@@ -48,7 +48,7 @@
 		}
 	
 		_data = [[NSData alloc] initWithData: data];
-		_source = [[NSString alloc] initWithData: data encoding: NSISOLatin1StringEncoding];
+		_source = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
 		_object = [[decoder decode] retain];
 		
 		if ( _object == nil )

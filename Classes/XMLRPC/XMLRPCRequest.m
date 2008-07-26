@@ -121,7 +121,7 @@
 
 - (NSURLRequest *)request
 {
-	NSData *request = [[_encoder encode] dataUsingEncoding: NSISOLatin1StringEncoding];
+	NSData *request = [[_encoder encode] dataUsingEncoding: NSUTF8StringEncoding];
 	NSNumber *length = [NSNumber numberWithInt: [request length]];
 	
 	if (request == nil)
