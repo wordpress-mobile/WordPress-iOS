@@ -397,6 +397,8 @@
 		saveButton.action = @selector(saveAction:);
 	} 
 
+	// Icons designed by, and included with permission of, IconBuffet | iconbuffet.com
+	
 	NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:5];
 
 	if (postDetailEditController == nil) {
