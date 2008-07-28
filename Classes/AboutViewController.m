@@ -34,7 +34,7 @@
 	[webView loadHTMLString:@"<font face=\"Helvetica\"> <p style=\"color:rgb(51,51,51);\"><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><b style=\"font-size:18px;\"><br>WordPress for iPhone</b><br>1.1 Beta<br><br>"
 	"An Open Source iPhone app for WordPress blogs.<br><br>"
 	"Designed by Automattic and developed by Effigent.<br><br>"
-	 "For more information, visit the     WordPress for iPhone web site    at <a style=\"color:rgb(37,131,173);text-decoration:none\" href=\"http://iphone.wordpress.net/\">iphone.wordpress.net</a>.</p></font>" baseURL:nil];
+	 "For more information, visit the     WordPress for iPhone web site    at <a style=\"color:rgb(37,131,173);text-decoration:none\" href=\"http://iphone.wordpress.net/\">iphone.wordpress.org</a>.</p></font>" baseURL:nil];
 }
 
 
