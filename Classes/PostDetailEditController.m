@@ -557,7 +557,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	NSString *pictureURL = [[aNotification userInfo] valueForKey:@"pictureURL"];
 	NSString *curText = textView.text;
 	curText = ( curText == nil ? @"" : curText );
-	textView.text = [curText stringByAppendingString:[NSString stringWithFormat:@"<img src=\"%@\" alt=\"photo\" />",pictureURL]]; 
+	textView.text = [curText stringByAppendingString:[NSString stringWithFormat:@"<img src=\"%@\" alt=\"\" />",pictureURL]]; 
 }
 
 - (void)didReceiveMemoryWarning {

@@ -538,7 +538,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		}
 	}
 	
-	return [NSString stringWithFormat:@"<img src=\"%@\" alt=\"photo\" width=\"%d\" height=\"%d\" class=\"alignnone size-full wp-image-364\" />", urlStr, (int)width, (int)height ];
+	return [NSString stringWithFormat:@"<img src=\"%@\" alt=\"\" width=\"%d\" height=\"%d\" class=\"alignnone size-full wp-image-364\" />", urlStr, (int)width, (int)height ];
 }
 
 - (BOOL)appendImagesOfCurrentPostToDescription
