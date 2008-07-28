@@ -3,7 +3,6 @@
 //  WordPress
 //
 //  Created by Ganesh Ramachandran on 6/6/08.
-//  Copyright 2008 Effigent, Inc.. All rights reserved.
 //
 
 // Blog archive file name
