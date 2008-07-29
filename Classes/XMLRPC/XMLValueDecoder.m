@@ -40,20 +40,23 @@
 	}
 	else
 	{
-		switch (curValueType)
-		{
-			case structtype:
-				if( [aValueDecoder valueType] == structMemberType )
-				{
-					[curVal setValue:[aValueDecoder value] forKey:[aValueDecoder valueForKey:@"curStructKey"]];
-				}
-				break;
-			case arraytype:
-				[curVal addObject:[aValueDecoder value]];
-				break;
-			default:
-				break;
-		}		
+		if (!([aValueDecoder value] == nil)) {
+			
+			switch (curValueType)
+			{
+				case structtype:
+					if( [aValueDecoder valueType] == structMemberType )
+					{
+						[curVal setValue:[aValueDecoder value] forKey:[aValueDecoder valueForKey:@"curStructKey"]];
+					}
+					break;
+				case arraytype:
+					[curVal addObject:[aValueDecoder value]];
+					break;
+				default:
+					break;
+			}
+		}
 	}
 }
 
