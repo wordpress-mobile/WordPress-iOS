@@ -1026,10 +1026,38 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[reqCategories setMethod:@"wp.getCategories" withObjects:[NSArray arrayWithObjects:blogid,username,pwd,nil]];
 	
 	NSArray *categories = [self executeXMLRPCRequest:reqCategories byHandlingError:YES];
-	if( [categories isKindOfClass:[NSArray class]] ) //might be an error.
+	if( [categories isKindOfClass:[NSArray class]])
 	{
-//		NSLog(@"categories %@", categories);
-		[currentBlog setObject:categories forKey:@"categories"];
+		
+		// categoryName if blank will be set to id
+		
+		NSMutableArray *cats = [NSMutableArray arrayWithCapacity:15];
+		
+		for (NSDictionary *category in categories) {
+			
+			NSString *categoryId = [category valueForKey:@"categoryId"];
+			NSString *categoryName = [category valueForKey:@"categoryName"];
+			
+			if (categoryName == nil || [categoryName isEqualToString:@""] ) {
+				
+				NSMutableDictionary *cat = [[category mutableCopy] retain];
+				[cat setObject:categoryId forKey:@"categoryName"];
+				[cats addObject:cat];
+				[cat release];
+			
+			} else {
+				
+				[cats addObject:category];
+			
+			}
+				
+		
+			
+		}
+		
+		[currentBlog setObject:cats forKey:@"categories"];
+		
+		
 	}
 	else {
 		return NO;
