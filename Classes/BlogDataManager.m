@@ -791,22 +791,26 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	{
 		NSRange range1 = [xmlstr rangeOfString:@"preferred=\"true\""];
 //		NSLog(@"range %@", NSStringFromRange(range1));
-		NSRange lr1 = NSMakeRange(range1.location, [xmlstr length]-range1.location);
-//		NSLog(@"lr %@", NSStringFromRange(lr1));
-		
-		NSRange endRange1 = [xmlstr rangeOfString:@"/>" options:NSLiteralSearch range:lr1];
-//		NSLog(@"endRange %@", NSStringFromRange(endRange1));
-		
-		NSString *ourStr = [xmlstr substringWithRange:NSMakeRange(range1.location, endRange1.location-range1.location)];
-//		NSLog(@"ourStr %@", ourStr);
-		
-		ourStr = [ourStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-		ourStr = [ourStr substringWithRange:NSMakeRange(0, [ourStr length]-1)];
-		NSRange r1 = [ourStr rangeOfString:@"\"" options:NSBackwardsSearch];
-		
-		NSString *xmlrpcurl = [ourStr substringWithRange:NSMakeRange(r1.location+1, [ourStr length]-r1.location-1)];			
-//		NSLog(@"xmlrpcurl %@", xmlrpcurl);
-		return xmlrpcurl;
+		if (range1.location != NSNotFound) {
+			NSRange lr1 = NSMakeRange(range1.location, [xmlstr length]-range1.location);
+	//		NSLog(@"lr %@", NSStringFromRange(lr1));
+			
+			NSRange endRange1 = [xmlstr rangeOfString:@"/>" options:NSLiteralSearch range:lr1];
+	//		NSLog(@"endRange %@", NSStringFromRange(endRange1));
+			if (endRange1.location != NSNotFound) {
+				NSString *ourStr = [xmlstr substringWithRange:NSMakeRange(range1.location, endRange1.location-range1.location)];
+		//		NSLog(@"ourStr %@", ourStr);
+				
+				ourStr = [ourStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+				ourStr = [ourStr substringWithRange:NSMakeRange(0, [ourStr length]-1)];
+				NSRange r1 = [ourStr rangeOfString:@"\"" options:NSBackwardsSearch];
+				if (r1.location != NSNotFound) {
+					NSString *xmlrpcurl = [ourStr substringWithRange:NSMakeRange(r1.location+1, [ourStr length]-r1.location-1)];			
+			//		NSLog(@"xmlrpcurl %@", xmlrpcurl);
+					return xmlrpcurl;
+				}
+			}
+		}
 	}
 	return nil;
 }
@@ -828,14 +832,18 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		if (range.location != NSNotFound) {
 			NSRange lr = NSMakeRange(range.location, [htmlStr length]-range.location);
 			NSRange endRange = [htmlStr rangeOfString:@"/>" options:NSLiteralSearch range:lr];
-			NSString *ourStr = [htmlStr substringWithRange:NSMakeRange(range.location, endRange.location-range.location)];
-			ourStr = [ourStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-			ourStr = [ourStr substringWithRange:NSMakeRange(0, [ourStr length]-1)];
-			NSRange r = [ourStr rangeOfString:@"\"" options:NSBackwardsSearch];
-			NSString *hosturl = [ourStr substringWithRange:NSMakeRange(r.location+1, [ourStr length]-r.location-1)];
-//			NSLog(@"hosturl %@", hosturl);
-			if( hosturl != nil )
-				return [self xmlurl:hosturl];
+			if (endRange.location != NSNotFound) {
+				NSString *ourStr = [htmlStr substringWithRange:NSMakeRange(range.location, endRange.location-range.location)];
+				ourStr = [ourStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+				ourStr = [ourStr substringWithRange:NSMakeRange(0, [ourStr length]-1)];
+				NSRange r = [ourStr rangeOfString:@"\"" options:NSBackwardsSearch];
+				if (r.location != NSNotFound) {
+					NSString *hosturl = [ourStr substringWithRange:NSMakeRange(r.location+1, [ourStr length]-r.location-1)];
+		//			NSLog(@"hosturl %@", hosturl);
+					if( hosturl != nil )
+						return [self xmlurl:hosturl];
+				}
+			}
 		}
 		
 	}
@@ -911,7 +919,15 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	NSString *xmlrpc = [self discoverxmlrpcurlForurl:url];
 	if (!xmlrpc) {
-		xmlrpc = [blogURL stringByAppendingString:[currentBlog valueForKey:@"xmlrpcsuffix"]];
+		UIAlertView *rsdError = [[UIAlertView alloc] initWithTitle:@"We could not find the XML-RPC service for your blog. Please check your network connection and try again. if the problem persists, please visit \"iphone.wordpress.org\" to report the problem."
+																	   message:nil
+																	  delegate:[[UIApplication sharedApplication] delegate]
+															 cancelButtonTitle:@"Visit Site"
+															 otherButtonTitles:@"OK", nil];
+		rsdError.tag = kRSDErrorTag;
+		[rsdError show];
+		[rsdError release];
+		return NO;
 	}
 	
 	int versionCheck = [self checkXML_RPC_URL_IsRunningSupportedVersionOfWordPress: xmlrpc];
@@ -919,7 +935,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		return NO;
 	if( versionCheck == 0 )
 	{
-		UIAlertView *unsupportedWordpress = [[UIAlertView alloc] initWithTitle:@"Sorry, you appear to be running an older version of WordPress that is not supported by this app. Please visit \"iphone.wordpress.net\" for details."
+		UIAlertView *unsupportedWordpress = [[UIAlertView alloc] initWithTitle:@"Sorry, you appear to be running an older version of WordPress that is not supported by this app. Please visit \"iphone.wordpress.org\" for details."
 																	   message:nil
 																	  delegate:[[UIApplication sharedApplication] delegate]
 															 cancelButtonTitle:@"Visit Site"
@@ -1678,7 +1694,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 									@"", @"", @"", @"",
 									@"",@"",@"",@"", 
 								   [NSNumber numberWithInt:0], [NSNumber numberWithInt:0], 
-								   [NSNumber numberWithInt:0], [NSNumber numberWithInt:0], @"/xmlrpc.php",@"",@"30 Recent Posts", nil];	
+								   [NSNumber numberWithInt:0], [NSNumber numberWithInt:0], @"/xmlrpc.php",@"",@"10 Recent Posts", nil];	
 	
 
 	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjects:blogInitValues forKeys:[self blogFieldNames]];
@@ -2217,6 +2233,9 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 //TODO: preview based on template.
 - (void)generateTemplateForBlog:(id)aBlog
 {
+	// skip template generation until !$title$! bug can be fixed
+	return;
+	
 	NSAutoreleasePool *ap = [[NSAutoreleasePool alloc] init];
 	[aBlog retain];
 	

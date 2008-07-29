@@ -14,6 +14,7 @@
 #define kDraftsHostName @"iPhone"
 
 #define kUnsupportedWordpressVersionTag 900
+#define kRSDErrorTag 901
 
 @interface BlogDataManager : NSObject 
 {

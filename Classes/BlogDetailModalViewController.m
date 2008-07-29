@@ -168,7 +168,8 @@
 	NSArray *dataSource = [NSArray arrayWithObjects:@"10 Recent Posts",@"20 Recent Posts",@"30 Recent Posts",@"40 Recent Posts",@"50 Recent Posts",nil] ;
 
 	NSString *curStatus = [[dm currentBlog] valueForKey:kPostsDownloadCount];
-	NSArray *selObject = ( curStatus == nil ? [NSArray arrayWithObject:[dataSource objectAtIndex:2]] : [NSArray arrayWithObject:curStatus] );	
+	// default value for number of posts is setin BlogDataManager.makeNewBlogCurrent
+	NSArray *selObject = ( curStatus == nil ? [NSArray arrayWithObject:[dataSource objectAtIndex:0]] : [NSArray arrayWithObject:curStatus] );	
 	[selectionTableViewController populateDataSource:dataSource
 									   havingContext:nil
 									 selectedObjects:selObject

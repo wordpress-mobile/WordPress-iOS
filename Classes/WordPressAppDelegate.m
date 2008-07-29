@@ -70,11 +70,11 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-	if( alertView.tag == kUnsupportedWordpressVersionTag )
+	if( alertView.tag == kUnsupportedWordpressVersionTag || alertView.tag == kRSDErrorTag)
 	{
 		if( buttonIndex == 0 ) //Visit Site button.
 		{
-			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://iphone.wordpress.net"]];
+			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://iphone.wordpress.org"]];
 		}
 	}
 }
