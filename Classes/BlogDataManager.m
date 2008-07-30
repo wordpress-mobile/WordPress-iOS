@@ -784,7 +784,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 										  timeoutInterval:60.0];			
 	NSData *data = [NSURLConnection sendSynchronousRequest:theRequest returningResponse:NULL error:NULL];
 	
-	NSString *xmlstr = [NSString stringWithUTF8String:[data bytes]];
+	// NSString *xmlstr = [NSString stringWithUTF8String:[data bytes]];
+	NSString *xmlstr = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
 //	NSLog(@"xmlstr %@", xmlstr);
 	
 	if( [data length] > 0 )
@@ -822,10 +823,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:urlstr]
 											  cachePolicy:NSURLRequestUseProtocolCachePolicy							  
 										  timeoutInterval:60.0];			
-	NSData *data = [NSURLConnection sendSynchronousRequest:theRequest returningResponse:NULL error:NULL];
+	NSData *data = [[NSURLConnection sendSynchronousRequest:theRequest returningResponse:NULL error:NULL] retain];
 	if( [data length] > 0 )
 	{
-		NSString *htmlStr = [NSString stringWithUTF8String:[data bytes]];
+		//NSString *htmlStr = [NSString stringWithUTF8String:[data bytes]];
+		NSString *htmlStr = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
 //		NSLog(@"htmlStr %@", htmlStr);
 
 		NSRange range = [htmlStr rangeOfString:@"EditURI"];
@@ -841,13 +843,14 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 					NSString *hosturl = [ourStr substringWithRange:NSMakeRange(r.location+1, [ourStr length]-r.location-1)];
 		//			NSLog(@"hosturl %@", hosturl);
 					if( hosturl != nil )
+						[data release];
 						return [self xmlurl:hosturl];
 				}
 			}
 		}
 		
 	}
-	
+	[data release];
 	return nil;
 }
 
@@ -2310,7 +2313,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 			NSData *data = [NSURLConnection sendSynchronousRequest:theRequest returningResponse:NULL error:NULL];
 			if( [data length] )
 			{
-				NSString *str = [NSString stringWithUTF8String:[data bytes]]; 
+				//NSString *str = [NSString stringWithUTF8String:[data bytes]];
+				NSString *str = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
 				NSLog(@"Received Template: %@", str);
 				if(!str || [str rangeOfString:@"!$text$!"].location == NSNotFound ) {
 					NSLog(@"Template not downloaded. Private Blog? Not writing to file");
@@ -2382,7 +2386,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	// categories
 	// password - have the option to show the password; 
 	//   TO-DO store password with simple encryption
-	// status : chooser from getAvailableStatuses (draft, pending, private, published
+	// status : chooser from getAvailableStatuses (draft, pending, private, publish
 	// - TO-DO clarify how this is used in mw.newPost and mw.EditPost
 	// mt_text_more
 	// not_used_allow_comments

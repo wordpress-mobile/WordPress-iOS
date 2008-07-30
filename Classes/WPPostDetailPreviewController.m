@@ -40,7 +40,7 @@
 	
 	BOOL isDraft = NO;
 	NSString *status = [[dataManager currentPost] objectForKey:@"post_status"];
-	if (![status isEqualToString:@"published"] &&  ![status isEqualToString:@"private"]) 
+	if (![status isEqualToString:@"publish"] &&  ![status isEqualToString:@"private"]) 
 		isDraft = YES;
 	
 	BOOL isPrivate = NO;
