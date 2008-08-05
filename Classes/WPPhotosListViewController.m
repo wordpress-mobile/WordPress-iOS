@@ -57,12 +57,22 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 {
 	isShowPhotoPickerActionSheet = YES;
 	// open a dialog with two custom buttons
-	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@""
-																													 delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
-																									otherButtonTitles:@"Add Photo from Library", @"Take Photo with Camera", nil];
-	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-	[actionSheet showInView:postDetailViewController.view];
-	[actionSheet release];
+	if ([UIImagePickerController
+		 isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+		UIActionSheet *actionSheet = [[UIActionSheet alloc]
+									  initWithTitle:@""
+									  delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
+									  otherButtonTitles:@"Add Photo from Library", @"Take Photo with Camera",
+									  nil];
+		actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+		[actionSheet showInView:postDetailViewController.view];
+		[actionSheet release];
+		
+	} else {
+		[self pickPhotoFromPhotoLibrary:nil];
+		
+	}
+	
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex 
