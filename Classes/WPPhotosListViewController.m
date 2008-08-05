@@ -61,7 +61,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 																													 delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
 																									otherButtonTitles:@"Add Photo from Library", @"Take Photo with Camera", nil];
 	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-	[actionSheet showInView:self.view];
+	[actionSheet showInView:postDetailViewController.view];
 	[actionSheet release];
 }
 
