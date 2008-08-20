@@ -33,4 +33,8 @@
 #define kCellHeight				44.0
 
 
-
+#ifdef DEBUGMODE
+#define WPLog NSLog
+#else
+#define WPLog //NSLog
+#endif

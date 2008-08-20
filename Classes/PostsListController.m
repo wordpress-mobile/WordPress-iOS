@@ -91,7 +91,7 @@
 
 - (IBAction) showAddPostView:(id)sender {
 	
-//	NSLog(@"Add Post Button Clicked");
+//	WPLog(@"Add Post Button Clicked");
 	
 	// Set current post to a new post
 	// Detail view will bind data into this instance and call save
@@ -208,7 +208,7 @@
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
 	
-//	NSLog(@"Edit Post Button Clicked");
+//	WPLog(@"Edit Post Button Clicked");
 	
 }
 
@@ -227,7 +227,7 @@
 - (void)reachabilityChanged
 {
 	
-	NSLog(@"reachabilityChanged ....");
+	WPLog(@"reachabilityChanged ....");
 	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
 	
 	[postsTableView reloadData];
@@ -288,7 +288,7 @@
 - (void)viewWillAppear:(BOOL)animated {
 	
 	
-	NSLog(@"PostsList:viewWillAppear");
+	WPLog(@"PostsList:viewWillAppear");
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	
 	dm.isLocaDraftsCurrent = NO;
@@ -298,7 +298,7 @@
 	// everytime we navigate to the view
 	// need to update the prompt and the title here as well as in loadView	
 	NSString *hostName = [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blog_host_name"];
-	NSLog(@"host name was: %@", hostName);
+	WPLog(@"host name was: %@", hostName);
 	NSString *blogName = [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blogName"];
 	
 	// remove the username prefix from the blog_host_name
@@ -306,7 +306,7 @@
 	NSString *username = [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"username"];
 	NSString *usernamePrefix = [NSString stringWithFormat:@"%@_", username];
 	hostName = [hostName stringByReplacingOccurrencesOfString:usernamePrefix withString:@""];
-	NSLog(@"host name changed for display to: %@", hostName);
+	WPLog(@"host name changed for display to: %@", hostName);
 	
 	self.title = [NSString stringWithFormat:@"%@", blogName];
 	
@@ -351,7 +351,7 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-	NSLog(@"PostsList: viewDidAppear");
+	WPLog(@"PostsList: viewDidAppear");
 	
 	[super viewDidAppear:animated];
 	
@@ -385,7 +385,7 @@
 
 - (IBAction)downloadRecentPosts:(id)sender {
 	
-	NSLog(@"PostsList: Downloading RecentPosts");
+	WPLog(@"PostsList: Downloading RecentPosts");
 	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	[dm syncPostsForCurrentBlog];
@@ -409,7 +409,7 @@
 {
 //	if( buttonIndex == 0 ) //Discard and Continue
 //	{
-//		NSLog(@"button 0");
+//		WPLog(@"button 0");
 //		[[BlogDataManager sharedDataManager] clearAutoSavedContext];
 //	}
 //	else 
@@ -425,7 +425,7 @@
 #pragma mark -
 
 - (void)didReceiveMemoryWarning {
-		NSLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+		WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[super didReceiveMemoryWarning];
 }
 

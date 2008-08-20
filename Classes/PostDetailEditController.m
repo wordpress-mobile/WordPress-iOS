@@ -92,7 +92,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 										 andDelegate:self];
 	selectionTableViewController.title = @"Categories";
 	selectionTableViewController.navigationItem.rightBarButtonItem = newCategoryBarButtonItem;
-	NSLog(@"selectionTableViewController navigationItem %@", selectionTableViewController.navigationItem);
+	WPLog(@"selectionTableViewController navigationItem %@", selectionTableViewController.navigationItem);
 	[postDetailViewController.navigationController pushViewController:selectionTableViewController animated:YES];	
 }
 
@@ -126,7 +126,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)selectionTableViewController:(WPSelectionTableViewController *)selctionController completedSelectionsWithContext:(void *)selContext selectedObjects:(NSArray *)selectedObjects haveChanges:(BOOL)isChanged
 {
-	//	NSLog(@" %@ completedSelectionsWithContext %u isChanged %d selectedObjects %@", [self className], selContext, isChanged, selectedObjects);
+	//	WPLog(@" %@ completedSelectionsWithContext %u isChanged %d selectedObjects %@", [self className], selContext, isChanged, selectedObjects);
 	if( !isChanged )
 	{
 		[selctionController clean];
@@ -420,7 +420,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		pickerController.delegate = self;
 		pickerController.allowsImageEditing = NO;
 	}
-	NSLog(@"pickerController %@", pickerController);
+	WPLog(@"pickerController %@", pickerController);
 	return pickerController;
 }
 
@@ -561,7 +561,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)didReceiveMemoryWarning {
-		NSLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+		WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
 	// Release anything that's not essential, such as cached data
 	

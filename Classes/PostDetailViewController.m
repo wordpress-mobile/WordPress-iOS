@@ -59,7 +59,7 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didEndCustomizingViewControllers:(NSArray *)viewControllers changed:(BOOL)changed 
 {
-	NSLog(@"tabBarController didEndCustomizingViewControllers");	
+	WPLog(@"tabBarController didEndCustomizingViewControllers");	
 }
 
 - (void)dealloc 
@@ -151,11 +151,11 @@
 
 - (void)autoSaveCurrentPost:(NSTimer *)aTimer
 {
-//	NSLog(@"autoSaveCurrentPost %@", aTimer);
+//	WPLog(@"autoSaveCurrentPost %@", aTimer);
 	
 	if( !hasChanges )
 	{
-		NSLog(@"Returning -- hasChanges is false");
+		WPLog(@"Returning -- hasChanges is false");
 		return;
 	}
 	
@@ -175,7 +175,7 @@
 	}
 	else
 	{
-		NSLog(@"ERROR: There exits a timer, trying to create another timer object.");
+		WPLog(@"ERROR: There exits a timer, trying to create another timer object.");
 	}
 }
 
@@ -456,7 +456,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	NSLog(@"pdvc viewWillAppear");
+	WPLog(@"pdvc viewWillAppear");
 	if(hasChanges == YES) {
 		if ([self.navigationItem.leftBarButtonItem.title isEqualToString:@"Posts"])
 			self.navigationItem.leftBarButtonItem.title = @"Cancel";
@@ -473,8 +473,8 @@
 		self.navigationItem.rightBarButtonItem = nil;
 	}
 	//	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-	//	NSLog(@"objects %@",postSettingsController.selectionTableViewController.table);
-	//	NSLog(@"categories %@",[(NSArray *)[postSettingsController.selectionTableViewController.objects valueForKey:@"categoryName"] componentsJoinedByString:@","]);
+	//	WPLog(@"objects %@",postSettingsController.selectionTableViewController.table);
+	//	WPLog(@"categories %@",[(NSArray *)[postSettingsController.selectionTableViewController.objects valueForKey:@"categoryName"] componentsJoinedByString:@","]);
 	//	[dataManager.currentPost setValue: forKey:@"categories"];
 	//categoryName
 	
@@ -507,7 +507,7 @@
 }
 
 - (void)didReceiveMemoryWarning {
-		NSLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+		WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[super didReceiveMemoryWarning];
 }
 

@@ -70,7 +70,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 - (void)dealloc {
 	
-	NSLog(@"retain count for blogsList at dealloc is %d", [blogsList retainCount]);
+	WPLog(@"retain count for blogsList at dealloc is %d", [blogsList retainCount]);
 	[blogsList release];
 	[currentBlog release];
 	[postTitlesList release];
@@ -159,7 +159,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		}
 		// set the current dir
 		[fileManager changeCurrentDirectoryPath:self.currentDirectoryPath];
-		NSLog(@"current directory is set to : %@", [fileManager currentDirectoryPath]);
+		WPLog(@"current directory is set to : %@", [fileManager currentDirectoryPath]);
 		
 		// allocate lists
 //		self->blogsList = [[NSMutableArray alloc] initWithCapacity:10];
@@ -182,7 +182,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 - (BOOL)handleError:(NSError *)err
 {
-//	NSLog(@"handleError ......");
+//	WPLog(@"handleError ......");
 	UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"Communication Error"
 													 message:[err localizedDescription]
 													delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -218,7 +218,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	{
 		// patch to eat the zero posts error
 		// "Either there are no posts, or something went wrong."
-//		NSLog(@"XML RPC Error: %@", [err description]);
+//		WPLog(@"XML RPC Error: %@", [err description]);
 		
 		NSString *zeroPostsError = @"Either there are no posts, or something went wrong.";
 		NSRange range = [[err description] rangeOfString:zeroPostsError options:NSBackwardsSearch];
@@ -237,10 +237,10 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 - (id)executeXMLRPCRequest:(XMLRPCRequest *)req byHandlingError:(BOOL)shouldHandleFalg
 {
-	NSLog(@"XMLRPC sendSynchronousXMLRPCRequest %@", [req method]);
+	WPLog(@"XMLRPC sendSynchronousXMLRPCRequest %@", [req method]);
 	XMLRPCResponse *userInfoResponse = [XMLRPCConnection sendSynchronousXMLRPCRequest:req];
 	NSError *err = [self errorWithResponse:userInfoResponse shouldHandle:shouldHandleFalg];
-	NSLog(@"END XMLRPC sendSynchronousXMLRPCRequest %@", [req method]);
+	WPLog(@"END XMLRPC sendSynchronousXMLRPCRequest %@", [req method]);
 	if( err )
 		return err;
 	
@@ -256,7 +256,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 {	
 	if( ![self respondsToSelector:anOperation] )
 	{
-		NSLog(@"ERROR: %@ can't respond to the Operation %@.", @"Blog Data Manager", NSStringFromSelector(anOperation));
+		WPLog(@"ERROR: %@ can't respond to the Operation %@.", @"Blog Data Manager", NSStringFromSelector(anOperation));
 		return;
 	}
 	
@@ -271,7 +271,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 //you can access the current context.
 - (void)addSendPictureMsgToQueue:(id)aPicture
 {	
-	NSLog(@"addSendPictureMsgToQueue");
+	WPLog(@"addSendPictureMsgToQueue");
 	//create args
 	NSData *pictData = UIImagePNGRepresentation([aPicture valueForKey:@"pictureData"]);
 	if( pictData == nil )
@@ -288,16 +288,16 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	//test code
 	if( ![self countOfBlogs] )
 	{
-		NSLog(@"NOTE: addSendPictureMsgToQueue Rejected ... as no blogs exist.");
+		WPLog(@"NOTE: addSendPictureMsgToQueue Rejected ... as no blogs exist.");
 		return;
 	}
 	
 //	[self makeBlogAtIndexCurrent:[self countOfBlogs]-1];
-//	NSLog(@"currentBlog %@",currentBlog);
+//	WPLog(@"currentBlog %@",currentBlog);
 
 	if( !currentBlog )
 	{
-		NSLog(@"NOTE: addSendPictureMsgToQueue Rejected ... as no Current Blog exist.");
+		WPLog(@"NOTE: addSendPictureMsgToQueue Rejected ... as no Current Blog exist.");
 		return;
 	}
 	
@@ -353,12 +353,12 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	id response = [self executeXMLRPCRequest:request byHandlingError:YES];
 	id pictObj = [aPictureInfo valueForKey:@"pictureObj"];
-	NSLog(@"response %@", response);
+	WPLog(@"response %@", response);
 	[request release];
 //	XMLRPCResponse *response = [XMLRPCConnection sendSynchronousXMLRPCRequest:request];
 	if( [response isKindOfClass:[NSError class]] )
 	{
-		NSLog(@"ERROR Occured %@", [response fault]);
+		WPLog(@"ERROR Occured %@", [response fault]);
 		[pictObj setValue:[response fault] forKey:@"faultString"];
 		[pictObj setValue:[NSNumber numberWithInt:-1] forKey:pictureStatus];
 	}
@@ -440,7 +440,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	if( [response isKindOfClass:[NSError class]] )
 	{
-		NSLog(@"ERROR Occured %@", response);
+		WPLog(@"ERROR Occured %@", response);
 		return nil;
 	}
 	else
@@ -456,7 +456,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 //	UIImage *pict = [UIImage imageWithContentsOfFile:filePath];
 		//UIImagePNGRepresentation(pict);s
 	NSData *pictData = [NSData dataWithContentsOfFile:filePath];
-	NSLog(@"pictData leng %d", [pictData length]);
+	WPLog(@"pictData leng %d", [pictData length]);
 	if( pictData == nil )
 	{
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
@@ -475,7 +475,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	//	[imageParms setValue:desc forKey:@"description"];
 	
 	id blog = [self blogForId:[currentPost valueForKey:@"blogid"] hostName:[currentPost valueForKey:@"blog_host_name"]];
-//	NSLog(@"retrived blog from current post %@", blog);
+//	WPLog(@"retrived blog from current post %@", blog);
 	
 	NSArray *args = [NSArray arrayWithObjects:[blog valueForKey:@"blogid"],
 					 [blog valueForKey:@"username"],
@@ -491,7 +491,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[request release];
 	if( [response isKindOfClass:[NSError class]] )
 	{
-		NSLog(@"ERROR Occured %@", response);
+		WPLog(@"ERROR Occured %@", response);
 		return nil;
 	}
 	else
@@ -546,7 +546,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSMutableArray *photos = [currentPost valueForKey:@"Photos"];
 	int i, count = [photos count];
 	NSString *curPath = nil;
-//	NSLog(@"appendImagesOfCurrentPostToDescription. %u", currentPost);
+//	WPLog(@"appendImagesOfCurrentPostToDescription. %u", currentPost);
 	
 	NSString *desc = [currentPost valueForKey:@"description"];
 	BOOL firstImage = YES;
@@ -674,7 +674,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *draftFileName = [NSString stringWithFormat:@"draft.%@.archive", draftid];
 	NSString *pathToDraft = [[self draftsPathForBlog:aBlog] stringByAppendingPathComponent:draftFileName];
 	
-//	NSLog(@"pathToDraft %@", pathToDraft);
+//	WPLog(@"pathToDraft %@", pathToDraft);
 	return pathToDraft;
 }
 
@@ -786,28 +786,28 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	// NSString *xmlstr = [NSString stringWithUTF8String:[data bytes]];
 	NSString *xmlstr = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
-//	NSLog(@"xmlstr %@", xmlstr);
+//	WPLog(@"xmlstr %@", xmlstr);
 	
 	if( [data length] > 0 )
 	{
 		NSRange range1 = [xmlstr rangeOfString:@"preferred=\"true\""];
-//		NSLog(@"range %@", NSStringFromRange(range1));
+//		WPLog(@"range %@", NSStringFromRange(range1));
 		if (range1.location != NSNotFound) {
 			NSRange lr1 = NSMakeRange(range1.location, [xmlstr length]-range1.location);
-	//		NSLog(@"lr %@", NSStringFromRange(lr1));
+	//		WPLog(@"lr %@", NSStringFromRange(lr1));
 			
 			NSRange endRange1 = [xmlstr rangeOfString:@"/>" options:NSLiteralSearch range:lr1];
-	//		NSLog(@"endRange %@", NSStringFromRange(endRange1));
+	//		WPLog(@"endRange %@", NSStringFromRange(endRange1));
 			if (endRange1.location != NSNotFound) {
 				NSString *ourStr = [xmlstr substringWithRange:NSMakeRange(range1.location, endRange1.location-range1.location)];
-		//		NSLog(@"ourStr %@", ourStr);
+		//		WPLog(@"ourStr %@", ourStr);
 				
 				ourStr = [ourStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 				ourStr = [ourStr substringWithRange:NSMakeRange(0, [ourStr length]-1)];
 				NSRange r1 = [ourStr rangeOfString:@"\"" options:NSBackwardsSearch];
 				if (r1.location != NSNotFound) {
 					NSString *xmlrpcurl = [ourStr substringWithRange:NSMakeRange(r1.location+1, [ourStr length]-r1.location-1)];			
-			//		NSLog(@"xmlrpcurl %@", xmlrpcurl);
+			//		WPLog(@"xmlrpcurl %@", xmlrpcurl);
 					return xmlrpcurl;
 				}
 			}
@@ -819,7 +819,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 - (NSString *)discoverxmlrpcurlForurl:(NSString *)urlstr
 {
 	urlstr = [NSString stringWithFormat:@"http://%@", urlstr];
-//	NSLog(@"url str %@", urlstr);
+//	WPLog(@"url str %@", urlstr);
 	NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:urlstr]
 											  cachePolicy:NSURLRequestUseProtocolCachePolicy							  
 										  timeoutInterval:60.0];			
@@ -828,7 +828,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	{
 		//NSString *htmlStr = [NSString stringWithUTF8String:[data bytes]];
 		NSString *htmlStr = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
-//		NSLog(@"htmlStr %@", htmlStr);
+//		WPLog(@"htmlStr %@", htmlStr);
 
 		NSRange range = [htmlStr rangeOfString:@"EditURI"];
 		if (range.location != NSNotFound) {
@@ -841,7 +841,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 				NSRange r = [ourStr rangeOfString:@"\"" options:NSBackwardsSearch];
 				if (r.location != NSNotFound) {
 					NSString *hosturl = [ourStr substringWithRange:NSMakeRange(r.location+1, [ourStr length]-r.location-1)];
-		//			NSLog(@"hosturl %@", hosturl);
+		//			WPLog(@"hosturl %@", hosturl);
 					if( hosturl != nil )
 						[data release];
 						return [self xmlurl:hosturl];
@@ -954,7 +954,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	//  ------------------------- invoke login & getUserInfo
 	
-	NSLog(@"xmlrpc url %@" ,[NSURL URLWithString:xmlrpc] );
+	WPLog(@"xmlrpc url %@" ,[NSURL URLWithString:xmlrpc] );
 	
 	XMLRPCRequest *reqUserInfo = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
 	[reqUserInfo setMethod:@"blogger.getUserInfo" withObjects:[NSArray arrayWithObjects:@"ABCDEF012345",username,pwd,nil]];
@@ -1092,7 +1092,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	if( [authors isKindOfClass:[NSArray class]] ) //might be an error.
 	{
 		[currentBlog setObject:authors forKey:@"authors"];
-//		NSLog(@"authors %@", authors);
+//		WPLog(@"authors %@", authors);
 	}
 	else {
 		return NO;
@@ -1122,8 +1122,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSMutableArray *ePostIds = [[ePosts valueForKey:@"postid"] mutableCopy];
 	NSArray *nPostIds = [nPosts valueForKey:@"postid"];
 	
-//	NSLog(@"deletedPostsForExistingPosts %d %d", [ePosts count], [nPosts count]);
-//	NSLog(@"ePosts %@ nPosts %@", ePostIds, nPostIds);
+//	WPLog(@"deletedPostsForExistingPosts %d %d", [ePosts count], [nPosts count]);
+//	WPLog(@"ePosts %@ nPosts %@", ePostIds, nPostIds);
 
 	id curPost = nil;
 	
@@ -1133,12 +1133,12 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		if( ![nPostIds containsObject:[ePostIds objectAtIndex:i]] )
 		{
 			curPost = [ePosts objectAtIndex:i];
-//			NSLog(@"hasChanges %@", [ePosts objectAtIndex:i]);
+//			WPLog(@"hasChanges %@", [ePosts objectAtIndex:i]);
 
 			if( ![[curPost valueForKey:@"hasChanges"] boolValue] )
 			{
 				NSString *pPath = [self pathToPost:curPost forBlog:aBlog];
-				NSLog(@"removing post %@ ", pPath);
+				WPLog(@"removing post %@ ", pPath);
 				if( [[NSFileManager defaultManager] removeItemAtPath:pPath error:NULL] )
 				{
 					[ePosts removeObjectAtIndex:i];
@@ -1183,7 +1183,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 // sync posts for a given blog
 - (BOOL) syncPostsForBlog:(id)blog {
-	NSLog(@"<<<<<<<<<<<<<<<<<< syncPostsForBlog >>>>>>>>>>>>>>");
+	WPLog(@"<<<<<<<<<<<<<<<<<< syncPostsForBlog >>>>>>>>>>>>>>");
 	if( [[blog valueForKey:@"blogid"] isEqualToString:kDraftsBlogIdStr] )
 		return NO;
 	[blog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
@@ -1194,7 +1194,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *blogid = [blog valueForKey:@"blogid"];
 	NSNumber *maxToFetch =  [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:2] intValue]];
 	
-//	NSLog(@"Fetching posts for blog %@ user %@/%@ from %@", blogid, username, pwd, fullURL);
+//	WPLog(@"Fetching posts for blog %@ user %@/%@ from %@", blogid, username, pwd, fullURL);
 	
 	//  ------------------------- invoke metaWeblog.getRecentPosts
 	XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
@@ -1208,7 +1208,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	// check for nil or empty response
 	// provide meaningful messge to user
 	if ((!recentPostsList) || !([recentPostsList isKindOfClass:[NSArray class]]) ) {
-		NSLog(@"Unknown Error");
+		WPLog(@"Unknown Error");
 		[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
 
@@ -1268,7 +1268,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 			[post setValue:@"original" forKey:@"local_status"];
 			newPostCount++ ;
 		}
-//		NSLog(@"post %@",post);
+//		WPLog(@"post %@",post);
 
 		// write the new post
 		[post writeToFile:pathToPost atomically:YES];
@@ -1327,7 +1327,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSString *blogsArchiveFilePath = [currentDirectoryPath stringByAppendingPathComponent:@"blogs.archive"];
 	
-	NSLog(blogsArchiveFilePath);
+	WPLog(blogsArchiveFilePath);
 	
 	if ([fileManager fileExistsAtPath:blogsArchiveFilePath]) {
 		// set method will release, make mutable copy and retain
@@ -1341,7 +1341,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		[self saveBlogData];
 	}
 	
-	NSLog(@"Number of blogs at launch: %d", [blogsList count]);
+	WPLog(@"Number of blogs at launch: %d", [blogsList count]);
 	
 }
 
@@ -1349,7 +1349,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	if (blogsList.count) {
 		
-		NSLog(@"Sorting %d blogs in list....", [blogsList count]);
+		WPLog(@"Sorting %d blogs in list....", [blogsList count]);
 		
 		// Create a descriptor to sort blog dictionaries by blogName
 		NSSortDescriptor *blognameSortDescriptor =  [[NSSortDescriptor alloc] 
@@ -1371,12 +1371,12 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	// check for existence of prior archive before saving
 	if ([blogsList count] || ([[NSFileManager defaultManager] fileExistsAtPath:blogsArchiveFilePath])) {
 		
-		NSLog(@"Saving %d blogs in list.", [blogsList count]);
+		WPLog(@"Saving %d blogs in list.", [blogsList count]);
 		[NSKeyedArchiver archiveRootObject:blogsList toFile:blogsArchiveFilePath];
 		
 	} else {
 		
-		NSLog(@"No blogs in list. there is nothing to save!");
+		WPLog(@"No blogs in list. there is nothing to save!");
 	}
 	
 	
@@ -1422,7 +1422,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	if ([[NSFileManager defaultManager] fileExistsAtPath:photosArchiveFilePath]) {
 		
 		[self setPhotosDB:[NSKeyedUnarchiver unarchiveObjectWithFile:photosArchiveFilePath]];
-//		NSLog(@"Loading %d photos....", [photosDB count]);
+//		WPLog(@"Loading %d photos....", [photosDB count]);
 		
 	} else {
 		[[NSFileManager defaultManager] createDirectoryAtPath:[currentDirectoryPath stringByAppendingString:@"/Pictures"] attributes:nil];
@@ -1433,18 +1433,18 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 }
 
 - (void) savePhotosDB {
-	NSLog(@"savePhotosDB");	
+	WPLog(@"savePhotosDB");	
 	NSString *photosArchiveFilePath = [self.currentDirectoryPath stringByAppendingPathComponent:@"wordpress.photos"];
 	// Empty photos list may signify all photos at launch were deleted;  
 	// check for existence of prior archive before saving
 	if ([photosDB count] || ([[NSFileManager defaultManager] fileExistsAtPath:photosArchiveFilePath])) {
 		
-		NSLog(@"Saving %d photos in list....", [photosDB count]);
+		WPLog(@"Saving %d photos in list....", [photosDB count]);
 		[NSKeyedArchiver archiveRootObject:photosDB toFile:photosArchiveFilePath];
 		
 	} else {
 		
-		NSLog(@"No photos in list. there is nothing to save!");
+		WPLog(@"No photos in list. there is nothing to save!");
 	}
 }
 
@@ -1528,7 +1528,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	// This is the safest way to obtain a C string from a CFString.
 	CFStringGetCString(myUUIDString, strBuffer, 256, kCFStringEncodingASCII);
 	
-//	NSLog(@"aImage.imageOrientation %d", aImage.imageOrientation);
+//	WPLog(@"aImage.imageOrientation %d", aImage.imageOrientation);
 //	char *prefix = "l";
 //	switch ( aImage.imageOrientation )
 //	{
@@ -1568,7 +1568,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	filePath = [NSString stringWithFormat:@"/%@/t_%@.jpeg",[self blogDir:currentBlog],(NSString *)outputString];
 	[siData writeToFile:filePath atomically:YES];
 
-	NSLog(@"il %d til %d", [imgData length], [siData length] );
+	WPLog(@"il %d til %d", [imgData length], [siData length] );
 	CFRelease(outputString);
 	CFRelease(myUUIDString);
 	CFRelease(myUUID);
@@ -1743,7 +1743,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 - (void)saveCurrentBlog {
 	
 	if (isLocaDraftsCurrent) {
-		NSLog(@"Tried to save local drafts fake blog!");
+		WPLog(@"Tried to save local drafts fake blog!");
 		return;
 	}
 	
@@ -1907,7 +1907,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 - (NSMutableArray *)draftTitlesForBlog:(id)aBlog
 {
 	NSString *draftTitlesFilePath = [self pathToDraftTitlesForBlog:aBlog];
-	NSLog(@"draftTitlesFilePath %@", draftTitlesFilePath);
+	WPLog(@"draftTitlesFilePath %@", draftTitlesFilePath);
 	if ([[NSFileManager defaultManager] fileExistsAtPath:draftTitlesFilePath]) 
 	{
 		return [NSMutableArray arrayWithContentsOfFile:draftTitlesFilePath];
@@ -1923,9 +1923,9 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 - (void)loadDraftTitlesForCurrentBlog
 {
-//	NSLog(@"loadDraftTitlesForCurrentBlog ...");
+//	WPLog(@"loadDraftTitlesForCurrentBlog ...");
 	[self loadDraftTitlesForBlog:currentBlog];
-//	NSLog(@"draftTitlesList ...", draftTitlesList);
+//	WPLog(@"draftTitlesList ...", draftTitlesList);
 }
 
 -(id)draftTitleAtIndex:(NSInteger)anIndex
@@ -1948,7 +1948,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 - (BOOL)makeDraftAtIndexCurrent:(NSInteger)anIndex
 {
 	NSString *draftPath = [self pathToDraft:[self draftTitleAtIndex:anIndex] forBlog:currentBlog];
-//	NSLog(@"draftPath %@", draftPath);
+//	WPLog(@"draftPath %@", draftPath);
 	NSMutableDictionary *draft = [NSMutableDictionary dictionaryWithContentsOfFile:draftPath];
 	[self setCurrentPost:draft];
 	currentDraftIndex = anIndex;
@@ -2010,7 +2010,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 //	
 //	NSString *postTitlesFilePath = [blogDir stringByAppendingPathComponent:@"postTitles.archive"];
 //	
-//	NSLog(postTitlesFilePath);
+//	WPLog(postTitlesFilePath);
 //	
 //	if ([[NSFileManager defaultManager] fileExistsAtPath:postTitlesFilePath]) {
 //		
@@ -2019,7 +2019,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 //		
 //	} 
 //	
-//	NSLog(@"Loaded %d posts for blog %@ at host %@", [postTitlesList count],
+//	WPLog(@"Loaded %d posts for blog %@ at host %@", [postTitlesList count],
 //		  [aBlog objectForKey:@"blogName"],	
 //		  [aBlog objectForKey:@"blog_host_name"]);	
 //	return nil;
@@ -2034,7 +2034,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	if (postTitlesList.count) {
 		
-//		NSLog(@"Sorting %d posts in list....", [postTitlesList count]);
+//		WPLog(@"Sorting %d posts in list....", [postTitlesList count]);
 		
 		// Create a descriptor to sort blog dictionaries by blogName
 		NSSortDescriptor *dateCreatedSortDescriptor =  [[NSSortDescriptor alloc] 
@@ -2259,7 +2259,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[catRequest release]; 
 	if( [catResponse isKindOfClass:[NSError class]] )
 	{
-		NSLog(@"ERROR in creating new cateogry %@", catResponse);
+		WPLog(@"ERROR in creating new cateogry %@", catResponse);
 		catResponse = nil;
 	}
 	
@@ -2288,7 +2288,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	id postid = [self executeXMLRPCRequest:request byHandlingError:NO];
 	[request release];
 	
-//	NSLog(@"------------- postid  --------- %@", postid	);
+//	WPLog(@"------------- postid  --------- %@", postid	);
 	if( ![postid isKindOfClass:[NSError class]] )
 	{
 		args = [NSArray arrayWithObjects:
@@ -2302,7 +2302,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		id post = [self executeXMLRPCRequest:request byHandlingError:NO];
 		[request release];
 		
-//		NSLog(@"------------- post  --------- %u", post	);
+//		WPLog(@"------------- post  --------- %u", post	);
 
 		if( ![post isKindOfClass:[NSError class]] )
 		{
@@ -2315,11 +2315,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 			{
 				//NSString *str = [NSString stringWithUTF8String:[data bytes]];
 				NSString *str = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
-				NSLog(@"Received Template: %@", str);
+				WPLog(@"Received Template: %@", str);
 				if(!str || [str rangeOfString:@"!$text$!"].location == NSNotFound ) {
-					NSLog(@"Template not downloaded. Private Blog? Not writing to file");
+					WPLog(@"Template not downloaded. Private Blog? Not writing to file");
 				} else {
-					NSLog(@"Writing Template to file");
+					WPLog(@"Writing Template to file");
 					[data writeToFile:fpath atomically:YES];
 				}
 			}
@@ -2335,7 +2335,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[aBlog valueForKey:@"xmlrpc"]]];
 		[request setMethod:@"metaWeblog.deletePost" withObjects:args];
 		[self executeXMLRPCRequest:request byHandlingError:NO];
-//		NSLog(@"------------- res  --------- %@", res	);
+//		WPLog(@"------------- res  --------- %@", res	);
 
 		[request release];
 		
@@ -2344,7 +2344,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	//delete cat
 	if( catResponse )
 	{
-		NSLog(@"wp.deleteCategory catResponse %@ ", catResponse);
+		WPLog(@"wp.deleteCategory catResponse %@ ", catResponse);
 		NSArray *catargs = [NSArray arrayWithObjects:[aBlog valueForKey:@"blogid"],
 						 [aBlog valueForKey:@"username"],
 						 [aBlog valueForKey:@"pwd"],
@@ -2356,10 +2356,10 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		[catRequest setMethod:@"wp.deleteCategory" withObjects:catargs];
 		id catResponse = [self executeXMLRPCRequest:catRequest byHandlingError:NO];
 		[catRequest release]; 
-//		NSLog(@"catResponse %@", catResponse);
+//		WPLog(@"catResponse %@", catResponse);
 		if( [catResponse isKindOfClass:[NSError class]] )
 		{
-			NSLog(@"ERROR in creating deleting cateogry %@", catResponse);
+			WPLog(@"ERROR in creating deleting cateogry %@", catResponse);
 			catResponse = nil;
 		}		
 	}
@@ -2370,7 +2370,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 - (void)makeNewPostCurrent {
 	
-	NSLog(@" ........... makeNewPostCurrent");
+	WPLog(@" ........... makeNewPostCurrent");
 	// Assign:
 	// post_type = "post"
 	// dateCreated = today
@@ -2510,7 +2510,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 - (void)makePostAtIndexCurrent:(NSUInteger)theIndex {
 	
-//	NSLog(@"postTitlesList objectAtIndex:theIndex %@", [postTitlesList objectAtIndex:theIndex]);
+//	WPLog(@"postTitlesList objectAtIndex:theIndex %@", [postTitlesList objectAtIndex:theIndex]);
 	
 	NSString *pathToPost = [self pathToPost:[self postTitleAtIndex:theIndex] forBlog:currentBlog];
 	[self setCurrentPost:[NSMutableDictionary dictionaryWithContentsOfFile:pathToPost]];	
@@ -2527,8 +2527,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	for ( i=0; i<count ; i++)
 	{
 		id postTitle = [somePostTitles objectAtIndex:i];
-//		NSLog(@"aPostTitle %@ %@ %@", [aPostTitle valueForKey:@"blogid"], [aPostTitle valueForKey:@"blog_host_name"], [aPostTitle valueForKey:@"postid"]);
-//		NSLog(@"postTitle %@ %@ %@", [postTitle valueForKey:@"blogid"], [postTitle valueForKey:@"blog_host_name"], [aPostTitle valueForKey:@"original_postid"]);
+//		WPLog(@"aPostTitle %@ %@ %@", [aPostTitle valueForKey:@"blogid"], [aPostTitle valueForKey:@"blog_host_name"], [aPostTitle valueForKey:@"postid"]);
+//		WPLog(@"postTitle %@ %@ %@", [postTitle valueForKey:@"blogid"], [postTitle valueForKey:@"blog_host_name"], [aPostTitle valueForKey:@"original_postid"]);
 
 		if ([[aPostTitle valueForKey:@"blogid"] isEqualToString:[postTitle valueForKey:@"blogid"]] &&
 			[[aPostTitle valueForKey:@"blog_host_name"]isEqualToString:[postTitle valueForKey:@"blog_host_name"]] &&
@@ -2563,7 +2563,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 			currentPostIndex = -2;
 		}
 		else {
-			NSLog(@"ERROR : we could not retrieve currentPostIndex from the post title list");
+			WPLog(@"ERROR : we could not retrieve currentPostIndex from the post title list");
 			return NO;
 		}
 	}	
@@ -2576,7 +2576,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 			if( index >= 0 && index < [postTitlesList count] )
 				currentPostIndex = index;
 			else {
-				NSLog(@"ERROR : we could not retrieve currentPostIndex from the post title list");
+				WPLog(@"ERROR : we could not retrieve currentPostIndex from the post title list");
 				return NO;
 			}
 		}		
@@ -2600,13 +2600,13 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 - (void)saveCurrentPostAsDraft
 {	
-	NSLog(@"saveCurrentPostAsDraft ...");
-	NSLog(@"isLocaDraftsCurrent %d currentPostIndex %d currentDraftIndex %d", isLocaDraftsCurrent, currentPostIndex, currentDraftIndex );
+	WPLog(@"saveCurrentPostAsDraft ...");
+	WPLog(@"isLocaDraftsCurrent %d currentPostIndex %d currentDraftIndex %d", isLocaDraftsCurrent, currentPostIndex, currentDraftIndex );
 	
 	//we can't save existing post as draft.
 	if( !isLocaDraftsCurrent && currentPostIndex != -1 )
 	{
-		NSLog(@"ERROR: we can't save existing post as draft ....");
+		WPLog(@"ERROR: we can't save existing post as draft ....");
 		return;
 	}
 
@@ -2647,13 +2647,13 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[self resetCurrentPost];
 	[self resetCurrentDraft];
 	
-	NSLog(@"draftTitles %u %@", draftTitles, draftTitles);
+	WPLog(@"draftTitles %u %@", draftTitles, draftTitles);
 }
 
 - (id)fectchNewPost:(NSString *)postid formBlog:(id)aBlog
 {
 	
-	NSLog(@"fectchNewPost %@", postid);
+	WPLog(@"fectchNewPost %@", postid);
 	NSArray *args = [NSArray arrayWithObjects:
 					 postid,
 					 [aBlog valueForKey:@"username"],
@@ -2678,7 +2678,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSMutableArray *newPostTitlesList = [NSMutableArray arrayWithContentsOfFile:[self pathToPostTitles:aBlog]];
 	
 	int index = [[newPostTitlesList valueForKey:@"postid"] indexOfObject:postid];
-//	NSLog(@"index %d", index);
+//	WPLog(@"index %d", index);
 	if( index >= 0 && index < [newPostTitlesList count] )
 	{
 		[newPostTitlesList removeObjectAtIndex:index];
@@ -2708,14 +2708,14 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 //taking post as arg. will help us in implementing async in future.
 - (BOOL)savePost:(id)aPost
 {
-	NSLog(@"------publishCurrentPost ...");
-	NSLog(@"publishCurrentPost isLocaDraftsCurrent %d currentPostIndex %d currentDraftIndex %d", isLocaDraftsCurrent, currentPostIndex, currentDraftIndex, currentDraftIndex);
-	NSLog(@"current Poist %@", currentPost);
+	WPLog(@"------publishCurrentPost ...");
+	WPLog(@"publishCurrentPost isLocaDraftsCurrent %d currentPostIndex %d currentDraftIndex %d", isLocaDraftsCurrent, currentPostIndex, currentDraftIndex, currentDraftIndex);
+	WPLog(@"current Poist %@", currentPost);
 	BOOL successFlag = NO;
 
 	if( ![self appendImagesOfCurrentPostToDescription] )
 	{
-		NSLog(@"ERROR : unable to add images to server.");
+		WPLog(@"ERROR : unable to add images to server.");
 		return successFlag;
 	}
 	
@@ -2752,7 +2752,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		[postParams setObject:[[currentPost valueForKey:@"not_used_allow_pings"] stringValue] forKey:@"not_used_allow_pings"];
 		[postParams setObject:[currentPost valueForKey:@"wp_password"] forKey:@"wp_password"];
 		
-//		NSLog(@"currentBlog pwd %@", [currentBlog valueForKey:@"pwd"] );
+//		WPLog(@"currentBlog pwd %@", [currentBlog valueForKey:@"pwd"] );
 		NSArray *args = [NSArray arrayWithObjects:[currentBlog valueForKey:@"blogid"],
 						 [currentBlog valueForKey:@"username"],
 						 [currentBlog valueForKey:@"pwd"],
@@ -2765,7 +2765,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		[request setMethod:@"metaWeblog.newPost" withObjects:args];
 		
 		id response = [self executeXMLRPCRequest:request byHandlingError:YES];
-//		NSLog(@"publishCurrentPost %@", response);
+//		WPLog(@"publishCurrentPost %@", response);
 		[request release];
 
 		if( ![response isKindOfClass:[NSError class]] )
@@ -2791,7 +2791,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	}
 	else
 	{
-//		NSLog(@"currentPost %@", currentPost);
+//		WPLog(@"currentPost %@", currentPost);
 		[currentPost setValue:[currentPost valueForKey:@"userid"] forKey:@"userid"];
 		
 		NSString *post_status = [currentPost valueForKey:@"post_status"];
@@ -2805,13 +2805,13 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 						 currentPost,
 						 nil
 						 ];
-//		NSLog(@"args %@", args);
+//		WPLog(@"args %@", args);
 		//TODO: take url from current post
 		XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[currentBlog valueForKey:@"xmlrpc"]]];
 		[request setMethod:@"metaWeblog.editPost" withObjects:args];
 		
 		id response = [self executeXMLRPCRequest:request byHandlingError:YES];
-//		NSLog(@"response ... %@", response);
+//		WPLog(@"response ... %@", response);
 		[request release];
 		
 		if( ![response isKindOfClass:[NSError class]] )
@@ -2822,7 +2822,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 	}
 	
-	NSLog(@" return flag from save post ... %d", successFlag);
+	WPLog(@" return flag from save post ... %d", successFlag);
 	
 	return successFlag;
 }
@@ -2949,7 +2949,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[request release]; 
 	if( [response isKindOfClass:[NSError class]] )
 	{
-		NSLog(@"ERROR Occured %@", response);
+		WPLog(@"ERROR Occured %@", response);
 		return NO;
 	}
 	
@@ -2962,7 +2962,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	if( [categories isKindOfClass:[NSArray class]] ) //might be an error.
 	{
-//		NSLog(@"categories %@", categories);
+//		WPLog(@"categories %@", categories);
 		[blog setObject:categories forKey:@"categories"];
 	}
 	
@@ -2983,7 +2983,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 }
 
 - (void)makePictureAtIndexCurrent:(NSUInteger)theIndex {
-	NSLog(@"makePictureAtIndexCurrent");
+	WPLog(@"makePictureAtIndexCurrent");
 	[self setCurrentPicture:(NSMutableDictionary*)[self pictureAtIndex:theIndex]];
 }
 

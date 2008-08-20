@@ -23,7 +23,7 @@
 - (void)clean
 {
 	
-	NSLog(@"curContext %u", curContext);
+	WPLog(@"curContext %u", curContext);
 	
 	[objects release];
 	objects = nil;
@@ -76,7 +76,7 @@
 			[selectionObjects addObject:curObject];
 	}
 	
-//	NSLog(@"selectionObjects %@", selectionObjects);
+//	WPLog(@"selectionObjects %@", selectionObjects);
 	return selectionObjects;
 }
 
@@ -129,7 +129,7 @@
 
 
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
-//	NSLog(@"tableView: numberOfRowsInSection %@", objects);
+//	WPLog(@"tableView: numberOfRowsInSection %@", objects);
 	// plus one to because we add a row for "Local Drafts"
 	//
 	return ( [objects count] );
@@ -158,9 +158,9 @@
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//	NSLog(@"indexPath %@", indexPath );
+//	WPLog(@"indexPath %@", indexPath );
 
-//	NSLog(@"selectionStatusOfObjects %@", selectionStatusOfObjects );
+//	WPLog(@"selectionStatusOfObjects %@", selectionStatusOfObjects );
 
 	BOOL curStatus = [[selectionStatusOfObjects objectAtIndex:indexPath.row] boolValue];
 	if( selectionType == kCheckbox )
@@ -206,7 +206,7 @@
 }
 
 - (void)didReceiveMemoryWarning {
-		NSLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+		WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
 	// Release anything that's not essential, such as cached data
 }

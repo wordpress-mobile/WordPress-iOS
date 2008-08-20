@@ -5,7 +5,7 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-	NSLog(@"touchesEnded .........");
+	WPLog(@"touchesEnded .........");
 	[delegate performSelector:operation withObject:self];
 }
 

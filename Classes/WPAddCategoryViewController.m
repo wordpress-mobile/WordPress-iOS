@@ -111,7 +111,7 @@
 
 
 - (void)didReceiveMemoryWarning {
-		NSLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+		WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
 	// Release anything that's not essential, such as cached data
 }

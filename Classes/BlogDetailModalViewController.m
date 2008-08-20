@@ -73,11 +73,11 @@
 	// we retain this controller in the caller (RootViewController) so load view does not get called 
 	// everytime we navigate to the view
 	// need to update the prompt and the title here as well as in loadView
-//	NSLog(@"[[BlogDataManager sharedDataManager] currentBlog] %@", [[BlogDataManager sharedDataManager] currentBlog]);
+//	WPLog(@"[[BlogDataManager sharedDataManager] currentBlog] %@", [[BlogDataManager sharedDataManager] currentBlog]);
 	NSString *blogid = [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blogid"];
-//	NSLog(@"BlogDetailModal:viewWillAppear 22222222");
+//	WPLog(@"BlogDetailModal:viewWillAppear 22222222");
 
-//	NSLog(@"BlogDetailModal:viewWillAppear blogid: %@", blogid);
+//	WPLog(@"BlogDetailModal:viewWillAppear blogid: %@", blogid);
 	
 	if (!blogid || blogid == @"") {
 		self.title = NSLocalizedString(@"Add Blog", @"BlogDetailModalViewController_Title_AddBlog");
@@ -89,7 +89,7 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-	NSLog(@"BlogDetailModal:viewDidAppear");
+	WPLog(@"BlogDetailModal:viewDidAppear");
 	[super viewDidAppear:animated];
 }
 
@@ -238,9 +238,9 @@
 //		[rootViewController release];
 //		// Configure and show the window
 //		[[WordPressAppDelegate sharedWordPressApp] navigationController].navigationBarHidden = YES;
-//		NSLog(@"sharedWordPressApp %@",[WordPressAppDelegate sharedWordPressApp]);
-//		NSLog(@"window %@",[[WordPressAppDelegate sharedWordPressApp] window]);
-//		NSLog(@"subviews %@",[[[WordPressAppDelegate sharedWordPressApp] window] subviews]);
+//		WPLog(@"sharedWordPressApp %@",[WordPressAppDelegate sharedWordPressApp]);
+//		WPLog(@"window %@",[[WordPressAppDelegate sharedWordPressApp] window]);
+//		WPLog(@"subviews %@",[[[WordPressAppDelegate sharedWordPressApp] window] subviews]);
 //		[[[WordPressAppDelegate sharedWordPressApp] window] addSubview:[[WordPressAppDelegate sharedWordPressApp] navigationController].view];
 		
 //		[self.navigationController popViewControllerAnimated:YES];
@@ -335,7 +335,7 @@
  */
 
 - (void)saveBlog:(id)sender {
-	NSLog(@"Save Blog was clicked");
+	WPLog(@"Save Blog was clicked");
 	// save the blog and then invoke dismissModalViewControllerAnimated on the parent nav controller
 
 	if (self.currentEditingTextField)
@@ -398,7 +398,7 @@
 }
 
 - (void)didReceiveMemoryWarning {
-		NSLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+		WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[super didReceiveMemoryWarning];
 }
 

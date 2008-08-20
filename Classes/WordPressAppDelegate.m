@@ -37,7 +37,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
 	
-	NSLog(@"Launching Wordpress....");
+	WPLog(@"Launching Wordpress....");
 	
 	// The Reachability class is capable of notifying your application when the network
 	// status changes. By default, those notifications are not enabled.
@@ -65,7 +65,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	[window makeKeyAndVisible];
 	
 	
-	NSLog(@"end of method applicationDidFinishLaunching");
+	WPLog(@"end of method applicationDidFinishLaunching");
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

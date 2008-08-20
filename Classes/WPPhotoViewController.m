@@ -51,7 +51,7 @@
 
 
 - (void)didReceiveMemoryWarning {
-	NSLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+	WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
 	// Release anything that's not essential, such as cached data
 }
@@ -69,7 +69,7 @@
 	if (currentPhotoIndex < ([array count] - 1))
 		nextImageButtonItem.enabled = YES;
 
-//	NSLog(@"prev currentPhotoIndex %d",currentPhotoIndex);
+//	WPLog(@"prev currentPhotoIndex %d",currentPhotoIndex);
 	titleButtonItem.title = [NSString stringWithFormat:@"%d of %d",currentPhotoIndex+1, [array count]];
 	imageView.image = [dataManager imageNamed:[array objectAtIndex:currentPhotoIndex] forBlog:dataManager.currentBlog];
 	
@@ -85,14 +85,14 @@
 	if (currentPhotoIndex > 0)
 		previousImageButtonItem.enabled = YES;
 	
-//	NSLog(@"next currentPhotoIndex %d",currentPhotoIndex);
+//	WPLog(@"next currentPhotoIndex %d",currentPhotoIndex);
 	titleButtonItem.title = [NSString stringWithFormat:@"%d of %d",currentPhotoIndex+1, [array count]];
 	imageView.image = [dataManager imageNamed:[array objectAtIndex:currentPhotoIndex] forBlog:dataManager.currentBlog];
 	
 }
 
 - (IBAction)deleteImage:(id)sender {
-//	NSLog(@"currentPhotoIndex %d",currentPhotoIndex);
+//	WPLog(@"currentPhotoIndex %d",currentPhotoIndex);
 	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 	id array = [dataManager.currentPost valueForKey:@"Photos"];
 	[dataManager deleteImageNamed:[array objectAtIndex:currentPhotoIndex] forBlog:dataManager.currentBlog];

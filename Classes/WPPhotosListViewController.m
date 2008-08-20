@@ -43,7 +43,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 		pickerController.delegate = self;
 		pickerController.allowsImageEditing = NO;
 	}
-//	NSLog(@"pickerController %@", pickerController);
+//	WPLog(@"pickerController %@", pickerController);
 	return pickerController;
 }
 
@@ -125,7 +125,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
 		UIImagePickerController* picker = [self pickerController];
 		picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-//		NSLog(@"pickPhotoFromPhotoLibrary ... %@", picker);
+//		WPLog(@"pickPhotoFromPhotoLibrary ... %@", picker);
 		// Picker is displayed asynchronously.
 		[postDetailViewController.navigationController presentModalViewController:picker animated:YES];
 	}
@@ -137,7 +137,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 	CGSize size = [img size];
 	
 	UIImageOrientation imageOrientation = [img imageOrientation];
-	NSLog(@"Image orientation : %d", imageOrientation);
+	WPLog(@"Image orientation : %d", imageOrientation);
 	
 	if (imageOrientation == UIImageOrientationUp)
 		return img;
@@ -297,7 +297,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 				didFinishPickingImage:(UIImage *)image
 									editingInfo:(NSDictionary *)editingInfo
 {
-	NSLog(@"imagePickerController editingInfo %@",editingInfo);
+	WPLog(@"imagePickerController editingInfo %@",editingInfo);
 //in case of photo library also we have to do our transformations.
 //	if( picker.sourceType == UIImagePickerControllerSourceTypeCamera )
 		image = [self scaleAndRotateImage:image];
@@ -319,7 +319,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
-//	NSLog(@"imagePickerControllerDidCancel");
+//	WPLog(@"imagePickerControllerDidCancel");
 	[[picker parentViewController] dismissModalViewControllerAnimated:YES];
 	[self clearPickerContrller];
 	[tableView reloadData];
@@ -328,7 +328,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 // Implement this method in your code to do something with the image.
 - (void)useImage:(UIImage*)theImage
 {
-//	NSLog(@"useImage %@",theImage);
+//	WPLog(@"useImage %@",theImage);
 	
 	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 	//	NSString *url = [dataManager pictureURLBySendingToServer:theImage];
@@ -347,11 +347,11 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 	
 	[[currentPost valueForKey:@"Photos"] addObject:[dataManager saveImage:theImage]];
 	[postDetailViewController updatePhotosBadge];
-//	NSLog(@"post detail currentPost %@",currentPost);
+//	WPLog(@"post detail currentPost %@",currentPost);
 }
 
 - (void)refreshData {
-//	NSLog(@"photos refreshData");
+//	WPLog(@"photos refreshData");
 	
 	//clean up of images
 //	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"photsSelectionRow"];
@@ -383,7 +383,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
 	// plus one to because we add a row for "Local Drafts"
 	//
-//	NSLog(@"photos count %d",[[[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"Photos"] count]);
+//	WPLog(@"photos count %d",[[[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"Photos"] count]);
 	int count = [[[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"Photos"] count];
 	countField.text = [NSString stringWithFormat:@"%d Photos", count];
 	return (count/NUM_COLS)+( count%NUM_COLS ? 1 : 0 ) ;
@@ -479,7 +479,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 
 
 - (void)didReceiveMemoryWarning {
-	NSLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+	WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
 }
 
