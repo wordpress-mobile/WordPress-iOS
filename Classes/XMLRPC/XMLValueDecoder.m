@@ -83,6 +83,10 @@
 			case defaultType:
 				if( curVal )
 					curVal = [NSString stringWithString:curVal];
+					//Comments --- Resolved the issue in character encoding with & in the Titles  ######
+					curVal = [[curVal componentsSeparatedByString: @"&amp;"] componentsJoinedByString: @"&"];	
+					curVal = [[curVal componentsSeparatedByString: @"&lt;"] componentsJoinedByString: @"<"];	
+					//############
 				[oldCurVal release];
 				break;
 			case booltype:
