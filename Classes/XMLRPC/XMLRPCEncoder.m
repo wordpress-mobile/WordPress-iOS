@@ -27,6 +27,7 @@
 //
 #import "XMLRPCEncoder.h"
 #import "XMLRPCExtensions.h"
+#import "NSString+XMLExtensions.h"
 
 @interface XMLRPCEncoder (XMLRPCEncoderPrivate)
 
@@ -192,10 +193,8 @@
 
 - (NSString *)escapeValue: (NSString *)value
 {
-	value = [self replaceTarget: @"&" withValue: @"&amp;" inString: value];
-	value = [self replaceTarget: @"<" withValue: @"&lt;" inString: value];
-	
-	return value;
+	//Comments --- Properly Encoding the special characters with XML 26Aug2008 ######
+	return [NSString encodeXMLCharactersIn:value];	
 }
 
 #pragma mark -

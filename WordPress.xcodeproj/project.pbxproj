@@ -75,6 +75,7 @@
 		ACFD04A10DFD2FCA0031D567 /* XMLRPCRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = ACFD049A0DFD2FCA0031D567 /* XMLRPCRequest.m */; };
 		ACFD04A20DFD2FCA0031D567 /* XMLRPCResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = ACFD049C0DFD2FCA0031D567 /* XMLRPCResponse.m */; };
 		ACFF1DE40E23265000EC6BF5 /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = ACFF1DE30E23265000EC6BF5 /* settings.png */; };
+		C59D3D4B0E6410D300AA591D /* NSString+XMLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -181,6 +182,8 @@
 		ACFD049B0DFD2FCA0031D567 /* XMLRPCResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCResponse.h; sourceTree = "<group>"; };
 		ACFD049C0DFD2FCA0031D567 /* XMLRPCResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLRPCResponse.m; sourceTree = "<group>"; };
 		ACFF1DE30E23265000EC6BF5 /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
+		C59D3D490E6410D300AA591D /* NSString+XMLExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+XMLExtensions.h"; sourceTree = "<group>"; };
+		C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+XMLExtensions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -288,6 +291,7 @@
 		2F706A870DFB229B00B43086 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				C59D3D480E6410BC00AA591D /* Categories */,
 				2F35D8AF0DFBAD82002A5F9C /* Entities */,
 			);
 			name = Model;
@@ -436,6 +440,15 @@
 			name = Post;
 			sourceTree = "<group>";
 		};
+		C59D3D480E6410BC00AA591D /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				C59D3D490E6410D300AA591D /* NSString+XMLExtensions.h */,
+				C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -559,6 +572,7 @@
 				A0E293F10E21027E00C6919C /* WPAddCategoryViewController.m in Sources */,
 				A00593C20E224A1B0087E1FB /* WPImageView.m in Sources */,
 				A01C54230E24E4ED00D411F2 /* Reachability.m in Sources */,
+				C59D3D4B0E6410D300AA591D /* NSString+XMLExtensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

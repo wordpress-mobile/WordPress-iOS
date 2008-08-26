@@ -1,5 +1,6 @@
 #import "XMLValueDecoder.h"
 #import "XMLRPCExtensions.h"
+#import "NSString+XMLExtensions.h"
 
 @implementation XMLValueDecoder
 
@@ -82,10 +83,9 @@
 			case stringtype:
 			case defaultType:
 				if( curVal )
-					curVal = [NSString stringWithString:curVal];
 					//Comments --- Resolved the issue in character encoding with & in the Titles  ######
-					curVal = [[curVal componentsSeparatedByString: @"&amp;"] componentsJoinedByString: @"&"];	
-					curVal = [[curVal componentsSeparatedByString: @"&lt;"] componentsJoinedByString: @"<"];	
+	                //Comments --- Properly Dencoding the special characters with XML 26Aug2008######
+					curVal = [NSString decodeXMLCharactersIn:curVal];
 					//############
 				[oldCurVal release];
 				break;

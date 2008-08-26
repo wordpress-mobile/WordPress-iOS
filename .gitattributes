@@ -9,6 +9,8 @@ Classes/BlogDetailModalViewController.m -text
 Classes/Constants.h -text
 Classes/DraftsListController.h -text
 Classes/DraftsListController.m -text
+Classes/NSString+XMLExtensions.h -text
+Classes/NSString+XMLExtensions.m -text
 Classes/PostDetailEditController.h -text
 Classes/PostDetailEditController.m -text
 Classes/PostDetailViewController.h -text
