@@ -106,6 +106,12 @@
 
 
 - (void)dealloc {
+	
+	[commentsTableView release];
+	[syncPostsButton release];
+	[commentStatusButton release];
+	[commentsList release];
+	
 	[super dealloc];
 }
 
