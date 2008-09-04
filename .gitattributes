@@ -8,6 +8,8 @@ Classes/BlogDetailModalViewController.h -text
 Classes/BlogDetailModalViewController.m -text
 Classes/BlogMainViewController.h -text
 Classes/BlogMainViewController.m -text
+Classes/CommentsListController.h -text
+Classes/CommentsListController.m -text
 Classes/Constants.h -text
 Classes/DraftsListController.h -text
 Classes/DraftsListController.m -text
@@ -61,6 +63,7 @@ Classes/XMLRPC/XMLRPCResponse.h -text
 Classes/XMLRPC/XMLRPCResponse.m -text
 Classes/XMLRPC/XMLValueDecoder.h -text
 Classes/XMLRPC/XMLValueDecoder.m -text
+/CommentsListController.xib -text
 /Default.png -text
 /Disclosure[!!-~]Indicator.png -text
 /DraftsFolder.png -text
