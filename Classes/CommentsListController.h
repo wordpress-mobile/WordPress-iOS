@@ -15,6 +15,9 @@
 
 	IBOutlet UIBarButtonItem *syncPostsButton;
 	IBOutlet UIBarButtonItem *commentStatusButton;
+	
+	NSMutableArray *commentsList;
+	BOOL connectionStatus;
 }
 
 - (IBAction)downloadRecentComments:(id)sender;

@@ -133,27 +133,26 @@
 
 		} else if ( indexPath.row == 2 ) { // Comments Section
 			
-//			self.commentsListController = [[CommentsListController alloc] initWithNibName:@"CommentsListController" bundle:nil];
-//			commentsListController.title = commentsListController.navigationItem.title =@"Comments";
-//			UIBarButtonItem *blogsButton = [[UIBarButtonItem alloc] initWithTitle:@"Blog" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
-//			commentsListController.navigationItem.leftBarButtonItem = blogsButton;
-//			[blogsButton release];
-//			
-//			// set up the edit blog button
-//			UIBarButtonItem *editCommentButton = [[UIBarButtonItem alloc] 
-//												  initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-//												  target:self
-//												  action:@selector(editComments:)];
-//			
-//			[self navigationController].navigationItem.rightBarButtonItem = editCommentButton;	
-//			[editCommentButton release];
-//		
-//
-//			[[self navigationController] pushViewController:commentsListController animated:YES];
 			
-			
-		}
 
+			if ( self.commentsListController == nil )
+				self.commentsListController = [[CommentsListController alloc] initWithNibName:@"CommentsListController" bundle:nil];
+			commentsListController.title = commentsListController.navigationItem.title =@"Comments";
+			UIBarButtonItem *blogsButton = [[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
+			commentsListController.navigationItem.leftBarButtonItem = blogsButton;
+			[blogsButton release];
+			
+			// set up the edit blog button
+			UIBarButtonItem *editCommentButton = [[UIBarButtonItem alloc] 
+												  initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+												  target:self
+												  action:@selector(editComments:)];
+			
+			[self navigationController].navigationItem.rightBarButtonItem = editCommentButton;	
+			[editCommentButton release];
+		
+			[[self navigationController] pushViewController:commentsListController animated:YES];
+		}
 	}
 }
 
