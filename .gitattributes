@@ -77,6 +77,7 @@ Classes/XMLRPC/XMLValueDecoder.m -text
 /WPActivityIndicator.xib -text
 /WPAddCategoryViewController.xib -text
 /WPBlogDetailViewController.xib -text
+/WPBlogMainViewController.xib -text
 /WPBlogsListController.xib -text
 /WPCategoriesController.xib -text
 /WPImageView.h -text
