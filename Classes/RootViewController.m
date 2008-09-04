@@ -1,5 +1,5 @@
 #import "RootViewController.h"
-#import "PostsListController.h"
+#import "BlogMainViewController.h"
 #import "BlogDetailModalViewController.h"
 #import "BlogDataManager.h"
 #import "Reachability.h"
@@ -14,13 +14,13 @@
 
 @implementation RootViewController
 
-@synthesize postsListController;
+@synthesize blogMainViewController;
 
 - (void)dealloc {
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"BlogsRefreshNotification" object:nil];
 
-	[postsListController release];
+	[blogMainViewController release];
 	[super dealloc];
 }
 
@@ -176,45 +176,25 @@
 			}
 			
 			[Reachability sharedReachability].hostName = url;
-			
-			if (self.postsListController == nil) {
-				self.postsListController = [[PostsListController alloc] initWithNibName:@"PostsListController" bundle:nil];
-			}
-			
-			UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:postsListController];
-			postsListController.title = [[dataManager currentBlog] valueForKey:@"blogName"];
-			UIBarButtonItem *blogsButton = [[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
-			postsListController.navigationItem.leftBarButtonItem = blogsButton;
-			[blogsButton release];
-			[[self navigationController] pushViewController:nc animated:YES];
-			[nc release];
-		}
-	} else 
-	{
-		AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutWordpress" bundle:nil];
-		[self.navigationController pushViewController:aboutViewController animated:YES];
-		[aboutViewController release];
+			if ( self.blogMainViewController == 0 )
+				self.blogMainViewController = [[BlogMainViewController alloc] initWithNibName:@"WPBlogMainViewController" bundle:nil];
 
-//		if ([dataManager countOfBlogs]) {
-//			WPBlogsListController *blogsListController = [[WPBlogsListController alloc] initWithNibName:@"WPBlogsListController" bundle:nil];
-//			UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:blogsListController];
-//			[self.navigationController pushViewController:nc animated:YES];
-//			[nc release];
-//		} else {
-//			[dataManager makeNewBlogCurrent];
-//			BlogDetailModalViewController *blogDetailModalViewController = [[BlogDetailModalViewController alloc] initWithNibName:@"WPBlogDetailViewController" bundle:nil];
-//			UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:blogDetailModalViewController];
-//			[self.navigationController pushViewController:nc animated:YES];
-//			blogDetailModalViewController.removeBlogButton.hidden = YES;
-//			blogDetailModalViewController.isModal = NO;
-//			blogDetailModalViewController.mode = 0;
-//			[blogDetailModalViewController refreshBlogCompose];
-//			[nc release];
-//			[blogDetailModalViewController release];
-//		}
-	}
+			UIBarButtonItem *blogsButton = [[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStylePlain target:self action:@selector(cancel:)];
+			blogMainViewController.navigationItem.leftBarButtonItem = blogsButton;
+			blogMainViewController.navigationItem.title =[[dataManager currentBlog] valueForKey:@"blogName"];
+			[blogsButton release];
+			[self.navigationController pushViewController:blogMainViewController animated:YES];
+			self.navigationController.navigationBarHidden = NO;
+		}
+		
+	}else {
+			AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutWordpress" bundle:nil];
+			[self.navigationController pushViewController:aboutViewController animated:YES];
+			[aboutViewController release];
+		}	
 }
 
+		
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
 	
 	// Set current blog to blog at the index which was clicked
@@ -285,6 +265,8 @@
 	
 	WPLog(@"Root:viewWillAppear");
 	
+	self.navigationController.navigationBarHidden= YES;
+
 	// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
 	NSIndexPath *tableSelection = [blogsTableView indexPathForSelectedRow];
 	[blogsTableView deselectRowAtIndexPath:tableSelection animated:NO];

@@ -6,6 +6,8 @@ Classes/BlogDataManager.h -text
 Classes/BlogDataManager.m -text
 Classes/BlogDetailModalViewController.h -text
 Classes/BlogDetailModalViewController.m -text
+Classes/BlogMainViewController.h -text
+Classes/BlogMainViewController.m -text
 Classes/Constants.h -text
 Classes/DraftsListController.h -text
 Classes/DraftsListController.m -text
