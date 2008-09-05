@@ -7,6 +7,7 @@
 //
 
 #import "WPCommentsDetailViewController.h"
+#import "BlogDataManager.h"
 
 
 @implementation WPCommentsDetailViewController
@@ -46,7 +47,7 @@
 	
 	//	UIColor *defaultTintColor = [segmentedControl.tintColor retain];	// keep track of this for later
 	
-	UIBarButtonItem *segmentBarItem = [[[UIBarButtonItem alloc] initWithCustomView:segmentedControl] autorelease];
+	segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
 	self.navigationItem.rightBarButtonItem = segmentBarItem;
 	//    self.navigationItem.title = @"1 of 1";
 	
@@ -87,13 +88,39 @@
 
 - (void)deleteComment:(id)sender
 {
-    WPLog(@"WPLog :deleteComment");
+         WPLog(@"WPLog :deleteComment");
+	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
+
+	BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
+	BOOL result = [sharedDataManager deleteComment:[commentDetails objectAtIndex:currentIndex] forBlog:[sharedDataManager currentBlog]];
+	
+	if ( result ) {
+		[sharedDataManager loadCommentTitlesForCurrentBlog];
+		[self.navigationController popViewControllerAnimated:YES];
+	}
+	[self performSelectorInBackground:@selector(removeProgressIndicator) withObject:nil];
 }
 
 - (void)approveComment:(id)sender
 {
-    WPLog(@"WPLog :approveComment");
+   WPLog(@"WPLog :approveComment");
+ 	return ;
+    [self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
+	
+	BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
+	BOOL result = [sharedDataManager approveComment:[commentDetails objectAtIndex:currentIndex] forBlog:[sharedDataManager currentBlog]];
+	if ( result ) {
+		[sharedDataManager loadCommentTitlesForCurrentBlog];
+		[self.navigationController popViewControllerAnimated:YES];
+	}
+	[self performSelectorInBackground:@selector(removeProgressIndicator) withObject:nil];
 }
+
+- (void)unApproveComment:(id)sender
+{
+    WPLog(@"WPLog :unApproveComment");
+}
+
 
 -(void)fillCommentDetails:(NSArray*)comments atRow:(int)row
 {
@@ -105,7 +132,8 @@
 	NSString *author = [[[commentDetails objectAtIndex:row] valueForKey:@"author"] stringByTrimmingCharactersInSet:whitespaceCS];
 	NSString *post_title = [[[commentDetails objectAtIndex:row] valueForKey:@"post_title"]stringByTrimmingCharactersInSet:whitespaceCS];
 	NSString *post_content = [[[commentDetails objectAtIndex:row] valueForKey:@"content"]stringByTrimmingCharactersInSet:whitespaceCS];
-    NSDate *date_created_gmt = [[commentDetails objectAtIndex:row] valueForKey:@"date_created_gmt"];
+         NSDate *date_created_gmt = [[commentDetails objectAtIndex:row] valueForKey:@"date_created_gmt"];
+	NSString *commentStatus = [[commentDetails objectAtIndex:row] valueForKey:@"status"];
 	
     static NSDateFormatter *dateFormatter = nil;
 	if (dateFormatter == nil) 
@@ -122,6 +150,16 @@
     commentsTextView.text = post_content;
     int count = [self.commentDetails count];
     self.navigationItem.title = [NSString stringWithFormat:@"%d of %d",row+1,count];    
+	
+
+	if ( [commentStatus isEqualToString:@"hold"] ) {	
+		[approveAndUnapproveButtonBar setHidden:NO];
+		[deleteButtonBar setHidden:YES];
+	} else {
+		[approveAndUnapproveButtonBar setHidden:YES];
+		[deleteButtonBar setHidden:NO];
+	}
+	
 	//    self.navigationItem.title = @"1 of 1";
 	
 	
@@ -137,8 +175,35 @@
     [commentedDateLabel release];
     [commentDetails release];
     
+    [segmentBarItem release];
     [super dealloc];
 	
+}
+
+- (void)addProgressIndicator
+{
+	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
+	UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+	UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aiv];
+	[aiv startAnimating]; 
+	[aiv release];
+	
+	self.navigationItem.rightBarButtonItem = activityButtonItem;
+	[activityButtonItem release];
+	[apool release];
+}
+
+- (void)removeProgressIndicator
+{
+	//wait incase the other thread did not complete its work.
+	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
+	while (self.navigationItem.rightBarButtonItem == nil)
+	{
+		[[NSRunLoop currentRunLoop] runUntilDate:[[NSDate date] addTimeInterval:0.1]];
+	}
+	
+	self.navigationItem.rightBarButtonItem = segmentBarItem;
+	[apool release];
 }
 
 

@@ -16,6 +16,11 @@
     IBOutlet UILabel     *commentedDateLabel;
     IBOutlet UITextView  *commentsTextView;
     NSMutableArray *commentDetails;
+	
+    IBOutlet UIToolbar  *approveAndUnapproveButtonBar;
+    IBOutlet UIToolbar  *deleteButtonBar;
+
+     UIBarButtonItem *segmentBarItem;
     int currentIndex;	
 }
 
@@ -27,8 +32,11 @@
 
 
 - (void)segmentAction:(id)sender;
+-(void)fillCommentDetails:(NSArray*)comments atRow:(int)row;
+
+
 - (void)deleteComment:(id)sender;
 - (void)approveComment:(id)sender;
--(void)fillCommentDetails:(NSArray*)comments atRow:(int)row;
+- (void)unApproveComment:(id)sender;
 
 @end
