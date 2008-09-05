@@ -40,12 +40,11 @@
 	
 	WPLog(@"PostsList:viewWillAppear");
 	
-	
-	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
-	[commentsTableView reloadData];
-	[commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:NO];
 	BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
 	[sharedDataManager loadCommentTitlesForCurrentBlog];
+	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
+	[commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:NO];
+	[commentsTableView reloadData];
 
 	BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
 	NSArray *commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
