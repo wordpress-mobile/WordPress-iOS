@@ -40,28 +40,12 @@
 	
 	WPLog(@"PostsList:viewWillAppear");
 	
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	[dm loadCommentTitlesForCurrentBlog];
 	
 	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
 	[commentsTableView reloadData];
 	[commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:NO];
-	[super viewWillAppear:animated];
-}
-
-
-// If you need to do additional setup after loading the view, override viewDidLoad.
-- (void)viewDidLoad {
-	
-	[commentsTableView setDataSource:self];
-	// Observe the kNetworkReachabilityChangedNotification. When that notification is posted, the
-	// method "reachabilityChanged" will be called. 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];	
-	
-	UIBarButtonItem *editButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered 
-												target:self action:@selector(editComments:)];
-	self.navigationItem.rightBarButtonItem = editButtonItem;
-	[editButtonItem release];
+	BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
+	[sharedDataManager loadCommentTitlesForCurrentBlog];
 
 	BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
 	NSArray *commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
@@ -79,6 +63,25 @@
 		commentStatusButton.title=@"";
 	else
 		commentStatusButton.title=[NSString stringWithFormat:@"%d awaiting moderation",awaitingComments];
+
+	[super viewWillAppear:animated];
+}
+
+
+// If you need to do additional setup after loading the view, override viewDidLoad.
+- (void)viewDidLoad {
+	
+
+	[commentsTableView setDataSource:self];
+	// Observe the kNetworkReachabilityChangedNotification. When that notification is posted, the
+	// method "reachabilityChanged" will be called. 
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];	
+	
+//	UIBarButtonItem *editButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered 
+//												target:self action:@selector(editComments:)];
+//	self.navigationItem.rightBarButtonItem = editButtonItem;
+//	[editButtonItem release];
+
 	
 }
  
@@ -136,10 +139,7 @@
 		[[NSRunLoop currentRunLoop] runUntilDate:[[NSDate date] addTimeInterval:0.1]];
 	}
 	
-	UIBarButtonItem *editButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered 
-																	  target:self action:@selector(editComments:)];
-	self.navigationItem.rightBarButtonItem = editButtonItem;
-	[editButtonItem release];
+	self.navigationItem.rightBarButtonItem = nil;
 }
 
 - (IBAction)downloadRecentComments:(id)sender {
