@@ -26,8 +26,6 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
 		// Initialization code
-		commentsList = [[NSMutableArray alloc] initWithCapacity:10];
-//        commentDetails = [[NSMutableArray alloc] initWithCapacity:3];
 	}
 	return self;
 }
@@ -41,6 +39,10 @@
 - (void)viewWillAppear:(BOOL)animated {
 	
 	WPLog(@"PostsList:viewWillAppear");
+	
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	[dm loadCommentTitlesForCurrentBlog];
+	
 	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
 	[commentsTableView reloadData];
 	[commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:NO];
@@ -57,7 +59,6 @@
 	// method "reachabilityChanged" will be called. 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];	
 	
-
 	UIBarButtonItem *editButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered 
 												target:self action:@selector(editComments:)];
 	self.navigationItem.rightBarButtonItem = editButtonItem;
@@ -80,8 +81,6 @@
 //		commentStatusButton.title=[NSString stringWithFormat:@"%d awaiting moderation",awaitingComments];
 //	
 //	[commentsTableView reloadData];
-	if ( [commentsList count] == 0 )
-		[self performSelectorInBackground:@selector(downloadRecentComments:) withObject:nil];
 }
  
 - (void)reachabilityChanged
@@ -114,8 +113,6 @@
 	[commentsTableView release];
 	[syncPostsButton release];
 	[commentStatusButton release];
-	[commentsList release];
-//    [commentDetails release];
 	[super dealloc];
 }
 
@@ -152,9 +149,11 @@
 
 	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
 
-	[commentsList removeAllObjects];
-	[commentsList addObjectsFromArray:[self getCommentsForBlog:[[BlogDataManager sharedDataManager] currentBlog]]];	
+
+	BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
+	[sharedBlogDataManager syncCommentsForCurrentBlog];
 	
+	NSArray *commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
 	int awaitingComments = 0;
 	
 	for ( NSDictionary *dict in commentsList ) {
@@ -171,37 +170,37 @@
 	
 	[self removeProgressIndicator];
 	
-	[commentsTableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
+	[commentsTableView reloadData];
 	[pool release];
 }
 
 
 // sync posts for a given blog
-- (NSArray *) getCommentsForBlog:(id)blog {
-	WPLog(@"<<<<<<<<<<<<<<<<<< syncPostsForBlog >>>>>>>>>>>>>>");
-
-	[blog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
-	// Parameters
-	NSString *username = [blog valueForKey:@"username"];
-	NSString *pwd = [blog valueForKey:@"pwd"];
-	NSString *fullURL = [blog valueForKey:@"xmlrpc"];
-	NSString *blogid = [blog valueForKey:@"blogid"];
-
-	
-	//	WPLog(@"Fetching posts for blog %@ user %@/%@ from %@", blogid, username, pwd, fullURL);
-	
-	//  ------------------------- invoke metaWeblog.getRecentPosts
-	XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
-	[postsReq setMethod:@"wp.getComments" 
-			withObjects:[NSArray arrayWithObjects:blogid,username, pwd, nil]];
-	
-	NSArray *commentsList = [[BlogDataManager sharedDataManager] executeXMLRPCRequest:postsReq byHandlingError:YES];
-	
-	WPLog(@"commentsList is (%@)",commentsList);
-	
-	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-	return commentsList;
-}
+//- (NSArray *) getCommentsForBlog:(id)blog {
+//	WPLog(@"<<<<<<<<<<<<<<<<<< syncPostsForBlog >>>>>>>>>>>>>>");
+//
+//	[blog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
+//	// Parameters
+//	NSString *username = [blog valueForKey:@"username"];
+//	NSString *pwd = [blog valueForKey:@"pwd"];
+//	NSString *fullURL = [blog valueForKey:@"xmlrpc"];
+//	NSString *blogid = [blog valueForKey:@"blogid"];
+//
+//	
+//	//	WPLog(@"Fetching posts for blog %@ user %@/%@ from %@", blogid, username, pwd, fullURL);
+//	
+//	//  ------------------------- invoke metaWeblog.getRecentPosts
+//	XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
+//	[postsReq setMethod:@"wp.getComments" 
+//			withObjects:[NSArray arrayWithObjects:blogid,username, pwd, nil]];
+//	
+//	NSArray *commentsList = [[BlogDataManager sharedDataManager] executeXMLRPCRequest:postsReq byHandlingError:YES];
+//	
+//	WPLog(@"commentsList is (%@)",commentsList);
+//	
+//	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+//	return commentsList;
+//}
 
 #define COMMENT_NAME_TAG 100
 #define COMMENT_POST_NAME_AND_DATE_TAG 200
@@ -239,7 +238,6 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	UILabel *label;
 	
 	rect = CGRectMake(LEFT_OFFSET, (COMMENTS_TABLE_ROW_HEIGHT - LABEL_HEIGHT - DATE_LABEL_HEIGHT - VERTICAL_OFFSET ) / 2.0, 288, LABEL_HEIGHT);
-	NSLog(@"COMMENT_NAME_TAG rect is (%@)",NSStringFromCGRect(rect));
 	
 	label = [[UILabel alloc] initWithFrame:rect];
 	label.tag = COMMENT_NAME_TAG;
@@ -268,8 +266,10 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	if (section == 0)
-		return [commentsList count];
+	if (section == 0) {
+		NSLog(@" countOfCommentTitles -- %d",[[BlogDataManager sharedDataManager] countOfCommentTitles]);
+		return [[BlogDataManager sharedDataManager] countOfCommentTitles];
+	}	
 	return 0;
 }
 
@@ -277,7 +277,6 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 		
 	if (indexPath.section == 0) 
 	{
-		WPLog(@"[commentsList objectAtIndex:(indexPath.row)] is (%@)",[commentsList objectAtIndex:(indexPath.row)]);
 //		
 //		cell.text = [NSString stringWithFormat:@"%@,%@,%@",author,post_title,date_created_gmt];
 //		
@@ -286,22 +285,24 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 //		cell.font = [cell.font fontWithSize:15.0f];
 		static NSString *postsTableRowId = @"postsTableRowId";
 		
+		BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
+		
 		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:postsTableRowId];
 		if (cell == nil) {
 			cell = [self tableviewCellWithReuseIdentifier:postsTableRowId];
 			//[[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:postsTableRowId] autorelease];
 		}
 		
-		NSLog(@"cell is (%@)",cell);
 				
-		if ( [[commentsList objectAtIndex:(indexPath.row)] count] ) 
-		{
+
+			id currentComment = [sharedBlogDataManager commentTitleAtIndex:indexPath.row];
+			NSLog(@"currentComment at index (%d) is is (%@)",indexPath.row,currentComment);
 
 			NSCharacterSet *whitespaceCS = [NSCharacterSet whitespaceCharacterSet];
 			
-			NSString *author = [[[commentsList objectAtIndex:(indexPath.row)] valueForKey:@"author"] stringByTrimmingCharactersInSet:whitespaceCS];
-			NSString *post_title = [[[commentsList objectAtIndex:(indexPath.row)] valueForKey:@"post_title"]stringByTrimmingCharactersInSet:whitespaceCS];
-			NSString *date_created_gmt = [[commentsList objectAtIndex:(indexPath.row)] valueForKey:@"date_created_gmt"];
+			NSString *author = [[currentComment valueForKey:@"author"] stringByTrimmingCharactersInSet:whitespaceCS];
+			NSString *post_title = [[currentComment valueForKey:@"post_title"]stringByTrimmingCharactersInSet:whitespaceCS];
+			NSString *date_created_gmt = [currentComment valueForKey:@"date_created_gmt"];
 
 			UILabel *label = (UILabel *)[cell viewWithTag:COMMENT_NAME_TAG];
 			label.text = author;
@@ -319,7 +320,7 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 			label.textColor = ( connectionStatus ? [UIColor blackColor] : [UIColor grayColor] );
 			
 			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-		}
+
 		return cell;
 	}
 	return nil;
@@ -335,7 +336,8 @@ NSString *NSStringFromCGRect(CGRect rect ) {
     WPLog(@"didSelectRowAtIndexPath:: Load The View");
     WPCommentsDetailViewController *commentsViewController = [[WPCommentsDetailViewController alloc] initWithNibName:@"WPCommentsDetailViewController" bundle:nil];
     [self.navigationController pushViewController:commentsViewController animated:YES];
-    [commentsViewController fillCommentDetails:commentsList atRow:indexPath.row];
+    [commentsViewController fillCommentDetails:[[BlogDataManager sharedDataManager] commentTitles]
+				     atRow:indexPath.row];
     [commentsViewController release];
         
 }

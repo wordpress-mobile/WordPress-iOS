@@ -16,9 +16,6 @@
 	IBOutlet UIBarButtonItem *syncPostsButton;
 	IBOutlet UIBarButtonItem *commentStatusButton;
 	
-	NSMutableArray *commentsList;
-//    NSMutableArray *commentDetails;
-    
 	BOOL connectionStatus;
 }
 
