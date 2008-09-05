@@ -229,5 +229,6 @@
 - (BOOL) syncCommentsForBlog:(id)blog;
 - (BOOL) deleteComment:(id) aComment forBlog:(id)blog;
 - (BOOL) approveComment:(id) aComment forBlog:(id)blog;
+- (BOOL) unApproveComment:(id) aComment forBlog:(id)blog;
 
 @end
