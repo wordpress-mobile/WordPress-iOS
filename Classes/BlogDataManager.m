@@ -28,6 +28,8 @@
 - (NSString *)pathToPost:(id)aPost forBlog:(id)aBlog;
 - (NSString *)postFileName:(id)aPost;
 - (NSString *)templatePathForBlog:(id)aBlog;
+- (NSString *)commentsFolderPathForBlog:(id)aBlog;
+- (NSString *)commentFilePath:(id)aComment forBlog:(id)aBlog;
 
 - (void) loadPhotosDB;
 - (void) createPhotosDB;
@@ -685,6 +687,19 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	return postFileName;
 }
 
+- (NSString *)commentsFolderPathForBlog:(id)aBlog
+{
+	NSString *commentsFolderPath = [[self blogDir:aBlog] stringByAppendingPathComponent:@"Comments"];	
+	return commentsFolderPath;
+}
+
+- (NSString *)commentFilePath:(id)aComment forBlog:(id)aBlog
+{
+	NSString *comment_id = [aComment valueForKey:@"comment_id"];
+	NSString *commentFileName = [NSString stringWithFormat:@"comment.%@.archive", comment_id];
+	NSString *commentFilePath = [[self blogDir:aBlog] stringByAppendingPathComponent:commentFileName];
+	return commentFilePath;
+}
 
 #pragma mark -
 #pragma mark Blog metadata
@@ -3159,5 +3174,68 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	return nil;
 }
+
+
+
+- (BOOL) syncCommentsForCurrentBlog {
+	[self syncCommentsForBlog:currentBlog];
+	[self makeBlogAtIndexCurrent:currentBlogIndex];
+	return YES;
+}
+
+// sync comments for a given blog
+- (BOOL) syncCommentsForBlog:(id)blog {
+	WPLog(@"<<<<<<<<<<<<<<<<<< syncPostsForBlog >>>>>>>>>>>>>>");
+	
+	[blog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
+	// Parameters
+	NSString *username = [blog valueForKey:@"username"];
+	NSString *pwd = [blog valueForKey:@"pwd"];
+	NSString *fullURL = [blog valueForKey:@"xmlrpc"];
+	NSString *blogid = [blog valueForKey:@"blogid"];
+	
+	
+	//	WPLog(@"Fetching posts for blog %@ user %@/%@ from %@", blogid, username, pwd, fullURL);
+	
+	//  ------------------------- invoke metaWeblog.getRecentPosts
+	XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
+	[postsReq setMethod:@"wp.getComments" 
+			withObjects:[NSArray arrayWithObjects:blogid,username, pwd, nil]];
+	
+	NSMutableArray *commentsList = [NSMutableArray arrayWithArray:[self executeXMLRPCRequest:postsReq byHandlingError:YES]];
+
+	// TODO:
+	// Check for fault
+	// check for nil or empty response
+	// provide meaningful messge to user
+	if ((!commentsList) || !([commentsList isKindOfClass:[NSArray class]]) ) {
+		WPLog(@"Unknown Error");
+		[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
+		return NO;
+	}
+	
+	WPLog(@"commentsList is (%@)",commentsList);
+	
+	NSFileManager *defaultFileManager = [NSFileManager defaultManager];
+
+	for ( NSDictionary *comment in commentsList ) {
+		// add blogid and blog_host_name to post
+		NSMutableDictionary *updatedComment = [NSMutableDictionary dictionaryWithDictionary:comment];
+		
+		[updatedComment setValue:[blog valueForKey:@"blogid"] forKey:@"blogid"];
+		[updatedComment setValue:[blog valueForKey:@"blog_host_name"] forKey:@"blog_host_name"];
+		
+		NSString *path = [self commentFilePath:updatedComment forBlog:blog];
+
+		[defaultFileManager removeFileAtPath:path handler:nil];
+		[updatedComment writeToFile:path atomically:YES];
+	}
+	
+	
+	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+	return YES;
+}
+
 
 @end

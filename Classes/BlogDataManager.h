@@ -211,4 +211,8 @@
 - (NSString *)statusForStatusDescription:(NSString *)statusDescription fromBlog:(id)aBlog;
 - (NSString *)statusDescriptionForStatus:(NSString *)curStatus fromBlog:(id)aBlog;
 
+// sync comments for a given blog
+- (BOOL) syncCommentsForCurrentBlog ;
+- (BOOL) syncCommentsForBlog:(id)blog;
+	
 @end
