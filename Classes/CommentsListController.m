@@ -151,7 +151,8 @@
 
 	BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
 	[sharedBlogDataManager syncCommentsForCurrentBlog];
-	
+	[sharedBlogDataManager loadCommentTitlesForCurrentBlog];
+
 	NSArray *commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
 	int awaitingComments = 0;
 	
