@@ -42,6 +42,7 @@
 - (void) setCurrentPost:(NSMutableDictionary *)aPost;
 
 - (NSMutableDictionary *) postTitleForPost:(NSDictionary *)aPost;
+- (NSMutableDictionary *) commentTitleForComment:(NSDictionary *)aComment ;
 
 
 - (void) sortPostsList;
@@ -650,6 +651,12 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 {
 	NSString *pathToPostTitles = [[self blogDir:aBlog] stringByAppendingPathComponent:@"postTitles.archive"];	
 	return pathToPostTitles;
+}
+
+- (NSString *)pathToCommentTitles:(id)aBlog
+{
+	NSString *pathToCommentTitles = [[self blogDir:aBlog] stringByAppendingPathComponent:@"commentTitles.archive"];	
+	return pathToCommentTitles;
 }
 
 - (NSString *)pathToPost:(id)aPost forBlog:(id)aBlog
@@ -1287,6 +1294,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 		// write the new post
 		[post writeToFile:pathToPost atomically:YES];
+		//WPLog(@"writing post(%@) to file path (%@)",post,pathToPost);
 		
 		// make a post title using the post
 		NSMutableDictionary *postTitle = [self postTitleForPost:post];
@@ -1308,7 +1316,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
 	[newPostTitlesList sortUsingDescriptors:[NSArray arrayWithObject:sd]];
 	[newPostTitlesList writeToFile:[self pathToPostTitles:blog]  atomically:YES];
-
+	//WPLog(@"writing newPostTitlesList(%@) to file path (%@)",newPostTitlesList,[self pathToPostTitles:blog]);
 	// increment blog counts and save blogs list
 	[blog setObject:[NSNumber numberWithInt:[newPostTitlesList count]] forKey:@"totalposts"];
 	[blog setObject:[NSNumber numberWithInt:newPostCount] forKey:@"newposts"];
@@ -1914,6 +1922,17 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	return [NSMutableArray array];
 }
 
+- (NSMutableArray *)commentTitlesForBlog:(id)aBlog
+{
+	NSString *commentTitlesFilePath = [self pathToCommentTitles:aBlog];
+	if ([[NSFileManager defaultManager] fileExistsAtPath:commentTitlesFilePath]) 
+	{
+		return [NSMutableArray arrayWithContentsOfFile:commentTitlesFilePath];
+	}
+	
+	return [NSMutableArray array];
+}
+
 - (NSInteger)numberOfDrafts
 {
 	return [draftTitlesList count];
@@ -2044,6 +2063,17 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[self loadPostTitlesForBlog:currentBlog];
 }
 
+- (void)loadCommentTitlesForCurrentBlog {
+	[self loadCommentTitlesForBlog:currentBlog];
+}
+
+- (id)loadCommentTitlesForBlog:(id)aBlog
+{
+	// set method will make a mutable copy and retain
+	[self setCommentTitlesList: [self commentTitlesForBlog:aBlog]];
+	return nil;
+}
+
 // TODO: we don't need this any more.
 -(void)sortPostTitlesList {
 	
@@ -2066,10 +2096,23 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	return [postTitlesList count];
 }
 
+- (NSInteger)countOfCommentTitles {
+	return [commentTitlesList count];
+}
+
+- (NSArray *)commentTitles {
+	return commentTitlesList;
+}
 
 - (NSDictionary *)postTitleAtIndex:(NSUInteger)theIndex {
 	
 	return [postTitlesList objectAtIndex:theIndex];
+	
+}
+
+- (NSDictionary *)commentTitleAtIndex:(NSUInteger)theIndex {
+	
+	return [commentTitlesList objectAtIndex:theIndex];
 	
 }
 
@@ -2242,6 +2285,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[self syncPostsForBlog:aBlog];
 	[self generateTemplateForBlog:aBlog];
 	
+	[self syncCommentsForBlog:aBlog];
+
 	[aBlog release];
 	[ap release];
 	
@@ -3086,6 +3131,14 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
     }
 }
 
+- (void)setCommentTitlesList:(NSMutableArray *)newArray
+{
+    if (commentTitlesList != newArray)
+    {
+        [commentTitlesList release];
+        commentTitlesList = [newArray retain];
+    }
+}
 
 - (void)setDraftTitlesList:(NSMutableArray *)newArray
 {
@@ -3219,6 +3272,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	NSFileManager *defaultFileManager = [NSFileManager defaultManager];
 
+	NSMutableArray *commentTitlesList = [NSMutableArray array];
+	
 	for ( NSDictionary *comment in commentsList ) {
 		// add blogid and blog_host_name to post
 		NSMutableDictionary *updatedComment = [NSMutableDictionary dictionaryWithDictionary:comment];
@@ -3230,12 +3285,56 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 		[defaultFileManager removeFileAtPath:path handler:nil];
 		[updatedComment writeToFile:path atomically:YES];
+		
+		[commentTitlesList addObject:[self commentTitleForComment:updatedComment]];
 	}
-	
+
+	// sort and save the postTitles list
+	NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
+	[commentTitlesList sortUsingDescriptors:[NSArray arrayWithObject:sd]];
+	NSString *pathToCommentTitles = [self pathToCommentTitles:blog];
+	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
+	[commentTitlesList writeToFile:pathToCommentTitles  atomically:YES];
+	NSLog(@"writing commentTitlesList(%@) to file path (%@)",commentTitlesList,[self pathToCommentTitles:blog]);
 	
 	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 	return YES;
 }
 
+
+- (NSMutableDictionary *) commentTitleForComment:(NSDictionary *)aComment 
+{
+	NSMutableDictionary *commentTitle = [NSMutableDictionary dictionary];
+	
+	NSString *blogid = [aComment valueForKey:@"blogid"];
+	[commentTitle setObject:(blogid?blogid:@"") forKey:@"blogid"];
+	
+	NSString *blogHost = [aComment valueForKey:@"blog_host_name"];
+	[commentTitle setObject:(blogHost?blogHost:@"") forKey:@"blog_host_name"];
+	
+	NSString *blogName = [[self blogForId:blogid hostName:blogHost] valueForKey:@"blogName"];
+	[commentTitle setObject:(blogName?blogName:@"") forKey:@"blogName"];
+	
+	
+	NSString *commentid = [aComment valueForKey:@"comment_id"];
+	[commentTitle setObject:(commentid?commentid:@"") forKey:@"comment_id"];
+
+	NSString *author = [aComment valueForKey:@"author"];
+	[commentTitle setObject:(author?author:@"") forKey:@"author"];
+
+	NSString *status = [aComment valueForKey:@"status"];
+	[commentTitle setObject:(status?status:@"") forKey:@"status"];
+
+	NSString *posttitle = [aComment valueForKey:@"post_title"];
+	[commentTitle setObject:(posttitle?posttitle:@"") forKey:@"post_title"];
+
+	NSString *dateCreated = [aComment valueForKey:@"date_created_gmt"];
+	[commentTitle setObject:(dateCreated?dateCreated:@"") forKey:@"date_created_gmt"];
+
+	NSString *content = [aComment valueForKey:@"content"];
+	[commentTitle setObject:(content?content:@"") forKey:@"content"];
+
+	return commentTitle;	
+}
 
 @end

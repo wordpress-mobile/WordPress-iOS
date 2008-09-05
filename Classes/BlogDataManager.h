@@ -35,7 +35,7 @@
 	NSArray *pictureFieldNames;
 	
 	NSMutableArray *blogsList;
-	NSMutableArray *postTitlesList, *draftTitlesList;
+	NSMutableArray *postTitlesList, *draftTitlesList,*commentTitlesList;
 	NSMutableArray *photosDB;
 
 	
@@ -131,6 +131,13 @@
 - (id)loadPostTitlesForBlog:(id)aBlog;
 - (void)loadPostTitlesForCurrentBlog;
 
+- (NSMutableArray *)commentTitlesForBlog:(id)aBlog;
+- (void)loadCommentTitlesForCurrentBlog;
+- (id)loadCommentTitlesForBlog:(id)aBlog;
+- (NSInteger)countOfCommentTitles ;
+- (NSArray *)commentTitles;
+- (NSDictionary *)commentTitleAtIndex:(NSUInteger)theIndex;
+
 - (NSInteger)numberOfDrafts;
 - (NSMutableArray *)draftTitlesForBlog:(id)aBlog;
 - (void)loadDraftTitlesForBlog:(id)aBlog;
@@ -152,6 +159,10 @@
 - (BOOL) syncPostsForBlog:(id)blog;
 - (BOOL) syncPostsForCurrentBlog;
 
+- (BOOL) syncCommentsForCurrentBlog;
+// sync comments for a given blog
+- (BOOL) syncCommentsForBlog:(id)blog;
+	
 - (void)generateTemplateForBlog:(id)aBlog;
 - (BOOL)wrapperForSyncPostsAndGetTemplateForBlog:(id)aBlog;
 
