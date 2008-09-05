@@ -227,5 +227,7 @@
 // sync comments for a given blog
 - (BOOL) syncCommentsForCurrentBlog ;
 - (BOOL) syncCommentsForBlog:(id)blog;
-	
+- (BOOL) deleteComment:(id) aComment forBlog:(id)blog;
+- (BOOL) approveComment:(id) aComment forBlog:(id)blog;
+
 @end
