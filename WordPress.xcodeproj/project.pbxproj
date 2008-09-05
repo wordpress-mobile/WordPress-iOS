@@ -250,7 +250,6 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
-				2A7F71FA0E70F82A00E48A1F /* WPCommentsDetailViewController.xib */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -273,6 +272,7 @@
 				2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */,
 				AC512F790E20D25E00B7DA32 /* Images */,
 				ACFF1DC00E231EF600EC6BF5 /* Blog */,
+				C50E78130E71648100991509 /* Comments */,
 				ACFF1DC10E231F0B00EC6BF5 /* Post */,
 				AC3D2BB50E2219C80064A705 /* WPActivityIndicator.xib */,
 				ACE287510E2E4381004F5145 /* WPPublishOnEditController.xib */,
@@ -456,7 +456,6 @@
 		ACFF1DC10E231F0B00EC6BF5 /* Post */ = {
 			isa = PBXGroup;
 			children = (
-				C533CF450E6D3E24000C3DE8 /* CommentsListController.xib */,
 				ACC9E24F0E0FAC75005FD167 /* PostsListController.xib */,
 				ACC156BA0E10D73100D6E1A0 /* PostDetailViewController.xib */,
 				ACBAB67C0E1247CC00F38795 /* WPPostDetailPreviewController.xib */,
@@ -465,6 +464,15 @@
 				ACBAB6080E121CF700F38795 /* WPPostSettingsController.xib */,
 			);
 			name = Post;
+			sourceTree = "<group>";
+		};
+		C50E78130E71648100991509 /* Comments */ = {
+			isa = PBXGroup;
+			children = (
+				C533CF450E6D3E24000C3DE8 /* CommentsListController.xib */,
+				2A7F71FA0E70F82A00E48A1F /* WPCommentsDetailViewController.xib */,
+			);
+			name = Comments;
 			sourceTree = "<group>";
 		};
 		C533CF320E6D3AB3000C3DE8 /* Comments */ = {
