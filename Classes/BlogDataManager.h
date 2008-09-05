@@ -132,6 +132,8 @@
 - (void)loadPostTitlesForCurrentBlog;
 
 - (NSMutableArray *)commentTitlesForBlog:(id)aBlog;
+- (NSMutableArray *)commentTitlesForCurrentBlog;
+
 - (void)loadCommentTitlesForCurrentBlog;
 - (id)loadCommentTitlesForBlog:(id)aBlog;
 - (NSInteger)countOfCommentTitles ;

@@ -35,6 +35,7 @@
 - (void) createPhotosDB;
 - (void) loadPostTitlesForCurrentBlog;
 - (void) setPostTitlesList:(NSMutableArray *)newArray;
+- (void) setCommentTitlesList:(NSMutableArray *)newArray;
 - (NSInteger) indexOfPostTitle:(id)postTitle inList:(NSArray *)aPostTitlesList;
 
 // set methods will release current and create mutable copy
@@ -1933,6 +1934,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	return [NSMutableArray array];
 }
 
+- (NSMutableArray *)commentTitlesForCurrentBlog
+{
+	return [self commentTitlesForBlog:currentBlog];
+}
+
 - (NSInteger)numberOfDrafts
 {
 	return [draftTitlesList count];
@@ -3272,7 +3278,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	NSFileManager *defaultFileManager = [NSFileManager defaultManager];
 
-	NSMutableArray *commentTitlesList = [NSMutableArray array];
+	NSMutableArray *commentTitlesArray = [NSMutableArray array];
 	
 	for ( NSDictionary *comment in commentsList ) {
 		// add blogid and blog_host_name to post
@@ -3286,16 +3292,16 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		[defaultFileManager removeFileAtPath:path handler:nil];
 		[updatedComment writeToFile:path atomically:YES];
 		
-		[commentTitlesList addObject:[self commentTitleForComment:updatedComment]];
+		[commentTitlesArray addObject:[self commentTitleForComment:updatedComment]];
 	}
 
 	// sort and save the postTitles list
 	NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
-	[commentTitlesList sortUsingDescriptors:[NSArray arrayWithObject:sd]];
+	[commentTitlesArray sortUsingDescriptors:[NSArray arrayWithObject:sd]];
 	NSString *pathToCommentTitles = [self pathToCommentTitles:blog];
 	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
-	[commentTitlesList writeToFile:pathToCommentTitles  atomically:YES];
-	NSLog(@"writing commentTitlesList(%@) to file path (%@)",commentTitlesList,[self pathToCommentTitles:blog]);
+	[commentTitlesArray writeToFile:pathToCommentTitles  atomically:YES];
+	NSLog(@"writing commentTitlesList(%@) to file path (%@)",commentTitlesArray,[self pathToCommentTitles:blog]);
 	
 	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 	return YES;
