@@ -46,7 +46,6 @@
 	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
 	[commentsTableView reloadData];
 	[commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:NO];
-	commentStatusButton.title=@"";
 	[super viewWillAppear:animated];
 }
 
@@ -63,24 +62,24 @@
 												target:self action:@selector(editComments:)];
 	self.navigationItem.rightBarButtonItem = editButtonItem;
 	[editButtonItem release];
+
+	BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
+	NSArray *commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
+	int awaitingComments = 0;
 	
-//	[commentsList removeAllObjects];
-//	[commentsList addObjectsFromArray:[self getCommentsForBlog:[[BlogDataManager sharedDataManager] currentBlog]]];	
-//	
-//	int awaitingComments = 0;
-//	
-//	for ( NSDictionary *dict in commentsList ) {
-//		if ( [[dict valueForKey:@"status"] isEqualToString:@"hold"] ) {
-//			awaitingComments++;
-//		}
-//	}
-//	
-//	if ( awaitingComments == 0 )
-//		commentStatusButton.title=@"";
-//	else
-//		commentStatusButton.title=[NSString stringWithFormat:@"%d awaiting moderation",awaitingComments];
-//	
-//	[commentsTableView reloadData];
+	for ( NSDictionary *dict in commentsList ) {
+		WPLog(@"Comment Status is (%@)",[dict valueForKey:@"status"]);
+		if ( [[dict valueForKey:@"status"] isEqualToString:@"hold"] ) {
+			awaitingComments++;
+		}
+	}
+	
+	WPLog(@"awaitingComments (%d)",awaitingComments);
+	if ( awaitingComments == 0 )
+		commentStatusButton.title=@"";
+	else
+		commentStatusButton.title=[NSString stringWithFormat:@"%d awaiting moderation",awaitingComments];
+	
 }
  
 - (void)reachabilityChanged

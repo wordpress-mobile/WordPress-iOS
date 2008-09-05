@@ -16,7 +16,7 @@
     IBOutlet UILabel     *commentedDateLabel;
     IBOutlet UITextView  *commentsTextView;
     NSMutableArray *commentDetails;
-
+    int currentIndex;	
 }
 
 @property (nonatomic,retain) UILabel *commenterNameLabel;
