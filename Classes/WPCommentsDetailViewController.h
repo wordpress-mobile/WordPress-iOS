@@ -29,6 +29,6 @@
 - (void)segmentAction:(id)sender;
 - (void)deleteComment:(id)sender;
 - (void)approveComment:(id)sender;
--(void)fillCommentDetails:(NSMutableArray*)comments atRow:(int)row;
+-(void)fillCommentDetails:(NSArray*)comments atRow:(int)row;
 
 @end

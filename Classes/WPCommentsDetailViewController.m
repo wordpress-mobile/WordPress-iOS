@@ -79,7 +79,7 @@
     WPLog(@"WPLog :approveComment");
 }
 
--(void)fillCommentDetails:(NSMutableArray*)comments atRow:(int)row
+-(void)fillCommentDetails:(NSArray*)comments atRow:(int)row
 {
  
    

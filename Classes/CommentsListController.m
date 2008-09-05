@@ -267,7 +267,7 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (section == 0) {
-		NSLog(@" countOfCommentTitles -- %d",[[BlogDataManager sharedDataManager] countOfCommentTitles]);
+		WPLog(@" countOfCommentTitles -- %d",[[BlogDataManager sharedDataManager] countOfCommentTitles]);
 		return [[BlogDataManager sharedDataManager] countOfCommentTitles];
 	}	
 	return 0;
@@ -296,13 +296,13 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 				
 
 			id currentComment = [sharedBlogDataManager commentTitleAtIndex:indexPath.row];
-			NSLog(@"currentComment at index (%d) is is (%@)",indexPath.row,currentComment);
+			WPLog(@"currentComment at index (%d) is is (%@)",indexPath.row,currentComment);
 
 			NSCharacterSet *whitespaceCS = [NSCharacterSet whitespaceCharacterSet];
 			
 			NSString *author = [[currentComment valueForKey:@"author"] stringByTrimmingCharactersInSet:whitespaceCS];
 			NSString *post_title = [[currentComment valueForKey:@"post_title"]stringByTrimmingCharactersInSet:whitespaceCS];
-			NSString *date_created_gmt = [currentComment valueForKey:@"date_created_gmt"];
+			NSDate *date_created_gmt = [currentComment valueForKey:@"date_created_gmt"];
 
 			UILabel *label = (UILabel *)[cell viewWithTag:COMMENT_NAME_TAG];
 			label.text = author;

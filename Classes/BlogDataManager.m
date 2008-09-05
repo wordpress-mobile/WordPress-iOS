@@ -3301,7 +3301,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *pathToCommentTitles = [self pathToCommentTitles:blog];
 	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
 	[commentTitlesArray writeToFile:pathToCommentTitles  atomically:YES];
-	NSLog(@"writing commentTitlesList(%@) to file path (%@)",commentTitlesArray,[self pathToCommentTitles:blog]);
+	WPLog(@"writing commentTitlesList(%@) to file path (%@)",commentTitlesArray,[self pathToCommentTitles:blog]);
 	
 	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 	return YES;
