@@ -104,7 +104,7 @@
 - (void)approveComment:(id)sender
 {
    WPLog(@"WPLog :approveComment");
- 	return ;
+
     [self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
 	
 	BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
@@ -119,6 +119,16 @@
 - (void)unApproveComment:(id)sender
 {
     WPLog(@"WPLog :unApproveComment");
+	
+    [self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
+	
+	BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
+	BOOL result = [sharedDataManager unApproveComment:[commentDetails objectAtIndex:currentIndex] forBlog:[sharedDataManager currentBlog]];
+	if ( result ) {
+		[sharedDataManager loadCommentTitlesForCurrentBlog];
+		[self.navigationController popViewControllerAnimated:YES];
+	}
+	[self performSelectorInBackground:@selector(removeProgressIndicator) withObject:nil];
 }
 
 
@@ -162,9 +172,7 @@
 	
 	//    self.navigationItem.title = @"1 of 1";
 	
-	
 	// WPLog(@" The Values .....  %@ %@ %@ ",author,post_title,date_created_gmt);
-	
 }
 
 - (void)dealloc {
