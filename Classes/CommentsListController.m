@@ -14,16 +14,20 @@
 #import "BlogDataManager.h"
 #import "Reachability.h"
 #import "NSString+XMLExtensions.h"
+#import "WPCommentsDetailViewController.h"
 
 #define COMMENTS_TABLE_ROW_HEIGHT 65.0f
 
 
 @implementation CommentsListController
 
+//@synthesize commentDetails;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
 		// Initialization code
 		commentsList = [[NSMutableArray alloc] initWithCapacity:10];
+//        commentDetails = [[NSMutableArray alloc] initWithCapacity:3];
 	}
 	return self;
 }
@@ -111,7 +115,7 @@
 	[syncPostsButton release];
 	[commentStatusButton release];
 	[commentsList release];
-	
+//    [commentDetails release];
 	[super dealloc];
 }
 
@@ -328,6 +332,12 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 
 // Show PostList when row is selected
 - (void)tableView:(UITableView *)atableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    WPLog(@"didSelectRowAtIndexPath:: Load The View");
+    WPCommentsDetailViewController *commentsViewController = [[WPCommentsDetailViewController alloc] initWithNibName:@"WPCommentsDetailViewController" bundle:nil];
+    [self.navigationController pushViewController:commentsViewController animated:YES];
+    [commentsViewController fillCommentDetails:commentsList atRow:indexPath.row];
+    [commentsViewController release];
+        
 }
 
 

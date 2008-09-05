@@ -17,8 +17,12 @@
 	IBOutlet UIBarButtonItem *commentStatusButton;
 	
 	NSMutableArray *commentsList;
+//    NSMutableArray *commentDetails;
+    
 	BOOL connectionStatus;
 }
+
+//@property (nonatomic, retain) NSMutableArray *commentDetails;
 
 - (IBAction)downloadRecentComments:(id)sender;
 
