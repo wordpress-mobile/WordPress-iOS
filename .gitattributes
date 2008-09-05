@@ -102,11 +102,13 @@ WordPress.xcodeproj/project.pbxproj -text
 /application-icon.png -text
 /defaultPostTemplate.html -text
 /defaultPostTemplate_old.html -text
+/down.png -text
 /license.txt -text
 /main.m -text
 /photos.png -text
 /preview.png -text
 /settings.png -text
+/up.png -text
 /webclip.png -text
 /wplogo.png -text
 /write.png -text
