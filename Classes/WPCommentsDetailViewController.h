@@ -2,8 +2,8 @@
 //  WPCommentsDetailViewController.h
 //  WordPress
 //
-//  Created by ramesh kakula on 05/09/08.
-//  Copyright 2008 __MyCompanyName__. All rights reserved.
+//  Created by Janakiram on 05/09/08.
+//  Copyright 2008 Effigent. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -20,7 +20,8 @@
     IBOutlet UIToolbar  *approveAndUnapproveButtonBar;
     IBOutlet UIToolbar  *deleteButtonBar;
 
-     UIBarButtonItem *segmentBarItem;
+    BOOL connectionStatus;
+    UIBarButtonItem *segmentBarItem;
     int currentIndex;	
 }
 
