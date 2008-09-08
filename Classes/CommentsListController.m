@@ -71,6 +71,7 @@
 - (void)viewDidLoad {
 	
 
+	[super viewDidLoad];
 	[commentsTableView setDataSource:self];
 	// Observe the kNetworkReachabilityChangedNotification. When that notification is posted, the
 	// method "reachabilityChanged" will be called. 
@@ -143,6 +144,18 @@
 
 - (IBAction)downloadRecentComments:(id)sender {
 	
+	if( !connectionStatus )
+	{
+		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
+														 message:@"Sync operation is not supported now."
+														delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+		
+		[alert1 show];
+		[alert1 release];		
+		
+		return;
+	}
+
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
 	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
@@ -313,6 +326,7 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 				[dateFormatter setDateStyle:NSDateFormatterLongStyle];
 			}
 
+			label.textColor = ( connectionStatus ? [UIColor blackColor] : [UIColor grayColor] );
 			label = (UILabel *)[cell viewWithTag:COMMENT_POST_NAME_AND_DATE_TAG];
 			label.text = [NSString stringWithFormat:@"%@ , %@",post_title,[[dateFormatter stringFromDate:date_created_gmt] description]];
 

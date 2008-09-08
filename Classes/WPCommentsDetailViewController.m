@@ -2,12 +2,13 @@
 //  WPCommentsDetailViewController.m
 //  WordPress
 //
-//  Created by ramesh kakula on 05/09/08.
-//  Copyright 2008 __MyCompanyName__. All rights reserved.
+//  Created by Janakiram on 05/09/08.
+//  Copyright 2008 Effigent. All rights reserved.
 //
 
 #import "WPCommentsDetailViewController.h"
 #import "BlogDataManager.h"
+#import "Reachability.h"
 
 
 @implementation WPCommentsDetailViewController
@@ -31,6 +32,28 @@
  }
  */
 
+- (void)viewWillAppear:(BOOL)animated {
+	
+	WPLog(@"PostsList:viewWillAppear");
+	
+	[self performSelector:@selector(reachabilityChanged)];;
+	
+	[super viewWillAppear:animated];
+}
+
+- (void)reachabilityChanged
+{
+	WPLog(@"reachabilityChanged ....");
+	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
+	UIColor *textColor = connectionStatus==YES ? [UIColor blackColor] : [UIColor grayColor];
+	
+	commenterNameLabel.textColor = textColor;
+	commentedOnLabel.textColor = textColor;
+	commentedDateLabel.textColor = textColor;
+	commentsTextView.textColor = textColor;
+		
+}
+
 // Implement viewDidLoad to do additional setup after loading the view.
 - (void)viewDidLoad {
 	
@@ -51,6 +74,9 @@
 	self.navigationItem.rightBarButtonItem = segmentBarItem;
 	//    self.navigationItem.title = @"1 of 1";
 	
+	// Observe the kNetworkReachabilityChangedNotification. When that notification is posted, the
+	// method "reachabilityChanged" will be called. 
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];	
 }
 
 
@@ -89,6 +115,20 @@
 - (void)deleteComment:(id)sender
 {
          WPLog(@"WPLog :deleteComment");
+	
+	if ( ![[Reachability sharedReachability] remoteHostStatus] != NotReachable ) {
+		
+		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
+														 message:@"Delete operation is not supported now."
+														delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+		
+		[alert1 show];
+		[alert1 release];		
+		
+		return;
+		
+	}
+		
 	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
 
 	BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
@@ -105,7 +145,19 @@
 {
    WPLog(@"WPLog :approveComment");
 
-    [self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
+	if ( ![[Reachability sharedReachability] remoteHostStatus] != NotReachable ) {
+		
+		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
+														 message:@"Approve operation is not supported now."
+														delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+		
+		[alert1 show];
+		[alert1 release];		
+		
+		return;
+		
+	}
+	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
 	
 	BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
 	BOOL result = [sharedDataManager approveComment:[commentDetails objectAtIndex:currentIndex] forBlog:[sharedDataManager currentBlog]];
@@ -120,7 +172,19 @@
 {
     WPLog(@"WPLog :unApproveComment");
 	
-    [self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
+	if ( ![[Reachability sharedReachability] remoteHostStatus] != NotReachable ) {
+		
+		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
+														 message:@"Unapprove operation is not supported now."
+														delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+		
+		[alert1 show];
+		[alert1 release];		
+		
+		return;
+		
+	}
+	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
 	
 	BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
 	BOOL result = [sharedDataManager unApproveComment:[commentDetails objectAtIndex:currentIndex] forBlog:[sharedDataManager currentBlog]];
