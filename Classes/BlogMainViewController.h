@@ -15,6 +15,7 @@
 	PostsListController *postsListController;	
 	CommentsListController *commentsListController;	
 	NSArray *blogMainMenuContents;
+	int awaitingComments;
 }
 
 @property (nonatomic, retain) PostsListController *postsListController;

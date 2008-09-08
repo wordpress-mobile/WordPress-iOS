@@ -60,6 +60,27 @@
 }
 
 
+- (void)viewWillAppear:(BOOL)animated {
+		
+	BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
+	[sharedDataManager loadCommentTitlesForCurrentBlog];
+
+	NSArray *commentsList = [sharedDataManager commentTitlesForBlog:[sharedDataManager currentBlog]];
+	awaitingComments = 0;
+	
+	for ( NSDictionary *dict in commentsList ) {
+		WPLog(@"Comment Status is (%@)",[dict valueForKey:@"status"]);
+		if ( [[dict valueForKey:@"status"] isEqualToString:@"hold"] ) {
+			awaitingComments++;
+		}
+	}
+	
+	[postsTableView deselectRowAtIndexPath:[postsTableView indexPathForSelectedRow] animated:NO];
+	[postsTableView reloadData];
+	
+	[super viewWillAppear:animated];
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	return 1;
 }
@@ -75,19 +96,30 @@
 //}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	
 	UITableViewCell *cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero] autorelease];
-
 	if (indexPath.section == 0) 
 	{
 		cell.image =[UIImage imageNamed:@"DraftsFolder.png"];
 		cell.text = [blogMainMenuContents objectAtIndex:(indexPath.row)];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-//#define MAIN_FONT_SIZE 15.0f
 		cell.font = [cell.font fontWithSize:15.0f];
+		
+		if ( indexPath.row == 2 ) { // Comments Section
+
+			[[cell viewWithTag:99] removeFromSuperview];
+			if ( awaitingComments > 0 ) {
+#define LOCALDRAFT_ROW_HEIGHT 44.0f
+#define LABEL_HEIGHT 35.0f
+				UILabel *badgeLabel = [[UILabel alloc] initWithFrame:CGRectMake(210, (LOCALDRAFT_ROW_HEIGHT - LABEL_HEIGHT)/2 , 80, LABEL_HEIGHT)];
+				[badgeLabel setTag:99];
+				badgeLabel.textAlignment = UITextAlignmentRight;
+				badgeLabel.font = cell.font;
+				badgeLabel.text = [NSString stringWithFormat:@"(%d)",awaitingComments];
+				[[cell contentView] addSubview:badgeLabel];
+				[badgeLabel release];
+			}
+		}
 	}
-	
-	
 	return cell;
 }
 
