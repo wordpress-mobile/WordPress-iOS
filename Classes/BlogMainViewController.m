@@ -105,22 +105,6 @@
 		
 		if ( indexPath.row == 0 ) {
 
-			if( [[[dataManager blogAtIndex:indexPath.row] valueForKey:@"kIsSyncProcessRunning"] intValue] == 1 ) {
-				[postsTableView deselectRowAtIndexPath:[postsTableView indexPathForSelectedRow] animated:YES];
-				return;
-			}
-			[dataManager makeBlogAtIndexCurrent:(indexPath.row)];	
-			NSString *url = [dataManager.currentBlog valueForKey:@"url"];
-			
-			if(url != nil && [url length] >= 7 && [url hasPrefix:@"http://"]) {
-				url = [url substringFromIndex:7];
-			}
-			
-			if(url != nil && [url length]) {
-				url = @"wordpress.com";
-			}
-			
-			[Reachability sharedReachability].hostName = url;
 			if (self.postsListController == nil) {
 				self.postsListController = [[PostsListController alloc] initWithNibName:@"PostsListController" bundle:nil];
 			}
