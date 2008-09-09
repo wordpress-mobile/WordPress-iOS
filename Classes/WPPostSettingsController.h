@@ -10,6 +10,7 @@
 	IBOutlet UITableViewCell *publishOnTableViewCell;
 	IBOutlet UITableViewCell *passwordTableViewCell;
 	IBOutlet UITableViewCell *passwordHintTableViewCell;
+	IBOutlet UITableViewCell *resizePhotoViewCell;
 	
 	IBOutlet UITextField *passwordTextField;
 	IBOutlet UITextField *publishOnTextField;
@@ -20,7 +21,12 @@
 	
 	IBOutlet UISwitch *commentsSwitchControl;
 	IBOutlet UISwitch *pingsSwitchControl;
+	IBOutlet UISwitch *resizePhotoControl;
 	
+	IBOutlet UILabel *resizePhotoLabel;
+	IBOutlet UITableViewCell *resizePhotoHintTableViewCell;
+	IBOutlet UILabel *resizePhotoHintLabel;
+
 	PostDetailViewController *postDetailViewController;	
 }
 

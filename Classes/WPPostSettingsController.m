@@ -98,7 +98,10 @@
 	publishOnLabel.font = [UIFont boldSystemFontOfSize:17.0f];
 	passwordTextField.font = [UIFont fontWithName:@"Helvetica" size:15];	
 	publishOnTextField.font = [UIFont fontWithName:@"Helvetica" size:15];	
-	
+
+	resizePhotoLabel.font = [UIFont boldSystemFontOfSize:17.0f];
+	resizePhotoHintLabel.font = [UIFont fontWithName:@"Helvetica" size:15];
+
 	[commentsSwitchControl addTarget:self action:@selector(controlEventValueChanged:) forControlEvents:UIControlEventValueChanged];
 	[pingsSwitchControl addTarget:self action:@selector(controlEventValueChanged:) forControlEvents:UIControlEventValueChanged];
 }
@@ -134,14 +137,15 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	//we don't have comments now
-	return 2;
+	return 3;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (section == 0)
 		return 1;
-	
+	if (section == 2)
+		return 2;
 	return 2;
 }
 
@@ -197,6 +201,17 @@
 				[passwordHintTableViewCell bringSubviewToFront:passwordHintLabel];
 				return passwordHintTableViewCell;
 			}
+
+		case 2:
+			if (indexPath.row == 0) {
+//				passwordTextField.text = [post valueForKey:@"wp_password"];
+//				passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+				return resizePhotoViewCell;
+			} else {
+				[resizePhotoHintTableViewCell bringSubviewToFront:resizePhotoHintLabel];
+				resizePhotoHintTableViewCell.backgroundColor = [UIColor clearColor];
+				return resizePhotoHintTableViewCell;
+			}
 		default:
 			break;
 	}
@@ -211,7 +226,10 @@
 //		return 88.0f;
 	if (indexPath.section == 1 && indexPath.row == 1)
 		return CGRectGetHeight([passwordHintTableViewCell frame]);
-	
+
+	if (indexPath.section == 2 && indexPath.row == 1)
+		return CGRectGetHeight([resizePhotoHintTableViewCell frame]);
+
 	return 44.0f;
 }
 

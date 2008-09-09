@@ -8,6 +8,11 @@
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="95"/>
+			<integer value="185"/>
+			<integer value="192"/>
+			<integer value="78"/>
+			<integer value="10"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -54,7 +59,7 @@
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 			</object>
 			<object class="IBUITableViewCell" id="823972763">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -132,6 +137,7 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 89}</string>
+				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MSAwAA</bytes>
@@ -204,7 +210,7 @@
 				<reference key="IBUIContentView" ref="373578252"/>
 			</object>
 			<object class="IBUITableViewCell" id="858300214">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -260,6 +266,7 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 44}</string>
+				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MSAwAA</bytes>
@@ -270,7 +277,7 @@
 				<reference key="IBUIContentView" ref="399164874"/>
 			</object>
 			<object class="IBUITableViewCell" id="521995996">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -288,7 +295,7 @@
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="IBUIText">Setting a password will require visitors to enter the above password to view this post and its comments.</string>
-								<object class="NSFont" key="IBUIFont">
+								<object class="NSFont" key="IBUIFont" id="623504108">
 									<string key="NSName">Helvetica</string>
 									<double key="NSSize">1.300000e+01</double>
 									<int key="NSfFlags">16</int>
@@ -314,6 +321,7 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{319, 81}</string>
+				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MSAwAA</bytes>
@@ -324,6 +332,117 @@
 				<bool key="IBUIUserInteractionEnabled">NO</bool>
 				<int key="IBUISelectionStyle">0</int>
 				<reference key="IBUIContentView" ref="418038596"/>
+				<bool key="IBUIShouldIndentWhileEditing">NO</bool>
+			</object>
+			<object class="IBUITableViewCell" id="352133937">
+				<reference key="NSNextResponder"/>
+				<int key="NSvFlags">292</int>
+				<object class="NSMutableArray" key="NSSubviews">
+					<bool key="EncodedWithXMLCoder">YES</bool>
+					<object class="IBUIView" id="500229868">
+						<reference key="NSNextResponder" ref="352133937"/>
+						<int key="NSvFlags">256</int>
+						<object class="NSMutableArray" key="NSSubviews">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBUISwitch" id="932273704">
+								<reference key="NSNextResponder" ref="500229868"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrame">{{201, 12}, {94, 27}}</string>
+								<reference key="NSSuperview" ref="500229868"/>
+								<bool key="IBUIOpaque">NO</bool>
+								<bool key="IBUIClipsSubviews">YES</bool>
+								<bool key="IBUIMultipleTouchEnabled">YES</bool>
+								<int key="IBUIContentHorizontalAlignment">0</int>
+								<int key="IBUIContentVerticalAlignment">0</int>
+								<bool key="IBUIOn">YES</bool>
+							</object>
+							<object class="IBUILabel" id="719350653">
+								<reference key="NSNextResponder" ref="500229868"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrame">{{20, 15}, {128, 21}}</string>
+								<reference key="NSSuperview" ref="500229868"/>
+								<bool key="IBUIOpaque">NO</bool>
+								<bool key="IBUIClipsSubviews">YES</bool>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<string key="IBUIText">Resize Photos</string>
+								<reference key="IBUITextColor" ref="769485322"/>
+								<nil key="IBUIHighlightedColor"/>
+								<int key="IBUIBaselineAdjustment">1</int>
+								<float key="IBUIMinimumFontSize">1.000000e+01</float>
+							</object>
+						</object>
+						<string key="NSFrameSize">{315, 53}</string>
+						<reference key="NSSuperview" ref="352133937"/>
+						<reference key="IBUIBackgroundColor" ref="961271066"/>
+						<bool key="IBUIOpaque">NO</bool>
+						<bool key="IBUIClipsSubviews">YES</bool>
+						<int key="IBUIContentMode">4</int>
+						<bool key="IBUIMultipleTouchEnabled">YES</bool>
+					</object>
+				</object>
+				<string key="NSFrameSize">{315, 53}</string>
+				<reference key="NSSuperview"/>
+				<object class="NSColor" key="IBUIBackgroundColor">
+					<int key="NSColorSpace">3</int>
+					<bytes key="NSWhite">MSAwAA</bytes>
+				</object>
+				<bool key="IBUIOpaque">NO</bool>
+				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
+				<int key="IBUISelectionStyle">0</int>
+				<reference key="IBUIContentView" ref="500229868"/>
+			</object>
+			<object class="IBUITableViewCell" id="867939903">
+				<reference key="NSNextResponder"/>
+				<int key="NSvFlags">292</int>
+				<object class="NSMutableArray" key="NSSubviews">
+					<bool key="EncodedWithXMLCoder">YES</bool>
+					<object class="IBUIView" id="112989152">
+						<reference key="NSNextResponder" ref="867939903"/>
+						<int key="NSvFlags">256</int>
+						<object class="NSMutableArray" key="NSSubviews">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBUILabel" id="657183356">
+								<reference key="NSNextResponder" ref="112989152"/>
+								<int key="NSvFlags">290</int>
+								<string key="NSFrame">{{7, 6}, {279, 68}}</string>
+								<reference key="NSSuperview" ref="112989152"/>
+								<bool key="IBUIOpaque">NO</bool>
+								<bool key="IBUIClipsSubviews">YES</bool>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<string key="IBUIText">Resizing will result in faster publishing but smaller photos. Resized photos will be no larger that 640 x 480.</string>
+								<reference key="IBUIFont" ref="623504108"/>
+								<object class="NSColor" key="IBUITextColor">
+									<int key="NSColorSpace">1</int>
+									<bytes key="NSRGB">MC40MDAwMDAwMSAwLjQwMDAwMDAxIDAuNDAwMDAwMDEAA</bytes>
+								</object>
+								<nil key="IBUIHighlightedColor"/>
+								<int key="IBUIBaselineAdjustment">1</int>
+								<float key="IBUIMinimumFontSize">1.000000e+01</float>
+								<int key="IBUINumberOfLines">0</int>
+								<int key="IBUITextAlignment">1</int>
+							</object>
+						</object>
+						<string key="NSFrameSize">{295, 74}</string>
+						<reference key="NSSuperview" ref="867939903"/>
+						<reference key="IBUIBackgroundColor" ref="961271066"/>
+						<bool key="IBUIOpaque">NO</bool>
+						<bool key="IBUIClipsSubviews">YES</bool>
+						<int key="IBUIContentMode">4</int>
+						<bool key="IBUIMultipleTouchEnabled">YES</bool>
+					</object>
+				</object>
+				<string key="NSFrameSize">{295, 74}</string>
+				<reference key="NSSuperview"/>
+				<object class="NSColor" key="IBUIBackgroundColor">
+					<int key="NSColorSpace">3</int>
+					<bytes key="NSWhite">MSAwAA</bytes>
+				</object>
+				<bool key="IBUIOpaque">NO</bool>
+				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
+				<int key="IBUIContentMode">4</int>
+				<bool key="IBUIUserInteractionEnabled">NO</bool>
+				<int key="IBUISelectionStyle">0</int>
+				<reference key="IBUIContentView" ref="112989152"/>
 				<bool key="IBUIShouldIndentWhileEditing">NO</bool>
 			</object>
 		</object>
@@ -466,6 +585,46 @@
 					</object>
 					<int key="connectionID">184</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">resizePhotoControl</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="932273704"/>
+					</object>
+					<int key="connectionID">190</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">resizePhotoViewCell</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="352133937"/>
+					</object>
+					<int key="connectionID">191</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">resizePhotoHintLabel</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="657183356"/>
+					</object>
+					<int key="connectionID">194</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">resizePhotoHintTableViewCell</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="867939903"/>
+					</object>
+					<int key="connectionID">195</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">resizePhotoLabel</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="719350653"/>
+					</object>
+					<int key="connectionID">196</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -593,6 +752,42 @@
 						<reference key="object" ref="659455832"/>
 						<reference key="parent" ref="521995996"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">185</int>
+						<reference key="object" ref="352133937"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="932273704"/>
+							<reference ref="719350653"/>
+						</object>
+						<reference key="parent" ref="957960031"/>
+						<string key="objectName">Resize Photos</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">186</int>
+						<reference key="object" ref="932273704"/>
+						<reference key="parent" ref="352133937"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">188</int>
+						<reference key="object" ref="719350653"/>
+						<reference key="parent" ref="352133937"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">192</int>
+						<reference key="object" ref="867939903"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="657183356"/>
+						</object>
+						<reference key="parent" ref="957960031"/>
+						<string key="objectName">Resize Photo Hint Cell</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">193</int>
+						<reference key="object" ref="657183356"/>
+						<reference key="parent" ref="867939903"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -609,6 +804,13 @@
 					<string>13.IBPluginDependency</string>
 					<string>14.IBPluginDependency</string>
 					<string>171.IBPluginDependency</string>
+					<string>185.IBEditorWindowLastContentRect</string>
+					<string>185.IBPluginDependency</string>
+					<string>186.IBPluginDependency</string>
+					<string>188.IBPluginDependency</string>
+					<string>192.IBEditorWindowLastContentRect</string>
+					<string>192.IBPluginDependency</string>
+					<string>193.IBPluginDependency</string>
 					<string>2.IBEditorWindowLastContentRect</string>
 					<string>2.IBPluginDependency</string>
 					<string>24.IBEditorWindowLastContentRect</string>
@@ -626,12 +828,19 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>WPPostSettingsController</string>
 					<string>UIResponder</string>
-					<string>{{234, 401}, {320, 89}}</string>
+					<string>{{181, 563}, {320, 89}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>{{322, 703}, {315, 53}}</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>{{411, 543}, {295, 74}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{235, 136}, {320, 460}}</string>
@@ -668,7 +877,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">184</int>
+			<int key="maxID">196</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -710,6 +919,11 @@
 							<string>publishOnLabel</string>
 							<string>publishOnTableViewCell</string>
 							<string>publishOnTextField</string>
+							<string>resizePhotoControl</string>
+							<string>resizePhotoHintLabel</string>
+							<string>resizePhotoHintTableViewCell</string>
+							<string>resizePhotoLabel</string>
+							<string>resizePhotoViewCell</string>
 							<string>tableView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -725,6 +939,11 @@
 							<string>UILabel</string>
 							<string>UITableViewCell</string>
 							<string>UITextField</string>
+							<string>UISwitch</string>
+							<string>UILabel</string>
+							<string>UITableViewCell</string>
+							<string>UILabel</string>
+							<string>UITableViewCell</string>
 							<string>UITableView</string>
 						</object>
 					</object>

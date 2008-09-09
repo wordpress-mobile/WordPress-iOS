@@ -22,6 +22,12 @@
 	IBOutlet UITextField *passwordTextField;
 	IBOutlet UITextField *noOfPostsTextField;
 
+	IBOutlet UILabel *resizePhotoLabel;
+	IBOutlet UITableViewCell *resizePhotoHintTableViewCell;
+	IBOutlet UILabel *resizePhotoHintLabel;
+	IBOutlet UITableViewCell *resizePhotoViewCell;
+	IBOutlet UISwitch *resizePhotoControl;
+	
 	IBOutlet UILabel *blogURLLabel;
 	IBOutlet UILabel *userNameLabel;
 	IBOutlet UILabel *passwordLabel;

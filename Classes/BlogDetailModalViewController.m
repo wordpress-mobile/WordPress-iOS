@@ -48,6 +48,9 @@
 	passwordLabel.font = [UIFont boldSystemFontOfSize:17];
 	noOfPostsLabel.font = [UIFont boldSystemFontOfSize:17];
 	
+	resizePhotoLabel.font = [UIFont boldSystemFontOfSize:17.0f];
+	resizePhotoHintLabel.font = [UIFont fontWithName:@"Helvetica" size:15];
+
 	blogEditTable.scrollEnabled = NO;
 	self.navigationItem.leftBarButtonItem = cancelBlogButton;
 	self.navigationItem.rightBarButtonItem = saveBlogButton;
@@ -100,12 +103,14 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 2;
+	return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (section == 1)
 		return 1;
+	if (section == 2)
+		return 2;
 	return 3;
 }
 
@@ -124,28 +129,47 @@
 				}
 				blogURLTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 				return blogURLTableViewCell;
+			} else if  (indexPath.section == 2) {
+//			resizePhotosButton.text = [[sharedDataManager currentBlog] objectForKey:@"pwd"];
+//			passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+					return resizePhotoViewCell;
+				break;
 			} else {
 //				noOfPostsTextField.text = [[sharedDataManager currentBlog] objectForKey:@"pwd"];
-				noOfPostsTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-				return noOfPostsTableViewCell;
-				break;
+					noOfPostsTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+					return noOfPostsTableViewCell;
+					break;
 			}
 			break;
 		case 1:
-			userNameTextField.text = [[sharedDataManager currentBlog] objectForKey:@"username"];
-			userNameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-			return userNameTableViewCell;
-			break;
+			if (indexPath.section == 0) {
+				userNameTextField.text = [[sharedDataManager currentBlog] objectForKey:@"username"];
+				userNameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+				return userNameTableViewCell;
+			} else {
+				[resizePhotoHintTableViewCell bringSubviewToFront:resizePhotoHintLabel];
+				resizePhotoHintTableViewCell.backgroundColor = [UIColor clearColor];
+				return resizePhotoHintTableViewCell;
+			}
 		case 2:
 			passwordTextField.text = [[sharedDataManager currentBlog] objectForKey:@"pwd"];
 			passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 			return passwordTableViewCell;
 			break;
+			
 		default:
 			break;
 	}
 		
 	return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	if (indexPath.section == 2 && indexPath.row == 1)
+		return CGRectGetHeight([resizePhotoHintTableViewCell frame]);
+	
+	return 44.0f;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
