@@ -8,8 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="97"/>
-			<integer value="98"/>
+			<integer value="111"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -47,7 +46,7 @@
 					<object class="IBUIButton" id="166273170">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{9, 354}, {301, 40}}</string>
+						<string key="NSFrame">{{9, 368}, {301, 40}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -399,8 +398,9 @@
 							<object class="IBUISwitch" id="869275936">
 								<reference key="NSNextResponder" ref="824143336"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{201, 12}, {94, 27}}</string>
+								<string key="NSFrame">{{193, 8}, {94, 27}}</string>
 								<reference key="NSSuperview" ref="824143336"/>
+								<reference key="NSWindow"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIMultipleTouchEnabled">YES</bool>
@@ -411,8 +411,9 @@
 							<object class="IBUILabel" id="139383594">
 								<reference key="NSNextResponder" ref="824143336"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{20, 15}, {128, 21}}</string>
+								<string key="NSFrame">{{11, 11}, {128, 21}}</string>
 								<reference key="NSSuperview" ref="824143336"/>
+								<reference key="NSWindow"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -423,8 +424,9 @@
 								<float key="IBUIMinimumFontSize">1.000000e+01</float>
 							</object>
 						</object>
-						<string key="NSFrameSize">{315, 53}</string>
+						<string key="NSFrameSize">{320, 44}</string>
 						<reference key="NSSuperview" ref="973064357"/>
+						<reference key="NSWindow"/>
 						<reference key="IBUIBackgroundColor" ref="658345807"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -432,8 +434,9 @@
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 					</object>
 				</object>
-				<string key="NSFrameSize">{315, 53}</string>
+				<string key="NSFrameSize">{320, 44}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MSAwAA</bytes>
@@ -443,21 +446,21 @@
 				<int key="IBUISelectionStyle">0</int>
 				<reference key="IBUIContentView" ref="824143336"/>
 			</object>
-			<object class="IBUITableViewCell" id="478268869">
+			<object class="IBUITableViewCell" id="234374950">
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<object class="IBUIView" id="1045713705">
-						<reference key="NSNextResponder" ref="478268869"/>
+					<object class="IBUIView" id="517280564">
+						<reference key="NSNextResponder" ref="234374950"/>
 						<int key="NSvFlags">256</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBUILabel" id="212757834">
-								<reference key="NSNextResponder" ref="1045713705"/>
+							<object class="IBUILabel" id="460271024">
+								<reference key="NSNextResponder" ref="517280564"/>
 								<int key="NSvFlags">290</int>
-								<string key="NSFrame">{{7, 6}, {279, 68}}</string>
-								<reference key="NSSuperview" ref="1045713705"/>
+								<string key="NSFrame">{{20, 11}, {279, 49}}</string>
+								<reference key="NSSuperview" ref="517280564"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -478,8 +481,8 @@
 								<int key="IBUITextAlignment">1</int>
 							</object>
 						</object>
-						<string key="NSFrameSize">{295, 74}</string>
-						<reference key="NSSuperview" ref="478268869"/>
+						<string key="NSFrameSize">{319, 71}</string>
+						<reference key="NSSuperview" ref="234374950"/>
 						<reference key="IBUIBackgroundColor" ref="658345807"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -487,7 +490,7 @@
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 					</object>
 				</object>
-				<string key="NSFrameSize">{295, 74}</string>
+				<string key="NSFrameSize">{319, 71}</string>
 				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -498,7 +501,7 @@
 				<int key="IBUIContentMode">4</int>
 				<bool key="IBUIUserInteractionEnabled">NO</bool>
 				<int key="IBUISelectionStyle">0</int>
-				<reference key="IBUIContentView" ref="1045713705"/>
+				<reference key="IBUIContentView" ref="517280564"/>
 				<bool key="IBUIShouldIndentWhileEditing">NO</bool>
 			</object>
 		</object>
@@ -717,27 +720,11 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">resizePhotoHintTableViewCell</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="478268869"/>
-					</object>
-					<int key="connectionID">102</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">resizePhotoViewCell</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="973064357"/>
 					</object>
 					<int key="connectionID">103</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">resizePhotoHintLabel</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="212757834"/>
-					</object>
-					<int key="connectionID">104</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -754,6 +741,22 @@
 						<reference key="destination" ref="139383594"/>
 					</object>
 					<int key="connectionID">106</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">resizePhotoHintTableViewCell</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="234374950"/>
+					</object>
+					<int key="connectionID">113</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">resizePhotoHintLabel</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="460271024"/>
+					</object>
+					<int key="connectionID">114</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -899,26 +902,11 @@
 						<reference key="object" ref="973064357"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="139383594"/>
 							<reference ref="869275936"/>
+							<reference ref="139383594"/>
 						</object>
 						<reference key="parent" ref="360949347"/>
 						<string key="objectName">Resize Photos</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">98</int>
-						<reference key="object" ref="478268869"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="212757834"/>
-						</object>
-						<reference key="parent" ref="360949347"/>
-						<string key="objectName">Resize Photo Hint Cell</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">99</int>
-						<reference key="object" ref="212757834"/>
-						<reference key="parent" ref="478268869"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100</int>
@@ -929,6 +917,21 @@
 						<int key="objectID">101</int>
 						<reference key="object" ref="869275936"/>
 						<reference key="parent" ref="973064357"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">111</int>
+						<reference key="object" ref="234374950"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="460271024"/>
+						</object>
+						<reference key="parent" ref="360949347"/>
+						<string key="objectName">Resize Photo Hint Cell</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">112</int>
+						<reference key="object" ref="460271024"/>
+						<reference key="parent" ref="234374950"/>
 					</object>
 				</object>
 			</object>
@@ -943,6 +946,9 @@
 					<string>1.IBViewEditorWindowController.showingLayoutRectangles</string>
 					<string>100.IBPluginDependency</string>
 					<string>101.IBPluginDependency</string>
+					<string>111.IBEditorWindowLastContentRect</string>
+					<string>111.IBPluginDependency</string>
+					<string>112.IBPluginDependency</string>
 					<string>14.IBPluginDependency</string>
 					<string>19.IBPluginDependency</string>
 					<string>29.IBPluginDependency</string>
@@ -965,9 +971,6 @@
 					<string>79.IBPluginDependency</string>
 					<string>97.IBEditorWindowLastContentRect</string>
 					<string>97.IBPluginDependency</string>
-					<string>98.IBEditorWindowLastContentRect</string>
-					<string>98.IBPluginDependency</string>
-					<string>99.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -976,6 +979,9 @@
 					<string>{{307, 92}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<integer value="1"/>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>{{300, 209}, {319, 71}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -990,7 +996,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{208, 613}, {320, 44}}</string>
+					<string>{{129, 65}, {320, 44}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -998,10 +1004,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{131, 193}, {315, 53}}</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{622, 191}, {295, 74}}</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>{{466, 128}, {320, 44}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
@@ -1025,7 +1028,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">106</int>
+			<int key="maxID">114</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

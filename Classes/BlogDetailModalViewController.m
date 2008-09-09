@@ -49,7 +49,6 @@
 	noOfPostsLabel.font = [UIFont boldSystemFontOfSize:17];
 	
 	resizePhotoLabel.font = [UIFont boldSystemFontOfSize:17.0f];
-	resizePhotoHintLabel.font = [UIFont fontWithName:@"Helvetica" size:15];
 
 	blogEditTable.scrollEnabled = NO;
 	self.navigationItem.leftBarButtonItem = cancelBlogButton;
@@ -103,14 +102,15 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 3;
+	return 2;
+//	return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (section == 1)
 		return 1;
-	if (section == 2)
-		return 2;
+//	if (section == 2)
+//		return 2;
 	return 3;
 }
 

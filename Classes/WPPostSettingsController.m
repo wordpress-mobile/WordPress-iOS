@@ -100,7 +100,6 @@
 	publishOnTextField.font = [UIFont fontWithName:@"Helvetica" size:15];	
 
 	resizePhotoLabel.font = [UIFont boldSystemFontOfSize:17.0f];
-	resizePhotoHintLabel.font = [UIFont fontWithName:@"Helvetica" size:15];
 
 	[commentsSwitchControl addTarget:self action:@selector(controlEventValueChanged:) forControlEvents:UIControlEventValueChanged];
 	[pingsSwitchControl addTarget:self action:@selector(controlEventValueChanged:) forControlEvents:UIControlEventValueChanged];
@@ -137,15 +136,16 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	//we don't have comments now
-	return 3;
+//	return 3;
+	return 2;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (section == 0)
 		return 1;
-	if (section == 2)
-		return 2;
+//	if (section == 2)
+//		return 2;
 	return 2;
 }
 
