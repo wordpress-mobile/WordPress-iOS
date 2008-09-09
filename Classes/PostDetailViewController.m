@@ -511,7 +511,12 @@
 	[super didReceiveMemoryWarning];
 }
 
-	
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    WPLog(@"shouldAutorotateToInterfaceOrientation : Auto rotation is called..");
+    return YES;
+}
+
 	
 @end
 
