@@ -3,12 +3,12 @@
 	<data>
 		<int key="IBDocument.SystemTarget">512</int>
 		<string key="IBDocument.SystemVersion">9E17</string>
-		<string key="IBDocument.InterfaceBuilderVersion">670</string>
+		<string key="IBDocument.InterfaceBuilderVersion">672</string>
 		<string key="IBDocument.AppKitVersion">949.33</string>
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="314"/>
+			<integer value="54"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -24,22 +24,22 @@
 			</object>
 			<object class="IBUIView" id="1066218360">
 				<reference key="NSNextResponder"/>
-				<int key="NSvFlags">292</int>
+				<int key="NSvFlags">294</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIView" id="180411387">
 						<reference key="NSNextResponder" ref="1066218360"/>
-						<int key="NSvFlags">292</int>
+						<int key="NSvFlags">294</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUIView" id="735874146">
 								<reference key="NSNextResponder" ref="180411387"/>
-								<int key="NSvFlags">293</int>
+								<int key="NSvFlags">294</int>
 								<object class="NSMutableArray" key="NSSubviews">
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<object class="IBUITableViewCell" id="808689251">
 										<reference key="NSNextResponder" ref="735874146"/>
-										<int key="NSvFlags">292</int>
+										<int key="NSvFlags">294</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
 											<object class="IBUIView" id="771935890">
@@ -116,7 +116,7 @@
 													</object>
 													<object class="IBUIImageView" id="155933296">
 														<reference key="NSNextResponder" ref="771935890"/>
-														<int key="NSvFlags">292</int>
+														<int key="NSvFlags">289</int>
 														<string key="NSFrame">{{297, 16}, {10, 13}}</string>
 														<reference key="NSSuperview" ref="771935890"/>
 														<bool key="IBUIOpaque">NO</bool>
@@ -251,7 +251,7 @@
 									</object>
 									<object class="IBUITableViewCell" id="421151578">
 										<reference key="NSNextResponder" ref="735874146"/>
-										<int key="NSvFlags">292</int>
+										<int key="NSvFlags">294</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
 											<object class="IBUIView" id="270641902">
@@ -320,7 +320,7 @@
 													</object>
 													<object class="IBUIImageView" id="527184181">
 														<reference key="NSNextResponder" ref="270641902"/>
-														<int key="NSvFlags">292</int>
+														<int key="NSvFlags">289</int>
 														<string key="NSFrame">{{297, 16}, {10, 13}}</string>
 														<reference key="NSSuperview" ref="270641902"/>
 														<bool key="IBUIOpaque">NO</bool>
@@ -406,7 +406,6 @@
 										<float key="IBUIMaximumZoomScale">0.000000e+00</float>
 										<bool key="IBUIBouncesZoom">NO</bool>
 										<string key="IBUIText"/>
-										<int key="IBUIMarginTop">0</int>
 									</object>
 									<object class="IBUITextField" id="138287431">
 										<reference key="NSNextResponder" ref="931841925"/>
@@ -907,7 +906,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{290, 110}, {320, 460}}</string>
+					<string>{{453, 297}, {320, 460}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
