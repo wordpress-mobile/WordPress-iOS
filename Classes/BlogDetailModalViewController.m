@@ -53,6 +53,10 @@
 	blogEditTable.scrollEnabled = NO;
 	self.navigationItem.leftBarButtonItem = cancelBlogButton;
 	self.navigationItem.rightBarButtonItem = saveBlogButton;
+	[resizePhotoControl addTarget:self action:@selector(changeResizePhotosOptions) forControlEvents:UIControlEventAllTouchEvents];
+}
+
+- (void) changeResizePhotosOptions {
 }
 
 - (void)refreshBlogEdit {
@@ -117,11 +121,11 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
 	BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
-	
+	NSDictionary *currentBlog = [sharedDataManager currentBlog];
 	switch (indexPath.row) {
 		case 0:;
 			if (indexPath.section == 0) {
-				NSString *urlString  = [[sharedDataManager currentBlog] objectForKey:@"url"];
+				NSString *urlString  = [currentBlog objectForKey:@"url"];
 				if (urlString) {
 					urlString = [urlString stringByReplacingOccurrencesOfString:@"http://" withString:@""];
 					urlString = [urlString stringByReplacingOccurrencesOfString:@"/xmlrpc.php" withString:@""];
@@ -130,8 +134,13 @@
 				blogURLTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 				return blogURLTableViewCell;
 			} else if  (indexPath.section == 2) {
-//			resizePhotosButton.text = [[sharedDataManager currentBlog] objectForKey:@"pwd"];
-//			passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+				NSNumber *value = [currentBlog valueForKey:kResizePhotoSetting];
+				if ( value == nil ) {
+					value = [NSNumber numberWithInt:0];
+					[currentBlog setValue:value forKey:kResizePhotoSetting];
+				}
+					
+					resizePhotoControl.on = [value boolValue];
 					return resizePhotoViewCell;
 				break;
 			} else {
@@ -143,7 +152,7 @@
 			break;
 		case 1:
 			if (indexPath.section == 0) {
-				userNameTextField.text = [[sharedDataManager currentBlog] objectForKey:@"username"];
+				userNameTextField.text = [currentBlog objectForKey:@"username"];
 				userNameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 				return userNameTableViewCell;
 			} else {
@@ -152,7 +161,7 @@
 				return resizePhotoHintTableViewCell;
 			}
 		case 2:
-			passwordTextField.text = [[sharedDataManager currentBlog] objectForKey:@"pwd"];
+			passwordTextField.text = [currentBlog objectForKey:@"pwd"];
 			passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 			return passwordTableViewCell;
 			break;
@@ -323,6 +332,10 @@
 		return;
 	}
 	
+	NSDictionary *currentBlog = [dm currentBlog];
+	NSNumber *value = [NSNumber numberWithBool:resizePhotoControl.on];
+	[currentBlog setValue:value forKey:kResizePhotoSetting];
+
 	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
 	
 	
@@ -384,6 +397,10 @@
 		return;
 	}
 	
+	NSDictionary *currentBlog = [dm currentBlog];
+	NSNumber *value = [NSNumber numberWithBool:resizePhotoControl.on];
+	[currentBlog setValue:value forKey:kResizePhotoSetting];
+
 	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
 	
 	

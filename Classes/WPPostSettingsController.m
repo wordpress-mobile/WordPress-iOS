@@ -103,8 +103,16 @@
 
 	[commentsSwitchControl addTarget:self action:@selector(controlEventValueChanged:) forControlEvents:UIControlEventValueChanged];
 	[pingsSwitchControl addTarget:self action:@selector(controlEventValueChanged:) forControlEvents:UIControlEventValueChanged];
+
+	[resizePhotoControl addTarget:self action:@selector(changeResizePhotosOptions) forControlEvents:UIControlEventAllTouchEvents];
 }
 
+
+- (void) changeResizePhotosOptions {
+	postDetailViewController.hasChanges = YES;
+	[[BlogDataManager sharedDataManager].currentPost setValue:[NSNumber numberWithInt:resizePhotoControl.on] 
+									     forKey:kResizePhotoSetting];
+}
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
@@ -204,8 +212,13 @@
 
 		case 2:
 			if (indexPath.row == 0) {
-//				passwordTextField.text = [post valueForKey:@"wp_password"];
-//				passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+				NSNumber *value = [post valueForKey:kResizePhotoSetting];
+				if ( value == nil ) {
+					value = [NSNumber numberWithInt:0];
+					[post setValue:value forKey:kResizePhotoSetting];
+				}
+				
+				resizePhotoControl.on = [value boolValue];
 				return resizePhotoViewCell;
 			} else {
 				[resizePhotoHintTableViewCell bringSubviewToFront:resizePhotoHintLabel];

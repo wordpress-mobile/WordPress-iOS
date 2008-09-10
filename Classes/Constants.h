@@ -38,3 +38,5 @@
 #else
 #define WPLog //NSLog
 #endif
+
+#define kResizePhotoSetting @"ResizePhotoSetting"
