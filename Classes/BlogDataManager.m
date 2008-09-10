@@ -2556,7 +2556,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[dict setObject:[NSNumber numberWithInt:0] forKey:@"not_used_allow_comments"];
 	[dict setObject:@"" forKey:@"mt_keywords"];
 	
-	[dict setObject:[currentBlog valueForKey:kResizePhotoSetting] forKey:kResizePhotoSetting];
+	NSNumber *value = [currentBlog valueForKey:kResizePhotoSetting];
+	if ( value ) {
+		value = [NSNumber numberWithInt:1];
+	}
+	[dict setObject:value forKey:kResizePhotoSetting];
 	// setCurrentPost will release current reference and make a mutable copy of this one
 	[self setCurrentPost:dict];
 	
