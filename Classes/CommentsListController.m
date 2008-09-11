@@ -230,7 +230,7 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	 */
 	CGRect rect;
 	
-	rect = CGRectMake(0.0, 0.0, 320.0, COMMENTS_TABLE_ROW_HEIGHT);
+	rect = CGRectMake(0.0, 0.0, 400.0, COMMENTS_TABLE_ROW_HEIGHT);
 	
 	UITableViewCell *cell = [[[UITableViewCell alloc] initWithFrame:rect reuseIdentifier:identifier] autorelease];
 	
@@ -260,8 +260,8 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	label.highlightedTextColor = [UIColor whiteColor];
 	[label release];
 	
-
-	rect = CGRectMake(LEFT_OFFSET, rect.origin.y+ LABEL_HEIGHT + VERTICAL_OFFSET , 320, DATE_LABEL_HEIGHT);
+	
+	rect = CGRectMake(LEFT_OFFSET, rect.origin.y+ LABEL_HEIGHT + VERTICAL_OFFSET , rect.size.width, DATE_LABEL_HEIGHT);
 	
 	label = [[UILabel alloc] initWithFrame:rect];
 	label.tag = COMMENT_POST_NAME_AND_DATE_TAG;
@@ -306,35 +306,35 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 			//[[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:postsTableRowId] autorelease];
 		}
 		
-				
-
-			id currentComment = [sharedBlogDataManager commentTitleAtIndex:indexPath.row];
-			WPLog(@"currentComment at index (%d) is is (%@)",indexPath.row,currentComment);
-
-			NSCharacterSet *whitespaceCS = [NSCharacterSet whitespaceCharacterSet];
-			
-			NSString *author = [[currentComment valueForKey:@"author"] stringByTrimmingCharactersInSet:whitespaceCS];
-			NSString *post_title = [[currentComment valueForKey:@"post_title"]stringByTrimmingCharactersInSet:whitespaceCS];
-			NSDate *date_created_gmt = [currentComment valueForKey:@"date_created_gmt"];
-
-			UILabel *label = (UILabel *)[cell viewWithTag:COMMENT_NAME_TAG];
-			label.text = author;
-			
-			static NSDateFormatter *dateFormatter = nil;
-			if (dateFormatter == nil) {
-				dateFormatter = [[NSDateFormatter alloc] init];
-				[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-				[dateFormatter setDateStyle:NSDateFormatterLongStyle];
-			}
-
-			label.textColor = ( connectionStatus ? [UIColor blackColor] : [UIColor grayColor] );
-			label = (UILabel *)[cell viewWithTag:COMMENT_POST_NAME_AND_DATE_TAG];
-			label.text = [NSString stringWithFormat:@"%@ , %@",post_title,[[dateFormatter stringFromDate:date_created_gmt] description]];
-
-			label.textColor = ( connectionStatus ? [UIColor blackColor] : [UIColor grayColor] );
-			
-			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-
+		
+		
+		id currentComment = [sharedBlogDataManager commentTitleAtIndex:indexPath.row];
+		WPLog(@"currentComment at index (%d) is is (%@)",indexPath.row,currentComment);
+		
+		NSCharacterSet *whitespaceCS = [NSCharacterSet whitespaceCharacterSet];
+		
+		NSString *author = [[currentComment valueForKey:@"author"] stringByTrimmingCharactersInSet:whitespaceCS];
+		NSString *post_title = [[currentComment valueForKey:@"post_title"]stringByTrimmingCharactersInSet:whitespaceCS];
+		NSDate *date_created_gmt = [currentComment valueForKey:@"date_created_gmt"];
+		
+		UILabel *label = (UILabel *)[cell viewWithTag:COMMENT_NAME_TAG];
+		label.text = author;
+		
+		static NSDateFormatter *dateFormatter = nil;
+		if (dateFormatter == nil) {
+			dateFormatter = [[NSDateFormatter alloc] init];
+			[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+			[dateFormatter setDateStyle:NSDateFormatterLongStyle];
+		}
+		
+		label.textColor = ( connectionStatus ? [UIColor blackColor] : [UIColor grayColor] );
+		label = (UILabel *)[cell viewWithTag:COMMENT_POST_NAME_AND_DATE_TAG];
+		label.text = [NSString stringWithFormat:@"%@ , %@",post_title,[[dateFormatter stringFromDate:date_created_gmt] description]];
+		[label setLineBreakMode:UILineBreakModeTailTruncation];
+		label.textColor = ( connectionStatus ? [UIColor blackColor] : [UIColor grayColor] );
+		
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		
 		return cell;
 	}
 	return nil;

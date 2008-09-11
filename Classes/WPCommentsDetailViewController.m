@@ -115,85 +115,26 @@
 
 - (void)deleteComment:(id)sender
 {
-         WPLog(@"WPLog :deleteComment");
-	
-	if ( ![[Reachability sharedReachability] remoteHostStatus] != NotReachable ) {
-		
-		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
-														 message:@"Delete operation is not supported now."
-														delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-		
-		[alert1 show];
-		[alert1 release];		
-		
-		return;
-		
-	}
-		
-	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
-
-	BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
-	BOOL result = [sharedDataManager deleteComment:[commentDetails objectAtIndex:currentIndex] forBlog:[sharedDataManager currentBlog]];
-	
-	if ( result ) {
-		[sharedDataManager loadCommentTitlesForCurrentBlog];
-		[self.navigationController popViewControllerAnimated:YES];
-	}
-	[self performSelectorInBackground:@selector(removeProgressIndicator) withObject:nil];
+    WPLog(@"WPLog :deleteComment");
+    UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Delete Blog" message:@"Are you sure you want to delete this Comment?" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Cancel", nil];                                                
+    [deleteAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
+    [deleteAlert show];
 }
 
 - (void)approveComment:(id)sender
 {
-   WPLog(@"WPLog :approveComment");
-
-	if ( ![[Reachability sharedReachability] remoteHostStatus] != NotReachable ) {
-		
-		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
-														 message:@"Approve operation is not supported now."
-														delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-		
-		[alert1 show];
-		[alert1 release];		
-		
-		return;
-		
-	}
-	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
-	
-	BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
-	BOOL result = [sharedDataManager approveComment:[commentDetails objectAtIndex:currentIndex] forBlog:[sharedDataManager currentBlog]];
-	if ( result ) {
-		[sharedDataManager loadCommentTitlesForCurrentBlog];
-		[self.navigationController popViewControllerAnimated:YES];
-	}
-	[self performSelectorInBackground:@selector(removeProgressIndicator) withObject:nil];
+	WPLog(@"WPLog :approveComment");
+	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Approve Comment" message:@"Are you sure you want to Approve this Comment?" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Cancel", nil];                                                
+	[deleteAlert setTag:2];  // for UIAlertView Delegate to handle which view is popped.
+	[deleteAlert show];
 }
 
 - (void)unApproveComment:(id)sender
 {
-    WPLog(@"WPLog :unApproveComment");
-	
-	if ( ![[Reachability sharedReachability] remoteHostStatus] != NotReachable ) {
-		
-		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
-														 message:@"Unapprove operation is not supported now."
-														delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-		
-		[alert1 show];
-		[alert1 release];		
-		
-		return;
-		
-	}
-	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
-	
-	BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
-	BOOL result = [sharedDataManager unApproveComment:[commentDetails objectAtIndex:currentIndex] forBlog:[sharedDataManager currentBlog]];
-	if ( result ) {
-		[sharedDataManager loadCommentTitlesForCurrentBlog];
-		[self.navigationController popViewControllerAnimated:YES];
-	}
-	[self performSelectorInBackground:@selector(removeProgressIndicator) withObject:nil];
+	WPLog(@"WPLog :unApproveComment");
+	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Unapprove Comment" message:@"Are you sure you want to Unapprove this Comment?" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Cancel", nil];                                                
+	[deleteAlert setTag:3];  // for UIAlertView Delegate to handle which view is popped.
+	[deleteAlert show];
 }
 
 
@@ -207,7 +148,7 @@
 	NSString *author = [[[commentDetails objectAtIndex:row] valueForKey:@"author"] stringByTrimmingCharactersInSet:whitespaceCS];
 	NSString *post_title = [[[commentDetails objectAtIndex:row] valueForKey:@"post_title"]stringByTrimmingCharactersInSet:whitespaceCS];
 	NSString *post_content = [[[commentDetails objectAtIndex:row] valueForKey:@"content"]stringByTrimmingCharactersInSet:whitespaceCS];
-         NSDate *date_created_gmt = [[commentDetails objectAtIndex:row] valueForKey:@"date_created_gmt"];
+	NSDate *date_created_gmt = [[commentDetails objectAtIndex:row] valueForKey:@"date_created_gmt"];
 	NSString *commentStatus = [[commentDetails objectAtIndex:row] valueForKey:@"status"];
 	
     static NSDateFormatter *dateFormatter = nil;
@@ -226,7 +167,7 @@
     int count = [self.commentDetails count];
     self.navigationItem.title = [NSString stringWithFormat:@"%d of %d",row+1,count];    
 	
-
+	
 	if ( [commentStatus isEqualToString:@"hold"] ) {	
 		[approveAndUnapproveButtonBar setHidden:NO];
 		[deleteButtonBar setHidden:YES];
@@ -279,5 +220,49 @@
 	[apool release];
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	
+    WPLog(@"The Alet name %d",[alertView tag]);
+	
+	//optimised code but need to comprimise at Alert messages.....Common message for all @"Operation is not supported now."
+	if ( buttonIndex == 0 ) 
+	{
+		if ( ![[Reachability sharedReachability] remoteHostStatus] != NotReachable ) 
+		{
+			UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
+															 message:@"Operation is not supported now."
+															delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+			[alert1 show];
+			[alert1 release];		
+			return;
+		}  
+		
+		[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
+		BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
+		BOOL result;
+		if([alertView tag] == 1)
+		{
+			result = [sharedDataManager deleteComment:[commentDetails objectAtIndex:currentIndex] forBlog:[sharedDataManager currentBlog]];
+		}
+		if([alertView tag] == 2)
+		{
+			result = [sharedDataManager approveComment:[commentDetails objectAtIndex:currentIndex] forBlog:[sharedDataManager currentBlog]];
+		}
+		
+		if([alertView tag] == 3)
+		{
+			result = [sharedDataManager unApproveComment:[commentDetails objectAtIndex:currentIndex] forBlog:[sharedDataManager currentBlog]];
+		}
+		
+		if ( result ) 
+		{
+			[sharedDataManager loadCommentTitlesForCurrentBlog];
+			[self.navigationController popViewControllerAnimated:YES];
+		}
+		[self performSelectorInBackground:@selector(removeProgressIndicator) withObject:nil];
+    }
+    [alertView autorelease];
+}
 
 @end
