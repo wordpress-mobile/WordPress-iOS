@@ -293,9 +293,8 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	// Return YES for supported orientations
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	return NO;
 }
-
 
 - (void)didReceiveMemoryWarning {
 		WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));

@@ -9,6 +9,7 @@
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="192"/>
+			<integer value="2"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -29,8 +30,8 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUITableView" id="408472278">
 						<reference key="NSNextResponder" ref="37055601"/>
-						<int key="NSvFlags">298</int>
-						<string key="NSFrame">{{0, 26}, {320, 372}}</string>
+						<int key="NSvFlags">290</int>
+						<string key="NSFrameSize">{320, 398}</string>
 						<reference key="NSSuperview" ref="37055601"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -329,7 +330,7 @@
 				<bool key="IBUIShouldIndentWhileEditing">NO</bool>
 			</object>
 			<object class="IBUITableViewCell" id="352133937">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -343,7 +344,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{193, 8}, {94, 27}}</string>
 								<reference key="NSSuperview" ref="500229868"/>
-								<reference key="NSWindow"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIMultipleTouchEnabled">YES</bool>
@@ -356,7 +356,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{11, 11}, {128, 21}}</string>
 								<reference key="NSSuperview" ref="500229868"/>
-								<reference key="NSWindow"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -369,7 +368,6 @@
 						</object>
 						<string key="NSFrameSize">{320, 44}</string>
 						<reference key="NSSuperview" ref="352133937"/>
-						<reference key="NSWindow"/>
 						<reference key="IBUIBackgroundColor" ref="961271066"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -378,8 +376,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 44}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MSAwAA</bytes>

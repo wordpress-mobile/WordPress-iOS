@@ -474,7 +474,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	// Return YES for supported orientations
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	return NO;
 }
 
 
