@@ -3,11 +3,12 @@
 	<data>
 		<int key="IBDocument.SystemTarget">512</int>
 		<string key="IBDocument.SystemVersion">9E17</string>
-		<string key="IBDocument.InterfaceBuilderVersion">672</string>
+		<string key="IBDocument.InterfaceBuilderVersion">670</string>
 		<string key="IBDocument.AppKitVersion">949.33</string>
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="2"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -28,10 +29,9 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUITableView" id="826206616">
 						<reference key="NSNextResponder" ref="723677457"/>
-						<int key="NSvFlags">294</int>
+						<int key="NSvFlags">274</int>
 						<string key="NSFrameSize">{320, 416}</string>
 						<reference key="NSSuperview" ref="723677457"/>
-						<reference key="NSWindow"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="187435215">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MSAxIDEAA</bytes>
@@ -55,7 +55,6 @@
 								<int key="NSvFlags">295</int>
 								<string key="NSFrame">{{77, 7}, {130, 31}}</string>
 								<reference key="NSSuperview" ref="305769845"/>
-								<reference key="NSWindow"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -76,7 +75,6 @@
 						</object>
 						<string key="NSFrame">{{0, 416}, {320, 44}}</string>
 						<reference key="NSSuperview" ref="723677457"/>
-						<reference key="NSWindow"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 						<object class="NSMutableArray" key="IBUIItems">
@@ -103,7 +101,6 @@
 				</object>
 				<string key="NSFrameSize">{320, 460}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
