@@ -192,18 +192,34 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 	CGFloat width = CGImageGetWidth(imgRef);
 	CGFloat height = CGImageGetHeight(imgRef);
 	
-	
 	CGAffineTransform transform = CGAffineTransformIdentity;
 	CGRect bounds = CGRectMake(0, 0, width, height);
-	if (width > kMaxResolution || height > kMaxResolution) {
-		CGFloat ratio = width/height;
-		if (ratio > 1) {
-			bounds.size.width = kMaxResolution;
-			bounds.size.height = bounds.size.width / ratio;
+
+	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
+	id currentPost = dataManager.currentPost;
+	NSNumber	 *number = [currentPost valueForKey:kResizePhotoSetting];
+	
+	if ( !number ) { // If post doesn't contain this key
+		number = [dataManager.currentBlog valueForKey:kResizePhotoSetting];
+		if ( !number ) {// If blog doesn't contain this key
+			number = [NSNumber numberWithInt:0];
 		}
-		else {
-			bounds.size.height = kMaxResolution;
-			bounds.size.width = bounds.size.height * ratio;
+		
+	}
+	
+	BOOL shouldResize = [number boolValue];
+	
+	if ( shouldResize ) { // Resize the photo only when user opts this setting
+		if (width > kMaxResolution || height > kMaxResolution) {
+			CGFloat ratio = width/height;
+			if (ratio > 1) {
+				bounds.size.width = kMaxResolution;
+				bounds.size.height = bounds.size.width / ratio;
+			}
+			else {
+				bounds.size.height = kMaxResolution;
+				bounds.size.width = bounds.size.height * ratio;
+			}
 		}
 	}
 	

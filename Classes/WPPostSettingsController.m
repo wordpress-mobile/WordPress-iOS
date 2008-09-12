@@ -144,16 +144,15 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	//we don't have comments now
-//	return 3;
-	return 2;
+	return 3;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (section == 0)
 		return 1;
-//	if (section == 2)
-//		return 2;
+	if (section == 2)
+		return 2;
 	return 2;
 }
 
