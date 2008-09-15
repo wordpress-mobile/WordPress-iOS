@@ -85,6 +85,9 @@
 		C59614CA0E6C547300E2FBF0 /* BlogMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C59614C90E6C547300E2FBF0 /* BlogMainViewController.m */; };
 		C59615350E6C5B0000E2FBF0 /* WPBlogMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C59615340E6C5B0000E2FBF0 /* WPBlogMainViewController.xib */; };
 		C59D3D4B0E6410D300AA591D /* NSString+XMLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */; };
+		C5C272DF0E7EC00A0034AA46 /* uncheck.png in Resources */ = {isa = PBXBuildFile; fileRef = C5C272DE0E7EC00A0034AA46 /* uncheck.png */; };
+		C5C272E10E7EC00F0034AA46 /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = C5C272E00E7EC00F0034AA46 /* check.png */; };
+		C5C2730A0E7EC9FE0034AA46 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = C5C273090E7EC9FE0034AA46 /* delete.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -205,6 +208,9 @@
 		C59615340E6C5B0000E2FBF0 /* WPBlogMainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WPBlogMainViewController.xib; sourceTree = "<group>"; };
 		C59D3D490E6410D300AA591D /* NSString+XMLExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+XMLExtensions.h"; sourceTree = "<group>"; };
 		C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+XMLExtensions.m"; sourceTree = "<group>"; };
+		C5C272DE0E7EC00A0034AA46 /* uncheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = uncheck.png; sourceTree = "<group>"; };
+		C5C272E00E7EC00F0034AA46 /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
+		C5C273090E7EC9FE0034AA46 /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -375,6 +381,9 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				C5C273090E7EC9FE0034AA46 /* delete.png */,
+				C5C272E00E7EC00F0034AA46 /* check.png */,
+				C5C272DE0E7EC00A0034AA46 /* uncheck.png */,
 				C50007E40E7A38A900F85224 /* Folder.png */,
 				2A7F72290E71000000E48A1F /* up.png */,
 				2A7F722A0E71000000E48A1F /* down.png */,
@@ -591,6 +600,9 @@
 				2A7F722B0E71000000E48A1F /* up.png in Resources */,
 				2A7F722C0E71000000E48A1F /* down.png in Resources */,
 				C50007E50E7A38A900F85224 /* Folder.png in Resources */,
+				C5C272DF0E7EC00A0034AA46 /* uncheck.png in Resources */,
+				C5C272E10E7EC00F0034AA46 /* check.png in Resources */,
+				C5C2730A0E7EC9FE0034AA46 /* delete.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
