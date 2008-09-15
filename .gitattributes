@@ -101,14 +101,17 @@ WordPress.xcodeproj/project.pbxproj -text
 /aboutscreenfooter.png -text
 /aboutscreenlogo.png -text
 /application-icon.png -text
+/check.png -text
 /defaultPostTemplate.html -text
 /defaultPostTemplate_old.html -text
+/delete.png -text
 /down.png -text
 /license.txt -text
 /main.m -text
 /photos.png -text
 /preview.png -text
 /settings.png -text
+/uncheck.png -text
 /up.png -text
 /webclip.png -text
 /wplogo.png -text
