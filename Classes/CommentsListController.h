@@ -16,7 +16,11 @@
 	IBOutlet UIBarButtonItem *syncPostsButton;
 	IBOutlet UIBarButtonItem *commentStatusButton;
 	
+         IBOutlet UIToolbar  *editToolbar;
+
 	BOOL connectionStatus;
+	BOOL editMode;
+	BOOL changeEditMode;
 }
 
 //@property (nonatomic, retain) NSMutableArray *commentDetails;

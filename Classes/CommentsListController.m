@@ -26,6 +26,8 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
 		// Initialization code
+		editMode = NO;
+		changeEditMode = NO;
 	}
 	return self;
 }
@@ -40,11 +42,16 @@
 	
 	WPLog(@"PostsList:viewWillAppear");
 	
+	editMode = NO;
+	changeEditMode = YES;
+
 	BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
 	[sharedDataManager loadCommentTitlesForCurrentBlog];
 	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
 	[commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:NO];
 	[commentsTableView reloadData];
+
+	[editToolbar setHidden:YES];
 
 	BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
 	NSArray *commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
@@ -77,10 +84,10 @@
 	// method "reachabilityChanged" will be called. 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];	
 	
-//	UIBarButtonItem *editButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered 
-//												target:self action:@selector(editComments:)];
-//	self.navigationItem.rightBarButtonItem = editButtonItem;
-//	[editButtonItem release];
+	UIBarButtonItem *editButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered 
+												target:self action:@selector(editComments:)];
+	self.navigationItem.rightBarButtonItem = editButtonItem;
+	[editButtonItem release];
 
 	
 }
@@ -95,7 +102,10 @@
 }
 
 - (void) editComments :(id)sender {
-	
+	changeEditMode=YES;
+	[editToolbar setHidden:editMode];
+	editMode = !editMode;
+	[commentsTableView reloadData];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -243,6 +253,18 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 #define LABEL_HEIGHT 18.0f
 #define DATE_LABEL_HEIGHT 13.0f
 #define VERTICAL_OFFSET	4.0f
+
+	int buttonOffset = 0;
+	if ( editMode == YES ) {
+		rect = CGRectMake(LEFT_OFFSET,15, 30, COMMENTS_TABLE_ROW_HEIGHT-30);
+		UIButton *but = [[UIButton alloc] initWithFrame:rect]; 
+		[but setImage:[UIImage imageNamed:@"uncheck.png"] forState:UIControlStateNormal];
+		[but setTag:NO];
+		[but addTarget:self action:@selector(commentSelected:) forControlEvents:UIControlEventTouchUpInside];
+		[cell.contentView addSubview:but];
+		[but release];
+		buttonOffset = 35;
+	}
 	
 	
 	/*
@@ -250,18 +272,17 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	 */
 	UILabel *label;
 	
-	rect = CGRectMake(LEFT_OFFSET, (COMMENTS_TABLE_ROW_HEIGHT - LABEL_HEIGHT - DATE_LABEL_HEIGHT - VERTICAL_OFFSET ) / 2.0, 288, LABEL_HEIGHT);
+	rect = CGRectMake(LEFT_OFFSET+buttonOffset, (COMMENTS_TABLE_ROW_HEIGHT - LABEL_HEIGHT - DATE_LABEL_HEIGHT - VERTICAL_OFFSET ) / 2.0, 288-buttonOffset, LABEL_HEIGHT);
 	
 	label = [[UILabel alloc] initWithFrame:rect];
 	label.tag = COMMENT_NAME_TAG;
 	label.font = [UIFont boldSystemFontOfSize:MAIN_FONT_SIZE];
-	//	label.adjustsFontSizeToFitWidth = YES;
 	[cell.contentView addSubview:label];
 	label.highlightedTextColor = [UIColor whiteColor];
 	[label release];
 	
 	
-	rect = CGRectMake(LEFT_OFFSET, rect.origin.y+ LABEL_HEIGHT + VERTICAL_OFFSET , rect.size.width, DATE_LABEL_HEIGHT);
+	rect = CGRectMake(LEFT_OFFSET+buttonOffset, rect.origin.y+ LABEL_HEIGHT + VERTICAL_OFFSET , rect.size.width, DATE_LABEL_HEIGHT);
 	
 	label = [[UILabel alloc] initWithFrame:rect];
 	label.tag = COMMENT_POST_NAME_AND_DATE_TAG;
@@ -273,6 +294,24 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	
 	
 	return cell;
+}
+
+-(void)commentSelected:(id)sender
+{
+    BOOL toggleTag = [sender tag];
+    if(toggleTag)
+    {
+        [sender setImage:[UIImage imageNamed:@"uncheck.png"] forState:UIControlStateNormal];  
+	[sender setTag:NO];
+        return;
+    }    
+    
+    if(!toggleTag)
+    {
+        [sender setImage:[UIImage imageNamed:@"check.png"] forState:UIControlStateNormal];  
+	[sender setTag:YES];
+        return;
+    }    
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	return 1;
@@ -288,56 +327,46 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 		
-	if (indexPath.section == 0) 
-	{
-//		
-//		cell.text = [NSString stringWithFormat:@"%@,%@,%@",author,post_title,date_created_gmt];
-//		
-//		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-//		//#define MAIN_FONT_SIZE 15.0f
-//		cell.font = [cell.font fontWithSize:15.0f];
-		static NSString *postsTableRowId = @"postsTableRowId";
-		
-		BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
-		
-		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:postsTableRowId];
-		if (cell == nil) {
-			cell = [self tableviewCellWithReuseIdentifier:postsTableRowId];
-			//[[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:postsTableRowId] autorelease];
-		}
-		
-		
-		
-		id currentComment = [sharedBlogDataManager commentTitleAtIndex:indexPath.row];
-		WPLog(@"currentComment at index (%d) is is (%@)",indexPath.row,currentComment);
-		
-		NSCharacterSet *whitespaceCS = [NSCharacterSet whitespaceCharacterSet];
-		
-		NSString *author = [[currentComment valueForKey:@"author"] stringByTrimmingCharactersInSet:whitespaceCS];
-		NSString *post_title = [[currentComment valueForKey:@"post_title"]stringByTrimmingCharactersInSet:whitespaceCS];
-		NSDate *date_created_gmt = [currentComment valueForKey:@"date_created_gmt"];
-		
-		UILabel *label = (UILabel *)[cell viewWithTag:COMMENT_NAME_TAG];
-		label.text = author;
-		
-		static NSDateFormatter *dateFormatter = nil;
-		if (dateFormatter == nil) {
-			dateFormatter = [[NSDateFormatter alloc] init];
-			[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-			[dateFormatter setDateStyle:NSDateFormatterLongStyle];
-		}
-		
-		label.textColor = ( connectionStatus ? [UIColor blackColor] : [UIColor grayColor] );
-		label = (UILabel *)[cell viewWithTag:COMMENT_POST_NAME_AND_DATE_TAG];
-		label.text = [NSString stringWithFormat:@"%@ , %@",post_title,[[dateFormatter stringFromDate:date_created_gmt] description]];
-		[label setLineBreakMode:UILineBreakModeTailTruncation];
-		label.textColor = ( connectionStatus ? [UIColor blackColor] : [UIColor grayColor] );
-		
-		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-		
-		return cell;
+	static NSString *postsTableRowId = @"postsTableRowId";
+	BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
+	
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:postsTableRowId];
+	if (cell == nil || changeEditMode) {
+		cell = [self tableviewCellWithReuseIdentifier:postsTableRowId];
+		//[[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:postsTableRowId] autorelease];
 	}
-	return nil;
+
+	
+	id currentComment = [sharedBlogDataManager commentTitleAtIndex:indexPath.row];
+	NSCharacterSet *whitespaceCS = [NSCharacterSet whitespaceCharacterSet];
+	NSString *author = [[currentComment valueForKey:@"author"] stringByTrimmingCharactersInSet:whitespaceCS];
+	NSString *post_title = [[currentComment valueForKey:@"post_title"]stringByTrimmingCharactersInSet:whitespaceCS];
+	NSDate *date_created_gmt = [currentComment valueForKey:@"date_created_gmt"];
+	
+	UILabel *label = (UILabel *)[cell viewWithTag:COMMENT_NAME_TAG];
+	label.text = author;
+	
+	static NSDateFormatter *dateFormatter = nil;
+	if (dateFormatter == nil) {
+		dateFormatter = [[NSDateFormatter alloc] init];
+		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+		[dateFormatter setDateStyle:NSDateFormatterLongStyle];
+	}
+	
+	label.textColor = ( connectionStatus ? [UIColor blackColor] : [UIColor grayColor] );
+	label = (UILabel *)[cell viewWithTag:COMMENT_POST_NAME_AND_DATE_TAG];
+	label.text = [NSString stringWithFormat:@"%@ , %@",post_title,[[dateFormatter stringFromDate:date_created_gmt] description]];
+	[label setLineBreakMode:UILineBreakModeTailTruncation];
+	label.textColor = ( connectionStatus ? [UIColor blackColor] : [UIColor grayColor] );
+	
+	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	
+	if ( indexPath.row == [[BlogDataManager sharedDataManager] countOfCommentTitles]-1 ) {
+		changeEditMode = NO;
+	}	
+
+	return cell;
+
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
