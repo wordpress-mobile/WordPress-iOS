@@ -1,11 +1,11 @@
 #import "PostDetailEditController.h"
 #import "BlogDataManager.h"
-
+#import "WPSegmentedSelectionTableViewController.h"
 NSTimeInterval kAnimationDuration = 0.3f;
 
 @implementation PostDetailEditController
 
-@synthesize postDetailViewController, selectionTableViewController;
+@synthesize postDetailViewController, selectionTableViewController,segmentedTableViewController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -16,8 +16,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)refreshUIForCompose
 {
-//	textView.alpha = 0.3f;
-//	textView.text = @"Tap here to begin writing";
+	//	textView.alpha = 0.3f;
+	//	textView.text = @"Tap here to begin writing";
 	titleTextField.text = @"";
 	tagsTextField.text = @"";
 	textView.text = @"";
@@ -39,16 +39,16 @@ NSTimeInterval kAnimationDuration = 0.3f;
 {
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	NSString *description = [dm.currentPost valueForKey:@"description"];
-
+	
 	if (!description || [description length] == 0 ) {
 		textViewPlaceHolderField.hidden = NO;
 		textView.text = @"";
-//		textView.alpha = 0.3f;
-//		textView.text = @"Tap here to begin writing";
+		//		textView.alpha = 0.3f;
+		//		textView.text = @"Tap here to begin writing";
 	}
 	else {
 		textViewPlaceHolderField.hidden = YES;
-//		textView.alpha = 1.0f;
+		//		textView.alpha = 1.0f;
 		textView.text = description;
 	}
 	
@@ -58,7 +58,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	NSString *status = [dm statusDescriptionForStatus:[dm.currentPost valueForKey:@"post_status"] fromBlog:dm.currentBlog];
 	status = ( status == nil ? @"" : status );
 	statusTextField.text = status ;
-
+	
 	
 	NSArray *cats = [[dm currentPost] valueForKey:@"categories"];
 	if( status )
@@ -66,7 +66,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	else 
 		categoriesTextField.text = @"";
 }
-
 
 
 - (void)populateSelectionsControllerWithCategories
@@ -94,6 +93,96 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	selectionTableViewController.navigationItem.rightBarButtonItem = newCategoryBarButtonItem;
 	WPLog(@"selectionTableViewController navigationItem %@", selectionTableViewController.navigationItem);
 	[postDetailViewController.navigationController pushViewController:selectionTableViewController animated:YES];	
+}
+
+- (void)populateSelectionsControllerWithCategories1
+{
+	if (selectionTableViewController == nil)
+		selectionTableViewController = [[WPSelectionTableViewController alloc] initWithNibName:@"WPSelectionTableViewController" bundle:nil];
+	
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	
+	NSArray *cats = [[dm currentBlog] valueForKey:@"categories"];
+	//    WPLog(@"All Categories.....%@",cats);
+    //added by me 
+    NSMutableArray *parentIds = [[NSMutableArray alloc] initWithCapacity:[cats count]];
+    int i,j;
+    for(i=0;i<[cats count];i++)
+    {
+        WPLog(@"Parent categories Categories..... %@",[[cats objectAtIndex:i] objectForKey:@"parentId"]);
+        int parent = [[[cats objectAtIndex:i] valueForKey:@"parentId"] intValue];
+        
+        if(parent == 0)
+        {
+            [parentIds addObject:[cats objectAtIndex:i]]; 
+        }
+    }
+    
+    NSMutableArray *childIds = [[NSMutableArray alloc] init];
+    for(i=0;i<[parentIds count];i++)
+    {
+        NSMutableArray *tempArray = [[NSMutableArray alloc] init];
+        [tempArray addObject:[parentIds objectAtIndex:i]];
+        for(j=0;j<[cats count];j++)
+        {
+            WPLog(@"Parent Id  %@",[[parentIds objectAtIndex:i] objectForKey:@"categoryId"]);
+			
+            int parent = [[[parentIds objectAtIndex:i] objectForKey:@"categoryId"] intValue];
+            int child = [[[cats objectAtIndex:j] valueForKey:@"parentId"] intValue];
+            if(parent == child)
+            {
+                WPLog(@"Category ID  %@",[cats objectAtIndex:j]);
+                [tempArray addObject:[cats objectAtIndex:j]];
+            }
+        }
+        [childIds addObject:tempArray];
+        [tempArray release];
+    }
+    WPLog(@"The Arrays of categories %@",childIds);
+    
+    
+    //ended my comments    
+    NSArray *dataSource = [cats valueForKey:@"categoryName"];
+   	//WPLog(@"categoryName..... %@",dataSource);
+	dataSource = [dm uniqueArray:dataSource];
+	
+	NSArray *selObject = [[dm currentPost] valueForKey:@"categories"];
+	if( selObject == nil )
+		selObject = [NSArray array];
+	
+    WPSegmentedSelectionTableViewController *segmentedControl = [[WPSegmentedSelectionTableViewController alloc] 
+																 initWithNibName:@"WPSelectionTableViewController" bundle:nil];
+    [segmentedControl populateDataSource:childIds
+						   havingContext:kSelectionsCategoriesContext
+						 selectedObjects:selObject
+						   selectionType:kCheckbox
+							 andDelegate:self];
+	/*
+	 [segmentedControl populateDataSource:dataSource
+	 havingContext:kSelectionsCategoriesContext
+	 selectedObjects:selObject
+	 selectionType:kCheckbox
+	 andDelegate:self];
+	 */
+	
+    segmentedControl.title = @"Categories";
+	segmentedControl.navigationItem.rightBarButtonItem = newCategoryBarButtonItem;
+	WPLog(@"selectionTableViewController navigationItem %@", selectionTableViewController.navigationItem);
+	[postDetailViewController.navigationController pushViewController:segmentedControl animated:YES];
+    [segmentedControl release];
+	
+	/*
+	 [segmentedTableViewController populateDataSource:dataSource
+	 havingContext:kSelectionsCategoriesContext
+	 selectedObjects:selObject
+	 selectionType:kCheckbox
+	 andDelegate:self];
+	 
+	 segmentedTableViewController.title = @"Categories";
+	 segmentedTableViewController.navigationItem.rightBarButtonItem = newCategoryBarButtonItem;
+	 WPLog(@"selectionTableViewController navigationItem %@", segmentedTableViewController.navigationItem);
+	 [postDetailViewController.navigationController pushViewController:segmentedTableViewController animated:YES];	
+	 */
 }
 
 - (void)populateSelectionsControllerWithStatuses
@@ -228,7 +317,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	statusLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
 	titleLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
 	tagsLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
-
+	
 	titleTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 	tagsTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 	[contentView bringSubviewToFront:textView];
@@ -237,8 +326,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)bringTextViewUp
 {
-//	if( subView.hidden )
-//		return;
+	//	if( subView.hidden )
+	//		return;
 	
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:kAnimationDuration];
@@ -246,7 +335,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	CGRect frame = textViewContentView.frame;
 	frame.origin.y -= 165.0f;
 	textViewContentView.frame = frame;
-//	subView.hidden = YES;
+	//	subView.hidden = YES;
 	
 	frame = subView.frame;
 	frame.origin.y -= 165.0f;
@@ -259,12 +348,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)bringTextViewDown
 {
-//	if( subView.hidden )
+	//	if( subView.hidden )
 	{
 		[UIView beginAnimations:nil context:NULL];
 		[UIView setAnimationDuration:0.2];
 		subView.hidden = NO;
-
+		
 		CGRect frame = textViewContentView.frame;
 		frame.origin.y += 165.0f;
 		textViewContentView.frame = frame;	
@@ -294,21 +383,21 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		isTextViewEditing = YES;
 		
 		[self updateTextViewPlacehoderFieldStatus];
-
-//		if ([aTextView.text isEqualToString:@"Tap here to begin writing"]) {
-////			textView.alpha = 1.0f;
-////			aTextView.text = @"";
-//		}
-//		else if ([aTextView.text isEqualToString:@""]) {
-//			textView.alpha = 0.3f;
-//			aTextView.text = @"Tap here to begin writing";
-//		}
-
+		
+		//		if ([aTextView.text isEqualToString:@"Tap here to begin writing"]) {
+		////			textView.alpha = 1.0f;
+		////			aTextView.text = @"";
+		//		}
+		//		else if ([aTextView.text isEqualToString:@""]) {
+		//			textView.alpha = 0.3f;
+		//			aTextView.text = @"Tap here to begin writing";
+		//		}
+		
 		postDetailViewController.navigationItem.leftBarButtonItem.style = UIBarButtonItemStyleDone;
 		postDetailViewController.navigationItem.leftBarButtonItem.title = @"Done";
 		postDetailViewController.navigationItem.leftBarButtonItem.target = self;
 		postDetailViewController.navigationItem.leftBarButtonItem.action = @selector(endTextEnteringButtonAction:);
-
+		
 		[self bringTextViewUp];
 	}
 }
@@ -320,21 +409,21 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		
 		[self updateTextViewPlacehoderFieldStatus];
 		
-//		if ([aTextView.text isEqualToString:@"Tap here to begin writing"]) {
-//			textView.alpha = 1.0f;
-//			aTextView.text = @"";
-//		}
-//		else if ([aTextView.text isEqualToString:@""]) {
-//			textView.alpha = 0.3f;
-//			aTextView.text = @"Tap here to begin writing";
-//		}
-
-
+		//		if ([aTextView.text isEqualToString:@"Tap here to begin writing"]) {
+		//			textView.alpha = 1.0f;
+		//			aTextView.text = @"";
+		//		}
+		//		else if ([aTextView.text isEqualToString:@""]) {
+		//			textView.alpha = 0.3f;
+		//			aTextView.text = @"Tap here to begin writing";
+		//		}
+		
+		
 		postDetailViewController.navigationItem.leftBarButtonItem.style = UIBarButtonItemStyleDone;
 		postDetailViewController.navigationItem.leftBarButtonItem.title = @"Done";
 		postDetailViewController.navigationItem.leftBarButtonItem.target = self;
 		postDetailViewController.navigationItem.leftBarButtonItem.action = @selector(endTextEnteringButtonAction:);
-
+		
 		[self bringTextViewUp];
 	}
 }
@@ -358,20 +447,20 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			postDetailViewController.navigationItem.leftBarButtonItem.title = @"Cancel";
 		else
 			postDetailViewController.navigationItem.leftBarButtonItem.title = @"Posts";
-			
+		
 		postDetailViewController.navigationItem.leftBarButtonItem.style = UIBarButtonItemStyleBordered;
 		
 		[self updateTextViewPlacehoderFieldStatus];
 		NSString *text = aTextView.text;
-//		NSString *text = @"";
-//		if ([aTextView.text isEqualToString:@"Tap here to begin writing"]) {
-//			textView.alpha = 1.0f;
-//			aTextView.text = text;
-//		} else if ([textView.text isEqualToString:text]) {
-//			textView.alpha = 0.3f;
-//			textView.text = @"Tap here to begin writing";
-//		} else
-//			text = aTextView.text;
+		//		NSString *text = @"";
+		//		if ([aTextView.text isEqualToString:@"Tap here to begin writing"]) {
+		//			textView.alpha = 1.0f;
+		//			aTextView.text = text;
+		//		} else if ([textView.text isEqualToString:text]) {
+		//			textView.alpha = 0.3f;
+		//			textView.text = @"Tap here to begin writing";
+		//		} else
+		//			text = aTextView.text;
 		
 		[[[BlogDataManager sharedDataManager] currentPost] setObject:text forKey:@"description"];		
 	}
@@ -379,12 +468,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-//	if ([textView.text isEqualToString:@""]) {
-//		textView.alpha = 0.3f;
-//		textView.text = @"Tap here to begin writing";
-//	}
+	//	if ([textView.text isEqualToString:@""]) {
+	//		textView.alpha = 0.3f;
+	//		textView.text = @"Tap here to begin writing";
+	//	}
 	[self updateTextViewPlacehoderFieldStatus];
-
+	
 	if (postDetailViewController.navigationItem.leftBarButtonItem.style == UIBarButtonItemStyleDone) {
 		[self textViewDidEndEditing:textView];
 	}
@@ -435,22 +524,22 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	// open a dialog with two custom buttons
 	UIActionSheet *actionSheet;
 	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-	
+		
 		actionSheet = [[UIActionSheet alloc] 
-								  initWithTitle:@""
-								  delegate:self 
-								  cancelButtonTitle:@"Cancel" 
-								  destructiveButtonTitle:nil
-								otherButtonTitles:@"Add Photo from Library", @"Take Photo with Camera", nil];
+					   initWithTitle:@""
+					   delegate:self 
+					   cancelButtonTitle:@"Cancel" 
+					   destructiveButtonTitle:nil
+					   otherButtonTitles:@"Add Photo from Library", @"Take Photo with Camera", nil];
 	} else {
-	
+		
 		actionSheet = [[UIActionSheet alloc] 
-									  initWithTitle:@""
-									  delegate:self 
-									  cancelButtonTitle:@"Cancel" 
-									  destructiveButtonTitle:nil
-									  otherButtonTitles:@"Add Photo from Library", nil];
-	
+					   initWithTitle:@""
+					   delegate:self 
+					   cancelButtonTitle:@"Cancel" 
+					   destructiveButtonTitle:nil
+					   otherButtonTitles:@"Add Photo from Library", nil];
+		
 	}
 	
 	
@@ -514,8 +603,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 
 - (void)imagePickerController:(UIImagePickerController *)picker
-				didFinishPickingImage:(UIImage *)image
-									editingInfo:(NSDictionary *)editingInfo
+		didFinishPickingImage:(UIImage *)image
+				  editingInfo:(NSDictionary *)editingInfo
 {
 	currentChoosenImage = [image retain];
 	isShowPhotoPickerActionSheet = NO;
@@ -537,16 +626,16 @@ NSTimeInterval kAnimationDuration = 0.3f;
 {
 	
 	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-//	NSString *url = [dataManager pictureURLBySendingToServer:theImage];
-//	if( !url )
-//		return;
+	//	NSString *url = [dataManager pictureURLBySendingToServer:theImage];
+	//	if( !url )
+	//		return;
 	
-//	NSString *curText = textView.text;
-//	curText = ( curText == nil ? @"" : curText );
-//	textView.text = [curText stringByAppendingString:[NSString stringWithFormat:@"<img src=\"%@\"></img>",url]];
-//	[dataManager.currentPost setObject:textView.text forKey:@"description"];
+	//	NSString *curText = textView.text;
+	//	curText = ( curText == nil ? @"" : curText );
+	//	textView.text = [curText stringByAppendingString:[NSString stringWithFormat:@"<img src=\"%@\"></img>",url]];
+	//	[dataManager.currentPost setObject:textView.text forKey:@"description"];
 	postDetailViewController.hasChanges = YES;
-
+	
 	id currentPost = dataManager.currentPost;
 	if (![currentPost valueForKey:@"Photos"])
 		[currentPost setValue:[NSMutableArray array] forKey:@"Photos"];
@@ -566,17 +655,18 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)didReceiveMemoryWarning {
-		WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+	WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
 	// Release anything that's not essential, such as cached data
 	
-//	[pickerController release];
-//	pickerController = nil;
+	//	[pickerController release];
+	//	pickerController = nil;
 }
 
 
 - (void)dealloc 
 {	
+    [segmentedTableViewController release];
 	[selectionTableViewController release];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
 	[super dealloc];

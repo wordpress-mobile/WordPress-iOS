@@ -5,6 +5,8 @@
 #define kSelectionsStatusContext ((void*)1000)
 #define kSelectionsCategoriesContext ((void*)2000)
 
+@class WPSegmentedSelectionTableViewController;
+
 @interface PostDetailEditController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
 	IBOutlet UITextView *textView;
 	IBOutlet UITextField *titleTextField;
@@ -27,6 +29,7 @@
 	UIImagePickerController *pickerController;
 
 	WPSelectionTableViewController *selectionTableViewController;
+   	WPSegmentedSelectionTableViewController *segmentedTableViewController;
 	PostDetailViewController *postDetailViewController;
 
 	BOOL isShowPhotoPickerActionSheet;
@@ -35,6 +38,7 @@
 
 @property (nonatomic, assign)PostDetailViewController * postDetailViewController;
 @property (nonatomic, retain) WPSelectionTableViewController *selectionTableViewController;
+@property (nonatomic, retain) WPSegmentedSelectionTableViewController *segmentedTableViewController;
 
 - (void)refreshUIForCompose;
 - (void)refreshUIForCurrentPost;
