@@ -34,8 +34,8 @@
 
 /*
  Implement loadView if you want to create a view hierarchy programmatically
-- (void)loadView {
-}
+ - (void)loadView {
+ }
  */
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -44,15 +44,15 @@
 	
 	editMode = NO;
 	changeEditMode = YES;
-
+	
 	BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
 	[sharedDataManager loadCommentTitlesForCurrentBlog];
 	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
 	[commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:NO];
 	[commentsTableView reloadData];
-
+	
 	[editToolbar setHidden:YES];
-
+	
 	BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
 	NSArray *commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
 	int awaitingComments = 0;
@@ -69,7 +69,7 @@
 		commentStatusButton.title=@"";
 	else
 		commentStatusButton.title=[NSString stringWithFormat:@"%d awaiting moderation",awaitingComments];
-
+	
 	[super viewWillAppear:animated];
 }
 
@@ -77,21 +77,20 @@
 // If you need to do additional setup after loading the view, override viewDidLoad.
 - (void)viewDidLoad {
 	
-
+	
 	[super viewDidLoad];
 	[commentsTableView setDataSource:self];
 	// Observe the kNetworkReachabilityChangedNotification. When that notification is posted, the
 	// method "reachabilityChanged" will be called. 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];	
 	
-	UIBarButtonItem *editButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered 
-												target:self action:@selector(editComments:)];
+	editButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered 
+													 target:self action:@selector(editComments:)];
 	self.navigationItem.rightBarButtonItem = editButtonItem;
-	[editButtonItem release];
-
+	
 	
 }
- 
+
 - (void)reachabilityChanged
 {
 	
@@ -123,6 +122,7 @@
 
 - (void)dealloc {
 	
+    [editButtonItem release];
 	[commentsTableView release];
 	[syncPostsButton release];
 	[commentStatusButton release];
@@ -150,7 +150,7 @@
 		[[NSRunLoop currentRunLoop] runUntilDate:[[NSDate date] addTimeInterval:0.1]];
 	}
 	
-	self.navigationItem.rightBarButtonItem = nil;
+	self.navigationItem.rightBarButtonItem = editButtonItem;
 }
 
 - (IBAction)downloadRecentComments:(id)sender {
@@ -166,16 +166,16 @@
 		
 		return;
 	}
-
+	
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
+	
 	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
-
-
+	
+	
 	BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
 	[sharedBlogDataManager syncCommentsForCurrentBlog];
 	[sharedBlogDataManager loadCommentTitlesForCurrentBlog];
-
+	
 	NSArray *commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
 	int awaitingComments = 0;
 	
@@ -189,7 +189,7 @@
 		commentStatusButton.title=@"";
 	else
 		commentStatusButton.title=[NSString stringWithFormat:@"%d awaiting moderation",awaitingComments];
-
+	
 	
 	[self removeProgressIndicator];
 	
@@ -229,7 +229,7 @@
 #define COMMENT_POST_NAME_AND_DATE_TAG 200
 
 NSString *NSStringFromCGRect(CGRect rect ) {
-
+	
 	return [NSString stringWithFormat:@"x-%f,y-%f,width-%f,heigh-%f",rect.origin.x,rect.origin.y,rect.size.width,rect.size.height];
 }
 
@@ -253,7 +253,7 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 #define LABEL_HEIGHT 18.0f
 #define DATE_LABEL_HEIGHT 13.0f
 #define VERTICAL_OFFSET	4.0f
-
+	
 	int buttonOffset = 0;
 	if ( editMode == YES ) {
 		rect = CGRectMake(LEFT_OFFSET,15, 30, COMMENTS_TABLE_ROW_HEIGHT-30);
@@ -302,14 +302,14 @@ NSString *NSStringFromCGRect(CGRect rect ) {
     if(toggleTag)
     {
         [sender setImage:[UIImage imageNamed:@"uncheck.png"] forState:UIControlStateNormal];  
-	[sender setTag:NO];
+		[sender setTag:NO];
         return;
     }    
     
     if(!toggleTag)
     {
         [sender setImage:[UIImage imageNamed:@"check.png"] forState:UIControlStateNormal];  
-	[sender setTag:YES];
+		[sender setTag:YES];
         return;
     }    
 }
@@ -326,7 +326,7 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-		
+	
 	static NSString *postsTableRowId = @"postsTableRowId";
 	BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
 	
@@ -335,7 +335,7 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 		cell = [self tableviewCellWithReuseIdentifier:postsTableRowId];
 		//[[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:postsTableRowId] autorelease];
 	}
-
+	
 	
 	id currentComment = [sharedBlogDataManager commentTitleAtIndex:indexPath.row];
 	NSCharacterSet *whitespaceCS = [NSCharacterSet whitespaceCharacterSet];
@@ -361,12 +361,8 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
-	if ( indexPath.row == [[BlogDataManager sharedDataManager] countOfCommentTitles]-1 ) {
-		changeEditMode = NO;
-	}	
-
 	return cell;
-
+	
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -380,9 +376,9 @@ NSString *NSStringFromCGRect(CGRect rect ) {
     WPCommentsDetailViewController *commentsViewController = [[WPCommentsDetailViewController alloc] initWithNibName:@"WPCommentsDetailViewController" bundle:nil];
     [self.navigationController pushViewController:commentsViewController animated:YES];
     [commentsViewController fillCommentDetails:[[BlogDataManager sharedDataManager] commentTitles]
-				     atRow:indexPath.row];
+										 atRow:indexPath.row];
     [commentsViewController release];
-        
+	
 }
 
 

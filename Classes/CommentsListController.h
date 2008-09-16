@@ -16,7 +16,8 @@
 	IBOutlet UIBarButtonItem *syncPostsButton;
 	IBOutlet UIBarButtonItem *commentStatusButton;
 	
-         IBOutlet UIToolbar  *editToolbar;
+    IBOutlet UIToolbar  *editToolbar;
+	UIBarButtonItem *editButtonItem;
 
 	BOOL connectionStatus;
 	BOOL editMode;
