@@ -82,6 +82,7 @@
 		C50007E50E7A38A900F85224 /* Folder.png in Resources */ = {isa = PBXBuildFile; fileRef = C50007E40E7A38A900F85224 /* Folder.png */; };
 		C533CF350E6D3ADA000C3DE8 /* CommentsListController.m in Sources */ = {isa = PBXBuildFile; fileRef = C533CF340E6D3ADA000C3DE8 /* CommentsListController.m */; };
 		C533CF460E6D3E24000C3DE8 /* CommentsListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C533CF450E6D3E24000C3DE8 /* CommentsListController.xib */; };
+		C55A90D90E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C55A90D80E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m */; };
 		C59614CA0E6C547300E2FBF0 /* BlogMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C59614C90E6C547300E2FBF0 /* BlogMainViewController.m */; };
 		C59615350E6C5B0000E2FBF0 /* WPBlogMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C59615340E6C5B0000E2FBF0 /* WPBlogMainViewController.xib */; };
 		C59D3D4B0E6410D300AA591D /* NSString+XMLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */; };
@@ -203,6 +204,8 @@
 		C533CF330E6D3ADA000C3DE8 /* CommentsListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsListController.h; sourceTree = "<group>"; };
 		C533CF340E6D3ADA000C3DE8 /* CommentsListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsListController.m; sourceTree = "<group>"; };
 		C533CF450E6D3E24000C3DE8 /* CommentsListController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentsListController.xib; sourceTree = "<group>"; };
+		C55A90D70E8026C500E1C9B5 /* WPSegmentedSelectionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPSegmentedSelectionTableViewController.h; sourceTree = "<group>"; };
+		C55A90D80E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPSegmentedSelectionTableViewController.m; sourceTree = "<group>"; };
 		C59614C80E6C547300E2FBF0 /* BlogMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogMainViewController.h; sourceTree = "<group>"; };
 		C59614C90E6C547300E2FBF0 /* BlogMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogMainViewController.m; sourceTree = "<group>"; };
 		C59615340E6C5B0000E2FBF0 /* WPBlogMainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WPBlogMainViewController.xib; sourceTree = "<group>"; };
@@ -346,6 +349,8 @@
 				ACAC7BEA0E1F9E0C00AC7074 /* WPPublishOnEditController.m */,
 				A0E293EF0E21027E00C6919C /* WPAddCategoryViewController.h */,
 				A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */,
+				C55A90D70E8026C500E1C9B5 /* WPSegmentedSelectionTableViewController.h */,
+				C55A90D80E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m */,
 			);
 			name = Post;
 			sourceTree = "<group>";
@@ -643,6 +648,7 @@
 				C59614CA0E6C547300E2FBF0 /* BlogMainViewController.m in Sources */,
 				C533CF350E6D3ADA000C3DE8 /* CommentsListController.m in Sources */,
 				2A7F72010E70F8C900E48A1F /* WPCommentsDetailViewController.m in Sources */,
+				C55A90D90E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

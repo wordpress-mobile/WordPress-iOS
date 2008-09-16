@@ -45,6 +45,8 @@ Classes/WPPostSettingsController.h -text
 Classes/WPPostSettingsController.m -text
 Classes/WPPublishOnEditController.h -text
 Classes/WPPublishOnEditController.m -text
+Classes/WPSegmentedSelectionTableViewController.h -text
+Classes/WPSegmentedSelectionTableViewController.m -text
 Classes/WPSelectionTableViewController.h -text
 Classes/WPSelectionTableViewController.m -text
 Classes/WPXMLValidator.h -text
