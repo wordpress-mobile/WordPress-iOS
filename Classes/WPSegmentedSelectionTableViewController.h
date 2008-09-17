@@ -10,7 +10,8 @@
 #import "WPSelectionTableViewController.h"
 
 @interface WPSegmentedSelectionTableViewController : WPSelectionTableViewController {
-
+	
+    NSMutableArray *categoryNames;
 }
 
 @end
