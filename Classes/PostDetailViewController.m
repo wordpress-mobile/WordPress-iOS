@@ -24,7 +24,7 @@
 @synthesize postDetailEditController, postPreviewController, postSettingsController, postsListController, hasChanges, mode, tabController, photosListController, saveButton;
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-
+	
 	if( [viewController.title isEqualToString:@"Photos"])
 	{
 		[photosListController refreshData];
@@ -83,13 +83,13 @@
 		[self.navigationController popViewControllerAnimated:YES]; 
 		return;
 	}
-
+	
 	[postSettingsController endEditingAction:nil];
 	[postDetailEditController endEditingAction:nil];
-
+	
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
-											  delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Discard"
-									 otherButtonTitles:nil];		
+															 delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Discard"
+													otherButtonTitles:nil];		
 	actionSheet.tag = 201;
 	actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
 	[actionSheet showInView:self.view];
@@ -106,13 +106,13 @@
 	
 	[postSettingsController endEditingAction:nil];
 	[postDetailEditController endEditingAction:nil];
-
+	
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	
 	NSString *description = [dm.currentPost valueForKey:@"description"];
 	NSString *title = [dm.currentPost valueForKey:@"title"];
 	NSArray *photos = [dm.currentPost valueForKey:@"Photos"];
-
+	
 	
 	if ((!description || [description isEqualToString:@""]) &&
 		(!title || [title isEqualToString:@""]) && 
@@ -129,10 +129,8 @@
 		
 		[self _cancel];
 		return;
-
+		
 	}
-
-	
 	
 	
 	if( ![dm postDescriptionHasValidDescription:dm.currentPost] )
@@ -142,7 +140,7 @@
 	}
 	
 	NSString *postStatus = [dm.currentPost valueForKey:@"post_status"];
-
+	
 	if( [postStatus isEqual:@"Local Draft"] )
 		[self _saveAsDrft];
 	else 
@@ -151,7 +149,7 @@
 
 - (void)autoSaveCurrentPost:(NSTimer *)aTimer
 {
-//	WPLog(@"autoSaveCurrentPost %@", aTimer);
+	//	WPLog(@"autoSaveCurrentPost %@", aTimer);
 	
 	if( !hasChanges )
 	{
@@ -195,7 +193,7 @@
 	[tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
 	UIViewController *vc = [[tabController viewControllers] objectAtIndex:0];
 	self.title = vc.title;
-
+	
 	[postDetailEditController refreshUIForCompose];
 	[postSettingsController reloadData];
 	[photosListController refreshData];
@@ -206,7 +204,7 @@
 - (void)refreshUIForCurrentPost
 {
 	self.navigationItem.rightBarButtonItem = nil;
-
+	
 	[tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
 	UIViewController *vc = [[tabController viewControllers] objectAtIndex:0];
 	self.title = vc.title;
@@ -265,7 +263,7 @@
 	self.navigationItem.rightBarButtonItem = nil;
 	[self stopTimer];
 	[dm removeAutoSavedCurrentPostFile];
-
+	
 	//new post is saving as draft.
 	if( postIndex == -1 )
 	{
@@ -309,11 +307,11 @@
 		self.navigationItem.rightBarButtonItem = nil;
 		[self stopTimer];
 		[dm removeAutoSavedCurrentPostFile];
-
+		
 		NSString *statusDesc = [dm statusDescriptionForStatus:[aPost valueForKey:@"post_status"] fromBlog:aBlog];
-//		NSString *title = [aPost valueForKey:@"title"];
-//		title = ( title == nil ? @"" : title );
-
+		//		NSString *title = [aPost valueForKey:@"title"];
+		//		title = ( title == nil ? @"" : title );
+		
 		NSString *msg = [NSString stringWithFormat:@"Post was saved to \"%@\" with status \"%@\"", [dm.currentBlog valueForKey:@"blogName"], statusDesc];
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Post Saved"
 														message:msg
@@ -348,13 +346,13 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-//	if( buttonIndex == 0 )
-//	{
-//		[self refreshUIForCurrentPost];
-//		tabController.selectedViewController = postPreviewController;
-//	}
-//	else
-		[self _discard];
+	//	if( buttonIndex == 0 )
+	//	{
+	//		[self refreshUIForCurrentPost];
+	//		tabController.selectedViewController = postPreviewController;
+	//	}
+	//	else
+	[self _discard];
 }
 
 - (void)setHasChanges:(BOOL)aFlag
@@ -381,7 +379,7 @@
 	[super viewDidLoad];
 	
 	
-
+	
 	UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] init];
 	cancelButton.title = @"Posts";
 	cancelButton.target = self;
@@ -396,11 +394,11 @@
 		saveButton.style = UIBarButtonItemStyleDone;
 		saveButton.action = @selector(saveAction:);
 	} 
-
+	
 	// Icons designed by, and included with permission of, IconBuffet | iconbuffet.com
 	
 	NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:5];
-
+	
 	if (postDetailEditController == nil) {
 		postDetailEditController = [[PostDetailEditController alloc] initWithNibName:@"PostDetailEditController" bundle:nil];
 	}
@@ -417,7 +415,7 @@
 	photosListController.postDetailViewController = self;
 	[array addObject:photosListController];
 	
-
+	
 	if (postPreviewController == nil) {
 		postPreviewController = [[WPPostDetailPreviewController alloc] initWithNibName:@"WPPostDetailPreviewController" bundle:nil];
 	}
@@ -425,10 +423,10 @@
 	postPreviewController.tabBarItem.image = [UIImage imageNamed:@"preview.png"];
 	postPreviewController.postDetailViewController = self;
 	[array addObject:postPreviewController];
-
+	
 	
 	if(postSettingsController == nil) {
-	 postSettingsController = [[WPPostSettingsController alloc] initWithNibName:@"WPPostSettingsController" bundle:nil];	
+		postSettingsController = [[WPPostSettingsController alloc] initWithNibName:@"WPPostSettingsController" bundle:nil];	
 	}
 	postSettingsController.title = @"Settings";
 	postSettingsController.tabBarItem.image = [UIImage imageNamed:@"settings.png"];
@@ -451,7 +449,7 @@
 	tabController.selectedIndex = 3;
 	tabController.selectedIndex = 0;
 	tabController.delegate = self;
-
+	
 	[array release];
 }
 
@@ -488,7 +486,7 @@
 		[self refreshUIForCurrentPost];
 		self.hasChanges = YES;
 	}
-
+	
 	mode = 3;
 }
 
@@ -507,7 +505,7 @@
 }
 
 - (void)didReceiveMemoryWarning {
-		WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+	WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[super didReceiveMemoryWarning];
 }
 
@@ -515,13 +513,13 @@
 {
     if(tabController.selectedIndex == 0) // Only for Write Screen
     {
-       WPLog(@"shouldAutorotateToInterfaceOrientation : Auto rotation is called..");
+		WPLog(@"shouldAutorotateToInterfaceOrientation : Auto rotation is called..");
         return (interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight ||
                 interfaceOrientation == UIInterfaceOrientationPortrait);
-    
+		
     }
     return NO;
 }
-	
+
 @end
 

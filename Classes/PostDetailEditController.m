@@ -67,43 +67,43 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		categoriesTextField.text = @"";
 }
 
+/*
+ - (void)populateSelectionsControllerWithCategories
+ {
+ if (selectionTableViewController == nil)
+ selectionTableViewController = [[WPSelectionTableViewController alloc] initWithNibName:@"WPSelectionTableViewController" bundle:nil];
+ 
+ BlogDataManager *dm = [BlogDataManager sharedDataManager];
+ 
+ NSArray *cats = [[dm currentBlog] valueForKey:@"categories"];
+ 
+ NSArray *dataSource = [cats valueForKey:@"categoryName"];
+ dataSource = [dm uniqueArray:dataSource];
+ 
+ NSArray *selObject = [[dm currentPost] valueForKey:@"categories"];
+ if( selObject == nil )
+ selObject = [NSArray array];
+ 
+ [selectionTableViewController populateDataSource:dataSource
+ havingContext:kSelectionsCategoriesContext
+ selectedObjects:selObject
+ selectionType:kCheckbox
+ andDelegate:self];
+ selectionTableViewController.title = @"Categories";
+ selectionTableViewController.navigationItem.rightBarButtonItem = newCategoryBarButtonItem;
+ WPLog(@"selectionTableViewController navigationItem %@", selectionTableViewController.navigationItem);
+ [postDetailViewController.navigationController pushViewController:selectionTableViewController animated:YES];	
+ }
+ */
 
 - (void)populateSelectionsControllerWithCategories
 {
-	if (selectionTableViewController == nil)
-		selectionTableViewController = [[WPSelectionTableViewController alloc] initWithNibName:@"WPSelectionTableViewController" bundle:nil];
-	
+	if (segmentedTableViewController == nil)
+		segmentedTableViewController = [[WPSegmentedSelectionTableViewController alloc] initWithNibName:@"WPSelectionTableViewController" bundle:nil];
+    
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	
 	NSArray *cats = [[dm currentBlog] valueForKey:@"categories"];
-	
-	NSArray *dataSource = [cats valueForKey:@"categoryName"];
-	dataSource = [dm uniqueArray:dataSource];
-	
-	NSArray *selObject = [[dm currentPost] valueForKey:@"categories"];
-	if( selObject == nil )
-		selObject = [NSArray array];
-	
-	[selectionTableViewController populateDataSource:dataSource
-									   havingContext:kSelectionsCategoriesContext
-									 selectedObjects:selObject
-									   selectionType:kCheckbox
-										 andDelegate:self];
-	selectionTableViewController.title = @"Categories";
-	selectionTableViewController.navigationItem.rightBarButtonItem = newCategoryBarButtonItem;
-	WPLog(@"selectionTableViewController navigationItem %@", selectionTableViewController.navigationItem);
-	[postDetailViewController.navigationController pushViewController:selectionTableViewController animated:YES];	
-}
-
-- (void)populateSelectionsControllerWithCategories1
-{
-	if (selectionTableViewController == nil)
-		selectionTableViewController = [[WPSelectionTableViewController alloc] initWithNibName:@"WPSelectionTableViewController" bundle:nil];
-	
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	
-	NSArray *cats = [[dm currentBlog] valueForKey:@"categories"];
-	//    WPLog(@"All Categories.....%@",cats);
+    
     //added by me 
     NSMutableArray *parentIds = [[NSMutableArray alloc] initWithCapacity:[cats count]];
     int i,j;
@@ -125,64 +125,42 @@ NSTimeInterval kAnimationDuration = 0.3f;
         [tempArray addObject:[parentIds objectAtIndex:i]];
         for(j=0;j<[cats count];j++)
         {
-            WPLog(@"Parent Id  %@",[[parentIds objectAtIndex:i] objectForKey:@"categoryId"]);
+			//            WPLog(@"Parent Id  %@",[[parentIds objectAtIndex:i] objectForKey:@"categoryId"]);
 			
             int parent = [[[parentIds objectAtIndex:i] objectForKey:@"categoryId"] intValue];
             int child = [[[cats objectAtIndex:j] valueForKey:@"parentId"] intValue];
             if(parent == child)
             {
-                WPLog(@"Category ID  %@",[cats objectAtIndex:j]);
+				//                WPLog(@"Category ID  %@",[cats objectAtIndex:j]);
                 [tempArray addObject:[cats objectAtIndex:j]];
             }
         }
         [childIds addObject:tempArray];
         [tempArray release];
     }
-    WPLog(@"The Arrays of categories %@",childIds);
-    
-    
+	
+	//     WPLog(@"The Arrays of categories %@",childIds);
+	
     //ended my comments    
     NSArray *dataSource = [cats valueForKey:@"categoryName"];
    	//WPLog(@"categoryName..... %@",dataSource);
 	dataSource = [dm uniqueArray:dataSource];
-	
 	NSArray *selObject = [[dm currentPost] valueForKey:@"categories"];
-	if( selObject == nil )
+	//	WPLog(@"  Selected Idexes.....  %@",selObject);
+    
+    if( selObject == nil )
 		selObject = [NSArray array];
 	
-    WPSegmentedSelectionTableViewController *segmentedControl = [[WPSegmentedSelectionTableViewController alloc] 
-																 initWithNibName:@"WPSelectionTableViewController" bundle:nil];
-    [segmentedControl populateDataSource:childIds
-						   havingContext:kSelectionsCategoriesContext
-						 selectedObjects:selObject
-						   selectionType:kCheckbox
-							 andDelegate:self];
-	/*
-	 [segmentedControl populateDataSource:dataSource
-	 havingContext:kSelectionsCategoriesContext
-	 selectedObjects:selObject
-	 selectionType:kCheckbox
-	 andDelegate:self];
-	 */
+    [segmentedTableViewController populateDataSource:childIds    //datasorce
+									   havingContext:kSelectionsCategoriesContext
+									 selectedObjects:selObject
+									   selectionType:kCheckbox
+										 andDelegate:self];
 	
-    segmentedControl.title = @"Categories";
-	segmentedControl.navigationItem.rightBarButtonItem = newCategoryBarButtonItem;
-	WPLog(@"selectionTableViewController navigationItem %@", selectionTableViewController.navigationItem);
-	[postDetailViewController.navigationController pushViewController:segmentedControl animated:YES];
-    [segmentedControl release];
-	
-	/*
-	 [segmentedTableViewController populateDataSource:dataSource
-	 havingContext:kSelectionsCategoriesContext
-	 selectedObjects:selObject
-	 selectionType:kCheckbox
-	 andDelegate:self];
-	 
-	 segmentedTableViewController.title = @"Categories";
-	 segmentedTableViewController.navigationItem.rightBarButtonItem = newCategoryBarButtonItem;
-	 WPLog(@"selectionTableViewController navigationItem %@", segmentedTableViewController.navigationItem);
-	 [postDetailViewController.navigationController pushViewController:segmentedTableViewController animated:YES];	
-	 */
+    segmentedTableViewController.title = @"Categories";
+	segmentedTableViewController.navigationItem.rightBarButtonItem = newCategoryBarButtonItem;
+	WPLog(@"selectionTableViewController navigationItem %@", segmentedTableViewController.navigationItem);
+	[postDetailViewController.navigationController pushViewController:segmentedTableViewController animated:YES];
 }
 
 - (void)populateSelectionsControllerWithStatuses
@@ -193,8 +171,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	NSDictionary *postStatusList = [[dm currentBlog] valueForKey:@"postStatusList"];
 	
-	NSArray *dataSource = [postStatusList allValues] ;
-	
+    WPLog(@"postStatusList :  --- %@",postStatusList);
+    NSArray *dataSource = [postStatusList allValues] ;
+	WPLog(@"dataSource :  --- %@",dataSource);
+    
 	if( dm.isLocaDraftsCurrent || dm.currentPostIndex == -1 )
 		dataSource = [dataSource arrayByAddingObject:@"Local Draft"];
 	
@@ -246,7 +226,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)newCategoryCreatedNotificationReceived:(NSNotification *)notification
 {
-	if( [selectionTableViewController curContext] == kSelectionsCategoriesContext )
+	if( [segmentedTableViewController curContext] == kSelectionsCategoriesContext )
 	{
 		[self populateSelectionsControllerWithCategories];
 	}
@@ -256,7 +236,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 {
 	WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithNibName:@"WPAddCategoryViewController" bundle:nil];
 	UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:addCategoryViewController];
-	[selectionTableViewController presentModalViewController:nc animated:YES];
+	[segmentedTableViewController presentModalViewController:nc animated:YES];
 	[nc release];
 	[addCategoryViewController release];
 }
