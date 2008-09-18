@@ -19,7 +19,7 @@
 - (void)dealloc {
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"BlogsRefreshNotification" object:nil];
-
+	
 	[blogMainViewController release];
 	[super dealloc];
 }
@@ -49,12 +49,12 @@
 	
 	BlogDetailModalViewController *blogDetailViewController = [[BlogDetailModalViewController alloc] initWithNibName:@"WPBlogDetailViewController" bundle:nil];
 	
-//	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:blogDetailViewController];
+	//	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:blogDetailViewController];
 	blogDetailViewController.isModal = YES;
 	blogDetailViewController.mode	= 0;
-
+	
 	[self.navigationController presentModalViewController:blogDetailViewController animated:YES];
-//	[navigationController release];
+	//	[navigationController release];
 	[blogDetailViewController refreshBlogCompose];
 	blogDetailViewController.removeBlogButton.hidden = YES;
 	[blogDetailViewController release];
@@ -81,7 +81,7 @@
 	if (section == 0)
 		return ([[BlogDataManager sharedDataManager] countOfBlogs]+1);
 	return 1;
-
+	
 }
 
 //- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -91,12 +91,12 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
 	UITableViewCell *cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero] autorelease];
-//	NSString *rootviewcell = @"rootviewcell";
-//	
-//	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rootviewcell];
-//	if (cell == nil) {
-//		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:rootviewcell] autorelease];
-//	}
+	//	NSString *rootviewcell = @"rootviewcell";
+	//	
+	//	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rootviewcell];
+	//	if (cell == nil) {
+	//		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:rootviewcell] autorelease];
+	//	}
 	
 	if (indexPath.section == 0) 
 	{
@@ -140,7 +140,7 @@
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
 	
-
+	
 	return cell;
 }
 
@@ -178,24 +178,26 @@
 			[Reachability sharedReachability].hostName = url;
 			if ( self.blogMainViewController == 0 )
 				self.blogMainViewController = [[BlogMainViewController alloc] initWithNibName:@"WPBlogMainViewController" bundle:nil];
-
-//			UIBarButtonItem *blogsButton = [[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStylePlain target:self action:@selector(cancel:)];
-//			blogMainViewController.navigationItem.leftBarButtonItem = blogsButton;
-//			blogMainViewController.navigationItem.title =[[dataManager currentBlog] valueForKey:@"blogName"];
-//			[blogsButton release];
+			
+			self.title=@"Blogs";
+			
+			//			UIBarButtonItem *blogsButton = [[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStylePlain target:self action:@selector(cancel:)];
+			//			blogMainViewController.navigationItem.leftBarButtonItem = blogsButton;
+			//			blogMainViewController.navigationItem.title =[[dataManager currentBlog] valueForKey:@"blogName"];
+			//			[blogsButton release];
 			[self.navigationController pushViewController:blogMainViewController animated:YES];
 			self.navigationController.navigationBarHidden = NO;
 		}
 		
 	}else {
-			AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutWordpress" bundle:nil];
-			[self.navigationController pushViewController:aboutViewController animated:YES];
-			self.title=@"Home";
-			[aboutViewController release];
-		}	
+		AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutWordpress" bundle:nil];
+		[self.navigationController pushViewController:aboutViewController animated:YES];
+		self.title=@"Home";
+		[aboutViewController release];
+	}	
 }
 
-		
+
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
 	
 	// Set current blog to blog at the index which was clicked
@@ -205,7 +207,7 @@
 	
 	
 	
-//	WPLog(@"current blog is : %@",[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blogName"]);
+	//	WPLog(@"current blog is : %@",[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blogName"]);
 	
 	
 	BlogDetailModalViewController *blogDetailViewController = [[BlogDetailModalViewController alloc] initWithNibName:@"WPBlogDetailViewController" bundle:nil];
@@ -213,10 +215,10 @@
 	blogDetailViewController.removeBlogButton.hidden = NO;
 	blogDetailViewController.isModal = NO;
 	blogDetailViewController.mode	= 1;
-
+	
 	[[self navigationController] pushViewController:blogDetailViewController animated:YES];
 	[blogDetailViewController release];
-
+	
 	[blogDetailViewController refreshBlogEdit];
 }
 
@@ -265,7 +267,7 @@
 	WPLog(@"Root:viewWillAppear");
 	
 	self.navigationController.navigationBarHidden= YES;
-
+	
 	// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
 	NSIndexPath *tableSelection = [blogsTableView indexPathForSelectedRow];
 	[blogsTableView deselectRowAtIndexPath:tableSelection animated:NO];
@@ -296,7 +298,7 @@
 }
 
 - (void)didReceiveMemoryWarning {
-		WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+	WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
 	// Release anything that's not essential, such as cached data
 }

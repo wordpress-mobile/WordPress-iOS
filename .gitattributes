@@ -35,6 +35,8 @@ Classes/WPCategoriesController.h -text
 Classes/WPCategoriesController.m -text
 Classes/WPCommentsDetailViewController.h -text
 Classes/WPCommentsDetailViewController.m -text
+Classes/WPNavigationLeftButtonView.h -text
+Classes/WPNavigationLeftButtonView.m -text
 Classes/WPPhotoViewController.h -text
 Classes/WPPhotoViewController.m -text
 Classes/WPPhotosListViewController.h -text
@@ -103,6 +105,7 @@ WordPress.xcodeproj/project.pbxproj -text
 /aboutscreenfooter.png -text
 /aboutscreenlogo.png -text
 /application-icon.png -text
+/backNav.png -text
 /check.png -text
 /defaultPostTemplate.html -text
 /defaultPostTemplate_old.html -text
