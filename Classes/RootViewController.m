@@ -214,11 +214,9 @@
 	blogDetailViewController.isModal = NO;
 	blogDetailViewController.mode	= 1;
 
-	UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:blogDetailViewController];
-
-	[[self navigationController] pushViewController:nc animated:YES];
+	[[self navigationController] pushViewController:blogDetailViewController animated:YES];
 	[blogDetailViewController release];
-	[nc release];
+
 	[blogDetailViewController refreshBlogEdit];
 }
 
