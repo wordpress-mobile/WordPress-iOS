@@ -16,22 +16,6 @@
 @synthesize commentsTextView,commenterNameLabel,commentedOnLabel,commentedDateLabel;
 @synthesize commentDetails;
 
-/*
- // Override initWithNibName:bundle: to load the view using a nib file then perform additional customization that is not appropriate for viewDidLoad.
- - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
- if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
- // Custom initialization
- }
- return self;
- }
- */
-
-/*
- // Implement loadView to create a view hierarchy programmatically.
- - (void)loadView {
- }
- */
-
 - (void)viewWillAppear:(BOOL)animated {
 	
 	WPLog(@"PostsList:viewWillAppear");
@@ -72,7 +56,6 @@
 	
 	segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
 	self.navigationItem.rightBarButtonItem = segmentBarItem;
-	//    self.navigationItem.title = @"1 of 1";
 	
 	// Observe the kNetworkReachabilityChangedNotification. When that notification is posted, the
 	// method "reachabilityChanged" will be called. 
@@ -97,7 +80,6 @@
     WPLog(@" The count %d  and current index %d",[commentDetails count], currentIndex);
     if(currentIndex > -1)
 	{
-		//        int i = currentIndex;
         if((currentIndex >0) && [sender selectedSegmentIndex] == 0)
         {
             WPLog(@"WPLog :segmentAction Tag:%d",[sender selectedSegmentIndex]);
@@ -140,10 +122,9 @@
 
 -(void)fillCommentDetails:(NSArray*)comments atRow:(int)row
 {
-	
     currentIndex = row;
 	//    WPLog(@"I Am Here  %@ row %d",comments,row);
-    self.commentDetails = comments;
+    self.commentDetails =(NSMutableArray *)comments;
 	NSCharacterSet *whitespaceCS = [NSCharacterSet whitespaceCharacterSet];
 	NSString *author = [[[commentDetails objectAtIndex:row] valueForKey:@"author"] stringByTrimmingCharactersInSet:whitespaceCS];
 	NSString *post_title = [[[commentDetails objectAtIndex:row] valueForKey:@"post_title"]stringByTrimmingCharactersInSet:whitespaceCS];
@@ -152,8 +133,7 @@
 	NSString *commentStatus = [[commentDetails objectAtIndex:row] valueForKey:@"status"];
 	
     static NSDateFormatter *dateFormatter = nil;
-	if (dateFormatter == nil) 
-    {
+	if (dateFormatter == nil){
         dateFormatter = [[NSDateFormatter alloc] init];
 		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 		[dateFormatter setDateStyle:NSDateFormatterLongStyle];
@@ -175,8 +155,6 @@
 		[approveAndUnapproveButtonBar setHidden:YES];
 		[deleteButtonBar setHidden:NO];
 	}
-	
-	//    self.navigationItem.title = @"1 of 1";
 	
 	// WPLog(@" The Values .....  %@ %@ %@ ",author,post_title,date_created_gmt);
 }
@@ -211,8 +189,8 @@
 {
 	//wait incase the other thread did not complete its work.
 	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
-	while (self.navigationItem.rightBarButtonItem == nil)
-	{
+	while (self.navigationItem.rightBarButtonItem == nil){
+		
 		[[NSRunLoop currentRunLoop] runUntilDate:[[NSDate date] addTimeInterval:0.1]];
 	}
 	
@@ -226,10 +204,10 @@
     WPLog(@"The Alet name %d",[alertView tag]);
 	
 	//optimised code but need to comprimise at Alert messages.....Common message for all @"Operation is not supported now."
-	if ( buttonIndex == 0 ) 
-	{
-		if ( ![[Reachability sharedReachability] remoteHostStatus] != NotReachable ) 
-		{
+	if ( buttonIndex == 0 ) {
+		
+		if ( ![[Reachability sharedReachability] remoteHostStatus] != NotReachable ) {
+			
 			UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
 															 message:@"Operation is not supported now."
 															delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
@@ -240,23 +218,17 @@
 		
 		[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
 		BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
+
 		BOOL result;
-		if([alertView tag] == 1)
-		{
+		if([alertView tag] == 1){
 			result = [sharedDataManager deleteComment:[commentDetails objectAtIndex:currentIndex] forBlog:[sharedDataManager currentBlog]];
-		}
-		if([alertView tag] == 2)
-		{
+		} else if([alertView tag] == 2){
 			result = [sharedDataManager approveComment:[commentDetails objectAtIndex:currentIndex] forBlog:[sharedDataManager currentBlog]];
-		}
-		
-		if([alertView tag] == 3)
-		{
+		} else if([alertView tag] == 3){
 			result = [sharedDataManager unApproveComment:[commentDetails objectAtIndex:currentIndex] forBlog:[sharedDataManager currentBlog]];
 		}
 		
-		if ( result ) 
-		{
+		if ( result ) {
 			[sharedDataManager loadCommentTitlesForCurrentBlog];
 			[self.navigationController popViewControllerAnimated:YES];
 		}

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface CommentsListController : UIViewController {
+@interface CommentsListController : UIViewController<UITableViewDataSource> {
 
 	IBOutlet UITableView *commentsTableView;
 
@@ -23,8 +23,6 @@
 	BOOL editMode;
 	BOOL changeEditMode;
 }
-
-//@property (nonatomic, retain) NSMutableArray *commentDetails;
 
 - (IBAction)downloadRecentComments:(id)sender;
 

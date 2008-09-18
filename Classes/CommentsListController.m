@@ -21,8 +21,6 @@
 
 @implementation CommentsListController
 
-//@synthesize commentDetails;
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
 		// Initialization code
@@ -77,7 +75,6 @@
 // If you need to do additional setup after loading the view, override viewDidLoad.
 - (void)viewDidLoad {
 	
-	
 	[super viewDidLoad];
 	[commentsTableView setDataSource:self];
 	// Observe the kNetworkReachabilityChangedNotification. When that notification is posted, the
@@ -88,12 +85,10 @@
 													 target:self action:@selector(editComments:)];
 	self.navigationItem.rightBarButtonItem = editButtonItem;
 	
-	
 }
 
 - (void)reachabilityChanged
 {
-	
 	WPLog(@"reachabilityChanged ....");
 	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
 	
@@ -145,8 +140,7 @@
 - (void)removeProgressIndicator
 {
 	//wait incase the other thread did not complete its work.
-	while (self.navigationItem.rightBarButtonItem == nil)
-	{
+	while (self.navigationItem.rightBarButtonItem == nil){
 		[[NSRunLoop currentRunLoop] runUntilDate:[[NSDate date] addTimeInterval:0.1]];
 	}
 	
@@ -155,8 +149,7 @@
 
 - (IBAction)downloadRecentComments:(id)sender {
 	
-	if( !connectionStatus )
-	{
+	if( !connectionStatus ){
 		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
 														 message:@"Sync operation is not supported now."
 														delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
@@ -266,7 +259,6 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 		buttonOffset = 35;
 	}
 	
-	
 	/*
 	 Create labels for the text fields; set the highlight color so that when the cell is selected it changes appropriately.
 	 */
@@ -299,15 +291,13 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 -(void)commentSelected:(id)sender
 {
     BOOL toggleTag = [sender tag];
-    if(toggleTag)
-    {
+    if(toggleTag){
         [sender setImage:[UIImage imageNamed:@"uncheck.png"] forState:UIControlStateNormal];  
 		[sender setTag:NO];
         return;
     }    
     
-    if(!toggleTag)
-    {
+    if(!toggleTag){
         [sender setImage:[UIImage imageNamed:@"check.png"] forState:UIControlStateNormal];  
 		[sender setTag:YES];
         return;
