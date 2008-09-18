@@ -5,6 +5,5 @@
 {
 	IBOutlet UIWebView *webView;
 }
-- (IBAction)aboutViewControllerBackAction:(id)sender;
 
 @end

@@ -78,7 +78,16 @@
 	[postsTableView deselectRowAtIndexPath:[postsTableView indexPathForSelectedRow] animated:NO];
 	[postsTableView reloadData];
 	
+	/* Set the Current Screen Title - JanakiRam */
+	self.title = [[sharedDataManager currentBlog] valueForKey:@"blogName"];
+
 	[super viewWillAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated 
+{
+	self.title = @"Blogs";
+	[super viewDidDisappear:animated];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -142,9 +151,9 @@
 			}
 			
 			postsListController.title = [[dataManager currentBlog] valueForKey:@"blogName"];
-			UIBarButtonItem *blogsButton = [[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
-			postsListController.navigationItem.leftBarButtonItem = blogsButton;
-			[blogsButton release];
+//			UIBarButtonItem *blogsButton = [[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
+//			postsListController.navigationItem.leftBarButtonItem = blogsButton;
+//			[blogsButton release];
 			[[self navigationController] pushViewController:postsListController animated:YES];
 
 		} else if ( indexPath.row == 2 ) { // Comments Section
@@ -154,9 +163,9 @@
 			if ( self.commentsListController == nil )
 				self.commentsListController = [[CommentsListController alloc] initWithNibName:@"CommentsListController" bundle:nil];
 			commentsListController.title = commentsListController.navigationItem.title =@"Comments";
-			UIBarButtonItem *blogsButton = [[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
-			commentsListController.navigationItem.leftBarButtonItem = blogsButton;
-			[blogsButton release];
+//			UIBarButtonItem *blogsButton = [[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
+//			commentsListController.navigationItem.leftBarButtonItem = blogsButton;
+//			[blogsButton release];
 			
 			// set up the edit blog button
 			UIBarButtonItem *editCommentButton = [[UIBarButtonItem alloc] 

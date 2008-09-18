@@ -10,11 +10,13 @@
 	return self;
 }
 
-- (IBAction)aboutViewControllerBackAction:(id)sender
-{
-	[self.navigationController popViewControllerAnimated:YES];
+- (void)viewWillAppear:(BOOL)animated {
+	
+	self.navigationController.navigationBarHidden= NO;
+	self.title=@"About";
+	
+	[super viewWillAppear:animated];
 }
-
 /*
  Implement loadView if you want to create a view hierarchy programmatically
 - (void)loadView {

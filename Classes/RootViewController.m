@@ -179,10 +179,10 @@
 			if ( self.blogMainViewController == 0 )
 				self.blogMainViewController = [[BlogMainViewController alloc] initWithNibName:@"WPBlogMainViewController" bundle:nil];
 
-			UIBarButtonItem *blogsButton = [[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStylePlain target:self action:@selector(cancel:)];
-			blogMainViewController.navigationItem.leftBarButtonItem = blogsButton;
-			blogMainViewController.navigationItem.title =[[dataManager currentBlog] valueForKey:@"blogName"];
-			[blogsButton release];
+//			UIBarButtonItem *blogsButton = [[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStylePlain target:self action:@selector(cancel:)];
+//			blogMainViewController.navigationItem.leftBarButtonItem = blogsButton;
+//			blogMainViewController.navigationItem.title =[[dataManager currentBlog] valueForKey:@"blogName"];
+//			[blogsButton release];
 			[self.navigationController pushViewController:blogMainViewController animated:YES];
 			self.navigationController.navigationBarHidden = NO;
 		}
@@ -190,6 +190,7 @@
 	}else {
 			AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutWordpress" bundle:nil];
 			[self.navigationController pushViewController:aboutViewController animated:YES];
+			self.title=@"Home";
 			[aboutViewController release];
 		}	
 }
