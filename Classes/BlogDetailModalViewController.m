@@ -51,6 +51,7 @@
 	resizePhotoLabel.font = [UIFont boldSystemFontOfSize:17.0f];
 
 	blogEditTable.scrollEnabled = NO;
+	self.navigationController.navigationBarHidden= NO;
 	self.navigationItem.leftBarButtonItem = cancelBlogButton;
 	self.navigationItem.rightBarButtonItem = saveBlogButton;
 	[resizePhotoControl addTarget:self action:@selector(changeResizePhotosOptions) forControlEvents:UIControlEventAllTouchEvents];
