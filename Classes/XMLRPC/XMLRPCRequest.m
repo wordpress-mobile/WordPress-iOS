@@ -49,7 +49,8 @@
 		[_request setTimeoutInterval:120.0f];
 		
 		// TODO: this should not be kept in the generic classes.
-		[self setUserAgent:@"wp-iphone/1.0"];
+		NSString *version  = [[[NSBundle mainBundle] infoDictionary] valueForKey:[NSString stringWithFormat:@"CFBundleVersion"]];
+		[self setUserAgent:[NSString stringWithFormat:@"wp-iphone/%@",version]];
 	}
 	
 	return self;
