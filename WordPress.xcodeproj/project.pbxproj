@@ -367,7 +367,6 @@
 				C533CF320E6D3AB3000C3DE8 /* Comments */,
 				AC3439790E11434600E5D79B /* Post */,
 				AC512F800E20D28500B7DA32 /* Utils */,
-				C5B001C00E82971C00D13185 /* WPNavigationLeftButtonView.h */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -431,6 +430,7 @@
 				AC3D2BB30E22198B0064A705 /* WPActivityIndicator.m */,
 				A01C55570E25E29200D411F2 /* WPXMLValidator.h */,
 				A01C55580E25E29200D411F2 /* WPXMLValidator.m */,
+				C5B001C00E82971C00D13185 /* WPNavigationLeftButtonView.h */,
 				C5B001BE0E82971400D13185 /* WPNavigationLeftButtonView.m */,
 			);
 			name = Utils;

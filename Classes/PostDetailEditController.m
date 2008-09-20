@@ -1,11 +1,14 @@
 #import "PostDetailEditController.h"
 #import "BlogDataManager.h"
 #import "WPSegmentedSelectionTableViewController.h"
+#import "WPNavigationLeftButtonView.h"
+
+
 NSTimeInterval kAnimationDuration = 0.3f;
 
 @implementation PostDetailEditController
 
-@synthesize postDetailViewController, selectionTableViewController,segmentedTableViewController;
+@synthesize postDetailViewController, selectionTableViewController,segmentedTableViewController,leftView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -70,7 +73,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	NSArray *cats = [[dm currentBlog] valueForKey:@"categories"];
-
+	
     //Start Extracting and constructing the Categories in an array of arrays in which the '0' index is a parent.   
     NSMutableArray *parentIds = [[NSMutableArray alloc] initWithCapacity:[cats count]];
     int i,j,categoryCount = [cats count];
@@ -100,7 +103,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         [childIds addObject:tempArray];
         [tempArray release];
     }
-
+	
 	NSArray *selObject = [[dm currentPost] valueForKey:@"categories"];
 	if( selObject == nil )
         selObject = [NSArray array];
@@ -109,7 +112,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 									 selectedObjects:selObject
 									   selectionType:kCheckbox
 										 andDelegate:self];
-
+	
     segmentedTableViewController.title = @"Categories";
 	segmentedTableViewController.navigationItem.rightBarButtonItem = newCategoryBarButtonItem;
 	WPLog(@"selectionTableViewController navigationItem %@", segmentedTableViewController.navigationItem);
@@ -123,10 +126,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	NSDictionary *postStatusList = [[dm currentBlog] valueForKey:@"postStatusList"];
-	
-    WPLog(@"postStatusList :  --- %@",postStatusList);
     NSArray *dataSource = [postStatusList allValues] ;
-	WPLog(@"dataSource :  --- %@",dataSource);
     
 	if( dm.isLocaDraftsCurrent || dm.currentPostIndex == -1 )
 		dataSource = [dataSource arrayByAddingObject:@"Local Draft"];
@@ -215,7 +215,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (IBAction)cancelView:(id)sender {
-	[[self navigationController] dismissModalViewControllerAnimated:YES];
+	
+    [postDetailViewController cancelView:sender];
 }
 
 - (IBAction)endTextEnteringButtonAction:(id)sender
@@ -249,7 +250,14 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	titleTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 	tagsTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 	[contentView bringSubviewToFront:textView];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newCategoryCreatedNotificationReceived:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
+	
+    leftView = [WPNavigationLeftButtonView createView];
+    [leftView setTarget:self withAction:@selector(cancelView:)];
+	//    [leftView setTitle:@"Posts"];
+    [postDetailViewController.leftView setTitle:@"Posts"];
+    WPLog(@"Posts  ..... %@",[postDetailViewController.leftView title]);
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newCategoryCreatedNotificationReceived:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
 }
 
 - (void)bringTextViewUp
@@ -272,19 +280,19 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)bringTextViewDown
 {
-		[UIView beginAnimations:nil context:NULL];
-		[UIView setAnimationDuration:0.2];
-		subView.hidden = NO;
-		
-		CGRect frame = textViewContentView.frame;
-		frame.origin.y += 165.0f;
-		textViewContentView.frame = frame;	
-		
-		frame = subView.frame;
-		frame.origin.y += 165.0f;
-		subView.frame = frame;
-		
-		[UIView commitAnimations];		
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:0.2];
+	subView.hidden = NO;
+	
+	CGRect frame = textViewContentView.frame;
+	frame.origin.y += 165.0f;
+	textViewContentView.frame = frame;	
+	
+	frame = subView.frame;
+	frame.origin.y += 165.0f;
+	subView.frame = frame;
+	
+	[UIView commitAnimations];		
 }
 
 - (void)updateTextViewPlacehoderFieldStatus
@@ -298,18 +306,19 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)textViewDidChangeSelection:(UITextView *)aTextView {
+	
 	if (!isTextViewEditing) {
 		
 		isTextViewEditing = YES;
 		
 		[self updateTextViewPlacehoderFieldStatus];
 		
-		//Modified by sridhar.
-		postDetailViewController.navigationItem.leftBarButtonItem.style = UIBarButtonItemStyleDone;
-		postDetailViewController.navigationItem.leftBarButtonItem.title = @"Done";
-		postDetailViewController.navigationItem.leftBarButtonItem.target = self;
-		postDetailViewController.navigationItem.leftBarButtonItem.action = @selector(endTextEnteringButtonAction:);
+		WPLog(@"textViewDidChangeSelection : ");   
+		UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone 
+																	  target:self action:@selector(endTextEnteringButtonAction:)];
 		
+        postDetailViewController.navigationItem.leftBarButtonItem = doneButton;
+        [doneButton release];
 		[self bringTextViewUp];
 	}
 }
@@ -320,11 +329,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		isTextViewEditing = YES;
 		
 		[self updateTextViewPlacehoderFieldStatus];
+		WPLog(@"textViewDidBeginEditing : ");   
 		
-		postDetailViewController.navigationItem.leftBarButtonItem.style = UIBarButtonItemStyleDone;
-		postDetailViewController.navigationItem.leftBarButtonItem.title = @"Done";
-		postDetailViewController.navigationItem.leftBarButtonItem.target = self;
-		postDetailViewController.navigationItem.leftBarButtonItem.action = @selector(endTextEnteringButtonAction:);
+		UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone 
+																	  target:self action:@selector(endTextEnteringButtonAction:)];
+        postDetailViewController.navigationItem.leftBarButtonItem = doneButton;
+        [doneButton release];
 		
 		[self bringTextViewUp];
 	}
@@ -342,27 +352,27 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		isTextViewEditing = NO;
 		
 		[self bringTextViewDown];
-		
-		postDetailViewController.navigationItem.leftBarButtonItem.target = postDetailViewController;
-		postDetailViewController.navigationItem.leftBarButtonItem.action = @selector(cancelView:);
 		if (postDetailViewController.hasChanges == YES)
-			postDetailViewController.navigationItem.leftBarButtonItem.title = @"Cancel";
-		else
-			postDetailViewController.navigationItem.leftBarButtonItem.title = @"Posts";
-		
-		postDetailViewController.navigationItem.leftBarButtonItem.style = UIBarButtonItemStyleBordered;
-		
+        {
+			[leftView setTitle:@"Cancel"];
+        }
+        else
+        {
+            [leftView setTitle:@"Posts"];
+		}
+        UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:leftView];
+        postDetailViewController.navigationItem.leftBarButtonItem = barItem;
+        [barItem release];
 		[self updateTextViewPlacehoderFieldStatus];
 		NSString *text = aTextView.text;
 		[[[BlogDataManager sharedDataManager] currentPost] setObject:text forKey:@"description"];		
 	}
 }
-
-
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 	[self updateTextViewPlacehoderFieldStatus];
 	
 	if (postDetailViewController.navigationItem.leftBarButtonItem.style == UIBarButtonItemStyleDone) {
+		
 		[self textViewDidEndEditing:textView];
 	}
 }
@@ -539,6 +549,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)dealloc 
 {	
+    [leftView release];
     [segmentedTableViewController release];
 	[selectionTableViewController release];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];

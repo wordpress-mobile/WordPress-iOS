@@ -11,7 +11,7 @@
 	IBOutlet UITextView *textView;
 	IBOutlet UITextField *titleTextField;
 	IBOutlet UITextField *tagsTextField;
-
+	
 	IBOutlet UIView *contentView;
 	IBOutlet UIView *subView;
 	IBOutlet UITextField *statusTextField;
@@ -24,14 +24,14 @@
 	IBOutlet UITextField *textViewPlaceHolderField;
 	
 	IBOutlet UIBarButtonItem *newCategoryBarButtonItem;
-
+	
 	UIImage *currentChoosenImage; 
 	UIImagePickerController *pickerController;
-
+	
 	WPSelectionTableViewController *selectionTableViewController;
    	WPSegmentedSelectionTableViewController *segmentedTableViewController;
 	PostDetailViewController *postDetailViewController;
-
+    WPNavigationLeftButtonView *leftView;
 	BOOL isShowPhotoPickerActionSheet;
 	BOOL isTextViewEditing;
 }
@@ -39,6 +39,8 @@
 @property (nonatomic, assign)PostDetailViewController * postDetailViewController;
 @property (nonatomic, retain) WPSelectionTableViewController *selectionTableViewController;
 @property (nonatomic, retain) WPSegmentedSelectionTableViewController *segmentedTableViewController;
+@property (nonatomic, retain) WPNavigationLeftButtonView *leftView;
+
 
 - (void)refreshUIForCompose;
 - (void)refreshUIForCurrentPost;

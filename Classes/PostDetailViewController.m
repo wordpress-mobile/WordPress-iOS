@@ -4,7 +4,7 @@
 #import "WPPostDetailPreviewController.h"
 #import "WPPostSettingsController.h"
 #import "WPPhotosListViewController.h"
-
+#import "WPNavigationLeftButtonView.h"
 #import "PostsListController.h"
 
 
@@ -22,6 +22,7 @@
 @implementation PostDetailViewController
 
 @synthesize postDetailEditController, postPreviewController, postSettingsController, postsListController, hasChanges, mode, tabController, photosListController, saveButton;
+@synthesize leftView;
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
 	
@@ -51,8 +52,8 @@
 	self.title = viewController.title;
 	
 	if( hasChanges ) {
-		if ([self.navigationItem.leftBarButtonItem.title isEqualToString:@"Posts"])
-			self.navigationItem.leftBarButtonItem.title = @"Cancel";
+		if ([[leftView title] isEqualToString:@"Posts"])
+			[leftView setTitle:@"Cancel"];
 		self.navigationItem.rightBarButtonItem = saveButton;
 	}
 }
@@ -64,7 +65,8 @@
 
 - (void)dealloc 
 {
-	[postDetailEditController release];
+	[leftView release];
+    [postDetailEditController release];
 	[postPreviewController release];
 	[postSettingsController release];
 	[photosListController release];
@@ -78,7 +80,7 @@
 
 - (IBAction)cancelView:(id)sender 
 {
-	if (!hasChanges) {
+    if (!hasChanges) {
 		[self stopTimer];
 		[self.navigationController popViewControllerAnimated:YES]; 
 		return;
@@ -132,7 +134,6 @@
 		
 	}
 	
-	
 	if( ![dm postDescriptionHasValidDescription:dm.currentPost] )
 	{
 		[self _cancel];
@@ -149,7 +150,6 @@
 
 - (void)autoSaveCurrentPost:(NSTimer *)aTimer
 {
-	//	WPLog(@"autoSaveCurrentPost %@", aTimer);
 	
 	if( !hasChanges )
 	{
@@ -248,8 +248,8 @@
 	}
 	
 	if(hasChanges) {
-		if ([self.navigationItem.leftBarButtonItem.title isEqualToString:@"Posts"])
-			self.navigationItem.leftBarButtonItem.title = @"Cancel";
+		if ([[leftView title] isEqualToString:@"Posts"])
+			[leftView setTitle:@"Cancel"];
 		self.navigationItem.rightBarButtonItem = saveButton;
 	}
 }
@@ -292,7 +292,9 @@
 
 - (void)_cancel
 {
-	hasChanges = YES;
+    hasChanges = YES;
+    if ([[leftView title] isEqualToString:@"Posts"])
+		[leftView setTitle:@"Cancel"];   
 }
 
 - (void)_savePost:(id)aPost inBlog:(id)aBlog
@@ -362,8 +364,9 @@
 	
 	hasChanges = aFlag;
 	if(hasChanges) {
-		if ([self.navigationItem.leftBarButtonItem.title isEqualToString:@"Posts"])
-			self.navigationItem.leftBarButtonItem.title = @"Cancel";
+		if ([[leftView title] isEqualToString:@"Posts"])
+			[leftView setTitle:@"Cancel"];
+		
 		self.navigationItem.rightBarButtonItem = saveButton;
 	}
 	
@@ -378,14 +381,6 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
-	
-	
-	UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] init];
-	cancelButton.title = @"Posts";
-	cancelButton.target = self;
-	cancelButton.action = @selector(cancelView:);
-	self.navigationItem.leftBarButtonItem = cancelButton;
-	[cancelButton release];
 	
 	if (!saveButton) {
 		saveButton = [[UIBarButtonItem alloc] init];
@@ -455,26 +450,27 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	WPLog(@"pdvc viewWillAppear");
+	leftView = [WPNavigationLeftButtonView createView];
+    [leftView setTarget:self withAction:@selector(cancelView:)];
+	
 	if(hasChanges == YES) {
-		if ([self.navigationItem.leftBarButtonItem.title isEqualToString:@"Posts"])
-			self.navigationItem.leftBarButtonItem.title = @"Cancel";
+		if ([[leftView title] isEqualToString:@"Posts"])
+        {
+            [leftView setTitle:@"Cancel"];
+            WPLog(@" The Title is Set to Cancel");
+        }
+		
 		self.navigationItem.rightBarButtonItem = saveButton;
 	}
 	else {
-		UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] init];
-		cancelButton.title = @"Posts";
-		cancelButton.target = self;
-		cancelButton.action = @selector(cancelView:);
-		self.navigationItem.leftBarButtonItem = cancelButton;
-		[cancelButton release];
-		
-		self.navigationItem.rightBarButtonItem = nil;
+        [leftView setTitle:@"Posts"];
+        WPLog(@" The Title is Set to Posts");
+        self.navigationItem.rightBarButtonItem = nil;
 	}
-	//	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-	//	WPLog(@"objects %@",postSettingsController.selectionTableViewController.table);
-	//	WPLog(@"categories %@",[(NSArray *)[postSettingsController.selectionTableViewController.objects valueForKey:@"categoryName"] componentsJoinedByString:@","]);
-	//	[dataManager.currentPost setValue: forKey:@"categories"];
-	//categoryName
+	
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
+    self.navigationItem.leftBarButtonItem = cancelButton;
+    [cancelButton release];
 	
 	[super viewWillAppear:animated];
 	if( mode == 1 )
