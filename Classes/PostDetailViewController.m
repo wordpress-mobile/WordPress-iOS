@@ -446,13 +446,18 @@
 	tabController.delegate = self;
 	
 	[array release];
+	
+	if(!leftView)
+	{   
+        leftView = [WPNavigationLeftButtonView createView];
+        [leftView setTitle:@"Posts"];
+    }   
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	WPLog(@"pdvc viewWillAppear");
-	leftView = [WPNavigationLeftButtonView createView];
-    [leftView setTarget:self withAction:@selector(cancelView:)];
 	
+    [leftView setTarget:self withAction:@selector(cancelView:)];
 	if(hasChanges == YES) {
 		if ([[leftView title] isEqualToString:@"Posts"])
         {
@@ -467,7 +472,7 @@
         WPLog(@" The Title is Set to Posts");
         self.navigationItem.rightBarButtonItem = nil;
 	}
-	
+    // For Setting the Button with title Posts.
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
     self.navigationItem.leftBarButtonItem = cancelButton;
     [cancelButton release];
