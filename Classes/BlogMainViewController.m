@@ -108,7 +108,7 @@
 	UITableViewCell *cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero] autorelease];
 	if (indexPath.section == 0) 
 	{
-		cell.image =[UIImage imageNamed:@"Folder.png"];
+		cell.image =[UIImage imageNamed:@"DraftsFolder.png"];
 		cell.text = [blogMainMenuContents objectAtIndex:(indexPath.row)];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		cell.font = [cell.font fontWithSize:15.0f];

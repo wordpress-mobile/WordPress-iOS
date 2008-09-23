@@ -79,7 +79,6 @@
 		ACFD04A10DFD2FCA0031D567 /* XMLRPCRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = ACFD049A0DFD2FCA0031D567 /* XMLRPCRequest.m */; };
 		ACFD04A20DFD2FCA0031D567 /* XMLRPCResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = ACFD049C0DFD2FCA0031D567 /* XMLRPCResponse.m */; };
 		ACFF1DE40E23265000EC6BF5 /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = ACFF1DE30E23265000EC6BF5 /* settings.png */; };
-		C50007E50E7A38A900F85224 /* Folder.png in Resources */ = {isa = PBXBuildFile; fileRef = C50007E40E7A38A900F85224 /* Folder.png */; };
 		C533CF350E6D3ADA000C3DE8 /* CommentsListController.m in Sources */ = {isa = PBXBuildFile; fileRef = C533CF340E6D3ADA000C3DE8 /* CommentsListController.m */; };
 		C533CF460E6D3E24000C3DE8 /* CommentsListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C533CF450E6D3E24000C3DE8 /* CommentsListController.xib */; };
 		C55A90D90E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C55A90D80E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m */; };
@@ -202,7 +201,6 @@
 		ACFD049B0DFD2FCA0031D567 /* XMLRPCResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCResponse.h; sourceTree = "<group>"; };
 		ACFD049C0DFD2FCA0031D567 /* XMLRPCResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLRPCResponse.m; sourceTree = "<group>"; };
 		ACFF1DE30E23265000EC6BF5 /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
-		C50007E40E7A38A900F85224 /* Folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Folder.png; sourceTree = "<group>"; };
 		C533CF330E6D3ADA000C3DE8 /* CommentsListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsListController.h; sourceTree = "<group>"; };
 		C533CF340E6D3ADA000C3DE8 /* CommentsListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsListController.m; sourceTree = "<group>"; };
 		C533CF450E6D3E24000C3DE8 /* CommentsListController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentsListController.xib; sourceTree = "<group>"; };
@@ -395,7 +393,6 @@
 				C5C273090E7EC9FE0034AA46 /* delete.png */,
 				C5C272E00E7EC00F0034AA46 /* check.png */,
 				C5C272DE0E7EC00A0034AA46 /* uncheck.png */,
-				C50007E40E7A38A900F85224 /* Folder.png */,
 				2A7F72290E71000000E48A1F /* up.png */,
 				2A7F722A0E71000000E48A1F /* down.png */,
 				AC600C100E20B81100D663AA /* Post Icons */,
@@ -612,7 +609,6 @@
 				2A7F71FB0E70F82A00E48A1F /* WPCommentsDetailViewController.xib in Resources */,
 				2A7F722B0E71000000E48A1F /* up.png in Resources */,
 				2A7F722C0E71000000E48A1F /* down.png in Resources */,
-				C50007E50E7A38A900F85224 /* Folder.png in Resources */,
 				C5C272DF0E7EC00A0034AA46 /* uncheck.png in Resources */,
 				C5C272E10E7EC00F0034AA46 /* check.png in Resources */,
 				C5C2730A0E7EC9FE0034AA46 /* delete.png in Resources */,
