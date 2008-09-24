@@ -11,7 +11,6 @@
 @interface WPNavigationLeftButtonView : UIView {
 
     UIButton *addButton;
-    UILabel *addLabel;
 }
 
 @property (nonatomic, assign) NSString *title;
