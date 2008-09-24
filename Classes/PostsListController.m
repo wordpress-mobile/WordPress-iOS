@@ -40,33 +40,33 @@
 	
 #define LEFT_OFFSET 10.0f
 #define RIGHT_OFFSET 280.0f
-
+	
 #define MAIN_FONT_SIZE 15.0f
 #define DATE_FONT_SIZE 12.0f
-
+	
 #define LABEL_HEIGHT 19.0f
 #define DATE_LABEL_HEIGHT 15.0f
 #define VERTICAL_OFFSET	2.0f
-
-
+	
+	
 	/*
 	 Create labels for the text fields; set the highlight color so that when the cell is selected it changes appropriately.
 	 */
 	UILabel *label;
 	
 	rect = CGRectMake(LEFT_OFFSET, (ROW_HEIGHT - LABEL_HEIGHT - DATE_LABEL_HEIGHT - VERTICAL_OFFSET ) / 2.0, 288, LABEL_HEIGHT);
-
+	
 	label = [[UILabel alloc] initWithFrame:rect];
 	label.tag = NAME_TAG;
 	label.font = [UIFont boldSystemFontOfSize:MAIN_FONT_SIZE];
-//	label.adjustsFontSizeToFitWidth = YES;
+	//	label.adjustsFontSizeToFitWidth = YES;
 	[cell.contentView addSubview:label];
 	label.highlightedTextColor = [UIColor whiteColor];
 	[label release];
 	
 	
 	rect = CGRectMake(LEFT_OFFSET, rect.origin.y+ LABEL_HEIGHT + VERTICAL_OFFSET , 320, DATE_LABEL_HEIGHT);
-
+	
 	label = [[UILabel alloc] initWithFrame:rect];
 	label.tag = DATE_TAG;
 	label.font = [UIFont systemFontOfSize:DATE_FONT_SIZE];
@@ -74,14 +74,24 @@
 	label.highlightedTextColor = [UIColor whiteColor];
 	label.textColor = [UIColor colorWithRed:0.560f green:0.560f blue:0.560f alpha:1];
 	[label release];
-		
+    
+    // Activity bar
+    rect = CGRectMake(LEFT_OFFSET+250, rect.origin.y-10, 20, 20);
+    UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithFrame:rect];
+    activityView.tag = 201;
+    activityView.hidden = YES;
+    activityView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+    [cell.contentView addSubview:activityView];
+    [activityView release];    
+	
+    
 	return cell;
 }
 
 - (void)dealloc {
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"kNetworkReachabilityChangedNotification" object:nil];
-
+	
 	[postDetailEditController release];
 	[PostDetailViewController release];
 	[super dealloc];
@@ -91,15 +101,15 @@
 
 - (IBAction) showAddPostView:(id)sender {
 	
-//	WPLog(@"Add Post Button Clicked");
+	WPLog(@"Add Post Button Clicked");
 	
 	// Set current post to a new post
 	// Detail view will bind data into this instance and call save
 	
 	[[BlogDataManager sharedDataManager] makeNewPostCurrent];
-		
+	
 	self.postDetailViewController.mode = 0; 
-
+	
 	// Create a new nav controller to provide navigation bar with Cancel and Done buttons.
 	// Ask for modal presentation
 	[[self navigationController] pushViewController:self.postDetailViewController animated:YES];
@@ -131,9 +141,9 @@
 	if( indexPath.row == 0 )
 	{
 		static NSString *draftsTableCellRowId = @"DraftsTableCellRowId";
-
+		
 		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:draftsTableCellRowId];
-
+		
 		if (cell == nil) {
 			cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:draftsTableCellRowId] autorelease];
 			cell.font = [cell.font fontWithSize:MAIN_FONT_SIZE];
@@ -149,7 +159,7 @@
 			cell.text =  @"Local Drafts";
 			cell.image = [UIImage imageNamed:@"DraftsFolder.png"];
 		}
-
+		
 		BlogDataManager *dm = [BlogDataManager sharedDataManager];
 		UILabel *bLabel = (UILabel *)[cell viewWithTag:99];
 		NSNumber *count = [dm.currentBlog valueForKey:@"kDraftsCount"];
@@ -161,9 +171,9 @@
 		else {
 			bLabel.text = [NSString stringWithFormat:@""];
 		}
-
+		
 		[[cell contentView] bringSubviewToFront:bLabel];
-
+		
 		return cell;
 	}
 	else 	//post cell
@@ -177,7 +187,7 @@
 		}
 		
 		BlogDataManager *dm = [BlogDataManager sharedDataManager];
-		NSCharacterSet *whitespaceCS = [NSCharacterSet whitespaceCharacterSet];
+        NSCharacterSet *whitespaceCS = [NSCharacterSet whitespaceCharacterSet];
 		
 		if ( [dm countOfPostTitles] ) 
 		{
@@ -200,20 +210,40 @@
 			NSDate *date = [currentPost valueForKey:@"date_created_gmt"];
 			label = (UILabel *)[cell viewWithTag:DATE_TAG];
 			label.text = [dateFormatter stringFromDate:date];
-		}
-		
+            
+			//            WPLog(@"The Indicator View %@", [cell viewWithTag:201]);            
+			WPLog(@"post  (%@)",currentPost);
+			if([[currentPost valueForKey:@"async_post"] boolValue])
+			{
+				WPLog(@"Asynchronous Post Name (%@)",[currentPost valueForKey:@"title"]);
+				UIActivityIndicatorView *aView = (UIActivityIndicatorView*)[cell viewWithTag:201];
+				aView.hidden = NO;
+				[aView startAnimating];
+				
+				//for Lock image
+				UIImageView *lockImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"lock.png"]];
+				cell.accessoryView = lockImg;
+				[lockImg release];
+			} else {
+				UIActivityIndicatorView *aView = (UIActivityIndicatorView*)[cell viewWithTag:201];
+				aView.hidden = YES;
+				[aView stopAnimating];
+			}
+        }
 		return cell;		
 	}
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
 	
-//	WPLog(@"Edit Post Button Clicked");
+	//	WPLog(@"Edit Post Button Clicked");
 	
 }
 
 - (UITableViewCellAccessoryType)tableView:(UITableView *)tv accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
-	return UITableViewCellAccessoryDisclosureIndicator;
+     return UITableViewCellAccessoryDisclosureIndicator;
+//    if(indexPath.row == 4)
+//        return UITableViewCellAccessoryNone;
 }
 
 - (void)viewDidLoad {
@@ -312,13 +342,13 @@
 	
 	NSInteger totalposts = [[[dm currentBlog] valueForKey:@"totalposts"] integerValue];
 	NSInteger newposts = [[[dm currentBlog] valueForKey:@"newposts"] integerValue];
-
+	
 	
 	postsStatusButton.title = [NSString stringWithFormat:@"%d %@ (%d %@)",
-												totalposts,
-												NSLocalizedString(@"Posts", @PostsListController_title_Posts),
-												newposts, 
-												NSLocalizedString(@"New", @PostsListController_title_new)];
+							   totalposts,
+							   NSLocalizedString(@"Posts", @PostsListController_title_Posts),
+							   newposts, 
+							   NSLocalizedString(@"New", @PostsListController_title_new)];
 	
 	
 	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
@@ -396,10 +426,10 @@
 	
 	
 	postsStatusButton.title = [NSString stringWithFormat:@"%d %@ (%d %@)",
-				  totalposts,
-				  NSLocalizedString(@"Posts", @PostsListController_title_Posts),
-				  newposts, 
-				  NSLocalizedString(@"New", @PostsListController_title_new)];
+							   totalposts,
+							   NSLocalizedString(@"Posts", @PostsListController_title_Posts),
+							   newposts, 
+							   NSLocalizedString(@"New", @PostsListController_title_new)];
 	[postsTableView reloadData];
 	[self removeProgressIndicator];
 }
@@ -407,18 +437,18 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-//	if( buttonIndex == 0 ) //Discard and Continue
-//	{
-//		WPLog(@"button 0");
-//		[[BlogDataManager sharedDataManager] clearAutoSavedContext];
-//	}
-//	else 
-//	{
-		[[BlogDataManager sharedDataManager] removeAutoSavedCurrentPostFile];
-		self.navigationItem.rightBarButtonItem = nil;
-		self.postDetailViewController.mode = 2;
-		[[self navigationController] pushViewController:self.postDetailViewController animated:YES];
-//	}
+	//	if( buttonIndex == 0 ) //Discard and Continue
+	//	{
+	//		WPLog(@"button 0");
+	//		[[BlogDataManager sharedDataManager] clearAutoSavedContext];
+	//	}
+	//	else 
+	//	{
+	[[BlogDataManager sharedDataManager] removeAutoSavedCurrentPostFile];
+	self.navigationItem.rightBarButtonItem = nil;
+	self.postDetailViewController.mode = 2;
+	[[self navigationController] pushViewController:self.postDetailViewController animated:YES];
+	//	}
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -430,7 +460,7 @@
 #pragma mark -
 
 - (void)didReceiveMemoryWarning {
-		WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+	WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[super didReceiveMemoryWarning];
 }
 
