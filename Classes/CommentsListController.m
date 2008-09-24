@@ -20,12 +20,15 @@
 
 
 @implementation CommentsListController
+@synthesize selectedComments,commentsArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
 		// Initialization code
 		editMode = NO;
 		changeEditMode = NO;
+		commentsDict=[[NSMutableDictionary alloc]init];
+		selectedComments=[[NSMutableArray alloc]init];
 	}
 	return self;
 }
@@ -45,17 +48,19 @@
 	
 	BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
 	[sharedDataManager loadCommentTitlesForCurrentBlog];
-	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
-	[commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:NO];
-	[commentsTableView reloadData];
 	
-	[editToolbar setHidden:YES];
-	
+	if(!selectedComments)
+		selectedComments=[[NSMutableArray alloc]init];
+	else
+		[selectedComments removeAllObjects];
 	BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
-	NSArray *commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
+	NSMutableArray *commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
+	[self setCommentsArray:commentsList];
 	int awaitingComments = 0;
 	
-	for ( NSDictionary *dict in commentsList ) {
+	for ( NSDictionary *dict in commentsArray ) {
+		NSString *str=[dict valueForKey:@"comment_id"];
+		[commentsDict setValue:dict forKey:str];
 		WPLog(@"Comment Status is (%@)",[dict valueForKey:@"status"]);
 		if ( [[dict valueForKey:@"status"] isEqualToString:@"hold"] ) {
 			awaitingComments++;
@@ -63,14 +68,27 @@
 	}
 	
 	WPLog(@"awaitingComments (%d)",awaitingComments);
+	//WPLog(@"******* commentsList %@",commentsArray);
 	if ( awaitingComments == 0 )
 		commentStatusButton.title=@"";
 	else
 		commentStatusButton.title=[NSString stringWithFormat:@"%d awaiting moderation",awaitingComments];
 	
+	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
+	[commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:NO];
+	[commentsTableView reloadData];
+	
+	[editToolbar setHidden:YES];
+
+	[editButtonItem setEnabled:([commentsArray count]>0)];
+
 	[super viewWillAppear:animated];
 }
-
+- (void)viewWillDisappear:(BOOL)animated{
+	WPLog(@"viewWillDisappear ");
+	[commentsArray removeAllObjects];
+	[selectedComments removeAllObjects];
+}
 
 // If you need to do additional setup after loading the view, override viewDidLoad.
 - (void)viewDidLoad {
@@ -80,10 +98,11 @@
 	// Observe the kNetworkReachabilityChangedNotification. When that notification is posted, the
 	// method "reachabilityChanged" will be called. 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];	
-	
 	editButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered 
 													 target:self action:@selector(editComments:)];
 	self.navigationItem.rightBarButtonItem = editButtonItem;
+		
+		[editButtonItem setEnabled:([commentsArray count]>0)];
 	
 }
 
@@ -116,7 +135,9 @@
 
 
 - (void)dealloc {
-	
+	[commentsArray release];
+	[commentsDict release];
+	[selectedComments release];
     [editButtonItem release];
 	[commentsTableView release];
 	[syncPostsButton release];
@@ -139,12 +160,14 @@
 
 - (void)removeProgressIndicator
 {
+	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
 	//wait incase the other thread did not complete its work.
 	while (self.navigationItem.rightBarButtonItem == nil){
 		[[NSRunLoop currentRunLoop] runUntilDate:[[NSDate date] addTimeInterval:0.1]];
 	}
 	
 	self.navigationItem.rightBarButtonItem = editButtonItem;
+	[apool release];
 }
 
 - (IBAction)downloadRecentComments:(id)sender {
@@ -170,6 +193,7 @@
 	[sharedBlogDataManager loadCommentTitlesForCurrentBlog];
 	
 	NSArray *commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
+	[self setCommentsArray:(NSMutableArray *)commentsList];
 	int awaitingComments = 0;
 	
 	for ( NSDictionary *dict in commentsList ) {
@@ -187,9 +211,73 @@
 	[self removeProgressIndicator];
 	
 	[commentsTableView reloadData];
+	[editButtonItem setEnabled:([commentsArray count]>0)];
+
 	[pool release];
 }
 
+- (IBAction)deleteSelectedComments:(id)sender{
+	WPLog(@"deleteSelectedComments");
+	WPLog(@"WPLog :deleteComment");
+    UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Delete Blog" message:@"Are you sure you want to delete this Comment?" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Cancel", nil];                                                
+    [deleteAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
+    [deleteAlert show];
+		
+}
+- (IBAction)approveSelectedComments:(id)sender{
+	
+	WPLog(@"WPLog :approveComment");
+	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Approve Comment" message:@"Are you sure you want to Approve this Comment?" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Cancel", nil];                                                
+	[deleteAlert setTag:2];  // for UIAlertView Delegate to handle which view is popped.
+	[deleteAlert show];
+	
+}
+- (IBAction)unapproveSelectedComments:(id)sender{
+	WPLog(@"unapproveSelectedComments");
+	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Unapprove Comment" message:@"Are you sure you want to Unapprove this Comment?" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Cancel", nil];                                                
+	[deleteAlert setTag:3];  // for UIAlertView Delegate to handle which view is popped.
+	[deleteAlert show];
+}
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	
+    WPLog(@"The Alet name %d",[alertView tag]);
+	
+	//optimised code but need to comprimise at Alert messages.....Common message for all @"Operation is not supported now."
+	if ( buttonIndex == 0 ) {
+		
+		if ( ![[Reachability sharedReachability] remoteHostStatus] != NotReachable ) {
+			
+			UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
+															 message:@"Operation is not supported now."
+															delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+			[alert1 show];
+			[alert1 release];		
+			return;
+		}  
+		
+		[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
+		BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
+		
+		BOOL result;
+		NSArray *selectedItems=[self selectedComments];
+		if([alertView tag] == 1){
+			result = [sharedDataManager deleteComment:selectedItems forBlog:[sharedDataManager currentBlog]];
+		} else if([alertView tag] == 2){
+			result = [sharedDataManager approveComment:selectedItems forBlog:[sharedDataManager currentBlog]];
+		} else if([alertView tag] == 3){
+			result = [sharedDataManager unApproveComment:selectedItems forBlog:[sharedDataManager currentBlog]];
+		}
+		
+		if ( result ) {
+			[sharedDataManager loadCommentTitlesForCurrentBlog];
+			[self.navigationController popViewControllerAnimated:YES];
+		}
+		[self performSelectorInBackground:@selector(removeProgressIndicator) withObject:nil];
+    }
+	[editButtonItem setEnabled:([commentsArray count]>0)];
+    [alertView autorelease];
+}
 
 // sync posts for a given blog
 //- (NSArray *) getCommentsForBlog:(id)blog {
@@ -226,7 +314,7 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	return [NSString stringWithFormat:@"x-%f,y-%f,width-%f,heigh-%f",rect.origin.x,rect.origin.y,rect.size.width,rect.size.height];
 }
 
-- (UITableViewCell *)tableviewCellWithReuseIdentifier:(NSString *)identifier {
+- (UITableViewCell *)tableviewCellWithReuseIdentifier:(NSString *)identifier withCategoryId:(int)categoryId {
 	
 	/*
 	 Create an instance of UITableViewCell and add tagged subviews for the name, local time, and quarter image of the time zone.
@@ -252,7 +340,7 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 		rect = CGRectMake(LEFT_OFFSET,15, 30, COMMENTS_TABLE_ROW_HEIGHT-30);
 		UIButton *but = [[UIButton alloc] initWithFrame:rect]; 
 		[but setImage:[UIImage imageNamed:@"uncheck.png"] forState:UIControlStateNormal];
-		[but setTag:NO];
+		[but setTag:categoryId];
 		[but addTarget:self action:@selector(commentSelected:) forControlEvents:UIControlEventTouchUpInside];
 		[cell.contentView addSubview:but];
 		[but release];
@@ -284,25 +372,26 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	label.textColor = [UIColor colorWithRed:0.560f green:0.560f blue:0.560f alpha:1];
 	[label release];
 	
-	
 	return cell;
 }
 
 -(void)commentSelected:(id)sender
 {
-    BOOL toggleTag = [sender tag];
-    if(toggleTag){
-        [sender setImage:[UIImage imageNamed:@"uncheck.png"] forState:UIControlStateNormal];  
-		[sender setTag:NO];
-        return;
-    }    
-    
-    if(!toggleTag){
+   int toggleTag = [sender tag];
+	NSString *str=[NSString stringWithFormat:@"%d",toggleTag];
+	
+	NSDictionary *dict  = [commentsDict valueForKey:str];
+	if ( [selectedComments containsObject:dict] ) {
+		[selectedComments removeObject:dict];
+		[sender setImage:[UIImage imageNamed:@"uncheck.png"] forState:UIControlStateNormal];  
+	} else {
+		[selectedComments addObject:dict];
         [sender setImage:[UIImage imageNamed:@"check.png"] forState:UIControlStateNormal];  
-		[sender setTag:YES];
-        return;
-    }    
+	}
+	
 }
+
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	return 1;
 }
@@ -310,7 +399,8 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (section == 0) {
 		WPLog(@" countOfCommentTitles -- %d",[[BlogDataManager sharedDataManager] countOfCommentTitles]);
-		return [[BlogDataManager sharedDataManager] countOfCommentTitles];
+//		return [[BlogDataManager sharedDataManager] countOfCommentTitles];
+		return [commentsArray count];
 	}	
 	return 0;
 }
@@ -318,16 +408,18 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
 	static NSString *postsTableRowId = @"postsTableRowId";
-	BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
-	
+
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:postsTableRowId];
+	id currentComment = [commentsArray objectAtIndex:indexPath.row];
+	
 	if (cell == nil || changeEditMode) {
-		cell = [self tableviewCellWithReuseIdentifier:postsTableRowId];
+		cell = [self tableviewCellWithReuseIdentifier:postsTableRowId withCategoryId:[[currentComment valueForKey:@"comment_id"]intValue]];
+		//- (UITableViewCell *)tableviewCellWithReuseIdentifier:(NSString *)identifier withCategoryId:(NSNumber *)categoryId
 		//[[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:postsTableRowId] autorelease];
 	}
 	
 	
-	id currentComment = [sharedBlogDataManager commentTitleAtIndex:indexPath.row];
+	//WPLog(@"currentComment %@",currentComment);
 	NSCharacterSet *whitespaceCS = [NSCharacterSet whitespaceCharacterSet];
 	NSString *author = [[currentComment valueForKey:@"author"] stringByTrimmingCharactersInSet:whitespaceCS];
 	NSString *post_title = [[currentComment valueForKey:@"post_title"]stringByTrimmingCharactersInSet:whitespaceCS];
@@ -367,6 +459,7 @@ NSString *NSStringFromCGRect(CGRect rect ) {
     [self.navigationController pushViewController:commentsViewController animated:YES];
     [commentsViewController fillCommentDetails:[[BlogDataManager sharedDataManager] commentTitles]
 										 atRow:indexPath.row];
+	
     [commentsViewController release];
 	
 }

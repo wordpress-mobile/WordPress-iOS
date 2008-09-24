@@ -22,8 +22,16 @@
 	BOOL connectionStatus;
 	BOOL editMode;
 	BOOL changeEditMode;
+
+	NSMutableArray *commentsArray;
+	NSMutableDictionary *commentsDict;
+	NSMutableArray *selectedComments;
 }
+@property (nonatomic,retain) NSMutableArray *selectedComments;
+@property (nonatomic,retain) NSMutableArray *commentsArray;
 
 - (IBAction)downloadRecentComments:(id)sender;
-
+- (IBAction)deleteSelectedComments:(id)sender;
+- (IBAction)approveSelectedComments:(id)sender;
+- (IBAction)unapproveSelectedComments:(id)sender;
 @end

@@ -3350,7 +3350,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 }
 
 // delete comment for a given blog
-- (BOOL) deleteComment:(id) aComment forBlog:(id)blog {
+- (BOOL) deleteComment:(NSArray *) aComment forBlog:(id)blog {
 
 	
 //function wp_deleteComment($args) { 
@@ -3360,62 +3360,73 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 //	$password       = $args[2]; 
 //	$comment_ID     = (int) $args[3]; 	WPLog(@"<<<<<<<<<<<<<<<<<< syncPostsForBlog >>>>>>>>>>>>>>");
 //}	
-
-	[blog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
-	// Parameters
+	
 	NSString *username = [blog valueForKey:@"username"];
 	NSString *pwd = [blog valueForKey:@"pwd"];
 	NSString *fullURL = [blog valueForKey:@"xmlrpc"];
 	NSString *blogid = [blog valueForKey:@"blogid"];
-	NSString *commentid = [aComment valueForKey:@"comment_id"];
-	WPLog(@"comment is (%@)",aComment);
-	WPLog(@"DELETE COMMENT DETAILS ARE %@",[NSArray arrayWithObjects:blogid,username, pwd, commentid,nil]);
-
-	//  ------------------------- invoke metaWeblog.getRecentPosts
-	XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
-	[postsReq setMethod:@"wp.deleteComment" 
-			withObjects:[NSArray arrayWithObjects:blogid,username, pwd, commentid,nil]];
-	
-	id result = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
-	
-	WPLog(@"result is %@ -- its class is %@",result,[result className]);
-	
-	// TODO:
-	// Check for fault
-	// check for nil or empty response
-	// provide meaningful messge to user
-	if ((!result) || !([result isKindOfClass:[NSNumber class]]) ) {
-		WPLog(@"Unknown Error");
-		[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
-		return NO;
-	}
-		
-	NSFileManager *defaultFileManager = [NSFileManager defaultManager];
-	
+	[blog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
 	NSMutableArray *commentTitlesArray = commentTitlesList;
+	NSFileManager *defaultFileManager = [NSFileManager defaultManager];
+	NSMutableArray *commentsReqArray=[[NSMutableArray alloc]init];
 	
-	
-	NSString *path = [self commentFilePath:aComment forBlog:blog];
-	[defaultFileManager removeFileAtPath:path handler:nil];
+	int commentsCount=[aComment count];
+	for(int i=0;i<commentsCount;i++)
+	{
+		NSDictionary *commentsDict=[aComment objectAtIndex:i];
+		NSString *commentid = [commentsDict valueForKey:@"comment_id"];
 		
-	[commentTitlesList removeObject:aComment];
+		NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
+		[dict setValue:@"wp.deleteComment" forKey:@"methodName"];
+		[dict setValue:[NSArray arrayWithObjects:blogid,username, pwd, commentid,nil] forKey:@"params"];
+		[commentsReqArray addObject:dict];
+		[dict release];
+	}
+
+	if(commentsCount>0)
+	{
+		XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
+		[postsReq setMethod:@"system.multicall" withObject:commentsReqArray];
+		id result = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
+		WPLog(@"result is %@ -- its class is %@",result,[result className]);
+		
+		// TODO:
+		// Check for fault
+		// check for nil or empty response
+		// provide meaningful messge to user
+		if ((!result) || !([result isKindOfClass:[NSArray class]]) ) {
+			WPLog(@"Unknown Error");
+			[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
+			return NO;
+		}else {
+			for(int i=0;i<commentsCount;i++)
+			{
+				NSDictionary *commentsDict=[aComment objectAtIndex:i];
+				NSString *path = [self commentFilePath:commentsDict forBlog:blog];
+				[defaultFileManager removeFileAtPath:path handler:nil];
+				[commentTitlesList removeObject:commentsDict];
+			}
+		}
+	}
+	
+	NSString *pathToCommentTitles = [self pathToCommentTitles:blog];
+	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
 
 	// sort and save the postTitles list
 	NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
 	[commentTitlesArray sortUsingDescriptors:[NSArray arrayWithObject:sd]];
-	NSString *pathToCommentTitles = [self pathToCommentTitles:blog];
 	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
 	[commentTitlesArray writeToFile:pathToCommentTitles  atomically:YES];
 	WPLog(@"writing commentTitlesList(%@) to file path (%@)",commentTitlesArray,[self pathToCommentTitles:blog]);
-	
+	[commentsReqArray release];
 	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 	return YES;
 }
 
 
 // approve comment for a given blog
-- (BOOL) approveComment:(id) aComment forBlog:(id)blog {
+- (BOOL) approveComment:(NSArray *) aComment forBlog:(id)blog {
 	
 //function wp_editComment($args) { 
 //	 $blog_id        = (int) $args[0]; 
@@ -3430,49 +3441,56 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *pwd = [blog valueForKey:@"pwd"];
 	NSString *fullURL = [blog valueForKey:@"xmlrpc"];
 	NSString *blogid = [blog valueForKey:@"blogid"];
-	NSString *commentid = [aComment valueForKey:@"comment_id"];
-	WPLog(@"comment is (%@)",aComment);
-	
-	NSString *commentFilePath = [self commentFilePath:aComment forBlog:blog];
-	NSDictionary *completeComment = [NSMutableDictionary dictionaryWithContentsOfFile:commentFilePath];
-
-	[aComment setValue:@"approve" forKey:@"status"];
-	[completeComment setValue:@"approve" forKey:@"status"];
-
-	WPLog(@"APPROVE COMMENT DETAILS ARE %@",[NSArray arrayWithObjects:blogid,username, pwd, commentid,completeComment,nil]);
-	//  ------------------------- invoke metaWeblog.getRecentPosts
-	XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
-	[postsReq setMethod:@"wp.editComment" 
-			withObjects:[NSArray arrayWithObjects:blogid,username, pwd, commentid,completeComment,nil]];
-	
-	id result = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
-	
-	WPLog(@"result is %@ -- its class is %@",result,[result className]);
-	
-	// TODO:
-	// Check for fault
-	// check for nil or empty response
-	// provide meaningful messge to user
-	if ((!result) || !([result isKindOfClass:[NSNumber class]]) ) {
-		WPLog(@"Unknown Error");
-		[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
-		return NO;
-	}
-	
 	NSFileManager *defaultFileManager = [NSFileManager defaultManager];
-	
 	NSMutableArray *commentTitlesArray = commentTitlesList;
-
-	int i=0,count = [commentTitlesArray count];
-	
-	for ( i = 0; i < count ; i++ ) {
-		NSDictionary *dict = [commentTitlesArray objectAtIndex:i];
-		
-		if ( [[dict valueForKey:@"comment_id"] isEqualToString:commentid] )
-			[commentTitlesArray replaceObjectAtIndex:i withObject:aComment];
-	}
-	
+	int commentsCount,i,count = [commentTitlesArray count];
+	NSMutableArray *commentsReqArray=[[NSMutableArray alloc]init];
+	 commentsCount=[aComment count];
+	 for(i=0;i<commentsCount;i++)
+	 {
+		 NSMutableDictionary *commentsDict=[aComment objectAtIndex:i];
+		 NSString *commentid = [commentsDict valueForKey:@"comment_id"];
+		 NSString *commentFilePath = [self commentFilePath:commentsDict forBlog:blog];
+		 NSDictionary *completeComment = [NSMutableDictionary dictionaryWithContentsOfFile:commentFilePath];
+		 
+		 [commentsDict setValue:@"approve" forKey:@"status"];
+		 [completeComment setValue:@"approve" forKey:@"status"];
+		 
+		 NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
+		 [dict setValue:@"wp.editComment" forKey:@"methodName"];
+		 [dict setValue:[NSArray arrayWithObjects:blogid,username, pwd, commentid,completeComment,nil] forKey:@"params"];
+		 [commentsReqArray addObject:dict];
+			
+		 [dict release];
+	 }
+	// WPLog(@"Comments arrray is %@",commentsReqArray);
+	 if(commentsCount>0)
+	 {
+		 XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
+		 [postsReq setMethod:@"system.multicall" withObject:commentsReqArray];
+		 id result = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
+		 WPLog(@"result is %@ -- its class is %@",result,[result className]);
+		 
+		 // TODO:
+		 // Check for fault
+		 // check for nil or empty response
+		 // provide meaningful messge to user
+		 if ((!result) || !([result isKindOfClass:[NSArray class]]) ) {
+		 WPLog(@"Unknown Error");
+		 [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+		 [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
+		 return NO;
+		 }else{
+			 for(int j=0;j<commentsCount;j++){
+				 NSDictionary *commentDict=[aComment objectAtIndex:j];
+				 for ( i = 0; i < count; i++ ) {
+					 NSDictionary *dict = [commentTitlesArray objectAtIndex:i];
+					 if ( [[dict valueForKey:@"comment_id"] isEqualToString:[commentDict valueForKey:@"comment_id"]] )
+						 [commentTitlesArray replaceObjectAtIndex:i withObject:commentDict];
+				 }
+			 }
+		 }
+	 }
 
 	// sort and save the postTitles list
 	NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
@@ -3481,8 +3499,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
 	[commentTitlesArray writeToFile:pathToCommentTitles  atomically:YES];
 	WPLog(@"writing commentTitlesList(%@) to file path (%@)",commentTitlesArray,[self pathToCommentTitles:blog]);
-
-	[completeComment writeToFile:commentFilePath atomically:YES];
+	[commentsReqArray release];
 	
 	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 	return YES;
@@ -3490,7 +3507,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 
 // approve comment for a given blog
-- (BOOL) unApproveComment:(id) aComment forBlog:(id)blog {
+- (BOOL) unApproveComment:(NSArray *) aComment forBlog:(id)blog {
 	
 	//function wp_editComment($args) { 
 	//	 $blog_id        = (int) $args[0]; 
@@ -3505,47 +3522,53 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *pwd = [blog valueForKey:@"pwd"];
 	NSString *fullURL = [blog valueForKey:@"xmlrpc"];
 	NSString *blogid = [blog valueForKey:@"blogid"];
-	NSString *commentid = [aComment valueForKey:@"comment_id"];
-	WPLog(@"comment is (%@)",aComment);
-	
-	NSString *commentFilePath = [self commentFilePath:aComment forBlog:blog];
-	NSDictionary *completeComment = [NSMutableDictionary dictionaryWithContentsOfFile:commentFilePath];
-
-	
-	[aComment setValue:@"spam" forKey:@"status"];
-	[completeComment setValue:@"spam" forKey:@"status"];
-	
-	WPLog(@"UNAPPROVE COMMENT DETAILS ARE %@",[NSArray arrayWithObjects:blogid,username, pwd, commentid,completeComment,nil]);
-
-	//  ------------------------- invoke metaWeblog.getRecentPosts
-	XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
-	[postsReq setMethod:@"wp.editComment" 
-			withObjects:[NSArray arrayWithObjects:blogid,username, pwd, commentid,completeComment,nil]];
-	
-	id result = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
-	
-	WPLog(@"result is %@ -- its class is %@",result,[result className]);
-	
-	// TODO:
-	// Check for fault
-	// check for nil or empty response
-	// provide meaningful messge to user
-	if ((!result) || !([result isKindOfClass:[NSNumber class]]) ) {
-		WPLog(@"Unknown Error");
-		[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
-		return NO;
-	}
 	NSFileManager *defaultFileManager = [NSFileManager defaultManager];
-	
 	NSMutableArray *commentTitlesArray = commentTitlesList;
-	
-	
-	NSString *path = [self commentFilePath:aComment forBlog:blog];
-	[defaultFileManager removeFileAtPath:path handler:nil];
-	
-	[commentTitlesList removeObject:aComment];
-	
+	int i=0,commentsCount=[aComment count];
+				
+	NSMutableArray *commentsReqArray=[[NSMutableArray alloc]init];
+	for(i=0;i<commentsCount;i++)
+	{
+		NSMutableDictionary *commentsDict=[aComment objectAtIndex:i];
+		NSString *commentid = [commentsDict valueForKey:@"comment_id"];
+		NSString *commentFilePath = [self commentFilePath:commentsDict forBlog:blog];
+		NSDictionary *completeComment = [NSMutableDictionary dictionaryWithContentsOfFile:commentFilePath];
+		
+		[commentsDict setValue:@"spam" forKey:@"status"];
+		[completeComment setValue:@"spam" forKey:@"status"];
+		
+		NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
+		[dict setValue:@"wp.editComment" forKey:@"methodName"];
+		[dict setValue:[NSArray arrayWithObjects:blogid,username, pwd, commentid,completeComment,nil] forKey:@"params"];
+		[commentsReqArray addObject:dict];
+		[dict release];
+	}
+	if(commentsCount>0)
+	{
+		XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
+		[postsReq setMethod:@"system.multicall" withObject:commentsReqArray];
+		id result = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
+		WPLog(@"result is %@ -- its class is %@",result,[result className]);
+		
+		// TODO:
+		// Check for fault
+		// check for nil or empty response
+		// provide meaningful messge to user
+		if ((!result) || !([result isKindOfClass:[NSArray class]]) ) {
+			WPLog(@"Unknown Error");
+			[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
+			return NO;
+		}else {
+			for(i=0;i<commentsCount;i++){
+				NSDictionary *dict=[aComment objectAtIndex:i];
+				NSString *path = [self commentFilePath:dict forBlog:blog];
+				[defaultFileManager removeFileAtPath:path handler:nil];
+				[commentTitlesList removeObject:aComment];
+			}
+		}
+	 }
+		
 	// sort and save the postTitles list
 	NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
 	[commentTitlesArray sortUsingDescriptors:[NSArray arrayWithObject:sd]];
@@ -3553,9 +3576,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
 	[commentTitlesArray writeToFile:pathToCommentTitles  atomically:YES];
 	WPLog(@"writing commentTitlesList(%@) to file path (%@)",commentTitlesArray,[self pathToCommentTitles:blog]);
-	
-	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-	return YES;
+	[commentsReqArray release];
 	
 	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 	return YES;

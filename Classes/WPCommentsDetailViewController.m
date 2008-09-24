@@ -220,18 +220,19 @@
 		BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
 
 		BOOL result;
+		NSArray *selectedComments=[NSArray arrayWithObjects:[commentDetails objectAtIndex:currentIndex],nil];
 		if([alertView tag] == 1){
-			result = [sharedDataManager deleteComment:[commentDetails objectAtIndex:currentIndex] forBlog:[sharedDataManager currentBlog]];
+			result = [sharedDataManager deleteComment:selectedComments forBlog:[sharedDataManager currentBlog]];
 		} else if([alertView tag] == 2){
-			result = [sharedDataManager approveComment:[commentDetails objectAtIndex:currentIndex] forBlog:[sharedDataManager currentBlog]];
+			result = [sharedDataManager approveComment:selectedComments forBlog:[sharedDataManager currentBlog]];
 		} else if([alertView tag] == 3){
-			result = [sharedDataManager unApproveComment:[commentDetails objectAtIndex:currentIndex] forBlog:[sharedDataManager currentBlog]];
+			result = [sharedDataManager unApproveComment:selectedComments forBlog:[sharedDataManager currentBlog]];
 		}
 		
-		if ( result ) {
+//		if ( result ) {
 			[sharedDataManager loadCommentTitlesForCurrentBlog];
 			[self.navigationController popViewControllerAnimated:YES];
-		}
+//		}
 		[self performSelectorInBackground:@selector(removeProgressIndicator) withObject:nil];
     }
     [alertView autorelease];
