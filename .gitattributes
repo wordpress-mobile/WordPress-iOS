@@ -106,6 +106,7 @@ WordPress.xcodeproj/project.pbxproj -text
 /application-icon.png -text
 /backNav.png -text
 /check.png -text
+/commentDelete.png -text
 /defaultPostTemplate.html -text
 /defaultPostTemplate_old.html -text
 /delete.png -text
