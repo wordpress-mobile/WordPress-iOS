@@ -251,8 +251,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	tagsTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 	[contentView bringSubviewToFront:textView];
 	
-	leftView = postDetailViewController.leftView;
+	if(!leftView)
+	{   
+        leftView = [WPNavigationLeftButtonView createView];
+        [leftView setTitle:@"Posts"];
+    }   
          [leftView setTitle:@"Posts"];
+    [leftView setTarget:self withAction:@selector(cancelView:)];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newCategoryCreatedNotificationReceived:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
 }
