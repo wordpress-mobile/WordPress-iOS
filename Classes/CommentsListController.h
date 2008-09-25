@@ -14,10 +14,15 @@
 	IBOutlet UITableView *commentsTableView;
 
 	IBOutlet UIBarButtonItem *syncPostsButton;
-	IBOutlet UIBarButtonItem *commentStatusButton;
+	IBOutlet UIButton *commentStatusButton;
 	
-    IBOutlet UIToolbar  *editToolbar;
+    IBOutlet UIToolbar  *editToolbar; 
 	UIBarButtonItem *editButtonItem;
+	
+	IBOutlet UIBarButtonItem  *approveButton;
+	IBOutlet UIBarButtonItem  *unapproveButton;
+	IBOutlet UIBarButtonItem  *spamButton;
+	IBOutlet UIButton  *deleteButton;
 
 	BOOL connectionStatus;
 	BOOL editMode;

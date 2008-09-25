@@ -19,7 +19,10 @@
 	
     IBOutlet UIToolbar  *approveAndUnapproveButtonBar;
     IBOutlet UIToolbar  *deleteButtonBar;
-
+	
+	IBOutlet UIBarButtonItem  *approveButton;
+	IBOutlet UIBarButtonItem  *unapproveButton;
+	
     BOOL connectionStatus;
     UIBarButtonItem *segmentBarItem;
     int currentIndex;	

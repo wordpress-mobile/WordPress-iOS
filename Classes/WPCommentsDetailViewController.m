@@ -51,7 +51,6 @@
 	segmentedControl.frame = CGRectMake(0, 0, 90, kCustomButtonHeight);
 	segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
 	segmentedControl.momentary = YES;
-	
 	//	UIColor *defaultTintColor = [segmentedControl.tintColor retain];	// keep track of this for later
 	
 	segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
@@ -77,20 +76,29 @@
 
 - (void)segmentAction:(id)sender
 {
-    WPLog(@" The count %d  and current index %d",[commentDetails count], currentIndex);
+	//- (void)setEnabled:(BOOL)enabled forSegmentAtIndex:(NSUInteger)segment
+    WPLog(@" The count %d  and current index %d object %@",[commentDetails count], currentIndex,sender);
     if(currentIndex > -1)
 	{
         if((currentIndex >0) && [sender selectedSegmentIndex] == 0)
         {
             WPLog(@"WPLog :segmentAction Tag:%d",[sender selectedSegmentIndex]);
             [self fillCommentDetails:commentDetails atRow:currentIndex-1];
-        }    
-        
-        if( (currentIndex < [commentDetails count]-1) && [sender selectedSegmentIndex] == 1)
+        }
+		
+		if( (currentIndex < [commentDetails count]-1) && [sender selectedSegmentIndex] == 1)
         {
             WPLog(@"WPLog :segmentAction Tag:%d",[sender selectedSegmentIndex]);
             [self fillCommentDetails:commentDetails atRow:currentIndex+1];
-        }    
+        }
+		
+		[sender setEnabled:TRUE forSegmentAtIndex:0];
+		[sender setEnabled:TRUE forSegmentAtIndex:1];
+		
+		if(currentIndex==0)
+			[sender setEnabled:FALSE forSegmentAtIndex:0];
+		else if(currentIndex == [commentDetails count]-1)
+			[sender setEnabled:FALSE forSegmentAtIndex:1];
 	}
 	
 }
@@ -98,7 +106,7 @@
 - (void)deleteComment:(id)sender
 {
     WPLog(@"WPLog :deleteComment");
-    UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Delete Blog" message:@"Are you sure you want to delete this Comment?" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Cancel", nil];                                                
+    UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Delete Comment" message:@"Are you sure you want to delete this Comment?" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Cancel", nil];                                                
     [deleteAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
     [deleteAlert show];
 }
@@ -154,6 +162,14 @@
 	} else {
 		[approveAndUnapproveButtonBar setHidden:YES];
 		[deleteButtonBar setHidden:NO];
+	}
+	[approveButton setEnabled:NO];
+	[unapproveButton setEnabled:NO];
+	if ( [commentStatus isEqualToString:@"hold"] ) {
+		[approveButton setEnabled:YES];
+	
+	}else if([commentStatus isEqualToString:@"approve"]){
+		[unapproveButton setEnabled:YES];
 	}
 	
 	// WPLog(@" The Values .....  %@ %@ %@ ",author,post_title,date_created_gmt);

@@ -68,11 +68,10 @@
 	}
 	
 	WPLog(@"awaitingComments (%d)",awaitingComments);
-	//WPLog(@"******* commentsList %@",commentsArray);
 	if ( awaitingComments == 0 )
-		commentStatusButton.title=@"";
+		[commentStatusButton setTitle:@"" forState:UIControlStateNormal];
 	else
-		commentStatusButton.title=[NSString stringWithFormat:@"%d awaiting moderation",awaitingComments];
+		[commentStatusButton setTitle:[NSString stringWithFormat:@"%d awaiting moderation",awaitingComments] forState:UIControlStateNormal];
 	
 	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
 	[commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:NO];
@@ -116,7 +115,15 @@
 
 - (void) editComments :(id)sender {
 	changeEditMode=YES;
+	
+	editButtonItem.title = (editMode==NO) ? @"Cancel" : @"Edit";
+	
 	[editToolbar setHidden:editMode];
+	
+	[deleteButton setEnabled:editMode];
+	[approveButton setEnabled:editMode];
+	[unapproveButton setEnabled:editMode];
+
 	editMode = !editMode;
 	[commentsTableView reloadData];
 }
@@ -141,7 +148,6 @@
     [editButtonItem release];
 	[commentsTableView release];
 	[syncPostsButton release];
-	[commentStatusButton release];
 	[super dealloc];
 }
 
@@ -203,11 +209,10 @@
 	}
 	
 	if ( awaitingComments == 0 )
-		commentStatusButton.title=@"";
+		[commentStatusButton setTitle:@"" forState:UIControlStateNormal];
 	else
-		commentStatusButton.title=[NSString stringWithFormat:@"%d awaiting moderation",awaitingComments];
-	
-	
+		[commentStatusButton setTitle:[NSString stringWithFormat:@"%d awaiting moderation",awaitingComments] forState:UIControlStateNormal];
+			
 	[self removeProgressIndicator];
 	
 	[commentsTableView reloadData];
@@ -218,23 +223,22 @@
 
 - (IBAction)deleteSelectedComments:(id)sender{
 	WPLog(@"deleteSelectedComments");
-	WPLog(@"WPLog :deleteComment");
-    UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Delete Blog" message:@"Are you sure you want to delete this Comment?" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Cancel", nil];                                                
+    UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Delete Comments" message:@"Are you sure you want to delete this Comments?" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Cancel", nil];                                                
     [deleteAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
     [deleteAlert show];
 		
 }
 - (IBAction)approveSelectedComments:(id)sender{
 	
-	WPLog(@"WPLog :approveComment");
-	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Approve Comment" message:@"Are you sure you want to Approve this Comment?" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Cancel", nil];                                                
+	WPLog(@"approveSelectedComments");
+	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Approve Comments" message:@"Are you sure you want to Approve this Comments?" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Cancel", nil];                                                
 	[deleteAlert setTag:2];  // for UIAlertView Delegate to handle which view is popped.
 	[deleteAlert show];
 	
 }
 - (IBAction)unapproveSelectedComments:(id)sender{
 	WPLog(@"unapproveSelectedComments");
-	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Unapprove Comment" message:@"Are you sure you want to Unapprove this Comment?" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Cancel", nil];                                                
+	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Unapprove Comments" message:@"Are you sure you want to Unapprove this Comments?" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Cancel", nil];                                                
 	[deleteAlert setTag:3];  // for UIAlertView Delegate to handle which view is popped.
 	[deleteAlert show];
 }
@@ -388,7 +392,23 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 		[selectedComments addObject:dict];
         [sender setImage:[UIImage imageNamed:@"check.png"] forState:UIControlStateNormal];  
 	}
+	int count=[selectedComments count];
 	
+	if(count){
+		[approveButton setTitle:[NSString stringWithFormat:@"Approve (%d)",count]];
+		[unapproveButton setTitle:[NSString stringWithFormat:@"Unapprove (%d)",count]];
+		[spamButton setTitle:[NSString stringWithFormat:@"Spam (%d)",count]];
+		[deleteButton setEnabled:YES];
+		[approveButton setEnabled:YES];
+		[unapproveButton setEnabled:YES];
+	}else{
+		[approveButton setTitle:@"Approve"];
+		[unapproveButton setTitle:@"Unapprove"];
+		[spamButton setTitle:@"Spam"];
+		[deleteButton setEnabled:NO];
+		[approveButton setEnabled:NO];
+		[unapproveButton setEnabled:NO];
+	}
 }
 
 
@@ -424,7 +444,7 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	NSString *author = [[currentComment valueForKey:@"author"] stringByTrimmingCharactersInSet:whitespaceCS];
 	NSString *post_title = [[currentComment valueForKey:@"post_title"]stringByTrimmingCharactersInSet:whitespaceCS];
 	NSDate *date_created_gmt = [currentComment valueForKey:@"date_created_gmt"];
-	
+	NSString *commentStatus=[currentComment valueForKey:@"status"];
 	UILabel *label = (UILabel *)[cell viewWithTag:COMMENT_NAME_TAG];
 	label.text = author;
 	
@@ -436,6 +456,9 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	}
 	
 	label.textColor = ( connectionStatus ? [UIColor blackColor] : [UIColor grayColor] );
+	if([commentStatus isEqual:@"hold"])
+	   [label setTextColor:[UIColor grayColor]];
+		
 	label = (UILabel *)[cell viewWithTag:COMMENT_POST_NAME_AND_DATE_TAG];
 	label.text = [NSString stringWithFormat:@"%@ , %@",post_title,[[dateFormatter stringFromDate:date_created_gmt] description]];
 	[label setLineBreakMode:UILineBreakModeTailTruncation];
