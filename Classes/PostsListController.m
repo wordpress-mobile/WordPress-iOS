@@ -83,15 +83,15 @@
     activityView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
     [cell.contentView addSubview:activityView];
     [activityView release];    
-	
-    
-	return cell;
+
+    return cell;
 }
 
 - (void)dealloc {
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"kNetworkReachabilityChangedNotification" object:nil];
-	
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"AsynchronousPostIsPosted" object:nil];
+
 	[postDetailEditController release];
 	[PostDetailViewController release];
 	[super dealloc];
@@ -175,7 +175,7 @@
 		[[cell contentView] bringSubviewToFront:bLabel];
 		
 		return cell;
-	}
+	}       
 	else 	//post cell
 	{
 		static NSString *postsTableRowId = @"postsTableRowId";
@@ -187,7 +187,7 @@
 		}
 		
 		BlogDataManager *dm = [BlogDataManager sharedDataManager];
-        NSCharacterSet *whitespaceCS = [NSCharacterSet whitespaceCharacterSet];
+		NSCharacterSet *whitespaceCS = [NSCharacterSet whitespaceCharacterSet];
 		
 		if ( [dm countOfPostTitles] ) 
 		{
@@ -210,26 +210,30 @@
 			NSDate *date = [currentPost valueForKey:@"date_created_gmt"];
 			label = (UILabel *)[cell viewWithTag:DATE_TAG];
 			label.text = [dateFormatter stringFromDate:date];
-            
-			//            WPLog(@"The Indicator View %@", [cell viewWithTag:201]);            
-			WPLog(@"post  (%@)",currentPost);
-			if([[currentPost valueForKey:@"async_post"] boolValue])
-			{
+
+			UIActivityIndicatorView *aView = (UIActivityIndicatorView*)[cell viewWithTag:201];
+			aView.hidden = YES;
+			if([aView isAnimating]){
+				[aView stopAnimating];
+			}
+			//to setback disclosure button in place of lock image.
+			int aSyncPostVal = [[currentPost valueForKey:@"async_post"] intValue];
+			UIView *view = cell.accessoryView;
+			if([view isKindOfClass:[UIImageView class]] && aSyncPostVal==0){
+				[cell setAccessoryView:nil];
+			}
+			if(aSyncPostVal == 1)
+			 {
 				WPLog(@"Asynchronous Post Name (%@)",[currentPost valueForKey:@"title"]);
-				UIActivityIndicatorView *aView = (UIActivityIndicatorView*)[cell viewWithTag:201];
 				aView.hidden = NO;
 				[aView startAnimating];
-				
-				//for Lock image
+				 //for Lock image
 				UIImageView *lockImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"lock.png"]];
 				cell.accessoryView = lockImg;
 				[lockImg release];
-			} else {
-				UIActivityIndicatorView *aView = (UIActivityIndicatorView*)[cell viewWithTag:201];
-				aView.hidden = YES;
-				[aView stopAnimating];
-			}
-        }
+						 
+			 }
+		}
 		return cell;		
 	}
 }
@@ -241,9 +245,9 @@
 }
 
 - (UITableViewCellAccessoryType)tableView:(UITableView *)tv accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
-     return UITableViewCellAccessoryDisclosureIndicator;
-//    if(indexPath.row == 4)
-//        return UITableViewCellAccessoryNone;
+
+    WPLog(@"accessoryTypeForRowWithIndexPath %d",indexPath.row);
+    return UITableViewCellAccessoryDisclosureIndicator; 
 }
 
 - (void)viewDidLoad {
@@ -252,11 +256,11 @@
 	// Observe the kNetworkReachabilityChangedNotification. When that notification is posted, the
     // method "reachabilityChanged" will be called. 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];	
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableViewAfterPostSaved:) name:@"AsynchronousPostIsPosted" object:nil];
 }
 
 - (void)reachabilityChanged
 {
-	
 	WPLog(@"reachabilityChanged ....");
 	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
 	
@@ -272,6 +276,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
+    //R 
+    
+    
+    //if(indexPath.row == 1)
+//    {
+//        return;
+//    }
+  
 	if( !connectionStatus && indexPath.row != 0 )
 	{
 		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
@@ -305,25 +317,34 @@
 	}
 	else
 	{
-		BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
+        BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
+
+        id currentPost = [dataManager postTitleAtIndex:indexPath.row-1];
+        if([[currentPost valueForKey:@"async_post"] intValue]==1)
+            return;
+        
 		[dataManager makePostAtIndexCurrent:indexPath.row-1];
 		
 		self.navigationItem.rightBarButtonItem = nil;
 		self.postDetailViewController.hasChanges = NO; 
 		self.postDetailViewController.mode = 1; 
 		[[self navigationController] pushViewController:self.postDetailViewController animated:YES];
-	}	
-}
+	}
+    WPLog(@"Pushing Completed");
+    //[self downloadRecentPosts:nil];
+ }
+
 
 - (void)viewWillAppear:(BOOL)animated {
 	
 	
 	WPLog(@"PostsList:viewWillAppear");
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	
+	[dm postTitlesForBlog:[dm currentBlog]];
 	dm.isLocaDraftsCurrent = NO;
 	[dm loadPostTitlesForCurrentBlog];
 	
+    //WPLog(@" ********* POSTTILES LIST IS %@",[dm postTitlesList]);
 	// we retain this controller in the caller (RootViewController) so load view does not get called 
 	// everytime we navigate to the view
 	// need to update the prompt and the title here as well as in loadView	
@@ -412,7 +433,17 @@
 	self.navigationItem.rightBarButtonItem = nil;
 }
 
-
+- (void)updatePostsTableViewAfterPostSaved:(NSNotification *)notification
+{
+    NSDictionary *postIdsDict=[notification userInfo];
+    BlogDataManager *dm = [BlogDataManager sharedDataManager]; 
+    [dm updatePostsTitlesFileAfterPostSaved:postIdsDict];
+      
+    
+ //   WPLog(@"****** postIdsDict is %@",postIdsDict);
+    
+     [postsTableView reloadData];               
+}
 - (IBAction)downloadRecentPosts:(id)sender {
 	
 	WPLog(@"PostsList: Downloading RecentPosts");

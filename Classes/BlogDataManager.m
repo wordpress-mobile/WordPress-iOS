@@ -66,7 +66,7 @@ static BlogDataManager *sharedDataManager;
 
 @synthesize blogFieldNames, blogFieldNamesByTag, blogFieldTagsByName, 
 pictureFieldNames, postFieldNames, postFieldNamesByTag, postFieldTagsByName,
-postTitleFieldNames, postTitleFieldNamesByTag, postTitleFieldTagsByName,
+postTitleFieldNames, postTitleFieldNamesByTag, postTitleFieldTagsByName,unsavedPostsCount,
 currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLocaDraftsCurrent, currentPostIndex, currentDraftIndex;
 
 
@@ -258,7 +258,10 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 - (void)addAsyncOperation:(SEL)anOperation withArg:(id)anArg
 {	
-	if( ![self respondsToSelector:anOperation] )
+	WPLog(@" addAsyncOperation :anOperation .... ");
+    
+    
+    if( ![self respondsToSelector:anOperation] )
 	{
 		WPLog(@"ERROR: %@ can't respond to the Operation %@.", @"Blog Data Manager", NSStringFromSelector(anOperation));
 		return;
@@ -1254,7 +1257,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	if([fm fileExistsAtPath:postTitlesPath])
 	{
 		newPostTitlesList = [NSArray arrayWithContentsOfFile:postTitlesPath];
-	} else {
+    } else {
 		newPostTitlesList = [NSMutableArray arrayWithCapacity:30];
 	}
 	
@@ -1269,6 +1272,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		// add blogid and blog_host_name to post
 		[post setValue:[blog valueForKey:@"blogid"] forKey:@"blogid"];
 		[post setValue:[blog valueForKey:@"blog_host_name"] forKey:@"blog_host_name"];
+
 		
 		// Check if the post already exists 
 		// yes: check if a local draft exists
@@ -1332,6 +1336,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 
+
 	[self saveBlogData];
 
 //	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
@@ -1390,7 +1395,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	
 	NSString *blogsArchiveFilePath = [currentDirectoryPath stringByAppendingPathComponent:@"blogs.archive"];
-	
 	// Empty blogs list may signify all blogs at launch were deleted;  
 	// check for existence of prior archive before saving
 	if ([blogsList count] || ([[NSFileManager defaultManager] fileExistsAtPath:blogsArchiveFilePath])) {
@@ -1840,7 +1844,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		self->postTitleFieldNames = [NSArray arrayWithObjects:@"local_status", @"dateCreated", @"blogid",  @"blog_host_name", 
 														@"blogName", @"postid", @"title", @"authorid", @"wp_author_display_name", @"status", 
 														@"mt_excerpt", @"mt_keywords", @"date_created_gmt", 
-														@"newcomments", @"totalcomments",nil];
+														@"newcomments", @"totalcomments",@"async_post",nil];
 		[postTitleFieldNames retain];
 		
 	}
@@ -1866,11 +1870,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		NSNumber *tag12 = [NSNumber numberWithInt:112];
 		NSNumber *tag13 = [NSNumber numberWithInt:113];
 		NSNumber *tag14 = [NSNumber numberWithInt:114];
-				
+		NSNumber *tag15 = [NSNumber numberWithInt:115];				
 		
 		
 		NSArray *tags = [NSArray arrayWithObjects:tag0, tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, 
-						 tag9, tag10, tag11, tag12, tag13,tag14, nil];
+						 tag9, tag10, tag11, tag12, tag13,tag14,tag15,nil];
 		self->postTitleFieldNamesByTag = [NSDictionary dictionaryWithObjects:[self postTitleFieldNames] forKeys:tags];
 		
 		[postTitleFieldNamesByTag retain];
@@ -1899,10 +1903,12 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		NSNumber *tag12 = [NSNumber numberWithInt:112];
 		NSNumber *tag13 = [NSNumber numberWithInt:113];
 		NSNumber *tag14 = [NSNumber numberWithInt:114];
+   		NSNumber *tag15 = [NSNumber numberWithInt:115];
+
 		
 		
 		NSArray *tags = [NSArray arrayWithObjects:tag0, tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, 
-						 tag9, tag10, tag11, tag12, tag13, tag14, nil];
+						 tag9, tag10, tag11, tag12, tag13, tag14,tag15, nil];
 		self->postTitleFieldTagsByName = [NSDictionary dictionaryWithObjects:tags forKeys:[self postTitleFieldNames]];
 		
 		[postTitleFieldTagsByName retain];
@@ -1918,7 +1924,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *postTitlesFilePath = [self pathToPostTitles:aBlog];
 	if ([[NSFileManager defaultManager] fileExistsAtPath:postTitlesFilePath]) 
 	{
-		return [NSMutableArray arrayWithContentsOfFile:postTitlesFilePath];
+
+        return [NSMutableArray arrayWithContentsOfFile:postTitlesFilePath];
 	}
 
 	return [NSMutableArray array];
@@ -2113,7 +2120,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 - (NSDictionary *)postTitleAtIndex:(NSUInteger)theIndex {
 	
-	return [postTitlesList objectAtIndex:theIndex];
+    
+    return [postTitlesList objectAtIndex:theIndex];
 	
 }
 
@@ -2166,7 +2174,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 								@"slug", @"wp_password", @"authorid", @"status", 
 								@"mt_excerpt", @"mt_text_more", @"mt_keywords", 
 								@"not_used_allow_comments", @"link_to_comments", @"not_used_allow_pings",@"dateUpdated", 
-								@"blogid", @"blog_host_name", @"wp_author_display_name",@"date_created_gmt", nil];
+								@"blogid", @"blog_host_name", @"wp_author_display_name",@"date_created_gmt",@"async_post", nil];
 		[postFieldNames retain];
 		
 	}
@@ -2200,10 +2208,12 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		NSNumber *tag19 = [NSNumber numberWithInt:119];
 		NSNumber *tag20 = [NSNumber numberWithInt:120];
 		NSNumber *tag21 = [NSNumber numberWithInt:121];
+		NSNumber *tag22 = [NSNumber numberWithInt:122];
+
 		
 		
 		NSArray *tags = [NSArray arrayWithObjects:tag0, tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, 
-						 tag9, tag10, tag11, tag12, tag13, tag14, tag15, tag16,tag17,tag18, tag19, tag20, tag21,  nil];
+						 tag9, tag10, tag11, tag12, tag13, tag14, tag15, tag16,tag17,tag18, tag19, tag20, tag21,tag22,  nil];
 		self->postFieldNamesByTag = [NSDictionary dictionaryWithObjects:[self postFieldNames] forKeys:tags];
 		
 		[postFieldNamesByTag retain];
@@ -2253,6 +2263,57 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 
 #pragma mark Post
+- (NSString *)savePostsFileWithAsynPostFlag:(NSMutableDictionary *)postDict{
+    BlogDataManager *dm = [BlogDataManager sharedDataManager];
+    [postDict setValue:[NSNumber numberWithInt:1] forKey:@"async_post"];
+    NSDictionary *blogDict=[dm currentBlog];
+    NSMutableDictionary *postTitleDict=[[NSMutableDictionary alloc]init];
+    [postTitleDict setValue:[NSNumber numberWithInt:1] forKey:@"async_post"]; 
+    [postTitleDict setValue:[blogDict valueForKey:@"blogid"] forKey:@"blogid"]; 
+    [postTitleDict setValue:[blogDict valueForKey:@"blog_host_name"] forKey:@"blog_host_name"]; 
+    [postTitleDict setValue:@"Original" forKey:@"local_status"]; 
+    [postTitleDict setValue:[blogDict valueForKey:@"blogName"] forKey:@"blogName"]; 
+    [postTitleDict setValue:[postDict valueForKey:@"date_created_gmt"] forKey:@"date_created_gmt"];
+    [postTitleDict setValue:[postDict valueForKey:@"mt_excerpt"] forKey:@"mt_excerpt"];  
+    [postTitleDict setValue:[postDict valueForKey:@"mt_keywords"] forKey:@"mt_keywords"];  
+    [postTitleDict setValue:[postDict valueForKey:@"post_status"] forKey:@"post_status"];
+    NSString *postId=[postDict valueForKey:@"postid"];
+    if(postId==nil ||[postId isEqual:@""]){  
+        postId=[NSString stringWithFormat:@"n%d",[dm unsavedPostsCount]];
+        [dm setUnsavedPostsCount:[dm unsavedPostsCount]+1];
+     }
+  
+    [postDict setValue:postId forKey:@"postid"];
+    [postTitleDict setValue:postId forKey:@"postid"];  
+    
+    [postTitleDict setValue:[postDict valueForKey:@"title"] forKey:@"title"];  
+    [postTitleDict setValue:[postDict valueForKey:@"wp_author_display_name"] forKey:@"wp_author_display_name"];  
+    [postTitleDict setValue:@"" forKey:@"wp_authorid"];  
+    NSMutableArray *newPostTitlesList = [NSMutableArray arrayWithContentsOfFile:[self pathToPostTitles:[dm currentBlog]]];
+	
+	int index = [[newPostTitlesList valueForKey:@"postid"] indexOfObject:postId];
+//	WPLog(@"index %d", index);
+	if( index >= 0 && index < [newPostTitlesList count] )
+	{
+		[newPostTitlesList removeObjectAtIndex:index];
+	}
+    [newPostTitlesList addObject:postTitleDict];
+    NSSortDescriptor *dateCreatedSortDescriptor =  [[NSSortDescriptor alloc] 
+                                                        initWithKey:@"date_created_gmt" ascending:NO];
+    NSArray *sortDescriptors = [NSArray arrayWithObjects:dateCreatedSortDescriptor, nil];
+    [newPostTitlesList sortUsingDescriptors:sortDescriptors];
+    [dateCreatedSortDescriptor release];
+    if( !( index >= 0 && index < [newPostTitlesList count] ) ) //not existing post, new post
+	{
+		[[dm currentBlog] setObject:[NSNumber numberWithInt:[newPostTitlesList count]] forKey:@"totalposts"];
+		[[dm currentBlog] setObject:[NSNumber numberWithInt:[[[dm currentBlog] valueForKey:@"newposts"] intValue]+1] forKey:@"newposts"];
+	}    
+      
+    //[postDict writeToFile:[dm pathToPost:postDict forBlog:[dm currentBlog]] atomically:YES];
+    [postTitleDict release]; 
+	[newPostTitlesList writeToFile:[self pathToPostTitles:[self currentBlog]]  atomically:YES];
+    return postId;
+}
 
 - (NSInteger)countOfPosts {
 	return 0;
@@ -2527,9 +2588,9 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 								 @"", @"", @"", @"draft", 
 								 @"", @"", @"", 
 								 @"", @"", @"", @"", 
-								 blogid, blogHost, @"", now,
+								 blogid, blogHost, @"", now,@"",
 								 nil];
-	
+	NSLog(@"[self postFieldNames] is (%@)  -- count is %d",[self postFieldNames],[[self postFieldNames] count]);
 	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjects:postInitValues  forKeys:[self postFieldNames]];
 	
 	[dict setObject:xmlrpc forKey:@"xmlrpc"];
@@ -2553,16 +2614,20 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[dict setObject:@"" forKey:@"mt_keywords"];
 	[dict setObject:[NSNumber numberWithInt:0] forKey:@"not_used_allow_pings"];
 	[dict setObject:@"" forKey:@"mt_excerpt"];
+    WPLog(@" Make New Post ............");
+    [dict setObject:[NSNumber numberWithInt:0] forKey:@"async_post"];
 	[dict setObject:[NSNumber numberWithInt:0] forKey:@"not_used_allow_comments"];
 	[dict setObject:@"" forKey:@"mt_keywords"];
 	
 	NSNumber *value = [currentBlog valueForKey:kResizePhotoSetting];
-	if ( value ) {
+	if ( !value ) {
 		value = [NSNumber numberWithInt:1];
 	}
 	[dict setObject:value forKey:kResizePhotoSetting];
+    
 	// setCurrentPost will release current reference and make a mutable copy of this one
 	[self setCurrentPost:dict];
+    //WPLog(@" The current Post is ........ %@ ",dict);
 	
 	// reset the currentPostIndex to nil;
 	currentPostIndex = -1;
@@ -2745,8 +2810,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[post setValue:[aBlog valueForKey:@"blogid"] forKey:@"blogid"];
 	[post setValue:[aBlog valueForKey:@"blog_host_name"] forKey:@"blog_host_name"];
 	[post setValue:@"original" forKey:@"local_status"];
-
 	id posttile = [self postTitleForPost:post];
+        [posttile setValue:[NSNumber numberWithInt:0] forKey:@"async_post"];
 	NSMutableArray *newPostTitlesList = [NSMutableArray arrayWithContentsOfFile:[self pathToPostTitles:aBlog]];
 	
 	int index = [[newPostTitlesList valueForKey:@"postid"] indexOfObject:postid];
@@ -2755,7 +2820,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	{
 		[newPostTitlesList removeObjectAtIndex:index];
 	}
-	
 	[newPostTitlesList addObject:posttile];
 	
 	NSSortDescriptor *dateCreatedSortDescriptor =  [[NSSortDescriptor alloc] 
@@ -2770,19 +2834,46 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		[aBlog setObject:[NSNumber numberWithInt:[[aBlog valueForKey:@"newposts"] intValue]+1] forKey:@"newposts"];
 	}
 
-	[post writeToFile:[self pathToPost:post forBlog:aBlog] atomically:YES]; ;
+    [post setValue:[NSNumber numberWithInt:0] forKey:@"async_post"];
+    [post writeToFile:[self pathToPost:post forBlog:aBlog] atomically:YES]; ;
 	[newPostTitlesList writeToFile:[self pathToPostTitles:aBlog]  atomically:YES];
 	
 	return post;
 }
+- (void)updatePostsTitlesFileAfterPostSaved:(NSMutableDictionary *)dict{
 
+    NSString *savedPostId=[dict valueForKey:@"savedPostId"];
+    NSString *originalPostId=[dict valueForKey:@"originalPostId"];
+    int equalPostIds=0;
+    if([savedPostId isEqualToString:originalPostId])
+        equalPostIds=1;
+ 
+    NSString *postTitlesPath = [self pathToPostTitles:[self currentBlog]];
+    NSMutableArray *postsArray=[NSMutableArray arrayWithContentsOfFile:postTitlesPath];
+    int postsCount=[postsArray count];
+    for(int i=0;i<postsCount;i++)
+    {
+        NSMutableDictionary *postDict=[postsArray objectAtIndex:i];
+        if([[postDict valueForKey:@"postid"] isEqualToString:savedPostId]){
+        //WPLog(@"EQUAL POST ID %@ equal values %d",savedPostId,equalPostIds);
+            if(!equalPostIds)
+                [postsArray removeObjectAtIndex:i];
+            else
+                [postDict setValue:[NSNumber numberWithInt:0] forKey:@"async_post"];
+                
+                break;
+          }  
+     }
+     [postsArray writeToFile:postTitlesPath atomically:YES];
+     [self loadPostTitlesForBlog:[self currentBlog]];
+}
 		
 //taking post as arg. will help us in implementing async in future.
 - (BOOL)savePost:(id)aPost
 {
 	WPLog(@"------publishCurrentPost ...");
 	WPLog(@"publishCurrentPost isLocaDraftsCurrent %d currentPostIndex %d currentDraftIndex %d", isLocaDraftsCurrent, currentPostIndex, currentDraftIndex, currentDraftIndex);
-	WPLog(@"current Poist %@", currentPost);
+
 	BOOL successFlag = NO;
 
 	if( ![self appendImagesOfCurrentPostToDescription] )
@@ -2842,7 +2933,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 		if( ![response isKindOfClass:[NSError class]] )
 			successFlag = YES;
-
+        
 		//if it is a draft and we successfully published then remove from drafts.
 		if( isLocaDraftsCurrent && ![response isKindOfClass:[NSError class]] )
 		{
@@ -2860,17 +2951,16 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		}
 		
 		[self fectchNewPost:response formBlog:currentBlog];
+        [currentPost setValue:response forKey:@"postid"];
 	}
 	else
 	{
-//		WPLog(@"currentPost %@", currentPost);
-		[currentPost setValue:[currentPost valueForKey:@"userid"] forKey:@"userid"];
+        [currentPost setValue:[currentPost valueForKey:@"userid"] forKey:@"userid"];
 		
 		NSString *post_status = [currentPost valueForKey:@"post_status"];
 		if ( !post_status || [post_status isEqualToString:@""] ) 
 			post_status = @"publish";
 		[currentPost setObject:post_status forKey:@"post_status"];
-		
 		NSArray *args = [NSArray arrayWithObjects:[currentPost valueForKey:@"postid"],
 						 [currentBlog valueForKey:@"username"],
 						 [currentBlog valueForKey:@"pwd"],
@@ -2883,7 +2973,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		[request setMethod:@"metaWeblog.editPost" withObjects:args];
 		
 		id response = [self executeXMLRPCRequest:request byHandlingError:YES];
-//		WPLog(@"response ... %@", response);
+        WPLog(@"response %@",response);
 		[request release];
 		
 		if( ![response isKindOfClass:[NSError class]] )
@@ -2900,7 +2990,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 }
 
 - (void)resetCurrentPost {
-	currentPost = nil;
+	currentPost = nil;                
 	currentPostIndex = -2;
 }
 
@@ -2940,6 +3030,9 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 	
 	NSString *postid = [aPost valueForKey:@"postid"];
+    
+    WPLog(@"postid  (%@)",postid);
+    
 	[postTitle setObject:(postid?postid:@"") forKey:@"postid"];
 	
 	// <-- TITLE - first 50 non-WS chars of title or description
@@ -2978,7 +3071,13 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	NSString *mtExcerpt = [aPost valueForKey:@"mt_excerpt"];
 	[postTitle setObject:(mtExcerpt?mtExcerpt:@"") forKey:@"mt_excerpt"];
-	
+
+	NSNumber *asyncpost = [aPost valueForKey:@"async_post"];
+    WPLog(@" PostTitleForPost 1(%@)  Post Tiles(%@) ",asyncpost,postTitle);
+	[postTitle setObject:(asyncpost?asyncpost:[NSNumber numberWithInt:0]) forKey:@"async_post"];
+    WPLog(@" PostTitleForPost 2(%@)  ",asyncpost);
+
+    
 	NSString *dateCreatedGMT = [aPost valueForKey:@"date_created_gmt"];
 	[postTitle setObject:(dateCreatedGMT?dateCreatedGMT:@"") forKey:@"date_created_gmt"];
 
@@ -3280,7 +3379,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		return NO;
 	}
 	
-	WPLog(@"commentsList is (%@)",commentsList);
+	//WPLog(@"commentsList is (%@)",commentsList);
 	
 	NSFileManager *defaultFileManager = [NSFileManager defaultManager];
 
@@ -3307,7 +3406,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *pathToCommentTitles = [self pathToCommentTitles:blog];
 	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
 	[commentTitlesArray writeToFile:pathToCommentTitles  atomically:YES];
-	WPLog(@"writing commentTitlesList(%@) to file path (%@)",commentTitlesArray,[self pathToCommentTitles:blog]);
+	//WPLog(@"writing commentTitlesList(%@) to file path (%@)",commentTitlesArray,[self pathToCommentTitles:blog]);
 	
 	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 	return YES;

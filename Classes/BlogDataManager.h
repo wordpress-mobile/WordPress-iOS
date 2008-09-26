@@ -50,6 +50,7 @@
 	NSInteger currentDraftIndex;
 	NSInteger currentBlogIndex;
 	int currentPictureIndex;
+    int unsavedPostsCount;
 	
 	NSString *currentDirectoryPath;
 	
@@ -83,7 +84,7 @@
 @property (nonatomic, assign) BOOL isLocaDraftsCurrent;
 
 @property (nonatomic, copy, readonly) NSMutableDictionary *currentPost;
-
+@property (nonatomic) int unsavedPostsCount;
 #pragma mark Blog metadata
 - (NSArray *)blogFieldNames;
 - (NSDictionary *)blogFieldNamesByTag;
@@ -230,5 +231,6 @@
 - (BOOL) deleteComment:(NSArray *) aComment forBlog:(id)blog;
 - (BOOL) approveComment:(NSArray *) aComment forBlog:(id)blog;
 - (BOOL) unApproveComment:(NSArray *) aComment forBlog:(id)blog;
-
+- (NSString *)savePostsFileWithAsynPostFlag:(NSMutableDictionary *)postDict;
+- (void)updatePostsTitlesFileAfterPostSaved:(NSMutableDictionary *)dict;
 @end

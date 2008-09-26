@@ -19,6 +19,7 @@
 		2A7F72010E70F8C900E48A1F /* WPCommentsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7F72000E70F8C900E48A1F /* WPCommentsDetailViewController.m */; };
 		2A7F722B0E71000000E48A1F /* up.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A7F72290E71000000E48A1F /* up.png */; };
 		2A7F722C0E71000000E48A1F /* down.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A7F722A0E71000000E48A1F /* down.png */; };
+		2A8FF7D90E8A32F7001A9A40 /* lock.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A8FF7D80E8A32F7001A9A40 /* lock.png */; };
 		2F706AA50DFB24C500B43086 /* BlogDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F706AA40DFB24C500B43086 /* BlogDataManager.m */; };
 		2F706C2A0DFB8A5200B43086 /* PostDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F706C290DFB8A5200B43086 /* PostDetailViewController.m */; };
 		2F970F740DF92274006BD934 /* PostsListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F970F730DF92274006BD934 /* PostsListController.m */; };
@@ -111,6 +112,7 @@
 		2A7F72000E70F8C900E48A1F /* WPCommentsDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPCommentsDetailViewController.m; sourceTree = "<group>"; };
 		2A7F72290E71000000E48A1F /* up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = up.png; sourceTree = "<group>"; };
 		2A7F722A0E71000000E48A1F /* down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = down.png; sourceTree = "<group>"; };
+		2A8FF7D80E8A32F7001A9A40 /* lock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lock.png; sourceTree = "<group>"; };
 		2F706AA30DFB24C500B43086 /* BlogDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogDataManager.h; sourceTree = "<group>"; };
 		2F706AA40DFB24C500B43086 /* BlogDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogDataManager.m; sourceTree = "<group>"; };
 		2F706C280DFB8A5200B43086 /* PostDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostDetailViewController.h; sourceTree = "<group>"; };
@@ -391,6 +393,7 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				2A8FF7D80E8A32F7001A9A40 /* lock.png */,
 				EC270CB10E8B5E8200E9AA18 /* commentDelete.png */,
 				C5B001CF0E82991300D13185 /* backNav.png */,
 				C5C273090E7EC9FE0034AA46 /* delete.png */,
@@ -616,6 +619,7 @@
 				C5C272E10E7EC00F0034AA46 /* check.png in Resources */,
 				C5C2730A0E7EC9FE0034AA46 /* delete.png in Resources */,
 				C5B001D00E82991300D13185 /* backNav.png in Resources */,
+				2A8FF7D90E8A32F7001A9A40 /* lock.png in Resources */,
 				EC270CB20E8B5E8200E9AA18 /* commentDelete.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

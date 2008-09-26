@@ -20,5 +20,4 @@
 
 - (IBAction)downloadRecentPosts:(id)sender;
 - (IBAction)showAddPostView:(id)sender;
-
 @end

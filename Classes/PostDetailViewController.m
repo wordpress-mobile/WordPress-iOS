@@ -22,7 +22,7 @@
 @implementation PostDetailViewController
 
 @synthesize postDetailEditController, postPreviewController, postSettingsController, postsListController, hasChanges, mode, tabController, photosListController, saveButton;
-@synthesize leftView;
+@synthesize leftView,asyncOperationsQueue;
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
 	
@@ -71,7 +71,7 @@
 	[postSettingsController release];
 	[photosListController release];
 	[saveButton release];
-	
+	[asyncOperationsQueue release];
 	[autoSaveTimer invalidate];
 	[autoSaveTimer release];
 	autoSaveTimer = nil;
@@ -100,6 +100,8 @@
 
 - (IBAction)saveAction:(id)sender 
 {
+    WPLog(@" ENTRY FOR  POST   ");
+
 	if (!hasChanges) {
 		[self stopTimer];
 		[self.navigationController popViewControllerAnimated:YES]; 
@@ -144,8 +146,14 @@
 	
 	if( [postStatus isEqual:@"Local Draft"] )
 		[self _saveAsDrft];
-	else 
-		[self _savePost:dm.currentPost inBlog:dm.currentBlog];
+	else
+    { 
+        //Need to release params
+        NSMutableArray *params = [[NSMutableArray alloc] initWithObjects:dm.currentPost,dm.currentBlog,nil];
+        //WPLog(@"params Are %@",params);
+        [self addAsyncPostOperation:@selector(_savePostWithBlog:) withArg:params];
+//      [self _savePost:dm.currentPost inBlog:dm.currentBlog];
+    }   
 }
 
 - (void)autoSaveCurrentPost:(NSTimer *)aTimer
@@ -297,20 +305,63 @@
 		[leftView setTitle:@"Cancel"];   
 }
 
-- (void)_savePost:(id)aPost inBlog:(id)aBlog
+- (void)addAsyncPostOperation:(SEL)anOperation withArg:(id)anArg
+{
+    WPLog(@" addAsyncOperation :anOperation ....");
+    if( ![self respondsToSelector:anOperation] )
+	{
+		WPLog(@"ERROR: %@ can't respond to the Operation %@.", @"Blog Data Manager", NSStringFromSelector(anOperation));
+		return;
+	}
+    BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	NSString *postId=[dm savePostsFileWithAsynPostFlag:[anArg objectAtIndex:0]];
+    NSMutableArray *argsArray=[NSMutableArray arrayWithArray:anArg];
+    int count=[argsArray count];
+    [argsArray insertObject:postId atIndex:count];
+	NSInvocationOperation *op = [[NSInvocationOperation alloc] initWithTarget:self selector:anOperation object:argsArray];
+	[asyncOperationsQueue addOperation:op];
+    [op release];
+    
+    hasChanges = NO;
+    [dm removeAutoSavedCurrentPostFile];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+//- (void)_savePost:(id)aPost inBlog:(id)aBlog
+-(void)_savePostWithBlog:(NSMutableArray *)arrayPost
 {	
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+    NSString *postId=[arrayPost lastObject];
+    WPLog(@"Post id is %@",postId);    
+   if( [dm savePost:[arrayPost objectAtIndex:0]])
+	{
+        [self stopTimer];
+        NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
+        [dict setValue:postId forKey:@"savedPostId"];
+        [dict setValue:[[dm currentPost] valueForKey:@"postid"] forKey:@"originalPostId"];
+        
+       	[[NSNotificationCenter defaultCenter] postNotificationName:@"AsynchronousPostIsPosted" object:nil userInfo:dict];
+        [dict release];
+        return;
+     }   
+		hasChanges = YES;
+       
+/*
 	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+//    [dm.currentPost setValue:[NSNumber numberWithInt:1] forKey:@"async_post"];
 	//TODO: helps us in implementing async in future.
-	if( [dm savePost:aPost] )
+//	if( [dm savePost:aPost] )
+	if( [dm savePost:[arrayPost objectAtIndex:0]])
 	{
 		[self removeProgressIndicator];
 		hasChanges = NO;
 		self.navigationItem.rightBarButtonItem = nil;
 		[self stopTimer];
 		[dm removeAutoSavedCurrentPostFile];
-		
-		NSString *statusDesc = [dm statusDescriptionForStatus:[aPost valueForKey:@"post_status"] fromBlog:aBlog];
+        		
+//		NSString *statusDesc = [dm statusDescriptionForStatus:[aPost valueForKey:@"post_status"] fromBlog:aBlog];
+		NSString *statusDesc = [dm statusDescriptionForStatus:[[arrayPost objectAtIndex:0] valueForKey:@"post_status"] fromBlog:[arrayPost objectAtIndex:1]];
 		//		NSString *title = [aPost valueForKey:@"title"];
 		//		title = ( title == nil ? @"" : title );
 		
@@ -327,6 +378,8 @@
 	{
 		[self removeProgressIndicator];
 	}
+*/
+
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -389,8 +442,12 @@
 		saveButton.style = UIBarButtonItemStyleDone;
 		saveButton.action = @selector(saveAction:);
 	} 
+    
+    asyncOperationsQueue = [[NSOperationQueue alloc] init];
+    [asyncOperationsQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
 	
-	// Icons designed by, and included with permission of, IconBuffet | iconbuffet.com
+    
+    // Icons designed by, and included with permission of, IconBuffet | iconbuffet.com
 	
 	NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:5];
 	
@@ -497,7 +554,8 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
-	mode = 3;
+    WPLog(@" RR viewWillDisappear");
+    mode = 3;
 	[postPreviewController stopLoading];
 }
 
