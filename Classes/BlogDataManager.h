@@ -231,6 +231,7 @@
 - (BOOL) deleteComment:(NSArray *) aComment forBlog:(id)blog;
 - (BOOL) approveComment:(NSArray *) aComment forBlog:(id)blog;
 - (BOOL) unApproveComment:(NSArray *) aComment forBlog:(id)blog;
+- (BOOL) spamComment:(NSArray *) aComment forBlog:(id)blog;
 - (NSString *)savePostsFileWithAsynPostFlag:(NSMutableDictionary *)postDict;
 - (void)updatePostsTitlesFileAfterPostSaved:(NSMutableDictionary *)dict;
 @end
