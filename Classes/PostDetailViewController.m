@@ -22,30 +22,25 @@
 @implementation PostDetailViewController
 
 @synthesize postDetailEditController, postPreviewController, postSettingsController, postsListController, hasChanges, mode, tabController, photosListController, saveButton;
-@synthesize leftView,asyncOperationsQueue;
+@synthesize leftView;
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
 	
-	if( [viewController.title isEqualToString:@"Photos"])
-	{
+	if( [viewController.title isEqualToString:@"Photos"]){
 		[photosListController refreshData];
 	}
-	if( [viewController.title isEqualToString:@"Preview"])
-	{
+	
+	if( [viewController.title isEqualToString:@"Preview"]){
 		[postPreviewController refreshWebView];
-	}
-	else
-	{
+	}else{
 		[postPreviewController stopLoading];
 	}
 	
-	if( [viewController.title isEqualToString:@"Settings"])
-	{
+	if( [viewController.title isEqualToString:@"Settings"]){
 		[postSettingsController reloadData];
 	}
 	
-	if( [viewController.title isEqualToString:@"Write"])
-	{
+	if( [viewController.title isEqualToString:@"Write"]){
 		[postDetailEditController refreshUIForCurrentPost];
 	}
 	
@@ -54,6 +49,7 @@
 	if( hasChanges ) {
 		if ([[leftView title] isEqualToString:@"Posts"])
 			[leftView setTitle:@"Cancel"];
+		
 		self.navigationItem.rightBarButtonItem = saveButton;
 	}
 }
@@ -71,7 +67,6 @@
 	[postSettingsController release];
 	[photosListController release];
 	[saveButton release];
-	[asyncOperationsQueue release];
 	[autoSaveTimer invalidate];
 	[autoSaveTimer release];
 	autoSaveTimer = nil;
@@ -136,8 +131,7 @@
 		
 	}
 	
-	if( ![dm postDescriptionHasValidDescription:dm.currentPost] )
-	{
+	if( ![dm postDescriptionHasValidDescription:dm.currentPost] ){
 		[self _cancel];
 		return;
 	}
@@ -147,7 +141,7 @@
 	if( [postStatus isEqual:@"Local Draft"] )
 		[self _saveAsDrft];
 	else
-    { 
+	{ 
         //Need to release params
         NSMutableArray *params = [[NSMutableArray alloc] initWithObjects:dm.currentPost,dm.currentBlog,nil];
         //WPLog(@"params Are %@",params);
@@ -159,8 +153,7 @@
 - (void)autoSaveCurrentPost:(NSTimer *)aTimer
 {
 	
-	if( !hasChanges )
-	{
+	if( !hasChanges ){
 		WPLog(@"Returning -- hasChanges is false");
 		return;
 	}
@@ -174,13 +167,10 @@
 
 - (void)startTimer
 {
-	if( autoSaveTimer == nil )
-	{
+	if( autoSaveTimer == nil ){
 		autoSaveTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(autoSaveCurrentPost:) userInfo:nil repeats:YES];
 		[autoSaveTimer retain];
-	}
-	else
-	{
+	}else{
 		WPLog(@"ERROR: There exits a timer, trying to create another timer object.");
 	}
 }
@@ -273,8 +263,7 @@
 	[dm removeAutoSavedCurrentPostFile];
 	
 	//new post is saving as draft.
-	if( postIndex == -1 )
-	{
+	if( postIndex == -1 ){
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Draft Saved"
 														message:@"Your post has been saved to the Local Drafts folder."
 													   delegate:self
@@ -282,9 +271,7 @@
 											  otherButtonTitles:@"OK", nil];
 		[alert show];
 		[alert release];		
-	}
-	else 
-	{
+	}else {
 		[self.navigationController popViewControllerAnimated:YES];	
 	}	
 }
@@ -308,8 +295,7 @@
 - (void)addAsyncPostOperation:(SEL)anOperation withArg:(id)anArg
 {
     WPLog(@" addAsyncOperation :anOperation ....");
-    if( ![self respondsToSelector:anOperation] )
-	{
+    if( ![self respondsToSelector:anOperation] ){
 		WPLog(@"ERROR: %@ can't respond to the Operation %@.", @"Blog Data Manager", NSStringFromSelector(anOperation));
 		return;
 	}
@@ -319,6 +305,7 @@
     int count=[argsArray count];
     [argsArray insertObject:postId atIndex:count];
 	NSInvocationOperation *op = [[NSInvocationOperation alloc] initWithTarget:self selector:anOperation object:argsArray];
+	NSOperationQueue *asyncOperationsQueue=[dm asyncPostsOperationsQueue];
 	[asyncOperationsQueue addOperation:op];
     [op release];
     
@@ -333,8 +320,7 @@
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
     NSString *postId=[arrayPost lastObject];
     WPLog(@"Post id is %@",postId);    
-   if( [dm savePost:[arrayPost objectAtIndex:0]])
-	{
+   if( [dm savePost:[arrayPost objectAtIndex:0]]){
         [self stopTimer];
         NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
         [dict setValue:postId forKey:@"savedPostId"];
@@ -349,7 +335,7 @@
 /*
 	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-//    [dm.currentPost setValue:[NSNumber numberWithInt:1] forKey:@"async_post"];
+//    [dm.currentPost setValue:[NSNumber numberWithInt:1] forKey:kAsyncPostFlag];
 	//TODO: helps us in implementing async in future.
 //	if( [dm savePost:aPost] )
 	if( [dm savePost:[arrayPost objectAtIndex:0]])
@@ -443,11 +429,7 @@
 		saveButton.action = @selector(saveAction:);
 	} 
     
-    asyncOperationsQueue = [[NSOperationQueue alloc] init];
-    [asyncOperationsQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
-	
-    
-    // Icons designed by, and included with permission of, IconBuffet | iconbuffet.com
+   // Icons designed by, and included with permission of, IconBuffet | iconbuffet.com
 	
 	NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:5];
 	
@@ -504,8 +486,7 @@
 	
 	[array release];
 	
-	if(!leftView)
-	{   
+	if(!leftView){   
         leftView = [WPNavigationLeftButtonView createView];
         [leftView setTitle:@"Posts"];
     }   
@@ -516,15 +497,13 @@
 	
     [leftView setTarget:self withAction:@selector(cancelView:)];
 	if(hasChanges == YES) {
-		if ([[leftView title] isEqualToString:@"Posts"])
-        {
+		if ([[leftView title] isEqualToString:@"Posts"]){
             [leftView setTitle:@"Cancel"];
             WPLog(@" The Title is Set to Cancel");
         }
 		
 		self.navigationItem.rightBarButtonItem = saveButton;
-	}
-	else {
+	}else {
         [leftView setTitle:@"Posts"];
         WPLog(@" The Title is Set to Posts");
         self.navigationItem.rightBarButtonItem = nil;
@@ -571,11 +550,10 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     if(tabController.selectedIndex == 0) // Only for Write Screen
-    {
+	{
 		WPLog(@"shouldAutorotateToInterfaceOrientation : Auto rotation is called..");
         return (interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight ||
-                interfaceOrientation == UIInterfaceOrientationPortrait);
-		
+                interfaceOrientation == UIInterfaceOrientationPortrait);		
     }
     return NO;
 }

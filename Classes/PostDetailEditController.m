@@ -233,7 +233,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 {
 	[self populateSelectionsControllerWithStatuses];
 }
-
+#pragma mark - view methods
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
@@ -251,8 +251,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	tagsTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 	[contentView bringSubviewToFront:textView];
 	
-	if(!leftView)
-	{   
+	if(!leftView){   
         leftView = [WPNavigationLeftButtonView createView];
         [leftView setTitle:@"Posts"];
     }   
@@ -301,8 +300,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 {
 	if ( [textView.text length] == 0 ){
 		textViewPlaceHolderField.hidden = NO;
-	}
-	else {
+	}else {
 		textViewPlaceHolderField.hidden = YES;
 	}	
 }
@@ -342,9 +340,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	}
 }
 
-- (void)textViewDidChange:(UITextView *)textView {
+- (void)textViewDidChange:(UITextView *)aTextView {
 	postDetailViewController.hasChanges = YES;
 	[self updateTextViewPlacehoderFieldStatus];
+	
+	if(![aTextView hasText])
+		return;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)aTextView
@@ -354,12 +355,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		isTextViewEditing = NO;
 		
 		[self bringTextViewDown];
-		if (postDetailViewController.hasChanges == YES)
-        {
+		if (postDetailViewController.hasChanges == YES){
 			[leftView setTitle:@"Cancel"];
-        }
-        else
-        {
+        }else{
             [leftView setTitle:@"Posts"];
 		}
         UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:leftView];
@@ -381,7 +379,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-	
 	if( textField == titleTextField )
 		[[BlogDataManager sharedDataManager].currentPost setValue:textField.text forKey:@"title"];
 	else if( textField == tagsTextField )
@@ -453,22 +450,17 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			[self pickPhotoFromPhotoLibrary:nil];
 		else
 			[self pickPhotoFromCamera:nil];		
-	}
-	else 
-	{
+	}else {
 		if (buttonIndex == 0) //add 
 		{
 			[self useImage:currentChoosenImage];
-		}
-		else if (buttonIndex == 1) //add and return
+		}else if (buttonIndex == 1) //add and return
 		{
 			[self useImage:currentChoosenImage];
 			//	[picker popViewControllerAnimated:YES];
 			UIImagePickerController* picker = [self pickerController];
 			[[picker parentViewController] dismissModalViewControllerAnimated:YES];
-		}
-		else 
-		{
+		}else {
 			//do nothing
 		}
 		[currentChoosenImage release];

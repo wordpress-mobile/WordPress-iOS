@@ -39,4 +39,5 @@
 - (IBAction)deleteSelectedComments:(id)sender;
 - (IBAction)approveSelectedComments:(id)sender;
 - (IBAction)unapproveSelectedComments:(id)sender;
+- (IBAction)spamSelectedComments:(id)sender;
 @end

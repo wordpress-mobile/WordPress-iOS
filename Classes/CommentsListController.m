@@ -101,8 +101,7 @@
 													 target:self action:@selector(editComments:)];
 	self.navigationItem.rightBarButtonItem = editButtonItem;
 		
-		[editButtonItem setEnabled:([commentsArray count]>0)];
-	
+	[editButtonItem setEnabled:([commentsArray count]>0)];
 }
 
 - (void)reachabilityChanged
@@ -123,6 +122,7 @@
 	[deleteButton setEnabled:editMode];
 	[approveButton setEnabled:editMode];
 	[unapproveButton setEnabled:editMode];
+	[spamButton setEnabled:editMode];
 
 	editMode = !editMode;
 	[commentsTableView reloadData];
@@ -132,8 +132,6 @@
 	// Return YES for supported orientations
 	return NO;
 }
-
-
 
 - (void)didReceiveMemoryWarning {
 	[super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
@@ -175,7 +173,8 @@
 	self.navigationItem.rightBarButtonItem = editButtonItem;
 	[apool release];
 }
-
+#pragma mark -
+#pragma mark Action methods
 - (IBAction)downloadRecentComments:(id)sender {
 	
 	if( !connectionStatus ){
@@ -242,9 +241,16 @@
 	[deleteAlert setTag:3];  // for UIAlertView Delegate to handle which view is popped.
 	[deleteAlert show];
 }
+
+- (IBAction)spamSelectedComments:(id)sender{
+	WPLog(@"spamSelectedComments");
+	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Spam Comments" message:@"Are you sure you want to Spam this Comments?" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Cancel", nil];                                                
+	[deleteAlert setTag:4];  // for UIAlertView Delegate to handle which view is popped.
+	[deleteAlert show];
+}
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-	
     WPLog(@"The Alet name %d",[alertView tag]);
 	
 	//optimised code but need to comprimise at Alert messages.....Common message for all @"Operation is not supported now."
@@ -252,11 +258,11 @@
 		
 		if ( ![[Reachability sharedReachability] remoteHostStatus] != NotReachable ) {
 			
-			UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
+			UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:@"No connection to host."
 															 message:@"Operation is not supported now."
 															delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-			[alert1 show];
-			[alert1 release];		
+			[connectionFailAlert show];
+			[connectionFailAlert release];		
 			return;
 		}  
 		
@@ -271,8 +277,10 @@
 			result = [sharedDataManager approveComment:selectedItems forBlog:[sharedDataManager currentBlog]];
 		} else if([alertView tag] == 3){
 			result = [sharedDataManager unApproveComment:selectedItems forBlog:[sharedDataManager currentBlog]];
+		}else if([alertView tag] == 4){
+			result = [sharedDataManager spamComment:selectedItems forBlog:[sharedDataManager currentBlog]];
 		}
-		
+			
 		if ( result ) {
 			[sharedDataManager loadCommentTitlesForCurrentBlog];
 			[self.navigationController popViewControllerAnimated:YES];
@@ -317,6 +325,41 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	
 	return [NSString stringWithFormat:@"x-%f,y-%f,width-%f,heigh-%f",rect.origin.x,rect.origin.y,rect.size.width,rect.size.height];
 }
+-(void)commentSelected:(id)sender
+{
+	int toggleTag = [sender tag];
+	NSString *str=[NSString stringWithFormat:@"%d",toggleTag];
+	
+	NSDictionary *dict  = [commentsDict valueForKey:str];
+	if ( [selectedComments containsObject:dict] ) {
+		[selectedComments removeObject:dict];
+		[sender setImage:[UIImage imageNamed:@"uncheck.png"] forState:UIControlStateNormal];  
+	} else {
+		[selectedComments addObject:dict];
+        [sender setImage:[UIImage imageNamed:@"check.png"] forState:UIControlStateNormal];  
+	}
+	int count=[selectedComments count];
+	
+	if(count){
+		[approveButton setTitle:[NSString stringWithFormat:@"Approve (%d)",count]];
+		[unapproveButton setTitle:[NSString stringWithFormat:@"Unapprove (%d)",count]];
+		[spamButton setTitle:[NSString stringWithFormat:@"Spam (%d)",count]];
+		[deleteButton setEnabled:YES];
+		[approveButton setEnabled:YES];
+		[unapproveButton setEnabled:YES];
+		[spamButton setEnabled:YES];
+	}else{
+		[approveButton setTitle:@"Approve"];
+		[unapproveButton setTitle:@"Unapprove"];
+		[spamButton setTitle:@"Spam"];
+		[deleteButton setEnabled:NO];
+		[approveButton setEnabled:NO];
+		[unapproveButton setEnabled:NO];
+		[spamButton setEnabled:NO];
+	}
+}
+#pragma mark -
+#pragma mark tableview methods
 
 - (UITableViewCell *)tableviewCellWithReuseIdentifier:(NSString *)identifier withCategoryId:(int)categoryId {
 	
@@ -378,39 +421,6 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	
 	return cell;
 }
-
--(void)commentSelected:(id)sender
-{
-   int toggleTag = [sender tag];
-	NSString *str=[NSString stringWithFormat:@"%d",toggleTag];
-	
-	NSDictionary *dict  = [commentsDict valueForKey:str];
-	if ( [selectedComments containsObject:dict] ) {
-		[selectedComments removeObject:dict];
-		[sender setImage:[UIImage imageNamed:@"uncheck.png"] forState:UIControlStateNormal];  
-	} else {
-		[selectedComments addObject:dict];
-        [sender setImage:[UIImage imageNamed:@"check.png"] forState:UIControlStateNormal];  
-	}
-	int count=[selectedComments count];
-	
-	if(count){
-		[approveButton setTitle:[NSString stringWithFormat:@"Approve (%d)",count]];
-		[unapproveButton setTitle:[NSString stringWithFormat:@"Unapprove (%d)",count]];
-		[spamButton setTitle:[NSString stringWithFormat:@"Spam (%d)",count]];
-		[deleteButton setEnabled:YES];
-		[approveButton setEnabled:YES];
-		[unapproveButton setEnabled:YES];
-	}else{
-		[approveButton setTitle:@"Approve"];
-		[unapproveButton setTitle:@"Unapprove"];
-		[spamButton setTitle:@"Spam"];
-		[deleteButton setEnabled:NO];
-		[approveButton setEnabled:NO];
-		[unapproveButton setEnabled:NO];
-	}
-}
-
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	return 1;

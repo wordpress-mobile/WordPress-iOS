@@ -67,29 +67,23 @@
 	return NO;
 }
 
-
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
     // Release anything that's not essential, such as cached data
 }
-
+#pragma mark action methods
 - (void)segmentAction:(id)sender
 {
-	//- (void)setEnabled:(BOOL)enabled forSegmentAtIndex:(NSUInteger)segment
-    WPLog(@" The count %d  and current index %d object %@",[commentDetails count], currentIndex,sender);
+	WPLog(@" The count %d  and current index %d object %@",[commentDetails count], currentIndex,sender);
     if(currentIndex > -1)
 	{
-        if((currentIndex >0) && [sender selectedSegmentIndex] == 0)
-        {
-            WPLog(@"WPLog :segmentAction Tag:%d",[sender selectedSegmentIndex]);
+		WPLog(@"WPLog :segmentAction Tag:%d",[sender selectedSegmentIndex]);
+        if((currentIndex >0) && [sender selectedSegmentIndex] == 0){          
             [self fillCommentDetails:commentDetails atRow:currentIndex-1];
         }
 		
-		if( (currentIndex < [commentDetails count]-1) && [sender selectedSegmentIndex] == 1)
-        {
-            WPLog(@"WPLog :segmentAction Tag:%d",[sender selectedSegmentIndex]);
-            [self fillCommentDetails:commentDetails atRow:currentIndex+1];
+		if( (currentIndex < [commentDetails count]-1) && [sender selectedSegmentIndex] == 1){
+             [self fillCommentDetails:commentDetails atRow:currentIndex+1];
         }
 		
 		[sender setEnabled:TRUE forSegmentAtIndex:0];
@@ -100,7 +94,6 @@
 		else if(currentIndex == [commentDetails count]-1)
 			[sender setEnabled:FALSE forSegmentAtIndex:1];
 	}
-	
 }
 
 - (void)deleteComment:(id)sender
@@ -127,6 +120,13 @@
 	[deleteAlert show];
 }
 
+- (void)spamComment:(id)sender
+{
+	WPLog(@"WPLog :spamComment");
+	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Spam Comment" message:@"Are you sure you want to Spam this Comment?" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Cancel", nil];                                                
+	[deleteAlert setTag:4];  // for UIAlertView Delegate to handle which view is popped.
+	[deleteAlert show];
+}
 
 -(void)fillCommentDetails:(NSArray*)comments atRow:(int)row
 {
@@ -155,7 +155,6 @@
     int count = [self.commentDetails count];
     self.navigationItem.title = [NSString stringWithFormat:@"%d of %d",row+1,count];    
 	
-	
 	if ( [commentStatus isEqualToString:@"hold"] ) {	
 		[approveAndUnapproveButtonBar setHidden:NO];
 		[deleteButtonBar setHidden:YES];
@@ -165,11 +164,16 @@
 	}
 	[approveButton setEnabled:NO];
 	[unapproveButton setEnabled:NO];
+	[spamButton1 setEnabled:YES];
+	[spamButton2 setEnabled:YES];
 	if ( [commentStatus isEqualToString:@"hold"] ) {
 		[approveButton setEnabled:YES];
 	
 	}else if([commentStatus isEqualToString:@"approve"]){
 		[unapproveButton setEnabled:YES];
+	}else if([commentStatus isEqualToString:@"spam"]){
+		[spamButton1 setEnabled:NO];
+		[spamButton2 setEnabled:NO];
 	}
 	
 	// WPLog(@" The Values .....  %@ %@ %@ ",author,post_title,date_created_gmt);
@@ -206,7 +210,6 @@
 	//wait incase the other thread did not complete its work.
 	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
 	while (self.navigationItem.rightBarButtonItem == nil){
-		
 		[[NSRunLoop currentRunLoop] runUntilDate:[[NSDate date] addTimeInterval:0.1]];
 	}
 	
@@ -243,12 +246,13 @@
 			result = [sharedDataManager approveComment:selectedComments forBlog:[sharedDataManager currentBlog]];
 		} else if([alertView tag] == 3){
 			result = [sharedDataManager unApproveComment:selectedComments forBlog:[sharedDataManager currentBlog]];
+		}else if([alertView tag] == 4){
+			result = [sharedDataManager spamComment:selectedComments forBlog:[sharedDataManager currentBlog]];
 		}
 		
-//		if ( result ) {
-			[sharedDataManager loadCommentTitlesForCurrentBlog];
-			[self.navigationController popViewControllerAnimated:YES];
-//		}
+		[sharedDataManager loadCommentTitlesForCurrentBlog];
+		[self.navigationController popViewControllerAnimated:YES];
+		
 		[self performSelectorInBackground:@selector(removeProgressIndicator) withObject:nil];
     }
     [alertView autorelease];

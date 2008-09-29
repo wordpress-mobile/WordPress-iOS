@@ -79,7 +79,6 @@
 								<reference key="IBUIToolbar" ref="781067034"/>
 							</object>
 							<object class="IBUIBarButtonItem" id="829162712">
-								<bool key="IBUIEnabled">NO</bool>
 								<string key="IBUITitle">Spam</string>
 								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="781067034"/>
@@ -142,7 +141,6 @@
 								<reference key="IBUIToolbar" ref="612046044"/>
 							</object>
 							<object class="IBUIBarButtonItem" id="53717115">
-								<bool key="IBUIEnabled">NO</bool>
 								<string key="IBUITitle">Spam</string>
 								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="612046044"/>
@@ -156,7 +154,7 @@
 					<object class="IBUILabel" id="892507518">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{6, 20}, {63, 21}}</string>
+						<string key="NSFrame">{{6, 23}, {63, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -438,6 +436,46 @@
 					</object>
 					<int key="connectionID">52</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">spamComment:</string>
+						<reference key="source" ref="53717115"/>
+						<reference key="destination" ref="372490531"/>
+					</object>
+					<int key="connectionID">53</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">spamComment:</string>
+						<reference key="source" ref="829162712"/>
+						<reference key="destination" ref="372490531"/>
+					</object>
+					<int key="connectionID">54</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="181985029"/>
+						<reference key="destination" ref="53717115"/>
+					</object>
+					<int key="connectionID">55</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">spamButton1</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="53717115"/>
+					</object>
+					<int key="connectionID">56</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">spamButton2</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="829162712"/>
+					</object>
+					<int key="connectionID">57</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -461,12 +499,12 @@
 							<reference ref="781067034"/>
 							<reference ref="612046044"/>
 							<reference ref="262849761"/>
-							<reference ref="181985029"/>
 							<reference ref="926542583"/>
 							<reference ref="551948107"/>
 							<reference ref="304260359"/>
 							<reference ref="873087794"/>
 							<reference ref="401294689"/>
+							<reference ref="181985029"/>
 						</object>
 						<reference key="parent" ref="360949347"/>
 					</object>
@@ -692,7 +730,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">52</int>
+			<int key="maxID">57</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -714,10 +752,12 @@
 							<string>approveComment:</string>
 							<string>deleteComment:</string>
 							<string>segmentAction:</string>
+							<string>spamComment:</string>
 							<string>unApproveComment:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -735,6 +775,8 @@
 							<string>commenterNameLabel</string>
 							<string>commentsTextView</string>
 							<string>deleteButtonBar</string>
+							<string>spamButton1</string>
+							<string>spamButton2</string>
 							<string>unapproveButton</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -746,6 +788,8 @@
 							<string>UILabel</string>
 							<string>UITextView</string>
 							<string>UIToolbar</string>
+							<string>UIBarButtonItem</string>
+							<string>UIBarButtonItem</string>
 							<string>UIBarButtonItem</string>
 						</object>
 					</object>

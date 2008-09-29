@@ -22,6 +22,8 @@
 	
 	IBOutlet UIBarButtonItem  *approveButton;
 	IBOutlet UIBarButtonItem  *unapproveButton;
+	IBOutlet UIBarButtonItem  *spamButton1;
+	IBOutlet UIBarButtonItem  *spamButton2;
 	
     BOOL connectionStatus;
     UIBarButtonItem *segmentBarItem;
@@ -36,11 +38,11 @@
 
 
 - (void)segmentAction:(id)sender;
--(void)fillCommentDetails:(NSArray*)comments atRow:(int)row;
-
+- (void)fillCommentDetails:(NSArray*)comments atRow:(int)row;
 
 - (void)deleteComment:(id)sender;
 - (void)approveComment:(id)sender;
 - (void)unApproveComment:(id)sender;
+- (void)spamComment:(id)sender;
 
 @end

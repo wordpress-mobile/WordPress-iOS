@@ -55,6 +55,8 @@
 	NSString *currentDirectoryPath;
 	
 	NSOperationQueue *asyncOperationsQueue;
+	
+	NSOperationQueue *asyncPostsOperationsQueue;
 }
 
 + (BlogDataManager *)sharedDataManager;
@@ -84,6 +86,7 @@
 @property (nonatomic, assign) BOOL isLocaDraftsCurrent;
 
 @property (nonatomic, copy, readonly) NSMutableDictionary *currentPost;
+@property (nonatomic, readonly) NSOperationQueue *asyncPostsOperationsQueue;
 @property (nonatomic) int unsavedPostsCount;
 #pragma mark Blog metadata
 - (NSArray *)blogFieldNames;

@@ -67,7 +67,7 @@ static BlogDataManager *sharedDataManager;
 @synthesize blogFieldNames, blogFieldNamesByTag, blogFieldTagsByName, 
 pictureFieldNames, postFieldNames, postFieldNamesByTag, postFieldTagsByName,
 postTitleFieldNames, postTitleFieldNamesByTag, postTitleFieldTagsByName,unsavedPostsCount,
-currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLocaDraftsCurrent, currentPostIndex, currentDraftIndex;
+currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLocaDraftsCurrent, currentPostIndex, currentDraftIndex,asyncPostsOperationsQueue;
 
 
 
@@ -99,6 +99,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[postFieldTagsByName release];
 	
 	[asyncOperationsQueue release];
+	[asyncPostsOperationsQueue release];
 	[super dealloc];
 }
 
@@ -151,6 +152,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	{
 		asyncOperationsQueue = [[NSOperationQueue alloc] init];
 		[asyncOperationsQueue setMaxConcurrentOperationCount:2];
+		asyncPostsOperationsQueue=[[NSOperationQueue alloc] init];
+		[asyncPostsOperationsQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
 		
 		// Set current directory for Wordpress app
 		NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -1844,7 +1847,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		self->postTitleFieldNames = [NSArray arrayWithObjects:@"local_status", @"dateCreated", @"blogid",  @"blog_host_name", 
 														@"blogName", @"postid", @"title", @"authorid", @"wp_author_display_name", @"status", 
 														@"mt_excerpt", @"mt_keywords", @"date_created_gmt", 
-														@"newcomments", @"totalcomments",@"async_post",nil];
+														@"newcomments", @"totalcomments",kAsyncPostFlag,nil];
 		[postTitleFieldNames retain];
 		
 	}
@@ -2174,7 +2177,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 								@"slug", @"wp_password", @"authorid", @"status", 
 								@"mt_excerpt", @"mt_text_more", @"mt_keywords", 
 								@"not_used_allow_comments", @"link_to_comments", @"not_used_allow_pings",@"dateUpdated", 
-								@"blogid", @"blog_host_name", @"wp_author_display_name",@"date_created_gmt",@"async_post", nil];
+								@"blogid", @"blog_host_name", @"wp_author_display_name",@"date_created_gmt",kAsyncPostFlag, nil];
 		[postFieldNames retain];
 		
 	}
@@ -2265,10 +2268,10 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 #pragma mark Post
 - (NSString *)savePostsFileWithAsynPostFlag:(NSMutableDictionary *)postDict{
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
-    [postDict setValue:[NSNumber numberWithInt:1] forKey:@"async_post"];
+    [postDict setValue:[NSNumber numberWithInt:1] forKey:kAsyncPostFlag];
     NSDictionary *blogDict=[dm currentBlog];
     NSMutableDictionary *postTitleDict=[[NSMutableDictionary alloc]init];
-    [postTitleDict setValue:[NSNumber numberWithInt:1] forKey:@"async_post"]; 
+    [postTitleDict setValue:[NSNumber numberWithInt:1] forKey:kAsyncPostFlag]; 
     [postTitleDict setValue:[blogDict valueForKey:@"blogid"] forKey:@"blogid"]; 
     [postTitleDict setValue:[blogDict valueForKey:@"blog_host_name"] forKey:@"blog_host_name"]; 
     [postTitleDict setValue:@"Original" forKey:@"local_status"]; 
@@ -2615,7 +2618,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[dict setObject:[NSNumber numberWithInt:0] forKey:@"not_used_allow_pings"];
 	[dict setObject:@"" forKey:@"mt_excerpt"];
     WPLog(@" Make New Post ............");
-    [dict setObject:[NSNumber numberWithInt:0] forKey:@"async_post"];
+    [dict setObject:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
 	[dict setObject:[NSNumber numberWithInt:0] forKey:@"not_used_allow_comments"];
 	[dict setObject:@"" forKey:@"mt_keywords"];
 	
@@ -2811,7 +2814,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[post setValue:[aBlog valueForKey:@"blog_host_name"] forKey:@"blog_host_name"];
 	[post setValue:@"original" forKey:@"local_status"];
 	id posttile = [self postTitleForPost:post];
-        [posttile setValue:[NSNumber numberWithInt:0] forKey:@"async_post"];
+        [posttile setValue:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
 	NSMutableArray *newPostTitlesList = [NSMutableArray arrayWithContentsOfFile:[self pathToPostTitles:aBlog]];
 	
 	int index = [[newPostTitlesList valueForKey:@"postid"] indexOfObject:postid];
@@ -2834,7 +2837,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		[aBlog setObject:[NSNumber numberWithInt:[[aBlog valueForKey:@"newposts"] intValue]+1] forKey:@"newposts"];
 	}
 
-    [post setValue:[NSNumber numberWithInt:0] forKey:@"async_post"];
+    [post setValue:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
     [post writeToFile:[self pathToPost:post forBlog:aBlog] atomically:YES]; ;
 	[newPostTitlesList writeToFile:[self pathToPostTitles:aBlog]  atomically:YES];
 	
@@ -2859,7 +2862,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
             if(!equalPostIds)
                 [postsArray removeObjectAtIndex:i];
             else
-                [postDict setValue:[NSNumber numberWithInt:0] forKey:@"async_post"];
+                [postDict setValue:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
                 
                 break;
           }  
@@ -3072,9 +3075,9 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *mtExcerpt = [aPost valueForKey:@"mt_excerpt"];
 	[postTitle setObject:(mtExcerpt?mtExcerpt:@"") forKey:@"mt_excerpt"];
 
-	NSNumber *asyncpost = [aPost valueForKey:@"async_post"];
+	NSNumber *asyncpost = [aPost valueForKey:kAsyncPostFlag];
     WPLog(@" PostTitleForPost 1(%@)  Post Tiles(%@) ",asyncpost,postTitle);
-	[postTitle setObject:(asyncpost?asyncpost:[NSNumber numberWithInt:0]) forKey:@"async_post"];
+	[postTitle setObject:(asyncpost?asyncpost:[NSNumber numberWithInt:0]) forKey:kAsyncPostFlag];
     WPLog(@" PostTitleForPost 2(%@)  ",asyncpost);
 
     
@@ -3482,8 +3485,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		[dict release];
 	}
 
-	if(commentsCount>0)
-	{
+	if(commentsCount>0){
 		XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
 		[postsReq setMethod:@"system.multicall" withObject:commentsReqArray];
 		id result = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
@@ -3563,8 +3565,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		 [dict release];
 	 }
 	// WPLog(@"Comments arrray is %@",commentsReqArray);
-	 if(commentsCount>0)
-	 {
+	 if(commentsCount>0){
 		 XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
 		 [postsReq setMethod:@"system.multicall" withObject:commentsReqArray];
 		 id result = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
@@ -3642,8 +3643,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		[commentsReqArray addObject:dict];
 		[dict release];
 	}
-	if(commentsCount>0)
-	{
+	if(commentsCount>0){
 		XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
 		[postsReq setMethod:@"system.multicall" withObject:commentsReqArray];
 		id result = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
@@ -3718,8 +3718,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		[commentsReqArray addObject:dict];
 		[dict release];
 	}
-	if(commentsCount>0)
-	{
+	if(commentsCount>0){
 		XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
 		[postsReq setMethod:@"system.multicall" withObject:commentsReqArray];
 		id result = [self executeXMLRPCRequest:postsReq byHandlingError:YES];

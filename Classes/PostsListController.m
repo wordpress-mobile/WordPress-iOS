@@ -64,7 +64,6 @@
 	label.highlightedTextColor = [UIColor whiteColor];
 	[label release];
 	
-	
 	rect = CGRectMake(LEFT_OFFSET, rect.origin.y+ LABEL_HEIGHT + VERTICAL_OFFSET , 320, DATE_LABEL_HEIGHT);
 	
 	label = [[UILabel alloc] initWithFrame:rect];
@@ -102,7 +101,6 @@
 - (IBAction) showAddPostView:(id)sender {
 	
 	WPLog(@"Add Post Button Clicked");
-	
 	// Set current post to a new post
 	// Detail view will bind data into this instance and call save
 	
@@ -125,6 +123,7 @@
 	return postDetailViewController;
 }
 
+#pragma mark -
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	return 1;
 }
@@ -186,6 +185,8 @@
 			//[[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:postsTableRowId] autorelease];
 		}
 		
+		cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
+		
 		BlogDataManager *dm = [BlogDataManager sharedDataManager];
 		NSCharacterSet *whitespaceCS = [NSCharacterSet whitespaceCharacterSet];
 		
@@ -211,17 +212,20 @@
 			label = (UILabel *)[cell viewWithTag:DATE_TAG];
 			label.text = [dateFormatter stringFromDate:date];
 
+			// to stop activity indicator if it is running.
 			UIActivityIndicatorView *aView = (UIActivityIndicatorView*)[cell viewWithTag:201];
 			aView.hidden = YES;
 			if([aView isAnimating]){
 				[aView stopAnimating];
 			}
 			//to setback disclosure button in place of lock image.
-			int aSyncPostVal = [[currentPost valueForKey:@"async_post"] intValue];
+			int aSyncPostVal = [[currentPost valueForKey:kAsyncPostFlag] intValue];
 			UIView *view = cell.accessoryView;
 			if([view isKindOfClass:[UIImageView class]] && aSyncPostVal==0){
 				[cell setAccessoryView:nil];
 			}
+			
+			// to set activity indicator anf lock image for background saving posts.
 			if(aSyncPostVal == 1)
 			 {
 				WPLog(@"Asynchronous Post Name (%@)",[currentPost valueForKey:@"title"]);
@@ -231,9 +235,9 @@
 				UIImageView *lockImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"lock.png"]];
 				cell.accessoryView = lockImg;
 				[lockImg release];
-						 
 			 }
 		}
+		
 		return cell;		
 	}
 }
@@ -241,14 +245,13 @@
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
 	
 	//	WPLog(@"Edit Post Button Clicked");
-	
 }
 
-- (UITableViewCellAccessoryType)tableView:(UITableView *)tv accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
-
-    WPLog(@"accessoryTypeForRowWithIndexPath %d",indexPath.row);
-    return UITableViewCellAccessoryDisclosureIndicator; 
-}
+//- (UITableViewCellAccessoryType)tableView:(UITableView *)tv accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
+//
+//    WPLog(@"accessoryTypeForRowWithIndexPath %d",indexPath.row);
+//    return UITableViewCellAccessoryDisclosureIndicator; 
+//}
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
@@ -271,20 +274,13 @@
 {
 	if( indexPath.row != 0 )
 		return ROW_HEIGHT;
+	
 	return LOCALDRAFT_ROW_HEIGHT;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    //R 
-    
-    
-    //if(indexPath.row == 1)
-//    {
-//        return;
-//    }
-  
-	if( !connectionStatus && indexPath.row != 0 )
+  	if( !connectionStatus && indexPath.row != 0 )
 	{
 		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
 														 message:@"Editing is not supported now."
@@ -301,12 +297,10 @@
 	// A fake blog will be set up if Local Drafts row is selected
 	[BlogDataManager sharedDataManager].isLocaDraftsCurrent = (indexPath.row == 0);
 	
-	
 	if( indexPath.row == 0 )
 	{
 		DraftsListController *draftsListController = [[DraftsListController alloc] initWithNibName:@"DraftsList" bundle:nil];
 		draftsListController.postsListController = self;
-		
 		
 		BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 		[dataManager loadDraftTitlesForCurrentBlog];
@@ -320,7 +314,8 @@
         BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 
         id currentPost = [dataManager postTitleAtIndex:indexPath.row-1];
-        if([[currentPost valueForKey:@"async_post"] intValue]==1)
+        //code to return the selection if row is in middle of saving data.
+		if([[currentPost valueForKey:kAsyncPostFlag] intValue]==1)
             return;
         
 		[dataManager makePostAtIndexCurrent:indexPath.row-1];
@@ -331,13 +326,11 @@
 		[[self navigationController] pushViewController:self.postDetailViewController animated:YES];
 	}
     WPLog(@"Pushing Completed");
-    //[self downloadRecentPosts:nil];
  }
 
-
+#pragma mark -
 - (void)viewWillAppear:(BOOL)animated {
-	
-	
+		
 	WPLog(@"PostsList:viewWillAppear");
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	[dm postTitlesForBlog:[dm currentBlog]];
@@ -345,6 +338,7 @@
 	[dm loadPostTitlesForCurrentBlog];
 	
     //WPLog(@" ********* POSTTILES LIST IS %@",[dm postTitlesList]);
+	
 	// we retain this controller in the caller (RootViewController) so load view does not get called 
 	// everytime we navigate to the view
 	// need to update the prompt and the title here as well as in loadView	
@@ -425,8 +419,7 @@
 - (void)removeProgressIndicator
 {
 	//wait incase the other thread did not complete its work.
-	while (self.navigationItem.rightBarButtonItem == nil)
-	{
+	while (self.navigationItem.rightBarButtonItem == nil){
 		[[NSRunLoop currentRunLoop] runUntilDate:[[NSDate date] addTimeInterval:0.1]];
 	}
 	
@@ -437,10 +430,7 @@
 {
     NSDictionary *postIdsDict=[notification userInfo];
     BlogDataManager *dm = [BlogDataManager sharedDataManager]; 
-    [dm updatePostsTitlesFileAfterPostSaved:postIdsDict];
-      
-    
- //   WPLog(@"****** postIdsDict is %@",postIdsDict);
+    [dm updatePostsTitlesFileAfterPostSaved:(NSMutableDictionary *)postIdsDict];
     
      [postsTableView reloadData];               
 }
@@ -487,14 +477,12 @@
 	return NO;
 }
 
-
 #pragma mark -
 
 - (void)didReceiveMemoryWarning {
 	WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[super didReceiveMemoryWarning];
 }
-
 
 @end
 
