@@ -34,12 +34,17 @@
     WPNavigationLeftButtonView *leftView;
 	BOOL isShowPhotoPickerActionSheet;
 	BOOL isTextViewEditing;
+    UITextField *infoText;
+    UITextField *urlField;
 }
 
 @property (nonatomic, assign)PostDetailViewController * postDetailViewController;
 @property (nonatomic, retain) WPSelectionTableViewController *selectionTableViewController;
 @property (nonatomic, retain) WPSegmentedSelectionTableViewController *segmentedTableViewController;
 @property (nonatomic, retain) WPNavigationLeftButtonView *leftView;
+@property (nonatomic, retain) UITextField *infoText;
+@property (nonatomic, retain) UITextField *urlField;
+
 
 
 - (void)refreshUIForCompose;
@@ -57,6 +62,8 @@
 
 //will be called when auto save method is called.
 - (void)updateValuesToCurrentPost;
+-(void)showLinkView;
+
 
 - (IBAction)showAddNewCategoryView:(id)sender;
 - (IBAction)showCategoriesViewAction:(id)sender;

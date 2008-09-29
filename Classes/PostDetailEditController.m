@@ -9,6 +9,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @implementation PostDetailEditController
 
 @synthesize postDetailViewController, selectionTableViewController,segmentedTableViewController,leftView;
+@synthesize infoText,urlField;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -233,7 +234,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 {
 	[self populateSelectionsControllerWithStatuses];
 }
-#pragma mark - view methods
+
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
@@ -251,13 +252,14 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	tagsTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 	[contentView bringSubviewToFront:textView];
 	
-	if(!leftView){   
+	if(!leftView)
+	{   
         leftView = [WPNavigationLeftButtonView createView];
         [leftView setTitle:@"Posts"];
     }   
-         [leftView setTitle:@"Posts"];
+	[leftView setTitle:@"Posts"];
     [leftView setTarget:self withAction:@selector(cancelView:)];
-
+	
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newCategoryCreatedNotificationReceived:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
 }
 
@@ -300,7 +302,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 {
 	if ( [textView.text length] == 0 ){
 		textViewPlaceHolderField.hidden = NO;
-	}else {
+	}
+	else {
 		textViewPlaceHolderField.hidden = YES;
 	}	
 }
@@ -341,12 +344,99 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)textViewDidChange:(UITextView *)aTextView {
+	
 	postDetailViewController.hasChanges = YES;
 	[self updateTextViewPlacehoderFieldStatus];
-	
 	if(![aTextView hasText])
 		return;
+	
+	NSArray *stringArray=[NSArray arrayWithObjects:@"http:",@"ftp:",@"https:",@"www.",nil];
+	NSString *str=[aTextView text];
+	int i,count=[stringArray count];
+	BOOL searchRes=NO;
+	for(i = 0; i < count; i++){
+		NSString *searchString=[stringArray objectAtIndex:i];
+		searchRes=[str hasSuffix:[searchString capitalizedString]];
+		if(searchRes)
+			break;
+		searchRes=[str hasSuffix:[searchString lowercaseString]];
+		if(searchRes)
+			break;
+		searchRes=[str hasSuffix:[searchString uppercaseString]];
+		if(searchRes)
+			break;
+	}
+	if(searchRes)
+	{
+		WPLog(@"Link Creation ");
+        UIAlertView *linkAlert = [[UIAlertView alloc] initWithTitle:@"Create Link" message:@"do you want to create link" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Cancel", nil];                                                
+        [linkAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
+        [linkAlert show];
+        [linkAlert release];
+		
+    }
+	
+	NSLog(@"str is %@ \nBOOL Result is %d",str,searchRes);
 }
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	
+    WPLog(@"The Alet Tag (%d) & Clicked on Button Index (%d)",[alertView tag],buttonIndex);
+    if([alertView tag] == 1)
+    {
+     	if ( buttonIndex == 0 ) 
+        {
+            [self showLinkView];
+        }   
+    }
+	
+    if([alertView tag] == 2)
+    {
+     	if ( buttonIndex == 1) 
+        {
+            WPLog(@" Entered Text %@ and The Link %@ ",infoText.text,urlField.text);
+            NSString *hyperLink = urlField.text;
+            textView.text = [NSString stringWithFormat:@"%@<a href=%@>%@</a>",textView.text,hyperLink,infoText.text];
+			//          [infoText resignFirstResponder];
+			//          [urlField resignFirstResponder];
+			//          [textView becomeFirstResponder];
+        }   
+    }
+	
+    return;
+}
+
+-(void)showLinkView
+{
+    WPLog(@"   Show the Lik  View . ");
+    UIAlertView *addURLSourceAlert = [[UIAlertView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    infoText = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 36.0, 260.0, 29.0)];
+    urlField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 65.0, 260.0, 29.0)];
+    infoText.placeholder = @"\n\nEnter Text For Link";
+    urlField.placeholder = @"\n\nEnter Link";
+    //infoText.enabled = YES;
+    
+    infoText.autocapitalizationType= UITextAutocapitalizationTypeNone;
+    urlField.autocapitalizationType= UITextAutocapitalizationTypeNone;
+    infoText.borderStyle = UITextBorderStyleRoundedRect;
+    urlField.borderStyle = UITextBorderStyleRoundedRect;
+    infoText.keyboardAppearance = UIKeyboardAppearanceAlert;         
+    urlField.keyboardAppearance = UIKeyboardAppearanceAlert;
+    [addURLSourceAlert addButtonWithTitle:@"Cancel"];
+    [addURLSourceAlert addButtonWithTitle:@"OK"];
+    addURLSourceAlert.title = @"Make Hyperlink\n\n\n";
+    addURLSourceAlert.delegate = self;
+    [addURLSourceAlert addSubview:infoText];
+    [addURLSourceAlert addSubview:urlField];
+    [infoText becomeFirstResponder];
+    CGAffineTransform upTransform = CGAffineTransformMakeTranslation(0.0, 130.0);
+    [addURLSourceAlert setTransform:upTransform];
+    [addURLSourceAlert setTag:2];
+    [addURLSourceAlert show];
+    [addURLSourceAlert release];
+}
+
 
 - (void)textViewDidEndEditing:(UITextView *)aTextView
 {	
@@ -355,9 +445,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		isTextViewEditing = NO;
 		
 		[self bringTextViewDown];
-		if (postDetailViewController.hasChanges == YES){
+		if (postDetailViewController.hasChanges == YES)
+        {
 			[leftView setTitle:@"Cancel"];
-        }else{
+        }
+        else
+        {
             [leftView setTitle:@"Posts"];
 		}
         UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:leftView];
@@ -368,6 +461,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[[[BlogDataManager sharedDataManager] currentPost] setObject:text forKey:@"description"];		
 	}
 }
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 	[self updateTextViewPlacehoderFieldStatus];
 	
@@ -379,16 +473,19 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+	
 	if( textField == titleTextField )
 		[[BlogDataManager sharedDataManager].currentPost setValue:textField.text forKey:@"title"];
 	else if( textField == tagsTextField )
 		[[BlogDataManager sharedDataManager].currentPost setValue:tagsTextField.text forKey:@"mt_keywords"];
 }
 
+
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
 	postDetailViewController.hasChanges = YES;
 	return YES;
 }
+
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
@@ -450,17 +547,22 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			[self pickPhotoFromPhotoLibrary:nil];
 		else
 			[self pickPhotoFromCamera:nil];		
-	}else {
+	}
+	else 
+	{
 		if (buttonIndex == 0) //add 
 		{
 			[self useImage:currentChoosenImage];
-		}else if (buttonIndex == 1) //add and return
+		}
+		else if (buttonIndex == 1) //add and return
 		{
 			[self useImage:currentChoosenImage];
 			//	[picker popViewControllerAnimated:YES];
 			UIImagePickerController* picker = [self pickerController];
 			[[picker parentViewController] dismissModalViewControllerAnimated:YES];
-		}else {
+		}
+		else 
+		{
 			//do nothing
 		}
 		[currentChoosenImage release];
@@ -543,6 +645,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)dealloc 
 {	
+    [infoText release];
+    [urlField release];
     [leftView release];
     [segmentedTableViewController release];
 	[selectionTableViewController release];
