@@ -27,7 +27,8 @@
 	
     BOOL connectionStatus;
     UIBarButtonItem *segmentBarItem;
-    int currentIndex;	
+    int currentIndex;
+	UISegmentedControl *segmentedControl;
 }
 
 @property (nonatomic,retain) UILabel *commenterNameLabel;

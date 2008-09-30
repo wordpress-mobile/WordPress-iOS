@@ -9,7 +9,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @implementation PostDetailEditController
 
 @synthesize postDetailViewController, selectionTableViewController,segmentedTableViewController,leftView;
-@synthesize infoText,urlField;
+@synthesize infoText,urlField,selectedLinkText;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -308,6 +308,67 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	}	
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	
+    WPLog(@"The Alet Tag (%d) & Clicked on Button Index (%d)",[alertView tag],buttonIndex);
+    if([alertView tag] == 1)
+    {
+     	if ( buttonIndex == 0 ) 
+        {
+            [self showLinkView];
+        }   
+    }
+	
+    if([alertView tag] == 2){
+     	if ( buttonIndex == 1){
+            
+			NSString *commentsStr = textView.text;
+			NSRange firstOccurance = [commentsStr rangeOfString:selectedLinkText options:NSBackwardsSearch];
+			
+			WPLog(@" Entered Text %@ and The Link %@ selected text is %@ ******* %d,%d",infoText.text,urlField.text,selectedLinkText,firstOccurance.location,firstOccurance.length);
+			NSString *aTagText=[NSString stringWithFormat:@"<a href=\"%@\">%@</a>",urlField.text,infoText.text];;
+			//          [infoText resignFirstResponder];
+			//          [urlField resignFirstResponder];
+			//          [textView becomeFirstResponder];
+			textView.text = [commentsStr stringByReplacingOccurrencesOfString:selectedLinkText withString:aTagText options:NSBackwardsSearch range:firstOccurance];
+        }   
+    }
+	
+    return;
+}
+
+-(void)showLinkView
+{
+    WPLog(@"   Show the Lik  View . ");
+    UIAlertView *addURLSourceAlert = [[UIAlertView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    infoText = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 36.0, 260.0, 29.0)];
+    urlField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 65.0, 260.0, 29.0)];
+    infoText.placeholder = @"\n\nEnter Text For Link";
+    urlField.placeholder = @"\n\nEnter Link";
+    //infoText.enabled = YES;
+    
+    infoText.autocapitalizationType= UITextAutocapitalizationTypeNone;
+    urlField.autocapitalizationType= UITextAutocapitalizationTypeNone;
+    infoText.borderStyle = UITextBorderStyleRoundedRect;
+    urlField.borderStyle = UITextBorderStyleRoundedRect;
+    infoText.keyboardAppearance = UIKeyboardAppearanceAlert;         
+    urlField.keyboardAppearance = UIKeyboardAppearanceAlert;
+    [addURLSourceAlert addButtonWithTitle:@"Cancel"];
+    [addURLSourceAlert addButtonWithTitle:@"OK"];
+    addURLSourceAlert.title = @"Make Hyperlink\n\n\n";
+    addURLSourceAlert.delegate = self;
+    [addURLSourceAlert addSubview:infoText];
+    [addURLSourceAlert addSubview:urlField];
+    [infoText becomeFirstResponder];
+    CGAffineTransform upTransform = CGAffineTransformMakeTranslation(0.0, 130.0);
+    [addURLSourceAlert setTransform:upTransform];
+    [addURLSourceAlert setTag:2];
+    [addURLSourceAlert show];
+    [addURLSourceAlert release];
+}
+
+#pragma mark TextView & TextField Delegates
 - (void)textViewDidChangeSelection:(UITextView *)aTextView {
 	
 	if (!isTextViewEditing) {
@@ -356,88 +417,29 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	BOOL searchRes=NO;
 	for(i = 0; i < count; i++){
 		NSString *searchString=[stringArray objectAtIndex:i];
-		searchRes=[str hasSuffix:[searchString capitalizedString]];
-		if(searchRes)
+		
+		if(searchRes = [str hasSuffix:[searchString capitalizedString]]){
+			self.selectedLinkText=[searchString capitalizedString];
 			break;
-		searchRes=[str hasSuffix:[searchString lowercaseString]];
-		if(searchRes)
+		}else if (searchRes = [str hasSuffix:[searchString lowercaseString]]) {
+			self.selectedLinkText=[searchString lowercaseString];
 			break;
-		searchRes=[str hasSuffix:[searchString uppercaseString]];
-		if(searchRes)
+		}else if (searchRes = [str hasSuffix:[searchString uppercaseString]]) {
+			self.selectedLinkText=[searchString uppercaseString];
 			break;
+		}
 	}
-	if(searchRes)
-	{
+	
+	if(searchRes){
 		WPLog(@"Link Creation ");
-        UIAlertView *linkAlert = [[UIAlertView alloc] initWithTitle:@"Create Link" message:@"do you want to create link" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Cancel", nil];                                                
+        UIAlertView *linkAlert = [[UIAlertView alloc] initWithTitle:@"Link Creation" message:@"Do you want to create link?" delegate:self cancelButtonTitle:@"Create Link" otherButtonTitles:@"Dismiss", nil];                                                
         [linkAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
         [linkAlert show];
         [linkAlert release];
-		
     }
 	
 	NSLog(@"str is %@ \nBOOL Result is %d",str,searchRes);
 }
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	
-    WPLog(@"The Alet Tag (%d) & Clicked on Button Index (%d)",[alertView tag],buttonIndex);
-    if([alertView tag] == 1)
-    {
-     	if ( buttonIndex == 0 ) 
-        {
-            [self showLinkView];
-        }   
-    }
-	
-    if([alertView tag] == 2)
-    {
-     	if ( buttonIndex == 1) 
-        {
-            WPLog(@" Entered Text %@ and The Link %@ ",infoText.text,urlField.text);
-            NSString *hyperLink = urlField.text;
-            textView.text = [NSString stringWithFormat:@"%@<a href=%@>%@</a>",textView.text,hyperLink,infoText.text];
-			//          [infoText resignFirstResponder];
-			//          [urlField resignFirstResponder];
-			//          [textView becomeFirstResponder];
-        }   
-    }
-	
-    return;
-}
-
--(void)showLinkView
-{
-    WPLog(@"   Show the Lik  View . ");
-    UIAlertView *addURLSourceAlert = [[UIAlertView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-    infoText = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 36.0, 260.0, 29.0)];
-    urlField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 65.0, 260.0, 29.0)];
-    infoText.placeholder = @"\n\nEnter Text For Link";
-    urlField.placeholder = @"\n\nEnter Link";
-    //infoText.enabled = YES;
-    
-    infoText.autocapitalizationType= UITextAutocapitalizationTypeNone;
-    urlField.autocapitalizationType= UITextAutocapitalizationTypeNone;
-    infoText.borderStyle = UITextBorderStyleRoundedRect;
-    urlField.borderStyle = UITextBorderStyleRoundedRect;
-    infoText.keyboardAppearance = UIKeyboardAppearanceAlert;         
-    urlField.keyboardAppearance = UIKeyboardAppearanceAlert;
-    [addURLSourceAlert addButtonWithTitle:@"Cancel"];
-    [addURLSourceAlert addButtonWithTitle:@"OK"];
-    addURLSourceAlert.title = @"Make Hyperlink\n\n\n";
-    addURLSourceAlert.delegate = self;
-    [addURLSourceAlert addSubview:infoText];
-    [addURLSourceAlert addSubview:urlField];
-    [infoText becomeFirstResponder];
-    CGAffineTransform upTransform = CGAffineTransformMakeTranslation(0.0, 130.0);
-    [addURLSourceAlert setTransform:upTransform];
-    [addURLSourceAlert setTag:2];
-    [addURLSourceAlert show];
-    [addURLSourceAlert release];
-}
-
-
 - (void)textViewDidEndEditing:(UITextView *)aTextView
 {	
 	if( isTextViewEditing ){
@@ -648,6 +650,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [infoText release];
     [urlField release];
     [leftView release];
+	[selectedLinkText release];
     [segmentedTableViewController release];
 	[selectionTableViewController release];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];

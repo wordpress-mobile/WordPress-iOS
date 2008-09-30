@@ -36,6 +36,7 @@
 	BOOL isTextViewEditing;
     UITextField *infoText;
     UITextField *urlField;
+	NSString *selectedLinkText;
 }
 
 @property (nonatomic, assign)PostDetailViewController * postDetailViewController;
@@ -44,8 +45,7 @@
 @property (nonatomic, retain) WPNavigationLeftButtonView *leftView;
 @property (nonatomic, retain) UITextField *infoText;
 @property (nonatomic, retain) UITextField *urlField;
-
-
+@property (nonatomic, retain) NSString *selectedLinkText;
 
 - (void)refreshUIForCompose;
 - (void)refreshUIForCurrentPost;

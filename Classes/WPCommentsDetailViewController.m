@@ -42,15 +42,16 @@
 - (void)viewDidLoad {
 	
 	// "Segmented" control to the right
-	UISegmentedControl *segmentedControl = [[[UISegmentedControl alloc] initWithItems:
+	segmentedControl = [[UISegmentedControl alloc] initWithItems:
 											 [NSArray arrayWithObjects:
 											  [UIImage imageNamed:@"up.png"],
 											  [UIImage imageNamed:@"down.png"],
-											  nil]] autorelease];
+											  nil]];
 	[segmentedControl addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
 	segmentedControl.frame = CGRectMake(0, 0, 90, kCustomButtonHeight);
 	segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
 	segmentedControl.momentary = YES;
+	
 	//	UIColor *defaultTintColor = [segmentedControl.tintColor retain];	// keep track of this for later
 	
 	segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
@@ -59,6 +60,7 @@
 	// Observe the kNetworkReachabilityChangedNotification. When that notification is posted, the
 	// method "reachabilityChanged" will be called. 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];	
+	WPLog(@"Current index is %@",self.commentDetails);
 }
 
 
@@ -86,13 +88,6 @@
              [self fillCommentDetails:commentDetails atRow:currentIndex+1];
         }
 		
-		[sender setEnabled:TRUE forSegmentAtIndex:0];
-		[sender setEnabled:TRUE forSegmentAtIndex:1];
-		
-		if(currentIndex==0)
-			[sender setEnabled:FALSE forSegmentAtIndex:0];
-		else if(currentIndex == [commentDetails count]-1)
-			[sender setEnabled:FALSE forSegmentAtIndex:1];
 	}
 }
 
@@ -176,6 +171,14 @@
 		[spamButton2 setEnabled:NO];
 	}
 	
+	[segmentedControl setEnabled:TRUE forSegmentAtIndex:0];
+	[segmentedControl setEnabled:TRUE forSegmentAtIndex:1];
+	
+	if(currentIndex==0)
+		[segmentedControl setEnabled:FALSE forSegmentAtIndex:0];
+	else if(currentIndex == [commentDetails count]-1)
+		[segmentedControl setEnabled:FALSE forSegmentAtIndex:1];
+	
 	// WPLog(@" The Values .....  %@ %@ %@ ",author,post_title,date_created_gmt);
 }
 
@@ -186,7 +189,7 @@
     [commentedOnLabel release];
     [commentedDateLabel release];
     [commentDetails release];
-    
+	[segmentedControl release];
     [segmentBarItem release];
     [super dealloc];
 	

@@ -488,13 +488,14 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 // Show PostList when row is selected
 - (void)tableView:(UITableView *)atableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     WPLog(@"didSelectRowAtIndexPath:: Load The View");
+	if(editMode)
+		return;
+	
     WPCommentsDetailViewController *commentsViewController = [[WPCommentsDetailViewController alloc] initWithNibName:@"WPCommentsDetailViewController" bundle:nil];
     [self.navigationController pushViewController:commentsViewController animated:YES];
-    [commentsViewController fillCommentDetails:[[BlogDataManager sharedDataManager] commentTitles]
+	[commentsViewController fillCommentDetails:[[BlogDataManager sharedDataManager] commentTitles]
 										 atRow:indexPath.row];
-	
-    [commentsViewController release];
-	
+	[commentsViewController release];
 }
 
 

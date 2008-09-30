@@ -3624,6 +3624,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *blogid = [blog valueForKey:@"blogid"];
 	NSFileManager *defaultFileManager = [NSFileManager defaultManager];
 	NSMutableArray *commentTitlesArray = commentTitlesList;
+	int count = [commentTitlesArray count];
 	int i=0,commentsCount=[aComment count];
 				
 	NSMutableArray *commentsReqArray=[[NSMutableArray alloc]init];
@@ -3658,15 +3659,18 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 			[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 			[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
 			return NO;
-		}else {
-			for(i=0;i<commentsCount;i++){
-				NSDictionary *dict=[aComment objectAtIndex:i];
-				NSString *path = [self commentFilePath:dict forBlog:blog];
-				[defaultFileManager removeFileAtPath:path handler:nil];
-				[commentTitlesList removeObject:aComment];
+		}else{
+			for(int j=0;j<commentsCount;j++){
+				NSDictionary *commentDict=[aComment objectAtIndex:j];
+				for ( i = 0; i < count; i++ ) {
+					NSDictionary *dict = [commentTitlesArray objectAtIndex:i];
+					if ( [[dict valueForKey:@"comment_id"] isEqualToString:[commentDict valueForKey:@"comment_id"]] )
+						[commentTitlesArray replaceObjectAtIndex:i withObject:commentDict];
+				}
 			}
+			
 		}
-	 }
+	}	
 		
 	// sort and save the postTitles list
 	NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
@@ -3738,7 +3742,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 				NSDictionary *dict=[aComment objectAtIndex:i];
 				NSString *path = [self commentFilePath:dict forBlog:blog];
 				[defaultFileManager removeFileAtPath:path handler:nil];
-				[commentTitlesList removeObject:aComment];
+				[commentTitlesList removeObject:dict];
 			}
 		}
 	}
