@@ -202,7 +202,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	// Return YES for supported orientations
-	return NO;
+	return YES;
 }
 
 - (void)didReceiveMemoryWarning {

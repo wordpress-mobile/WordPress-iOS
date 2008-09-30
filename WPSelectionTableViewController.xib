@@ -3,7 +3,7 @@
 	<data>
 		<int key="IBDocument.SystemTarget">512</int>
 		<string key="IBDocument.SystemVersion">9E17</string>
-		<string key="IBDocument.InterfaceBuilderVersion">670</string>
+		<string key="IBDocument.InterfaceBuilderVersion">672</string>
 		<string key="IBDocument.AppKitVersion">949.33</string>
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
@@ -22,8 +22,8 @@
 				<string key="IBProxiedObjectIdentifier">IBFirstResponder</string>
 			</object>
 			<object class="IBUIView" id="732855441">
-				<reference key="NSNextResponder"/>
-				<int key="NSvFlags">292</int>
+				<nil key="NSNextResponder"/>
+				<int key="NSvFlags">310</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUITableView" id="1007165256">
@@ -31,7 +31,6 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrameSize">{320, 460}</string>
 						<reference key="NSSuperview" ref="732855441"/>
-						<reference key="NSWindow"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -45,8 +44,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 460}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
@@ -186,8 +183,17 @@
 					<string key="className">WPSelectionTableViewController</string>
 					<string key="superclassName">UIViewController</string>
 					<object class="NSMutableDictionary" key="outlets">
-						<string key="NS.key.0">tableView</string>
-						<string key="NS.object.0">UITableView</string>
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSMutableArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>selectionDelegate</string>
+							<string>tableView</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>UITableView</string>
+						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>

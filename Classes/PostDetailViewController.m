@@ -549,13 +549,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    if(tabController.selectedIndex == 0) // Only for Write Screen
-	{
-		WPLog(@"shouldAutorotateToInterfaceOrientation : Auto rotation is called..");
-        return (interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight ||
-                interfaceOrientation == UIInterfaceOrientationPortrait);		
-    }
-    return NO;
+    return YES;
 }
 
 @end

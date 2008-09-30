@@ -3,7 +3,7 @@
 	<data>
 		<int key="IBDocument.SystemTarget">512</int>
 		<string key="IBDocument.SystemVersion">9E17</string>
-		<string key="IBDocument.InterfaceBuilderVersion">670</string>
+		<string key="IBDocument.InterfaceBuilderVersion">672</string>
 		<string key="IBDocument.AppKitVersion">949.33</string>
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
@@ -25,12 +25,12 @@
 			</object>
 			<object class="IBUIView" id="37055601">
 				<reference key="NSNextResponder"/>
-				<int key="NSvFlags">294</int>
+				<int key="NSvFlags">310</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUITableView" id="408472278">
 						<reference key="NSNextResponder" ref="37055601"/>
-						<int key="NSvFlags">306</int>
+						<int key="NSvFlags">274</int>
 						<string key="NSFrameSize">{320, 460}</string>
 						<reference key="NSSuperview" ref="37055601"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -837,7 +837,7 @@
 					<string>{{300, 209}, {319, 71}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{235, 136}, {320, 460}}</string>
+					<string>{{327, 216}, {320, 460}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{149, 216}, {320, 44}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>

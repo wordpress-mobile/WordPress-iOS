@@ -3,7 +3,7 @@
 	<data>
 		<int key="IBDocument.SystemTarget">512</int>
 		<string key="IBDocument.SystemVersion">9E17</string>
-		<string key="IBDocument.InterfaceBuilderVersion">670</string>
+		<string key="IBDocument.InterfaceBuilderVersion">672</string>
 		<string key="IBDocument.AppKitVersion">949.33</string>
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
@@ -24,7 +24,7 @@
 			</object>
 			<object class="IBUIView" id="191373211">
 				<reference key="NSNextResponder"/>
-				<int key="NSvFlags">292</int>
+				<int key="NSvFlags">310</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUITableView" id="59428291">

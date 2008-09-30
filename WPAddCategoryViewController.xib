@@ -2,13 +2,14 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.02">
 	<data>
 		<int key="IBDocument.SystemTarget">512</int>
-		<string key="IBDocument.SystemVersion">9D34</string>
-		<string key="IBDocument.InterfaceBuilderVersion">670</string>
+		<string key="IBDocument.SystemVersion">9E17</string>
+		<string key="IBDocument.InterfaceBuilderVersion">672</string>
 		<string key="IBDocument.AppKitVersion">949.33</string>
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="10"/>
+			<integer value="11"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -24,7 +25,7 @@
 			</object>
 			<object class="IBUIView" id="191373211">
 				<nil key="NSNextResponder"/>
-				<int key="NSvFlags">292</int>
+				<int key="NSvFlags">310</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUITableView" id="733186959">
@@ -111,7 +112,7 @@
 				<string key="IBUIReuseIdentifier">newCategoryCell</string>
 			</object>
 			<object class="IBUITableViewCell" id="590214896">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -144,7 +145,7 @@
 							</object>
 							<object class="IBUITextField" id="655460930">
 								<reference key="NSNextResponder" ref="219876080"/>
-								<int key="NSvFlags">292</int>
+								<int key="NSvFlags">289</int>
 								<string key="NSFrame">{{155, 1}, {122, 40}}</string>
 								<reference key="NSSuperview" ref="219876080"/>
 								<bool key="IBUIOpaque">NO</bool>
@@ -173,6 +174,7 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 44}</string>
+				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MSAwAA</bytes>

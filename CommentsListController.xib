@@ -3,7 +3,7 @@
 	<data>
 		<int key="IBDocument.SystemTarget">512</int>
 		<string key="IBDocument.SystemVersion">9E17</string>
-		<string key="IBDocument.InterfaceBuilderVersion">670</string>
+		<string key="IBDocument.InterfaceBuilderVersion">672</string>
 		<string key="IBDocument.AppKitVersion">949.33</string>
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
@@ -24,12 +24,12 @@
 			</object>
 			<object class="IBUIView" id="749316841">
 				<reference key="NSNextResponder"/>
-				<int key="NSvFlags">292</int>
+				<int key="NSvFlags">310</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUITableView" id="392073514">
 						<reference key="NSNextResponder" ref="749316841"/>
-						<int key="NSvFlags">282</int>
+						<int key="NSvFlags">274</int>
 						<string key="NSFrameSize">{320, 416}</string>
 						<reference key="NSSuperview" ref="749316841"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="630055485">
@@ -49,7 +49,7 @@
 					</object>
 					<object class="IBUIToolbar" id="1017118542">
 						<reference key="NSNextResponder" ref="749316841"/>
-						<int key="NSvFlags">271</int>
+						<int key="NSvFlags">266</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUIButton" id="110137339">
@@ -106,7 +106,7 @@
 					</object>
 					<object class="IBUIToolbar" id="191496090">
 						<reference key="NSNextResponder" ref="749316841"/>
-						<int key="NSvFlags">271</int>
+						<int key="NSvFlags">266</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUIButton" id="439509642">
@@ -474,7 +474,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{441, 386}, {320, 460}}</string>
+					<string>{{366, 386}, {320, 460}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
