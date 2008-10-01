@@ -294,7 +294,12 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	// Return YES for supported orientations
+	self.navigationController.navigationBarHidden = NO;
 	return YES;
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+	self.navigationController.navigationBarHidden = YES;
 }
 
 - (void)didReceiveMemoryWarning {
