@@ -6,10 +6,12 @@
 	
 	IBOutlet UIWindow *window;
 	IBOutlet UINavigationController *navigationController;
+	BOOL alertRunning;
 }
 
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) UINavigationController *navigationController;
+@property (nonatomic, getter=isAlertRunning) BOOL alertRunning;
 
 + (WordPressAppDelegate *)sharedWordPressApp;
 

@@ -8,7 +8,7 @@
 static WordPressAppDelegate *wordPressApp = NULL;
 
 @synthesize window;
-@synthesize navigationController;
+@synthesize navigationController,alertRunning;
 
 - (id)init {
 	if (!wordPressApp) {

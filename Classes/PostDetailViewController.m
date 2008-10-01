@@ -1,5 +1,6 @@
 #import "PostDetailViewController.h"
 #import "BlogDataManager.h"
+#import "WordPressAppDelegate.h"
 #import "PostDetailEditController.h"
 #import "WPPostDetailPreviewController.h"
 #import "WPPostSettingsController.h"
@@ -549,7 +550,13 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return YES;
+	if((interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(interfaceOrientation == UIInterfaceOrientationLandscapeRight)){
+		//Code to disable landscape when alert is raised.
+		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		if([delegate isAlertRunning] == TRUE)
+			return NO;
+		}
+	return YES;
 }
 
 @end

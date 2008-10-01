@@ -1,4 +1,5 @@
 #import "PostDetailEditController.h"
+#import "WordPressAppDelegate.h"
 #import "BlogDataManager.h"
 #import "WPSegmentedSelectionTableViewController.h"
 #import "WPNavigationLeftButtonView.h"
@@ -9,7 +10,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @implementation PostDetailEditController
 
 @synthesize postDetailViewController, selectionTableViewController,segmentedTableViewController,leftView;
-@synthesize infoText,urlField,selectedLinkText;
+@synthesize infoText,urlField,bookMarksArray,selectedLinkRange;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -310,40 +311,63 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-	
-    WPLog(@"The Alet Tag (%d) & Clicked on Button Index (%d)",[alertView tag],buttonIndex);
-    if([alertView tag] == 1)
-    {
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	WPLog(@"The Alet Tag (%d) & Clicked on Button Index (%d)",[alertView tag],buttonIndex);
+    if([alertView tag] == 1){
      	if ( buttonIndex == 0 ) 
-        {
             [self showLinkView];
-        }   
-    }
+		else{
+			[textView becomeFirstResponder];
+			[delegate setAlertRunning:NO];
+		}
+	}
 	
     if([alertView tag] == 2){
      	if ( buttonIndex == 1){
             
 			NSString *commentsStr = textView.text;
-			NSRange firstOccurance = [commentsStr rangeOfString:selectedLinkText options:NSBackwardsSearch];
-			
-			WPLog(@" Entered Text %@ and The Link %@ selected text is %@ ******* %d,%d",infoText.text,urlField.text,selectedLinkText,firstOccurance.location,firstOccurance.length);
-			NSString *aTagText=[NSString stringWithFormat:@"<a href=\"%@\">%@</a>",urlField.text,infoText.text];;
-			//          [infoText resignFirstResponder];
-			//          [urlField resignFirstResponder];
-			//          [textView becomeFirstResponder];
-			textView.text = [commentsStr stringByReplacingOccurrencesOfString:selectedLinkText withString:aTagText options:NSBackwardsSearch range:firstOccurance];
-        }   
-    }
-	
+			NSRange rangeToReplace=[self selectedLinkRange];
+			//WPLog(@" Entered Text %@ and The Link %@ selected text is %@ ******* %d,%d",infoText.text,urlField.text,[commentsStr substringWithRange:rangeToReplace],rangeToReplace.location,rangeToReplace.length);
+			NSString *urlString=[self validateNewLinkInfo:urlField.text];
+			NSString *aTagText=[NSString stringWithFormat:@"<a href=\"%@\">%@</a>",urlString,infoText.text];;
+			textView.text = [commentsStr stringByReplacingOccurrencesOfString:[commentsStr substringWithRange:rangeToReplace] withString:aTagText options:NSCaseInsensitiveSearch range:rangeToReplace];
+		}
+		[delegate setAlertRunning:FALSE];
+		[textView becomeFirstResponder];
+	}
+		
     return;
 }
-
+//code to append http:// if protocol part is not there as part of urlText.
+- (NSString *)validateNewLinkInfo:(NSString *)urlText{
+	NSArray *stringArray=[NSArray arrayWithObjects:@"http:",@"ftp:",@"https:",nil];
+	int i,count=[stringArray count];
+	BOOL searchRes=NO;
+	
+	for(i = 0; i < count; i++){
+		NSString *searchString=[stringArray objectAtIndex:i];
+		
+		if(searchRes = [urlText hasPrefix:[searchString capitalizedString]])
+			break;
+		else if (searchRes = [urlText hasPrefix:[searchString lowercaseString]])
+			break;
+		else if (searchRes = [urlText hasPrefix:[searchString uppercaseString]])
+			break;				
+	}
+	NSString *returnStr;
+	if(searchRes)
+		returnStr=[NSString stringWithString:urlText];
+	else
+		returnStr=[NSString stringWithFormat:@"http://%@",urlText];
+	
+	return returnStr;
+}
 -(void)showLinkView
 {
-    WPLog(@"   Show the Lik  View . ");
-    UIAlertView *addURLSourceAlert = [[UIAlertView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    WPLog(@"   Show the Link  View . ");
+    UIAlertView *addURLSourceAlert = [[UIAlertView alloc] initWithFrame:CGRectMake(0, 0, 0, 0.0)];
     infoText = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 36.0, 260.0, 29.0)];
-    urlField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 65.0, 260.0, 29.0)];
+    urlField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 70.0, 260.0, 29.0)];
     infoText.placeholder = @"\n\nEnter Text For Link";
     urlField.placeholder = @"\n\nEnter Link";
     //infoText.enabled = YES;
@@ -361,7 +385,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [addURLSourceAlert addSubview:infoText];
     [addURLSourceAlert addSubview:urlField];
     [infoText becomeFirstResponder];
-    CGAffineTransform upTransform = CGAffineTransformMakeTranslation(0.0, 130.0);
+    CGAffineTransform upTransform = CGAffineTransformMakeTranslation(0.0, 140.0);
     [addURLSourceAlert setTransform:upTransform];
     [addURLSourceAlert setTag:2];
     [addURLSourceAlert show];
@@ -405,33 +429,47 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)textViewDidChange:(UITextView *)aTextView {
-	
 	postDetailViewController.hasChanges = YES;
 	[self updateTextViewPlacehoderFieldStatus];
 	if(![aTextView hasText])
 		return;
 	
+	NSRange range=[aTextView selectedRange]; 
 	NSArray *stringArray=[NSArray arrayWithObjects:@"http:",@"ftp:",@"https:",@"www.",nil];
 	NSString *str=[aTextView text];
-	int i,count=[stringArray count];
+	int i,j,count=[stringArray count];
 	BOOL searchRes=NO;
-	for(i = 0; i < count; i++){
-		NSString *searchString=[stringArray objectAtIndex:i];
+	for(j = 4;j <= 6; j++){
+
+		if(range.location < j)
+			return;
+
+		NSRange subStrRange;
+		subStrRange.location=range.location-j;
+		subStrRange.length=j;
+		[self setSelectedLinkRange:subStrRange];
+		NSString *subStr=[str substringWithRange:subStrRange];
 		
-		if(searchRes = [str hasSuffix:[searchString capitalizedString]]){
-			self.selectedLinkText=[searchString capitalizedString];
-			break;
-		}else if (searchRes = [str hasSuffix:[searchString lowercaseString]]) {
-			self.selectedLinkText=[searchString lowercaseString];
-			break;
-		}else if (searchRes = [str hasSuffix:[searchString uppercaseString]]) {
-			self.selectedLinkText=[searchString uppercaseString];
-			break;
+		for(i = 0; i < count; i++){
+			NSString *searchString=[stringArray objectAtIndex:i];
+			
+			WPLog(@"Substring is %@   searchString is %@",subStr,searchString);
+			if(searchRes = [subStr isEqualToString:[searchString capitalizedString]])
+				break;
+			else if (searchRes = [subStr isEqualToString:[searchString lowercaseString]])
+				break;
+			else if (searchRes = [subStr isEqualToString:[searchString uppercaseString]])
+				break;				
 		}
+		if(searchRes)
+			break;
 	}
 	
 	if(searchRes){
-		WPLog(@"Link Creation ");
+		WPLog(@"Link Creation Alert ");
+		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		[delegate setAlertRunning:TRUE];
+		[textView resignFirstResponder];
         UIAlertView *linkAlert = [[UIAlertView alloc] initWithTitle:@"Link Creation" message:@"Do you want to create link?" delegate:self cancelButtonTitle:@"Create Link" otherButtonTitles:@"Dismiss", nil];                                                
         [linkAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
         [linkAlert show];
@@ -637,20 +675,39 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	curText = ( curText == nil ? @"" : curText );
 	textView.text = [curText stringByAppendingString:[NSString stringWithFormat:@"<img src=\"%@\" alt=\"\" />",pictureURL]]; 
 }
-
+- (void)readBookmarksFile{
+	bookMarksArray=[[NSMutableArray alloc]init];
+	//NSDictionary *bookMarksDict=[NSMutableDictionary dictionaryWithContentsOfFile:@"/Users/sridharrao/Library/Safari/Bookmarks.plist"];
+	NSDictionary *bookMarksDict=[NSMutableDictionary dictionaryWithContentsOfFile:@"/Users/sridharrao/Library/Application%20Support/iPhone%20Simulator/User/Library/Safari/Bookmarks.plist"];
+	NSArray *childrenArray=[bookMarksDict valueForKey:@"Children"];
+	bookMarksDict=[childrenArray objectAtIndex:0];
+	int count=[childrenArray count];
+	childrenArray=[bookMarksDict valueForKey:@"Children"];
+	for(int i=0;i<count;i++)
+	{
+		bookMarksDict=[childrenArray objectAtIndex:i];
+		if([[bookMarksDict valueForKey:@"WebBookmarkType"] isEqualToString:@"WebBookmarkTypeLeaf"]){
+			NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
+			[dict setValue:[[bookMarksDict valueForKey:@"URIDictionary"] valueForKey:@"title"] forKey:@"title"];
+			[dict setValue:[bookMarksDict valueForKey:@"URLString"] forKey:@"url"];
+			[bookMarksArray addObject:dict];
+			[dict release];
+		}
+		
+	}
+}
 - (void)didReceiveMemoryWarning {
 	WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
 	// Release anything that's not essential, such as cached data
 }
 
-
 - (void)dealloc 
 {	
     [infoText release];
     [urlField release];
     [leftView release];
-	[selectedLinkText release];
+	[bookMarksArray release];
     [segmentedTableViewController release];
 	[selectionTableViewController release];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];

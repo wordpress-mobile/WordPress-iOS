@@ -36,7 +36,8 @@
 	BOOL isTextViewEditing;
     UITextField *infoText;
     UITextField *urlField;
-	NSString *selectedLinkText;
+	NSRange selectedLinkRange;
+	NSMutableArray *bookMarksArray;
 }
 
 @property (nonatomic, assign)PostDetailViewController * postDetailViewController;
@@ -45,7 +46,8 @@
 @property (nonatomic, retain) WPNavigationLeftButtonView *leftView;
 @property (nonatomic, retain) UITextField *infoText;
 @property (nonatomic, retain) UITextField *urlField;
-@property (nonatomic, retain) NSString *selectedLinkText;
+@property (nonatomic, retain) NSMutableArray *bookMarksArray;
+@property (nonatomic) NSRange selectedLinkRange;
 
 - (void)refreshUIForCompose;
 - (void)refreshUIForCurrentPost;
@@ -68,5 +70,6 @@
 - (IBAction)showAddNewCategoryView:(id)sender;
 - (IBAction)showCategoriesViewAction:(id)sender;
 - (IBAction)showStatusViewAction:(id)sender;
+- (NSString *)validateNewLinkInfo:(NSString *)urlText;
 
 @end
