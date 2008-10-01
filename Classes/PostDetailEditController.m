@@ -539,10 +539,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[self showPhotoPickerActionSheet];
 }
 
-- (UIImagePickerController*)pickerController
+- (WPImagePickerController*)pickerController
 {
 	if( pickerController == nil ) {
-		pickerController = [[UIImagePickerController alloc] init];
+		pickerController = [[WPImagePickerController alloc] init];
 		pickerController.delegate = self;
 		pickerController.allowsImageEditing = NO;
 	}
@@ -555,7 +555,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	isShowPhotoPickerActionSheet = YES;
 	// open a dialog with two custom buttons
 	UIActionSheet *actionSheet;
-	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+	if ([WPImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
 		
 		actionSheet = [[UIActionSheet alloc] 
 					   initWithTitle:@""
@@ -598,7 +598,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		{
 			[self useImage:currentChoosenImage];
 			//	[picker popViewControllerAnimated:YES];
-			UIImagePickerController* picker = [self pickerController];
+			WPImagePickerController* picker = [self pickerController];
 			[[picker parentViewController] dismissModalViewControllerAnimated:YES];
 		}
 		else 
@@ -612,8 +612,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)pickPhotoFromCamera:(id)sender {
 	[[BlogDataManager sharedDataManager] makeNewPictureCurrent];
-	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-		UIImagePickerController* picker = [self pickerController];
+	if ([WPImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+		WPImagePickerController* picker = [self pickerController];
 		picker.sourceType = UIImagePickerControllerSourceTypeCamera;
 		
 		// Picker is displayed asynchronously.
@@ -623,8 +623,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)pickPhotoFromPhotoLibrary:(id)sender {
 	[[BlogDataManager sharedDataManager] makeNewPictureCurrent];
-	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-		UIImagePickerController* picker = [self pickerController];
+	if ([WPImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+		WPImagePickerController* picker = [self pickerController];
 		picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
 		// Picker is displayed asynchronously.
 		[postDetailViewController.navigationController presentModalViewController:picker animated:YES];

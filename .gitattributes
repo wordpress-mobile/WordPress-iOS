@@ -35,6 +35,8 @@ Classes/WPCategoriesController.h -text
 Classes/WPCategoriesController.m -text
 Classes/WPCommentsDetailViewController.h -text
 Classes/WPCommentsDetailViewController.m -text
+Classes/WPImagePickerController.h -text
+Classes/WPImagePickerController.m -text
 Classes/WPNavigationLeftButtonView.h -text
 Classes/WPNavigationLeftButtonView.m -text
 Classes/WPPhotoViewController.h -text

@@ -35,11 +35,11 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 	[self pickPhotoFromCamera:nil];		
 }
 
-- (UIImagePickerController*)pickerController
+- (WPImagePickerController*)pickerController
 {
 	if( pickerController == nil )
 	{
-		pickerController = [[UIImagePickerController alloc] init];
+		pickerController = [[WPImagePickerController alloc] init];
 		pickerController.delegate = self;
 		pickerController.allowsImageEditing = NO;
 	}
@@ -57,7 +57,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 {
 	isShowPhotoPickerActionSheet = YES;
 	// open a dialog with two custom buttons
-	if ([UIImagePickerController
+	if ([WPImagePickerController
 		 isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
 		UIActionSheet *actionSheet = [[UIActionSheet alloc]
 									  initWithTitle:@""
@@ -96,7 +96,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 		{
 			[self useImage:currentChoosenImage];
 			//	[picker popViewControllerAnimated:YES];
-			UIImagePickerController* picker = [self pickerController];
+			WPImagePickerController* picker = [self pickerController];
 			[[picker parentViewController] dismissModalViewControllerAnimated:YES];
 			[self refreshData];
 		}
@@ -111,8 +111,8 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 
 - (void)pickPhotoFromCamera:(id)sender {
 //	[[BlogDataManager sharedDataManager] makeNewPictureCurrent];
-	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-		UIImagePickerController* picker = [self pickerController];
+	if ([WPImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+		WPImagePickerController* picker = [self pickerController];
 		picker.sourceType = UIImagePickerControllerSourceTypeCamera;
 		
 		// Picker is displayed asynchronously.
@@ -122,8 +122,8 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 
 - (void)pickPhotoFromPhotoLibrary:(id)sender {
 //	[[BlogDataManager sharedDataManager] makeNewPictureCurrent];
-	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-		UIImagePickerController* picker = [self pickerController];
+	if ([WPImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+		WPImagePickerController* picker = [self pickerController];
 		picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
 //		WPLog(@"pickPhotoFromPhotoLibrary ... %@", picker);
 		// Picker is displayed asynchronously.
@@ -309,7 +309,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 }
 
 
-- (void)imagePickerController:(UIImagePickerController *)picker
+- (void)imagePickerController:(WPImagePickerController *)picker
 				didFinishPickingImage:(UIImage *)image
 									editingInfo:(NSDictionary *)editingInfo
 {
@@ -333,7 +333,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 //	[actionSheet release];	
 }
 
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+- (void)imagePickerControllerDidCancel:(WPImagePickerController *)picker
 {
 //	WPLog(@"imagePickerControllerDidCancel");
 	[[picker parentViewController] dismissModalViewControllerAnimated:YES];

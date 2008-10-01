@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "PostDetailViewController.h"
 #import "WPAddCategoryViewController.h"
+#import "WPImagePickerController.h"
 
 #define kSelectionsStatusContext ((void*)1000)
 #define kSelectionsCategoriesContext ((void*)2000)
@@ -26,7 +27,7 @@
 	IBOutlet UIBarButtonItem *newCategoryBarButtonItem;
 	
 	UIImage *currentChoosenImage; 
-	UIImagePickerController *pickerController;
+	WPImagePickerController *pickerController;
 	
 	WPSelectionTableViewController *selectionTableViewController;
    	WPSegmentedSelectionTableViewController *segmentedTableViewController;

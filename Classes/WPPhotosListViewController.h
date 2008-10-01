@@ -2,13 +2,14 @@
 #import "WPPhotoViewController.h"
 #import "PostDetailViewController.h"
 #import "WPImageView.h"
+#import "WPImagePickerController.h"
 
 @interface WPPhotosListViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
 	IBOutlet UITableView *tableView;
 	IBOutlet UITextField *countField;
 	
 	UIImage *currentChoosenImage; 
-	UIImagePickerController *pickerController;
+	WPImagePickerController *pickerController;
 
 	PostDetailViewController *postDetailViewController;
 
