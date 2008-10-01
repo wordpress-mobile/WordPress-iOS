@@ -312,7 +312,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	WPLog(@"The Alet Tag (%d) & Clicked on Button Index (%d)",[alertView tag],buttonIndex);
+	//WPLog(@"The Alet Tag (%d) & Clicked on Button Index (%d)",[alertView tag],buttonIndex);
     if([alertView tag] == 1){
      	if ( buttonIndex == 0 ) 
             [self showLinkView];
@@ -324,7 +324,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
     if([alertView tag] == 2){
      	if ( buttonIndex == 1){
-            
+            if((urlField.text == nil)||([urlField.text isEqualToString:@""]))
+				return;
+			if((infoText.text == nil)||([infoText.text isEqualToString:@""]))
+				infoText.text=urlField.text;
+			
 			NSString *commentsStr = textView.text;
 			NSRange rangeToReplace=[self selectedLinkRange];
 			//WPLog(@" Entered Text %@ and The Link %@ selected text is %@ ******* %d,%d",infoText.text,urlField.text,[commentsStr substringWithRange:rangeToReplace],rangeToReplace.location,rangeToReplace.length);
@@ -453,7 +457,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		for(i = 0; i < count; i++){
 			NSString *searchString=[stringArray objectAtIndex:i];
 			
-			WPLog(@"Substring is %@   searchString is %@",subStr,searchString);
 			if(searchRes = [subStr isEqualToString:[searchString capitalizedString]])
 				break;
 			else if (searchRes = [subStr isEqualToString:[searchString lowercaseString]])
@@ -485,12 +488,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		isTextViewEditing = NO;
 		
 		[self bringTextViewDown];
-		if (postDetailViewController.hasChanges == YES)
-        {
+		if (postDetailViewController.hasChanges == YES){
 			[leftView setTitle:@"Cancel"];
-        }
-        else
-        {
+        }else{
             [leftView setTitle:@"Posts"];
 		}
         UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:leftView];
