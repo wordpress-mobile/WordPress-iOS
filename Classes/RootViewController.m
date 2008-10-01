@@ -151,13 +151,11 @@
 		if ([dataManager countOfBlogs] == indexPath.row || [dataManager countOfBlogs] == 0) {
 			[dataManager makeNewBlogCurrent];
 			BlogDetailModalViewController *blogDetailModalViewController = [[BlogDetailModalViewController alloc] initWithNibName:@"WPBlogDetailViewController" bundle:nil];
-			UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:blogDetailModalViewController];
-			[self.navigationController pushViewController:nc animated:YES];
+			[self.navigationController pushViewController:blogDetailModalViewController animated:YES];
 			blogDetailModalViewController.removeBlogButton.hidden = YES;
 			blogDetailModalViewController.isModal = NO;
 			blogDetailModalViewController.mode = 0;
 			[blogDetailModalViewController refreshBlogCompose];
-			[nc release];
 			[blogDetailModalViewController release];			
 		} else {
 			if( [[[dataManager blogAtIndex:indexPath.row] valueForKey:@"kIsSyncProcessRunning"] intValue] == 1 ) {
