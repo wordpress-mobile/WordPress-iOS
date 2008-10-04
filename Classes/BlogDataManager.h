@@ -195,6 +195,7 @@
 #pragma mark CategoriesCreation
 
 - (BOOL)createCategory:(NSString *)catTitle parentCategory:(NSString *)parentTitle forBlog:(id)aBlog;
+- (void)downloadAllCategoriesForBlog:(id)aBlog;
 
 #pragma mark Pictures  
 - (int)countOfPictures;
@@ -232,9 +233,9 @@
 - (BOOL) syncCommentsForCurrentBlog ;
 - (BOOL) syncCommentsForBlog:(id)blog;
 - (BOOL) deleteComment:(NSArray *) aComment forBlog:(id)blog;
-- (BOOL) approveComment:(NSArray *) aComment forBlog:(id)blog;
-- (BOOL) unApproveComment:(NSArray *) aComment forBlog:(id)blog;
-- (BOOL) spamComment:(NSArray *) aComment forBlog:(id)blog;
+- (BOOL) approveComment:(NSMutableArray *) aComment forBlog:(id)blog;
+- (BOOL) unApproveComment:(NSMutableArray *) aComment forBlog:(id)blog;
+- (BOOL) spamComment:(NSMutableArray *) aComment forBlog:(id)blog;
 - (NSString *)savePostsFileWithAsynPostFlag:(NSMutableDictionary *)postDict;
 - (void)updatePostsTitlesFileAfterPostSaved:(NSMutableDictionary *)dict;
 @end

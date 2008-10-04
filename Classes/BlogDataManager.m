@@ -1396,7 +1396,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 - (void)saveBlogData {
 	
-	
 	NSString *blogsArchiveFilePath = [currentDirectoryPath stringByAppendingPathComponent:@"blogs.archive"];
 	// Empty blogs list may signify all blogs at launch were deleted;  
 	// check for existence of prior archive before saving
@@ -3098,24 +3097,29 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 - (BOOL)createCategory:(NSString *)catTitle parentCategory:(NSString *)parentTitle forBlog:(id)blog
 {
-//	[[blog valueForKey:@"categories"] addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"sra1", @"categoryName", nil]]; ;
-////	[blog setObject:categories forKey:@"categories"];
-//	return YES;
-	
 	NSDictionary *catParms = [NSMutableDictionary dictionaryWithCapacity:4];
+	if( parentTitle && [parentTitle length] ) {
+		NSArray *currentCategories = [[self currentBlog] valueForKey:@"categories"];
+		int i,catCount = [currentCategories count];
+		for(i = 0; i < catCount; i++){
+			NSDictionary *dict = [currentCategories objectAtIndex:i];
+			if([[dict valueForKey:@"categoryName"] isEqualToString:parentTitle]){
+				[catParms setValue:[dict valueForKey:@"categoryId"] forKey:@"parent_id"];
+				break;
+			}
+		}
+	}
 	
 	[catParms setValue:catTitle forKey:@"name"];
-	if( parentTitle && [parentTitle length] )
-		[catParms setValue:catTitle forKey:@"parent_id"];
 	[catParms setValue:catTitle forKey:@"description"];
-
+		
 	NSArray *args = [NSArray arrayWithObjects:[blog valueForKey:@"blogid"],
 					 [blog valueForKey:@"username"],
 					 [blog valueForKey:@"pwd"],
 					 catParms,
 					 nil
 					 ];
-	
+	WPLog(@"args Dict is %@ ",args);
 	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[blog valueForKey:@"xmlrpc"]]];
 	[request setMethod:@"wp.newCategory" withObjects:args];
 	
@@ -3128,20 +3132,26 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	}
 	
 	// invoke wp.getCategories
-	XMLRPCRequest *reqCategories = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[blog valueForKey:@"xmlrpc"]]];
+	[self downloadAllCategoriesForBlog:blog];
+	return YES;
+}
+- (void)downloadAllCategoriesForBlog:(id)aBlog{
+	
+	NSArray *args = [NSArray arrayWithObjects:[aBlog valueForKey:@"blogid"],
+					 [aBlog valueForKey:@"username"],
+					 [aBlog valueForKey:@"pwd"],
+					 nil];
+	XMLRPCRequest *reqCategories = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[aBlog valueForKey:@"xmlrpc"]]];
 	[reqCategories setMethod:@"wp.getCategories" withObjects:args];
 	
 	NSArray *categories = [self executeXMLRPCRequest:reqCategories byHandlingError:YES];
 	[reqCategories release];
-	
 	if( [categories isKindOfClass:[NSArray class]] ) //might be an error.
 	{
-//		WPLog(@"categories %@", categories);
-		[blog setObject:categories forKey:@"categories"];
+		[aBlog setObject:categories forKey:@"categories"];
 	}
 	
 	[self saveBlogData];
-	return YES;
 }
 
 #pragma mark -
@@ -3519,15 +3529,14 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[commentTitlesArray sortUsingDescriptors:[NSArray arrayWithObject:sd]];
 	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
 	[commentTitlesArray writeToFile:pathToCommentTitles  atomically:YES];
-	WPLog(@"writing commentTitlesList(%@) to file path (%@)",commentTitlesArray,[self pathToCommentTitles:blog]);
+	//WPLog(@"writing commentTitlesList(%@) to file path (%@)",commentTitlesArray,[self pathToCommentTitles:blog]);
 	[commentsReqArray release];
 	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 	return YES;
 }
 
-
 // approve comment for a given blog
-- (BOOL) approveComment:(NSArray *) aComment forBlog:(id)blog {
+- (BOOL) approveComment:(NSMutableArray *) aComment forBlog:(id)blog {
 	
 //function wp_editComment($args) { 
 //	 $blog_id        = (int) $args[0]; 
@@ -3554,6 +3563,12 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		 NSString *commentFilePath = [self commentFilePath:commentsDict forBlog:blog];
 		 NSDictionary *completeComment = [NSMutableDictionary dictionaryWithContentsOfFile:commentFilePath];
 		 
+		 if([[commentsDict valueForKey:@"status"]isEqualToString:@"approve"]){
+			 [aComment removeObjectAtIndex:i];
+			 commentsCount--;i--;
+			 continue;
+		 }
+				 
 		 [commentsDict setValue:@"approve" forKey:@"status"];
 		 [completeComment setValue:@"approve" forKey:@"status"];
 		 
@@ -3564,6 +3579,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 			
 		 [dict release];
 	 }
+	 commentsCount=[aComment count];
 	// WPLog(@"Comments arrray is %@",commentsReqArray);
 	 if(commentsCount>0){
 		 XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
@@ -3598,7 +3614,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *pathToCommentTitles = [self pathToCommentTitles:blog];
 	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
 	[commentTitlesArray writeToFile:pathToCommentTitles  atomically:YES];
-	WPLog(@"writing commentTitlesList(%@) to file path (%@)",commentTitlesArray,[self pathToCommentTitles:blog]);
+	//WPLog(@"writing commentTitlesList(%@) to file path (%@)",commentTitlesArray,[self pathToCommentTitles:blog]);
 	[commentsReqArray release];
 	
 	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
@@ -3607,7 +3623,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 
 // approve comment for a given blog
-- (BOOL) unApproveComment:(NSArray *) aComment forBlog:(id)blog {
+- (BOOL) unApproveComment:(NSMutableArray *) aComment forBlog:(id)blog {
 	
 	//function wp_editComment($args) { 
 	//	 $blog_id        = (int) $args[0]; 
@@ -3635,6 +3651,12 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		NSString *commentFilePath = [self commentFilePath:commentsDict forBlog:blog];
 		NSDictionary *completeComment = [NSMutableDictionary dictionaryWithContentsOfFile:commentFilePath];
 		
+		if([[commentsDict valueForKey:@"status"]isEqualToString:@"hold"]){
+			[aComment removeObjectAtIndex:i];
+			commentsCount--;i--;
+			continue;
+		}
+		
 		[commentsDict setValue:@"hold" forKey:@"status"];
 		[completeComment setValue:@"hold" forKey:@"status"];
 		
@@ -3644,6 +3666,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		[commentsReqArray addObject:dict];
 		[dict release];
 	}
+	commentsCount=[aComment count];
 	if(commentsCount>0){
 		XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
 		[postsReq setMethod:@"system.multicall" withObject:commentsReqArray];
@@ -3678,7 +3701,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *pathToCommentTitles = [self pathToCommentTitles:blog];
 	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
 	[commentTitlesArray writeToFile:pathToCommentTitles  atomically:YES];
-	WPLog(@"writing commentTitlesList(%@) to file path (%@)",commentTitlesArray,[self pathToCommentTitles:blog]);
+	//WPLog(@"writing commentTitlesList(%@) to file path (%@)",commentTitlesArray,[self pathToCommentTitles:blog]);
 	[commentsReqArray release];
 	
 	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
@@ -3686,7 +3709,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 }
 
 // approve comment for a given blog
-- (BOOL) spamComment:(NSArray *) aComment forBlog:(id)blog {
+- (BOOL) spamComment:(NSMutableArray *) aComment forBlog:(id)blog {
 	
 	//function wp_editComment($args) { 
 	//	 $blog_id        = (int) $args[0]; 
@@ -3712,7 +3735,13 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		NSString *commentid = [commentsDict valueForKey:@"comment_id"];
 		NSString *commentFilePath = [self commentFilePath:commentsDict forBlog:blog];
 		NSDictionary *completeComment = [NSMutableDictionary dictionaryWithContentsOfFile:commentFilePath];
-		
+	
+		if([[commentsDict valueForKey:@"status"]isEqualToString:@"spam"]){
+			[aComment removeObjectAtIndex:i];
+			commentsCount--;i--;
+			continue;
+		}
+			
 		[commentsDict setValue:@"spam" forKey:@"status"];
 		[completeComment setValue:@"spam" forKey:@"status"];
 		
@@ -3722,6 +3751,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		[commentsReqArray addObject:dict];
 		[dict release];
 	}
+	commentsCount=[aComment count];
 	if(commentsCount>0){
 		XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
 		[postsReq setMethod:@"system.multicall" withObject:commentsReqArray];
@@ -3753,7 +3783,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *pathToCommentTitles = [self pathToCommentTitles:blog];
 	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
 	[commentTitlesArray writeToFile:pathToCommentTitles  atomically:YES];
-	WPLog(@"writing commentTitlesList(%@) to file path (%@)",commentTitlesArray,[self pathToCommentTitles:blog]);
+	//WPLog(@"writing commentTitlesList(%@) to file path (%@)",commentTitlesArray,[self pathToCommentTitles:blog]);
 	[commentsReqArray release];
 	
 	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];

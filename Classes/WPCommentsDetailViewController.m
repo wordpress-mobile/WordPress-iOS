@@ -246,11 +246,11 @@
 		if([alertView tag] == 1){
 			result = [sharedDataManager deleteComment:selectedComments forBlog:[sharedDataManager currentBlog]];
 		} else if([alertView tag] == 2){
-			result = [sharedDataManager approveComment:selectedComments forBlog:[sharedDataManager currentBlog]];
+			result = [sharedDataManager approveComment:(NSMutableArray *)selectedComments forBlog:[sharedDataManager currentBlog]];
 		} else if([alertView tag] == 3){
-			result = [sharedDataManager unApproveComment:selectedComments forBlog:[sharedDataManager currentBlog]];
+			result = [sharedDataManager unApproveComment:(NSMutableArray *)selectedComments forBlog:[sharedDataManager currentBlog]];
 		}else if([alertView tag] == 4){
-			result = [sharedDataManager spamComment:selectedComments forBlog:[sharedDataManager currentBlog]];
+			result = [sharedDataManager spamComment:(NSMutableArray *)selectedComments forBlog:[sharedDataManager currentBlog]];
 		}
 		
 		[sharedDataManager loadCommentTitlesForCurrentBlog];

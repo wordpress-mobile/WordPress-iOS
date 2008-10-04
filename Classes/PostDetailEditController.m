@@ -526,6 +526,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	return YES;
 }
 
+- (BOOL)textFieldShouldClear:(UITextField *)textField
+{
+	postDetailViewController.hasChanges = YES;
+	return YES;
+}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {

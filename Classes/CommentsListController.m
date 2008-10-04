@@ -42,10 +42,10 @@
 - (void)viewWillAppear:(BOOL)animated {
 	
 	WPLog(@"PostsList:viewWillAppear");
-	
+		
 	editMode = NO;
 	changeEditMode = YES;
-	
+
 	BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
 	[sharedDataManager loadCommentTitlesForCurrentBlog];
 	
@@ -84,6 +84,7 @@
 	[super viewWillAppear:animated];
 }
 - (void)viewWillDisappear:(BOOL)animated{
+	editButtonItem.title = @"Edit";
 	WPLog(@"viewWillDisappear ");
 	[commentsArray removeAllObjects];
 	[selectedComments removeAllObjects];
@@ -274,11 +275,11 @@
 		if([alertView tag] == 1){
 			result = [sharedDataManager deleteComment:selectedItems forBlog:[sharedDataManager currentBlog]];
 		} else if([alertView tag] == 2){
-			result = [sharedDataManager approveComment:selectedItems forBlog:[sharedDataManager currentBlog]];
+			result = [sharedDataManager approveComment:(NSMutableArray *)selectedItems forBlog:[sharedDataManager currentBlog]];
 		} else if([alertView tag] == 3){
-			result = [sharedDataManager unApproveComment:selectedItems forBlog:[sharedDataManager currentBlog]];
+			result = [sharedDataManager unApproveComment:(NSMutableArray *)selectedItems forBlog:[sharedDataManager currentBlog]];
 		}else if([alertView tag] == 4){
-			result = [sharedDataManager spamComment:selectedItems forBlog:[sharedDataManager currentBlog]];
+			result = [sharedDataManager spamComment:(NSMutableArray *)selectedItems forBlog:[sharedDataManager currentBlog]];
 		}
 			
 		if ( result ) {
@@ -338,25 +339,30 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 		[selectedComments addObject:dict];
         [sender setImage:[UIImage imageNamed:@"check.png"] forState:UIControlStateNormal];  
 	}
-	int count=[selectedComments count];
 	
-	if(count){
-		[approveButton setTitle:[NSString stringWithFormat:@"Approve (%d)",count]];
-		[unapproveButton setTitle:[NSString stringWithFormat:@"Unapprove (%d)",count]];
-		[spamButton setTitle:[NSString stringWithFormat:@"Spam (%d)",count]];
-		[deleteButton setEnabled:YES];
-		[approveButton setEnabled:YES];
-		[unapproveButton setEnabled:YES];
-		[spamButton setEnabled:YES];
-	}else{
-		[approveButton setTitle:@"Approve"];
-		[unapproveButton setTitle:@"Unapprove"];
-		[spamButton setTitle:@"Spam"];
-		[deleteButton setEnabled:NO];
-		[approveButton setEnabled:NO];
-		[unapproveButton setEnabled:NO];
-		[spamButton setEnabled:NO];
+	int i,approvedCount,unapprovedCount,spamCount,count=[selectedComments count];
+	
+	approvedCount = unapprovedCount = spamCount = 0;
+	for (i=0; i<count; i++) {
+		NSDictionary *dict=[selectedComments objectAtIndex:i];
+		if([[dict valueForKey:@"status"] isEqualToString:@"hold"])
+			unapprovedCount++;
+		else if([[dict valueForKey:@"status"] isEqualToString:@"approve"])
+			approvedCount++;
+		else if([[dict valueForKey:@"status"] isEqualToString:@"spam"])
+			spamCount++;
 	}
+	
+	[deleteButton setEnabled:((count > 0)?YES:NO)];
+	[approveButton setEnabled:(((count-approvedCount) > 0)?YES:NO)];
+	[unapproveButton setEnabled:(((count-unapprovedCount) > 0)?YES:NO)];
+	[spamButton setEnabled:(((count-spamCount) > 0)?YES:NO)];
+	
+	[approveButton setTitle:(((count-approvedCount) > 0)?[NSString stringWithFormat:@"Approve (%d)",count-approvedCount]:@"Approve")];
+	[unapproveButton setTitle:(((count-unapprovedCount) > 0)?[NSString stringWithFormat:@"Unapprove (%d)",count-unapprovedCount]:@"Unapprove")];
+	[spamButton setTitle:(((count-spamCount) > 0)?[NSString stringWithFormat:@"Spam (%d)",count-spamCount]:@"Spam")];
+	
+	//WPLog(@"unapprovedCount %d approvedCount %d spamCount %d",unapprovedCount,approvedCount,spamCount);
 }
 #pragma mark -
 #pragma mark tableview methods

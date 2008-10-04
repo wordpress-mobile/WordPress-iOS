@@ -26,7 +26,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	return wordPressApp;
 }
 
-
 - (void)dealloc {
 	
 	[navigationController release];
@@ -58,12 +57,12 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	navigationController =	[[UINavigationController alloc] initWithRootViewController:rootViewController];
 	[rootViewController release];
 	// Configure and show the window
+	
 	navigationController.navigationBarHidden = YES;
 	[window addSubview:navigationController.view];
 
 	
 	[window makeKeyAndVisible];
-	
 	
 	WPLog(@"end of method applicationDidFinishLaunching");
 }
