@@ -51,7 +51,7 @@
 	
 	resizePhotoLabel.font = [UIFont boldSystemFontOfSize:17.0f];
 	
-	blogEditTable.scrollEnabled = NO;
+	blogEditTable.scrollEnabled = YES;
 	self.navigationController.navigationBarHidden= NO;
     
     WPNavigationLeftButtonView *myview = [WPNavigationLeftButtonView createView];  

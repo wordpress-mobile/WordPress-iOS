@@ -77,6 +77,7 @@ Classes/XMLRPC/XMLValueDecoder.m -text
 /DraftsFolder.png -text
 /DraftsList.xib -text
 /Info.plist -text
+/MainBackground.png -text
 /MainWindow.xib -text
 /PostDetailEditController.xib -text
 /PostDetailViewController.xib -text
@@ -123,6 +124,7 @@ WordPress.xcodeproj/project.pbxproj -text
 /up.png -text
 /webclip.png -text
 /wplogo.png -text
+/wplogo1.png -text
 /write.png -text
 /xhtml1-transitional.dtd -text
 /xhtmlValidatorTemplate.xhtml -text
