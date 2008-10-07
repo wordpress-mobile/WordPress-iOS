@@ -60,7 +60,9 @@
 		result = [[result componentsSeparatedByString: @"&quot;"] componentsJoinedByString: @"\""];	
 	
 	if ( [result rangeOfString:@"&apos;"].location != NSNotFound )
-		result = [[result componentsSeparatedByString: @"&apos;"] componentsJoinedByString: @"'"];	
+		result = [[result componentsSeparatedByString: @"&apos;"] componentsJoinedByString: @"'"];
+	if ( [result rangeOfString:@"&nbsp;"].location != NSNotFound )
+		result = [[result componentsSeparatedByString: @"&nbsp;"] componentsJoinedByString: @" "];
 	
 	return result;
 	

@@ -479,7 +479,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
         [linkAlert release];
     }
 	
-	NSLog(@"str is %@ \nBOOL Result is %d",str,searchRes);
 }
 - (void)textViewDidEndEditing:(UITextView *)aTextView
 {	

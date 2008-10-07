@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="54"/>
+			<integer value="314"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -165,7 +165,7 @@
 									</object>
 									<object class="IBUITextField" id="28692399">
 										<reference key="NSNextResponder" ref="735874146"/>
-										<int key="NSvFlags">292</int>
+										<int key="NSvFlags">294</int>
 										<string key="NSFrame">{{79, 41}, {251, 40}}</string>
 										<reference key="NSSuperview" ref="735874146"/>
 										<bool key="IBUIOpaque">NO</bool>
@@ -208,7 +208,7 @@
 									</object>
 									<object class="IBUITextField" id="583175134">
 										<reference key="NSNextResponder" ref="735874146"/>
-										<int key="NSvFlags">292</int>
+										<int key="NSvFlags">294</int>
 										<string key="NSFrame">{{79, 1}, {251, 40}}</string>
 										<reference key="NSSuperview" ref="735874146"/>
 										<bool key="IBUIOpaque">NO</bool>
@@ -261,7 +261,7 @@
 													<bool key="EncodedWithXMLCoder">YES</bool>
 													<object class="IBUIButton" id="518831838">
 														<reference key="NSNextResponder" ref="270641902"/>
-														<int key="NSvFlags">292</int>
+														<int key="NSvFlags">290</int>
 														<string key="NSFrameSize">{320, 42}</string>
 														<reference key="NSSuperview" ref="270641902"/>
 														<bool key="IBUIOpaque">NO</bool>
@@ -906,7 +906,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{453, 297}, {320, 460}}</string>
+					<string>{{584, 109}, {320, 460}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>

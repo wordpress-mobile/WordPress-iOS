@@ -117,12 +117,15 @@
 		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:selectionTableRowCell] autorelease];
 		[cell setAccessoryType:UITableViewCellAccessoryCheckmark];
 	}
-	
+
 	NSArray *subArray=[objects objectAtIndex:indexPath.section];
     if(subArray){
         if (indexPath.row < [subArray count]) {
 			NSDictionary *item = (NSDictionary *)[subArray objectAtIndex:indexPath.row];
-			cell.text = [item valueForKey:@"categoryName"];
+			if(indexPath.row == 0)
+				cell.text = [item valueForKey:@"categoryName"];
+			else
+				cell.text = [NSString stringWithFormat:@"   %@",[item valueForKey:@"categoryName"]];
 		} else {
 			cell.text = @"";
 		}

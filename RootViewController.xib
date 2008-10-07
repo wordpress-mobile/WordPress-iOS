@@ -52,8 +52,8 @@
 					</object>
 					<object class="IBUITableView" id="975890633">
 						<reference key="NSNextResponder" ref="417869833"/>
-						<int key="NSvFlags">318</int>
-						<string key="NSFrame">{{0, 85.5}, {320, 435}}</string>
+						<int key="NSvFlags">274</int>
+						<string key="NSFrame">{{0, 94}, {320, 475}}</string>
 						<reference key="NSSuperview" ref="417869833"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -69,8 +69,8 @@
 					</object>
 					<object class="IBUIImageView" id="25818595">
 						<reference key="NSNextResponder" ref="417869833"/>
-						<int key="NSvFlags">310</int>
-						<string key="NSFrame">{{0, -12}, {320, 98}}</string>
+						<int key="NSvFlags">303</int>
+						<string key="NSFrame">{{11, 18}, {297, 69}}</string>
 						<reference key="NSSuperview" ref="417869833"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -79,11 +79,11 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">wplogo.png</string>
+							<string key="NSResourceName">wplogo2.png</string>
 						</object>
 					</object>
 				</object>
-				<string key="NSFrameSize">{320, 460}</string>
+				<string key="NSFrameSize">{320, 500}</string>
 				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -158,16 +158,11 @@
 						<reference key="object" ref="417869833"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="975890633"/>
 							<reference ref="291562275"/>
 							<reference ref="25818595"/>
-							<reference ref="975890633"/>
 						</object>
 						<reference key="parent" ref="360949347"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">22</int>
-						<reference key="object" ref="291562275"/>
-						<reference key="parent" ref="417869833"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">31</int>
@@ -177,6 +172,11 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">32</int>
 						<reference key="object" ref="25818595"/>
+						<reference key="parent" ref="417869833"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">22</int>
+						<reference key="object" ref="291562275"/>
 						<reference key="parent" ref="417869833"/>
 					</object>
 				</object>
@@ -200,7 +200,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{555, 328}, {320, 460}}</string>
+					<string>{{281, 128}, {320, 500}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
@@ -224,7 +224,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">50</int>
+			<int key="maxID">51</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

@@ -54,7 +54,6 @@
 //argument should provide all required perameters for 
 - (void)addAsyncOperation:(SEL)anOperation withArg:(id)anArg;
 
-
 - (BOOL)deleteAllPhotosForPost:(id)aPost forBlog:(id)aBlog;
 - (BOOL)deleteAllPhotosForCurrentPostBlog;
 
@@ -68,8 +67,6 @@ static BlogDataManager *sharedDataManager;
 pictureFieldNames, postFieldNames, postFieldNamesByTag, postFieldTagsByName,
 postTitleFieldNames, postTitleFieldNamesByTag, postTitleFieldTagsByName,unsavedPostsCount,
 currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLocaDraftsCurrent, currentPostIndex, currentDraftIndex,asyncPostsOperationsQueue;
-
-
 
 
 - (void)dealloc {
@@ -1212,7 +1209,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 // sync posts for a given blog
 - (BOOL) syncPostsForBlog:(id)blog {
-	WPLog(@"<<<<<<<<<<<<<<<<<< syncPostsForBlog >>>>>>>>>>>>>>");
 	if( [[blog valueForKey:@"blogid"] isEqualToString:kDraftsBlogIdStr] )
 		return NO;
 	[blog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
@@ -2592,7 +2588,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 								 @"", @"", @"", @"", 
 								 blogid, blogHost, @"", now,@"",
 								 nil];
-	NSLog(@"[self postFieldNames] is (%@)  -- count is %d",[self postFieldNames],[[self postFieldNames] count]);
+	WPLog(@"[self postFieldNames] is (%@)  -- count is %d",[self postFieldNames],[[self postFieldNames] count]);
 	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjects:postInitValues  forKeys:[self postFieldNames]];
 	
 	[dict setObject:xmlrpc forKey:@"xmlrpc"];
@@ -2869,6 +2865,22 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
      [postsArray writeToFile:postTitlesPath atomically:YES];
      [self loadPostTitlesForBlog:[self currentBlog]];
 }
+
+- (void)removeTempFileForUnSavedPost:(NSString *)postId{
+	
+    NSString *postTitlesPath = [self pathToPostTitles:[self currentBlog]];
+    NSMutableArray *postsArray=[NSMutableArray arrayWithContentsOfFile:postTitlesPath];
+    int postsCount=[postsArray count];
+    for(int i=0;i<postsCount;i++)
+    {
+        NSMutableDictionary *postDict=[postsArray objectAtIndex:i];
+        if([[postDict valueForKey:@"postid"] isEqualToString:postId]){
+            [postsArray removeObjectAtIndex:i];
+			[postsArray writeToFile:postTitlesPath atomically:YES];
+			break;
+		}  
+	}
+}
 		
 //taking post as arg. will help us in implementing async in future.
 - (BOOL)savePost:(id)aPost
@@ -2935,21 +2947,25 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 		if( ![response isKindOfClass:[NSError class]] )
 			successFlag = YES;
-        
+      
 		//if it is a draft and we successfully published then remove from drafts.
-		if( isLocaDraftsCurrent && ![response isKindOfClass:[NSError class]] )
-		{
-			NSMutableArray *draftPostTitleList = [self draftTitlesForBlog:currentBlog];
-			[draftPostTitleList removeObjectAtIndex:currentDraftIndex];
-			[draftPostTitleList writeToFile:[self pathToDraftTitlesForBlog:currentBlog]  atomically:YES];
-			[self setDraftTitlesList:draftPostTitleList];
+		if(![response isKindOfClass:[NSError class]] ){
 			
-			NSString *draftPath = [self pathToDraft:currentPost forBlog:currentBlog];
-			[[NSFileManager defaultManager] removeItemAtPath:draftPath error:nil];
-			
-			NSNumber *dc = [currentBlog valueForKey:@"kDraftsCount"];
-			[currentBlog setValue:[NSNumber numberWithInt:[dc intValue]-1] forKey:@"kDraftsCount"];			
-			[self saveBlogData];
+			NSMutableArray *draftTitles = [self draftTitlesForBlog:currentBlog];
+			int draftsCount=[draftTitles count];
+			for(int i = 0;i < draftsCount;i++){
+				NSDictionary *draftDict=[draftTitles objectAtIndex:i];
+				if([[draftDict valueForKey:@"draftid"] isEqualToString:[currentPost valueForKey:@"draftid"]]){
+					[draftTitles removeObjectAtIndex:i];
+					[draftTitles writeToFile:[self pathToDraftTitlesForBlog:currentBlog] atomically:YES];
+					[currentBlog setObject:[NSNumber numberWithInt:[draftTitles count]] forKey:kDraftsCount];
+					[self saveBlogData];
+					NSString *pathToPost = [self pathToDraft:currentPost forBlog:currentBlog];
+					NSFileManager *defaultFileManager = [NSFileManager defaultManager];
+					if([defaultFileManager fileExistsAtPath:pathToPost])
+						[defaultFileManager removeFileAtPath:pathToPost handler:nil];
+				}
+			}
 		}
 		
 		[self fectchNewPost:response formBlog:currentBlog];
@@ -3362,7 +3378,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 // sync comments for a given blog
 - (BOOL) syncCommentsForBlog:(id)blog {
-	WPLog(@"<<<<<<<<<<<<<<<<<< syncPostsForBlog >>>>>>>>>>>>>>");
 	
 	[blog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
 	// Parameters

@@ -428,11 +428,28 @@
 
 - (void)updatePostsTableViewAfterPostSaved:(NSNotification *)notification
 {
+	WPLog(@"******* updatePostsTableViewAfterPostSaved Dict is %@",[notification userInfo]);
     NSDictionary *postIdsDict=[notification userInfo];
     BlogDataManager *dm = [BlogDataManager sharedDataManager]; 
     [dm updatePostsTitlesFileAfterPostSaved:(NSMutableDictionary *)postIdsDict];
-    
-     [postsTableView reloadData];               
+ 
+	if([[postIdsDict valueForKey:@"isCurrentPostDraft"] intValue]==1)
+		[self.navigationController popViewControllerAnimated:YES]; 
+
+	[dm syncPostsForCurrentBlog];
+	[dm loadPostTitlesForCurrentBlog];
+	
+	NSInteger totalposts = [[[dm currentBlog] valueForKey:@"totalposts"] integerValue];
+	NSInteger newposts = [[[dm currentBlog] valueForKey:@"newposts"] integerValue];
+	
+	
+	postsStatusButton.title = [NSString stringWithFormat:@"%d %@ (%d %@)",
+							   totalposts,
+							   NSLocalizedString(@"Posts", @PostsListController_title_Posts),
+							   newposts, 
+							   NSLocalizedString(@"New", @PostsListController_title_new)];
+	[postsTableView reloadData];
+	
 }
 - (IBAction)downloadRecentPosts:(id)sender {
 	
