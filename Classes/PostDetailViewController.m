@@ -315,14 +315,12 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-//- (void)_savePost:(id)aPost inBlog:(id)aBlog
 -(void)_savePostWithBlog:(NSMutableArray *)arrayPost
 {	
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
     NSString *postId=[arrayPost lastObject];
-    WPLog(@"Post id is %@",arrayPost);
+   // WPLog(@"**********Post id is %@",postId);
     BOOL isCurrentPostDraft = dm.isLocaDraftsCurrent;
-	//NSNumber postId = [[arrayPost objectAtIndex:0] valueForKey:@"postid"];
 	BOOL savePostStatus = [dm savePost:[arrayPost objectAtIndex:0]];
 	
    if(savePostStatus){

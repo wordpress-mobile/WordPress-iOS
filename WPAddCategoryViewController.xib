@@ -8,8 +8,8 @@
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="10"/>
 			<integer value="11"/>
+			<integer value="10"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -67,7 +67,7 @@
 							<object class="IBUITextField" id="54386347">
 								<reference key="NSNextResponder" ref="443780007"/>
 								<int key="NSvFlags">290</int>
-								<string key="NSFrame">{{20, 1}, {280, 40}}</string>
+								<string key="NSFrame">{{7, 1}, {302, 40}}</string>
 								<reference key="NSSuperview" ref="443780007"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -124,7 +124,7 @@
 							<object class="IBUILabel" id="590524587">
 								<reference key="NSNextResponder" ref="219876080"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{20, 1}, {127, 40}}</string>
+								<string key="NSFrame">{{7, 1}, {127, 40}}</string>
 								<reference key="NSSuperview" ref="219876080"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -145,8 +145,8 @@
 							</object>
 							<object class="IBUITextField" id="655460930">
 								<reference key="NSNextResponder" ref="219876080"/>
-								<int key="NSvFlags">289</int>
-								<string key="NSFrame">{{155, 1}, {122, 40}}</string>
+								<int key="NSvFlags">291</int>
+								<string key="NSFrame">{{144, 1}, {148, 40}}</string>
 								<reference key="NSSuperview" ref="219876080"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -357,8 +357,8 @@
 						<reference key="object" ref="590214896"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="655460930"/>
 							<reference ref="590524587"/>
+							<reference ref="655460930"/>
 						</object>
 						<reference key="parent" ref="360949347"/>
 						<string key="objectName">parentcatname</string>

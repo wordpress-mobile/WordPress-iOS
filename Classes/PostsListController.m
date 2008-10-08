@@ -33,8 +33,7 @@
 	 Create an instance of UITableViewCell and add tagged subviews for the name, local time, and quarter image of the time zone.
 	 */
 	CGRect rect;
-	
-	rect = CGRectMake(0.0, 0.0, 320.0, ROW_HEIGHT);
+	rect = CGRectMake(0.0, 0.0, postsTableView.frame.size.width, ROW_HEIGHT);
 	
 	UITableViewCell *cell = [[[UITableViewCell alloc] initWithFrame:rect reuseIdentifier:identifier] autorelease];
 	
@@ -75,14 +74,15 @@
 	[label release];
     
     // Activity bar
-    rect = CGRectMake(LEFT_OFFSET+250, rect.origin.y-10, 20, 20);
+    rect = CGRectMake(cell.frame.origin.x+cell.frame.size.width-25, rect.origin.y-10, 20, 20);
     UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithFrame:rect];
+    activityView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     activityView.tag = 201;
     activityView.hidden = YES;
     activityView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
     [cell.contentView addSubview:activityView];
     [activityView release];    
-
+	
     return cell;
 }
 
@@ -90,7 +90,7 @@
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"kNetworkReachabilityChangedNotification" object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"AsynchronousPostIsPosted" object:nil];
-
+	
 	[postDetailEditController release];
 	[PostDetailViewController release];
 	[super dealloc];
@@ -147,7 +147,8 @@
 			cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:draftsTableCellRowId] autorelease];
 			cell.font = [cell.font fontWithSize:MAIN_FONT_SIZE];
 			UILabel *badgeLabel = [[UILabel alloc] initWithFrame:CGRectMake(210, (LOCALDRAFT_ROW_HEIGHT - LABEL_HEIGHT)/2 , 80, LABEL_HEIGHT)];
-			[badgeLabel setTag:99];
+			badgeLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+            [badgeLabel setTag:99];
 			badgeLabel.textColor = [UIColor lightGrayColor];
 			badgeLabel.textAlignment = UITextAlignmentRight;
 			badgeLabel.font = cell.font;
@@ -181,7 +182,7 @@
 		
 		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:postsTableRowId];
 		if (cell == nil) {
-			cell = [self tableviewCellWithReuseIdentifier:postsTableRowId];
+			cell = [self tableviewCellWithReuseIdentifier:postsTableRowId];         
 			//[[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:postsTableRowId] autorelease];
 		}
 		
@@ -211,9 +212,12 @@
 			NSDate *date = [currentPost valueForKey:@"date_created_gmt"];
 			label = (UILabel *)[cell viewWithTag:DATE_TAG];
 			label.text = [dateFormatter stringFromDate:date];
-
+			
 			// to stop activity indicator if it is running.
+            WPLog(@" The Cell Width is %f",cell.frame.size.width);
+			
 			UIActivityIndicatorView *aView = (UIActivityIndicatorView*)[cell viewWithTag:201];
+            
 			aView.hidden = YES;
 			if([aView isAnimating]){
 				[aView stopAnimating];
@@ -227,15 +231,15 @@
 			
 			// to set activity indicator anf lock image for background saving posts.
 			if(aSyncPostVal == 1)
-			 {
+			{
 				WPLog(@"Asynchronous Post Name (%@)",[currentPost valueForKey:@"title"]);
 				aView.hidden = NO;
 				[aView startAnimating];
-				 //for Lock image
+				//for Lock image
 				UIImageView *lockImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"lock.png"]];
 				cell.accessoryView = lockImg;
 				[lockImg release];
-			 }
+			}
 		}
 		
 		return cell;		
@@ -312,7 +316,7 @@
 	else
 	{
         BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-
+		
         id currentPost = [dataManager postTitleAtIndex:indexPath.row-1];
         //code to return the selection if row is in middle of saving data.
 		if([[currentPost valueForKey:kAsyncPostFlag] intValue]==1)
@@ -326,11 +330,11 @@
 		[[self navigationController] pushViewController:self.postDetailViewController animated:YES];
 	}
     WPLog(@"Pushing Completed");
- }
+}
 
 #pragma mark -
 - (void)viewWillAppear:(BOOL)animated {
-		
+	
 	WPLog(@"PostsList:viewWillAppear");
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	[dm postTitlesForBlog:[dm currentBlog]];
@@ -432,10 +436,10 @@
     NSDictionary *postIdsDict=[notification userInfo];
     BlogDataManager *dm = [BlogDataManager sharedDataManager]; 
     [dm updatePostsTitlesFileAfterPostSaved:(NSMutableDictionary *)postIdsDict];
- 
+	
 	if([[postIdsDict valueForKey:@"isCurrentPostDraft"] intValue]==1)
 		[self.navigationController popViewControllerAnimated:YES]; 
-
+	
 	[dm syncPostsForCurrentBlog];
 	[dm loadPostTitlesForCurrentBlog];
 	

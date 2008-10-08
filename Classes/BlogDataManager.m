@@ -2735,7 +2735,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 - (void)saveCurrentPostAsDraft
 {	
-	WPLog(@"saveCurrentPostAsDraft ...");
+	//WPLog(@"saveCurrentPostAsDraft ...");
 	WPLog(@"isLocaDraftsCurrent %d currentPostIndex %d currentDraftIndex %d", isLocaDraftsCurrent, currentPostIndex, currentDraftIndex );
 	
 	//we can't save existing post as draft.
@@ -2809,7 +2809,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[post setValue:[aBlog valueForKey:@"blog_host_name"] forKey:@"blog_host_name"];
 	[post setValue:@"original" forKey:@"local_status"];
 	id posttile = [self postTitleForPost:post];
-        [posttile setValue:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
+    [posttile setValue:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
 	NSMutableArray *newPostTitlesList = [NSMutableArray arrayWithContentsOfFile:[self pathToPostTitles:aBlog]];
 	
 	int index = [[newPostTitlesList valueForKey:@"postid"] indexOfObject:postid];
@@ -2841,29 +2841,28 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 - (void)updatePostsTitlesFileAfterPostSaved:(NSMutableDictionary *)dict{
 
     NSString *savedPostId=[dict valueForKey:@"savedPostId"];
-    NSString *originalPostId=[dict valueForKey:@"originalPostId"];
-    int equalPostIds=0;
-    if([savedPostId isEqualToString:originalPostId])
-        equalPostIds=1;
- 
+  //  NSString *originalPostId=[dict valueForKey:@"originalPostId"];
+     
     NSString *postTitlesPath = [self pathToPostTitles:[self currentBlog]];
     NSMutableArray *postsArray=[NSMutableArray arrayWithContentsOfFile:postTitlesPath];
     int postsCount=[postsArray count];
     for(int i=0;i<postsCount;i++)
     {
-        NSMutableDictionary *postDict=[postsArray objectAtIndex:i];
+		NSMutableDictionary *postDict=[postsArray objectAtIndex:i];
+		//WPLog(@"Name is %@",[postDict valueForKey:@"title"]);
         if([[postDict valueForKey:@"postid"] isEqualToString:savedPostId]){
-        //WPLog(@"EQUAL POST ID %@ equal values %d",savedPostId,equalPostIds);
-            if(!equalPostIds)
-                [postsArray removeObjectAtIndex:i];
-            else
-                [postDict setValue:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
-                
-                break;
-          }  
-     }
-     [postsArray writeToFile:postTitlesPath atomically:YES];
-     [self loadPostTitlesForBlog:[self currentBlog]];
+//			WPLog(@"POST ID IS %@",savedPostId);
+			if([savedPostId	hasPrefix:@"n"])
+				 [postsArray removeObjectAtIndex:i];
+			else
+				[postDict setValue:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
+			break;
+          }
+	}
+    [postsArray writeToFile:postTitlesPath atomically:YES];
+	[self loadPostTitlesForCurrentBlog];	
+	if(![savedPostId	hasPrefix:@"n"])
+		[self fectchNewPost:savedPostId formBlog:[self currentBlog]];
 }
 
 - (void)removeTempFileForUnSavedPost:(NSString *)postId{
