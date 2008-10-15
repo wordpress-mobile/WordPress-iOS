@@ -214,7 +214,7 @@
 			label.text = [dateFormatter stringFromDate:date];
 			
 			// to stop activity indicator if it is running.
-            WPLog(@" The Cell Width is %f",cell.frame.size.width);
+           // WPLog(@" The Cell Width is %f",cell.frame.size.width);
 			
 			UIActivityIndicatorView *aView = (UIActivityIndicatorView*)[cell viewWithTag:201];
             
@@ -341,8 +341,6 @@
 	dm.isLocaDraftsCurrent = NO;
 	[dm loadPostTitlesForCurrentBlog];
 	
-    //WPLog(@" ********* POSTTILES LIST IS %@",[dm postTitlesList]);
-	
 	// we retain this controller in the caller (RootViewController) so load view does not get called 
 	// everytime we navigate to the view
 	// need to update the prompt and the title here as well as in loadView	
@@ -432,7 +430,6 @@
 
 - (void)updatePostsTableViewAfterPostSaved:(NSNotification *)notification
 {
-	WPLog(@"******* updatePostsTableViewAfterPostSaved Dict is %@",[notification userInfo]);
     NSDictionary *postIdsDict=[notification userInfo];
     BlogDataManager *dm = [BlogDataManager sharedDataManager]; 
     [dm updatePostsTitlesFileAfterPostSaved:(NSMutableDictionary *)postIdsDict];
@@ -440,7 +437,6 @@
 	if([[postIdsDict valueForKey:@"isCurrentPostDraft"] intValue]==1)
 		[self.navigationController popViewControllerAnimated:YES]; 
 	
-	[dm syncPostsForCurrentBlog];
 	[dm loadPostTitlesForCurrentBlog];
 	
 	NSInteger totalposts = [[[dm currentBlog] valueForKey:@"totalposts"] integerValue];
@@ -453,7 +449,7 @@
 							   newposts, 
 							   NSLocalizedString(@"New", @PostsListController_title_new)];
 	[postsTableView reloadData];
-	
+
 }
 - (IBAction)downloadRecentPosts:(id)sender {
 	

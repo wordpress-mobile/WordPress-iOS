@@ -97,6 +97,12 @@
 	//	if (cell == nil) {
 	//		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:rootviewcell] autorelease];
 	//	}
+	UIActivityIndicatorView *activityView = (UIActivityIndicatorView*)[cell viewWithTag:5919];
+	
+	activityView.hidden = YES;
+	if([activityView isAnimating]){
+		[activityView stopAnimating];
+	}
 	
 	if (indexPath.section == 0) 
 	{

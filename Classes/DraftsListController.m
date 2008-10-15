@@ -38,6 +38,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
+	if([[[dm draftTitleAtIndex:indexPath.row] valueForKey:kAsyncPostFlag]intValue] == 1)
+		return;
+	
 	[dm makeDraftAtIndexCurrent:indexPath.row];
 	postsListController.postDetailViewController.mode = 1; 
 	[tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
@@ -79,15 +82,19 @@
 
 
 - (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"DraftsUpdated" object:nil];
 	[super dealloc];
 }
-
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	dm = [BlogDataManager sharedDataManager];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsAndDraftsList) name:@"DraftsUpdated" object:nil];
 }
-
+- (void)updatePostsAndDraftsList{
+	WPLog(@"updatePostsAndDraftsList");
+	[self.tableView reloadData];
+}
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];

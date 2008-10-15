@@ -145,15 +145,16 @@
 	{ 
         //Need to release params
         NSMutableArray *params = [[NSMutableArray alloc] initWithObjects:dm.currentPost,dm.currentBlog,nil];
+		BOOL isCurrentPostDraft = dm.isLocaDraftsCurrent;
+		if(isCurrentPostDraft)
+			[dm saveCurrentPostAsDraftWithAsyncPostFlag];
         					
         [self addAsyncPostOperation:@selector(_savePostWithBlog:) withArg:params];
     }
-			
 }
 
 - (void)autoSaveCurrentPost:(NSTimer *)aTimer
 {
-	
 	if( !hasChanges ){
 		WPLog(@"Returning -- hasChanges is false");
 		return;
@@ -319,24 +320,25 @@
 {	
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
     NSString *postId=[arrayPost lastObject];
-   // WPLog(@"**********Post id is %@",postId);
     BOOL isCurrentPostDraft = dm.isLocaDraftsCurrent;
-	BOOL savePostStatus = [dm savePost:[arrayPost objectAtIndex:0]];
 	
-   if(savePostStatus){
-        [self stopTimer];
-        NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
+	BOOL savePostStatus = [dm savePost:[arrayPost objectAtIndex:0]];
+	NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
+	[self stopTimer];
+	if(savePostStatus){
         [dict setValue:postId forKey:@"savedPostId"];
         [dict setValue:[[dm currentPost] valueForKey:@"postid"] forKey:@"originalPostId"];
 		[dict setValue:[NSNumber numberWithInt:isCurrentPostDraft] forKey:@"isCurrentPostDraft"];
-       	[[NSNotificationCenter defaultCenter] postNotificationName:@"AsynchronousPostIsPosted" object:nil userInfo:dict];
-        [dict release];
-        return;
    }else{
-	   [self stopTimer];
-	   [dm removeTempFileForUnSavedPost:postId];	  
+	   [dm removeTempFileForUnSavedPost:postId];
+	   if(isCurrentPostDraft){
+		   [dm restoreUnsavedDraft];
+	   }
 	}
-		hasChanges = YES;
+	
+	hasChanges = YES;
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"AsynchronousPostIsPosted" object:nil userInfo:dict];
+   	[dict release];
        
 /*
 	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];

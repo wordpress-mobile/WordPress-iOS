@@ -57,6 +57,7 @@
 	NSOperationQueue *asyncOperationsQueue;
 	
 	NSOperationQueue *asyncPostsOperationsQueue;
+	NSMutableDictionary *currentUnsavedDraft;
 }
 
 + (BlogDataManager *)sharedDataManager;
@@ -88,6 +89,7 @@
 @property (nonatomic, copy, readonly) NSMutableDictionary *currentPost;
 @property (nonatomic, readonly) NSOperationQueue *asyncPostsOperationsQueue;
 @property (nonatomic) int unsavedPostsCount;
+@property (nonatomic, retain) NSMutableDictionary *currentUnsavedDraft;
 #pragma mark Blog metadata
 - (NSArray *)blogFieldNames;
 - (NSDictionary *)blogFieldNamesByTag;
@@ -239,4 +241,6 @@
 - (NSString *)savePostsFileWithAsynPostFlag:(NSMutableDictionary *)postDict;
 - (void)updatePostsTitlesFileAfterPostSaved:(NSMutableDictionary *)dict;
 - (void)removeTempFileForUnSavedPost:(NSString *)postId;
+- (void)saveCurrentPostAsDraftWithAsyncPostFlag;
+- (void)restoreUnsavedDraft;
 @end
