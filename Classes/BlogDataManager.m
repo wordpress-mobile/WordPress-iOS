@@ -856,6 +856,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		//NSString *htmlStr = [NSString stringWithUTF8String:[data bytes]];
 		NSString *htmlStr = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
 //		WPLog(@"htmlStr %@", htmlStr);
+		if ( !htmlStr ) // Handle the Servers which send Non UTF-8 Strings
+			htmlStr = [[[NSString alloc] initWithData:data encoding:[NSString defaultCStringEncoding]] autorelease];
 
 		NSRange range = [htmlStr rangeOfString:@"EditURI"];
 		if (range.location != NSNotFound) {
