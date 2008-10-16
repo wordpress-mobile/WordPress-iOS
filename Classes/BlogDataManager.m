@@ -845,12 +845,16 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 - (NSString *)discoverxmlrpcurlForurl:(NSString *)urlstr
 {
-	urlstr = [NSString stringWithFormat:@"http://%@", urlstr];
+	if ( ![urlstr hasPrefix:@"http"] )
+		urlstr = [NSString stringWithFormat:@"http://%@", urlstr];
 //	WPLog(@"url str %@", urlstr);
 	NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:urlstr]
 											  cachePolicy:NSURLRequestUseProtocolCachePolicy							  
-										  timeoutInterval:60.0];			
-	NSData *data = [[NSURLConnection sendSynchronousRequest:theRequest returningResponse:NULL error:NULL] retain];
+										  timeoutInterval:60.0];		
+	NSError *error = nil;
+	NSData *data = [[NSURLConnection sendSynchronousRequest:theRequest returningResponse:NULL error:&error] retain];
+	if ( error != nil )
+		WPLog(@"error is (%@)",error);
 	if( [data length] > 0 )
 	{
 		//NSString *htmlStr = [NSString stringWithUTF8String:[data bytes]];
@@ -3411,19 +3415,20 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[postsReq setMethod:@"wp.getComments" 
 			withObjects:[NSArray arrayWithObjects:blogid,username, pwd, nil]];
 	
-	NSMutableArray *commentsList = [NSMutableArray arrayWithArray:[self executeXMLRPCRequest:postsReq byHandlingError:YES]];
+	NSMutableArray *commentsReceived = [self executeXMLRPCRequest:postsReq byHandlingError:NO];
 
 	// TODO:
 	// Check for fault
 	// check for nil or empty response
 	// provide meaningful messge to user
-	if ((!commentsList) || !([commentsList isKindOfClass:[NSArray class]]) ) {
+	if ((!commentsReceived) || !([commentsReceived isKindOfClass:[NSArray class]]) ) {
 		WPLog(@"Unknown Error");
 		[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
 		return NO;
 	}
 	
+	NSMutableArray *commentsList = [NSMutableArray arrayWithArray:commentsReceived];
 	//WPLog(@"commentsList is (%@)",commentsList);
 	
 	NSFileManager *defaultFileManager = [NSFileManager defaultManager];
