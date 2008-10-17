@@ -57,6 +57,13 @@
 - (BOOL)deleteAllPhotosForPost:(id)aPost forBlog:(id)aBlog;
 - (BOOL)deleteAllPhotosForCurrentPostBlog;
 
+//pages
+- (NSString *)pathToPageTitles:(id)aBlog;
+- (NSString *)pageFilePath:(id)aPage forBlog:(id)aBlog;
+- (void) setPageTitlesList:(NSMutableArray *)newArray;
+- (NSMutableArray *)pageTitlesForBlog:(id)aBlog;
+- (NSMutableDictionary *) pageTitleForPage:(NSDictionary *)aPage;
+
 @end
 
 @implementation BlogDataManager
@@ -65,7 +72,7 @@ static BlogDataManager *sharedDataManager;
 
 @synthesize blogFieldNames, blogFieldNamesByTag, blogFieldTagsByName, 
 pictureFieldNames, postFieldNames, postFieldNamesByTag, postFieldTagsByName,
-postTitleFieldNames, postTitleFieldNamesByTag, postTitleFieldTagsByName,unsavedPostsCount,
+postTitleFieldNames, postTitleFieldNamesByTag, postTitleFieldTagsByName,unsavedPostsCount,currentPageIndex,currentPage,
 currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLocaDraftsCurrent, currentPostIndex, currentDraftIndex,asyncPostsOperationsQueue,currentUnsavedDraft;
 
 
@@ -75,7 +82,9 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[blogsList release];
 	[currentBlog release];
 	[postTitlesList release];
+	[pageTitlesList release];
 	[currentPost release];
+	[currentPage release];
 	[currentDirectoryPath release];
 	
 	[photosDB release];
@@ -236,9 +245,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	return err;
 }
-
-
-
 
 - (id)executeXMLRPCRequest:(XMLRPCRequest *)req byHandlingError:(BOOL)shouldHandleFalg
 {
@@ -663,6 +669,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *pathToCommentTitles = [[self blogDir:aBlog] stringByAppendingPathComponent:@"commentTitles.archive"];	
 	return pathToCommentTitles;
 }
+- (NSString *)pathToPageTitles:(id)aBlog
+{
+	NSString *pathToPageTitles = [[self blogDir:aBlog] stringByAppendingPathComponent:@"pageTitles.archive"];	
+	return pathToPageTitles;
+}
 
 - (NSString *)pathToPost:(id)aPost forBlog:(id)aBlog
 {
@@ -712,6 +723,15 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *commentFilePath = [[self blogDir:aBlog] stringByAppendingPathComponent:commentFileName];
 	return commentFilePath;
 }
+
+- (NSString *)pageFilePath:(id)aPage forBlog:(id)aBlog
+{
+	NSString *page_id = [aPage valueForKey:@"page_id"];
+	NSString *pageFileName = [NSString stringWithFormat:@"page.%@.archive", page_id];
+	NSString *pageFilePath = [[self blogDir:aBlog] stringByAppendingPathComponent:pageFileName];
+	return pageFilePath;
+}
+
 
 #pragma mark -
 #pragma mark Blog metadata
@@ -1933,6 +1953,17 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	return [NSMutableArray array];
 }
 
+- (NSMutableArray *)pageTitlesForBlog:(id)aBlog
+{
+	NSString *pageTitlesFilePath = [self pathToPageTitles:aBlog];
+	if ([[NSFileManager defaultManager] fileExistsAtPath:pageTitlesFilePath]) 
+	{
+        return [NSMutableArray arrayWithContentsOfFile:pageTitlesFilePath];
+	}
+	
+	return [NSMutableArray array];
+}
+
 - (NSMutableArray *)commentTitlesForBlog:(id)aBlog
 {
 	NSString *commentTitlesFilePath = [self pathToCommentTitles:aBlog];
@@ -2078,6 +2109,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[self loadPostTitlesForBlog:currentBlog];
 }
 
+- (void)loadPageTitlesForCurrentBlog {
+	NSMutableArray *pagesList = [self pageTitlesForBlog:currentBlog];
+	[self setPageTitlesList:pagesList];
+}
+
 - (void)loadCommentTitlesForCurrentBlog {
 	[self loadCommentTitlesForBlog:currentBlog];
 }
@@ -2125,6 +2161,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
     return [postTitlesList objectAtIndex:theIndex];
 	
 }
+
 
 - (NSDictionary *)commentTitleAtIndex:(NSUInteger)theIndex {
 	
@@ -2262,6 +2299,120 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	return postFieldTagsByName;
 }
 
+#pragma mark Page
+
+- (BOOL) syncPagesForBlog:(id)blog {
+
+	[blog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
+	// Parameters
+	NSString *username = [blog valueForKey:@"username"];
+	NSString *pwd = [blog valueForKey:@"pwd"];
+	NSString *fullURL = [blog valueForKey:@"xmlrpc"];
+	NSString *blogid = [blog valueForKey:@"blogid"];
+	
+	
+	//	WPLog(@"Fetching posts for blog %@ user %@/%@ from %@", blogid, username, pwd, fullURL);
+	
+	//  ------------------------- invoke metaWeblog.getRecentPosts
+	XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
+	[postsReq setMethod:@"wp.getPages" 
+			withObjects:[NSArray arrayWithObjects:blogid,username, pwd, nil]];
+	
+	id response = [self executeXMLRPCRequest:postsReq byHandlingError:NO];
+	WPLog(@"RESPONSE IS %@",response);	
+	// TODO:
+	// Check for fault
+	// check for nil or empty response
+	// provide meaningful messge to user
+	if ((!response) || !([response isKindOfClass:[NSArray class]]) ) {
+		WPLog(@"Unknown Error");
+		[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
+		return NO;
+	}
+	NSMutableArray *pagesList = [NSMutableArray arrayWithArray:response];
+	
+	NSFileManager *defaultFileManager = [NSFileManager defaultManager];
+	
+	NSMutableArray *pageTitlesArray = [NSMutableArray array];
+	
+	for ( NSDictionary *page in pagesList ) {
+		// add blogid and blog_host_name to post
+		NSMutableDictionary *updatedPage = [NSMutableDictionary dictionaryWithDictionary:page];
+		
+		[updatedPage setValue:[blog valueForKey:@"blogid"] forKey:@"blogid"];
+		[updatedPage setValue:[blog valueForKey:@"blog_host_name"] forKey:@"blog_host_name"];
+		
+		NSString *path = [self pageFilePath:updatedPage forBlog:blog];
+		
+		[defaultFileManager removeFileAtPath:path handler:nil];
+		[updatedPage writeToFile:path atomically:YES];
+		
+		[pageTitlesArray addObject:[self pageTitleForPage:updatedPage]];
+	}
+	
+	// sort and save the postTitles list
+	NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
+	[pageTitlesArray sortUsingDescriptors:[NSArray arrayWithObject:sd]];
+	NSString *pathToCommentTitles = [self pathToPageTitles:blog];
+	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
+	[pageTitlesArray writeToFile:pathToCommentTitles  atomically:YES];
+	[self setPageTitlesList:pageTitlesArray];
+	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+	return YES;
+}
+- (NSMutableDictionary *) pageTitleForPage:(NSDictionary *)aPage
+{
+	NSMutableDictionary *pageTitle = [NSMutableDictionary dictionary];
+	
+	NSString *blogid = [aPage valueForKey:@"blogid"];
+	[pageTitle setObject:(blogid?blogid:@"") forKey:@"blogid"];
+	
+	NSString *blogHost = [aPage valueForKey:@"blog_host_name"];
+	[pageTitle setObject:(blogHost?blogHost:@"") forKey:@"blog_host_name"];
+	
+	NSString *blogName = [[self blogForId:blogid hostName:blogHost] valueForKey:@"blogName"];
+	[pageTitle setObject:(blogName?blogName:@"") forKey:@"blogName"];
+	
+	
+	NSString *pageid = [aPage valueForKey:@"page_id"];
+	[pageTitle setObject:(pageid?pageid:@"") forKey:@"page_id"];
+	
+	NSString *author = [aPage valueForKey:@"wp_author"];
+	[pageTitle setObject:(author?author:@"") forKey:@"author"];
+	
+	NSString *status = [aPage valueForKey:@"page_status"];
+	[pageTitle setObject:(status?status:@"") forKey:@"status"];
+	
+	NSString *pagetitle = [aPage valueForKey:@"title"];
+	[pageTitle setObject:(pagetitle?pagetitle:@"") forKey:@"title"];
+	
+	NSString *dateCreated = [aPage valueForKey:@"date_created_gmt"];
+	[pageTitle setObject:(dateCreated?dateCreated:@"") forKey:@"date_created_gmt"];
+	
+	NSString *content = [aPage valueForKey:@"description"];
+	[pageTitle setObject:(content?content:@"") forKey:@"content"];
+	
+	return pageTitle;	
+}
+
+- (NSInteger)countOfPageTitles
+{
+	return [pageTitlesList count];
+}
+- (NSDictionary *)pageTitleAtIndex:(NSUInteger)theIndex
+{
+	return [pageTitlesList objectAtIndex:theIndex];
+}
+- (void)makePageAtIndexCurrent:(NSUInteger)theIndex {
+	
+
+	NSString *pathToPage = [self pageFilePath:[self pageTitleAtIndex:theIndex] forBlog:currentBlog];
+	[self setCurrentPage:[NSMutableDictionary dictionaryWithContentsOfFile:pathToPage]];	
+	
+	// save the current index as well
+	currentPageIndex = theIndex;
+}
 #pragma mark Post
 - (void)saveCurrentPostAsDraftWithAsyncPostFlag
 {	
@@ -2367,6 +2518,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[self generateTemplateForBlog:aBlog];
 	
 	[self syncCommentsForBlog:aBlog];
+	[self syncPagesForBlog:aBlog];
 	[self saveCurrentBlog];
 	[self performSelectorOnMainThread:@selector(postBlogsRefreshNotificationInMainThread:) withObject:aBlog waitUntilDone:NO];
 
@@ -3282,6 +3434,14 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	}
 }
 
+- (void)setPageTitlesList:(NSMutableArray *)newArray
+{
+    if (pageTitlesList != newArray)
+    {
+        [pageTitlesList release];
+        pageTitlesList = [newArray retain];
+    }
+}
 
 - (void)setPostTitlesList:(NSMutableArray *)newArray
 {
@@ -3462,7 +3622,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	return YES;
 }
 
-
 - (NSMutableDictionary *) commentTitleForComment:(NSDictionary *)aComment 
 {
 	NSMutableDictionary *commentTitle = [NSMutableDictionary dictionary];
@@ -3497,6 +3656,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 	return commentTitle;	
 }
+
 
 // delete comment for a given blog
 - (BOOL) deleteComment:(NSArray *) aComment forBlog:(id)blog {

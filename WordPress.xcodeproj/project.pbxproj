@@ -96,6 +96,10 @@
 		C5C2730A0E7EC9FE0034AA46 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = C5C273090E7EC9FE0034AA46 /* delete.png */; };
 		C5E3AE350E93F3C5008755FF /* WPImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5E3AE340E93F3C5008755FF /* WPImagePickerController.m */; };
 		EC270CB20E8B5E8200E9AA18 /* commentDelete.png in Resources */ = {isa = PBXBuildFile; fileRef = EC270CB10E8B5E8200E9AA18 /* commentDelete.png */; };
+		EC4696FF0EA75D460040EE8E /* PagesListController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4696FE0EA75D460040EE8E /* PagesListController.m */; };
+		EC4697CF0EA76B210040EE8E /* PagesListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC4697CE0EA76B210040EE8E /* PagesListController.xib */; };
+		ECCD48880EA8623F0078082C /* PageDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECCD48870EA8623F0078082C /* PageDetailViewController.xib */; };
+		ECCD488C0EA8628A0078082C /* PageDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECCD488B0EA8628A0078082C /* PageDetailViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -230,6 +234,12 @@
 		C5E3AE330E93F3C5008755FF /* WPImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPImagePickerController.h; sourceTree = "<group>"; };
 		C5E3AE340E93F3C5008755FF /* WPImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPImagePickerController.m; sourceTree = "<group>"; };
 		EC270CB10E8B5E8200E9AA18 /* commentDelete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = commentDelete.png; sourceTree = "<group>"; };
+		EC4696FD0EA75D460040EE8E /* PagesListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PagesListController.h; sourceTree = "<group>"; };
+		EC4696FE0EA75D460040EE8E /* PagesListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PagesListController.m; sourceTree = "<group>"; };
+		EC4697CE0EA76B210040EE8E /* PagesListController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PagesListController.xib; sourceTree = "<group>"; };
+		ECCD48870EA8623F0078082C /* PageDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PageDetailViewController.xib; sourceTree = "<group>"; };
+		ECCD488A0EA8628A0078082C /* PageDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageDetailViewController.h; sourceTree = "<group>"; };
+		ECCD488B0EA8628A0078082C /* PageDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageDetailViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -297,6 +307,7 @@
 				2FAE97040E33B21600CA8540 /* defaultPostTemplate_old.html */,
 				2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */,
 				2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */,
+				EC4696CB0EA759EA0040EE8E /* Pages */,
 				AC512F790E20D25E00B7DA32 /* Images */,
 				ACFF1DC00E231EF600EC6BF5 /* Blog */,
 				C50E78130E71648100991509 /* Comments */,
@@ -376,6 +387,7 @@
 		AC34397A0E11435A00E5D79B /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				EC4696A80EA74DAC0040EE8E /* Pages */,
 				AC34397B0E11443300E5D79B /* Blog */,
 				C533CF320E6D3AB3000C3DE8 /* Comments */,
 				AC3439790E11434600E5D79B /* Post */,
@@ -537,6 +549,26 @@
 			name = Categories;
 			sourceTree = "<group>";
 		};
+		EC4696A80EA74DAC0040EE8E /* Pages */ = {
+			isa = PBXGroup;
+			children = (
+				ECCD488A0EA8628A0078082C /* PageDetailViewController.h */,
+				ECCD488B0EA8628A0078082C /* PageDetailViewController.m */,
+				EC4696FD0EA75D460040EE8E /* PagesListController.h */,
+				EC4696FE0EA75D460040EE8E /* PagesListController.m */,
+			);
+			name = Pages;
+			sourceTree = "<group>";
+		};
+		EC4696CB0EA759EA0040EE8E /* Pages */ = {
+			isa = PBXGroup;
+			children = (
+				EC4697CE0EA76B210040EE8E /* PagesListController.xib */,
+				ECCD48870EA8623F0078082C /* PageDetailViewController.xib */,
+			);
+			name = Pages;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -638,6 +670,8 @@
 				2AB2EB0C0E9A148B00CB166E /* MainBackground.png in Resources */,
 				2AC5227A0E9B2BE300A61748 /* vertBars.png in Resources */,
 				2AC522990E9B31DD00A61748 /* wplogo2.png in Resources */,
+				EC4697CF0EA76B210040EE8E /* PagesListController.xib in Resources */,
+				ECCD48880EA8623F0078082C /* PageDetailViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -681,6 +715,8 @@
 				C55A90D90E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m in Sources */,
 				C5B001BF0E82971400D13185 /* WPNavigationLeftButtonView.m in Sources */,
 				C5E3AE350E93F3C5008755FF /* WPImagePickerController.m in Sources */,
+				EC4696FF0EA75D460040EE8E /* PagesListController.m in Sources */,
+				ECCD488C0EA8628A0078082C /* PageDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

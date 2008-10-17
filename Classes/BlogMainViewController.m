@@ -12,11 +12,12 @@
 #import "BlogDataManager.h"
 #import "Reachability.h"
 #import "CommentsListController.h"
+#import "PagesListController.h"
 
 @implementation BlogMainViewController
 
 @synthesize postsListController;
-@synthesize commentsListController;
+@synthesize commentsListController,pagesListController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -177,6 +178,14 @@
 			[editCommentButton release];
 		
 			[[self navigationController] pushViewController:commentsListController animated:YES];
+		}else if ( indexPath.row == 1 ) {
+			
+			
+			if (self.pagesListController == nil) {
+				self.pagesListController = [[PagesListController alloc] initWithNibName:@"PagesListController" bundle:nil];
+			}
+			[[self navigationController] pushViewController:pagesListController animated:YES];
+			
 		}
 	}
 }

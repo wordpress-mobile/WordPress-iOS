@@ -15,6 +15,10 @@ Classes/DraftsListController.h -text
 Classes/DraftsListController.m -text
 Classes/NSString+XMLExtensions.h -text
 Classes/NSString+XMLExtensions.m -text
+Classes/PageDetailViewController.h -text
+Classes/PageDetailViewController.m -text
+Classes/PagesListController.h -text
+Classes/PagesListController.m -text
 Classes/PostDetailEditController.h -text
 Classes/PostDetailEditController.m -text
 Classes/PostDetailViewController.h -text
@@ -79,6 +83,8 @@ Classes/XMLRPC/XMLValueDecoder.m -text
 /Info.plist -text
 /MainBackground.png -text
 /MainWindow.xib -text
+/PageDetailViewController.xib -text
+/PagesListController.xib -text
 /PostDetailEditController.xib -text
 /PostDetailViewController.xib -text
 /PostsListController.xib -text

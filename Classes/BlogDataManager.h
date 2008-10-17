@@ -35,7 +35,7 @@
 	NSArray *pictureFieldNames;
 	
 	NSMutableArray *blogsList;
-	NSMutableArray *postTitlesList, *draftTitlesList,*commentTitlesList;
+	NSMutableArray *postTitlesList, *draftTitlesList,*commentTitlesList,*pageTitlesList;
 	NSMutableArray *photosDB;
 
 	
@@ -44,11 +44,14 @@
 	
 	NSMutableDictionary *currentPost;
 	
+	NSMutableDictionary *currentPage;
+	
 	NSMutableDictionary *currentPicture;
 	
 	NSInteger currentPostIndex;
 	NSInteger currentDraftIndex;
 	NSInteger currentBlogIndex;
+	NSInteger currentPageIndex;
 	int currentPictureIndex;
     int unsavedPostsCount;
 	
@@ -62,7 +65,7 @@
 
 + (BlogDataManager *)sharedDataManager;
 
-@property (nonatomic) NSInteger currentPostIndex,currentDraftIndex;
+@property (nonatomic) NSInteger currentPostIndex,currentDraftIndex,currentPageIndex;
 
 @property (nonatomic, copy) NSString *currentDirectoryPath;
 
@@ -87,6 +90,7 @@
 @property (nonatomic, assign) BOOL isLocaDraftsCurrent;
 
 @property (nonatomic, copy, readonly) NSMutableDictionary *currentPost;
+@property (nonatomic, retain) NSMutableDictionary *currentPage;
 @property (nonatomic, readonly) NSOperationQueue *asyncPostsOperationsQueue;
 @property (nonatomic) int unsavedPostsCount;
 @property (nonatomic, retain) NSMutableDictionary *currentUnsavedDraft;
@@ -243,4 +247,12 @@
 - (void)removeTempFileForUnSavedPost:(NSString *)postId;
 - (void)saveCurrentPostAsDraftWithAsyncPostFlag;
 - (void)restoreUnsavedDraft;
+
+//pages
+- (BOOL) syncPagesForBlog:(id)blog;
+- (NSInteger)countOfPageTitles;
+- (NSDictionary *)pageTitleAtIndex:(NSUInteger)theIndex;
+- (void)loadPageTitlesForCurrentBlog;
+- (void)makePageAtIndexCurrent:(NSUInteger)theIndex;
+
 @end
