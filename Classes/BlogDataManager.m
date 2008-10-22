@@ -3696,7 +3696,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
 		[postsReq setMethod:@"system.multicall" withObject:commentsReqArray];
 		id result = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
-		WPLog(@"result is %@ -- its class is %@",result,[result className]);
+//		WPLog(@"result is %@ -- its class is %@",result,[result className]);
 		
 		// TODO:
 		// Check for fault
@@ -3782,8 +3782,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		 XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
 		 [postsReq setMethod:@"system.multicall" withObject:commentsReqArray];
 		 id result = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
-		 WPLog(@"result is %@ -- its class is %@",result,[result className]);
-		 
+//		 WPLog(@"result is %@ -- its class is %@",result,NSStringFromClass([result class]));
+
 		 // TODO:
 		 // Check for fault
 		 // check for nil or empty response
@@ -3868,7 +3868,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
 		[postsReq setMethod:@"system.multicall" withObject:commentsReqArray];
 		id result = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
-		WPLog(@"result is %@ -- its class is %@",result,[result className]);
+//		WPLog(@"result is %@ -- its class is %@",result,[result className]);
 		
 		// TODO:
 		// Check for fault
@@ -3953,7 +3953,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
 		[postsReq setMethod:@"system.multicall" withObject:commentsReqArray];
 		id result = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
-		WPLog(@"result is %@ -- its class is %@",result,[result className]);
+//		WPLog(@"result is %@ -- its class is %@",result,[result className]);
 		
 		// TODO:
 		// Check for fault
