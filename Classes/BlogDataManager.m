@@ -869,7 +869,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		urlstr = [NSString stringWithFormat:@"http://%@", urlstr];
 //	WPLog(@"url str %@", urlstr);
 	NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:urlstr]
-											  cachePolicy:NSURLRequestUseProtocolCachePolicy							  
+											  cachePolicy:NSURLRequestReloadIgnoringLocalCacheData							  
 										  timeoutInterval:60.0];		
 	NSError *error = nil;
 	NSData *data = [[NSURLConnection sendSynchronousRequest:theRequest returningResponse:NULL error:&error] retain];

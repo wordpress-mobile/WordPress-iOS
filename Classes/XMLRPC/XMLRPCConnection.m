@@ -96,6 +96,12 @@ NSString *XMLRPCReceivedResponseNotification = @"XML-RPC Successfully Received R
 //	WPLog(@"returningResponse %@", [[NSString alloc] initWithUTF8String:data]);
 	if (data != nil)
 	{
+		NSString  *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+		if ( ! str ) {
+			str = [[NSString alloc] initWithData:data encoding:[NSString defaultCStringEncoding]];
+			data = [str dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+		}
+		[str release];
 		return [[[XMLRPCResponse alloc] initWithData: data] autorelease];
 	}
 
