@@ -15,6 +15,7 @@
 
 #define kNextDraftIdStr @"kNextDraftIdStr"
 #define kDraftsCount @"kDraftsCount"
+#define kNumberOfCommentsToDisplay 1000
 
 @interface BlogDataManager (private)
 
@@ -3566,14 +3567,14 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *pwd = [blog valueForKey:@"pwd"];
 	NSString *fullURL = [blog valueForKey:@"xmlrpc"];
 	NSString *blogid = [blog valueForKey:@"blogid"];
-	
+	NSDictionary *commentsStructure = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kNumberOfCommentsToDisplay] forKey:@"number"];
 	
 	//	WPLog(@"Fetching posts for blog %@ user %@/%@ from %@", blogid, username, pwd, fullURL);
 	
 	//  ------------------------- invoke metaWeblog.getRecentPosts
 	XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
 	[postsReq setMethod:@"wp.getComments" 
-			withObjects:[NSArray arrayWithObjects:blogid,username, pwd, nil]];
+			withObjects:[NSArray arrayWithObjects:blogid,username, pwd, commentsStructure,nil]];
 	
 	NSMutableArray *commentsReceived = [self executeXMLRPCRequest:postsReq byHandlingError:NO];
 
