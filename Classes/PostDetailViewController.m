@@ -8,6 +8,8 @@
 #import "WPNavigationLeftButtonView.h"
 #import "PostsListController.h"
 
+NSString *fromView;
+
 
 @interface PostDetailViewController (privateMethods)
 - (void)startTimer;
@@ -19,6 +21,7 @@
 - (void)_cancel;
 
 @end
+
 
 @implementation PostDetailViewController
 
@@ -427,7 +430,7 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	
+	fromView=@"FromPost";
 	
 	if (!saveButton) {
 		saveButton = [[UIBarButtonItem alloc] init];
@@ -454,7 +457,10 @@
 	}
 	photosListController.title = @"Photos";
 	photosListController.tabBarItem.image = [UIImage imageNamed:@"photos.png"];
-	photosListController.postDetailViewController = self;
+//	photosListController.postDetailViewController = self;
+
+	photosListController.delegate = self;
+
 	[array addObject:photosListController];
 	
 	
@@ -501,6 +507,8 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+	fromView=@"FromPost";
+
 	WPLog(@"pdvc viewWillAppear");
 	
     [leftView setTarget:self withAction:@selector(cancelView:)];
@@ -537,11 +545,13 @@
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
+	fromView=@"FromPost";
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
-    WPLog(@" RR viewWillDisappear");
+    WPLog(@"PDVC RR viewWillDisappear");
     mode = 3;
 	[postPreviewController stopLoading];
 }
@@ -564,6 +574,20 @@
 			return NO;
 		}
 	return YES;
+}
+
+
+- (void)useImage:(UIImage*)theImage
+{
+	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
+	self.hasChanges = YES;
+	
+	id currentPost = dataManager.currentPost;
+	if (![currentPost valueForKey:@"Photos"])
+		[currentPost setValue:[NSMutableArray array] forKey:@"Photos"];
+	
+	[[currentPost valueForKey:@"Photos"] addObject:[dataManager saveImage:theImage]];
+	[self updatePhotosBadge];
 }
 
 @end

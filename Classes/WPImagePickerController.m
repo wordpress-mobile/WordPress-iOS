@@ -19,7 +19,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	
+	WPLog(@"1111WPImagePickrContrll viewWillAppearviewWillAppear");
 	[super viewWillAppear:animated];
 }
 

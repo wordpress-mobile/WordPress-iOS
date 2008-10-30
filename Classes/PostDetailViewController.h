@@ -1,8 +1,9 @@
 #import <UIKit/UIKit.h>
+#import "WPPhotosListProtocol.h"
 
 @class PostDetailEditController, WPPostDetailPreviewController, WPSelectionTableViewController, WPPostSettingsController, WPPhotosListViewController, PostsListController;
 @class WPNavigationLeftButtonView;
-@interface PostDetailViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate> {
+@interface PostDetailViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate,WPPhotosListProtocol> {
 	IBOutlet UITabBarController *tabController;
 	UIBarButtonItem *saveButton;
 	

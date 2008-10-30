@@ -43,6 +43,7 @@
 	BOOL isLocaDraftsCurrent;
 	
 	NSMutableDictionary *currentPost;
+	NSArray *pageFieldNames;
 	
 	NSMutableDictionary *currentPage;
 	
@@ -90,6 +91,7 @@
 @property (nonatomic, assign) BOOL isLocaDraftsCurrent;
 
 @property (nonatomic, copy, readonly) NSMutableDictionary *currentPost;
+@property (nonatomic, retain, readonly) NSArray *pageFieldNames;
 @property (nonatomic, retain) NSMutableDictionary *currentPage;
 @property (nonatomic, readonly) NSOperationQueue *asyncPostsOperationsQueue;
 @property (nonatomic) int unsavedPostsCount;
@@ -254,5 +256,6 @@
 - (NSDictionary *)pageTitleAtIndex:(NSUInteger)theIndex;
 - (void)loadPageTitlesForCurrentBlog;
 - (void)makePageAtIndexCurrent:(NSUInteger)theIndex;
-
+- (BOOL)savePage:(id)aPage;
+- (void)makeNewPageCurrent;
 @end

@@ -1,0 +1,370 @@
+#import "PageDetailsController.h"
+#import "BlogDataManager.h"
+#import "WordPressAppDelegate.h"
+#import "PageDetailViewController.h"
+#import "PagesListController.h"
+#import "WPPhotosListViewController.h"
+#import "WPNavigationLeftButtonView.h"
+#import "PostsListController.h"
+
+NSString *fromView;
+
+
+@interface PageDetailsController (privateMethods)
+- (void)startTimer;
+- (void)stopTimer;
+
+- (void)_saveAsDrft;
+- (void)_savePost:(id)aPost inBlog:(id)aBlog;
+//- (void)_discard;
+- (void)_cancel;
+
+@end
+
+@implementation PageDetailsController
+
+@synthesize pageDetailViewController,   pagesListController, hasChanges, mode, tabController, photosListController, saveButton;
+@synthesize leftView;
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
+	
+	if( [viewController.title isEqualToString:@"Photos"]){
+		[photosListController refreshData];
+	}
+	
+	//if( [viewController.title isEqualToString:@"Preview"]){
+//		[postPreviewController refreshWebView];
+//	}else{
+//		[postPreviewController stopLoading];
+//	}
+	
+	if( [viewController.title isEqualToString:@"Settings"]){
+		//[postSettingsController reloadData];
+	}
+	
+	if( [viewController.title isEqualToString:@"Write"]){
+		[pageDetailViewController refreshUIForCurrentPage];
+	}
+	
+	self.title = viewController.title;
+	
+	if( hasChanges ) {
+		if ([[leftView title] isEqualToString:@"Pages"])
+			[leftView setTitle:@"Cancel"];
+		
+		self.navigationItem.rightBarButtonItem = saveButton;
+	}
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController didEndCustomizingViewControllers:(NSArray *)viewControllers changed:(BOOL)changed 
+{
+	WPLog(@"tabBarController didEndCustomizingViewControllers");	
+}
+
+- (void)dealloc 
+{
+	[leftView release];
+    [pageDetailViewController release];
+	//[postPreviewController release];
+//	[postSettingsController release];
+	[photosListController release];
+	[saveButton release];
+	[autoSaveTimer invalidate];
+	[autoSaveTimer release];
+	autoSaveTimer = nil;
+	[super dealloc];
+}
+
+
+- (void)updatePhotosBadge
+{
+	int photoCount = [[[BlogDataManager sharedDataManager].currentPage valueForKey:@"Photos"] count];
+	WPLog(@"PHOTOS COUNT--------%d",photoCount);
+	if( photoCount )
+		photosListController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",photoCount];
+	else 
+		photosListController.tabBarItem.badgeValue = nil;	
+}
+
+#pragma mark - UIActionSheetDelegate
+
+- (void)addProgressIndicator
+{
+	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
+	UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+	UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aiv];
+	[aiv startAnimating]; 
+	[aiv release];
+	
+	self.navigationItem.rightBarButtonItem = activityButtonItem;
+	[activityButtonItem release];
+	[apool release];
+}
+
+- (void)removeProgressIndicator
+{
+	//wait incase the other thread did not complete its work.
+	while (self.navigationItem.rightBarButtonItem == nil)
+	{
+		[[NSRunLoop currentRunLoop] runUntilDate:[[NSDate date] addTimeInterval:0.1]];
+	}
+	
+	if(hasChanges) {
+		if ([[leftView title] isEqualToString:@"Pages"])
+			[leftView setTitle:@"Cancel"];
+		self.navigationItem.rightBarButtonItem = saveButton;
+	}
+}
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+
+	hasChanges = NO;
+	self.navigationItem.rightBarButtonItem = nil;
+	[[BlogDataManager sharedDataManager] clearAutoSavedContext];
+	[self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)cancelView:(id)sender 
+{
+	if (!self.hasChanges) {
+		[self.navigationController popViewControllerAnimated:YES]; 
+		return;
+	}
+	
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
+															 delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Discard"
+													otherButtonTitles:nil];		
+	actionSheet.tag = 202;
+	actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
+	[actionSheet showInView:self.view];
+	[actionSheet release];	
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	switch ([actionSheet tag])
+	{
+		case 202:
+		{
+			if( buttonIndex == 0 ){
+				self.hasChanges = NO;
+				self.navigationItem.rightBarButtonItem = nil;
+				[self.navigationController popViewControllerAnimated:YES];
+			}
+			
+			if( buttonIndex == 1 ){
+				self.hasChanges = YES;
+				if ([[leftView title] isEqualToString:@"Pages"])
+					[leftView setTitle:@"Cancel"];
+			}			
+			break;
+		}
+		default:
+			break;
+	}
+}
+
+- (void)setHasChanges:(BOOL)aFlag
+{
+	//if( hasChanges == NO && aFlag == YES )
+//		[self startTimer];
+	
+	hasChanges = aFlag;
+	if(hasChanges) {
+		if ([[leftView title] isEqualToString:@"Pages"])
+			[leftView setTitle:@"Cancel"];
+		
+		self.navigationItem.rightBarButtonItem = saveButton;
+	}
+	
+	NSNumber *postEdited = [NSNumber numberWithBool:hasChanges];
+	[[[BlogDataManager sharedDataManager] currentPost] setObject:postEdited	forKey:@"hasChanges"];
+}
+
+
+#pragma mark - Overridden
+
+
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	
+	NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:2];
+	
+	if (pageDetailViewController == nil) {
+		pageDetailViewController = [[PageDetailViewController alloc] initWithNibName:@"PageDetailViewController" bundle:nil];
+		pageDetailViewController.mode = self.mode;
+	}
+	pageDetailViewController.pageDetailsController = self;
+	pageDetailViewController.title=@"Write";
+	pageDetailViewController.tabBarItem.image = [UIImage imageNamed:@"write.png"];
+	[array addObject:pageDetailViewController];
+	
+	if (photosListController == nil) {
+		photosListController = [[WPPhotosListViewController alloc] initWithNibName:@"WPPhotosListViewController" bundle:nil];
+	}
+	pageDetailViewController.photosListController = photosListController;
+	photosListController.title = @"Photos";
+	photosListController.tabBarItem.image = [UIImage imageNamed:@"photos.png"];
+//	photosListController.pageDetailViewController = self.pageDetailViewController;
+//	photosListController.pageDetailsController = self;
+	photosListController.delegate = self;
+
+
+	fromView=@"FromPage";
+	if (!saveButton) {
+		saveButton = [[UIBarButtonItem alloc] init];
+		saveButton.title = @"Save";
+		saveButton.target = self;
+		saveButton.style = UIBarButtonItemStyleDone;
+		saveButton.action = @selector(savePageAction:);
+	}
+	
+	[array addObject:photosListController];
+				
+	tabController.viewControllers = array;
+	self.view = tabController.view;
+	
+	[array release];
+	
+	if(!leftView){   
+        leftView = [WPNavigationLeftButtonView createView];
+    }   
+	[leftView setTitle:@"Pages"];
+    [leftView setTarget:self withAction:@selector(cancelView:)];
+	
+	UIBarButtonItem *barButton  = [[UIBarButtonItem alloc] initWithCustomView:leftView];
+    self.navigationItem.leftBarButtonItem = barButton;
+    [barButton release];
+}
+- (IBAction)savePageAction:(id)sender 
+{
+    BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	WPLog(@" savePageAction %@ ",dm.currentPage);
+		if (!hasChanges) {
+			[self.navigationController popViewControllerAnimated:YES]; 
+			return;
+		}
+	
+	[pageDetailViewController endEditingAction:nil];
+	
+	NSString *description = [dm.currentPage valueForKey:@"description"];
+	NSString *title = [dm.currentPage valueForKey:@"title"];
+	NSArray *photos = [dm.currentPage valueForKey:@"Photos"];
+
+	if ((!description || [description isEqualToString:@""]) &&
+		(!title || [title isEqualToString:@""])&&
+		(!photos || ([photos count] == 0))) {
+		WPLog(@"IN NO VALUES");
+
+		NSString *msg = [NSString stringWithFormat:@"Please provide either a title or description, or attach photos to the page before saving."];
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Page Error"
+														message:msg
+													   delegate:nil
+											  cancelButtonTitle:nil
+											  otherButtonTitles:@"OK",nil];
+		[alert show];
+		[alert release];
+		[self _cancel];
+		return;
+		
+	}
+	
+	//self.navigationItem.rightBarButtonItem=nil;
+	
+	
+	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
+	
+	[dm savePage:dm.currentPage];
+	[self.navigationController popViewControllerAnimated:YES];
+	
+	[self performSelectorInBackground:@selector(removeProgressIndicator) withObject:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	WPLog(@"pagedetailscontroller viewWillAppear");
+	fromView=@"FromPage";
+
+    [leftView setTarget:self withAction:@selector(cancelView:)];
+	if(hasChanges == YES) {
+		if ([[leftView title] isEqualToString:@"Pages"]){
+            [leftView setTitle:@"Cancel"];
+        }
+		self.navigationItem.rightBarButtonItem = saveButton;
+	}else {
+        [leftView setTitle:@"Pages"];
+        self.navigationItem.rightBarButtonItem = nil;
+	}
+    // For Setting the Button with title Posts.
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
+    self.navigationItem.leftBarButtonItem = cancelButton;
+    [cancelButton release];
+	
+	[super viewWillAppear:animated];
+	
+	tabController.selectedIndex=0;
+	[tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
+	[pageDetailViewController refreshUIForCurrentPage];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	fromView=@"FromPage";
+
+    WPLog(@" RR viewWillDisappear");
+    mode = 3;
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+	[super viewDidDisappear:animated];
+}
+
+- (void)didReceiveMemoryWarning {
+	WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+	[super didReceiveMemoryWarning];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+	if((interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(interfaceOrientation == UIInterfaceOrientationLandscapeRight)){
+		//Code to disable landscape when alert is raised.
+		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		if([delegate isAlertRunning] == TRUE)
+			return NO;
+		}
+	return YES;
+}
+
+- (void)_cancel
+{
+    hasChanges = YES;
+    if ([[leftView title] isEqualToString:@"Pages"])
+		[leftView setTitle:@"Cancel"];   
+}
+
+- (void)useImage:(UIImage*)theImage
+{
+	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
+	self.hasChanges = YES;
+	
+	id currentPage = dataManager.currentPage;
+	if (![currentPage valueForKey:@"Photos"])
+		[currentPage setValue:[NSMutableArray array] forKey:@"Photos"];
+	
+	WPLog(@"1111111111STRING VALUE -----%@",[dataManager saveImage:theImage]);
+	
+	WPLog(@"PDC----currentPage--------%@",currentPage);
+
+	[[currentPage valueForKey:@"Photos"] addObject:[dataManager saveImage:theImage]];
+	WPLog(@"PDC----currentPage--------%@",currentPage);
+
+	[self updatePhotosBadge];
+}
+
+@end
+

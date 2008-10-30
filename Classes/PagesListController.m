@@ -2,6 +2,7 @@
 #import "BlogDataManager.h"
 #import "Reachability.h"
 #import "PageDetailViewController.h"
+#import "PageDetailsController.h"
 
 #import "XMLRPCRequest.h"
 #import "XMLRPCResponse.h"
@@ -17,7 +18,7 @@
 
 @implementation PagesListController
 
-@synthesize pageDetailViewController;
+@synthesize pageDetailViewController,pageDetailsController;
 #define ROW_HEIGHT 60.0f
 #define LOCALDRAFT_ROW_HEIGHT 44.0f
 
@@ -82,7 +83,23 @@
 	
     return cell;
 }
-
+- (IBAction) showAddNewPage:(id)sender {
+	
+	WPLog(@"showAddNewPage Clicked");
+	// Set current post to a new post
+	// Detail view will bind data into this instance and call save
+	
+	[[BlogDataManager sharedDataManager] makeNewPageCurrent];
+	
+	//if(self.pageDetailViewController == nil)
+//		self.pageDetailViewController = [[PageDetailViewController alloc] initWithNibName:@"PageDetailViewController" bundle:nil];
+	if(self.pageDetailsController == nil)
+		self.pageDetailsController = [[PageDetailsController alloc] initWithNibName:@"PageDetailsController" bundle:nil];
+	
+	self.pageDetailsController.mode = 0; 	
+	self.navigationItem.rightBarButtonItem = nil;
+	[[self navigationController] pushViewController:self.pageDetailsController animated:YES];
+}
 
 - (void)dealloc {
 	
@@ -90,6 +107,7 @@
 		[pageDetailViewController autorelease];
 		pageDetailViewController = nil;
 	}
+	[pageDetailsController release];
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"kNetworkReachabilityChangedNotification" object:nil];
 	[super dealloc];
@@ -161,11 +179,16 @@
 	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 	[dataManager makePageAtIndexCurrent:indexPath.row];	
 	
-	if(self.pageDetailViewController == nil)
-		self.pageDetailViewController = [[PageDetailViewController alloc] initWithNibName:@"PageDetailViewController" bundle:nil];
-		
+	//if(self.pageDetailViewController == nil)
+//		self.pageDetailViewController = [[PageDetailViewController alloc] initWithNibName:@"PageDetailViewController" bundle:nil];
+	
+	if(self.pageDetailsController == nil)
+		self.pageDetailsController = [[PageDetailsController alloc] initWithNibName:@"PageDetailsController" bundle:nil];
+	
+	self.pageDetailsController.mode = 1; 	
 	self.navigationItem.rightBarButtonItem = nil;
-	[[self navigationController] pushViewController:self.pageDetailViewController animated:YES];
+	self.pageDetailsController.hasChanges = NO; 	
+	[[self navigationController] pushViewController:self.pageDetailsController animated:YES];
 }
 
 - (void)viewDidLoad {

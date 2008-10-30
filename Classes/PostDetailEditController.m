@@ -32,17 +32,14 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	NSString *status = [dm statusDescriptionForStatus:[dm.currentPost valueForKey:@"post_status"] fromBlog:dm.currentBlog];
 	status = ( status == nil ? @"" : status );
 	statusTextField.text = status ;
-	
-	NSArray *cats = [[dm currentPost] valueForKey:@"categories"];
-	if( status )
-		categoriesTextField.text = [cats componentsJoinedByString:@", "];
-	else 
-		categoriesTextField.text = @"";
 }
 
 - (void)refreshUIForCurrentPost
 {
+
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	WPLog(@"PDEC refreshUIForCurrentPost-------%@",dm.currentPost);
+
 	NSString *description = [dm.currentPost valueForKey:@"description"];
 	
 	if (!description || [description length] == 0 ) {
@@ -556,6 +553,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)showPhotoPickerActionSheet
 {
+	WPLog(@"POSTpickerController showPhotoPickerActionSheetshowPhotoPickerActionSheet");
+
 	isShowPhotoPickerActionSheet = YES;
 	// open a dialog with two custom buttons
 	UIActionSheet *actionSheet;
@@ -626,6 +625,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)pickPhotoFromPhotoLibrary:(id)sender {
+	WPLog(@"PDEC pickPhotoFromPhotoLibrarypickPhotoFromPhotoLibrary");
 	[[BlogDataManager sharedDataManager] makeNewPictureCurrent];
 	if ([WPImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
 		WPImagePickerController* picker = [self pickerController];

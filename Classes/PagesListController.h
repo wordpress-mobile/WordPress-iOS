@@ -1,14 +1,17 @@
 #import <UIKit/UIKit.h>
 
-@class PageDetailViewController;
+@class PageDetailViewController,PageDetailsController;
 @interface PagesListController : UIViewController {
 	
 	IBOutlet UITableView *pagesTableView;
 	IBOutlet UIBarButtonItem *postsStatusButton;
 	PageDetailViewController *pageDetailViewController;
+	PageDetailsController *pageDetailsController;
+	
 	BOOL connectionStatus;
 }
 @property (nonatomic, retain) PageDetailViewController *pageDetailViewController;
+@property (nonatomic, retain) PageDetailsController *pageDetailsController;
 - (IBAction)downloadRecentPages:(id)sender;
-
+- (IBAction)showAddNewPage:(id)sender;
 @end

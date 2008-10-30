@@ -58,13 +58,15 @@
 - (BOOL)deleteAllPhotosForPost:(id)aPost forBlog:(id)aBlog;
 - (BOOL)deleteAllPhotosForCurrentPostBlog;
 
-//pages
-- (NSString *)pathToPageTitles:(id)aBlog;
-- (NSString *)pageFilePath:(id)aPage forBlog:(id)aBlog;
-- (void) setPageTitlesList:(NSMutableArray *)newArray;
-- (NSMutableArray *)pageTitlesForBlog:(id)aBlog;
-- (NSMutableDictionary *) pageTitleForPage:(NSDictionary *)aPage;
 
+//pages
+
+- (NSString *)pathToPageTitles:(id)aBlog;
+- (NSMutableArray *)pageTitlesForBlog:(id)aBlog;
+- (void) setPageTitlesList:(NSMutableArray *)newArray;
+- (NSString *)pageFilePath:(id)aPage forBlog:(id)aBlog;
+- (id)fectchNewPage:(NSString *)pageid formBlog:(id)aBlog;
+- (NSMutableDictionary *) pageTitleForPage:(NSDictionary *)aPage;
 @end
 
 @implementation BlogDataManager
@@ -73,7 +75,7 @@ static BlogDataManager *sharedDataManager;
 
 @synthesize blogFieldNames, blogFieldNamesByTag, blogFieldTagsByName, 
 pictureFieldNames, postFieldNames, postFieldNamesByTag, postFieldTagsByName,
-postTitleFieldNames, postTitleFieldNamesByTag, postTitleFieldTagsByName,unsavedPostsCount,currentPageIndex,currentPage,
+postTitleFieldNames, postTitleFieldNamesByTag, postTitleFieldTagsByName,unsavedPostsCount,currentPageIndex,currentPage,pageFieldNames,
 currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLocaDraftsCurrent, currentPostIndex, currentDraftIndex,asyncPostsOperationsQueue,currentUnsavedDraft;
 
 
@@ -102,6 +104,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[postTitleFieldTagsByName release];
 	
 	[postFieldNames release];
+	[pageFieldNames release];
 	[postFieldNamesByTag release];
 	[postFieldTagsByName release];
 	
@@ -517,6 +520,60 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	return nil;
 }
 
+- (NSString *)pagePictureURLForPicturePathBySendingToServer:(NSString *)filePath
+{
+	//	UIImage *pict = [UIImage imageWithContentsOfFile:filePath];
+	//UIImagePNGRepresentation(pict);s
+	NSData *pictData = [NSData dataWithContentsOfFile:filePath];
+	WPLog(@"pictData leng %d", [pictData length]);
+	if( pictData == nil )
+	{
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+														message:@"Invalid Image. Unable to Upload to the server." 
+													   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		
+		[alert show];
+		return nil;
+	}
+	
+	NSMutableDictionary *imageParms = [NSMutableDictionary dictionary];
+	[imageParms setValue:@"image/jpeg" forKey:@"type"];
+	[imageParms setValue:pictData forKey:@"bits"];
+	[imageParms setValue:[filePath lastPathComponent] forKey:@"name"];
+	//	[imageParms setValue:categories forKey:@"categories"];
+	//	[imageParms setValue:desc forKey:@"description"];
+	
+	//id blog = [self blogForId:[currentPost valueForKey:@"blogid"] hostName:[currentPost valueForKey:@"blog_host_name"]];
+	id blog = [self blogForId:[currentPage valueForKey:@"blogid"] hostName:[currentPage valueForKey:@"blog_host_name"]];
+	
+	
+	//	WPLog(@"retrived blog from current post %@", blog);
+	
+	NSArray *args = [NSArray arrayWithObjects:[blog valueForKey:@"blogid"],
+					 [blog valueForKey:@"username"],
+					 [blog valueForKey:@"pwd"],
+					 imageParms,
+					 nil
+					 ];
+	
+	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[blog valueForKey:@"xmlrpc"]]];
+	[request setMethod:@"metaWeblog.newMediaObject" withObjects:args];
+	
+	id response = [self executeXMLRPCRequest:request byHandlingError:YES];
+	[request release];
+	if( [response isKindOfClass:[NSError class]] )
+	{
+		WPLog(@"ERROR Occured %@", response);
+		return nil;
+	}
+	else
+	{
+		return [response valueForKey:@"url"];
+	}
+	
+	return nil;
+}
+
 - (BOOL)postDescriptionHasValidDescription:(id)aPost
 {
 //	return [[WPXMLValidator sharedValidator] isValidXMLString:[aPost valueForKey:@"description"]];
@@ -599,6 +656,54 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		desc = [desc  stringByAppendingString:@"</p>"];
 	
 	[currentPost setObject:desc forKey:@"description"];
+	
+	
+	return YES;
+}
+
+- (BOOL)appendImagesOfCurrentPageToDescription
+{
+	NSMutableArray *photos = [currentPage valueForKey:@"Photos"];
+	int i, count = [photos count];
+	NSString *curPath = nil;
+	//	WPLog(@"appendImagesOfCurrentPostToDescription. %u", currentPost);
+	
+	NSString *desc = [currentPage valueForKey:@"description"];
+	BOOL firstImage = YES;
+	BOOL paraOpen = NO;
+	
+	for( i=count-1; i >=0 ; i-- )
+	{
+		curPath = [photos objectAtIndex:i];
+		NSString *filePAth = [NSString stringWithFormat:@"%@/%@",[self blogDir:currentBlog], curPath];
+		NSAutoreleasePool *ap = [[NSAutoreleasePool alloc] init];
+		NSString *urlStr = [self pagePictureURLForPicturePathBySendingToServer:filePAth];
+		[urlStr retain];
+		[ap release];
+		[urlStr autorelease];
+		if( !urlStr )
+			return NO;
+		else 
+		{
+			NSString *imgTag = [self imageTagForPath:curPath andURL:urlStr];
+			if (firstImage) {
+				desc = [desc  stringByAppendingString:@"\n<p>"];
+				paraOpen = YES;
+				desc = [desc stringByAppendingString:[NSString stringWithFormat:@"<a href=\"%@\">%@</a>", urlStr, imgTag]];
+				firstImage = NO;
+			} else {
+				
+				desc = [desc stringByAppendingString:[NSString stringWithFormat:@"<br /><br /><a href=\"%@\">%@</a>",urlStr, imgTag]];
+			}
+			[self deleteImageNamed:curPath forBlog:currentBlog];
+			[photos removeLastObject];
+		}
+	}
+	
+	if (paraOpen)
+		desc = [desc  stringByAppendingString:@"</p>"];
+	
+	[currentPage setObject:desc forKey:@"description"];
 	
 	
 	return YES;
@@ -1161,6 +1266,18 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		//keys are actual values, values are display strings.
 	{
 		[currentBlog setObject:postStatusList forKey:@"postStatusList"];
+	}
+	else {
+		return NO;
+	}
+	// invoke wp. getPageStatusList	
+	XMLRPCRequest *getPageStatusListReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
+	[getPageStatusListReq setMethod:@"wp.getPageStatusList" withObjects:[NSArray arrayWithObjects:blogid,username,pwd,nil]];
+	NSDictionary *pageStatusList = [self executeXMLRPCRequest:getPageStatusListReq byHandlingError:YES];
+	if( [pageStatusList isKindOfClass:[NSDictionary class]] ) //might be an error.
+		//keys are actual values, values are display strings.
+	{
+		[currentBlog setObject:pageStatusList forKey:@"pageStatusList"];
 	}
 	else {
 		return NO;
@@ -2302,6 +2419,180 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 #pragma mark Page
 
+- (BOOL)savePage:(id)aPage
+{
+	WPLog(@"------savePage ...");
+	WPLog(@"aPost %@ currentPageIndex %d ",aPage, currentPageIndex );
+	
+	BOOL successFlag = NO;
+	
+	if( ![self appendImagesOfCurrentPageToDescription] )
+	{
+		WPLog(@"ERROR : unable to add images to server.");
+		return successFlag;
+	}
+	
+	if (currentPageIndex == -1)
+	{
+		NSMutableDictionary *pageParams = [NSMutableDictionary dictionary];
+		
+		NSString *title = [currentPage valueForKey:@"title"];
+		title = (title == nil ? @"" : title );
+		[pageParams setObject:title forKey:@"title"];
+		
+		NSString *description = [currentPage valueForKey:@"description"];
+		description = (description == nil ? @"" : description );
+		[pageParams setObject:description forKey:@"description"];
+		
+		NSDate *date = [currentPage valueForKey:@"date_created_gmt"];
+		NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:date];
+		NSDate *gmtDate = [date addTimeInterval:(secs*-1)];
+		[pageParams setObject:gmtDate forKey:@"date_created_gmt"];
+		
+		NSString *post_status = [currentPage valueForKey:@"page_status"];	
+		if ( !post_status || [post_status isEqualToString:@""] )
+			post_status = @"Published";
+		//WPLog(@"post_status %@",post_status);
+		[pageParams setObject:post_status forKey:@"page_status"];
+		
+		[pageParams setObject:[currentPage valueForKey:@"wp_password"] forKey:@"wp_password"];
+		NSArray *args = [NSArray arrayWithObjects:[currentBlog valueForKey:@"blogid"],
+						 [currentBlog valueForKey:@"username"],
+						 [currentBlog valueForKey:@"pwd"],
+						 pageParams,
+						 nil ];
+		
+		//TODO: take url from current post
+		XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[currentBlog valueForKey:@"xmlrpc"]]];
+		
+		WPLog(@"-------REQUEST ARGS----%@",args);
+		[request setMethod:@"wp.newPage" withObjects:args];
+		
+		id response = [self executeXMLRPCRequest:request byHandlingError:YES];
+		
+		WPLog(@"-------RESPONSE----%@",response);
+
+		[request release];
+		
+		//if it is a draft and we successfully published then remove from drafts.
+		if(![response isKindOfClass:[NSError class]] ){
+			successFlag = YES;
+		}
+		[self fectchNewPage:response formBlog:currentBlog];
+	}
+	else
+	{
+		NSString *page_status = [currentPage valueForKey:@"page_status"];
+		if ( !page_status || [page_status isEqualToString:@""] ) 
+			page_status = @"publish";
+		[currentPage setObject:page_status forKey:@"page_status"];
+		[currentPage setObject:[currentBlog valueForKey:@"pwd"] forKey:@"wp_password"];
+		//WPLog(@"************ currentPage is %@",currentPage);
+		NSArray *args = [NSArray arrayWithObjects:[currentBlog valueForKey:@"blogid"],[currentPage valueForKey:@"page_id"],
+						 [currentBlog valueForKey:@"username"],
+						 [currentBlog valueForKey:@"pwd"],
+						 currentPage,
+						 nil ];
+		//TODO: take url from current post
+		XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[currentBlog valueForKey:@"xmlrpc"]]];
+		[request setMethod:@"wp.editPage" withObjects:args];
+		
+		id response = [self executeXMLRPCRequest:request byHandlingError:YES];
+		[request release];
+		
+		if( ![response isKindOfClass:[NSError class]] )
+		{
+			[self fectchNewPage:[currentPage valueForKey:@"page_id"] formBlog:currentBlog];
+			successFlag = YES;
+		}
+	}
+	
+	WPLog(@" return flag from save post ... %d", successFlag);
+	return successFlag;
+}
+
+- (void)makeNewPageCurrent {
+	
+	WPLog(@" ........... makeNewPageCurrent");
+	
+	NSMutableDictionary *dict =[[NSMutableDictionary alloc]init];
+	
+	NSString *userid = [currentBlog valueForKey:@"userid"];
+	userid = userid ? userid:@"";
+	[dict setObject:userid forKey:@"userid"];
+	
+	// load blog fields into currentBlog
+	NSString *blogid = [currentBlog valueForKey:@"blogid"];
+	blogid = blogid ? blogid:@"";
+	
+	NSString *pwd = [currentBlog valueForKey:@"pwd"];
+	pwd = pwd ? pwd:@"";
+	
+	NSString *xmlrpc = [currentBlog valueForKey:@"xmlrpc"];
+	xmlrpc = xmlrpc ? xmlrpc:@"";
+	NSString *blogHost = [currentBlog valueForKey:@"blog_host_name"];
+	
+	
+	/*self->pageFieldNames = [NSArray arrayWithObjects:@"dateCreated", @"userid", 
+	 @"pageid", @"description", @"title", @"permalink", 
+	 @"wp_password", @"wp_author_id", @"page_status",@"wp_author" 
+	 @"mt_allow_comments", @"mt_allow_pings", @"wp_page_order", 
+	 @"wp_page_parent_id", @"wp_page_template", @"wp_slug",@"blogid",
+	 @"blog_host_name", @"wp_author_display_name",@"date_created_gmt",kAsyncPostFlag, nil];
+	 */
+	//NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjects:pageInitValues  forKeys:[self pageFieldNames]];
+	
+	[dict setObject:blogHost forKey:@"blog_host_name"];
+	[dict setObject:blogid forKey:@"blogid"];
+	[dict setObject:@"" forKey:@"pageid"];
+	[dict setObject:@"" forKey:@"description"];
+	[dict setObject:@"" forKey:@"wp_author"];
+	[dict setObject:@"" forKey:@"wp_page_order"];
+	[dict setObject:@"" forKey:@"wp_page_parent_id"];
+	[dict setObject:@"" forKey:@"wp_page_template"];
+	[dict setObject:@"" forKey:@"wp_slug"];
+	[dict setObject:@"" forKey:@"wp_author_display_name"];
+	[dict setObject:@"" forKey:@"permalink"];
+	[dict setObject:@"" forKey:@"wp_author_id"];
+	[dict setObject:xmlrpc forKey:@"xmlrpc"];
+	[dict setObject:[NSDate date] forKey:@"dateCreated"];
+	[dict setObject:[NSDate date] forKey:@"date_created_gmt"];
+	[dict setObject:@"" forKey:@"title"];
+	[dict setObject:@"Published" forKey:@"page_status"];
+	[dict setObject:@"" forKey:@"wp_password"];
+	[dict setObject:@"" forKey:@"mt_keywords"];
+	[dict setObject:[NSNumber numberWithInt:0] forKey:@"mt_allow_comments"];
+	[dict setObject:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
+	[dict setObject:[NSNumber numberWithInt:0] forKey:@"mt_allow_pings"];
+	[dict setObject:@"" forKey:@"mt_keywords"];
+	
+	[self setCurrentPage:dict];
+	currentPageIndex = -1;
+	[dict release];
+}
+
+- (NSArray *)pageFieldNames {
+	
+	if (!pageFieldNames) {
+		// local_status is :
+		//  'new' for posts created locally
+		//  'edit' for posts that are downloaded and edited locally
+		//  'original' for downlaoded posts that have not been edited locally
+		// At the time a post is downloaded or created, we add blogid and blog_host_name fields to post dict
+		
+		self->pageFieldNames = [NSArray arrayWithObjects:@"dateCreated", @"userid", 
+								@"pageid", @"description", @"title", @"permalink", 
+								@"wp_password", @"wp_author_id", @"page_status",@"wp_author" 
+								@"mt_allow_comments", @"mt_allow_pings", @"wp_page_order", 
+								@"wp_page_parent_id", @"wp_page_template", @"wp_slug",@"blogid",
+								@"blog_host_name", @"wp_author_display_name",@"date_created_gmt",kAsyncPostFlag, nil];
+		[pageFieldNames retain];
+		
+	}
+	
+	return pageFieldNames;
+}
+
 - (BOOL) syncPagesForBlog:(id)blog {
 
 	[blog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
@@ -2960,8 +3251,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 {
 	
 	WPLog(@"fectchNewPost %@", postid);
-	NSArray *args = [NSArray arrayWithObjects:
-					 postid,
+	NSArray *args = [NSArray arrayWithObjects:postid,
 					 [aBlog valueForKey:@"username"],
 					 [aBlog valueForKey:@"pwd"],nil];
 	
@@ -2983,7 +3273,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSMutableArray *newPostTitlesList = [NSMutableArray arrayWithContentsOfFile:[self pathToPostTitles:aBlog]];
 	
 	int index = [[newPostTitlesList valueForKey:@"postid"] indexOfObject:postid];
-//	WPLog(@"index %d", index);
 	if( index >= 0 && index < [newPostTitlesList count] )
 	{
 		[newPostTitlesList removeObjectAtIndex:index];
@@ -3008,6 +3297,58 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	return post;
 }
+
+
+- (id)fectchNewPage:(NSString *)pageid formBlog:(id)aBlog
+{
+	WPLog(@"fectchNewPage %@", pageid);
+	NSArray *args = [NSArray arrayWithObjects:
+					 [currentBlog valueForKey:@"blogid"],pageid,
+					 [aBlog valueForKey:@"username"],
+					 [aBlog valueForKey:@"pwd"],nil];
+	
+	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[aBlog valueForKey:@"xmlrpc"]]];
+	[request setMethod:@"wp.getPage" withObjects:args];
+	
+	id page = [self executeXMLRPCRequest:request byHandlingError:YES];
+	[request release];
+	if( [page isKindOfClass:[NSError class]] )
+	{
+		return nil;
+	}
+	
+	[page setValue:[aBlog valueForKey:@"blogid"] forKey:@"blogid"];
+	[page setValue:[aBlog valueForKey:@"blog_host_name"] forKey:@"blog_host_name"];
+
+	NSMutableArray *newPageTitlesList = [NSMutableArray arrayWithContentsOfFile:[self pathToPageTitles:aBlog]];
+	
+	int index = [[newPageTitlesList valueForKey:@"page_id"] indexOfObject:[page valueForKey:@"page_id"]];
+	//	WPLog(@"index %d", index);
+	if( index >= 0 && index < [newPageTitlesList count] )
+	{
+		[newPageTitlesList removeObjectAtIndex:index];
+	}
+	[newPageTitlesList addObject:page];
+	
+	NSSortDescriptor *dateCreatedSortDescriptor =  [[NSSortDescriptor alloc] 
+													initWithKey:@"date_created_gmt" ascending:NO];
+	NSArray *sortDescriptors = [NSArray arrayWithObjects:dateCreatedSortDescriptor, nil];
+	[newPageTitlesList sortUsingDescriptors:sortDescriptors];
+	[dateCreatedSortDescriptor release];
+	
+	if( !( index >= 0 && index < [newPageTitlesList count] ) ) //not existing post, new post
+	{
+		[aBlog setObject:[NSNumber numberWithInt:[newPageTitlesList count]] forKey:@"totalpages"];
+		[aBlog setObject:[NSNumber numberWithInt:1] forKey:@"newpages"];
+	}
+	
+   // [page setValue:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
+    [page writeToFile:[self pageFilePath:page forBlog:aBlog] atomically:YES]; ;
+	[newPageTitlesList writeToFile:[self pathToPageTitles:aBlog]  atomically:YES];
+	
+	return page;
+}
+
 - (void)updatePostsTitlesFileAfterPostSaved:(NSMutableDictionary *)dict{
 
     NSString *savedPostId=[dict valueForKey:@"savedPostId"];
@@ -3182,6 +3523,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	return successFlag;
 }
+
 
 - (void)resetCurrentPost {
 	currentPost = nil;                

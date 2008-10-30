@@ -7,14 +7,17 @@
 #import "WPPhotosListViewController.h"
 #import "BlogDataManager.h"
 
+NSString *fromView;
+
 @implementation WPPhotosListViewController
 
 static inline double radians (double degrees) {return degrees * M_PI/180;}
 
-@synthesize postDetailViewController, tableView;
+@synthesize postDetailViewController, pageDetailsController, tableView,delegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+		WPLog(@"tableView------%@",self.tableView);
 		// Initialization code
 	}
 	return self;
@@ -22,16 +25,21 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 
 - (IBAction)showPhotoUploadScreen:(id)sender;
 {
+	WPLog(@"WPPhotoLVC showPhotoUploadScreenshowPhotoUploadScreen");
+
 	[self showPhotoPickerActionSheet];
 }
 
 - (IBAction)addPhotoFromLibraryAction:(id)sender
 {
+	WPLog(@"WPPhotoLVC addPhotoFromLibraryActionaddPhotoFromLibraryAction");
 	[self pickPhotoFromPhotoLibrary:nil];
 }
 
 - (IBAction)addPhotoFromCameraAction:(id)sender
 {
+	WPLog(@"WPPhotoLVC addPhotoFromCameraActionaddPhotoFromCameraAction");
+
 	[self pickPhotoFromCamera:nil];		
 }
 
@@ -55,10 +63,14 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 
 - (void)showPhotoPickerActionSheet
 {
+	WPLog(@"WPPhotoLVC showPhotoPickerActionSheetshowPhotoPickerActionSheet");
+
 	isShowPhotoPickerActionSheet = YES;
 	// open a dialog with two custom buttons
 	if ([WPImagePickerController
 		 isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+		WPLog(@"WPPhotoLVC IN IF");
+
 		UIActionSheet *actionSheet = [[UIActionSheet alloc]
 									  initWithTitle:@""
 									  delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
@@ -69,6 +81,8 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 		[actionSheet release];
 		
 	} else {
+		WPLog(@"WPPhotoLVC IN ELSE");
+
 		[self pickPhotoFromPhotoLibrary:nil];
 		
 	}
@@ -121,13 +135,23 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 }
 
 - (void)pickPhotoFromPhotoLibrary:(id)sender {
+	WPLog(@"fromVie----%@",fromView);
 //	[[BlogDataManager sharedDataManager] makeNewPictureCurrent];
 	if ([WPImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+		WPLog(@"111111pickPhotoFromPhotoLibrary ... %@",pageDetailsController);
+
 		WPImagePickerController* picker = [self pickerController];
 		picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-//		WPLog(@"pickPhotoFromPhotoLibrary ... %@", picker);
+
+		[[delegate navigationController] presentModalViewController:picker animated:YES];
+
 		// Picker is displayed asynchronously.
-		[postDetailViewController.navigationController presentModalViewController:picker animated:YES];
+		//[postDetailViewController.navigationController presentModalViewController:picker animated:YES];
+//		if([fromView isEqualToString:@"FromPost"])
+//			[postDetailViewController.navigationController presentModalViewController:picker animated:YES];
+//		else if([fromView isEqualToString:@"FromPage"])
+//			[pageDetailsController.navigationController presentModalViewController:picker animated:YES];
+		//fromView=@"";
 	}
 }
 
@@ -164,7 +188,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 			CGContextRotateCTM( bitmap, radians(-90.) );
 			break;
 		case UIImageOrientationRight:
-			// rotate 90 degrees CCW
+			// rotate 90 degrees5 CCW
 			CGContextRotateCTM( bitmap, radians(90.) );
 			break;
 		default:
@@ -344,7 +368,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 // Implement this method in your code to do something with the image.
 - (void)useImage:(UIImage*)theImage
 {
-//	WPLog(@"useImage %@",theImage);
+	WPLog(@"useImage %@",theImage);
 	
 	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 	//	NSString *url = [dataManager pictureURLBySendingToServer:theImage];
@@ -355,19 +379,23 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 	//	curText = ( curText == nil ? @"" : curText );
 	//	textView.text = [curText stringByAppendingString:[NSString stringWithFormat:@"<img src=\"%@\"></img>",url]];
 	//	[dataManager.currentPost setObject:textView.text forKey:@"description"];
-	postDetailViewController.hasChanges = YES;
 	
-	id currentPost = dataManager.currentPost;
-	if (![currentPost valueForKey:@"Photos"])
-		[currentPost setValue:[NSMutableArray array] forKey:@"Photos"];
+	[delegate useImage:theImage];
+
 	
-	[[currentPost valueForKey:@"Photos"] addObject:[dataManager saveImage:theImage]];
-	[postDetailViewController updatePhotosBadge];
+	//postDetailViewController.hasChanges = YES;
+//	
+//	id currentPost = dataManager.currentPost;
+//	if (![currentPost valueForKey:@"Photos"])
+//		[currentPost setValue:[NSMutableArray array] forKey:@"Photos"];
+//	
+//	[[currentPost valueForKey:@"Photos"] addObject:[dataManager saveImage:theImage]];
+//	[postDetailViewController updatePhotosBadge];
 //	WPLog(@"post detail currentPost %@",currentPost);
 }
 
 - (void)refreshData {
-//	WPLog(@"photos refreshData");
+	WPLog(@"photos refreshData tableView----%@",tableView);
 	
 	//clean up of images
 //	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"photsSelectionRow"];
@@ -386,10 +414,20 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 	[tableView reloadData];
 }
 
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	WPLog(@"viewDidLoad from photos list  details -------%@",tableView);
+	[tableView reloadData];
+
+	
+}
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	[tableView reloadData];
-	[postDetailViewController updatePhotosBadge];
+	NSLog(@" table view -------- :%@",tableView);
+	//[postDetailViewController updatePhotosBadge];
+	[delegate updatePhotosBadge];
+
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -400,7 +438,18 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 	// plus one to because we add a row for "Local Drafts"
 	//
 //	WPLog(@"photos count %d",[[[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"Photos"] count]);
-	int count = [[[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"Photos"] count];
+	//int count = [[[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"Photos"] count];
+	
+	int count;
+	WPLog(@"fromViewfromViewfromView------%@--------PHOTOS---------%@",fromView,[[[BlogDataManager sharedDataManager] currentPage] valueForKey:@"Photos"]);
+	WPLog(@"fromViewfromViewfromView------%@--------PHOTOS---------%@",fromView,[[BlogDataManager sharedDataManager] currentPost] );
+
+	if([fromView isEqualToString:@"FromPost"])
+		count = [[[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"Photos"] count];
+	else if([fromView isEqualToString:@"FromPage"])	
+		count = [[[[BlogDataManager sharedDataManager] currentPage] valueForKey:@"Photos"] count];
+
+	
 	countField.text = [NSString stringWithFormat:@"%d Photos", count];
 	return (count/NUM_COLS)+( count%NUM_COLS ? 1 : 0 ) ;
 }
@@ -436,8 +485,18 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:selectionTableRowCell] autorelease];
 	}
 	
+//	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
+//	id array = [dataManager.currentPost valueForKey:@"Photos"];
+	
+	
+	id array;
 	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-	id array = [dataManager.currentPost valueForKey:@"Photos"];
+	if([fromView isEqualToString:@"FromPost"])
+		array = [dataManager.currentPost valueForKey:@"Photos"];
+	else if([fromView isEqualToString:@"FromPage"])	
+		array = [dataManager.currentPage valueForKey:@"Photos"];
+	WPLog(@"ARRRRRRAY-----%@",array);
+	
 	
 	float psize = (CGRectGetWidth([aTableView frame]) - (PhotoOffSet * (NUM_COLS+1))) / NUM_COLS; 
 	int i;
@@ -501,6 +560,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 
 
 - (void)dealloc {
+	
 	[pickerController release];
 	[super dealloc];
 }

@@ -17,6 +17,8 @@ Classes/NSString+XMLExtensions.h -text
 Classes/NSString+XMLExtensions.m -text
 Classes/PageDetailViewController.h -text
 Classes/PageDetailViewController.m -text
+Classes/PageDetailsController.h -text
+Classes/PageDetailsController.m -text
 Classes/PagesListController.h -text
 Classes/PagesListController.m -text
 Classes/PostDetailEditController.h -text
@@ -45,6 +47,7 @@ Classes/WPNavigationLeftButtonView.h -text
 Classes/WPNavigationLeftButtonView.m -text
 Classes/WPPhotoViewController.h -text
 Classes/WPPhotoViewController.m -text
+Classes/WPPhotosListProtocol.h -text
 Classes/WPPhotosListViewController.h -text
 Classes/WPPhotosListViewController.m -text
 Classes/WPPostDetailPreviewController.h -text
@@ -84,6 +87,7 @@ Classes/XMLRPC/XMLValueDecoder.m -text
 /MainBackground.png -text
 /MainWindow.xib -text
 /PageDetailViewController.xib -text
+/PageDetailsController.xib -text
 /PagesListController.xib -text
 /PostDetailEditController.xib -text
 /PostDetailViewController.xib -text
