@@ -77,7 +77,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 									  otherButtonTitles:@"Add Photo from Library", @"Take Photo with Camera",
 									  nil];
 		actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-		[actionSheet showInView:postDetailViewController.view];
+		[actionSheet showInView:delegate.view];
 		[actionSheet release];
 		
 	} else {

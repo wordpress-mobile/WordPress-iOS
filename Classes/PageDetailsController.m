@@ -103,6 +103,7 @@ NSString *fromView;
 
 - (void)removeProgressIndicator
 {
+	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
 	//wait incase the other thread did not complete its work.
 	while (self.navigationItem.rightBarButtonItem == nil)
 	{
@@ -114,6 +115,7 @@ NSString *fromView;
 			[leftView setTitle:@"Cancel"];
 		self.navigationItem.rightBarButtonItem = saveButton;
 	}
+	[apool release];
 }
 
 
