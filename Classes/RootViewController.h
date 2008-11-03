@@ -5,9 +5,6 @@
 
 @interface RootViewController : UIViewController {
 	IBOutlet UITableView *blogsTableView;
-	IBOutlet BlogMainViewController *blogMainViewController;	
 }
-
-@property (nonatomic, retain) BlogMainViewController *blogMainViewController;
 
 @end

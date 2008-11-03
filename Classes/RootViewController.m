@@ -14,13 +14,10 @@
 
 @implementation RootViewController
 
-@synthesize blogMainViewController;
-
 - (void)dealloc {
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"BlogsRefreshNotification" object:nil];
 	
-	[blogMainViewController release];
 	[super dealloc];
 }
 
@@ -180,8 +177,8 @@
 			}
 			
 			[Reachability sharedReachability].hostName = url;
-			if ( self.blogMainViewController == 0 )
-				self.blogMainViewController = [[BlogMainViewController alloc] initWithNibName:@"WPBlogMainViewController" bundle:nil];
+			
+			BlogMainViewController  *blogMainViewController = [[BlogMainViewController alloc] initWithNibName:@"WPBlogMainViewController" bundle:nil];
 			
 			self.title=@"Blogs";
 			
@@ -191,6 +188,7 @@
 			//			[blogsButton release];
 			[self.navigationController pushViewController:blogMainViewController animated:YES];
 			self.navigationController.navigationBarHidden = NO;
+			[blogMainViewController release];
 		}
 		
 	}else {

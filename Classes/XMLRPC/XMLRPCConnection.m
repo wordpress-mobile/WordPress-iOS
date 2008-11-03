@@ -83,8 +83,8 @@ NSString *XMLRPCReceivedResponseNotification = @"XML-RPC Successfully Received R
 //	WPLog(@"[request request] %@", [request request]);
 	NSURLResponse *urlres;
 	NSError *err = NULL;
-	NSData *data = [[[NSURLConnection sendSynchronousRequest: [request request] 
-		returningResponse: &urlres error: &err] retain] autorelease];
+	NSData *data = [NSURLConnection sendSynchronousRequest: [request request] 
+		returningResponse: &urlres error: &err];
 	
 	if( err != NULL )
 	{

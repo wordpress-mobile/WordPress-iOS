@@ -147,7 +147,7 @@ NSString *fromView;
 	else
 	{ 
         //Need to release params
-        NSMutableArray *params = [[NSMutableArray alloc] initWithObjects:dm.currentPost,dm.currentBlog,nil];
+        NSMutableArray *params = [[[NSMutableArray alloc] initWithObjects:dm.currentPost,dm.currentBlog,nil] autorelease];
 		BOOL isCurrentPostDraft = dm.isLocaDraftsCurrent;
 		if(isCurrentPostDraft)
 			[dm saveCurrentPostAsDraftWithAsyncPostFlag];

@@ -159,8 +159,8 @@
 
 - (void)dealloc
 {
-	[_request autorelease];
-	[_encoder autorelease];
+	[_request release];
+	[_encoder release];
 	
 	[super dealloc];
 }

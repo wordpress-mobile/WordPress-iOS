@@ -116,6 +116,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	segmentedTableViewController.navigationItem.rightBarButtonItem = newCategoryBarButtonItem;
 	WPLog(@"selectionTableViewController navigationItem %@", segmentedTableViewController.navigationItem);
 	[postDetailViewController.navigationController pushViewController:segmentedTableViewController animated:YES];
+	[parentIds release];
+	[childIds release];
 }
 
 - (void)populateSelectionsControllerWithStatuses
@@ -603,6 +605,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			//	[picker popViewControllerAnimated:YES];
 			WPImagePickerController* picker = [self pickerController];
 			[[picker parentViewController] dismissModalViewControllerAnimated:YES];
+			[self clearPickerContrller];
 		}
 		else 
 		{

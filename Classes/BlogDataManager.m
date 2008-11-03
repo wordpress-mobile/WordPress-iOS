@@ -1148,6 +1148,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	// If the returned object is a NSArray, the, the object at index 0 will be the dictionary with blog info fields
 	
 	NSArray *usersBlogsResponseArray = [self executeXMLRPCRequest:reqUsersBlogs byHandlingError:YES];
+	[reqUsersBlogs release];
 	if( ![usersBlogsResponseArray isKindOfClass:[NSArray class]] )
 		return NO;
 
@@ -1204,6 +1205,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[reqCategories setMethod:@"wp.getCategories" withObjects:[NSArray arrayWithObjects:blogid,username,pwd,nil]];
 	
 	NSArray *categories = [self executeXMLRPCRequest:reqCategories byHandlingError:YES];
+	[reqCategories release];
 	if( [categories isKindOfClass:[NSArray class]])
 	{
 		
@@ -1248,6 +1250,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	XMLRPCRequest *getAuthorsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
 	[getAuthorsReq setMethod:@"wp.getAuthors" withObjects:[NSArray arrayWithObjects:blogid,username,pwd,nil]];
 	NSArray *authors = [self executeXMLRPCRequest:getAuthorsReq byHandlingError:YES];
+	[getAuthorsReq release];
 	if( [authors isKindOfClass:[NSArray class]] ) //might be an error.
 	{
 		[currentBlog setObject:authors forKey:@"authors"];
@@ -1261,7 +1264,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	XMLRPCRequest *getPostStatusListReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
 	[getPostStatusListReq setMethod:@"wp.getPostStatusList" withObjects:[NSArray arrayWithObjects:blogid,username,pwd,nil]];
 	NSDictionary *postStatusList = [self executeXMLRPCRequest:getPostStatusListReq byHandlingError:YES];
-
+	[getPostStatusListReq release];
 	if( [postStatusList isKindOfClass:[NSDictionary class]] ) //might be an error.
 		//keys are actual values, values are display strings.
 	{
@@ -1274,6 +1277,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	XMLRPCRequest *getPageStatusListReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
 	[getPageStatusListReq setMethod:@"wp.getPageStatusList" withObjects:[NSArray arrayWithObjects:blogid,username,pwd,nil]];
 	NSDictionary *pageStatusList = [self executeXMLRPCRequest:getPageStatusListReq byHandlingError:YES];
+	[getPageStatusListReq release];
 	if( [pageStatusList isKindOfClass:[NSDictionary class]] ) //might be an error.
 		//keys are actual values, values are display strings.
 	{
@@ -1372,7 +1376,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 			withObjects:[NSArray arrayWithObjects:blogid,username, pwd, maxToFetch, nil]];
 	
 	NSArray *recentPostsList = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
-	
+	[postsReq release];
 	// TODO:
 	// Check for fault
 	// check for nil or empty response
@@ -1464,6 +1468,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	// sort and save the postTitles list
 	NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
 	[newPostTitlesList sortUsingDescriptors:[NSArray arrayWithObject:sd]];
+	[sd release];
 	[newPostTitlesList writeToFile:[self pathToPostTitles:blog]  atomically:YES];
 	//WPLog(@"writing newPostTitlesList(%@) to file path (%@)",newPostTitlesList,[self pathToPostTitles:blog]);
 	// increment blog counts and save blogs list
@@ -2611,6 +2616,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 			withObjects:[NSArray arrayWithObjects:blogid,username, pwd, nil]];
 	
 	id response = [self executeXMLRPCRequest:postsReq byHandlingError:NO];
+	[postsReq release];
 	WPLog(@"RESPONSE IS %@",response);	
 	// TODO:
 	// Check for fault
@@ -2646,6 +2652,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	// sort and save the postTitles list
 	NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
 	[pageTitlesArray sortUsingDescriptors:[NSArray arrayWithObject:sd]];
+	[sd release];
 	NSString *pathToCommentTitles = [self pathToPageTitles:blog];
 	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
 	[pageTitlesArray writeToFile:pathToCommentTitles  atomically:YES];
@@ -3915,11 +3922,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	//  ------------------------- invoke metaWeblog.getRecentPosts
 	XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
-	[postsReq setMethod:@"wp.getComments" 
+	[postsReq setMethod:[NSString stringWithFormat:@"wp.getComments"] 
 			withObjects:[NSArray arrayWithObjects:blogid,username, pwd, commentsStructure,nil]];
 	
 	NSMutableArray *commentsReceived = [self executeXMLRPCRequest:postsReq byHandlingError:NO];
-
+	[postsReq release];
 	// TODO:
 	// Check for fault
 	// check for nil or empty response
@@ -3956,6 +3963,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	// sort and save the postTitles list
 	NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
 	[commentTitlesArray sortUsingDescriptors:[NSArray arrayWithObject:sd]];
+	[sd release];
 	NSString *pathToCommentTitles = [self pathToCommentTitles:blog];
 	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
 	[commentTitlesArray writeToFile:pathToCommentTitles  atomically:YES];
@@ -4039,6 +4047,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
 		[postsReq setMethod:@"system.multicall" withObject:commentsReqArray];
 		id result = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
+		[postsReq release];
 //		WPLog(@"result is %@ -- its class is %@",result,[result className]);
 		
 		// TODO:
@@ -4067,6 +4076,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	// sort and save the postTitles list
 	NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
 	[commentTitlesArray sortUsingDescriptors:[NSArray arrayWithObject:sd]];
+	[sd release];
 	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
 	[commentTitlesArray writeToFile:pathToCommentTitles  atomically:YES];
 	//WPLog(@"writing commentTitlesList(%@) to file path (%@)",commentTitlesArray,[self pathToCommentTitles:blog]);
@@ -4125,6 +4135,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		 XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
 		 [postsReq setMethod:@"system.multicall" withObject:commentsReqArray];
 		 id result = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
+		 [postsReq release];
 //		 WPLog(@"result is %@ -- its class is %@",result,NSStringFromClass([result class]));
 
 		 // TODO:
@@ -4151,6 +4162,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	// sort and save the postTitles list
 	NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
 	[commentTitlesArray sortUsingDescriptors:[NSArray arrayWithObject:sd]];
+	[sd release];
 	NSString *pathToCommentTitles = [self pathToCommentTitles:blog];
 	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
 	[commentTitlesArray writeToFile:pathToCommentTitles  atomically:YES];
@@ -4211,6 +4223,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
 		[postsReq setMethod:@"system.multicall" withObject:commentsReqArray];
 		id result = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
+		[postsReq release];
 //		WPLog(@"result is %@ -- its class is %@",result,[result className]);
 		
 		// TODO:
@@ -4238,6 +4251,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	// sort and save the postTitles list
 	NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
 	[commentTitlesArray sortUsingDescriptors:[NSArray arrayWithObject:sd]];
+	[sd release];
 	NSString *pathToCommentTitles = [self pathToCommentTitles:blog];
 	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
 	[commentTitlesArray writeToFile:pathToCommentTitles  atomically:YES];
@@ -4296,6 +4310,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
 		[postsReq setMethod:@"system.multicall" withObject:commentsReqArray];
 		id result = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
+		[postsReq release];
 //		WPLog(@"result is %@ -- its class is %@",result,[result className]);
 		
 		// TODO:
@@ -4320,6 +4335,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	// sort and save the postTitles list
 	NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
 	[commentTitlesArray sortUsingDescriptors:[NSArray arrayWithObject:sd]];
+	[sd release];
 	NSString *pathToCommentTitles = [self pathToCommentTitles:blog];
 	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
 	[commentTitlesArray writeToFile:pathToCommentTitles  atomically:YES];
