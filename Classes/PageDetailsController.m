@@ -7,7 +7,6 @@
 #import "WPNavigationLeftButtonView.h"
 #import "PostsListController.h"
 
-NSString *fromView;
 
 
 @interface PageDetailsController (privateMethods)
@@ -214,7 +213,6 @@ NSString *fromView;
 	photosListController.delegate = self;
 
 
-	fromView=@"FromPage";
 	if (!saveButton) {
 		saveButton = [[UIBarButtonItem alloc] init];
 		saveButton.title = @"Save";
@@ -282,11 +280,13 @@ NSString *fromView;
 	[self.navigationController popViewControllerAnimated:YES];
 	
 	[self performSelectorInBackground:@selector(removeProgressIndicator) withObject:nil];
+	
+	hasChanges=NO;
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	WPLog(@"pagedetailscontroller viewWillAppear");
-	fromView=@"FromPage";
+	WPLog(@"pagedetailscontroller viewWillAppear MODEEEEEE-------%d---------hasChanges------%d",mode,hasChanges);
 
     [leftView setTarget:self withAction:@selector(cancelView:)];
 	if(hasChanges == YES) {
@@ -307,7 +307,16 @@ NSString *fromView;
 	
 	tabController.selectedIndex=0;
 	[tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
-	[pageDetailViewController refreshUIForCurrentPage];
+	
+	
+	if( mode == 1 )
+		[pageDetailViewController refreshUIForCurrentPage];
+	else if( mode == 0 )
+		[pageDetailViewController refreshUIForNewPage];
+	
+	
+	
+//	[pageDetailViewController refreshUIForCurrentPage];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -316,7 +325,6 @@ NSString *fromView;
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
-	fromView=@"FromPage";
 
     WPLog(@" RR viewWillDisappear");
     mode = 3;
@@ -366,6 +374,16 @@ NSString *fromView;
 	WPLog(@"PDC----currentPage--------%@",currentPage);
 
 	[self updatePhotosBadge];
+}
+
+
+
+-(id)photosDataSource
+{
+	//NSMutableArray* photosArray=[[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"Photos"] ;
+	
+	return [[[BlogDataManager sharedDataManager] currentPage] valueForKey:@"Photos"] ;
+	
 }
 
 @end

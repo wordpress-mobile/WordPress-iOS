@@ -8,7 +8,6 @@
 #import "WPNavigationLeftButtonView.h"
 #import "PostsListController.h"
 
-NSString *fromView;
 
 
 @interface PostDetailViewController (privateMethods)
@@ -430,7 +429,6 @@ NSString *fromView;
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	fromView=@"FromPost";
 	
 	if (!saveButton) {
 		saveButton = [[UIBarButtonItem alloc] init];
@@ -507,7 +505,6 @@ NSString *fromView;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	fromView=@"FromPost";
 
 	WPLog(@"pdvc viewWillAppear");
 	
@@ -545,8 +542,6 @@ NSString *fromView;
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-	fromView=@"FromPost";
-
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -589,6 +584,16 @@ NSString *fromView;
 	[[currentPost valueForKey:@"Photos"] addObject:[dataManager saveImage:theImage]];
 	[self updatePhotosBadge];
 }
+
+-(id)photosDataSource
+{
+	//NSMutableArray* photosArray=[[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"Photos"] ;
+
+	return [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"Photos"] ;
+
+}
+
+
 
 @end
 

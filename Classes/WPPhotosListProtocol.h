@@ -10,4 +10,5 @@
 
 @protocol WPPhotosListProtocol
 - (void)useImage:(UIImage*)theImage;
+-(id)photosDataSource;
 @end

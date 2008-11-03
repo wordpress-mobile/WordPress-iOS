@@ -7,7 +7,6 @@
 #import "WPPhotosListViewController.h"
 #import "BlogDataManager.h"
 
-NSString *fromView;
 
 @implementation WPPhotosListViewController
 
@@ -136,7 +135,6 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 }
 
 - (void)pickPhotoFromPhotoLibrary:(id)sender {
-	WPLog(@"fromVie----%@",fromView);
 //	[[BlogDataManager sharedDataManager] makeNewPictureCurrent];
 	if ([WPImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
 		WPLog(@"111111pickPhotoFromPhotoLibrary ... %@",pageDetailsController);
@@ -145,14 +143,6 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 		picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
 
 		[[delegate navigationController] presentModalViewController:picker animated:YES];
-
-		// Picker is displayed asynchronously.
-		//[postDetailViewController.navigationController presentModalViewController:picker animated:YES];
-//		if([fromView isEqualToString:@"FromPost"])
-//			[postDetailViewController.navigationController presentModalViewController:picker animated:YES];
-//		else if([fromView isEqualToString:@"FromPage"])
-//			[pageDetailsController.navigationController presentModalViewController:picker animated:YES];
-		//fromView=@"";
 	}
 }
 
@@ -438,18 +428,9 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
 	// plus one to because we add a row for "Local Drafts"
 	//
-//	WPLog(@"photos count %d",[[[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"Photos"] count]);
-	//int count = [[[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"Photos"] count];
-	
 	int count;
-	WPLog(@"fromViewfromViewfromView------%@--------PHOTOS---------%@",fromView,[[[BlogDataManager sharedDataManager] currentPage] valueForKey:@"Photos"]);
-	WPLog(@"fromViewfromViewfromView------%@--------PHOTOS---------%@",fromView,[[BlogDataManager sharedDataManager] currentPost] );
-
-	if([fromView isEqualToString:@"FromPost"])
-		count = [[[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"Photos"] count];
-	else if([fromView isEqualToString:@"FromPage"])	
-		count = [[[[BlogDataManager sharedDataManager] currentPage] valueForKey:@"Photos"] count];
-
+	
+	count=[[delegate photosDataSource]count];
 	
 	countField.text = [NSString stringWithFormat:@"%d Photos", count];
 	return (count/NUM_COLS)+( count%NUM_COLS ? 1 : 0 ) ;
@@ -492,12 +473,8 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 	
 	id array;
 	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-	if([fromView isEqualToString:@"FromPost"])
-		array = [dataManager.currentPost valueForKey:@"Photos"];
-	else if([fromView isEqualToString:@"FromPage"])	
-		array = [dataManager.currentPage valueForKey:@"Photos"];
-	WPLog(@"ARRRRRRAY-----%@",array);
 	
+	array=[delegate photosDataSource];
 	
 	float psize = (CGRectGetWidth([aTableView frame]) - (PhotoOffSet * (NUM_COLS+1))) / NUM_COLS; 
 	int i;
