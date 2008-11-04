@@ -296,7 +296,12 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	// Return YES for supported orientations
-	return YES;
+	if(self.interfaceOrientation!=interfaceOrientation) {
+		self.navigationController.navigationBarHidden = NO;
+		return YES;
+	} else {
+		return NO;
+	}
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {

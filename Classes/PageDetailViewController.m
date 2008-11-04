@@ -61,6 +61,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
 	//WPLog(@"PDVC refreshUIForCurrentPage ------tableView------%@",photosListController.view.subviews);
 
+	photosListController.tabBarItem.badgeValue = nil;	
 	
 	[photosListController refreshData];
 }
@@ -82,13 +83,16 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	NSString *status = [dm statusDescriptionForStatus:[dm.currentPage valueForKey:@"page_status"] fromBlog:dm.currentBlog];
 	status = ( status == nil ? @"" : status );
 	statusTextField.text = status ;
+	
+	photosListController.tabBarItem.badgeValue = nil;	
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	WPLog(@"viewWillAppear for PAGE DETAILS ");
 	pageDetailsController.hasChanges = NO;
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	self.title = @"Write";
+	//self.title = @"Write";
 	if( mode == 1 )
 		[self refreshUIForCurrentPage];
 	else if( mode == 0 )

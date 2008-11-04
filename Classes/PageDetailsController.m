@@ -45,8 +45,7 @@
 		[pageDetailViewController refreshUIForCurrentPage];
 	}
 	
-	self.title = viewController.title;
-	
+
 	if( hasChanges ) {
 		if ([[leftView title] isEqualToString:@"Pages"])
 			[leftView setTitle:@"Cancel"];
@@ -198,7 +197,6 @@
 		pageDetailViewController.mode = self.mode;
 	}
 	pageDetailViewController.pageDetailsController = self;
-	pageDetailViewController.title=@"Write";
 	pageDetailViewController.tabBarItem.image = [UIImage imageNamed:@"write.png"];
 	[array addObject:pageDetailViewController];
 	
@@ -287,7 +285,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	WPLog(@"pagedetailscontroller viewWillAppear MODEEEEEE-------%d---------hasChanges------%d",mode,hasChanges);
-
+	self.navigationItem.title=@"Write";
     [leftView setTarget:self withAction:@selector(cancelView:)];
 	if(hasChanges == YES) {
 		if ([[leftView title] isEqualToString:@"Pages"]){
@@ -313,7 +311,6 @@
 		[pageDetailViewController refreshUIForCurrentPage];
 	else if( mode == 0 )
 		[pageDetailViewController refreshUIForNewPage];
-	
 	
 	
 //	[pageDetailViewController refreshUIForCurrentPage];
