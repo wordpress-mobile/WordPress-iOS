@@ -2575,7 +2575,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		
 		NSString *post_status = [currentPage valueForKey:@"page_status"];	
 		if ( !post_status || [post_status isEqualToString:@""] )
-			post_status = @"Published";
+			post_status = @"publish";
 		//WPLog(@"post_status %@",post_status);
 		[pageParams setObject:post_status forKey:@"page_status"];
 		
@@ -2608,7 +2608,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	{
 		NSString *page_status = [currentPage valueForKey:@"page_status"];
 		if ( !page_status || [page_status isEqualToString:@""] ) 
-			page_status = @"Published";
+			page_status = @"publish";
 		[currentPage setObject:page_status forKey:@"page_status"];
 		[currentPage setObject:[currentBlog valueForKey:@"pwd"] forKey:@"wp_password"];
 		//WPLog(@"************ currentPage is %@",currentPage);
@@ -3681,7 +3681,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		
 		NSString *post_status = [currentPost valueForKey:@"post_status"];
 		if ( !post_status || [post_status isEqualToString:@""] ) 
-			post_status = @"Published";
+			post_status = @"publish";
 		[currentPost setObject:post_status forKey:@"post_status"];
 //		WPLog(@"currentPost is %@",currentPost);
 		NSArray *args = [NSArray arrayWithObjects:[currentPost valueForKey:@"postid"],
@@ -4101,6 +4101,20 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	if( index != -1 )
 	{
 		return [[postStatusList allKeys] objectAtIndex:index];
+	}
+	return nil;
+}
+
+- (NSString *)pageStatusForStatusDescription:(NSString *)statusDescription fromBlog:(id)aBlog
+{
+	if( [statusDescription isEqual:@"Local Draft"] )
+		return statusDescription;
+	NSDictionary *pageStatusList = [aBlog valueForKey:@"pageStatusList"];
+	NSArray *dataSource = [pageStatusList allValues] ;
+	int index = [dataSource indexOfObject:statusDescription];
+	if( index != -1 )
+	{
+		return [[pageStatusList allKeys] objectAtIndex:index];
 	}
 	return nil;
 }

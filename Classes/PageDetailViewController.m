@@ -302,18 +302,25 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 - (void)selectionTableViewController:(WPSelectionTableViewController *)selctionController completedSelectionsWithContext:(void *)selContext selectedObjects:(NSArray *)selectedObjects haveChanges:(BOOL)isChanged
 {
 	
+	//	WPLog(@" %@ completedSelectionsWithContext %u isChanged %d selectedObjects %@", [self className], selContext, isChanged, selectedObjects);
+	if( !isChanged ){
+		[selctionController clean];
+		return;
+	}
+	
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	if( selContext == kSelectionsStatusContext1 ){
 		NSString *curStatus = [selectedObjects lastObject];
-		WPLog(@"-----curStatus-----%@",curStatus);
-		NSString *status = curStatus;
+		NSString *status = [dm pageStatusForStatusDescription:curStatus fromBlog:dm.currentBlog];
 		if( status ){
-			WPLog(@"-----status-----%@",status);
-
 			[[dm currentPage] setObject:status forKey:@"page_status"];
 			statusTextField.text = curStatus ;
 		}	
 	}
+	
+	[selctionController clean];
+	pageDetailsController.hasChanges = YES;
+	
 }	
 
 - (void)populateSelectionsControllerWithStatuses
