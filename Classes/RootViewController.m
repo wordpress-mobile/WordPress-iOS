@@ -3,6 +3,7 @@
 #import "BlogDetailModalViewController.h"
 #import "BlogDataManager.h"
 #import "Reachability.h"
+#import "PostsListController.h"
 
 @interface RootViewController (private)
 
@@ -178,17 +179,29 @@
 			
 			[Reachability sharedReachability].hostName = url;
 			
-			BlogMainViewController  *blogMainViewController = [[BlogMainViewController alloc] initWithNibName:@"WPBlogMainViewController" bundle:nil];
+			NSDictionary *currentBlog = dataManager.currentBlog;
 			
-			self.title=@"Blogs";
+			if ( [[currentBlog valueForKey:kSupportsPagesAndComments] boolValue] ) {
 			
-			//			UIBarButtonItem *blogsButton = [[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStylePlain target:self action:@selector(cancel:)];
-			//			blogMainViewController.navigationItem.leftBarButtonItem = blogsButton;
-			//			blogMainViewController.navigationItem.title =[[dataManager currentBlog] valueForKey:@"blogName"];
-			//			[blogsButton release];
-			[self.navigationController pushViewController:blogMainViewController animated:YES];
-			self.navigationController.navigationBarHidden = NO;
-			[blogMainViewController release];
+				BlogMainViewController  *blogMainViewController = [[BlogMainViewController alloc] initWithNibName:@"WPBlogMainViewController" bundle:nil];
+				
+				self.title=@"Blogs";
+				
+				//			UIBarButtonItem *blogsButton = [[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStylePlain target:self action:@selector(cancel:)];
+				//			blogMainViewController.navigationItem.leftBarButtonItem = blogsButton;
+				//			blogMainViewController.navigationItem.title =[[dataManager currentBlog] valueForKey:@"blogName"];
+				//			[blogsButton release];
+				[self.navigationController pushViewController:blogMainViewController animated:YES];
+				self.navigationController.navigationBarHidden = NO;
+				[blogMainViewController release];
+			} else {
+				PostsListController *postsListController = [[PostsListController alloc] initWithNibName:@"PostsListController" bundle:nil];
+				postsListController.title = [[dataManager currentBlog] valueForKey:@"blogName"];
+				[self.navigationController pushViewController:postsListController animated:YES];
+				self.navigationController.navigationBarHidden = NO;
+				[postsListController release];
+			}
+			
 		}
 		
 	}else {

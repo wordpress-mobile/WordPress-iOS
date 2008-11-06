@@ -12,15 +12,9 @@
 
 @interface BlogMainViewController : UIViewController {
 	IBOutlet UITableView *postsTableView;
-	PostsListController *postsListController;	
-	CommentsListController *commentsListController;
-	PagesListController *pagesListController;
 	NSArray *blogMainMenuContents;
 	int awaitingComments;
 }
 
-@property (nonatomic, retain) PostsListController *postsListController;
-@property (nonatomic, retain) CommentsListController *commentsListController;
-@property (nonatomic, retain) PagesListController *pagesListController;
 
 @end

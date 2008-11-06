@@ -16,8 +16,6 @@
 
 @implementation BlogMainViewController
 
-@synthesize postsListController;
-@synthesize commentsListController,pagesListController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -55,9 +53,6 @@
 
 - (void)dealloc {
 	[super dealloc];
-	
-	[postsListController release];
-
 }
 
 
@@ -147,26 +142,16 @@
 		
 		if ( indexPath.row == 0 ) {
 
-			if (self.postsListController == nil) {
-				self.postsListController = [[PostsListController alloc] initWithNibName:@"PostsListController" bundle:nil];
-			}
+			PostsListController *postsListController = [[PostsListController alloc] initWithNibName:@"PostsListController" bundle:nil];
 			
 			postsListController.title = [[dataManager currentBlog] valueForKey:@"blogName"];
-//			UIBarButtonItem *blogsButton = [[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
-//			postsListController.navigationItem.leftBarButtonItem = blogsButton;
-//			[blogsButton release];
 			[[self navigationController] pushViewController:postsListController animated:YES];
+			[postsListController release];
 
 		} else if ( indexPath.row == 2 ) { // Comments Section
 			
-			
-
-			if ( self.commentsListController == nil )
-				self.commentsListController = [[CommentsListController alloc] initWithNibName:@"CommentsListController" bundle:nil];
+			CommentsListController *commentsListController = [[CommentsListController alloc] initWithNibName:@"CommentsListController" bundle:nil];
 			commentsListController.title = commentsListController.navigationItem.title =@"Comments";
-//			UIBarButtonItem *blogsButton = [[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
-//			commentsListController.navigationItem.leftBarButtonItem = blogsButton;
-//			[blogsButton release];
 			
 			// set up the edit blog button
 			UIBarButtonItem *editCommentButton = [[UIBarButtonItem alloc] 
@@ -178,41 +163,14 @@
 			[editCommentButton release];
 		
 			[[self navigationController] pushViewController:commentsListController animated:YES];
+			[commentsListController release];
 		}else if ( indexPath.row == 1 ) {
-			
-			
-			if (self.pagesListController == nil) {
-				self.pagesListController = [[PagesListController alloc] initWithNibName:@"PagesListController" bundle:nil];
-			}
+			PagesListController *pagesListController = [[PagesListController alloc] initWithNibName:@"PagesListController" bundle:nil];
 			[[self navigationController] pushViewController:pagesListController animated:YES];
-			
+			[pagesListController release];
 		}
 	}
 }
-
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-	
-//	// Set current blog to blog at the index which was clicked
-//	// Detail view will bind data into this instance and call save
-//	
-//	[[BlogDataManager sharedDataManager] copyBlogAtIndexCurrent:(indexPath.row)];
-//	
-//	//	WPLog(@"current blog is : %@",[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blogName"]);
-//	
-//	
-//	BlogDetailModalViewController *blogDetailViewController = [[BlogDetailModalViewController alloc] initWithNibName:@"WPBlogDetailViewController" bundle:nil];
-//	
-//	blogDetailViewController.removeBlogButton.hidden = NO;
-//	blogDetailViewController.isModal = NO;
-//	blogDetailViewController.mode	= 1;
-//	
-//	
-//	[[self navigationController] pushViewController:postsListController animated:YES];
-//	[blogDetailViewController release];
-//	[blogDetailViewController refreshBlogEdit];
-}
-
-
 
 - (void)cancel:(id)sender {
 	[self.navigationController popViewControllerAnimated:YES];

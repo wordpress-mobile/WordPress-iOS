@@ -1033,15 +1033,19 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	return YES;
 }
 
-- (int)checkXML_RPC_URL_IsRunningSupportedVersionOfWordPress:(NSString *)xmlrpcurl
+- (int)checkXML_RPC_URL_IsRunningSupportedVersionOfWordPress:(NSString *)xmlrpcurl withPagesAndCommentsSupport:(BOOL *) isPagesAndCommentsSupported
 {
 	XMLRPCRequest *listMethodsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpcurl]];
 	[listMethodsReq setMethod:@"system.listMethods" withObjects:[NSArray array]];
 	NSArray *listOfMethods = [self executeXMLRPCRequest:listMethodsReq byHandlingError:YES];
 	[listMethodsReq release];
 	
+	* isPagesAndCommentsSupported = NO;
+
 	if( [listOfMethods isKindOfClass:[NSError class]] )
 		return -1;
+	
+	NSLog(@"listOfMethods is (%@)",listOfMethods);
 	
 	if( [listOfMethods containsObject:@"wp.getPostStatusList"] && [listOfMethods containsObject:@"blogger.getUserInfo"] && 
 	   [listOfMethods containsObject:@"metaWeblog.newMediaObject"] && [listOfMethods containsObject:@"blogger.getUsersBlogs"] &&
@@ -1049,8 +1053,12 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	   [listOfMethods containsObject:@"metaWeblog.getPost"] &&
 	   [listOfMethods containsObject:@"metaWeblog.newPost"] && [listOfMethods containsObject:@"metaWeblog.editPost"] &&
 	   [listOfMethods containsObject:@"metaWeblog.deletePost"] && [listOfMethods containsObject:@"wp.newCategory"] &&
-	   [listOfMethods containsObject:@"wp.deleteCategory"] && [listOfMethods containsObject:@"wp.getCategories"] )
+	   [listOfMethods containsObject:@"wp.deleteCategory"] && [listOfMethods containsObject:@"wp.getCategories"] ) {
+
+		if ( [listOfMethods containsObject:@"wp.getComments"] && [listOfMethods containsObject:@"wp.getPages"] )
+			*isPagesAndCommentsSupported = YES;
 		return 1;
+	}	
 	
 	return 0;
 }
@@ -1080,6 +1088,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[currentBlog setValue:(blogURL?blogURL:@"") forKey:@"url"];
 	
 	NSString *xmlrpc = [self discoverxmlrpcurlForurl:url];
+	NSLog(@"xmlrpc is (%@)",xmlrpc);
 	if (!xmlrpc) {
 		UIAlertView *rsdError = [[UIAlertView alloc] initWithTitle:@"We could not find the XML-RPC service for your blog. Please check your network connection and try again. if the problem persists, please visit \"iphone.wordpress.org\" to report the problem."
 																	   message:nil
@@ -1092,7 +1101,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		return NO;
 	}
 	
-	int versionCheck = [self checkXML_RPC_URL_IsRunningSupportedVersionOfWordPress: xmlrpc];
+	BOOL supportsPagesAndComments;
+	int versionCheck = [self checkXML_RPC_URL_IsRunningSupportedVersionOfWordPress: xmlrpc withPagesAndCommentsSupport:&supportsPagesAndComments];
 	if( versionCheck < 0 )
 		return NO;
 	if( versionCheck == 0 )
@@ -1108,6 +1118,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		return NO;
 	}
 	
+	[currentBlog setValue:[NSNumber numberWithBool:supportsPagesAndComments]   forKey:kSupportsPagesAndComments];
+
 	[currentBlog setValue:xmlrpc?xmlrpc:@"" forKey:@"xmlrpc"];
 	[currentBlog setValue:(username?username:@"") forKey:@"username"];
 	
@@ -1518,7 +1530,9 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	}
 	
 	WPLog(@"Number of blogs at launch: %d", [blogsList count]);
-	
+
+	NSLog(@" blogs at launch: %@", blogsList);
+
 }
 
 -(void)sortBlogData {
@@ -2615,7 +2629,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[postsReq setMethod:@"wp.getPages" 
 			withObjects:[NSArray arrayWithObjects:blogid,username, pwd, nil]];
 	
-	id response = [self executeXMLRPCRequest:postsReq byHandlingError:NO];
+	id response = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
 	[postsReq release];
 	WPLog(@"RESPONSE IS %@",response);	
 	// TODO:
@@ -2815,9 +2829,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 	[self syncPostsForBlog:aBlog];
 	[self generateTemplateForBlog:aBlog];
-	
-	[self syncCommentsForBlog:aBlog];
-	[self syncPagesForBlog:aBlog];
+
+	if ( [[currentBlog valueForKey:kSupportsPagesAndComments] boolValue] ) {
+		[self syncCommentsForBlog:aBlog];
+		[self syncPagesForBlog:aBlog];
+	}	
 	[self saveCurrentBlog];
 	[self performSelectorOnMainThread:@selector(postBlogsRefreshNotificationInMainThread:) withObject:aBlog waitUntilDone:NO];
 
@@ -3925,7 +3941,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[postsReq setMethod:[NSString stringWithFormat:@"wp.getComments"] 
 			withObjects:[NSArray arrayWithObjects:blogid,username, pwd, commentsStructure,nil]];
 	
-	NSMutableArray *commentsReceived = [self executeXMLRPCRequest:postsReq byHandlingError:NO];
+	NSMutableArray *commentsReceived = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
 	[postsReq release];
 	// TODO:
 	// Check for fault
