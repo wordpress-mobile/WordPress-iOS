@@ -60,7 +60,6 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 //	}
 
 	//WPLog(@"PDVC refreshUIForCurrentPage ------tableView------%@",photosListController.view.subviews);
-
 	photosListController.tabBarItem.badgeValue = nil;	
 	
 	[photosListController refreshData];
@@ -80,7 +79,8 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	
 	titleTextField.text = [dm.currentPage valueForKey:@"title"];
 	
-	NSString *status = [dm statusDescriptionForStatus:[dm.currentPage valueForKey:@"page_status"] fromBlog:dm.currentBlog];
+	NSString *status = [dm pageStatusDescriptionForStatus:[dm.currentPage valueForKey:@"page_status"] fromBlog:dm.currentBlog];
+
 	status = ( status == nil ? @"" : status );
 	statusTextField.text = status ;
 	
@@ -92,7 +92,6 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	WPLog(@"viewWillAppear for PAGE DETAILS ");
 	pageDetailsController.hasChanges = NO;
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	//self.title = @"Write";
 	if( mode == 1 )
 		[self refreshUIForCurrentPage];
 	else if( mode == 0 )
@@ -326,10 +325,11 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	NSDictionary *postStatusList = [[dm currentBlog] valueForKey:@"pageStatusList"];
     NSArray *dataSource = [postStatusList allValues] ;
     
-	if( dm.isLocaDraftsCurrent || dm.currentPostIndex == -1 )
+	if(dm.currentPageIndex == -1 )
 		dataSource = [dataSource arrayByAddingObject:@"Local Draft"];
 	
 	NSString *curStatus = [dm.currentPage valueForKey:@"page_status"];
+
 	NSArray *selObject = ( curStatus == nil ? [NSArray array] : [NSArray arrayWithObject:curStatus] );
 	
 	[selectionTableViewController populateDataSource:dataSource

@@ -35,7 +35,7 @@
 	NSArray *pictureFieldNames;
 	
 	NSMutableArray *blogsList;
-	NSMutableArray *postTitlesList, *draftTitlesList,*commentTitlesList,*pageTitlesList;
+	NSMutableArray *postTitlesList, *draftTitlesList,*pageDraftTitlesList,*commentTitlesList,*pageTitlesList;
 	NSMutableArray *photosDB;
 
 	
@@ -51,6 +51,9 @@
 	
 	NSInteger currentPostIndex;
 	NSInteger currentDraftIndex;
+	NSInteger currentPageDraftIndex;
+
+	
 	NSInteger currentBlogIndex;
 	NSInteger currentPageIndex;
 	int currentPictureIndex;
@@ -66,7 +69,7 @@
 
 + (BlogDataManager *)sharedDataManager;
 
-@property (nonatomic) NSInteger currentPostIndex,currentDraftIndex,currentPageIndex;
+@property (nonatomic) NSInteger currentPostIndex,currentDraftIndex,currentPageDraftIndex,currentPageIndex;
 
 @property (nonatomic, copy) NSString *currentDirectoryPath;
 
@@ -153,14 +156,25 @@
 - (NSDictionary *)commentTitleAtIndex:(NSUInteger)theIndex;
 
 - (NSInteger)numberOfDrafts;
+- (NSInteger)numberOfPageDrafts;
 - (NSMutableArray *)draftTitlesForBlog:(id)aBlog;
 - (void)loadDraftTitlesForBlog:(id)aBlog;
 - (void)loadDraftTitlesForCurrentBlog;
+- (void)loadPageDraftTitlesForBlog:(id)aBlog;
+- (void)loadPageDraftTitlesForCurrentBlog;
 - (id)draftTitleAtIndex:(NSInteger)anIndex;
+-(id)pageDraftTitleAtIndex:(NSInteger)anIndex;
+
 - (BOOL)makeDraftAtIndexCurrent:(NSInteger)anIndex;
+- (BOOL)makePageDraftAtIndexCurrent:(NSInteger)anIndex;
 - (BOOL)deleteDraftAtIndex:(NSInteger)anIndex forBlog:(id)aBlog;
 - (void)resetDrafts;
 - (void)resetCurrentDraft;
+
+- (void)resetCurrentPage;
+- (void)resetCurrentPageDraft;
+
+
 
 #pragma mark Post metadata
 - (NSArray *)postFieldNames;
@@ -190,6 +204,7 @@
 - (void)makePostAtIndexCurrent:(NSUInteger)theIndex;
 - (void)makeNewPostCurrent;
 - (void)saveCurrentPostAsDraft;
+- (void)saveCurrentPageAsDraft;
 - (void)resetCurrentPost;
 //- (BOOL)publishCurrentPost;
 - (BOOL)savePost:(id)aPost;
@@ -236,6 +251,8 @@
 //these methods will take currentBlog
 - (NSString *)statusForStatusDescription:(NSString *)statusDescription fromBlog:(id)aBlog;
 - (NSString *)statusDescriptionForStatus:(NSString *)curStatus fromBlog:(id)aBlog;
+- (NSString *)pageStatusDescriptionForStatus:(NSString *)curStatus fromBlog:(id)aBlog;
+
 
 // sync comments for a given blog
 - (BOOL) syncCommentsForCurrentBlog ;

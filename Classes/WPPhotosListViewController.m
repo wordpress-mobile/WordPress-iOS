@@ -16,7 +16,6 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-		WPLog(@"tableView------%@",self.tableView);
 		// Initialization code
 	}
 	return self;
@@ -130,7 +129,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 		picker.sourceType = UIImagePickerControllerSourceTypeCamera;
 		
 		// Picker is displayed asynchronously.
-		[[postDetailViewController navigationController] presentModalViewController:picker animated:YES];
+		[[delegate navigationController] presentModalViewController:picker animated:YES];
 	}
 }
 
@@ -451,7 +450,8 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 		WPPhotoViewController *photoViewController = [[WPPhotoViewController alloc] initWithNibName:@"WPPhotoViewController" bundle:nil];
 		photoViewController.currentPhotoIndex = index;
 		photoViewController.photosListViewController = self;
-		[postDetailViewController.navigationController presentModalViewController:photoViewController animated:YES];	
+
+		[[delegate navigationController] presentModalViewController:photoViewController animated:YES];	
 		[photoViewController release];		
 	}
 }

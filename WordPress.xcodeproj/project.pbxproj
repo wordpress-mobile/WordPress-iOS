@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		108F0F540EC2A4F200D09FB6 /* PagesDraftListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 108F0F530EC2A4F200D09FB6 /* PagesDraftListController.m */; };
+		108F0FB40EC2B51C00D09FB6 /* PagesDraftListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 108F0FB30EC2B51C00D09FB6 /* PagesDraftListController.xib */; };
 		1D3623260D0F684500981E51 /* WordPressAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* WordPressAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -106,6 +108,9 @@
 
 /* Begin PBXFileReference section */
 		021751A50EB8412E0032D429 /* WPPhotosListProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPPhotosListProtocol.h; sourceTree = "<group>"; };
+		108F0F520EC2A4F200D09FB6 /* PagesDraftListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PagesDraftListController.h; sourceTree = "<group>"; };
+		108F0F530EC2A4F200D09FB6 /* PagesDraftListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PagesDraftListController.m; sourceTree = "<group>"; };
+		108F0FB30EC2B51C00D09FB6 /* PagesDraftListController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PagesDraftListController.xib; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* WordPressAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* WordPressAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressAppDelegate.m; sourceTree = "<group>"; };
@@ -520,6 +525,7 @@
 				ACC9E24F0E0FAC75005FD167 /* PostsListController.xib */,
 				ACC156BA0E10D73100D6E1A0 /* PostDetailViewController.xib */,
 				ACBAB67C0E1247CC00F38795 /* WPPostDetailPreviewController.xib */,
+				108F0FB30EC2B51C00D09FB6 /* PagesDraftListController.xib */,
 				A068C46E0E1DE02F00571B04 /* DraftsList.xib */,
 				AC3437BD0E10F7BC00E5D79B /* PostDetailEditController.xib */,
 				ACBAB6080E121CF700F38795 /* WPPostSettingsController.xib */,
@@ -565,6 +571,8 @@
 				EC0F59310EB042B0002FCB4D /* PageDetailsController.m */,
 				EC4696FD0EA75D460040EE8E /* PagesListController.h */,
 				EC4696FE0EA75D460040EE8E /* PagesListController.m */,
+				108F0F520EC2A4F200D09FB6 /* PagesDraftListController.h */,
+				108F0F530EC2A4F200D09FB6 /* PagesDraftListController.m */,
 			);
 			name = Pages;
 			sourceTree = "<group>";
@@ -683,6 +691,7 @@
 				EC4697CF0EA76B210040EE8E /* PagesListController.xib in Resources */,
 				ECCD48880EA8623F0078082C /* PageDetailViewController.xib in Resources */,
 				EC0F59350EB0438E002FCB4D /* PageDetailsController.xib in Resources */,
+				108F0FB40EC2B51C00D09FB6 /* PagesDraftListController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -729,6 +738,7 @@
 				EC4696FF0EA75D460040EE8E /* PagesListController.m in Sources */,
 				ECCD488C0EA8628A0078082C /* PageDetailViewController.m in Sources */,
 				EC0F59330EB042B0002FCB4D /* PageDetailsController.m in Sources */,
+				108F0F540EC2A4F200D09FB6 /* PagesDraftListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -45,7 +45,6 @@
 		[pageDetailViewController refreshUIForCurrentPage];
 	}
 	
-
 	if( hasChanges ) {
 		if ([[leftView title] isEqualToString:@"Pages"])
 			[leftView setTitle:@"Cancel"];
@@ -274,7 +273,11 @@
 	
 	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
 	
+	if( [[dm.currentPage valueForKey:@"page_status"] isEqual:@"Local Draft"] )
+		[self _saveAsDrft];
+	else	
 	[dm savePage:dm.currentPage];
+	
 	[self.navigationController popViewControllerAnimated:YES];
 	
 	[self performSelectorInBackground:@selector(removeProgressIndicator) withObject:nil];
@@ -283,7 +286,31 @@
 
 }
 
+- (void)_saveAsDrft
+{
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	int pageIndex = [dm currentPageIndex];
+	[dm saveCurrentPageAsDraft];
+	hasChanges = NO;
+	self.navigationItem.rightBarButtonItem = nil;
+	[dm removeAutoSavedCurrentPostFile];
+	
+	//new post is saving as draft.
+	if( pageIndex == -1 ){
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Draft Saved"
+														message:@"Your post has been saved to the Local Drafts folder."
+													   delegate:self
+											  cancelButtonTitle:nil
+											  otherButtonTitles:@"OK", nil];
+		[alert show];
+		[alert release];		
+	}else {
+		[self.navigationController popViewControllerAnimated:YES];	
+	}	
+}
+
 - (void)viewWillAppear:(BOOL)animated {
+	WPLog(@"pagedetailscontroller  viewWillAppear");
 	WPLog(@"pagedetailscontroller viewWillAppear MODEEEEEE-------%d---------hasChanges------%d",mode,hasChanges);
 	self.navigationItem.title=@"Write";
     [leftView setTarget:self withAction:@selector(cancelView:)];

@@ -14,7 +14,9 @@
 #define pictureURL @"pictureURL"
 
 #define kNextDraftIdStr @"kNextDraftIdStr"
+#define kNextPageDraftIdStr @"kNextPageDraftIdStr"
 #define kDraftsCount @"kDraftsCount"
+#define kPageDraftsCount @"kPageDraftsCount"
 #define kNumberOfCommentsToDisplay 200
 
 @interface BlogDataManager (private)
@@ -50,6 +52,7 @@
 - (void) sortPostsList;
 //- (void) sortPostsListByAuthorAndDate;
 - (void)setDraftTitlesList:(NSMutableArray *)newArray;
+- (void)setPageDraftTitlesList:(NSMutableArray *)newArray;
 
 
 //argument should provide all required perameters for 
@@ -76,7 +79,7 @@ static BlogDataManager *sharedDataManager;
 @synthesize blogFieldNames, blogFieldNamesByTag, blogFieldTagsByName, 
 pictureFieldNames, postFieldNames, postFieldNamesByTag, postFieldTagsByName,
 postTitleFieldNames, postTitleFieldNamesByTag, postTitleFieldTagsByName,unsavedPostsCount,currentPageIndex,currentPage,pageFieldNames,
-currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLocaDraftsCurrent, currentPostIndex, currentDraftIndex,asyncPostsOperationsQueue,currentUnsavedDraft;
+currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLocaDraftsCurrent, currentPostIndex, currentDraftIndex,currentPageDraftIndex,asyncPostsOperationsQueue,currentUnsavedDraft;
 
 
 - (void)dealloc {
@@ -721,6 +724,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *blogDir = [blogHostDir stringByAppendingPathComponent:[aBlog objectForKey:@"blogid"]];
 	NSString *localDraftsDir = [blogDir stringByAppendingPathComponent:@"localDrafts"];
 
+
 	NSFileManager *fm = [NSFileManager defaultManager];
 	BOOL isDirectory;
 	if( !([fm fileExistsAtPath:blogDir isDirectory:&isDirectory] && isDirectory) )
@@ -799,6 +803,35 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	return pathToDraftTitles;
 }
 
+
+- (NSString *)pageDraftsPathForBlog:(id)aBlog
+{
+	NSString *pagesDraftsDir = [[self blogDir:aBlog] stringByAppendingPathComponent:@"Pages"];
+	NSString *pageslocalDraftsDir = [[self blogDir:aBlog] stringByAppendingPathComponent:@"Pages/localDrafts"];
+	NSFileManager *fm = [NSFileManager defaultManager];
+	BOOL isDirectory;
+	if( !([fm fileExistsAtPath:pagesDraftsDir isDirectory:&isDirectory] && isDirectory) )
+	{
+		[fm createDirectoryAtPath:pagesDraftsDir attributes:nil];
+	}
+	if( !([fm fileExistsAtPath:pageslocalDraftsDir isDirectory:&isDirectory] && isDirectory) )
+	{
+		[fm createDirectoryAtPath:pageslocalDraftsDir attributes:nil];
+	}
+	
+	NSString *pageDraftsPath = [[self blogDir:aBlog] stringByAppendingPathComponent:@"Pages/localDrafts"];	
+
+	return pageDraftsPath;
+}
+
+- (NSString *)pathToPageDraftTitlesForBlog:(id)aBlog
+{
+	NSString *pathToDraftTitles = [[self pageDraftsPathForBlog:aBlog] stringByAppendingPathComponent:@"draftTitles.archive"];	
+	return pathToDraftTitles;
+}
+
+
+
 - (NSString *)pathToDraft:(id)aDraft forBlog:(id)aBlog
 {
 	NSString *draftid = [aDraft valueForKey:@"draftid"];
@@ -808,6 +841,16 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 //	WPLog(@"pathToDraft %@", pathToDraft);
 	return pathToDraft;
 }
+
+- (NSString *)pathToPageDraft:(id)aDraft forBlog:(id)aBlog
+{
+	NSString *draftid = [aDraft valueForKey:@"pageDraftid"];
+	NSString *draftFileName = [NSString stringWithFormat:@"draft.%@.archive", draftid];
+	NSString *pathToPageDraft = [[self pageDraftsPathForBlog:aBlog] stringByAppendingPathComponent:draftFileName];
+	
+	return pathToPageDraft;
+}
+
 
 - (NSString *)postFileName:(id)aPost 
 {
@@ -1890,7 +1933,10 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjects:blogInitValues forKeys:[self blogFieldNames]];
 	[dict setObject:@"0" forKey:kNextDraftIdStr];
+	[dict setObject:@"0" forKey:kNextPageDraftIdStr];
+
 	[dict setObject:[NSNumber numberWithInt:0] forKey:kDraftsCount];
+	[dict setObject:[NSNumber numberWithInt:0] forKey:kNextPageDraftIdStr];
 
 	[dict setObject:[NSNumber numberWithInt:1] forKey:kResizePhotoSetting];
 	// setCurrentBlog will release current reference and make a mutable copy of this one
@@ -2122,6 +2168,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	return [draftTitlesList count];
 }
 
+- (NSInteger)numberOfPageDrafts
+{
+	return [pageDraftTitlesList count];
+}
+
 - (NSMutableArray *)draftTitlesForBlog:(id)aBlog
 {
 	NSString *draftTitlesFilePath = [self pathToDraftTitlesForBlog:aBlog];
@@ -2134,6 +2185,35 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	return [NSMutableArray array];	
 }
 
+
+- (NSMutableArray *)pageDraftTitlesForBlog:(id)aBlog
+{
+	NSString *draftTitlesFilePath = [self pathToPageDraftTitlesForBlog:aBlog];
+	WPLog(@"pageDraftTitlesForBlog %@", draftTitlesFilePath);
+	if ([[NSFileManager defaultManager] fileExistsAtPath:draftTitlesFilePath]) 
+	{
+		return [NSMutableArray arrayWithContentsOfFile:draftTitlesFilePath];
+	}
+	
+	return [NSMutableArray array];	
+}
+
+
+
+- (void)loadPageDraftTitlesForBlog:(id)aBlog
+{
+	[self setPageDraftTitlesList:[self pageDraftTitlesForBlog:aBlog]];
+}
+
+- (void)loadPageDraftTitlesForCurrentBlog
+{
+	//	WPLog(@"loadDraftTitlesForCurrentBlog ...");
+	[self loadPageDraftTitlesForBlog:currentBlog];
+}
+
+
+
+
 - (void)loadDraftTitlesForBlog:(id)aBlog
 {
 	[self setDraftTitlesList:[self draftTitlesForBlog:aBlog]];
@@ -2143,12 +2223,16 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 {
 //	WPLog(@"loadDraftTitlesForCurrentBlog ...");
 	[self loadDraftTitlesForBlog:currentBlog];
-//	WPLog(@"draftTitlesList ...", draftTitlesList);
 }
 
 -(id)draftTitleAtIndex:(NSInteger)anIndex
 {
 	return [draftTitlesList objectAtIndex:anIndex];
+}
+
+-(id)pageDraftTitleAtIndex:(NSInteger)anIndex
+{
+	return [pageDraftTitlesList objectAtIndex:anIndex];
 }
 
 - (BOOL)makeDraftWithIDCurrent:(NSString *)aDraftID
@@ -2173,6 +2257,20 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	currentPostIndex = -2;
 	return YES;
 }
+
+- (BOOL)makePageDraftAtIndexCurrent:(NSInteger)anIndex
+{
+	WPLog(@"makePageDraftAtIndexCurrent draftPath ---------%@", [self pageDraftTitleAtIndex:anIndex]);
+
+	NSString *draftPath = [self pathToPageDraft:[self pageDraftTitleAtIndex:anIndex] forBlog:currentBlog];
+		WPLog(@"makePageDraftAtIndexCurrent draftPath ---------%@", draftPath);
+	NSMutableDictionary *draft = [NSMutableDictionary dictionaryWithContentsOfFile:draftPath];
+	[self setCurrentPage:draft];
+	currentPageDraftIndex = anIndex;
+	currentPageIndex = -2;
+	return YES;
+}
+
 
 - (BOOL)deleteDraftAtIndex:(NSInteger)anIndex forBlog:(id)aBlog
 {
@@ -2201,6 +2299,13 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	currentDraftIndex = -1;
 	[self setCurrentPost:nil];
 }
+
+- (void)resetCurrentPageDraft
+{
+	currentPageDraftIndex = -1;
+	[self setCurrentPage:nil];
+}
+
 
 - (id)loadPostTitlesForBlog:(id)aBlog
 {
@@ -2503,7 +2608,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	{
 		NSString *page_status = [currentPage valueForKey:@"page_status"];
 		if ( !page_status || [page_status isEqualToString:@""] ) 
-			page_status = @"publish";
+			page_status = @"Published";
 		[currentPage setObject:page_status forKey:@"page_status"];
 		[currentPage setObject:[currentBlog valueForKey:@"pwd"] forKey:@"wp_password"];
 		//WPLog(@"************ currentPage is %@",currentPage);
@@ -2577,7 +2682,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[dict setObject:[NSDate date] forKey:@"dateCreated"];
 	[dict setObject:[NSDate date] forKey:@"date_created_gmt"];
 	[dict setObject:@"" forKey:@"title"];
-	[dict setObject:@"Published" forKey:@"page_status"];
+	[dict setObject:@"Local Draft" forKey:@"page_status"];
 	[dict setObject:@"" forKey:@"wp_password"];
 	[dict setObject:@"" forKey:@"mt_keywords"];
 	[dict setObject:[NSNumber numberWithInt:0] forKey:@"mt_allow_comments"];
@@ -2725,6 +2830,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	// save the current index as well
 	currentPageIndex = theIndex;
+	currentPageDraftIndex=-1;
 }
 #pragma mark Post
 - (void)saveCurrentPostAsDraftWithAsyncPostFlag
@@ -3217,6 +3323,64 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	return [currentPost writeToFile:[self autoSavePathForTheCurrentBlog] atomically:YES];
 }
 
+-(void)saveCurrentPageAsDraft
+{	
+	WPLog(@"saveCurrentPageAsDraft ...%d",currentPageIndex);
+	
+//	//we can't save existing post as draft.
+//	if(currentPageIndex != -1 )
+//	{
+//		WPLog(@"ERROR: we can't save existing post as draft ....");
+//		return;
+//	}
+	
+	NSMutableArray *draftTitles = [self pageDraftTitlesForBlog:currentBlog];
+	
+	NSMutableDictionary *pageTitle = [self pageTitleForPage:currentPage];
+	//[pageTitle setValue:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
+	
+	if (currentPageIndex == -1) 
+	{
+		[draftTitles insertObject:pageTitle atIndex:0];
+		
+		NSString *nextDraftID = [[[currentBlog valueForKey:@"kNextPageDraftIdStr"] retain] autorelease];
+		[currentBlog setObject:[[NSNumber numberWithInt:[nextDraftID intValue]+1] stringValue] forKey:@"kNextPageDraftIdStr"];
+		NSNumber *draftsCount = [currentBlog valueForKey:kPageDraftsCount];
+		[currentBlog setObject:[NSNumber numberWithInt:[draftsCount intValue]+1] forKey:kPageDraftsCount];
+		[self saveBlogData];
+		
+		[currentPage setObject:nextDraftID forKey:@"pageDraftid"];
+		WPLog(@"currentPagecurrentPage ...%@",currentPage);
+
+		[pageTitle setObject:nextDraftID forKey:@"pageDraftid"];
+		
+		[draftTitles writeToFile:[self pathToPageDraftTitlesForBlog:currentBlog]  atomically:YES];
+		NSString *pathToDraft = [self pathToPageDraft:currentPage forBlog:currentBlog];
+		[currentPage writeToFile:pathToDraft atomically:YES];
+	}
+	else
+	{
+		[pageTitle setObject:[currentPage valueForKey:@"pageDraftid"] forKey:@"pageDraftid"];
+		
+		[draftTitles replaceObjectAtIndex:currentPageDraftIndex withObject:pageTitle];
+		[draftTitles writeToFile:[self pathToPageDraftTitlesForBlog:currentBlog]  atomically:YES];
+		
+		[pageDraftTitlesList replaceObjectAtIndex:currentPageDraftIndex withObject:pageTitle];
+		
+		NSString *pathToPage = [self pathToPageDraft:currentPage forBlog:currentBlog];
+		[currentPage writeToFile:pathToPage atomically:YES];	
+	}
+	
+	[self resetCurrentPage];
+	[self resetCurrentPageDraft];
+	
+	//WPLog(@"draftTitles  %@", draftTitles);
+}
+
+
+
+
+
 - (void)saveCurrentPostAsDraft
 {	
 	WPLog(@"saveCurrentPostAsDraft ...");
@@ -3517,7 +3681,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		
 		NSString *post_status = [currentPost valueForKey:@"post_status"];
 		if ( !post_status || [post_status isEqualToString:@""] ) 
-			post_status = @"publish";
+			post_status = @"Published";
 		[currentPost setObject:post_status forKey:@"post_status"];
 //		WPLog(@"currentPost is %@",currentPost);
 		NSArray *args = [NSArray arrayWithObjects:[currentPost valueForKey:@"postid"],
@@ -3545,6 +3709,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	WPLog(@" return flag from save post ... %d", successFlag);
 	
 	return successFlag;
+}
+
+- (void)resetCurrentPage {
+	currentPage = nil;                
+	currentPageIndex = -2;
 }
 
 
@@ -3647,6 +3816,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	return postTitle;	
 	
 }
+
+
 
 #pragma mark -
 
@@ -3837,6 +4008,17 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	}
 }
 
+- (void)setPageDraftTitlesList:(NSMutableArray *)newArray
+{
+	if (pageDraftTitlesList != newArray)
+    {
+		[newArray retain];
+		[pageDraftTitlesList release];
+		pageDraftTitlesList = newArray;
+	}
+}
+
+
 - (void)setPhotosDB:(NSMutableArray *)newArray
 {
 	if (photosDB != newArray)
@@ -3900,6 +4082,15 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	return [postStatusList valueForKey:curStatus];
 }
 
+- (NSString *)pageStatusDescriptionForStatus:(NSString *)curStatus fromBlog:(id)aBlog
+{
+	if( [curStatus isEqual:@"Local Draft"] )
+		return curStatus;
+	NSDictionary *pageStatusList = [aBlog valueForKey:@"pageStatusList"];
+	return [pageStatusList valueForKey:curStatus];
+}
+
+
 - (NSString *)statusForStatusDescription:(NSString *)statusDescription fromBlog:(id)aBlog
 {
 	if( [statusDescription isEqual:@"Local Draft"] )
@@ -3911,11 +4102,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	{
 		return [[postStatusList allKeys] objectAtIndex:index];
 	}
-	
 	return nil;
 }
-
-
 
 - (BOOL) syncCommentsForCurrentBlog {
 	[self syncCommentsForBlog:currentBlog];

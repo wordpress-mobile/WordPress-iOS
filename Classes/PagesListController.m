@@ -3,6 +3,8 @@
 #import "Reachability.h"
 #import "PageDetailViewController.h"
 #import "PageDetailsController.h"
+#import "PagesDraftListController.h"
+
 
 #import "XMLRPCRequest.h"
 #import "XMLRPCResponse.h"
@@ -12,6 +14,7 @@
 
 - (void) addPostsToolbarItems;
 - (void)layoutSubviews;
+-(void) setPageDetailsController;
 
 @end
 
@@ -91,11 +94,6 @@
 	
 	[[BlogDataManager sharedDataManager] makeNewPageCurrent];
 	
-	//if(self.pageDetailViewController == nil)
-//		self.pageDetailViewController = [[PageDetailViewController alloc] initWithNibName:@"PageDetailViewController" bundle:nil];
-	if(self.pageDetailsController == nil)
-		self.pageDetailsController = [[PageDetailsController alloc] initWithNibName:@"PageDetailsController" bundle:nil];
-	
 	self.pageDetailsController.mode = 0; 	
 	self.navigationItem.rightBarButtonItem = nil;
 	[[self navigationController] pushViewController:self.pageDetailsController animated:YES];
@@ -126,6 +124,47 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
+	if( indexPath.row == 0 )
+	{
+		static NSString *draftsTableCellRowId = @"DraftsTableCellRowId";
+		
+		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:draftsTableCellRowId];
+		
+		if (cell == nil) {
+			cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:draftsTableCellRowId] autorelease];
+			cell.font = [cell.font fontWithSize:MAIN_FONT_SIZE];
+			UILabel *badgeLabel = [[UILabel alloc] initWithFrame:CGRectMake(210, (LOCALDRAFT_ROW_HEIGHT - LABEL_HEIGHT)/2 , 80, LABEL_HEIGHT)];
+			badgeLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+            [badgeLabel setTag:99];
+			badgeLabel.textColor = [UIColor lightGrayColor];
+			badgeLabel.textAlignment = UITextAlignmentRight;
+			badgeLabel.font = cell.font;
+			[[cell contentView] addSubview:badgeLabel];
+			[badgeLabel release];
+			
+			//As these values won't change in the lifetime of this tableview so we can do this only for once.
+			cell.text =  @"Local Drafts";
+			cell.image = [UIImage imageNamed:@"DraftsFolder.png"];
+		}
+		
+		BlogDataManager *dm = [BlogDataManager sharedDataManager];
+		UILabel *bLabel = (UILabel *)[cell viewWithTag:99];
+		NSNumber *count = [dm.currentBlog valueForKey:@"kPageDraftsCount"];
+		if( [count intValue] )
+		{
+			int c = ( count == nil ? 0 : [count intValue] );
+			bLabel.text = [NSString stringWithFormat:@"(%d)", c];
+		}
+		else {
+			bLabel.text = [NSString stringWithFormat:@""];
+		}
+		
+		[[cell contentView] bringSubviewToFront:bLabel];
+		
+		return cell;
+	}
+	else
+	{
 		static NSString *pagesTableRowId = @"pagesTableRowId";
 		
 		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:pagesTableRowId];
@@ -140,7 +179,7 @@
 		
 		if ( [dm countOfPageTitles] ) 
 		{
-			id currentPage = [dm pageTitleAtIndex:indexPath.row];
+			id currentPage = [dm pageTitleAtIndex:indexPath.row-1];
 			
 			NSString *title = [[currentPage valueForKey:@"title"] 
 							   stringByTrimmingCharactersInSet:whitespaceCS];
@@ -159,8 +198,8 @@
 			label = (UILabel *)[cell viewWithTag:DATE_TAG];
 			label.text = [dateFormatter stringFromDate:date];			
 		}
-	
 	return cell;
+	}
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
@@ -176,23 +215,36 @@
 		[pagesTableView deselectRowAtIndexPath:indexPath animated:YES];
 		return;
 	}
-	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-	[dataManager makePageAtIndexCurrent:indexPath.row];	
 	
-	//if(self.pageDetailViewController == nil)
-//		self.pageDetailViewController = [[PageDetailViewController alloc] initWithNibName:@"PageDetailViewController" bundle:nil];
-	
-	if(self.pageDetailsController == nil)
-		self.pageDetailsController = [[PageDetailsController alloc] initWithNibName:@"PageDetailsController" bundle:nil];
-	
-	self.pageDetailsController.mode = 1; 	
-	self.navigationItem.rightBarButtonItem = nil;
-	self.pageDetailsController.hasChanges = NO; 	
-	[[self navigationController] pushViewController:self.pageDetailsController animated:YES];
+	if( indexPath.row == 0 )
+	{
+		PagesDraftListController *pagesDraftsListController = [[PagesDraftListController alloc] initWithNibName:@"PagesDraftListController" bundle:nil];
+		pagesDraftsListController.pagesListController = self;
+		
+		BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
+		[dataManager loadPageDraftTitlesForCurrentBlog];
+		
+		[[self navigationController] pushViewController:pagesDraftsListController animated:YES];
+		[pagesDraftsListController release];
+		return;
+	}
+	else
+	{
+		BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
+		[dataManager makePageAtIndexCurrent:indexPath.row-1];	
+		
+
+	//	[self setPageDetailsController ];
+		self.pageDetailsController.mode = 1; 	
+		self.navigationItem.rightBarButtonItem = nil;
+		self.pageDetailsController.hasChanges = NO; 	
+		[[self navigationController] pushViewController:self.pageDetailsController animated:YES];
+	}
 }
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
+	[self setPageDetailsController ];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];	
 }
 
@@ -213,7 +265,6 @@
 #pragma mark -
 - (void)viewWillAppear:(BOOL)animated {
 	
-	WPLog(@"PostsList:viewWillAppear");
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	[dm loadPageTitlesForCurrentBlog];
 	
@@ -272,4 +323,9 @@
 	[super didReceiveMemoryWarning];
 }
 
+-(void)setPageDetailsController
+{
+	if(self.pageDetailsController == nil)
+		self.pageDetailsController = [[PageDetailsController alloc] initWithNibName:@"PageDetailsController" bundle:nil];
+}
 @end

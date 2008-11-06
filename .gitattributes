@@ -19,6 +19,8 @@ Classes/PageDetailViewController.h -text
 Classes/PageDetailViewController.m -text
 Classes/PageDetailsController.h -text
 Classes/PageDetailsController.m -text
+Classes/PagesDraftListController.h -text
+Classes/PagesDraftListController.m -text
 Classes/PagesListController.h -text
 Classes/PagesListController.m -text
 Classes/PostDetailEditController.h -text
@@ -88,6 +90,7 @@ Classes/XMLRPC/XMLValueDecoder.m -text
 /MainWindow.xib -text
 /PageDetailViewController.xib -text
 /PageDetailsController.xib -text
+/PagesDraftListController.xib -text
 /PagesListController.xib -text
 /PostDetailEditController.xib -text
 /PostDetailViewController.xib -text
