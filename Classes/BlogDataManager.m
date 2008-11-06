@@ -1016,14 +1016,23 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 {
 	if ( ![urlstr hasPrefix:@"http"] )
 		urlstr = [NSString stringWithFormat:@"http://%@", urlstr];
-//	WPLog(@"url str %@", urlstr);
+	// WPLog(@"url str %@", urlstr);
 	NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:urlstr]
-											  cachePolicy:NSURLRequestReloadIgnoringLocalCacheData							  
-										  timeoutInterval:60.0];		
+											  cachePolicy:NSURLRequestReloadIgnoringLocalCacheData   
+										  timeoutInterval:60.0]; 
+	WPLog(@"Request Body:%@", theRequest);
+	
 	NSError *error = nil;
-	NSData *data = [[NSURLConnection sendSynchronousRequest:theRequest returningResponse:NULL error:&error] retain];
+	NSHTTPURLResponse *response = nil;
+	NSData *data = [[NSURLConnection sendSynchronousRequest:theRequest returningResponse:&response error:&error] retain];
 	if ( error != nil )
 		WPLog(@"error is (%@)",error);
+	
+	if ( [response statusCode] != 200 ) {
+		NSError *responseError = [NSError errorWithDomain:NSPOSIXErrorDomain code:kURLInvalidURLError userInfo:nil];
+		return (id)responseError;
+	}
+	
 	if( [data length] > 0 )
 	{
 		//NSString *htmlStr = [NSString stringWithUTF8String:[data bytes]];
@@ -1041,26 +1050,25 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 				ourStr = [ourStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 				ourStr = [ourStr substringWithRange:NSMakeRange(0, [ourStr length]-1)];
 				NSRange r = [ourStr rangeOfString:@"\"" options:NSBackwardsSearch];
+				WPLog(@"******************************************************************************");
 				if (r.location != NSNotFound) {
 					NSString *hosturl = [ourStr substringWithRange:NSMakeRange(r.location+1, [ourStr length]-r.location-1)];
-		//			WPLog(@"hosturl %@", hosturl);
+					WPLog(@"hosturl %@", hosturl);
 					if( hosturl != nil )
 						[data release];
-						return [self xmlurl:hosturl];
+					return [self xmlurl:hosturl];
 				}
 			}
 		}
-		
 	}
 	[data release];
 	return nil;
-}
-
+}	
 - (BOOL)validateCurrentBlog:(NSString *)url user:(NSString *)username password:(NSString*)pwd 
 {	
 	NSString *blogURL = [NSString stringWithFormat:@"http://%@", url];
 	NSString *xmlrpc = [self discoverxmlrpcurlForurl:url];
-	if (!xmlrpc) {
+	if ( ![xmlrpc isKindOfClass:[NSError class]] && !xmlrpc) {
 		xmlrpc = [blogURL stringByAppendingString:[currentBlog valueForKey:@"xmlrpcsuffix"]];
 	}
 	//  ------------------------- invoke login & getUserInfo
@@ -1131,7 +1139,21 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[currentBlog setValue:(blogURL?blogURL:@"") forKey:@"url"];
 	
 	NSString *xmlrpc = [self discoverxmlrpcurlForurl:url];
-	NSLog(@"xmlrpc is (%@)",xmlrpc);
+	
+	if ([xmlrpc isKindOfClass:[NSError class]]) {
+		UIAlertView *rsdError = [[UIAlertView alloc] initWithTitle:@"We could not find your blog. Please check the URL and try again. if the problem persists, please visit \"iphone.wordpress.org\" to report the problem."
+														   message:nil
+														  delegate:[[UIApplication sharedApplication] delegate]
+												 cancelButtonTitle:@"Visit Site"
+												 otherButtonTitles:@"OK", nil];
+		
+		rsdError.tag = kRSDErrorTag;
+		[rsdError show];
+		[rsdError release];
+		return NO;
+		
+	}
+
 	if (!xmlrpc) {
 		UIAlertView *rsdError = [[UIAlertView alloc] initWithTitle:@"We could not find the XML-RPC service for your blog. Please check your network connection and try again. if the problem persists, please visit \"iphone.wordpress.org\" to report the problem."
 																	   message:nil

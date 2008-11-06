@@ -340,6 +340,9 @@
 		return;
 	}
 	
+	url = [url stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	blogURLTextField.text = url;
+
 	NSDictionary *currentBlog = [dm currentBlog];
 	NSNumber *value = [NSNumber numberWithBool:resizePhotoControl.on];
 	[currentBlog setValue:value forKey:kResizePhotoSetting];
@@ -405,6 +408,9 @@
 		return;
 	}
 	
+	url = [url stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	blogURLTextField.text = url;
+
 	NSDictionary *currentBlog = [dm currentBlog];
 	NSNumber *value = [NSNumber numberWithBool:resizePhotoControl.on];
 	[currentBlog setValue:value forKey:kResizePhotoSetting];
