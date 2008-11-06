@@ -1029,7 +1029,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		WPLog(@"error is (%@)",error);
 	
 	if ( [response statusCode] != 200 ) {
-		NSError *responseError = [NSError errorWithDomain:NSPOSIXErrorDomain code:kURLInvalidURLError userInfo:nil];
+		NSError *responseError = [NSError errorWithDomain:NSPOSIXErrorDomain code:1 userInfo:nil];
 		return (id)responseError;
 	}
 	
