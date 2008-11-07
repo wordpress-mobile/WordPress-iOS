@@ -292,33 +292,6 @@
     [alertView autorelease];
 }
 
-// sync posts for a given blog
-//- (NSArray *) getCommentsForBlog:(id)blog {
-//	WPLog(@"<<<<<<<<<<<<<<<<<< syncPostsForBlog >>>>>>>>>>>>>>");
-//
-//	[blog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
-//	// Parameters
-//	NSString *username = [blog valueForKey:@"username"];
-//	NSString *pwd = [blog valueForKey:@"pwd"];
-//	NSString *fullURL = [blog valueForKey:@"xmlrpc"];
-//	NSString *blogid = [blog valueForKey:@"blogid"];
-//
-//	
-//	//	WPLog(@"Fetching posts for blog %@ user %@/%@ from %@", blogid, username, pwd, fullURL);
-//	
-//	//  ------------------------- invoke metaWeblog.getRecentPosts
-//	XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
-//	[postsReq setMethod:@"wp.getComments" 
-//			withObjects:[NSArray arrayWithObjects:blogid,username, pwd, nil]];
-//	
-//	NSArray *commentsList = [[BlogDataManager sharedDataManager] executeXMLRPCRequest:postsReq byHandlingError:YES];
-//	
-//	WPLog(@"commentsList is (%@)",commentsList);
-//	
-//	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-//	return commentsList;
-//}
-
 #define COMMENT_NAME_TAG 100
 #define COMMENT_POST_NAME_AND_DATE_TAG 200
 

@@ -1,3 +1,11 @@
+//
+//  PageDetailViewController.m
+//  WordPress
+//
+//  Created by Janakiram on 01/11/08.
+//  Copyright 2008 Prithvi Information Solutions Limited. All rights reserved.
+//
+
 #import "PageDetailViewController.h"
 #import "WPSelectionTableViewController.h"
 #import "BlogDataManager.h"
@@ -49,6 +57,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	
 	titleTextField.text = [dm.currentPage valueForKey:@"title"];
 	
+	NSString *status = [dm.currentPage valueForKey:@"page_status"];
 	NSString *statusValue=[dm pageStatusDescriptionForStatus:status fromBlog:dm.currentBlog];
 	statusValue = ( statusValue == nil ? @"" : statusValue );
 	statusTextField.text = statusValue;

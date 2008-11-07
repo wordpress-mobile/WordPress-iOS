@@ -8,6 +8,11 @@
 
 #import "WPSegmentedSelectionTableViewController.h"
 
+@interface NSObject (WPSelectionTableViewControllerDelegateCategory)
+
+- (void)selectionTableViewController:(WPSelectionTableViewController *)selctionController completedSelectionsWithContext:(void *)selContext selectedObjects:(NSArray *)selectedObjects haveChanges:(BOOL)isChanged;
+
+@end
 
 @implementation WPSegmentedSelectionTableViewController
 

@@ -1,3 +1,11 @@
+//
+//  PagesListController.m
+//  WordPress
+//
+//  Created by Janakiram on 01/11/08.
+//  Copyright 2008 Prithvi Information Solutions Limited. All rights reserved.
+//
+
 #import "PagesListController.h"
 #import "BlogDataManager.h"
 #import "Reachability.h"

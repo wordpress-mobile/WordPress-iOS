@@ -36,6 +36,8 @@
 
 @property (readonly) UITabBarController *tabController;
 
+- (IBAction)cancelView:(id)sender;
+
 - (void)refreshUIForCompose;
 - (void)refreshUIForCurrentPost;
 - (void)updatePhotosBadge;

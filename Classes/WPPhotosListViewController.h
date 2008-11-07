@@ -12,7 +12,7 @@
 	UIImage *currentChoosenImage; 
 	WPImagePickerController *pickerController;
 
-	id <WPPhotosListProtocol>  delegate;
+	id<WPPhotosListProtocol>  delegate;
 	PostDetailViewController *postDetailViewController;
 	PageDetailsController *pageDetailsController;
 

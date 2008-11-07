@@ -7,6 +7,12 @@
 
 NSTimeInterval kAnimationDuration = 0.3f;
 
+@interface PostDetailEditController (privates)
+
+- (void)clearPickerContrller;
+
+@end
+
 @implementation PostDetailEditController
 
 @synthesize postDetailViewController, selectionTableViewController,segmentedTableViewController,leftView;

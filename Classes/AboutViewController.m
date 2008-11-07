@@ -1,5 +1,10 @@
 #import "AboutViewController.h"
 
+@interface AboutViewController ( privates )
+
+-(void) loadWebView;
+
+@end
 
 @implementation AboutViewController
 

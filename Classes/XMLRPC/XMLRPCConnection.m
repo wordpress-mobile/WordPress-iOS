@@ -89,7 +89,7 @@ NSString *XMLRPCReceivedResponseNotification = @"XML-RPC Successfully Received R
 	if( err != NULL )
 	{
 		//TODO: we may need to create a XMLRPCResponse with the error. and return
-		return err;
+		return (id) err;
 	}
 	
 //	WPLog(@"data %d urlres %@ err %@", [data length], urlres, err);

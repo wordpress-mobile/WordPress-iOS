@@ -1,3 +1,11 @@
+//
+//  PageDetailsController.m
+//  WordPress
+//
+//  Created by Janakiram on 01/11/08.
+//  Copyright 2008 Prithvi Information Solutions Limited. All rights reserved.
+//
+
 #import "PageDetailsController.h"
 #import "BlogDataManager.h"
 #import "WordPressAppDelegate.h"
@@ -6,7 +14,6 @@
 #import "WPPhotosListViewController.h"
 #import "WPNavigationLeftButtonView.h"
 #import "PostsListController.h"
-
 
 
 @interface PageDetailsController (privateMethods)
@@ -390,12 +397,7 @@
 	if (![currentPage valueForKey:@"Photos"])
 		[currentPage setValue:[NSMutableArray array] forKey:@"Photos"];
 	
-	WPLog(@"1111111111STRING VALUE -----%@",[dataManager saveImage:theImage]);
-	
-	WPLog(@"PDC----currentPage--------%@",currentPage);
-
 	[[currentPage valueForKey:@"Photos"] addObject:[dataManager saveImage:theImage]];
-	WPLog(@"PDC----currentPage--------%@",currentPage);
 
 	[self updatePhotosBadge];
 }
@@ -404,11 +406,7 @@
 
 -(id)photosDataSource
 {
-	//NSMutableArray* photosArray=[[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"Photos"] ;
-	
 	return [[[BlogDataManager sharedDataManager] currentPage] valueForKey:@"Photos"] ;
-	
 }
 
 @end
-

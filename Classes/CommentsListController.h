@@ -16,7 +16,7 @@
 	IBOutlet UIBarButtonItem *syncPostsButton;
 	IBOutlet UIButton *commentStatusButton;
 	
-    IBOutlet UIToolbar  *editToolbar; 
+	IBOutlet UIToolbar  *editToolbar; 
 	UIBarButtonItem *editButtonItem;
 	
 	IBOutlet UIBarButtonItem  *approveButton;

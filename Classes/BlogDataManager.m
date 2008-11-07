@@ -37,6 +37,8 @@
 - (void) loadPhotosDB;
 - (void) createPhotosDB;
 - (void) loadPostTitlesForCurrentBlog;
+- (void)loadPageTitlesForCurrentBlog;
+- (id)loadPageTitlesForBlog:(id)aBlog;
 - (void) setPostTitlesList:(NSMutableArray *)newArray;
 - (void) setCommentTitlesList:(NSMutableArray *)newArray;
 - (NSInteger) indexOfPostTitle:(id)postTitle inList:(NSArray *)aPostTitlesList;
@@ -2380,7 +2382,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 {
 	// set method will make a mutable copy and retain
 	[self setPageTitlesList: [self pageTitlesForBlog:aBlog]];
-	NSLog(@"[self pageTitlesForBlog:aBlog] %@",[self pageTitlesForBlog:aBlog]);
 	return nil;
 }
 

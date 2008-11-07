@@ -7,6 +7,12 @@
 #import "WPPhotosListViewController.h"
 #import "BlogDataManager.h"
 
+@interface WPPhotosListViewController (privates)
+
+- (void)clearPickerContrller;
+
+@end
+
 
 @implementation WPPhotosListViewController
 
@@ -75,7 +81,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 									  otherButtonTitles:@"Add Photo from Library", @"Take Photo with Camera",
 									  nil];
 		actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-		[actionSheet showInView:[delegate view]];
+		[actionSheet showInView:[(UIViewController *)delegate view]];
 		[actionSheet release];
 		
 	} else {
@@ -129,7 +135,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 		picker.sourceType = UIImagePickerControllerSourceTypeCamera;
 		
 		// Picker is displayed asynchronously.
-		[[delegate navigationController] presentModalViewController:picker animated:YES];
+		[[(UIViewController *)delegate navigationController] presentModalViewController:picker animated:YES];
 	}
 }
 
@@ -141,7 +147,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 		WPImagePickerController* picker = [self pickerController];
 		picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
 
-		[[delegate navigationController] presentModalViewController:picker animated:YES];
+		[[(UIViewController *)delegate navigationController] presentModalViewController:picker animated:YES];
 	}
 }
 
@@ -323,7 +329,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 }
 
 
-- (void)imagePickerController:(WPImagePickerController *)picker
+- (void)imagePickerController:(UIImagePickerController *)picker
 				didFinishPickingImage:(UIImage *)image
 									editingInfo:(NSDictionary *)editingInfo
 {
@@ -347,7 +353,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 //	[actionSheet release];	
 }
 
-- (void)imagePickerControllerDidCancel:(WPImagePickerController *)picker
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
 //	WPLog(@"imagePickerControllerDidCancel");
 	[[picker parentViewController] dismissModalViewControllerAnimated:YES];
@@ -359,9 +365,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 - (void)useImage:(UIImage*)theImage
 {
 	WPLog(@"useImage %@",theImage);
-	
-	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-	//	NSString *url = [dataManager pictureURLBySendingToServer:theImage];
+		//	NSString *url = [dataManager pictureURLBySendingToServer:theImage];
 	//	if( !url )
 	//		return;
 	
@@ -414,9 +418,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	[tableView reloadData];
-	//[postDetailViewController updatePhotosBadge];
-	[delegate updatePhotosBadge];
-
+	[(NSObject *)delegate  performSelector:@selector(updatePhotosBadge)];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -450,7 +452,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 		photoViewController.currentPhotoIndex = index;
 		photoViewController.photosListViewController = self;
 
-		[[delegate navigationController] presentModalViewController:photoViewController animated:YES];	
+		[[(UIViewController *)delegate navigationController] presentModalViewController:photoViewController animated:YES];	
 		[photoViewController release];		
 	}
 }

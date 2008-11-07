@@ -278,4 +278,7 @@
 - (void)makePageAtIndexCurrent:(NSUInteger)theIndex;
 - (BOOL)savePage:(id)aPage;
 - (void)makeNewPageCurrent;
+
+- (NSString *)pageStatusForStatusDescription:(NSString *)statusDescription fromBlog:(id)aBlog;
+
 @end
