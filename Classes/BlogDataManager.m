@@ -79,7 +79,7 @@ static BlogDataManager *sharedDataManager;
 @synthesize blogFieldNames, blogFieldNamesByTag, blogFieldTagsByName, 
 pictureFieldNames, postFieldNames, postFieldNamesByTag, postFieldTagsByName,
 postTitleFieldNames, postTitleFieldNamesByTag, postTitleFieldTagsByName,unsavedPostsCount,currentPageIndex,currentPage,pageFieldNames,
-currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLocaDraftsCurrent, currentPostIndex, currentDraftIndex,currentPageDraftIndex,asyncPostsOperationsQueue,currentUnsavedDraft;
+currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLocaDraftsCurrent, isPageLocalDraftsCurrent, currentPostIndex, currentDraftIndex,currentPageDraftIndex,asyncPostsOperationsQueue,currentUnsavedDraft;
 
 
 - (void)dealloc {
@@ -1095,9 +1095,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 	if( [listOfMethods isKindOfClass:[NSError class]] )
 		return -1;
-	
-	NSLog(@"listOfMethods is (%@)",listOfMethods);
-	
+		
 	if( [listOfMethods containsObject:@"wp.getPostStatusList"] && [listOfMethods containsObject:@"blogger.getUserInfo"] && 
 	   [listOfMethods containsObject:@"metaWeblog.newMediaObject"] && [listOfMethods containsObject:@"blogger.getUsersBlogs"] &&
 	   [listOfMethods containsObject:@"wp.getAuthors"] && [listOfMethods containsObject:@"metaWeblog.getRecentPosts"] &&
@@ -1594,9 +1592,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		[self saveBlogData];
 	}
 	
-	WPLog(@"Number of blogs at launch: %d", [blogsList count]);
-
-	NSLog(@" blogs at launch: %@", blogsList);
 
 }
 
@@ -2374,12 +2369,19 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 }
 
 - (void)loadPageTitlesForCurrentBlog {
-	NSMutableArray *pagesList = [self pageTitlesForBlog:currentBlog];
-	[self setPageTitlesList:pagesList];
+	[self loadPageTitlesForBlog:currentBlog];
 }
 
 - (void)loadCommentTitlesForCurrentBlog {
 	[self loadCommentTitlesForBlog:currentBlog];
+}
+
+- (id)loadPageTitlesForBlog:(id)aBlog
+{
+	// set method will make a mutable copy and retain
+	[self setPageTitlesList: [self pageTitlesForBlog:aBlog]];
+	NSLog(@"[self pageTitlesForBlog:aBlog] %@",[self pageTitlesForBlog:aBlog]);
+	return nil;
 }
 
 - (id)loadCommentTitlesForBlog:(id)aBlog
@@ -2578,7 +2580,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		return successFlag;
 	}
 	
-	if (currentPageIndex == -1)
+	//if (currentPageIndex == -1)
+	if(currentPageIndex == -1 || isLocaDraftsCurrent)
 	{
 		NSMutableDictionary *pageParams = [NSMutableDictionary dictionary];
 		
@@ -2838,7 +2841,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 - (NSInteger)countOfPageTitles
 {
-	return [pageTitlesList count];
+	return [pageTitlesList count]+1;
 }
 - (NSDictionary *)pageTitleAtIndex:(NSUInteger)theIndex
 {
@@ -2853,6 +2856,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	// save the current index as well
 	currentPageIndex = theIndex;
 	currentPageDraftIndex=-1;
+//	isPageLocalDraftsCurrent=NO;
+	isLocaDraftsCurrent=NO;
 }
 #pragma mark Post
 - (void)saveCurrentPostAsDraftWithAsyncPostFlag
@@ -3361,6 +3366,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSMutableDictionary *pageTitle = [self pageTitleForPage:currentPage];
 	//[pageTitle setValue:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
 	
+	if( !isLocaDraftsCurrent && currentPostIndex != -1 )
+
 	if (currentPageIndex == -1) 
 	{
 		[draftTitles insertObject:pageTitle atIndex:0];

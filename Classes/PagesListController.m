@@ -216,6 +216,8 @@
 		return;
 	}
 	
+	[BlogDataManager sharedDataManager].isLocaDraftsCurrent = (indexPath.row == 0);
+
 	if( indexPath.row == 0 )
 	{
 		PagesDraftListController *pagesDraftsListController = [[PagesDraftListController alloc] initWithNibName:@"PagesDraftListController" bundle:nil];
@@ -305,8 +307,9 @@
 	
 	WPLog(@"PagesList: downloadRecentPages");
 	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	[dm syncPagesForBlog:[dm currentBlog]];
+	BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
+	[sharedBlogDataManager syncPagesForBlog:[sharedBlogDataManager currentBlog]];
+	[sharedBlogDataManager loadPageTitlesForCurrentBlog];
 	
 	[pagesTableView reloadData];
 	[self removeProgressIndicator];

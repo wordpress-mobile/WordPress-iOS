@@ -41,6 +41,7 @@
 	
 	NSMutableDictionary *currentBlog;
 	BOOL isLocaDraftsCurrent;
+	BOOL isPageLocalDraftsCurrent;
 	
 	NSMutableDictionary *currentPost;
 	NSArray *pageFieldNames;
@@ -92,6 +93,8 @@
 
 @property (nonatomic, copy, readonly) NSMutableDictionary *currentBlog;
 @property (nonatomic, assign) BOOL isLocaDraftsCurrent;
+@property (nonatomic, assign) BOOL isPageLocalDraftsCurrent;
+
 
 @property (nonatomic, copy, readonly) NSMutableDictionary *currentPost;
 @property (nonatomic, retain, readonly) NSArray *pageFieldNames;

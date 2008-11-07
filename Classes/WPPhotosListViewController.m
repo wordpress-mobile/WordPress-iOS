@@ -414,7 +414,6 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	[tableView reloadData];
-	NSLog(@" table view -------- :%@",tableView);
 	//[postDetailViewController updatePhotosBadge];
 	[delegate updatePhotosBadge];
 
