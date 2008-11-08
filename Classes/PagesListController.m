@@ -277,11 +277,23 @@
 
 #pragma mark -
 - (void)viewWillAppear:(BOOL)animated {
-	
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	[dm loadPageTitlesForCurrentBlog];
-	
+	dm.isLocaDraftsCurrent = NO;
+
 	self.title=@"Pages";
+	
+	NSInteger totalpages = [[[dm currentBlog] valueForKey:@"totalpages"] integerValue];
+	NSInteger newpages = [[[dm currentBlog] valueForKey:@"newpages"] integerValue];
+	
+	
+	pagessStatusButton.title = [NSString stringWithFormat:@"%d %@ (%d %@)",
+							   totalpages,
+							   @"Pages",
+							   newpages, 
+							   @"New"];
+
+	
 	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
 	[pagesTableView reloadData];
 	[pagesTableView deselectRowAtIndexPath:[pagesTableView indexPathForSelectedRow] animated:NO];

@@ -67,7 +67,6 @@
 //pages
 
 - (NSString *)pathToPageTitles:(id)aBlog;
-- (NSMutableArray *)pageTitlesForBlog:(id)aBlog;
 - (void) setPageTitlesList:(NSMutableArray *)newArray;
 - (NSString *)pageFilePath:(id)aPage forBlog:(id)aBlog;
 - (id)fectchNewPage:(NSString *)pageid formBlog:(id)aBlog;

@@ -146,6 +146,7 @@
 #pragma mark Post Titles List
 
 - (NSMutableArray *)postTitlesForBlog:(id)aBlog;
+- (NSMutableArray *)pageTitlesForBlog:(id)aBlog;
 - (id)loadPostTitlesForBlog:(id)aBlog;
 - (void)loadPostTitlesForCurrentBlog;
 

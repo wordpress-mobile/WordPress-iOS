@@ -10,9 +10,8 @@
 
 @class PageDetailViewController,PageDetailsController;
 @interface PagesListController : UIViewController {
-	
+	IBOutlet UIBarButtonItem *pagessStatusButton;
 	IBOutlet UITableView *pagesTableView;
-	IBOutlet UIBarButtonItem *postsStatusButton;
 	PageDetailViewController *pageDetailViewController;
 	PageDetailsController *pageDetailsController;
 	

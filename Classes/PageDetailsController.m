@@ -357,9 +357,6 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
-
-    WPLog(@" RR viewWillDisappear");
-    mode = 3;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
