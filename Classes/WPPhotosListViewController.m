@@ -362,7 +362,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 }
 
 // Implement this method in your code to do something with the image.
-- (void)useImage:(UIImage*)theImage
+- (void)useImage:(UIImage*)theImage {
 	//	if( !url )
 	//		return;
 	
@@ -373,7 +373,6 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 	
 	[delegate useImage:theImage];
 
-	
 	//postDetailViewController.hasChanges = YES;
 //	
 //	id currentPost = dataManager.currentPost;

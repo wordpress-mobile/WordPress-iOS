@@ -2626,6 +2626,17 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		
 		//if it is a draft and we successfully published then remove from drafts.
 		if(![response isKindOfClass:[NSError class]] ){
+			NSMutableArray *draftPageTitleList = [self pageDraftTitlesForBlog:currentBlog];
+			[draftPageTitleList removeObjectAtIndex:currentPageDraftIndex];
+			[draftPageTitleList writeToFile:[self pathToPageDraftTitlesForBlog:currentBlog]  atomically:YES];
+			[self setPageDraftTitlesList:draftPageTitleList];
+			
+			NSString *pagedraftPath = [self pathToPageDraft:currentPost forBlog:currentBlog];
+			[[NSFileManager defaultManager] removeItemAtPath:pagedraftPath error:nil];
+			
+			NSNumber *dc = [currentBlog valueForKey:kPageDraftsCount];
+			[currentBlog setValue:[NSNumber numberWithInt:[dc intValue]-1] forKey:kPageDraftsCount];			
+			[self saveBlogData];
 			successFlag = YES;
 		}
 		[self fectchNewPage:response formBlog:currentBlog];
