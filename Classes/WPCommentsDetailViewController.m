@@ -94,7 +94,7 @@
 - (void)deleteComment:(id)sender
 {
     WPLog(@"WPLog :deleteComment");
-    UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Delete Comment" message:@"Are you sure you want to delete this Comment?" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Cancel", nil];                                                
+    UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Delete Comment" message:@"Are you sure you want to delete this comment?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];                                                
     [deleteAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
     [deleteAlert show];
 }
@@ -102,7 +102,7 @@
 - (void)approveComment:(id)sender
 {
 	WPLog(@"WPLog :approveComment");
-	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Approve Comment" message:@"Are you sure you want to Approve this Comment?" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Cancel", nil];                                                
+	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Approve Comment" message:@"Are you sure you want to approve this comment?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];                                                
 	[deleteAlert setTag:2];  // for UIAlertView Delegate to handle which view is popped.
 	[deleteAlert show];
 }
@@ -110,7 +110,7 @@
 - (void)unApproveComment:(id)sender
 {
 	WPLog(@"WPLog :unApproveComment");
-	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Unapprove Comment" message:@"Are you sure you want to Unapprove this Comment?" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Cancel", nil];                                                
+	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Unapprove Comment" message:@"Are you sure you want to unapprove this comment?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];  
 	[deleteAlert setTag:3];  // for UIAlertView Delegate to handle which view is popped.
 	[deleteAlert show];
 }
@@ -118,7 +118,7 @@
 - (void)spamComment:(id)sender
 {
 	WPLog(@"WPLog :spamComment");
-	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Spam Comment" message:@"Are you sure you want to Spam this Comment?" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Cancel", nil];                                                
+	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Spam Comment" message:@"Are you sure you want to mark the comment as spam?. This action can only be reversed in the web admin." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
 	[deleteAlert setTag:4];  // for UIAlertView Delegate to handle which view is popped.
 	[deleteAlert show];
 }
@@ -226,13 +226,13 @@
     WPLog(@"The Alet name %d",[alertView tag]);
 	
 	//optimised code but need to comprimise at Alert messages.....Common message for all @"Operation is not supported now."
-	if ( buttonIndex == 0 ) {
-		
-		if ( ![[Reachability sharedReachability] remoteHostStatus] != NotReachable ) {
+	if ( buttonIndex == 1 )		 // OK
+	{
+			if ( ![[Reachability sharedReachability] remoteHostStatus] != NotReachable ) {
 			
 			UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
 															 message:@"Operation is not supported now."
-															delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+															delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[alert1 show];
 			[alert1 release];		
 			return;

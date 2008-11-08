@@ -288,7 +288,7 @@
 	{
 		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
 														 message:@"Editing is not supported now."
-														delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+														delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		
 		[alert1 show];
 		[alert1 release];		

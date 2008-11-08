@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.02">
 	<data>
 		<int key="IBDocument.SystemTarget">512</int>
-		<string key="IBDocument.SystemVersion">9E17</string>
-		<string key="IBDocument.InterfaceBuilderVersion">672</string>
-		<string key="IBDocument.AppKitVersion">949.33</string>
+		<string key="IBDocument.SystemVersion">9F33</string>
+		<string key="IBDocument.InterfaceBuilderVersion">670</string>
+		<string key="IBDocument.AppKitVersion">949.34</string>
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="3"/>
+			<integer value="29"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -152,7 +152,8 @@
 							<object class="IBUIBarButtonItem" id="987220153">
 								<bool key="IBUIEnabled">NO</bool>
 								<string key="IBUITitle">Spam</string>
-								<int key="IBUIStyle">1</int>
+								<float key="IBUIWidth">7.500000e+01</float>
+								<int key="IBUIStyle">2</int>
 								<reference key="IBUIToolbar" ref="191496090"/>
 							</object>
 							<object class="IBUIBarButtonItem" id="869485387">
@@ -161,7 +162,8 @@
 							</object>
 							<object class="IBUIBarButtonItem" id="61998937">
 								<string key="IBUITitle">Unapprove</string>
-								<int key="IBUIStyle">1</int>
+								<float key="IBUIWidth">9.000000e+01</float>
+								<int key="IBUIStyle">2</int>
 								<reference key="IBUIToolbar" ref="191496090"/>
 							</object>
 							<object class="IBUIBarButtonItem" id="445427913">

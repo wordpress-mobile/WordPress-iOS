@@ -203,6 +203,7 @@
 		pageDetailViewController.mode = self.mode;
 	}
 	pageDetailViewController.pageDetailsController = self;
+	pageDetailViewController.title = @"Write";
 	pageDetailViewController.tabBarItem.image = [UIImage imageNamed:@"write.png"];
 	[array addObject:pageDetailViewController];
 	

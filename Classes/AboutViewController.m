@@ -50,7 +50,7 @@
 	[webView loadHTMLString:[NSString stringWithFormat:@"<font face=\"Helvetica\"> <p style=\"color:rgb(51,51,51);\"><b style=\"font-size:18px;\">WordPress for iPhone</b><br>Version %@<br><br>"
 							 "An Open Source iPhone app for WordPress blogs.<br><br>"
 							 "Designed by Automattic in Alabama. Developed by Effigent and the WordPress community.<br><br>"
-							 "For more information or to contribute to the project,<br />visit our web site at <a style=\"color:rgb(37,131,173);text-decoration:none\" href=\"http://iphone.wordpress.net/\">iphone.wordpress.org</a>.</p></font>",version] baseURL:nil];
+							 "For more information or to contribute to the project,<br />visit our web site at <a style=\"color:rgb(37,131,173);text-decoration:none\" href=\"http://iphone.wordpress.org/\">iphone.wordpress.org</a>.</p></font>",version] baseURL:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

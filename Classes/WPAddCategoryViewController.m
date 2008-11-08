@@ -56,7 +56,7 @@
 	{
 		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"Cateogry title missing."
 														 message:@"Title for a category is mandatory."
-														delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+														delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		
 		[alert1 show];
 		[alert1 release];		

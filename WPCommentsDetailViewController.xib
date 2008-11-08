@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.02">
 	<data>
 		<int key="IBDocument.SystemTarget">528</int>
-		<string key="IBDocument.SystemVersion">9E17</string>
-		<string key="IBDocument.InterfaceBuilderVersion">672</string>
-		<string key="IBDocument.AppKitVersion">949.33</string>
+		<string key="IBDocument.SystemVersion">9F33</string>
+		<string key="IBDocument.InterfaceBuilderVersion">670</string>
+		<string key="IBDocument.AppKitVersion">949.34</string>
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="1"/>
+			<integer value="58"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -147,6 +147,11 @@
 							</object>
 							<object class="IBUIBarButtonItem" id="1009597259">
 								<int key="IBUISystemItemIdentifier">5</int>
+								<reference key="IBUIToolbar" ref="612046044"/>
+							</object>
+							<object class="IBUIBarButtonItem" id="185201196">
+								<string key="IBUITitle">Unapprove</string>
+								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="612046044"/>
 							</object>
 						</object>
@@ -476,6 +481,14 @@
 					</object>
 					<int key="connectionID">57</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">unApproveComment:</string>
+						<reference key="source" ref="185201196"/>
+						<reference key="destination" ref="372490531"/>
+					</object>
+					<int key="connectionID">59</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -605,6 +618,7 @@
 							<reference ref="1009597259"/>
 							<reference ref="53717115"/>
 							<reference ref="872125406"/>
+							<reference ref="185201196"/>
 						</object>
 						<reference key="parent" ref="191373211"/>
 					</object>
@@ -651,6 +665,11 @@
 						<reference key="object" ref="829162712"/>
 						<reference key="parent" ref="781067034"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">58</int>
+						<reference key="object" ref="185201196"/>
+						<reference key="parent" ref="612046044"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -677,6 +696,7 @@
 					<string>40.IBPluginDependency</string>
 					<string>43.IBPluginDependency</string>
 					<string>49.IBPluginDependency</string>
+					<string>58.IBPluginDependency</string>
 					<string>6.IBPluginDependency</string>
 					<string>7.IBPluginDependency</string>
 					<string>8.IBPluginDependency</string>
@@ -687,6 +707,7 @@
 					<string>WPCommentsDetailViewController</string>
 					<string>UIResponder</string>
 					<string>{{366, 218}, {320, 480}}</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -730,7 +751,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">57</int>
+			<int key="maxID">59</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

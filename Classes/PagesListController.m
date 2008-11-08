@@ -215,7 +215,7 @@
 	{
 		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
 														 message:@"Editing is not supported now."
-														delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+														delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		
 		[alert1 show];
 		[alert1 release];		
@@ -266,11 +266,14 @@
 	[pagesTableView reloadData];
 }
 
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	return ROW_HEIGHT;
+	if( indexPath.row != 0 )
+		return ROW_HEIGHT;
+	
+	return LOCALDRAFT_ROW_HEIGHT;
 }
+
 
 #pragma mark -
 - (void)viewWillAppear:(BOOL)animated {

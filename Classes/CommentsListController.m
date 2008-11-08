@@ -181,7 +181,7 @@
 	if( !connectionStatus ){
 		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
 														 message:@"Sync operation is not supported now."
-														delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+														delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		
 		[alert1 show];
 		[alert1 release];		
@@ -223,7 +223,8 @@
 
 - (IBAction)deleteSelectedComments:(id)sender{
 	WPLog(@"deleteSelectedComments");
-    UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Delete Comments" message:@"Are you sure you want to delete this Comments?" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Cancel", nil];                                                
+//    UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Delete Comments" message:@"Are you sure you want to delete this comment?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel", nil];
+    UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Delete Comments" message:@"Are you sure you want to delete the selected comment(s)?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];                                                
     [deleteAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
     [deleteAlert show];
 		
@@ -231,21 +232,24 @@
 - (IBAction)approveSelectedComments:(id)sender{
 	
 	WPLog(@"approveSelectedComments");
-	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Approve Comments" message:@"Are you sure you want to Approve this Comments?" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Cancel", nil];                                                
+//	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Approve Comments" message:@"Are you sure you want to Approve this comment?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel", nil];
+	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Approve Comments" message:@"Are you sure you want to approve the selected comment(s)?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];                                                
 	[deleteAlert setTag:2];  // for UIAlertView Delegate to handle which view is popped.
 	[deleteAlert show];
 	
 }
 - (IBAction)unapproveSelectedComments:(id)sender{
 	WPLog(@"unapproveSelectedComments");
-	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Unapprove Comments" message:@"Are you sure you want to Unapprove this Comments?" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Cancel", nil];                                                
+//	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Unapprove Comments" message:@"Are you sure you want to Unapprove this comment?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel", nil];
+	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Unapprove Comments" message:@"Are you sure you want to unapprove the selected comment(s)?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];                                                
 	[deleteAlert setTag:3];  // for UIAlertView Delegate to handle which view is popped.
 	[deleteAlert show];
 }
 
 - (IBAction)spamSelectedComments:(id)sender{
 	WPLog(@"spamSelectedComments");
-	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Spam Comments" message:@"Are you sure you want to Spam this Comments?" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:@"Cancel", nil];                                                
+//	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Spam Comments" message:@"Are you sure you want to Spam this comment?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel", nil];
+	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Spam Comments" message:@"Are you sure you want to mark the selected comment(s) as spam?. This action can only be reversed in the web admin." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];                                                
 	[deleteAlert setTag:4];  // for UIAlertView Delegate to handle which view is popped.
 	[deleteAlert show];
 }
@@ -255,13 +259,14 @@
     WPLog(@"The Alet name %d",[alertView tag]);
 	
 	//optimised code but need to comprimise at Alert messages.....Common message for all @"Operation is not supported now."
-	if ( buttonIndex == 0 ) {
-		
+//	if ( buttonIndex == 0 ) 
+	if ( buttonIndex == 1 ) 
+	{
 		if ( ![[Reachability sharedReachability] remoteHostStatus] != NotReachable ) {
 			
 			UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:@"No connection to host."
 															 message:@"Operation is not supported now."
-															delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+															delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[connectionFailAlert show];
 			[connectionFailAlert release];		
 			return;
@@ -407,8 +412,6 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (section == 0) {
-		WPLog(@" countOfCommentTitles -- %d",[[BlogDataManager sharedDataManager] countOfCommentTitles]);
-//		return [[BlogDataManager sharedDataManager] countOfCommentTitles];
 		return [commentsArray count];
 	}	
 	return 0;
@@ -423,8 +426,6 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	
 	if (cell == nil || changeEditMode) {
 		cell = [self tableviewCellWithReuseIdentifier:postsTableRowId withCategoryId:[[currentComment valueForKey:@"comment_id"]intValue]];
-		//- (UITableViewCell *)tableviewCellWithReuseIdentifier:(NSString *)identifier withCategoryId:(NSNumber *)categoryId
-		//[[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:postsTableRowId] autorelease];
 	}
 	
 	
@@ -466,9 +467,13 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 
 // Show PostList when row is selected
 - (void)tableView:(UITableView *)atableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    WPLog(@"didSelectRowAtIndexPath:: Load The View");
-	if(editMode)
+	if(editMode)  {
+		[atableView deselectRowAtIndexPath:indexPath animated:NO];
+		UITableViewCell *indexViewCell = [atableView cellForRowAtIndexPath:indexPath];
+		[self commentSelected:[[[[indexViewCell subviews] objectAtIndex:0]subviews] objectAtIndex:0]];//;(id)self.senderObj];//[atableView cellForRowAtIndexPath:indexPath]];
 		return;
+	}
+		
 	
     WPCommentsDetailViewController *commentsViewController = [[WPCommentsDetailViewController alloc] initWithNibName:@"WPCommentsDetailViewController" bundle:nil];
     [self.navigationController pushViewController:commentsViewController animated:YES];
@@ -477,5 +482,13 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	[commentsViewController release];
 }
 
+- (void)tableView:(UITableView *)atableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+	if(editMode)  {
+		[atableView deselectRowAtIndexPath:indexPath animated:NO];
+		UITableViewCell *indexViewCell = [atableView cellForRowAtIndexPath:indexPath];
+		[self commentSelected:[[[[indexViewCell subviews] objectAtIndex:0]subviews] objectAtIndex:0]];//;(id)self.senderObj];//[atableView cellForRowAtIndexPath:indexPath]];
+		return;
+	}
+}
 
 @end

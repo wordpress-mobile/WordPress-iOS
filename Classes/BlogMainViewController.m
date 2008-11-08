@@ -107,7 +107,7 @@
 		cell.image =[UIImage imageNamed:@"DraftsFolder.png"];
 		cell.text = [blogMainMenuContents objectAtIndex:(indexPath.row)];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-		cell.font = [cell.font fontWithSize:15.0f];
+		cell.font = [cell.font fontWithSize:17.0f];
 		
 		if ( indexPath.row == 2 ) { // Comments Section
 
