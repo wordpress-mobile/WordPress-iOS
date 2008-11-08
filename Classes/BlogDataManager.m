@@ -2580,7 +2580,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		return successFlag;
 	}
 	
-	//if (currentPageIndex == -1)
 	if(currentPageIndex == -1 || isLocaDraftsCurrent)
 	{
 		NSMutableDictionary *pageParams = [NSMutableDictionary dictionary];
@@ -2623,8 +2622,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 		[request release];
 		
+		if( ![response isKindOfClass:[NSError class]] )
+			successFlag = YES;
+
 		//if it is a draft and we successfully published then remove from drafts.
-		if(![response isKindOfClass:[NSError class]] ){
+		if( isLocaDraftsCurrent && ![response isKindOfClass:[NSError class]] ) {
 			NSMutableArray *draftPageTitleList = [self pageDraftTitlesForBlog:currentBlog];
 			[draftPageTitleList removeObjectAtIndex:currentPageDraftIndex];
 			[draftPageTitleList writeToFile:[self pathToPageDraftTitlesForBlog:currentBlog]  atomically:YES];
@@ -2636,7 +2638,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 			NSNumber *dc = [currentBlog valueForKey:kPageDraftsCount];
 			[currentBlog setValue:[NSNumber numberWithInt:[dc intValue]-1] forKey:kPageDraftsCount];			
 			[self saveBlogData];
-			successFlag = YES;
 		}
 		[self fectchNewPage:response formBlog:currentBlog];
 	}
