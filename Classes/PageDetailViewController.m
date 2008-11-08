@@ -87,6 +87,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	status = ( status == nil ? @"" : status );
 	statusTextField.text = status ;
 	
+	[photosListController refreshData];
 	photosListController.tabBarItem.badgeValue = nil;	
 
 }

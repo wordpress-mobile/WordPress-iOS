@@ -2612,7 +2612,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 						 pageParams,
 						 nil ];
 		
-		//TODO: take url from current post
+		//TODO: take url from current page
 		XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[currentBlog valueForKey:@"xmlrpc"]]];
 		
 		WPLog(@"-------REQUEST ARGS----%@",args);
@@ -3353,7 +3353,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 -(void)saveCurrentPageAsDraft
 {	
-	WPLog(@"saveCurrentPageAsDraft ...%d",currentPageIndex);
 	
 //	//we can't save existing post as draft.
 //	if(currentPageIndex != -1 )
@@ -3368,8 +3367,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	//[pageTitle setValue:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
 	
 	if( !isLocaDraftsCurrent && currentPostIndex != -1 )
-
-	if (currentPageIndex == -1) 
 	{
 		[draftTitles insertObject:pageTitle atIndex:0];
 		
@@ -3380,7 +3377,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		[self saveBlogData];
 		
 		[currentPage setObject:nextDraftID forKey:@"pageDraftid"];
-		WPLog(@"currentPagecurrentPage ...%@",currentPage);
 
 		[pageTitle setObject:nextDraftID forKey:@"pageDraftid"];
 		
@@ -3612,7 +3608,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 }
 - (void)restoreUnsavedDraft
 {
-	//WPLog(@"restoreUnsavedDraft %@",currentUnsavedDraft);
 	[self setCurrentPost:[self currentUnsavedDraft]];
 	currentPostIndex= -1;
 	[currentPost setObject:@"Local Draft" forKey:@"post_status"];

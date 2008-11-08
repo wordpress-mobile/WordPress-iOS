@@ -363,9 +363,6 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 
 // Implement this method in your code to do something with the image.
 - (void)useImage:(UIImage*)theImage
-{
-	WPLog(@"useImage %@",theImage);
-		//	NSString *url = [dataManager pictureURLBySendingToServer:theImage];
 	//	if( !url )
 	//		return;
 	
@@ -389,9 +386,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 }
 
 - (void)refreshData {
-	WPLog(@"photos refreshData tableView----%@",tableView);
-	
-	//clean up of images
+		//clean up of images
 //	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"photsSelectionRow"];
 //	if (cell != nil) {
 //		int i;
@@ -429,7 +424,6 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 	// plus one to because we add a row for "Local Drafts"
 	//
 	int count;
-	
 	count=[[delegate photosDataSource]count];
 	
 	countField.text = [NSString stringWithFormat:@"%d Photos", count];
@@ -459,7 +453,6 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	
 	//WordPressAppDelegate *appController = [[UIApplication sharedApplication] delegate];
 	NSString *selectionTableRowCell = [NSString stringWithFormat:@"photsSelectionRow%d", indexPath.row];
 	
@@ -470,7 +463,6 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 	
 //	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 //	id array = [dataManager.currentPost valueForKey:@"Photos"];
-	
 	
 	id array;
 	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
