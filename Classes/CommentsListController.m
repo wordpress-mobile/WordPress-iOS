@@ -299,6 +299,7 @@
 
 #define COMMENT_NAME_TAG 100
 #define COMMENT_POST_NAME_AND_DATE_TAG 200
+#define COMMENT_MAIL_TAG 300
 
 NSString *NSStringFromCGRect(CGRect rect ) {
 	
@@ -362,9 +363,9 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 #define MAIN_FONT_SIZE 18.0f
 #define DATE_FONT_SIZE 13.0f
 	
-#define LABEL_HEIGHT 18.0f
-#define DATE_LABEL_HEIGHT 13.0f
-#define VERTICAL_OFFSET	4.0f
+#define LABEL_HEIGHT 20.0f
+#define DATE_LABEL_HEIGHT 35.0f
+#define VERTICAL_OFFSET	1.0f
 	
 	int buttonOffset = 0;
 	if ( editMode == YES ) {
@@ -383,8 +384,15 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	 */
 	UILabel *label;
 	
-	rect = CGRectMake(LEFT_OFFSET+buttonOffset, (COMMENTS_TABLE_ROW_HEIGHT - LABEL_HEIGHT - DATE_LABEL_HEIGHT - VERTICAL_OFFSET ) / 2.0, 288-buttonOffset, LABEL_HEIGHT);
+	rect = CGRectMake(LEFT_OFFSET+buttonOffset+150, (COMMENTS_TABLE_ROW_HEIGHT - LABEL_HEIGHT - DATE_LABEL_HEIGHT - VERTICAL_OFFSET ) / 2.0, 150-buttonOffset, LABEL_HEIGHT);
+	UILabel *alabel = [[UILabel alloc]initWithFrame:rect];
+	alabel.tag = COMMENT_MAIL_TAG;
+	alabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
+	[cell.contentView addSubview:alabel];
+	[alabel release];
+
 	
+	rect = CGRectMake(LEFT_OFFSET+buttonOffset, (COMMENTS_TABLE_ROW_HEIGHT - LABEL_HEIGHT - DATE_LABEL_HEIGHT - VERTICAL_OFFSET ) / 2.0, 150-buttonOffset, LABEL_HEIGHT);
 	label = [[UILabel alloc] initWithFrame:rect];
 	label.tag = COMMENT_NAME_TAG;
 	label.font = [UIFont boldSystemFontOfSize:MAIN_FONT_SIZE];
@@ -393,7 +401,7 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	[label release];
 	
 	
-	rect = CGRectMake(LEFT_OFFSET+buttonOffset, rect.origin.y+ LABEL_HEIGHT + VERTICAL_OFFSET , rect.size.width, DATE_LABEL_HEIGHT);
+	rect = CGRectMake(LEFT_OFFSET+buttonOffset, rect.origin.y+ LABEL_HEIGHT + VERTICAL_OFFSET , 288-buttonOffset, DATE_LABEL_HEIGHT);
 	
 	label = [[UILabel alloc] initWithFrame:rect];
 	label.tag = COMMENT_POST_NAME_AND_DATE_TAG;
@@ -401,6 +409,8 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	[cell.contentView addSubview:label];
 	label.highlightedTextColor = [UIColor whiteColor];
 	label.textColor = [UIColor colorWithRed:0.560f green:0.560f blue:0.560f alpha:1];
+	label.numberOfLines = 3;
+	label.lineBreakMode = UILineBreakModeTailTruncation;
 	[label release];
 	
 	return cell;
@@ -429,31 +439,29 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	}
 	
 	
-	//WPLog(@"currentComment %@",currentComment);
 	NSCharacterSet *whitespaceCS = [NSCharacterSet whitespaceCharacterSet];
 	NSString *author = [[currentComment valueForKey:@"author"] stringByTrimmingCharactersInSet:whitespaceCS];
-	NSString *post_title = [[currentComment valueForKey:@"post_title"]stringByTrimmingCharactersInSet:whitespaceCS];
-	NSDate *date_created_gmt = [currentComment valueForKey:@"date_created_gmt"];
 	NSString *commentStatus=[currentComment valueForKey:@"status"];
 	UILabel *label = (UILabel *)[cell viewWithTag:COMMENT_NAME_TAG];
 	label.text = author;
-	
-	static NSDateFormatter *dateFormatter = nil;
-	if (dateFormatter == nil) {
-		dateFormatter = [[NSDateFormatter alloc] init];
-		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-		[dateFormatter setDateStyle:NSDateFormatterLongStyle];
+
+	NSString *authorEmail = [currentComment valueForKey:@"author_email"] ;
+	UILabel *alabel = (UILabel *)[cell viewWithTag:COMMENT_MAIL_TAG];
+	alabel.text=authorEmail;
+	[cell.contentView addSubview:alabel];
+
+	if([commentStatus isEqual:@"hold"] || !connectionStatus)
+	{
+	   [alabel setTextColor:[UIColor grayColor]];
+		[label setTextColor:[UIColor grayColor]];
 	}
 	
-	label.textColor = ( connectionStatus ? [UIColor blackColor] : [UIColor grayColor] );
-	if([commentStatus isEqual:@"hold"])
-	   [label setTextColor:[UIColor grayColor]];
-		
+	NSString *content= [currentComment valueForKey:@"content"] ;
 	label = (UILabel *)[cell viewWithTag:COMMENT_POST_NAME_AND_DATE_TAG];
-	label.text = [NSString stringWithFormat:@"%@ , %@",post_title,[[dateFormatter stringFromDate:date_created_gmt] description]];
-	[label setLineBreakMode:UILineBreakModeTailTruncation];
+	NSString *statuString= [NSString stringWithString:@"(Awaiting moderation)"] ;
+	label.text = ( [commentStatus isEqual:@"hold"] ? [NSString stringWithFormat:@"%@%@",statuString,content] : [NSString stringWithFormat:@"%@",content] );
+
 	label.textColor = ( connectionStatus ? [UIColor blackColor] : [UIColor grayColor] );
-	
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
 	return cell;

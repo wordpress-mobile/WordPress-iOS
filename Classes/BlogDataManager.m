@@ -2573,11 +2573,15 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	WPLog(@"aPost %@ currentPageIndex %d ",aPage, currentPageIndex );
 	
 	BOOL successFlag = NO;
+	NSArray *photos=[currentPage valueForKey:@"Photos"];
 	
-	if( ![self appendImagesOfCurrentPageToDescription] )
+	if(photos!=NULL)
 	{
-		WPLog(@"ERROR : unable to add images to server.");
-		return successFlag;
+		if( ![self appendImagesOfCurrentPageToDescription] )
+		{
+			WPLog(@"ERROR : unable to add images to server.");
+			return successFlag;
+		}
 	}
 	
 	if(currentPageIndex == -1 || isLocaDraftsCurrent)
@@ -4246,6 +4250,9 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 	NSString *author = [aComment valueForKey:@"author"];
 	[commentTitle setObject:(author?author:@"") forKey:@"author"];
+	
+	NSString *authorEmail = [aComment valueForKey:@"author_email"];
+	[commentTitle setObject:(authorEmail?authorEmail:@"") forKey:@"author_email"];
 
 	NSString *status = [aComment valueForKey:@"status"];
 	[commentTitle setObject:(status?status:@"") forKey:@"status"];
