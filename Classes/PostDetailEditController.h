@@ -35,6 +35,7 @@
     WPNavigationLeftButtonView *leftView;
 	BOOL isShowPhotoPickerActionSheet;
 	BOOL isTextViewEditing;
+	BOOL dismiss;
     UITextField *infoText;
     UITextField *urlField;
 	NSRange selectedLinkRange;

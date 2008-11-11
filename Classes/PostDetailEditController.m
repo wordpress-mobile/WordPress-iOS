@@ -317,12 +317,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	//WPLog(@"The Alet Tag (%d) & Clicked on Button Index (%d)",[alertView tag],buttonIndex);
     if([alertView tag] == 1){
      	if ( buttonIndex == 0 ) 
             [self showLinkView];
 		else{
-			[textView becomeFirstResponder];
+			dismiss=YES;
+			[textView touchesBegan:nil withEvent:nil];
 			[delegate setAlertRunning:NO];
 		}
 	}
@@ -341,8 +341,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			NSString *aTagText=[NSString stringWithFormat:@"<a href=\"%@\">%@</a>",urlString,infoText.text];;
 			textView.text = [commentsStr stringByReplacingOccurrencesOfString:[commentsStr substringWithRange:rangeToReplace] withString:aTagText options:NSCaseInsensitiveSearch range:rangeToReplace];
 		}
-		[delegate setAlertRunning:FALSE];
-		[textView becomeFirstResponder];
+		dismiss = YES;
+		[delegate setAlertRunning:NO];
+		[textView touchesBegan:nil withEvent:nil];
 	}
 		
     return;
@@ -422,6 +423,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)textViewDidBeginEditing:(UITextView *)aTextView
 {	
+	dismiss=NO;
 	if (!isTextViewEditing) {
 		isTextViewEditing = YES;
 		
@@ -440,9 +442,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)textViewDidChange:(UITextView *)aTextView {
 	postDetailViewController.hasChanges = YES;
 	[self updateTextViewPlacehoderFieldStatus];
-	if(![aTextView hasText])
+	if(dismiss==YES) {
+		dismiss = NO;
 		return;
-	
+	}	
+
 	NSRange range=[aTextView selectedRange]; 
 	NSArray *stringArray=[NSArray arrayWithObjects:@"http:",@"ftp:",@"https:",@"www.",nil];
 	NSString *str=[aTextView text];
@@ -473,7 +477,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			break;
 	}
 	
-	if(searchRes){
+	if(searchRes && dismiss!=YES){
 		WPLog(@"Link Creation Alert ");
 		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 		[delegate setAlertRunning:TRUE];
@@ -487,6 +491,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 - (void)textViewDidEndEditing:(UITextView *)aTextView
 {	
+	dismiss=NO;
 	if( isTextViewEditing ){
 		
 		isTextViewEditing = NO;
