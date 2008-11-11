@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="29"/>
+			<integer value="45"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -55,16 +55,16 @@
 							<object class="IBUIButton" id="110137339">
 								<reference key="NSNextResponder" ref="1017118542"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{79, 7}, {200, 30}}</string>
+								<string key="NSFrame">{{58, 7}, {243, 30}}</string>
 								<reference key="NSSuperview" ref="1017118542"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<int key="IBUIContentHorizontalAlignment">3</int>
 								<int key="IBUIContentVerticalAlignment">3</int>
-								<object class="NSFont" key="IBUIFont" id="696697742">
+								<object class="NSFont" key="IBUIFont">
 									<string key="NSName">Helvetica-Bold</string>
-									<double key="NSSize">1.500000e+01</double>
+									<double key="NSSize">2.000000e+01</double>
 									<int key="NSfFlags">16</int>
 								</object>
 								<string key="IBUIHighlightedTitle"/>
@@ -120,7 +120,11 @@
 								<int key="IBUIContentMode">1</int>
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">3</int>
-								<reference key="IBUIFont" ref="696697742"/>
+								<object class="NSFont" key="IBUIFont">
+									<string key="NSName">Helvetica-Bold</string>
+									<double key="NSSize">1.500000e+01</double>
+									<int key="NSfFlags">16</int>
+								</object>
 								<string key="IBUIHighlightedTitle"/>
 								<string key="IBUIDisabledTitle"/>
 								<string key="IBUISelectedTitle"/>

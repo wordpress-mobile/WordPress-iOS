@@ -52,6 +52,7 @@
 
 
 - (void)dealloc {
+	[blogMainMenuContents release];
 	[super dealloc];
 }
 

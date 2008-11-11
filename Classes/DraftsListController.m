@@ -33,6 +33,7 @@
 	}
 	// Configure the cell
 	cell.text = [[dm draftTitleAtIndex:indexPath.row] valueForKey:@"title"];
+	cell.font = [cell.font fontWithSize:15.0f];
 	return cell;
 }
 

@@ -360,7 +360,7 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 #define LEFT_OFFSET 10.0f
 #define RIGHT_OFFSET 280.0f
 	
-#define MAIN_FONT_SIZE 18.0f
+#define MAIN_FONT_SIZE 15.0f
 #define DATE_FONT_SIZE 13.0f
 	
 #define LABEL_HEIGHT 20.0f
