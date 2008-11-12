@@ -2596,10 +2596,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		description = (description == nil ? @"" : description );
 		[pageParams setObject:description forKey:@"description"];
 		
-		NSDate *date = [currentPage valueForKey:@"date_created_gmt"];
-		NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:date];
-		NSDate *gmtDate = [date addTimeInterval:(secs*-1)];
-		[pageParams setObject:gmtDate forKey:@"date_created_gmt"];
 		
 		NSString *post_status = [currentPage valueForKey:@"page_status"];	
 		if ( !post_status || [post_status isEqualToString:@""] )
