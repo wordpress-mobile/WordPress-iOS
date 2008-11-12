@@ -109,11 +109,7 @@
 {
 	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
 	//wait incase the other thread did not complete its work.
-	while (self.navigationItem.rightBarButtonItem == nil)
-	{
-		[[NSRunLoop currentRunLoop] runUntilDate:[[NSDate date] addTimeInterval:0.1]];
-	}
-	
+	self.navigationItem.rightBarButtonItem = nil;
 	if(hasChanges) {
 		if ([[leftView title] isEqualToString:@"Pages"])
 			[leftView setTitle:@"Cancel"];
@@ -186,7 +182,7 @@
 	}
 	
 	NSNumber *postEdited = [NSNumber numberWithBool:hasChanges];
-	[[[BlogDataManager sharedDataManager] currentPost] setObject:postEdited	forKey:@"hasChanges"];
+	[[[BlogDataManager sharedDataManager] currentPage] setObject:postEdited	forKey:@"hasChanges"];
 }
 
 

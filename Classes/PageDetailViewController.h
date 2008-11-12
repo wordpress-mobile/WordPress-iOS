@@ -23,25 +23,37 @@
 	IBOutlet UILabel *titleLabel;
 	IBOutlet UIView *textViewContentView;
 	IBOutlet UITextField *textViewPlaceHolderField;
+	
+	UITextField *infoText;
+	UITextField *urlField;
 	WPSelectionTableViewController *selectionTableViewController;
 	PageDetailsController *pageDetailsController;
 	
 	WPPhotosListViewController *photosListController;
 
-
+	BOOL dismiss;
 	int mode;	//0 new, 1 edit, 2 autorecovery, 3 refresh
 	BOOL hasChanges;
 	BOOL isTextViewEditing;
+	NSRange selectedLinkRange;
 }
 
 @property (nonatomic, retain) PageDetailsController *pageDetailsController;
 @property (nonatomic, retain) WPSelectionTableViewController *selectionTableViewController;
 @property (nonatomic)	int mode;
 @property (nonatomic,assign) WPPhotosListViewController *photosListController;
+@property (nonatomic, retain) UITextField *infoText;
+@property (nonatomic, retain) UITextField *urlField;
+@property (nonatomic) NSRange selectedLinkRange;
 
 - (void)refreshUIForCurrentPage;
 - (IBAction)showStatusViewAction:(id)sender;
 - (void)endEditingAction:(id)sender;
 - (void)refreshUIForCurrentPage;
 - (void)refreshUIForNewPage;
+
+- (NSString *)validateNewLinkInfo:(NSString *)urlText;
+- (void)showLinkView;
+
+
 @end

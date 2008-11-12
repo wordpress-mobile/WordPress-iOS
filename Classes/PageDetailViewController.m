@@ -12,6 +12,7 @@
 #import "WPNavigationLeftButtonView.h"
 #import "PageDetailsController.h"
 #import "WPPhotosListViewController.h"
+#import "WordPressAppDelegate.h"
 
 
 @interface PageDetailViewController (private)
@@ -28,6 +29,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 @implementation PageDetailViewController
 
 @synthesize mode,selectionTableViewController,pageDetailsController,photosListController;
+@synthesize infoText,urlField,selectedLinkRange;
 //@synthesize photosListController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -188,7 +190,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
 #pragma mark TextView & TextField Delegates
 - (void)textViewDidChangeSelection:(UITextView *)aTextView {
-	WPLog(@"textViewDidChangeSelection");
+	WPLog(@"Page textViewDidChangeSelection");
 	pageDetailsController.hasChanges = YES;
 	hasChanges = YES;
 	if (!isTextViewEditing) 		
@@ -196,7 +198,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 				
 	[self updateTextViewPlacehoderFieldStatus];
 	
-	WPLog(@"textViewDidChangeSelection : ");   
+	WPLog(@"Page textViewDidChangeSelection : ");   
 	UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone 
 																  target:self action:@selector(endTextEnteringButtonAction:)];
 	
@@ -207,13 +209,15 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
 - (void)textViewDidBeginEditing:(UITextView *)aTextView
 {	
-		if (!isTextViewEditing) 
-			isTextViewEditing = YES;
-			
-		[self updateTextViewPlacehoderFieldStatus];
-		WPLog(@"textViewDidBeginEditing : ");   
+	dismiss=NO;
+
+	if (!isTextViewEditing) 
+		isTextViewEditing = YES;
 		
-		[self bringTextViewUp];
+	[self updateTextViewPlacehoderFieldStatus];
+	WPLog(@"PAGE textViewDidBeginEditing : ");   
+	
+	[self bringTextViewUp];
 }
 - (void)bringTextViewUp
 {
@@ -237,6 +241,55 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	[self updateTextViewPlacehoderFieldStatus];
 	if(![aTextView hasText])
 		return;
+	
+	if(dismiss==YES) {
+		dismiss = NO;
+		return;
+	}	
+	
+	NSRange range=[aTextView selectedRange]; 
+	NSArray *stringArray=[NSArray arrayWithObjects:@"http:",@"ftp:",@"https:",@"www.",nil];
+	NSString *str=[aTextView text];
+	int i,j,count=[stringArray count];
+	BOOL searchRes=NO;
+	for(j = 4;j <= 6; j++){
+		
+		if(range.location < j)
+			return;
+		
+		NSRange subStrRange;
+		subStrRange.location=range.location-j;
+		subStrRange.length=j;
+		[self setSelectedLinkRange:subStrRange];
+		NSString *subStr=[str substringWithRange:subStrRange];
+		
+		for(i = 0; i < count; i++){
+			NSString *searchString=[stringArray objectAtIndex:i];
+			
+			if(searchRes = [subStr isEqualToString:[searchString capitalizedString]])
+				break;
+			else if (searchRes = [subStr isEqualToString:[searchString lowercaseString]])
+				break;
+			else if (searchRes = [subStr isEqualToString:[searchString uppercaseString]])
+				break;				
+		}
+		if(searchRes)
+			break;
+	}
+	
+	if(searchRes && dismiss!=YES){
+	WPLog(@"Link Creation Alert ");
+		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		[delegate setAlertRunning:TRUE];
+		[textView resignFirstResponder];
+        UIAlertView *linkAlert = [[UIAlertView alloc] initWithTitle:@"Link Creation" message:@"Do you want to create link?" delegate:self cancelButtonTitle:@"Create Link" otherButtonTitles:@"Dismiss", nil];                                                
+        [linkAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
+        [linkAlert show];
+        [linkAlert release];
+    }
+	
+	
+	
 }
 - (void)updateTextViewPlacehoderFieldStatus
 {
@@ -249,6 +302,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 }
 - (void)textViewDidEndEditing:(UITextView *)aTextView
 {	
+	dismiss=NO;
 	if( isTextViewEditing )
 		isTextViewEditing = NO;
 		[self bringTextViewDown];
@@ -389,5 +443,104 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	[super dealloc];
 }
 
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    if([alertView tag] == 1){
+     	if ( buttonIndex == 0 ) 
+            [self showLinkView];
+		else{
+			dismiss=YES;
+			[textView touchesBegan:nil withEvent:nil];
+			[delegate setAlertRunning:NO];
+		}
+	}
+	
+    if([alertView tag] == 2){
+     	if ( buttonIndex == 1){
+            if((urlField.text == nil)||([urlField.text isEqualToString:@""]))
+				return;
+			if((infoText.text == nil)||([infoText.text isEqualToString:@""]))
+				infoText.text=urlField.text;
+			
+			NSString *commentsStr = textView.text;
+			NSRange rangeToReplace=[self selectedLinkRange];
+			//WPLog(@" Entered Text %@ and The Link %@ selected text is %@ ******* %d,%d",infoText.text,urlField.text,[commentsStr substringWithRange:rangeToReplace],rangeToReplace.location,rangeToReplace.length);
+			NSString *urlString=[self validateNewLinkInfo:urlField.text];
+			NSString *aTagText=[NSString stringWithFormat:@"<a href=\"%@\">%@</a>",urlString,infoText.text];;
+			textView.text = [commentsStr stringByReplacingOccurrencesOfString:[commentsStr substringWithRange:rangeToReplace] withString:aTagText options:NSCaseInsensitiveSearch range:rangeToReplace];
+		
+			BlogDataManager *dm = [BlogDataManager sharedDataManager];
+			NSString *str = textView.text;
+			str = ( str	!= nil ? str : @"" );
+			[dm.currentPage setValue:str forKey:@"description"];
+			
+		}
+		dismiss = YES;
+		[delegate setAlertRunning:NO];
+		[textView touchesBegan:nil withEvent:nil];
+	}
+	
+    return;
+}
+
+//code to append http:// if protocol part is not there as part of urlText.
+- (NSString *)validateNewLinkInfo:(NSString *)urlText{
+	NSArray *stringArray=[NSArray arrayWithObjects:@"http:",@"ftp:",@"https:",nil];
+	int i,count=[stringArray count];
+	BOOL searchRes=NO;
+	
+	for(i = 0; i < count; i++){
+		NSString *searchString=[stringArray objectAtIndex:i];
+		
+		if(searchRes = [urlText hasPrefix:[searchString capitalizedString]])
+			break;
+		else if (searchRes = [urlText hasPrefix:[searchString lowercaseString]])
+			break;
+		else if (searchRes = [urlText hasPrefix:[searchString uppercaseString]])
+			break;				
+	}
+	NSString *returnStr;
+	if(searchRes)
+		returnStr=[NSString stringWithString:urlText];
+	else
+		returnStr=[NSString stringWithFormat:@"http://%@",urlText];
+	
+	return returnStr;
+}
+
+//code to Show the link view
+//when create link button of the create hyperlink alert is clicked. 
+
+-(void)showLinkView
+{
+    WPLog(@"   Show the Link  View . ");
+    UIAlertView *addURLSourceAlert = [[UIAlertView alloc] initWithFrame:CGRectMake(0, 0, 0, 0.0)];
+    infoText = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 36.0, 260.0, 29.0)];
+    urlField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 70.0, 260.0, 29.0)];
+    infoText.placeholder = @"\n\nEnter Text For Link";
+    urlField.placeholder = @"\n\nEnter Link";
+    //infoText.enabled = YES;
+    
+    infoText.autocapitalizationType= UITextAutocapitalizationTypeNone;
+    urlField.autocapitalizationType= UITextAutocapitalizationTypeNone;
+    infoText.borderStyle = UITextBorderStyleRoundedRect;
+    urlField.borderStyle = UITextBorderStyleRoundedRect;
+    infoText.keyboardAppearance = UIKeyboardAppearanceAlert;         
+    urlField.keyboardAppearance = UIKeyboardAppearanceAlert;
+    [addURLSourceAlert addButtonWithTitle:@"Cancel"];
+    [addURLSourceAlert addButtonWithTitle:@"OK"];
+    addURLSourceAlert.title = @"Make Hyperlink\n\n\n";
+    addURLSourceAlert.delegate = self;
+    [addURLSourceAlert addSubview:infoText];
+    [addURLSourceAlert addSubview:urlField];
+    [infoText becomeFirstResponder];
+    CGAffineTransform upTransform = CGAffineTransformMakeTranslation(0.0, 140.0);
+    [addURLSourceAlert setTransform:upTransform];
+    [addURLSourceAlert setTag:2];
+    [addURLSourceAlert show];
+    [addURLSourceAlert release];
+}
 @end
 

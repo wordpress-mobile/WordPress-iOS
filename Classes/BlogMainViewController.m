@@ -116,10 +116,11 @@
 			if ( awaitingComments > 0 ) {
 #define LOCALDRAFT_ROW_HEIGHT 44.0f
 #define LABEL_HEIGHT 35.0f
-				UILabel *badgeLabel = [[UILabel alloc] initWithFrame:CGRectMake(210, (LOCALDRAFT_ROW_HEIGHT - LABEL_HEIGHT)/2 , 80, LABEL_HEIGHT)];
+				UILabel *badgeLabel = [[UILabel alloc] initWithFrame:CGRectMake(220, (LOCALDRAFT_ROW_HEIGHT - LABEL_HEIGHT)/2 , 80, LABEL_HEIGHT)];
 				[badgeLabel setTag:99];
 				badgeLabel.textAlignment = UITextAlignmentRight;
 				badgeLabel.font = cell.font;
+				badgeLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 				badgeLabel.text = [NSString stringWithFormat:@"(%d)",awaitingComments];
 				[[cell contentView] addSubview:badgeLabel];
 				[badgeLabel release];
