@@ -405,11 +405,14 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	WPLog(@"viewDidLoad from photos list  details -------%@",tableView);
+	self.title=@"Photos";
+
 	[tableView reloadData];
 
 	
 }
 - (void)viewWillAppear:(BOOL)animated {
+	self.title=@"Photos";
 	[super viewWillAppear:animated];
 	[tableView reloadData];
 	[(NSObject *)delegate  performSelector:@selector(updatePhotosBadge)];
