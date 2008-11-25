@@ -104,6 +104,7 @@
 	
 	self.pageDetailsController.mode = 0; 	
 	self.navigationItem.rightBarButtonItem = nil;
+	self.pageDetailsController.tabController.selectedIndex=0;
 	[[self navigationController] pushViewController:self.pageDetailsController animated:YES];
 }
 

@@ -562,10 +562,20 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+	if((interfaceOrientation == UIInterfaceOrientationPortrait)||(interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown))
+	{
+		if(self.interfaceOrientation!=interfaceOrientation) {
+			[postDetailEditController setTextViewHeight:60];
+		}
+	}
+	
 	if((interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(interfaceOrientation == UIInterfaceOrientationLandscapeRight)){
+		if(self.interfaceOrientation!=interfaceOrientation) {
+			[postDetailEditController setTextViewHeight:-60];
+		}
 		//Code to disable landscape when alert is raised.
 		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-		if([delegate isAlertRunning] == TRUE)
+		if([delegate isAlertRunning] == YES)
 			return NO;
 		}
 	return YES;

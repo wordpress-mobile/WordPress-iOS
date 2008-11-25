@@ -36,7 +36,10 @@
 	
 	if( [viewController.title isEqualToString:@"Photos"]){
 		[photosListController refreshData];
+		self.navigationItem.title=@"Photos";
 	}
+	else
+		self.navigationItem.title=@"Write";
 	
 	//if( [viewController.title isEqualToString:@"Preview"]){
 //		[postPreviewController refreshWebView];
@@ -227,6 +230,8 @@
 	tabController.viewControllers = array;
 	self.view = tabController.view;
 	
+	tabController.selectedIndex = 0;
+
 	[array release];
 	
 	if(!leftView){   
@@ -334,8 +339,8 @@
 	
 	[super viewWillAppear:animated];
 	
-	tabController.selectedIndex=0;
-	[tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
+//	tabController.selectedIndex=0;
+//	[tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
 	
 	
 	if( mode == 1 )
@@ -366,7 +371,19 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+	if((interfaceOrientation == UIInterfaceOrientationPortrait)||(interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown))
+	{
+		if(self.interfaceOrientation!=interfaceOrientation) {
+			[pageDetailViewController setTextViewHeight:145];
+		}
+	}
+	
 	if((interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(interfaceOrientation == UIInterfaceOrientationLandscapeRight)){
+
+		if(self.interfaceOrientation!=interfaceOrientation) {
+			[pageDetailViewController setTextViewHeight:-145];
+		}
+		
 		//Code to disable landscape when alert is raised.
 		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 		if([delegate isAlertRunning] == TRUE)
