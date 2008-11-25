@@ -673,6 +673,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	//	WPLog(@"appendImagesOfCurrentPostToDescription. %u", currentPost);
 	
 	NSString *desc = [currentPage valueForKey:@"description"];
+	desc = (desc == nil ? @"" : desc );
 	BOOL firstImage = YES;
 	BOOL paraOpen = NO;
 	
@@ -707,6 +708,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	if (paraOpen)
 		desc = [desc  stringByAppendingString:@"</p>"];
 	
+	WPLog(@"APPEND currentPagecurrentPage-----");
+	WPLog(@"APPEND currentPagecurrentPage-----%@",currentPage);
+	WPLog(@"APPEND descdescdescdesc-----");
+	WPLog(@"APPEND descdescdescdesc-----%@",desc);
+
 	[currentPage setObject:desc forKey:@"description"];
 	
 	
@@ -3377,7 +3383,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSMutableDictionary *pageTitle = [self pageTitleForPage:currentPage];
 	//[pageTitle setValue:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
 	
-	if( !isLocaDraftsCurrent && currentPostIndex != -1 )
+	if( !isLocaDraftsCurrent)
 	{
 		[draftTitles insertObject:pageTitle atIndex:0];
 		
