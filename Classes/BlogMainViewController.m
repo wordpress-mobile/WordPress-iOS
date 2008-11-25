@@ -13,6 +13,7 @@
 #import "Reachability.h"
 #import "CommentsListController.h"
 #import "PagesListController.h"
+#import "WPNavigationLeftButtonView.h"
 
 @implementation BlogMainViewController
 
@@ -54,6 +55,23 @@
 - (void)dealloc {
 	[blogMainMenuContents release];
 	[super dealloc];
+}
+
+
+-(void)viewDidLoad
+{
+	WPNavigationLeftButtonView *myview = [WPNavigationLeftButtonView createView];  
+    [myview setTarget:self withAction:@selector(goToHome:)];
+    [myview setTitle:@"Blogs"];
+    UIBarButtonItem *barButton  = [[UIBarButtonItem alloc] initWithCustomView:myview];
+    self.navigationItem.leftBarButtonItem = barButton;
+    [barButton release];
+    [myview release];
+	
+}
+
+- (void)goToHome:(id)sender {
+	[self.navigationController.navigationController popToRootViewControllerAnimated:YES];
 }
 
 

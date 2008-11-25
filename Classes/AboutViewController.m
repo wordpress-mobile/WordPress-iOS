@@ -1,4 +1,6 @@
 #import "AboutViewController.h"
+#import "WPNavigationLeftButtonView.h"
+
 
 @interface AboutViewController ( privates )
 
@@ -38,8 +40,22 @@
 
 	//If you need to do additional setup after loading the view, override viewDidLoad.
 - (void)viewDidLoad {
+	
+	WPNavigationLeftButtonView *myview = [WPNavigationLeftButtonView createView];  
+    [myview setTarget:self withAction:@selector(goToHome:)];
+    [myview setTitle:@"Home"];
+    UIBarButtonItem *barButton  = [[UIBarButtonItem alloc] initWithCustomView:myview];
+    self.navigationItem.leftBarButtonItem = barButton;
+    [barButton release];
+    [myview release];
+	
 	[self loadWebView];
 }
+
+- (IBAction)goToHome:(id)sender {
+	[self.navigationController.navigationController popToRootViewControllerAnimated:YES];
+}
+
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
 	[self loadWebView];

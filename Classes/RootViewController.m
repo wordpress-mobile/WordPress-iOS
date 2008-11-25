@@ -151,16 +151,19 @@
 // Show PostList when row is selected
 - (void)tableView:(UITableView *)atableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
+	
 	if (indexPath.section == 0) {		
 		if ([dataManager countOfBlogs] == indexPath.row || [dataManager countOfBlogs] == 0) {
 			[dataManager makeNewBlogCurrent];
 			BlogDetailModalViewController *blogDetailModalViewController = [[BlogDetailModalViewController alloc] initWithNibName:@"WPBlogDetailViewController" bundle:nil];
-			[self.navigationController pushViewController:blogDetailModalViewController animated:YES];
+			UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController:blogDetailModalViewController];
+			[self.navigationController pushViewController:navigationCntrlr animated:YES];
 			blogDetailModalViewController.removeBlogButton.hidden = YES;
 			blogDetailModalViewController.isModal = NO;
 			blogDetailModalViewController.mode = 0;
 			[blogDetailModalViewController refreshBlogCompose];
-			[blogDetailModalViewController release];			
+			[blogDetailModalViewController release];	
+			[navigationCntrlr release];
 		} else {
 			if( [[[dataManager blogAtIndex:indexPath.row] valueForKey:@"kIsSyncProcessRunning"] intValue] == 1 ) {
 				[blogsTableView deselectRowAtIndexPath:[blogsTableView indexPathForSelectedRow] animated:YES];
@@ -184,33 +187,31 @@
 			if ( [[currentBlog valueForKey:kSupportsPagesAndComments] boolValue] ) {
 			
 				BlogMainViewController  *blogMainViewController = [[BlogMainViewController alloc] initWithNibName:@"WPBlogMainViewController" bundle:nil];
-				
-				self.title=@"Blogs";
-				
-				//			UIBarButtonItem *blogsButton = [[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStylePlain target:self action:@selector(cancel:)];
-				//			blogMainViewController.navigationItem.leftBarButtonItem = blogsButton;
-				//			blogMainViewController.navigationItem.title =[[dataManager currentBlog] valueForKey:@"blogName"];
-				//			[blogsButton release];
-				[self.navigationController pushViewController:blogMainViewController animated:YES];
-				self.navigationController.navigationBarHidden = NO;
+				UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController:blogMainViewController];
+				[self.navigationController pushViewController:navigationCntrlr animated:YES];
 				[blogMainViewController release];
+				[navigationCntrlr release];
 			} else {
 				PostsListController *postsListController = [[PostsListController alloc] initWithNibName:@"PostsListController" bundle:nil];
+				UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController: postsListController];
 				postsListController.title = [[dataManager currentBlog] valueForKey:@"blogName"];
-				[self.navigationController pushViewController:postsListController animated:YES];
+				[self.navigationController pushViewController: navigationCntrlr animated:YES];
 				self.navigationController.navigationBarHidden = NO;
 				[postsListController release];
+				[navigationCntrlr release];
 			}
-			
 		}
 		
 	}else {
 		AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutWordpress" bundle:nil];
-		[self.navigationController pushViewController:aboutViewController animated:YES];
+		UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController:aboutViewController];
+		[self.navigationController pushViewController:navigationCntrlr animated:YES];
 		self.title=@"Home";
 		[aboutViewController release];
+		[navigationCntrlr release];
 	}	
 }
+
 
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
@@ -227,14 +228,15 @@
 	
 	BlogDetailModalViewController *blogDetailViewController = [[BlogDetailModalViewController alloc] initWithNibName:@"WPBlogDetailViewController" bundle:nil];
 	
+	UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController:blogDetailViewController];
+
 	blogDetailViewController.removeBlogButton.hidden = NO;
 	blogDetailViewController.isModal = NO;
 	blogDetailViewController.mode	= 1;
-	
-	[[self navigationController] pushViewController:blogDetailViewController animated:YES];
+	[[self navigationController] pushViewController:navigationCntrlr animated:YES];
 	[blogDetailViewController release];
-	
 	[blogDetailViewController refreshBlogEdit];
+	[navigationCntrlr release];
 }
 
 /*
