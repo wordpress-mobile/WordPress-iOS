@@ -24,7 +24,7 @@
 			</object>
 			<object class="IBUIView" id="191373211">
 				<reference key="NSNextResponder"/>
-				<int key="NSvFlags">310</int>
+				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIToolbar" id="781067034">
@@ -307,7 +307,7 @@
 					</object>
 					<object class="IBUITextView" id="181985029">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">274</int>
+						<int key="NSvFlags">277</int>
 						<string key="NSFrame">{{0, 138}, {324, 289}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -706,7 +706,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>WPCommentsDetailViewController</string>
 					<string>UIResponder</string>
-					<string>{{366, 218}, {320, 480}}</string>
+					<string>{{372, 318}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>

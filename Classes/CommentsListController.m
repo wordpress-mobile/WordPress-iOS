@@ -86,8 +86,7 @@
 - (void)viewWillDisappear:(BOOL)animated{
 	editButtonItem.title = @"Edit";
 	WPLog(@"viewWillDisappear ");
-	[commentsArray removeAllObjects];
-	[selectedComments removeAllObjects];
+	[super viewWillDisappear:animated];
 }
 
 // If you need to do additional setup after loading the view, override viewDidLoad.
@@ -443,11 +442,13 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	NSString *author = [[currentComment valueForKey:@"author"] stringByTrimmingCharactersInSet:whitespaceCS];
 	NSString *commentStatus=[currentComment valueForKey:@"status"];
 	UILabel *label = (UILabel *)[cell viewWithTag:COMMENT_NAME_TAG];
+	label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
 	label.text = author;
 
 	NSString *authorEmail = [currentComment valueForKey:@"author_email"] ;
 	UILabel *alabel = (UILabel *)[cell viewWithTag:COMMENT_MAIL_TAG];
 	alabel.text=authorEmail;
+	alabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 	[cell.contentView addSubview:alabel];
 
 	if([commentStatus isEqual:@"hold"] || !connectionStatus)
@@ -460,9 +461,10 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	label = (UILabel *)[cell viewWithTag:COMMENT_POST_NAME_AND_DATE_TAG];
 	NSString *statuString= [NSString stringWithString:@"(Awaiting moderation)"] ;
 	label.text = ( [commentStatus isEqual:@"hold"] ? [NSString stringWithFormat:@"%@%@",statuString,content] : [NSString stringWithFormat:@"%@",content] );
-
+	label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
 	label.textColor = ( connectionStatus ? [UIColor blackColor] : [UIColor grayColor] );
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	cell.autoresizingMask=UIViewAutoresizingFlexibleLeftMargin;
 	
 	return cell;
 	
