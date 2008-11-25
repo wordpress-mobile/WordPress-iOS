@@ -36,6 +36,8 @@
 	BOOL isShowPhotoPickerActionSheet;
 	BOOL isTextViewEditing;
 	BOOL dismiss;
+	BOOL isEditing;
+
     UITextField *infoText;
     UITextField *urlField;
 	NSRange selectedLinkRange;
@@ -53,6 +55,9 @@
 
 - (void)refreshUIForCompose;
 - (void)refreshUIForCurrentPost;
+
+- (void)setTextViewHeight:(float)height;
+
 
 - (IBAction)showPhotoUploadScreen:(id)sender;
 - (IBAction)endTextEnteringButtonAction:(id)sender;

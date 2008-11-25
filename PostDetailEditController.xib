@@ -3,12 +3,12 @@
 	<data>
 		<int key="IBDocument.SystemTarget">512</int>
 		<string key="IBDocument.SystemVersion">9F33</string>
-		<string key="IBDocument.InterfaceBuilderVersion">670</string>
+		<string key="IBDocument.InterfaceBuilderVersion">672</string>
 		<string key="IBDocument.AppKitVersion">949.34</string>
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="180"/>
+			<integer value="54"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -29,7 +29,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIView" id="180411387">
 						<reference key="NSNextResponder" ref="1066218360"/>
-						<int key="NSvFlags">294</int>
+						<int key="NSvFlags">290</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUIView" id="735874146">
@@ -392,7 +392,7 @@
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<object class="IBUITextView" id="966140404">
 										<reference key="NSNextResponder" ref="931841925"/>
-										<int key="NSvFlags">287</int>
+										<int key="NSvFlags">282</int>
 										<string key="NSFrame">{{20, 0}, {320, 202}}</string>
 										<reference key="NSSuperview" ref="931841925"/>
 										<reference key="IBUIBackgroundColor" ref="725962077"/>

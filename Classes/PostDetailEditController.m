@@ -33,7 +33,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	tagsTextField.text = @"";
 	textView.text = @"";
 	textViewPlaceHolderField.hidden = NO;
-	
+	categoriesTextField.text = @"";
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	NSString *status = [dm statusDescriptionForStatus:[dm.currentPost valueForKey:@"post_status"] fromBlog:dm.currentBlog];
 	status = ( status == nil ? @"" : status );
@@ -402,6 +402,17 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [addURLSourceAlert release];
 }
 
+
+- (void)setTextViewHeight:(float)height
+{
+	if(isEditing==YES)
+	{
+		CGRect frame = textView.frame;
+		frame.size.height+=height;
+		textView.frame=frame;
+	}
+}
+
 #pragma mark TextView & TextField Delegates
 - (void)textViewDidChangeSelection:(UITextView *)aTextView {
 	
@@ -423,6 +434,14 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)textViewDidBeginEditing:(UITextView *)aTextView
 {	
+	isEditing=YES;
+	if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
+	{
+		CGRect frame = textView.frame;
+		frame.size.height-=60;
+		textView.frame=frame;
+	}
+	
 	dismiss=NO;
 	if (!isTextViewEditing) {
 		isTextViewEditing = YES;
@@ -491,6 +510,14 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 - (void)textViewDidEndEditing:(UITextView *)aTextView
 {	
+	if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
+	{
+		CGRect frame = textView.frame;
+		frame.size.height+=60;
+		textView.frame=frame;
+	}
+	
+	isEditing=NO;
 	dismiss=NO;
 	if( isTextViewEditing ){
 		

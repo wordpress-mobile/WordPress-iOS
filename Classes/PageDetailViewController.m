@@ -65,8 +65,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	statusTextField.text = statusValue;
 
 	
-	photosListController.tabBarItem.badgeValue = nil;	
-	
+	[pageDetailsController updatePhotosBadge];
 	[photosListController refreshData];
 }
 - (void)refreshUIForNewPage
@@ -90,7 +89,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	statusTextField.text = status ;
 	
 	[photosListController refreshData];
-	photosListController.tabBarItem.badgeValue = nil;	
+	[pageDetailsController updatePhotosBadge];
 
 }
 
@@ -188,6 +187,18 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	return YES;
 }
 
+
+- (void)setTextViewHeight:(float)height
+{
+	if(isEditing==YES)
+	{
+
+		CGRect frame = textView.frame;
+		frame.size.height+=height;
+		textView.frame=frame;
+	}
+}
+
 #pragma mark TextView & TextField Delegates
 - (void)textViewDidChangeSelection:(UITextView *)aTextView {
 	WPLog(@"Page textViewDidChangeSelection");
@@ -209,6 +220,15 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
 - (void)textViewDidBeginEditing:(UITextView *)aTextView
 {	
+	isEditing=YES;
+	
+	if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
+	{
+		CGRect frame = textView.frame;
+		frame.size.height-=145;
+		textView.frame=frame;
+	}
+	
 	dismiss=NO;
 
 	if (!isTextViewEditing) 
@@ -221,6 +241,12 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 }
 - (void)bringTextViewUp
 {
+	if((self.interfaceOrientation == UIInterfaceOrientationPortrait)||(self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown))
+	{
+		[self setTextViewHeight:-55];
+	}
+	
+	
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:kAnimationDuration1];
 	
@@ -302,6 +328,21 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 }
 - (void)textViewDidEndEditing:(UITextView *)aTextView
 {	
+	if((self.interfaceOrientation == UIInterfaceOrientationPortrait)||(self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown))
+	{
+		[self setTextViewHeight:55];
+	}
+	
+	if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
+	{
+		CGRect frame = textView.frame;
+
+		frame.size.height+=145;
+		textView.frame=frame;
+	}
+	
+	isEditing=NO;
+	
 	dismiss=NO;
 	if( isTextViewEditing )
 		isTextViewEditing = NO;

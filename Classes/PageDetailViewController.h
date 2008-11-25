@@ -32,6 +32,7 @@
 	WPPhotosListViewController *photosListController;
 
 	BOOL dismiss;
+	BOOL isEditing;
 	int mode;	//0 new, 1 edit, 2 autorecovery, 3 refresh
 	BOOL hasChanges;
 	BOOL isTextViewEditing;
@@ -46,7 +47,6 @@
 @property (nonatomic, retain) UITextField *urlField;
 @property (nonatomic) NSRange selectedLinkRange;
 
-- (void)refreshUIForCurrentPage;
 - (IBAction)showStatusViewAction:(id)sender;
 - (void)endEditingAction:(id)sender;
 - (void)refreshUIForCurrentPage;
@@ -54,6 +54,7 @@
 
 - (NSString *)validateNewLinkInfo:(NSString *)urlText;
 - (void)showLinkView;
+- (void)setTextViewHeight:(float)height;
 
 
 @end
