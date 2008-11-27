@@ -156,14 +156,14 @@
 		if ([dataManager countOfBlogs] == indexPath.row || [dataManager countOfBlogs] == 0) {
 			[dataManager makeNewBlogCurrent];
 			BlogDetailModalViewController *blogDetailModalViewController = [[BlogDetailModalViewController alloc] initWithNibName:@"WPBlogDetailViewController" bundle:nil];
-			UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController:blogDetailModalViewController];
-			[self.navigationController pushViewController:navigationCntrlr animated:YES];
+//			UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController:blogDetailModalViewController];
+			[self.navigationController pushViewController:blogDetailModalViewController animated:YES];
 			blogDetailModalViewController.removeBlogButton.hidden = YES;
 			blogDetailModalViewController.isModal = NO;
 			blogDetailModalViewController.mode = 0;
 			[blogDetailModalViewController refreshBlogCompose];
 			[blogDetailModalViewController release];	
-			[navigationCntrlr release];
+//			[navigationCntrlr release];
 		} else {
 			if( [[[dataManager blogAtIndex:indexPath.row] valueForKey:@"kIsSyncProcessRunning"] intValue] == 1 ) {
 				[blogsTableView deselectRowAtIndexPath:[blogsTableView indexPathForSelectedRow] animated:YES];
@@ -187,28 +187,28 @@
 			if ( [[currentBlog valueForKey:kSupportsPagesAndComments] boolValue] ) {
 			
 				BlogMainViewController  *blogMainViewController = [[BlogMainViewController alloc] initWithNibName:@"WPBlogMainViewController" bundle:nil];
-				UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController:blogMainViewController];
-				[self.navigationController pushViewController:navigationCntrlr animated:YES];
+//				UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController:blogMainViewController];
+				[self.navigationController pushViewController:blogMainViewController animated:YES];
 				[blogMainViewController release];
-				[navigationCntrlr release];
+//				[navigationCntrlr release];
 			} else {
 				PostsListController *postsListController = [[PostsListController alloc] initWithNibName:@"PostsListController" bundle:nil];
-				UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController: postsListController];
+//				UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController: postsListController];
 				postsListController.title = [[dataManager currentBlog] valueForKey:@"blogName"];
-				[self.navigationController pushViewController: navigationCntrlr animated:YES];
+				[self.navigationController pushViewController: postsListController animated:YES];
 				self.navigationController.navigationBarHidden = NO;
 				[postsListController release];
-				[navigationCntrlr release];
+//				[navigationCntrlr release];
 			}
 		}
 		
 	}else {
 		AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutWordpress" bundle:nil];
-		UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController:aboutViewController];
-		[self.navigationController pushViewController:navigationCntrlr animated:YES];
+//		UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController:aboutViewController];
+		[self.navigationController pushViewController:aboutViewController animated:YES];
 		self.title=@"Home";
 		[aboutViewController release];
-		[navigationCntrlr release];
+//		[navigationCntrlr release];
 	}	
 }
 
