@@ -21,11 +21,15 @@
 }
  */
 
-/*
- If you need to do additional setup after loading the view, override viewDidLoad.
+
+ //If you need to do additional setup after loading the view, override viewDidLoad.
 - (void)viewDidLoad {
+	[super viewDidLoad];
+	
+	//TODO : Need to remove the logic to call viewWillAppear. Has been placed to avoid crash on iPhone SDK 2.2
+	[self viewWillAppear:NO];
 }
- */
+ 
 
 - (void)viewWillAppear:(BOOL)animated {
 	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
