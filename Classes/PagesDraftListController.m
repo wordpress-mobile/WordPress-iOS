@@ -11,6 +11,7 @@
 #import "PagesListController.h"
 #import "PageDetailViewController.h"
 #import "PageDetailsController.h"
+#import "WordPressAppDelegate.h"
 
 
 @implementation PagesDraftListController
@@ -54,6 +55,7 @@
 	[dm makePageDraftAtIndexCurrent:indexPath.row];
 	PageDetailsController *pageDetailsController=pagesListController.pageDetailsController;
 	pageDetailsController.mode = 1; 
+	pageDetailsController.tabController.selectedIndex=0;
 	[tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
 	WPLog(@"11111AFTER makePageDraftAtIndexCurrent-------%@",pageDetailsController);
 
@@ -133,6 +135,12 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	
+	//Code to disable landscape when alert is raised.
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	if([delegate isAlertRunning] == YES)
+		return NO;
+	
 	// Return YES for supported orientations
 	return YES;
 }

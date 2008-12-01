@@ -14,6 +14,7 @@
 #import "WPPhotosListViewController.h"
 #import "WPNavigationLeftButtonView.h"
 #import "PostsListController.h"
+#import "WordPressAppDelegate.h"
 
 
 @interface PageDetailsController (privateMethods)
@@ -129,6 +130,10 @@
 	self.navigationItem.rightBarButtonItem = nil;
 	[[BlogDataManager sharedDataManager] clearAutoSavedContext];
 	[self.navigationController popViewControllerAnimated:YES];
+	
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate setAlertRunning:NO];
+
 }
 
 - (IBAction)cancelView:(id)sender 
@@ -267,10 +272,13 @@
 		NSString *msg = [NSString stringWithFormat:@"Please provide either a title or description, or attach photos to the page before saving."];
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Page Error"
 														message:msg
-													   delegate:nil
+													   delegate:self
 											  cancelButtonTitle:nil
 											  otherButtonTitles:@"OK",nil];
 		[alert show];
+		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		[delegate setAlertRunning:YES];
+
 		[alert release];
 		[self _cancel];
 		return;
@@ -321,7 +329,7 @@
 - (void)viewWillAppear:(BOOL)animated {
 	WPLog(@"pagedetailscontroller  viewWillAppear");
 	WPLog(@"pagedetailscontroller viewWillAppear MODEEEEEE-------%d---------hasChanges------%d",mode,hasChanges);
-	self.navigationItem.title=@"Write";
+	//self.navigationItem.title=@"Write";
     [leftView setTarget:self withAction:@selector(cancelView:)];
 	if(hasChanges == YES) {
 		if ([[leftView title] isEqualToString:@"Pages"]){
@@ -371,6 +379,11 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+	//Code to disable landscape when alert is raised.
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	if([delegate isAlertRunning] == YES)
+		return NO;
+	
 	if((interfaceOrientation == UIInterfaceOrientationPortrait)||(interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown))
 	{
 		if(self.interfaceOrientation!=interfaceOrientation) {
@@ -384,11 +397,8 @@
 			[pageDetailViewController setTextViewHeight:-145];
 		}
 		
-		//Code to disable landscape when alert is raised.
-		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-		if([delegate isAlertRunning] == TRUE)
-			return NO;
-		}
+	}
+		
 	return YES;
 }
 

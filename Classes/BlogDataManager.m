@@ -1,4 +1,5 @@
 #import "BlogDataManager.h"
+#import "WordPressAppDelegate.h"
 #import "CoreGraphics/CoreGraphics.h"
 
 #define kURL @"URL"
@@ -207,9 +208,13 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 //	WPLog(@"handleError ......");
 	UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"Communication Error"
 													 message:[err localizedDescription]
-													delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+													delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	
 	[alert1 show];
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate setAlertRunning:YES];
+
+	
 	[alert1 release];
 	return YES;
 }
@@ -303,6 +308,9 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 													   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		
 		[alert show];
+		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		[delegate setAlertRunning:YES];
+
 		[alert release];
 		return;
 	}
@@ -435,6 +443,9 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 													   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		
 		[alert show];
+		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		[delegate setAlertRunning:YES];
+
 		return nil;
 	}
 	
@@ -486,6 +497,9 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 													   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		
 		[alert show];
+		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		[delegate setAlertRunning:YES];
+
 		return nil;
 	}
 
@@ -537,6 +551,9 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 													   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		
 		[alert show];
+		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		[delegate setAlertRunning:YES];
+
 		return nil;
 	}
 	
@@ -1154,6 +1171,9 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		
 		rsdError.tag = kRSDErrorTag;
 		[rsdError show];
+		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		[delegate setAlertRunning:YES];
+
 		[rsdError release];
 		return NO;
 		
@@ -1167,6 +1187,9 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 															 otherButtonTitles:@"OK", nil];
 		rsdError.tag = kRSDErrorTag;
 		[rsdError show];
+		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		[delegate setAlertRunning:YES];
+
 		[rsdError release];
 		return NO;
 	}
@@ -1184,6 +1207,9 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 															 otherButtonTitles:@"OK", nil];
 		unsupportedWordpress.tag = kUnsupportedWordpressVersionTag;
 		[unsupportedWordpress show];
+		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		[delegate setAlertRunning:YES];
+
 		[unsupportedWordpress release];
 		return NO;
 	}
@@ -1250,6 +1276,9 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 													   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		
 		[alert show];
+		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		[delegate setAlertRunning:YES];
+
 		[alert release];		
 		return NO;
 	}
@@ -4608,5 +4637,14 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 	return YES;
 }
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	WPLog(@"WPBlogdataManager UIAlertView DELEGATE");
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate setAlertRunning:NO];
+}
+
 
 @end

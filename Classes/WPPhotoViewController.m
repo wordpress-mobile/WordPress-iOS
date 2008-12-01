@@ -2,6 +2,7 @@
 #import "BlogDataManager.h"
 #import "WPPhotosListViewController.h"
 #import "PostDetailViewController.h"
+#import "WordPressAppDelegate.h"
 
 @implementation WPPhotoViewController
 
@@ -46,6 +47,11 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	// Return YES for supported orientations
+	
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	if([delegate isAlertRunning] == YES)
+		return NO;
+
     return YES;
 }
 

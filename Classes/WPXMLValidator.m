@@ -44,6 +44,9 @@
 												   otherButtonTitles:nil];
 			
 			[alert1 show];
+			WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+			[delegate setAlertRunning:YES];
+
 			[alert1 release];		
 			
 			

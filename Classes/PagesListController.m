@@ -12,6 +12,7 @@
 #import "PageDetailViewController.h"
 #import "PageDetailsController.h"
 #import "PagesDraftListController.h"
+#import "WordPressAppDelegate.h"
 
 
 #import "XMLRPCRequest.h"
@@ -216,9 +217,12 @@
 	{
 		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
 														 message:@"Editing is not supported now."
-														delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+														delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		
 		[alert1 show];
+		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		[delegate setAlertRunning:YES];
+
 		[alert1 release];		
 		
 		[pagesTableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -241,6 +245,7 @@
 	}
 	else
 	{
+		self.pageDetailsController.tabController.selectedIndex=0;
 		BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 		[dataManager makePageAtIndexCurrent:indexPath.row-1];	
 		
@@ -340,6 +345,12 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	//Code to disable landscape when alert is raised.
+	
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	if([delegate isAlertRunning] == YES)
+		return NO;
+	
 	// Return YES for supported orientations
 	return YES;
 }
@@ -354,5 +365,11 @@
 {
 	if(self.pageDetailsController == nil)
 		self.pageDetailsController = [[PageDetailsController alloc] initWithNibName:@"PageDetailsController" bundle:nil];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate setAlertRunning:NO];
 }
 @end

@@ -9,6 +9,7 @@
 #import "WPCommentsDetailViewController.h"
 #import "BlogDataManager.h"
 #import "Reachability.h"
+#import "WordPressAppDelegate.h"
 
 
 @implementation WPCommentsDetailViewController
@@ -65,6 +66,12 @@
 
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	
+	WPLog(@"[delegate isAlertRunning]---------%d",[delegate isAlertRunning]);
+	if([delegate isAlertRunning] == YES)
+		return NO;
+	
 	// Return YES for supported orientations
 	return YES;
 }
@@ -97,6 +104,9 @@
     UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Delete Comment" message:@"Are you sure you want to delete this comment?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];                                                
     [deleteAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
     [deleteAlert show];
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate setAlertRunning:YES];
+
 }
 
 - (void)approveComment:(id)sender
@@ -105,6 +115,9 @@
 	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Approve Comment" message:@"Are you sure you want to approve this comment?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];                                                
 	[deleteAlert setTag:2];  // for UIAlertView Delegate to handle which view is popped.
 	[deleteAlert show];
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate setAlertRunning:YES];
+
 }
 
 - (void)unApproveComment:(id)sender
@@ -113,6 +126,9 @@
 	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Unapprove Comment" message:@"Are you sure you want to unapprove this comment?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];  
 	[deleteAlert setTag:3];  // for UIAlertView Delegate to handle which view is popped.
 	[deleteAlert show];
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate setAlertRunning:YES];
+
 }
 
 - (void)spamComment:(id)sender
@@ -121,6 +137,9 @@
 	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Spam Comment" message:@"Are you sure you want to mark the comment as spam?. This action can only be reversed in the web admin." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
 	[deleteAlert setTag:4];  // for UIAlertView Delegate to handle which view is popped.
 	[deleteAlert show];
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate setAlertRunning:YES];
+
 }
 
 -(void)fillCommentDetails:(NSArray*)comments atRow:(int)row
@@ -232,7 +251,7 @@
 			
 			UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
 															 message:@"Operation is not supported now."
-															delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+															delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[alert1 show];
 			[alert1 release];		
 			return;
@@ -259,6 +278,9 @@
 		[self performSelectorInBackground:@selector(removeProgressIndicator) withObject:nil];
     }
     [alertView autorelease];
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate setAlertRunning:NO];
+
 }
 
 @end

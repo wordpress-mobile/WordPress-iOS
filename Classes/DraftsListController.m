@@ -2,6 +2,7 @@
 #import "BlogDataManager.h"
 #import "PostsListController.h"
 #import "PostDetailViewController.h"
+#import "WordPressAppDelegate.h"
 
 @implementation DraftsListController
 @synthesize postsListController;
@@ -122,6 +123,10 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	if([delegate isAlertRunning] == YES)
+		return NO;
+	
 	// Return YES for supported orientations
 	return YES;
 }

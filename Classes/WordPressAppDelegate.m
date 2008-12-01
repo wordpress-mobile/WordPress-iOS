@@ -76,6 +76,9 @@ static WordPressAppDelegate *wordPressApp = NULL;
 			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://iphone.wordpress.org"]];
 		}
 	}
+	
+	self.alertRunning=NO;
+
 }
 
 

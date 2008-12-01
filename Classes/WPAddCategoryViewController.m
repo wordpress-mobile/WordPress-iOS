@@ -1,5 +1,6 @@
 #import "WPAddCategoryViewController.h"
 #import "WPPostSettingsController.h"
+#import "WordPressAppDelegate.h"
 
 @implementation WPAddCategoryViewController
 
@@ -59,6 +60,9 @@
 														delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		
 		[alert1 show];
+		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		[delegate setAlertRunning:YES];
+
 		[alert1 release];		
 		return;
 	}
@@ -105,6 +109,9 @@
 
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	if([delegate isAlertRunning] == YES)
+		return NO;
 	// Return YES for supported orientations
 	return YES;
 }
@@ -279,13 +286,17 @@
 	return YES;
 }
 
-
-
 #pragma mark -dealloc
 
 - (void)dealloc {
 	[super dealloc];
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	WPLog(@"WPAddCategoryViewController UIAlertView DELEGATE");
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate setAlertRunning:NO];
+}
 
 @end

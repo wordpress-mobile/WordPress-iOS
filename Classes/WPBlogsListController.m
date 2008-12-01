@@ -4,6 +4,7 @@
 #import "BlogDetailModalViewController.h"
 #import "BlogDataManager.h"
 #import "Reachability.h"
+#import "WordPressAppDelegate.h"
 
 @interface WPBlogsListController (private)
 - (void) addBlogsToolbarItems;
@@ -269,6 +270,10 @@
 
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	if([delegate isAlertRunning] == YES)
+		return NO;
+	
 	// Return YES for supported orientations
 	return YES;
 }

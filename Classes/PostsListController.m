@@ -4,6 +4,7 @@
 #import "PostDetailEditController.h"
 #import "DraftsListController.h"
 #import "Reachability.h"
+#import "WordPressAppDelegate.h"
 
 #import "XMLRPCRequest.h"
 #import "XMLRPCResponse.h"
@@ -288,9 +289,12 @@
 	{
 		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
 														 message:@"Editing is not supported now."
-														delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+														delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		
 		[alert1 show];
+		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		[delegate setAlertRunning:YES];
+
 		[alert1 release];		
 		
 		[postsTableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -390,6 +394,9 @@
 		alert1.tag = tag;
 		
 		[alert1 show];
+		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		[delegate setAlertRunning:YES];
+
 		[alert1 release];
 		return YES;
 	}
@@ -487,9 +494,20 @@
 	self.postDetailViewController.mode = 2;
 	[[self navigationController] pushViewController:self.postDetailViewController animated:YES];
 	//	}
+	
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate setAlertRunning:NO];
+
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	
+	WPLog(@"POSTTTTTTTT----[delegate isAlertRunning]---------%d",[delegate isAlertRunning]);
+
+	if([delegate isAlertRunning] == YES)
+		return NO;
+	
 	// Return YES for supported orientations
 	return YES;
 }

@@ -333,7 +333,7 @@
 		
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
 														message:@"Please enter values for URL, User Name and Password." 
-													   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+													   delegate:[[UIApplication sharedApplication] delegate]  cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		
 		[alert show];
 		[alert release];
@@ -401,7 +401,7 @@
 		
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
 														message:@"Please enter values for URL, User Name and Password." 
-													   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+													   delegate:[[UIApplication sharedApplication] delegate] cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		
 		[alert show];
 		[alert release];
@@ -495,6 +495,10 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	if([delegate isAlertRunning] == YES)
+		return NO;
+	
 	// Return YES for supported orientations
 	return YES;
 }

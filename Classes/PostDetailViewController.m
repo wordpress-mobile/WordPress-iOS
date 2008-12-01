@@ -123,10 +123,14 @@
 		NSString *msg = [NSString stringWithFormat:@"Please provide either a title or description, or attach photos to the post before saving."];
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Post Error"
 														message:msg
-													   delegate:nil
+													   delegate:self
 											  cancelButtonTitle:nil
 											  otherButtonTitles:@"OK",nil];
 		[alert show];
+		
+		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		[delegate setAlertRunning:YES];
+
 		[alert release];
 		
 		[self _cancel];
@@ -274,6 +278,9 @@
 											  cancelButtonTitle:nil
 											  otherButtonTitles:@"OK", nil];
 		[alert show];
+		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		[delegate setAlertRunning:YES];
+
 		[alert release];		
 	}else {
 		[self.navigationController popViewControllerAnimated:YES];	
@@ -404,6 +411,8 @@
 	//	}
 	//	else
 	[self _discard];
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate setAlertRunning:NO];
 }
 
 - (void)setHasChanges:(BOOL)aFlag
@@ -562,6 +571,12 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+	//Code to disable landscape when alert is raised.
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	WPLog(@"PDVC [delegate isAlertRunning]----%d",[delegate isAlertRunning]);
+	if([delegate isAlertRunning] == YES)
+		return NO;
+
 	if((interfaceOrientation == UIInterfaceOrientationPortrait)||(interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown))
 	{
 		if(self.interfaceOrientation!=interfaceOrientation) {
@@ -573,11 +588,7 @@
 		if(self.interfaceOrientation!=interfaceOrientation) {
 			[postDetailEditController setTextViewHeight:-60];
 		}
-		//Code to disable landscape when alert is raised.
-		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-		if([delegate isAlertRunning] == YES)
-			return NO;
-		}
+	}
 	return YES;
 }
 

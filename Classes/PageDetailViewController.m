@@ -184,6 +184,10 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	if([delegate isAlertRunning] == YES)
+		return NO;
+	
 	return YES;
 }
 
@@ -306,7 +310,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	if(searchRes && dismiss!=YES){
 	WPLog(@"Link Creation Alert ");
 		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-		[delegate setAlertRunning:TRUE];
+		[delegate setAlertRunning:YES];
 		[textView resignFirstResponder];
         UIAlertView *linkAlert = [[UIAlertView alloc] initWithTitle:@"Link Creation" message:@"Do you want to create link?" delegate:self cancelButtonTitle:@"Create Link" otherButtonTitles:@"Dismiss", nil];                                                
         [linkAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
@@ -582,6 +586,10 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
     [addURLSourceAlert setTag:2];
     [addURLSourceAlert show];
     [addURLSourceAlert release];
+	
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate setAlertRunning:NO];
+
 }
 @end
 

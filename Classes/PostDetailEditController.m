@@ -328,9 +328,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	}
 	
     if([alertView tag] == 2){
+		WPLog(@"IN PDVCCCCCCC--------");
      	if ( buttonIndex == 1){
             if((urlField.text == nil)||([urlField.text isEqualToString:@""]))
+			{
+				[delegate setAlertRunning:NO];
 				return;
+			}
 			if((infoText.text == nil)||([infoText.text isEqualToString:@""]))
 				infoText.text=urlField.text;
 			
@@ -345,7 +349,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[delegate setAlertRunning:NO];
 		[textView touchesBegan:nil withEvent:nil];
 	}
-		
     return;
 }
 //code to append http:// if protocol part is not there as part of urlText.
@@ -498,12 +501,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
 	if(searchRes && dismiss!=YES){
 		WPLog(@"Link Creation Alert ");
-		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-		[delegate setAlertRunning:TRUE];
 		[textView resignFirstResponder];
         UIAlertView *linkAlert = [[UIAlertView alloc] initWithTitle:@"Link Creation" message:@"Do you want to create link?" delegate:self cancelButtonTitle:@"Create Link" otherButtonTitles:@"Dismiss", nil];                                                
         [linkAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
         [linkAlert show];
+		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		[delegate setAlertRunning:YES];
         [linkAlert release];
     }
 	

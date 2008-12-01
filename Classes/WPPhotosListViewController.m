@@ -6,6 +6,7 @@
 
 #import "WPPhotosListViewController.h"
 #import "BlogDataManager.h"
+#import "WordPressAppDelegate.h"
 
 @interface WPPhotosListViewController (privates)
 
@@ -521,6 +522,10 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	if([delegate isAlertRunning] == YES)
+		return NO;
 	// Return YES for supported orientations
 	return YES;
 }

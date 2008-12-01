@@ -15,6 +15,7 @@
 #import "Reachability.h"
 #import "NSString+XMLExtensions.h"
 #import "WPCommentsDetailViewController.h"
+#import "WordPressAppDelegate.h"
 
 #define COMMENTS_TABLE_ROW_HEIGHT 65.0f
 
@@ -129,6 +130,10 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	if([delegate isAlertRunning] == YES)
+		return NO;
+	
 	// Return YES for supported orientations
 	return YES;
 }
@@ -180,9 +185,12 @@
 	if( !connectionStatus ){
 		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
 														 message:@"Sync operation is not supported now."
-														delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+														delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		
 		[alert1 show];
+		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		[delegate setAlertRunning:YES];
+
 		[alert1 release];		
 		
 		return;
@@ -226,6 +234,9 @@
     UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Delete Comments" message:@"Are you sure you want to delete the selected comment(s)?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];                                                
     [deleteAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
     [deleteAlert show];
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate setAlertRunning:YES];
+
 		
 }
 - (IBAction)approveSelectedComments:(id)sender{
@@ -235,6 +246,9 @@
 	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Approve Comments" message:@"Are you sure you want to approve the selected comment(s)?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];                                                
 	[deleteAlert setTag:2];  // for UIAlertView Delegate to handle which view is popped.
 	[deleteAlert show];
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate setAlertRunning:YES];
+
 	
 }
 - (IBAction)unapproveSelectedComments:(id)sender{
@@ -243,6 +257,9 @@
 	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Unapprove Comments" message:@"Are you sure you want to unapprove the selected comment(s)?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];                                                
 	[deleteAlert setTag:3];  // for UIAlertView Delegate to handle which view is popped.
 	[deleteAlert show];
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate setAlertRunning:YES];
+
 }
 
 - (IBAction)spamSelectedComments:(id)sender{
@@ -251,6 +268,9 @@
 	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Spam Comments" message:@"Are you sure you want to mark the selected comment(s) as spam?. This action can only be reversed in the web admin." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];                                                
 	[deleteAlert setTag:4];  // for UIAlertView Delegate to handle which view is popped.
 	[deleteAlert show];
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate setAlertRunning:YES];
+
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -265,7 +285,7 @@
 			
 			UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:@"No connection to host."
 															 message:@"Operation is not supported now."
-															delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+															delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[connectionFailAlert show];
 			[connectionFailAlert release];		
 			return;
@@ -294,6 +314,9 @@
     }
 	[editButtonItem setEnabled:([commentsArray count]>0)];
     [alertView autorelease];
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate setAlertRunning:NO];
+
 }
 
 #define COMMENT_NAME_TAG 100
@@ -370,7 +393,6 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	if ( editMode == YES ) {
 		rect = CGRectMake(LEFT_OFFSET,15, 30, COMMENTS_TABLE_ROW_HEIGHT-30);
 		UIButton *but = [[UIButton alloc] initWithFrame:rect]; 
-		[but setImage:[UIImage imageNamed:@"uncheck.png"] forState:UIControlStateNormal];
 		[but setTag:categoryId];
 		[but addTarget:self action:@selector(commentSelected:) forControlEvents:UIControlEventTouchUpInside];
 		[cell.contentView addSubview:but];
@@ -437,6 +459,20 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 		cell = [self tableviewCellWithReuseIdentifier:postsTableRowId withCategoryId:[[currentComment valueForKey:@"comment_id"]intValue]];
 	}
 	
+	if( editMode == YES )
+	{
+		UIButton *imageButton=(UIButton *)[cell viewWithTag:[[currentComment valueForKey:@"comment_id"]intValue]];
+		int toggleTag = [imageButton tag];
+		NSString *str=[NSString stringWithFormat:@"%d",toggleTag];
+		NSDictionary *dict  = [commentsDict valueForKey:str];
+		if ( [selectedComments containsObject:dict] ) {
+			[imageButton setImage:[UIImage imageNamed:@"check.png"] forState:UIControlStateNormal];  
+		} else {
+			[imageButton setImage:[UIImage imageNamed:@"uncheck.png"] forState:UIControlStateNormal];  
+		}
+		[cell.contentView addSubview:imageButton];
+	}
+	
 	
 	NSCharacterSet *whitespaceCS = [NSCharacterSet whitespaceCharacterSet];
 	NSString *author = [[currentComment valueForKey:@"author"] stringByTrimmingCharactersInSet:whitespaceCS];
@@ -480,7 +516,7 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	if(editMode)  {
 		[atableView deselectRowAtIndexPath:indexPath animated:NO];
 		UITableViewCell *indexViewCell = [atableView cellForRowAtIndexPath:indexPath];
-		[self commentSelected:[[[[indexViewCell subviews] objectAtIndex:0]subviews] objectAtIndex:0]];//;(id)self.senderObj];//[atableView cellForRowAtIndexPath:indexPath]];
+		[self commentSelected:[[[[indexViewCell subviews] objectAtIndex:0]subviews] objectAtIndex:2]];//;(id)self.senderObj];//[atableView cellForRowAtIndexPath:indexPath]];
 		return;
 	}
 		

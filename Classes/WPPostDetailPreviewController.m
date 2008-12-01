@@ -1,5 +1,6 @@
 #import "WPPostDetailPreviewController.h"
 #import "BlogDataManager.h"
+#import "WordPressAppDelegate.h"
 
 @implementation WPPostDetailPreviewController
 
@@ -124,6 +125,10 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	if([delegate isAlertRunning] == YES)
+		return NO;
+	
 	// Return YES for supported orientations
 	return YES;
 }

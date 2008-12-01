@@ -4,6 +4,7 @@
 #import "BlogDataManager.h"
 #import "Reachability.h"
 #import "PostsListController.h"
+#import "WordPressAppDelegate.h"
 
 @interface RootViewController (private)
 
@@ -188,11 +189,12 @@
 			if ( [[currentBlog valueForKey:kSupportsPagesAndComments] boolValue] ) {
 			
 				BlogMainViewController  *blogMainViewController = [[BlogMainViewController alloc] initWithNibName:@"WPBlogMainViewController" bundle:nil];
-//				UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController:blogMainViewController];
+				self.title=@"Blogs";
+				//UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController:blogMainViewController];
 				[self.navigationController pushViewController:blogMainViewController animated:YES];
-				[blogMainViewController release];
 				self.navigationController.navigationBarHidden = NO;
-//				[navigationCntrlr release];
+				[blogMainViewController release];
+				//[navigationCntrlr release];
 			} else {
 				PostsListController *postsListController = [[PostsListController alloc] initWithNibName:@"PostsListController" bundle:nil];
 //				UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController: postsListController];
@@ -313,6 +315,10 @@
 
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	if([delegate isAlertRunning] == YES)
+		return NO;
+	
 	// Return YES for supported orientations
 	if(self.interfaceOrientation!=interfaceOrientation) {
 		self.navigationController.navigationBarHidden = NO;
