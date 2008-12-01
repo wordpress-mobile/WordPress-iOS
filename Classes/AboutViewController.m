@@ -53,7 +53,7 @@
 }
 
 - (IBAction)goToHome:(id)sender {
-	[self.navigationController.navigationController popToRootViewControllerAnimated:YES];
+	[self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 

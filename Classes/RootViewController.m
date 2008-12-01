@@ -158,6 +158,7 @@
 			BlogDetailModalViewController *blogDetailModalViewController = [[BlogDetailModalViewController alloc] initWithNibName:@"WPBlogDetailViewController" bundle:nil];
 //			UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController:blogDetailModalViewController];
 			[self.navigationController pushViewController:blogDetailModalViewController animated:YES];
+			self.navigationController.navigationBarHidden = NO;
 			blogDetailModalViewController.removeBlogButton.hidden = YES;
 			blogDetailModalViewController.isModal = NO;
 			blogDetailModalViewController.mode = 0;
@@ -190,6 +191,7 @@
 //				UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController:blogMainViewController];
 				[self.navigationController pushViewController:blogMainViewController animated:YES];
 				[blogMainViewController release];
+				self.navigationController.navigationBarHidden = NO;
 //				[navigationCntrlr release];
 			} else {
 				PostsListController *postsListController = [[PostsListController alloc] initWithNibName:@"PostsListController" bundle:nil];
@@ -207,6 +209,7 @@
 //		UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController:aboutViewController];
 		[self.navigationController pushViewController:aboutViewController animated:YES];
 		self.title=@"Home";
+		self.navigationController.navigationBarHidden = NO;
 		[aboutViewController release];
 //		[navigationCntrlr release];
 	}	
@@ -228,15 +231,15 @@
 	
 	BlogDetailModalViewController *blogDetailViewController = [[BlogDetailModalViewController alloc] initWithNibName:@"WPBlogDetailViewController" bundle:nil];
 	
-	UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController:blogDetailViewController];
+//	UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController:blogDetailViewController];
 
 	blogDetailViewController.removeBlogButton.hidden = NO;
 	blogDetailViewController.isModal = NO;
 	blogDetailViewController.mode	= 1;
-	[[self navigationController] pushViewController:navigationCntrlr animated:YES];
-	[blogDetailViewController release];
+	[[self navigationController] pushViewController:blogDetailViewController animated:YES];
 	[blogDetailViewController refreshBlogEdit];
-	[navigationCntrlr release];
+	[blogDetailViewController release];
+//	[navigationCntrlr release];
 }
 
 /*
