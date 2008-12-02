@@ -121,7 +121,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
     segmentedTableViewController.title = @"Categories";
 	segmentedTableViewController.navigationItem.rightBarButtonItem = newCategoryBarButtonItem;
 	WPLog(@"selectionTableViewController navigationItem %@", segmentedTableViewController.navigationItem);
-	[postDetailViewController.navigationController pushViewController:segmentedTableViewController animated:YES];
+	if(isNewCategory!=YES) {
+		[postDetailViewController.navigationController pushViewController:segmentedTableViewController animated:YES];
+	}
+	isNewCategory=NO;
 	[parentIds release];
 	[childIds release];
 }
@@ -183,6 +186,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)newCategoryCreatedNotificationReceived:(NSNotification *)notification
 {
 	if( [segmentedTableViewController curContext] == kSelectionsCategoriesContext ){
+		isNewCategory=YES;
 		[self populateSelectionsControllerWithCategories];
 	}
 }

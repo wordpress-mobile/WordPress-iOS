@@ -37,6 +37,7 @@
 	BOOL isTextViewEditing;
 	BOOL dismiss;
 	BOOL isEditing;
+	BOOL isNewCategory;
 
     UITextField *infoText;
     UITextField *urlField;
