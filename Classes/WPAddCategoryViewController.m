@@ -55,7 +55,7 @@
 	NSString *catName = newCatNameField.text;
 	if( !catName || [catName length] == 0 )
 	{
-		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"Cateogry title missing."
+		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"Category title missing."
 														 message:@"Title for a category is mandatory."
 														delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		
