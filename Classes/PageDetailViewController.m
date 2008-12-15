@@ -30,7 +30,6 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
 @synthesize mode,selectionTableViewController,pageDetailsController,photosListController;
 @synthesize infoText,urlField,selectedLinkRange;
-//@synthesize photosListController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -151,6 +150,8 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	actionSheet.tag = 202;
 	actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
 	[actionSheet showInView:self.view];
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate setAlertRunning:YES];
 	[actionSheet release];	
 }
 
@@ -168,7 +169,10 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 			
 			if( buttonIndex == 1 ){
 				pageDetailsController.hasChanges = YES;
-			}			
+			}	
+			
+			WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+			[delegate setAlertRunning:NO];
 			break;
 		}
 		default:
