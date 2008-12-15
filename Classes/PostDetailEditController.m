@@ -626,6 +626,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
 	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
 	[actionSheet showInView:self.view];
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate setAlertRunning:YES];
+
 	[actionSheet release];
 }
 
@@ -656,6 +659,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		{
 			//do nothing
 		}
+		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		[delegate setAlertRunning:NO];
+
 		[currentChoosenImage release];
 		currentChoosenImage = nil;
 	}
@@ -695,6 +701,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 													otherButtonTitles:@"Add and Select More", @"Add and Continue Editing", nil];
 	actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
 	[actionSheet showInView:self.view];
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate setAlertRunning:NO];
+
 	[actionSheet release];	
 }
 
