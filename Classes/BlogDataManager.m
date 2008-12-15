@@ -264,7 +264,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	WPLog(@"XMLRPC sendSynchronousXMLRPCRequest %@", [req method]);
 	XMLRPCResponse *userInfoResponse = [XMLRPCConnection sendSynchronousXMLRPCRequest:req];
 	NSError *err = [self errorWithResponse:userInfoResponse shouldHandle:shouldHandleFalg];
-	WPLog(@"END XMLRPC sendSynchronousXMLRPCRequest %@", [req method]);
+
 	if( err )
 		return err;
 	
@@ -1067,17 +1067,19 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 		NSRange range = [htmlStr rangeOfString:@"EditURI"];
 		if (range.location != NSNotFound) {
+//			WPLog(@"htmlStr is (%@)",htmlStr);
 			NSRange lr = NSMakeRange(range.location, [htmlStr length]-range.location);
 			NSRange endRange = [htmlStr rangeOfString:@"/>" options:NSLiteralSearch range:lr];
 			if (endRange.location != NSNotFound) {
 				NSString *ourStr = [htmlStr substringWithRange:NSMakeRange(range.location, endRange.location-range.location)];
 				ourStr = [ourStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+				//WPLog(@"ourStr is (%@)",ourStr);
 				ourStr = [ourStr substringWithRange:NSMakeRange(0, [ourStr length]-1)];
 				NSRange r = [ourStr rangeOfString:@"\"" options:NSBackwardsSearch];
 				WPLog(@"******************************************************************************");
 				if (r.location != NSNotFound) {
 					NSString *hosturl = [ourStr substringWithRange:NSMakeRange(r.location+1, [ourStr length]-r.location-1)];
-					WPLog(@"hosturl %@", hosturl);
+					//WPLog(@"hosturl %@", hosturl);
 					if( hosturl != nil )
 						[data release];
 					return [self xmlurl:hosturl];
@@ -1092,7 +1094,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 {	
 	NSString *blogURL = [NSString stringWithFormat:@"http://%@", url];
 	NSString *xmlrpc = [self discoverxmlrpcurlForurl:url];
-	if ( ![xmlrpc isKindOfClass:[NSError class]] && !xmlrpc) {
+
+	if ( [xmlrpc isKindOfClass:[NSError class]] || !xmlrpc) {
 		xmlrpc = [blogURL stringByAppendingString:[currentBlog valueForKey:@"xmlrpcsuffix"]];
 	}
 	//  ------------------------- invoke login & getUserInfo
@@ -1221,7 +1224,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	//  ------------------------- invoke login & getUserInfo
 	
-	WPLog(@"xmlrpc url %@" ,[NSURL URLWithString:xmlrpc] );
+	//WPLog(@"xmlrpc url %@" ,[NSURL URLWithString:xmlrpc] );
 	
 	XMLRPCRequest *reqUserInfo = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
 	[reqUserInfo setMethod:@"blogger.getUserInfo" withObjects:[NSArray arrayWithObjects:@"ABCDEF012345",username,pwd,nil]];
@@ -1515,17 +1518,16 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 	if([fm fileExistsAtPath:postTitlesPath])
 	{
-		newPostTitlesList = [NSArray arrayWithContentsOfFile:postTitlesPath];
+		newPostTitlesList = [NSMutableArray arrayWithContentsOfFile:postTitlesPath];
     } else {
 		newPostTitlesList = [NSMutableArray arrayWithCapacity:30];
 	}
-	
 	
 	// loop thru posts list
 	NSEnumerator *postsEnum = [recentPostsList objectEnumerator];
 	NSDictionary *post;
 	NSInteger newPostCount = 0;
-	[newPostTitlesList removeAllObjects];
+	[newPostTitlesList removeAllObjects];	
 	while (post = [postsEnum nextObject] ) {
 		
 		// add blogid and blog_host_name to post
@@ -2229,7 +2231,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 - (NSMutableArray *)draftTitlesForBlog:(id)aBlog
 {
 	NSString *draftTitlesFilePath = [self pathToDraftTitlesForBlog:aBlog];
-	WPLog(@"draftTitlesFilePath %@", draftTitlesFilePath);
 	if ([[NSFileManager defaultManager] fileExistsAtPath:draftTitlesFilePath]) 
 	{
 		return [NSMutableArray arrayWithContentsOfFile:draftTitlesFilePath];
@@ -3689,7 +3690,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		NSString *description = [currentPost valueForKey:@"description"];
 		description = (description == nil ? @"" : description );
 		[postParams setObject:description forKey:@"description"];
-		
+		//WPLog(@"currentPostcurrentPostcurrentPostcurrentPost----------%@",currentPost);
 		[postParams setObject:[currentPost valueForKey:@"categories"] forKey:@"categories"];
 		
 		NSDate *date = [currentPost valueForKey:@"date_created_gmt"];
@@ -3754,7 +3755,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		if ( !post_status || [post_status isEqualToString:@""] ) 
 			post_status = @"publish";
 		[currentPost setObject:post_status forKey:@"post_status"];
-//		WPLog(@"currentPost is %@",currentPost);
 		NSArray *args = [NSArray arrayWithObjects:[currentPost valueForKey:@"postid"],
 						 [currentBlog valueForKey:@"username"],
 						 [currentBlog valueForKey:@"pwd"],
@@ -3765,7 +3765,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[currentBlog valueForKey:@"xmlrpc"]]];
 		[request setMethod:@"metaWeblog.editPost" withObjects:args];
 		
-		//WPLog(@"reXMLRPCRequestsponse %@",[request source]);
+		//WPLog(@"reXMLRPCRequest %@",[request source]);
 		id response = [self executeXMLRPCRequest:request byHandlingError:YES];
 		[request release];
 		
