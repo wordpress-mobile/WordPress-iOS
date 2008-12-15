@@ -213,21 +213,6 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-  	if( !connectionStatus)
-	{
-		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
-														 message:@"Editing is not supported now."
-														delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		
-		[alert1 show];
-		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-		[delegate setAlertRunning:YES];
-
-		[alert1 release];		
-		
-		[pagesTableView deselectRowAtIndexPath:indexPath animated:YES];
-		return;
-	}
 	
 	[BlogDataManager sharedDataManager].isLocaDraftsCurrent = (indexPath.row == 0);
 
@@ -245,6 +230,23 @@
 	}
 	else
 	{
+		if( !connectionStatus)
+		{
+			UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
+															 message:@"Editing is not supported now."
+															delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			
+			[alert1 show];
+			WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+			[delegate setAlertRunning:YES];
+			
+			[alert1 release];		
+			
+			[pagesTableView deselectRowAtIndexPath:indexPath animated:YES];
+			return;
+		}
+		
+		
 		self.pageDetailsController.tabController.selectedIndex=0;
 		BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 		[dataManager makePageAtIndexCurrent:indexPath.row-1];	
@@ -283,6 +285,7 @@
 
 #pragma mark -
 - (void)viewWillAppear:(BOOL)animated {
+	
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	[dm loadPageTitlesForCurrentBlog];
 	dm.isLocaDraftsCurrent = NO;
@@ -292,13 +295,11 @@
 	NSInteger totalpages = [[[dm currentBlog] valueForKey:@"totalpages"] integerValue];
 	NSInteger newpages = [[[dm currentBlog] valueForKey:@"newpages"] integerValue];
 	
-	
 	pagessStatusButton.title = [NSString stringWithFormat:@"%d %@ (%d %@)",
 							   totalpages,
 							   @"Pages",
 							   newpages, 
 							   @"New"];
-
 	
 	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
 	[pagesTableView reloadData];
