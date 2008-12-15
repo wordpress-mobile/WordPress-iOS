@@ -33,7 +33,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-	id array = [dataManager.currentPost valueForKey:@"Photos"];
+	id array =[photosListViewController.delegate photosDataSource];
 	if ([array count] == 1) {
 		previousImageButtonItem.enabled = NO;
 		nextImageButtonItem.enabled = NO;
@@ -72,7 +72,7 @@
 
 - (IBAction)previousImage:(id)sender {
 	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-	id array = [dataManager.currentPost valueForKey:@"Photos"];
+	id array =[photosListViewController.delegate photosDataSource];
 	if (--currentPhotoIndex <= 0)
 		previousImageButtonItem.enabled = NO;
 
@@ -87,8 +87,7 @@
 
 - (IBAction)nextImage:(id)sender {
 	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-	id array = [dataManager.currentPost valueForKey:@"Photos"];
-	
+	id array =[photosListViewController.delegate photosDataSource];
 	if (++currentPhotoIndex >= [array count] - 1)
 		nextImageButtonItem.enabled = NO;
 
@@ -102,9 +101,9 @@
 }
 
 - (IBAction)deleteImage:(id)sender {
-//	WPLog(@"currentPhotoIndex %d",currentPhotoIndex);
+	//WPLog(@"deleteImage  currentPhotoIndex %d",currentPhotoIndex);
 	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-	id array = [dataManager.currentPost valueForKey:@"Photos"];
+	id array =[photosListViewController.delegate photosDataSource];
 	[dataManager deleteImageNamed:[array objectAtIndex:currentPhotoIndex] forBlog:dataManager.currentBlog];
 	[array removeObjectAtIndex:currentPhotoIndex];
 
@@ -125,8 +124,13 @@
 		[self cancel:nil];
 	}
 	titleButtonItem.title = [NSString stringWithFormat:@"%d of %d",currentPhotoIndex+1, [array count]];
-	[photosListViewController.postDetailViewController updatePhotosBadge];
+	
+	
+	[photosListViewController.delegate updatePhotosBadge];
 	photosListViewController.postDetailViewController.hasChanges = YES;
+	
+//	[photosListViewController.postDetailViewController updatePhotosBadge];
+//	photosListViewController.postDetailViewController.hasChanges = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

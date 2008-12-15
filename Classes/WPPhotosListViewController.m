@@ -83,6 +83,9 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 									  nil];
 		actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
 		[actionSheet showInView:[(UIViewController *)delegate view]];
+		WordPressAppDelegate *wpAppDelegate = [[UIApplication sharedApplication] delegate];
+		[wpAppDelegate setAlertRunning:YES];
+
 		[actionSheet release];
 		
 	} else {
@@ -124,6 +127,9 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 		{
 			//do nothing
 		}
+		WordPressAppDelegate *wpAppDelegate = [[UIApplication sharedApplication] delegate];
+		[wpAppDelegate setAlertRunning:NO];
+
 		[currentChoosenImage release];
 		currentChoosenImage = nil;
 	}
@@ -442,7 +448,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 - (void)imageViewSelected:(WPImageView *)iv
 {
 	int index = [iv tag]-TAG_OFFSET;
-	id array = [[BlogDataManager sharedDataManager].currentPost valueForKey:@"Photos"];
+	id array =[delegate photosDataSource]; 
 	if( index >=0 && index < [array count] )
 	{
 		WPPhotoViewController *photoViewController = [[WPPhotoViewController alloc] initWithNibName:@"WPPhotoViewController" bundle:nil];
@@ -523,8 +529,8 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	
-	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	if([delegate isAlertRunning] == YES)
+	WordPressAppDelegate *wpAppDelegate = [[UIApplication sharedApplication] delegate];
+	if([wpAppDelegate isAlertRunning] == YES)
 		return NO;
 	// Return YES for supported orientations
 	return YES;

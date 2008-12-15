@@ -138,6 +138,11 @@
 	else {
         cell.text = @"";
 	}
+
+	CGFloat cellFontSize=[UIFont labelFontSize]; 
+	UIFont *aFont = [[cell font] fontWithSize:cellFontSize-4.0];
+	[cell setFont:aFont];
+	
    	return cell;
 }
 - (UITableViewCellAccessoryType)tableView:(UITableView *)aTableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath 
@@ -157,7 +162,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	CGFloat height=32.0;
+	CGFloat height=38.0;
 	return height;
 }
 
