@@ -149,6 +149,9 @@
 	actionSheet.tag = 202;
 	actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
 	[actionSheet showInView:self.view];
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate setAlertRunning:YES];
+
 	[actionSheet release];	
 }
 
@@ -169,6 +172,9 @@
 				if ([[leftView title] isEqualToString:@"Pages"])
 					[leftView setTitle:@"Cancel"];
 			}			
+			WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+			[delegate setAlertRunning:NO];
+
 			break;
 		}
 		default:
