@@ -27,6 +27,7 @@
 
 #define NAME_TAG 100
 #define DATE_TAG 200
+#define ALERT_TAG 5111
 
 - (UITableViewCell *)tableviewCellWithReuseIdentifier:(NSString *)identifier {
 	
@@ -291,6 +292,7 @@
 														 message:@"Editing is not supported now."
 														delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		
+		alert1.tag=ALERT_TAG;
 		[alert1 show];
 		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 		[delegate setAlertRunning:YES];
@@ -459,8 +461,22 @@
 
 }
 - (IBAction)downloadRecentPosts:(id)sender {
+
+	if( !connectionStatus ){
+     	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		[delegate setAlertRunning:YES];
+
+		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
+														 message:@"Sync operation is not supported now."
+														delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		
+		alert1.tag=ALERT_TAG;
+		[alert1 show];
+		[alert1 release];		
+		
+		return;
+	}	
 	
-	WPLog(@"PostsList: Downloading RecentPosts");
 	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	[dm syncPostsForCurrentBlog];
@@ -482,22 +498,15 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-	//	if( buttonIndex == 0 ) //Discard and Continue
-	//	{
-	//		WPLog(@"button 0");
-	//		[[BlogDataManager sharedDataManager] clearAutoSavedContext];
-	//	}
-	//	else 
-	//	{
-	[[BlogDataManager sharedDataManager] removeAutoSavedCurrentPostFile];
-	self.navigationItem.rightBarButtonItem = nil;
-	self.postDetailViewController.mode = 2;
-	[[self navigationController] pushViewController:self.postDetailViewController animated:YES];
-	//	}
-	
+	if( alertView.tag != ALERT_TAG ) //When Connection Available.
+	{
+		[[BlogDataManager sharedDataManager] removeAutoSavedCurrentPostFile];
+		self.navigationItem.rightBarButtonItem = nil;
+		self.postDetailViewController.mode = 2;
+		[[self navigationController] pushViewController:self.postDetailViewController animated:YES];
+	}
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	[delegate setAlertRunning:NO];
-
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
