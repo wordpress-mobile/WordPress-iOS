@@ -27,7 +27,7 @@
 
 #define NAME_TAG 100
 #define DATE_TAG 200
-#define ALERT_TAG 5111
+#define NEW_VERSION_ALERT_TAG 5111
 
 - (UITableViewCell *)tableviewCellWithReuseIdentifier:(NSString *)identifier {
 	
@@ -292,7 +292,7 @@
 														 message:@"Editing is not supported now."
 														delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		
-		alert1.tag=ALERT_TAG;
+		alert1.tag=NEW_VERSION_ALERT_TAG;
 		[alert1 show];
 		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 		[delegate setAlertRunning:YES];
@@ -470,7 +470,7 @@
 														 message:@"Sync operation is not supported now."
 														delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		
-		alert1.tag=ALERT_TAG;
+		alert1.tag=NEW_VERSION_ALERT_TAG;
 		[alert1 show];
 		[alert1 release];		
 		
@@ -498,7 +498,7 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-	if( alertView.tag != ALERT_TAG ) //When Connection Available.
+	if( alertView.tag != NEW_VERSION_ALERT_TAG ) //When Connection Available.
 	{
 		[[BlogDataManager sharedDataManager] removeAutoSavedCurrentPostFile];
 		self.navigationItem.rightBarButtonItem = nil;

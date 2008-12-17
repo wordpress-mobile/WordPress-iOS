@@ -131,7 +131,13 @@
 					[aView removeFromSuperview];
 			}
 			
-			cell.text = [[[BlogDataManager sharedDataManager] blogAtIndex:(indexPath.row)] valueForKey:@"blogName"];
+			//cell.text = [[[BlogDataManager sharedDataManager] blogAtIndex:(indexPath.row)] valueForKey:@"blogName"];
+			
+			UILabel *blogName=[[UILabel alloc] initWithFrame:CGRectMake(10, 2 , 230, 50)];
+			blogName.text=[[[BlogDataManager sharedDataManager] blogAtIndex:(indexPath.row)] valueForKey:@"blogName"];
+			blogName.font = [UIFont boldSystemFontOfSize:18.0];
+			[cell.contentView addSubview:blogName];
+			[blogName release];
 		}
 		
 		if ([[BlogDataManager sharedDataManager] countOfBlogs] == indexPath.row)
@@ -196,6 +202,22 @@
 				[blogMainViewController release];
 				//[navigationCntrlr release];
 			} else {
+				
+				if ( [[currentBlog valueForKey:kVersionAlertShown] boolValue] == NO || [currentBlog valueForKey:kVersionAlertShown] ==NULL )
+				{
+					UIAlertView *unsupportedWordpress = [[UIAlertView alloc] initWithTitle:@"New features available!"
+																				   message:@"WordPress for iPhone now supports page editing and comment moderation.However, Wordpress 2.7 is required to use these features. Please visit \"iphone.wordpress.org\" for details."
+																				  delegate:[[UIApplication sharedApplication] delegate]
+																		 cancelButtonTitle:nil
+																		 otherButtonTitles:@"OK", nil];
+					[unsupportedWordpress show];
+					WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+					[delegate setAlertRunning:YES];
+					[unsupportedWordpress release];
+					[currentBlog setValue:[NSNumber numberWithBool:YES]   forKey:kVersionAlertShown];
+					[dataManager saveCurrentBlog];
+				}
+				
 				PostsListController *postsListController = [[PostsListController alloc] initWithNibName:@"PostsListController" bundle:nil];
 //				UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController: postsListController];
 				postsListController.title = [[dataManager currentBlog] valueForKey:@"blogName"];

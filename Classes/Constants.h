@@ -42,3 +42,4 @@
 #define kResizePhotoSetting @"ResizePhotoSetting"
 #define kAsyncPostFlag @"async_post"
 #define kSupportsPagesAndComments @"SupportsPagesAndComments"
+#define kVersionAlertShown @"VersionAlertShown"
