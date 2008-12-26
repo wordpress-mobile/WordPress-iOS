@@ -18,9 +18,6 @@
 @synthesize commentDetails;
 
 - (void)viewWillAppear:(BOOL)animated {
-	
-	WPLog(@"PostsList:viewWillAppear");
-	
 	[self performSelector:@selector(reachabilityChanged)];;
 	
 	[super viewWillAppear:animated];
@@ -28,7 +25,6 @@
 
 - (void)reachabilityChanged
 {
-	WPLog(@"reachabilityChanged ....");
 	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
 	UIColor *textColor = connectionStatus==YES ? [UIColor blackColor] : [UIColor grayColor];
 	
@@ -61,14 +57,12 @@
 	// Observe the kNetworkReachabilityChangedNotification. When that notification is posted, the
 	// method "reachabilityChanged" will be called. 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];	
-	WPLog(@"Current index is %@",self.commentDetails);
 }
 
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	
-	WPLog(@"[delegate isAlertRunning]---------%d",[delegate isAlertRunning]);
 	if([delegate isAlertRunning] == YES)
 		return NO;
 	
@@ -77,16 +71,15 @@
 }
 
 - (void)didReceiveMemoryWarning {
+	WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
     // Release anything that's not essential, such as cached data
 }
 #pragma mark action methods
 - (void)segmentAction:(id)sender
 {
-	WPLog(@" The count %d  and current index %d object %@",[commentDetails count], currentIndex,sender);
     if(currentIndex > -1)
 	{
-		WPLog(@"WPLog :segmentAction Tag:%d",[sender selectedSegmentIndex]);
         if((currentIndex >0) && [sender selectedSegmentIndex] == 0){          
             [self fillCommentDetails:commentDetails atRow:currentIndex-1];
         }
@@ -100,7 +93,6 @@
 
 - (void)deleteComment:(id)sender
 {
-    WPLog(@"WPLog :deleteComment");
     UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Delete Comment" message:@"Are you sure you want to delete this comment?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];                                                
     [deleteAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
     [deleteAlert show];
@@ -111,7 +103,6 @@
 
 - (void)approveComment:(id)sender
 {
-	WPLog(@"WPLog :approveComment");
 	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Approve Comment" message:@"Are you sure you want to approve this comment?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];                                                
 	[deleteAlert setTag:2];  // for UIAlertView Delegate to handle which view is popped.
 	[deleteAlert show];
@@ -122,7 +113,6 @@
 
 - (void)unApproveComment:(id)sender
 {
-	WPLog(@"WPLog :unApproveComment");
 	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Unapprove Comment" message:@"Are you sure you want to unapprove this comment?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];  
 	[deleteAlert setTag:3];  // for UIAlertView Delegate to handle which view is popped.
 	[deleteAlert show];
@@ -133,7 +123,6 @@
 
 - (void)spamComment:(id)sender
 {
-	WPLog(@"WPLog :spamComment");
 	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Spam Comment" message:@"Are you sure you want to mark the comment as spam?. This action can only be reversed in the web admin." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
 	[deleteAlert setTag:4];  // for UIAlertView Delegate to handle which view is popped.
 	[deleteAlert show];
@@ -145,7 +134,6 @@
 -(void)fillCommentDetails:(NSArray*)comments atRow:(int)row
 {
     currentIndex = row;
-	//    WPLog(@"I Am Here  %@ row %d",comments,row);
     self.commentDetails =(NSMutableArray *)comments;
 	NSCharacterSet *whitespaceCS = [NSCharacterSet whitespaceCharacterSet];
 	NSString *author = [[[commentDetails objectAtIndex:row] valueForKey:@"author"] stringByTrimmingCharactersInSet:whitespaceCS];
@@ -198,7 +186,6 @@
 	else if(currentIndex == [commentDetails count]-1)
 		[segmentedControl setEnabled:FALSE forSegmentAtIndex:1];
 	
-	// WPLog(@" The Values .....  %@ %@ %@ ",author,post_title,date_created_gmt);
 }
 
 - (void)dealloc {
@@ -241,9 +228,6 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-	
-    WPLog(@"The Alet name %d",[alertView tag]);
-	
 	//optimised code but need to comprimise at Alert messages.....Common message for all @"Operation is not supported now."
 	if ( buttonIndex == 1 )		 // OK
 	{
