@@ -20,7 +20,6 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	WPLog(@"1111WPImagePickrContrll viewWillAppearviewWillAppear");
 	[super viewWillAppear:animated];
 }
 
@@ -39,6 +38,7 @@
 
 
 - (void)didReceiveMemoryWarning {
+	WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
 	// Release anything that's not essential, such as cached data
 }
