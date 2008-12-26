@@ -82,14 +82,11 @@
 
 - (void)blogsRefreshNotificationReceived:(id)notification
 {
-	WPLog(@"blogsTableView reloadData .......");
-	
 	[blogsTableView reloadData];
 }
 
 //- (void)syncAllBlogs:(id)sender
 //{
-//	WPLog(@"syncAllBlogs .......");
 //	[[BlogDataManager sharedDataManager] syncPostsForAllBlogsToQueue:nil];
 //}
 
@@ -162,7 +159,6 @@
 		url = @"wordpress.com";
 	}
 
-	WPLog(@"url %@", url );
 	[Reachability sharedReachability].hostName = url;
 	
 	
@@ -184,7 +180,6 @@
 	
 	
 	
-//	WPLog(@"current blog is : %@",[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blogName"]);
 	
 	
 	if (self.blogDetailViewController == nil) {
@@ -242,7 +237,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	
-	WPLog(@"Root:viewWillAppear");
 	
 	// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
 	NSIndexPath *tableSelection = [blogsTableView indexPathForSelectedRow];
@@ -259,7 +253,6 @@
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-	WPLog(@"Root: viewDidAppear");
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -280,7 +273,7 @@
 
 
 - (void)didReceiveMemoryWarning {
-		WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+	WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
 	// Release anything that's not essential, such as cached data
 }
