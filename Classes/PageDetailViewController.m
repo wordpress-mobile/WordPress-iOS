@@ -40,11 +40,9 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
 - (void)refreshUIForCurrentPage
 {
-	WPLog(@"PDVC refreshUIForCurrentPage");
 	self.navigationItem.rightBarButtonItem = nil;
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	
-	WPLog(@"PDVC refreshUIForCurrentPage-------%@",dm.currentPage);
 
 	NSString *description = [dm.currentPage valueForKey:@"description"];
 	
@@ -93,7 +91,6 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	WPLog(@"viewWillAppear for PAGE DETAILS ");
 	pageDetailsController.hasChanges = NO;
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	if( mode == 1 )
@@ -117,7 +114,6 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	WPLog(@"viewDidLoad from page details");
 	//photosListController.pageDetailViewController = self;
 
 	titleTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
@@ -209,7 +205,6 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
 #pragma mark TextView & TextField Delegates
 - (void)textViewDidChangeSelection:(UITextView *)aTextView {
-	WPLog(@"Page textViewDidChangeSelection");
 	pageDetailsController.hasChanges = YES;
 	hasChanges = YES;
 	if (!isTextViewEditing) 		
@@ -217,7 +212,6 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 				
 	[self updateTextViewPlacehoderFieldStatus];
 	
-	WPLog(@"Page textViewDidChangeSelection : ");   
 	UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone 
 																  target:self action:@selector(endTextEnteringButtonAction:)];
 	
@@ -243,7 +237,6 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 		isTextViewEditing = YES;
 		
 	[self updateTextViewPlacehoderFieldStatus];
-	WPLog(@"PAGE textViewDidBeginEditing : ");   
 	
 	[self bringTextViewUp];
 }
@@ -271,7 +264,6 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 }
 
 - (void)textViewDidChange:(UITextView *)aTextView {
-	WPLog(@"textViewDidChange");
 	[self updateTextViewPlacehoderFieldStatus];
 	if(![aTextView hasText])
 		return;
@@ -312,7 +304,6 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	}
 	
 	if(searchRes && dismiss!=YES){
-	WPLog(@"Link Creation Alert ");
 		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 		[delegate setAlertRunning:YES];
 		[textView resignFirstResponder];
@@ -409,7 +400,6 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 - (void)selectionTableViewController:(WPSelectionTableViewController *)selctionController completedSelectionsWithContext:(void *)selContext selectedObjects:(NSArray *)selectedObjects haveChanges:(BOOL)isChanged
 {
 	
-	//	WPLog(@" %@ completedSelectionsWithContext %u isChanged %d selectedObjects %@", [self className], selContext, isChanged, selectedObjects);
 	if( !isChanged ){
 		[selctionController clean];
 		return;
@@ -472,7 +462,6 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 }
 - (void)viewWillDisappear:(BOOL)animated
 {
-	WPLog(@"PageDVC viewWillDisappear");
 	[super viewWillDisappear:animated];
 	pageDetailsController.hasChanges = NO;
 	[titleTextField resignFirstResponder];
@@ -515,7 +504,6 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 			
 			NSString *commentsStr = textView.text;
 			NSRange rangeToReplace=[self selectedLinkRange];
-			//WPLog(@" Entered Text %@ and The Link %@ selected text is %@ ******* %d,%d",infoText.text,urlField.text,[commentsStr substringWithRange:rangeToReplace],rangeToReplace.location,rangeToReplace.length);
 			NSString *urlString=[self validateNewLinkInfo:urlField.text];
 			NSString *aTagText=[NSString stringWithFormat:@"<a href=\"%@\">%@</a>",urlString,infoText.text];;
 			textView.text = [commentsStr stringByReplacingOccurrencesOfString:[commentsStr substringWithRange:rangeToReplace] withString:aTagText options:NSCaseInsensitiveSearch range:rangeToReplace];
@@ -564,7 +552,6 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
 -(void)showLinkView
 {
-    WPLog(@"   Show the Link  View . ");
     UIAlertView *addURLSourceAlert = [[UIAlertView alloc] initWithFrame:CGRectMake(0, 0, 0, 0.0)];
     infoText = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 36.0, 260.0, 29.0)];
     urlField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 70.0, 260.0, 29.0)];
