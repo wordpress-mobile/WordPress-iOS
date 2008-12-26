@@ -30,12 +30,8 @@
 		[parser setDelegate:self];
 		BOOL parseStatus = [parser parse];
 		
-		WPLog(@"parseStatus %d", parseStatus);
 		
 		if( parseStatus == NO ) {
-			
-			WPLog(@"NOTE: given string is not valid xml string. %@", [parser parserError]);
-			
 			NSString *invalidXML = [NSString stringWithFormat:@"Post does not contain valid XHTML. Please review and correct."];
 			UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"INVALID XHTML"
 															 message:invalidXML

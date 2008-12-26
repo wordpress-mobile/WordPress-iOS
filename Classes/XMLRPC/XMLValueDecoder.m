@@ -157,7 +157,6 @@
 	
 	
 	
-//	WPLog(@"self %@ parser %@ didEndElement elementName %@ namespaceURI %@ qName:%@",self, parser, elementName, namespaceURI, qName);
 	if( !curStructKey && [elementName isEqualToString:@"name"] )
 	{
 		curStructKey = curVal;
@@ -254,12 +253,10 @@
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string
 {
 	
-//	WPLog(@"foundCharacters %@", string);
 	if( !curElementName || !string )
 	{
 		return;
 	}
-//	WPLog(@"Added foundCharacters %@", string);
 
 	switch (curValueType)
 	{

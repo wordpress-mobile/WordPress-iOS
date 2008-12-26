@@ -79,8 +79,6 @@ NSString *XMLRPCReceivedResponseNotification = @"XML-RPC Successfully Received R
 
 + (XMLRPCResponse *)sendSynchronousXMLRPCRequest: (XMLRPCRequest *)request
 {
-//	WPLog(@"request %@", [request source] );
-//	WPLog(@"[request request] %@", [request request]);
 	NSURLResponse *urlres;
 	NSError *err = NULL;
 	NSData *data = [NSURLConnection sendSynchronousRequest: [request request] 
@@ -92,9 +90,7 @@ NSString *XMLRPCReceivedResponseNotification = @"XML-RPC Successfully Received R
 		return (id) err;
 	}
 	
-//	WPLog(@"data %d urlres %@ err %@", [data length], urlres, err);
-//	WPLog(@"returningResponse %@", [[NSString alloc] initWithUTF8String:data]);
-	if (data != nil)
+ 	if (data != nil)
 	{
 		NSString  *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 		if ( ! str ) {

@@ -75,7 +75,6 @@
 	{		
         elementName = qName;
     }
-//	WPLog(@"parser %@ didEndElement elementName %@ namespaceURI %@ qName:%@",parser, elementName, namespaceURI, qName);
 	
 }
 
@@ -101,17 +100,14 @@
 	
 - (void)parserDidStartDocument:(NSXMLParser *)parser
 {
-//	WPLog(@"parserDidStartDocument");
 }
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser
 {
-//	WPLog(@"parserDidEndDocument");
 }
 
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string
 {
-//	WPLog(@"foundCharacters:%@:", string);
 }
 
 - (id)decode
@@ -119,8 +115,6 @@
 	[_parser parse];
 	
 	NSError *parseError = [_parser parserError];
-//	WPLog(@"parserError %@", parseError);
-//	WPLog(@"decodedValue %@", decodedValue);
 	if (parseError) {
 		return parseError;
 	}
