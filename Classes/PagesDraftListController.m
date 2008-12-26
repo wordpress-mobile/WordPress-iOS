@@ -57,10 +57,6 @@
 	pageDetailsController.mode = 1; 
 	pageDetailsController.tabController.selectedIndex=0;
 	[tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
-	WPLog(@"11111AFTER makePageDraftAtIndexCurrent-------%@",pageDetailsController);
-
-	WPLog(@"11111AFTER makePageDraftAtIndexCurrent ----%@",pagesListController.pageDetailsController);
-
 	[[pagesListController navigationController] pushViewController:pagesListController.pageDetailsController animated:YES];
 }
 
@@ -69,11 +65,11 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-//		if( [dm deleteDraftAtIndex:indexPath.row forBlog:dm.currentBlog] )
-//		{
-//			[dm loadPageDraftTitlesForCurrentBlog];
-//			[tableView reloadData];			
-//		}
+		if( [dm deletePageDraftAtIndex:indexPath.row forBlog:dm.currentBlog] )
+		{
+			[dm loadPageDraftTitlesForCurrentBlog];
+			[tableView reloadData];			
+		}
 		
 	}
 	if (editingStyle == UITableViewCellEditingStyleInsert) {
@@ -106,7 +102,6 @@
 }
 
 - (void)updatePostsAndDraftsList{
-	WPLog(@"updatePostsAndDraftsList");
 	[self.tableView reloadData];
 }
 
@@ -131,6 +126,7 @@
 }
 
 - (void)didReceiveMemoryWarning {
+	WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[super didReceiveMemoryWarning];
 }
 
