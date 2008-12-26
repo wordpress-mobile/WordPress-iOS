@@ -51,7 +51,7 @@
 	BlogDetailModalViewController *blogDetailViewController = [[BlogDetailModalViewController alloc] initWithNibName:@"WPBlogDetailViewController" bundle:nil];
 	blogDetailViewController.isModal = YES;
 	blogDetailViewController.mode	= 0;
-	[self pushTransition:blogDetailModalViewController];
+	[self pushTransition:blogDetailViewController];
 //	[self.navigationController presentModalViewController:blogDetailViewController animated:YES];
 	[blogDetailViewController refreshBlogCompose];
 	blogDetailViewController.removeBlogButton.hidden = YES;

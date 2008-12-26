@@ -12,4 +12,5 @@
 - (void)useImage:(UIImage*)theImage;
 -(id)photosDataSource;
 - (void)updatePhotosBadge;
+- (void)setHasChanges:(BOOL)aFlag;
 @end

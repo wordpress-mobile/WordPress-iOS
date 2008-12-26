@@ -72,6 +72,7 @@
 - (NSString *)pageFilePath:(id)aPage forBlog:(id)aBlog;
 - (id)fectchNewPage:(NSString *)pageid formBlog:(id)aBlog;
 - (NSMutableDictionary *) pageTitleForPage:(NSDictionary *)aPage;
+- (BOOL)deleteAllPhotosForPage:(id)aPage forBlog:(id)aBlog;
 @end
 
 @implementation BlogDataManager
