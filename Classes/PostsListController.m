@@ -101,8 +101,6 @@
 
 
 - (IBAction) showAddPostView:(id)sender {
-	
-	WPLog(@"Add Post Button Clicked");
 	// Set current post to a new post
 	// Detail view will bind data into this instance and call save
 	
@@ -216,7 +214,6 @@
 			label.text = [dateFormatter stringFromDate:date];
 			
 			// to stop activity indicator if it is running.
-           // WPLog(@" The Cell Width is %f",cell.frame.size.width);
 			
 			UIActivityIndicatorView *aView = (UIActivityIndicatorView*)[cell viewWithTag:201];
             
@@ -234,7 +231,6 @@
 			// to set activity indicator anf lock image for background saving posts.
 			if(aSyncPostVal == 1)
 			{
-				WPLog(@"Asynchronous Post Name (%@)",[currentPost valueForKey:@"title"]);
 				aView.hidden = NO;
 				[aView startAnimating];
 				//for Lock image
@@ -250,12 +246,10 @@
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
 	
-	//	WPLog(@"Edit Post Button Clicked");
 }
 
 //- (UITableViewCellAccessoryType)tableView:(UITableView *)tv accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
 //
-//    WPLog(@"accessoryTypeForRowWithIndexPath %d",indexPath.row);
 //    return UITableViewCellAccessoryDisclosureIndicator; 
 //}
 
@@ -270,7 +264,6 @@
 
 - (void)reachabilityChanged
 {
-	WPLog(@"reachabilityChanged ....");
 	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
 	
 	[postsTableView reloadData];
@@ -335,13 +328,11 @@
 		self.postDetailViewController.mode = 1; 
 		[[self navigationController] pushViewController:self.postDetailViewController animated:YES];
 	}
-    WPLog(@"Pushing Completed");
 }
 
 #pragma mark -
 - (void)viewWillAppear:(BOOL)animated {
 	
-	WPLog(@"PostsList:viewWillAppear");
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	[dm postTitlesForBlog:[dm currentBlog]];
 	dm.isLocaDraftsCurrent = NO;
@@ -351,7 +342,6 @@
 	// everytime we navigate to the view
 	// need to update the prompt and the title here as well as in loadView	
 	NSString *hostName = [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blog_host_name"];
-	WPLog(@"host name was: %@", hostName);
 	NSString *blogName = [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blogName"];
 	
 	// remove the username prefix from the blog_host_name
@@ -359,7 +349,6 @@
 	NSString *username = [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"username"];
 	NSString *usernamePrefix = [NSString stringWithFormat:@"%@_", username];
 	hostName = [hostName stringByReplacingOccurrencesOfString:usernamePrefix withString:@""];
-	WPLog(@"host name changed for display to: %@", hostName);
 	
 	self.title = [NSString stringWithFormat:@"%@", blogName];
 	
@@ -407,8 +396,6 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-	WPLog(@"PostsList: viewDidAppear");
-	
 	[super viewDidAppear:animated];
 	
 	[self handleAutoSavedContext:0];
@@ -512,7 +499,6 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	
-	WPLog(@"POSTTTTTTTT----[delegate isAlertRunning]---------%d",[delegate isAlertRunning]);
 
 	if([delegate isAlertRunning] == YES)
 		return NO;
