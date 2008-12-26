@@ -94,7 +94,6 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsAndDraftsList) name:@"DraftsUpdated" object:nil];
 }
 - (void)updatePostsAndDraftsList{
-	WPLog(@"updatePostsAndDraftsList");
 	[self.tableView reloadData];
 }
 
