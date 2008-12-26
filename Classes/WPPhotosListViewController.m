@@ -30,21 +30,16 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 
 - (IBAction)showPhotoUploadScreen:(id)sender;
 {
-	WPLog(@"WPPhotoLVC showPhotoUploadScreenshowPhotoUploadScreen");
-
 	[self showPhotoPickerActionSheet];
 }
 
 - (IBAction)addPhotoFromLibraryAction:(id)sender
 {
-	WPLog(@"WPPhotoLVC addPhotoFromLibraryActionaddPhotoFromLibraryAction");
 	[self pickPhotoFromPhotoLibrary:nil];
 }
 
 - (IBAction)addPhotoFromCameraAction:(id)sender
 {
-	WPLog(@"WPPhotoLVC addPhotoFromCameraActionaddPhotoFromCameraAction");
-
 	[self pickPhotoFromCamera:nil];		
 }
 
@@ -56,7 +51,6 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 		pickerController.delegate = self;
 		pickerController.allowsImageEditing = NO;
 	}
-//	WPLog(@"pickerController %@", pickerController);
 	return pickerController;
 }
 
@@ -68,14 +62,10 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 
 - (void)showPhotoPickerActionSheet
 {
-	WPLog(@"WPPhotoLVC showPhotoPickerActionSheetshowPhotoPickerActionSheet");
-
 	isShowPhotoPickerActionSheet = YES;
 	// open a dialog with two custom buttons
 	if ([WPImagePickerController
 		 isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-		WPLog(@"WPPhotoLVC IN IF");
-
 		UIActionSheet *actionSheet = [[UIActionSheet alloc]
 									  initWithTitle:@""
 									  delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
@@ -89,10 +79,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 		[actionSheet release];
 		
 	} else {
-		WPLog(@"WPPhotoLVC IN ELSE");
-
 		[self pickPhotoFromPhotoLibrary:nil];
-		
 	}
 	
 }
@@ -149,7 +136,6 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 - (void)pickPhotoFromPhotoLibrary:(id)sender {
 //	[[BlogDataManager sharedDataManager] makeNewPictureCurrent];
 	if ([WPImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-		WPLog(@"111111pickPhotoFromPhotoLibrary ... %@",pageDetailsController);
 
 		WPImagePickerController* picker = [self pickerController];
 		picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
@@ -164,7 +150,6 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 	CGSize size = [img size];
 	
 	UIImageOrientation imageOrientation = [img imageOrientation];
-	WPLog(@"Image orientation : %d", imageOrientation);
 	
 	if (imageOrientation == UIImageOrientationUp)
 		return img;
@@ -340,7 +325,6 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 				didFinishPickingImage:(UIImage *)image
 									editingInfo:(NSDictionary *)editingInfo
 {
-	WPLog(@"imagePickerController editingInfo %@",editingInfo);
 //in case of photo library also we have to do our transformations.
 //	if( picker.sourceType == UIImagePickerControllerSourceTypeCamera )
 		image = [self scaleAndRotateImage:image];
@@ -362,7 +346,6 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
-//	WPLog(@"imagePickerControllerDidCancel");
 	[[picker parentViewController] dismissModalViewControllerAnimated:YES];
 	[self clearPickerContrller];
 	[tableView reloadData];
@@ -388,7 +371,6 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 //	
 //	[[currentPost valueForKey:@"Photos"] addObject:[dataManager saveImage:theImage]];
 //	[postDetailViewController updatePhotosBadge];
-//	WPLog(@"post detail currentPost %@",currentPost);
 }
 
 - (void)refreshData {
@@ -411,7 +393,6 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	WPLog(@"viewDidLoad from photos list  details -------%@",tableView);
 	self.title=@"Photos";
 
 	[tableView reloadData];
