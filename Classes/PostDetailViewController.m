@@ -59,7 +59,6 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didEndCustomizingViewControllers:(NSArray *)viewControllers changed:(BOOL)changed 
 {
-	WPLog(@"tabBarController didEndCustomizingViewControllers");	
 }
 
 - (void)dealloc 
@@ -101,8 +100,6 @@
 
 - (IBAction)saveAction:(id)sender 
 {
-    WPLog(@" ENTRY FOR  POST   ");
-
 	if (!hasChanges) {
 		[self stopTimer];
 		[self.navigationController popViewControllerAnimated:YES]; 
@@ -123,7 +120,7 @@
 		(!title || [title isEqualToString:@""]) && 
 		(!photos || ([photos count] == 0))) {
 		
-		NSString *msg = [NSString stringWithFormat:@"Please provide either a title or description, or attach photos to the post before saving."];
+		NSString *msg = [NSString stringWithFormat:@"Please provide either a title or description or attach photos to the post before saving."];
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Post Error"
 														message:msg
 													   delegate:self
@@ -165,7 +162,6 @@
 - (void)autoSaveCurrentPost:(NSTimer *)aTimer
 {
 	if( !hasChanges ){
-		WPLog(@"Returning -- hasChanges is false");
 		return;
 	}
 	
@@ -182,8 +178,7 @@
 		autoSaveTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(autoSaveCurrentPost:) userInfo:nil repeats:YES];
 		[autoSaveTimer retain];
 	}else{
-		WPLog(@"ERROR: There exits a timer, trying to create another timer object.");
-	}
+ 	}
 }
 
 - (void)stopTimer
@@ -308,10 +303,8 @@
 
 - (void)addAsyncPostOperation:(SEL)anOperation withArg:(id)anArg
 {
-    WPLog(@" addAsyncOperation :anOperation ....");
-    if( ![self respondsToSelector:anOperation] ){
-		WPLog(@"ERROR: %@ can't respond to the Operation %@.", @"Blog Data Manager", NSStringFromSelector(anOperation));
-		return;
+     if( ![self respondsToSelector:anOperation] ){
+ 		return;
 	}
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	NSString *postId=[dm savePostsFileWithAsynPostFlag:[anArg objectAtIndex:0]];
@@ -519,20 +512,15 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-
-	WPLog(@"pdvc viewWillAppear");
-	
-    [leftView setTarget:self withAction:@selector(cancelView:)];
+     [leftView setTarget:self withAction:@selector(cancelView:)];
 	if(hasChanges == YES) {
 		if ([[leftView title] isEqualToString:@"Posts"]){
             [leftView setTitle:@"Cancel"];
-            WPLog(@" The Title is Set to Cancel");
-        }
+         }
 		
 		self.navigationItem.rightBarButtonItem = saveButton;
 	}else {
         [leftView setTitle:@"Posts"];
-        WPLog(@" The Title is Set to Posts");
         self.navigationItem.rightBarButtonItem = nil;
 	}
     // For Setting the Button with title Posts.
@@ -560,8 +548,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
-    WPLog(@"PDVC RR viewWillDisappear");
-    mode = 3;
+     mode = 3;
 	[postPreviewController stopLoading];
 }
 
@@ -578,7 +565,6 @@
 {
 	//Code to disable landscape when alert is raised.
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	WPLog(@"PDVC [delegate isAlertRunning]----%d",[delegate isAlertRunning]);
 	if([delegate isAlertRunning] == YES)
 		return NO;
 
