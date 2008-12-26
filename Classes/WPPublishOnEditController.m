@@ -41,8 +41,6 @@
 }
 
 -(IBAction)datePickerValueChanged:(id)sender {
-	WPLog(@"datePickerValueChanged");
-	
 	[dateLabel setText:[dateFormatter stringFromDate:datePicker.date]];
 	[[[BlogDataManager sharedDataManager] currentPost] setValue:datePicker.date forKey:@"date_created_gmt"];
 //	[[[BlogDataManager sharedDataManager] currentPost] setValue:datePicker.date forKey:@"dateCreated"];
@@ -60,7 +58,7 @@
 
 
 - (void)didReceiveMemoryWarning {
-		WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+	WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
 	// Release anything that's not essential, such as cached data
 }
