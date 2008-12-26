@@ -88,6 +88,8 @@
 		C533CF350E6D3ADA000C3DE8 /* CommentsListController.m in Sources */ = {isa = PBXBuildFile; fileRef = C533CF340E6D3ADA000C3DE8 /* CommentsListController.m */; };
 		C533CF460E6D3E24000C3DE8 /* CommentsListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C533CF450E6D3E24000C3DE8 /* CommentsListController.xib */; };
 		C55A90D90E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C55A90D80E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m */; };
+		C584D0840EF942DC00B78012 /* UIViewController+WPAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = C584D0830EF942DC00B78012 /* UIViewController+WPAnimation.m */; };
+		C584D0B40EF943A600B78012 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C584D0B30EF943A600B78012 /* QuartzCore.framework */; };
 		C59614CA0E6C547300E2FBF0 /* BlogMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C59614C90E6C547300E2FBF0 /* BlogMainViewController.m */; };
 		C59615350E6C5B0000E2FBF0 /* WPBlogMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C59615340E6C5B0000E2FBF0 /* WPBlogMainViewController.xib */; };
 		C59D3D4B0E6410D300AA591D /* NSString+XMLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */; };
@@ -228,6 +230,9 @@
 		C533CF450E6D3E24000C3DE8 /* CommentsListController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentsListController.xib; sourceTree = "<group>"; };
 		C55A90D70E8026C500E1C9B5 /* WPSegmentedSelectionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPSegmentedSelectionTableViewController.h; sourceTree = "<group>"; };
 		C55A90D80E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPSegmentedSelectionTableViewController.m; sourceTree = "<group>"; };
+		C584D0820EF942DC00B78012 /* UIViewController+WPAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+WPAnimation.h"; sourceTree = "<group>"; };
+		C584D0830EF942DC00B78012 /* UIViewController+WPAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+WPAnimation.m"; sourceTree = "<group>"; };
+		C584D0B30EF943A600B78012 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C59614C80E6C547300E2FBF0 /* BlogMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogMainViewController.h; sourceTree = "<group>"; };
 		C59614C90E6C547300E2FBF0 /* BlogMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogMainViewController.m; sourceTree = "<group>"; };
 		C59615340E6C5B0000E2FBF0 /* WPBlogMainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WPBlogMainViewController.xib; sourceTree = "<group>"; };
@@ -262,6 +267,7 @@
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				2892E4100DC94CBA00A64D0F /* CoreGraphics.framework in Frameworks */,
 				A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */,
+				C584D0B40EF943A600B78012 /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,6 +277,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				C584D0820EF942DC00B78012 /* UIViewController+WPAnimation.h */,
+				C584D0830EF942DC00B78012 /* UIViewController+WPAnimation.m */,
 				2F970F970DF929B8006BD934 /* Constants.h */,
 				1D3623240D0F684500981E51 /* WordPressAppDelegate.h */,
 				1D3623250D0F684500981E51 /* WordPressAppDelegate.m */,
@@ -340,6 +348,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C584D0B30EF943A600B78012 /* QuartzCore.framework */,
 				A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */,
 				2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
@@ -739,6 +748,7 @@
 				ECCD488C0EA8628A0078082C /* PageDetailViewController.m in Sources */,
 				EC0F59330EB042B0002FCB4D /* PageDetailsController.m in Sources */,
 				108F0F540EC2A4F200D09FB6 /* PagesDraftListController.m in Sources */,
+				C584D0840EF942DC00B78012 /* UIViewController+WPAnimation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

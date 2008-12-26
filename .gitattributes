@@ -33,6 +33,8 @@ Classes/Reachability.h -text
 Classes/Reachability.m -text
 Classes/RootViewController.h -text
 Classes/RootViewController.m -text
+Classes/UIViewController+WPAnimation.h -text
+Classes/UIViewController+WPAnimation.m -text
 Classes/WPActivityIndicator.h -text
 Classes/WPActivityIndicator.m -text
 Classes/WPAddCategoryViewController.h -text

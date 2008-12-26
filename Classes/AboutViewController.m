@@ -1,6 +1,7 @@
 #import "AboutViewController.h"
 #import "WPNavigationLeftButtonView.h"
 #import "WordPressAppDelegate.h"
+#import "UIViewController+WPAnimation.h"
 
 
 @interface AboutViewController ( privates )
@@ -41,7 +42,6 @@
 
 	//If you need to do additional setup after loading the view, override viewDidLoad.
 - (void)viewDidLoad {
-	
 	WPNavigationLeftButtonView *myview = [WPNavigationLeftButtonView createView];  
     [myview setTarget:self withAction:@selector(goToHome:)];
     [myview setTitle:@"Home"];
@@ -54,7 +54,7 @@
 }
 
 - (IBAction)goToHome:(id)sender {
-	[self.navigationController popToRootViewControllerAnimated:YES];
+	[self popTransition:self.navigationController.view];
 }
 
 
@@ -82,7 +82,7 @@
 
 
 - (void)didReceiveMemoryWarning {
-		WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+	WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
 	// Release anything that's not essential, such as cached data
 }
