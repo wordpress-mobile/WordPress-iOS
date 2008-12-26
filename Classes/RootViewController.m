@@ -5,6 +5,8 @@
 #import "Reachability.h"
 #import "PostsListController.h"
 #import "WordPressAppDelegate.h"
+#import "UIViewController+WPAnimation.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface RootViewController (private)
 
@@ -47,13 +49,10 @@
 	
 	
 	BlogDetailModalViewController *blogDetailViewController = [[BlogDetailModalViewController alloc] initWithNibName:@"WPBlogDetailViewController" bundle:nil];
-	
-	//	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:blogDetailViewController];
 	blogDetailViewController.isModal = YES;
 	blogDetailViewController.mode	= 0;
-	
-	[self.navigationController presentModalViewController:blogDetailViewController animated:YES];
-	//	[navigationController release];
+	[self pushTransition:blogDetailModalViewController];
+//	[self.navigationController presentModalViewController:blogDetailViewController animated:YES];
 	[blogDetailViewController refreshBlogCompose];
 	blogDetailViewController.removeBlogButton.hidden = YES;
 	[blogDetailViewController release];
@@ -61,14 +60,11 @@
 
 - (void)blogsRefreshNotificationReceived:(id)notification
 {
-	WPLog(@"blogsTableView reloadData .......");
-	
 	[blogsTableView reloadData];
 }
 
 //- (void)syncAllBlogs:(id)sender
 //{
-//	WPLog(@"syncAllBlogs .......");
 //	[[BlogDataManager sharedDataManager] syncPostsForAllBlogsToQueue:nil];
 //}
 
@@ -163,15 +159,13 @@
 		if ([dataManager countOfBlogs] == indexPath.row || [dataManager countOfBlogs] == 0) {
 			[dataManager makeNewBlogCurrent];
 			BlogDetailModalViewController *blogDetailModalViewController = [[BlogDetailModalViewController alloc] initWithNibName:@"WPBlogDetailViewController" bundle:nil];
-//			UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController:blogDetailModalViewController];
-			[self.navigationController pushViewController:blogDetailModalViewController animated:YES];
+			[self pushTransition:blogDetailModalViewController];
 			self.navigationController.navigationBarHidden = NO;
 			blogDetailModalViewController.removeBlogButton.hidden = YES;
 			blogDetailModalViewController.isModal = NO;
 			blogDetailModalViewController.mode = 0;
 			[blogDetailModalViewController refreshBlogCompose];
 			[blogDetailModalViewController release];	
-//			[navigationCntrlr release];
 		} else {
 			if( [[[dataManager blogAtIndex:indexPath.row] valueForKey:@"kIsSyncProcessRunning"] intValue] == 1 ) {
 				[blogsTableView deselectRowAtIndexPath:[blogsTableView indexPathForSelectedRow] animated:YES];
@@ -193,14 +187,12 @@
 			NSDictionary *currentBlog = dataManager.currentBlog;
 			
 			if ( [[currentBlog valueForKey:kSupportsPagesAndComments] boolValue] ) {
-			
+				
 				BlogMainViewController  *blogMainViewController = [[BlogMainViewController alloc] initWithNibName:@"WPBlogMainViewController" bundle:nil];
 				self.title=@"Blogs";
-				//UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController:blogMainViewController];
-				[self.navigationController pushViewController:blogMainViewController animated:YES];
+				[self pushTransition:blogMainViewController];
 				self.navigationController.navigationBarHidden = NO;
 				[blogMainViewController release];
-				//[navigationCntrlr release];
 			} else {
 				
 				if ( [[currentBlog valueForKey:kVersionAlertShown] boolValue] == NO || [currentBlog valueForKey:kVersionAlertShown] ==NULL )
@@ -217,25 +209,20 @@
 					[currentBlog setValue:[NSNumber numberWithBool:YES]   forKey:kVersionAlertShown];
 					[dataManager saveCurrentBlog];
 				}
-				
 				PostsListController *postsListController = [[PostsListController alloc] initWithNibName:@"PostsListController" bundle:nil];
-//				UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController: postsListController];
 				postsListController.title = [[dataManager currentBlog] valueForKey:@"blogName"];
-				[self.navigationController pushViewController: postsListController animated:YES];
+				[self pushTransition:postsListController];
 				self.navigationController.navigationBarHidden = NO;
 				[postsListController release];
-//				[navigationCntrlr release];
 			}
 		}
 		
 	}else {
 		AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutWordpress" bundle:nil];
-//		UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController:aboutViewController];
-		[self.navigationController pushViewController:aboutViewController animated:YES];
 		self.title=@"Home";
+		[self pushTransition:aboutViewController];
 		self.navigationController.navigationBarHidden = NO;
 		[aboutViewController release];
-//		[navigationCntrlr release];
 	}	
 }
 
@@ -247,23 +234,13 @@
 	// Detail view will bind data into this instance and call save
 	
 	[[BlogDataManager sharedDataManager] copyBlogAtIndexCurrent:(indexPath.row)];
-	
-	
-	
-	//	WPLog(@"current blog is : %@",[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blogName"]);
-	
-	
 	BlogDetailModalViewController *blogDetailViewController = [[BlogDetailModalViewController alloc] initWithNibName:@"WPBlogDetailViewController" bundle:nil];
-	
-//	UINavigationController *navigationCntrlr = [[UINavigationController alloc] initWithRootViewController:blogDetailViewController];
-
 	blogDetailViewController.removeBlogButton.hidden = NO;
 	blogDetailViewController.isModal = NO;
 	blogDetailViewController.mode	= 1;
-	[[self navigationController] pushViewController:blogDetailViewController animated:YES];
+	[self pushTransition:blogDetailViewController];
 	[blogDetailViewController refreshBlogEdit];
 	[blogDetailViewController release];
-//	[navigationCntrlr release];
 }
 
 /*
@@ -307,9 +284,9 @@
 
 
 - (void)viewWillAppear:(BOOL)animated {
-	
-	WPLog(@"Root:viewWillAppear");
-	
+	if([blogsTableView indexPathForSelectedRow])
+		[self popTransition:self.navigationController.view];
+
 	self.navigationController.navigationBarHidden= YES;
 	
 	// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
@@ -321,8 +298,6 @@
 	[blogsTableView reloadData];
 	
 	[super viewWillAppear:animated];
-	
-	
 }
 
 - (void)viewDidAppear:(BOOL)animated {
