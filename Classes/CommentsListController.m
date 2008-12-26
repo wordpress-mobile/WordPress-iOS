@@ -41,8 +41,6 @@
  */
 
 - (void)viewWillAppear:(BOOL)animated {
-	
-	WPLog(@"PostsList:viewWillAppear");
 		
 	editMode = NO;
 	changeEditMode = YES;
@@ -62,13 +60,11 @@
 	for ( NSDictionary *dict in commentsArray ) {
 		NSString *str=[dict valueForKey:@"comment_id"];
 		[commentsDict setValue:dict forKey:str];
-		WPLog(@"Comment Status is (%@)",[dict valueForKey:@"status"]);
 		if ( [[dict valueForKey:@"status"] isEqualToString:@"hold"] ) {
 			awaitingComments++;
 		}
 	}
 	
-	WPLog(@"awaitingComments (%d)",awaitingComments);
 	if ( awaitingComments == 0 )
 		[commentStatusButton setTitle:@"" forState:UIControlStateNormal];
 	else
@@ -86,7 +82,6 @@
 }
 - (void)viewWillDisappear:(BOOL)animated{
 	editButtonItem.title = @"Edit";
-	WPLog(@"viewWillDisappear ");
 	[super viewWillDisappear:animated];
 }
 
@@ -107,7 +102,6 @@
 
 - (void)reachabilityChanged
 {
-	WPLog(@"reachabilityChanged ....");
 	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
 	
 	[commentsTableView reloadData];
@@ -139,6 +133,7 @@
 }
 
 - (void)didReceiveMemoryWarning {
+	WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
 	// Release anything that's not essential, such as cached data
 }
@@ -161,7 +156,6 @@
 	UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aiv];
 	[aiv startAnimating]; 
 	[aiv release];
-	
 	self.navigationItem.rightBarButtonItem = activityButtonItem;
 	[activityButtonItem release];
 	[apool release];
@@ -175,13 +169,16 @@
 		[[NSRunLoop currentRunLoop] runUntilDate:[[NSDate date] addTimeInterval:0.1]];
 	}
 	
+	
+	editButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered 
+													 target:self action:@selector(editComments:)];
 	self.navigationItem.rightBarButtonItem = editButtonItem;
+	
 	[apool release];
 }
 #pragma mark -
 #pragma mark Action methods
 - (IBAction)downloadRecentComments:(id)sender {
-	
 	if( !connectionStatus ){
 		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
 														 message:@"Sync operation is not supported now."
@@ -199,8 +196,7 @@
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
-	
-	
+
 	BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
 	[sharedBlogDataManager syncCommentsForCurrentBlog];
 	[sharedBlogDataManager loadCommentTitlesForCurrentBlog];
@@ -229,7 +225,6 @@
 }
 
 - (IBAction)deleteSelectedComments:(id)sender{
-	WPLog(@"deleteSelectedComments");
 //    UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Delete Comments" message:@"Are you sure you want to delete this comment?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel", nil];
     UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Delete Comments" message:@"Are you sure you want to delete the selected comment(s)?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];                                                
     [deleteAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
@@ -240,8 +235,6 @@
 		
 }
 - (IBAction)approveSelectedComments:(id)sender{
-	
-	WPLog(@"approveSelectedComments");
 //	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Approve Comments" message:@"Are you sure you want to Approve this comment?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel", nil];
 	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Approve Comments" message:@"Are you sure you want to approve the selected comment(s)?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];                                                
 	[deleteAlert setTag:2];  // for UIAlertView Delegate to handle which view is popped.
@@ -252,7 +245,6 @@
 	
 }
 - (IBAction)unapproveSelectedComments:(id)sender{
-	WPLog(@"unapproveSelectedComments");
 //	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Unapprove Comments" message:@"Are you sure you want to Unapprove this comment?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel", nil];
 	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Unapprove Comments" message:@"Are you sure you want to unapprove the selected comment(s)?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];                                                
 	[deleteAlert setTag:3];  // for UIAlertView Delegate to handle which view is popped.
@@ -263,7 +255,6 @@
 }
 
 - (IBAction)spamSelectedComments:(id)sender{
-	WPLog(@"spamSelectedComments");
 //	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Spam Comments" message:@"Are you sure you want to Spam this comment?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel", nil];
 	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Spam Comments" message:@"Are you sure you want to mark the selected comment(s) as spam?. This action can only be reversed in the web admin." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];                                                
 	[deleteAlert setTag:4];  // for UIAlertView Delegate to handle which view is popped.
@@ -275,7 +266,6 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    WPLog(@"The Alet name %d",[alertView tag]);
 	
 	//optimised code but need to comprimise at Alert messages.....Common message for all @"Operation is not supported now."
 //	if ( buttonIndex == 0 ) 
@@ -363,7 +353,6 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	[unapproveButton setTitle:(((count-unapprovedCount) > 0)?[NSString stringWithFormat:@"Unapprove (%d)",count-unapprovedCount]:@"Unapprove")];
 	[spamButton setTitle:(((count-spamCount) > 0)?[NSString stringWithFormat:@"Spam (%d)",count-spamCount]:@"Spam")];
 	
-	//WPLog(@"unapprovedCount %d approvedCount %d spamCount %d",unapprovedCount,approvedCount,spamCount);
 }
 #pragma mark -
 #pragma mark tableview methods
