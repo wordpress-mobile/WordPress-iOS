@@ -6,6 +6,7 @@
 #import "WordPressAppDelegate.h"
 #import "RootViewController.h"
 #import "WPNavigationLeftButtonView.h"
+#import "UIViewController+WPAnimation.h"
 
 @interface BlogDetailModalViewController()
 - (void)populateSelectionsControllerWithNoOfRecentPosts;
@@ -88,12 +89,7 @@
 	// we retain this controller in the caller (RootViewController) so load view does not get called 
 	// everytime we navigate to the view
 	// need to update the prompt and the title here as well as in loadView
-	//	WPLog(@"[[BlogDataManager sharedDataManager] currentBlog] %@", [[BlogDataManager sharedDataManager] currentBlog]);
 	NSString *blogid = [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blogid"];
-	//	WPLog(@"BlogDetailModal:viewWillAppear 22222222");
-	
-	//	WPLog(@"BlogDetailModal:viewWillAppear blogid: %@", blogid);
-	
 	if (!blogid || blogid == @"") {
 		self.title = NSLocalizedString(@"Add Blog", @"BlogDetailModalViewController_Title_AddBlog");
 	} else {
@@ -104,7 +100,6 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-	WPLog(@"BlogDetailModal:viewDidAppear");
 	[super viewDidAppear:animated];
 }
 
@@ -273,19 +268,7 @@
 		[self.navigationController dismissModalViewControllerAnimated:YES];
 	}
 	else {
-		//		RootViewController *rootViewController = [[RootViewController alloc] initWithNibName:@"RootViewController" bundle:nil];
-		//		
-		//		[[WordPressAppDelegate sharedWordPressApp] setNavigationController:[[UINavigationController alloc] initWithRootViewController:rootViewController]];
-		//		[rootViewController release];
-		//		// Configure and show the window
-		//		[[WordPressAppDelegate sharedWordPressApp] navigationController].navigationBarHidden = YES;
-		//		WPLog(@"sharedWordPressApp %@",[WordPressAppDelegate sharedWordPressApp]);
-		//		WPLog(@"window %@",[[WordPressAppDelegate sharedWordPressApp] window]);
-		//		WPLog(@"subviews %@",[[[WordPressAppDelegate sharedWordPressApp] window] subviews]);
-		//		[[[WordPressAppDelegate sharedWordPressApp] window] addSubview:[[WordPressAppDelegate sharedWordPressApp] navigationController].view];
-		
-		//		[self.navigationController popViewControllerAnimated:YES];
-		[[[WordPressAppDelegate sharedWordPressApp] navigationController] popViewControllerAnimated:YES];
+		[self popTransition:self.navigationController.view];
 	}
 }
 
@@ -383,7 +366,6 @@
  */
 
 - (void)saveBlog:(id)sender {
-	WPLog(@"Save Blog was clicked");
 	// save the blog and then invoke dismissModalViewControllerAnimated on the parent nav controller
 	
 	if (self.currentEditingTextField)
@@ -437,7 +419,7 @@
 		
 		//		WPBlogsListController *blogListController = [[WPBlogsListController alloc] initWithNibName:@"WPBlogsListController" bundle:nil];
 		//		[self.navigationController pushViewController:blogListController animated:YES];
-		[[[WordPressAppDelegate sharedWordPressApp] navigationController] popViewControllerAnimated:YES];
+		[self popTransition:self.navigationController.view];
 		
 		//		// Success Message
 		//		UIAlertView *alert5 = [[UIAlertView alloc] initWithTitle:@"Success!"
