@@ -66,7 +66,6 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didEndCustomizingViewControllers:(NSArray *)viewControllers changed:(BOOL)changed 
 {
-	WPLog(@"tabBarController didEndCustomizingViewControllers");	
 }
 
 - (void)dealloc 
@@ -87,7 +86,6 @@
 - (void)updatePhotosBadge
 {
 	int photoCount = [[[BlogDataManager sharedDataManager].currentPage valueForKey:@"Photos"] count];
-	WPLog(@"PHOTOS COUNT--------%d",photoCount);
 	if( photoCount )
 		photosListController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",photoCount];
 	else 
@@ -258,7 +256,6 @@
 - (IBAction)savePageAction:(id)sender 
 {
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	WPLog(@" savePageAction %@ ",dm.currentPage);
 		if (!hasChanges) {
 			[self.navigationController popViewControllerAnimated:YES]; 
 			return;
@@ -273,9 +270,8 @@
 	if ((!description || [description isEqualToString:@""]) &&
 		(!title || [title isEqualToString:@""])&&
 		(!photos || ([photos count] == 0))) {
-		WPLog(@"IN NO VALUES");
 
-		NSString *msg = [NSString stringWithFormat:@"Please provide either a title or description, or attach photos to the page before saving."];
+		NSString *msg = [NSString stringWithFormat:@"Please provide either a title or description or attach photos to the page before saving."];
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Page Error"
 														message:msg
 													   delegate:self
@@ -296,14 +292,15 @@
 	
 	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
 	
-	if( [[dm.currentPage valueForKey:@"page_status"] isEqual:@"Local Draft"] )
+	if( [[dm.currentPage valueForKey:@"page_status"] isEqual:@"Local Draft"] ) {
 		[self _saveAsDrft];
-	else	
-	[dm savePage:dm.currentPage];
-	
-	[self.navigationController popViewControllerAnimated:YES];
-	
+	} else {
+		[dm savePage:dm.currentPage];
+	}
+
 	[self performSelectorInBackground:@selector(removeProgressIndicator) withObject:nil];
+	[self.navigationController popViewControllerAnimated:YES];
+
 	
 	hasChanges=NO;
 
@@ -321,7 +318,7 @@
 	//new post is saving as draft.
 	if( pageIndex == -1 ){
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Draft Saved"
-														message:@"Your post has been saved to the Local Drafts folder."
+														message:@"Your page has been saved to the Local Drafts folder."
 													   delegate:self
 											  cancelButtonTitle:nil
 											  otherButtonTitles:@"OK", nil];
@@ -333,8 +330,6 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	WPLog(@"pagedetailscontroller  viewWillAppear");
-	WPLog(@"pagedetailscontroller viewWillAppear MODEEEEEE-------%d---------hasChanges------%d",mode,hasChanges);
 	//self.navigationItem.title=@"Write";
     [leftView setTarget:self withAction:@selector(cancelView:)];
 	if(hasChanges == YES) {
