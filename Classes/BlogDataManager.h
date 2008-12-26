@@ -172,6 +172,7 @@
 - (BOOL)makeDraftAtIndexCurrent:(NSInteger)anIndex;
 - (BOOL)makePageDraftAtIndexCurrent:(NSInteger)anIndex;
 - (BOOL)deleteDraftAtIndex:(NSInteger)anIndex forBlog:(id)aBlog;
+- (BOOL)deletePageDraftAtIndex:(NSInteger)anIndex forBlog:(id)aBlog;
 - (void)resetDrafts;
 - (void)resetCurrentDraft;
 
@@ -190,10 +191,6 @@
 - (BOOL)validateCurrentBlog:(NSString *)url user:(NSString *)username password:(NSString*)pwd;
 - (BOOL) syncPostsForBlog:(id)blog;
 - (BOOL) syncPostsForCurrentBlog;
-
-- (BOOL) syncCommentsForCurrentBlog;
-// sync comments for a given blog
-- (BOOL) syncCommentsForBlog:(id)blog;
 	
 - (void)generateTemplateForBlog:(id)aBlog;
 - (BOOL)wrapperForSyncPostsAndGetTemplateForBlog:(id)aBlog;
