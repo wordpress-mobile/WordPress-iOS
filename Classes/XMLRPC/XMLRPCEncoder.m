@@ -312,7 +312,6 @@
 {
 //	NSString *buffer = [date descriptionWithCalendarFormat: @"%Y%m%dT%H:%M:%S"
 //		timeZone: nil locale: nil];
-//	WPLog(@"encode date %@",date);
 
 	NSCalendar *cal = [NSCalendar currentCalendar];	
 	NSDateComponents *comps = [cal components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit
@@ -332,14 +331,12 @@
 	
 	NSString *buffer = [NSString stringWithFormat:@"%d%@%@T%@:%@:%@", [comps year]	,month	,day		,hour	,minute,second];
 	
-//	WPLog(@"encoded date  %@",buffer);
 	
 	return [self valueTag: @"dateTime.iso8601" value: buffer];
 }
 
 - (NSString *)encodeData: (NSData *)data
 {
-	WPLog(@"START base64StringFromData %d", [data length]);
 //	NSString *buffer = [NSString base64StringFromData: data
 //		length: [data length]];
 //	return [self valueTag: @"base64" value: buffer];
@@ -351,7 +348,6 @@
 	r = [str rangeOfString:@"</data>"];
 	str = [str substringToIndex:r.location-1];
 	str = [NSString stringWithFormat:@"<value><base64>%@</base64></value>",str];
-	WPLog(@"END base64StringFromData %d", [data length]);
 	return str;
 }
 
