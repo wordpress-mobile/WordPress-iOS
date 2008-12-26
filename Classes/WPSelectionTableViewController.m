@@ -23,9 +23,6 @@
 
 - (void)clean
 {
-	
-	WPLog(@"curContext %u", curContext);
-	
 	[objects release];
 	objects = nil;
 	selectionDelegate = nil;
@@ -77,7 +74,6 @@
 			[selectionObjects addObject:curObject];
 	}
 	
-//	WPLog(@"selectionObjects %@", selectionObjects);
 	return selectionObjects;
 }
 
@@ -130,7 +126,6 @@
 
 
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
-//	WPLog(@"tableView: numberOfRowsInSection %@", objects);
 	// plus one to because we add a row for "Local Drafts"
 	//
 	return ( [objects count] );
@@ -159,10 +154,6 @@
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//	WPLog(@"indexPath %@", indexPath );
-
-//	WPLog(@"selectionStatusOfObjects %@", selectionStatusOfObjects );
-
 	BOOL curStatus = [[selectionStatusOfObjects objectAtIndex:indexPath.row] boolValue];
 	if( selectionType == kCheckbox )
 	{
