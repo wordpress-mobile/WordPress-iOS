@@ -79,7 +79,6 @@
 	if (currentPhotoIndex < ([array count] - 1))
 		nextImageButtonItem.enabled = YES;
 
-//	WPLog(@"prev currentPhotoIndex %d",currentPhotoIndex);
 	titleButtonItem.title = [NSString stringWithFormat:@"%d of %d",currentPhotoIndex+1, [array count]];
 	imageView.image = [dataManager imageNamed:[array objectAtIndex:currentPhotoIndex] forBlog:dataManager.currentBlog];
 	
@@ -94,14 +93,12 @@
 	if (currentPhotoIndex > 0)
 		previousImageButtonItem.enabled = YES;
 	
-//	WPLog(@"next currentPhotoIndex %d",currentPhotoIndex);
 	titleButtonItem.title = [NSString stringWithFormat:@"%d of %d",currentPhotoIndex+1, [array count]];
 	imageView.image = [dataManager imageNamed:[array objectAtIndex:currentPhotoIndex] forBlog:dataManager.currentBlog];
 	
 }
 
 - (IBAction)deleteImage:(id)sender {
-	//WPLog(@"deleteImage  currentPhotoIndex %d",currentPhotoIndex);
 	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 	id array =[photosListViewController.delegate photosDataSource];
 	[dataManager deleteImageNamed:[array objectAtIndex:currentPhotoIndex] forBlog:dataManager.currentBlog];
@@ -125,12 +122,8 @@
 	}
 	titleButtonItem.title = [NSString stringWithFormat:@"%d of %d",currentPhotoIndex+1, [array count]];
 	
-	
 	[photosListViewController.delegate updatePhotosBadge];
-	photosListViewController.postDetailViewController.hasChanges = YES;
-	
-//	[photosListViewController.postDetailViewController updatePhotosBadge];
-//	photosListViewController.postDetailViewController.hasChanges = YES;
+	[photosListViewController.delegate setHasChanges:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
