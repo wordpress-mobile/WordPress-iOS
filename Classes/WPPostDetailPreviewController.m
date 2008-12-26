@@ -31,7 +31,6 @@
 }
 
 - (void)refreshWebView {
-	WPLog(@"refreshWebView");
 	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 	
 	// Use the template to preview if local draft, new post, 
