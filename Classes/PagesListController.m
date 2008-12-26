@@ -96,8 +96,6 @@
     return cell;
 }
 - (IBAction) showAddNewPage:(id)sender {
-	
-	WPLog(@"showAddNewPage Clicked");
 	// Set current post to a new post
 	// Detail view will bind data into this instance and call save
 	
@@ -268,7 +266,6 @@
 
 - (void)reachabilityChanged
 {
-	WPLog(@"Pages List reachabilityChanged ....");
 	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
 	
 	[pagesTableView reloadData];
@@ -334,8 +331,6 @@
 
 
 - (IBAction)downloadRecentPages:(id)sender {
-	
-	WPLog(@"PagesList: downloadRecentPages");
 	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
 	BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
 	[sharedBlogDataManager syncPagesForBlog:[sharedBlogDataManager currentBlog]];
