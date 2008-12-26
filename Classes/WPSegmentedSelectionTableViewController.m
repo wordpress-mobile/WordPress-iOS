@@ -28,7 +28,6 @@
 - (void)viewWillDisappear:(BOOL)animated {
 	if( ! flag ){
 		if( [selectionDelegate respondsToSelector:@selector(selectionTableViewController:completedSelectionsWithContext:selectedObjects:haveChanges:)] ){
-		//	WPLog(@"########## viewWillDisappear selectionDelegate respondsToSelector categoryNames %@",categoryNames);
 
             NSMutableArray *result = [NSMutableArray array];
             int i=0,count = [categoryNames count];
@@ -57,7 +56,6 @@
 //overriding the main Method
 - (void)populateDataSource:(NSArray *)sourceObjects havingContext:(void*)context selectedObjects:(NSArray *)selObjects selectionType:(WPSelectionType)aType andDelegate:(id)delegate
 {
-	WPLog(@"populateDataSource:havingContext:");
 	objects = [sourceObjects retain];
 	curContext = context;
 	selectionType = aType;
@@ -92,7 +90,6 @@
 		}
     }
 	
-    WPLog(@"The Names of the 'categoryName' key  %@",selectionStatusOfObjects);
    	[originalSelObjects release];
 	originalSelObjects = [selectionStatusOfObjects copy];
 	
@@ -102,19 +99,16 @@
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView {
-	//WPLog(@"numberOfSectionsInTableView %d",[objects count]);
     return [objects count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-//	WPLog(@"numberOfRowsInSection %d",section);
 	NSArray *subArray=[objects objectAtIndex:section];
 	
     return [subArray count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	
     NSString *selectionTableRowCell = @"selectionTableRowCell";
 	
 	UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:selectionTableRowCell];
@@ -127,6 +121,7 @@
     if(subArray){
         if (indexPath.row < [subArray count]) {
 			NSDictionary *item = (NSDictionary *)[subArray objectAtIndex:indexPath.row];
+			
 			if(indexPath.row == 0)
 				cell.text = [item valueForKey:@"categoryName"];
 			else
@@ -147,16 +142,12 @@
 }
 - (UITableViewCellAccessoryType)tableView:(UITableView *)aTableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath 
 {
- //   WPLog(@"accessoryTypeForRowWithIndexPath 1111111111111 %@",indexPath);
     int previousRows = indexPath.section + indexPath.row;
     int currentSection = indexPath.section;
     while ( currentSection > 0 ) {
         currentSection--;
         previousRows += [self tableView:aTableView numberOfRowsInSection:currentSection] - 1;
     }
-	
-  //  WPLog(@"the previousRows is %d",previousRows);
-//    WPLog(@"the selectionStatusOfObjects is %@",selectionStatusOfObjects);
     
 	return (UITableViewCellAccessoryType)( [[selectionStatusOfObjects objectAtIndex:previousRows] boolValue] == YES ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone );	
 }
