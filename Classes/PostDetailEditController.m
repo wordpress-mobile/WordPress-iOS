@@ -44,7 +44,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 {
 
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	WPLog(@"PDEC refreshUIForCurrentPost-------%@",dm.currentPost);
 
 	NSString *description = [dm.currentPost valueForKey:@"description"];
 	
@@ -83,7 +82,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     NSMutableArray *parentIds = [[NSMutableArray alloc] initWithCapacity:[cats count]];
     int i,j,categoryCount = [cats count];
     for(i = 0;i < categoryCount; i++){
-        WPLog(@"Parent categories Categories..... %@",[[cats objectAtIndex:i] objectForKey:@"parentId"]);
         
 		int parent = [[[cats objectAtIndex:i] valueForKey:@"parentId"] intValue];
       	if(parent == 0){
@@ -120,7 +118,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
     segmentedTableViewController.title = @"Categories";
 	segmentedTableViewController.navigationItem.rightBarButtonItem = newCategoryBarButtonItem;
-	WPLog(@"selectionTableViewController navigationItem %@", segmentedTableViewController.navigationItem);
 	if(isNewCategory!=YES) {
 		[postDetailViewController.navigationController pushViewController:segmentedTableViewController animated:YES];
 	}
@@ -158,7 +155,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)selectionTableViewController:(WPSelectionTableViewController *)selctionController completedSelectionsWithContext:(void *)selContext selectedObjects:(NSArray *)selectedObjects haveChanges:(BOOL)isChanged
 {
-	//	WPLog(@" %@ completedSelectionsWithContext %u isChanged %d selectedObjects %@", [self className], selContext, isChanged, selectedObjects);
 	if( !isChanged ){
 		[selctionController clean];
 		return;
@@ -332,7 +328,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	}
 	
     if([alertView tag] == 2){
-		WPLog(@"IN PDVCCCCCCC--------");
      	if ( buttonIndex == 1){
             if((urlField.text == nil)||([urlField.text isEqualToString:@""]))
 			{
@@ -344,7 +339,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			
 			NSString *commentsStr = textView.text;
 			NSRange rangeToReplace=[self selectedLinkRange];
-			//WPLog(@" Entered Text %@ and The Link %@ selected text is %@ ******* %d,%d",infoText.text,urlField.text,[commentsStr substringWithRange:rangeToReplace],rangeToReplace.location,rangeToReplace.length);
 			NSString *urlString=[self validateNewLinkInfo:urlField.text];
 			NSString *aTagText=[NSString stringWithFormat:@"<a href=\"%@\">%@</a>",urlString,infoText.text];;
 			textView.text = [commentsStr stringByReplacingOccurrencesOfString:[commentsStr substringWithRange:rangeToReplace] withString:aTagText options:NSCaseInsensitiveSearch range:rangeToReplace];
@@ -381,7 +375,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 -(void)showLinkView
 {
-    WPLog(@"   Show the Link  View . ");
     UIAlertView *addURLSourceAlert = [[UIAlertView alloc] initWithFrame:CGRectMake(0, 0, 0, 0.0)];
     infoText = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 36.0, 260.0, 29.0)];
     urlField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 70.0, 260.0, 29.0)];
@@ -429,7 +422,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		
 		[self updateTextViewPlacehoderFieldStatus];
 		
-		WPLog(@"textViewDidChangeSelection : ");   
 		UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone 
 																	  target:self action:@selector(endTextEnteringButtonAction:)];
 		
@@ -454,7 +446,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		isTextViewEditing = YES;
 		
 		[self updateTextViewPlacehoderFieldStatus];
-		WPLog(@"textViewDidBeginEditing : ");   
 		
 		UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone 
 																	  target:self action:@selector(endTextEnteringButtonAction:)];
@@ -504,7 +495,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	}
 	
 	if(searchRes && dismiss!=YES){
-		WPLog(@"Link Creation Alert ");
 		[textView resignFirstResponder];
         UIAlertView *linkAlert = [[UIAlertView alloc] initWithTitle:@"Link Creation" message:@"Do you want to create link?" delegate:self cancelButtonTitle:@"Create Link" otherButtonTitles:@"Dismiss", nil];                                                
         [linkAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
@@ -594,14 +584,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		pickerController.delegate = self;
 		pickerController.allowsImageEditing = NO;
 	}
-	WPLog(@"pickerController %@", pickerController);
 	return pickerController;
 }
 
 - (void)showPhotoPickerActionSheet
 {
-	WPLog(@"POSTpickerController showPhotoPickerActionSheetshowPhotoPickerActionSheet");
-
 	isShowPhotoPickerActionSheet = YES;
 	// open a dialog with two custom buttons
 	UIActionSheet *actionSheet;
@@ -679,7 +666,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)pickPhotoFromPhotoLibrary:(id)sender {
-	WPLog(@"PDEC pickPhotoFromPhotoLibrarypickPhotoFromPhotoLibrary");
 	[[BlogDataManager sharedDataManager] makeNewPictureCurrent];
 	if ([WPImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
 		WPImagePickerController* picker = [self pickerController];
