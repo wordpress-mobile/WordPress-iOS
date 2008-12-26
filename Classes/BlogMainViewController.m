@@ -15,6 +15,7 @@
 #import "PagesListController.h"
 #import "WPNavigationLeftButtonView.h"
 #import "WordPressAppDelegate.h"
+#import "UIViewController+WPAnimation.h"
 
 @implementation BlogMainViewController
 
@@ -52,6 +53,7 @@
 
 
 - (void)didReceiveMemoryWarning {
+	WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
 	// Release anything that's not essential, such as cached data
 }
@@ -76,7 +78,7 @@
 }
 
 - (void)goToHome:(id)sender {
-	[self.navigationController popToRootViewControllerAnimated:YES];
+	[self popTransition:self.navigationController.view];
 }
 
 
@@ -89,7 +91,6 @@
 	awaitingComments = 0;
 	
 	for ( NSDictionary *dict in commentsList ) {
-		WPLog(@"Comment Status is (%@)",[dict valueForKey:@"status"]);
 		if ( [[dict valueForKey:@"status"] isEqualToString:@"hold"] ) {
 			awaitingComments++;
 		}
@@ -198,7 +199,7 @@
 }
 
 - (void)cancel:(id)sender {
-	[self.navigationController popViewControllerAnimated:YES];
+	[self popTransition:self.navigationController.view];
 }
 
 @end
