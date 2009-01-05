@@ -284,9 +284,7 @@
 
 
 - (void)viewWillAppear:(BOOL)animated {
-	if([blogsTableView indexPathForSelectedRow])
-		[self popTransition:self.navigationController.view];
-
+	
 	self.navigationController.navigationBarHidden= YES;
 	
 	// this UIViewController is about to re-appear, make sure we remove the current selection in our table view

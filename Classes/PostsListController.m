@@ -5,6 +5,8 @@
 #import "DraftsListController.h"
 #import "Reachability.h"
 #import "WordPressAppDelegate.h"
+#import "WPNavigationLeftButtonView.h"
+#import "UIViewController+WPAnimation.h"
 
 #import "XMLRPCRequest.h"
 #import "XMLRPCResponse.h"
@@ -255,11 +257,23 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
+
+	WPNavigationLeftButtonView *myview = [WPNavigationLeftButtonView createView];  
+    [myview setTarget:self withAction:@selector(goToHome:)];
+    [myview setTitle:@"Blogs"];
+    UIBarButtonItem *barButton  = [[UIBarButtonItem alloc] initWithCustomView:myview];
+    self.navigationItem.leftBarButtonItem = barButton;
+    [barButton release];
+    [myview release];
 	
 	// Observe the kNetworkReachabilityChangedNotification. When that notification is posted, the
     // method "reachabilityChanged" will be called. 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];	
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableViewAfterPostSaved:) name:@"AsynchronousPostIsPosted" object:nil];
+}
+
+- (void)goToHome:(id)sender {
+	[self popTransition:self.navigationController.view];
 }
 
 - (void)reachabilityChanged
