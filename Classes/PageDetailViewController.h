@@ -37,6 +37,7 @@
 	BOOL hasChanges;
 	BOOL isTextViewEditing;
 	NSRange selectedLinkRange;
+	UITextField *currentEditingTextField;
 }
 
 @property (nonatomic, retain) PageDetailsController *pageDetailsController;
@@ -46,6 +47,7 @@
 @property (nonatomic, retain) UITextField *infoText;
 @property (nonatomic, retain) UITextField *urlField;
 @property (nonatomic) NSRange selectedLinkRange;
+@property (nonatomic, assign) UITextField *currentEditingTextField;
 
 - (IBAction)showStatusViewAction:(id)sender;
 - (void)endEditingAction:(id)sender;

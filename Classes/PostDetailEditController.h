@@ -43,6 +43,7 @@
     UITextField *urlField;
 	NSRange selectedLinkRange;
 	NSMutableArray *bookMarksArray;
+	UITextField *currentEditingTextField;
 }
 
 @property (nonatomic, assign)PostDetailViewController * postDetailViewController;
@@ -53,6 +54,7 @@
 @property (nonatomic, retain) UITextField *urlField;
 @property (nonatomic, retain) NSMutableArray *bookMarksArray;
 @property (nonatomic) NSRange selectedLinkRange;
+@property (nonatomic, assign) UITextField *currentEditingTextField;
 
 - (void)refreshUIForCompose;
 - (void)refreshUIForCurrentPost;

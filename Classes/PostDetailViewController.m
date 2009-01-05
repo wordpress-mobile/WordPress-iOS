@@ -547,6 +547,8 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+	if(postDetailEditController.currentEditingTextField)
+		[postDetailEditController.currentEditingTextField resignFirstResponder];	
 	[super viewWillDisappear:animated];
      mode = 3;
 	[postPreviewController stopLoading];

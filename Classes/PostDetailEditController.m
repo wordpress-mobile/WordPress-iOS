@@ -16,7 +16,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @implementation PostDetailEditController
 
 @synthesize postDetailViewController, selectionTableViewController,segmentedTableViewController,leftView;
-@synthesize infoText,urlField,bookMarksArray,selectedLinkRange;
+@synthesize infoText,urlField,bookMarksArray,selectedLinkRange,currentEditingTextField;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -536,6 +536,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
+		self.currentEditingTextField = textField;
 	[self updateTextViewPlacehoderFieldStatus];
 	
 	if (postDetailViewController.navigationItem.leftBarButtonItem.style == UIBarButtonItemStyleDone) {
@@ -546,7 +547,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-	
+	self.currentEditingTextField = nil;
 	if( textField == titleTextField )
 		[[BlogDataManager sharedDataManager].currentPost setValue:textField.text forKey:@"title"];
 	else if( textField == tagsTextField )
@@ -567,6 +568,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+	self.currentEditingTextField = nil;
 	[textField resignFirstResponder];
 	return YES;
 }

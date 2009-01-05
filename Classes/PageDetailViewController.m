@@ -29,7 +29,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 @implementation PageDetailViewController
 
 @synthesize mode,selectionTableViewController,pageDetailsController,photosListController;
-@synthesize infoText,urlField,selectedLinkRange;
+@synthesize infoText,urlField,selectedLinkRange,currentEditingTextField;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -367,12 +367,15 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	[UIView commitAnimations];		
 }
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
+	self.currentEditingTextField = textField;
 	[self textViewDidEndEditing:textView];
 	//pageDetailsController.hasChanges = YES;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+	self.currentEditingTextField = nil;
+
 	if( textField == titleTextField )
 		[[BlogDataManager sharedDataManager].currentPage setValue:textField.text forKey:@"title"];
 
@@ -456,6 +459,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+	self.currentEditingTextField = nil;
 	[textField resignFirstResponder];
 	pageDetailsController.hasChanges = YES;
 	return YES;

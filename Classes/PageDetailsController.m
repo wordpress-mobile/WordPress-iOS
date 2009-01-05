@@ -366,6 +366,9 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+	if(pageDetailViewController.currentEditingTextField)
+		[pageDetailViewController.currentEditingTextField resignFirstResponder];	
+
 	[super viewWillDisappear:animated];
 }
 
