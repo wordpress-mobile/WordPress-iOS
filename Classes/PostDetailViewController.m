@@ -1,3 +1,6 @@
+
+#define TAG_OFFSET 1010
+
 #import "PostDetailViewController.h"
 #import "BlogDataManager.h"
 #import "WordPressAppDelegate.h"
@@ -126,6 +129,7 @@
 													   delegate:self
 											  cancelButtonTitle:nil
 											  otherButtonTitles:@"OK",nil];
+		alert.tag=TAG_OFFSET;
 		[alert show];
 		
 		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
@@ -402,13 +406,9 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-	//	if( buttonIndex == 0 )
-	//	{
-	//		[self refreshUIForCurrentPost];
-	//		tabController.selectedViewController = postPreviewController;
-	//	}
-	//	else
-	[self _discard];
+	if( alertView.tag != TAG_OFFSET )
+		[self _discard];
+	
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	[delegate setAlertRunning:NO];
 }

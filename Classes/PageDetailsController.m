@@ -6,6 +6,7 @@
 //  Copyright 2008 Prithvi Information Solutions Limited. All rights reserved.
 //
 
+#define TAG_OFFSET 1020
 #import "PageDetailsController.h"
 #import "BlogDataManager.h"
 #import "WordPressAppDelegate.h"
@@ -120,18 +121,17 @@
 	[apool release];
 }
 
-
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-
-	hasChanges = NO;
-	self.navigationItem.rightBarButtonItem = nil;
-	[[BlogDataManager sharedDataManager] clearAutoSavedContext];
-	[self.navigationController popViewControllerAnimated:YES];
-	
+	if(alertView.tag != TAG_OFFSET) 
+	{
+		hasChanges = NO;
+		self.navigationItem.rightBarButtonItem = nil;
+		[[BlogDataManager sharedDataManager] clearAutoSavedContext];
+		[self.navigationController popViewControllerAnimated:YES];
+	}
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	[delegate setAlertRunning:NO];
-
 }
 
 - (IBAction)cancelView:(id)sender 
@@ -270,13 +270,13 @@
 	if ((!description || [description isEqualToString:@""]) &&
 		(!title || [title isEqualToString:@""])&&
 		(!photos || ([photos count] == 0))) {
-
 		NSString *msg = [NSString stringWithFormat:@"Please provide either a title or description or attach photos to the page before saving."];
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Page Error"
 														message:msg
 													   delegate:self
 											  cancelButtonTitle:nil
 											  otherButtonTitles:@"OK",nil];
+		alert.tag=TAG_OFFSET;
 		[alert show];
 		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 		[delegate setAlertRunning:YES];
@@ -284,11 +284,8 @@
 		[alert release];
 		[self _cancel];
 		return;
-		
 	}
-	
 	//self.navigationItem.rightBarButtonItem=nil;
-	
 	
 	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
 	
@@ -296,14 +293,10 @@
 		[self _saveAsDrft];
 	} else {
 		[dm savePage:dm.currentPage];
+		[self performSelectorInBackground:@selector(removeProgressIndicator) withObject:nil];
+		[self.navigationController popViewControllerAnimated:YES];
 	}
-
-	[self performSelectorInBackground:@selector(removeProgressIndicator) withObject:nil];
-	[self.navigationController popViewControllerAnimated:YES];
-
-	
 	hasChanges=NO;
-
 }
 
 - (void)_saveAsDrft
