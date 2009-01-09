@@ -127,8 +127,6 @@
 					[aView removeFromSuperview];
 			}
 			
-			//cell.text = [[[BlogDataManager sharedDataManager] blogAtIndex:(indexPath.row)] valueForKey:@"blogName"];
-			
 			UILabel *blogName=[[UILabel alloc] initWithFrame:CGRectMake(10, 2 , 230, 50)];
 			blogName.text=[[[BlogDataManager sharedDataManager] blogAtIndex:(indexPath.row)] valueForKey:@"blogName"];
 			blogName.font = [UIFont boldSystemFontOfSize:18.0];
@@ -187,12 +185,27 @@
 			NSDictionary *currentBlog = dataManager.currentBlog;
 			
 			if ( [[currentBlog valueForKey:kSupportsPagesAndComments] boolValue] ) {
-				
 				BlogMainViewController  *blogMainViewController = [[BlogMainViewController alloc] initWithNibName:@"WPBlogMainViewController" bundle:nil];
 				self.title=@"Blogs";
 				[self pushTransition:blogMainViewController];
 				self.navigationController.navigationBarHidden = NO;
 				[blogMainViewController release];
+				if([[currentBlog valueForKey:kSupportsPagesAndCommentsServerCheck] boolValue])
+				{
+					UIAlertView *supportedWordpress = [[UIAlertView alloc] initWithTitle:@"New features available!"
+																				   message:@"WordPress for iPhone now supports page editing and comment moderation.Refresh Pages and Comments in the respective screens to access the features."
+																				  delegate:[[UIApplication sharedApplication] delegate]
+																		 cancelButtonTitle:nil
+																		 otherButtonTitles:@"OK", nil];
+					[supportedWordpress show];
+					WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+					[delegate setAlertRunning:YES];
+					[supportedWordpress release];
+					
+					[currentBlog setValue:[NSNumber numberWithBool:NO]   forKey:kSupportsPagesAndCommentsServerCheck];
+					[dataManager saveCurrentBlog];
+				}
+				
 			} else {
 				
 				if ( [[currentBlog valueForKey:kVersionAlertShown] boolValue] == NO || [currentBlog valueForKey:kVersionAlertShown] ==NULL )

@@ -1123,7 +1123,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *xmlrpc = [self discoverxmlrpcurlForurl:url];
 	
 	if ([xmlrpc isKindOfClass:[NSError class]]) {
-		UIAlertView *rsdError = [[UIAlertView alloc] initWithTitle:@"We could not find your blog. Please check the URL and try again. if the problem persists, please visit \"iphone.wordpress.org\" to report the problem."
+		UIAlertView *rsdError = [[UIAlertView alloc] initWithTitle:@"We could not find your blog. Please check the URL, Network Connection and try again.If the problem persists, please visit \"iphone.wordpress.org\" to report the problem."
 														   message:nil
 														  delegate:[[UIApplication sharedApplication] delegate]
 												 cancelButtonTitle:@"Visit Site"
@@ -1447,8 +1447,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	// provide meaningful messge to user
 	if ((!recentPostsList) || !([recentPostsList isKindOfClass:[NSArray class]]) ) {
 		[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
-
+//		[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
 		return NO;
 	}
 	
@@ -2769,7 +2768,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	// provide meaningful messge to user
 	if ((!response) || !([response isKindOfClass:[NSArray class]]) ) {
  		[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
+//		[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
 		return NO;
 	}
 	NSMutableArray *pagesList = [NSMutableArray arrayWithArray:response];
@@ -2969,8 +2968,10 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		[self syncCommentsForBlog:aBlog];
 		[self syncPagesForBlog:aBlog];
 	}	
+
+	[aBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 	[self saveCurrentBlog];
-	[self performSelectorOnMainThread:@selector(postBlogsRefreshNotificationInMainThread:) withObject:aBlog waitUntilDone:NO];
+	[self performSelectorOnMainThread:@selector(postBlogsRefreshNotificationInMainThread:) withObject:aBlog waitUntilDone:YES];
 
 	[aBlog release];
 	[ap release];
@@ -4128,7 +4129,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	// provide meaningful messge to user
 	if ((!commentsReceived) || !([commentsReceived isKindOfClass:[NSArray class]]) ) {
  		[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
+//		[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
 		return NO;
 	}
 	
@@ -4161,7 +4162,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
 	[commentTitlesArray writeToFile:pathToCommentTitles  atomically:YES];
  	
-	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+//	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 	return YES;
 }
 
@@ -4250,7 +4251,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		// provide meaningful messge to user
 		if ((!result) || !([result isKindOfClass:[NSArray class]]) ) {
  			[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
+//			[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
 			return NO;
 		}else {
 			for(int i=0;i<commentsCount;i++)
@@ -4334,7 +4335,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		 // provide meaningful messge to user
 		 if ((!result) || !([result isKindOfClass:[NSArray class]]) ) {
  		 [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-		 [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
+//		 [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
 		 return NO;
 		 }else{
 			 for(int j=0;j<commentsCount;j++){
@@ -4503,7 +4504,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		// provide meaningful messge to user
 		if ((!result) || !([result isKindOfClass:[NSArray class]]) ) {
  			[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
+//			[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
 			return NO;
 		}else {
 			for(i=0;i<commentsCount;i++){
@@ -4535,5 +4536,22 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[delegate setAlertRunning:NO];
 }
 
+- (void)wrapperForSyncPagesAndCommentsForBlog:(id)aBlog
+{
+	NSAutoreleasePool *ap = [[NSAutoreleasePool alloc] init];
+	BOOL supportsPagesAndComments = NO;
+	[aBlog setValue:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
+	[self checkXML_RPC_URL_IsRunningSupportedVersionOfWordPress: [self discoverxmlrpcurlForurl:[aBlog valueForKey:@"url"]] withPagesAndCommentsSupport:&supportsPagesAndComments];
+	[aBlog setValue:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+	if( supportsPagesAndComments )
+	{
+		[aBlog setValue:[NSNumber numberWithBool:YES]   forKey:kSupportsPagesAndCommentsServerCheck];
+	}
+	[aBlog setValue:[NSNumber numberWithBool:supportsPagesAndComments]   forKey:kSupportsPagesAndComments];
+	[self saveCurrentBlog];
+	[self performSelectorOnMainThread:@selector(postBlogsRefreshNotificationInMainThread:) withObject:aBlog waitUntilDone:YES];
+
+	[ap release];
+}
 
 @end

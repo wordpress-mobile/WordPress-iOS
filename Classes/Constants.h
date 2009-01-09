@@ -43,3 +43,4 @@
 #define kAsyncPostFlag @"async_post"
 #define kSupportsPagesAndComments @"SupportsPagesAndComments"
 #define kVersionAlertShown @"VersionAlertShown"
+#define kSupportsPagesAndCommentsServerCheck @"SupportsPagesAndCommentsServerCheck"
