@@ -7,6 +7,7 @@
 #import "RootViewController.h"
 #import "WPNavigationLeftButtonView.h"
 #import "UIViewController+WPAnimation.h"
+#import "Reachability.h"
 
 @interface BlogDetailModalViewController()
 - (void)populateSelectionsControllerWithNoOfRecentPosts;
@@ -366,6 +367,16 @@
  */
 
 - (void)saveBlog:(id)sender {
+	
+	if ( [[Reachability sharedReachability] internetConnectionStatus] == NotReachable ) {
+		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"Communication Error."
+														  message:@"no internet connection."
+														 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[alert1 show];
+		[alert1 release];		
+		return;
+	}
+	
 	// save the blog and then invoke dismissModalViewControllerAnimated on the parent nav controller
 	
 	if (self.currentEditingTextField)
