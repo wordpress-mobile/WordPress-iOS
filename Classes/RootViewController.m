@@ -210,8 +210,9 @@
 				
 				if ( [[currentBlog valueForKey:kVersionAlertShown] boolValue] == NO || [currentBlog valueForKey:kVersionAlertShown] ==NULL )
 				{
+					//changed the alert message  as per ticket 71
 					UIAlertView *unsupportedWordpress = [[UIAlertView alloc] initWithTitle:@"New features available!"
-																				   message:@"WordPress for iPhone now supports page editing and comment moderation.However, Wordpress 2.7 is required to use these features. Please visit \"iphone.wordpress.org\" for details."
+																				   message:@"WordPress for iPhone now supports page editing and comment moderation. However, to use these features you must be running your site on WordPress 2.7+ or WordPress.com."
 																				  delegate:[[UIApplication sharedApplication] delegate]
 																		 cancelButtonTitle:nil
 																		 otherButtonTitles:@"OK", nil];
