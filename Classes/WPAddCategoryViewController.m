@@ -1,6 +1,7 @@
 #import "WPAddCategoryViewController.h"
 #import "WPPostSettingsController.h"
 #import "WordPressAppDelegate.h"
+#import "Reachability.h"
 
 @implementation WPAddCategoryViewController
 
@@ -52,22 +53,37 @@
 
 - (IBAction)saveAddCategory:(id)sender
 {
+	//if ( ![[Reachability sharedReachability] remoteHostStatus] != NotReachable ) {
+//		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"Communication Error."
+//														 message:@"no Internet Connection."
+//														delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//		
+//		[alert1 show];
+//		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+//		[delegate setAlertRunning:YES];
+//		[alert1 release];		
+//		return;
+//	}
+
 	NSString *catName = newCatNameField.text;
 	if( !catName || [catName length] == 0 )
 	{
-		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"Category title missing."
+		UIAlertView *alert2 = [[UIAlertView alloc] initWithTitle:@"Category title missing."
 														 message:@"Title for a category is mandatory."
 														delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		
-		[alert1 show];
+		[alert2 show];
 		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 		[delegate setAlertRunning:YES];
 
-		[alert1 release];		
+		[alert2 release];		
 		return;
 	}
 	
-	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
+	//Resolved the application crash.
+	if ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable ) 
+		[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
+	
 	NSString *parentCatName = parentCatNameField.text;
 	
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];

@@ -235,7 +235,7 @@
 			
 			UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
 															 message:@"Operation is not supported now."
-															delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+															delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[alert1 show];
 			[alert1 release];		
 			return;
