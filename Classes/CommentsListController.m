@@ -180,16 +180,13 @@
 #pragma mark Action methods
 - (IBAction)downloadRecentComments:(id)sender {
 	if( !connectionStatus ){
-		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
+		UIAlertView *alertt1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
 														 message:@"Sync operation is not supported now."
 														delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		
-		[alert1 show];
+		[alertt1 show];
 		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 		[delegate setAlertRunning:YES];
-
-		[alert1 release];		
-		
 		return;
 	}
 	
@@ -275,7 +272,7 @@
 			
 			UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:@"No connection to host."
 															 message:@"Operation is not supported now."
-															delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+															delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[connectionFailAlert show];
 			[connectionFailAlert release];		
 			return;
