@@ -326,6 +326,7 @@
     hasChanges = NO;
     [dm removeAutoSavedCurrentPostFile];
     
+	[NSThread sleepForTimeInterval:3];
 	[self removeProgressIndicator];
 	[self.navigationController popToViewController:postsListController animated:YES];
 }
