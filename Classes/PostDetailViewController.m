@@ -153,6 +153,7 @@
 		[self _saveAsDrft];
 	else
 	{ 
+		[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
         //Need to release params
         NSMutableArray *params = [[[NSMutableArray alloc] initWithObjects:dm.currentPost,dm.currentBlog,nil] autorelease];
 		BOOL isCurrentPostDraft = dm.isLocaDraftsCurrent;
@@ -249,16 +250,18 @@
 
 - (void)removeProgressIndicator
 {
-	//wait incase the other thread did not complete its work.
-	while (self.navigationItem.rightBarButtonItem == nil)
-	{
-		[[NSRunLoop currentRunLoop] runUntilDate:[[NSDate date] addTimeInterval:0.1]];
-	}
-	
+//	//wait incase the other thread did not complete its work.
+//	while (self.navigationItem.rightBarButtonItem == nil)
+//	{
+//		[[NSRunLoop currentRunLoop] runUntilDate:[[NSDate date] addTimeInterval:0.1]];
+//	}
+//	
 	if(hasChanges) {
 		if ([[leftView title] isEqualToString:@"Posts"])
 			[leftView setTitle:@"Cancel"];
 		self.navigationItem.rightBarButtonItem = saveButton;
+	} else {
+		self.navigationItem.rightBarButtonItem = nil;
 	}
 }
 
@@ -322,7 +325,9 @@
     
     hasChanges = NO;
     [dm removeAutoSavedCurrentPostFile];
-    [self.navigationController popViewControllerAnimated:YES];
+    
+	[self removeProgressIndicator];
+	[self.navigationController popToViewController:postsListController animated:YES];
 }
 
 -(void)_savePostWithBlog:(NSMutableArray *)arrayPost

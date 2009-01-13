@@ -444,8 +444,8 @@
     BlogDataManager *dm = [BlogDataManager sharedDataManager]; 
     [dm updatePostsTitlesFileAfterPostSaved:(NSMutableDictionary *)postIdsDict];
 	
-	if([[postIdsDict valueForKey:@"isCurrentPostDraft"] intValue]==1)
-		[self.navigationController popViewControllerAnimated:YES]; 
+//	if([[postIdsDict valueForKey:@"isCurrentPostDraft"] intValue]==1)
+//		[self.navigationController popViewControllerAnimated:YES]; 
 	
 	[dm loadPostTitlesForCurrentBlog];
 	
