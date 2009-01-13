@@ -408,6 +408,21 @@
 	NSNumber *value = [NSNumber numberWithBool:resizePhotoControl.on];
 	[currentBlog setValue:value forKey:kResizePhotoSetting];
 	
+	if ( mode == 0 ) { // new one -- Check for adding a existing blog again.
+		NSDictionary *newBlog = [NSDictionary dictionaryWithObjectsAndKeys:username,@"username",pwd,@"pwd",url,@"url",nil];
+			
+		if([dm doesBlogExists:newBlog])
+		{
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
+															message:[NSString stringWithFormat:@"Blog '%@' already configured on this iPhone.", url]
+														   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			
+			[alert show];
+			[alert release];		
+			return;
+		}
+    }
+	
 	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
 	
 	
