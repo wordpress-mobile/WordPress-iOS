@@ -279,4 +279,5 @@
 
 - (NSString *)pageStatusForStatusDescription:(NSString *)statusDescription fromBlog:(id)aBlog;
 
+- (BOOL)doesBlogExists:(NSDictionary *)aBlog;
 @end

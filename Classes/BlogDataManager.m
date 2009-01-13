@@ -1224,24 +1224,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	// load blog fields into currentBlog
 	NSString *blogid = [usersBlogs valueForKey:@"blogid"];
 	[currentBlog setValue:blogid?blogid:@"" forKey:@"blogid"];
-	
-	// blog id is unique within blog_host_ which = <username>_<blogURL>
-	id existingBlog = [self blogForId:blogid hostName:[currentBlog valueForKey:@"blog_host_name"]];
-	if( existingBlog != nil && [existingBlog count] != 0 )
-	{
-		
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
-														message:[NSString stringWithFormat:@"Blog '%@' already configured on this iPhone.", [existingBlog valueForKey:@"blogName"]]
-													   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		
-		[alert show];
-		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-		[delegate setAlertRunning:YES];
-
-		[alert release];		
-		return NO;
-	}
-	
 	/*
 	 NSString *adminStr	= [usersBlogs valueForKey:@"isAdmin"];
 	 NSNumber *isAdmin = [NSNumber numberWithBool:(BOOL) (adminStr == kCFBooleanTrue)?YES:NO) ];
@@ -1888,6 +1870,24 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	// return an empty dictionary to signal that blog id was not found
 	return [NSDictionary dictionary];
 	
+}
+
+- (BOOL)doesBlogExists:(NSDictionary *)aBlog{
+	NSString *urlstr = [aBlog valueForKey:@"url"]; 
+	if ( ![urlstr hasPrefix:@"http"] )
+		urlstr = [NSString stringWithFormat:@"http://%@", urlstr];
+	NSMutableDictionary *tempBlog;
+	NSEnumerator *blogEnum = [blogsList objectEnumerator];
+	while (tempBlog = [blogEnum nextObject])
+	{
+		if ([[tempBlog valueForKey:@"url"] isEqualToString: urlstr] &&
+			[[tempBlog valueForKey:@"username"] isEqualToString:[aBlog valueForKey:@"username"]] 
+			&& [[tempBlog valueForKey:@"pwd"] isEqualToString:[aBlog valueForKey:@"pwd"]] ) {
+			
+			return YES; 
+		}
+	}
+	return NO;
 }
 
 - (NSString *)defaultTemplateHTMLString
