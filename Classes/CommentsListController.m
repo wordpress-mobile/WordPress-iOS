@@ -482,7 +482,7 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	NSString *content= [currentComment valueForKey:@"content"] ;
 	label = (UILabel *)[cell viewWithTag:COMMENT_POST_NAME_AND_DATE_TAG];
 	NSString *statuString= [NSString stringWithString:@"(Awaiting moderation)"] ;
-	label.text = ( [commentStatus isEqual:@"hold"] ? [NSString stringWithFormat:@"%@%@",statuString,content] : [NSString stringWithFormat:@"%@",content] );
+	label.text = ( [commentStatus isEqual:@"hold"] ? [NSString stringWithFormat:@"%@ %@",statuString,content] : [NSString stringWithFormat:@"%@",content] );
 	label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
 	label.textColor = ( connectionStatus ? [UIColor blackColor] : [UIColor grayColor] );
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
