@@ -1,19 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.02">
+<archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.03">
 	<data>
 		<int key="IBDocument.SystemTarget">512</int>
-		<string key="IBDocument.SystemVersion">9E17</string>
-		<string key="IBDocument.InterfaceBuilderVersion">672</string>
-		<string key="IBDocument.AppKitVersion">949.33</string>
-		<string key="IBDocument.HIToolboxVersion">352.00</string>
+		<string key="IBDocument.SystemVersion">9G55</string>
+		<string key="IBDocument.InterfaceBuilderVersion">677</string>
+		<string key="IBDocument.AppKitVersion">949.43</string>
+		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="192"/>
+			<integer value="10"/>
+			<integer value="95"/>
 			<integer value="2"/>
+			<integer value="185"/>
+			<integer value="24"/>
+			<integer value="78"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+		</object>
+		<object class="NSMutableDictionary" key="IBDocument.Metadata">
+			<bool key="EncodedWithXMLCoder">YES</bool>
+			<object class="NSArray" key="dict.sortedKeys">
+				<bool key="EncodedWithXMLCoder">YES</bool>
+			</object>
+			<object class="NSMutableArray" key="dict.values">
+				<bool key="EncodedWithXMLCoder">YES</bool>
+			</object>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.RootObjects" id="1000">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -57,7 +71,7 @@
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 			</object>
 			<object class="IBUITableViewCell" id="823972763">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -135,6 +149,7 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 89}</string>
+				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MSAwAA</bytes>
@@ -145,7 +160,7 @@
 				<reference key="IBUIContentView" ref="83766833"/>
 			</object>
 			<object class="IBUITableViewCell" id="544018142">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -157,16 +172,18 @@
 							<object class="IBUITextField" id="692634358">
 								<reference key="NSNextResponder" ref="373578252"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{102, 6}, {198, 31}}</string>
+								<string key="NSFrame">{{100, 6}, {181, 31}}</string>
 								<reference key="NSSuperview" ref="373578252"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<string key="IBUIText"/>
+								<string key="IBUIPlaceholder">Optional</string>
 								<object class="NSColor" key="IBUITextColor">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MC4yOTQxMTc2NiAwLjM5NjA3ODQ0IDAuNTgwMzkyMTgAA</bytes>
 								</object>
+								<int key="IBUITextAlignment">2</int>
 								<float key="IBUIMinimumFontSize">2.000000e+01</float>
 								<object class="IBUITextInputTraits" key="IBUITextInputTraits">
 									<int key="IBUIReturnKeyType">9</int>
@@ -198,6 +215,7 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 44}</string>
+				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MSAwAA</bytes>
@@ -207,7 +225,7 @@
 				<reference key="IBUIContentView" ref="373578252"/>
 			</object>
 			<object class="IBUITableViewCell" id="858300214">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -219,20 +237,24 @@
 							<object class="IBUITextField" id="30952785">
 								<reference key="NSNextResponder" ref="399164874"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{110, 6}, {167, 31}}</string>
+								<string key="NSFrame">{{105, 6}, {172, 31}}</string>
 								<reference key="NSSuperview" ref="399164874"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<int key="IBUIContentVerticalAlignment">0</int>
-								<string key="IBUIText"/>
+								<string key="IBUIText">A</string>
 								<object class="NSColor" key="IBUITextColor">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MC4yOTQxMTc2NiAwLjM5NjA3ODQ0IDAuNTgwMzkyMTgAA</bytes>
 								</object>
+								<object class="NSFont" key="IBUIFont">
+									<string key="NSName">Helvetica</string>
+									<double key="NSSize">9.000000e+00</double>
+									<int key="NSfFlags">16</int>
+								</object>
 								<int key="IBUITextAlignment">2</int>
-								<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
-								<float key="IBUIMinimumFontSize">1.700000e+01</float>
+								<float key="IBUIMinimumFontSize">8.000000e+00</float>
 								<object class="IBUITextInputTraits" key="IBUITextInputTraits">
 									<int key="IBUIAutocorrectionType">1</int>
 									<int key="IBUIReturnKeyType">9</int>
@@ -241,7 +263,7 @@
 							<object class="IBUILabel" id="1063091872">
 								<reference key="NSNextResponder" ref="399164874"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{10, 11}, {94, 21}}</string>
+								<string key="NSFrame">{{10, 11}, {92, 21}}</string>
 								<reference key="NSSuperview" ref="399164874"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -263,6 +285,7 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 44}</string>
+				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MSAwAA</bytes>
@@ -273,7 +296,7 @@
 				<reference key="IBUIContentView" ref="399164874"/>
 			</object>
 			<object class="IBUITableViewCell" id="521995996">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -317,6 +340,7 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{319, 81}</string>
+				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MSAwAA</bytes>
@@ -330,7 +354,7 @@
 				<bool key="IBUIShouldIndentWhileEditing">NO</bool>
 			</object>
 			<object class="IBUITableViewCell" id="352133937">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -376,6 +400,7 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 44}</string>
+				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MSAwAA</bytes>
@@ -839,7 +864,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{327, 216}, {320, 460}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{149, 216}, {320, 44}}</string>
+					<string>{{186, 187}, {320, 44}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -881,6 +906,13 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">Classes/XMLRPC/XMLRPCConnection.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">UIViewController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/UIViewController+WPAnimation.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

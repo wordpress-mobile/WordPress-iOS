@@ -97,8 +97,8 @@
 
 	passwordLabel.font = [UIFont boldSystemFontOfSize:17.0f];
 	publishOnLabel.font = [UIFont boldSystemFontOfSize:17.0f];
-	passwordTextField.font = [UIFont fontWithName:@"Helvetica" size:15];	
-	publishOnTextField.font = [UIFont fontWithName:@"Helvetica" size:15];	
+	passwordTextField.font = [UIFont systemFontOfSize:13];
+	publishOnTextField.font = [UIFont systemFontOfSize:14];
 
 	resizePhotoLabel.font = [UIFont boldSystemFontOfSize:17.0f];
 
