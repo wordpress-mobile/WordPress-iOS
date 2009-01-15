@@ -46,13 +46,17 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 
 	NSString *description = [dm.currentPost valueForKey:@"description"];
+	NSString *moreText = [dm.currentPost valueForKey:@"mt_text_more"];
 	
 	if (!description || [description length] == 0 ) {
 		textViewPlaceHolderField.hidden = NO;
 		textView.text = @"";
 	} else {
 		textViewPlaceHolderField.hidden = YES;
-		textView.text = description;
+		if(moreText!=NULL)
+			textView.text = [NSString stringWithFormat:@"%@\n<!--more-->%@",description,moreText];
+		else
+			textView.text = description;
 	}
 	
 	titleTextField.text = [dm.currentPost valueForKey:@"title"];
@@ -68,7 +72,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	else 
 		categoriesTextField.text = @"";
 }
-
 
 - (void)populateSelectionsControllerWithCategories
 {

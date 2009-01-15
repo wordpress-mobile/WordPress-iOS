@@ -108,7 +108,8 @@
 		[self.navigationController popViewControllerAnimated:YES]; 
 		return;
 	}
-	
+	//for handling more tag text.
+	[(NSMutableDictionary *)[BlogDataManager sharedDataManager].currentPost setValue:@"" forKey:@"mt_text_more"];
 	[postSettingsController endEditingAction:nil];
 	[postDetailEditController endEditingAction:nil];
 	

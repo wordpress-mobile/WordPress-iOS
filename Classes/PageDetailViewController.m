@@ -43,15 +43,18 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	self.navigationItem.rightBarButtonItem = nil;
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	
-
 	NSString *description = [dm.currentPage valueForKey:@"description"];
+	NSString *moreText = [dm.currentPage valueForKey:@"text_more"];
 	
 	if (!description || [description length] == 0 ) {
 		textViewPlaceHolderField.hidden = NO;
 		textView.text = @"";
 	} else {
 		textViewPlaceHolderField.hidden = YES;
-		textView.text = description;
+		if(moreText!=NULL)
+			textView.text = [NSString stringWithFormat:@"%@\n<!--more-->%@",description,moreText];
+		else
+			textView.text = description;
 	}
 	
 	titleTextField.text = [dm.currentPage valueForKey:@"title"];
@@ -60,7 +63,6 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	NSString *statusValue=[dm pageStatusDescriptionForStatus:status fromBlog:dm.currentBlog];
 	statusValue = ( statusValue == nil ? @"" : statusValue );
 	statusTextField.text = statusValue;
-
 	
 	[pageDetailsController updatePhotosBadge];
 	[photosListController refreshData];
