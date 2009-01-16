@@ -149,16 +149,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	//we don't have comments now
-	return 3;
+	return 5;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	if (section == 0)
 		return 1;
-	if (section == 2)
-		return 2;
-	return 2;
 }
 
 - (IBAction)controlEventValueChanged:(id)sender {
@@ -209,12 +205,12 @@
 				passwordTextField.text = [post valueForKey:@"wp_password"];
 				passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 				return passwordTableViewCell;
-			} else {
-				[passwordHintTableViewCell bringSubviewToFront:passwordHintLabel];
-				return passwordHintTableViewCell;
-			}
-
+			} 
+			break ;
 		case 2:
+			[passwordHintTableViewCell bringSubviewToFront:passwordHintLabel];
+			return passwordHintTableViewCell;
+		case 3:
 			if (indexPath.row == 0) {
 				NSNumber *value = [post valueForKey:kResizePhotoSetting];
 				if ( value == nil ) {
@@ -224,11 +220,11 @@
 				
 				resizePhotoControl.on = [value boolValue];
 				return resizePhotoViewCell;
-			} else {
-				[resizePhotoHintTableViewCell bringSubviewToFront:resizePhotoHintLabel];
-				resizePhotoHintTableViewCell.backgroundColor = [UIColor clearColor];
-				return resizePhotoHintTableViewCell;
-			}
+			} 
+		case 4:
+			[resizePhotoHintTableViewCell bringSubviewToFront:resizePhotoHintLabel];
+			resizePhotoHintTableViewCell.backgroundColor = [UIColor clearColor];
+			return resizePhotoHintTableViewCell;
 		default:
 			break;
 	}
@@ -237,18 +233,24 @@
 	return nil;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-
-//	if (indexPath.section == 2)	//comments are removed.
-//		return 88.0f;
-	if (indexPath.section == 1 && indexPath.row == 1)
-		return CGRectGetHeight([passwordHintTableViewCell frame]);
-
-	if (indexPath.section == 2 && indexPath.row == 1)
-		return CGRectGetHeight([resizePhotoHintTableViewCell frame]);
-
-	return 44.0f;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+	switch( indexPath.section)
+	{
+		case 0:
+		case 1:
+		case 3:
+			return passwordTableViewCell.frame.size.height ;
+		case 2:
+		case 4:
+			return passwordHintTableViewCell.frame.size.height ;
+		
+			
+	}
+		return 44.0f;
 }
+
+
 
 //will be called when auto save method is called.
 - (void)updateValuesToCurrentPost
