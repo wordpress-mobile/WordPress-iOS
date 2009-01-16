@@ -7,6 +7,7 @@
 #import "WordPressAppDelegate.h"
 #import "UIViewController+WPAnimation.h"
 #import <QuartzCore/QuartzCore.h>
+#import "WPLogoView.h"
 
 @interface RootViewController (private)
 
@@ -240,7 +241,20 @@
 	}	
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	if(section == 0)
+	{
+		WPLogoView *img = [[[WPLogoView alloc] initWithFrame:CGRectMake(tableView.tableHeaderView.frame.origin.x, tableView.tableHeaderView.frame.origin.y, tableView.tableHeaderView.frame.size.width,tableView.tableHeaderView.frame.size.height)] autorelease];
+		return img;
+	}
+	return nil;
+}
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	if(section == 0)
+		return 100.0f;
+	return 0.0f;
+}
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
 	
@@ -339,6 +353,7 @@
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
 	self.navigationController.navigationBarHidden = YES;
+	[blogsTableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
