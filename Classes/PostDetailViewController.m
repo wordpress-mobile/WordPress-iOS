@@ -603,6 +603,13 @@
 	return YES;
 }
 
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+	if( [tabController.selectedViewController.title isEqualToString:@"Settings"]){
+		[postSettingsController.tableView reloadData];
+	}
+	
+}
 
 - (void)useImage:(UIImage*)theImage
 {

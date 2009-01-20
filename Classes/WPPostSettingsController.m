@@ -92,7 +92,6 @@
 }
 
 - (void)viewDidLoad {
-	tableView.sectionHeaderHeight = 20.0f;
 	tableView.sectionFooterHeight = 0.0f;
 
 	passwordLabel.font = [UIFont boldSystemFontOfSize:17.0f];
@@ -208,8 +207,13 @@
 			} 
 			break ;
 		case 2:
-			[passwordHintTableViewCell bringSubviewToFront:passwordHintLabel];
-			return passwordHintTableViewCell;
+			{
+				UIView *hint = [[[UIView alloc] initWithFrame:CGRectMake(passwordHintTableViewCell.frame.origin.x, passwordHintTableViewCell.frame.origin.y, passwordHintTableViewCell.frame.size.width,passwordHintTableViewCell.frame.size.height)] autorelease];
+				hint.backgroundColor = [ UIColor clearColor];
+
+				passwordHintTableViewCell.backgroundView = hint ;
+				return passwordHintTableViewCell;
+			}	
 		case 3:
 			if (indexPath.row == 0) {
 				NSNumber *value = [post valueForKey:kResizePhotoSetting];
@@ -221,10 +225,15 @@
 				resizePhotoControl.on = [value boolValue];
 				return resizePhotoViewCell;
 			} 
+			break;
 		case 4:
-			[resizePhotoHintTableViewCell bringSubviewToFront:resizePhotoHintLabel];
-			resizePhotoHintTableViewCell.backgroundColor = [UIColor clearColor];
+		{
+			UIView *hint = [[[UIView alloc] initWithFrame:CGRectMake(resizePhotoHintTableViewCell.frame.origin.x, resizePhotoHintTableViewCell.frame.origin.y, resizePhotoHintTableViewCell.frame.size.width,resizePhotoHintTableViewCell.frame.size.height)] autorelease];
+			hint.backgroundColor = [ UIColor clearColor];
+			
+			resizePhotoHintTableViewCell.backgroundView = hint ;
 			return resizePhotoHintTableViewCell;
+		}
 		default:
 			break;
 	}
@@ -239,18 +248,30 @@
 	{
 		case 0:
 		case 1:
-		case 3:
-			return passwordTableViewCell.frame.size.height ;
+		case 3:break;
 		case 2:
-		case 4:
 			return passwordHintTableViewCell.frame.size.height ;
 		
-			
+		case 4:
+			return resizePhotoHintTableViewCell.frame.size.height ;
 	}
-		return 44.0f;
+	return 44.0f;
 }
 
+- (CGFloat)tableView:(UITableView *)aTableView heightForHeaderInSection:(NSInteger)section
+{
+	if(section == 3)
+		return 20.0f;
+	if( section == 2 || section == 4 )
+		return 5.0f;
 
+	return 15.0f;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	
+	return [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 55, 25.0)] autorelease];
+}
 
 //will be called when auto save method is called.
 - (void)updateValuesToCurrentPost
