@@ -123,7 +123,13 @@
 	[commentsTableView reloadData];
 }
 
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+	[ commentsTableView reloadData];
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	if([delegate isAlertRunning] == YES)
 		return NO;
@@ -368,7 +374,7 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 #define LEFT_OFFSET 10.0f
 #define RIGHT_OFFSET 280.0f
 	
-#define MAIN_FONT_SIZE 15.0f
+#define MAIN_FONT_SIZE 17.0f
 #define DATE_FONT_SIZE 13.0f
 	
 #define LABEL_HEIGHT 20.0f
@@ -391,10 +397,11 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	 */
 	UILabel *label;
 	
-	rect = CGRectMake(LEFT_OFFSET+buttonOffset+150, (COMMENTS_TABLE_ROW_HEIGHT - LABEL_HEIGHT - DATE_LABEL_HEIGHT - VERTICAL_OFFSET ) / 2.0, 150-buttonOffset, LABEL_HEIGHT);
+	rect = CGRectMake(LEFT_OFFSET+buttonOffset, (COMMENTS_TABLE_ROW_HEIGHT - LABEL_HEIGHT - DATE_LABEL_HEIGHT - VERTICAL_OFFSET ) / 2.0, 150-buttonOffset, LABEL_HEIGHT);
 	UILabel *alabel = [[UILabel alloc]initWithFrame:rect];
 	alabel.tag = COMMENT_MAIL_TAG;
 	alabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
+	
 	[cell.contentView addSubview:alabel];
 	[alabel release];
 
@@ -403,22 +410,23 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	label = [[UILabel alloc] initWithFrame:rect];
 	label.tag = COMMENT_NAME_TAG;
 	label.font = [UIFont boldSystemFontOfSize:MAIN_FONT_SIZE];
+	
 	[cell.contentView addSubview:label];
 	label.highlightedTextColor = [UIColor whiteColor];
 	[label release];
 	
 	
 	rect = CGRectMake(LEFT_OFFSET+buttonOffset, rect.origin.y+ LABEL_HEIGHT + VERTICAL_OFFSET , 288-buttonOffset, DATE_LABEL_HEIGHT);
-	
-	label = [[UILabel alloc] initWithFrame:rect];
-	label.tag = COMMENT_POST_NAME_AND_DATE_TAG;
-	label.font = [UIFont systemFontOfSize:DATE_FONT_SIZE];
-	[cell.contentView addSubview:label];
-	label.highlightedTextColor = [UIColor whiteColor];
-	label.textColor = [UIColor colorWithRed:0.560f green:0.560f blue:0.560f alpha:1];
-	label.numberOfLines = 3;
-	label.lineBreakMode = UILineBreakModeTailTruncation;
-	[label release];
+	UILabel *label2 ;
+	label2 = [[UILabel alloc] initWithFrame:rect];
+	label2.tag = COMMENT_POST_NAME_AND_DATE_TAG;
+	label2.font = [UIFont systemFontOfSize:DATE_FONT_SIZE];
+	[cell.contentView addSubview:label2];
+	label2.highlightedTextColor = [UIColor whiteColor];
+	label2.textColor = [UIColor colorWithRed:0.560f green:0.560f blue:0.560f alpha:1];
+	label2.numberOfLines = 3;
+	label2.lineBreakMode = UILineBreakModeTailTruncation;
+	[label2 release];
 	
 	return cell;
 }
@@ -465,18 +473,43 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	NSString *commentStatus=[currentComment valueForKey:@"status"];
 	UILabel *label = (UILabel *)[cell viewWithTag:COMMENT_NAME_TAG];
 	label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+	
+	CGSize commentSize = [ author sizeWithFont:[ label font]];
+	CGFloat commentWidth = commentSize.width ;
+	
+	label.adjustsFontSizeToFitWidth = NO ;
 	label.text = author;
-
+	[ cell bringSubviewToFront:label];
+	
 	NSString *authorEmail = [currentComment valueForKey:@"author_email"] ;
 	UILabel *alabel = (UILabel *)[cell viewWithTag:COMMENT_MAIL_TAG];
+	
+	CGSize mailSize = [ authorEmail sizeWithFont:[ alabel font]];
+	CGFloat mailWidth = mailSize.width ;
+	
+	alabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+	alabel.adjustsFontSizeToFitWidth = NO ;
+//	alabel.backgroundColor = [ UIColor redColor];
+	alabel.textColor = [ UIColor grayColor ] ;
 	alabel.text=authorEmail;
-	alabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+	
+	if( (((commentWidth > tableView.frame.size.width*0.50) && (mailWidth < tableView.frame.size.width*0.50)) ||
+		  ((commentWidth < tableView.frame.size.width*0.50) && (mailWidth > tableView.frame.size.width*0.50))) )
+	{
+		commentWidth = tableView.frame.size.width*0.50 ;
+		mailWidth = tableView.frame.size.width*0.50 ;
+	}
+	
+	label.frame = CGRectMake(label.frame.origin.x, label.frame.origin.y, commentWidth, label.frame.size.height);
+	alabel.frame = CGRectMake(CGRectGetMaxX(label.frame)+2.0, alabel.frame.origin.y, mailWidth, alabel.frame.size.height);
+	
+	[cell.contentView addSubview:label];
 	[cell.contentView addSubview:alabel];
-
+	
 	if([commentStatus isEqual:@"hold"] || !connectionStatus)
 	{
 	   [alabel setTextColor:[UIColor grayColor]];
-		[label setTextColor:[UIColor grayColor]];
+	   [label setTextColor:[UIColor grayColor]];
 	}
 	
 	NSString *content= [currentComment valueForKey:@"content"] ;
