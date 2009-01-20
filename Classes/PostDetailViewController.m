@@ -108,12 +108,23 @@
 		[self.navigationController popViewControllerAnimated:YES]; 
 		return;
 	}
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	
+	//Code for scaling image based on post settings
+	NSArray *photosArray = [dm.currentPost valueForKey:@"Photos"];
+	NSString  *filepath;
+	for(int i=0; i < [photosArray count] ; i++)
+	{
+		filepath = [photosArray objectAtIndex:i];
+		NSString *imagePath = [NSString stringWithFormat:@"%@/%@",[dm blogDir:dm.currentBlog],filepath];
+		UIImage *scaledImage = [photosListController scaleAndRotateImage:[UIImage imageWithContentsOfFile:imagePath]];
+		NSData *imageData = UIImageJPEGRepresentation( scaledImage, 0.5 );
+		[imageData writeToFile:imagePath atomically:YES];
+	}
 	//for handling more tag text.
 	[(NSMutableDictionary *)[BlogDataManager sharedDataManager].currentPost setValue:@"" forKey:@"mt_text_more"];
 	[postSettingsController endEditingAction:nil];
 	[postDetailEditController endEditingAction:nil];
-	
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	
 	NSString *description = [dm.currentPost valueForKey:@"description"];
 	NSString *title = [dm.currentPost valueForKey:@"title"];

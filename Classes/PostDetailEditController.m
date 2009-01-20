@@ -53,7 +53,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		textView.text = @"";
 	} else {
 		textViewPlaceHolderField.hidden = YES;
-		if(moreText!=NULL)
+		if((moreText!=NULL)&&([moreText length]>0))
 			textView.text = [NSString stringWithFormat:@"%@\n<!--more-->%@",description,moreText];
 		else
 			textView.text = description;

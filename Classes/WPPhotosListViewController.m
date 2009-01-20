@@ -327,7 +327,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 {
 //in case of photo library also we have to do our transformations.
 //	if( picker.sourceType == UIImagePickerControllerSourceTypeCamera )
-		image = [self scaleAndRotateImage:image];
+	//	image = [self scaleAndRotateImage:image];
 
 	[self useImage:image];
 	[[picker parentViewController] dismissModalViewControllerAnimated:YES];

@@ -34,5 +34,5 @@
 - (void)pickPhotoFromPhotoLibrary:(id)sender;
 - (void)useImage:(UIImage*)theImage;
 - (void)showPhotoPickerActionSheet;
-
+- (UIImage *)scaleAndRotateImage:(UIImage *)image;
 @end

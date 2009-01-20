@@ -27,7 +27,6 @@
 - (void) createDemoBlogData;
 - (void) sortBlogData;
 
-- (NSString *)blogDir:(id)forBlog;
 - (NSString *)pathToPostTitles:(id)forBlog;
 - (NSString *)pathToPost:(id)aPost forBlog:(id)aBlog;
 - (NSString *)postFileName:(id)aPost;

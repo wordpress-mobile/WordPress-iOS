@@ -126,7 +126,7 @@
 - (id) newDraftsBlog;
 - (void) addSyncPostsForBlogToQueue:(id)aBlog;
 - (void) syncPostsForAllBlogsToQueue:(id)sender;
-
+- (NSString *)blogDir:(id)aBlog;
 - (void) saveBlogData;
 - (NSString *)templateHTMLStringForBlog:(id)aBlog isDefaultTemplate:(BOOL *)flag;
 - (NSString *)defaultTemplateHTMLString;
@@ -212,6 +212,7 @@
 - (BOOL)autoSaveCurrentPost;
 - (BOOL)makeAutoSavedPostCurrentForCurrentBlog;
 - (id)autoSavedPostForCurrentBlog;
+- (NSString *)blogDir:(id)aBlog;
 
 
 - (BOOL)postDescriptionHasValidDescription:(id)aPost;
