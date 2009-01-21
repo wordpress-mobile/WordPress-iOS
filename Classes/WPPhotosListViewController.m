@@ -325,9 +325,9 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 				didFinishPickingImage:(UIImage *)image
 									editingInfo:(NSDictionary *)editingInfo
 {
-//in case of photo library also we have to do our transformations.
-//	if( picker.sourceType == UIImagePickerControllerSourceTypeCamera )
-	//	image = [self scaleAndRotateImage:image];
+    // Add captured photo to iPhone photo library
+	if( picker.sourceType == UIImagePickerControllerSourceTypeCamera )
+		UIImageWriteToSavedPhotosAlbum(image, nil,nil,nil);
 
 	[self useImage:image];
 	[[picker parentViewController] dismissModalViewControllerAnimated:YES];
