@@ -38,8 +38,6 @@
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	noOfPostsTextField.text = [[dm currentBlog] valueForKey:kPostsDownloadCount];
 	
-	blogEditTable.sectionHeaderHeight = 10.0f;
-	blogEditTable.sectionFooterHeight = 10.0f;
 	
 	blogURLTextField.font = [UIFont fontWithName:@"Helvetica" size:15];
 	userNameTextField.font = [UIFont fontWithName:@"Helvetica" size:15];
@@ -111,15 +109,13 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 3;
+	return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	if (section == 1)
-		return 1;
-	if (section == 2)
-		return 2;
-	return 3;
+	if(section == 0)
+		return 3;
+	return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -147,6 +143,12 @@
 				resizePhotoControl.on = [value boolValue];
 				return resizePhotoViewCell;
 				break;
+			} else if  (indexPath.section == 3) {
+				UIView *resizePhotoHintView = [[[UIView alloc] initWithFrame:CGRectMake(resizePhotoHintTableViewCell.frame.origin.x, resizePhotoHintTableViewCell.frame.origin.y, resizePhotoHintTableViewCell.frame.size.width,resizePhotoHintTableViewCell.frame.size.height)] autorelease];
+				resizePhotoHintView.backgroundColor = [ UIColor clearColor];
+				resizePhotoHintTableViewCell.backgroundView = resizePhotoHintView ;
+				return resizePhotoHintTableViewCell;
+				
 			} else {
 				//				noOfPostsTextField.text = [[sharedDataManager currentBlog] objectForKey:@"pwd"];
 				noOfPostsTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -159,11 +161,7 @@
 				userNameTextField.text = [currentBlog objectForKey:@"username"];
 				userNameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 				return userNameTableViewCell;
-			} else {
-				[resizePhotoHintTableViewCell bringSubviewToFront:resizePhotoHintLabel];
-				resizePhotoHintTableViewCell.backgroundColor = [UIColor clearColor];
-				return resizePhotoHintTableViewCell;
-			}
+			} 
 		case 2:
 			passwordTextField.text = [currentBlog objectForKey:@"pwd"];
 			passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -177,11 +175,22 @@
 	return nil;
 }
 
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	if( section == 3 )
+		return 5.0f;		
+	return 15.0f;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	return [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 55, 25.0)] autorelease];
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	if (indexPath.section == 2 && indexPath.row == 1)
-		return CGRectGetHeight([resizePhotoHintTableViewCell frame]);
-	
+	if (indexPath.section == 3)
+		return [resizePhotoHintTableViewCell frame].size.height;
+
 	return 44.0f;
 }
 
@@ -509,6 +518,12 @@
 	
 	// Return YES for supported orientations
 	return YES;
+}
+
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+		[blogEditTable reloadData];
 }
 
 @end
