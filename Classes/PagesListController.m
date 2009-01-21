@@ -191,6 +191,11 @@
 			
 			NSString *title = [[currentPage valueForKey:@"title"] 
 							   stringByTrimmingCharactersInSet:whitespaceCS];
+			
+			if( title == nil || ([title length] == 0) )
+				title = @"(no title)" ;
+			
+			
 
 			static NSDateFormatter *dateFormatter = nil;
 			if (dateFormatter == nil) {

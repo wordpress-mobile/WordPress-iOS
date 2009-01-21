@@ -44,7 +44,9 @@
 		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:MyIdentifier] autorelease];
 	}
 	// Configure the cell
-	cell.text = [[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"];
+	cell.text = ( [[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] == nil || ([[[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] length] == 0) )?
+																	@"(no title)" : [[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] ;
+	
 	cell.font = [cell.font fontWithSize:15.0f];
 	return cell;
 }
