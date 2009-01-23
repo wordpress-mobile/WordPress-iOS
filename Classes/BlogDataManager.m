@@ -1,6 +1,7 @@
 #import "BlogDataManager.h"
 #import "WordPressAppDelegate.h"
 #import "CoreGraphics/CoreGraphics.h"
+#import "WPXMLReader.h"
 
 #define kURL @"URL"
 #define kMETHOD @"METHOD"
@@ -1020,28 +1021,19 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	if( [data length] > 0 )
 	{
-		//NSString *htmlStr = [NSString stringWithUTF8String:[data bytes]];
 		NSString *htmlStr = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
-		if ( !htmlStr ) // Handle the Servers which send Non UTF-8 Strings
+		if ( !htmlStr ) { // Handle the Servers which send Non UTF-8 Strings
 			htmlStr = [[[NSString alloc] initWithData:data encoding:[NSString defaultCStringEncoding]] autorelease];
+			data = [htmlStr dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+		}	
 
-		NSRange range = [htmlStr rangeOfString:@"EditURI"];
-		if (range.location != NSNotFound) {
-			NSRange lr = NSMakeRange(range.location, [htmlStr length]-range.location);
-			NSRange endRange = [htmlStr rangeOfString:@"/>" options:NSLiteralSearch range:lr];
-			if (endRange.location != NSNotFound) {
-				NSString *ourStr = [htmlStr substringWithRange:NSMakeRange(range.location, endRange.location-range.location)];
-				ourStr = [ourStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-				ourStr = [ourStr substringWithRange:NSMakeRange(0, [ourStr length]-1)];
-				NSRange r = [ourStr rangeOfString:@"\"" options:NSBackwardsSearch];
-				if (r.location != NSNotFound) {
-					NSString *hosturl = [ourStr substringWithRange:NSMakeRange(r.location+1, [ourStr length]-r.location-1)];
-					if( hosturl != nil )
-						[data release];
-					return [self xmlurl:hosturl];
-				}
-			}
-		}
+		NSError *parseError = nil;
+		WPXMLReader *xmlReader = [[WPXMLReader alloc] init];
+		[xmlReader parseXMLData:data parseError:&parseError];
+		NSString *hosturl = xmlReader.hostUrl;
+		if( hosturl != nil )
+			[data release];
+		return [self xmlurl:hosturl];
 	}
 	[data release];
 	return nil;
@@ -2969,8 +2961,10 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		[self syncPagesForBlog:aBlog];
 	}	
 
-	[aBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-	[self saveCurrentBlog];
+	//Has been commented to avoid Empty Blog Creation.
+	//	[aBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+	//	[self saveCurrentBlog];
+	
 	[self performSelectorOnMainThread:@selector(postBlogsRefreshNotificationInMainThread:) withObject:aBlog waitUntilDone:YES];
 
 	[aBlog release];

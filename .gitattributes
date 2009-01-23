@@ -66,6 +66,8 @@ Classes/WPSegmentedSelectionTableViewController.h -text
 Classes/WPSegmentedSelectionTableViewController.m -text
 Classes/WPSelectionTableViewController.h -text
 Classes/WPSelectionTableViewController.m -text
+Classes/WPXMLReader.h -text
+Classes/WPXMLReader.m -text
 Classes/WPXMLValidator.h -text
 Classes/WPXMLValidator.m -text
 Classes/WordPressAppDelegate.h -text
