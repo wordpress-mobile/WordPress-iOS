@@ -110,9 +110,9 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	if(mode)
-		return 5;
-	else 
 		return 4;
+	else 
+		return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -147,12 +147,6 @@
 				return resizePhotoViewCell;
 				break;
 			} else if  (indexPath.section == 3) {
-				UIView *resizePhotoHintView = [[[UIView alloc] initWithFrame:CGRectMake(resizePhotoHintTableViewCell.frame.origin.x, resizePhotoHintTableViewCell.frame.origin.y, resizePhotoHintTableViewCell.frame.size.width,resizePhotoHintTableViewCell.frame.size.height)] autorelease];
-				resizePhotoHintView.backgroundColor = [ UIColor clearColor];
-				resizePhotoHintTableViewCell.backgroundView = resizePhotoHintView ;
-				return resizePhotoHintTableViewCell;
-				
-			} else if  (indexPath.section == 4) {
 				return removeButtonViewCell;
 			} else {
 				//				noOfPostsTextField.text = [[sharedDataManager currentBlog] objectForKey:@"pwd"];
@@ -180,22 +174,22 @@
 	return nil;
 }
 
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	if( section == 3 )
-		return 5.0f;		
-	return 15.0f;
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+	if( section == 2  )
+	{
+		return kResizePhotoSettingHintLabel;
+	}
+	return nil;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	return [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 55, 25.0)] autorelease];
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+	if( section == 2 )
+		return 80.0f;		
+	return 0.0f;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	
-	if (indexPath.section == 3)
-		return [resizePhotoHintTableViewCell frame].size.height;
-
 	return 44.0f;
 }
 

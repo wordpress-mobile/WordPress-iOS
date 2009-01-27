@@ -92,7 +92,6 @@
 }
 
 - (void)viewDidLoad {
-	tableView.sectionFooterHeight = 0.0f;
 
 	passwordLabel.font = [UIFont boldSystemFontOfSize:17.0f];
 	publishOnLabel.font = [UIFont boldSystemFontOfSize:17.0f];
@@ -147,8 +146,7 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	//we don't have comments now
-	return 5;
+	return 3;
 }
 
 
@@ -207,14 +205,6 @@
 			} 
 			break ;
 		case 2:
-			{
-				UIView *hint = [[[UIView alloc] initWithFrame:CGRectMake(passwordHintTableViewCell.frame.origin.x, passwordHintTableViewCell.frame.origin.y, passwordHintTableViewCell.frame.size.width,passwordHintTableViewCell.frame.size.height)] autorelease];
-				hint.backgroundColor = [ UIColor clearColor];
-
-				passwordHintTableViewCell.backgroundView = hint ;
-				return passwordHintTableViewCell;
-			}	
-		case 3:
 			if (indexPath.row == 0) {
 				NSNumber *value = [post valueForKey:kResizePhotoSetting];
 				if ( value == nil ) {
@@ -226,14 +216,6 @@
 				return resizePhotoViewCell;
 			} 
 			break;
-		case 4:
-		{
-			UIView *hint = [[[UIView alloc] initWithFrame:CGRectMake(resizePhotoHintTableViewCell.frame.origin.x, resizePhotoHintTableViewCell.frame.origin.y, resizePhotoHintTableViewCell.frame.size.width,resizePhotoHintTableViewCell.frame.size.height)] autorelease];
-			hint.backgroundColor = [ UIColor clearColor];
-			
-			resizePhotoHintTableViewCell.backgroundView = hint ;
-			return resizePhotoHintTableViewCell;
-		}
 		default:
 			break;
 	}
@@ -242,35 +224,18 @@
 	return nil;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+	if(section == 1)
+		return kPasswordHintLabel;
+	else if( section == 2  )
+		return kResizePhotoSettingHintLabel;
+	
+	return nil;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	switch( indexPath.section)
-	{
-		case 0:
-		case 1:
-		case 3:break;
-		case 2:
-			return passwordHintTableViewCell.frame.size.height ;
-		
-		case 4:
-			return resizePhotoHintTableViewCell.frame.size.height ;
-	}
 	return 44.0f;
-}
-
-- (CGFloat)tableView:(UITableView *)aTableView heightForHeaderInSection:(NSInteger)section
-{
-	if(section == 3)
-		return 20.0f;
-	if( section == 2 || section == 4 )
-		return 5.0f;
-
-	return 15.0f;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	
-	return [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 55, 25.0)] autorelease];
 }
 
 //will be called when auto save method is called.

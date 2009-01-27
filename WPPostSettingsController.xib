@@ -8,11 +8,11 @@
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="24"/>
 			<integer value="199"/>
+			<integer value="24"/>
+			<integer value="192"/>
 			<integer value="78"/>
 			<integer value="185"/>
-			<integer value="192"/>
 			<integer value="95"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -610,27 +610,11 @@ NDgwLg</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">passwordHintTableViewCell</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="521995996"/>
-					</object>
-					<int key="connectionID">98</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">view</string>
 						<reference key="source" ref="841351856"/>
 						<reference key="destination" ref="37055601"/>
 					</object>
 					<int key="connectionID">128</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">passwordHintLabel</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="659455832"/>
-					</object>
-					<int key="connectionID">172</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -663,22 +647,6 @@ NDgwLg</string>
 						<reference key="destination" ref="352133937"/>
 					</object>
 					<int key="connectionID">191</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">resizePhotoHintTableViewCell</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="867939903"/>
-					</object>
-					<int key="connectionID">207</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">resizePhotoHintLabel</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="683471887"/>
-					</object>
-					<int key="connectionID">208</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -923,7 +891,7 @@ NDgwLg</string>
 					<string>{{146, 405}, {320, 44}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{204, 502}, {317, 55}}</string>
+					<string>{{284, 499}, {317, 55}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>

@@ -44,3 +44,5 @@
 #define kSupportsPagesAndComments @"SupportsPagesAndComments"
 #define kVersionAlertShown @"VersionAlertShown"
 #define kSupportsPagesAndCommentsServerCheck @"SupportsPagesAndCommentsServerCheck"
+#define kResizePhotoSettingHintLabel @"Resizing will result in faster publishing \n but smaller photos. Resized photos \n will be no larger than 640 x 480."
+#define kPasswordHintLabel @"Setting a password will require visitors to \n enter the above password to view this \n post and its comments."
