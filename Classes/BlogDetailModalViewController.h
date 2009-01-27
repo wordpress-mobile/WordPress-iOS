@@ -16,6 +16,7 @@
 	IBOutlet UITableViewCell *userNameTableViewCell;
 	IBOutlet UITableViewCell *passwordTableViewCell;
 	IBOutlet UITableViewCell *noOfPostsTableViewCell;
+	IBOutlet UITableViewCell *removeButtonViewCell;
 
 	IBOutlet UITextField *blogURLTextField;
 	IBOutlet UITextField *userNameTextField;

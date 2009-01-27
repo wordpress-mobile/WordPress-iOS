@@ -109,7 +109,10 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 4;
+	if(mode)
+		return 5;
+	else 
+		return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -149,6 +152,8 @@
 				resizePhotoHintTableViewCell.backgroundView = resizePhotoHintView ;
 				return resizePhotoHintTableViewCell;
 				
+			} else if  (indexPath.section == 4) {
+				return removeButtonViewCell;
 			} else {
 				//				noOfPostsTextField.text = [[sharedDataManager currentBlog] objectForKey:@"pwd"];
 				noOfPostsTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
