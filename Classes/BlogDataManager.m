@@ -970,6 +970,10 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 - (NSString *)xmlurl:(NSString *)hosturl
 {
+	//Handeled if HostUrl is nil from server.
+	if(!hosturl)
+		return nil;
+	
 	NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:hosturl]
 											  cachePolicy:NSURLRequestUseProtocolCachePolicy							  
 										  timeoutInterval:60.0];			
