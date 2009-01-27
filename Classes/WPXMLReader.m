@@ -34,7 +34,6 @@
         NSString *relAtt = [attributeDict valueForKey:@"rel"];
         if ([relAtt isEqualToString:@"EditURI"]) {
             hostUrl = [attributeDict valueForKey:@"href"];
-			[parser abortParsing];
         }
     } 
 }

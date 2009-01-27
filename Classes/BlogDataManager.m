@@ -1015,7 +1015,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	NSError *error = nil;
 	NSHTTPURLResponse *response = nil;
-	NSData *data = [[NSURLConnection sendSynchronousRequest:theRequest returningResponse:&response error:&error] retain];
+	NSData *data = [NSURLConnection sendSynchronousRequest:theRequest returningResponse:&response error:&error];
 	if ( error != nil )
 	
 	if ( [response statusCode] != 200 ) {
@@ -1025,21 +1025,18 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	if( [data length] > 0 )
 	{
-		NSString *htmlStr = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
-		if ( !htmlStr ) { // Handle the Servers which send Non UTF-8 Strings
-			htmlStr = [[[NSString alloc] initWithData:data encoding:[NSString defaultCStringEncoding]] autorelease];
-			data = [htmlStr dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-		}	
+			NSString *htmlStr = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+			if ( !htmlStr ) { // Handle the Servers which send Non UTF-8 Strings
+				htmlStr = [[[NSString alloc] initWithData:data encoding:[NSString defaultCStringEncoding]] autorelease];
+				data = [htmlStr dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+			}	
 
-		NSError *parseError = nil;
-		WPXMLReader *xmlReader = [[WPXMLReader alloc] init];
-		[xmlReader parseXMLData:data parseError:&parseError];
-		NSString *hosturl = xmlReader.hostUrl;
-		if( hosturl != nil )
-			[data release];
-		return [self xmlurl:hosturl];
-	}
-	[data release];
+			NSError *parseError = nil;
+			WPXMLReader *xmlReader = [[[WPXMLReader alloc] init] autorelease];
+			[xmlReader parseXMLData:data parseError:&parseError];
+			NSString *hosturl = xmlReader.hostUrl;
+			return [self xmlurl:hosturl];
+		}
 	return nil;
 }	
 - (BOOL)validateCurrentBlog:(NSString *)url user:(NSString *)username password:(NSString*)pwd 
@@ -1079,9 +1076,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	   [listOfMethods containsObject:@"metaWeblog.newMediaObject"] && [listOfMethods containsObject:@"blogger.getUsersBlogs"] &&
 	   [listOfMethods containsObject:@"wp.getAuthors"] && [listOfMethods containsObject:@"metaWeblog.getRecentPosts"] &&
 	   [listOfMethods containsObject:@"metaWeblog.getPost"] &&
+	   [listOfMethods containsObject:@"wp.getOptions"] &&
 	   [listOfMethods containsObject:@"metaWeblog.newPost"] && [listOfMethods containsObject:@"metaWeblog.editPost"] &&
 	   [listOfMethods containsObject:@"metaWeblog.deletePost"] && [listOfMethods containsObject:@"wp.newCategory"] &&
 	   [listOfMethods containsObject:@"wp.deleteCategory"] && [listOfMethods containsObject:@"wp.getCategories"] ) {
+
 
 		if ( [listOfMethods containsObject:@"wp.getComments"] && [listOfMethods containsObject:@"wp.getPages"] )
 			*isPagesAndCommentsSupported = YES;
@@ -1219,14 +1218,24 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	// load blog fields into currentBlog
 	NSString *blogid = [usersBlogs valueForKey:@"blogid"];
 	[currentBlog setValue:blogid?blogid:@"" forKey:@"blogid"];
+	
+	
+	XMLRPCRequest *reqOptionsBlogs = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
+	[reqOptionsBlogs setMethod:@"wp.getOptions" withObjects:[NSArray arrayWithObjects:blogid,username,pwd,nil]];
+	NSDictionary *optionsDict = [self executeXMLRPCRequest:reqOptionsBlogs byHandlingError:YES];
+	if( ![optionsDict isKindOfClass:[NSDictionary class]] )
+		return NO;
+	
 	/*
 	 NSString *adminStr	= [usersBlogs valueForKey:@"isAdmin"];
 	 NSNumber *isAdmin = [NSNumber numberWithBool:(BOOL) (adminStr == kCFBooleanTrue)?YES:NO) ];
 	 */
 	[currentBlog setValue:@"" forKey:@"isAdmin"];
 	
-	NSString *blogName = [usersBlogs valueForKey:@"blogName"];
+	NSString *blogName = [[optionsDict valueForKey:@"blog_title"]valueForKey:@"value"];
 	[currentBlog setValue:blogName?blogName:@"" forKey:@"blogName"];
+
+	
 	
 	// Do not use this value
 	//NSString *xmlrpc = url;//[usersBlogs valueForKey:@"xmlrpc"];
