@@ -14,7 +14,7 @@
 	IBOutlet UITableView *commentsTableView;
 
 	IBOutlet UIBarButtonItem *syncPostsButton;
-	IBOutlet UIButton *commentStatusButton;
+	IBOutlet UIBarButtonItem *commentStatusButton;
 	
 	IBOutlet UIToolbar  *editToolbar; 
 	UIBarButtonItem *editButtonItem;

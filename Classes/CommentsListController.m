@@ -66,9 +66,9 @@
 	}
 	
 	if ( awaitingComments == 0 )
-		[commentStatusButton setTitle:@"" forState:UIControlStateNormal];
+		[commentStatusButton setTitle:@""];
 	else
-		[commentStatusButton setTitle:[NSString stringWithFormat:@"%d awaiting moderation",awaitingComments] forState:UIControlStateNormal];
+		[commentStatusButton setTitle:[NSString stringWithFormat:@"%d awaiting moderation",awaitingComments]];
 	
 	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
 	[commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:NO];
@@ -215,9 +215,9 @@
 	}
 	
 	if ( awaitingComments == 0 )
-		[commentStatusButton setTitle:@"" forState:UIControlStateNormal];
+		[commentStatusButton setTitle:@""];
 	else
-		[commentStatusButton setTitle:[NSString stringWithFormat:@"%d awaiting moderation",awaitingComments] forState:UIControlStateNormal];
+		[commentStatusButton setTitle:[NSString stringWithFormat:@"%d awaiting moderation",awaitingComments]];
 			
 	[self removeProgressIndicator];
 	

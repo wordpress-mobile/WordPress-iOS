@@ -50,36 +50,6 @@
 					<object class="IBUIToolbar" id="1017118542">
 						<reference key="NSNextResponder" ref="749316841"/>
 						<int key="NSvFlags">266</int>
-						<object class="NSMutableArray" key="NSSubviews">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBUIButton" id="110137339">
-								<reference key="NSNextResponder" ref="1017118542"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{58, 7}, {243, 30}}</string>
-								<reference key="NSSuperview" ref="1017118542"/>
-								<bool key="IBUIOpaque">NO</bool>
-								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
-								<bool key="IBUIUserInteractionEnabled">NO</bool>
-								<int key="IBUIContentHorizontalAlignment">3</int>
-								<int key="IBUIContentVerticalAlignment">3</int>
-								<object class="NSFont" key="IBUIFont">
-									<string key="NSName">Helvetica-Bold</string>
-									<double key="NSSize">2.000000e+01</double>
-									<int key="NSfFlags">16</int>
-								</object>
-								<string key="IBUIHighlightedTitle"/>
-								<string key="IBUIDisabledTitle"/>
-								<string key="IBUISelectedTitle"/>
-								<string key="IBUINormalTitle"/>
-								<object class="NSColor" key="IBUIHighlightedTitleColor" id="180105104">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MQA</bytes>
-								</object>
-								<reference key="IBUIDisabledTitleColor" ref="180105104"/>
-								<reference key="IBUISelectedTitleColor" ref="180105104"/>
-								<reference key="IBUINormalTitleColor" ref="180105104"/>
-							</object>
-						</object>
 						<string key="NSFrame">{{0, 416}, {320, 44}}</string>
 						<reference key="NSSuperview" ref="749316841"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -95,8 +65,9 @@
 								<int key="IBUISystemItemIdentifier">5</int>
 								<reference key="IBUIToolbar" ref="1017118542"/>
 							</object>
-							<object class="IBUIBarButtonItem" id="281659958">
-								<reference key="IBUICustomView" ref="110137339"/>
+							<object class="IBUIBarButtonItem" id="601060404">
+								<string key="IBUITitle">0 awaiting moderation</string>
+								<float key="IBUIWidth">2.430000e+02</float>
 								<reference key="IBUIToolbar" ref="1017118542"/>
 							</object>
 							<object class="IBUIBarButtonItem" id="355885316">
@@ -309,20 +280,20 @@
 					<int key="connectionID">43</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">commentStatusButton</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="110137339"/>
-					</object>
-					<int key="connectionID">46</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">spamSelectedComments:</string>
 						<reference key="source" ref="987220153"/>
 						<reference key="destination" ref="372490531"/>
 					</object>
 					<int key="connectionID">47</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">commentStatusButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="601060404"/>
+					</object>
+					<int key="connectionID">49</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -371,7 +342,7 @@
 							<reference ref="355885316"/>
 							<reference ref="97956499"/>
 							<reference ref="151780196"/>
-							<reference ref="281659958"/>
+							<reference ref="601060404"/>
 						</object>
 						<reference key="parent" ref="749316841"/>
 					</object>
@@ -438,18 +409,9 @@
 						<reference key="parent" ref="702516767"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">45</int>
-						<reference key="object" ref="281659958"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="110137339"/>
-						</object>
+						<int key="objectID">48</int>
+						<reference key="object" ref="601060404"/>
 						<reference key="parent" ref="1017118542"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">44</int>
-						<reference key="object" ref="110137339"/>
-						<reference key="parent" ref="281659958"/>
 					</object>
 				</object>
 			</object>
@@ -469,7 +431,7 @@
 					<string>36.IBPluginDependency</string>
 					<string>37.IBPluginDependency</string>
 					<string>4.IBPluginDependency</string>
-					<string>44.IBPluginDependency</string>
+					<string>48.IBPluginDependency</string>
 					<string>5.IBPluginDependency</string>
 					<string>6.IBPluginDependency</string>
 					<string>9.IBPluginDependency</string>
@@ -481,7 +443,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{210, 296}, {320, 460}}</string>
+					<string>{{96, 376}, {320, 460}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -514,7 +476,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">47</int>
+			<int key="maxID">49</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -557,7 +519,7 @@
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIBarButtonItem</string>
-							<string>UIButton</string>
+							<string>UIBarButtonItem</string>
 							<string>UITableView</string>
 							<string>UIButton</string>
 							<string>UIToolbar</string>
