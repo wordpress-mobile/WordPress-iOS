@@ -612,6 +612,51 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	return [NSString stringWithFormat:@"<img src=\"%@\" alt=\"\" width=\"%d\" height=\"%d\" class=\"alignnone size-full wp-image-364\" />", urlStr, (int)width, (int)height ];
 }
+- (BOOL)appendImagesToPostDescription:(id)aPost
+{
+	NSMutableArray *photos = [aPost valueForKey:@"Photos"];
+	int i, count = [photos count];
+	NSString *curPath = nil;
+	
+	NSString *desc = [aPost valueForKey:@"description"];
+	BOOL firstImage = YES;
+	BOOL paraOpen = NO;
+	
+	for( i=count-1; i >=0 ; i-- )
+	{
+		curPath = [photos objectAtIndex:i];
+		NSString *filePAth = [NSString stringWithFormat:@"%@/%@",[self blogDir:currentBlog], curPath];
+		NSAutoreleasePool *ap = [[NSAutoreleasePool alloc] init];
+		NSString *urlStr = [self pictureURLForPicturePathBySendingToServer:filePAth];
+		[urlStr retain];
+		[ap release];
+		[urlStr autorelease];
+		if( !urlStr )
+			return NO;
+		else 
+		{
+			NSString *imgTag = [self imageTagForPath:curPath andURL:urlStr];
+			if (firstImage) {
+				desc = [desc  stringByAppendingString:@"\n<p>"];
+				paraOpen = YES;
+				desc = [desc stringByAppendingString:[NSString stringWithFormat:@"<a href=\"%@\">%@</a>", urlStr, imgTag]];
+				firstImage = NO;
+			} else {
+				
+				desc = [desc stringByAppendingString:[NSString stringWithFormat:@"<br /><br /><a href=\"%@\">%@</a>",urlStr, imgTag]];
+			}
+			[self deleteImageNamed:curPath forBlog:currentBlog];
+			[photos removeLastObject];
+		}
+	}
+	
+	if (paraOpen)
+		desc = [desc  stringByAppendingString:@"</p>"];
+	
+	[aPost setObject:desc forKey:@"description"];
+	
+	return YES;
+}
 
 - (BOOL)appendImagesOfCurrentPostToDescription
 {
@@ -3222,7 +3267,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[dict setObject:@"Local Draft" forKey:@"post_status_description"];
 
 	[dict setObject:[NSDate date] forKey:@"date_created_gmt"];
-
+	[dict setObject:[NSNumber numberWithBool:0] forKey:@"isLocalDraft"];
 	[dict setObject:@"" forKey:@"wp_password"];
 	[dict setObject:@"" forKey:@"mt_keywords"];
 	[dict setObject:[NSNumber numberWithInt:0] forKey:@"not_used_allow_pings"];
@@ -3404,7 +3449,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 	NSMutableDictionary *postTitle = [self postTitleForPost:currentPost];
 	[postTitle setValue:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
-	
+	[currentPost setObject:[NSNumber numberWithBool:1] forKey:@"isLocalDraft"];
+
 	if (currentPostIndex == -1) 
 	{
 		[draftTitles insertObject:postTitle atIndex:0];
@@ -3591,44 +3637,45 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 - (BOOL)savePost:(id)aPost
 {
  	BOOL successFlag = NO;
-
-	if( ![self appendImagesOfCurrentPostToDescription] )
+	
+	if( ![self appendImagesToPostDescription:aPost] )
 	{
  		return successFlag;
 	}
 	
-	if (currentPostIndex == -1 || isLocaDraftsCurrent)
+	NSNumber *postStatus = [aPost valueForKey:@"isLocalDraft"];
+	if (currentPostIndex == -1 || ([postStatus intValue] == 1))
 	{
 		NSMutableDictionary *postParams = [NSMutableDictionary dictionary];
 		
-		NSString *title = [currentPost valueForKey:@"title"];
+		NSString *title = [aPost valueForKey:@"title"];
 		title = (title == nil ? @"" : title );
 		[postParams setObject:title forKey:@"title"];
 		
-		NSString *tags = [currentPost valueForKey:@"mt_keywords"];
+		NSString *tags = [aPost valueForKey:@"mt_keywords"];
 		tags = (tags == nil ? @"" : tags );
 		[postParams setObject:tags forKey:@"mt_keywords"];
 		
-		NSString *description = [currentPost valueForKey:@"description"];
+		NSString *description = [aPost valueForKey:@"description"];
 		description = (description == nil ? @"" : description );
 		[postParams setObject:description forKey:@"description"];
- 		[postParams setObject:[currentPost valueForKey:@"categories"] forKey:@"categories"];
+ 		[postParams setObject:[aPost valueForKey:@"categories"] forKey:@"categories"];
 		
-		NSDate *date = [currentPost valueForKey:@"date_created_gmt"];
+		NSDate *date = [aPost valueForKey:@"date_created_gmt"];
 		NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:date];
 		NSDate *gmtDate = [date addTimeInterval:(secs*-1)];
 		//[postParams setObject:gmtDate forKey:@"dateCreated"];
 		[postParams setObject:gmtDate forKey:@"date_created_gmt"];
-
-		NSString *post_status = [currentPost valueForKey:@"post_status"];		
+		
+		NSString *post_status = [aPost valueForKey:@"post_status"];		
 		if ( !post_status || [post_status isEqualToString:@""] )
 			post_status = @"publish";
 		[postParams setObject:post_status forKey:@"post_status"];
-
-		[postParams setObject:[[currentPost valueForKey:@"not_used_allow_comments"] stringValue] forKey:@"not_used_allow_comments"];
-		[postParams setObject:[[currentPost valueForKey:@"not_used_allow_pings"] stringValue] forKey:@"not_used_allow_pings"];
-		[postParams setObject:[currentPost valueForKey:@"wp_password"] forKey:@"wp_password"];
-		NSString *draftId = [currentPost valueForKey:@"draftid"];
+		
+		[postParams setObject:[[aPost valueForKey:@"not_used_allow_comments"] stringValue] forKey:@"not_used_allow_comments"];
+		[postParams setObject:[[aPost valueForKey:@"not_used_allow_pings"] stringValue] forKey:@"not_used_allow_pings"];
+		[postParams setObject:[aPost valueForKey:@"wp_password"] forKey:@"wp_password"];
+		NSString *draftId = [aPost valueForKey:@"draftid"];
 		NSDictionary *draftPost = [self currentPost];
 		NSArray *args = [NSArray arrayWithObjects:[currentBlog valueForKey:@"blogid"],
 						 [currentBlog valueForKey:@"username"],
@@ -3643,7 +3690,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		
 		id response = [self executeXMLRPCRequest:request byHandlingError:YES];
 		[request release];
-
+		
 		//if it is a draft and we successfully published then remove from drafts.
 		if(![response isKindOfClass:[NSError class]] ){
 			
@@ -3670,16 +3717,16 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	}
 	else
 	{
-        [currentPost setValue:[currentPost valueForKey:@"userid"] forKey:@"userid"];
+        [currentPost setValue:[aPost valueForKey:@"userid"] forKey:@"userid"];
 		
-		NSString *post_status = [currentPost valueForKey:@"post_status"];
+		NSString *post_status = [aPost valueForKey:@"post_status"];
 		if ( !post_status || [post_status isEqualToString:@""] ) 
 			post_status = @"publish";
 		[currentPost setObject:post_status forKey:@"post_status"];
 		NSArray *args = [NSArray arrayWithObjects:[currentPost valueForKey:@"postid"],
 						 [currentBlog valueForKey:@"username"],
 						 [currentBlog valueForKey:@"pwd"],
-						 currentPost,
+						 aPost,
 						 nil
 						 ];
 		//TODO: take url from current post
@@ -3694,9 +3741,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 			[self fectchNewPost:[currentPost valueForKey:@"postid"] formBlog:currentBlog];
 			successFlag = YES;
 		}
-
 	}
-	
  	
 	return successFlag;
 }
