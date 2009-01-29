@@ -360,7 +360,7 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 #pragma mark -
 #pragma mark tableview methods
 
-- (UITableViewCell *)tableviewCellWithReuseIdentifier:(NSString *)identifier withCategoryId:(int)categoryId {
+- (UITableViewCell *)tableviewCellWithReuseIdentifier:(NSString *)identifier withCommentId:(int)commentId {
 	
 	/*
 	 Create an instance of UITableViewCell and add tagged subviews for the name, local time, and quarter image of the time zone.
@@ -385,7 +385,7 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	if ( editMode == YES ) {
 		rect = CGRectMake(LEFT_OFFSET,15, 30, COMMENTS_TABLE_ROW_HEIGHT-30);
 		UIButton *but = [[UIButton alloc] initWithFrame:rect]; 
-		[but setTag:categoryId];
+		[but setTag:commentId];
 		[but addTarget:self action:@selector(commentSelected:) forControlEvents:UIControlEventTouchUpInside];
 		[cell.contentView addSubview:but];
 		[but release];
@@ -450,7 +450,7 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	id currentComment = [commentsArray objectAtIndex:indexPath.row];
 	
 	if (cell == nil || changeEditMode) {
-		cell = [self tableviewCellWithReuseIdentifier:postsTableRowId withCategoryId:[[currentComment valueForKey:@"comment_id"]intValue]];
+		cell = [self tableviewCellWithReuseIdentifier:postsTableRowId withCommentId:[[currentComment valueForKey:@"comment_id"]intValue]];
 	}
 	
 	if( editMode == YES )
@@ -533,9 +533,12 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 // Show PostList when row is selected
 - (void)tableView:(UITableView *)atableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if(editMode)  {
+		id currentComment = [commentsArray objectAtIndex:indexPath.row];
+		int commentId = [[currentComment valueForKey:@"comment_id"]intValue];
 		[atableView deselectRowAtIndexPath:indexPath animated:NO];
 		UITableViewCell *indexViewCell = [atableView cellForRowAtIndexPath:indexPath];
-		[self commentSelected:[[[[indexViewCell subviews] objectAtIndex:0]subviews] objectAtIndex:2]];//;(id)self.senderObj];//[atableView cellForRowAtIndexPath:indexPath]];
+		//[self commentSelected:[[[[indexViewCell subviews] objectAtIndex:0]subviews] objectAtIndex:1]];//;(id)self.senderObj];//[atableView cellForRowAtIndexPath:indexPath]];
+		[self commentSelected:[[[indexViewCell subviews] objectAtIndex:0]viewWithTag:commentId] ];//;(id)self.senderObj];//[atableView cellForRowAtIndexPath:indexPath]];
 		return;
 	}
 		

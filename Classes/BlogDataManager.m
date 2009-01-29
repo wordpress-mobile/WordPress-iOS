@@ -4169,7 +4169,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
 	[commentTitlesArray writeToFile:pathToCommentTitles  atomically:YES];
  	
-//	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 	return YES;
 }
 
