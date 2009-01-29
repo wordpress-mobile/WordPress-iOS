@@ -21,6 +21,7 @@
 		// Initialization code
 		autoReturnInRadioSelectMode = YES;
         categoryNames = nil;
+		categoryIndentationLevels = [[NSMutableArray alloc] init];
 	}
 	return self;
 }
@@ -90,6 +91,17 @@
 		}
     }
 	
+	//IndentationaValues have been set here for displaying parent and child relationship
+	for( i=0; i < count; i++ ){
+		NSEnumerator *enumerator =  [[objects objectAtIndex:i] objectEnumerator]; 
+		id category = nil;
+		while ( category = [enumerator nextObject] ) {
+			NSString *CurrentParentID = [category objectForKey:@"parentId"];
+			int indentationValue = [self indentationLevelForParentIDAndCategoryArray:CurrentParentID categoryObjects:objects];
+			[categoryIndentationLevels addObject:[NSNumber numberWithInt:indentationValue]];
+		}
+	}
+		
    	[originalSelObjects release];
 	originalSelObjects = [selectionStatusOfObjects copy];
 	
@@ -98,14 +110,44 @@
 }
 
 
+-(int)indentationLevelForParentIDAndCategoryArray:(NSString *)parentID categoryObjects:(NSArray *)categoryArray
+{
+	int i, count = [categoryArray count];
+	if ([parentID intValue] == 0)
+	{
+		return 0;
+	}
+	else
+	{
+		for( i=0; i < count; i++ ){
+			NSEnumerator *enumerator =  [[objects objectAtIndex:i] objectEnumerator]; 
+			id category = nil;
+			while ( category = [enumerator nextObject] ) {
+				NSString *catID = [category objectForKey:@"categoryId"];
+				NSString *CurrentParentID = [category objectForKey:@"parentId"];
+				if ([parentID isEqualToString:catID])
+				{
+					return ([self indentationLevelForParentIDAndCategoryArray:CurrentParentID categoryObjects:categoryArray] + 1);
+				}
+			}
+		}
+	}
+	return 0;
+}
+
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView {
-    return [objects count];
+ //   return [objects count];
+	return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	NSArray *subArray=[objects objectAtIndex:section];
-	
-    return [subArray count];
+	int totalCount = 0;
+	int i=0, count = [objects count];
+	for( i=0 ; i < count ; i++ ) {
+		totalCount += [[objects objectAtIndex:i] count];
+	}	
+	return totalCount;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -117,26 +159,14 @@
 		[cell setAccessoryType:UITableViewCellAccessoryCheckmark];
 	}
 
-	NSArray *subArray=[objects objectAtIndex:indexPath.section];
-    if(subArray){
-        if (indexPath.row < [subArray count]) {
-			NSDictionary *item = (NSDictionary *)[subArray objectAtIndex:indexPath.row];
-			
-			if(indexPath.row == 0)
-				cell.text = [item valueForKey:@"categoryName"];
-			else
-				cell.text = [NSString stringWithFormat:@"   %@",[item valueForKey:@"categoryName"]];
-		} else {
-			cell.text = @"";
-		}
-	}
-	else {
-        cell.text = @"";
-	}
+	cell.indentationLevel = [[categoryIndentationLevels objectAtIndex:indexPath.row] intValue];
+	cell.text = [categoryNames objectAtIndex:indexPath.row];
 
-	CGFloat cellFontSize=[UIFont labelFontSize]; 
-	UIFont *aFont = [[cell font] fontWithSize:cellFontSize-4.0];
-	[cell setFont:aFont];
+	BOOL curStatus = [[selectionStatusOfObjects objectAtIndex:indexPath.row] boolValue];
+	if (curStatus)
+		cell.textColor = [UIColor blueColor];
+	else
+		cell.textColor = [UIColor blackColor];
 	
    	return cell;
 }
@@ -182,13 +212,22 @@
     }
 	
     
-    BOOL curStatus = [[selectionStatusOfObjects objectAtIndex:previousRows] boolValue];
+	BOOL curStatus = [[selectionStatusOfObjects objectAtIndex:previousRows] boolValue];
 	if( selectionType == kCheckbox ){
-        [selectionStatusOfObjects replaceObjectAtIndex:previousRows withObject:[NSNumber numberWithBool:!curStatus]];
+		[selectionStatusOfObjects replaceObjectAtIndex:previousRows withObject:[NSNumber numberWithBool:!curStatus]];
 		[aTableView reloadData];		
 	}
 	
 	[aTableView deselectRowAtIndexPath:[aTableView indexPathForSelectedRow] animated:YES];
 }
 
+/*- (NSInteger)tableView:(UITableView *)tableView indentationLevelForRowAtIndexPath:(NSIndexPath *)indexPath { // return 'depth' of row for hierarchies 
+	return 0;
+}*/
+
+-(void)dealloc
+{
+	[categoryIndentationLevels release];
+	[super dealloc];
+}
 @end

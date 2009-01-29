@@ -99,7 +99,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
         NSMutableArray *tempArray = [[NSMutableArray alloc] init];
         [tempArray addObject:[parentIds objectAtIndex:i]];
         for(j = 0;j < categoryCount; j++){
-			
             int parent = [[[parentIds objectAtIndex:i] objectForKey:@"categoryId"] intValue];
             int child = [[[cats objectAtIndex:j] valueForKey:@"parentId"] intValue];
             if(parent == child){
@@ -136,7 +135,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	NSDictionary *postStatusList = [[dm currentBlog] valueForKey:@"postStatusList"];
-    NSArray *dataSource = [postStatusList allValues] ;
+         NSArray *dataSource = [postStatusList allValues] ;
     
 	if( dm.isLocaDraftsCurrent || dm.currentPostIndex == -1 )
 		dataSource = [dataSource arrayByAddingObject:@"Local Draft"];
@@ -153,6 +152,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	selectionTableViewController.title = @"Status";
 	selectionTableViewController.navigationItem.rightBarButtonItem = nil;
 	[postDetailViewController.navigationController pushViewController:selectionTableViewController animated:YES];
+	[selectionTableViewController release];
 }
 
 
@@ -761,7 +761,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [leftView release];
 	[bookMarksArray release];
     [segmentedTableViewController release];
-	[selectionTableViewController release];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
 	[super dealloc];
 }

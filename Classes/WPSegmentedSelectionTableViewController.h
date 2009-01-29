@@ -12,6 +12,7 @@
 @interface WPSegmentedSelectionTableViewController : WPSelectionTableViewController {
 	
     NSMutableArray *categoryNames;
+	NSMutableArray *categoryIndentationLevels;
 }
-
+-(int)indentationLevelForParentIDAndCategoryArray:(NSString *)parentID categoryObjects:(NSArray *)categoryArray;
 @end
