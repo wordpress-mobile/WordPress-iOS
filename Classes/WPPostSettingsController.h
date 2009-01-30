@@ -13,7 +13,8 @@
 	IBOutlet UITableViewCell *resizePhotoViewCell;
 	
 	IBOutlet UITextField *passwordTextField;
-	IBOutlet UITextField *publishOnTextField;
+	IBOutlet UILabel *publishOnTextField;
+
 	IBOutlet UILabel *passwordHintLabel;
 
 	IBOutlet UILabel *passwordLabel;

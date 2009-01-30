@@ -95,7 +95,7 @@
 
 	passwordLabel.font = [UIFont boldSystemFontOfSize:17.0f];
 	publishOnLabel.font = [UIFont boldSystemFontOfSize:17.0f];
-	passwordTextField.font = [UIFont systemFontOfSize:13];
+	passwordTextField.font = [UIFont systemFontOfSize:16];
 	publishOnTextField.font = [UIFont systemFontOfSize:14];
 
 	resizePhotoLabel.font = [UIFont boldSystemFontOfSize:17.0f];
@@ -145,6 +145,10 @@
 	return YES;
 }
 
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+	[self reloadData];
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	return 3;
 }
@@ -170,7 +174,6 @@
 	switch (indexPath.section) {
 		case 0:
 		{
-			publishOnTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 			NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 			[dateFormatter setDateStyle:NSDateFormatterFullStyle];
 			[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
