@@ -2836,7 +2836,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		
 		NSString *path = [self pageFilePath:updatedPage forBlog:blog];
 		
-		[defaultFileManager removeFileAtPath:path handler:nil];
+		[defaultFileManager removeItemAtPath:path error:nil];
 		[updatedPage writeToFile:path atomically:YES];
 		
 		[pageTitlesArray addObject:[self pageTitleForPage:updatedPage]];
@@ -2850,7 +2850,9 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[blog setObject:[NSNumber numberWithInt:1] forKey:@"newpages"];
 
 	NSString *pathToCommentTitles = [self pathToPageTitles:blog];
-	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
+	[defaultFileManager removeItemAtPath:pathToCommentTitles error:nil];
+	
+
 	[pageTitlesArray writeToFile:pathToCommentTitles  atomically:YES];
 	[self setPageTitlesList:pageTitlesArray];
 	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
@@ -2924,7 +2926,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *pathToPost = [self pathToDraft:currentPost forBlog:currentBlog];
 	NSFileManager *defaultFileManager = [NSFileManager defaultManager];
 	if([defaultFileManager fileExistsAtPath:pathToPost])
-		[defaultFileManager removeFileAtPath:pathToPost handler:nil];
+		[defaultFileManager removeItemAtPath:pathToPost error:nil];
 	
 	[self setCurrentUnsavedDraft:currentPost];
 	[[NSNotificationCenter defaultCenter]postNotificationName:@"DraftsUpdated" object:nil];
@@ -3707,7 +3709,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 					NSString *pathToPost = [self pathToDraft:draftPost forBlog:currentBlog];
 					NSFileManager *defaultFileManager = [NSFileManager defaultManager];
 					if([defaultFileManager fileExistsAtPath:pathToPost])
-						[defaultFileManager removeFileAtPath:pathToPost handler:nil];
+						[defaultFileManager removeItemAtPath:pathToPost error:nil];
 					break;
 				}
 			}
@@ -4200,7 +4202,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		
 		NSString *path = [self commentFilePath:updatedComment forBlog:blog];
 
-		[defaultFileManager removeFileAtPath:path handler:nil];
+		[defaultFileManager removeItemAtPath:path error:nil];
 		[updatedComment writeToFile:path atomically:YES];
 		
 		[commentTitlesArray addObject:[self commentTitleForComment:updatedComment]];
@@ -4211,7 +4213,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[commentTitlesArray sortUsingDescriptors:[NSArray arrayWithObject:sd]];
 	[sd release];
 	NSString *pathToCommentTitles = [self pathToCommentTitles:blog];
-	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
+	[defaultFileManager removeItemAtPath:pathToCommentTitles error:nil];
 	[commentTitlesArray writeToFile:pathToCommentTitles  atomically:YES];
  	
 	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
@@ -4310,20 +4312,20 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 			{
 				NSDictionary *commentsDict=[aComment objectAtIndex:i];
 				NSString *path = [self commentFilePath:commentsDict forBlog:blog];
-				[defaultFileManager removeFileAtPath:path handler:nil];
+				[defaultFileManager removeItemAtPath:path error:nil];
 				[commentTitlesList removeObject:commentsDict];
 			}
 		}
 	}
 	
 	NSString *pathToCommentTitles = [self pathToCommentTitles:blog];
-	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
+	[defaultFileManager removeItemAtPath:pathToCommentTitles error:nil];
 
 	// sort and save the postTitles list
 	NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
 	[commentTitlesArray sortUsingDescriptors:[NSArray arrayWithObject:sd]];
 	[sd release];
-	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
+	[defaultFileManager removeItemAtPath:pathToCommentTitles error:nil];
 	[commentTitlesArray writeToFile:pathToCommentTitles  atomically:YES];
  	[commentsReqArray release];
 	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
@@ -4406,7 +4408,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[commentTitlesArray sortUsingDescriptors:[NSArray arrayWithObject:sd]];
 	[sd release];
 	NSString *pathToCommentTitles = [self pathToCommentTitles:blog];
-	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
+	[defaultFileManager removeItemAtPath:pathToCommentTitles error:nil];
 	[commentTitlesArray writeToFile:pathToCommentTitles  atomically:YES];
  	[commentsReqArray release];
 	
@@ -4492,7 +4494,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[commentTitlesArray sortUsingDescriptors:[NSArray arrayWithObject:sd]];
 	[sd release];
 	NSString *pathToCommentTitles = [self pathToCommentTitles:blog];
-	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
+	[defaultFileManager removeItemAtPath:pathToCommentTitles error:nil];
 	[commentTitlesArray writeToFile:pathToCommentTitles  atomically:YES];
  	[commentsReqArray release];
 	
@@ -4562,7 +4564,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 			for(i=0;i<commentsCount;i++){
 				NSDictionary *dict=[aComment objectAtIndex:i];
 				NSString *path = [self commentFilePath:dict forBlog:blog];
-				[defaultFileManager removeFileAtPath:path handler:nil];
+				[defaultFileManager removeItemAtPath:path error:nil];
 				[commentTitlesList removeObject:dict];
 			}
 		}
@@ -4573,7 +4575,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[commentTitlesArray sortUsingDescriptors:[NSArray arrayWithObject:sd]];
 	[sd release];
 	NSString *pathToCommentTitles = [self pathToCommentTitles:blog];
-	[defaultFileManager removeFileAtPath:pathToCommentTitles handler:nil];
+	[defaultFileManager removeItemAtPath:pathToCommentTitles error:nil];
 	[commentTitlesArray writeToFile:pathToCommentTitles  atomically:YES];
  	[commentsReqArray release];
 	
