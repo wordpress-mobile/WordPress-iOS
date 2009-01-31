@@ -39,7 +39,7 @@
 					<object class="IBUIWebView" id="975252262">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrame">{{69.5, 4}, {246, 406}}</string>
+						<string key="NSFrame">{{69.5, 4}, {246, 428}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -67,7 +67,7 @@
 					<object class="IBUIImageView" id="753409639">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">271</int>
-						<string key="NSFrame">{{68, 436}, {222, 24}}</string>
+						<string key="NSFrame">{{69, 447}, {141, 24}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
