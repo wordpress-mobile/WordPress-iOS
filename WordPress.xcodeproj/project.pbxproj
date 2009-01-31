@@ -34,6 +34,8 @@
 		2FAE970B0E33B21600CA8540 /* webclip.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97060E33B21600CA8540 /* webclip.png */; };
 		2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */; };
 		2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */; };
+		7059CD210F332B6500A0660B /* WPCategoryTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 7059CD200F332B6500A0660B /* WPCategoryTree.m */; };
+		706D25F50F347F1200491666 /* category_child.png in Resources */ = {isa = PBXBuildFile; fileRef = 706D25F40F347F1200491666 /* category_child.png */; };
 		A00593C20E224A1B0087E1FB /* WPImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = A00593C10E224A1B0087E1FB /* WPImageView.m */; };
 		A017DD7F0E29DDBF009095C2 /* application-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A017DD7E0E29DDBF009095C2 /* application-icon.png */; };
 		A01C54230E24E4ED00D411F2 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = A01C54220E24E4ED00D411F2 /* Reachability.m */; };
@@ -150,6 +152,9 @@
 		2FAE97060E33B21600CA8540 /* webclip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = webclip.png; sourceTree = "<group>"; };
 		2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xhtml1-transitional.dtd"; sourceTree = "<group>"; };
 		2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = xhtmlValidatorTemplate.xhtml; sourceTree = "<group>"; };
+		7059CD1F0F332B6500A0660B /* WPCategoryTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WPCategoryTree.h; path = ../WPCategoryTree.h; sourceTree = "<group>"; };
+		7059CD200F332B6500A0660B /* WPCategoryTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WPCategoryTree.m; path = ../WPCategoryTree.m; sourceTree = "<group>"; };
+		706D25F40F347F1200491666 /* category_child.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = category_child.png; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A00593C00E224A1B0087E1FB /* WPImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WPImageView.h; path = ../WPImageView.h; sourceTree = "<group>"; };
 		A00593C10E224A1B0087E1FB /* WPImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WPImageView.m; path = ../WPImageView.m; sourceTree = "<group>"; };
@@ -366,6 +371,8 @@
 		2F35D8AF0DFBAD82002A5F9C /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				7059CD1F0F332B6500A0660B /* WPCategoryTree.h */,
+				7059CD200F332B6500A0660B /* WPCategoryTree.m */,
 				C57AD5E10F2A10BC00A1717C /* WPXMLReader.h */,
 				C57AD5E00F2A10BC00A1717C /* WPXMLReader.m */,
 				2F706AA30DFB24C500B43086 /* BlogDataManager.h */,
@@ -444,6 +451,7 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				706D25F40F347F1200491666 /* category_child.png */,
 				2AC522980E9B31DD00A61748 /* wplogo2.png */,
 				2AC522790E9B2BE300A61748 /* vertBars.png */,
 				2AB2EB0B0E9A148B00CB166E /* MainBackground.png */,
@@ -711,6 +719,7 @@
 				ECCD48880EA8623F0078082C /* PageDetailViewController.xib in Resources */,
 				EC0F59350EB0438E002FCB4D /* PageDetailsController.xib in Resources */,
 				108F0FB40EC2B51C00D09FB6 /* PagesDraftListController.xib in Resources */,
+				706D25F50F347F1200491666 /* category_child.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -761,6 +770,7 @@
 				C584D0840EF942DC00B78012 /* UIViewController+WPAnimation.m in Sources */,
 				C5D87A800F20ADB300601936 /* WPLogoView.m in Sources */,
 				C57AD5E20F2A10BC00A1717C /* WPXMLReader.m in Sources */,
+				7059CD210F332B6500A0660B /* WPCategoryTree.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

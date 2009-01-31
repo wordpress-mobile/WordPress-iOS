@@ -81,38 +81,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	NSArray *cats = [[dm currentBlog] valueForKey:@"categories"];
 	
-    //Start Extracting and constructing the Categories in an array of arrays in which the '0' index is a parent.   
-    NSMutableArray *parentIds = [[NSMutableArray alloc] initWithCapacity:[cats count]];
-    int i,j,categoryCount = [cats count];
-    for(i = 0;i < categoryCount; i++){
-        
-		int parent = [[[cats objectAtIndex:i] valueForKey:@"parentId"] intValue];
-      	if(parent == 0){
-            [parentIds addObject:[cats objectAtIndex:i]]; 
-        }
-    }
-    
-    NSMutableArray *childIds = [[NSMutableArray alloc] init];
-    int parentCount = [parentIds count];
-    for(i = 0;i < parentCount; i++){
-		
-        NSMutableArray *tempArray = [[NSMutableArray alloc] init];
-        [tempArray addObject:[parentIds objectAtIndex:i]];
-        for(j = 0;j < categoryCount; j++){
-            int parent = [[[parentIds objectAtIndex:i] objectForKey:@"categoryId"] intValue];
-            int child = [[[cats objectAtIndex:j] valueForKey:@"parentId"] intValue];
-            if(parent == child){
-                [tempArray addObject:[cats objectAtIndex:j]];
-            }
-        }
-        [childIds addObject:tempArray];
-        [tempArray release];
-    }
-	
 	NSArray *selObject = [[dm currentPost] valueForKey:@"categories"];
 	if( selObject == nil )
         selObject = [NSArray array];
-    [segmentedTableViewController populateDataSource:childIds    //datasorce
+    [segmentedTableViewController populateDataSource:cats    //datasorce
 									   havingContext:kSelectionsCategoriesContext
 									 selectedObjects:selObject
 									   selectionType:kCheckbox
@@ -124,8 +96,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[postDetailViewController.navigationController pushViewController:segmentedTableViewController animated:YES];
 	}
 	isNewCategory=NO;
-	[parentIds release];
-	[childIds release];
 }
 
 - (void)populateSelectionsControllerWithStatuses
@@ -153,6 +123,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	selectionTableViewController.navigationItem.rightBarButtonItem = nil;
 	[postDetailViewController.navigationController pushViewController:selectionTableViewController animated:YES];
 	[selectionTableViewController release];
+	selectionTableViewController = nil;
 }
 
 

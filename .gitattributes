@@ -111,6 +111,8 @@ Classes/XMLRPC/XMLValueDecoder.m -text
 /WPBlogMainViewController.xib -text
 /WPBlogsListController.xib -text
 /WPCategoriesController.xib -text
+/WPCategoryTree.h -text
+/WPCategoryTree.m -text
 /WPCommentsDetailViewController.xib -text
 /WPImageView.h -text
 /WPImageView.m -text
@@ -127,6 +129,7 @@ WordPress.xcodeproj/project.pbxproj -text
 /aboutscreenlogo.png -text
 /application-icon.png -text
 /backNav.png -text
+/category_child.png -text
 /check.png -text
 /commentDelete.png -text
 /defaultPostTemplate.html -text

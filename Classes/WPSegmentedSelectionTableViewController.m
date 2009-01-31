@@ -7,6 +7,7 @@
 //
 
 #import "WPSegmentedSelectionTableViewController.h"
+#import "WPCategoryTree.h"
 
 @interface NSObject (WPSelectionTableViewControllerDelegateCategory)
 
@@ -14,16 +15,34 @@
 
 @end
 
+@interface WPSegmentedSelectionTableViewController (private)
+
+-(int)indentationLevelForCategory:(NSString *)categoryParentID categoryCollection:(NSMutableDictionary *)categoryDict;
+
+@end
+
 @implementation WPSegmentedSelectionTableViewController
+
+@synthesize objects, selectionStatusOfObjects, originalSelObjects;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
 		// Initialization code
 		autoReturnInRadioSelectMode = YES;
-        categoryNames = nil;
-		categoryIndentationLevels = [[NSMutableArray alloc] init];
+		categoryIndentationLevelsDict = [[NSMutableDictionary alloc] init];
+		rowTextColor = [[UIColor alloc] initWithRed:0.196 green:0.31 blue:0.522 alpha:1.0];
 	}
 	return self;
+}
+
+-(void)dealloc
+{
+	[categoryIndentationLevelsDict release];
+	[rowTextColor release];
+	[originalSelObjects release];
+	[selectionStatusOfObjects release];
+	[objects release];
+	[super dealloc];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -31,10 +50,12 @@
 		if( [selectionDelegate respondsToSelector:@selector(selectionTableViewController:completedSelectionsWithContext:selectedObjects:haveChanges:)] ){
 
             NSMutableArray *result = [NSMutableArray array];
-            int i=0,count = [categoryNames count];
+            int i=0,count = [objects count];
             for( i=0; i < count; i++ ){
-                if ( [[selectionStatusOfObjects objectAtIndex:i] boolValue] == YES )
-					[result addObject:[categoryNames objectAtIndex:i]];
+                if ( [[self.selectionStatusOfObjects objectAtIndex:i] boolValue] == YES )
+				{
+					[result addObject:[[objects objectAtIndex:i] objectForKey:@"categoryName"]];
+				}
             }
 			[selectionDelegate selectionTableViewController:self completedSelectionsWithContext:curContext selectedObjects:result haveChanges:[self haveChanges]];
 		}		
@@ -43,11 +64,11 @@
 
 - (BOOL)haveChanges
 {
-	int i = 0, count = [categoryNames count];
+	int i = 0, count = [objects count];
 		
 	for( i=0; i < count; i++ )
 	{
-		if( ![[selectionStatusOfObjects objectAtIndex:i] isEqual:[originalSelObjects objectAtIndex:i]] )
+		if( ![[self.selectionStatusOfObjects objectAtIndex:i] isEqual:[self.originalSelObjects objectAtIndex:i]] )
 			return YES;
 	}
 	
@@ -57,97 +78,78 @@
 //overriding the main Method
 - (void)populateDataSource:(NSArray *)sourceObjects havingContext:(void*)context selectedObjects:(NSArray *)selObjects selectionType:(WPSelectionType)aType andDelegate:(id)delegate
 {
-	objects = [sourceObjects retain];
 	curContext = context;
 	selectionType = aType;
 	selectionDelegate = delegate;
+
+	WPCategoryTree *tree = [[WPCategoryTree alloc] initWithParent:nil];
+	[tree getChildrenFromObjects:sourceObjects];
 	
-	int i = 0, k=0,count = [objects count];
-	[selectionStatusOfObjects release];
-	selectionStatusOfObjects = [[NSMutableArray arrayWithCapacity:count] retain];
+	self.objects = [tree getAllObjects];
+	[tree release];
 	
-    if ( categoryNames != nil ) {
-        [categoryNames release];
-        categoryNames = nil;
-	} 
-    
-    categoryNames = [[NSMutableArray alloc] init];
+	int i = 0, k=0,count = [self.objects count];
+	self.selectionStatusOfObjects = [NSMutableArray arrayWithCapacity:count];
+	NSMutableDictionary *categoryDict = [[NSMutableDictionary alloc] init];
+	
 	for( i=0; i < count; i++ ){
-		NSEnumerator *enumerator =  [[objects objectAtIndex:i] objectEnumerator]; 
-		id category = nil;
-		while ( category = [enumerator nextObject] ) {
-            NSString *catName = [category objectForKey:@"categoryName"];
-            [categoryNames addObject:catName];
-            BOOL isFound = NO;
-            for (k=0;k<[selObjects count];k++ ) {
-                if ( [[selObjects objectAtIndex:k] isEqualToString:catName] ) {
-                    [selectionStatusOfObjects addObject:[NSNumber numberWithBool:YES]];
-                    isFound = YES;
-                    break;
-                }
-		     }
-            if ( !isFound )
-                [selectionStatusOfObjects addObject:[NSNumber numberWithBool:NO]];
-		}
+		NSMutableDictionary *category = [objects objectAtIndex:i];
+		NSString *categoryId = [category objectForKey:@"categoryId"];
+		[categoryDict setObject:category forKey:categoryId];
     }
 	
-	//IndentationaValues have been set here for displaying parent and child relationship
-	for( i=0; i < count; i++ ){
-		NSEnumerator *enumerator =  [[objects objectAtIndex:i] objectEnumerator]; 
-		id category = nil;
-		while ( category = [enumerator nextObject] ) {
-			NSString *CurrentParentID = [category objectForKey:@"parentId"];
-			int indentationValue = [self indentationLevelForParentIDAndCategoryArray:CurrentParentID categoryObjects:objects];
-			[categoryIndentationLevels addObject:[NSNumber numberWithInt:indentationValue]];
-		}
-	}
+	[categoryIndentationLevelsDict removeAllObjects];
+	for( i=0; i < count; i++ )
+	{
+		NSMutableDictionary *category = [objects objectAtIndex:i];
+		NSString *parentID = [category objectForKey:@"parentId"];
+		NSString *catName = [category objectForKey:@"categoryName"];
 		
-   	[originalSelObjects release];
-	originalSelObjects = [selectionStatusOfObjects copy];
-	
+		BOOL isFound = NO;
+		for (k=0;k<[selObjects count];k++ ) {
+			if ( [[selObjects objectAtIndex:k] isEqualToString:catName] ) {
+				[selectionStatusOfObjects addObject:[NSNumber numberWithBool:YES]];
+				isFound = YES;
+				break;
+			}
+		}
+		if ( !isFound )
+			[selectionStatusOfObjects addObject:[NSNumber numberWithBool:NO]];
+		
+		int indentationLevel = [self indentationLevelForCategory:parentID categoryCollection:categoryDict];
+			[categoryIndentationLevelsDict setValue:[NSNumber numberWithInt:indentationLevel]
+										   forKey:[category objectForKey:@"categoryId"]];
+	}
+
+	self.originalSelObjects = [[selectionStatusOfObjects copy] autorelease];
+
 	flag = NO;
+	[categoryDict release];
 	[tableView reloadData];
 }
 
-
--(int)indentationLevelForParentIDAndCategoryArray:(NSString *)parentID categoryObjects:(NSArray *)categoryArray
+-(int)indentationLevelForCategory:(NSString *)parentID categoryCollection:(NSMutableDictionary *)categoryDict
 {
-	int i, count = [categoryArray count];
 	if ([parentID intValue] == 0)
 	{
 		return 0;
 	}
 	else
 	{
-		for( i=0; i < count; i++ ){
-			NSEnumerator *enumerator =  [[objects objectAtIndex:i] objectEnumerator]; 
-			id category = nil;
-			while ( category = [enumerator nextObject] ) {
-				NSString *catID = [category objectForKey:@"categoryId"];
-				NSString *CurrentParentID = [category objectForKey:@"parentId"];
-				if ([parentID isEqualToString:catID])
-				{
-					return ([self indentationLevelForParentIDAndCategoryArray:CurrentParentID categoryObjects:categoryArray] + 1);
-				}
-			}
-		}
+		return (([self indentationLevelForCategory:[[categoryDict objectForKey:parentID] objectForKey:@"parentId"] categoryCollection:categoryDict]) + 1);
 	}
-	return 0;
+		
 }
 
 
+#pragma mark TableView DataSource Methods
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView {
- //   return [objects count];
 	return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	int totalCount = 0;
-	int i=0, count = [objects count];
-	for( i=0 ; i < count ; i++ ) {
-		totalCount += [[objects objectAtIndex:i] count];
-	}	
-	return totalCount;
+	return [objects count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -158,18 +160,27 @@
 		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:selectionTableRowCell] autorelease];
 		[cell setAccessoryType:UITableViewCellAccessoryCheckmark];
 	}
+	int indentationLevel = [[categoryIndentationLevelsDict valueForKey:[[objects objectAtIndex:indexPath.row] objectForKey:@"categoryId"]] intValue];
+	cell.indentationLevel = indentationLevel;
+	if (indentationLevel == 0)
+		cell.image = nil;
+	else
+		cell.image = [UIImage imageNamed:@"category_child.png"];
 
-	cell.indentationLevel = [[categoryIndentationLevels objectAtIndex:indexPath.row] intValue];
-	cell.text = [categoryNames objectAtIndex:indexPath.row];
+	cell.text = [[objects objectAtIndex:indexPath.row] objectForKey:@"categoryName"];
 
 	BOOL curStatus = [[selectionStatusOfObjects objectAtIndex:indexPath.row] boolValue];
 	if (curStatus)
-		cell.textColor = [UIColor blueColor];
+		cell.textColor = rowTextColor;
 	else
 		cell.textColor = [UIColor blackColor];
 	
    	return cell;
 }
+
+
+#pragma mark TableView Delegate Methods
+
 - (UITableViewCellAccessoryType)tableView:(UITableView *)aTableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath 
 {
     int previousRows = indexPath.section + indexPath.row;
@@ -178,9 +189,9 @@
         currentSection--;
         previousRows += [self tableView:aTableView numberOfRowsInSection:currentSection] - 1;
     }
-    
 	return (UITableViewCellAccessoryType)( [[selectionStatusOfObjects objectAtIndex:previousRows] boolValue] == YES ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone );	
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	CGFloat height=38.0;
@@ -200,34 +211,4 @@
 	return height;
 }
 
-
-- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    int previousRows = indexPath.section + indexPath.row;
-    int currentSection = indexPath.section;
-
-    while ( currentSection > 0 ) {
-        currentSection--;
-        previousRows += [self tableView:aTableView numberOfRowsInSection:currentSection] - 1;
-    }
-	
-    
-	BOOL curStatus = [[selectionStatusOfObjects objectAtIndex:previousRows] boolValue];
-	if( selectionType == kCheckbox ){
-		[selectionStatusOfObjects replaceObjectAtIndex:previousRows withObject:[NSNumber numberWithBool:!curStatus]];
-		[aTableView reloadData];		
-	}
-	
-	[aTableView deselectRowAtIndexPath:[aTableView indexPathForSelectedRow] animated:YES];
-}
-
-/*- (NSInteger)tableView:(UITableView *)tableView indentationLevelForRowAtIndexPath:(NSIndexPath *)indexPath { // return 'depth' of row for hierarchies 
-	return 0;
-}*/
-
--(void)dealloc
-{
-	[categoryIndentationLevels release];
-	[super dealloc];
-}
 @end
