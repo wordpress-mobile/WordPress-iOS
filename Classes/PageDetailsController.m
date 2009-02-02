@@ -16,6 +16,7 @@
 #import "WPNavigationLeftButtonView.h"
 #import "PostsListController.h"
 #import "WordPressAppDelegate.h"
+#import "Reachability.h"
 
 
 @interface PageDetailsController (privateMethods)
@@ -255,8 +256,25 @@
 }
 - (IBAction)savePageAction:(id)sender 
 {
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
-		if (!hasChanges) {
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	//Check for internet connection
+	if(![[dm.currentPost valueForKey:@"post_status"] isEqualToString:@"Local Draft"])
+	{
+		if ( [[Reachability sharedReachability] internetConnectionStatus] == NotReachable ) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Communication Error."
+															message:@"no internet connection."
+														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			alert.tag=TAG_OFFSET;
+			[alert show];
+			
+			WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+			[delegate setAlertRunning:YES];
+			[alert release];		
+			return;
+		}
+	}
+	
+	if (!hasChanges) {
 			[self.navigationController popViewControllerAnimated:YES]; 
 			return;
 		}

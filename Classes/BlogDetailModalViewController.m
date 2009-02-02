@@ -8,6 +8,7 @@
 #import "WPNavigationLeftButtonView.h"
 #import "UIViewController+WPAnimation.h"
 #import "Reachability.h"
+#import "WPLabelFooterView.h"
 
 @interface BlogDetailModalViewController()
 - (void)populateSelectionsControllerWithNoOfRecentPosts;
@@ -174,15 +175,19 @@
 	return nil;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-	if( section == 2  )
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section 
+{
+	if (section == 2)
 	{
-		return kResizePhotoSettingHintLabel;
+		WPLabelFooterView *labelView = [[[WPLabelFooterView alloc] initWithFrame:CGRectMake(10,3,300,60)] autorelease];
+		labelView.label.numberOfLines = 4;
+		labelView.label.textAlignment = UITextAlignmentCenter;
+		labelView.label.text = kResizePhotoSettingHintLabel;
+		return labelView;
 	}
 	return nil;
 }
-
-
+		
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
 	if( section == 2 )
 		return 80.0f;		

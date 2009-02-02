@@ -10,6 +10,7 @@
 #import "WPPhotosListViewController.h"
 #import "WPNavigationLeftButtonView.h"
 #import "PostsListController.h"
+#import "Reachability.h"
 
 
 
@@ -103,12 +104,29 @@
 
 - (IBAction)saveAction:(id)sender 
 {
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	//Check for internet connection
+	if(![[dm.currentPost valueForKey:@"post_status"] isEqualToString:@"Local Draft"])
+	{
+		if ( [[Reachability sharedReachability] internetConnectionStatus] == NotReachable ) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Communication Error."
+															 message:@"no internet connection."
+															delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			alert.tag=TAG_OFFSET;
+			[alert show];
+			
+			WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+			[delegate setAlertRunning:YES];
+			[alert release];		
+			return;
+		}
+	}
+	
 	if (!hasChanges) {
 		[self stopTimer];
 		[self.navigationController popViewControllerAnimated:YES]; 
 		return;
 	}
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	
 	//Code for scaling image based on post settings
 	NSArray *photosArray = [dm.currentPost valueForKey:@"Photos"];

@@ -34,6 +34,7 @@
 		2FAE970B0E33B21600CA8540 /* webclip.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97060E33B21600CA8540 /* webclip.png */; };
 		2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */; };
 		2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */; };
+		702CA0680F36FF0D00018B88 /* WPLabelFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 702CA0670F36FF0D00018B88 /* WPLabelFooterView.m */; };
 		7059CD210F332B6500A0660B /* WPCategoryTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 7059CD200F332B6500A0660B /* WPCategoryTree.m */; };
 		706D25F50F347F1200491666 /* category_child.png in Resources */ = {isa = PBXBuildFile; fileRef = 706D25F40F347F1200491666 /* category_child.png */; };
 		A00593C20E224A1B0087E1FB /* WPImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = A00593C10E224A1B0087E1FB /* WPImageView.m */; };
@@ -152,6 +153,8 @@
 		2FAE97060E33B21600CA8540 /* webclip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = webclip.png; sourceTree = "<group>"; };
 		2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xhtml1-transitional.dtd"; sourceTree = "<group>"; };
 		2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = xhtmlValidatorTemplate.xhtml; sourceTree = "<group>"; };
+		702CA0660F36FF0D00018B88 /* WPLabelFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLabelFooterView.h; sourceTree = "<group>"; };
+		702CA0670F36FF0D00018B88 /* WPLabelFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLabelFooterView.m; sourceTree = "<group>"; };
 		7059CD1F0F332B6500A0660B /* WPCategoryTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WPCategoryTree.h; path = ../WPCategoryTree.h; sourceTree = "<group>"; };
 		7059CD200F332B6500A0660B /* WPCategoryTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WPCategoryTree.m; path = ../WPCategoryTree.m; sourceTree = "<group>"; };
 		706D25F40F347F1200491666 /* category_child.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = category_child.png; sourceTree = "<group>"; };
@@ -500,6 +503,8 @@
 				A01C55580E25E29200D411F2 /* WPXMLValidator.m */,
 				C5B001C00E82971C00D13185 /* WPNavigationLeftButtonView.h */,
 				C5B001BE0E82971400D13185 /* WPNavigationLeftButtonView.m */,
+				702CA0660F36FF0D00018B88 /* WPLabelFooterView.h */,
+				702CA0670F36FF0D00018B88 /* WPLabelFooterView.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -771,6 +776,7 @@
 				C5D87A800F20ADB300601936 /* WPLogoView.m in Sources */,
 				C57AD5E20F2A10BC00A1717C /* WPXMLReader.m in Sources */,
 				7059CD210F332B6500A0660B /* WPCategoryTree.m in Sources */,
+				702CA0680F36FF0D00018B88 /* WPLabelFooterView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

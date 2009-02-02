@@ -3,6 +3,7 @@
 #import "WPPublishOnEditController.h"
 #import "BlogDataManager.h"
 #import "WordPressAppDelegate.h"
+#import "WPLabelFooterView.h"
 
 @interface WPPostSettingsController(WPPostSettingsControllerCategory)
 
@@ -158,6 +159,39 @@
 		return 1;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section 
+{
+	if (section != 0)
+	{
+		WPLabelFooterView *labelView = [[[WPLabelFooterView alloc] initWithFrame:CGRectMake(10,3,300,60)] autorelease];
+		labelView.label.numberOfLines = 4;
+		labelView.label.textAlignment = UITextAlignmentCenter;
+		
+		if(section == 1)
+		{
+			labelView.label.text = kPasswordHintLabel;
+			return labelView;
+		}
+		else if( section == 2  )
+		{
+			labelView.label.text = kResizePhotoSettingHintLabel;
+			return labelView;
+		}
+	}
+	return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section 
+{
+	if(section == 1)
+		return 68;
+		
+	if(section == 2)
+		return 60;
+	
+	return 0;
+}
+
 - (IBAction)controlEventValueChanged:(id)sender {
 	postDetailViewController.hasChanges = YES;
 	if (commentsSwitchControl == sender)
@@ -224,15 +258,6 @@
 	}
 
 	// Configure the cell
-	return nil;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-	if(section == 1)
-		return kPasswordHintLabel;
-	else if( section == 2  )
-		return kResizePhotoSettingHintLabel;
-	
 	return nil;
 }
 
