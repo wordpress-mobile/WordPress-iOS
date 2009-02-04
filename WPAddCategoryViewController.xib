@@ -145,7 +145,7 @@
 							</object>
 							<object class="IBUITextField" id="655460930">
 								<reference key="NSNextResponder" ref="219876080"/>
-								<int key="NSvFlags">291</int>
+								<int key="NSvFlags">289</int>
 								<string key="NSFrame">{{144, 1}, {148, 40}}</string>
 								<reference key="NSSuperview" ref="219876080"/>
 								<bool key="IBUIOpaque">NO</bool>
@@ -459,6 +459,13 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">Classes/XMLRPC/XMLRPCConnection.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">UIViewController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/UIViewController+WPAnimation.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
