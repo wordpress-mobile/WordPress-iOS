@@ -5,6 +5,10 @@
 #import "WordPressAppDelegate.h"
 #import "WPLabelFooterView.h"
 
+#define kPasswordFooterSectionHeight		 68.0f
+#define kResizePhotoSettingSectionHeight	 60.0f
+
+
 @interface WPPostSettingsController(WPPostSettingsControllerCategory)
 
 - (void)keyboardWillShow:(BOOL)notif;
@@ -161,22 +165,27 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section 
 {
-	if (section != 0)
+	if ((section == 1) || (section == 2))
 	{
-		WPLabelFooterView *labelView = [[[WPLabelFooterView alloc] initWithFrame:CGRectMake(10,3,300,60)] autorelease];
-		labelView.label.numberOfLines = 4;
-		labelView.label.textAlignment = UITextAlignmentCenter;
+		//This Class creates a view which contains label with color and font attributes and sets the label properties and it is used as footer view for section in tableview.
+		WPLabelFooterView *labelView = [[[WPLabelFooterView alloc] initWithFrame:CGRectMake(0,3,300,60)] autorelease];
+		//Sets the number of lines to be shown in the label.
+		[labelView setNumberOfLines:(NSInteger)3];
+		//Sets the text alignment of the label.
+		[labelView setTextAlignment:UITextAlignmentCenter];
 		
 		if(section == 1)
 		{
-			labelView.label.text = kPasswordHintLabel;
-			return labelView;
+			//Sets the text for the label.
+			[labelView setText:kPasswordHintLabel];
 		}
-		else if( section == 2  )
+		else
 		{
-			labelView.label.text = kResizePhotoSettingHintLabel;
-			return labelView;
+			//Sets the text for the label.
+			[labelView setText:kResizePhotoSettingHintLabel];
 		}
+		
+		return labelView;
 	}
 	return nil;
 }
@@ -184,12 +193,12 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section 
 {
 	if(section == 1)
-		return 68;
+		return kPasswordFooterSectionHeight;
 		
 	if(section == 2)
-		return 60;
+		return kResizePhotoSettingSectionHeight;
 	
-	return 0;
+	return 0.0f;
 }
 
 - (IBAction)controlEventValueChanged:(id)sender {

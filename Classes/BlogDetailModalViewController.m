@@ -10,6 +10,8 @@
 #import "Reachability.h"
 #import "WPLabelFooterView.h"
 
+#define kResizePhotoSettingSectionHeight	 80.0f
+
 @interface BlogDetailModalViewController()
 - (void)populateSelectionsControllerWithNoOfRecentPosts;
 @end
@@ -179,10 +181,15 @@
 {
 	if (section == 2)
 	{
-		WPLabelFooterView *labelView = [[[WPLabelFooterView alloc] initWithFrame:CGRectMake(10,3,300,60)] autorelease];
-		labelView.label.numberOfLines = 4;
-		labelView.label.textAlignment = UITextAlignmentCenter;
-		labelView.label.text = kResizePhotoSettingHintLabel;
+		//This Class creates a view which contains label with color and font attributes and sets the label properties and it is used as footer view for section in tableview.
+		WPLabelFooterView *labelView = [[[WPLabelFooterView alloc] initWithFrame:CGRectMake(0,3,300,60)] autorelease];
+		//Sets the number of lines to be shown in the label.
+		[labelView setNumberOfLines:(NSInteger)3];
+		//Sets the text alignment of the label.
+		[labelView setTextAlignment:UITextAlignmentCenter];
+		//Sets the text for the label.
+		[labelView setText:kResizePhotoSettingHintLabel];
+		
 		return labelView;
 	}
 	return nil;
@@ -190,7 +197,7 @@
 		
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
 	if( section == 2 )
-		return 80.0f;		
+		return kResizePhotoSettingSectionHeight;		
 	return 0.0f;
 }
 
