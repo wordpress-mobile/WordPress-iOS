@@ -8,13 +8,13 @@
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="111"/>
-			<integer value="46"/>
-			<integer value="97"/>
-			<integer value="39"/>
-			<integer value="49"/>
-			<integer value="125"/>
 			<integer value="77"/>
+			<integer value="49"/>
+			<integer value="46"/>
+			<integer value="111"/>
+			<integer value="39"/>
+			<integer value="97"/>
+			<integer value="125"/>
 			<integer value="1" id="9"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -322,7 +322,7 @@
 							<object class="IBUITextField" id="520695439">
 								<reference key="NSNextResponder" ref="467484506"/>
 								<int key="NSvFlags">289</int>
-								<string key="NSFrame">{{63, 6}, {214, 31}}</string>
+								<string key="NSFrame">{{79, 6}, {214, 31}}</string>
 								<reference key="NSSuperview" ref="467484506"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -381,7 +381,7 @@
 							<object class="IBUISwitch" id="869275936">
 								<reference key="NSNextResponder" ref="824143336"/>
 								<int key="NSvFlags">289</int>
-								<string key="NSFrame">{{193, 8}, {94, 27}}</string>
+								<string key="NSFrame">{{218, 8}, {94, 27}}</string>
 								<reference key="NSSuperview" ref="824143336"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -1065,7 +1065,7 @@ NDgwLg</string>
 					<reference ref="9"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{474, 178}, {315, 56}}</string>
+					<string>{{725, 98}, {315, 56}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{162, 291}, {317, 62}}</string>

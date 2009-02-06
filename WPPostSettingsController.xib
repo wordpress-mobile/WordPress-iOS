@@ -9,9 +9,9 @@
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="24"/>
-			<integer value="199"/>
-			<integer value="78"/>
 			<integer value="185"/>
+			<integer value="78"/>
+			<integer value="199"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -157,13 +157,13 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUITextField" id="692634358">
 								<reference key="NSNextResponder" ref="373578252"/>
-								<int key="NSvFlags">289</int>
-								<string key="NSFrame">{{112, 6}, {198, 31}}</string>
+								<int key="NSvFlags">290</int>
+								<string key="NSFrame">{{94, 6}, {218, 31}}</string>
 								<reference key="NSSuperview" ref="373578252"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<string key="IBUIText"/>
-								<string key="IBUIPlaceholder">                             Optional  </string>
+								<string key="IBUIPlaceholder">                            Optional  </string>
 								<object class="NSColor" key="IBUITextColor">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MC4yOTQxMTc2NiAwLjM5NjA3ODQ0IDAuNTgwMzkyMTgAA</bytes>
@@ -363,7 +363,7 @@ ICAgICAgICAgICAgICDigKh0aGlzIHBvc3QgYW5kIGl0cyBjb21tZW50cy4</string>
 							<object class="IBUISwitch" id="932273704">
 								<reference key="NSNextResponder" ref="500229868"/>
 								<int key="NSvFlags">289</int>
-								<string key="NSFrame">{{193, 8}, {94, 27}}</string>
+								<string key="NSFrame">{{218, 8}, {94, 27}}</string>
 								<reference key="NSSuperview" ref="500229868"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -375,7 +375,7 @@ ICAgICAgICAgICAgICDigKh0aGlzIHBvc3QgYW5kIGl0cyBjb21tZW50cy4</string>
 							<object class="IBUILabel" id="719350653">
 								<reference key="NSNextResponder" ref="500229868"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{6, 11}, {128, 21}}</string>
+								<string key="NSFrame">{{8, 11}, {120, 21}}</string>
 								<reference key="NSSuperview" ref="500229868"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
