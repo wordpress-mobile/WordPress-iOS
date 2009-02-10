@@ -111,8 +111,8 @@
 			{
 				UIActivityIndicatorView *ai = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 				CGRect frame = [ai frame];
-				frame.origin.x = [cell.contentView bounds].size.width - frame.size.width-55.0;
-				frame.origin.y += 12;//(kPictRowHeight - frame.size.height)/2;
+				frame.origin.x = [cell.contentView bounds].size.width - frame.size.width-60.0;
+				frame.origin.y += 15;//(kPictRowHeight - frame.size.height)/2;
 				
 				[ai startAnimating];
 				[ai setFrame:frame];

@@ -787,6 +787,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sunil Naramu";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -795,6 +796,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUGMODE;
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = WordPress;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CA6DE7FF-44A3-4BD9-AAB6-3FD1A9C5111F";
 			};
 			name = Debug;
 		};

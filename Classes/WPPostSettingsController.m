@@ -102,7 +102,10 @@
 	publishOnLabel.font = [UIFont boldSystemFontOfSize:17.0f];
 	passwordTextField.font = [UIFont systemFontOfSize:16];
 	publishOnTextField.font = [UIFont systemFontOfSize:14];
-
+	
+	[publishOnTextField setMinimumFontSize:14];
+	[publishOnTextField setAdjustsFontSizeToFitWidth:YES];
+	
 	resizePhotoLabel.font = [UIFont boldSystemFontOfSize:17.0f];
 
 	[commentsSwitchControl addTarget:self action:@selector(controlEventValueChanged:) forControlEvents:UIControlEventValueChanged];
