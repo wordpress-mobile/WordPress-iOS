@@ -4529,14 +4529,14 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		NSString *commentid = [commentsDict valueForKey:@"comment_id"];
 		NSString *commentFilePath = [self commentFilePath:commentsDict forBlog:blog];
 		NSDictionary *completeComment = [NSMutableDictionary dictionaryWithContentsOfFile:commentFilePath];
-	
-		if([[commentsDict valueForKey:@"status"]isEqualToString:@"spam"]){
-			[aComment removeObjectAtIndex:i];
-			commentsCount--;i--;
-			continue;
-		}
-			
-		[commentsDict setValue:@"spam" forKey:@"status"];
+	// Commented code to resolve the issue mentioned in Ticket#97
+//		if([[commentsDict valueForKey:@"status"]isEqualToString:@"spam"]){
+//			[aComment removeObjectAtIndex:i];
+//			commentsCount--;i--;
+//			continue;
+//		}
+//			
+//		[commentsDict setValue:@"spam" forKey:@"status"];
 		[completeComment setValue:@"spam" forKey:@"status"];
 		
 		NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
@@ -4566,6 +4566,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 				NSString *path = [self commentFilePath:dict forBlog:blog];
 				[defaultFileManager removeItemAtPath:path error:nil];
 				[commentTitlesList removeObject:dict];
+				[commentTitlesArray removeObject:dict];
 			}
 		}
 	}
