@@ -1444,8 +1444,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	if( isLocaDraftsCurrent )
 		return NO;
-	
+	[currentBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
+
 	[self syncPostsForBlog:currentBlog];
+	[currentBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+
 	[self makeBlogAtIndexCurrent:currentBlogIndex];
 
 	return YES;
@@ -1456,7 +1459,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 - (BOOL) syncPostsForBlog:(id)blog {
 	if( [[blog valueForKey:@"blogid"] isEqualToString:kDraftsBlogIdStr] )
 		return NO;
-	[blog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
 	// Parameters
 	NSString *username = [blog valueForKey:@"username"];
 	NSString *pwd = [blog valueForKey:@"pwd"];
@@ -1570,10 +1572,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	} else {
 //		[self->blogsList addObject:blog];
 	}
-	
-	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 
-	[self saveBlogData];
+//Commented code as per ticket#102	
+//	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+//
+//	[self saveBlogData];
 
 //	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
 	[self performSelectorOnMainThread:@selector(postBlogsRefreshNotificationInMainThread:) withObject:blog waitUntilDone:NO];
@@ -4153,7 +4156,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 }
 
 - (BOOL) syncCommentsForCurrentBlog {
+	[currentBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
+
 	[self syncCommentsForBlog:currentBlog];
+	[currentBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+
 	[self makeBlogAtIndexCurrent:currentBlogIndex];
 	return YES;
 }
@@ -4161,7 +4168,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 // sync comments for a given blog
 - (BOOL) syncCommentsForBlog:(id)blog {
 	
-	[blog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
 	// Parameters
 	NSString *username = [blog valueForKey:@"username"];
 	NSString *pwd = [blog valueForKey:@"pwd"];
@@ -4216,7 +4222,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[defaultFileManager removeItemAtPath:pathToCommentTitles error:nil];
 	[commentTitlesArray writeToFile:pathToCommentTitles  atomically:YES];
  	
-	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+	//[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 	return YES;
 }
 
