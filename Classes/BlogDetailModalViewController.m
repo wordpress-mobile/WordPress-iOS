@@ -458,7 +458,9 @@
 		//		[dm addSyncPostsForBlogToQueue:dm.currentBlog]; 
 		
 		//see implemention of wrapperForSyncPostsAndGetTemplateForBlog: method for comment
-		[dm.currentBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
+
+		//Commented this line for spinning indicator in the main screen. When a new blog is created.
+		//[dm.currentBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
 		[dm performSelectorInBackground:@selector(wrapperForSyncPostsAndGetTemplateForBlog:) withObject:dm.currentBlog];
 		
 		[dm saveCurrentBlog];
