@@ -37,6 +37,8 @@ Classes/UIViewController+WPAnimation.h -text
 Classes/UIViewController+WPAnimation.m -text
 Classes/WPActivityIndicator.h -text
 Classes/WPActivityIndicator.m -text
+Classes/WPActivityIndicatorTVCell.h -text
+Classes/WPActivityIndicatorTVCell.m -text
 Classes/WPAddCategoryViewController.h -text
 Classes/WPAddCategoryViewController.m -text
 Classes/WPBlogsListController.h -text

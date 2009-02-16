@@ -8,6 +8,7 @@
 #import "UIViewController+WPAnimation.h"
 #import <QuartzCore/QuartzCore.h>
 #import "WPLogoView.h"
+#import "WPActivityIndicatorTVCell.h"
 
 @interface RootViewController (private)
 
@@ -86,18 +87,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	UITableViewCell *cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero] autorelease];
-	//	NSString *rootviewcell = @"rootviewcell";
-	//	
-	//	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rootviewcell];
-	//	if (cell == nil) {
-	//		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:rootviewcell] autorelease];
-	//	}
-	UIActivityIndicatorView *activityView = (UIActivityIndicatorView*)[cell viewWithTag:5919];
+	static NSString *rootviewcell = @"rootviewcell";
 	
-	activityView.hidden = YES;
-	if([activityView isAnimating]){
-		[activityView stopAnimating];
+	//Creation of ActivityIndicatorView and label which holds the blog name happens in the WPActivityIndicatorTVCell.
+	WPActivityIndicatorTVCell *cell = (WPActivityIndicatorTVCell *)[tableView dequeueReusableCellWithIdentifier:rootviewcell];
+	if (cell == nil) {
+		cell = [[[WPActivityIndicatorTVCell alloc] initWithFrame:CGRectZero reuseIdentifier:rootviewcell] autorelease];
 	}
 	
 	if (indexPath.section == 0) 
@@ -109,30 +104,23 @@
 		} else {
 			if( [[[[BlogDataManager sharedDataManager] blogAtIndex:(indexPath.row)] valueForKey:@"kIsSyncProcessRunning"] intValue] == 1)
 			{
-				UIActivityIndicatorView *ai = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-				CGRect frame = [ai frame];
-				frame.origin.x = [cell.contentView bounds].size.width - frame.size.width-60.0;
-				frame.origin.y += 15;//(kPictRowHeight - frame.size.height)/2;
-				
-				[ai startAnimating];
-				[ai setFrame:frame];
-				ai.tag = 5919;	//some number
-				[cell.contentView addSubview:ai];
-				[cell.contentView bringSubviewToFront:ai];
-				
-				[ai release];
+				//Starting Activity Indicator View in cell.
+				[cell startActivityAnimation];
 			}else
 			{
-				UIView *aView = [cell.contentView viewWithTag:5919];
-				if( aView )
-					[aView removeFromSuperview];
+				//Stoping Activity Indicator View in cell
+				[cell stopActivityAnimation];
 			}
 			
-			UILabel *blogName=[[UILabel alloc] initWithFrame:CGRectMake(10, 2 , 230, 50)];
-			blogName.text=[[[BlogDataManager sharedDataManager] blogAtIndex:(indexPath.row)] valueForKey:@"blogName"];
-			blogName.font = [UIFont boldSystemFontOfSize:18.0];
-			[cell.contentView addSubview:blogName];
-			[blogName release];
+			//Label Creation has been done in WPActivityIndicatorTVCell.
+			/*UILabel *blogName=[[UILabel alloc] initWithFrame:CGRectMake(10, 2 , 230, 50)];
+			 blogName.text=[[[BlogDataManager sharedDataManager] blogAtIndex:(indexPath.row)] valueForKey:@"blogName"];
+			 blogName.font = [UIFont boldSystemFontOfSize:18.0];
+			 [cell.contentView addSubview:blogName];
+			 [blogName release];*/
+			
+			UILabel *label = (UILabel *)[cell viewWithTag:2];
+			label.text = [[[BlogDataManager sharedDataManager] blogAtIndex:(indexPath.row)] valueForKey:@"blogName"];
 		}
 		
 		if ([[BlogDataManager sharedDataManager] countOfBlogs] == indexPath.row)
@@ -145,7 +133,6 @@
 		cell.text = @"About WordPress for iPhone";
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
-	
 	
 	return cell;
 }
