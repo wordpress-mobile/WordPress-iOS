@@ -260,7 +260,7 @@
 
 	WPNavigationLeftButtonView *myview = [WPNavigationLeftButtonView createView];  
     [myview setTarget:self withAction:@selector(goToHome:)];
-    [myview setTitle:@"Blogs"];
+    [myview setTitle:@"Blog"];
     UIBarButtonItem *barButton  = [[UIBarButtonItem alloc] initWithCustomView:myview];
     self.navigationItem.leftBarButtonItem = barButton;
     [barButton release];

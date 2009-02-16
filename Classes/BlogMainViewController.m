@@ -69,7 +69,7 @@
 {
 	WPNavigationLeftButtonView *myview = [WPNavigationLeftButtonView createView];  
     [myview setTarget:self withAction:@selector(goToHome:)];
-    [myview setTitle:@"Blogs"];
+    [myview setTitle:@"Home"];
     UIBarButtonItem *barButton  = [[UIBarButtonItem alloc] initWithCustomView:myview];
     self.navigationItem.leftBarButtonItem = barButton;
     [barButton release];
@@ -107,7 +107,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated 
 {
-	self.title = @"Blogs";
+	self.title = @"Blog";
 	[super viewDidDisappear:animated];
 }
 
