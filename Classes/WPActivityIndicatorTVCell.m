@@ -16,10 +16,14 @@
         // Initialization code
 		activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 		CGRect frame = [activityIndicatorView frame];
-		frame.origin.x = [self.contentView bounds].size.width - frame.size.width-60.0;
+//		frame.origin.x = [self.contentView bounds].size.width - frame.size.width-60.0;
+		frame.origin.x = [self.contentView bounds].size.width - frame.size.width;
+
 		frame.origin.y += 15;
 		[activityIndicatorView setFrame:frame];
 		activityIndicatorView.tag = 1;	
+		activityIndicatorView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+
 		[self.contentView addSubview:activityIndicatorView];
 		[self.contentView bringSubviewToFront:activityIndicatorView];
 		
