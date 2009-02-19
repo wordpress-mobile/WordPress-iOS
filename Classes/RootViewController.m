@@ -94,7 +94,10 @@
 	if (cell == nil) {
 		cell = [[[WPActivityIndicatorTVCell alloc] initWithFrame:CGRectZero reuseIdentifier:rootviewcell] autorelease];
 	}
-	
+	else
+	{
+		[cell reset];
+	}
 	if (indexPath.section == 0) 
 	{
 		if ([[BlogDataManager sharedDataManager] countOfBlogs] == indexPath.row) {

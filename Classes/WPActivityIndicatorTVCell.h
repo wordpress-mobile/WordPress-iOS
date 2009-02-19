@@ -16,5 +16,6 @@
 
 -(void)startActivityAnimation;
 -(void)stopActivityAnimation;
+-(void)reset;
 
 @end

@@ -16,7 +16,6 @@
         // Initialization code
 		activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 		CGRect frame = [activityIndicatorView frame];
-//		frame.origin.x = [self.contentView bounds].size.width - frame.size.width-60.0;
 		frame.origin.x = [self.contentView bounds].size.width - frame.size.width;
 
 		frame.origin.y += 15;
@@ -27,15 +26,25 @@
 		[self.contentView addSubview:activityIndicatorView];
 		[self.contentView bringSubviewToFront:activityIndicatorView];
 		
-		UILabel *labelName = [[UILabel alloc] initWithFrame:CGRectMake(10, 2 , 230, 50)];
+		UILabel *labelName = [[UILabel alloc] initWithFrame:CGRectMake(10, 2, 285,50)];
 		[labelName setBackgroundColor:[UIColor clearColor]];
 		labelName.font = [UIFont boldSystemFontOfSize:18.0];
 		labelName.tag = (NSInteger)2;
+		labelName.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		[self.contentView addSubview:labelName];
 		[labelName release];
 		
     }
     return self;
+}
+
+-(void)reset
+{
+	UILabel *label = (UILabel *)[self viewWithTag:(NSInteger)2];
+	label.text = nil;
+	self.text = nil;
+	if ([activityIndicatorView isAnimating])
+		[activityIndicatorView stopAnimating];
 }
 
 -(void)startActivityAnimation

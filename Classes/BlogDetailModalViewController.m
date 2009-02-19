@@ -461,15 +461,16 @@
 		
 		//see implemention of wrapperForSyncPostsAndGetTemplateForBlog: method for comment
 
-		//Commented this line for spinning indicator in the main screen. When a new blog is created.
-		//[dm.currentBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
+		//UnCommented this line and moved saveCurrentBlog after transition for spinning indicator in the main screen. When a new blog is created.
+		[dm.currentBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
 		[dm performSelectorInBackground:@selector(wrapperForSyncPostsAndGetTemplateForBlog:) withObject:dm.currentBlog];
-		
-		[dm saveCurrentBlog];
+
 		
 		//		WPBlogsListController *blogListController = [[WPBlogsListController alloc] initWithNibName:@"WPBlogsListController" bundle:nil];
 		//		[self.navigationController pushViewController:blogListController animated:YES];
 		[self popTransition:self.navigationController.view];
+		[dm saveCurrentBlog];
+
 		
 		//		// Success Message
 		//		UIAlertView *alert5 = [[UIAlertView alloc] initWithTitle:@"Success!"
