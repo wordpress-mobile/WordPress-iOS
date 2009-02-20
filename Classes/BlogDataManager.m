@@ -3724,6 +3724,21 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	{
         [currentPost setValue:[aPost valueForKey:@"userid"] forKey:@"userid"];
 		
+		
+		//Added for resolving Ticket#113.
+		if([aPost valueForKey:@"sticky"]!=nil)
+		{
+			if([[aPost valueForKey:@"sticky"]intValue]==0)
+			{
+				[aPost setValue:[NSNumber numberWithInt:0] forKey:@"sticky"];
+			}
+			else
+			{
+				[aPost setValue:[NSNumber numberWithInt:1] forKey:@"sticky"];
+			}
+		}
+		
+		
 		NSString *post_status = [aPost valueForKey:@"post_status"];
 		if ( !post_status || [post_status isEqualToString:@""] ) 
 			post_status = @"publish";
