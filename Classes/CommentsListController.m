@@ -52,23 +52,8 @@
 		selectedComments=[[NSMutableArray alloc]init];
 	else
 		[selectedComments removeAllObjects];
-	BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
-	NSMutableArray *commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
-	[self setCommentsArray:commentsList];
-	int awaitingComments = 0;
-	
-	for ( NSDictionary *dict in commentsArray ) {
-		NSString *str=[dict valueForKey:@"comment_id"];
-		[commentsDict setValue:dict forKey:str];
-		if ( [[dict valueForKey:@"status"] isEqualToString:@"hold"] ) {
-			awaitingComments++;
-		}
-	}
-	
-	if ( awaitingComments == 0 )
-		[commentStatusButton setTitle:@""];
-	else
-		[commentStatusButton setTitle:[NSString stringWithFormat:@"%d awaiting moderation",awaitingComments]];
+
+	[self updateToolBarStatus];
 	
 	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
 	[commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:NO];
@@ -182,6 +167,32 @@
 	
 	[apool release];
 }
+
+-(void)updateToolBarStatus
+{
+	BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
+	NSArray *commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
+	[self setCommentsArray:(NSMutableArray *)commentsList];
+	int awaitingComments = 0;
+	
+	for ( NSDictionary *dict in commentsList ) {
+		if ( [[dict valueForKey:@"status"] isEqualToString:@"hold"] ) {
+			awaitingComments++;
+		}
+	}
+	
+	if ( awaitingComments == 0 )
+	{
+		[commentStatusButton setEnabled:NO];
+		[commentStatusButton setTitle:@""];
+	}
+	else
+	{
+		[commentStatusButton setEnabled:YES];
+		[commentStatusButton setTitle:[NSString stringWithFormat:@"%d awaiting moderation",awaitingComments]];
+	}
+}
+
 #pragma mark -
 #pragma mark Action methods
 - (IBAction)downloadRecentComments:(id)sender {
@@ -204,21 +215,7 @@
 	[sharedBlogDataManager syncCommentsForCurrentBlog];
 	[sharedBlogDataManager loadCommentTitlesForCurrentBlog];
 	
-	NSArray *commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
-	[self setCommentsArray:(NSMutableArray *)commentsList];
-	int awaitingComments = 0;
-	
-	for ( NSDictionary *dict in commentsList ) {
-		if ( [[dict valueForKey:@"status"] isEqualToString:@"hold"] ) {
-			awaitingComments++;
-		}
-	}
-	
-	if ( awaitingComments == 0 )
-		[commentStatusButton setTitle:@""];
-	else
-		[commentStatusButton setTitle:[NSString stringWithFormat:@"%d awaiting moderation",awaitingComments]];
-			
+	[self updateToolBarStatus];
 	[self removeProgressIndicator];
 	
 	[commentsTableView reloadData];
