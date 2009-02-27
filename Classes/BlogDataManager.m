@@ -1512,6 +1512,12 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	while (post = [postsEnum nextObject] ) {
 		
 		// add blogid and blog_host_name to post
+	
+		NSDate* postGMTDate=[post valueForKey:@"date_created_gmt"];
+		NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:postGMTDate];
+		NSDate *currentDate = [postGMTDate addTimeInterval:(secs*+1)];
+		[post setValue:currentDate forKey:@"date_created_gmt"];
+
 		[post setValue:[blog valueForKey:@"blogid"] forKey:@"blogid"];
 		[post setValue:[blog valueForKey:@"blog_host_name"] forKey:@"blog_host_name"];
 
@@ -3500,6 +3506,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[request setMethod:@"metaWeblog.getPost" withObjects:args];
 	
 	id post = [self executeXMLRPCRequest:request byHandlingError:YES];
+	NSDate* postGMTDate=[post valueForKey:@"date_created_gmt"];
+	NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:postGMTDate];
+	NSDate *currentDate = [postGMTDate addTimeInterval:(secs*+1)];
+	[post setValue:currentDate forKey:@"date_created_gmt"];
+	
 	[request release];
 	if( [post isKindOfClass:[NSError class]] )
 	{
@@ -3738,6 +3749,10 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 			}
 		}
 		
+		NSDate *date = [aPost valueForKey:@"date_created_gmt"];
+		NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:date];
+		NSDate *gmtDate = [date addTimeInterval:(secs*-1)];
+		[aPost setObject:gmtDate forKey:@"date_created_gmt"];
 		
 		NSString *post_status = [aPost valueForKey:@"post_status"];
 		if ( !post_status || [post_status isEqualToString:@""] ) 
