@@ -61,8 +61,15 @@
 	
 	if ( [result rangeOfString:@"&apos;"].location != NSNotFound )
 		result = [[result componentsSeparatedByString: @"&apos;"] componentsJoinedByString: @"'"];
+	
 	if ( [result rangeOfString:@"&nbsp;"].location != NSNotFound )
 		result = [[result componentsSeparatedByString: @"&nbsp;"] componentsJoinedByString: @" "];
+	
+	if ( [result rangeOfString:@"&#8220;"].location != NSNotFound )
+		result = [[result componentsSeparatedByString: @"&#8220;"] componentsJoinedByString: @"\""];
+	
+	if ( [result rangeOfString:@"&#8221;"].location != NSNotFound )
+		result = [[result componentsSeparatedByString: @"&#8221;"] componentsJoinedByString: @"\""];
 	
 	return result;
 	
