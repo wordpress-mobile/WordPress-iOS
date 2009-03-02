@@ -3501,7 +3501,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSArray *args = [NSArray arrayWithObjects:postid,
 					 [aBlog valueForKey:@"username"],
 					 [aBlog valueForKey:@"pwd"],nil];
-	
 	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[aBlog valueForKey:@"xmlrpc"]]];
 	[request setMethod:@"metaWeblog.getPost" withObjects:args];
 	
@@ -3770,10 +3769,10 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		
  		id response = [self executeXMLRPCRequest:request byHandlingError:YES];
 		[request release];
-		
 		if( ![response isKindOfClass:[NSError class]] )
 		{
-			[self fectchNewPost:[currentPost valueForKey:@"postid"] formBlog:currentBlog];
+			//Commented aginst Ticket#--114
+//			[self fectchNewPost:[currentPost valueForKey:@"postid"] formBlog:currentBlog];
 			successFlag = YES;
 		}
 	}
