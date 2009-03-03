@@ -627,7 +627,8 @@
 	if([delegate isAlertRunning] == YES)
 		return NO;
 
-	if((interfaceOrientation == UIInterfaceOrientationPortrait)||(interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown))
+	//Commented against Ticket#124.
+	/*if((interfaceOrientation == UIInterfaceOrientationPortrait)||(interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown))
 	{
 		if(self.interfaceOrientation!=interfaceOrientation) {
 			[postDetailEditController setTextViewHeight:60];
@@ -638,7 +639,7 @@
 		if(self.interfaceOrientation!=interfaceOrientation) {
 			[postDetailEditController setTextViewHeight:-60];
 		}
-	}
+	}*/
 	return YES;
 }
 

@@ -408,12 +408,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)textViewDidBeginEditing:(UITextView *)aTextView
 {	
 	isEditing=YES;
-	if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
+	//Commented against Ticket#124.
+	/*if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
 	{
 		CGRect frame = textView.frame;
 		frame.size.height-=60;
 		textView.frame=frame;
-	}
+	}*/
 	
 	dismiss=NO;
 	if (!isTextViewEditing) {
@@ -481,12 +482,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 - (void)textViewDidEndEditing:(UITextView *)aTextView
 {	
-	if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
+	//Commented against Ticket#124.
+	/*if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
 	{
 		CGRect frame = textView.frame;
 		frame.size.height+=60;
 		textView.frame=frame;
-	}
+	}*/
 	
 	isEditing=NO;
 	dismiss=NO;
