@@ -114,12 +114,12 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 		{
 			//do nothing
 		}
-		WordPressAppDelegate *wpAppDelegate = [[UIApplication sharedApplication] delegate];
-		[wpAppDelegate setAlertRunning:NO];
-
 		[currentChoosenImage release];
 		currentChoosenImage = nil;
 	}
+	WordPressAppDelegate *wpAppDelegate = [[UIApplication sharedApplication] delegate];
+	[wpAppDelegate setAlertRunning:NO];
+	
 }
 
 - (void)pickPhotoFromCamera:(id)sender {

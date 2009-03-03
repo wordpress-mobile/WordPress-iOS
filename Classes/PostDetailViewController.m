@@ -34,20 +34,27 @@
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
 	
 	if( [viewController.title isEqualToString:@"Photos"]){
+		if(self.interfaceOrientation!=UIInterfaceOrientationPortrait)
+		{
+			[photosListController.view addSubview:photoEditingStatusView];
+		}
 		[photosListController refreshData];
 	}
 	
 	if( [viewController.title isEqualToString:@"Preview"]){
+			[photoEditingStatusView removeFromSuperview];
 		[postPreviewController refreshWebView];
 	}else{
 		[postPreviewController stopLoading];
 	}
 	
 	if( [viewController.title isEqualToString:@"Settings"]){
+			[photoEditingStatusView removeFromSuperview];
 		[postSettingsController reloadData];
 	}
 	
 	if( [viewController.title isEqualToString:@"Write"]){
+			[photoEditingStatusView removeFromSuperview];
 		[postDetailEditController refreshUIForCurrentPost];
 	}
 	
@@ -583,6 +590,8 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+	[photoEditingStatusView removeFromSuperview];
+
 	if(postDetailEditController.currentEditingTextField)
 		[postDetailEditController.currentEditingTextField resignFirstResponder];	
 	[super viewWillDisappear:animated];
@@ -601,8 +610,20 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+//	[viewController.title isEqualToString:@"Photos"]
+	if([[[[self tabController]selectedViewController] title] isEqualToString: @"Photos"])
+	{
+		if((interfaceOrientation == UIInterfaceOrientationPortrait) || (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown))
+		{
+			[photoEditingStatusView removeFromSuperview];
+		}
+		return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	}
+	
 	//Code to disable landscape when alert is raised.
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	WPLog(@"shouldAutorotateToInterfaceOrientation----------%d---",[delegate isAlertRunning]);
+
 	if([delegate isAlertRunning] == YES)
 		return NO;
 

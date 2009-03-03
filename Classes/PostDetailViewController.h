@@ -5,6 +5,7 @@
 @class WPNavigationLeftButtonView;
 @interface PostDetailViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate,WPPhotosListProtocol> {
 	IBOutlet UITabBarController *tabController;
+	IBOutlet UIView	*photoEditingStatusView;
 	UIBarButtonItem *saveButton;
 	
 	PostDetailEditController *postDetailEditController;
