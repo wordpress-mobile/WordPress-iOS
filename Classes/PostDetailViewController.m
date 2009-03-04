@@ -555,6 +555,17 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+	if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)){
+		if(postDetailEditController.isEditing==NO)
+		{
+			[postDetailEditController setTextViewHeight:57];
+		}
+		else
+		{
+			[postDetailEditController setTextViewHeight:107];
+		}
+	}
+	
      [leftView setTarget:self withAction:@selector(cancelView:)];
 	if(hasChanges == YES) {
 		if ([[leftView title] isEqualToString:@"Posts"]){
@@ -590,6 +601,10 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+	if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)){
+		[postDetailEditController setTextViewHeight:202];
+	}
+	
 	[photoEditingStatusView removeFromSuperview];
 
 	if(postDetailEditController.currentEditingTextField)
@@ -627,19 +642,22 @@
 	if([delegate isAlertRunning] == YES)
 		return NO;
 
-	//Commented against Ticket#124.
-	/*if((interfaceOrientation == UIInterfaceOrientationPortrait)||(interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown))
+	if((interfaceOrientation == UIInterfaceOrientationPortrait)||(interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown))
 	{
-		if(self.interfaceOrientation!=interfaceOrientation) {
-			[postDetailEditController setTextViewHeight:60];
-		}
+		[postDetailEditController setTextViewHeight:202];
 	}
-	
 	if((interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(interfaceOrientation == UIInterfaceOrientationLandscapeRight)){
 		if(self.interfaceOrientation!=interfaceOrientation) {
-			[postDetailEditController setTextViewHeight:-60];
+			if(postDetailEditController.isEditing==NO)
+			{
+				[postDetailEditController setTextViewHeight:57];
+			}
+			else
+			{
+				[postDetailEditController setTextViewHeight:107];
+			}
 		}
-	}*/
+	}
 	return YES;
 }
 

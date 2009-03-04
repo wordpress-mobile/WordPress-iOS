@@ -103,6 +103,7 @@
 @property (nonatomic) int unsavedPostsCount;
 @property (nonatomic, retain) NSMutableDictionary *currentUnsavedDraft;
 #pragma mark Blog metadata
+
 - (NSArray *)blogFieldNames;
 - (NSDictionary *)blogFieldNamesByTag;
 - (NSDictionary *)blogFieldTagsByName;
@@ -242,6 +243,7 @@
 - (UIImage *)imageNamed:(NSString *)name forBlog:(id)blog;
 - (BOOL)deleteImageNamed:(NSString *)name forBlog:(id)blog;
 - (UIImage *)thumbnailImageNamed:(NSString *)name forBlog:(id)blog;
+- (UIImage *)scaleAndRotateImage:(UIImage *)image;
 
 - (void)addSendPictureMsgToQueue:(id)aPicture;
 - (int)currentPictureIndex;

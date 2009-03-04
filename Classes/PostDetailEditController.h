@@ -55,6 +55,8 @@
 @property (nonatomic, retain) NSMutableArray *bookMarksArray;
 @property (nonatomic) NSRange selectedLinkRange;
 @property (nonatomic, assign) UITextField *currentEditingTextField;
+@property (nonatomic, assign) BOOL isEditing;;
+
 
 - (void)refreshUIForCompose;
 - (void)refreshUIForCurrentPost;

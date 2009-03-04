@@ -16,7 +16,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @implementation PostDetailEditController
 
 @synthesize postDetailViewController, selectionTableViewController,segmentedTableViewController,leftView;
-@synthesize infoText,urlField,bookMarksArray,selectedLinkRange,currentEditingTextField;
+@synthesize infoText,urlField,bookMarksArray,selectedLinkRange,currentEditingTextField,isEditing;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -379,12 +379,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)setTextViewHeight:(float)height
 {
-	if(isEditing==YES)
-	{
 		CGRect frame = textView.frame;
-		frame.size.height+=height;
+		frame.size.height=height;
 		textView.frame=frame;
-	}
 }
 
 #pragma mark TextView & TextField Delegates
@@ -393,6 +390,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	if (!isTextViewEditing) {
 		
 		isTextViewEditing = YES;
+
+		if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
+		{
+			[self setTextViewHeight:107];
+		}
 		
 		[self updateTextViewPlacehoderFieldStatus];
 		
@@ -408,13 +410,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)textViewDidBeginEditing:(UITextView *)aTextView
 {	
 	isEditing=YES;
-	//Commented against Ticket#124.
-	/*if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
+	if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
 	{
-		CGRect frame = textView.frame;
-		frame.size.height-=60;
-		textView.frame=frame;
-	}*/
+		[self setTextViewHeight:107];
+	}
 	
 	dismiss=NO;
 	if (!isTextViewEditing) {
@@ -482,13 +481,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 - (void)textViewDidEndEditing:(UITextView *)aTextView
 {	
-	//Commented against Ticket#124.
-	/*if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
+	if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
 	{
-		CGRect frame = textView.frame;
-		frame.size.height+=60;
-		textView.frame=frame;
-	}*/
+		[self setTextViewHeight:57];
+	}
 	
 	isEditing=NO;
 	dismiss=NO;

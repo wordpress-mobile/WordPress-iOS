@@ -342,7 +342,7 @@
 //	return [self valueTag: @"base64" value: buffer];
 
 	NSData *d = [NSPropertyListSerialization dataFromPropertyList:data  format:NSPropertyListXMLFormat_v1_0 errorDescription:NULL];
-	NSString *str = [NSString stringWithUTF8String:[d bytes]];
+	NSString *str =  [[[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding] autorelease];//[NSString stringWithUTF8String:[d bytes]];
 	NSRange r = [str rangeOfString:@"<data>"];
 	str = [str substringFromIndex:r.location+7];
 	r = [str rangeOfString:@"</data>"];
