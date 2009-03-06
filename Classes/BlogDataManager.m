@@ -2664,7 +2664,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 			post_status = @"publish";
 		[pageParams setObject:post_status forKey:@"page_status"];
 		
-		[pageParams setObject:[currentPage valueForKey:@"wp_password"] forKey:@"wp_password"];
+		//[pageParams setObject:[currentPage valueForKey:@"wp_password"] forKey:@"wp_password"];
 		NSArray *args = [NSArray arrayWithObjects:[currentBlog valueForKey:@"blogid"],
 						 [currentBlog valueForKey:@"username"],
 						 [currentBlog valueForKey:@"pwd"],
@@ -2675,7 +2675,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[currentBlog valueForKey:@"xmlrpc"]]];
 		
 		[request setMethod:@"wp.newPage" withObjects:args];
-		
+
 		id response = [self executeXMLRPCRequest:request byHandlingError:YES];
 		
 
@@ -2706,7 +2706,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		if ( !page_status || [page_status isEqualToString:@""] ) 
 			page_status = @"publish";
 		[currentPage setObject:page_status forKey:@"page_status"];
-		[currentPage setObject:[currentBlog valueForKey:@"pwd"] forKey:@"wp_password"];
+		//[currentPage setObject:[currentPage valueForKey:@"wp_password"] forKey:@"wp_password"];
 		NSArray *args = [NSArray arrayWithObjects:[currentBlog valueForKey:@"blogid"],[currentPage valueForKey:@"page_id"],
 						 [currentBlog valueForKey:@"username"],
 						 [currentBlog valueForKey:@"pwd"],
