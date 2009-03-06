@@ -29,7 +29,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 @implementation PageDetailViewController
 
 @synthesize mode,selectionTableViewController,pageDetailsController,photosListController;
-@synthesize infoText,urlField,selectedLinkRange,currentEditingTextField;
+@synthesize infoText,urlField,selectedLinkRange,currentEditingTextField,isEditing;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -129,6 +129,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 }
 - (IBAction)endTextEnteringButtonAction:(id)sender
 {
+	isTextViewEditing=NO;
 	[textView resignFirstResponder];
 	UIBarButtonItem *barButton  = [[UIBarButtonItem alloc] initWithCustomView:pageDetailsController.leftView];
     pageDetailsController.navigationItem.leftBarButtonItem = barButton;
@@ -196,30 +197,39 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
 - (void)setTextViewHeight:(float)height
 {
-	if(isEditing==YES)
-	{
-
 		CGRect frame = textView.frame;
-		frame.size.height+=height;
+		frame.size.height=height;
 		textView.frame=frame;
-	}
 }
 
 #pragma mark TextView & TextField Delegates
 - (void)textViewDidChangeSelection:(UITextView *)aTextView {
-	pageDetailsController.hasChanges = YES;
-	hasChanges = YES;
-	if (!isTextViewEditing) 		
+	
+	if (!isTextViewEditing) 
+	{
+		pageDetailsController.hasChanges = YES;
+		hasChanges = YES;
+
 		isTextViewEditing = YES;
+		if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
+		{
+			[self setTextViewHeight:105];
+		}	
+		else if((self.interfaceOrientation == UIInterfaceOrientationPortrait)||(self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown))
+		{
+			[self setTextViewHeight:200];
+		}
+		
 				
-	[self updateTextViewPlacehoderFieldStatus];
-	
-	UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone 
-																  target:self action:@selector(endTextEnteringButtonAction:)];
-	
-	pageDetailsController.navigationItem.leftBarButtonItem = doneButton;
-	[doneButton release];
-	
+		[self updateTextViewPlacehoderFieldStatus];
+		[self bringTextViewUp];
+
+		UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone 
+																	  target:self action:@selector(endTextEnteringButtonAction:)];
+		
+		pageDetailsController.navigationItem.leftBarButtonItem = doneButton;
+		[doneButton release];
+	}
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)aTextView
@@ -228,27 +238,32 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	
 	if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
 	{
-		CGRect frame = textView.frame;
-		frame.size.height-=145;
-		textView.frame=frame;
+		[self setTextViewHeight:105];
+	}
+	else if((self.interfaceOrientation == UIInterfaceOrientationPortrait)||(self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown))
+	{
+		[self setTextViewHeight:200];
+
 	}
 	
 	dismiss=NO;
 
 	if (!isTextViewEditing) 
 		isTextViewEditing = YES;
+	
 		
 	[self updateTextViewPlacehoderFieldStatus];
+	
+	UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone 
+																  target:self action:@selector(endTextEnteringButtonAction:)];
+	
+	pageDetailsController.navigationItem.leftBarButtonItem = doneButton;
+	[doneButton release];
 	
 	[self bringTextViewUp];
 }
 - (void)bringTextViewUp
 {
-	if((self.interfaceOrientation == UIInterfaceOrientationPortrait)||(self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown))
-	{
-		[self setTextViewHeight:-55];
-	}
-	
 	
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:kAnimationDuration1];
@@ -266,6 +281,8 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 }
 
 - (void)textViewDidChange:(UITextView *)aTextView {
+	pageDetailsController.hasChanges = YES;
+
 	[self updateTextViewPlacehoderFieldStatus];
 	if(![aTextView hasText])
 		return;
@@ -328,18 +345,16 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	}	
 }
 - (void)textViewDidEndEditing:(UITextView *)aTextView
-{	
-	if((self.interfaceOrientation == UIInterfaceOrientationPortrait)||(self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown))
-	{
-		[self setTextViewHeight:55];
-	}
+{
 	
 	if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
 	{
-		CGRect frame = textView.frame;
-
-		frame.size.height+=145;
-		textView.frame=frame;
+		[self setTextViewHeight:137];
+	}
+	else if((self.interfaceOrientation == UIInterfaceOrientationPortrait)||(self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown))
+	{
+		[self setTextViewHeight:287];
+		
 	}
 	
 	isEditing=NO;

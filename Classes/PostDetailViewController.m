@@ -34,9 +34,13 @@
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
 	
 	if( [viewController.title isEqualToString:@"Photos"]){
-		if(self.interfaceOrientation!=UIInterfaceOrientationPortrait)
+		if((self.interfaceOrientation==UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation==UIInterfaceOrientationLandscapeRight))
 		{
 			[photosListController.view addSubview:photoEditingStatusView];
+		}
+		else if((self.interfaceOrientation==UIInterfaceOrientationPortrait) || (self.interfaceOrientation==UIInterfaceOrientationPortraitUpsideDown))
+		{
+			[photoEditingStatusView removeFromSuperview];
 		}
 		[photosListController refreshData];
 	}
@@ -628,16 +632,18 @@
 //	[viewController.title isEqualToString:@"Photos"]
 	if([[[[self tabController]selectedViewController] title] isEqualToString: @"Photos"])
 	{
-		if((interfaceOrientation == UIInterfaceOrientationPortrait) || (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown))
+		if((interfaceOrientation==UIInterfaceOrientationLandscapeLeft) || (interfaceOrientation==UIInterfaceOrientationLandscapeRight))
+		{
+			[photosListController.view addSubview:photoEditingStatusView];
+		}
+		else if((interfaceOrientation==UIInterfaceOrientationPortrait) || (interfaceOrientation==UIInterfaceOrientationPortraitUpsideDown))
 		{
 			[photoEditingStatusView removeFromSuperview];
 		}
-		return (interfaceOrientation == UIInterfaceOrientationPortrait);
 	}
 	
 	//Code to disable landscape when alert is raised.
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	WPLog(@"shouldAutorotateToInterfaceOrientation----------%d---",[delegate isAlertRunning]);
 
 	if([delegate isAlertRunning] == YES)
 		return NO;

@@ -38,11 +38,23 @@
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
 	
 	if( [viewController.title isEqualToString:@"Photos"]){
+		if((self.interfaceOrientation==UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation==UIInterfaceOrientationLandscapeRight))
+		{
+			[photosListController.view addSubview:photoEditingStatusView];
+		}
+		else if((self.interfaceOrientation==UIInterfaceOrientationPortrait) || (self.interfaceOrientation==UIInterfaceOrientationPortraitUpsideDown))
+		{
+			[photoEditingStatusView removeFromSuperview];
+		}
+		
 		[photosListController refreshData];
 		self.navigationItem.title=@"Photos";
 	}
 	else
+	{
+		[photoEditingStatusView removeFromSuperview];
 		self.navigationItem.title=@"Write";
+	}
 	
 	//if( [viewController.title isEqualToString:@"Preview"]){
 //		[postPreviewController refreshWebView];
@@ -258,7 +270,7 @@
 {
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	//Check for internet connection
-	if(![[dm.currentPost valueForKey:@"post_status"] isEqualToString:@"Local Draft"])
+	if(![[dm.currentPage valueForKey:@"page_status"] isEqualToString:@"Local Draft"])
 	{
 		if ( [[Reachability sharedReachability] internetConnectionStatus] == NotReachable ) {
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Communication Error."
@@ -341,6 +353,17 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+	
+	if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)){
+		if(pageDetailViewController.isEditing==NO)
+		{
+			[pageDetailViewController setTextViewHeight:137];
+		}
+		else
+		{
+			[pageDetailViewController setTextViewHeight:105];
+		}
+	}
 	//self.navigationItem.title=@"Write";
     [leftView setTarget:self withAction:@selector(cancelView:)];
 	if(hasChanges == YES) {
@@ -377,6 +400,11 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+	if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)){
+		[pageDetailViewController setTextViewHeight:287];
+	}
+	
+	[photoEditingStatusView removeFromSuperview];
 	if(pageDetailViewController.currentEditingTextField)
 		[pageDetailViewController.currentEditingTextField resignFirstResponder];	
 
@@ -399,19 +427,39 @@
 	if([delegate isAlertRunning] == YES)
 		return NO;
 	
-	if((interfaceOrientation == UIInterfaceOrientationPortrait)||(interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown))
+	if([[[[self tabController]selectedViewController] title] isEqualToString: @"Photos"])
 	{
-		if(self.interfaceOrientation!=interfaceOrientation) {
-			[pageDetailViewController setTextViewHeight:145];
+		if((interfaceOrientation==UIInterfaceOrientationLandscapeLeft) || (interfaceOrientation==UIInterfaceOrientationLandscapeRight))
+		{
+			[photosListController.view addSubview:photoEditingStatusView];
+		}
+		else if((interfaceOrientation==UIInterfaceOrientationPortrait) || (interfaceOrientation==UIInterfaceOrientationPortraitUpsideDown))
+		{
+			[photoEditingStatusView removeFromSuperview];
 		}
 	}
 	
-	if((interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(interfaceOrientation == UIInterfaceOrientationLandscapeRight)){
-
-		if(self.interfaceOrientation!=interfaceOrientation) {
-			[pageDetailViewController setTextViewHeight:-145];
+	if((interfaceOrientation == UIInterfaceOrientationPortrait)||(interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown))
+	{
+		if(pageDetailViewController.isEditing==NO)
+		{
+			[pageDetailViewController setTextViewHeight:287];
+		}
+		else
+		{
+			[pageDetailViewController setTextViewHeight:200];
 		}
 		
+	}
+	if((interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(interfaceOrientation == UIInterfaceOrientationLandscapeRight)){
+		if(pageDetailViewController.isEditing==NO)
+		{
+			[pageDetailViewController setTextViewHeight:137];
+		}
+		else
+		{
+			[pageDetailViewController setTextViewHeight:105];
+		}
 	}
 		
 	return YES;

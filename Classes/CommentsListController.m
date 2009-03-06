@@ -55,6 +55,13 @@
 
 	[self updateToolBarStatus];
 	
+	NSMutableArray *commentsList = [sharedDataManager commentTitlesForBlog:[sharedDataManager currentBlog]];
+	[self setCommentsArray:commentsList];
+	for ( NSDictionary *dict in commentsArray ) {
+		NSString *str=[dict valueForKey:@"comment_id"];
+		[commentsDict setValue:dict forKey:str];
+	}
+	
 	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
 	[commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:NO];
 	[commentsTableView reloadData];

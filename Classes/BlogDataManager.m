@@ -2702,6 +2702,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	}
 	else
 	{
+		NSDate *date = [currentPage valueForKey:@"date_created_gmt"];
+		NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:date];
+		NSDate *gmtDate = [date addTimeInterval:(secs*-1)];
+		[currentPage setObject:gmtDate forKey:@"date_created_gmt"];
+		
 		NSString *page_status = [currentPage valueForKey:@"page_status"];
 		if ( !page_status || [page_status isEqualToString:@""] ) 
 			page_status = @"publish";
@@ -2844,6 +2849,12 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	for ( NSDictionary *page in pagesList ) {
 		// add blogid and blog_host_name to post
 		NSMutableDictionary *updatedPage = [NSMutableDictionary dictionaryWithDictionary:page];
+		
+		NSDate* pageGMTDate=[updatedPage valueForKey:@"date_created_gmt"];
+		NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:pageGMTDate];
+		NSDate *currentDate = [pageGMTDate addTimeInterval:(secs*+1)];
+		[updatedPage setValue:currentDate forKey:@"date_created_gmt"];
+		
 		
 		[updatedPage setValue:[blog valueForKey:@"blogid"] forKey:@"blogid"];
 		[updatedPage setValue:[blog valueForKey:@"blog_host_name"] forKey:@"blog_host_name"];
@@ -3566,6 +3577,10 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[request setMethod:@"wp.getPage" withObjects:args];
 	
 	id page = [self executeXMLRPCRequest:request byHandlingError:YES];
+	NSDate* pageGMTDate=[page valueForKey:@"date_created_gmt"];
+	NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:pageGMTDate];
+	NSDate *currentDate = [pageGMTDate addTimeInterval:(secs*+1)];
+	[page setValue:currentDate forKey:@"date_created_gmt"];
 	[request release];
 	if( [page isKindOfClass:[NSError class]] )
 	{

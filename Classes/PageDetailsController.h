@@ -13,6 +13,8 @@
 @class WPNavigationLeftButtonView;
 @interface PageDetailsController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate,WPPhotosListProtocol> {
 	IBOutlet UITabBarController *tabController;
+	IBOutlet UIView	*photoEditingStatusView;
+
 	UIBarButtonItem *saveButton;
 	
 	PageDetailViewController *pageDetailViewController;

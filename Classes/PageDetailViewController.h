@@ -48,6 +48,8 @@
 @property (nonatomic, retain) UITextField *urlField;
 @property (nonatomic) NSRange selectedLinkRange;
 @property (nonatomic, assign) UITextField *currentEditingTextField;
+@property (nonatomic, assign) BOOL isEditing;
+
 
 - (IBAction)showStatusViewAction:(id)sender;
 - (void)endEditingAction:(id)sender;
