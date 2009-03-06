@@ -481,7 +481,8 @@
 	if (![currentPage valueForKey:@"Photos"])
 		[currentPage setValue:[NSMutableArray array] forKey:@"Photos"];
 	
-	[[currentPage valueForKey:@"Photos"] addObject:[dataManager saveImage:theImage]];
+	UIImage * image=[photosListController scaleAndRotateImage:theImage];
+	[[currentPage valueForKey:@"Photos"] addObject:[dataManager saveImage:image]];
 
 	[self updatePhotosBadge];
 }
