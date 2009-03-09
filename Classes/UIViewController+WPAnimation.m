@@ -3,7 +3,6 @@
 //  WordPress
 //
 //  Created by JanakiRam on 17/12/08.
-//  Copyright 2008 Prithvi Information Solutions Limited. All rights reserved.
 //
 
 #import "UIViewController+WPAnimation.h"

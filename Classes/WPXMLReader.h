@@ -3,7 +3,6 @@
 //  WordPress
 //
 //  Created by JanakiRam on 22/01/09.
-//  Copyright 2009 Prithvi Information Solutions Limited. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

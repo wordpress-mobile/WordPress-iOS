@@ -3,7 +3,6 @@
 //  WordPress
 //
 //  Created by Janakiram on 26/08/08.
-//  Copyright 2008 Effigent. All rights reserved.
 //
 
 #import "NSString+XMLExtensions.h"

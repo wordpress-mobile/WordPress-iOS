@@ -3,7 +3,6 @@
 //  WordPress
 //
 //  Created by Janakiram on 02/09/08.
-//  Copyright 2008 Effigent. All rights reserved.
 //
 
 #import "CommentsListController.h"

@@ -3,7 +3,6 @@
 //  WordPress
 //
 //  Created by JanakiRam on 30/01/09.
-//  Copyright 2008 Prithvi Information Solutions Limited. All rights reserved.
 
 #import <UIKit/UIKit.h>
 

@@ -4,7 +4,6 @@
 //
 //
 //  Created by JanakiRam on 02/02/09.
-//  Copyright 2008 Prithvi Information Solutions Limited. All rights reserved.
 
 /*!
     @class	   WPLabelFooterView

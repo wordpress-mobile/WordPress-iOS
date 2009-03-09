@@ -3,7 +3,6 @@
 //  WordPress
 //
 //  Created by Praveen on 25/06/08.
-//  Copyright 2008 Effigent Inc. All rights reserved.
 //
 
 #import "WPCategoriesController.h"
