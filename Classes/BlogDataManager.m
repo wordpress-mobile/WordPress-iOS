@@ -19,7 +19,7 @@
 #define kNextPageDraftIdStr @"kNextPageDraftIdStr"
 #define kDraftsCount @"kDraftsCount"
 #define kPageDraftsCount @"kPageDraftsCount"
-#define kNumberOfCommentsToDisplay 50
+#define kNumberOfCommentsToDisplay 100
 
 @interface BlogDataManager (private)
 
