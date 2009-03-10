@@ -381,7 +381,7 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 #define DATE_FONT_SIZE 13.0f
 	
 #define LABEL_HEIGHT 20.0f
-#define DATE_LABEL_HEIGHT 33.0f
+#define DATE_LABEL_HEIGHT 32.0f
 #define NAME_LABEL_HEIGHT 35.0f
 #define VERTICAL_OFFSET	1.0f
 	
