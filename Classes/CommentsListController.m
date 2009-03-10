@@ -381,7 +381,8 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 #define DATE_FONT_SIZE 13.0f
 	
 #define LABEL_HEIGHT 20.0f
-#define DATE_LABEL_HEIGHT 35.0f
+#define DATE_LABEL_HEIGHT 33.0f
+#define NAME_LABEL_HEIGHT 35.0f
 #define VERTICAL_OFFSET	1.0f
 	
 	int buttonOffset = 0;
@@ -400,7 +401,7 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	 */
 	UILabel *label;
 	
-	rect = CGRectMake(LEFT_OFFSET+buttonOffset, (COMMENTS_TABLE_ROW_HEIGHT - LABEL_HEIGHT - DATE_LABEL_HEIGHT - VERTICAL_OFFSET ) / 2.0, 150-buttonOffset, LABEL_HEIGHT);
+	rect = CGRectMake(LEFT_OFFSET+buttonOffset, ((COMMENTS_TABLE_ROW_HEIGHT - LABEL_HEIGHT - DATE_LABEL_HEIGHT - VERTICAL_OFFSET ) / 2.0), 150-buttonOffset, LABEL_HEIGHT);
 	UILabel *alabel = [[UILabel alloc]initWithFrame:rect];
 	alabel.tag = COMMENT_MAIL_TAG;
 	alabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
@@ -409,7 +410,7 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	[alabel release];
 
 	
-	rect = CGRectMake(LEFT_OFFSET+buttonOffset, (COMMENTS_TABLE_ROW_HEIGHT - LABEL_HEIGHT - DATE_LABEL_HEIGHT - VERTICAL_OFFSET ) / 2.0, 150-buttonOffset, LABEL_HEIGHT);
+	rect = CGRectMake(LEFT_OFFSET+buttonOffset, (COMMENTS_TABLE_ROW_HEIGHT - LABEL_HEIGHT - NAME_LABEL_HEIGHT - VERTICAL_OFFSET ) / 2.0, 150-buttonOffset, LABEL_HEIGHT);
 	label = [[UILabel alloc] initWithFrame:rect];
 	label.tag = COMMENT_NAME_TAG;
 	label.font = [UIFont boldSystemFontOfSize:MAIN_FONT_SIZE];
@@ -419,7 +420,7 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 	[label release];
 	
 	
-	rect = CGRectMake(LEFT_OFFSET+buttonOffset, rect.origin.y+ LABEL_HEIGHT + VERTICAL_OFFSET , 288-buttonOffset, DATE_LABEL_HEIGHT);
+	rect = CGRectMake(LEFT_OFFSET+buttonOffset, rect.origin.y+ LABEL_HEIGHT + VERTICAL_OFFSET , 288-buttonOffset, NAME_LABEL_HEIGHT);
 	UILabel *label2 ;
 	label2 = [[UILabel alloc] initWithFrame:rect];
 	label2.tag = COMMENT_POST_NAME_AND_DATE_TAG;
