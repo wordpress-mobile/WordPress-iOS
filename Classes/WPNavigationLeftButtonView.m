@@ -31,10 +31,11 @@
         CGRect rect = frame;
         addButton = [[UIButton alloc] initWithFrame:rect];
         UIImage *img = [UIImage imageNamed:@"backNav.png"];
+		UIImage *imgselect = [UIImage imageNamed:@"backNavd.png"];
         [addButton setBackgroundImage:img forState:UIControlStateNormal];
-        [addButton setBackgroundImage:img forState:UIControlStateHighlighted];
-        [addButton setBackgroundImage:img forState:UIControlStateSelected];
-		[addButton setFont:[UIFont boldSystemFontOfSize:13]];
+        [addButton setBackgroundImage:imgselect forState:UIControlStateHighlighted];
+        [addButton setBackgroundImage:imgselect forState:UIControlStateSelected];
+		[addButton setFont:[UIFont boldSystemFontOfSize:12]];
         [self addSubview:addButton];
     }
     return self;
