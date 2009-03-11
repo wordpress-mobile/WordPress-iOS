@@ -2319,7 +2319,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 {
 	NSString *draftPath = [self pathToDraft:[self draftTitleAtIndex:anIndex] forBlog:currentBlog];
 	NSMutableDictionary *draft = [NSMutableDictionary dictionaryWithContentsOfFile:draftPath];
-	[draft setValue:[NSDate date] forKey:@"date_created_gmt"];
+	//[draft setValue:[NSDate date] forKey:@"date_created_gmt"];
 	[self setCurrentPost:draft];
 	currentDraftIndex = anIndex;
 	currentPostIndex = -2;
