@@ -24,14 +24,12 @@
 		2A8FF7D90E8A32F7001A9A40 /* lock.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A8FF7D80E8A32F7001A9A40 /* lock.png */; };
 		2AB2EB0C0E9A148B00CB166E /* MainBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 2AB2EB0B0E9A148B00CB166E /* MainBackground.png */; };
 		2AC5227A0E9B2BE300A61748 /* vertBars.png in Resources */ = {isa = PBXBuildFile; fileRef = 2AC522790E9B2BE300A61748 /* vertBars.png */; };
-		2AC522990E9B31DD00A61748 /* wplogo2.png in Resources */ = {isa = PBXBuildFile; fileRef = 2AC522980E9B31DD00A61748 /* wplogo2.png */; };
 		2F706AA50DFB24C500B43086 /* BlogDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F706AA40DFB24C500B43086 /* BlogDataManager.m */; };
 		2F706C2A0DFB8A5200B43086 /* PostDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F706C290DFB8A5200B43086 /* PostDetailViewController.m */; };
 		2F970F740DF92274006BD934 /* PostsListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F970F730DF92274006BD934 /* PostsListController.m */; };
 		2F970F870DF924E2006BD934 /* BlogDetailModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F970F860DF924E2006BD934 /* BlogDetailModalViewController.m */; };
 		2FAE97090E33B21600CA8540 /* defaultPostTemplate_old.html in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97040E33B21600CA8540 /* defaultPostTemplate_old.html */; };
 		2FAE970A0E33B21600CA8540 /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97050E33B21600CA8540 /* license.txt */; };
-		2FAE970B0E33B21600CA8540 /* webclip.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97060E33B21600CA8540 /* webclip.png */; };
 		2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */; };
 		2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */; };
 		6EC5B7F50F6747F5002609EE /* backNavd.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EC5B7F40F6747F5002609EE /* backNavd.png */; };
@@ -140,7 +138,6 @@
 		2A8FF7D80E8A32F7001A9A40 /* lock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lock.png; sourceTree = "<group>"; };
 		2AB2EB0B0E9A148B00CB166E /* MainBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MainBackground.png; sourceTree = "<group>"; };
 		2AC522790E9B2BE300A61748 /* vertBars.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vertBars.png; sourceTree = "<group>"; };
-		2AC522980E9B31DD00A61748 /* wplogo2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wplogo2.png; sourceTree = "<group>"; };
 		2F706AA30DFB24C500B43086 /* BlogDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogDataManager.h; sourceTree = "<group>"; };
 		2F706AA40DFB24C500B43086 /* BlogDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogDataManager.m; sourceTree = "<group>"; };
 		2F706C280DFB8A5200B43086 /* PostDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostDetailViewController.h; sourceTree = "<group>"; };
@@ -152,7 +149,6 @@
 		2F970F970DF929B8006BD934 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		2FAE97040E33B21600CA8540 /* defaultPostTemplate_old.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = defaultPostTemplate_old.html; sourceTree = "<group>"; };
 		2FAE97050E33B21600CA8540 /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.txt; sourceTree = "<group>"; };
-		2FAE97060E33B21600CA8540 /* webclip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = webclip.png; sourceTree = "<group>"; };
 		2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xhtml1-transitional.dtd"; sourceTree = "<group>"; };
 		2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = xhtmlValidatorTemplate.xhtml; sourceTree = "<group>"; };
 		6EC5B7F40F6747F5002609EE /* backNavd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backNavd.png; sourceTree = "<group>"; };
@@ -460,7 +456,6 @@
 			isa = PBXGroup;
 			children = (
 				706D25F40F347F1200491666 /* category_child.png */,
-				2AC522980E9B31DD00A61748 /* wplogo2.png */,
 				2AC522790E9B2BE300A61748 /* vertBars.png */,
 				2AB2EB0B0E9A148B00CB166E /* MainBackground.png */,
 				2A8FF7D80E8A32F7001A9A40 /* lock.png */,
@@ -474,7 +469,6 @@
 				2A7F722A0E71000000E48A1F /* down.png */,
 				AC600C100E20B81100D663AA /* Post Icons */,
 				ACAA41AF0E2609AF0031FAB7 /* wplogo.png */,
-				2FAE97060E33B21600CA8540 /* webclip.png */,
 				A017DD7E0E29DDBF009095C2 /* application-icon.png */,
 				A01C58B80E2682AD00D411F2 /* Disclosure Indicator.png */,
 				ACF35BD10E20A64100DB9213 /* Red Background.png */,
@@ -711,7 +705,6 @@
 				ACE287520E2E4381004F5145 /* WPPublishOnEditController.xib in Resources */,
 				2FAE97090E33B21600CA8540 /* defaultPostTemplate_old.html in Resources */,
 				2FAE970A0E33B21600CA8540 /* license.txt in Resources */,
-				2FAE970B0E33B21600CA8540 /* webclip.png in Resources */,
 				2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */,
 				2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */,
 				C59615350E6C5B0000E2FBF0 /* WPBlogMainViewController.xib in Resources */,
@@ -727,7 +720,6 @@
 				EC270CB20E8B5E8200E9AA18 /* commentDelete.png in Resources */,
 				2AB2EB0C0E9A148B00CB166E /* MainBackground.png in Resources */,
 				2AC5227A0E9B2BE300A61748 /* vertBars.png in Resources */,
-				2AC522990E9B31DD00A61748 /* wplogo2.png in Resources */,
 				EC4697CF0EA76B210040EE8E /* PagesListController.xib in Resources */,
 				ECCD48880EA8623F0078082C /* PageDetailViewController.xib in Resources */,
 				EC0F59350EB0438E002FCB4D /* PageDetailsController.xib in Resources */,
