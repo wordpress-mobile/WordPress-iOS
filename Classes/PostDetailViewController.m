@@ -146,7 +146,7 @@
 	{
 		filepath = [photosArray objectAtIndex:i];
 		NSString *imagePath = [NSString stringWithFormat:@"%@/%@",[dm blogDir:dm.currentBlog],filepath];
-		UIImage *scaledImage = [photosListController scaleAndRotateImage:[UIImage imageWithContentsOfFile:imagePath]];
+		UIImage *scaledImage = [photosListController scaleAndRotateImage:[UIImage imageWithContentsOfFile:imagePath] scaleFlag:YES];
 		NSData *imageData = UIImageJPEGRepresentation( scaledImage, 0.5 );
 		[imageData writeToFile:imagePath atomically:YES];
 	}
@@ -684,7 +684,11 @@
 	if (![currentPost valueForKey:@"Photos"])
 		[currentPost setValue:[NSMutableArray array] forKey:@"Photos"];
 	
-	[[currentPost valueForKey:@"Photos"] addObject:[dataManager saveImage:theImage]];
+	
+	UIImage * image=[photosListController scaleAndRotateImage:theImage scaleFlag:NO];
+	[[currentPost valueForKey:@"Photos"] addObject:[dataManager saveImage:image]];
+
+//	[[currentPost valueForKey:@"Photos"] addObject:[dataManager saveImage:theImage]];
 	[self updatePhotosBadge];
 }
 

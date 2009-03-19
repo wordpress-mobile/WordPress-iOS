@@ -1823,10 +1823,13 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[imgData writeToFile:filePath atomically:YES];
 	NSString *returnValue = [NSString stringWithFormat:@"%@.jpeg",outputString];
 	
-	UIImage * rotationImage = [UIImage imageWithData:imgData];
-	rotationImage= [self scaleAndRotateImage:rotationImage];
+		UIImage * si = [self smallImage:aImage];
 
-	UIImage * si = [self smallImage:rotationImage];
+	
+//	UIImage * rotationImage = [UIImage imageWithData:imgData];
+//	rotationImage= [self scaleAndRotateImage:rotationImage];
+//
+//	UIImage * si = [self smallImage:rotationImage];
 
 	NSData *siData = UIImageJPEGRepresentation( si, 0.8 );
 	[si release];
