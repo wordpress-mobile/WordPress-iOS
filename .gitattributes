@@ -126,6 +126,7 @@ Classes/XMLRPC/XMLValueDecoder.m -text
 /WPPostSettingsController.xib -text
 /WPPublishOnEditController.xib -text
 /WPSelectionTableViewController.xib -text
+/WP_application-icon.png -text
 /WordPress.png -text
 WordPress.xcodeproj/project.pbxproj -text
 /WordPress_Prefix.pch -text

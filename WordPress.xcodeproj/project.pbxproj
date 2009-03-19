@@ -92,6 +92,7 @@
 		C55A90D90E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C55A90D80E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m */; };
 		C56D68DA0F4946E4008EE84E /* WPActivityIndicatorTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C56D68D90F4946E4008EE84E /* WPActivityIndicatorTVCell.m */; };
 		C57AD5E20F2A10BC00A1717C /* WPXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = C57AD5E00F2A10BC00A1717C /* WPXMLReader.m */; };
+		C57E2FC40F7261180038F796 /* WP_application-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C57E2FC30F7261180038F796 /* WP_application-icon.png */; };
 		C584D0840EF942DC00B78012 /* UIViewController+WPAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = C584D0830EF942DC00B78012 /* UIViewController+WPAnimation.m */; };
 		C584D0B40EF943A600B78012 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C584D0B30EF943A600B78012 /* QuartzCore.framework */; };
 		C59614CA0E6C547300E2FBF0 /* BlogMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C59614C90E6C547300E2FBF0 /* BlogMainViewController.m */; };
@@ -243,6 +244,7 @@
 		C56D68D90F4946E4008EE84E /* WPActivityIndicatorTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPActivityIndicatorTVCell.m; sourceTree = "<group>"; };
 		C57AD5E00F2A10BC00A1717C /* WPXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPXMLReader.m; sourceTree = "<group>"; };
 		C57AD5E10F2A10BC00A1717C /* WPXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPXMLReader.h; sourceTree = "<group>"; };
+		C57E2FC30F7261180038F796 /* WP_application-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WP_application-icon.png"; sourceTree = "<group>"; };
 		C584D0820EF942DC00B78012 /* UIViewController+WPAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+WPAnimation.h"; sourceTree = "<group>"; };
 		C584D0830EF942DC00B78012 /* UIViewController+WPAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+WPAnimation.m"; sourceTree = "<group>"; };
 		C584D0B30EF943A600B78012 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -479,6 +481,7 @@
 				A0F129B20E1F9D5700867E18 /* aboutscreenlogo.png */,
 				A068C6500E1E49F800571B04 /* DraftsFolder.png */,
 				AC2FB2E00E1D11A400DFE859 /* WordPress.png */,
+				C57E2FC30F7261180038F796 /* WP_application-icon.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -726,6 +729,7 @@
 				108F0FB40EC2B51C00D09FB6 /* PagesDraftListController.xib in Resources */,
 				706D25F50F347F1200491666 /* category_child.png in Resources */,
 				6EC5B7F50F6747F5002609EE /* backNavd.png in Resources */,
+				C57E2FC40F7261180038F796 /* WP_application-icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
