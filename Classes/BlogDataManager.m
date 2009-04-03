@@ -2490,6 +2490,22 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	return commentTitlesList;
 }
 
+-(int)countOfAwaitingComments
+{
+	int i,count,awaitingCommentsCount = 0;;
+	count=[self countOfBlogs];
+	for(i=0;i<count;i++)
+	{
+		NSMutableArray *commentsList = [self commentTitlesForBlog:[self blogAtIndex:i]];
+		for ( NSDictionary *dict in commentsList ) {
+			if ( [[dict valueForKey:@"status"] isEqualToString:@"hold"] ) {
+				awaitingCommentsCount++;
+			}
+		}
+	}
+	return awaitingCommentsCount;
+}
+
 - (NSDictionary *)postTitleAtIndex:(NSUInteger)theIndex {
 	
     
