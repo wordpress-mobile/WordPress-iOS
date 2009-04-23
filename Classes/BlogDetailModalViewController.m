@@ -125,6 +125,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	//TODO:JOHNB this method uses the password
 	
 	BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
 	NSDictionary *currentBlog = [sharedDataManager currentBlog];
@@ -165,7 +166,8 @@
 				return userNameTableViewCell;
 			} 
 		case 2:
-			passwordTextField.text = [currentBlog objectForKey:@"pwd"];
+			//passwordTextField.text = [currentBlog objectForKey:@"pwd"];
+			passwordTextField.text = [sharedDataManager getPasswordFromKeychainInContextOfCurrentBlog:currentBlog];
 			passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 			return passwordTableViewCell;
 			break;
@@ -261,7 +263,13 @@
 	if( buttonIndex == 0 ) //NO
 	{
 		BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
+		//TODO:JOHNB -- remove keychain-stored password here
+		//NSString * url = [dataManager.currentBlog valueForKey:url];
+		//NSString * username = [dataManager.currentBlog valueForKey:username];
+		//NSLog(@"username: %@ url: %@", username, url);
+		//[dataManager deleteBlogFromKeychain:username andBlogURL:url];
 		[dataManager removeCurrentBlog];
+		
 		
 		[blogEditTable reloadData];
 		[self cancel:nil];		
@@ -324,6 +332,7 @@
 }
 
 - (void)updateBlog:(id)sender {
+	//TODO:JOHNB this method uses the password
 	if (self.currentEditingTextField)
 		[self.currentEditingTextField resignFirstResponder];	
 	
@@ -331,9 +340,14 @@
 	
 	// set entered values in current blog
 	NSString *username = userNameTextField.text;
-	NSString *pwd = passwordTextField.text;
-	[dm.currentBlog setValue:(pwd?pwd:@"") forKey:@"pwd"];	
+	NSString *pwd = passwordTextField.text;//JB OK
 	NSString *url = blogURLTextField.text;
+	url = [url stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	blogURLTextField.text = url;
+	//[dm.currentBlog setValue:(pwd?pwd:@"") forKey:@"pwd"];
+	//JOHNB: the above line removed so we can write pwd only to keychain
+	[dm updatePasswordInKeychain:pwd andUserName:username andBlogURL:url];
+	//NSString *url = blogURLTextField.text;
 	
 	if (!username || !url || !pwd || [username length] ==0 || [url length] == 0 || [pwd length] == 0 ) {
 		
@@ -346,8 +360,7 @@
 		return;
 	}
 	
-	url = [url stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-	blogURLTextField.text = url;
+	
 
 	NSDictionary *currentBlog = [dm currentBlog];
 	NSNumber *value = [NSNumber numberWithBool:resizePhotoControl.on];
@@ -357,7 +370,9 @@
 	
 	
 	// How do I know if there are errors? 
-	if( [dm validateCurrentBlog:url user:username password:pwd] )
+	//if( [dm validateCurrentBlog:url user:username password:pwd] )
+	if( [dm validateCurrentBlog:url user:username ])
+		//JOHNB:CHECKTHIS: here, we need to remove the password part, assuming this doesn't break anything
 	{
 		// show the updated blog values
 		[self.blogEditTable reloadData];
@@ -389,6 +404,7 @@
  */
 
 - (void)saveBlog:(id)sender {
+	//TODO:JOHNB this method uses the password
 	
 	if ( [[Reachability sharedReachability] internetConnectionStatus] == NotReachable ) {
 		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"Communication Error."
@@ -409,8 +425,13 @@
 	// set entered values in current blog
 	NSString *username = userNameTextField.text;
 	NSString *pwd = passwordTextField.text;
-	[dm.currentBlog setValue:(pwd?pwd:@"") forKey:@"pwd"];	
+	//JOHNB:Added the next line and moved the url line up to here because I want that trim before I write to the keychain.
 	NSString *url = blogURLTextField.text;
+	url = [url stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	//[dm.currentBlog setValue:(pwd?pwd:@"") forKey:@"pwd"];	
+	//JOHNB:Added the next line to write to the keychain.  the previous code line [dm.currentBlog setValue...] was the old way of saving the password
+	[dm saveBlogPasswordToKeychain:(pwd?pwd:@"") andUserName:username andBlogURL:url];
+	//(done above now) NSString *url = blogURLTextField.text;
 	
 	if (!username || !url || !pwd || [username length] ==0 || [url length] == 0 || [pwd length] == 0 ) {
 		
@@ -423,7 +444,7 @@
 		return;
 	}
 	
-	url = [url stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	
 	blogURLTextField.text = url;
 
 	NSDictionary *currentBlog = [dm currentBlog];
@@ -431,6 +452,7 @@
 	[currentBlog setValue:value forKey:kResizePhotoSetting];
 	
 	if ( mode == 0 ) { // new one -- Check for adding a existing blog again.
+		
 		NSDictionary *newBlog = [NSDictionary dictionaryWithObjectsAndKeys:username,@"username",pwd,@"pwd",url,@"url",nil];
 			
 		if([dm doesBlogExists:newBlog])
@@ -445,11 +467,12 @@
 		}
     }
 	
+	
 	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
 	
 	
 	// How do I know if there are errors? 
-	if( [dm refreshCurrentBlog:url user:username password:pwd] )
+	if( [dm refreshCurrentBlog:url user:username] )
 	{
 		// show the updated blog values
 		[self.blogEditTable reloadData];
@@ -469,6 +492,9 @@
 		//		WPBlogsListController *blogListController = [[WPBlogsListController alloc] initWithNibName:@"WPBlogsListController" bundle:nil];
 		//		[self.navigationController pushViewController:blogListController animated:YES];
 		[self popTransition:self.navigationController.view];
+		// TODO:JOHNB This is likely the place to pull pwd out of data structure - replace with something benign
+		// pass pwd on to keychain code here
+		//TODO:JOHNB find rest of CRUD components for password... This is "Create"
 		[dm saveCurrentBlog];
 
 		
@@ -523,7 +549,12 @@
 		[[dataManager currentBlog] setValue:textField.text forKey:@"username"];
 	}
 	else if (textField.tag == 113) {
-		[[dataManager currentBlog] setValue:textField.text forKey:@"pwd"];
+		//[[dataManager currentBlog] setValue:textField.text forKey:@"pwd"];
+		//Do Nothing because this isn't a save an pwd is no longer going into currentBlog
+		//[[dataManager currentBlog] setValue:textField.text forKey:@"pwd"];
+		//Eliminate above line because pwd now stored in keychain.  Line below stores to keychain
+		//[dm saveBlogPasswordToKeychain:(pwd?pwd:@"") andUserName:username andBlogURL:url];
+		//Save Button should do this now...
 	}
 }
 
