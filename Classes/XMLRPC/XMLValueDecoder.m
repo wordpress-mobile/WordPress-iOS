@@ -49,6 +49,7 @@
 					if( [aValueDecoder valueType] == structMemberType )
 					{
 						[curVal setValue:[aValueDecoder value] forKey:[aValueDecoder valueForKey:@"curStructKey"]];
+						//TODO:JOHNBCustomField check this for debug
 					}
 					break;
 				case arraytype:

@@ -340,6 +340,7 @@
 		self.navigationItem.rightBarButtonItem = nil;
 		self.postDetailViewController.hasChanges = NO; 
 		self.postDetailViewController.mode = 1; 
+		postDetailEditController.postDetailViewController=self.postDetailViewController;
 		[[self navigationController] pushViewController:self.postDetailViewController animated:YES];
 	}
 }

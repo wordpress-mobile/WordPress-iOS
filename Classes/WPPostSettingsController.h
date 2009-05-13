@@ -11,6 +11,7 @@
 	IBOutlet UITableViewCell *passwordTableViewCell;
 	IBOutlet UITableViewCell *passwordHintTableViewCell;
 	IBOutlet UITableViewCell *resizePhotoViewCell;
+	IBOutlet UITableViewCell *customFieldsCell;
 	
 	IBOutlet UITextField *passwordTextField;
 	IBOutlet UILabel *publishOnTextField;

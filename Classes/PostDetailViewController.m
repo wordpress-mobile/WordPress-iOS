@@ -12,6 +12,9 @@
 #import "PostsListController.h"
 #import "Reachability.h"
 
+#import "CustomFieldsEditView.h"
+#import "CustomFieldsDetailController.h"
+
 
 
 @interface PostDetailViewController (privateMethods)
@@ -30,6 +33,7 @@
 
 @synthesize postDetailEditController, postPreviewController, postSettingsController, postsListController, hasChanges, mode, tabController, photosListController, saveButton;
 @synthesize leftView;
+@synthesize customFieldsEditView, customFieldsDetailController;
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
 	
@@ -115,6 +119,8 @@
 
 - (IBAction)saveAction:(id)sender 
 {
+	saveButton.title = @"asdf";
+	NSLog(@"Inside Save Action");
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	//Check for internet connection
 	if(![[dm.currentPost valueForKey:@"post_status"] isEqualToString:@"Local Draft"])
@@ -298,7 +304,7 @@
 //	}
 //	
 	if(hasChanges) {
-		if ([[leftView title] isEqualToString:@"Posts"])
+		if ([[leftView title] isEqualToString:@"Posts"] || [[self.navigationItem.leftBarButtonItem title] isEqualToString:@"Done"])
 			[leftView setTitle:@"Cancel"];
 		self.navigationItem.rightBarButtonItem = saveButton;
 	} else {
@@ -462,6 +468,7 @@
 
 - (void)setHasChanges:(BOOL)aFlag
 {
+	NSLog(@"inside PostDetailViewController:setHasChanges");
 	if( hasChanges == NO && aFlag == YES )
 		[self startTimer];
 	
@@ -487,6 +494,7 @@
 	if (!saveButton) {
 		saveButton = [[UIBarButtonItem alloc] init];
 		saveButton.title = @"Save";
+		//saveButton.title = @"Monst";
 		saveButton.target = self;
 		saveButton.style = UIBarButtonItemStyleDone;
 		saveButton.action = @selector(saveAction:);
