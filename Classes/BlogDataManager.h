@@ -43,6 +43,7 @@
 	BOOL isLocaDraftsCurrent;
 	BOOL isPageLocalDraftsCurrent;
 	
+	
 	NSMutableDictionary *currentPost;
 	NSArray *pageFieldNames;
 	

@@ -264,7 +264,7 @@
 - (NSDictionary *) getDictForThisCell:(NSString *) rowString{
 	
 	NSMutableDictionary *oneCustomFieldDict = [[NSDictionary alloc] init];
-	NSDictionary *noCustomFieldsDict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@"000", @"id", @"Enter Name Here", @"key", @"Enter Value Here", @"value", nil];
+	NSDictionary *noCustomFieldsDict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@"000", @"id", @"", @"key", @"", @"value", nil];
 	int count = [customFieldsArray count];
 	for(int i = 0;i < count;i++){
 		NSString *tempKey = [[customFieldsArray objectAtIndex:i] objectForKey:@"key"];
