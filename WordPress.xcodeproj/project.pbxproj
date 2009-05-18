@@ -20,12 +20,10 @@
 		291039340FB53B5900D73592 /* CustomFieldsDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291039330FB53B5900D73592 /* CustomFieldsDetailController.m */; };
 		291DF5D20F8086D00095C259 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 291DF5D10F8086D00095C259 /* Security.framework */; };
 		291DF5D90F80877E0095C259 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 291DF5D80F80877E0095C259 /* SFHFKeychainUtils.m */; };
-		29475AF80F9506CC00A72013 /* Snapshot Version: PWD Delete from Keychain in Resources */ = {isa = PBXBuildFile; fileRef = 29475AF70F9506CC00A72013 /* Snapshot Version: PWD Delete from Keychain */; };
 		2947785F0FB0B8800031B51C /* CustomFieldsTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2947785E0FB0B8800031B51C /* CustomFieldsTableView.xib */; };
 		294778640FB0B9960031B51C /* CustomFieldsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 294778630FB0B9960031B51C /* CustomFieldsTableView.m */; };
 		294779550FB0E5F90031B51C /* CustomFieldsEditView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 294779540FB0E5F90031B51C /* CustomFieldsEditView.xib */; };
 		2947795D0FB0E8320031B51C /* CustomFieldsEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2947795C0FB0E8320031B51C /* CustomFieldsEditView.m */; };
-		29B1012C0FA25B1A00E96ED1 /* Notes on Custom Fields Changes in Resources */ = {isa = PBXBuildFile; fileRef = 29B1012B0FA25B1A00E96ED1 /* Notes on Custom Fields Changes */; };
 		2A7F71FB0E70F82A00E48A1F /* WPCommentsDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A7F71FA0E70F82A00E48A1F /* WPCommentsDetailViewController.xib */; };
 		2A7F72010E70F8C900E48A1F /* WPCommentsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7F72000E70F8C900E48A1F /* WPCommentsDetailViewController.m */; };
 		2A7F722B0E71000000E48A1F /* up.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A7F72290E71000000E48A1F /* up.png */; };
@@ -144,14 +142,12 @@
 		291DF5D10F8086D00095C259 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = /System/Library/Frameworks/Security.framework; sourceTree = "<absolute>"; };
 		291DF5D70F80877E0095C259 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
 		291DF5D80F80877E0095C259 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
-		29475AF70F9506CC00A72013 /* Snapshot Version: PWD Delete from Keychain */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Snapshot Version: PWD Delete from Keychain"; sourceTree = "<group>"; };
 		2947785E0FB0B8800031B51C /* CustomFieldsTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomFieldsTableView.xib; sourceTree = "<group>"; };
 		294778620FB0B9960031B51C /* CustomFieldsTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomFieldsTableView.h; sourceTree = "<group>"; };
 		294778630FB0B9960031B51C /* CustomFieldsTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomFieldsTableView.m; sourceTree = "<group>"; };
 		294779540FB0E5F90031B51C /* CustomFieldsEditView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomFieldsEditView.xib; sourceTree = "<group>"; };
 		2947795B0FB0E8320031B51C /* CustomFieldsEditView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomFieldsEditView.h; sourceTree = "<group>"; };
 		2947795C0FB0E8320031B51C /* CustomFieldsEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomFieldsEditView.m; sourceTree = "<group>"; };
-		29B1012B0FA25B1A00E96ED1 /* Notes on Custom Fields Changes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Notes on Custom Fields Changes"; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2A7F71FA0E70F82A00E48A1F /* WPCommentsDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WPCommentsDetailViewController.xib; sourceTree = "<group>"; };
 		2A7F71FF0E70F8C900E48A1F /* WPCommentsDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPCommentsDetailViewController.h; sourceTree = "<group>"; };
@@ -317,7 +313,6 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				29475AF70F9506CC00A72013 /* Snapshot Version: PWD Delete from Keychain */,
 				C584D0820EF942DC00B78012 /* UIViewController+WPAnimation.h */,
 				C584D0830EF942DC00B78012 /* UIViewController+WPAnimation.m */,
 				2F970F970DF929B8006BD934 /* Constants.h */,
@@ -447,7 +442,6 @@
 				2F706C290DFB8A5200B43086 /* PostDetailViewController.m */,
 				ACC156CA0E10E67600D6E1A0 /* PostDetailEditController.h */,
 				ACC156CB0E10E67600D6E1A0 /* PostDetailEditController.m */,
-				29B1012B0FA25B1A00E96ED1 /* Notes on Custom Fields Changes */,
 				ACBAB5FC0E121C7300F38795 /* WPPostSettingsController.h */,
 				ACBAB5FD0E121C7300F38795 /* WPPostSettingsController.m */,
 				ACBAB6840E1247F700F38795 /* WPPostDetailPreviewController.h */,
@@ -774,8 +768,6 @@
 				706D25F50F347F1200491666 /* category_child.png in Resources */,
 				6EC5B7F50F6747F5002609EE /* backNavd.png in Resources */,
 				C57E2FC40F7261180038F796 /* WP_application-icon.png in Resources */,
-				29475AF80F9506CC00A72013 /* Snapshot Version: PWD Delete from Keychain in Resources */,
-				29B1012C0FA25B1A00E96ED1 /* Notes on Custom Fields Changes in Resources */,
 				2947785F0FB0B8800031B51C /* CustomFieldsTableView.xib in Resources */,
 				294779550FB0E5F90031B51C /* CustomFieldsEditView.xib in Resources */,
 			);
