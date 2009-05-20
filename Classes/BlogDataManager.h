@@ -43,7 +43,6 @@
 	BOOL isLocaDraftsCurrent;
 	BOOL isPageLocalDraftsCurrent;
 	
-	
 	NSMutableDictionary *currentPost;
 	NSArray *pageFieldNames;
 	
@@ -105,7 +104,6 @@
 @property (nonatomic, retain) NSMutableDictionary *currentUnsavedDraft;
 #pragma mark Blog metadata
 
-
 - (NSArray *)blogFieldNames;
 - (NSDictionary *)blogFieldNamesByTag;
 - (NSDictionary *)blogFieldTagsByName;
@@ -133,8 +131,6 @@
 - (void) saveBlogData;
 - (NSString *)templateHTMLStringForBlog:(id)aBlog isDefaultTemplate:(BOOL *)flag;
 - (NSString *)defaultTemplateHTMLString;
-
-
 
 #pragma mark Post Title metadata
 - (NSArray *)postTitleFieldNames;
@@ -193,11 +189,8 @@
 - (NSDictionary *)postFieldTagsByName;
 
 #pragma mark Sync with Blog Host
-- (BOOL) refreshCurrentBlog:(NSString *)url user:(NSString *)username
-;
-//- (BOOL) refreshCurrentBlog:(NSString *)url user:(NSString *)username password:(NSString*)pwd;
-//- (BOOL)validateCurrentBlog:(NSString *)url user:(NSString *)username password:(NSString*)pwd;
-- (BOOL)validateCurrentBlog:(NSString *)url user:(NSString *)username;
+- (BOOL) refreshCurrentBlog:(NSString *)url user:(NSString *)username password:(NSString*)pwd;
+- (BOOL)validateCurrentBlog:(NSString *)url user:(NSString *)username password:(NSString*)pwd;
 - (BOOL) syncPostsForBlog:(id)blog;
 - (BOOL) syncPostsForCurrentBlog;
 	
@@ -291,29 +284,4 @@
 - (NSString *)pageStatusForStatusDescription:(NSString *)statusDescription fromBlog:(id)aBlog;
 
 - (BOOL)doesBlogExists:(NSDictionary *)aBlog;
-
-#pragma mark -
-#pragma mark CRUD for keychain Passwords
-//Note: we use other data elements here, but password is the only data element persisted here...
-//all other persistence is as it was before this change (I.E. inside blogsList and written to filesystem
-//from blogsList
-
--(NSString*) getPasswordFromKeychainInContextOfCurrentBlog:(NSDictionary *)theCurrentBlog;
--(NSString*) getBlogPasswordFromKeychainWithUsername:(NSString *)userName andBlogName:(NSString *)blogName;
--(void) saveBlogPasswordToKeychain:(NSString *)password andUserName:(NSString *)userName andBlogURL:(NSString *)blogURL;
--(void) updatePasswordInKeychain:(NSString *)password andUserName:(NSString *)userName andBlogURL:(NSString *)blogURL;
--(void) deleteBlogFromKeychain:(NSString *)userName andBlogURL:(NSString *)blogURL;
-
-#pragma mark -
-#pragma mark upgrade Password into Keychain Upgrade Helper
-//See comments above method in BlogDataManager.m file (end)
-- (void) callSetCurrentBlog:(NSMutableDictionary *)aBlog;
-
-#pragma mark -
-#pragma mark Misc.
-
--(void) printArrayToLog:(NSArray *) theArray andArrayName:(NSString *)theArrayName;
--(void) printDictToLog:(NSDictionary *)theDict andArrayName:(NSString *)theArrayName;
-
 @end
-

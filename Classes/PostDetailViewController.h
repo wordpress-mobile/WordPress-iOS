@@ -3,7 +3,6 @@
 
 @class PostDetailEditController, WPPostDetailPreviewController, WPSelectionTableViewController, WPPostSettingsController, WPPhotosListViewController, PostsListController;
 @class WPNavigationLeftButtonView;
-@class CustomFieldsEditView, CustomFieldsDetailController;
 @interface PostDetailViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate,WPPhotosListProtocol> {
 	IBOutlet UITabBarController *tabController;
 	IBOutlet UIView	*photoEditingStatusView;
@@ -16,9 +15,6 @@
 	PostsListController *postsListController;
    	WPNavigationLeftButtonView *leftView;
 	
-	CustomFieldsEditView *customFieldsEditView;
-	CustomFieldsDetailController *customFieldsDetailController;
-	
 	BOOL hasChanges;
 	int mode;	//0 new, 1 edit, 2 autorecovery, 3 refresh
 	
@@ -30,9 +26,6 @@
 @property (nonatomic, retain)	WPPostDetailPreviewController *postPreviewController;
 @property (nonatomic, retain)	WPPostSettingsController *postSettingsController;
 @property (nonatomic, retain)	WPPhotosListViewController *photosListController;
-
-@property (nonatomic, retain)	CustomFieldsEditView *customFieldsEditView;
-@property (nonatomic, retain)	CustomFieldsDetailController *customFieldsDetailController;
 
 @property (nonatomic, assign)	PostsListController *postsListController;
 
