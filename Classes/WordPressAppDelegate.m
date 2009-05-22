@@ -115,7 +115,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	//[self saveBlogData];
 	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 	[dataManager saveBlogData];
-
+	[UIApplication sharedApplication].applicationIconBadgeNumber = [dataManager countOfAwaitingComments];
 }
 
 

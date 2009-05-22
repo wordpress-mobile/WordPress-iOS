@@ -157,6 +157,7 @@
 - (void)loadCommentTitlesForCurrentBlog;
 - (id)loadCommentTitlesForBlog:(id)aBlog;
 - (NSInteger)countOfCommentTitles ;
+-(int)countOfAwaitingComments;
 - (NSArray *)commentTitles;
 - (NSDictionary *)commentTitleAtIndex:(NSUInteger)theIndex;
 
