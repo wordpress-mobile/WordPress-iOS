@@ -67,7 +67,7 @@
 }
 
 - (IBAction)cancel:(id)sender {
-	[self.navigationController dismissModalViewControllerAnimated:YES];
+	[[(UIViewController*)[photosListViewController delegate] navigationController] dismissModalViewControllerAnimated:YES];
 }
 
 - (IBAction)previousImage:(id)sender {

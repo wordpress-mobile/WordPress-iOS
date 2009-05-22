@@ -542,7 +542,8 @@ NSString *NSStringFromCGRect(CGRect rect ) {
 		[atableView deselectRowAtIndexPath:indexPath animated:NO];
 		UITableViewCell *indexViewCell = [atableView cellForRowAtIndexPath:indexPath];
 		//[self commentSelected:[[[[indexViewCell subviews] objectAtIndex:0]subviews] objectAtIndex:1]];//;(id)self.senderObj];//[atableView cellForRowAtIndexPath:indexPath]];
-		[self commentSelected:[[[indexViewCell subviews] objectAtIndex:0]viewWithTag:commentId] ];//;(id)self.senderObj];//[atableView cellForRowAtIndexPath:indexPath]];
+		[self commentSelected:[indexViewCell.contentView viewWithTag:commentId] ];//;(id)self.senderObj];//[atableView cellForRowAtIndexPath:indexPath]];
+//		[self commentSelected:[[[indexViewCell subviews] objectAtIndex:0]viewWithTag:commentId] ];//;(id)self.senderObj];//[atableView cellForRowAtIndexPath:indexPath]];
 		return;
 	}
 		

@@ -101,9 +101,14 @@
 	if (indexPath.section == 0) 
 	{
 		if ([[BlogDataManager sharedDataManager] countOfBlogs] == indexPath.row) {
-			cell.text = @"Add another blog...";
+			//cell.text = @"Add another blog...";
+			UILabel *label = (UILabel *)[cell viewWithTag:2];
+			label.text = @"Add another blog...";
+
 			if ([[BlogDataManager sharedDataManager] countOfBlogs] == 0)
-				cell.text = @"Set up your blog";
+				//cell.text = @"Set up your blog";
+				label.text=@"Set up your blog";
+
 		} else {
 			if( [[[[BlogDataManager sharedDataManager] blogAtIndex:(indexPath.row)] valueForKey:@"kIsSyncProcessRunning"] intValue] == 1)
 			{
@@ -133,7 +138,10 @@
 	}
 	else
 	{
-		cell.text = @"About WordPress for iPhone";
+		UILabel *label = (UILabel *)[cell viewWithTag:2];
+		label.text = @"About WordPress for iPhone";
+
+//		cell.text = @"About WordPress for iPhone";
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
 	
@@ -333,12 +341,12 @@
 		return NO;
 	
 	// Return YES for supported orientations
-	if(self.interfaceOrientation!=interfaceOrientation) {
-		self.navigationController.navigationBarHidden = NO;
+//	if(self.interfaceOrientation!=interfaceOrientation) {
+//		self.navigationController.navigationBarHidden = NO;
 		return YES;
-	} else {
-		return NO;
-	}
+//	} else {
+//		return NO;
+//	}
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {

@@ -493,6 +493,8 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 			[imageView setBackgroundColor:[UIColor whiteColor]];
 		}
 	}
+		
+	cell.accessoryType=UITableViewCellAccessoryNone;
 	
 	return cell;
 }
@@ -507,10 +509,10 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 	
 }
 
-- (UITableViewCellAccessoryType)tableView:(UITableView *)aTableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath 
-{
-	return UITableViewCellAccessoryNone;	
-}
+//- (UITableViewCellAccessoryType)tableView:(UITableView *)aTableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath 
+//{
+//	return UITableViewCellAccessoryNone;	
+//}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	

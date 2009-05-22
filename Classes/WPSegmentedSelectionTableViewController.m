@@ -22,7 +22,7 @@
 
 @implementation WPSegmentedSelectionTableViewController
 
-@synthesize objects, selectionStatusOfObjects, originalSelObjects;
+//@synthesize objects, selectionStatusOfObjects, originalSelObjects;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -38,9 +38,9 @@
 {
 	[categoryIndentationLevelsDict release];
 	[rowTextColor release];
-	[originalSelObjects release];
-	[selectionStatusOfObjects release];
-	[objects release];
+//	[originalSelObjects release];
+//	[selectionStatusOfObjects release];
+//	[objects release];
 	[super dealloc];
 }
 
@@ -161,26 +161,69 @@
 	}
 	int indentationLevel = [[categoryIndentationLevelsDict valueForKey:[[objects objectAtIndex:indexPath.row] objectForKey:@"categoryId"]] intValue];
 	cell.indentationLevel = indentationLevel;
+	
+	
 	if (indentationLevel == 0)
+	{
+#if defined __IPHONE_3_0		
+		cell.imageView.image = nil;
+#else if defined __IPHONE_2_0		
 		cell.image = nil;
+#endif
+	}
 	else
+	{
+#if defined __IPHONE_3_0		
+		cell.imageView.image = [UIImage imageNamed:@"category_child.png"];
+#else if defined __IPHONE_2_0		
 		cell.image = [UIImage imageNamed:@"category_child.png"];
-
+#endif
+	}
+	
+#if defined __IPHONE_3_0		
+	cell.textLabel.text = [[objects objectAtIndex:indexPath.row] objectForKey:@"categoryName"];
+#else if defined __IPHONE_2_0		
 	cell.text = [[objects objectAtIndex:indexPath.row] objectForKey:@"categoryName"];
+#endif
+	
 
 	BOOL curStatus = [[selectionStatusOfObjects objectAtIndex:indexPath.row] boolValue];
 	if (curStatus)
+	{
+#if defined __IPHONE_3_0		
+		cell.textLabel.textColor = rowTextColor;
+#else if defined __IPHONE_2_0		
 		cell.textColor = rowTextColor;
+#endif
+	}
 	else
+	{
+#if defined __IPHONE_3_0		
+		cell.textLabel.textColor = [UIColor blackColor];
+#else if defined __IPHONE_2_0		
 		cell.textColor = [UIColor blackColor];
+#endif
+	}
 	
+	cell.accessoryType=[self accessoryTypeForRowWithIndexPath:indexPath ofTableView:tableView];
    	return cell;
 }
 
 
 #pragma mark TableView Delegate Methods
 
-- (UITableViewCellAccessoryType)tableView:(UITableView *)aTableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath 
+//- (UITableViewCellAccessoryType)tableView:(UITableView *)aTableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath 
+//{
+//    int previousRows = indexPath.section + indexPath.row;
+//    int currentSection = indexPath.section;
+//    while ( currentSection > 0 ) {
+//        currentSection--;
+//        previousRows += [self tableView:aTableView numberOfRowsInSection:currentSection] - 1;
+//    }
+//	return (UITableViewCellAccessoryType)( [[selectionStatusOfObjects objectAtIndex:previousRows] boolValue] == YES ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone );	
+//}
+
+- (UITableViewCellAccessoryType)accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath ofTableView:(UITableView *)aTableView
 {
     int previousRows = indexPath.section + indexPath.row;
     int currentSection = indexPath.section;
@@ -190,6 +233,7 @@
     }
 	return (UITableViewCellAccessoryType)( [[selectionStatusOfObjects objectAtIndex:previousRows] boolValue] == YES ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone );	
 }
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

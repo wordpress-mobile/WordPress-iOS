@@ -20,6 +20,9 @@ typedef enum _SelectionType {
 
 //default is true;
 @property (nonatomic, assign) BOOL autoReturnInRadioSelectMode;
+@property (nonatomic, retain) NSArray *objects;
+@property (nonatomic, retain) NSMutableArray *selectionStatusOfObjects;
+@property (nonatomic, retain) NSMutableArray *originalSelObjects;
 
 //strings
 - (void)populateDataSource:(NSArray *)sourceObjects havingContext:(void*)context selectedObjects:(NSArray *)selObjects selectionType:(WPSelectionType)aType andDelegate:(id)delegate;

@@ -12,6 +12,7 @@
 @implementation WPSelectionTableViewController
 
 @synthesize autoReturnInRadioSelectMode;
+@synthesize objects, selectionStatusOfObjects, originalSelObjects;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -141,9 +142,21 @@
 		[cell setAccessoryType:UITableViewCellAccessoryCheckmark];
 	}
 	
-	cell.text = [objects objectAtIndex:indexPath.row];
+	UILabel *cellTextLabel=[[UILabel alloc] initWithFrame:CGRectMake(10, -2 , 230, 50)];
+	cellTextLabel.text=[objects objectAtIndex:indexPath.row];
+	cellTextLabel.font = [UIFont boldSystemFontOfSize:16.0];
+	cellTextLabel.backgroundColor=[UIColor clearColor];
+	
+	
+//	cell.text = [objects objectAtIndex:indexPath.row];
 	BOOL curStatus = [[selectionStatusOfObjects objectAtIndex:indexPath.row] boolValue];
-	cell.textColor = ( curStatus == YES ? [UIColor blueColor] : [UIColor blackColor] );
+	//cell.textColor = ( curStatus == YES ? [UIColor blueColor] : [UIColor blackColor] );
+	cellTextLabel.textColor = ( curStatus == YES ? [UIColor blueColor] : [UIColor blackColor] );
+	[cell.contentView addSubview:cellTextLabel];
+	[cellTextLabel release];
+	
+	cell.accessoryType=(UITableViewCellAccessoryType)( [[selectionStatusOfObjects objectAtIndex:indexPath.row] boolValue] == YES ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone );
+
 	return cell;
 }
 
@@ -187,10 +200,10 @@
 	
 }
 
-- (UITableViewCellAccessoryType)tableView:(UITableView *)aTableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath 
-{
-	return (UITableViewCellAccessoryType)( [[selectionStatusOfObjects objectAtIndex:indexPath.row] boolValue] == YES ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone );	
-}
+//- (UITableViewCellAccessoryType)tableView:(UITableView *)aTableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath 
+//{
+//	return (UITableViewCellAccessoryType)( [[selectionStatusOfObjects objectAtIndex:indexPath.row] boolValue] == YES ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone );	
+//}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
@@ -208,6 +221,9 @@
 }
 
 - (void)dealloc {
+	[originalSelObjects release];
+	[selectionStatusOfObjects release];
+	[objects release];
 	[super dealloc];
 }
 

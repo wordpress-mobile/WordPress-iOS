@@ -223,8 +223,8 @@
 		return newCatNameCell;
 	}
 	else {
-		parentCatNameCell.text = @"Parent Category";
-		parentCatNameCell.textColor = [UIColor blueColor];
+//		parentCatNameCell.text = @"Parent Category";
+//		parentCatNameCell.textColor = [UIColor blueColor];
 		return parentCatNameCell;
 	}
 }

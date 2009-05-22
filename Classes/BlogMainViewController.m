@@ -128,10 +128,23 @@
 	UITableViewCell *cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero] autorelease];
 	if (indexPath.section == 0) 
 	{
-		cell.image =[UIImage imageNamed:@"DraftsFolder.png"];
-		cell.text = [blogMainMenuContents objectAtIndex:(indexPath.row)];
+		//cell.image =[UIImage imageNamed:@"DraftsFolder.png"];
+		UIImageView *folderImage=[[UIImageView alloc] initWithFrame:CGRectMake(10, 10 ,26, 26)];
+		folderImage.image=[UIImage imageNamed:@"DraftsFolder.png"];
+		[cell.contentView addSubview:folderImage];
+		[folderImage release];
+		
+		//cell.text = [blogMainMenuContents objectAtIndex:(indexPath.row)];
+		
+		UILabel *blogMainMenuContentLabel=[[UILabel alloc] initWithFrame:CGRectMake(44, 7 , 230, 30)];
+		blogMainMenuContentLabel.text= [blogMainMenuContents objectAtIndex:(indexPath.row)];
+		blogMainMenuContentLabel.font = [UIFont boldSystemFontOfSize:17.0];
+		[cell.contentView addSubview:blogMainMenuContentLabel];
+		[blogMainMenuContentLabel release];
+		
+		
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-		cell.font = [cell.font fontWithSize:17.0f];
+		//cell.font = [cell.font fontWithSize:17.0f];
 		
 		if ( indexPath.row == 2 ) { // Comments Section
 
@@ -142,7 +155,8 @@
 				UILabel *badgeLabel = [[UILabel alloc] initWithFrame:CGRectMake(220, (LOCALDRAFT_ROW_HEIGHT - LABEL_HEIGHT)/2 , 80, LABEL_HEIGHT)];
 				[badgeLabel setTag:99];
 				badgeLabel.textAlignment = UITextAlignmentRight;
-				badgeLabel.font = cell.font;
+//				badgeLabel.font = cell.font;
+				badgeLabel.font =[UIFont boldSystemFontOfSize:17.0];
 				badgeLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 				badgeLabel.text = [NSString stringWithFormat:@"(%d)",awaitingComments];
 				[[cell contentView] addSubview:badgeLabel];

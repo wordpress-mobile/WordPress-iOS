@@ -43,10 +43,19 @@
 		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:MyIdentifier] autorelease];
 	}
 	// Configure the cell
-	cell.text = ( [[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] == nil || ([[[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] length] == 0) )?
-																	@"(no title)" : [[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] ;
+//	cell.text = ( [[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] == nil || ([[[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] length] == 0) )?
+//																	@"(no title)" : [[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] ;
 	
-	cell.font = [cell.font fontWithSize:15.0f];
+	UILabel *pageTitleLabel=[[UILabel alloc] initWithFrame:CGRectMake(10, -2 , 230, 50)];
+	pageTitleLabel.text=( [[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] == nil || ([[[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] length] == 0) )?
+																		@"(no title)" : [[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] ;
+	pageTitleLabel.font = [UIFont boldSystemFontOfSize:15.0];
+	[cell.contentView addSubview:pageTitleLabel];
+	[pageTitleLabel release];
+	
+	
+	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	//cell.font = [cell.font fontWithSize:15.0f];
 	return cell;
 }
 
@@ -82,10 +91,10 @@
 	return YES;
 }
 
-- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath
-{
-	return UITableViewCellAccessoryDisclosureIndicator;
-}
+//- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath
+//{
+//	return UITableViewCellAccessoryDisclosureIndicator;
+//}
 
 
 

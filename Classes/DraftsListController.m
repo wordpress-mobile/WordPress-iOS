@@ -33,8 +33,14 @@
 		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:MyIdentifier] autorelease];
 	}
 	// Configure the cell
-	cell.text = [[dm draftTitleAtIndex:indexPath.row] valueForKey:@"title"];
-	cell.font = [cell.font fontWithSize:15.0f];
+	//cell.text = [[dm draftTitleAtIndex:indexPath.row] valueForKey:@"title"];
+	UILabel *postTitleLabel=[[UILabel alloc] initWithFrame:CGRectMake(10, -2 , 230, 50)];
+	postTitleLabel.text=[[dm draftTitleAtIndex:indexPath.row] valueForKey:@"title"];
+	postTitleLabel.font = [UIFont boldSystemFontOfSize:15.0];
+	[cell.contentView addSubview:postTitleLabel];
+	[postTitleLabel release];
+	cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
+	//cell.font = [cell.font fontWithSize:15.0f];
 	return cell;
 }
 
@@ -67,10 +73,10 @@
 	return YES;
 }
 
-- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath
-{
-	return UITableViewCellAccessoryDisclosureIndicator;
-}
+//- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath
+//{
+//	return UITableViewCellAccessoryDisclosureIndicator;
+//}
 
 /*
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {

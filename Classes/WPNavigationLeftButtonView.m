@@ -35,7 +35,12 @@
         [addButton setBackgroundImage:img forState:UIControlStateNormal];
         [addButton setBackgroundImage:imgselect forState:UIControlStateHighlighted];
         [addButton setBackgroundImage:imgselect forState:UIControlStateSelected];
+#if defined __IPHONE_3_0		
+		addButton.titleLabel.font=[UIFont boldSystemFontOfSize:12];
+#else if defined __IPHONE_2_0		
 		[addButton setFont:[UIFont boldSystemFontOfSize:12]];
+#endif
+		
         [self addSubview:addButton];
     }
     return self;

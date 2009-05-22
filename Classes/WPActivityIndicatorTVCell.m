@@ -41,7 +41,7 @@
 {
 	UILabel *label = (UILabel *)[self viewWithTag:(NSInteger)2];
 	label.text = nil;
-	self.text = nil;
+	//self.text = nil;
 	if ([activityIndicatorView isAnimating])
 		[activityIndicatorView stopAnimating];
 }

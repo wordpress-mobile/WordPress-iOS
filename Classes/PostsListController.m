@@ -147,19 +147,31 @@
 		
 		if (cell == nil) {
 			cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:draftsTableCellRowId] autorelease];
-			cell.font = [cell.font fontWithSize:MAIN_FONT_SIZE];
+			//cell.font = [cell.font fontWithSize:MAIN_FONT_SIZE];
 			UILabel *badgeLabel = [[UILabel alloc] initWithFrame:CGRectMake(210, (LOCALDRAFT_ROW_HEIGHT - LABEL_HEIGHT)/2 , 80, LABEL_HEIGHT)];
 			badgeLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
             [badgeLabel setTag:99];
 			badgeLabel.textColor = [UIColor lightGrayColor];
 			badgeLabel.textAlignment = UITextAlignmentRight;
-			badgeLabel.font = cell.font;
+//			badgeLabel.font = cell.font;
+			badgeLabel.font = [badgeLabel.font fontWithSize:MAIN_FONT_SIZE];
 			[[cell contentView] addSubview:badgeLabel];
 			[badgeLabel release];
 			
 			//As these values won't change in the lifetime of this tableview so we can do this only for once.
-			cell.text =  @"Local Drafts";
-			cell.image = [UIImage imageNamed:@"DraftsFolder.png"];
+			//cell.text =  @"Local Drafts";
+			UILabel *localDraftLabel=[[UILabel alloc] initWithFrame:CGRectMake(44, 5 , 200, 33)];
+			localDraftLabel.text= @"Local Drafts";
+			localDraftLabel.font = [UIFont boldSystemFontOfSize:15.0];
+			[cell.contentView addSubview:localDraftLabel];
+			[localDraftLabel release];
+			
+			//cell.image = [UIImage imageNamed:@"DraftsFolder.png"];
+			UIImageView *localDraftImage=[[UIImageView alloc] initWithFrame:CGRectMake(10, 10 ,26, 26)];
+			localDraftImage.image=[UIImage imageNamed:@"DraftsFolder.png"];
+			[cell.contentView addSubview:localDraftImage];
+			[localDraftImage release];
+			
 		}
 		
 		BlogDataManager *dm = [BlogDataManager sharedDataManager];
