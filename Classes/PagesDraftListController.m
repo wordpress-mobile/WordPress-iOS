@@ -46,7 +46,7 @@
 //	cell.text = ( [[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] == nil || ([[[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] length] == 0) )?
 //																	@"(no title)" : [[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] ;
 	
-	UILabel *pageTitleLabel=[[UILabel alloc] initWithFrame:CGRectMake(10, -2 , 230, 50)];
+	UILabel *pageTitleLabel=[[UILabel alloc] initWithFrame:CGRectMake(10, 2, 230, 40)];
 	pageTitleLabel.text=( [[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] == nil || ([[[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] length] == 0) )?
 																		@"(no title)" : [[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] ;
 	pageTitleLabel.font = [UIFont boldSystemFontOfSize:15.0];

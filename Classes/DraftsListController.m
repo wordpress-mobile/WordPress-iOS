@@ -34,7 +34,7 @@
 	}
 	// Configure the cell
 	//cell.text = [[dm draftTitleAtIndex:indexPath.row] valueForKey:@"title"];
-	UILabel *postTitleLabel=[[UILabel alloc] initWithFrame:CGRectMake(10, -2 , 230, 50)];
+	UILabel *postTitleLabel=[[UILabel alloc] initWithFrame:CGRectMake(10, 2, 230, 40)];
 	postTitleLabel.text=[[dm draftTitleAtIndex:indexPath.row] valueForKey:@"title"];
 	postTitleLabel.font = [UIFont boldSystemFontOfSize:15.0];
 	[cell.contentView addSubview:postTitleLabel];
