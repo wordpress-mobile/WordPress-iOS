@@ -141,20 +141,18 @@
 		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:selectionTableRowCell] autorelease];
 		[cell setAccessoryType:UITableViewCellAccessoryCheckmark];
 	}
+#if defined __IPHONE_3_0	
+	cell.textLabel.text = [objects objectAtIndex:indexPath.row];
+#else if defined __IPHONE_2_0		
+	cell.text = [objects objectAtIndex:indexPath.row];
+#endif
 	
-	UILabel *cellTextLabel=[[UILabel alloc] initWithFrame:CGRectMake(10, -2 , 230, 50)];
-	cellTextLabel.text=[objects objectAtIndex:indexPath.row];
-	cellTextLabel.font = [UIFont boldSystemFontOfSize:16.0];
-	cellTextLabel.backgroundColor=[UIColor clearColor];
-	
-	
-//	cell.text = [objects objectAtIndex:indexPath.row];
 	BOOL curStatus = [[selectionStatusOfObjects objectAtIndex:indexPath.row] boolValue];
-	//cell.textColor = ( curStatus == YES ? [UIColor blueColor] : [UIColor blackColor] );
-	cellTextLabel.textColor = ( curStatus == YES ? [UIColor blueColor] : [UIColor blackColor] );
-	[cell.contentView addSubview:cellTextLabel];
-	[cellTextLabel release];
-	
+#if defined __IPHONE_3_0	
+	cell.textLabel.textColor = ( curStatus == YES ? [UIColor blueColor] : [UIColor blackColor] );
+#else if defined __IPHONE_2_0		
+	cell.textColor = ( curStatus == YES ? [UIColor blueColor] : [UIColor blackColor] );
+#endif
 	cell.accessoryType=(UITableViewCellAccessoryType)( [[selectionStatusOfObjects objectAtIndex:indexPath.row] boolValue] == YES ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone );
 
 	return cell;
