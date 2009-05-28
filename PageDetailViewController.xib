@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.02">
+<archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.03">
 	<data>
 		<int key="IBDocument.SystemTarget">512</int>
-		<string key="IBDocument.SystemVersion">9F33</string>
-		<string key="IBDocument.InterfaceBuilderVersion">672</string>
-		<string key="IBDocument.AppKitVersion">949.34</string>
-		<string key="IBDocument.HIToolboxVersion">352.00</string>
+		<string key="IBDocument.SystemVersion">9J61</string>
+		<string key="IBDocument.InterfaceBuilderVersion">677</string>
+		<string key="IBDocument.AppKitVersion">949.46</string>
+		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="334"/>
@@ -13,6 +13,15 @@
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+		</object>
+		<object class="NSMutableDictionary" key="IBDocument.Metadata">
+			<bool key="EncodedWithXMLCoder">YES</bool>
+			<object class="NSArray" key="dict.sortedKeys">
+				<bool key="EncodedWithXMLCoder">YES</bool>
+			</object>
+			<object class="NSMutableArray" key="dict.values">
+				<bool key="EncodedWithXMLCoder">YES</bool>
+			</object>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.RootObjects" id="1000">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -61,10 +70,6 @@
 															<double key="NSSize">1.500000e+01</double>
 															<int key="NSfFlags">16</int>
 														</object>
-														<string key="IBUIHighlightedTitle"/>
-														<string key="IBUIDisabledTitle"/>
-														<string key="IBUISelectedTitle"/>
-														<string key="IBUINormalTitle"/>
 														<object class="NSColor" key="IBUIHighlightedTitleColor" id="725962077">
 															<int key="NSColorSpace">1</int>
 															<bytes key="NSRGB">MSAxIDEAA</bytes>
@@ -72,6 +77,10 @@
 														<object class="NSColor" key="IBUINormalTitleColor">
 															<int key="NSColorSpace">1</int>
 															<bytes key="NSRGB">MC4xOTYwNzg0MyAwLjMwOTgwMzkzIDAuNTIxNTY4NjYAA</bytes>
+														</object>
+														<object class="NSColor" key="IBUINormalTitleShadowColor">
+															<int key="NSColorSpace">3</int>
+															<bytes key="NSWhite">MAA</bytes>
 														</object>
 													</object>
 													<object class="IBUILabel" id="705667128">
@@ -241,11 +250,11 @@
 										<bool key="IBUIMultipleTouchEnabled">YES</bool>
 										<bool key="IBUIShowsHorizontalScrollIndicator">NO</bool>
 										<bool key="IBUIDelaysContentTouches">NO</bool>
-										<bool key="IBUICanCancelContentTouches">NO</bool>
 										<float key="IBUIMinimumZoomScale">0.000000e+00</float>
 										<float key="IBUIMaximumZoomScale">0.000000e+00</float>
 										<bool key="IBUIBouncesZoom">NO</bool>
 										<string key="IBUIText"/>
+										<object class="IBUITextInputTraits" key="IBUITextInputTraits"/>
 									</object>
 									<object class="IBUITextField" id="138287431">
 										<reference key="NSNextResponder" ref="931841925"/>
@@ -671,10 +680,18 @@
 						<string key="minorKey">Classes/PageDetailViewController.h</string>
 					</object>
 				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">UIViewController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/UIViewController+WPAnimation.h</string>
+					</object>
+				</object>
 			</object>
 		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.LastKnownRelativeProjectPath">WordPress.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
+		<string key="IBCocoaTouchPluginVersion">3.0</string>
 	</data>
 </archive>
