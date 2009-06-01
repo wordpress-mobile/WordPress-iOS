@@ -102,7 +102,7 @@
 	
 	self.pageDetailsController.mode = 0; 	
 	self.navigationItem.rightBarButtonItem = nil;
-	self.pageDetailsController.tabController.selectedIndex=0;
+	//self.pageDetailsController.tabController.selectedIndex=0;
 	[[self navigationController] pushViewController:self.pageDetailsController animated:YES];
 }
 
@@ -262,7 +262,7 @@
 		}
 		
 		
-		self.pageDetailsController.tabController.selectedIndex=0;
+//		self.pageDetailsController.tabController.selectedIndex=0;
 		BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 		[dataManager makePageAtIndexCurrent:indexPath.row-1];	
 		

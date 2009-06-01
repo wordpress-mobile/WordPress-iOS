@@ -250,8 +250,7 @@
 										<bool key="IBUIMultipleTouchEnabled">YES</bool>
 										<bool key="IBUIShowsHorizontalScrollIndicator">NO</bool>
 										<bool key="IBUIDelaysContentTouches">NO</bool>
-										<float key="IBUIMinimumZoomScale">0.000000e+00</float>
-										<float key="IBUIMaximumZoomScale">0.000000e+00</float>
+										<float key="IBUIMaximumZoomScale">2.000000e+00</float>
 										<bool key="IBUIBouncesZoom">NO</bool>
 										<string key="IBUIText"/>
 										<object class="IBUITextInputTraits" key="IBUITextInputTraits"/>

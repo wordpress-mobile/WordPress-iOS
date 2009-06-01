@@ -543,12 +543,12 @@
 	//lazy loading of nib by viewcontrollers we are unable to access the view outlets for the very first time.
 	//with this viewcontroller will load the nib and connects view outlets.
 	//in order to avoid delegate method calls i am setting to nil first and then resetting to self at the end.
-	tabController.delegate = nil;
-	tabController.selectedIndex = 1;
-	tabController.selectedIndex = 2;
-	tabController.selectedIndex = 3;
-	tabController.selectedIndex = 0;
-	tabController.delegate = self;
+//tabController.delegate = nil;
+//	tabController.selectedIndex = 1;
+//	tabController.selectedIndex = 2;
+//	tabController.selectedIndex = 3;
+//	tabController.selectedIndex = 0;
+//	tabController.delegate = self;
 	
 	[array release];
 	

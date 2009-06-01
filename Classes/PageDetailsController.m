@@ -52,6 +52,7 @@
 	else
 	{
 		[photoEditingStatusView removeFromSuperview];
+		[pageDetailViewController refreshUIForCurrentPage];
 		self.navigationItem.title=@"Write";
 	}
 	
@@ -61,14 +62,14 @@
 //		[postPreviewController stopLoading];
 //	}
 	
-	if( [viewController.title isEqualToString:@"Settings"]){
-		//[postSettingsController reloadData];
-	}
+//	if( [viewController.title isEqualToString:@"Settings"]){
+//		//[postSettingsController reloadData];
+//	}
 	
-	if( [viewController.title isEqualToString:@"Write"]){
-		[pageDetailViewController refreshUIForCurrentPage];
-	}
-	
+//	if( [viewController.title isEqualToString:@"Write"]){
+//		[pageDetailViewController refreshUIForCurrentPage];
+//	}
+	self.title = viewController.title;
 	if( hasChanges ) {
 		if ([[leftView title] isEqualToString:@"Pages"])
 			[leftView setTitle:@"Cancel"];
@@ -251,7 +252,7 @@
 	tabController.viewControllers = array;
 	self.view = tabController.view;
 	
-	tabController.selectedIndex = 0;
+	//tabController.selectedIndex = 0;
 
 	[array release];
 	
@@ -381,9 +382,13 @@
 	
 	[super viewWillAppear:animated];
 	
-//	tabController.selectedIndex=0;
-//	[tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
 	
+	//Added to solve the title issue .
+	[tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
+	UIViewController *vc = [[tabController viewControllers] objectAtIndex:0];
+	WPLog(@"vc.title---%@",vc.title);
+	self.title = vc.title;
+	//
 	
 	if( mode == 1 )
 		[pageDetailViewController refreshUIForCurrentPage];
