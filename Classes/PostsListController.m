@@ -78,7 +78,12 @@
 	[label release];
     
     // Activity bar
+#if defined __IPHONE_3_0
+	rect = CGRectMake(cell.frame.origin.x+cell.frame.size.width-35, rect.origin.y-10, 20, 20);
+#else if defined __IPHONE_2_0
     rect = CGRectMake(cell.frame.origin.x+cell.frame.size.width-25, rect.origin.y-10, 20, 20);
+#endif	
+	
     UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithFrame:rect];
     activityView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     activityView.tag = 201;
