@@ -46,12 +46,15 @@
 //	cell.text = ( [[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] == nil || ([[[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] length] == 0) )?
 //																	@"(no title)" : [[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] ;
 	
-	UILabel *pageTitleLabel=[[UILabel alloc] initWithFrame:CGRectMake(10, 2, 230, 40)];
-	pageTitleLabel.text=( [[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] == nil || ([[[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] length] == 0) )?
-																		@"(no title)" : [[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] ;
-	pageTitleLabel.font = [UIFont boldSystemFontOfSize:15.0];
-	[cell.contentView addSubview:pageTitleLabel];
-	[pageTitleLabel release];
+#if defined __IPHONE_3_0	
+	cell.textLabel.text = ( [[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] == nil || ([[[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] length] == 0) )?
+																			@"(no title)" : [[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"];
+	cell.textLabel.font = [cell.textLabel.font fontWithSize:15.0f];
+#else if defined __IPHONE_2_0		
+	cell.text = ( [[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] == nil || ([[[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"] length] == 0) )?
+																			@"(no title)" : [[dm pageDraftTitleAtIndex:indexPath.row] valueForKey:@"title"];
+	cell.font = [cell.font fontWithSize:15.0f];
+#endif
 	
 	
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

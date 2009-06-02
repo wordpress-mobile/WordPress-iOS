@@ -160,17 +160,18 @@
 			
 			//As these values won't change in the lifetime of this tableview so we can do this only for once.
 			//cell.text =  @"Local Drafts";
-			UILabel *localDraftLabel=[[UILabel alloc] initWithFrame:CGRectMake(44, 5 , 200, 33)];
-			localDraftLabel.text= @"Local Drafts";
-			localDraftLabel.font = [UIFont boldSystemFontOfSize:15.0];
-			[cell.contentView addSubview:localDraftLabel];
-			[localDraftLabel release];
+		
+#if defined __IPHONE_3_0	
+			cell.textLabel.text = @"Local Drafts";
+			cell.textLabel.font = [cell.textLabel.font fontWithSize:14.0f];
+			cell.imageView.image = [UIImage imageNamed:@"DraftsFolder.png"];
+#else if defined __IPHONE_2_0		
+			cell.text = @"Local Drafts";
+			cell.font = [cell.font fontWithSize:14.0f];
+			cell.image = [UIImage imageNamed:@"DraftsFolder.png"];
+#endif
 			
 			//cell.image = [UIImage imageNamed:@"DraftsFolder.png"];
-			UIImageView *localDraftImage=[[UIImageView alloc] initWithFrame:CGRectMake(10, 10 ,26, 26)];
-			localDraftImage.image=[UIImage imageNamed:@"DraftsFolder.png"];
-			[cell.contentView addSubview:localDraftImage];
-			[localDraftImage release];
 			
 		}
 		

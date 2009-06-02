@@ -129,18 +129,18 @@
 	if (indexPath.section == 0) 
 	{
 		//cell.image =[UIImage imageNamed:@"DraftsFolder.png"];
-		UIImageView *folderImage=[[UIImageView alloc] initWithFrame:CGRectMake(10, 10 ,26, 26)];
-		folderImage.image=[UIImage imageNamed:@"DraftsFolder.png"];
-		[cell.contentView addSubview:folderImage];
-		[folderImage release];
 		
 		//cell.text = [blogMainMenuContents objectAtIndex:(indexPath.row)];
 		
-		UILabel *blogMainMenuContentLabel=[[UILabel alloc] initWithFrame:CGRectMake(44, 7 , 230, 30)];
-		blogMainMenuContentLabel.text= [blogMainMenuContents objectAtIndex:(indexPath.row)];
-		blogMainMenuContentLabel.font = [UIFont boldSystemFontOfSize:17.0];
-		[cell.contentView addSubview:blogMainMenuContentLabel];
-		[blogMainMenuContentLabel release];
+#if defined __IPHONE_3_0	
+		cell.imageView.image = [UIImage imageNamed:@"DraftsFolder.png"];
+		cell.textLabel.text = [blogMainMenuContents objectAtIndex:(indexPath.row)];
+		cell.textLabel.font = [cell.textLabel.font fontWithSize:17.0f];
+#else if defined __IPHONE_2_0		
+		cell.image = [UIImage imageNamed:@"DraftsFolder.png"];
+		cell.text = [blogMainMenuContents objectAtIndex:(indexPath.row)];
+		cell.font = [cell.font fontWithSize:17.0f];
+#endif
 		
 		
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

@@ -34,11 +34,13 @@
 	}
 	// Configure the cell
 	//cell.text = [[dm draftTitleAtIndex:indexPath.row] valueForKey:@"title"];
-	UILabel *postTitleLabel=[[UILabel alloc] initWithFrame:CGRectMake(10, 2, 230, 40)];
-	postTitleLabel.text=[[dm draftTitleAtIndex:indexPath.row] valueForKey:@"title"];
-	postTitleLabel.font = [UIFont boldSystemFontOfSize:15.0];
-	[cell.contentView addSubview:postTitleLabel];
-	[postTitleLabel release];
+#if defined __IPHONE_3_0	
+	cell.textLabel.text = [[dm draftTitleAtIndex:indexPath.row] valueForKey:@"title"];
+	cell.textLabel.font = [cell.textLabel.font fontWithSize:15.0f];
+#else if defined __IPHONE_2_0		
+	cell.text = [[dm draftTitleAtIndex:indexPath.row] valueForKey:@"title"];
+	cell.font = [cell.font fontWithSize:15.0f];
+#endif
 	cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
 	//cell.font = [cell.font fontWithSize:15.0f];
 	return cell;
