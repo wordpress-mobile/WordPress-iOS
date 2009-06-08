@@ -653,7 +653,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	if (paraOpen)
 		desc = [desc  stringByAppendingString:@"</p>"];
 	
-	[aPost setObject:desc forKey:@"description"];
+	[aPost setObject:(desc == nil ? @"" : desc ) forKey:@"description"];
 	
 	return YES;
 }
@@ -699,7 +699,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	if (paraOpen)
 		desc = [desc  stringByAppendingString:@"</p>"];
 	
-	[currentPost setObject:desc forKey:@"description"];
+	[currentPost setObject:(desc == nil ? @"" : desc ) forKey:@"description"];
 	
 	
 	return YES;
@@ -747,7 +747,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	if (paraOpen)
 		desc = [desc  stringByAppendingString:@"</p>"];
 
-	[currentPage setObject:desc forKey:@"description"];
+	[currentPage setObject:(desc == nil ? @"" : desc ) forKey:@"description"];
 	
 	
 	return YES;
@@ -3544,7 +3544,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:postGMTDate];
 	NSDate *currentDate = [postGMTDate addTimeInterval:(secs*+1)];
 	[post setValue:currentDate forKey:@"date_created_gmt"];
-	
+	[post setValue:[NSString stringWithFormat:@"%@",[post valueForKey:@"postid"]]  forKey:@"postid"];
 	[request release];
 	if( [post isKindOfClass:[NSError class]] )
 	{
