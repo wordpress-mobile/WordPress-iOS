@@ -410,7 +410,9 @@
 										<float key="IBUIMaximumZoomScale">2.000000e+00</float>
 										<bool key="IBUIBouncesZoom">NO</bool>
 										<string key="IBUIText"/>
-										<object class="IBUITextInputTraits" key="IBUITextInputTraits"/>
+										<object class="IBUITextInputTraits" key="IBUITextInputTraits">
+											<int key="IBUIAutocapitalizationType">2</int>
+										</object>
 									</object>
 									<object class="IBUITextField" id="138287431">
 										<reference key="NSNextResponder" ref="931841925"/>
