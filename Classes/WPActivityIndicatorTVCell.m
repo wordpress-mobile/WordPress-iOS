@@ -27,7 +27,7 @@
 		
 		UILabel *labelName = [[UILabel alloc] initWithFrame:CGRectMake(10, 2, 285,50)];
 		[labelName setBackgroundColor:[UIColor clearColor]];
-		labelName.font = [UIFont boldSystemFontOfSize:18.0];
+		labelName.font = [UIFont boldSystemFontOfSize:17.0];
 		labelName.tag = (NSInteger)2;
 		labelName.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		[self.contentView addSubview:labelName];
