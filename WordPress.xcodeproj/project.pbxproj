@@ -19,6 +19,7 @@
 		28C286E10D94DF7D0034E888 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C286E00D94DF7D0034E888 /* RootViewController.m */; };
 		2904E9940FE6E09600E00DBC /* CustomFieldsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2904E9910FE6E09600E00DBC /* CustomFieldsTableView.m */; };
 		2904E9950FE6E09600E00DBC /* CustomFieldsDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2904E9930FE6E09600E00DBC /* CustomFieldsDetailController.m */; };
+		29FF132F0FE70F3100CFB908 /* CustomFieldsTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29FF132E0FE70F3100CFB908 /* CustomFieldsTableView.xib */; };
 		2A7F71FB0E70F82A00E48A1F /* WPCommentsDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A7F71FA0E70F82A00E48A1F /* WPCommentsDetailViewController.xib */; };
 		2A7F72010E70F8C900E48A1F /* WPCommentsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7F72000E70F8C900E48A1F /* WPCommentsDetailViewController.m */; };
 		2A7F722B0E71000000E48A1F /* up.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A7F72290E71000000E48A1F /* up.png */; };
@@ -137,6 +138,7 @@
 		2904E9920FE6E09600E00DBC /* CustomFieldsDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomFieldsDetailController.h; sourceTree = "<group>"; };
 		2904E9930FE6E09600E00DBC /* CustomFieldsDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomFieldsDetailController.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		29FF132E0FE70F3100CFB908 /* CustomFieldsTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomFieldsTableView.xib; sourceTree = "<group>"; };
 		2A7F71FA0E70F82A00E48A1F /* WPCommentsDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WPCommentsDetailViewController.xib; sourceTree = "<group>"; };
 		2A7F71FF0E70F8C900E48A1F /* WPCommentsDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPCommentsDetailViewController.h; sourceTree = "<group>"; };
 		2A7F72000E70F8C900E48A1F /* WPCommentsDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPCommentsDetailViewController.m; sourceTree = "<group>"; };
@@ -356,6 +358,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				29FF132C0FE70EFF00CFB908 /* Custom Fields */,
 				A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */,
 				2FAE97040E33B21600CA8540 /* defaultPostTemplate_old.html */,
 				2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */,
@@ -389,6 +392,14 @@
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		29FF132C0FE70EFF00CFB908 /* Custom Fields */ = {
+			isa = PBXGroup;
+			children = (
+				29FF132E0FE70F3100CFB908 /* CustomFieldsTableView.xib */,
+			);
+			name = "Custom Fields";
 			sourceTree = "<group>";
 		};
 		2F35D8AF0DFBAD82002A5F9C /* Entities */ = {
@@ -748,6 +759,7 @@
 				706D25F50F347F1200491666 /* category_child.png in Resources */,
 				6EC5B7F50F6747F5002609EE /* backNavd.png in Resources */,
 				C57E2FC40F7261180038F796 /* WP_application-icon.png in Resources */,
+				29FF132F0FE70F3100CFB908 /* CustomFieldsTableView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

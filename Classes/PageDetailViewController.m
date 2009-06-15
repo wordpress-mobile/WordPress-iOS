@@ -26,8 +26,7 @@
 NSTimeInterval kAnimationDuration1 = 0.3f;
 
 @implementation PageDetailViewController
-
-@synthesize mode,selectionTableViewController,pageDetailsController,photosListController;
+@synthesize mode,selectionTableViewController,pageDetailsController,photosListController, customFieldsTableView;
 @synthesize infoText,urlField,selectedLinkRange,currentEditingTextField,isEditing;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -82,13 +81,13 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	titleTextField.text = [dm.currentPage valueForKey:@"title"];
 	
 	NSString *status = [dm pageStatusDescriptionForStatus:[dm.currentPage valueForKey:@"page_status"] fromBlog:dm.currentBlog];
-
+	
 	status = ( status == nil ? @"" : status );
 	statusTextField.text = status ;
 	
 	[photosListController refreshData];
 	[pageDetailsController updatePhotosBadge];
-
+	
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -116,7 +115,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	//photosListController.pageDetailViewController = self;
-
+	
 	titleTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
 	statusTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
 	statusLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
@@ -124,6 +123,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	
 	titleTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 	[contentView bringSubviewToFront:textView];
+	self.title = @"Write";
 	
 }
 - (IBAction)endTextEnteringButtonAction:(id)sender
@@ -196,9 +196,9 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
 - (void)setTextViewHeight:(float)height
 {
-		CGRect frame = textView.frame;
-		frame.size.height=height;
-		textView.frame=frame;
+	CGRect frame = textView.frame;
+	frame.size.height=height;
+	textView.frame=frame;
 }
 
 #pragma mark TextView & TextField Delegates
@@ -208,7 +208,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	{
 		pageDetailsController.hasChanges = YES;
 		hasChanges = YES;
-
+		
 		isTextViewEditing = YES;
 		if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
 		{
@@ -219,10 +219,10 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 			[self setTextViewHeight:200];
 		}
 		
-				
+		
 		[self updateTextViewPlacehoderFieldStatus];
 		[self bringTextViewUp];
-
+		
 		UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone 
 																	  target:self action:@selector(endTextEnteringButtonAction:)];
 		
@@ -242,15 +242,15 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	else if((self.interfaceOrientation == UIInterfaceOrientationPortrait)||(self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown))
 	{
 		[self setTextViewHeight:200];
-
+		
 	}
 	
 	dismiss=NO;
-
+	
 	if (!isTextViewEditing) 
 		isTextViewEditing = YES;
 	
-		
+	
 	[self updateTextViewPlacehoderFieldStatus];
 	
 	UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone 
@@ -281,7 +281,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
 - (void)textViewDidChange:(UITextView *)aTextView {
 	pageDetailsController.hasChanges = YES;
-
+	
 	[self updateTextViewPlacehoderFieldStatus];
 	if(![aTextView hasText])
 		return;
@@ -361,9 +361,9 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	dismiss=NO;
 	if( isTextViewEditing )
 		isTextViewEditing = NO;
-		[self bringTextViewDown];
-		NSString *text = aTextView.text;
-		[[[BlogDataManager sharedDataManager] currentPage] setObject:text forKey:@"description"];		
+	[self bringTextViewDown];
+	NSString *text = aTextView.text;
+	[[[BlogDataManager sharedDataManager] currentPage] setObject:text forKey:@"description"];		
 }
 
 - (void)bringTextViewDown
@@ -391,10 +391,10 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
 	self.currentEditingTextField = nil;
-
+	
 	if( textField == titleTextField )
 		[[BlogDataManager sharedDataManager].currentPage setValue:textField.text forKey:@"title"];
-
+	
 	CGRect frame = subView.frame;
 	frame.origin.y = 0.0f;
 	subView.frame = frame;
@@ -414,6 +414,12 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 - (IBAction)showStatusViewAction:(id)sender
 {
 	[self populateSelectionsControllerWithStatuses];
+}
+
+
+- (IBAction)showCustomFieldsTableView:(id)sender
+{
+	[self populateCustomFieldsTableViewControllerWithCustomFields];
 }
 
 - (void)selectionTableViewController:(WPSelectionTableViewController *)selctionController completedSelectionsWithContext:(void *)selContext selectedObjects:(NSArray *)selectedObjects haveChanges:(BOOL)isChanged
@@ -451,11 +457,11 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 		dataSource = [dataSource arrayByAddingObject:@"Local Draft"];
 	
 	NSString *curStatus = [dm.currentPage valueForKey:@"page_status"];
-
+	
 	NSString *statusValue=[dm statusDescriptionForStatus:curStatus  fromBlog:dm.currentBlog];
 	
 	NSArray *selObject = ( statusValue == nil ? [NSArray array] : [NSArray arrayWithObject:statusValue] );
-
+	
 	[selectionTableViewController populateDataSource:dataSource
 									   havingContext:kSelectionsStatusContext1
 									 selectedObjects:selObject
@@ -467,6 +473,20 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	[pageDetailsController.navigationController pushViewController:selectionTableViewController animated:YES];
 }
 
+-(void) populateCustomFieldsTableViewControllerWithCustomFields{
+	
+		
+		//initialize the new view if it doesn't exist
+		if (customFieldsTableView == nil)
+			customFieldsTableView = [[CustomFieldsTableView alloc] initWithNibName:@"CustomFieldsTableView" bundle:nil];
+		customFieldsTableView.pageDetailsController = self.pageDetailsController;
+		//load the CustomFieldsTableView  Note: customFieldsTableView loads some data in viewDidLoad
+		[customFieldsTableView setIsPost:NO]; //since we're dealing with pages, NOT posts
+		[pageDetailsController.navigationController pushViewController:customFieldsTableView animated:YES];
+		
+	
+	
+}
 - (BOOL)textFieldShouldClear:(UITextField *)textField
 {
 	pageDetailsController.hasChanges = YES;
@@ -486,7 +506,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	pageDetailsController.hasChanges = NO;
 	[titleTextField resignFirstResponder];
 	[textView resignFirstResponder];
-	 mode = 3;
+	mode = 3;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -498,6 +518,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 {
 	[pageDetailsController release];
 	[selectionTableViewController release];
+	//[customFieldsTableView release];
 	[super dealloc];
 }
 
@@ -527,7 +548,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 			NSString *urlString=[self validateNewLinkInfo:urlField.text];
 			NSString *aTagText=[NSString stringWithFormat:@"<a href=\"%@\">%@</a>",urlString,infoText.text];;
 			textView.text = [commentsStr stringByReplacingOccurrencesOfString:[commentsStr substringWithRange:rangeToReplace] withString:aTagText options:NSCaseInsensitiveSearch range:rangeToReplace];
-		
+			
 			BlogDataManager *dm = [BlogDataManager sharedDataManager];
 			NSString *str = textView.text;
 			str = ( str	!= nil ? str : @"" );
@@ -600,7 +621,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	[delegate setAlertRunning:NO];
-
+	
 }
 @end
 

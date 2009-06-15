@@ -6,6 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CustomFieldsTableView.h"
 @class WPNavigationLeftButtonView;
 @class WPSelectionTableViewController;
 @class PageDetailsController;
@@ -28,8 +29,9 @@
 	WPSelectionTableViewController *selectionTableViewController;
 	PageDetailsController *pageDetailsController;
 	
+	CustomFieldsTableView *customFieldsTableView;
 	WPPhotosListViewController *photosListController;
-
+	
 	BOOL dismiss;
 	BOOL isEditing;
 	int mode;	//0 new, 1 edit, 2 autorecovery, 3 refresh
@@ -42,6 +44,7 @@
 @property (nonatomic, retain) PageDetailsController *pageDetailsController;
 @property (nonatomic, retain) WPSelectionTableViewController *selectionTableViewController;
 @property (nonatomic)	int mode;
+@property (nonatomic, retain) CustomFieldsTableView *customFieldsTableView;
 @property (nonatomic,assign) WPPhotosListViewController *photosListController;
 @property (nonatomic, retain) UITextField *infoText;
 @property (nonatomic, retain) UITextField *urlField;
@@ -51,6 +54,8 @@
 
 
 - (IBAction)showStatusViewAction:(id)sender;
+- (IBAction)showCustomFieldsTableView:(id)sender;
+- (void) populateCustomFieldsTableViewControllerWithCustomFields;
 - (void)endEditingAction:(id)sender;
 - (void)refreshUIForCurrentPage;
 - (void)refreshUIForNewPage;
