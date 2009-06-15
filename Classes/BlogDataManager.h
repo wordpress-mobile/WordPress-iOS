@@ -284,4 +284,8 @@
 - (NSString *)pageStatusForStatusDescription:(NSString *)statusDescription fromBlog:(id)aBlog;
 
 - (BOOL)doesBlogExists:(NSDictionary *)aBlog;
+
+//utils
+-(void) printArrayToLog:(NSArray *) theArray andArrayName:(NSString *)theArrayName;
+-(void) printDictToLog:(NSDictionary *)theDict andArrayName:(NSString *)theDictName;
 @end

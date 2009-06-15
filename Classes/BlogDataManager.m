@@ -4810,4 +4810,20 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	return imageCopy;
 }
 
+-(void) printArrayToLog:(NSArray *) theArray andArrayName:(NSString *)theArrayName {
+	NSLog(@"Starting to print passed array (%@) to log", theArrayName);
+	NSLog(@"theArray: %@", theArray);
+	//NSLog([theArray objectAtIndex:0]);
+	//NSLog([theArray objectAtIndex:1]);
+	//NSLog([theArray objectAtIndex:2]);
+	//NSLog([theArray objectAtIndex:3]);
+	//NSInteger count = [theArray count];
+	
+}
+
+-(void) printDictToLog:(NSDictionary *)theDict andArrayName:(NSString *)theDictName {
+	NSLog(@"Starting to print passed Dict (%@) to log", theDictName);
+	NSLog(@"theDict: %@", theDict);
+}
+
 @end
