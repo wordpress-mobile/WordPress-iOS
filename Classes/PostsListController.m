@@ -276,7 +276,7 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
-	WPNavigationLeftButtonView *myview = [WPNavigationLeftButtonView createView];  
+	WPNavigationLeftButtonView *myview = [WPNavigationLeftButtonView createCopyOfView];  
     [myview setTarget:self withAction:@selector(goToHome:)];
     [myview setTitle:@"Blog"];
     UIBarButtonItem *barButton  = [[UIBarButtonItem alloc] initWithCustomView:myview];
@@ -373,14 +373,7 @@
 	// we retain this controller in the caller (RootViewController) so load view does not get called 
 	// everytime we navigate to the view
 	// need to update the prompt and the title here as well as in loadView	
-	NSString *hostName = [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blog_host_name"];
 	NSString *blogName = [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blogName"];
-	
-	// remove the username prefix from the blog_host_name
-	// ganeshr_effigentiphone.wordpress.com becomes effigentiphone.wordpress.com
-	NSString *username = [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"username"];
-	NSString *usernamePrefix = [NSString stringWithFormat:@"%@_", username];
-	hostName = [hostName stringByReplacingOccurrencesOfString:usernamePrefix withString:@""];
 	
 	self.title = [NSString stringWithFormat:@"%@", blogName];
 	

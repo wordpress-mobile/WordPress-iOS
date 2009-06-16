@@ -257,7 +257,7 @@
 	[array release];
 	
 	if(!leftView){   
-        leftView = [WPNavigationLeftButtonView createView];
+        leftView = [WPNavigationLeftButtonView createCopyOfView];
     }   
 	[leftView setTitle:@"Pages"];
     [leftView setTarget:self withAction:@selector(cancelView:)];

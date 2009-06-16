@@ -14,7 +14,7 @@
 
 @property (nonatomic, assign) NSString *title;
 
-+ (WPNavigationLeftButtonView *) createView;
++ (WPNavigationLeftButtonView *) createCopyOfView;
 
 -(void)setTarget:(id)aTarget withAction:(SEL)action;
 

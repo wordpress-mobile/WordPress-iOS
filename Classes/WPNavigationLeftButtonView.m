@@ -5,7 +5,7 @@
 
 @dynamic title;
 
-+ (WPNavigationLeftButtonView *) createView  {
++ (WPNavigationLeftButtonView *) createCopyOfView  {
 	return [[WPNavigationLeftButtonView alloc] initWithFrame:CGRectMake(0, 0, 65, 31)];
 }
 

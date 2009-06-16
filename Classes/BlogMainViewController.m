@@ -66,7 +66,7 @@
 
 -(void)viewDidLoad
 {
-	WPNavigationLeftButtonView *myview = [WPNavigationLeftButtonView createView];  
+	WPNavigationLeftButtonView *myview = [WPNavigationLeftButtonView createCopyOfView];  
     [myview setTarget:self withAction:@selector(goToHome:)];
     [myview setTitle:@"Home"];
     UIBarButtonItem *barButton  = [[UIBarButtonItem alloc] initWithCustomView:myview];

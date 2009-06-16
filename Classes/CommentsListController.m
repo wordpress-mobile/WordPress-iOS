@@ -203,9 +203,9 @@
 #pragma mark Action methods
 - (IBAction)downloadRecentComments:(id)sender {
 	if( !connectionStatus ){
-		UIAlertView *alertt1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
+		UIAlertView *alertt1 = [[[UIAlertView alloc] initWithTitle:@"No connection to host."
 														 message:@"Sync operation is not supported now."
-														delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+														delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
 		
 		[alertt1 show];
 		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
@@ -232,7 +232,7 @@
 
 - (IBAction)deleteSelectedComments:(id)sender{
 //    UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Delete Comments" message:@"Are you sure you want to delete this comment?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel", nil];
-    UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Delete Comments" message:@"Are you sure you want to delete the selected comment(s)?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];                                                
+    UIAlertView *deleteAlert = [[[UIAlertView alloc] initWithTitle:@"Delete Comments" message:@"Are you sure you want to delete the selected comment(s)?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil] autorelease];
     [deleteAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
     [deleteAlert show];
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
@@ -242,7 +242,7 @@
 }
 - (IBAction)approveSelectedComments:(id)sender{
 //	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Approve Comments" message:@"Are you sure you want to Approve this comment?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel", nil];
-	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Approve Comments" message:@"Are you sure you want to approve the selected comment(s)?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];                                                
+	UIAlertView *deleteAlert = [[[UIAlertView alloc] initWithTitle:@"Approve Comments" message:@"Are you sure you want to approve the selected comment(s)?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil] autorelease];                                                
 	[deleteAlert setTag:2];  // for UIAlertView Delegate to handle which view is popped.
 	[deleteAlert show];
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
@@ -252,7 +252,7 @@
 }
 - (IBAction)unapproveSelectedComments:(id)sender{
 //	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Unapprove Comments" message:@"Are you sure you want to Unapprove this comment?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel", nil];
-	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Unapprove Comments" message:@"Are you sure you want to unapprove the selected comment(s)?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];                                                
+	UIAlertView *deleteAlert = [[[UIAlertView alloc] initWithTitle:@"Unapprove Comments" message:@"Are you sure you want to unapprove the selected comment(s)?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil] autorelease];                                                
 	[deleteAlert setTag:3];  // for UIAlertView Delegate to handle which view is popped.
 	[deleteAlert show];
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
@@ -262,7 +262,7 @@
 
 - (IBAction)spamSelectedComments:(id)sender{
 //	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Spam Comments" message:@"Are you sure you want to Spam this comment?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel", nil];
-	UIAlertView *deleteAlert = [[UIAlertView alloc] initWithTitle:@"Spam Comments" message:@"Are you sure you want to mark the selected comment(s) as spam?. This action can only be reversed in the web admin." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];                                                
+	UIAlertView *deleteAlert = [[[UIAlertView alloc] initWithTitle:@"Spam Comments" message:@"Are you sure you want to mark the selected comment(s) as spam?. This action can only be reversed in the web admin." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil] autorelease];  
 	[deleteAlert setTag:4];  // for UIAlertView Delegate to handle which view is popped.
 	[deleteAlert show];
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
@@ -290,7 +290,7 @@
 		[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
 		BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
 		
-		BOOL result;
+		BOOL result = NO;
 		NSArray *selectedItems=[self selectedComments];
 		if([alertView tag] == 1){
 			result = [sharedDataManager deleteComment:selectedItems forBlog:[sharedDataManager currentBlog]];

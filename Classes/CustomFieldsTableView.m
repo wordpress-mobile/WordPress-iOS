@@ -120,7 +120,7 @@
 		//NSString *rowString = [[customFieldsArray objectAtIndex:row-1] objectForKey:@"key"];
 		NSString *rowString = [[customFieldsArray objectAtIndex:row] objectForKey:@"key"];
 		NSLog(@"rowString is %@", rowString);
-		cell.textLabel.text = rowString;
+    [cell setText: rowString];
 		//cell.text = rowString;
 		NSLog(@"after cell.text = rowString");
 	//}
@@ -151,7 +151,7 @@
 		customFieldsDetailController = [[CustomFieldsDetailController alloc] initWithStyle:UITableViewStyleGrouped];
 	
 	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-	NSString *rowString = cell.textLabel.text;
+	NSString *rowString = cell.text;
 	//NSString *rowString = cell.text;
 	
 	

@@ -553,7 +553,7 @@
 	[array release];
 	
 	if(!leftView){   
-        leftView = [WPNavigationLeftButtonView createView];
+        leftView = [WPNavigationLeftButtonView createCopyOfView];
         [leftView setTitle:@"Posts"];
     }   
 }

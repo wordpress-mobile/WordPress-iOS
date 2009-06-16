@@ -23,6 +23,8 @@
 
 @interface BlogDataManager (private)
 
+- (void) displayAlertForInvalidImage;
+
 - (void) loadBlogData;
 - (void) setBlogsList:(NSMutableArray *)newArray;
 - (void) createDemoBlogData;
@@ -419,19 +421,13 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	return pictureFieldNames;
 }
 
+
 - (NSString *)pictureURLBySendingToServer:(UIImage *)pict
 {
 	NSData *pictData = UIImagePNGRepresentation(pict);
 	if( pictData == nil )
 	{
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-														message:@"Invalid Image. Unable to Upload to the server." 
-													   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		
-		[alert show];
-		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-		[delegate setAlertRunning:YES];
-
+		[self displayAlertForInvalidImage];
 		return nil;
 	}
 	
@@ -476,14 +472,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSData *pictData = [NSData dataWithContentsOfFile:filePath];
 	if( pictData == nil )
 	{
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-														message:@"Invalid Image. Unable to Upload to the server." 
-													   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		
-		[alert show];
-		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-		[delegate setAlertRunning:YES];
-
+		[self displayAlertForInvalidImage];
 		return nil;
 	}
 
@@ -527,14 +516,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSData *pictData = [NSData dataWithContentsOfFile:filePath];
 	if( pictData == nil )
 	{
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-														message:@"Invalid Image. Unable to Upload to the server." 
-													   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		
-		[alert show];
-		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-		[delegate setAlertRunning:YES];
-
+		[self displayAlertForInvalidImage];
 		return nil;
 	}
 	
@@ -1321,7 +1303,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 			
 			if (categoryName == nil || [categoryName isEqualToString:@""] ) {
 				
-				NSMutableDictionary *cat = [[category mutableCopy] retain];
+				NSMutableDictionary *cat = [category mutableCopy];
 				[cat setObject:categoryId forKey:@"categoryName"];
 				[cats addObject:cat];
 				[cat release];
@@ -1729,7 +1711,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	return CGSizeMake(nWidth, nHeight);	
 }
 
-- (UIImage *)smallImage:(UIImage *)image
+- (UIImage *)copyToSmallImage:(UIImage *)image
 {
 	CGImageRef imageRef = [image CGImage];	
 	
@@ -1823,7 +1805,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[imgData writeToFile:filePath atomically:YES];
 	NSString *returnValue = [NSString stringWithFormat:@"%@.jpeg",outputString];
 	
-		UIImage * si = [self smallImage:aImage];
+		UIImage * si = [self copyToSmallImage:aImage];
 
 	
 //	UIImage * rotationImage = [UIImage imageWithData:imgData];
@@ -1993,6 +1975,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjects:blogInitValues forKeys:[self blogFieldNames]];
 	
 	[dict setObject:@"0" forKey:@"kNextDraftIdStr"];
+	[dict retain];
 	return dict;
 }
 
@@ -2073,7 +2056,9 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 									   hostName:[currentBlog valueForKey:@"blog_host_name"]];
 		
 	} else {
-		[blogsList replaceObjectAtIndex:currentBlogIndex withObject:[currentBlog mutableCopy]];
+		id cb = [currentBlog mutableCopy];
+		[blogsList replaceObjectAtIndex:currentBlogIndex withObject:cb];
+		[cb release];
 		// not need to re-sort here - we're not allowing change to blog name
 	}
 }
@@ -2763,10 +2748,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	// load blog fields into currentBlog
 	NSString *blogid = [currentBlog valueForKey:@"blogid"];
 	blogid = blogid ? blogid:@"";
-	
-	NSString *pwd = [currentBlog valueForKey:@"pwd"];
-	pwd = pwd ? pwd:@"";
-	
+		
 	NSString *xmlrpc = [currentBlog valueForKey:@"xmlrpc"];
 	xmlrpc = xmlrpc ? xmlrpc:@"";
 	NSString *blogHost = [currentBlog valueForKey:@"blog_host_name"];
@@ -3236,10 +3218,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	// load blog fields into currentBlog
 	NSString *blogid = [currentBlog valueForKey:@"blogid"];
 	blogid = blogid ? blogid:@"";
-		
-	NSString *pwd = [currentBlog valueForKey:@"pwd"];
-	pwd = pwd ? pwd:@"";
-	
+			
 	NSString *xmlrpc = [currentBlog valueForKey:@"xmlrpc"];
 	xmlrpc = xmlrpc ? xmlrpc:@"";
 	NSString *blogHost = [currentBlog valueForKey:@"blog_host_name"];
@@ -4162,6 +4141,16 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 #pragma mark util methods
 
+- (void)displayAlertForInvalidImage {
+	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Error"
+													 message:@"Invalid Image. Unable to Upload to the server." 
+													delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
+	
+	[alert show];
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate setAlertRunning:YES];	
+}
+
 - (NSArray *)uniqueArray:(NSArray *)array
 {
 	int i, count = [array count];
@@ -4380,6 +4369,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		if ((!result) || !([result isKindOfClass:[NSArray class]]) ) {
  			[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 //			[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
+			[commentsReqArray release];
 			return NO;
 		}else {
 			for(int i=0;i<commentsCount;i++)
@@ -4464,6 +4454,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		 if ((!result) || !([result isKindOfClass:[NSArray class]]) ) {
  		 [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 //		 [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
+			 [commentsReqArray release];
 		 return NO;
 		 }else{
 			 for(int j=0;j<commentsCount;j++){
@@ -4549,6 +4540,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		if ((!result) || !([result isKindOfClass:[NSArray class]]) ) {
  			[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 			[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
+			[commentsReqArray release];
 			return NO;
 		}else{
 			for(int j=0;j<commentsCount;j++){
@@ -4633,6 +4625,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		if ((!result) || !([result isKindOfClass:[NSArray class]]) ) {
  			[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 //			[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
+			[commentsReqArray release];
+
 			return NO;
 		}else {
 			for(i=0;i<commentsCount;i++){

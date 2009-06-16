@@ -234,7 +234,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
 	if(!leftView)
 	{   
-        leftView = [WPNavigationLeftButtonView createView];
+        leftView = [WPNavigationLeftButtonView createCopyOfView];
         [leftView setTitle:@"Posts"];
     }   
 	[leftView setTitle:@"Posts"];

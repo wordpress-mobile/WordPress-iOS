@@ -57,7 +57,7 @@
 	blogEditTable.scrollEnabled = YES;
 	self.navigationController.navigationBarHidden= NO;
     
-    WPNavigationLeftButtonView *myview = [WPNavigationLeftButtonView createView];  
+    WPNavigationLeftButtonView *myview = [WPNavigationLeftButtonView createCopyOfView];  
     [myview setTarget:self withAction:@selector(cancel:)];
     [myview setTitle:@"Cancel"];
     UIBarButtonItem *barButton  = [[UIBarButtonItem alloc] initWithCustomView:myview];

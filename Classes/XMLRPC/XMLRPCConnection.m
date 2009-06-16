@@ -157,7 +157,7 @@ NSString *XMLRPCReceivedResponseNotification = @"XML-RPC Successfully Received R
 	
 	[[NSNotificationCenter defaultCenter] postNotificationName:
 			XMLRPCReceivedResponseNotification object: nil];
-			
+	[response release];
 	[connection autorelease];
 }
 
