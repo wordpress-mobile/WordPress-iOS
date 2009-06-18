@@ -13,6 +13,9 @@
 #import "Reachability.h"
 
 
+#import "CustomFieldsDetailController.h"
+
+
 
 @interface PostDetailViewController (privateMethods)
 - (void)startTimer;
@@ -30,6 +33,7 @@
 
 @synthesize postDetailEditController, postPreviewController, postSettingsController, postsListController, hasChanges, mode, tabController, photosListController, saveButton;
 @synthesize leftView;
+@synthesize customFieldsDetailController;
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
 	
@@ -115,8 +119,11 @@
 
 - (IBAction)saveAction:(id)sender 
 {
+	saveButton.title = @"Save";
+	NSLog(@"Inside Save Action");
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	//Check for internet connection
+	//TODO FIXME Code3
 	if(![[dm.currentPost valueForKey:@"post_status"] isEqualToString:@"Local Draft"])
 	{
 		if ( [[Reachability sharedReachability] internetConnectionStatus] == NotReachable ) {
@@ -298,7 +305,7 @@
 //	}
 //	
 	if(hasChanges) {
-		if ([[leftView title] isEqualToString:@"Posts"])
+		if ([[leftView title] isEqualToString:@"Posts"] || [[self.navigationItem.leftBarButtonItem title] isEqualToString:@"Done"])
 			[leftView setTitle:@"Cancel"];
 		self.navigationItem.rightBarButtonItem = saveButton;
 	} else {
@@ -462,6 +469,7 @@
 
 - (void)setHasChanges:(BOOL)aFlag
 {
+	NSLog(@"inside PostDetailViewController:setHasChanges");
 	if( hasChanges == NO && aFlag == YES )
 		[self startTimer];
 	
@@ -598,6 +606,7 @@
 	}
 	
 	mode = 3;
+	[postDetailEditController viewWillAppear: animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

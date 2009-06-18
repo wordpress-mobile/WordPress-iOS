@@ -121,6 +121,7 @@
 		NSString *rowString = [[customFieldsArray objectAtIndex:row] objectForKey:@"key"];
 		NSLog(@"rowString is %@", rowString);
     [cell setText: rowString];
+	cell.setText
 		//cell.text = rowString;
 		NSLog(@"after cell.text = rowString");
 	//}
@@ -151,8 +152,8 @@
 		customFieldsDetailController = [[CustomFieldsDetailController alloc] initWithStyle:UITableViewStyleGrouped];
 	
 	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+	//NSString *rowString = cell.textLabel.text;
 	NSString *rowString = cell.text;
-	//NSString *rowString = cell.text;
 	
 	
 	//get the right NSDict out of the customFieldsArray using the rowString to key into the NSDict
@@ -170,6 +171,7 @@
 		//[self.navigationController pushViewController:customFieldsEditView animated:YES];
 		customFieldsDetailController.postDetailViewController=self.postDetailViewController;
 		customFieldsDetailController.pageDetailsController=self.pageDetailsController;
+		customFieldsDetailController.isPost = self.isPost;
 		[self.navigationController pushViewController:customFieldsDetailController animated:YES];
 	
 	//[theDict release];

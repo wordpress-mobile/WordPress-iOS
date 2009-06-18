@@ -19,7 +19,7 @@
 @implementation WPPostSettingsController
 
 @synthesize postDetailViewController, tableView, 
-	passwordTextField, commentsSwitchControl, pingsSwitchControl;
+	passwordTextField, commentsSwitchControl, pingsSwitchControl, customFieldsSwitchControl;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -110,6 +110,7 @@
 
 	[commentsSwitchControl addTarget:self action:@selector(controlEventValueChanged:) forControlEvents:UIControlEventValueChanged];
 	[pingsSwitchControl addTarget:self action:@selector(controlEventValueChanged:) forControlEvents:UIControlEventValueChanged];
+	[customFieldsSwitchControl addTarget:self action:@selector (controlEventValueChanged:) forControlEvents:UIControlEventValueChanged];
 
 	[resizePhotoControl addTarget:self action:@selector(changeResizePhotosOptions) forControlEvents:UIControlEventAllTouchEvents];
 }
@@ -158,7 +159,7 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 3;
+	return 4;
 }
 
 
@@ -208,8 +209,13 @@
 	postDetailViewController.hasChanges = YES;
 	if (commentsSwitchControl == sender)
 		[[BlogDataManager sharedDataManager].currentPost setValue:[NSNumber numberWithInt:commentsSwitchControl.on] forKey:@"not_used_allow_comments"];
-	else
+	else if (pingsSwitchControl == sender)
 		[[BlogDataManager sharedDataManager].currentPost setValue:[NSNumber numberWithInt:pingsSwitchControl.on] forKey:@"not_used_allow_pings"];
+	else if (customFieldsSwitchControl == sender)
+		//TODO:JOHNB CustomFields  do something similar here, but first add the appropriate value to current post build in Blog Data Manager
+		[[BlogDataManager sharedDataManager].currentPost setValue:[NSNumber numberWithInt:customFieldsSwitchControl.on] forKey:@"custom_fields_enabled"];
+	
+	NSLog(@"this is the value from WPPostSettingsController, controlEventValueChanged %d", [[[BlogDataManager sharedDataManager].currentPost valueForKey:@"custom_fields_enabled"] intValue] );
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -265,6 +271,20 @@
 				return resizePhotoViewCell;
 			} 
 			break;
+		case 3:
+			if (indexPath.row == 0) {
+				//[[BlogDataManager sharedDataManager].currentPost setValue:[NSNumber numberWithInt:customFieldsSwitchControl.on] forKey:@"custom_fields_enabled"];
+				//BOOL custom_fields_on = [[post valueForKey:@"custom_fields_enabled"] intValue];
+				[dataManager printDictToLog:dataManager.currentPost andArrayName:@"currentPost from inside cellForRow"];
+				NSNumber *value = [post valueForKey:@"custom_fields_enabled"];
+				NSLog(@"the value, %d", value);
+				customFieldsSwitchControl.on = [value boolValue];
+				//customFieldsSwitchControl.on = YES;
+				//customFieldsSwitchControl.on = [[post valueForKey:@"custom_fields_enabled"] intValue];
+				NSLog(@"this is the value from WPPostSettingsController, cellForRow: Case3 %d", [[post valueForKey:@"custom_fields_enabled"] intValue] );
+				return customFieldsCell;
+			} 
+			break ;
 		default:
 			break;
 	}
@@ -286,6 +306,9 @@
 	NSString *str = passwordTextField.text;
 	str = ( str	!= nil ? str : @"" );
 	[dm.currentPost setValue:str forKey:@"wp_password"];
+	
+	//[dm.currentPost setValue:[NSNumber numberWithInt:customFieldsSwitchControl.on] forKey:@"custom_fields_enabled"];
+	//[dm printDictToLog:dm.currentPost andArrayName:@"from update values: currentPost"];
 }
 
 - (void)reloadData

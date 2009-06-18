@@ -47,7 +47,7 @@
 
 - (void) viewDidLoad {
 	
-	self.title = @"Edit Post Custom Field";
+	self.title = @"Edit Custom Field";
 	//possibly the cancel button here
 	//possibly the save button here (see 286-289)
 	[saveButtonItem retain];
@@ -264,7 +264,7 @@
 			}
 		}
 		//replace the custom_fields array in currentPost or currentPage with tempCustomFieldsArray (which should persist the new values in memory)
-		if (_isPost = YES) {
+		if (_isPost = YES){
 			[dm.currentPost setValue:tempCustomFieldsArray forKey:@"custom_fields"];
 		}
 		else {

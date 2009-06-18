@@ -19,6 +19,8 @@
 		28C286E10D94DF7D0034E888 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C286E00D94DF7D0034E888 /* RootViewController.m */; };
 		2904E9940FE6E09600E00DBC /* CustomFieldsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2904E9910FE6E09600E00DBC /* CustomFieldsTableView.m */; };
 		2904E9950FE6E09600E00DBC /* CustomFieldsDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2904E9930FE6E09600E00DBC /* CustomFieldsDetailController.m */; };
+		296890420FE96F1900770264 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 296890410FE96F1900770264 /* SFHFKeychainUtils.m */; };
+		296890780FE971DC00770264 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296890770FE971DC00770264 /* Security.framework */; };
 		29FF132F0FE70F3100CFB908 /* CustomFieldsTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29FF132E0FE70F3100CFB908 /* CustomFieldsTableView.xib */; };
 		2A7F71FB0E70F82A00E48A1F /* WPCommentsDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A7F71FA0E70F82A00E48A1F /* WPCommentsDetailViewController.xib */; };
 		2A7F72010E70F8C900E48A1F /* WPCommentsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7F72000E70F8C900E48A1F /* WPCommentsDetailViewController.m */; };
@@ -137,6 +139,9 @@
 		2904E9910FE6E09600E00DBC /* CustomFieldsTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomFieldsTableView.m; sourceTree = "<group>"; };
 		2904E9920FE6E09600E00DBC /* CustomFieldsDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomFieldsDetailController.h; sourceTree = "<group>"; };
 		2904E9930FE6E09600E00DBC /* CustomFieldsDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomFieldsDetailController.m; sourceTree = "<group>"; };
+		296890400FE96F1900770264 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
+		296890410FE96F1900770264 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
+		296890770FE971DC00770264 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29FF132E0FE70F3100CFB908 /* CustomFieldsTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomFieldsTableView.xib; sourceTree = "<group>"; };
 		2A7F71FA0E70F82A00E48A1F /* WPCommentsDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WPCommentsDetailViewController.xib; sourceTree = "<group>"; };
@@ -293,6 +298,7 @@
 				2892E4100DC94CBA00A64D0F /* CoreGraphics.framework in Frameworks */,
 				A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */,
 				C584D0B40EF943A600B78012 /* QuartzCore.framework in Frameworks */,
+				296890780FE971DC00770264 /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -385,6 +391,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				296890770FE971DC00770264 /* Security.framework */,
 				C584D0B30EF943A600B78012 /* QuartzCore.framework */,
 				A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */,
 				2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */,
@@ -518,6 +525,8 @@
 		AC512F800E20D28500B7DA32 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				296890400FE96F1900770264 /* SFHFKeychainUtils.h */,
+				296890410FE96F1900770264 /* SFHFKeychainUtils.m */,
 				C5D87A7E0F20ADB300601936 /* WPLogoView.h */,
 				C5D87A7F0F20ADB300601936 /* WPLogoView.m */,
 				021751A50EB8412E0032D429 /* WPPhotosListProtocol.h */,
@@ -815,6 +824,7 @@
 				C56D68DA0F4946E4008EE84E /* WPActivityIndicatorTVCell.m in Sources */,
 				2904E9940FE6E09600E00DBC /* CustomFieldsTableView.m in Sources */,
 				2904E9950FE6E09600E00DBC /* CustomFieldsDetailController.m in Sources */,
+				296890420FE96F1900770264 /* SFHFKeychainUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

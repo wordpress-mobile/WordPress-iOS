@@ -158,14 +158,14 @@
             [badgeLabel setTag:99];
 			badgeLabel.textColor = [UIColor lightGrayColor];
 			badgeLabel.textAlignment = UITextAlignmentRight;
-//			badgeLabel.font = cell.font;
+			//			badgeLabel.font = cell.font;
 			badgeLabel.font = [badgeLabel.font fontWithSize:MAIN_FONT_SIZE];
 			[[cell contentView] addSubview:badgeLabel];
 			[badgeLabel release];
 			
 			//As these values won't change in the lifetime of this tableview so we can do this only for once.
 			//cell.text =  @"Local Drafts";
-		
+			
 #if defined __IPHONE_3_0	
 			cell.textLabel.text = @"Local Drafts";
 			cell.textLabel.font = [cell.textLabel.font fontWithSize:14.0f];
@@ -275,7 +275,7 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-
+	
 	WPNavigationLeftButtonView *myview = [WPNavigationLeftButtonView createCopyOfView];  
     [myview setTarget:self withAction:@selector(goToHome:)];
     [myview setTitle:@"Blog"];
@@ -288,6 +288,7 @@
     // method "reachabilityChanged" will be called. 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];	
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableViewAfterPostSaved:) name:@"AsynchronousPostIsPosted" object:nil];
+	
 }
 
 - (void)goToHome:(id)sender {
@@ -321,7 +322,7 @@
 		[alert1 show];
 		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 		[delegate setAlertRunning:YES];
-
+		
 		[alert1 release];		
 		
 		[postsTableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -358,6 +359,8 @@
 		self.navigationItem.rightBarButtonItem = nil;
 		self.postDetailViewController.hasChanges = NO; 
 		self.postDetailViewController.mode = 1; 
+		postDetailEditController.postDetailViewController=self.postDetailViewController;
+		
 		[[self navigationController] pushViewController:self.postDetailViewController animated:YES];
 	}
 }
@@ -412,7 +415,7 @@
 		[alert1 show];
 		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 		[delegate setAlertRunning:YES];
-
+		
 		[alert1 release];
 		return YES;
 	}
@@ -455,8 +458,8 @@
     BlogDataManager *dm = [BlogDataManager sharedDataManager]; 
     [dm updatePostsTitlesFileAfterPostSaved:(NSMutableDictionary *)postIdsDict];
 	
-//	if([[postIdsDict valueForKey:@"isCurrentPostDraft"] intValue]==1)
-//		[self.navigationController popViewControllerAnimated:YES]; 
+	//	if([[postIdsDict valueForKey:@"isCurrentPostDraft"] intValue]==1)
+	//		[self.navigationController popViewControllerAnimated:YES]; 
 	
 	[dm loadPostTitlesForCurrentBlog];
 	
@@ -470,14 +473,14 @@
 							   newposts, 
 							   NSLocalizedString(@"New", @PostsListController_title_new)];
 	[postsTableView reloadData];
-
+	
 }
 - (IBAction)downloadRecentPosts:(id)sender {
-
+	
 	if( !connectionStatus ){
      	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 		[delegate setAlertRunning:YES];
-
+		
 		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
 														 message:@"Sync operation is not supported now."
 														delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -524,7 +527,7 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	
-
+	
 	if([delegate isAlertRunning] == YES)
 		return NO;
 	

@@ -11,6 +11,7 @@
 	IBOutlet UITableViewCell *passwordTableViewCell;
 	IBOutlet UITableViewCell *passwordHintTableViewCell;
 	IBOutlet UITableViewCell *resizePhotoViewCell;
+	IBOutlet UITableViewCell *customFieldsCell;
 	
 	IBOutlet UITextField *passwordTextField;
 	IBOutlet UILabel *publishOnTextField;
@@ -23,6 +24,7 @@
 	IBOutlet UISwitch *commentsSwitchControl;
 	IBOutlet UISwitch *pingsSwitchControl;
 	IBOutlet UISwitch *resizePhotoControl;
+	IBOutlet UISwitch *customFieldsSwitchControl;
 	
 	IBOutlet UILabel *resizePhotoLabel;
 	IBOutlet UITableViewCell *resizePhotoHintTableViewCell;
@@ -37,6 +39,7 @@
 
 @property (readonly) UISwitch *commentsSwitchControl;
 @property (readonly) UISwitch *pingsSwitchControl;
+@property (readonly) UISwitch *customFieldsSwitchControl;
 
 - (void)reloadData;
 
