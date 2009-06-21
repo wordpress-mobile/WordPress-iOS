@@ -312,6 +312,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
+	//comment out this block to test on a local VM without internet access.  Add blog to app before turning off network
+	//similar block in PagesListController and (probably) in Comments something
+	
   	if( !connectionStatus && indexPath.row != 0 )
 	{
 		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
@@ -328,6 +331,8 @@
 		[postsTableView deselectRowAtIndexPath:indexPath animated:YES];
 		return;
 	}
+	//comment out this block to test on a local VM without internet access.  Add blog to app before turning off network
+	//similar block in PagesListController and (probably) in Comments something
 	
 	// Set current blog to blog at the index which was selected
 	// A fake blog will be set up if Local Drafts row is selected

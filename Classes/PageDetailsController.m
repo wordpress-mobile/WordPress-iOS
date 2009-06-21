@@ -395,7 +395,7 @@
 	else if( mode == 0 )
 		[pageDetailViewController refreshUIForNewPage];
 	
-	
+	[pageDetailViewController viewWillAppear: animated];
 //	[pageDetailViewController refreshUIForCurrentPage];
 }
 

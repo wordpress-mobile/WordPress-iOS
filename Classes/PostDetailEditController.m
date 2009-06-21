@@ -242,8 +242,17 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	//[super viewWillAppear:YES];
 	NSLog(@"inside PostDetailEditController:viewWillAppear, just called [super viewWillAppear:YES]");
 	isCustomFieldsEnabledForThisPost = [self checkCustomFieldsMinusMetadata];
-	if (isCustomFieldsEnabledForThisPost)
+	if (isCustomFieldsEnabledForThisPost){
 		customFieldsEditButton.hidden = NO;
+		tableViewForSelectingCustomFields.hidden = NO;
+		
+		//customFieldsEditButton.enabled = YES;
+	}else {
+		customFieldsEditButton.hidden = YES;
+		tableViewForSelectingCustomFields.hidden = YES;
+		//customFieldsEditButton.enabled = NO;
+	}
+
 	[self postionTextViewContentView];
 }
 
@@ -251,7 +260,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[super viewDidLoad];
 	NSLog(@"inside PostDetailEditController:viewDidLoad, just called [super viewDidLoad]");
 
-	customFieldsEditButton.hidden = YES;	
+	//customFieldsEditButton.hidden = YES;	
+	//customFieldsEditButton.enabled = NO;
 	
 	titleTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
 	tagsTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
@@ -278,9 +288,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newCategoryCreatedNotificationReceived:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
 	
 	//JOHNB TODO: Add a check here for the presence of custom fields in the data model
-	// if there are, set CustomFields BOOL to true
+	// if there are, set isCustomFieldsEnabledForThisPost BOOL to true
 	isCustomFieldsEnabledForThisPost = [self checkCustomFieldsMinusMetadata];
-	//call a helper to set the originY for textViewContentView
+	//call a helper to set originY for textViewContentView
 	[self postionTextViewContentView];
 	
 	 
@@ -323,19 +333,30 @@ NSTimeInterval kAnimationDuration = 0.3f;
 {
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:kAnimationDuration];
+
+	if (isCustomFieldsEnabledForThisPost) {
+		CGRect frame = textViewContentView.frame;
+		frame.origin.y -= 220.0f; //was 164, 214 is new value to accomodate custom fields "cell + other objects" in IB
+		textViewContentView.frame = frame;
 	
-	CGRect frame = textViewContentView.frame;
-	//if (editCustomFields = YES)
-	frame.origin.y -= 190.0f; //was 164 214 is new value to accomodate custom fields "cell + other objects" in IB
-	textViewContentView.frame = frame;
-	
-	frame = subView.frame;
-	frame.origin.y -= 190.0f;//was 164
-	subView.frame = frame;
+		frame = subView.frame;
+		frame.origin.y -= 220.0f;//was 164
+		subView.frame = frame;
+	}else{
+		CGRect frame = textViewContentView.frame;
+		frame.origin.y -= 175.0f;
+		textViewContentView.frame = frame;
+		
+		frame = subView.frame;
+		//frame.origin.y -= 80.0f;
+		frame.origin.y -= 175.0f;
+		subView.frame = frame;
+	}
+
 	
 	
 	[UIView commitAnimations];
-	[self.view setNeedsDisplay];	
+	//[self.view setNeedsDisplay];	
 }
 
 - (void)bringTextViewDown
@@ -343,14 +364,24 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:0.2];
 	subView.hidden = NO;
+	if (isCustomFieldsEnabledForThisPost) {
+		CGRect frame = textViewContentView.frame;
+		frame.origin.y += 220.0f;//was 164
+		textViewContentView.frame = frame;	
 	
-	CGRect frame = textViewContentView.frame;
-	frame.origin.y += 190.0f;//was 164
-	textViewContentView.frame = frame;	
-	
-	frame = subView.frame;
-	frame.origin.y += 190.0f;//was 164
-	subView.frame = frame;
+		frame = subView.frame;
+		frame.origin.y += 220.0f;//was 164
+		subView.frame = frame;
+	}else{
+		
+		CGRect frame = textViewContentView.frame;
+		frame.origin.y += 175.0f;
+		textViewContentView.frame = frame;	
+		
+		frame = subView.frame;
+		frame.origin.y = 0.0f;
+		subView.frame = frame;		
+	}
 	
 	[UIView commitAnimations];		
 }
@@ -862,20 +893,20 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	//This is not getting called.
-	//In the interest of not wasting (time = money) for WP/Automattic, I'm letting it go
-	//the hackish solution is a button on top of the tableView.
-	//Perhaps calling didSelectRowAtIndexPath is incompatible with a UIViewController, even if it extends UITableViewDelegate and UITableViewDatasource
-	
-	//initialize the new view if it doesn't exist
-	if (customFieldsTableView == nil)
-		customFieldsTableView = [[CustomFieldsTableView alloc] initWithNibName:@"CustomFieldsTableView" bundle:nil];
-	customFieldsTableView.postDetailViewController = self.postDetailViewController;
-	//load the CustomFieldsTableView  Note: customFieldsTableView loads some data in viewDidLoad
-	[postDetailViewController.navigationController pushViewController:customFieldsTableView animated:YES];
-	
-}
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+//	//This is not getting called.  Probably because of the return nil in the willSelectRowAtIndexPath below...
+// I don't want to change the entire UI model at this point...
+//	//In the interest of not wasting (time = money) for WP/Automattic, I'm letting it go
+//	//the hackish solution is a button on top of the tableView.
+//	
+//	//initialize the new view if it doesn't exist
+//	if (customFieldsTableView == nil)
+//		customFieldsTableView = [[CustomFieldsTableView alloc] initWithNibName:@"CustomFieldsTableView" bundle:nil];
+//	customFieldsTableView.postDetailViewController = self.postDetailViewController;
+//	//load the CustomFieldsTableView  Note: customFieldsTableView loads some data in viewDidLoad
+//	[postDetailViewController.navigationController pushViewController:customFieldsTableView animated:YES];
+//	
+//}
 
 #pragma mark -
 #pragma mark Table Delegate Methods

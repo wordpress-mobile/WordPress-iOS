@@ -28,6 +28,7 @@
 	IBOutlet UIView *textViewContentView;
 	IBOutlet UITextField *textViewPlaceHolderField;
 	IBOutlet UIButton *customFieldsEditButton;
+	IBOutlet UITableView *tableViewForSelectingCustomFields;
 	
 	IBOutlet UIBarButtonItem *newCategoryBarButtonItem;
 	
@@ -53,6 +54,7 @@
 	NSMutableArray *bookMarksArray;
 	UITextField *currentEditingTextField;
 		
+	//also for Custom Fields to move text view up and down appropriately
 	NSUInteger originY;
 }
 
@@ -91,8 +93,6 @@
 
 - (void)endEditingAction:(id)sender;
 
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 
 //will be called when auto save method is called.
 - (void)updateValuesToCurrentPost;

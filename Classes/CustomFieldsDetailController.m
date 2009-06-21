@@ -153,6 +153,11 @@
 	//[self.view setNeedsDisplay];
 	//postDetailViewController.navigationItem.rightBarButtonItem = saveButtonItem;
 	//[self.view setNeedsDisplay];
+	
+	UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone 
+																  target:self action:@selector(textFieldDone:)];
+	postDetailViewController.navigationItem.leftBarButtonItem = doneButton;
+	[doneButton release];
 }
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {

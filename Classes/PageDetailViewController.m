@@ -27,7 +27,8 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
 @implementation PageDetailViewController
 @synthesize mode,selectionTableViewController,pageDetailsController,photosListController, customFieldsTableView;
-@synthesize infoText,urlField,selectedLinkRange,currentEditingTextField,isEditing;
+@synthesize infoText,urlField,selectedLinkRange,currentEditingTextField,isEditing, isCustomFieldsEnabledForThisPage;
+@synthesize customFieldsEditCell;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -98,13 +99,23 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	else if( mode == 0 )
 		[self refreshUIForNewPage];
 	
-	CGRect frame = subView.frame;
-	frame.origin.y = 0.0f;
-	subView.frame = frame;
-	
-	frame=textViewContentView.frame;
-	frame.origin.y = 81.0f;
-	textViewContentView.frame = frame;
+//	CGRect frame = subView.frame;
+//	frame.origin.y = 0.0f;
+//	subView.frame = frame;
+//	
+//	frame=textViewContentView.frame;
+//	frame.origin.y = 81.0f;
+//	textViewContentView.frame = frame;
+	isCustomFieldsEnabledForThisPage = [self checkCustomFieldsMinusMetadata];
+	if (isCustomFieldsEnabledForThisPage){
+		customFieldsEditCell.hidden = NO;
+		customFieldsEditCell.userInteractionEnabled = YES;
+	}else{
+		customFieldsEditCell.hidden = YES;
+		customFieldsEditCell.userInteractionEnabled = NO;
+	}
+
+	[self postionTextViewContentView];
 	
 	NSString *status=[[dm currentPage] valueForKey:@"page_status"];
 	statusTextField.text = status ;
@@ -124,6 +135,13 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	titleTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 	[contentView bringSubviewToFront:textView];
 	self.title = @"Write";
+	
+	//JOHNB TODO: Add a check here for the presence of custom fields in the data model
+	// if there are, set CustomFields BOOL to true
+	isCustomFieldsEnabledForThisPage = [self checkCustomFieldsMinusMetadata];
+	//call a helper to set the originY for textViewContentView
+	[self postionTextViewContentView];
+	customFieldsEditCell.hidden = YES;
 	
 }
 - (IBAction)endTextEnteringButtonAction:(id)sender
@@ -267,16 +285,59 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:kAnimationDuration1];
 	
-	CGRect frame = textViewContentView.frame;
-	frame.origin.y -= 80.0f;
-	textViewContentView.frame = frame;
+	if (isCustomFieldsEnabledForThisPage) {
+		CGRect frame = textViewContentView.frame;
+		frame.origin.y -= 120.0f;
+		textViewContentView.frame = frame;
 	
-	frame = subView.frame;
-	frame.origin.y -= 80.0f;
-	subView.frame = frame;
+		frame = subView.frame;
+		frame.origin.y -= 120.0f;
+		subView.frame = frame;
+	}else{
+		CGRect frame = textViewContentView.frame;
+		frame.origin.y -= 80.0f;
+		textViewContentView.frame = frame;
+		
+		frame = subView.frame;
+		frame.origin.y -= 80.0f;
+		subView.frame = frame;
+	}
 	
 	[UIView commitAnimations];
-	[self.view setNeedsDisplay];	
+
+}
+
+- (void)bringTextViewDown
+{
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:0.2];
+	subView.hidden = NO;
+	
+	if (isCustomFieldsEnabledForThisPage) {
+		CGRect frame = textViewContentView.frame;
+		frame.origin.y += 60.0f;
+		textViewContentView.frame = frame;	
+	
+		frame = subView.frame;
+		frame.origin.y = 0.0f;
+		subView.frame = frame;
+		
+	}else{
+		CGRect frame = textViewContentView.frame;
+		frame.origin.y = 81.0f;
+		textViewContentView.frame = frame;	
+		
+		frame = subView.frame;
+		frame.origin.y = 0.0f;
+		subView.frame = frame;		
+	}
+	
+	[UIView commitAnimations];		
+}
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+	self.currentEditingTextField = textField;
+	[self textViewDidEndEditing:textView];
+	//pageDetailsController.hasChanges = YES;
 }
 
 - (void)textViewDidChange:(UITextView *)aTextView {
@@ -366,27 +427,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	[[[BlogDataManager sharedDataManager] currentPage] setObject:text forKey:@"description"];		
 }
 
-- (void)bringTextViewDown
-{
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:0.2];
-	subView.hidden = NO;
-	
-	CGRect frame = textViewContentView.frame;
-	frame.origin.y = 81.0f;
-	textViewContentView.frame = frame;	
-	
-	frame = subView.frame;
-	frame.origin.y = 0.0f;
-	subView.frame = frame;
-	
-	[UIView commitAnimations];		
-}
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
-	self.currentEditingTextField = textField;
-	[self textViewDidEndEditing:textView];
-	//pageDetailsController.hasChanges = YES;
-}
+
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
@@ -622,6 +663,68 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	[delegate setAlertRunning:NO];
 	
+}
+
+#pragma mark -
+#pragma mark Custom Fields methods
+-(void)  postionTextViewContentView {
+	
+	if (isCustomFieldsEnabledForThisPage) {
+		
+		
+		//originY = 214.0f;
+		originY = 125.0f;
+		CGRect frame = textViewContentView.frame;
+		frame.origin.y = originY;
+		[textViewContentView setFrame:frame];
+		
+		
+		
+		
+	}else{
+		
+		originY = 80.0f;
+		CGRect frame = textViewContentView.frame;
+		frame.origin.y = originY;
+		[textViewContentView setFrame:frame];
+		
+	}
+}
+
+- (BOOL) checkCustomFieldsMinusMetadata {
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	NSMutableArray *tempCustomFieldsArray = [dm.currentPage valueForKey:@"custom_fields"];
+	
+	//if there is anything (>=1) in the array, start proceessing, otherwise return NO
+	if (tempCustomFieldsArray.count >=1)
+	{
+		//strip out any underscore-containing NSDicts inside the array, as this is metadata we don't need
+		int dictsCount = [tempCustomFieldsArray count];
+		for(int i = 0;i < dictsCount;i++){
+			NSString *tempKey = [[tempCustomFieldsArray objectAtIndex:i] objectForKey:@"key"];
+			NSLog(@"Strip Metadata tempKey is... %@", tempKey);
+			//if tempKey contains an underscore, remove that object (NSDict with metadata) from the array and move on
+			if([tempKey rangeOfString:@"_"].location != NSNotFound)
+			{
+				NSLog(@"Found an underscore metadata 'member' and removing it %@", tempKey);
+				[tempCustomFieldsArray removeObjectAtIndex:i]; 
+				//if I remove one, the count goes down and we stop too soon unless we subtract one from i
+				//and re-set dictsCount.  Doing this keeps us in sync with the actual array.count
+				i--;
+				dictsCount = [tempCustomFieldsArray count];
+			}
+		}
+		
+		//if the count of everything minus the metedata is one or greater, there is at least one custom field on this post, so return YES
+		if (dictsCount >= 1) {
+			return YES;
+		}else{ 
+			return NO;
+		}
+		
+	}else{
+		return NO;
+	}
 }
 @end
 

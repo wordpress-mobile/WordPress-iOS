@@ -23,6 +23,7 @@
 	IBOutlet UILabel *titleLabel;
 	IBOutlet UIView *textViewContentView;
 	IBOutlet UITextField *textViewPlaceHolderField;
+	IBOutlet UITableViewCell *customFieldsEditCell;
 	
 	UITextField *infoText;
 	UITextField *urlField;
@@ -39,6 +40,10 @@
 	BOOL isTextViewEditing;
 	NSRange selectedLinkRange;
 	UITextField *currentEditingTextField;
+	BOOL isCustomFieldsEnabledForThisPage;
+	
+	//also for Custom Fields to move text view up and down appropriately
+	NSUInteger originY;
 }
 
 @property (nonatomic, retain) PageDetailsController *pageDetailsController;
@@ -51,6 +56,9 @@
 @property (nonatomic) NSRange selectedLinkRange;
 @property (nonatomic, assign) UITextField *currentEditingTextField;
 @property (nonatomic, assign) BOOL isEditing;
+@property (nonatomic, assign) BOOL isCustomFieldsEnabledForThisPage;
+
+@property (nonatomic, retain) UITableViewCell *customFieldsEditCell;
 
 
 - (IBAction)showStatusViewAction:(id)sender;
@@ -63,6 +71,12 @@
 - (NSString *)validateNewLinkInfo:(NSString *)urlText;
 - (void)showLinkView;
 - (void)setTextViewHeight:(float)height;
+
+#pragma mark 
+#pragma mark Custom Fields Methods
+
+- (BOOL) checkCustomFieldsMinusMetadata;
+- (void)  postionTextViewContentView;
 
 
 @end

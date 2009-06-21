@@ -230,7 +230,7 @@
 									</object>
 									<object class="IBUITableViewCell" id="821817578">
 										<reference key="NSNextResponder" ref="735874146"/>
-										<int key="NSvFlags">302</int>
+										<int key="NSvFlags">-2147483346</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
 											<object class="IBUIView" id="491558478">
@@ -542,6 +542,14 @@
 					</object>
 					<int key="connectionID">354</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">customFieldsEditCell</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="821817578"/>
+					</object>
+					<int key="connectionID">356</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -765,7 +773,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{647, 295}, {320, 460}}</string>
+					<string>{{379, 295}, {320, 460}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
@@ -789,7 +797,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">354</int>
+			<int key="maxID">356</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -826,6 +834,7 @@
 							<string>categoriesLabel</string>
 							<string>categoriesTextField</string>
 							<string>contentView</string>
+							<string>customFieldsEditCell</string>
 							<string>statusLabel</string>
 							<string>statusTextField</string>
 							<string>subView</string>
@@ -840,6 +849,7 @@
 							<string>UILabel</string>
 							<string>UITextField</string>
 							<string>UIView</string>
+							<string>UITableViewCell</string>
 							<string>UILabel</string>
 							<string>UITextField</string>
 							<string>UIView</string>

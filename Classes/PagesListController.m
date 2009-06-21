@@ -245,6 +245,8 @@
 	}
 	else
 	{
+		//comment out this block to test on a local VM without internet access.  Add blog to app before turning off network
+		//similar block in PagesListController and (probably in comments something)
 		if( !connectionStatus)
 		{
 			UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
@@ -259,6 +261,8 @@
 			
 			[pagesTableView deselectRowAtIndexPath:indexPath animated:YES];
 			return;
+			//comment out this block to test on a local VM without internet access.  Add blog to app before turning off network
+			//similar block in PagesListController and (probably in comments something)
 		}
 		
 		
