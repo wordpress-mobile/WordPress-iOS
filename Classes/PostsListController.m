@@ -314,8 +314,9 @@
 {
 	//comment out this block to test on a local VM without internet access.  Add blog to app before turning off network
 	//similar block in PagesListController and (probably) in Comments something
+	//code3
 	
-  	if( !connectionStatus && indexPath.row != 0 )
+ 	if( !connectionStatus && indexPath.row != 0 )
 	{
 		UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
 														 message:@"Editing is not supported now."
@@ -481,7 +482,7 @@
 	
 }
 - (IBAction)downloadRecentPosts:(id)sender {
-	
+	//code3
 	if( !connectionStatus ){
      	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 		[delegate setAlertRunning:YES];
