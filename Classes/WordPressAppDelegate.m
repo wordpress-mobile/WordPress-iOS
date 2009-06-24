@@ -1,3 +1,4 @@
+
 #import "WordPressAppDelegate.h"
 #import "RootViewController.h"
 #import "BlogDataManager.h"
@@ -35,7 +36,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
-	NSLog(@"Release Candidate for Keychain Password fix :: Inside applicationDidFinishLaunching");
 	
 	
 	// The Reachability class is capable of notifying your application when the network
@@ -85,55 +85,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 				url = @"wordpress.com";
 			}
 			
-		
-		//JOHNB:This code removes pwd from data structure and puts it into keychain
-		//This code fires IF (and ONLY IF) there is a "pwd" key inside the currentBlog
-		
-		//if there is a "key" in "blog" that contains "pwd"
-		//copy the value associated (the blog's password) to a string
-		//get the other values needed from "blog" (username, url)
-		//put that password string into the keychain using password, username, url
-		//REMOVE the "pwd" object from the NSDictionary
-		NSArray *keysFromDict = [blog allKeys];
-		if ([keysFromDict containsObject:@"pwd"]){
-			NSMutableDictionary *blogCopy = [[NSMutableDictionary alloc]initWithDictionary:blog];
-			//get the values from blog NSDict
-			NSString *passwordForKeychain = [blog valueForKey:@"pwd"];
-			NSString *username = [blog valueForKey:@"username"];
-			NSString *urlForKeychain = [blog valueForKey:@"url"];
-			
-			//check for nil or an http prefix, remove prefix if exists
-			if(urlForKeychain != nil && [urlForKeychain length] >= 7 && [urlForKeychain hasPrefix:@"http://"]){
-			urlForKeychain = [urlForKeychain substringFromIndex:7];
-			}
-			
-			//log the values for debugging
-			//TODO:FIXME:REMOVE THIS CODE!
-			NSLog(@"passwordForKeychain = %@ username = %@ urlForKeychain = %@", passwordForKeychain, username, urlForKeychain);
-			//save the password to the keychain using the necessary extra values
-			[blogDataManager saveBlogPasswordToKeychain:(passwordForKeychain?passwordForKeychain:@"") andUserName:username andBlogURL:urlForKeychain];
-			//remove the pwd from the data structure henceforth
-			[blogCopy removeObjectForKey:@"pwd"];
-			NSLog(@"Just ran: [blogCopy removeObjectForKey: @'pwd'] Saving Modified blog via setCurrentBlog as per usual");
-			//save blog by using BlogDataManager setCurrentBlog - which copies the blog passed in OVER the current blog if it's different
-			// compiler was unhappy with this because setCurrentBlog is a private method of the BlogDataManager class
-			//So, I made a public method in BlogDataManager that just calls setCurrentBlog... avoiding the compiler error
-			//it just calls setCurrentBlog and passes the exact same object (blogCopy)
-			//OK - here is the call to the public method
-			[blogDataManager callSetCurrentBlog:blogCopy];
-			
-			[blogCopy release];
-			NSLog(@"inside the if... this implies we found pwd inside the blog NSDict");
-		}else {
-			NSLog(@"We did NOT find pwd inside the blog NSDict and thus did not go through the if");
-		}
-		
-		//}
-		// put the password into the keychain
-		//remove the password "key" from the keychain
-		//
-		//}
-		
 			[Reachability sharedReachability].hostName=url;
 			//Check network connectivity
 			if ([[Reachability sharedReachability] internetConnectionStatus])
@@ -144,7 +95,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 				}
 			}
 		}
-	NSLog(@"Last line of applicationDidFinishLaunching");
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

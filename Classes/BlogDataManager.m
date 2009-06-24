@@ -1,8 +1,8 @@
+
 #import "BlogDataManager.h"
 #import "WordPressAppDelegate.h"
 #import "CoreGraphics/CoreGraphics.h"
 #import "WPXMLReader.h"
-#import "SFHFKeychainUtils.h"
 
 #define kURL @"URL"
 #define kMETHOD @"METHOD"
@@ -343,8 +343,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	NSArray *args = [NSArray arrayWithObjects:[currentBlog valueForKey:@"blogid"],
 					 [currentBlog valueForKey:@"username"],
-					// [currentBlog valueForKey:@"pwd"],
-					 [self getPasswordFromKeychainInContextOfCurrentBlog:currentBlog],
+					 [currentBlog valueForKey:@"pwd"],
 					 imageParms,
 					 nil
 					 ];
@@ -444,8 +443,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 	NSArray *args = [NSArray arrayWithObjects:[blog valueForKey:@"blogid"],
 					 [blog valueForKey:@"username"],
-					 //[blog valueForKey:@"pwd"],
-					 [self getPasswordFromKeychainInContextOfCurrentBlog:blog],
+					 [blog valueForKey:@"pwd"],
 					 imageParms,
 					 nil
 					 ];
@@ -490,8 +488,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	NSArray *args = [NSArray arrayWithObjects:[blog valueForKey:@"blogid"],
 					 [blog valueForKey:@"username"],
-					 //[blog valueForKey:@"pwd"],
-					 [self getPasswordFromKeychainInContextOfCurrentBlog:blog],
+					 [blog valueForKey:@"pwd"],
 					 imageParms,
 					 nil
 					 ];
@@ -538,8 +535,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	NSArray *args = [NSArray arrayWithObjects:[blog valueForKey:@"blogid"],
 					 [blog valueForKey:@"username"],
-					 //[blog valueForKey:@"pwd"],
-					 [self getPasswordFromKeychainInContextOfCurrentBlog:blog],
+					 [blog valueForKey:@"pwd"],
 					 imageParms,
 					 nil
 					 ];
@@ -920,9 +916,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 														@"isAdmin",@"blogid",@"blogName",@"xmlrpc",
 														@"nickname",@"userid",@"lastname",@"firstname",
 														@"newposts",@"totalposts",
-														//@"newcomments",@"totalcomments", @"xmlrpcsuffix",@"pwd", kPostsDownloadCount, nil];
-														@"newcomments",@"totalcomments", @"xmlrpcsuffix", kPostsDownloadCount, nil];
-														//pwd out of datastructure.. see commented line above for it's original position (18)
+														@"newcomments",@"totalcomments", @"xmlrpcsuffix",@"pwd", kPostsDownloadCount, nil];
 		[blogFieldNames retain];
 	
 	}
@@ -1073,9 +1067,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		}
 	return nil;
 }	
-- (BOOL)validateCurrentBlog:(NSString *)url user:(NSString *)username
+- (BOOL)validateCurrentBlog:(NSString *)url user:(NSString *)username password:(NSString*)pwd 
 {	
-	NSString *pwd = [self getBlogPasswordFromKeychainWithUsername:username andBlogName:url];
 	NSString *blogURL = [NSString stringWithFormat:@"http://%@", url];
 	NSString *xmlrpc = [self discoverxmlrpcurlForurl:url];
 
@@ -1128,8 +1121,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 /*
  Get blog data from host
  */
-- (BOOL) refreshCurrentBlog:(NSString *)url user:(NSString *)username
-//- (BOOL) refreshCurrentBlog:(NSString *)url user:(NSString *)username password:(NSString*)pwd 
+- (BOOL) refreshCurrentBlog:(NSString *)url user:(NSString *)username password:(NSString*)pwd 
 {	
 	// REFACTOR login method in BlogDetailModalViewControler so that all XML rpc interaction is handled from here
 	// report exceptions back to caller
@@ -1139,10 +1131,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	// 4. getAuthors
 	// 5. get Categories
 	// 6. get Statuses
-	
-	//get the password from keychain as we're not passing it in on the method call now
-	NSString *pwd = [self getBlogPasswordFromKeychainWithUsername:username andBlogName:url];
-
 	
 	// Can have multiple usernames registered for the same blog
 	NSString *blogHost = [NSString stringWithFormat:@"%@_%@", username, url];
@@ -1456,8 +1444,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		return NO;
 	// Parameters
 	NSString *username = [blog valueForKey:@"username"];
-	//NSString *pwd = [blog valueForKey:@"pwd"];
-	NSString *pwd = [self getPasswordFromKeychainInContextOfCurrentBlog:blog];
+	NSString *pwd = [blog valueForKey:@"pwd"];
 	NSString *fullURL = [blog valueForKey:@"xmlrpc"];
 	NSString *blogid = [blog valueForKey:@"blogid"];
 	NSNumber *maxToFetch =  [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:2] intValue]];
@@ -1506,13 +1493,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSInteger newPostCount = 0;
 	[newPostTitlesList removeAllObjects];	
 	while (post = [postsEnum nextObject] ) {
-		
-		//TODO:JOHNBCustomFields:syncPostsForBlog:getting custom fields on newly entered blog here
-		//<trythis>
-		NSArray *customFieldsArray = [post valueForKey:@"custom_fields"];
-		[self printArrayToLog:customFieldsArray andArrayName:@"customFieldsArray From syncPostsForBlog"];
-		//just grabbing the data in "custom_fields" and printing to nslog via helper method...
-		//</trythis>
 		
 		// add blogid and blog_host_name to post
 	
@@ -1643,13 +1623,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	// check for existence of prior archive before saving
 	if ([blogsList count] || ([[NSFileManager defaultManager] fileExistsAtPath:blogsArchiveFilePath])) {
 		[NSKeyedArchiver archiveRootObject:blogsList toFile:blogsArchiveFilePath];
-		
-				
-		//TODO:JOHNBCustomFields: the next two lines of code are for testing.  REMOVE!
-		[self printArrayToLog:blogsList andArrayName:@"blogsList From BLogDataManager:saveBlogData"];
-		[self printArrayToLog:postTitlesList andArrayName:@"postTitlesList From BLogDataManager:saveBlogData"];
-		
-		
 	} else {
 		WPLog(@"No blogs in list. there is nothing to save!");
 	}
@@ -1957,8 +1930,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	while (tempBlog = [blogEnum nextObject])
 	{
 		if ([[tempBlog valueForKey:@"url"] isEqualToString: urlstr] &&
-			[[tempBlog valueForKey:@"username"] isEqualToString:[aBlog valueForKey:@"username"]] ) {
-			//&& [[tempBlog valueForKey:@"pwd"] isEqualToString:[aBlog valueForKey:@"pwd"]] ) {
+			[[tempBlog valueForKey:@"username"] isEqualToString:[aBlog valueForKey:@"username"]] 
+			&& [[tempBlog valueForKey:@"pwd"] isEqualToString:[aBlog valueForKey:@"pwd"]] ) {
 			
 			return YES; 
 		}
@@ -2015,10 +1988,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 									@"", @"", @"", @"",
 									@"",@"",@"",@"", 
 								   [NSNumber numberWithInt:0], [NSNumber numberWithInt:0], 
-								   [NSNumber numberWithInt:0], [NSNumber numberWithInt:0], @"/xmlrpc.php", 
-								   @"10 Recent Posts", nil];	
-									//we deleted pwd from this list, the 18th @"", right before @"10 Recent Posts"
-		
+								   [NSNumber numberWithInt:0], [NSNumber numberWithInt:0], @"/xmlrpc.php",@"",@"10 Recent Posts", nil];	
 	
 
 	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjects:blogInitValues forKeys:[self blogFieldNames]];
@@ -2098,11 +2068,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 {
 	if( [[NSFileManager defaultManager] removeItemAtPath:[self blogDir:currentBlog] error:nil] )
 	{
-		NSString * url = [self.currentBlog valueForKey:@"url"];
-		NSString * username = [self.currentBlog valueForKey:@"username"];
-		NSLog(@"username: %@ url: %@", username, url);
-		[self deleteBlogFromKeychain:username andBlogURL:url];
-		
 		[blogsList removeObjectAtIndex:currentBlogIndex];
 		[self saveBlogData];
 		[self resetCurrentBlog];
@@ -2580,16 +2545,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		// At the time a post is downloaded or created, we add blogid and blog_host_name fields to post dict
 		
 		self->postFieldNames = [NSArray arrayWithObjects:@"local_status", @"dateCreated", @"userid", 
-								@"postid", @"description", @"title", 
-								@"permalink", @"slug", @"wp_password", 
-								@"authorid", @"status",	@"mt_excerpt", 
-								@"mt_text_more", @"mt_keywords", @"not_used_allow_comments", 
-								@"link_to_comments", @"not_used_allow_pings", @"dateUpdated", 
-								@"blogid", @"blog_host_name", @"wp_author_display_name",
-								@"date_created_gmt", @"custom_fields_enabled",kAsyncPostFlag, nil];
-								//TODO:JOHNBCustomFields  Add @"custom_fields" here
-								//NoteToSelf: the number of items above should match the number of items in makeNewPostCurrent
-								//count for these is: 23 - now 24 since I added @custom_fields_enabled
+								@"postid", @"description", @"title", @"permalink", 
+								@"slug", @"wp_password", @"authorid", @"status", 
+								@"mt_excerpt", @"mt_text_more", @"mt_keywords", 
+								@"not_used_allow_comments", @"link_to_comments", @"not_used_allow_pings",@"dateUpdated", 
+								@"blogid", @"blog_host_name", @"wp_author_display_name",@"date_created_gmt",kAsyncPostFlag, nil];
 		[postFieldNames retain];
 		
 	}
@@ -2712,8 +2672,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		//[pageParams setObject:[currentPage valueForKey:@"wp_password"] forKey:@"wp_password"];
 		NSArray *args = [NSArray arrayWithObjects:[currentBlog valueForKey:@"blogid"],
 						 [currentBlog valueForKey:@"username"],
-						// [currentBlog valueForKey:@"pwd"],
-						 [self getPasswordFromKeychainInContextOfCurrentBlog:currentBlog],
+						 [currentBlog valueForKey:@"pwd"],
 						 pageParams,
 						 nil ];
 		
@@ -2760,8 +2719,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		//[currentPage setObject:[currentPage valueForKey:@"wp_password"] forKey:@"wp_password"];
 		NSArray *args = [NSArray arrayWithObjects:[currentBlog valueForKey:@"blogid"],[currentPage valueForKey:@"page_id"],
 						 [currentBlog valueForKey:@"username"],
-						 //[currentBlog valueForKey:@"pwd"],
-						 [self getPasswordFromKeychainInContextOfCurrentBlog:currentBlog],
+						 [currentBlog valueForKey:@"pwd"],
 						 currentPage,
 						 nil ];
 		//TODO: take url from current post
@@ -2792,10 +2750,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *blogid = [currentBlog valueForKey:@"blogid"];
 	blogid = blogid ? blogid:@"";
 		
-	//NSString *pwd = [currentBlog valueForKey:@"pwd"];
-	NSString *pwd = [self getPasswordFromKeychainInContextOfCurrentBlog:currentBlog];
-	pwd = pwd ? pwd:@"";
-	
 	NSString *xmlrpc = [currentBlog valueForKey:@"xmlrpc"];
 	xmlrpc = xmlrpc ? xmlrpc:@"";
 	NSString *blogHost = [currentBlog valueForKey:@"blog_host_name"];
@@ -2866,8 +2820,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[blog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
 	// Parameters
 	NSString *username = [blog valueForKey:@"username"];
-	//NSString *pwd = [blog valueForKey:@"pwd"];
-	NSString *pwd = [self getPasswordFromKeychainInContextOfCurrentBlog:blog];
+	NSString *pwd = [blog valueForKey:@"pwd"];
 	NSString *fullURL = [blog valueForKey:@"xmlrpc"];
 	NSString *blogid = [blog valueForKey:@"blogid"];
 	
@@ -3122,8 +3075,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	NSArray *catargs = [NSArray arrayWithObjects:[aBlog valueForKey:@"blogid"],
 					 [aBlog valueForKey:@"username"],
-					 //[aBlog valueForKey:@"pwd"],
-					 [self getPasswordFromKeychainInContextOfCurrentBlog:aBlog],
+					 [aBlog valueForKey:@"pwd"],
 					 catParms,
 					 nil
 					 ];
@@ -3150,8 +3102,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	NSArray *args = [NSArray arrayWithObjects:[aBlog valueForKey:@"blogid"],
 					 [aBlog valueForKey:@"username"],
-					 //[aBlog valueForKey:@"pwd"],
-					 [self getPasswordFromKeychainInContextOfCurrentBlog:aBlog],
+					 [aBlog valueForKey:@"pwd"],
 					 postParams,
 					 nil
 					 ];
@@ -3168,8 +3119,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		args = [NSArray arrayWithObjects:
 				postid,
 				[aBlog valueForKey:@"username"],
-				//[aBlog valueForKey:@"pwd"],nil];
-				[self getPasswordFromKeychainInContextOfCurrentBlog:aBlog], nil];
+				[aBlog valueForKey:@"pwd"],nil];
 		
 		request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[aBlog valueForKey:@"xmlrpc"]]];
 		[request setMethod:@"metaWeblog.getPost" withObjects:args];
@@ -3201,8 +3151,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 				bloggerAPIKey,
 				postid,
 				[aBlog valueForKey:@"username"],
-				//[aBlog valueForKey:@"pwd"],nil];
-				[self getPasswordFromKeychainInContextOfCurrentBlog:aBlog], nil];
+				[aBlog valueForKey:@"pwd"],nil];
 		
 		request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[aBlog valueForKey:@"xmlrpc"]]];
 		[request setMethod:@"metaWeblog.deletePost" withObjects:args];
@@ -3217,8 +3166,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	{
 		NSArray *catargs = [NSArray arrayWithObjects:[aBlog valueForKey:@"blogid"],
 						 [aBlog valueForKey:@"username"],
-						 //[aBlog valueForKey:@"pwd"],
-						 [self getPasswordFromKeychainInContextOfCurrentBlog:aBlog],
+						 [aBlog valueForKey:@"pwd"],
 						 catResponse,
 						 nil
 						 ];
@@ -3272,10 +3220,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *blogid = [currentBlog valueForKey:@"blogid"];
 	blogid = blogid ? blogid:@"";
 			
-	//NSString *pwd = [currentBlog valueForKey:@"pwd"];
-	NSString *pwd = [self getPasswordFromKeychainInContextOfCurrentBlog:currentBlog];
-	pwd = pwd ? pwd:@"";
-	
 	NSString *xmlrpc = [currentBlog valueForKey:@"xmlrpc"];
 	xmlrpc = xmlrpc ? xmlrpc:@"";
 	NSString *blogHost = [currentBlog valueForKey:@"blog_host_name"];
@@ -3571,9 +3515,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 {
 	NSArray *args = [NSArray arrayWithObjects:postid,
 					 [aBlog valueForKey:@"username"],
-					 //[aBlog valueForKey:@"pwd"],nil];
-					 [self getPasswordFromKeychainInContextOfCurrentBlog:aBlog], nil];
-	
+					 [aBlog valueForKey:@"pwd"],nil];
 	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[aBlog valueForKey:@"xmlrpc"]]];
 	[request setMethod:@"metaWeblog.getPost" withObjects:args];
 	
@@ -3628,8 +3570,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSArray *args = [NSArray arrayWithObjects:
 					 [currentBlog valueForKey:@"blogid"],pageid,
 					 [aBlog valueForKey:@"username"],
-					 //[aBlog valueForKey:@"pwd"],nil];
-					 [self getPasswordFromKeychainInContextOfCurrentBlog:aBlog], nil];
+					 [aBlog valueForKey:@"pwd"],nil];
 	
 	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[aBlog valueForKey:@"xmlrpc"]]];
 	[request setMethod:@"wp.getPage" withObjects:args];
@@ -3772,8 +3713,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		NSDictionary *draftPost = [self currentPost];
 		NSArray *args = [NSArray arrayWithObjects:[currentBlog valueForKey:@"blogid"],
 						 [currentBlog valueForKey:@"username"],
-						 //[currentBlog valueForKey:@"pwd"],
-						 [self getPasswordFromKeychainInContextOfCurrentBlog:currentBlog],
+						 [currentBlog valueForKey:@"pwd"],
 						 postParams,
 						 nil
 						 ];
@@ -3838,7 +3778,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		[currentPost setObject:post_status forKey:@"post_status"];
 		NSArray *args = [NSArray arrayWithObjects:[currentPost valueForKey:@"postid"],
 						 [currentBlog valueForKey:@"username"],
-						 //[currentBlog valueForKey:@"pwd"],
+						 [currentBlog valueForKey:@"pwd"],
 						 aPost,
 						 nil
 						 ];
@@ -3969,7 +3909,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 #pragma mark -
 
 - (BOOL)createCategory:(NSString *)catTitle parentCategory:(NSString *)parentTitle forBlog:(id)blog
-//TODO:JOHNB this method uses the password
 {
 	NSDictionary *catParms = [NSMutableDictionary dictionaryWithCapacity:4];
 	if( parentTitle && [parentTitle length] ) {
@@ -3989,8 +3928,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		
 	NSArray *args = [NSArray arrayWithObjects:[blog valueForKey:@"blogid"],
 					 [blog valueForKey:@"username"],
-					 //[blog valueForKey:@"pwd"],
-					 [self getPasswordFromKeychainInContextOfCurrentBlog:blog],
+					 [blog valueForKey:@"pwd"],
 					 catParms,
 					 nil
 					 ];
@@ -4009,12 +3947,10 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	return YES;
 }
 - (void)downloadAllCategoriesForBlog:(id)aBlog{
-	//TODO:JOHNB this method uses the password
 	
 	NSArray *args = [NSArray arrayWithObjects:[aBlog valueForKey:@"blogid"],
 					 [aBlog valueForKey:@"username"],
-					 //[aBlog valueForKey:@"pwd"],
-					 [self getPasswordFromKeychainInContextOfCurrentBlog:aBlog],
+					 [aBlog valueForKey:@"pwd"],
 					 nil];
 	XMLRPCRequest *reqCategories = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[aBlog valueForKey:@"xmlrpc"]]];
 	[reqCategories setMethod:@"wp.getCategories" withObjects:args];
@@ -4180,7 +4116,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	if (currentBlog != aBlog)
     {
-		[self printDictToLog:aBlog andArrayName:@"this is from setCurrentBlog and is 'aBlog' - is there a pwd after second start?"];
         [currentBlog release];
         currentBlog = [aBlog retain];
     }
@@ -4293,8 +4228,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	// Parameters
 	NSString *username = [blog valueForKey:@"username"];
-	//NSString *pwd = [blog valueForKey:@"pwd"];
-	NSString *pwd = [self getPasswordFromKeychainInContextOfCurrentBlog:blog];
+	NSString *pwd = [blog valueForKey:@"pwd"];
 	NSString *fullURL = [blog valueForKey:@"xmlrpc"];
 	NSString *blogid = [blog valueForKey:@"blogid"];
 	NSDictionary *commentsStructure = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kNumberOfCommentsToDisplay] forKey:@"number"];
@@ -4402,8 +4336,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 //}	
 	
 	NSString *username = [blog valueForKey:@"username"];
-	//NSString *pwd = [blog valueForKey:@"pwd"];
-	NSString *pwd = [self getPasswordFromKeychainInContextOfCurrentBlog:blog];
+	NSString *pwd = [blog valueForKey:@"pwd"];
 	NSString *fullURL = [blog valueForKey:@"xmlrpc"];
 	NSString *blogid = [blog valueForKey:@"blogid"];
 	[blog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
@@ -4477,8 +4410,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[blog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
 	// Parameters
 	NSString *username = [blog valueForKey:@"username"];
-	//NSString *pwd = [blog valueForKey:@"pwd"];
-	NSString *pwd = [self getPasswordFromKeychainInContextOfCurrentBlog:blog];
+	NSString *pwd = [blog valueForKey:@"pwd"];
 	NSString *fullURL = [blog valueForKey:@"xmlrpc"];
 	NSString *blogid = [blog valueForKey:@"blogid"];
 	NSFileManager *defaultFileManager = [NSFileManager defaultManager];
@@ -4564,8 +4496,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[blog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
 	// Parameters
 	NSString *username = [blog valueForKey:@"username"];
-	//NSString *pwd = [blog valueForKey:@"pwd"];
-	NSString *pwd = [self getPasswordFromKeychainInContextOfCurrentBlog:blog];
+	NSString *pwd = [blog valueForKey:@"pwd"];
 	NSString *fullURL = [blog valueForKey:@"xmlrpc"];
 	NSString *blogid = [blog valueForKey:@"blogid"];
 	NSFileManager *defaultFileManager = [NSFileManager defaultManager];
@@ -4651,8 +4582,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[blog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
 	// Parameters
 	NSString *username = [blog valueForKey:@"username"];
-	//NSString *pwd = [blog valueForKey:@"pwd"];
-	NSString *pwd = [self getPasswordFromKeychainInContextOfCurrentBlog:blog];
+	NSString *pwd = [blog valueForKey:@"pwd"];
 	NSString *fullURL = [blog valueForKey:@"xmlrpc"];
 	NSString *blogid = [blog valueForKey:@"blogid"];
 	NSFileManager *defaultFileManager = [NSFileManager defaultManager];
@@ -4873,106 +4803,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[image release];
 	
 	return imageCopy;
-}
-
-
-
-#pragma mark -
-#pragma mark KeyChain Helper Methods Add/Delete passwords in Keychain
- 
- /* NOTE: If using SFHFKeychainUtils, we will be passing the blogName (blog url collected on AddBlog view) as the serviceName...
-	This is because the util code wants to key off the serviceName for uniqueness when adding to keychain
-	in our case, userName and password *could* possibly be the same, but the url should always be different from any other blog
-    so that's our choice for a "unique" value to go into the Util's "serviceName" field.
-		Currently that assumption is on the wordpress iphone trac for validation...
-
-
-  Method Signatures in SFHFKeychainUtils:
-  
-+ (NSString *) getPasswordForUsername: (NSString *) username andServiceName: (NSString *) serviceName error: (NSError **) error;
-+ (void) storeUsername: (NSString *) username andPassword: (NSString *) password forServiceName: (NSString *) serviceName updateExisting: (BOOL) updateExisting error: (NSError **) error;
-+ (void) deleteItemForUsername: (NSString *) username andServiceName: (NSString *) serviceName error: (NSError **) error;
- */
-
-
--(NSString*) getPasswordFromKeychainInContextOfCurrentBlog:(NSDictionary *)theCurrentBlog {
-	
-	NSString * username = [theCurrentBlog valueForKey:@"username"];
-	NSString * url		= [theCurrentBlog valueForKey:@"url"];
-	url = [url stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-	NSLog(@"inside getPasswordFromKeychainInContextofCurrentBlog %@, %@", username, url);
-	//!!TODO Trim url to eliminate http:// here!
-	
-	//url = [url stringByReplacingOccurrencesOfString:@"www." withString:@""];
-	if ((username == @"") || (url == @"")) {
-		NSString *password = @"";
-		return password;
-		NSLog(@"password is empty %@", password);
-		//if username and url are empty, it's a new blog and there is no entry yet, just return an empty string
-	}else{
-		NSString * password = [self getBlogPasswordFromKeychainWithUsername:username andBlogName:url];
-		return password;
-	}
-	
-}
-
-
-
- -(NSString*) getBlogPasswordFromKeychainWithUsername:(NSString *)userName andBlogName:(NSString *)blogURL {
-	//make a "blank" string to hold our password
-	 NSString * keychainPWD = @"";
-	//call the keychain util's getPassword function, passing in the userName and blogURL we got from the method that called this one
-	// and set our blank string equal to the result of this call
-	 NSError *anError = nil;
-	 keychainPWD = [SFHFKeychainUtils getPasswordForUsername : userName andServiceName : blogURL error:&anError];
-	 //return the resulting string to the calling function as a string
-	 NSLog(@"Inside getBlogPasswordFromKeychainWithUsername... keychainPWD is %@", keychainPWD);
-	 return keychainPWD;	
- }
-
-
- -(void) saveBlogPasswordToKeychain:(NSString *)password andUserName:(NSString *)userName andBlogURL:(NSString *)blogURL {
-	//call util's store password function, pass in the password, the username and the blogURL (blogURL = servicename for the Util's code)
-	//note that there is an updateExisting BOOL in the util call below, whereby you can tell the code NOT to modify, but only create if not in keychain already
-	//this isn't implemented in the method call for this method, but could be if needed.  Currently hard-coded to FALSE because this code path
-	//should only ever get called for a "create" kind of scenario from the Add Blog view's Save button.  (code in: BlogDetailModalViewController)
-	NSLog(@"Inside saveBlogPasswordToKeychain... password is %@ userName is %@ blogURL is %@", password, userName, blogURL);
-	 NSError *anError = nil; 
-	[ SFHFKeychainUtils storeUsername:userName andPassword:password forServiceName:blogURL updateExisting:FALSE error:&anError ];
-	}
- 
- -(void) updatePasswordInKeychain:(NSString *)password andUserName:(NSString *)userName andBlogURL:(NSString *)blogURL{
-	//call util's update pwd function - pass in the "new" password, the username and the blogURL (blogURL = servicename for the Util's code)
-	//note that there is an updateExisting BOOL in the util call below, whereby you can tell the code NOT to modify, but only create if not in keychain already
-	//this isn't implemented in the method call for this method, but could be if needed.  Currently hard-coded to TRUE here because this code path
-	//gets called for an "update" kind of scenario from the Edit Blog view's Save button.  (code in: BlogDetailModalViewController)
-	 NSLog(@"Inside updatePasswordInKeychain... password is %@ userName is %@ blogURL is %@", password, userName, blogURL);
-	 NSError *anError = nil;
-	[ SFHFKeychainUtils storeUsername:userName andPassword:password forServiceName:blogURL updateExisting:TRUE error:&anError ];
-	 }
-
-
--(void) deleteBlogFromKeychain:(NSString *)userName andBlogURL:(NSString *)blogURL{
-	NSLog(@"inside deleteBlogFromKeychain");
- //Note: The Util will delete the entire keychain entry: (username, blogURL and password) we just don't need the password passed in to do that
-	//username and blogURL are also stored in the standard data structure - password is what we care about here
-	//username and blogURL are NOT deleted from the standard data structure (blogsList) at this point, that is handled separately
-	//This should only get called from the Remove Blog button of the Edit Blog view (code in BlogDetailModalViewController)
-	//call util's delete pwd function -- pass in username, and blogURL
-	NSLog(@"Inside deleteBlogFromKeychain... userName is %@ blogURL is %@", userName, blogURL);
-	NSError *anError = nil;
-	[ SFHFKeychainUtils deleteItemForUsername: userName andServiceName: blogURL error:&anError ];
- 
- }
-
-//The compiler was complaining...  this method just passes along the aBlog data structure to setCurrentBlog which is a private method
-//This is called ONLY by AppDelegate:applicationDidFinishLaunching when user is upgrading and password exists in blog Dict.
-//part of process to remove password from currentBlog Dict completely and store it in keychain
-//this is called from an if statement that should never run again as it keys off the presence of a key called "pwd" in the currentBlog Dict.
-
-- (void) callSetCurrentBlog:(NSMutableDictionary *)aBlog{
-	[self setCurrentBlog:aBlog];
-	NSLog(@"BlogDataManager:callSetCurrentBlog... ONLY if I had old passwords that needed to go into keychain. UPGRADE");
 }
 
 -(void) printArrayToLog:(NSArray *) theArray andArrayName:(NSString *)theArrayName {

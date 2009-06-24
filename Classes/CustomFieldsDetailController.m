@@ -1,3 +1,4 @@
+
 //
 //  CustomFieldsDetailController.m
 //  WordPress
@@ -40,7 +41,6 @@
 	}
 	[self writeCustomFieldsToCurrentPostOrPageUsingID];
 	[sender resignFirstResponder];
-	[self.navigationController popViewControllerAnimated:YES];
 }
 
 
@@ -97,7 +97,7 @@
 		UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(70, 12, 200, 25)];
 		textField.clearsOnBeginEditing = NO;
 		[textField setDelegate:self];
-		textField.returnKeyType = UIReturnKeyDone;
+		//textField.returnKeyType = UIReturnKeyDone;
 		[textField addTarget:self 
 					  action:@selector(textFieldDone:) 
 			forControlEvents:UIControlEventEditingDidEndOnExit];
