@@ -1,5 +1,5 @@
 //
-//  PageDetailsController.h
+//  PagePhotosViewController.h
 //  WordPress
 //
 //  Created by Janakiram on 01/11/08.
@@ -8,17 +8,18 @@
 #import <UIKit/UIKit.h>
 #import "WPPhotosListProtocol.h"
 
-@class PageDetailViewController, WPPostDetailPreviewController, WPSelectionTableViewController,  WPPhotosListViewController, PagesListController;
+@class EditPageViewController, WPPostDetailPreviewController, WPSelectionTableViewController,  WPPhotosListViewController, PagesViewController;
 @class WPNavigationLeftButtonView;
-@interface PageDetailsController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate,WPPhotosListProtocol> {
+
+@interface PagePhotosViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate,WPPhotosListProtocol> {
 	IBOutlet UITabBarController *tabController;
 	IBOutlet UIView	*photoEditingStatusView;
 
 	UIBarButtonItem *saveButton;
 	
-	PageDetailViewController *pageDetailViewController;
+	EditPageViewController *pageDetailViewController;
 	WPPhotosListViewController *photosListController;
-	PagesListController *pagesListController;
+	PagesViewController *pagesListController;
    	WPNavigationLeftButtonView *leftView;
 	
 	BOOL hasChanges;
@@ -28,11 +29,11 @@
 }
 
 @property (nonatomic, retain)	WPNavigationLeftButtonView *leftView;
-@property (nonatomic, retain)	PageDetailViewController *pageDetailViewController;
+@property (nonatomic, retain)	EditPageViewController *pageDetailViewController;
 //@property (nonatomic, retain)	WPPostDetailPreviewController *postPreviewController;
 //@property (nonatomic, retain)	WPPostSettingsController *postSettingsController;
 @property (nonatomic, retain)	WPPhotosListViewController *photosListController;
-@property (nonatomic, assign)	PagesListController *pagesListController;
+@property (nonatomic, assign)	PagesViewController *pagesListController;
 
 @property (nonatomic, readonly) UIBarButtonItem * saveButton;
 
@@ -45,4 +46,5 @@
 - (void)updatePhotosBadge;
 - (IBAction)savePageAction:(id)sender;
 //- (void)addAsyncPostOperation:(SEL)anOperation withArg:(id)anArg;
+
 @end

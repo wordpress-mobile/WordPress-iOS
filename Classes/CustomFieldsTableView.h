@@ -9,9 +9,8 @@
 
 #import <UIKit/UIKit.h>
 #import "BlogDataManager.h"
-
-#import "PostDetailViewController.h"
-#import "PageDetailsController.h"
+#import "PostPhotosViewController.h"
+#import "PagePhotosViewController.h"
 #import "CustomFieldsDetailController.h"
 
 
@@ -22,8 +21,8 @@
 	CustomFieldsDetailController *customFieldsDetailController;
 	
 	
-	PostDetailViewController * postDetailViewController;
-	PageDetailsController * pageDetailsController;
+	PostPhotosViewController * postDetailViewController;
+	PagePhotosViewController * pageDetailsController;
 	
 	BlogDataManager *dm;
 	NSArray *customFieldsArray;
@@ -35,8 +34,9 @@
 
 @property (nonatomic, retain) CustomFieldsDetailController *customFieldsDetailController;
 
-@property (nonatomic, assign) PostDetailViewController * postDetailViewController;
-@property (nonatomic, assign) PageDetailsController *pageDetailsController;
+
+@property (nonatomic, assign) PostPhotosViewController * postDetailViewController;
+@property (nonatomic, assign) PagePhotosViewController *pageDetailsController;
 @property (nonatomic, assign) BlogDataManager *dm;
 @property (nonatomic, retain) NSArray *customFieldsArray;
 @property (retain, nonatomic) UITableView * customFieldsTableView;

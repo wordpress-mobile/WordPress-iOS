@@ -4,7 +4,8 @@
 @class PostDetailEditController, WPPostDetailPreviewController, WPSelectionTableViewController, WPPostSettingsController, WPPhotosListViewController, PostsListController;
 @class WPNavigationLeftButtonView;
 @class  CustomFieldsDetailController;
-@interface PostDetailViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate,WPPhotosListProtocol> {
+
+@interface PostPhotosViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate,WPPhotosListProtocol> {
 	IBOutlet UITabBarController *tabController;
 	IBOutlet UIView	*photoEditingStatusView;
 	UIBarButtonItem *saveButton;

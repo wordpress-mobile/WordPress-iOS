@@ -1,7 +1,7 @@
 #import "WPPhotoViewController.h"
 #import "BlogDataManager.h"
 #import "WPPhotosListViewController.h"
-#import "PostDetailViewController.h"
+#import "PostPhotosViewController.h"
 #import "WordPressAppDelegate.h"
 
 @implementation WPPhotoViewController

@@ -1,7 +1,7 @@
 #import "DraftsListController.h"
 #import "BlogDataManager.h"
 #import "PostsListController.h"
-#import "PostDetailViewController.h"
+#import "PostPhotosViewController.h"
 #import "WordPressAppDelegate.h"
 
 @implementation DraftsListController

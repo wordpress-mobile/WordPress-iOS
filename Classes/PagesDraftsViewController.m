@@ -1,19 +1,19 @@
 //
-//  PagesDraftListController.m
+//  PagesDraftsViewController.m
 //  WordPress
 //
 //  Created by JanakiRam on 06/11/08.
 //
 
-#import "PagesDraftListController.h"
+#import "PagesDraftsViewController.h"
 #import "BlogDataManager.h"
-#import "PagesListController.h"
-#import "PageDetailViewController.h"
-#import "PageDetailsController.h"
+#import "PagesViewController.h"
+#import "EditPageViewController.h"
+#import "PagePhotosViewController.h"
 #import "WordPressAppDelegate.h"
 
 
-@implementation PagesDraftListController
+@implementation PagesDraftsViewController
 @synthesize pagesListController;
 
 
@@ -66,7 +66,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	[dm makePageDraftAtIndexCurrent:indexPath.row];
-	PageDetailsController *pageDetailsController=pagesListController.pageDetailsController;
+	PagePhotosViewController *pageDetailsController=pagesListController.pageDetailsController;
 	pageDetailsController.mode = 1; 
 	pageDetailsController.tabController.selectedIndex=0;
 	[tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];

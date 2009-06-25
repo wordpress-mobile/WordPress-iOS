@@ -1,16 +1,16 @@
 //
-//  PageDetailsController.m
+//  PagePhotosViewController.m
 //  WordPress
 //
 //  Created by Janakiram on 01/11/08.
 //
 
 #define TAG_OFFSET 1020
-#import "PageDetailsController.h"
+#import "PagePhotosViewController.h"
 #import "BlogDataManager.h"
 #import "WordPressAppDelegate.h"
-#import "PageDetailViewController.h"
-#import "PagesListController.h"
+#import "EditPageViewController.h"
+#import "PagesViewController.h"
 #import "WPPhotosListViewController.h"
 #import "WPNavigationLeftButtonView.h"
 #import "PostsListController.h"
@@ -18,7 +18,7 @@
 #import "Reachability.h"
 
 
-@interface PageDetailsController (privateMethods)
+@interface PagePhotosViewController (privateMethods)
 - (void)startTimer;
 - (void)stopTimer;
 
@@ -29,7 +29,7 @@
 
 @end
 
-@implementation PageDetailsController
+@implementation PagePhotosViewController
 
 @synthesize pageDetailViewController,   pagesListController, hasChanges, mode, tabController, photosListController, saveButton;
 @synthesize leftView;
@@ -220,7 +220,7 @@
 	NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:2];
 	
 	if (pageDetailViewController == nil) {
-		pageDetailViewController = [[PageDetailViewController alloc] initWithNibName:@"PageDetailViewController" bundle:nil];
+		pageDetailViewController = [[EditPageViewController alloc] initWithNibName:@"EditPageViewController" bundle:nil];
 		pageDetailViewController.mode = self.mode;
 	}
 	pageDetailViewController.pageDetailsController = self;

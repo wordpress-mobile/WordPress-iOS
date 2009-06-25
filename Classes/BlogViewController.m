@@ -1,22 +1,22 @@
 //
-//  BlogMainViewController.m
+//  BlogViewController.m
 //  WordPress
 //
 //  Created by Janakiram on 01/09/08.
 //
 
-#import "BlogMainViewController.h"
+#import "BlogViewController.h"
 #import "PostsListController.h"
-#import "BlogDetailModalViewController.h"
+#import "EditBlogViewController.h"
 #import "BlogDataManager.h"
 #import "Reachability.h"
 #import "CommentsListController.h"
-#import "PagesListController.h"
+#import "PagesViewController.h"
 #import "WPNavigationLeftButtonView.h"
 #import "WordPressAppDelegate.h"
 #import "UIViewController+WPAnimation.h"
 
-@implementation BlogMainViewController
+@implementation BlogViewController
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -77,6 +77,7 @@
 }
 
 - (void)goToHome:(id)sender {
+    [[BlogDataManager sharedDataManager] resetCurrentBlog];
 	[self popTransition:self.navigationController.view];
 }
 
@@ -204,7 +205,7 @@
 			[[self navigationController] pushViewController:commentsListController animated:YES];
 			[commentsListController release];
 		}else if ( indexPath.row == 1 ) {
-			PagesListController *pagesListController = [[PagesListController alloc] initWithNibName:@"PagesListController" bundle:nil];
+			PagesViewController *pagesListController = [[PagesViewController alloc] initWithNibName:@"PagesViewController" bundle:nil];
 			[[self navigationController] pushViewController:pagesListController animated:YES];
 			[pagesListController release];
 		}

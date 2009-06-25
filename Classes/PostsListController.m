@@ -1,7 +1,7 @@
 
 #import "PostsListController.h"
 #import "BlogDataManager.h"
-#import "PostDetailViewController.h"
+#import "PostPhotosViewController.h"
 #import "PostDetailEditController.h"
 #import "DraftsListController.h"
 #import "Reachability.h"
@@ -102,7 +102,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"AsynchronousPostIsPosted" object:nil];
 	
 	[postDetailEditController release];
-	[PostDetailViewController release];
+	[PostPhotosViewController release];
 	[super dealloc];
 }
 
@@ -122,10 +122,10 @@
 	
 }
 
-- (PostDetailViewController *)postDetailViewController
+- (PostPhotosViewController *)postDetailViewController
 {
 	if (postDetailViewController == nil) {
-		postDetailViewController = [[PostDetailViewController alloc] initWithNibName:@"PostDetailViewController" bundle:nil];
+		postDetailViewController = [[PostPhotosViewController alloc] initWithNibName:@"PostPhotosViewController" bundle:nil];
 		postDetailViewController.postsListController = self;
 	}
 	return postDetailViewController;
@@ -293,6 +293,9 @@
 }
 
 - (void)goToHome:(id)sender {
+    if ([[[BlogDataManager sharedDataManager] currentBlog] valueForKey:kSupportsPagesAndComments] == NO) {
+        [[BlogDataManager sharedDataManager] resetCurrentBlog];
+    }
 	[self popTransition:self.navigationController.view];
 }
 

@@ -1,5 +1,5 @@
 //
-//  PageDetailViewController.h
+//  EditPageViewController.h
 //  WordPress
 //
 //  Created by Janakiram on 01/11/08.
@@ -7,12 +7,14 @@
 
 #import <UIKit/UIKit.h>
 #import "CustomFieldsTableView.h"
+
 @class WPNavigationLeftButtonView;
 @class WPSelectionTableViewController;
-@class PageDetailsController;
+@class PagePhotosViewController;
 @class WPPhotosListViewController;
-@interface PageDetailViewController : UIViewController<UIActionSheetDelegate>  {
-	IBOutlet UITextView *textView;
+
+@interface EditPageViewController : UIViewController<UIActionSheetDelegate, UITextViewDelegate>  {
+	IBOutlet UITextView *pageContentTextView;
 	IBOutlet UITextField *titleTextField;
 	IBOutlet UIView *contentView;
 	IBOutlet UIView *subView;
@@ -28,7 +30,7 @@
 	UITextField *infoText;
 	UITextField *urlField;
 	WPSelectionTableViewController *selectionTableViewController;
-	PageDetailsController *pageDetailsController;
+	PagePhotosViewController *pageDetailsController;
 	
 	CustomFieldsTableView *customFieldsTableView;
 	WPPhotosListViewController *photosListController;
@@ -46,11 +48,11 @@
 	NSUInteger originY;
 }
 
-@property (nonatomic, retain) PageDetailsController *pageDetailsController;
+@property (nonatomic, retain) PagePhotosViewController *pageDetailsController;
 @property (nonatomic, retain) WPSelectionTableViewController *selectionTableViewController;
-@property (nonatomic)	int mode;
+@property (nonatomic) int mode;
 @property (nonatomic, retain) CustomFieldsTableView *customFieldsTableView;
-@property (nonatomic,assign) WPPhotosListViewController *photosListController;
+@property (nonatomic, assign) WPPhotosListViewController *photosListController;
 @property (nonatomic, retain) UITextField *infoText;
 @property (nonatomic, retain) UITextField *urlField;
 @property (nonatomic) NSRange selectedLinkRange;
@@ -72,11 +74,11 @@
 - (void)showLinkView;
 - (void)setTextViewHeight:(float)height;
 
-#pragma mark 
+
+#pragma mark -
 #pragma mark Custom Fields Methods
 
 - (BOOL) checkCustomFieldsMinusMetadata;
 - (void)  postionTextViewContentView;
-
 
 @end

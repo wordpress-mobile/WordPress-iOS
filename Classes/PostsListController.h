@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-@class BlogDataManager, PostDetailViewController, PostDetailEditController, DraftsListController;
+@class BlogDataManager, PostPhotosViewController, PostDetailEditController, DraftsListController;
 
 @interface PostsListController : UIViewController {
 		
@@ -9,13 +9,13 @@
 	
 	IBOutlet UITableView *postsTableView;
 
-	PostDetailViewController *postDetailViewController;
+	PostPhotosViewController *postDetailViewController;
 	PostDetailEditController *postDetailEditController;
 		
 	BOOL connectionStatus;
 }
 
-@property (nonatomic, retain) PostDetailViewController *postDetailViewController;
+@property (nonatomic, retain) PostPhotosViewController *postDetailViewController;
 @property (nonatomic, retain) PostDetailEditController *postDetailEditController;
 
 - (IBAction)downloadRecentPosts:(id)sender;

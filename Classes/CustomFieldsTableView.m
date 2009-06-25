@@ -174,7 +174,7 @@
 		customFieldsDetailController.isPost = self.isPost;
 		[self.navigationController pushViewController:customFieldsDetailController animated:YES];
 	
-	//[theDict release];
+	[theDict release];
 	
 }
 
@@ -281,8 +281,8 @@
 
 - (NSDictionary *) getDictForThisCell:(NSString *) rowString{
 	
-	NSMutableDictionary *oneCustomFieldDict = [[NSDictionary alloc] init];
-	NSDictionary *noCustomFieldsDict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@"000", @"id", @"", @"key", @"", @"value", nil];
+	NSMutableDictionary *oneCustomFieldDict;
+	NSDictionary *noCustomFieldsDict = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:@"000", @"id", @"", @"key", @"", @"value", nil] autorelease];
 	int count = [customFieldsArray count];
 	for(int i = 0;i < count;i++){
 		NSString *tempKey = [[customFieldsArray objectAtIndex:i] objectForKey:@"key"];
@@ -305,8 +305,6 @@
 		
 	}
 	return noCustomFieldsDict;
-	[oneCustomFieldDict release];
-	[noCustomFieldsDict release];
 }
 
 

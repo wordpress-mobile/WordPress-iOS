@@ -7,19 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		108F0F540EC2A4F200D09FB6 /* PagesDraftListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 108F0F530EC2A4F200D09FB6 /* PagesDraftListController.m */; };
-		108F0FB40EC2B51C00D09FB6 /* PagesDraftListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 108F0FB30EC2B51C00D09FB6 /* PagesDraftListController.xib */; };
+		03CF21ED0FE9F0C3008AD538 /* NSString+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CF21EC0FE9F0C3008AD538 /* NSString+Util.m */; };
+		108F0F540EC2A4F200D09FB6 /* PagesDraftsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 108F0F530EC2A4F200D09FB6 /* PagesDraftsViewController.m */; };
+		108F0FB40EC2B51C00D09FB6 /* PagesDraftsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 108F0FB30EC2B51C00D09FB6 /* PagesDraftsViewController.xib */; };
 		1D3623260D0F684500981E51 /* WordPressAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* WordPressAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		2892E4100DC94CBA00A64D0F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */; };
-		2899E5600DE3E45000AC0155 /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E55F0DE3E45000AC0155 /* RootViewController.xib */; };
 		28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow.xib */; };
-		28C286E10D94DF7D0034E888 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C286E00D94DF7D0034E888 /* RootViewController.m */; };
+		28C286E10D94DF7D0034E888 /* BlogsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C286E00D94DF7D0034E888 /* BlogsViewController.m */; };
 		2904E9940FE6E09600E00DBC /* CustomFieldsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2904E9910FE6E09600E00DBC /* CustomFieldsTableView.m */; };
 		2904E9950FE6E09600E00DBC /* CustomFieldsDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2904E9930FE6E09600E00DBC /* CustomFieldsDetailController.m */; };
-		296890420FE96F1900770264 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 296890410FE96F1900770264 /* SFHFKeychainUtils.m */; };
 		296890780FE971DC00770264 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296890770FE971DC00770264 /* Security.framework */; };
 		29FF132F0FE70F3100CFB908 /* CustomFieldsTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29FF132E0FE70F3100CFB908 /* CustomFieldsTableView.xib */; };
 		2A7F71FB0E70F82A00E48A1F /* WPCommentsDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A7F71FA0E70F82A00E48A1F /* WPCommentsDetailViewController.xib */; };
@@ -30,9 +29,9 @@
 		2AB2EB0C0E9A148B00CB166E /* MainBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 2AB2EB0B0E9A148B00CB166E /* MainBackground.png */; };
 		2AC5227A0E9B2BE300A61748 /* vertBars.png in Resources */ = {isa = PBXBuildFile; fileRef = 2AC522790E9B2BE300A61748 /* vertBars.png */; };
 		2F706AA50DFB24C500B43086 /* BlogDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F706AA40DFB24C500B43086 /* BlogDataManager.m */; };
-		2F706C2A0DFB8A5200B43086 /* PostDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F706C290DFB8A5200B43086 /* PostDetailViewController.m */; };
+		2F706C2A0DFB8A5200B43086 /* PostPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F706C290DFB8A5200B43086 /* PostPhotosViewController.m */; };
 		2F970F740DF92274006BD934 /* PostsListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F970F730DF92274006BD934 /* PostsListController.m */; };
-		2F970F870DF924E2006BD934 /* BlogDetailModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F970F860DF924E2006BD934 /* BlogDetailModalViewController.m */; };
+		2F970F870DF924E2006BD934 /* EditBlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F970F860DF924E2006BD934 /* EditBlogViewController.m */; };
 		2FAE97090E33B21600CA8540 /* defaultPostTemplate_old.html in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97040E33B21600CA8540 /* defaultPostTemplate_old.html */; };
 		2FAE970A0E33B21600CA8540 /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97050E33B21600CA8540 /* license.txt */; };
 		2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */; };
@@ -57,9 +56,8 @@
 		A0F129B10E1F9D4E00867E18 /* aboutscreenfooter.png in Resources */ = {isa = PBXBuildFile; fileRef = A0F129B00E1F9D4E00867E18 /* aboutscreenfooter.png */; };
 		A0F129B30E1F9D5700867E18 /* aboutscreenlogo.png in Resources */ = {isa = PBXBuildFile; fileRef = A0F129B20E1F9D5700867E18 /* aboutscreenlogo.png */; };
 		A0F129CB0E1FAD4F00867E18 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0F129CA0E1FAD4F00867E18 /* AboutViewController.m */; };
-		AC2FB1E00E1D008500DFE859 /* WPBlogsListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC2FB1DF0E1D008500DFE859 /* WPBlogsListController.xib */; };
 		AC2FB2E10E1D11A400DFE859 /* WordPress.png in Resources */ = {isa = PBXBuildFile; fileRef = AC2FB2E00E1D11A400DFE859 /* WordPress.png */; };
-		AC2FB44C0E1D236A00DFE859 /* WPBlogDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC2FB44B0E1D236A00DFE859 /* WPBlogDetailViewController.xib */; };
+		AC2FB44C0E1D236A00DFE859 /* EditBlogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC2FB44B0E1D236A00DFE859 /* EditBlogViewController.xib */; };
 		AC3437BE0E10F7BC00E5D79B /* PostDetailEditController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC3437BD0E10F7BC00E5D79B /* PostDetailEditController.xib */; };
 		AC3D2BB60E2219C80064A705 /* WPActivityIndicator.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC3D2BB50E2219C80064A705 /* WPActivityIndicator.xib */; };
 		AC3D2C110E2222430064A705 /* RoundedRectBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = AC3D2C100E2222430064A705 /* RoundedRectBlack.png */; };
@@ -71,7 +69,6 @@
 		AC600C0E0E20B80400D663AA /* photos.png in Resources */ = {isa = PBXBuildFile; fileRef = AC600C0A0E20B80400D663AA /* photos.png */; };
 		AC600C0F0E20B80400D663AA /* preview.png in Resources */ = {isa = PBXBuildFile; fileRef = AC600C0B0E20B80400D663AA /* preview.png */; };
 		ACAA41B00E2609AF0031FAB7 /* wplogo.png in Resources */ = {isa = PBXBuildFile; fileRef = ACAA41AF0E2609AF0031FAB7 /* wplogo.png */; };
-		ACAA42160E260E7A0031FAB7 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = ACAA42150E260E7A0031FAB7 /* Default.png */; };
 		ACAC79C60E1F50EB00AC7074 /* WPSelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACAC79C50E1F50EB00AC7074 /* WPSelectionTableViewController.m */; };
 		ACAC7B6A0E1F8C0700AC7074 /* WPSelectionTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACAC7B690E1F8C0700AC7074 /* WPSelectionTableViewController.xib */; };
 		ACAC7BEB0E1F9E0C00AC7074 /* WPPublishOnEditController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACAC7BEA0E1F9E0C00AC7074 /* WPPublishOnEditController.m */; };
@@ -79,7 +76,7 @@
 		ACBAB6090E121CF700F38795 /* WPPostSettingsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACBAB6080E121CF700F38795 /* WPPostSettingsController.xib */; };
 		ACBAB67D0E1247CC00F38795 /* WPPostDetailPreviewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACBAB67C0E1247CC00F38795 /* WPPostDetailPreviewController.xib */; };
 		ACBAB6860E1247F700F38795 /* WPPostDetailPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBAB6850E1247F700F38795 /* WPPostDetailPreviewController.m */; };
-		ACC156BB0E10D73100D6E1A0 /* PostDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACC156BA0E10D73100D6E1A0 /* PostDetailViewController.xib */; };
+		ACC156BB0E10D73100D6E1A0 /* PostPhotosViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACC156BA0E10D73100D6E1A0 /* PostPhotosViewController.xib */; };
 		ACC156CC0E10E67600D6E1A0 /* PostDetailEditController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC156CB0E10E67600D6E1A0 /* PostDetailEditController.m */; };
 		ACC9E2500E0FAC75005FD167 /* PostsListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACC9E24F0E0FAC75005FD167 /* PostsListController.xib */; };
 		ACE287520E2E4381004F5145 /* WPPublishOnEditController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACE287510E2E4381004F5145 /* WPPublishOnEditController.xib */; };
@@ -100,8 +97,8 @@
 		C57E2FC40F7261180038F796 /* WP_application-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C57E2FC30F7261180038F796 /* WP_application-icon.png */; };
 		C584D0840EF942DC00B78012 /* UIViewController+WPAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = C584D0830EF942DC00B78012 /* UIViewController+WPAnimation.m */; };
 		C584D0B40EF943A600B78012 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C584D0B30EF943A600B78012 /* QuartzCore.framework */; };
-		C59614CA0E6C547300E2FBF0 /* BlogMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C59614C90E6C547300E2FBF0 /* BlogMainViewController.m */; };
-		C59615350E6C5B0000E2FBF0 /* WPBlogMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C59615340E6C5B0000E2FBF0 /* WPBlogMainViewController.xib */; };
+		C59614CA0E6C547300E2FBF0 /* BlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C59614C90E6C547300E2FBF0 /* BlogViewController.m */; };
+		C59615350E6C5B0000E2FBF0 /* BlogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C59615340E6C5B0000E2FBF0 /* BlogViewController.xib */; };
 		C59D3D4B0E6410D300AA591D /* NSString+XMLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */; };
 		C5B001BF0E82971400D13185 /* WPNavigationLeftButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5B001BE0E82971400D13185 /* WPNavigationLeftButtonView.m */; };
 		C5B001D00E82991300D13185 /* backNav.png in Resources */ = {isa = PBXBuildFile; fileRef = C5B001CF0E82991300D13185 /* backNav.png */; };
@@ -110,37 +107,41 @@
 		C5C2730A0E7EC9FE0034AA46 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = C5C273090E7EC9FE0034AA46 /* delete.png */; };
 		C5D87A800F20ADB300601936 /* WPLogoView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D87A7F0F20ADB300601936 /* WPLogoView.m */; };
 		C5E3AE350E93F3C5008755FF /* WPImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5E3AE340E93F3C5008755FF /* WPImagePickerController.m */; };
-		EC0F59330EB042B0002FCB4D /* PageDetailsController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC0F59310EB042B0002FCB4D /* PageDetailsController.m */; };
-		EC0F59350EB0438E002FCB4D /* PageDetailsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC0F59340EB0438E002FCB4D /* PageDetailsController.xib */; };
+		CE0CA8CB0FEB178800BC71AD /* favicon.ico in Resources */ = {isa = PBXBuildFile; fileRef = CE0CA8CA0FEB178800BC71AD /* favicon.ico */; };
+		CE4E33D20FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4E33D10FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m */; };
+		CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBD3EAA0FF1BA3B00C1396E /* Blog.m */; };
+		CEC7EFA60FC66081007B90D6 /* AddBlogValidationBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = CEC7EFA50FC66081007B90D6 /* AddBlogValidationBackground.png */; };
+		CEC7EFB40FC663AF007B90D6 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = CEC7EFB30FC663AF007B90D6 /* Default.png */; };
+		EC0F59330EB042B0002FCB4D /* PagePhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC0F59310EB042B0002FCB4D /* PagePhotosViewController.m */; };
+		EC0F59350EB0438E002FCB4D /* PagePhotosViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC0F59340EB0438E002FCB4D /* PagePhotosViewController.xib */; };
 		EC270CB20E8B5E8200E9AA18 /* commentDelete.png in Resources */ = {isa = PBXBuildFile; fileRef = EC270CB10E8B5E8200E9AA18 /* commentDelete.png */; };
-		EC4696FF0EA75D460040EE8E /* PagesListController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4696FE0EA75D460040EE8E /* PagesListController.m */; };
-		EC4697CF0EA76B210040EE8E /* PagesListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC4697CE0EA76B210040EE8E /* PagesListController.xib */; };
-		ECCD48880EA8623F0078082C /* PageDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECCD48870EA8623F0078082C /* PageDetailViewController.xib */; };
-		ECCD488C0EA8628A0078082C /* PageDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECCD488B0EA8628A0078082C /* PageDetailViewController.m */; };
+		EC4696FF0EA75D460040EE8E /* PagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4696FE0EA75D460040EE8E /* PagesViewController.m */; };
+		EC4697CF0EA76B210040EE8E /* PagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC4697CE0EA76B210040EE8E /* PagesViewController.xib */; };
+		ECCD48880EA8623F0078082C /* EditPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECCD48870EA8623F0078082C /* EditPageViewController.xib */; };
+		ECCD488C0EA8628A0078082C /* EditPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECCD488B0EA8628A0078082C /* EditPageViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		021751A50EB8412E0032D429 /* WPPhotosListProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPPhotosListProtocol.h; sourceTree = "<group>"; };
-		108F0F520EC2A4F200D09FB6 /* PagesDraftListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PagesDraftListController.h; sourceTree = "<group>"; };
-		108F0F530EC2A4F200D09FB6 /* PagesDraftListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PagesDraftListController.m; sourceTree = "<group>"; };
-		108F0FB30EC2B51C00D09FB6 /* PagesDraftListController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PagesDraftListController.xib; sourceTree = "<group>"; };
+		03CF21EB0FE9F0C3008AD538 /* NSString+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Util.h"; sourceTree = "<group>"; };
+		03CF21EC0FE9F0C3008AD538 /* NSString+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Util.m"; sourceTree = "<group>"; };
+		108F0F520EC2A4F200D09FB6 /* PagesDraftsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PagesDraftsViewController.h; sourceTree = "<group>"; };
+		108F0F530EC2A4F200D09FB6 /* PagesDraftsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PagesDraftsViewController.m; sourceTree = "<group>"; };
+		108F0FB30EC2B51C00D09FB6 /* PagesDraftsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PagesDraftsViewController.xib; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* WordPressAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* WordPressAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressAppDelegate.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* WordPress.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WordPress.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS2.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = "<absolute>"; };
 		2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS2.0.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = "<absolute>"; };
-		2899E55F0DE3E45000AC0155 /* RootViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RootViewController.xib; sourceTree = "<group>"; };
 		28A0AAE50D9B0CCF005BE974 /* WordPress_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPress_Prefix.pch; sourceTree = "<group>"; };
 		28AD735F0D9D9599002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
-		28C286DF0D94DF7D0034E888 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
-		28C286E00D94DF7D0034E888 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		28C286DF0D94DF7D0034E888 /* BlogsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogsViewController.h; sourceTree = "<group>"; };
+		28C286E00D94DF7D0034E888 /* BlogsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogsViewController.m; sourceTree = "<group>"; };
 		2904E9900FE6E09600E00DBC /* CustomFieldsTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomFieldsTableView.h; sourceTree = "<group>"; };
 		2904E9910FE6E09600E00DBC /* CustomFieldsTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomFieldsTableView.m; sourceTree = "<group>"; };
 		2904E9920FE6E09600E00DBC /* CustomFieldsDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomFieldsDetailController.h; sourceTree = "<group>"; };
 		2904E9930FE6E09600E00DBC /* CustomFieldsDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomFieldsDetailController.m; sourceTree = "<group>"; };
-		296890400FE96F1900770264 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
-		296890410FE96F1900770264 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		296890770FE971DC00770264 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29FF132E0FE70F3100CFB908 /* CustomFieldsTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomFieldsTableView.xib; sourceTree = "<group>"; };
@@ -154,12 +155,12 @@
 		2AC522790E9B2BE300A61748 /* vertBars.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vertBars.png; sourceTree = "<group>"; };
 		2F706AA30DFB24C500B43086 /* BlogDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogDataManager.h; sourceTree = "<group>"; };
 		2F706AA40DFB24C500B43086 /* BlogDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogDataManager.m; sourceTree = "<group>"; };
-		2F706C280DFB8A5200B43086 /* PostDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostDetailViewController.h; sourceTree = "<group>"; };
-		2F706C290DFB8A5200B43086 /* PostDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostDetailViewController.m; sourceTree = "<group>"; };
+		2F706C280DFB8A5200B43086 /* PostPhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostPhotosViewController.h; sourceTree = "<group>"; };
+		2F706C290DFB8A5200B43086 /* PostPhotosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostPhotosViewController.m; sourceTree = "<group>"; };
 		2F970F720DF92274006BD934 /* PostsListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostsListController.h; sourceTree = "<group>"; };
 		2F970F730DF92274006BD934 /* PostsListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostsListController.m; sourceTree = "<group>"; };
-		2F970F850DF924E2006BD934 /* BlogDetailModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogDetailModalViewController.h; sourceTree = "<group>"; };
-		2F970F860DF924E2006BD934 /* BlogDetailModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogDetailModalViewController.m; sourceTree = "<group>"; };
+		2F970F850DF924E2006BD934 /* EditBlogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditBlogViewController.h; sourceTree = "<group>"; };
+		2F970F860DF924E2006BD934 /* EditBlogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditBlogViewController.m; sourceTree = "<group>"; };
 		2F970F970DF929B8006BD934 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		2FAE97040E33B21600CA8540 /* defaultPostTemplate_old.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = defaultPostTemplate_old.html; sourceTree = "<group>"; };
 		2FAE97050E33B21600CA8540 /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.txt; sourceTree = "<group>"; };
@@ -196,11 +197,8 @@
 		A0F129B20E1F9D5700867E18 /* aboutscreenlogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = aboutscreenlogo.png; sourceTree = "<group>"; };
 		A0F129C90E1FAD4F00867E18 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		A0F129CA0E1FAD4F00867E18 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
-		AC2FB1DF0E1D008500DFE859 /* WPBlogsListController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WPBlogsListController.xib; sourceTree = "<group>"; };
-		AC2FB1E20E1D00AB00DFE859 /* WPBlogsListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPBlogsListController.h; sourceTree = "<group>"; };
-		AC2FB1E30E1D00AB00DFE859 /* WPBlogsListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPBlogsListController.m; sourceTree = "<group>"; };
 		AC2FB2E00E1D11A400DFE859 /* WordPress.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WordPress.png; sourceTree = "<group>"; };
-		AC2FB44B0E1D236A00DFE859 /* WPBlogDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WPBlogDetailViewController.xib; sourceTree = "<group>"; };
+		AC2FB44B0E1D236A00DFE859 /* EditBlogViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditBlogViewController.xib; sourceTree = "<group>"; };
 		AC3437BD0E10F7BC00E5D79B /* PostDetailEditController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostDetailEditController.xib; sourceTree = "<group>"; };
 		AC3D2BB20E22198B0064A705 /* WPActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPActivityIndicator.h; sourceTree = "<group>"; };
 		AC3D2BB30E22198B0064A705 /* WPActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPActivityIndicator.m; sourceTree = "<group>"; };
@@ -216,7 +214,6 @@
 		AC600C0A0E20B80400D663AA /* photos.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = photos.png; sourceTree = "<group>"; };
 		AC600C0B0E20B80400D663AA /* preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preview.png; sourceTree = "<group>"; };
 		ACAA41AF0E2609AF0031FAB7 /* wplogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wplogo.png; sourceTree = "<group>"; };
-		ACAA42150E260E7A0031FAB7 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		ACAC79C40E1F50EB00AC7074 /* WPSelectionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPSelectionTableViewController.h; sourceTree = "<group>"; };
 		ACAC79C50E1F50EB00AC7074 /* WPSelectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPSelectionTableViewController.m; sourceTree = "<group>"; };
 		ACAC7B690E1F8C0700AC7074 /* WPSelectionTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WPSelectionTableViewController.xib; sourceTree = "<group>"; };
@@ -228,7 +225,7 @@
 		ACBAB67C0E1247CC00F38795 /* WPPostDetailPreviewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WPPostDetailPreviewController.xib; sourceTree = "<group>"; };
 		ACBAB6840E1247F700F38795 /* WPPostDetailPreviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPPostDetailPreviewController.h; sourceTree = "<group>"; };
 		ACBAB6850E1247F700F38795 /* WPPostDetailPreviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPPostDetailPreviewController.m; sourceTree = "<group>"; };
-		ACC156BA0E10D73100D6E1A0 /* PostDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostDetailViewController.xib; sourceTree = "<group>"; };
+		ACC156BA0E10D73100D6E1A0 /* PostPhotosViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostPhotosViewController.xib; sourceTree = "<group>"; };
 		ACC156CA0E10E67600D6E1A0 /* PostDetailEditController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostDetailEditController.h; sourceTree = "<group>"; };
 		ACC156CB0E10E67600D6E1A0 /* PostDetailEditController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostDetailEditController.m; sourceTree = "<group>"; };
 		ACC9E24F0E0FAC75005FD167 /* PostsListController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostsListController.xib; sourceTree = "<group>"; };
@@ -261,9 +258,9 @@
 		C584D0820EF942DC00B78012 /* UIViewController+WPAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+WPAnimation.h"; sourceTree = "<group>"; };
 		C584D0830EF942DC00B78012 /* UIViewController+WPAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+WPAnimation.m"; sourceTree = "<group>"; };
 		C584D0B30EF943A600B78012 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS2.0.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = "<absolute>"; };
-		C59614C80E6C547300E2FBF0 /* BlogMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogMainViewController.h; sourceTree = "<group>"; };
-		C59614C90E6C547300E2FBF0 /* BlogMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogMainViewController.m; sourceTree = "<group>"; };
-		C59615340E6C5B0000E2FBF0 /* WPBlogMainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WPBlogMainViewController.xib; sourceTree = "<group>"; };
+		C59614C80E6C547300E2FBF0 /* BlogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogViewController.h; sourceTree = "<group>"; };
+		C59614C90E6C547300E2FBF0 /* BlogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogViewController.m; sourceTree = "<group>"; };
+		C59615340E6C5B0000E2FBF0 /* BlogViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BlogViewController.xib; sourceTree = "<group>"; };
 		C59D3D490E6410D300AA591D /* NSString+XMLExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+XMLExtensions.h"; sourceTree = "<group>"; };
 		C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+XMLExtensions.m"; sourceTree = "<group>"; };
 		C5B001BE0E82971400D13185 /* WPNavigationLeftButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPNavigationLeftButtonView.m; sourceTree = "<group>"; };
@@ -276,16 +273,23 @@
 		C5D87A7F0F20ADB300601936 /* WPLogoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLogoView.m; sourceTree = "<group>"; };
 		C5E3AE330E93F3C5008755FF /* WPImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPImagePickerController.h; sourceTree = "<group>"; };
 		C5E3AE340E93F3C5008755FF /* WPImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPImagePickerController.m; sourceTree = "<group>"; };
-		EC0F59310EB042B0002FCB4D /* PageDetailsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageDetailsController.m; sourceTree = "<group>"; };
-		EC0F59320EB042B0002FCB4D /* PageDetailsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageDetailsController.h; sourceTree = "<group>"; };
-		EC0F59340EB0438E002FCB4D /* PageDetailsController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PageDetailsController.xib; sourceTree = "<group>"; };
+		CE0CA8CA0FEB178800BC71AD /* favicon.ico */ = {isa = PBXFileReference; lastKnownFileType = image.ico; path = favicon.ico; sourceTree = "<group>"; };
+		CE4E33D00FEB0F3A00415662 /* UIImage+INResizeImageAllocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+INResizeImageAllocator.h"; sourceTree = "<group>"; };
+		CE4E33D10FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+INResizeImageAllocator.m"; sourceTree = "<group>"; };
+		CEBD3EA90FF1BA3B00C1396E /* Blog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Blog.h; sourceTree = "<group>"; };
+		CEBD3EAA0FF1BA3B00C1396E /* Blog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Blog.m; sourceTree = "<group>"; };
+		CEC7EFA50FC66081007B90D6 /* AddBlogValidationBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AddBlogValidationBackground.png; sourceTree = "<group>"; };
+		CEC7EFB30FC663AF007B90D6 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		EC0F59310EB042B0002FCB4D /* PagePhotosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PagePhotosViewController.m; sourceTree = "<group>"; };
+		EC0F59320EB042B0002FCB4D /* PagePhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PagePhotosViewController.h; sourceTree = "<group>"; };
+		EC0F59340EB0438E002FCB4D /* PagePhotosViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PagePhotosViewController.xib; sourceTree = "<group>"; };
 		EC270CB10E8B5E8200E9AA18 /* commentDelete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = commentDelete.png; sourceTree = "<group>"; };
-		EC4696FD0EA75D460040EE8E /* PagesListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PagesListController.h; sourceTree = "<group>"; };
-		EC4696FE0EA75D460040EE8E /* PagesListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PagesListController.m; sourceTree = "<group>"; };
-		EC4697CE0EA76B210040EE8E /* PagesListController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PagesListController.xib; sourceTree = "<group>"; };
-		ECCD48870EA8623F0078082C /* PageDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PageDetailViewController.xib; sourceTree = "<group>"; };
-		ECCD488A0EA8628A0078082C /* PageDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageDetailViewController.h; sourceTree = "<group>"; };
-		ECCD488B0EA8628A0078082C /* PageDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageDetailViewController.m; sourceTree = "<group>"; };
+		EC4696FD0EA75D460040EE8E /* PagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PagesViewController.h; sourceTree = "<group>"; };
+		EC4696FE0EA75D460040EE8E /* PagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PagesViewController.m; sourceTree = "<group>"; };
+		EC4697CE0EA76B210040EE8E /* PagesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PagesViewController.xib; sourceTree = "<group>"; };
+		ECCD48870EA8623F0078082C /* EditPageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditPageViewController.xib; sourceTree = "<group>"; };
+		ECCD488A0EA8628A0078082C /* EditPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditPageViewController.h; sourceTree = "<group>"; };
+		ECCD488B0EA8628A0078082C /* EditPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditPageViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -308,14 +312,16 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				AC34397A0E11435A00E5D79B /* Controller */,
+				2F706A870DFB229B00B43086 /* Models */,
+				ACFD04900DFD2FCA0031D567 /* XMLRPC */,
+				2F970F970DF929B8006BD934 /* Constants.h */,
+				03CF21EB0FE9F0C3008AD538 /* NSString+Util.h */,
+				03CF21EC0FE9F0C3008AD538 /* NSString+Util.m */,
 				C584D0820EF942DC00B78012 /* UIViewController+WPAnimation.h */,
 				C584D0830EF942DC00B78012 /* UIViewController+WPAnimation.m */,
-				2F970F970DF929B8006BD934 /* Constants.h */,
 				1D3623240D0F684500981E51 /* WordPressAppDelegate.h */,
 				1D3623250D0F684500981E51 /* WordPressAppDelegate.m */,
-				AC34397A0E11435A00E5D79B /* Controller */,
-				2F706A870DFB229B00B43086 /* Model */,
-				ACFD04900DFD2FCA0031D567 /* XMLRPC */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -364,23 +370,22 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				ACFF1DC00E231EF600EC6BF5 /* Blog */,
+				C50E78130E71648100991509 /* Comments */,
 				29FF132C0FE70EFF00CFB908 /* Custom Fields */,
+				AC512F790E20D25E00B7DA32 /* Images */,
+				EC4696CB0EA759EA0040EE8E /* Pages */,
+				ACFF1DC10E231F0B00EC6BF5 /* Post */,
 				A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */,
 				2FAE97040E33B21600CA8540 /* defaultPostTemplate_old.html */,
 				2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */,
 				2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */,
-				EC4696CB0EA759EA0040EE8E /* Pages */,
-				AC512F790E20D25E00B7DA32 /* Images */,
-				ACFF1DC00E231EF600EC6BF5 /* Blog */,
-				C50E78130E71648100991509 /* Comments */,
-				ACFF1DC10E231F0B00EC6BF5 /* Post */,
 				AC3D2BB50E2219C80064A705 /* WPActivityIndicator.xib */,
 				ACE287510E2E4381004F5145 /* WPPublishOnEditController.xib */,
 				AC512FC70E20D68100B7DA32 /* WPPhotoViewController.xib */,
 				AC512FC30E20D61C00B7DA32 /* WPPhotosListViewController.xib */,
 				ACAC7B690E1F8C0700AC7074 /* WPSelectionTableViewController.xib */,
 				A0E293FD0E21037200C6919C /* WPAddCategoryViewController.xib */,
-				2899E55F0DE3E45000AC0155 /* RootViewController.xib */,
 				28AD735F0D9D9599002E5188 /* MainWindow.xib */,
 				A0F128B90E1F82A400867E18 /* AboutWordpress.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
@@ -422,13 +427,15 @@
 			name = Entities;
 			sourceTree = "<group>";
 		};
-		2F706A870DFB229B00B43086 /* Model */ = {
+		2F706A870DFB229B00B43086 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				C59D3D480E6410BC00AA591D /* Categories */,
 				2F35D8AF0DFBAD82002A5F9C /* Entities */,
+				CEBD3EA90FF1BA3B00C1396E /* Blog.h */,
+				CEBD3EAA0FF1BA3B00C1396E /* Blog.m */,
 			);
-			name = Model;
+			name = Models;
 			sourceTree = "<group>";
 		};
 		AC3439790E11434600E5D79B /* Post */ = {
@@ -438,8 +445,8 @@
 				2F970F730DF92274006BD934 /* PostsListController.m */,
 				A068C4690E1DDF9600571B04 /* DraftsListController.h */,
 				A068C46A0E1DDF9600571B04 /* DraftsListController.m */,
-				2F706C280DFB8A5200B43086 /* PostDetailViewController.h */,
-				2F706C290DFB8A5200B43086 /* PostDetailViewController.m */,
+				2F706C280DFB8A5200B43086 /* PostPhotosViewController.h */,
+				2F706C290DFB8A5200B43086 /* PostPhotosViewController.m */,
 				ACC156CA0E10E67600D6E1A0 /* PostDetailEditController.h */,
 				ACC156CB0E10E67600D6E1A0 /* PostDetailEditController.m */,
 				ACBAB5FC0E121C7300F38795 /* WPPostSettingsController.h */,
@@ -469,6 +476,8 @@
 				C533CF320E6D3AB3000C3DE8 /* Comments */,
 				AC3439790E11434600E5D79B /* Post */,
 				AC512F800E20D28500B7DA32 /* Utils */,
+				A0F129C90E1FAD4F00867E18 /* AboutViewController.h */,
+				A0F129CA0E1FAD4F00867E18 /* AboutViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -476,16 +485,12 @@
 		AC34397B0E11443300E5D79B /* Blog */ = {
 			isa = PBXGroup;
 			children = (
-				28C286DF0D94DF7D0034E888 /* RootViewController.h */,
-				28C286E00D94DF7D0034E888 /* RootViewController.m */,
-				2F970F850DF924E2006BD934 /* BlogDetailModalViewController.h */,
-				2F970F860DF924E2006BD934 /* BlogDetailModalViewController.m */,
-				AC2FB1E20E1D00AB00DFE859 /* WPBlogsListController.h */,
-				AC2FB1E30E1D00AB00DFE859 /* WPBlogsListController.m */,
-				A0F129C90E1FAD4F00867E18 /* AboutViewController.h */,
-				A0F129CA0E1FAD4F00867E18 /* AboutViewController.m */,
-				C59614C80E6C547300E2FBF0 /* BlogMainViewController.h */,
-				C59614C90E6C547300E2FBF0 /* BlogMainViewController.m */,
+				28C286DF0D94DF7D0034E888 /* BlogsViewController.h */,
+				28C286E00D94DF7D0034E888 /* BlogsViewController.m */,
+				2F970F850DF924E2006BD934 /* EditBlogViewController.h */,
+				2F970F860DF924E2006BD934 /* EditBlogViewController.m */,
+				C59614C80E6C547300E2FBF0 /* BlogViewController.h */,
+				C59614C90E6C547300E2FBF0 /* BlogViewController.m */,
 			);
 			name = Blog;
 			sourceTree = "<group>";
@@ -493,9 +498,12 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				CE0CA8CA0FEB178800BC71AD /* favicon.ico */,
+				CEC7EFA50FC66081007B90D6 /* AddBlogValidationBackground.png */,
 				706D25F40F347F1200491666 /* category_child.png */,
 				2AC522790E9B2BE300A61748 /* vertBars.png */,
 				2AB2EB0B0E9A148B00CB166E /* MainBackground.png */,
+				CEC7EFB30FC663AF007B90D6 /* Default.png */,
 				2A8FF7D80E8A32F7001A9A40 /* lock.png */,
 				6EC5B7F40F6747F5002609EE /* backNavd.png */,
 				EC270CB10E8B5E8200E9AA18 /* commentDelete.png */,
@@ -510,7 +518,6 @@
 				A017DD7E0E29DDBF009095C2 /* application-icon.png */,
 				A01C58B80E2682AD00D411F2 /* Disclosure Indicator.png */,
 				ACF35BD10E20A64100DB9213 /* Red Background.png */,
-				ACAA42150E260E7A0031FAB7 /* Default.png */,
 				AC3D2C100E2222430064A705 /* RoundedRectBlack.png */,
 				ACF35BEF0E20ABAF00DB9213 /* Red Selected Background.png */,
 				A0F129B00E1F9D4E00867E18 /* aboutscreenfooter.png */,
@@ -525,8 +532,6 @@
 		AC512F800E20D28500B7DA32 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				296890400FE96F1900770264 /* SFHFKeychainUtils.h */,
-				296890410FE96F1900770264 /* SFHFKeychainUtils.m */,
 				C5D87A7E0F20ADB300601936 /* WPLogoView.h */,
 				C5D87A7F0F20ADB300601936 /* WPLogoView.m */,
 				021751A50EB8412E0032D429 /* WPPhotosListProtocol.h */,
@@ -587,9 +592,8 @@
 		ACFF1DC00E231EF600EC6BF5 /* Blog */ = {
 			isa = PBXGroup;
 			children = (
-				AC2FB44B0E1D236A00DFE859 /* WPBlogDetailViewController.xib */,
-				AC2FB1DF0E1D008500DFE859 /* WPBlogsListController.xib */,
-				C59615340E6C5B0000E2FBF0 /* WPBlogMainViewController.xib */,
+				AC2FB44B0E1D236A00DFE859 /* EditBlogViewController.xib */,
+				C59615340E6C5B0000E2FBF0 /* BlogViewController.xib */,
 			);
 			name = Blog;
 			sourceTree = "<group>";
@@ -598,9 +602,8 @@
 			isa = PBXGroup;
 			children = (
 				ACC9E24F0E0FAC75005FD167 /* PostsListController.xib */,
-				ACC156BA0E10D73100D6E1A0 /* PostDetailViewController.xib */,
+				ACC156BA0E10D73100D6E1A0 /* PostPhotosViewController.xib */,
 				ACBAB67C0E1247CC00F38795 /* WPPostDetailPreviewController.xib */,
-				108F0FB30EC2B51C00D09FB6 /* PagesDraftListController.xib */,
 				A068C46E0E1DE02F00571B04 /* DraftsList.xib */,
 				AC3437BD0E10F7BC00E5D79B /* PostDetailEditController.xib */,
 				ACBAB6080E121CF700F38795 /* WPPostSettingsController.xib */,
@@ -633,6 +636,8 @@
 			children = (
 				C59D3D490E6410D300AA591D /* NSString+XMLExtensions.h */,
 				C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */,
+				CE4E33D00FEB0F3A00415662 /* UIImage+INResizeImageAllocator.h */,
+				CE4E33D10FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -640,14 +645,14 @@
 		EC4696A80EA74DAC0040EE8E /* Pages */ = {
 			isa = PBXGroup;
 			children = (
-				ECCD488A0EA8628A0078082C /* PageDetailViewController.h */,
-				ECCD488B0EA8628A0078082C /* PageDetailViewController.m */,
-				EC0F59320EB042B0002FCB4D /* PageDetailsController.h */,
-				EC0F59310EB042B0002FCB4D /* PageDetailsController.m */,
-				EC4696FD0EA75D460040EE8E /* PagesListController.h */,
-				EC4696FE0EA75D460040EE8E /* PagesListController.m */,
-				108F0F520EC2A4F200D09FB6 /* PagesDraftListController.h */,
-				108F0F530EC2A4F200D09FB6 /* PagesDraftListController.m */,
+				ECCD488A0EA8628A0078082C /* EditPageViewController.h */,
+				ECCD488B0EA8628A0078082C /* EditPageViewController.m */,
+				EC0F59320EB042B0002FCB4D /* PagePhotosViewController.h */,
+				EC0F59310EB042B0002FCB4D /* PagePhotosViewController.m */,
+				108F0F520EC2A4F200D09FB6 /* PagesDraftsViewController.h */,
+				108F0F530EC2A4F200D09FB6 /* PagesDraftsViewController.m */,
+				EC4696FD0EA75D460040EE8E /* PagesViewController.h */,
+				EC4696FE0EA75D460040EE8E /* PagesViewController.m */,
 			);
 			name = Pages;
 			sourceTree = "<group>";
@@ -655,9 +660,10 @@
 		EC4696CB0EA759EA0040EE8E /* Pages */ = {
 			isa = PBXGroup;
 			children = (
-				EC0F59340EB0438E002FCB4D /* PageDetailsController.xib */,
-				EC4697CE0EA76B210040EE8E /* PagesListController.xib */,
-				ECCD48870EA8623F0078082C /* PageDetailViewController.xib */,
+				108F0FB30EC2B51C00D09FB6 /* PagesDraftsViewController.xib */,
+				EC0F59340EB0438E002FCB4D /* PagePhotosViewController.xib */,
+				EC4697CE0EA76B210040EE8E /* PagesViewController.xib */,
+				ECCD48870EA8623F0078082C /* EditPageViewController.xib */,
 			);
 			name = Pages;
 			sourceTree = "<group>";
@@ -712,16 +718,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */,
-				2899E5600DE3E45000AC0155 /* RootViewController.xib in Resources */,
 				ACC9E2500E0FAC75005FD167 /* PostsListController.xib in Resources */,
-				ACC156BB0E10D73100D6E1A0 /* PostDetailViewController.xib in Resources */,
+				ACC156BB0E10D73100D6E1A0 /* PostPhotosViewController.xib in Resources */,
 				AC3437BE0E10F7BC00E5D79B /* PostDetailEditController.xib in Resources */,
 				ACBAB6090E121CF700F38795 /* WPPostSettingsController.xib in Resources */,
 				ACBAB67D0E1247CC00F38795 /* WPPostDetailPreviewController.xib in Resources */,
 				A068C46F0E1DE02F00571B04 /* DraftsList.xib in Resources */,
-				AC2FB1E00E1D008500DFE859 /* WPBlogsListController.xib in Resources */,
 				AC2FB2E10E1D11A400DFE859 /* WordPress.png in Resources */,
-				AC2FB44C0E1D236A00DFE859 /* WPBlogDetailViewController.xib in Resources */,
+				AC2FB44C0E1D236A00DFE859 /* EditBlogViewController.xib in Resources */,
 				ACAC7B6A0E1F8C0700AC7074 /* WPSelectionTableViewController.xib in Resources */,
 				A068C6510E1E49F800571B04 /* DraftsFolder.png in Resources */,
 				A0F128BA0E1F82A400867E18 /* AboutWordpress.xib in Resources */,
@@ -740,7 +744,6 @@
 				ACFF1DE40E23265000EC6BF5 /* settings.png in Resources */,
 				A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */,
 				ACAA41B00E2609AF0031FAB7 /* wplogo.png in Resources */,
-				ACAA42160E260E7A0031FAB7 /* Default.png in Resources */,
 				A01C58B90E2682AD00D411F2 /* Disclosure Indicator.png in Resources */,
 				A017DD7F0E29DDBF009095C2 /* application-icon.png in Resources */,
 				ACE287520E2E4381004F5145 /* WPPublishOnEditController.xib in Resources */,
@@ -748,7 +751,7 @@
 				2FAE970A0E33B21600CA8540 /* license.txt in Resources */,
 				2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */,
 				2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */,
-				C59615350E6C5B0000E2FBF0 /* WPBlogMainViewController.xib in Resources */,
+				C59615350E6C5B0000E2FBF0 /* BlogViewController.xib in Resources */,
 				C533CF460E6D3E24000C3DE8 /* CommentsListController.xib in Resources */,
 				2A7F71FB0E70F82A00E48A1F /* WPCommentsDetailViewController.xib in Resources */,
 				2A7F722B0E71000000E48A1F /* up.png in Resources */,
@@ -761,14 +764,17 @@
 				EC270CB20E8B5E8200E9AA18 /* commentDelete.png in Resources */,
 				2AB2EB0C0E9A148B00CB166E /* MainBackground.png in Resources */,
 				2AC5227A0E9B2BE300A61748 /* vertBars.png in Resources */,
-				EC4697CF0EA76B210040EE8E /* PagesListController.xib in Resources */,
-				ECCD48880EA8623F0078082C /* PageDetailViewController.xib in Resources */,
-				EC0F59350EB0438E002FCB4D /* PageDetailsController.xib in Resources */,
-				108F0FB40EC2B51C00D09FB6 /* PagesDraftListController.xib in Resources */,
+				EC4697CF0EA76B210040EE8E /* PagesViewController.xib in Resources */,
+				ECCD48880EA8623F0078082C /* EditPageViewController.xib in Resources */,
+				EC0F59350EB0438E002FCB4D /* PagePhotosViewController.xib in Resources */,
+				108F0FB40EC2B51C00D09FB6 /* PagesDraftsViewController.xib in Resources */,
 				706D25F50F347F1200491666 /* category_child.png in Resources */,
 				6EC5B7F50F6747F5002609EE /* backNavd.png in Resources */,
 				C57E2FC40F7261180038F796 /* WP_application-icon.png in Resources */,
+				CEC7EFA60FC66081007B90D6 /* AddBlogValidationBackground.png in Resources */,
+				CEC7EFB40FC663AF007B90D6 /* Default.png in Resources */,
 				29FF132F0FE70F3100CFB908 /* CustomFieldsTableView.xib in Resources */,
+				CE0CA8CB0FEB178800BC71AD /* favicon.ico in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -781,11 +787,11 @@
 			files = (
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* WordPressAppDelegate.m in Sources */,
-				28C286E10D94DF7D0034E888 /* RootViewController.m in Sources */,
+				28C286E10D94DF7D0034E888 /* BlogsViewController.m in Sources */,
 				2F970F740DF92274006BD934 /* PostsListController.m in Sources */,
-				2F970F870DF924E2006BD934 /* BlogDetailModalViewController.m in Sources */,
+				2F970F870DF924E2006BD934 /* EditBlogViewController.m in Sources */,
 				2F706AA50DFB24C500B43086 /* BlogDataManager.m in Sources */,
-				2F706C2A0DFB8A5200B43086 /* PostDetailViewController.m in Sources */,
+				2F706C2A0DFB8A5200B43086 /* PostPhotosViewController.m in Sources */,
 				ACFD049D0DFD2FCA0031D567 /* XMLRPCConnection.m in Sources */,
 				ACFD049E0DFD2FCA0031D567 /* XMLRPCDecoder.m in Sources */,
 				ACFD049F0DFD2FCA0031D567 /* XMLRPCEncoder.m in Sources */,
@@ -806,16 +812,16 @@
 				A00593C20E224A1B0087E1FB /* WPImageView.m in Sources */,
 				A01C54230E24E4ED00D411F2 /* Reachability.m in Sources */,
 				C59D3D4B0E6410D300AA591D /* NSString+XMLExtensions.m in Sources */,
-				C59614CA0E6C547300E2FBF0 /* BlogMainViewController.m in Sources */,
+				C59614CA0E6C547300E2FBF0 /* BlogViewController.m in Sources */,
 				C533CF350E6D3ADA000C3DE8 /* CommentsListController.m in Sources */,
 				2A7F72010E70F8C900E48A1F /* WPCommentsDetailViewController.m in Sources */,
 				C55A90D90E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m in Sources */,
 				C5B001BF0E82971400D13185 /* WPNavigationLeftButtonView.m in Sources */,
 				C5E3AE350E93F3C5008755FF /* WPImagePickerController.m in Sources */,
-				EC4696FF0EA75D460040EE8E /* PagesListController.m in Sources */,
-				ECCD488C0EA8628A0078082C /* PageDetailViewController.m in Sources */,
-				EC0F59330EB042B0002FCB4D /* PageDetailsController.m in Sources */,
-				108F0F540EC2A4F200D09FB6 /* PagesDraftListController.m in Sources */,
+				EC4696FF0EA75D460040EE8E /* PagesViewController.m in Sources */,
+				ECCD488C0EA8628A0078082C /* EditPageViewController.m in Sources */,
+				EC0F59330EB042B0002FCB4D /* PagePhotosViewController.m in Sources */,
+				108F0F540EC2A4F200D09FB6 /* PagesDraftsViewController.m in Sources */,
 				C584D0840EF942DC00B78012 /* UIViewController+WPAnimation.m in Sources */,
 				C5D87A800F20ADB300601936 /* WPLogoView.m in Sources */,
 				C57AD5E20F2A10BC00A1717C /* WPXMLReader.m in Sources */,
@@ -824,7 +830,9 @@
 				C56D68DA0F4946E4008EE84E /* WPActivityIndicatorTVCell.m in Sources */,
 				2904E9940FE6E09600E00DBC /* CustomFieldsTableView.m in Sources */,
 				2904E9950FE6E09600E00DBC /* CustomFieldsDetailController.m in Sources */,
-				296890420FE96F1900770264 /* SFHFKeychainUtils.m in Sources */,
+				03CF21ED0FE9F0C3008AD538 /* NSString+Util.m in Sources */,
+				CE4E33D20FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m in Sources */,
+				CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -842,6 +850,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUGMODE;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = WordPress;
 			};
@@ -854,6 +863,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = WordPress;
 			};
@@ -879,6 +889,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
 				PRODUCT_NAME = WordPress;
 			};

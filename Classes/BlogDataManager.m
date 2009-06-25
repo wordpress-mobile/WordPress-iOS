@@ -1440,8 +1440,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 // sync posts for a given blog
 - (BOOL) syncPostsForBlog:(id)blog {
-	if( [[blog valueForKey:@"blogid"] isEqualToString:kDraftsBlogIdStr] )
-		return NO;
+	if( [[blog valueForKey:@"blogid"] isEqualToString:kDraftsBlogIdStr] ) {
+        [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+        return NO;
+    }
+		
 	// Parameters
 	NSString *username = [blog valueForKey:@"username"];
 	NSString *pwd = [blog valueForKey:@"pwd"];
@@ -1568,6 +1571,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 //	[self saveBlogData];
 
 //	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
+    [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 	[self performSelectorOnMainThread:@selector(postBlogsRefreshNotificationInMainThread:) withObject:blog waitUntilDone:NO];
 	return YES;
 }

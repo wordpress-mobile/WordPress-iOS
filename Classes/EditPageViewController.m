@@ -1,20 +1,20 @@
 //
-//  PageDetailViewController.m
+//  EditPageViewController.m
 //  WordPress
 //
 //  Created by Janakiram on 01/11/08.
 //
 
-#import "PageDetailViewController.h"
+#import "EditPageViewController.h"
 #import "WPSelectionTableViewController.h"
 #import "BlogDataManager.h"
 #import "WPNavigationLeftButtonView.h"
-#import "PageDetailsController.h"
+#import "PagePhotosViewController.h"
 #import "WPPhotosListViewController.h"
 #import "WordPressAppDelegate.h"
 
 
-@interface PageDetailViewController (private)
+@interface EditPageViewController (private)
 - (void)_savePageWithBlog:(NSMutableArray *)arrayPage;
 - (void)updateTextViewPlacehoderFieldStatus;
 - (void)populateSelectionsControllerWithStatuses;
@@ -25,7 +25,7 @@
 #define kSelectionsStatusContext1 ((void*)1000)
 NSTimeInterval kAnimationDuration1 = 0.3f;
 
-@implementation PageDetailViewController
+@implementation EditPageViewController
 @synthesize mode,selectionTableViewController,pageDetailsController,photosListController, customFieldsTableView;
 @synthesize infoText,urlField,selectedLinkRange,currentEditingTextField,isEditing, isCustomFieldsEnabledForThisPage;
 @synthesize customFieldsEditCell;
@@ -47,13 +47,13 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	
 	if (!description || [description length] == 0 ) {
 		textViewPlaceHolderField.hidden = NO;
-		textView.text = @"";
+		pageContentTextView.text = @"";
 	} else {
 		textViewPlaceHolderField.hidden = YES;
 		if((moreText!=NULL)&&([moreText length]>0))
-			textView.text = [NSString stringWithFormat:@"%@\n<!--more-->%@",description,moreText];
+			pageContentTextView.text = [NSString stringWithFormat:@"%@\n<!--more-->%@",description,moreText];
 		else
-			textView.text = description;
+			pageContentTextView.text = description;
 	}
 	
 	titleTextField.text = [dm.currentPage valueForKey:@"title"];
@@ -73,10 +73,10 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	
 	if (!description || [description length] == 0 ) {
 		textViewPlaceHolderField.hidden = NO;
-		textView.text = @"";
+		pageContentTextView.text = @"";
 	} else {
 		textViewPlaceHolderField.hidden = YES;
-		textView.text = description;
+		pageContentTextView.text = description;
 	}
 	
 	titleTextField.text = [dm.currentPage valueForKey:@"title"];
@@ -133,7 +133,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	titleLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
 	
 	titleTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-	[contentView bringSubviewToFront:textView];
+	[contentView bringSubviewToFront:pageContentTextView];
 	self.title = @"Write";
 	
 	//JOHNB TODO: Add a check here for the presence of custom fields in the data model
@@ -147,7 +147,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 - (IBAction)endTextEnteringButtonAction:(id)sender
 {
 	isTextViewEditing=NO;
-	[textView resignFirstResponder];
+	[pageContentTextView resignFirstResponder];
 	UIBarButtonItem *barButton  = [[UIBarButtonItem alloc] initWithCustomView:pageDetailsController.leftView];
     pageDetailsController.navigationItem.leftBarButtonItem = barButton;
     [barButton release];
@@ -199,7 +199,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 - (void)endEditingAction:(id)sender
 {
 	[titleTextField resignFirstResponder];
-	[textView resignFirstResponder];
+	[pageContentTextView resignFirstResponder];
 }
 
 
@@ -214,9 +214,9 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
 - (void)setTextViewHeight:(float)height
 {
-	CGRect frame = textView.frame;
+	CGRect frame = pageContentTextView.frame;
 	frame.size.height=height;
-	textView.frame=frame;
+	pageContentTextView.frame=frame;
 }
 
 #pragma mark TextView & TextField Delegates
@@ -336,7 +336,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 }
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 	self.currentEditingTextField = textField;
-	[self textViewDidEndEditing:textView];
+	[self textViewDidEndEditing:pageContentTextView];
 	//pageDetailsController.hasChanges = YES;
 }
 
@@ -385,7 +385,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	if(searchRes && dismiss!=YES){
 		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 		[delegate setAlertRunning:YES];
-		[textView resignFirstResponder];
+		[pageContentTextView resignFirstResponder];
         UIAlertView *linkAlert = [[UIAlertView alloc] initWithTitle:@"Link Creation" message:@"Do you want to create link?" delegate:self cancelButtonTitle:@"Create Link" otherButtonTitles:@"Dismiss", nil];                                                
         [linkAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
         [linkAlert show];
@@ -397,14 +397,15 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 }
 - (void)updateTextViewPlacehoderFieldStatus
 {
-	if ( [textView.text length] == 0 ){
+	if ( [pageContentTextView.text length] == 0 ){
 		textViewPlaceHolderField.hidden = NO;
 	}
 	else {
 		textViewPlaceHolderField.hidden = YES;
 	}	
 }
-- (void)textViewDidEndEditing:(UITextView *)aTextView
+
+- (void)textViewDidEndEditing:(UITextView *)textView
 {
 	
 	if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
@@ -423,7 +424,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	if( isTextViewEditing )
 		isTextViewEditing = NO;
 	[self bringTextViewDown];
-	NSString *text = aTextView.text;
+	NSString *text = textView.text;
 	[[[BlogDataManager sharedDataManager] currentPage] setObject:text forKey:@"description"];		
 }
 
@@ -546,7 +547,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	[super viewWillDisappear:animated];
 	pageDetailsController.hasChanges = NO;
 	[titleTextField resignFirstResponder];
-	[textView resignFirstResponder];
+	[pageContentTextView resignFirstResponder];
 	mode = 3;
 }
 
@@ -572,7 +573,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
             [self showLinkView];
 		else{
 			dismiss=YES;
-			[textView touchesBegan:nil withEvent:nil];
+			[pageContentTextView touchesBegan:nil withEvent:nil];
 			[delegate setAlertRunning:NO];
 		}
 	}
@@ -584,21 +585,21 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 			if((infoText.text == nil)||([infoText.text isEqualToString:@""]))
 				infoText.text=urlField.text;
 			
-			NSString *commentsStr = textView.text;
+			NSString *commentsStr = pageContentTextView.text;
 			NSRange rangeToReplace=[self selectedLinkRange];
 			NSString *urlString=[self validateNewLinkInfo:urlField.text];
 			NSString *aTagText=[NSString stringWithFormat:@"<a href=\"%@\">%@</a>",urlString,infoText.text];;
-			textView.text = [commentsStr stringByReplacingOccurrencesOfString:[commentsStr substringWithRange:rangeToReplace] withString:aTagText options:NSCaseInsensitiveSearch range:rangeToReplace];
+			pageContentTextView.text = [commentsStr stringByReplacingOccurrencesOfString:[commentsStr substringWithRange:rangeToReplace] withString:aTagText options:NSCaseInsensitiveSearch range:rangeToReplace];
 			
 			BlogDataManager *dm = [BlogDataManager sharedDataManager];
-			NSString *str = textView.text;
+			NSString *str = pageContentTextView.text;
 			str = ( str	!= nil ? str : @"" );
 			[dm.currentPage setValue:str forKey:@"description"];
 			
 		}
 		dismiss = YES;
 		[delegate setAlertRunning:NO];
-		[textView touchesBegan:nil withEvent:nil];
+		[pageContentTextView touchesBegan:nil withEvent:nil];
 	}
 	
     return;

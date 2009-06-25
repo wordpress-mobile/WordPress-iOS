@@ -1,16 +1,16 @@
 //
-//  PagesListController.m
+//  PagesViewController.m
 //  WordPress
 //
 //  Created by Janakiram on 01/11/08.
 //
 
-#import "PagesListController.h"
+#import "PagesViewController.h"
 #import "BlogDataManager.h"
 #import "Reachability.h"
-#import "PageDetailViewController.h"
-#import "PageDetailsController.h"
-#import "PagesDraftListController.h"
+#import "EditPageViewController.h"
+#import "PagePhotosViewController.h"
+#import "PagesDraftsViewController.h"
 #import "WordPressAppDelegate.h"
 
 
@@ -18,16 +18,16 @@
 #import "XMLRPCResponse.h"
 #import "XMLRPCConnection.h"
 
-@interface PagesListController (private)
-
-- (void) addPostsToolbarItems;
+@interface PagesViewController (private)
+- (void)addPostsToolbarItems;
 - (void)layoutSubviews;
--(void) setPageDetailsController;
-
+- (void)setPageDetailsController;
+- (void)downloadRecentPages;
+- (void)showAddNewPage;
 @end
 
 
-@implementation PagesListController
+@implementation PagesViewController
 
 @synthesize pageDetailViewController,pageDetailsController;
 #define ROW_HEIGHT 60.0f
@@ -94,6 +94,7 @@
 	
     return cell;
 }
+
 - (IBAction) showAddNewPage:(id)sender {
 	// Set current post to a new post
 	// Detail view will bind data into this instance and call save
@@ -233,7 +234,7 @@
 
 	if( indexPath.row == 0 )
 	{
-		PagesDraftListController *pagesDraftsListController = [[PagesDraftListController alloc] initWithNibName:@"PagesDraftListController" bundle:nil];
+		PagesDraftsViewController *pagesDraftsListController = [[PagesDraftsViewController alloc] initWithNibName:@"PagesDraftsViewController" bundle:nil];
 		pagesDraftsListController.pagesListController = self;
 		
 		BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
@@ -272,17 +273,23 @@
 		
 
 	//	[self setPageDetailsController ];
-		self.pageDetailsController.mode = 1; 	
-		self.navigationItem.rightBarButtonItem = nil;
+		self.pageDetailsController.mode = 1;
 		self.pageDetailsController.hasChanges = NO; 	
 		[[self navigationController] pushViewController:self.pageDetailsController animated:YES];
 	}
 }
 
 - (void)viewDidLoad {
-	[super viewDidLoad];
-	[self setPageDetailsController ];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];	
+	[self setPageDetailsController];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
+																						   target:self
+																						   action:@selector(showAddNewPage)];
+ 
+	refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(downloadRecentPages)];  
+	refreshButton.style = UIBarButtonItemStyleBordered; // No glow when tapped.
+	NSArray *items = [NSArray arrayWithObjects: refreshButton, nil];  
+	[toolbar setItems:items animated:NO]; 
 }
 
 - (void)reachabilityChanged
@@ -308,16 +315,7 @@
 	[dm loadPageTitlesForCurrentBlog];
 	dm.isLocaDraftsCurrent = NO;
 
-	self.title=@"Pages";
-	
-	NSInteger totalpages = [[[dm currentBlog] valueForKey:@"totalpages"] integerValue];
-	NSInteger newpages = [[[dm currentBlog] valueForKey:@"newpages"] integerValue];
-	
-	pagessStatusButton.title = [NSString stringWithFormat:@"%d %@ (%d %@)",
-							   totalpages,
-							   @"Pages",
-							   newpages, 
-							   @"New"];
+	self.title = @"Pages";
 	
 	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
 	[pagesTableView reloadData];
@@ -329,29 +327,27 @@
 	[super viewDidAppear:animated];
 }
 
-- (void)addProgressIndicator
-{
-	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
-	UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-	UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aiv];
-	[aiv startAnimating]; 
-	[aiv release];
-	
-	self.navigationItem.rightBarButtonItem = activityButtonItem;
-	[activityButtonItem release];
-	[apool release];
+- (void)addProgressIndicator {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	CGRect frame = CGRectMake(0.0, 0.0, 25.0, 25.0);  
+	UIActivityIndicatorView *loading = [[[UIActivityIndicatorView alloc] initWithFrame:frame] autorelease];  
+	[loading sizeToFit];  
+	loading.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);  
+	[loading startAnimating];	
+	UIBarButtonItem *activityButton = [[[UIBarButtonItem alloc] initWithCustomView:loading] autorelease];
+	activityButton.style = UIBarButtonItemStyleBordered; // No glow when tapped.
+	NSArray *items = [NSArray arrayWithObjects: activityButton, nil];
+	[toolbar setItems:items animated:NO];
+	[pool release];
 }
 
-- (void)removeProgressIndicator
-{
-	while (self.navigationItem.rightBarButtonItem == nil){
-		[[NSRunLoop currentRunLoop] runUntilDate:[[NSDate date] addTimeInterval:0.1]];
-	}
-	self.navigationItem.rightBarButtonItem = nil;
+- (void)removeProgressIndicator {
+	NSArray *items = [NSArray arrayWithObjects: refreshButton, nil];
+	[toolbar setItems:items animated:NO]; 
 }
 
 
-- (IBAction)downloadRecentPages:(id)sender {
+- (void)downloadRecentPages {
 	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
 	BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
 	[sharedBlogDataManager syncPagesForBlog:[sharedBlogDataManager currentBlog]];
@@ -359,6 +355,16 @@
 	
 	[pagesTableView reloadData];
 	[self removeProgressIndicator];
+}
+
+- (void)showAddNewPage {
+	// Set current post to a new post
+	// Detail view will bind data into this instance and call save
+	
+	[[BlogDataManager sharedDataManager] makeNewPageCurrent];
+	
+	self.pageDetailsController.mode = 0;
+	[[self navigationController] pushViewController:self.pageDetailsController animated:YES];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -381,7 +387,7 @@
 -(void)setPageDetailsController
 {
 	if(self.pageDetailsController == nil)
-		self.pageDetailsController = [[PageDetailsController alloc] initWithNibName:@"PageDetailsController" bundle:nil];
+		self.pageDetailsController = [[PagePhotosViewController alloc] initWithNibName:@"PagePhotosViewController" bundle:nil];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

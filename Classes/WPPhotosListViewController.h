@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "WPPhotoViewController.h"
-#import "PostDetailViewController.h"
-#import "PageDetailsController.h"
+#import "PostPhotosViewController.h"
+#import "PagePhotosViewController.h"
 #import "WPImageView.h"
 #import "WPImagePickerController.h"
 
@@ -13,14 +13,14 @@
 	WPImagePickerController *pickerController;
 
 	id<WPPhotosListProtocol>  delegate;
-	PostDetailViewController *postDetailViewController;
-	PageDetailsController *pageDetailsController;
+	PostPhotosViewController *postDetailViewController;
+	PagePhotosViewController *pageDetailsController;
 
 	BOOL isShowPhotoPickerActionSheet;
 }
 
-@property (nonatomic, assign) PostDetailViewController *postDetailViewController;
-@property (nonatomic, assign) PageDetailsController *pageDetailsController;
+@property (nonatomic, assign) PostPhotosViewController *postDetailViewController;
+@property (nonatomic, assign) PagePhotosViewController *pageDetailsController;
 @property (nonatomic, assign) id <WPPhotosListProtocol>  delegate;
 
 @property (nonatomic, retain) UITableView *tableView;

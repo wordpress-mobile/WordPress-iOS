@@ -1,7 +1,7 @@
 
 #define TAG_OFFSET 1010
 
-#import "PostDetailViewController.h"
+#import "PostPhotosViewController.h"
 #import "BlogDataManager.h"
 #import "WordPressAppDelegate.h"
 #import "PostDetailEditController.h"
@@ -11,13 +11,9 @@
 #import "WPNavigationLeftButtonView.h"
 #import "PostsListController.h"
 #import "Reachability.h"
-
-
 #import "CustomFieldsDetailController.h"
 
-
-
-@interface PostDetailViewController (privateMethods)
+@interface PostPhotosViewController (privateMethods)
 - (void)startTimer;
 - (void)stopTimer;
 
@@ -29,7 +25,7 @@
 @end
 
 
-@implementation PostDetailViewController
+@implementation PostPhotosViewController
 
 @synthesize postDetailEditController, postPreviewController, postSettingsController, postsListController, hasChanges, mode, tabController, photosListController, saveButton;
 @synthesize leftView;

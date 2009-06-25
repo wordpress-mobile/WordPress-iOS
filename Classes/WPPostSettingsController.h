@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import "PostDetailViewController.h"
+#import "PostPhotosViewController.h"
 
 // the amount of vertical shift upwards keep the text field in view as the keyboard appears
 #define kOFFSET_FOR_KEYBOARD					150.0
@@ -30,10 +30,10 @@
 	IBOutlet UITableViewCell *resizePhotoHintTableViewCell;
 	IBOutlet UILabel *resizePhotoHintLabel;
 
-	PostDetailViewController *postDetailViewController;	
+	PostPhotosViewController *postDetailViewController;	
 }
 
-@property (nonatomic, assign) PostDetailViewController * postDetailViewController;
+@property (nonatomic, assign) PostPhotosViewController * postDetailViewController;
 @property (readonly) UITableView *tableView;
 @property (readonly) UITextField *passwordTextField;
 
