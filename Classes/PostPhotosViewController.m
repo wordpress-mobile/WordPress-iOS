@@ -17,10 +17,10 @@
 - (void)startTimer;
 - (void)stopTimer;
 
-- (void)_saveAsDrft;
-- (void)_savePost:(id)aPost inBlog:(id)aBlog;
-- (void)_discard;
-- (void)_cancel;
+- (void)saveAsDrft;
+- (void)savePost:(id)aPost inBlog:(id)aBlog;
+- (void)discard;
+- (void)cancel;
 
 @end
 
@@ -181,20 +181,20 @@
 
 		[alert release];
 		
-		[self _cancel];
+		[self cancel];
 		return;
 		
 	}
 	
 	if( ![dm postDescriptionHasValidDescription:dm.currentPost] ){
-		[self _cancel];
+		[self cancel];
 		return;
 	}
 	
 	NSString *postStatus = [dm.currentPost valueForKey:@"post_status"];
 	
 	if( [postStatus isEqual:@"Local Draft"] )
-		[self _saveAsDrft];
+		[self saveAsDrft];
 	else
 	{ 
 		[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
