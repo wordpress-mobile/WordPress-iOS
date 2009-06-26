@@ -309,7 +309,7 @@
 	}
 }
 
-- (void)_saveAsDrft
+- (void)saveAsDrft
 {
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	int postIndex = [dm currentPostIndex];
@@ -336,7 +336,7 @@
 	}	
 }
 
-- (void)_discard
+- (void)discard
 {
 	hasChanges = NO;
 	self.navigationItem.rightBarButtonItem = nil;
@@ -345,7 +345,7 @@
 	[self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)_cancel
+- (void)cancel
 {
     hasChanges = YES;
     if ([[leftView title] isEqualToString:@"Posts"])
@@ -375,7 +375,7 @@
 	[self.navigationController popToViewController:postsListController animated:YES];
 }
 
--(void)_savePostWithBlog:(NSMutableArray *)arrayPost
+-(void)savePostWithBlog:(NSMutableArray *)arrayPost
 {	
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
     NSString *postId=[arrayPost lastObject];
@@ -442,9 +442,9 @@
 		case 201:
 		{
 			if( buttonIndex == 0 )
-				[self _discard];
+				[self discard];
 			if( buttonIndex == 1 )
-				[self _cancel];			
+				[self cancel];			
 			break;
 		}
 		default:
@@ -457,7 +457,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
 	if( alertView.tag != TAG_OFFSET )
-		[self _discard];
+		[self discard];
 	
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	[delegate setAlertRunning:NO];
