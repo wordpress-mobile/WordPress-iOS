@@ -5,40 +5,35 @@
 //  Created by Janakiram on 02/09/08.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
+#import "CommentsTableViewDelegate.h"
 
-@interface CommentsListController : UIViewController<UITableViewDataSource> {
-
+@interface CommentsListController : UIViewController<UITableViewDataSource, CommentsTableViewDelegate> {
 	IBOutlet UITableView *commentsTableView;
-
-	IBOutlet UIBarButtonItem *syncPostsButton;
-	IBOutlet UIBarButtonItem *commentStatusButton;
 	
-	IBOutlet UIToolbar  *editToolbar; 
+	IBOutlet UIToolbar *editToolbar; 
 	UIBarButtonItem *editButtonItem;
 	
-	IBOutlet UIBarButtonItem  *approveButton;
-	IBOutlet UIBarButtonItem  *unapproveButton;
-	IBOutlet UIBarButtonItem  *spamButton;
-	IBOutlet UIButton  *deleteButton;
-
+	IBOutlet UIBarButtonItem *approveButton;
+	IBOutlet UIBarButtonItem *unapproveButton;
+	IBOutlet UIBarButtonItem *spamButton;
+	IBOutlet UIButton *deleteButton;
+    
 	BOOL connectionStatus;
-	BOOL editMode;
-	BOOL changeEditMode;
-
+	BOOL editing;
+    
 	NSMutableArray *commentsArray;
 	NSMutableDictionary *commentsDict;
 	NSMutableArray *selectedComments;
 }
-@property (nonatomic,retain) NSMutableArray *selectedComments;
-@property (nonatomic,retain) NSMutableArray *commentsArray;
 
-- (IBAction)downloadRecentComments:(id)sender;
+@property (nonatomic, retain) NSMutableArray *selectedComments;
+@property (nonatomic, retain) NSMutableArray *commentsArray;
+
 - (IBAction)deleteSelectedComments:(id)sender;
 - (IBAction)approveSelectedComments:(id)sender;
 - (IBAction)unapproveSelectedComments:(id)sender;
 - (IBAction)spamSelectedComments:(id)sender;
-- (void)updateToolBarStatus;
 
 @end

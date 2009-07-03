@@ -5,19 +5,15 @@
 //  Created by Janakiram on 01/11/08.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 @class EditPageViewController,PagePhotosViewController;
 
-@interface PagesViewController : UIViewController {
-	IBOutlet UITableView *pagesTableView;
+@interface PagesViewController : UITableViewController {
 	EditPageViewController *pageDetailViewController;
 	PagePhotosViewController *pageDetailsController;
 	
 	BOOL connectionStatus;
-	
-	IBOutlet UIToolbar *toolbar;
-	UIBarButtonItem *refreshButton;
 }
 
 @property (nonatomic, retain) EditPageViewController *pageDetailViewController;

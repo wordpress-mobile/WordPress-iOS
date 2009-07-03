@@ -205,7 +205,7 @@
 			[[self navigationController] pushViewController:commentsListController animated:YES];
 			[commentsListController release];
 		}else if ( indexPath.row == 1 ) {
-			PagesViewController *pagesListController = [[PagesViewController alloc] initWithNibName:@"PagesViewController" bundle:nil];
+			PagesViewController *pagesListController = [[PagesViewController alloc] init];
 			[[self navigationController] pushViewController:pagesListController animated:YES];
 			[pagesListController release];
 		}

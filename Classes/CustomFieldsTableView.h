@@ -6,18 +6,13 @@
 //  Copyright 2009 Smilodon Software. All rights reserved.
 //
 
-
 #import <UIKit/UIKit.h>
 #import "BlogDataManager.h"
 #import "PostPhotosViewController.h"
 #import "PagePhotosViewController.h"
 #import "CustomFieldsDetailController.h"
 
-
-
 @interface CustomFieldsTableView : UITableViewController {
-
-
 	CustomFieldsDetailController *customFieldsDetailController;
 	
 	
@@ -33,7 +28,6 @@
 }
 
 @property (nonatomic, retain) CustomFieldsDetailController *customFieldsDetailController;
-
 
 @property (nonatomic, assign) PostPhotosViewController * postDetailViewController;
 @property (nonatomic, assign) PagePhotosViewController *pageDetailsController;

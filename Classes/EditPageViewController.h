@@ -81,4 +81,10 @@
 - (BOOL) checkCustomFieldsMinusMetadata;
 - (void)  postionTextViewContentView;
 
+#pragma mark -
+#pragma mark Custom Fields Methods
+
+- (BOOL) checkCustomFieldsMinusMetadata;
+- (void)  postionTextViewContentView;
+
 @end

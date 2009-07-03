@@ -34,6 +34,7 @@
 #define kCellWidth				300.0
 #define kCellHeight				44.0
 
+#define kTableBackgroundColor   [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1]
 
 #ifdef DEBUGMODE
 #define WPLog NSLog

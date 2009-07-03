@@ -8,12 +8,18 @@ Classes/Blog.h -text
 Classes/Blog.m -text
 Classes/BlogDataManager.h -text
 Classes/BlogDataManager.m -text
+Classes/BlogTabViewController.h -text
+Classes/BlogTabViewController.m -text
+Classes/BlogTabViewController.xib -text
 Classes/BlogViewController.h -text
 Classes/BlogViewController.m -text
 Classes/BlogsViewController.h -text
 Classes/BlogsViewController.m -text
+Classes/CommentTableViewCell.h -text
+Classes/CommentTableViewCell.m -text
 Classes/CommentsListController.h -text
 Classes/CommentsListController.m -text
+Classes/CommentsTableViewDelegate.h -text
 Classes/Constants.h -text
 Classes/DraftsListController.h -text
 Classes/DraftsListController.m -text
@@ -21,12 +27,17 @@ Classes/EditBlogViewController.h -text
 Classes/EditBlogViewController.m -text
 Classes/EditPageViewController.h -text
 Classes/EditPageViewController.m -text
+Classes/LocalDraftsTableViewCell.h -text
+Classes/LocalDraftsTableViewCell.m -text
 Classes/NSString+Util.h -text
 Classes/NSString+Util.m -text
 Classes/NSString+XMLExtensions.h -text
 Classes/NSString+XMLExtensions.m -text
 Classes/PagePhotosViewController.h -text
 Classes/PagePhotosViewController.m -text
+Classes/PagesAndCommentsNotSupported.h -text
+Classes/PagesAndCommentsNotSupported.m -text
+Classes/PagesAndCommentsNotSupported.xib -text
 Classes/PagesDraftsViewController.h -text
 Classes/PagesDraftsViewController.m -text
 Classes/PagesViewController.h -text
@@ -35,6 +46,8 @@ Classes/PostDetailEditController.h -text
 Classes/PostDetailEditController.m -text
 Classes/PostPhotosViewController.h -text
 Classes/PostPhotosViewController.m -text
+Classes/PostTableViewCell.h -text
+Classes/PostTableViewCell.m -text
 Classes/PostsListController.h -text
 Classes/PostsListController.m -text
 Classes/Reachability.h -text
@@ -108,7 +121,6 @@ Classes/XMLRPC/XMLValueDecoder.m -text
 /MainWindow.xib -text
 /PagePhotosViewController.xib -text
 /PagesDraftsViewController.xib -text
-/PagesViewController.xib -text
 /PostDetailEditController.xib -text
 /PostPhotosViewController.xib -text
 /PostsListController.xib -text
@@ -152,6 +164,9 @@ WordPress.xcodeproj/project.pbxproj -text
 /photos.png -text
 /preview.png -text
 /settings.png -text
+/sticky_note.png -text svneol=unset#unset
+/sync.png -text svneol=unset#unset
+/talk_bubbles.png -text svneol=unset#unset
 /uncheck.png -text
 /up.png -text
 /vertBars.png -text

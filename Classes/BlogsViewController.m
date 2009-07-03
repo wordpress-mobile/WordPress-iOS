@@ -9,6 +9,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "WPLogoView.h"
 #import "Blog.h"
+#import "BlogTabViewController.h"
 
 @interface BlogsViewController (Private)
 - (void)showBlogDetailModalViewForNewBlogWithAnimation;
@@ -127,55 +128,10 @@
     }
     
     [Reachability sharedReachability].hostName = url;
-    
-    NSDictionary *currentBlog = dataManager.currentBlog;
-    
-    if ( [[currentBlog valueForKey:kSupportsPagesAndComments] boolValue] ) {
-        BlogViewController  *blogMainViewController = [[BlogViewController alloc] initWithNibName:@"BlogViewController" bundle:nil];
-        self.title=@"Blogs";
-        [self.navigationController pushViewController:blogMainViewController animated:animated];
-        self.navigationController.navigationBarHidden = NO;
-        [blogMainViewController release];
-        if([[currentBlog valueForKey:kSupportsPagesAndCommentsServerCheck] boolValue])
-        {
-            UIAlertView *supportedWordpress = [[UIAlertView alloc] initWithTitle:@"New features available!"
-                                                                         message:@"WordPress for iPhone now supports page editing and comment moderation.Refresh Pages and Comments in the respective screens to access the features."
-                                                                        delegate:[[UIApplication sharedApplication] delegate]
-                                                               cancelButtonTitle:nil
-                                                               otherButtonTitles:@"OK", nil];
-            [supportedWordpress show];
-            WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-            [delegate setAlertRunning:YES];
-            [supportedWordpress release];
-            
-            [currentBlog setValue:[NSNumber numberWithBool:NO]   forKey:kSupportsPagesAndCommentsServerCheck];
-            [dataManager saveCurrentBlog];
-        }
         
-    } else {
-        
-        if ( [[currentBlog valueForKey:kVersionAlertShown] boolValue] == NO || [currentBlog valueForKey:kVersionAlertShown] ==NULL )
-        {
-            //changed the alert message  as per ticket 71
-            UIAlertView *unsupportedWordpress = [[UIAlertView alloc] initWithTitle:@"New features available!"
-                                                                           message:@"WordPress for iPhone now supports page editing and comment moderation. However, to use these features you must be running your site on WordPress 2.7+ or WordPress.com."
-                                                                          delegate:[[UIApplication sharedApplication] delegate]
-                                                                 cancelButtonTitle:nil
-                                                                 otherButtonTitles:@"OK", nil];
-            [unsupportedWordpress show];
-            WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-            [delegate setAlertRunning:YES];
-            [unsupportedWordpress release];
-            [currentBlog setValue:[NSNumber numberWithBool:YES]   forKey:kVersionAlertShown];
-            [dataManager saveCurrentBlog];
-        }
-        PostsListController *postsListController = [[PostsListController alloc] initWithNibName:@"PostsListController" bundle:nil];
-        postsListController.title = [[dataManager currentBlog] valueForKey:@"blogName"];
-        [self.navigationController pushViewController:postsListController animated:animated];
-        self.navigationController.navigationBarHidden = NO;
-        [postsListController release];
-    }
-    
+    BlogTabViewController  *blogTabViewController = [[BlogTabViewController alloc] initWithNibName:@"BlogTabViewController" bundle:nil];
+    [self.navigationController pushViewController:blogTabViewController animated:animated];
+    [blogTabViewController release];
 }
 
 

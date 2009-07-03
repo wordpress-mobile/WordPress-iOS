@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		031662460FFAF9AB0045D052 /* LocalDraftsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 031662450FFAF9AB0045D052 /* LocalDraftsTableViewCell.m */; };
+		031663070FFB151A0045D052 /* PostTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 031663060FFB151A0045D052 /* PostTableViewCell.m */; };
+		031665FD0FFC2E890045D052 /* sync.png in Resources */ = {isa = PBXBuildFile; fileRef = 031665FC0FFC2E890045D052 /* sync.png */; };
+		031666AE0FFC3E130045D052 /* CommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 031666AD0FFC3E130045D052 /* CommentTableViewCell.m */; };
 		03CF21ED0FE9F0C3008AD538 /* NSString+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CF21EC0FE9F0C3008AD538 /* NSString+Util.m */; };
 		108F0F540EC2A4F200D09FB6 /* PagesDraftsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 108F0F530EC2A4F200D09FB6 /* PagesDraftsViewController.m */; };
 		108F0FB40EC2B51C00D09FB6 /* PagesDraftsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 108F0FB30EC2B51C00D09FB6 /* PagesDraftsViewController.xib */; };
@@ -108,21 +112,35 @@
 		C5D87A800F20ADB300601936 /* WPLogoView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D87A7F0F20ADB300601936 /* WPLogoView.m */; };
 		C5E3AE350E93F3C5008755FF /* WPImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5E3AE340E93F3C5008755FF /* WPImagePickerController.m */; };
 		CE0CA8CB0FEB178800BC71AD /* favicon.ico in Resources */ = {isa = PBXBuildFile; fileRef = CE0CA8CA0FEB178800BC71AD /* favicon.ico */; };
+		CE444BFE0FF46BD000EEDE7D /* BlogTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE444BFC0FF46BD000EEDE7D /* BlogTabViewController.m */; };
+		CE444BFF0FF46BD000EEDE7D /* BlogTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE444BFD0FF46BD000EEDE7D /* BlogTabViewController.xib */; };
+		CE444C820FF48F8B00EEDE7D /* PagesAndCommentsNotSupported.m in Sources */ = {isa = PBXBuildFile; fileRef = CE444C800FF48F8B00EEDE7D /* PagesAndCommentsNotSupported.m */; };
+		CE444C830FF48F8B00EEDE7D /* PagesAndCommentsNotSupported.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE444C810FF48F8B00EEDE7D /* PagesAndCommentsNotSupported.xib */; };
 		CE4E33D20FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4E33D10FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m */; };
 		CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBD3EAA0FF1BA3B00C1396E /* Blog.m */; };
 		CEC7EFA60FC66081007B90D6 /* AddBlogValidationBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = CEC7EFA50FC66081007B90D6 /* AddBlogValidationBackground.png */; };
 		CEC7EFB40FC663AF007B90D6 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = CEC7EFB30FC663AF007B90D6 /* Default.png */; };
+		CECB84620FFD91050087FF33 /* talk_bubbles.png in Resources */ = {isa = PBXBuildFile; fileRef = CECB84610FFD91050087FF33 /* talk_bubbles.png */; };
+		CECB84640FFD91810087FF33 /* sticky_note.png in Resources */ = {isa = PBXBuildFile; fileRef = CECB84630FFD91810087FF33 /* sticky_note.png */; };
+		CECB84660FFD919A0087FF33 /* documents.png in Resources */ = {isa = PBXBuildFile; fileRef = CECB84650FFD919A0087FF33 /* documents.png */; };
 		EC0F59330EB042B0002FCB4D /* PagePhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC0F59310EB042B0002FCB4D /* PagePhotosViewController.m */; };
 		EC0F59350EB0438E002FCB4D /* PagePhotosViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC0F59340EB0438E002FCB4D /* PagePhotosViewController.xib */; };
 		EC270CB20E8B5E8200E9AA18 /* commentDelete.png in Resources */ = {isa = PBXBuildFile; fileRef = EC270CB10E8B5E8200E9AA18 /* commentDelete.png */; };
 		EC4696FF0EA75D460040EE8E /* PagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4696FE0EA75D460040EE8E /* PagesViewController.m */; };
-		EC4697CF0EA76B210040EE8E /* PagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC4697CE0EA76B210040EE8E /* PagesViewController.xib */; };
 		ECCD48880EA8623F0078082C /* EditPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECCD48870EA8623F0078082C /* EditPageViewController.xib */; };
 		ECCD488C0EA8628A0078082C /* EditPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECCD488B0EA8628A0078082C /* EditPageViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		021751A50EB8412E0032D429 /* WPPhotosListProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPPhotosListProtocol.h; sourceTree = "<group>"; };
+		031662440FFAF9AB0045D052 /* LocalDraftsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalDraftsTableViewCell.h; sourceTree = "<group>"; };
+		031662450FFAF9AB0045D052 /* LocalDraftsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalDraftsTableViewCell.m; sourceTree = "<group>"; };
+		031663050FFB151A0045D052 /* PostTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostTableViewCell.h; sourceTree = "<group>"; };
+		031663060FFB151A0045D052 /* PostTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostTableViewCell.m; sourceTree = "<group>"; };
+		031665FC0FFC2E890045D052 /* sync.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sync.png; sourceTree = "<group>"; };
+		031666AC0FFC3E130045D052 /* CommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentTableViewCell.h; sourceTree = "<group>"; };
+		031666AD0FFC3E130045D052 /* CommentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentTableViewCell.m; sourceTree = "<group>"; };
+		031669580FFC81A20045D052 /* CommentsTableViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsTableViewDelegate.h; sourceTree = "<group>"; };
 		03CF21EB0FE9F0C3008AD538 /* NSString+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Util.h"; sourceTree = "<group>"; };
 		03CF21EC0FE9F0C3008AD538 /* NSString+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Util.m"; sourceTree = "<group>"; };
 		108F0F520EC2A4F200D09FB6 /* PagesDraftsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PagesDraftsViewController.h; sourceTree = "<group>"; };
@@ -274,19 +292,27 @@
 		C5E3AE330E93F3C5008755FF /* WPImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPImagePickerController.h; sourceTree = "<group>"; };
 		C5E3AE340E93F3C5008755FF /* WPImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPImagePickerController.m; sourceTree = "<group>"; };
 		CE0CA8CA0FEB178800BC71AD /* favicon.ico */ = {isa = PBXFileReference; lastKnownFileType = image.ico; path = favicon.ico; sourceTree = "<group>"; };
+		CE444BFB0FF46BD000EEDE7D /* BlogTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogTabViewController.h; sourceTree = "<group>"; };
+		CE444BFC0FF46BD000EEDE7D /* BlogTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogTabViewController.m; sourceTree = "<group>"; };
+		CE444BFD0FF46BD000EEDE7D /* BlogTabViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = BlogTabViewController.xib; path = Classes/BlogTabViewController.xib; sourceTree = "<group>"; };
+		CE444C7F0FF48F8B00EEDE7D /* PagesAndCommentsNotSupported.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PagesAndCommentsNotSupported.h; sourceTree = "<group>"; };
+		CE444C800FF48F8B00EEDE7D /* PagesAndCommentsNotSupported.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PagesAndCommentsNotSupported.m; sourceTree = "<group>"; };
+		CE444C810FF48F8B00EEDE7D /* PagesAndCommentsNotSupported.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PagesAndCommentsNotSupported.xib; path = Classes/PagesAndCommentsNotSupported.xib; sourceTree = "<group>"; };
 		CE4E33D00FEB0F3A00415662 /* UIImage+INResizeImageAllocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+INResizeImageAllocator.h"; sourceTree = "<group>"; };
 		CE4E33D10FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+INResizeImageAllocator.m"; sourceTree = "<group>"; };
 		CEBD3EA90FF1BA3B00C1396E /* Blog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Blog.h; sourceTree = "<group>"; };
 		CEBD3EAA0FF1BA3B00C1396E /* Blog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Blog.m; sourceTree = "<group>"; };
 		CEC7EFA50FC66081007B90D6 /* AddBlogValidationBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AddBlogValidationBackground.png; sourceTree = "<group>"; };
 		CEC7EFB30FC663AF007B90D6 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		CECB84610FFD91050087FF33 /* talk_bubbles.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = talk_bubbles.png; sourceTree = "<group>"; };
+		CECB84630FFD91810087FF33 /* sticky_note.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sticky_note.png; sourceTree = "<group>"; };
+		CECB84650FFD919A0087FF33 /* documents.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = documents.png; path = /Users/quamen/Downloads/iphone_ui_icon_set/icons/documents.png; sourceTree = "<absolute>"; };
 		EC0F59310EB042B0002FCB4D /* PagePhotosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PagePhotosViewController.m; sourceTree = "<group>"; };
 		EC0F59320EB042B0002FCB4D /* PagePhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PagePhotosViewController.h; sourceTree = "<group>"; };
 		EC0F59340EB0438E002FCB4D /* PagePhotosViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PagePhotosViewController.xib; sourceTree = "<group>"; };
 		EC270CB10E8B5E8200E9AA18 /* commentDelete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = commentDelete.png; sourceTree = "<group>"; };
 		EC4696FD0EA75D460040EE8E /* PagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PagesViewController.h; sourceTree = "<group>"; };
 		EC4696FE0EA75D460040EE8E /* PagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PagesViewController.m; sourceTree = "<group>"; };
-		EC4697CE0EA76B210040EE8E /* PagesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PagesViewController.xib; sourceTree = "<group>"; };
 		ECCD48870EA8623F0078082C /* EditPageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditPageViewController.xib; sourceTree = "<group>"; };
 		ECCD488A0EA8628A0078082C /* EditPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditPageViewController.h; sourceTree = "<group>"; };
 		ECCD488B0EA8628A0078082C /* EditPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditPageViewController.m; sourceTree = "<group>"; };
@@ -309,11 +335,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		031662E60FFB14C60045D052 /* Tables */ = {
+			isa = PBXGroup;
+			children = (
+				031666AC0FFC3E130045D052 /* CommentTableViewCell.h */,
+				031666AD0FFC3E130045D052 /* CommentTableViewCell.m */,
+				031669580FFC81A20045D052 /* CommentsTableViewDelegate.h */,
+				031662440FFAF9AB0045D052 /* LocalDraftsTableViewCell.h */,
+				031662450FFAF9AB0045D052 /* LocalDraftsTableViewCell.m */,
+				031663050FFB151A0045D052 /* PostTableViewCell.h */,
+				031663060FFB151A0045D052 /* PostTableViewCell.m */,
+			);
+			name = Tables;
+			sourceTree = "<group>";
+		};
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
 				AC34397A0E11435A00E5D79B /* Controller */,
 				2F706A870DFB229B00B43086 /* Models */,
+				031662E60FFB14C60045D052 /* Tables */,
 				ACFD04900DFD2FCA0031D567 /* XMLRPC */,
 				2F970F970DF929B8006BD934 /* Constants.h */,
 				03CF21EB0FE9F0C3008AD538 /* NSString+Util.h */,
@@ -470,10 +511,10 @@
 		AC34397A0E11435A00E5D79B /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				2904E98D0FE6E03100E00DBC /* Custom Fields */,
-				EC4696A80EA74DAC0040EE8E /* Pages */,
 				AC34397B0E11443300E5D79B /* Blog */,
 				C533CF320E6D3AB3000C3DE8 /* Comments */,
+				2904E98D0FE6E03100E00DBC /* Custom Fields */,
+				EC4696A80EA74DAC0040EE8E /* Pages */,
 				AC3439790E11434600E5D79B /* Post */,
 				AC512F800E20D28500B7DA32 /* Utils */,
 				A0F129C90E1FAD4F00867E18 /* AboutViewController.h */,
@@ -491,6 +532,10 @@
 				2F970F860DF924E2006BD934 /* EditBlogViewController.m */,
 				C59614C80E6C547300E2FBF0 /* BlogViewController.h */,
 				C59614C90E6C547300E2FBF0 /* BlogViewController.m */,
+				CE444BFB0FF46BD000EEDE7D /* BlogTabViewController.h */,
+				CE444BFC0FF46BD000EEDE7D /* BlogTabViewController.m */,
+				CE444C7F0FF48F8B00EEDE7D /* PagesAndCommentsNotSupported.h */,
+				CE444C800FF48F8B00EEDE7D /* PagesAndCommentsNotSupported.m */,
 			);
 			name = Blog;
 			sourceTree = "<group>";
@@ -498,6 +543,10 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				031665FC0FFC2E890045D052 /* sync.png */,
+				CECB84650FFD919A0087FF33 /* documents.png */,
+				CECB84630FFD91810087FF33 /* sticky_note.png */,
+				CECB84610FFD91050087FF33 /* talk_bubbles.png */,
 				CE0CA8CA0FEB178800BC71AD /* favicon.ico */,
 				CEC7EFA50FC66081007B90D6 /* AddBlogValidationBackground.png */,
 				706D25F40F347F1200491666 /* category_child.png */,
@@ -592,8 +641,10 @@
 		ACFF1DC00E231EF600EC6BF5 /* Blog */ = {
 			isa = PBXGroup;
 			children = (
+				CE444C810FF48F8B00EEDE7D /* PagesAndCommentsNotSupported.xib */,
 				AC2FB44B0E1D236A00DFE859 /* EditBlogViewController.xib */,
 				C59615340E6C5B0000E2FBF0 /* BlogViewController.xib */,
+				CE444BFD0FF46BD000EEDE7D /* BlogTabViewController.xib */,
 			);
 			name = Blog;
 			sourceTree = "<group>";
@@ -662,7 +713,6 @@
 			children = (
 				108F0FB30EC2B51C00D09FB6 /* PagesDraftsViewController.xib */,
 				EC0F59340EB0438E002FCB4D /* PagePhotosViewController.xib */,
-				EC4697CE0EA76B210040EE8E /* PagesViewController.xib */,
 				ECCD48870EA8623F0078082C /* EditPageViewController.xib */,
 			);
 			name = Pages;
@@ -764,7 +814,6 @@
 				EC270CB20E8B5E8200E9AA18 /* commentDelete.png in Resources */,
 				2AB2EB0C0E9A148B00CB166E /* MainBackground.png in Resources */,
 				2AC5227A0E9B2BE300A61748 /* vertBars.png in Resources */,
-				EC4697CF0EA76B210040EE8E /* PagesViewController.xib in Resources */,
 				ECCD48880EA8623F0078082C /* EditPageViewController.xib in Resources */,
 				EC0F59350EB0438E002FCB4D /* PagePhotosViewController.xib in Resources */,
 				108F0FB40EC2B51C00D09FB6 /* PagesDraftsViewController.xib in Resources */,
@@ -775,6 +824,12 @@
 				CEC7EFB40FC663AF007B90D6 /* Default.png in Resources */,
 				29FF132F0FE70F3100CFB908 /* CustomFieldsTableView.xib in Resources */,
 				CE0CA8CB0FEB178800BC71AD /* favicon.ico in Resources */,
+				031665FD0FFC2E890045D052 /* sync.png in Resources */,
+				CE444BFF0FF46BD000EEDE7D /* BlogTabViewController.xib in Resources */,
+				CE444C830FF48F8B00EEDE7D /* PagesAndCommentsNotSupported.xib in Resources */,
+				CECB84620FFD91050087FF33 /* talk_bubbles.png in Resources */,
+				CECB84640FFD91810087FF33 /* sticky_note.png in Resources */,
+				CECB84660FFD919A0087FF33 /* documents.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -833,6 +888,11 @@
 				03CF21ED0FE9F0C3008AD538 /* NSString+Util.m in Sources */,
 				CE4E33D20FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m in Sources */,
 				CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */,
+				031662460FFAF9AB0045D052 /* LocalDraftsTableViewCell.m in Sources */,
+				031663070FFB151A0045D052 /* PostTableViewCell.m in Sources */,
+				031666AE0FFC3E130045D052 /* CommentTableViewCell.m in Sources */,
+				CE444BFE0FF46BD000EEDE7D /* BlogTabViewController.m in Sources */,
+				CE444C820FF48F8B00EEDE7D /* PagesAndCommentsNotSupported.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

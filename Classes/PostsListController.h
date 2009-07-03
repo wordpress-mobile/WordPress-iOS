@@ -1,12 +1,9 @@
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 @class BlogDataManager, PostPhotosViewController, PostDetailEditController, DraftsListController;
 
-@interface PostsListController : UIViewController {
+@interface PostsListController : UITableViewController {
 		
-	IBOutlet UIBarButtonItem *syncPostsButton;
-	IBOutlet UIBarButtonItem *postsStatusButton;
-	
 	IBOutlet UITableView *postsTableView;
 
 	PostPhotosViewController *postDetailViewController;
@@ -18,6 +15,4 @@
 @property (nonatomic, retain) PostPhotosViewController *postDetailViewController;
 @property (nonatomic, retain) PostDetailEditController *postDetailEditController;
 
-- (IBAction)downloadRecentPosts:(id)sender;
-- (IBAction)showAddPostView:(id)sender;
 @end
