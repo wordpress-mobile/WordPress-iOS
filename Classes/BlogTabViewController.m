@@ -52,6 +52,10 @@
         [self.view bringSubviewToFront:self.tabBar];
         self.selectedViewController = postsListController;
         
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
+                                                                                                target:postsListController
+                                                                                                action:@selector(showAddPostView)] autorelease];
+        
         [postsListController release];
         [pagesViewController release];
         [commentsListController release];
@@ -134,6 +138,10 @@
         [self.view bringSubviewToFront:self.tabBar];
         self.selectedViewController = postsListController;
         
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
+                                                                                                target:postsListController
+                                                                                                action:@selector(showAddPostView)] autorelease];
+        
     }
     else if ((item == pagesTabBarItem) && [[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:kSupportsPagesAndComments] boolValue]) {
         UIViewController *pagesViewController = [viewControllers objectAtIndex:1];        
@@ -142,6 +150,10 @@
         [pagesViewController viewWillAppear:NO];
         [self.view bringSubviewToFront:self.tabBar];
         self.selectedViewController = pagesViewController;
+        
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
+                                                                                                target:pagesViewController
+                                                                                                action:@selector(showAddNewPage)] autorelease];
     }
     else if ((item == commentsTabBarItem) && [[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:kSupportsPagesAndComments] boolValue]) {
         UIViewController *commentsListController = [viewControllers objectAtIndex:2];        
@@ -150,6 +162,8 @@
         [commentsListController viewWillAppear:NO];
         [self.view bringSubviewToFront:self.tabBar];
         self.selectedViewController = commentsListController;
+        
+        self.navigationItem.rightBarButtonItem = nil;
     }
     else {
         UIViewController *pagesAndCommentsNotSupported = [viewControllers objectAtIndex:3];        
@@ -158,6 +172,8 @@
         [pagesAndCommentsNotSupported viewWillAppear:NO];
         [self.view bringSubviewToFront:self.tabBar];
         self.selectedViewController = pagesAndCommentsNotSupported;
+        
+        self.navigationItem.rightBarButtonItem = nil;
     }
     
 }

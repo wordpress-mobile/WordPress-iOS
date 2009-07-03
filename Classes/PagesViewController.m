@@ -51,9 +51,6 @@
     
 	[self setPageDetailsController];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
-																							target:self
-																							action:@selector(showAddNewPage)] autorelease];
 }
 
 - (void)dealloc {	
@@ -217,7 +214,8 @@
 - (void)showAddNewPage {
 	[[BlogDataManager sharedDataManager] makeNewPageCurrent];	
 	self.pageDetailsController.mode = 0;
-	[[self navigationController] pushViewController:self.pageDetailsController animated:YES];
+    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    [delegate.navigationController pushViewController:self.pageDetailsController animated:YES];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

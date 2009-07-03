@@ -45,17 +45,6 @@
     
     [self addRefreshButton];
     
-	WPNavigationLeftButtonView *myview = [WPNavigationLeftButtonView createCopyOfView];  
-    [myview setTarget:self withAction:@selector(goToHome:)];
-    [myview setTitle:@"Blog"];
-    UIBarButtonItem *barButton  = [[UIBarButtonItem alloc] initWithCustomView:myview];
-    self.navigationItem.leftBarButtonItem = barButton;
-    [barButton release];
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
-																							target:self
-																							action:@selector(showAddPostView)] autorelease];
-    [myview release];
-	
 	// Observe the kNetworkReachabilityChangedNotification. When that notification is posted, the
     // method "reachabilityChanged" will be called. 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];	
@@ -83,7 +72,8 @@
 	
 	// Create a new nav controller to provide navigation bar with Cancel and Done buttons.
 	// Ask for modal presentation
-	[[self navigationController] pushViewController:self.postDetailViewController animated:YES];
+    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    [delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
 }
 
 - (PostPhotosViewController *)postDetailViewController {
