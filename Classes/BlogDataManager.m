@@ -207,9 +207,17 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 - (BOOL)handleError:(NSError *)err
 {
-	UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"Communication Error"
-													 message:[err localizedDescription]
-													delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    UIAlertView *alert1 = nil;
+    if ([[err localizedDescription] isEqualToString:@"Bad login/pass combination."]) {
+        alert1 = [[UIAlertView alloc] initWithTitle:@"Communication Error"
+                                                         message:@"Bad user name or password."
+                                                        delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    }
+    else {
+        alert1 = [[UIAlertView alloc] initWithTitle:@"Communication Error"
+                                                         message:[err localizedDescription]
+                                                        delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    }
 	
 	[alert1 show];
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
