@@ -12,17 +12,69 @@
 #import "PagePhotosViewController.h"
 #import "WordPressAppDelegate.h"
 
-
 @implementation PagesDraftsViewController
 @synthesize pagesListController;
 
+#pragma mark -
+#pragma mark Memory Management
 
-- (id)initWithStyle:(UITableViewStyle)style {
-	if (self = [super initWithStyle:style]) {
-	}
-	return self;
+- (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"DraftsUpdated" object:nil];
+	[super dealloc];
 }
 
+- (void)didReceiveMemoryWarning {
+	WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+	[super didReceiveMemoryWarning];
+}
+
+#pragma mark -
+#pragma mark View lifecycle
+
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	dm = [BlogDataManager sharedDataManager];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsAndDraftsList) name:@"DraftsUpdated" object:nil];
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	
+	self.navigationItem.title = [NSString stringWithFormat:@"Local Drafts"];
+    
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
+                                                                                            target:self
+                                                                                            action:@selector(showAddNewLocalPage)] autorelease];
+	[self.tableView reloadData];
+	
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+	[super viewDidDisappear:animated];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	
+	//Code to disable landscape when alert is raised.
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	if([delegate isAlertRunning] == YES)
+		return NO;
+	
+	// Return YES for supported orientations
+	return YES;
+}
+
+#pragma mark -
+#pragma mark Table View Delegate Methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	return 1;
@@ -70,10 +122,8 @@
 	pageDetailsController.mode = 1; 
 	pageDetailsController.tabController.selectedIndex=0;
 	[tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
-	[[pagesListController navigationController] pushViewController:pagesListController.pageDetailsController animated:YES];
+	[[self navigationController] pushViewController:pagesListController.pageDetailsController animated:YES];
 }
-
-
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	
@@ -89,70 +139,8 @@
 	}
 }
 
-
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
 	return YES;
 }
-
-//- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath
-//{
-//	return UITableViewCellAccessoryDisclosureIndicator;
-//}
-
-
-
-- (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"DraftsUpdated" object:nil];
-	[super dealloc];
-}
-
-
-- (void)viewDidLoad {
-	[super viewDidLoad];
-	dm = [BlogDataManager sharedDataManager];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsAndDraftsList) name:@"DraftsUpdated" object:nil];
-
-}
-
-- (void)updatePostsAndDraftsList{
-	[self.tableView reloadData];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-	
-	self.navigationItem.title = [NSString stringWithFormat:@"Local Drafts"];
-	[(UITableView *) self.view reloadData];
-	
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-	[super viewDidDisappear:animated];
-}
-
-- (void)didReceiveMemoryWarning {
-	WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
-	[super didReceiveMemoryWarning];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	
-	//Code to disable landscape when alert is raised.
-	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	if([delegate isAlertRunning] == YES)
-		return NO;
-	
-	// Return YES for supported orientations
-	return YES;
-}
-
 
 @end

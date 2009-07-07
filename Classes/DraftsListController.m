@@ -33,7 +33,11 @@
 	[super viewWillAppear:animated];
 	
 	self.navigationItem.title = [NSString stringWithFormat:@"Local Drafts"];
-	[(UITableView *) self.view reloadData];
+    
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
+                                                                                            target:self
+                                                                                            action:@selector(showAddNewLocalPost)] autorelease];
+	[self.tableView reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -41,6 +45,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    self.navigationItem.rightBarButtonItem = nil;
 	[super viewWillDisappear:animated];
 }
 
@@ -98,7 +103,7 @@
 	[dm makeDraftAtIndexCurrent:indexPath.row];
 	postsListController.postDetailViewController.mode = 1; 
 	[tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
-	[[postsListController navigationController] pushViewController:postsListController.postDetailViewController animated:YES];
+	[[self navigationController] pushViewController:postsListController.postDetailViewController animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath 
@@ -117,10 +122,6 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
 	return YES;
-}
-
-- (void)updatePostsAndDraftsList{
-	[self.tableView reloadData];
 }
 
 @end
