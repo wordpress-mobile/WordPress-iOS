@@ -25,6 +25,8 @@
 - (void)showAddPostView;
 - (void)downloadRecentPosts;
 - (UITableViewCell *)postCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
+- (BOOL)handleAutoSavedContext:(NSInteger)tag;
+- (void)addRefreshButton;
 @end
 
 @implementation PostsListController
