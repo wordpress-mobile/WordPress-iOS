@@ -86,6 +86,7 @@
 }
 
 #pragma mark -
+#pragma mark Table View Delegate Methods
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     cell.backgroundColor = [UIColor whiteColor];
@@ -115,23 +116,6 @@
         cell.badgeLabel.text = [NSString stringWithFormat:@"(%d)", c];
     } else {
         cell.badgeLabel.text = [NSString stringWithFormat:@""];
-    }
-    
-    return cell;
-}
-
-- (UITableViewCell *)postCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"PostCell";
-    PostTableViewCell *cell = (PostTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
-    
-    if (cell == nil) {
-        cell = [[[PostTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
-    }
-    
-    if ([dm countOfPostTitles]) {
-        id currentPost = [dm postTitleAtIndex:indexPath.row - POST_ROW];
-		cell.post = currentPost;
     }
     
     return cell;
@@ -202,6 +186,24 @@
 	} else {
         return POST_ROW_HEIGHT;
     }
+}
+
+
+- (UITableViewCell *)postCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *CellIdentifier = @"PostCell";
+    PostTableViewCell *cell = (PostTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    BlogDataManager *dm = [BlogDataManager sharedDataManager];
+    
+    if (cell == nil) {
+        cell = [[[PostTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
+    }
+    
+    if ([dm countOfPostTitles]) {
+        id currentPost = [dm postTitleAtIndex:indexPath.row - POST_ROW];
+		cell.post = currentPost;
+    }
+    
+    return cell;
 }
 
 - (void)goToHome:(id)sender {
