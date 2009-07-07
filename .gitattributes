@@ -156,6 +156,7 @@ WordPress.xcodeproj/project.pbxproj -text
 /defaultPostTemplate.html -text
 /defaultPostTemplate_old.html -text
 /delete.png -text
+/documents.png -text
 /down.png -text
 /favicon.ico -text svneol=unset#unset
 /license.txt -text
