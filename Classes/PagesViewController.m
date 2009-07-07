@@ -193,7 +193,6 @@
 	
 	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
 	[self.tableView reloadData];
-	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:NO];
 	[super viewWillAppear:animated];
 }
 

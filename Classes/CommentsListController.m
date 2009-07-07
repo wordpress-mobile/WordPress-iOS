@@ -86,7 +86,6 @@
 	}
 	
 	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
-	[commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:NO];
 	[commentsTableView reloadData];
 	
 	[editToolbar setHidden:YES];

@@ -12,6 +12,11 @@
 #import "PagePhotosViewController.h"
 #import "WordPressAppDelegate.h"
 
+@interface PagesDraftsViewController (Private)
+- (void) updateDraftsList;
+@end
+
+
 @implementation PagesDraftsViewController
 @synthesize pagesListController;
 
@@ -34,7 +39,7 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	dm = [BlogDataManager sharedDataManager];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsAndDraftsList) name:@"DraftsUpdated" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateDraftsList) name:@"DraftsUpdated" object:nil];
     
 }
 
@@ -43,23 +48,7 @@
 	
 	self.navigationItem.title = [NSString stringWithFormat:@"Local Drafts"];
     
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
-                                                                                            target:self
-                                                                                            action:@selector(showAddNewLocalPage)] autorelease];
-	[self.tableView reloadData];
-	
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-	[super viewDidDisappear:animated];
+   [self updateDraftsList];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -141,6 +130,11 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
 	return YES;
+}
+
+#pragma mark -
+- (void) updateDraftsList {
+    [self.tableView reloadData];
 }
 
 @end

@@ -31,6 +31,8 @@
 
 @synthesize selectedViewController;
 
+#pragma mark -
+#pragma mark Memory Management
 
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -47,7 +49,6 @@
         [array release];
         
         [self.view addSubview:postsListController.view];
-        [postsListController viewWillAppear:YES];
 
         [self.view bringSubviewToFront:self.tabBar];
         self.selectedViewController = postsListController;
@@ -64,6 +65,28 @@
     return self;
 }
 
+- (void)didReceiveMemoryWarning {
+	// Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+	
+	// Release any cached data, images, etc that aren't in use.
+}
+
+- (void)dealloc {
+    [viewControllers release];
+    
+    [tabBar release];
+    [postsTabBarItem release];
+    [pagesTabBarItem release];
+    [commentsTabBarItem release];
+    
+    [selectedViewController release];
+    
+    [super dealloc];
+}
+
+#pragma mark -
+#pragma mark View Lifecycle Methods
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
@@ -80,49 +103,30 @@
     [super viewDidLoad];
 }
 
-- (void)goToHome:(id)sender {
-    [[BlogDataManager sharedDataManager] resetCurrentBlog];
-	[self popTransition:self.navigationController.view];
-}
-
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
-
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
+- (void)viewWillAppear:(BOOL)animated {
+    [self.selectedViewController viewWillAppear:animated];
+    [super viewWillAppear:animated];
 }
 
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
+    self.viewControllers  = nil;
     
+    self.tabBar = nil;
+    self.postsTabBarItem = nil;
+    self.pagesTabBarItem = nil;
+    self.commentsTabBarItem = nil;
+    
+    self.selectedViewController = nil;
 }
 
-//- (void)goToHome:(id)sender {
-//    [[BlogDataManager sharedDataManager] resetCurrentBlog];
-//	[self popTransition:self.navigationController.view];
-//}
+#pragma mark -
+#pragma mark Navigation Methods
 
-- (void)dealloc {
-    [viewControllers release];
-    
-    [tabBar release];
-    [postsTabBarItem release];
-    [pagesTabBarItem release];
-    [commentsTabBarItem release];
-    
-    [selectedViewController release];
-    
-    [super dealloc];
+- (void)goToHome:(id)sender {
+    [[BlogDataManager sharedDataManager] resetCurrentBlog];
+	[self popTransition:self.navigationController.view];
 }
 
 #pragma mark -
@@ -175,8 +179,6 @@
         
         self.navigationItem.rightBarButtonItem = nil;
     }
-    
 }
-
 
 @end
