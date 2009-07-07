@@ -108,19 +108,6 @@
     [super viewWillAppear:animated];
 }
 
-- (void)viewDidUnload {
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
-    self.viewControllers  = nil;
-    
-    self.tabBar = nil;
-    self.postsTabBarItem = nil;
-    self.pagesTabBarItem = nil;
-    self.commentsTabBarItem = nil;
-    
-    self.selectedViewController = nil;
-}
-
 #pragma mark -
 #pragma mark Navigation Methods
 
