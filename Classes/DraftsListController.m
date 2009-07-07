@@ -7,22 +7,66 @@
 @implementation DraftsListController
 @synthesize postsListController;
 
-- (id)initWithStyle:(UITableViewStyle)style {
-	if (self = [super initWithStyle:style]) {
-	}
-	return self;
+#pragma mark -
+#pragma mark Memory Management
+
+- (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"DraftsUpdated" object:nil];
+	[super dealloc];
 }
 
+- (void)didReceiveMemoryWarning {
+    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+	[super didReceiveMemoryWarning];
+}
+
+#pragma mark -
+#pragma mark View lifecycle
+
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	dm = [BlogDataManager sharedDataManager];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsAndDraftsList) name:@"DraftsUpdated" object:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	
+	self.navigationItem.title = [NSString stringWithFormat:@"Local Drafts"];
+	[(UITableView *) self.view reloadData];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+	[super viewDidDisappear:animated];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	if([delegate isAlertRunning] == YES)
+		return NO;
+	
+	// Return YES for supported orientations
+	return YES;
+}
+
+#pragma mark -
+#pragma mark Table View Delegate Methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	return 1;
 }
 
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	return [dm numberOfDrafts];
 }
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
@@ -75,68 +119,8 @@
 	return YES;
 }
 
-//- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath
-//{
-//	return UITableViewCellAccessoryDisclosureIndicator;
-//}
-
-/*
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-/*
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-	return YES;
-}
-*/
-
-
-- (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"DraftsUpdated" object:nil];
-	[super dealloc];
-}
-
-- (void)viewDidLoad {
-	[super viewDidLoad];
-	dm = [BlogDataManager sharedDataManager];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsAndDraftsList) name:@"DraftsUpdated" object:nil];
-}
 - (void)updatePostsAndDraftsList{
 	[self.tableView reloadData];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-	
-	self.navigationItem.title = [NSString stringWithFormat:@"Local Drafts"];
-	[(UITableView *) self.view reloadData];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-	[super viewDidDisappear:animated];
-}
-
-- (void)didReceiveMemoryWarning {
-		WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
-	[super didReceiveMemoryWarning];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	if([delegate isAlertRunning] == YES)
-		return NO;
-	
-	// Return YES for supported orientations
-	return YES;
-}
-
 @end
-

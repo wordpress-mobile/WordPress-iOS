@@ -24,6 +24,7 @@
 - (void)layoutSubviews;
 - (void)showAddPostView;
 - (void)downloadRecentPosts;
+- (UITableViewCell *)postCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
 @end
 
 @implementation PostsListController
