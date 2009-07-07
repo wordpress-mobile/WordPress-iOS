@@ -259,10 +259,8 @@
 		
 		[self performSelectorInBackground:@selector(removeProgressIndicator) withObject:nil];
     }
-    [alertView autorelease];
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	[delegate setAlertRunning:NO];
-
 }
 
 @end
