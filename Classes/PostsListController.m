@@ -20,8 +20,6 @@
 #define REFRESH_BUTTON_HEIGHT   50
 
 @interface PostsListController (Private)
-- (void)addPostsToolbarItems;
-- (void)layoutSubviews;
 - (void)showAddPostView;
 - (void)downloadRecentPosts;
 - (UITableViewCell *)postCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
@@ -81,13 +79,13 @@
 	
 	
 	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
-	[self.tableView reloadData];
+	
 	[super viewWillAppear:animated];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-	
 	[self handleAutoSavedContext:0];
 }
 

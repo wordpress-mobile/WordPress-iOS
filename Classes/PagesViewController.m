@@ -23,8 +23,6 @@
 #define REFRESH_BUTTON_HEIGHT   50
 
 @interface PagesViewController (Private)
-- (void)addPostsToolbarItems;
-- (void)layoutSubviews;
 - (void)setPageDetailsController;
 - (void)downloadRecentPages;
 - (void)showAddNewPage;
@@ -192,7 +190,6 @@
 	self.title = @"Pages";
 	
 	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
-	[self.tableView reloadData];
 	[super viewWillAppear:animated];
 }
 
