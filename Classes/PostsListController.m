@@ -31,15 +31,26 @@
 
 @synthesize postDetailViewController, postDetailEditController;
 
-- (void)addRefreshButton {
-    CGRect frame = CGRectMake(0, 0, self.tableView.bounds.size.width, REFRESH_BUTTON_HEIGHT);
-    UIButton *refreshButton = [[UIButton alloc] initWithFrame:frame];
+#pragma mark -
+#pragma mark Memory Management
+
+- (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"kNetworkReachabilityChangedNotification" object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"AsynchronousPostIsPosted" object:nil];
+	
+	[postDetailEditController release];
+	[PostPhotosViewController release];
     
-    [refreshButton setImage:[UIImage imageNamed:REFRESH_BUTTON_ICON] forState:UIControlStateNormal];
-    [refreshButton addTarget:self action:@selector(downloadRecentPosts) forControlEvents:UIControlEventTouchUpInside];
-    
-    self.tableView.tableHeaderView = refreshButton;
+	[super dealloc];
 }
+
+- (void)didReceiveMemoryWarning {
+	WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+	[super didReceiveMemoryWarning];
+}
+
+#pragma mark -
+#pragma mark View Lifecycle
 
 - (void)viewDidLoad {
     self.tableView.backgroundColor = kTableBackgroundColor;
@@ -53,14 +64,53 @@
 	
 }
 
-- (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"kNetworkReachabilityChangedNotification" object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"AsynchronousPostIsPosted" object:nil];
+- (void)viewWillAppear:(BOOL)animated {    
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	[dm postTitlesForBlog:[dm currentBlog]];
+	dm.isLocaDraftsCurrent = NO;
+	[dm loadPostTitlesForCurrentBlog];
 	
-	[postDetailEditController release];
-	[PostPhotosViewController release];
+	// we retain this controller in the caller (RootViewController) so load view does not get called 
+	// everytime we navigate to the view
+	// need to update the prompt and the title here as well as in loadView	
+	NSString *blogName = [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blogName"];
+	
+	self.title = [NSString stringWithFormat:@"%@", blogName];
+	
+	
+	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
+	[self.tableView reloadData];
+	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:NO];
+	[super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	
+	[self handleAutoSavedContext:0];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	
+	
+	if([delegate isAlertRunning] == YES)
+		return NO;
+	
+	// Return YES for supported orientations
+	return YES;
+}
+
+#pragma mark -
+
+- (void)addRefreshButton {
+    CGRect frame = CGRectMake(0, 0, self.tableView.bounds.size.width, REFRESH_BUTTON_HEIGHT);
+    UIButton *refreshButton = [[UIButton alloc] initWithFrame:frame];
     
-	[super dealloc];
+    [refreshButton setImage:[UIImage imageNamed:REFRESH_BUTTON_ICON] forState:UIControlStateNormal];
+    [refreshButton addTarget:self action:@selector(downloadRecentPosts) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.tableView.tableHeaderView = refreshButton;
 }
 
 - (void)showAddPostView {
@@ -218,28 +268,6 @@
 	[self.tableView reloadData];
 }
 
-#pragma mark -
-
-- (void)viewWillAppear:(BOOL)animated {    
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	[dm postTitlesForBlog:[dm currentBlog]];
-	dm.isLocaDraftsCurrent = NO;
-	[dm loadPostTitlesForCurrentBlog];
-	
-	// we retain this controller in the caller (RootViewController) so load view does not get called 
-	// everytime we navigate to the view
-	// need to update the prompt and the title here as well as in loadView	
-	NSString *blogName = [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blogName"];
-	
-	self.title = [NSString stringWithFormat:@"%@", blogName];
-	
-	
-	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
-	[self.tableView reloadData];
-	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:NO];
-	[super viewWillAppear:animated];
-}
-
 - (BOOL)handleAutoSavedContext:(NSInteger)tag {
 	if ([[BlogDataManager sharedDataManager] makeAutoSavedPostCurrentForCurrentBlog]) {
 		NSString *title = [[BlogDataManager sharedDataManager].currentPost valueForKey:@"title"];
@@ -262,12 +290,6 @@
 	}
 	
 	return NO;
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-	
-	[self handleAutoSavedContext:0];
 }
 
 - (void)downloadRecentPosts {
@@ -317,24 +339,6 @@
 	}
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	[delegate setAlertRunning:NO];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	
-	
-	if([delegate isAlertRunning] == YES)
-		return NO;
-	
-	// Return YES for supported orientations
-	return YES;
-}
-
-#pragma mark -
-
-- (void)didReceiveMemoryWarning {
-	WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
-	[super didReceiveMemoryWarning];
 }
 
 @end
