@@ -30,6 +30,8 @@ Classes/NSString+Util.h -text
 Classes/NSString+Util.m -text
 Classes/NSString+XMLExtensions.h -text
 Classes/NSString+XMLExtensions.m -text
+Classes/PageViewController.h -text
+Classes/PageViewController.m -text
 Classes/PagesAndCommentsNotSupported.h -text
 Classes/PagesAndCommentsNotSupported.m -text
 Classes/PagesAndCommentsNotSupported.xib -text
@@ -41,6 +43,8 @@ Classes/PostDetailEditController.h -text
 Classes/PostDetailEditController.m -text
 Classes/PostTableViewCell.h -text
 Classes/PostTableViewCell.m -text
+Classes/PostViewController.h -text
+Classes/PostViewController.m -text
 Classes/PostsListController.h -text
 Classes/PostsListController.m -text
 Classes/Reachability.h -text
@@ -112,8 +116,10 @@ Classes/XMLRPC/XMLValueDecoder.m -text
 /Info.plist -text
 /MainBackground.png -text
 /MainWindow.xib -text
+/PageViewController.xib -text
 /PagesDraftsViewController.xib -text
 /PostDetailEditController.xib -text
+/PostViewController.xib -text
 /Red[!!-~]Background.png -text
 /Red[!!-~]Selected[!!-~]Background.png -text
 /RoundedRectBlack.png -text
