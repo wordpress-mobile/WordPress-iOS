@@ -92,7 +92,15 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		}
 	}
     
-    [[BlogDataManager sharedDataManager] resetCurrentBlog];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    int current_blog_index = [defaults integerForKey:@"current_blog_index"];
+    if (current_blog_index > -1) {
+        [[BlogDataManager sharedDataManager] makeBlogAtIndexCurrent:current_blog_index];
+    }
+    else {
+        [[BlogDataManager sharedDataManager] resetCurrentBlog];
+    }
+        
     splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, 320, 480)];
     splashView.image = [UIImage imageNamed:@"Default.png"];
     [window addSubview:splashView];
@@ -125,6 +133,14 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	//[self saveBlogData];
 	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 	[dataManager saveBlogData];
+    
+    NSString *current_blog_id = [[dataManager currentBlog] objectForKey:@"blogid"];
+    NSString *current_blog_hostname = [[dataManager currentBlog] objectForKey:@"blog_host_name"];
+    int current_blog_index = [dataManager indexForBlogid:current_blog_id hostName:current_blog_hostname];
+    
+     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setInteger:current_blog_index forKey:@"current_blog_index"];
+    
 	[UIApplication sharedApplication].applicationIconBadgeNumber = [dataManager countOfAwaitingComments];
 }
 
