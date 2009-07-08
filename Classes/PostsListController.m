@@ -79,6 +79,8 @@
 	
 	connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
 	
+	[self.tableView reloadData];
+	
 	[super viewWillAppear:animated];
 }
 
