@@ -71,7 +71,7 @@
 																  action:@selector(showAddPostView)];
 }
 
-- (void)viewWillAppear:(BOOL)animated {    
+- (void)viewWillAppear:(BOOL)animated {
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	[dm postTitlesForBlog:[dm currentBlog]];
 	dm.isLocaDraftsCurrent = NO;

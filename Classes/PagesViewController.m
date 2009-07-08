@@ -146,7 +146,6 @@
         [delegate.navigationController pushViewController:pagesDraftsListController animated:YES];
         
 		[pagesDraftsListController release];
-		return;
 	} else {
 		if (!connectionStatus) {
 			UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
@@ -171,7 +170,6 @@
         // Get the navigation controller from the delegate
         WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
         [delegate.navigationController pushViewController:self.pageDetailsController animated:YES];
-        
 	}
 }
 

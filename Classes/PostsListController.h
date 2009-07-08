@@ -2,7 +2,7 @@
 
 @class BlogDataManager, PostPhotosViewController, PostDetailEditController, DraftsListController;
 
-@interface PostsListController : UITableViewController {
+@interface PostsListController : UITableViewController <UITableViewDataSource, UITableViewDelegate> {
 	UIBarButtonItem *newButtonItem;
 	
 	IBOutlet UITableView *postsTableView;

@@ -30,6 +30,11 @@
 	tabBarController.selectedIndex = 0;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[tabBarController.selectedViewController viewWillAppear:NO];
+}
+
 #pragma mark -
 #pragma mark Navigation Methods
 

@@ -51,7 +51,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
 	
 	editButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered 
-													 target:self action:@selector(editComments:)];
+													 target:self action:@selector(editComments)];
     
 	self.navigationItem.rightBarButtonItem = editButtonItem;
     
@@ -86,13 +86,15 @@
 		[commentsDict setValue:dict forKey:str];
 	}
 	
-	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
+	connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
 	[commentsTableView reloadData];
 	
 	[editToolbar setHidden:YES];
 
 	[editButtonItem setEnabled:([commentsArray count] > 0)];
 
+	[commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:NO];
+	
 	[super viewWillAppear:animated];
 }
 
@@ -130,7 +132,7 @@
 	[commentsTableView reloadData];
 }
 
-- (void)editComments:(id)sender {
+- (void)editComments {
 	[self setEditing:!editing];
 }
 
@@ -271,7 +273,7 @@
 }
 
 #pragma mark -
-#pragma mark tableview methods
+#pragma mark UITableView Delegate Methods
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     cell.backgroundColor = [UIColor whiteColor];
