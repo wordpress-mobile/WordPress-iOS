@@ -16,9 +16,9 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "PostPhotosViewController.h"
+#import "PostViewController.h"
 #import "BlogDataManager.h"
-#import "PagePhotosViewController.h"
+#import "PageViewController.h"
 
 @interface CustomFieldsDetailController : UITableViewController
 	<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
@@ -36,8 +36,8 @@
 		
 		UITextField *textFieldBeingEdited;
 		NSMutableDictionary *customFieldsDict;
-		PostPhotosViewController *postDetailViewController;
-		PagePhotosViewController *pageDetailsController;
+		PostViewController *postDetailViewController;
+		PageViewController *pageDetailsController;
 		BlogDataManager *dm;
 		BOOL isNewCustomField;
 		BOOL _isPost;
@@ -64,8 +64,8 @@
 
 
 @property (retain, nonatomic)NSMutableDictionary *customFieldsDict;
-@property (nonatomic, assign) PostPhotosViewController *postDetailViewController;
-@property (nonatomic, assign) PagePhotosViewController *pageDetailsController;
+@property (nonatomic, assign) PostViewController *postDetailViewController;
+@property (nonatomic, assign) PageViewController *pageDetailsController;
 @property (nonatomic, assign) BlogDataManager *dm;
 
 

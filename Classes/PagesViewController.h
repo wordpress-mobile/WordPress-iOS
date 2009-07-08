@@ -7,19 +7,19 @@
 
 #import <Foundation/Foundation.h>
 
-@class EditPageViewController,PagePhotosViewController;
+@class EditPageViewController,PageViewController;
 
 @interface PagesViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate> {
 	UIBarButtonItem *newButtonItem;
 	
 	EditPageViewController *pageDetailViewController;
-	PagePhotosViewController *pageDetailsController;
+	PageViewController *pageDetailsController;
 	
 	BOOL connectionStatus;
 }
 
 @property (readonly) UIBarButtonItem *newButtonItem;
 @property (nonatomic, retain) EditPageViewController *pageDetailViewController;
-@property (nonatomic, retain) PagePhotosViewController *pageDetailsController;
+@property (nonatomic, retain) PageViewController *pageDetailsController;
 
 @end

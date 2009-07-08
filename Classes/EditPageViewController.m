@@ -9,7 +9,7 @@
 #import "WPSelectionTableViewController.h"
 #import "BlogDataManager.h"
 #import "WPNavigationLeftButtonView.h"
-#import "PagePhotosViewController.h"
+#import "PageViewController.h"
 #import "WPPhotosListViewController.h"
 #import "WordPressAppDelegate.h"
 

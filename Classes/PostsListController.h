@@ -1,20 +1,20 @@
 #import <Foundation/Foundation.h>
 
-@class BlogDataManager, PostPhotosViewController, PostDetailEditController, DraftsListController;
+@class BlogDataManager, PostViewController, PostDetailEditController, DraftsListController;
 
 @interface PostsListController : UITableViewController <UITableViewDataSource, UITableViewDelegate> {
 	UIBarButtonItem *newButtonItem;
 	
 	IBOutlet UITableView *postsTableView;
 
-	PostPhotosViewController *postDetailViewController;
+	PostViewController *postDetailViewController;
 	PostDetailEditController *postDetailEditController;
 		
 	BOOL connectionStatus;
 }
 
 @property (readonly) UIBarButtonItem *newButtonItem;
-@property (nonatomic, retain) PostPhotosViewController *postDetailViewController;
+@property (nonatomic, retain) PostViewController *postDetailViewController;
 @property (nonatomic, retain) PostDetailEditController *postDetailEditController;
 
 @end

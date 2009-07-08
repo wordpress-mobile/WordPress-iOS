@@ -3,7 +3,7 @@
 #import "BlogDataManager.h"
 #import "DraftsListController.h"
 #import "LocalDraftsTableViewCell.h"
-#import "PostPhotosViewController.h"
+#import "PostViewController.h"
 #import "PostDetailEditController.h"
 #import "PostTableViewCell.h"
 #import "Reachability.h"
@@ -39,7 +39,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"AsynchronousPostIsPosted" object:nil];
 	
 	[postDetailEditController release];
-	[PostPhotosViewController release];
+	[PostViewController release];
 	
 	[newButtonItem release];
     
@@ -125,9 +125,9 @@
     [delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
 }
 
-- (PostPhotosViewController *)postDetailViewController {
+- (PostViewController *)postDetailViewController {
 	if (postDetailViewController == nil) {
-		postDetailViewController = [[PostPhotosViewController alloc] initWithNibName:@"PostPhotosViewController" bundle:nil];
+		postDetailViewController = [[PostViewController alloc] initWithNibName:@"PostViewController" bundle:nil];
 		postDetailViewController.postsListController = self;
 	}
     

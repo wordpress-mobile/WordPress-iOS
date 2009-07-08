@@ -10,7 +10,7 @@
 #import "BlogDataManager.h"
 #import "EditPageViewController.h"
 #import "LocalDraftsTableViewCell.h"
-#import "PagePhotosViewController.h"
+#import "PageViewController.h"
 #import "PagesDraftsViewController.h"
 #import "PostTableViewCell.h"
 #import "Reachability.h"
@@ -237,7 +237,7 @@
 
 -(void)setPageDetailsController {
 	if (self.pageDetailsController == nil) {
-		self.pageDetailsController = [[PagePhotosViewController alloc] initWithNibName:@"PagePhotosViewController" bundle:nil];
+		self.pageDetailsController = [[PageViewController alloc] initWithNibName:@"PageViewController" bundle:nil];
 	}
 }
 

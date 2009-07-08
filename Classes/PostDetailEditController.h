@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import "PostPhotosViewController.h"
+#import "PostViewController.h"
 #import "WPAddCategoryViewController.h"
 #import "WPImagePickerController.h"
 #import "CustomFieldsTableView.h"
@@ -37,7 +37,7 @@
 	
 	WPSelectionTableViewController *selectionTableViewController;
    	WPSegmentedSelectionTableViewController *segmentedTableViewController;
-	PostPhotosViewController *postDetailViewController;
+	PostViewController *postDetailViewController;
     WPNavigationLeftButtonView *leftView;
 	CustomFieldsTableView *customFieldsTableView;
 	BOOL isShowPhotoPickerActionSheet;
@@ -58,7 +58,7 @@
 	NSUInteger originY;
 }
 
-@property (nonatomic, assign)PostPhotosViewController * postDetailViewController;
+@property (nonatomic, assign)PostViewController * postDetailViewController;
 @property (nonatomic, retain) WPSelectionTableViewController *selectionTableViewController;
 @property (nonatomic, retain) WPSegmentedSelectionTableViewController *segmentedTableViewController;
 @property (nonatomic, retain) WPNavigationLeftButtonView *leftView;

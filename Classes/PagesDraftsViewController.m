@@ -9,7 +9,7 @@
 #import "BlogDataManager.h"
 #import "PagesViewController.h"
 #import "EditPageViewController.h"
-#import "PagePhotosViewController.h"
+#import "PageViewController.h"
 #import "WordPressAppDelegate.h"
 
 @interface PagesDraftsViewController (Private)
@@ -107,7 +107,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	[dm makePageDraftAtIndexCurrent:indexPath.row];
-	PagePhotosViewController *pageDetailsController=pagesListController.pageDetailsController;
+	PageViewController *pageDetailsController=pagesListController.pageDetailsController;
 	pageDetailsController.mode = 1; 
 	pageDetailsController.tabController.selectedIndex=0;
 	[tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];

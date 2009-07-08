@@ -10,7 +10,7 @@
 
 @class WPNavigationLeftButtonView;
 @class WPSelectionTableViewController;
-@class PagePhotosViewController;
+@class PageViewController;
 @class WPPhotosListViewController;
 
 @interface EditPageViewController : UIViewController<UIActionSheetDelegate, UITextViewDelegate>  {
@@ -30,7 +30,7 @@
 	UITextField *infoText;
 	UITextField *urlField;
 	WPSelectionTableViewController *selectionTableViewController;
-	PagePhotosViewController *pageDetailsController;
+	PageViewController *pageDetailsController;
 	
 	CustomFieldsTableView *customFieldsTableView;
 	WPPhotosListViewController *photosListController;
@@ -48,7 +48,7 @@
 	NSUInteger originY;
 }
 
-@property (nonatomic, retain) PagePhotosViewController *pageDetailsController;
+@property (nonatomic, retain) PageViewController *pageDetailsController;
 @property (nonatomic, retain) WPSelectionTableViewController *selectionTableViewController;
 @property (nonatomic) int mode;
 @property (nonatomic, retain) CustomFieldsTableView *customFieldsTableView;

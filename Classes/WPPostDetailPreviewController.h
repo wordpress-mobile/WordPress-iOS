@@ -1,14 +1,14 @@
 #import <UIKit/UIKit.h>
-#import "PostPhotosViewController.h"
+#import "PostViewController.h"
 
 @interface WPPostDetailPreviewController : UIViewController {
 	IBOutlet UIWebView *webView;
 	BOOL isWebRefreshRequested;
 	
-	PostPhotosViewController *postDetailViewController;
+	PostViewController *postDetailViewController;
 }
 
-@property (nonatomic, assign)PostPhotosViewController * postDetailViewController;
+@property (nonatomic, assign)PostViewController * postDetailViewController;
 @property (readonly) UIWebView *webView;
 
 - (void)refreshWebView;
