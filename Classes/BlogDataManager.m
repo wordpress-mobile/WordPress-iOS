@@ -613,7 +613,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	BOOL firstImage = YES;
 	BOOL paraOpen = NO;
 	
-	for( i=count-1; i >=0 ; i-- )
+//	for( i=count-1; i >=0 ; i-- )
+	for( i=0; i<=count-1 ; i++ )
 	{
 		curPath = [photos objectAtIndex:i];
 		NSString *filePAth = [NSString stringWithFormat:@"%@/%@",[self blogDir:currentBlog], curPath];
@@ -637,7 +638,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 				desc = [desc stringByAppendingString:[NSString stringWithFormat:@"<br /><br /><a href=\"%@\">%@</a>",urlStr, imgTag]];
 			}
 			[self deleteImageNamed:curPath forBlog:currentBlog];
-			[photos removeLastObject];
+//			[photos removeLastObject];
+
 		}
 	}
 	
@@ -707,7 +709,9 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	BOOL firstImage = YES;
 	BOOL paraOpen = NO;
 	
-	for( i=count-1; i >=0 ; i-- )
+//	for( i=count-1; i >=0 ; i-- )
+	for( i=0; i<=count-1 ; i++ )
+
 	{
 		curPath = [photos objectAtIndex:i];
 		NSString *filePAth = [NSString stringWithFormat:@"%@/%@",[self blogDir:currentBlog], curPath];
@@ -731,7 +735,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 				desc = [desc stringByAppendingString:[NSString stringWithFormat:@"<br /><br /><a href=\"%@\">%@</a>",urlStr, imgTag]];
 			}
 			[self deleteImageNamed:curPath forBlog:currentBlog];
-			[photos removeLastObject];
+			//[photos removeLastObject];
 		}
 	}
 	
