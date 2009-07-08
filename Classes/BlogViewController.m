@@ -68,14 +68,13 @@
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
 	[viewController viewWillAppear:NO];
 	
+	backButton.title = viewController.tabBarItem.title;
+	
 	if (viewController == postsViewController) {
-		backButton.title = @"Posts";
 		self.navigationItem.rightBarButtonItem = postsViewController.newButtonItem;
 	} else if (viewController == pagesViewController) {
-		backButton.title = @"Pages";
 		self.navigationItem.rightBarButtonItem = pagesViewController.newButtonItem;
 	} else if (viewController == commentsViewController) {
-		backButton.title = @"Comments";
 		self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
 	} else {
 		self.navigationItem.rightBarButtonItem = nil;
