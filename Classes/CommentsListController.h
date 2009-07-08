@@ -28,6 +28,7 @@
 	NSMutableArray *selectedComments;
 }
 
+@property (readonly) UIBarButtonItem *editButtonItem;
 @property (nonatomic, retain) NSMutableArray *selectedComments;
 @property (nonatomic, retain) NSMutableArray *commentsArray;
 

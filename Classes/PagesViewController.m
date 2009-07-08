@@ -30,7 +30,7 @@
 
 @implementation PagesViewController
 
-@synthesize pageDetailViewController, pageDetailsController;
+@synthesize newButtonItem, pageDetailViewController, pageDetailsController;
 
 - (void)addRefreshButton {
     CGRect frame = CGRectMake(0, 0, self.tableView.bounds.size.width, REFRESH_BUTTON_HEIGHT);
@@ -47,10 +47,14 @@
 	
     self.tableView.backgroundColor = kTableBackgroundColor;
     
-    [self addRefreshButton];
-    
+    [self addRefreshButton];    
 	[self setPageDetailsController];
+	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
+	
+	newButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
+																  target:self
+																  action:@selector(showAddNewPage)];
 }
 
 - (void)dealloc {	
@@ -62,6 +66,8 @@
 	[pageDetailsController release];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"kNetworkReachabilityChangedNotification" object:nil];
     
+    [newButtonItem release];
+	
 	[super dealloc];
 }
 

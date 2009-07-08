@@ -1,6 +1,6 @@
 #import "BlogsViewController.h"
 
-#import "BlogTabViewController.h"
+#import "BlogViewController.h"
 #import "EditBlogViewController.h"
 #import "BlogDataManager.h"
 #import "Reachability.h"
@@ -129,7 +129,7 @@
     
     [Reachability sharedReachability].hostName = url;
         
-    BlogTabViewController *blogViewController = [[BlogTabViewController alloc] initWithNibName:@"BlogTabViewController" bundle:nil];
+    BlogViewController *blogViewController = [[BlogViewController alloc] initWithNibName:@"BlogViewController" bundle:nil];
     [self.navigationController pushViewController:blogViewController animated:animated];
     [blogViewController release];
 }

@@ -29,7 +29,7 @@
 
 @implementation PostsListController
 
-@synthesize postDetailViewController, postDetailEditController;
+@synthesize newButtonItem, postDetailViewController, postDetailEditController;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -40,6 +40,8 @@
 	
 	[postDetailEditController release];
 	[PostPhotosViewController release];
+	
+	[newButtonItem release];
     
 	[super dealloc];
 }
@@ -64,6 +66,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];	
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableViewAfterPostSaved:) name:@"AsynchronousPostIsPosted" object:nil];
 	
+	newButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
+																  target:self
+																  action:@selector(showAddPostView)];
 }
 
 - (void)viewWillAppear:(BOOL)animated {    
@@ -75,7 +80,6 @@
 	connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
 	
 	[super viewWillAppear:animated];
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated {

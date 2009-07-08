@@ -10,12 +10,15 @@
 @class EditPageViewController,PagePhotosViewController;
 
 @interface PagesViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate> {
+	UIBarButtonItem *newButtonItem;
+	
 	EditPageViewController *pageDetailViewController;
 	PagePhotosViewController *pageDetailsController;
 	
 	BOOL connectionStatus;
 }
 
+@property (readonly) UIBarButtonItem *newButtonItem;
 @property (nonatomic, retain) EditPageViewController *pageDetailViewController;
 @property (nonatomic, retain) PagePhotosViewController *pageDetailsController;
 

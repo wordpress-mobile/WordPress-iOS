@@ -25,7 +25,7 @@
 
 @implementation CommentsListController
 
-@synthesize selectedComments, commentsArray;
+@synthesize editButtonItem, selectedComments, commentsArray;
 
 - (void)addRefreshButton {
     CGRect frame = CGRectMake(0, 0, commentsTableView.bounds.size.width, REFRESH_BUTTON_HEIGHT);
@@ -48,7 +48,8 @@
     
     [self addRefreshButton];
     
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
+	
 	editButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered 
 													 target:self action:@selector(editComments:)];
     

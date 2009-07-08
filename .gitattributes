@@ -1,15 +1,15 @@
 * text=auto !eol
 /AboutWordpress.xib -text
 /AddBlogValidationBackground.png -text svneol=unset#unset
+/BlogViewController.xib -text
 Classes/AboutViewController.h -text
 Classes/AboutViewController.m -text
 Classes/Blog.h -text
 Classes/Blog.m -text
 Classes/BlogDataManager.h -text
 Classes/BlogDataManager.m -text
-Classes/BlogTabViewController.h -text
-Classes/BlogTabViewController.m -text
-Classes/BlogTabViewController.xib -text
+Classes/BlogViewController.h -text
+Classes/BlogViewController.m -text
 Classes/BlogsViewController.h -text
 Classes/BlogsViewController.m -text
 Classes/CommentTableViewCell.h -text
