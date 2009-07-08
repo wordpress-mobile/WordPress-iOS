@@ -43,6 +43,8 @@
 }
 
 - (void)viewDidLoad {
+	[super viewDidLoad];
+	
     self.tableView.backgroundColor = kTableBackgroundColor;
     
     [self addRefreshButton];
@@ -186,15 +188,10 @@
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	[dm loadPageTitlesForCurrentBlog];
 	dm.isLocaDraftsCurrent = NO;
-    
-	self.title = @"Pages";
 	
-	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
+	connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
+	
 	[super viewWillAppear:animated];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
 }
 
 - (void)downloadRecentPages {

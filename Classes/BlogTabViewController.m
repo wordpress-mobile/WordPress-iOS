@@ -3,7 +3,6 @@
 //  WordPress
 //
 //  Created by Gareth Townsend on 26/06/09.
-//  Copyright 2009 Clear Interactive. All rights reserved.
 //
 
 #import "BlogTabViewController.h"
@@ -17,7 +16,6 @@
 #import "Reachability.h"
 #import "UIViewController+WPAnimation.h"
 #import "WordPressAppDelegate.h"
-
 
 
 @implementation BlogTabViewController

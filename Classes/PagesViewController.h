@@ -9,7 +9,7 @@
 
 @class EditPageViewController,PagePhotosViewController;
 
-@interface PagesViewController : UITableViewController {
+@interface PagesViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate> {
 	EditPageViewController *pageDetailViewController;
 	PagePhotosViewController *pageDetailsController;
 	

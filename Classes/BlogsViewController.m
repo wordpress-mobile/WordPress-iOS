@@ -1,5 +1,6 @@
 #import "BlogsViewController.h"
-#import "BlogViewController.h"
+
+#import "BlogTabViewController.h"
 #import "EditBlogViewController.h"
 #import "BlogDataManager.h"
 #import "Reachability.h"
@@ -9,7 +10,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import "WPLogoView.h"
 #import "Blog.h"
-#import "BlogTabViewController.h"
 
 @interface BlogsViewController (Private)
 - (void)showBlogDetailModalViewForNewBlogWithAnimation;
@@ -129,9 +129,9 @@
     
     [Reachability sharedReachability].hostName = url;
         
-    BlogTabViewController  *blogTabViewController = [[BlogTabViewController alloc] initWithNibName:@"BlogTabViewController" bundle:nil];
-    [self.navigationController pushViewController:blogTabViewController animated:animated];
-    [blogTabViewController release];
+    BlogTabViewController *blogViewController = [[BlogTabViewController alloc] initWithNibName:@"BlogTabViewController" bundle:nil];
+    [self.navigationController pushViewController:blogViewController animated:animated];
+    [blogViewController release];
 }
 
 

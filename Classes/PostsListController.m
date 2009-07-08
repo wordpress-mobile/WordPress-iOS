@@ -53,6 +53,8 @@
 #pragma mark View Lifecycle
 
 - (void)viewDidLoad {
+	[super viewDidLoad];
+	
     self.tableView.backgroundColor = kTableBackgroundColor;
     
     [self addRefreshButton];
@@ -70,15 +72,7 @@
 	dm.isLocaDraftsCurrent = NO;
 	[dm loadPostTitlesForCurrentBlog];
 	
-	// we retain this controller in the caller (RootViewController) so load view does not get called 
-	// everytime we navigate to the view
-	// need to update the prompt and the title here as well as in loadView	
-	NSString *blogName = [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blogName"];
-	
-	self.title = [NSString stringWithFormat:@"%@", blogName];
-	
-	
-	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
+	connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
 	
 	[super viewWillAppear:animated];
     
@@ -92,8 +86,7 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	
-	
-	if([delegate isAlertRunning] == YES)
+	if ([delegate isAlertRunning] == YES)
 		return NO;
 	
 	// Return YES for supported orientations
