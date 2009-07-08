@@ -17,6 +17,8 @@
 	IBOutlet PostsListController *postsViewController;
 	IBOutlet PagesViewController *pagesViewController;
 	IBOutlet CommentsListController *commentsViewController;
+	
+	UIBarButtonItem *backButton;
 }
 
 @end

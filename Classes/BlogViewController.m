@@ -14,10 +14,22 @@
 
 @implementation BlogViewController
 
+- (void)initBackButton {
+	backButton = [[UIBarButtonItem alloc] initWithTitle:@"Posts"
+												  style:UIBarButtonItemStylePlain
+												 target:self
+												 action:nil];
+	
+	self.navigationItem.backBarButtonItem = backButton;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
 	self.view = tabBarController.view;
+	
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	self.title = [[dm currentBlog] valueForKey:@"blogName"];
     
     WPNavigationLeftButtonView *myview = [WPNavigationLeftButtonView createCopyOfView];  
     [myview setTarget:self withAction:@selector(goToHome:)];
@@ -27,7 +39,14 @@
     [barButton release];
     [myview release];
 	
+	[self initBackButton];
+	
 	tabBarController.selectedIndex = 0;
+}
+
+- (void)dealloc {
+	[backButton release];
+	[super dealloc];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -50,10 +69,13 @@
 	[viewController viewWillAppear:NO];
 	
 	if (viewController == postsViewController) {
+		backButton.title = @"Posts";
 		self.navigationItem.rightBarButtonItem = postsViewController.newButtonItem;
 	} else if (viewController == pagesViewController) {
+		backButton.title = @"Pages";
 		self.navigationItem.rightBarButtonItem = pagesViewController.newButtonItem;
 	} else if (viewController == commentsViewController) {
+		backButton.title = @"Comments";
 		self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
 	} else {
 		self.navigationItem.rightBarButtonItem = nil;
