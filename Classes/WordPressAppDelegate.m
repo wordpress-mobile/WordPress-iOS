@@ -94,6 +94,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     int current_blog_index = [defaults integerForKey:@"current_blog_index"];
+        
     if (current_blog_index > -1) {
         [[BlogDataManager sharedDataManager] makeBlogAtIndexCurrent:current_blog_index];
     }
@@ -130,16 +131,16 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-	//[self saveBlogData];
-	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-	[dataManager saveBlogData];
-    
+    BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
+
     NSString *current_blog_id = [[dataManager currentBlog] objectForKey:@"blogid"];
     NSString *current_blog_hostname = [[dataManager currentBlog] objectForKey:@"blog_host_name"];
     int current_blog_index = [dataManager indexForBlogid:current_blog_id hostName:current_blog_hostname];
-    
-     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setInteger:current_blog_index forKey:@"current_blog_index"];
+
+	[dataManager saveBlogData];
     
 	[UIApplication sharedApplication].applicationIconBadgeNumber = [dataManager countOfAwaitingComments];
 }

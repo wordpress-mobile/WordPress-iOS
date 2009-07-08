@@ -32,7 +32,8 @@
 #pragma mark psudo instance variables
 
 - (UIImage *)favicon {
-    [[BlogDataManager sharedDataManager] makeBlogAtIndexCurrent:index];
+    NSDictionary *blog = [[BlogDataManager sharedDataManager] blogAtIndex:index];
+
     UIImage *faviconImage = nil;
     NSString *fileName = [NSString stringWithFormat:@"favicon-%i.png", index];
     
@@ -43,7 +44,7 @@
         faviconImage = [UIImage imageWithContentsOfFile:faviconFilePath];
     } 
     else {        
-        NSString *faviconURL = [[NSString alloc] initWithFormat:@"%@/favicon.ico", [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"url"]];
+        NSString *faviconURL = [[NSString alloc] initWithFormat:@"%@/favicon.ico", [blog valueForKey:@"url"]];
         faviconImage = [[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:faviconURL]]] scaleImageToSize:CGSizeMake(16.0f, 16.0f)];
         [faviconURL release];
         
