@@ -93,7 +93,7 @@
 
 	[editButtonItem setEnabled:([commentsArray count] > 0)];
 
-	[commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:NO];
+	[commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:animated];
 	
 	[super viewWillAppear:animated];
 }

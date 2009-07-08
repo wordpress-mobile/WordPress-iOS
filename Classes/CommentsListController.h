@@ -9,7 +9,7 @@
 
 #import "CommentsTableViewDelegate.h"
 
-@interface CommentsListController : UIViewController<UITableViewDataSource, CommentsTableViewDelegate> {
+@interface CommentsListController : UIViewController <UITableViewDataSource, CommentsTableViewDelegate> {
 	IBOutlet UITableView *commentsTableView;
 	
 	IBOutlet UIToolbar *editToolbar; 

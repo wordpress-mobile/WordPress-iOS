@@ -31,8 +31,8 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+	[tabBarController.selectedViewController viewWillAppear:animated];
 	[super viewWillAppear:animated];
-	[tabBarController.selectedViewController viewWillAppear:NO];
 }
 
 #pragma mark -
