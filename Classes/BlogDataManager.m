@@ -3962,6 +3962,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[self downloadAllCategoriesForBlog:blog];
 	return YES;
 }
+
 - (void)downloadAllCategoriesForBlog:(id)aBlog{
 	
 	NSArray *args = [NSArray arrayWithObjects:[aBlog valueForKey:@"blogid"],

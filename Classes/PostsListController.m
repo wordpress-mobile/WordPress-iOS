@@ -310,6 +310,7 @@
     
     [dm syncPostsForCurrentBlog];
     [dm loadPostTitlesForCurrentBlog];
+    [dm downloadAllCategoriesForBlog:[dm currentBlog]];
     
     [self.tableView reloadData];
 }
