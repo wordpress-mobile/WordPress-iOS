@@ -134,6 +134,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 	dataManager.isLocaDraftsCurrent = (indexPath.row == LOCAL_DRAFTS_ROW);
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     
 	if (indexPath.row == LOCAL_DRAFTS_ROW) {
 		PagesDraftsViewController *pagesDraftsListController = [[PagesDraftsViewController alloc] initWithNibName:@"PagesDraftsViewController" bundle:nil];
@@ -141,8 +142,6 @@
 		
 		[dataManager loadPageDraftTitlesForCurrentBlog];
 		
-        // Get the navigation controller from the delegate
-        WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
         [delegate.navigationController pushViewController:pagesDraftsListController animated:YES];
         
 		[pagesDraftsListController release];
@@ -153,9 +152,7 @@
 															delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			
 			[alert1 show];
-			WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 			[delegate setAlertRunning:YES];
-			
 			[alert1 release];		
 			
 			[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -167,8 +164,6 @@
 		self.pageDetailsController.mode = 1;
 		self.pageDetailsController.hasChanges = NO; 	
         
-        // Get the navigation controller from the delegate
-        WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
         [delegate.navigationController pushViewController:self.pageDetailsController animated:YES];
 	}
 }
@@ -206,6 +201,7 @@
 }
 
 - (void)downloadRecentPages {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
     
 	[dm syncPagesForBlog:[dm currentBlog]];
@@ -214,6 +210,7 @@
 	[self.tableView reloadData];
 	
 	[refreshButton stopAnimating];
+	[pool release];
 }
 
 - (void)showAddNewPage {

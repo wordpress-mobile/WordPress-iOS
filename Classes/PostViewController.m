@@ -17,8 +17,7 @@
 - (void)startTimer;
 - (void)stopTimer;
 
-- (void)saveAsDrft;
-- (void)savePost:(id)aPost inBlog:(id)aBlog;
+- (void)saveAsDraft;
 - (void)discard;
 - (void)cancel;
 
@@ -113,8 +112,7 @@
 	[actionSheet release];	
 }
 
-- (IBAction)saveAction:(id)sender 
-{
+- (IBAction)saveAction:(id)sender {
 	saveButton.title = @"Save";
 	NSLog(@"Inside Save Action");
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
@@ -194,7 +192,7 @@
 	NSString *postStatus = [dm.currentPost valueForKey:@"post_status"];
 	
 	if( [postStatus isEqual:@"Local Draft"] )
-		[self saveAsDrft];
+		[self saveAsDraft];
 	else
 	{ 
 		[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
@@ -204,7 +202,7 @@
 		if(isCurrentPostDraft)
 			[dm saveCurrentPostAsDraftWithAsyncPostFlag];
         					
-        [self addAsyncPostOperation:@selector(_savePostWithBlog:) withArg:params];
+        [self addAsyncPostOperation:@selector(savePostWithBlog:) withArg:params];
     }
 }
 
@@ -309,7 +307,7 @@
 	}
 }
 
-- (void)saveAsDrft
+- (void)saveAsDraft
 {
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	int postIndex = [dm currentPostIndex];
@@ -332,7 +330,7 @@
 
 		[alert release];		
 	}else {
-		[self.navigationController popViewControllerAnimated:YES];	
+		[self.navigationController popViewControllerAnimated:YES];
 	}	
 }
 
@@ -372,7 +370,8 @@
     
 	[NSThread sleepForTimeInterval:3];
 	[self removeProgressIndicator];
-	[self.navigationController popToViewController:postsListController animated:YES];
+	
+	[self.navigationController popViewControllerAnimated:YES];
 }
 
 -(void)savePostWithBlog:(NSMutableArray *)arrayPost
@@ -398,41 +397,6 @@
 	hasChanges = YES;
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"AsynchronousPostIsPosted" object:nil userInfo:dict];
    	[dict release];
-       
-/*
-	[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-//    [dm.currentPost setValue:[NSNumber numberWithInt:1] forKey:kAsyncPostFlag];
-	//TODO: helps us in implementing async in future.
-//	if( [dm savePost:aPost] )
-	if( [dm savePost:[arrayPost objectAtIndex:0]])
-	{
-		[self removeProgressIndicator];
-		hasChanges = NO;
-		self.navigationItem.rightBarButtonItem = nil;
-		[self stopTimer];
-		[dm removeAutoSavedCurrentPostFile];
-        		
-//		NSString *statusDesc = [dm statusDescriptionForStatus:[aPost valueForKey:@"post_status"] fromBlog:aBlog];
-		NSString *statusDesc = [dm statusDescriptionForStatus:[[arrayPost objectAtIndex:0] valueForKey:@"post_status"] fromBlog:[arrayPost objectAtIndex:1]];
-		//		NSString *title = [aPost valueForKey:@"title"];
-		//		title = ( title == nil ? @"" : title );
-		
-		NSString *msg = [NSString stringWithFormat:@"Post was saved to \"%@\" with status \"%@\"", [dm.currentBlog valueForKey:@"blogName"], statusDesc];
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Post Saved"
-														message:msg
-													   delegate:self
-											  cancelButtonTitle:nil
-											  otherButtonTitles:@"OK", nil];
-		[alert show];
-		[alert release];
-	}
-	else 
-	{
-		[self removeProgressIndicator];
-	}
-*/
-
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex

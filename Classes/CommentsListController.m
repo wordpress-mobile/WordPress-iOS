@@ -166,6 +166,8 @@
 }
 
 - (void)downloadRecentComments {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
 	if (!connectionStatus) {
 		UIAlertView *alertt1 = [[[UIAlertView alloc] initWithTitle:@"No connection to host."
 														 message:@"Sync operation is not supported now."
@@ -185,6 +187,7 @@
 	[editButtonItem setEnabled:([commentsArray count] > 0)];
 	
 	[refreshButton stopAnimating];
+	[pool release];
 }
 
 - (IBAction)deleteSelectedComments:(id)sender {

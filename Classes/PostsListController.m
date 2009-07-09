@@ -198,6 +198,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 	dataManager.isLocaDraftsCurrent = (indexPath.row == LOCAL_DRAFTS_ROW);
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	
 	if (indexPath.row == LOCAL_DRAFTS_ROW) {
 		DraftsListController *draftsListController = [[DraftsListController alloc] initWithNibName:@"DraftsList" bundle:nil];
@@ -205,9 +206,7 @@
 		
 		[dataManager loadDraftTitlesForCurrentBlog];
 		
-        // Get the navigation controller from the delegate
-        WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-        [delegate.navigationController pushViewController:draftsListController animated:YES];
+        [self.navigationController pushViewController:draftsListController animated:YES];
         
 		[draftsListController release];
 	} else {
@@ -218,7 +217,6 @@
             
             alert1.tag=NEW_VERSION_ALERT_TAG;
             [alert1 show];
-            WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
             [delegate setAlertRunning:YES];
             
             [alert1 release];		
@@ -239,8 +237,6 @@
 		self.postDetailViewController.mode = 1; 
 		postDetailEditController.postDetailViewController=self.postDetailViewController;
 		
-        // Get the navigation controller from the delegate
-        WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
         [delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
 	}
 }
@@ -294,6 +290,7 @@
 }
 
 - (void)downloadRecentPosts {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	
     [dm syncPostsForCurrentBlog];
@@ -303,6 +300,7 @@
     [self.tableView reloadData];
 	
 	[refreshButton stopAnimating];
+	[pool release];
 }
 
 - (void)updatePostsTableViewAfterPostSaved:(NSNotification *)notification {
