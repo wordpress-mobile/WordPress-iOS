@@ -21,6 +21,8 @@
 - (void)setEditing:(BOOL)value;
 - (void)updateSelectedComments;
 - (void)downloadRecentComments;
+- (void)addProgressIndicator;
+- (void)removeProgressIndicator;
 @end
 
 @implementation CommentsListController
@@ -221,7 +223,7 @@
 			return;
 		}
 		
-		[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
+        [self addProgressIndicator];
 		BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
 		
 		BOOL result = NO;
@@ -240,12 +242,12 @@
 			[sharedDataManager loadCommentTitlesForCurrentBlog];
 			[self.navigationController popViewControllerAnimated:YES];
 		}
-		[self performSelectorInBackground:@selector(removeProgressIndicator) withObject:nil];
+        [self removeProgressIndicator];
     }
 	[editButtonItem setEnabled:([commentsArray count]>0)];
-    [alertView autorelease];
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	[delegate setAlertRunning:NO];
+    [self setEditing:FALSE];
 }
 
 - (void)updateSelectedComments {
@@ -270,6 +272,31 @@
 	[approveButton setTitle:(((count-approvedCount) > 0)?[NSString stringWithFormat:@"Approve (%d)",count-approvedCount]:@"Approve")];
 	[unapproveButton setTitle:(((count-unapprovedCount) > 0)?[NSString stringWithFormat:@"Unapprove (%d)",count-unapprovedCount]:@"Unapprove")];
 	[spamButton setTitle:(((count-spamCount) > 0)?[NSString stringWithFormat:@"Spam (%d)",count-spamCount]:@"Spam")];	
+}
+
+- (void)addProgressIndicator
+{
+	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
+	UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+	UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aiv];
+	[aiv startAnimating]; 
+	[aiv release];
+    
+	self.navigationItem.rightBarButtonItem = activityButtonItem;
+	[activityButtonItem release];
+	[apool release];
+}
+
+- (void)removeProgressIndicator
+{
+	//wait incase the other thread did not complete its work.
+	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
+	while (self.navigationItem.rightBarButtonItem == nil){
+		[[NSRunLoop currentRunLoop] runUntilDate:[[NSDate date] addTimeInterval:0.1]];
+	}
+	
+	self.navigationItem.rightBarButtonItem = editButtonItem;
+	[apool release];
 }
 
 #pragma mark -
