@@ -20,7 +20,6 @@
     if (self = [super init]) {
         [self setIndex:blogIndex];
     }
-    
     return self;
 }
 
@@ -33,9 +32,11 @@
 
 - (UIImage *)favicon {
     NSDictionary *blog = [[BlogDataManager sharedDataManager] blogAtIndex:index];
-
+    
     UIImage *faviconImage = nil;
-    NSString *fileName = [NSString stringWithFormat:@"favicon-%i.png", index];
+    NSString *fileName = [NSString stringWithFormat:@"favicon-%@-%@.png", [blog objectForKey:@"blog_host_name"], [blog objectForKey:@"blogid"]];
+    
+    NSLog(@"filename: %@", fileName);
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *faviconFilePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:fileName];
