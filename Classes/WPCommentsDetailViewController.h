@@ -28,6 +28,8 @@
     UIBarButtonItem *segmentBarItem;
     int currentIndex;
 	UISegmentedControl *segmentedControl;
+    
+    UIAlertView *progressAlert;
 }
 
 @property (nonatomic,retain) UILabel *commenterNameLabel;

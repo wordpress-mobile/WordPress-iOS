@@ -18,11 +18,16 @@
 #define REFRESH_BUTTON_HEIGHT           50
 
 @interface CommentsListController (Private)
-- (void)setEditing:(BOOL)value;
-- (void)updateSelectedComments;
-- (void)refreshHandler;
-- (void)downloadRecentComments;
-- (BOOL)isConnectedToHost;
+- (void) setEditing:(BOOL)value;
+- (void) updateSelectedComments;
+- (void) refreshHandler;
+- (void) downloadRecentComments;
+- (BOOL) isConnectedToHost;
+- (void) moderateCommentsWithSelector:(SEL)selector;
+- (void) deleteComments;
+- (void) approveComments;
+- (void) markCommentsAsSpam;
+- (void) unapproveComments;
 @end
 
 @implementation CommentsListController
@@ -229,7 +234,7 @@
     return YES;
 }
 
--(void)moderateCommentsWithSelector:(SEL)selector {
+- (void) moderateCommentsWithSelector:(SEL)selector {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     if ([self isConnectedToHost]) {
         BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
@@ -246,19 +251,19 @@
     [pool release];
 }
 
--(void)deleteComments {
+- (void) deleteComments {
     [self moderateCommentsWithSelector:@selector(deleteComment:forBlog:)];
 }
 
--(void)approveComments {
+- (void) approveComments {
     [self moderateCommentsWithSelector:@selector(approveComment:forBlog:)];
 }
 
--(void)markCommentsAsSpam {
+- (void) markCommentsAsSpam {
     [self moderateCommentsWithSelector:@selector(spamComment:forBlog:)];
 }
     
--(void)unapproveComments {
+- (void) unapproveComments {
     [self moderateCommentsWithSelector:@selector(unApproveComment:forBlog:)];
 }
 
