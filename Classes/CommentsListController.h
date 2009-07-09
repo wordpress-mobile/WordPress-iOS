@@ -28,6 +28,8 @@
 	NSMutableArray *commentsArray;
 	NSMutableDictionary *commentsDict;
 	NSMutableArray *selectedComments;
+    
+    UIAlertView *progressAlert;
 }
 
 @property (readonly) UIBarButtonItem *editButtonItem;

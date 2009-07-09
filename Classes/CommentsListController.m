@@ -13,6 +13,7 @@
 #import "Reachability.h"
 #import "WordPressAppDelegate.h"
 #import "WPCommentsDetailViewController.h"
+#import "WPProgressHUD.h"
 
 #define REFRESH_BUTTON_HEIGHT           50
 
@@ -21,8 +22,7 @@
 - (void)updateSelectedComments;
 - (void)refreshHandler;
 - (void)downloadRecentComments;
-- (void)addProgressIndicator;
-- (void)removeProgressIndicator;
+- (BOOL)isConnectedToHost;
 @end
 
 @implementation CommentsListController
@@ -130,7 +130,6 @@
 	[spamButton setEnabled:!editing];
     
 	editButtonItem.title = editing ? @"Cancel" : @"Edit";
-    
 	[commentsTableView reloadData];
 }
 
@@ -191,73 +190,76 @@
 }
 
 - (IBAction)deleteSelectedComments:(id)sender {
-    UIAlertView *deleteAlert = [[[UIAlertView alloc] initWithTitle:@"Delete Comments" message:@"Are you sure you want to delete the selected comment(s)?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil] autorelease];
-    [deleteAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
-    [deleteAlert show];
-	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	[delegate setAlertRunning:YES];
+    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"deleting"];
+    [progressAlert show];
+    
+    [self performSelectorInBackground:@selector(deleteComments) withObject:nil];
 }
 
 - (IBAction)approveSelectedComments:(id)sender {
-	UIAlertView *deleteAlert = [[[UIAlertView alloc] initWithTitle:@"Approve Comments" message:@"Are you sure you want to approve the selected comment(s)?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil] autorelease];                                                
-	[deleteAlert setTag:2];  // for UIAlertView Delegate to handle which view is popped.
-	[deleteAlert show];
-	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	[delegate setAlertRunning:YES];
+    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"moderating"];
+    [progressAlert show];
+    
+    [self performSelectorInBackground:@selector(approveComments) withObject:nil];
 }
 
 - (IBAction)unapproveSelectedComments:(id)sender {
-	UIAlertView *deleteAlert = [[[UIAlertView alloc] initWithTitle:@"Unapprove Comments" message:@"Are you sure you want to unapprove the selected comment(s)?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil] autorelease];                                                
-	[deleteAlert setTag:3];  // for UIAlertView Delegate to handle which view is popped.
-	[deleteAlert show];
-	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	[delegate setAlertRunning:YES];
+    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"moderating"];
+    [progressAlert show];
+    
+    [self performSelectorInBackground:@selector(unapproveComments) withObject:nil];
 }
 
 - (IBAction)spamSelectedComments:(id)sender {
-	UIAlertView *deleteAlert = [[[UIAlertView alloc] initWithTitle:@"Spam Comments" message:@"Are you sure you want to mark the selected comment(s) as spam?. This action can only be reversed in the web admin." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil] autorelease];  
-	[deleteAlert setTag:4];  // for UIAlertView Delegate to handle which view is popped.
-	[deleteAlert show];
-	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	[delegate setAlertRunning:YES];
+    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"moderating"];
+    [progressAlert show];
+    
+    [self performSelectorInBackground:@selector(markCommentsAsSpam) withObject:nil];
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-	if (buttonIndex == 1) {
-		if (![[Reachability sharedReachability] remoteHostStatus] != NotReachable) {
-			UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:@"No connection to host."
-															 message:@"Operation is not supported now."
-															delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-			[connectionFailAlert show];
-			[connectionFailAlert release];		
-			return;
-		}
-		
-        [self addProgressIndicator];
-		BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
-		
-		BOOL result = NO;
-		NSArray *selectedItems=[self selectedComments];
-		if([alertView tag] == 1){
-			result = [sharedDataManager deleteComment:selectedItems forBlog:[sharedDataManager currentBlog]];
-		} else if([alertView tag] == 2){
-			result = [sharedDataManager approveComment:(NSMutableArray *)selectedItems forBlog:[sharedDataManager currentBlog]];
-		} else if([alertView tag] == 3){
-			result = [sharedDataManager unApproveComment:(NSMutableArray *)selectedItems forBlog:[sharedDataManager currentBlog]];
-		}else if([alertView tag] == 4){
-			result = [sharedDataManager spamComment:(NSMutableArray *)selectedItems forBlog:[sharedDataManager currentBlog]];
-		}
-			
-		if ( result ) {
-			[sharedDataManager loadCommentTitlesForCurrentBlog];
-			[self.navigationController popViewControllerAnimated:YES];
-		}
-        [self removeProgressIndicator];
+-(BOOL)isConnectedToHost {
+    if (![[Reachability sharedReachability] remoteHostStatus] != NotReachable) {
+        UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:@"No connection to host."
+                                                                      message:@"Operation is not supported now."
+                                                                     delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [connectionFailAlert show];
+        [connectionFailAlert release];		
+        return NO;
     }
-	[editButtonItem setEnabled:([commentsArray count]>0)];
-	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	[delegate setAlertRunning:NO];
-    [self setEditing:FALSE];
+    return YES;
+}
+
+-(void)moderateCommentsWithSelector:(SEL)selector {
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    if ([self isConnectedToHost]) {
+        BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
+        
+        NSArray *selectedItems=[self selectedComments];
+        
+        [sharedDataManager performSelector:selector withObject:selectedItems withObject:[sharedDataManager currentBlog]];
+        
+        [editButtonItem setEnabled:([commentsArray count]>0)];
+        [self setEditing:FALSE]; 
+    }
+    [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
+    [progressAlert release];
+    [pool release];
+}
+
+-(void)deleteComments {
+    [self moderateCommentsWithSelector:@selector(deleteComment:forBlog:)];
+}
+
+-(void)approveComments {
+    [self moderateCommentsWithSelector:@selector(approveComment:forBlog:)];
+}
+
+-(void)markCommentsAsSpam {
+    [self moderateCommentsWithSelector:@selector(spamComment:forBlog:)];
+}
+    
+-(void)unapproveComments {
+    [self moderateCommentsWithSelector:@selector(unApproveComment:forBlog:)];
 }
 
 - (void)updateSelectedComments {
@@ -282,31 +284,6 @@
 	[approveButton setTitle:(((count-approvedCount) > 0)?[NSString stringWithFormat:@"Approve (%d)",count-approvedCount]:@"Approve")];
 	[unapproveButton setTitle:(((count-unapprovedCount) > 0)?[NSString stringWithFormat:@"Unapprove (%d)",count-unapprovedCount]:@"Unapprove")];
 	[spamButton setTitle:(((count-spamCount) > 0)?[NSString stringWithFormat:@"Spam (%d)",count-spamCount]:@"Spam")];	
-}
-
-- (void)addProgressIndicator
-{
-	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
-	UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-	UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aiv];
-	[aiv startAnimating]; 
-	[aiv release];
-    
-	self.navigationItem.rightBarButtonItem = activityButtonItem;
-	[activityButtonItem release];
-	[apool release];
-}
-
-- (void)removeProgressIndicator
-{
-	//wait incase the other thread did not complete its work.
-	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
-	while (self.navigationItem.rightBarButtonItem == nil){
-		[[NSRunLoop currentRunLoop] runUntilDate:[[NSDate date] addTimeInterval:0.1]];
-	}
-	
-	self.navigationItem.rightBarButtonItem = editButtonItem;
-	[apool release];
 }
 
 #pragma mark -

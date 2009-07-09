@@ -82,6 +82,8 @@ Classes/WPPostDetailPreviewController.h -text
 Classes/WPPostDetailPreviewController.m -text
 Classes/WPPostSettingsController.h -text
 Classes/WPPostSettingsController.m -text
+Classes/WPProgressHUD.h -text
+Classes/WPProgressHUD.m -text
 Classes/WPPublishOnEditController.h -text
 Classes/WPPublishOnEditController.m -text
 Classes/WPSegmentedSelectionTableViewController.h -text
@@ -140,6 +142,7 @@ Classes/XMLRPC/XMLValueDecoder.m -text
 /WPPublishOnEditController.xib -text
 /WPSelectionTableViewController.xib -text
 /WP_application-icon.png -text
+/WPpregressHUDBackground.png -text
 /WordPress.png -text
 WordPress.xcodeproj/project.pbxproj -text
 /WordPress_Prefix.pch -text
