@@ -12,6 +12,7 @@
 		031665FD0FFC2E890045D052 /* sync.png in Resources */ = {isa = PBXBuildFile; fileRef = 031665FC0FFC2E890045D052 /* sync.png */; };
 		031666AE0FFC3E130045D052 /* CommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 031666AD0FFC3E130045D052 /* CommentTableViewCell.m */; };
 		03CF21ED0FE9F0C3008AD538 /* NSString+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CF21EC0FE9F0C3008AD538 /* NSString+Util.m */; };
+		03F298C410057AEC0097B29A /* RefreshButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F298C310057AEC0097B29A /* RefreshButtonView.m */; };
 		03FF34BB10040B0A0066ED95 /* documents.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FF34BA10040B0A0066ED95 /* documents.png */; };
 		03FF35C5100423A10066ED95 /* BlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FF35C3100423A10066ED95 /* BlogViewController.m */; };
 		03FF35C6100423A10066ED95 /* BlogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FF35C4100423A10066ED95 /* BlogViewController.xib */; };
@@ -140,6 +141,8 @@
 		031669580FFC81A20045D052 /* CommentsTableViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsTableViewDelegate.h; sourceTree = "<group>"; };
 		03CF21EB0FE9F0C3008AD538 /* NSString+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Util.h"; sourceTree = "<group>"; };
 		03CF21EC0FE9F0C3008AD538 /* NSString+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Util.m"; sourceTree = "<group>"; };
+		03F298C210057AEC0097B29A /* RefreshButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RefreshButtonView.h; sourceTree = "<group>"; };
+		03F298C310057AEC0097B29A /* RefreshButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RefreshButtonView.m; sourceTree = "<group>"; };
 		03FF34BA10040B0A0066ED95 /* documents.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = documents.png; sourceTree = "<group>"; };
 		03FF35C2100423A10066ED95 /* BlogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogViewController.h; sourceTree = "<group>"; };
 		03FF35C3100423A10066ED95 /* BlogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogViewController.m; sourceTree = "<group>"; };
@@ -328,9 +331,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		031662E60FFB14C60045D052 /* Tables */ = {
+		031662E60FFB14C60045D052 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				03F298C210057AEC0097B29A /* RefreshButtonView.h */,
+				03F298C310057AEC0097B29A /* RefreshButtonView.m */,
 				031666AC0FFC3E130045D052 /* CommentTableViewCell.h */,
 				031666AD0FFC3E130045D052 /* CommentTableViewCell.m */,
 				031669580FFC81A20045D052 /* CommentsTableViewDelegate.h */,
@@ -339,7 +344,7 @@
 				031663050FFB151A0045D052 /* PostTableViewCell.h */,
 				031663060FFB151A0045D052 /* PostTableViewCell.m */,
 			);
-			name = Tables;
+			name = Views;
 			sourceTree = "<group>";
 		};
 		080E96DDFE201D6D7F000001 /* Classes */ = {
@@ -347,7 +352,7 @@
 			children = (
 				AC34397A0E11435A00E5D79B /* Controller */,
 				2F706A870DFB229B00B43086 /* Models */,
-				031662E60FFB14C60045D052 /* Tables */,
+				031662E60FFB14C60045D052 /* Views */,
 				ACFD04900DFD2FCA0031D567 /* XMLRPC */,
 				2F970F970DF929B8006BD934 /* Constants.h */,
 				03CF21EB0FE9F0C3008AD538 /* NSString+Util.h */,
@@ -879,6 +884,7 @@
 				031666AE0FFC3E130045D052 /* CommentTableViewCell.m in Sources */,
 				CE444C820FF48F8B00EEDE7D /* PagesAndCommentsNotSupported.m in Sources */,
 				03FF35C5100423A10066ED95 /* BlogViewController.m in Sources */,
+				03F298C410057AEC0097B29A /* RefreshButtonView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

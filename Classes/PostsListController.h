@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import "RefreshButtonView.h"
 
 @class BlogDataManager, PostViewController, PostDetailEditController, DraftsListController;
 
@@ -6,10 +7,11 @@
 	UIBarButtonItem *newButtonItem;
 	
 	IBOutlet UITableView *postsTableView;
-
+	
 	PostViewController *postDetailViewController;
 	PostDetailEditController *postDetailEditController;
-		
+	RefreshButtonView *refreshButton;
+	
 	BOOL connectionStatus;
 }
 

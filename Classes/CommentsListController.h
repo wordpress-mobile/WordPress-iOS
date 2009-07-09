@@ -8,12 +8,14 @@
 #import <Foundation/Foundation.h>
 
 #import "CommentsTableViewDelegate.h"
+#import "RefreshButtonView.h"
 
 @interface CommentsListController : UIViewController <UITableViewDataSource, CommentsTableViewDelegate> {
 	IBOutlet UITableView *commentsTableView;
 	
 	IBOutlet UIToolbar *editToolbar; 
 	UIBarButtonItem *editButtonItem;
+	RefreshButtonView *refreshButton;
 	
 	IBOutlet UIBarButtonItem *approveButton;
 	IBOutlet UIBarButtonItem *unapproveButton;

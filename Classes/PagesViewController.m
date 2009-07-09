@@ -19,11 +19,11 @@
 #define LOCAL_DRAFTS_ROW        0
 #define PAGE_ROW                1
 
-#define REFRESH_BUTTON_ICON     @"sync.png"
 #define REFRESH_BUTTON_HEIGHT   50
 
 @interface PagesViewController (Private)
 - (void)setPageDetailsController;
+- (void)refreshHandler;
 - (void)downloadRecentPages;
 - (void)showAddNewPage;
 @end
@@ -34,11 +34,10 @@
 
 - (void)addRefreshButton {
     CGRect frame = CGRectMake(0, 0, self.tableView.bounds.size.width, REFRESH_BUTTON_HEIGHT);
-    UIButton *refreshButton = [[UIButton alloc] initWithFrame:frame];
-    
-    [refreshButton setImage:[UIImage imageNamed:REFRESH_BUTTON_ICON] forState:UIControlStateNormal];
-    [refreshButton addTarget:self action:@selector(downloadRecentPages) forControlEvents:UIControlEventTouchUpInside];
-    
+	
+	refreshButton = [[RefreshButtonView alloc] initWithFrame:frame];
+    [refreshButton addTarget:self action:@selector(refreshHandler) forControlEvents:UIControlEventTouchUpInside];
+	
     self.tableView.tableHeaderView = refreshButton;
 }
 
@@ -67,6 +66,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"kNetworkReachabilityChangedNotification" object:nil];
     
     [newButtonItem release];
+	[refreshButton release];
 	
 	[super dealloc];
 }
@@ -200,6 +200,11 @@
 	[super viewWillAppear:animated];
 }
 
+- (void)refreshHandler {
+	[refreshButton startAnimating];
+	[self performSelectorInBackground:@selector(downloadRecentPages) withObject:nil];
+}
+
 - (void)downloadRecentPages {
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
     
@@ -207,8 +212,9 @@
 	[dm loadPageTitlesForCurrentBlog];
 	
 	[self.tableView reloadData];
+	
+	[refreshButton stopAnimating];
 }
-
 
 - (void)showAddNewPage {
 	[[BlogDataManager sharedDataManager] makeNewPageCurrent];	

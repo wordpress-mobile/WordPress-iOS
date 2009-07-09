@@ -16,11 +16,11 @@
 #define LOCAL_DRAFTS_ROW        0
 #define POST_ROW                1
 
-#define REFRESH_BUTTON_ICON     @"sync.png"
 #define REFRESH_BUTTON_HEIGHT   50
 
 @interface PostsListController (Private)
 - (void)showAddPostView;
+- (void)refreshHandler;
 - (void)downloadRecentPosts;
 - (UITableViewCell *)postCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
 - (BOOL)handleAutoSavedContext:(NSInteger)tag;
@@ -42,6 +42,7 @@
 	[PostViewController release];
 	
 	[newButtonItem release];
+	[refreshButton release];
     
 	[super dealloc];
 }
@@ -103,11 +104,10 @@
 
 - (void)addRefreshButton {
     CGRect frame = CGRectMake(0, 0, self.tableView.bounds.size.width, REFRESH_BUTTON_HEIGHT);
-    UIButton *refreshButton = [[UIButton alloc] initWithFrame:frame];
-    
-    [refreshButton setImage:[UIImage imageNamed:REFRESH_BUTTON_ICON] forState:UIControlStateNormal];
-    [refreshButton addTarget:self action:@selector(downloadRecentPosts) forControlEvents:UIControlEventTouchUpInside];
-    
+	
+	refreshButton = [[RefreshButtonView alloc] initWithFrame:frame];
+    [refreshButton addTarget:self action:@selector(refreshHandler) forControlEvents:UIControlEventTouchUpInside];
+	
     self.tableView.tableHeaderView = refreshButton;
 }
 
@@ -170,6 +170,23 @@
     return cell;
 }
 
+- (UITableViewCell *)postCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *CellIdentifier = @"PostCell";
+    PostTableViewCell *cell = (PostTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    BlogDataManager *dm = [BlogDataManager sharedDataManager];
+    
+    if (cell == nil) {
+        cell = [[[PostTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
+    }
+    
+    if ([dm countOfPostTitles]) {
+        id currentPost = [dm postTitleAtIndex:indexPath.row - POST_ROW];
+		cell.post = currentPost;
+    }
+    
+    return cell;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.row == LOCAL_DRAFTS_ROW) {
 		return [self localDraftsCell:tableView forRowAtIndexPath:indexPath];
@@ -193,7 +210,6 @@
         [delegate.navigationController pushViewController:draftsListController animated:YES];
         
 		[draftsListController release];
-		return;
 	} else {
         if (!connectionStatus) {
             UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
@@ -237,24 +253,6 @@
     }
 }
 
-
-- (UITableViewCell *)postCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"PostCell";
-    PostTableViewCell *cell = (PostTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
-    
-    if (cell == nil) {
-        cell = [[[PostTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
-    }
-    
-    if ([dm countOfPostTitles]) {
-        id currentPost = [dm postTitleAtIndex:indexPath.row - POST_ROW];
-		cell.post = currentPost;
-    }
-    
-    return cell;
-}
-
 - (void)goToHome:(id)sender {
     [[BlogDataManager sharedDataManager] resetCurrentBlog];
 	[self popTransition:self.navigationController.view];
@@ -290,29 +288,21 @@
 	return NO;
 }
 
+- (void)refreshHandler {
+	[refreshButton startAnimating];
+	[self performSelectorInBackground:@selector(downloadRecentPosts) withObject:nil];
+}
+
 - (void)downloadRecentPosts {
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
-    
-    if (!connectionStatus) {
-        WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-        [delegate setAlertRunning:YES];
-        
-        UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
-                                                         message:@"Sync operation is not supported now."
-                                                        delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        
-        alert1.tag = NEW_VERSION_ALERT_TAG;
-        [alert1 show];
-        [alert1 release];
-        
-        return;
-    }       
-    
+	
     [dm syncPostsForCurrentBlog];
     [dm loadPostTitlesForCurrentBlog];
     [dm downloadAllCategoriesForBlog:[dm currentBlog]];
     
     [self.tableView reloadData];
+	
+	[refreshButton stopAnimating];
 }
 
 - (void)updatePostsTableViewAfterPostSaved:(NSNotification *)notification {

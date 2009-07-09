@@ -49,6 +49,8 @@ Classes/PostsListController.h -text
 Classes/PostsListController.m -text
 Classes/Reachability.h -text
 Classes/Reachability.m -text
+Classes/RefreshButtonView.h -text
+Classes/RefreshButtonView.m -text
 Classes/UIImage+INResizeImageAllocator.h -text
 Classes/UIImage+INResizeImageAllocator.m -text
 Classes/UIViewController+WPAnimation.h -text

@@ -39,7 +39,7 @@
 		self.font = [UIFont boldSystemFontOfSize:LOCAL_DRAFTS_LABEL_FONT_SIZE];
 		self.image = [UIImage imageNamed:LOCAL_DRAFTS_ICON];
 #endif
-        
+		
         CGRect frame = CGRectMake(BADGE_LABEL_X, (LOCAL_DRAFTS_ROW_HEIGHT - BADGE_LABEL_HEIGHT) / 2 , BADGE_LABEL_WIDTH, BADGE_LABEL_HEIGHT);
 		_badgeLabel = [[UILabel alloc] initWithFrame:frame];
 		_badgeLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;

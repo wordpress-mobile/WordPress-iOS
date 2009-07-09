@@ -6,14 +6,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "RefreshButtonView.h"
 
-@class EditPageViewController,PageViewController;
+@class EditPageViewController, PageViewController;
 
 @interface PagesViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate> {
 	UIBarButtonItem *newButtonItem;
 	
 	EditPageViewController *pageDetailViewController;
 	PageViewController *pageDetailsController;
+	RefreshButtonView *refreshButton;
 	
 	BOOL connectionStatus;
 }

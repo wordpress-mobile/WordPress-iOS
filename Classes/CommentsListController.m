@@ -14,12 +14,12 @@
 #import "WordPressAppDelegate.h"
 #import "WPCommentsDetailViewController.h"
 
-#define REFRESH_BUTTON_ICON             @"sync.png"
 #define REFRESH_BUTTON_HEIGHT           50
 
 @interface CommentsListController (Private)
 - (void)setEditing:(BOOL)value;
 - (void)updateSelectedComments;
+- (void)refreshHandler;
 - (void)downloadRecentComments;
 - (void)addProgressIndicator;
 - (void)removeProgressIndicator;
@@ -31,11 +31,10 @@
 
 - (void)addRefreshButton {
     CGRect frame = CGRectMake(0, 0, commentsTableView.bounds.size.width, REFRESH_BUTTON_HEIGHT);
-    UIButton *refreshButton = [[UIButton alloc] initWithFrame:frame];
-    
-    [refreshButton setImage:[UIImage imageNamed:REFRESH_BUTTON_ICON] forState:UIControlStateNormal];    
-    [refreshButton addTarget:self action:@selector(downloadRecentComments) forControlEvents:UIControlEventTouchUpInside];
-    
+	
+	refreshButton = [[RefreshButtonView alloc] initWithFrame:frame];
+    [refreshButton addTarget:self action:@selector(refreshHandler) forControlEvents:UIControlEventTouchUpInside];
+	
     commentsTableView.tableHeaderView = refreshButton;
 }
 
@@ -66,6 +65,7 @@
 	[selectedComments release];
     [editButtonItem release];
 	[commentsTableView release];
+	[refreshButton release];
 	[super dealloc];
 }
 
@@ -160,6 +160,11 @@
 #pragma mark -
 #pragma mark Action methods
 
+- (void)refreshHandler {
+	[refreshButton startAnimating];
+	[self performSelectorInBackground:@selector(downloadRecentComments) withObject:nil];
+}
+
 - (void)downloadRecentComments {
 	if (!connectionStatus) {
 		UIAlertView *alertt1 = [[[UIAlertView alloc] initWithTitle:@"No connection to host."
@@ -178,6 +183,8 @@
     
 	[commentsTableView reloadData];
 	[editButtonItem setEnabled:([commentsArray count] > 0)];
+	
+	[refreshButton stopAnimating];
 }
 
 - (IBAction)deleteSelectedComments:(id)sender {
