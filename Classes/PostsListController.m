@@ -206,7 +206,7 @@
 		
 		[dataManager loadDraftTitlesForCurrentBlog];
 		
-        [self.navigationController pushViewController:draftsListController animated:YES];
+        [delegate.navigationController pushViewController:draftsListController animated:YES];
         
 		[draftsListController release];
 	} else {
