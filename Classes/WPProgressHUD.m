@@ -35,7 +35,7 @@
 
 - (void) drawRect:(CGRect)rect {
     CGSize backGroundImageSize = self.backgroundImage.size;
-    [self.backgroundImage drawInRect:CGRectMake(0, 0, backGroundImageSize.width, backGroundImageSize.height)];        
+    [backgroundImage drawInRect:CGRectMake(0, 0, backGroundImageSize.width, backGroundImageSize.height) blendMode:kCGBlendModeNormal alpha:0.8];
 }
 
 - (void) layoutSubviews {
