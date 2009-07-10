@@ -138,7 +138,7 @@
 			return NULL;
 		}
 	} else {
-		return @"Pages";
+		return @"Posts";
 	}
 }
 
