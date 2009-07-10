@@ -7,6 +7,7 @@
 
 #import "UIViewController+WPAnimation.h"
 
+#import <QuartzCore/QuartzCore.h>
 
 @implementation UIViewController (WPAnimation)
 

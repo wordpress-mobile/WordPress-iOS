@@ -6,14 +6,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <QuartzCore/QuartzCore.h>
-
 
 @interface UIViewController (WPAnimation) 
 
-- (void) pushTransition:(UIViewController *)viewController;
-- (void) popTransition:(UIView *)view;
-
+- (void)pushTransition:(UIViewController *)viewController;
+- (void)popTransition:(UIView *)view;
 
 @end
-

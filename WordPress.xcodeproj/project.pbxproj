@@ -344,15 +344,14 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				AC34397A0E11435A00E5D79B /* Controller */,
+				C59D3D480E6410BC00AA591D /* Categories */,
+				AC34397A0E11435A00E5D79B /* Controllers */,
 				2F706A870DFB229B00B43086 /* Models */,
 				031662E60FFB14C60045D052 /* Views */,
 				ACFD04900DFD2FCA0031D567 /* XMLRPC */,
 				2F970F970DF929B8006BD934 /* Constants.h */,
-				03CF21EB0FE9F0C3008AD538 /* NSString+Util.h */,
-				03CF21EC0FE9F0C3008AD538 /* NSString+Util.m */,
-				C584D0820EF942DC00B78012 /* UIViewController+WPAnimation.h */,
-				C584D0830EF942DC00B78012 /* UIViewController+WPAnimation.m */,
+				2F706AA30DFB24C500B43086 /* BlogDataManager.h */,
+				2F706AA40DFB24C500B43086 /* BlogDataManager.m */,
 				1D3623240D0F684500981E51 /* WordPressAppDelegate.h */,
 				1D3623250D0F684500981E51 /* WordPressAppDelegate.m */,
 			);
@@ -447,24 +446,9 @@
 			name = "Custom Fields";
 			sourceTree = "<group>";
 		};
-		2F35D8AF0DFBAD82002A5F9C /* Entities */ = {
-			isa = PBXGroup;
-			children = (
-				7059CD1F0F332B6500A0660B /* WPCategoryTree.h */,
-				7059CD200F332B6500A0660B /* WPCategoryTree.m */,
-				C57AD5E10F2A10BC00A1717C /* WPXMLReader.h */,
-				C57AD5E00F2A10BC00A1717C /* WPXMLReader.m */,
-				2F706AA30DFB24C500B43086 /* BlogDataManager.h */,
-				2F706AA40DFB24C500B43086 /* BlogDataManager.m */,
-			);
-			name = Entities;
-			sourceTree = "<group>";
-		};
 		2F706A870DFB229B00B43086 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				C59D3D480E6410BC00AA591D /* Categories */,
-				2F35D8AF0DFBAD82002A5F9C /* Entities */,
 				CEBD3EA90FF1BA3B00C1396E /* Blog.h */,
 				CEBD3EAA0FF1BA3B00C1396E /* Blog.m */,
 			);
@@ -488,7 +472,7 @@
 			name = Post;
 			sourceTree = "<group>";
 		};
-		AC34397A0E11435A00E5D79B /* Controller */ = {
+		AC34397A0E11435A00E5D79B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				AC34397B0E11443300E5D79B /* Blog */,
@@ -500,7 +484,7 @@
 				A0F129C90E1FAD4F00867E18 /* AboutViewController.h */,
 				A0F129CA0E1FAD4F00867E18 /* AboutViewController.m */,
 			);
-			name = Controller;
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 		AC34397B0E11443300E5D79B /* Blog */ = {
@@ -560,6 +544,10 @@
 		AC512F800E20D28500B7DA32 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				7059CD1F0F332B6500A0660B /* WPCategoryTree.h */,
+				7059CD200F332B6500A0660B /* WPCategoryTree.m */,
+				C57AD5E10F2A10BC00A1717C /* WPXMLReader.h */,
+				C57AD5E00F2A10BC00A1717C /* WPXMLReader.m */,
 				C5D87A7E0F20ADB300601936 /* WPLogoView.h */,
 				C5D87A7F0F20ADB300601936 /* WPLogoView.m */,
 				021751A50EB8412E0032D429 /* WPPhotosListProtocol.h */,
@@ -674,10 +662,14 @@
 		C59D3D480E6410BC00AA591D /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				03CF21EB0FE9F0C3008AD538 /* NSString+Util.h */,
+				03CF21EC0FE9F0C3008AD538 /* NSString+Util.m */,
 				C59D3D490E6410D300AA591D /* NSString+XMLExtensions.h */,
 				C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */,
 				CE4E33D00FEB0F3A00415662 /* UIImage+INResizeImageAllocator.h */,
 				CE4E33D10FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m */,
+				C584D0820EF942DC00B78012 /* UIViewController+WPAnimation.h */,
+				C584D0830EF942DC00B78012 /* UIViewController+WPAnimation.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
