@@ -111,8 +111,6 @@
 		C5E3AE350E93F3C5008755FF /* WPImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5E3AE340E93F3C5008755FF /* WPImagePickerController.m */; };
 		CE0CA8CB0FEB178800BC71AD /* favicon.ico in Resources */ = {isa = PBXBuildFile; fileRef = CE0CA8CA0FEB178800BC71AD /* favicon.ico */; };
 		CE1E3BC71005B3D500A7BD08 /* WPpregressHUDBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = CE1E3BC61005B3D500A7BD08 /* WPpregressHUDBackground.png */; };
-		CE444C820FF48F8B00EEDE7D /* PagesAndCommentsNotSupported.m in Sources */ = {isa = PBXBuildFile; fileRef = CE444C800FF48F8B00EEDE7D /* PagesAndCommentsNotSupported.m */; };
-		CE444C830FF48F8B00EEDE7D /* PagesAndCommentsNotSupported.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE444C810FF48F8B00EEDE7D /* PagesAndCommentsNotSupported.xib */; };
 		CE4E33D20FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4E33D10FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m */; };
 		CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBD3EAA0FF1BA3B00C1396E /* Blog.m */; };
 		CEC7EFA60FC66081007B90D6 /* AddBlogValidationBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = CEC7EFA50FC66081007B90D6 /* AddBlogValidationBackground.png */; };
@@ -287,9 +285,6 @@
 		C5E3AE340E93F3C5008755FF /* WPImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPImagePickerController.m; sourceTree = "<group>"; };
 		CE0CA8CA0FEB178800BC71AD /* favicon.ico */ = {isa = PBXFileReference; lastKnownFileType = image.ico; path = favicon.ico; sourceTree = "<group>"; };
 		CE1E3BC61005B3D500A7BD08 /* WPpregressHUDBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WPpregressHUDBackground.png; sourceTree = "<group>"; };
-		CE444C7F0FF48F8B00EEDE7D /* PagesAndCommentsNotSupported.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PagesAndCommentsNotSupported.h; sourceTree = "<group>"; };
-		CE444C800FF48F8B00EEDE7D /* PagesAndCommentsNotSupported.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PagesAndCommentsNotSupported.m; sourceTree = "<group>"; };
-		CE444C810FF48F8B00EEDE7D /* PagesAndCommentsNotSupported.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PagesAndCommentsNotSupported.xib; path = Classes/PagesAndCommentsNotSupported.xib; sourceTree = "<group>"; };
 		CE4E33D00FEB0F3A00415662 /* UIImage+INResizeImageAllocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+INResizeImageAllocator.h"; sourceTree = "<group>"; };
 		CE4E33D10FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+INResizeImageAllocator.m"; sourceTree = "<group>"; };
 		CEBD3EA90FF1BA3B00C1396E /* Blog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Blog.h; sourceTree = "<group>"; };
@@ -501,8 +496,6 @@
 				28C286E00D94DF7D0034E888 /* BlogsViewController.m */,
 				2F970F850DF924E2006BD934 /* EditBlogViewController.h */,
 				2F970F860DF924E2006BD934 /* EditBlogViewController.m */,
-				CE444C7F0FF48F8B00EEDE7D /* PagesAndCommentsNotSupported.h */,
-				CE444C800FF48F8B00EEDE7D /* PagesAndCommentsNotSupported.m */,
 			);
 			name = Blog;
 			sourceTree = "<group>";
@@ -627,7 +620,6 @@
 			children = (
 				03FF35C4100423A10066ED95 /* BlogViewController.xib */,
 				AC2FB44B0E1D236A00DFE859 /* EditBlogViewController.xib */,
-				CE444C810FF48F8B00EEDE7D /* PagesAndCommentsNotSupported.xib */,
 			);
 			name = Blog;
 			sourceTree = "<group>";
@@ -807,7 +799,6 @@
 				29FF132F0FE70F3100CFB908 /* CustomFieldsTableView.xib in Resources */,
 				CE0CA8CB0FEB178800BC71AD /* favicon.ico in Resources */,
 				031665FD0FFC2E890045D052 /* sync.png in Resources */,
-				CE444C830FF48F8B00EEDE7D /* PagesAndCommentsNotSupported.xib in Resources */,
 				CECB84620FFD91050087FF33 /* talk_bubbles.png in Resources */,
 				CECB84640FFD91810087FF33 /* sticky_note.png in Resources */,
 				03FF34BB10040B0A0066ED95 /* documents.png in Resources */,
@@ -870,7 +861,6 @@
 				CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */,
 				031663070FFB151A0045D052 /* PostTableViewCell.m in Sources */,
 				031666AE0FFC3E130045D052 /* CommentTableViewCell.m in Sources */,
-				CE444C820FF48F8B00EEDE7D /* PagesAndCommentsNotSupported.m in Sources */,
 				03FF35C5100423A10066ED95 /* BlogViewController.m in Sources */,
 				CEFC8B5910057D0A0052604A /* WPProgressHUD.m in Sources */,
 				03F298C410057AEC0097B29A /* RefreshButtonView.m in Sources */,

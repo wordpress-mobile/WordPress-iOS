@@ -28,9 +28,6 @@ Classes/NSString+XMLExtensions.h -text
 Classes/NSString+XMLExtensions.m -text
 Classes/PageViewController.h -text
 Classes/PageViewController.m -text
-Classes/PagesAndCommentsNotSupported.h -text
-Classes/PagesAndCommentsNotSupported.m -text
-Classes/PagesAndCommentsNotSupported.xib -text
 Classes/PagesViewController.h -text
 Classes/PagesViewController.m -text
 Classes/PostDetailEditController.h -text

@@ -65,6 +65,17 @@
 #pragma mark -
 #pragma mark UITabBarControllerDelegate Methods
 
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	
+	if (viewController == pagesViewController || viewController == commentsViewController) {	
+		// Enable pages and comments tabs only if they are supported.
+		return ([[[dm currentBlog] valueForKey:kSupportsPagesAndComments] boolValue]);
+	} else {
+		return YES;
+	}
+}
+
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
 	[viewController viewWillAppear:NO];
 	
