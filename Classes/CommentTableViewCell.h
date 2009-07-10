@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-#define COMMENT_ROW_HEIGHT          65
+#define COMMENT_ROW_HEIGHT          100
 
 #define LEFT_OFFSET                 10
 #define RIGHT_OFFSET                280
@@ -30,7 +30,7 @@
     
     UIButton *_checkButton;
     UILabel *_nameLabel;
-    UILabel *_emailLabel;
+    UILabel *_urlLabel;
     UILabel *_commentLabel;
     
     BOOL _checked;

@@ -4277,7 +4277,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	for ( NSDictionary *comment in commentsList ) {
 		// add blogid and blog_host_name to post
 		NSMutableDictionary *updatedComment = [NSMutableDictionary dictionaryWithDictionary:comment];
-		
+		        
 		[updatedComment setValue:[blog valueForKey:@"blogid"] forKey:@"blogid"];
 		[updatedComment setValue:[blog valueForKey:@"blog_host_name"] forKey:@"blog_host_name"];
 		
@@ -4323,6 +4323,9 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	NSString *authorEmail = [aComment valueForKey:@"author_email"];
 	[commentTitle setObject:(authorEmail?authorEmail:@"") forKey:@"author_email"];
+    
+    NSString *authorUrl = [aComment valueForKey:@"author_url"];
+	[commentTitle setObject:(authorUrl?authorUrl:@"") forKey:@"author_url"];
 
 	NSString *status = [aComment valueForKey:@"status"];
 	[commentTitle setObject:(status?status:@"") forKey:@"status"];

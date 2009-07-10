@@ -194,6 +194,7 @@
     }
 	
 	NSMutableArray *commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
+        
 	[self setCommentsArray:commentsList];
 	for ( NSDictionary *dict in commentsArray ) {
 		NSString *str=[dict valueForKey:@"comment_id"];

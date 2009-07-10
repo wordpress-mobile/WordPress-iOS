@@ -12,7 +12,7 @@
 @interface CommentTableViewCell (Private)
 - (void)addCheckButton;
 - (void)addNameLabel;
-- (void)addEmailLabel;
+- (void)addURLLabel;
 - (void)addCommentLabel;
 @end
 
@@ -24,9 +24,10 @@
     if (self = [super initWithFrame:frame reuseIdentifier:reuseIdentifier]) {
         self.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
         
+        
         [self addCheckButton];
         [self addNameLabel];
-        //[self addEmailLabel];
+        [self addURLLabel];
         [self addCommentLabel];
     }
     
@@ -35,7 +36,7 @@
 
 - (void)dealloc {
     [_nameLabel release];
-    [_emailLabel release];
+    [_urlLabel release];
     [_commentLabel release];
     [_checkButton release];
     [super dealloc];
@@ -64,6 +65,10 @@
     nameRect.origin.x = LEFT_OFFSET + buttonOffset;
     _nameLabel.frame = nameRect;
     
+    CGRect urlRect = _urlLabel.frame;
+    urlRect.origin.x = LEFT_OFFSET + buttonOffset;
+    _urlLabel.frame = urlRect;
+    
     CGRect commentRect = _commentLabel.frame;
     commentRect.origin.x = LEFT_OFFSET + buttonOffset;
     commentRect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
@@ -89,8 +94,8 @@
 	NSString *author = [[_comment valueForKey:@"author"] stringByTrimmingCharactersInSet:whitespaceCS];
 	_nameLabel.text = author;
 	
-	NSString *authorEmail = [_comment valueForKey:@"author_email"];
-	_emailLabel.text = authorEmail;
+	NSString *authorURL = [_comment valueForKey:@"author_url"];
+	_urlLabel.text = authorURL;
 	
 	NSString *content= [_comment valueForKey:@"content"];
 	_commentLabel.text = content;
@@ -117,7 +122,7 @@
 }
 
 - (void)addNameLabel {
-    CGRect rect = CGRectMake(LEFT_OFFSET, (COMMENT_ROW_HEIGHT - LABEL_HEIGHT - NAME_LABEL_HEIGHT - VERTICAL_OFFSET) / 2.0, 150, LABEL_HEIGHT);
+    CGRect rect = CGRectMake(LEFT_OFFSET, 10, 250, LABEL_HEIGHT);
     
     _nameLabel = [[UILabel alloc] initWithFrame:rect];
     _nameLabel.font = [UIFont boldSystemFontOfSize:MAIN_FONT_SIZE];
@@ -127,20 +132,20 @@
     [self.contentView addSubview:_nameLabel];
 }
 
-- (void)addEmailLabel {
-    CGRect rect = CGRectMake(LEFT_OFFSET, ((COMMENT_ROW_HEIGHT - LABEL_HEIGHT - DATE_LABEL_HEIGHT - VERTICAL_OFFSET) / 2.0), 150, LABEL_HEIGHT);
+- (void)addURLLabel {
+    CGRect rect = CGRectMake(LEFT_OFFSET, _nameLabel.frame.origin.y + LABEL_HEIGHT, 250, LABEL_HEIGHT);
     
-    _emailLabel = [[UILabel alloc]initWithFrame:rect];
-    _emailLabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
-    _emailLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-	_emailLabel.adjustsFontSizeToFitWidth = NO;
-	_emailLabel.textColor = [UIColor grayColor];
+    _urlLabel = [[UILabel alloc]initWithFrame:rect];
+    _urlLabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
+    _urlLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+	_urlLabel.adjustsFontSizeToFitWidth = NO;
+	_urlLabel.textColor = [UIColor grayColor];
     
-    [self.contentView addSubview:_emailLabel];
+    [self.contentView addSubview:_urlLabel];
 }
 
 - (void)addCommentLabel {
-    CGRect rect = CGRectMake(LEFT_OFFSET, _nameLabel.frame.origin.y + LABEL_HEIGHT + VERTICAL_OFFSET, COMMENT_LABEL_WIDTH, NAME_LABEL_HEIGHT);
+    CGRect rect = CGRectMake(LEFT_OFFSET, _urlLabel.frame.origin.y + LABEL_HEIGHT + VERTICAL_OFFSET, COMMENT_LABEL_WIDTH, NAME_LABEL_HEIGHT);
     
     _commentLabel = [[UILabel alloc] initWithFrame:rect];
     _commentLabel.font = [UIFont systemFontOfSize:DATE_FONT_SIZE];
