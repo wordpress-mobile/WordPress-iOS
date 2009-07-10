@@ -18,6 +18,7 @@
 #define NEW_VERSION_ALERT_TAG   5111
 
 @interface PostsListController (Private)
+- (void)loadPosts;
 - (void)showAddPostView;
 - (void)refreshHandler;
 - (void)downloadRecentPosts;
@@ -51,15 +52,9 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	dm.isLocaDraftsCurrent = NO;
-	[dm loadPostTitlesForCurrentBlog];
-	[dm loadDraftTitlesForCurrentBlog];
-	
 	connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
 	
-	[self.tableView reloadData];
-	
+	[self loadPosts];
 	[super viewWillAppear:animated];
 }
 
@@ -241,13 +236,22 @@
 		// TODO: delete the post.
 	}
 	
-	[dataManager loadPostTitlesForCurrentBlog];
-	[dataManager loadDraftTitlesForCurrentBlog];
-	[self.tableView reloadData];
+	[self loadPosts];
 }
 
 #pragma mark -
 #pragma mark Private methods
+
+- (void)loadPosts {
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+
+	dm.isLocaDraftsCurrent = NO;
+	
+	[dm loadPostTitlesForCurrentBlog];
+	[dm loadDraftTitlesForCurrentBlog];
+	
+	[self.tableView reloadData];
+}
 
 - (void)goToHome:(id)sender {
     [[BlogDataManager sharedDataManager] resetCurrentBlog];
@@ -302,10 +306,7 @@
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	
     [dm syncPostsForCurrentBlog];
-    [dm loadPostTitlesForCurrentBlog];
-    [dm downloadAllCategoriesForBlog:[dm currentBlog]];
-    
-    [self.tableView reloadData];
+	[self loadPosts];
 	
 	[refreshButton stopAnimating];
 	[pool release];
@@ -314,14 +315,11 @@
 - (void)updatePostsTableViewAfterPostSaved:(NSNotification *)notification {
     NSDictionary *postIdsDict=[notification userInfo];
     BlogDataManager *dm = [BlogDataManager sharedDataManager]; 
+	
     [dm updatePostsTitlesFileAfterPostSaved:(NSMutableDictionary *)postIdsDict];
-	
-	//	if([[postIdsDict valueForKey:@"isCurrentPostDraft"] intValue]==1)
-	//		[self.navigationController popViewControllerAnimated:YES]; 
-	
 	[dm loadPostTitlesForCurrentBlog];
     
-	[self.tableView reloadData];	
+	[self.tableView reloadData];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {

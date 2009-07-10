@@ -21,6 +21,7 @@
 #define REFRESH_BUTTON_HEIGHT   50
 
 @interface PagesViewController (Private)
+- (void)loadPages;
 - (void)setPageDetailsController;
 - (void)refreshHandler;
 - (void)downloadRecentPages;
@@ -52,15 +53,9 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	dm.isLocaDraftsCurrent = NO;
-	[dm loadPageTitlesForCurrentBlog];
-	[dm loadPageDraftTitlesForCurrentBlog];
-	
 	connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
 	
-	[self.tableView reloadData];
-	
+	[self loadPages];
 	[super viewWillAppear:animated];
 }
 
@@ -194,13 +189,22 @@
 		// TODO: delete the page.
 	}
 	
-	[dataManager loadPageTitlesForCurrentBlog];
-	[dataManager loadPageDraftTitlesForCurrentBlog];
-	[self.tableView reloadData];
+	[self loadPages];
 }
 
 #pragma mark -
 #pragma mark Private methods
+
+- (void)loadPages {	
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	
+	dm.isLocaDraftsCurrent = NO;
+	
+	[dm loadPageTitlesForCurrentBlog];
+	[dm loadPageDraftTitlesForCurrentBlog];
+	
+	[self.tableView reloadData];
+}
 
 - (void)reachabilityChanged {
 	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
@@ -226,9 +230,7 @@
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
     
 	[dm syncPagesForBlog:[dm currentBlog]];
-	[dm loadPageTitlesForCurrentBlog];
-	
-	[self.tableView reloadData];
+	[self loadPages];
 	
 	[refreshButton stopAnimating];
 	[pool release];

@@ -2166,39 +2166,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	return postTitleFieldNamesByTag;
 }
 
-- (NSDictionary *)postTitleFieldTagsByName {
-	
-	if(!postTitleFieldTagsByName) {
-		
-		NSNumber *tag0 = [NSNumber numberWithInt:100];
-		NSNumber *tag1 = [NSNumber numberWithInt:101];
-		NSNumber *tag2 = [NSNumber numberWithInt:102];
-		NSNumber *tag3 = [NSNumber numberWithInt:103];
-		NSNumber *tag4 = [NSNumber numberWithInt:104];
-		NSNumber *tag5 = [NSNumber numberWithInt:105];
-		NSNumber *tag6 = [NSNumber numberWithInt:106];
-		NSNumber *tag7 = [NSNumber numberWithInt:107];
-		NSNumber *tag8 = [NSNumber numberWithInt:108];
-		NSNumber *tag9 = [NSNumber numberWithInt:109];
-		NSNumber *tag10 = [NSNumber numberWithInt:110];
-		NSNumber *tag11 = [NSNumber numberWithInt:111];
-		NSNumber *tag12 = [NSNumber numberWithInt:112];
-		NSNumber *tag13 = [NSNumber numberWithInt:113];
-		NSNumber *tag14 = [NSNumber numberWithInt:114];
-   		NSNumber *tag15 = [NSNumber numberWithInt:115];
-
-		
-		
-		NSArray *tags = [NSArray arrayWithObjects:tag0, tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, 
-						 tag9, tag10, tag11, tag12, tag13, tag14,tag15, nil];
-		self->postTitleFieldTagsByName = [NSDictionary dictionaryWithObjects:tags forKeys:[self postTitleFieldNames]];
-		
-		[postTitleFieldTagsByName retain];
-	}
-	
-	return postTitleFieldTagsByName;
-}
-
 #pragma mark PostTitle Data
 
 - (NSMutableArray *)postTitlesForBlog:(id)aBlog
