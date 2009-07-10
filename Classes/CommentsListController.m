@@ -357,6 +357,10 @@
 	return COMMENT_ROW_HEIGHT;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return kSectionHeaderHight;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editing) {
         [self tableView:tableView didCheckRowAtIndexPath:indexPath];

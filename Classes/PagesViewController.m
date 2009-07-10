@@ -176,6 +176,10 @@
 	return POST_ROW_HEIGHT;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return kSectionHeaderHight;
+}
+
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
 	return (indexPath.section == LOCAL_DRAFTS_SECTION);
 }
