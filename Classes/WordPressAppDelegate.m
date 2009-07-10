@@ -69,7 +69,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
     int current_blog_index = [dataManager indexForBlogid:current_blog_id hostName:current_blog_hostname];
         
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setInteger:current_blog_index forKey:@"current_blog_index"];
+    [defaults setInteger:current_blog_index forKey:kCurrentBlogIndex];
 
 	[dataManager saveBlogData];
     
@@ -135,12 +135,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	}
 }
 
-/*
- TODO: restore state from what was saved > we need to restore the view hierarchy 
- Blogs > BlogDetail (modal)
- Blogs > Posts >Post Edit (one of 4 tabs);
- Also Need to get currentpost and current blog from autosave area if they are there.
- */
 - (void)setCurrentBlog {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	
