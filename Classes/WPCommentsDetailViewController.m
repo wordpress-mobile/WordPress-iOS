@@ -150,7 +150,7 @@
         NSArray *selectedComment = [NSArray arrayWithObjects:[commentDetails objectAtIndex:currentIndex],nil];
         
         [sharedDataManager performSelector:selector withObject:selectedComment withObject:[sharedDataManager currentBlog]];
-        
+                
         [sharedDataManager loadCommentTitlesForCurrentBlog];
 		[self.navigationController popViewControllerAnimated:YES]; 
     }

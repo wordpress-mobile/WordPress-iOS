@@ -28,6 +28,7 @@
 - (void) approveComments;
 - (void) markCommentsAsSpam;
 - (void) unapproveComments;
+- (void) refreshCommentsList;
 @end
 
 @implementation CommentsListController
@@ -80,21 +81,9 @@
 	BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
 	[sharedDataManager loadCommentTitlesForCurrentBlog];
 	
-	if (!selectedComments) {
-		selectedComments = [[NSMutableArray alloc] init];
-	} else {
-		[selectedComments removeAllObjects];
-    }
-	
-	NSMutableArray *commentsList = [sharedDataManager commentTitlesForBlog:[sharedDataManager currentBlog]];
-	[self setCommentsArray:commentsList];
-	for ( NSDictionary *dict in commentsArray ) {
-		NSString *str=[dict valueForKey:@"comment_id"];
-		[commentsDict setValue:dict forKey:str];
-	}
-	
+	[self refreshCommentsList];
+    
 	connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
-	[commentsTableView reloadData];
 	
 	[editToolbar setHidden:YES];
 
@@ -185,13 +174,33 @@
 	
 	BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
 	[sharedBlogDataManager syncCommentsForCurrentBlog];
-	[sharedBlogDataManager loadCommentTitlesForCurrentBlog];
+    [sharedBlogDataManager loadCommentTitlesForCurrentBlog];
+
+    [self refreshCommentsList];
     
-	[commentsTableView reloadData];
-	[editButtonItem setEnabled:([commentsArray count] > 0)];
+    [editButtonItem setEnabled:([commentsArray count] > 0)];
 	
 	[refreshButton stopAnimating];
 	[pool release];
+}
+
+- (void) refreshCommentsList {
+    BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
+    
+	if (!selectedComments) {
+		selectedComments = [[NSMutableArray alloc] init];
+	} else {
+		[selectedComments removeAllObjects];
+    }
+	
+	NSMutableArray *commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
+	[self setCommentsArray:commentsList];
+	for ( NSDictionary *dict in commentsArray ) {
+		NSString *str=[dict valueForKey:@"comment_id"];
+		[commentsDict setValue:dict forKey:str];
+	}
+    
+	[commentsTableView reloadData];
 }
 
 - (IBAction)deleteSelectedComments:(id)sender {
