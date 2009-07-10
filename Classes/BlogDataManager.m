@@ -2341,7 +2341,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	return YES;
 }
 
-
 - (BOOL)deleteDraftAtIndex:(NSInteger)anIndex forBlog:(id)aBlog
 {
 	NSString *draftPath = [self pathToDraft:[self draftTitleAtIndex:anIndex] forBlog:aBlog];
@@ -2358,11 +2357,9 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	return YES;
 }
 
-
-
 - (BOOL)deletePageDraftAtIndex:(NSInteger)anIndex forBlog:(id)aBlog
 {
-	NSString *pageDraftPath = [self pathToPageDraft:[self  pageDraftTitleAtIndex:anIndex] forBlog:aBlog];
+	NSString *pageDraftPath = [self pathToPageDraft:[self pageDraftTitleAtIndex:anIndex] forBlog:aBlog];
 	NSMutableArray *pageDraftTitles = [self pageDraftTitlesForBlog:(id)aBlog];
 	[pageDraftTitles removeObjectAtIndex:anIndex];
 	
@@ -2375,10 +2372,6 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[self saveBlogData];
 	return YES;
 }
-
-
-
-
 
 - (void)resetDrafts
 {

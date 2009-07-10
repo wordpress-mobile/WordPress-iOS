@@ -181,13 +181,31 @@
 	return POST_ROW_HEIGHT;
 }
 
-- (void)reachabilityChanged {
-	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+	return (indexPath.section == LOCAL_DRAFTS_SECTION);
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
+	
+	if (indexPath.section == LOCAL_DRAFTS_SECTION) {
+		[dataManager deletePageDraftAtIndex:indexPath.row forBlog:[dataManager currentBlog]];
+	} else {
+		// TODO: delete the page.
+	}
+	
+	[dataManager loadPageTitlesForCurrentBlog];
+	[dataManager loadPageDraftTitlesForCurrentBlog];
 	[self.tableView reloadData];
 }
 
 #pragma mark -
 #pragma mark Private methods
+
+- (void)reachabilityChanged {
+	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
+	[self.tableView reloadData];
+}
 
 - (void)addRefreshButton {
     CGRect frame = CGRectMake(0, 0, self.tableView.bounds.size.width, REFRESH_BUTTON_HEIGHT);

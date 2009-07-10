@@ -52,7 +52,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	[dm postTitlesForBlog:[dm currentBlog]];
 	dm.isLocaDraftsCurrent = NO;
 	[dm loadPostTitlesForCurrentBlog];
 	[dm loadDraftTitlesForCurrentBlog];
@@ -227,6 +226,24 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return POST_ROW_HEIGHT;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+	return (indexPath.section == LOCAL_DRAFTS_SECTION);
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
+	
+	if (indexPath.section == LOCAL_DRAFTS_SECTION) {
+		[dataManager deleteDraftAtIndex:indexPath.row forBlog:[dataManager currentBlog]];
+	} else {
+		// TODO: delete the post.
+	}
+	
+	[dataManager loadPostTitlesForCurrentBlog];
+	[dataManager loadDraftTitlesForCurrentBlog];
+	[self.tableView reloadData];
 }
 
 #pragma mark -
