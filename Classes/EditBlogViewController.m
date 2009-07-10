@@ -36,7 +36,7 @@
 }
 
 - (BOOL)currentBlogIsNew {
-	NSString *blogid = [currentBlog valueForKey:@"blogid"];
+	NSString *blogid = [currentBlog valueForKey:kBlogId];
 	return (!blogid || [blogid isEmpty]);
 }
 

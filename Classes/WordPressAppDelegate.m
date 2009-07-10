@@ -5,9 +5,11 @@
 
 @interface WordPressAppDelegate (Private)
 
+- (void)setAppBadge;
 - (void)startupAnimationDone:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context;
 - (void)checkPagesAndCommentsSupported;
-- (void)setCurrentBlog;
+- (void)storeCurrentBlog;
+- (void)restoreCurrentBlog;
 - (void)showSplashView;
 
 @end
@@ -23,6 +25,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 - (id)init {
 	if (!wordPressApp) {
 		wordPressApp = [super init];
+		dataManager = [BlogDataManager sharedDataManager];
 	}
 	
 	return wordPressApp;
@@ -39,6 +42,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 - (void)dealloc {
 	[navigationController release];
 	[window release];
+	[dataManager release];
 	[super dealloc];
 }
 
@@ -57,23 +61,14 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	[window makeKeyAndVisible];
 	
 	[self checkPagesAndCommentsSupported];
-	[self setCurrentBlog];
+	[self restoreCurrentBlog];
 	[self showSplashView];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-    BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-
-    NSString *current_blog_id = [[dataManager currentBlog] objectForKey:@"blogid"];
-    NSString *current_blog_hostname = [[dataManager currentBlog] objectForKey:@"blog_host_name"];
-    int current_blog_index = [dataManager indexForBlogid:current_blog_id hostName:current_blog_hostname];
-        
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setInteger:current_blog_index forKey:kCurrentBlogIndex];
-
+	[self storeCurrentBlog];
 	[dataManager saveBlogData];
-    
-	[UIApplication sharedApplication].applicationIconBadgeNumber = [dataManager countOfAwaitingComments];
+    [self setAppBadge];
 }
 
 #pragma mark -
@@ -106,15 +101,18 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	self.alertRunning = NO;
 }
 
+- (void)setAppBadge {
+	[UIApplication sharedApplication].applicationIconBadgeNumber = [dataManager countOfAwaitingComments];
+}
+
 // Code for Checking a Blog configured in 1.1 supports Pages & Comments 
 // When the iphone WP version upgraded from 1.1 to 1.2
 - (void)checkPagesAndCommentsSupported {
-	BlogDataManager *blogDataManager = [BlogDataManager sharedDataManager];
-	int blogsCount = [blogDataManager countOfBlogs];
+	int blogsCount = [dataManager countOfBlogs];
 	
 	for (int i = 0; i < blogsCount; i++) {
-		[blogDataManager makeBlogAtIndexCurrent:i];
-		NSDictionary *blog = [blogDataManager blogAtIndex:i];
+		[dataManager makeBlogAtIndexCurrent:i];
+		NSDictionary *blog = [dataManager blogAtIndex:i];
 		NSString *url = [blog valueForKey:@"url"];
 		
 		if(url != nil && [url length] >= 7 && [url hasPrefix:@"http://"]) {
@@ -129,25 +127,42 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		//Check network connectivity
 		if ([[Reachability sharedReachability] internetConnectionStatus]) {
 			if (![blog valueForKey:kSupportsPagesAndComments]) {
-				[blogDataManager performSelectorInBackground:@selector(wrapperForSyncPagesAndCommentsForBlog:) withObject:blog];
+				[dataManager performSelectorInBackground:@selector(wrapperForSyncPagesAndCommentsForBlog:) withObject:blog];
 			}
 		}
 	}
 }
 
-- (void)setCurrentBlog {
+- (void)storeCurrentBlog {
+	NSDictionary *currentBlog = [dataManager currentBlog];
+	
+	if (currentBlog) {	
+		NSString *currentBlogId = [currentBlog objectForKey:kBlogId];
+		NSString *currentBlogHostName = [currentBlog objectForKey:kBlogHostName];
+		int currentBlogIndex = [dataManager indexForBlogid:currentBlogId hostName:currentBlogHostName];
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		
+		[defaults setInteger:currentBlogIndex forKey:kCurrentBlogIndex];
+	}
+}
+
+- (void)restoreCurrentBlog {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	
 	if ([defaults objectForKey:kCurrentBlogIndex]) {
-		int currentBlogIndex = [defaults integerForKey:kCurrentBlogIndex];        
-        [[BlogDataManager sharedDataManager] makeBlogAtIndexCurrent:currentBlogIndex];
+		int currentBlogIndex = [defaults integerForKey:kCurrentBlogIndex];
+		
+		// Sanity check.
+		if (currentBlogIndex >= 0) {
+			[dataManager makeBlogAtIndexCurrent:currentBlogIndex];
+		}
 	} else {
-        [[BlogDataManager sharedDataManager] resetCurrentBlog];
+        [dataManager resetCurrentBlog];
     }
 }
 
 - (void)showSplashView {
-    splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, 320, 480)];
+    splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
     splashView.image = [UIImage imageNamed:@"Default.png"];
     [window addSubview:splashView];
     [window bringSubviewToFront:splashView];

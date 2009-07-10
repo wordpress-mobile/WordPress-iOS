@@ -34,7 +34,7 @@
     NSDictionary *blog = [[BlogDataManager sharedDataManager] blogAtIndex:index];
     
     UIImage *faviconImage = nil;
-    NSString *fileName = [NSString stringWithFormat:@"favicon-%@-%@.png", [blog objectForKey:@"blog_host_name"], [blog objectForKey:@"blogid"]];
+    NSString *fileName = [NSString stringWithFormat:@"favicon-%@-%@.png", [blog objectForKey:kBlogHostName], [blog objectForKey:kBlogId]];
     
     NSLog(@"filename: %@", fileName);
     

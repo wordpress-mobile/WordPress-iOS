@@ -42,6 +42,8 @@
 #define WPLog //NSLog
 #endif
 
+#define kBlogId									@"blogid"
+#define kBlogHostName							@"blog_host_name"
 #define kCurrentBlogIndex						@"CurrentBlogIndex"
 #define kResizePhotoSetting						@"ResizePhotoSetting"
 #define kAsyncPostFlag							@"async_post"

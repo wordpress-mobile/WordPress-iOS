@@ -349,7 +349,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[imageParms setValue:categories forKey:@"categories"];
 	[imageParms setValue:desc forKey:@"description"];
 	
-	NSArray *args = [NSArray arrayWithObjects:[currentBlog valueForKey:@"blogid"],
+	NSArray *args = [NSArray arrayWithObjects:[currentBlog valueForKey:kBlogId],
 					 [currentBlog valueForKey:@"username"],
 					 [currentBlog valueForKey:@"pwd"],
 					 imageParms,
@@ -447,9 +447,9 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	//	[imageParms setValue:categories forKey:@"categories"];
 	//	[imageParms setValue:desc forKey:@"description"];
 	
-	id blog = [self blogForId:[currentPost valueForKey:@"blogid"] hostName:[currentPost valueForKey:@"blog_host_name"]];
+	id blog = [self blogForId:[currentPost valueForKey:kBlogId] hostName:[currentPost valueForKey:kBlogHostName]];
 
-	NSArray *args = [NSArray arrayWithObjects:[blog valueForKey:@"blogid"],
+	NSArray *args = [NSArray arrayWithObjects:[blog valueForKey:kBlogId],
 					 [blog valueForKey:@"username"],
 					 [blog valueForKey:@"pwd"],
 					 imageParms,
@@ -492,9 +492,9 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	//	[imageParms setValue:categories forKey:@"categories"];
 	//	[imageParms setValue:desc forKey:@"description"];
 	
-	id blog = [self blogForId:[currentPost valueForKey:@"blogid"] hostName:[currentPost valueForKey:@"blog_host_name"]];
+	id blog = [self blogForId:[currentPost valueForKey:kBlogId] hostName:[currentPost valueForKey:kBlogHostName]];
 	
-	NSArray *args = [NSArray arrayWithObjects:[blog valueForKey:@"blogid"],
+	NSArray *args = [NSArray arrayWithObjects:[blog valueForKey:kBlogId],
 					 [blog valueForKey:@"username"],
 					 [blog valueForKey:@"pwd"],
 					 imageParms,
@@ -536,12 +536,12 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	//	[imageParms setValue:categories forKey:@"categories"];
 	//	[imageParms setValue:desc forKey:@"description"];
 	
-	//id blog = [self blogForId:[currentPost valueForKey:@"blogid"] hostName:[currentPost valueForKey:@"blog_host_name"]];
-	id blog = [self blogForId:[currentPage valueForKey:@"blogid"] hostName:[currentPage valueForKey:@"blog_host_name"]];
+	//id blog = [self blogForId:[currentPost valueForKey:kBlogId] hostName:[currentPost valueForKey:kBlogHostName]];
+	id blog = [self blogForId:[currentPage valueForKey:kBlogId] hostName:[currentPage valueForKey:kBlogHostName]];
 	
 	
 	
-	NSArray *args = [NSArray arrayWithObjects:[blog valueForKey:@"blogid"],
+	NSArray *args = [NSArray arrayWithObjects:[blog valueForKey:kBlogId],
 					 [blog valueForKey:@"username"],
 					 [blog valueForKey:@"pwd"],
 					 imageParms,
@@ -754,10 +754,10 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 // So that we can reduse the file system references.
 - (NSString *)blogDir:(id)aBlog
 {
-	NSString *blogHostDir = [currentDirectoryPath stringByAppendingPathComponent:[aBlog objectForKey:@"blog_host_name"]];
+	NSString *blogHostDir = [currentDirectoryPath stringByAppendingPathComponent:[aBlog objectForKey:kBlogHostName]];
 	// note that when the local drafts is set as current blog, a fake blogid "localdrafts" is used
 	// this will resolve to a dir called "localdrafts" which is what we want
-	NSString *blogDir = [blogHostDir stringByAppendingPathComponent:[aBlog objectForKey:@"blogid"]];
+	NSString *blogDir = [blogHostDir stringByAppendingPathComponent:[aBlog objectForKey:kBlogId]];
 	NSString *localDraftsDir = [blogDir stringByAppendingPathComponent:@"localDrafts"];
 
 
@@ -924,8 +924,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	if (!blogFieldNames) {
 
-		self->blogFieldNames = [NSArray arrayWithObjects:@"url", @"username", @"blog_host_name",@"blog_host_software",
-														@"isAdmin",@"blogid",@"blogName",@"xmlrpc",
+		self->blogFieldNames = [NSArray arrayWithObjects:@"url", @"username", kBlogHostName,@"blog_host_software",
+														@"isAdmin",kBlogId,@"blogName",@"xmlrpc",
 														@"nickname",@"userid",@"lastname",@"firstname",
 														@"newposts",@"totalposts",
 														@"newcomments",@"totalcomments", @"xmlrpcsuffix",@"pwd", kPostsDownloadCount, nil];
@@ -1149,7 +1149,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	// Important: This is the only place where blog_host_name should be set
 	// We use this as the blog folder name
-	[currentBlog setValue:blogHost forKey:@"blog_host_name"];
+	[currentBlog setValue:blogHost forKey:kBlogHostName];
 	
 	NSString *blogURL = [NSString stringWithFormat:@"http://%@", url];
 	[currentBlog setValue:(blogURL?blogURL:@"") forKey:@"url"];
@@ -1256,8 +1256,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSDictionary *usersBlogs = [usersBlogsResponseArray objectAtIndex:0];
 
 	// load blog fields into currentBlog
-	NSString *blogid = [usersBlogs valueForKey:@"blogid"];
-	[currentBlog setValue:blogid?blogid:@"" forKey:@"blogid"];
+	NSString *blogid = [usersBlogs valueForKey:kBlogId];
+	[currentBlog setValue:blogid?blogid:@"" forKey:kBlogId];
 	
 	
 	XMLRPCRequest *reqOptionsBlogs = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
@@ -1452,7 +1452,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 // sync posts for a given blog
 - (BOOL) syncPostsForBlog:(id)blog {
-	if( [[blog valueForKey:@"blogid"] isEqualToString:kDraftsBlogIdStr] ) {
+	if( [[blog valueForKey:kBlogId] isEqualToString:kDraftsBlogIdStr] ) {
         [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
         return NO;
     }
@@ -1461,7 +1461,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *username = [blog valueForKey:@"username"];
 	NSString *pwd = [blog valueForKey:@"pwd"];
 	NSString *fullURL = [blog valueForKey:@"xmlrpc"];
-	NSString *blogid = [blog valueForKey:@"blogid"];
+	NSString *blogid = [blog valueForKey:kBlogId];
 	NSNumber *maxToFetch =  [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:2] intValue]];
 	
 	
@@ -1516,8 +1516,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		NSDate *currentDate = [postGMTDate addTimeInterval:(secs*+1)];
 		[post setValue:currentDate forKey:@"date_created_gmt"];
 
-		[post setValue:[blog valueForKey:@"blogid"] forKey:@"blogid"];
-		[post setValue:[blog valueForKey:@"blog_host_name"] forKey:@"blog_host_name"];
+		[post setValue:[blog valueForKey:kBlogId] forKey:kBlogId];
+		[post setValue:[blog valueForKey:kBlogHostName] forKey:kBlogHostName];
 
 		
 		// Check if the post already exists 
@@ -1569,7 +1569,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	// increment blog counts and save blogs list
 	[blog setObject:[NSNumber numberWithInt:[newPostTitlesList count]] forKey:@"totalposts"];
 	[blog setObject:[NSNumber numberWithInt:newPostCount] forKey:@"newposts"];
-	NSInteger blogIndex = [self indexForBlogid:[blog valueForKey:@"blogid"] hostName:[blog valueForKey:@"blog_host_name"]];
+	NSInteger blogIndex = [self indexForBlogid:[blog valueForKey:kBlogId] hostName:[blog valueForKey:kBlogHostName]];
 	if (blogIndex >= 0) {
 		[self->blogsList replaceObjectAtIndex:blogIndex withObject:blog];
 		
@@ -1925,8 +1925,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	while (aBlog = [blogEnum nextObject])
 	{
-		if ([[aBlog valueForKey:@"blogid"] isEqualToString:aBlogid] &&
-			[[aBlog valueForKey:@"blog_host_name"] isEqualToString:hostname]) {
+		if ([[aBlog valueForKey:kBlogId] isEqualToString:aBlogid] &&
+			[[aBlog valueForKey:kBlogHostName] isEqualToString:hostname]) {
 			
 			return aBlog; 
 		}
@@ -2069,8 +2069,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		[self saveBlogData];
 		
 		//find the index where the blog was placed
-		currentBlogIndex = [self indexForBlogid:[currentBlog valueForKey:@"blogid"] 
-									   hostName:[currentBlog valueForKey:@"blog_host_name"]];
+		currentBlogIndex = [self indexForBlogid:[currentBlog valueForKey:kBlogId] 
+									   hostName:[currentBlog valueForKey:kBlogHostName]];
 		
 	} else {
 		id cb = [currentBlog mutableCopy];
@@ -2103,8 +2103,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	while (aBlog = [blogEnum nextObject])
 	{
-		if ([[aBlog valueForKey:@"blogid"] isEqualToString:aBlogid] &&
-			[[aBlog valueForKey:@"blog_host_name"] isEqualToString:hostname]) {
+		if ([[aBlog valueForKey:kBlogId] isEqualToString:aBlogid] &&
+			[[aBlog valueForKey:kBlogHostName] isEqualToString:hostname]) {
 			
 			return index; 
 		}
@@ -2123,7 +2123,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	
 	if (!postTitleFieldNames) {
 		
-		self->postTitleFieldNames = [NSArray arrayWithObjects:@"local_status", @"dateCreated", @"blogid",  @"blog_host_name", 
+		self->postTitleFieldNames = [NSArray arrayWithObjects:@"local_status", @"dateCreated", kBlogId,  kBlogHostName, 
 														@"blogName", @"postid", @"title", @"authorid", @"wp_author_display_name", @"status", 
 														@"mt_excerpt", @"mt_keywords", @"date_created_gmt", 
 														@"newcomments", @"totalcomments",kAsyncPostFlag,nil];
@@ -2408,7 +2408,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	//TODO: Remove junk
 //	
 //	// append blog host to the curr dir path to get the dir at which a blog keeps its posts and drafts
-//	NSString *blogHostDir = [currentDirectoryPath stringByAppendingPathComponent:[aBlog objectForKey:@"blog_host_name"]];
+//	NSString *blogHostDir = [currentDirectoryPath stringByAppendingPathComponent:[aBlog objectForKey:kBlogHostName]];
 //	
 ////	// append blog id to the curr dir path to get the dir at which a blog keeps its posts and drafts
 ////	// local drafts are loaded from "localdrafts" dir
@@ -2418,7 +2418,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 ////		blogDir = [blogHostDir stringByAppendingPathComponent:@"localdrafts"];
 ////	} else {
 //		
-//		blogDir = [blogHostDir stringByAppendingPathComponent:[aBlog objectForKey:@"blogid"]];
+//		blogDir = [blogHostDir stringByAppendingPathComponent:[aBlog objectForKey:kBlogId]];
 ////	}
 //	
 //	
@@ -2433,7 +2433,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 //	} 
 //	
 //		  [aBlog objectForKey:@"blogName"],	
-//		  [aBlog objectForKey:@"blog_host_name"]);	
+//		  [aBlog objectForKey:kBlogHostName]);	
 //	return nil;
 }
 
@@ -2530,8 +2530,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	int i = 0;
 	while (aPostTitle = [postTitlesEnum nextObject])
 	{
-		if ([[aPostTitle valueForKey:@"blogid"] isEqualToString:[postTitle valueForKey:@"blogid"]] &&
-			[[aPostTitle valueForKey:@"blog_host_name"]isEqualToString:[postTitle valueForKey:@"blog_host_name"]] &&
+		if ([[aPostTitle valueForKey:kBlogId] isEqualToString:[postTitle valueForKey:kBlogId]] &&
+			[[aPostTitle valueForKey:kBlogHostName]isEqualToString:[postTitle valueForKey:kBlogHostName]] &&
 			[[aPostTitle valueForKey:@"postid"]isEqualToString:[postTitle valueForKey:@"postid"]]) {
 			return i; 
 		}
@@ -2565,7 +2565,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 								@"slug", @"wp_password", @"authorid", @"status", 
 								@"mt_excerpt", @"mt_text_more", @"mt_keywords", 
 								@"not_used_allow_comments", @"link_to_comments", @"not_used_allow_pings",@"dateUpdated", 
-								@"blogid", @"blog_host_name", @"wp_author_display_name",@"date_created_gmt",kAsyncPostFlag, nil];
+								kBlogId, kBlogHostName, @"wp_author_display_name",@"date_created_gmt",kAsyncPostFlag, nil];
 		[postFieldNames retain];
 		
 	}
@@ -2686,7 +2686,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		[pageParams setObject:post_status forKey:@"page_status"];
 		
 		//[pageParams setObject:[currentPage valueForKey:@"wp_password"] forKey:@"wp_password"];
-		NSArray *args = [NSArray arrayWithObjects:[currentBlog valueForKey:@"blogid"],
+		NSArray *args = [NSArray arrayWithObjects:[currentBlog valueForKey:kBlogId],
 						 [currentBlog valueForKey:@"username"],
 						 [currentBlog valueForKey:@"pwd"],
 						 pageParams,
@@ -2733,7 +2733,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 			page_status = @"publish";
 		[currentPage setObject:page_status forKey:@"page_status"];
 		//[currentPage setObject:[currentPage valueForKey:@"wp_password"] forKey:@"wp_password"];
-		NSArray *args = [NSArray arrayWithObjects:[currentBlog valueForKey:@"blogid"],[currentPage valueForKey:@"page_id"],
+		NSArray *args = [NSArray arrayWithObjects:[currentBlog valueForKey:kBlogId],[currentPage valueForKey:@"page_id"],
 						 [currentBlog valueForKey:@"username"],
 						 [currentBlog valueForKey:@"pwd"],
 						 currentPage,
@@ -2763,25 +2763,25 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[dict setObject:userid forKey:@"userid"];
 	
 	// load blog fields into currentBlog
-	NSString *blogid = [currentBlog valueForKey:@"blogid"];
+	NSString *blogid = [currentBlog valueForKey:kBlogId];
 	blogid = blogid ? blogid:@"";
 		
 	NSString *xmlrpc = [currentBlog valueForKey:@"xmlrpc"];
 	xmlrpc = xmlrpc ? xmlrpc:@"";
-	NSString *blogHost = [currentBlog valueForKey:@"blog_host_name"];
+	NSString *blogHost = [currentBlog valueForKey:kBlogHostName];
 	
 	
 	/*self->pageFieldNames = [NSArray arrayWithObjects:@"dateCreated", @"userid", 
 	 @"pageid", @"description", @"title", @"permalink", 
 	 @"wp_password", @"wp_author_id", @"page_status",@"wp_author" 
 	 @"mt_allow_comments", @"mt_allow_pings", @"wp_page_order", 
-	 @"wp_page_parent_id", @"wp_page_template", @"wp_slug",@"blogid",
-	 @"blog_host_name", @"wp_author_display_name",@"date_created_gmt",kAsyncPostFlag, nil];
+	 @"wp_page_parent_id", @"wp_page_template", @"wp_slug",kBlogId,
+	 kBlogHostName, @"wp_author_display_name",@"date_created_gmt",kAsyncPostFlag, nil];
 	 */
 	//NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjects:pageInitValues  forKeys:[self pageFieldNames]];
 	
-	[dict setObject:blogHost forKey:@"blog_host_name"];
-	[dict setObject:blogid forKey:@"blogid"];
+	[dict setObject:blogHost forKey:kBlogHostName];
+	[dict setObject:blogid forKey:kBlogId];
 	[dict setObject:@"" forKey:@"pageid"];
 	[dict setObject:@"" forKey:@"description"];
 	[dict setObject:@"" forKey:@"wp_author"];
@@ -2822,8 +2822,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 								@"pageid", @"description", @"title", @"permalink", 
 								@"wp_password", @"wp_author_id", @"page_status",@"wp_author" 
 								@"mt_allow_comments", @"mt_allow_pings", @"wp_page_order", 
-								@"wp_page_parent_id", @"wp_page_template", @"wp_slug",@"blogid",
-								@"blog_host_name", @"wp_author_display_name",@"date_created_gmt",kAsyncPostFlag, nil];
+								@"wp_page_parent_id", @"wp_page_template", @"wp_slug",kBlogId,
+								kBlogHostName, @"wp_author_display_name",@"date_created_gmt",kAsyncPostFlag, nil];
 		[pageFieldNames retain];
 		
 	}
@@ -2838,7 +2838,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *username = [blog valueForKey:@"username"];
 	NSString *pwd = [blog valueForKey:@"pwd"];
 	NSString *fullURL = [blog valueForKey:@"xmlrpc"];
-	NSString *blogid = [blog valueForKey:@"blogid"];
+	NSString *blogid = [blog valueForKey:kBlogId];
 	
 	
 	
@@ -2874,8 +2874,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		[updatedPage setValue:currentDate forKey:@"date_created_gmt"];
 		
 		
-		[updatedPage setValue:[blog valueForKey:@"blogid"] forKey:@"blogid"];
-		[updatedPage setValue:[blog valueForKey:@"blog_host_name"] forKey:@"blog_host_name"];
+		[updatedPage setValue:[blog valueForKey:kBlogId] forKey:kBlogId];
+		[updatedPage setValue:[blog valueForKey:kBlogHostName] forKey:kBlogHostName];
 		
 		NSString *path = [self pageFilePath:updatedPage forBlog:blog];
 		
@@ -2905,11 +2905,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 {
 	NSMutableDictionary *pageTitle = [NSMutableDictionary dictionary];
 	
-	NSString *blogid = [aPage valueForKey:@"blogid"];
-	[pageTitle setObject:(blogid?blogid:@"") forKey:@"blogid"];
+	NSString *blogid = [aPage valueForKey:kBlogId];
+	[pageTitle setObject:(blogid?blogid:@"") forKey:kBlogId];
 	
-	NSString *blogHost = [aPage valueForKey:@"blog_host_name"];
-	[pageTitle setObject:(blogHost?blogHost:@"") forKey:@"blog_host_name"];
+	NSString *blogHost = [aPage valueForKey:kBlogHostName];
+	[pageTitle setObject:(blogHost?blogHost:@"") forKey:kBlogHostName];
 	
 	NSString *blogName = [[self blogForId:blogid hostName:blogHost] valueForKey:@"blogName"];
 	[pageTitle setObject:(blogName?blogName:@"") forKey:@"blogName"];
@@ -2981,8 +2981,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
     NSDictionary *blogDict=[dm currentBlog];
     NSMutableDictionary *postTitleDict=[[NSMutableDictionary alloc]init];
     [postTitleDict setValue:[NSNumber numberWithInt:1] forKey:kAsyncPostFlag]; 
-    [postTitleDict setValue:[blogDict valueForKey:@"blogid"] forKey:@"blogid"]; 
-    [postTitleDict setValue:[blogDict valueForKey:@"blog_host_name"] forKey:@"blog_host_name"]; 
+    [postTitleDict setValue:[blogDict valueForKey:kBlogId] forKey:kBlogId]; 
+    [postTitleDict setValue:[blogDict valueForKey:kBlogHostName] forKey:kBlogHostName]; 
     [postTitleDict setValue:@"Original" forKey:@"local_status"]; 
     [postTitleDict setValue:[blogDict valueForKey:@"blogName"] forKey:@"blogName"]; 
     [postTitleDict setValue:[postDict valueForKey:@"date_created_gmt"] forKey:@"date_created_gmt"];
@@ -3089,7 +3089,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[catParms setValue:@"!$categories$!" forKey:@"name"];
 	[catParms setValue:@"!$categories$!" forKey:@"description"];
 	
-	NSArray *catargs = [NSArray arrayWithObjects:[aBlog valueForKey:@"blogid"],
+	NSArray *catargs = [NSArray arrayWithObjects:[aBlog valueForKey:kBlogId],
 					 [aBlog valueForKey:@"username"],
 					 [aBlog valueForKey:@"pwd"],
 					 catParms,
@@ -3116,7 +3116,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 	[postParams setObject:@"publish" forKey:@"post_status"];
 	
-	NSArray *args = [NSArray arrayWithObjects:[aBlog valueForKey:@"blogid"],
+	NSArray *args = [NSArray arrayWithObjects:[aBlog valueForKey:kBlogId],
 					 [aBlog valueForKey:@"username"],
 					 [aBlog valueForKey:@"pwd"],
 					 postParams,
@@ -3180,7 +3180,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	//delete cat
 	if( catResponse )
 	{
-		NSArray *catargs = [NSArray arrayWithObjects:[aBlog valueForKey:@"blogid"],
+		NSArray *catargs = [NSArray arrayWithObjects:[aBlog valueForKey:kBlogId],
 						 [aBlog valueForKey:@"username"],
 						 [aBlog valueForKey:@"pwd"],
 						 catResponse,
@@ -3233,12 +3233,12 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	userid = userid ? userid:@"";
 	
 	// load blog fields into currentBlog
-	NSString *blogid = [currentBlog valueForKey:@"blogid"];
+	NSString *blogid = [currentBlog valueForKey:kBlogId];
 	blogid = blogid ? blogid:@"";
 			
 	NSString *xmlrpc = [currentBlog valueForKey:@"xmlrpc"];
 	xmlrpc = xmlrpc ? xmlrpc:@"";
-	NSString *blogHost = [currentBlog valueForKey:@"blog_host_name"];
+	NSString *blogHost = [currentBlog valueForKey:kBlogHostName];
 	
 	NSCalendar *cal = [NSCalendar currentCalendar];
 	
@@ -3281,7 +3281,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 //							@"slug", @"wp_password", @"authorid", @"status", 
 //							@"mt_excerpt", @"mt_text_more", @"mt_keywords", 
 //							@"not_used_allow_comments", @"link_to_comments", @"not_used_allow_pings",@"dateUpdated", 
-//							@"blogid", @"blog_host_name", @"wp_author_display_name",@"date_created_gmt", nil];
+//							kBlogId, kBlogHostName, @"wp_author_display_name",@"date_created_gmt", nil];
 	
 	
 	NSArray *postInitValues = 	[NSArray arrayWithObjects:@"post", now, userid, 
@@ -3359,8 +3359,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	for ( i=0; i<count ; i++)
 	{
 		id postTitle = [somePostTitles objectAtIndex:i];
-		if ([[aPostTitle valueForKey:@"blogid"] isEqualToString:[postTitle valueForKey:@"blogid"]] &&
-			[[aPostTitle valueForKey:@"blog_host_name"]isEqualToString:[postTitle valueForKey:@"blog_host_name"]] &&
+		if ([[aPostTitle valueForKey:kBlogId] isEqualToString:[postTitle valueForKey:kBlogId]] &&
+			[[aPostTitle valueForKey:kBlogHostName]isEqualToString:[postTitle valueForKey:kBlogHostName]] &&
 			[[aPostTitle valueForKey:@"postid"]isEqualToString:[postTitle valueForKey:@"original_postid"]]) {
 				return i;
 			}
@@ -3547,8 +3547,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		return nil;
 	}
 	
-	[post setValue:[aBlog valueForKey:@"blogid"] forKey:@"blogid"];
-	[post setValue:[aBlog valueForKey:@"blog_host_name"] forKey:@"blog_host_name"];
+	[post setValue:[aBlog valueForKey:kBlogId] forKey:kBlogId];
+	[post setValue:[aBlog valueForKey:kBlogHostName] forKey:kBlogHostName];
 	[post setValue:@"original" forKey:@"local_status"];
 	id posttile = [self postTitleForPost:post];
     [posttile setValue:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
@@ -3584,7 +3584,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 - (id)fectchNewPage:(NSString *)pageid formBlog:(id)aBlog
 {
 	NSArray *args = [NSArray arrayWithObjects:
-					 [currentBlog valueForKey:@"blogid"],pageid,
+					 [currentBlog valueForKey:kBlogId],pageid,
 					 [aBlog valueForKey:@"username"],
 					 [aBlog valueForKey:@"pwd"],nil];
 	
@@ -3602,8 +3602,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		return nil;
 	}
 	
-	[page setValue:[aBlog valueForKey:@"blogid"] forKey:@"blogid"];
-	[page setValue:[aBlog valueForKey:@"blog_host_name"] forKey:@"blog_host_name"];
+	[page setValue:[aBlog valueForKey:kBlogId] forKey:kBlogId];
+	[page setValue:[aBlog valueForKey:kBlogHostName] forKey:kBlogHostName];
 
 	NSMutableArray *newPageTitlesList = [NSMutableArray arrayWithContentsOfFile:[self pathToPageTitles:aBlog]];
 	
@@ -3727,7 +3727,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		[postParams setObject:[aPost valueForKey:@"wp_password"] forKey:@"wp_password"];
 		NSString *draftId = [aPost valueForKey:@"draftid"];
 		NSDictionary *draftPost = [self currentPost];
-		NSArray *args = [NSArray arrayWithObjects:[currentBlog valueForKey:@"blogid"],
+		NSArray *args = [NSArray arrayWithObjects:[currentBlog valueForKey:kBlogId],
 						 [currentBlog valueForKey:@"username"],
 						 [currentBlog valueForKey:@"pwd"],
 						 postParams,
@@ -3836,11 +3836,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	 @"slug", @"wp_password", @"authorid", @"status", 
 	 @"mt_excerpt", @"mt_text_more", @"mt_keywords", 
 	 @"not_used_allow_comments", @"link_to_comments", @"not_used_allow_pings",@"dateUpdated", 
-	 @"blogid", @"blog_host_name", @"wp_author_display_name", nil];
+	 kBlogId, kBlogHostName, @"wp_author_display_name", nil];
 	 */
 	/*
 	 
-	 self->postTitleFieldNames = [NSArray arrayWithObjects:@"local_status", @"dateCreated", @"blogid",  @"blog_host_name", 
+	 self->postTitleFieldNames = [NSArray arrayWithObjects:@"local_status", @"dateCreated", kBlogId,  kBlogHostName, 
 	 @"blogName", @"postid", @"title", @"authorid", @"wp_author_display_name", @"status", 
 	 @"mt_excerpt", @"mt_keywords", @"date_created_gmt", 
 	 @"newcomments", @"totalcomments",nil];
@@ -3851,11 +3851,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	//NSString *dateCreated = [aPost valueForKey:@"dateCreated"];
 	//[postTitle setObject:(dateCreated?dateCreated:@"") forKey:@"date_created_gmt"];
 	
-	NSString *blogid = [aPost valueForKey:@"blogid"];
-	[postTitle setObject:(blogid?blogid:@"") forKey:@"blogid"];
+	NSString *blogid = [aPost valueForKey:kBlogId];
+	[postTitle setObject:(blogid?blogid:@"") forKey:kBlogId];
 	
-	NSString *blogHost = [aPost valueForKey:@"blog_host_name"];
-	[postTitle setObject:(blogHost?blogHost:@"") forKey:@"blog_host_name"];
+	NSString *blogHost = [aPost valueForKey:kBlogHostName];
+	[postTitle setObject:(blogHost?blogHost:@"") forKey:kBlogHostName];
 	
 	NSString *blogName = [[self blogForId:blogid hostName:blogHost] valueForKey:@"blogName"];
 	[postTitle setObject:(blogName?blogName:@"") forKey:@"blogName"];
@@ -3942,7 +3942,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	[catParms setValue:catTitle forKey:@"name"];
 	[catParms setValue:catTitle forKey:@"description"];
 		
-	NSArray *args = [NSArray arrayWithObjects:[blog valueForKey:@"blogid"],
+	NSArray *args = [NSArray arrayWithObjects:[blog valueForKey:kBlogId],
 					 [blog valueForKey:@"username"],
 					 [blog valueForKey:@"pwd"],
 					 catParms,
@@ -3965,7 +3965,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 - (void)downloadAllCategoriesForBlog:(id)aBlog{
 	
-	NSArray *args = [NSArray arrayWithObjects:[aBlog valueForKey:@"blogid"],
+	NSArray *args = [NSArray arrayWithObjects:[aBlog valueForKey:kBlogId],
 					 [aBlog valueForKey:@"username"],
 					 [aBlog valueForKey:@"pwd"],
 					 nil];
@@ -4247,7 +4247,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *username = [blog valueForKey:@"username"];
 	NSString *pwd = [blog valueForKey:@"pwd"];
 	NSString *fullURL = [blog valueForKey:@"xmlrpc"];
-	NSString *blogid = [blog valueForKey:@"blogid"];
+	NSString *blogid = [blog valueForKey:kBlogId];
 	NSDictionary *commentsStructure = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kNumberOfCommentsToDisplay] forKey:@"number"];
 	
  	
@@ -4278,8 +4278,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		// add blogid and blog_host_name to post
 		NSMutableDictionary *updatedComment = [NSMutableDictionary dictionaryWithDictionary:comment];
 		        
-		[updatedComment setValue:[blog valueForKey:@"blogid"] forKey:@"blogid"];
-		[updatedComment setValue:[blog valueForKey:@"blog_host_name"] forKey:@"blog_host_name"];
+		[updatedComment setValue:[blog valueForKey:kBlogId] forKey:kBlogId];
+		[updatedComment setValue:[blog valueForKey:kBlogHostName] forKey:kBlogHostName];
 		
 		NSString *path = [self commentFilePath:updatedComment forBlog:blog];
 
@@ -4305,11 +4305,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 {
 	NSMutableDictionary *commentTitle = [NSMutableDictionary dictionary];
 	
-	NSString *blogid = [aComment valueForKey:@"blogid"];
-	[commentTitle setObject:(blogid?blogid:@"") forKey:@"blogid"];
+	NSString *blogid = [aComment valueForKey:kBlogId];
+	[commentTitle setObject:(blogid?blogid:@"") forKey:kBlogId];
 	
-	NSString *blogHost = [aComment valueForKey:@"blog_host_name"];
-	[commentTitle setObject:(blogHost?blogHost:@"") forKey:@"blog_host_name"];
+	NSString *blogHost = [aComment valueForKey:kBlogHostName];
+	[commentTitle setObject:(blogHost?blogHost:@"") forKey:kBlogHostName];
 	
 	NSString *blogName = [[self blogForId:blogid hostName:blogHost] valueForKey:@"blogName"];
 	[commentTitle setObject:(blogName?blogName:@"") forKey:@"blogName"];
@@ -4358,7 +4358,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *username = [blog valueForKey:@"username"];
 	NSString *pwd = [blog valueForKey:@"pwd"];
 	NSString *fullURL = [blog valueForKey:@"xmlrpc"];
-	NSString *blogid = [blog valueForKey:@"blogid"];
+	NSString *blogid = [blog valueForKey:kBlogId];
 	[blog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
 	NSMutableArray *commentTitlesArray = commentTitlesList;
 	NSFileManager *defaultFileManager = [NSFileManager defaultManager];
@@ -4432,7 +4432,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *username = [blog valueForKey:@"username"];
 	NSString *pwd = [blog valueForKey:@"pwd"];
 	NSString *fullURL = [blog valueForKey:@"xmlrpc"];
-	NSString *blogid = [blog valueForKey:@"blogid"];
+	NSString *blogid = [blog valueForKey:kBlogId];
 	NSFileManager *defaultFileManager = [NSFileManager defaultManager];
 	NSMutableArray *commentTitlesArray = commentTitlesList;
 	int commentsCount,i,count = [commentTitlesArray count];
@@ -4518,7 +4518,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *username = [blog valueForKey:@"username"];
 	NSString *pwd = [blog valueForKey:@"pwd"];
 	NSString *fullURL = [blog valueForKey:@"xmlrpc"];
-	NSString *blogid = [blog valueForKey:@"blogid"];
+	NSString *blogid = [blog valueForKey:kBlogId];
 	NSFileManager *defaultFileManager = [NSFileManager defaultManager];
 	NSMutableArray *commentTitlesArray = commentTitlesList;
 	int count = [commentTitlesArray count];
@@ -4604,7 +4604,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	NSString *username = [blog valueForKey:@"username"];
 	NSString *pwd = [blog valueForKey:@"pwd"];
 	NSString *fullURL = [blog valueForKey:@"xmlrpc"];
-	NSString *blogid = [blog valueForKey:@"blogid"];
+	NSString *blogid = [blog valueForKey:kBlogId];
 	NSFileManager *defaultFileManager = [NSFileManager defaultManager];
 	NSMutableArray *commentTitlesArray = commentTitlesList;
 	int i=0,commentsCount=[aComment count];
