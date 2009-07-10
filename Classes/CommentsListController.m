@@ -343,6 +343,9 @@
 	if (cell == nil) {
         cell = [[[CommentTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
 	}
+    else {
+        [cell resetAsynchronousImageView];
+    }
 	
     cell.comment = comment;
     cell.editing = editing;

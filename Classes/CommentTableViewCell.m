@@ -6,14 +6,17 @@
 //
 
 #import "CommentTableViewCell.h"
-
 #import "CommentsTableViewDelegate.h"
+#import <CommonCrypto/CommonDigest.h>
 
 @interface CommentTableViewCell (Private)
 - (void)addCheckButton;
 - (void)addNameLabel;
 - (void)addURLLabel;
 - (void)addCommentLabel;
+- (void)addAsynchronousImageView;
+NSString* md5( NSString *str );
+- (NSURL *) gravatarURLforEmail:(NSString *)emailString;
 @end
 
 @implementation CommentTableViewCell
@@ -24,11 +27,11 @@
     if (self = [super initWithFrame:frame reuseIdentifier:reuseIdentifier]) {
         self.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
         
-        
         [self addCheckButton];
         [self addNameLabel];
         [self addURLLabel];
         [self addCommentLabel];
+        [self addAsynchronousImageView];
     }
     
     return self;
@@ -62,19 +65,23 @@
     }
     
     CGRect nameRect = _nameLabel.frame;
-    nameRect.origin.x = LEFT_OFFSET + buttonOffset;
+    nameRect.origin.x = GRAVATAR_OFFSET + buttonOffset;
     nameRect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
     _nameLabel.frame = nameRect;
     
     CGRect urlRect = _urlLabel.frame;
-    urlRect.origin.x = LEFT_OFFSET + buttonOffset;
+    urlRect.origin.x = GRAVATAR_OFFSET + buttonOffset;
     urlRect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
     _urlLabel.frame = urlRect;
     
     CGRect commentRect = _commentLabel.frame;
-    commentRect.origin.x = LEFT_OFFSET + buttonOffset;
+    commentRect.origin.x = GRAVATAR_OFFSET + buttonOffset;
     commentRect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
     _commentLabel.frame = commentRect;
+    
+    CGRect gravatarRect = asynchronousImageView.frame;
+    gravatarRect.origin.x = LEFT_OFFSET + buttonOffset;
+    asynchronousImageView.frame = gravatarRect;
     
     [UIView commitAnimations];
 }
@@ -101,6 +108,9 @@
 	
 	NSString *content= [_comment valueForKey:@"content"];
 	_commentLabel.text = content;
+    
+    NSURL *theURL = [self gravatarURLforEmail:[_comment valueForKey:@"author_email"]];
+    [asynchronousImageView loadImageFromURL:theURL];
 }
 
 // Calls the tableView:didCheckRowAtIndexPath method on the table view delegate.
@@ -124,7 +134,7 @@
 }
 
 - (void)addNameLabel {
-    CGRect rect = CGRectMake(LEFT_OFFSET, 10, COMMENT_LABEL_WIDTH, LABEL_HEIGHT);
+    CGRect rect = CGRectMake(GRAVATAR_OFFSET, 10, COMMENT_LABEL_WIDTH, LABEL_HEIGHT);
     
     _nameLabel = [[UILabel alloc] initWithFrame:rect];
     _nameLabel.font = [UIFont boldSystemFontOfSize:MAIN_FONT_SIZE];
@@ -135,7 +145,7 @@
 }
 
 - (void)addURLLabel {
-    CGRect rect = CGRectMake(LEFT_OFFSET, _nameLabel.frame.origin.y + LABEL_HEIGHT, COMMENT_LABEL_WIDTH, LABEL_HEIGHT);
+    CGRect rect = CGRectMake(GRAVATAR_OFFSET, _nameLabel.frame.origin.y + LABEL_HEIGHT, COMMENT_LABEL_WIDTH, LABEL_HEIGHT);
     
     _urlLabel = [[UILabel alloc]initWithFrame:rect];
     _urlLabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
@@ -147,7 +157,7 @@
 }
 
 - (void)addCommentLabel {
-    CGRect rect = CGRectMake(LEFT_OFFSET, _urlLabel.frame.origin.y + LABEL_HEIGHT + VERTICAL_OFFSET, COMMENT_LABEL_WIDTH, NAME_LABEL_HEIGHT);
+    CGRect rect = CGRectMake(GRAVATAR_OFFSET, _urlLabel.frame.origin.y + LABEL_HEIGHT + VERTICAL_OFFSET, COMMENT_LABEL_WIDTH, NAME_LABEL_HEIGHT);
     
     _commentLabel = [[UILabel alloc] initWithFrame:rect];
     _commentLabel.font = [UIFont systemFontOfSize:DATE_FONT_SIZE];
@@ -158,6 +168,41 @@
     _commentLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
     
     [self.contentView addSubview:_commentLabel];
+}
+
+- (void)addAsynchronousImageView {
+    CGRect rect = CGRectMake(LEFT_OFFSET, LEFT_OFFSET, 80, 80);
+    
+    asynchronousImageView = [[WPAsynchronousImageView alloc] initWithFrame:rect];
+    [self.contentView addSubview:asynchronousImageView];
+    [self bringSubviewToFront:asynchronousImageView];
+}
+
+- (NSURL *) gravatarURLforEmail:(NSString *)emailString {
+    NSString *emailHash = [md5(emailString) lowercaseString];
+    NSString *url = [[NSString alloc] initWithFormat:@"http://www.gravatar.com/avatar/%@s=80", emailHash];
+    return [NSURL URLWithString:url];
+}
+
+#pragma mark -
+#pragma mark md5
+
+NSString* md5( NSString *str )
+{
+    const char *cStr = [str UTF8String];
+    unsigned char result[CC_MD5_DIGEST_LENGTH];
+    CC_MD5( cStr, strlen(cStr), result );
+    return [NSString stringWithFormat:
+            @"%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
+            result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7],
+            result[8], result[9], result[10], result[11], result[12], result[13], result[14], result[15]
+            ];
+} 
+
+- (void) resetAsynchronousImageView {
+    WPAsynchronousImageView* oldImage = asynchronousImageView;
+	[oldImage removeFromSuperview];
+    [self addAsynchronousImageView];
 }
 
 @end

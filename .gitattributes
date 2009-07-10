@@ -55,6 +55,8 @@ Classes/WPActivityIndicatorTVCell.h -text
 Classes/WPActivityIndicatorTVCell.m -text
 Classes/WPAddCategoryViewController.h -text
 Classes/WPAddCategoryViewController.m -text
+Classes/WPAsynchronousImageView.h -text
+Classes/WPAsynchronousImageView.m -text
 Classes/WPCategoriesController.h -text
 Classes/WPCategoriesController.m -text
 Classes/WPCommentsDetailViewController.h -text
