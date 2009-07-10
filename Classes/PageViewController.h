@@ -24,8 +24,6 @@
 	
 	BOOL hasChanges;
 	int mode;	//0 new, 1 edit, 2 autorecovery, 3 refresh
-	
-	NSTimer *autoSaveTimer;
 }
 
 @property (nonatomic, retain)	WPNavigationLeftButtonView *leftView;

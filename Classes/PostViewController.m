@@ -1,6 +1,3 @@
-
-#define TAG_OFFSET 1010
-
 #import "PostViewController.h"
 #import "BlogDataManager.h"
 #import "WordPressAppDelegate.h"
@@ -13,7 +10,10 @@
 #import "Reachability.h"
 #import "CustomFieldsDetailController.h"
 
-@interface PostViewController (privateMethods)
+#define TAG_OFFSET 1010
+
+@interface PostViewController (Private)
+
 - (void)startTimer;
 - (void)stopTimer;
 
@@ -31,66 +31,58 @@
 @synthesize customFieldsDetailController;
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-	
-	if( [viewController.title isEqualToString:@"Photos"]){
-		if((self.interfaceOrientation==UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation==UIInterfaceOrientationLandscapeRight))
-		{
+	if ( [viewController.title isEqualToString:@"Photos"]) {
+		if ((self.interfaceOrientation==UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation==UIInterfaceOrientationLandscapeRight)) {
 			[photosListController.view addSubview:photoEditingStatusView];
-		}
-		else if((self.interfaceOrientation==UIInterfaceOrientationPortrait) || (self.interfaceOrientation==UIInterfaceOrientationPortraitUpsideDown))
-		{
+		} else if((self.interfaceOrientation==UIInterfaceOrientationPortrait) || (self.interfaceOrientation==UIInterfaceOrientationPortraitUpsideDown))	{
 			[photoEditingStatusView removeFromSuperview];
 		}
+		
 		[photosListController refreshData];
 	}
 	
-	if( [viewController.title isEqualToString:@"Preview"]){
-			[photoEditingStatusView removeFromSuperview];
+	if ( [viewController.title isEqualToString:@"Preview"]) {
+		[photoEditingStatusView removeFromSuperview];
 		[postPreviewController refreshWebView];
-	}else{
+	} else {
 		[postPreviewController stopLoading];
 	}
 	
-	if( [viewController.title isEqualToString:@"Settings"]){
-			[photoEditingStatusView removeFromSuperview];
+	if ( [viewController.title isEqualToString:@"Settings"]) {
+		[photoEditingStatusView removeFromSuperview];
 		[postSettingsController reloadData];
 	}
 	
-	if( [viewController.title isEqualToString:@"Write"]){
-			[photoEditingStatusView removeFromSuperview];
+	if ( [viewController.title isEqualToString:@"Write"]) {
+		[photoEditingStatusView removeFromSuperview];
 		[postDetailEditController refreshUIForCurrentPost];
 	}
 	
 	self.title = viewController.title;
 	
-	if( hasChanges ) {
-		if ([[leftView title] isEqualToString:@"Posts"])
+	if (hasChanges) {
+		if ([[leftView title] isEqualToString:@"Posts"]) {
 			[leftView setTitle:@"Cancel"];
+		}
 		
 		self.navigationItem.rightBarButtonItem = saveButton;
 	}
 }
 
-- (void)tabBarController:(UITabBarController *)tabBarController didEndCustomizingViewControllers:(NSArray *)viewControllers changed:(BOOL)changed 
-{
-}
-
-- (void)dealloc 
-{
+- (void)dealloc {
 	[leftView release];
     [postDetailEditController release];
 	[postPreviewController release];
 	[postSettingsController release];
 	[photosListController release];
 	[saveButton release];
-	[autoSaveTimer invalidate];
-	[autoSaveTimer release];
-	autoSaveTimer = nil;
+
+	[self stopTimer];
+	
 	[super dealloc];
 }
 
-- (IBAction)cancelView:(id)sender 
-{
+- (IBAction)cancelView:(id)sender {
     if (!hasChanges) {
 		[self stopTimer];
 		[self.navigationController popViewControllerAnimated:YES]; 
@@ -116,10 +108,8 @@
 	saveButton.title = @"Save";
 	NSLog(@"Inside Save Action");
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	//Check for internet connection
-	//TODO FIXME Code3
-	if(![[dm.currentPost valueForKey:@"post_status"] isEqualToString:@"Local Draft"])
-	{
+
+	if (![[dm.currentPost valueForKey:@"post_status"] isEqualToString:@"Local Draft"]) 	{
 		if ( [[Reachability sharedReachability] internetConnectionStatus] == NotReachable ) {
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Communication Error."
 															 message:@"no internet connection."
@@ -206,40 +196,31 @@
     }
 }
 
-- (void)autoSaveCurrentPost:(NSTimer *)aTimer
-{
-	if( !hasChanges ){
-		return;
+- (void)autoSaveCurrentPost:(NSTimer *)aTimer {
+	if (hasChanges) {
+		[postDetailEditController updateValuesToCurrentPost];
+		[postSettingsController updateValuesToCurrentPost];
+		
+		BlogDataManager *dm = [BlogDataManager sharedDataManager];
+		[dm autoSaveCurrentPost];
 	}
-	
-	[postDetailEditController updateValuesToCurrentPost];
-	[postSettingsController updateValuesToCurrentPost];
-	
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	[dm autoSaveCurrentPost];
 }
 
-- (void)startTimer
-{
-	if( autoSaveTimer == nil ){
-		autoSaveTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(autoSaveCurrentPost:) userInfo:nil repeats:YES];
-		[autoSaveTimer retain];
-	}else{
- 	}
+- (void)startTimer {
+	if (!autoSaveTimer) {
+		autoSaveTimer = [[NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(autoSaveCurrentPost:) userInfo:nil repeats:YES] retain];
+	}
 }
 
-- (void)stopTimer
-{
-	if( !autoSaveTimer )
-		return;
-	
-	[autoSaveTimer invalidate];
-	[autoSaveTimer release];
-	autoSaveTimer = nil;
+- (void)stopTimer {
+	if (autoSaveTimer) {	
+		[autoSaveTimer invalidate];
+		[autoSaveTimer release];
+		autoSaveTimer = nil;
+	}
 }
 
-- (void)refreshUIForCompose
-{
+- (void)refreshUIForCompose {
 	self.navigationItem.rightBarButtonItem = nil;
 	[tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
 	UIViewController *vc = [[tabController viewControllers] objectAtIndex:0];
@@ -252,8 +233,7 @@
 	[self updatePhotosBadge];
 }
 
-- (void)refreshUIForCurrentPost
-{
+- (void)refreshUIForCurrentPost {
 	self.navigationItem.rightBarButtonItem = nil;
 	
 	[tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
@@ -266,8 +246,7 @@
 	[self updatePhotosBadge];
 }
 
-- (void)updatePhotosBadge
-{
+- (void)updatePhotosBadge {
 	int photoCount = [[[BlogDataManager sharedDataManager].currentPost valueForKey:@"Photos"] count];
 	if( photoCount )
 		photosListController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",photoCount];
@@ -275,10 +254,10 @@
 		photosListController.tabBarItem.badgeValue = nil;	
 }
 
-#pragma mark - UIActionSheetDelegate
+#pragma mark -
+#pragma mark UIActionSheetDelegate methods
 
-- (void)addProgressIndicator
-{
+- (void)addProgressIndicator {
 	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
 	UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
 	UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aiv];
@@ -290,15 +269,8 @@
 	[apool release];
 }
 
-- (void)removeProgressIndicator
-{
-//	//wait incase the other thread did not complete its work.
-//	while (self.navigationItem.rightBarButtonItem == nil)
-//	{
-//		[[NSRunLoop currentRunLoop] runUntilDate:[[NSDate date] addTimeInterval:0.1]];
-//	}
-//	
-	if(hasChanges) {
+- (void)removeProgressIndicator {
+	if (hasChanges) {
 		if ([[leftView title] isEqualToString:@"Posts"] || [[self.navigationItem.leftBarButtonItem title] isEqualToString:@"Done"])
 			[leftView setTitle:@"Cancel"];
 		self.navigationItem.rightBarButtonItem = saveButton;
@@ -307,35 +279,17 @@
 	}
 }
 
-- (void)saveAsDraft
-{
+- (void)saveAsDraft {
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	int postIndex = [dm currentPostIndex];
 	[dm saveCurrentPostAsDraft];
 	hasChanges = NO;
 	self.navigationItem.rightBarButtonItem = nil;
 	[self stopTimer];
 	[dm removeAutoSavedCurrentPostFile];
-	
-	//new post is saving as draft.
-	if( postIndex == -1 ){
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Draft Saved"
-														message:@"Your post has been saved to the Local Drafts folder."
-													   delegate:self
-											  cancelButtonTitle:nil
-											  otherButtonTitles:@"OK", nil];
-		[alert show];
-		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-		[delegate setAlertRunning:YES];
-
-		[alert release];		
-	}else {
-		[self.navigationController popViewControllerAnimated:YES];
-	}	
+	[self discard];
 }
 
-- (void)discard
-{
+- (void)discard {
 	hasChanges = NO;
 	self.navigationItem.rightBarButtonItem = nil;
 	[self stopTimer];
@@ -343,18 +297,17 @@
 	[self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)cancel
-{
+- (void)cancel {
     hasChanges = YES;
     if ([[leftView title] isEqualToString:@"Posts"])
 		[leftView setTitle:@"Cancel"];   
 }
 
-- (void)addAsyncPostOperation:(SEL)anOperation withArg:(id)anArg
-{
-     if( ![self respondsToSelector:anOperation] ){
+- (void)addAsyncPostOperation:(SEL)anOperation withArg:(id)anArg {
+	if (![self respondsToSelector:anOperation]) {
  		return;
 	}
+	
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	NSString *postId=[dm savePostsFileWithAsynPostFlag:[anArg objectAtIndex:0]];
     NSMutableArray *argsArray=[NSMutableArray arrayWithArray:anArg];
@@ -374,8 +327,7 @@
 	[self.navigationController popViewControllerAnimated:YES];
 }
 
--(void)savePostWithBlog:(NSMutableArray *)arrayPost
-{	
+-(void)savePostWithBlog:(NSMutableArray *)arrayPost {	
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
     NSString *postId=[arrayPost lastObject];
     BOOL isCurrentPostDraft = dm.isLocaDraftsCurrent;
@@ -399,36 +351,31 @@
    	[dict release];
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	switch ([actionSheet tag])
-	{
-		case 201:
-		{
-			if( buttonIndex == 0 )
-				[self discard];
-			if( buttonIndex == 1 )
-				[self cancel];			
-			break;
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {	
+	if ([actionSheet tag] == 201) {
+		if ( buttonIndex == 0 ) {
+			[self discard];
 		}
-		default:
-			break;
+		
+		if ( buttonIndex == 1 ) {
+			[self cancel];
+		}
 	}
-	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	[delegate setAlertRunning:NO];
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	if( alertView.tag != TAG_OFFSET )
-		[self discard];
 	
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	[delegate setAlertRunning:NO];
 }
 
-- (void)setHasChanges:(BOOL)aFlag
-{
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if ( alertView.tag != TAG_OFFSET ) {
+		[self discard];
+	}
+	
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate setAlertRunning:NO];
+}
+
+- (void)setHasChanges:(BOOL)aFlag {
 	NSLog(@"inside PostDetailViewController:setHasChanges");
 	if( hasChanges == NO && aFlag == YES )
 		[self startTimer];
@@ -446,8 +393,8 @@
 }
 
 
-#pragma mark - Overridden
-
+#pragma mark -
+#pragma mark View lifecycle
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
@@ -508,65 +455,53 @@
 	tabController.viewControllers = array;
 	self.view = tabController.view;
 	
-	//lazy loading of nib by viewcontrollers we are unable to access the view outlets for the very first time.
-	//with this viewcontroller will load the nib and connects view outlets.
-	//in order to avoid delegate method calls i am setting to nil first and then resetting to self at the end.
-//tabController.delegate = nil;
-//	tabController.selectedIndex = 1;
-//	tabController.selectedIndex = 2;
-//	tabController.selectedIndex = 3;
-//	tabController.selectedIndex = 0;
-//	tabController.delegate = self;
-	
 	[array release];
 	
-	if(!leftView){   
+	if (!leftView){   
         leftView = [WPNavigationLeftButtonView createCopyOfView];
         [leftView setTitle:@"Posts"];
     }   
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)){
-		if(postDetailEditController.isEditing==NO)
-		{
+	if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+		if(postDetailEditController.isEditing==NO) {
 			[postDetailEditController setTextViewHeight:57];
-		}
-		else
-		{
+		} else {
 			[postDetailEditController setTextViewHeight:107];
 		}
 	}
 	
-     [leftView setTarget:self withAction:@selector(cancelView:)];
-	if(hasChanges == YES) {
+	[leftView setTarget:self withAction:@selector(cancelView:)];
+	
+	if (hasChanges == YES) {
 		if ([[leftView title] isEqualToString:@"Posts"]){
             [leftView setTitle:@"Cancel"];
-         }
+		}
 		
 		self.navigationItem.rightBarButtonItem = saveButton;
-	}else {
+	} else {
         [leftView setTitle:@"Posts"];
         self.navigationItem.rightBarButtonItem = nil;
 	}
-    // For Setting the Button with title Posts.
+	
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
     self.navigationItem.leftBarButtonItem = cancelButton;
     [cancelButton release];
 	
 	[super viewWillAppear:animated];
-	if( mode == 1 )
+	
+	if ( mode == 1 ) {
 		[self refreshUIForCurrentPost];
-	else if( mode == 0 )
+	} else if ( mode == 0 ) {
 		[self refreshUIForCompose];
-	else if( mode == 2 )	//auto recovery mode
-	{
+	} else if ( mode == 2 ) {
 		[self refreshUIForCurrentPost];
 		self.hasChanges = YES;
 	}
 	
 	mode = 3;
-	[postDetailEditController viewWillAppear: animated];
+	[postDetailEditController viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -596,17 +531,11 @@
 	[super didReceiveMemoryWarning];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-//	[viewController.title isEqualToString:@"Photos"]
-	if([[[[self tabController]selectedViewController] title] isEqualToString: @"Photos"])
-	{
-		if((interfaceOrientation==UIInterfaceOrientationLandscapeLeft) || (interfaceOrientation==UIInterfaceOrientationLandscapeRight))
-		{
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	if ([[[[self tabController]selectedViewController] title] isEqualToString: @"Photos"]) {
+		if ((interfaceOrientation==UIInterfaceOrientationLandscapeLeft) || (interfaceOrientation==UIInterfaceOrientationLandscapeRight))	{
 			[photosListController.view addSubview:photoEditingStatusView];
-		}
-		else if((interfaceOrientation==UIInterfaceOrientationPortrait) || (interfaceOrientation==UIInterfaceOrientationPortraitUpsideDown))
-		{
+		} else if ((interfaceOrientation==UIInterfaceOrientationPortrait) || (interfaceOrientation==UIInterfaceOrientationPortraitUpsideDown)) {
 			[photoEditingStatusView removeFromSuperview];
 		}
 	}
@@ -614,62 +543,51 @@
 	//Code to disable landscape when alert is raised.
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 
-	if([delegate isAlertRunning] == YES)
+	if ([delegate isAlertRunning] == YES) {
 		return NO;
+	}
 
-	if((interfaceOrientation == UIInterfaceOrientationPortrait)||(interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown))
-	{
+	if ((interfaceOrientation == UIInterfaceOrientationPortrait)||(interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
 		[postDetailEditController setTextViewHeight:202];
 	}
-	if((interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(interfaceOrientation == UIInterfaceOrientationLandscapeRight)){
+	
+	if ((interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
 		if(self.interfaceOrientation!=interfaceOrientation) {
-			if(postDetailEditController.isEditing==NO)
-			{
+			if(postDetailEditController.isEditing==NO) {
 				[postDetailEditController setTextViewHeight:57];
-			}
-			else
-			{
+			} else {
 				[postDetailEditController setTextViewHeight:107];
 			}
 		}
 	}
+	
 	return YES;
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
 	if( [tabController.selectedViewController.title isEqualToString:@"Settings"]){
 		[postSettingsController.tableView reloadData];
 	}
-	
 }
 
-- (void)useImage:(UIImage*)theImage
-{
+- (void)useImage:(UIImage*)theImage {
 	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 	self.hasChanges = YES;
 	
 	id currentPost = dataManager.currentPost;
-	if (![currentPost valueForKey:@"Photos"])
+	if (![currentPost valueForKey:@"Photos"]) {
 		[currentPost setValue:[NSMutableArray array] forKey:@"Photos"];
+	}
 	
 	
-	UIImage * image=[photosListController scaleAndRotateImage:theImage scaleFlag:NO];
+	UIImage *image=[photosListController scaleAndRotateImage:theImage scaleFlag:NO];
 	[[currentPost valueForKey:@"Photos"] addObject:[dataManager saveImage:image]];
 
-//	[[currentPost valueForKey:@"Photos"] addObject:[dataManager saveImage:theImage]];
 	[self updatePhotosBadge];
 }
 
--(id)photosDataSource
-{
-	//NSMutableArray* photosArray=[[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"Photos"] ;
-
+- (id)photosDataSource {
 	return [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"Photos"] ;
-
 }
 
-
-
 @end
-

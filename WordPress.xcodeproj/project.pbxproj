@@ -484,16 +484,6 @@
 				ACBAB5FD0E121C7300F38795 /* WPPostSettingsController.m */,
 				ACBAB6840E1247F700F38795 /* WPPostDetailPreviewController.h */,
 				ACBAB6850E1247F700F38795 /* WPPostDetailPreviewController.m */,
-				ACAC79C40E1F50EB00AC7074 /* WPSelectionTableViewController.h */,
-				ACAC79C50E1F50EB00AC7074 /* WPSelectionTableViewController.m */,
-				ACAC7BE90E1F9E0C00AC7074 /* WPPublishOnEditController.h */,
-				ACAC7BEA0E1F9E0C00AC7074 /* WPPublishOnEditController.m */,
-				A0E293EF0E21027E00C6919C /* WPAddCategoryViewController.h */,
-				A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */,
-				C55A90D70E8026C500E1C9B5 /* WPSegmentedSelectionTableViewController.h */,
-				C55A90D80E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m */,
-				C5E3AE330E93F3C5008755FF /* WPImagePickerController.h */,
-				C5E3AE340E93F3C5008755FF /* WPImagePickerController.m */,
 			);
 			name = Post;
 			sourceTree = "<group>";
@@ -593,6 +583,16 @@
 				C56D68D90F4946E4008EE84E /* WPActivityIndicatorTVCell.m */,
 				CEFC8B5710057D0A0052604A /* WPProgressHUD.h */,
 				CEFC8B5810057D0A0052604A /* WPProgressHUD.m */,
+				ACAC79C40E1F50EB00AC7074 /* WPSelectionTableViewController.h */,
+				ACAC79C50E1F50EB00AC7074 /* WPSelectionTableViewController.m */,
+				ACAC7BE90E1F9E0C00AC7074 /* WPPublishOnEditController.h */,
+				ACAC7BEA0E1F9E0C00AC7074 /* WPPublishOnEditController.m */,
+				A0E293EF0E21027E00C6919C /* WPAddCategoryViewController.h */,
+				A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */,
+				C55A90D70E8026C500E1C9B5 /* WPSegmentedSelectionTableViewController.h */,
+				C55A90D80E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m */,
+				C5E3AE330E93F3C5008755FF /* WPImagePickerController.h */,
+				C5E3AE340E93F3C5008755FF /* WPImagePickerController.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";

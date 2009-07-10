@@ -5,100 +5,70 @@
 //  Created by Janakiram on 01/11/08.
 //
 
-#define TAG_OFFSET 1020
 #import "PageViewController.h"
+
 #import "BlogDataManager.h"
-#import "WordPressAppDelegate.h"
 #import "EditPageViewController.h"
 #import "PagesViewController.h"
-#import "WPPhotosListViewController.h"
-#import "WPNavigationLeftButtonView.h"
 #import "PostsListController.h"
-#import "WordPressAppDelegate.h"
 #import "Reachability.h"
+#import "WordPressAppDelegate.h"
+#import "WPNavigationLeftButtonView.h"
+#import "WPPhotosListViewController.h"
 
+#define TAG_OFFSET 1020
 
-@interface PageViewController (privateMethods)
-- (void)startTimer;
-- (void)stopTimer;
+@interface PageViewController (Private)
 
 - (void)_saveAsDrft;
 - (void)_savePost:(id)aPost inBlog:(id)aBlog;
-//- (void)_discard;
+- (void)_dismiss;
 - (void)_cancel;
 
 @end
+
 
 @implementation PageViewController
 
 @synthesize pageDetailViewController,   pagesListController, hasChanges, mode, tabController, photosListController, saveButton;
 @synthesize leftView;
 
-- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-	
-	if( [viewController.title isEqualToString:@"Photos"]){
-		if((self.interfaceOrientation==UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation==UIInterfaceOrientationLandscapeRight))
-		{
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {	
+	if ([viewController.title isEqualToString:@"Photos"]) {
+		if ((self.interfaceOrientation==UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation==UIInterfaceOrientationLandscapeRight)) {
 			[photosListController.view addSubview:photoEditingStatusView];
-		}
-		else if((self.interfaceOrientation==UIInterfaceOrientationPortrait) || (self.interfaceOrientation==UIInterfaceOrientationPortraitUpsideDown))
-		{
+		} else if ((self.interfaceOrientation==UIInterfaceOrientationPortrait) || (self.interfaceOrientation==UIInterfaceOrientationPortraitUpsideDown)) {
 			[photoEditingStatusView removeFromSuperview];
 		}
 		
 		[photosListController refreshData];
 		self.navigationItem.title=@"Photos";
-	}
-	else
-	{
+	} else {
 		[photoEditingStatusView removeFromSuperview];
 		[pageDetailViewController refreshUIForCurrentPage];
 		self.navigationItem.title=@"Write";
 	}
-	
-	//if( [viewController.title isEqualToString:@"Preview"]){
-//		[postPreviewController refreshWebView];
-//	}else{
-//		[postPreviewController stopLoading];
-//	}
-	
-//	if( [viewController.title isEqualToString:@"Settings"]){
-//		//[postSettingsController reloadData];
-//	}
-	
-//	if( [viewController.title isEqualToString:@"Write"]){
-//		[pageDetailViewController refreshUIForCurrentPage];
-//	}
+
 	self.title = viewController.title;
-	if( hasChanges ) {
-		if ([[leftView title] isEqualToString:@"Pages"])
+	
+	if (hasChanges) {
+		if ([[leftView title] isEqualToString:@"Pages"]) {
 			[leftView setTitle:@"Cancel"];
+		}
 		
 		self.navigationItem.rightBarButtonItem = saveButton;
 	}
 }
 
-- (void)tabBarController:(UITabBarController *)tabBarController didEndCustomizingViewControllers:(NSArray *)viewControllers changed:(BOOL)changed 
-{
-}
-
-- (void)dealloc 
-{
+- (void)dealloc {
 	[leftView release];
     [pageDetailViewController release];
-	//[postPreviewController release];
-//	[postSettingsController release];
 	[photosListController release];
 	[saveButton release];
-	[autoSaveTimer invalidate];
-	[autoSaveTimer release];
-	autoSaveTimer = nil;
 	[super dealloc];
 }
 
-
-- (void)updatePhotosBadge
-{
+- (void)updatePhotosBadge {
 	int photoCount = [[[BlogDataManager sharedDataManager].currentPage valueForKey:@"Photos"] count];
 	if( photoCount )
 		photosListController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d",photoCount];
@@ -134,14 +104,18 @@
 	[apool release];
 }
 
+- (void)_dismiss {
+	hasChanges = NO;
+	self.navigationItem.rightBarButtonItem = nil;
+	[[BlogDataManager sharedDataManager] clearAutoSavedContext];
+	[self.navigationController popViewControllerAnimated:YES];
+}
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
 	if(alertView.tag != TAG_OFFSET) 
 	{
-		hasChanges = NO;
-		self.navigationItem.rightBarButtonItem = nil;
-		[[BlogDataManager sharedDataManager] clearAutoSavedContext];
-		[self.navigationController popViewControllerAnimated:YES];
+		[self _dismiss];
 	}
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	[delegate setAlertRunning:NO];
@@ -193,11 +167,7 @@
 	}
 }
 
-- (void)setHasChanges:(BOOL)aFlag
-{
-	//if( hasChanges == NO && aFlag == YES )
-//		[self startTimer];
-	
+- (void)setHasChanges:(BOOL)aFlag {
 	hasChanges = aFlag;
 	if(hasChanges) {
 		if ([[leftView title] isEqualToString:@"Pages"])
@@ -329,31 +299,16 @@
 	hasChanges=NO;
 }
 
-- (void)_saveAsDrft
-{
+- (void)_saveAsDrft {
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	int pageIndex = [dm currentPageIndex];
 	[dm saveCurrentPageAsDraft];
 	hasChanges = NO;
 	self.navigationItem.rightBarButtonItem = nil;
 	[dm removeAutoSavedCurrentPostFile];
-	
-	//new post is saving as draft.
-	if( pageIndex == -1 ){
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Draft Saved"
-														message:@"Your page has been saved to the Local Drafts folder."
-													   delegate:self
-											  cancelButtonTitle:nil
-											  otherButtonTitles:@"OK", nil];
-		[alert show];
-		[alert release];		
-	}else {
-		[self.navigationController popViewControllerAnimated:YES];	
-	}	
+	[self _dismiss];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	
 	if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)){
 		if(pageDetailViewController.isEditing==NO)
 		{
