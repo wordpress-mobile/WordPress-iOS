@@ -63,10 +63,12 @@
     
     CGRect nameRect = _nameLabel.frame;
     nameRect.origin.x = LEFT_OFFSET + buttonOffset;
+    nameRect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
     _nameLabel.frame = nameRect;
     
     CGRect urlRect = _urlLabel.frame;
     urlRect.origin.x = LEFT_OFFSET + buttonOffset;
+    urlRect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
     _urlLabel.frame = urlRect;
     
     CGRect commentRect = _commentLabel.frame;
@@ -122,7 +124,7 @@
 }
 
 - (void)addNameLabel {
-    CGRect rect = CGRectMake(LEFT_OFFSET, 10, 250, LABEL_HEIGHT);
+    CGRect rect = CGRectMake(LEFT_OFFSET, 10, COMMENT_LABEL_WIDTH, LABEL_HEIGHT);
     
     _nameLabel = [[UILabel alloc] initWithFrame:rect];
     _nameLabel.font = [UIFont boldSystemFontOfSize:MAIN_FONT_SIZE];
@@ -133,7 +135,7 @@
 }
 
 - (void)addURLLabel {
-    CGRect rect = CGRectMake(LEFT_OFFSET, _nameLabel.frame.origin.y + LABEL_HEIGHT, 250, LABEL_HEIGHT);
+    CGRect rect = CGRectMake(LEFT_OFFSET, _nameLabel.frame.origin.y + LABEL_HEIGHT, COMMENT_LABEL_WIDTH, LABEL_HEIGHT);
     
     _urlLabel = [[UILabel alloc]initWithFrame:rect];
     _urlLabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
