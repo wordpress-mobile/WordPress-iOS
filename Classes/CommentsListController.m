@@ -180,7 +180,15 @@
     
     [editButtonItem setEnabled:([commentsArray count] > 0)];
 	
-	[refreshButton stopAnimating];
+    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    if ([delegate isAlertRunning]) {
+        [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
+        [progressAlert release];
+    }
+    else {
+        [refreshButton stopAnimating];
+    }
+	
 	[pool release];
 }
 
@@ -194,12 +202,19 @@
     }
 	
 	NSMutableArray *commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
-        
+    
 	[self setCommentsArray:commentsList];
 	for ( NSDictionary *dict in commentsArray ) {
 		NSString *str=[dict valueForKey:@"comment_id"];
 		[commentsDict setValue:dict forKey:str];
 	}
+    
+    if (([commentsArray count] > 0) && (![(NSDictionary *)[commentsArray objectAtIndex:0] objectForKey:@"author_url"])) {
+        progressAlert = [[WPProgressHUD alloc] initWithLabel:@"updating"];
+        [progressAlert show];
+        
+        [self performSelectorInBackground:@selector(downloadRecentComments) withObject:nil];
+    }
     
 	[commentsTableView reloadData];
 }
