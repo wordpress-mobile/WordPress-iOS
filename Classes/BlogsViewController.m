@@ -157,9 +157,13 @@
 		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:rootviewcell] autorelease];
 	}
 	
+#if defined __IPHONE_3_0		
+	cell.textLabel.text = [[[BlogDataManager sharedDataManager] blogAtIndex:(indexPath.row)] valueForKey:@"blogName"];
+    cell.imageView.image = [[[[Blog alloc] initWithIndex:indexPath.row] autorelease] favicon];
+#else if defined __IPHONE_2_0		
 	cell.text = [[[BlogDataManager sharedDataManager] blogAtIndex:(indexPath.row)] valueForKey:@"blogName"];
-    
     cell.image = [[[[Blog alloc] initWithIndex:indexPath.row] autorelease] favicon];
+#endif
     
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 

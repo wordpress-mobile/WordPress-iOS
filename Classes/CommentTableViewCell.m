@@ -115,7 +115,9 @@ NSString* md5( NSString *str );
 
 // Calls the tableView:didCheckRowAtIndexPath method on the table view delegate.
 - (void)checkButtonPressed {
-    UITableView *tableView = self.target;
+//    UITableView *tableView = self.target;
+    UITableView *tableView = (UITableView *)self.superview;
+
     NSIndexPath *indexPath = [tableView indexPathForCell:self];
     
     [(id<CommentsTableViewDelegate>)tableView.delegate tableView:tableView didCheckRowAtIndexPath:indexPath];

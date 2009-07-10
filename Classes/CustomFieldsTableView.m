@@ -120,7 +120,11 @@
 		//NSString *rowString = [[customFieldsArray objectAtIndex:row-1] objectForKey:@"key"];
 		NSString *rowString = [[customFieldsArray objectAtIndex:row] objectForKey:@"key"];
 		NSLog(@"rowString is %@", rowString);
-    [cell setText: rowString];
+#if defined __IPHONE_3_0
+	cell.textLabel.text=rowString;
+#else if defined __IPHONE_2_0		
+   [cell setText: rowString];
+#endif
 
 		//cell.text = rowString;
 		NSLog(@"after cell.text = rowString");
@@ -152,9 +156,12 @@
 		customFieldsDetailController = [[CustomFieldsDetailController alloc] initWithStyle:UITableViewStyleGrouped];
 	
 	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-	//NSString *rowString = cell.textLabel.text;
+
+#if defined __IPHONE_3_0
+	NSString *rowString = cell.textLabel.text;
+#else if defined __IPHONE_2_0		
 	NSString *rowString = cell.text;
-	
+#endif
 	
 	//get the right NSDict out of the customFieldsArray using the rowString to key into the NSDict
 	NSMutableDictionary *theDict = [[NSMutableDictionary alloc] initWithDictionary:[self getDictForThisCell:rowString]];
