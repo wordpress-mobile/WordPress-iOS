@@ -18,14 +18,10 @@ Classes/CommentsListController.h -text
 Classes/CommentsListController.m -text
 Classes/CommentsTableViewDelegate.h -text
 Classes/Constants.h -text
-Classes/DraftsListController.h -text
-Classes/DraftsListController.m -text
 Classes/EditBlogViewController.h -text
 Classes/EditBlogViewController.m -text
 Classes/EditPageViewController.h -text
 Classes/EditPageViewController.m -text
-Classes/LocalDraftsTableViewCell.h -text
-Classes/LocalDraftsTableViewCell.m -text
 Classes/NSString+Util.h -text
 Classes/NSString+Util.m -text
 Classes/NSString+XMLExtensions.h -text
@@ -35,8 +31,6 @@ Classes/PageViewController.m -text
 Classes/PagesAndCommentsNotSupported.h -text
 Classes/PagesAndCommentsNotSupported.m -text
 Classes/PagesAndCommentsNotSupported.xib -text
-Classes/PagesDraftsViewController.h -text
-Classes/PagesDraftsViewController.m -text
 Classes/PagesViewController.h -text
 Classes/PagesViewController.m -text
 Classes/PostDetailEditController.h -text

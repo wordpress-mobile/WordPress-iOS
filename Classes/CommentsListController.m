@@ -302,7 +302,7 @@
 }
 
 #pragma mark -
-#pragma mark UITableView Delegate Methods
+#pragma mark UITableViewDataSource methods
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     cell.backgroundColor = [UIColor whiteColor];
@@ -312,11 +312,12 @@
 	return 1;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	return @"Comments";
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	if (section == 0) {
-		return [commentsArray count];
-	}
-	return 0;
+	return [commentsArray count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

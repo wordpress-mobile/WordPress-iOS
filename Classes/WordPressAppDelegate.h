@@ -15,8 +15,6 @@
 
 + (WordPressAppDelegate *)sharedWordPressApp;
 
--(void)startupAnimationDone:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context;
-
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message;
 - (void)showErrorAlert:(NSString *)message;
 

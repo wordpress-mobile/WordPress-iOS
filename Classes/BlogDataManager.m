@@ -2938,7 +2938,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 - (NSInteger)countOfPageTitles
 {
-	return [pageTitlesList count]+1;
+	return [pageTitlesList count];
 }
 - (NSDictionary *)pageTitleAtIndex:(NSUInteger)theIndex
 {

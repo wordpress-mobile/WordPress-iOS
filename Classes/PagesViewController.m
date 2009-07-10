@@ -9,15 +9,14 @@
 
 #import "BlogDataManager.h"
 #import "EditPageViewController.h"
-#import "LocalDraftsTableViewCell.h"
 #import "PageViewController.h"
-#import "PagesDraftsViewController.h"
 #import "PostTableViewCell.h"
 #import "Reachability.h"
 #import "WordPressAppDelegate.h"
 
-#define LOCAL_DRAFTS_ROW        0
-#define PAGE_ROW                1
+#define LOCAL_DRAFTS_SECTION    0
+#define PAGES_SECTION           1
+#define NUM_SECTIONS			2
 
 #define REFRESH_BUTTON_HEIGHT   50
 
@@ -26,20 +25,16 @@
 - (void)refreshHandler;
 - (void)downloadRecentPages;
 - (void)showAddNewPage;
+- (void)addRefreshButton;
 @end
+
 
 @implementation PagesViewController
 
 @synthesize newButtonItem, pageDetailViewController, pageDetailsController;
 
-- (void)addRefreshButton {
-    CGRect frame = CGRectMake(0, 0, self.tableView.bounds.size.width, REFRESH_BUTTON_HEIGHT);
-	
-	refreshButton = [[RefreshButtonView alloc] initWithFrame:frame];
-    [refreshButton addTarget:self action:@selector(refreshHandler) forControlEvents:UIControlEventTouchUpInside];
-	
-    self.tableView.tableHeaderView = refreshButton;
-}
+#pragma mark -
+#pragma mark View lifecycle
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
@@ -54,6 +49,19 @@
 	newButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
 																  target:self
 																  action:@selector(showAddNewPage)];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	dm.isLocaDraftsCurrent = NO;
+	[dm loadPageTitlesForCurrentBlog];
+	[dm loadPageDraftTitlesForCurrentBlog];
+	
+	connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
+	
+	[self.tableView reloadData];
+	
+	[super viewWillAppear:animated];
 }
 
 - (void)dealloc {	
@@ -72,79 +80,72 @@
 }
 
 #pragma mark -
+#pragma mark UITableViewDataSource methods
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     cell.backgroundColor = [UIColor whiteColor];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 1;
+	return NUM_SECTIONS;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	if (section == LOCAL_DRAFTS_SECTION) {
+		if ([[BlogDataManager sharedDataManager] numberOfPageDrafts] > 0) {
+			return @"Local Drafts";
+		} else {
+			return NULL;
+		}
+	} else {
+		return @"Pages";
+	}
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [[BlogDataManager sharedDataManager] countOfPageTitles];
-}
-
-- (UITableViewCell *)localDraftsCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath {
-	static NSString *CellIdentifier = @"DraftsCell";
-	LocalDraftsTableViewCell *cell = (LocalDraftsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	
-	if (cell == nil) {
-		cell = [[[LocalDraftsTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
-	}
-    
-	NSNumber *count = [dm.currentBlog valueForKey:@"kPageDraftsCount"];
-    
-	if ([count intValue]) {
-		int c = (count == nil ? 0 : [count intValue]);
-		cell.badgeLabel.text = [NSString stringWithFormat:@"(%d)", c];
+	if (section == LOCAL_DRAFTS_SECTION) {
+		return [[BlogDataManager sharedDataManager] numberOfPageDrafts];
 	} else {
-		cell.badgeLabel.text = [NSString stringWithFormat:@""];
+		return [[BlogDataManager sharedDataManager] countOfPageTitles];
 	}
-	
-	return cell;
 }
 
-- (UITableViewCell *)pageCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	static NSString *CellIdentifier = @"PageCell";
     PostTableViewCell *cell = (PostTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	id page = nil;
 	
 	if (cell == nil) {
         cell = [[[PostTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
 	}
+    
+    if (indexPath.section == LOCAL_DRAFTS_SECTION) {
+		page = [dm pageDraftTitleAtIndex:indexPath.row];
+	} else {
+        page = [dm pageTitleAtIndex:indexPath.row];
+    }
 	
-	if ([dm countOfPageTitles]) {
-		id currentPage = [dm pageTitleAtIndex:indexPath.row - PAGE_ROW];
-		cell.post = currentPage;
-	}
+	cell.post = page;
 	
 	return cell;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row == LOCAL_DRAFTS_ROW) {
-		return [self localDraftsCell:tableView forRowAtIndexPath:indexPath];
-	} else {
-		return [self pageCell:tableView forRowAtIndexPath:indexPath];
-	}
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-	dataManager.isLocaDraftsCurrent = (indexPath.row == LOCAL_DRAFTS_ROW);
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	dataManager.isLocaDraftsCurrent = (indexPath.section == LOCAL_DRAFTS_SECTION);
     
-	if (indexPath.row == LOCAL_DRAFTS_ROW) {
-		PagesDraftsViewController *pagesDraftsListController = [[PagesDraftsViewController alloc] initWithNibName:@"PagesDraftsViewController" bundle:nil];
-		pagesDraftsListController.pagesListController = self;
+	if (indexPath.section == LOCAL_DRAFTS_SECTION) {
+		id currentDraft = [dataManager pageDraftTitleAtIndex:indexPath.row];
 		
-		[dataManager loadPageDraftTitlesForCurrentBlog];
+		// Bail out if we're in the middle of saving the draft.
+		if ([[currentDraft valueForKey:kAsyncPostFlag]intValue] == 1) {
+			[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+			return;
+		}
 		
-        [delegate.navigationController pushViewController:pagesDraftsListController animated:YES];
-        
-		[pagesDraftsListController release];
+		[dataManager makePageDraftAtIndexCurrent:indexPath.row];
 	} else {
 		if (!connectionStatus) {
 			UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
@@ -159,21 +160,25 @@
 			return;
 		}
 		
-		[dataManager makePageAtIndexCurrent:indexPath.row - PAGE_ROW];	
+		id page = [dataManager pageTitleAtIndex:indexPath.row];
 		
-		self.pageDetailsController.mode = 1;
-		self.pageDetailsController.hasChanges = NO; 	
-        
-        [delegate.navigationController pushViewController:self.pageDetailsController animated:YES];
+		// Bail out if we're in the middle of saving the page.
+		if ([[page valueForKey:kAsyncPostFlag] intValue] == 1) {
+			[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+			return;
+		}
+		
+		[dataManager makePageAtIndexCurrent:indexPath.row];	
+		
+		self.pageDetailsController.hasChanges = NO;
 	}
+	
+	self.pageDetailsController.mode = 1;
+	[delegate.navigationController pushViewController:self.pageDetailsController animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row == LOCAL_DRAFTS_ROW) {
-		return LOCAL_DRAFTS_ROW_HEIGHT;
-	} else {
-		return POST_ROW_HEIGHT;
-    }
+	return POST_ROW_HEIGHT;
 }
 
 - (void)reachabilityChanged {
@@ -182,17 +187,15 @@
 }
 
 #pragma mark -
+#pragma mark Private methods
 
-- (void)viewWillAppear:(BOOL)animated {
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	[dm loadPageTitlesForCurrentBlog];
-	dm.isLocaDraftsCurrent = NO;
+- (void)addRefreshButton {
+    CGRect frame = CGRectMake(0, 0, self.tableView.bounds.size.width, REFRESH_BUTTON_HEIGHT);
 	
-	connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
+	refreshButton = [[RefreshButtonView alloc] initWithFrame:frame];
+    [refreshButton addTarget:self action:@selector(refreshHandler) forControlEvents:UIControlEventTouchUpInside];
 	
-	[self.tableView reloadData];
-	
-	[super viewWillAppear:animated];
+    self.tableView.tableHeaderView = refreshButton;
 }
 
 - (void)refreshHandler {

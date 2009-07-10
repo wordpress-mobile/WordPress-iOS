@@ -1,8 +1,6 @@
 #import "PostsListController.h"
 
 #import "BlogDataManager.h"
-#import "DraftsListController.h"
-#import "LocalDraftsTableViewCell.h"
 #import "PostViewController.h"
 #import "PostDetailEditController.h"
 #import "PostTableViewCell.h"
@@ -11,49 +9,29 @@
 #import "WPNavigationLeftButtonView.h"
 #import "UIViewController+WPAnimation.h"
 
-#define NEW_VERSION_ALERT_TAG   5111
-
-#define LOCAL_DRAFTS_ROW        0
-#define POST_ROW                1
+#define LOCAL_DRAFTS_SECTION    0
+#define POSTS_SECTION           1
+#define NUM_SECTIONS			2
 
 #define REFRESH_BUTTON_HEIGHT   50
+
+#define NEW_VERSION_ALERT_TAG   5111
 
 @interface PostsListController (Private)
 - (void)showAddPostView;
 - (void)refreshHandler;
 - (void)downloadRecentPosts;
-- (UITableViewCell *)postCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
 - (BOOL)handleAutoSavedContext:(NSInteger)tag;
 - (void)addRefreshButton;
 @end
+
 
 @implementation PostsListController
 
 @synthesize newButtonItem, postDetailViewController, postDetailEditController;
 
 #pragma mark -
-#pragma mark Memory Management
-
-- (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"kNetworkReachabilityChangedNotification" object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"AsynchronousPostIsPosted" object:nil];
-	
-	[postDetailEditController release];
-	[PostViewController release];
-	
-	[newButtonItem release];
-	[refreshButton release];
-    
-	[super dealloc];
-}
-
-- (void)didReceiveMemoryWarning {
-	WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
-	[super didReceiveMemoryWarning];
-}
-
-#pragma mark -
-#pragma mark View Lifecycle
+#pragma mark View lifecycle
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
@@ -77,6 +55,7 @@
 	[dm postTitlesForBlog:[dm currentBlog]];
 	dm.isLocaDraftsCurrent = NO;
 	[dm loadPostTitlesForCurrentBlog];
+	[dm loadDraftTitlesForCurrentBlog];
 	
 	connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
 	
@@ -101,15 +80,27 @@
 }
 
 #pragma mark -
+#pragma mark Memory management
 
-- (void)addRefreshButton {
-    CGRect frame = CGRectMake(0, 0, self.tableView.bounds.size.width, REFRESH_BUTTON_HEIGHT);
+- (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"kNetworkReachabilityChangedNotification" object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"AsynchronousPostIsPosted" object:nil];
 	
-	refreshButton = [[RefreshButtonView alloc] initWithFrame:frame];
-    [refreshButton addTarget:self action:@selector(refreshHandler) forControlEvents:UIControlEventTouchUpInside];
+	[postDetailEditController release];
+	[PostViewController release];
 	
-    self.tableView.tableHeaderView = refreshButton;
+	[newButtonItem release];
+	[refreshButton release];
+    
+	[super dealloc];
 }
+
+- (void)didReceiveMemoryWarning {
+	WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+	[super didReceiveMemoryWarning];
+}
+
+#pragma mark -
 
 - (void)showAddPostView {
 	// Set current post to a new post
@@ -135,119 +126,111 @@
 }
 
 #pragma mark -
-#pragma mark Table View Delegate Methods
+#pragma mark UITableViewDataSource methods
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     cell.backgroundColor = [UIColor whiteColor];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 1;
+	return NUM_SECTIONS;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	if (section == LOCAL_DRAFTS_SECTION) {
+		if ([[BlogDataManager sharedDataManager] numberOfDrafts] > 0) {
+			return @"Local Drafts";
+		} else {
+			return NULL;
+		}
+	} else {
+		return @"Pages";
+	}
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [[BlogDataManager sharedDataManager] countOfPostTitles] + 1;
+	if (section == LOCAL_DRAFTS_SECTION) {
+		return [[BlogDataManager sharedDataManager] numberOfDrafts];
+	} else {
+		return [[BlogDataManager sharedDataManager] countOfPostTitles];
+	}
 }
 
-- (UITableViewCell *)localDraftsCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"DraftsCell";
-    LocalDraftsTableViewCell *cell = (LocalDraftsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
-    
-    if (cell == nil) {
-		cell = [[[LocalDraftsTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
-    }
-    
-    NSNumber *count = [dm.currentBlog valueForKey:@"kDraftsCount"];
-    
-    if ([count intValue]) {
-        int c = (count == nil ? 0 : [count intValue]);
-        cell.badgeLabel.text = [NSString stringWithFormat:@"(%d)", c];
-    } else {
-        cell.badgeLabel.text = [NSString stringWithFormat:@""];
-    }
-    
-    return cell;
-}
-
-- (UITableViewCell *)postCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"PostCell";
     PostTableViewCell *cell = (PostTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	id post = nil;
     
     if (cell == nil) {
         cell = [[[PostTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
     }
     
-    if ([dm countOfPostTitles]) {
-        id currentPost = [dm postTitleAtIndex:indexPath.row - POST_ROW];
-		cell.post = currentPost;
+    if (indexPath.section == LOCAL_DRAFTS_SECTION) {
+		post = [dm draftTitleAtIndex:indexPath.row];
+	} else {
+        post = [dm postTitleAtIndex:indexPath.row];
     }
+	
+	cell.post = post;
     
     return cell;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row == LOCAL_DRAFTS_ROW) {
-		return [self localDraftsCell:tableView forRowAtIndexPath:indexPath];
-	} else {
-		return [self postCell:tableView forRowAtIndexPath:indexPath];
-	}
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-	dataManager.isLocaDraftsCurrent = (indexPath.row == LOCAL_DRAFTS_ROW);
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	dataManager.isLocaDraftsCurrent = (indexPath.section == LOCAL_DRAFTS_SECTION);
 	
-	if (indexPath.row == LOCAL_DRAFTS_ROW) {
-		DraftsListController *draftsListController = [[DraftsListController alloc] initWithNibName:@"DraftsList" bundle:nil];
-		draftsListController.postsListController = self;
+	if (indexPath.section == LOCAL_DRAFTS_SECTION) {
+		id currentDraft = [dataManager draftTitleAtIndex:indexPath.row];
 		
-		[dataManager loadDraftTitlesForCurrentBlog];
+		// Bail out if we're in the middle of saving the draft.
+		if ([[currentDraft valueForKey:kAsyncPostFlag]intValue] == 1) {
+			[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+			return;
+		}
 		
-        [delegate.navigationController pushViewController:draftsListController animated:YES];
-        
-		[draftsListController release];
+		[dataManager makeDraftAtIndexCurrent:indexPath.row];
 	} else {
-        if (!connectionStatus) {
-            UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
-                                                             message:@"Editing is not supported now."
-                                                            delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            
-            alert1.tag=NEW_VERSION_ALERT_TAG;
-            [alert1 show];
-            [delegate setAlertRunning:YES];
-            
-            [alert1 release];		
-            
-            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-            return;
-        }
+		if (!connectionStatus) {
+			UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
+															 message:@"Editing is not supported now."
+															delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			
+			alert1.tag=NEW_VERSION_ALERT_TAG;
+			[alert1 show];
+			[delegate setAlertRunning:YES];
+			
+			[alert1 release];		
+			
+			[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+			return;
+		}
 		
-        id currentPost = [dataManager postTitleAtIndex:indexPath.row - POST_ROW];
-        //code to return the selection if row is in middle of saving data.
-		if([[currentPost valueForKey:kAsyncPostFlag] intValue]==1)
-            return;
-        
-		[dataManager makePostAtIndexCurrent:indexPath.row - POST_ROW];
+		id currentPost = [dataManager postTitleAtIndex:indexPath.row];
 		
-		self.navigationItem.rightBarButtonItem = nil;
-		self.postDetailViewController.hasChanges = NO; 
-		self.postDetailViewController.mode = 1; 
-		postDetailEditController.postDetailViewController=self.postDetailViewController;
+		// Bail out if we're in the middle of saving the post.
+		if ([[currentPost valueForKey:kAsyncPostFlag] intValue] == 1) {
+			[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+			return;
+		}
 		
-        [delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
+		[dataManager makePostAtIndexCurrent:indexPath.row];
+		
+		self.postDetailViewController.hasChanges = NO;
 	}
+	
+	self.postDetailViewController.mode = 1; 
+	[delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row == LOCAL_DRAFTS_ROW) {
-		return LOCAL_DRAFTS_ROW_HEIGHT;
-	} else {
-        return POST_ROW_HEIGHT;
-    }
+	return POST_ROW_HEIGHT;
 }
+
+#pragma mark -
+#pragma mark Private methods
 
 - (void)goToHome:(id)sender {
     [[BlogDataManager sharedDataManager] resetCurrentBlog];
@@ -255,8 +238,7 @@
 }
 
 - (void)reachabilityChanged {
-	connectionStatus = ( [[Reachability sharedReachability] remoteHostStatus] != NotReachable );
-	
+	connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
 	[self.tableView reloadData];
 }
 
@@ -282,6 +264,15 @@
 	}
 	
 	return NO;
+}
+
+- (void)addRefreshButton {
+    CGRect frame = CGRectMake(0, 0, self.tableView.bounds.size.width, REFRESH_BUTTON_HEIGHT);
+	
+	refreshButton = [[RefreshButtonView alloc] initWithFrame:frame];
+    [refreshButton addTarget:self action:@selector(refreshHandler) forControlEvents:UIControlEventTouchUpInside];
+	
+    self.tableView.tableHeaderView = refreshButton;
 }
 
 - (void)refreshHandler {
@@ -317,13 +308,13 @@
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-	if( alertView.tag != NEW_VERSION_ALERT_TAG ) //When Connection Available.
-	{
+	if (alertView.tag != NEW_VERSION_ALERT_TAG) { // When Connection Available.
 		[[BlogDataManager sharedDataManager] removeAutoSavedCurrentPostFile];
 		self.navigationItem.rightBarButtonItem = nil;
 		self.postDetailViewController.mode = 2;
 		[[self navigationController] pushViewController:self.postDetailViewController animated:YES];
 	}
+	
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	[delegate setAlertRunning:NO];
 }
