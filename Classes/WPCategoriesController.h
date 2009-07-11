@@ -8,14 +8,14 @@
 #import <UIKit/UIKit.h>
 #import "PostDetailViewController.h"
 
-@interface WPCategoriesController : UIViewController 
+@interface WPCategoriesController : UIViewController
 {
-	IBOutlet UITableView *categoriesTableView;
-	NSArray *categories;	//just keeping a pointer to the categoies in the current blog
-	PostDetailViewController *postDetailViewController;
+    IBOutlet UITableView *categoriesTableView;
+    NSArray *categories;    //just keeping a pointer to the categoies in the current blog
+    PostDetailViewController *postDetailViewController;
 }
 
-@property (nonatomic, assign)PostDetailViewController * postDetailViewController;
+@property (nonatomic, assign) PostDetailViewController *postDetailViewController;
 
 - (void)refreshData;
 

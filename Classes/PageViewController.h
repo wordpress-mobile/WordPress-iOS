@@ -8,36 +8,35 @@
 #import <UIKit/UIKit.h>
 #import "WPPhotosListProtocol.h"
 
-@class EditPageViewController, WPPostDetailPreviewController, WPSelectionTableViewController,  WPPhotosListViewController, PagesViewController;
+@class EditPageViewController, WPPostDetailPreviewController, WPSelectionTableViewController, WPPhotosListViewController, PagesViewController;
 @class WPNavigationLeftButtonView;
 
-@interface PageViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate,WPPhotosListProtocol> {
-	IBOutlet UITabBarController *tabController;
-	IBOutlet UIView	*photoEditingStatusView;
+@interface PageViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate, WPPhotosListProtocol> {
+    IBOutlet UITabBarController *tabController;
+    IBOutlet UIView *photoEditingStatusView;
 
-	UIBarButtonItem *saveButton;
-	
-	EditPageViewController *pageDetailViewController;
-	WPPhotosListViewController *photosListController;
-	PagesViewController *pagesListController;
-   	WPNavigationLeftButtonView *leftView;
-	
-	BOOL hasChanges;
-	int mode;	//0 new, 1 edit, 2 autorecovery, 3 refresh
+    UIBarButtonItem *saveButton;
+
+    EditPageViewController *pageDetailViewController;
+    WPPhotosListViewController *photosListController;
+    PagesViewController *pagesListController;
+    WPNavigationLeftButtonView *leftView;
+
+    BOOL hasChanges;
+    int mode;   //0 new, 1 edit, 2 autorecovery, 3 refresh
 }
 
-@property (nonatomic, retain)	WPNavigationLeftButtonView *leftView;
-@property (nonatomic, retain)	EditPageViewController *pageDetailViewController;
+@property (nonatomic, retain)   WPNavigationLeftButtonView *leftView;
+@property (nonatomic, retain)   EditPageViewController *pageDetailViewController;
 //@property (nonatomic, retain)	WPPostDetailPreviewController *postPreviewController;
 //@property (nonatomic, retain)	WPPostSettingsController *postSettingsController;
-@property (nonatomic, retain)	WPPhotosListViewController *photosListController;
-@property (nonatomic, assign)	PagesViewController *pagesListController;
+@property (nonatomic, retain)   WPPhotosListViewController *photosListController;
+@property (nonatomic, assign)   PagesViewController *pagesListController;
 
-@property (nonatomic, readonly) UIBarButtonItem * saveButton;
+@property (nonatomic, readonly) UIBarButtonItem *saveButton;
 
-
-@property (nonatomic)	BOOL hasChanges;
-@property (nonatomic)	int mode;
+@property (nonatomic)   BOOL hasChanges;
+@property (nonatomic)   int mode;
 
 @property (readonly) UITabBarController *tabController;
 

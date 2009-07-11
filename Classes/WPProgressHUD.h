@@ -13,7 +13,7 @@
     UIImage *backgroundImage;
     UIActivityIndicatorView *activityIndicator;
     UILabel *progressMessage;
-    
+
     WordPressAppDelegate *appDelegate;
 }
 
@@ -22,6 +22,6 @@
 @property (nonatomic, retain) UILabel *progressMessage;
 @property (nonatomic, assign) WordPressAppDelegate *appDelegate;
 
--(id) initWithLabel:(NSString *)text;
+- (id)initWithLabel:(NSString *)text;
 
 @end

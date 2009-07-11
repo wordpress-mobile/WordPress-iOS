@@ -6,19 +6,14 @@
 
 #import <UIKit/UIKit.h>
 
-
 @interface WPNavigationLeftButtonView : UIView {
-
     UIButton *addButton;
 }
 
 @property (nonatomic, assign) NSString *title;
 
-+ (WPNavigationLeftButtonView *) createCopyOfView;
++ (WPNavigationLeftButtonView *)createCopyOfView;
 
--(void)setTarget:(id)aTarget withAction:(SEL)action;
+- (void)setTarget:(id)aTarget withAction:(SEL)action;
 
 @end
-
-
-

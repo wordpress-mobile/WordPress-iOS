@@ -11,13 +11,13 @@
 @class EditPageViewController, PageViewController;
 
 @interface PagesViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate> {
-	UIBarButtonItem *newButtonItem;
-	
-	EditPageViewController *pageDetailViewController;
-	PageViewController *pageDetailsController;
-	RefreshButtonView *refreshButton;
-	
-	BOOL connectionStatus;
+    UIBarButtonItem *newButtonItem;
+
+    EditPageViewController *pageDetailViewController;
+    PageViewController *pageDetailsController;
+    RefreshButtonView *refreshButton;
+
+    BOOL connectionStatus;
 }
 
 @property (readonly) UIBarButtonItem *newButtonItem;

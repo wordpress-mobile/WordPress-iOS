@@ -11,24 +11,24 @@
 #import "RefreshButtonView.h"
 
 @interface CommentsViewController : UIViewController <UITableViewDataSource, CommentsTableViewDelegate> {
-	IBOutlet UITableView *commentsTableView;
-	
-	IBOutlet UIToolbar *editToolbar; 
-	UIBarButtonItem *editButtonItem;
-	RefreshButtonView *refreshButton;
-	
-	IBOutlet UIBarButtonItem *approveButton;
-	IBOutlet UIBarButtonItem *unapproveButton;
-	IBOutlet UIBarButtonItem *spamButton;
-	IBOutlet UIButton *deleteButton;
-    
-	BOOL connectionStatus;
-	BOOL editing;
-    
-	NSMutableArray *commentsArray;
-	NSMutableDictionary *commentsDict;
-	NSMutableArray *selectedComments;
-    
+    IBOutlet UITableView *commentsTableView;
+
+    IBOutlet UIToolbar *editToolbar;
+    UIBarButtonItem *editButtonItem;
+    RefreshButtonView *refreshButton;
+
+    IBOutlet UIBarButtonItem *approveButton;
+    IBOutlet UIBarButtonItem *unapproveButton;
+    IBOutlet UIBarButtonItem *spamButton;
+    IBOutlet UIButton *deleteButton;
+
+    BOOL connectionStatus;
+    BOOL editing;
+
+    NSMutableArray *commentsArray;
+    NSMutableDictionary *commentsDict;
+    NSMutableArray *selectedComments;
+
     UIAlertView *progressAlert;
 }
 

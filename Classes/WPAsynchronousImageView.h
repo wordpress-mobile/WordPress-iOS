@@ -15,6 +15,6 @@
     NSMutableData *data;
 }
 
-- (void) loadImageFromURL:(NSURL *)url;
+- (void)loadImageFromURL:(NSURL *)url;
 
 @end

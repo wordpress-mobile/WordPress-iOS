@@ -7,7 +7,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UIViewController (WPAnimation) 
+@interface UIViewController (WPAnimation)
 
 - (void)pushTransition:(UIViewController *)viewController;
 - (void)popTransition:(UIView *)view;

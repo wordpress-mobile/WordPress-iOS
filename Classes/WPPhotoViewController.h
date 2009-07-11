@@ -3,14 +3,14 @@
 @class WPPhotosListViewController;
 
 @interface WPPhotoViewController : UIViewController {
-	IBOutlet UIImageView *imageView;
-	IBOutlet UIBarButtonItem *previousImageButtonItem;
-	IBOutlet UIBarButtonItem *nextImageButtonItem;
-	IBOutlet UIBarButtonItem *trashImageButtonItem;
-	IBOutlet UIBarButtonItem *titleButtonItem;
-	
-	WPPhotosListViewController *photosListViewController;
-	int currentPhotoIndex;
+    IBOutlet UIImageView *imageView;
+    IBOutlet UIBarButtonItem *previousImageButtonItem;
+    IBOutlet UIBarButtonItem *nextImageButtonItem;
+    IBOutlet UIBarButtonItem *trashImageButtonItem;
+    IBOutlet UIBarButtonItem *titleButtonItem;
+
+    WPPhotosListViewController *photosListViewController;
+    int currentPhotoIndex;
 }
 
 @property (nonatomic, assign) int currentPhotoIndex;

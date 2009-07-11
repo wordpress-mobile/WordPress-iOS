@@ -6,13 +6,10 @@
 //  Copyright 2009 Smilodon Software. All rights reserved.
 //
 
-#define kNumberOfEditableRows	2
-#define kKeyRowIndex			0
-#define kValueRowIndex			1
-#define kLabelTag				4096
-
-
-
+#define kNumberOfEditableRows   2
+#define kKeyRowIndex            0
+#define kValueRowIndex          1
+#define kLabelTag               4096
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
@@ -21,34 +18,31 @@
 #import "PageViewController.h"
 
 @interface CustomFieldsDetailController : UITableViewController
-	<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
-		
-		WPNavigationLeftButtonView *leftView;
-		
-		NSArray *fieldLables;
-		
-		//IBOutlet	UITextField		*keyField;
-		//IBOutlet	UITextField		*valueField;
-		//IBOutlet	UITextField		*idField;
-		
-		IBOutlet UIBarButtonItem *saveButtonItem;
-		
-		
-		UITextField *textFieldBeingEdited;
-		NSMutableDictionary *customFieldsDict;
-		PostViewController *postDetailViewController;
-		PageViewController *pageDetailsController;
-		BlogDataManager *dm;
-		BOOL isNewCustomField;
-		BOOL _isPost;
-	}
+    <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
+    WPNavigationLeftButtonView *leftView;
 
+    NSArray *fieldLables;
+
+    //IBOutlet	UITextField		*keyField;
+    //IBOutlet	UITextField		*valueField;
+    //IBOutlet	UITextField		*idField;
+
+    IBOutlet UIBarButtonItem *saveButtonItem;
+
+    UITextField *textFieldBeingEdited;
+    NSMutableDictionary *customFieldsDict;
+    PostViewController *postDetailViewController;
+    PageViewController *pageDetailsController;
+    BlogDataManager *dm;
+    BOOL isNewCustomField;
+    BOOL _isPost;
+}
 
 //- (void) loadData:(NSDictionary *) theDict;
-- (void) writeCustomFieldsToCurrentPostOrPageUsingID;
+- (void)writeCustomFieldsToCurrentPostOrPageUsingID;
 
--(void)loadData:(NSDictionary *) theDict andNewCustomFieldBool:(BOOL) theBool;
--(void) writeCustomFieldsToCurrentPostOrPageUsingID;
+- (void)loadData:(NSDictionary *)theDict andNewCustomFieldBool:(BOOL)theBool;
+- (void)writeCustomFieldsToCurrentPostOrPageUsingID;
 
 - (IBAction)cancel:(id)sender;
 - (IBAction)save:(id)sender;
@@ -62,12 +56,9 @@
 @property (retain, nonatomic) UITextField *textFieldBeingEdited;
 @property BOOL isPost;
 
-
-@property (retain, nonatomic)NSMutableDictionary *customFieldsDict;
+@property (retain, nonatomic) NSMutableDictionary *customFieldsDict;
 @property (nonatomic, assign) PostViewController *postDetailViewController;
 @property (nonatomic, assign) PageViewController *pageDetailsController;
 @property (nonatomic, assign) BlogDataManager *dm;
-
-
 
 @end

@@ -9,15 +9,13 @@
 #import "WPSelectionTableViewController.h"
 
 @interface WPSegmentedSelectionTableViewController : WPSelectionTableViewController {
-	
-	NSMutableDictionary *categoryIndentationLevelsDict;
-	UIColor *rowTextColor;
+    NSMutableDictionary *categoryIndentationLevelsDict;
+    UIColor *rowTextColor;
 }
 
 //@property (nonatomic, retain) NSArray *objects;
 //@property (nonatomic, retain) NSMutableArray *selectionStatusOfObjects;
 //@property (nonatomic, retain) NSMutableArray *originalSelObjects;
-
 
 - (UITableViewCellAccessoryType)accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath ofTableView:(UITableView *)tableView;
 

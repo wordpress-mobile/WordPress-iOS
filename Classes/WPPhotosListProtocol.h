@@ -8,8 +8,10 @@
 #import <UIKit/UIKit.h>
 
 @protocol WPPhotosListProtocol
-- (void)useImage:(UIImage*)theImage;
--(id)photosDataSource;
+
+- (void)useImage:(UIImage *)theImage;
+- (id)photosDataSource;
 - (void)updatePhotosBadge;
 - (void)setHasChanges:(BOOL)aFlag;
+
 @end

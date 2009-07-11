@@ -48,22 +48,20 @@ Classes/UIImage+INResizeImageAllocator.h -text
 Classes/UIImage+INResizeImageAllocator.m -text
 Classes/UIViewController+WPAnimation.h -text
 Classes/UIViewController+WPAnimation.m -text
-Classes/WPActivityIndicator.h -text
-Classes/WPActivityIndicator.m -text
-Classes/WPActivityIndicatorTVCell.h -text
-Classes/WPActivityIndicatorTVCell.m -text
 Classes/WPAddCategoryViewController.h -text
 Classes/WPAddCategoryViewController.m -text
 Classes/WPAsynchronousImageView.h -text
 Classes/WPAsynchronousImageView.m -text
 Classes/WPCategoriesController.h -text
 Classes/WPCategoriesController.m -text
+Classes/WPCategoryTree.h -text
+Classes/WPCategoryTree.m -text
 Classes/WPImagePickerController.h -text
 Classes/WPImagePickerController.m -text
+Classes/WPImageView.h -text
+Classes/WPImageView.m -text
 Classes/WPLabelFooterView.h -text
 Classes/WPLabelFooterView.m -text
-Classes/WPLogoView.h -text
-Classes/WPLogoView.m -text
 Classes/WPNavigationLeftButtonView.h -text
 Classes/WPNavigationLeftButtonView.m -text
 Classes/WPPhotoViewController.h -text
@@ -85,8 +83,6 @@ Classes/WPSelectionTableViewController.h -text
 Classes/WPSelectionTableViewController.m -text
 Classes/WPXMLReader.h -text
 Classes/WPXMLReader.m -text
-Classes/WPXMLValidator.h -text
-Classes/WPXMLValidator.m -text
 Classes/WordPressAppDelegate.h -text
 Classes/WordPressAppDelegate.m -text
 Classes/XMLRPC/XMLRPCConnection.h -text
@@ -121,13 +117,8 @@ Classes/XMLRPC/XMLValueDecoder.m -text
 /Red[!!-~]Background.png -text
 /Red[!!-~]Selected[!!-~]Background.png -text
 /RoundedRectBlack.png -text
-/WPActivityIndicator.xib -text
 /WPAddCategoryViewController.xib -text
 /WPCategoriesController.xib -text
-/WPCategoryTree.h -text
-/WPCategoryTree.m -text
-/WPImageView.h -text
-/WPImageView.m -text
 /WPPhotoViewController.xib -text
 /WPPhotosListViewController.xib -text
 /WPPostDetailPreviewController.xib -text
@@ -163,6 +154,7 @@ WordPress.xcodeproj/project.pbxproj -text
 /sync.png -text svneol=unset#unset
 /talk_bubbles.png -text svneol=unset#unset
 /uncheck.png -text
+/uncrustify.cfg -text
 /up.png -text
 /vertBars.png -text
 /wplogo.png -text

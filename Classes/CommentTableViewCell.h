@@ -29,20 +29,20 @@
 
 @interface CommentTableViewCell : UITableViewCell {
     NSDictionary *_comment;
-    
+
     UIButton *_checkButton;
     UILabel *_nameLabel;
     UILabel *_urlLabel;
     UILabel *_commentLabel;
-    
+
     WPAsynchronousImageView *asynchronousImageView;
-    
+
     BOOL _checked;
 }
 
 @property (readwrite, assign) NSDictionary *comment;
 @property BOOL checked;
 
-- (void) resetAsynchronousImageView;
+- (void)resetAsynchronousImageView;
 
 @end

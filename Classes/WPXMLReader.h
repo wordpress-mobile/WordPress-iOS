@@ -7,13 +7,12 @@
 
 #import <Foundation/Foundation.h>
 
-
 @interface WPXMLReader : NSObject {
-	NSString *hostUrl;
+    NSString *hostUrl;
 }
 
 @property (nonatomic, retain) NSString *hostUrl;
 
-- (void)parseXMLData:(NSData *)data parseError:(NSError **)error;
+- (void)parseXMLData:(NSData *)data parseError:(NSError * *)error;
 
 @end

@@ -10,15 +10,14 @@
 #import "PagesViewController.h"
 #import "CommentsViewController.h"
 
-
 @interface BlogViewController : UIViewController <UITabBarControllerDelegate> {
-	IBOutlet UITabBarController *tabBarController;
-	
-	IBOutlet PostsListController *postsViewController;
-	IBOutlet PagesViewController *pagesViewController;
-	IBOutlet CommentsViewController *commentsViewController;
-	
-	UIBarButtonItem *backButton;
+    IBOutlet UITabBarController *tabBarController;
+
+    IBOutlet PostsListController *postsViewController;
+    IBOutlet PagesViewController *pagesViewController;
+    IBOutlet CommentsViewController *commentsViewController;
+
+    UIBarButtonItem *backButton;
 }
 
 @end

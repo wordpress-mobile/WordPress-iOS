@@ -13,39 +13,39 @@
 @class PageViewController;
 @class WPPhotosListViewController;
 
-@interface EditPageViewController : UIViewController<UIActionSheetDelegate, UITextViewDelegate>  {
-	IBOutlet UITextView *pageContentTextView;
-	IBOutlet UITextField *titleTextField;
-	IBOutlet UIView *contentView;
-	IBOutlet UIView *subView;
-	IBOutlet UITextField *statusTextField;
-	IBOutlet UITextField *categoriesTextField;
-	IBOutlet UILabel *statusLabel;
-	IBOutlet UILabel *categoriesLabel;
-	IBOutlet UILabel *titleLabel;
-	IBOutlet UIView *textViewContentView;
-	IBOutlet UITextField *textViewPlaceHolderField;
-	IBOutlet UITableViewCell *customFieldsEditCell;
-	
-	UITextField *infoText;
-	UITextField *urlField;
-	WPSelectionTableViewController *selectionTableViewController;
-	PageViewController *pageDetailsController;
-	
-	CustomFieldsTableView *customFieldsTableView;
-	WPPhotosListViewController *photosListController;
-	
-	BOOL dismiss;
-	BOOL isEditing;
-	int mode;	//0 new, 1 edit, 2 autorecovery, 3 refresh
-	BOOL hasChanges;
-	BOOL isTextViewEditing;
-	NSRange selectedLinkRange;
-	UITextField *currentEditingTextField;
-	BOOL isCustomFieldsEnabledForThisPage;
-	
-	//also for Custom Fields to move text view up and down appropriately
-	NSUInteger originY;
+@interface EditPageViewController : UIViewController<UIActionSheetDelegate, UITextViewDelegate> {
+    IBOutlet UITextView *pageContentTextView;
+    IBOutlet UITextField *titleTextField;
+    IBOutlet UIView *contentView;
+    IBOutlet UIView *subView;
+    IBOutlet UITextField *statusTextField;
+    IBOutlet UITextField *categoriesTextField;
+    IBOutlet UILabel *statusLabel;
+    IBOutlet UILabel *categoriesLabel;
+    IBOutlet UILabel *titleLabel;
+    IBOutlet UIView *textViewContentView;
+    IBOutlet UITextField *textViewPlaceHolderField;
+    IBOutlet UITableViewCell *customFieldsEditCell;
+
+    UITextField *infoText;
+    UITextField *urlField;
+    WPSelectionTableViewController *selectionTableViewController;
+    PageViewController *pageDetailsController;
+
+    CustomFieldsTableView *customFieldsTableView;
+    WPPhotosListViewController *photosListController;
+
+    BOOL dismiss;
+    BOOL isEditing;
+    int mode;   //0 new, 1 edit, 2 autorecovery, 3 refresh
+    BOOL hasChanges;
+    BOOL isTextViewEditing;
+    NSRange selectedLinkRange;
+    UITextField *currentEditingTextField;
+    BOOL isCustomFieldsEnabledForThisPage;
+
+    //also for Custom Fields to move text view up and down appropriately
+    NSUInteger originY;
 }
 
 @property (nonatomic, retain) PageViewController *pageDetailsController;
@@ -62,10 +62,9 @@
 
 @property (nonatomic, retain) UITableViewCell *customFieldsEditCell;
 
-
 - (IBAction)showStatusViewAction:(id)sender;
 - (IBAction)showCustomFieldsTableView:(id)sender;
-- (void) populateCustomFieldsTableViewControllerWithCustomFields;
+- (void)populateCustomFieldsTableViewControllerWithCustomFields;
 - (void)endEditingAction:(id)sender;
 - (void)refreshUIForCurrentPage;
 - (void)refreshUIForNewPage;
@@ -74,17 +73,16 @@
 - (void)showLinkView;
 - (void)setTextViewHeight:(float)height;
 
+#pragma mark -
+#pragma mark Custom Fields Methods
+
+- (BOOL)checkCustomFieldsMinusMetadata;
+- (void)postionTextViewContentView;
 
 #pragma mark -
 #pragma mark Custom Fields Methods
 
-- (BOOL) checkCustomFieldsMinusMetadata;
-- (void)  postionTextViewContentView;
-
-#pragma mark -
-#pragma mark Custom Fields Methods
-
-- (BOOL) checkCustomFieldsMinusMetadata;
-- (void)  postionTextViewContentView;
+- (BOOL)checkCustomFieldsMinusMetadata;
+- (void)postionTextViewContentView;
 
 @end

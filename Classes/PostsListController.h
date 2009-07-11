@@ -4,15 +4,15 @@
 @class BlogDataManager, PostViewController, PostDetailEditController, DraftsListController;
 
 @interface PostsListController : UITableViewController <UITableViewDataSource, UITableViewDelegate> {
-	UIBarButtonItem *newButtonItem;
-	
-	IBOutlet UITableView *postsTableView;
-	
-	PostViewController *postDetailViewController;
-	PostDetailEditController *postDetailEditController;
-	RefreshButtonView *refreshButton;
-	
-	BOOL connectionStatus;
+    UIBarButtonItem *newButtonItem;
+
+    IBOutlet UITableView *postsTableView;
+
+    PostViewController *postDetailViewController;
+    PostDetailEditController *postDetailEditController;
+    RefreshButtonView *refreshButton;
+
+    BOOL connectionStatus;
 }
 
 @property (readonly) UIBarButtonItem *newButtonItem;

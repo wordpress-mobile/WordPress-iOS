@@ -13,7 +13,6 @@
 #import "WPPhotosListViewController.h"
 #import "WordPressAppDelegate.h"
 
-
 @interface EditPageViewController (private)
 - (void)_savePageWithBlog:(NSMutableArray *)arrayPage;
 - (void)updateTextViewPlacehoderFieldStatus;
@@ -22,631 +21,585 @@
 - (void)bringTextViewDown;
 @end
 
-#define kSelectionsStatusContext1 ((void*)1000)
+#define kSelectionsStatusContext1 ((void *)1000)
 NSTimeInterval kAnimationDuration1 = 0.3f;
 
 @implementation EditPageViewController
-@synthesize mode,selectionTableViewController,pageDetailsController,photosListController, customFieldsTableView;
-@synthesize infoText,urlField,selectedLinkRange,currentEditingTextField,isEditing, isCustomFieldsEnabledForThisPage;
+@synthesize mode, selectionTableViewController, pageDetailsController, photosListController, customFieldsTableView;
+@synthesize infoText, urlField, selectedLinkRange, currentEditingTextField, isEditing, isCustomFieldsEnabledForThisPage;
 @synthesize customFieldsEditCell;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-		// Initialization code
-	}
-	return self;
+    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+        // Initialization code
+    }
+
+    return self;
 }
 
-- (void)refreshUIForCurrentPage
-{
-	self.navigationItem.rightBarButtonItem = nil;
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	
-	NSString *description = [dm.currentPage valueForKey:@"description"];
-	NSString *moreText = [dm.currentPage valueForKey:@"text_more"];
-	
-	if (!description || [description length] == 0 ) {
-		textViewPlaceHolderField.hidden = NO;
-		pageContentTextView.text = @"";
-	} else {
-		textViewPlaceHolderField.hidden = YES;
-		if((moreText!=NULL)&&([moreText length]>0))
-			pageContentTextView.text = [NSString stringWithFormat:@"%@\n<!--more-->%@",description,moreText];
-		else
-			pageContentTextView.text = description;
-	}
-	
-	titleTextField.text = [dm.currentPage valueForKey:@"title"];
-	
-	NSString *status = [dm.currentPage valueForKey:@"page_status"];
-	NSString *statusValue=[dm pageStatusDescriptionForStatus:status fromBlog:dm.currentBlog];
-	statusValue = ( statusValue == nil ? @"" : statusValue );
-	statusTextField.text = statusValue;
-	
-	[pageDetailsController updatePhotosBadge];
-	[photosListController refreshData];
+- (void)refreshUIForCurrentPage {
+    self.navigationItem.rightBarButtonItem = nil;
+    BlogDataManager *dm = [BlogDataManager sharedDataManager];
+
+    NSString *description = [dm.currentPage valueForKey:@"description"];
+    NSString *moreText = [dm.currentPage valueForKey:@"text_more"];
+
+    if (!description ||[description length] == 0) {
+        textViewPlaceHolderField.hidden = NO;
+        pageContentTextView.text = @"";
+    } else {
+        textViewPlaceHolderField.hidden = YES;
+
+        if ((moreText != NULL) && ([moreText length] > 0))
+            pageContentTextView.text = [NSString stringWithFormat:@"%@\n<!--more-->%@", description, moreText];else
+            pageContentTextView.text = description;
+    }
+
+    titleTextField.text = [dm.currentPage valueForKey:@"title"];
+
+    NSString *status = [dm.currentPage valueForKey:@"page_status"];
+    NSString *statusValue = [dm pageStatusDescriptionForStatus:status fromBlog:dm.currentBlog];
+    statusValue = (statusValue == nil ? @"" : statusValue);
+    statusTextField.text = statusValue;
+
+    [pageDetailsController updatePhotosBadge];
+    [photosListController refreshData];
 }
-- (void)refreshUIForNewPage
-{
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	NSString *description = [dm.currentPage valueForKey:@"description"];
-	
-	if (!description || [description length] == 0 ) {
-		textViewPlaceHolderField.hidden = NO;
-		pageContentTextView.text = @"";
-	} else {
-		textViewPlaceHolderField.hidden = YES;
-		pageContentTextView.text = description;
-	}
-	
-	titleTextField.text = [dm.currentPage valueForKey:@"title"];
-	
-	NSString *status = [dm pageStatusDescriptionForStatus:[dm.currentPage valueForKey:@"page_status"] fromBlog:dm.currentBlog];
-	
-	status = ( status == nil ? @"" : status );
-	statusTextField.text = status ;
-	
-	[photosListController refreshData];
-	[pageDetailsController updatePhotosBadge];
-	
+
+- (void)refreshUIForNewPage {
+    BlogDataManager *dm = [BlogDataManager sharedDataManager];
+    NSString *description = [dm.currentPage valueForKey:@"description"];
+
+    if (!description ||[description length] == 0) {
+        textViewPlaceHolderField.hidden = NO;
+        pageContentTextView.text = @"";
+    } else {
+        textViewPlaceHolderField.hidden = YES;
+        pageContentTextView.text = description;
+    }
+
+    titleTextField.text = [dm.currentPage valueForKey:@"title"];
+
+    NSString *status = [dm pageStatusDescriptionForStatus:[dm.currentPage valueForKey:@"page_status"] fromBlog:dm.currentBlog];
+
+    status = (status == nil ? @"" : status);
+    statusTextField.text = status;
+
+    [photosListController refreshData];
+    [pageDetailsController updatePhotosBadge];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	pageDetailsController.hasChanges = NO;
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	if( mode == 1 )
-		[self refreshUIForCurrentPage];
-	else if( mode == 0 )
-		[self refreshUIForNewPage];
-	
+    pageDetailsController.hasChanges = NO;
+    BlogDataManager *dm = [BlogDataManager sharedDataManager];
+
+    if (mode == 1)
+        [self refreshUIForCurrentPage];else if (mode == 0)
+        [self refreshUIForNewPage];
+
 //	CGRect frame = subView.frame;
 //	frame.origin.y = 0.0f;
 //	subView.frame = frame;
-//	
+//
 //	frame=textViewContentView.frame;
 //	frame.origin.y = 81.0f;
 //	textViewContentView.frame = frame;
-	isCustomFieldsEnabledForThisPage = [self checkCustomFieldsMinusMetadata];
-	if (isCustomFieldsEnabledForThisPage){
-		customFieldsEditCell.hidden = NO;
-		customFieldsEditCell.userInteractionEnabled = YES;
-	}else{
-		customFieldsEditCell.hidden = YES;
-		customFieldsEditCell.userInteractionEnabled = NO;
-	}
+    isCustomFieldsEnabledForThisPage = [self checkCustomFieldsMinusMetadata];
 
-	[self postionTextViewContentView];
-	
-	NSString *status=[[dm currentPage] valueForKey:@"page_status"];
-	statusTextField.text = status ;
-	
-	[super viewWillAppear:animated];
+    if (isCustomFieldsEnabledForThisPage) {
+        customFieldsEditCell.hidden = NO;
+        customFieldsEditCell.userInteractionEnabled = YES;
+    } else {
+        customFieldsEditCell.hidden = YES;
+        customFieldsEditCell.userInteractionEnabled = NO;
+    }
+
+    [self postionTextViewContentView];
+
+    NSString *status = [[dm currentPage] valueForKey:@"page_status"];
+    statusTextField.text = status;
+
+    [super viewWillAppear:animated];
 }
 
 - (void)viewDidLoad {
-	[super viewDidLoad];
-	//photosListController.pageDetailViewController = self;
-	
-	titleTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
-	statusTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
-	statusLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
-	titleLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
-	
-	titleTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-	[contentView bringSubviewToFront:pageContentTextView];
-	self.title = @"Write";
-	
-	//JOHNB TODO: Add a check here for the presence of custom fields in the data model
-	// if there are, set CustomFields BOOL to true
-	isCustomFieldsEnabledForThisPage = [self checkCustomFieldsMinusMetadata];
-	//call a helper to set the originY for textViewContentView
-	[self postionTextViewContentView];
-	customFieldsEditCell.hidden = YES;
-	
+    [super viewDidLoad];
+    //photosListController.pageDetailViewController = self;
+
+    titleTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
+    statusTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
+    statusLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
+    titleLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
+
+    titleTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    [contentView bringSubviewToFront:pageContentTextView];
+    self.title = @"Write";
+
+    //JOHNB TODO: Add a check here for the presence of custom fields in the data model
+    // if there are, set CustomFields BOOL to true
+    isCustomFieldsEnabledForThisPage = [self checkCustomFieldsMinusMetadata];
+    //call a helper to set the originY for textViewContentView
+    [self postionTextViewContentView];
+    customFieldsEditCell.hidden = YES;
 }
-- (IBAction)endTextEnteringButtonAction:(id)sender
-{
-	isTextViewEditing=NO;
-	[pageContentTextView resignFirstResponder];
-	UIBarButtonItem *barButton  = [[UIBarButtonItem alloc] initWithCustomView:pageDetailsController.leftView];
+
+- (IBAction)endTextEnteringButtonAction:(id)sender {
+    isTextViewEditing = NO;
+    [pageContentTextView resignFirstResponder];
+    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:pageDetailsController.leftView];
     pageDetailsController.navigationItem.leftBarButtonItem = barButton;
     [barButton release];
 }
 
-- (IBAction)cancelView:(id)sender 
-{
-	if (!pageDetailsController.hasChanges) {
-		[pageDetailsController.navigationController popViewControllerAnimated:YES]; 
-		return;
-	}
-	
-	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
-															 delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Discard"
-													otherButtonTitles:nil];		
-	actionSheet.tag = 202;
-	actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
-	[actionSheet showInView:self.view];
-	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	[delegate setAlertRunning:YES];
-	[actionSheet release];	
+- (IBAction)cancelView:(id)sender {
+    if (!pageDetailsController.hasChanges) {
+        [pageDetailsController.navigationController popViewControllerAnimated:YES];
+        return;
+    }
+
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
+                                  delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Discard"
+                                  otherButtonTitles:nil];
+    actionSheet.tag = 202;
+    actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
+    [actionSheet showInView:self.view];
+    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    [delegate setAlertRunning:YES];
+    [actionSheet release];
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	switch ([actionSheet tag])
-	{
-		case 202:
-		{
-			if( buttonIndex == 0 ){
-				pageDetailsController.hasChanges = NO;
-				pageDetailsController.navigationItem.rightBarButtonItem = nil;
-				[pageDetailsController.navigationController popViewControllerAnimated:YES];
-			}
-			
-			if( buttonIndex == 1 ){
-				pageDetailsController.hasChanges = YES;
-			}	
-			
-			WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-			[delegate setAlertRunning:NO];
-			break;
-		}
-		default:
-			break;
-	}
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    switch ([actionSheet tag]) {
+        case 202:
+        {
+            if (buttonIndex == 0) {
+                pageDetailsController.hasChanges = NO;
+                pageDetailsController.navigationItem.rightBarButtonItem = nil;
+                [pageDetailsController.navigationController popViewControllerAnimated:YES];
+            }
+
+            if (buttonIndex == 1) {
+                pageDetailsController.hasChanges = YES;
+            }
+
+            WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+            [delegate setAlertRunning:NO];
+            break;
+        }
+        default:
+            break;
+    }
 }
 
-- (void)endEditingAction:(id)sender
-{
-	[titleTextField resignFirstResponder];
-	[pageContentTextView resignFirstResponder];
+- (void)endEditingAction:(id)sender {
+    [titleTextField resignFirstResponder];
+    [pageContentTextView resignFirstResponder];
 }
-
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	if([delegate isAlertRunning] == YES)
-		return NO;
-	
-	return YES;
+    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+
+    if ([delegate isAlertRunning] == YES)
+        return NO;
+
+    return YES;
 }
 
-
-- (void)setTextViewHeight:(float)height
-{
-	CGRect frame = pageContentTextView.frame;
-	frame.size.height=height;
-	pageContentTextView.frame=frame;
+- (void)setTextViewHeight:(float)height {
+    CGRect frame = pageContentTextView.frame;
+    frame.size.height = height;
+    pageContentTextView.frame = frame;
 }
 
 #pragma mark TextView & TextField Delegates
 - (void)textViewDidChangeSelection:(UITextView *)aTextView {
-	
-	if (!isTextViewEditing) 
-	{
-		pageDetailsController.hasChanges = YES;
-		hasChanges = YES;
-		
-		isTextViewEditing = YES;
-		if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
-		{
-			[self setTextViewHeight:105];
-		}	
-		else if((self.interfaceOrientation == UIInterfaceOrientationPortrait)||(self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown))
-		{
-			[self setTextViewHeight:200];
-		}
-		
-		
-		[self updateTextViewPlacehoderFieldStatus];
-		[self bringTextViewUp];
-		
-		UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone 
-																	  target:self action:@selector(endTextEnteringButtonAction:)];
-		
-		pageDetailsController.navigationItem.leftBarButtonItem = doneButton;
-		[doneButton release];
-	}
+    if (!isTextViewEditing) {
+        pageDetailsController.hasChanges = YES;
+        hasChanges = YES;
+
+        isTextViewEditing = YES;
+
+        if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+            [self setTextViewHeight:105];
+        } else if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
+            [self setTextViewHeight:200];
+        }
+
+        [self updateTextViewPlacehoderFieldStatus];
+        [self bringTextViewUp];
+
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
+                                       target:self action:@selector(endTextEnteringButtonAction:)];
+
+        pageDetailsController.navigationItem.leftBarButtonItem = doneButton;
+        [doneButton release];
+    }
 }
 
-- (void)textViewDidBeginEditing:(UITextView *)aTextView
-{	
-	isEditing=YES;
-	
-	if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
-	{
-		[self setTextViewHeight:105];
-	}
-	else if((self.interfaceOrientation == UIInterfaceOrientationPortrait)||(self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown))
-	{
-		[self setTextViewHeight:200];
-		
-	}
-	
-	dismiss=NO;
-	
-	if (!isTextViewEditing) 
-		isTextViewEditing = YES;
-	
-	
-	[self updateTextViewPlacehoderFieldStatus];
-	
-	UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone 
-																  target:self action:@selector(endTextEnteringButtonAction:)];
-	
-	pageDetailsController.navigationItem.leftBarButtonItem = doneButton;
-	[doneButton release];
-	
-	[self bringTextViewUp];
-}
-- (void)bringTextViewUp
-{
-	
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:kAnimationDuration1];
-	
-	if (isCustomFieldsEnabledForThisPage) {
-		CGRect frame = textViewContentView.frame;
-		frame.origin.y -= 120.0f;
-		textViewContentView.frame = frame;
-	
-		frame = subView.frame;
-		frame.origin.y -= 120.0f;
-		subView.frame = frame;
-	}else{
-		CGRect frame = textViewContentView.frame;
-		frame.origin.y -= 80.0f;
-		textViewContentView.frame = frame;
-		
-		frame = subView.frame;
-		frame.origin.y -= 80.0f;
-		subView.frame = frame;
-	}
-	
-	[UIView commitAnimations];
+- (void)textViewDidBeginEditing:(UITextView *)aTextView {
+    isEditing = YES;
 
+    if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+        [self setTextViewHeight:105];
+    } else if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
+        [self setTextViewHeight:200];
+    }
+
+    dismiss = NO;
+
+    if (!isTextViewEditing)
+        isTextViewEditing = YES;
+
+    [self updateTextViewPlacehoderFieldStatus];
+
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
+                                   target:self action:@selector(endTextEnteringButtonAction:)];
+
+    pageDetailsController.navigationItem.leftBarButtonItem = doneButton;
+    [doneButton release];
+
+    [self bringTextViewUp];
 }
 
-- (void)bringTextViewDown
-{
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:0.2];
-	subView.hidden = NO;
-	
-	if (isCustomFieldsEnabledForThisPage) {
-		CGRect frame = textViewContentView.frame;
-		frame.origin.y += 60.0f;
-		textViewContentView.frame = frame;	
-	
-		frame = subView.frame;
-		frame.origin.y = 0.0f;
-		subView.frame = frame;
-		
-	}else{
-		CGRect frame = textViewContentView.frame;
-		frame.origin.y = 81.0f;
-		textViewContentView.frame = frame;	
-		
-		frame = subView.frame;
-		frame.origin.y = 0.0f;
-		subView.frame = frame;		
-	}
-	
-	[UIView commitAnimations];		
+- (void)bringTextViewUp {
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:kAnimationDuration1];
+
+    if (isCustomFieldsEnabledForThisPage) {
+        CGRect frame = textViewContentView.frame;
+        frame.origin.y -= 120.0f;
+        textViewContentView.frame = frame;
+
+        frame = subView.frame;
+        frame.origin.y -= 120.0f;
+        subView.frame = frame;
+    } else {
+        CGRect frame = textViewContentView.frame;
+        frame.origin.y -= 80.0f;
+        textViewContentView.frame = frame;
+
+        frame = subView.frame;
+        frame.origin.y -= 80.0f;
+        subView.frame = frame;
+    }
+
+    [UIView commitAnimations];
 }
+
+- (void)bringTextViewDown {
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.2];
+    subView.hidden = NO;
+
+    if (isCustomFieldsEnabledForThisPage) {
+        CGRect frame = textViewContentView.frame;
+        frame.origin.y += 60.0f;
+        textViewContentView.frame = frame;
+
+        frame = subView.frame;
+        frame.origin.y = 0.0f;
+        subView.frame = frame;
+    } else {
+        CGRect frame = textViewContentView.frame;
+        frame.origin.y = 81.0f;
+        textViewContentView.frame = frame;
+
+        frame = subView.frame;
+        frame.origin.y = 0.0f;
+        subView.frame = frame;
+    }
+
+    [UIView commitAnimations];
+}
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-	self.currentEditingTextField = textField;
-	[self textViewDidEndEditing:pageContentTextView];
-	//pageDetailsController.hasChanges = YES;
+    self.currentEditingTextField = textField;
+    [self textViewDidEndEditing:pageContentTextView];
+    //pageDetailsController.hasChanges = YES;
 }
 
 - (void)textViewDidChange:(UITextView *)aTextView {
-	pageDetailsController.hasChanges = YES;
-	
-	[self updateTextViewPlacehoderFieldStatus];
-	if(![aTextView hasText])
-		return;
-	
-	if(dismiss==YES) {
-		dismiss = NO;
-		return;
-	}	
-	
-	NSRange range=[aTextView selectedRange]; 
-	NSArray *stringArray=[NSArray arrayWithObjects:@"http:",@"ftp:",@"https:",@"www.",nil];
-	NSString *str=[aTextView text];
-	int i,j,count=[stringArray count];
-	BOOL searchRes=NO;
-	for(j = 4;j <= 6; j++){
-		
-		if(range.location < j)
-			return;
-		
-		NSRange subStrRange;
-		subStrRange.location=range.location-j;
-		subStrRange.length=j;
-		[self setSelectedLinkRange:subStrRange];
-		NSString *subStr=[str substringWithRange:subStrRange];
-		
-		for(i = 0; i < count; i++){
-			NSString *searchString=[stringArray objectAtIndex:i];
-			
-			if(searchRes = [subStr isEqualToString:[searchString capitalizedString]])
-				break;
-			else if (searchRes = [subStr isEqualToString:[searchString lowercaseString]])
-				break;
-			else if (searchRes = [subStr isEqualToString:[searchString uppercaseString]])
-				break;				
-		}
-		if(searchRes)
-			break;
-	}
-	
-	if(searchRes && dismiss!=YES){
-		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-		[delegate setAlertRunning:YES];
-		[pageContentTextView resignFirstResponder];
-        UIAlertView *linkAlert = [[UIAlertView alloc] initWithTitle:@"Link Creation" message:@"Do you want to create link?" delegate:self cancelButtonTitle:@"Create Link" otherButtonTitles:@"Dismiss", nil];                                                
+    pageDetailsController.hasChanges = YES;
+
+    [self updateTextViewPlacehoderFieldStatus];
+
+    if (![aTextView hasText])
+        return;
+
+    if (dismiss == YES) {
+        dismiss = NO;
+        return;
+    }
+
+    NSRange range = [aTextView selectedRange];
+    NSArray *stringArray = [NSArray arrayWithObjects:@"http:", @"ftp:", @"https:", @"www.", nil];
+    NSString *str = [aTextView text];
+    int i, j, count = [stringArray count];
+    BOOL searchRes = NO;
+
+    for (j = 4; j <= 6; j++) {
+        if (range.location < j)
+            return;
+
+        NSRange subStrRange;
+        subStrRange.location = range.location - j;
+        subStrRange.length = j;
+        [self setSelectedLinkRange:subStrRange];
+        NSString *subStr = [str substringWithRange:subStrRange];
+
+        for (i = 0; i < count; i++) {
+            NSString *searchString = [stringArray objectAtIndex:i];
+
+            if (searchRes = [subStr isEqualToString:[searchString capitalizedString]])
+                break;else if (searchRes = [subStr isEqualToString:[searchString lowercaseString]])
+                break;else if (searchRes = [subStr isEqualToString:[searchString uppercaseString]])
+                break;
+        }
+
+        if (searchRes)
+            break;
+    }
+
+    if (searchRes && dismiss != YES) {
+        WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+        [delegate setAlertRunning:YES];
+        [pageContentTextView resignFirstResponder];
+        UIAlertView *linkAlert = [[UIAlertView alloc] initWithTitle:@"Link Creation" message:@"Do you want to create link?" delegate:self cancelButtonTitle:@"Create Link" otherButtonTitles:@"Dismiss", nil];
         [linkAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
         [linkAlert show];
         [linkAlert release];
     }
-	
-	
-	
-}
-- (void)updateTextViewPlacehoderFieldStatus
-{
-	if ( [pageContentTextView.text length] == 0 ){
-		textViewPlaceHolderField.hidden = NO;
-	}
-	else {
-		textViewPlaceHolderField.hidden = YES;
-	}	
 }
 
-- (void)textViewDidEndEditing:(UITextView *)textView
-{
-	
-	if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
-	{
-		[self setTextViewHeight:137];
-	}
-	else if((self.interfaceOrientation == UIInterfaceOrientationPortrait)||(self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown))
-	{
-		[self setTextViewHeight:287];
-		
-	}
-	
-	isEditing=NO;
-	
-	dismiss=NO;
-	if( isTextViewEditing )
-		isTextViewEditing = NO;
-	[self bringTextViewDown];
-	NSString *text = textView.text;
-	[[[BlogDataManager sharedDataManager] currentPage] setObject:text forKey:@"description"];		
+- (void)updateTextViewPlacehoderFieldStatus {
+    if ([pageContentTextView.text length] == 0) {
+        textViewPlaceHolderField.hidden = NO;
+    } else {
+        textViewPlaceHolderField.hidden = YES;
+    }
 }
 
+- (void)textViewDidEndEditing:(UITextView *)textView {
+    if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+        [self setTextViewHeight:137];
+    } else if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
+        [self setTextViewHeight:287];
+    }
 
+    isEditing = NO;
 
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-	self.currentEditingTextField = nil;
-	
-	if( textField == titleTextField )
-		[[BlogDataManager sharedDataManager].currentPage setValue:textField.text forKey:@"title"];
-	
-	CGRect frame = subView.frame;
-	frame.origin.y = 0.0f;
-	subView.frame = frame;
-	
-	frame=textViewContentView.frame;
-	frame.origin.y = 81.0f;
-	textViewContentView.frame = frame;
+    dismiss = NO;
+
+    if (isTextViewEditing)
+        isTextViewEditing = NO;
+
+    [self bringTextViewDown];
+    NSString *text = textView.text;
+    [[[BlogDataManager sharedDataManager] currentPage] setObject:text forKey:@"description"];
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string 
-{
-	pageDetailsController.hasChanges = YES;
-	hasChanges = YES;
-	return YES;
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    self.currentEditingTextField = nil;
+
+    if (textField == titleTextField)
+        [[BlogDataManager sharedDataManager].currentPage setValue:textField.text forKey:@"title"];
+
+    CGRect frame = subView.frame;
+    frame.origin.y = 0.0f;
+    subView.frame = frame;
+
+    frame = textViewContentView.frame;
+    frame.origin.y = 81.0f;
+    textViewContentView.frame = frame;
 }
 
-- (IBAction)showStatusViewAction:(id)sender
-{
-	[self populateSelectionsControllerWithStatuses];
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    pageDetailsController.hasChanges = YES;
+    hasChanges = YES;
+    return YES;
 }
 
-
-- (IBAction)showCustomFieldsTableView:(id)sender
-{
-	[self populateCustomFieldsTableViewControllerWithCustomFields];
+- (IBAction)showStatusViewAction:(id)sender {
+    [self populateSelectionsControllerWithStatuses];
 }
 
-- (void)selectionTableViewController:(WPSelectionTableViewController *)selctionController completedSelectionsWithContext:(void *)selContext selectedObjects:(NSArray *)selectedObjects haveChanges:(BOOL)isChanged
-{
-	
-	if( !isChanged ){
-		[selctionController clean];
-		return;
-	}
-	
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	if( selContext == kSelectionsStatusContext1 ){
-		NSString *curStatus = [selectedObjects lastObject];
-		NSString *status = [dm pageStatusForStatusDescription:curStatus fromBlog:dm.currentBlog];
-		if( status ){
-			[[dm currentPage] setObject:status forKey:@"page_status"];
-			statusTextField.text = curStatus ;
-		}	
-	}
-	
-	[selctionController clean];
-	pageDetailsController.hasChanges = YES;
-	
-}	
-
-- (void)populateSelectionsControllerWithStatuses
-{
-	if (selectionTableViewController == nil)
-		selectionTableViewController = [[WPSelectionTableViewController alloc] initWithNibName:@"WPSelectionTableViewController" bundle:nil];
-	
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	NSDictionary *postStatusList = [[dm currentBlog] valueForKey:@"pageStatusList"];
-    NSArray *dataSource = [postStatusList allValues] ;
-	if(dm.currentPageIndex == -1 || dm.isLocaDraftsCurrent)
-		dataSource = [dataSource arrayByAddingObject:@"Local Draft"];
-	
-	NSString *curStatus = [dm.currentPage valueForKey:@"page_status"];
-	
-	NSString *statusValue=[dm statusDescriptionForStatus:curStatus  fromBlog:dm.currentBlog];
-	
-	NSArray *selObject = ( statusValue == nil ? [NSArray array] : [NSArray arrayWithObject:statusValue] );
-	
-	[selectionTableViewController populateDataSource:dataSource
-									   havingContext:kSelectionsStatusContext1
-									 selectedObjects:selObject
-									   selectionType:kRadio
-										 andDelegate:self];
-	
-	selectionTableViewController.title = @"Status";
-	selectionTableViewController.navigationItem.rightBarButtonItem = nil;
-	[pageDetailsController.navigationController pushViewController:selectionTableViewController animated:YES];
+- (IBAction)showCustomFieldsTableView:(id)sender {
+    [self populateCustomFieldsTableViewControllerWithCustomFields];
 }
 
--(void) populateCustomFieldsTableViewControllerWithCustomFields{
-	
-		
-		//initialize the new view if it doesn't exist
-		if (customFieldsTableView == nil)
-			customFieldsTableView = [[CustomFieldsTableView alloc] initWithNibName:@"CustomFieldsTableView" bundle:nil];
-		customFieldsTableView.pageDetailsController = self.pageDetailsController;
-		//load the CustomFieldsTableView  Note: customFieldsTableView loads some data in viewDidLoad
-		[customFieldsTableView setIsPost:NO]; //since we're dealing with pages, NOT posts
-		[pageDetailsController.navigationController pushViewController:customFieldsTableView animated:YES];
-		
-	
-	
-}
-- (BOOL)textFieldShouldClear:(UITextField *)textField
-{
-	pageDetailsController.hasChanges = YES;
-	return YES;
+- (void)selectionTableViewController:(WPSelectionTableViewController *)selctionController completedSelectionsWithContext:(void *)selContext selectedObjects:(NSArray *)selectedObjects haveChanges:(BOOL)isChanged {
+    if (!isChanged) {
+        [selctionController clean];
+        return;
+    }
+
+    BlogDataManager *dm = [BlogDataManager sharedDataManager];
+
+    if (selContext == kSelectionsStatusContext1) {
+        NSString *curStatus = [selectedObjects lastObject];
+        NSString *status = [dm pageStatusForStatusDescription:curStatus fromBlog:dm.currentBlog];
+
+        if (status) {
+            [[dm currentPage] setObject:status forKey:@"page_status"];
+            statusTextField.text = curStatus;
+        }
+    }
+
+    [selctionController clean];
+    pageDetailsController.hasChanges = YES;
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-	self.currentEditingTextField = nil;
-	[textField resignFirstResponder];
-	pageDetailsController.hasChanges = YES;
-	return YES;
+- (void)populateSelectionsControllerWithStatuses {
+    if (selectionTableViewController == nil)
+        selectionTableViewController = [[WPSelectionTableViewController alloc] initWithNibName:@"WPSelectionTableViewController" bundle:nil];
+
+    BlogDataManager *dm = [BlogDataManager sharedDataManager];
+    NSDictionary *postStatusList = [[dm currentBlog] valueForKey:@"pageStatusList"];
+    NSArray *dataSource = [postStatusList allValues];
+
+    if (dm.currentPageIndex == -1 || dm.isLocaDraftsCurrent)
+        dataSource = [dataSource arrayByAddingObject:@"Local Draft"];
+
+    NSString *curStatus = [dm.currentPage valueForKey:@"page_status"];
+
+    NSString *statusValue = [dm statusDescriptionForStatus:curStatus fromBlog:dm.currentBlog];
+
+    NSArray *selObject = (statusValue == nil ? [NSArray array] : [NSArray arrayWithObject:statusValue]);
+
+    [selectionTableViewController populateDataSource:dataSource
+     havingContext:kSelectionsStatusContext1
+     selectedObjects:selObject
+     selectionType:kRadio
+     andDelegate:self];
+
+    selectionTableViewController.title = @"Status";
+    selectionTableViewController.navigationItem.rightBarButtonItem = nil;
+    [pageDetailsController.navigationController pushViewController:selectionTableViewController animated:YES];
 }
-- (void)viewWillDisappear:(BOOL)animated
-{
-	[super viewWillDisappear:animated];
-	pageDetailsController.hasChanges = NO;
-	[titleTextField resignFirstResponder];
-	[pageContentTextView resignFirstResponder];
-	mode = 3;
+
+- (void)populateCustomFieldsTableViewControllerWithCustomFields {
+    //initialize the new view if it doesn't exist
+    if (customFieldsTableView == nil)
+        customFieldsTableView = [[CustomFieldsTableView alloc] initWithNibName:@"CustomFieldsTableView" bundle:nil];
+
+    customFieldsTableView.pageDetailsController = self.pageDetailsController;
+    //load the CustomFieldsTableView  Note: customFieldsTableView loads some data in viewDidLoad
+    [customFieldsTableView setIsPost:NO];     //since we're dealing with pages, NOT posts
+    [pageDetailsController.navigationController pushViewController:customFieldsTableView animated:YES];
+}
+
+- (BOOL)textFieldShouldClear:(UITextField *)textField {
+    pageDetailsController.hasChanges = YES;
+    return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    self.currentEditingTextField = nil;
+    [textField resignFirstResponder];
+    pageDetailsController.hasChanges = YES;
+    return YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    pageDetailsController.hasChanges = NO;
+    [titleTextField resignFirstResponder];
+    [pageContentTextView resignFirstResponder];
+    mode = 3;
 }
 
 - (void)didReceiveMemoryWarning {
-	WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
-	[super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
+    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+    [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
 }
 
-- (void)dealloc 
-{
-	[pageDetailsController release];
-	[selectionTableViewController release];
-	//[customFieldsTableView release];
-	[super dealloc];
+- (void)dealloc {
+    [pageDetailsController release];
+    [selectionTableViewController release];
+    //[customFieldsTableView release];
+    [super dealloc];
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    if([alertView tag] == 1){
-     	if ( buttonIndex == 0 ) 
-            [self showLinkView];
-		else{
-			dismiss=YES;
-			[pageContentTextView touchesBegan:nil withEvent:nil];
-			[delegate setAlertRunning:NO];
-		}
-	}
-	
-    if([alertView tag] == 2){
-     	if ( buttonIndex == 1){
-            if((urlField.text == nil)||([urlField.text isEqualToString:@""]))
-				return;
-			if((infoText.text == nil)||([infoText.text isEqualToString:@""]))
-				infoText.text=urlField.text;
-			
-			NSString *commentsStr = pageContentTextView.text;
-			NSRange rangeToReplace=[self selectedLinkRange];
-			NSString *urlString=[self validateNewLinkInfo:urlField.text];
-			NSString *aTagText=[NSString stringWithFormat:@"<a href=\"%@\">%@</a>",urlString,infoText.text];;
-			pageContentTextView.text = [commentsStr stringByReplacingOccurrencesOfString:[commentsStr substringWithRange:rangeToReplace] withString:aTagText options:NSCaseInsensitiveSearch range:rangeToReplace];
-			
-			BlogDataManager *dm = [BlogDataManager sharedDataManager];
-			NSString *str = pageContentTextView.text;
-			str = ( str	!= nil ? str : @"" );
-			[dm.currentPage setValue:str forKey:@"description"];
-			
-		}
-		dismiss = YES;
-		[delegate setAlertRunning:NO];
-		[pageContentTextView touchesBegan:nil withEvent:nil];
-	}
-	
+    if ([alertView tag] == 1) {
+        if (buttonIndex == 0)
+            [self showLinkView];else {
+            dismiss = YES;
+            [pageContentTextView touchesBegan:nil withEvent:nil];
+            [delegate setAlertRunning:NO];
+        }
+    }
+
+    if ([alertView tag] == 2) {
+        if (buttonIndex == 1) {
+            if ((urlField.text == nil) || ([urlField.text isEqualToString:@""]))
+                return;
+
+            if ((infoText.text == nil) || ([infoText.text isEqualToString:@""]))
+                infoText.text = urlField.text;
+
+            NSString *commentsStr = pageContentTextView.text;
+            NSRange rangeToReplace = [self selectedLinkRange];
+            NSString *urlString = [self validateNewLinkInfo:urlField.text];
+            NSString *aTagText = [NSString stringWithFormat:@"<a href=\"%@\">%@</a>", urlString, infoText.text];;
+            pageContentTextView.text = [commentsStr stringByReplacingOccurrencesOfString:[commentsStr substringWithRange:rangeToReplace] withString:aTagText options:NSCaseInsensitiveSearch range:rangeToReplace];
+
+            BlogDataManager *dm = [BlogDataManager sharedDataManager];
+            NSString *str = pageContentTextView.text;
+            str = (str != nil ? str : @"");
+            [dm.currentPage setValue:str forKey:@"description"];
+        }
+
+        dismiss = YES;
+        [delegate setAlertRunning:NO];
+        [pageContentTextView touchesBegan:nil withEvent:nil];
+    }
+
     return;
 }
 
 //code to append http:// if protocol part is not there as part of urlText.
-- (NSString *)validateNewLinkInfo:(NSString *)urlText{
-	NSArray *stringArray=[NSArray arrayWithObjects:@"http:",@"ftp:",@"https:",nil];
-	int i,count=[stringArray count];
-	BOOL searchRes=NO;
-	
-	for(i = 0; i < count; i++){
-		NSString *searchString=[stringArray objectAtIndex:i];
-		
-		if(searchRes = [urlText hasPrefix:[searchString capitalizedString]])
-			break;
-		else if (searchRes = [urlText hasPrefix:[searchString lowercaseString]])
-			break;
-		else if (searchRes = [urlText hasPrefix:[searchString uppercaseString]])
-			break;				
-	}
-	NSString *returnStr;
-	if(searchRes)
-		returnStr=[NSString stringWithString:urlText];
-	else
-		returnStr=[NSString stringWithFormat:@"http://%@",urlText];
-	
-	return returnStr;
+- (NSString *)validateNewLinkInfo:(NSString *)urlText {
+    NSArray *stringArray = [NSArray arrayWithObjects:@"http:", @"ftp:", @"https:", nil];
+    int i, count = [stringArray count];
+    BOOL searchRes = NO;
+
+    for (i = 0; i < count; i++) {
+        NSString *searchString = [stringArray objectAtIndex:i];
+
+        if (searchRes = [urlText hasPrefix:[searchString capitalizedString]])
+            break;else if (searchRes = [urlText hasPrefix:[searchString lowercaseString]])
+            break;else if (searchRes = [urlText hasPrefix:[searchString uppercaseString]])
+            break;
+    }
+
+    NSString *returnStr;
+
+    if (searchRes)
+        returnStr = [NSString stringWithString:urlText];else
+        returnStr = [NSString stringWithFormat:@"http://%@", urlText];
+
+    return returnStr;
 }
 
 //code to Show the link view
-//when create link button of the create hyperlink alert is clicked. 
+//when create link button of the create hyperlink alert is clicked.
 
--(void)showLinkView
-{
+- (void)showLinkView {
     UIAlertView *addURLSourceAlert = [[UIAlertView alloc] initWithFrame:CGRectMake(0, 0, 0, 0.0)];
     infoText = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 36.0, 260.0, 29.0)];
     urlField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 70.0, 260.0, 29.0)];
     infoText.placeholder = @"\n\nEnter Text For Link";
     urlField.placeholder = @"\n\nEnter Link";
     //infoText.enabled = YES;
-    
-    infoText.autocapitalizationType= UITextAutocapitalizationTypeNone;
-    urlField.autocapitalizationType= UITextAutocapitalizationTypeNone;
+
+    infoText.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    urlField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     infoText.borderStyle = UITextBorderStyleRoundedRect;
     urlField.borderStyle = UITextBorderStyleRoundedRect;
-    infoText.keyboardAppearance = UIKeyboardAppearanceAlert;         
+    infoText.keyboardAppearance = UIKeyboardAppearanceAlert;
     urlField.keyboardAppearance = UIKeyboardAppearanceAlert;
     [addURLSourceAlert addButtonWithTitle:@"Cancel"];
     [addURLSourceAlert addButtonWithTitle:@"OK"];
@@ -660,72 +613,61 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
     [addURLSourceAlert setTag:2];
     [addURLSourceAlert show];
     [addURLSourceAlert release];
-	
-	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	[delegate setAlertRunning:NO];
-	
+
+    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    [delegate setAlertRunning:NO];
 }
 
 #pragma mark -
 #pragma mark Custom Fields methods
--(void)  postionTextViewContentView {
-	
-	if (isCustomFieldsEnabledForThisPage) {
-		
-		
-		//originY = 214.0f;
-		originY = 125.0f;
-		CGRect frame = textViewContentView.frame;
-		frame.origin.y = originY;
-		[textViewContentView setFrame:frame];
-		
-		
-		
-		
-	}else{
-		
-		originY = 80.0f;
-		CGRect frame = textViewContentView.frame;
-		frame.origin.y = originY;
-		[textViewContentView setFrame:frame];
-		
-	}
+- (void)postionTextViewContentView {
+    if (isCustomFieldsEnabledForThisPage) {
+        //originY = 214.0f;
+        originY = 125.0f;
+        CGRect frame = textViewContentView.frame;
+        frame.origin.y = originY;
+        [textViewContentView setFrame:frame];
+    } else {
+        originY = 80.0f;
+        CGRect frame = textViewContentView.frame;
+        frame.origin.y = originY;
+        [textViewContentView setFrame:frame];
+    }
 }
 
-- (BOOL) checkCustomFieldsMinusMetadata {
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	NSMutableArray *tempCustomFieldsArray = [dm.currentPage valueForKey:@"custom_fields"];
-	
-	//if there is anything (>=1) in the array, start proceessing, otherwise return NO
-	if (tempCustomFieldsArray.count >=1)
-	{
-		//strip out any underscore-containing NSDicts inside the array, as this is metadata we don't need
-		int dictsCount = [tempCustomFieldsArray count];
-		for(int i = 0;i < dictsCount;i++){
-			NSString *tempKey = [[tempCustomFieldsArray objectAtIndex:i] objectForKey:@"key"];
-			NSLog(@"Strip Metadata tempKey is... %@", tempKey);
-			//if tempKey contains an underscore, remove that object (NSDict with metadata) from the array and move on
-			if([tempKey rangeOfString:@"_"].location != NSNotFound)
-			{
-				NSLog(@"Found an underscore metadata 'member' and removing it %@", tempKey);
-				[tempCustomFieldsArray removeObjectAtIndex:i]; 
-				//if I remove one, the count goes down and we stop too soon unless we subtract one from i
-				//and re-set dictsCount.  Doing this keeps us in sync with the actual array.count
-				i--;
-				dictsCount = [tempCustomFieldsArray count];
-			}
-		}
-		
-		//if the count of everything minus the metedata is one or greater, there is at least one custom field on this post, so return YES
-		if (dictsCount >= 1) {
-			return YES;
-		}else{ 
-			return NO;
-		}
-		
-	}else{
-		return NO;
-	}
+- (BOOL)checkCustomFieldsMinusMetadata {
+    BlogDataManager *dm = [BlogDataManager sharedDataManager];
+    NSMutableArray *tempCustomFieldsArray = [dm.currentPage valueForKey:@"custom_fields"];
+
+    //if there is anything (>=1) in the array, start proceessing, otherwise return NO
+    if (tempCustomFieldsArray.count >= 1) {
+        //strip out any underscore-containing NSDicts inside the array, as this is metadata we don't need
+        int dictsCount = [tempCustomFieldsArray count];
+
+        for (int i = 0; i < dictsCount; i++) {
+            NSString *tempKey = [[tempCustomFieldsArray objectAtIndex:i] objectForKey:@"key"];
+            NSLog(@"Strip Metadata tempKey is... %@", tempKey);
+
+            //if tempKey contains an underscore, remove that object (NSDict with metadata) from the array and move on
+            if ([tempKey rangeOfString:@"_"].location != NSNotFound) {
+                NSLog(@"Found an underscore metadata 'member' and removing it %@", tempKey);
+                [tempCustomFieldsArray removeObjectAtIndex:i];
+                //if I remove one, the count goes down and we stop too soon unless we subtract one from i
+                //and re-set dictsCount.  Doing this keeps us in sync with the actual array.count
+                i--;
+                dictsCount = [tempCustomFieldsArray count];
+            }
+        }
+
+        //if the count of everything minus the metedata is one or greater, there is at least one custom field on this post, so return YES
+        if (dictsCount >= 1) {
+            return YES;
+        } else {
+            return NO;
+        }
+    } else {
+        return NO;
+    }
 }
+
 @end
-

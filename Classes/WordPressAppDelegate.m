@@ -14,7 +14,6 @@
 
 @end
 
-
 @implementation WordPressAppDelegate
 
 static WordPressAppDelegate *wordPressApp = NULL;
@@ -23,27 +22,27 @@ static WordPressAppDelegate *wordPressApp = NULL;
 @synthesize navigationController, alertRunning;
 
 - (id)init {
-	if (!wordPressApp) {
-		wordPressApp = [super init];
-		dataManager = [BlogDataManager sharedDataManager];
-	}
-	
-	return wordPressApp;
+    if (!wordPressApp) {
+        wordPressApp = [super init];
+        dataManager = [BlogDataManager sharedDataManager];
+    }
+
+    return wordPressApp;
 }
 
 + (WordPressAppDelegate *)sharedWordPressApp {
-	if (!wordPressApp) {
-		wordPressApp = [[WordPressAppDelegate alloc] init];
-	}
-	
-	return wordPressApp;
+    if (!wordPressApp) {
+        wordPressApp = [[WordPressAppDelegate alloc] init];
+    }
+
+    return wordPressApp;
 }
 
 - (void)dealloc {
-	[navigationController release];
-	[window release];
-	[dataManager release];
-	[super dealloc];
+    [navigationController release];
+    [window release];
+    [dataManager release];
+    [super dealloc];
 }
 
 #pragma mark -
@@ -51,23 +50,23 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
     [[Reachability sharedReachability] setNetworkStatusNotificationsEnabled:YES];
-	
-	BlogsViewController *rootViewController = [[BlogsViewController alloc] initWithStyle:UITableViewStylePlain];    
-	UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+
+    BlogsViewController *rootViewController = [[BlogsViewController alloc] initWithStyle:UITableViewStylePlain];
+    UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
     self.navigationController = aNavigationController;
-	[rootViewController release];
-	
-	[window addSubview:[navigationController view]];	
-	[window makeKeyAndVisible];
-	
-	[self checkPagesAndCommentsSupported];
-	[self restoreCurrentBlog];
-	[self showSplashView];
+    [rootViewController release];
+
+    [window addSubview:[navigationController view]];
+    [window makeKeyAndVisible];
+
+    [self checkPagesAndCommentsSupported];
+    [self restoreCurrentBlog];
+    [self showSplashView];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-	[self storeCurrentBlog];
-	[dataManager saveBlogData];
+    [self storeCurrentBlog];
+    [dataManager saveBlogData];
     [self setAppBadge];
 }
 
@@ -75,88 +74,89 @@ static WordPressAppDelegate *wordPressApp = NULL;
 #pragma mark Public methods
 
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message {
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
-													message:message
-												   delegate:nil
-										  cancelButtonTitle:@"OK"
-										  otherButtonTitles:nil];
-	[alert show];
-	[alert release];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                          message:message
+                          delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil];
+    [alert show];
+    [alert release];
 }
 
 - (void)showErrorAlert:(NSString *)message {
-	[self showAlertWithTitle:@"Error" message:message];
+    [self showAlertWithTitle:@"Error" message:message];
 }
 
 #pragma mark -
 #pragma mark Private methods
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-	if (alertView.tag == kUnsupportedWordpressVersionTag || alertView.tag == kRSDErrorTag) {
-		if (buttonIndex == 0) { // Visit Site button.
-			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://iphone.wordpress.org"]];
-		}
-	}
-	
-	self.alertRunning = NO;
+    if (alertView.tag == kUnsupportedWordpressVersionTag || alertView.tag == kRSDErrorTag) {
+        if (buttonIndex == 0) { // Visit Site button.
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://iphone.wordpress.org"]];
+        }
+    }
+
+    self.alertRunning = NO;
 }
 
 - (void)setAppBadge {
-	[UIApplication sharedApplication].applicationIconBadgeNumber = [dataManager countOfAwaitingComments];
+    [UIApplication sharedApplication].applicationIconBadgeNumber = [dataManager countOfAwaitingComments];
 }
 
-// Code for Checking a Blog configured in 1.1 supports Pages & Comments 
+// Code for Checking a Blog configured in 1.1 supports Pages & Comments
 // When the iphone WP version upgraded from 1.1 to 1.2
 - (void)checkPagesAndCommentsSupported {
-	int blogsCount = [dataManager countOfBlogs];
-	
-	for (int i = 0; i < blogsCount; i++) {
-		[dataManager makeBlogAtIndexCurrent:i];
-		NSDictionary *blog = [dataManager blogAtIndex:i];
-		NSString *url = [blog valueForKey:@"url"];
-		
-		if(url != nil && [url length] >= 7 && [url hasPrefix:@"http://"]) {
-			url = [url substringFromIndex:7];
-		}
-		
-		if(url != nil && [url length]) {
-			url = @"wordpress.com";
-		}
-		
-		[Reachability sharedReachability].hostName=url;
-		//Check network connectivity
-		if ([[Reachability sharedReachability] internetConnectionStatus]) {
-			if (![blog valueForKey:kSupportsPagesAndComments]) {
-				[dataManager performSelectorInBackground:@selector(wrapperForSyncPagesAndCommentsForBlog:) withObject:blog];
-			}
-		}
-	}
+    int blogsCount = [dataManager countOfBlogs];
+
+    for (int i = 0; i < blogsCount; i++) {
+        [dataManager makeBlogAtIndexCurrent:i];
+        NSDictionary *blog = [dataManager blogAtIndex:i];
+        NSString *url = [blog valueForKey:@"url"];
+
+        if (url != nil &&[url length] >= 7 &&[url hasPrefix:@"http://"]) {
+            url = [url substringFromIndex:7];
+        }
+
+        if (url != nil &&[url length]) {
+            url = @"wordpress.com";
+        }
+
+        [Reachability sharedReachability].hostName = url;
+
+        //Check network connectivity
+        if ([[Reachability sharedReachability] internetConnectionStatus]) {
+            if (![blog valueForKey:kSupportsPagesAndComments]) {
+                [dataManager performSelectorInBackground:@selector(wrapperForSyncPagesAndCommentsForBlog:) withObject:blog];
+            }
+        }
+    }
 }
 
 - (void)storeCurrentBlog {
-	NSDictionary *currentBlog = [dataManager currentBlog];
-	
-	if (currentBlog) {	
-		NSString *currentBlogId = [currentBlog objectForKey:kBlogId];
-		NSString *currentBlogHostName = [currentBlog objectForKey:kBlogHostName];
-		int currentBlogIndex = [dataManager indexForBlogid:currentBlogId hostName:currentBlogHostName];
-		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-		
-		[defaults setInteger:currentBlogIndex forKey:kCurrentBlogIndex];
-	}
+    NSDictionary *currentBlog = [dataManager currentBlog];
+
+    if (currentBlog) {
+        NSString *currentBlogId = [currentBlog objectForKey:kBlogId];
+        NSString *currentBlogHostName = [currentBlog objectForKey:kBlogHostName];
+        int currentBlogIndex = [dataManager indexForBlogid:currentBlogId hostName:currentBlogHostName];
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+        [defaults setInteger:currentBlogIndex forKey:kCurrentBlogIndex];
+    }
 }
 
 - (void)restoreCurrentBlog {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	
-	if ([defaults objectForKey:kCurrentBlogIndex]) {
-		int currentBlogIndex = [defaults integerForKey:kCurrentBlogIndex];
-		
-		// Sanity check.
-		if (currentBlogIndex >= 0) {
-			[dataManager makeBlogAtIndexCurrent:currentBlogIndex];
-		}
-	} else {
+
+    if ([defaults objectForKey:kCurrentBlogIndex]) {
+        int currentBlogIndex = [defaults integerForKey:kCurrentBlogIndex];
+
+        // Sanity check.
+        if (currentBlogIndex >= 0) {
+            [dataManager makeBlogAtIndexCurrent:currentBlogIndex];
+        }
+    } else {
         [dataManager resetCurrentBlog];
     }
 }
@@ -169,7 +169,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.5];
     [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:window cache:YES];
-    [UIView setAnimationDelegate:self]; 
+    [UIView setAnimationDelegate:self];
     [UIView setAnimationDidStopSelector:@selector(startupAnimationDone:finished:context:)];
     splashView.alpha = 0.0;
     splashView.frame = CGRectMake(-60, -60, 440, 600);

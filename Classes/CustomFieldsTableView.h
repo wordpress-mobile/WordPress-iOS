@@ -13,30 +13,29 @@
 #import "CustomFieldsDetailController.h"
 
 @interface CustomFieldsTableView : UITableViewController {
-	CustomFieldsDetailController *customFieldsDetailController;
-	
-	
-	PostViewController * postDetailViewController;
-	PageViewController * pageDetailsController;
-	
-	BlogDataManager *dm;
-	NSArray *customFieldsArray;
-	IBOutlet	UITableView		*customFieldsTableView;
-	IBOutlet	UIBarButtonItem *saveButtonItem;
-	BOOL newCustomFieldBool;
-	BOOL _isPost;
+    CustomFieldsDetailController *customFieldsDetailController;
+
+    PostViewController *postDetailViewController;
+    PageViewController *pageDetailsController;
+
+    BlogDataManager *dm;
+    NSArray *customFieldsArray;
+    IBOutlet UITableView *customFieldsTableView;
+    IBOutlet UIBarButtonItem *saveButtonItem;
+    BOOL newCustomFieldBool;
+    BOOL _isPost;
 }
 
 @property (nonatomic, retain) CustomFieldsDetailController *customFieldsDetailController;
 
-@property (nonatomic, assign) PostViewController * postDetailViewController;
+@property (nonatomic, assign) PostViewController *postDetailViewController;
 @property (nonatomic, assign) PageViewController *pageDetailsController;
 @property (nonatomic, assign) BlogDataManager *dm;
 @property (nonatomic, retain) NSArray *customFieldsArray;
-@property (retain, nonatomic) UITableView * customFieldsTableView;
+@property (retain, nonatomic) UITableView *customFieldsTableView;
 @property BOOL isPost;
 
-- (void) getCustomFieldsStripMetadata;
-- (NSDictionary *) getDictForThisCell:(NSString *) rowString;
+- (void)getCustomFieldsStripMetadata;
+- (NSDictionary *)getDictForThisCell:(NSString *)rowString;
 
 @end

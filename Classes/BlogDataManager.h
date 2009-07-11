@@ -1,11 +1,7 @@
-
 #import <Foundation/Foundation.h>
-/*
- */
 #import "XMLRPCResponse.h"
 #import "XMLRPCRequest.h"
 #import "XMLRPCConnection.h"
-//#import "WPXMLValidator.h"
 
 #define PictureObjectUploadedNotificationName @"PictureObjectUploadedNotificationName"
 #define WPNewCategoryCreatedAndUpdatedInBlogNotificationName @"WPNewCategoryCreatedAndUpdatedInBlog"
@@ -17,61 +13,57 @@
 #define kUnsupportedWordpressVersionTag 900
 #define kRSDErrorTag 901
 
-@interface BlogDataManager : NSObject 
-{
-	
-@private
-	NSArray *blogFieldNames;
-	NSDictionary *blogFieldNamesByTag;
-	NSDictionary *blogFieldTagsByName;
-	
-	NSArray *postTitleFieldNames;
-	NSDictionary *postTitleFieldNamesByTag;
-	NSDictionary *postTitleFieldTagsByName;
-	
-	NSArray *postFieldNames;
-	NSDictionary *postFieldNamesByTag;
-	NSDictionary *postFieldTagsByName;
-	
-	NSArray *pictureFieldNames;
-	
-	NSMutableArray *blogsList;
-	NSMutableArray *postTitlesList, *draftTitlesList,*pageDraftTitlesList,*commentTitlesList,*pageTitlesList;
-	NSMutableArray *photosDB;
+@interface BlogDataManager : NSObject {
+    @private
+    NSArray *blogFieldNames;
+    NSDictionary *blogFieldNamesByTag;
+    NSDictionary *blogFieldTagsByName;
 
-	
-	NSMutableDictionary *currentBlog;
-	BOOL isLocaDraftsCurrent;
-	BOOL isPageLocalDraftsCurrent;
-	
-	NSMutableDictionary *currentPost;
-	NSArray *pageFieldNames;
-	
-	NSMutableDictionary *currentPage;
-	
-	NSMutableDictionary *currentPicture;
-	
-	NSInteger currentPostIndex;
-	NSInteger currentDraftIndex;
-	NSInteger currentPageDraftIndex;
+    NSArray *postTitleFieldNames;
+    NSDictionary *postTitleFieldNamesByTag;
+    NSDictionary *postTitleFieldTagsByName;
 
-	
-	NSInteger currentBlogIndex;
-	NSInteger currentPageIndex;
-	int currentPictureIndex;
+    NSArray *postFieldNames;
+    NSDictionary *postFieldNamesByTag;
+    NSDictionary *postFieldTagsByName;
+
+    NSArray *pictureFieldNames;
+
+    NSMutableArray *blogsList;
+    NSMutableArray *postTitlesList, *draftTitlesList, *pageDraftTitlesList, *commentTitlesList, *pageTitlesList;
+    NSMutableArray *photosDB;
+
+    NSMutableDictionary *currentBlog;
+    BOOL isLocaDraftsCurrent;
+    BOOL isPageLocalDraftsCurrent;
+
+    NSMutableDictionary *currentPost;
+    NSArray *pageFieldNames;
+
+    NSMutableDictionary *currentPage;
+
+    NSMutableDictionary *currentPicture;
+
+    NSInteger currentPostIndex;
+    NSInteger currentDraftIndex;
+    NSInteger currentPageDraftIndex;
+
+    NSInteger currentBlogIndex;
+    NSInteger currentPageIndex;
+    int currentPictureIndex;
     int unsavedPostsCount;
-	
-	NSString *currentDirectoryPath;
-	
-	NSOperationQueue *asyncOperationsQueue;
-	
-	NSOperationQueue *asyncPostsOperationsQueue;
-	NSMutableDictionary *currentUnsavedDraft;
+
+    NSString *currentDirectoryPath;
+
+    NSOperationQueue *asyncOperationsQueue;
+
+    NSOperationQueue *asyncPostsOperationsQueue;
+    NSMutableDictionary *currentUnsavedDraft;
 }
 
 + (BlogDataManager *)sharedDataManager;
 
-@property (nonatomic) NSInteger currentPostIndex,currentDraftIndex,currentPageDraftIndex,currentPageIndex;
+@property (nonatomic) NSInteger currentPostIndex, currentDraftIndex, currentPageDraftIndex, currentPageIndex;
 
 @property (nonatomic, copy) NSString *currentDirectoryPath;
 
@@ -96,13 +88,13 @@
 @property (nonatomic, assign) BOOL isLocaDraftsCurrent;
 @property (nonatomic, assign) BOOL isPageLocalDraftsCurrent;
 
-
 @property (nonatomic, copy, readonly) NSMutableDictionary *currentPost;
 @property (nonatomic, retain, readonly) NSArray *pageFieldNames;
 @property (nonatomic, retain) NSMutableDictionary *currentPage;
 @property (nonatomic, readonly) NSOperationQueue *asyncPostsOperationsQueue;
 @property (nonatomic) int unsavedPostsCount;
 @property (nonatomic, retain) NSMutableDictionary *currentUnsavedDraft;
+
 #pragma mark Blog metadata
 
 - (NSArray *)blogFieldNames;
@@ -112,33 +104,36 @@
 - (BOOL)removeAutoSavedCurrentPostFile;
 - (BOOL)clearAutoSavedContext;
 
-#pragma mark Blog 
+#pragma mark Blog
+
 - (NSInteger)countOfBlogs;
 - (NSDictionary *)blogAtIndex:(NSUInteger)theIndex;
 - (NSDictionary *)blogForId:(NSString *)blogid hostName:(NSString *)hostname;
-- (NSInteger)indexForBlogid:(NSString *)blogid hostName:(NSString *)hostname; 
+- (NSInteger)indexForBlogid:(NSString *)blogid hostName:(NSString *)hostname;
 - (void)makeBlogAtIndexCurrent:(NSUInteger)theIndex;
 - (void)copyBlogAtIndexCurrent:(NSUInteger)theIndex;
 - (void)makeNewBlogCurrent;
 - (void)makeLocalDraftsCurrent;
 - (void)saveCurrentBlog;
 - (void)resetCurrentBlog;
-- (void) savePhotosDB;
+- (void)savePhotosDB;
 - (void)removeCurrentBlog;
-- (id) newDraftsBlog;
-- (void) addSyncPostsForBlogToQueue:(id)aBlog;
-- (void) syncPostsForAllBlogsToQueue:(id)sender;
+- (id)newDraftsBlog;
+- (void)addSyncPostsForBlogToQueue:(id)aBlog;
+- (void)syncPostsForAllBlogsToQueue:(id)sender;
 - (NSString *)blogDir:(id)aBlog;
-- (void) saveBlogData;
+- (void)saveBlogData;
 - (NSString *)templateHTMLStringForBlog:(id)aBlog isDefaultTemplate:(BOOL *)flag;
 - (NSString *)defaultTemplateHTMLString;
 
 #pragma mark Post Title metadata
+
 - (NSArray *)postTitleFieldNames;
 - (NSDictionary *)postTitleFieldNamesByTag;
 - (NSDictionary *)postTitleFieldTagsByName;
 
 #pragma mark PostTitles
+
 - (NSInteger)countOfPostTitles;
 - (NSDictionary *)postTitleAtIndex:(NSUInteger)theIndex;
 - (NSDictionary *)postTitleForId:(NSString *)postTitleid;
@@ -157,8 +152,8 @@
 
 - (void)loadCommentTitlesForCurrentBlog;
 - (id)loadCommentTitlesForBlog:(id)aBlog;
-- (NSInteger)countOfCommentTitles ;
--(int)countOfAwaitingComments;
+- (NSInteger)countOfCommentTitles;
+- (int)countOfAwaitingComments;
 - (NSArray *)commentTitles;
 - (NSDictionary *)commentTitleAtIndex:(NSUInteger)theIndex;
 
@@ -170,7 +165,7 @@
 - (void)loadPageDraftTitlesForBlog:(id)aBlog;
 - (void)loadPageDraftTitlesForCurrentBlog;
 - (id)draftTitleAtIndex:(NSInteger)anIndex;
--(id)pageDraftTitleAtIndex:(NSInteger)anIndex;
+- (id)pageDraftTitleAtIndex:(NSInteger)anIndex;
 
 - (BOOL)makeDraftAtIndexCurrent:(NSInteger)anIndex;
 - (BOOL)makePageDraftAtIndexCurrent:(NSInteger)anIndex;
@@ -182,25 +177,24 @@
 - (void)resetCurrentPage;
 - (void)resetCurrentPageDraft;
 
-
-
 #pragma mark Post metadata
+
 - (NSArray *)postFieldNames;
 - (NSDictionary *)postFieldNamesByTag;
 - (NSDictionary *)postFieldTagsByName;
 
 #pragma mark Sync with Blog Host
-- (BOOL) refreshCurrentBlog:(NSString *)url user:(NSString *)username password:(NSString*)pwd;
-- (BOOL)validateCurrentBlog:(NSString *)url user:(NSString *)username password:(NSString*)pwd;
-- (BOOL) syncPostsForBlog:(id)blog;
-- (BOOL) syncPostsForCurrentBlog;
-	
+
+- (BOOL)refreshCurrentBlog:(NSString *)url user:(NSString *)username password:(NSString *)pwd;
+- (BOOL)validateCurrentBlog:(NSString *)url user:(NSString *)username password:(NSString *)pwd;
+- (BOOL)syncPostsForBlog:(id)blog;
+- (BOOL)syncPostsForCurrentBlog;
+
 - (void)generateTemplateForBlog:(id)aBlog;
 - (BOOL)wrapperForSyncPostsAndGetTemplateForBlog:(id)aBlog;
 
+#pragma mark Post
 
-
-#pragma mark Post 
 - (NSInteger)countOfPosts;
 - (NSDictionary *)postAtIndex:(NSUInteger)theIndex;
 - (NSDictionary *)postForId:(NSString *)postid;
@@ -217,7 +211,6 @@
 - (id)autoSavedPostForCurrentBlog;
 - (NSString *)blogDir:(id)aBlog;
 
-
 - (BOOL)postDescriptionHasValidDescription:(id)aPost;
 
 #pragma mark CategoriesCreation
@@ -225,7 +218,8 @@
 - (BOOL)createCategory:(NSString *)catTitle parentCategory:(NSString *)parentTitle forBlog:(id)aBlog;
 - (void)downloadAllCategoriesForBlog:(id)aBlog;
 
-#pragma mark Pictures  
+#pragma mark Pictures
+
 - (int)countOfPictures;
 - (NSDictionary *)pictureAtIndex:(NSUInteger)theIndex;
 - (void)makePictureAtIndexCurrent:(NSUInteger)theIndex;
@@ -238,9 +232,11 @@
 - (NSString *)pictureURLBySendingToServer:(UIImage *)pict;
 
 #pragma mark Pictures List
+
 - (void)loadPictures;
 
-#pragma mark Image 
+#pragma mark Image
+
 - (NSString *)saveImage:(UIImage *)aImage;
 - (UIImage *)imageNamed:(NSString *)name forBlog:(id)blog;
 - (BOOL)deleteImageNamed:(NSString *)name forBlog:(id)blog;
@@ -252,6 +248,7 @@
 - (void)setCurrentPictureIndex:(int)anIndex;
 
 #pragma mark util methods
+
 - (NSArray *)uniqueArray:(NSArray *)array;
 
 //these methods will take currentBlog
@@ -259,14 +256,13 @@
 - (NSString *)statusDescriptionForStatus:(NSString *)curStatus fromBlog:(id)aBlog;
 - (NSString *)pageStatusDescriptionForStatus:(NSString *)curStatus fromBlog:(id)aBlog;
 
-
 // sync comments for a given blog
-- (BOOL) syncCommentsForCurrentBlog ;
-- (BOOL) syncCommentsForBlog:(id)blog;
-- (BOOL) deleteComment:(NSArray *) aComment forBlog:(id)blog;
-- (BOOL) approveComment:(NSMutableArray *) aComment forBlog:(id)blog;
-- (BOOL) unApproveComment:(NSMutableArray *) aComment forBlog:(id)blog;
-- (BOOL) spamComment:(NSMutableArray *) aComment forBlog:(id)blog;
+- (BOOL)syncCommentsForCurrentBlog;
+- (BOOL)syncCommentsForBlog:(id)blog;
+- (BOOL)deleteComment:(NSArray *)aComment forBlog:(id)blog;
+- (BOOL)approveComment:(NSMutableArray *)aComment forBlog:(id)blog;
+- (BOOL)unApproveComment:(NSMutableArray *)aComment forBlog:(id)blog;
+- (BOOL)spamComment:(NSMutableArray *)aComment forBlog:(id)blog;
 - (NSString *)savePostsFileWithAsynPostFlag:(NSMutableDictionary *)postDict;
 - (void)updatePostsTitlesFileAfterPostSaved:(NSMutableDictionary *)dict;
 - (void)removeTempFileForUnSavedPost:(NSString *)postId;
@@ -274,7 +270,7 @@
 - (void)restoreUnsavedDraft;
 
 //pages
-- (BOOL) syncPagesForBlog:(id)blog;
+- (BOOL)syncPagesForBlog:(id)blog;
 - (NSInteger)countOfPageTitles;
 - (NSDictionary *)pageTitleAtIndex:(NSUInteger)theIndex;
 - (void)loadPageTitlesForCurrentBlog;
@@ -287,6 +283,7 @@
 - (BOOL)doesBlogExists:(NSDictionary *)aBlog;
 
 //utils
--(void) printArrayToLog:(NSArray *) theArray andArrayName:(NSString *)theArrayName;
--(void) printDictToLog:(NSDictionary *)theDict andArrayName:(NSString *)theDictName;
+- (void)printArrayToLog:(NSArray *)theArray andArrayName:(NSString *)theArrayName;
+- (void)printDictToLog:(NSDictionary *)theDict andArrayName:(NSString *)theDictName;
+
 @end

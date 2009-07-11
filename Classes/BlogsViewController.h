@@ -3,8 +3,7 @@
 
 @class BlogDataManager, WordPressAppDelegate, EditBlogViewController, BlogViewController;
 
-@interface BlogsViewController : UITableViewController 
-{
+@interface BlogsViewController : UITableViewController {
 }
 
 @end

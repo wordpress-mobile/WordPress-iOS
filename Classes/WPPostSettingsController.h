@@ -2,38 +2,38 @@
 #import "PostViewController.h"
 
 // the amount of vertical shift upwards keep the text field in view as the keyboard appears
-#define kOFFSET_FOR_KEYBOARD					150.0
+#define kOFFSET_FOR_KEYBOARD                    150.0
 
 @interface WPPostSettingsController : UIViewController {
-	IBOutlet UITableView *tableView;
-	IBOutlet UITableViewCell *pingsTableViewCell;
-	IBOutlet UITableViewCell *publishOnTableViewCell;
-	IBOutlet UITableViewCell *passwordTableViewCell;
-	IBOutlet UITableViewCell *passwordHintTableViewCell;
-	IBOutlet UITableViewCell *resizePhotoViewCell;
+    IBOutlet UITableView *tableView;
+    IBOutlet UITableViewCell *pingsTableViewCell;
+    IBOutlet UITableViewCell *publishOnTableViewCell;
+    IBOutlet UITableViewCell *passwordTableViewCell;
+    IBOutlet UITableViewCell *passwordHintTableViewCell;
+    IBOutlet UITableViewCell *resizePhotoViewCell;
 //	IBOutlet UITableViewCell *customFieldsCell;
-	
-	IBOutlet UITextField *passwordTextField;
-	IBOutlet UILabel *publishOnTextField;
 
-	IBOutlet UILabel *passwordHintLabel;
+    IBOutlet UITextField *passwordTextField;
+    IBOutlet UILabel *publishOnTextField;
 
-	IBOutlet UILabel *passwordLabel;
-	IBOutlet UILabel *publishOnLabel;
-	
-	IBOutlet UISwitch *commentsSwitchControl;
-	IBOutlet UISwitch *pingsSwitchControl;
-	IBOutlet UISwitch *resizePhotoControl;
-	IBOutlet UISwitch *customFieldsSwitchControl;
-	
-	IBOutlet UILabel *resizePhotoLabel;
-	IBOutlet UITableViewCell *resizePhotoHintTableViewCell;
-	IBOutlet UILabel *resizePhotoHintLabel;
+    IBOutlet UILabel *passwordHintLabel;
 
-	PostViewController *postDetailViewController;	
+    IBOutlet UILabel *passwordLabel;
+    IBOutlet UILabel *publishOnLabel;
+
+    IBOutlet UISwitch *commentsSwitchControl;
+    IBOutlet UISwitch *pingsSwitchControl;
+    IBOutlet UISwitch *resizePhotoControl;
+    IBOutlet UISwitch *customFieldsSwitchControl;
+
+    IBOutlet UILabel *resizePhotoLabel;
+    IBOutlet UITableViewCell *resizePhotoHintTableViewCell;
+    IBOutlet UILabel *resizePhotoHintLabel;
+
+    PostViewController *postDetailViewController;
 }
 
-@property (nonatomic, assign) PostViewController * postDetailViewController;
+@property (nonatomic, assign) PostViewController *postDetailViewController;
 @property (readonly) UITableView *tableView;
 @property (readonly) UITextField *passwordTextField;
 

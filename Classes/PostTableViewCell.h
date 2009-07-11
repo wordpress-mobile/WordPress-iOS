@@ -24,7 +24,7 @@
 
 @interface PostTableViewCell : UITableViewCell {
     NSDictionary *_post;
-    
+
     UILabel *_nameLabel;
     UILabel *_dateLabel;
     UIActivityIndicatorView *_activityIndicator;

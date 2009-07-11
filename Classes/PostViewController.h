@@ -3,44 +3,42 @@
 
 @class PostDetailEditController, WPPostDetailPreviewController, WPSelectionTableViewController, WPPostSettingsController, WPPhotosListViewController, PostsListController;
 @class WPNavigationLeftButtonView;
-@class  CustomFieldsDetailController;
+@class CustomFieldsDetailController;
 
-@interface PostViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate,WPPhotosListProtocol> {
-	IBOutlet UITabBarController *tabController;
-	IBOutlet UIView	*photoEditingStatusView;
-	UIBarButtonItem *saveButton;
-	
-	PostDetailEditController *postDetailEditController;
-	WPPostDetailPreviewController *postPreviewController;
-	WPPostSettingsController *postSettingsController;
-	WPPhotosListViewController *photosListController;
-	PostsListController *postsListController;
-   	WPNavigationLeftButtonView *leftView;
-	
-	
-	CustomFieldsDetailController *customFieldsDetailController;
-	
-	BOOL hasChanges;
-	int mode;	//0 new, 1 edit, 2 autorecovery, 3 refresh
-	
-	NSTimer *autoSaveTimer;
+@interface PostViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate, WPPhotosListProtocol> {
+    IBOutlet UITabBarController *tabController;
+    IBOutlet UIView *photoEditingStatusView;
+    UIBarButtonItem *saveButton;
+
+    PostDetailEditController *postDetailEditController;
+    WPPostDetailPreviewController *postPreviewController;
+    WPPostSettingsController *postSettingsController;
+    WPPhotosListViewController *photosListController;
+    PostsListController *postsListController;
+    WPNavigationLeftButtonView *leftView;
+
+    CustomFieldsDetailController *customFieldsDetailController;
+
+    BOOL hasChanges;
+    int mode;   //0 new, 1 edit, 2 autorecovery, 3 refresh
+
+    NSTimer *autoSaveTimer;
 }
 
-@property (nonatomic, retain)	WPNavigationLeftButtonView *leftView;
-@property (nonatomic, retain)	PostDetailEditController *postDetailEditController;
-@property (nonatomic, retain)	WPPostDetailPreviewController *postPreviewController;
-@property (nonatomic, retain)	WPPostSettingsController *postSettingsController;
-@property (nonatomic, retain)	WPPhotosListViewController *photosListController;
+@property (nonatomic, retain)   WPNavigationLeftButtonView *leftView;
+@property (nonatomic, retain)   PostDetailEditController *postDetailEditController;
+@property (nonatomic, retain)   WPPostDetailPreviewController *postPreviewController;
+@property (nonatomic, retain)   WPPostSettingsController *postSettingsController;
+@property (nonatomic, retain)   WPPhotosListViewController *photosListController;
 
-@property (nonatomic, retain)	CustomFieldsDetailController *customFieldsDetailController;
+@property (nonatomic, retain)   CustomFieldsDetailController *customFieldsDetailController;
 
-@property (nonatomic, assign)	PostsListController *postsListController;
+@property (nonatomic, assign)   PostsListController *postsListController;
 
-@property (nonatomic, readonly) UIBarButtonItem * saveButton;
+@property (nonatomic, readonly) UIBarButtonItem *saveButton;
 
-
-@property (nonatomic)	BOOL hasChanges;
-@property (nonatomic)	int mode;
+@property (nonatomic)   BOOL hasChanges;
+@property (nonatomic)   int mode;
 
 @property (readonly) UITabBarController *tabController;
 
