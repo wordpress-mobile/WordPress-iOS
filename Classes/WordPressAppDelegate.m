@@ -135,14 +135,17 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)storeCurrentBlog {
     NSDictionary *currentBlog = [dataManager currentBlog];
-
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
     if (currentBlog) {
         NSString *currentBlogId = [currentBlog objectForKey:kBlogId];
         NSString *currentBlogHostName = [currentBlog objectForKey:kBlogHostName];
         int currentBlogIndex = [dataManager indexForBlogid:currentBlogId hostName:currentBlogHostName];
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
+        
         [defaults setInteger:currentBlogIndex forKey:kCurrentBlogIndex];
+    }
+    else {
+        [defaults removeObjectForKey:kCurrentBlogIndex];
     }
 }
 
@@ -151,12 +154,12 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
     if ([defaults objectForKey:kCurrentBlogIndex]) {
         int currentBlogIndex = [defaults integerForKey:kCurrentBlogIndex];
-
         // Sanity check.
         if (currentBlogIndex >= 0) {
             [dataManager makeBlogAtIndexCurrent:currentBlogIndex];
         }
-    } else {
+    } 
+    else {
         [dataManager resetCurrentBlog];
     }
 }
