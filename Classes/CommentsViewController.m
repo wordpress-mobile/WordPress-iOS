@@ -1,23 +1,23 @@
 //
-//  CommentsListController.m
+//  CommentsViewController.m
 //  WordPress
 //
 //  Created by Janakiram on 02/09/08.
 //
 
-#import "CommentsListController.h"
+#import "CommentsViewController.h"
 
 #import "BlogDataManager.h"
 #import "CommentTableViewCell.h"
 #import "NSString+XMLExtensions.h"
 #import "Reachability.h"
 #import "WordPressAppDelegate.h"
-#import "WPCommentsDetailViewController.h"
+#import "CommentViewController.h"
 #import "WPProgressHUD.h"
 
 #define REFRESH_BUTTON_HEIGHT           50
 
-@interface CommentsListController (Private)
+@interface CommentsViewController (Private)
 - (void) setEditing:(BOOL)value;
 - (void) updateSelectedComments;
 - (void) refreshHandler;
@@ -31,7 +31,7 @@
 - (void) refreshCommentsList;
 @end
 
-@implementation CommentsListController
+@implementation CommentsViewController
 
 @synthesize editButtonItem, selectedComments, commentsArray;
 
@@ -365,7 +365,7 @@
 	if (editing) {
         [self tableView:tableView didCheckRowAtIndexPath:indexPath];
 	} else {
-        WPCommentsDetailViewController *commentsViewController = [[WPCommentsDetailViewController alloc] initWithNibName:@"WPCommentsDetailViewController" bundle:nil];
+        CommentViewController *commentsViewController = [[CommentViewController alloc] initWithNibName:@"CommentViewController" bundle:nil];
         
         // Get the navigation controller from the delegate
         WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];

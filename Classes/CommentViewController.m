@@ -1,17 +1,17 @@
 //
-//  WPCommentsDetailViewController.m
+//  CommentViewController.m
 //  WordPress
 //
 //  Created by Janakiram on 05/09/08.
 //
 
-#import "WPCommentsDetailViewController.h"
+#import "CommentViewController.h"
 #import "BlogDataManager.h"
 #import "Reachability.h"
 #import "WordPressAppDelegate.h"
 #import "WPProgressHUD.h"
 
-@interface WPCommentsDetailViewController (Private)
+@interface CommentViewController (Private)
 - (BOOL) isConnectedToHost;
 - (void) moderateCommentWithSelector:(SEL)selector;
 - (void) deleteThisComment;
@@ -20,7 +20,7 @@
 - (void) unapproveThisComment;
 @end
 
-@implementation WPCommentsDetailViewController
+@implementation CommentViewController
 
 @synthesize commentsTextView,commenterNameLabel,commentedOnLabel,commentedDateLabel;
 @synthesize commentDetails;

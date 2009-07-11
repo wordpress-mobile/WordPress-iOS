@@ -27,8 +27,8 @@
 		2904E9950FE6E09600E00DBC /* CustomFieldsDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2904E9930FE6E09600E00DBC /* CustomFieldsDetailController.m */; };
 		296890780FE971DC00770264 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296890770FE971DC00770264 /* Security.framework */; };
 		29FF132F0FE70F3100CFB908 /* CustomFieldsTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29FF132E0FE70F3100CFB908 /* CustomFieldsTableView.xib */; };
-		2A7F71FB0E70F82A00E48A1F /* WPCommentsDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A7F71FA0E70F82A00E48A1F /* WPCommentsDetailViewController.xib */; };
-		2A7F72010E70F8C900E48A1F /* WPCommentsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7F72000E70F8C900E48A1F /* WPCommentsDetailViewController.m */; };
+		2A7F71FB0E70F82A00E48A1F /* CommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A7F71FA0E70F82A00E48A1F /* CommentViewController.xib */; };
+		2A7F72010E70F8C900E48A1F /* CommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7F72000E70F8C900E48A1F /* CommentViewController.m */; };
 		2A7F722B0E71000000E48A1F /* up.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A7F72290E71000000E48A1F /* up.png */; };
 		2A7F722C0E71000000E48A1F /* down.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A7F722A0E71000000E48A1F /* down.png */; };
 		2A8FF7D90E8A32F7001A9A40 /* lock.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A8FF7D80E8A32F7001A9A40 /* lock.png */; };
@@ -93,8 +93,8 @@
 		ACFD04A10DFD2FCA0031D567 /* XMLRPCRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = ACFD049A0DFD2FCA0031D567 /* XMLRPCRequest.m */; };
 		ACFD04A20DFD2FCA0031D567 /* XMLRPCResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = ACFD049C0DFD2FCA0031D567 /* XMLRPCResponse.m */; };
 		ACFF1DE40E23265000EC6BF5 /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = ACFF1DE30E23265000EC6BF5 /* settings.png */; };
-		C533CF350E6D3ADA000C3DE8 /* CommentsListController.m in Sources */ = {isa = PBXBuildFile; fileRef = C533CF340E6D3ADA000C3DE8 /* CommentsListController.m */; };
-		C533CF460E6D3E24000C3DE8 /* CommentsListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C533CF450E6D3E24000C3DE8 /* CommentsListController.xib */; };
+		C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */; };
+		C533CF460E6D3E24000C3DE8 /* CommentsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C533CF450E6D3E24000C3DE8 /* CommentsViewController.xib */; };
 		C55A90D90E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C55A90D80E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m */; };
 		C56D68DA0F4946E4008EE84E /* WPActivityIndicatorTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C56D68D90F4946E4008EE84E /* WPActivityIndicatorTVCell.m */; };
 		C57AD5E20F2A10BC00A1717C /* WPXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = C57AD5E00F2A10BC00A1717C /* WPXMLReader.m */; };
@@ -161,9 +161,9 @@
 		296890770FE971DC00770264 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29FF132E0FE70F3100CFB908 /* CustomFieldsTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomFieldsTableView.xib; sourceTree = "<group>"; };
-		2A7F71FA0E70F82A00E48A1F /* WPCommentsDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WPCommentsDetailViewController.xib; sourceTree = "<group>"; };
-		2A7F71FF0E70F8C900E48A1F /* WPCommentsDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPCommentsDetailViewController.h; sourceTree = "<group>"; };
-		2A7F72000E70F8C900E48A1F /* WPCommentsDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPCommentsDetailViewController.m; sourceTree = "<group>"; };
+		2A7F71FA0E70F82A00E48A1F /* CommentViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentViewController.xib; sourceTree = "<group>"; };
+		2A7F71FF0E70F8C900E48A1F /* CommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentViewController.h; sourceTree = "<group>"; };
+		2A7F72000E70F8C900E48A1F /* CommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentViewController.m; sourceTree = "<group>"; };
 		2A7F72290E71000000E48A1F /* up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = up.png; sourceTree = "<group>"; };
 		2A7F722A0E71000000E48A1F /* down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = down.png; sourceTree = "<group>"; };
 		2A8FF7D80E8A32F7001A9A40 /* lock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lock.png; sourceTree = "<group>"; };
@@ -258,9 +258,9 @@
 		ACFD049B0DFD2FCA0031D567 /* XMLRPCResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCResponse.h; sourceTree = "<group>"; };
 		ACFD049C0DFD2FCA0031D567 /* XMLRPCResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLRPCResponse.m; sourceTree = "<group>"; };
 		ACFF1DE30E23265000EC6BF5 /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
-		C533CF330E6D3ADA000C3DE8 /* CommentsListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsListController.h; sourceTree = "<group>"; };
-		C533CF340E6D3ADA000C3DE8 /* CommentsListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsListController.m; sourceTree = "<group>"; };
-		C533CF450E6D3E24000C3DE8 /* CommentsListController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentsListController.xib; sourceTree = "<group>"; };
+		C533CF330E6D3ADA000C3DE8 /* CommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsViewController.h; sourceTree = "<group>"; };
+		C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsViewController.m; sourceTree = "<group>"; };
+		C533CF450E6D3E24000C3DE8 /* CommentsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentsViewController.xib; sourceTree = "<group>"; };
 		C55A90D70E8026C500E1C9B5 /* WPSegmentedSelectionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPSegmentedSelectionTableViewController.h; sourceTree = "<group>"; };
 		C55A90D80E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPSegmentedSelectionTableViewController.m; sourceTree = "<group>"; };
 		C56D68D80F4946E4008EE84E /* WPActivityIndicatorTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPActivityIndicatorTVCell.h; sourceTree = "<group>"; };
@@ -639,8 +639,8 @@
 		C50E78130E71648100991509 /* Comments */ = {
 			isa = PBXGroup;
 			children = (
-				C533CF450E6D3E24000C3DE8 /* CommentsListController.xib */,
-				2A7F71FA0E70F82A00E48A1F /* WPCommentsDetailViewController.xib */,
+				2A7F71FA0E70F82A00E48A1F /* CommentViewController.xib */,
+				C533CF450E6D3E24000C3DE8 /* CommentsViewController.xib */,
 			);
 			name = Comments;
 			sourceTree = "<group>";
@@ -648,10 +648,10 @@
 		C533CF320E6D3AB3000C3DE8 /* Comments */ = {
 			isa = PBXGroup;
 			children = (
-				2A7F71FF0E70F8C900E48A1F /* WPCommentsDetailViewController.h */,
-				2A7F72000E70F8C900E48A1F /* WPCommentsDetailViewController.m */,
-				C533CF330E6D3ADA000C3DE8 /* CommentsListController.h */,
-				C533CF340E6D3ADA000C3DE8 /* CommentsListController.m */,
+				2A7F71FF0E70F8C900E48A1F /* CommentViewController.h */,
+				2A7F72000E70F8C900E48A1F /* CommentViewController.m */,
+				C533CF330E6D3ADA000C3DE8 /* CommentsViewController.h */,
+				C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */,
 			);
 			name = Comments;
 			sourceTree = "<group>";
@@ -776,8 +776,8 @@
 				2FAE970A0E33B21600CA8540 /* license.txt in Resources */,
 				2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */,
 				2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */,
-				C533CF460E6D3E24000C3DE8 /* CommentsListController.xib in Resources */,
-				2A7F71FB0E70F82A00E48A1F /* WPCommentsDetailViewController.xib in Resources */,
+				C533CF460E6D3E24000C3DE8 /* CommentsViewController.xib in Resources */,
+				2A7F71FB0E70F82A00E48A1F /* CommentViewController.xib in Resources */,
 				2A7F722B0E71000000E48A1F /* up.png in Resources */,
 				2A7F722C0E71000000E48A1F /* down.png in Resources */,
 				C5C272DF0E7EC00A0034AA46 /* uncheck.png in Resources */,
@@ -840,8 +840,8 @@
 				A00593C20E224A1B0087E1FB /* WPImageView.m in Sources */,
 				A01C54230E24E4ED00D411F2 /* Reachability.m in Sources */,
 				C59D3D4B0E6410D300AA591D /* NSString+XMLExtensions.m in Sources */,
-				C533CF350E6D3ADA000C3DE8 /* CommentsListController.m in Sources */,
-				2A7F72010E70F8C900E48A1F /* WPCommentsDetailViewController.m in Sources */,
+				C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */,
+				2A7F72010E70F8C900E48A1F /* CommentViewController.m in Sources */,
 				C55A90D90E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m in Sources */,
 				C5B001BF0E82971400D13185 /* WPNavigationLeftButtonView.m in Sources */,
 				C5E3AE350E93F3C5008755FF /* WPImagePickerController.m in Sources */,

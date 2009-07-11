@@ -1,5 +1,5 @@
 //
-//  WPCommentsDetailViewController.h
+//  CommentViewController.h
 //  WordPress
 //
 //  Created by Janakiram on 05/09/08.
@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 #define kCustomButtonHeight		30.0
 
-@interface WPCommentsDetailViewController : UIViewController {
+@interface CommentViewController : UIViewController {
 
     IBOutlet UILabel     *commenterNameLabel;
     IBOutlet UILabel     *commentedOnLabel;

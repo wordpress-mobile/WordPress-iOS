@@ -8,7 +8,6 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="11"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -47,20 +46,32 @@
 			<object class="IBUITabBarController" id="29387635">
 				<object class="IBUISimulatedTabBarMetrics" key="IBUISimulatedBottomBarMetrics"/>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
-				<object class="IBUIViewController" key="IBUISelectedViewController" id="500830918">
-					<object class="IBUITabBarItem" key="IBUITabBarItem" id="1069445293">
-						<string key="IBUITitle">Posts</string>
+				<object class="IBUIViewController" key="IBUISelectedViewController" id="546101017">
+					<object class="IBUITabBarItem" key="IBUITabBarItem" id="345809472">
+						<string key="IBUITitle">Comments</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">sticky_note.png</string>
+							<string key="NSResourceName">talk_bubbles.png</string>
 						</object>
-						<reference key="IBUITabBar"/>
+					</object>
+					<object class="NSArray" key="IBUIToolbarItems">
+						<bool key="EncodedWithXMLCoder">YES</bool>
 					</object>
 					<reference key="IBUIParentViewController" ref="29387635"/>
+					<string key="IBUINibName">CommentsViewController</string>
 				</object>
 				<object class="NSMutableArray" key="IBUIViewControllers">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<reference ref="500830918"/>
+					<object class="IBUIViewController" id="500830918">
+						<object class="IBUITabBarItem" key="IBUITabBarItem" id="1069445293">
+							<string key="IBUITitle">Posts</string>
+							<object class="NSCustomResource" key="IBUIImage">
+								<string key="NSClassName">NSImage</string>
+								<string key="NSResourceName">sticky_note.png</string>
+							</object>
+						</object>
+						<reference key="IBUIParentViewController" ref="29387635"/>
+					</object>
 					<object class="IBUIViewController" id="558401690">
 						<object class="IBUITabBarItem" key="IBUITabBarItem" id="349988836">
 							<string key="IBUITitle">Pages</string>
@@ -68,25 +79,10 @@
 								<string key="NSClassName">NSImage</string>
 								<string key="NSResourceName">documents.png</string>
 							</object>
-							<reference key="IBUITabBar"/>
 						</object>
 						<reference key="IBUIParentViewController" ref="29387635"/>
 					</object>
-					<object class="IBUIViewController" id="546101017">
-						<object class="IBUITabBarItem" key="IBUITabBarItem" id="345809472">
-							<string key="IBUITitle">Comments</string>
-							<object class="NSCustomResource" key="IBUIImage">
-								<string key="NSClassName">NSImage</string>
-								<string key="NSResourceName">talk_bubbles.png</string>
-							</object>
-							<reference key="IBUITabBar"/>
-						</object>
-						<object class="NSArray" key="IBUIToolbarItems">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-						</object>
-						<reference key="IBUIParentViewController" ref="29387635"/>
-						<string key="IBUINibName">CommentsListController</string>
-					</object>
+					<reference ref="546101017"/>
 				</object>
 				<object class="IBUITabBar" key="IBUITabBar" id="393666339">
 					<nil key="NSNextResponder"/>
@@ -276,7 +272,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>CommentsListController</string>
+					<string>CommentsViewController</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -318,7 +314,7 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>CommentsListController</string>
+							<string>CommentsViewController</string>
 							<string>PagesViewController</string>
 							<string>PostsListController</string>
 							<string>UITabBarController</string>
@@ -330,7 +326,7 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">CommentsListController</string>
+					<string key="className">CommentsViewController</string>
 					<string key="superclassName">UIViewController</string>
 					<object class="NSMutableDictionary" key="actions">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -372,7 +368,15 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Classes/CommentsListController.h</string>
+						<string key="minorKey">Classes/CommentsViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">CommentsViewController</string>
+					<string key="superclassName">UIViewController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBUserSource</string>
+						<string key="minorKey"/>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -412,7 +416,7 @@
 			</object>
 		</object>
 		<int key="IBDocument.localizationMode">0</int>
-		<string key="IBDocument.LastKnownRelativeProjectPath">../WordPress.xcodeproj</string>
+		<string key="IBDocument.LastKnownRelativeProjectPath">WordPress.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<string key="IBCocoaTouchPluginVersion">3.0</string>
 	</data>

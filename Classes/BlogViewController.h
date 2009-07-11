@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 #import "PostsListController.h"
 #import "PagesViewController.h"
-#import "CommentsListController.h"
+#import "CommentsViewController.h"
 
 
 @interface BlogViewController : UIViewController <UITabBarControllerDelegate> {
@@ -16,7 +16,7 @@
 	
 	IBOutlet PostsListController *postsViewController;
 	IBOutlet PagesViewController *pagesViewController;
-	IBOutlet CommentsListController *commentsViewController;
+	IBOutlet CommentsViewController *commentsViewController;
 	
 	UIBarButtonItem *backButton;
 }

@@ -14,9 +14,11 @@ Classes/BlogsViewController.h -text
 Classes/BlogsViewController.m -text
 Classes/CommentTableViewCell.h -text
 Classes/CommentTableViewCell.m -text
-Classes/CommentsListController.h -text
-Classes/CommentsListController.m -text
+Classes/CommentViewController.h -text
+Classes/CommentViewController.m -text
 Classes/CommentsTableViewDelegate.h -text
+Classes/CommentsViewController.h -text
+Classes/CommentsViewController.m -text
 Classes/Constants.h -text
 Classes/EditBlogViewController.h -text
 Classes/EditBlogViewController.m -text
@@ -56,8 +58,6 @@ Classes/WPAsynchronousImageView.h -text
 Classes/WPAsynchronousImageView.m -text
 Classes/WPCategoriesController.h -text
 Classes/WPCategoriesController.m -text
-Classes/WPCommentsDetailViewController.h -text
-Classes/WPCommentsDetailViewController.m -text
 Classes/WPImagePickerController.h -text
 Classes/WPImagePickerController.m -text
 Classes/WPLabelFooterView.h -text
@@ -103,7 +103,8 @@ Classes/XMLRPC/XMLRPCResponse.h -text
 Classes/XMLRPC/XMLRPCResponse.m -text
 Classes/XMLRPC/XMLValueDecoder.h -text
 Classes/XMLRPC/XMLValueDecoder.m -text
-/CommentsListController.xib -text
+/CommentViewController.xib -text
+/CommentsViewController.xib -text
 /Default.png -text
 /Disclosure[!!-~]Indicator.png -text
 /DraftsFolder.png -text
@@ -125,7 +126,6 @@ Classes/XMLRPC/XMLValueDecoder.m -text
 /WPCategoriesController.xib -text
 /WPCategoryTree.h -text
 /WPCategoryTree.m -text
-/WPCommentsDetailViewController.xib -text
 /WPImageView.h -text
 /WPImageView.m -text
 /WPPhotoViewController.xib -text

@@ -1,5 +1,5 @@
 //
-//  CommentsListController.h
+//  CommentsViewControllers.h
 //  WordPress
 //
 //  Created by Janakiram on 02/09/08.
@@ -10,7 +10,7 @@
 #import "CommentsTableViewDelegate.h"
 #import "RefreshButtonView.h"
 
-@interface CommentsListController : UIViewController <UITableViewDataSource, CommentsTableViewDelegate> {
+@interface CommentsViewController : UIViewController <UITableViewDataSource, CommentsTableViewDelegate> {
 	IBOutlet UITableView *commentsTableView;
 	
 	IBOutlet UIToolbar *editToolbar; 
