@@ -13,8 +13,6 @@
 #define POSTS_SECTION           1
 #define NUM_SECTIONS            2
 
-#define REFRESH_BUTTON_HEIGHT   50
-
 #define NEW_VERSION_ALERT_TAG   5111
 
 @interface PostsListController (Private)

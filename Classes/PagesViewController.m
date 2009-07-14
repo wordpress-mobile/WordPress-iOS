@@ -18,8 +18,6 @@
 #define PAGES_SECTION           1
 #define NUM_SECTIONS            2
 
-#define REFRESH_BUTTON_HEIGHT   50
-
 @interface PagesViewController (Private)
 - (void)loadPages;
 - (void)setPageDetailsController;

@@ -15,8 +15,6 @@
 #import "CommentViewController.h"
 #import "WPProgressHUD.h"
 
-#define REFRESH_BUTTON_HEIGHT           50
-
 @interface CommentsViewController (Private)
 - (void)setEditing:(BOOL)value;
 - (void)updateSelectedComments;
