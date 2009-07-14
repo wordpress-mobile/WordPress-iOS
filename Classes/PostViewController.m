@@ -129,7 +129,14 @@
         return;
     }
 
+	NSString *postStatus = [dm.currentPost valueForKey:@"post_status"];
+	if( ![postStatus isEqual:@"Local Draft"] )
+	{ 
+		[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
+    }
+	
     //Code for scaling image based on post settings
+	NSAutoreleasePool *pool=[[NSAutoreleasePool alloc] init];
     NSArray *photosArray = [dm.currentPost valueForKey:@"Photos"];
     NSString *filepath;
 
@@ -139,7 +146,14 @@
         UIImage *scaledImage = [photosListController scaleAndRotateImage:[UIImage imageWithContentsOfFile:imagePath] scaleFlag:YES];
         NSData *imageData = UIImageJPEGRepresentation(scaledImage, 0.5);
         [imageData writeToFile:imagePath atomically:YES];
+		
+		if(pool)
+			[pool release];
+		
+		pool=[[NSAutoreleasePool alloc] init];
+
     }
+	[pool release];
 
     //for handling more tag text.
     [(NSMutableDictionary *)[BlogDataManager sharedDataManager].currentPost setValue:@"" forKey:@"mt_text_more"];
@@ -176,11 +190,11 @@
         return;
     }
 
-    NSString *postStatus = [dm.currentPost valueForKey:@"post_status"];
+   // NSString *postStatus = [dm.currentPost valueForKey:@"post_status"];
 
     if ([postStatus isEqual:@"Local Draft"])
         [self saveAsDraft];else {
-        [self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
+       // [self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
         //Need to release params
         NSMutableArray *params = [[[NSMutableArray alloc] initWithObjects:dm.currentPost, dm.currentBlog, nil] autorelease];
         BOOL isCurrentPostDraft = dm.isLocaDraftsCurrent;
