@@ -19,7 +19,9 @@
 - (void)createBlog;
 - (void)updateBlog;
 - (void)handleTextFieldChanged:(NSNotification *)note;
+- (void)observeTextField:(UITextField *)textField;
 - (void)observeTextFields;
+- (void)stopObservingTextField:(UITextField *)textField;
 - (void)stopObservingTextFields;
 @end
 
@@ -37,7 +39,7 @@
 
 - (BOOL)currentBlogIsNew {
     NSString *blogid = [currentBlog valueForKey:kBlogId];
-    return !blogid ||[blogid isEmpty];
+    return !blogid || [blogid isEmpty];
 }
 
 - (void)viewDidLoad {
@@ -64,12 +66,7 @@
         [passwordTextField becomeFirstResponder];
     }
 
-    [resizePhotoControl addTarget:self action:@selector(changeResizePhotosOptions) forControlEvents:UIControlEventAllTouchEvents];
-
     [self observeTextFields];
-}
-
-- (void)changeResizePhotosOptions {
 }
 
 #ifdef __IPHONE_3_0
@@ -122,8 +119,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.row) {
-        case 0:;
-
+        case 0:
             if (indexPath.section == 0) {
                 NSString *urlString = [currentBlog objectForKey:@"url"];
 
@@ -145,22 +141,20 @@
 
                 resizePhotoControl.on = [value boolValue];
                 return resizePhotoViewCell;
-                break;
             } else {
-                //				noOfPostsTextField.text = [[sharedDataManager currentBlog] objectForKey:@"pwd"];
                 noOfPostsTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
                 return noOfPostsTableViewCell;
-                break;
             }
 
             break;
         case 1:
-
             if (indexPath.section == 0) {
                 userNameTextField.text = [currentBlog objectForKey:@"username"];
                 userNameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
                 return userNameTableViewCell;
             }
+            
+            break;
 
         case 2:
             passwordTextField.text = [currentBlog objectForKey:@"pwd"];
@@ -193,15 +187,17 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    if (section == 2)
+    if (section == 2) {
         return kResizePhotoSettingSectionHeight;
+    }
 
     return 0.0f;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 3)
+    if (indexPath.section == 3) {
         return 40.0f;
+    }
 
     return 44.0f;
 }
@@ -350,8 +346,6 @@
     NSString *pwd = [currentBlog valueForKey:@"pwd"];
     NSString *url = [currentBlog valueForKey:@"url"];
 
-    [self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
-
     if ([dm validateCurrentBlog:url user:username password:pwd]) {
         [dm performSelector:@selector(generateTemplateForBlog:) withObject:[[dm.currentBlog copy] autorelease]];
         [dm addSyncPostsForBlogToQueue:dm.currentBlog];
@@ -367,24 +361,37 @@
 }
 
 - (void)handleTextFieldChanged:(NSNotification *)note {
-    saveBlogButton.enabled = !([blogURLTextField.text isEmpty] ||[userNameTextField.text isEmpty] ||[passwordTextField.text isEmpty]);
+    saveBlogButton.enabled = !([blogURLTextField.text isEmpty] ||
+                               [userNameTextField.text isEmpty] ||
+                               [passwordTextField.text isEmpty]);
+}
+
+- (void)observeTextField:(UITextField *)textField {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleTextFieldChanged:)
+                                                 name:@"UITextFieldTextDidChangeNotification"
+                                               object:textField];
 }
 
 - (void)observeTextFields {
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(handleTextFieldChanged:) name:@"UITextFieldTextDidChangeNotification" object:blogURLTextField];
-    [nc addObserver:self selector:@selector(handleTextFieldChanged:) name:@"UITextFieldTextDidChangeNotification" object:userNameTextField];
-    [nc addObserver:self selector:@selector(handleTextFieldChanged:) name:@"UITextFieldTextDidChangeNotification" object:passwordTextField];
+    [self observeTextField:blogURLTextField];
+    [self observeTextField:userNameTextField];
+    [self observeTextField:passwordTextField];
+}
+
+- (void)stopObservingTextField:(UITextField *)textField {
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:@"UITextFieldTextDidChangeNotification"
+                                                  object:textField];
 }
 
 - (void)stopObservingTextFields {
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc removeObserver:self name:@"UITextFieldTextDidChangeNotification" object:blogURLTextField];
-    [nc removeObserver:self name:@"UITextFieldTextDidChangeNotification" object:userNameTextField];
-    [nc removeObserver:self name:@"UITextFieldTextDidChangeNotification" object:passwordTextField];
+    [self stopObservingTextField:blogURLTextField];
+    [self stopObservingTextField:userNameTextField];
+    [self stopObservingTextField:passwordTextField];
 }
 
-#pragma mark <UITextFieldDelegate> Methods
+#pragma mark UITextFieldDelegate methods
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
