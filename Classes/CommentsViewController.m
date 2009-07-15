@@ -12,7 +12,6 @@
 #import "CommentViewController.h"
 #import "NSString+XMLExtensions.h"
 #import "Reachability.h"
-#import "UIViewController+DefaultUITableViewDelegate.h"
 #import "WordPressAppDelegate.h"
 #import "WPProgressHUD.h"
 
@@ -325,6 +324,10 @@
 
 #pragma mark -
 #pragma mark UITableViewDataSource methods
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;

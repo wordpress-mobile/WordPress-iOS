@@ -10,7 +10,6 @@
 		031663070FFB151A0045D052 /* PostTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 031663060FFB151A0045D052 /* PostTableViewCell.m */; };
 		031665FD0FFC2E890045D052 /* sync.png in Resources */ = {isa = PBXBuildFile; fileRef = 031665FC0FFC2E890045D052 /* sync.png */; };
 		031666AE0FFC3E130045D052 /* CommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 031666AD0FFC3E130045D052 /* CommentTableViewCell.m */; };
-		03957E9D100D559400850742 /* UIViewController+DefaultUITableViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03957E9C100D559400850742 /* UIViewController+DefaultUITableViewDelegate.m */; };
 		03958062100D6CFC00850742 /* WPLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03958061100D6CFC00850742 /* WPLabel.m */; };
 		03958860100DA2DA00850742 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0395885F100DA2DA00850742 /* ImageCache.m */; };
 		03CF21ED0FE9F0C3008AD538 /* NSString+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CF21EC0FE9F0C3008AD538 /* NSString+Util.m */; };
@@ -135,8 +134,6 @@
 		031666AC0FFC3E130045D052 /* CommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentTableViewCell.h; sourceTree = "<group>"; };
 		031666AD0FFC3E130045D052 /* CommentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentTableViewCell.m; sourceTree = "<group>"; };
 		031669580FFC81A20045D052 /* CommentsTableViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsTableViewDelegate.h; sourceTree = "<group>"; };
-		03957E9B100D559400850742 /* UIViewController+DefaultUITableViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+DefaultUITableViewDelegate.h"; sourceTree = "<group>"; };
-		03957E9C100D559400850742 /* UIViewController+DefaultUITableViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+DefaultUITableViewDelegate.m"; sourceTree = "<group>"; };
 		03958060100D6CFC00850742 /* WPLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLabel.h; sourceTree = "<group>"; };
 		03958061100D6CFC00850742 /* WPLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLabel.m; sourceTree = "<group>"; };
 		0395885E100DA2DA00850742 /* ImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCache.h; sourceTree = "<group>"; };
@@ -657,8 +654,6 @@
 				C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */,
 				CE4E33D00FEB0F3A00415662 /* UIImage+INResizeImageAllocator.h */,
 				CE4E33D10FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m */,
-				03957E9B100D559400850742 /* UIViewController+DefaultUITableViewDelegate.h */,
-				03957E9C100D559400850742 /* UIViewController+DefaultUITableViewDelegate.m */,
 				C584D0820EF942DC00B78012 /* UIViewController+WPAnimation.h */,
 				C584D0830EF942DC00B78012 /* UIViewController+WPAnimation.m */,
 			);
@@ -856,7 +851,6 @@
 				CEFC8B5910057D0A0052604A /* WPProgressHUD.m in Sources */,
 				03F298C410057AEC0097B29A /* RefreshButtonView.m in Sources */,
 				CEE7088B1006FC1200D6302A /* WPAsynchronousImageView.m in Sources */,
-				03957E9D100D559400850742 /* UIViewController+DefaultUITableViewDelegate.m in Sources */,
 				03958062100D6CFC00850742 /* WPLabel.m in Sources */,
 				03958860100DA2DA00850742 /* ImageCache.m in Sources */,
 			);

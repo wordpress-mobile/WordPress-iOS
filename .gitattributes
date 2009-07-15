@@ -48,8 +48,6 @@ Classes/RefreshButtonView.h -text
 Classes/RefreshButtonView.m -text
 Classes/UIImage+INResizeImageAllocator.h -text
 Classes/UIImage+INResizeImageAllocator.m -text
-Classes/UIViewController+DefaultUITableViewDelegate.h -text
-Classes/UIViewController+DefaultUITableViewDelegate.m -text
 Classes/UIViewController+WPAnimation.h -text
 Classes/UIViewController+WPAnimation.m -text
 Classes/WPAddCategoryViewController.h -text

@@ -39,7 +39,6 @@
 
 #define TABLE_VIEW_BACKGROUND_COLOR          [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1]
 #define TABLE_VIEW_CELL_BACKGROUND_COLOR     [UIColor whiteColor]
-#define TABLE_VIEW_CELL_ALT_BACKGROUND_COLOR [UIColor colorWithRed:0.98 green:0.98 blue:0.98 alpha:1]
 
 #ifdef DEBUGMODE
 #define WPLog NSLog

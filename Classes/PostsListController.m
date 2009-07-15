@@ -5,7 +5,6 @@
 #import "PostDetailEditController.h"
 #import "PostTableViewCell.h"
 #import "Reachability.h"
-#import "UIViewController+DefaultUITableViewDelegate.h"
 #import "UIViewController+WPAnimation.h"
 #import "WordPressAppDelegate.h"
 #import "WPNavigationLeftButtonView.h"
@@ -119,6 +118,10 @@
 
 #pragma mark -
 #pragma mark UITableViewDataSource methods
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return NUM_SECTIONS;
