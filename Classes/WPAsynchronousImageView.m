@@ -10,6 +10,7 @@
 
 #import "WPAsynchronousImageView.h"
 
+#import "ImageCache.h"
 
 @interface WPAsynchronousImageView (Private)
 
@@ -27,6 +28,7 @@
     if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor lightGrayColor];
         self.contentMode = UIViewContentModeScaleAspectFit;
+        
     }
     
     return self;
@@ -49,6 +51,8 @@
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)theConnection {
+    ImageCache *cache =  [ImageCache sharedImageCache];
+    [cache storeData:data forURL:url];
     self.image = [UIImage imageWithData:data];
     [self releaseConnectionAndData];
 }
@@ -56,12 +60,21 @@
 #pragma mark -
 #pragma mark Public Methods
 
-- (void)loadImageFromURL:(NSURL *)url {
-    self.image = nil;
+- (void)loadImageFromURL:(NSURL *)theUrl {
+    ImageCache *cache =  [ImageCache sharedImageCache];
+
     [self releaseConnectionAndData];
-    
-    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-    connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+
+    url = [theUrl retain];
+    NSData *cachedData = [cache dataForURL:url];
+
+    if (cachedData) {
+        self.image = [UIImage imageWithData:cachedData];
+    } else {
+        self.image = nil;
+        NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:60.0];
+        connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    }
 }
 
 #pragma mark -
@@ -77,6 +90,11 @@
     if (data) {
         [data release];
         data = nil;
+    }
+
+    if (url) {
+        [url release];
+        url = nil;
     }
 }
 

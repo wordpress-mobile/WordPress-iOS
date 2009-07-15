@@ -46,7 +46,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 #pragma mark -
-#pragma mark UIApplicationDelegate methods
+#pragma mark UIApplicationDelegate Methods
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
     [[Reachability sharedReachability] setNetworkStatusNotificationsEnabled:YES];
@@ -71,7 +71,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 #pragma mark -
-#pragma mark Public methods
+#pragma mark Public Methods
 
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
@@ -88,7 +88,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 #pragma mark -
-#pragma mark Private methods
+#pragma mark Private Methods
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (alertView.tag == kUnsupportedWordpressVersionTag || alertView.tag == kRSDErrorTag) {

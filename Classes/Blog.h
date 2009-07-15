@@ -8,7 +8,7 @@
 #import <Foundation/Foundation.h>
 
 @interface Blog : NSObject {
-    @private
+@private
     int index;
 }
 

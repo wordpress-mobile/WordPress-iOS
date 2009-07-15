@@ -14,8 +14,9 @@
 @private
     NSURLConnection *connection;
     NSMutableData *data;
+    NSURL *url;
 }
 
-- (void)loadImageFromURL:(NSURL *)url;
+- (void)loadImageFromURL:(NSURL *)theUrl;
 
 @end
