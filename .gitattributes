@@ -62,6 +62,8 @@ Classes/WPImagePickerController.h -text
 Classes/WPImagePickerController.m -text
 Classes/WPImageView.h -text
 Classes/WPImageView.m -text
+Classes/WPLabel.h -text
+Classes/WPLabel.m -text
 Classes/WPLabelFooterView.h -text
 Classes/WPLabelFooterView.m -text
 Classes/WPNavigationLeftButtonView.h -text

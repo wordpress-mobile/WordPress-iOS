@@ -6,19 +6,49 @@
 //
 
 #import "CommentTableViewCell.h"
+
 #import "CommentsTableViewDelegate.h"
 #import <CommonCrypto/CommonDigest.h>
 
+#define PADDING                     5
+#define CELL_PADDING                8
+
+#define TOP_OFFSET                  CELL_PADDING
+#define LEFT_OFFSET                 CELL_PADDING
+
+#define MAIN_FONT_SIZE              17
+#define DATE_FONT_SIZE              13
+
+#define COMMENT_LABEL_HEIGHT        40
+#define COMMENT_LABEL_WIDTH         280
+
+#define DATE_LABEL_HEIGHT           20
+#define NAME_LABEL_HEIGHT           20
+#define URL_LABEL_HEIGHT            20
+
+#define CHECK_BUTTON_CHECKED_ICON   @"check.png"
+#define CHECK_BUTTON_UNCHECKED_ICON @"uncheck.png"
+
+#define GRAVATAR_URL                @"http://www.gravatar.com/avatar/%@s=80"
+#define GRAVATAR_WIDTH              40
+#define GRAVATAR_HEIGHT             40
+#define GRAVATAR_LEFT_OFFSET        LEFT_OFFSET + GRAVATAR_WIDTH + PADDING
+#define GRAVATAR_TOP_OFFSET         TOP_OFFSET + GRAVATAR_HEIGHT + PADDING
+
+
 @interface CommentTableViewCell (Private)
+
 - (void)addCheckButton;
 - (void)addNameLabel;
 - (void)addURLLabel;
 - (void)addCommentLabel;
-- (void)addAsynchronousImageView;
-NSString *md5(NSString *str);
+- (void)addGravatarImageView;
 
 - (NSURL *)gravatarURLforEmail:(NSString *)emailString;
+NSString *md5(NSString *str);
+
 @end
+
 
 @implementation CommentTableViewCell
 
@@ -32,7 +62,7 @@ NSString *md5(NSString *str);
         [self addNameLabel];
         [self addURLLabel];
         [self addCommentLabel];
-        [self addAsynchronousImageView];
+        [self addGravatarImageView];
     }
 
     return self;
@@ -64,25 +94,25 @@ NSString *md5(NSString *str);
         checkButton.enabled = NO;
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
+    
+    CGRect gravatarRect = gravatarImageView.frame;
+    gravatarRect.origin.x = LEFT_OFFSET + buttonOffset;
+    gravatarImageView.frame = gravatarRect;
 
     CGRect nameRect = nameLabel.frame;
-    nameRect.origin.x = GRAVATAR_OFFSET + buttonOffset;
+    nameRect.origin.x = GRAVATAR_LEFT_OFFSET + buttonOffset;
     nameRect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
     nameLabel.frame = nameRect;
 
     CGRect urlRect = urlLabel.frame;
-    urlRect.origin.x = GRAVATAR_OFFSET + buttonOffset;
+    urlRect.origin.x = GRAVATAR_LEFT_OFFSET + buttonOffset;
     urlRect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
     urlLabel.frame = urlRect;
 
     CGRect commentRect = commentLabel.frame;
-    commentRect.origin.x = GRAVATAR_OFFSET + buttonOffset;
+    commentRect.origin.x = LEFT_OFFSET + buttonOffset;
     commentRect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
     commentLabel.frame = commentRect;
-
-    CGRect gravatarRect = asynchronousImageView.frame;
-    gravatarRect.origin.x = LEFT_OFFSET + buttonOffset;
-    asynchronousImageView.frame = gravatarRect;
 
     [UIView commitAnimations];
 }
@@ -111,7 +141,7 @@ NSString *md5(NSString *str);
     commentLabel.text = content;
 
     NSURL *theURL = [self gravatarURLforEmail:[comment valueForKey:@"author_email"]];
-    [asynchronousImageView loadImageFromURL:theURL];
+    [gravatarImageView loadImageFromURL:theURL];
 }
 
 // Calls the tableView:didCheckRowAtIndexPath method on the table view delegate.
@@ -134,80 +164,77 @@ NSString *md5(NSString *str);
     [self.contentView addSubview:checkButton];
 }
 
+- (void)addGravatarImageView {
+    CGRect rect = CGRectMake(LEFT_OFFSET, TOP_OFFSET, GRAVATAR_WIDTH, GRAVATAR_HEIGHT);
+    
+    gravatarImageView = [[WPAsynchronousImageView alloc] initWithFrame:rect];
+    
+    [self.contentView addSubview:gravatarImageView];
+}
+
 - (void)addNameLabel {
-    CGRect rect = CGRectMake(GRAVATAR_OFFSET, 10, COMMENT_LABEL_WIDTH, LABEL_HEIGHT);
+    CGRect rect = CGRectMake(GRAVATAR_LEFT_OFFSET, TOP_OFFSET, COMMENT_LABEL_WIDTH, NAME_LABEL_HEIGHT);
 
     nameLabel = [[UILabel alloc] initWithFrame:rect];
     nameLabel.font = [UIFont boldSystemFontOfSize:MAIN_FONT_SIZE];
-    nameLabel.highlightedTextColor = [UIColor whiteColor];
-    nameLabel.adjustsFontSizeToFitWidth = NO;
     nameLabel.backgroundColor = [UIColor clearColor];
+    nameLabel.highlightedTextColor = [UIColor whiteColor];
+    nameLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
 
     [self.contentView addSubview:nameLabel];
 }
 
 - (void)addURLLabel {
-    CGRect rect = CGRectMake(GRAVATAR_OFFSET, nameLabel.frame.origin.y + LABEL_HEIGHT, COMMENT_LABEL_WIDTH, LABEL_HEIGHT);
+    CGRect rect = CGRectMake(GRAVATAR_LEFT_OFFSET, nameLabel.frame.origin.y + NAME_LABEL_HEIGHT, COMMENT_LABEL_WIDTH, URL_LABEL_HEIGHT);
 
     urlLabel = [[UILabel alloc] initWithFrame:rect];
     urlLabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
-    urlLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-    urlLabel.adjustsFontSizeToFitWidth = NO;
-    urlLabel.textColor = [UIColor grayColor];
     urlLabel.backgroundColor = [UIColor clearColor];
+    urlLabel.textColor = [UIColor grayColor];
+    urlLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
 
     [self.contentView addSubview:urlLabel];
 }
 
 - (void)addCommentLabel {
-    CGRect rect = CGRectMake(GRAVATAR_OFFSET, urlLabel.frame.origin.y + LABEL_HEIGHT + VERTICAL_OFFSET, COMMENT_LABEL_WIDTH, NAME_LABEL_HEIGHT);
+    CGRect rect = CGRectMake(LEFT_OFFSET, GRAVATAR_TOP_OFFSET, COMMENT_LABEL_WIDTH, COMMENT_LABEL_HEIGHT);
 
-    commentLabel = [[UILabel alloc] initWithFrame:rect];
+    commentLabel = [[WPLabel alloc] initWithFrame:rect];
     commentLabel.font = [UIFont systemFontOfSize:DATE_FONT_SIZE];
-    commentLabel.highlightedTextColor = [UIColor whiteColor];
-    commentLabel.textColor = [UIColor colorWithRed:0.560f green:0.560f blue:0.560f alpha:1];
-    commentLabel.numberOfLines = 3;
-    commentLabel.lineBreakMode = UILineBreakModeTailTruncation;
-    commentLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
     commentLabel.backgroundColor = [UIColor clearColor];
+    commentLabel.textColor = [UIColor colorWithRed:0.560f green:0.560f blue:0.560f alpha:1];
+    commentLabel.highlightedTextColor = [UIColor whiteColor];
+    commentLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+    commentLabel.numberOfLines = 2;
+    commentLabel.lineBreakMode = UILineBreakModeTailTruncation;
+    commentLabel.verticalAlignment = VerticalAlignmentTop;
 
     [self.contentView addSubview:commentLabel];
 }
 
-- (void)addAsynchronousImageView {
-    CGRect rect = CGRectMake(LEFT_OFFSET, LEFT_OFFSET, 80, 80);
-
-    asynchronousImageView = [[WPAsynchronousImageView alloc] initWithFrame:rect];
-    [self.contentView addSubview:asynchronousImageView];
-    [self bringSubviewToFront:asynchronousImageView];
-}
-
 - (NSURL *)gravatarURLforEmail:(NSString *)emailString {
     NSString *emailHash = [md5(emailString) lowercaseString];
-    NSString *url = [[NSString alloc] initWithFormat:@"http://www.gravatar.com/avatar/%@s=80", emailHash];
+    NSString *url = [NSString stringWithFormat:GRAVATAR_URL, emailHash];
     return [NSURL URLWithString:url];
 }
 
-#pragma mark -
-#pragma mark md5
+- (void)resetAsynchronousImageView {
+    WPAsynchronousImageView *oldImage = gravatarImageView;
+    [oldImage removeFromSuperview];
+    [self addGravatarImageView];
+}
 
 NSString *md5(NSString *str) {
     const char *cStr = [str UTF8String];
     unsigned char result[CC_MD5_DIGEST_LENGTH];
-
+    
     CC_MD5(cStr, strlen(cStr), result);
-
+    
     return [NSString stringWithFormat:
             @"%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
             result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7],
             result[8], result[9], result[10], result[11], result[12], result[13], result[14], result[15]
-    ];
-}
-
-- (void)resetAsynchronousImageView {
-    WPAsynchronousImageView *oldImage = asynchronousImageView;
-    [oldImage removeFromSuperview];
-    [self addAsynchronousImageView];
+            ];
 }
 
 @end
