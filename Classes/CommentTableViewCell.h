@@ -28,16 +28,16 @@
 #define CHECK_BUTTON_UNCHECKED_ICON @"uncheck.png"
 
 @interface CommentTableViewCell : UITableViewCell {
-    NSDictionary *_comment;
+    NSDictionary *comment;
 
-    UIButton *_checkButton;
-    UILabel *_nameLabel;
-    UILabel *_urlLabel;
-    UILabel *_commentLabel;
+    UIButton *checkButton;
+    UILabel *nameLabel;
+    UILabel *urlLabel;
+    UILabel *commentLabel;
 
     WPAsynchronousImageView *asynchronousImageView;
 
-    BOOL _checked;
+    BOOL checked;
 }
 
 @property (readwrite, assign) NSDictionary *comment;

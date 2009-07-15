@@ -22,7 +22,7 @@ NSString *md5(NSString *str);
 
 @implementation CommentTableViewCell
 
-@synthesize comment = _comment, checked = _checked;
+@synthesize comment, checked;
 
 - (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithFrame:frame reuseIdentifier:reuseIdentifier]) {
@@ -39,10 +39,10 @@ NSString *md5(NSString *str);
 }
 
 - (void)dealloc {
-    [_nameLabel release];
-    [_urlLabel release];
-    [_commentLabel release];
-    [_checkButton release];
+    [nameLabel release];
+    [urlLabel release];
+    [commentLabel release];
+    [checkButton release];
     [super dealloc];
 }
 
@@ -56,29 +56,29 @@ NSString *md5(NSString *str);
 
     if (self.editing) {
         buttonOffset = 35;
-        _checkButton.alpha = 1;
-        _checkButton.enabled = YES;
+        checkButton.alpha = 1;
+        checkButton.enabled = YES;
         self.accessoryType = UITableViewCellAccessoryNone;
     } else {
-        _checkButton.alpha = 0;
-        _checkButton.enabled = NO;
+        checkButton.alpha = 0;
+        checkButton.enabled = NO;
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
 
-    CGRect nameRect = _nameLabel.frame;
+    CGRect nameRect = nameLabel.frame;
     nameRect.origin.x = GRAVATAR_OFFSET + buttonOffset;
     nameRect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
-    _nameLabel.frame = nameRect;
+    nameLabel.frame = nameRect;
 
-    CGRect urlRect = _urlLabel.frame;
+    CGRect urlRect = urlLabel.frame;
     urlRect.origin.x = GRAVATAR_OFFSET + buttonOffset;
     urlRect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
-    _urlLabel.frame = urlRect;
+    urlLabel.frame = urlRect;
 
-    CGRect commentRect = _commentLabel.frame;
+    CGRect commentRect = commentLabel.frame;
     commentRect.origin.x = GRAVATAR_OFFSET + buttonOffset;
     commentRect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
-    _commentLabel.frame = commentRect;
+    commentLabel.frame = commentRect;
 
     CGRect gravatarRect = asynchronousImageView.frame;
     gravatarRect.origin.x = LEFT_OFFSET + buttonOffset;
@@ -88,37 +88,35 @@ NSString *md5(NSString *str);
 }
 
 - (void)setChecked:(BOOL)value {
-    _checked = value;
+    checked = value;
 
-    if (_checked) {
-        [_checkButton setImage:[UIImage imageNamed:CHECK_BUTTON_CHECKED_ICON] forState:UIControlStateNormal];
+    if (checked) {
+        [checkButton setImage:[UIImage imageNamed:CHECK_BUTTON_CHECKED_ICON] forState:UIControlStateNormal];
     } else {
-        [_checkButton setImage:[UIImage imageNamed:CHECK_BUTTON_UNCHECKED_ICON] forState:UIControlStateNormal];
+        [checkButton setImage:[UIImage imageNamed:CHECK_BUTTON_UNCHECKED_ICON] forState:UIControlStateNormal];
     }
 }
 
 - (void)setComment:(NSDictionary *)value {
-    _comment = value;
+    comment = value;
 
     NSCharacterSet *whitespaceCS = [NSCharacterSet whitespaceCharacterSet];
-    NSString *author = [[_comment valueForKey:@"author"] stringByTrimmingCharactersInSet:whitespaceCS];
-    _nameLabel.text = author;
+    NSString *author = [[comment valueForKey:@"author"] stringByTrimmingCharactersInSet:whitespaceCS];
+    nameLabel.text = author;
 
-    NSString *authorURL = [_comment valueForKey:@"author_url"];
-    _urlLabel.text = authorURL;
+    NSString *authorURL = [comment valueForKey:@"author_url"];
+    urlLabel.text = authorURL;
 
-    NSString *content = [_comment valueForKey:@"content"];
-    _commentLabel.text = content;
+    NSString *content = [comment valueForKey:@"content"];
+    commentLabel.text = content;
 
-    NSURL *theURL = [self gravatarURLforEmail:[_comment valueForKey:@"author_email"]];
+    NSURL *theURL = [self gravatarURLforEmail:[comment valueForKey:@"author_email"]];
     [asynchronousImageView loadImageFromURL:theURL];
 }
 
 // Calls the tableView:didCheckRowAtIndexPath method on the table view delegate.
 - (void)checkButtonPressed {
-//    UITableView *tableView = self.target;
     UITableView *tableView = (UITableView *)self.superview;
-
     NSIndexPath *indexPath = [tableView indexPathForCell:self];
 
     [(id < CommentsTableViewDelegate >)tableView.delegate tableView:tableView didCheckRowAtIndexPath:indexPath];
@@ -129,48 +127,51 @@ NSString *md5(NSString *str);
 - (void)addCheckButton {
     CGRect rect = CGRectMake(LEFT_OFFSET, 15, 30, COMMENT_ROW_HEIGHT - 30);
 
-    _checkButton = [[UIButton alloc] initWithFrame:rect];
-    [_checkButton addTarget:self action:@selector(checkButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    checkButton = [[UIButton alloc] initWithFrame:rect];
+    [checkButton addTarget:self action:@selector(checkButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [self setChecked:NO];
 
-    [self.contentView addSubview:_checkButton];
+    [self.contentView addSubview:checkButton];
 }
 
 - (void)addNameLabel {
     CGRect rect = CGRectMake(GRAVATAR_OFFSET, 10, COMMENT_LABEL_WIDTH, LABEL_HEIGHT);
 
-    _nameLabel = [[UILabel alloc] initWithFrame:rect];
-    _nameLabel.font = [UIFont boldSystemFontOfSize:MAIN_FONT_SIZE];
-    _nameLabel.highlightedTextColor = [UIColor whiteColor];
-    _nameLabel.adjustsFontSizeToFitWidth = NO;
+    nameLabel = [[UILabel alloc] initWithFrame:rect];
+    nameLabel.font = [UIFont boldSystemFontOfSize:MAIN_FONT_SIZE];
+    nameLabel.highlightedTextColor = [UIColor whiteColor];
+    nameLabel.adjustsFontSizeToFitWidth = NO;
+    nameLabel.backgroundColor = [UIColor clearColor];
 
-    [self.contentView addSubview:_nameLabel];
+    [self.contentView addSubview:nameLabel];
 }
 
 - (void)addURLLabel {
-    CGRect rect = CGRectMake(GRAVATAR_OFFSET, _nameLabel.frame.origin.y + LABEL_HEIGHT, COMMENT_LABEL_WIDTH, LABEL_HEIGHT);
+    CGRect rect = CGRectMake(GRAVATAR_OFFSET, nameLabel.frame.origin.y + LABEL_HEIGHT, COMMENT_LABEL_WIDTH, LABEL_HEIGHT);
 
-    _urlLabel = [[UILabel alloc] initWithFrame:rect];
-    _urlLabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
-    _urlLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-    _urlLabel.adjustsFontSizeToFitWidth = NO;
-    _urlLabel.textColor = [UIColor grayColor];
+    urlLabel = [[UILabel alloc] initWithFrame:rect];
+    urlLabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
+    urlLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+    urlLabel.adjustsFontSizeToFitWidth = NO;
+    urlLabel.textColor = [UIColor grayColor];
+    urlLabel.backgroundColor = [UIColor clearColor];
 
-    [self.contentView addSubview:_urlLabel];
+    [self.contentView addSubview:urlLabel];
 }
 
 - (void)addCommentLabel {
-    CGRect rect = CGRectMake(GRAVATAR_OFFSET, _urlLabel.frame.origin.y + LABEL_HEIGHT + VERTICAL_OFFSET, COMMENT_LABEL_WIDTH, NAME_LABEL_HEIGHT);
+    CGRect rect = CGRectMake(GRAVATAR_OFFSET, urlLabel.frame.origin.y + LABEL_HEIGHT + VERTICAL_OFFSET, COMMENT_LABEL_WIDTH, NAME_LABEL_HEIGHT);
 
-    _commentLabel = [[UILabel alloc] initWithFrame:rect];
-    _commentLabel.font = [UIFont systemFontOfSize:DATE_FONT_SIZE];
-    _commentLabel.highlightedTextColor = [UIColor whiteColor];
-    _commentLabel.textColor = [UIColor colorWithRed:0.560f green:0.560f blue:0.560f alpha:1];
-    _commentLabel.numberOfLines = 3;
-    _commentLabel.lineBreakMode = UILineBreakModeTailTruncation;
-    _commentLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+    commentLabel = [[UILabel alloc] initWithFrame:rect];
+    commentLabel.font = [UIFont systemFontOfSize:DATE_FONT_SIZE];
+    commentLabel.highlightedTextColor = [UIColor whiteColor];
+    commentLabel.textColor = [UIColor colorWithRed:0.560f green:0.560f blue:0.560f alpha:1];
+    commentLabel.numberOfLines = 3;
+    commentLabel.lineBreakMode = UILineBreakModeTailTruncation;
+    commentLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+    commentLabel.backgroundColor = [UIColor clearColor];
 
-    [self.contentView addSubview:_commentLabel];
+    [self.contentView addSubview:commentLabel];
 }
 
 - (void)addAsynchronousImageView {
@@ -193,7 +194,9 @@ NSString *md5(NSString *str);
 NSString *md5(NSString *str) {
     const char *cStr = [str UTF8String];
     unsigned char result[CC_MD5_DIGEST_LENGTH];
+
     CC_MD5(cStr, strlen(cStr), result);
+
     return [NSString stringWithFormat:
             @"%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
             result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7],

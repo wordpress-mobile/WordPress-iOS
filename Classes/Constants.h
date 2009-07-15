@@ -37,7 +37,9 @@
 
 #define REFRESH_BUTTON_HEIGHT   50
 
-#define kTableBackgroundColor   [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1]
+#define TABLE_VIEW_BACKGROUND_COLOR          [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1]
+#define TABLE_VIEW_CELL_BACKGROUND_COLOR     [UIColor whiteColor]
+#define TABLE_VIEW_CELL_ALT_BACKGROUND_COLOR [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1]
 
 #ifdef DEBUGMODE
 #define WPLog NSLog

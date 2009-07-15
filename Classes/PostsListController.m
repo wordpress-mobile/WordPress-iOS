@@ -34,7 +34,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.tableView.backgroundColor = kTableBackgroundColor;
+    self.tableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
 
     [self addRefreshButton];
 
@@ -120,7 +120,11 @@
 #pragma mark UITableViewDataSource methods
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    cell.backgroundColor = [UIColor whiteColor];
+    if (indexPath.row % 2 == 0) {
+        cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
+    } else {
+        cell.backgroundColor = TABLE_VIEW_CELL_ALT_BACKGROUND_COLOR;
+    }
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

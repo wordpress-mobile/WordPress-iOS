@@ -23,12 +23,12 @@
 #define POST_LOCK_IMAGE         @"lock.png"
 
 @interface PostTableViewCell : UITableViewCell {
-    NSDictionary *_post;
+    NSDictionary *post;
 
-    UILabel *_nameLabel;
-    UILabel *_dateLabel;
-    UIActivityIndicatorView *_activityIndicator;
-    BOOL _saving;
+    UILabel *nameLabel;
+    UILabel *dateLabel;
+    UIActivityIndicatorView *activityIndicator;
+    BOOL saving;
 }
 
 @property (readwrite, assign) NSDictionary *post;
