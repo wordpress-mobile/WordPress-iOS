@@ -38,6 +38,7 @@
 
 @interface CommentTableViewCell (Private)
 
+- (void)updateLayout;
 - (void)addCheckButton;
 - (void)addNameLabel;
 - (void)addURLLabel;
@@ -78,43 +79,7 @@ NSString *md5(NSString *str);
 
 - (void)setEditing:(BOOL)value {
     [super setEditing:value];
-
-    int buttonOffset = 0;
-
-    [UIView beginAnimations:@"CommentCell" context:self];
-    [UIView setAnimationDuration:0.25];
-
-    if (self.editing) {
-        buttonOffset = 35;
-        checkButton.alpha = 1;
-        checkButton.enabled = YES;
-        self.accessoryType = UITableViewCellAccessoryNone;
-    } else {
-        checkButton.alpha = 0;
-        checkButton.enabled = NO;
-        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }
-    
-    CGRect gravatarRect = gravatarImageView.frame;
-    gravatarRect.origin.x = LEFT_OFFSET + buttonOffset;
-    gravatarImageView.frame = gravatarRect;
-
-    CGRect nameRect = nameLabel.frame;
-    nameRect.origin.x = GRAVATAR_LEFT_OFFSET + buttonOffset;
-    nameRect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
-    nameLabel.frame = nameRect;
-
-    CGRect urlRect = urlLabel.frame;
-    urlRect.origin.x = GRAVATAR_LEFT_OFFSET + buttonOffset;
-    urlRect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
-    urlLabel.frame = urlRect;
-
-    CGRect commentRect = commentLabel.frame;
-    commentRect.origin.x = LEFT_OFFSET + buttonOffset;
-    commentRect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
-    commentLabel.frame = commentRect;
-
-    [UIView commitAnimations];
+    [self updateLayout];
 }
 
 - (void)setChecked:(BOOL)value {
@@ -152,7 +117,41 @@ NSString *md5(NSString *str);
     [(id < CommentsTableViewDelegate >)tableView.delegate tableView:tableView didCheckRowAtIndexPath:indexPath];
 }
 
-#pragma mark Private methods
+#pragma mark Private Methods
+
+- (void)updateLayout {
+    int buttonOffset = 0;
+    
+    if (self.editing) {
+        buttonOffset = 35;
+        checkButton.alpha = 1;
+        checkButton.enabled = YES;
+        self.accessoryType = UITableViewCellAccessoryNone;
+    } else {
+        checkButton.alpha = 0;
+        checkButton.enabled = NO;
+        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    
+    CGRect gravatarRect = gravatarImageView.frame;
+    gravatarRect.origin.x = LEFT_OFFSET + buttonOffset;
+    gravatarImageView.frame = gravatarRect;
+    
+    CGRect nameRect = nameLabel.frame;
+    nameRect.origin.x = GRAVATAR_LEFT_OFFSET + buttonOffset;
+    nameRect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
+    nameLabel.frame = nameRect;
+    
+    CGRect urlRect = urlLabel.frame;
+    urlRect.origin.x = GRAVATAR_LEFT_OFFSET + buttonOffset;
+    urlRect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
+    urlLabel.frame = urlRect;
+    
+    CGRect commentRect = commentLabel.frame;
+    commentRect.origin.x = LEFT_OFFSET + buttonOffset;
+    commentRect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
+    commentLabel.frame = commentRect;
+}
 
 - (void)addCheckButton {
     CGRect rect = CGRectMake(LEFT_OFFSET, 15, 30, COMMENT_ROW_HEIGHT - 30);
@@ -216,12 +215,6 @@ NSString *md5(NSString *str);
     NSString *emailHash = [md5(emailString) lowercaseString];
     NSString *url = [NSString stringWithFormat:GRAVATAR_URL, emailHash];
     return [NSURL URLWithString:url];
-}
-
-- (void)resetAsynchronousImageView {
-    WPAsynchronousImageView *oldImage = gravatarImageView;
-    [oldImage removeFromSuperview];
-    [self addGravatarImageView];
 }
 
 NSString *md5(NSString *str) {

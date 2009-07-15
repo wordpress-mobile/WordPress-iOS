@@ -10,40 +10,35 @@
 
 #import "WPAsynchronousImageView.h"
 
+
+@interface WPAsynchronousImageView (Private)
+
+- (void)releaseConnectionAndData;
+
+@end
+
+
 @implementation WPAsynchronousImageView
 
 #pragma mark -
 #pragma mark Memory Management
 
-- (void)dealloc {
-    [connection cancel];
-    [connection release];
-    [data release];
-    [super dealloc];
-}
-
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [UIColor lightGrayColor];
+        self.contentMode = UIViewContentModeScaleAspectFit;
     }
-
+    
     return self;
 }
 
-#pragma mark -
-#pragma mark Image Loading
-- (void)loadImageFromURL:(NSURL *)url {
-    if (connection != nil) {
-        [connection release];
-    }
-
-    if (data != nil) {
-        [data release];
-    }
-
-    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-    connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+- (void)dealloc {
+    [self releaseConnectionAndData];
+    [super dealloc];
 }
+
+#pragma mark -
+#pragma mark NSURLConnection Delegate Methods
 
 - (void)connection:(NSURLConnection *)theConnection didReceiveData:(NSData *)incrementalData {
     if (data == nil) {
@@ -54,23 +49,35 @@
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)theConnection {
-    [connection release];
-    connection = nil;
+    self.image = [UIImage imageWithData:data];
+    [self releaseConnectionAndData];
+}
 
-    if ([[self subviews] count] > 0) {
-        [[[self subviews] objectAtIndex:0] removeFromSuperview];
+#pragma mark -
+#pragma mark Public Methods
+
+- (void)loadImageFromURL:(NSURL *)url {
+    self.image = nil;
+    [self releaseConnectionAndData];
+    
+    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+    connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+}
+
+#pragma mark -
+#pragma mark Private Methods
+
+- (void)releaseConnectionAndData {
+    if (connection) {
+        [connection cancel];
+        [connection release];
+        connection = nil;
     }
 
-    UIImageView *imageView = [[[UIImageView alloc] initWithImage:[UIImage imageWithData:data]] autorelease];
-    imageView.contentMode = UIViewContentModeScaleAspectFit;
-    imageView.autoresizingMask = (UIViewAutoresizingFlexibleWidth || UIViewAutoresizingFlexibleHeight);
-    [self addSubview:imageView];
-    imageView.frame = self.bounds;
-    [imageView setNeedsLayout];
-    [self setNeedsLayout];
-
-    [data release];
-    data = nil;
+    if (data) {
+        [data release];
+        data = nil;
+    }
 }
 
 @end

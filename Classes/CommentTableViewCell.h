@@ -27,6 +27,4 @@
 @property (readwrite, assign) NSDictionary *comment;
 @property BOOL checked;
 
-- (void)resetAsynchronousImageView;
-
 @end

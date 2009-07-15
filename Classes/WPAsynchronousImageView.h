@@ -10,7 +10,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WPAsynchronousImageView : UIView {
+@interface WPAsynchronousImageView : UIImageView {
+@private
     NSURLConnection *connection;
     NSMutableData *data;
 }
