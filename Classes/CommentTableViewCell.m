@@ -31,8 +31,8 @@
 #define CHECK_BUTTON_UNCHECKED_ICON @"uncheck.png"
 
 #define GRAVATAR_URL                @"http://www.gravatar.com/avatar/%@s=80"
-#define GRAVATAR_WIDTH              48
-#define GRAVATAR_HEIGHT             48
+#define GRAVATAR_WIDTH              47
+#define GRAVATAR_HEIGHT             47
 #define GRAVATAR_LEFT_OFFSET        LEFT_OFFSET + GRAVATAR_WIDTH + PADDING
 #define GRAVATAR_TOP_OFFSET         TOP_OFFSET + GRAVATAR_HEIGHT + PADDING
 
