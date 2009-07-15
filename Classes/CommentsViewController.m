@@ -9,10 +9,11 @@
 
 #import "BlogDataManager.h"
 #import "CommentTableViewCell.h"
+#import "CommentViewController.h"
 #import "NSString+XMLExtensions.h"
 #import "Reachability.h"
+#import "UIViewController+DefaultUITableViewDelegate.h"
 #import "WordPressAppDelegate.h"
-#import "CommentViewController.h"
 #import "WPProgressHUD.h"
 
 @interface CommentsViewController (Private)
@@ -323,14 +324,6 @@
 
 #pragma mark -
 #pragma mark UITableViewDataSource methods
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row % 2 == 0) {
-        cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
-    } else {
-        cell.backgroundColor = TABLE_VIEW_CELL_ALT_BACKGROUND_COLOR;
-    }
-}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;

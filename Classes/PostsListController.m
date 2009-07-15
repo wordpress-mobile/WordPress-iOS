@@ -5,9 +5,10 @@
 #import "PostDetailEditController.h"
 #import "PostTableViewCell.h"
 #import "Reachability.h"
+#import "UIViewController+DefaultUITableViewDelegate.h"
+#import "UIViewController+WPAnimation.h"
 #import "WordPressAppDelegate.h"
 #import "WPNavigationLeftButtonView.h"
-#import "UIViewController+WPAnimation.h"
 
 #define LOCAL_DRAFTS_SECTION    0
 #define POSTS_SECTION           1
@@ -118,14 +119,6 @@
 
 #pragma mark -
 #pragma mark UITableViewDataSource methods
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row % 2 == 0) {
-        cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
-    } else {
-        cell.backgroundColor = TABLE_VIEW_CELL_ALT_BACKGROUND_COLOR;
-    }
-}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return NUM_SECTIONS;
