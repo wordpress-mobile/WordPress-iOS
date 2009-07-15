@@ -16,8 +16,8 @@
 #define TOP_OFFSET                  CELL_PADDING
 #define LEFT_OFFSET                 CELL_PADDING
 
-#define MAIN_FONT_SIZE              17
-#define DATE_FONT_SIZE              13
+#define NAME_FONT_SIZE              17
+#define COMMENT_FONT_SIZE           13
 
 #define COMMENT_LABEL_HEIGHT        40
 #define COMMENT_LABEL_WIDTH         280
@@ -39,7 +39,7 @@
 
 @interface CommentTableViewCell (Private)
 
-- (void)updateLayout;
+- (void)updateLayout:(BOOL)editing;
 - (void)addCheckButton;
 - (void)addNameLabel;
 - (void)addURLLabel;
@@ -47,7 +47,7 @@
 - (void)addCommentLabel;
 - (void)addGravatarImageView;
 
-- (NSURL *)gravatarURLforEmail:(NSString *)emailString;
+- (NSURL *)gravatarURLForEmail:(NSString *)emailString;
 NSString *md5(NSString *str);
 
 @end
@@ -81,9 +81,17 @@ NSString *md5(NSString *str);
     [super dealloc];
 }
 
-- (void)setEditing:(BOOL)value {
-    [super setEditing:value];
-    [self updateLayout];
+- (void)setEditing:(BOOL)value animated:(BOOL)animated {
+    if (animated) {
+        [UIView beginAnimations:@"CommentCell" context:self];
+        [UIView setAnimationDuration:0.25];
+    }
+
+    [self updateLayout:value];
+
+    if (animated) {
+        [UIView commitAnimations];
+    }
 }
 
 - (void)setChecked:(BOOL)value {
@@ -107,12 +115,12 @@ NSString *md5(NSString *str);
     urlLabel.text = authorURL;
     
     NSString *postTitle = [comment valueForKey:@"post_title"];
-    postLabel.text = [NSString stringWithFormat:@"On: %@", postTitle];
+    postLabel.text = [@"On: " stringByAppendingString:postTitle];
 
     NSString *content = [comment valueForKey:@"content"];
     commentLabel.text = content;
 
-    NSURL *theURL = [self gravatarURLforEmail:[comment valueForKey:@"author_email"]];
+    NSURL *theURL = [self gravatarURLForEmail:[comment valueForKey:@"author_email"]];
     [gravatarImageView loadImageFromURL:theURL];
 }
 
@@ -121,15 +129,16 @@ NSString *md5(NSString *str);
     UITableView *tableView = (UITableView *)self.superview;
     NSIndexPath *indexPath = [tableView indexPathForCell:self];
 
-    [(id < CommentsTableViewDelegate >)tableView.delegate tableView:tableView didCheckRowAtIndexPath:indexPath];
+    [(id<CommentsTableViewDelegate>)tableView.delegate tableView:tableView didCheckRowAtIndexPath:indexPath];
 }
 
 #pragma mark Private Methods
 
-- (void)updateLayout {
+- (void)updateLayout:(BOOL)editing {
+    CGRect rect;
     int buttonOffset = 0;
     
-    if (self.editing) {
+    if (editing) {
         buttonOffset = 35;
         checkButton.alpha = 1;
         checkButton.enabled = YES;
@@ -140,29 +149,29 @@ NSString *md5(NSString *str);
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
-    CGRect gravatarRect = gravatarImageView.frame;
-    gravatarRect.origin.x = LEFT_OFFSET + buttonOffset;
-    gravatarImageView.frame = gravatarRect;
+    rect = gravatarImageView.frame;
+    rect.origin.x = LEFT_OFFSET + buttonOffset;
+    gravatarImageView.frame = rect;
     
-    CGRect nameRect = nameLabel.frame;
-    nameRect.origin.x = GRAVATAR_LEFT_OFFSET + buttonOffset;
-    nameRect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
-    nameLabel.frame = nameRect;
+    rect = nameLabel.frame;
+    rect.origin.x = GRAVATAR_LEFT_OFFSET + buttonOffset;
+    rect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
+    nameLabel.frame = rect;
     
-    CGRect urlRect = urlLabel.frame;
-    urlRect.origin.x = GRAVATAR_LEFT_OFFSET + buttonOffset;
-    urlRect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
-    urlLabel.frame = urlRect;
+    rect = urlLabel.frame;
+    rect.origin.x = GRAVATAR_LEFT_OFFSET + buttonOffset;
+    rect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
+    urlLabel.frame = rect;
     
-    CGRect postRect = postLabel.frame;
-    postRect.origin.x = GRAVATAR_LEFT_OFFSET + buttonOffset;
-    postRect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
-    postLabel.frame = postRect;
+    rect = postLabel.frame;
+    rect.origin.x = GRAVATAR_LEFT_OFFSET + buttonOffset;
+    rect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
+    postLabel.frame = rect;
     
-    CGRect commentRect = commentLabel.frame;
-    commentRect.origin.x = LEFT_OFFSET + buttonOffset;
-    commentRect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
-    commentLabel.frame = commentRect;
+    rect = commentLabel.frame;
+    rect.origin.x = LEFT_OFFSET + buttonOffset;
+    rect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
+    commentLabel.frame = rect;
 }
 
 - (void)addCheckButton {
@@ -187,7 +196,7 @@ NSString *md5(NSString *str);
     CGRect rect = CGRectMake(GRAVATAR_LEFT_OFFSET, TOP_OFFSET, COMMENT_LABEL_WIDTH, NAME_LABEL_HEIGHT);
 
     nameLabel = [[UILabel alloc] initWithFrame:rect];
-    nameLabel.font = [UIFont boldSystemFontOfSize:MAIN_FONT_SIZE];
+    nameLabel.font = [UIFont boldSystemFontOfSize:NAME_FONT_SIZE];
     nameLabel.backgroundColor = [UIColor clearColor];
     nameLabel.highlightedTextColor = [UIColor whiteColor];
     nameLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
@@ -223,7 +232,7 @@ NSString *md5(NSString *str);
     CGRect rect = CGRectMake(LEFT_OFFSET, GRAVATAR_TOP_OFFSET, COMMENT_LABEL_WIDTH, COMMENT_LABEL_HEIGHT);
 
     commentLabel = [[WPLabel alloc] initWithFrame:rect];
-    commentLabel.font = [UIFont systemFontOfSize:DATE_FONT_SIZE];
+    commentLabel.font = [UIFont systemFontOfSize:COMMENT_FONT_SIZE];
     commentLabel.backgroundColor = [UIColor clearColor];
     commentLabel.textColor = [UIColor colorWithRed:0.560f green:0.560f blue:0.560f alpha:1];
     commentLabel.highlightedTextColor = [UIColor whiteColor];
@@ -235,7 +244,7 @@ NSString *md5(NSString *str);
     [self.contentView addSubview:commentLabel];
 }
 
-- (NSURL *)gravatarURLforEmail:(NSString *)emailString {
+- (NSURL *)gravatarURLForEmail:(NSString *)emailString {
     NSString *emailHash = [md5(emailString) lowercaseString];
     NSString *url = [NSString stringWithFormat:GRAVATAR_URL, emailHash];
     return [NSURL URLWithString:url];

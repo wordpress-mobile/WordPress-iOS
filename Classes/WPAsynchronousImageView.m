@@ -53,6 +53,7 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)theConnection {
     ImageCache *cache =  [ImageCache sharedImageCache];
     [cache storeData:data forURL:url];
+
     self.image = [UIImage imageWithData:data];
     [self releaseConnectionAndData];
 }

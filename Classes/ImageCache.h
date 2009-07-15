@@ -10,6 +10,7 @@
 
 
 @interface ImageCache : NSObject {
+@private
     NSMutableDictionary *_data;
 }
 

@@ -123,7 +123,8 @@
     [spamButton setEnabled:!editing];
 
     editButtonItem.title = editing ? @"Cancel" : @"Edit";
-    [commentsTableView reloadData];
+    
+    [commentsTableView setEditing:value animated:YES];
 }
 
 - (void)editComments {
@@ -345,8 +346,9 @@
     if (cell == nil) {
         cell = [[[CommentTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
     }
-
+    
     cell.comment = comment;
+    cell.checked = [selectedComments containsObject:comment];
     cell.editing = editing;
 
     return cell;
