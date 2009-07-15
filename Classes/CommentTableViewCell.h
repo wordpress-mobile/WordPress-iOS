@@ -9,7 +9,7 @@
 #import "WPAsynchronousImageView.h"
 #import "WPLabel.h"
 
-#define COMMENT_ROW_HEIGHT 90
+#define COMMENT_ROW_HEIGHT 100
 
 @interface CommentTableViewCell : UITableViewCell {
     NSDictionary *comment;
@@ -17,6 +17,7 @@
     UIButton *checkButton;
     UILabel *nameLabel;
     UILabel *urlLabel;
+    UILabel *postLabel;
     WPLabel *commentLabel;
 
     WPAsynchronousImageView *gravatarImageView;

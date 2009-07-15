@@ -24,14 +24,15 @@
 
 #define DATE_LABEL_HEIGHT           20
 #define NAME_LABEL_HEIGHT           20
-#define URL_LABEL_HEIGHT            20
+#define URL_LABEL_HEIGHT            15
+#define POST_LABEL_HEIGHT           15
 
 #define CHECK_BUTTON_CHECKED_ICON   @"check.png"
 #define CHECK_BUTTON_UNCHECKED_ICON @"uncheck.png"
 
 #define GRAVATAR_URL                @"http://www.gravatar.com/avatar/%@s=80"
-#define GRAVATAR_WIDTH              40
-#define GRAVATAR_HEIGHT             40
+#define GRAVATAR_WIDTH              48
+#define GRAVATAR_HEIGHT             48
 #define GRAVATAR_LEFT_OFFSET        LEFT_OFFSET + GRAVATAR_WIDTH + PADDING
 #define GRAVATAR_TOP_OFFSET         TOP_OFFSET + GRAVATAR_HEIGHT + PADDING
 
@@ -42,6 +43,7 @@
 - (void)addCheckButton;
 - (void)addNameLabel;
 - (void)addURLLabel;
+- (void)addPostLabel;
 - (void)addCommentLabel;
 - (void)addGravatarImageView;
 
@@ -62,6 +64,7 @@ NSString *md5(NSString *str);
         [self addCheckButton];
         [self addNameLabel];
         [self addURLLabel];
+        [self addPostLabel];
         [self addCommentLabel];
         [self addGravatarImageView];
     }
@@ -72,6 +75,7 @@ NSString *md5(NSString *str);
 - (void)dealloc {
     [nameLabel release];
     [urlLabel release];
+    [postLabel release];
     [commentLabel release];
     [checkButton release];
     [super dealloc];
@@ -101,6 +105,9 @@ NSString *md5(NSString *str);
 
     NSString *authorURL = [comment valueForKey:@"author_url"];
     urlLabel.text = authorURL;
+    
+    NSString *postTitle = [comment valueForKey:@"post_title"];
+    postLabel.text = [NSString stringWithFormat:@"On: %@", postTitle];
 
     NSString *content = [comment valueForKey:@"content"];
     commentLabel.text = content;
@@ -146,6 +153,11 @@ NSString *md5(NSString *str);
     urlRect.origin.x = GRAVATAR_LEFT_OFFSET + buttonOffset;
     urlRect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
     urlLabel.frame = urlRect;
+    
+    CGRect postRect = postLabel.frame;
+    postRect.origin.x = GRAVATAR_LEFT_OFFSET + buttonOffset;
+    postRect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
+    postLabel.frame = postRect;
     
     CGRect commentRect = commentLabel.frame;
     commentRect.origin.x = LEFT_OFFSET + buttonOffset;
@@ -193,6 +205,18 @@ NSString *md5(NSString *str);
     urlLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
 
     [self.contentView addSubview:urlLabel];
+}
+
+- (void)addPostLabel {
+    CGRect rect = CGRectMake(GRAVATAR_LEFT_OFFSET, urlLabel.frame.origin.y + URL_LABEL_HEIGHT, COMMENT_LABEL_WIDTH, POST_LABEL_HEIGHT);
+    
+    postLabel = [[UILabel alloc] initWithFrame:rect];
+    postLabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
+    postLabel.backgroundColor = [UIColor clearColor];
+    postLabel.textColor = [UIColor grayColor];
+    postLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+    
+    [self.contentView addSubview:postLabel];
 }
 
 - (void)addCommentLabel {
