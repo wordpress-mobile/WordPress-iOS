@@ -115,6 +115,7 @@ passwordTextField, commentsSwitchControl, pingsSwitchControl; //, customFieldsSw
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

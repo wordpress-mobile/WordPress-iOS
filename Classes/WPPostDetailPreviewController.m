@@ -2,9 +2,19 @@
 #import "BlogDataManager.h"
 #import "WordPressAppDelegate.h"
 
+@interface WPPostDetailPreviewController (Private)
+
+- (void)addProgressIndicator;
+- (NSString *)stringReplacingNewlinesWithBR:(NSString *)surString;
+
+@end
+
 @implementation WPPostDetailPreviewController
 
 @synthesize postDetailViewController, webView;
+
+#pragma mark -
+#pragma mark Memory Management
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -14,21 +24,37 @@
     return self;
 }
 
-/*
-   Implement loadView if you want to create a view hierarchy programmatically
-   - (void)loadView {
-   }
- */
-
-/*
-   - (void)viewDidLoad {
-   }
- */
-
-- (NSString *)stringReplacingNewlinesWithBR:(NSString *)surString {
-    NSArray *comps = [surString componentsSeparatedByString:@"\n"];
-    return [comps componentsJoinedByString:@"<br>"];
+- (void)didReceiveMemoryWarning {
+    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+    [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
+    // Release anything that's not essential, such as cached data
 }
+
+#pragma mark -
+#pragma mark View Lifecycle Methods
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self refreshWebView];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self stopLoading];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    
+    if ([delegate isAlertRunning] == YES)
+        return NO;
+    
+    // Return YES for supported orientations
+    return YES;
+}
+
+#pragma mark -
+#pragma mark Webkit View Delegate Methods
 
 - (void)refreshWebView {
     BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
@@ -123,49 +149,10 @@
     isWebRefreshRequested = YES;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-
-    if ([delegate isAlertRunning] == YES)
-        return NO;
-
-    // Return YES for supported orientations
-    return YES;
-}
-
-- (void)didReceiveMemoryWarning {
-    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
-    // Release anything that's not essential, such as cached data
-}
-
-- (void)dealloc {
-    [super dealloc];
-}
-
-- (void)stopLoading {
-    [webView stopLoading];
-    postDetailViewController.navigationItem.rightBarButtonItem = nil;
-    isWebRefreshRequested = NO;
-}
-
-- (void)addProgressIndicator {
-    NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
-    UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aiv];
-    [aiv startAnimating];
-    [aiv release];
-
-    postDetailViewController.navigationItem.rightBarButtonItem = activityButtonItem;
-    [activityButtonItem release];
-    [apool release];
-}
-
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     if (postDetailViewController.navigationItem.rightBarButtonItem == nil ||
         postDetailViewController.navigationItem.rightBarButtonItem == postDetailViewController.saveButton) {
         [self addProgressIndicator];
-        postDetailViewController.navigationItem.title = @"Generating Preview ...";
     }
 }
 
@@ -184,6 +171,31 @@
 - (BOOL)webView:(UIWebView *)awebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     return YES;
     return isWebRefreshRequested || postDetailViewController.navigationItem.rightBarButtonItem != nil;
+}
+
+#pragma mark -
+
+- (NSString *)stringReplacingNewlinesWithBR:(NSString *)surString {
+    NSArray *comps = [surString componentsSeparatedByString:@"\n"];
+    return [comps componentsJoinedByString:@"<br>"];
+}
+
+- (void)addProgressIndicator {
+    NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
+    UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aiv];
+    [aiv startAnimating];
+    [aiv release];
+    
+    postDetailViewController.navigationItem.rightBarButtonItem = activityButtonItem;
+    [activityButtonItem release];
+    [apool release];
+}
+
+- (void)stopLoading {
+    [webView stopLoading];
+    postDetailViewController.navigationItem.rightBarButtonItem = nil;
+    isWebRefreshRequested = NO;
 }
 
 @end

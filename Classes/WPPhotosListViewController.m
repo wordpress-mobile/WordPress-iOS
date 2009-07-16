@@ -343,34 +343,17 @@ editingInfo:(NSDictionary *)editingInfo {
 }
 
 - (void)refreshData {
-    //clean up of images
-//	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"photsSelectionRow"];
-//	if (cell != nil) {
-//		int i;
-//		WPImageView *imageView;
-//		for( i=0;1; i++ )
-//		{
-//			imageView = (WPImageView*)[cell viewWithTag:i+TAG_OFFSET];
-//			if( !imageView )
-//				break;
-//			[imageView setImage:nil];
-//		}
-//	}
-//
     [tableView reloadData];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Photos";
-
-    [tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     self.title = @"Photos";
     [super viewWillAppear:animated];
-    [tableView reloadData];
     [(NSObject *) delegate performSelector:@selector(updatePhotosBadge)];
 }
 

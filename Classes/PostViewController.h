@@ -17,6 +17,8 @@
     PostsListController *postsListController;
     CommentsViewController *commentsViewController;
     
+    UIViewController *selectedViewController;
+    
     WPNavigationLeftButtonView *leftView;
 
     CustomFieldsDetailController *customFieldsDetailController;
@@ -37,6 +39,7 @@
 @property (nonatomic, retain)   CustomFieldsDetailController *customFieldsDetailController;
 
 @property (nonatomic, assign)   PostsListController *postsListController;
+@property (nonatomic, assign)   UIViewController *selectedViewController;
 
 @property (nonatomic, readonly) UIBarButtonItem *saveButton;
 

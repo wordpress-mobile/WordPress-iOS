@@ -30,8 +30,10 @@
 @synthesize leftView;
 @synthesize customFieldsDetailController;
 @synthesize commentsViewController;
+@synthesize selectedViewController;
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
+    [selectedViewController viewWillDisappear:NO];
     [viewController viewWillAppear:NO];
     
     if (viewController == photosListController) {
@@ -40,37 +42,17 @@
         } else if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
             [photoEditingStatusView removeFromSuperview];
         }
-
-        [photosListController refreshData];
     }
-
-    if (viewController == postPreviewController) {
-        [photoEditingStatusView removeFromSuperview];
-        [postPreviewController refreshWebView];
-    } else {
-        [postPreviewController stopLoading];
-    }
-
-    if (viewController == postSettingsController) {
-        [photoEditingStatusView removeFromSuperview];
-        [postSettingsController reloadData];
-    }
-
-    if (viewController == postDetailEditController) {
-        [photoEditingStatusView removeFromSuperview];
-        [postDetailEditController refreshUIForCurrentPost];
-    }
-    
-    if (viewController == commentsViewController) {
+    else {
         [photoEditingStatusView removeFromSuperview];
     }
-
-    self.title = viewController.title;
 
     if (hasChanges) {
         [leftView setTitle:@"Cancel"];
         self.navigationItem.rightBarButtonItem = saveButton;
     }
+    
+    selectedViewController = viewController;
 }
 
 - (void)dealloc {
@@ -455,8 +437,6 @@
 
     photosListController.title = @"Photos";
     photosListController.tabBarItem.image = [UIImage imageNamed:@"photos.png"];
-//	photosListController.postDetailViewController = self;
-
     photosListController.delegate = self;
 
     [array addObject:photosListController];
@@ -500,7 +480,7 @@
     }
 
     [leftView setTarget:self withAction:@selector(cancelView:)];
-    
+    self.navigationItem.title = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"title"];
 
     if (hasChanges == YES) {
         if ([[leftView title] isEqualToString:@"Posts"]) {
@@ -533,10 +513,6 @@
     [[tabController selectedViewController] viewWillAppear:animated];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-
 - (void)viewWillDisappear:(BOOL)animated {
     if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
         [postDetailEditController setTextViewHeight:202];
@@ -550,10 +526,6 @@
     [super viewWillDisappear:animated];
     mode = 3;
     [postPreviewController stopLoading];
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning {

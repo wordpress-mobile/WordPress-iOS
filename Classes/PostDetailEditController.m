@@ -18,6 +18,101 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @synthesize infoText, urlField, bookMarksArray, selectedLinkRange, currentEditingTextField, isEditing;
 @synthesize customFieldsEditButton, editCustomFields, isCustomFieldsEnabledForThisPost;
 
+#pragma mark -
+#pragma mark View Lifecycle Methods
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    NSLog(@"inside PostDetailEditController:viewDidLoad, just called [super viewDidLoad]");
+    
+    //customFieldsEditButton.hidden = YES;
+    //customFieldsEditButton.enabled = NO;
+    
+    titleTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
+    tagsTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
+    categoriesTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
+    statusTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
+    tagsTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
+    categoriesLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
+    statusLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
+    titleLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
+    tagsLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
+    
+    titleTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    tagsTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    [contentView bringSubviewToFront:textView];
+    
+    if (!leftView) {
+        leftView = [WPNavigationLeftButtonView createCopyOfView];
+        [leftView setTitle:@"Posts"];
+    }
+    
+    [leftView setTitle:@"Posts"];
+    [leftView setTarget:self withAction:@selector(cancelView:)];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newCategoryCreatedNotificationReceived:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
+    
+    //JOHNB TODO: Add a check here for the presence of custom fields in the data model
+    // if there are, set isCustomFieldsEnabledForThisPost BOOL to true
+    isCustomFieldsEnabledForThisPost = [self checkCustomFieldsMinusMetadata];
+    //call a helper to set originY for textViewContentView
+    [self postionTextViewContentView];
+    
+    //TODO:JOHNBCustomFields: this code is garbage for testing.  REMOVE IT!
+    BlogDataManager *dm = [BlogDataManager sharedDataManager];
+    NSArray *customFieldsArray = [dm.currentPost valueForKey:@"custom_fields"];
+    [dm printArrayToLog:customFieldsArray andArrayName:@"customFieldsArray From PostDetailEditController:viewDidLoad"];
+    //NSArray *test1 = [customFieldsArray objectAtIndex:0];
+    //NSDictionary *testDict = [customFieldsArray objectAtIndex:0];
+    //NSMutableData
+    //NSString * string = [[test1 objectAtIndex: 0] objectAtIndex: 0];
+    //NSString *string = [test1 objectAtIndex:0];
+    //NSMutableDictionary * theCurrentPost = [dm currentPost];
+    //[dm printArrayToLog:customFieldsArray andArrayName:@"customFieldsArray From PostDetailEditController:viewDidLoad"];
+    /*
+     [dm printArrayToLog:test1 andArrayName:@"test1 From PostDetailEditController:viewDidLoad"];
+     NSLog(@"this is the testDict id:::-->   %@", [testDict objectForKey:@"id"]);
+     NSLog(@"this is the testDict key:::-->   %@", [testDict objectForKey:@"key"]);
+     NSLog(@"this is the testDict value:::-->   %@", [testDict objectForKey:@"value"]);
+     NSLog(@"A test of the whole shebang: 'Value' from the array at the 0th index, should be Buffalo for a Broken Heart by Dan O'Brien <<*****>> %@", [[customFieldsArray objectAtIndex:0] objectForKey:@"value"] );
+     //The next line models how to change individual values inside custom_fields... Note that we need to address the Array's index number and then address the "invisible" NSDict inside the array
+     //this implies we need a way to know how many custom fields we have, and ignore the other values (edit_last and edit_lock)
+     [[customFieldsArray objectAtIndex:0] setValue:@"This is the second time I changed this in code" forKey:@"value"];
+     NSLog(@"this is the testDict 'Value':::-->   %@", [testDict objectForKey:@"value"]);
+     NSString *valueString = [[customFieldsArray objectAtIndex:2] valueForKey:@"value"];
+     NSLog(@"this is the string value out of the array/nsdict to prove we can %@", valueString);
+     //next line sets custom_fields inside currentPost equal to any changes made to customFieldsArray
+     [dm.currentPost setValue:customFieldsArray forKey:@"custom_fields"];
+     
+     NSArray *secondCustomFieldsArray = [dm.currentPost valueForKey:@"custom_fields"];
+     [dm printArrayToLog:secondCustomFieldsArray andArrayName:@"secondCustomFieldsArray From PostDetailEditController:viewDidLoad"];
+     */
+    
+    //[dm printDictToLog:theCurrentPost andArrayName:@"customFieldsArray From PostDetailEditController:viewDidLoad"];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    NSLog(@"inside PostDetailEditController:viewWillAppear, just called [super viewWillAppear:YES]");
+    isCustomFieldsEnabledForThisPost = [self checkCustomFieldsMinusMetadata];
+    
+    if (isCustomFieldsEnabledForThisPost) {
+        customFieldsEditButton.hidden = NO;
+        tableViewForSelectingCustomFields.hidden = NO;
+        
+        //customFieldsEditButton.enabled = YES;
+    } else {
+        customFieldsEditButton.hidden = YES;
+        tableViewForSelectingCustomFields.hidden = YES;
+        //customFieldsEditButton.enabled = NO;
+    }
+    
+    [self postionTextViewContentView];
+    [self refreshUIForCurrentPost];
+}
+
+#pragma mark -
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
         // Initialization code
@@ -222,95 +317,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (IBAction)showCustomFieldsTableView:(id)sender {
     [self populateCustomFieldsTableViewControllerWithCustomFields];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    //[super viewWillAppear:YES];
-    NSLog(@"inside PostDetailEditController:viewWillAppear, just called [super viewWillAppear:YES]");
-    isCustomFieldsEnabledForThisPost = [self checkCustomFieldsMinusMetadata];
-
-    if (isCustomFieldsEnabledForThisPost) {
-        customFieldsEditButton.hidden = NO;
-        tableViewForSelectingCustomFields.hidden = NO;
-
-        //customFieldsEditButton.enabled = YES;
-    } else {
-        customFieldsEditButton.hidden = YES;
-        tableViewForSelectingCustomFields.hidden = YES;
-        //customFieldsEditButton.enabled = NO;
-    }
-
-    [self postionTextViewContentView];
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    NSLog(@"inside PostDetailEditController:viewDidLoad, just called [super viewDidLoad]");
-
-    //customFieldsEditButton.hidden = YES;
-    //customFieldsEditButton.enabled = NO;
-
-    titleTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
-    tagsTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
-    categoriesTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
-    statusTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
-    tagsTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
-    categoriesLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
-    statusLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
-    titleLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
-    tagsLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
-
-    titleTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    tagsTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    [contentView bringSubviewToFront:textView];
-
-    if (!leftView) {
-        leftView = [WPNavigationLeftButtonView createCopyOfView];
-        [leftView setTitle:@"Posts"];
-    }
-
-    [leftView setTitle:@"Posts"];
-    [leftView setTarget:self withAction:@selector(cancelView:)];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newCategoryCreatedNotificationReceived:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
-
-    //JOHNB TODO: Add a check here for the presence of custom fields in the data model
-    // if there are, set isCustomFieldsEnabledForThisPost BOOL to true
-    isCustomFieldsEnabledForThisPost = [self checkCustomFieldsMinusMetadata];
-    //call a helper to set originY for textViewContentView
-    [self postionTextViewContentView];
-
-    //TODO:JOHNBCustomFields: this code is garbage for testing.  REMOVE IT!
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
-    NSArray *customFieldsArray = [dm.currentPost valueForKey:@"custom_fields"];
-    [dm printArrayToLog:customFieldsArray andArrayName:@"customFieldsArray From PostDetailEditController:viewDidLoad"];
-    //NSArray *test1 = [customFieldsArray objectAtIndex:0];
-    //NSDictionary *testDict = [customFieldsArray objectAtIndex:0];
-    //NSMutableData
-    //NSString * string = [[test1 objectAtIndex: 0] objectAtIndex: 0];
-    //NSString *string = [test1 objectAtIndex:0];
-    //NSMutableDictionary * theCurrentPost = [dm currentPost];
-    //[dm printArrayToLog:customFieldsArray andArrayName:@"customFieldsArray From PostDetailEditController:viewDidLoad"];
-    /*
-       [dm printArrayToLog:test1 andArrayName:@"test1 From PostDetailEditController:viewDidLoad"];
-       NSLog(@"this is the testDict id:::-->   %@", [testDict objectForKey:@"id"]);
-       NSLog(@"this is the testDict key:::-->   %@", [testDict objectForKey:@"key"]);
-       NSLog(@"this is the testDict value:::-->   %@", [testDict objectForKey:@"value"]);
-       NSLog(@"A test of the whole shebang: 'Value' from the array at the 0th index, should be Buffalo for a Broken Heart by Dan O'Brien <<*****>> %@", [[customFieldsArray objectAtIndex:0] objectForKey:@"value"] );
-       //The next line models how to change individual values inside custom_fields... Note that we need to address the Array's index number and then address the "invisible" NSDict inside the array
-       //this implies we need a way to know how many custom fields we have, and ignore the other values (edit_last and edit_lock)
-       [[customFieldsArray objectAtIndex:0] setValue:@"This is the second time I changed this in code" forKey:@"value"];
-       NSLog(@"this is the testDict 'Value':::-->   %@", [testDict objectForKey:@"value"]);
-       NSString *valueString = [[customFieldsArray objectAtIndex:2] valueForKey:@"value"];
-       NSLog(@"this is the string value out of the array/nsdict to prove we can %@", valueString);
-       //next line sets custom_fields inside currentPost equal to any changes made to customFieldsArray
-       [dm.currentPost setValue:customFieldsArray forKey:@"custom_fields"];
-
-       NSArray *secondCustomFieldsArray = [dm.currentPost valueForKey:@"custom_fields"];
-       [dm printArrayToLog:secondCustomFieldsArray andArrayName:@"secondCustomFieldsArray From PostDetailEditController:viewDidLoad"];
-     */
-
-    //[dm printDictToLog:theCurrentPost andArrayName:@"customFieldsArray From PostDetailEditController:viewDidLoad"];
 }
 
 - (void)bringTextViewUp {
