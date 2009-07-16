@@ -12,6 +12,7 @@
 
 #import "ImageCache.h"
 
+
 @interface WPAsynchronousImageView (Private)
 
 - (void)releaseConnectionAndData;
@@ -26,7 +27,6 @@
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = [UIColor lightGrayColor];
         self.contentMode = UIViewContentModeScaleAspectFit;
         
     }
