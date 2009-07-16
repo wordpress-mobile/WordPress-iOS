@@ -15,7 +15,12 @@
 #import "WordPressAppDelegate.h"
 #import "WPProgressHUD.h"
 
+#define COMMENTS_SECTION        0
+#define NUM_SECTIONS            1
+
 @interface CommentsViewController (Private)
+
+- (void)scrollToFirstCell;
 - (void)setEditing:(BOOL)value;
 - (void)updateSelectedComments;
 - (void)refreshHandler;
@@ -27,7 +32,9 @@
 - (void)markCommentsAsSpam;
 - (void)unapproveComments;
 - (void)refreshCommentsList;
+
 @end
+
 
 @implementation CommentsViewController
 
@@ -74,17 +81,17 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
+
     [self setEditing:NO];
 
     BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
     [sharedDataManager loadCommentTitlesForCurrentBlog];
 
     [self refreshCommentsList];
-
-    connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
+    [self scrollToFirstCell];
 
     [editToolbar setHidden:YES];
-
     [editButtonItem setEnabled:([commentsArray count] > 0)];
 
     [commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:animated];
@@ -150,7 +157,20 @@
 }
 
 #pragma mark -
-#pragma mark Action methods
+#pragma mark Action Methods
+
+- (void)scrollToFirstCell {
+    NSIndexPath *indexPath = NULL;
+    
+    if ([self tableView:commentsTableView numberOfRowsInSection:COMMENTS_SECTION] > 0) {
+        NSUInteger indexes[] = {0, 0};
+        indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
+    }
+    
+    if (indexPath) {
+        [commentsTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    }
+}
 
 - (void)refreshHandler {
     [refreshButton startAnimating];
@@ -323,7 +343,7 @@
 }
 
 #pragma mark -
-#pragma mark UITableViewDataSource methods
+#pragma mark UITableViewDataSource Methods
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;

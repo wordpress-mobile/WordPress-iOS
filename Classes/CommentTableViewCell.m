@@ -84,6 +84,7 @@ NSString *md5(NSString *str);
 - (void)setEditing:(BOOL)value animated:(BOOL)animated {
     if (animated) {
         [UIView beginAnimations:@"CommentCell" context:self];
+        [UIView setAnimationBeginsFromCurrentState:YES];
         [UIView setAnimationDuration:0.25];
     }
 

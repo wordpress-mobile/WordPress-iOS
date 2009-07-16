@@ -15,21 +15,26 @@
 
 #define NEW_VERSION_ALERT_TAG   5111
 
+
 @interface PostsListController (Private)
+
+- (void)scrollToFirstCell;
 - (void)loadPosts;
 - (void)showAddPostView;
 - (void)refreshHandler;
 - (void)downloadRecentPosts;
 - (BOOL)handleAutoSavedContext:(NSInteger)tag;
 - (void)addRefreshButton;
+
 @end
+
 
 @implementation PostsListController
 
 @synthesize newButtonItem, postDetailViewController, postDetailEditController;
 
 #pragma mark -
-#pragma mark View lifecycle
+#pragma mark View Lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -52,6 +57,8 @@
     connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
 
     [self loadPosts];
+    [self scrollToFirstCell];
+
     [super viewWillAppear:animated];
 }
 
@@ -71,7 +78,7 @@
 }
 
 #pragma mark -
-#pragma mark Memory management
+#pragma mark Memory Management
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"kNetworkReachabilityChangedNotification" object:nil];
@@ -117,7 +124,7 @@
 }
 
 #pragma mark -
-#pragma mark UITableViewDataSource methods
+#pragma mark UITableViewDataSource Methods
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
@@ -241,7 +248,23 @@
 }
 
 #pragma mark -
-#pragma mark Private methods
+#pragma mark Private Methods
+
+- (void)scrollToFirstCell {
+    NSIndexPath *indexPath = NULL;
+
+    if ([self tableView:self.tableView numberOfRowsInSection:LOCAL_DRAFTS_SECTION] > 0) {
+        NSUInteger indexes[] = {LOCAL_DRAFTS_SECTION, 0};
+        indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
+    } else if ([self tableView:self.tableView numberOfRowsInSection:POSTS_SECTION] > 0) {
+        NSUInteger indexes[] = {POSTS_SECTION, 0};
+        indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
+    }
+
+    if (indexPath) {
+        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    }
+}
 
 - (void)loadPosts {
     BlogDataManager *dm = [BlogDataManager sharedDataManager];

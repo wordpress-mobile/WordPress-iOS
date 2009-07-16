@@ -18,14 +18,19 @@
 #define PAGES_SECTION           1
 #define NUM_SECTIONS            2
 
+
 @interface PagesViewController (Private)
+
+- (void)scrollToFirstCell;
 - (void)loadPages;
 - (void)setPageDetailsController;
 - (void)refreshHandler;
 - (void)downloadRecentPages;
 - (void)showAddNewPage;
 - (void)addRefreshButton;
+
 @end
+
 
 @implementation PagesViewController
 
@@ -53,6 +58,8 @@
     connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
 
     [self loadPages];
+    [self scrollToFirstCell];
+
     [super viewWillAppear:animated];
 }
 
@@ -194,7 +201,23 @@
 }
 
 #pragma mark -
-#pragma mark Private methods
+#pragma mark Private Methods
+
+- (void)scrollToFirstCell {
+    NSIndexPath *indexPath = NULL;
+    
+    if ([self tableView:self.tableView numberOfRowsInSection:LOCAL_DRAFTS_SECTION] > 0) {
+        NSUInteger indexes[] = {LOCAL_DRAFTS_SECTION, 0};
+        indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
+    } else if ([self tableView:self.tableView numberOfRowsInSection:PAGES_SECTION] > 0) {
+        NSUInteger indexes[] = {PAGES_SECTION, 0};
+        indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
+    }
+    
+    if (indexPath) {
+        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    }
+}
 
 - (void)loadPages {
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
