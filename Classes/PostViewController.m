@@ -34,7 +34,7 @@
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
     [viewController viewWillAppear:NO];
     
-    if ([viewController.title isEqualToString:@"Photos"]) {
+    if (viewController == photosListController) {
         if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
             [photosListController.view addSubview:photoEditingStatusView];
         } else if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
@@ -44,19 +44,19 @@
         [photosListController refreshData];
     }
 
-    if ([viewController.title isEqualToString:@"Preview"]) {
+    if (viewController == postPreviewController) {
         [photoEditingStatusView removeFromSuperview];
         [postPreviewController refreshWebView];
     } else {
         [postPreviewController stopLoading];
     }
 
-    if ([viewController.title isEqualToString:@"Settings"]) {
+    if (viewController == postSettingsController) {
         [photoEditingStatusView removeFromSuperview];
         [postSettingsController reloadData];
     }
 
-    if ([viewController.title isEqualToString:@"Write"]) {
+    if (viewController == postDetailEditController) {
         [photoEditingStatusView removeFromSuperview];
         [postDetailEditController refreshUIForCurrentPost];
     }
@@ -68,10 +68,7 @@
     self.title = viewController.title;
 
     if (hasChanges) {
-        if ([[leftView title] isEqualToString:@"Posts"]) {
-            [leftView setTitle:@"Cancel"];
-        }
-
+        [leftView setTitle:@"Cancel"];
         self.navigationItem.rightBarButtonItem = saveButton;
     }
 }
