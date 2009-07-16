@@ -6,14 +6,20 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GravatarImageView.h"
+
 #define kCustomButtonHeight     30.0
 
-@interface CommentViewController : UIViewController {
-    IBOutlet UILabel *commenterNameLabel;
-    IBOutlet UILabel *commentedOnLabel;
-    IBOutlet UILabel *commentedDateLabel;
-    IBOutlet UITextView *commentsTextView;
-    NSMutableArray *commentDetails;
+
+@interface CommentViewController : UIViewController <UIScrollViewDelegate> {
+    IBOutlet UIScrollView *scrollView;
+    
+    IBOutlet GravatarImageView *gravatarImageView;
+    IBOutlet UILabel *commentAuthorLabel;
+    IBOutlet UILabel *commentAuthorUrlLabel;
+    IBOutlet UILabel *commentPostTitleLabel;
+    IBOutlet UILabel *commentDateLabel;
+    IBOutlet UILabel *commentBodyLabel;
 
     IBOutlet UIToolbar *approveAndUnapproveButtonBar;
     IBOutlet UIToolbar *deleteButtonBar;
@@ -23,22 +29,18 @@
     IBOutlet UIBarButtonItem *spamButton1;
     IBOutlet UIBarButtonItem *spamButton2;
 
-    BOOL connectionStatus;
     UIBarButtonItem *segmentBarItem;
-    int currentIndex;
     UISegmentedControl *segmentedControl;
 
     UIAlertView *progressAlert;
+    
+    NSMutableArray *commentDetails;
+    int currentIndex;
+    BOOL connectionStatus;
 }
 
-@property (nonatomic, retain) UILabel *commenterNameLabel;
-@property (nonatomic, retain) UILabel *commentedOnLabel;
-@property (nonatomic, retain) UILabel *commentedDateLabel;
-@property (nonatomic, retain) UITextView *commentsTextView;
-@property (nonatomic, retain) NSMutableArray *commentDetails;
-
 - (void)segmentAction:(id)sender;
-- (void)fillCommentDetails:(NSArray *)comments atRow:(int)row;
+- (void)showComment:(NSArray *)comments atIndex:(int)row;
 
 - (void)deleteComment:(id)sender;
 - (void)approveComment:(id)sender;

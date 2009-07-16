@@ -6,9 +6,7 @@
 //
 
 #import "CommentTableViewCell.h"
-
 #import "CommentsTableViewDelegate.h"
-#import <CommonCrypto/CommonDigest.h>
 
 #define PADDING                     5
 #define CELL_PADDING                8
@@ -30,7 +28,6 @@
 #define CHECK_BUTTON_CHECKED_ICON   @"check.png"
 #define CHECK_BUTTON_UNCHECKED_ICON @"uncheck.png"
 
-#define GRAVATAR_URL                @"http://www.gravatar.com/avatar/%@s=80"
 #define GRAVATAR_WIDTH              47
 #define GRAVATAR_HEIGHT             47
 #define GRAVATAR_LEFT_OFFSET        LEFT_OFFSET + GRAVATAR_WIDTH + PADDING
@@ -46,9 +43,6 @@
 - (void)addPostLabel;
 - (void)addCommentLabel;
 - (void)addGravatarImageView;
-
-- (NSURL *)gravatarURLForEmail:(NSString *)emailString;
-NSString *md5(NSString *str);
 
 @end
 
@@ -77,6 +71,7 @@ NSString *md5(NSString *str);
     [urlLabel release];
     [postLabel release];
     [commentLabel release];
+    [gravatarImageView release];
     [checkButton release];
     [super dealloc];
 }
@@ -121,8 +116,8 @@ NSString *md5(NSString *str);
     NSString *content = [comment valueForKey:@"content"];
     commentLabel.text = content;
 
-    NSURL *theURL = [self gravatarURLForEmail:[comment valueForKey:@"author_email"]];
-    [gravatarImageView loadImageFromURL:theURL];
+    NSString *email = [comment valueForKey:@"author_email"];
+    gravatarImageView.email = email;
 }
 
 // Calls the tableView:didCheckRowAtIndexPath method on the table view delegate.
@@ -188,7 +183,7 @@ NSString *md5(NSString *str);
 - (void)addGravatarImageView {
     CGRect rect = CGRectMake(LEFT_OFFSET, TOP_OFFSET, GRAVATAR_WIDTH, GRAVATAR_HEIGHT);
     
-    gravatarImageView = [[WPAsynchronousImageView alloc] initWithFrame:rect];
+    gravatarImageView = [[GravatarImageView alloc] initWithFrame:rect];
     
     [self.contentView addSubview:gravatarImageView];
 }
@@ -243,25 +238,6 @@ NSString *md5(NSString *str);
     commentLabel.verticalAlignment = VerticalAlignmentTop;
 
     [self.contentView addSubview:commentLabel];
-}
-
-- (NSURL *)gravatarURLForEmail:(NSString *)emailString {
-    NSString *emailHash = [md5(emailString) lowercaseString];
-    NSString *url = [NSString stringWithFormat:GRAVATAR_URL, emailHash];
-    return [NSURL URLWithString:url];
-}
-
-NSString *md5(NSString *str) {
-    const char *cStr = [str UTF8String];
-    unsigned char result[CC_MD5_DIGEST_LENGTH];
-    
-    CC_MD5(cStr, strlen(cStr), result);
-    
-    return [NSString stringWithFormat:
-            @"%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
-            result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7],
-            result[8], result[9], result[10], result[11], result[12], result[13], result[14], result[15]
-            ];
 }
 
 @end

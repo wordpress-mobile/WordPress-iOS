@@ -11,23 +11,67 @@
 #import "WordPressAppDelegate.h"
 #import "WPProgressHUD.h"
 
+
 @interface CommentViewController (Private)
+
 - (BOOL)isConnectedToHost;
 - (void)moderateCommentWithSelector:(SEL)selector;
 - (void)deleteThisComment;
 - (void)approveThisComment;
 - (void)markThisCommentAsSpam;
 - (void)unapproveThisComment;
+
 @end
+
 
 @implementation CommentViewController
 
-@synthesize commentsTextView, commenterNameLabel, commentedOnLabel, commentedDateLabel;
-@synthesize commentDetails;
+#pragma mark -
+#pragma mark Memory Management
+
+- (void)dealloc {
+    [gravatarImageView release];
+    [commentBodyLabel release];
+    [commentAuthorLabel release];
+    [commentAuthorUrlLabel release];
+    [commentPostTitleLabel release];
+    [commentDateLabel release];
+    
+    [commentDetails release];
+    [segmentedControl release];
+    [segmentBarItem release];
+    
+    [super dealloc];
+}
+
+- (void)didReceiveMemoryWarning {
+    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+    [super didReceiveMemoryWarning];
+}
+
+#pragma mark -
+#pragma mark View Lifecycle
+
+- (void)viewDidLoad {
+    segmentedControl = [[UISegmentedControl alloc] initWithItems:
+                        [NSArray arrayWithObjects:
+                         [UIImage imageNamed:@"up.png"],
+                         [UIImage imageNamed:@"down.png"],
+                         nil]];
+    
+    [segmentedControl addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
+    segmentedControl.frame = CGRectMake(0, 0, 90, kCustomButtonHeight);
+    segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
+    segmentedControl.momentary = YES;
+    
+    segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
+    self.navigationItem.rightBarButtonItem = segmentBarItem;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
+}
 
 - (void)viewWillAppear:(BOOL)animated {
-    [self performSelector:@selector(reachabilityChanged)];;
-
+    [self performSelector:@selector(reachabilityChanged)];
     [super viewWillAppear:animated];
 }
 
@@ -35,62 +79,31 @@
     connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
     UIColor *textColor = connectionStatus == YES ? [UIColor blackColor] : [UIColor grayColor];
 
-    commenterNameLabel.textColor = textColor;
-    commentedOnLabel.textColor = textColor;
-    commentedDateLabel.textColor = textColor;
-    commentsTextView.textColor = textColor;
-}
-
-// Implement viewDidLoad to do additional setup after loading the view.
-- (void)viewDidLoad {
-    // "Segmented" control to the right
-    segmentedControl = [[UISegmentedControl alloc] initWithItems:
-                        [NSArray arrayWithObjects:
-                         [UIImage imageNamed:@"up.png"],
-                         [UIImage imageNamed:@"down.png"],
-                         nil]];
-    [segmentedControl addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
-    segmentedControl.frame = CGRectMake(0, 0, 90, kCustomButtonHeight);
-    segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
-    segmentedControl.momentary = YES;
-
-    //	UIColor *defaultTintColor = [segmentedControl.tintColor retain];	// keep track of this for later
-
-    segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
-    self.navigationItem.rightBarButtonItem = segmentBarItem;
-
-    // Observe the kNetworkReachabilityChangedNotification. When that notification is posted, the
-    // method "reachabilityChanged" will be called.
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
+    commentAuthorLabel.textColor = textColor;
+    commentPostTitleLabel.textColor = textColor;
+    commentDateLabel.textColor = textColor;
+    commentBodyLabel.textColor = textColor;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 
-    if ([delegate isAlertRunning] == YES)
+    if ([delegate isAlertRunning] == YES) {
         return NO;
-
-    // Return YES for supported orientations
-    return YES;
-}
-
-- (void)didReceiveMemoryWarning {
-    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
-    // Release anything that's not essential, such as cached data
+    } else {
+        return YES;
+    }
 }
 
 #pragma mark -
-#pragma mark action methods
+#pragma mark Action Methods
 
 - (void)segmentAction:(id)sender {
     if (currentIndex > -1) {
-        if ((currentIndex > 0) &&[sender selectedSegmentIndex] == 0) {
-            [self fillCommentDetails:commentDetails atRow:currentIndex - 1];
-        }
-
-        if ((currentIndex <[commentDetails count] - 1) &&[sender selectedSegmentIndex] == 1) {
-            [self fillCommentDetails:commentDetails atRow:currentIndex + 1];
+        if ([sender selectedSegmentIndex] == 0 && currentIndex > 0) {
+            [self showComment:commentDetails atIndex:currentIndex - 1];
+        } else if ([sender selectedSegmentIndex] == 1 && currentIndex < [commentDetails count] - 1) {
+            [self showComment:commentDetails atIndex:currentIndex + 1];
         }
     }
 }
@@ -171,31 +184,48 @@
     [self moderateCommentWithSelector:@selector(unApproveComment:forBlog:)];
 }
 
-- (void)fillCommentDetails:(NSArray *)comments atRow:(int)row {
-    currentIndex = row;
-    self.commentDetails = (NSMutableArray *)comments;
-    NSCharacterSet *whitespaceCS = [NSCharacterSet whitespaceCharacterSet];
-    NSString *author = [[[commentDetails objectAtIndex:row] valueForKey:@"author"] stringByTrimmingCharactersInSet:whitespaceCS];
-    NSString *post_title = [[[commentDetails objectAtIndex:row] valueForKey:@"post_title"] stringByTrimmingCharactersInSet:whitespaceCS];
-    NSString *post_content = [[[commentDetails objectAtIndex:row] valueForKey:@"content"] stringByTrimmingCharactersInSet:whitespaceCS];
-    NSDate *date_created_gmt = [[commentDetails objectAtIndex:row] valueForKey:@"date_created_gmt"];
-    NSString *commentStatus = [[commentDetails objectAtIndex:row] valueForKey:@"status"];
+- (void)setCommentBody:(NSString *)value {
+    commentBodyLabel.text = value;
+    CGSize size = [value sizeWithFont:commentBodyLabel.font
+                    constrainedToSize:CGSizeMake(300.0, 4000.0)
+                        lineBreakMode:commentBodyLabel.lineBreakMode];
+    scrollView.contentSize = CGSizeMake(size.width, commentBodyLabel.frame.origin.y + size.height);
+    commentBodyLabel.frame = CGRectMake(commentBodyLabel.frame.origin.x, commentBodyLabel.frame.origin.y, size.width, size.height);
+}
 
+#pragma mark -
+#pragma mark Public Methods
+
+- (void)showComment:(NSArray *)comments atIndex:(int)index {
+    currentIndex = index;
+    commentDetails = (NSMutableArray *)[comments retain];
+    NSDictionary *comment = [commentDetails objectAtIndex:currentIndex];
+    
     static NSDateFormatter *dateFormatter = nil;
+    int count = [commentDetails count];
+
+    NSString *author = [[comment valueForKey:@"author"] trim];
+    NSString *postTitle = [[comment valueForKey:@"post_title"] trim];
+    NSString *commentBody = [[comment valueForKey:@"content"] trim];
+    NSDate *createdAt = [comment valueForKey:@"date_created_gmt"];
+    NSString *commentStatus = [comment valueForKey:@"status"];
+    NSString *authorEmail = [comment valueForKey:@"author_email"];
+    NSString *authorUrl = [comment valueForKey:@"author_url"];
 
     if (dateFormatter == nil) {
         dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
         [dateFormatter setDateStyle:NSDateFormatterLongStyle];
     }
+    
+    gravatarImageView.email = authorEmail;
+    commentAuthorLabel.text = author;
+    commentAuthorUrlLabel.text = authorUrl;
+    commentPostTitleLabel.text = [@"on " stringByAppendingString:postTitle];
+    commentDateLabel.text = [@"at " stringByAppendingString:[dateFormatter stringFromDate:createdAt]];
+    [self setCommentBody:commentBody];
 
-    commentedDateLabel.text = [NSString stringWithFormat:@"%@", [[dateFormatter stringFromDate:date_created_gmt] description]];
-
-    commenterNameLabel.text = author;
-    commentedOnLabel.text = post_title;
-    commentsTextView.text = post_content;
-    int count = [self.commentDetails count];
-    self.navigationItem.title = [NSString stringWithFormat:@"%d of %d", row + 1, count];
+    self.navigationItem.title = [NSString stringWithFormat:@"%d of %d", currentIndex + 1, count];
 
     if ([commentStatus isEqualToString:@"hold"]) {
         [approveAndUnapproveButtonBar setHidden:NO];
@@ -222,20 +252,11 @@
     [segmentedControl setEnabled:TRUE forSegmentAtIndex:0];
     [segmentedControl setEnabled:TRUE forSegmentAtIndex:1];
 
-    if (currentIndex == 0)
-        [segmentedControl setEnabled:FALSE forSegmentAtIndex:0];else if (currentIndex ==[commentDetails count] - 1)
+    if (currentIndex == 0) {
+        [segmentedControl setEnabled:FALSE forSegmentAtIndex:0];
+    } else if (currentIndex == [commentDetails count] - 1) {
         [segmentedControl setEnabled:FALSE forSegmentAtIndex:1];
-}
-
-- (void)dealloc {
-    [commentsTextView release];
-    [commenterNameLabel release];
-    [commentedOnLabel release];
-    [commentedDateLabel release];
-    [commentDetails release];
-    [segmentedControl release];
-    [segmentBarItem release];
-    [super dealloc];
+    }
 }
 
 @end

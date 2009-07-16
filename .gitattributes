@@ -24,6 +24,8 @@ Classes/EditBlogViewController.h -text
 Classes/EditBlogViewController.m -text
 Classes/EditPageViewController.h -text
 Classes/EditPageViewController.m -text
+Classes/GravatarImageView.h -text
+Classes/GravatarImageView.m -text
 Classes/ImageCache.h -text
 Classes/ImageCache.m -text
 Classes/NSString+Util.h -text

@@ -8,8 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+
 @interface NSString (Util)
 
 - (bool)isEmpty;
+- (NSString *)trim;
 
 @end

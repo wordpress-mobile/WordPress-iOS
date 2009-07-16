@@ -8,10 +8,16 @@
 
 #import "NSString+Util.h"
 
+
 @implementation NSString (Util)
 
 - (bool)isEmpty {
     return self.length == 0;
+}
+
+- (NSString *)trim {
+    NSCharacterSet *set = [NSCharacterSet whitespaceCharacterSet];
+    return [self stringByTrimmingCharactersInSet:set];
 }
 
 @end

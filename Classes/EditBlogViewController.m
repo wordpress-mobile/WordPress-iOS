@@ -8,7 +8,6 @@
 #import "UIViewController+WPAnimation.h"
 #import "Reachability.h"
 #import "WPLabelFooterView.h"
-#import "NSString+Util.h"
 
 #define kResizePhotoSettingSectionHeight    80.0f
 

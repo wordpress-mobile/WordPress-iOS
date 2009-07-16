@@ -356,6 +356,16 @@
     [spamButton setTitle:(((count - spamCount) > 0) ? [NSString stringWithFormat:@"Spam (%d)", count - spamCount]:@"Spam")];
 }
 
+- (void)showCommentAtIndex:(int)index {
+    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    CommentViewController *commentsViewController = [[CommentViewController alloc] initWithNibName:@"CommentViewController" bundle:nil];
+
+    [delegate.navigationController pushViewController:commentsViewController animated:YES];
+
+    [commentsViewController showComment:[[BlogDataManager sharedDataManager] commentTitles] atIndex:index];
+    [commentsViewController release];
+}
+
 #pragma mark -
 #pragma mark UITableViewDataSource Methods
 
@@ -403,15 +413,7 @@
     if (editing) {
         [self tableView:tableView didCheckRowAtIndexPath:indexPath];
     } else {
-        CommentViewController *commentsViewController = [[CommentViewController alloc] initWithNibName:@"CommentViewController" bundle:nil];
-
-        // Get the navigation controller from the delegate
-        WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-        [delegate.navigationController pushViewController:commentsViewController animated:YES];
-
-        [commentsViewController fillCommentDetails:[self commentsArray]
-         atRow:indexPath.row];
-        [commentsViewController release];
+        [self showCommentAtIndex:indexPath.row];
     }
 }
 

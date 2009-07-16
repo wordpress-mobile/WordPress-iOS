@@ -12,6 +12,7 @@
 		031666AE0FFC3E130045D052 /* CommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 031666AD0FFC3E130045D052 /* CommentTableViewCell.m */; };
 		03958062100D6CFC00850742 /* WPLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03958061100D6CFC00850742 /* WPLabel.m */; };
 		03958860100DA2DA00850742 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0395885F100DA2DA00850742 /* ImageCache.m */; };
+		039FFDA1100EDC1B00D8B279 /* GravatarImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 039FFDA0100EDC1B00D8B279 /* GravatarImageView.m */; };
 		03CF21ED0FE9F0C3008AD538 /* NSString+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CF21EC0FE9F0C3008AD538 /* NSString+Util.m */; };
 		03F298C410057AEC0097B29A /* RefreshButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F298C310057AEC0097B29A /* RefreshButtonView.m */; };
 		03FF34BB10040B0A0066ED95 /* documents.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FF34BA10040B0A0066ED95 /* documents.png */; };
@@ -138,6 +139,8 @@
 		03958061100D6CFC00850742 /* WPLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLabel.m; sourceTree = "<group>"; };
 		0395885E100DA2DA00850742 /* ImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCache.h; sourceTree = "<group>"; };
 		0395885F100DA2DA00850742 /* ImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCache.m; sourceTree = "<group>"; };
+		039FFD9F100EDC1B00D8B279 /* GravatarImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GravatarImageView.h; sourceTree = "<group>"; };
+		039FFDA0100EDC1B00D8B279 /* GravatarImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GravatarImageView.m; sourceTree = "<group>"; };
 		03CF21EB0FE9F0C3008AD538 /* NSString+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Util.h"; sourceTree = "<group>"; };
 		03CF21EC0FE9F0C3008AD538 /* NSString+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Util.m"; sourceTree = "<group>"; };
 		03F298C210057AEC0097B29A /* RefreshButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RefreshButtonView.h; sourceTree = "<group>"; };
@@ -325,6 +328,8 @@
 				031666AC0FFC3E130045D052 /* CommentTableViewCell.h */,
 				031666AD0FFC3E130045D052 /* CommentTableViewCell.m */,
 				031669580FFC81A20045D052 /* CommentsTableViewDelegate.h */,
+				039FFD9F100EDC1B00D8B279 /* GravatarImageView.h */,
+				039FFDA0100EDC1B00D8B279 /* GravatarImageView.m */,
 				031663050FFB151A0045D052 /* PostTableViewCell.h */,
 				031663060FFB151A0045D052 /* PostTableViewCell.m */,
 				03F298C210057AEC0097B29A /* RefreshButtonView.h */,
@@ -348,10 +353,10 @@
 				2F970F970DF929B8006BD934 /* Constants.h */,
 				2F706AA30DFB24C500B43086 /* BlogDataManager.h */,
 				2F706AA40DFB24C500B43086 /* BlogDataManager.m */,
-				1D3623240D0F684500981E51 /* WordPressAppDelegate.h */,
-				1D3623250D0F684500981E51 /* WordPressAppDelegate.m */,
 				0395885E100DA2DA00850742 /* ImageCache.h */,
 				0395885F100DA2DA00850742 /* ImageCache.m */,
+				1D3623240D0F684500981E51 /* WordPressAppDelegate.h */,
+				1D3623250D0F684500981E51 /* WordPressAppDelegate.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -853,6 +858,7 @@
 				CEE7088B1006FC1200D6302A /* WPAsynchronousImageView.m in Sources */,
 				03958062100D6CFC00850742 /* WPLabel.m in Sources */,
 				03958860100DA2DA00850742 /* ImageCache.m in Sources */,
+				039FFDA1100EDC1B00D8B279 /* GravatarImageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

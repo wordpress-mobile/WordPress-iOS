@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "WPAsynchronousImageView.h"
+#import "GravatarImageView.h"
 #import "WPLabel.h"
 
 #define COMMENT_ROW_HEIGHT 100
@@ -19,8 +19,7 @@
     UILabel *urlLabel;
     UILabel *postLabel;
     WPLabel *commentLabel;
-
-    WPAsynchronousImageView *gravatarImageView;
+    GravatarImageView *gravatarImageView;
 
     BOOL checked;
 }
