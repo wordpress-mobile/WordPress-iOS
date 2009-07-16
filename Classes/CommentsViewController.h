@@ -30,6 +30,8 @@
     NSMutableArray *selectedComments;
 
     UIAlertView *progressAlert;
+    
+    int indexForCurrentPost;
 }
 
 @property (readonly) UIBarButtonItem *editButtonItem;
@@ -40,5 +42,7 @@
 - (IBAction)approveSelectedComments:(id)sender;
 - (IBAction)unapproveSelectedComments:(id)sender;
 - (IBAction)spamSelectedComments:(id)sender;
+
+- (void)setIndexForCurrentPost:(int)index;
 
 @end

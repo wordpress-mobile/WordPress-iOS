@@ -76,8 +76,6 @@
 }
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-    [viewController viewWillAppear:NO];
-
     backButton.title = viewController.tabBarItem.title;
 
     if (viewController == postsViewController) {
@@ -85,10 +83,13 @@
     } else if (viewController == pagesViewController) {
         self.navigationItem.rightBarButtonItem = pagesViewController.newButtonItem;
     } else if (viewController == commentsViewController) {
+        [commentsViewController setIndexForCurrentPost:-1];
         self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
     } else {
         self.navigationItem.rightBarButtonItem = nil;
     }
+    
+    [viewController viewWillAppear:NO];
 }
 
 @end

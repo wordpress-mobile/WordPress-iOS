@@ -2024,6 +2024,19 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
     return [self commentTitlesForBlog:currentBlog];
 }
 
+- (NSMutableArray *)commentTitlesForBlog:(id)aBlog scopedToPostWithIndex:(int)indexForPost {
+    NSMutableArray *commentTitles = [self commentTitlesForBlog:aBlog];
+    NSMutableArray *copyOfCommentTitles = [commentTitles copy];
+    
+    for (NSDictionary *commentTitle in copyOfCommentTitles) {
+        if (![[commentTitle valueForKey:@"post_title"] isEqualToString: [[self postTitleAtIndex:indexForPost] valueForKey:@"title"]]) {
+            [commentTitles removeObject:commentTitle];
+        }
+    }
+    [copyOfCommentTitles release];
+    return commentTitles;
+}
+
 - (NSInteger)numberOfDrafts {
     return [draftTitlesList count];
 }

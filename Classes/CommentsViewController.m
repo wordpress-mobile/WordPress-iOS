@@ -32,7 +32,7 @@
 - (void)markCommentsAsSpam;
 - (void)unapproveComments;
 - (void)refreshCommentsList;
-
+- (void)addRefreshButton;
 @end
 
 
@@ -40,35 +40,8 @@
 
 @synthesize editButtonItem, selectedComments, commentsArray;
 
-- (void)addRefreshButton {
-    CGRect frame = CGRectMake(0, 0, commentsTableView.bounds.size.width, REFRESH_BUTTON_HEIGHT);
-
-    refreshButton = [[RefreshButtonView alloc] initWithFrame:frame];
-    [refreshButton addTarget:self action:@selector(refreshHandler) forControlEvents:UIControlEventTouchUpInside];
-
-    commentsTableView.tableHeaderView = refreshButton;
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-
-    commentsDict = [[NSMutableDictionary alloc] init];
-    selectedComments = [[NSMutableArray alloc] init];
-
-    [commentsTableView setDataSource:self];
-    commentsTableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
-
-    [self addRefreshButton];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
-
-    editButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered
-                      target:self action:@selector(editComments)];
-
-    self.navigationItem.rightBarButtonItem = editButtonItem;
-
-    [editButtonItem setEnabled:([commentsArray count] > 0)];
-}
+#pragma mark -
+#pragma mark Memory Management
 
 - (void)dealloc {
     [commentsArray release];
@@ -80,28 +53,80 @@
     [super dealloc];
 }
 
+- (void)didReceiveMemoryWarning {
+    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+    [super didReceiveMemoryWarning];
+}
+
+#pragma mark -
+#pragma mark View Lifecycle Methods
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    commentsDict = [[NSMutableDictionary alloc] init];
+    selectedComments = [[NSMutableArray alloc] init];
+    
+    [commentsTableView setDataSource:self];
+    commentsTableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
+    
+    [self addRefreshButton];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
+    
+    editButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered
+                                                     target:self action:@selector(editComments)];
+    
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
-
+    
     [self setEditing:NO];
-
+    
     BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
     [sharedDataManager loadCommentTitlesForCurrentBlog];
-
+    
     [self refreshCommentsList];
     [self scrollToFirstCell];
-
+    
     [editToolbar setHidden:YES];
+    self.navigationItem.rightBarButtonItem = editButtonItem;
     [editButtonItem setEnabled:([commentsArray count] > 0)];
-
+    
     [commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:animated];
-
+    
     [super viewWillAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     editButtonItem.title = @"Edit";
     [super viewWillDisappear:animated];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    [commentsTableView reloadData];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    
+    if ([delegate isAlertRunning] == YES) {
+        return NO;
+    } else {
+        return YES;
+    }
+}
+
+#pragma mark -
+
+- (void)addRefreshButton {
+    CGRect frame = CGRectMake(0, 0, commentsTableView.bounds.size.width, REFRESH_BUTTON_HEIGHT);
+
+    refreshButton = [[RefreshButtonView alloc] initWithFrame:frame];
+    [refreshButton addTarget:self action:@selector(refreshHandler) forControlEvents:UIControlEventTouchUpInside];
+
+    commentsTableView.tableHeaderView = refreshButton;
 }
 
 - (void)reachabilityChanged {
@@ -135,25 +160,6 @@
 
 - (void)editComments {
     [self setEditing:!editing];
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    [commentsTableView reloadData];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-
-    if ([delegate isAlertRunning] == YES) {
-        return NO;
-    } else {
-        return YES;
-    }
-}
-
-- (void)didReceiveMemoryWarning {
-    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [super didReceiveMemoryWarning];
 }
 
 #pragma mark -
@@ -220,7 +226,15 @@
         [selectedComments removeAllObjects];
     }
 
-    NSMutableArray *commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
+    NSMutableArray *commentsList = nil;
+    NSLog(@"index for current post: %i", indexForCurrentPost);
+    if (indexForCurrentPost >= 0) {
+        commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog] scopedToPostWithIndex:indexForCurrentPost];
+    }
+    else {
+        commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
+    }
+    
 
     [self setCommentsArray:commentsList];
 
@@ -395,7 +409,7 @@
         WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
         [delegate.navigationController pushViewController:commentsViewController animated:YES];
 
-        [commentsViewController fillCommentDetails:[[BlogDataManager sharedDataManager] commentTitles]
+        [commentsViewController fillCommentDetails:[self commentsArray]
          atRow:indexPath.row];
         [commentsViewController release];
     }
@@ -416,6 +430,13 @@
     }
 
     [self updateSelectedComments];
+}
+
+#pragma mark -
+#pragma mark accessors
+
+- (void)setIndexForCurrentPost:(int)index {
+    indexForCurrentPost = index;
 }
 
 @end

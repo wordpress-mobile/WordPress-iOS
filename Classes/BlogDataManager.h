@@ -149,6 +149,7 @@
 
 - (NSMutableArray *)commentTitlesForBlog:(id)aBlog;
 - (NSMutableArray *)commentTitlesForCurrentBlog;
+- (NSMutableArray *)commentTitlesForBlog:(id)aBlog scopedToPostWithIndex:(int)indexForPost;
 
 - (void)loadCommentTitlesForCurrentBlog;
 - (id)loadCommentTitlesForBlog:(id)aBlog;

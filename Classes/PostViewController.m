@@ -9,6 +9,7 @@
 #import "PostsListController.h"
 #import "Reachability.h"
 #import "CustomFieldsDetailController.h"
+#import "CommentsViewController.h"
 
 #define TAG_OFFSET 1010
 
@@ -28,8 +29,11 @@
 @synthesize postDetailEditController, postPreviewController, postSettingsController, postsListController, hasChanges, mode, tabController, photosListController, saveButton;
 @synthesize leftView;
 @synthesize customFieldsDetailController;
+@synthesize commentsViewController;
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
+    [viewController viewWillAppear:NO];
+    
     if ([viewController.title isEqualToString:@"Photos"]) {
         if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
             [photosListController.view addSubview:photoEditingStatusView];
@@ -56,6 +60,10 @@
         [photoEditingStatusView removeFromSuperview];
         [postDetailEditController refreshUIForCurrentPost];
     }
+    
+    if (viewController == commentsViewController) {
+        [photoEditingStatusView removeFromSuperview];
+    }
 
     self.title = viewController.title;
 
@@ -74,6 +82,7 @@
     [postPreviewController release];
     [postSettingsController release];
     [photosListController release];
+    [commentsViewController release];
     [saveButton release];
 
     [self stopTimer];
@@ -434,6 +443,14 @@
     postDetailEditController.tabBarItem.image = [UIImage imageNamed:@"write.png"];
     postDetailEditController.postDetailViewController = self;
     [array addObject:postDetailEditController];
+    
+    if (commentsViewController == nil) {
+        commentsViewController = [[CommentsViewController alloc] initWithNibName:@"CommentsViewController" bundle:nil];
+    }
+    
+    commentsViewController.title = @"Comments";
+    commentsViewController.tabBarItem.image = [UIImage imageNamed:@"talk_bubbles.png"];
+    [array addObject:commentsViewController];
 
     if (photosListController == nil) {
         photosListController = [[WPPhotosListViewController alloc] initWithNibName:@"WPPhotosListViewController" bundle:nil];
@@ -486,17 +503,18 @@
     }
 
     [leftView setTarget:self withAction:@selector(cancelView:)];
+    
 
     if (hasChanges == YES) {
         if ([[leftView title] isEqualToString:@"Posts"]) {
             [leftView setTitle:@"Cancel"];
         }
-
+        
         self.navigationItem.rightBarButtonItem = saveButton;
     } else {
         [leftView setTitle:@"Posts"];
         self.navigationItem.rightBarButtonItem = nil;
-    }
+    } 
 
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
     self.navigationItem.leftBarButtonItem = cancelButton;
@@ -514,7 +532,8 @@
     }
 
     mode = 3;
-    [postDetailEditController viewWillAppear:animated];
+    [commentsViewController setIndexForCurrentPost:[[BlogDataManager sharedDataManager] currentPostIndex]];
+    [[tabController selectedViewController] viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

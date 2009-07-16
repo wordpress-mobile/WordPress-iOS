@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "WPPhotosListProtocol.h"
 
-@class PostDetailEditController, WPPostDetailPreviewController, WPSelectionTableViewController, WPPostSettingsController, WPPhotosListViewController, PostsListController;
+@class PostDetailEditController, WPPostDetailPreviewController, WPSelectionTableViewController, WPPostSettingsController, WPPhotosListViewController, PostsListController, CommentsViewController;
 @class WPNavigationLeftButtonView;
 @class CustomFieldsDetailController;
 
@@ -15,6 +15,8 @@
     WPPostSettingsController *postSettingsController;
     WPPhotosListViewController *photosListController;
     PostsListController *postsListController;
+    CommentsViewController *commentsViewController;
+    
     WPNavigationLeftButtonView *leftView;
 
     CustomFieldsDetailController *customFieldsDetailController;
@@ -30,6 +32,7 @@
 @property (nonatomic, retain)   WPPostDetailPreviewController *postPreviewController;
 @property (nonatomic, retain)   WPPostSettingsController *postSettingsController;
 @property (nonatomic, retain)   WPPhotosListViewController *photosListController;
+@property (nonatomic, retain)   CommentsViewController *commentsViewController;
 
 @property (nonatomic, retain)   CustomFieldsDetailController *customFieldsDetailController;
 
