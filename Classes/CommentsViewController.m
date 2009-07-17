@@ -94,7 +94,10 @@
     self.navigationItem.rightBarButtonItem = editButtonItem;
     [editButtonItem setEnabled:([commentsArray count] > 0)];
     
-    [commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:animated];
+    if ([commentsTableView indexPathForSelectedRow]) {
+        [commentsTableView scrollToRowAtIndexPath:[commentsTableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+        [commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:animated];
+    }
     
     [super viewWillAppear:animated];
 }
