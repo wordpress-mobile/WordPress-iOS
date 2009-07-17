@@ -65,7 +65,7 @@
 
     [self addRefreshButton];
     [self setPageDetailsController];
-    [self syncPages];
+    [self refreshHandler];
 
     newButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
                      target:self
@@ -234,7 +234,7 @@
 
 - (void)refreshHandler {
     [refreshButton startAnimating];
-    [self performSelectorInBackground:@selector(downloadRecentPages) withObject:nil];
+    [self performSelectorInBackground:@selector(syncPages) withObject:nil];
 }
 
 - (void)syncPages {

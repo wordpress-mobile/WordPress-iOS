@@ -68,7 +68,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [self loadPosts];
     [self scrollToFirstCell];
-    [self syncPosts];
+    [self refreshHandler];
 
     if ([self.tableView indexPathForSelectedRow]) {
         [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
@@ -292,7 +292,7 @@
 
 - (void)refreshHandler {
     [refreshButton startAnimating];
-    [self performSelectorInBackground:@selector(downloadRecentPosts) withObject:nil];
+    [self performSelectorInBackground:@selector(syncPosts) withObject:nil];
 }
 
 - (void)syncPosts {

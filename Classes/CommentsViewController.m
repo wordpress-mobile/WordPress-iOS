@@ -81,7 +81,7 @@
     
     [self refreshCommentsList];
     [self scrollToFirstCell];
-    [self syncComments];
+    [self refreshHandler];
     
     [editToolbar setHidden:YES];
     self.navigationItem.rightBarButtonItem = editButtonItem;
@@ -171,7 +171,7 @@
 
 - (void)refreshHandler {
     [refreshButton startAnimating];
-    [self performSelectorInBackground:@selector(downloadRecentComments) withObject:nil];
+    [self performSelectorInBackground:@selector(syncComments) withObject:nil];
 }
 
 - (void)syncComments {
