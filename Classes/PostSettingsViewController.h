@@ -4,7 +4,7 @@
 // the amount of vertical shift upwards keep the text field in view as the keyboard appears
 #define kOFFSET_FOR_KEYBOARD                    150.0
 
-@interface WPPostSettingsController : UIViewController {
+@interface PostSettingsViewController : UIViewController {
     IBOutlet UITableView *tableView;
     IBOutlet UITableViewCell *pingsTableViewCell;
     IBOutlet UITableViewCell *publishOnTableViewCell;

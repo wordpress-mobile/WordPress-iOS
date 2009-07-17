@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 #import "WPPhotosListProtocol.h"
 
-@class EditPageViewController, WPPostDetailPreviewController, WPSelectionTableViewController, WPPhotosListViewController, PagesViewController;
+@class EditPageViewController, PostPreviewViewController, WPSelectionTableViewController, WPPhotosListViewController, PagesViewController;
 @class WPNavigationLeftButtonView;
 
 @interface PageViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate, WPPhotosListProtocol> {
@@ -28,8 +28,6 @@
 
 @property (nonatomic, retain)   WPNavigationLeftButtonView *leftView;
 @property (nonatomic, retain)   EditPageViewController *pageDetailViewController;
-//@property (nonatomic, retain)	WPPostDetailPreviewController *postPreviewController;
-//@property (nonatomic, retain)	WPPostSettingsController *postSettingsController;
 @property (nonatomic, retain)   WPPhotosListViewController *photosListController;
 @property (nonatomic, assign)   PagesViewController *pagesListController;
 

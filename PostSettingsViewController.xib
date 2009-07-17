@@ -2,18 +2,12 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.03">
 	<data>
 		<int key="IBDocument.SystemTarget">544</int>
-		<string key="IBDocument.SystemVersion">9J61</string>
+		<string key="IBDocument.SystemVersion">9J3050</string>
 		<string key="IBDocument.InterfaceBuilderVersion">677</string>
 		<string key="IBDocument.AppKitVersion">949.46</string>
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="95"/>
-			<integer value="24"/>
-			<integer value="185"/>
-			<integer value="192"/>
-			<integer value="199"/>
-			<integer value="10"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -69,7 +63,7 @@
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 			</object>
 			<object class="IBUITableViewCell" id="823972763">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -147,7 +141,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 89}</string>
-				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MSAwAA</bytes>
@@ -158,7 +151,7 @@
 				<reference key="IBUIContentView" ref="83766833"/>
 			</object>
 			<object class="IBUITableViewCell" id="544018142">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -217,7 +210,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 44}</string>
-				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor" id="804990546">
 					<int key="NSColorSpace">1</int>
 					<bytes key="NSRGB">MSAxIDEAA</bytes>
@@ -292,7 +284,7 @@
 				<reference key="IBUIContentView" ref="399164874"/>
 			</object>
 			<object class="IBUITableViewCell" id="521995996">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -347,7 +339,6 @@ ICAgICAgICAgICAgICDigKh0aGlzIHBvc3QgYW5kIGl0cyBjb21tZW50cy4</string>
 					</object>
 				</object>
 				<string key="NSFrameSize">{317, 55}</string>
-				<reference key="NSSuperview"/>
 				<reference key="IBUIBackgroundColor" ref="804990546"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClipsSubviews">YES</bool>
@@ -358,7 +349,7 @@ ICAgICAgICAgICAgICDigKh0aGlzIHBvc3QgYW5kIGl0cyBjb21tZW50cy4</string>
 				<bool key="IBUIShouldIndentWhileEditing">NO</bool>
 			</object>
 			<object class="IBUITableViewCell" id="352133937">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -409,7 +400,6 @@ ICAgICAgICAgICAgICDigKh0aGlzIHBvc3QgYW5kIGl0cyBjb21tZW50cy4</string>
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 44}</string>
-				<reference key="NSSuperview"/>
 				<reference key="IBUIBackgroundColor" ref="804990546"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -417,7 +407,7 @@ ICAgICAgICAgICAgICDigKh0aGlzIHBvc3QgYW5kIGl0cyBjb21tZW50cy4</string>
 				<reference key="IBUIContentView" ref="500229868"/>
 			</object>
 			<object class="IBUITableViewCell" id="867939903">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -466,7 +456,6 @@ NDgwLg</string>
 					</object>
 				</object>
 				<string key="NSFrameSize">{317, 55}</string>
-				<reference key="NSSuperview"/>
 				<reference key="IBUIBackgroundColor" ref="804990546"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClipsSubviews">YES</bool>
@@ -477,7 +466,7 @@ NDgwLg</string>
 				<bool key="IBUIShouldIndentWhileEditing">NO</bool>
 			</object>
 			<object class="IBUITableViewCell" id="313069095">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -494,7 +483,6 @@ NDgwLg</string>
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 44}</string>
-				<reference key="NSSuperview"/>
 				<reference key="IBUIBackgroundColor" ref="804990546"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -845,7 +833,7 @@ NDgwLg</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>WPPostSettingsController</string>
+					<string>PostSettingsViewController</string>
 					<string>UIResponder</string>
 					<string>{{146, 217}, {320, 89}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -913,22 +901,7 @@ NDgwLg</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">UIViewController</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Classes/UIViewController+WPAnimation.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">UIViewController</string>
-					<string key="superclassName">UIResponder</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBUserSource</string>
-						<string key="minorKey"/>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">WPPostSettingsController</string>
+					<string key="className">PostSettingsViewController</string>
 					<string key="superclassName">UIViewController</string>
 					<object class="NSMutableDictionary" key="actions">
 						<string key="NS.key.0">endEditingAction:</string>
@@ -978,8 +951,23 @@ NDgwLg</string>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBUserSource</string>
+						<string key="minorKey"/>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">UIViewController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Classes/WPPostSettingsController.h</string>
+						<string key="minorKey">Classes/UIViewController+WPAnimation.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">UIViewController</string>
+					<string key="superclassName">UIResponder</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBUserSource</string>
+						<string key="minorKey"/>
 					</object>
 				</object>
 			</object>

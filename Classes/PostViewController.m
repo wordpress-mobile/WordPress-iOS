@@ -2,8 +2,8 @@
 #import "BlogDataManager.h"
 #import "WordPressAppDelegate.h"
 #import "EditPostViewController.h"
-#import "WPPostDetailPreviewController.h"
-#import "WPPostSettingsController.h"
+#import "PostPreviewViewController.h"
+#import "PostSettingsViewController.h"
 #import "WPPhotosListViewController.h"
 #import "WPNavigationLeftButtonView.h"
 #import "PostsViewController.h"
@@ -415,7 +415,7 @@
     NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:5];
 
     if (postDetailEditController == nil) {
-        postDetailEditController = [[EditPostViewController alloc] initWithNibName:@"PostDetailEditController" bundle:nil];
+        postDetailEditController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil];
     }
 
     postDetailEditController.title = @"Write";
@@ -442,7 +442,7 @@
     [array addObject:photosListController];
 
     if (postPreviewController == nil) {
-        postPreviewController = [[WPPostDetailPreviewController alloc] initWithNibName:@"WPPostDetailPreviewController" bundle:nil];
+        postPreviewController = [[PostPreviewViewController alloc] initWithNibName:@"PostPreviewViewController" bundle:nil];
     }
 
     postPreviewController.title = @"Preview";
@@ -451,7 +451,7 @@
     [array addObject:postPreviewController];
 
     if (postSettingsController == nil) {
-        postSettingsController = [[WPPostSettingsController alloc] initWithNibName:@"WPPostSettingsController" bundle:nil];
+        postSettingsController = [[PostSettingsViewController alloc] initWithNibName:@"PostSettingsViewController" bundle:nil];
     }
 
     postSettingsController.title = @"Settings";

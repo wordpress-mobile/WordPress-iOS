@@ -1,15 +1,15 @@
-#import "WPPostDetailPreviewController.h"
+#import "PostPreviewViewController.h"
 #import "BlogDataManager.h"
 #import "WordPressAppDelegate.h"
 
-@interface WPPostDetailPreviewController (Private)
+@interface PostPreviewViewController (Private)
 
 - (void)addProgressIndicator;
 - (NSString *)stringReplacingNewlinesWithBR:(NSString *)surString;
 
 @end
 
-@implementation WPPostDetailPreviewController
+@implementation PostPreviewViewController
 
 @synthesize postDetailViewController, webView;
 

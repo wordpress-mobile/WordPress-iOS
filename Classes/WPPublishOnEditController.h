@@ -1,16 +1,16 @@
 #import <UIKit/UIKit.h>
 
-@class WPPostSettingsController;
+@class PostSettingsViewController;
 
 @interface WPPublishOnEditController : UIViewController {
     IBOutlet UILabel *dateLabel;
     IBOutlet UIDatePicker *datePicker;
     NSDateFormatter *dateFormatter;
 
-    WPPostSettingsController *settingController;
+    PostSettingsViewController *settingController;
 }
 
-@property (nonatomic, assign) WPPostSettingsController *settingController;
+@property (nonatomic, assign) PostSettingsViewController *settingController;
 
 - (NSDate *)currentSelectedDate;
 - (IBAction)datePickerValueChanged:(id)sender;

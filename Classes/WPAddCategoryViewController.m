@@ -1,5 +1,5 @@
 #import "WPAddCategoryViewController.h"
-#import "WPPostSettingsController.h"
+#import "PostSettingsViewController.h"
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
 

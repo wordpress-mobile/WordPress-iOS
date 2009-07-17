@@ -1,4 +1,4 @@
-#import "WPPostSettingsController.h"
+#import "PostSettingsViewController.h"
 #import "WPSelectionTableViewController.h"
 #import "WPPublishOnEditController.h"
 #import "BlogDataManager.h"
@@ -8,14 +8,14 @@
 #define kPasswordFooterSectionHeight         68.0f
 #define kResizePhotoSettingSectionHeight     60.0f
 
-@interface WPPostSettingsController (WPPostSettingsControllerCategory)
+@interface PostSettingsViewController (Private)
 
 - (void)keyboardWillShow:(BOOL)notif;
 - (void)setViewMovedUp:(BOOL)movedUp;
 
 @end
 
-@implementation WPPostSettingsController
+@implementation PostSettingsViewController
 
 @synthesize postDetailViewController, tableView,
 passwordTextField, commentsSwitchControl, pingsSwitchControl; //, customFieldsSwitchControl;
@@ -200,7 +200,7 @@ passwordTextField, commentsSwitchControl, pingsSwitchControl; //, customFieldsSw
         [[BlogDataManager sharedDataManager].currentPost setValue:[NSNumber numberWithInt:customFieldsSwitchControl.on] forKey:@"custom_fields_enabled"];
     }
 
-    NSLog(@"this is the value from WPPostSettingsController, controlEventValueChanged %d", [[[BlogDataManager sharedDataManager].currentPost valueForKey:@"custom_fields_enabled"] intValue]);
+    NSLog(@"this is the value from PostSettingsViewController, controlEventValueChanged %d", [[[BlogDataManager sharedDataManager].currentPost valueForKey:@"custom_fields_enabled"] intValue]);
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -261,20 +261,6 @@ passwordTextField, commentsSwitchControl, pingsSwitchControl; //, customFieldsSw
             }
 
             break;
-//		case 3:
-//			if (indexPath.row == 0) {
-//				//[[BlogDataManager sharedDataManager].currentPost setValue:[NSNumber numberWithInt:customFieldsSwitchControl.on] forKey:@"custom_fields_enabled"];
-//				//BOOL custom_fields_on = [[post valueForKey:@"custom_fields_enabled"] intValue];
-//				[dataManager printDictToLog:dataManager.currentPost andArrayName:@"currentPost from inside cellForRow"];
-//				NSNumber *value = [post valueForKey:@"custom_fields_enabled"];
-//				NSLog(@"the value, %d", value);
-//				customFieldsSwitchControl.on = [value boolValue];
-//				//customFieldsSwitchControl.on = YES;
-//				//customFieldsSwitchControl.on = [[post valueForKey:@"custom_fields_enabled"] intValue];
-//				NSLog(@"this is the value from WPPostSettingsController, cellForRow: Case3 %d", [[post valueForKey:@"custom_fields_enabled"] intValue] );
-//				return customFieldsCell;
-//			}
-//			break ;
         default:
             break;
     }

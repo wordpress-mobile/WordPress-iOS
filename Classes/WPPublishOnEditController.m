@@ -1,7 +1,7 @@
 #import "WPPublishOnEditController.h"
 #import "BlogDataManager.h"
 #import "PostViewController.h"
-#import "WPPostSettingsController.h"
+#import "PostSettingsViewController.h"
 #import "WordPressAppDelegate.h"
 
 @implementation WPPublishOnEditController

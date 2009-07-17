@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "PostViewController.h"
 
-@interface WPPostDetailPreviewController : UIViewController {
+@interface PostPreviewViewController : UIViewController {
     IBOutlet UIWebView *webView;
     BOOL isWebRefreshRequested;
 

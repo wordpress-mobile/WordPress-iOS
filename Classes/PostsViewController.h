@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "RefreshButtonView.h"
 
-@class BlogDataManager, PostViewController, EditPostViewController, DraftsListController;
+@class BlogDataManager, PostViewController, EditPostViewController;
 
 @interface PostsViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate> {
 @private
