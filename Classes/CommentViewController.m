@@ -11,9 +11,13 @@
 #import "WordPressAppDelegate.h"
 #import "WPProgressHUD.h"
 
+#define COMMENT_BODY_TOP        100
+#define COMMENT_BODY_MAX_HEIGHT 4000
+
 
 @interface CommentViewController (Private)
 
+- (void)resizeCommentBodyLabel;
 - (BOOL)isConnectedToHost;
 - (void)moderateCommentWithSelector:(SEL)selector;
 - (void)deleteThisComment;
@@ -83,6 +87,11 @@
     commentPostTitleLabel.textColor = textColor;
     commentDateLabel.textColor = textColor;
     commentBodyLabel.textColor = textColor;
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    [self resizeCommentBodyLabel];
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -184,13 +193,12 @@
     [self moderateCommentWithSelector:@selector(unApproveComment:forBlog:)];
 }
 
-- (void)setCommentBody:(NSString *)value {
-    commentBodyLabel.text = value;
-    CGSize size = [value sizeWithFont:commentBodyLabel.font
-                    constrainedToSize:CGSizeMake(300.0, 4000.0)
+- (void)resizeCommentBodyLabel {
+    CGSize size = [commentBodyLabel.text sizeWithFont:commentBodyLabel.font
+                    constrainedToSize:CGSizeMake(self.view.frame.size.width, COMMENT_BODY_MAX_HEIGHT)
                         lineBreakMode:commentBodyLabel.lineBreakMode];
-    scrollView.contentSize = CGSizeMake(size.width, commentBodyLabel.frame.origin.y + size.height);
-    commentBodyLabel.frame = CGRectMake(commentBodyLabel.frame.origin.x, commentBodyLabel.frame.origin.y, size.width, size.height);
+    scrollView.contentSize = CGSizeMake(size.width, COMMENT_BODY_TOP + size.height);
+    commentBodyLabel.frame = CGRectMake(commentBodyLabel.frame.origin.x, COMMENT_BODY_TOP, size.width, size.height);
 }
 
 #pragma mark -
@@ -223,7 +231,9 @@
     commentAuthorUrlLabel.text = authorUrl;
     commentPostTitleLabel.text = [@"on " stringByAppendingString:postTitle];
     commentDateLabel.text = [@"at " stringByAppendingString:[dateFormatter stringFromDate:createdAt]];
-    [self setCommentBody:commentBody];
+    commentBodyLabel.text = commentBody;
+    
+    [self resizeCommentBodyLabel];
 
     self.navigationItem.title = [NSString stringWithFormat:@"%d of %d", currentIndex + 1, count];
 
@@ -257,6 +267,7 @@
     } else if (currentIndex == [commentDetails count] - 1) {
         [segmentedControl setEnabled:FALSE forSegmentAtIndex:1];
     }
+
 }
 
 @end
