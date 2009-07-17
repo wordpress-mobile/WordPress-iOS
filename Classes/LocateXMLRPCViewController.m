@@ -76,6 +76,7 @@
 	XMLRPCRequest *listMethodsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpcurl]];
     [listMethodsReq setMethod:@"system.listMethods" withObjects:[NSArray array]];
     NSArray *listOfMethods = [dm executeXMLRPCRequest:listMethodsReq byHandlingError:YES];
+	[dm printArrayToLog:listOfMethods andArrayName:@"list of methods from LocateXMLRPC...:-saveXMLRPCLocation"];
     [listMethodsReq release];
 	
     if ([listOfMethods isKindOfClass:[NSError class]]){

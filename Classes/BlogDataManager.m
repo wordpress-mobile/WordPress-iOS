@@ -1089,6 +1089,14 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
         [rsdError release];
         return NO;
     }
+<<<<<<< .mine
+	
+	//This line is for testing the "new" UI to get XMLRPC endpoint directly from user without needing to create a "broken" blog for testing
+	//comment out the line for normal running of the application, uncomment the line for testing.
+	//Unique search string: ^^XMLRPC Endpoint
+	xmlrpc = nil;
+=======
+>>>>>>> .r520
 
     if (!xmlrpc) {
         UIAlertView *rsdError = [[UIAlertView alloc] initWithTitle:@"We could not find the XML-RPC service for your blog. Please check your network connection and try again. if the problem persists, please visit \"iphone.wordpress.org\" to report the problem."
