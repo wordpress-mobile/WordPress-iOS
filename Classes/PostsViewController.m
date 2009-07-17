@@ -58,6 +58,7 @@
 
     [self loadPosts];
     [self scrollToFirstCell];
+    [self refreshHandler];
 
     [super viewWillAppear:animated];
 }

@@ -89,6 +89,7 @@
     
     [self refreshCommentsList];
     [self scrollToFirstCell];
+    [self refreshHandler];
     
     [editToolbar setHidden:YES];
     self.navigationItem.rightBarButtonItem = editButtonItem;

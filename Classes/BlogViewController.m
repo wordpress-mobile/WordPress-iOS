@@ -48,11 +48,6 @@
     [super dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [tabBarController.selectedViewController viewWillAppear:animated];
-    [super viewWillAppear:animated];
-}
-
 #pragma mark -
 #pragma mark Navigation Methods
 
