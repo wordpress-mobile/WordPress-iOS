@@ -4,7 +4,6 @@
 #import "BlogDataManager.h"
 #import "Reachability.h"
 
-
 @interface WordPressAppDelegate (Private)
 
 - (void)reachabilityChanged;
@@ -16,7 +15,6 @@
 - (void)showSplashView;
 
 @end
-
 
 @implementation WordPressAppDelegate
 

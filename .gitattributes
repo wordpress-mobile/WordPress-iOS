@@ -24,6 +24,8 @@ Classes/EditBlogViewController.h -text
 Classes/EditBlogViewController.m -text
 Classes/EditPageViewController.h -text
 Classes/EditPageViewController.m -text
+Classes/EditPostViewController.h -text
+Classes/EditPostViewController.m -text
 Classes/GravatarImageView.h -text
 Classes/GravatarImageView.m -text
 Classes/ImageCache.h -text
@@ -36,8 +38,6 @@ Classes/PageViewController.h -text
 Classes/PageViewController.m -text
 Classes/PagesViewController.h -text
 Classes/PagesViewController.m -text
-Classes/PostDetailEditController.h -text
-Classes/PostDetailEditController.m -text
 Classes/PostTableViewCell.h -text
 Classes/PostTableViewCell.m -text
 Classes/PostViewController.h -text

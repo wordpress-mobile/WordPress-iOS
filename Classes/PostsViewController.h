@@ -1,20 +1,21 @@
 #import <Foundation/Foundation.h>
 #import "RefreshButtonView.h"
 
-@class BlogDataManager, PostViewController, PostDetailEditController, DraftsListController;
+@class BlogDataManager, PostViewController, EditPostViewController, DraftsListController;
 
 @interface PostsViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate> {
+@private
     UIBarButtonItem *newButtonItem;
 
     IBOutlet UITableView *postsTableView;
 
     PostViewController *postDetailViewController;
-    PostDetailEditController *postDetailEditController;
+    EditPostViewController *postDetailEditController;
     RefreshButtonView *refreshButton;
 }
 
 @property (readonly) UIBarButtonItem *newButtonItem;
 @property (nonatomic, retain) PostViewController *postDetailViewController;
-@property (nonatomic, retain) PostDetailEditController *postDetailEditController;
+@property (nonatomic, retain) EditPostViewController *postDetailEditController;
 
 @end

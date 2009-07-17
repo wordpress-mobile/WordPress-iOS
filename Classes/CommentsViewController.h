@@ -12,6 +12,7 @@
 
 
 @interface CommentsViewController : UIViewController <UITableViewDataSource, CommentsTableViewDelegate> {
+@private
     IBOutlet UITableView *commentsTableView;
 
     IBOutlet UIToolbar *editToolbar;

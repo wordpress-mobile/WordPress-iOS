@@ -1,10 +1,10 @@
 #import <UIKit/UIKit.h>
 #import "Constants.h"
 
-
 @class BlogDataManager;
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate> {
+@private
     BlogDataManager *dataManager;
 
     IBOutlet UIWindow *window;

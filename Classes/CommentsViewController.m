@@ -22,7 +22,7 @@
 - (void)setEditing:(BOOL)value;
 - (void)updateSelectedComments;
 - (void)refreshHandler;
-- (void)downloadRecentComments;
+- (void)syncComments;
 - (BOOL)isConnectedToHost;
 - (void)moderateCommentsWithSelector:(SEL)selector;
 - (void)deleteComments;
@@ -173,7 +173,7 @@
     [self performSelectorInBackground:@selector(downloadRecentComments) withObject:nil];
 }
 
-- (void)downloadRecentComments {
+- (void)syncComments {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
     BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];

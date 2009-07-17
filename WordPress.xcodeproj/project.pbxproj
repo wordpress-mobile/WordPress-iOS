@@ -85,7 +85,7 @@
 		ACBAB67D0E1247CC00F38795 /* WPPostDetailPreviewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACBAB67C0E1247CC00F38795 /* WPPostDetailPreviewController.xib */; };
 		ACBAB6860E1247F700F38795 /* WPPostDetailPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBAB6850E1247F700F38795 /* WPPostDetailPreviewController.m */; };
 		ACC156BB0E10D73100D6E1A0 /* PostViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACC156BA0E10D73100D6E1A0 /* PostViewController.xib */; };
-		ACC156CC0E10E67600D6E1A0 /* PostDetailEditController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC156CB0E10E67600D6E1A0 /* PostDetailEditController.m */; };
+		ACC156CC0E10E67600D6E1A0 /* EditPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC156CB0E10E67600D6E1A0 /* EditPostViewController.m */; };
 		ACE287520E2E4381004F5145 /* WPPublishOnEditController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACE287510E2E4381004F5145 /* WPPublishOnEditController.xib */; };
 		ACF35BD20E20A64100DB9213 /* Red Background.png in Resources */ = {isa = PBXBuildFile; fileRef = ACF35BD10E20A64100DB9213 /* Red Background.png */; };
 		ACF35BF00E20ABAF00DB9213 /* Red Selected Background.png in Resources */ = {isa = PBXBuildFile; fileRef = ACF35BEF0E20ABAF00DB9213 /* Red Selected Background.png */; };
@@ -243,8 +243,8 @@
 		ACBAB6840E1247F700F38795 /* WPPostDetailPreviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPPostDetailPreviewController.h; sourceTree = "<group>"; };
 		ACBAB6850E1247F700F38795 /* WPPostDetailPreviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPPostDetailPreviewController.m; sourceTree = "<group>"; };
 		ACC156BA0E10D73100D6E1A0 /* PostViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostViewController.xib; sourceTree = "<group>"; };
-		ACC156CA0E10E67600D6E1A0 /* PostDetailEditController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostDetailEditController.h; sourceTree = "<group>"; };
-		ACC156CB0E10E67600D6E1A0 /* PostDetailEditController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostDetailEditController.m; sourceTree = "<group>"; };
+		ACC156CA0E10E67600D6E1A0 /* EditPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditPostViewController.h; sourceTree = "<group>"; };
+		ACC156CB0E10E67600D6E1A0 /* EditPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditPostViewController.m; sourceTree = "<group>"; };
 		ACE287510E2E4381004F5145 /* WPPublishOnEditController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WPPublishOnEditController.xib; sourceTree = "<group>"; };
 		ACF35BD10E20A64100DB9213 /* Red Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Red Background.png"; sourceTree = "<group>"; };
 		ACF35BEF0E20ABAF00DB9213 /* Red Selected Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Red Selected Background.png"; sourceTree = "<group>"; };
@@ -462,8 +462,8 @@
 		AC3439790E11434600E5D79B /* Post */ = {
 			isa = PBXGroup;
 			children = (
-				ACC156CA0E10E67600D6E1A0 /* PostDetailEditController.h */,
-				ACC156CB0E10E67600D6E1A0 /* PostDetailEditController.m */,
+				ACC156CA0E10E67600D6E1A0 /* EditPostViewController.h */,
+				ACC156CB0E10E67600D6E1A0 /* EditPostViewController.m */,
 				2F706C280DFB8A5200B43086 /* PostViewController.h */,
 				2F706C290DFB8A5200B43086 /* PostViewController.m */,
 				2F970F720DF92274006BD934 /* PostsViewController.h */,
@@ -825,7 +825,7 @@
 				ACFD04A10DFD2FCA0031D567 /* XMLRPCRequest.m in Sources */,
 				ACFD04A20DFD2FCA0031D567 /* XMLRPCResponse.m in Sources */,
 				A0A242270DFE85D2008BDA15 /* XMLValueDecoder.m in Sources */,
-				ACC156CC0E10E67600D6E1A0 /* PostDetailEditController.m in Sources */,
+				ACC156CC0E10E67600D6E1A0 /* EditPostViewController.m in Sources */,
 				ACBAB5FE0E121C7300F38795 /* WPPostSettingsController.m in Sources */,
 				ACBAB6860E1247F700F38795 /* WPPostDetailPreviewController.m in Sources */,
 				ACAC79C60E1F50EB00AC7074 /* WPSelectionTableViewController.m in Sources */,

@@ -23,7 +23,7 @@
 - (void)loadPages;
 - (void)setPageDetailsController;
 - (void)refreshHandler;
-- (void)downloadRecentPages;
+- (void)syncPages;
 - (void)showAddNewPage;
 - (void)addRefreshButton;
 
@@ -236,7 +236,7 @@
     [self performSelectorInBackground:@selector(downloadRecentPages) withObject:nil];
 }
 
-- (void)downloadRecentPages {
+- (void)syncPages {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 

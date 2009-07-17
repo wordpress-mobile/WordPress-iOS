@@ -9,7 +9,7 @@
 
 @class WPSegmentedSelectionTableViewController;
 
-@interface PostDetailEditController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
+@interface EditPostViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
                                                         UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
     IBOutlet UITextView *textView;
     IBOutlet UITextField *titleTextField;

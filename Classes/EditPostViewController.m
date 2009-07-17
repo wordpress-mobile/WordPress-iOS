@@ -1,4 +1,4 @@
-#import "PostDetailEditController.h"
+#import "EditPostViewController.h"
 #import "WordPressAppDelegate.h"
 #import "BlogDataManager.h"
 #import "WPSegmentedSelectionTableViewController.h"
@@ -6,13 +6,13 @@
 
 NSTimeInterval kAnimationDuration = 0.3f;
 
-@interface PostDetailEditController (privates)
+@interface EditPostViewController (privates)
 
 - (void)clearPickerContrller;
 
 @end
 
-@implementation PostDetailEditController
+@implementation EditPostViewController
 
 @synthesize postDetailViewController, selectionTableViewController, segmentedTableViewController, leftView, customFieldsTableView;
 @synthesize infoText, urlField, bookMarksArray, selectedLinkRange, currentEditingTextField, isEditing;
@@ -57,38 +57,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     isCustomFieldsEnabledForThisPost = [self checkCustomFieldsMinusMetadata];
     //call a helper to set originY for textViewContentView
     [self postionTextViewContentView];
-    
-    //TODO:JOHNBCustomFields: this code is garbage for testing.  REMOVE IT!
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
-    NSArray *customFieldsArray = [dm.currentPost valueForKey:@"custom_fields"];
-    [dm printArrayToLog:customFieldsArray andArrayName:@"customFieldsArray From PostDetailEditController:viewDidLoad"];
-    //NSArray *test1 = [customFieldsArray objectAtIndex:0];
-    //NSDictionary *testDict = [customFieldsArray objectAtIndex:0];
-    //NSMutableData
-    //NSString * string = [[test1 objectAtIndex: 0] objectAtIndex: 0];
-    //NSString *string = [test1 objectAtIndex:0];
-    //NSMutableDictionary * theCurrentPost = [dm currentPost];
-    //[dm printArrayToLog:customFieldsArray andArrayName:@"customFieldsArray From PostDetailEditController:viewDidLoad"];
-    /*
-     [dm printArrayToLog:test1 andArrayName:@"test1 From PostDetailEditController:viewDidLoad"];
-     NSLog(@"this is the testDict id:::-->   %@", [testDict objectForKey:@"id"]);
-     NSLog(@"this is the testDict key:::-->   %@", [testDict objectForKey:@"key"]);
-     NSLog(@"this is the testDict value:::-->   %@", [testDict objectForKey:@"value"]);
-     NSLog(@"A test of the whole shebang: 'Value' from the array at the 0th index, should be Buffalo for a Broken Heart by Dan O'Brien <<*****>> %@", [[customFieldsArray objectAtIndex:0] objectForKey:@"value"] );
-     //The next line models how to change individual values inside custom_fields... Note that we need to address the Array's index number and then address the "invisible" NSDict inside the array
-     //this implies we need a way to know how many custom fields we have, and ignore the other values (edit_last and edit_lock)
-     [[customFieldsArray objectAtIndex:0] setValue:@"This is the second time I changed this in code" forKey:@"value"];
-     NSLog(@"this is the testDict 'Value':::-->   %@", [testDict objectForKey:@"value"]);
-     NSString *valueString = [[customFieldsArray objectAtIndex:2] valueForKey:@"value"];
-     NSLog(@"this is the string value out of the array/nsdict to prove we can %@", valueString);
-     //next line sets custom_fields inside currentPost equal to any changes made to customFieldsArray
-     [dm.currentPost setValue:customFieldsArray forKey:@"custom_fields"];
-     
-     NSArray *secondCustomFieldsArray = [dm.currentPost valueForKey:@"custom_fields"];
-     [dm printArrayToLog:secondCustomFieldsArray andArrayName:@"secondCustomFieldsArray From PostDetailEditController:viewDidLoad"];
-     */
-    
-    //[dm printDictToLog:theCurrentPost andArrayName:@"customFieldsArray From PostDetailEditController:viewDidLoad"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -112,14 +80,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 #pragma mark -
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        // Initialization code
-    }
-
-    return self;
-}
 
 - (void)refreshUIForCompose {
     //	textView.alpha = 0.3f;
@@ -593,21 +553,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
         NSString *text = aTextView.text;
         [[[BlogDataManager sharedDataManager] currentPost] setObject:text forKey:@"description"];
         NSLog(@"the text from aTextView is %@", text);
-        //TODO:JOHNBCustomFields: try calling a helper method here while we don't have UI
-        //?this is how the text in the post gets into currentPost, but what is currentPost?
-        //FIXME:JOHNBCustomFields: remove this when we're doing it in the right place in the UI
-        /*
-           NSArray *fakeCustomFieldsArray1 = [NSMutableArray arrayWithObjects:
-                                           @"id = 117",   @"key = Currently Also Reading", @"value = asdf", nil];
-           NSArray *fakeCustomFieldsArray2 = [NSMutableArray arrayWithObjects:
-                                           @"id = 195",   @"key = My Mood", @"value = Green", nil];
-           NSArray *fakeCustomFieldsArray3 = [NSMutableArray arrayWithObjects:
-                                          @"id = 119",   @"key = Weather is Like", @"value = Rainy", nil];
-           NSArray *comboCustomFieldsArray = [NSMutableArray arrayWithObjects:
-                                          fakeCustomFieldsArray1, fakeCustomFieldsArray2, fakeCustomFieldsArray3, nil ];
-
-           NSLog(@"comboCustomFieldsArray: %@", comboCustomFieldsArray);
-         */
     }
 }
 
@@ -848,21 +793,6 @@ editingInfo:(NSDictionary *)editingInfo {
     return UITableViewCellAccessoryDisclosureIndicator;
 }
 
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//	//This is not getting called.  Probably because of the return nil in the willSelectRowAtIndexPath below...
-// I don't want to change the entire UI model at this point...
-//	//In the interest of not wasting (time = money) for WP/Automattic, I'm letting it go
-//	//the hackish solution is a button on top of the tableView.
-//
-//	//initialize the new view if it doesn't exist
-//	if (customFieldsTableView == nil)
-//		customFieldsTableView = [[CustomFieldsTableView alloc] initWithNibName:@"CustomFieldsTableView" bundle:nil];
-//	customFieldsTableView.postDetailViewController = self.postDetailViewController;
-//	//load the CustomFieldsTableView  Note: customFieldsTableView loads some data in viewDidLoad
-//	[postDetailViewController.navigationController pushViewController:customFieldsTableView animated:YES];
-//
-//}
-
 #pragma mark -
 #pragma mark Table Delegate Methods
 - (NSIndexPath *)tableView:(UITableView *)tableView
@@ -926,8 +856,7 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)didReceiveMemoryWarning {
     WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
-    // Release anything that's not essential, such as cached data
+    [super didReceiveMemoryWarning];
 }
 
 - (void)dealloc {

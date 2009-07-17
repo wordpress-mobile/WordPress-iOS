@@ -11,6 +11,7 @@
 @class EditPageViewController, PageViewController;
 
 @interface PagesViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate> {
+@private
     UIBarButtonItem *newButtonItem;
 
     EditPageViewController *pageDetailViewController;

@@ -2,7 +2,7 @@
 
 #import "BlogDataManager.h"
 #import "PostViewController.h"
-#import "PostDetailEditController.h"
+#import "EditPostViewController.h"
 #import "PostTableViewCell.h"
 #import "UIViewController+WPAnimation.h"
 #import "WordPressAppDelegate.h"
@@ -18,7 +18,7 @@
 - (void)loadPosts;
 - (void)showAddPostView;
 - (void)refreshHandler;
-- (void)downloadRecentPosts;
+- (void)syncPosts;
 - (BOOL)handleAutoSavedContext:(NSInteger)tag;
 - (void)addRefreshButton;
 
@@ -294,7 +294,7 @@
     [self performSelectorInBackground:@selector(downloadRecentPosts) withObject:nil];
 }
 
-- (void)downloadRecentPosts {
+- (void)syncPosts {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 

@@ -1,7 +1,7 @@
 #import "PostViewController.h"
 #import "BlogDataManager.h"
 #import "WordPressAppDelegate.h"
-#import "PostDetailEditController.h"
+#import "EditPostViewController.h"
 #import "WPPostDetailPreviewController.h"
 #import "WPPostSettingsController.h"
 #import "WPPhotosListViewController.h"
@@ -415,7 +415,7 @@
     NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:5];
 
     if (postDetailEditController == nil) {
-        postDetailEditController = [[PostDetailEditController alloc] initWithNibName:@"PostDetailEditController" bundle:nil];
+        postDetailEditController = [[EditPostViewController alloc] initWithNibName:@"PostDetailEditController" bundle:nil];
     }
 
     postDetailEditController.title = @"Write";
