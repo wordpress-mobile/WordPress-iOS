@@ -81,6 +81,7 @@
     
     [self refreshCommentsList];
     [self scrollToFirstCell];
+    [self syncComments];
     
     [editToolbar setHidden:YES];
     self.navigationItem.rightBarButtonItem = editButtonItem;

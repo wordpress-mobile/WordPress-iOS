@@ -68,6 +68,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [self loadPosts];
     [self scrollToFirstCell];
+    [self syncPosts];
 
     if ([self.tableView indexPathForSelectedRow]) {
         [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];

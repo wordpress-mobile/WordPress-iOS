@@ -65,6 +65,7 @@
 
     [self addRefreshButton];
     [self setPageDetailsController];
+    [self syncPages];
 
     newButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
                      target:self
