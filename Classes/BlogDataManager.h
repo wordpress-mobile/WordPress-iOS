@@ -2,8 +2,6 @@
 #import "XMLRPCResponse.h"
 #import "XMLRPCRequest.h"
 #import "XMLRPCConnection.h"
-#import "RegExProcessor.h"
-#import "EditBlogViewController.h"
 
 #define PictureObjectUploadedNotificationName @"PictureObjectUploadedNotificationName"
 #define WPNewCategoryCreatedAndUpdatedInBlogNotificationName @"WPNewCategoryCreatedAndUpdatedInBlog"
@@ -61,11 +59,6 @@
 
     NSOperationQueue *asyncPostsOperationsQueue;
     NSMutableDictionary *currentUnsavedDraft;
-	EditBlogViewController *editBlogViewController;
-	
-	BOOL isProblemWithXMLRPC;
-
-	
 }
 
 + (BlogDataManager *)sharedDataManager;
@@ -101,11 +94,6 @@
 @property (nonatomic, readonly) NSOperationQueue *asyncPostsOperationsQueue;
 @property (nonatomic) int unsavedPostsCount;
 @property (nonatomic, retain) NSMutableDictionary *currentUnsavedDraft;
-@property (nonatomic, retain) EditBlogViewController *editBlogViewController;
-//BOOLs for handling XMLRPC issues...  See LocateXMLRPCViewController
-@property BOOL isProblemWithXMLRPC; 
-
-
 
 #pragma mark Blog metadata
 
@@ -298,8 +286,5 @@
 //utils
 - (void)printArrayToLog:(NSArray *)theArray andArrayName:(NSString *)theArrayName;
 - (void)printDictToLog:(NSDictionary *)theDict andArrayName:(NSString *)theDictName;
-
-//exposing XMLRPC call to use as test in LocateXMLRPCViewController
-- (id)executeXMLRPCRequest:(XMLRPCRequest *)req byHandlingError:(BOOL)shouldHandleFalg;
 
 @end

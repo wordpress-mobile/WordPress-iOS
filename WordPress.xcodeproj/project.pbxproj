@@ -28,11 +28,7 @@
 		28C286E10D94DF7D0034E888 /* BlogsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C286E00D94DF7D0034E888 /* BlogsViewController.m */; };
 		2904E9940FE6E09600E00DBC /* CustomFieldsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2904E9910FE6E09600E00DBC /* CustomFieldsTableView.m */; };
 		2904E9950FE6E09600E00DBC /* CustomFieldsDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2904E9930FE6E09600E00DBC /* CustomFieldsDetailController.m */; };
-		29160CE21009067B008F403C /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 29160CE11009067B008F403C /* RegexKitLite.m */; };
-		29160CFC10090BFA008F403C /* RegExProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 29160CFB10090BFA008F403C /* RegExProcessor.m */; };
 		296890780FE971DC00770264 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296890770FE971DC00770264 /* Security.framework */; };
-		299AC92E100978660035F140 /* LocateXMLRPCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 299AC92C100978660035F140 /* LocateXMLRPCViewController.m */; };
-		299ACA7410099CA30035F140 /* LocateXMLRPCViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 299ACA7310099CA30035F140 /* LocateXMLRPCViewController.xib */; };
 		29FF132F0FE70F3100CFB908 /* CustomFieldsTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29FF132E0FE70F3100CFB908 /* CustomFieldsTableView.xib */; };
 		2A7F71FB0E70F82A00E48A1F /* CommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A7F71FA0E70F82A00E48A1F /* CommentViewController.xib */; };
 		2A7F72010E70F8C900E48A1F /* CommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7F72000E70F8C900E48A1F /* CommentViewController.m */; };
@@ -168,14 +164,7 @@
 		2904E9910FE6E09600E00DBC /* CustomFieldsTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomFieldsTableView.m; sourceTree = "<group>"; };
 		2904E9920FE6E09600E00DBC /* CustomFieldsDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomFieldsDetailController.h; sourceTree = "<group>"; };
 		2904E9930FE6E09600E00DBC /* CustomFieldsDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomFieldsDetailController.m; sourceTree = "<group>"; };
-		29160CE01009067B008F403C /* RegexKitLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegexKitLite.h; sourceTree = "<group>"; };
-		29160CE11009067B008F403C /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
-		29160CFA10090BFA008F403C /* RegExProcessor.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; path = RegExProcessor.h; sourceTree = "<group>"; };
-		29160CFB10090BFA008F403C /* RegExProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegExProcessor.m; sourceTree = "<group>"; };
 		296890770FE971DC00770264 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		299AC92B100978660035F140 /* LocateXMLRPCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocateXMLRPCViewController.h; sourceTree = "<group>"; };
-		299AC92C100978660035F140 /* LocateXMLRPCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocateXMLRPCViewController.m; sourceTree = "<group>"; };
-		299ACA7310099CA30035F140 /* LocateXMLRPCViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LocateXMLRPCViewController.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29FF132E0FE70F3100CFB908 /* CustomFieldsTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomFieldsTableView.xib; sourceTree = "<group>"; };
 		2A7F71FA0E70F82A00E48A1F /* CommentViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentViewController.xib; sourceTree = "<group>"; };
@@ -509,8 +498,6 @@
 				28C286E00D94DF7D0034E888 /* BlogsViewController.m */,
 				2F970F850DF924E2006BD934 /* EditBlogViewController.h */,
 				2F970F860DF924E2006BD934 /* EditBlogViewController.m */,
-				299AC92B100978660035F140 /* LocateXMLRPCViewController.h */,
-				299AC92C100978660035F140 /* LocateXMLRPCViewController.m */,
 			);
 			name = Blog;
 			sourceTree = "<group>";
@@ -557,10 +544,6 @@
 		AC512F800E20D28500B7DA32 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				29160CE01009067B008F403C /* RegexKitLite.h */,
-				29160CE11009067B008F403C /* RegexKitLite.m */,
-				29160CFA10090BFA008F403C /* RegExProcessor.h */,
-				29160CFB10090BFA008F403C /* RegExProcessor.m */,
 				A01C54210E24E4ED00D411F2 /* Reachability.h */,
 				A01C54220E24E4ED00D411F2 /* Reachability.m */,
 				A0E293EF0E21027E00C6919C /* WPAddCategoryViewController.h */,
@@ -631,7 +614,6 @@
 			children = (
 				03FF35C4100423A10066ED95 /* BlogViewController.xib */,
 				AC2FB44B0E1D236A00DFE859 /* EditBlogViewController.xib */,
-				299ACA7310099CA30035F140 /* LocateXMLRPCViewController.xib */,
 			);
 			name = Blog;
 			sourceTree = "<group>";
@@ -815,7 +797,6 @@
 				03FF34BB10040B0A0066ED95 /* documents.png in Resources */,
 				03FF35C6100423A10066ED95 /* BlogViewController.xib in Resources */,
 				CE1E3BC71005B3D500A7BD08 /* WPpregressHUDBackground.png in Resources */,
-				299ACA7410099CA30035F140 /* LocateXMLRPCViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -875,9 +856,6 @@
 				CEFC8B5910057D0A0052604A /* WPProgressHUD.m in Sources */,
 				03F298C410057AEC0097B29A /* RefreshButtonView.m in Sources */,
 				CEE7088B1006FC1200D6302A /* WPAsynchronousImageView.m in Sources */,
-				29160CE21009067B008F403C /* RegexKitLite.m in Sources */,
-				29160CFC10090BFA008F403C /* RegExProcessor.m in Sources */,
-				299AC92E100978660035F140 /* LocateXMLRPCViewController.m in Sources */,
 				03958062100D6CFC00850742 /* WPLabel.m in Sources */,
 				03958860100DA2DA00850742 /* ImageCache.m in Sources */,
 				039FFDA1100EDC1B00D8B279 /* GravatarImageView.m in Sources */,
@@ -891,8 +869,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer: John Bickerstaff";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: John Bickerstaff";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer:";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -948,18 +925,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Developer: John Bickerstaff";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: John Bickerstaff";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = "-licucore";
 				PREBINDING = NO;
-				PROVISIONING_PROFILE = "FB50A450-F863-4282-A539-2A7F74B1E589";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FB50A450-F863-4282-A539-2A7F74B1E589";
-				SDKROOT = iphonesimulator2.2.1;
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos2.2.1;
 			};
 			name = Debug;
 		};

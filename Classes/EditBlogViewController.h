@@ -1,6 +1,5 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
-#import "LocateXMLRPCViewController.h"
 
 @class BlogDataManager, WPSelectionTableViewController;
 
@@ -34,20 +33,14 @@
     IBOutlet UIView *validationView;
 
     NSDictionary *currentBlog;
-	
-	
 }
 
 @property (nonatomic, assign) UITableView *blogEditTable;
 @property (nonatomic, retain) UIView *validationView;
 
 @property (nonatomic, retain) NSDictionary *currentBlog;
-@property (nonatomic, retain) UITextField *blogURLTextField;
-
 
 - (IBAction)saveBlog:(id)sender;
 - (IBAction)cancel:(id)sender;
-- (void)hideSpinner;
-- (void)showLocateXMLRPCModalViewWithAnimation:(BOOL)animate;
 
 @end
