@@ -10,6 +10,7 @@
 
 #import <CommonCrypto/CommonDigest.h>
 
+#define GRAVATAR_DEFAULT_IMAGE  @"gravatar.jpg"
 #define GRAVATAR_IMAGE_RADIUS   10
 #define GRAVATAR_URL            @"http://www.gravatar.com/avatar/%@s=80"
 
@@ -27,6 +28,8 @@ NSString *md5(NSString *str);
 @implementation GravatarImageView
 
 @synthesize email;
+
+#pragma mark Memory Management
 
 - (void)dealloc {
     if (email) {
@@ -46,6 +49,10 @@ NSString *md5(NSString *str);
 #pragma mark Public Methods
 
 - (void)setImage:(UIImage *)image {
+    if (!image) {
+        image = [UIImage imageNamed:GRAVATAR_DEFAULT_IMAGE];
+    }
+
     image = [self makeRoundCornerImage:image radius:GRAVATAR_IMAGE_RADIUS];
     [super setImage:image];
 }
@@ -94,7 +101,6 @@ static void addRoundedRectToPath(CGContextRef context, CGRect rect, float radius
         CGImageRef imageMasked = CGBitmapContextCreateImage(context);
         CGContextRelease(context);
         CGColorSpaceRelease(colorSpace);
-        [image release];
         
         newImage = [[UIImage imageWithCGImage:imageMasked] retain];
         CGImageRelease(imageMasked);

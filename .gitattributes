@@ -150,6 +150,7 @@ WordPress.xcodeproj/project.pbxproj -text
 /documents.png -text
 /down.png -text
 /favicon.ico -text svneol=unset#unset
+/gravatar.jpg -text
 /license.txt -text
 /lock.png -text
 /main.m -text
