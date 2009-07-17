@@ -4,7 +4,7 @@
 #import "EditBlogViewController.h"
 #import "BlogDataManager.h"
 #import "Reachability.h"
-#import "PostsListController.h"
+#import "PostsViewController.h"
 #import "WordPressAppDelegate.h"
 #import "UIViewController+WPAnimation.h"
 #import <QuartzCore/QuartzCore.h>

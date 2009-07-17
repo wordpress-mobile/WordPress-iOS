@@ -265,7 +265,7 @@
 					<string>{{386, 190}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>PostsListController</string>
+					<string>PostsViewController</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>PagesViewController</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -316,7 +316,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>CommentsViewController</string>
 							<string>PagesViewController</string>
-							<string>PostsListController</string>
+							<string>PostsViewController</string>
 							<string>UITabBarController</string>
 						</object>
 					</object>
@@ -395,15 +395,15 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">PostsListController</string>
+					<string key="className">PostsViewController</string>
 					<string key="superclassName">UITableViewController</string>
 					<object class="NSMutableDictionary" key="outlets">
 						<string key="NS.key.0">postsTableView</string>
 						<string key="NS.object.0">UITableView</string>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Classes/PostsListController.h</string>
+						<string key="majorKey">IBUserSource</string>
+						<string key="minorKey"/>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

@@ -6,14 +6,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PostsListController.h"
+#import "PostsViewController.h"
 #import "PagesViewController.h"
 #import "CommentsViewController.h"
 
 @interface BlogViewController : UIViewController <UITabBarControllerDelegate> {
     IBOutlet UITabBarController *tabBarController;
 
-    IBOutlet PostsListController *postsViewController;
+    IBOutlet PostsViewController *postsViewController;
     IBOutlet PagesViewController *pagesViewController;
     IBOutlet CommentsViewController *commentsViewController;
 

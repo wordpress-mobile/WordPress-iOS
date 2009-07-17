@@ -42,8 +42,8 @@ Classes/PostTableViewCell.h -text
 Classes/PostTableViewCell.m -text
 Classes/PostViewController.h -text
 Classes/PostViewController.m -text
-Classes/PostsListController.h -text
-Classes/PostsListController.m -text
+Classes/PostsViewController.h -text
+Classes/PostsViewController.m -text
 Classes/Reachability.h -text
 Classes/Reachability.m -text
 Classes/RefreshButtonView.h -text

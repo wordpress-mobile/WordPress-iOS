@@ -36,7 +36,7 @@
     self.getCustomFieldsStripMetadata;
 //TODO:JOHNB CustomFields - refactor this so I can call this view from pages or posts - perhaps a BOOL that gets set when this view is called?
     //with luck all we need to do is populate the customFieldsArray from the Pages... currentPage? and we're done
-    //no this is all in the context of PostsListController - different context and troublesome to figure it all out for Pages... maybe better to just copy?
+    //no this is all in the context of PostsViewController - different context and troublesome to figure it all out for Pages... maybe better to just copy?
     NSLog(@"inside viewWillAppear, hopefully reloading data now");
     [saveButtonItem retain];
     //[customFieldsTableView reloadData];

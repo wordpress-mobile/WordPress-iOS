@@ -6,7 +6,7 @@
 #import "WPPostSettingsController.h"
 #import "WPPhotosListViewController.h"
 #import "WPNavigationLeftButtonView.h"
-#import "PostsListController.h"
+#import "PostsViewController.h"
 #import "Reachability.h"
 #import "CustomFieldsDetailController.h"
 #import "CommentsViewController.h"

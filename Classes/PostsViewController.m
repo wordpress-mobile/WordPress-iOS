@@ -1,4 +1,4 @@
-#import "PostsListController.h"
+#import "PostsViewController.h"
 
 #import "BlogDataManager.h"
 #import "PostViewController.h"
@@ -16,7 +16,7 @@
 #define NEW_VERSION_ALERT_TAG   5111
 
 
-@interface PostsListController (Private)
+@interface PostsViewController (Private)
 
 - (void)scrollToFirstCell;
 - (void)loadPosts;
@@ -29,7 +29,7 @@
 @end
 
 
-@implementation PostsListController
+@implementation PostsViewController
 
 @synthesize newButtonItem, postDetailViewController, postDetailEditController;
 

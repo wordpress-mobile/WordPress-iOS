@@ -10,7 +10,7 @@
 #import "BlogDataManager.h"
 #import "EditPageViewController.h"
 #import "PagesViewController.h"
-#import "PostsListController.h"
+#import "PostsViewController.h"
 #import "Reachability.h"
 #import "WordPressAppDelegate.h"
 #import "WPNavigationLeftButtonView.h"
