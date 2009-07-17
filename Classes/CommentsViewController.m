@@ -362,7 +362,7 @@
 
     [delegate.navigationController pushViewController:commentsViewController animated:YES];
 
-    [commentsViewController showComment:[[BlogDataManager sharedDataManager] commentTitles] atIndex:index];
+    [commentsViewController showComment:commentsArray atIndex:index];
     [commentsViewController release];
 }
 
