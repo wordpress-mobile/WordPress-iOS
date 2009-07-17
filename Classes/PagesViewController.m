@@ -74,6 +74,11 @@
 - (void)viewWillAppear:(BOOL)animated {
     [self loadPages];
     [self scrollToFirstCell];
+    
+    if ([self.tableView indexPathForSelectedRow]) {
+        [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+        [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
+    }
 
     [super viewWillAppear:animated];
 }
