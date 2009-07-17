@@ -2029,7 +2029,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
     NSMutableArray *copyOfCommentTitles = [commentTitles copy];
     
     for (NSDictionary *commentTitle in copyOfCommentTitles) {
-        if (![[commentTitle valueForKey:@"post_title"] isEqualToString: [[self postTitleAtIndex:indexForPost] valueForKey:@"title"]]) {
+        if (![[commentTitle valueForKey:@"postid"] isEqualToString: [[self postTitleAtIndex:indexForPost] valueForKey:@"postid"]]) {
             [commentTitles removeObject:commentTitle];
         }
     }
@@ -3968,7 +3968,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 - (NSMutableDictionary *)commentTitleForComment:(NSDictionary *)aComment {
     NSMutableDictionary *commentTitle = [NSMutableDictionary dictionary];
-
+        
     NSString *blogid = [aComment valueForKey:kBlogId];
     [commentTitle setObject:(blogid ? blogid:@"")forKey:kBlogId];
 
@@ -4001,6 +4001,9 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
     NSString *content = [aComment valueForKey:@"content"];
     [commentTitle setObject:(content ? content:@"")forKey:@"content"];
+    
+    NSString *postid = [aComment valueForKey:@"post_id"];
+    [commentTitle setObject:(postid ? postid:@"")forKey:@"postid"];
 
     return commentTitle;
 }
