@@ -29,6 +29,8 @@
 @synthesize blogEditTable;
 @synthesize validationView;
 @synthesize currentBlog;
+@synthesize blogURLTextField;
+
 
 - (void)disableLabel:(UILabel *)label andTextField:(UITextField *)textField {
     [label setTextColor:kDisabledTextColor];
@@ -49,6 +51,8 @@
     noOfPostsTextField.text = [currentBlog valueForKey:kPostsDownloadCount];
 
     self.navigationItem.rightBarButtonItem = saveBlogButton;
+	
+	
 
     if ([[BlogDataManager sharedDataManager] countOfBlogs] > 0) {
         self.navigationItem.leftBarButtonItem = cancelBlogButton;
@@ -59,7 +63,7 @@
     if ([self currentBlogIsNew]) {
         [blogURLTextField becomeFirstResponder];
         saveBlogButton.enabled = NO;
-    } else {
+		} else {
         [self disableLabel:blogURLLabel andTextField:blogURLTextField];
         [self disableLabel:userNameLabel andTextField:userNameTextField];
         [passwordTextField becomeFirstResponder];
@@ -97,6 +101,7 @@
     // need to update the prompt and the title here as well as in loadView
     if ([self currentBlogIsNew]) {
         self.title = NSLocalizedString(@"Add Blog", @"EditBlogViewController_Title_AddBlog");
+			
     } else {
         self.title = NSLocalizedString(@"Edit Blog", @"EditBlogViewController_Title_EditBlog");
     }
@@ -297,6 +302,7 @@
     [currentBlog setValue:value forKey:kResizePhotoSetting];
 }
 
+	
 - (void)saveBlog:(id)sender {
     [self showSpinner];
     [self setBlogAttributes];
@@ -308,13 +314,16 @@
 
     if ([self currentBlogIsNew]) {
         [self createBlog];
+
     } else {
         [self updateBlog];
     }
 
     [self hideSpinner];
+	
 }
-
+	
+#pragma mark saveBlog
 - (void)createBlog {
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 
@@ -335,7 +344,15 @@
         [dm saveCurrentBlog];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"NewBlogAdded" object:nil];
         [self.navigationController dismissModalViewControllerAnimated:YES];
-    }
+    } else {
+			if (dm.isProblemWithXMLRPC = YES) {
+				//this handles the case of not getting the XMLRPC endpoint and launches a view to ask user for input
+				[self showLocateXMLRPCModalViewWithAnimation:YES];
+				saveBlogButton.title = @"Try Again";
+				dm.isProblemWithXMLRPC = NO;
+				return;
+			}
+	}
 }
 
 - (void)updateBlog {
@@ -360,6 +377,7 @@
 }
 
 - (void)handleTextFieldChanged:(NSNotification *)note {
+
     saveBlogButton.enabled = !([blogURLTextField.text isEmpty] ||
                                [userNameTextField.text isEmpty] ||
                                [passwordTextField.text isEmpty]);
@@ -370,6 +388,7 @@
                                              selector:@selector(handleTextFieldChanged:)
                                                  name:@"UITextFieldTextDidChangeNotification"
                                                object:textField];
+
 }
 
 - (void)observeTextFields {
@@ -403,5 +422,18 @@
 
     return YES;
 }
+
+#pragma mark -
+#pragma mark Show LocateXMLRPC Modal View
+
+- (void)showLocateXMLRPCModalViewWithAnimation:(BOOL)animate {
+	LocateXMLRPCViewController *locateXMLRPCViewController = [[[LocateXMLRPCViewController alloc] initWithNibName:@"LocateXMLRPCViewController" bundle:nil] autorelease];
+	UINavigationController *modalNavigationController = [[UINavigationController alloc] initWithRootViewController:locateXMLRPCViewController];
+		
+	[self.navigationController presentModalViewController:modalNavigationController animated:animate];
+
+	[modalNavigationController release];
+}
+
 
 @end

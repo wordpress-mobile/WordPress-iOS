@@ -2,6 +2,8 @@
 #import "WordPressAppDelegate.h"
 #import "CoreGraphics/CoreGraphics.h"
 #import "WPXMLReader.h"
+#import "LocateXMLRPCViewController.h"
+
 
 #define kURL @"URL"
 #define kMETHOD @"METHOD"
@@ -81,7 +83,10 @@ static BlogDataManager *sharedDataManager;
 @synthesize blogFieldNames, blogFieldNamesByTag, blogFieldTagsByName,
 pictureFieldNames, postFieldNames, postFieldNamesByTag, postFieldTagsByName,
 postTitleFieldNames, postTitleFieldNamesByTag, postTitleFieldTagsByName, unsavedPostsCount, currentPageIndex, currentPage, pageFieldNames,
-currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLocaDraftsCurrent, isPageLocalDraftsCurrent, currentPostIndex, currentDraftIndex, currentPageDraftIndex, asyncPostsOperationsQueue, currentUnsavedDraft;
+currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLocaDraftsCurrent, isPageLocalDraftsCurrent, currentPostIndex, currentDraftIndex, currentPageDraftIndex, asyncPostsOperationsQueue, currentUnsavedDraft,
+editBlogViewController;
+//BOOL for handling XMLRPC issues...  See LocateXMLRPCViewController
+@synthesize isProblemWithXMLRPC; 
 
 - (void)dealloc {
     [blogsList release];
@@ -922,7 +927,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 }
 
 #pragma mark Blog data
-
+//This method gets the XML output of the appropriate XMLRPC endpoint
+//http:///mydomain.com/xmlrpc.php?rsd is what should be coming in as hosturl
 - (NSString *)xmlurl:(NSString *)hosturl {
     //Handeled if HostUrl is nil from server.
     if (!hosturl)
@@ -989,10 +995,16 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
             data = [htmlStr dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
         }
 
-        NSError *parseError = nil;
-        WPXMLReader *xmlReader = [[[WPXMLReader alloc] init] autorelease];
-        [xmlReader parseXMLData:data parseError:&parseError];
-        NSString *hosturl = xmlReader.hostUrl;
+       // NSError *parseError = nil;
+       // WPXMLReader *xmlReader = [[[WPXMLReader alloc] init] autorelease];
+        //[xmlReader parseXMLData:data parseError:&parseError];
+       // NSString *hosturl = xmlReader.hostUrl;
+		
+		//This is the "new" way of deriving xmlrpc endpoint...
+		RegExProcessor *regExProcessor = [[RegExProcessor alloc] init];
+		NSString *hosturl = [regExProcessor lookForXMLRPCEndpointInURLString:htmlStr];
+		[regExProcessor release];
+		
         return [self xmlurl:hosturl];
     }
 
@@ -1062,6 +1074,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
     // 5. get Categories
     // 6. get Statuses
 
+	
     // Can have multiple usernames registered for the same blog
     NSString *blogHost = [NSString stringWithFormat:@"%@_%@", username, url];
 
@@ -1073,6 +1086,8 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
     [currentBlog setValue:(blogURL ? blogURL:@"")forKey:@"url"];
 
     NSString *xmlrpc = [self discoverxmlrpcurlForurl:url];
+
+
 
     if ([xmlrpc isKindOfClass:[NSError class]]) {
         UIAlertView *rsdError = [[UIAlertView alloc] initWithTitle:@"We could not find your blog. Please check the URL, Network Connection and try again.If the problem persists, please visit \"iphone.wordpress.org\" to report the problem."
@@ -1089,28 +1104,34 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
         [rsdError release];
         return NO;
     }
-<<<<<<< .mine
-	
-	//This line is for testing the "new" UI to get XMLRPC endpoint directly from user without needing to create a "broken" blog for testing
-	//comment out the line for normal running of the application, uncomment the line for testing.
-	//Unique search string: ^^XMLRPC Endpoint
-	xmlrpc = nil;
-=======
->>>>>>> .r520
+    
+    //This line is for testing the "new" UI to get XMLRPC endpoint directly from user without needing to create a "broken" blog for testing
+    //comment out the line for normal running of the application, uncomment the line for testing.
+    //Unique search string: ^^XMLRPC Endpoint
+    //xmlrpc = nil;
 
     if (!xmlrpc) {
-        UIAlertView *rsdError = [[UIAlertView alloc] initWithTitle:@"We could not find the XML-RPC service for your blog. Please check your network connection and try again. if the problem persists, please visit \"iphone.wordpress.org\" to report the problem."
-                                 message:nil
-                                 delegate:[[UIApplication sharedApplication] delegate]
-                                 cancelButtonTitle:@"Visit Site"
-                                 otherButtonTitles:@"OK", nil];
+      xmlrpc =  [currentBlog valueForKey:@"xmlrpc"];
+      NSLog(@"this is xmlrpc after grabbing it from currentBlog %d", xmlrpc);
+      NSLog(@"this is xmlrpc with an @ sign %@", xmlrpc);
+
+      if (xmlrpc == @"xmlrpc url not set") {
+        UIAlertView *rsdError = [[UIAlertView alloc] initWithTitle:@"We could not find the XML-RPC service for your blog. Please check your network connection and try again. Or if you're self-hosted and changed your XMLRPC endpoint name, enter the full URL on the next page.  If the problem persists, please visit \"iphone.wordpress.org\" to report the problem."
+                                   message:nil
+                                  delegate:[[UIApplication sharedApplication] delegate]
+                             cancelButtonTitle:@"Visit Site"
+                             otherButtonTitles:@"OK", nil];
         rsdError.tag = kRSDErrorTag;
         [rsdError show];
         WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
         [delegate setAlertRunning:YES];
-
+        
         [rsdError release];
         return NO;
+      } else {
+        //at this point do nothing because if xmlrpc has a value, it's stored to currentBlog later in this method
+        //and the new GUI for getting xmlrpc endpoint from user also stores to xmlrpc to currentBlog.
+      }
     }
 
     BOOL supportsPagesAndComments;
@@ -1207,6 +1228,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
     // use the default value from the blog
     // if RSD failed to find the endpoint
+	//TODO JOHNB: Ask Sunil what this is for...
     if (!xmlrpc) {
         xmlrpc = [usersBlogs valueForKey:@"xmlrpc"];
         [currentBlog setValue:xmlrpc ? xmlrpc:@"" forKey:@"xmlrpc"];
@@ -1290,6 +1312,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
     return YES;
 }
+
 
 - (void)deletedPostsForExistingPosts:(NSMutableArray *)ePosts ofBlog:(id)aBlog andNewPosts:(NSArray *)nPosts {
     NSMutableArray *ePostIds = [[ePosts valueForKey:@"postid"] mutableCopy];
@@ -1839,7 +1862,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 //TODO: remove
 - (id)newDraftsBlog {
     NSArray *blogInitValues = [NSArray arrayWithObjects:@"Local Drafts", @"", kDraftsHostName, @"iPhone",
-                               @"", kDraftsBlogIdStr, @"Local Drafts", @"",
+                               @"", kDraftsBlogIdStr, @"Local Drafts", @"xmlrpc url not set",
                                @"", @"", @"", @"",
                                [NSNumber numberWithInt:0], [NSNumber numberWithInt:0],
                                [NSNumber numberWithInt:0], [NSNumber numberWithInt:0], @"/xmlrpc.php", @"", @"", nil];
@@ -1855,7 +1878,7 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
     self->isLocaDraftsCurrent = NO;
 
     NSArray *blogInitValues = [NSArray arrayWithObjects:@"", @"", @"", @"",
-                               @"", @"", @"", @"",
+                               @"", @"", @"", @"xmlrpc url not set",
                                @"", @"", @"", @"",
                                [NSNumber numberWithInt:0], [NSNumber numberWithInt:0],
                                [NSNumber numberWithInt:0], [NSNumber numberWithInt:0], @"/xmlrpc.php", @"", @"10 Recent Posts", nil];
@@ -4358,7 +4381,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
     BOOL supportsPagesAndComments = NO;
     [aBlog setValue:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
     [self checkXML_RPC_URL_IsRunningSupportedVersionOfWordPress:[self discoverxmlrpcurlForurl:[aBlog valueForKey:@"url"]] withPagesAndCommentsSupport:&supportsPagesAndComments];
-    [aBlog setValue:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+    //TODO:JOHNB:in the middle of fixing issues with discoverxmlrpcurlForurl -(XML not dependable) and wonder if this call is necessary?
+	//shouldn't we just store the value for the endpoint in the currentBlog/blogsList datastructure and not task the iPhone with another battery-sucking
+	//network call here?
+	//I'm leaving that question for a time when I better understand what the underlying datastructure does and exactly what calls this...
+	[aBlog setValue:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 
     if (supportsPagesAndComments) {
         [aBlog setValue:[NSNumber numberWithBool:YES]   forKey:kSupportsPagesAndCommentsServerCheck];

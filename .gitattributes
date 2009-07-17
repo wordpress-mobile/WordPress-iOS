@@ -52,6 +52,10 @@ Classes/Reachability.h -text
 Classes/Reachability.m -text
 Classes/RefreshButtonView.h -text
 Classes/RefreshButtonView.m -text
+Classes/RegExProcessor.h -text
+Classes/RegExProcessor.m -text
+Classes/RegexKitLite.h -text
+Classes/RegexKitLite.m -text
 Classes/UIImage+INResizeImageAllocator.h -text
 Classes/UIImage+INResizeImageAllocator.m -text
 Classes/UIViewController+WPAnimation.h -text

@@ -106,6 +106,8 @@
     [modalNavigationController release];
 }
 
+
+
 #pragma mark -
 #pragma mark Open Blog Main View
 
@@ -170,6 +172,7 @@
     if ([self.tableView cellForRowAtIndexPath:indexPath].editing) {
         [[BlogDataManager sharedDataManager] copyBlogAtIndexCurrent:(indexPath.row)];
         [self showBlogDetailModalViewWithAnimation:YES];
+		
     } else {
         if ([[[dataManager blogAtIndex:indexPath.row] valueForKey:@"kIsSyncProcessRunning"] intValue] == 1) {
             [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
