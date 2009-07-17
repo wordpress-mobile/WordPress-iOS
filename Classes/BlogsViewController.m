@@ -53,7 +53,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    if ([[BlogDataManager sharedDataManager] currentBlog]) {
+    if ([[WordPressAppDelegate sharedWordPressApp] shouldLoadBlogFromUserDefaults]) {
         [self showBlog:NO];
     }
 

@@ -10,6 +10,7 @@
 #import "BlogDataManager.h"
 #import "UIViewController+WPAnimation.h"
 #import "WPNavigationLeftButtonView.h"
+#import "WordPressAppDelegate.h"
 
 @implementation BlogViewController
 
@@ -46,6 +47,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [tabBarController.selectedViewController viewWillAppear:animated];
     [super viewWillAppear:animated];
+    [[WordPressAppDelegate sharedWordPressApp] storeCurrentBlog];
 }
 
 - (void)dealloc {
@@ -57,7 +59,7 @@
 #pragma mark Navigation Methods
 
 - (void)goToHome:(id)sender {
-    [[BlogDataManager sharedDataManager] resetCurrentBlog];
+    [[WordPressAppDelegate sharedWordPressApp] resetCurrentBlogInUserDefaults];
     [self popTransition:self.navigationController.view];
 }
 

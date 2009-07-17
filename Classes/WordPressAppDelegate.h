@@ -23,5 +23,8 @@
 
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message;
 - (void)showErrorAlert:(NSString *)message;
+- (void)storeCurrentBlog;
+- (void)resetCurrentBlogInUserDefaults;
+- (BOOL)shouldLoadBlogFromUserDefaults;
 
 @end

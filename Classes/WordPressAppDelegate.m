@@ -13,7 +13,7 @@
 - (void)storeCurrentBlog;
 - (void)restoreCurrentBlog;
 - (void)showSplashView;
-
+- (int)indexForCurrentBlog;
 @end
 
 @implementation WordPressAppDelegate
@@ -68,7 +68,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-    [self storeCurrentBlog];
     [dataManager saveBlogData];
     [self setAppBadge];
 }
@@ -140,16 +139,33 @@ static WordPressAppDelegate *wordPressApp = NULL;
     }
 }
 
+- (void)resetCurrentBlogInUserDefaults {
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  [defaults removeObjectForKey:kCurrentBlogIndex];
+}
+
+- (BOOL)shouldLoadBlogFromUserDefaults {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    if ([self indexForCurrentBlog] == [defaults integerForKey:kCurrentBlogIndex]) {
+        return YES;
+    }
+    return NO;
+}
+
+- (int)indexForCurrentBlog {
+    NSDictionary *currentBlog = [dataManager currentBlog];
+    NSString *currentBlogId = [currentBlog objectForKey:kBlogId];
+    NSString *currentBlogHostName = [currentBlog objectForKey:kBlogHostName];
+    return [dataManager indexForBlogid:currentBlogId hostName:currentBlogHostName];
+}
+
 - (void)storeCurrentBlog {
     NSDictionary *currentBlog = [dataManager currentBlog];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
-    if (currentBlog) {
-        NSString *currentBlogId = [currentBlog objectForKey:kBlogId];
-        NSString *currentBlogHostName = [currentBlog objectForKey:kBlogHostName];
-        int currentBlogIndex = [dataManager indexForBlogid:currentBlogId hostName:currentBlogHostName];
-        
-        [defaults setInteger:currentBlogIndex forKey:kCurrentBlogIndex];
+    if (currentBlog) {        
+        [defaults setInteger:[self indexForCurrentBlog] forKey:kCurrentBlogIndex];
     }
     else {
         [defaults removeObjectForKey:kCurrentBlogIndex];
