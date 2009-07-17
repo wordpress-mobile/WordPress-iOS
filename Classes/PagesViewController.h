@@ -16,8 +16,6 @@
     EditPageViewController *pageDetailViewController;
     PageViewController *pageDetailsController;
     RefreshButtonView *refreshButton;
-
-    BOOL connectionStatus;
 }
 
 @property (readonly) UIBarButtonItem *newButtonItem;

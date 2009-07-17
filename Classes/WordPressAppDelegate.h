@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "Constants.h"
 
+
 @class BlogDataManager;
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate> {
@@ -8,6 +9,7 @@
 
     IBOutlet UIWindow *window;
     IBOutlet UINavigationController *navigationController;
+    BOOL connectionStatus;
     BOOL alertRunning;
 
     UIImageView *splashView;

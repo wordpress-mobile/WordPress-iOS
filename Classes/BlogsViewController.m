@@ -25,6 +25,20 @@
 @implementation BlogsViewController
 
 #pragma mark -
+#pragma mark Memory Management
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"BlogsRefreshNotification" object:nil];
+    [super dealloc];
+}
+
+- (void)didReceiveMemoryWarning {
+    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+    [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
+    // Release anything that's not essential, such as cached data
+}
+
+#pragma mark -
 #pragma mark View Methods
 
 - (void)viewDidLoad {
@@ -157,22 +171,19 @@
     return cell;
 }
 
-// Show PostList when row is selected
 - (void)tableView:(UITableView *)atableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 
     if ([self.tableView cellForRowAtIndexPath:indexPath].editing) {
         [[BlogDataManager sharedDataManager] copyBlogAtIndexCurrent:(indexPath.row)];
-
         [self showBlogDetailModalViewWithAnimation:YES];
     } else {
         if ([[[dataManager blogAtIndex:indexPath.row] valueForKey:@"kIsSyncProcessRunning"] intValue] == 1) {
             [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
-            return;
+        } else {
+            [dataManager makeBlogAtIndexCurrent:(indexPath.row)];
+            [self showBlog:YES];
         }
-
-        [dataManager makeBlogAtIndexCurrent:(indexPath.row)];
-        [self showBlog:YES];
     }
 }
 
@@ -187,21 +198,6 @@
             self.navigationItem.leftBarButtonItem = nil;
         }
     }
-}
-
-#pragma mark -
-#pragma mark Memory Management
-
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"BlogsRefreshNotification" object:nil];
-
-    [super dealloc];
-}
-
-- (void)didReceiveMemoryWarning {
-    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
-    // Release anything that's not essential, such as cached data
 }
 
 @end

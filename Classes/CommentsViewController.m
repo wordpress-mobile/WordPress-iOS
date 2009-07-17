@@ -10,8 +10,6 @@
 #import "BlogDataManager.h"
 #import "CommentTableViewCell.h"
 #import "CommentViewController.h"
-#import "NSString+XMLExtensions.h"
-#import "Reachability.h"
 #import "WordPressAppDelegate.h"
 #import "WPProgressHUD.h"
 
@@ -35,7 +33,6 @@
 - (void)addRefreshButton;
 @end
 
-
 @implementation CommentsViewController
 
 @synthesize editButtonItem, selectedComments, commentsArray;
@@ -48,7 +45,6 @@
     [commentsDict release];
     [selectedComments release];
     [editButtonItem release];
-    [commentsTableView release];
     [refreshButton release];
     [super dealloc];
 }
@@ -72,16 +68,12 @@
     
     [self addRefreshButton];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
-    
     editButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered
                                                      target:self action:@selector(editComments)];
     
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
-    
+- (void)viewWillAppear:(BOOL)animated {  
     [self setEditing:NO];
     
     BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
@@ -89,7 +81,6 @@
     
     [self refreshCommentsList];
     [self scrollToFirstCell];
-    [self refreshHandler];
     
     [editToolbar setHidden:YES];
     self.navigationItem.rightBarButtonItem = editButtonItem;
@@ -131,11 +122,6 @@
     [refreshButton addTarget:self action:@selector(refreshHandler) forControlEvents:UIControlEventTouchUpInside];
 
     commentsTableView.tableHeaderView = refreshButton;
-}
-
-- (void)reachabilityChanged {
-    connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
-    [commentsTableView reloadData];
 }
 
 - (void)setEditing:(BOOL)value {
@@ -189,17 +175,6 @@
 
 - (void)downloadRecentComments {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
-    if (!connectionStatus) {
-        UIAlertView *alertt1 = [[[UIAlertView alloc] initWithTitle:@"No connection to host."
-                                 message:@"Sync operation is not supported now."
-                                 delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
-
-        [alertt1 show];
-        WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-        [delegate setAlertRunning:YES];
-        return;
-    }
 
     BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
     [sharedBlogDataManager syncCommentsForCurrentBlog];
@@ -283,19 +258,6 @@
     [progressAlert show];
 
     [self performSelectorInBackground:@selector(markCommentsAsSpam) withObject:nil];
-}
-
-- (BOOL)isConnectedToHost {
-    if (![[Reachability sharedReachability] remoteHostStatus] != NotReachable) {
-        UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:@"No connection to host."
-                                            message:@"Operation is not supported now."
-                                            delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [connectionFailAlert show];
-        [connectionFailAlert release];
-        return NO;
-    }
-
-    return YES;
 }
 
 - (void)moderateCommentsWithSelector:(SEL)selector {

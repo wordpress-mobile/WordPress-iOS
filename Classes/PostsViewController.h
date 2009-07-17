@@ -11,8 +11,6 @@
     PostViewController *postDetailViewController;
     PostDetailEditController *postDetailEditController;
     RefreshButtonView *refreshButton;
-
-    BOOL connectionStatus;
 }
 
 @property (readonly) UIBarButtonItem *newButtonItem;

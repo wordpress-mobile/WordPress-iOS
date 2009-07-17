@@ -43,6 +43,11 @@
     tabBarController.selectedIndex = 0;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [tabBarController.selectedViewController viewWillAppear:animated];
+    [super viewWillAppear:animated];
+}
+
 - (void)dealloc {
     [backButton release];
     [super dealloc];

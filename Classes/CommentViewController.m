@@ -14,6 +14,7 @@
 #define COMMENT_BODY_TOP        100
 #define COMMENT_BODY_MAX_HEIGHT 4000
 
+#define kCustomButtonHeight     30.0
 
 @interface CommentViewController (Private)
 
@@ -27,24 +28,15 @@
 
 @end
 
-
 @implementation CommentViewController
 
 #pragma mark -
 #pragma mark Memory Management
 
 - (void)dealloc {
-    [gravatarImageView release];
-    [commentBodyLabel release];
-    [commentAuthorLabel release];
-    [commentAuthorUrlLabel release];
-    [commentPostTitleLabel release];
-    [commentDateLabel release];
-    
     [commentDetails release];
     [segmentedControl release];
     [segmentBarItem release];
-    
     [super dealloc];
 }
 

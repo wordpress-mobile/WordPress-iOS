@@ -10,6 +10,7 @@
 #import "CommentsTableViewDelegate.h"
 #import "RefreshButtonView.h"
 
+
 @interface CommentsViewController : UIViewController <UITableViewDataSource, CommentsTableViewDelegate> {
     IBOutlet UITableView *commentsTableView;
 
@@ -22,7 +23,6 @@
     IBOutlet UIBarButtonItem *spamButton;
     IBOutlet UIButton *deleteButton;
 
-    BOOL connectionStatus;
     BOOL editing;
 
     NSMutableArray *commentsArray;

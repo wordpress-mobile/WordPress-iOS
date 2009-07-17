@@ -1,10 +1,13 @@
 #import "WordPressAppDelegate.h"
+
 #import "BlogsViewController.h"
 #import "BlogDataManager.h"
 #import "Reachability.h"
 
+
 @interface WordPressAppDelegate (Private)
 
+- (void)reachabilityChanged;
 - (void)setAppBadge;
 - (void)startupAnimationDone:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context;
 - (void)checkPagesAndCommentsSupported;
@@ -13,6 +16,7 @@
 - (void)showSplashView;
 
 @end
+
 
 @implementation WordPressAppDelegate
 
@@ -50,6 +54,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
     [[Reachability sharedReachability] setNetworkStatusNotificationsEnabled:YES];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
 
     BlogsViewController *rootViewController = [[BlogsViewController alloc] initWithStyle:UITableViewStylePlain];
     UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
@@ -90,6 +95,10 @@ static WordPressAppDelegate *wordPressApp = NULL;
 #pragma mark -
 #pragma mark Private Methods
 
+- (void)reachabilityChanged {
+    connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
+}
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (alertView.tag == kUnsupportedWordpressVersionTag || alertView.tag == kRSDErrorTag) {
         if (buttonIndex == 0) { // Visit Site button.
@@ -124,7 +133,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
         [Reachability sharedReachability].hostName = url;
 
-        //Check network connectivity
+        // Check network connectivity.
         if ([[Reachability sharedReachability] internetConnectionStatus]) {
             if (![blog valueForKey:kSupportsPagesAndComments]) {
                 [dataManager performSelectorInBackground:@selector(wrapperForSyncPagesAndCommentsForBlog:) withObject:blog];

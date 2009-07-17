@@ -8,9 +8,6 @@
 #import <UIKit/UIKit.h>
 #import "GravatarImageView.h"
 
-#define kCustomButtonHeight     30.0
-
-
 @interface CommentViewController : UIViewController <UIScrollViewDelegate> {
     IBOutlet UIScrollView *scrollView;
     

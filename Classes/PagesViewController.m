@@ -11,13 +11,11 @@
 #import "EditPageViewController.h"
 #import "PageViewController.h"
 #import "PostTableViewCell.h"
-#import "Reachability.h"
 #import "WordPressAppDelegate.h"
 
 #define LOCAL_DRAFTS_SECTION    0
 #define PAGES_SECTION           1
 #define NUM_SECTIONS            2
-
 
 @interface PagesViewController (Private)
 
@@ -31,13 +29,34 @@
 
 @end
 
-
 @implementation PagesViewController
 
 @synthesize newButtonItem, pageDetailViewController, pageDetailsController;
 
 #pragma mark -
-#pragma mark View lifecycle
+#pragma mark Memory Management
+
+- (void)dealloc {
+    if (pageDetailViewController != nil) {
+        [pageDetailViewController autorelease];
+        pageDetailViewController = nil;
+    }
+    
+    [pageDetailsController release];
+    
+    [newButtonItem release];
+    [refreshButton release];
+    
+    [super dealloc];
+}
+
+- (void)didReceiveMemoryWarning {
+    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+    [super didReceiveMemoryWarning];
+}
+
+#pragma mark -
+#pragma mark View Lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -47,40 +66,20 @@
     [self addRefreshButton];
     [self setPageDetailsController];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
-
     newButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
                      target:self
                      action:@selector(showAddNewPage)];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
-
     [self loadPages];
     [self scrollToFirstCell];
-    [self refreshHandler];
 
     [super viewWillAppear:animated];
 }
 
-- (void)dealloc {
-    if (pageDetailViewController != nil) {
-        [pageDetailViewController autorelease];
-        pageDetailViewController = nil;
-    }
-
-    [pageDetailsController release];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"kNetworkReachabilityChangedNotification" object:nil];
-
-    [newButtonItem release];
-    [refreshButton release];
-
-    [super dealloc];
-}
-
 #pragma mark -
-#pragma mark UITableViewDataSource methods
+#pragma mark UITableViewDataSource Methods
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
@@ -147,19 +146,6 @@
 
         [dataManager makePageDraftAtIndexCurrent:indexPath.row];
     } else {
-        if (!connectionStatus) {
-            UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
-                                   message:@"Editing is not supported now."
-                                   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-
-            [alert1 show];
-            [delegate setAlertRunning:YES];
-            [alert1 release];
-
-            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-            return;
-        }
-
         id page = [dataManager pageTitleAtIndex:indexPath.row];
 
         // Bail out if we're in the middle of saving the page.
@@ -231,11 +217,6 @@
     [self.tableView reloadData];
 }
 
-- (void)reachabilityChanged {
-    connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
-    [self.tableView reloadData];
-}
-
 - (void)addRefreshButton {
     CGRect frame = CGRectMake(0, 0, self.tableView.bounds.size.width, REFRESH_BUTTON_HEIGHT);
 
@@ -281,11 +262,6 @@
 }
 
 #pragma mark -
-
-- (void)didReceiveMemoryWarning {
-    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [super didReceiveMemoryWarning];
-}
 
 - (void)setPageDetailsController {
     if (self.pageDetailsController == nil) {

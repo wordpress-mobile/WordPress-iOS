@@ -4,7 +4,6 @@
 #import "PostViewController.h"
 #import "PostDetailEditController.h"
 #import "PostTableViewCell.h"
-#import "Reachability.h"
 #import "UIViewController+WPAnimation.h"
 #import "WordPressAppDelegate.h"
 #import "WPNavigationLeftButtonView.h"
@@ -12,9 +11,6 @@
 #define LOCAL_DRAFTS_SECTION    0
 #define POSTS_SECTION           1
 #define NUM_SECTIONS            2
-
-#define NEW_VERSION_ALERT_TAG   5111
-
 
 @interface PostsViewController (Private)
 
@@ -28,10 +24,29 @@
 
 @end
 
-
 @implementation PostsViewController
 
 @synthesize newButtonItem, postDetailViewController, postDetailEditController;
+
+#pragma mark -
+#pragma mark Memory Management
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"AsynchronousPostIsPosted" object:nil];
+    
+    [postDetailEditController release];
+    [PostViewController release];
+    
+    [newButtonItem release];
+    [refreshButton release];
+    
+    [super dealloc];
+}
+
+- (void)didReceiveMemoryWarning {
+    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+    [super didReceiveMemoryWarning];
+}
 
 #pragma mark -
 #pragma mark View Lifecycle
@@ -43,9 +58,6 @@
 
     [self addRefreshButton];
 
-    // Observe the kNetworkReachabilityChangedNotification. When that notification is posted, the
-    // method "reachabilityChanged" will be called.
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableViewAfterPostSaved:) name:@"AsynchronousPostIsPosted" object:nil];
 
     newButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
@@ -54,11 +66,8 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
-
     [self loadPosts];
     [self scrollToFirstCell];
-    [self refreshHandler];
 
     [super viewWillAppear:animated];
 }
@@ -79,38 +88,12 @@
 }
 
 #pragma mark -
-#pragma mark Memory Management
-
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"kNetworkReachabilityChangedNotification" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"AsynchronousPostIsPosted" object:nil];
-
-    [postDetailEditController release];
-    [PostViewController release];
-
-    [newButtonItem release];
-    [refreshButton release];
-
-    [super dealloc];
-}
-
-- (void)didReceiveMemoryWarning {
-    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [super didReceiveMemoryWarning];
-}
-
-#pragma mark -
 
 - (void)showAddPostView {
-    // Set current post to a new post
-    // Detail view will bind data into this instance and call save
-
     [[BlogDataManager sharedDataManager] makeNewPostCurrent];
 
     self.postDetailViewController.mode = 0;
 
-    // Create a new nav controller to provide navigation bar with Cancel and Done buttons.
-    // Ask for modal presentation
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     [delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
 }
@@ -192,21 +175,6 @@
 
         [dataManager makeDraftAtIndexCurrent:indexPath.row];
     } else {
-        if (!connectionStatus) {
-            UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"No connection to host."
-                                   message:@"Editing is not supported now."
-                                   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-
-            alert1.tag = NEW_VERSION_ALERT_TAG;
-            [alert1 show];
-            [delegate setAlertRunning:YES];
-
-            [alert1 release];
-
-            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-            return;
-        }
-
         id currentPost = [dataManager postTitleAtIndex:indexPath.row];
 
         // Bail out if we're in the middle of saving the post.
@@ -283,11 +251,6 @@
     [self popTransition:self.navigationController.view];
 }
 
-- (void)reachabilityChanged {
-    connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
-    [self.tableView reloadData];
-}
-
 - (BOOL)handleAutoSavedContext:(NSInteger)tag {
     if ([[BlogDataManager sharedDataManager] makeAutoSavedPostCurrentForCurrentBlog]) {
         NSString *title = [[BlogDataManager sharedDataManager].currentPost valueForKey:@"title"];
@@ -348,12 +311,10 @@
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (alertView.tag != NEW_VERSION_ALERT_TAG) { // When Connection Available.
-        [[BlogDataManager sharedDataManager] removeAutoSavedCurrentPostFile];
-        self.navigationItem.rightBarButtonItem = nil;
-        self.postDetailViewController.mode = 2;
-        [[self navigationController] pushViewController:self.postDetailViewController animated:YES];
-    }
+    [[BlogDataManager sharedDataManager] removeAutoSavedCurrentPostFile];
+    self.navigationItem.rightBarButtonItem = nil;
+    self.postDetailViewController.mode = 2;
+    [[self navigationController] pushViewController:self.postDetailViewController animated:YES];
 
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     [delegate setAlertRunning:NO];
