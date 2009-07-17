@@ -54,16 +54,26 @@ static WordPressAppDelegate *wordPressApp = NULL;
     [[Reachability sharedReachability] setNetworkStatusNotificationsEnabled:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
 
-    BlogsViewController *rootViewController = [[BlogsViewController alloc] initWithStyle:UITableViewStylePlain];
-    UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+    BlogsViewController *blogsViewController = [[BlogsViewController alloc] initWithStyle:UITableViewStylePlain];
+    UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:blogsViewController];
     self.navigationController = aNavigationController;
-    [rootViewController release];
-
+    
     [window addSubview:[navigationController view]];
     [window makeKeyAndVisible];
 
     [self checkPagesAndCommentsSupported];
     [self restoreCurrentBlog];
+    
+    if ([self shouldLoadBlogFromUserDefaults]) {
+        [blogsViewController showBlog:NO];
+    }
+    
+    if ([dataManager countOfBlogs] == 0) {
+        [blogsViewController showBlogDetailModalViewForNewBlogWithAnimation:NO];
+    }
+    
+    [blogsViewController release];
+    
     [self showSplashView];
 }
 

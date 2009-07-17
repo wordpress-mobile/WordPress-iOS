@@ -6,4 +6,7 @@
 @interface BlogsViewController : UITableViewController {
 }
 
+- (void)showBlog:(BOOL)animated;
+- (void)showBlogDetailModalViewForNewBlogWithAnimation:(BOOL)animated;
+
 @end

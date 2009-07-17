@@ -333,7 +333,7 @@
         [dm.currentBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
         [dm wrapperForSyncPostsAndGetTemplateForBlog:dm.currentBlog];
         [dm saveCurrentBlog];
-
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"NewBlogAdded" object:nil];
         [self.navigationController dismissModalViewControllerAnimated:YES];
     }
 }

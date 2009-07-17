@@ -13,10 +13,8 @@
 @interface BlogsViewController (Private)
 
 - (void)showBlogDetailModalViewForNewBlogWithAnimation;
-- (void)showBlogDetailModalViewForNewBlogWithAnimation:(BOOL)annimate;
 - (void)showBlogDetailModalViewWithAnimation:(BOOL)animate;
-- (void)showBlog:(BOOL)animated;
-
+- (void)showBlogWithoutAnimation;
 - (void)edit:(id)sender;
 - (void)cancel:(id)sender;
 
@@ -29,6 +27,7 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"BlogsRefreshNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"NewBlogAdded" object:nil];
     [super dealloc];
 }
 
@@ -50,18 +49,8 @@
     self.tableView.allowsSelectionDuringEditing = YES;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blogsRefreshNotificationReceived:) name:@"BlogsRefreshNotification" object:nil];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    if ([[WordPressAppDelegate sharedWordPressApp] shouldLoadBlogFromUserDefaults]) {
-        [self showBlog:NO];
-    }
-
-    if ([[BlogDataManager sharedDataManager] countOfBlogs] == 0) {
-        [self showBlogDetailModalViewForNewBlogWithAnimation:NO];
-    }
-
-    [super viewWillAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBlogWithoutAnimation:) name:@"NewBlogAdded" object:nil];
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -119,6 +108,10 @@
 
 #pragma mark -
 #pragma mark Open Blog Main View
+
+- (void)showBlogWithoutAnimation {
+    [self showBlog:NO];
+}
 
 - (void)showBlog:(BOOL)animated {
     BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
