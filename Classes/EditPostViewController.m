@@ -784,14 +784,14 @@ editingInfo:(NSDictionary *)editingInfo {
     } else {
         //do nothing because we've only got one cell right now
     }
-
+	cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
     cell.userInteractionEnabled = YES;
     return cell;
 }
 
-- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
-    return UITableViewCellAccessoryDisclosureIndicator;
-}
+//- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
+//    return UITableViewCellAccessoryDisclosureIndicator;
+//}
 
 #pragma mark -
 #pragma mark Table Delegate Methods
