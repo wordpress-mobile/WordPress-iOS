@@ -118,16 +118,16 @@
 #else if defined __IPHONE_2_0
     [cell setText:rowString];
 #endif
-
+	cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
     //cell.text = rowString;
     NSLog(@"after cell.text = rowString");
     //}
     return cell;
 }
 
-- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
-    return UITableViewCellAccessoryDisclosureIndicator;
-}
+//- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
+//    return UITableViewCellAccessoryDisclosureIndicator;
+//}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSUInteger row = [indexPath row];
