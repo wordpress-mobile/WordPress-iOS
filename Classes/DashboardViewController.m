@@ -36,7 +36,7 @@
 
 @implementation DashboardViewController
 
-@synthesize editButtonItem, selectedComments, commentsArray, numberOfRowsInSection, sectionHeaders;
+@synthesize editButtonItem, selectedComments, commentsArray, sectionHeaders;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -47,7 +47,6 @@
     [selectedComments release];
     [editButtonItem release];
     [refreshButton release];
-    [numberOfRowsInSection release];
     [sectionHeaders release];
     [super dealloc];
 }
@@ -212,7 +211,6 @@
     }
     
     NSMutableArray *commentsList = nil;
-    NSLog(@"index for current post: %i", indexForCurrentPost);
     if (indexForCurrentPost >= 0) {
         commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog] scopedToPostWithIndex:indexForCurrentPost];
     }
@@ -347,15 +345,15 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [numberOfRowsInSection count];
+    return ([sectionHeaders count] == 0) ? 1 : [sectionHeaders count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return [[sectionHeaders objectAtIndex:section] objectForKey:@"date"];
+    return ([sectionHeaders count] == 0) ? @"No Comments" : [[sectionHeaders objectAtIndex:section] objectForKey:@"date"];  
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [[[sectionHeaders objectAtIndex:section] objectForKey:@"numberOfComments"] intValue];
+    return ([sectionHeaders count] == 0) ? 0 : [[[sectionHeaders objectAtIndex:section] objectForKey:@"numberOfComments"] intValue];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -435,7 +433,6 @@
             [[sectionDateMapping objectAtIndex:dateArrayIndex] setObject:comment forKey:[NSString stringWithFormat:@"%i", [numberOfComments intValue] -1]];
         }
     }
-    self.numberOfRowsInSection = dates;
     self.sectionHeaders = sectionDateMapping;
     
     [dateFormat release];

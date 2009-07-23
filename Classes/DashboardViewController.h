@@ -32,14 +32,12 @@
     
     int indexForCurrentPost;
     
-    NSMutableDictionary *numberOfRowsInSection;
     NSMutableArray *sectionHeaders;
 }
 
 @property (readonly) UIBarButtonItem *editButtonItem;
 @property (nonatomic, retain) NSMutableArray *selectedComments;
 @property (nonatomic, retain) NSMutableArray *commentsArray;
-@property (nonatomic, retain) NSMutableDictionary *numberOfRowsInSection;
 @property (nonatomic, retain) NSMutableArray *sectionHeaders;
 
 - (IBAction)deleteSelectedComments:(id)sender;

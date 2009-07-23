@@ -73,7 +73,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
     }
     
     [blogsViewController release];
-    
+        
     [self showSplashView];
 }
 
