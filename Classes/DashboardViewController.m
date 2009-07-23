@@ -31,11 +31,12 @@
 - (void)unapproveComments;
 - (void)refreshCommentsList;
 - (void)addRefreshButton;
+- (void)calculateSections;
 @end
 
 @implementation DashboardViewController
 
-@synthesize editButtonItem, selectedComments, commentsArray;
+@synthesize editButtonItem, selectedComments, commentsArray, numberOfRowsInSection, sectionHeaders;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -46,6 +47,8 @@
     [selectedComments release];
     [editButtonItem release];
     [refreshButton release];
+    [numberOfRowsInSection release];
+    [sectionHeaders release];
     [super dealloc];
 }
 
@@ -232,6 +235,7 @@
         [self performSelectorInBackground:@selector(downloadRecentComments) withObject:nil];
     }
     
+    [self calculateSections];
     [commentsTableView reloadData];
 }
 
@@ -343,21 +347,21 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return [numberOfRowsInSection count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return @"Comments";
+    return [[sectionHeaders objectAtIndex:section] objectForKey:@"date"];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [commentsArray count];
+    return [[[sectionHeaders objectAtIndex:section] objectForKey:@"numberOfComments"] intValue];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"PageCell";
     CommentTableViewCell *cell = (CommentTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    id comment = [commentsArray objectAtIndex:indexPath.row];
+    id comment = [[sectionHeaders objectAtIndex:indexPath.section] objectForKey:[NSString stringWithFormat:@"%i", indexPath.row]];
     
     if (cell == nil) {
         cell = [[[CommentTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
@@ -401,6 +405,42 @@
     }
     
     [self updateSelectedComments];
+}
+
+- (void)calculateSections {
+    NSMutableDictionary *dates = [[NSMutableDictionary alloc] init];
+    NSMutableArray *sectionDateMapping = [[NSMutableArray alloc] init];
+    
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateStyle:NSDateFormatterLongStyle];
+    
+    for (NSDictionary *comment in commentsArray) {
+        NSString *dateString = [dateFormat stringFromDate:[comment objectForKey:@"date_created_gmt"]];
+        
+        if ([dates objectForKey:dateString] == nil) {
+            [dates setObject:[NSNumber numberWithInt:[dates count]] forKey:dateString];
+            
+            NSMutableDictionary *commentContainer = [[NSMutableDictionary alloc] init];
+            [commentContainer setObject:dateString forKey:@"date"];
+            [commentContainer setObject:[NSNumber numberWithInt:1] forKey:@"numberOfComments"];
+            [commentContainer setObject:comment forKey:@"0"];
+            
+            [sectionDateMapping addObject:commentContainer];
+            [commentContainer release];
+        }
+        else {
+            int dateArrayIndex = [[dates objectForKey:dateString] intValue];
+            NSNumber *numberOfComments = [NSNumber numberWithInt:[[[sectionDateMapping objectAtIndex:dateArrayIndex] objectForKey:@"numberOfComments"] intValue] +1];
+            [[sectionDateMapping objectAtIndex:dateArrayIndex] setObject:numberOfComments forKey:@"numberOfComments"];
+            [[sectionDateMapping objectAtIndex:dateArrayIndex] setObject:comment forKey:[NSString stringWithFormat:@"%i", [numberOfComments intValue] -1]];
+        }
+    }
+    self.numberOfRowsInSection = dates;
+    self.sectionHeaders = sectionDateMapping;
+    
+    [dateFormat release];
+    [sectionDateMapping release];
+    [dates release];
 }
 
 #pragma mark -
