@@ -9,6 +9,7 @@
 #import "PostsViewController.h"
 #import "PagesViewController.h"
 #import "CommentsViewController.h"
+#import "DashboardViewController.h"
 
 @interface BlogViewController : UIViewController <UITabBarControllerDelegate> {
     IBOutlet UITabBarController *tabBarController;
@@ -16,6 +17,7 @@
     IBOutlet PostsViewController *postsViewController;
     IBOutlet PagesViewController *pagesViewController;
     IBOutlet CommentsViewController *commentsViewController;
+    IBOutlet DashboardViewController *dashboardViewController;
 
     UIBarButtonItem *backButton;
 }

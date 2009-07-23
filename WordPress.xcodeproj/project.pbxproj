@@ -114,6 +114,10 @@
 		C5C2730A0E7EC9FE0034AA46 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = C5C273090E7EC9FE0034AA46 /* delete.png */; };
 		C5E3AE350E93F3C5008755FF /* WPImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5E3AE340E93F3C5008755FF /* WPImagePickerController.m */; };
 		CE0CA8CB0FEB178800BC71AD /* favicon.ico in Resources */ = {isa = PBXBuildFile; fileRef = CE0CA8CA0FEB178800BC71AD /* favicon.ico */; };
+		CE1946341017F4D6002BE752 /* speedometer.png in Resources */ = {isa = PBXBuildFile; fileRef = CE1946331017F4D6002BE752 /* speedometer.png */; };
+		CE1946681017F5AF002BE752 /* Icons License in Resources */ = {isa = PBXBuildFile; fileRef = CE1946671017F5AF002BE752 /* Icons License */; };
+		CE1946711017F86D002BE752 /* DashboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1946701017F86D002BE752 /* DashboardViewController.m */; };
+		CE1946781017FC16002BE752 /* DashboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE1946771017FC16002BE752 /* DashboardViewController.xib */; };
 		CE1E3BC71005B3D500A7BD08 /* WPpregressHUDBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = CE1E3BC61005B3D500A7BD08 /* WPpregressHUDBackground.png */; };
 		CE4E33D20FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4E33D10FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m */; };
 		CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBD3EAA0FF1BA3B00C1396E /* Blog.m */; };
@@ -292,6 +296,11 @@
 		C5E3AE330E93F3C5008755FF /* WPImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPImagePickerController.h; sourceTree = "<group>"; };
 		C5E3AE340E93F3C5008755FF /* WPImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPImagePickerController.m; sourceTree = "<group>"; };
 		CE0CA8CA0FEB178800BC71AD /* favicon.ico */ = {isa = PBXFileReference; lastKnownFileType = image.ico; path = favicon.ico; sourceTree = "<group>"; };
+		CE1946331017F4D6002BE752 /* speedometer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = speedometer.png; sourceTree = "<group>"; };
+		CE1946671017F5AF002BE752 /* Icons License */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Icons License"; sourceTree = "<group>"; };
+		CE19466F1017F86D002BE752 /* DashboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashboardViewController.h; sourceTree = "<group>"; };
+		CE1946701017F86D002BE752 /* DashboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashboardViewController.m; sourceTree = "<group>"; };
+		CE1946771017FC16002BE752 /* DashboardViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DashboardViewController.xib; sourceTree = "<group>"; };
 		CE1E3BC61005B3D500A7BD08 /* WPpregressHUDBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WPpregressHUDBackground.png; sourceTree = "<group>"; };
 		CE4E33D00FEB0F3A00415662 /* UIImage+INResizeImageAllocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+INResizeImageAllocator.h"; sourceTree = "<group>"; };
 		CE4E33D10FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+INResizeImageAllocator.m"; sourceTree = "<group>"; };
@@ -416,6 +425,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CE1946761017FBEE002BE752 /* Dashboard */,
 				ACFF1DC00E231EF600EC6BF5 /* Blog */,
 				C50E78130E71648100991509 /* Comments */,
 				29FF132C0FE70EFF00CFB908 /* Custom Fields */,
@@ -488,6 +498,7 @@
 		AC34397A0E11435A00E5D79B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				CE19466E1017F85A002BE752 /* Dashboard */,
 				AC34397B0E11443300E5D79B /* Blog */,
 				C533CF320E6D3AB3000C3DE8 /* Comments */,
 				2904E98D0FE6E03100E00DBC /* Custom Fields */,
@@ -518,12 +529,11 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				CE1946671017F5AF002BE752 /* Icons License */,
+				CE1946361017F4DF002BE752 /* Tab Icons */,
 				03EB54B4100FFB5C004E82CD /* gravatar.jpg */,
 				CE1E3BC61005B3D500A7BD08 /* WPpregressHUDBackground.png */,
-				03FF34BA10040B0A0066ED95 /* documents.png */,
 				031665FC0FFC2E890045D052 /* sync.png */,
-				CECB84630FFD91810087FF33 /* sticky_note.png */,
-				CECB84610FFD91050087FF33 /* talk_bubbles.png */,
 				CE0CA8CA0FEB178800BC71AD /* favicon.ico */,
 				CEC7EFA50FC66081007B90D6 /* AddBlogValidationBackground.png */,
 				706D25F40F347F1200491666 /* category_child.png */,
@@ -683,6 +693,34 @@
 			name = Categories;
 			sourceTree = "<group>";
 		};
+		CE1946361017F4DF002BE752 /* Tab Icons */ = {
+			isa = PBXGroup;
+			children = (
+				CECB84630FFD91810087FF33 /* sticky_note.png */,
+				CECB84610FFD91050087FF33 /* talk_bubbles.png */,
+				CE1946331017F4D6002BE752 /* speedometer.png */,
+				03FF34BA10040B0A0066ED95 /* documents.png */,
+			);
+			name = "Tab Icons";
+			sourceTree = "<group>";
+		};
+		CE19466E1017F85A002BE752 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				CE19466F1017F86D002BE752 /* DashboardViewController.h */,
+				CE1946701017F86D002BE752 /* DashboardViewController.m */,
+			);
+			name = Dashboard;
+			sourceTree = "<group>";
+		};
+		CE1946761017FBEE002BE752 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				CE1946771017FC16002BE752 /* DashboardViewController.xib */,
+			);
+			name = Dashboard;
+			sourceTree = "<group>";
+		};
 		EC4696A80EA74DAC0040EE8E /* Pages */ = {
 			isa = PBXGroup;
 			children = (
@@ -816,6 +854,9 @@
 				CE1E3BC71005B3D500A7BD08 /* WPpregressHUDBackground.png in Resources */,
 				03EB54B5100FFB5C004E82CD /* gravatar.jpg in Resources */,
 				032BDCB610106E1B00E26F44 /* LocateXMLRPCViewController.xib in Resources */,
+				CE1946341017F4D6002BE752 /* speedometer.png in Resources */,
+				CE1946681017F5AF002BE752 /* Icons License in Resources */,
+				CE1946781017FC16002BE752 /* DashboardViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -881,6 +922,7 @@
 				03EB590F10105076004E82CD /* RegexKitLite.m in Sources */,
 				03EB591010105076004E82CD /* RegExProcessor.m in Sources */,
 				03EB591310105088004E82CD /* LocateXMLRPCViewController.m in Sources */,
+				CE1946711017F86D002BE752 /* DashboardViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

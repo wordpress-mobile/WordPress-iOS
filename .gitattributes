@@ -20,6 +20,8 @@ Classes/CommentsTableViewDelegate.h -text
 Classes/CommentsViewController.h -text
 Classes/CommentsViewController.m -text
 Classes/Constants.h -text
+Classes/DashboardViewController.h -text
+Classes/DashboardViewController.m -text
 Classes/EditBlogViewController.h -text
 Classes/EditBlogViewController.m -text
 Classes/EditPageViewController.h -text
@@ -111,6 +113,7 @@ Classes/XMLRPC/XMLValueDecoder.h -text
 Classes/XMLRPC/XMLValueDecoder.m -text
 /CommentViewController.xib -text
 /CommentsViewController.xib -text
+/DashboardViewController.xib -text
 /Default.png -text
 /Disclosure[!!-~]Indicator.png -text
 /DraftsFolder.png -text
@@ -161,6 +164,7 @@ WordPress.xcodeproj/project.pbxproj -text
 /photos.png -text
 /preview.png -text
 /settings.png -text
+/speedometer.png -text
 /sticky_note.png -text svneol=unset#unset
 /sync.png -text svneol=unset#unset
 /talk_bubbles.png -text svneol=unset#unset
