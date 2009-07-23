@@ -13,6 +13,7 @@
 
 #define COMMENT_BODY_TOP        100
 #define COMMENT_BODY_MAX_HEIGHT 4000
+#define COMMENT_BODY_PADDING 20
 
 #define kCustomButtonHeight     30.0
 
@@ -187,7 +188,7 @@
 
 - (void)resizeCommentBodyLabel {
     CGSize size = [commentBodyLabel.text sizeWithFont:commentBodyLabel.font
-                    constrainedToSize:CGSizeMake(self.view.frame.size.width, COMMENT_BODY_MAX_HEIGHT)
+                    constrainedToSize:CGSizeMake(self.view.frame.size.width - COMMENT_BODY_PADDING, COMMENT_BODY_MAX_HEIGHT)
                         lineBreakMode:commentBodyLabel.lineBreakMode];
     scrollView.contentSize = CGSizeMake(size.width, COMMENT_BODY_TOP + size.height);
     commentBodyLabel.frame = CGRectMake(commentBodyLabel.frame.origin.x, COMMENT_BODY_TOP, size.width, size.height);
