@@ -176,7 +176,8 @@
 
 - (void)syncComments {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
     BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
     [sharedBlogDataManager syncCommentsForCurrentBlog];
     [sharedBlogDataManager loadCommentTitlesForCurrentBlog];
@@ -194,6 +195,7 @@
         [refreshButton stopAnimating];
     }
 
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     [pool release];
 }
 

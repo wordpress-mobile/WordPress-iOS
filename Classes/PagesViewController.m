@@ -239,12 +239,14 @@
 
 - (void)syncPages {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 
     [dm syncPagesForBlog:[dm currentBlog]];
     [self loadPages];
 
     [refreshButton stopAnimating];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     [pool release];
 }
 

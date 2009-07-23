@@ -297,12 +297,14 @@
 
 - (void)syncPosts {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 
     [dm syncPostsForCurrentBlog];
     [self loadPosts];
 
     [refreshButton stopAnimating];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     [pool release];
 }
 
