@@ -20,6 +20,7 @@
 #define COMMENT_LABEL_HEIGHT        40
 #define COMMENT_LABEL_WIDTH         280
 
+#define OTHER_LABEL_WIDTH           220
 #define DATE_LABEL_HEIGHT           20
 #define NAME_LABEL_HEIGHT           20
 #define URL_LABEL_HEIGHT            15
@@ -151,17 +152,17 @@
     
     rect = nameLabel.frame;
     rect.origin.x = GRAVATAR_LEFT_OFFSET + buttonOffset;
-    rect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
+    rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
     nameLabel.frame = rect;
     
     rect = urlLabel.frame;
     rect.origin.x = GRAVATAR_LEFT_OFFSET + buttonOffset;
-    rect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
+    rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
     urlLabel.frame = rect;
     
     rect = postLabel.frame;
     rect.origin.x = GRAVATAR_LEFT_OFFSET + buttonOffset;
-    rect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
+    rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
     postLabel.frame = rect;
     
     rect = commentLabel.frame;
@@ -189,7 +190,7 @@
 }
 
 - (void)addNameLabel {
-    CGRect rect = CGRectMake(GRAVATAR_LEFT_OFFSET, TOP_OFFSET, COMMENT_LABEL_WIDTH, NAME_LABEL_HEIGHT);
+    CGRect rect = CGRectMake(GRAVATAR_LEFT_OFFSET, TOP_OFFSET, OTHER_LABEL_WIDTH, NAME_LABEL_HEIGHT);
 
     nameLabel = [[UILabel alloc] initWithFrame:rect];
     nameLabel.font = [UIFont boldSystemFontOfSize:NAME_FONT_SIZE];
@@ -201,7 +202,7 @@
 }
 
 - (void)addURLLabel {
-    CGRect rect = CGRectMake(GRAVATAR_LEFT_OFFSET, nameLabel.frame.origin.y + NAME_LABEL_HEIGHT, COMMENT_LABEL_WIDTH, URL_LABEL_HEIGHT);
+    CGRect rect = CGRectMake(GRAVATAR_LEFT_OFFSET, nameLabel.frame.origin.y + NAME_LABEL_HEIGHT, OTHER_LABEL_WIDTH, URL_LABEL_HEIGHT);
 
     urlLabel = [[UILabel alloc] initWithFrame:rect];
     urlLabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
@@ -213,7 +214,7 @@
 }
 
 - (void)addPostLabel {
-    CGRect rect = CGRectMake(GRAVATAR_LEFT_OFFSET, urlLabel.frame.origin.y + URL_LABEL_HEIGHT, COMMENT_LABEL_WIDTH, POST_LABEL_HEIGHT);
+    CGRect rect = CGRectMake(GRAVATAR_LEFT_OFFSET, urlLabel.frame.origin.y + URL_LABEL_HEIGHT, OTHER_LABEL_WIDTH, POST_LABEL_HEIGHT);
     
     postLabel = [[UILabel alloc] initWithFrame:rect];
     postLabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
