@@ -2,6 +2,7 @@
 #import "WordPressAppDelegate.h"
 #import "CoreGraphics/CoreGraphics.h"
 #import "WPXMLReader.h"
+#import "NSString+XMLExtensions.h" 
 #import "LocateXMLRPCViewController.h"
 
 
@@ -1219,8 +1220,9 @@ editBlogViewController;
      */
     [currentBlog setValue:@"" forKey:@"isAdmin"];
 
-    NSString *blogName = [[optionsDict valueForKey:@"blog_title"] valueForKey:@"value"];
-    [currentBlog setValue:blogName ? blogName:@"" forKey:@"blogName"];
+    //NSString *blogName = [[optionsDict valueForKey:@"blog_title"] valueForKey:@"value"];
+	NSString *blogName = [NSString decodeXMLCharactersIn:[[optionsDict valueForKey:@"blog_title"]valueForKey:@"value"]]; 
+	[currentBlog setValue:blogName ? blogName:@"" forKey:@"blogName"];
 
     // Do not use this value
     //NSString *xmlrpc = url;//[usersBlogs valueForKey:@"xmlrpc"];
