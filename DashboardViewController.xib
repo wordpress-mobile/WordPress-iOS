@@ -39,9 +39,9 @@
 					<object class="IBUITableView" id="328970223">
 						<reference key="NSNextResponder" ref="668816383"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrameSize">{320, 416}</string>
+						<string key="NSFrameSize">{320, 460}</string>
 						<reference key="NSSuperview" ref="668816383"/>
-						<object class="NSColor" key="IBUIBackgroundColor" id="200608532">
+						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MSAxIDEAA</bytes>
 						</object>
@@ -55,79 +55,6 @@
 						<float key="IBUIRowHeight">6.500000e+01</float>
 						<float key="IBUISectionHeaderHeight">2.700000e+01</float>
 						<float key="IBUISectionFooterHeight">2.700000e+01</float>
-					</object>
-					<object class="IBUIToolbar" id="745343780">
-						<reference key="NSNextResponder" ref="668816383"/>
-						<int key="NSvFlags">266</int>
-						<object class="NSMutableArray" key="NSSubviews">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBUIButton" id="673968921">
-								<reference key="NSNextResponder" ref="745343780"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{12, 6}, {32, 32}}</string>
-								<reference key="NSSuperview" ref="745343780"/>
-								<bool key="IBUIOpaque">NO</bool>
-								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
-								<int key="IBUIContentMode">1</int>
-								<int key="IBUIContentHorizontalAlignment">0</int>
-								<int key="IBUIContentVerticalAlignment">3</int>
-								<object class="NSFont" key="IBUIFont">
-									<string key="NSName">Helvetica-Bold</string>
-									<double key="NSSize">1.500000e+01</double>
-									<int key="NSfFlags">16</int>
-								</object>
-								<reference key="IBUIHighlightedTitleColor" ref="200608532"/>
-								<object class="NSColor" key="IBUINormalTitleColor">
-									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC4xOTYwNzg0MyAwLjMwOTgwMzkzIDAuNTIxNTY4NjYAA</bytes>
-								</object>
-								<object class="NSColor" key="IBUINormalTitleShadowColor">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MAA</bytes>
-								</object>
-								<object class="NSCustomResource" key="IBUIHighlightedBackgroundImage" id="1026710047">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">commentDelete.png</string>
-								</object>
-								<reference key="IBUIDisabledBackgroundImage" ref="1026710047"/>
-								<reference key="IBUISelectedBackgroundImage" ref="1026710047"/>
-								<reference key="IBUINormalBackgroundImage" ref="1026710047"/>
-							</object>
-						</object>
-						<string key="NSFrame">{{0, 416}, {320, 44}}</string>
-						<reference key="NSSuperview" ref="668816383"/>
-						<bool key="IBUIOpaque">NO</bool>
-						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
-						<object class="NSMutableArray" key="IBUIItems">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBUIBarButtonItem" id="969216181">
-								<reference key="IBUICustomView" ref="673968921"/>
-								<reference key="IBUIToolbar" ref="745343780"/>
-							</object>
-							<object class="IBUIBarButtonItem" id="736374652">
-								<bool key="IBUIEnabled">NO</bool>
-								<string key="IBUITitle">Spam</string>
-								<float key="IBUIWidth">7.500000e+01</float>
-								<int key="IBUIStyle">2</int>
-								<reference key="IBUIToolbar" ref="745343780"/>
-							</object>
-							<object class="IBUIBarButtonItem" id="254569765">
-								<reference key="IBUIToolbar" ref="745343780"/>
-								<int key="IBUISystemItemIdentifier">5</int>
-							</object>
-							<object class="IBUIBarButtonItem" id="666981083">
-								<string key="IBUITitle">Unapprove</string>
-								<float key="IBUIWidth">9.000000e+01</float>
-								<int key="IBUIStyle">2</int>
-								<reference key="IBUIToolbar" ref="745343780"/>
-							</object>
-							<object class="IBUIBarButtonItem" id="702761259">
-								<string key="IBUITitle">Approve</string>
-								<float key="IBUIWidth">7.500000e+01</float>
-								<int key="IBUIStyle">2</int>
-								<reference key="IBUIToolbar" ref="745343780"/>
-							</object>
-						</object>
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 460}</string>
@@ -148,14 +75,6 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">approveButton</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="702761259"/>
-					</object>
-					<int key="connectionID">21</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">commentsTableView</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="328970223"/>
@@ -164,76 +83,11 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">deleteButton</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="673968921"/>
-					</object>
-					<int key="connectionID">23</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">editToolbar</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="745343780"/>
-					</object>
-					<int key="connectionID">24</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">spamButton</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="736374652"/>
-					</object>
-					<int key="connectionID">25</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">unapproveButton</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="666981083"/>
-					</object>
-					<int key="connectionID">26</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">view</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="668816383"/>
 					</object>
 					<int key="connectionID">27</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">approveSelectedComments:</string>
-						<reference key="source" ref="702761259"/>
-						<reference key="destination" ref="372490531"/>
-					</object>
-					<int key="connectionID">28</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">deleteSelectedComments:</string>
-						<reference key="source" ref="673968921"/>
-						<reference key="destination" ref="372490531"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">29</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">spamSelectedComments:</string>
-						<reference key="source" ref="736374652"/>
-						<reference key="destination" ref="372490531"/>
-					</object>
-					<int key="connectionID">30</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">unapproveSelectedComments:</string>
-						<reference key="source" ref="666981083"/>
-						<reference key="destination" ref="372490531"/>
-					</object>
-					<int key="connectionID">31</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -279,62 +133,14 @@
 						<reference key="object" ref="668816383"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="745343780"/>
 							<reference ref="328970223"/>
 						</object>
 						<reference key="parent" ref="7024364"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">13</int>
-						<reference key="object" ref="745343780"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="969216181"/>
-							<reference ref="736374652"/>
-							<reference ref="254569765"/>
-							<reference ref="702761259"/>
-							<reference ref="666981083"/>
-						</object>
-						<reference key="parent" ref="668816383"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">14</int>
 						<reference key="object" ref="328970223"/>
 						<reference key="parent" ref="668816383"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">15</int>
-						<reference key="object" ref="969216181"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="673968921"/>
-						</object>
-						<reference key="parent" ref="745343780"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">16</int>
-						<reference key="object" ref="736374652"/>
-						<reference key="parent" ref="745343780"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">17</int>
-						<reference key="object" ref="254569765"/>
-						<reference key="parent" ref="745343780"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">18</int>
-						<reference key="object" ref="702761259"/>
-						<reference key="parent" ref="745343780"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">19</int>
-						<reference key="object" ref="666981083"/>
-						<reference key="parent" ref="745343780"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">20</int>
-						<reference key="object" ref="673968921"/>
-						<reference key="parent" ref="969216181"/>
 					</object>
 				</object>
 			</object>
@@ -346,25 +152,13 @@
 					<string>-2.CustomClassName</string>
 					<string>12.IBEditorWindowLastContentRect</string>
 					<string>12.IBPluginDependency</string>
-					<string>13.IBPluginDependency</string>
 					<string>14.IBPluginDependency</string>
-					<string>16.IBPluginDependency</string>
-					<string>17.IBPluginDependency</string>
-					<string>18.IBPluginDependency</string>
-					<string>19.IBPluginDependency</string>
-					<string>20.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>DashboardViewController</string>
 					<string>UIResponder</string>
 					<string>{{96, 296}, {320, 460}}</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>

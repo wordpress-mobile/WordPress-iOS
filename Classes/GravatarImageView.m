@@ -18,7 +18,7 @@
 @interface GravatarImageView (Private)
 
 static void addRoundedRectToPath(CGContextRef context, CGRect rect, float radius);
-- (UIImage *)makeRoundCornerImage:(UIImage *)image radius:(int)radius;
+- (UIImage *)newRoundCornerImage:(UIImage *)image radius:(int)radius;
 - (NSURL *)gravatarURLForEmail:(NSString *)emailString;
 NSString *md5(NSString *str);
 
@@ -53,8 +53,9 @@ NSString *md5(NSString *str);
         image = [UIImage imageNamed:GRAVATAR_DEFAULT_IMAGE];
     }
 
-    image = [self makeRoundCornerImage:image radius:GRAVATAR_IMAGE_RADIUS];
+    image = [self newRoundCornerImage:image radius:GRAVATAR_IMAGE_RADIUS];
     [super setImage:image];
+    [image release];
 }
 
 #pragma mark -
@@ -80,7 +81,7 @@ static void addRoundedRectToPath(CGContextRef context, CGRect rect, float radius
     }
 }
 
-- (UIImage *)makeRoundCornerImage:(UIImage *)image radius:(int)radius {
+- (UIImage *)newRoundCornerImage:(UIImage *)image radius:(int)radius {
     UIImage *newImage = nil;
     
     if (image) {

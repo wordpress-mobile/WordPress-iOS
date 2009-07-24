@@ -14,21 +14,13 @@
 #import "WPProgressHUD.h"
 
 #define COMMENTS_SECTION        0
-#define NUM_SECTIONS            1
 
 @interface DashboardViewController (Private)
 
 - (void)scrollToFirstCell;
-- (void)setEditing:(BOOL)value;
-- (void)updateSelectedComments;
 - (void)refreshHandler;
 - (void)syncComments;
 - (BOOL)isConnectedToHost;
-- (void)moderateCommentsWithSelector:(SEL)selector;
-- (void)deleteComments;
-- (void)approveComments;
-- (void)markCommentsAsSpam;
-- (void)unapproveComments;
 - (void)refreshCommentsList;
 - (void)addRefreshButton;
 - (void)calculateSections;
@@ -36,7 +28,7 @@
 
 @implementation DashboardViewController
 
-@synthesize editButtonItem, selectedComments, commentsArray, sectionHeaders;
+@synthesize commentsArray, sectionHeaders;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -44,8 +36,6 @@
 - (void)dealloc {
     [commentsArray release];
     [commentsDict release];
-    [selectedComments release];
-    [editButtonItem release];
     [refreshButton release];
     [sectionHeaders release];
     [super dealloc];
@@ -63,20 +53,14 @@
     [super viewDidLoad];
     
     commentsDict = [[NSMutableDictionary alloc] init];
-    selectedComments = [[NSMutableArray alloc] init];
     
     [commentsTableView setDataSource:self];
     commentsTableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
     
     [self addRefreshButton];
-    
-    editButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered
-                                                     target:self action:@selector(editComments)];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {  
-    [self setEditing:NO];
     
     BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
     [sharedDataManager loadCommentTitlesForCurrentBlog];
@@ -84,22 +68,13 @@
     [self refreshCommentsList];
     [self scrollToFirstCell];
     [self refreshHandler];
-    
-    [editToolbar setHidden:YES];
-    self.navigationItem.rightBarButtonItem = editButtonItem;
-    [editButtonItem setEnabled:([commentsArray count] > 0)];
-    
+        
     if ([commentsTableView indexPathForSelectedRow]) {
         [commentsTableView scrollToRowAtIndexPath:[commentsTableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
         [commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:animated];
     }
     
     [super viewWillAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    editButtonItem.title = @"Edit";
-    [super viewWillDisappear:animated];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
@@ -125,34 +100,6 @@
     [refreshButton addTarget:self action:@selector(refreshHandler) forControlEvents:UIControlEventTouchUpInside];
     
     commentsTableView.tableHeaderView = refreshButton;
-}
-
-- (void)setEditing:(BOOL)value {
-    editing = value;
-    
-    // Adjust comments table view height to fit toolbar (if it's visible).
-    CGFloat toolbarHeight = editing ? editToolbar.bounds.size.height : 0;
-    CGRect mainViewBounds = self.view.bounds;
-    CGRect rect = CGRectMake(mainViewBounds.origin.x,
-                             mainViewBounds.origin.y,
-                             mainViewBounds.size.width,
-                             mainViewBounds.size.height - toolbarHeight);
-    
-    commentsTableView.frame = rect;
-    
-    [editToolbar setHidden:!editing];
-    [deleteButton setEnabled:!editing];
-    [approveButton setEnabled:!editing];
-    [unapproveButton setEnabled:!editing];
-    [spamButton setEnabled:!editing];
-    
-    editButtonItem.title = editing ? @"Cancel" : @"Edit";
-    
-    [commentsTableView setEditing:value animated:YES];
-}
-
-- (void)editComments {
-    [self setEditing:!editing];
 }
 
 #pragma mark -
@@ -185,9 +132,7 @@
     [sharedBlogDataManager loadCommentTitlesForCurrentBlog];
     
     [self refreshCommentsList];
-    
-    [editButtonItem setEnabled:([commentsArray count] > 0)];
-    
+        
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     
     if ([delegate isAlertRunning]) {
@@ -203,23 +148,8 @@
 
 - (void)refreshCommentsList {
     BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
-    
-    if (!selectedComments) {
-        selectedComments = [[NSMutableArray alloc] init];
-    } else {
-        [selectedComments removeAllObjects];
-    }
-    
-    NSMutableArray *commentsList = nil;
-    if (indexForCurrentPost >= 0) {
-        commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog] scopedToPostWithIndex:indexForCurrentPost];
-    }
-    else {
-        commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
-    }
-    
-    
-    [self setCommentsArray:commentsList];
+        
+    [self setCommentsArray:[sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]]];
     
     for (NSDictionary *dict in commentsArray) {
         NSString *str = [dict valueForKey:@"comment_id"];
@@ -237,104 +167,14 @@
     [commentsTableView reloadData];
 }
 
-- (IBAction)deleteSelectedComments:(id)sender {
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"deleting"];
-    [progressAlert show];
-    
-    [self performSelectorInBackground:@selector(deleteComments) withObject:nil];
-}
-
-- (IBAction)approveSelectedComments:(id)sender {
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"moderating"];
-    [progressAlert show];
-    
-    [self performSelectorInBackground:@selector(approveComments) withObject:nil];
-}
-
-- (IBAction)unapproveSelectedComments:(id)sender {
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"moderating"];
-    [progressAlert show];
-    
-    [self performSelectorInBackground:@selector(unapproveComments) withObject:nil];
-}
-
-- (IBAction)spamSelectedComments:(id)sender {
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"moderating"];
-    [progressAlert show];
-    
-    [self performSelectorInBackground:@selector(markCommentsAsSpam) withObject:nil];
-}
-
-- (void)moderateCommentsWithSelector:(SEL)selector {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    
-    if ([self isConnectedToHost]) {
-        BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
-        
-        NSArray *selectedItems = [self selectedComments];
-        
-        [sharedDataManager performSelector:selector withObject:selectedItems withObject:[sharedDataManager currentBlog]];
-        
-        [editButtonItem setEnabled:([commentsArray count] > 0)];
-        [self setEditing:FALSE];
-    }
-    
-    [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-    [progressAlert release];
-    [pool release];
-}
-
-- (void)deleteComments {
-    [self moderateCommentsWithSelector:@selector(deleteComment:forBlog:)];
-}
-
-- (void)approveComments {
-    [self moderateCommentsWithSelector:@selector(approveComment:forBlog:)];
-}
-
-- (void)markCommentsAsSpam {
-    [self moderateCommentsWithSelector:@selector(spamComment:forBlog:)];
-}
-
-- (void)unapproveComments {
-    [self moderateCommentsWithSelector:@selector(unApproveComment:forBlog:)];
-}
-
-- (void)updateSelectedComments {
-    int i, approvedCount, unapprovedCount, spamCount, count = [selectedComments count];
-    
-    approvedCount = unapprovedCount = spamCount = 0;
-    
-    for (i = 0; i < count; i++) {
-        NSDictionary *dict = [selectedComments objectAtIndex:i];
-        
-        if ([[dict valueForKey:@"status"] isEqualToString:@"hold"]) {
-            unapprovedCount++;
-        } else if ([[dict valueForKey:@"status"] isEqualToString:@"approve"]) {
-            approvedCount++;
-        } else if ([[dict valueForKey:@"status"] isEqualToString:@"spam"]) {
-            spamCount++;
-        }
-    }
-    
-    [deleteButton setEnabled:(count > 0)];
-    [approveButton setEnabled:((count - approvedCount) > 0)];
-    [unapproveButton setEnabled:((count - unapprovedCount) > 0)];
-    [spamButton setEnabled:((count - spamCount) > 0)];
-    
-    [approveButton setTitle:(((count - approvedCount) > 0) ? [NSString stringWithFormat:@"Approve (%d)", count - approvedCount]:@"Approve")];
-    [unapproveButton setTitle:(((count - unapprovedCount) > 0) ? [NSString stringWithFormat:@"Unapprove (%d)", count - unapprovedCount]:@"Unapprove")];
-    [spamButton setTitle:(((count - spamCount) > 0) ? [NSString stringWithFormat:@"Spam (%d)", count - spamCount]:@"Spam")];
-}
-
 - (void)showCommentAtIndex:(int)index {
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    CommentViewController *commentsViewController = [[CommentViewController alloc] initWithNibName:@"CommentViewController" bundle:nil];
+    CommentViewController *commentViewController = [[CommentViewController alloc] initWithNibName:@"CommentViewController" bundle:nil];
     
-    [delegate.navigationController pushViewController:commentsViewController animated:YES];
+    [delegate.navigationController pushViewController:commentViewController animated:YES];
     
-    [commentsViewController showComment:commentsArray atIndex:index];
-    [commentsViewController release];
+    [commentViewController showComment:commentsArray atIndex:index];
+    [commentViewController release];
 }
 
 #pragma mark -
@@ -366,7 +206,7 @@
     }
     
     cell.comment = comment;
-    cell.checked = [selectedComments containsObject:comment];
+    cell.checked = NO;
     cell.editing = editing;
     
     return cell;
@@ -381,28 +221,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editing) {
-        [self tableView:tableView didCheckRowAtIndexPath:indexPath];
-    } else {
-        [self showCommentAtIndex:indexPath.row];
-    }
-}
-
-- (void)tableView:(UITableView *)tableView didCheckRowAtIndexPath:(NSIndexPath *)indexPath {
-    CommentTableViewCell *cell = (CommentTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-    NSDictionary *comment = cell.comment;
-    
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    
-    if ([selectedComments containsObject:comment]) {
-        cell.checked = NO;
-        [selectedComments removeObject:comment];
-    } else {
-        cell.checked = YES;
-        [selectedComments addObject:comment];
-    }
-    
-    [self updateSelectedComments];
+    [self showCommentAtIndex:[[[[sectionHeaders objectAtIndex:indexPath.section] objectForKey:[NSString stringWithFormat:@"%i", indexPath.row]] objectForKey:@"index"] intValue]];
 }
 
 - (void)calculateSections {
@@ -412,9 +231,11 @@
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateStyle:NSDateFormatterLongStyle];
     
+    int index = 0;
     for (NSDictionary *comment in commentsArray) {
         NSString *dateString = [dateFormat stringFromDate:[comment objectForKey:@"date_created_gmt"]];
-        
+        [comment setValue:[NSNumber numberWithInt:index] forKey:@"index"];
+
         if ([dates objectForKey:dateString] == nil) {
             [dates setObject:[NSNumber numberWithInt:[dates count]] forKey:dateString];
             
@@ -432,19 +253,13 @@
             [[sectionDateMapping objectAtIndex:dateArrayIndex] setObject:numberOfComments forKey:@"numberOfComments"];
             [[sectionDateMapping objectAtIndex:dateArrayIndex] setObject:comment forKey:[NSString stringWithFormat:@"%i", [numberOfComments intValue] -1]];
         }
+        index++;
     }
     self.sectionHeaders = sectionDateMapping;
     
     [dateFormat release];
     [sectionDateMapping release];
     [dates release];
-}
-
-#pragma mark -
-#pragma mark accessors
-
-- (void)setIndexForCurrentPost:(int)index {
-    indexForCurrentPost = index;
 }
 
 @end

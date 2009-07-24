@@ -88,10 +88,6 @@
         [commentsViewController setIndexForCurrentPost:-1];
         self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
     }
-    else if (viewController == dashboardViewController) {
-        [dashboardViewController setIndexForCurrentPost:-1];
-        self.navigationItem.rightBarButtonItem = dashboardViewController.editButtonItem;
-    }
     else {
         self.navigationItem.rightBarButtonItem = nil;
     }

@@ -7,7 +7,7 @@
 @private
     UIBarButtonItem *newButtonItem;
 
-    IBOutlet UITableView *postsTableView;
+//    IBOutlet UITableView *postsTableView;
 
     PostViewController *postDetailViewController;
     EditPostViewController *postDetailEditController;
