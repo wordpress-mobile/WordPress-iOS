@@ -31,6 +31,7 @@
 - (void)unapproveComments;
 - (void)refreshCommentsList;
 - (void)addRefreshButton;
+- (void)limitToOnHold;
 @end
 
 @implementation CommentsViewController
@@ -199,6 +200,17 @@
     [pool release];
 }
 
+- (void)limitToOnHold {
+    NSMutableArray *commentsOnHold = [[NSMutableArray alloc] init];
+    for (NSDictionary *comment in commentsArray) {
+        if ([[comment valueForKey:@"status"] isEqualToString:@"hold"]) {
+            [commentsOnHold addObject:comment];
+        }
+    }
+    [self setCommentsArray:commentsOnHold];
+    [commentsOnHold release];
+}
+
 - (void)refreshCommentsList {
     BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
 
@@ -209,7 +221,6 @@
     }
 
     NSMutableArray *commentsList = nil;
-    NSLog(@"index for current post: %i", indexForCurrentPost);
     if (indexForCurrentPost >= 0) {
         commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog] scopedToPostWithIndex:indexForCurrentPost];
     }
@@ -217,8 +228,8 @@
         commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
     }
     
-
     [self setCommentsArray:commentsList];
+    [self limitToOnHold];
 
     for (NSDictionary *dict in commentsArray) {
         NSString *str = [dict valueForKey:@"comment_id"];
@@ -347,7 +358,7 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return @"Comments";
+    return ([commentsArray count] == 0) ? @"Empty" : @"Comments";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
