@@ -41,7 +41,12 @@
 
     [self initBackButton];
 
+#if defined __IPHONE_3_0
+	[dashboardViewController viewWillAppear:NO];
+#else if defined __IPHONE_2_0 
     tabBarController.selectedIndex = 0;
+#endif
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
