@@ -3,7 +3,6 @@
 //  WordPress
 //
 //  Created by Joshua Bassett on 18/06/09.
-//  Copyright 2009 Clear Interactive. All rights reserved.
 //
 
 #import "NSString+Util.h"
