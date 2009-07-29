@@ -11,6 +11,7 @@
 #import "UIViewController+WPAnimation.h"
 #import "WPNavigationLeftButtonView.h"
 #import "WordPressAppDelegate.h"
+#import "NSString+XMLExtensions.h" 
 
 @implementation BlogViewController
 
@@ -29,7 +30,7 @@
     self.view = tabBarController.view;
 
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
-    self.title = [[dm currentBlog] valueForKey:@"blogName"];
+    self.title =[NSString decodeXMLCharactersIn:[[dm currentBlog] valueForKey:@"blogName"]] ;
 
     WPNavigationLeftButtonView *myview = [WPNavigationLeftButtonView createCopyOfView];
     [myview setTarget:self withAction:@selector(goToHome:)];
