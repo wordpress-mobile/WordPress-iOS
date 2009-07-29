@@ -10,13 +10,14 @@
 #import "BlogDataManager.h"
 #import "CommentTableViewCell.h"
 #import "CommentViewController.h"
+#import "ResourcesTableViewSection.h"
 #import "WordPressAppDelegate.h"
-#import "WPProgressHUD.h"
 
 #define COMMENTS_SECTION        0
 
 @interface DashboardViewController (Private)
 
+- (void)initCommentsMap;
 - (void)scrollToFirstCell;
 - (void)refreshHandler;
 - (void)syncComments;
@@ -24,18 +25,20 @@
 - (void)refreshCommentsList;
 - (void)addRefreshButton;
 - (void)calculateSections;
+- (void)showCommentAtIndex:(int)index;
+
 @end
 
 @implementation DashboardViewController
 
-@synthesize commentsArray, sectionHeaders;
+@synthesize comments, sectionHeaders;
 
 #pragma mark -
 #pragma mark Memory Management
 
 - (void)dealloc {
-    [commentsArray release];
-    [commentsDict release];
+    [comments release];
+    [commentsMap release];
     [refreshButton release];
     [sectionHeaders release];
     [super dealloc];
@@ -52,16 +55,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    commentsDict = [[NSMutableDictionary alloc] init];
-    
-    [commentsTableView setDataSource:self];
-    commentsTableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
+    self.tableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
     
     [self addRefreshButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated {  
-    
     BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
     [sharedDataManager loadCommentTitlesForCurrentBlog];
     
@@ -69,16 +68,16 @@
     [self scrollToFirstCell];
     [self refreshHandler];
         
-    if ([commentsTableView indexPathForSelectedRow]) {
-        [commentsTableView scrollToRowAtIndexPath:[commentsTableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
-        [commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:animated];
+    if ([self.tableView indexPathForSelectedRow]) {
+        [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+        [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
     }
     
     [super viewWillAppear:animated];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    [commentsTableView reloadData];
+    [self.tableView reloadData];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -89,92 +88,6 @@
     } else {
         return YES;
     }
-}
-
-#pragma mark -
-
-- (void)addRefreshButton {
-    CGRect frame = CGRectMake(0, 0, commentsTableView.bounds.size.width, REFRESH_BUTTON_HEIGHT);
-    
-    refreshButton = [[RefreshButtonView alloc] initWithFrame:frame];
-    [refreshButton addTarget:self action:@selector(refreshHandler) forControlEvents:UIControlEventTouchUpInside];
-    
-    commentsTableView.tableHeaderView = refreshButton;
-}
-
-#pragma mark -
-#pragma mark Action Methods
-
-- (void)scrollToFirstCell {
-    NSIndexPath *indexPath = NULL;
-    
-    if ([self tableView:commentsTableView numberOfRowsInSection:COMMENTS_SECTION] > 0) {
-        NSUInteger indexes[] = {0, 0};
-        indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
-    }
-    
-    if (indexPath) {
-        [commentsTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
-    }
-}
-
-- (void)refreshHandler {
-    [refreshButton startAnimating];
-    [self performSelectorInBackground:@selector(syncComments) withObject:nil];
-}
-
-- (void)syncComments {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    
-    BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
-    [sharedBlogDataManager syncCommentsForCurrentBlog];
-    [sharedBlogDataManager loadCommentTitlesForCurrentBlog];
-    
-    [self refreshCommentsList];
-        
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    
-    if ([delegate isAlertRunning]) {
-        [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-        [progressAlert release];
-    } else {
-        [refreshButton stopAnimating];
-    }
-    
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [pool release];
-}
-
-- (void)refreshCommentsList {
-    BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
-        
-    [self setCommentsArray:[sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]]];
-    
-    for (NSDictionary *dict in commentsArray) {
-        NSString *str = [dict valueForKey:@"comment_id"];
-        [commentsDict setValue:dict forKey:str];
-    }
-    
-    if (([commentsArray count] > 0) && (![(NSDictionary *)[commentsArray objectAtIndex:0] objectForKey:@"author_url"])) {
-        progressAlert = [[WPProgressHUD alloc] initWithLabel:@"updating"];
-        [progressAlert show];
-        
-        [self performSelectorInBackground:@selector(downloadRecentComments) withObject:nil];
-    }
-    
-    [self calculateSections];
-    [commentsTableView reloadData];
-}
-
-- (void)showCommentAtIndex:(int)index {
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    CommentViewController *commentViewController = [[CommentViewController alloc] initWithNibName:@"CommentViewController" bundle:nil];
-    
-    [delegate.navigationController pushViewController:commentViewController animated:YES];
-    
-    [commentViewController showComment:commentsArray atIndex:index];
-    [commentViewController release];
 }
 
 #pragma mark -
@@ -189,17 +102,28 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return ([sectionHeaders count] == 0) ? @"No Comments" : [[sectionHeaders objectAtIndex:section] objectForKey:@"date"];  
+    if ([sectionHeaders count] > 0) {
+        ResourcesTableViewSection *tableViewSection = [sectionHeaders objectAtIndex:section];
+        return tableViewSection.title;
+    } else {
+        return  @"No Comments";
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return ([sectionHeaders count] == 0) ? 0 : [[[sectionHeaders objectAtIndex:section] objectForKey:@"numberOfComments"] intValue];
+    if ([sectionHeaders count] > 0) {
+        ResourcesTableViewSection *tableViewSection = [sectionHeaders objectAtIndex:section];
+        return tableViewSection.numberOfRows;
+    } else {
+        return 0;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"PageCell";
+    static NSString *CellIdentifier = @"CommentCell";
     CommentTableViewCell *cell = (CommentTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    id comment = [[sectionHeaders objectAtIndex:indexPath.section] objectForKey:[NSString stringWithFormat:@"%i", indexPath.row]];
+    ResourcesTableViewSection *tableViewSection = [sectionHeaders objectAtIndex:indexPath.section];
+    id comment = [tableViewSection.resources objectAtIndex:indexPath.row];
     
     if (cell == nil) {
         cell = [[[CommentTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
@@ -221,44 +145,135 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self showCommentAtIndex:[[[[sectionHeaders objectAtIndex:indexPath.section] objectForKey:[NSString stringWithFormat:@"%i", indexPath.row]] objectForKey:@"index"] intValue]];
+    ResourcesTableViewSection *tableViewSection = [sectionHeaders objectAtIndex:indexPath.section];
+    id comment = [tableViewSection.resources objectAtIndex:indexPath.row];
+    int index = [[comment objectForKey:@"index"] intValue];
+    [self showCommentAtIndex:index];
+}
+
+#pragma mark -
+#pragma mark Private Methods
+
+- (void)addRefreshButton {
+    CGRect frame = CGRectMake(0, 0, self.tableView.bounds.size.width, REFRESH_BUTTON_HEIGHT);
+    
+    refreshButton = [[RefreshButtonView alloc] initWithFrame:frame];
+    [refreshButton addTarget:self action:@selector(refreshHandler) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.tableView.tableHeaderView = refreshButton;
+}
+
+- (void)scrollToFirstCell {
+    NSIndexPath *indexPath = NULL;
+    
+    if ([self tableView:self.tableView numberOfRowsInSection:COMMENTS_SECTION] > 0) {
+        NSUInteger indexes[] = {0, 0};
+        indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
+    }
+    
+    if (indexPath) {
+        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    }
+}
+
+- (void)refreshHandler {
+    [refreshButton startAnimating];
+    [self performSelectorInBackground:@selector(syncComments) withObject:nil];
+}
+
+- (void)syncComments {
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
+    BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
+    [sharedBlogDataManager syncCommentsForCurrentBlog];
+    [sharedBlogDataManager loadCommentTitlesForCurrentBlog];
+    
+    [self refreshCommentsList];
+    
+    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    
+    if ([delegate isAlertRunning]) {
+        [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
+        [progressAlert release];
+    } else {
+        [refreshButton stopAnimating];
+    }
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [pool release];
+}
+
+- (void)initCommentsMap {
+    if (commentsMap) {
+        [commentsMap release];
+        commentsMap = nil;
+    }
+    
+    commentsMap = [[NSMutableDictionary alloc] init];
+}
+
+- (void)refreshCommentsList {
+    BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
+    [self setComments:[sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]]];
+    
+    [self initCommentsMap];
+    
+    for (NSDictionary *comment in comments) {
+        NSString *commentId = [comment valueForKey:@"comment_id"];
+        [commentsMap setValue:comment forKey:commentId];
+    }
+    
+    [self calculateSections];
+    [self.tableView reloadData];
+}
+
+- (void)showCommentAtIndex:(int)index {
+    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    CommentViewController *commentViewController = [[CommentViewController alloc] initWithNibName:@"CommentViewController" bundle:nil];
+    
+    [delegate.navigationController pushViewController:commentViewController animated:YES];
+    
+    [commentViewController showComment:comments atIndex:index];
+    [commentViewController release];
 }
 
 - (void)calculateSections {
+    ResourcesTableViewSection *tableViewSection = nil;
+
     NSMutableDictionary *dates = [[NSMutableDictionary alloc] init];
-    NSMutableArray *sectionDateMapping = [[NSMutableArray alloc] init];
+    NSMutableArray *tableViewSections = [[NSMutableArray alloc] init];
     
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateStyle:NSDateFormatterLongStyle];
     
     int index = 0;
-    for (NSDictionary *comment in commentsArray) {
+
+    for (id comment in comments) {
         NSString *dateString = [dateFormat stringFromDate:[comment objectForKey:@"date_created_gmt"]];
         [comment setValue:[NSNumber numberWithInt:index] forKey:@"index"];
 
         if ([dates objectForKey:dateString] == nil) {
             [dates setObject:[NSNumber numberWithInt:[dates count]] forKey:dateString];
             
-            NSMutableDictionary *commentContainer = [[NSMutableDictionary alloc] init];
-            [commentContainer setObject:dateString forKey:@"date"];
-            [commentContainer setObject:[NSNumber numberWithInt:1] forKey:@"numberOfComments"];
-            [commentContainer setObject:comment forKey:@"0"];
-            
-            [sectionDateMapping addObject:commentContainer];
-            [commentContainer release];
-        }
-        else {
+            tableViewSection = [[ResourcesTableViewSection alloc] initWithTitle:dateString];
+            [tableViewSections addObject:tableViewSection];
+            [tableViewSection release];
+        } else {
             int dateArrayIndex = [[dates objectForKey:dateString] intValue];
-            NSNumber *numberOfComments = [NSNumber numberWithInt:[[[sectionDateMapping objectAtIndex:dateArrayIndex] objectForKey:@"numberOfComments"] intValue] +1];
-            [[sectionDateMapping objectAtIndex:dateArrayIndex] setObject:numberOfComments forKey:@"numberOfComments"];
-            [[sectionDateMapping objectAtIndex:dateArrayIndex] setObject:comment forKey:[NSString stringWithFormat:@"%i", [numberOfComments intValue] -1]];
+            tableViewSection = [tableViewSections objectAtIndex:dateArrayIndex];
         }
+
+        tableViewSection.numberOfRows = tableViewSection.numberOfRows + 1;
+        [tableViewSection.resources addObject:comment];
+
         index++;
     }
-    self.sectionHeaders = sectionDateMapping;
+
+    self.sectionHeaders = tableViewSections;
     
     [dateFormat release];
-    [sectionDateMapping release];
+    [tableViewSections release];
     [dates release];
 }
 

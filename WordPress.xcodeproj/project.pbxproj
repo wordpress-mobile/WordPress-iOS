@@ -10,6 +10,7 @@
 		031663070FFB151A0045D052 /* PostTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 031663060FFB151A0045D052 /* PostTableViewCell.m */; };
 		031665FD0FFC2E890045D052 /* sync.png in Resources */ = {isa = PBXBuildFile; fileRef = 031665FC0FFC2E890045D052 /* sync.png */; };
 		031666AE0FFC3E130045D052 /* CommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 031666AD0FFC3E130045D052 /* CommentTableViewCell.m */; };
+		032BD74F101FCF59006F0017 /* ResourcesTableViewSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 032BD74E101FCF59006F0017 /* ResourcesTableViewSection.m */; };
 		032BDCB610106E1B00E26F44 /* LocateXMLRPCViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 032BDCB510106E1B00E26F44 /* LocateXMLRPCViewController.xib */; };
 		03958062100D6CFC00850742 /* WPLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03958061100D6CFC00850742 /* WPLabel.m */; };
 		03958860100DA2DA00850742 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0395885F100DA2DA00850742 /* ImageCache.m */; };
@@ -117,7 +118,6 @@
 		CE1946341017F4D6002BE752 /* speedometer.png in Resources */ = {isa = PBXBuildFile; fileRef = CE1946331017F4D6002BE752 /* speedometer.png */; };
 		CE1946681017F5AF002BE752 /* Icons License in Resources */ = {isa = PBXBuildFile; fileRef = CE1946671017F5AF002BE752 /* Icons License */; };
 		CE1946711017F86D002BE752 /* DashboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1946701017F86D002BE752 /* DashboardViewController.m */; };
-		CE1946781017FC16002BE752 /* DashboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE1946771017FC16002BE752 /* DashboardViewController.xib */; };
 		CE1E3BC71005B3D500A7BD08 /* WPpregressHUDBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = CE1E3BC61005B3D500A7BD08 /* WPpregressHUDBackground.png */; };
 		CE4E33D20FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4E33D10FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m */; };
 		CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBD3EAA0FF1BA3B00C1396E /* Blog.m */; };
@@ -143,6 +143,8 @@
 		031666AC0FFC3E130045D052 /* CommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentTableViewCell.h; sourceTree = "<group>"; };
 		031666AD0FFC3E130045D052 /* CommentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentTableViewCell.m; sourceTree = "<group>"; };
 		031669580FFC81A20045D052 /* CommentsTableViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsTableViewDelegate.h; sourceTree = "<group>"; };
+		032BD74D101FCF59006F0017 /* ResourcesTableViewSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourcesTableViewSection.h; sourceTree = "<group>"; };
+		032BD74E101FCF59006F0017 /* ResourcesTableViewSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResourcesTableViewSection.m; sourceTree = "<group>"; };
 		032BDCB510106E1B00E26F44 /* LocateXMLRPCViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LocateXMLRPCViewController.xib; sourceTree = "<group>"; };
 		03958060100D6CFC00850742 /* WPLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLabel.h; sourceTree = "<group>"; };
 		03958061100D6CFC00850742 /* WPLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLabel.m; sourceTree = "<group>"; };
@@ -300,7 +302,6 @@
 		CE1946671017F5AF002BE752 /* Icons License */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Icons License"; sourceTree = "<group>"; };
 		CE19466F1017F86D002BE752 /* DashboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashboardViewController.h; sourceTree = "<group>"; };
 		CE1946701017F86D002BE752 /* DashboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashboardViewController.m; sourceTree = "<group>"; };
-		CE1946771017FC16002BE752 /* DashboardViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DashboardViewController.xib; sourceTree = "<group>"; };
 		CE1E3BC61005B3D500A7BD08 /* WPpregressHUDBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WPpregressHUDBackground.png; sourceTree = "<group>"; };
 		CE4E33D00FEB0F3A00415662 /* UIImage+INResizeImageAllocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+INResizeImageAllocator.h"; sourceTree = "<group>"; };
 		CE4E33D10FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+INResizeImageAllocator.m"; sourceTree = "<group>"; };
@@ -425,7 +426,6 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				CE1946761017FBEE002BE752 /* Dashboard */,
 				ACFF1DC00E231EF600EC6BF5 /* Blog */,
 				C50E78130E71648100991509 /* Comments */,
 				29FF132C0FE70EFF00CFB908 /* Custom Fields */,
@@ -574,6 +574,8 @@
 				03EB590E10105076004E82CD /* RegExProcessor.m */,
 				A01C54210E24E4ED00D411F2 /* Reachability.h */,
 				A01C54220E24E4ED00D411F2 /* Reachability.m */,
+				032BD74D101FCF59006F0017 /* ResourcesTableViewSection.h */,
+				032BD74E101FCF59006F0017 /* ResourcesTableViewSection.m */,
 				A0E293EF0E21027E00C6919C /* WPAddCategoryViewController.h */,
 				A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */,
 				7059CD1F0F332B6500A0660B /* WPCategoryTree.h */,
@@ -713,14 +715,6 @@
 			name = Dashboard;
 			sourceTree = "<group>";
 		};
-		CE1946761017FBEE002BE752 /* Dashboard */ = {
-			isa = PBXGroup;
-			children = (
-				CE1946771017FC16002BE752 /* DashboardViewController.xib */,
-			);
-			name = Dashboard;
-			sourceTree = "<group>";
-		};
 		EC4696A80EA74DAC0040EE8E /* Pages */ = {
 			isa = PBXGroup;
 			children = (
@@ -856,7 +850,6 @@
 				032BDCB610106E1B00E26F44 /* LocateXMLRPCViewController.xib in Resources */,
 				CE1946341017F4D6002BE752 /* speedometer.png in Resources */,
 				CE1946681017F5AF002BE752 /* Icons License in Resources */,
-				CE1946781017FC16002BE752 /* DashboardViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -923,6 +916,7 @@
 				03EB591010105076004E82CD /* RegExProcessor.m in Sources */,
 				03EB591310105088004E82CD /* LocateXMLRPCViewController.m in Sources */,
 				CE1946711017F86D002BE752 /* DashboardViewController.m in Sources */,
+				032BD74F101FCF59006F0017 /* ResourcesTableViewSection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

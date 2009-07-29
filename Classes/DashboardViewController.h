@@ -8,23 +8,21 @@
 #import <UIKit/UIKit.h>
 #import "RefreshButtonView.h"
 
-@interface DashboardViewController : UIViewController <UITableViewDataSource> {
+@interface DashboardViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate> {
 @private
-    IBOutlet UITableView *commentsTableView;
-    
     RefreshButtonView *refreshButton;
 
     BOOL editing;
     
-    NSMutableArray *commentsArray;
-    NSMutableDictionary *commentsDict;
+    NSMutableArray *comments;
+    NSMutableDictionary *commentsMap;
     
     UIAlertView *progressAlert;
     
     NSMutableArray *sectionHeaders;
 }
 
-@property (nonatomic, retain) NSMutableArray *commentsArray;
+@property (nonatomic, retain) NSMutableArray *comments;
 @property (nonatomic, retain) NSMutableArray *sectionHeaders;
 
 @end

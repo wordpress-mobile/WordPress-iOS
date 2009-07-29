@@ -236,13 +236,6 @@
         [commentsDict setValue:dict forKey:str];
     }
 
-    if (([commentsArray count] > 0) && (![(NSDictionary *)[commentsArray objectAtIndex:0] objectForKey:@"author_url"])) {
-        progressAlert = [[WPProgressHUD alloc] initWithLabel:@"updating"];
-        [progressAlert show];
-
-        [self performSelectorInBackground:@selector(downloadRecentComments) withObject:nil];
-    }
-
     [commentsTableView reloadData];
 }
 
