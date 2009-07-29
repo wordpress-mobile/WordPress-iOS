@@ -199,7 +199,7 @@
 
 - (void)showComment:(NSArray *)comments atIndex:(int)index {
     currentIndex = index;
-    commentDetails = (NSMutableArray *)[comments retain];
+	commentDetails = [comments mutableCopy];
     NSDictionary *comment = [commentDetails objectAtIndex:currentIndex];
     
     static NSDateFormatter *dateFormatter = nil;
