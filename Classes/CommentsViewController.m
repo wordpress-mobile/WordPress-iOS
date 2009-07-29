@@ -71,7 +71,6 @@
     
     editButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered
                                                      target:self action:@selector(editComments)];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {  
@@ -202,11 +201,13 @@
 
 - (void)limitToOnHold {
     NSMutableArray *commentsOnHold = [[NSMutableArray alloc] init];
+
     for (NSDictionary *comment in commentsArray) {
         if ([[comment valueForKey:@"status"] isEqualToString:@"hold"]) {
             [commentsOnHold addObject:comment];
         }
     }
+
     [self setCommentsArray:commentsOnHold];
     [commentsOnHold release];
 }
@@ -220,16 +221,12 @@
         [selectedComments removeAllObjects];
     }
 
-    NSMutableArray *commentsList = nil;
-    if (indexForCurrentPost >= 0) {
-        commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog] scopedToPostWithIndex:indexForCurrentPost];
+    if (indexForCurrentPost >= -1) {
+        self.commentsArray = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog] scopedToPostWithIndex:indexForCurrentPost];
+    } else {
+        self.commentsArray = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
+        [self limitToOnHold];
     }
-    else {
-        commentsList = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
-    }
-    
-    [self setCommentsArray:commentsList];
-    [self limitToOnHold];
 
     for (NSDictionary *dict in commentsArray) {
         NSString *str = [dict valueForKey:@"comment_id"];

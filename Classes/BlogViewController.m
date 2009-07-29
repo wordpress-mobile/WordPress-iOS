@@ -46,7 +46,6 @@
 #else if defined __IPHONE_2_0 
     tabBarController.selectedIndex = 0;
 #endif
-
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -90,7 +89,7 @@
     } else if (viewController == pagesViewController) {
         self.navigationItem.rightBarButtonItem = pagesViewController.newButtonItem;
     } else if (viewController == commentsViewController) {
-        [commentsViewController setIndexForCurrentPost:-1];
+        [commentsViewController setIndexForCurrentPost:-2];
         self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
     }
     else {
