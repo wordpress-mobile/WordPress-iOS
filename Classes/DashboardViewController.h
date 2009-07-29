@@ -14,15 +14,15 @@
 
     BOOL editing;
     
-    NSMutableArray *comments;
-    NSMutableDictionary *commentsMap;
+    NSArray *comments;
+    NSDictionary *commentsMap;
+    NSArray *commentsSections;
     
     UIAlertView *progressAlert;
-    
-    NSMutableArray *sectionHeaders;
 }
 
-@property (nonatomic, retain) NSMutableArray *comments;
-@property (nonatomic, retain) NSMutableArray *sectionHeaders;
+@property (nonatomic, retain) NSArray *comments;
+@property (nonatomic, retain) NSDictionary *commentsMap;
+@property (nonatomic, retain) NSArray *commentsSections;
 
 @end

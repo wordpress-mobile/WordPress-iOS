@@ -13,17 +13,17 @@
 #import "ResourcesTableViewSection.h"
 #import "WordPressAppDelegate.h"
 
-#define COMMENTS_SECTION        0
+#define COMMENTS_SECTION    0
 
 @interface DashboardViewController (Private)
 
-- (void)initCommentsMap;
 - (void)scrollToFirstCell;
 - (void)refreshHandler;
 - (void)syncComments;
 - (BOOL)isConnectedToHost;
 - (void)refreshCommentsList;
 - (void)addRefreshButton;
+- (void)initCommentsMap;
 - (void)calculateSections;
 - (void)showCommentAtIndex:(int)index;
 
@@ -31,7 +31,7 @@
 
 @implementation DashboardViewController
 
-@synthesize comments, sectionHeaders;
+@synthesize comments, commentsMap, commentsSections;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -40,7 +40,7 @@
     [comments release];
     [commentsMap release];
     [refreshButton release];
-    [sectionHeaders release];
+    [commentsSections release];
     [super dealloc];
 }
 
@@ -98,22 +98,22 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return ([sectionHeaders count] == 0) ? 1 : [sectionHeaders count];
+    return ([commentsSections count] == 0) ? 1 : [commentsSections count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if ([sectionHeaders count] > 0) {
-        ResourcesTableViewSection *tableViewSection = [sectionHeaders objectAtIndex:section];
-        return tableViewSection.title;
+    if ([commentsSections count] > 0) {
+        ResourcesTableViewSection *commentsSection = [commentsSections objectAtIndex:section];
+        return commentsSection.title;
     } else {
         return  @"No Comments";
     }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if ([sectionHeaders count] > 0) {
-        ResourcesTableViewSection *tableViewSection = [sectionHeaders objectAtIndex:section];
-        return tableViewSection.numberOfRows;
+    if ([commentsSections count] > 0) {
+        ResourcesTableViewSection *commentsSection = [commentsSections objectAtIndex:section];
+        return commentsSection.numberOfRows;
     } else {
         return 0;
     }
@@ -122,8 +122,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"CommentCell";
     CommentTableViewCell *cell = (CommentTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    ResourcesTableViewSection *tableViewSection = [sectionHeaders objectAtIndex:indexPath.section];
-    id comment = [tableViewSection.resources objectAtIndex:indexPath.row];
+    ResourcesTableViewSection *commentsSection = [commentsSections objectAtIndex:indexPath.section];
+    id comment = [commentsSection.resources objectAtIndex:indexPath.row];
     
     if (cell == nil) {
         cell = [[[CommentTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
@@ -145,9 +145,9 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    ResourcesTableViewSection *tableViewSection = [sectionHeaders objectAtIndex:indexPath.section];
-    id comment = [tableViewSection.resources objectAtIndex:indexPath.row];
-    int index = [[comment objectForKey:@"index"] intValue];
+    ResourcesTableViewSection *commentsSection = [commentsSections objectAtIndex:indexPath.section];
+    id comment = [commentsSection.resources objectAtIndex:indexPath.row];
+    int index = [comments indexOfObject:comment];
     [self showCommentAtIndex:index];
 }
 
@@ -204,26 +204,11 @@
     [pool release];
 }
 
-- (void)initCommentsMap {
-    if (commentsMap) {
-        [commentsMap release];
-        commentsMap = nil;
-    }
-    
-    commentsMap = [[NSMutableDictionary alloc] init];
-}
-
 - (void)refreshCommentsList {
     BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
-    [self setComments:[sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]]];
-    
+    self.comments = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
+     
     [self initCommentsMap];
-    
-    for (NSDictionary *comment in comments) {
-        NSString *commentId = [comment valueForKey:@"comment_id"];
-        [commentsMap setValue:comment forKey:commentId];
-    }
-    
     [self calculateSections];
     [self.tableView reloadData];
 }
@@ -238,43 +223,48 @@
     [commentViewController release];
 }
 
-- (void)calculateSections {
-    ResourcesTableViewSection *tableViewSection = nil;
+- (void)initCommentsMap {
+    NSMutableDictionary *newCommentsMap = [[NSMutableDictionary alloc] init];
+    
+    for (NSDictionary *comment in comments) {
+        NSString *commentId = [comment valueForKey:@"comment_id"];
+        [newCommentsMap setValue:comment forKey:commentId];
+    }
+    
+    self.commentsMap = newCommentsMap;
+    [newCommentsMap release];
+}
 
-    NSMutableDictionary *dates = [[NSMutableDictionary alloc] init];
-    NSMutableArray *tableViewSections = [[NSMutableArray alloc] init];
+- (void)calculateSections {
+    ResourcesTableViewSection *commentsSection = nil;
+
+    NSMutableArray *newCommentsSections = [[NSMutableArray alloc] init];
+    NSMutableDictionary *dateToCommentSectionMap = [[NSMutableDictionary alloc] init];
     
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateStyle:NSDateFormatterLongStyle];
-    
-    int index = 0;
 
     for (id comment in comments) {
         NSString *dateString = [dateFormat stringFromDate:[comment objectForKey:@"date_created_gmt"]];
-        [comment setValue:[NSNumber numberWithInt:index] forKey:@"index"];
 
-        if ([dates objectForKey:dateString] == nil) {
-            [dates setObject:[NSNumber numberWithInt:[dates count]] forKey:dateString];
-            
-            tableViewSection = [[ResourcesTableViewSection alloc] initWithTitle:dateString];
-            [tableViewSections addObject:tableViewSection];
-            [tableViewSection release];
+        if ([dateToCommentSectionMap objectForKey:dateString] == nil) {
+            commentsSection = [[ResourcesTableViewSection alloc] initWithTitle:dateString];
+            [newCommentsSections addObject:commentsSection];
+            [dateToCommentSectionMap setObject:commentsSection forKey:dateString];
+            [commentsSection release];
         } else {
-            int dateArrayIndex = [[dates objectForKey:dateString] intValue];
-            tableViewSection = [tableViewSections objectAtIndex:dateArrayIndex];
+            commentsSection = [dateToCommentSectionMap objectForKey:dateString];
         }
 
-        tableViewSection.numberOfRows = tableViewSection.numberOfRows + 1;
-        [tableViewSection.resources addObject:comment];
-
-        index++;
+        commentsSection.numberOfRows = commentsSection.numberOfRows + 1;
+        [commentsSection.resources addObject:comment];
     }
 
-    self.sectionHeaders = tableViewSections;
+    self.commentsSections = newCommentsSections;
     
     [dateFormat release];
-    [tableViewSections release];
-    [dates release];
+    [dateToCommentSectionMap release];
+    [newCommentsSections release];
 }
 
 @end
