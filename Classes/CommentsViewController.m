@@ -22,21 +22,22 @@
 - (void)setEditing:(BOOL)value;
 - (void)updateSelectedComments;
 - (void)refreshHandler;
-- (void)syncComments;
 - (BOOL)isConnectedToHost;
 - (void)moderateCommentsWithSelector:(SEL)selector;
 - (void)deleteComments;
 - (void)approveComments;
 - (void)markCommentsAsSpam;
 - (void)unapproveComments;
-- (void)refreshCommentsList;
+- (void)syncComments;
 - (void)addRefreshButton;
 - (void)limitToOnHold;
+- (void)updateBadge;
+
 @end
 
 @implementation CommentsViewController
 
-@synthesize editButtonItem, selectedComments, commentsArray;
+@synthesize editButtonItem, selectedComments, commentsArray, indexForCurrentPost;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -234,6 +235,7 @@
     }
 
     [commentsTableView reloadData];
+    [self updateBadge];
 }
 
 - (IBAction)deleteSelectedComments:(id)sender {
@@ -404,11 +406,14 @@
     [self updateSelectedComments];
 }
 
-#pragma mark -
-#pragma mark accessors
+- (void)updateBadge {
+    NSString *badge = nil;
 
-- (void)setIndexForCurrentPost:(int)index {
-    indexForCurrentPost = index;
+    if (indexForCurrentPost <= -1 && [commentsArray count] > 0) {
+        badge = [[NSNumber numberWithInt:[commentsArray count]] stringValue];
+    }
+
+    self.tabBarItem.badgeValue = badge;
 }
 
 @end

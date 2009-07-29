@@ -38,11 +38,14 @@
 @property (readonly) UIBarButtonItem *editButtonItem;
 @property (nonatomic, retain) NSMutableArray *selectedComments;
 @property (nonatomic, retain) NSMutableArray *commentsArray;
+@property int indexForCurrentPost;
 
 - (IBAction)deleteSelectedComments:(id)sender;
 - (IBAction)approveSelectedComments:(id)sender;
 - (IBAction)unapproveSelectedComments:(id)sender;
 - (IBAction)spamSelectedComments:(id)sender;
+
+- (void)refreshCommentsList;
 
 - (void)setIndexForCurrentPost:(int)index;
 

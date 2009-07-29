@@ -46,6 +46,9 @@
 #else if defined __IPHONE_2_0 
     tabBarController.selectedIndex = 0;
 #endif
+    
+    [commentsViewController setIndexForCurrentPost:-2];
+    [commentsViewController refreshCommentsList];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
