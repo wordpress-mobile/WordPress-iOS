@@ -112,7 +112,7 @@
     urlLabel.text = authorURL;
     
     NSString *postTitle = [comment valueForKey:@"post_title"];
-    postLabel.text = [@"On: " stringByAppendingString:postTitle];
+    postLabel.text = [@"on " stringByAppendingString:postTitle];
 
     NSString *content = [comment valueForKey:@"content"];
     commentLabel.text = content;
