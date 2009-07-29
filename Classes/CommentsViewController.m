@@ -22,7 +22,6 @@
 - (void)setEditing:(BOOL)value;
 - (void)updateSelectedComments;
 - (void)refreshHandler;
-- (BOOL)isConnectedToHost;
 - (void)moderateCommentsWithSelector:(SEL)selector;
 - (void)deleteComments;
 - (void)approveComments;
@@ -86,7 +85,6 @@
     
     [editToolbar setHidden:YES];
     self.navigationItem.rightBarButtonItem = editButtonItem;
-    [editButtonItem setEnabled:([commentsArray count] > 0)];
     
     if ([commentsTableView indexPathForSelectedRow]) {
         [commentsTableView scrollToRowAtIndexPath:[commentsTableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
@@ -185,8 +183,6 @@
 
     [self refreshCommentsList];
 
-    [editButtonItem setEnabled:([commentsArray count] > 0)];
-
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 
     if ([delegate isAlertRunning]) {
@@ -233,9 +229,10 @@
         NSString *str = [dict valueForKey:@"comment_id"];
         [commentsDict setValue:dict forKey:str];
     }
-
-    [commentsTableView reloadData];
+    
+    [editButtonItem setEnabled:([commentsArray count] > 0)];
     [self updateBadge];
+    [commentsTableView reloadData];
 }
 
 - (IBAction)deleteSelectedComments:(id)sender {
@@ -269,16 +266,12 @@
 - (void)moderateCommentsWithSelector:(SEL)selector {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
-    if ([self isConnectedToHost]) {
-        BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
+    BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
 
-        NSArray *selectedItems = [self selectedComments];
+    [sharedDataManager performSelector:selector withObject:[self selectedComments] withObject:[sharedDataManager currentBlog]];
 
-        [sharedDataManager performSelector:selector withObject:selectedItems withObject:[sharedDataManager currentBlog]];
-
-        [editButtonItem setEnabled:([commentsArray count] > 0)];
-        [self setEditing:FALSE];
-    }
+    [self refreshCommentsList];
+    [self setEditing:FALSE];
 
     [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
     [progressAlert release];
