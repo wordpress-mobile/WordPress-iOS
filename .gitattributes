@@ -155,18 +155,18 @@ WordPress.xcodeproj/project.pbxproj -text
 /defaultPostTemplate.html -text
 /defaultPostTemplate_old.html -text
 /delete.png -text
-/documents.png -text
 /down.png -text
 /favicon.ico -text svneol=unset#unset
 /gravatar.jpg -text
 /license.txt -text
+/list.png -text
 /lock.png -text
 /main.m -text
+/pages.png -text
 /photos.png -text
+/posts.png -text
 /preview.png -text
 /settings.png -text
-/speedometer.png -text
-/sticky_note.png -text svneol=unset#unset
 /sync.png -text svneol=unset#unset
 /talk_bubbles.png -text svneol=unset#unset
 /uncheck.png -text

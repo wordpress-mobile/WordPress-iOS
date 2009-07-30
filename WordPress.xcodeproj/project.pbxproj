@@ -21,7 +21,6 @@
 		03EB591010105076004E82CD /* RegExProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EB590E10105076004E82CD /* RegExProcessor.m */; };
 		03EB591310105088004E82CD /* LocateXMLRPCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EB591210105088004E82CD /* LocateXMLRPCViewController.m */; };
 		03F298C410057AEC0097B29A /* RefreshButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F298C310057AEC0097B29A /* RefreshButtonView.m */; };
-		03FF34BB10040B0A0066ED95 /* documents.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FF34BA10040B0A0066ED95 /* documents.png */; };
 		03FF35C5100423A10066ED95 /* BlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FF35C3100423A10066ED95 /* BlogViewController.m */; };
 		03FF35C6100423A10066ED95 /* BlogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FF35C4100423A10066ED95 /* BlogViewController.xib */; };
 		108F0FB40EC2B51C00D09FB6 /* PagesDraftsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 108F0FB30EC2B51C00D09FB6 /* PagesDraftsViewController.xib */; };
@@ -115,16 +114,17 @@
 		C5C2730A0E7EC9FE0034AA46 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = C5C273090E7EC9FE0034AA46 /* delete.png */; };
 		C5E3AE350E93F3C5008755FF /* WPImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5E3AE340E93F3C5008755FF /* WPImagePickerController.m */; };
 		CE0CA8CB0FEB178800BC71AD /* favicon.ico in Resources */ = {isa = PBXBuildFile; fileRef = CE0CA8CA0FEB178800BC71AD /* favicon.ico */; };
-		CE1946341017F4D6002BE752 /* speedometer.png in Resources */ = {isa = PBXBuildFile; fileRef = CE1946331017F4D6002BE752 /* speedometer.png */; };
 		CE1946681017F5AF002BE752 /* Icons License in Resources */ = {isa = PBXBuildFile; fileRef = CE1946671017F5AF002BE752 /* Icons License */; };
 		CE1946711017F86D002BE752 /* DashboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1946701017F86D002BE752 /* DashboardViewController.m */; };
 		CE1E3BC71005B3D500A7BD08 /* WPpregressHUDBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = CE1E3BC61005B3D500A7BD08 /* WPpregressHUDBackground.png */; };
+		CE31B4301022644F00BC060C /* pages.png in Resources */ = {isa = PBXBuildFile; fileRef = CE31B42E1022644F00BC060C /* pages.png */; };
+		CE31B4311022644F00BC060C /* posts.png in Resources */ = {isa = PBXBuildFile; fileRef = CE31B42F1022644F00BC060C /* posts.png */; };
+		CE31B4331022651A00BC060C /* list.png in Resources */ = {isa = PBXBuildFile; fileRef = CE31B4321022651A00BC060C /* list.png */; };
 		CE4E33D20FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4E33D10FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m */; };
 		CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBD3EAA0FF1BA3B00C1396E /* Blog.m */; };
 		CEC7EFA60FC66081007B90D6 /* AddBlogValidationBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = CEC7EFA50FC66081007B90D6 /* AddBlogValidationBackground.png */; };
 		CEC7EFB40FC663AF007B90D6 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = CEC7EFB30FC663AF007B90D6 /* Default.png */; };
 		CECB84620FFD91050087FF33 /* talk_bubbles.png in Resources */ = {isa = PBXBuildFile; fileRef = CECB84610FFD91050087FF33 /* talk_bubbles.png */; };
-		CECB84640FFD91810087FF33 /* sticky_note.png in Resources */ = {isa = PBXBuildFile; fileRef = CECB84630FFD91810087FF33 /* sticky_note.png */; };
 		CEE7088B1006FC1200D6302A /* WPAsynchronousImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE7088A1006FC1200D6302A /* WPAsynchronousImageView.m */; };
 		CEFC8B5910057D0A0052604A /* WPProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = CEFC8B5810057D0A0052604A /* WPProgressHUD.m */; };
 		EC0F59330EB042B0002FCB4D /* PageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC0F59310EB042B0002FCB4D /* PageViewController.m */; };
@@ -163,7 +163,6 @@
 		03EB591210105088004E82CD /* LocateXMLRPCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocateXMLRPCViewController.m; sourceTree = "<group>"; };
 		03F298C210057AEC0097B29A /* RefreshButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RefreshButtonView.h; sourceTree = "<group>"; };
 		03F298C310057AEC0097B29A /* RefreshButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RefreshButtonView.m; sourceTree = "<group>"; };
-		03FF34BA10040B0A0066ED95 /* documents.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = documents.png; sourceTree = "<group>"; };
 		03FF35C2100423A10066ED95 /* BlogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogViewController.h; sourceTree = "<group>"; };
 		03FF35C3100423A10066ED95 /* BlogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogViewController.m; sourceTree = "<group>"; };
 		03FF35C4100423A10066ED95 /* BlogViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BlogViewController.xib; sourceTree = "<group>"; };
@@ -298,11 +297,13 @@
 		C5E3AE330E93F3C5008755FF /* WPImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPImagePickerController.h; sourceTree = "<group>"; };
 		C5E3AE340E93F3C5008755FF /* WPImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPImagePickerController.m; sourceTree = "<group>"; };
 		CE0CA8CA0FEB178800BC71AD /* favicon.ico */ = {isa = PBXFileReference; lastKnownFileType = image.ico; path = favicon.ico; sourceTree = "<group>"; };
-		CE1946331017F4D6002BE752 /* speedometer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = speedometer.png; sourceTree = "<group>"; };
 		CE1946671017F5AF002BE752 /* Icons License */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Icons License"; sourceTree = "<group>"; };
 		CE19466F1017F86D002BE752 /* DashboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashboardViewController.h; sourceTree = "<group>"; };
 		CE1946701017F86D002BE752 /* DashboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashboardViewController.m; sourceTree = "<group>"; };
 		CE1E3BC61005B3D500A7BD08 /* WPpregressHUDBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WPpregressHUDBackground.png; sourceTree = "<group>"; };
+		CE31B42E1022644F00BC060C /* pages.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pages.png; sourceTree = "<group>"; };
+		CE31B42F1022644F00BC060C /* posts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = posts.png; sourceTree = "<group>"; };
+		CE31B4321022651A00BC060C /* list.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = list.png; sourceTree = "<group>"; };
 		CE4E33D00FEB0F3A00415662 /* UIImage+INResizeImageAllocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+INResizeImageAllocator.h"; sourceTree = "<group>"; };
 		CE4E33D10FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+INResizeImageAllocator.m"; sourceTree = "<group>"; };
 		CEBD3EA90FF1BA3B00C1396E /* Blog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Blog.h; sourceTree = "<group>"; };
@@ -310,7 +311,6 @@
 		CEC7EFA50FC66081007B90D6 /* AddBlogValidationBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AddBlogValidationBackground.png; sourceTree = "<group>"; };
 		CEC7EFB30FC663AF007B90D6 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		CECB84610FFD91050087FF33 /* talk_bubbles.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = talk_bubbles.png; sourceTree = "<group>"; };
-		CECB84630FFD91810087FF33 /* sticky_note.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sticky_note.png; sourceTree = "<group>"; };
 		CEE708891006FC1200D6302A /* WPAsynchronousImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAsynchronousImageView.h; sourceTree = "<group>"; };
 		CEE7088A1006FC1200D6302A /* WPAsynchronousImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAsynchronousImageView.m; sourceTree = "<group>"; };
 		CEFC8B5710057D0A0052604A /* WPProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPProgressHUD.h; sourceTree = "<group>"; };
@@ -698,10 +698,10 @@
 		CE1946361017F4DF002BE752 /* Tab Icons */ = {
 			isa = PBXGroup;
 			children = (
-				CECB84630FFD91810087FF33 /* sticky_note.png */,
+				CE31B4321022651A00BC060C /* list.png */,
+				CE31B42E1022644F00BC060C /* pages.png */,
+				CE31B42F1022644F00BC060C /* posts.png */,
 				CECB84610FFD91050087FF33 /* talk_bubbles.png */,
-				CE1946331017F4D6002BE752 /* speedometer.png */,
-				03FF34BA10040B0A0066ED95 /* documents.png */,
 			);
 			name = "Tab Icons";
 			sourceTree = "<group>";
@@ -842,14 +842,14 @@
 				CE0CA8CB0FEB178800BC71AD /* favicon.ico in Resources */,
 				031665FD0FFC2E890045D052 /* sync.png in Resources */,
 				CECB84620FFD91050087FF33 /* talk_bubbles.png in Resources */,
-				CECB84640FFD91810087FF33 /* sticky_note.png in Resources */,
-				03FF34BB10040B0A0066ED95 /* documents.png in Resources */,
 				03FF35C6100423A10066ED95 /* BlogViewController.xib in Resources */,
 				CE1E3BC71005B3D500A7BD08 /* WPpregressHUDBackground.png in Resources */,
 				03EB54B5100FFB5C004E82CD /* gravatar.jpg in Resources */,
 				032BDCB610106E1B00E26F44 /* LocateXMLRPCViewController.xib in Resources */,
-				CE1946341017F4D6002BE752 /* speedometer.png in Resources */,
 				CE1946681017F5AF002BE752 /* Icons License in Resources */,
+				CE31B4301022644F00BC060C /* pages.png in Resources */,
+				CE31B4311022644F00BC060C /* posts.png in Resources */,
+				CE31B4331022651A00BC060C /* list.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
