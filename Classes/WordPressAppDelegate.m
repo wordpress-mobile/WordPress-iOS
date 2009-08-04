@@ -14,6 +14,7 @@
 - (void)restoreCurrentBlog;
 - (void)showSplashView;
 - (int)indexForCurrentBlog;
+- (void) passwordIntoKeychain;
 @end
 
 @implementation WordPressAppDelegate
@@ -51,6 +52,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 #pragma mark UIApplicationDelegate Methods
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
+	
     [[Reachability sharedReachability] setNetworkStatusNotificationsEnabled:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
 
@@ -62,6 +64,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
     [window makeKeyAndVisible];
 
     [self checkPagesAndCommentsSupported];
+	[self passwordIntoKeychain];
     [self restoreCurrentBlog];
     
     if ([self shouldLoadBlogFromUserDefaults]) {
@@ -75,6 +78,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
     [blogsViewController release];
         
     [self showSplashView];
+	
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -215,6 +219,87 @@ static WordPressAppDelegate *wordPressApp = NULL;
 - (void)startupAnimationDone:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
     [splashView removeFromSuperview];
     [splashView release];
+}
+
+- (void) passwordIntoKeychain {
+	//Code for Checking a Blog configured in 1.1 supports Pages & Comments 
+	//When the iphone WP version upgraded from 1.1 to 1.2
+	
+	int i, blogsCount;
+	BlogDataManager *blogDataManager = [BlogDataManager sharedDataManager];
+	blogsCount = [blogDataManager countOfBlogs];
+	for(i=0;i<blogsCount;i++)
+	{
+		//Make blog at index as current blog for checking presence of password in datastructure instead of keychain
+		//this should only happen when migrating from an old version that stored password in data strucutre into this new
+		//version that stores it into keychain.  Ultimately (after a year or so?) we can probably remove this code entirely
+		//since everyone should be upgraded by then
+		[blogDataManager makeBlogAtIndexCurrent:i];
+		NSDictionary *blog = [blogDataManager blogAtIndex:i];
+	/*	NSString *url = [blog valueForKey:@"url"];
+		
+		if(url != nil && [url length] >= 7 && [url hasPrefix:@"http://"]) {
+			url = [url substringFromIndex:7];
+		}
+		
+		if(url != nil && [url length]) {
+			url = @"wordpress.com";
+		}
+	*/	
+		
+		//JOHNB:This code removes pwd from data structure and puts it into keychain
+		//This code fires IF (and ONLY IF) there is a "pwd" key inside the currentBlog
+		
+		//if there is a "key" in "blog" that contains "pwd"
+		//copy the value associated (the blog's password) to a string
+		//get the other values needed from "blog" (username, url)
+		//put that password string into the keychain using password, username, url
+		//REMOVE the "pwd" object from the NSDictionary
+		NSArray *keysFromDict = [blog allKeys];
+		if ([keysFromDict containsObject:@"pwd"]){
+			NSMutableDictionary *blogCopy = [[NSMutableDictionary alloc]initWithDictionary:blog];
+			//get the values from blog NSDict
+			NSString *passwordForKeychain = [blog valueForKey:@"pwd"];
+			NSString *username = [blog valueForKey:@"username"];
+			NSString *urlForKeychain = [blog valueForKey:@"url"];
+			
+			//check for nil or an http prefix, remove prefix if exists
+			if(urlForKeychain != nil && [urlForKeychain length] >= 7 && [urlForKeychain hasPrefix:@"http://"]){
+				urlForKeychain = [urlForKeychain substringFromIndex:7];
+			}
+			
+			//log the values for debugging
+			//TODO:FIXME:REMOVE THIS CODE!
+			NSLog(@"passwordForKeychain = %@ username = %@ urlForKeychain = %@", passwordForKeychain, username, urlForKeychain);
+			//save the password to the keychain using the necessary extra values
+			[blogDataManager saveBlogPasswordToKeychain:(passwordForKeychain?passwordForKeychain:@"") andUserName:username andBlogURL:urlForKeychain];
+			//remove the pwd from the data structure henceforth
+			NSLog(@"before removeObjectForKey");
+			NSLog(@"This is the value before the remove %@", [blogCopy objectForKey:@"pwd"]);
+			[blogCopy removeObjectForKey:@"pwd"];
+			//[blogCopy setObject:@"asdf" forKey:@"pwd"];
+			//NSLog(@"Just ran: [blogCopy removeObjectForKey: @'pwd'] Saving Modified blog via setCurrentBlog as per usual");
+			NSLog(@"after removeObjectForKey");
+			NSLog(@"This is the value after the remove %@", [blogCopy objectForKey:@"pwd"]);
+			//save blog by using BlogDataManager setCurrentBlog - which copies the blog passed in OVER the current blog if it's different
+			// compiler was unhappy with this because setCurrentBlog is a private method of the BlogDataManager class
+			//So, I made a public method in BlogDataManager that just calls setCurrentBlog... avoiding the compiler error
+			//it just calls setCurrentBlog and passes the exact same object (blogCopy)
+			//OK - here is the call to the public method
+			
+			//[blogDataManager 
+			
+			[blogDataManager replaceBlogWithBlog:blogCopy atIndex:i];
+			//JOHNB - I think this is unnecessary now that we have replaceBLogWithBlog
+			
+			//[blogDataManager callSetCurrentBlog:blogCopy];
+			
+			[blogCopy release];
+			NSLog(@"inside the if... this implies we found pwd inside the blog NSDict");
+		}else {
+			NSLog(@"We did NOT find pwd inside the blog NSDict and thus did not go through the if");
+		}
+}
 }
 
 @end

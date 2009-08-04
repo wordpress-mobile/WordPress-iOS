@@ -158,10 +158,10 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
     if (textField.tag == 0) {
         [customFieldsDict setValue:textField.text forKey:@"key"];
-        [dm printDictToLog:customFieldsDict andArrayName:@"test from textFieldDidEndEditing, CustomFieldsEditView... isn't it key and value"];
+        [dm printDictToLog:customFieldsDict andDictName:@"test from textFieldDidEndEditing, CustomFieldsEditView... isn't it key and value"];
     } else if (textField.tag == 1) {
         [customFieldsDict setValue:textField.text forKey:@"value"];
-        [dm printDictToLog:customFieldsDict andArrayName:@"test from textFieldDidEndEditing, CustomFieldsEditView... isn't it key and value"];
+        [dm printDictToLog:customFieldsDict andDictName:@"test from textFieldDidEndEditing, CustomFieldsEditView... isn't it key and value"];
     }
 
     //[[BlogDataManager sharedDataManager].currentPost setValue:tagsTextField.text forKey:@"mt_keywords"];

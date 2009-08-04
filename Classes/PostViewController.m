@@ -378,7 +378,7 @@
 }
 
 - (void)setHasChanges:(BOOL)aFlag {
-    NSLog(@"inside PostDetailViewController:setHasChanges");
+    //NSLog(@"inside PostViewController:setHasChanges");
 
     if (hasChanges == NO && aFlag == YES)
         [self startTimer];

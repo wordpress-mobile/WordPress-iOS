@@ -162,7 +162,7 @@
     newCustomFieldBool = NO;
 
     dm = [BlogDataManager sharedDataManager];
-    [dm printDictToLog:theDict andArrayName:@"test from CustomFieldsTableView:didSelectRowAt... isn't it key and value"];
+    [dm printDictToLog:theDict andDictName:@"test from CustomFieldsTableView:didSelectRowAt... isn't it key and value"];
 
     //[self.navigationController pushViewController:customFieldsEditView animated:YES];
     customFieldsDetailController.postDetailViewController = self.postDetailViewController;

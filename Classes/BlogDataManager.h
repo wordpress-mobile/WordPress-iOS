@@ -4,6 +4,7 @@
 #import "XMLRPCConnection.h"
 #import "RegExProcessor.h"
 #import "EditBlogViewController.h"
+#import "SFHFKeychainUtils.h"
 
 #define PictureObjectUploadedNotificationName @"PictureObjectUploadedNotificationName"
 #define WPNewCategoryCreatedAndUpdatedInBlogNotificationName @"WPNewCategoryCreatedAndUpdatedInBlog"
@@ -198,7 +199,7 @@
 
 #pragma mark Sync with Blog Host
 
-- (BOOL)refreshCurrentBlog:(NSString *)url user:(NSString *)username password:(NSString *)pwd;
+- (BOOL)refreshCurrentBlog:(NSString *)url user:(NSString *)username;
 - (BOOL)validateCurrentBlog:(NSString *)url user:(NSString *)username password:(NSString *)pwd;
 - (BOOL)syncPostsForBlog:(id)blog;
 - (BOOL)syncPostsForCurrentBlog;
@@ -297,9 +298,32 @@
 
 //utils
 - (void)printArrayToLog:(NSArray *)theArray andArrayName:(NSString *)theArrayName;
-- (void)printDictToLog:(NSDictionary *)theDict andArrayName:(NSString *)theDictName;
+- (void)printDictToLog:(NSDictionary *)theDict andDictName:(NSString *)theDictName;
 
 //exposing XMLRPC call to use as test in LocateXMLRPCViewController
 - (id)executeXMLRPCRequest:(XMLRPCRequest *)req byHandlingError:(BOOL)shouldHandleFalg;
+
+#pragma mark -
+#pragma mark CRUD for keychain Passwords
+//Note: we use other data elements here, but password is the only data element persisted here...
+//all other persistence is as it was before this change (I.E. inside blogsList and written to filesystem
+//from blogsList
+
+-(NSString*) getPasswordFromKeychainInContextOfCurrentBlog:(NSDictionary *)theCurrentBlog;
+-(NSString*) getBlogPasswordFromKeychainWithUsername:(NSString *)userName andBlogName:(NSString *)blogName;
+-(void) saveBlogPasswordToKeychain:(NSString *)password andUserName:(NSString *)userName andBlogURL:(NSString *)blogURL;
+-(void) updatePasswordInKeychain:(NSString *)password andUserName:(NSString *)userName andBlogURL:(NSString *)blogURL;
+-(void) deleteBlogFromKeychain:(NSString *)userName andBlogURL:(NSString *)blogURL;
+
+#pragma mark -
+#pragma mark upgrade Password into Keychain Upgrade Helper
+//See comments above method in BlogDataManager.m file (end)
+- (void) replaceBlogWithBlog:(NSMutableDictionary *)aBlog atIndex:(int)anIndex;
+
+#pragma mark -
+#pragma mark Misc.
+
+-(void) printArrayToLog:(NSArray *) theArray andArrayName:(NSString *)theArrayName;
+-(void) printDictToLog:(NSDictionary *)theDict andDictName:(NSString *)theDictName;
 
 @end

@@ -161,7 +161,8 @@
             break;
 
         case 2:
-            passwordTextField.text = [currentBlog objectForKey:@"pwd"];
+            //passwordTextField.text = [currentBlog objectForKey:@"pwd"];
+			passwordTextField.text = [[BlogDataManager sharedDataManager] getPasswordFromKeychainInContextOfCurrentBlog:currentBlog];
             passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
             return passwordTableViewCell;
             break;
@@ -298,7 +299,9 @@
 
     [currentBlog setValue:url forKey:@"url"];
     [currentBlog setValue:username forKey:@"username"];
-    [currentBlog setValue:pwd forKey:@"pwd"];
+    //[currentBlog setValue:pwd forKey:@"pwd"];
+	[[BlogDataManager sharedDataManager] updatePasswordInKeychain:pwd andUserName:username andBlogURL:url];
+	
     [currentBlog setValue:value forKey:kResizePhotoSetting];
 }
 
@@ -328,17 +331,23 @@
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 
     NSString *username = [currentBlog valueForKey:@"username"];
-    NSString *pwd = [currentBlog valueForKey:@"pwd"];
+    //NSString *pwd = [currentBlog valueForKey:@"pwd"];
+	//NSString *pwd =	[[BlogDataManager sharedDataManager] getPasswordFromKeychainInContextOfCurrentBlog:currentBlog];
     NSString *url = [currentBlog valueForKey:@"url"];
 
-    NSDictionary *newBlog = [NSDictionary dictionaryWithObjectsAndKeys:username, @"username", pwd, @"pwd", url, @"url", nil];
+    //NSDictionary *newBlog = [NSDictionary dictionaryWithObjectsAndKeys:username, @"username", pwd, @"pwd", url, @"url", nil];
+	//taking out @"pwd" here as it's in keychain now
+	
+	NSDictionary *newBlog = [NSDictionary dictionaryWithObjectsAndKeys:username, @"username", url, @"url", nil];
 
     if ([dm doesBlogExists:newBlog]) {
         [[WordPressAppDelegate sharedWordPressApp] showErrorAlert:[NSString stringWithFormat:kBlogExistsErrorMessage, url]];
         return;
     }
 
-    if ([dm refreshCurrentBlog:url user:username password:pwd]) {
+    //if ([dm refreshCurrentBlog:url user:username password:pwd]) {
+		//taking out @"pwd" here too...
+	if ([dm refreshCurrentBlog:url user:username]) {
         [dm.currentBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
         [dm wrapperForSyncPostsAndGetTemplateForBlog:dm.currentBlog];
         [dm saveCurrentBlog];
