@@ -4584,14 +4584,15 @@ editBlogViewController;
 			NSString * username = [theCurrentBlog valueForKey:@"username"];
 			NSString * url		= [theCurrentBlog valueForKey:@"url"];
 			url = [url stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-			NSLog(@"inside getPasswordFromKeychainInContextofCurrentBlog %@, %@", username, url);
+			//NSLog(@"inside getPasswordFromKeychainInContextofCurrentBlog %@, %@", username, url);
 			//!!TODO Trim url to eliminate http:// here!
 			
 			//url = [url stringByReplacingOccurrencesOfString:@"www." withString:@""];
 			if ((username == @"") || (url == @"")) {
 				NSString *password = @"";
+				//NSLog(@"getPasswordFromKeychainInContextofCurrentBlog... password is empty %@", password);
 				return password;
-				NSLog(@"password is empty %@", password);
+				
 				//if username and url are empty, it's a new blog and there is no entry yet, just return an empty string
 			}else{
 				NSString * password = [self getBlogPasswordFromKeychainWithUsername:username andBlogName:url];

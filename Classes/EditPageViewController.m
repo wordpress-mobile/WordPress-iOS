@@ -342,7 +342,9 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
             return;
 
         NSRange subStrRange;
-        subStrRange.location = range.location - j;
+        //subStrRange.location = range.location - j;
+		//see same place in EditPostViewController for more on this change
+		subStrRange.location = str.length -j;
         subStrRange.length = j;
         [self setSelectedLinkRange:subStrRange];
         NSString *subStr = [str substringWithRange:subStrRange];

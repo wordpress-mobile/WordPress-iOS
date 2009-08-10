@@ -489,7 +489,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
     NSRange range = [aTextView selectedRange];
     NSArray *stringArray = [NSArray arrayWithObjects:@"http:", @"ftp:", @"https:", @"www.", nil];
-    NSString *str = [aTextView text];
+	NSString *str = [[aTextView text]stringByReplacingOccurrencesOfString: @"&nbsp;" withString: @"&#160"];
+    //NSString *str = [aTextView text];
+	//NSString *foo = @"your text here";
+	//const char *UTF8_str = [str_old UTF8String]; 
+	//NSString *str = [[NSString alloc] initWithUTF8String:UTF8_str];
+	NSLog(@"this is str::-->  %@", str);
+	NSLog(@"this is str's count %d", str.length);
     int i, j, count = [stringArray count];
     BOOL searchRes = NO;
 
@@ -498,10 +504,15 @@ NSTimeInterval kAnimationDuration = 0.3f;
             return;
 
         NSRange subStrRange;
-        subStrRange.location = range.location - j;
+       // subStrRange.location = range.location - j;
+		//I took this out because adding &nbsp; to the post caused a mismatch between the length of the string from the text field and range.location
+		//both should be equal, but the OS/Cocoa interprets &nbsp; as ONE space, not 6.
+		//This caused NSString *subStr = [str substringWithRange:subStrRange]; to fail if the user entered &nbsp; in the post
+		subStrRange.location = str.length -j;
         subStrRange.length = j;
         [self setSelectedLinkRange:subStrRange];
-        NSString *subStr = [str substringWithRange:subStrRange];
+		
+       NSString *subStr = [str substringWithRange:subStrRange];
 
         for (i = 0; i < count; i++) {
             NSString *searchString = [stringArray objectAtIndex:i];
