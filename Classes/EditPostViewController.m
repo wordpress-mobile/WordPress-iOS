@@ -489,11 +489,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
     NSRange range = [aTextView selectedRange];
     NSArray *stringArray = [NSArray arrayWithObjects:@"http:", @"ftp:", @"https:", @"www.", nil];
-	NSString *str = [[aTextView text]stringByReplacingOccurrencesOfString: @"&nbsp;" withString: @"&#160"];
-    //NSString *str = [aTextView text];
-	//NSString *foo = @"your text here";
-	//const char *UTF8_str = [str_old UTF8String]; 
-	//NSString *str = [[NSString alloc] initWithUTF8String:UTF8_str];
+	//NSString *str = [[aTextView text]stringByReplacingOccurrencesOfString: @"&nbsp;" withString: @"&#160"];
+    NSString *str = [aTextView text];
 	NSLog(@"this is str::-->  %@", str);
 	NSLog(@"this is str's count %d", str.length);
     int i, j, count = [stringArray count];
