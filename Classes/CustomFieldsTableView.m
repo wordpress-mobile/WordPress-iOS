@@ -121,7 +121,7 @@
 		NSString *rowString = [[customFieldsArray objectAtIndex:row] objectForKey:@"key"];
 		NSLog(@"rowString is %@", rowString);
     [cell setText: rowString];
-	cell.setText
+
 		//cell.text = rowString;
 		NSLog(@"after cell.text = rowString");
 	//}
