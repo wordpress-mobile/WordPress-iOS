@@ -1284,6 +1284,7 @@ editBlogViewController;
     // response will be array of author dictionaries
 
     // invoke wp.getAuthors
+	/* Friday, Aug 14 2009: Taking this out to test. If we don't use it, there's no need for it right now.
     XMLRPCRequest *getAuthorsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
     [getAuthorsReq setMethod:@"wp.getAuthors" withObjects:[NSArray arrayWithObjects:blogid, username, pwd, nil]];
     NSArray *authors = [self executeXMLRPCRequest:getAuthorsReq byHandlingError:YES];
@@ -1294,6 +1295,7 @@ editBlogViewController;
     } else {
         return NO;
     }
+	 */
 
     // invoke wp.getPostStatusList
     XMLRPCRequest *getPostStatusListReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
