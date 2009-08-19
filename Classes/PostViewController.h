@@ -7,6 +7,7 @@
 
 @interface PostViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate, WPPhotosListProtocol> {
     IBOutlet UITabBarController *tabController;
+	//IBOutlet UITabBar *tabBar;
     IBOutlet UIView *photoEditingStatusView;
     UIBarButtonItem *saveButton;
 
@@ -47,6 +48,7 @@
 @property (nonatomic)   int mode;
 
 @property (readonly) UITabBarController *tabController;
+//@property (readonly) UITabBar *tabBar;
 
 - (IBAction)cancelView:(id)sender;
 

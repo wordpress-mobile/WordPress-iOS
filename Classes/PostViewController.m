@@ -21,6 +21,7 @@
 - (void)saveAsDraft;
 - (void)discard;
 - (void)cancel;
+- (void)conditionalLoadOfTabBarController;//to solve issue with crash when selecting comments tab from "new" (mode 0) post editing view
 
 @end
 
@@ -31,6 +32,7 @@
 @synthesize customFieldsDetailController;
 @synthesize commentsViewController;
 @synthesize selectedViewController;
+@synthesize tabController;//tabBar
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
     [selectedViewController viewWillDisappear:NO];
@@ -409,68 +411,18 @@
         saveButton.style = UIBarButtonItemStyleDone;
         saveButton.action = @selector(saveAction :);
     }
-
-    // Icons designed by, and included with permission of, IconBuffet | iconbuffet.com
-
-    NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:5];
-
-    if (postDetailEditController == nil) {
-        postDetailEditController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil];
-    }
-
-    postDetailEditController.title = @"Write";
-    postDetailEditController.tabBarItem.image = [UIImage imageNamed:@"write.png"];
-    postDetailEditController.postDetailViewController = self;
-    [array addObject:postDetailEditController];
-    
-    if (commentsViewController == nil) {
-        commentsViewController = [[CommentsViewController alloc] initWithNibName:@"CommentsViewController" bundle:nil];
-    }
-    
-    commentsViewController.title = @"Comments";
-    commentsViewController.tabBarItem.image = [UIImage imageNamed:@"talk_bubbles.png"];
-    [array addObject:commentsViewController];
-
-    if (photosListController == nil) {
-        photosListController = [[WPPhotosListViewController alloc] initWithNibName:@"WPPhotosListViewController" bundle:nil];
-    }
-
-    photosListController.title = @"Photos";
-    photosListController.tabBarItem.image = [UIImage imageNamed:@"photos.png"];
-    photosListController.delegate = self;
-
-    [array addObject:photosListController];
-
-    if (postPreviewController == nil) {
-        postPreviewController = [[PostPreviewViewController alloc] initWithNibName:@"PostPreviewViewController" bundle:nil];
-    }
-
-    postPreviewController.title = @"Preview";
-    postPreviewController.tabBarItem.image = [UIImage imageNamed:@"preview.png"];
-    postPreviewController.postDetailViewController = self;
-    [array addObject:postPreviewController];
-
-    if (postSettingsController == nil) {
-        postSettingsController = [[PostSettingsViewController alloc] initWithNibName:@"PostSettingsViewController" bundle:nil];
-    }
-
-    postSettingsController.title = @"Settings";
-    postSettingsController.tabBarItem.image = [UIImage imageNamed:@"settings.png"];
-    postSettingsController.postDetailViewController = self;
-    [array addObject:postSettingsController];
-
-    tabController.viewControllers = array;
-    self.view = tabController.view;
-
-    [array release];
-
-    if (!leftView) {
+	//conditionalLoadOfTabBarController is now referenced from viewWillAppear.  Solves Ticket #223 (crash when selecting comments from new post view)
+	    if (!leftView) {
         leftView = [WPNavigationLeftButtonView createCopyOfView];
         [leftView setTitle:@"Posts"];
     }
+
 }
 
+
+
 - (void)viewWillAppear:(BOOL)animated {
+	NSLog(@"inside PostViewController:viewWillAppear");
     if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
         if (postDetailEditController.isEditing == NO) {
             [postDetailEditController setTextViewHeight:57];
@@ -498,6 +450,7 @@
     [cancelButton release];
 
     [super viewWillAppear:animated];
+	[self conditionalLoadOfTabBarController];
 
     if (mode == 1) {
         [self refreshUIForCurrentPost];
@@ -511,6 +464,64 @@
     mode = 3;
     [commentsViewController setIndexForCurrentPost:[[BlogDataManager sharedDataManager] currentPostIndex]];
     [[tabController selectedViewController] viewWillAppear:animated];
+}
+
+- (void)conditionalLoadOfTabBarController {
+	// Icons designed by, and included with permission of, IconBuffet | iconbuffet.com
+	
+    NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:5];
+	
+    if (postDetailEditController == nil) {
+        postDetailEditController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil];
+    }
+	
+    postDetailEditController.title = @"Write";
+    postDetailEditController.tabBarItem.image = [UIImage imageNamed:@"write.png"];
+    postDetailEditController.postDetailViewController = self;
+    [array addObject:postDetailEditController];
+    
+    if ((mode == 1 || mode == 2 || mode == 3)) { //don't load this tab if mode == 0 (new post) since comments are irrelevant to a brand new post
+		if (commentsViewController == nil) {
+			commentsViewController = [[CommentsViewController alloc] initWithNibName:@"CommentsViewController" bundle:nil];
+		}
+		
+		commentsViewController.title = @"Comments";
+		commentsViewController.tabBarItem.image = [UIImage imageNamed:@"talk_bubbles.png"];
+		[array addObject:commentsViewController];
+	}
+	
+    if (photosListController == nil) {
+        photosListController = [[WPPhotosListViewController alloc] initWithNibName:@"WPPhotosListViewController" bundle:nil];
+    }
+	
+    photosListController.title = @"Photos";
+    photosListController.tabBarItem.image = [UIImage imageNamed:@"photos.png"];
+    photosListController.delegate = self;
+	
+    [array addObject:photosListController];
+	
+    if (postPreviewController == nil) {
+        postPreviewController = [[PostPreviewViewController alloc] initWithNibName:@"PostPreviewViewController" bundle:nil];
+    }
+	
+    postPreviewController.title = @"Preview";
+    postPreviewController.tabBarItem.image = [UIImage imageNamed:@"preview.png"];
+    postPreviewController.postDetailViewController = self;
+    [array addObject:postPreviewController];
+	
+    if (postSettingsController == nil) {
+        postSettingsController = [[PostSettingsViewController alloc] initWithNibName:@"PostSettingsViewController" bundle:nil];
+    }
+	
+    postSettingsController.title = @"Settings";
+    postSettingsController.tabBarItem.image = [UIImage imageNamed:@"settings.png"];
+    postSettingsController.postDetailViewController = self;
+    [array addObject:postSettingsController];
+	
+    tabController.viewControllers = array;
+    self.view = tabController.view;
+	
+    [array release];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
