@@ -1,6 +1,12 @@
 #import <UIKit/UIKit.h>
 #import "WPPhotosListProtocol.h"
 
+//refactoring "mode"
+#define newPost 0
+#define editPost 1
+#define autorecoverPost 2
+#define refreshPost 3
+
 @class EditPostViewController, PostPreviewViewController, WPSelectionTableViewController, PostSettingsViewController, WPPhotosListViewController, PostsViewController, CommentsViewController;
 @class WPNavigationLeftButtonView;
 @class CustomFieldsDetailController;
@@ -25,6 +31,7 @@
     CustomFieldsDetailController *customFieldsDetailController;
 
     BOOL hasChanges;
+	
     int mode;   //0 new, 1 edit, 2 autorecovery, 3 refresh
 
     NSTimer *autoSaveTimer;

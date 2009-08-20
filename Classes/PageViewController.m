@@ -346,8 +346,8 @@
     self.title = vc.title;
     //
 
-    if (mode == 1)
-        [pageDetailViewController refreshUIForCurrentPage];else if (mode == 0)
+    if (mode == editPage)
+        [pageDetailViewController refreshUIForCurrentPage];else if (mode == newPage)
         [pageDetailViewController refreshUIForNewPage];
 
     [pageDetailViewController viewWillAppear:animated];

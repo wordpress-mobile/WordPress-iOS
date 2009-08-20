@@ -1,6 +1,11 @@
 #import <Foundation/Foundation.h>
 #import "RefreshButtonView.h"
 
+#define newPost 0
+#define editPost 1
+#define autorecoverPost 2
+#define refreshPost 3
+
 @class BlogDataManager, PostViewController, EditPostViewController;
 
 @interface PostsViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate> {

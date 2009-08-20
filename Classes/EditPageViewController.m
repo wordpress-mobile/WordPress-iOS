@@ -13,6 +13,8 @@
 #import "WPPhotosListViewController.h"
 #import "WordPressAppDelegate.h"
 
+
+
 @interface EditPageViewController (private)
 - (void)_savePageWithBlog:(NSMutableArray *)arrayPage;
 - (void)updateTextViewPlacehoderFieldStatus;
@@ -93,8 +95,8 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
     pageDetailsController.hasChanges = NO;
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 
-    if (mode == 1)
-        [self refreshUIForCurrentPage];else if (mode == 0)
+    if (mode == editPage)
+        [self refreshUIForCurrentPage];else if (mode == newPage)
         [self refreshUIForNewPage];
 
 //	CGRect frame = subView.frame;
@@ -507,7 +509,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
     pageDetailsController.hasChanges = NO;
     [titleTextField resignFirstResponder];
     [pageContentTextView resignFirstResponder];
-    mode = 3;
+    mode = refreshPage;
 }
 
 - (void)didReceiveMemoryWarning {

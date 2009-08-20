@@ -8,6 +8,11 @@
 #import <UIKit/UIKit.h>
 #import "CustomFieldsTableView.h"
 
+#define newPage 0
+#define editPage 1
+#define autorecoverPage 2
+#define refreshPage 3
+
 @class WPNavigationLeftButtonView;
 @class WPSelectionTableViewController;
 @class PageViewController;
@@ -37,7 +42,7 @@
 
     BOOL dismiss;
     BOOL isEditing;
-    int mode;   //0 new, 1 edit, 2 autorecovery, 3 refresh
+    int mode;   //handled with #defines above... newPage etc...
     BOOL hasChanges;
     BOOL isTextViewEditing;
     NSRange selectedLinkRange;

@@ -98,7 +98,7 @@
 - (void)showAddPostView {
     [[BlogDataManager sharedDataManager] makeNewPostCurrent];
 
-    self.postDetailViewController.mode = 0;
+    self.postDetailViewController.mode = newPost;
 
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     [delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
@@ -194,7 +194,7 @@
         self.postDetailViewController.hasChanges = NO;
     }
 
-    self.postDetailViewController.mode = 1;
+    self.postDetailViewController.mode = editPost;
     [delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
 }
 
@@ -321,7 +321,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     [[BlogDataManager sharedDataManager] removeAutoSavedCurrentPostFile];
     self.navigationItem.rightBarButtonItem = nil;
-    self.postDetailViewController.mode = 2;
+    self.postDetailViewController.mode = autorecoverPost;
     [[self navigationController] pushViewController:self.postDetailViewController animated:YES];
 
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];

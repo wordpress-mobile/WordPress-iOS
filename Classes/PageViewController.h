@@ -8,6 +8,7 @@
 #import <UIKit/UIKit.h>
 #import "WPPhotosListProtocol.h"
 
+
 @class EditPageViewController, PostPreviewViewController, WPSelectionTableViewController, WPPhotosListViewController, PagesViewController;
 @class WPNavigationLeftButtonView;
 

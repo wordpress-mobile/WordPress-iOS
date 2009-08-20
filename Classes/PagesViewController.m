@@ -165,7 +165,7 @@
         self.pageDetailsController.hasChanges = NO;
     }
 
-    self.pageDetailsController.mode = 1;
+    self.pageDetailsController.mode = editPage;
     [delegate.navigationController pushViewController:self.pageDetailsController animated:YES];
 }
 
@@ -252,7 +252,7 @@
 
 - (void)showAddNewPage {
     [[BlogDataManager sharedDataManager] makeNewPageCurrent];
-    self.pageDetailsController.mode = 0;
+    self.pageDetailsController.mode = newPage;
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     [delegate.navigationController pushViewController:self.pageDetailsController animated:YES];
 }

@@ -21,7 +21,7 @@
 - (void)saveAsDraft;
 - (void)discard;
 - (void)cancel;
-- (void)conditionalLoadOfTabBarController;//to solve issue with crash when selecting comments tab from "new" (mode 0) post editing view
+- (void)conditionalLoadOfTabBarController;//to solve issue with crash when selecting comments tab from "new" (newPost) post editing view
 
 @end
 
@@ -452,16 +452,16 @@
     [super viewWillAppear:animated];
 	[self conditionalLoadOfTabBarController];
 
-    if (mode == 1) {
+    if (mode == editPost) {
         [self refreshUIForCurrentPost];
-    } else if (mode == 0) {
+    } else if (mode == newPost) {
         [self refreshUIForCompose];
-    } else if (mode == 2) {
+    } else if (mode == autorecoverPost) {
         [self refreshUIForCurrentPost];
         self.hasChanges = YES;
     }
 
-    mode = 3;
+    mode = refreshPost;
     [commentsViewController setIndexForCurrentPost:[[BlogDataManager sharedDataManager] currentPostIndex]];
     [[tabController selectedViewController] viewWillAppear:animated];
 }
@@ -480,7 +480,8 @@
     postDetailEditController.postDetailViewController = self;
     [array addObject:postDetailEditController];
     
-    if ((mode == 1 || mode == 2 || mode == 3)) { //don't load this tab if mode == 0 (new post) since comments are irrelevant to a brand new post
+    //if (mode == 1 || mode == 2 || mode == 3) { //don't load this tab if mode == 0 (new post) since comments are irrelevant to a brand new post
+	if (mode != newPost ) { //don't load commentsViewController tab if it's a new post since comments are irrelevant to a brand new post
 		if (commentsViewController == nil) {
 			commentsViewController = [[CommentsViewController alloc] initWithNibName:@"CommentsViewController" bundle:nil];
 		}
@@ -535,7 +536,7 @@
         [postDetailEditController.currentEditingTextField resignFirstResponder];
 
     [super viewWillDisappear:animated];
-    mode = 3;
+    mode = refreshPost;
     [postPreviewController stopLoading];
 }
 
