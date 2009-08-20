@@ -11,7 +11,7 @@
 
 #define GRAVATAR_DEFAULT_IMAGE  @"gravatar.jpg"
 #define GRAVATAR_IMAGE_RADIUS   10
-#define GRAVATAR_URL            @"http://www.gravatar.com/avatar/%@s=80"
+#define GRAVATAR_URL            @"http://www.gravatar.com/avatar/%@s=80?d=404"
 
 
 @interface GravatarImageView (Private)
