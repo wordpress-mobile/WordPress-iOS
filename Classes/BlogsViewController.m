@@ -58,6 +58,11 @@
     [self cancel:self];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[[WordPressAppDelegate sharedWordPressApp] resetCurrentBlogInUserDefaults];
+}
+
 #pragma mark -
 #pragma mark Editing life cycle methods
 

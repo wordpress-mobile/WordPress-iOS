@@ -17,6 +17,7 @@
     NSArray *comments;
     NSDictionary *commentsMap;
     NSArray *commentsSections;
+	UISegmentedControl *segmentedControl;
     
     UIAlertView *progressAlert;
 }
@@ -24,5 +25,7 @@
 @property (nonatomic, retain) NSArray *comments;
 @property (nonatomic, retain) NSDictionary *commentsMap;
 @property (nonatomic, retain) NSArray *commentsSections;
+@property (nonatomic, retain) UISegmentedControl *segmentedControl;
+
 
 @end

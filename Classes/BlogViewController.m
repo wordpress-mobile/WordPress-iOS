@@ -15,15 +15,6 @@
 
 @implementation BlogViewController
 
-- (void)initBackButton {
-    backButton = [[UIBarButtonItem alloc] initWithTitle:@"Posts"
-                  style:UIBarButtonItemStylePlain
-                  target:self
-                  action:nil];
-
-    self.navigationItem.backBarButtonItem = backButton;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -31,16 +22,6 @@
 
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
     self.title =[NSString decodeXMLCharactersIn:[[dm currentBlog] valueForKey:@"blogName"]] ;
-
-    WPNavigationLeftButtonView *myview = [WPNavigationLeftButtonView createCopyOfView];
-    [myview setTarget:self withAction:@selector(goToHome:)];
-    [myview setTitle:@"Blogs"];
-    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:myview];
-    self.navigationItem.leftBarButtonItem = barButton;
-    [barButton release];
-    [myview release];
-
-    [self initBackButton];
 
 #if defined __IPHONE_3_0
 	[dashboardViewController viewWillAppear:NO];
@@ -50,6 +31,7 @@
     
     [commentsViewController setIndexForCurrentPost:-2];
     [commentsViewController refreshCommentsList];
+	self.navigationItem.titleView = dashboardViewController.segmentedControl;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -59,7 +41,6 @@
 }
 
 - (void)dealloc {
-    [backButton release];
     [super dealloc];
 }
 
@@ -86,18 +67,21 @@
 }
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-    backButton.title = viewController.tabBarItem.title;
-
+	self.navigationItem.titleView = nil;
+	self.navigationItem.rightBarButtonItem = nil;
+	
     if (viewController == postsViewController) {
         self.navigationItem.rightBarButtonItem = postsViewController.newButtonItem;
-    } else if (viewController == pagesViewController) {
+    } 
+	else if (viewController == pagesViewController) {
         self.navigationItem.rightBarButtonItem = pagesViewController.newButtonItem;
-    } else if (viewController == commentsViewController) {
+    } 
+	else if (viewController == commentsViewController) {
         [commentsViewController setIndexForCurrentPost:-2];
         self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
     }
-    else {
-        self.navigationItem.rightBarButtonItem = nil;
+    else if (viewController == dashboardViewController) {
+		self.navigationItem.titleView = dashboardViewController.segmentedControl;
     }
     
     [viewController viewWillAppear:NO];

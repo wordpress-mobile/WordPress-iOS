@@ -15,23 +15,29 @@
 
 #define COMMENTS_SECTION    0
 
+#define ALL_COMMENTS		0
+#define PENDING_COMMENTS	0
+
 @interface DashboardViewController (Private)
 
 - (void)scrollToFirstCell;
 - (void)refreshHandler;
 - (void)syncComments;
 - (BOOL)isConnectedToHost;
-- (void)refreshCommentsList;
 - (void)addRefreshButton;
 - (void)initCommentsMap;
 - (void)calculateSections;
 - (void)showCommentAtIndex:(int)index;
-
+- (void)limitToOnHold;
+- (void)doNotLimit;
+- (NSMutableArray *)commentsOnHold;
+- (void)updateBadge;
+- (void)reloadTableView;
 @end
 
 @implementation DashboardViewController
 
-@synthesize comments, commentsMap, commentsSections;
+@synthesize comments, commentsMap, commentsSections, segmentedControl;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -58,13 +64,26 @@
     self.tableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
     
     [self addRefreshButton];
+	
+	// segmented control as the custom title view
+	NSArray *segmentTextContent = [NSArray arrayWithObjects:
+								   NSLocalizedString(@"All", @""),
+								   NSLocalizedString(@"Pending", @""),
+								   nil];
+	segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentTextContent];
+	segmentedControl.selectedSegmentIndex = ALL_COMMENTS;
+	segmentedControl.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
+	segmentedControl.frame = CGRectMake(0, 0, 170, 30);
+	[segmentedControl addTarget:self action:@selector(reloadTableView) forControlEvents:UIControlEventValueChanged];
+	[self updateBadge];
 }
 
 - (void)viewWillAppear:(BOOL)animated {  
     BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
     [sharedDataManager loadCommentTitlesForCurrentBlog];
     
-    [self refreshCommentsList];
+    [self reloadTableView];
     [self scrollToFirstCell];
     [self refreshHandler];
         
@@ -74,20 +93,6 @@
     }
     
     [super viewWillAppear:animated];
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    [self.tableView reloadData];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    
-    if ([delegate isAlertRunning] == YES) {
-        return NO;
-    } else {
-        return YES;
-    }
 }
 
 #pragma mark -
@@ -189,7 +194,7 @@
     [sharedBlogDataManager syncCommentsForCurrentBlog];
     [sharedBlogDataManager loadCommentTitlesForCurrentBlog];
     
-    [self refreshCommentsList];
+    [self reloadTableView];
     
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     
@@ -202,15 +207,6 @@
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     [pool release];
-}
-
-- (void)refreshCommentsList {
-    BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
-    self.comments = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
-     
-    [self initCommentsMap];
-    [self calculateSections];
-    [self.tableView reloadData];
 }
 
 - (void)showCommentAtIndex:(int)index {
@@ -265,6 +261,63 @@
     [dateFormat release];
     [dateToCommentSectionMap release];
     [newCommentsSections release];
+}
+
+#pragma mark -
+#pragma mark Segmented View Controls
+
+- (void)reloadTableView {
+	if ([segmentedControl selectedSegmentIndex] == ALL_COMMENTS) {
+		[self doNotLimit];
+	}
+	else {
+		[self limitToOnHold];
+	}
+	[self initCommentsMap];
+    [self calculateSections];
+	[self updateBadge];
+    [self.tableView reloadData];
+}
+
+#pragma mark -
+#pragma mark Comments Scoping
+
+- (void)limitToOnHold {
+    [self setComments: [self commentsOnHold]];
+}
+
+- (void)doNotLimit {
+	BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
+	[self setComments: [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]]];
+}
+
+- (NSMutableArray *)commentsOnHold {
+	BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
+	NSMutableArray *allComments = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
+    NSMutableArray *commentsOnHold = [[NSMutableArray alloc] init];
+	
+    for (NSDictionary *comment in allComments) {
+        if ([[comment valueForKey:@"status"] isEqualToString:@"hold"]) {
+            [commentsOnHold addObject:comment];
+        }
+    }
+	NSMutableArray *copyOfCommentsOnHold = [NSMutableArray arrayWithArray:commentsOnHold];
+	[commentsOnHold release];
+	return copyOfCommentsOnHold;
+}
+
+#pragma mark -
+#pragma mark Tab Badge
+
+- (void)updateBadge {
+    NSString *badge = nil;
+	NSMutableArray *commentsOnHold = [self commentsOnHold];
+	
+    if ([commentsOnHold count] > 0) {
+        badge = [[NSNumber numberWithInt:[commentsOnHold count]] stringValue];
+    }
+	
+    self.tabBarItem.badgeValue = badge;
 }
 
 @end

@@ -18,8 +18,6 @@
     IBOutlet PagesViewController *pagesViewController;
     IBOutlet CommentsViewController *commentsViewController;
     IBOutlet DashboardViewController *dashboardViewController;
-
-    UIBarButtonItem *backButton;
 }
 
 @end
