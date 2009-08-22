@@ -1072,7 +1072,7 @@ editBlogViewController;
    Get blog data from host
  */
 - (BOOL)refreshCurrentBlog:(NSString *)url user:(NSString *)username {
-    // REFACTOR login method in BlogDetailModalViewControler so that all XML rpc interaction is handled from here
+	// REFACTOR login method in BlogDetailModalViewControler so that all XML rpc interaction is handled from here
     // report exceptions back to caller
     // 1. test connection and xmlrpc call using blogger.getUserInfo
     // 2. update current blog with user info
@@ -1126,6 +1126,7 @@ editBlogViewController;
       NSLog(@"this is xmlrpc with an @ sign %@", xmlrpc);
 
       if (xmlrpc == @"xmlrpc url not set") {
+		  isProblemWithXMLRPC = YES;
         UIAlertView *rsdError = [[UIAlertView alloc] initWithTitle:@"We could not find the XML-RPC service for your blog. Please check your network connection and try again. Or if you're self-hosted and changed your XMLRPC endpoint name, enter the full URL on the next page.  If the problem persists, please visit \"iphone.wordpress.org\" to report the problem."
                                    message:nil
                                   delegate:[[UIApplication sharedApplication] delegate]

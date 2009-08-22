@@ -329,6 +329,9 @@
 #pragma mark saveBlog
 - (void)createBlog {
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	dm.isProblemWithXMLRPC = NO;
+	// isProblem... gets set to YES inside BlogDataManager's refreshCurrentBlog method if there's a problem getting the xmlrpc endpoint url. 
+	// set to NO again later in this method if it was set to YES in refreshCurrentBlog.
 
     NSString *username = [currentBlog valueForKey:@"username"];
     //NSString *pwd = [currentBlog valueForKey:@"pwd"];
@@ -354,7 +357,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"NewBlogAdded" object:nil];
         [self.navigationController dismissModalViewControllerAnimated:YES];
     } else {
-			if (dm.isProblemWithXMLRPC = YES) {
+			if (dm.isProblemWithXMLRPC) {
 				//this handles the case of not getting the XMLRPC endpoint and launches a view to ask user for input
 				[self showLocateXMLRPCModalViewWithAnimation:YES];
 				saveBlogButton.title = @"Try Again";
