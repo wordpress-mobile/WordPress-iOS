@@ -484,7 +484,16 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
         return NO;
     }
 
-    memset((char *)address, sizeof(struct sockaddr_in), 0);
+   
+	//Trac ticket 224, no indication that current wp iphone app code uses this (08/22/09)
+	//Tested - can't see any difference.  Seems he's right about the location of the zero however.
+	//NSLog(@"about to run memset line in Reachability.m");
+	// memset((char *)address, sizeof(struct sockaddr_in), 0);
+	memset((char *)address, 0, sizeof(struct sockaddr_in));
+	
+
+
+	
     address->sin_family = AF_INET;
     address->sin_len = sizeof(struct sockaddr_in);
 

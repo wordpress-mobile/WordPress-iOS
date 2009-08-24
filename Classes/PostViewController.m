@@ -461,7 +461,8 @@
         self.hasChanges = YES;
     }
 
-    mode = refreshPost;
+    if (mode != newPost)
+		mode = refreshPost;
     [commentsViewController setIndexForCurrentPost:[[BlogDataManager sharedDataManager] currentPostIndex]];
     [[tabController selectedViewController] viewWillAppear:animated];
 }
@@ -536,7 +537,8 @@
         [postDetailEditController.currentEditingTextField resignFirstResponder];
 
     [super viewWillDisappear:animated];
-    mode = refreshPost;
+   if (mode != newPost)
+	   mode = refreshPost;
     [postPreviewController stopLoading];
 }
 

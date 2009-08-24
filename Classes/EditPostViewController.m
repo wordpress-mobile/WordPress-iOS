@@ -811,17 +811,18 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 #pragma mark -
 #pragma mark Custom Fields methods
 - (void)postionTextViewContentView {
-    if (isCustomFieldsEnabledForThisPost) {
-        originY = 214.0f;
-        CGRect frame = textViewContentView.frame;
-        frame.origin.y = originY;
-        [textViewContentView setFrame:frame];
-    } else {
+//removing custom fields code for now.  will integrate into 1.4 if time allows
+//    if (isCustomFieldsEnabledForThisPost) {
+//        originY = 214.0f;
+//        CGRect frame = textViewContentView.frame;
+//        frame.origin.y = originY;
+//        [textViewContentView setFrame:frame];
+//    } else {
         originY = 164.0f;
         CGRect frame = textViewContentView.frame;
         frame.origin.y = originY;
         [textViewContentView setFrame:frame];
-    }
+//    }
 }
 
 - (BOOL)checkCustomFieldsMinusMetadata {
