@@ -368,7 +368,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
         WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
         [delegate setAlertRunning:YES];
         [pageContentTextView resignFirstResponder];
-        UIAlertView *linkAlert = [[UIAlertView alloc] initWithTitle:@"Add a Link" message:@"Would you like help adding a link?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Link", nil];
+        UIAlertView *linkAlert = [[UIAlertView alloc] initWithTitle:@"Make a Link" message:@"Would you like help making a link?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Make a Link", nil];
         [linkAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
         [linkAlert show];
         [linkAlert release];
@@ -607,7 +607,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
     urlField.keyboardAppearance = UIKeyboardAppearanceAlert;
     [addURLSourceAlert addButtonWithTitle:@"Cancel"];
     [addURLSourceAlert addButtonWithTitle:@"Save"];
-    addURLSourceAlert.title = @"Add a Link\n\n\n\n";
+    addURLSourceAlert.title = @"Make a Link\n\n\n\n";
     addURLSourceAlert.delegate = self;
     [addURLSourceAlert addSubview:infoText];
     [addURLSourceAlert addSubview:urlField];

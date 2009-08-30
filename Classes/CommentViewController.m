@@ -111,28 +111,28 @@
 }
 
 - (void)deleteComment:(id)sender {
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"deleting"];
+    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Deleting..."];
     [progressAlert show];
 
     [self performSelectorInBackground:@selector(deleteThisComment) withObject:nil];
 }
 
 - (void)approveComment:(id)sender {
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"moderating"];
+    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Moderating..."];
     [progressAlert show];
 
     [self performSelectorInBackground:@selector(approveThisComment) withObject:nil];
 }
 
 - (void)unApproveComment:(id)sender {
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"moderating"];
+    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Moderating..."];
     [progressAlert show];
 
     [self performSelectorInBackground:@selector(unapproveThisComment) withObject:nil];
 }
 
 - (void)spamComment:(id)sender {
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"moderating"];
+    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Moderating..."];
     [progressAlert show];
 
     [self performSelectorInBackground:@selector(markThisCommentAsSpam) withObject:nil];
