@@ -344,7 +344,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 
     if ([alertView tag] == 1) {
-        if (buttonIndex == 0)
+        if (buttonIndex == 1)
             [self showLinkView];else {
             dismiss = YES;
             [textView touchesBegan:nil withEvent:nil];
@@ -403,10 +403,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)showLinkView {
     UIAlertView *addURLSourceAlert = [[UIAlertView alloc] initWithFrame:CGRectMake(0, 0, 0, 0.0)];
-    infoText = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 36.0, 260.0, 29.0)];
-    urlField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 70.0, 260.0, 29.0)];
-    infoText.placeholder = @"\n\nEnter Text For Link";
-    urlField.placeholder = @"\n\nEnter Link";
+    infoText = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 48.0, 260.0, 29.0)];
+    urlField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 82.0, 260.0, 29.0)];
+    infoText.placeholder = @"Text to be linked";
+    urlField.placeholder = @"Link URL";
     //infoText.enabled = YES;
 
     infoText.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -416,8 +416,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     infoText.keyboardAppearance = UIKeyboardAppearanceAlert;
     urlField.keyboardAppearance = UIKeyboardAppearanceAlert;
     [addURLSourceAlert addButtonWithTitle:@"Cancel"];
-    [addURLSourceAlert addButtonWithTitle:@"OK"];
-    addURLSourceAlert.title = @"Make Hyperlink\n\n\n";
+    [addURLSourceAlert addButtonWithTitle:@"Save"];
+    addURLSourceAlert.title = @"Add a Link\n\n\n\n";
     addURLSourceAlert.delegate = self;
     [addURLSourceAlert addSubview:infoText];
     [addURLSourceAlert addSubview:urlField];
@@ -526,7 +526,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
     if (searchRes && dismiss != YES) {
         [textView resignFirstResponder];
-        UIAlertView *linkAlert = [[UIAlertView alloc] initWithTitle:@"Link Creation" message:@"Do you want to create link?" delegate:self cancelButtonTitle:@"Create Link" otherButtonTitles:@"Dismiss", nil];
+        UIAlertView *linkAlert = [[UIAlertView alloc] initWithTitle:@"Add a Link" message:@"Would you like help adding a link?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Link", nil];
         [linkAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
         [linkAlert show];
         WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
