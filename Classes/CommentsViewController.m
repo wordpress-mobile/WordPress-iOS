@@ -16,6 +16,9 @@
 #define COMMENTS_SECTION        0
 #define NUM_SECTIONS            1
 
+#define ALL_COMMENTS		0
+#define PENDING_COMMENTS	1
+
 @interface CommentsViewController (Private)
 
 - (void)scrollToFirstCell;
@@ -29,14 +32,16 @@
 - (void)unapproveComments;
 - (void)syncComments;
 - (void)addRefreshButton;
-- (void)limitToOnHold;
 - (void)updateBadge;
-
+- (void)reloadTableView;
+- (void)limitToOnHold;
+- (void)doNotLimit;
+- (NSMutableArray *)commentsOnHold;
 @end
 
 @implementation CommentsViewController
 
-@synthesize editButtonItem, selectedComments, commentsArray, indexForCurrentPost;
+@synthesize editButtonItem, selectedComments, commentsArray, indexForCurrentPost, segmentedControl;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -71,6 +76,18 @@
     
     editButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered
                                                      target:self action:@selector(editComments)];
+	
+	// segmented control as the custom title view
+	NSArray *segmentTextContent = [NSArray arrayWithObjects:
+								   NSLocalizedString(@"All", @""),
+								   NSLocalizedString(@"Pending", @""),
+								   nil];
+	segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentTextContent];
+	segmentedControl.selectedSegmentIndex = ALL_COMMENTS;
+	segmentedControl.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
+	segmentedControl.frame = CGRectMake(0, 0, 170, 30);
+	[segmentedControl addTarget:self action:@selector(reloadTableView) forControlEvents:UIControlEventValueChanged];
 }
 
 - (void)viewWillAppear:(BOOL)animated {  
@@ -196,21 +213,7 @@
     [pool release];
 }
 
-- (void)limitToOnHold {
-    NSMutableArray *commentsOnHold = [[NSMutableArray alloc] init];
-
-    for (NSDictionary *comment in commentsArray) {
-        if ([[comment valueForKey:@"status"] isEqualToString:@"hold"]) {
-            [commentsOnHold addObject:comment];
-        }
-    }
-
-    [self setCommentsArray:commentsOnHold];
-    [commentsOnHold release];
-}
-
 - (void)refreshCommentsList {
-    BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
 
     if (!selectedComments) {
         selectedComments = [[NSMutableArray alloc] init];
@@ -218,12 +221,7 @@
         [selectedComments removeAllObjects];
     }
 
-    if (indexForCurrentPost >= -1) {
-        self.commentsArray = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog] scopedToPostWithIndex:indexForCurrentPost];
-    } else {
-        self.commentsArray = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
-        [self limitToOnHold];
-    }
+    [self reloadTableView];
 
     for (NSDictionary *dict in commentsArray) {
         NSString *str = [dict valueForKey:@"comment_id"];
@@ -332,6 +330,60 @@
 }
 
 #pragma mark -
+#pragma mark Segmented View Controls
+
+- (void)reloadTableView {
+	if ([segmentedControl selectedSegmentIndex] == ALL_COMMENTS) {
+		[self doNotLimit];
+	}
+	else {
+		[self limitToOnHold];
+	}
+
+	[self updateBadge];
+    [commentsTableView reloadData];
+}
+
+#pragma mark -
+#pragma mark Comments Scoping
+
+- (void)limitToOnHold {
+    [self setCommentsArray: [self commentsOnHold]];
+}
+
+- (void)doNotLimit {
+	BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
+
+	if (indexForCurrentPost >= -1) {
+        self.commentsArray = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog] scopedToPostWithIndex:indexForCurrentPost];
+    } else {
+        self.commentsArray = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
+    }
+}
+
+- (NSMutableArray *)commentsOnHold {
+	BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
+	NSMutableArray *allComments = nil;
+	
+	if (indexForCurrentPost >= -1) {
+        allComments = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog] scopedToPostWithIndex:indexForCurrentPost];
+    } else {
+        allComments = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
+    }
+
+    NSMutableArray *commentsOnHold = [[NSMutableArray alloc] init];
+	
+    for (NSDictionary *comment in allComments) {
+        if ([[comment valueForKey:@"status"] isEqualToString:@"hold"]) {
+            [commentsOnHold addObject:comment];
+        }
+    }
+	NSMutableArray *copyOfCommentsOnHold = [NSMutableArray arrayWithArray:commentsOnHold];
+	[commentsOnHold release];
+	return copyOfCommentsOnHold;
+}
+
+#pragma mark -
 #pragma mark UITableViewDataSource Methods
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -399,13 +451,18 @@
     [self updateSelectedComments];
 }
 
+#pragma mark -
+#pragma mark Update Badge
+
 - (void)updateBadge {
     NSString *badge = nil;
-
-    if (indexForCurrentPost <= -1 && [commentsArray count] > 0) {
-        badge = [[NSNumber numberWithInt:[commentsArray count]] stringValue];
+	
+	NSMutableArray *commentsOnHold = [self commentsOnHold];
+	
+    if ([commentsOnHold count] > 0) {
+        badge = [[NSNumber numberWithInt:[commentsOnHold count]] stringValue];
     }
-
+	
     self.tabBarItem.badgeValue = badge;
 }
 

@@ -16,7 +16,7 @@
 #define COMMENTS_SECTION    0
 
 #define ALL_COMMENTS		0
-#define PENDING_COMMENTS	0
+#define PENDING_COMMENTS	1
 
 @interface DashboardViewController (Private)
 

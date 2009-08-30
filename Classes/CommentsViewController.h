@@ -33,12 +33,15 @@
     UIAlertView *progressAlert;
     
     int indexForCurrentPost;
+	UISegmentedControl *segmentedControl;
 }
 
 @property (readonly) UIBarButtonItem *editButtonItem;
 @property (nonatomic, retain) NSMutableArray *selectedComments;
 @property (nonatomic, retain) NSMutableArray *commentsArray;
 @property int indexForCurrentPost;
+
+@property (nonatomic, retain) UISegmentedControl *segmentedControl;
 
 - (IBAction)deleteSelectedComments:(id)sender;
 - (IBAction)approveSelectedComments:(id)sender;

@@ -24,14 +24,15 @@
     self.title =[NSString decodeXMLCharactersIn:[[dm currentBlog] valueForKey:@"blogName"]] ;
 
 #if defined __IPHONE_3_0
-	[dashboardViewController viewWillAppear:NO];
+	[commentsViewController viewWillAppear:NO];
 #else if defined __IPHONE_2_0 
     tabBarController.selectedIndex = 0;
 #endif
     
     [commentsViewController setIndexForCurrentPost:-2];
     [commentsViewController refreshCommentsList];
-	self.navigationItem.titleView = dashboardViewController.segmentedControl;
+	self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
+	self.navigationItem.titleView = commentsViewController.segmentedControl;	
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -79,9 +80,7 @@
 	else if (viewController == commentsViewController) {
         [commentsViewController setIndexForCurrentPost:-2];
         self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
-    }
-    else if (viewController == dashboardViewController) {
-		self.navigationItem.titleView = dashboardViewController.segmentedControl;
+		self.navigationItem.titleView = commentsViewController.segmentedControl;
     }
     
     [viewController viewWillAppear:NO];
