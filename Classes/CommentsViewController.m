@@ -457,12 +457,14 @@
 - (void)updateBadge {
     NSString *badge = nil;
 	
-	NSMutableArray *commentsOnHold = [self commentsOnHold];
-	
-    if ([commentsOnHold count] > 0) {
-        badge = [[NSNumber numberWithInt:[commentsOnHold count]] stringValue];
-    }
-	
+	if (indexForCurrentPost < -1) {
+		
+		NSMutableArray *commentsOnHold = [self commentsOnHold];
+		
+		if ([commentsOnHold count] > 0) {
+			badge = [[NSNumber numberWithInt:[commentsOnHold count]] stringValue];
+		}
+	}
     self.tabBarItem.badgeValue = badge;
 }
 
