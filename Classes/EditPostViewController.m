@@ -24,6 +24,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSLog(@"inside PostDetailEditController:viewDidLoad, just called [super viewDidLoad]");
+
+
     
     //customFieldsEditButton.hidden = YES;
     //customFieldsEditButton.enabled = NO;
@@ -439,9 +441,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)textViewDidChangeSelection:(UITextView *)aTextView {
     if (!isTextViewEditing) {
         isTextViewEditing = YES;
-
-        if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-            [self setTextViewHeight:107];
+		
+        if ((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+            [self setTextViewHeight:116];
         }
 
         [self updateTextViewPlacehoderFieldStatus];
@@ -455,13 +457,21 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
 }
 
+
+
+
+
 - (void)textViewDidBeginEditing:(UITextView *)aTextView {
+	NSLog(@"inside textViewDidBeginEditing, before the if");
+	
     isEditing = YES;
 
-    if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-        [self setTextViewHeight:107];
-    }
+	if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
+        [self setTextViewHeight:116];
+		
 
+    }
+	
     dismiss = NO;
 
     if (!isTextViewEditing) {
@@ -491,7 +501,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     NSArray *stringArray = [NSArray arrayWithObjects:@"http:", @"ftp:", @"https:", @"www.", nil];
 	//NSString *str = [[aTextView text]stringByReplacingOccurrencesOfString: @"&nbsp;" withString: @"&#160"];
     NSString *str = [aTextView text];
-	NSLog(@"this is str::-->  %@", str);
+	//NSLog(@"this is str::-->  %@", str);
 	NSLog(@"this is str's count %d", str.length);
     int i, j, count = [stringArray count];
     BOOL searchRes = NO;
@@ -536,7 +546,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)aTextView {
-    if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+    if ((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
         [self setTextViewHeight:57];
     }
 
@@ -560,7 +570,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         [self updateTextViewPlacehoderFieldStatus];
         NSString *text = aTextView.text;
         [[[BlogDataManager sharedDataManager] currentPost] setObject:text forKey:@"description"];
-        NSLog(@"the text from aTextView is %@", text);
+        //NSLog(@"the text from aTextView is %@", text);
     }
 }
 

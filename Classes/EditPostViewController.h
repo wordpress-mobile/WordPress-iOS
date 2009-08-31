@@ -54,6 +54,8 @@
 
     //also for Custom Fields to move text view up and down appropriately
     NSUInteger originY;
+	//for setting textview height correctly because shouldAutorotate runs in the TabBarController that "owns" this class
+	NSUInteger textViewHeightForRotation;
 }
 
 @property (nonatomic, assign) PostViewController *postDetailViewController;
@@ -73,6 +75,7 @@
 
 @property (nonatomic, retain) UIButton *customFieldsEditButton;
 //@property (nonatomic, retain) UITableView *selectCustomFields;
+
 
 - (void)refreshUIForCompose;
 - (void)refreshUIForCurrentPost;

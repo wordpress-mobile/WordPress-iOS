@@ -80,9 +80,19 @@ NSString *XMLRPCReceivedResponseNotification = @"XML-RPC Successfully Received R
 + (XMLRPCResponse *)sendSynchronousXMLRPCRequest: (XMLRPCRequest *)request
 {
 	NSURLResponse *urlres;
+	//NSHTTPURLResponse *urlres;
+	
 	NSError *err = NULL;
 	NSData *data = [NSURLConnection sendSynchronousRequest: [request request] 
 		returningResponse: &urlres error: &err];
+	
+	
+		if ([urlres isKindOfClass:[NSHTTPURLResponse class]]) {
+		
+		NSLog(@"Received status code: %d %@", [(NSHTTPURLResponse *) urlres statusCode], 
+			  [NSHTTPURLResponse localizedStringForStatusCode:[(NSHTTPURLResponse *) urlres statusCode]]) ;
+	}
+	
 	
 	if( err != NULL )
 	{
@@ -97,7 +107,32 @@ NSString *XMLRPCReceivedResponseNotification = @"XML-RPC Successfully Received R
 			str = [[NSString alloc] initWithData:data encoding:[NSString defaultCStringEncoding]];
 			data = [str dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
 		}
-		[str release];
+			
+			//Check for HTML code 400 or greater in response statusCode (from header) and throw error if so
+			if ([urlres isKindOfClass:[NSHTTPURLResponse class]]) {
+				
+				if ([(NSHTTPURLResponse *) urlres statusCode] >= 400) {
+				
+//					NSLog(@"Received status code: %d %@", [(NSHTTPURLResponse *) urlres statusCode], 
+//						  [NSHTTPURLResponse localizedStringForStatusCode:[(NSHTTPURLResponse *) urlres statusCode]]) ;
+					   
+					NSString *errorIntString = [NSString stringWithFormat:@"%d", [(NSHTTPURLResponse *) urlres statusCode]];
+					NSString *stringForStatusCode = [NSHTTPURLResponse localizedStringForStatusCode:[(NSHTTPURLResponse *) urlres statusCode]];
+					NSString *errorString = [[errorIntString stringByAppendingString:@" "] stringByAppendingString:stringForStatusCode];
+			
+					NSInteger code = -1; //This is not significant, just a number with no meaning
+					NSDictionary *usrInfo = [NSDictionary dictionaryWithObject:errorString forKey:NSLocalizedDescriptionKey];
+					err = [NSError errorWithDomain:@"com.effigent.iphone.wordpress" code:code userInfo:usrInfo];
+					return (id) err;
+			}
+	     }
+				
+			
+		
+			
+		
+		
+		//[str release];
 		return [[[XMLRPCResponse alloc] initWithData: data] autorelease];
 	}
 

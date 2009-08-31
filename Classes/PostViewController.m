@@ -427,7 +427,7 @@
         if (postDetailEditController.isEditing == NO) {
             [postDetailEditController setTextViewHeight:57];
         } else {
-            [postDetailEditController setTextViewHeight:107];
+            [postDetailEditController setTextViewHeight:116];
         }
     }
 
@@ -572,7 +572,7 @@
             if (postDetailEditController.isEditing == NO) {
                 [postDetailEditController setTextViewHeight:57];
             } else {
-                [postDetailEditController setTextViewHeight:107];
+                [postDetailEditController setTextViewHeight:116];
             }
         }
     }
@@ -581,6 +581,7 @@
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+	//[self.selectedViewController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     if ([tabController.selectedViewController.title isEqualToString:@"Settings"]) {
         [postSettingsController.tableView reloadData];
     }
