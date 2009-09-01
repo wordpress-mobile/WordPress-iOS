@@ -106,7 +106,7 @@
         self.title = NSLocalizedString(@"Edit Blog", @"EditBlogViewController_Title_EditBlog");
     }
 
-    [blogEditTable reloadData];
+    //[blogEditTable reloadData];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
