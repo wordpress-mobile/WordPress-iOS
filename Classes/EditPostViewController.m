@@ -342,42 +342,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-
-    if ([alertView tag] == 1) {
-        if (buttonIndex == 1)
-            [self showLinkView];else {
-            dismiss = YES;
-            [textView touchesBegan:nil withEvent:nil];
-            [delegate setAlertRunning:NO];
-        }
-    }
-
-    if ([alertView tag] == 2) {
-        if (buttonIndex == 1) {
-            if ((urlField.text == nil) || ([urlField.text isEqualToString:@""])) {
-                [delegate setAlertRunning:NO];
-                return;
-            }
-
-            if ((infoText.text == nil) || ([infoText.text isEqualToString:@""]))
-                infoText.text = urlField.text;
-
-            NSString *commentsStr = textView.text;
-            NSRange rangeToReplace = [self selectedLinkRange];
-            NSString *urlString = [self validateNewLinkInfo:urlField.text];
-            NSString *aTagText = [NSString stringWithFormat:@"<a href=\"%@\">%@</a>", urlString, infoText.text];;
-            textView.text = [commentsStr stringByReplacingOccurrencesOfString:[commentsStr substringWithRange:rangeToReplace] withString:aTagText options:NSCaseInsensitiveSearch range:rangeToReplace];
-        }
-
-        dismiss = YES;
-        [delegate setAlertRunning:NO];
-        [textView touchesBegan:nil withEvent:nil];
-    }
-
-    return;
-}
 
 //code to append http:// if protocol part is not there as part of urlText.
 - (NSString *)validateNewLinkInfo:(NSString *)urlText {
@@ -424,8 +388,19 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [addURLSourceAlert addSubview:infoText];
     [addURLSourceAlert addSubview:urlField];
     [infoText becomeFirstResponder];
-    CGAffineTransform upTransform = CGAffineTransformMakeTranslation(0.0, 140.0);
-    [addURLSourceAlert setTransform:upTransform];
+	
+	//deal with rotation
+	if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft) 
+		|| (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight))
+	{
+		CGAffineTransform upTransform = CGAffineTransformMakeTranslation(0.0, 80.0);
+		[addURLSourceAlert setTransform:upTransform];
+	}else{
+		CGAffineTransform upTransform = CGAffineTransformMakeTranslation(0.0, 140.0);
+		[addURLSourceAlert setTransform:upTransform];
+	}
+	
+    //[addURLSourceAlert setTransform:upTransform];
     [addURLSourceAlert setTag:2];
     [addURLSourceAlert show];
     [addURLSourceAlert release];
@@ -436,6 +411,44 @@ NSTimeInterval kAnimationDuration = 0.3f;
     frame.size.height = height;
     textView.frame = frame;
 }
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	
+    if ([alertView tag] == 1) {
+        if (buttonIndex == 1)
+            [self showLinkView];else {
+				dismiss = YES;
+				[textView touchesBegan:nil withEvent:nil];
+				[delegate setAlertRunning:NO];
+			}
+    }
+	
+    if ([alertView tag] == 2) {
+        if (buttonIndex == 1) {
+            if ((urlField.text == nil) || ([urlField.text isEqualToString:@""])) {
+                [delegate setAlertRunning:NO];
+                return;
+            }
+			
+            if ((infoText.text == nil) || ([infoText.text isEqualToString:@""]))
+                infoText.text = urlField.text;
+			
+            NSString *commentsStr = textView.text;
+            NSRange rangeToReplace = [self selectedLinkRange];
+            NSString *urlString = [self validateNewLinkInfo:urlField.text];
+            NSString *aTagText = [NSString stringWithFormat:@"<a href=\"%@\">%@</a>", urlString, infoText.text];;
+            textView.text = [commentsStr stringByReplacingOccurrencesOfString:[commentsStr substringWithRange:rangeToReplace] withString:aTagText options:NSCaseInsensitiveSearch range:rangeToReplace];
+        }
+		
+        dismiss = YES;
+        [delegate setAlertRunning:NO];
+        [textView touchesBegan:nil withEvent:nil];
+    }
+	
+    return;
+}
+
 
 #pragma mark TextView & TextField Delegates
 - (void)textViewDidChangeSelection:(UITextView *)aTextView {
@@ -462,11 +475,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 
 - (void)textViewDidBeginEditing:(UITextView *)aTextView {
-	NSLog(@"inside textViewDidBeginEditing, before the if");
+	
 	
     isEditing = YES;
 
-	if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
+	if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
+		|| (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
         [self setTextViewHeight:116];
 		
 
