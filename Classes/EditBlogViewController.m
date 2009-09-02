@@ -371,8 +371,9 @@
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 
     NSString *username = [currentBlog valueForKey:@"username"];
-    NSString *pwd = [currentBlog valueForKey:@"pwd"];
+    //NSString *pwd = [currentBlog valueForKey:@"pwd"];
     NSString *url = [currentBlog valueForKey:@"url"];
+	NSString *pwd = [dm getBlogPasswordFromKeychainWithUsername:username andBlogName:url];
 
     if ([dm validateCurrentBlog:url user:username password:pwd]) {
         [dm performSelector:@selector(generateTemplateForBlog:) withObject:[[dm.currentBlog copy] autorelease]];
