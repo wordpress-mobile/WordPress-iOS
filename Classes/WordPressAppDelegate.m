@@ -3,6 +3,7 @@
 #import "BlogsViewController.h"
 #import "BlogDataManager.h"
 #import "Reachability.h"
+#import "NSString+Helpers.h"
 
 @interface WordPressAppDelegate (Private)
 
@@ -15,6 +16,8 @@
 - (void)showSplashView;
 - (int)indexForCurrentBlog;
 - (void) passwordIntoKeychain;
+- (void) checkIfStatsShouldRun;
+- (void) runStats;
 @end
 
 @implementation WordPressAppDelegate
@@ -52,6 +55,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 #pragma mark UIApplicationDelegate Methods
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
+	[self checkIfStatsShouldRun];
 	
     [[Reachability sharedReachability] setNetworkStatusNotificationsEnabled:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
@@ -301,5 +305,207 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		}
 }
 }
+
+- (void) checkIfStatsShouldRun {
+	
+	//check if statsDate exists in user defaults, if not, add it and run stats since this is obviously the first time
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	if (![defaults objectForKey:@"statsDate"]){
+		NSLog(@"not a statsDate in userdefaults");
+		NSDate *theDate = [NSDate date];
+		NSLog(@"date %@", theDate);
+		[defaults setObject:theDate forKey:@"statsDate"];
+		[self runStats];
+	}else{ 
+		//if statsDate existed, check if it's 30 days since last stats run, if it is > 30 days, run stats
+		NSDate *statsDate = [defaults objectForKey:@"statsDate"];
+		NSLog(@"statsDate %@", statsDate);
+			NSDate *today = [NSDate date];
+			NSTimeInterval difference = [today timeIntervalSinceDate:statsDate];
+			//NSTimeInterval statsInterval = 30 * 24 * 60 * 60; //number of seconds in 30 days
+			NSTimeInterval statsInterval = 1; //for testing and beta, if it's one second different, run again. will only happen on startup of app anyway...
+			if (difference > statsInterval) //if it's been more than 30 days since last stats run
+			{
+				[self runStats];
+			}
+	}
+}
+		
+- (void) runStats{
+	//generate and post the stats data
+	/*
+	 - device_uuid – A unique identifier to the iPhone/iPod that the app is installed on. 
+	 - app_version – the version number of the WP iPhone app
+	 - language – language setting for the device. What does that look like? Is it EN or English?
+	 - os_version – the version of the iPhone/iPod OS for the device
+	 - num_blogs – number of blogs configured in the WP iPhone app
+	 */
+	NSString *deviceuuid = [[UIDevice currentDevice] uniqueIdentifier];
+	
+	NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
+	NSString *appversion = [info objectForKey:@"CFBundleVersion"];
+	[appversion stringByUrlEncoding];
+
+	NSLocale *locale = [NSLocale currentLocale];
+	
+	NSString *language = [locale objectForKey: NSLocaleIdentifier];
+	[language stringByUrlEncoding];
+	
+	NSString *osversion = [[UIDevice currentDevice] systemVersion];
+	[osversion stringByUrlEncoding];
+	
+	int num_blogs = [[BlogDataManager sharedDataManager] countOfBlogs];
+	NSString *numblogs = [NSString stringWithFormat:@"%d",num_blogs];
+	[numblogs stringByUrlEncoding];
+	
+	
+	NSLog(@"UUID %@", deviceuuid);
+	NSLog(@"app version %@",appversion);
+	NSLog(@"language %@",language);
+	NSLog(@"os_version, %@", osversion);
+	NSLog(@"count of blogs %@",numblogs);
+	
+	//handle data coming back
+	[statsData release];
+	statsData = [[NSMutableData alloc] init];
+	
+	//build HTML Post
+	// #import for NSString+Helpers.h at the top
+	
+	NSMutableURLRequest *theRequest=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://api.wordpress.org/iphoneapp/update-check/1.0/"]
+															cachePolicy:NSURLRequestUseProtocolCachePolicy
+														timeoutInterval:30.0];
+	
+	[theRequest setHTTPMethod:@"POST"];
+	[theRequest addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField: @"Content-Type"];
+	
+	//create the body
+	NSMutableData *postBody = [NSMutableData data];
+	[postBody appendData:[[NSString stringWithFormat:@"?device_uuid=%@&app_version=%@&language=%@&os_version=%@&num_blogs=%@", 
+										deviceuuid,
+										 appversion,
+											language,
+										  osversion,
+										   numblogs] dataUsingEncoding:NSUTF8StringEncoding]];
+	[theRequest setHTTPBody:postBody];
+		
+	NSURLConnection *conn=[[[NSURLConnection alloc] initWithRequest:theRequest delegate:self]autorelease];
+	if (conn)   
+	{  
+		//receivedData = [[NSMutableData data] retain];  
+		NSLog(@"inside 'if conn' so connection should exist and inside else should not print to log");
+	}   
+	else   
+	{  
+		// inform the user that the download could not be made
+		NSLog(@"inside else - implies the 'download' could not be made");
+	}  	
+
+}
+
+#pragma mark NSURLConnection callbacks
+
+//START:code.SimpleTwitterClientViewController.connectiondidreceivedata
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+	[statsData appendData: data];
+	NSLog(@"did recieve data");
+}
+//END:code.SimpleTwitterClientViewController.connectiondidreceivedata
+
+-(void) connection:(NSURLConnection *)connection
+  didFailWithError: (NSError *)error {
+	NSLog(@"didFailWithError");
+	UIAlertView *errorAlert = [[UIAlertView alloc]
+							   initWithTitle: [error localizedDescription]
+							   message: [error localizedFailureReason]
+							   delegate:nil
+							   cancelButtonTitle:@"OK"
+							   otherButtonTitles:nil];
+	[errorAlert show];
+	[errorAlert release];
+//	[activityIndicator stopAnimating];
+}
+
+//START:code.SimpleTwitterClientViewController.connectiondidfinishloading
+- (void) connectionDidFinishLoading: (NSURLConnection*) connection {
+	NSLog(@"connectionDidFinishLoading");
+	//process statsData here or call a helper method to do so.
+	//it should parse the "latest version" and the over the air download url and give user some opportunity to upgrade if version numbers don't match...
+	//all of this should get pulled out of WPAppDelegate and into it's own class... http request, check for stats methods, delegate methods for http, and present user with option to upgrade
+	NSString *statsDataString = [[NSString alloc] initWithData:statsData encoding:NSUTF8StringEncoding];
+	
+	NSLog(@"should be statsDataString %@", statsDataString);
+	//need to break this up based on the \n
+
+	[statsDataString release];
+//	[activityIndicator stopAnimating];
+//	[self startParsingTweets];
+}
+//END:code.SimpleTwitterClientViewController.connectiondidfinishloading
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+	NSLog (@"connectionDidReceiveResponse %@", response);
+}
+
+
+//START:code.SimpleCocoaURLReader.didreceiveauthenticationchallenge
+- (void)connection:(NSURLConnection *)connection
+didReceiveAuthenticationChallenge:
+(NSURLAuthenticationChallenge *)challenge {
+//	if ([challenge previousFailureCount] != 0) { //<label id="code.SimpleCocoaURLReader.didreceiveauthenticationchallenge.ifcountnotzero"/>
+//		// if pervious failure count > 0, then user/pass was rejected
+//		NSString *alertMessage = @"Invalid username or password"; //<label id="code.SimpleCocoaURLReader.didreceiveauthenticationchallenge.passwordrejectalertstart"/>
+//		UIAlertView *authenticationAlert =
+//		[[UIAlertView alloc] initWithTitle:@"Authentication failed"
+//								   message:alertMessage
+//								  delegate:nil
+//						 cancelButtonTitle:@"OK"
+//						 otherButtonTitles:nil];
+//		[authenticationAlert show];
+//		[authenticationAlert release];
+//		[alertMessage release]; //<label id="code.SimpleCocoaURLReader.didreceiveauthenticationchallenge.passwordrejectalertend"/>
+//		[activityIndicator stopAnimating];
+//	} else {
+//		// show and block for authentication challenge
+//		AuthenticationChallengeViewController *challengeController = //<label id="code.SimpleCocoaURLReader.didreceiveauthenticationchallenge.showauthenticationchallengestart"/>
+//		[[AuthenticationChallengeViewController alloc]
+//		 initWithNibName:@"AuthenticationChallengeView"
+//		 bundle:[NSBundle mainBundle]
+//		 loader: self
+//		 challenge: challenge];
+//		[self presentModalViewController:challengeController
+//								animated:YES]; //<label id="code.SimpleCocoaURLReader.didreceiveauthenticationchallenge.showauthenticationchallengeend"/>
+//		[challengeController release];
+//	}
+}
+//END:code.SimpleTwitterClientViewController.didreceiveauthenticationchallenge
+
+
+
+//START:code.SimpleCocoaURLReader.handleauthenticationokforchallenge
+- (void) handleAuthenticationOKForChallenge:
+(NSURLAuthenticationChallenge *) aChallenge
+								   withUser: (NSString*) username
+								   password: (NSString*) password {
+//	// try to reply to challenge
+//	NSURLCredential *credential = [[NSURLCredential alloc]
+//								   initWithUser:username
+//								   password:password
+//								   persistence:NSURLCredentialPersistenceForSession];
+//	//persistence:NSURLCredentialPersistencePermanent];
+//	[[aChallenge sender] useCredential:credential
+//			forAuthenticationChallenge:aChallenge];
+//	[credential release];
+//	[self dismissModalViewControllerAnimated:YES];
+}
+//END:code.SimpleCocoaURLReader.handleauthenticationokforchallenge
+
+
+- (void) handleAuthenticationCancelForChallenge: (NSURLAuthenticationChallenge *) aChallenge {
+//	[[aChallenge sender] cancelAuthenticationChallenge: aChallenge];
+//	[self dismissModalViewControllerAnimated:YES];
+//	[activityIndicator stopAnimating];
+}
+
 
 @end

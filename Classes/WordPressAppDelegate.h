@@ -13,6 +13,7 @@
     BOOL alertRunning;
 
     UIImageView *splashView;
+	NSMutableData *statsData;
 }
 
 @property (nonatomic, retain) UIWindow *window;
