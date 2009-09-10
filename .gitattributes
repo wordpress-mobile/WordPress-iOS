@@ -121,6 +121,7 @@ Classes/XMLRPC/XMLValueDecoder.m -text
 /EditBlogViewController.xib -text
 /EditPageViewController.xib -text
 /EditPostViewController.xib -text
+/Entitlements.plist -text
 /Icons[!!-~]License -text
 /Info.plist -text
 /MainBackground.png -text
@@ -158,6 +159,7 @@ WordPress.xcodeproj/project.pbxproj -text
 /down.png -text
 /favicon.ico -text svneol=unset#unset
 /gravatar.jpg -text
+/iTunesArtwork -text
 /license.txt -text
 /list.png -text
 /lock.png -text
