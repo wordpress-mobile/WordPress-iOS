@@ -92,7 +92,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    pageDetailsController.hasChanges = NO;
+   // pageDetailsController.hasChanges = NO;
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 
     if (mode == editPage)
