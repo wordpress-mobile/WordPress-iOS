@@ -76,6 +76,9 @@
 - (id)fectchNewPage:(NSString *)pageid formBlog:(id)aBlog;
 - (NSMutableDictionary *)pageTitleForPage:(NSDictionary *)aPage;
 - (BOOL)deleteAllPhotosForPage:(id)aPage forBlog:(id)aBlog;
+
+//xmlrpc
+- (void) tryDefaultXMLRPCEndpoint: (NSString *) url;
 @end
 
 @implementation BlogDataManager
@@ -934,6 +937,38 @@ editBlogViewController;
 }
 
 #pragma mark Blog data
+
+
+- (void) tryDefaultXMLRPCEndpoint: (NSString *) url{
+	/*
+	 add http:// and "/xmlrpc.php"to url
+	 try the listMethods XMLRPC Call
+	 log the returned array (might be an error, might be a list of methods)
+	 
+	 if the returned array is an error, 
+		log "I can't access the url"
+	 else
+		set xmlrpc value in blog data manger
+	 */
+	
+	NSString *xmlrpcURL = [[@"http://" stringByAppendingString:url] stringByAppendingString:@"/xmlrpc.php"];
+	NSLog(@"xmlrpcURL %@", xmlrpcURL);
+	XMLRPCRequest *listMethodsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpcURL]];
+    [listMethodsReq setMethod:@"system.listMethods" withObjects:[NSArray array]];
+    NSArray *listOfMethods = [self executeXMLRPCRequest:listMethodsReq byHandlingError:YES];
+	[self printArrayToLog:listOfMethods andArrayName:@"list of methods from LocateXMLRPC...:-saveXMLRPCLocation"];
+    [listMethodsReq release];
+	
+	if ([listOfMethods isKindOfClass:[NSError class]]){
+		NSLog(@"returned an error, can't get to xmlrpc.php endpoint");
+		
+    } else {
+		NSLog(@"should have been successful ping of default xmlrpc endpoint");
+		[currentBlog  setValue:xmlrpcURL forKey:@"xmlrpc"];
+	}
+	
+}
+
 //This method gets the XML output of the appropriate XMLRPC endpoint
 //http:///mydomain.com/xmlrpc.php?rsd is what should be coming in as hosturl
 - (NSString *)xmlurl:(NSString *)hosturl {
@@ -1116,16 +1151,18 @@ editBlogViewController;
     
     //This line is for testing the "new" UI to get XMLRPC endpoint directly from user without needing to create a "broken" blog for testing
     //comment out the line for normal running of the application, uncomment the line for testing.
+	//the line just below: [self tryDefaultXMLRPCEndpoint:url]; will also need to be commented out (or not) depending on testing scenario...
     //Unique search string: ^^XMLRPC Endpoint
     //xmlrpc = nil;
 
 
-    if (!xmlrpc) {
+    if (!xmlrpc) {//if xmlrpc is nill
+		//the next line will need to be commented out for testing (in the absence of a broken blog that has problems with the xmlrpc.php endpoint)
+		[self tryDefaultXMLRPCEndpoint:url]; //try the default endpoint of BlogURL.com/xmlrpc.php  If it returns a list of methods after a listMethods XMLRPC call, set currentBlog valueForKey:@"xmlrpc" equal to that.
       xmlrpc =  [currentBlog valueForKey:@"xmlrpc"];
-      NSLog(@"this is xmlrpc after grabbing it from currentBlog %d", xmlrpc);
-      NSLog(@"this is xmlrpc with an @ sign %@", xmlrpc);
+      NSLog(@"this is xmlrpc", xmlrpc);
 
-      if (xmlrpc == @"xmlrpc url not set") {
+      if (xmlrpc == @"xmlrpc url not set") {//if xmlrpc is the default value set when the blog's array is built for the first time when attempting to add the blog...
 		  isProblemWithXMLRPC = YES;
         UIAlertView *rsdError = [[UIAlertView alloc] initWithTitle:@"We could not find the XML-RPC service for your blog. Please check your network connection and try again. Or if you're self-hosted and changed your XMLRPC endpoint name, enter the full URL on the next page.  If the problem persists, please visit \"iphone.wordpress.org\" to report the problem."
                                    message:nil
@@ -1139,11 +1176,8 @@ editBlogViewController;
         
         [rsdError release];
         return NO;
-      } else {
-        //at this point do nothing because if xmlrpc has a value, it's stored to currentBlog later in this method
-        //and the new GUI for getting xmlrpc endpoint from user also stores to xmlrpc to currentBlog.
-      }
-    }
+		}
+      } 
 
     BOOL supportsPagesAndComments;
     int versionCheck = [self checkXML_RPC_URL_IsRunningSupportedVersionOfWordPress:xmlrpc withPagesAndCommentsSupport:&supportsPagesAndComments];

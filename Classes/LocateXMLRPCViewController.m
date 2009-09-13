@@ -39,6 +39,7 @@
 	self.navigationItem.leftBarButtonItem = cancelXMLRPCButton;
 	
 	saveXMLRPCButton.enabled = NO;
+	didUserEnterURL = NO;
 	
 	//if the value in currentBlog is not the default set when building the blog
 	//the user has tried once before, but we got failure anyway.  Fat fingers being a possibility,
@@ -66,6 +67,7 @@
 
 - (IBAction)saveXMLRPCLocation:(id)sender{
 	//save in here...
+	[self textFieldDidEndEditing:xmlrpcURLTextField];
 	[xmlrpcURLTextField resignFirstResponder];
 	NSString *xmlrpcurl = xmlrpcURLTextField.text;
 	//Now, test that we can actually access their blog with these values...
@@ -115,7 +117,9 @@
 - (void) saveUserEnteredXMLRPCEndpointToCurrentBlog:(UITextField *)textField{
 	
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	//NSString *xmlrpc = [textField.text stringByReplacingOccurrencesOfString:@"www." withString:@""];
 	NSString *xmlrpc = textField.text;
+	NSLog(@"xmlrpc is %@", xmlrpc);
 	[dm.currentBlog setObject:xmlrpc forKey:@"xmlrpc"];
 }
 
@@ -131,10 +135,16 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
 	saveXMLRPCButton.enabled = YES;
+	if (!didUserEnterURL)
+		textField.text = @"http://";
+		
+	
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+	textField.text = [textField.text stringByReplacingOccurrencesOfString:@"www." withString:@""];
+	didUserEnterURL = YES;
 	
 	
 }

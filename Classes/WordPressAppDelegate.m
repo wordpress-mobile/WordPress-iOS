@@ -381,12 +381,17 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	
 	//create the body
 	NSMutableData *postBody = [NSMutableData data];
+						
+	
+	
 	[postBody appendData:[[NSString stringWithFormat:@"?device_uuid=%@&app_version=%@&language=%@&os_version=%@&num_blogs=%@", 
 										deviceuuid,
 										 appversion,
 											language,
 										  osversion,
 										   numblogs] dataUsingEncoding:NSUTF8StringEncoding]];
+	NSString *htmlStr = [[[NSString alloc] initWithData:postBody encoding:NSUTF8StringEncoding] autorelease];
+	NSLog(@"htmlStr %@", htmlStr);
 	[theRequest setHTTPBody:postBody];
 		
 	NSURLConnection *conn=[[[NSURLConnection alloc] initWithRequest:theRequest delegate:self]autorelease];
@@ -426,7 +431,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 //	[activityIndicator stopAnimating];
 }
 
-//START:code.SimpleTwitterClientViewController.connectiondidfinishloading
+
 - (void) connectionDidFinishLoading: (NSURLConnection*) connection {
 	NSLog(@"connectionDidFinishLoading");
 	//process statsData here or call a helper method to do so.

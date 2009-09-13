@@ -17,6 +17,7 @@
 	IBOutlet UITableViewCell *xmlrpcURLTableViewCell;
 	IBOutlet UITextField *xmlrpcURLTextField;
 	IBOutlet UILabel *xmlrpcURLLabel;
+	BOOL didUserEnterURL;
 	
 	
 	

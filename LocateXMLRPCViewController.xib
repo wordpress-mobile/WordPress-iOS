@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.03">
 	<data>
 		<int key="IBDocument.SystemTarget">768</int>
-		<string key="IBDocument.SystemVersion">9J61</string>
+		<string key="IBDocument.SystemVersion">9L31a</string>
 		<string key="IBDocument.InterfaceBuilderVersion">677</string>
-		<string key="IBDocument.AppKitVersion">949.46</string>
+		<string key="IBDocument.AppKitVersion">949.54</string>
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -79,8 +79,9 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string type="base64-UTF8" key="IBUIText">VGhlIFdvcmRQcmVzcyBhcHAgd2FzIHVuYWJsZSB0byBmaW5kIHlvdXIgWE1MLVJQQyBlbmRwb2ludC4K
 CuKAqFBsZWFzZSBlbnRlciB5b3VyIFhNTC1SUEMgZW5kcG9pbnQgVVJMIGluIHRoZSBmaWVsZCBhYm92
-ZS4gIAoK4oCoS2VlcCBpbiBtaW5kIHRoYXQgc29tZSBob3N0cyByZXF1aXJlIGEgY2hhbmdlIHRvIHRo
-ZSBuYW1lIG9mIHRoZSB4bWxycGMgZmlsZS4K4oCo4oCoRm9yIGV4YW1wbGU6Cgo</string>
+ZS4gIAoK4oCoS2VlcCBpbiBtaW5kIHRoYXQgc29tZSBob3N0cyByZXF1aXJlIGEgY2hhbmdlIHRvIGh0
+dHBzIGFuZC9vciBhIGNoYW5nZSB0byB0aGUgbmFtZSBvZiB0aGUgeG1scnBjIGZpbGUuCuKAqOKAqEZv
+ciBleGFtcGxlOgoKA</string>
 						<object class="NSFont" key="IBUIFont">
 							<string key="NSName">Helvetica</string>
 							<double key="NSSize">1.800000e+01</double>
@@ -153,7 +154,7 @@ ZSBuYW1lIG9mIHRoZSB4bWxycGMgZmlsZS4K4oCo4oCoRm9yIGV4YW1wbGU6Cgo</string>
 							<object class="IBUITextField" id="89567230">
 								<reference key="NSNextResponder" ref="272275514"/>
 								<int key="NSvFlags">290</int>
-								<string key="NSFrame">{{45, 8}, {253, 31}}</string>
+								<string key="NSFrame">{{45, 8}, {240, 31}}</string>
 								<reference key="NSSuperview" ref="272275514"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -222,6 +223,7 @@ ZSBuYW1lIG9mIHRoZSB4bWxycGMgZmlsZS4K4oCo4oCoRm9yIGV4YW1wbGU6Cgo</string>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 				<int key="IBUISelectionStyle">0</int>
 				<reference key="IBUIContentView" ref="272275514"/>
+				<int key="IBUILineBreakMode">1</int>
 			</object>
 		</object>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
