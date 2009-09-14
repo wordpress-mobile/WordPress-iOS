@@ -1148,12 +1148,13 @@ editBlogViewController;
         [rsdError release];
         return NO;
     }
-    
-    //This line is for testing the "new" UI to get XMLRPC endpoint directly from user without needing to create a "broken" blog for testing
-    //comment out the line for normal running of the application, uncomment the line for testing.
-	//the line just below: [self tryDefaultXMLRPCEndpoint:url]; will also need to be commented out (or not) depending on testing scenario...
-    //Unique search string: ^^XMLRPC Endpoint
+	
+     //Unique search string: ^^XMLRPC Endpoint
+    //This line is for testing to getting the XMLRPC endpoint directly from user without needing to create a "broken" blog for testing
+    //comment out the next line for normal running of the application, uncomment the line for testing.
     //xmlrpc = nil;
+	
+	//the line just below: [self tryDefaultXMLRPCEndpoint:url]; will also need to be commented out (or not) depending on testing scenario...
 
 
     if (!xmlrpc) {//if xmlrpc is nill

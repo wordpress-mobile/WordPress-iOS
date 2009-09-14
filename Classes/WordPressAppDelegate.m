@@ -369,22 +369,18 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	[statsData release];
 	statsData = [[NSMutableData alloc] init];
 	
-	//build HTML Post
-	// #import for NSString+Helpers.h at the top
-	
 	NSMutableURLRequest *theRequest=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://api.wordpress.org/iphoneapp/update-check/1.0/"]
 															cachePolicy:NSURLRequestUseProtocolCachePolicy
 														timeoutInterval:30.0];
 	
 	[theRequest setHTTPMethod:@"POST"];
 	[theRequest addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField: @"Content-Type"];
-	
 	//create the body
 	NSMutableData *postBody = [NSMutableData data];
 						
 	
 	
-	[postBody appendData:[[NSString stringWithFormat:@"?device_uuid=%@&app_version=%@&language=%@&os_version=%@&num_blogs=%@", 
+	[postBody appendData:[[NSString stringWithFormat:@"device_uuid=%@&app_version=%@&language=%@&os_version=%@&num_blogs=%@", 
 										deviceuuid,
 										 appversion,
 											language,
@@ -397,25 +393,21 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	NSURLConnection *conn=[[[NSURLConnection alloc] initWithRequest:theRequest delegate:self]autorelease];
 	if (conn)   
 	{  
-		//receivedData = [[NSMutableData data] retain];  
-		NSLog(@"inside 'if conn' so connection should exist and inside else should not print to log");
+		//NSLog(@"inside 'if conn' so connection should exist and inside else should not print to log");
 	}   
 	else   
 	{  
-		// inform the user that the download could not be made
-		NSLog(@"inside else - implies the 'download' could not be made");
+		//NSLog(@"inside else - implies the 'download' could not be made");
 	}  	
 
 }
 
 #pragma mark NSURLConnection callbacks
 
-//START:code.SimpleTwitterClientViewController.connectiondidreceivedata
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
 	[statsData appendData: data];
 	NSLog(@"did recieve data");
 }
-//END:code.SimpleTwitterClientViewController.connectiondidreceivedata
 
 -(void) connection:(NSURLConnection *)connection
   didFailWithError: (NSError *)error {
@@ -428,7 +420,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 							   otherButtonTitles:nil];
 	[errorAlert show];
 	[errorAlert release];
-//	[activityIndicator stopAnimating];
 }
 
 
@@ -443,73 +434,36 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	//need to break this up based on the \n
 
 	[statsDataString release];
-//	[activityIndicator stopAnimating];
-//	[self startParsingTweets];
+
 }
-//END:code.SimpleTwitterClientViewController.connectiondidfinishloading
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
 	NSLog (@"connectionDidReceiveResponse %@", response);
 }
 
 
-//START:code.SimpleCocoaURLReader.didreceiveauthenticationchallenge
+
 - (void)connection:(NSURLConnection *)connection
 didReceiveAuthenticationChallenge:
 (NSURLAuthenticationChallenge *)challenge {
-//	if ([challenge previousFailureCount] != 0) { //<label id="code.SimpleCocoaURLReader.didreceiveauthenticationchallenge.ifcountnotzero"/>
-//		// if pervious failure count > 0, then user/pass was rejected
-//		NSString *alertMessage = @"Invalid username or password"; //<label id="code.SimpleCocoaURLReader.didreceiveauthenticationchallenge.passwordrejectalertstart"/>
-//		UIAlertView *authenticationAlert =
-//		[[UIAlertView alloc] initWithTitle:@"Authentication failed"
-//								   message:alertMessage
-//								  delegate:nil
-//						 cancelButtonTitle:@"OK"
-//						 otherButtonTitles:nil];
-//		[authenticationAlert show];
-//		[authenticationAlert release];
-//		[alertMessage release]; //<label id="code.SimpleCocoaURLReader.didreceiveauthenticationchallenge.passwordrejectalertend"/>
-//		[activityIndicator stopAnimating];
-//	} else {
-//		// show and block for authentication challenge
-//		AuthenticationChallengeViewController *challengeController = //<label id="code.SimpleCocoaURLReader.didreceiveauthenticationchallenge.showauthenticationchallengestart"/>
-//		[[AuthenticationChallengeViewController alloc]
-//		 initWithNibName:@"AuthenticationChallengeView"
-//		 bundle:[NSBundle mainBundle]
-//		 loader: self
-//		 challenge: challenge];
-//		[self presentModalViewController:challengeController
-//								animated:YES]; //<label id="code.SimpleCocoaURLReader.didreceiveauthenticationchallenge.showauthenticationchallengeend"/>
-//		[challengeController release];
-//	}
+
 }
-//END:code.SimpleTwitterClientViewController.didreceiveauthenticationchallenge
 
 
 
-//START:code.SimpleCocoaURLReader.handleauthenticationokforchallenge
+
+
 - (void) handleAuthenticationOKForChallenge:
 (NSURLAuthenticationChallenge *) aChallenge
 								   withUser: (NSString*) username
 								   password: (NSString*) password {
-//	// try to reply to challenge
-//	NSURLCredential *credential = [[NSURLCredential alloc]
-//								   initWithUser:username
-//								   password:password
-//								   persistence:NSURLCredentialPersistenceForSession];
-//	//persistence:NSURLCredentialPersistencePermanent];
-//	[[aChallenge sender] useCredential:credential
-//			forAuthenticationChallenge:aChallenge];
-//	[credential release];
-//	[self dismissModalViewControllerAnimated:YES];
+
 }
-//END:code.SimpleCocoaURLReader.handleauthenticationokforchallenge
+
 
 
 - (void) handleAuthenticationCancelForChallenge: (NSURLAuthenticationChallenge *) aChallenge {
-//	[[aChallenge sender] cancelAuthenticationChallenge: aChallenge];
-//	[self dismissModalViewControllerAnimated:YES];
-//	[activityIndicator stopAnimating];
+
 }
 
 
