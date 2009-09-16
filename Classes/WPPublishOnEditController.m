@@ -18,9 +18,7 @@
     }
 
     BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-    NSDate *today = [NSDate date];
     datePicker.date = [[dataManager currentPost] valueForKey:@"date_created_gmt"];
-    datePicker.minimumDate = today;
     dateLabel.text = [dateFormatter stringFromDate:[[dataManager currentPost] valueForKey:@"date_created_gmt"]];
 }
 
