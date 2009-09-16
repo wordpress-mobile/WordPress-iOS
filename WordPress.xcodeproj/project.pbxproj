@@ -51,7 +51,6 @@
 		2FAE970A0E33B21600CA8540 /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97050E33B21600CA8540 /* license.txt */; };
 		2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */; };
 		2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */; };
-		6E27AB861058854D00837F74 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E27AB851058854D00837F74 /* Entitlements.plist */; };
 		6EC5B7F50F6747F5002609EE /* backNavd.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EC5B7F40F6747F5002609EE /* backNavd.png */; };
 		6EDC0E8F105881A800F68A1D /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 6EDC0E8E105881A800F68A1D /* iTunesArtwork */; };
 		702CA0680F36FF0D00018B88 /* WPLabelFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 702CA0670F36FF0D00018B88 /* WPLabelFooterView.m */; };
@@ -203,7 +202,6 @@
 		2FAE97050E33B21600CA8540 /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.txt; sourceTree = "<group>"; };
 		2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xhtml1-transitional.dtd"; sourceTree = "<group>"; };
 		2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = xhtmlValidatorTemplate.xhtml; sourceTree = "<group>"; };
-		6E27AB851058854D00837F74 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		6EC5B7F40F6747F5002609EE /* backNavd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backNavd.png; sourceTree = "<group>"; };
 		6EDC0E8E105881A800F68A1D /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		702CA0660F36FF0D00018B88 /* WPLabelFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLabelFooterView.h; sourceTree = "<group>"; };
@@ -437,7 +435,6 @@
 				28AD735F0D9D9599002E5188 /* MainWindow.xib */,
 				A0F128B90E1F82A400867E18 /* AboutWordpress.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
-				6E27AB851058854D00837F74 /* Entitlements.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -830,7 +827,6 @@
 				CE31B4301022644F00BC060C /* pages.png in Resources */,
 				CE31B4311022644F00BC060C /* posts.png in Resources */,
 				6EDC0E8F105881A800F68A1D /* iTunesArtwork in Resources */,
-				6E27AB861058854D00837F74 /* Entitlements.plist in Resources */,
 				29B666331061315800CABB70 /* MainBackground.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -943,16 +939,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Automattic, Inc.";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_LDFLAGS = "-licucore";
 				PREBINDING = NO;
-				PROVISIONING_PROFILE = "9FCA74C4-092F-4B6E-AC7D-31FBB609DD58";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9FCA74C4-092F-4B6E-AC7D-31FBB609DD58";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos3.0;
 			};
 			name = Distribution;
@@ -974,9 +969,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Automattic, Inc.";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -984,8 +978,8 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-licucore";
 				PREBINDING = NO;
-				PROVISIONING_PROFILE = "9FCA74C4-092F-4B6E-AC7D-31FBB609DD58";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9FCA74C4-092F-4B6E-AC7D-31FBB609DD58";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos3.0;
 			};
 			name = Debug;
@@ -994,16 +988,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Automattic, Inc.";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_LDFLAGS = "-licucore";
 				PREBINDING = NO;
-				PROVISIONING_PROFILE = "9FCA74C4-092F-4B6E-AC7D-31FBB609DD58";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9FCA74C4-092F-4B6E-AC7D-31FBB609DD58";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos3.0;
 			};
 			name = Release;
