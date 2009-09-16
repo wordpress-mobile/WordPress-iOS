@@ -32,7 +32,6 @@
 @synthesize customFieldsDetailController;
 @synthesize commentsViewController;
 @synthesize selectedViewController;
-@synthesize tabController;//tabBar
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
     [selectedViewController viewWillDisappear:NO];

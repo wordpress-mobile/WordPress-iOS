@@ -66,6 +66,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
     [self loadPosts];
     [self scrollToFirstCell];
     [self refreshHandler];
@@ -74,13 +75,8 @@
         [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
         [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
     }
-    
-    [super viewWillAppear:animated];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    [self handleAutoSavedContext:0];
+	
+	[self handleAutoSavedContext:0];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -322,10 +318,10 @@
     [[BlogDataManager sharedDataManager] removeAutoSavedCurrentPostFile];
     self.navigationItem.rightBarButtonItem = nil;
     self.postDetailViewController.mode = autorecoverPost;
-    [[self navigationController] pushViewController:self.postDetailViewController animated:YES];
-
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    [delegate setAlertRunning:NO];
+	
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate setAlertRunning:NO];
+	[delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
 }
 
 @end
