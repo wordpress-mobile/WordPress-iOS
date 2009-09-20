@@ -122,7 +122,7 @@ NSString *XMLRPCReceivedResponseNotification = @"XML-RPC Successfully Received R
 			
 					NSInteger code = -1; //This is not significant, just a number with no meaning
 					NSDictionary *usrInfo = [NSDictionary dictionaryWithObject:errorString forKey:NSLocalizedDescriptionKey];
-					err = [NSError errorWithDomain:@"com.effigent.iphone.wordpress" code:code userInfo:usrInfo];
+					err = [NSError errorWithDomain:@"org.wordpress.iphone" code:code userInfo:usrInfo];
 					return (id) err;
 			}
 	     }

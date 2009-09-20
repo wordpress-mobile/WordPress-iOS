@@ -11,7 +11,7 @@
 	<key>CFBundleIconFile</key>
 	<string>application-icon.png</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.effigent.iphone.wordpress</string>
+	<string>org.wordpress.iphone</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>

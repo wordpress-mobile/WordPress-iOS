@@ -200,7 +200,7 @@ editBlogViewController;
 
 - (NSError *)defaultError {
     NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Failed to request the server.", NSLocalizedDescriptionKey, nil];
-    return [NSError errorWithDomain:@"com.effigent.iphone.wordpress" code:-1 userInfo:usrInfo];
+    return [NSError errorWithDomain:@"org.wordpress.iphone" code:-1 userInfo:usrInfo];
 }
 
 - (BOOL)handleError:(NSError *)err {
