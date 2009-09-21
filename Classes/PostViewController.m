@@ -97,7 +97,7 @@
     NSLog(@"Inside Save Action");
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 
-    if (![[dm.currentPost valueForKey:@"post_status"] isEqualToString:@"Local Draft"]) {
+     if (![[dm.currentPost valueForKey:@"post_status"] isEqualToString:@"Local Draft"]) {
         if ([[Reachability sharedReachability] internetConnectionStatus] == NotReachable) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Communication Error."
                                   message:@"no internet connection."

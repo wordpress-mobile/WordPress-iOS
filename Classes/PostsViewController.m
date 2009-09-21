@@ -76,6 +76,7 @@
         [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
     }
 	
+	NSLog(@"inside PostsViewController.m viewWillAppear");
 	[self handleAutoSavedContext:0];
 }
 
@@ -254,6 +255,7 @@
 }
 
 - (BOOL)handleAutoSavedContext:(NSInteger)tag {
+	NSLog(@"inside handleAutoSavedContext");
     if ([[BlogDataManager sharedDataManager] makeAutoSavedPostCurrentForCurrentBlog]) {
         NSString *title = [[BlogDataManager sharedDataManager].currentPost valueForKey:@"title"];
         title = (title == nil ? @"" : title);

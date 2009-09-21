@@ -742,6 +742,7 @@ editBlogViewController;
 }
 
 - (BOOL)clearAutoSavedContext {
+	NSLog(@"inside clearAutoSavedContext");
     id aPost = [self autoSavedPostForCurrentBlog];
     [self deleteAllPhotosForPost:aPost forBlog:currentBlog];
 
@@ -754,6 +755,7 @@ editBlogViewController;
 }
 
 - (BOOL)removeAutoSavedCurrentPostFile {
+	NSLog(@"about to remove autosaved file BDM, removeAutoSavedCurrentPostFile");
     NSString *fp = [self autoSavePathForTheCurrentBlog];
 
     if (fp)
@@ -1241,6 +1243,7 @@ editBlogViewController;
     // If the returned object is a NSArray, the, the object at index 0 will be the dictionary with blog info fields
 
     NSArray *usersBlogsResponseArray = [self executeXMLRPCRequest:reqUsersBlogs byHandlingError:YES];
+	[self printArrayToLog:usersBlogsResponseArray andArrayName:@"this is usersBlogsResponseArray from -refreshCurrentUser in BlogDataManager"];
     [reqUsersBlogs release];
 
     if (![usersBlogsResponseArray isKindOfClass:[NSArray class]])
@@ -3199,6 +3202,7 @@ editBlogViewController;
 
 - (BOOL)makeAutoSavedPostCurrentForCurrentBlog {
     NSMutableDictionary *post = [self autoSavedPostForCurrentBlog];
+	[self printDictToLog:post andDictName:@"the result of makeAutoSavedPostForCurrentBlog"];
 
     if (!post ||[post count] == 0)
         return NO;
@@ -3530,6 +3534,7 @@ editBlogViewController;
         [postParams setObject:[[aPost valueForKey:@"not_used_allow_pings"] stringValue] forKey:@"not_used_allow_pings"];
         [postParams setObject:[aPost valueForKey:@"wp_password"] forKey:@"wp_password"];
         NSString *draftId = [aPost valueForKey:@"draftid"];
+		NSLog(@"draft id %@", draftId);
         NSDictionary *draftPost = [self currentPost];
         NSArray *args = [NSArray arrayWithObjects:[currentBlog valueForKey:kBlogId],
                          [currentBlog valueForKey:@"username"],
@@ -3545,6 +3550,38 @@ editBlogViewController;
 
         id response = [self executeXMLRPCRequest:request byHandlingError:YES];
         [request release];
+		//begin JohnB's new code for ticket #152
+		//TODO: SUNIL here is where I catch the error if the network has gone away during the save and the XMLRPC request failed...
+		[self printDictToLog:postParams andDictName:@"postParams"];
+		//if network fails or the XMLRPCRequest fails for any reason
+		if ([response isKindOfClass:[NSError class]]) {
+			[self printArrayToLog:response andArrayName:@"the response, should be error if printed to log"];
+			successFlag = NO;
+			//TODO: Check if the blog title already exists
+			//[aPost setObject:@"Local Draft" forKey:@"post_status"];
+			[self saveCurrentPostAsDraftWithAsyncPostFlag];
+
+			
+			//[self autoSaveCurrentPost];
+			//[self saveCurrentPostAsDraft];
+			NSString *titleStr = [NSString stringWithFormat:@"There was a network error saving your post. Post was saved as Local Draft to preserve your work", title];
+			UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"Error Saving Post"
+															 message:titleStr
+															delegate:self
+												   cancelButtonTitle:nil
+												   otherButtonTitles:@"OK", nil];
+			
+			//alert1.tag = tag;
+			
+			[alert1 show];
+			//WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+			//[delegate setAlertRunning:YES];
+			
+			[alert1 release];
+			
+			return successFlag;
+		}
+		//end JohnB's new code for ticket #152
 
         //if it is a draft and we successfully published then remove from drafts.
         if (![response isKindOfClass:[NSError class]]) {
