@@ -435,7 +435,10 @@
     }
 
     [leftView setTarget:self withAction:@selector(cancelView:)];
-    self.navigationItem.title = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"title"];
+	
+	if (![[[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"title"] isEqualToString:@""]) {
+		self.navigationItem.title = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"title"];
+	}
 
     if (hasChanges == YES) {
         if ([[leftView title] isEqualToString:@"Posts"]) {
