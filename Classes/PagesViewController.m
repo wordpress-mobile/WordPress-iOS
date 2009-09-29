@@ -65,7 +65,6 @@
 
     [self addRefreshButton];
     [self setPageDetailsController];
-    [self refreshHandler];
 
     newButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
                      target:self
@@ -73,6 +72,14 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:@"refreshPagesRequired"]) {
+		[self refreshHandler];
+		[defaults setBool:false forKey:@"refreshPagesRequired"];
+	}
+	
     [self loadPages];
     [self scrollToFirstCell];
     
@@ -80,8 +87,6 @@
         [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
         [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
     }
-
-    [super viewWillAppear:animated];
 }
 
 #pragma mark -

@@ -69,8 +69,13 @@
 	[super viewWillAppear:animated];
     [self loadPosts];
     [self scrollToFirstCell];
-    [self refreshHandler];
-
+    
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:@"refreshPostsRequired"]) {
+		[self refreshHandler];
+		[defaults setBool:false forKey:@"refreshPostsRequired"];
+	}
+	
     if ([self.tableView indexPathForSelectedRow]) {
         [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
         [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];

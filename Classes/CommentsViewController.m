@@ -90,15 +90,12 @@
 	[segmentedControl addTarget:self action:@selector(reloadTableView) forControlEvents:UIControlEventValueChanged];
 }
 
-- (void)viewWillAppear:(BOOL)animated {  
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
     [self setEditing:NO];
     
     BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
     [sharedDataManager loadCommentTitlesForCurrentBlog];
-    
-    [self refreshCommentsList];
-    [self scrollToFirstCell];
-    [self refreshHandler];
     
     [editToolbar setHidden:YES];
     self.navigationItem.rightBarButtonItem = editButtonItem;
@@ -108,7 +105,14 @@
         [commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:animated];
     }
     
-    [super viewWillAppear:animated];
+	[self refreshCommentsList];
+    [self scrollToFirstCell];
+	
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:@"refreshCommentsRequired"]) {
+		[self refreshHandler];
+		[defaults setBool:false forKey:@"refreshCommentsRequired"];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -187,6 +191,7 @@
 
 - (void)refreshHandler {
     [refreshButton startAnimating];
+	[self setEditing:false];
     [self performSelectorInBackground:@selector(syncComments) withObject:nil];
 }
 
@@ -214,7 +219,6 @@
 }
 
 - (void)refreshCommentsList {
-
     if (!selectedComments) {
         selectedComments = [[NSMutableArray alloc] init];
     } else {
