@@ -61,6 +61,7 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	[[WordPressAppDelegate sharedWordPressApp] resetCurrentBlogInUserDefaults];
+	[[WordPressAppDelegate sharedWordPressApp] setAutoRefreshMarkers];
 }
 
 #pragma mark -
@@ -211,6 +212,9 @@
     }
 }
 
+#pragma mark -
+#pragma mark Private
+
 - (BOOL)canChangeCurrentBlog {
 	if ([UIApplication sharedApplication].networkActivityIndicatorVisible) {
 		UIAlertView *currentlyUpdatingAlert = [[UIAlertView alloc] initWithTitle:@"Currently Syncing" message:@"Please wait a few seconds and try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -220,4 +224,5 @@
 	}
 	return YES;
 }
+
 @end

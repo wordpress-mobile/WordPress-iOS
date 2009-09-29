@@ -18,7 +18,6 @@
 - (void) passwordIntoKeychain;
 - (void) checkIfStatsShouldRun;
 - (void) runStats;
-- (void)setAutoRefreshMarkers;
 @end
 
 @implementation WordPressAppDelegate
@@ -109,9 +108,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
     [self showAlertWithTitle:@"Error" message:message];
 }
 
-#pragma mark -
-#pragma mark Private Methods
-
 - (void)setAutoRefreshMarkers {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
@@ -119,6 +115,9 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	[defaults setBool:true forKey:@"refreshPostsRequired"];
 	[defaults setBool:true forKey:@"refreshPagesRequired"];
 }
+
+#pragma mark -
+#pragma mark Private Methods
 
 - (void)reachabilityChanged {
     connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);

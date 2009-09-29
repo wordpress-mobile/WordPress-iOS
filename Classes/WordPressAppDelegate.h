@@ -27,5 +27,5 @@
 - (void)storeCurrentBlog;
 - (void)resetCurrentBlogInUserDefaults;
 - (BOOL)shouldLoadBlogFromUserDefaults;
-
+- (void)setAutoRefreshMarkers;
 @end
