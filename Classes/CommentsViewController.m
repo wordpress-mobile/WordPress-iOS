@@ -170,7 +170,14 @@
 }
 
 - (void)editComments {
-    [self setEditing:!editing];
+	if ([UIApplication sharedApplication].networkActivityIndicatorVisible) {
+		UIAlertView *currentlyUpdatingAlert = [[UIAlertView alloc] initWithTitle:@"Currently Syncing" message:@"The edit feature is disabled while syncing. Please try again in a few seconds." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[currentlyUpdatingAlert show];
+		[currentlyUpdatingAlert release];
+	}
+	else {
+		[self setEditing:!editing];
+	}
 }
 
 #pragma mark -
