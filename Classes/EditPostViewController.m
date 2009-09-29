@@ -64,6 +64,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     NSLog(@"inside PostDetailEditController:viewWillAppear, just called [super viewWillAppear:YES]");
+//	NSLog(@"inside PostDetailEditController:viewWillAppear, hasChanges equals:: %@", self.postDetailViewController.hasChanges);
+//	NSLog(@"BOOL = %d", (int)self.postDetailViewController.hasChanges);
+	NSLog(@"hasChanges = %@\n", (self.postDetailViewController.hasChanges ? @"YES" : @"NO")); 
     isCustomFieldsEnabledForThisPost = [self checkCustomFieldsMinusMetadata];
     
     if (isCustomFieldsEnabledForThisPost) {
@@ -295,12 +298,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
         subView.frame = frame;
     } else {
         CGRect frame = textViewContentView.frame;
-        frame.origin.y -= 175.0f;
+        frame.origin.y -= 170.0f;
         textViewContentView.frame = frame;
 
         frame = subView.frame;
-        //frame.origin.y -= 80.0f;
-        frame.origin.y -= 175.0f;
+        frame.origin.y -= 170.0f;
+        //frame.origin.y -= 175.0f;
         subView.frame = frame;
     }
 
@@ -323,7 +326,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         subView.frame = frame;
     } else {
         CGRect frame = textViewContentView.frame;
-        frame.origin.y += 175.0f;
+        frame.origin.y += 170.0f;
         textViewContentView.frame = frame;
 
         frame = subView.frame;
