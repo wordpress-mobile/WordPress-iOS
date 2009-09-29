@@ -22,7 +22,8 @@
 - (void)discard;
 - (void)cancel;
 - (void)conditionalLoadOfTabBarController;//to solve issue with crash when selecting comments tab from "new" (newPost) post editing view
-
+- (void)savePostWithBlog:(NSMutableArray *)arrayPost;
+- (void)removeProgressIndicator;
 @end
 
 @implementation PostViewController
@@ -190,8 +191,20 @@
 
         if (isCurrentPostDraft)
             [dm saveCurrentPostAsDraftWithAsyncPostFlag];
+			
+		NSString *postId = [dm savePostsFileWithAsynPostFlag:[params objectAtIndex:0]];
+		NSMutableArray *argsArray = [NSMutableArray arrayWithArray:params];
+		int count = [argsArray count];
+		[argsArray insertObject:postId atIndex:count];
 
-        [self addAsyncPostOperation:@selector(savePostWithBlog:) withArg:params];
+		[self savePostWithBlog:argsArray];
+		
+		hasChanges = NO;
+		[dm removeAutoSavedCurrentPostFile];
+
+		[self removeProgressIndicator];
+		
+		[self.navigationController popViewControllerAnimated:YES];
     }
 }
 
@@ -302,30 +315,6 @@
 
     if ([[leftView title] isEqualToString:@"Posts"])
         [leftView setTitle:@"Cancel"];
-}
-
-- (void)addAsyncPostOperation:(SEL)anOperation withArg:(id)anArg {
-    if (![self respondsToSelector:anOperation]) {
-        return;
-    }
-
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
-    NSString *postId = [dm savePostsFileWithAsynPostFlag:[anArg objectAtIndex:0]];
-    NSMutableArray *argsArray = [NSMutableArray arrayWithArray:anArg];
-    int count = [argsArray count];
-    [argsArray insertObject:postId atIndex:count];
-    NSInvocationOperation *op = [[NSInvocationOperation alloc] initWithTarget:self selector:anOperation object:argsArray];
-    NSOperationQueue *asyncOperationsQueue = [dm asyncPostsOperationsQueue];
-    [asyncOperationsQueue addOperation:op];
-    [op release];
-
-    hasChanges = NO;
-    [dm removeAutoSavedCurrentPostFile];
-
-    [NSThread sleepForTimeInterval:3];
-    [self removeProgressIndicator];
-
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)savePostWithBlog:(NSMutableArray *)arrayPost {

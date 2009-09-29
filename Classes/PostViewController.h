@@ -62,5 +62,4 @@
 - (void)refreshUIForCompose;
 - (void)refreshUIForCurrentPost;
 - (void)updatePhotosBadge;
-- (void)addAsyncPostOperation:(SEL)anOperation withArg:(id)anArg;
 @end
