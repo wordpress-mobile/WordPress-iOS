@@ -18,7 +18,7 @@
 - (void)showBlogWithoutAnimation;
 - (void)edit:(id)sender;
 - (void)cancel:(id)sender;
-
+- (BOOL)canChangeCurrentBlog;
 @end
 
 @implementation BlogsViewController
@@ -67,12 +67,14 @@
 #pragma mark Editing life cycle methods
 
 - (void)edit:(id)sender {
-    UIBarButtonItem *cancelButton = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
-                                      style:UIBarButtonItemStyleDone
-                                      target:self
-                                      action:@selector(cancel:)] autorelease];
-    [self.navigationItem setLeftBarButtonItem:cancelButton animated:YES];
-    [self.tableView setEditing:YES animated:YES];
+	if ([self canChangeCurrentBlog]) {
+		UIBarButtonItem *cancelButton = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+																		  style:UIBarButtonItemStyleDone
+																		 target:self
+																		 action:@selector(cancel:)] autorelease];
+		[self.navigationItem setLeftBarButtonItem:cancelButton animated:YES];
+		[self.tableView setEditing:YES animated:YES];
+	}
 }
 
 - (void)cancel:(id)sender {
@@ -99,8 +101,10 @@
 }
 
 - (void)showBlogDetailModalViewForNewBlogWithAnimation:(BOOL)animate {
-    [[BlogDataManager sharedDataManager] makeNewBlogCurrent];
-    [self showBlogDetailModalViewWithAnimation:animate];
+	if ([self canChangeCurrentBlog]) {
+		[[BlogDataManager sharedDataManager] makeNewBlogCurrent];
+		[self showBlogDetailModalViewWithAnimation:animate];
+	}
 }
 
 - (void)showBlogDetailModalViewWithAnimation:(BOOL)animate {
@@ -183,14 +187,19 @@
         if ([[[dataManager blogAtIndex:indexPath.row] valueForKey:@"kIsSyncProcessRunning"] intValue] == 1) {
             [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
         } else {
-            [dataManager makeBlogAtIndexCurrent:(indexPath.row)];
-            [self showBlog:YES];
+			if ([self canChangeCurrentBlog]) {
+				[dataManager makeBlogAtIndexCurrent:(indexPath.row)];
+				[self showBlog:YES];
+			}
+			else {
+				[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
+			}
         }
     }
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
+    if (editingStyle == UITableViewCellEditingStyleDelete && [self canChangeCurrentBlog]) {
         [[BlogDataManager sharedDataManager] makeBlogAtIndexCurrent:indexPath.row];
         [[BlogDataManager sharedDataManager] removeCurrentBlog];
 
@@ -202,4 +211,13 @@
     }
 }
 
+- (BOOL)canChangeCurrentBlog {
+	if ([UIApplication sharedApplication].networkActivityIndicatorVisible) {
+		UIAlertView *currentlyUpdatingAlert = [[UIAlertView alloc] initWithTitle:@"Currently Syncing" message:@"Please wait a few seconds and try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[currentlyUpdatingAlert show];
+		[currentlyUpdatingAlert release];
+		return NO;
+	}
+	return YES;
+}
 @end
