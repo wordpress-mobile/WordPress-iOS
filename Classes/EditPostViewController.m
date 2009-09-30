@@ -288,7 +288,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:kAnimationDuration];
 
-    if (isCustomFieldsEnabledForThisPost) {
+/*   This is for custom fields - IF we keep current UI... out for now until 1.5
+	if (isCustomFieldsEnabledForThisPost) {
         CGRect frame = textViewContentView.frame;
         frame.origin.y -= 220.0f; //was 164, 214 is new value to accomodate custom fields "cell + other objects" in IB
         textViewContentView.frame = frame;
@@ -297,6 +298,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         frame.origin.y -= 220.0f; //was 164
         subView.frame = frame;
     } else {
+ */
         CGRect frame = textViewContentView.frame;
         frame.origin.y -= 170.0f;
         textViewContentView.frame = frame;
@@ -305,7 +307,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
         frame.origin.y -= 170.0f;
         //frame.origin.y -= 175.0f;
         subView.frame = frame;
-    }
+	
+   // remove "//" for custom fields }
 
     [UIView commitAnimations];
     //[self.view setNeedsDisplay];
@@ -316,6 +319,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [UIView setAnimationDuration:0.2];
     subView.hidden = NO;
 
+/*   This is for custom fields - IF we keep current UI... out for now until 1.5
     if (isCustomFieldsEnabledForThisPost) {
         CGRect frame = textViewContentView.frame;
         frame.origin.y += 220.0f; //was 164
@@ -325,6 +329,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         frame.origin.y += 220.0f; //was 164
         subView.frame = frame;
     } else {
+ */
         CGRect frame = textViewContentView.frame;
         frame.origin.y += 170.0f;
         textViewContentView.frame = frame;
@@ -332,7 +337,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
         frame = subView.frame;
         frame.origin.y = 0.0f;
         subView.frame = frame;
-    }
+	
+     // remove "//" for custom fields }
 
     [UIView commitAnimations];
 }
