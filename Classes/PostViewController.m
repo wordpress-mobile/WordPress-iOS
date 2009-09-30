@@ -200,7 +200,7 @@
 		[self savePostWithBlog:argsArray];
 		
 		hasChanges = NO;
-		[dm removeAutoSavedCurrentPostFile];
+//		[dm removeAutoSavedCurrentPostFile];
 
 		[self removeProgressIndicator];
 		
@@ -327,6 +327,7 @@
     [self stopTimer];
 
     if (savePostStatus) {
+		[dm removeAutoSavedCurrentPostFile];
         [dict setValue:postId forKey:@"savedPostId"];
         [dict setValue:[[dm currentPost] valueForKey:@"postid"] forKey:@"originalPostId"];
         [dict setValue:[NSNumber numberWithInt:isCurrentPostDraft] forKey:@"isCurrentPostDraft"];

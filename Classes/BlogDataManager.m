@@ -3343,6 +3343,11 @@ editBlogViewController;
     [request setMethod:@"metaWeblog.getPost" withObjects:args];
 
     id post = [self executeXMLRPCRequest:request byHandlingError:YES];
+
+	if ([post isKindOfClass:[NSError class]]) {
+        return nil;
+    }
+	
     NSDate *postGMTDate = [post valueForKey:@"date_created_gmt"];
     NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:postGMTDate];
     NSDate *currentDate = [postGMTDate addTimeInterval:(secs * +1)];
@@ -3350,9 +3355,6 @@ editBlogViewController;
     [post setValue:[NSString stringWithFormat:@"%@", [post valueForKey:@"postid"]]  forKey:@"postid"];
     [request release];
 
-    if ([post isKindOfClass:[NSError class]]) {
-        return nil;
-    }
 
     [post setValue:[aBlog valueForKey:kBlogId] forKey:kBlogId];
     [post setValue:[aBlog valueForKey:kBlogHostName] forKey:kBlogHostName];
@@ -3559,25 +3561,25 @@ editBlogViewController;
 			successFlag = NO;
 			//TODO: Check if the blog title already exists
 			//[aPost setObject:@"Local Draft" forKey:@"post_status"];
-			[self saveCurrentPostAsDraftWithAsyncPostFlag];
+//			[self saveCurrentPostAsDraftWithAsyncPostFlag];
 
 			
 			//[self autoSaveCurrentPost];
 			//[self saveCurrentPostAsDraft];
-			NSString *titleStr = [NSString stringWithFormat:@"There was a network error saving your post. Post was saved as Local Draft to preserve your work", title];
-			UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"Error Saving Post"
-															 message:titleStr
-															delegate:self
-												   cancelButtonTitle:nil
-												   otherButtonTitles:@"OK", nil];
+//			NSString *titleStr = [NSString stringWithFormat:@"There was a network error saving your post. Post was saved as Local Draft to preserve your work", title];
+//			UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"Error Saving Post"
+//															 message:titleStr
+//															delegate:self
+//												   cancelButtonTitle:nil
+//												   otherButtonTitles:@"OK", nil];
 			
 			//alert1.tag = tag;
 			
-			[alert1 show];
+//			[alert1 show];
 			//WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 			//[delegate setAlertRunning:YES];
 			
-			[alert1 release];
+//			[alert1 release];
 			
 			return successFlag;
 		}
