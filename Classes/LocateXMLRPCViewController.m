@@ -3,7 +3,7 @@
 //  WordPress
 //
 //  Created by John Bickerstaff on 7/11/09.
-//  Copyright 2009 Smilodon Software. All rights reserved.
+// 
 //
 
 #import "LocateXMLRPCViewController.h"
@@ -96,7 +96,6 @@
 		//continue
 		[self saveUserEnteredXMLRPCEndpointToCurrentBlog:xmlrpcURLTextField];
 		[self.navigationController dismissModalViewControllerAnimated:YES]; 
-		//possibly run EditBlogViewController:-saveBlog again?  but I'm in the middle of it so what will that do?
     }
 	
 	
@@ -117,7 +116,6 @@
 - (void) saveUserEnteredXMLRPCEndpointToCurrentBlog:(UITextField *)textField{
 	
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	//NSString *xmlrpc = [textField.text stringByReplacingOccurrencesOfString:@"www." withString:@""];
 	NSString *xmlrpc = textField.text;
 	NSLog(@"xmlrpc is %@", xmlrpc);
 	[dm.currentBlog setObject:xmlrpc forKey:@"xmlrpc"];
@@ -143,7 +141,6 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-	textField.text = [textField.text stringByReplacingOccurrencesOfString:@"www." withString:@""];
 	didUserEnterURL = YES;
 	
 	
