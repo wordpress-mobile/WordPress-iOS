@@ -71,9 +71,13 @@
     [self scrollToFirstCell];
     
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults boolForKey:@"refreshPostsRequired"]) {
-		[self refreshHandler];
-		[defaults setBool:false forKey:@"refreshPostsRequired"];
+	
+	if ([[Reachability sharedReachability] internetConnectionStatus])
+	{
+		if ([defaults boolForKey:@"refreshPostsRequired"]) {
+			[self refreshHandler];
+			[defaults setBool:false forKey:@"refreshPostsRequired"];
+		}
 	}
 	
     if ([self.tableView indexPathForSelectedRow]) {

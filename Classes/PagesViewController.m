@@ -75,12 +75,17 @@
 	[super viewWillAppear:animated];
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults boolForKey:@"refreshPagesRequired"]) {
-		[self refreshHandler];
-		[defaults setBool:false forKey:@"refreshPagesRequired"];
-	}
 	
-    [self loadPages];
+	
+	if ([[Reachability sharedReachability] internetConnectionStatus])
+	{
+		if ([defaults boolForKey:@"refreshPagesRequired"]) {
+			[self refreshHandler];
+			[defaults setBool:false forKey:@"refreshPagesRequired"];
+		}
+	}	
+	
+	[self loadPages];
     [self scrollToFirstCell];
     
     if ([self.tableView indexPathForSelectedRow]) {

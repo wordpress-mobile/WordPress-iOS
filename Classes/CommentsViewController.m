@@ -109,9 +109,13 @@
     [self scrollToFirstCell];
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults boolForKey:@"refreshCommentsRequired"]) {
-		[self refreshHandler];
-		[defaults setBool:false forKey:@"refreshCommentsRequired"];
+	
+	if ([[Reachability sharedReachability] internetConnectionStatus])
+	{
+		if ([defaults boolForKey:@"refreshCommentsRequired"]) {
+			[self refreshHandler];
+			[defaults setBool:false forKey:@"refreshCommentsRequired"];
+		}
 	}
 }
 
