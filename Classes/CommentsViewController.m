@@ -12,6 +12,7 @@
 #import "CommentViewController.h"
 #import "WordPressAppDelegate.h"
 #import "WPProgressHUD.h"
+#import "Reachability.h"
 
 #define COMMENTS_SECTION        0
 #define NUM_SECTIONS            1

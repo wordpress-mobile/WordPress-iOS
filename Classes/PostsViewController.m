@@ -7,6 +7,7 @@
 #import "UIViewController+WPAnimation.h"
 #import "WordPressAppDelegate.h"
 #import "WPNavigationLeftButtonView.h"
+#import "Reachability.h"
 
 #define LOCAL_DRAFTS_SECTION    0
 #define POSTS_SECTION           1

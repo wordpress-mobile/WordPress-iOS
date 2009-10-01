@@ -12,6 +12,7 @@
 #import "PageViewController.h"
 #import "PostTableViewCell.h"
 #import "WordPressAppDelegate.h"
+#import "Reachability.h"
 
 #define LOCAL_DRAFTS_SECTION    0
 #define PAGES_SECTION           1
