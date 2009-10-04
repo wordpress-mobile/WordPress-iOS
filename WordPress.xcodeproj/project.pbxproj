@@ -109,7 +109,6 @@
 		C5C2730A0E7EC9FE0034AA46 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = C5C273090E7EC9FE0034AA46 /* delete.png */; };
 		C5E3AE350E93F3C5008755FF /* WPImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5E3AE340E93F3C5008755FF /* WPImagePickerController.m */; };
 		CE0CA8CB0FEB178800BC71AD /* favicon.ico in Resources */ = {isa = PBXBuildFile; fileRef = CE0CA8CA0FEB178800BC71AD /* favicon.ico */; };
-		CE1946681017F5AF002BE752 /* Icons License in Resources */ = {isa = PBXBuildFile; fileRef = CE1946671017F5AF002BE752 /* Icons License */; };
 		CE1946711017F86D002BE752 /* DashboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1946701017F86D002BE752 /* DashboardViewController.m */; };
 		CE1E3BC71005B3D500A7BD08 /* WPpregressHUDBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = CE1E3BC61005B3D500A7BD08 /* WPpregressHUDBackground.png */; };
 		CE31B4301022644F00BC060C /* pages.png in Resources */ = {isa = PBXBuildFile; fileRef = CE31B42E1022644F00BC060C /* pages.png */; };
@@ -288,7 +287,6 @@
 		C5E3AE330E93F3C5008755FF /* WPImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPImagePickerController.h; sourceTree = "<group>"; };
 		C5E3AE340E93F3C5008755FF /* WPImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPImagePickerController.m; sourceTree = "<group>"; };
 		CE0CA8CA0FEB178800BC71AD /* favicon.ico */ = {isa = PBXFileReference; lastKnownFileType = image.ico; path = favicon.ico; sourceTree = "<group>"; };
-		CE1946671017F5AF002BE752 /* Icons License */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Icons License"; sourceTree = "<group>"; };
 		CE19466F1017F86D002BE752 /* DashboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashboardViewController.h; sourceTree = "<group>"; };
 		CE1946701017F86D002BE752 /* DashboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashboardViewController.m; sourceTree = "<group>"; };
 		CE1E3BC61005B3D500A7BD08 /* WPpregressHUDBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WPpregressHUDBackground.png; sourceTree = "<group>"; };
@@ -521,7 +519,6 @@
 			isa = PBXGroup;
 			children = (
 				29B666321061315800CABB70 /* MainBackground.png */,
-				CE1946671017F5AF002BE752 /* Icons License */,
 				CE1946361017F4DF002BE752 /* Tab Icons */,
 				03EB54B4100FFB5C004E82CD /* gravatar.jpg */,
 				CE1E3BC61005B3D500A7BD08 /* WPpregressHUDBackground.png */,
@@ -823,7 +820,6 @@
 				CE1E3BC71005B3D500A7BD08 /* WPpregressHUDBackground.png in Resources */,
 				03EB54B5100FFB5C004E82CD /* gravatar.jpg in Resources */,
 				032BDCB610106E1B00E26F44 /* LocateXMLRPCViewController.xib in Resources */,
-				CE1946681017F5AF002BE752 /* Icons License in Resources */,
 				CE31B4301022644F00BC060C /* pages.png in Resources */,
 				CE31B4311022644F00BC060C /* posts.png in Resources */,
 				6EDC0E8F105881A800F68A1D /* iTunesArtwork in Resources */,
