@@ -45,8 +45,53 @@
         return NO;
 
     // Return YES for supported orientations
-    return YES;
+	NSLog(@"inside WPPublishOnEditController : shouldAutorotateToInterfaceOrientation");
+	UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+	
+	if (orientation == UIDeviceOrientationLandscapeRight)
+	{
+		NSLog(@"Landscape Right!");
+	}
+	if ((orientation == UIDeviceOrientationLandscapeRight) || 
+		(orientation == UIDeviceOrientationLandscapeLeft)) {
+			[self moveDatePickerUp];
+	}else {
+		if ((orientation == UIDeviceOrientationPortrait) || 
+			(orientation == UIDeviceOrientationPortraitUpsideDown)) {
+				[self moveDatePickerDown];
+		}
+	}
+	return YES;
+	//return NO; //see ticket #148
 }
+
+- (void) moveDatePickerUp {
+			
+NSLog(@"inside moveDatePickerUp");
+[UIView beginAnimations:nil context:NULL];
+			
+CGRect frame = datePicker.frame;
+frame.origin.y -= 73.0f;
+datePicker.frame = frame;
+
+[UIView commitAnimations];
+NSLog(@"just tried to commit animations inside WPPublishOnEditController : moveDatePickerUp");
+		}
+		
+		
+		
+- (void) moveDatePickerDown {
+NSLog(@"inside moveDatePickerDown");
+[UIView beginAnimations:nil context:NULL];
+			
+CGRect frame = datePicker.frame;
+frame.origin.y += 73.0f;
+datePicker.frame = frame;
+			
+[UIView commitAnimations];
+NSLog(@"just tried to commit animations inside WPPublishOnEditController : moveDatePickerDown");
+		}
+
 
 - (void)didReceiveMemoryWarning {
     WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));

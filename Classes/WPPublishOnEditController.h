@@ -1,5 +1,7 @@
 #import <UIKit/UIKit.h>
 
+
+
 @class PostSettingsViewController;
 
 @interface WPPublishOnEditController : UIViewController {
@@ -12,7 +14,10 @@
 
 @property (nonatomic, assign) PostSettingsViewController *settingController;
 
+
 - (NSDate *)currentSelectedDate;
 - (IBAction)datePickerValueChanged:(id)sender;
+- (void) moveDatePickerUp;
+- (void) moveDatePickerDown;
 
 @end

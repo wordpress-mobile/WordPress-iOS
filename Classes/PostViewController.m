@@ -10,6 +10,7 @@
 #import "Reachability.h"
 #import "CustomFieldsDetailController.h"
 #import "CommentsViewController.h"
+#import "WPPublishOnEditController.h"
 
 #define TAG_OFFSET 1010
 
@@ -551,6 +552,7 @@
             [photoEditingStatusView removeFromSuperview];
         }
     }
+	
 
     //Code to disable landscape when alert is raised.
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];

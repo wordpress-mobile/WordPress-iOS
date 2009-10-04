@@ -9,7 +9,7 @@
 
 @class EditPostViewController, PostPreviewViewController, WPSelectionTableViewController, PostSettingsViewController, WPPhotosListViewController, PostsViewController, CommentsViewController;
 @class WPNavigationLeftButtonView;
-@class CustomFieldsDetailController;
+@class CustomFieldsDetailController, WPPublishOnEditController;
 
 @interface PostViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate, WPPhotosListProtocol> {
     IBOutlet UITabBarController *tabController;
@@ -43,6 +43,7 @@
 @property (nonatomic, retain)   PostSettingsViewController *postSettingsController;
 @property (nonatomic, retain)   WPPhotosListViewController *photosListController;
 @property (nonatomic, retain)   CommentsViewController *commentsViewController;
+
 
 @property (nonatomic, retain)   CustomFieldsDetailController *customFieldsDetailController;
 

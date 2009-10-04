@@ -2664,12 +2664,14 @@ editBlogViewController;
 	NSString *pwd =	[self getPasswordFromKeychainInContextOfCurrentBlog:blog];
     NSString *fullURL = [blog valueForKey:@"xmlrpc"];
     NSString *blogid = [blog valueForKey:kBlogId];
+	NSLog(@"blogid is %@", blogid);
+	
 
     //  ------------------------- invoke metaWeblog.getRecentPosts
     XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
     [postsReq setMethod:@"wp.getPages"
      withObjects:[NSArray arrayWithObjects:blogid, username, pwd, nil]];
-
+	
     id response = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
     [postsReq release];
 
@@ -2684,6 +2686,7 @@ editBlogViewController;
     }
 
     NSMutableArray *pagesList = [NSMutableArray arrayWithArray:response];
+	[self printArrayToLog:pagesList andArrayName:@"this is pagesList from syncPagesForBlog"];
 
     NSFileManager *defaultFileManager = [NSFileManager defaultManager];
 

@@ -295,6 +295,7 @@ passwordTextField, commentsSwitchControl, pingsSwitchControl; //, customFieldsSw
     if (indexPath.section == 0) {
         WPPublishOnEditController *publishOnEditController = [[WPPublishOnEditController alloc] initWithNibName:@"WPPublishOnEditController" bundle:nil];
         publishOnEditController.settingController = self;
+		publishOnEditController.title = @"Publish Date";
         [postDetailViewController.navigationController pushViewController:publishOnEditController animated:YES];
         [publishOnEditController release];
     }
