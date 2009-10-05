@@ -574,6 +574,11 @@
             }
         }
     }
+	if ([tabController.selectedViewController.title isEqualToString:@"Settings"]) {
+		return NO;
+		
+    }
+	
 
     return YES;
 }

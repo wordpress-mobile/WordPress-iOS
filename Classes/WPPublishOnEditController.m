@@ -45,24 +45,9 @@
         return NO;
 
     // Return YES for supported orientations
-	NSLog(@"inside WPPublishOnEditController : shouldAutorotateToInterfaceOrientation");
-	UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-	
-	if (orientation == UIDeviceOrientationLandscapeRight)
-	{
-		NSLog(@"Landscape Right!");
-	}
-	if ((orientation == UIDeviceOrientationLandscapeRight) || 
-		(orientation == UIDeviceOrientationLandscapeLeft)) {
-			[self moveDatePickerUp];
-	}else {
-		if ((orientation == UIDeviceOrientationPortrait) || 
-			(orientation == UIDeviceOrientationPortraitUpsideDown)) {
-				[self moveDatePickerDown];
-		}
-	}
-	return YES;
-	//return NO; //see ticket #148
+
+	//return YES;
+	return NO; //see ticket #148.  Trouble with rotation on real device although code worked fine on simulator...
 }
 
 - (void) moveDatePickerUp {
