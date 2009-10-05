@@ -419,7 +419,7 @@
 	
     if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
         if (postDetailEditController.isEditing == NO) {
-            [postDetailEditController setTextViewHeight:57];
+            //[postDetailEditController setTextViewHeight:57]; //#148
         } else {
             [postDetailEditController setTextViewHeight:116];
         }
@@ -569,7 +569,7 @@
     if ((interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
         if (self.interfaceOrientation != interfaceOrientation) {
             if (postDetailEditController.isEditing == NO) {
-                [postDetailEditController setTextViewHeight:57];
+              //  [postDetailEditController setTextViewHeight:57]; //#148
             } else {
                 [postDetailEditController setTextViewHeight:116];
 				return YES;
