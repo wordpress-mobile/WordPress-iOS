@@ -563,6 +563,7 @@
 
     if ((interfaceOrientation == UIInterfaceOrientationPortrait) || (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
         [postDetailEditController setTextViewHeight:202];
+		return YES;
     }
 
     if ((interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
@@ -571,6 +572,7 @@
                 [postDetailEditController setTextViewHeight:57];
             } else {
                 [postDetailEditController setTextViewHeight:116];
+				return YES;
             }
         }
     }
@@ -580,7 +582,8 @@
     }
 	
 
-    return YES;
+    //return YES;
+	return NO; //trac ticket #148
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
