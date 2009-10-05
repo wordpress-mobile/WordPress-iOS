@@ -571,7 +571,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)textViewDidEndEditing:(UITextView *)aTextView {
     if ((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
         [self setTextViewHeight:57];
-    }
+	}
+	NSLog(@"before new block");
+	if((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)){
+		NSLog(@"inside new block");
+		[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+	}
+	
 
     isEditing = NO;
     dismiss = NO;

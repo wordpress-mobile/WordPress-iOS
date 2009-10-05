@@ -545,6 +545,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	NSLog(@"inside PostViewController: should autorotate");
     if ([[[[self tabController] selectedViewController] title] isEqualToString:@"Photos"]) {
         if ((interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
             [photosListController.view addSubview:photoEditingStatusView];
@@ -577,6 +578,7 @@
         }
     }
 	if ([tabController.selectedViewController.title isEqualToString:@"Settings"]) {
+		NSLog(@"PostViewController:should autorotate, isEqualToString Settings");
 		return NO;
 		
     }

@@ -7,6 +7,8 @@
 #define kSelectionsStatusContext ((void *)1000)
 #define kSelectionsCategoriesContext ((void *)2000)
 
+#define degreesToRadian(x) (M_PI * x / 180.0)
+
 @class WPSegmentedSelectionTableViewController;
 
 @interface EditPostViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate,

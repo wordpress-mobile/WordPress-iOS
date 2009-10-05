@@ -115,6 +115,7 @@ passwordTextField, commentsSwitchControl, pingsSwitchControl; //, customFieldsSw
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+	NSLog(@"viewWillAppear: PostSettingsViewController, just called postDetailViewController shouldAutorotate");
     [self reloadData];
 }
 
