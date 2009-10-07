@@ -106,15 +106,20 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 //	frame=textViewContentView.frame;
 //	frame.origin.y = 81.0f;
 //	textViewContentView.frame = frame;
-    isCustomFieldsEnabledForThisPage = [self checkCustomFieldsMinusMetadata];
 
-    if (isCustomFieldsEnabledForThisPage) {
-        customFieldsEditCell.hidden = NO;
-        customFieldsEditCell.userInteractionEnabled = YES;
-    } else {
-        customFieldsEditCell.hidden = YES;
-        customFieldsEditCell.userInteractionEnabled = NO;
-    }
+	
+	//temporarily disable custom fields per ticket # 266
+//    isCustomFieldsEnabledForThisPage = [self checkCustomFieldsMinusMetadata];
+//
+//    if (isCustomFieldsEnabledForThisPage) {
+//        customFieldsEditCell.hidden = NO;
+//        customFieldsEditCell.userInteractionEnabled = YES;
+//    } else {
+//        customFieldsEditCell.hidden = YES;
+//        customFieldsEditCell.userInteractionEnabled = NO;
+//    }
+	
+	isCustomFieldsEnabledForThisPage = NO;  //temporarily disable custom fields per ticket # 266
 
     [self postionTextViewContentView];
 
@@ -139,7 +144,8 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
     //JOHNB TODO: Add a check here for the presence of custom fields in the data model
     // if there are, set CustomFields BOOL to true
-    isCustomFieldsEnabledForThisPage = [self checkCustomFieldsMinusMetadata];
+   // isCustomFieldsEnabledForThisPage = [self checkCustomFieldsMinusMetadata];
+	isCustomFieldsEnabledForThisPage = NO; //temporarily disable custom fields per ticket # 266
     //call a helper to set the originY for textViewContentView
     [self postionTextViewContentView];
     customFieldsEditCell.hidden = YES;

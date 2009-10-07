@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="334"/>
+			<integer value="180"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -397,7 +397,7 @@
 										<object class="IBUITextInputTraits" key="IBUITextInputTraits"/>
 									</object>
 								</object>
-								<string key="NSFrame">{{-20, 122}, {360, 284}}</string>
+								<string key="NSFrame">{{-20, 119}, {360, 284}}</string>
 								<reference key="NSSuperview" ref="180411387"/>
 								<reference key="IBUIBackgroundColor" ref="725962077"/>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -775,7 +775,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{665, 322}, {320, 460}}</string>
+					<string>{{483, 322}, {320, 460}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
