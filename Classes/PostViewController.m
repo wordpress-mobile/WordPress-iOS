@@ -95,7 +95,8 @@
 }
 
 - (IBAction)saveAction:(id)sender {
-    saveButton.title = @"Save";
+    //saveButton.title = @"Save";
+	[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
     NSLog(@"Inside Save Action");
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 
