@@ -39,16 +39,16 @@
     [selectedViewController viewWillDisappear:NO];
     [viewController viewWillAppear:NO];
     
-    if (viewController == photosListController) {
-        if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-            [photosListController.view addSubview:photoEditingStatusView];
-        } else if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
-            [photoEditingStatusView removeFromSuperview];
-        }
-    }
-    else {
-        [photoEditingStatusView removeFromSuperview];
-    }
+//    if (viewController == photosListController) {
+//        if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+//            [photosListController.view addSubview:photoEditingStatusView];
+//        } else if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
+//            [photoEditingStatusView removeFromSuperview];
+//        }
+//    }
+//    else {
+//        [photoEditingStatusView removeFromSuperview];
+//    }
 
     if (hasChanges) {
         [leftView setTitle:@"Cancel"];
@@ -528,7 +528,7 @@
         [postDetailEditController setTextViewHeight:202];
     }
 
-    [photoEditingStatusView removeFromSuperview];
+//    [photoEditingStatusView removeFromSuperview];
 
     if (postDetailEditController.currentEditingTextField)
         [postDetailEditController.currentEditingTextField resignFirstResponder];
@@ -546,13 +546,13 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	NSLog(@"inside PostViewController: should autorotate");
-    if ([[[[self tabController] selectedViewController] title] isEqualToString:@"Photos"]) {
-        if ((interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-            [photosListController.view addSubview:photoEditingStatusView];
-        } else if ((interfaceOrientation == UIInterfaceOrientationPortrait) || (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
-            [photoEditingStatusView removeFromSuperview];
-        }
-    }
+//    if ([[[[self tabController] selectedViewController] title] isEqualToString:@"Photos"]) {
+//        if ((interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+//            [photosListController.view addSubview:photoEditingStatusView];
+//        } else if ((interfaceOrientation == UIInterfaceOrientationPortrait) || (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
+//            [photoEditingStatusView removeFromSuperview];
+//        }
+//    }
 	
 
     //Code to disable landscape when alert is raised.

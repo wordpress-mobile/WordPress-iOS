@@ -34,16 +34,16 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
     if ([viewController.title isEqualToString:@"Photos"]) {
-        if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-            [photosListController.view addSubview:photoEditingStatusView];
-        } else if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
-            [photoEditingStatusView removeFromSuperview];
-        }
+//        if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+//            [photosListController.view addSubview:photoEditingStatusView];
+//        } else if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
+//            [photoEditingStatusView removeFromSuperview];
+//        }
 
         [photosListController refreshData];
         self.navigationItem.title = @"Photos";
     } else {
-        [photoEditingStatusView removeFromSuperview];
+//        [photoEditingStatusView removeFromSuperview];
         [pageDetailViewController refreshUIForCurrentPage];
         self.navigationItem.title = @"Write";
     }
@@ -363,7 +363,7 @@
         [pageDetailViewController setTextViewHeight:287];
     }
 
-    [photoEditingStatusView removeFromSuperview];
+//    [photoEditingStatusView removeFromSuperview];
 
     if (pageDetailViewController.currentEditingTextField)
         [pageDetailViewController.currentEditingTextField resignFirstResponder];
@@ -387,13 +387,13 @@
     if ([delegate isAlertRunning] == YES)
         return NO;
 
-    if ([[[[self tabController] selectedViewController] title] isEqualToString:@"Photos"]) {
-        if ((interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-            [photosListController.view addSubview:photoEditingStatusView];
-        } else if ((interfaceOrientation == UIInterfaceOrientationPortrait) || (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
-            [photoEditingStatusView removeFromSuperview];
-        }
-    }
+//    if ([[[[self tabController] selectedViewController] title] isEqualToString:@"Photos"]) {
+//        if ((interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+//            [photosListController.view addSubview:photoEditingStatusView];
+//        } else if ((interfaceOrientation == UIInterfaceOrientationPortrait) || (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
+//            [photoEditingStatusView removeFromSuperview];
+//        }
+//    }
 
     if ((interfaceOrientation == UIInterfaceOrientationPortrait) || (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
 //        if (pageDetailViewController.isEditing == NO) {
