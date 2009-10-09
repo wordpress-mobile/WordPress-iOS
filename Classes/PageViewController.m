@@ -396,22 +396,25 @@
     }
 
     if ((interfaceOrientation == UIInterfaceOrientationPortrait) || (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
-        if (pageDetailViewController.isEditing == NO) {
-            [pageDetailViewController setTextViewHeight:287];
-        } else {
-            [pageDetailViewController setTextViewHeight:200];
+//        if (pageDetailViewController.isEditing == NO) {
+//            [pageDetailViewController setTextViewHeight:287];
+//        } else {
+           [pageDetailViewController setTextViewHeight:200];
+		   return YES;
         }
-    }
+//    }
 
     if ((interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
         if (pageDetailViewController.isEditing == NO) {
-            [pageDetailViewController setTextViewHeight:137];
+            //[pageDetailViewController setTextViewHeight:137];
         } else {
             [pageDetailViewController setTextViewHeight:105];
+			return YES; //trac ticket #148
         }
     }
 
-    return YES;
+    //return YES;
+	return NO; //trac ticket #148
 }
 
 - (void)_cancel {

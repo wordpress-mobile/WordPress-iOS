@@ -390,12 +390,17 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
-    if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+   if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+	
         [self setTextViewHeight:137];
+		
     } else if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
         [self setTextViewHeight:287];
     }
-
+	
+	if((pageDetailsController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (pageDetailsController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)){
+		[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+	}
     isEditing = NO;
 
     dismiss = NO;
