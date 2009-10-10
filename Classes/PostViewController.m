@@ -25,6 +25,7 @@
 - (void)conditionalLoadOfTabBarController;//to solve issue with crash when selecting comments tab from "new" (newPost) post editing view
 - (void)savePostWithBlog:(NSMutableArray *)arrayPost;
 - (void)removeProgressIndicator;
+- (void)forceAutoRotate;
 @end
 
 @implementation PostViewController
@@ -73,14 +74,21 @@
 }
 
 - (IBAction)cancelView:(id)sender {
+	
+	
     if (!hasChanges) {
         [self stopTimer];
         [self.navigationController popViewControllerAnimated:YES];
+		NSLog(@"cancelView on PostViewController");
         return;
     }
+	
+	
 
     [postSettingsController endEditingAction:nil];
     [postDetailEditController endEditingAction:nil];
+	
+	//[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
 
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
                                   delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Discard"
@@ -94,9 +102,18 @@
     [actionSheet release];
 }
 
+-(void)forceAutoRotate{
+	 NSLog(@"Inside forceAutorotate");
+	//[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+}
+
 - (IBAction)saveAction:(id)sender {
     //saveButton.title = @"Save";
-	[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+	//[postDetailEditController endEditingAction:nil];
+	
+	self.forceAutoRotate;
+	
+	
     NSLog(@"Inside Save Action");
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 
@@ -118,6 +135,7 @@
     if (!hasChanges) {
         [self stopTimer];
         [self.navigationController popViewControllerAnimated:YES];
+		NSLog(@"fdsa");
         return;
     }
 
@@ -183,7 +201,8 @@
     }
 
    // NSString *postStatus = [dm.currentPost valueForKey:@"post_status"];
-
+	//[self.navigationController popViewControllerAnimated:YES];
+	NSLog(@"just attempted to pop the viewController BEFORE the save");
     if ([postStatus isEqual:@"Local Draft"])
         [self saveAsDraft];else {
        // [self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
@@ -207,6 +226,7 @@
 		[self removeProgressIndicator];
 		
 		[self.navigationController popViewControllerAnimated:YES];
+		
     }
 }
 
@@ -309,7 +329,8 @@
     self.navigationItem.rightBarButtonItem = nil;
     [self stopTimer];
     [[BlogDataManager sharedDataManager] clearAutoSavedContext];
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController Animated:YES];
+	NSLog(@"discard: self.navigationController Animated:YES");
 }
 
 - (void)cancel {
