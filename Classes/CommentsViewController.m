@@ -107,7 +107,6 @@
     }
     
 	[self refreshCommentsList];
-    [self scrollToFirstCell];
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	

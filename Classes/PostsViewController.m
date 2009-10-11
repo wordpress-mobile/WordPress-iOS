@@ -69,7 +69,6 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
     [self loadPosts];
-    [self scrollToFirstCell];
     
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	

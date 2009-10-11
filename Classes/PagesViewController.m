@@ -87,7 +87,6 @@
 	}	
 	
 	[self loadPages];
-    [self scrollToFirstCell];
     
     if ([self.tableView indexPathForSelectedRow]) {
         [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
