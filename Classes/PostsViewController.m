@@ -309,6 +309,7 @@
 
     [dm syncPostsForCurrentBlog];
     [self loadPosts];
+	[dm downloadAllCategoriesForBlog:[dm currentBlog]];
 
     [refreshButton stopAnimating];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
