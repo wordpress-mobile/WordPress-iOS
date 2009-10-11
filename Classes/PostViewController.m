@@ -489,7 +489,8 @@
     [array addObject:postDetailEditController];
     
     //if (mode == 1 || mode == 2 || mode == 3) { //don't load this tab if mode == 0 (new post) since comments are irrelevant to a brand new post
-	if (mode != newPost ) { //don't load commentsViewController tab if it's a new post since comments are irrelevant to a brand new post
+	NSString *postStatus = [[BlogDataManager sharedDataManager].currentPost valueForKey:@"post_status"];
+	if (mode != newPost && ![postStatus isEqualToString:@"Local Draft"]) { //don't load commentsViewController tab if it's a new post or a local draft since comments are irrelevant to a brand new post
 		if (commentsViewController == nil) {
 			commentsViewController = [[CommentsViewController alloc] initWithNibName:@"CommentsViewController" bundle:nil];
 		}
