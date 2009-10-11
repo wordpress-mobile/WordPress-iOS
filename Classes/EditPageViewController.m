@@ -157,6 +157,10 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:pageDetailsController.leftView];
     pageDetailsController.navigationItem.leftBarButtonItem = barButton;
     [barButton release];
+	if((pageDetailsController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || 
+	   (pageDetailsController.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
+		[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+	
 }
 
 - (IBAction)cancelView:(id)sender {
@@ -399,7 +403,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
     }
 	
 	if((pageDetailsController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (pageDetailsController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)){
-		[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+		
 	}
     isEditing = NO;
 

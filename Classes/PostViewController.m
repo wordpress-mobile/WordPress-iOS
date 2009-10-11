@@ -25,7 +25,7 @@
 - (void)conditionalLoadOfTabBarController;//to solve issue with crash when selecting comments tab from "new" (newPost) post editing view
 - (void)savePostWithBlog:(NSMutableArray *)arrayPost;
 - (void)removeProgressIndicator;
-- (void)forceAutoRotate;
+
 @end
 
 @implementation PostViewController
@@ -87,8 +87,6 @@
 
     [postSettingsController endEditingAction:nil];
     [postDetailEditController endEditingAction:nil];
-	
-	//[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
 
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
                                   delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Discard"
@@ -102,18 +100,8 @@
     [actionSheet release];
 }
 
--(void)forceAutoRotate{
-	 NSLog(@"Inside forceAutorotate");
-	//[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
-}
-
 - (IBAction)saveAction:(id)sender {
     //saveButton.title = @"Save";
-	//[postDetailEditController endEditingAction:nil];
-	
-	self.forceAutoRotate;
-	
-	
     NSLog(@"Inside Save Action");
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 
@@ -329,8 +317,8 @@
     self.navigationItem.rightBarButtonItem = nil;
     [self stopTimer];
     [[BlogDataManager sharedDataManager] clearAutoSavedContext];
-    [self.navigationController Animated:YES];
-	NSLog(@"discard: self.navigationController Animated:YES");
+    [self.navigationController popViewControllerAnimated:YES];
+	
 }
 
 - (void)cancel {

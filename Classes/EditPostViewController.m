@@ -270,7 +270,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (IBAction)endTextEnteringButtonAction:(id)sender {
     [textView resignFirstResponder];
-	[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+	if((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
+		[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
 }
 
 - (IBAction)showCategoriesViewAction:(id)sender {
@@ -572,11 +573,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)textViewDidEndEditing:(UITextView *)aTextView {
     if ((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
         [self setTextViewHeight:57];
-	}
-	NSLog(@"before new block");
-	if((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)){
-		NSLog(@"inside new block");
-		//[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
 	}
 	
 
