@@ -21,6 +21,7 @@
 - (void)populateSelectionsControllerWithStatuses;
 - (void)bringTextViewUp;
 - (void)bringTextViewDown;
+-(void) correctlySetStatusTextFieldText;
 @end
 
 #define kSelectionsStatusContext1 ((void *)1000)
@@ -59,14 +60,10 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
     titleTextField.text = [dm.currentPage valueForKey:@"title"];
 
-    NSString *status = [dm.currentPage valueForKey:@"page_status"];
-    NSString *statusValue = [dm pageStatusDescriptionForStatus:status fromBlog:dm.currentBlog];
-    statusValue = (statusValue == nil ? @"" : statusValue);
-    statusTextField.text = statusValue;
+
+	[self correctlySetStatusTextFieldText];
 	
-    NSLog(@"statusValue from refreshUIForCurrentPage, EditPageViewController %@" , statusValue);
-	NSLog(@"status from refreshUIForCurrentPage, EditPageViewController %@" , status);
-    [pageDetailsController updatePhotosBadge];
+	[pageDetailsController updatePhotosBadge];
     [photosListController refreshData];
 }
 
@@ -85,10 +82,9 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
     titleTextField.text = [dm.currentPage valueForKey:@"title"];
 
 	
-	NSString *status = [[dm currentPage] valueForKey:@"page_status"];
-	NSString *statusValue = [dm pageStatusDescriptionForStatus:status fromBlog:dm.currentBlog];
-    statusValue = (statusValue == nil ? @"" : statusValue);
-    statusTextField.text = statusValue;
+
+	
+	[self correctlySetStatusTextFieldText];
 
     [photosListController refreshData];
     [pageDetailsController updatePhotosBadge];
@@ -96,7 +92,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
 - (void)viewWillAppear:(BOOL)animated {
    // pageDetailsController.hasChanges = NO;
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
+ 
 
     if (mode == editPage)
         [self refreshUIForCurrentPage];else if (mode == newPage)
@@ -126,11 +122,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
     [self postionTextViewContentView];
 
-    NSString *status = [[dm currentPage] valueForKey:@"page_status"];
-	NSString *statusValue = [dm pageStatusDescriptionForStatus:status fromBlog:dm.currentBlog];
-    statusValue = (statusValue == nil ? @"" : statusValue);
-    statusTextField.text = statusValue;
-
+	[self correctlySetStatusTextFieldText];
     [super viewWillAppear:animated];
 }
 
@@ -154,6 +146,14 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
     //call a helper to set the originY for textViewContentView
     [self postionTextViewContentView];
     customFieldsEditCell.hidden = YES;
+}
+
+-(void) correctlySetStatusTextFieldText {
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	NSString *status = [[dm currentPage] valueForKey:@"page_status"];
+	NSString *statusValue = [dm pageStatusDescriptionForStatus:status fromBlog:dm.currentBlog];
+	statusValue = (statusValue == nil ? @"" : statusValue);
+	statusTextField.text = statusValue;
 }
 
 - (IBAction)endTextEnteringButtonAction:(id)sender {
