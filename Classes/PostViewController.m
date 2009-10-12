@@ -243,6 +243,7 @@
 }
 
 - (void)refreshUIForCompose {
+	if (hasChanges == NO)
     self.navigationItem.rightBarButtonItem = nil;
     [tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
     UIViewController *vc = [[tabController viewControllers] objectAtIndex:0];
