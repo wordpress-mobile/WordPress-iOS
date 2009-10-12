@@ -326,14 +326,14 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		[defaults setObject:theDate forKey:@"statsDate"];
 		[self runStats];
 	}else{ 
-		//if statsDate existed, check if it's 30 days since last stats run, if it is > 30 days, run stats
+		//if statsDate existed, check if it's 7 days since last stats run, if it is > 7 days, run stats
 		NSDate *statsDate = [defaults objectForKey:@"statsDate"];
 		NSLog(@"statsDate %@", statsDate);
 			NSDate *today = [NSDate date];
 			NSTimeInterval difference = [today timeIntervalSinceDate:statsDate];
-			//NSTimeInterval statsInterval = 30 * 24 * 60 * 60; //number of seconds in 30 days
-			NSTimeInterval statsInterval = 1; //for testing and beta, if it's one second different, run again. will only happen on startup of app anyway...
-			if (difference > statsInterval) //if it's been more than 30 days since last stats run
+			NSTimeInterval statsInterval = 7 * 24 * 60 * 60; //number of seconds in 30 days
+			//NSTimeInterval statsInterval = 1; //for testing and beta, if it's one second different, run again. will only happen on startup of app anyway...
+			if (difference > statsInterval) //if it's been more than 7 days since last stats run
 			{
 				[self runStats];
 			}
@@ -415,12 +415,12 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
 	[statsData appendData: data];
-	NSLog(@"did recieve data");
+	//NSLog(@"did recieve data");
 }
 
 -(void) connection:(NSURLConnection *)connection
   didFailWithError: (NSError *)error {
-	NSLog(@"didFailWithError");
+	//NSLog(@"didFailWithError");
 	UIAlertView *errorAlert = [[UIAlertView alloc]
 							   initWithTitle: [error localizedDescription]
 							   message: [error localizedFailureReason]
@@ -433,7 +433,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 
 - (void) connectionDidFinishLoading: (NSURLConnection*) connection {
-	NSLog(@"connectionDidFinishLoading");
+	//NSLog(@"connectionDidFinishLoading");
 	//process statsData here or call a helper method to do so.
 	//it should parse the "latest version" and the over the air download url and give user some opportunity to upgrade if version numbers don't match...
 	//all of this should get pulled out of WPAppDelegate and into it's own class... http request, check for stats methods, delegate methods for http, and present user with option to upgrade
@@ -447,7 +447,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-	NSLog (@"connectionDidReceiveResponse %@", response);
+	//NSLog (@"connectionDidReceiveResponse %@", response);
 }
 
 
