@@ -63,7 +63,9 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
     NSString *statusValue = [dm pageStatusDescriptionForStatus:status fromBlog:dm.currentBlog];
     statusValue = (statusValue == nil ? @"" : statusValue);
     statusTextField.text = statusValue;
-
+	
+    NSLog(@"statusValue from refreshUIForCurrentPage, EditPageViewController %@" , statusValue);
+	NSLog(@"status from refreshUIForCurrentPage, EditPageViewController %@" , status);
     [pageDetailsController updatePhotosBadge];
     [photosListController refreshData];
 }
@@ -82,10 +84,11 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
     titleTextField.text = [dm.currentPage valueForKey:@"title"];
 
-    NSString *status = [dm pageStatusDescriptionForStatus:[dm.currentPage valueForKey:@"page_status"] fromBlog:dm.currentBlog];
-
-    status = (status == nil ? @"" : status);
-    statusTextField.text = status;
+	
+	NSString *status = [[dm currentPage] valueForKey:@"page_status"];
+	NSString *statusValue = [dm pageStatusDescriptionForStatus:status fromBlog:dm.currentBlog];
+    statusValue = (statusValue == nil ? @"" : statusValue);
+    statusTextField.text = statusValue;
 
     [photosListController refreshData];
     [pageDetailsController updatePhotosBadge];
@@ -124,7 +127,9 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
     [self postionTextViewContentView];
 
     NSString *status = [[dm currentPage] valueForKey:@"page_status"];
-    statusTextField.text = status;
+	NSString *statusValue = [dm pageStatusDescriptionForStatus:status fromBlog:dm.currentBlog];
+    statusValue = (statusValue == nil ? @"" : statusValue);
+    statusTextField.text = statusValue;
 
     [super viewWillAppear:animated];
 }
