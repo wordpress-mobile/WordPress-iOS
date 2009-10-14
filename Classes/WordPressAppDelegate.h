@@ -7,6 +7,7 @@
 	IBOutlet UIWindow *window;
 	IBOutlet UINavigationController *navigationController;
 	BOOL alertRunning;
+	NSMutableData *statsData;
 }
 
 @property (nonatomic, retain) UIWindow *window;

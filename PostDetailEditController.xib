@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.03">
 	<data>
 		<int key="IBDocument.SystemTarget">512</int>
-		<string key="IBDocument.SystemVersion">9G55</string>
+		<string key="IBDocument.SystemVersion">9L31a</string>
 		<string key="IBDocument.InterfaceBuilderVersion">677</string>
-		<string key="IBDocument.AppKitVersion">949.43</string>
+		<string key="IBDocument.AppKitVersion">949.54</string>
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -53,6 +53,7 @@
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<bool key="IBUIBouncesZoom">NO</bool>
 								<int key="IBUISeparatorStyle">1</int>
 								<int key="IBUISectionIndexMinimumDisplayRowCount">0</int>
@@ -90,10 +91,6 @@
 															<double key="NSSize">1.500000e+01</double>
 															<int key="NSfFlags">16</int>
 														</object>
-														<string key="IBUIHighlightedTitle"/>
-														<string key="IBUIDisabledTitle"/>
-														<string key="IBUISelectedTitle"/>
-														<string key="IBUINormalTitle"/>
 														<object class="NSColor" key="IBUIHighlightedTitleColor" id="725962077">
 															<int key="NSColorSpace">1</int>
 															<bytes key="NSRGB">MSAxIDEAA</bytes>
@@ -101,6 +98,10 @@
 														<object class="NSColor" key="IBUINormalTitleColor">
 															<int key="NSColorSpace">1</int>
 															<bytes key="NSRGB">MC4xOTYwNzg0MyAwLjMwOTgwMzkzIDAuNTIxNTY4NjYAA</bytes>
+														</object>
+														<object class="NSColor" key="IBUINormalTitleShadowColor" id="907838335">
+															<int key="NSColorSpace">3</int>
+															<bytes key="NSWhite">MAA</bytes>
 														</object>
 													</object>
 													<object class="IBUILabel" id="705667128">
@@ -298,15 +299,12 @@
 														<int key="IBUIContentHorizontalAlignment">0</int>
 														<int key="IBUIContentVerticalAlignment">0</int>
 														<reference key="IBUIFont" ref="637615118"/>
-														<string key="IBUIHighlightedTitle"/>
-														<string key="IBUIDisabledTitle"/>
-														<string key="IBUISelectedTitle"/>
-														<string key="IBUINormalTitle"/>
 														<reference key="IBUIHighlightedTitleColor" ref="725962077"/>
 														<object class="NSColor" key="IBUINormalTitleColor">
 															<int key="NSColorSpace">1</int>
 															<bytes key="NSRGB">MC4xOTYwNzg0MyAwLjMwOTgwMzkzIDAuNTIxNTY4NjYAA</bytes>
 														</object>
+														<reference key="IBUINormalTitleShadowColor" ref="907838335"/>
 													</object>
 													<object class="IBUITextField" id="531310614">
 														<reference key="NSNextResponder" ref="270641902"/>
@@ -435,6 +433,7 @@
 										<float key="IBUIMaximumZoomScale">0.000000e+00</float>
 										<bool key="IBUIBouncesZoom">NO</bool>
 										<string key="IBUIText"/>
+										<object class="IBUITextInputTraits" key="IBUITextInputTraits"/>
 									</object>
 									<object class="IBUITextField" id="138287431">
 										<reference key="NSNextResponder" ref="931841925"/>
@@ -480,15 +479,13 @@
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<reference key="IBUIFont" ref="637615118"/>
-								<string key="IBUIHighlightedTitle"/>
-								<string key="IBUIDisabledTitle"/>
-								<string key="IBUISelectedTitle"/>
-								<string key="IBUINormalTitle"/>
+								<string key="IBUINormalTitle">The Button</string>
 								<reference key="IBUIHighlightedTitleColor" ref="725962077"/>
 								<object class="NSColor" key="IBUINormalTitleColor">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MC4xOTYwNzg0MyAwLjMwOTgwMzkzIDAuNTIxNTY4NjYAA</bytes>
 								</object>
+								<reference key="IBUINormalTitleShadowColor" ref="907838335"/>
 							</object>
 						</object>
 						<string key="NSFrameSize">{320, 460}</string>
@@ -1134,5 +1131,6 @@
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.LastKnownRelativeProjectPath">WordPress.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
+		<string key="IBCocoaTouchPluginVersion">3.0</string>
 	</data>
 </archive>

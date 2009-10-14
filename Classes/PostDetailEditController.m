@@ -242,8 +242,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	//[super viewWillAppear:YES];
 	NSLog(@"inside PostDetailEditController:viewWillAppear, just called [super viewWillAppear:YES]");
 	isCustomFieldsEnabledForThisPost = [self checkCustomFieldsMinusMetadata];
-	if (isCustomFieldsEnabledForThisPost)
-		customFieldsEditButton.hidden = NO;
+// removing for now until full implementation of CustomFields
+//	if (isCustomFieldsEnabledForThisPost)
+//		customFieldsEditButton.hidden = NO;
 	[self postionTextViewContentView];
 }
 
@@ -281,7 +282,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	// if there are, set CustomFields BOOL to true
 	isCustomFieldsEnabledForThisPost = [self checkCustomFieldsMinusMetadata];
 	//call a helper to set the originY for textViewContentView
-	[self postionTextViewContentView];
+	//[self postionTextViewContentView];
 	
 	 
 	
@@ -326,11 +327,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
 	CGRect frame = textViewContentView.frame;
 	//if (editCustomFields = YES)
-	frame.origin.y -= 190.0f; //was 164 214 is new value to accomodate custom fields "cell + other objects" in IB
+	//frame.origin.y -= 190.0f; //was 164 214 is new value to accomodate custom fields "cell + other objects" in IB
+	frame.origin.y -= 164.0f;
 	textViewContentView.frame = frame;
 	
 	frame = subView.frame;
-	frame.origin.y -= 190.0f;//was 164
+	//frame.origin.y -= 190.0f;//was 164
+	frame.origin.y -= 164.0f;
 	subView.frame = frame;
 	
 	
@@ -345,11 +348,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	subView.hidden = NO;
 	
 	CGRect frame = textViewContentView.frame;
-	frame.origin.y += 190.0f;//was 164
+	//frame.origin.y += 190.0f;//was 164
+	frame.origin.y += 165.0f;
 	textViewContentView.frame = frame;	
 	
 	frame = subView.frame;
-	frame.origin.y += 190.0f;//was 164
+	//frame.origin.y += 190.0f;//was 164
+	frame.origin.y += 164.0f;
 	subView.frame = frame;
 	
 	[UIView commitAnimations];		
@@ -486,10 +491,17 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)textViewDidBeginEditing:(UITextView *)aTextView
 {	
+	NSLog(@"outside the if, but inside textViewDidBeginEditing");
 	isEditing=YES;
+	//if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
+	if((self.interfaceOrientation == UIDeviceOrientationLandscapeRight))
+		NSLog(@"interfaceOrientation as right came true");
+	
 	if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft)||(self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
 	{
 		[self setTextViewHeight:107];
+		NSLog(@"inside if self.interfaceorientation...");
+		
 	}
 	
 	dismiss=NO;
@@ -852,7 +864,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		//do nothing because we've only got one cell right now
 	}
 	
-	cell.userInteractionEnabled = YES; 
+	//cell.userInteractionEnabled = YES; 
+	cell.userInteractionEnabled = NO;
 	return cell;
 }
 
@@ -888,25 +901,26 @@ NSTimeInterval kAnimationDuration = 0.3f;
 #pragma mark Custom Fields methods
 -(void)  postionTextViewContentView {
 	
-if (isCustomFieldsEnabledForThisPost) {
-	
-	
-	originY = 214.0f;
-	CGRect frame = textViewContentView.frame;
-	frame.origin.y = originY;
-	[textViewContentView setFrame:frame];
-	
-	
-	
-	
-}else{
+//if (isCustomFieldsEnabledForThisPost) {
+//	
+//	
+//	originY = 214.0f;
+//	CGRect frame = textViewContentView.frame;
+//	frame.origin.y = originY;
+//	[textViewContentView setFrame:frame];
+//	
+//	
+//	
+//	
+//}else{
 	
 	originY = 164.0f;
+	NSLog(@"just ran originY in PostDetailEditControlle: positionTextViewContentView");
 	CGRect frame = textViewContentView.frame;
 	frame.origin.y = originY;
 	[textViewContentView setFrame:frame];
 	
-		}
+//	}
 }
 
 
