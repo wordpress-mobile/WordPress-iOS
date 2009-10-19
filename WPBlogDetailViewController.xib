@@ -2,20 +2,20 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.03">
 	<data>
 		<int key="IBDocument.SystemTarget">512</int>
-		<string key="IBDocument.SystemVersion">9J61</string>
+		<string key="IBDocument.SystemVersion">9L31a</string>
 		<string key="IBDocument.InterfaceBuilderVersion">677</string>
-		<string key="IBDocument.AppKitVersion">949.46</string>
+		<string key="IBDocument.AppKitVersion">949.54</string>
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="77"/>
+			<integer value="111"/>
+			<integer value="39"/>
+			<integer value="49"/>
+			<integer value="46"/>
 			<integer value="125"/>
 			<integer value="97"/>
 			<integer value="1" id="9"/>
-			<integer value="39"/>
-			<integer value="49"/>
-			<integer value="77"/>
-			<integer value="111"/>
-			<integer value="46"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -90,8 +90,8 @@
 				<int key="IBUISystemItemIdentifier">1</int>
 			</object>
 			<object class="IBUIBarButtonItem" id="561265277">
+				<string key="IBUITitle">Save</string>
 				<int key="IBUIStyle">1</int>
-				<int key="IBUISystemItemIdentifier">3</int>
 			</object>
 			<object class="IBUITableViewCell" id="846141064">
 				<reference key="NSNextResponder"/>
@@ -1050,12 +1050,12 @@ NDgwLg</string>
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>BlogDetailModalViewController</string>
 					<string>UIResponder</string>
-					<string>{{463, 276}, {320, 480}}</string>
+					<string>{{321, 276}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<reference ref="9"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{678, 98}, {315, 56}}</string>
+					<string>{{326, 98}, {315, 56}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{162, 291}, {317, 62}}</string>

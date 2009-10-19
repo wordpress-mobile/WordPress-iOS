@@ -1,5 +1,7 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
+#import "LocateXMLRPCViewController.h"
+
 
 @class BlogDataManager, WPSelectionTableViewController;
 
@@ -57,5 +59,6 @@
 
 - (void)refreshBlogEdit;
 - (void)refreshBlogCompose;
+- (void)showLocateXMLRPCModalViewWithAnimation:(BOOL)animate;
 
 @end

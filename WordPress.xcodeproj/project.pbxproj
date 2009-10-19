@@ -20,6 +20,10 @@
 		2904E9940FE6E09600E00DBC /* CustomFieldsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2904E9910FE6E09600E00DBC /* CustomFieldsTableView.m */; };
 		2904E9950FE6E09600E00DBC /* CustomFieldsDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2904E9930FE6E09600E00DBC /* CustomFieldsDetailController.m */; };
 		291D689910858EF900D0A447 /* NSString+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 291D689710858EF900D0A447 /* NSString+Helpers.m */; };
+		29598EAF108A4814009359B4 /* LocateXMLRPCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29598EAE108A4814009359B4 /* LocateXMLRPCViewController.m */; };
+		29598ECD108A4B63009359B4 /* RegExProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 29598ECB108A4B63009359B4 /* RegExProcessor.m */; };
+		29598ED3108A4C3A009359B4 /* LocateXMLRPCViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29598ED2108A4C3A009359B4 /* LocateXMLRPCViewController.xib */; };
+		29598F16108A57D9009359B4 /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 29598F15108A57D9009359B4 /* RegexKitLite.m */; };
 		296890420FE96F1900770264 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 296890410FE96F1900770264 /* SFHFKeychainUtils.m */; };
 		296890780FE971DC00770264 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296890770FE971DC00770264 /* Security.framework */; };
 		29FF132F0FE70F3100CFB908 /* CustomFieldsTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29FF132E0FE70F3100CFB908 /* CustomFieldsTableView.xib */; };
@@ -142,6 +146,13 @@
 		2904E9930FE6E09600E00DBC /* CustomFieldsDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomFieldsDetailController.m; sourceTree = "<group>"; };
 		291D689710858EF900D0A447 /* NSString+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Helpers.m"; sourceTree = "<group>"; };
 		291D689810858EF900D0A447 /* NSString+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Helpers.h"; sourceTree = "<group>"; };
+		29598EAD108A4814009359B4 /* LocateXMLRPCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocateXMLRPCViewController.h; sourceTree = "<group>"; };
+		29598EAE108A4814009359B4 /* LocateXMLRPCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocateXMLRPCViewController.m; sourceTree = "<group>"; };
+		29598ECB108A4B63009359B4 /* RegExProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegExProcessor.m; sourceTree = "<group>"; };
+		29598ECC108A4B63009359B4 /* RegExProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegExProcessor.h; sourceTree = "<group>"; };
+		29598ED2108A4C3A009359B4 /* LocateXMLRPCViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LocateXMLRPCViewController.xib; sourceTree = "<group>"; };
+		29598F14108A57D9009359B4 /* RegexKitLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegexKitLite.h; sourceTree = "<group>"; };
+		29598F15108A57D9009359B4 /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
 		296890400FE96F1900770264 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
 		296890410FE96F1900770264 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		296890770FE971DC00770264 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -383,6 +394,7 @@
 				AC512FC30E20D61C00B7DA32 /* WPPhotosListViewController.xib */,
 				ACAC7B690E1F8C0700AC7074 /* WPSelectionTableViewController.xib */,
 				A0E293FD0E21037200C6919C /* WPAddCategoryViewController.xib */,
+				29598ED2108A4C3A009359B4 /* LocateXMLRPCViewController.xib */,
 				2899E55F0DE3E45000AC0155 /* RootViewController.xib */,
 				28AD735F0D9D9599002E5188 /* MainWindow.xib */,
 				A0F128B90E1F82A400867E18 /* AboutWordpress.xib */,
@@ -528,6 +540,12 @@
 		AC512F800E20D28500B7DA32 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				29598F14108A57D9009359B4 /* RegexKitLite.h */,
+				29598F15108A57D9009359B4 /* RegexKitLite.m */,
+				29598ECB108A4B63009359B4 /* RegExProcessor.m */,
+				29598ECC108A4B63009359B4 /* RegExProcessor.h */,
+				29598EAD108A4814009359B4 /* LocateXMLRPCViewController.h */,
+				29598EAE108A4814009359B4 /* LocateXMLRPCViewController.m */,
 				291D689710858EF900D0A447 /* NSString+Helpers.m */,
 				291D689810858EF900D0A447 /* NSString+Helpers.h */,
 				296890400FE96F1900770264 /* SFHFKeychainUtils.h */,
@@ -774,6 +792,7 @@
 				6EC5B7F50F6747F5002609EE /* backNavd.png in Resources */,
 				C57E2FC40F7261180038F796 /* WP_application-icon.png in Resources */,
 				29FF132F0FE70F3100CFB908 /* CustomFieldsTableView.xib in Resources */,
+				29598ED3108A4C3A009359B4 /* LocateXMLRPCViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -831,6 +850,9 @@
 				2904E9950FE6E09600E00DBC /* CustomFieldsDetailController.m in Sources */,
 				296890420FE96F1900770264 /* SFHFKeychainUtils.m in Sources */,
 				291D689910858EF900D0A447 /* NSString+Helpers.m in Sources */,
+				29598EAF108A4814009359B4 /* LocateXMLRPCViewController.m in Sources */,
+				29598ECD108A4B63009359B4 /* RegExProcessor.m in Sources */,
+				29598F16108A57D9009359B4 /* RegexKitLite.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -849,6 +871,7 @@
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUGMODE;
 				INFOPLIST_FILE = Info.plist;
+				OTHER_LDFLAGS = "-licucore";
 				PRODUCT_NAME = WordPress;
 			};
 			name = Debug;

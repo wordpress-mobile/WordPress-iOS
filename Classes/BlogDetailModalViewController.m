@@ -478,6 +478,15 @@
 		//														delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		//		[alert5 show];
 		//		[alert5 release];
+	}else{
+		if (dm.isProblemWithXMLRPC) {
+			//this handles the case of not getting the XMLRPC endpoint and launches a view to ask user for input
+			[self showLocateXMLRPCModalViewWithAnimation:YES];
+			[self performSelectorInBackground:@selector(removeProgressIndicator) withObject:nil];
+			saveBlogButton.title = @"Try Again";
+			dm.isProblemWithXMLRPC = NO;
+			return;
+		}
 	}
 	
 	[self performSelectorInBackground:@selector(removeProgressIndicator) withObject:nil];
@@ -540,6 +549,19 @@
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
 		[blogEditTable reloadData];
+}
+
+
+#pragma mark -
+#pragma mark Show LocateXMLRPC Modal View
+
+- (void)showLocateXMLRPCModalViewWithAnimation:(BOOL)animate {
+	LocateXMLRPCViewController *locateXMLRPCViewController = [[[LocateXMLRPCViewController alloc] initWithNibName:@"LocateXMLRPCViewController" bundle:nil] autorelease];
+	UINavigationController *modalNavigationController = [[UINavigationController alloc] initWithRootViewController:locateXMLRPCViewController];
+	
+	[self.navigationController presentModalViewController:modalNavigationController animated:animate];
+	
+	[modalNavigationController release];
 }
 
 @end

@@ -75,6 +75,10 @@
 - (id)fectchNewPage:(NSString *)pageid formBlog:(id)aBlog;
 - (NSMutableDictionary *) pageTitleForPage:(NSDictionary *)aPage;
 - (BOOL)deleteAllPhotosForPage:(id)aPage forBlog:(id)aBlog;
+
+//xmlrpc
+- (void) tryDefaultXMLRPCEndpoint: (NSString *) url;
+
 @end
 
 @implementation BlogDataManager
@@ -85,6 +89,8 @@ static BlogDataManager *sharedDataManager;
 pictureFieldNames, postFieldNames, postFieldNamesByTag, postFieldTagsByName,
 postTitleFieldNames, postTitleFieldNamesByTag, postTitleFieldTagsByName,unsavedPostsCount,currentPageIndex,currentPage,pageFieldNames,
 currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLocaDraftsCurrent, isPageLocalDraftsCurrent, currentPostIndex, currentDraftIndex,currentPageDraftIndex,asyncPostsOperationsQueue,currentUnsavedDraft;
+//BOOL for handling XMLRPC issues...  See LocateXMLRPCViewController
+@synthesize isProblemWithXMLRPC; 
 
 
 - (void)dealloc {
@@ -995,6 +1001,37 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 
 #pragma mark Blog data
 
+- (void) tryDefaultXMLRPCEndpoint: (NSString *) url{
+	/*
+	 add http:// and "/xmlrpc.php"to url
+	 try the listMethods XMLRPC Call
+	 log the returned array (might be an error, might be a list of methods)
+	 
+	 if the returned array is an error, 
+	 log "I can't access the url"
+	 else
+	 set xmlrpc value in blog data manger
+	 */
+	
+	NSString *xmlrpcURL = [[@"http://" stringByAppendingString:url] stringByAppendingString:@"/xmlrpc.php"];
+	NSLog(@"xmlrpcURL %@", xmlrpcURL);
+	XMLRPCRequest *listMethodsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpcURL]];
+    [listMethodsReq setMethod:@"system.listMethods" withObjects:[NSArray array]];
+    NSArray *listOfMethods = [self executeXMLRPCRequest:listMethodsReq byHandlingError:YES];
+	[self printArrayToLog:listOfMethods andArrayName:@"list of methods from LocateXMLRPC...:-saveXMLRPCLocation"];
+    [listMethodsReq release];
+	
+	if ([listOfMethods isKindOfClass:[NSError class]]){
+		NSLog(@"returned an error, can't get to xmlrpc.php endpoint");
+		
+    } else {
+		NSLog(@"should have been successful ping of default xmlrpc endpoint");
+		[currentBlog  setValue:xmlrpcURL forKey:@"xmlrpc"];
+	}
+	
+}
+
+
 - (NSString *)xmlurl:(NSString *)hosturl
 {
 	//Handeled if HostUrl is nil from server.
@@ -1057,11 +1094,15 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 				htmlStr = [[[NSString alloc] initWithData:data encoding:[NSString defaultCStringEncoding]] autorelease];
 				data = [htmlStr dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
 			}	
-
-			NSError *parseError = nil;
-			WPXMLReader *xmlReader = [[[WPXMLReader alloc] init] autorelease];
-			[xmlReader parseXMLData:data parseError:&parseError];
-			NSString *hosturl = xmlReader.hostUrl;
+			// NSError *parseError = nil;
+			// WPXMLReader *xmlReader = [[[WPXMLReader alloc] init] autorelease];
+			//[xmlReader parseXMLData:data parseError:&parseError];
+			// NSString *hosturl = xmlReader.hostUrl;
+		
+			//This is the "new" way of deriving xmlrpc endpoint...
+			RegExProcessor *regExProcessor = [[RegExProcessor alloc] init];
+			NSString *hosturl = [regExProcessor lookForXMLRPCEndpointInURLString:htmlStr];
+			[regExProcessor release];
 			return [self xmlurl:hosturl];
 		}
 	return nil;
@@ -1159,22 +1200,34 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 		return NO;
 		
 	}
-
-	if (!xmlrpc) {
-		UIAlertView *rsdError = [[UIAlertView alloc] initWithTitle:@"We could not find the XML-RPC service for your blog. Please check your network connection and try again. if the problem persists, please visit \"iphone.wordpress.org\" to report the problem."
-																	   message:nil
-																	  delegate:[[UIApplication sharedApplication] delegate]
-															 cancelButtonTitle:@"Visit Site"
-															 otherButtonTitles:@"OK", nil];
-		rsdError.tag = kRSDErrorTag;
-		[rsdError show];
-		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-		[delegate setAlertRunning:YES];
-
-		[rsdError release];
-		return NO;
-	}
+	//Unique search string: ^^XMLRPC Endpoint
+    //This line is for testing to getting the XMLRPC endpoint directly from user without needing to create a "broken" blog for testing
+    //comment out the next line for normal running of the application, uncomment the line for testing.
+    xmlrpc = nil;
 	
+    if (!xmlrpc) {//if xmlrpc is nill
+		//the next line will need to be commented out for testing (in the absence of a broken blog that has problems with the xmlrpc.php endpoint)
+		//[self tryDefaultXMLRPCEndpoint:url]; //try the default endpoint of BlogURL.com/xmlrpc.php  If it returns a list of methods after a listMethods XMLRPC call, set currentBlog valueForKey:@"xmlrpc" equal to that.
+		xmlrpc =  [currentBlog valueForKey:@"xmlrpc"];
+		NSLog(@"this is xmlrpc %@", xmlrpc);
+		
+		if (xmlrpc == @"xmlrpc url not set") {//if xmlrpc is the default value set when the blog's array is built for the first time when attempting to add the blog...
+			isProblemWithXMLRPC = YES;
+			UIAlertView *rsdError = [[UIAlertView alloc] initWithTitle:@"We could not find the XML-RPC service for your blog. Please check your network connection and try again. Or if you're self-hosted and changed your XMLRPC endpoint name, enter the full URL on the next page.  If the problem persists, please visit \"iphone.wordpress.org\" to report the problem."
+															   message:nil
+															  delegate:[[UIApplication sharedApplication] delegate]
+													 cancelButtonTitle:@"Visit Site"
+													 otherButtonTitles:@"OK", nil];
+			rsdError.tag = kRSDErrorTag;
+			[rsdError show];
+			WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+			[delegate setAlertRunning:YES];
+			
+			[rsdError release];
+			return NO;
+		}
+	} 
+
 	BOOL supportsPagesAndComments;
 	int versionCheck = [self checkXML_RPC_URL_IsRunningSupportedVersionOfWordPress: xmlrpc withPagesAndCommentsSupport:&supportsPagesAndComments];
 	if( versionCheck < 0 )
@@ -1964,30 +2017,30 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 }
 
 //TODO: remove
-- (id)newDraftsBlog 
-{	
-	NSArray *blogInitValues = [NSArray arrayWithObjects:@"Local Drafts", @"", kDraftsHostName,@"iPhone",
-							   @"", kDraftsBlogIdStr, @"Local Drafts", @"",
-							   @"",@"",@"",@"", 
-							   [NSNumber numberWithInt:0], [NSNumber numberWithInt:0], 
-							   [NSNumber numberWithInt:0], [NSNumber numberWithInt:0], @"/xmlrpc.php",@"", @"", nil];	
-		
-	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjects:blogInitValues forKeys:[self blogFieldNames]];
+- (id)newDraftsBlog {
+	//it appears no one calls this any more.
+    NSArray *blogInitValues = [NSArray arrayWithObjects:@"Local Drafts", @"", kDraftsHostName, @"iPhone",
+                               @"", kDraftsBlogIdStr, @"Local Drafts", @"xmlrpc url not set",
+                               @"", @"", @"", @"",
+                               [NSNumber numberWithInt:0], [NSNumber numberWithInt:0],
+                               [NSNumber numberWithInt:0], [NSNumber numberWithInt:0], @"/xmlrpc.php", @"", nil];	
 	
-	[dict setObject:@"0" forKey:@"kNextDraftIdStr"];
-	[dict retain];
-	return dict;
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjects:blogInitValues forKeys:[self blogFieldNames]];
+	
+    [dict setObject:@"0" forKey:@"kNextDraftIdStr"];
+    [dict retain];
+    return dict;
 }
-
 - (void)makeNewBlogCurrent {
 	
 	self->isLocaDraftsCurrent = NO;
 	
 	NSArray *blogInitValues = [NSArray arrayWithObjects:@"", @"", @"",@"",
-									@"", @"", @"", @"",
+									@"", @"", @"", @"xmlrpc url not set",
 									@"",@"",@"",@"", 
 								   [NSNumber numberWithInt:0], [NSNumber numberWithInt:0], 
 								   [NSNumber numberWithInt:0], [NSNumber numberWithInt:0], @"/xmlrpc.php",@"",@"10 Recent Posts", nil];	
+
 	
 
 	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjects:blogInitValues forKeys:[self blogFieldNames]];
