@@ -1203,11 +1203,11 @@ currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLoca
 	//Unique search string: ^^XMLRPC Endpoint
     //This line is for testing to getting the XMLRPC endpoint directly from user without needing to create a "broken" blog for testing
     //comment out the next line for normal running of the application, uncomment the line for testing.
-    xmlrpc = nil;
+    //xmlrpc = nil;
 	
     if (!xmlrpc) {//if xmlrpc is nill
 		//the next line will need to be commented out for testing (in the absence of a broken blog that has problems with the xmlrpc.php endpoint)
-		//[self tryDefaultXMLRPCEndpoint:url]; //try the default endpoint of BlogURL.com/xmlrpc.php  If it returns a list of methods after a listMethods XMLRPC call, set currentBlog valueForKey:@"xmlrpc" equal to that.
+		[self tryDefaultXMLRPCEndpoint:url]; //try the default endpoint of BlogURL.com/xmlrpc.php  If it returns a list of methods after a listMethods XMLRPC call, set currentBlog valueForKey:@"xmlrpc" equal to that.
 		xmlrpc =  [currentBlog valueForKey:@"xmlrpc"];
 		NSLog(@"this is xmlrpc %@", xmlrpc);
 		
