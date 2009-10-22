@@ -26,6 +26,8 @@
 		29598F16108A57D9009359B4 /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 29598F15108A57D9009359B4 /* RegexKitLite.m */; };
 		296890420FE96F1900770264 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 296890410FE96F1900770264 /* SFHFKeychainUtils.m */; };
 		296890780FE971DC00770264 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296890770FE971DC00770264 /* Security.framework */; };
+		299F46A210900C26006AEFB7 /* NewAppAnnounce.xib in Resources */ = {isa = PBXBuildFile; fileRef = 299F46A110900C26006AEFB7 /* NewAppAnnounce.xib */; };
+		299F46A710900D71006AEFB7 /* NewAppAnnounceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 299F46A610900D71006AEFB7 /* NewAppAnnounceViewController.m */; };
 		29FF132F0FE70F3100CFB908 /* CustomFieldsTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29FF132E0FE70F3100CFB908 /* CustomFieldsTableView.xib */; };
 		2A7F71FB0E70F82A00E48A1F /* WPCommentsDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A7F71FA0E70F82A00E48A1F /* WPCommentsDetailViewController.xib */; };
 		2A7F72010E70F8C900E48A1F /* WPCommentsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7F72000E70F8C900E48A1F /* WPCommentsDetailViewController.m */; };
@@ -156,6 +158,9 @@
 		296890400FE96F1900770264 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
 		296890410FE96F1900770264 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		296890770FE971DC00770264 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		299F46A110900C26006AEFB7 /* NewAppAnnounce.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewAppAnnounce.xib; sourceTree = "<group>"; };
+		299F46A510900D71006AEFB7 /* NewAppAnnounceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewAppAnnounceViewController.h; sourceTree = "<group>"; };
+		299F46A610900D71006AEFB7 /* NewAppAnnounceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewAppAnnounceViewController.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29FF132E0FE70F3100CFB908 /* CustomFieldsTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomFieldsTableView.xib; sourceTree = "<group>"; };
 		2A7F71FA0E70F82A00E48A1F /* WPCommentsDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WPCommentsDetailViewController.xib; sourceTree = "<group>"; };
@@ -378,6 +383,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				299F46A110900C26006AEFB7 /* NewAppAnnounce.xib */,
 				29FF132C0FE70EFF00CFB908 /* Custom Fields */,
 				A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */,
 				2FAE97040E33B21600CA8540 /* defaultPostTemplate_old.html */,
@@ -501,6 +507,8 @@
 				A0F129CA0E1FAD4F00867E18 /* AboutViewController.m */,
 				C59614C80E6C547300E2FBF0 /* BlogMainViewController.h */,
 				C59614C90E6C547300E2FBF0 /* BlogMainViewController.m */,
+				299F46A510900D71006AEFB7 /* NewAppAnnounceViewController.h */,
+				299F46A610900D71006AEFB7 /* NewAppAnnounceViewController.m */,
 			);
 			name = Blog;
 			sourceTree = "<group>";
@@ -793,6 +801,7 @@
 				C57E2FC40F7261180038F796 /* WP_application-icon.png in Resources */,
 				29FF132F0FE70F3100CFB908 /* CustomFieldsTableView.xib in Resources */,
 				29598ED3108A4C3A009359B4 /* LocateXMLRPCViewController.xib in Resources */,
+				299F46A210900C26006AEFB7 /* NewAppAnnounce.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -853,6 +862,7 @@
 				29598EAF108A4814009359B4 /* LocateXMLRPCViewController.m in Sources */,
 				29598ECD108A4B63009359B4 /* RegExProcessor.m in Sources */,
 				29598F16108A57D9009359B4 /* RegexKitLite.m in Sources */,
+				299F46A710900D71006AEFB7 /* NewAppAnnounceViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

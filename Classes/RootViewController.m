@@ -9,6 +9,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "WPLogoView.h"
 #import "WPActivityIndicatorTVCell.h"
+#import "NewAppAnnounceViewController.h"
 
 @interface RootViewController (private)
 
@@ -71,7 +72,7 @@
 //}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 2;
+	return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -138,11 +139,22 @@
 	}
 	else
 	{
+		if (indexPath.section == 1) 
+		{
 		UILabel *label = (UILabel *)[cell viewWithTag:2];
 		label.text = @"About WordPress for iPhone";
 
 //		cell.text = @"About WordPress for iPhone";
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		}
+		else {
+			UILabel *label = (UILabel *)[cell viewWithTag:2];
+			label.text = @"Get the new WP iPhone App!";
+			
+			//		cell.text = @"About WordPress for iPhone";
+			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		}
+
 	}
 	
 	return cell;
@@ -230,13 +242,24 @@
 			}
 		}
 		
-	}else {
-		AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutWordpress" bundle:nil];
+	}else if (indexPath.section == 1) 
+			{
+			AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutWordpress" bundle:nil];
+			self.title=@"Home";
+			[self pushTransition:aboutViewController];
+			self.navigationController.navigationBarHidden = NO;
+			[aboutViewController release];
+			}
+
+	else {
+		//AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutWordpress" bundle:nil];
+		NewAppAnnounceViewController *newAppAnnounceViewController = [[NewAppAnnounceViewController alloc] initWithNibName:@"NewAppAnnounce" bundle:nil];
 		self.title=@"Home";
-		[self pushTransition:aboutViewController];
+		[self pushTransition:newAppAnnounceViewController];
 		self.navigationController.navigationBarHidden = NO;
-		[aboutViewController release];
-	}	
+		[newAppAnnounceViewController release];
+	}
+	
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
