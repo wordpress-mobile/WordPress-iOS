@@ -277,8 +277,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (IBAction)showCategoriesViewAction:(id)sender {
-	[self showEditPostModalViewWithAnimation:YES];
-    //[self populateSelectionsControllerWithCategories];
+	//[self showEditPostModalViewWithAnimation:YES];
+    [self populateSelectionsControllerWithCategories];
 	
 }
 
