@@ -9,6 +9,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @interface EditPostViewController (privates)
 
 - (void)clearPickerContrller;
+- (void)showEditPostModalViewWithAnimation:(BOOL)animate;
 
 @end
 
@@ -233,6 +234,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (IBAction)showAddNewCategoryView:(id)sender {
+	
     WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithNibName:@"WPAddCategoryViewController" bundle:nil];
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:addCategoryViewController];
     [segmentedTableViewController presentModalViewController:nc animated:YES];
@@ -275,11 +277,14 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (IBAction)showCategoriesViewAction:(id)sender {
-    [self populateSelectionsControllerWithCategories];
+	[self showEditPostModalViewWithAnimation:YES];
+    //[self populateSelectionsControllerWithCategories];
+	
 }
 
 - (IBAction)showStatusViewAction:(id)sender {
     [self populateSelectionsControllerWithStatuses];
+	
 }
 
 - (IBAction)showCustomFieldsTableView:(id)sender {
@@ -486,7 +491,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 
 - (void)textViewDidBeginEditing:(UITextView *)aTextView {
-	
 	
     isEditing = YES;
 
@@ -895,6 +899,15 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         return NO;
     }
 }
+
+#pragma mark -
+#pragma mark Show EditPostModalView (Modal View)
+
+- (void)showEditPostModalViewWithAnimation:(BOOL)animate {
+	EditPostModalViewController *editPostModalViewController = [[[EditPostModalViewController alloc] initWithNibName:@"EditPostModalViewController" bundle:nil] autorelease];
+	[postDetailViewController.navigationController pushViewController:editPostModalViewController animated:animate];
+}
+
 
 #pragma mark -
 #pragma mark Memory Stuff

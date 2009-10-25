@@ -3,6 +3,7 @@
 #import "WPAddCategoryViewController.h"
 #import "WPImagePickerController.h"
 #import "CustomFieldsTableView.h"
+#import "EditPostModalViewController.h"
 
 #define kSelectionsStatusContext ((void *)1000)
 #define kSelectionsCategoriesContext ((void *)2000)

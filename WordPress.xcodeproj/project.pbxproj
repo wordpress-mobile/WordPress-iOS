@@ -34,6 +34,8 @@
 		2904E9940FE6E09600E00DBC /* CustomFieldsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2904E9910FE6E09600E00DBC /* CustomFieldsTableView.m */; };
 		2904E9950FE6E09600E00DBC /* CustomFieldsDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2904E9930FE6E09600E00DBC /* CustomFieldsDetailController.m */; };
 		292CED001027259000BD407D /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 292CECFF1027259000BD407D /* SFHFKeychainUtils.m */; };
+		2962F4721094EDD400F284B7 /* EditPostModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2962F4701094EDD400F284B7 /* EditPostModalViewController.m */; };
+		2962F4731094EDD400F284B7 /* EditPostModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2962F4711094EDD400F284B7 /* EditPostModalViewController.xib */; };
 		296526FE105810E100597FA3 /* NSString+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 296526FD105810E100597FA3 /* NSString+Helpers.m */; };
 		296890780FE971DC00770264 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296890770FE971DC00770264 /* Security.framework */; };
 		29B666331061315800CABB70 /* MainBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B666321061315800CABB70 /* MainBackground.png */; };
@@ -176,6 +178,9 @@
 		2904E9930FE6E09600E00DBC /* CustomFieldsDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomFieldsDetailController.m; sourceTree = "<group>"; };
 		292CECFE1027259000BD407D /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
 		292CECFF1027259000BD407D /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
+		2962F46F1094EDD400F284B7 /* EditPostModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditPostModalViewController.h; sourceTree = "<group>"; };
+		2962F4701094EDD400F284B7 /* EditPostModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditPostModalViewController.m; sourceTree = "<group>"; };
+		2962F4711094EDD400F284B7 /* EditPostModalViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditPostModalViewController.xib; path = Classes/EditPostModalViewController.xib; sourceTree = "<group>"; };
 		296526FC105810E100597FA3 /* NSString+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Helpers.h"; sourceTree = "<group>"; };
 		296526FD105810E100597FA3 /* NSString+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Helpers.m"; sourceTree = "<group>"; };
 		296890770FE971DC00770264 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -480,6 +485,8 @@
 				2F706C290DFB8A5200B43086 /* PostViewController.m */,
 				2F970F720DF92274006BD934 /* PostsViewController.h */,
 				2F970F730DF92274006BD934 /* PostsViewController.m */,
+				2962F46F1094EDD400F284B7 /* EditPostModalViewController.h */,
+				2962F4701094EDD400F284B7 /* EditPostModalViewController.m */,
 			);
 			name = Post;
 			sourceTree = "<group>";
@@ -640,6 +647,7 @@
 				ACBAB67C0E1247CC00F38795 /* PostPreviewViewController.xib */,
 				ACBAB6080E121CF700F38795 /* PostSettingsViewController.xib */,
 				ACC156BA0E10D73100D6E1A0 /* PostViewController.xib */,
+				2962F4711094EDD400F284B7 /* EditPostModalViewController.xib */,
 			);
 			name = Post;
 			sourceTree = "<group>";
@@ -824,6 +832,7 @@
 				CE31B4311022644F00BC060C /* posts.png in Resources */,
 				6EDC0E8F105881A800F68A1D /* iTunesArtwork in Resources */,
 				29B666331061315800CABB70 /* MainBackground.png in Resources */,
+				2962F4731094EDD400F284B7 /* EditPostModalViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -893,6 +902,7 @@
 				032BD74F101FCF59006F0017 /* ResourcesTableViewSection.m in Sources */,
 				292CED001027259000BD407D /* SFHFKeychainUtils.m in Sources */,
 				296526FE105810E100597FA3 /* NSString+Helpers.m in Sources */,
+				2962F4721094EDD400F284B7 /* EditPostModalViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
