@@ -22,7 +22,7 @@
 - (void)viewWillAppear:(BOOL)animated {
 	
 	self.navigationController.navigationBarHidden= NO;
-	self.title=@"About";
+	self.title=@"Get 2.0 Now!";
 	
 	[super viewWillAppear:animated];
 }
@@ -65,9 +65,9 @@
 -(void) loadWebView {
 	NSString *version  = [[[NSBundle mainBundle] infoDictionary] valueForKey:[NSString stringWithFormat:@"CFBundleVersion"]];
 	[webView loadHTMLString:[NSString stringWithFormat:@"<font face=\"Helvetica\"> <p style=\"color:rgb(51,51,51);padding-top:8px;\"><br><br><br><br><br><br><br><br><br><br><b style=\"font-size:18px;\">WordPress for iPhone</b><br>Version %@<br><br>"
-							 "An Open Source iPhone app for WordPress blogs.<br><br>"
-							 "WordPress for iPhone was created by Automattic and developed by the WordPress community with the help of Prithvi Information Solutions.<br><br>"
-							 "For more information or to contribute to the project,<br />visit our web site at <a style=\"color:rgb(37,131,173);text-decoration:none\" href=\"http://iphone.wordpress.org/\">iphone.wordpress.org</a>.</p></font>",version] baseURL:nil];
+							 
+							 "A new version of WordPress for iPhone is now available. <br><br>WordPress for iPhone 2 is a free update that adds new features and a great new user interface.<br><br>"
+							 "<a style=\"color:rgb(37,131,173);text-decoration:none\" href=\"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=335703880&mt=8\">Download it now from the App Store!</a></p></font>",version] baseURL:nil];
 	[webView setBackgroundColor:[UIColor whiteColor]];
 }
 

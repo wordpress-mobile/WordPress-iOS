@@ -72,7 +72,7 @@
 //}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 3;
+	return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -142,19 +142,11 @@
 		if (indexPath.section == 1) 
 		{
 		UILabel *label = (UILabel *)[cell viewWithTag:2];
-		label.text = @"About WordPress for iPhone";
+		label.text = @"New Version Now Available";
 
 //		cell.text = @"About WordPress for iPhone";
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		}
-		else {
-			UILabel *label = (UILabel *)[cell viewWithTag:2];
-			label.text = @"Get the new WP iPhone App!";
-			
-			//		cell.text = @"About WordPress for iPhone";
-			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-		}
-
 	}
 	
 	return cell;
