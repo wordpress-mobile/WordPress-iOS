@@ -213,7 +213,8 @@
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return indexPath.section == LOCAL_DRAFTS_SECTION;
+    //return indexPath.section == LOCAL_DRAFTS_SECTION;
+	return YES;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -222,7 +223,19 @@
     if (indexPath.section == LOCAL_DRAFTS_SECTION) {
         [dataManager deleteDraftAtIndex:indexPath.row forBlog:[dataManager currentBlog]];
     } else {
+		if (indexPath.section == POSTS_SECTION) {
         // TODO: delete the post.
+		//[datamanager deletePostAtIndex:indexPath.row forBLog:[datamanager currentBlog]];
+		//derive swiped post via indexPath.row (somehow) from dm.currentPost
+		//guess - see what happens when a cell is touched...  ahh... [dataManager makePostAtIndexCurrent:indexPath.row];
+		//[datamanager deleteSwipedPost:
+			//this must either delete the post from BOTH the blog AND the local data store....
+			// OR it must delete from blog, then reload posts from blog (which is what I suspect is the general pattern here)
+				//if we do differently, we'll need to look very carefully at the datastore and how to manipulate it to remove a post without damage
+//		UIAlertView *swipeToDeleteAlert = [[UIAlertView alloc] initWithTitle:@"Swipe!" message:@"You swiped to delete. More code on the way" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//		[swipeToDeleteAlert show];
+//		[swipeToDeleteAlert release];
+		}
     }
 
     [self loadPosts];

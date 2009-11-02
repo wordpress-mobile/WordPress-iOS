@@ -4061,6 +4061,9 @@ editBlogViewController;
     NSString *fullURL = [blog valueForKey:@"xmlrpc"];
     NSString *blogid = [blog valueForKey:kBlogId];
     NSDictionary *commentsStructure = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kNumberOfCommentsToDisplay] forKey:@"number"];
+	NSLog(@"number of comments to display: %@", commentsStructure);
+	NSLog(@"blogid, username, pwd %@ : %@ : %@", blogid, username, pwd);
+	
 
     //  ------------------------- invoke metaWeblog.getRecentPosts
     XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
@@ -4068,6 +4071,7 @@ editBlogViewController;
      withObjects:[NSArray arrayWithObjects:blogid, username, pwd, commentsStructure, nil]];
 
     NSMutableArray *commentsReceived = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
+	NSLog(@"TheARrayt: %@", commentsReceived);
     [postsReq release];
 
     // TODO:
