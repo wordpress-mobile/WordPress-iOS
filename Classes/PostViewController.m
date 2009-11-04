@@ -440,6 +440,8 @@
 	
 	if (![[[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"title"] isEqualToString:@""]) {
 		self.navigationItem.title = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"title"];
+	}else{
+		self.navigationItem.title = @"Write";
 	}
 
     if (hasChanges == YES) {
@@ -484,7 +486,7 @@
         postDetailEditController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil];
     }
 	
-    postDetailEditController.title = @"Write";
+//    postDetailEditController.title = @"Write";
     postDetailEditController.tabBarItem.image = [UIImage imageNamed:@"write.png"];
     postDetailEditController.postDetailViewController = self;
     [array addObject:postDetailEditController];
