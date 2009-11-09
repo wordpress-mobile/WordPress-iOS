@@ -221,8 +221,6 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-	//[refreshButton startAnimating];
-	[self refreshHandler];
 	
     if (indexPath.section == LOCAL_DRAFTS_SECTION) {
         [dataManager deleteDraftAtIndex:indexPath.row forBlog:[dataManager currentBlog]];

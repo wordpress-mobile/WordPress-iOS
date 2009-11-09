@@ -219,7 +219,8 @@
         [dateFormatter setDateStyle:NSDateFormatterLongStyle];
     }
     
-    gravatarImageView.email = authorEmail;
+	gravatarImageView.email = authorEmail;
+	commentAuthorEmailLabel.text = authorEmail;
     commentAuthorLabel.text = author;
     commentAuthorUrlLabel.text = authorUrl;
     commentPostTitleLabel.text = [@"on " stringByAppendingString:postTitle];

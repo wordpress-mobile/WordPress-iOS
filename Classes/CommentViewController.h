@@ -14,6 +14,7 @@
     IBOutlet GravatarImageView *gravatarImageView;
     IBOutlet UILabel *commentAuthorLabel;
     IBOutlet UILabel *commentAuthorUrlLabel;
+	IBOutlet UILabel *commentAuthorEmailLabel;
     IBOutlet UILabel *commentPostTitleLabel;
     IBOutlet UILabel *commentDateLabel;
     IBOutlet UILabel *commentBodyLabel;

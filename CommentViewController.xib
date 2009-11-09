@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.03">
 	<data>
 		<int key="IBDocument.SystemTarget">528</int>
-		<string key="IBDocument.SystemVersion">9J3050</string>
+		<string key="IBDocument.SystemVersion">9L31a</string>
 		<string key="IBDocument.InterfaceBuilderVersion">677</string>
-		<string key="IBDocument.AppKitVersion">949.46</string>
+		<string key="IBDocument.AppKitVersion">949.54</string>
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="84"/>
+			<integer value="113"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -246,11 +246,29 @@
 										<bool key="IBUIClipsSubviews">YES</bool>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="IBUIText">blog.appleseed.com</string>
-										<object class="NSFont" key="IBUIFont">
+										<object class="NSFont" key="IBUIFont" id="787371715">
 											<string key="NSName">Helvetica</string>
 											<double key="NSSize">1.200000e+01</double>
 											<int key="NSfFlags">16</int>
 										</object>
+										<object class="NSColor" key="IBUITextColor">
+											<int key="NSColorSpace">1</int>
+											<bytes key="NSRGB">MC4yIDAuMiAwLjIAA</bytes>
+										</object>
+										<nil key="IBUIHighlightedColor"/>
+										<int key="IBUIBaselineAdjustment">1</int>
+										<float key="IBUIMinimumFontSize">1.000000e+01</float>
+									</object>
+									<object class="IBUILabel" id="202604078">
+										<reference key="NSNextResponder" ref="898074275"/>
+										<int key="NSvFlags">290</int>
+										<string key="NSFrame">{{98, 43}, {210, 16}}</string>
+										<reference key="NSSuperview" ref="898074275"/>
+										<bool key="IBUIOpaque">NO</bool>
+										<bool key="IBUIClipsSubviews">YES</bool>
+										<bool key="IBUIUserInteractionEnabled">NO</bool>
+										<string key="IBUIText">commentor@appleseed.com</string>
+										<reference key="IBUIFont" ref="787371715"/>
 										<object class="NSColor" key="IBUITextColor">
 											<int key="NSColorSpace">1</int>
 											<bytes key="NSRGB">MC4yIDAuMiAwLjIAA</bytes>
@@ -493,6 +511,14 @@
 					</object>
 					<int key="connectionID">111</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">commentAuthorEmailLabel</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="202604078"/>
+					</object>
+					<int key="connectionID">115</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -635,6 +661,7 @@
 							<reference ref="363582112"/>
 							<reference ref="968367912"/>
 							<reference ref="916267571"/>
+							<reference ref="202604078"/>
 						</object>
 						<reference key="parent" ref="24131200"/>
 					</object>
@@ -668,6 +695,11 @@
 						<reference key="object" ref="525850944"/>
 						<reference key="parent" ref="24131200"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">114</int>
+						<reference key="object" ref="202604078"/>
+						<reference key="parent" ref="898074275"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -684,6 +716,7 @@
 					<string>101.IBPluginDependency</string>
 					<string>108.IBPluginDependency</string>
 					<string>113.IBPluginDependency</string>
+					<string>114.IBPluginDependency</string>
 					<string>26.IBPluginDependency</string>
 					<string>27.IBPluginDependency</string>
 					<string>30.IBPluginDependency</string>
@@ -706,11 +739,12 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>CommentViewController</string>
 					<string>UIResponder</string>
-					<string>{{440, 384}, {320, 480}}</string>
+					<string>{{440, 376}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<boolean value="YES"/>
 					<boolean value="NO"/>
 					<string>GravatarImageView</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -780,7 +814,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">113</int>
+			<int key="maxID">115</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -813,6 +847,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>approveAndUnapproveButtonBar</string>
 							<string>approveButton</string>
+							<string>commentAuthorEmailLabel</string>
 							<string>commentAuthorLabel</string>
 							<string>commentAuthorUrlLabel</string>
 							<string>commentBodyLabel</string>
@@ -829,6 +864,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIToolbar</string>
 							<string>UIBarButtonItem</string>
+							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
