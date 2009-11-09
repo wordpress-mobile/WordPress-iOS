@@ -13,6 +13,8 @@
 #define POSTS_SECTION           1
 #define NUM_SECTIONS            2
 
+#define TAG_OFFSET 1010
+
 @interface PostsViewController (Private)
 
 - (void)scrollToFirstCell;
@@ -218,28 +220,41 @@
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-
+	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
+	//[refreshButton startAnimating];
+	[self refreshHandler];
+	
     if (indexPath.section == LOCAL_DRAFTS_SECTION) {
         [dataManager deleteDraftAtIndex:indexPath.row forBlog:[dataManager currentBlog]];
+		[self refreshHandler];
     } else {
-		if (indexPath.section == POSTS_SECTION) {
-        // TODO: delete the post.
-		//[datamanager deletePostAtIndex:indexPath.row forBLog:[datamanager currentBlog]];
-		//derive swiped post via indexPath.row (somehow) from dm.currentPost
-		//guess - see what happens when a cell is touched...  ahh... [dataManager makePostAtIndexCurrent:indexPath.row];
-		//[datamanager deleteSwipedPost:
-			//this must either delete the post from BOTH the blog AND the local data store....
-			// OR it must delete from blog, then reload posts from blog (which is what I suspect is the general pattern here)
-				//if we do differently, we'll need to look very carefully at the datastore and how to manipulate it to remove a post without damage
-//		UIAlertView *swipeToDeleteAlert = [[UIAlertView alloc] initWithTitle:@"Swipe!" message:@"You swiped to delete. More code on the way" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//		[swipeToDeleteAlert show];
-//		[swipeToDeleteAlert release];
+		if (indexPath.section == POSTS_SECTION){
+			//[refreshButton startAnimating];
+			[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+			//check for reachability
+				if ([[Reachability sharedReachability] internetConnectionStatus] == NotReachable) {
+					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Communication Error."
+																	message:@"no internet connection."
+																   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+					alert.tag = TAG_OFFSET;
+					[alert show];
+					
+					WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+					[delegate setAlertRunning:YES];
+					[alert release];
+					return;
+			}else{
+				//if reachability is good, make post at index current, delete post, and refresh view (sync posts)
+				[dataManager makePostAtIndexCurrent:indexPath.row];
+				//delete post
+				//if ([dataManager deletePost]){
+				[dataManager deletePost];
+				//resync posts
+				[self refreshHandler];
+			}
 		}
-    }
-
-    [self loadPosts];
-}
+		}
+	}
 
 #pragma mark -
 #pragma mark Private Methods

@@ -220,6 +220,7 @@
 - (void)resetCurrentPost;
 //- (BOOL)publishCurrentPost;
 - (BOOL)savePost:(id)aPost;
+- (BOOL)deletePost;
 - (BOOL)autoSaveCurrentPost;
 - (BOOL)makeAutoSavedPostCurrentForCurrentBlog;
 - (id)autoSavedPostForCurrentBlog;
