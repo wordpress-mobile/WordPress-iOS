@@ -114,8 +114,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
     } else {
         textViewPlaceHolderField.hidden = YES;
 
-        if ((moreText != NULL) && ([moreText length] > 0))
-            textView.text = [NSString stringWithFormat:@"%@\n<!--more-->%@", description, moreText];else
+        if ((moreText != NULL) && ([moreText length] > 0)){
+			// To Do: when we show more tag label dynamically, we need to add label (if any) of more tag in the Character set string .
+			NSRange moretagRange = [description rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"<!--more-->"] options:NSForcedOrderingSearch];
+		if (moretagRange.length == 0)
+            textView.text = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", description, moreText];
+		}	
+		else
             textView.text = description;
     }
 
