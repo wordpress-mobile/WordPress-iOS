@@ -73,6 +73,7 @@
 - (void)dealloc {
     [nameLabel release];
     [urlLabel release];
+	[emailLabel release];
     [postLabel release];
     [commentLabel release];
     [gravatarImageView release];
