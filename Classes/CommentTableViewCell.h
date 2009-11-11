@@ -9,7 +9,7 @@
 #import "GravatarImageView.h"
 #import "WPLabel.h"
 
-#define COMMENT_ROW_HEIGHT 100
+#define COMMENT_ROW_HEIGHT 115
 
 @interface CommentTableViewCell : UITableViewCell {
     NSDictionary *comment;
@@ -17,6 +17,7 @@
     UIButton *checkButton;
     UILabel *nameLabel;
     UILabel *urlLabel;
+	UILabel *emailLabel;
     UILabel *postLabel;
     WPLabel *commentLabel;
     GravatarImageView *gravatarImageView;

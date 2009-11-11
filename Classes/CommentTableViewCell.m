@@ -8,7 +8,7 @@
 #import "CommentTableViewCell.h"
 #import "CommentsTableViewDelegate.h"
 
-#define PADDING                     5
+#define PADDING                     17
 #define CELL_PADDING                8
 
 #define TOP_OFFSET                  CELL_PADDING
@@ -24,6 +24,7 @@
 #define DATE_LABEL_HEIGHT           20
 #define NAME_LABEL_HEIGHT           20
 #define URL_LABEL_HEIGHT            15
+#define EMAIL_LABEL_HEIGHT			15
 #define POST_LABEL_HEIGHT           15
 
 #define CHECK_BUTTON_CHECKED_ICON   @"check.png"
@@ -41,6 +42,7 @@
 - (void)addCheckButton;
 - (void)addNameLabel;
 - (void)addURLLabel;
+- (void)addEmailLabel;
 - (void)addPostLabel;
 - (void)addCommentLabel;
 - (void)addGravatarImageView;
@@ -59,6 +61,7 @@
         [self addCheckButton];
         [self addNameLabel];
         [self addURLLabel];
+		[self addEmailLabel];
         [self addPostLabel];
         [self addCommentLabel];
         [self addGravatarImageView];
@@ -119,6 +122,7 @@
 
     NSString *email = [comment valueForKey:@"author_email"];
     gravatarImageView.email = email;
+	emailLabel.text = [comment valueForKey:@"author_email"];
 }
 
 // Calls the tableView:didCheckRowAtIndexPath method on the table view delegate.
@@ -159,6 +163,11 @@
     rect.origin.x = GRAVATAR_LEFT_OFFSET + buttonOffset;
     rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
     urlLabel.frame = rect;
+	
+	rect = emailLabel.frame;
+    rect.origin.x = GRAVATAR_LEFT_OFFSET + buttonOffset;
+    rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
+    emailLabel.frame = rect;
     
     rect = postLabel.frame;
     rect.origin.x = GRAVATAR_LEFT_OFFSET + buttonOffset;
@@ -213,8 +222,22 @@
     [self.contentView addSubview:urlLabel];
 }
 
+- (void)addEmailLabel {
+    CGRect rect = CGRectMake(GRAVATAR_LEFT_OFFSET, urlLabel.frame.origin.y + URL_LABEL_HEIGHT, OTHER_LABEL_WIDTH, EMAIL_LABEL_HEIGHT);
+	
+    emailLabel = [[UILabel alloc] initWithFrame:rect];
+    emailLabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
+    emailLabel.backgroundColor = [UIColor clearColor];
+    emailLabel.textColor = [UIColor grayColor];
+    emailLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+	
+    [self.contentView addSubview:emailLabel];
+}
+
+
 - (void)addPostLabel {
-    CGRect rect = CGRectMake(GRAVATAR_LEFT_OFFSET, urlLabel.frame.origin.y + URL_LABEL_HEIGHT, OTHER_LABEL_WIDTH, POST_LABEL_HEIGHT);
+    CGRect rect = CGRectMake(GRAVATAR_LEFT_OFFSET, emailLabel.frame.origin.y + EMAIL_LABEL_HEIGHT
+							 , OTHER_LABEL_WIDTH, POST_LABEL_HEIGHT);
     
     postLabel = [[UILabel alloc] initWithFrame:rect];
     postLabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
