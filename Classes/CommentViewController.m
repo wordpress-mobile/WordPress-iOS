@@ -88,13 +88,14 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-
-    if ([delegate isAlertRunning] == YES) {
-        return NO;
-    } else {
-        return YES;
-    }
+//    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+//
+//    if ([delegate isAlertRunning] == YES) {
+//        return NO;
+//    } else {
+//        return YES;
+//    }
+	return NO;
 }
 
 #pragma mark -
