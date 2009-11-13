@@ -225,7 +225,7 @@
     commentAuthorLabel.text = author;
     commentAuthorUrlLabel.text = authorUrl;
     commentPostTitleLabel.text = [@"on " stringByAppendingString:postTitle];
-    commentDateLabel.text = [@"at " stringByAppendingString:[dateFormatter stringFromDate:createdAt]];
+    commentDateLabel.text = [@"" stringByAppendingString:[dateFormatter stringFromDate:createdAt]];
     commentBodyLabel.text = commentBody;
     
     [self resizeCommentBodyLabel];
