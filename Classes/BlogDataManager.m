@@ -3679,10 +3679,6 @@ editBlogViewController;
 	
 	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[[self currentBlog] valueForKey:@"xmlrpc"]]];
 	[request setMethod:@"metaWeblog.deletePost" withObjects:args];
-	//
-	NSArray *myStars = [NSArray arrayWithObjects:request];
-	NSLog(@"myStars: %@", myStars);
-	//
 	NSDictionary *deleteDict = [[BlogDataManager sharedDataManager] executeXMLRPCRequest:request byHandlingError:YES];
 	if (![deleteDict isKindOfClass:[NSDictionary class]])  //err occured.
         return NO;
@@ -3690,8 +3686,9 @@ editBlogViewController;
 	//NSArray *deleteArray2 = [[BlogDataManager sharedDataManager] executeXMLRPCRequest:request byHandlingError:NO];
 	NSLog(@"deleteDict: %@", deleteDict);
 	//NSLog(@"deleteArray2: %@", deleteArray2);
-	
+	NSLog(@"about to release request");
 	[request release];
+	NSLog(@"released request about to return YES");
 	return YES;
 }
 - (void)resetCurrentPage {
