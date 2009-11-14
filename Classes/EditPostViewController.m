@@ -522,6 +522,47 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
 }
 
+ //replace "&nbsp" with a space @"&#160" before apple can do so an screw it all up
+- (BOOL)textView:(UITextView *)aTextView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+	
+    // create final version of textView after the current text has been inserted
+    NSMutableString *updatedText = [[NSMutableString alloc] initWithString:aTextView.text];
+    [updatedText insertString:text atIndex:range.location];
+	
+    NSRange replaceRange = range, endRange = range;
+	
+    if (text.length > 1) {
+        // handle paste
+        replaceRange.length = text.length;
+    } else {
+        // handle normal typing
+        replaceRange.length = 5;  // length of "hi" is two characters
+        replaceRange.location -= 4; // look back one characters (length of "hi" minus one)
+    }
+	
+    // replace "hi" with "hello" for the inserted range
+    int replaceCount = [updatedText replaceOccurrencesOfString:@"&nbsp" withString:@"&#160" options:NSCaseInsensitiveSearch range:replaceRange];
+	
+    if (replaceCount > 0) {
+        // update the textView's text
+        aTextView.text = updatedText;
+		
+        // leave cursor at end of inserted text
+        endRange.location += text.length + replaceCount * 4; // length diff of "&nbsp" and "&#160" is 3 characters
+        aTextView.selectedRange = endRange; 
+		
+        [updatedText release];
+		
+        // let the textView know that it should ingore the inserted text
+        return NO;
+    }
+	
+    [updatedText release];
+	
+    // let the textView know that it should handle the inserted text
+    return YES;
+}
+
 - (void)textViewDidChange:(UITextView *)aTextView {
     postDetailViewController.hasChanges = YES;
     [self updateTextViewPlacehoderFieldStatus];
@@ -537,6 +578,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     NSString *str = [aTextView text];
 	//NSLog(@"this is str::-->  %@", str);
 	NSLog(@"this is str's count %d", str.length);
+	NSLog(@"this is the string from the textView %@", str);
     int i, j, count = [stringArray count];
     BOOL searchRes = NO;
 
@@ -549,7 +591,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		//I took this out because adding &nbsp; to the post caused a mismatch between the length of the string from the text field and range.location
 		//both should be equal, but the OS/Cocoa interprets &nbsp; as ONE space, not 6.
 		//This caused NSString *subStr = [str substringWithRange:subStrRange]; to fail if the user entered &nbsp; in the post
-		subStrRange.location = str.length -j;
+		//subStrRange.location = str.length -j;
+		 subStrRange.location = range.location - j;
         subStrRange.length = j;
         [self setSelectedLinkRange:subStrRange];
 		
