@@ -522,7 +522,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
 }
 
- //replace "&nbsp" with a space @"&#160" before apple can do so an screw it all up
+//replace "&nbsp" with a space @"&#160;" before Apple's broken TextView handling can do so and break things
+//this enables the "http helper" to work as expected
+//important is capturing &nbsp BEFORE the semicolon is added.  Not doing so causes a crash in the textViewDidChange method due to array overrun
 - (BOOL)textView:(UITextView *)aTextView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
 	
     // create final version of textView after the current text has been inserted
@@ -536,19 +538,19 @@ NSTimeInterval kAnimationDuration = 0.3f;
         replaceRange.length = text.length;
     } else {
         // handle normal typing
-        replaceRange.length = 5;  // length of "hi" is two characters
-        replaceRange.location -= 4; // look back one characters (length of "hi" minus one)
+        replaceRange.length = 6;  // length of "&#160;" is 6 characters
+        replaceRange.location -= 5; // look back one characters (length of "&#160;" minus one)
     }
 	
-    // replace "hi" with "hello" for the inserted range
-    int replaceCount = [updatedText replaceOccurrencesOfString:@"&nbsp" withString:@"&#160" options:NSCaseInsensitiveSearch range:replaceRange];
+    // replace "&nbsp" with "&#160;" for the inserted range
+    int replaceCount = [updatedText replaceOccurrencesOfString:@"&nbsp" withString:@"&#160;" options:NSCaseInsensitiveSearch range:replaceRange];
 	
     if (replaceCount > 0) {
         // update the textView's text
         aTextView.text = updatedText;
 		
         // leave cursor at end of inserted text
-        endRange.location += text.length + replaceCount * 4; // length diff of "&nbsp" and "&#160" is 3 characters
+        endRange.location += text.length + replaceCount * 1; // length diff of "&nbsp" and "&#160;" is 1 character
         aTextView.selectedRange = endRange; 
 		
         [updatedText release];
@@ -562,6 +564,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     // let the textView know that it should handle the inserted text
     return YES;
 }
+
 
 - (void)textViewDidChange:(UITextView *)aTextView {
     postDetailViewController.hasChanges = YES;
