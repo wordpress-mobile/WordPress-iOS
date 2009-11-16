@@ -486,7 +486,7 @@
         postDetailEditController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil];
     }
 	
-//    postDetailEditController.title = @"Write";
+    postDetailEditController.title = @"Write";
     postDetailEditController.tabBarItem.image = [UIImage imageNamed:@"write.png"];
     postDetailEditController.postDetailViewController = self;
     [array addObject:postDetailEditController];
