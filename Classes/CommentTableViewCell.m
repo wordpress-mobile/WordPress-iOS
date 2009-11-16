@@ -107,9 +107,17 @@
     NSCharacterSet *whitespaceCS = [NSCharacterSet whitespaceCharacterSet];
     NSString *author = [[comment valueForKey:@"author"] stringByTrimmingCharactersInSet:whitespaceCS];
     nameLabel.text = author;
-
+	
+//conditional load of author_email if url is empty per ticket #273
     NSString *authorURL = [comment valueForKey:@"author_url"];
-    urlLabel.text = authorURL;
+	if ( authorURL == nil || [authorURL isEqualToString:@"http://"] || [authorURL isEqualToString:@""]) {
+		NSLog(@"authorURL was nill or empty");
+		NSString *emailInsteadOfURL = [comment valueForKey:@"author_email"];
+		urlLabel.text = emailInsteadOfURL;
+	}else {
+		urlLabel.text = authorURL;
+	}
+
     
     NSString *postTitle = [comment valueForKey:@"post_title"];
     postLabel.text = [@"on " stringByAppendingString:postTitle];
