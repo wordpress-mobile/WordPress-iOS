@@ -291,6 +291,7 @@
 - (void)loadPageTitlesForCurrentBlog;
 - (void)makePageAtIndexCurrent:(NSUInteger)theIndex;
 - (BOOL)savePage:(id)aPage;
+- (BOOL)deletePage;
 - (void)makeNewPageCurrent;
 
 - (NSString *)pageStatusForStatusDescription:(NSString *)statusDescription fromBlog:(id)aBlog;

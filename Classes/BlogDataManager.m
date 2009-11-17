@@ -2583,6 +2583,41 @@ editBlogViewController;
     return successFlag;
 }
 
+- (BOOL)deletePage {
+	//calling method in PagesViewController (tableView:(UITableView *)tableView commitEditingStyle:) sets current page before calling this method.
+	//currentBlog = [[BlogDataManager sharedDataManager] currentBlog];
+	//NSString *blogid = [currentBlog valueForKey:@"blogid"];
+	NSString *pageid = [currentPage valueForKey:@"page_id"];
+	NSLog(@"pageid %@", pageid);
+	
+	//NSString *bloggerAPIKey = @"ABCDEF012345";
+	//NSString *username = [currentBlog valueForKey:@"username"];
+	//NSLog(@"username %@" , username);
+	NSArray *args = [NSArray arrayWithObjects:
+					 [currentBlog valueForKey:@"blogid"],
+					 [currentBlog valueForKey:@"username"],
+					 [self getPasswordFromKeychainInContextOfCurrentBlog:[self currentBlog]],
+					 [currentPage valueForKey:@"page_id"],
+					 nil];
+	NSLog(@"args to log: %@", args);
+	NSLog(@"currentPage %@", currentPage);
+	
+	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[[self currentBlog] valueForKey:@"xmlrpc"]]];
+	[request setMethod:@"wp.deletePage" withObjects:args];
+	NSDictionary *deleteDict = [[BlogDataManager sharedDataManager] executeXMLRPCRequest:request byHandlingError:YES];
+	if (![deleteDict isKindOfClass:[NSDictionary class]])  //err occured.
+        return NO;
+	
+	//NSArray *deleteArray2 = [[BlogDataManager sharedDataManager] executeXMLRPCRequest:request byHandlingError:NO];
+	NSLog(@"deleteDict: %@", deleteDict);
+	//NSLog(@"deleteArray2: %@", deleteArray2);
+	NSLog(@"about to release request");
+	[request release];
+	NSLog(@"released request about to return YES");
+	return YES;
+}
+
+
 - (void)makeNewPageCurrent {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
 

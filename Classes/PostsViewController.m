@@ -25,7 +25,7 @@
 - (void)syncPosts;
 - (BOOL)handleAutoSavedContext:(NSInteger)tag;
 - (void)addRefreshButton;
-- (void)showProgressAlert;
+- (void)deletePostAtIndexPath;
 
 @end
 
@@ -223,52 +223,11 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 
-	[self performSelectorInBackground:@selector(showProgressAlert) withObject:nil];
+	progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Deleting Post..."];
+	[progressAlert show];
 	
-	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
+	[self performSelectorInBackground:@selector(deletePostAtIndexPath:) withObject:indexPath];
 	
-    if (indexPath.section == LOCAL_DRAFTS_SECTION) {
-        [dataManager deleteDraftAtIndex:indexPath.row forBlog:[dataManager currentBlog]];
-		[self refreshHandler];
-    } else {
-		if (indexPath.section == POSTS_SECTION){
-			//[refreshButton startAnimating];
-			//[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-			
-			
-			//check for reachability
-				if ([[Reachability sharedReachability] internetConnectionStatus] == NotReachable) {
-					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Communication Error."
-																	message:@"no internet connection."
-																   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-					alert.tag = TAG_OFFSET;
-					[alert show];
-					
-					WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-					[delegate setAlertRunning:YES];
-					[alert release];
-					return;
-			}else{
-//				- (void)deleteComment:(id)sender {
-//					progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Deleting..."];
-//					[progressAlert show];
-//					
-//					[self performSelectorInBackground:@selector(deleteThisComment) withObject:nil];
-//				}
-				
-				//if reachability is good, make post at index current, delete post, and refresh view (sync posts)
-				[dataManager makePostAtIndexCurrent:indexPath.row];
-				//delete post
-				//if ([dataManager deletePost]){
-				[dataManager deletePost];
-				//resync posts
-				[self syncPosts];
-			
-			}
-		}
-	}
-	[progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-	[progressAlert release];
 }
 
 #pragma mark -
@@ -379,9 +338,48 @@
 	[delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
 }
 
-- (void) showProgressAlert {
-	progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Deleting Post..."];
-	[progressAlert show];
+- (void) deletePostAtIndexPath:(id)object{
+	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+	
+	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
+	//NewObj* pNew = (NewObj*)oldObj;
+	NSIndexPath *indexPath = (NSIndexPath*)object;
+	
+    if (indexPath.section == LOCAL_DRAFTS_SECTION) {
+        [dataManager deleteDraftAtIndex:indexPath.row forBlog:[dataManager currentBlog]];
+		[self syncPosts];
+    } else {
+		if (indexPath.section == POSTS_SECTION){
+			//check for reachability
+			if ([[Reachability sharedReachability] internetConnectionStatus] == NotReachable) {
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Communication Error."
+																message:@"no internet connection."
+															   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+				alert.tag = TAG_OFFSET;
+				[alert show];
+				
+				WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+				[delegate setAlertRunning:YES];
+				[alert release];
+				return;
+			}else{				
+				//if reachability is good, make post at index current, delete post, and refresh view (sync posts)
+				[dataManager makePostAtIndexCurrent:indexPath.row];
+				//delete post
+				//if ([dataManager deletePage]){
+				[dataManager deletePost];
+				//resync posts
+				[self syncPosts];
+				
+			}
+		}
+	}
+	
+	[progressAlert dismissWithClickedButtonIndex:0 animated:YES];
+    [progressAlert release];
+    [pool release];
+	
 }
+
 
 @end

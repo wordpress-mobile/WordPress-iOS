@@ -13,6 +13,7 @@
 @interface PagesViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate> {
 @private
     UIBarButtonItem *newButtonItem;
+	UIAlertView *progressAlert;
 
     EditPageViewController *pageDetailViewController;
     PageViewController *pageDetailsController;

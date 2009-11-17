@@ -13,10 +13,13 @@
 #import "PostTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
+#import "WPProgressHUD.h"
 
 #define LOCAL_DRAFTS_SECTION    0
 #define PAGES_SECTION           1
 #define NUM_SECTIONS            2
+
+#define TAG_OFFSET 1010
 
 @interface PagesViewController (Private)
 
@@ -27,6 +30,7 @@
 - (void)syncPages;
 - (void)showAddNewPage;
 - (void)addRefreshButton;
+- (void)deletePageAtIndexPath;
 
 @end
 
@@ -188,20 +192,18 @@
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return indexPath.section == LOCAL_DRAFTS_SECTION;
+    //return indexPath.section == LOCAL_DRAFTS_SECTION;
+	return YES;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-
-    if (indexPath.section == LOCAL_DRAFTS_SECTION) {
-        [dataManager deletePageDraftAtIndex:indexPath.row forBlog:[dataManager currentBlog]];
-    } else {
-        // TODO: delete the page.
-    }
-
-    [self loadPages];
+	
+	progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Deleting Page..."];
+	[progressAlert show];
+	
+	[self performSelectorInBackground:@selector(deletePageAtIndexPath:) withObject:indexPath];
 }
+
 
 #pragma mark -
 #pragma mark Private Methods
@@ -277,6 +279,48 @@
 
     // Return YES for supported orientations
     return YES;
+}
+
+- (void) deletePageAtIndexPath:(id)object{
+	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+	
+	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
+	
+	NSIndexPath *indexPath = (NSIndexPath*)object;
+	
+    if (indexPath.section == LOCAL_DRAFTS_SECTION) {
+        [dataManager deletePageDraftAtIndex:indexPath.row forBlog:[dataManager currentBlog]];
+		[self loadPages];
+    } else {
+		if (indexPath.section == PAGES_SECTION){
+			//check for reachability
+			if ([[Reachability sharedReachability] internetConnectionStatus] == NotReachable) {
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Communication Error."
+																message:@"no internet connection."
+															   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+				alert.tag = TAG_OFFSET;
+				[alert show];
+				
+				WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+				[delegate setAlertRunning:YES];
+				[alert release];
+				return;
+			}else{				
+				//if reachability is good, make page at index current, delete page, and refresh view (load pages)
+				[dataManager makePageAtIndexCurrent:indexPath.row];
+				//delete page
+				[dataManager deletePage];
+				//resync pages
+				[self syncPages];
+				
+			}
+		}
+	}
+	
+	[progressAlert dismissWithClickedButtonIndex:0 animated:YES];
+    [progressAlert release];
+    [pool release];
+	
 }
 
 #pragma mark -
