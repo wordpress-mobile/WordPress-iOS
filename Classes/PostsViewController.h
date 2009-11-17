@@ -17,6 +17,7 @@
     PostViewController *postDetailViewController;
     EditPostViewController *postDetailEditController;
     RefreshButtonView *refreshButton;
+	UIAlertView *progressAlert;
 }
 
 @property (readonly) UIBarButtonItem *newButtonItem;

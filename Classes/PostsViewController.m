@@ -8,6 +8,7 @@
 #import "WordPressAppDelegate.h"
 #import "WPNavigationLeftButtonView.h"
 #import "Reachability.h"
+#import "WPProgressHUD.h"
 
 #define LOCAL_DRAFTS_SECTION    0
 #define POSTS_SECTION           1
@@ -24,6 +25,7 @@
 - (void)syncPosts;
 - (BOOL)handleAutoSavedContext:(NSInteger)tag;
 - (void)addRefreshButton;
+- (void)showProgressAlert;
 
 @end
 
@@ -220,6 +222,9 @@
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+
+	[self performSelectorInBackground:@selector(showProgressAlert) withObject:nil];
+	
 	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 	
     if (indexPath.section == LOCAL_DRAFTS_SECTION) {
@@ -228,7 +233,9 @@
     } else {
 		if (indexPath.section == POSTS_SECTION){
 			//[refreshButton startAnimating];
-			[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+			//[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+			
+			
 			//check for reachability
 				if ([[Reachability sharedReachability] internetConnectionStatus] == NotReachable) {
 					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Communication Error."
@@ -242,17 +249,27 @@
 					[alert release];
 					return;
 			}else{
+//				- (void)deleteComment:(id)sender {
+//					progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Deleting..."];
+//					[progressAlert show];
+//					
+//					[self performSelectorInBackground:@selector(deleteThisComment) withObject:nil];
+//				}
+				
 				//if reachability is good, make post at index current, delete post, and refresh view (sync posts)
 				[dataManager makePostAtIndexCurrent:indexPath.row];
 				//delete post
 				//if ([dataManager deletePost]){
 				[dataManager deletePost];
 				//resync posts
-				[self refreshHandler];
+				[self syncPosts];
+			
 			}
 		}
-		}
 	}
+	[progressAlert dismissWithClickedButtonIndex:0 animated:YES];
+	[progressAlert release];
+}
 
 #pragma mark -
 #pragma mark Private Methods
@@ -360,6 +377,11 @@
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	[delegate setAlertRunning:NO];
 	[delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
+}
+
+- (void) showProgressAlert {
+	progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Deleting Post..."];
+	[progressAlert show];
 }
 
 @end
