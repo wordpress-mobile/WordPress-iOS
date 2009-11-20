@@ -1155,8 +1155,13 @@ editBlogViewController;
     // Important: This is the only place where blog_host_name should be set
     // We use this as the blog folder name
     [currentBlog setValue:blogHost forKey:kBlogHostName];
+	
+	NSString *blogURL = [NSString stringWithString:url];
+	if (![blogURL hasPrefix:@"http"])
+        blogURL = [NSString stringWithFormat:@"http://%@", blogURL];
 
-    NSString *blogURL = [NSString stringWithFormat:@"http://%@", url];
+    
+	NSLog(@"url from refreshCurrentBlog %@", blogURL);
     [currentBlog setValue:(blogURL ? blogURL:@"")forKey:@"url"];
 
     NSString *xmlrpc = [self discoverxmlrpcurlForurl:url];
