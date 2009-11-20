@@ -4,6 +4,8 @@
 #import "CoreGraphics/CoreGraphics.h"
 #import "WPXMLReader.h"
 #import "NSString+XMLExtensions.h" 
+#import "NSString+Helpers.h"
+#import "XMLRPCConnection+Authentication.h"
 #import "LocateXMLRPCViewController.h"
 
 
@@ -210,6 +212,10 @@ editBlogViewController;
         alert1 = [[UIAlertView alloc] initWithTitle:@"Communication Error"
                   message:@"Bad user name or password."
                   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    } else if ([err code] == NSURLErrorUserCancelledAuthentication) {
+        alert1 = [[UIAlertView alloc] initWithTitle:@"Communication Error"
+											message:@"Bad HTTP Authentication user name or password."
+										   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     } else {
         alert1 = [[UIAlertView alloc] initWithTitle:@"Communication Error"
                   message:[err localizedDescription]
@@ -261,7 +267,19 @@ editBlogViewController;
 }
 
 - (id)executeXMLRPCRequest:(XMLRPCRequest *)req byHandlingError:(BOOL)shouldHandleFalg {
-    XMLRPCResponse *userInfoResponse = [XMLRPCConnection sendSynchronousXMLRPCRequest:req];
+
+	BOOL httpAuthEnabled = [[currentBlog objectForKey:@"authEnabled"] boolValue];
+	NSString *httpAuthUsername = [currentBlog valueForKey:@"authUsername"];
+	NSString *httpAuthPassword = [self getHTTPPasswordFromKeychainInContextOfCurrentBlog:currentBlog];
+
+	XMLRPCResponse *userInfoResponse = nil;
+	if (httpAuthEnabled) {
+		userInfoResponse = [XMLRPCConnection sendSynchronousXMLRPCRequest:req
+															 withUsername:httpAuthUsername
+															  andPassword:httpAuthPassword];
+	} else {
+		userInfoResponse = [XMLRPCConnection sendSynchronousXMLRPCRequest:req];
+	}
     NSError *err = [self errorWithResponse:userInfoResponse shouldHandle:shouldHandleFalg];
 
     if (err)
@@ -1016,19 +1034,29 @@ editBlogViewController;
     if (![urlstr hasPrefix:@"http"])
         urlstr = [NSString stringWithFormat:@"http://%@", urlstr];
 
-    NSURLRequest *theRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:urlstr]
-                                cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
-                                timeoutInterval:60.0];
+	BOOL httpAuthEnabled = [[currentBlog objectForKey:@"authEnabled"] boolValue];
+	NSString *httpAuthUsername = [currentBlog valueForKey:@"authUsername"];
+	NSString *httpAuthPassword = [self getHTTPPasswordFromKeychainInContextOfCurrentBlog:currentBlog];
+
+	NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlstr]];
+	[theRequest setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
+	[theRequest setTimeoutInterval:60.0];
+
+	if (httpAuthEnabled) {
+		NSString *format = [NSString stringWithFormat:@"%@:%@", httpAuthUsername, httpAuthPassword];
+		[theRequest addValue:[NSString stringWithFormat:@"Basic %@", [format base64Encoding]] forHTTPHeaderField:@"Authorization"];
+	}
 
     NSError *error = nil;
     NSHTTPURLResponse *response = nil;
     NSData *data = [NSURLConnection sendSynchronousRequest:theRequest returningResponse:&response error:&error];
 
     if (error != nil) {
-        if ([response statusCode] != 200) {
+        if (response && ([response statusCode] != 200)) {
             NSError *responseError = [NSError errorWithDomain:NSPOSIXErrorDomain code:1 userInfo:nil];
             return (id)responseError;
         }
+		return (id)error;
     }
 
     if ([data length] > 0) {
@@ -1136,11 +1164,18 @@ editBlogViewController;
 
 
     if ([xmlrpc isKindOfClass:[NSError class]]) {
-        UIAlertView *rsdError = [[UIAlertView alloc] initWithTitle:@"We could not find your blog. Please check the URL, Network Connection and try again.If the problem persists, please visit \"iphone.wordpress.org\" to report the problem."
+		UIAlertView *rsdError = nil;
+		if ([(NSError *)xmlrpc code] == NSURLErrorUserCancelledAuthentication) {
+			rsdError = [[UIAlertView alloc] initWithTitle:@"Communication Error"
+												message:@"Bad HTTP Authentication user name or password."
+											   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		} else {
+			rsdError = [[UIAlertView alloc] initWithTitle:@"We could not find your blog. Please check the URL, Network Connection and try again.If the problem persists, please visit \"iphone.wordpress.org\" to report the problem."
                                  message:nil
                                  delegate:[[UIApplication sharedApplication] delegate]
                                  cancelButtonTitle:@"Visit Site"
                                  otherButtonTitles:@"OK", nil];
+		}
 
         rsdError.tag = kRSDErrorTag;
         [rsdError show];
@@ -4748,7 +4783,13 @@ editBlogViewController;
 			}
 			
 		}
-			
+
+		- (NSString *)getHTTPPasswordFromKeychainInContextOfCurrentBlog:(NSDictionary *)theCurrentBlog {
+			NSString *httpAuthUsername = [theCurrentBlog valueForKey:@"authUsername"];
+			NSString *blogURL = [[theCurrentBlog valueForKey:@"url"] stringByReplacingOccurrencesOfString:@"http://" withString:@""];
+			NSString *blogAuthURL = [blogURL stringByAppendingString:@"_auth"];
+			return [self getBlogPasswordFromKeychainWithUsername:httpAuthUsername andBlogName:blogAuthURL];
+		}
 			
 			
 			-(NSString*) getBlogPasswordFromKeychainWithUsername:(NSString *)userName andBlogName:(NSString *)blogURL {

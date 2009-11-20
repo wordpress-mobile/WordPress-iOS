@@ -8,6 +8,7 @@
 #import "UIViewController+WPAnimation.h"
 #import "Reachability.h"
 #import "WPLabelFooterView.h"
+#import "BlogHTTPAuthenticationViewController.h"
 
 #define kResizePhotoSettingSectionHeight    80.0f
 
@@ -51,8 +52,6 @@
     noOfPostsTextField.text = [currentBlog valueForKey:kPostsDownloadCount];
 
     self.navigationItem.rightBarButtonItem = saveBlogButton;
-	
-	
 
     if ([[BlogDataManager sharedDataManager] countOfBlogs] > 0) {
         self.navigationItem.leftBarButtonItem = cancelBlogButton;
@@ -63,13 +62,17 @@
     if ([self currentBlogIsNew]) {
         [blogURLTextField becomeFirstResponder];
         saveBlogButton.enabled = NO;
-		} else {
+	} else {
         [self disableLabel:blogURLLabel andTextField:blogURLTextField];
         [self disableLabel:userNameLabel andTextField:userNameTextField];
         [passwordTextField becomeFirstResponder];
     }
-
-    [self observeTextFields];
+	
+	blogHTTPAuthViewController.authEnabled = [[currentBlog objectForKey:@"authEnabled"] boolValue];
+	blogHTTPAuthViewController.authUsername = [currentBlog valueForKey:@"authUsername"];
+	blogHTTPAuthViewController.authPassword = [[BlogDataManager sharedDataManager] getHTTPPasswordFromKeychainInContextOfCurrentBlog:currentBlog];
+	
+	[self observeTextFields];
 }
 
 #ifdef __IPHONE_3_0
@@ -110,7 +113,7 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -135,7 +138,7 @@
 
                 blogURLTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
                 return blogURLTableViewCell;
-            } else if (indexPath.section == 2) {
+            } else if (indexPath.section == 3) {
                 NSNumber *value = [currentBlog valueForKey:kResizePhotoSetting];
 
                 if (value == nil) {
@@ -145,7 +148,12 @@
 
                 resizePhotoControl.on = [value boolValue];
                 return resizePhotoViewCell;
-            } else {
+            } else if (indexPath.section == 2) {
+				BOOL httpAuthEnabled = [[currentBlog objectForKey:@"authEnabled"] boolValue];
+				blogHTTPAuthTextField.text = httpAuthEnabled ? @"On" : @"Off";
+				return blogHTTPAuthTableViewCell;
+			}
+			else {
                 noOfPostsTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
                 return noOfPostsTableViewCell;
             }
@@ -175,7 +183,7 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    if (section == 2) {
+    if (section == 3) {
         //This Class creates a view which contains label with color and font attributes and sets the label properties and it is used as footer view for section in tableview.
         WPLabelFooterView *labelView = [[[WPLabelFooterView alloc] initWithFrame:CGRectMake(0, 3, 300, 60)] autorelease];
         //Sets the number of lines to be shown in the label.
@@ -192,7 +200,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    if (section == 2) {
+    if (section == 3) {
         return kResizePhotoSettingSectionHeight;
     }
 
@@ -200,16 +208,16 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 3) {
-        return 40.0f;
-    }
-
     return 44.0f;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 1) {
         [self populateSelectionsControllerWithNoOfRecentPosts];
+    }
+	if (indexPath.section == 2) {
+		blogHTTPAuthViewController.title = @"HTTP Authentication";
+		[self.navigationController pushViewController:blogHTTPAuthViewController animated:YES];
     }
 }
 
@@ -296,12 +304,24 @@
     NSString *pwd = passwordTextField.text;
     NSString *url = [blogURLTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     NSNumber *value = [NSNumber numberWithBool:resizePhotoControl.on];
+	NSString *authUsername = blogHTTPAuthViewController.blogHTTPAuthUsername.text;
+	NSString *authPassword = blogHTTPAuthViewController.blogHTTPAuthPassword.text;
+	BOOL authEnabled = blogHTTPAuthViewController.blogHTTPAuthEnabled.on;
 
+	NSString *authBlogURL = [url stringByAppendingString:@"_auth"];
     [currentBlog setValue:url forKey:@"url"];
     [currentBlog setValue:username forKey:@"username"];
+	[currentBlog setValue:[NSNumber numberWithBool:authEnabled] forKey:@"authEnabled"];
     //[currentBlog setValue:pwd forKey:@"pwd"];
 	[[BlogDataManager sharedDataManager] updatePasswordInKeychain:pwd andUserName:username andBlogURL:url];
 	
+	//if (authEnabled) {
+		[currentBlog setValue:authUsername forKey:@"authUsername"];
+		[[BlogDataManager sharedDataManager] updatePasswordInKeychain:authPassword
+														  andUserName:authUsername
+														   andBlogURL:authBlogURL];
+	//}
+
     [currentBlog setValue:value forKey:kResizePhotoSetting];
 }
 
@@ -334,14 +354,14 @@
 	// set to NO again later in this method if it was set to YES in refreshCurrentBlog.
 
     NSString *username = [currentBlog valueForKey:@"username"];
-    //NSString *pwd = [currentBlog valueForKey:@"pwd"];
-	//NSString *pwd =	[[BlogDataManager sharedDataManager] getPasswordFromKeychainInContextOfCurrentBlog:currentBlog];
     NSString *url = [currentBlog valueForKey:@"url"];
+	NSString *authUsername = [currentBlog valueForKey:@"authUsername"];
+	NSNumber *authEnabled = [currentBlog objectForKey:@"authEnabled"];
 
     //NSDictionary *newBlog = [NSDictionary dictionaryWithObjectsAndKeys:username, @"username", pwd, @"pwd", url, @"url", nil];
 	//taking out @"pwd" here as it's in keychain now
 	
-	NSDictionary *newBlog = [NSDictionary dictionaryWithObjectsAndKeys:username, @"username", url, @"url", nil];
+	NSDictionary *newBlog = [NSDictionary dictionaryWithObjectsAndKeys:username, @"username", url, @"url", authEnabled, @"authEnabled", authUsername, @"authUsername", nil];
 
     if ([dm doesBlogExists:newBlog]) {
         [[WordPressAppDelegate sharedWordPressApp] showErrorAlert:[NSString stringWithFormat:kBlogExistsErrorMessage, url]];
@@ -371,7 +391,6 @@
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 
     NSString *username = [currentBlog valueForKey:@"username"];
-    //NSString *pwd = [currentBlog valueForKey:@"pwd"];
     NSString *url = [currentBlog valueForKey:@"url"];
 	NSString *pwd = [dm getBlogPasswordFromKeychainWithUsername:username andBlogName:url];
 
@@ -420,6 +439,10 @@
     [self stopObservingTextField:blogURLTextField];
     [self stopObservingTextField:userNameTextField];
     [self stopObservingTextField:passwordTextField];
+}
+
+- (void)setAuthEnabledText:(BOOL)authEnabled {
+	blogHTTPAuthTextField.text = authEnabled ? @"On" : @"Off";
 }
 
 #pragma mark UITextFieldDelegate methods

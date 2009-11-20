@@ -128,6 +128,10 @@
 		EC4696FF0EA75D460040EE8E /* PagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4696FE0EA75D460040EE8E /* PagesViewController.m */; };
 		ECCD48880EA8623F0078082C /* EditPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECCD48870EA8623F0078082C /* EditPageViewController.xib */; };
 		ECCD488C0EA8628A0078082C /* EditPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECCD488B0EA8628A0078082C /* EditPageViewController.m */; };
+		F52BF2E710B1DC8F00AF4582 /* BlogHTTPAuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F52BF2E510B1DC8F00AF4582 /* BlogHTTPAuthenticationViewController.m */; };
+		F52BF2E810B1DC8F00AF4582 /* BlogHTTPAuthenticationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F52BF2E610B1DC8F00AF4582 /* BlogHTTPAuthenticationViewController.xib */; };
+		F5A4EF3510B32F68002BF126 /* XMLRPCConnection+Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = F5A4EF3410B32F68002BF126 /* XMLRPCConnection+Authentication.m */; };
+		F5A4EF6810B34147002BF126 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = F5A4EF6710B34147002BF126 /* NSData+Base64.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -317,6 +321,13 @@
 		ECCD48870EA8623F0078082C /* EditPageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditPageViewController.xib; sourceTree = "<group>"; };
 		ECCD488A0EA8628A0078082C /* EditPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditPageViewController.h; sourceTree = "<group>"; };
 		ECCD488B0EA8628A0078082C /* EditPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditPageViewController.m; sourceTree = "<group>"; };
+		F52BF2E410B1DC8F00AF4582 /* BlogHTTPAuthenticationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogHTTPAuthenticationViewController.h; sourceTree = "<group>"; };
+		F52BF2E510B1DC8F00AF4582 /* BlogHTTPAuthenticationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogHTTPAuthenticationViewController.m; sourceTree = "<group>"; };
+		F52BF2E610B1DC8F00AF4582 /* BlogHTTPAuthenticationViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = BlogHTTPAuthenticationViewController.xib; path = Classes/BlogHTTPAuthenticationViewController.xib; sourceTree = "<group>"; };
+		F5A4EF3310B32F68002BF126 /* XMLRPCConnection+Authentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "XMLRPCConnection+Authentication.h"; path = "XMLRPC/XMLRPCConnection+Authentication.h"; sourceTree = "<group>"; };
+		F5A4EF3410B32F68002BF126 /* XMLRPCConnection+Authentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "XMLRPCConnection+Authentication.m"; path = "XMLRPC/XMLRPCConnection+Authentication.m"; sourceTree = "<group>"; };
+		F5A4EF6610B34147002BF126 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
+		F5A4EF6710B34147002BF126 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -518,6 +529,8 @@
 				2F970F860DF924E2006BD934 /* EditBlogViewController.m */,
 				03EB591110105088004E82CD /* LocateXMLRPCViewController.h */,
 				03EB591210105088004E82CD /* LocateXMLRPCViewController.m */,
+				F52BF2E410B1DC8F00AF4582 /* BlogHTTPAuthenticationViewController.h */,
+				F52BF2E510B1DC8F00AF4582 /* BlogHTTPAuthenticationViewController.m */,
 			);
 			name = Blog;
 			sourceTree = "<group>";
@@ -592,8 +605,6 @@
 				CEFC8B5810057D0A0052604A /* WPProgressHUD.m */,
 				C57AD5E10F2A10BC00A1717C /* WPXMLReader.h */,
 				C57AD5E00F2A10BC00A1717C /* WPXMLReader.m */,
-				296526FC105810E100597FA3 /* NSString+Helpers.h */,
-				296526FD105810E100597FA3 /* NSString+Helpers.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -633,6 +644,7 @@
 		ACFF1DC00E231EF600EC6BF5 /* Blog */ = {
 			isa = PBXGroup;
 			children = (
+				F52BF2E610B1DC8F00AF4582 /* BlogHTTPAuthenticationViewController.xib */,
 				03FF35C4100423A10066ED95 /* BlogViewController.xib */,
 				AC2FB44B0E1D236A00DFE859 /* EditBlogViewController.xib */,
 				032BDCB510106E1B00E26F44 /* LocateXMLRPCViewController.xib */,
@@ -675,6 +687,10 @@
 		C59D3D480E6410BC00AA591D /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				F5A4EF6610B34147002BF126 /* NSData+Base64.h */,
+				F5A4EF6710B34147002BF126 /* NSData+Base64.m */,
+				296526FC105810E100597FA3 /* NSString+Helpers.h */,
+				296526FD105810E100597FA3 /* NSString+Helpers.m */,
 				03CF21EB0FE9F0C3008AD538 /* NSString+Util.h */,
 				03CF21EC0FE9F0C3008AD538 /* NSString+Util.m */,
 				C59D3D490E6410D300AA591D /* NSString+XMLExtensions.h */,
@@ -683,6 +699,8 @@
 				CE4E33D10FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m */,
 				C584D0820EF942DC00B78012 /* UIViewController+WPAnimation.h */,
 				C584D0830EF942DC00B78012 /* UIViewController+WPAnimation.m */,
+				F5A4EF3310B32F68002BF126 /* XMLRPCConnection+Authentication.h */,
+				F5A4EF3410B32F68002BF126 /* XMLRPCConnection+Authentication.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -833,6 +851,7 @@
 				6EDC0E8F105881A800F68A1D /* iTunesArtwork in Resources */,
 				29B666331061315800CABB70 /* MainBackground.png in Resources */,
 				2962F4731094EDD400F284B7 /* EditPostModalViewController.xib in Resources */,
+				F52BF2E810B1DC8F00AF4582 /* BlogHTTPAuthenticationViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -903,6 +922,9 @@
 				292CED001027259000BD407D /* SFHFKeychainUtils.m in Sources */,
 				296526FE105810E100597FA3 /* NSString+Helpers.m in Sources */,
 				2962F4721094EDD400F284B7 /* EditPostModalViewController.m in Sources */,
+				F52BF2E710B1DC8F00AF4582 /* BlogHTTPAuthenticationViewController.m in Sources */,
+				F5A4EF3510B32F68002BF126 /* XMLRPCConnection+Authentication.m in Sources */,
+				F5A4EF6810B34147002BF126 /* NSData+Base64.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,5 +11,6 @@
 
 // helper functions
 - (NSString *) stringByUrlEncoding;
+- (NSString *) base64Encoding;
 
 @end

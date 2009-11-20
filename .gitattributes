@@ -8,6 +8,9 @@ Classes/Blog.h -text
 Classes/Blog.m -text
 Classes/BlogDataManager.h -text
 Classes/BlogDataManager.m -text
+Classes/BlogHTTPAuthenticationViewController.h -text
+Classes/BlogHTTPAuthenticationViewController.m -text
+Classes/BlogHTTPAuthenticationViewController.xib -text
 Classes/BlogViewController.h -text
 Classes/BlogViewController.m -text
 Classes/BlogsViewController.h -text
@@ -32,6 +35,8 @@ Classes/GravatarImageView.h -text
 Classes/GravatarImageView.m -text
 Classes/ImageCache.h -text
 Classes/ImageCache.m -text
+Classes/NSData+Base64.h -text
+Classes/NSData+Base64.m -text
 Classes/NSString+Util.h -text
 Classes/NSString+Util.m -text
 Classes/NSString+XMLExtensions.h -text
@@ -99,6 +104,8 @@ Classes/WPXMLReader.h -text
 Classes/WPXMLReader.m -text
 Classes/WordPressAppDelegate.h -text
 Classes/WordPressAppDelegate.m -text
+Classes/XMLRPC/XMLRPCConnection+Authentication.h -text
+Classes/XMLRPC/XMLRPCConnection+Authentication.m -text
 Classes/XMLRPC/XMLRPCConnection.h -text
 Classes/XMLRPC/XMLRPCConnection.m -text
 Classes/XMLRPC/XMLRPCDecoder.h -text

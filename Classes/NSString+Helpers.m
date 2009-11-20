@@ -7,6 +7,7 @@
 //
 
 #import "NSString+Helpers.h"
+#import "NSData+Base64.h"
 
 @implementation NSString (Helpers)
 
@@ -14,6 +15,14 @@
 - (NSString *) stringByUrlEncoding
 {
 	return (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL,  (CFStringRef)self,  NULL,  (CFStringRef)@"!*'();:@&=+$,/?%#[]",  kCFStringEncodingUTF8);
+}
+
+- (NSString *)base64Encoding
+{
+	NSData *stringData = [self dataUsingEncoding:NSUTF8StringEncoding];
+	NSString *encodedString = [stringData base64EncodedString];
+
+	return encodedString;
 }
 
 @end

@@ -312,6 +312,7 @@
 //from blogsList
 
 -(NSString*) getPasswordFromKeychainInContextOfCurrentBlog:(NSDictionary *)theCurrentBlog;
+-(NSString *) getHTTPPasswordFromKeychainInContextOfCurrentBlog:(NSDictionary *)theCurrentBlog;
 -(NSString*) getBlogPasswordFromKeychainWithUsername:(NSString *)userName andBlogName:(NSString *)blogName;
 -(void) saveBlogPasswordToKeychain:(NSString *)password andUserName:(NSString *)userName andBlogURL:(NSString *)blogURL;
 -(void) updatePasswordInKeychain:(NSString *)password andUserName:(NSString *)userName andBlogURL:(NSString *)blogURL;

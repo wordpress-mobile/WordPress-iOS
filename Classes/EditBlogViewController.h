@@ -2,7 +2,7 @@
 #import <Foundation/Foundation.h>
 #import "LocateXMLRPCViewController.h"
 
-@class BlogDataManager, WPSelectionTableViewController;
+@class BlogDataManager, WPSelectionTableViewController, BlogHTTPAuthenticationViewController;
 
 @interface EditBlogViewController : UIViewController <UITextFieldDelegate> {
     IBOutlet UIBarButtonItem *cancelBlogButton;
@@ -14,11 +14,13 @@
     IBOutlet UITableViewCell *userNameTableViewCell;
     IBOutlet UITableViewCell *passwordTableViewCell;
     IBOutlet UITableViewCell *noOfPostsTableViewCell;
+	IBOutlet UITableViewCell *blogHTTPAuthTableViewCell;
 
     IBOutlet UITextField *blogURLTextField;
     IBOutlet UITextField *userNameTextField;
     IBOutlet UITextField *passwordTextField;
     IBOutlet UITextField *noOfPostsTextField;
+	IBOutlet UITextField *blogHTTPAuthTextField;
 
     IBOutlet UILabel *resizePhotoLabel;
     IBOutlet UITableViewCell *resizePhotoHintTableViewCell;
@@ -32,6 +34,8 @@
     IBOutlet UILabel *noOfPostsLabel;
 
     IBOutlet UIView *validationView;
+
+	IBOutlet BlogHTTPAuthenticationViewController *blogHTTPAuthViewController;
 
     NSDictionary *currentBlog;
 	
@@ -49,5 +53,6 @@
 - (IBAction)cancel:(id)sender;
 - (void)hideSpinner;
 - (void)showLocateXMLRPCModalViewWithAnimation:(BOOL)animate;
+- (void)setAuthEnabledText:(BOOL)authEnabled;
 
 @end
