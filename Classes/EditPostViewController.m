@@ -172,7 +172,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
     NSDictionary *postStatusList = [[dm currentBlog] valueForKey:@"postStatusList"];
-    NSArray *dataSource = [postStatusList allValues];
+    NSArray *dataSource = [NSArray arrayWithObjects:
+						   [postStatusList valueForKey:@"publish"],
+						   [postStatusList valueForKey:@"private"],
+						   [postStatusList valueForKey:@"pending"],
+						   [postStatusList valueForKey:@"draft"], nil];
 
     if (dm.isLocaDraftsCurrent || dm.currentPostIndex == -1)
         dataSource = [dataSource arrayByAddingObject:@"Local Draft"];
