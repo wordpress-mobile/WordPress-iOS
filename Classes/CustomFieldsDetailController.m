@@ -3,7 +3,7 @@
 //  WordPress
 //
 //  Created by John Bickerstaff on 5/8/09.
-//  Copyright 2009 Smilodon Software. All rights reserved.
+//  
 //
 
 #import "CustomFieldsDetailController.h"

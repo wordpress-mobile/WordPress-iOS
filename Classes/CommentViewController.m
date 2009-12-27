@@ -10,6 +10,7 @@
 #import "Reachability.h"
 #import "WordPressAppDelegate.h"
 #import "WPProgressHUD.h"
+#import "ReplyToCommentViewController.h"
 
 #define COMMENT_BODY_TOP        100
 #define COMMENT_BODY_MAX_HEIGHT 4000
@@ -21,11 +22,14 @@
 
 - (void)resizeCommentBodyLabel;
 - (BOOL)isConnectedToHost;
+- (BOOL)isApprove;
 - (void)moderateCommentWithSelector:(SEL)selector;
 - (void)deleteThisComment;
 - (void)approveThisComment;
 - (void)markThisCommentAsSpam;
 - (void)unapproveThisComment;
+
+- (void)showReplyToCommentModalViewWithAnimation:(BOOL)animate;
 
 @end
 
@@ -50,6 +54,7 @@
 #pragma mark View Lifecycle
 
 - (void)viewDidLoad {
+	
     segmentedControl = [[UISegmentedControl alloc] initWithItems:
                         [NSArray arrayWithObjects:
                          [UIImage imageNamed:@"up.png"],
@@ -99,6 +104,103 @@
 }
 
 #pragma mark -
+#pragma mark UIActionSheetDelegate methods
+
+//not truly an ActionSheetDelegate method, but it's where we call the ActionSheet...
+- (void) launchModerateMenu {
+	NSString *conditionalButtonTitle = nil;
+	
+	if ([self isApprove]) {
+		conditionalButtonTitle = @"Approve Comment";
+	} else {
+		conditionalButtonTitle = @"Unapprove Comment";
+	}
+		 
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@""
+															 delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
+													otherButtonTitles: conditionalButtonTitle, @"Mark Comment as Spam", @"Edit Comment",nil];
+													//otherButtonTitles: conditionalButtonTitle, @"Mark Comment as Spam",nil];
+	
+	actionSheet.tag = 301;
+	actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
+	[actionSheet showInView:self.view];
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate setAlertRunning:YES];
+	
+	[actionSheet release];	
+	
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+	NSLog(@"buttonIndex is: %d", buttonIndex);
+    if ([actionSheet tag] == 301) {
+        if (buttonIndex == 0) {  //Approve/Unapprove conditional button was selected
+			if ([self isApprove]) {
+				[self approveComment:nil];
+			} else {
+				[self unApproveComment:nil];
+			}
+        }
+		
+        if (buttonIndex == 1) {  //Mark as Spam was selected
+            [self spamComment:nil];
+        }
+		
+		if (buttonIndex == 2) {  //Edit Comment was selected
+			//[self showEditCommentModalViewWithAnimation:YES];
+			//... or [self editThisComment]; (if we need more data loading perhaps)
+			//yet to be written...
+			//launch the modal editing view and load it with the selected comment
+			//editing view to save new comment and return to this screen with new comment loaded into detail
+			//consider making this edit view and the reply-to-comment edit view the same xib
+			//   and load data conditionally
+        }
+    }
+	
+    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    [delegate setAlertRunning:NO];
+}
+
+
+#pragma mark -
+#pragma mark Modal View Methods (Edit, Reply)
+- (void)showReplyToCommentModalViewWithAnimation:(BOOL)animate {
+	
+//TODO: Make sure this method passes commentDetails and currentIndex to editCommentViewController!
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+//TODO: Make this conditional - if editCommentViewController == nil...
+	ReplyToCommentViewController *replyToCommentViewController = [[[ReplyToCommentViewController alloc] initWithNibName:@"ReplyToCommentViewController" bundle:nil]autorelease];
+	
+
+	replyToCommentViewController.commentViewController = self;
+	replyToCommentViewController.commentDetails = commentDetails;
+	replyToCommentViewController.currentIndex = currentIndex;
+	
+	UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Foo" style:UIBarButtonItemStyleDone target:nil action:nil];
+	[self.navigationItem setBackBarButtonItem:backButton];
+	[backButton release];
+	
+    [delegate.navigationController pushViewController:replyToCommentViewController animated:YES];
+	//[delegate.navigationController.navigationItem.rightBarButtonItem = doneButton;
+	
+	 //pageDetailsController.navigationItem.leftBarButtonItem = doneButton;
+	
+    //[commentsViewController showComment:commentsArray atIndex:index];
+    //[commentsViewController release];
+	
+	//EditCommentViewController *editCommentViewController = [[[EditCommentViewController alloc] initWithNibName:@"EditCommentViewController" bundle:nil]autorelease];
+	//UINavigationController *modalNavigationController = [[UINavigationController alloc] initWithRootViewController:editCommentViewController];
+	
+	//[self.navigationController presentModalViewController:modalNavigationController animated:animate];
+	
+	//[modalNavigationController release];
+}
+
+- (void)launchReplyToComments {
+	[self showReplyToCommentModalViewWithAnimation:YES];
+}
+
+#pragma mark -
 #pragma mark Action Methods
 
 - (void)segmentAction:(id)sender {
@@ -133,10 +235,11 @@
 }
 
 - (void)spamComment:(id)sender {
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Moderating..."];
+   progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Moderating..."];
     [progressAlert show];
 
     [self performSelectorInBackground:@selector(markThisCommentAsSpam) withObject:nil];
+	
 }
 
 - (BOOL)isConnectedToHost {
@@ -151,6 +254,16 @@
 
     return YES;
 }
+- (BOOL)isApprove {
+	if ([commentStatus isEqualToString:@"hold"]) {
+		return YES;
+    } else  {
+        return NO;
+	}
+	
+	
+}
+
 
 - (void)moderateCommentWithSelector:(SEL)selector {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -201,7 +314,9 @@
 - (void)showComment:(NSArray *)comments atIndex:(int)index {
     currentIndex = index;
 	commentDetails = [comments mutableCopy];
+	NSLog(@"this is the NSArray commentDetails from showComment %@", commentDetails);
     NSDictionary *comment = [commentDetails objectAtIndex:currentIndex];
+	NSLog(@"this is the nsdict 'comment' from showComment %@", comment);
     
     static NSDateFormatter *dateFormatter = nil;
     int count = [commentDetails count];
@@ -210,7 +325,8 @@
     NSString *postTitle = [[comment valueForKey:@"post_title"] trim];
     NSString *commentBody = [[comment valueForKey:@"content"] trim];
     NSDate *createdAt = [comment valueForKey:@"date_created_gmt"];
-    NSString *commentStatus = [comment valueForKey:@"status"];
+    //NSString *commentStatus = [comment valueForKey:@"status"];
+	commentStatus = [comment valueForKey:@"status"];
     NSString *authorEmail = [comment valueForKey:@"author_email"];
     NSString *authorUrl = [comment valueForKey:@"author_url"];
 
@@ -233,11 +349,17 @@
     self.navigationItem.title = [NSString stringWithFormat:@"%d of %d", currentIndex + 1, count];
 
     if ([commentStatus isEqualToString:@"hold"]) {
-        [approveAndUnapproveButtonBar setHidden:NO];
-        [deleteButtonBar setHidden:YES];
+        //[approveAndUnapproveButtonBar setHidden:NO];
+        //[deleteButtonBar setHidden:YES];
+		[approveAndUnapproveButtonBar setHidden:YES];
+		[deleteButtonBar setHidden:NO];
+		 
     } else {
-        [approveAndUnapproveButtonBar setHidden:YES];
-        [deleteButtonBar setHidden:NO];
+        //[approveAndUnapproveButtonBar setHidden:YES];
+        //[deleteButtonBar setHidden:NO];
+		[approveAndUnapproveButtonBar setHidden:YES];
+		[deleteButtonBar setHidden:NO];
+
     }
 
     [approveButton setEnabled:NO];
@@ -263,6 +385,7 @@
         [segmentedControl setEnabled:FALSE forSegmentAtIndex:1];
     }
 
+	//We have "currentComment" context here, without the need for another BlogDataManager method...
 }
 
 @end

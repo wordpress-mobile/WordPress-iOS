@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 #import "GravatarImageView.h"
 
-@interface CommentViewController : UIViewController <UIScrollViewDelegate> {
+@interface CommentViewController : UIViewController <UIScrollViewDelegate, UIActionSheetDelegate> {
     IBOutlet UIScrollView *scrollView;
     
     IBOutlet GravatarImageView *gravatarImageView;
@@ -26,6 +26,8 @@
     IBOutlet UIBarButtonItem *unapproveButton;
     IBOutlet UIBarButtonItem *spamButton1;
     IBOutlet UIBarButtonItem *spamButton2;
+	
+	IBOutlet UIBarButtonItem *deleteButton;
 
     UIBarButtonItem *segmentBarItem;
     UISegmentedControl *segmentedControl;
@@ -33,9 +35,13 @@
     UIAlertView *progressAlert;
     
     NSMutableArray *commentDetails;
+	NSString *commentStatus;
     int currentIndex;
     BOOL connectionStatus;
 }
+
+- (IBAction)launchModerateMenu;
+- (IBAction)launchReplyToComments;
 
 - (void)segmentAction:(id)sender;
 - (void)showComment:(NSArray *)comments atIndex:(int)row;
@@ -44,5 +50,6 @@
 - (void)approveComment:(id)sender;
 - (void)unApproveComment:(id)sender;
 - (void)spamComment:(id)sender;
+
 
 @end

@@ -4599,6 +4599,111 @@ editBlogViewController;
     return YES;
 }
 
+// reply to comment for a given blog
+- (BOOL)replyToComment:(NSMutableDictionary *)theNewComment forBlog:(id)blog {
+	//function wp_editComment($args) {
+	//	 $blog_id        = (int) $args[0];
+	//	 $username       = $args[1];
+	//	$password        = $args[2];
+	//	$post_id          = (int) $args[3];
+	//	$comment_struct   = $args[5];
+	//}
+    [blog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
+    // Parameters
+    NSString *username = [blog valueForKey:@"username"];
+    //NSString *pwd = [blog valueForKey:@"pwd"];
+	NSString *pwd =	[self getPasswordFromKeychainInContextOfCurrentBlog:blog];
+    NSString *fullURL = [blog valueForKey:@"xmlrpc"];
+    NSString *blogid = [blog valueForKey:kBlogId];
+	NSString *postid = [theNewComment valueForKey:@"postid"];
+	NSMutableDictionary *commentStruct = [[NSMutableDictionary alloc] initWithCapacity:5];
+	[commentStruct setValue:[theNewComment valueForKey:@"comment_id"] forKey:@"comment_parent"];
+	[commentStruct setValue:[theNewComment valueForKey:@"content"] forKey:@"content"];
+	[commentStruct setValue:username forKey:@"author"];
+	[commentStruct setValue:@"" forKey:@"author_url"];
+	[commentStruct setValue:@"" forKey:@"author_email"];
+	
+	
+	
+	
+	
+	
+	
+//    NSFileManager *defaultFileManager = [NSFileManager defaultManager];
+//    NSMutableArray *commentTitlesArray = commentTitlesList;
+//    int commentsCount, i, count = [commentTitlesArray count];
+    NSMutableArray *commentsReqArray = [[NSMutableArray alloc] init];
+////    commentsCount = [aComment count];
+//	
+//    for (i = 0; i < commentsCount; i++) {
+//        NSMutableDictionary *commentsDict = [aComment objectAtIndex:i];
+//        NSString *commentid = [commentsDict valueForKey:@"comment_id"];
+//        NSString *commentFilePath = [self commentFilePath:commentsDict forBlog:blog];
+//        NSDictionary *completeComment = [NSMutableDictionary dictionaryWithContentsOfFile:commentFilePath];
+//		
+//        if ([[commentsDict valueForKey:@"status"] isEqualToString:@"approve"]) {
+//            [aComment removeObjectAtIndex:i];
+//            commentsCount--; i--;
+//            continue;
+//        }
+//		
+//        [commentsDict setValue:@"approve" forKey:@"status"];
+//        [completeComment setValue:@"approve" forKey:@"status"];
+//		
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+        [dict setValue:@"wp.newComment" forKey:@"methodName"];
+        [dict setValue:[NSArray arrayWithObjects:blogid, username, pwd, postid, commentStruct, nil] forKey:@"params"];
+        [commentsReqArray addObject:dict];
+	NSLog(@"commentsReqArray whole shebang %@", commentsReqArray);
+		
+        [dict release];
+//    }
+//	
+//    commentsCount = [aComment count];
+//	
+//    if (commentsCount > 0) {
+        XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
+        [postsReq setMethod:@"system.multicall" withObject:commentsReqArray];
+        id result = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
+        [postsReq release];
+//		
+//        // TODO:
+//        // Check for fault
+//        // check for nil or empty response
+//        // provide meaningful messge to user
+//        if ((!result) || !([result isKindOfClass:[NSArray class]])) {
+//            [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+//			//		 [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
+//            [commentsReqArray release];
+//            return NO;
+//        } else {
+//            for (int j = 0; j < commentsCount; j++) {
+//                NSDictionary *commentDict = [aComment objectAtIndex:j];
+//				
+//                for (i = 0; i < count; i++) {
+//                    NSDictionary *dict = [commentTitlesArray objectAtIndex:i];
+//					
+//                    if ([[dict valueForKey:@"comment_id"] isEqualToString:[commentDict valueForKey:@"comment_id"]])
+//                        [commentTitlesArray replaceObjectAtIndex:i withObject:commentDict];
+//                }
+//            }
+//        }
+//    }
+//	
+//    // sort and save the postTitles list
+//    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
+//    [commentTitlesArray sortUsingDescriptors:[NSArray arrayWithObject:sd]];
+//    [sd release];
+//    NSString *pathToCommentTitles = [self pathToCommentTitles:blog];
+//    [defaultFileManager removeItemAtPath:pathToCommentTitles error:nil];
+//    [commentTitlesArray writeToFile:pathToCommentTitles atomically:YES];
+//    [commentsReqArray release];
+//	
+//    [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+    return YES;
+}
+
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     [delegate setAlertRunning:NO];
