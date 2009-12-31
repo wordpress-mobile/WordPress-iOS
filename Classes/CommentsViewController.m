@@ -411,7 +411,29 @@
 #pragma mark UITableViewDataSource Methods
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
+    //NSDictionary *dict = [selectedComments objectAtIndex:indexPath.row];
+	id comment = [commentsArray objectAtIndex:indexPath.row];
+	if ([[comment valueForKey:@"status"] isEqualToString:@"hold"]) {
+		cell.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
+		//float rd = 225.00/255.00;
+//		float gr = 255.00/255.00;
+//		float bl = 224.00/255.00;
+		//cell.backgroundColor = [UIColor colorWithRed:rd green:gr blue:bl alpha:1.0];
+		//cell.backgroundColor = [[UIColor alloc] initWithRed:255/255 green:255/255 blue:224/255 alpha:1.0];
+		//cell.backgroundColor = [[UIColor alloc] initWithRed:1.0 green:1.0 blue:0.0 alpha:.50];
+		//cell.backgroundColor = [UIColor colorWithRed:51.0 / 255.0 green:(0.0) blue:(153.0 / 255.0)];
+		
+		
+		//cell.backgroundColor = [UIColor colorWithRed:255.0 / 255.0 green:255.0/255.0 blue:224.0 / 255.0 alpha:1.0];
+		
+		
+		//(UIColor *)colorWithRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha
+
+	}else {
+		cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
+	}
+
+	
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

@@ -193,10 +193,7 @@
 	[self showReplyToCommentModalViewWithAnimation:YES];
 }
 - (void)showReplyToCommentModalViewWithAnimation:(BOOL)animate {
-	
-//TODO: Make sure this method passes commentDetails and currentIndex to editCommentViewController!
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-//TODO: Make this conditional - if editCommentViewController == nil...
 	
 		replyToCommentViewController = [[[ReplyToCommentViewController alloc] 
 										 initWithNibName:@"ReplyToCommentViewController" 
@@ -204,58 +201,22 @@
 		replyToCommentViewController.commentViewController = self;
 		replyToCommentViewController.commentDetails = commentDetails;
 	    replyToCommentViewController.currentIndex = currentIndex;
-	
-	
-	UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Foo" style:UIBarButtonItemStyleDone target:nil action:nil];
-	[self.navigationItem setBackBarButtonItem:backButton];
-	[backButton release];
+		replyToCommentViewController.title = @"Comment Reply";
 	
     [delegate.navigationController pushViewController:replyToCommentViewController animated:YES];
-	//[delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
-	//[delegate.navigationController.navigationItem.rightBarButtonItem = doneButton;
-	
-	 //pageDetailsController.navigationItem.leftBarButtonItem = doneButton;
-	
-    //[commentsViewController showComment:commentsArray atIndex:index];
-    //[commentsViewController release];
-	
-	//EditCommentViewController *editCommentViewController = [[[EditCommentViewController alloc] initWithNibName:@"EditCommentViewController" bundle:nil]autorelease];
-	//UINavigationController *modalNavigationController = [[UINavigationController alloc] initWithRootViewController:editCommentViewController];
-	
-	//[self.navigationController presentModalViewController:modalNavigationController animated:animate];
-	
-	//[modalNavigationController release];
 }
-
-//- (ReplyToCommentViewController *)replyToCommentlViewController {
-//	NSLog(@"inside replytocomment... builder method");
-//    if (!replyToCommentViewController) {
-//        replyToCommentViewController = [[ReplyToCommentViewController alloc] 
-//										initWithNibName:@"ReplyToCommentViewController" 
-//										bundle:nil];
-//		replyToCommentViewController.commentViewController = self;
-//		replyToCommentViewController.commentDetails = commentDetails;
-//		replyToCommentViewController.currentIndex = currentIndex;
-//    }
-//	
-//    return replyToCommentViewController;
-//}
-
 
 
 - (void)cancelView:(id)sender {
 	
-	[replyToCommentViewController test];
-    
-        //[self.navigationController popViewControllerAnimated:YES];
-		NSLog(@"cancelView on CommentViewController");
-	
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
-															 delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Discard"
-													otherButtonTitles:nil];
+											   delegate:self cancelButtonTitle:@"Cancel" 
+											   destructiveButtonTitle:@"Discard"
+											   otherButtonTitles:nil];
     actionSheet.tag = 401;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
-    [actionSheet showInView:self.view];
+    [actionSheet showInView:replyToCommentViewController.view];
+	
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     [delegate setAlertRunning:YES];
 	
