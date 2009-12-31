@@ -140,6 +140,15 @@
 
 #pragma mark -
 
+- (void) cancelView {
+	NSLog(@"inside Comments View Controller cancelView");
+	
+
+	[self.navigationController popViewControllerAnimated:YES];
+
+}
+
+
 - (void)addRefreshButton {
     CGRect frame = CGRectMake(0, 0, commentsTableView.bounds.size.width, REFRESH_BUTTON_HEIGHT);
 

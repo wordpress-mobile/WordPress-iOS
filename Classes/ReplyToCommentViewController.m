@@ -1,5 +1,5 @@
 //
-//  EditCommentViewController.m
+//  ReplyToCommentViewController.m
 //  WordPress
 //
 //  Created by John Bickerstaff on 12/20/09.
@@ -26,7 +26,8 @@
 
 @implementation ReplyToCommentViewController
 
-@synthesize commentViewController, commentDetails, currentIndex, saveButton, doneButton;
+@synthesize commentViewController, commentDetails, currentIndex, saveButton, doneButton, comment;
+@synthesize leftView, cancelButton;
 
 //TODO: Make sure to give this class a connection to commentDetails and currentIndex from CommentViewController
 
@@ -43,29 +44,35 @@
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
+	[super viewDidLoad];
+	
+	comment = [[NSMutableDictionary alloc] init];
 	
 	if (!saveButton) {
 	saveButton = [[UIBarButtonItem alloc] 
 				  initWithTitle:@"Save" 
-				  style:UIBarButtonItemStylePlain 
+				  style:UIBarButtonItemStyleDone
 				  target:self 
-				  action:@selector(endTextEnteringButtonAction:)];
+				  action:@selector(initiateSaveCommentReply:)];
 	}
 	
-	//if (!saveButton) {
 	
-	//}
-	
-    [super viewDidLoad];
+	if (!leftView) {
+        leftView = [WPNavigationLeftButtonView createCopyOfView];
+        [leftView setTitle:@"Comment"];
+		
+		
+	}
 }
 
 
 - (void)viewWillAppear:(BOOL)animated {
 
+	[leftView setTarget:self withAction:@selector(cancelView:)];
+	cancelButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
+	self.navigationItem.leftBarButtonItem = cancelButton;
+    [cancelButton release];
 	
-//	[commentViewController.navigationItem setBackBarButtonItem:doneButton];
-//	[commentViewController.navigationItem setBackBarButtonItem:backButton];
-//	[backButton release];
 	
 }
 
@@ -96,11 +103,85 @@
     [super dealloc];
 }
 
+#pragma mark -
+#pragma mark Button Override Methods
+
+- (void)cancelView:(id)sender {
+    [commentViewController cancelView:sender];
+	NSLog(@"inside replyToCommentViewController cancelView");
+	
+//    if (!hasChanges) {
+//        //[self stopTimer];
+        //[commentViewController.navigationController popViewControllerAnimated:YES];
+	//[commentViewController.navigationController popViewControllerAnimated:YES];
+//        return;
+//    }
+//	
+//	
+//	
+//    //[postSettingsController endEditingAction:nil];
+//    //[postDetailEditController endEditingAction:nil];
+//	
+//    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
+//															 delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Discard"
+//													otherButtonTitles:nil];
+//    actionSheet.tag = 401;
+//    actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
+//    [actionSheet showInView:self.view];
+//    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+//    [delegate setAlertRunning:YES];
+//	
+//    [actionSheet release];
+}
 
 #pragma mark -
-#pragma mark Text View Methods
+#pragma mark Helper Methods
+
+- (void) test{
+	NSLog(@"inside replyTOCommentViewController:test");
+}
+
+- (void)endTextEnteringButtonAction:(id)sender {
+	
+    [textView resignFirstResponder];
+	//    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:pageDetailsController.leftView];
+	//    pageDetailsController.navigationItem.leftBarButtonItem = barButton;
+	//    [barButton release];
+	//	if((pageDetailsController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || 
+	//	   (pageDetailsController.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
+	//		[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+	
+	//[self initiateSaveCommentReply: nil];
+	
+}
+
+
+
+#pragma mark -
+#pragma mark Text View Delegate Methods
+
 
 - (void)textViewDidEndEditing:(UITextView *)aTextView {
+	
+	
+//	isEditing = NO;
+//    dismiss = NO;
+//	
+//    if (isTextViewEditing) {
+//        isTextViewEditing = NO;
+//		
+//        [self bringTextViewDown];
+//		
+//        if (postDetailViewController.hasChanges == YES) {
+//            [leftView setTitle:@"Cancel"];
+//        } else {
+//            [leftView setTitle:@"Posts"];
+//        }
+	[leftView setTitle:@"Cancel"];
+	UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:leftView];
+	self.navigationItem.leftBarButtonItem = barItem;
+	//[barItem release];
+	//[barItem retain];
 	
 }
 
@@ -136,12 +217,12 @@
 	self.navigationItem.rightBarButtonItem = saveButton;
 	doneButton = [[UIBarButtonItem alloc] 
 								   initWithTitle:@"Done" 
-								   style:UIBarButtonItemStylePlain 
+								   style:UIBarButtonItemStyleDone 
 								   target:self 
 								   action:@selector(endTextEnteringButtonAction:)];
 	
-	//self.navigationItem.backBarButtonItem = doneButton;
-	[commentViewController.navigationItem setBackBarButtonItem:doneButton];
+	[self.navigationItem setLeftBarButtonItem:doneButton];
+	//[commentViewController.navigationItem setLeftBarButtonItem:doneButton];
 	//commentViewController.navigationItem.backBarButtonItem = doneButton;
 	
 	//UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Foo" style:UIBarButtonItemStyleDone target:nil action:nil];
@@ -149,19 +230,6 @@
 //	[backButton release];
 }
 
-- (void)endTextEnteringButtonAction:(id)sender {
-
-    [textView resignFirstResponder];
-//    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:pageDetailsController.leftView];
-//    pageDetailsController.navigationItem.leftBarButtonItem = barButton;
-//    [barButton release];
-//	if((pageDetailsController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || 
-//	   (pageDetailsController.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
-//		[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
-	
-	[self initiateSaveCommentReply: nil];
-	
-}
 
 
 
@@ -182,16 +250,20 @@
 }
 
 - (void)initiateSaveCommentReply:(id)sender {
-	
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Saving Your Reply..."];
+
+    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Saving Reply..."];
     [progressAlert show];
-	
+	comment = [commentDetails objectAtIndex:currentIndex];
+	[comment setValue:textView.text forKey:@"content"];	
     [self performSelectorInBackground:@selector(saveReplyBackgroundMethod:) withObject:nil];
+	[self.navigationController popViewControllerAnimated:YES];
+	
 
 }
 
 - (void)saveReplyBackgroundMethod:(id)sender {
 	[self callBDMSaveCommentReply:@selector(replyToComment:forBlog:)];
+	NSLog(@"after callBDMSaveCommentReply");
 }
 
 - (void)callBDMSaveCommentReply:(SEL)selector {
@@ -199,24 +271,8 @@ NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
 if ([self isConnectedToHost]) {
 	BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
-	
-	//NSMutableArray *selectedComment = [NSArray arrayWithObjects:[commentDetails objectAtIndex:currentIndex], nil];
-	//After getting selected comment, we need to replace whatever necessary data with 
-	//whatever the user put into the text field...  for sure the "content" field... anything else?
-	//it may be possible to simply replace the content with the new content and send this off to the BDM method...
-	//at this point it's neither fish nor fowl, because it's a hybrid with new content but all the "old" data
-	//from the parent comment.  As far as I can see, that's what's needed - parent id, username etc and new content...
-	//BDM replyToComment method will take this and format the xmlrpc POST.
-	
-	NSMutableDictionary *comment = [commentDetails objectAtIndex:currentIndex];
-	[comment setValue:textView.text forKey:@"content"];
-	//NSString *commentid = [commentsDict valueForKey:@"comment_id"];
-	
-	
-	[sharedDataManager performSelector:selector withObject:comment withObject:[sharedDataManager currentBlog]];
-	
+	[sharedDataManager performSelector:selector withObject:[self comment] withObject:[sharedDataManager currentBlog]];
 	[sharedDataManager loadCommentTitlesForCurrentBlog];
-	[self.navigationController popViewControllerAnimated:YES];
 }
 
 [progressAlert dismissWithClickedButtonIndex:0 animated:YES];

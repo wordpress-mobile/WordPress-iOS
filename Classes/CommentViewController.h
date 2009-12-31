@@ -7,9 +7,12 @@
 
 #import <UIKit/UIKit.h>
 #import "GravatarImageView.h"
+#import "ReplyToCommentViewController.h"
 
 @interface CommentViewController : UIViewController <UIScrollViewDelegate, UIActionSheetDelegate> {
-    IBOutlet UIScrollView *scrollView;
+
+	
+	IBOutlet UIScrollView *scrollView;
     
     IBOutlet GravatarImageView *gravatarImageView;
     IBOutlet UILabel *commentAuthorLabel;
@@ -34,11 +37,13 @@
 
     UIAlertView *progressAlert;
     
-    NSMutableArray *commentDetails;
+    ReplyToCommentViewController *replyToCommentViewController;
+	NSMutableArray *commentDetails;
 	NSString *commentStatus;
     int currentIndex;
     BOOL connectionStatus;
 }
+
 
 - (IBAction)launchModerateMenu;
 - (IBAction)launchReplyToComments;
@@ -50,6 +55,8 @@
 - (void)approveComment:(id)sender;
 - (void)unApproveComment:(id)sender;
 - (void)spamComment:(id)sender;
+
+@property (nonatomic, retain) ReplyToCommentViewController *replyToCommentViewController;
 
 
 @end

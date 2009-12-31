@@ -10,7 +10,7 @@
 #import "Reachability.h"
 #import "WordPressAppDelegate.h"
 #import "WPProgressHUD.h"
-#import "ReplyToCommentViewController.h"
+
 
 #define COMMENT_BODY_TOP        100
 #define COMMENT_BODY_MAX_HEIGHT 4000
@@ -28,12 +28,17 @@
 - (void)approveThisComment;
 - (void)markThisCommentAsSpam;
 - (void)unapproveThisComment;
+- (void)cancel;
+- (void)discard;
 
 - (void)showReplyToCommentModalViewWithAnimation:(BOOL)animate;
 
 @end
 
 @implementation CommentViewController
+
+
+@synthesize replyToCommentViewController;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -42,6 +47,7 @@
     [commentDetails release];
     [segmentedControl release];
     [segmentBarItem release];
+	[replyToCommentViewController release];
     [super dealloc];
 }
 
@@ -132,7 +138,23 @@
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+	
+	
+//handle action sheet from replyToCommentsViewController
+	if ([actionSheet tag] == 401) {
+		if (buttonIndex == 0) {
+			[self discard];
+		}
+			
+		if (buttonIndex == 1) {
+			[self cancel];
+		}
+	}
+		
+	
+	
 	NSLog(@"buttonIndex is: %d", buttonIndex);
+//handle action sheet for approve/spam/edit
     if ([actionSheet tag] == 301) {
         if (buttonIndex == 0) {  //Approve/Unapprove conditional button was selected
 			if ([self isApprove]) {
@@ -163,24 +185,33 @@
 
 
 #pragma mark -
-#pragma mark Modal View Methods (Edit, Reply)
+#pragma mark ReplyToCommentViewController methods
+//These methods call the ReplyToCommentViewController as well as handling the "back-referenced" cancel button click
+//that has to be run here given the view heirarchy...
+
+- (void)launchReplyToComments {
+	[self showReplyToCommentModalViewWithAnimation:YES];
+}
 - (void)showReplyToCommentModalViewWithAnimation:(BOOL)animate {
 	
 //TODO: Make sure this method passes commentDetails and currentIndex to editCommentViewController!
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 //TODO: Make this conditional - if editCommentViewController == nil...
-	ReplyToCommentViewController *replyToCommentViewController = [[[ReplyToCommentViewController alloc] initWithNibName:@"ReplyToCommentViewController" bundle:nil]autorelease];
 	
-
-	replyToCommentViewController.commentViewController = self;
-	replyToCommentViewController.commentDetails = commentDetails;
-	replyToCommentViewController.currentIndex = currentIndex;
+		replyToCommentViewController = [[[ReplyToCommentViewController alloc] 
+										 initWithNibName:@"ReplyToCommentViewController" 
+										 bundle:nil]autorelease];
+		replyToCommentViewController.commentViewController = self;
+		replyToCommentViewController.commentDetails = commentDetails;
+	    replyToCommentViewController.currentIndex = currentIndex;
+	
 	
 	UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Foo" style:UIBarButtonItemStyleDone target:nil action:nil];
 	[self.navigationItem setBackBarButtonItem:backButton];
 	[backButton release];
 	
     [delegate.navigationController pushViewController:replyToCommentViewController animated:YES];
+	//[delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
 	//[delegate.navigationController.navigationItem.rightBarButtonItem = doneButton;
 	
 	 //pageDetailsController.navigationItem.leftBarButtonItem = doneButton;
@@ -196,9 +227,65 @@
 	//[modalNavigationController release];
 }
 
-- (void)launchReplyToComments {
-	[self showReplyToCommentModalViewWithAnimation:YES];
+//- (ReplyToCommentViewController *)replyToCommentlViewController {
+//	NSLog(@"inside replytocomment... builder method");
+//    if (!replyToCommentViewController) {
+//        replyToCommentViewController = [[ReplyToCommentViewController alloc] 
+//										initWithNibName:@"ReplyToCommentViewController" 
+//										bundle:nil];
+//		replyToCommentViewController.commentViewController = self;
+//		replyToCommentViewController.commentDetails = commentDetails;
+//		replyToCommentViewController.currentIndex = currentIndex;
+//    }
+//	
+//    return replyToCommentViewController;
+//}
+
+
+
+- (void)cancelView:(id)sender {
+	
+	[replyToCommentViewController test];
+    
+        //[self.navigationController popViewControllerAnimated:YES];
+		NSLog(@"cancelView on CommentViewController");
+	
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
+															 delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Discard"
+													otherButtonTitles:nil];
+    actionSheet.tag = 401;
+    actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
+    [actionSheet showInView:self.view];
+    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    [delegate setAlertRunning:YES];
+	
+    [actionSheet release];
+	NSLog(@"last line of cancelView");
 }
+	
+#pragma mark -
+#pragma mark Action Sheet Button Helper Methods
+
+
+
+- (void)discard {
+//    hasChanges = NO;
+    replyToCommentViewController.navigationItem.rightBarButtonItem = nil;
+//    [self stopTimer];
+//    [[BlogDataManager sharedDataManager] clearAutoSavedContext];
+    [self.navigationController popViewControllerAnimated:YES];
+	
+}
+
+- (void)cancel {
+    //hasChanges = YES;
+	NSLog(@"first line of CommentViewControler:cancel");
+	
+    if ([[replyToCommentViewController.leftView title] isEqualToString:@"Comment"])
+        [replyToCommentViewController.leftView setTitle:@"Cancel"];
+}
+
+
 
 #pragma mark -
 #pragma mark Action Methods
@@ -384,8 +471,6 @@
     } else if (currentIndex == [commentDetails count] - 1) {
         [segmentedControl setEnabled:FALSE forSegmentAtIndex:1];
     }
-
-	//We have "currentComment" context here, without the need for another BlogDataManager method...
 }
 
 @end

@@ -275,7 +275,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     //TODO:JOHNBCustomFields -- probably want an entry here for custom_fields too
 }
 
-- (IBAction)cancelView:(id)sender {
+//- (IBAction)cancelView:(id)sender {
+- (void)cancelView:(id)sender {
     [postDetailViewController cancelView:sender];
 }
 
