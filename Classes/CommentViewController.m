@@ -15,6 +15,7 @@
 #define COMMENT_BODY_TOP        100
 #define COMMENT_BODY_MAX_HEIGHT 4000
 #define COMMENT_BODY_PADDING 20
+#define JUST_TO_AVIID_COMPILER_ERRORS 400
 
 #define kCustomButtonHeight     30.0
 
@@ -32,6 +33,7 @@
 - (void)discard;
 
 - (void)showReplyToCommentModalViewWithAnimation:(BOOL)animate;
+- (void)insertPendingLabel;
 
 @end
 
@@ -81,6 +83,9 @@
 - (void)viewWillAppear:(BOOL)animated {
     [self performSelector:@selector(reachabilityChanged)];
     [super viewWillAppear:animated];
+	
+	//NSDictionary *comment = [commentDetails objectAtIndex:currentIndex];
+	NSLog(@"commentStatus is: %@", commentStatus);	
 }
 
 - (void)reachabilityChanged {
@@ -356,6 +361,86 @@
     commentBodyLabel.frame = CGRectMake(commentBodyLabel.frame.origin.x, COMMENT_BODY_TOP, size.width, size.height);
 }
 
+#pragma mark resize top UIView
+
+- (void)insertPendingLabel {
+	
+	/*
+	 what about adding the label to the subview
+	 and then calling sizeToFit on that UIView?
+	 
+	 
+	 /*
+	
+	/*
+	 IBOutlet GravatarImageView *gravatarImageView;
+	 IBOutlet UILabel *commentAuthorLabel;
+	 IBOutlet UILabel *commentAuthorUrlLabel;
+	 IBOutlet UILabel *commentAuthorEmailLabel;
+	 IBOutlet UILabel *commentPostTitleLabel;
+	 IBOutlet UILabel *commentDateLabel;
+	 IBOutlet UILabel *commentBodyLabel;
+	 */
+	
+    CGRect rect;
+    //int pendingLabelOffset = 0;
+    
+    //if (isPending) {
+//        pendingLabelOffset = 100;
+//		UILabel *myLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 40)];
+//		myLabel2.text = @"only Xcode";
+//		myLabel2.textAlignment = UITextAlignmentCenter;
+//		myLabel2.textColor = [UIColor yellowColor];
+//		myLabel2.shadowColor = [UIColor whiteColor];
+//		myLabel2.shadowOffset = CGSizeMake(1,1);
+//		myLabel2.font = [UIFont fontWithName:@"Zapfino" size:20];
+//		myLabel2.backgroundColor = [UIColor greenColor];
+		pendingLabel.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
+		[labelHolder addSubview:pendingLabel];
+		//[labelHolder sizeToFit];
+		
+		//[self.contentView addSubview:checkButton];
+        //checkButton.alpha = 1;
+        //checkButton.enabled = YES;
+        //self.accessoryType = UITableViewCellAccessoryNone;
+    
+    
+    rect = gravatarImageView.frame;
+    rect.origin.y += 40.0f;
+    gravatarImageView.frame = rect;
+    
+    rect = commentAuthorLabel.frame;
+    rect.origin.y += 40.0f;
+    //rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
+    commentAuthorLabel.frame = rect;
+    
+    rect = commentAuthorUrlLabel.frame;
+    rect.origin.y += 40.0f;
+    //rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
+    commentAuthorUrlLabel.frame = rect;
+	
+    rect = commentAuthorEmailLabel.frame;
+    rect.origin.y += 40.0f;
+    //rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
+    commentAuthorEmailLabel.frame = rect;
+    
+    rect = commentPostTitleLabel.frame;
+    rect.origin.y += 40.0f;
+    //rect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
+    commentPostTitleLabel.frame = rect;
+	
+	rect = commentDateLabel.frame;
+    rect.origin.y += 40.0f;
+    //rect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
+    commentDateLabel.frame = rect;
+	
+	[labelHolder sizeToFit];
+	
+	
+	
+	}
+
+
 #pragma mark -
 #pragma mark Public Methods
 
@@ -399,6 +484,7 @@
     if ([commentStatus isEqualToString:@"hold"]) {
         //[approveAndUnapproveButtonBar setHidden:NO];
         //[deleteButtonBar setHidden:YES];
+		[self insertPendingLabel];
 		[approveAndUnapproveButtonBar setHidden:YES];
 		[deleteButtonBar setHidden:NO];
 		 
@@ -410,19 +496,19 @@
 
     }
 
-    [approveButton setEnabled:NO];
-    [unapproveButton setEnabled:NO];
-    [spamButton1 setEnabled:YES];
-    [spamButton2 setEnabled:YES];
-
-    if ([commentStatus isEqualToString:@"hold"]) {
-        [approveButton setEnabled:YES];
-    } else if ([commentStatus isEqualToString:@"approve"]) {
-        [unapproveButton setEnabled:YES];
-    } else if ([commentStatus isEqualToString:@"spam"]) {
-        [spamButton1 setEnabled:NO];
-        [spamButton2 setEnabled:NO];
-    }
+//    [approveButton setEnabled:NO];
+//    [unapproveButton setEnabled:NO];
+//    [spamButton1 setEnabled:YES];
+//    [spamButton2 setEnabled:YES];
+//
+//    if ([commentStatus isEqualToString:@"hold"]) {
+//        [approveButton setEnabled:YES];
+//    } else if ([commentStatus isEqualToString:@"approve"]) {
+//        [unapproveButton setEnabled:YES];
+//    } else if ([commentStatus isEqualToString:@"spam"]) {
+//        [spamButton1 setEnabled:NO];
+//        [spamButton2 setEnabled:NO];
+//    }
 
     [segmentedControl setEnabled:TRUE forSegmentAtIndex:0];
     [segmentedControl setEnabled:TRUE forSegmentAtIndex:1];

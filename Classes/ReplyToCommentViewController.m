@@ -27,7 +27,7 @@
 @implementation ReplyToCommentViewController
 
 @synthesize commentViewController, commentDetails, currentIndex, saveButton, doneButton, comment;
-@synthesize leftView, cancelButton;
+@synthesize leftView, cancelButton, label;
 
 //TODO: Make sure to give this class a connection to commentDetails and currentIndex from CommentViewController
 
@@ -60,9 +60,8 @@
 	if (!leftView) {
         leftView = [WPNavigationLeftButtonView createCopyOfView];
         [leftView setTitle:@"Comment"];
-		
-		
 	}
+	
 }
 
 
@@ -72,6 +71,22 @@
 	cancelButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
 	self.navigationItem.leftBarButtonItem = cancelButton;
     [cancelButton release];
+	
+	comment = [commentDetails objectAtIndex:currentIndex];
+	if ([[comment valueForKey:@"status"] isEqualToString:@"hold"]) {
+		NSLog(@"inside if of vwappear");
+		label.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
+		label.hidden = NO;
+	} else {
+		label.hidden = YES;
+		//TODO: JOHNB - code movement of text view upward if this is not a pending comment
+		
+	}
+	
+	[textView becomeFirstResponder];
+	
+
+	
 	
 	
 }

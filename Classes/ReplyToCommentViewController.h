@@ -22,6 +22,7 @@
 	NSMutableDictionary *comment;
     int currentIndex;
 	IBOutlet UITextView *textView;
+	IBOutlet UILabel *label;
 	UIBarButtonItem *saveButton;
 	UIBarButtonItem *doneButton;
 	UIBarButtonItem *cancelButton;
@@ -38,6 +39,7 @@
 @property (nonatomic, retain) UIBarButtonItem *cancelButton;
 @property (nonatomic, retain)   WPNavigationLeftButtonView *leftView;
 @property (nonatomic, retain) CommentViewController *commentViewController;
+@property (nonatomic, retain) UILabel *label;
 
 @property int currentIndex;
 

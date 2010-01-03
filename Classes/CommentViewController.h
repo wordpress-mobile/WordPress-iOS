@@ -21,6 +21,9 @@
     IBOutlet UILabel *commentPostTitleLabel;
     IBOutlet UILabel *commentDateLabel;
     IBOutlet UILabel *commentBodyLabel;
+	
+	IBOutlet UIView *labelHolder;
+	IBOutlet UILabel *pendingLabel;
 
     IBOutlet UIToolbar *approveAndUnapproveButtonBar;
     IBOutlet UIToolbar *deleteButtonBar;
