@@ -366,44 +366,13 @@
 - (void)insertPendingLabel {
 	
 	/*
-	 what about adding the label to the subview
-	 and then calling sizeToFit on that UIView?
-	 
-	 
-	 /*
-	
-	/*
-	 IBOutlet GravatarImageView *gravatarImageView;
-	 IBOutlet UILabel *commentAuthorLabel;
-	 IBOutlet UILabel *commentAuthorUrlLabel;
-	 IBOutlet UILabel *commentAuthorEmailLabel;
-	 IBOutlet UILabel *commentPostTitleLabel;
-	 IBOutlet UILabel *commentDateLabel;
-	 IBOutlet UILabel *commentBodyLabel;
+	 move all the labels down to accomodate the pending header
+	 which is 40 high.
 	 */
 	
     CGRect rect;
-    //int pendingLabelOffset = 0;
-    
-    //if (isPending) {
-//        pendingLabelOffset = 100;
-//		UILabel *myLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 40)];
-//		myLabel2.text = @"only Xcode";
-//		myLabel2.textAlignment = UITextAlignmentCenter;
-//		myLabel2.textColor = [UIColor yellowColor];
-//		myLabel2.shadowColor = [UIColor whiteColor];
-//		myLabel2.shadowOffset = CGSizeMake(1,1);
-//		myLabel2.font = [UIFont fontWithName:@"Zapfino" size:20];
-//		myLabel2.backgroundColor = [UIColor greenColor];
-		pendingLabel.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
-		[labelHolder addSubview:pendingLabel];
-		//[labelHolder sizeToFit];
-		
-		//[self.contentView addSubview:checkButton];
-        //checkButton.alpha = 1;
-        //checkButton.enabled = YES;
-        //self.accessoryType = UITableViewCellAccessoryNone;
-    
+	pendingLabel.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
+	[labelHolder addSubview:pendingLabel];    
     
     rect = gravatarImageView.frame;
     rect.origin.y += 40.0f;
@@ -411,33 +380,30 @@
     
     rect = commentAuthorLabel.frame;
     rect.origin.y += 40.0f;
-    //rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
     commentAuthorLabel.frame = rect;
     
     rect = commentAuthorUrlLabel.frame;
     rect.origin.y += 40.0f;
-    //rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
-    commentAuthorUrlLabel.frame = rect;
+	commentAuthorUrlLabel.frame = rect;
 	
     rect = commentAuthorEmailLabel.frame;
     rect.origin.y += 40.0f;
-    //rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
-    commentAuthorEmailLabel.frame = rect;
+	commentAuthorEmailLabel.frame = rect;
     
     rect = commentPostTitleLabel.frame;
     rect.origin.y += 40.0f;
-    //rect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
     commentPostTitleLabel.frame = rect;
 	
 	rect = commentDateLabel.frame;
     rect.origin.y += 40.0f;
-    //rect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
     commentDateLabel.frame = rect;
 	
-	[labelHolder sizeToFit];
+	//move commentBodyLabel down also
 	
-	
-	
+	rect = commentBodyLabel.frame;
+	rect.origin.y += 40.0f;
+	commentBodyLabel.frame = rect;
+
 	}
 
 

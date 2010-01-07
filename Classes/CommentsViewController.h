@@ -22,7 +22,7 @@
     IBOutlet UIBarButtonItem *approveButton;
     IBOutlet UIBarButtonItem *unapproveButton;
     IBOutlet UIBarButtonItem *spamButton;
-    IBOutlet UIButton *deleteButton;
+    IBOutlet UIBarButtonItem *deleteButton;
 
     BOOL editing;
 

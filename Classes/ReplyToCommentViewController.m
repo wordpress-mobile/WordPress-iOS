@@ -11,6 +11,8 @@
 #import "WPProgressHUD.h"
 #import "Reachability.h"
 
+NSTimeInterval kAnimationDuration2 = 0.3f;
+
 @interface ReplyToCommentViewController (Private)
 
 - (BOOL)isConnectedToHost;
@@ -177,6 +179,13 @@
 
 
 - (void)textViewDidEndEditing:(UITextView *)aTextView {
+	//make the text view longer !!!! Will need to modify this for rotation
+	[UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:kAnimationDuration2];
+	CGRect frame = textView.frame;
+	frame.size.height = 460.0f;
+	textView.frame = frame;
+    [UIView commitAnimations];
 	
 	
 //	isEditing = NO;
@@ -201,6 +210,15 @@
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)aTextView {
+	
+	
+//	//make the text view shorter !!!! Will need to modify this for rotation
+	[UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:kAnimationDuration2];
+	CGRect frame = textView.frame;
+	frame.size.height = 225.0f;
+	textView.frame = frame;
+    [UIView commitAnimations];
 	
  //   isEditing = YES;
 //	
