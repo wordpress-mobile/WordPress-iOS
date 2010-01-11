@@ -34,6 +34,7 @@
 
 - (void)showReplyToCommentModalViewWithAnimation:(BOOL)animate;
 - (void)insertPendingLabel;
+- (void)removePendingLabel;
 
 @end
 
@@ -371,40 +372,107 @@
 	 */
 	
     CGRect rect;
-	pendingLabel.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
-	[labelHolder addSubview:pendingLabel];    
+
+	float pendingLabelHeight = pendingLabelHolder.frame.size.height;
+    //int pendingLabelOffset = 0;
+    
+    //if (isPending) {
+//        pendingLabelOffset = 100;
+//		UILabel *myLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 40)];
+//		myLabel2.text = @"only Xcode";
+//		myLabel2.textAlignment = UITextAlignmentCenter;
+//		myLabel2.textColor = [UIColor yellowColor];
+//		myLabel2.shadowColor = [UIColor whiteColor];
+//		myLabel2.shadowOffset = CGSizeMake(1,1);
+//		myLabel2.font = [UIFont fontWithName:@"Zapfino" size:20];
+//		myLabel2.backgroundColor = [UIColor greenColor];
+	
+	pendingLabelHolder.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BORDER_COLOR;
+		pendingLabel.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
+
+		[labelHolder addSubview:pendingLabelHolder];
+		//[labelHolder sizeToFit];
+		
+		//[self.contentView addSubview:checkButton];
+        //checkButton.alpha = 1;
+        //checkButton.enabled = YES;
+        //self.accessoryType = UITableViewCellAccessoryNone;
+    
     
     rect = gravatarImageView.frame;
-    rect.origin.y += 40.0f;
+    rect.origin.y += pendingLabelHeight;
     gravatarImageView.frame = rect;
     
     rect = commentAuthorLabel.frame;
-    rect.origin.y += 40.0f;
+    rect.origin.y += pendingLabelHeight;
     commentAuthorLabel.frame = rect;
     
     rect = commentAuthorUrlLabel.frame;
-    rect.origin.y += 40.0f;
+    rect.origin.y += pendingLabelHeight;
 	commentAuthorUrlLabel.frame = rect;
 	
     rect = commentAuthorEmailLabel.frame;
-    rect.origin.y += 40.0f;
+    rect.origin.y += pendingLabelHeight;
 	commentAuthorEmailLabel.frame = rect;
     
     rect = commentPostTitleLabel.frame;
-    rect.origin.y += 40.0f;
+    rect.origin.y += pendingLabelHeight;
     commentPostTitleLabel.frame = rect;
 	
 	rect = commentDateLabel.frame;
-    rect.origin.y += 40.0f;
+    rect.origin.y += pendingLabelHeight;
     commentDateLabel.frame = rect;
 	
-	//move commentBodyLabel down also
+	rect = commentBodyLabel.frame;
+    rect.origin.y += pendingLabelHeight;
+	//rect.size.y -= 40.0f;
+    //rect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
+    commentBodyLabel.frame = rect;
+	
+	[labelHolder sizeToFit];
 	
 	rect = commentBodyLabel.frame;
 	rect.origin.y += 40.0f;
 	commentBodyLabel.frame = rect;
 
 	}
+
+- (void)removePendingLabel {
+	
+	if ([pendingLabelHolder superview] == labelHolder) {
+		float pendingLabelHeight = pendingLabelHolder.frame.size.height;
+		[pendingLabelHolder removeFromSuperview];
+	
+		CGRect rect = gravatarImageView.frame;
+		rect.origin.y -= pendingLabelHeight;
+		gravatarImageView.frame = rect;
+		
+		rect = commentAuthorLabel.frame;
+		rect.origin.y -= pendingLabelHeight;
+		//rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
+		commentAuthorLabel.frame = rect;
+		
+		rect = commentAuthorUrlLabel.frame;
+		rect.origin.y -= pendingLabelHeight;
+		//rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
+		commentAuthorUrlLabel.frame = rect;
+		
+		rect = commentAuthorEmailLabel.frame;
+		rect.origin.y -= pendingLabelHeight;
+		//rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
+		commentAuthorEmailLabel.frame = rect;
+		
+		rect = commentPostTitleLabel.frame;
+		rect.origin.y -= pendingLabelHeight;
+		//rect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
+		commentPostTitleLabel.frame = rect;
+		
+		rect = commentDateLabel.frame;
+		rect.origin.y -= pendingLabelHeight;
+		//rect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
+		commentDateLabel.frame = rect;
+	}
+}
 
 
 #pragma mark -
@@ -457,6 +525,7 @@
     } else {
         //[approveAndUnapproveButtonBar setHidden:YES];
         //[deleteButtonBar setHidden:NO];
+		[self removePendingLabel];
 		[approveAndUnapproveButtonBar setHidden:YES];
 		[deleteButtonBar setHidden:NO];
 

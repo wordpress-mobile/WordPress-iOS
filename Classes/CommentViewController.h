@@ -24,6 +24,7 @@
 	
 	IBOutlet UIView *labelHolder;
 	IBOutlet UILabel *pendingLabel;
+	IBOutlet UIView *pendingLabelHolder;
 
     IBOutlet UIToolbar *approveAndUnapproveButtonBar;
     IBOutlet UIToolbar *deleteButtonBar;

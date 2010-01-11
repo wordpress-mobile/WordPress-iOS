@@ -39,7 +39,8 @@
 
 #define TABLE_VIEW_BACKGROUND_COLOR          [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1]
 #define TABLE_VIEW_CELL_BACKGROUND_COLOR     [UIColor whiteColor]
-#define PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR     [UIColor colorWithRed:1.0 green:1.0 blue:224.0 / 255.0 alpha:1.0]
+#define PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR     [UIColor colorWithRed:1.0 green:1.0 blue:215.0 / 255.0 alpha:1.0]
+#define PENDING_COMMENT_TABLE_VIEW_CELL_BORDER_COLOR     [UIColor colorWithRed:226.0 / 255.0 green:215.0 / 255.0 blue:58.0 / 255.0 alpha:1.0]
 
 #ifdef DEBUGMODE
 #define WPLog NSLog
