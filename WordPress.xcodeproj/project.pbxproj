@@ -681,7 +681,6 @@
 		C533CF320E6D3AB3000C3DE8 /* Comments */ = {
 			isa = PBXGroup;
 			children = (
-				2994EEE810DEBA4B008336A6 /* Comments Notes */,
 				2A7F71FF0E70F8C900E48A1F /* CommentViewController.h */,
 				2A7F72000E70F8C900E48A1F /* CommentViewController.m */,
 				C533CF330E6D3ADA000C3DE8 /* CommentsViewController.h */,
