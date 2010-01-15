@@ -41,7 +41,7 @@
 @implementation CommentViewController
 
 
-@synthesize replyToCommentViewController;
+@synthesize replyToCommentViewController, commentsViewController;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -51,6 +51,7 @@
     [segmentedControl release];
     [segmentBarItem release];
 	[replyToCommentViewController release];
+	[commentsViewController release];
     [super dealloc];
 }
 
@@ -105,6 +106,15 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	
+	//[super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+	if(UIInterfaceOrientationIsLandscape(self.commentsViewController.interfaceOrientation)){
+		NSLog(@"inside 999CVC if - landscape");
+	}else {
+		NSLog(@"inside 999CVC if - portriat");
+	}
+		
+		
 //    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 //
 //    if ([delegate isAlertRunning] == YES) {
@@ -112,6 +122,7 @@
 //    } else {
 //        return YES;
 //    }
+	NSLog(@"inside CommentViewController's should autorotate");
 	return NO;
 }
 
@@ -145,6 +156,17 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	
+//handle action sheet from trash button
+	if ([actionSheet tag] == 501) {
+		if (buttonIndex == 0) {
+			[self deleteComment:nil];
+		}
+		
+		if (buttonIndex == 1) {
+			
+		}
+	}
+	
 	
 //handle action sheet from replyToCommentsViewController
 	if ([actionSheet tag] == 401) {
@@ -157,7 +179,6 @@
 		}
 	}
 		
-	
 	
 	NSLog(@"buttonIndex is: %d", buttonIndex);
 //handle action sheet for approve/spam/edit
@@ -205,15 +226,23 @@
 										 initWithNibName:@"ReplyToCommentViewController" 
 										 bundle:nil]autorelease];
 		replyToCommentViewController.commentViewController = self;
+	    //replyToCommentViewController.commentsViewController = self.commentsViewController;
 		replyToCommentViewController.commentDetails = commentDetails;
 	    replyToCommentViewController.currentIndex = currentIndex;
 		replyToCommentViewController.title = @"Comment Reply";
 	
-    [delegate.navigationController pushViewController:replyToCommentViewController animated:YES];
+	
+    [delegate.navigationController pushViewController:self.replyToCommentViewController animated:YES];
 }
 
 
 - (void)cancelView:(id)sender {
+	
+	if (!replyToCommentViewController.hasChanges) {
+        [self.navigationController popViewControllerAnimated:YES];
+        return;
+    }
+	
 	
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
 											   delegate:self cancelButtonTitle:@"Cancel" 
@@ -265,6 +294,22 @@
             [self showComment:commentDetails atIndex:currentIndex + 1];
         }
     }
+}
+
+- (void)launchDeleteCommentActionSheet {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Are you sure?"
+															 delegate:self cancelButtonTitle:@"Cancel" 
+											   destructiveButtonTitle:@"Delete"
+													otherButtonTitles:nil];
+    actionSheet.tag = 501;
+    actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
+    [actionSheet showInView:self.view];
+	
+    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    [delegate setAlertRunning:YES];
+	
+    [actionSheet release];
+	
 }
 
 - (void)deleteComment:(id)sender {
@@ -355,11 +400,27 @@
 }
 
 - (void)resizeCommentBodyLabel {
+	
+	//if pending label will be shown, scrollView.contentSize has to reflect the extra pixels taken by the pending label
+	if ([commentStatus isEqualToString:@"hold"]) {
+		float pendingLabelHeight = pendingLabelHolder.frame.size.height;
+		CGSize size = [commentBodyLabel.text sizeWithFont:commentBodyLabel.font
+										constrainedToSize:CGSizeMake(self.view.frame.size.width - COMMENT_BODY_PADDING, COMMENT_BODY_MAX_HEIGHT)
+											lineBreakMode:commentBodyLabel.lineBreakMode];
+		//scrollView.contentSize = CGSizeMake(size.width, COMMENT_BODY_TOP + 45.0f + size.height);
+		scrollView.contentSize = CGSizeMake(size.width, COMMENT_BODY_TOP + pendingLabelHeight + COMMENT_BODY_PADDING + size.height);
+		commentBodyLabel.frame = CGRectMake(commentBodyLabel.frame.origin.x, COMMENT_BODY_TOP, size.width, size.height);
+		
+		
+	}else{
+
     CGSize size = [commentBodyLabel.text sizeWithFont:commentBodyLabel.font
                     constrainedToSize:CGSizeMake(self.view.frame.size.width - COMMENT_BODY_PADDING, COMMENT_BODY_MAX_HEIGHT)
                         lineBreakMode:commentBodyLabel.lineBreakMode];
     scrollView.contentSize = CGSizeMake(size.width, COMMENT_BODY_TOP + size.height);
+	//scrollView.contentSize = CGSizeMake(size.width, commentBodyLabel.frame.origin.y + size.height);
     commentBodyLabel.frame = CGRectMake(commentBodyLabel.frame.origin.x, COMMENT_BODY_TOP, size.width, size.height);
+	}
 }
 
 #pragma mark resize top UIView
@@ -425,53 +486,49 @@
 	
 	rect = commentBodyLabel.frame;
     rect.origin.y += pendingLabelHeight;
-	//rect.size.y -= 40.0f;
-    //rect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
     commentBodyLabel.frame = rect;
 	
 	[labelHolder sizeToFit];
 	
-	rect = commentBodyLabel.frame;
-	rect.origin.y += 40.0f;
-	commentBodyLabel.frame = rect;
+	
 
 	}
 
 - (void)removePendingLabel {
 	
-	if ([pendingLabelHolder superview] == labelHolder) {
-		float pendingLabelHeight = pendingLabelHolder.frame.size.height;
-		[pendingLabelHolder removeFromSuperview];
-	
-		CGRect rect = gravatarImageView.frame;
-		rect.origin.y -= pendingLabelHeight;
-		gravatarImageView.frame = rect;
-		
-		rect = commentAuthorLabel.frame;
-		rect.origin.y -= pendingLabelHeight;
-		//rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
-		commentAuthorLabel.frame = rect;
-		
-		rect = commentAuthorUrlLabel.frame;
-		rect.origin.y -= pendingLabelHeight;
-		//rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
-		commentAuthorUrlLabel.frame = rect;
-		
-		rect = commentAuthorEmailLabel.frame;
-		rect.origin.y -= pendingLabelHeight;
-		//rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
-		commentAuthorEmailLabel.frame = rect;
-		
-		rect = commentPostTitleLabel.frame;
-		rect.origin.y -= pendingLabelHeight;
-		//rect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
-		commentPostTitleLabel.frame = rect;
-		
-		rect = commentDateLabel.frame;
-		rect.origin.y -= pendingLabelHeight;
-		//rect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
-		commentDateLabel.frame = rect;
-	}
+//	if ([pendingLabelHolder superview] == labelHolder) {
+//		float pendingLabelHeight = pendingLabelHolder.frame.size.height;
+//		[pendingLabelHolder removeFromSuperview];
+//	
+//		CGRect rect = gravatarImageView.frame;
+//		rect.origin.y -= pendingLabelHeight;
+//		gravatarImageView.frame = rect;
+//		
+//		rect = commentAuthorLabel.frame;
+//		rect.origin.y -= pendingLabelHeight;
+//		//rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
+//		commentAuthorLabel.frame = rect;
+//		
+//		rect = commentAuthorUrlLabel.frame;
+//		rect.origin.y -= pendingLabelHeight;
+//		//rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
+//		commentAuthorUrlLabel.frame = rect;
+//		
+//		rect = commentAuthorEmailLabel.frame;
+//		rect.origin.y -= pendingLabelHeight;
+//		//rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
+//		commentAuthorEmailLabel.frame = rect;
+//		
+//		rect = commentPostTitleLabel.frame;
+//		rect.origin.y -= pendingLabelHeight;
+//		//rect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
+//		commentPostTitleLabel.frame = rect;
+//		
+//		rect = commentDateLabel.frame;
+//		rect.origin.y -= pendingLabelHeight;
+//		//rect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
+//		commentDateLabel.frame = rect;
+//	}
 }
 
 
@@ -525,7 +582,7 @@
     } else {
         //[approveAndUnapproveButtonBar setHidden:YES];
         //[deleteButtonBar setHidden:NO];
-		[self removePendingLabel];
+		//[self removePendingLabel];
 		[approveAndUnapproveButtonBar setHidden:YES];
 		[deleteButtonBar setHidden:NO];
 
@@ -544,7 +601,7 @@
 //        [spamButton1 setEnabled:NO];
 //        [spamButton2 setEnabled:NO];
 //    }
-
+	
     [segmentedControl setEnabled:TRUE forSegmentAtIndex:0];
     [segmentedControl setEnabled:TRUE forSegmentAtIndex:1];
 

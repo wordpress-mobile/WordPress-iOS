@@ -8,9 +8,11 @@
 #import <UIKit/UIKit.h>
 #import "GravatarImageView.h"
 #import "ReplyToCommentViewController.h"
+#import "CommentsViewController.h"
 
 @interface CommentViewController : UIViewController <UIScrollViewDelegate, UIActionSheetDelegate> {
 
+	CommentsViewController *commentsViewController;
 	
 	IBOutlet UIScrollView *scrollView;
     
@@ -51,6 +53,7 @@
 
 - (IBAction)launchModerateMenu;
 - (IBAction)launchReplyToComments;
+- (IBAction)launchDeleteCommentActionSheet;
 
 - (void)segmentAction:(id)sender;
 - (void)showComment:(NSArray *)comments atIndex:(int)row;
@@ -61,6 +64,7 @@
 - (void)spamComment:(id)sender;
 
 @property (nonatomic, retain) ReplyToCommentViewController *replyToCommentViewController;
+@property (nonatomic, retain) CommentsViewController *commentsViewController;
 
 
 @end

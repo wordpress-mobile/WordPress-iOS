@@ -134,6 +134,7 @@
     if ([delegate isAlertRunning] == YES) {
         return NO;
     } else {
+	NSLog(@"inside commentsviewcontroller's should autorotate");
         return YES;
     }
 }
@@ -345,14 +346,14 @@
 
 - (void)showCommentAtIndex:(int)index {
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    CommentViewController *commentsViewController = [[CommentViewController alloc] initWithNibName:@"CommentViewController" bundle:nil];
-
-	//[commentsViewController showComment:commentsArray atIndex:index];
+    CommentViewController *commentViewController = [[CommentViewController alloc] initWithNibName:@"CommentViewController" bundle:nil];
+	commentViewController.commentsViewController = self;
+	//[commentViewController showComment:commentsArray atIndex:index];
 	
-    [delegate.navigationController pushViewController:commentsViewController animated:YES];
+    [delegate.navigationController pushViewController:commentViewController animated:YES];
 
-    [commentsViewController showComment:commentsArray atIndex:index];
-    [commentsViewController release];
+    [commentViewController showComment:commentsArray atIndex:index];
+    [commentViewController release];
 }
 
 #pragma mark -

@@ -1253,10 +1253,12 @@ editBlogViewController;
     XMLRPCRequest *reqUserInfo = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
     [reqUserInfo setMethod:@"blogger.getUserInfo" withObjects:[NSArray arrayWithObjects:@"ABCDEF012345", username, pwd, nil]];
 
+	NSLog(@"xmlrpc value: %@", xmlrpc);
     NSDictionary *userInfo = [self executeXMLRPCRequest:reqUserInfo byHandlingError:YES];
     [reqUserInfo release];
 
     if (![userInfo isKindOfClass:[NSDictionary class]])  //err occured.
+		NSLog(@"error occured on blogger.getUserInfo");
         return NO;
 
     // save values returned by getUserInfo into current blog
@@ -1276,13 +1278,17 @@ editBlogViewController;
 
     XMLRPCRequest *reqUsersBlogs = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
     [reqUsersBlogs setMethod:@"blogger.getUsersBlogs" withObjects:[NSArray arrayWithObjects:@"ABCDEF012345", username, pwd, nil]];
+	NSLog(@"reqUsersBlogs %@", reqUsersBlogs);
+	
 
     // we are expecting an array to be returned in the response with one dictionary containing
     // the blog located by url used at login
     // If there is a fault, the returned object will be a dictionary with a fault element.
     // If the returned object is a NSArray, the, the object at index 0 will be the dictionary with blog info fields
-
+	NSLog(@"just before attempted getUsersBlogs");
     NSArray *usersBlogsResponseArray = [self executeXMLRPCRequest:reqUsersBlogs byHandlingError:YES];
+	NSLog(@"just attempted getUsersBlogs");
+
 	[self printArrayToLog:usersBlogsResponseArray andArrayName:@"this is usersBlogsResponseArray from -refreshCurrentUser in BlogDataManager"];
     [reqUsersBlogs release];
 
@@ -4671,11 +4677,12 @@ editBlogViewController;
 //        // Check for fault
 //        // check for nil or empty response
 //        // provide meaningful messge to user
-//        if ((!result) || !([result isKindOfClass:[NSArray class]])) {
-//            [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-//			//		 [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
-//            [commentsReqArray release];
-//            return NO;
+        if ((!result) || !([result isKindOfClass:[NSArray class]])) {
+            [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+			//		 [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
+            [commentsReqArray release];
+            return NO;
+		}
 //        } else {
 //            for (int j = 0; j < commentsCount; j++) {
 //                NSDictionary *commentDict = [aComment objectAtIndex:j];
@@ -4697,9 +4704,10 @@ editBlogViewController;
 //    NSString *pathToCommentTitles = [self pathToCommentTitles:blog];
 //    [defaultFileManager removeItemAtPath:pathToCommentTitles error:nil];
 //    [commentTitlesArray writeToFile:pathToCommentTitles atomically:YES];
-//    [commentsReqArray release];
+    [commentsReqArray release];
 //	
-//    [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+    [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+	[self syncCommentsForCurrentBlog];
     return YES;
 }
 

@@ -20,6 +20,8 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 - (void)saveReplyBackgroundMethod:(id)sender;
 - (void)callBDMSaveCommentReply:(SEL)selector;
 - (void)endTextEnteringButtonAction:(id)sender;
+- (void)testStringAccess;
+-(void) receivedRotate: (NSNotification*) notification;
 
 
 @end
@@ -29,7 +31,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 @implementation ReplyToCommentViewController
 
 @synthesize commentViewController, commentDetails, currentIndex, saveButton, doneButton, comment;
-@synthesize leftView, cancelButton, label;
+@synthesize leftView, cancelButton, label, hasChanges, textViewText;
 
 //TODO: Make sure to give this class a connection to commentDetails and currentIndex from CommentViewController
 
@@ -44,9 +46,14 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 */
 
 
+- (void)testStringAccess{
+	//NSLog(@"%@",foo);
+}
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
 	[super viewDidLoad];
+	//foo = [[NSString alloc] initWithString: textView.text];
 	
 	comment = [[NSMutableDictionary alloc] init];
 	
@@ -68,6 +75,15 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 
 
 - (void)viewWillAppear:(BOOL)animated {
+	
+	[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+	[[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(receivedRotate:) name: UIDeviceOrientationDidChangeNotification object: nil];
+
+	
+	self.hasChanges = NO;
+	//foo = textView.text;//so we can compare to set hasChanges correctly
+	textViewText = [[NSString alloc] initWithString: textView.text];
+	NSLog(@"waga this is the text from textViewString %@", textViewText);
 
 	[leftView setTarget:self withAction:@selector(cancelView:)];
 	cancelButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
@@ -86,11 +102,17 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	}
 	
 	[textView becomeFirstResponder];
+	[self testStringAccess];
 	
 
 	
 	
 	
+}
+
+-(void) viewWillDisappear: (BOOL) animated{
+	[[NSNotificationCenter defaultCenter] removeObserver: self];
+	[[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
 }
 
 /*
@@ -116,6 +138,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 
 - (void)dealloc {
 	[saveButton release];
+	[textViewText release];
 	//[doneButton release];
     [super dealloc];
 }
@@ -161,92 +184,65 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 - (void)endTextEnteringButtonAction:(id)sender {
 	
     [textView resignFirstResponder];
-	//    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:pageDetailsController.leftView];
-	//    pageDetailsController.navigationItem.leftBarButtonItem = barButton;
-	//    [barButton release];
-	//	if((pageDetailsController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || 
-	//	   (pageDetailsController.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
-	//		[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
-	
-	//[self initiateSaveCommentReply: nil];
+	[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
 	
 }
 
+- (void)setTextViewHeight:(float)height {
+	[UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:kAnimationDuration2];
+    CGRect frame = textView.frame;
+    frame.size.height = height;
+    textView.frame = frame;
+	[UIView commitAnimations];
+}
 
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	NSLog(@"inside ReplyToCommentViewController's should autorotate");
+		return YES;
+}
+
+-(void) receivedRotate: (NSNotification*) notification
+{
+	UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
+	//if(interfaceOrientation == UIInterfaceOrientationLandscapeLeft)
+		if(UIInterfaceOrientationIsLandscape(interfaceOrientation)){
+			NSLog(@"inside RTCVC new method - landscape");
+			[self setTextViewHeight:130];
+		}else {
+			NSLog(@"inside RTCVC newmethod - portriat");
+			[self setTextViewHeight:225];
+		}
+}
 #pragma mark -
 #pragma mark Text View Delegate Methods
 
 
+
+
 - (void)textViewDidEndEditing:(UITextView *)aTextView {
-	//make the text view longer !!!! Will need to modify this for rotation
-	[UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:kAnimationDuration2];
-	CGRect frame = textView.frame;
-	frame.size.height = 460.0f;
-	textView.frame = frame;
-    [UIView commitAnimations];
+	NSString *textString = textView.text;
+	//set hasChanges only if a change was made using textViewString
+	NSLog(@"just before accessing textViewString in did end editing");
+	NSLog(@"textviewText inside did end editing %@", self.textViewText);
+	if (![textString isEqualToString:textViewText]) {
+		self.hasChanges=YES;
+	}
 	
+	//make the text view longer !!!! 
+	[self setTextViewHeight:460];
 	
-//	isEditing = NO;
-//    dismiss = NO;
-//	
-//    if (isTextViewEditing) {
-//        isTextViewEditing = NO;
-//		
-//        [self bringTextViewDown];
-//		
-//        if (postDetailViewController.hasChanges == YES) {
-//            [leftView setTitle:@"Cancel"];
-//        } else {
-//            [leftView setTitle:@"Posts"];
-//        }
+
 	[leftView setTitle:@"Cancel"];
 	UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:leftView];
-	self.navigationItem.leftBarButtonItem = barItem;
-	//[barItem release];
-	//[barItem retain];
-	
+	self.navigationItem.leftBarButtonItem = barItem;	
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)aTextView {
 	
 	
-//	//make the text view shorter !!!! Will need to modify this for rotation
-	[UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:kAnimationDuration2];
-	CGRect frame = textView.frame;
-	frame.size.height = 225.0f;
-	textView.frame = frame;
-    [UIView commitAnimations];
 	
- //   isEditing = YES;
-//	
-//	if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
-//		|| (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
-//        [self setTextViewHeight:116];
-//		
-//		
-//    }
-//	
-//    dismiss = NO;
-//	
-//    if (!isTextViewEditing) {
-//        isTextViewEditing = YES;
-//		
-//        [self updateTextViewPlacehoderFieldStatus];
-		
-       // UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
-																	  //target:self action:@selector(endTextEnteringButtonAction:)];
-		//UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain
-																  //target:self action:@selector(endTextEnteringButtonAction:)];
-	//[commentViewController.navigationItem setLeftBarButtonItem:doneButton];
-	//[commentViewController.navigationItem setLeftBarButtonItem:saveButton];
-	//commentViewController.navigationItem.leftBarButtonItem = saveButton;
-        //[saveButton release];
-		
-        //[self bringTextViewUp];
-//    }
 	self.navigationItem.rightBarButtonItem = saveButton;
 	doneButton = [[UIBarButtonItem alloc] 
 								   initWithTitle:@"Done" 
@@ -255,12 +251,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 								   action:@selector(endTextEnteringButtonAction:)];
 	
 	[self.navigationItem setLeftBarButtonItem:doneButton];
-	//[commentViewController.navigationItem setLeftBarButtonItem:doneButton];
-	//commentViewController.navigationItem.backBarButtonItem = doneButton;
-	
-	//UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Foo" style:UIBarButtonItemStyleDone target:nil action:nil];
-//	[self.navigationItem setBackBarButtonItem:backButton];
-//	[backButton release];
+
 }
 
 
@@ -289,6 +280,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	comment = [commentDetails objectAtIndex:currentIndex];
 	[comment setValue:textView.text forKey:@"content"];	
     [self performSelectorInBackground:@selector(saveReplyBackgroundMethod:) withObject:nil];
+	
 	[self.navigationController popViewControllerAnimated:YES];
 	
 
