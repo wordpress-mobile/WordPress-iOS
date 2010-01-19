@@ -12,6 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="24"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -35,7 +36,7 @@
 				<string key="IBProxiedObjectIdentifier">IBFirstResponder</string>
 			</object>
 			<object class="IBUIView" id="749316841">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">306</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -44,7 +45,7 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrameSize">{320, 416}</string>
 						<reference key="NSSuperview" ref="749316841"/>
-						<object class="NSColor" key="IBUIBackgroundColor" id="630055485">
+						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MSAxIDEAA</bytes>
 						</object>
@@ -62,41 +63,6 @@
 					<object class="IBUIToolbar" id="191496090">
 						<reference key="NSNextResponder" ref="749316841"/>
 						<int key="NSvFlags">266</int>
-						<object class="NSMutableArray" key="NSSubviews">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBUIButton">
-								<reference key="NSNextResponder" ref="191496090"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{12, 6}, {32, 32}}</string>
-								<reference key="NSSuperview" ref="191496090"/>
-								<bool key="IBUIOpaque">NO</bool>
-								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
-								<int key="IBUIContentMode">1</int>
-								<int key="IBUIContentHorizontalAlignment">0</int>
-								<int key="IBUIContentVerticalAlignment">3</int>
-								<object class="NSFont" key="IBUIFont">
-									<string key="NSName">Helvetica-Bold</string>
-									<double key="NSSize">15</double>
-									<int key="NSfFlags">16</int>
-								</object>
-								<reference key="IBUIHighlightedTitleColor" ref="630055485"/>
-								<object class="NSColor" key="IBUINormalTitleColor">
-									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC4xOTYwNzg0MyAwLjMwOTgwMzkzIDAuNTIxNTY4NjYAA</bytes>
-								</object>
-								<object class="NSColor" key="IBUINormalTitleShadowColor">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MAA</bytes>
-								</object>
-								<object class="NSCustomResource" key="IBUIHighlightedBackgroundImage" id="877173567">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">commentDelete.png</string>
-								</object>
-								<reference key="IBUIDisabledBackgroundImage" ref="877173567"/>
-								<reference key="IBUISelectedBackgroundImage" ref="877173567"/>
-								<reference key="IBUINormalBackgroundImage" ref="877173567"/>
-							</object>
-						</object>
 						<string key="NSFrame">{{0, 416}, {320, 44}}</string>
 						<reference key="NSSuperview" ref="749316841"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -110,7 +76,7 @@
 							<object class="IBUIBarButtonItem" id="987220153">
 								<bool key="IBUIEnabled">NO</bool>
 								<string key="IBUITitle">Spam</string>
-								<float key="IBUIWidth">75</float>
+								<float key="IBUIWidth">80</float>
 								<int key="IBUIStyle">2</int>
 								<reference key="IBUIToolbar" ref="191496090"/>
 							</object>
@@ -120,13 +86,13 @@
 							</object>
 							<object class="IBUIBarButtonItem" id="61998937">
 								<string key="IBUITitle">Unapprove</string>
-								<float key="IBUIWidth">90</float>
+								<float key="IBUIWidth">100</float>
 								<int key="IBUIStyle">2</int>
 								<reference key="IBUIToolbar" ref="191496090"/>
 							</object>
 							<object class="IBUIBarButtonItem" id="445427913">
 								<string key="IBUITitle">Approve</string>
-								<float key="IBUIWidth">75</float>
+								<float key="IBUIWidth">80</float>
 								<int key="IBUIStyle">2</int>
 								<reference key="IBUIToolbar" ref="191496090"/>
 							</object>
@@ -134,6 +100,7 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 460}</string>
+				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
@@ -352,7 +319,7 @@
 					<string>UIResponder</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{96, 296}, {320, 460}}</string>
+					<string>{{96, 258}, {320, 460}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>

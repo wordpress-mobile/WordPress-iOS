@@ -1257,9 +1257,10 @@ editBlogViewController;
     NSDictionary *userInfo = [self executeXMLRPCRequest:reqUserInfo byHandlingError:YES];
     [reqUserInfo release];
 
-    if (![userInfo isKindOfClass:[NSDictionary class]])  //err occured.
+    if (![userInfo isKindOfClass:[NSDictionary class]]){  //err occured.
 		NSLog(@"error occured on blogger.getUserInfo");
         return NO;
+	}
 
     // save values returned by getUserInfo into current blog
     NSString *nickname = [userInfo valueForKey:@"nickname"];
@@ -1290,8 +1291,8 @@ editBlogViewController;
 	NSLog(@"just attempted getUsersBlogs");
 
 	[self printArrayToLog:usersBlogsResponseArray andArrayName:@"this is usersBlogsResponseArray from -refreshCurrentUser in BlogDataManager"];
-    [reqUsersBlogs release];
-
+    NSLog(@"just before releasing reqUsersBlogs");
+	[reqUsersBlogs release];
     if (![usersBlogsResponseArray isKindOfClass:[NSArray class]])
         return NO;
 

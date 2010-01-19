@@ -206,7 +206,6 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 -(void) receivedRotate: (NSNotification*) notification
 {
 	UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
-	//if(interfaceOrientation == UIInterfaceOrientationLandscapeLeft)
 		if(UIInterfaceOrientationIsLandscape(interfaceOrientation)){
 			NSLog(@"inside RTCVC new method - landscape");
 			[self setTextViewHeight:130];

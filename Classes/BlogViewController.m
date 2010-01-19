@@ -15,19 +15,6 @@
 
 @implementation BlogViewController
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	NSLog(@"inside BlogViewController's should autorotate");
-		
-	//    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	//
-	//    if ([delegate isAlertRunning] == YES) {
-	//        return NO;
-	//    } else {
-	//        return YES;
-	//    }
-	return YES;
-}
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
