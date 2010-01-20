@@ -84,6 +84,13 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [self performSelector:@selector(reachabilityChanged)];
+	//if ([commentStatus isEqualToString:@"hold"]) {
+//		wasLastCommentPending = YES;
+//	}else{
+		wasLastCommentPending = NO;
+//	}
+
+		
     [super viewWillAppear:animated];
 	
 	//NSDictionary *comment = [commentDetails objectAtIndex:currentIndex];
@@ -287,6 +294,12 @@
 #pragma mark Action Methods
 
 - (void)segmentAction:(id)sender {
+	if ([commentStatus isEqualToString:@"hold"]) {
+		wasLastCommentPending = YES;
+	}else {
+		wasLastCommentPending = NO;
+	}
+
     if (currentIndex > -1) {
         if ([sender selectedSegmentIndex] == 0 && currentIndex > 0) {
             [self showComment:commentDetails atIndex:currentIndex - 1];
@@ -399,10 +412,10 @@
     [self moderateCommentWithSelector:@selector(unApproveComment:forBlog:)];
 }
 
-- (void)resizeCommentBodyLabel {
+- (void)resizeCommentBodyLabel {  //:(BOOL)wasLastPending {
 	
 	//if pending label will be shown, scrollView.contentSize has to reflect the extra pixels taken by the pending label
-	if ([commentStatus isEqualToString:@"hold"]) {
+	if ([commentStatus isEqualToString:@"hold"]){ 
 		float pendingLabelHeight = pendingLabelHolder.frame.size.height;
 		CGSize size = [commentBodyLabel.text sizeWithFont:commentBodyLabel.font
 										constrainedToSize:CGSizeMake(self.view.frame.size.width - COMMENT_BODY_PADDING, COMMENT_BODY_MAX_HEIGHT)
@@ -496,39 +509,39 @@
 
 - (void)removePendingLabel {
 	
-//	if ([pendingLabelHolder superview] == labelHolder) {
-//		float pendingLabelHeight = pendingLabelHolder.frame.size.height;
-//		[pendingLabelHolder removeFromSuperview];
-//	
-//		CGRect rect = gravatarImageView.frame;
-//		rect.origin.y -= pendingLabelHeight;
-//		gravatarImageView.frame = rect;
-//		
-//		rect = commentAuthorLabel.frame;
-//		rect.origin.y -= pendingLabelHeight;
-//		//rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
-//		commentAuthorLabel.frame = rect;
-//		
-//		rect = commentAuthorUrlLabel.frame;
-//		rect.origin.y -= pendingLabelHeight;
-//		//rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
-//		commentAuthorUrlLabel.frame = rect;
-//		
-//		rect = commentAuthorEmailLabel.frame;
-//		rect.origin.y -= pendingLabelHeight;
-//		//rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
-//		commentAuthorEmailLabel.frame = rect;
-//		
-//		rect = commentPostTitleLabel.frame;
-//		rect.origin.y -= pendingLabelHeight;
-//		//rect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
-//		commentPostTitleLabel.frame = rect;
-//		
-//		rect = commentDateLabel.frame;
-//		rect.origin.y -= pendingLabelHeight;
-//		//rect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
-//		commentDateLabel.frame = rect;
-//	}
+	if ([pendingLabelHolder superview] == labelHolder) {
+		float pendingLabelHeight = pendingLabelHolder.frame.size.height;
+		[pendingLabelHolder removeFromSuperview];
+	
+		CGRect rect = gravatarImageView.frame;
+		rect.origin.y -= pendingLabelHeight;
+		gravatarImageView.frame = rect;
+		
+		rect = commentAuthorLabel.frame;
+		rect.origin.y -= pendingLabelHeight;
+		//rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
+		commentAuthorLabel.frame = rect;
+		
+		rect = commentAuthorUrlLabel.frame;
+		rect.origin.y -= pendingLabelHeight;
+		//rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
+		commentAuthorUrlLabel.frame = rect;
+		
+		rect = commentAuthorEmailLabel.frame;
+		rect.origin.y -= pendingLabelHeight;
+		//rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
+		commentAuthorEmailLabel.frame = rect;
+		
+		rect = commentPostTitleLabel.frame;
+		rect.origin.y -= pendingLabelHeight;
+		//rect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
+		commentPostTitleLabel.frame = rect;
+		
+		rect = commentDateLabel.frame;
+		rect.origin.y -= pendingLabelHeight;
+		//rect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
+		commentDateLabel.frame = rect;
+	}
 }
 
 
@@ -572,17 +585,26 @@
 
     self.navigationItem.title = [NSString stringWithFormat:@"%d of %d", currentIndex + 1, count];
 
-    if ([commentStatus isEqualToString:@"hold"]) {
+    if ([commentStatus isEqualToString:@"hold"] && wasLastCommentPending == NO) {
         //[approveAndUnapproveButtonBar setHidden:NO];
         //[deleteButtonBar setHidden:YES];
 		[self insertPendingLabel];
+		NSLog(@"inside if commentStatus is hold");
+		//[self resizeCommentBodyLabel];//:wasLastCommentPending];
 		[approveAndUnapproveButtonBar setHidden:YES];
 		[deleteButtonBar setHidden:NO];
-		 
-    } else {
+		
+	}else if ([commentStatus isEqualToString:@"hold"] && wasLastCommentPending == YES) {
+		//[self resizeCommentBodyLabel];
+		CGRect rect;
+		rect = commentBodyLabel.frame;
+		rect.origin.y += pendingLabelHolder.frame.size.height;
+		commentBodyLabel.frame = rect;
+	} else {
         //[approveAndUnapproveButtonBar setHidden:YES];
         //[deleteButtonBar setHidden:NO];
-		//[self removePendingLabel];
+		[self removePendingLabel];
+		//[self resizeCommentBodyLabel];//:wasLastCommentPending];
 		[approveAndUnapproveButtonBar setHidden:YES];
 		[deleteButtonBar setHidden:NO];
 

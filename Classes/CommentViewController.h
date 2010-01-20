@@ -48,6 +48,8 @@
 	NSString *commentStatus;
     int currentIndex;
     BOOL connectionStatus;
+	//to control whether
+	BOOL wasLastCommentPending;
 }
 
 
