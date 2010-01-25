@@ -184,11 +184,16 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 - (void)endTextEnteringButtonAction:(id)sender {
 	
     [textView resignFirstResponder];
-	[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+	UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
+	if(UIInterfaceOrientationIsLandscape(interfaceOrientation)){
+		[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+	}
+	
 	
 }
 
 - (void)setTextViewHeight:(float)height {
+	NSLog(@"inside setTextViewHeight %f", height);
 	[UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:kAnimationDuration2];
     CGRect frame = textView.frame;

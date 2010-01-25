@@ -8,11 +8,13 @@
 #import <UIKit/UIKit.h>
 #import "GravatarImageView.h"
 #import "ReplyToCommentViewController.h"
+#import "EditCommentViewController.h"
 #import "CommentsViewController.h"
 
 @interface CommentViewController : UIViewController <UIScrollViewDelegate, UIActionSheetDelegate> {
 
 	CommentsViewController *commentsViewController;
+	EditCommentViewController *editCommentViewController;
 	
 	IBOutlet UIScrollView *scrollView;
     
@@ -64,8 +66,11 @@
 - (void)approveComment:(id)sender;
 - (void)unApproveComment:(id)sender;
 - (void)spamComment:(id)sender;
+- (void) updateCommentText;
+- (void)cancelView:(id)sender;
 
 @property (nonatomic, retain) ReplyToCommentViewController *replyToCommentViewController;
+@property (nonatomic, retain) EditCommentViewController *editCommentViewController;
 @property (nonatomic, retain) CommentsViewController *commentsViewController;
 
 

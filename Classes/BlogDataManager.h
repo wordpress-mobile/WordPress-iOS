@@ -279,6 +279,7 @@
 - (BOOL)unApproveComment:(NSMutableArray *)aComment forBlog:(id)blog;
 - (BOOL)spamComment:(NSMutableArray *)aComment forBlog:(id)blog;
 - (BOOL)replyToComment:(NSMutableDictionary *)aComment forBlog:(id)blog;
+- (BOOL)editComment:(NSMutableDictionary *)aComment forBlog:(id)blog;
 - (NSString *)savePostsFileWithAsynPostFlag:(NSMutableDictionary *)postDict;
 - (void)updatePostsTitlesFileAfterPostSaved:(NSMutableDictionary *)dict;
 - (void)removeTempFileForUnSavedPost:(NSString *)postId;

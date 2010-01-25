@@ -33,6 +33,8 @@
 		28C286E10D94DF7D0034E888 /* BlogsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C286E00D94DF7D0034E888 /* BlogsViewController.m */; };
 		2904E9940FE6E09600E00DBC /* CustomFieldsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2904E9910FE6E09600E00DBC /* CustomFieldsTableView.m */; };
 		2904E9950FE6E09600E00DBC /* CustomFieldsDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2904E9930FE6E09600E00DBC /* CustomFieldsDetailController.m */; };
+		2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2906F810110CDA8900169D56 /* EditCommentViewController.m */; };
+		2906F813110CDA8900169D56 /* EditCommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2906F811110CDA8900169D56 /* EditCommentViewController.xib */; };
 		292CED001027259000BD407D /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 292CECFF1027259000BD407D /* SFHFKeychainUtils.m */; };
 		2962F4721094EDD400F284B7 /* EditPostModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2962F4701094EDD400F284B7 /* EditPostModalViewController.m */; };
 		2962F4731094EDD400F284B7 /* EditPostModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2962F4711094EDD400F284B7 /* EditPostModalViewController.xib */; };
@@ -182,6 +184,9 @@
 		2904E9910FE6E09600E00DBC /* CustomFieldsTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomFieldsTableView.m; sourceTree = "<group>"; };
 		2904E9920FE6E09600E00DBC /* CustomFieldsDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomFieldsDetailController.h; sourceTree = "<group>"; };
 		2904E9930FE6E09600E00DBC /* CustomFieldsDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomFieldsDetailController.m; sourceTree = "<group>"; };
+		2906F80F110CDA8900169D56 /* EditCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditCommentViewController.h; sourceTree = "<group>"; };
+		2906F810110CDA8900169D56 /* EditCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditCommentViewController.m; sourceTree = "<group>"; };
+		2906F811110CDA8900169D56 /* EditCommentViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditCommentViewController.xib; sourceTree = "<group>"; };
 		292CECFE1027259000BD407D /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
 		292CECFF1027259000BD407D /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		2962F46F1094EDD400F284B7 /* EditPostModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditPostModalViewController.h; sourceTree = "<group>"; };
@@ -688,6 +693,9 @@
 				2994EEEB10DF0FCD008336A6 /* ReplyToCommentViewController.h */,
 				2994EEEC10DF0FCD008336A6 /* ReplyToCommentViewController.m */,
 				2994EEED10DF0FCD008336A6 /* ReplyToCommentViewController.xib */,
+				2906F80F110CDA8900169D56 /* EditCommentViewController.h */,
+				2906F810110CDA8900169D56 /* EditCommentViewController.m */,
+				2906F811110CDA8900169D56 /* EditCommentViewController.xib */,
 			);
 			name = Comments;
 			sourceTree = "<group>";
@@ -861,6 +869,7 @@
 				2962F4731094EDD400F284B7 /* EditPostModalViewController.xib in Resources */,
 				F52BF2E810B1DC8F00AF4582 /* BlogHTTPAuthenticationViewController.xib in Resources */,
 				2994EEEF10DF0FCD008336A6 /* ReplyToCommentViewController.xib in Resources */,
+				2906F813110CDA8900169D56 /* EditCommentViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -935,6 +944,7 @@
 				F5A4EF3510B32F68002BF126 /* XMLRPCConnection+Authentication.m in Sources */,
 				F5A4EF6810B34147002BF126 /* NSData+Base64.m in Sources */,
 				2994EEEE10DF0FCD008336A6 /* ReplyToCommentViewController.m in Sources */,
+				2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

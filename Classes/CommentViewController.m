@@ -32,16 +32,20 @@
 - (void)cancel;
 - (void)discard;
 
-- (void)showReplyToCommentModalViewWithAnimation:(BOOL)animate;
+- (void)showReplyToCommentViewWithAnimation:(BOOL)animate;
+- (void)showEditCommentViewWithAnimation:(BOOL)animate;
 - (void)insertPendingLabel;
 - (void)removePendingLabel;
+
+- (void)launchReplyToComments;
+- (void)launchEditComment;
 
 @end
 
 @implementation CommentViewController
 
 
-@synthesize replyToCommentViewController, commentsViewController;
+@synthesize replyToCommentViewController, editCommentViewController, commentsViewController;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -84,6 +88,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [self performSelector:@selector(reachabilityChanged)];
+	[self updateCommentText];
 	//if ([commentStatus isEqualToString:@"hold"]) {
 //		wasLastCommentPending = YES;
 //	}else{
@@ -203,6 +208,7 @@
         }
 		
 		if (buttonIndex == 2) {  //Edit Comment was selected
+			[self launchEditComment];
 			//[self showEditCommentModalViewWithAnimation:YES];
 			//... or [self editThisComment]; (if we need more data loading perhaps)
 			//yet to be written...
@@ -224,9 +230,9 @@
 //that has to be run here given the view heirarchy...
 
 - (void)launchReplyToComments {
-	[self showReplyToCommentModalViewWithAnimation:YES];
+	[self showReplyToCommentViewWithAnimation:YES];
 }
-- (void)showReplyToCommentModalViewWithAnimation:(BOOL)animate {
+- (void)showReplyToCommentViewWithAnimation:(BOOL)animate {
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	
 		replyToCommentViewController = [[[ReplyToCommentViewController alloc] 
@@ -245,10 +251,16 @@
 
 - (void)cancelView:(id)sender {
 	
-	if (!replyToCommentViewController.hasChanges) {
+	if (!replyToCommentViewController.hasChanges && !editCommentViewController.hasChanges) {
         [self.navigationController popViewControllerAnimated:YES];
+		//replyToCommentViewController.hasChanges = NO;
         return;
-    }
+    }//else if (!editCommentViewController.hasChanges) {
+//        [self.navigationController popViewControllerAnimated:YES];
+//		//editCommentViewController.hasChanges = NO;
+//        return;
+//    }
+	
 	
 	
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
@@ -257,7 +269,12 @@
 											   otherButtonTitles:nil];
     actionSheet.tag = 401;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
-    [actionSheet showInView:replyToCommentViewController.view];
+	
+	if (replyToCommentViewController.hasChanges) { 
+		[actionSheet showInView:replyToCommentViewController.view];
+	}else if (editCommentViewController.hasChanges) {
+		[actionSheet showInView:editCommentViewController.view];
+		}
 	
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     [delegate setAlertRunning:YES];
@@ -265,6 +282,39 @@
     [actionSheet release];
 	NSLog(@"last line of cancelView");
 }
+
+- (void)launchEditComment {
+	[self showEditCommentViewWithAnimation:YES];
+}
+
+
+
+- (void)showEditCommentViewWithAnimation:(BOOL)animate {
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	
+	editCommentViewController = [[[EditCommentViewController alloc] 
+									 initWithNibName:@"EditCommentViewController" 
+									 bundle:nil]autorelease];
+	editCommentViewController.commentViewController = self;
+	//replyToCommentViewController.commentsViewController = self.commentsViewController;
+	editCommentViewController.commentDetails = commentDetails;
+	editCommentViewController.currentIndex = currentIndex;
+	editCommentViewController.title = @"Edit Comment";
+	
+	
+    [delegate.navigationController pushViewController:self.editCommentViewController animated:YES];
+}
+
+- (void) updateCommentText {
+
+	//[commentDetails objectAtIndex:currentIndex];
+	//NSString *commentBody = [[comment valueForKey:@"content"] trim];
+	NSString *commentBody = [[[commentDetails objectAtIndex:currentIndex]valueForKey:@"content"]trim];
+	commentBodyLabel.text = commentBody;
+	NSLog(@"this is the text CommentViewController updateCommentText %@", [[commentDetails objectAtIndex:currentIndex]valueForKey:@"content"]);
+	
+}
+
 	
 #pragma mark -
 #pragma mark Action Sheet Button Helper Methods
