@@ -3,7 +3,7 @@
 //  WordPress
 //
 //  Created by John Bickerstaff on 1/24/10.
-//  Copyright 2010 Smilodon Software. All rights reserved.
+//  
 //
 
 #import "EditCommentViewController.h"
