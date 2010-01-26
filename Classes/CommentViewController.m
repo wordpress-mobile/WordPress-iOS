@@ -112,8 +112,8 @@
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    [self resizeCommentBodyLabel];
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    //[self resizeCommentBodyLabel];
+    //[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

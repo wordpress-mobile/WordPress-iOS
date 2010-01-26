@@ -18,6 +18,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 
 - (BOOL)isConnectedToHost;
 - (void)initiateSaveCommentReply:(id)sender;
+- (void)continueSaveCommentReply:(id)sender;
 - (void)saveReplyBackgroundMethod:(id)sender;
 - (void)callBDMSaveCommentEdit:(SEL)selector;
 - (void)endTextEnteringButtonAction:(id)sender;
@@ -93,7 +94,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 //		label.hidden = NO;
 //	} else {
 //		label.hidden = YES;
-		//TODO: JOHNB - code movement of text view upward if this is not a pending comment
+		//
 		
 //	}
 	
@@ -173,7 +174,9 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	NSLog(@"inside EditCommentViewController's should autorotate");
-	return YES;
+	
+		return YES;
+
 }
 
 -(void) receivedRotate: (NSNotification*) notification
@@ -184,7 +187,8 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 		[self setTextViewHeight:130];
 	}else {
 		NSLog(@"inside EditCVC newmethod - portriat");
-		[self setTextViewHeight:225];
+		//[self setTextViewHeight:225];
+		[self setTextViewHeight:440];
 	}
 }
 
@@ -248,17 +252,25 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 
 - (void)initiateSaveCommentReply:(id)sender {
 	
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Saving Reply..."];
-    [progressAlert show];
+	[self endTextEnteringButtonAction: sender];
+//	[textView resignFirstResponder];
+//	[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+	[self continueSaveCommentReply: sender];
+}
+	
+- (void)continueSaveCommentReply:(id)sender {
+	
 	comment = [commentDetails objectAtIndex:currentIndex];
 	[comment setValue:textView.text forKey:@"content"];	
-    [self performSelectorInBackground:@selector(saveEditBackgroundMethod:) withObject:nil];
 	commentViewController.wasLastCommentPending = YES;
 	[commentViewController showComment:commentDetails atIndex:currentIndex];
 	[self.navigationController popViewControllerAnimated:YES];
 	
-	
+    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Saving Reply..."];
+    [progressAlert show];
+	[self performSelectorInBackground:@selector(saveEditBackgroundMethod:) withObject:nil];
 }
+
 // saveEditBackgroundMethod...
 - (void)saveEditBackgroundMethod:(id)sender {
 	[self callBDMSaveCommentEdit:@selector(editComment:forBlog:)];
