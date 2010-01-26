@@ -66,12 +66,12 @@
 - (void)approveComment:(id)sender;
 - (void)unApproveComment:(id)sender;
 - (void)spamComment:(id)sender;
-- (void) updateCommentText;
 - (void)cancelView:(id)sender;
 
 @property (nonatomic, retain) ReplyToCommentViewController *replyToCommentViewController;
 @property (nonatomic, retain) EditCommentViewController *editCommentViewController;
 @property (nonatomic, retain) CommentsViewController *commentsViewController;
+@property BOOL wasLastCommentPending;
 
 
 @end

@@ -45,7 +45,7 @@
 @implementation CommentViewController
 
 
-@synthesize replyToCommentViewController, editCommentViewController, commentsViewController;
+@synthesize replyToCommentViewController, editCommentViewController, commentsViewController, wasLastCommentPending;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -88,14 +88,13 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [self performSelector:@selector(reachabilityChanged)];
-	[self updateCommentText];
+	//[self updateCommentText];
 	//if ([commentStatus isEqualToString:@"hold"]) {
 //		wasLastCommentPending = YES;
 //	}else{
 		wasLastCommentPending = NO;
 //	}
 
-		
     [super viewWillAppear:animated];
 	
 	//NSDictionary *comment = [commentDetails objectAtIndex:currentIndex];
@@ -303,16 +302,6 @@
 	
 	
     [delegate.navigationController pushViewController:self.editCommentViewController animated:YES];
-}
-
-- (void) updateCommentText {
-
-	//[commentDetails objectAtIndex:currentIndex];
-	//NSString *commentBody = [[comment valueForKey:@"content"] trim];
-	NSString *commentBody = [[[commentDetails objectAtIndex:currentIndex]valueForKey:@"content"]trim];
-	commentBodyLabel.text = commentBody;
-	NSLog(@"this is the text CommentViewController updateCommentText %@", [[commentDetails objectAtIndex:currentIndex]valueForKey:@"content"]);
-	
 }
 
 	
