@@ -4686,9 +4686,9 @@ editBlogViewController;
 	[commentStruct setValue:[aComment valueForKey:@"status"]forKey:@"status"];
 	[commentStruct setValue:[aComment valueForKey:@"date_created_gmt"]forKey:@"date_created_gmt"];
 	[commentStruct setValue:[aComment valueForKey:@"content"] forKey:@"content"];
-	[commentStruct setValue:username forKey:@"author"];
-	[commentStruct setValue:@"" forKey:@"author_url"];
-	[commentStruct setValue:@"" forKey:@"author_email"];
+	[commentStruct setValue:[aComment valueForKey:@"author"] forKey:@"author"];
+	[commentStruct setValue:[aComment valueForKey:@"author_url"] forKey:@"author_url"];
+	[commentStruct setValue:[aComment valueForKey:@"author_email"] forKey:@"author_email"];
     int commentsCount, i, count = [commentTitlesArray count];
     NSMutableArray *commentsReqArray = [[NSMutableArray alloc] init];
     commentsCount = [aComment count];
@@ -4716,6 +4716,7 @@ editBlogViewController;
         [dict setValue:@"wp.editComment" forKey:@"methodName"];
         [dict setValue:[NSArray arrayWithObjects:blogid, username, pwd, commentid, commentStruct, nil] forKey:@"params"];
         [commentsReqArray addObject:dict];
+	NSLog(@"this is comment dict %@", dict);
 		
         [dict release];
 //    }

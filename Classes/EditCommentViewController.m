@@ -266,7 +266,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	[commentViewController showComment:commentDetails atIndex:currentIndex];
 	[self.navigationController popViewControllerAnimated:YES];
 	
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Saving Reply..."];
+    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Saving Edit..."];
     [progressAlert show];
 	[self performSelectorInBackground:@selector(saveEditBackgroundMethod:) withObject:nil];
 }
