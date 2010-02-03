@@ -575,7 +575,7 @@ editBlogViewController;
         height = [[comps objectAtIndex:1] floatValue];
     }
 
-    float kMaxResolution = 300.0f; // Or whatever
+    float kMaxResolution = 640; // Or whatever
 
     if (width > kMaxResolution || height > kMaxResolution) {
         float ratio = width / height;
