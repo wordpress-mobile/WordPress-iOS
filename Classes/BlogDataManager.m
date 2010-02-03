@@ -589,7 +589,7 @@ editBlogViewController;
         }
     }
 
-    return [NSString stringWithFormat:@"<img src=\"%@\" alt=\"\" width=\"%d\" height=\"%d\" class=\"alignnone size-full wp-image-364\" />", urlStr, (int)width, (int)height];
+    return [NSString stringWithFormat:@"<img src=\"%@\" alt=\"\" class=\"alignnone size-full\" />", urlStr, (int)width, (int)height];
 }
 
 - (BOOL)appendImagesToPostDescription:(id)aPost {
