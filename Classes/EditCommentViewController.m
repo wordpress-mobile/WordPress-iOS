@@ -236,6 +236,12 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 //important is capturing &nbsp BEFORE the semicolon is added.  Not doing so causes a crash in the textViewDidChange method due to array overrun
 - (BOOL)textView:(UITextView *)aTextView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
 	
+	//if nothing has been entered yet, or if user deletes all text, return YES to prevent crash when hitting delet
+    if (text.length == 0) {
+		return YES;
+    }
+	
+	
     // create final version of textView after the current text has been inserted
     NSMutableString *updatedText = [[NSMutableString alloc] initWithString:aTextView.text];
     [updatedText insertString:text atIndex:range.location];
