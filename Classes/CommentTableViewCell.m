@@ -215,7 +215,8 @@
     urlLabel = [[UILabel alloc] initWithFrame:rect];
     urlLabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
     urlLabel.backgroundColor = [UIColor clearColor];
-    urlLabel.textColor = [UIColor grayColor];
+    urlLabel.textColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.8];
+    urlLabel.highlightedTextColor = [UIColor whiteColor];
     urlLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
 
     [self.contentView addSubview:urlLabel];
@@ -227,7 +228,8 @@
     postLabel = [[UILabel alloc] initWithFrame:rect];
     postLabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
     postLabel.backgroundColor = [UIColor clearColor];
-    postLabel.textColor = [UIColor grayColor];
+    postLabel.textColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.8];
+	postLabel.highlightedTextColor = [UIColor whiteColor];
     postLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
     
     [self.contentView addSubview:postLabel];
@@ -239,7 +241,7 @@
     commentLabel = [[WPLabel alloc] initWithFrame:rect];
     commentLabel.font = [UIFont systemFontOfSize:COMMENT_FONT_SIZE];
     commentLabel.backgroundColor = [UIColor clearColor];
-    commentLabel.textColor = [UIColor colorWithRed:0.560f green:0.560f blue:0.560f alpha:1];
+    commentLabel.textColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.8];
     commentLabel.highlightedTextColor = [UIColor whiteColor];
     commentLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
     commentLabel.numberOfLines = 2;
