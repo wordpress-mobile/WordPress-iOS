@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="24"/>
+			<integer value="3"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -70,13 +70,18 @@
 						<object class="NSMutableArray" key="IBUIItems">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUIBarButtonItem" id="702516767">
+								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="191496090"/>
 								<int key="IBUISystemItemIdentifier">16</int>
+							</object>
+							<object class="IBUIBarButtonItem" id="916133962">
+								<reference key="IBUIToolbar" ref="191496090"/>
+								<int key="IBUISystemItemIdentifier">5</int>
 							</object>
 							<object class="IBUIBarButtonItem" id="987220153">
 								<bool key="IBUIEnabled">NO</bool>
 								<string key="IBUITitle">Spam</string>
-								<float key="IBUIWidth">80</float>
+								<float key="IBUIWidth">69</float>
 								<int key="IBUIStyle">2</int>
 								<reference key="IBUIToolbar" ref="191496090"/>
 							</object>
@@ -86,13 +91,17 @@
 							</object>
 							<object class="IBUIBarButtonItem" id="61998937">
 								<string key="IBUITitle">Unapprove</string>
-								<float key="IBUIWidth">100</float>
+								<float key="IBUIWidth">103</float>
 								<int key="IBUIStyle">2</int>
 								<reference key="IBUIToolbar" ref="191496090"/>
 							</object>
+							<object class="IBUIBarButtonItem" id="960661416">
+								<reference key="IBUIToolbar" ref="191496090"/>
+								<int key="IBUISystemItemIdentifier">5</int>
+							</object>
 							<object class="IBUIBarButtonItem" id="445427913">
 								<string key="IBUITitle">Approve</string>
-								<float key="IBUIWidth">80</float>
+								<float key="IBUIWidth">85</float>
 								<int key="IBUIStyle">2</int>
 								<reference key="IBUIToolbar" ref="191496090"/>
 							</object>
@@ -265,6 +274,8 @@
 							<reference ref="869485387"/>
 							<reference ref="987220153"/>
 							<reference ref="702516767"/>
+							<reference ref="916133962"/>
+							<reference ref="960661416"/>
 						</object>
 						<reference key="parent" ref="749316841"/>
 					</object>
@@ -296,6 +307,16 @@
 						</object>
 						<reference key="parent" ref="191496090"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">53</int>
+						<reference key="object" ref="916133962"/>
+						<reference key="parent" ref="191496090"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">54</int>
+						<reference key="object" ref="960661416"/>
+						<reference key="parent" ref="191496090"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -312,6 +333,8 @@
 					<string>31.IBPluginDependency</string>
 					<string>36.IBPluginDependency</string>
 					<string>4.IBPluginDependency</string>
+					<string>53.IBPluginDependency</string>
+					<string>54.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -320,6 +343,8 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{96, 258}, {320, 460}}</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -343,7 +368,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">52</int>
+			<int key="maxID">54</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
