@@ -14,21 +14,25 @@
     NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
     UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aiv];
+	activityButtonItem.title = @"foobar!";
     [aiv startAnimating];
     [aiv release];
 
     self.navigationItem.rightBarButtonItem = activityButtonItem;
     [activityButtonItem release];
-    [apool release];
+	[apool release];
 }
 
 - (void)removeProgressIndicator {
     //wait incase the other thread did not complete its work.
     while (self.navigationItem.rightBarButtonItem == saveButtonItem) {
+		NSLog(@"before loop");
         [[NSRunLoop currentRunLoop] runUntilDate:[[NSDate date] addTimeInterval:0.1]];
+		NSLog(@"after loop");
     }
 
     self.navigationItem.rightBarButtonItem = saveButtonItem;
+	
 }
 
 - (IBAction)cancelAddCategory:(id)sender {
@@ -52,9 +56,15 @@
         return;
     }
 
-    //Resolved the application crash.
-    if ([[Reachability sharedReachability] remoteHostStatus] != NotReachable)
+//	NSLog(@"This string remotHostStatus: %@", NotReachable?@"YES":@"NO");
+//	NSLog(@"This string ReachableViaCarrierDataNetwork: %@", ReachableViaCarrierDataNetwork?@"YES":@"NO");
+//	NSLog(@"This string ReachableViaWiFiNetwork: %@", ReachableViaWiFiNetwork?@"YES":@"NO");
+//	NSLog(@"This string remoteHostStatus: %@", [[Reachability sharedReachability] remoteHostStatus]?@"YES":@"NO");
+
+
+    if (![[Reachability sharedReachability] remoteHostStatus] != NotReachable)
         [self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
+
 
     NSString *parentCatName = parentCatNameField.text;
 
