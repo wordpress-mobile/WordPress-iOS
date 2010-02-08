@@ -56,13 +56,9 @@
         return;
     }
 
-//	NSLog(@"This string remotHostStatus: %@", NotReachable?@"YES":@"NO");
-//	NSLog(@"This string ReachableViaCarrierDataNetwork: %@", ReachableViaCarrierDataNetwork?@"YES":@"NO");
-//	NSLog(@"This string ReachableViaWiFiNetwork: %@", ReachableViaWiFiNetwork?@"YES":@"NO");
-//	NSLog(@"This string remoteHostStatus: %@", [[Reachability sharedReachability] remoteHostStatus]?@"YES":@"NO");
 
 
-    if (![[Reachability sharedReachability] remoteHostStatus] != NotReachable)
+    if ([[Reachability sharedReachability] remoteHostStatus] != NotReachable)
         [self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
 
 

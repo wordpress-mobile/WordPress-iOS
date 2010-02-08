@@ -29,8 +29,13 @@
     UILabel *dateLabel;
     UIActivityIndicatorView *activityIndicator;
     BOOL saving;
+	BOOL gettingMore;
 }
 
 @property (readwrite, assign) NSDictionary *post;
+
+- (void)changeCellLabelsForUpdate:(NSString *)postTotalString;
+- (void)runSpinner:(BOOL)value;
+
 
 @end

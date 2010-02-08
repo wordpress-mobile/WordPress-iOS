@@ -150,27 +150,46 @@
     if (section == LOCAL_DRAFTS_SECTION) {
         return [[BlogDataManager sharedDataManager] numberOfDrafts];
     } else {
-        return [[BlogDataManager sharedDataManager] countOfPostTitles];
+        return [[BlogDataManager sharedDataManager] countOfPostTitles] + 1;
     }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"PostCell";
     PostTableViewCell *cell = (PostTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
     id post = nil;
-
+	
     if (cell == nil) {
         cell = [[[PostTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
     }
+	
 
     if (indexPath.section == LOCAL_DRAFTS_SECTION) {
         post = [dm draftTitleAtIndex:indexPath.row];
-    } else {
+    } else { 
+		int count = [[BlogDataManager sharedDataManager] countOfPostTitles];
+		//handle the case when it's the last row and we need to return the modified "get more posts" cell
+		//note that it's not [[BlogDataManager sharedDataManager] countOfPostTitles] +1 because of the difference in the counting of the datasets
+		if (indexPath.row == count) {
+			
+			NSLog(@"inside the else");
+			NSLog(@"index path: %d", indexPath.row);
+		//set the labels.  The spinner will be activiated if the row is selected in didSelectRow...
+		//get the total number of posts on the blog, make a string and pump it into the cell
+		int totalPosts = [[BlogDataManager sharedDataManager] countOfPostTitles];
+			NSLog(@"totalPosts %d", totalPosts);
+		NSString * totalString = [NSString stringWithFormat:@"%d posts total", totalPosts];
+		[cell changeCellLabelsForUpdate:totalString];
+		return cell;
+	}
+		//if it wasn't the last cell, proceed as normal.
         post = [dm postTitleAtIndex:indexPath.row];
     }
 
     cell.post = post;
+	//[cell setSaving:YES];
 
     return cell;
 }
@@ -190,7 +209,27 @@
         }
 
         [dataManager makeDraftAtIndexCurrent:indexPath.row];
+		
     } else {
+		//handle the case when it's the last row and is the "get more posts" cell
+		if (indexPath.row == [[BlogDataManager sharedDataManager] countOfPostTitles]) {
+			//get the cell
+			UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+			
+			//do "nothing"
+			[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+			
+			//set the spinner (cast to PostTableView "type" in order to avoid warnings)
+			[((PostTableViewCell *)cell) runSpinner:YES];
+			
+			//run the "get more" function and get 10 more
+			
+			//turn off the spinner
+			
+			//update the tableview
+			return;
+		}
+		
         id currentPost = [dataManager postTitleAtIndex:indexPath.row];
 
         // Bail out if we're in the middle of saving the post.

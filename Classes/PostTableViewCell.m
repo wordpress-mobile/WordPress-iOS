@@ -11,6 +11,7 @@
 - (void)addNameLabel;
 - (void)addDateLabel;
 - (void)addActivityIndicator;
+
 @end
 
 @implementation PostTableViewCell
@@ -86,6 +87,14 @@
     saving = newSaving;
 }
 
+- (void)prepareForReuse{
+	[super prepareForReuse]; 
+	self.contentView.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
+	nameLabel.textColor = [UIColor blackColor];
+	dateLabel.textColor = [UIColor lightGrayColor];
+}
+
+
 #pragma mark Private methods
 
 - (void)addNameLabel {
@@ -124,6 +133,33 @@
     activityIndicator.hidden = YES;
 
     [self.contentView addSubview:activityIndicator];
+}
+
+- (void)changeCellLabelsForUpdate:(NSString *)postTotalString {
+	
+	nameLabel.textColor = LOAD_MORE_DATA_TEXT_COLOR;
+	dateLabel.textColor = LOAD_MORE_DATA_TEXT_COLOR;
+	nameLabel.text = @"Load more posts...";
+	dateLabel.text = postTotalString;
+	self.accessoryType = UITableViewCellAccessoryNone;
+	self.contentView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
+}
+
+- (void)runSpinner:(BOOL)value {
+	gettingMore = value;
+	
+    if (gettingMore) {
+        activityIndicator.hidden = NO;
+        [activityIndicator startAnimating];
+		
+    } else {
+        activityIndicator.hidden = YES;
+		
+        if ([activityIndicator isAnimating]) {
+            [activityIndicator stopAnimating];
+        }
+		
+	}
 }
 
 @end
