@@ -144,9 +144,9 @@
 		nameLabel.textColor = LOAD_MORE_DATA_TEXT_COLOR;
 	}
 	
-		nameLabel.font = [UIFont boldSystemFontOfSize:16];
+		nameLabel.font = [UIFont boldSystemFontOfSize:MAIN_FONT_SIZE];
 		dateLabel.textColor = [UIColor grayColor];
-		dateLabel.font = [UIFont systemFontOfSize:14];
+		dateLabel.font = [UIFont systemFontOfSize:DATE_FONT_SIZE];
 		nameLabel.text = loadingString;
 		dateLabel.text = postTotalString;
 		self.accessoryType = UITableViewCellAccessoryNone;

@@ -22,7 +22,7 @@
 
 #define OTHER_LABEL_WIDTH           220
 #define DATE_LABEL_HEIGHT           20
-#define NAME_LABEL_HEIGHT           20
+#define NAME_LABEL_HEIGHT           17
 #define URL_LABEL_HEIGHT            15
 #define POST_LABEL_HEIGHT           15
 
@@ -31,7 +31,7 @@
 
 #define GRAVATAR_WIDTH              47
 #define GRAVATAR_HEIGHT             47
-#define GRAVATAR_LEFT_OFFSET        LEFT_OFFSET + GRAVATAR_WIDTH + PADDING
+#define GRAVATAR_LEFT_OFFSET        LEFT_OFFSET + GRAVATAR_WIDTH + CELL_PADDING
 #define GRAVATAR_TOP_OFFSET         TOP_OFFSET + GRAVATAR_HEIGHT + PADDING
 
 

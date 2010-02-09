@@ -14,7 +14,7 @@
 #define RIGHT_OFFSET            280
 
 #define MAIN_FONT_SIZE          15
-#define DATE_FONT_SIZE          12
+#define DATE_FONT_SIZE          13
 
 #define LABEL_HEIGHT            19
 #define DATE_LABEL_HEIGHT       15
