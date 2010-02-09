@@ -135,14 +135,24 @@
     [self.contentView addSubview:activityIndicator];
 }
 
-- (void)changeCellLabelsForUpdate:(NSString *)postTotalString {
+- (void)changeCellLabelsForUpdate:(NSString *)postTotalString:(NSString *) loadingString:(BOOL)isLoading{
 	
-	nameLabel.textColor = LOAD_MORE_DATA_TEXT_COLOR;
-	dateLabel.textColor = LOAD_MORE_DATA_TEXT_COLOR;
-	nameLabel.text = @"Load more posts...";
-	dateLabel.text = postTotalString;
-	self.accessoryType = UITableViewCellAccessoryNone;
-	self.contentView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
+	if (isLoading) {
+		nameLabel.textColor = [UIColor grayColor];
+		
+	}else {
+		nameLabel.textColor = LOAD_MORE_DATA_TEXT_COLOR;
+	}
+	
+		nameLabel.font = [UIFont boldSystemFontOfSize:16];
+		dateLabel.textColor = [UIColor grayColor];
+		dateLabel.font = [UIFont systemFontOfSize:14];
+		nameLabel.text = loadingString;
+		dateLabel.text = postTotalString;
+		self.accessoryType = UITableViewCellAccessoryNone;
+		self.contentView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
+
+	
 }
 
 - (void)runSpinner:(BOOL)value {

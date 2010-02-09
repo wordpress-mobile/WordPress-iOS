@@ -34,7 +34,7 @@
 
 @property (readwrite, assign) NSDictionary *post;
 
-- (void)changeCellLabelsForUpdate:(NSString *)postTotalString;
+- (void)changeCellLabelsForUpdate:(NSString *)postTotalString:(NSString *) loadingString:(BOOL)isLoading;
 - (void)runSpinner:(BOOL)value;
 
 

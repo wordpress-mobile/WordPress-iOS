@@ -181,7 +181,7 @@
 		int totalPosts = [[BlogDataManager sharedDataManager] countOfPostTitles];
 			NSLog(@"totalPosts %d", totalPosts);
 		NSString * totalString = [NSString stringWithFormat:@"%d posts total", totalPosts];
-		[cell changeCellLabelsForUpdate:totalString];
+			[cell changeCellLabelsForUpdate:totalString:@"Load more posts":NO];
 		return cell;
 	}
 		//if it wasn't the last cell, proceed as normal.
@@ -218,6 +218,11 @@
 			
 			//do "nothing"
 			[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+			
+			//change the text in the cell to say "Loading" and change it's color
+			int totalPosts = [[BlogDataManager sharedDataManager] countOfPostTitles];
+			NSString * totalString = [NSString stringWithFormat:@"%d posts total", totalPosts];
+			[((PostTableViewCell *)cell) changeCellLabelsForUpdate:totalString:@"Loading more posts...":YES];
 			
 			//set the spinner (cast to PostTableView "type" in order to avoid warnings)
 			[((PostTableViewCell *)cell) runSpinner:YES];

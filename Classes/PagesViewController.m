@@ -125,7 +125,7 @@
     if (section == LOCAL_DRAFTS_SECTION) {
         return [[BlogDataManager sharedDataManager] numberOfPageDrafts];
     } else {
-        return [[BlogDataManager sharedDataManager] countOfPageTitles];
+        return [[BlogDataManager sharedDataManager] countOfPageTitles] +1;
     }
 }
 
@@ -142,6 +142,22 @@
     if (indexPath.section == LOCAL_DRAFTS_SECTION) {
         page = [dm pageDraftTitleAtIndex:indexPath.row];
     } else {
+		int count = [[BlogDataManager sharedDataManager] countOfPageTitles];
+		//handle the case when it's the last row and we need to return the modified "get more posts" cell
+		//note that it's not [[BlogDataManager sharedDataManager] countOfPostTitles] +1 because of the difference in the counting of the datasets
+		if (indexPath.row == count) {
+			
+			NSLog(@"inside the else");
+			NSLog(@"index path: %d", indexPath.row);
+			//set the labels.  The spinner will be activiated if the row is selected in didSelectRow...
+			//get the total number of posts on the blog, make a string and pump it into the cell
+			int totalPages = [[BlogDataManager sharedDataManager] countOfPageTitles];
+			NSLog(@"totalPosts %d", totalPages);
+			NSString * totalString = [NSString stringWithFormat:@"%d pages total", totalPages];
+			[cell changeCellLabelsForUpdate:totalString:@"Load more pages":NO];
+			return cell;
+		}
+		//if it wasn't the last cell, proceed as normal.
         page = [dm pageTitleAtIndex:indexPath.row];
     }
 
@@ -166,6 +182,34 @@
 
         [dataManager makePageDraftAtIndexCurrent:indexPath.row];
     } else {
+		//handle the case when it's the last row and is the "get more posts" cell
+		if (indexPath.row == [[BlogDataManager sharedDataManager] countOfPageTitles]) {
+			//get the cell
+			UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+			
+			//do "nothing"
+			[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+			
+			//change the text in the cell to say Loading and change it's color
+			int totalPages = [[BlogDataManager sharedDataManager] countOfPageTitles];
+			NSLog(@"totalPosts %d", totalPages);
+			NSString * totalString = [NSString stringWithFormat:@"%d pages total", totalPages];
+			[((PostTableViewCell *)cell)  changeCellLabelsForUpdate:totalString:@"Loading more pages...":YES];
+			
+			
+			//set the spinner (cast to PostTableView "type" in order to avoid warnings)
+			[((PostTableViewCell *)cell) runSpinner:YES];
+			
+			//run the "get more" function and get 10 more
+			
+			//turn off the spinner and reset the cell
+			//turn off spinner
+			//[((PostTableViewCell *)cell)  changeCellLabelsForUpdate:totalString:@"Load more pages...":NO];
+			
+			//update the tableview
+			return;
+		}
+		
         id page = [dataManager pageTitleAtIndex:indexPath.row];
 
         // Bail out if we're in the middle of saving the page.
