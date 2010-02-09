@@ -348,6 +348,12 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	 - language – language setting for the device. What does that look like? Is it EN or English?
 	 - os_version – the version of the iPhone/iPod OS for the device
 	 - num_blogs – number of blogs configured in the WP iPhone app
+	 
+	 NSString *deviceType = [UIDevice currentDevice].model;
+	 if([deviceType isEqualToString:@"iPhone"])
+	 // it's an iPhone
+	 
+	 
 	 */
 	NSString *deviceuuid = [[UIDevice currentDevice] uniqueIdentifier];
 	
