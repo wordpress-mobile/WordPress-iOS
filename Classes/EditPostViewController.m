@@ -35,7 +35,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     tagsTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
     categoriesTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
     statusTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
-    tagsTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
+    //tagsTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
     categoriesLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
     statusLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
     titleLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
@@ -107,17 +107,20 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
     NSString *description = [dm.currentPost valueForKey:@"description"];
     NSString *moreText = [dm.currentPost valueForKey:@"mt_text_more"];
+	
+	NSLog(@"description: %@", description);
+	NSLog(@"moreText: %@", moreText);
 
     if (!description ||[description length] == 0) {
         textViewPlaceHolderField.hidden = NO;
         textView.text = @"";
+		NSLog(@"just made textview nil");
     } else {
         textViewPlaceHolderField.hidden = YES;
 
         if ((moreText != NULL) && ([moreText length] > 0)){
 			// To Do: when we show more tag label dynamically, we need to add label (if any) of more tag in the Character set string .
-			NSRange moretagRange = [description rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"<!--more-->"] options:NSForcedOrderingSearch];
-		if (moretagRange.length == 0)
+			//NSRange moretagRange = [description rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"<!--more-->"] options:NSForcedOrderingSearch];
             textView.text = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", description, moreText];
 		}	
 		else
