@@ -35,6 +35,8 @@ Classes/GravatarImageView.h -text
 Classes/GravatarImageView.m -text
 Classes/ImageCache.h -text
 Classes/ImageCache.m -text
+Classes/LocationController.h -text
+Classes/LocationController.m -text
 Classes/NSData+Base64.h -text
 Classes/NSData+Base64.m -text
 Classes/NSString+Util.h -text
