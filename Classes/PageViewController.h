@@ -7,7 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import "WPPhotosListProtocol.h"
-
+#import "LocationController.h"
 
 @class EditPageViewController, PostPreviewViewController, WPSelectionTableViewController, WPPhotosListViewController, PagesViewController;
 @class WPNavigationLeftButtonView;
@@ -27,15 +27,15 @@
     int mode;   //0 new, 1 edit, 2 autorecovery, 3 refresh
 }
 
-@property (nonatomic, retain)   WPNavigationLeftButtonView *leftView;
-@property (nonatomic, retain)   EditPageViewController *pageDetailViewController;
-@property (nonatomic, retain)   WPPhotosListViewController *photosListController;
-@property (nonatomic, assign)   PagesViewController *pagesListController;
+@property (nonatomic, retain) WPNavigationLeftButtonView *leftView;
+@property (nonatomic, retain) EditPageViewController *pageDetailViewController;
+@property (nonatomic, retain) WPPhotosListViewController *photosListController;
+@property (nonatomic, assign) PagesViewController *pagesListController;
 
 @property (nonatomic, readonly) UIBarButtonItem *saveButton;
 
-@property (nonatomic)   BOOL hasChanges;
-@property (nonatomic)   int mode;
+@property (nonatomic) BOOL hasChanges;
+@property (nonatomic) int mode;
 
 @property (readonly) UITabBarController *tabController;
 

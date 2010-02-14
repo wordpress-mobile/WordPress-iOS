@@ -36,4 +36,9 @@
     }
 }
 
+-(void)dealloc {
+	[hostUrl release];
+	[super dealloc];
+}
+
 @end

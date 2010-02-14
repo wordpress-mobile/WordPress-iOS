@@ -186,6 +186,8 @@
 
 
 - (void)dealloc {
+	[xmlrpcURLTextField release];
+	[xmlrpcURLTableView release];
     [super dealloc];
 }
 

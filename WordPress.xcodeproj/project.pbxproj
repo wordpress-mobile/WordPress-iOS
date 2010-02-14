@@ -62,6 +62,9 @@
 		702CA0680F36FF0D00018B88 /* WPLabelFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 702CA0670F36FF0D00018B88 /* WPLabelFooterView.m */; };
 		7059CD210F332B6500A0660B /* WPCategoryTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 7059CD200F332B6500A0660B /* WPCategoryTree.m */; };
 		706D25F50F347F1200491666 /* category_child.png in Resources */ = {isa = PBXBuildFile; fileRef = 706D25F40F347F1200491666 /* category_child.png */; };
+		83F3E26011275E07004CD686 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E25F11275E07004CD686 /* MapKit.framework */; };
+		83F3E2BE11276357004CD686 /* LocationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F3E2BD11276357004CD686 /* LocationController.m */; };
+		83F3E2D311276371004CD686 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E2D211276371004CD686 /* CoreLocation.framework */; };
 		A00593C20E224A1B0087E1FB /* WPImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = A00593C10E224A1B0087E1FB /* WPImageView.m */; };
 		A017DD7F0E29DDBF009095C2 /* application-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A017DD7E0E29DDBF009095C2 /* application-icon.png */; };
 		A01C54230E24E4ED00D411F2 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = A01C54220E24E4ED00D411F2 /* Reachability.m */; };
@@ -227,6 +230,10 @@
 		7059CD1F0F332B6500A0660B /* WPCategoryTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPCategoryTree.h; sourceTree = "<group>"; };
 		7059CD200F332B6500A0660B /* WPCategoryTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPCategoryTree.m; sourceTree = "<group>"; };
 		706D25F40F347F1200491666 /* category_child.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = category_child.png; sourceTree = "<group>"; };
+		83F3E25F11275E07004CD686 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		83F3E2BC11276357004CD686 /* LocationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationController.h; sourceTree = "<group>"; };
+		83F3E2BD11276357004CD686 /* LocationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationController.m; sourceTree = "<group>"; };
+		83F3E2D211276371004CD686 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A00593C00E224A1B0087E1FB /* WPImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPImageView.h; sourceTree = "<group>"; };
 		A00593C10E224A1B0087E1FB /* WPImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPImageView.m; sourceTree = "<group>"; };
@@ -351,6 +358,8 @@
 				A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */,
 				C584D0B40EF943A600B78012 /* QuartzCore.framework in Frameworks */,
 				296890780FE971DC00770264 /* Security.framework in Frameworks */,
+				83F3E26011275E07004CD686 /* MapKit.framework in Frameworks */,
+				83F3E2D311276371004CD686 /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -472,6 +481,8 @@
 				2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
+				83F3E25F11275E07004CD686 /* MapKit.framework */,
+				83F3E2D211276371004CD686 /* CoreLocation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -615,6 +626,8 @@
 				CEFC8B5810057D0A0052604A /* WPProgressHUD.m */,
 				C57AD5E10F2A10BC00A1717C /* WPXMLReader.h */,
 				C57AD5E00F2A10BC00A1717C /* WPXMLReader.m */,
+				83F3E2BC11276357004CD686 /* LocationController.h */,
+				83F3E2BD11276357004CD686 /* LocationController.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -945,6 +958,7 @@
 				F5A4EF6810B34147002BF126 /* NSData+Base64.m in Sources */,
 				2994EEEE10DF0FCD008336A6 /* ReplyToCommentViewController.m in Sources */,
 				2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */,
+				83F3E2BE11276357004CD686 /* LocationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

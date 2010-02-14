@@ -470,6 +470,7 @@ editingInfo:(NSDictionary *)editingInfo {
 
 - (void)dealloc {
     [pickerController release];
+	[tableView release];
     [super dealloc];
 }
 

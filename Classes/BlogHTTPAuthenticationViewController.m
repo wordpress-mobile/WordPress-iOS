@@ -29,6 +29,7 @@
 	} else if (indexPath.row == 2) {
 		return blogHTTPAuthPasswordTabelCell;
 	}
+	return nil;
 }
 
 - (void)awakeFromNib {

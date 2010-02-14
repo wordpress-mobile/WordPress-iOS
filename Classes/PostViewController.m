@@ -67,6 +67,7 @@
     [photosListController release];
     [commentsViewController release];
     [saveButton release];
+	[locationController release];
 
     [self stopTimer];
 
@@ -343,7 +344,16 @@
         [dict setValue:postId forKey:@"savedPostId"];
         [dict setValue:[[dm currentPost] valueForKey:@"postid"] forKey:@"originalPostId"];
         [dict setValue:[NSNumber numberWithInt:isCurrentPostDraft] forKey:@"isCurrentPostDraft"];
-    } else {
+		
+		//geo_latitude, geo_accuracy, geo_longitude, geo_address, geo_public
+		NSString *latitude = [NSString stringWithFormat:@"%@", locationController.locationManager.location.coordinate.latitude];
+		NSString *longitude = [NSString stringWithFormat:@"%@", locationController.locationManager.location.coordinate.longitude];
+		[dict setValue:latitude forKey:@"geo_latitude"];
+		[dict setValue:latitude forKey:@"geo_longitude"];
+		[latitude release];
+		[longitude release];
+    
+	} else {
         [dm removeTempFileForUnSavedPost:postId];
 
         if (isCurrentPostDraft) {
@@ -475,6 +485,21 @@
 		mode = refreshPost;
     [commentsViewController setIndexForCurrentPost:[[BlogDataManager sharedDataManager] currentPostIndex]];
     [[tabController selectedViewController] viewWillAppear:animated];
+	
+	
+	// While developing, this will always be true.  Once Location is integrated into Settings
+	// we will pull this value based on the preferences in Blog and Post Settings.
+	// Reminder:  Checks will need to be put in place for devices that don't support GPS.
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setBool:YES forKey:@"blogLocationEnabled"];
+	[defaults setBool:YES forKey:@"postLocationEnabled"];
+	if([defaults valueForKey:@"blogLocationEnabled"] && [defaults valueForKey:@"postLocationEnabled"])
+	{
+		locationController = [[LocationController alloc] init];
+		locationController.delegate = self;
+		[locationController.locationManager startUpdatingLocation];
+		[self showLocationActivity];
+	}
 }
 
 - (void)conditionalLoadOfTabBarController {
@@ -628,5 +653,29 @@
 - (id)photosDataSource {
     return [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"Photos"];
 }
+
+
+#pragma mark -
+#pragma mark Location updates
+
+- (void)locationUpdate:(CLLocation *)location {
+	self.navigationItem.rightBarButtonItem = nil;
+}
+
+- (void)locationError:(NSError *)error {
+	self.navigationItem.rightBarButtonItem = nil;
+}
+
+- (void)showLocationActivity {
+	UIActivityIndicatorView *locationIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+	[locationIndicator startAnimating];
+	
+	UIBarButtonItem *activityBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:locationIndicator];
+	[locationIndicator release];
+	
+	self.navigationItem.rightBarButtonItem = activityBarButtonItem;
+	[activityBarButtonItem release];
+}
+
 
 @end

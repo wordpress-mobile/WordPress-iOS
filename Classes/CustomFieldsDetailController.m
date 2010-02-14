@@ -57,6 +57,7 @@
 
 - (void)dealloc {
     [textFieldBeingEdited release];
+	[leftView release];
     //[customFieldsDict release];
     [super dealloc];
 }

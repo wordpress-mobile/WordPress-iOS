@@ -55,6 +55,7 @@
     [segmentedControl release];
     [segmentBarItem release];
 	[replyToCommentViewController release];
+	[editCommentViewController release];
 	[commentsViewController release];
     [super dealloc];
 }

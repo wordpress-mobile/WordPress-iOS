@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "WPPhotosListProtocol.h"
+#import "LocationController.h"
 
 //refactoring "mode"
 #define newPost 0
@@ -11,7 +12,7 @@
 @class WPNavigationLeftButtonView;
 @class CustomFieldsDetailController, WPPublishOnEditController;
 
-@interface PostViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate, WPPhotosListProtocol> {
+@interface PostViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate, WPPhotosListProtocol, LocationControllerDelegate> {
     IBOutlet UITabBarController *tabController;
 	//IBOutlet UITabBar *tabBar;
     IBOutlet UIView *photoEditingStatusView;
@@ -25,16 +26,14 @@
     CommentsViewController *commentsViewController;
     
     UIViewController *selectedViewController;
-    
     WPNavigationLeftButtonView *leftView;
-
     CustomFieldsDetailController *customFieldsDetailController;
 
     BOOL hasChanges;
-	
     int mode;   //0 new, 1 edit, 2 autorecovery, 3 refresh
-
     NSTimer *autoSaveTimer;
+	
+	LocationController *locationController;
 }
 
 @property (nonatomic, retain)   WPNavigationLeftButtonView *leftView;
@@ -43,24 +42,21 @@
 @property (nonatomic, retain)   PostSettingsViewController *postSettingsController;
 @property (nonatomic, retain)   WPPhotosListViewController *photosListController;
 @property (nonatomic, retain)   CommentsViewController *commentsViewController;
-
-
 @property (nonatomic, retain)   CustomFieldsDetailController *customFieldsDetailController;
-
 @property (nonatomic, assign)   PostsViewController *postsListController;
 @property (nonatomic, assign)   UIViewController *selectedViewController;
-
 @property (nonatomic, readonly) UIBarButtonItem *saveButton;
-
 @property (nonatomic)   BOOL hasChanges;
 @property (nonatomic)   int mode;
-
 @property (readonly) UITabBarController *tabController;
 //@property (readonly) UITabBar *tabBar;
 
 - (IBAction)cancelView:(id)sender;
-
 - (void)refreshUIForCompose;
 - (void)refreshUIForCurrentPost;
 - (void)updatePhotosBadge;
+- (void)locationUpdate:(CLLocation *)location;
+- (void)locationError:(NSError *)error;
+- (void)showLocationActivity;
+
 @end

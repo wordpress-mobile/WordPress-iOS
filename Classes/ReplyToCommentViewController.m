@@ -138,8 +138,13 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 
 - (void)dealloc {
 	[saveButton release];
+	[doneButton release];
+	[cancelButton release];
+	[comment release];
+	[commentDetails release];
+	[saveButton release];
 	[textViewText release];
-	//[doneButton release];
+	[leftView release];
     [super dealloc];
 }
 

@@ -48,6 +48,7 @@
 #pragma mark Memory Management
 
 - (void)dealloc {
+	[segmentedControl release];
     [commentsArray release];
     [commentsDict release];
     [selectedComments release];
