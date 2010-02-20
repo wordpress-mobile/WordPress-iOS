@@ -68,6 +68,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+	[self dismissModalViewControllerAnimated:YES];
     NSLog(@"inside PostDetailEditController:viewWillAppear, just called [super viewWillAppear:YES]");
 //	NSLog(@"inside PostDetailEditController:viewWillAppear, hasChanges equals:: %@", self.postDetailViewController.hasChanges);
 //	NSLog(@"BOOL = %d", (int)self.postDetailViewController.hasChanges);
@@ -87,6 +88,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
     
     [self postionTextViewContentView];
     [self refreshUIForCurrentPost];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark -
