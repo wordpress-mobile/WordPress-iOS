@@ -13,16 +13,26 @@
     return self;
 }
 
+- (BOOL)hasLocation {
+	return hasLocation;
+}
+
+- (void)setHasLocation:(BOOL)input {
+	hasLocation = input;
+}
+
 - (void)locationManager:(CLLocationManager *)manager
     didUpdateToLocation:(CLLocation *)newLocation
            fromLocation:(CLLocation *)oldLocation
 {
+	[self setHasLocation:YES];
     [self.delegate locationUpdate:newLocation];
 }
 
 - (void)locationManager:(CLLocationManager *)manager
 	   didFailWithError:(NSError *)error
 {
+	[self setHasLocation:NO];
     [self.delegate locationError:error];
 }
 

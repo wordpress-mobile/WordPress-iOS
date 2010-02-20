@@ -7,10 +7,14 @@
 @interface LocationController : NSObject <CLLocationManagerDelegate> {
 	CLLocationManager *locationManager;
     id delegate;
+	BOOL hasLocation;
 }
 
 @property (nonatomic, retain) CLLocationManager *locationManager;
 @property (nonatomic, assign) id delegate;
+
+- (BOOL)hasLocation;
+- (void)setHasLocation:(BOOL)input;
 
 - (void)locationManager:(CLLocationManager *)manager
     didUpdateToLocation:(CLLocation *)newLocation

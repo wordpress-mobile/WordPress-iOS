@@ -1,6 +1,9 @@
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
 #import "WPPhotosListProtocol.h"
+#import "BlogDataManager.h"
 #import "LocationController.h"
+#import "PostLocationViewController.h"
 
 //refactoring "mode"
 #define newPost 0
@@ -12,7 +15,7 @@
 @class WPNavigationLeftButtonView;
 @class CustomFieldsDetailController, WPPublishOnEditController;
 
-@interface PostViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate, WPPhotosListProtocol, LocationControllerDelegate> {
+@interface PostViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate, WPPhotosListProtocol> {
     IBOutlet UITabBarController *tabController;
 	//IBOutlet UITabBar *tabBar;
     IBOutlet UIView *photoEditingStatusView;
@@ -29,11 +32,9 @@
     WPNavigationLeftButtonView *leftView;
     CustomFieldsDetailController *customFieldsDetailController;
 
-    BOOL hasChanges;
+    BOOL hasChanges, isVisible;
     int mode;   //0 new, 1 edit, 2 autorecovery, 3 refresh
     NSTimer *autoSaveTimer;
-	
-	LocationController *locationController;
 }
 
 @property (nonatomic, retain)   WPNavigationLeftButtonView *leftView;
@@ -46,7 +47,7 @@
 @property (nonatomic, assign)   PostsViewController *postsListController;
 @property (nonatomic, assign)   UIViewController *selectedViewController;
 @property (nonatomic, readonly) UIBarButtonItem *saveButton;
-@property (nonatomic)   BOOL hasChanges;
+@property (nonatomic)   BOOL hasChanges, isVisible;
 @property (nonatomic)   int mode;
 @property (readonly) UITabBarController *tabController;
 //@property (readonly) UITabBar *tabBar;
@@ -55,8 +56,5 @@
 - (void)refreshUIForCompose;
 - (void)refreshUIForCurrentPost;
 - (void)updatePhotosBadge;
-- (void)locationUpdate:(CLLocation *)location;
-- (void)locationError:(NSError *)error;
-- (void)showLocationActivity;
 
 @end

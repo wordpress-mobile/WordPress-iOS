@@ -17,8 +17,8 @@
 
 @implementation PostSettingsViewController
 
-@synthesize postDetailViewController, tableView,
-passwordTextField, commentsSwitchControl, pingsSwitchControl; //, customFieldsSwitchControl;
+@synthesize postDetailViewController, tableView, passwordTextField, commentsSwitchControl;
+@synthesize pingsSwitchControl, locationLabel, locationSwitchControl, locationTableViewCell; //, customFieldsSwitchControl;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -29,6 +29,9 @@ passwordTextField, commentsSwitchControl, pingsSwitchControl; //, customFieldsSw
 }
 
 - (void)dealloc {
+	[locationLabel release];
+	[locationSwitchControl release];
+	[locationTableViewCell release];
     [super dealloc];
 }
 
@@ -105,6 +108,7 @@ passwordTextField, commentsSwitchControl, pingsSwitchControl; //, customFieldsSw
     [customFieldsSwitchControl addTarget:self action:@selector(controlEventValueChanged:) forControlEvents:UIControlEventValueChanged];
 
     [resizePhotoControl addTarget:self action:@selector(changeResizePhotosOptions) forControlEvents:UIControlEventAllTouchEvents];
+    [locationSwitchControl addTarget:self action:@selector(changeLocationOptions) forControlEvents:UIControlEventAllTouchEvents];
 }
 
 - (void)changeResizePhotosOptions {
@@ -113,10 +117,18 @@ passwordTextField, commentsSwitchControl, pingsSwitchControl; //, customFieldsSw
      forKey:kResizePhotoSetting];
 }
 
+- (void)changeLocationOptions {
+    postDetailViewController.hasChanges = YES;
+    [[BlogDataManager sharedDataManager].currentPost setValue:[NSNumber numberWithInt:locationSwitchControl.on]
+													   forKey:kLocationSetting];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 	NSLog(@"viewWillAppear: PostSettingsViewController, just called postDetailViewController shouldAutorotate");
     [self reloadData];
+	NSLog(@"View will appear.  Setting up help button...");
+	[self setupHelpButton];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -151,34 +163,11 @@ passwordTextField, commentsSwitchControl, pingsSwitchControl; //, customFieldsSw
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 1;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    if ((section == 1) || (section == 2)) {
-        //This Class creates a view which contains label with color and font attributes and sets the label properties and it is used as footer view for section in tableview.
-        WPLabelFooterView *labelView = [[[WPLabelFooterView alloc] initWithFrame:CGRectMake(0, 3, 300, 60)] autorelease];
-        //Sets the number of lines to be shown in the label.
-        [labelView setNumberOfLines:(NSInteger) 3];
-        //Sets the text alignment of the label.
-        [labelView setTextAlignment:UITextAlignmentCenter];
-
-        if (section == 1) {
-            //Sets the text for the label.
-            [labelView setText:kPasswordHintLabel];
-        } else {
-            //Sets the text for the label.
-            [labelView setText:kResizePhotoSettingHintLabel];
-        }
-
-        return labelView;
-    }
-
-    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
@@ -260,7 +249,18 @@ passwordTextField, commentsSwitchControl, pingsSwitchControl; //, customFieldsSw
                 resizePhotoControl.on = [value boolValue];
                 return resizePhotoViewCell;
             }
-
+        case 3:
+            if (indexPath.row == 0) {
+                NSNumber *value = [post valueForKey:kLocationSetting];
+				
+                if (value == nil) {
+                    value = [NSNumber numberWithInt:0];
+                    [post setValue:value forKey:kLocationSetting];
+                }
+				
+                locationSwitchControl.on = [value boolValue];
+                return locationTableViewCell;
+            }
             break;
         default:
             break;
@@ -302,6 +302,15 @@ passwordTextField, commentsSwitchControl, pingsSwitchControl; //, customFieldsSw
     }
 
     [atableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
+}
+
+- (void)setupHelpButton {
+}
+
+- (IBAction)helpButtonClicked:(id)sender {
+	PostSettingsHelpViewController *helpView = [[PostSettingsHelpViewController alloc] init];
+	[self.navigationController pushViewController:helpView animated:YES];
+	[helpView release];
 }
 
 @end

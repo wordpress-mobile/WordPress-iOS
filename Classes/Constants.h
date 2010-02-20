@@ -54,6 +54,7 @@
 #define kBlogHostName                           @"blog_host_name"
 #define kCurrentBlogIndex                       @"CurrentBlogIndex"
 #define kResizePhotoSetting                     @"ResizePhotoSetting"
+#define kLocationSetting						@"LocationSetting"
 #define kAsyncPostFlag                          @"async_post"
 #define kSupportsPagesAndComments               @"SupportsPagesAndComments"
 #define kVersionAlertShown                      @"VersionAlertShown"

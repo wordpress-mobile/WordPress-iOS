@@ -17,7 +17,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 @synthesize postDetailViewController, selectionTableViewController, segmentedTableViewController, leftView, customFieldsTableView;
 @synthesize infoText, urlField, bookMarksArray, selectedLinkRange, currentEditingTextField, isEditing;
-@synthesize customFieldsEditButton, editCustomFields, isCustomFieldsEnabledForThisPost;
+@synthesize customFieldsEditButton, editCustomFields, isCustomFieldsEnabledForThisPost, locationController, locationButton, locationSpinner;
 
 #pragma mark -
 #pragma mark View Lifecycle Methods
@@ -26,7 +26,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [super viewDidLoad];
     NSLog(@"inside PostDetailEditController:viewDidLoad, just called [super viewDidLoad]");
 
-
+	
+	// Begin getting location
+	locationController = [[LocationController alloc] init];
+	[locationController setDelegate:self];
+	[self getLocation:locationButton];
     
     //customFieldsEditButton.hidden = YES;
     //customFieldsEditButton.enabled = NO;
@@ -973,6 +977,81 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[postDetailViewController.navigationController pushViewController:editPostModalViewController animated:animate];
 }
 
+#pragma mark -
+#pragma mark Location Methods
+
+- (IBAction)getLocation:(id)sender {
+	// We don't have a location yet
+	if(![locationController hasLocation])
+	{
+		// Start the spinner and update our button state
+		[locationSpinner startAnimating];
+		[self.locationButton setHighlighted:NO];
+		[self.locationButton setSelected:YES];
+		
+		// Tell LocationController to start updating its location
+		[[locationController locationManager] startUpdatingLocation];
+	}
+	else { // We already have a location
+		// Show our map view and update our button state
+		[self showLocationMapView:sender];
+		[self.locationButton setHighlighted:YES];
+		[self.locationButton setSelected:NO];
+	}
+}
+
+- (void)locationUpdate:(CLLocation *)location {
+	// We got a successful location update
+	// Start the spinner and update our button state
+	[locationSpinner stopAnimating];
+	[self.locationButton setHighlighted:YES];
+	[self.locationButton setSelected:NO];
+}
+
+- (void)locationError:(NSError *)error {
+	// Our location update failed
+	// Stop the spinner and update our button state
+	[locationSpinner stopAnimating];
+	[self.locationButton setHighlighted:NO];
+	[self.locationButton setSelected:NO];
+}
+
+- (void)saveLocationDataToCustomFields {
+	// Stub method.
+	// Grab our mutable array of custom fields from BlogDataManager
+    BlogDataManager *dm = [BlogDataManager sharedDataManager];
+    NSMutableArray *customFieldsArray = [dm.currentPost valueForKey:@"custom_fields"];
+	
+	// Format our values
+	// Latitude
+	NSString *latitude = [NSString stringWithFormat:@"%lf", 
+						  locationController.locationManager.location.coordinate.latitude];
+	// Longitude
+	NSString *longitude = [NSString stringWithFormat:@"%lf", 
+						   locationController.locationManager.location.coordinate.longitude];
+	// Accuracy
+	NSString *accuracy = [NSString stringWithFormat:@"%d", 
+								  locationController.locationManager.location.horizontalAccuracy];
+	
+	// Add latitude, accuracy, longitude, address, and public
+	// WP API fields: geo_latitude, geo_longitude, geo_accuracy, geo_public
+	NSArray *keys = [NSArray arrayWithObjects:@"geo_latitude",@"geo_longitude", @"geo_accuracy", @"geo_public"];
+	NSArray *objects = [NSArray arrayWithObjects:latitude, longitude, accuracy];
+	NSDictionary *locationFields = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+	
+	// Send our modified custom fields back to BlogDataManager
+	NSLog(@"Saving location data to custom fields...");
+	[customFieldsArray addObject:locationFields];
+	[dm.currentPost setValue:customFieldsArray forKey:@"custom_fields"];
+	NSLog(@"custom fields: %@", customFieldsArray);
+}
+
+- (IBAction)showLocationMapView:(id)sender {
+	PostLocationViewController *locationView = [[PostLocationViewController alloc] init];
+	locationView.initialLocation = locationController.locationManager.location;
+	[self presentModalViewController:locationView animated:YES];
+	[locationView autorelease];
+}
 
 #pragma mark -
 #pragma mark Memory Stuff
@@ -990,6 +1069,9 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [segmentedTableViewController release];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
     [customFieldsTableView release];
+	[locationController release];
+	[locationButton release];
+	[locationSpinner release];
     [super dealloc];
 }
 

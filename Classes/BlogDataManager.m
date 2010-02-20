@@ -1996,6 +1996,7 @@ editBlogViewController;
     [dict setObject:[NSNumber numberWithInt:0] forKey:kNextPageDraftIdStr];
 
     [dict setObject:[NSNumber numberWithInt:1] forKey:kResizePhotoSetting];
+    [dict setObject:[NSNumber numberWithInt:1] forKey:kLocationSetting];
     // setCurrentBlog will release current reference and make a mutable copy of this one
     [self setCurrentBlog:dict];
 
