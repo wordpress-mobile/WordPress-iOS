@@ -47,8 +47,13 @@ Classes/PageViewController.h -text
 Classes/PageViewController.m -text
 Classes/PagesViewController.h -text
 Classes/PagesViewController.m -text
+Classes/PostLocationViewController.h -text
+Classes/PostLocationViewController.m -text
+Classes/PostLocationViewController.xib -text
 Classes/PostPreviewViewController.h -text
 Classes/PostPreviewViewController.m -text
+Classes/PostSettingsHelpViewController.h -text
+Classes/PostSettingsHelpViewController.m -text
 Classes/PostSettingsViewController.h -text
 Classes/PostSettingsViewController.m -text
 Classes/PostTableViewCell.h -text
@@ -159,7 +164,11 @@ WordPress.xcodeproj/project.pbxproj -text
 /delete.png -text
 /down.png -text
 /favicon.ico -text svneol=unset#unset
+/getLocation.png -text
+/gettingLocation.png -text
 /gravatar.jpg -text
+/hasLocation.png -text
+/help.png -text
 /iTunesArtwork -text
 /license.txt -text
 /lock.png -text
