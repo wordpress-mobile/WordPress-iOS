@@ -8,7 +8,9 @@
     self = [super init];
     if (self != nil) {
         self.locationManager = [[[CLLocationManager alloc] init] autorelease];
-        self.locationManager.delegate = self; // send loc updates to myself
+		
+		// Always send location updates to myself.
+        self.locationManager.delegate = self;
     }
     return self;
 }
@@ -25,6 +27,7 @@
     didUpdateToLocation:(CLLocation *)newLocation
            fromLocation:(CLLocation *)oldLocation
 {
+	// Called whenever we receive a GPS location update.
 	[self setHasLocation:YES];
     [self.delegate locationUpdate:newLocation];
 }
@@ -32,6 +35,7 @@
 - (void)locationManager:(CLLocationManager *)manager
 	   didFailWithError:(NSError *)error
 {
+	// Called whenever we receive a GPS location failure.
 	[self setHasLocation:NO];
     [self.delegate locationError:error];
 }
