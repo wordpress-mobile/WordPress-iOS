@@ -9,6 +9,7 @@
 #import "WPNavigationLeftButtonView.h"
 #import "Reachability.h"
 #import "WPProgressHUD.h"
+#import "IncrementPost.h"
 
 #define LOCAL_DRAFTS_SECTION    0
 #define POSTS_SECTION           1
@@ -23,6 +24,8 @@
 - (void)showAddPostView;
 - (void)refreshHandler;
 - (void)syncPosts;
+//- (void) addSpinnerToCell:(NSIndexPath *)indexPath;
+//- (void) removeSpinnerFromCell:(NSIndexPath *)indexPath;
 - (BOOL)handleAutoSavedContext:(NSInteger)tag;
 - (void)addRefreshButton;
 - (void)deletePostAtIndexPath;
@@ -170,18 +173,23 @@
         post = [dm draftTitleAtIndex:indexPath.row];
     } else { 
 		int count = [[BlogDataManager sharedDataManager] countOfPostTitles];
+		NSLog(@"countOfPostTitles: %d", count);
+		NSLog(@"index path: %d", indexPath.row);
 		//handle the case when it's the last row and we need to return the modified "get more posts" cell
 		//note that it's not [[BlogDataManager sharedDataManager] countOfPostTitles] +1 because of the difference in the counting of the datasets
 		if (indexPath.row == count) {
 			
-			NSLog(@"inside the else");
+			NSLog(@"inside the else, they should match and be the largest number");
 			NSLog(@"index path: %d", indexPath.row);
+			NSLog(@"count: %d", count);
 		//set the labels.  The spinner will be activiated if the row is selected in didSelectRow...
 		//get the total number of posts on the blog, make a string and pump it into the cell
 		int totalPosts = [[BlogDataManager sharedDataManager] countOfPostTitles];
 			NSLog(@"totalPosts %d", totalPosts);
 		NSString * totalString = [NSString stringWithFormat:@"%d posts total", totalPosts];
 			[cell changeCellLabelsForUpdate:totalString:@"Load more posts":NO];
+			//prevent masking of the changes to font color etc that we want
+			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 		return cell;
 	}
 		//if it wasn't the last cell, proceed as normal.
@@ -195,6 +203,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
     BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     dataManager.isLocaDraftsCurrent = (indexPath.section == LOCAL_DRAFTS_SECTION);
@@ -211,28 +220,48 @@
         [dataManager makeDraftAtIndexCurrent:indexPath.row];
 		
     } else {
-		//handle the case when it's the last row and is the "get more posts" cell
+		//handle the case when it's the last row and is the "get more posts" special cell
 		if (indexPath.row == [[BlogDataManager sharedDataManager] countOfPostTitles]) {
-			//get the cell
-			UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 			
-			//do "nothing"
-			[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+			//run the spinner in the background and change the text
+			[self performSelectorInBackground:@selector(addSpinnerToCell:) withObject:indexPath];
 			
-			//change the text in the cell to say "Loading" and change it's color
-			int totalPosts = [[BlogDataManager sharedDataManager] countOfPostTitles];
-			NSString * totalString = [NSString stringWithFormat:@"%d posts total", totalPosts];
-			[((PostTableViewCell *)cell) changeCellLabelsForUpdate:totalString:@"Loading more posts...":YES];
+			// deselect the row.
+			[self.tableView deselectRowAtIndexPath:indexPath animated:NO];
 			
-			//set the spinner (cast to PostTableView "type" in order to avoid warnings)
-			[((PostTableViewCell *)cell) runSpinner:YES];
+			//init the Increment Post helper class class
+			IncrementPost *incrementPost = [[IncrementPost alloc] init];
 			
-			//run the "get more" function and get 10 more
+			//run the "get more" function in the IncrementPost class and get metadata, then parse metadata for next 10 and get 10 more
+			[incrementPost getPostMetadata];
+			//TODO: JOHNB if this fails we should surface an alert with useful error message.
+			//here or in incrementPost?  Perhaps a bool return?
 			
-			//turn off the spinner
+			//release the helper class
+			[incrementPost release];
 			
-			//update the tableview
+			//turn of spinner and change text
+			[self performSelectorInBackground:@selector(removeSpinnerFromCell:) withObject:indexPath];
+			
+			//refresh the post list
+			[self loadPosts];
+			
+			//get a reference to the cell
+			UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
+			
+			// solve the problem where the "load more" cell is reused and retains it's old formatting by forcing a redraw
+			[cell setNeedsDisplay];
+			
+			//scroll to the bottom of the new list to show we did what the user requested
+			////TODO: JOHNB there should probably be an alert if there are no more posts
+			NSIndexPath *indPath = 
+				[NSIndexPath indexPathForRow:[[BlogDataManager sharedDataManager] countOfPostTitles] inSection:1];
+			
+			[tableView scrollToRowAtIndexPath:indPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+						
+			//return
 			return;
+			
 		}
 		
         id currentPost = [dataManager postTitleAtIndex:indexPath.row];
@@ -252,6 +281,44 @@
     [delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
 }
 
+- (void) addSpinnerToCell:(NSIndexPath *)indexPath {
+	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
+	
+	//get the cell
+	UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
+	
+	//set the spinner (cast to PostTableView "type" in order to avoid warnings)
+	[((PostTableViewCell *)cell) runSpinner:YES];
+	
+	//set up variables for cell text values
+	int totalPosts = [[BlogDataManager sharedDataManager] countOfPostTitles];
+	NSString * totalString = [NSString stringWithFormat:@"%d posts total", totalPosts];
+	
+	//change the text in the cell to say "Loading" and change text color
+	[((PostTableViewCell *)cell) changeCellLabelsForUpdate:totalString:@"Loading more posts...":YES];
+		
+	[apool release];
+}
+
+- (void) removeSpinnerFromCell:(NSIndexPath *)indexPath {
+	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
+	
+	//get the cell
+	UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
+	
+	//set up variables for changing text values
+	int totalPosts = [[BlogDataManager sharedDataManager] countOfPostTitles];
+	NSString * totalString = [NSString stringWithFormat:@"%d posts total", totalPosts];
+	
+	//turn off the spinner and change the text
+	[((PostTableViewCell *)cell) changeCellLabelsForUpdate:totalString:@"Load more posts...":NO];
+	[((PostTableViewCell *)cell) runSpinner:NO];
+	
+	[apool release];
+}
+
+
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return POST_ROW_HEIGHT;
 }
@@ -262,7 +329,12 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     //return indexPath.section == LOCAL_DRAFTS_SECTION;
-	return YES;
+	if (indexPath.row == [[BlogDataManager sharedDataManager] countOfPostTitles]) {
+		return NO;
+		//prevents attempting to delete the "load more" cell and crashing.
+	} else {
+		return YES;
+	}
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -369,7 +441,7 @@
     [dm updatePostsTitlesFileAfterPostSaved:(NSMutableDictionary *)postIdsDict];
     [dm loadPostTitlesForCurrentBlog];
 
-    [self.tableView reloadData];
+    [self loadPosts];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {

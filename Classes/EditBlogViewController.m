@@ -50,6 +50,7 @@
     currentBlog = [[BlogDataManager sharedDataManager] currentBlog];
 
     noOfPostsTextField.text = [currentBlog valueForKey:kPostsDownloadCount];
+	NSLog(@"kpostsdownloadcount %@",[currentBlog valueForKey:kPostsDownloadCount]);
 
     self.navigationItem.rightBarButtonItem = saveBlogButton;
 

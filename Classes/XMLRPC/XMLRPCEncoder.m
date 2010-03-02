@@ -259,6 +259,7 @@
 	}
 	
 	[buffer appendString: @"</data></array></value>"];
+	//NSLog(@"string from xmlrpc array encoder %@", buffer);
 	
 	return (NSString *)buffer;
 }
@@ -281,6 +282,7 @@
 	}
 	
 	[buffer appendString: @"</struct></value>"];
+	//NSLog(@"string from xmlrpc dict encoder %@", buffer);
 	
 	return (NSString *)buffer;
 }

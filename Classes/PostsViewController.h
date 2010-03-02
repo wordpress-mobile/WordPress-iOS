@@ -24,4 +24,8 @@
 @property (nonatomic, retain) PostViewController *postDetailViewController;
 @property (nonatomic, retain) EditPostViewController *postDetailEditController;
 
+- (void) addSpinnerToCell:(NSIndexPath *)indexPath;
+- (void) removeSpinnerFromCell:(NSIndexPath *)indexPath;
+
+
 @end

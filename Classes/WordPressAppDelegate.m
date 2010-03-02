@@ -353,8 +353,13 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	 if([deviceType isEqualToString:@"iPhone"])
 	 // it's an iPhone
 	 
+	 NSString *deviceType = [UIDevice currentDevice].model;
+	 NSLog(@"device string from currentDevice.model %@", deviceType);
 	 
 	 */
+	
+		
+		
 	NSString *deviceuuid = [[UIDevice currentDevice] uniqueIdentifier];
 	
 	NSDictionary *info = [[NSBundle mainBundle] infoDictionary];

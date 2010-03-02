@@ -203,6 +203,8 @@
 - (BOOL)validateCurrentBlog:(NSString *)url user:(NSString *)username password:(NSString *)pwd;
 - (BOOL)syncPostsForBlog:(id)blog;
 - (BOOL)syncPostsForCurrentBlog;
+- (BOOL)syncIncrementallyLoadedPostsForCurrentBlog:(NSArray *)recentPostsList;
+- (BOOL)organizePostsForBlog:(id)blog withPostsArray:(NSArray *) recentPostsList;
 
 - (void)generateTemplateForBlog:(id)aBlog;
 - (BOOL)wrapperForSyncPostsAndGetTemplateForBlog:(id)aBlog;
@@ -330,5 +332,11 @@
 
 -(void) printArrayToLog:(NSArray *) theArray andArrayName:(NSString *)theArrayName;
 -(void) printDictToLog:(NSDictionary *)theDict andDictName:(NSString *)theDictName;
+
+#pragma mark -
+#pragma mark exposing some private methods for IncrementPost
+
+- (NSString *)getPathToPost:(id)aPost forBlog:(id)aBlog;
+- (void) updateBlogsListByIndex:(NSInteger )blogIndex withDict:(NSDictionary *) aBlog;
 
 @end

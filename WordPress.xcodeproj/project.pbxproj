@@ -42,6 +42,8 @@
 		296890780FE971DC00770264 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296890770FE971DC00770264 /* Security.framework */; };
 		2994EEEE10DF0FCD008336A6 /* ReplyToCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2994EEEC10DF0FCD008336A6 /* ReplyToCommentViewController.m */; };
 		2994EEEF10DF0FCD008336A6 /* ReplyToCommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2994EEED10DF0FCD008336A6 /* ReplyToCommentViewController.xib */; };
+		29A84C80112D029F00CDDB06 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 29A84C7F112D029F00CDDB06 /* Entitlements.plist */; };
+		29A84CA5112E485100CDDB06 /* IncrementPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A84CA4112E485100CDDB06 /* IncrementPost.m */; };
 		29B666331061315800CABB70 /* MainBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B666321061315800CABB70 /* MainBackground.png */; };
 		29FF132F0FE70F3100CFB908 /* CustomFieldsTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29FF132E0FE70F3100CFB908 /* CustomFieldsTableView.xib */; };
 		2A7F71FB0E70F82A00E48A1F /* CommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A7F71FA0E70F82A00E48A1F /* CommentViewController.xib */; };
@@ -208,6 +210,9 @@
 		2994EEEB10DF0FCD008336A6 /* ReplyToCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplyToCommentViewController.h; sourceTree = "<group>"; };
 		2994EEEC10DF0FCD008336A6 /* ReplyToCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReplyToCommentViewController.m; sourceTree = "<group>"; };
 		2994EEED10DF0FCD008336A6 /* ReplyToCommentViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReplyToCommentViewController.xib; sourceTree = "<group>"; };
+		29A84C7F112D029F00CDDB06 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
+		29A84CA3112E485100CDDB06 /* IncrementPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IncrementPost.h; sourceTree = "<group>"; };
+		29A84CA4112E485100CDDB06 /* IncrementPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IncrementPost.m; sourceTree = "<group>"; };
 		29B666321061315800CABB70 /* MainBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MainBackground.png; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29FF132E0FE70F3100CFB908 /* CustomFieldsTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomFieldsTableView.xib; sourceTree = "<group>"; };
@@ -449,6 +454,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				29A84C7F112D029F00CDDB06 /* Entitlements.plist */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -516,6 +522,8 @@
 			children = (
 				CEBD3EA90FF1BA3B00C1396E /* Blog.h */,
 				CEBD3EAA0FF1BA3B00C1396E /* Blog.m */,
+				29A84CA3112E485100CDDB06 /* IncrementPost.h */,
+				29A84CA4112E485100CDDB06 /* IncrementPost.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -908,6 +916,7 @@
 				F52BF2E810B1DC8F00AF4582 /* BlogHTTPAuthenticationViewController.xib in Resources */,
 				2994EEEF10DF0FCD008336A6 /* ReplyToCommentViewController.xib in Resources */,
 				2906F813110CDA8900169D56 /* EditCommentViewController.xib in Resources */,
+				29A84C80112D029F00CDDB06 /* Entitlements.plist in Resources */,
 				83A645D9112B8690000999A6 /* PostLocationViewController.xib in Resources */,
 				83A646AB112C63E5000999A6 /* help.png in Resources */,
 				837576C411305C67002EAA27 /* gettingLocation.png in Resources */,
@@ -988,6 +997,7 @@
 				F5A4EF6810B34147002BF126 /* NSData+Base64.m in Sources */,
 				2994EEEE10DF0FCD008336A6 /* ReplyToCommentViewController.m in Sources */,
 				2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */,
+				29A84CA5112E485100CDDB06 /* IncrementPost.m in Sources */,
 				83F3E2BE11276357004CD686 /* LocationController.m in Sources */,
 				83A645D8112B8690000999A6 /* PostLocationViewController.m in Sources */,
 				83A64689112C5F75000999A6 /* PostSettingsHelpViewController.m in Sources */,
@@ -1053,6 +1063,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;

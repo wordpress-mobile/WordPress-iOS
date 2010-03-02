@@ -797,6 +797,11 @@ editBlogViewController;
     return pathToPageTitles;
 }
 
+- (NSString *)getPathToPost:(id)aPost forBlog:(id)aBlog{
+	return [self pathToPost:aPost forBlog:aBlog];
+	//this just exposes the private pathToPost so IncrementPost can use it.
+}
+
 - (NSString *)pathToPost:(id)aPost forBlog:(id)aBlog {
     NSString *pathToPost = [[self blogDir:aBlog] stringByAppendingPathComponent:[self postFileName:aPost]];
     return pathToPost;
@@ -885,9 +890,10 @@ editBlogViewController;
         self->blogFieldNames = [NSArray arrayWithObjects:@"url", @"username", kBlogHostName, @"blog_host_software",
                                 @"isAdmin", kBlogId, @"blogName", @"xmlrpc",
                                 @"nickname", @"userid", @"lastname", @"firstname",
-                                @"newposts", @"totalposts",
+                                @"newposts", @"totalPosts",
                                 //@"newcomments", @"totalcomments", @"xmlrpcsuffix", @"pwd", kPostsDownloadCount, nil];
-								@"newcomments",@"totalcomments", @"xmlrpcsuffix", kPostsDownloadCount, nil];
+								@"newcomments",@"totalcomments", @"", kPostsDownloadCount, nil];
+								//@blog metadata
         [blogFieldNames retain];
     }
 
@@ -1469,39 +1475,221 @@ editBlogViewController;
     return YES;
 }
 
+
+- (BOOL)syncIncrementallyLoadedPostsForCurrentBlog:(NSArray *)recentPostsList {
+	
+    [currentBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
+	
+	BOOL success = [self organizePostsForBlog:currentBlog withPostsArray:(NSArray *) recentPostsList];
+	 
+    [currentBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+	
+	if (success) {
+		[self makeBlogAtIndexCurrent:currentBlogIndex];
+		return YES;
+	}else{
+		return NO;
+	}
+}
+
+
+
+// sync posts for a given blog
+//- (BOOL)syncPostsForBlog:(id)blog {
+//    if ([[blog valueForKey:kBlogId] isEqualToString:kDraftsBlogIdStr]) {
+//        [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+//        return NO;
+//    }
+//
+//    // Parameters
+//    NSString *username = [blog valueForKey:@"username"];
+//    //NSString *pwd = [blog valueForKey:@"pwd"];
+//	NSString *pwd = [self getPasswordFromKeychainInContextOfCurrentBlog:blog];
+//    NSString *fullURL = [blog valueForKey:@"xmlrpc"];
+//    NSString *blogid = [blog valueForKey:kBlogId];
+//    //NSNumber *maxToFetch = [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:2] intValue]];
+//	//Note: Changed this and added "totalPostsLoaded" to BDM datastructure to accomodate 10-at-a-time updating of posts.
+//	NSNumber *maxToFetch = [currentBlog valueForKey:@"totalPostsLoaded"];
+//
+//    //  ------------------------- invoke metaWeblog.getRecentPosts
+//    XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
+//    [postsReq setMethod:@"metaWeblog.getRecentPosts"
+//     withObjects:[NSArray arrayWithObjects:blogid, username, pwd, maxToFetch, nil]];
+//
+//    NSArray *recentPostsList = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
+//    [postsReq release];
+//
+//    // TODO:
+//    // Check for fault
+//    // check for nil or empty response
+//    // provide meaningful messge to user
+//    if ((!recentPostsList) || !([recentPostsList isKindOfClass:[NSArray class]])) {
+//        [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+////		[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
+//        return NO;
+//    }
+//
+//    // loop through each post
+//    // - add local_status, blogid and bloghost to the pos
+//    // - save the post
+//    // - count new posts
+//    // - add/replace postTitle for post
+//    // Sort and Save postTitles list
+//    // Update blog counts and save blogs list
+//
+//    // get post titles from file
+//    NSMutableArray *newPostTitlesList;
+//    NSString *postTitlesPath = [self pathToPostTitles:blog];
+//    NSFileManager *fm = [NSFileManager defaultManager];
+//
+//    if ([fm fileExistsAtPath:postTitlesPath]) {
+//        newPostTitlesList = [NSMutableArray arrayWithContentsOfFile:postTitlesPath];
+//    } else {
+//        newPostTitlesList = [NSMutableArray arrayWithCapacity:30];
+//    }
+//
+//    // loop thru posts list
+//    NSEnumerator *postsEnum = [recentPostsList objectEnumerator];
+//    NSDictionary *post;
+//    NSInteger newPostCount = 0;
+//    [newPostTitlesList removeAllObjects];
+//
+//    while (post = [postsEnum nextObject]) {
+//        // add blogid and blog_host_name to post
+//
+//        NSDate *postGMTDate = [post valueForKey:@"date_created_gmt"];
+//        NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:postGMTDate];
+//        NSDate *currentDate = [postGMTDate addTimeInterval:(secs * +1)];
+//        [post setValue:currentDate forKey:@"date_created_gmt"];
+//
+//        [post setValue:[blog valueForKey:kBlogId] forKey:kBlogId];
+//        [post setValue:[blog valueForKey:kBlogHostName] forKey:kBlogHostName];
+//
+//        // Check if the post already exists
+//        // yes: check if a local draft exists
+//        //		 yes: set the local-status to 'edit'
+//        //		 no: set the local_status to 'original'
+//        // no: increment new posts count
+//
+//        NSString *pathToPost = [self pathToPost:post forBlog:blog];
+//
+//        if ([fm fileExistsAtPath:pathToPost]) {
+//            //TODO: if we implement drafts as a logical blog we may not need this logic any more.
+////			if([fm fileExistsAtPath:pathToDraft]) {
+////				[post setValue:@"edit" forKey:@"local_status"];
+////			} else {
+////				[post setValue:@"original" forKey:@"local_status"];
+////			}
+//        } else {
+//            [post setValue:@"original" forKey:@"local_status"];
+//            newPostCount++;
+//        }
+//
+//        // write the new post
+//        [post writeToFile:pathToPost atomically:YES];
+//
+//        // make a post title using the post
+//        NSMutableDictionary *postTitle = [self postTitleForPost:post];
+//
+//        // delete existing postTitle and add new post title to list
+//        NSInteger index = [self indexOfPostTitle:postTitle inList:(NSArray *)newPostTitlesList];
+//
+//        if (index != -1) {
+//            [newPostTitlesList removeObjectAtIndex:index];
+//        }
+//
+//        [newPostTitlesList addObject:postTitle];
+//    }
+//
+//    [self deletedPostsForExistingPosts:newPostTitlesList ofBlog:currentBlog andNewPosts:recentPostsList];
+//
+//    // sort and save the postTitles list
+//    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
+//    [newPostTitlesList sortUsingDescriptors:[NSArray arrayWithObject:sd]];
+//    [sd release];
+//    [newPostTitlesList writeToFile:[self pathToPostTitles:blog]  atomically:YES];
+//    // increment blog counts and save blogs list
+//    [blog setObject:[NSNumber numberWithInt:[newPostTitlesList count]] forKey:@"totalPosts"];
+//    [blog setObject:[NSNumber numberWithInt:newPostCount] forKey:@"newposts"];
+//    NSInteger blogIndex = [self indexForBlogid:[blog valueForKey:kBlogId] hostName:[blog valueForKey:kBlogHostName]];
+//
+//    if (blogIndex >= 0) {
+//        [self->blogsList replaceObjectAtIndex:blogIndex withObject:blog];
+//    } else {
+////		[self->blogsList addObject:blog];
+//    }
+//
+////Commented code as per ticket#102
+////	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+////
+////	[self saveBlogData];
+//
+////	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
+//    [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+//    [self performSelectorOnMainThread:@selector(postBlogsRefreshNotificationInMainThread:) withObject:blog waitUntilDone:NO];
+//    return YES;
+//}
+//TODO JohnB remove the above commented method or remove the "split" methods below.
+//split the syncPostsForBlog to enable use of the "sync" part by the "load-10-at-a-time" enhancement
+
 // sync posts for a given blog
 - (BOOL)syncPostsForBlog:(id)blog {
     if ([[blog valueForKey:kBlogId] isEqualToString:kDraftsBlogIdStr]) {
         [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
         return NO;
     }
-
+	
     // Parameters
     NSString *username = [blog valueForKey:@"username"];
     //NSString *pwd = [blog valueForKey:@"pwd"];
 	NSString *pwd = [self getPasswordFromKeychainInContextOfCurrentBlog:blog];
     NSString *fullURL = [blog valueForKey:@"xmlrpc"];
     NSString *blogid = [blog valueForKey:kBlogId];
-    NSNumber *maxToFetch = [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:2] intValue]];
-
+    //NSNumber *maxToFetch = [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:2] intValue]];
+	//Note: Changed this to accomodate 10-at-a-time updating of posts. kPostsDownloadCount seems to be associated with the number set when setting up the blog
+	//NSString *maxToFetch = nil;
+	//NSNumber *maxToFetch = [NSNumber numberWithInt:[[currentBlog valueForKey:@"totalPostsLoaded"] intValue]];
+	NSNumber *maxToFetch = [NSNumber numberWithInt:[[currentBlog valueForKey:@"totalPosts"] intValue]];
+	//NSNumber *maxToFetch = [NSNumber numberWithInt:[[currentBlog valueForKey:@"totalPosts"] intValue]];
+	//NSInteger maxCopy = [NSNumber numberWithInt: [[currentBlog valueForKey:@"totalPosts"] intValue]];
+//	NSNumber *loadint = [NSNumber numberWithInt: [[currentBlog valueForKey:@"totalPosts"] intValue]];
+//	int score = [loadint intValue];
+//	NSString *myString35 = [NSString stringWithFormat:@"%d", loadint];
+	
+	
+	
+	
+	
+	
+	NSArray *test = [NSArray arrayWithObjects:blogid, username, pwd, maxToFetch, nil ];
+	NSLog(@"the array for get recent posts %@",test);
+	
+	NSLog(@"currentblog %@", currentBlog);
+	
     //  ------------------------- invoke metaWeblog.getRecentPosts
     XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
     [postsReq setMethod:@"metaWeblog.getRecentPosts"
-     withObjects:[NSArray arrayWithObjects:blogid, username, pwd, maxToFetch, nil]];
-
+			withObjects:[NSArray arrayWithObjects:blogid, username, pwd, maxToFetch, nil]];
+	
     NSArray *recentPostsList = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
     [postsReq release];
-
+	
     // TODO:
     // Check for fault
     // check for nil or empty response
-    // provide meaningful messge to user
+    // provide meaningful message to user
     if ((!recentPostsList) || !([recentPostsList isKindOfClass:[NSArray class]])) {
         [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-//		[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
+		//		[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
         return NO;
     }
+	return [self organizePostsForBlog:blog withPostsArray:recentPostsList];
+	
+}
 
+// Consider splitting here so that this second part can be used by the "increment 10 more posts" thing
+- (BOOL)organizePostsForBlog:(id)blog withPostsArray:(NSArray *) recentPostsList{
+	//TODO: JOHNB reverse this split and put this method back together...
     // loop through each post
     // - add local_status, blogid and bloghost to the pos
     // - save the post
@@ -1509,99 +1697,105 @@ editBlogViewController;
     // - add/replace postTitle for post
     // Sort and Save postTitles list
     // Update blog counts and save blogs list
-
+	
     // get post titles from file
     NSMutableArray *newPostTitlesList;
     NSString *postTitlesPath = [self pathToPostTitles:blog];
     NSFileManager *fm = [NSFileManager defaultManager];
-
+	
     if ([fm fileExistsAtPath:postTitlesPath]) {
         newPostTitlesList = [NSMutableArray arrayWithContentsOfFile:postTitlesPath];
     } else {
         newPostTitlesList = [NSMutableArray arrayWithCapacity:30];
     }
-
+	
     // loop thru posts list
     NSEnumerator *postsEnum = [recentPostsList objectEnumerator];
     NSDictionary *post;
     NSInteger newPostCount = 0;
     [newPostTitlesList removeAllObjects];
-
+	
     while (post = [postsEnum nextObject]) {
         // add blogid and blog_host_name to post
-
+		
+		NSLog(@"this is the post %@", post);
+		NSLog(@"this is value in date_created_gmt %@", [post valueForKey:@"date_created_gmt"]);
+		
         NSDate *postGMTDate = [post valueForKey:@"date_created_gmt"];
         NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:postGMTDate];
         NSDate *currentDate = [postGMTDate addTimeInterval:(secs * +1)];
         [post setValue:currentDate forKey:@"date_created_gmt"];
-
+		
         [post setValue:[blog valueForKey:kBlogId] forKey:kBlogId];
         [post setValue:[blog valueForKey:kBlogHostName] forKey:kBlogHostName];
-
+		
         // Check if the post already exists
         // yes: check if a local draft exists
         //		 yes: set the local-status to 'edit'
         //		 no: set the local_status to 'original'
         // no: increment new posts count
-
+		
         NSString *pathToPost = [self pathToPost:post forBlog:blog];
-
+		
         if ([fm fileExistsAtPath:pathToPost]) {
             //TODO: if we implement drafts as a logical blog we may not need this logic any more.
-//			if([fm fileExistsAtPath:pathToDraft]) {
-//				[post setValue:@"edit" forKey:@"local_status"];
-//			} else {
-//				[post setValue:@"original" forKey:@"local_status"];
-//			}
+			//			if([fm fileExistsAtPath:pathToDraft]) {
+			//				[post setValue:@"edit" forKey:@"local_status"];
+			//			} else {
+			//				[post setValue:@"original" forKey:@"local_status"];
+			//			}
         } else {
             [post setValue:@"original" forKey:@"local_status"];
             newPostCount++;
         }
-
+		
         // write the new post
         [post writeToFile:pathToPost atomically:YES];
-
+		
         // make a post title using the post
         NSMutableDictionary *postTitle = [self postTitleForPost:post];
-
+		
         // delete existing postTitle and add new post title to list
         NSInteger index = [self indexOfPostTitle:postTitle inList:(NSArray *)newPostTitlesList];
-
+		
         if (index != -1) {
             [newPostTitlesList removeObjectAtIndex:index];
         }
-
+		
         [newPostTitlesList addObject:postTitle];
     }
-
+	
     [self deletedPostsForExistingPosts:newPostTitlesList ofBlog:currentBlog andNewPosts:recentPostsList];
-
+	
     // sort and save the postTitles list
     NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
     [newPostTitlesList sortUsingDescriptors:[NSArray arrayWithObject:sd]];
     [sd release];
     [newPostTitlesList writeToFile:[self pathToPostTitles:blog]  atomically:YES];
     // increment blog counts and save blogs list
-    [blog setObject:[NSNumber numberWithInt:[newPostTitlesList count]] forKey:@"totalposts"];
+    [blog setObject:[NSNumber numberWithInt:[newPostTitlesList count]] forKey:@"totalPosts"];
+	NSLog(@"organizePostsForBlog postsArray count ### %d", [newPostTitlesList count]);
     [blog setObject:[NSNumber numberWithInt:newPostCount] forKey:@"newposts"];
     NSInteger blogIndex = [self indexForBlogid:[blog valueForKey:kBlogId] hostName:[blog valueForKey:kBlogHostName]];
-
+	
     if (blogIndex >= 0) {
         [self->blogsList replaceObjectAtIndex:blogIndex withObject:blog];
     } else {
-//		[self->blogsList addObject:blog];
+		//		[self->blogsList addObject:blog];
     }
-
-//Commented code as per ticket#102
-//	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-//
-//	[self saveBlogData];
-
-//	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
+	
+	//Commented code as per ticket#102
+	//	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+	//
+	//	[self saveBlogData];
+	
+	//	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
     [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
     [self performSelectorOnMainThread:@selector(postBlogsRefreshNotificationInMainThread:) withObject:blog waitUntilDone:NO];
     return YES;
 }
+
+
 
 - (void)postBlogsRefreshNotificationInMainThread:(id)blog {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
@@ -1964,17 +2158,18 @@ editBlogViewController;
     NSArray *blogInitValues = [NSArray arrayWithObjects:@"Local Drafts", @"", kDraftsHostName, @"iPhone",
                                @"", kDraftsBlogIdStr, @"Local Drafts", @"xmlrpc url not set",
                                @"", @"", @"", @"",
-                               [NSNumber numberWithInt:0], [NSNumber numberWithInt:0],
-                               [NSNumber numberWithInt:0], [NSNumber numberWithInt:0], @"/xmlrpc.php", @"", nil];
-								//logically, one @"" should be removed here since we're using a similar data structure to blogFieldNames
-								//and it seems to contain a @"" as a placeholder for the password value
-								//[NSNumber numberWithInt:0], [NSNumber numberWithInt:0], @"/xmlrpc.php", @"", @"", nil];
-	
+                               [NSNumber numberWithInt:0], [NSNumber numberWithInt:10],
+                               [NSNumber numberWithInt:0], [NSNumber numberWithInt:0], 
+							   @"/xmlrpc.php", @"", 
+							   nil];
+								//@blog metadata
+									
 
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjects:blogInitValues forKeys:[self blogFieldNames]];
 
     [dict setObject:@"0" forKey:@"kNextDraftIdStr"];
     [dict retain];
+	NSLog(@"dict %@",dict);
     return dict;
 }
 
@@ -1984,10 +2179,13 @@ editBlogViewController;
     NSArray *blogInitValues = [NSArray arrayWithObjects:@"", @"", @"", @"",
                                @"", @"", @"", @"xmlrpc url not set",
                                @"", @"", @"", @"",
-                               [NSNumber numberWithInt:0], [NSNumber numberWithInt:0],
-                               [NSNumber numberWithInt:0], [NSNumber numberWithInt:0], @"/xmlrpc.php", @"10 Recent Posts", nil];
+                               [NSNumber numberWithInt:0], [NSNumber numberWithInt:10],
+                               [NSNumber numberWithInt:0], [NSNumber numberWithInt:0], 
+							   @"/xmlrpc.php", @"10 Recent Posts",
+							   nil];
 								//removed one @"" from the above line before "10 Recent Posts" to account for moving password to keychain
-
+								//@blog metadata
+	
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjects:blogInitValues forKeys:[self blogFieldNames]];
     [dict setObject:@"0" forKey:kNextDraftIdStr];
     [dict setObject:@"0" forKey:kNextPageDraftIdStr];
@@ -1999,6 +2197,7 @@ editBlogViewController;
     [dict setObject:[NSNumber numberWithInt:1] forKey:kLocationSetting];
     // setCurrentBlog will release current reference and make a mutable copy of this one
     [self setCurrentBlog:dict];
+	NSLog(@"currentblog %@", currentBlog);
 
     // reset the currentBlogIndex to -1 indicating new blog;
     currentBlogIndex = -1;
@@ -2057,6 +2256,11 @@ editBlogViewController;
         [self saveBlogData];
         [self resetCurrentBlog];
     }
+}
+
+- (void) updateBlogsListByIndex:(NSInteger )blogIndex withDict:(NSDictionary *)aBlog{
+	[blogsList replaceObjectAtIndex:blogIndex withObject:aBlog];
+	//this exists so I can touch blogsList from IncrementPost
 }
 
 - (void)resetCurrentBlog {
@@ -2453,6 +2657,7 @@ editBlogViewController;
                                 @"mt_excerpt", @"mt_text_more", @"mt_keywords",
                                 @"not_used_allow_comments", @"link_to_comments", @"not_used_allow_pings", @"dateUpdated",
                                 kBlogId, kBlogHostName, @"wp_author_display_name", @"date_created_gmt", kAsyncPostFlag, nil];
+		//@ post metadata
         [postFieldNames retain];
     }
 
@@ -3203,6 +3408,7 @@ editBlogViewController;
                                @"", @"", @"", @"",
                                blogid, blogHost, @"", now, @"",
                                nil];
+	//@ post metadata
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjects:postInitValues forKeys:[self postFieldNames]];
 
     [dict setObject:xmlrpc forKey:@"xmlrpc"];
@@ -3464,7 +3670,8 @@ editBlogViewController;
     [dateCreatedSortDescriptor release];
 
     if (!(index >= 0 && index <[newPostTitlesList count])) {   //not existing post, new post
-        [aBlog setObject:[NSNumber numberWithInt:[newPostTitlesList count]] forKey:@"totalposts"];
+        [aBlog setObject:[NSNumber numberWithInt:[newPostTitlesList count]] forKey:@"totalPosts"];
+		NSLog(@"fectchNewPost newPostTitlesList count ### %d", [newPostTitlesList count]);
         [aBlog setObject:[NSNumber numberWithInt:1] forKey:@"newposts"];
     }
 
@@ -3553,7 +3760,8 @@ editBlogViewController;
     if (![savedPostId hasPrefix:@"n"])
         [self fectchNewPost:savedPostId formBlog:[self currentBlog]];
 
-    [[self currentBlog] setObject:[NSNumber numberWithInt:[postsArray count]] forKey:@"totalposts"];
+    [[self currentBlog] setObject:[NSNumber numberWithInt:[postsArray count]] forKey:@"totalPosts"];
+	NSLog(@"updatePostsTitlesFileAFterPostSaved postsArray count ### %d", [postsArray count]);
 }
 
 - (void)removeTempFileForUnSavedPost:(NSString *)postId {
