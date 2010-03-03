@@ -11,6 +11,7 @@
 
 @implementation PostLocationViewController
 @synthesize map, locationController, initialLocation, buttonClose;
+@synthesize toolbar;
 
 #pragma mark -
 #pragma mark View Lifecycle
@@ -27,6 +28,15 @@
 	
 	// Begin updating our coordinates to keep track of any movement
 	[locationController.locationManager startUpdatingLocation];
+	
+	// remove toolbar for iPad: we use it in a popover
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		CGRect toolbarFrame = toolbar.frame;
+		CGRect mapFrame = map.frame;
+		mapFrame.size.height += toolbarFrame.size.height;
+		map.frame = mapFrame;
+		[toolbar removeFromSuperview];
+	}
 }
 
 - (void)didReceiveMemoryWarning {
@@ -51,7 +61,7 @@
 	  target:self
 	  action:@selector(locationButtonClicked:)] autorelease];
 	
-	self.navigationItem.rightBarButtonItem = currentLocationItem;
+//	self.navigationItem.rightBarButtonItem = currentLocationItem;
 	[self centerMapOn:location];
 }
 

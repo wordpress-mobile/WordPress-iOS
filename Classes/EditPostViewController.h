@@ -64,6 +64,9 @@
 	NSUInteger textViewHeightForRotation;
 															
 	LocationController *locationController;
+	
+	UIBarButtonItem *popoverDoneButton;
+	UIPopoverController *popoverController;
 }
 
 @property (nonatomic, assign) PostViewController *postDetailViewController;
@@ -88,6 +91,8 @@
 @property (nonatomic, retain) IBOutlet UIButton *locationButton;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *locationSpinner;
 
+@property (nonatomic, retain) UIBarButtonItem *popoverDoneButton;
+@property (nonatomic, retain) UIPopoverController *popoverController;
 
 - (void)refreshUIForCompose;
 - (void)refreshUIForCurrentPost;
@@ -123,5 +128,7 @@
 - (IBAction)getLocation:(id)sender;
 - (void)locationUpdate:(CLLocation *)location;
 - (void)locationError:(NSError *)error;
+
+- (IBAction)popoverDoneAction:(id)sender;
 
 @end

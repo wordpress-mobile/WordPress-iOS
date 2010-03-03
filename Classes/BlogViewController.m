@@ -69,22 +69,22 @@
 }
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-	self.navigationItem.titleView = nil;
-	self.navigationItem.rightBarButtonItem = nil;
-	
-    if (viewController == postsViewController) {
-        self.navigationItem.rightBarButtonItem = postsViewController.newButtonItem;
-    } 
-	else if (viewController == pagesViewController) {
-        self.navigationItem.rightBarButtonItem = pagesViewController.newButtonItem;
-    } 
-	else if (viewController == commentsViewController) {
-        [commentsViewController setIndexForCurrentPost:-2];
-        self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
-		self.navigationItem.titleView = commentsViewController.segmentedControl;
-    }
-    
-    [viewController viewWillAppear:NO];
+		self.navigationItem.titleView = nil;
+		self.navigationItem.rightBarButtonItem = nil;
+		
+		if (viewController == postsViewController) {
+			self.navigationItem.rightBarButtonItem = postsViewController.newButtonItem;
+		} 
+		else if (viewController == pagesViewController) {
+			self.navigationItem.rightBarButtonItem = pagesViewController.newButtonItem;
+		} 
+		else if (viewController == commentsViewController) {
+			[commentsViewController setIndexForCurrentPost:-2];
+			self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
+			self.navigationItem.titleView = commentsViewController.segmentedControl;
+		}
+		
+		[viewController viewWillAppear:NO];
 }
 
 @end

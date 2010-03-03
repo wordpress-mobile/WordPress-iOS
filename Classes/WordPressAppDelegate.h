@@ -9,6 +9,7 @@
 
     IBOutlet UIWindow *window;
     IBOutlet UINavigationController *navigationController;
+	IBOutlet UISplitViewController *splitViewController;
     BOOL connectionStatus;
     BOOL alertRunning;
 
@@ -18,6 +19,7 @@
 
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) UINavigationController *navigationController;
+@property (nonatomic, retain) IBOutlet UISplitViewController *splitViewController;
 @property (nonatomic, getter = isAlertRunning) BOOL alertRunning;
 
 + (WordPressAppDelegate *)sharedWordPressApp;

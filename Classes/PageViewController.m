@@ -223,13 +223,15 @@
     //tabController.selectedIndex = 0;
 
     [array release];
-
-    if (!leftView) {
-        leftView = [WPNavigationLeftButtonView createCopyOfView];
-    }
-
-    [leftView setTitle:@"Pages"];
-    [leftView setTarget:self withAction:@selector(cancelView:)];
+	
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone)
+	{
+		if (!leftView) {
+			leftView = [WPNavigationLeftButtonView createCopyOfView];
+			[leftView setTitle:@"Pages"];
+			[leftView setTarget:self withAction:@selector(cancelView:)];
+		}
+	}
 
     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
     self.navigationItem.leftBarButtonItem = barButton;

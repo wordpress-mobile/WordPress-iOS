@@ -19,6 +19,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @synthesize infoText, urlField, bookMarksArray, selectedLinkRange, currentEditingTextField, isEditing;
 @synthesize customFieldsEditButton, editCustomFields, isCustomFieldsEnabledForThisPost, locationController, locationButton, locationSpinner;
 
+@synthesize popoverController;
+@synthesize popoverDoneButton;
+
 #pragma mark -
 #pragma mark View Lifecycle Methods
 
@@ -56,6 +59,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     
     [leftView setTitle:@"Posts"];
     [leftView setTarget:self withAction:@selector(cancelView:)];
+	
+	popoverDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(popoverDoneAction:)];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newCategoryCreatedNotificationReceived:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
     
@@ -92,6 +97,16 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[self dismissModalViewControllerAnimated:YES];
+}
+
+- (UIPopoverController *)popoverController;
+{
+	if (!popoverController) {
+		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:nil];
+		navController.contentSizeForViewInPopover = CGSizeMake(320.0, 400.0);
+		popoverController = [[UIPopoverController alloc] initWithContentViewController:navController];
+	}
+	return popoverController;
 }
 
 #pragma mark -
@@ -170,9 +185,17 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
     segmentedTableViewController.title = @"Categories";
     segmentedTableViewController.navigationItem.rightBarButtonItem = newCategoryBarButtonItem;
-
+	
     if (isNewCategory != YES) {
-        [postDetailViewController.navigationController pushViewController:segmentedTableViewController animated:YES];
+		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+			[(UINavigationController *)(self.popoverController.contentViewController) setViewControllers:[NSArray arrayWithObject:segmentedTableViewController] animated:NO];
+			segmentedTableViewController.navigationItem.leftBarButtonItem = popoverDoneButton;
+			CGRect popoverRect = [self.view convertRect:[categoriesTextField frame] fromView:[categoriesTextField superview]];
+			segmentedTableViewController.contentSizeForViewInPopover = popoverController.contentViewController.contentSizeForViewInPopover;
+			[popoverController presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		} else {
+			[postDetailViewController.navigationController pushViewController:segmentedTableViewController animated:YES];
+		}
     }
 
     isNewCategory = NO;
@@ -204,9 +227,16 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
     selectionTableViewController.title = @"Status";
     selectionTableViewController.navigationItem.rightBarButtonItem = nil;
-    [postDetailViewController.navigationController pushViewController:selectionTableViewController animated:YES];
-    [selectionTableViewController release];
-    selectionTableViewController = nil;
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		[(UINavigationController *)(self.popoverController.contentViewController) setViewControllers:[NSArray arrayWithObject:selectionTableViewController] animated:NO];
+		selectionTableViewController.navigationItem.leftBarButtonItem = popoverDoneButton;
+		selectionTableViewController.contentSizeForViewInPopover = popoverController.contentViewController.contentSizeForViewInPopover;
+		CGRect popoverRect = [self.view convertRect:[statusTextField frame] fromView:[statusTextField superview]];
+		[popoverController presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	} else {
+		[postDetailViewController.navigationController pushViewController:selectionTableViewController animated:YES];
+	}
+    [selectionTableViewController release], selectionTableViewController = nil;
 }
 
 - (void)populateCustomFieldsTableViewControllerWithCustomFields {
@@ -254,12 +284,16 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
 }
 
-- (IBAction)showAddNewCategoryView:(id)sender {
-	
+- (IBAction)showAddNewCategoryView:(id)sender
+{
     WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithNibName:@"WPAddCategoryViewController" bundle:nil];
-    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:addCategoryViewController];
-    [segmentedTableViewController presentModalViewController:nc animated:YES];
-    [nc release];
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		[(UINavigationController *)(popoverController.contentViewController) pushViewController:addCategoryViewController animated:YES];
+	} else {
+		UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:addCategoryViewController];
+		[segmentedTableViewController presentModalViewController:nc animated:YES];
+		[nc release];
+	}
     [addCategoryViewController release];
 }
 
@@ -487,6 +521,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
     return;
 }
 
+- (IBAction)popoverDoneAction:(id)sender;
+{
+	[popoverController dismissPopoverAnimated:YES];
+}
 
 #pragma mark TextView & TextField Delegates
 - (void)textViewDidChangeSelection:(UITextView *)aTextView {
@@ -1054,7 +1092,14 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 - (IBAction)showLocationMapView:(id)sender {
 	PostLocationViewController *locationView = [[PostLocationViewController alloc] init];
 	locationView.initialLocation = locationController.locationManager.location;
-	[self presentModalViewController:locationView animated:YES];
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		locationView.contentSizeForViewInPopover = popoverController.contentViewController.contentSizeForViewInPopover;
+		locationView.navigationItem.rightBarButtonItem = popoverDoneButton;
+		[(UINavigationController *)(self.popoverController.contentViewController) setViewControllers:[NSArray arrayWithObject:locationView] animated:NO];
+		[popoverController presentPopoverFromRect:[locationButton frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	} else {
+		[self presentModalViewController:locationView animated:YES];
+	}
 	[locationView autorelease];
 }
 
@@ -1077,6 +1122,8 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[locationController release];
 	[locationButton release];
 	[locationSpinner release];
+	[popoverController release];
+	[popoverDoneButton release];
     [super dealloc];
 }
 

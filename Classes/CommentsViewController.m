@@ -352,7 +352,11 @@
 	commentViewController.commentsViewController = self;
 	//[commentViewController showComment:commentsArray atIndex:index];
 	
-    [delegate.navigationController pushViewController:commentViewController animated:YES];
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		[self.navigationController pushViewController:commentViewController animated:YES];
+	} else {
+		[delegate.navigationController pushViewController:commentViewController animated:YES];
+	}
 
     [commentViewController showComment:commentsArray atIndex:index];
     [commentViewController release];

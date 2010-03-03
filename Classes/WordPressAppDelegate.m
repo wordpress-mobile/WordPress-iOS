@@ -26,6 +26,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 @synthesize window;
 @synthesize navigationController, alertRunning;
+@synthesize splitViewController;
 
 - (id)init {
     if (!wordPressApp) {
@@ -59,31 +60,39 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	
     [[Reachability sharedReachability] setNetworkStatusNotificationsEnabled:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
-
-    BlogsViewController *blogsViewController = [[BlogsViewController alloc] initWithStyle:UITableViewStylePlain];
-    UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:blogsViewController];
-    self.navigationController = aNavigationController;
-    
-    [window addSubview:[navigationController view]];
-    [window makeKeyAndVisible];
-
-	[self setAutoRefreshMarkers];
-    [self checkPagesAndCommentsSupported];
-	[self passwordIntoKeychain];
-    [self restoreCurrentBlog];
-    
-    if ([self shouldLoadBlogFromUserDefaults]) {
-        [blogsViewController showBlog:NO];
-    }
-    
-    if ([dataManager countOfBlogs] == 0) {
-        [blogsViewController showBlogDetailModalViewForNewBlogWithAnimation:NO];
-    }
-    
-    [blogsViewController release];
-        
-    [self showSplashView];
 	
+	[self setAutoRefreshMarkers];
+	[self checkPagesAndCommentsSupported];
+	[self passwordIntoKeychain];
+	[self restoreCurrentBlog];
+	
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone)
+	{
+		BlogsViewController *blogsViewController = [[BlogsViewController alloc] initWithStyle:UITableViewStylePlain];
+		UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:blogsViewController];
+		self.navigationController = aNavigationController;
+		
+		[window addSubview:[navigationController view]];
+		[window makeKeyAndVisible];
+
+		
+		if ([self shouldLoadBlogFromUserDefaults]) {
+			[blogsViewController showBlog:NO];
+		}
+		
+		if ([dataManager countOfBlogs] == 0) {
+			[blogsViewController showBlogDetailModalViewForNewBlogWithAnimation:NO];
+		}
+		
+		[blogsViewController release];
+			
+		[self showSplashView];
+	}
+	else
+	{
+		[window addSubview:splitViewController.view];
+	}
+
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -212,10 +221,13 @@ static WordPressAppDelegate *wordPressApp = NULL;
     else {
         [dataManager resetCurrentBlog];
     }
+#warning TODO: REMOVE
+	[dataManager makeBlogAtIndexCurrent:0];
 }
 
 - (void)showSplashView {
-    splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
+
+    splashView = [[UIImageView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     splashView.image = [UIImage imageNamed:@"Default.png"];
     [window addSubview:splashView];
     [window bringSubviewToFront:splashView];
@@ -225,7 +237,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
     [UIView setAnimationDelegate:self];
     [UIView setAnimationDidStopSelector:@selector(startupAnimationDone:finished:context:)];
     splashView.alpha = 0.0;
-    splashView.frame = CGRectMake(-60, -60, 440, 600);
+//    splashView.frame = CGRectInset(splashView.bounds, -60, -60);
     [UIView commitAnimations];
 }
 

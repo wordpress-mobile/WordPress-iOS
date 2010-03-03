@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "NSString+XMLExtensions.h" 
 #import "Blog.h"
+#import "BlogSplitViewMasterViewController.h"
 
 @interface BlogsViewController (Private)
 
@@ -140,9 +141,20 @@
 
     [Reachability sharedReachability].hostName = url;
 
-    BlogViewController *blogViewController = [[BlogViewController alloc] initWithNibName:@"BlogViewController" bundle:nil];
-    [self.navigationController pushViewController:blogViewController animated:animated];
-    [blogViewController release];
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		
+		UINavigationController *theMasterNavigationController = [[WordPressAppDelegate sharedWordPressApp].splitViewController.viewControllers objectAtIndex:0];
+		NSAssert([theMasterNavigationController isKindOfClass:[UINavigationController class]], @"Split view controller master view controller not of expected class.");
+		BlogSplitViewMasterViewController *theMasterViewController = (BlogSplitViewMasterViewController *)theMasterNavigationController.visibleViewController; 
+		NSAssert([theMasterViewController isKindOfClass:[BlogSplitViewMasterViewController class]], @"Split view controller master view controller not of expected class.");
+		
+		[theMasterViewController currentBlogChanged];
+		
+	} else {
+		BlogViewController *blogViewController = [[BlogViewController alloc] initWithNibName:@"BlogViewController" bundle:nil];
+		[self.navigationController pushViewController:blogViewController animated:animated];
+		[blogViewController release];
+	}
 }
 
 #pragma mark -

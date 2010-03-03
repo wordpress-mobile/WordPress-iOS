@@ -1,6 +1,7 @@
 * text=auto !eol
 /AboutWordpress.xib -text
 /AddBlogValidationBackground.png -text svneol=unset#unset
+/BlogViewController-iPad.xib -text
 /BlogViewController.xib -text
 Classes/AboutViewController.h -text
 Classes/AboutViewController.m -text
@@ -11,10 +12,18 @@ Classes/BlogDataManager.m -text
 Classes/BlogHTTPAuthenticationViewController.h -text
 Classes/BlogHTTPAuthenticationViewController.m -text
 Classes/BlogHTTPAuthenticationViewController.xib -text
+Classes/BlogSplitViewDetailViewController.h -text
+Classes/BlogSplitViewDetailViewController.m -text
+Classes/BlogSplitViewDetailViewController.xib -text
+Classes/BlogSplitViewMasterViewController.h -text
+Classes/BlogSplitViewMasterViewController.m -text
+Classes/BlogSplitViewMasterViewController.xib -text
 Classes/BlogViewController.h -text
 Classes/BlogViewController.m -text
 Classes/BlogsViewController.h -text
 Classes/BlogsViewController.m -text
+Classes/CInvisibleToolbar.h -text
+Classes/CInvisibleToolbar.m -text
 Classes/CommentTableViewCell.h -text
 Classes/CommentTableViewCell.m -text
 Classes/CommentViewController.h -text
@@ -111,6 +120,8 @@ Classes/WPXMLReader.h -text
 Classes/WPXMLReader.m -text
 Classes/WordPressAppDelegate.h -text
 Classes/WordPressAppDelegate.m -text
+Classes/WordPressSplitViewController.h -text
+Classes/WordPressSplitViewController.m -text
 Classes/XMLRPC/XMLRPCConnection+Authentication.h -text
 Classes/XMLRPC/XMLRPCConnection+Authentication.m -text
 Classes/XMLRPC/XMLRPCConnection.h -text
@@ -134,6 +145,7 @@ Classes/XMLRPC/XMLValueDecoder.m -text
 /EditBlogViewController.xib -text
 /EditPageViewController.xib -text
 /EditPostViewController.xib -text
+/Entitlements.plist -text
 /Info.plist -text
 /MainBackground.png -text
 /MainWindow.xib -text
@@ -141,7 +153,9 @@ Classes/XMLRPC/XMLValueDecoder.m -text
 /PagesDraftsViewController.xib -text
 /PostPreviewViewController.xib -text
 /PostSettingsViewController.xib -text
+/PostViewController-iPad.xib -text
 /PostViewController.xib -text
+Resources-iPad/MainWindow-iPad.xib -text
 /RoundedRectBlack.png -text
 /WPAddCategoryViewController.xib -text
 /WPCategoriesController.xib -text

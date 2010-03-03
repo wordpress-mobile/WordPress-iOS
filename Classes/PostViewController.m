@@ -36,6 +36,14 @@
 @synthesize commentsViewController;
 @synthesize selectedViewController;
 
+@synthesize toolbar;
+@synthesize contentView;
+@synthesize popoverController;
+
+@synthesize commentsButton;
+@synthesize photosButton;
+@synthesize settingsButton;
+
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
     [selectedViewController viewWillDisappear:NO];
     [viewController viewWillAppear:NO];
@@ -67,10 +75,28 @@
     [photosListController release];
     [commentsViewController release];
     [saveButton release];
+	
+	[toolbar release];
+	[contentView release];
+	[popoverController release];
+	[photoPickerPopover release];
+	[commentsButton release];
+	[photosButton release];
+	[settingsButton release];
 
     [self stopTimer];
 
     [super dealloc];
+}
+
+- (UIPopoverController *)popoverController;
+{
+	if (!popoverController) {
+		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:nil] autorelease];
+		navController.contentSizeForViewInPopover = CGSizeMake(320.0, 480.0);
+		popoverController = [[UIPopoverController alloc] initWithContentViewController:navController];
+	}
+	return popoverController;
 }
 
 - (IBAction)cancelView:(id)sender {
@@ -271,10 +297,20 @@
 
 - (void)updatePhotosBadge {
     int photoCount = [[[BlogDataManager sharedDataManager].currentPost valueForKey:@"Photos"] count];
-
-    if (photoCount)
-        photosListController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d", photoCount];else
-        photosListController.tabBarItem.badgeValue = nil;
+	
+	if (tabController) {
+		if (photoCount)
+			photosListController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d", photoCount];
+		else
+			photosListController.tabBarItem.badgeValue = nil;
+	} else if (toolbar) {
+		if (!photoCount)
+			photosButton.title = @"No Photos";
+		else if (photoCount == 1)
+			photosButton.title = @"1 Photo";
+		else
+			photosButton.title = [NSString stringWithFormat:@"%d Photos", photoCount];
+	}
 }
 
 #pragma mark -
@@ -413,11 +449,15 @@
         saveButton.style = UIBarButtonItemStyleDone;
         saveButton.action = @selector(saveAction :);
     }
-	//conditionalLoadOfTabBarController is now referenced from viewWillAppear.  Solves Ticket #223 (crash when selecting comments from new post view)
+	
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone)
+	{
+			//conditionalLoadOfTabBarController is now referenced from viewWillAppear.  Solves Ticket #223 (crash when selecting comments from new post view)
 	    if (!leftView) {
-        leftView = [WPNavigationLeftButtonView createCopyOfView];
-        [leftView setTitle:@"Posts"];
-    }
+			leftView = [WPNavigationLeftButtonView createCopyOfView];
+			[leftView setTitle:@"Posts"];
+		}
+	}
 }
 //shouldAutorotateToInterfaceOrientation
 
@@ -532,8 +572,14 @@
     postSettingsController.postDetailViewController = self;
     [array addObject:postSettingsController];
 	
-    tabController.viewControllers = array;
-    self.view = tabController.view;
+	if (tabController) {
+		tabController.viewControllers = array;
+		self.view = tabController.view;
+	}
+	else {
+		postDetailEditController.view.frame = contentView.bounds;
+		[contentView addSubview:postDetailEditController.view];
+	}
 	
     [array release];
 }
@@ -561,6 +607,11 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	// iPad apps should always autorotate
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		return YES;
+	}
+	
 	NSLog(@"inside PostViewController: should autorotate");
 //    if ([[[[self tabController] selectedViewController] title] isEqualToString:@"Photos"]) {
 //        if ((interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
@@ -629,6 +680,59 @@
 
 - (id)photosDataSource {
     return [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"Photos"];
+}
+
+#pragma mark -
+#pragma mark iPad actions
+
+- (IBAction)commentsAction:(id)sender;
+{
+	[(UINavigationController *)(self.popoverController.contentViewController) setViewControllers:[NSArray arrayWithObject:commentsViewController] animated:NO];
+	commentsViewController.contentSizeForViewInPopover = popoverController.contentViewController.contentSizeForViewInPopover;
+	[popoverController presentPopoverFromBarButtonItem:commentsButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+}
+
+- (IBAction)picturesAction:(id)sender;
+{
+	[(UINavigationController *)(self.popoverController.contentViewController) setViewControllers:[NSArray arrayWithObject:photosListController] animated:NO];
+	photosListController.contentSizeForViewInPopover = popoverController.contentViewController.contentSizeForViewInPopover;
+	[popoverController presentPopoverFromBarButtonItem:photosButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+}
+
+- (IBAction)settingsAction:(id)sender;
+{
+	[(UINavigationController *)(self.popoverController.contentViewController) setViewControllers:[NSArray arrayWithObject:postSettingsController] animated:NO];
+	postSettingsController.contentSizeForViewInPopover = popoverController.contentViewController.contentSizeForViewInPopover;
+	[popoverController presentPopoverFromBarButtonItem:settingsButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+}
+
+- (IBAction)addPhotoAction:(id)sender;
+{
+	if ([WPImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+        WPImagePickerController *picker = [[[UIImagePickerController alloc] init] autorelease];
+        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+		self.popoverController.contentViewController = picker;
+	}
+}
+
+#pragma mark -
+#pragma mark Photo list delegate: iPad
+
+- (void)displayPhotoListImagePicker:(UIImagePickerController *)picker;
+{
+	if (!photoPickerPopover) {
+		photoPickerPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
+	}
+	picker.contentSizeForViewInPopover = popoverController.contentViewController.contentSizeForViewInPopover;
+	photoPickerPopover.contentViewController = picker;
+	[popoverController dismissPopoverAnimated:NO];
+	[photoPickerPopover presentPopoverFromBarButtonItem:photosButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
+}
+
+- (void)hidePhotoListImagePicker;
+{
+	[photoPickerPopover dismissPopoverAnimated:NO];
+	[popoverController presentPopoverFromBarButtonItem:photosButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
 }
 
 @end

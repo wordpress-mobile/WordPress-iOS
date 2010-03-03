@@ -35,6 +35,16 @@
     BOOL hasChanges, isVisible;
     int mode;   //0 new, 1 edit, 2 autorecovery, 3 refresh
     NSTimer *autoSaveTimer;
+	
+	// iPad additions
+	IBOutlet UIToolbar *toolbar;
+	IBOutlet UIView *contentView;
+	UIPopoverController *popoverController;
+	UIPopoverController *photoPickerPopover;
+	
+	IBOutlet UIBarButtonItem *commentsButton;
+	IBOutlet UIBarButtonItem *photosButton;
+	IBOutlet UIBarButtonItem *settingsButton;
 }
 
 @property (nonatomic, retain)   WPNavigationLeftButtonView *leftView;
@@ -52,9 +62,23 @@
 @property (readonly) UITabBarController *tabController;
 //@property (readonly) UITabBar *tabBar;
 
+@property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
+@property (nonatomic, retain) IBOutlet UIView *contentView;
+@property (nonatomic, retain) UIPopoverController *popoverController;
+
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *commentsButton;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *photosButton;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *settingsButton;
+
 - (IBAction)cancelView:(id)sender;
 - (void)refreshUIForCompose;
 - (void)refreshUIForCurrentPost;
 - (void)updatePhotosBadge;
+
+- (IBAction)commentsAction:(id)sender;
+- (IBAction)picturesAction:(id)sender;
+- (IBAction)settingsAction:(id)sender;
+
+- (IBAction)addPhotoAction:(id)sender;
 
 @end

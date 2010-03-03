@@ -14,4 +14,10 @@
 - (void)updatePhotosBadge;
 - (void)setHasChanges:(BOOL)aFlag;
 
+@optional
+
+// iPad additions
+- (void)displayPhotoListImagePicker:(UIImagePickerController *)picker;
+- (void)hidePhotoListImagePicker;
+
 @end
