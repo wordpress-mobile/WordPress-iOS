@@ -132,9 +132,10 @@
 
 - (void)addActivityIndicator {
 #if defined __IPHONE_3_0
-    CGRect rect = CGRectMake(self.frame.origin.x + self.frame.size.width - 35, dateLabel.frame.origin.y - 10, 20, 20);
+    //CGRect rect = CGRectMake(self.frame.origin.x + self.frame.size.width - 35, dateLabel.frame.origin.y - 10, 20, 20);
+	CGRect rect = CGRectMake(self.frame.origin.x + self.frame.size.width - 31, dateLabel.frame.origin.y - 13, 20, 20);
 #else
-    CGRect rect = CGRectMake(self.frame.origin.x + self.frame.size.width - 25, dateLabel.frame.origin.y - 10, 20, 20);
+    CGRect rect = CGRectMake(self.frame.origin.x + self.frame.size.width - 21, dateLabel.frame.origin.y - 13, 20, 20);
 #endif
 
     activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:rect];
