@@ -186,7 +186,7 @@
 		//get the total number of posts on the blog, make a string and pump it into the cell
 		int totalPosts = [[BlogDataManager sharedDataManager] countOfPostTitles];
 			NSLog(@"totalPosts %d", totalPosts);
-		NSString * totalString = [NSString stringWithFormat:@"%d posts total", totalPosts];
+		NSString * totalString = [NSString stringWithFormat:@"%d posts loaded", totalPosts];
 			[cell changeCellLabelsForUpdate:totalString:@"Load more posts":NO];
 			//prevent masking of the changes to font color etc that we want
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -252,12 +252,6 @@
 			// solve the problem where the "load more" cell is reused and retains it's old formatting by forcing a redraw
 			[cell setNeedsDisplay];
 			
-			//scroll to the bottom of the new list to show we did what the user requested
-			////TODO: JOHNB there should probably be an alert if there are no more posts
-			NSIndexPath *indPath = 
-				[NSIndexPath indexPathForRow:[[BlogDataManager sharedDataManager] countOfPostTitles] inSection:1];
-			
-			[tableView scrollToRowAtIndexPath:indPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 						
 			//return
 			return;
@@ -292,7 +286,7 @@
 	
 	//set up variables for cell text values
 	int totalPosts = [[BlogDataManager sharedDataManager] countOfPostTitles];
-	NSString * totalString = [NSString stringWithFormat:@"%d posts total", totalPosts];
+	NSString * totalString = [NSString stringWithFormat:@"%d posts loaded", totalPosts];
 	
 	//change the text in the cell to say "Loading" and change text color
 	[((PostTableViewCell *)cell) changeCellLabelsForUpdate:totalString:@"Loading more posts...":YES];
@@ -308,7 +302,7 @@
 	
 	//set up variables for changing text values
 	int totalPosts = [[BlogDataManager sharedDataManager] countOfPostTitles];
-	NSString * totalString = [NSString stringWithFormat:@"%d posts total", totalPosts];
+	NSString * totalString = [NSString stringWithFormat:@"%d posts loaded", totalPosts];
 	
 	//turn off the spinner and change the text
 	[((PostTableViewCell *)cell) changeCellLabelsForUpdate:totalString:@"Load more posts...":NO];

@@ -96,6 +96,11 @@
 	dateLabel.textColor = [UIColor lightGrayColor];
 	self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	self.selectionStyle = UITableViewCellSelectionStyleBlue;
+	
+	CGRect rect = CGRectMake(LEFT_OFFSET, nameLabel.frame.origin.y + LABEL_HEIGHT + VERTICAL_OFFSET, 320, DATE_LABEL_HEIGHT);
+	dateLabel.frame = rect;
+	
+	
 	[self runSpinner:NO];
 }
 
@@ -157,7 +162,9 @@
 		dateLabel.text = postTotalString;
 		self.accessoryType = UITableViewCellAccessoryNone;
 		self.contentView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
-
+	
+		CGRect rect = CGRectMake(LEFT_OFFSET, nameLabel.frame.origin.y + LABEL_HEIGHT + VERTICAL_OFFSET -1, 320, DATE_LABEL_HEIGHT);
+		dateLabel.frame = rect;
 	
 }
 
