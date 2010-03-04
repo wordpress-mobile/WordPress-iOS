@@ -16,7 +16,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @implementation EditPostViewController
 
 @synthesize postDetailViewController, selectionTableViewController, segmentedTableViewController, leftView, customFieldsTableView;
-@synthesize infoText, urlField, bookMarksArray, selectedLinkRange, currentEditingTextField, isEditing;
+@synthesize infoText, urlField, bookMarksArray, selectedLinkRange, currentEditingTextField, isEditing, currentLocation;
 @synthesize customFieldsEditButton, editCustomFields, isCustomFieldsEnabledForThisPost, locationController, locationButton, locationSpinner;
 
 #pragma mark -
@@ -24,13 +24,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSLog(@"inside PostDetailEditController:viewDidLoad, just called [super viewDidLoad]");
 
-	
-	// Begin getting location
+	// Set up location
 	locationController = [[LocationController alloc] init];
 	[locationController setDelegate:self];
-	[self getLocation:locationButton];
+	NSNumber *locationSetting = [[[BlogDataManager sharedDataManager] currentBlog] objectForKey:@"LocationSetting"];
+	if([locationSetting intValue] == 1)
+		[self getLocation:self];
     
     //customFieldsEditButton.hidden = YES;
     //customFieldsEditButton.enabled = NO;
@@ -70,11 +70,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [super viewWillAppear:animated];
 	[self dismissModalViewControllerAnimated:YES];
     NSLog(@"inside PostDetailEditController:viewWillAppear, just called [super viewWillAppear:YES]");
-//	NSLog(@"inside PostDetailEditController:viewWillAppear, hasChanges equals:: %@", self.postDetailViewController.hasChanges);
-//	NSLog(@"BOOL = %d", (int)self.postDetailViewController.hasChanges);
-	NSLog(@"hasChanges = %@\n", (self.postDetailViewController.hasChanges ? @"YES" : @"NO")); 
-    isCustomFieldsEnabledForThisPost = [self checkCustomFieldsMinusMetadata];
-    
+	//NSLog(@"inside PostDetailEditController:viewWillAppear, hasChanges equals:: %@", self.postDetailViewController.hasChanges);
+	//NSLog(@"BOOL = %d", (int)self.postDetailViewController.hasChanges);
+	//NSLog(@"hasChanges = %@\n", (self.postDetailViewController.hasChanges ? @"YES" : @"NO")); 
+    //isCustomFieldsEnabledForThisPost = [self checkCustomFieldsMinusMetadata];
+    isCustomFieldsEnabledForThisPost = YES;
+	
     if (isCustomFieldsEnabledForThisPost) {
         customFieldsEditButton.hidden = NO;
         tableViewForSelectingCustomFields.hidden = NO;
@@ -116,14 +117,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
     NSString *description = [dm.currentPost valueForKey:@"description"];
     NSString *moreText = [dm.currentPost valueForKey:@"mt_text_more"];
-	
-	NSLog(@"description: %@", description);
-	NSLog(@"moreText: %@", moreText);
 
     if (!description ||[description length] == 0) {
         textViewPlaceHolderField.hidden = NO;
         textView.text = @"";
-		NSLog(@"just made textview nil");
     } else {
         textViewPlaceHolderField.hidden = YES;
 
@@ -283,6 +280,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     str = titleTextField.text;
     str = (str != nil ? str : @"");
     [dm.currentPost setValue:str forKey:@"title"];
+	
+	[self saveLocationDataToCustomFields];
 
     //TODO:JOHNBCustomFields -- probably want an entry here for custom_fields too
 }
@@ -602,9 +601,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     NSArray *stringArray = [NSArray arrayWithObjects:@"http:", @"ftp:", @"https:", @"www.", nil];
 	//NSString *str = [[aTextView text]stringByReplacingOccurrencesOfString: @"&nbsp;" withString: @"&#160"];
     NSString *str = [aTextView text];
-	//NSLog(@"this is str::-->  %@", str);
-	NSLog(@"this is str's count %d", str.length);
-	NSLog(@"this is the string from the textView %@", str);
     int i, j, count = [stringArray count];
     BOOL searchRes = NO;
 
@@ -674,7 +670,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
         [self updateTextViewPlacehoderFieldStatus];
         NSString *text = aTextView.text;
         [[[BlogDataManager sharedDataManager] currentPost] setObject:text forKey:@"description"];
-        //NSLog(@"the text from aTextView is %@", text);
     }
 }
 
@@ -877,8 +872,6 @@ editingInfo:(NSDictionary *)editingInfo {
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"inside cellForRow of PostDetailEditController");
-
     static NSString *CellIdentifier = @"Cell";
 
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -886,7 +879,6 @@ editingInfo:(NSDictionary *)editingInfo {
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
 
-        //NSLog(@"inside if cell == nil");
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 200, 25)];
         label.textAlignment = UITextAlignmentLeft;
         label.tag = kLabelTag;
@@ -942,7 +934,7 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 - (BOOL)checkCustomFieldsMinusMetadata {
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
     NSMutableArray *tempCustomFieldsArray = [dm.currentPost valueForKey:@"custom_fields"];
-
+	
     //if there is anything (>=1) in the array, start proceessing, otherwise return NO
     if (tempCustomFieldsArray.count >= 1) {
         //strip out any underscore-containing NSDicts inside the array, as this is metadata we don't need
@@ -950,11 +942,10 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
         for (int i = 0; i < dictsCount; i++) {
             NSString *tempKey = [[tempCustomFieldsArray objectAtIndex:i] objectForKey:@"key"];
-            NSLog(@"Strip Metadata tempKey is... %@", tempKey);
-
+			
             //if tempKey contains an underscore, remove that object (NSDict with metadata) from the array and move on
             if ([tempKey rangeOfString:@"_"].location != NSNotFound) {
-                NSLog(@"Found an underscore metadata 'member' and removing it %@", tempKey);
+                NSLog(@"Removing metadata key: %@", tempKey);
                 [tempCustomFieldsArray removeObjectAtIndex:i];
                 //if I remove one, the count goes down and we stop too soon unless we subtract one from i
                 //and re-set dictsCount.  Doing this keeps us in sync with the actual array.count
@@ -1011,6 +1002,8 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[locationSpinner stopAnimating];
 	[self.locationButton setHighlighted:YES];
 	[self.locationButton setSelected:NO];
+	currentLocation = location;
+	//[self saveLocationDataToCustomFields];
 }
 
 - (void)locationError:(NSError *)error {
@@ -1021,11 +1014,41 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[self.locationButton setSelected:NO];
 }
 
+- (void)saveLocationDataToPostContent {
+	if(currentLocation != nil)
+	{
+		// Format our values
+		// Latitude
+		NSString *latitude = [NSString stringWithFormat:@"%f", 
+							  currentLocation.coordinate.latitude];
+		// Longitude
+		NSString *longitude = [NSString stringWithFormat:@"%f", 
+							   currentLocation.coordinate.longitude];
+		
+		BlogDataManager *dm = [BlogDataManager sharedDataManager];
+		textView.text = [NSString stringWithFormat:@"%@\nGEOPRESS_LOCATION([%@, %@])", 
+						 textView.text, latitude, longitude];
+	}
+}
+
 - (void)saveLocationDataToCustomFields {
-	// Stub method.
+	// TODO: frsh.  Preferred method for sending geo data if a viable way to send
+	// custom fields to BlogDataManager can be determined.
 	// Grab our mutable array of custom fields from BlogDataManager
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
     NSMutableArray *customFieldsArray = [dm.currentPost valueForKey:@"custom_fields"];
+	
+	// Remove existing values
+	NSMutableArray *discardedItems = [NSMutableArray array];
+	for(NSDictionary *dict in customFieldsArray)
+	{
+		if([dict objectForKey:@"geo_latitude"] != nil)
+		{
+			[discardedItems addObject:dict];
+			break;
+		}
+	}
+	[customFieldsArray removeObjectsInArray:discardedItems];
 	
 	// Format our values
 	// Latitude
@@ -1040,15 +1063,13 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	
 	// Add latitude, accuracy, longitude, address, and public
 	// WP API fields: geo_latitude, geo_longitude, geo_accuracy, geo_public
-	NSArray *keys = [NSArray arrayWithObjects:@"geo_latitude",@"geo_longitude", @"geo_accuracy", @"geo_public"];
-	NSArray *objects = [NSArray arrayWithObjects:latitude, longitude, accuracy];
+	NSMutableArray *keys = [NSMutableArray arrayWithObjects:@"geo_latitude",@"geo_longitude", @"geo_accuracy", @"geo_public", nil];
+	NSMutableArray *objects = [NSMutableArray arrayWithObjects:latitude, longitude, accuracy, @"1", nil];
 	NSDictionary *locationFields = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
 	
 	// Send our modified custom fields back to BlogDataManager
-	NSLog(@"Saving location data to custom fields...");
 	[customFieldsArray addObject:locationFields];
 	[dm.currentPost setValue:customFieldsArray forKey:@"custom_fields"];
-	NSLog(@"custom fields: %@", customFieldsArray);
 }
 
 - (IBAction)showLocationMapView:(id)sender {
@@ -1067,6 +1088,7 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 
 - (void)dealloc {
+	[currentLocation release];
     [infoText release];
     [urlField release];
     [leftView release];

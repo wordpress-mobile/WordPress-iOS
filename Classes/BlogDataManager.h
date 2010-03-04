@@ -287,6 +287,7 @@
 - (void)removeTempFileForUnSavedPost:(NSString *)postId;
 - (void)saveCurrentPostAsDraftWithAsyncPostFlag;
 - (void)restoreUnsavedDraft;
+- (NSString *)pathToPostTitles:(id)forBlog;
 
 //pages
 - (BOOL)syncPagesForBlog:(id)blog;

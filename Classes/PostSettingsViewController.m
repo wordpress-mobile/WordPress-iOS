@@ -109,6 +109,9 @@
 
     [resizePhotoControl addTarget:self action:@selector(changeResizePhotosOptions) forControlEvents:UIControlEventAllTouchEvents];
     [locationSwitchControl addTarget:self action:@selector(changeLocationOptions) forControlEvents:UIControlEventAllTouchEvents];
+	
+	if([[NSUserDefaults standardUserDefaults] integerForKey:@"LocationSetting"] == 1)
+		locationSwitchControl.on;
 }
 
 - (void)changeResizePhotosOptions {
@@ -118,16 +121,16 @@
 }
 
 - (void)changeLocationOptions {
+	// WP API fields: geo_latitude, geo_longitude, geo_accuracy, geo_public
     postDetailViewController.hasChanges = YES;
     [[BlogDataManager sharedDataManager].currentPost setValue:[NSNumber numberWithInt:locationSwitchControl.on]
-													   forKey:kLocationSetting];
+													   forKey:@"geo_public"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 	NSLog(@"viewWillAppear: PostSettingsViewController, just called postDetailViewController shouldAutorotate");
     [self reloadData];
-	NSLog(@"View will appear.  Setting up help button...");
 	[self setupHelpButton];
 }
 
@@ -189,8 +192,6 @@
         //TODO:JOHNB CustomFields  do something similar here, but first add the appropriate value to current post build in Blog Data Manager
         [[BlogDataManager sharedDataManager].currentPost setValue:[NSNumber numberWithInt:customFieldsSwitchControl.on] forKey:@"custom_fields_enabled"];
     }
-
-    NSLog(@"this is the value from PostSettingsViewController, controlEventValueChanged %d", [[[BlogDataManager sharedDataManager].currentPost valueForKey:@"custom_fields_enabled"] intValue]);
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

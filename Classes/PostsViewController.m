@@ -173,19 +173,13 @@
         post = [dm draftTitleAtIndex:indexPath.row];
     } else { 
 		int count = [[BlogDataManager sharedDataManager] countOfPostTitles];
-		NSLog(@"countOfPostTitles: %d", count);
-		NSLog(@"index path: %d", indexPath.row);
+		
 		//handle the case when it's the last row and we need to return the modified "get more posts" cell
 		//note that it's not [[BlogDataManager sharedDataManager] countOfPostTitles] +1 because of the difference in the counting of the datasets
 		if (indexPath.row == count) {
-			
-			NSLog(@"inside the else, they should match and be the largest number");
-			NSLog(@"index path: %d", indexPath.row);
-			NSLog(@"count: %d", count);
 		//set the labels.  The spinner will be activiated if the row is selected in didSelectRow...
 		//get the total number of posts on the blog, make a string and pump it into the cell
 		int totalPosts = [[BlogDataManager sharedDataManager] countOfPostTitles];
-			NSLog(@"totalPosts %d", totalPosts);
 		NSString * totalString = [NSString stringWithFormat:@"%d posts loaded", totalPosts];
 			[cell changeCellLabelsForUpdate:totalString:@"Load more posts":NO];
 			//prevent masking of the changes to font color etc that we want

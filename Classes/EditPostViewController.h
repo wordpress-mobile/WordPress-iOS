@@ -64,6 +64,7 @@
 	NSUInteger textViewHeightForRotation;
 															
 	LocationController *locationController;
+	CLLocation *currentLocation;
 }
 
 @property (nonatomic, assign) PostViewController *postDetailViewController;
@@ -79,6 +80,7 @@
 @property (nonatomic, assign) BOOL isEditing;
 @property (nonatomic, assign) BOOL editCustomFields;
 @property (nonatomic, assign) BOOL isCustomFieldsEnabledForThisPost;
+@property (nonatomic, retain) CLLocation *currentLocation;
 //@property (nonatomic, assign) NSUinteger originY;
 
 @property (nonatomic, retain) UIButton *customFieldsEditButton;
@@ -119,6 +121,7 @@
 
 // Location methods
 - (IBAction)showLocationMapView:(id)sender;
+- (void)saveLocationDataToPostContent;
 - (void)saveLocationDataToCustomFields;
 - (IBAction)getLocation:(id)sender;
 - (void)locationUpdate:(CLLocation *)location;

@@ -74,16 +74,11 @@
 }
 
 - (IBAction)cancelView:(id)sender {
-	
-	
     if (!hasChanges) {
         [self stopTimer];
         [self.navigationController popViewControllerAnimated:YES];
-		NSLog(@"cancelView on PostViewController");
         return;
     }
-	
-	
 
     [postSettingsController endEditingAction:nil];
     [postDetailEditController endEditingAction:nil];
@@ -118,15 +113,14 @@
             [alert release];
             return;
         }
-    }
+	 }
 
     if (!hasChanges) {
         [self stopTimer];
         [self.navigationController popViewControllerAnimated:YES];
-		NSLog(@"fdsa");
         return;
     }
-
+	
 	NSString *postStatus = [dm.currentPost valueForKey:@"post_status"];
 	if( ![postStatus isEqual:@"Local Draft"] )
 	{ 
@@ -190,7 +184,6 @@
 
    // NSString *postStatus = [dm.currentPost valueForKey:@"post_status"];
 	//[self.navigationController popViewControllerAnimated:YES];
-	NSLog(@"just attempted to pop the viewController BEFORE the save");
     if ([postStatus isEqual:@"Local Draft"])
         [self saveAsDraft];else {
        // [self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
@@ -382,8 +375,6 @@
 }
 
 - (void)setHasChanges:(BOOL)aFlag {
-    //NSLog(@"inside PostViewController:setHasChanges");
-
     if (hasChanges == NO && aFlag == YES)
         [self startTimer];
 
@@ -593,12 +584,9 @@
             }
         }
     }
-	if ([tabController.selectedViewController.title isEqualToString:@"Settings"]) {
-		NSLog(@"PostViewController:should autorotate, isEqualToString Settings");
-		return NO;
-		
-    }
 	
+	if ([tabController.selectedViewController.title isEqualToString:@"Settings"])
+		return NO;
 
     //return YES;
 	return NO; //trac ticket #148

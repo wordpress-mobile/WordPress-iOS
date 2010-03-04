@@ -3936,6 +3936,7 @@ editBlogViewController;
                          aPost,
                          nil
                         ];
+		
         //TODO: take url from current post
         XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[currentBlog valueForKey:@"xmlrpc"]]];
         [request setMethod:@"metaWeblog.editPost" withObjects:args];
