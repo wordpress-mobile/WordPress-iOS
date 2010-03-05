@@ -90,7 +90,21 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	}
 	else
 	{
-		[window addSubview:splitViewController.view];
+	[window addSubview:splitViewController.view];
+	if ([dataManager countOfBlogs] == 0)
+		{
+		EditBlogViewController *blogDetailViewController = [[[EditBlogViewController alloc] initWithNibName:@"EditBlogViewController" bundle:nil] autorelease];
+		UINavigationController *modalNavigationController = [[UINavigationController alloc] initWithRootViewController:blogDetailViewController];
+		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+			modalNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+			modalNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+			}
+
+		[splitViewController presentModalViewController:modalNavigationController animated:YES];
+
+		[modalNavigationController release];
+		}
+		
 	}
 
 }
@@ -222,7 +236,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
         [dataManager resetCurrentBlog];
     }
 #warning TODO: REMOVE
-	[dataManager makeBlogAtIndexCurrent:0];
+//	[dataManager makeBlogAtIndexCurrent:0];
 }
 
 - (void)showSplashView {
