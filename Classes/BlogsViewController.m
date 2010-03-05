@@ -14,7 +14,7 @@
 
 @interface BlogsViewController (Private)
 
-- (void)showBlogDetailModalViewForNewBlogWithAnimation;
+- (void)showBlogDetailModalViewForNewBlog:(id)inSender;
 - (void)showBlogDetailModalViewWithAnimation:(BOOL)animate;
 - (void)showBlogWithoutAnimation;
 - (void)edit:(id)sender;
@@ -47,7 +47,7 @@
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                target:self
-                                               action:@selector(showBlogDetailModalViewForNewBlogWithAnimation)] autorelease];
+                                               action:@selector(showBlogDetailModalViewForNewBlog:)] autorelease];
     self.tableView.allowsSelectionDuringEditing = YES;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blogsRefreshNotificationReceived:) name:@"BlogsRefreshNotification" object:nil];
@@ -98,7 +98,7 @@
 #pragma mark -
 #pragma mark Show Blog Detail Modal View
 
-- (void)showBlogDetailModalViewForNewBlogWithAnimation {
+- (void)showBlogDetailModalViewForNewBlog:(id)inSender {
     [self showBlogDetailModalViewForNewBlogWithAnimation:YES];
 }
 
@@ -110,12 +110,17 @@
 }
 
 - (void)showBlogDetailModalViewWithAnimation:(BOOL)animate {
-    EditBlogViewController *blogDetailViewController = [[[EditBlogViewController alloc] initWithNibName:@"EditBlogViewController" bundle:nil] autorelease];
-    UINavigationController *modalNavigationController = [[UINavigationController alloc] initWithRootViewController:blogDetailViewController];
+	
+	EditBlogViewController *blogDetailViewController = [[[EditBlogViewController alloc] initWithNibName:@"EditBlogViewController" bundle:nil] autorelease];
+	UINavigationController *modalNavigationController = [[UINavigationController alloc] initWithRootViewController:blogDetailViewController];
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		modalNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+		modalNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+		}
 
-    [self.navigationController presentModalViewController:modalNavigationController animated:animate];
+	[self.navigationController presentModalViewController:modalNavigationController animated:animate];
 
-    [modalNavigationController release];
+	[modalNavigationController release];
 }
 
 

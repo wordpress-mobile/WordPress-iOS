@@ -107,11 +107,15 @@
 
 - (IBAction)blogMenuAction:(id)sender;
 {
+self.currentPopoverController = NULL;
+
 BlogsViewController *theBlogsViewController = [[BlogsViewController alloc] initWithStyle:UITableViewStylePlain];
 // TODO - this is a bit of a hack. Should move to BlogsViewController really.
 theBlogsViewController.contentSizeForViewInPopover = CGSizeMake(320, 44 * [[BlogDataManager sharedDataManager] countOfBlogs]);
 
-UIPopoverController *theBlogMenuPopoverController = [[UIPopoverController alloc] initWithContentViewController:theBlogsViewController];
+UINavigationController *theNavigationController = [[UINavigationController alloc] initWithRootViewController:theBlogsViewController];
+
+UIPopoverController *theBlogMenuPopoverController = [[UIPopoverController alloc] initWithContentViewController:theNavigationController];
 
 [theBlogMenuPopoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 

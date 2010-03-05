@@ -604,6 +604,7 @@
 		AC34397A0E11435A00E5D79B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				03B1DF31113D87E900BBD1C6 /* iPad */,
 				CE19466E1017F85A002BE752 /* Dashboard */,
 				AC34397B0E11443300E5D79B /* Blog */,
 				C533CF320E6D3AB3000C3DE8 /* Comments */,
@@ -620,7 +621,6 @@
 		AC34397B0E11443300E5D79B /* Blog */ = {
 			isa = PBXGroup;
 			children = (
-				03B1DF31113D87E900BBD1C6 /* iPad */,
 				03FF35C2100423A10066ED95 /* BlogViewController.h */,
 				03FF35C3100423A10066ED95 /* BlogViewController.m */,
 				28C286DF0D94DF7D0034E888 /* BlogsViewController.h */,

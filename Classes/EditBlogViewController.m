@@ -113,6 +113,15 @@
     //[blogEditTable reloadData];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		return(YES);
+	} else {
+		return(toInterfaceOrientation == UIInterfaceOrientationPortrait);
+	}
+}
+
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 4;
 }
