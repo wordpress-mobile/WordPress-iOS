@@ -314,6 +314,10 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		return YES;
+	}
+
     //Code to disable landscape when alert is raised.
 
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];

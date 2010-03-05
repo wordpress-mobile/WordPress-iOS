@@ -476,6 +476,10 @@ editingInfo:(NSDictionary *)editingInfo {
 //}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		return YES;
+	}
+
     WordPressAppDelegate *wpAppDelegate = [[UIApplication sharedApplication] delegate];
 
     if ([wpAppDelegate isAlertRunning] == YES) {

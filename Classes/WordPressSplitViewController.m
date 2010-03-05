@@ -21,6 +21,11 @@ self.delegate = self;
 
 #pragma mark -
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
+{
+	return YES;
+}
+
 - (UINavigationController *)masterNavigationController
 {
 return([self.viewControllers objectAtIndex:0]);

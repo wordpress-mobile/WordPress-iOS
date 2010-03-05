@@ -14,6 +14,7 @@
 @class EditPostViewController, PostPreviewViewController, WPSelectionTableViewController, PostSettingsViewController, WPPhotosListViewController, PostsViewController, CommentsViewController;
 @class WPNavigationLeftButtonView;
 @class CustomFieldsDetailController, WPPublishOnEditController;
+@class CInvisibleToolbar;
 
 @interface PostViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate, WPPhotosListProtocol> {
     IBOutlet UITabBarController *tabController;
@@ -21,6 +22,7 @@
     IBOutlet UIView *photoEditingStatusView;
     UIBarButtonItem *saveButton;
 
+	EditPostViewController *postDetailViewController;
     EditPostViewController *postDetailEditController;
     PostPreviewViewController *postPreviewController;
     PostSettingsViewController *postSettingsController;
@@ -45,9 +47,14 @@
 	IBOutlet UIBarButtonItem *commentsButton;
 	IBOutlet UIBarButtonItem *photosButton;
 	IBOutlet UIBarButtonItem *settingsButton;
+	
+	IBOutlet UIToolbar *editToolbar;
+	UIBarButtonItem *editToolbarItem;
+	IBOutlet UIBarButtonItem *cancelEditButton;
 }
 
 @property (nonatomic, retain)   WPNavigationLeftButtonView *leftView;
+@property (nonatomic, retain)   EditPostViewController *postDetailViewController;
 @property (nonatomic, retain)   EditPostViewController *postDetailEditController;
 @property (nonatomic, retain)   PostPreviewViewController *postPreviewController;
 @property (nonatomic, retain)   PostSettingsViewController *postSettingsController;
@@ -69,13 +76,22 @@
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *commentsButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *photosButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *settingsButton;
+@property (nonatomic, retain) IBOutlet UIToolbar *editToolbar;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *cancelEditButton;
 
 - (IBAction)cancelView:(id)sender;
 - (void)refreshUIForCompose;
 - (void)refreshUIForCurrentPost;
 - (void)updatePhotosBadge;
 
+- (UINavigationItem *)navigationItemForEditPost;
+@property (nonatomic, assign) UIBarButtonItem *leftBarButtonItemForEditPost;
+@property (nonatomic, assign) UIBarButtonItem *rightBarButtonItemForEditPost;
+
 - (IBAction)commentsAction:(id)sender;
+
+- (IBAction)editAction:(id)sender;
+// TODO: move to edit post VC
 - (IBAction)picturesAction:(id)sender;
 - (IBAction)settingsAction:(id)sender;
 

@@ -69,6 +69,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
     isCustomFieldsEnabledForThisPost = [self checkCustomFieldsMinusMetadata];
     //call a helper to set originY for textViewContentView
     [self postionTextViewContentView];
+	
+	if (editingDisabled) {
+		// TODO: graphical indication of editability
+		subView.userInteractionEnabled = NO;
+		textView.editable = NO;
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -107,6 +113,16 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		popoverController = [[UIPopoverController alloc] initWithContentViewController:navController];
 	}
 	return popoverController;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
+{
+	return YES;
+}
+
+- (void)disableInteraction;
+{
+	editingDisabled = YES;
 }
 
 #pragma mark -
@@ -328,8 +344,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (IBAction)endTextEnteringButtonAction:(id)sender {
     [textView resignFirstResponder];
-	if((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
-		[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		if((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
+			[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+	}
 }
 
 - (IBAction)showCategoriesViewAction:(id)sender {
@@ -541,13 +559,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			if ((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
 				[self setTextViewHeight:116];
 			}
-
+		
+			[self bringTextViewUp];
+			
 			UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
 										   target:self action:@selector(endTextEnteringButtonAction:)];
-
-			postDetailViewController.navigationItem.leftBarButtonItem = doneButton;
+			[postDetailViewController setLeftBarButtonItemForEditPost:doneButton];
 			[doneButton release];
-			[self bringTextViewUp];
 		}
     }
 }
@@ -575,12 +593,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
         [self updateTextViewPlacehoderFieldStatus];
 
  		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+			[self bringTextViewUp];
+		
 			UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
 										   target:self action:@selector(endTextEnteringButtonAction:)];
-			postDetailViewController.navigationItem.leftBarButtonItem = doneButton;
+			[postDetailViewController setLeftBarButtonItemForEditPost:doneButton];
 			[doneButton release];
-
-			[self bringTextViewUp];
 		}
     }
 }
@@ -719,9 +737,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			} else {
 				[leftView setTitle:@"Posts"];
 			}
-
 			UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:leftView];
-			postDetailViewController.navigationItem.leftBarButtonItem = barItem;
+			[postDetailViewController setLeftBarButtonItemForEditPost:barItem];
 			[barItem release];
 		}
         //NSLog(@"the text from aTextView is %@", text);

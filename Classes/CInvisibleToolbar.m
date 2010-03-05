@@ -20,6 +20,16 @@ if ((self = [super initWithFrame:frame]) != NULL)
 return(self);
 }
 
+- (id)initWithCoder:(NSCoder *)aDecoder;
+{
+if ((self = [super initWithCoder:aDecoder]) != NULL)
+	{
+	self.opaque = NO;
+	self.backgroundColor = [UIColor clearColor];
+	}
+return(self);
+}
+
 - (void)drawRect:(CGRect)inRect
 {
 }

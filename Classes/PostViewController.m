@@ -11,6 +11,7 @@
 #import "CustomFieldsDetailController.h"
 #import "CommentsViewController.h"
 #import "WPPublishOnEditController.h"
+#import "CInvisibleToolbar.h"
 
 #define TAG_OFFSET 1010
 
@@ -30,7 +31,7 @@
 
 @implementation PostViewController
 
-@synthesize postDetailEditController, postPreviewController, postSettingsController, postsListController, hasChanges, mode, tabController, photosListController, saveButton;
+@synthesize postDetailViewController, postDetailEditController, postPreviewController, postSettingsController, postsListController, hasChanges, mode, tabController, photosListController, saveButton;
 @synthesize leftView, isVisible;
 @synthesize customFieldsDetailController;
 @synthesize commentsViewController;
@@ -43,6 +44,12 @@
 @synthesize commentsButton;
 @synthesize photosButton;
 @synthesize settingsButton;
+
+@synthesize editToolbar;
+@synthesize cancelEditButton;
+
+@dynamic leftBarButtonItemForEditPost;
+@dynamic rightBarButtonItemForEditPost;
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
     [selectedViewController viewWillDisappear:NO];
@@ -61,7 +68,7 @@
 
     if (hasChanges) {
         [leftView setTitle:@"Cancel"];
-        self.navigationItem.rightBarButtonItem = saveButton;
+        self.leftBarButtonItemForEditPost = saveButton;
     }
     
     selectedViewController = viewController;
@@ -104,15 +111,19 @@
 	
     if (!hasChanges) {
         [self stopTimer];
-        [self.navigationController popViewControllerAnimated:YES];
+		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+			[self.navigationController popViewControllerAnimated:YES];
+		} else {
+			[self dismissModalViewControllerAnimated:YES];
+		}
 		NSLog(@"cancelView on PostViewController");
         return;
     }
 	
-	
-
-    [postSettingsController endEditingAction:nil];
-    [postDetailEditController endEditingAction:nil];
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		[postSettingsController endEditingAction:nil];
+		[postDetailEditController endEditingAction:nil];
+	}
 
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
                                   delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Discard"
@@ -246,6 +257,7 @@
 
 - (void)autoSaveCurrentPost:(NSTimer *)aTimer {
     if (hasChanges) {
+        [postDetailViewController updateValuesToCurrentPost];
         [postDetailEditController updateValuesToCurrentPost];
         [postSettingsController updateValuesToCurrentPost];
 
@@ -270,11 +282,13 @@
 
 - (void)refreshUIForCompose {
 	if (hasChanges == NO)
-    self.navigationItem.rightBarButtonItem = nil;
+		[self setRightBarButtonItemForEditPost:nil];
+	
     [tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
     UIViewController *vc = [[tabController viewControllers] objectAtIndex:0];
     self.title = vc.title;
 
+	[postDetailViewController refreshUIForCompose];
     [postDetailEditController refreshUIForCompose];
     [postSettingsController reloadData];
     [photosListController refreshData];
@@ -283,11 +297,12 @@
 }
 
 - (void)refreshUIForCurrentPost {
-    self.navigationItem.rightBarButtonItem = nil;
+    [self setRightBarButtonItemForEditPost:nil];
 
     [tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
     UIViewController *vc = [[tabController viewControllers] objectAtIndex:0];
     self.title = vc.title;
+    [postDetailViewController refreshUIForCurrentPost];
     [postDetailEditController refreshUIForCurrentPost];
     [postSettingsController reloadData];
     [photosListController refreshData];
@@ -323,19 +338,19 @@
     [aiv startAnimating];
     [aiv release];
 
-    self.navigationItem.rightBarButtonItem = activityButtonItem;
+    [self setRightBarButtonItemForEditPost:activityButtonItem];
     [activityButtonItem release];
     [apool release];
 }
 
 - (void)removeProgressIndicator {
     if (hasChanges) {
-        if ([[leftView title] isEqualToString:@"Posts"] ||[[self.navigationItem.leftBarButtonItem title] isEqualToString:@"Done"])
+        if ([[leftView title] isEqualToString:@"Posts"] || [[self.leftBarButtonItemForEditPost title] isEqualToString:@"Done"])
             [leftView setTitle:@"Cancel"];
 
-        self.navigationItem.rightBarButtonItem = saveButton;
+        self.leftBarButtonItemForEditPost = saveButton;
     } else {
-        self.navigationItem.rightBarButtonItem = nil;
+        self.rightBarButtonItemForEditPost = nil;
     }
 }
 
@@ -343,7 +358,7 @@
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
     [dm saveCurrentPostAsDraft];
     hasChanges = NO;
-    self.navigationItem.rightBarButtonItem = nil;
+    self.rightBarButtonItemForEditPost = nil;
     [self stopTimer];
     [dm removeAutoSavedCurrentPostFile];
     [self discard];
@@ -351,10 +366,15 @@
 
 - (void)discard {
     hasChanges = NO;
-    self.navigationItem.rightBarButtonItem = nil;
+    self.rightBarButtonItemForEditPost = nil;
     [self stopTimer];
     [[BlogDataManager sharedDataManager] clearAutoSavedContext];
-    [self.navigationController popViewControllerAnimated:YES];
+	
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		[self.navigationController popViewControllerAnimated:YES];
+	} else {
+		[self dismissModalViewControllerAnimated:YES];
+	}
 	
 }
 
@@ -429,7 +449,7 @@
         if ([[leftView title] isEqualToString:@"Posts"])
             [leftView setTitle:@"Cancel"];
 
-        self.navigationItem.rightBarButtonItem = saveButton;
+        self.rightBarButtonItemForEditPost = saveButton;
     }
 
     NSNumber *postEdited = [NSNumber numberWithBool:hasChanges];
@@ -491,15 +511,17 @@
             [leftView setTitle:@"Cancel"];
         }
         
-        self.navigationItem.rightBarButtonItem = saveButton;
+        self.rightBarButtonItemForEditPost = saveButton;
     } else {
         [leftView setTitle:@"Posts"];
-        self.navigationItem.rightBarButtonItem = nil;
-    } 
-
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
-    self.navigationItem.leftBarButtonItem = cancelButton;
-    [cancelButton release];
+        self.rightBarButtonItemForEditPost = nil;
+    }
+	
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
+		self.leftBarButtonItemForEditPost = cancelButton;
+		[cancelButton release];
+	}
 
     [super viewWillAppear:animated];
 	[self conditionalLoadOfTabBarController];
@@ -525,6 +547,7 @@
 	// Icons designed by, and included with permission of, IconBuffet | iconbuffet.com
     NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:5];
 	
+	// post detail controllers
     if (postDetailEditController == nil) {
         postDetailEditController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil];
     }
@@ -533,6 +556,12 @@
     postDetailEditController.tabBarItem.image = [UIImage imageNamed:@"write.png"];
     postDetailEditController.postDetailViewController = self;
     [array addObject:postDetailEditController];
+	
+	// the iPad has two of em...
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		postDetailViewController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil];
+		[postDetailViewController disableInteraction];
+	}
     
     //if (mode == 1 || mode == 2 || mode == 3) { //don't load this tab if mode == 0 (new post) since comments are irrelevant to a brand new post
 	NSString *postStatus = [[BlogDataManager sharedDataManager].currentPost valueForKey:@"post_status"];
@@ -579,8 +608,8 @@
 		self.view = tabController.view;
 	}
 	else {
-		postDetailEditController.view.frame = contentView.bounds;
-		[contentView addSubview:postDetailEditController.view];
+		postDetailViewController.view.frame = contentView.bounds;
+		[contentView addSubview:postDetailViewController.view];
 	}
 	
     [array release];
@@ -689,25 +718,86 @@
 #pragma mark -
 #pragma mark iPad actions
 
+- (UINavigationItem *)navigationItemForEditPost;
+{
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		return self.navigationItem;
+	} else if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		return postDetailEditController.navigationItem;
+	}
+	return nil;
+}
+
+- (UIBarButtonItem *)leftBarButtonItemForEditPost;
+{
+	return [self navigationItemForEditPost].leftBarButtonItem;
+}
+
+- (void)setLeftBarButtonItemForEditPost:(UIBarButtonItem *)item;
+{
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		self.navigationItem.leftBarButtonItem = item;
+	} else if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		postDetailEditController.navigationItem.leftBarButtonItem = item;
+	}
+}
+
+- (UIBarButtonItem *)rightBarButtonItemForEditPost;
+{
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		return self.navigationItem.rightBarButtonItem;
+	} else if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		return [editToolbar.items lastObject];
+	}
+	return nil;
+}
+
+- (void)setRightBarButtonItemForEditPost:(UIBarButtonItem *)item;
+{
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		self.navigationItem.rightBarButtonItem = item;
+	} else if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		NSArray *currentItems = editToolbar.items;
+		// TODO: magic number
+		NSMutableArray *newItems = [NSMutableArray arrayWithArray:[currentItems subarrayWithRange:NSMakeRange(0, 4)]];
+		if (item)
+			[newItems addObject:item];
+		[editToolbar setItems:newItems animated:YES];
+	}
+}
+
+- (IBAction)editAction:(id)sender;
+{
+	UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:postDetailEditController] autorelease];
+	navController.modalPresentationStyle = UIModalPresentationPageSheet;
+	navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+	if (!editToolbarItem) {
+		editToolbarItem = [[UIBarButtonItem alloc] initWithCustomView:editToolbar];
+	}
+	postDetailEditController.navigationItem.rightBarButtonItem = editToolbarItem;
+	postDetailEditController.navigationItem.leftBarButtonItem = cancelEditButton;
+	[self.splitViewController presentModalViewController:navController animated:YES];
+}
+
 - (IBAction)commentsAction:(id)sender;
 {
 	[(UINavigationController *)(self.popoverController.contentViewController) setViewControllers:[NSArray arrayWithObject:commentsViewController] animated:NO];
 	commentsViewController.contentSizeForViewInPopover = popoverController.contentViewController.contentSizeForViewInPopover;
-	[popoverController presentPopoverFromBarButtonItem:commentsButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	[popoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 - (IBAction)picturesAction:(id)sender;
 {
 	[(UINavigationController *)(self.popoverController.contentViewController) setViewControllers:[NSArray arrayWithObject:photosListController] animated:NO];
 	photosListController.contentSizeForViewInPopover = popoverController.contentViewController.contentSizeForViewInPopover;
-	[popoverController presentPopoverFromBarButtonItem:photosButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	[popoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 - (IBAction)settingsAction:(id)sender;
 {
 	[(UINavigationController *)(self.popoverController.contentViewController) setViewControllers:[NSArray arrayWithObject:postSettingsController] animated:NO];
 	postSettingsController.contentSizeForViewInPopover = popoverController.contentViewController.contentSizeForViewInPopover;
-	[popoverController presentPopoverFromBarButtonItem:settingsButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	[popoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 - (IBAction)addPhotoAction:(id)sender;

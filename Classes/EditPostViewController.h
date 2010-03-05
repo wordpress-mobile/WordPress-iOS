@@ -67,6 +67,8 @@
 	
 	UIBarButtonItem *popoverDoneButton;
 	UIPopoverController *popoverController;
+	
+	BOOL editingDisabled;
 }
 
 @property (nonatomic, assign) PostViewController *postDetailViewController;
@@ -111,6 +113,8 @@
 //will be called when auto save method is called.
 - (void)updateValuesToCurrentPost;
 - (void)showLinkView;
+
+- (void)disableInteraction;
 
 - (IBAction)showAddNewCategoryView:(id)sender;
 - (IBAction)showCategoriesViewAction:(id)sender;

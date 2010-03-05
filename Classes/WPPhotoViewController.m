@@ -44,7 +44,10 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
+    	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		return YES;
+	}
+
 
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 

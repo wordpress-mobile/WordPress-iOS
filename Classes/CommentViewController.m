@@ -118,7 +118,10 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		return YES;
+	}
+
 	//[super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 	if(UIInterfaceOrientationIsLandscape(self.commentsViewController.interfaceOrientation)){
 		NSLog(@"inside 999CVC if - landscape");
