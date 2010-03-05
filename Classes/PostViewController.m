@@ -464,17 +464,19 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	NSLog(@"inside PostViewController:viewWillAppear");
-	if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
-		[postDetailEditController setTextViewHeight:202];
-    }
-	
-    if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-        if (postDetailEditController.isEditing == NO) {
-            //[postDetailEditController setTextViewHeight:57]; //#148
-        } else {
-            [postDetailEditController setTextViewHeight:116];
-        }
-    }
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
+			[postDetailEditController setTextViewHeight:202];
+		}
+		
+		if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+			if (postDetailEditController.isEditing == NO) {
+				//[postDetailEditController setTextViewHeight:57]; //#148
+			} else {
+				[postDetailEditController setTextViewHeight:116];
+			}
+		}
+	}
 
     [leftView setTarget:self withAction:@selector(cancelView:)];
 	

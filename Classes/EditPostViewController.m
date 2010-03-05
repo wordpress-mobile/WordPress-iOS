@@ -348,62 +348,66 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)bringTextViewUp {
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:kAnimationDuration];
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		[UIView beginAnimations:nil context:NULL];
+		[UIView setAnimationDuration:kAnimationDuration];
 
-/*   This is for custom fields - IF we keep current UI... out for now until 1.5
-	if (isCustomFieldsEnabledForThisPost) {
-        CGRect frame = textViewContentView.frame;
-        frame.origin.y -= 220.0f; //was 164, 214 is new value to accomodate custom fields "cell + other objects" in IB
-        textViewContentView.frame = frame;
+	/*   This is for custom fields - IF we keep current UI... out for now until 1.5
+		if (isCustomFieldsEnabledForThisPost) {
+			CGRect frame = textViewContentView.frame;
+			frame.origin.y -= 220.0f; //was 164, 214 is new value to accomodate custom fields "cell + other objects" in IB
+			textViewContentView.frame = frame;
 
-        frame = subView.frame;
-        frame.origin.y -= 220.0f; //was 164
-        subView.frame = frame;
-    } else {
- */
-        CGRect frame = textViewContentView.frame;
-        frame.origin.y -= 170.0f;
-        textViewContentView.frame = frame;
+			frame = subView.frame;
+			frame.origin.y -= 220.0f; //was 164
+			subView.frame = frame;
+		} else {
+	 */
+			CGRect frame = textViewContentView.frame;
+			frame.origin.y -= 170.0f;
+			textViewContentView.frame = frame;
 
-        frame = subView.frame;
-        frame.origin.y -= 170.0f;
-        //frame.origin.y -= 175.0f;
-        subView.frame = frame;
-	
-   // remove "//" for custom fields }
+			frame = subView.frame;
+			frame.origin.y -= 170.0f;
+			//frame.origin.y -= 175.0f;
+			subView.frame = frame;
+		
+	   // remove "//" for custom fields }
 
-    [UIView commitAnimations];
-    //[self.view setNeedsDisplay];
+		[UIView commitAnimations];
+		//[self.view setNeedsDisplay];
+	}
 }
 
 - (void)bringTextViewDown {
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.2];
-    subView.hidden = NO;
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		[UIView beginAnimations:nil context:NULL];
+		[UIView setAnimationDuration:0.2];
+		subView.hidden = NO;
 
-/*   This is for custom fields - IF we keep current UI... out for now until 1.5
-    if (isCustomFieldsEnabledForThisPost) {
-        CGRect frame = textViewContentView.frame;
-        frame.origin.y += 220.0f; //was 164
-        textViewContentView.frame = frame;
+	/*   This is for custom fields - IF we keep current UI... out for now until 1.5
+		if (isCustomFieldsEnabledForThisPost) {
+			CGRect frame = textViewContentView.frame;
+			frame.origin.y += 220.0f; //was 164
+			textViewContentView.frame = frame;
 
-        frame = subView.frame;
-        frame.origin.y += 220.0f; //was 164
-        subView.frame = frame;
-    } else {
- */
-        CGRect frame = textViewContentView.frame;
-        frame.origin.y += 170.0f;
-        textViewContentView.frame = frame;
+			frame = subView.frame;
+			frame.origin.y += 220.0f; //was 164
+			subView.frame = frame;
+		} else {
+	 */
+			CGRect frame = textViewContentView.frame;
+			frame.origin.y += 170.0f;
+			textViewContentView.frame = frame;
 
-        frame = subView.frame;
-        frame.origin.y = 0.0f;
-        subView.frame = frame;
-	
-     // remove "//" for custom fields }
+			frame = subView.frame;
+			frame.origin.y = 0.0f;
+			subView.frame = frame;
+		
+		 // remove "//" for custom fields }
 
-    [UIView commitAnimations];
+		[UIView commitAnimations];
+	}
 }
 
 - (void)updateTextViewPlacehoderFieldStatus {
@@ -531,18 +535,20 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if (!isTextViewEditing) {
         isTextViewEditing = YES;
 		
-        if ((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-            [self setTextViewHeight:116];
-        }
-
         [self updateTextViewPlacehoderFieldStatus];
+		
+		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+			if ((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+				[self setTextViewHeight:116];
+			}
 
-        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
-                                       target:self action:@selector(endTextEnteringButtonAction:)];
+			UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
+										   target:self action:@selector(endTextEnteringButtonAction:)];
 
-        postDetailViewController.navigationItem.leftBarButtonItem = doneButton;
-        [doneButton release];
-        [self bringTextViewUp];
+			postDetailViewController.navigationItem.leftBarButtonItem = doneButton;
+			[doneButton release];
+			[self bringTextViewUp];
+		}
     }
 }
 
@@ -554,12 +560,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
     isEditing = YES;
 
-	if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
-		|| (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
-        [self setTextViewHeight:116];
-		
-
-    }
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
+			|| (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
+			[self setTextViewHeight:116];
+		}
+	}
 	
     dismiss = NO;
 
@@ -568,12 +574,14 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
         [self updateTextViewPlacehoderFieldStatus];
 
-        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
-                                       target:self action:@selector(endTextEnteringButtonAction:)];
-        postDetailViewController.navigationItem.leftBarButtonItem = doneButton;
-        [doneButton release];
+ 		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+			UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
+										   target:self action:@selector(endTextEnteringButtonAction:)];
+			postDetailViewController.navigationItem.leftBarButtonItem = doneButton;
+			[doneButton release];
 
-        [self bringTextViewUp];
+			[self bringTextViewUp];
+		}
     }
 }
 
@@ -687,31 +695,35 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)aTextView {
-    if ((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-        [self setTextViewHeight:57];
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		if ((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+			[self setTextViewHeight:57];
+		}
 	}
-	
 
     isEditing = NO;
     dismiss = NO;
 
     if (isTextViewEditing) {
         isTextViewEditing = NO;
-
-        [self bringTextViewDown];
-
-        if (postDetailViewController.hasChanges == YES) {
-            [leftView setTitle:@"Cancel"];
-        } else {
-            [leftView setTitle:@"Posts"];
-        }
-
-        UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:leftView];
-        postDetailViewController.navigationItem.leftBarButtonItem = barItem;
-        [barItem release];
-        [self updateTextViewPlacehoderFieldStatus];
+		
+		[self updateTextViewPlacehoderFieldStatus];
         NSString *text = aTextView.text;
         [[[BlogDataManager sharedDataManager] currentPost] setObject:text forKey:@"description"];
+
+		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+			[self bringTextViewDown];
+
+			if (postDetailViewController.hasChanges == YES) {
+				[leftView setTitle:@"Cancel"];
+			} else {
+				[leftView setTitle:@"Posts"];
+			}
+
+			UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:leftView];
+			postDetailViewController.navigationItem.leftBarButtonItem = barItem;
+			[barItem release];
+		}
         //NSLog(@"the text from aTextView is %@", text);
     }
 }
@@ -729,7 +741,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     self.currentEditingTextField = nil;
 
     if (textField == titleTextField)
-        [[BlogDataManager sharedDataManager].currentPost setValue:textField.text forKey:@"title"];else if (textField == tagsTextField)
+        [[BlogDataManager sharedDataManager].currentPost setValue:textField.text forKey:@"title"];
+	else if (textField == tagsTextField)
         [[BlogDataManager sharedDataManager].currentPost setValue:tagsTextField.text forKey:@"mt_keywords"];
 }
 
@@ -970,10 +983,10 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 //        frame.origin.y = originY;
 //        [textViewContentView setFrame:frame];
 //    } else {
-        originY = 164.0f;
-        CGRect frame = textViewContentView.frame;
-        frame.origin.y = originY;
-        [textViewContentView setFrame:frame];
+//        originY = 164.0f;
+//        CGRect frame = textViewContentView.frame;
+//        frame.origin.y = originY;
+//        [textViewContentView setFrame:frame];
 //    }
 }
 
