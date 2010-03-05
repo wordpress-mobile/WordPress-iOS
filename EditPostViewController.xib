@@ -543,10 +543,7 @@
 						</object>
 						<string key="NSFrameSize">{320, 460}</string>
 						<reference key="NSSuperview" ref="1066218360"/>
-						<object class="NSColor" key="IBUIBackgroundColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC40OTQ4OTc5NTkyIDAuNDk0ODk3OTU5MiAwLjQ5NDg5Nzk1OTIAA</bytes>
-						</object>
+						<reference key="IBUIBackgroundColor" ref="725962077"/>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>

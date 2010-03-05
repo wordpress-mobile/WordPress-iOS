@@ -312,13 +312,15 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-        if (pageDetailViewController.isEditing == NO) {
-            [pageDetailViewController setTextViewHeight:137];
-        } else {
-            [pageDetailViewController setTextViewHeight:105];
-        }
-    }
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+			if (pageDetailViewController.isEditing == NO) {
+				[pageDetailViewController setTextViewHeight:137];
+			} else {
+				[pageDetailViewController setTextViewHeight:105];
+			}
+		}
+	}
 
     //self.navigationItem.title=@"Write";
     [leftView setTarget:self withAction:@selector(cancelView:)];
@@ -361,9 +363,11 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-        [pageDetailViewController setTextViewHeight:287];
-    }
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+			[pageDetailViewController setTextViewHeight:287];
+		}
+	}
 
 //    [photoEditingStatusView removeFromSuperview];
 
@@ -396,24 +400,26 @@
 //            [photoEditingStatusView removeFromSuperview];
 //        }
 //    }
+	
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		if ((interfaceOrientation == UIInterfaceOrientationPortrait) || (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
+	//        if (pageDetailViewController.isEditing == NO) {
+	//            [pageDetailViewController setTextViewHeight:287];
+	//        } else {
+			   [pageDetailViewController setTextViewHeight:200];
+			   return YES;
+			}
+	//    }
 
-    if ((interfaceOrientation == UIInterfaceOrientationPortrait) || (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
-//        if (pageDetailViewController.isEditing == NO) {
-//            [pageDetailViewController setTextViewHeight:287];
-//        } else {
-           [pageDetailViewController setTextViewHeight:200];
-		   return YES;
-        }
-//    }
-
-    if ((interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-        if (pageDetailViewController.isEditing == NO) {
-            //[pageDetailViewController setTextViewHeight:137];
-        } else {
-            [pageDetailViewController setTextViewHeight:105];
-			return YES; //trac ticket #148
-        }
-    }
+		if ((interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+			if (pageDetailViewController.isEditing == NO) {
+				//[pageDetailViewController setTextViewHeight:137];
+			} else {
+				[pageDetailViewController setTextViewHeight:105];
+				return YES; //trac ticket #148
+			}
+		}
+	}
 
     //return YES;
 	return NO; //trac ticket #148

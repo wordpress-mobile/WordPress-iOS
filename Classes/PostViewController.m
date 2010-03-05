@@ -587,9 +587,11 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-        [postDetailEditController setTextViewHeight:202];
-    }
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+			[postDetailEditController setTextViewHeight:202];
+		}
+	}
 
 //    [photoEditingStatusView removeFromSuperview];
 
