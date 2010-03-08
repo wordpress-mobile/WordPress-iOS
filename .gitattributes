@@ -47,6 +47,8 @@ Classes/PageViewController.h -text
 Classes/PageViewController.m -text
 Classes/PagesViewController.h -text
 Classes/PagesViewController.m -text
+Classes/PostAnnotation.h -text
+Classes/PostAnnotation.m -text
 Classes/PostLocationViewController.h -text
 Classes/PostLocationViewController.m -text
 Classes/PostLocationViewController.xib -text
