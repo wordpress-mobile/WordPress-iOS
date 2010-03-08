@@ -126,5 +126,7 @@
 - (IBAction)getLocation:(id)sender;
 - (void)locationUpdate:(CLLocation *)location;
 - (void)locationError:(NSError *)error;
+- (BOOL)isPostPublished;
+- (BOOL)isPostLocationEnabled;
 
 @end

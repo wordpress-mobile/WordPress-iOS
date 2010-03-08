@@ -109,9 +109,6 @@
 
     [resizePhotoControl addTarget:self action:@selector(changeResizePhotosOptions) forControlEvents:UIControlEventAllTouchEvents];
     [locationSwitchControl addTarget:self action:@selector(changeLocationOptions) forControlEvents:UIControlEventAllTouchEvents];
-	
-	if([[NSUserDefaults standardUserDefaults] integerForKey:@"LocationSetting"] == 1)
-		locationSwitchControl.on;
 }
 
 - (void)changeResizePhotosOptions {
@@ -125,6 +122,10 @@
     postDetailViewController.hasChanges = YES;
     [[BlogDataManager sharedDataManager].currentPost setValue:[NSNumber numberWithInt:locationSwitchControl.on]
 													   forKey:@"geo_public"];
+	if(locationSwitchControl.on)
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"LocationSetting"];
+	else
+		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"LocationSetting"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -132,6 +133,12 @@
 	NSLog(@"viewWillAppear: PostSettingsViewController, just called postDetailViewController shouldAutorotate");
     [self reloadData];
 	[self setupHelpButton];
+	
+	NSLog(@"LocationSetting: %@", [[NSUserDefaults standardUserDefaults] valueForKey:@"LocationSetting"]);
+	if([[NSUserDefaults standardUserDefaults] boolForKey:@"LocationSetting"])
+		locationSwitchControl.on == YES;
+	else
+		locationSwitchControl.on == NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -252,14 +259,7 @@
             }
         case 3:
             if (indexPath.row == 0) {
-                NSNumber *value = [post valueForKey:kLocationSetting];
-				
-                if (value == nil) {
-                    value = [NSNumber numberWithInt:0];
-                    [post setValue:value forKey:kLocationSetting];
-                }
-				
-                locationSwitchControl.on = [value boolValue];
+                locationSwitchControl.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"LocationSetting"];
                 return locationTableViewCell;
             }
             break;

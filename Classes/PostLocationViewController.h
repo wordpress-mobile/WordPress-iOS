@@ -8,17 +8,21 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
+#import "BlogDataManager.h"
 #import "LocationController.h"
+#import "PostAnnotation.h"
 
 @interface PostLocationViewController : UIViewController <LocationControllerDelegate> {
 	IBOutlet MKMapView *map;
-	IBOutlet UIBarButtonItem *buttonClose;
+	IBOutlet UIBarButtonItem *buttonClose, *buttonRemove, *buttonAdd;
+	IBOutlet UIToolbar *toolbar;
 	LocationController *locationController;
 	CLLocation *initialLocation;
 }
 
 @property (nonatomic, retain) IBOutlet MKMapView *map;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *buttonClose;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *buttonClose, *buttonRemove, *buttonAdd;
+@property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, retain) LocationController *locationController;
 @property (nonatomic, retain) CLLocation *initialLocation;
 
@@ -26,5 +30,10 @@
 - (void)locationError:(NSError *)error;
 - (void)centerMapOn:(CLLocation *)location;
 - (IBAction)dismiss:(id)sender;
+- (IBAction)removeLocation:(id)sender;
+- (IBAction)addLocation:(id)sender;
+- (IBAction)updateLocation:(id)sender;
+- (BOOL)isPostLocationAware;
+- (CLLocationCoordinate2D)getPostLocation;
 
 @end

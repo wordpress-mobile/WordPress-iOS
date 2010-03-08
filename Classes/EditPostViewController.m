@@ -24,13 +24,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-	// Set up location
-	locationController = [[LocationController alloc] init];
-	[locationController setDelegate:self];
-	NSNumber *locationSetting = [[[BlogDataManager sharedDataManager] currentBlog] objectForKey:@"LocationSetting"];
-	if([locationSetting intValue] == 1)
-		[self getLocation:self];
     
     //customFieldsEditButton.hidden = YES;
     //customFieldsEditButton.enabled = NO;
@@ -86,6 +79,25 @@ NSTimeInterval kAnimationDuration = 0.3f;
         tableViewForSelectingCustomFields.hidden = YES;
         //customFieldsEditButton.enabled = NO;
     }
+	
+	// Set up location
+	if([[NSUserDefaults standardUserDefaults] boolForKey:@"LocationSetting"])
+	{
+		if(![self isPostPublished])
+		{
+			// Unpublished post - active Location editing
+			locationController = [[LocationController alloc] init];
+			[locationController setDelegate:self];
+			[self getLocation:self];
+		}
+		else {
+			// Published post - passive Location editing
+		}
+
+	}
+	else {
+		locationButton.hidden = YES;
+	}
     
     [self postionTextViewContentView];
     [self refreshUIForCurrentPost];
@@ -96,6 +108,37 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 #pragma mark -
+
+- (BOOL)isPostPublished {
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	NSString *status = [dm statusDescriptionForStatus:[dm.currentPost valueForKey:@"post_status"] fromBlog:dm.currentBlog];
+	
+	NSLog(@"post status: %@", [status lowercaseString]);
+	
+	if([[status lowercaseString] isEqualToString:@"published"])
+		return YES;
+	else
+		return NO;
+}
+
+- (BOOL)isPostLocationAware {
+	BOOL result = NO;
+    NSArray *customFieldsArray = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"custom_fields"];
+	
+	// Loop through our custom fields.  If we find geo_latitude, return YES
+	// TODO:  Make this more elegant and thorough, perhaps looking for longitude as well?
+	for(NSDictionary *dict in customFieldsArray)
+	{
+		if([dict objectForKey:@"geo_latitude"] != nil)
+		{
+			result = YES;
+			NSLog(@"Post is Location aware.");
+			break;
+		}
+	}
+	
+	return result;
+}
 
 - (void)refreshUIForCompose {
     //	textView.alpha = 0.3f;
@@ -944,7 +987,7 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             NSString *tempKey = [[tempCustomFieldsArray objectAtIndex:i] objectForKey:@"key"];
 			
             //if tempKey contains an underscore, remove that object (NSDict with metadata) from the array and move on
-            if ([tempKey rangeOfString:@"_"].location != NSNotFound) {
+            if(([tempKey rangeOfString:@"_"].location != NSNotFound) && ([tempKey rangeOfString:@"geo_"].location == NSNotFound)) {
                 NSLog(@"Removing metadata key: %@", tempKey);
                 [tempCustomFieldsArray removeObjectAtIndex:i];
                 //if I remove one, the count goes down and we stop too soon unless we subtract one from i
@@ -977,23 +1020,7 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 #pragma mark Location Methods
 
 - (IBAction)getLocation:(id)sender {
-	// We don't have a location yet
-	if(![locationController hasLocation])
-	{
-		// Start the spinner and update our button state
-		[locationSpinner startAnimating];
-		[self.locationButton setHighlighted:NO];
-		[self.locationButton setSelected:YES];
-		
-		// Tell LocationController to start updating its location
-		[[locationController locationManager] startUpdatingLocation];
-	}
-	else { // We already have a location
-		// Show our map view and update our button state
-		[self showLocationMapView:sender];
-		[self.locationButton setHighlighted:YES];
-		[self.locationButton setSelected:NO];
-	}
+	[self showLocationMapView:sender];
 }
 
 - (void)locationUpdate:(CLLocation *)location {
@@ -1024,8 +1051,6 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 		// Longitude
 		NSString *longitude = [NSString stringWithFormat:@"%f", 
 							   currentLocation.coordinate.longitude];
-		
-		BlogDataManager *dm = [BlogDataManager sharedDataManager];
 		textView.text = [NSString stringWithFormat:@"%@\nGEOPRESS_LOCATION([%@, %@])", 
 						 textView.text, latitude, longitude];
 	}

@@ -308,9 +308,9 @@ static WordPressAppDelegate *wordPressApp = NULL;
 			//[blogDataManager callSetCurrentBlog:blogCopy];
 			
 			[blogCopy release];
-			NSLog(@"inside the if... this implies we found pwd inside the blog NSDict");
+			//NSLog(@"inside the if... this implies we found pwd inside the blog NSDict");
 		}else {
-			NSLog(@"We did NOT find pwd inside the blog NSDict and thus did not go through the if");
+			//NSLog(@"We did NOT find pwd inside the blog NSDict and thus did not go through the if");
 		}
 }
 }

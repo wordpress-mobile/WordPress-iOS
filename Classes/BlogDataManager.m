@@ -1662,9 +1662,9 @@ editBlogViewController;
 	
 	
 	NSArray *test = [NSArray arrayWithObjects:blogid, username, pwd, maxToFetch, nil ];
-	NSLog(@"the array for get recent posts %@",test);
+	//NSLog(@"the array for get recent posts %@",test);
 	
-	NSLog(@"currentblog %@", currentBlog);
+	//NSLog(@"currentblog %@", currentBlog);
 	
     //  ------------------------- invoke metaWeblog.getRecentPosts
     XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
@@ -1718,8 +1718,8 @@ editBlogViewController;
     while (post = [postsEnum nextObject]) {
         // add blogid and blog_host_name to post
 		
-		NSLog(@"this is the post %@", post);
-		NSLog(@"this is value in date_created_gmt %@", [post valueForKey:@"date_created_gmt"]);
+		//NSLog(@"this is the post %@", post);
+		//NSLog(@"this is value in date_created_gmt %@", [post valueForKey:@"date_created_gmt"]);
 		
         NSDate *postGMTDate = [post valueForKey:@"date_created_gmt"];
         NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:postGMTDate];
@@ -4382,8 +4382,8 @@ editBlogViewController;
     NSString *fullURL = [blog valueForKey:@"xmlrpc"];
     NSString *blogid = [blog valueForKey:kBlogId];
     NSDictionary *commentsStructure = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kNumberOfCommentsToDisplay] forKey:@"number"];
-	NSLog(@"number of comments to display: %@", commentsStructure);
-	NSLog(@"blogid, username, pwd %@ : %@ : %@", blogid, username, pwd);
+	//NSLog(@"number of comments to display: %@", commentsStructure);
+	//NSLog(@"blogid: %@, username: %@, password: %@", blogid, username, pwd);
 	
 
     //  ------------------------- invoke metaWeblog.getRecentPosts

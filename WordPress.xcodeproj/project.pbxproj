@@ -63,6 +63,7 @@
 		702CA0680F36FF0D00018B88 /* WPLabelFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 702CA0670F36FF0D00018B88 /* WPLabelFooterView.m */; };
 		7059CD210F332B6500A0660B /* WPCategoryTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 7059CD200F332B6500A0660B /* WPCategoryTree.m */; };
 		706D25F50F347F1200491666 /* category_child.png in Resources */ = {isa = PBXBuildFile; fileRef = 706D25F40F347F1200491666 /* category_child.png */; };
+		833AF25B114575A50016DE8F /* PostAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 833AF25A114575A50016DE8F /* PostAnnotation.m */; };
 		837576C411305C67002EAA27 /* gettingLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = 837576C111305C67002EAA27 /* gettingLocation.png */; };
 		837576C511305C67002EAA27 /* hasLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = 837576C211305C67002EAA27 /* hasLocation.png */; };
 		837576C611305C67002EAA27 /* getLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = 837576C311305C67002EAA27 /* getLocation.png */; };
@@ -240,6 +241,8 @@
 		7059CD1F0F332B6500A0660B /* WPCategoryTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPCategoryTree.h; sourceTree = "<group>"; };
 		7059CD200F332B6500A0660B /* WPCategoryTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPCategoryTree.m; sourceTree = "<group>"; };
 		706D25F40F347F1200491666 /* category_child.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = category_child.png; sourceTree = "<group>"; };
+		833AF259114575A50016DE8F /* PostAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostAnnotation.h; sourceTree = "<group>"; };
+		833AF25A114575A50016DE8F /* PostAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostAnnotation.m; sourceTree = "<group>"; };
 		837576C111305C67002EAA27 /* gettingLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gettingLocation.png; sourceTree = "<group>"; };
 		837576C211305C67002EAA27 /* hasLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hasLocation.png; sourceTree = "<group>"; };
 		837576C311305C67002EAA27 /* getLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = getLocation.png; sourceTree = "<group>"; };
@@ -521,6 +524,8 @@
 				CEBD3EAA0FF1BA3B00C1396E /* Blog.m */,
 				29A84CA3112E485100CDDB06 /* IncrementPost.h */,
 				29A84CA4112E485100CDDB06 /* IncrementPost.m */,
+				833AF259114575A50016DE8F /* PostAnnotation.h */,
+				833AF25A114575A50016DE8F /* PostAnnotation.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -997,6 +1002,7 @@
 				83F3E2BE11276357004CD686 /* LocationController.m in Sources */,
 				83A645D8112B8690000999A6 /* PostLocationViewController.m in Sources */,
 				83A64689112C5F75000999A6 /* PostSettingsHelpViewController.m in Sources */,
+				833AF25B114575A50016DE8F /* PostAnnotation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
