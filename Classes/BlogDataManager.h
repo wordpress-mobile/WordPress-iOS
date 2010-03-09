@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
 #import "XMLRPCResponse.h"
 #import "XMLRPCRequest.h"
 #import "XMLRPCConnection.h"
@@ -65,8 +66,7 @@
 	EditBlogViewController *editBlogViewController;
 	
 	BOOL isProblemWithXMLRPC;
-
-	
+	CLLocation *currentLocation;
 }
 
 + (BlogDataManager *)sharedDataManager;
@@ -103,6 +103,7 @@
 @property (nonatomic) int unsavedPostsCount;
 @property (nonatomic, retain) NSMutableDictionary *currentUnsavedDraft;
 @property (nonatomic, retain) EditBlogViewController *editBlogViewController;
+@property (nonatomic, retain) CLLocation *currentLocation;
 //BOOLs for handling XMLRPC issues...  See LocateXMLRPCViewController
 @property BOOL isProblemWithXMLRPC; 
 

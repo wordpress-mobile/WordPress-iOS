@@ -116,6 +116,7 @@
 	 }
 
     if (!hasChanges) {
+		NSLog(@"No changes to save...");
         [self stopTimer];
         [self.navigationController popViewControllerAnimated:YES];
         return;
@@ -155,6 +156,8 @@
     NSString *description = [dm.currentPost valueForKey:@"description"];
     NSString *title = [dm.currentPost valueForKey:@"title"];
     NSArray *photos = [dm.currentPost valueForKey:@"Photos"];
+    NSArray *customFields = [dm.currentPost valueForKey:@"custom_fields"];
+	NSLog(@"customFields: %@", customFields);
 
     if ((!description ||[description isEqualToString:@""]) &&
         (!title ||[title isEqualToString:@""]) &&

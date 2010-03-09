@@ -10,7 +10,7 @@
 
 
 @implementation PostLocationViewController
-@synthesize map, locationController, initialLocation, buttonClose, buttonRemove, buttonAdd, toolbar;
+@synthesize map, locationController, buttonClose, buttonRemove, buttonAdd, toolbar;
 
 #pragma mark -
 #pragma mark View Lifecycle
@@ -21,6 +21,8 @@
 	// If we have a predefined location, center the map on it immediately
 	if([self isPostLocationAware])
 	{
+		// Post with previously determined Location data
+		NSLog(@"custom fields:%@", [[[BlogDataManager sharedDataManager] currentPost] objectForKey:@"custom_fields"]);
 		map.showsUserLocation = NO;
 		CLLocationCoordinate2D postCoordinates = [self getPostLocation];
 		CLLocation *postLocation = [[CLLocation alloc] initWithLatitude:postCoordinates.latitude longitude:postCoordinates.longitude];
@@ -126,7 +128,7 @@
     NSArray *customFieldsArray = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"custom_fields"];
 	for(NSDictionary *dict in customFieldsArray)
 	{
-		if([[dict objectForKey:@"key"] isEqualToString:@"geo_latitude"])
+		if([dict objectForKey:@"geo_latitude"] != nil)
 		{
 			result = YES;
 			break;
@@ -156,6 +158,8 @@
 	}
 	
 	[dm.currentPost setValue:customFieldsArray forKey:@"custom_fields"];
+	NSLog(@"custom fields after Location removal:%@", [dm.currentPost objectForKey:@"custom_fields"]);
+	
 	[self dismissModalViewControllerAnimated:YES];
 }
 
@@ -171,7 +175,12 @@
 
 - (IBAction)addLocation:(id)sender {
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-    NSMutableArray *customFieldsArray = [dm.currentPost valueForKey:@"custom_fields"];
+    NSMutableArray *customFieldsArray;
+	
+	if([dm.currentPost valueForKey:@"custom_fields"] == nil)
+		customFieldsArray = [[NSMutableArray alloc] init];
+	else
+		customFieldsArray = [dm.currentPost objectForKey:@"custom_fields"];
 	
 	// Remove existing values
 	NSMutableArray *discardedItems = [NSMutableArray array];
@@ -211,8 +220,9 @@
 	NSString *longitude = [NSString stringWithFormat:@"%lf", 
 						   locationController.locationManager.location.coordinate.longitude];
 	// Accuracy
-	NSString *accuracy = [NSString stringWithFormat:@"%d", 
-						  locationController.locationManager.location.horizontalAccuracy];
+	//NSString *accuracy = [NSString stringWithFormat:@"%f", 
+	//					  locationController.locationManager.location.horizontalAccuracy];
+	NSString *accuracy = [[NSString alloc] initWithString:@"0"];
 	
 	// Add latitude, accuracy, longitude, address, and public
 	// WP API fields: geo_latitude, geo_longitude, geo_accuracy, geo_public
@@ -222,7 +232,8 @@
 	
 	// Send our modified custom fields back to BlogDataManager
 	[customFieldsArray addObject:locationFields];
-	[dm.currentPost setValue:customFieldsArray forKey:@"custom_fields"];
+	[dm.currentPost setValue:customFieldsArray forKey:@"custom_fields"];	
+	[dm autoSaveCurrentPost];
 	[self dismissModalViewControllerAnimated:YES];
 }
 
@@ -234,7 +245,6 @@
 	[buttonAdd release];
 	[toolbar release];
 	[locationController release];
-	[initialLocation release];
 	[buttonClose release];
 	[buttonRemove release];
     [super dealloc];

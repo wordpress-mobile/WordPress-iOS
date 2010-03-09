@@ -16,7 +16,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @implementation EditPostViewController
 
 @synthesize postDetailViewController, selectionTableViewController, segmentedTableViewController, leftView, customFieldsTableView;
-@synthesize infoText, urlField, bookMarksArray, selectedLinkRange, currentEditingTextField, isEditing, currentLocation;
+@synthesize infoText, urlField, bookMarksArray, selectedLinkRange, currentEditingTextField, isEditing;
 @synthesize customFieldsEditButton, editCustomFields, isCustomFieldsEnabledForThisPost, locationController, locationButton, locationSpinner;
 
 #pragma mark -
@@ -24,7 +24,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+	
     //customFieldsEditButton.hidden = YES;
     //customFieldsEditButton.enabled = NO;
     
@@ -81,22 +81,14 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
 	
 	// Set up location
-	if([[NSUserDefaults standardUserDefaults] boolForKey:@"LocationSetting"])
+	if(![[NSUserDefaults standardUserDefaults] boolForKey:@"LocationSetting"])
 	{
-		if(![self isPostPublished])
-		{
-			// Unpublished post - active Location editing
-			locationController = [[LocationController alloc] init];
-			[locationController setDelegate:self];
-			[self getLocation:self];
-		}
-		else {
-			// Published post - passive Location editing
-		}
-
+		locationButton.hidden = YES;
 	}
 	else {
-		locationButton.hidden = YES;
+		locationButton.hidden = NO;
+		[self.locationButton setHighlighted:YES];
+		[self getLocation:self];
 	}
     
     [self postionTextViewContentView];
@@ -112,9 +104,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (BOOL)isPostPublished {
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	NSString *status = [dm statusDescriptionForStatus:[dm.currentPost valueForKey:@"post_status"] fromBlog:dm.currentBlog];
-	
-	NSLog(@"post status: %@", [status lowercaseString]);
-	
+		
 	if([[status lowercaseString] isEqualToString:@"published"])
 		return YES;
 	else
@@ -324,7 +314,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     str = (str != nil ? str : @"");
     [dm.currentPost setValue:str forKey:@"title"];
 	
-	[self saveLocationDataToCustomFields];
+	//[self saveLocationDataToCustomFields];
 
     //TODO:JOHNBCustomFields -- probably want an entry here for custom_fields too
 }
@@ -550,10 +540,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
 }
 
-
-
-
-
 - (void)textViewDidBeginEditing:(UITextView *)aTextView {
 	
     isEditing = YES;
@@ -629,7 +615,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     // let the textView know that it should handle the inserted text
     return YES;
 }
-
 
 - (void)textViewDidChange:(UITextView *)aTextView {
     postDetailViewController.hasChanges = YES;
@@ -1020,7 +1005,19 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 #pragma mark Location Methods
 
 - (IBAction)getLocation:(id)sender {
-	[self showLocationMapView:sender];
+	if(([self isPostLocationAware]) || ([[BlogDataManager sharedDataManager] currentLocation] != nil))
+	{
+		[self showLocationMapView:sender];
+	}
+	else
+	{
+		locationController = [[LocationController alloc] init];
+		locationController.delegate = self;
+		[locationController.locationManager startUpdatingLocation];
+		[locationSpinner startAnimating];
+		[self.locationButton setHighlighted:NO];
+		[self.locationButton setSelected:NO];
+	}
 }
 
 - (void)locationUpdate:(CLLocation *)location {
@@ -1029,8 +1026,9 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[locationSpinner stopAnimating];
 	[self.locationButton setHighlighted:YES];
 	[self.locationButton setSelected:NO];
-	currentLocation = location;
-	//[self saveLocationDataToCustomFields];
+	[[BlogDataManager sharedDataManager] setCurrentLocation:location];
+	[self saveLocationDataToCustomFields];
+	postDetailViewController.hasChanges = YES;
 }
 
 - (void)locationError:(NSError *)error {
@@ -1039,21 +1037,6 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[locationSpinner stopAnimating];
 	[self.locationButton setHighlighted:NO];
 	[self.locationButton setSelected:NO];
-}
-
-- (void)saveLocationDataToPostContent {
-	if(currentLocation != nil)
-	{
-		// Format our values
-		// Latitude
-		NSString *latitude = [NSString stringWithFormat:@"%f", 
-							  currentLocation.coordinate.latitude];
-		// Longitude
-		NSString *longitude = [NSString stringWithFormat:@"%f", 
-							   currentLocation.coordinate.longitude];
-		textView.text = [NSString stringWithFormat:@"%@\nGEOPRESS_LOCATION([%@, %@])", 
-						 textView.text, latitude, longitude];
-	}
 }
 
 - (void)saveLocationDataToCustomFields {
@@ -1097,11 +1080,25 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[dm.currentPost setValue:customFieldsArray forKey:@"custom_fields"];
 }
 
+- (void)saveLocationDataToPostContent {
+	if([[BlogDataManager sharedDataManager] currentLocation] != nil)
+	{
+		// Format our values
+		// Latitude
+		NSString *latitude = [NSString stringWithFormat:@"%f", 
+							  locationController.locationManager.location.coordinate.latitude];
+		// Longitude
+		NSString *longitude = [NSString stringWithFormat:@"%f", 
+							   locationController.locationManager.location.coordinate.longitude];
+		
+		textView.text = [NSString stringWithFormat:@"%@\nGEOPRESS_LOCATION([%@, %@])", 
+						 textView.text, latitude, longitude];
+	}
+}
+
 - (IBAction)showLocationMapView:(id)sender {
-	PostLocationViewController *locationView = [[PostLocationViewController alloc] init];
-	locationView.initialLocation = locationController.locationManager.location;
+	PostLocationViewController *locationView = [[PostLocationViewController alloc] initWithNibName:@"PostLocationViewController" bundle:nil];
 	[self presentModalViewController:locationView animated:YES];
-	[locationView autorelease];
 }
 
 #pragma mark -
@@ -1113,7 +1110,6 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 
 - (void)dealloc {
-	[currentLocation release];
     [infoText release];
     [urlField release];
     [leftView release];

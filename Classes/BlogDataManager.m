@@ -91,7 +91,7 @@ static BlogDataManager *sharedDataManager;
 pictureFieldNames, postFieldNames, postFieldNamesByTag, postFieldTagsByName,
 postTitleFieldNames, postTitleFieldNamesByTag, postTitleFieldTagsByName, unsavedPostsCount, currentPageIndex, currentPage, pageFieldNames,
 currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLocaDraftsCurrent, isPageLocalDraftsCurrent, currentPostIndex, currentDraftIndex, currentPageDraftIndex, asyncPostsOperationsQueue, currentUnsavedDraft,
-editBlogViewController;
+editBlogViewController, currentLocation;
 //BOOL for handling XMLRPC issues...  See LocateXMLRPCViewController
 @synthesize isProblemWithXMLRPC; 
 
@@ -103,6 +103,7 @@ editBlogViewController;
     [currentPost release];
     [currentPage release];
     [currentDirectoryPath release];
+	[currentLocation release];
 
     [photosDB release];
     [currentPicture release];
@@ -187,6 +188,8 @@ editBlogViewController;
 
         // set the current dir
         [fileManager changeCurrentDirectoryPath:self.currentDirectoryPath];
+		
+		currentLocation = [[CLLocation alloc] init];
 
         // allocate lists
 //		self->blogsList = [[NSMutableArray alloc] initWithCapacity:10];
@@ -3494,6 +3497,7 @@ editBlogViewController;
 
 - (BOOL)makeAutoSavedPostCurrentForCurrentBlog {
     NSMutableDictionary *post = [self autoSavedPostForCurrentBlog];
+	NSLog(@"makeAutoSavedPostCurrentForCurrentBlog.post: %@", post);
 	[self printDictToLog:post andDictName:@"the result of makeAutoSavedPostForCurrentBlog"];
 
     if (!post ||[post count] == 0)
@@ -3534,6 +3538,7 @@ editBlogViewController;
 }
 
 - (BOOL)autoSaveCurrentPost {
+	NSLog(@"autosaving current post: %@", currentPost);
     return [currentPost writeToFile:[self autoSavePathForTheCurrentBlog] atomically:YES];
 }
 
