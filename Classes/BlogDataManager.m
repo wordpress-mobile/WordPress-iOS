@@ -1648,11 +1648,11 @@ editBlogViewController, currentLocation;
 	NSString *pwd = [self getPasswordFromKeychainInContextOfCurrentBlog:blog];
     NSString *fullURL = [blog valueForKey:@"xmlrpc"];
     NSString *blogid = [blog valueForKey:kBlogId];
-    //NSNumber *maxToFetch = [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:2] intValue]];
+    NSNumber *maxToFetch = [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:2] intValue]];
 	//Note: Changed this to accomodate 10-at-a-time updating of posts. kPostsDownloadCount seems to be associated with the number set when setting up the blog
 	//NSString *maxToFetch = nil;
 	//NSNumber *maxToFetch = [NSNumber numberWithInt:[[currentBlog valueForKey:@"totalPostsLoaded"] intValue]];
-	NSNumber *maxToFetch = [NSNumber numberWithInt:[[currentBlog valueForKey:@"totalPosts"] intValue]];
+	//NSNumber *maxToFetch = [NSNumber numberWithInt:[[currentBlog valueForKey:@"totalPosts"] intValue]];
 	//NSNumber *maxToFetch = [NSNumber numberWithInt:[[currentBlog valueForKey:@"totalPosts"] intValue]];
 	//NSInteger maxCopy = [NSNumber numberWithInt: [[currentBlog valueForKey:@"totalPosts"] intValue]];
 //	NSNumber *loadint = [NSNumber numberWithInt: [[currentBlog valueForKey:@"totalPosts"] intValue]];
@@ -2161,7 +2161,7 @@ editBlogViewController, currentLocation;
     NSArray *blogInitValues = [NSArray arrayWithObjects:@"Local Drafts", @"", kDraftsHostName, @"iPhone",
                                @"", kDraftsBlogIdStr, @"Local Drafts", @"xmlrpc url not set",
                                @"", @"", @"", @"",
-                               [NSNumber numberWithInt:0], [NSNumber numberWithInt:10],
+                               [NSNumber numberWithInt:0], [NSNumber numberWithInt:0],
                                [NSNumber numberWithInt:0], [NSNumber numberWithInt:0], 
 							   @"/xmlrpc.php", @"", 
 							   nil];
@@ -2182,11 +2182,10 @@ editBlogViewController, currentLocation;
     NSArray *blogInitValues = [NSArray arrayWithObjects:@"", @"", @"", @"",
                                @"", @"", @"", @"xmlrpc url not set",
                                @"", @"", @"", @"",
-                               [NSNumber numberWithInt:0], [NSNumber numberWithInt:10],
+                               [NSNumber numberWithInt:0], [NSNumber numberWithInt:0],
                                [NSNumber numberWithInt:0], [NSNumber numberWithInt:0], 
 							   @"/xmlrpc.php", @"10 Recent Posts",
 							   nil];
-								//removed one @"" from the above line before "10 Recent Posts" to account for moving password to keychain
 								//@blog metadata
 	
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjects:blogInitValues forKeys:[self blogFieldNames]];

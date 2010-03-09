@@ -227,7 +227,7 @@
 
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 
-    NSArray *dataSource = [NSArray arrayWithObjects:@"10 Recent Posts", @"20 Recent Posts", @"30 Recent Posts", @"40 Recent Posts", @"50 Recent Posts", nil];
+    NSArray *dataSource = [NSArray arrayWithObjects:@"10 Recent Items", @"25 Recent Items", @"50 Recent Items", @"100 Recent Items", nil];
 
     NSString *curStatus = [[dm currentBlog] valueForKey:kPostsDownloadCount];
     // default value for number of posts is setin BlogDataManager.makeNewBlogCurrent
