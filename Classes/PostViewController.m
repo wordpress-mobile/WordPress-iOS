@@ -301,7 +301,7 @@
 }
 
 - (void)refreshUIForCurrentPost {
-    [self setRightBarButtonItemForEditPost:nil];
+//    [self setRightBarButtonItemForEditPost:nil];
 
     [tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
     UIViewController *vc = [[tabController viewControllers] objectAtIndex:0];
@@ -770,18 +770,21 @@
 		self.navigationItem.rightBarButtonItem = item;
 	} else if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
 		NSArray *currentItems = editToolbar.items;
-		// TODO: magic numbers
-		NSMutableArray *newItems = [NSMutableArray arrayWithArray:[currentItems subarrayWithRange:NSMakeRange(0, 4)]];
-		if (item)
-			[newItems addObject:item];
-		[editToolbar setItems:newItems animated:YES];
-		CGRect frame = editToolbar.frame;
-		if (newItems.count > 4) {
-			frame.size.width = 240.0;
-		} else {
-			frame.size.width = 185.0;
+		// TODO: uuuugly
+		NSMutableArray *newItems = [NSMutableArray arrayWithArray:currentItems];
+		
+		// if we have an item, replace our last item with it;
+		// if it's nil, just gray out the current last item.
+		// It's this sort of thing that keeps me from sleeping at night.
+		if (item) {
+			[newItems replaceObjectAtIndex:(newItems.count - 1) withObject:item];
+			[item setEnabled:YES];
 		}
-		editToolbar.frame = frame;
+		else {
+			[[newItems objectAtIndex:(newItems.count - 1)] setEnabled:NO];
+		}
+		
+		[editToolbar setItems:newItems animated:YES];
 	}
 }
 
@@ -866,13 +869,19 @@
 	picker.contentSizeForViewInPopover = popoverController.contentViewController.contentSizeForViewInPopover;
 	photoPickerPopover.contentViewController = picker;
 	[popoverController dismissPopoverAnimated:NO];
-	[photoPickerPopover presentPopoverFromBarButtonItem:photosButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
+	
+	// TODO: this is pretty kludgy
+	UIBarButtonItem *buttonItem = [editToolbar.items objectAtIndex:1];
+	[photoPickerPopover presentPopoverFromBarButtonItem:buttonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
 }
 
 - (void)hidePhotoListImagePicker;
 {
 	[photoPickerPopover dismissPopoverAnimated:NO];
-	[popoverController presentPopoverFromBarButtonItem:photosButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
+	
+	// TODO: this is pretty kludgy
+	UIBarButtonItem *buttonItem = [editToolbar.items objectAtIndex:1];
+	[popoverController presentPopoverFromBarButtonItem:buttonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
 }
 
 @end

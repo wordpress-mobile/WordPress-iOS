@@ -12,8 +12,8 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="44"/>
 			<integer value="22"/>
+			<integer value="44"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -124,7 +124,7 @@
 			<object class="IBUIToolbar" id="817429275">
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">266</int>
-				<string key="NSFrameSize">{265, 44}</string>
+				<string key="NSFrameSize">{245, 44}</string>
 				<reference key="NSSuperview"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -157,9 +157,8 @@
 						<reference key="IBUIToolbar" ref="817429275"/>
 					</object>
 					<object class="IBUIBarButtonItem" id="654794120">
-						<string key="IBUITitle">Post</string>
+						<string key="IBUITitle">Save</string>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<float key="IBUIWidth">70</float>
 						<int key="IBUIStyle">2</int>
 						<reference key="IBUIToolbar" ref="817429275"/>
 					</object>
@@ -457,7 +456,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>CInvisibleToolbar</string>
-					<string>{{21, 789}, {265, 44}}</string>
+					<string>{{21, 789}, {245, 44}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -609,6 +608,7 @@
 							<string>cancelView:</string>
 							<string>commentsAction:</string>
 							<string>editAction:</string>
+							<string>newPostAction:</string>
 							<string>picturesAction:</string>
 							<string>previewAction:</string>
 							<string>previewEditAction:</string>
@@ -617,6 +617,7 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>

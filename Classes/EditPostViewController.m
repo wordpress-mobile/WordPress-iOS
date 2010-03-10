@@ -182,7 +182,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     NSArray *cats = [[dm currentPost] valueForKey:@"categories"];
 
     if (status)
-        categoriesTextField.text = [cats componentsJoinedByString:@", "];else
+        categoriesTextField.text = [cats componentsJoinedByString:@", "];
+	else
         categoriesTextField.text = @"";
 }
 
