@@ -24,6 +24,7 @@ typedef enum _WPItemType {
 	int selectedItemIndex;
 	
 	id <UITableViewDataSource, UITableViewDelegate> currentDataSource;
+	NSIndexPath *currentIndexPath;
 	
 	IBOutlet PostsViewController *postsViewController;
 	IBOutlet PagesViewController *pagesViewController;
@@ -38,6 +39,7 @@ typedef enum _WPItemType {
 }
 
 @property (nonatomic, assign) id <UITableViewDataSource, UITableViewDelegate> currentDataSource;
+@property (nonatomic, retain) NSIndexPath *currentIndexPath;
 
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet PostsViewController *postsViewController;

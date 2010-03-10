@@ -21,6 +21,7 @@
 @implementation BlogSplitViewMasterViewController
 
 @synthesize currentDataSource;
+@synthesize currentIndexPath;
 
 @synthesize tableView;
 
@@ -76,6 +77,29 @@
 	[self updateSelection];
 }
 
+- (void)setCurrentIndexPath:(NSIndexPath *)newIndexPath;
+{
+	int section = MIN(newIndexPath.section, [currentDataSource numberOfSectionsInTableView:tableView] - 1);
+	int row = MIN(newIndexPath.row, [currentDataSource tableView:tableView numberOfRowsInSection:section] - 1);
+	
+	newIndexPath = [NSIndexPath indexPathForRow:row inSection:section];
+	[tableView selectRowAtIndexPath:newIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+
+//	if ([newIndexPath isEqual:currentIndexPath])
+//		return;
+	
+	[currentIndexPath release];
+	currentIndexPath = [newIndexPath retain];
+	
+	// avoid selecting the "Load more posts..." row
+	if ([currentDataSource numberOfSectionsInTableView:tableView] == 1 && [currentDataSource tableView:tableView numberOfRowsInSection:1] == 1) {
+		return;
+	}
+	
+	[tableView selectRowAtIndexPath:currentIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+	[self tableView:tableView didSelectRowAtIndexPath:currentIndexPath];
+}
+
 - (void)setCurrentDataSource:(id<UITableViewDataSource, UITableViewDelegate>)newDataSource;
 {
 	if (currentDataSource == newDataSource)
@@ -127,9 +151,13 @@
 {
 	if (currentDataSource == postsViewController) {
 		if (selectedItemType == kWPItemTypePost || selectedItemType == kWPItemTypePostDraft) {
-			int sectionNum = (selectedItemType == kWPItemTypePost) ? [postsViewController numberOfSectionsInTableView:tableView] - 1 : 0;
-			NSIndexPath *indexPath = [NSIndexPath indexPathForRow:selectedItemIndex inSection:sectionNum];
-			[tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+			int sectionNum = (selectedItemType == kWPItemTypePost) ? 1 : 0;
+			self.currentIndexPath = [NSIndexPath indexPathForRow:selectedItemIndex inSection:sectionNum];
+		}
+	} else if (currentDataSource == pagesViewController) {
+		if (selectedItemType == kWPItemTypePage || selectedItemType == kWPItemTypePageDraft) {
+			int sectionNum = (selectedItemType == kWPItemTypePage) ? 1 : 0;
+			self.currentIndexPath = [NSIndexPath indexPathForRow:selectedItemIndex inSection:sectionNum];
 		}
 	}
 }
@@ -227,7 +255,8 @@ self.currentPopoverController = theBlogMenuPopoverController;
 - (void)refreshBlogs:(NSNotification *)notification;
 {
 	NSLog(@"Refreshed!");
-	[tableView reloadData];
+	[tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
+	[self performSelectorOnMainThread:@selector(updateSelection) withObject:nil waitUntilDone:YES];
 }
 
 #pragma mark KVO
@@ -236,27 +265,33 @@ self.currentPopoverController = theBlogMenuPopoverController;
 {
 	if (object == [BlogDataManager sharedDataManager]) {
 		NSNumber *new = [change valueForKey:NSKeyValueChangeNewKey];
-		if ([new intValue] < 0) {
+		int newSelectedIndex = [new intValue];
+		if (newSelectedIndex < 0)
 			return;
-		}
-		selectedItemIndex = [new intValue];
+		
+		WPItemType newItemType;
 		if ([keyPath isEqual:@"currentDraftIndex"]) {
-			selectedItemType = kWPItemTypePostDraft;
+			newItemType = kWPItemTypePostDraft;
 			NSLog(@"SHOULD SHOW DRAFT #%@", new);
 		}
 		if ([keyPath isEqual:@"currentPostIndex"]) {
-			selectedItemType = kWPItemTypePost;
+			newItemType = kWPItemTypePost;
 			NSLog(@"SHOULD SHOW POST #%@", new);
 		}
 		if ([keyPath isEqual:@"currentPageIndex"]) {
-			selectedItemType = kWPItemTypePage;
+			newItemType = kWPItemTypePage;
 			NSLog(@"SHOULD SHOW PAGE #%@", new);
 		}
 		if ([keyPath isEqual:@"currentPageDraftIndex"]) {
-			selectedItemType = kWPItemTypePageDraft;
+			newItemType = kWPItemTypePageDraft;
 			NSLog(@"SHOULD SHOW PAGE DRAFT #%@", new);
 		}
-		[self updateSelection];
+		
+		if (newItemType != selectedItemType || newSelectedIndex != selectedItemIndex) {
+			selectedItemType = newItemType;
+			selectedItemIndex = newSelectedIndex;
+			[self updateSelection];
+		}
 	}
 }
 

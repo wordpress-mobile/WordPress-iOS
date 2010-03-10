@@ -256,6 +256,10 @@
 		[self removeProgressIndicator];
 		
 		[self dismissEditView];
+		
+		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+			[[BlogDataManager sharedDataManager] makePostWithPostIDCurrent:postId];
+		}
     }
 }
 
