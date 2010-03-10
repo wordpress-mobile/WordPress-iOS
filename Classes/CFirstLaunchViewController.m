@@ -10,7 +10,6 @@
 
 #import "EditBlogViewController.h"
 #import "BlogDataManager.h"
-#import "CNewBlogSignupViewController.h"
 
 @implementation CFirstLaunchViewController
 
@@ -55,9 +54,6 @@ EditBlogViewController *blogDetailViewController = [[[EditBlogViewController all
 
 - (IBAction)actionSignupBlog:(id)inSender
 {
-CNewBlogSignupViewController *theSignupViewController = [[[CNewBlogSignupViewController alloc] initWithNibName:NULL bundle:NULL] autorelease];
-[self.navigationController pushViewController:theSignupViewController animated:YES];
-
 }
 
 @end

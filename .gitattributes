@@ -27,9 +27,6 @@ Classes/CFirstLaunchViewController.m -text
 Classes/CFirstLaunchViewController.xib -text
 Classes/CInvisibleToolbar.h -text
 Classes/CInvisibleToolbar.m -text
-Classes/CNewBlogSignupViewController.h -text
-Classes/CNewBlogSignupViewController.m -text
-Classes/CNewBlogSignupViewController.xib -text
 Classes/CommentTableViewCell.h -text
 Classes/CommentTableViewCell.m -text
 Classes/CommentViewController.h -text
@@ -149,15 +146,12 @@ Classes/XMLRPC/XMLRPCResponse.h -text
 Classes/XMLRPC/XMLRPCResponse.m -text
 Classes/XMLRPC/XMLValueDecoder.h -text
 Classes/XMLRPC/XMLValueDecoder.m -text
-Classes/blue-m.png -text svneol=unset#unset
-Classes/glossyButton-disabled.png -text svneol=unset#unset
-Classes/glossyButton-highlighted.png -text svneol=unset#unset
-Classes/glossyButton-normal.png -text svneol=unset#unset
 /CommentViewController.xib -text
 /CommentsViewController.xib -text
 /Default.png -text
 /Disclosure[!!-~]Indicator.png -text
 /EditBlogViewController.xib -text
+/EditPageViewController-iPad.xib -text
 /EditPageViewController.xib -text
 /EditPostViewController-iPad.xib -text
 /EditPostViewController.xib -text
@@ -165,6 +159,7 @@ Classes/glossyButton-normal.png -text svneol=unset#unset
 /Info.plist -text
 /MainBackground.png -text
 /MainWindow.xib -text
+/PageViewController-iPad.xib -text
 /PageViewController.xib -text
 /PagesDraftsViewController.xib -text
 /PostPreviewViewController.xib -text

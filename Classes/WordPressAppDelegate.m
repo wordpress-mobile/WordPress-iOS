@@ -93,6 +93,10 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	{
 	[window addSubview:splitViewController.view];
 	
+	NSLog(@"> %@", [dataManager currentBlog]);
+	NSLog(@"> %d", [self shouldLoadBlogFromUserDefaults]);
+	
+	
 	if ([dataManager countOfBlogs] == 0)
 		{
 		CFirstLaunchViewController *theFirstLaunchViewController = [[[CFirstLaunchViewController alloc] initWithNibName:NULL bundle:NULL] autorelease];

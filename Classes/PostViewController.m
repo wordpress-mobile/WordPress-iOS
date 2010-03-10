@@ -611,11 +611,6 @@
     [array addObject:postSettingsController];
 	
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-//			if (!popoverController) {
-//			RotatingNavigationController *navController = [[[RotatingNavigationController alloc] initWithRootViewController:commentsViewController] autorelease];
-//			popoverController = [[UIPopoverController alloc] initWithContentViewController:navController];
-//		}
-
 		// the iPad has two detail views
 		postDetailViewController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController-iPad" bundle:nil];
 		[postDetailViewController disableInteraction];

@@ -31,6 +31,8 @@
     IBOutlet UIView *textViewContentView;
     IBOutlet UITextField *textViewPlaceHolderField;
     IBOutlet UITableViewCell *customFieldsEditCell;
+	
+	BOOL editingDisabled;
 
     UITextField *infoText;
     UITextField *urlField;
@@ -51,6 +53,8 @@
 
     //also for Custom Fields to move text view up and down appropriately
     NSUInteger originY;
+	
+	UIPopoverController *popover;
 }
 
 @property (nonatomic, retain) PageViewController *pageDetailsController;
@@ -65,6 +69,8 @@
 @property (nonatomic, assign) BOOL isEditing;
 @property (nonatomic, assign) BOOL isCustomFieldsEnabledForThisPage;
 
+@property (nonatomic, retain) UIPopoverController *popover;
+
 @property (nonatomic, retain) UITableViewCell *customFieldsEditCell;
 
 - (IBAction)showStatusViewAction:(id)sender;
@@ -73,6 +79,8 @@
 - (void)endEditingAction:(id)sender;
 - (void)refreshUIForCurrentPage;
 - (void)refreshUIForNewPage;
+
+- (void)disableInteraction;
 
 - (NSString *)validateNewLinkInfo:(NSString *)urlText;
 - (void)showLinkView;

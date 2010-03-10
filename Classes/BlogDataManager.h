@@ -216,6 +216,7 @@
 - (NSDictionary *)postForId:(NSString *)postid;
 - (NSUInteger)indexForPostid:(NSString *)postid;
 - (void)makePostAtIndexCurrent:(NSUInteger)theIndex;
+- (BOOL)makePageWithPageIDCurrent:(NSString *)pageID;
 - (void)makeNewPostCurrent;
 - (void)saveCurrentPostAsDraft;
 - (void)saveCurrentPageAsDraft;

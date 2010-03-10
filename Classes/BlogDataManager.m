@@ -3462,6 +3462,17 @@ editBlogViewController;
     return NO;
 }
 
+- (BOOL)makePageWithPageIDCurrent:(NSString *)pageID {
+    int index = [[pageTitlesList valueForKey:@"pageid"] indexOfObject:pageID];
+
+    if (index >= 0 && index <[pageTitlesList count]) {
+        [self makePageAtIndexCurrent:index];
+        return YES;
+    }
+
+    return NO;
+}
+
 - (void)makePostAtIndexCurrent:(NSUInteger)theIndex {
     NSString *pathToPost = [self pathToPost:[self postTitleAtIndex:theIndex] forBlog:currentBlog];
     [self setCurrentPost:[NSMutableDictionary dictionaryWithContentsOfFile:pathToPost]];

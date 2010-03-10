@@ -375,7 +375,11 @@
 
 - (void)setPageDetailsController {
     if (self.pageDetailsController == nil) {
-        self.pageDetailsController = [[PageViewController alloc] initWithNibName:@"PageViewController" bundle:nil];
+		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+			self.pageDetailsController = [[PageViewController alloc] initWithNibName:@"PageViewController-iPad" bundle:nil];
+		} else {
+			self.pageDetailsController = [[PageViewController alloc] initWithNibName:@"PageViewController" bundle:nil];
+		}
     }
 }
 
