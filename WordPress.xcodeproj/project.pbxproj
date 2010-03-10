@@ -37,6 +37,8 @@
 		03FF762A11445B1400DCFC6F /* ToolbarIconGear.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FF762611445B1400DCFC6F /* ToolbarIconGear.png */; };
 		03FF762B11445B1400DCFC6F /* ToolbarIconLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FF762711445B1400DCFC6F /* ToolbarIconLocation.png */; };
 		03FF763311445F8E00DCFC6F /* EditPostViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FF763211445F8E00DCFC6F /* EditPostViewController-iPad.xib */; };
+		03FF79D11144C54600DCFC6F /* RecentCommentButtonSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FF79CF1144C54600DCFC6F /* RecentCommentButtonSelected.png */; };
+		03FF79D21144C54600DCFC6F /* RecentCommentButtonDeselected.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FF79D01144C54600DCFC6F /* RecentCommentButtonDeselected.png */; };
 		108F0FB40EC2B51C00D09FB6 /* PagesDraftsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 108F0FB30EC2B51C00D09FB6 /* PagesDraftsViewController.xib */; };
 		1D3623260D0F684500981E51 /* WordPressAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* WordPressAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
@@ -218,6 +220,8 @@
 		03FF762611445B1400DCFC6F /* ToolbarIconGear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ToolbarIconGear.png; sourceTree = "<group>"; };
 		03FF762711445B1400DCFC6F /* ToolbarIconLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ToolbarIconLocation.png; sourceTree = "<group>"; };
 		03FF763211445F8E00DCFC6F /* EditPostViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "EditPostViewController-iPad.xib"; sourceTree = "<group>"; };
+		03FF79CF1144C54600DCFC6F /* RecentCommentButtonSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RecentCommentButtonSelected.png; sourceTree = "<group>"; };
+		03FF79D01144C54600DCFC6F /* RecentCommentButtonDeselected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RecentCommentButtonDeselected.png; sourceTree = "<group>"; };
 		108F0FB30EC2B51C00D09FB6 /* PagesDraftsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PagesDraftsViewController.xib; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* WordPressAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressAppDelegate.h; sourceTree = "<group>"; };
@@ -670,6 +674,8 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				03FF79CF1144C54600DCFC6F /* RecentCommentButtonSelected.png */,
+				03FF79D01144C54600DCFC6F /* RecentCommentButtonDeselected.png */,
 				03FF762411445B1400DCFC6F /* ToolbarIconCamera.png */,
 				03FF762511445B1400DCFC6F /* ToolbarIconEye.png */,
 				03FF762611445B1400DCFC6F /* ToolbarIconGear.png */,
@@ -1021,6 +1027,8 @@
 				03FF762A11445B1400DCFC6F /* ToolbarIconGear.png in Resources */,
 				03FF762B11445B1400DCFC6F /* ToolbarIconLocation.png in Resources */,
 				03FF763311445F8E00DCFC6F /* EditPostViewController-iPad.xib in Resources */,
+				03FF79D11144C54600DCFC6F /* RecentCommentButtonSelected.png in Resources */,
+				03FF79D21144C54600DCFC6F /* RecentCommentButtonDeselected.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

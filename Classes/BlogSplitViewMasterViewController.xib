@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="4"/>
+			<integer value="28"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -101,7 +101,7 @@
 					<object class="IBUITableView" id="616137608">
 						<reference key="NSNextResponder" ref="849037353"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrame">{{0, 44}, {320, 644}}</string>
+						<string key="NSFrame">{{0, 44}, {320, 640}}</string>
 						<reference key="NSSuperview" ref="849037353"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -123,7 +123,7 @@
 					<object class="IBUIButton" id="405098691">
 						<reference key="NSNextResponder" ref="849037353"/>
 						<int key="NSvFlags">266</int>
-						<string key="NSFrame">{{10, 696}, {300, 44}}</string>
+						<string key="NSFrame">{{0, 684}, {320, 64}}</string>
 						<reference key="NSSuperview" ref="849037353"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -131,23 +131,38 @@
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<object class="NSFont" key="IBUIFont">
 							<string key="NSName">Helvetica-Bold</string>
-							<double key="NSSize">15</double>
+							<double key="NSSize">19</double>
 							<int key="NSfFlags">16</int>
 						</object>
 						<int key="IBUIButtonType">1</int>
 						<bool key="IBUIReversesTitleShadowWhenHighlighted">YES</bool>
-						<string key="IBUINormalTitle">Recent Comments &gt;</string>
+						<bool key="IBUIAdjustsImageWhenHighlighted">NO</bool>
+						<string key="IBUITitleShadowOffset">{0, 1}</string>
+						<string key="IBUINormalTitle">Recent Comments</string>
 						<object class="NSColor" key="IBUIHighlightedTitleColor">
+							<int key="NSColorSpace">2</int>
+							<bytes key="NSRGB">MC4zMjk0MTE3NzQ5IDAuMzQ1MDk4MDQ4NCAwLjM2NDcwNTg5MDQAA</bytes>
+						</object>
+						<object class="NSColor" key="IBUISelectedTitleColor" id="268417013">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MQA</bytes>
 						</object>
 						<object class="NSColor" key="IBUINormalTitleColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+							<int key="NSColorSpace">2</int>
+							<bytes key="NSRGB">MC4zMjk0MTE3NzQ5IDAuMzQ1MDk4MDQ4NCAwLjM2NDcwNTg5MDQAA</bytes>
 						</object>
-						<object class="NSColor" key="IBUINormalTitleShadowColor">
-							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MC41AA</bytes>
+						<object class="NSColor" key="IBUISelectedTitleShadowColor">
+							<int key="NSColorSpace">2</int>
+							<bytes key="NSRGB">MC4zMjk0MTE3NzQ5IDAuMzQ1MDk4MDQ4NCAwLjM2NDcwNTg5MDQAA</bytes>
+						</object>
+						<reference key="IBUINormalTitleShadowColor" ref="268417013"/>
+						<object class="NSCustomResource" key="IBUISelectedBackgroundImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">RecentCommentButtonSelected.png</string>
+						</object>
+						<object class="NSCustomResource" key="IBUINormalBackgroundImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">RecentCommentButtonDeselected.png</string>
 						</object>
 					</object>
 				</object>
@@ -246,6 +261,14 @@
 						<reference key="destination" ref="152829227"/>
 					</object>
 					<int key="connectionID">30</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">commentsButton</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="405098691"/>
+					</object>
+					<int key="connectionID">31</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -382,7 +405,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">30</int>
+			<int key="maxID">31</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -627,6 +650,19 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<string key="IBDocument.LastKnownRelativeProjectPath">../WordPress.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
+		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<bool key="EncodedWithXMLCoder">YES</bool>
+			<object class="NSArray" key="dict.sortedKeys">
+				<bool key="EncodedWithXMLCoder">YES</bool>
+				<string>RecentCommentButtonDeselected.png</string>
+				<string>RecentCommentButtonSelected.png</string>
+			</object>
+			<object class="NSMutableArray" key="dict.values">
+				<bool key="EncodedWithXMLCoder">YES</bool>
+				<string>{320, 64}</string>
+				<string>{320, 64}</string>
+			</object>
+		</object>
 		<string key="IBCocoaTouchPluginVersion">84</string>
 	</data>
 </archive>

@@ -193,6 +193,8 @@ self.currentPopoverController = theBlogMenuPopoverController;
 
 - (IBAction)commentsAction:(id)sender;
 {
+	commentsButton.selected = YES;
+	commentsButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
 	[tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:NO];
 	commentsViewController.navigationItem.title = @"All Blog Comments";
 	[commentsViewController refreshCommentsList];
@@ -220,6 +222,9 @@ self.currentPopoverController = theBlogMenuPopoverController;
 
 - (void)tableView:(UITableView *)theTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 {
+	commentsButton.selected = NO;
+	commentsButton.titleLabel.shadowOffset = CGSizeMake(0, 1);
+	
 	[currentDataSource tableView:theTableView didSelectRowAtIndexPath:indexPath];
 	
 	UIViewController *detailViewController = nil;

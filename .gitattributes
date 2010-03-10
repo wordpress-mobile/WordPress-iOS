@@ -164,6 +164,8 @@ Classes/XMLRPC/XMLValueDecoder.m -text
 /PostSettingsViewController.xib -text
 /PostViewController-iPad.xib -text
 /PostViewController.xib -text
+/RecentCommentButtonDeselected.png -text svneol=unset#unset
+/RecentCommentButtonSelected.png -text svneol=unset#unset
 Resources-iPad/MainWindow-iPad.xib -text
 /RoundedRectBlack.png -text
 /ToolbarIconCamera.png -text svneol=unset#unset
