@@ -134,6 +134,7 @@ self.currentPopoverController = theBlogMenuPopoverController;
 - (IBAction)commentsAction:(id)sender;
 {
 	[tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:NO];
+	commentsViewController.navigationItem.title = @"All Blog Comments";
 	[commentsViewController refreshCommentsList];
 	[detailNavController setViewControllers:[NSArray arrayWithObject:commentsViewController] animated:NO];
 }
@@ -154,6 +155,7 @@ self.currentPopoverController = theBlogMenuPopoverController;
 	if ([currentDataSource respondsToSelector:@selector(tableView:willDisplayCell:forRowAtIndexPath:)]) {
 		[currentDataSource tableView:theTableView willDisplayCell:cell forRowAtIndexPath:indexPath];
 	}
+	cell.accessoryType = UITableViewCellAccessoryNone;
 }
 
 - (void)tableView:(UITableView *)theTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;

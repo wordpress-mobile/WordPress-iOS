@@ -17,6 +17,9 @@
 [super viewDidLoad];
 
 self.delegate = self;
+
+UIBarButtonItem *newPostButton = [[[UIBarButtonItem alloc] initWithTitle:@"New Post" style:UIBarButtonItemStyleBordered target:self action:@selector(newPostAction:)] autorelease];
+[self.detailNavigationController.viewControllers objectAtIndex:0].navigationItem.rightBarButtonItem = newPostButton;
 }
 
 #pragma mark -

@@ -604,7 +604,7 @@
 	
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
 		// the iPad has two detail views
-		postDetailViewController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController-iPad" bundle:nil];
+		postDetailViewController = [[EditPostViewController alloc] initWithNibName:@"StaticEditPostViewController-iPad" bundle:nil];
 		[postDetailViewController disableInteraction];
 		
 		if (!editModalViewController) {

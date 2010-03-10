@@ -94,7 +94,7 @@
 - (IBAction)commentsAction:(id)sender;
 
 - (IBAction)editAction:(id)sender;
-// TODO: move to edit post VC
+
 - (IBAction)picturesAction:(id)sender;
 - (IBAction)settingsAction:(id)sender;
 
@@ -102,5 +102,7 @@
 - (IBAction)previewAction:(id)sender;
 - (IBAction)previewEditAction:(id)sender;
 - (IBAction)previewPublishAction:(id)sender;
+
+- (IBAction)newPostAction:(id)sender;
 
 @end
