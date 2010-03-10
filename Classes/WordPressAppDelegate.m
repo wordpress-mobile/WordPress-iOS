@@ -242,8 +242,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
     else {
         [dataManager resetCurrentBlog];
     }
-#warning TODO: REMOVE
-//	[dataManager makeBlogAtIndexCurrent:0];
 }
 
 - (void)showSplashView {

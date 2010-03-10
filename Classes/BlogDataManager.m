@@ -4237,6 +4237,7 @@ editBlogViewController;
         [postTitlesList release];
         postTitlesList = [newArray retain];
     }
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 }
 
 - (void)setCommentTitlesList:(NSMutableArray *)newArray {
@@ -4252,6 +4253,7 @@ editBlogViewController;
         [draftTitlesList release];
         draftTitlesList = newArray;
     }
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"DraftsUpdated" object:nil];
 }
 
 - (void)setPageDraftTitlesList:(NSMutableArray *)newArray {
