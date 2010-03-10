@@ -26,7 +26,7 @@ webView = NULL;
 
 self.title = @"Sign up";
 
-NSURL *theURL = [NSURL URLWithString:@"http://en.wordpress.com/signup/"];
+NSURL *theURL = [NSURL URLWithString:@"http://wordpress.com/signup/"];
 NSURLRequest *theRequest = [NSURLRequest requestWithURL:theURL];
 [self.webView loadRequest:theRequest];
 }
