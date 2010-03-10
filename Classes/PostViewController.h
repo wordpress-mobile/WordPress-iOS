@@ -49,6 +49,7 @@
 	IBOutlet UIBarButtonItem *settingsButton;
 	
 	IBOutlet UIToolbar *editToolbar;
+	IBOutlet UIToolbar *previewToolbar;
 	UIBarButtonItem *editToolbarItem;
 	IBOutlet UIBarButtonItem *cancelEditButton;
 }
@@ -96,5 +97,8 @@
 - (IBAction)settingsAction:(id)sender;
 
 - (IBAction)addPhotoAction:(id)sender;
+- (IBAction)previewAction:(id)sender;
+- (IBAction)previewEditAction:(id)sender;
+- (IBAction)previewPublishAction:(id)sender;
 
 @end

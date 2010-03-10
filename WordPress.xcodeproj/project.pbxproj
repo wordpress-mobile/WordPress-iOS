@@ -64,6 +64,8 @@
 		2FAE970A0E33B21600CA8540 /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97050E33B21600CA8540 /* license.txt */; };
 		2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */; };
 		2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */; };
+		45601C891141713100CDE805 /* CFirstLaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45601C871141713100CDE805 /* CFirstLaunchViewController.m */; };
+		45601C8A1141713100CDE805 /* CFirstLaunchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45601C881141713100CDE805 /* CFirstLaunchViewController.xib */; };
 		459FA613113DAA3700A9D096 /* WordPressSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 459FA612113DAA3700A9D096 /* WordPressSplitViewController.m */; };
 		459FA676113DBCE000A9D096 /* CInvisibleToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 459FA675113DBCE000A9D096 /* CInvisibleToolbar.m */; };
 		45B71DE5113EDAA100D0A33C /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 45B71DE4113EDAA100D0A33C /* Entitlements.plist */; };
@@ -251,6 +253,9 @@
 		2FAE97050E33B21600CA8540 /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.txt; sourceTree = "<group>"; };
 		2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xhtml1-transitional.dtd"; sourceTree = "<group>"; };
 		2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = xhtmlValidatorTemplate.xhtml; sourceTree = "<group>"; };
+		45601C861141713100CDE805 /* CFirstLaunchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFirstLaunchViewController.h; sourceTree = "<group>"; };
+		45601C871141713100CDE805 /* CFirstLaunchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFirstLaunchViewController.m; sourceTree = "<group>"; };
+		45601C881141713100CDE805 /* CFirstLaunchViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CFirstLaunchViewController.xib; sourceTree = "<group>"; };
 		459FA611113DAA3700A9D096 /* WordPressSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressSplitViewController.h; sourceTree = "<group>"; };
 		459FA612113DAA3700A9D096 /* WordPressSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressSplitViewController.m; sourceTree = "<group>"; };
 		459FA674113DBCE000A9D096 /* CInvisibleToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CInvisibleToolbar.h; sourceTree = "<group>"; };
@@ -440,6 +445,9 @@
 				459FA612113DAA3700A9D096 /* WordPressSplitViewController.m */,
 				459FA674113DBCE000A9D096 /* CInvisibleToolbar.h */,
 				459FA675113DBCE000A9D096 /* CInvisibleToolbar.m */,
+				45601C861141713100CDE805 /* CFirstLaunchViewController.h */,
+				45601C871141713100CDE805 /* CFirstLaunchViewController.m */,
+				45601C881141713100CDE805 /* CFirstLaunchViewController.xib */,
 			);
 			name = iPad;
 			sourceTree = "<group>";
@@ -978,6 +986,7 @@
 				03B1DF30113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.xib in Resources */,
 				03B1E32B113DBDB300BBD1C6 /* PostViewController-iPad.xib in Resources */,
 				45B71DE5113EDAA100D0A33C /* Entitlements.plist in Resources */,
+				45601C8A1141713100CDE805 /* CFirstLaunchViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1061,6 +1070,7 @@
 				03B1DF2F113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.m in Sources */,
 				459FA613113DAA3700A9D096 /* WordPressSplitViewController.m in Sources */,
 				459FA676113DBCE000A9D096 /* CInvisibleToolbar.m in Sources */,
+				45601C891141713100CDE805 /* CFirstLaunchViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

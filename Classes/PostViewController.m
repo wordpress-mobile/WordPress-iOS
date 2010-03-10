@@ -758,11 +758,18 @@
 		self.navigationItem.rightBarButtonItem = item;
 	} else if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
 		NSArray *currentItems = editToolbar.items;
-		// TODO: magic number
+		// TODO: magic numbers
 		NSMutableArray *newItems = [NSMutableArray arrayWithArray:[currentItems subarrayWithRange:NSMakeRange(0, 4)]];
 		if (item)
 			[newItems addObject:item];
 		[editToolbar setItems:newItems animated:YES];
+		CGRect frame = editToolbar.frame;
+		if (newItems.count > 4) {
+			frame.size.width = 240.0;
+		} else {
+			frame.size.width = 185.0;
+		}
+		editToolbar.frame = frame;
 	}
 }
 
@@ -807,6 +814,27 @@
         picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
 		self.popoverController.contentViewController = picker;
 	}
+}
+
+- (IBAction)previewAction:(id)sender;
+{
+//	[UIView beginAnimations:nil context:nil];
+	UINavigationController *modal = (UINavigationController *)self.modalViewController;
+	postPreviewController.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:previewToolbar] autorelease];
+	[modal setViewControllers:[NSArray arrayWithObject:postPreviewController]];
+//	[UIView commitAnimations];
+}
+
+- (IBAction)previewEditAction:(id)sender;
+{
+//	[UIView beginAnimations:nil context:nil];
+	UINavigationController *modal = (UINavigationController *)self.modalViewController;
+	[modal setViewControllers:[NSArray arrayWithObject:postDetailEditController]];
+//	[UIView commitAnimations];
+}
+
+- (IBAction)previewPublishAction:(id)sender;
+{
 }
 
 #pragma mark -

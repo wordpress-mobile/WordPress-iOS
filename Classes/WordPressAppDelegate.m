@@ -4,6 +4,7 @@
 #import "BlogDataManager.h"
 #import "Reachability.h"
 #import "NSString+Helpers.h"
+#import "CFirstLaunchViewController.h"
 
 @interface WordPressAppDelegate (Private)
 
@@ -91,20 +92,26 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	else
 	{
 	[window addSubview:splitViewController.view];
+	
+	NSLog(@"> %@", [dataManager currentBlog]);
+	NSLog(@"> %d", [self shouldLoadBlogFromUserDefaults]);
+	
+	
 	if ([dataManager countOfBlogs] == 0)
 		{
-		EditBlogViewController *blogDetailViewController = [[[EditBlogViewController alloc] initWithNibName:@"EditBlogViewController" bundle:nil] autorelease];
-		UINavigationController *modalNavigationController = [[UINavigationController alloc] initWithRootViewController:blogDetailViewController];
+		CFirstLaunchViewController *theFirstLaunchViewController = [[[CFirstLaunchViewController alloc] initWithNibName:NULL bundle:NULL] autorelease];
+		UINavigationController *modalNavigationController = [[UINavigationController alloc] initWithRootViewController:theFirstLaunchViewController];
 		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
 			modalNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 			modalNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 			}
-
 		[splitViewController presentModalViewController:modalNavigationController animated:YES];
-
 		[modalNavigationController release];
 		}
-		
+	else if ([dataManager countOfBlogs] == 1)
+		{
+		[dataManager makeBlogAtIndexCurrent:0];
+		}		
 	}
 
 }

@@ -22,6 +22,9 @@ Classes/BlogViewController.h -text
 Classes/BlogViewController.m -text
 Classes/BlogsViewController.h -text
 Classes/BlogsViewController.m -text
+Classes/CFirstLaunchViewController.h -text
+Classes/CFirstLaunchViewController.m -text
+Classes/CFirstLaunchViewController.xib -text
 Classes/CInvisibleToolbar.h -text
 Classes/CInvisibleToolbar.m -text
 Classes/CommentTableViewCell.h -text

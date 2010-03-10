@@ -75,6 +75,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		subView.userInteractionEnabled = NO;
 		textView.editable = NO;
 	}
+	
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -1134,6 +1139,49 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 
 #pragma mark -
+#pragma mark Keyboard management
+
+- (void)keyboardWillShow:(NSNotification *)notification;
+{
+	NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo];
+	
+	CGRect kbBounds = [[keyboardInfo objectForKey:UIKeyboardBoundsUserInfoKey] CGRectValue];
+	CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+	UIViewAnimationCurve curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue];
+	
+	[UIView beginAnimations:nil context:nil];
+	
+	[UIView setAnimationCurve:curve];
+	[UIView setAnimationDuration:animationDuration];
+	
+	CGRect frame = textViewContentView.frame;
+	frame.size.height -= kbBounds.size.height;
+	textViewContentView.frame = frame;
+	
+	[UIView commitAnimations];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification;
+{
+	NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo];
+	
+	CGRect kbBounds = [[keyboardInfo objectForKey:UIKeyboardBoundsUserInfoKey] CGRectValue];
+	CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+	UIViewAnimationCurve curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue];
+	
+	[UIView beginAnimations:nil context:nil];
+	
+	[UIView setAnimationCurve:curve];
+	[UIView setAnimationDuration:animationDuration];
+	
+	CGRect frame = textViewContentView.frame;
+	frame.size.height += kbBounds.size.height;
+	textViewContentView.frame = frame;
+	
+	[UIView commitAnimations];
+}
+
+#pragma mark -
 #pragma mark Memory Stuff
 
 - (void)didReceiveMemoryWarning {
@@ -1142,6 +1190,8 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 
 - (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
     [infoText release];
     [urlField release];
     [leftView release];

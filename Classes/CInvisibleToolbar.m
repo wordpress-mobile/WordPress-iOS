@@ -34,4 +34,13 @@ return(self);
 {
 }
 
+- (CGSize)sizeThatFits:(CGSize)size;
+{
+	CGFloat width = 0.0;
+	for (UIBarButtonItem *item in self.items) {
+		width += item.width;
+	}
+	return CGSizeMake(width, self.frame.size.height);
+}
+
 @end
