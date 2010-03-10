@@ -74,6 +74,8 @@
 		2FAE970A0E33B21600CA8540 /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97050E33B21600CA8540 /* license.txt */; };
 		2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */; };
 		2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */; };
+		4526DC551148072F0090C99D /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 4526DC531148072F0090C99D /* Default-Portrait.png */; };
+		4526DC561148072F0090C99D /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 4526DC541148072F0090C99D /* Default-Landscape.png */; };
 		45601C891141713100CDE805 /* CFirstLaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45601C871141713100CDE805 /* CFirstLaunchViewController.m */; };
 		45601C8A1141713100CDE805 /* CFirstLaunchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45601C881141713100CDE805 /* CFirstLaunchViewController.xib */; };
 		4590D0B61146A323008F5D22 /* CNewBlogSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4590D0B41146A323008F5D22 /* CNewBlogSignupViewController.m */; };
@@ -283,6 +285,8 @@
 		2FAE97050E33B21600CA8540 /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.txt; sourceTree = "<group>"; };
 		2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xhtml1-transitional.dtd"; sourceTree = "<group>"; };
 		2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = xhtmlValidatorTemplate.xhtml; sourceTree = "<group>"; };
+		4526DC531148072F0090C99D /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait.png"; sourceTree = "<group>"; };
+		4526DC541148072F0090C99D /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
 		45601C861141713100CDE805 /* CFirstLaunchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFirstLaunchViewController.h; sourceTree = "<group>"; };
 		45601C871141713100CDE805 /* CFirstLaunchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFirstLaunchViewController.m; sourceTree = "<group>"; };
 		45601C881141713100CDE805 /* CFirstLaunchViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CFirstLaunchViewController.xib; sourceTree = "<group>"; };
@@ -626,6 +630,8 @@
 		45C73C23113C36F50024D0D2 /* Resources-iPad */ = {
 			isa = PBXGroup;
 			children = (
+				4526DC531148072F0090C99D /* Default-Portrait.png */,
+				4526DC541148072F0090C99D /* Default-Landscape.png */,
 				45C73C24113C36F70024D0D2 /* MainWindow-iPad.xib */,
 				030DB993113C4BE6002FF1A2 /* BlogViewController-iPad.xib */,
 				03B1DF29113D87C400BBD1C6 /* BlogSplitViewMasterViewController.xib */,
@@ -1058,6 +1064,8 @@
 				4590D1AD1146BE8E008F5D22 /* glossyButton-highlighted.png in Resources */,
 				4590D1AE1146BE8E008F5D22 /* glossyButton-normal.png in Resources */,
 				4590D1BC1146BF56008F5D22 /* blue-m.png in Resources */,
+				4526DC551148072F0090C99D /* Default-Portrait.png in Resources */,
+				4526DC561148072F0090C99D /* Default-Landscape.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

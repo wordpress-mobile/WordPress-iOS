@@ -155,6 +155,8 @@ Classes/glossyButton-highlighted.png -text svneol=unset#unset
 Classes/glossyButton-normal.png -text svneol=unset#unset
 /CommentViewController.xib -text
 /CommentsViewController.xib -text
+/Default-Landscape.png -text svneol=unset#unset
+/Default-Portrait.png -text svneol=unset#unset
 /Default.png -text
 /Disclosure[!!-~]Indicator.png -text
 /EditBlogViewController.xib -text
