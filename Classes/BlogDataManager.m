@@ -2446,8 +2446,8 @@ editBlogViewController;
     NSMutableDictionary *draft = [NSMutableDictionary dictionaryWithContentsOfFile:draftPath];
     //[draft setValue:[NSDate date] forKey:@"date_created_gmt"];
     [self setCurrentPost:draft];
-    currentDraftIndex = anIndex;
-    currentPostIndex = -2;
+    self.currentDraftIndex = anIndex;
+    self.currentPostIndex = -2;
     return YES;
 }
 
@@ -2455,8 +2455,8 @@ editBlogViewController;
     NSString *draftPath = [self pathToPageDraft:[self pageDraftTitleAtIndex:anIndex] forBlog:currentBlog];
     NSMutableDictionary *draft = [NSMutableDictionary dictionaryWithContentsOfFile:draftPath];
     [self setCurrentPage:draft];
-    currentPageDraftIndex = anIndex;
-    currentPageIndex = -2;
+    self.currentPageDraftIndex = anIndex;
+    self.currentPageIndex = -2;
     return YES;
 }
 
@@ -2491,17 +2491,17 @@ editBlogViewController;
 }
 
 - (void)resetDrafts {
-    currentDraftIndex = -1;
+    self.currentDraftIndex = -1;
     [self setDraftTitlesList:nil];
 }
 
 - (void)resetCurrentDraft {
-    currentDraftIndex = -1;
+    self.currentDraftIndex = -1;
     [self setCurrentPost:nil];
 }
 
 - (void)resetCurrentPageDraft {
-    currentPageDraftIndex = -1;
+    self.currentPageDraftIndex = -1;
     [self setCurrentPage:nil];
 }
 
@@ -2920,7 +2920,7 @@ editBlogViewController;
     [dict setObject:@"" forKey:@"mt_keywords"];
 
     [self setCurrentPage:dict];
-    currentPageIndex = -1;
+    self.currentPageIndex = -1;
     [dict release];
 }
 
@@ -3062,8 +3062,8 @@ editBlogViewController;
     [self setCurrentPage:[NSMutableDictionary dictionaryWithContentsOfFile:pathToPage]];
 
     // save the current index as well
-    currentPageIndex = theIndex;
-    currentPageDraftIndex = -1;
+    self.currentPageIndex = theIndex;
+    self.currentPageDraftIndex = -1;
 //	isPageLocalDraftsCurrent=NO;
     isLocaDraftsCurrent = NO;
 }
@@ -3448,7 +3448,7 @@ editBlogViewController;
     [self setCurrentPost:dict];
 
     // reset the currentPostIndex to nil;
-    currentPostIndex = -1;
+    self.currentPostIndex = -1;
 }
 
 - (BOOL)makePostWithPostIDCurrent:(NSString *)postID {
@@ -3467,9 +3467,9 @@ editBlogViewController;
     [self setCurrentPost:[NSMutableDictionary dictionaryWithContentsOfFile:pathToPost]];
 
     // save the current index as well
-    currentPostIndex = theIndex;
+    self.currentPostIndex = theIndex;
     isLocaDraftsCurrent = NO;
-    currentDraftIndex = -1;
+    self.currentDraftIndex = -1;
 }
 
 - (int)draftExistsForPostTitle:(id)aPostTitle inDraftsPostTitles:(NSArray *)somePostTitles {
@@ -3506,8 +3506,8 @@ editBlogViewController;
         int index = [[draftTitlesList valueForKey:@"draftid"] indexOfObject:draftID];
 
         if (index >= 0 && index <[draftTitlesList count]) {
-            currentDraftIndex = index;
-            currentPostIndex = -2;
+            self.currentDraftIndex = index;
+            self.currentPostIndex = -2;
         } else {
             return NO;
         }
@@ -3517,14 +3517,15 @@ editBlogViewController;
         if (postID &&[postID length] > 0) {
             int index = [[postTitlesList valueForKey:@"postid"] indexOfObject:postID];
 
-            if (index >= 0 && index <[postTitlesList count])
-                currentPostIndex = index;else {
+            if (index >= 0 && index <[postTitlesList count]) {
+                self.currentPostIndex = index;
+			} else {
                 return NO;
             }
         } else {
             //new post
-            currentPostIndex = -1;
-            currentDraftIndex = -1;
+            self.currentPostIndex = -1;
+            self.currentDraftIndex = -1;
         }
     }
 
@@ -3783,7 +3784,7 @@ editBlogViewController;
 
 - (void)restoreUnsavedDraft {
     [self setCurrentPost:[self currentUnsavedDraft]];
-    currentPostIndex = -1;
+    self.currentPostIndex = -1;
     [currentPost setObject:@"Local Draft" forKey:@"post_status"];
     [self saveCurrentPostAsDraft];
 }
@@ -3985,12 +3986,12 @@ editBlogViewController;
 }
 - (void)resetCurrentPage {
     currentPage = nil;
-    currentPageIndex = -2;
+    self.currentPageIndex = -2;
 }
 
 - (void)resetCurrentPost {
     currentPost = nil;
-    currentPostIndex = -2;
+    self.currentPostIndex = -2;
 }
 
 - (NSMutableDictionary *)postTitleForPost:(NSDictionary *)aPost {

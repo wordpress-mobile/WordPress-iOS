@@ -859,6 +859,8 @@
         [self.navigationController popViewControllerAnimated:YES];
 	} else {
 		[self dismissModalViewControllerAnimated:YES];
+		[[BlogDataManager sharedDataManager] loadDraftTitlesForCurrentBlog];
+		[[BlogDataManager sharedDataManager] loadPostTitlesForCurrentBlog];
 	}
 }
 

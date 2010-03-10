@@ -8,10 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum _WPItemType {
+	kWPItemTypePost,
+	kWPItemTypePostDraft,
+	kWPItemTypePage,
+	kWPItemTypePageDraft
+} WPItemType;
+
 @class PostsViewController, CommentsViewController, PagesViewController;
 
 @interface BlogSplitViewMasterViewController : UIViewController <UITableViewDelegate> {
 	IBOutlet UITableView *tableView;
+	
+	WPItemType selectedItemType;
+	int selectedItemIndex;
 	
 	id <UITableViewDataSource, UITableViewDelegate> currentDataSource;
 	
@@ -20,6 +30,7 @@
 	IBOutlet CommentsViewController *commentsViewController;
 	
 	IBOutlet UIButton *commentsButton;
+	IBOutlet UISegmentedControl *segmentedControl;
 
 	UIPopoverController *currentPopoverController;
 	
@@ -36,6 +47,7 @@
 @property (nonatomic, retain) IBOutlet UINavigationController *detailNavController;
 
 @property (nonatomic, retain) IBOutlet UIButton *commentsButton;
+@property (nonatomic, retain) IBOutlet UISegmentedControl *segmentedControl;
 
 @property (readwrite, nonatomic, retain) UIPopoverController *currentPopoverController;
 
@@ -45,5 +57,7 @@
 - (IBAction)selectSegmentAction:(id)sender;
 - (IBAction)blogMenuAction:(id)sender;
 - (IBAction)commentsAction:(id)sender;
+
+- (void)updateSelection;
 
 @end

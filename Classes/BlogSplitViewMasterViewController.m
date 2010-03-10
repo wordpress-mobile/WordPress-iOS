@@ -31,8 +31,14 @@
 @synthesize detailNavController;
 
 @synthesize commentsButton;
+@synthesize segmentedControl;
 
 - (void)dealloc {
+	[[BlogDataManager sharedDataManager] removeObserver:self forKeyPath:@"currentPostIndex"];
+	[[BlogDataManager sharedDataManager] removeObserver:self forKeyPath:@"currentDraftIndex"];
+	[[BlogDataManager sharedDataManager] removeObserver:self forKeyPath:@"currentPageIndex"];
+	[[BlogDataManager sharedDataManager] removeObserver:self forKeyPath:@"currentPageDraftIndex"];
+
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
 	[tableView release], tableView = nil;
@@ -46,6 +52,7 @@
 	[currentPopoverController release], currentPopoverController = nil;
 	
 	[commentsButton release], commentsButton = nil;
+	[segmentedControl release], segmentedControl = nil;
 
     [super dealloc];
 }
@@ -60,6 +67,13 @@
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"DraftsUpdated" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"BlogsRefreshNotification" object:nil];
+	
+	[[BlogDataManager sharedDataManager] addObserver:self forKeyPath:@"currentPostIndex" options:NSKeyValueObservingOptionNew context:nil];
+	[[BlogDataManager sharedDataManager] addObserver:self forKeyPath:@"currentDraftIndex" options:NSKeyValueObservingOptionNew context:nil];
+	[[BlogDataManager sharedDataManager] addObserver:self forKeyPath:@"currentPageIndex" options:NSKeyValueObservingOptionNew context:nil];
+	[[BlogDataManager sharedDataManager] addObserver:self forKeyPath:@"currentPageDraftIndex" options:NSKeyValueObservingOptionNew context:nil];
+	
+	[self updateSelection];
 }
 
 - (void)setCurrentDataSource:(id<UITableViewDataSource, UITableViewDelegate>)newDataSource;
@@ -89,6 +103,7 @@
 			break;
 	}
 	self.currentDataSource = newDataSource;
+	[self updateSelection];
 }
 
 #pragma mark -
@@ -105,6 +120,18 @@
 - (void)currentBlogChanged
 {
 	[self refreshBlogData];
+	[self updateSelection];
+}
+
+- (void)updateSelection;
+{
+	if (currentDataSource == postsViewController) {
+		if (selectedItemType == kWPItemTypePost || selectedItemType == kWPItemTypePostDraft) {
+			int sectionNum = (selectedItemType == kWPItemTypePost) ? [postsViewController numberOfSectionsInTableView:tableView] - 1 : 0;
+			NSIndexPath *indexPath = [NSIndexPath indexPathForRow:selectedItemIndex inSection:sectionNum];
+			[tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+		}
+	}
 }
 
 #pragma mark -
@@ -201,6 +228,36 @@ self.currentPopoverController = theBlogMenuPopoverController;
 {
 	NSLog(@"Refreshed!");
 	[tableView reloadData];
+}
+
+#pragma mark KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	if (object == [BlogDataManager sharedDataManager]) {
+		NSNumber *new = [change valueForKey:NSKeyValueChangeNewKey];
+		if ([new intValue] < 0) {
+			return;
+		}
+		selectedItemIndex = [new intValue];
+		if ([keyPath isEqual:@"currentDraftIndex"]) {
+			selectedItemType = kWPItemTypePostDraft;
+			NSLog(@"SHOULD SHOW DRAFT #%@", new);
+		}
+		if ([keyPath isEqual:@"currentPostIndex"]) {
+			selectedItemType = kWPItemTypePost;
+			NSLog(@"SHOULD SHOW POST #%@", new);
+		}
+		if ([keyPath isEqual:@"currentPageIndex"]) {
+			selectedItemType = kWPItemTypePage;
+			NSLog(@"SHOULD SHOW PAGE #%@", new);
+		}
+		if ([keyPath isEqual:@"currentPageDraftIndex"]) {
+			selectedItemType = kWPItemTypePageDraft;
+			NSLog(@"SHOULD SHOW PAGE DRAFT #%@", new);
+		}
+		[self updateSelection];
+	}
 }
 
 @end
