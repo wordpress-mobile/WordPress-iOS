@@ -116,11 +116,7 @@
 	
     if (!hasChanges) {
         [self stopTimer];
-		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
-			[self.navigationController popViewControllerAnimated:YES];
-		} else {
-			[self dismissModalViewControllerAnimated:YES];
-		}
+		[self dismissEditView];
 		NSLog(@"cancelView on PostViewController");
         return;
     }
@@ -164,7 +160,7 @@
 
     if (!hasChanges) {
         [self stopTimer];
-        [self.navigationController popViewControllerAnimated:YES];
+		[self dismissEditView];
 		NSLog(@"fdsa");
         return;
     }
@@ -234,7 +230,11 @@
 	//[self.navigationController popViewControllerAnimated:YES];
 	NSLog(@"just attempted to pop the viewController BEFORE the save");
     if ([postStatus isEqual:@"Local Draft"])
-        [self saveAsDraft];else {
+	{
+		[self saveAsDraft];
+	}
+	else
+	{
        // [self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
         //Need to release params
         NSMutableArray *params = [[[NSMutableArray alloc] initWithObjects:dm.currentPost, dm.currentBlog, nil] autorelease];
@@ -255,8 +255,7 @@
 
 		[self removeProgressIndicator];
 		
-		[self.navigationController popViewControllerAnimated:YES];
-		
+		[self dismissEditView];
     }
 }
 
@@ -375,12 +374,7 @@
     [self stopTimer];
     [[BlogDataManager sharedDataManager] clearAutoSavedContext];
 	
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
-		[self.navigationController popViewControllerAnimated:YES];
-	} else {
-		[self dismissModalViewControllerAnimated:YES];
-	}
-	
+	[self dismissEditView];
 }
 
 - (void)cancel {
@@ -850,6 +844,15 @@
 
 - (IBAction)previewPublishAction:(id)sender;
 {
+}
+
+- (void)dismissEditView;
+{
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+        [self.navigationController popViewControllerAnimated:YES];
+	} else {
+		[self dismissModalViewControllerAnimated:YES];
+	}
 }
 
 #pragma mark -

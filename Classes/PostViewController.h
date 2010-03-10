@@ -105,4 +105,6 @@
 
 - (IBAction)newPostAction:(id)sender;
 
+- (void)dismissEditView;
+
 @end

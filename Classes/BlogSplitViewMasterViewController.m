@@ -33,6 +33,8 @@
 @synthesize commentsButton;
 
 - (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
 	[tableView release], tableView = nil;
 	
 	[postsViewController release], postsViewController = nil;
@@ -55,6 +57,9 @@
 	
 	[self refreshBlogData];
 	self.currentDataSource = postsViewController;
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"DraftsUpdated" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"BlogsRefreshNotification" object:nil];
 }
 
 - (void)setCurrentDataSource:(id<UITableViewDataSource, UITableViewDelegate>)newDataSource;
@@ -172,9 +177,30 @@ self.currentPopoverController = theBlogMenuPopoverController;
 		detailViewController = pagesViewController.pageDetailsController;
 	}
 	
+	UIBarButtonItem *newPostButton = [[[UIBarButtonItem alloc] initWithTitle:@"New Post" style:UIBarButtonItemStyleBordered target:self action:@selector(newPostAction:)] autorelease];
+	detailViewController.navigationItem.rightBarButtonItem = newPostButton;
+	
 	if (detailViewController) {
 		[detailNavController setViewControllers:[NSArray arrayWithObject:detailViewController] animated:NO];
 	}
+}
+
+#pragma mark -
+#pragma mark Interface actions
+
+- (IBAction)newPostAction:(id)sender;
+{
+	[postsViewController showAddPostView];
+	
+	PostViewController *detailViewController = postsViewController.postDetailViewController;
+	[detailViewController refreshUIForCompose];
+	[detailViewController editAction:self];
+}
+
+- (void)refreshBlogs:(NSNotification *)notification;
+{
+	NSLog(@"Refreshed!");
+	[tableView reloadData];
 }
 
 @end

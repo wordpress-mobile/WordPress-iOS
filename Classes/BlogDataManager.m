@@ -3622,6 +3622,7 @@ editBlogViewController;
 
     [self resetCurrentPost];
     [self resetCurrentDraft];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"DraftsUpdated" object:nil];
 }
 
 - (id)fectchNewPost:(NSString *)postid formBlog:(id)aBlog {
