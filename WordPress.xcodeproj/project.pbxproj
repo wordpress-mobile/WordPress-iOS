@@ -13,6 +13,9 @@
 		031666AE0FFC3E130045D052 /* CommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 031666AD0FFC3E130045D052 /* CommentTableViewCell.m */; };
 		032BD74F101FCF59006F0017 /* ResourcesTableViewSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 032BD74E101FCF59006F0017 /* ResourcesTableViewSection.m */; };
 		032BDCB610106E1B00E26F44 /* LocateXMLRPCViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 032BDCB510106E1B00E26F44 /* LocateXMLRPCViewController.xib */; };
+		036ABF921141DF1A00181F3B /* FlippingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 036ABF901141DF1A00181F3B /* FlippingViewController.m */; };
+		036ABF931141DF1A00181F3B /* EditPostParentModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 036ABF911141DF1A00181F3B /* EditPostParentModalViewController.xib */; };
+		036ABF961141E06300181F3B /* RotatingNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 036ABF951141E06300181F3B /* RotatingNavigationController.m */; };
 		03958062100D6CFC00850742 /* WPLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03958061100D6CFC00850742 /* WPLabel.m */; };
 		03958860100DA2DA00850742 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0395885F100DA2DA00850742 /* ImageCache.m */; };
 		039FFDA1100EDC1B00D8B279 /* GravatarImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 039FFDA0100EDC1B00D8B279 /* GravatarImageView.m */; };
@@ -173,6 +176,11 @@
 		032BD74D101FCF59006F0017 /* ResourcesTableViewSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourcesTableViewSection.h; sourceTree = "<group>"; };
 		032BD74E101FCF59006F0017 /* ResourcesTableViewSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResourcesTableViewSection.m; sourceTree = "<group>"; };
 		032BDCB510106E1B00E26F44 /* LocateXMLRPCViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LocateXMLRPCViewController.xib; sourceTree = "<group>"; };
+		036ABF8F1141DF1A00181F3B /* FlippingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlippingViewController.h; sourceTree = "<group>"; };
+		036ABF901141DF1A00181F3B /* FlippingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlippingViewController.m; sourceTree = "<group>"; };
+		036ABF911141DF1A00181F3B /* EditPostParentModalViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditPostParentModalViewController.xib; sourceTree = "<group>"; };
+		036ABF941141E06300181F3B /* RotatingNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RotatingNavigationController.h; sourceTree = "<group>"; };
+		036ABF951141E06300181F3B /* RotatingNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RotatingNavigationController.m; sourceTree = "<group>"; };
 		03958060100D6CFC00850742 /* WPLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLabel.h; sourceTree = "<group>"; };
 		03958061100D6CFC00850742 /* WPLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLabel.m; sourceTree = "<group>"; };
 		0395885E100DA2DA00850742 /* ImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCache.h; sourceTree = "<group>"; };
@@ -448,6 +456,11 @@
 				45601C861141713100CDE805 /* CFirstLaunchViewController.h */,
 				45601C871141713100CDE805 /* CFirstLaunchViewController.m */,
 				45601C881141713100CDE805 /* CFirstLaunchViewController.xib */,
+				036ABF8F1141DF1A00181F3B /* FlippingViewController.h */,
+				036ABF901141DF1A00181F3B /* FlippingViewController.m */,
+				036ABF911141DF1A00181F3B /* EditPostParentModalViewController.xib */,
+				036ABF941141E06300181F3B /* RotatingNavigationController.h */,
+				036ABF951141E06300181F3B /* RotatingNavigationController.m */,
 			);
 			name = iPad;
 			sourceTree = "<group>";
@@ -987,6 +1000,7 @@
 				03B1E32B113DBDB300BBD1C6 /* PostViewController-iPad.xib in Resources */,
 				45B71DE5113EDAA100D0A33C /* Entitlements.plist in Resources */,
 				45601C8A1141713100CDE805 /* CFirstLaunchViewController.xib in Resources */,
+				036ABF931141DF1A00181F3B /* EditPostParentModalViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1071,6 +1085,8 @@
 				459FA613113DAA3700A9D096 /* WordPressSplitViewController.m in Sources */,
 				459FA676113DBCE000A9D096 /* CInvisibleToolbar.m in Sources */,
 				45601C891141713100CDE805 /* CFirstLaunchViewController.m in Sources */,
+				036ABF921141DF1A00181F3B /* FlippingViewController.m in Sources */,
+				036ABF961141E06300181F3B /* RotatingNavigationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

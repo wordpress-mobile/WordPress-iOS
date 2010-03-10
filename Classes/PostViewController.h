@@ -15,6 +15,7 @@
 @class WPNavigationLeftButtonView;
 @class CustomFieldsDetailController, WPPublishOnEditController;
 @class CInvisibleToolbar;
+@class FlippingViewController;
 
 @interface PostViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate, WPPhotosListProtocol> {
     IBOutlet UITabBarController *tabController;
@@ -50,8 +51,8 @@
 	
 	IBOutlet UIToolbar *editToolbar;
 	IBOutlet UIToolbar *previewToolbar;
-	UIBarButtonItem *editToolbarItem;
 	IBOutlet UIBarButtonItem *cancelEditButton;
+	FlippingViewController *editModalViewController;
 }
 
 @property (nonatomic, retain)   WPNavigationLeftButtonView *leftView;
@@ -79,6 +80,7 @@
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *settingsButton;
 @property (nonatomic, retain) IBOutlet UIToolbar *editToolbar;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *cancelEditButton;
+@property (nonatomic, retain) FlippingViewController *editModalViewController;
 
 - (IBAction)cancelView:(id)sender;
 - (void)refreshUIForCompose;

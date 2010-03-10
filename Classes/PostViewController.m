@@ -12,6 +12,8 @@
 #import "CommentsViewController.h"
 #import "WPPublishOnEditController.h"
 #import "CInvisibleToolbar.h"
+#import "FlippingViewController.h"
+#import "RotatingNavigationController.h"
 
 #define TAG_OFFSET 1010
 
@@ -47,6 +49,7 @@
 
 @synthesize editToolbar;
 @synthesize cancelEditButton;
+@synthesize editModalViewController;
 
 @dynamic leftBarButtonItemForEditPost;
 @dynamic rightBarButtonItemForEditPost;
@@ -90,6 +93,8 @@
 	[commentsButton release];
 	[photosButton release];
 	[settingsButton release];
+	
+	[editModalViewController release];
 
     [self stopTimer];
 
@@ -556,12 +561,6 @@
     postDetailEditController.tabBarItem.image = [UIImage imageNamed:@"write.png"];
     postDetailEditController.postDetailViewController = self;
     [array addObject:postDetailEditController];
-	
-	// the iPad has two of em...
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-		postDetailViewController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil];
-		[postDetailViewController disableInteraction];
-	}
     
     //if (mode == 1 || mode == 2 || mode == 3) { //don't load this tab if mode == 0 (new post) since comments are irrelevant to a brand new post
 	NSString *postStatus = [[BlogDataManager sharedDataManager].currentPost valueForKey:@"post_status"];
@@ -602,6 +601,25 @@
     postSettingsController.tabBarItem.image = [UIImage imageNamed:@"settings.png"];
     postSettingsController.postDetailViewController = self;
     [array addObject:postSettingsController];
+	
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		// the iPad has two detail views
+		postDetailViewController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil];
+		[postDetailViewController disableInteraction];
+		
+		if (!editModalViewController) {
+			editModalViewController = [[FlippingViewController alloc] init];
+			
+			RotatingNavigationController *editNav = [[[RotatingNavigationController alloc] initWithRootViewController:postDetailEditController] autorelease];
+			editModalViewController.frontViewController = editNav;
+			postDetailEditController.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:editToolbar] autorelease];
+			postDetailEditController.navigationItem.leftBarButtonItem = cancelEditButton;
+			
+			RotatingNavigationController *previewNav = [[[RotatingNavigationController alloc] initWithRootViewController:postPreviewController] autorelease];
+			editModalViewController.backViewController = previewNav;
+			postPreviewController.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:previewToolbar] autorelease];
+		}
+	}
 	
 	if (tabController) {
 		tabController.viewControllers = array;
@@ -775,15 +793,10 @@
 
 - (IBAction)editAction:(id)sender;
 {
-	UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:postDetailEditController] autorelease];
-	navController.modalPresentationStyle = UIModalPresentationPageSheet;
-	navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-	if (!editToolbarItem) {
-		editToolbarItem = [[UIBarButtonItem alloc] initWithCustomView:editToolbar];
-	}
-	postDetailEditController.navigationItem.rightBarButtonItem = editToolbarItem;
-	postDetailEditController.navigationItem.leftBarButtonItem = cancelEditButton;
-	[self.splitViewController presentModalViewController:navController animated:YES];
+	[editModalViewController setShowingFront:YES animated:NO];
+	editModalViewController.modalPresentationStyle = UIModalPresentationPageSheet;
+	editModalViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+	[self.splitViewController presentModalViewController:editModalViewController animated:YES];
 }
 
 - (IBAction)commentsAction:(id)sender;
@@ -818,18 +831,20 @@
 
 - (IBAction)previewAction:(id)sender;
 {
-//	[UIView beginAnimations:nil context:nil];
-	UINavigationController *modal = (UINavigationController *)self.modalViewController;
-	postPreviewController.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:previewToolbar] autorelease];
-	[modal setViewControllers:[NSArray arrayWithObject:postPreviewController]];
-//	[UIView commitAnimations];
+	[editModalViewController setShowingFront:NO animated:YES];
+//	UINavigationController *modal = (UINavigationController *)self.modalViewController;
+//	postPreviewController.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:previewToolbar] autorelease];
+//	postPreviewController.modalTransitionStyle = UIModalTransitionStylePartialCurl;
+//	postPreviewController.modalPresentationStyle = UIModalPresentationCurrentContext;
+//	[self presentModalViewController:postPreviewController animated:YES];
 }
 
 - (IBAction)previewEditAction:(id)sender;
 {
+	[editModalViewController setShowingFront:YES animated:YES];
 //	[UIView beginAnimations:nil context:nil];
-	UINavigationController *modal = (UINavigationController *)self.modalViewController;
-	[modal setViewControllers:[NSArray arrayWithObject:postDetailEditController]];
+//	UINavigationController *modal = (UINavigationController *)self.modalViewController;
+//	[modal setViewControllers:[NSArray arrayWithObject:postDetailEditController]];
 //	[UIView commitAnimations];
 }
 

@@ -12,7 +12,6 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="22"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -102,11 +101,33 @@
 				</object>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
+			<object class="IBUIToolbar" id="1021996377">
+				<nil key="NSNextResponder"/>
+				<int key="NSvFlags">266</int>
+				<string key="NSFrameSize">{132, 44}</string>
+				<bool key="IBUIOpaque">NO</bool>
+				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
+				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+				<object class="NSMutableArray" key="IBUIItems">
+					<bool key="EncodedWithXMLCoder">YES</bool>
+					<object class="IBUIBarButtonItem" id="297222377">
+						<string key="IBUITitle">Edit</string>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<int key="IBUIStyle">1</int>
+						<reference key="IBUIToolbar" ref="1021996377"/>
+					</object>
+					<object class="IBUIBarButtonItem" id="269158482">
+						<string key="IBUITitle">Publish</string>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<int key="IBUIStyle">2</int>
+						<reference key="IBUIToolbar" ref="1021996377"/>
+					</object>
+				</object>
+			</object>
 			<object class="IBUIToolbar" id="817429275">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">266</int>
 				<string key="NSFrameSize">{265, 44}</string>
-				<reference key="NSSuperview"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -150,29 +171,6 @@
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 				<int key="IBUIStyle">1</int>
 				<int key="IBUISystemItemIdentifier">1</int>
-			</object>
-			<object class="IBUIToolbar" id="1021996377">
-				<nil key="NSNextResponder"/>
-				<int key="NSvFlags">266</int>
-				<string key="NSFrameSize">{132, 44}</string>
-				<bool key="IBUIOpaque">NO</bool>
-				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
-				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-				<object class="NSMutableArray" key="IBUIItems">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-					<object class="IBUIBarButtonItem" id="297222377">
-						<string key="IBUITitle">Edit</string>
-						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<int key="IBUIStyle">1</int>
-						<reference key="IBUIToolbar" ref="1021996377"/>
-					</object>
-					<object class="IBUIBarButtonItem" id="269158482">
-						<string key="IBUITitle">Publish</string>
-						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<int key="IBUIStyle">2</int>
-						<reference key="IBUIToolbar" ref="1021996377"/>
-					</object>
-				</object>
 			</object>
 		</object>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -375,49 +373,6 @@
 						<reference key="parent" ref="217263663"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">22</int>
-						<reference key="object" ref="817429275"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="654794120"/>
-							<reference ref="245508903"/>
-							<reference ref="391292495"/>
-							<reference ref="851908908"/>
-							<reference ref="168442158"/>
-						</object>
-						<reference key="parent" ref="0"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">28</int>
-						<reference key="object" ref="654794120"/>
-						<reference key="parent" ref="817429275"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">27</int>
-						<reference key="object" ref="245508903"/>
-						<reference key="parent" ref="817429275"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">26</int>
-						<reference key="object" ref="391292495"/>
-						<reference key="parent" ref="817429275"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">25</int>
-						<reference key="object" ref="851908908"/>
-						<reference key="parent" ref="817429275"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">24</int>
-						<reference key="object" ref="168442158"/>
-						<reference key="parent" ref="817429275"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">40</int>
-						<reference key="object" ref="370061637"/>
-						<reference key="parent" ref="0"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">44</int>
 						<reference key="object" ref="1021996377"/>
 						<object class="NSMutableArray" key="children">
@@ -436,6 +391,49 @@
 						<int key="objectID">49</int>
 						<reference key="object" ref="269158482"/>
 						<reference key="parent" ref="1021996377"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">22</int>
+						<reference key="object" ref="817429275"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="168442158"/>
+							<reference ref="851908908"/>
+							<reference ref="391292495"/>
+							<reference ref="245508903"/>
+							<reference ref="654794120"/>
+						</object>
+						<reference key="parent" ref="0"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">24</int>
+						<reference key="object" ref="168442158"/>
+						<reference key="parent" ref="817429275"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">25</int>
+						<reference key="object" ref="851908908"/>
+						<reference key="parent" ref="817429275"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">26</int>
+						<reference key="object" ref="391292495"/>
+						<reference key="parent" ref="817429275"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">27</int>
+						<reference key="object" ref="245508903"/>
+						<reference key="parent" ref="817429275"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">28</int>
+						<reference key="object" ref="654794120"/>
+						<reference key="parent" ref="817429275"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">40</int>
+						<reference key="object" ref="370061637"/>
+						<reference key="parent" ref="0"/>
 					</object>
 				</object>
 			</object>
@@ -512,7 +510,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">57</int>
+			<int key="maxID">72</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
