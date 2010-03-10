@@ -71,6 +71,7 @@
 }
 
 - (void)locationError:(NSError *)error {
+	if (!self.view.window) return; // only alert if we're on-screen
 	UIAlertView *locationAlert = [[UIAlertView alloc]
 								  initWithTitle:@"Location Error"
 								  message:@"There was a problem updating your location. Please try again."
