@@ -39,6 +39,11 @@
 	}
 }
 
+- (CGSize)contentSizeForViewInPopover;
+{
+	return CGSizeMake(320.0, 320.0);
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }

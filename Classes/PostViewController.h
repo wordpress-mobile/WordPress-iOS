@@ -97,6 +97,7 @@
 
 - (IBAction)picturesAction:(id)sender;
 - (IBAction)settingsAction:(id)sender;
+- (IBAction)locationAction:(id)sender;
 
 - (IBAction)addPhotoAction:(id)sender;
 - (IBAction)previewAction:(id)sender;

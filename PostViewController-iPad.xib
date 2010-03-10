@@ -124,7 +124,7 @@
 			<object class="IBUIToolbar" id="817429275">
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">266</int>
-				<string key="NSFrameSize">{195, 44}</string>
+				<string key="NSFrameSize">{277, 44}</string>
 				<reference key="NSSuperview"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -137,6 +137,7 @@
 							<string key="NSResourceName">ToolbarIconGear.png</string>
 						</object>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<float key="IBUIWidth">44</float>
 						<reference key="IBUIToolbar" ref="817429275"/>
 					</object>
 					<object class="IBUIBarButtonItem" id="851908908">
@@ -145,6 +146,7 @@
 							<string key="NSResourceName">ToolbarIconCamera.png</string>
 						</object>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<float key="IBUIWidth">44</float>
 						<reference key="IBUIToolbar" ref="817429275"/>
 					</object>
 					<object class="IBUIBarButtonItem" id="391292495">
@@ -153,6 +155,7 @@
 							<string key="NSResourceName">ToolbarIconLocation.png</string>
 						</object>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<float key="IBUIWidth">44</float>
 						<reference key="IBUIToolbar" ref="817429275"/>
 					</object>
 					<object class="IBUIBarButtonItem" id="245508903">
@@ -161,6 +164,7 @@
 							<string key="NSResourceName">ToolbarIconEye.png</string>
 						</object>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<float key="IBUIWidth">44</float>
 						<reference key="IBUIToolbar" ref="817429275"/>
 					</object>
 					<object class="IBUIBarButtonItem" id="654794120">
@@ -253,14 +257,6 @@
 					<int key="connectionID">38</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">showLocationMapView:</string>
-						<reference key="source" ref="391292495"/>
-						<reference key="destination" ref="975951072"/>
-					</object>
-					<int key="connectionID">39</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">cancelEditButton</string>
 						<reference key="source" ref="372490531"/>
@@ -299,6 +295,14 @@
 						<reference key="destination" ref="372490531"/>
 					</object>
 					<int key="connectionID">55</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">locationAction:</string>
+						<reference key="source" ref="391292495"/>
+						<reference key="destination" ref="372490531"/>
+					</object>
+					<int key="connectionID">75</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -463,7 +467,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>CInvisibleToolbar</string>
-					<string>{{21, 789}, {195, 44}}</string>
+					<string>{{21, 489}, {277, 44}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -474,7 +478,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>CInvisibleToolbar</string>
-					<string>{{20, 708}, {57, 44}}</string>
+					<string>{{20, 408}, {57, 44}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -498,7 +502,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">72</int>
+			<int key="maxID">75</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -509,92 +513,6 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">Classes/CInvisibleToolbar.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">EditPostViewController</string>
-					<string key="superclassName">UIViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>endEditingAction:</string>
-							<string>endTextEnteringButtonAction:</string>
-							<string>getLocation:</string>
-							<string>pickPhotoFromCamera:</string>
-							<string>pickPhotoFromPhotoLibrary:</string>
-							<string>popoverDoneAction:</string>
-							<string>showAddNewCategoryView:</string>
-							<string>showCategoriesViewAction:</string>
-							<string>showCustomFieldsTableView:</string>
-							<string>showLocationMapView:</string>
-							<string>showPhotoUploadScreen:</string>
-							<string>showStatusViewAction:</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="outlets">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>categoriesLabel</string>
-							<string>categoriesTextField</string>
-							<string>contentView</string>
-							<string>customFieldsEditButton</string>
-							<string>locationButton</string>
-							<string>locationSpinner</string>
-							<string>newCategoryBarButtonItem</string>
-							<string>statusLabel</string>
-							<string>statusTextField</string>
-							<string>subView</string>
-							<string>tableViewForSelectingCustomFields</string>
-							<string>tagsLabel</string>
-							<string>tagsTextField</string>
-							<string>textView</string>
-							<string>textViewContentView</string>
-							<string>textViewPlaceHolderField</string>
-							<string>titleLabel</string>
-							<string>titleTextField</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>UILabel</string>
-							<string>UITextField</string>
-							<string>UIView</string>
-							<string>UIButton</string>
-							<string>UIButton</string>
-							<string>UIActivityIndicatorView</string>
-							<string>UIBarButtonItem</string>
-							<string>UILabel</string>
-							<string>UITextField</string>
-							<string>UIView</string>
-							<string>UITableView</string>
-							<string>UILabel</string>
-							<string>UITextField</string>
-							<string>UITextView</string>
-							<string>UIView</string>
-							<string>UITextField</string>
-							<string>UILabel</string>
-							<string>UITextField</string>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Classes/EditPostViewController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -615,6 +533,7 @@
 							<string>cancelView:</string>
 							<string>commentsAction:</string>
 							<string>editAction:</string>
+							<string>locationAction:</string>
 							<string>newPostAction:</string>
 							<string>picturesAction:</string>
 							<string>previewAction:</string>
@@ -624,6 +543,7 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>

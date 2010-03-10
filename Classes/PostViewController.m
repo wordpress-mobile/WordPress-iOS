@@ -844,6 +844,11 @@
 	self.popoverController = popover;
 }
 
+- (IBAction)locationAction:(id)sender;
+{
+	[postDetailEditController showLocationMapView:sender];
+}
+
 
 - (IBAction)previewAction:(id)sender;
 {
