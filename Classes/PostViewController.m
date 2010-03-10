@@ -548,7 +548,11 @@
 	
 	// post detail controllers
     if (postDetailEditController == nil) {
-		postDetailEditController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil];
+		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+			postDetailEditController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController-iPad" bundle:nil];
+		} else {
+			postDetailEditController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil];
+		}
     }
 	
     postDetailEditController.title = @"Write";
@@ -598,7 +602,7 @@
 	
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
 		// the iPad has two detail views
-		postDetailViewController = [[EditPostViewController alloc] initWithNibName:@"StaticEditPostViewController-iPad" bundle:nil];
+		postDetailViewController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController-iPad" bundle:nil];
 		[postDetailViewController disableInteraction];
 		
 		if (!editModalViewController) {

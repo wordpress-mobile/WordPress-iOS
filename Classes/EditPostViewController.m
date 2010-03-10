@@ -71,8 +71,18 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [self postionTextViewContentView];
 	
 	if (editingDisabled) {
-		// TODO: graphical indication of editability
-		subView.userInteractionEnabled = NO;
+		titleTextField.enabled = NO;
+		titleTextField.textColor = [UIColor grayColor];
+		
+		tagsTextField.enabled = NO;
+		tagsTextField.textColor = [UIColor grayColor];
+		
+		categoriesTextField.enabled = NO;
+		categoriesTextField.textColor = [UIColor grayColor];
+		
+		statusTextField.enabled = NO;
+		statusTextField.textColor = [UIColor grayColor];
+		
 		textView.editable = NO;
 	}
 	
@@ -213,6 +223,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			[(UINavigationController *)(self.popoverController.contentViewController) setViewControllers:[NSArray arrayWithObject:segmentedTableViewController] animated:NO];
 			segmentedTableViewController.navigationItem.leftBarButtonItem = popoverDoneButton;
 			CGRect popoverRect = [self.view convertRect:[categoriesTextField frame] fromView:[categoriesTextField superview]];
+			popoverRect.size.width = MIN(popoverRect.size.width, 100); // the text field is actually really big
 			segmentedTableViewController.contentSizeForViewInPopover = popoverController.contentViewController.contentSizeForViewInPopover;
 			[popoverController presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		} else {
@@ -254,6 +265,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		selectionTableViewController.navigationItem.leftBarButtonItem = popoverDoneButton;
 		selectionTableViewController.contentSizeForViewInPopover = popoverController.contentViewController.contentSizeForViewInPopover;
 		CGRect popoverRect = [self.view convertRect:[statusTextField frame] fromView:[statusTextField superview]];
+		popoverRect.size.width = MIN(popoverRect.size.width, 100);
 		[popoverController presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 	} else {
 		[postDetailViewController.navigationController pushViewController:selectionTableViewController animated:YES];
@@ -749,6 +761,26 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		}
         //NSLog(@"the text from aTextView is %@", text);
     }
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField;
+{
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		if (textField == categoriesTextField) {
+			[self populateSelectionsControllerWithCategories];
+			return NO;
+		}
+		else if (textField == statusTextField) {
+			[self populateSelectionsControllerWithStatuses];
+			return NO;
+		}
+	}
+	return YES;
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+	return YES;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {

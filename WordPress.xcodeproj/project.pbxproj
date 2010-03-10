@@ -16,7 +16,6 @@
 		036ABF921141DF1A00181F3B /* FlippingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 036ABF901141DF1A00181F3B /* FlippingViewController.m */; };
 		036ABF931141DF1A00181F3B /* EditPostParentModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 036ABF911141DF1A00181F3B /* EditPostParentModalViewController.xib */; };
 		036ABF961141E06300181F3B /* RotatingNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 036ABF951141E06300181F3B /* RotatingNavigationController.m */; };
-		036ABFCA1141E59700181F3B /* StaticEditPostViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 036ABFC91141E59700181F3B /* StaticEditPostViewController-iPad.xib */; };
 		03958062100D6CFC00850742 /* WPLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03958061100D6CFC00850742 /* WPLabel.m */; };
 		03958860100DA2DA00850742 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0395885F100DA2DA00850742 /* ImageCache.m */; };
 		039FFDA1100EDC1B00D8B279 /* GravatarImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 039FFDA0100EDC1B00D8B279 /* GravatarImageView.m */; };
@@ -37,6 +36,7 @@
 		03FF762911445B1400DCFC6F /* ToolbarIconEye.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FF762511445B1400DCFC6F /* ToolbarIconEye.png */; };
 		03FF762A11445B1400DCFC6F /* ToolbarIconGear.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FF762611445B1400DCFC6F /* ToolbarIconGear.png */; };
 		03FF762B11445B1400DCFC6F /* ToolbarIconLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FF762711445B1400DCFC6F /* ToolbarIconLocation.png */; };
+		03FF763311445F8E00DCFC6F /* EditPostViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FF763211445F8E00DCFC6F /* EditPostViewController-iPad.xib */; };
 		108F0FB40EC2B51C00D09FB6 /* PagesDraftsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 108F0FB30EC2B51C00D09FB6 /* PagesDraftsViewController.xib */; };
 		1D3623260D0F684500981E51 /* WordPressAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* WordPressAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
@@ -186,7 +186,6 @@
 		036ABF911141DF1A00181F3B /* EditPostParentModalViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditPostParentModalViewController.xib; sourceTree = "<group>"; };
 		036ABF941141E06300181F3B /* RotatingNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RotatingNavigationController.h; sourceTree = "<group>"; };
 		036ABF951141E06300181F3B /* RotatingNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RotatingNavigationController.m; sourceTree = "<group>"; };
-		036ABFC91141E59700181F3B /* StaticEditPostViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "StaticEditPostViewController-iPad.xib"; sourceTree = "<group>"; };
 		03958060100D6CFC00850742 /* WPLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLabel.h; sourceTree = "<group>"; };
 		03958061100D6CFC00850742 /* WPLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLabel.m; sourceTree = "<group>"; };
 		0395885E100DA2DA00850742 /* ImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCache.h; sourceTree = "<group>"; };
@@ -218,6 +217,7 @@
 		03FF762511445B1400DCFC6F /* ToolbarIconEye.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ToolbarIconEye.png; sourceTree = "<group>"; };
 		03FF762611445B1400DCFC6F /* ToolbarIconGear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ToolbarIconGear.png; sourceTree = "<group>"; };
 		03FF762711445B1400DCFC6F /* ToolbarIconLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ToolbarIconLocation.png; sourceTree = "<group>"; };
+		03FF763211445F8E00DCFC6F /* EditPostViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "EditPostViewController-iPad.xib"; sourceTree = "<group>"; };
 		108F0FB30EC2B51C00D09FB6 /* PagesDraftsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PagesDraftsViewController.xib; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* WordPressAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressAppDelegate.h; sourceTree = "<group>"; };
@@ -605,7 +605,7 @@
 				03B1DF29113D87C400BBD1C6 /* BlogSplitViewMasterViewController.xib */,
 				03B1DF2E113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.xib */,
 				03B1E32A113DBDB300BBD1C6 /* PostViewController-iPad.xib */,
-				036ABFC91141E59700181F3B /* StaticEditPostViewController-iPad.xib */,
+				03FF763211445F8E00DCFC6F /* EditPostViewController-iPad.xib */,
 			);
 			name = "Resources-iPad";
 			sourceTree = "<group>";
@@ -1016,11 +1016,11 @@
 				45B71DE5113EDAA100D0A33C /* Entitlements.plist in Resources */,
 				45601C8A1141713100CDE805 /* CFirstLaunchViewController.xib in Resources */,
 				036ABF931141DF1A00181F3B /* EditPostParentModalViewController.xib in Resources */,
-				036ABFCA1141E59700181F3B /* StaticEditPostViewController-iPad.xib in Resources */,
 				03FF762811445B1400DCFC6F /* ToolbarIconCamera.png in Resources */,
 				03FF762911445B1400DCFC6F /* ToolbarIconEye.png in Resources */,
 				03FF762A11445B1400DCFC6F /* ToolbarIconGear.png in Resources */,
 				03FF762B11445B1400DCFC6F /* ToolbarIconLocation.png in Resources */,
+				03FF763311445F8E00DCFC6F /* EditPostViewController-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
