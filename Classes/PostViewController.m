@@ -101,15 +101,17 @@
     [super dealloc];
 }
 
-- (UIPopoverController *)popoverController;
-{
-	if (!popoverController) {
-		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:nil] autorelease];
-		navController.contentSizeForViewInPopover = CGSizeMake(320.0, 480.0);
-		popoverController = [[UIPopoverController alloc] initWithContentViewController:navController];
-	}
-	return popoverController;
-}
+//- (UIPopoverController *)popoverController;
+//{
+//	if (!popoverController) {
+//		RotatingNavigationController *navController = [[[RotatingNavigationController alloc] initWithRootViewController:nil] autorelease];
+////		navController.contentSizeForViewInPopover = CGSizeMake(320.0, 480.0);
+//		NSLog(@"COntent size %@", NSStringFromCGSize(navController.contentSizeForViewInPopover));
+//		popoverController = [[UIPopoverController alloc] initWithContentViewController:navController];
+////		popoverController.popoverContentSize = CGSizeMake(320.0, 480.0);
+//	}
+//	return popoverController;
+//}
 
 - (IBAction)cancelView:(id)sender {
 	
@@ -306,7 +308,13 @@
 
 - (void)refreshUIForCurrentPost {
 //    [self setRightBarButtonItemForEditPost:nil];
-
+	
+	if (![[[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"title"] isEqualToString:@""]) {
+		self.navigationItem.title = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"title"];
+	}else{
+		self.navigationItem.title = @"Write";
+	}
+	
     [tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
     UIViewController *vc = [[tabController viewControllers] objectAtIndex:0];
     self.title = vc.title;
@@ -506,12 +514,6 @@
 	}
 
     [leftView setTarget:self withAction:@selector(cancelView:)];
-	
-	if (![[[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"title"] isEqualToString:@""]) {
-		self.navigationItem.title = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"title"];
-	}else{
-		self.navigationItem.title = @"Write";
-	}
 
     if (hasChanges == YES) {
         if ([[leftView title] isEqualToString:@"Posts"]) {
@@ -609,6 +611,11 @@
     [array addObject:postSettingsController];
 	
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+//			if (!popoverController) {
+//			RotatingNavigationController *navController = [[[RotatingNavigationController alloc] initWithRootViewController:commentsViewController] autorelease];
+//			popoverController = [[UIPopoverController alloc] initWithContentViewController:navController];
+//		}
+
 		// the iPad has two detail views
 		postDetailViewController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController-iPad" bundle:nil];
 		[postDetailViewController disableInteraction];
@@ -782,6 +789,7 @@
 		self.navigationItem.rightBarButtonItem = item;
 	} else if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
 		NSArray *currentItems = editToolbar.items;
+		if (currentItems.count < 1) return;
 		// TODO: uuuugly
 		NSMutableArray *newItems = [NSMutableArray arrayWithArray:currentItems];
 		
@@ -810,51 +818,41 @@
 
 - (IBAction)commentsAction:(id)sender;
 {
-	[(UINavigationController *)(self.popoverController.contentViewController) setViewControllers:[NSArray arrayWithObject:commentsViewController] animated:NO];
-	commentsViewController.contentSizeForViewInPopover = popoverController.contentViewController.contentSizeForViewInPopover;
-	[popoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	// why is this necessary?
+	commentsViewController.contentSizeForViewInPopover = commentsViewController.contentSizeForViewInPopover;
+	UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:commentsViewController] autorelease];
+	UIPopoverController *popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
+	[popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	self.popoverController = popover;
 }
 
 - (IBAction)picturesAction:(id)sender;
 {
-	[(UINavigationController *)(self.popoverController.contentViewController) setViewControllers:[NSArray arrayWithObject:photosListController] animated:NO];
-	photosListController.contentSizeForViewInPopover = popoverController.contentViewController.contentSizeForViewInPopover;
-	[popoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	photosListController.contentSizeForViewInPopover = photosListController.contentSizeForViewInPopover;
+	UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:photosListController] autorelease];
+	UIPopoverController *popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
+	[popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	self.popoverController = popover;
 }
 
 - (IBAction)settingsAction:(id)sender;
 {
-	[(UINavigationController *)(self.popoverController.contentViewController) setViewControllers:[NSArray arrayWithObject:postSettingsController] animated:NO];
-	postSettingsController.contentSizeForViewInPopover = popoverController.contentViewController.contentSizeForViewInPopover;
-	[popoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	postSettingsController.contentSizeForViewInPopover = postSettingsController.contentSizeForViewInPopover;
+	UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:postSettingsController] autorelease];
+	UIPopoverController *popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
+	[popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	self.popoverController = popover;
 }
 
-- (IBAction)addPhotoAction:(id)sender;
-{
-	if ([WPImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-        WPImagePickerController *picker = [[[UIImagePickerController alloc] init] autorelease];
-        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-		self.popoverController.contentViewController = picker;
-	}
-}
 
 - (IBAction)previewAction:(id)sender;
 {
 	[editModalViewController setShowingFront:NO animated:YES];
-//	UINavigationController *modal = (UINavigationController *)self.modalViewController;
-//	postPreviewController.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:previewToolbar] autorelease];
-//	postPreviewController.modalTransitionStyle = UIModalTransitionStylePartialCurl;
-//	postPreviewController.modalPresentationStyle = UIModalPresentationCurrentContext;
-//	[self presentModalViewController:postPreviewController animated:YES];
 }
 
 - (IBAction)previewEditAction:(id)sender;
 {
 	[editModalViewController setShowingFront:YES animated:YES];
-//	[UIView beginAnimations:nil context:nil];
-//	UINavigationController *modal = (UINavigationController *)self.modalViewController;
-//	[modal setViewControllers:[NSArray arrayWithObject:postDetailEditController]];
-//	[UIView commitAnimations];
 }
 
 - (IBAction)previewPublishAction:(id)sender;
@@ -880,7 +878,7 @@
 	if (!photoPickerPopover) {
 		photoPickerPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
 	}
-	picker.contentSizeForViewInPopover = popoverController.contentViewController.contentSizeForViewInPopover;
+	picker.contentSizeForViewInPopover = photosListController.contentSizeForViewInPopover;
 	photoPickerPopover.contentViewController = picker;
 	[popoverController dismissPopoverAnimated:NO];
 	

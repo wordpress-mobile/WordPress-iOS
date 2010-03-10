@@ -1176,7 +1176,10 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 		locationView.contentSizeForViewInPopover = popoverController.contentViewController.contentSizeForViewInPopover;
 		locationView.navigationItem.rightBarButtonItem = popoverDoneButton;
 		[(UINavigationController *)(self.popoverController.contentViewController) setViewControllers:[NSArray arrayWithObject:locationView] animated:NO];
-		[popoverController presentPopoverFromRect:[locationButton frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		if ([sender isKindOfClass:[UIBarButtonItem class]])
+			[popoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		else
+			[popoverController presentPopoverFromRect:[locationButton frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 	} else {
 		[self presentModalViewController:locationView animated:YES];
 	}

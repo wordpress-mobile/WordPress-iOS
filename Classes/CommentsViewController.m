@@ -62,6 +62,12 @@
     [super didReceiveMemoryWarning];
 }
 
+- (CGSize)contentSizeForViewInPopover;
+{
+	float height = MIN([commentsArray count] * COMMENT_ROW_HEIGHT + REFRESH_BUTTON_HEIGHT + kSectionHeaderHight, 600);
+	return CGSizeMake(320.0, height);
+}
+
 #pragma mark -
 #pragma mark View Lifecycle Methods
 

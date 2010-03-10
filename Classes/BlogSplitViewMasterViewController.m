@@ -236,6 +236,7 @@ self.currentPopoverController = theBlogMenuPopoverController;
 	detailViewController.navigationItem.rightBarButtonItem = newPostButton;
 	
 	if (detailViewController) {
+//		[detailViewController viewWillAppear:NO];
 		[detailNavController setViewControllers:[NSArray arrayWithObject:detailViewController] animated:NO];
 	}
 }

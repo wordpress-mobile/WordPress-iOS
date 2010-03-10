@@ -35,6 +35,11 @@
     [super dealloc];
 }
 
+- (CGSize)contentSizeForViewInPopover;
+{
+	return CGSizeMake(320.0, 275.0);
+}
+
 - (void)endEditingAction:(id)sender {
     [passwordTextField resignFirstResponder];
 }

@@ -24,6 +24,11 @@ static inline double radians(double degrees) {
 
 @synthesize addButton;
 
+- (CGSize)contentSizeForViewInPopover;
+{
+	return CGSizeMake(320.0, 275.0);
+}
+
 - (IBAction)showPhotoUploadScreen:(id)sender {
     [self showPhotoPickerActionSheet];
 }

@@ -16,4 +16,13 @@
     return YES;
 }
 
+- (CGSize)contentSizeForViewInPopover;
+{
+	CGSize childSize = self.visibleViewController.contentSizeForViewInPopover;
+	if (childSize.height == 0) {
+		childSize = CGSizeMake(320, 436);
+	}
+	return CGSizeMake(childSize.width, childSize.height + 44.0);
+}
+
 @end

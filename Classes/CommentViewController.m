@@ -65,6 +65,11 @@
     [super didReceiveMemoryWarning];
 }
 
+- (CGSize)contentSizeForViewInPopover;
+{
+	return CGSizeMake(320, 400);
+}
+
 #pragma mark -
 #pragma mark View Lifecycle
 
