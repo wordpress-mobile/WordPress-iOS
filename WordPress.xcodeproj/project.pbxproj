@@ -76,6 +76,8 @@
 		2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */; };
 		45601C891141713100CDE805 /* CFirstLaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45601C871141713100CDE805 /* CFirstLaunchViewController.m */; };
 		45601C8A1141713100CDE805 /* CFirstLaunchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45601C881141713100CDE805 /* CFirstLaunchViewController.xib */; };
+		4590D0B61146A323008F5D22 /* CNewBlogSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4590D0B41146A323008F5D22 /* CNewBlogSignupViewController.m */; };
+		4590D0B71146A323008F5D22 /* CNewBlogSignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4590D0B51146A323008F5D22 /* CNewBlogSignupViewController.xib */; };
 		459FA613113DAA3700A9D096 /* WordPressSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 459FA612113DAA3700A9D096 /* WordPressSplitViewController.m */; };
 		459FA676113DBCE000A9D096 /* CInvisibleToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 459FA675113DBCE000A9D096 /* CInvisibleToolbar.m */; };
 		45B71DE5113EDAA100D0A33C /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 45B71DE4113EDAA100D0A33C /* Entitlements.plist */; };
@@ -278,6 +280,9 @@
 		45601C861141713100CDE805 /* CFirstLaunchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFirstLaunchViewController.h; sourceTree = "<group>"; };
 		45601C871141713100CDE805 /* CFirstLaunchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFirstLaunchViewController.m; sourceTree = "<group>"; };
 		45601C881141713100CDE805 /* CFirstLaunchViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CFirstLaunchViewController.xib; sourceTree = "<group>"; };
+		4590D0B31146A323008F5D22 /* CNewBlogSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNewBlogSignupViewController.h; sourceTree = "<group>"; };
+		4590D0B41146A323008F5D22 /* CNewBlogSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CNewBlogSignupViewController.m; sourceTree = "<group>"; };
+		4590D0B51146A323008F5D22 /* CNewBlogSignupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CNewBlogSignupViewController.xib; sourceTree = "<group>"; };
 		459FA611113DAA3700A9D096 /* WordPressSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressSplitViewController.h; sourceTree = "<group>"; };
 		459FA612113DAA3700A9D096 /* WordPressSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressSplitViewController.m; sourceTree = "<group>"; };
 		459FA674113DBCE000A9D096 /* CInvisibleToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CInvisibleToolbar.h; sourceTree = "<group>"; };
@@ -475,6 +480,9 @@
 				036ABF911141DF1A00181F3B /* EditPostParentModalViewController.xib */,
 				036ABF941141E06300181F3B /* RotatingNavigationController.h */,
 				036ABF951141E06300181F3B /* RotatingNavigationController.m */,
+				4590D0B31146A323008F5D22 /* CNewBlogSignupViewController.h */,
+				4590D0B41146A323008F5D22 /* CNewBlogSignupViewController.m */,
+				4590D0B51146A323008F5D22 /* CNewBlogSignupViewController.xib */,
 			);
 			name = iPad;
 			sourceTree = "<group>";
@@ -1029,6 +1037,7 @@
 				03FF763311445F8E00DCFC6F /* EditPostViewController-iPad.xib in Resources */,
 				03FF79D11144C54600DCFC6F /* RecentCommentButtonSelected.png in Resources */,
 				03FF79D21144C54600DCFC6F /* RecentCommentButtonDeselected.png in Resources */,
+				4590D0B71146A323008F5D22 /* CNewBlogSignupViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1115,6 +1124,7 @@
 				45601C891141713100CDE805 /* CFirstLaunchViewController.m in Sources */,
 				036ABF921141DF1A00181F3B /* FlippingViewController.m in Sources */,
 				036ABF961141E06300181F3B /* RotatingNavigationController.m in Sources */,
+				4590D0B61146A323008F5D22 /* CNewBlogSignupViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

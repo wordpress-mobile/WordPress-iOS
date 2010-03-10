@@ -28,32 +28,30 @@ self.delegate = self;
 
 - (UINavigationController *)masterNavigationController
 {
-return([self.viewControllers objectAtIndex:0]);
+id theObject = [self.viewControllers objectAtIndex:0];
+NSAssert([theObject isKindOfClass:[UINavigationController class]], @"That is not a nav controller");
+return(theObject);
 }
 
 - (UINavigationController *)detailNavigationController
 {
-return([self.viewControllers objectAtIndex:1]);
+id theObject = [self.viewControllers objectAtIndex:1];
+NSAssert([theObject isKindOfClass:[UINavigationController class]], @"That is not a nav controller");
+return(theObject);
 }
 
 // Called when a button should be added to a toolbar for a hidden view controller
 - (void)splitViewController: (UISplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc
 {
+UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
 [barButtonItem setTitle:@"Items"];
-
-NSLog(@"%@", self.detailNavigationController.topViewController.navigationItem);
-[[[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem] setLeftBarButtonItem:barButtonItem animated:YES];
-
-NSLog(@"%@", barButtonItem.title);
-
+[theNavigationItem setLeftBarButtonItem:barButtonItem animated:YES];
 self.currentPopoverController = pc;
 }
 
 // Called when the view is shown again in the split view, invalidating the button and popover controller
 - (void)splitViewController: (UISplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
 {
-NSLog(@"B");
-
 [[[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem] setLeftBarButtonItem:NULL animated:YES];
 
 self.currentPopoverController = NULL;
@@ -62,10 +60,6 @@ self.currentPopoverController = NULL;
 // Called when the view controller is shown in a popover so the delegate can take action like hiding other popovers.
 - (void)splitViewController: (UISplitViewController*)svc popoverController: (UIPopoverController*)pc willPresentViewController:(UIViewController *)aViewController
 {
-NSLog(@"C");
 }
-
-
-
 
 @end

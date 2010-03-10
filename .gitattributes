@@ -27,6 +27,9 @@ Classes/CFirstLaunchViewController.m -text
 Classes/CFirstLaunchViewController.xib -text
 Classes/CInvisibleToolbar.h -text
 Classes/CInvisibleToolbar.m -text
+Classes/CNewBlogSignupViewController.h -text
+Classes/CNewBlogSignupViewController.m -text
+Classes/CNewBlogSignupViewController.xib -text
 Classes/CommentTableViewCell.h -text
 Classes/CommentTableViewCell.m -text
 Classes/CommentViewController.h -text
