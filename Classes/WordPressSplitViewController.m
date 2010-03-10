@@ -42,7 +42,7 @@ return([self.viewControllers objectAtIndex:1]);
 [barButtonItem setTitle:@"Items"];
 
 NSLog(@"%@", self.detailNavigationController.topViewController.navigationItem);
-[self.detailNavigationController.visibleViewController.navigationItem setLeftBarButtonItem:barButtonItem animated:YES];
+[[[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem] setLeftBarButtonItem:barButtonItem animated:YES];
 
 NSLog(@"%@", barButtonItem.title);
 
@@ -54,7 +54,7 @@ self.currentPopoverController = pc;
 {
 NSLog(@"B");
 
-[self.detailNavigationController.visibleViewController.navigationItem setLeftBarButtonItem:NULL animated:YES];
+[[[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem] setLeftBarButtonItem:NULL animated:YES];
 
 self.currentPopoverController = NULL;
 }
