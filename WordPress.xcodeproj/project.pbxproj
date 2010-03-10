@@ -33,6 +33,10 @@
 		03F298C410057AEC0097B29A /* RefreshButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F298C310057AEC0097B29A /* RefreshButtonView.m */; };
 		03FF35C5100423A10066ED95 /* BlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FF35C3100423A10066ED95 /* BlogViewController.m */; };
 		03FF35C6100423A10066ED95 /* BlogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FF35C4100423A10066ED95 /* BlogViewController.xib */; };
+		03FF762811445B1400DCFC6F /* ToolbarIconCamera.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FF762411445B1400DCFC6F /* ToolbarIconCamera.png */; };
+		03FF762911445B1400DCFC6F /* ToolbarIconEye.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FF762511445B1400DCFC6F /* ToolbarIconEye.png */; };
+		03FF762A11445B1400DCFC6F /* ToolbarIconGear.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FF762611445B1400DCFC6F /* ToolbarIconGear.png */; };
+		03FF762B11445B1400DCFC6F /* ToolbarIconLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FF762711445B1400DCFC6F /* ToolbarIconLocation.png */; };
 		108F0FB40EC2B51C00D09FB6 /* PagesDraftsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 108F0FB30EC2B51C00D09FB6 /* PagesDraftsViewController.xib */; };
 		1D3623260D0F684500981E51 /* WordPressAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* WordPressAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
@@ -210,6 +214,10 @@
 		03FF35C2100423A10066ED95 /* BlogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogViewController.h; sourceTree = "<group>"; };
 		03FF35C3100423A10066ED95 /* BlogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogViewController.m; sourceTree = "<group>"; };
 		03FF35C4100423A10066ED95 /* BlogViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BlogViewController.xib; sourceTree = "<group>"; };
+		03FF762411445B1400DCFC6F /* ToolbarIconCamera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ToolbarIconCamera.png; sourceTree = "<group>"; };
+		03FF762511445B1400DCFC6F /* ToolbarIconEye.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ToolbarIconEye.png; sourceTree = "<group>"; };
+		03FF762611445B1400DCFC6F /* ToolbarIconGear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ToolbarIconGear.png; sourceTree = "<group>"; };
+		03FF762711445B1400DCFC6F /* ToolbarIconLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ToolbarIconLocation.png; sourceTree = "<group>"; };
 		108F0FB30EC2B51C00D09FB6 /* PagesDraftsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PagesDraftsViewController.xib; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* WordPressAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressAppDelegate.h; sourceTree = "<group>"; };
@@ -662,6 +670,10 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				03FF762411445B1400DCFC6F /* ToolbarIconCamera.png */,
+				03FF762511445B1400DCFC6F /* ToolbarIconEye.png */,
+				03FF762611445B1400DCFC6F /* ToolbarIconGear.png */,
+				03FF762711445B1400DCFC6F /* ToolbarIconLocation.png */,
 				837576C111305C67002EAA27 /* gettingLocation.png */,
 				837576C211305C67002EAA27 /* hasLocation.png */,
 				837576C311305C67002EAA27 /* getLocation.png */,
@@ -1005,6 +1017,10 @@
 				45601C8A1141713100CDE805 /* CFirstLaunchViewController.xib in Resources */,
 				036ABF931141DF1A00181F3B /* EditPostParentModalViewController.xib in Resources */,
 				036ABFCA1141E59700181F3B /* StaticEditPostViewController-iPad.xib in Resources */,
+				03FF762811445B1400DCFC6F /* ToolbarIconCamera.png in Resources */,
+				03FF762911445B1400DCFC6F /* ToolbarIconEye.png in Resources */,
+				03FF762A11445B1400DCFC6F /* ToolbarIconGear.png in Resources */,
+				03FF762B11445B1400DCFC6F /* ToolbarIconLocation.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

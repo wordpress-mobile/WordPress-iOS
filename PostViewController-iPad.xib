@@ -106,7 +106,7 @@
 			<object class="IBUIToolbar" id="1021996377">
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">266</int>
-				<string key="NSFrameSize">{65, 44}</string>
+				<string key="NSFrameSize">{57, 44}</string>
 				<reference key="NSSuperview"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -124,7 +124,7 @@
 			<object class="IBUIToolbar" id="817429275">
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">266</int>
-				<string key="NSFrameSize">{245, 44}</string>
+				<string key="NSFrameSize">{195, 44}</string>
 				<reference key="NSSuperview"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -132,28 +132,35 @@
 				<object class="NSMutableArray" key="IBUIItems">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIBarButtonItem" id="168442158">
+						<object class="NSCustomResource" key="IBUIImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">ToolbarIconGear.png</string>
+						</object>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<float key="IBUIWidth">44</float>
 						<reference key="IBUIToolbar" ref="817429275"/>
-						<int key="IBUISystemItemIdentifier">9</int>
 					</object>
 					<object class="IBUIBarButtonItem" id="851908908">
+						<object class="NSCustomResource" key="IBUIImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">ToolbarIconCamera.png</string>
+						</object>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<float key="IBUIWidth">44</float>
 						<reference key="IBUIToolbar" ref="817429275"/>
-						<int key="IBUISystemItemIdentifier">15</int>
 					</object>
 					<object class="IBUIBarButtonItem" id="391292495">
+						<object class="NSCustomResource" key="IBUIImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">ToolbarIconLocation.png</string>
+						</object>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<float key="IBUIWidth">44</float>
 						<reference key="IBUIToolbar" ref="817429275"/>
-						<int key="IBUISystemItemIdentifier">13</int>
 					</object>
 					<object class="IBUIBarButtonItem" id="245508903">
-						<string key="IBUITitle">Preview</string>
+						<object class="NSCustomResource" key="IBUIImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">ToolbarIconEye.png</string>
+						</object>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<float key="IBUIWidth">70</float>
-						<int key="IBUIStyle">1</int>
 						<reference key="IBUIToolbar" ref="817429275"/>
 					</object>
 					<object class="IBUIBarButtonItem" id="654794120">
@@ -456,7 +463,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>CInvisibleToolbar</string>
-					<string>{{21, 789}, {245, 44}}</string>
+					<string>{{21, 789}, {195, 44}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -467,7 +474,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>CInvisibleToolbar</string>
-					<string>{{20, 708}, {65, 44}}</string>
+					<string>{{20, 708}, {57, 44}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -786,6 +793,23 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<string key="IBDocument.LastKnownRelativeProjectPath">WordPress.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
+		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<bool key="EncodedWithXMLCoder">YES</bool>
+			<object class="NSArray" key="dict.sortedKeys">
+				<bool key="EncodedWithXMLCoder">YES</bool>
+				<string>ToolbarIconCamera.png</string>
+				<string>ToolbarIconEye.png</string>
+				<string>ToolbarIconGear.png</string>
+				<string>ToolbarIconLocation.png</string>
+			</object>
+			<object class="NSMutableArray" key="dict.values">
+				<bool key="EncodedWithXMLCoder">YES</bool>
+				<string>{24, 18}</string>
+				<string>{24, 16}</string>
+				<string>{26, 26}</string>
+				<string>{20, 20}</string>
+			</object>
+		</object>
 		<string key="IBCocoaTouchPluginVersion">84</string>
 	</data>
 </archive>

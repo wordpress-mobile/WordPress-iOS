@@ -166,6 +166,10 @@ Classes/XMLRPC/XMLValueDecoder.m -text
 Resources-iPad/MainWindow-iPad.xib -text
 /RoundedRectBlack.png -text
 /StaticEditPostViewController-iPad.xib -text
+/ToolbarIconCamera.png -text svneol=unset#unset
+/ToolbarIconEye.png -text svneol=unset#unset
+/ToolbarIconGear.png -text svneol=unset#unset
+/ToolbarIconLocation.png -text svneol=unset#unset
 /WPAddCategoryViewController.xib -text
 /WPCategoriesController.xib -text
 /WPPhotoViewController.xib -text
