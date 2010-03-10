@@ -116,6 +116,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [self refreshUIForCurrentPost];
 }
 
+- (void)viewDidAppear:(BOOL)animated;
+{
+	if (textView.editable) {
+		[textView becomeFirstResponder];
+	}
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
 	[self dismissModalViewControllerAnimated:YES];
 }
@@ -656,7 +663,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		
         // leave cursor at end of inserted text
         endRange.location += text.length + replaceCount * 1; // length diff of "&nbsp" and "&#160;" is 1 character
-        aTextView.selectedRange = endRange; 
 		
         [updatedText release];
 		
@@ -1187,9 +1193,9 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[UIView setAnimationCurve:curve];
 	[UIView setAnimationDuration:animationDuration];
 	
-	CGRect frame = textViewContentView.frame;
+	CGRect frame = textView.frame;
 	frame.size.height -= kbBounds.size.height;
-	textViewContentView.frame = frame;
+	textView.frame = frame;
 	
 	[UIView commitAnimations];
 }
@@ -1207,9 +1213,9 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[UIView setAnimationCurve:curve];
 	[UIView setAnimationDuration:animationDuration];
 	
-	CGRect frame = textViewContentView.frame;
+	CGRect frame = textView.frame;
 	frame.size.height += kbBounds.size.height;
-	textViewContentView.frame = frame;
+	textView.frame = frame;
 	
 	[UIView commitAnimations];
 }
