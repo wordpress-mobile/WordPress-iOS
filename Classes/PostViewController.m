@@ -314,7 +314,11 @@
     [postDetailEditController refreshUIForCurrentPost];
     [postSettingsController reloadData];
     [photosListController refreshData];
-
+	
+	[commentsViewController setIndexForCurrentPost:[[BlogDataManager sharedDataManager] currentPostIndex]];
+	[commentsViewController refreshCommentsList];
+	commentsButton.enabled = ([commentsViewController.commentsArray count] > 0);
+	
     [self updatePhotosBadge];
 }
 
