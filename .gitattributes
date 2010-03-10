@@ -152,6 +152,7 @@ Classes/XMLRPC/XMLValueDecoder.m -text
 /Disclosure[!!-~]Indicator.png -text
 /EditBlogViewController.xib -text
 /EditPageViewController.xib -text
+/EditPostViewController-iPad.xib -text
 /EditPostViewController.xib -text
 /Entitlements.plist -text
 /Info.plist -text
