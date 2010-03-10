@@ -118,7 +118,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)viewDidAppear:(BOOL)animated;
 {
-	if (textView.editable) {
+	if (titleTextField.text.length < 1 && titleTextField.enabled) {
+		[titleTextField becomeFirstResponder];
+	}
+	else if (textView.editable) {
 		[textView becomeFirstResponder];
 	}
 }
@@ -202,6 +205,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
         categoriesTextField.text = [cats componentsJoinedByString:@", "];
 	else
         categoriesTextField.text = @"";
+	
+	// workaround for odd text view behavior on iPad
+	[textView setContentOffset:CGPointZero animated:NO];
 }
 
 - (void)populateSelectionsControllerWithCategories {
