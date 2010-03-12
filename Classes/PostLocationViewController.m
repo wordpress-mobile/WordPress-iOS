@@ -32,7 +32,7 @@
 		pin.title = @"Post Location";
 		[self.map addAnnotation:pin];
 		
-		buttonAction.title = @"Remove";
+		buttonAction.title = @"Remove Geotag";
 	}
 	else {
 		// Begin updating our coordinates to keep track of any movement
