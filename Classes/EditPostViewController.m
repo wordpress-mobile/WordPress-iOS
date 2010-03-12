@@ -90,6 +90,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		locationButton.hidden = NO;
 		if([self isPostLocationAware])
 			[locationButton setImage:[UIImage imageNamed:@"hasLocation.png"] forState:UIControlStateNormal];
+		else
+			[locationButton setImage:[UIImage imageNamed:@"getLocation.png"] forState:UIControlStateNormal];
 	}
     
     [self postionTextViewContentView];
@@ -987,7 +989,9 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 #pragma mark Location Methods
 
 - (BOOL)isPostLocationAware {
-	BOOL result, hasLatitude, hasLongitude = NO;
+	BOOL result = NO;
+	BOOL hasLatitude = NO;
+	BOOL hasLongitude = NO;
 	
     NSArray *customFieldsArray = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"custom_fields"];
 	for(NSDictionary *dict in customFieldsArray)
@@ -997,7 +1001,7 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 		if([[dict objectForKey:@"key"] isEqualToString:@"geo_longitude"])
 			hasLongitude = YES;
 		
-		if(hasLatitude && hasLongitude)
+		if((hasLatitude == YES) && (hasLongitude == YES))
 		{
 			result = YES;
 			break;

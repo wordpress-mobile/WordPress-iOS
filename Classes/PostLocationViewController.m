@@ -17,7 +17,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	
+}
+
+- (void)viewWillAppear:(BOOL)animated {
 	// If we have a predefined location, center the map on it immediately
 	if([self isPostLocationAware])
 	{
@@ -38,7 +40,7 @@
 		locationController.delegate = self;
 		[locationController.locationManager startUpdatingLocation];
 		
-		buttonAction.title = @"Geocode";
+		buttonAction.title = @"Geotag";
 	}
 }
 
@@ -95,7 +97,8 @@
 
 - (CLLocationCoordinate2D)getPostLocation {
 	CLLocationCoordinate2D result;
-	BOOL hasLatitude, hasLongitude = NO;
+	BOOL hasLatitude = NO;
+	BOOL hasLongitude = NO;
     NSArray *customFieldsArray = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"custom_fields"];
 	
 	for(NSDictionary *dict in customFieldsArray)
@@ -112,7 +115,7 @@
 			result.longitude = [[dict objectForKey:@"value"] doubleValue];
 		}
 		
-		if(hasLatitude && hasLongitude)
+		if((hasLatitude == YES) && (hasLongitude == YES))
 			break;
 	}
 	
@@ -120,7 +123,9 @@
 }
 
 - (BOOL)isPostLocationAware {
-	BOOL result, hasLatitude, hasLongitude = NO;
+	BOOL result = NO;
+	BOOL hasLatitude = NO;
+	BOOL hasLongitude = NO;
 	
     NSArray *customFieldsArray = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"custom_fields"];
 	for(NSDictionary *dict in customFieldsArray)
@@ -130,7 +135,7 @@
 		if([[dict objectForKey:@"key"] isEqualToString:@"geo_longitude"])
 			hasLongitude = YES;
 		
-		if(hasLatitude && hasLongitude)
+		if((hasLatitude == YES) && (hasLongitude == YES))
 		{
 			result = YES;
 			break;

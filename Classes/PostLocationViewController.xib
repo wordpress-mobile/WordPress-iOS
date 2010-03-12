@@ -70,7 +70,7 @@
 								<int key="IBUISystemItemIdentifier">5</int>
 							</object>
 							<object class="IBUIBarButtonItem" id="824223532">
-								<string key="IBUITitle">Geocode</string>
+								<string key="IBUITitle">Geotag</string>
 								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="149552597"/>
 							</object>

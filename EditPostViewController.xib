@@ -267,14 +267,11 @@
 											<string key="NSClassName">NSImage</string>
 											<string key="NSResourceName">hasLocation.png</string>
 										</object>
-										<object class="NSCustomResource" key="IBUISelectedImage">
-											<string key="NSClassName">NSImage</string>
-											<string key="NSResourceName">gettingLocation.png</string>
-										</object>
-										<object class="NSCustomResource" key="IBUINormalImage">
+										<object class="NSCustomResource" key="IBUISelectedImage" id="996267622">
 											<string key="NSClassName">NSImage</string>
 											<string key="NSResourceName">getLocation.png</string>
 										</object>
+										<reference key="IBUINormalImage" ref="996267622"/>
 									</object>
 									<object class="IBUIView" id="822584192">
 										<reference key="NSNextResponder" ref="735874146"/>
