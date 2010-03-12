@@ -91,11 +91,14 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		if([self isPostLocationAware])
 			[locationButton setImage:[UIImage imageNamed:@"hasLocation.png"] forState:UIControlStateNormal];
 		else
-			[locationButton setImage:[UIImage imageNamed:@"getLocation.png"] forState:UIControlStateNormal];
+			 [locationButton setImage:[UIImage imageNamed:@"getLocation.png"] forState:UIControlStateNormal];
+		
+		[locationButton setNeedsLayout];
+		[locationButton setNeedsDisplay];
 	}
     
-    [self postionTextViewContentView];
-    [self refreshUIForCurrentPost];
+    //[self postionTextViewContentView];
+    //[self refreshUIForCurrentPost];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -349,7 +352,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         textViewContentView.frame = frame;
 
         frame = subView.frame;
-        frame.origin.y -= 170.0f;
+        frame.origin.y -= 175.0f;
         //frame.origin.y -= 175.0f;
         subView.frame = frame;
 	
@@ -1011,40 +1014,6 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	}
 	
 	return result;
-}
-
-- (IBAction)getLocation:(id)sender {
-	if(([self isPostLocationAware]) || ([[BlogDataManager sharedDataManager] currentLocation] != nil))
-	{
-		[self showLocationMapView:sender];
-	}
-	else
-	{
-		locationController = [[LocationController alloc] init];
-		locationController.delegate = self;
-		[locationController.locationManager startUpdatingLocation];
-		[locationSpinner startAnimating];
-		[self.locationButton setHighlighted:NO];
-		[self.locationButton setSelected:NO];
-	}
-}
-
-- (void)locationUpdate:(CLLocation *)location {
-	// We got a successful location update
-	// Start the spinner and update our button state
-	[locationSpinner stopAnimating];
-	[self.locationButton setHighlighted:YES];
-	[self.locationButton setSelected:NO];
-	[[BlogDataManager sharedDataManager] setCurrentLocation:location];
-	postDetailViewController.hasChanges = YES;
-}
-
-- (void)locationError:(NSError *)error {
-	// Our location update failed
-	// Stop the spinner and update our button state
-	[locationSpinner stopAnimating];
-	[self.locationButton setHighlighted:NO];
-	[self.locationButton setSelected:NO];
 }
 
 - (IBAction)showLocationMapView:(id)sender {

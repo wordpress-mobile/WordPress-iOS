@@ -267,11 +267,10 @@
 											<string key="NSClassName">NSImage</string>
 											<string key="NSResourceName">hasLocation.png</string>
 										</object>
-										<object class="NSCustomResource" key="IBUISelectedImage" id="996267622">
+										<object class="NSCustomResource" key="IBUINormalImage">
 											<string key="NSClassName">NSImage</string>
 											<string key="NSResourceName">getLocation.png</string>
 										</object>
-										<reference key="IBUINormalImage" ref="996267622"/>
 									</object>
 									<object class="IBUIView" id="822584192">
 										<reference key="NSNextResponder" ref="735874146"/>
@@ -785,15 +784,6 @@
 					<int key="connectionID">360</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">getLocation:</string>
-						<reference key="source" ref="956232196"/>
-						<reference key="destination" ref="372490531"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">367</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">locationButton</string>
 						<reference key="source" ref="372490531"/>
@@ -808,6 +798,15 @@
 						<reference key="destination" ref="971671064"/>
 					</object>
 					<int key="connectionID">371</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">showLocationMapView:</string>
+						<reference key="source" ref="956232196"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">372</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1094,7 +1093,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{267, 246}, {320, 460}}</string>
+					<string>{{142, 203}, {320, 460}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
@@ -1114,7 +1113,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">371</int>
+			<int key="maxID">372</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1128,7 +1127,6 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>endEditingAction:</string>
 							<string>endTextEnteringButtonAction:</string>
-							<string>getLocation:</string>
 							<string>pickPhotoFromCamera:</string>
 							<string>pickPhotoFromPhotoLibrary:</string>
 							<string>showAddNewCategoryView:</string>
@@ -1140,7 +1138,6 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>

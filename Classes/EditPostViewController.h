@@ -4,7 +4,6 @@
 #import "WPImagePickerController.h"
 #import "CustomFieldsTableView.h"
 #import "EditPostModalViewController.h"
-#import "LocationController.h"
 
 #define kSelectionsStatusContext ((void *)1000)
 #define kSelectionsCategoriesContext ((void *)2000)
@@ -14,7 +13,7 @@
 @class WPSegmentedSelectionTableViewController;
 
 @interface EditPostViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
-                                                        UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, LocationControllerDelegate> {
+                                                        UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
     IBOutlet UITextView *textView;
     IBOutlet UITextField *titleTextField;
     IBOutlet UITextField *tagsTextField;
@@ -119,9 +118,6 @@
 
 // Location methods
 - (IBAction)showLocationMapView:(id)sender;
-- (IBAction)getLocation:(id)sender;
-- (void)locationUpdate:(CLLocation *)location;
-- (void)locationError:(NSError *)error;
 - (BOOL)isPostPublished;
 - (BOOL)isPostLocationAware;
 
