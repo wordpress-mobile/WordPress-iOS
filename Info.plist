@@ -27,7 +27,7 @@
 		<string>Icon_Spotlight.png</string>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2.2</string>
+	<string>2.4</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSMainNibFile</key>
