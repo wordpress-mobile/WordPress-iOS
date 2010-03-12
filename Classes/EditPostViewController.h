@@ -119,12 +119,10 @@
 
 // Location methods
 - (IBAction)showLocationMapView:(id)sender;
-- (void)saveLocationDataToPostContent;
-- (void)saveLocationDataToCustomFields;
 - (IBAction)getLocation:(id)sender;
 - (void)locationUpdate:(CLLocation *)location;
 - (void)locationError:(NSError *)error;
 - (BOOL)isPostPublished;
-- (BOOL)isPostLocationEnabled;
+- (BOOL)isPostLocationAware;
 
 @end

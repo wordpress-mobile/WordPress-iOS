@@ -62,25 +62,17 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUIBarButtonItem" id="323932855">
 								<string key="IBUITitle">Close</string>
-								<int key="IBUIStyle">1</int>
+								<int key="IBUIStyle">2</int>
 								<reference key="IBUIToolbar" ref="149552597"/>
 							</object>
 							<object class="IBUIBarButtonItem" id="378182859">
 								<reference key="IBUIToolbar" ref="149552597"/>
 								<int key="IBUISystemItemIdentifier">5</int>
 							</object>
-							<object class="IBUIBarButtonItem" id="505459103">
-								<reference key="IBUIToolbar" ref="149552597"/>
-								<int key="IBUISystemItemIdentifier">16</int>
-							</object>
-							<object class="IBUIBarButtonItem" id="677093731">
-								<float key="IBUIWidth">21</float>
-								<reference key="IBUIToolbar" ref="149552597"/>
-								<int key="IBUISystemItemIdentifier">6</int>
-							</object>
 							<object class="IBUIBarButtonItem" id="824223532">
+								<string key="IBUITitle">Geocode</string>
+								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="149552597"/>
-								<int key="IBUISystemItemIdentifier">4</int>
 							</object>
 						</object>
 					</object>
@@ -131,35 +123,19 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">buttonRemove</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="505459103"/>
-					</object>
-					<int key="connectionID">23</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">removeLocation:</string>
-						<reference key="source" ref="505459103"/>
-						<reference key="destination" ref="372490531"/>
-					</object>
-					<int key="connectionID">24</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">buttonAdd</string>
+						<string key="label">buttonAction</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="824223532"/>
 					</object>
-					<int key="connectionID">33</int>
+					<int key="connectionID">35</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">addLocation:</string>
+						<string key="label">buttonActionPressed:</string>
 						<reference key="source" ref="824223532"/>
 						<reference key="destination" ref="372490531"/>
 					</object>
-					<int key="connectionID">34</int>
+					<int key="connectionID">36</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -203,9 +179,7 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="378182859"/>
-							<reference ref="505459103"/>
 							<reference ref="323932855"/>
-							<reference ref="677093731"/>
 							<reference ref="824223532"/>
 						</object>
 						<reference key="parent" ref="191373211"/>
@@ -218,16 +192,6 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">18</int>
 						<reference key="object" ref="378182859"/>
-						<reference key="parent" ref="149552597"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">19</int>
-						<reference key="object" ref="505459103"/>
-						<reference key="parent" ref="149552597"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">31</int>
-						<reference key="object" ref="677093731"/>
 						<reference key="parent" ref="149552597"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -247,8 +211,6 @@
 					<string>1.IBPluginDependency</string>
 					<string>10.IBPluginDependency</string>
 					<string>18.IBPluginDependency</string>
-					<string>19.IBPluginDependency</string>
-					<string>31.IBPluginDependency</string>
 					<string>32.IBPluginDependency</string>
 					<string>4.IBPluginDependency</string>
 					<string>9.IBPluginDependency</string>
@@ -258,8 +220,6 @@
 					<string>PostLocationViewController</string>
 					<string>UIResponder</string>
 					<string>{{91, 260}, {320, 480}}</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -284,7 +244,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">34</int>
+			<int key="maxID">36</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -303,15 +263,11 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>addLocation:</string>
+							<string>buttonActionPressed:</string>
 							<string>dismiss:</string>
-							<string>removeLocation:</string>
-							<string>updateLocation:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 						</object>
@@ -320,15 +276,13 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>buttonAdd</string>
+							<string>buttonAction</string>
 							<string>buttonClose</string>
-							<string>buttonRemove</string>
 							<string>map</string>
 							<string>toolbar</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>UIBarButtonItem</string>
 							<string>UIBarButtonItem</string>
 							<string>UIBarButtonItem</string>
 							<string>MKMapView</string>

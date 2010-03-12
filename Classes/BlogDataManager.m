@@ -3537,7 +3537,6 @@ editBlogViewController, currentLocation;
 }
 
 - (BOOL)autoSaveCurrentPost {
-	NSLog(@"autosaving current post: %@", currentPost);
     return [currentPost writeToFile:[self autoSavePathForTheCurrentBlog] atomically:YES];
 }
 
@@ -3843,6 +3842,10 @@ editBlogViewController, currentLocation;
                          postParams,
                          nil
                         ];
+		
+		// Custom Fields
+		NSDictionary *customFields = [aPost valueForKey:@"custom_fields"];
+		NSLog(@"We have the following custom fields inside of savePost-new: %@", customFields);
 
         //TODO: take url from current post
         XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[currentBlog valueForKey:@"xmlrpc"]]];

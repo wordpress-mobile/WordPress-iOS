@@ -63,6 +63,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [super viewWillAppear:animated];
 	[self dismissModalViewControllerAnimated:YES];
     NSLog(@"inside PostDetailEditController:viewWillAppear, just called [super viewWillAppear:YES]");
+	NSLog(@"%@", [[BlogDataManager sharedDataManager] currentPost]);
 	//NSLog(@"inside PostDetailEditController:viewWillAppear, hasChanges equals:: %@", self.postDetailViewController.hasChanges);
 	//NSLog(@"BOOL = %d", (int)self.postDetailViewController.hasChanges);
 	//NSLog(@"hasChanges = %@\n", (self.postDetailViewController.hasChanges ? @"YES" : @"NO")); 
@@ -73,7 +74,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         customFieldsEditButton.hidden = NO;
         tableViewForSelectingCustomFields.hidden = NO;
         
-        //customFieldsEditButton.enabled = YES;
+        customFieldsEditButton.enabled = YES;
     } else {
         customFieldsEditButton.hidden = YES;
         tableViewForSelectingCustomFields.hidden = YES;
@@ -87,8 +88,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	}
 	else {
 		locationButton.hidden = NO;
-		[self.locationButton setHighlighted:YES];
-		[self getLocation:self];
+		if([self isPostLocationAware])
+			[locationButton setImage:[UIImage imageNamed:@"hasLocation.png"] forState:UIControlStateNormal];
 	}
     
     [self postionTextViewContentView];
@@ -109,25 +110,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		return YES;
 	else
 		return NO;
-}
-
-- (BOOL)isPostLocationAware {
-	BOOL result = NO;
-    NSArray *customFieldsArray = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"custom_fields"];
-	
-	// Loop through our custom fields.  If we find geo_latitude, return YES
-	// TODO:  Make this more elegant and thorough, perhaps looking for longitude as well?
-	for(NSDictionary *dict in customFieldsArray)
-	{
-		if([dict objectForKey:@"geo_latitude"] != nil)
-		{
-			result = YES;
-			NSLog(@"Post is Location aware.");
-			break;
-		}
-	}
-	
-	return result;
 }
 
 - (void)refreshUIForCompose {
@@ -1004,6 +986,29 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 #pragma mark -
 #pragma mark Location Methods
 
+- (BOOL)isPostLocationAware {
+	BOOL result, hasLatitude, hasLongitude = NO;
+	
+    NSArray *customFieldsArray = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"custom_fields"];
+	for(NSDictionary *dict in customFieldsArray)
+	{
+		if([[dict objectForKey:@"key"] isEqualToString:@"geo_latitude"])
+			hasLatitude = YES;
+		if([[dict objectForKey:@"key"] isEqualToString:@"geo_longitude"])
+			hasLongitude = YES;
+		
+		if(hasLatitude && hasLongitude)
+		{
+			result = YES;
+			break;
+		}
+		else
+			result = NO;
+	}
+	
+	return result;
+}
+
 - (IBAction)getLocation:(id)sender {
 	if(([self isPostLocationAware]) || ([[BlogDataManager sharedDataManager] currentLocation] != nil))
 	{
@@ -1027,7 +1032,6 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[self.locationButton setHighlighted:YES];
 	[self.locationButton setSelected:NO];
 	[[BlogDataManager sharedDataManager] setCurrentLocation:location];
-	[self saveLocationDataToCustomFields];
 	postDetailViewController.hasChanges = YES;
 }
 
@@ -1037,63 +1041,6 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[locationSpinner stopAnimating];
 	[self.locationButton setHighlighted:NO];
 	[self.locationButton setSelected:NO];
-}
-
-- (void)saveLocationDataToCustomFields {
-	// TODO: frsh.  Preferred method for sending geo data if a viable way to send
-	// custom fields to BlogDataManager can be determined.
-	// Grab our mutable array of custom fields from BlogDataManager
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
-    NSMutableArray *customFieldsArray = [dm.currentPost valueForKey:@"custom_fields"];
-	
-	// Remove existing values
-	NSMutableArray *discardedItems = [NSMutableArray array];
-	for(NSDictionary *dict in customFieldsArray)
-	{
-		if([dict objectForKey:@"geo_latitude"] != nil)
-		{
-			[discardedItems addObject:dict];
-			break;
-		}
-	}
-	[customFieldsArray removeObjectsInArray:discardedItems];
-	
-	// Format our values
-	// Latitude
-	NSString *latitude = [NSString stringWithFormat:@"%lf", 
-						  locationController.locationManager.location.coordinate.latitude];
-	// Longitude
-	NSString *longitude = [NSString stringWithFormat:@"%lf", 
-						   locationController.locationManager.location.coordinate.longitude];
-	// Accuracy
-	NSString *accuracy = [NSString stringWithFormat:@"%d", 
-								  locationController.locationManager.location.horizontalAccuracy];
-	
-	// Add latitude, accuracy, longitude, address, and public
-	// WP API fields: geo_latitude, geo_longitude, geo_accuracy, geo_public
-	NSMutableArray *keys = [NSMutableArray arrayWithObjects:@"geo_latitude",@"geo_longitude", @"geo_accuracy", @"geo_public", nil];
-	NSMutableArray *objects = [NSMutableArray arrayWithObjects:latitude, longitude, accuracy, @"1", nil];
-	NSDictionary *locationFields = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
-	
-	// Send our modified custom fields back to BlogDataManager
-	[customFieldsArray addObject:locationFields];
-	[dm.currentPost setValue:customFieldsArray forKey:@"custom_fields"];
-}
-
-- (void)saveLocationDataToPostContent {
-	if([[BlogDataManager sharedDataManager] currentLocation] != nil)
-	{
-		// Format our values
-		// Latitude
-		NSString *latitude = [NSString stringWithFormat:@"%f", 
-							  locationController.locationManager.location.coordinate.latitude];
-		// Longitude
-		NSString *longitude = [NSString stringWithFormat:@"%f", 
-							   locationController.locationManager.location.coordinate.longitude];
-		
-		textView.text = [NSString stringWithFormat:@"%@\nGEOPRESS_LOCATION([%@, %@])", 
-						 textView.text, latitude, longitude];
-	}
 }
 
 - (IBAction)showLocationMapView:(id)sender {

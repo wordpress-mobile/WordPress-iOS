@@ -14,13 +14,13 @@
 
 @interface PostLocationViewController : UIViewController <LocationControllerDelegate> {
 	IBOutlet MKMapView *map;
-	IBOutlet UIBarButtonItem *buttonClose, *buttonRemove, *buttonAdd;
+	IBOutlet UIBarButtonItem *buttonClose, *buttonAction;
 	IBOutlet UIToolbar *toolbar;
 	LocationController *locationController;
 }
 
 @property (nonatomic, retain) IBOutlet MKMapView *map;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *buttonClose, *buttonRemove, *buttonAdd;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *buttonClose, *buttonAction;
 @property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, retain) LocationController *locationController;
 
@@ -28,9 +28,9 @@
 - (void)locationError:(NSError *)error;
 - (void)centerMapOn:(CLLocation *)location;
 - (IBAction)dismiss:(id)sender;
-- (IBAction)removeLocation:(id)sender;
-- (IBAction)addLocation:(id)sender;
-- (IBAction)updateLocation:(id)sender;
+- (IBAction)buttonActionPressed:(id)sender;
+- (void)addLocation;
+- (void)removeLocation;
 - (BOOL)isPostLocationAware;
 - (CLLocationCoordinate2D)getPostLocation;
 

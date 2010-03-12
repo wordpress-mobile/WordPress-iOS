@@ -10,7 +10,7 @@
 
 
 @implementation PostLocationViewController
-@synthesize map, locationController, buttonClose, buttonRemove, buttonAdd, toolbar;
+@synthesize map, locationController, buttonClose, buttonAction, toolbar;
 
 #pragma mark -
 #pragma mark View Lifecycle
@@ -22,7 +22,6 @@
 	if([self isPostLocationAware])
 	{
 		// Post with previously determined Location data
-		NSLog(@"custom fields:%@", [[[BlogDataManager sharedDataManager] currentPost] objectForKey:@"custom_fields"]);
 		map.showsUserLocation = NO;
 		CLLocationCoordinate2D postCoordinates = [self getPostLocation];
 		CLLocation *postLocation = [[CLLocation alloc] initWithLatitude:postCoordinates.latitude longitude:postCoordinates.longitude];
@@ -30,18 +29,16 @@
 		PostAnnotation *pin = [[PostAnnotation alloc] initWithCoordinate:[self getPostLocation]];
 		pin.title = @"Post Location";
 		[self.map addAnnotation:pin];
-	
-		buttonAdd.enabled = NO;
-		buttonRemove.enabled = YES;
+		
+		buttonAction.title = @"Remove";
 	}
 	else {
-		buttonAdd.enabled = YES;
-		buttonRemove.enabled = NO;
-		
 		// Begin updating our coordinates to keep track of any movement
 		locationController = [[LocationController alloc] init];
 		locationController.delegate = self;
 		[locationController.locationManager startUpdatingLocation];
+		
+		buttonAction.title = @"Geocode";
 	}
 }
 
@@ -105,14 +102,14 @@
 	{
 		if([[dict objectForKey:@"key"] isEqualToString:@"geo_latitude"])
 		{
-			result.latitude = [[dict objectForKey:@"value"] doubleValue];
 			hasLatitude = YES;
+			result.latitude = [[dict objectForKey:@"value"] doubleValue];
 		}
 		
 		if([[dict objectForKey:@"key"] isEqualToString:@"geo_longitude"])
 		{
-			result.longitude = [[dict objectForKey:@"value"] doubleValue];
 			hasLongitude = YES;
+			result.longitude = [[dict objectForKey:@"value"] doubleValue];
 		}
 		
 		if(hasLatitude && hasLongitude)
@@ -123,57 +120,58 @@
 }
 
 - (BOOL)isPostLocationAware {
-	BOOL result = NO;
+	BOOL result, hasLatitude, hasLongitude = NO;
 	
     NSArray *customFieldsArray = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"custom_fields"];
 	for(NSDictionary *dict in customFieldsArray)
 	{
-		if([dict objectForKey:@"geo_latitude"] != nil)
+		if([[dict objectForKey:@"key"] isEqualToString:@"geo_latitude"])
+			hasLatitude = YES;
+		if([[dict objectForKey:@"key"] isEqualToString:@"geo_longitude"])
+			hasLongitude = YES;
+		
+		if(hasLatitude && hasLongitude)
 		{
 			result = YES;
 			break;
 		}
+		else
+			result = NO;
 	}
-	
-	NSLog(@"isPostLocationAware: %@", result?@"YES":@"NO");
 	
 	return result;
 }
 
-- (IBAction)removeLocation:(id)sender {
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-    NSMutableArray *customFieldsArray = [dm.currentPost valueForKey:@"custom_fields"];
-	
-	int dictsCount = [customFieldsArray count];
-	
-	for (int i = 0; i < dictsCount; i++) {
-		NSString *tempKey = [[customFieldsArray objectAtIndex:i] objectForKey:@"key"];
-		
-		if(([tempKey rangeOfString:@"geo_latitude"].location != NSNotFound) || ([tempKey rangeOfString:@"geo_longitude"].location != NSNotFound)) {
-			NSLog(@"Removing Location key: %@", tempKey);
-			[customFieldsArray removeObjectAtIndex:i];
-			i--;
-			dictsCount = [customFieldsArray count];
+- (IBAction)buttonActionPressed:(id)sender {
+	if([self isPostLocationAware])
+		[self removeLocation];
+	else
+		[self addLocation];
+}
+
+- (void)removeLocation {
+	NSLog(@"removeLocation has been called...");
+	NSMutableArray *customFieldsArray = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"custom_fields"];
+	for(NSMutableDictionary *dict in customFieldsArray)
+	{
+		NSLog(@"dict: %@", [dict objectForKey:@"key"]);
+		if(([[dict objectForKey:@"key"] isEqualToString:@"geo_latitude"]) ||
+			([[dict objectForKey:@"key"] isEqualToString:@"geo_longitude"]) ||
+			([[dict objectForKey:@"key"] isEqualToString:@"geo_accuracy"]) || 
+			([[dict objectForKey:@"key"] isEqualToString:@"geo_public"]))
+		{
+			NSLog(@"removing dict: %@", [dict objectForKey:@"key"]);
+			[dict removeObjectForKey:@"key"];
+			[dict removeObjectForKey:@"value"];
 		}
 	}
 	
-	[dm.currentPost setValue:customFieldsArray forKey:@"custom_fields"];
-	NSLog(@"custom fields after Location removal:%@", [dm.currentPost objectForKey:@"custom_fields"]);
+	[[[BlogDataManager sharedDataManager] currentPost] setValue:customFieldsArray forKey:@"custom_fields"];
 	
 	[self dismissModalViewControllerAnimated:YES];
 }
 
-- (IBAction)updateLocation:(id)sender {
-	locationController = [[LocationController alloc] init];
-	locationController.delegate = self;
-	[locationController.locationManager startUpdatingLocation];
-	
-	[self.map removeAnnotations:map.annotations];
-	self.map.showsUserLocation = YES;
-	[self addLocation:sender];
-}
-
-- (IBAction)addLocation:(id)sender {
+- (void)addLocation {
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
     NSMutableArray *customFieldsArray;
 	
@@ -182,58 +180,44 @@
 	else
 		customFieldsArray = [dm.currentPost objectForKey:@"custom_fields"];
 	
-	// Remove existing values
-	NSMutableArray *discardedItems = [NSMutableArray array];
-	for(NSDictionary *dict in customFieldsArray)
-	{
-		if([dict objectForKey:@"geo_latitude"] != nil)
-		{
-			[discardedItems addObject:dict];
-			break;
-		}
-		
-		if([dict objectForKey:@"geo_longitude"] != nil)
-		{
-			[discardedItems addObject:dict];
-			break;
-		}
-		
-		if([dict objectForKey:@"geo_accuracy"] != nil)
-		{
-			[discardedItems addObject:dict];
-			break;
-		}
-		
-		if([dict objectForKey:@"geo_public"] != nil)
-		{
-			[discardedItems addObject:dict];
-			break;
-		}
-	}
-	[customFieldsArray removeObjectsInArray:discardedItems];
-	
 	// Format our values
 	// Latitude
-	NSString *latitude = [NSString stringWithFormat:@"%lf", 
+	NSString *latitude = [NSString stringWithFormat:@"%f", 
 						  locationController.locationManager.location.coordinate.latitude];
 	// Longitude
-	NSString *longitude = [NSString stringWithFormat:@"%lf", 
+	NSString *longitude = [NSString stringWithFormat:@"%f", 
 						   locationController.locationManager.location.coordinate.longitude];
 	// Accuracy
 	//NSString *accuracy = [NSString stringWithFormat:@"%f", 
 	//					  locationController.locationManager.location.horizontalAccuracy];
-	NSString *accuracy = [[NSString alloc] initWithString:@"0"];
 	
 	// Add latitude, accuracy, longitude, address, and public
 	// WP API fields: geo_latitude, geo_longitude, geo_accuracy, geo_public
-	NSMutableArray *keys = [NSMutableArray arrayWithObjects:@"geo_latitude",@"geo_longitude", @"geo_accuracy", @"geo_public", nil];
-	NSMutableArray *objects = [NSMutableArray arrayWithObjects:latitude, longitude, accuracy, @"1", nil];
-	NSDictionary *locationFields = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+	//NSMutableArray *keys = [NSMutableArray arrayWithObjects:@"geo_latitude",@"geo_longitude", @"geo_accuracy", @"geo_public", nil];
+	//NSMutableArray *objects = [NSMutableArray arrayWithObjects:latitude, longitude, accuracy, @"1", nil];
+	NSMutableDictionary *dictLatitude = [[NSMutableDictionary alloc] init];
+	[dictLatitude setValue:@"geo_latitude" forKey:@"key"];
+	[dictLatitude setValue:latitude forKey:@"value"];
+	[customFieldsArray addObject:dictLatitude];
+	
+	NSMutableDictionary *dictLongitude = [[NSMutableDictionary alloc] init];
+	[dictLongitude setValue:@"geo_longitude" forKey:@"key"];
+	[dictLongitude setValue:longitude forKey:@"value"];
+	[customFieldsArray addObject:dictLongitude];
+	
+	NSMutableDictionary *dictAccuracy = [[NSMutableDictionary alloc] init];
+	[dictAccuracy setValue:@"geo_accuracy" forKey:@"key"];
+	[dictAccuracy setValue:[NSNumber numberWithInt:5] forKey:@"value"];
+	[customFieldsArray addObject:dictAccuracy];
+	
+	NSMutableDictionary *dictPublic = [[NSMutableDictionary alloc] init];
+	[dictPublic setValue:@"geo_public" forKey:@"key"];
+	[dictPublic setValue:@"1" forKey:@"value"];
+	[customFieldsArray addObject:dictPublic];
 	
 	// Send our modified custom fields back to BlogDataManager
-	[customFieldsArray addObject:locationFields];
-	[dm.currentPost setValue:customFieldsArray forKey:@"custom_fields"];	
-	[dm autoSaveCurrentPost];
+	[dm.currentPost setValue:customFieldsArray forKey:@"custom_fields"];
+	
 	[self dismissModalViewControllerAnimated:YES];
 }
 
@@ -242,11 +226,10 @@
 
 - (void)dealloc {
 	[map release];
-	[buttonAdd release];
+	[buttonAction release];
 	[toolbar release];
 	[locationController release];
 	[buttonClose release];
-	[buttonRemove release];
     [super dealloc];
 }
 
