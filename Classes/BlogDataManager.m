@@ -2832,6 +2832,8 @@ editBlogViewController;
             successFlag = YES;
         }
     }
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"PagesUpdated" object:nil];
 
     return successFlag;
 }
@@ -3561,7 +3563,7 @@ editBlogViewController;
     NSMutableDictionary *pageTitle = [self pageTitleForPage:currentPage];
     //[pageTitle setValue:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
 
-    if (!isLocaDraftsCurrent) {
+    if (currentPageIndex == -1) {
         [draftTitles insertObject:pageTitle atIndex:0];
 
         NSString *nextDraftID = [[[currentBlog valueForKey:@"kNextPageDraftIdStr"] retain] autorelease];
@@ -3591,6 +3593,7 @@ editBlogViewController;
 
     [self resetCurrentPage];
     [self resetCurrentPageDraft];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"DraftsUpdated" object:nil];
 }
 
 - (void)saveCurrentPostAsDraft {

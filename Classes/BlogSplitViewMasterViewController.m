@@ -68,6 +68,7 @@
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"DraftsUpdated" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"BlogsRefreshNotification" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"PagesUpdated" object:nil];
 	
 	[[BlogDataManager sharedDataManager] addObserver:self forKeyPath:@"currentPostIndex" options:NSKeyValueObservingOptionNew context:nil];
 	[[BlogDataManager sharedDataManager] addObserver:self forKeyPath:@"currentDraftIndex" options:NSKeyValueObservingOptionNew context:nil];
@@ -138,6 +139,7 @@
 	
 	[postsViewController loadPosts];
 	[pagesViewController loadPages];
+	
 	[commentsViewController refreshCommentsList];
 }
 
@@ -232,13 +234,18 @@ self.currentPopoverController = theBlogMenuPopoverController;
 	if (currentDataSource == postsViewController) {
 		detailViewController = postsViewController.postDetailViewController;
 		[detailViewController refreshUIForCurrentPost];
+		
+		UIBarButtonItem *newPostButton = [[[UIBarButtonItem alloc] initWithTitle:@"New Post" style:UIBarButtonItemStyleBordered target:self action:@selector(newPostAction:)] autorelease];
+		detailViewController.navigationItem.rightBarButtonItem = newPostButton;
 	}
 	else if (currentDataSource == pagesViewController) {
 		detailViewController = pagesViewController.pageDetailsController;
+		// I'm don it rong. should add a refreshUIForCurrentPage to PageViewController.
+		[detailViewController viewWillAppear:NO];
+		
+		UIBarButtonItem *newPageButton = [[[UIBarButtonItem alloc] initWithTitle:@"New Page" style:UIBarButtonItemStyleBordered target:self action:@selector(newPageAction:)] autorelease];
+		detailViewController.navigationItem.rightBarButtonItem = newPageButton;
 	}
-	
-	UIBarButtonItem *newPostButton = [[[UIBarButtonItem alloc] initWithTitle:@"New Post" style:UIBarButtonItemStyleBordered target:self action:@selector(newPostAction:)] autorelease];
-	detailViewController.navigationItem.rightBarButtonItem = newPostButton;
 	
 	if (detailViewController) {
 //		[detailViewController viewWillAppear:NO];
@@ -255,6 +262,14 @@ self.currentPopoverController = theBlogMenuPopoverController;
 	
 	PostViewController *detailViewController = postsViewController.postDetailViewController;
 	[detailViewController refreshUIForCompose];
+	[detailViewController editAction:self];
+}
+
+- (IBAction)newPageAction:(id)sender;
+{
+	[pagesViewController showAddNewPage];
+	
+	PageViewController *detailViewController = pagesViewController.pageDetailsController;
 	[detailViewController editAction:self];
 }
 

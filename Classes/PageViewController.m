@@ -350,6 +350,8 @@
     self.rightBarButtonItemForEditPost = nil;
     [dm removeAutoSavedCurrentPostFile];
     [self _dismiss];
+	// kludge
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"DraftsUpdated" object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
