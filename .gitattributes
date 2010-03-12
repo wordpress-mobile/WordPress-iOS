@@ -165,6 +165,9 @@ Classes/glossyButton-normal.png -text svneol=unset#unset
 /EditPostViewController-iPad.xib -text
 /EditPostViewController.xib -text
 /Entitlements.plist -text
+/Icon_Spotlight.png -text svneol=unset#unset
+/Icon_iPad.png -text svneol=unset#unset
+/Icon_iPhone.png -text svneol=unset#unset
 /Info.plist -text
 /MainBackground.png -text
 /MainWindow.xib -text
@@ -193,7 +196,6 @@ Resources-iPad/MainWindow-iPad.xib -text
 /WordPress.png -text
 WordPress.xcodeproj/project.pbxproj -text
 /WordPress_Prefix.pch -text
-/application-icon.png -text
 /backNav.png -text
 /backNavd.png -text
 /category_child.png -text
