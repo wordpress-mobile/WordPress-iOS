@@ -21,14 +21,13 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	// If we have a predefined location, center the map on it immediately
-	if([self isPostLocationAware])
+	if([self isPostGeotagged])
 	{
 		// Post with previously determined Location data
 		map.showsUserLocation = NO;
-		CLLocationCoordinate2D postCoordinates = [self getPostLocation];
-		CLLocation *postLocation = [[CLLocation alloc] initWithLatitude:postCoordinates.latitude longitude:postCoordinates.longitude];
+		CLLocation *postLocation = [self getPostLocation];
 		[self locationUpdate:postLocation];
-		PostAnnotation *pin = [[PostAnnotation alloc] initWithCoordinate:[self getPostLocation]];
+		PostAnnotation *pin = [[PostAnnotation alloc] initWithCoordinate:postLocation.coordinate];
 		pin.title = @"Post Location";
 		[self.map addAnnotation:pin];
 		
@@ -95,60 +94,51 @@
 	}
 }
 
-- (CLLocationCoordinate2D)getPostLocation {
-	CLLocationCoordinate2D result;
-	BOOL hasLatitude = NO;
-	BOOL hasLongitude = NO;
-    NSArray *customFieldsArray = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"custom_fields"];
-	
-	for(NSDictionary *dict in customFieldsArray)
-	{
-		if([[dict objectForKey:@"key"] isEqualToString:@"geo_latitude"])
-		{
-			hasLatitude = YES;
-			result.latitude = [[dict objectForKey:@"value"] doubleValue];
-		}
-		
-		if([[dict objectForKey:@"key"] isEqualToString:@"geo_longitude"])
-		{
-			hasLongitude = YES;
-			result.longitude = [[dict objectForKey:@"value"] doubleValue];
-		}
-		
-		if((hasLatitude == YES) && (hasLongitude == YES))
-			break;
-	}
-	
-	return result;
+- (BOOL)isPostGeotagged {
+	if([self getPostLocation] != nil)
+		return YES;
+	else
+		return NO;
 }
 
-- (BOOL)isPostLocationAware {
-	BOOL result = NO;
-	BOOL hasLatitude = NO;
-	BOOL hasLongitude = NO;
-	
+- (IBAction)showLocationMapView:(id)sender {
+	// Display the geotag view
+	PostLocationViewController *locationView = [[PostLocationViewController alloc] initWithNibName:@"PostLocationViewController" bundle:nil];
+	[self presentModalViewController:locationView animated:YES];
+}
+
+- (CLLocation *)getPostLocation {
+	CLLocation *result = nil;
+	double latitude = 0.0;
+	double longitude = 0.0;
     NSArray *customFieldsArray = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"custom_fields"];
+	
+	// Loop through the post's custom fields
 	for(NSDictionary *dict in customFieldsArray)
 	{
+		// Latitude
 		if([[dict objectForKey:@"key"] isEqualToString:@"geo_latitude"])
-			hasLatitude = YES;
-		if([[dict objectForKey:@"key"] isEqualToString:@"geo_longitude"])
-			hasLongitude = YES;
+			latitude = [[dict objectForKey:@"value"] doubleValue];
 		
-		if((hasLatitude == YES) && (hasLongitude == YES))
+		// Longitude
+		if([[dict objectForKey:@"key"] isEqualToString:@"geo_longitude"])
+			longitude = [[dict objectForKey:@"value"] doubleValue];
+		
+		// If we have both lat and long, we have a geotag
+		if((latitude != 0.0) && (longitude != 0.0))
 		{
-			result = YES;
+			result = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
 			break;
 		}
 		else
-			result = NO;
+			result = nil;
 	}
 	
 	return result;
 }
 
 - (IBAction)buttonActionPressed:(id)sender {
-	if([self isPostLocationAware])
+	if([self isPostGeotagged])
 		[self removeLocation];
 	else
 		[self addLocation];

@@ -63,6 +63,7 @@
 	NSUInteger textViewHeightForRotation;
 															
 	LocationController *locationController;
+	CLLocation *initialLocation;
 }
 
 @property (nonatomic, assign) PostViewController *postDetailViewController;
@@ -84,6 +85,7 @@
 //@property (nonatomic, retain) UITableView *selectCustomFields;
 
 @property (nonatomic, retain) LocationController *locationController;
+@property (nonatomic, retain) CLLocation *initialLocation;
 @property (nonatomic, retain) IBOutlet UIButton *locationButton;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *locationSpinner;
 
@@ -119,6 +121,7 @@
 // Location methods
 - (IBAction)showLocationMapView:(id)sender;
 - (BOOL)isPostPublished;
-- (BOOL)isPostLocationAware;
+- (BOOL)isPostGeotagged;
+- (CLLocation *)getPostLocation;
 
 @end

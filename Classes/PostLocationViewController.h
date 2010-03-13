@@ -31,7 +31,7 @@
 - (IBAction)buttonActionPressed:(id)sender;
 - (void)addLocation;
 - (void)removeLocation;
-- (BOOL)isPostLocationAware;
-- (CLLocationCoordinate2D)getPostLocation;
+- (BOOL)isPostGeotagged;
+- (CLLocation *)getPostLocation;
 
 @end
