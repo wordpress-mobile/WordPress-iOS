@@ -1028,7 +1028,7 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 - (IBAction)showLocationMapView:(id)sender {
 	// Display the geotag view
 	PostLocationViewController *locationView = [[PostLocationViewController alloc] initWithNibName:@"PostLocationViewController" bundle:nil];
-	[self presentModalViewController:locationView animated:YES];
+	[postDetailViewController presentModalViewController:locationView animated:YES];
 }
 
 - (CLLocation *)getPostLocation {
