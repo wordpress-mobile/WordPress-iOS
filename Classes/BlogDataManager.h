@@ -11,6 +11,7 @@
 #define WPNewCategoryCreatedAndUpdatedInBlogNotificationName @"WPNewCategoryCreatedAndUpdatedInBlog"
 
 #define kPostsDownloadCount @"postsDownloadCount"
+//#define kPagesDownloadCount @"pagesDownloadCount"
 #define kDraftsBlogIdStr @"localDrafts"
 #define kDraftsHostName @"iPhone"
 
@@ -132,7 +133,7 @@
 - (void)resetCurrentBlog;
 - (void)savePhotosDB;
 - (void)removeCurrentBlog;
-- (id)newDraftsBlog;
+//- (id)newDraftsBlog;
 - (void)addSyncPostsForBlogToQueue:(id)aBlog;
 - (void)syncPostsForAllBlogsToQueue:(id)sender;
 - (NSString *)blogDir:(id)aBlog;

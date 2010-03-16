@@ -14,6 +14,7 @@
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
 #import "WPProgressHUD.h"
+#import "IncrementPost.h"
 
 #define LOCAL_DRAFTS_SECTION    0
 #define PAGES_SECTION           1
@@ -51,7 +52,7 @@
     
     [newButtonItem release];
     [refreshButton release];
-    
+	    
     [super dealloc];
 }
 
@@ -85,7 +86,7 @@
 	if ([[Reachability sharedReachability] internetConnectionStatus])
 	{
 		if ([defaults boolForKey:@"refreshPagesRequired"]) {
-			[self refreshHandler];
+			//[self refreshHandler];
 			[defaults setBool:false forKey:@"refreshPagesRequired"];
 		}
 	}	
@@ -132,13 +133,14 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"PageCell";
     PostTableViewCell *cell = (PostTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
     id page = nil;
-
+	
     if (cell == nil) {
         cell = [[[PostTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
     }
-
+	
     if (indexPath.section == LOCAL_DRAFTS_SECTION) {
         page = [dm pageDraftTitleAtIndex:indexPath.row];
     } else {
@@ -152,20 +154,25 @@
 			//set the labels.  The spinner will be activiated if the row is selected in didSelectRow...
 			//get the total number of posts on the blog, make a string and pump it into the cell
 			int totalPages = [[BlogDataManager sharedDataManager] countOfPageTitles];
-			NSLog(@"totalPosts %d", totalPages);
+			NSLog(@"totalPages %d", totalPages);
+			if (totalPages == 0) {
+				return cell;
+			}else{
+				
 			NSString * totalString = [NSString stringWithFormat:@"%d pages total", totalPages];
 			[cell changeCellLabelsForUpdate:totalString:@"Load more pages":NO];
+			
 			return cell;
+			}
 		}
 		//if it wasn't the last cell, proceed as normal.
         page = [dm pageTitleAtIndex:indexPath.row];
     }
-
+	
     cell.post = page;
-
+	
     return cell;
 }
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
@@ -182,33 +189,44 @@
 
         [dataManager makePageDraftAtIndexCurrent:indexPath.row];
     } else {
-		//handle the case when it's the last row and is the "get more posts" cell
+		//handle the case when it's the last row and is the "get more posts" special cell
 		if (indexPath.row == [[BlogDataManager sharedDataManager] countOfPageTitles]) {
-			//get the cell
-			UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 			
-			//do "nothing"
-			[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+			//run the spinner in the background and change the text
+			[self performSelectorInBackground:@selector(addSpinnerToCell:) withObject:indexPath];
 			
-			//change the text in the cell to say Loading and change it's color
-			int totalPages = [[BlogDataManager sharedDataManager] countOfPageTitles];
-			NSLog(@"totalPosts %d", totalPages);
-			NSString * totalString = [NSString stringWithFormat:@"%d pages total", totalPages];
-			[((PostTableViewCell *)cell)  changeCellLabelsForUpdate:totalString:@"Loading more pages...":YES];
+			// deselect the row.
+			[self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+			
+			//init the Increment Post helper class class
+			IncrementPost *incrementPost = [[IncrementPost alloc] init];
+			
+			//run the "get more" function in the IncrementPost class and get metadata, then parse metadata for next 10 and get 10 more
+			[incrementPost loadOlderPages];
+			//TODO: JOHNB if this fails we should surface an alert with useful error message.
+			//here or in incrementPost?  Perhaps a bool return?
+			
+			//release the helper class
+			[incrementPost release];
+			
+			//turn of spinner and change text
+			[self performSelectorInBackground:@selector(removeSpinnerFromCell:) withObject:indexPath];
+			
+			//refresh the post list
+			[self loadPages];
+			
+			//get a reference to the cell
+			UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
+			
+			// solve the problem where the "load more" cell is reused and retains it's old formatting by forcing a redraw
+			[cell setNeedsDisplay];
 			
 			
-			//set the spinner (cast to PostTableView "type" in order to avoid warnings)
-			[((PostTableViewCell *)cell) runSpinner:YES];
-			
-			//run the "get more" function and get 10 more
-			
-			//turn off the spinner and reset the cell
-			//turn off spinner
-			//[((PostTableViewCell *)cell)  changeCellLabelsForUpdate:totalString:@"Load more pages...":NO];
-			
-			//update the tableview
+			//return
 			return;
+			
 		}
+		
 		
         id page = [dataManager pageTitleAtIndex:indexPath.row];
 
@@ -365,6 +383,44 @@
     [progressAlert release];
     [pool release];
 	
+}
+
+#pragma mark -
+#pragma mark Helper Methods for "Load More" cell
+- (void) addSpinnerToCell:(NSIndexPath *)indexPath {
+	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
+	
+	//get the cell
+	UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
+	
+	//set the spinner (cast to PostTableView "type" in order to avoid warnings)
+	[((PostTableViewCell *)cell) runSpinner:YES];
+	
+	//set up variables for cell text values
+	int totalPages = [[BlogDataManager sharedDataManager] countOfPageTitles];
+	NSString * totalString = [NSString stringWithFormat:@"%d pages loaded", totalPages];
+	
+	//change the text in the cell to say "Loading" and change text color
+	[((PostTableViewCell *)cell) changeCellLabelsForUpdate:totalString:@"Loading more pages...":YES];
+	
+	[apool release];
+}
+
+- (void) removeSpinnerFromCell:(NSIndexPath *)indexPath {
+	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
+	
+	//get the cell
+	UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
+	
+	//set up variables for changing text values
+	//int totalPages = [[BlogDataManager sharedDataManager] countOfPostTitles];
+	//NSString * totalString = [NSString stringWithFormat:@"%d pages loaded", totalPages];
+	
+	//turn off the spinner and change the text
+	//[((PostTableViewCell *)cell) changeCellLabelsForUpdate:totalString:@"Load more pages...":NO];
+	[((PostTableViewCell *)cell) runSpinner:NO];
+	
+	[apool release];
 }
 
 #pragma mark -

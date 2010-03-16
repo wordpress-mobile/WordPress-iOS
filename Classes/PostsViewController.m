@@ -82,7 +82,7 @@
 	if ([[Reachability sharedReachability] internetConnectionStatus])
 	{
 		if ([defaults boolForKey:@"refreshPostsRequired"]) {
-			[self refreshHandler];
+			//[self refreshHandler];
 			[defaults setBool:false forKey:@"refreshPostsRequired"];
 		}
 	}
@@ -92,7 +92,6 @@
         [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
     }
 	
-	NSLog(@"inside PostsViewController.m viewWillAppear");
 	[self handleAutoSavedContext:0];
 }
 
@@ -227,7 +226,7 @@
 			IncrementPost *incrementPost = [[IncrementPost alloc] init];
 			
 			//run the "get more" function in the IncrementPost class and get metadata, then parse metadata for next 10 and get 10 more
-			[incrementPost getPostMetadata];
+			[incrementPost loadOlderPosts];
 			//TODO: JOHNB if this fails we should surface an alert with useful error message.
 			//here or in incrementPost?  Perhaps a bool return?
 			
@@ -244,6 +243,7 @@
 			UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
 			
 			// solve the problem where the "load more" cell is reused and retains it's old formatting by forcing a redraw
+			NSLog(@"about to run setNeedsDisplay");
 			[cell setNeedsDisplay];
 			
 						
@@ -269,41 +269,7 @@
     [delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
 }
 
-- (void) addSpinnerToCell:(NSIndexPath *)indexPath {
-	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
-	
-	//get the cell
-	UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
-	
-	//set the spinner (cast to PostTableView "type" in order to avoid warnings)
-	[((PostTableViewCell *)cell) runSpinner:YES];
-	
-	//set up variables for cell text values
-	int totalPosts = [[BlogDataManager sharedDataManager] countOfPostTitles];
-	NSString * totalString = [NSString stringWithFormat:@"%d posts loaded", totalPosts];
-	
-	//change the text in the cell to say "Loading" and change text color
-	[((PostTableViewCell *)cell) changeCellLabelsForUpdate:totalString:@"Loading more posts...":YES];
-		
-	[apool release];
-}
 
-- (void) removeSpinnerFromCell:(NSIndexPath *)indexPath {
-	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
-	
-	//get the cell
-	UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
-	
-	//set up variables for changing text values
-	int totalPosts = [[BlogDataManager sharedDataManager] countOfPostTitles];
-	NSString * totalString = [NSString stringWithFormat:@"%d posts loaded", totalPosts];
-	
-	//turn off the spinner and change the text
-	[((PostTableViewCell *)cell) changeCellLabelsForUpdate:totalString:@"Load more posts...":NO];
-	[((PostTableViewCell *)cell) runSpinner:NO];
-	
-	[apool release];
-}
 
 
 
@@ -483,6 +449,46 @@
     [progressAlert release];
     [pool release];
 	
+}
+
+#pragma mark -
+#pragma mark Helper Methods for "Load More" cell
+
+
+- (void) addSpinnerToCell:(NSIndexPath *)indexPath {
+	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
+	
+	//get the cell
+	UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
+	
+	//set the spinner (cast to PostTableView "type" in order to avoid warnings)
+	[((PostTableViewCell *)cell) runSpinner:YES];
+	
+	//set up variables for cell text values
+	int totalPosts = [[BlogDataManager sharedDataManager] countOfPostTitles];
+	NSString * totalString = [NSString stringWithFormat:@"%d posts loaded", totalPosts];
+	
+	//change the text in the cell to say "Loading" and change text color
+	[((PostTableViewCell *)cell) changeCellLabelsForUpdate:totalString:@"Loading more posts...":YES];
+	
+	[apool release];
+}
+
+- (void) removeSpinnerFromCell:(NSIndexPath *)indexPath {
+	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
+	
+	//get the cell
+	UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
+	
+	//set up variables for changing text values
+	//int totalPosts = [[BlogDataManager sharedDataManager] countOfPostTitles];
+	//NSString * totalString = [NSString stringWithFormat:@"%d posts loaded", totalPosts];
+	
+	//turn off the spinner and change the text
+	//[((PostTableViewCell *)cell) changeCellLabelsForUpdate:totalString:@"Load more posts...":NO];
+	[((PostTableViewCell *)cell) runSpinner:NO];
+	
+	[apool release];
 }
 
 @end

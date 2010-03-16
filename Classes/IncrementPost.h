@@ -32,6 +32,7 @@
 @property (nonatomic, retain) NSArray *next10PostIdArray;
 @property (nonatomic, retain) BlogDataManager *dm;
 
--(BOOL)getPostMetadata;
+-(BOOL)loadOlderPosts;
+-(BOOL)loadOlderPages;
 
 @end
