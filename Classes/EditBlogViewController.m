@@ -50,7 +50,7 @@
     currentBlog = [[BlogDataManager sharedDataManager] currentBlog];
 
     noOfPostsTextField.text = [currentBlog valueForKey:kPostsDownloadCount];
-	NSLog(@"kpostsdownloadcount %@",[currentBlog valueForKey:kPostsDownloadCount]);
+	//NSLog(@"kpostsdownloadcount %@",[currentBlog valueForKey:kPostsDownloadCount]);
 
     self.navigationItem.rightBarButtonItem = saveBlogButton;
 
@@ -61,12 +61,12 @@
     }
 
     if ([self currentBlogIsNew]) {
-        [blogURLTextField becomeFirstResponder];
+        //[blogURLTextField becomeFirstResponder];	// Trac #353
         saveBlogButton.enabled = NO;
 	} else {
         [self disableLabel:blogURLLabel andTextField:blogURLTextField];
         [self disableLabel:userNameLabel andTextField:userNameTextField];
-        [passwordTextField becomeFirstResponder];
+        //[passwordTextField becomeFirstResponder];	// Trac #353
     }
 	
 	blogHTTPAuthViewController.authEnabled = [[currentBlog objectForKey:@"authEnabled"] boolValue];
