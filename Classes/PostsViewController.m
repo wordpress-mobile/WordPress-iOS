@@ -82,7 +82,7 @@
 	if ([[Reachability sharedReachability] internetConnectionStatus])
 	{
 		if ([defaults boolForKey:@"refreshPostsRequired"]) {
-			//[self refreshHandler];
+			[self refreshHandler];
 			[defaults setBool:false forKey:@"refreshPostsRequired"];
 		}
 	}
