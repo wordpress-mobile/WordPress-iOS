@@ -89,8 +89,8 @@ NSString *XMLRPCReceivedResponseNotification = @"XML-RPC Successfully Received R
 	
 		if ([urlres isKindOfClass:[NSHTTPURLResponse class]]) {
 		
-		NSLog(@"Received status code: %d %@", [(NSHTTPURLResponse *) urlres statusCode], 
-			  [NSHTTPURLResponse localizedStringForStatusCode:[(NSHTTPURLResponse *) urlres statusCode]]) ;
+		//NSLog(@"Received status code: %d %@", [(NSHTTPURLResponse *) urlres statusCode], 
+		//	  [NSHTTPURLResponse localizedStringForStatusCode:[(NSHTTPURLResponse *) urlres statusCode]]) ;
 	}
 	
 	

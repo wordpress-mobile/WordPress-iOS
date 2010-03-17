@@ -283,17 +283,17 @@ static WordPressAppDelegate *wordPressApp = NULL;
 			
 			//log the values for debugging
 			//TODO:FIXME:REMOVE THIS CODE!
-			NSLog(@"passwordForKeychain = %@ username = %@ urlForKeychain = %@", passwordForKeychain, username, urlForKeychain);
+			//NSLog(@"passwordForKeychain = %@ username = %@ urlForKeychain = %@", passwordForKeychain, username, urlForKeychain);
 			//save the password to the keychain using the necessary extra values
 			[blogDataManager saveBlogPasswordToKeychain:(passwordForKeychain?passwordForKeychain:@"") andUserName:username andBlogURL:urlForKeychain];
 			//remove the pwd from the data structure henceforth
-			NSLog(@"before removeObjectForKey");
-			NSLog(@"This is the value before the remove %@", [blogCopy objectForKey:@"pwd"]);
+			//NSLog(@"before removeObjectForKey");
+			//NSLog(@"This is the value before the remove %@", [blogCopy objectForKey:@"pwd"]);
 			[blogCopy removeObjectForKey:@"pwd"];
 			//[blogCopy setObject:@"asdf" forKey:@"pwd"];
 			//NSLog(@"Just ran: [blogCopy removeObjectForKey: @'pwd'] Saving Modified blog via setCurrentBlog as per usual");
-			NSLog(@"after removeObjectForKey");
-			NSLog(@"This is the value after the remove %@", [blogCopy objectForKey:@"pwd"]);
+			//NSLog(@"after removeObjectForKey");
+			//NSLog(@"This is the value after the remove %@", [blogCopy objectForKey:@"pwd"]);
 			//save blog by using BlogDataManager setCurrentBlog - which copies the blog passed in OVER the current blog if it's different
 			// compiler was unhappy with this because setCurrentBlog is a private method of the BlogDataManager class
 			//So, I made a public method in BlogDataManager that just calls setCurrentBlog... avoiding the compiler error
@@ -320,15 +320,15 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	//check if statsDate exists in user defaults, if not, add it and run stats since this is obviously the first time
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	if (![defaults objectForKey:@"statsDate"]){
-		NSLog(@"not a statsDate in userdefaults");
+		//NSLog(@"not a statsDate in userdefaults");
 		NSDate *theDate = [NSDate date];
-		NSLog(@"date %@", theDate);
+		//NSLog(@"date %@", theDate);
 		[defaults setObject:theDate forKey:@"statsDate"];
 		[self runStats];
 	}else{ 
 		//if statsDate existed, check if it's 7 days since last stats run, if it is > 7 days, run stats
 		NSDate *statsDate = [defaults objectForKey:@"statsDate"];
-		NSLog(@"statsDate %@", statsDate);
+		//NSLog(@"statsDate %@", statsDate);
 			NSDate *today = [NSDate date];
 			NSTimeInterval difference = [today timeIntervalSinceDate:statsDate];
 			NSTimeInterval statsInterval = 7 * 24 * 60 * 60; //number of seconds in 30 days
@@ -379,11 +379,11 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	[numblogs stringByUrlEncoding];
 	
 	
-	NSLog(@"UUID %@", deviceuuid);
-	NSLog(@"app version %@",appversion);
-	NSLog(@"language %@",language);
-	NSLog(@"os_version, %@", osversion);
-	NSLog(@"count of blogs %@",numblogs);
+	//NSLog(@"UUID %@", deviceuuid);
+	//NSLog(@"app version %@",appversion);
+	//NSLog(@"language %@",language);
+	//NSLog(@"os_version, %@", osversion);
+	//NSLog(@"count of blogs %@",numblogs);
 	
 	//handle data coming back
 	[statsData release];

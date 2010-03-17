@@ -82,7 +82,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
 	
 	// Check that Geotagging is enabled
-	if(![[NSUserDefaults standardUserDefaults] boolForKey:@"LocationSetting"])
+	NSString *geotaggingSettingName = [NSString stringWithFormat:@"%@-Geotagging", [[[BlogDataManager sharedDataManager]  currentBlog] valueForKey:kBlogId]];
+	if(![[NSUserDefaults standardUserDefaults] boolForKey:geotaggingSettingName])
 	{
 		// If disabled, hide our geo button
 		locationButton.hidden = YES;
@@ -98,7 +99,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			[locationButton setImage:[UIImage imageNamed:@"hasLocation.png"] forState:UIControlStateNormal];
 			
 			CLLocation *postLocation = [self getPostLocation];
-			NSLog(@"postLocation: %@", postLocation);
 			if(postLocation != nil)
 			{
 				// If our location has changed from its initial value, show the Save button

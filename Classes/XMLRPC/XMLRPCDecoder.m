@@ -112,7 +112,6 @@
 
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError
 {
-	NSLog(@"inside parseErrorOccured");
 }
 
 - (id)decode

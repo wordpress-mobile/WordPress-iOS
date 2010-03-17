@@ -18,7 +18,7 @@
 @implementation PostSettingsViewController
 
 @synthesize postDetailViewController, tableView, passwordTextField, commentsSwitchControl;
-@synthesize pingsSwitchControl, locationLabel, locationSwitchControl, locationTableViewCell; //, customFieldsSwitchControl;
+@synthesize pingsSwitchControl; //, customFieldsSwitchControl;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -29,9 +29,6 @@
 }
 
 - (void)dealloc {
-	[locationLabel release];
-	[locationSwitchControl release];
-	[locationTableViewCell release];
     [super dealloc];
 }
 
@@ -108,7 +105,6 @@
     [customFieldsSwitchControl addTarget:self action:@selector(controlEventValueChanged:) forControlEvents:UIControlEventValueChanged];
 
     [resizePhotoControl addTarget:self action:@selector(changeResizePhotosOptions) forControlEvents:UIControlEventAllTouchEvents];
-    [locationSwitchControl addTarget:self action:@selector(changeLocationOptions) forControlEvents:UIControlEventAllTouchEvents];
 }
 
 - (void)changeResizePhotosOptions {
@@ -117,28 +113,10 @@
      forKey:kResizePhotoSetting];
 }
 
-- (void)changeLocationOptions {
-	// WP API fields: geo_latitude, geo_longitude, geo_accuracy, geo_public
-    postDetailViewController.hasChanges = YES;
-    [[BlogDataManager sharedDataManager].currentPost setValue:[NSNumber numberWithInt:locationSwitchControl.on]
-													   forKey:@"geo_public"];
-	if(locationSwitchControl.on)
-		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"LocationSetting"];
-	else
-		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"LocationSetting"];
-}
-
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-	NSLog(@"viewWillAppear: PostSettingsViewController, just called postDetailViewController shouldAutorotate");
     [self reloadData];
 	[self setupHelpButton];
-	
-	NSLog(@"LocationSetting: %@", [[NSUserDefaults standardUserDefaults] valueForKey:@"LocationSetting"]);
-	if([[NSUserDefaults standardUserDefaults] boolForKey:@"LocationSetting"])
-		locationSwitchControl.on == YES;
-	else
-		locationSwitchControl.on == NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -173,7 +151,7 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 4;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -257,12 +235,6 @@
                 resizePhotoControl.on = [value boolValue];
                 return resizePhotoViewCell;
             }
-        case 3:
-            if (indexPath.row == 0) {
-                locationSwitchControl.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"LocationSetting"];
-                return locationTableViewCell;
-            }
-            break;
         default:
             break;
     }

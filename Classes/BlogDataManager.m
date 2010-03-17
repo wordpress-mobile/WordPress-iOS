@@ -1664,7 +1664,7 @@ editBlogViewController, currentLocation;
 	
 	
 	
-	NSArray *test = [NSArray arrayWithObjects:blogid, username, pwd, maxToFetch, nil ];
+	//NSArray *test = [NSArray arrayWithObjects:blogid, username, pwd, maxToFetch, nil ];
 	//NSLog(@"the array for get recent posts %@",test);
 	
 	//NSLog(@"currentblog %@", currentBlog);
