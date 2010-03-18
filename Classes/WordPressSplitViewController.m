@@ -44,7 +44,7 @@ return(theObject);
 - (void)splitViewController: (UISplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc
 {
 UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
-[barButtonItem setTitle:@"Items"];
+[barButtonItem setTitle:@"My Blog"];
 [theNavigationItem setLeftBarButtonItem:barButtonItem animated:YES];
 self.currentPopoverController = pc;
 }
