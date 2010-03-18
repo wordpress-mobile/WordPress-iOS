@@ -62,8 +62,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 	[self dismissModalViewControllerAnimated:YES];
-    NSLog(@"inside PostDetailEditController:viewWillAppear, just called [super viewWillAppear:YES]");
-	NSLog(@"%@", [[BlogDataManager sharedDataManager] currentPost]);
+    //NSLog(@"inside PostDetailEditController:viewWillAppear, just called [super viewWillAppear:YES]");
+	//NSLog(@"%@", [[BlogDataManager sharedDataManager] currentPost]);
 	//NSLog(@"inside PostDetailEditController:viewWillAppear, hasChanges equals:: %@", self.postDetailViewController.hasChanges);
 	//NSLog(@"BOOL = %d", (int)self.postDetailViewController.hasChanges);
 	//NSLog(@"hasChanges = %@\n", (self.postDetailViewController.hasChanges ? @"YES" : @"NO")); 
@@ -1020,9 +1020,15 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (BOOL)isPostGeotagged {
 	if([self getPostLocation] != nil)
+	{
+		NSLog(@"Post is geotagged.");
 		return YES;
+	}
 	else
+	{
+		NSLog(@"Post is not geotagged.");
 		return NO;
+	}
 }
 
 - (IBAction)showLocationMapView:(id)sender {

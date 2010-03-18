@@ -146,22 +146,22 @@
 
                 blogURLTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
                 return blogURLTableViewCell;
-            } else if (indexPath.section == 3) {
+            } else if (indexPath.section == 2) {
+				return geotaggingTableViewCell;
+			} else if (indexPath.section == 3) {
                 NSNumber *value = [currentBlog valueForKey:kResizePhotoSetting];
-
+				
                 if (value == nil) {
                     value = [NSNumber numberWithInt:0];
                     [currentBlog setValue:value forKey:kResizePhotoSetting];
                 }
-
+				
                 resizePhotoControl.on = [value boolValue];
                 return resizePhotoViewCell;
-            } else if (indexPath.section == 2) {
+            } else if (indexPath.section == 4) {
 				BOOL httpAuthEnabled = [[currentBlog objectForKey:@"authEnabled"] boolValue];
 				blogHTTPAuthTextField.text = httpAuthEnabled ? @"On" : @"Off";
 				return blogHTTPAuthTableViewCell;
-			} else if (indexPath.section == 4) {
-				return geotaggingTableViewCell;
 			}
 			else {
                 noOfPostsTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -225,7 +225,7 @@
     if (indexPath.section == 1) {
         [self populateSelectionsControllerWithNoOfRecentPosts];
     }
-	if (indexPath.section == 2) {
+	if (indexPath.section == 4) {
 		blogHTTPAuthViewController.title = @"HTTP Authentication";
 		[self.navigationController pushViewController:blogHTTPAuthViewController animated:YES];
     }

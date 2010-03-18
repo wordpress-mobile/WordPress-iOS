@@ -3954,6 +3954,7 @@ editBlogViewController, currentLocation;
         [postParams setObject:[[aPost valueForKey:@"not_used_allow_comments"] stringValue] forKey:@"not_used_allow_comments"];
         [postParams setObject:[[aPost valueForKey:@"not_used_allow_pings"] stringValue] forKey:@"not_used_allow_pings"];
         [postParams setObject:[aPost valueForKey:@"wp_password"] forKey:@"wp_password"];
+		[postParams setObject:[aPost valueForKey:@"custom_fields"] forKey:@"custom_fields"];
         NSString *draftId = [aPost valueForKey:@"draftid"];
 		NSLog(@"draft id %@", draftId);
         NSDictionary *draftPost = [self currentPost];
@@ -3967,7 +3968,6 @@ editBlogViewController, currentLocation;
 		
 		// Custom Fields
 		NSDictionary *customFields = [aPost valueForKey:@"custom_fields"];
-		NSLog(@"We have the following custom fields inside of savePost-new: %@", customFields);
 
         //TODO: take url from current post
         XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[currentBlog valueForKey:@"xmlrpc"]]];
