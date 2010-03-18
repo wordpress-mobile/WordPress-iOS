@@ -274,7 +274,9 @@
 - (void)addProgressIndicator {
     NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
 
+	validationView.frame = self.view.bounds;
     [self.view addSubview:validationView];
+	
     validationView.alpha = 0.0;
     [self.view bringSubviewToFront:validationView];
     [UIView beginAnimations:nil context:nil];
