@@ -8,9 +8,9 @@
 
 #import "WordPressSplitViewController.h"
 
-@implementation WordPressSplitViewController
+#import "UIPopoverController_Extensions.h"
 
-@synthesize currentPopoverController;
+@implementation WordPressSplitViewController
 
 - (void)viewDidLoad
 {
@@ -46,7 +46,7 @@ return(theObject);
 UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
 [barButtonItem setTitle:@"My Blog"];
 [theNavigationItem setLeftBarButtonItem:barButtonItem animated:YES];
-self.currentPopoverController = pc;
+[UIPopoverController setCurrentPopoverController:pc];
 }
 
 // Called when the view is shown again in the split view, invalidating the button and popover controller
@@ -54,7 +54,9 @@ self.currentPopoverController = pc;
 {
 [[[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem] setLeftBarButtonItem:NULL animated:YES];
 
-self.currentPopoverController = NULL;
+
+
+[UIPopoverController setCurrentPopoverController:NULL];
 }
 
 // Called when the view controller is shown in a popover so the delegate can take action like hiding other popovers.

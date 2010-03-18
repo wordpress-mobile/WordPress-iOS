@@ -11,6 +11,7 @@
 #import "NSString+XMLExtensions.h" 
 #import "Blog.h"
 #import "BlogSplitViewMasterViewController.h"
+#import "UIPopoverController_Extensions.h"
 
 @interface BlogsViewController (Private)
 
@@ -195,6 +196,9 @@
 }
 
 - (void)tableView:(UITableView *)atableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+		[UIPopoverController setCurrentPopoverController:NULL];
+
     BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 
     if ([self.tableView cellForRowAtIndexPath:indexPath].editing) {

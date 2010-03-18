@@ -14,6 +14,7 @@
 #import "CInvisibleToolbar.h"
 #import "FlippingViewController.h"
 #import "RotatingNavigationController.h"
+#import "UIPopoverController_Extensions.h"
 
 #define TAG_OFFSET 1010
 
@@ -41,7 +42,6 @@
 
 @synthesize toolbar;
 @synthesize contentView;
-@synthesize popoverController;
 
 @synthesize commentsButton;
 @synthesize photosButton;
@@ -88,7 +88,6 @@
 	
 	[toolbar release];
 	[contentView release];
-	[popoverController release];
 	[photoPickerPopover release];
 	[commentsButton release];
 	[photosButton release];
@@ -100,18 +99,6 @@
 
     [super dealloc];
 }
-
-//- (UIPopoverController *)popoverController;
-//{
-//	if (!popoverController) {
-//		RotatingNavigationController *navController = [[[RotatingNavigationController alloc] initWithRootViewController:nil] autorelease];
-////		navController.contentSizeForViewInPopover = CGSizeMake(320.0, 480.0);
-//		NSLog(@"COntent size %@", NSStringFromCGSize(navController.contentSizeForViewInPopover));
-//		popoverController = [[UIPopoverController alloc] initWithContentViewController:navController];
-////		popoverController.popoverContentSize = CGSizeMake(320.0, 480.0);
-//	}
-//	return popoverController;
-//}
 
 - (IBAction)cancelView:(id)sender {
 	
@@ -818,7 +805,7 @@
 	UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:commentsViewController] autorelease];
 	UIPopoverController *popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
 	[popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-	self.popoverController = popover;
+	[UIPopoverController setCurrentPopoverController:popover];
 }
 
 - (IBAction)picturesAction:(id)sender;
@@ -827,7 +814,7 @@
 	UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:photosListController] autorelease];
 	UIPopoverController *popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
 	[popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-	self.popoverController = popover;
+	[UIPopoverController setCurrentPopoverController:popover];
 }
 
 - (IBAction)settingsAction:(id)sender;
@@ -836,7 +823,7 @@
 	UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:postSettingsController] autorelease];
 	UIPopoverController *popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
 	[popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-	self.popoverController = popover;
+	[UIPopoverController setCurrentPopoverController:popover];
 }
 
 - (IBAction)locationAction:(id)sender;
@@ -880,11 +867,12 @@
 	}
 	picker.contentSizeForViewInPopover = photosListController.contentSizeForViewInPopover;
 	photoPickerPopover.contentViewController = picker;
-	[popoverController dismissPopoverAnimated:NO];
+
 	
 	// TODO: this is pretty kludgy
 	UIBarButtonItem *buttonItem = [editToolbar.items objectAtIndex:1];
 	[photoPickerPopover presentPopoverFromBarButtonItem:buttonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
+	[UIPopoverController setCurrentPopoverController:photoPickerPopover];
 }
 
 - (void)hidePhotoListImagePicker;
@@ -894,6 +882,7 @@
 	// TODO: this is pretty kludgy
 	UIBarButtonItem *buttonItem = [editToolbar.items objectAtIndex:1];
 	[popoverController presentPopoverFromBarButtonItem:buttonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
+	[UIPopoverController setCurrentPopoverController:photoPickerPopover];
 }
 
 @end

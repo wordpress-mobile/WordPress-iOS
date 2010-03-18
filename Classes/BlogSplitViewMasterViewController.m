@@ -17,6 +17,7 @@
 
 #import "PostViewController.h"
 #import "PageViewController.h"
+#import "UIPopoverController_Extensions.h"
 
 @implementation BlogSplitViewMasterViewController
 
@@ -28,7 +29,6 @@
 @synthesize postsViewController;
 @synthesize pagesViewController;
 @synthesize commentsViewController;
-@synthesize currentPopoverController;
 @synthesize detailNavController;
 
 @synthesize commentsButton;
@@ -50,8 +50,6 @@
 	
 	[detailNavController release], detailNavController = nil;
 
-	[currentPopoverController release], currentPopoverController = nil;
-	
 	[commentsButton release], commentsButton = nil;
 	[segmentedControl release], segmentedControl = nil;
 
@@ -169,8 +167,6 @@
 
 - (IBAction)blogMenuAction:(id)sender;
 {
-self.currentPopoverController = NULL;
-
 BlogsViewController *theBlogsViewController = [[BlogsViewController alloc] initWithStyle:UITableViewStylePlain];
 // TODO - this is a bit of a hack. Should move to BlogsViewController really.
 theBlogsViewController.contentSizeForViewInPopover = CGSizeMake(320, 44 * [[BlogDataManager sharedDataManager] countOfBlogs]);
@@ -183,7 +179,7 @@ UIPopoverController *theBlogMenuPopoverController = [[UIPopoverController alloc]
 
 [theBlogsViewController release];
 
-self.currentPopoverController = theBlogMenuPopoverController;
+[UIPopoverController setCurrentPopoverController:theBlogMenuPopoverController];
 
 [theBlogMenuPopoverController release];
 }

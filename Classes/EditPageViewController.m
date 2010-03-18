@@ -12,7 +12,7 @@
 #import "PageViewController.h"
 #import "WPPhotosListViewController.h"
 #import "WordPressAppDelegate.h"
-
+#import "UIPopoverController_Extensions.h"
 
 
 @interface EditPageViewController (private)
@@ -31,7 +31,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 @synthesize mode, selectionTableViewController, pageDetailsController, photosListController, customFieldsTableView;
 @synthesize infoText, urlField, selectedLinkRange, currentEditingTextField, isEditing, isCustomFieldsEnabledForThisPage;
 @synthesize customFieldsEditCell;
-@synthesize popover;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -605,7 +605,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 		CGRect rect = statusTextField.frame;
 		rect.size.width = MIN(rect.size.width, 100);
 		[pc presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-		self.popover = pc;
+		[UIPopoverController setCurrentPopoverController:pc];
 	} else {
 		[pageDetailsController.navigationController pushViewController:selectionTableViewController animated:YES];
 	}
@@ -851,7 +851,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
 - (IBAction)popoverDoneAction:(id)sender;
 {
-	[self.popover dismissPopoverAnimated:YES];
+[UIPopoverController setCurrentPopoverController:NULL];
 }
 
 @end

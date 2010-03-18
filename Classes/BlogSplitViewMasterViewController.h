@@ -33,8 +33,6 @@ typedef enum _WPItemType {
 	IBOutlet UIButton *commentsButton;
 	IBOutlet UISegmentedControl *segmentedControl;
 
-	UIPopoverController *currentPopoverController;
-	
 	IBOutlet UINavigationController *detailNavController;
 }
 
@@ -50,8 +48,6 @@ typedef enum _WPItemType {
 
 @property (nonatomic, retain) IBOutlet UIButton *commentsButton;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *segmentedControl;
-
-@property (readwrite, nonatomic, retain) UIPopoverController *currentPopoverController;
 
 - (void)currentBlogChanged;
 - (void)refreshBlogData;

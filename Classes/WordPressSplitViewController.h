@@ -9,12 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface WordPressSplitViewController : UISplitViewController <UISplitViewControllerDelegate> {
-	UIPopoverController *currentPopoverController;
 }
 
 @property (readonly, nonatomic, retain) UINavigationController *masterNavigationController;
 @property (readonly, nonatomic, retain) UINavigationController *detailNavigationController;
-
-@property (readwrite, nonatomic, retain) UIPopoverController *currentPopoverController;
 
 @end

@@ -54,7 +54,6 @@
 
 @property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, retain) IBOutlet UIView *contentView;
-@property (nonatomic, retain) UIPopoverController *popoverController;
 
 @property (nonatomic, retain) IBOutlet UIToolbar *editToolbar;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *cancelEditButton;

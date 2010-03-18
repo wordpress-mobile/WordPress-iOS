@@ -69,8 +69,6 @@
 @property (nonatomic, assign) BOOL isEditing;
 @property (nonatomic, assign) BOOL isCustomFieldsEnabledForThisPage;
 
-@property (nonatomic, retain) UIPopoverController *popover;
-
 @property (nonatomic, retain) UITableViewCell *customFieldsEditCell;
 
 - (IBAction)showStatusViewAction:(id)sender;

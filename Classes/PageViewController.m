@@ -18,6 +18,7 @@
 
 #import "FlippingViewController.h"
 #import "RotatingNavigationController.h"
+#import "UIPopoverController_Extensions.h"
 
 #define TAG_OFFSET 1020
 
@@ -38,7 +39,6 @@
 @synthesize pageDetailStaticViewController;
 @synthesize toolbar;
 @synthesize contentView;
-@synthesize popoverController;
 @synthesize editToolbar;
 @synthesize cancelEditButton;
 @synthesize editModalViewController;
@@ -580,7 +580,7 @@
 	UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:photosListController] autorelease];
 	UIPopoverController *popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
 	[popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-	self.popoverController = popover;
+	[UIPopoverController setCurrentPopoverController:popover];
 }
 
 - (void)dismissEditView;
@@ -604,7 +604,8 @@
 	}
 	picker.contentSizeForViewInPopover = photosListController.contentSizeForViewInPopover;
 	photoPickerPopover.contentViewController = picker;
-	[popoverController dismissPopoverAnimated:NO];
+
+	[UIPopoverController setCurrentPopoverController:NULL];
 	
 	// TODO: this is pretty kludgy
 	UIBarButtonItem *buttonItem = [editToolbar.items objectAtIndex:0];

@@ -74,6 +74,7 @@
 		2FAE970A0E33B21600CA8540 /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97050E33B21600CA8540 /* license.txt */; };
 		2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */; };
 		2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */; };
+		451E6DAD11529C140024ABA5 /* UIPopoverController_Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 451E6DAC11529C140024ABA5 /* UIPopoverController_Extensions.m */; };
 		4526DC551148072F0090C99D /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 4526DC531148072F0090C99D /* Default-Portrait.png */; };
 		4526DC561148072F0090C99D /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 4526DC541148072F0090C99D /* Default-Landscape.png */; };
 		45601C891141713100CDE805 /* CFirstLaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45601C871141713100CDE805 /* CFirstLaunchViewController.m */; };
@@ -287,6 +288,8 @@
 		2FAE97050E33B21600CA8540 /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.txt; sourceTree = "<group>"; };
 		2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xhtml1-transitional.dtd"; sourceTree = "<group>"; };
 		2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = xhtmlValidatorTemplate.xhtml; sourceTree = "<group>"; };
+		451E6DAB11529C140024ABA5 /* UIPopoverController_Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPopoverController_Extensions.h; sourceTree = "<group>"; };
+		451E6DAC11529C140024ABA5 /* UIPopoverController_Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPopoverController_Extensions.m; sourceTree = "<group>"; };
 		4526DC531148072F0090C99D /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait.png"; sourceTree = "<group>"; };
 		4526DC541148072F0090C99D /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
 		45601C861141713100CDE805 /* CFirstLaunchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFirstLaunchViewController.h; sourceTree = "<group>"; };
@@ -892,6 +895,8 @@
 				C584D0830EF942DC00B78012 /* UIViewController+WPAnimation.m */,
 				F5A4EF3310B32F68002BF126 /* XMLRPCConnection+Authentication.h */,
 				F5A4EF3410B32F68002BF126 /* XMLRPCConnection+Authentication.m */,
+				451E6DAB11529C140024ABA5 /* UIPopoverController_Extensions.h */,
+				451E6DAC11529C140024ABA5 /* UIPopoverController_Extensions.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -1161,6 +1166,7 @@
 				036ABF921141DF1A00181F3B /* FlippingViewController.m in Sources */,
 				036ABF961141E06300181F3B /* RotatingNavigationController.m in Sources */,
 				4590D0B61146A323008F5D22 /* CNewBlogSignupViewController.m in Sources */,
+				451E6DAD11529C140024ABA5 /* UIPopoverController_Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
