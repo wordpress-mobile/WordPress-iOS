@@ -110,10 +110,10 @@
         return;
     }
 	
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+//	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
 		[postSettingsController endEditingAction:nil];
 		[postDetailEditController endEditingAction:nil];
-	}
+//	}
 
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
                                   delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Discard"
