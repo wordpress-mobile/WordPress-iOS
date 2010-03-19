@@ -306,7 +306,11 @@
         WPPublishOnEditController *publishOnEditController = [[WPPublishOnEditController alloc] initWithNibName:@"WPPublishOnEditController" bundle:nil];
         publishOnEditController.settingController = self;
 		publishOnEditController.title = @"Publish Date";
-        [postDetailViewController.navigationController pushViewController:publishOnEditController animated:YES];
+		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+			[self.navigationController pushViewController:publishOnEditController animated:YES];
+		} else {
+			[postDetailViewController.navigationController pushViewController:publishOnEditController animated:YES];
+		}
         [publishOnEditController release];
     }
 
