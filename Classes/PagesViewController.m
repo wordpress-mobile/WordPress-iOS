@@ -161,7 +161,7 @@
 				
 			NSString * totalString = [NSString stringWithFormat:@"%d pages total", totalPages];
 			[cell changeCellLabelsForUpdate:totalString:@"Load more pages":NO];
-			
+			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 			return cell;
 			}
 		}
