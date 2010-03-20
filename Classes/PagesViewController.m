@@ -93,10 +93,10 @@
 	
 	[self loadPages];
     
-    if ([self.tableView indexPathForSelectedRow]) {
-        [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
-        [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
-    }
+//    if ([self.tableView indexPathForSelectedRow]) {
+//        [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+//        [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
+//    }
 }
 
 #pragma mark -
@@ -155,7 +155,10 @@
 			//get the total number of posts on the blog, make a string and pump it into the cell
 			int totalPages = [[BlogDataManager sharedDataManager] countOfPageTitles];
 			NSLog(@"totalPages %d", totalPages);
+			//show "nothing" if this is the first time this view showed for a newly-loaded blog
 			if (totalPages == 0) {
+				cell .contentView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
+				cell.accessoryType = UITableViewCellAccessoryNone;
 				return cell;
 			}else{
 				

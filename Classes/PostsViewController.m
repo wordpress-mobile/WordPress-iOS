@@ -176,15 +176,24 @@
 		//handle the case when it's the last row and we need to return the modified "get more posts" cell
 		//note that it's not [[BlogDataManager sharedDataManager] countOfPostTitles] +1 because of the difference in the counting of the datasets
 		if (indexPath.row == count) {
+			
 		//set the labels.  The spinner will be activiated if the row is selected in didSelectRow...
 		//get the total number of posts on the blog, make a string and pump it into the cell
 		int totalPosts = [[BlogDataManager sharedDataManager] countOfPostTitles];
+			//show "nothing" if this is the first time this view showed for a newly-loaded blog
+			if (totalPosts == 0) {
+				cell .contentView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
+				cell.accessoryType = UITableViewCellAccessoryNone;
+				return cell;
+			}else{
 		NSString * totalString = [NSString stringWithFormat:@"%d posts loaded", totalPosts];
 			[cell changeCellLabelsForUpdate:totalString:@"Load more posts":NO];
 			//prevent masking of the changes to font color etc that we want
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 		return cell;
-	}
+				
+			}
+		}
 		//if it wasn't the last cell, proceed as normal.
         post = [dm postTitleAtIndex:indexPath.row];
     }
