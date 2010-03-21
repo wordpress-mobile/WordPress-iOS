@@ -84,7 +84,6 @@
 @property (nonatomic, retain) UIButton *customFieldsEditButton;
 //@property (nonatomic, retain) UITableView *selectCustomFields;
 
-@property (nonatomic, retain) LocationController *locationController;
 @property (nonatomic, retain) CLLocation *initialLocation;
 @property (nonatomic, retain) IBOutlet UIButton *locationButton;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *locationSpinner;
