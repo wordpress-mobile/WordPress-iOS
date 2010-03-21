@@ -62,8 +62,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	
-	anyMorePosts = YES;
 
     self.tableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
 
@@ -152,10 +150,12 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	
     if (section == LOCAL_DRAFTS_SECTION) {
         return [[BlogDataManager sharedDataManager] numberOfDrafts];
 		
-    } else if (anyMorePosts) {
+    } else if ([defaults boolForKey:@"anyMorePosts"]) {
 		return [[BlogDataManager sharedDataManager] countOfPostTitles] + 1;
 		
 	}else {
@@ -180,12 +180,13 @@
         post = [dm draftTitleAtIndex:indexPath.row];
     } else { 
 		int count = [[BlogDataManager sharedDataManager] countOfPostTitles];
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		
 		//handle the case when it's the last row and we need to return the modified "get more posts" cell
 		//note that it's not [[BlogDataManager sharedDataManager] countOfPostTitles] +1 because of the difference in the counting of the datasets
 		//also note that anyMorePosts has to be true or we won't do anything.  This balances with numberOfRowsInSection which only adds the extra row
 		//if anyMorePosts is true
-		if (anyMorePosts) {
+		if ([defaults boolForKey:@"anyMorePosts"])  {
 			
 			if (indexPath.row == count) {
 			
@@ -237,6 +238,7 @@
     } else {
 		//handle the case when it's the last row and is the "get more posts" special cell
 		if (indexPath.row == [[BlogDataManager sharedDataManager] countOfPostTitles]) {
+			NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 			
 			//run the spinner in the background and change the text
 			[self performSelectorInBackground:@selector(addSpinnerToCell:) withObject:indexPath];
@@ -249,6 +251,7 @@
 			
 			//run the "get more" function in the IncrementPost class and get metadata, then parse metadata for next 10 and get 10 more
 			anyMorePosts = [incrementPost loadOlderPosts];
+			[defaults setBool:anyMorePosts forKey:@"anyMorePosts"];
 			//TODO: JOHNB if this fails we should surface an alert with useful error message.
 			//here or in incrementPost?  Perhaps a bool return?
 			

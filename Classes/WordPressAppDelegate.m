@@ -114,6 +114,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	[defaults setBool:true forKey:@"refreshCommentsRequired"];
 	[defaults setBool:true forKey:@"refreshPostsRequired"];
 	[defaults setBool:true forKey:@"refreshPagesRequired"];
+	[defaults setBool:true forKey:@"anyMorePosts"];
+	[defaults setBool:true forKey:@"anyMorePages"];
 }
 
 #pragma mark -

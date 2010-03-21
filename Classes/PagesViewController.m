@@ -68,8 +68,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
-	anyMorePages = YES;
-
     self.tableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
 
     [self addRefreshButton];
@@ -126,10 +124,12 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	
     if (section == LOCAL_DRAFTS_SECTION) {
         return [[BlogDataManager sharedDataManager] numberOfPageDrafts];
 		
-    } else if (anyMorePages) {
+    } else if ([defaults boolForKey:@"anyMorePages"]) {
         return [[BlogDataManager sharedDataManager] countOfPageTitles] +1;
 		
     } else {
@@ -153,10 +153,11 @@
         page = [dm pageDraftTitleAtIndex:indexPath.row];
     } else {
 		int count = [[BlogDataManager sharedDataManager] countOfPageTitles];
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		//handle the case when it's the last row and we need to return the modified "get more posts" cell
 		//note that it's not [[BlogDataManager sharedDataManager] countOfPostTitles] +1 because of the difference in the counting of the datasets
 		
-		if (anyMorePages) {
+		if ([defaults boolForKey:@"anyMorePages"]) {
 			if (indexPath.row == count) {
 			
 				NSLog(@"inside the else");
@@ -188,7 +189,8 @@
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
+    //NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     dataManager.isLocaDraftsCurrent = (indexPath.section == LOCAL_DRAFTS_SECTION);
 
@@ -205,6 +207,7 @@
     } else {
 		//handle the case when it's the last row and is the "get more posts" special cell
 		if (indexPath.row == [[BlogDataManager sharedDataManager] countOfPageTitles]) {
+			NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 			
 			//run the spinner in the background and change the text
 			[self performSelectorInBackground:@selector(addSpinnerToCell:) withObject:indexPath];
@@ -217,6 +220,7 @@
 			
 			//run the "get more" function in the IncrementPost class and get metadata, then parse metadata for next 10 and get 10 more
 			anyMorePages = [incrementPost loadOlderPages];
+			[defaults setBool:anyMorePages forKey:@"anyMorePages"];
 			//TODO: JOHNB if this fails we should surface an alert with useful error message.
 			//here or in incrementPost?  Perhaps a bool return?
 			
