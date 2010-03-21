@@ -17,7 +17,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 @synthesize postDetailViewController, selectionTableViewController, segmentedTableViewController, leftView, customFieldsTableView;
 @synthesize infoText, urlField, bookMarksArray, selectedLinkRange, currentEditingTextField, isEditing, initialLocation;
-@synthesize customFieldsEditButton, editCustomFields, isCustomFieldsEnabledForThisPost, locationController, locationButton, locationSpinner;
+@synthesize customFieldsEditButton, editCustomFields, isCustomFieldsEnabledForThisPost, locationButton, locationSpinner;
 
 #pragma mark -
 #pragma mark View Lifecycle Methods
@@ -1020,15 +1020,9 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (BOOL)isPostGeotagged {
 	if([self getPostLocation] != nil)
-	{
-		NSLog(@"Post is geotagged.");
 		return YES;
-	}
 	else
-	{
-		NSLog(@"Post is not geotagged.");
 		return NO;
-	}
 }
 
 - (IBAction)showLocationMapView:(id)sender {
@@ -1083,7 +1077,6 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [segmentedTableViewController release];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
     [customFieldsTableView release];
-	[locationController release];
 	[locationButton release];
 	[locationSpinner release];
     [super dealloc];
