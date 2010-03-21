@@ -2184,7 +2184,7 @@ editBlogViewController, currentLocation;
                                @"", @"", @"", @"",
                                [NSNumber numberWithInt:0], [NSNumber numberWithInt:0],
                                [NSNumber numberWithInt:0], [NSNumber numberWithInt:0], 
-							   @"/xmlrpc.php", @"10 Recent Items",
+							   @"/xmlrpc.php", @"25 Recent Items",
 							   nil];
 								//@blog metadata
 	
