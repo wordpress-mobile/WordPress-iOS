@@ -23,6 +23,7 @@
 
 @synthesize currentBlog, currentPost, numberOfPostsCurrentlyLoaded, next10PostIdArray, dm;
 
+
 #pragma mark -
 #pragma mark Initialize and dealloc
 
@@ -147,7 +148,7 @@
 	
 	
 	NSString *postID = @"nil";
-	int postIDInt;
+	//int postIDInt;
 	int lastPostIDInt = [[[newPostTitlesList objectAtIndex:0] valueForKey:@"postid"] intValue];
 	NSString *postID2 = [[newPostTitlesList objectAtIndex:0] valueForKey:@"postid"];
 	
@@ -169,7 +170,7 @@
 		//newPostCount ++;
 	
 		postID = [postMetadataDict valueForKey:@"postid"];
-		postIDInt = [postID intValue];
+		//postIDInt = [postID intValue];
 		
 		NSDate *postGMTDate = [postMetadataDict valueForKey:@"date_created_gmt"];
 		NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:postGMTDate];
@@ -199,14 +200,14 @@
 				NSLog(@"This got into NSOrderedAscending and probably should be saved (left smaller than right) %@", postMetadataDict);
 				NSLog(@"lastKnownCreatedAt %@, ", lastKnownCreatedAt);
 				[onlyOlderPostsArray addObject:postMetadataDict];
-				[postMetadataDict release];
+				//[postMetadataDict release];
 				break;
 			case NSOrderedSame:
 				NSLog(@"NSOrderedSame");
 				NSLog(@"this is same... keep? %@", postMetadataDict);
 				NSLog(@"lastKnownCreatedAt %@, ", lastKnownCreatedAt);
 				[onlyOlderPostsArray addObject:postMetadataDict];
-				[postMetadataDict release];
+				//[postMetadataDict release];
 				break;
 			case NSOrderedDescending:
 				NSLog(@"NSOrderedDescending");
@@ -220,6 +221,7 @@
 	
 	NSLog(@"onlyOlderPostsArray %@", onlyOlderPostsArray);
 	NSLog(@"older posts array count %d", onlyOlderPostsArray.count);
+	
 
 	NSEnumerator *postsEnum2 = [onlyOlderPostsArray objectEnumerator];
 	//NSEnumerator *postsEnum2 = [response objectEnumerator];
@@ -227,8 +229,8 @@
 	while (postMetadataDict = [postsEnum2 nextObject]) {
 		newPostCount ++;
 		postID = [postMetadataDict valueForKey:@"postid"];
-		postIDInt = [postID intValue];
-		int oldPostCount = onlyOlderPostsArray.count;
+		//postIDInt = [postID intValue];
+		//int oldPostCount = onlyOlderPostsArray.count;
 		NSLog(@"postID %@", postID);
 		NSLog(@"lastPostIDInt %d", lastPostIDInt);
 		NSLog(@"postID2 %@", postID2);
@@ -282,6 +284,7 @@
 			//}
 		}
 	}
+	[onlyOlderPostsArray release];
 //ask for the next 10 posts via system.multicall using getMorePostsArray			
 		XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
 		[postsReq setMethod:@"system.multicall" withObject:getMorePostsArray];
@@ -397,9 +400,16 @@
 	
     [currentBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
     [dm performSelectorOnMainThread:@selector(postBlogsRefreshNotificationInMainThread:) withObject:currentBlog waitUntilDone:NO];
+	}
+	
+	if (metadataCount < previousNumberOfPosts + loadLimit) {
+		//tell calling class that there are no more items past this point, so anyMorePosts can be NO and we don't display the cell
+		return NO;
+	}else {
+		return YES;
+	}
 
-	return YES;
-}
+	
 }
 
 -(BOOL)loadOlderPages {
@@ -495,7 +505,7 @@
 	
 	
 	NSString *pageID = @"nil";
-	int pageIDInt;
+	//int pageIDInt;
 	int lastPageIDInt = [[[newPageTitlesList objectAtIndex:0] valueForKey:@"pageid"] intValue];
 	NSString *pageID2 = [[newPageTitlesList objectAtIndex:0] valueForKey:@"pageid"];
 		
@@ -508,7 +518,7 @@
 		//newPageCount ++;
 		
 		pageID = [pageMetadataDict valueForKey:@"page_id"];
-		pageIDInt = [pageID intValue];
+		//pageIDInt = [pageID intValue];
 		
 		NSDate *pageGMTDate = [pageMetadataDict valueForKey:@"date_created_gmt"];
 		NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:pageGMTDate];
@@ -531,7 +541,7 @@
 				NSLog(@"This got into NSOrderedAscending and probably should be saved (left smaller than right) %@", pageMetadataDict);
 				NSLog(@"lastKnownCreatedAt %@, ", lastKnownCreatedAt);
 				[onlyOlderPagesArray addObject:pageMetadataDict];
-				[pageMetadataDict release];
+				//[pageMetadataDict release];
 				break;
 			case NSOrderedSame:
 				NSLog(@"NSOrderedSame");
@@ -595,6 +605,7 @@
 		//NSLog(@"the array %@", [onlyOlderPagesArray objectAtIndex:i]);
 		[dict release];
 	}
+	[onlyOlderPagesArray release];
 	
 	NSLog(@"getMorePagesArray %@", getMorePagesArray);
 	NSLog(@"getMorePagesArray %d", getMorePagesArray.count);
@@ -676,7 +687,14 @@
 	}
 	[getMorePagesArray release];
     [currentBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-	return YES;
+	
+	if (metadataCount < previousNumberOfPages + loadLimit) {
+		//tell calling class that there are no more items past this point, so anyMorePages can be NO and we don't display the cell
+		return NO;
+	}else {
+		return YES;
+	}
+	
 }
 
 @end

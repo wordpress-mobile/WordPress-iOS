@@ -20,12 +20,14 @@
     EditPageViewController *pageDetailViewController;
     PageViewController *pageDetailsController;
     RefreshButtonView *refreshButton;
+	BOOL anyMorePages;
 }
 
 @property (readonly) UIBarButtonItem *newButtonItem;
 @property (nonatomic, retain) EditPageViewController *pageDetailViewController;
 @property (nonatomic, retain) PageViewController *pageDetailsController;
 //@property (nonatomic, retain) PostTableViewCell	*cell;
+@property (nonatomic, assign) BOOL anyMorePages;
 
 - (void) addSpinnerToCell:(NSIndexPath *)indexPath;
 - (void) removeSpinnerFromCell:(NSIndexPath *)indexPath;

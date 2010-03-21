@@ -38,6 +38,7 @@
 @implementation PagesViewController
 
 @synthesize newButtonItem, pageDetailViewController, pageDetailsController;
+@synthesize anyMorePages;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -66,6 +67,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	
+	anyMorePages = YES;
 
     self.tableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
 
@@ -125,9 +128,14 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == LOCAL_DRAFTS_SECTION) {
         return [[BlogDataManager sharedDataManager] numberOfPageDrafts];
-    } else {
+		
+    } else if (anyMorePages) {
         return [[BlogDataManager sharedDataManager] countOfPageTitles] +1;
-    }
+		
+    } else {
+		return [[BlogDataManager sharedDataManager] countOfPageTitles];
+	}
+
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -147,25 +155,28 @@
 		int count = [[BlogDataManager sharedDataManager] countOfPageTitles];
 		//handle the case when it's the last row and we need to return the modified "get more posts" cell
 		//note that it's not [[BlogDataManager sharedDataManager] countOfPostTitles] +1 because of the difference in the counting of the datasets
-		if (indexPath.row == count) {
+		
+		if (anyMorePages) {
+			if (indexPath.row == count) {
 			
-			NSLog(@"inside the else");
-			NSLog(@"index path: %d", indexPath.row);
-			//set the labels.  The spinner will be activiated if the row is selected in didSelectRow...
-			//get the total number of posts on the blog, make a string and pump it into the cell
-			int totalPages = [[BlogDataManager sharedDataManager] countOfPageTitles];
-			NSLog(@"totalPages %d", totalPages);
-			//show "nothing" if this is the first time this view showed for a newly-loaded blog
-			if (totalPages == 0) {
-				cell .contentView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
-				cell.accessoryType = UITableViewCellAccessoryNone;
-				return cell;
-			}else{
+				NSLog(@"inside the else");
+				NSLog(@"index path: %d", indexPath.row);
+				//set the labels.  The spinner will be activiated if the row is selected in didSelectRow...
+				//get the total number of posts on the blog, make a string and pump it into the cell
+				int totalPages = [[BlogDataManager sharedDataManager] countOfPageTitles];
+				NSLog(@"totalPages %d", totalPages);
+				//show "nothing" if this is the first time this view showed for a newly-loaded blog
+				if (totalPages == 0) {
+					cell .contentView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
+					cell.accessoryType = UITableViewCellAccessoryNone;
+					return cell;
+				}else{
 				
-			NSString * totalString = [NSString stringWithFormat:@"%d pages total", totalPages];
-			[cell changeCellLabelsForUpdate:totalString:@"Load more pages":NO];
-			cell.selectionStyle = UITableViewCellSelectionStyleNone;
-			return cell;
+					NSString * totalString = [NSString stringWithFormat:@"%d pages total", totalPages];
+					[cell changeCellLabelsForUpdate:totalString:@"Load more pages":NO];
+					cell.selectionStyle = UITableViewCellSelectionStyleNone;
+					return cell;
+				}
 			}
 		}
 		//if it wasn't the last cell, proceed as normal.
@@ -205,7 +216,7 @@
 			IncrementPost *incrementPost = [[IncrementPost alloc] init];
 			
 			//run the "get more" function in the IncrementPost class and get metadata, then parse metadata for next 10 and get 10 more
-			[incrementPost loadOlderPages];
+			anyMorePages = [incrementPost loadOlderPages];
 			//TODO: JOHNB if this fails we should surface an alert with useful error message.
 			//here or in incrementPost?  Perhaps a bool return?
 			
