@@ -51,8 +51,6 @@
 }
 
 - (IBAction)dismiss:(id)sender {
-	[[locationController locationManager] stopUpdatingLocation];
-	locationController = nil;
 	[self dismissModalViewControllerAnimated:YES];
 }
 
@@ -147,6 +145,7 @@
 }
 
 - (void)removeLocation {
+	NSLog(@"removeLocation has been called...");
 	NSMutableArray *customFieldsArray = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"custom_fields"];
 	for(NSMutableDictionary *dict in customFieldsArray)
 	{
@@ -164,7 +163,7 @@
 	
 	[[[BlogDataManager sharedDataManager] currentPost] setValue:customFieldsArray forKey:@"custom_fields"];
 	
-	[self dismiss:self];
+	[self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)addLocation {
@@ -214,7 +213,7 @@
 	// Send our modified custom fields back to BlogDataManager
 	[dm.currentPost setValue:customFieldsArray forKey:@"custom_fields"];
 	
-	[self dismiss:self];
+	[self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark -
