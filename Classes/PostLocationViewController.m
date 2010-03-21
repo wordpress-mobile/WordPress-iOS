@@ -24,7 +24,7 @@
 	if([self isPostGeotagged])
 	{
 		// Post with previously determined Location data
-		map.showsUserLocation = NO;
+		map.showsUserLocation = YES;
 		CLLocation *postLocation = [self getPostLocation];
 		[self locationUpdate:postLocation];
 		PostAnnotation *pin = [[PostAnnotation alloc] initWithCoordinate:postLocation.coordinate];
