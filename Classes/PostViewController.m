@@ -336,7 +336,7 @@
 
 - (void)addProgressIndicator {
     NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
-    UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aiv];
     [aiv startAnimating];
     [aiv release];
