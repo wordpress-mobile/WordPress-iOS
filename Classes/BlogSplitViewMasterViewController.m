@@ -150,6 +150,9 @@
 
 - (void)updateSelection;
 {
+	if (![BlogDataManager sharedDataManager].currentBlog)
+		return;
+	
 	if (currentDataSource == postsViewController) {
 		if (selectedItemType == kWPItemTypePost || selectedItemType == kWPItemTypePostDraft) {
 			int sectionNum = (selectedItemType == kWPItemTypePost) ? 1 : 0;
