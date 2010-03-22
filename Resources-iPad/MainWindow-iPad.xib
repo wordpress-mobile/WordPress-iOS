@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
+<archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">512</int>
 		<string key="IBDocument.SystemVersion">10C540</string>
-		<string key="IBDocument.InterfaceBuilderVersion">761</string>
+		<string key="IBDocument.InterfaceBuilderVersion">762</string>
 		<string key="IBDocument.AppKitVersion">1038.25</string>
 		<string key="IBDocument.HIToolboxVersion">458.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">84</string>
+			<string key="NS.object.0">87</string>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="42"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -88,6 +89,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="IBUIViewController" id="234674893">
 							<object class="IBUINavigationItem" key="IBUINavigationItem" id="7244384">
+								<reference key="IBUINavigationBar"/>
 								<string key="IBUITitle">Item</string>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
@@ -125,7 +127,8 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="IBUIViewController" id="318573060">
 							<object class="IBUINavigationItem" key="IBUINavigationItem" id="131095720">
-								<string key="IBUITitle">Root View Controller</string>
+								<reference key="IBUINavigationBar"/>
+								<string key="IBUITitle">WordPress</string>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
 							<reference key="IBUIParentViewController" ref="587967588"/>
@@ -324,7 +327,7 @@
 					<string>WordPressAppDelegate</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>WordPressSplitViewController</string>
-					<string>{{21, 354}, {1024, 768}}</string>
+					<string>{{21, 88}, {1024, 768}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -375,10 +378,16 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>blogMenuAction:</string>
 							<string>commentsAction:</string>
+							<string>newItemAction:</string>
+							<string>newPageAction:</string>
+							<string>newPostAction:</string>
 							<string>selectSegmentAction:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -394,6 +403,8 @@
 							<string>detailNavController</string>
 							<string>pagesViewController</string>
 							<string>postsViewController</string>
+							<string>segmentedControl</string>
+							<string>tabBarController</string>
 							<string>tableView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -404,6 +415,8 @@
 							<string>UINavigationController</string>
 							<string>PagesViewController</string>
 							<string>PostsViewController</string>
+							<string>UISegmentedControl</string>
+							<string>UITabBarController</string>
 							<string>UITableView</string>
 						</object>
 					</object>
@@ -639,6 +652,6 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<string key="IBDocument.LastKnownRelativeProjectPath">../WordPress.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<string key="IBCocoaTouchPluginVersion">84</string>
+		<string key="IBCocoaTouchPluginVersion">87</string>
 	</data>
 </archive>

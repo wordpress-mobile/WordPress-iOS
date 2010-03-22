@@ -24,6 +24,8 @@
 @synthesize currentDataSource;
 @synthesize currentIndexPath;
 
+@synthesize tabBarController;
+
 @synthesize tableView;
 
 @synthesize postsViewController;
@@ -41,6 +43,8 @@
 	[[BlogDataManager sharedDataManager] removeObserver:self forKeyPath:@"currentPageDraftIndex"];
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
+	[tabBarController release], tabBarController = nil;
 	
 	[tableView release], tableView = nil;
 	
@@ -61,20 +65,22 @@
 	
 	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(blogMenuAction:)] autorelease];
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(newItemAction:)] autorelease];
-	
+
 	[self refreshBlogData];
-	self.currentDataSource = postsViewController;
 	
+//	self.currentDataSource = postsViewController;
+//	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"DraftsUpdated" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"BlogsRefreshNotification" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"PagesUpdated" object:nil];
-	
-	[[BlogDataManager sharedDataManager] addObserver:self forKeyPath:@"currentPostIndex" options:NSKeyValueObservingOptionNew context:nil];
-	[[BlogDataManager sharedDataManager] addObserver:self forKeyPath:@"currentDraftIndex" options:NSKeyValueObservingOptionNew context:nil];
-	[[BlogDataManager sharedDataManager] addObserver:self forKeyPath:@"currentPageIndex" options:NSKeyValueObservingOptionNew context:nil];
-	[[BlogDataManager sharedDataManager] addObserver:self forKeyPath:@"currentPageDraftIndex" options:NSKeyValueObservingOptionNew context:nil];
-	
-	[self updateSelection];
+//	
+//	[[BlogDataManager sharedDataManager] addObserver:self forKeyPath:@"currentPostIndex" options:NSKeyValueObservingOptionNew context:nil];
+//	[[BlogDataManager sharedDataManager] addObserver:self forKeyPath:@"currentDraftIndex" options:NSKeyValueObservingOptionNew context:nil];
+//	[[BlogDataManager sharedDataManager] addObserver:self forKeyPath:@"currentPageIndex" options:NSKeyValueObservingOptionNew context:nil];
+//	[[BlogDataManager sharedDataManager] addObserver:self forKeyPath:@"currentPageDraftIndex" options:NSKeyValueObservingOptionNew context:nil];
+//	
+//	[self updateSelection];
+	self.view  = tabBarController.view;
 }
 
 - (void)setCurrentIndexPath:(NSIndexPath *)newIndexPath;
@@ -298,7 +304,7 @@ UIPopoverController *theBlogMenuPopoverController = [[UIPopoverController alloc]
 - (void)refreshBlogs:(NSNotification *)notification;
 {
 	NSLog(@"Refreshed!");
-	[tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
+//	[tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
 // JIW	[self performSelectorOnMainThread:@selector(updateSelection) withObject:nil waitUntilDone:YES];
 }
 
