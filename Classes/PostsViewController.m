@@ -119,7 +119,11 @@
 
 - (PostViewController *)postDetailViewController {
     if (postDetailViewController == nil) {
-        postDetailViewController = [[PostViewController alloc] initWithNibName:@"PostViewController" bundle:nil];
+		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+			postDetailViewController = [[PostViewController alloc] initWithNibName:@"PostViewController-iPad" bundle:nil];
+		} else {
+			postDetailViewController = [[PostViewController alloc] initWithNibName:@"PostViewController" bundle:nil];
+		}
         postDetailViewController.postsListController = self;
     }
 
