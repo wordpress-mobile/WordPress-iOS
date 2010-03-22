@@ -119,7 +119,9 @@
 		modalNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 		}
 
-	[self.navigationController presentModalViewController:modalNavigationController animated:animate];
+	
+
+	[[WordPressAppDelegate sharedWordPressApp].splitViewController presentModalViewController:modalNavigationController animated:animate];
 
 	[modalNavigationController release];
 }
