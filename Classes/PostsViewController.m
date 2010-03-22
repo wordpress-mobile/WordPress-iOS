@@ -20,8 +20,6 @@
 @interface PostsViewController (Private)
 
 - (void)scrollToFirstCell;
-- (void)loadPosts;
-- (void)showAddPostView;
 - (void)refreshHandler;
 - (void)syncPosts;
 //- (void) addSpinnerToCell:(NSIndexPath *)indexPath;

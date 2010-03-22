@@ -28,6 +28,8 @@
 
 - (void) addSpinnerToCell:(NSIndexPath *)indexPath;
 - (void) removeSpinnerFromCell:(NSIndexPath *)indexPath;
+- (void) loadPosts;
+- (void) showAddPostView;
 
 
 @end

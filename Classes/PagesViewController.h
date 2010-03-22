@@ -31,5 +31,7 @@
 
 - (void) addSpinnerToCell:(NSIndexPath *)indexPath;
 - (void) removeSpinnerFromCell:(NSIndexPath *)indexPath;
+- (void) loadPages;
+- (void) showAddNewPage;
 
 @end

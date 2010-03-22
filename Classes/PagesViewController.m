@@ -25,11 +25,9 @@
 @interface PagesViewController (Private)
 
 - (void)scrollToFirstCell;
-- (void)loadPages;
 - (void)setPageDetailsController;
 - (void)refreshHandler;
 - (void)syncPages;
-- (void)showAddNewPage;
 - (void)addRefreshButton;
 - (void)deletePageAtIndexPath;
 

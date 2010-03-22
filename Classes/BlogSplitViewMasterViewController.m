@@ -60,6 +60,7 @@
     [super viewDidLoad];
 	
 	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(blogMenuAction:)] autorelease];
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(newItemAction:)] autorelease];
 	
 	[self refreshBlogData];
 	self.currentDataSource = postsViewController;
@@ -226,16 +227,29 @@ UIPopoverController *theBlogMenuPopoverController = [[UIPopoverController alloc]
 	[currentDataSource tableView:theTableView didSelectRowAtIndexPath:indexPath];
 	
 	UIViewController *detailViewController = nil;
-	
 	if (currentDataSource == postsViewController) {
 		detailViewController = postsViewController.postDetailViewController;
-		[detailViewController refreshUIForCurrentPost];
+	}
+	else if (currentDataSource == pagesViewController) {
+		detailViewController = pagesViewController.pageDetailsController;
+	}
+	
+	if (detailViewController) {
+		[self showDetailController:detailViewController];
+	}
+}
+
+- (void)showDetailController:(UIViewController *)detailViewController;
+{
+	// make sure the VC's view has been loaded
+	[detailViewController view];
+	if ([detailViewController isKindOfClass:[PostViewController class]]) {
+		[(PostViewController *)detailViewController refreshUIForCurrentPost];
 		
 		UIBarButtonItem *newPostButton = [[[UIBarButtonItem alloc] initWithTitle:@"New Post" style:UIBarButtonItemStyleBordered target:self action:@selector(newPostAction:)] autorelease];
 		detailViewController.navigationItem.rightBarButtonItem = newPostButton;
 	}
-	else if (currentDataSource == pagesViewController) {
-		detailViewController = pagesViewController.pageDetailsController;
+	else if ([detailViewController isKindOfClass:[PageViewController class]]) {
 		// I'm don it rong. should add a refreshUIForCurrentPage to PageViewController.
 		[detailViewController viewWillAppear:NO];
 		
@@ -243,14 +257,21 @@ UIPopoverController *theBlogMenuPopoverController = [[UIPopoverController alloc]
 		detailViewController.navigationItem.rightBarButtonItem = newPageButton;
 	}
 	
-	if (detailViewController) {
-//		[detailViewController viewWillAppear:NO];
-		[detailNavController setViewControllers:[NSArray arrayWithObject:detailViewController] animated:NO];
-	}
+	[detailNavController setViewControllers:[NSArray arrayWithObject:detailViewController] animated:NO];
 }
 
 #pragma mark -
 #pragma mark Interface actions
+
+- (IBAction)newItemAction:(id)sender;
+{
+	if (currentDataSource == postsViewController) {
+		[self newPostAction:self];
+	}
+	else if (currentDataSource == pagesViewController) {
+		[self newPageAction:self];
+	}
+}
 
 - (IBAction)newPostAction:(id)sender;
 {
@@ -258,6 +279,7 @@ UIPopoverController *theBlogMenuPopoverController = [[UIPopoverController alloc]
 	
 	PostViewController *detailViewController = postsViewController.postDetailViewController;
 	[detailViewController refreshUIForCompose];
+	[self showDetailController:detailViewController];
 	[detailViewController editAction:self];
 }
 
@@ -266,6 +288,7 @@ UIPopoverController *theBlogMenuPopoverController = [[UIPopoverController alloc]
 	[pagesViewController showAddNewPage];
 	
 	PageViewController *detailViewController = pagesViewController.pageDetailsController;
+	[self showDetailController:detailViewController];
 	[detailViewController editAction:self];
 }
 

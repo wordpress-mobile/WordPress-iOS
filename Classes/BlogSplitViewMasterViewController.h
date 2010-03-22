@@ -51,10 +51,15 @@ typedef enum _WPItemType {
 
 - (void)currentBlogChanged;
 - (void)refreshBlogData;
+- (void)showDetailController:(UIViewController *)detailViewController;
 
 - (IBAction)selectSegmentAction:(id)sender;
 - (IBAction)blogMenuAction:(id)sender;
 - (IBAction)commentsAction:(id)sender;
+
+- (IBAction)newItemAction:(id)sender;
+- (IBAction)newPostAction:(id)sender;
+- (IBAction)newPageAction:(id)sender;
 
 - (void)updateSelection;
 
