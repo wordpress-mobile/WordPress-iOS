@@ -18,7 +18,7 @@
 @implementation PostSettingsViewController
 
 @synthesize postDetailViewController, tableView, passwordTextField, commentsSwitchControl;
-@synthesize pingsSwitchControl, locationLabel, locationSwitchControl, locationTableViewCell; //, customFieldsSwitchControl;
+@synthesize pingsSwitchControl; //, customFieldsSwitchControl;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -29,9 +29,6 @@
 }
 
 - (void)dealloc {
-	[locationLabel release];
-	[locationSwitchControl release];
-	[locationTableViewCell release];
     [super dealloc];
 }
 
@@ -113,7 +110,6 @@
     [customFieldsSwitchControl addTarget:self action:@selector(controlEventValueChanged:) forControlEvents:UIControlEventValueChanged];
 
     [resizePhotoControl addTarget:self action:@selector(changeResizePhotosOptions) forControlEvents:UIControlEventAllTouchEvents];
-    [locationSwitchControl addTarget:self action:@selector(changeLocationOptions) forControlEvents:UIControlEventAllTouchEvents];
 }
 
 - (void)changeResizePhotosOptions {
@@ -122,17 +118,9 @@
      forKey:kResizePhotoSetting];
 }
 
-- (void)changeLocationOptions {
-    postDetailViewController.hasChanges = YES;
-    [[BlogDataManager sharedDataManager].currentPost setValue:[NSNumber numberWithInt:locationSwitchControl.on]
-													   forKey:kLocationSetting];
-}
-
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-	NSLog(@"viewWillAppear: PostSettingsViewController, just called postDetailViewController shouldAutorotate");
     [self reloadData];
-	NSLog(@"View will appear.  Setting up help button...");
 	[self setupHelpButton];
 }
 
@@ -172,7 +160,7 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 4;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -198,8 +186,6 @@
         //TODO:JOHNB CustomFields  do something similar here, but first add the appropriate value to current post build in Blog Data Manager
         [[BlogDataManager sharedDataManager].currentPost setValue:[NSNumber numberWithInt:customFieldsSwitchControl.on] forKey:@"custom_fields_enabled"];
     }
-
-    NSLog(@"this is the value from PostSettingsViewController, controlEventValueChanged %d", [[[BlogDataManager sharedDataManager].currentPost valueForKey:@"custom_fields_enabled"] intValue]);
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -258,19 +244,6 @@
                 resizePhotoControl.on = [value boolValue];
                 return resizePhotoViewCell;
             }
-        case 3:
-            if (indexPath.row == 0) {
-                NSNumber *value = [post valueForKey:kLocationSetting];
-				
-                if (value == nil) {
-                    value = [NSNumber numberWithInt:0];
-                    [post setValue:value forKey:kLocationSetting];
-                }
-				
-                locationSwitchControl.on = [value boolValue];
-                return locationTableViewCell;
-            }
-            break;
         default:
             break;
     }

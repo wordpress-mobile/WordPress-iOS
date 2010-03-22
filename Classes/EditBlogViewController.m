@@ -50,7 +50,7 @@
     currentBlog = [[BlogDataManager sharedDataManager] currentBlog];
 
     noOfPostsTextField.text = [currentBlog valueForKey:kPostsDownloadCount];
-	NSLog(@"kpostsdownloadcount %@",[currentBlog valueForKey:kPostsDownloadCount]);
+	//NSLog(@"kpostsdownloadcount %@",[currentBlog valueForKey:kPostsDownloadCount]);
 
     self.navigationItem.rightBarButtonItem = saveBlogButton;
 
@@ -61,17 +61,19 @@
     }
 
     if ([self currentBlogIsNew]) {
-        [blogURLTextField becomeFirstResponder];
+        //[blogURLTextField becomeFirstResponder];	// Trac #353
         saveBlogButton.enabled = NO;
 	} else {
         [self disableLabel:blogURLLabel andTextField:blogURLTextField];
         [self disableLabel:userNameLabel andTextField:userNameTextField];
-        [passwordTextField becomeFirstResponder];
+        //[passwordTextField becomeFirstResponder];	// Trac #353
     }
 	
 	blogHTTPAuthViewController.authEnabled = [[currentBlog objectForKey:@"authEnabled"] boolValue];
 	blogHTTPAuthViewController.authUsername = [currentBlog valueForKey:@"authUsername"];
 	blogHTTPAuthViewController.authPassword = [[BlogDataManager sharedDataManager] getHTTPPasswordFromKeychainInContextOfCurrentBlog:currentBlog];
+	
+	[geotaggingSwitch addTarget:self action:@selector(changeGeotaggingSetting) forControlEvents:UIControlEventAllTouchEvents];
 	
 	[self observeTextFields];
 }
@@ -108,7 +110,12 @@
 			
     } else {
         self.title = NSLocalizedString(@"Edit Blog", @"EditBlogViewController_Title_EditBlog");
-    }
+		NSString *geotaggingSettingName = [NSString stringWithFormat:@"%@-Geotagging", [currentBlog valueForKey:kBlogId]];
+		if([[NSUserDefaults standardUserDefaults] boolForKey:geotaggingSettingName])
+			geotaggingSwitch.on = YES;
+		else
+			geotaggingSwitch.on = NO;
+	}
 
     //[blogEditTable reloadData];
 }
@@ -123,7 +130,7 @@
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 4;
+    return 5;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -148,17 +155,19 @@
 
                 blogURLTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
                 return blogURLTableViewCell;
-            } else if (indexPath.section == 3) {
+            } else if (indexPath.section == 2) {
+				return geotaggingTableViewCell;
+			} else if (indexPath.section == 3) {
                 NSNumber *value = [currentBlog valueForKey:kResizePhotoSetting];
-
+				
                 if (value == nil) {
                     value = [NSNumber numberWithInt:0];
                     [currentBlog setValue:value forKey:kResizePhotoSetting];
                 }
-
+				
                 resizePhotoControl.on = [value boolValue];
                 return resizePhotoViewCell;
-            } else if (indexPath.section == 2) {
+            } else if (indexPath.section == 4) {
 				BOOL httpAuthEnabled = [[currentBlog objectForKey:@"authEnabled"] boolValue];
 				blogHTTPAuthTextField.text = httpAuthEnabled ? @"On" : @"Off";
 				return blogHTTPAuthTableViewCell;
@@ -193,18 +202,18 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    if (section == 3) {
+    //if (section == 3) {
         //This Class creates a view which contains label with color and font attributes and sets the label properties and it is used as footer view for section in tableview.
-        WPLabelFooterView *labelView = [[[WPLabelFooterView alloc] initWithFrame:CGRectMake(0, 3, 300, 60)] autorelease];
+    //    WPLabelFooterView *labelView = [[[WPLabelFooterView alloc] initWithFrame:CGRectMake(0, 3, 300, 60)] autorelease];
         //Sets the number of lines to be shown in the label.
-        [labelView setNumberOfLines:(NSInteger) 3];
+    //    [labelView setNumberOfLines:(NSInteger) 3];
         //Sets the text alignment of the label.
-        [labelView setTextAlignment:UITextAlignmentCenter];
+    //    [labelView setTextAlignment:UITextAlignmentCenter];
         //Sets the text for the label.
-        [labelView setText:kResizePhotoSettingHintLabel];
+    //    [labelView setText:kResizePhotoSettingHintLabel];
 
-        return labelView;
-    }
+    //    return labelView;
+    //}
 
     return nil;
 }
@@ -225,7 +234,7 @@
     if (indexPath.section == 1) {
         [self populateSelectionsControllerWithNoOfRecentPosts];
     }
-	if (indexPath.section == 2) {
+	if (indexPath.section == 4) {
 		blogHTTPAuthViewController.title = @"HTTP Authentication";
 		[self.navigationController pushViewController:blogHTTPAuthViewController animated:YES];
     }
@@ -236,7 +245,7 @@
 
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 
-    NSArray *dataSource = [NSArray arrayWithObjects:@"10 Recent Posts", @"20 Recent Posts", @"30 Recent Posts", @"40 Recent Posts", @"50 Recent Posts", nil];
+    NSArray *dataSource = [NSArray arrayWithObjects:@"10 Recent Items", @"25 Recent Items", @"50 Recent Items", @"100 Recent Items", nil];
 
     NSString *curStatus = [[dm currentBlog] valueForKey:kPostsDownloadCount];
     // default value for number of posts is setin BlogDataManager.makeNewBlogCurrent
@@ -357,6 +366,14 @@
     [self hideSpinner];
 	
 }
+
+- (void)changeGeotaggingSetting {
+	NSString *geotaggingSettingName = [NSString stringWithFormat:@"%@-Geotagging", [currentBlog valueForKey:kBlogId]];
+	if(geotaggingSwitch.on)
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:geotaggingSettingName];
+	else
+		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:geotaggingSettingName];
+}
 	
 #pragma mark saveBlog
 - (void)createBlog {
@@ -397,6 +414,7 @@
 				return;
 			}
 	}
+	[self changeGeotaggingSetting];
 }
 
 - (void)updateBlog {
@@ -410,6 +428,7 @@
         [dm performSelector:@selector(generateTemplateForBlog:) withObject:[[dm.currentBlog copy] autorelease]];
         [dm addSyncPostsForBlogToQueue:dm.currentBlog];
         [dm saveCurrentBlog];
+		[self changeGeotaggingSetting];
 
         [self.navigationController dismissModalViewControllerAnimated:YES];
     }

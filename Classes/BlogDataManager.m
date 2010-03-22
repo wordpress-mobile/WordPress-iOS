@@ -91,7 +91,7 @@ static BlogDataManager *sharedDataManager;
 pictureFieldNames, postFieldNames, postFieldNamesByTag, postFieldTagsByName,
 postTitleFieldNames, postTitleFieldNamesByTag, postTitleFieldTagsByName, unsavedPostsCount, currentPageIndex, currentPage, pageFieldNames,
 currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLocaDraftsCurrent, isPageLocalDraftsCurrent, currentPostIndex, currentDraftIndex, currentPageDraftIndex, asyncPostsOperationsQueue, currentUnsavedDraft,
-editBlogViewController;
+editBlogViewController, currentLocation;
 //BOOL for handling XMLRPC issues...  See LocateXMLRPCViewController
 @synthesize isProblemWithXMLRPC; 
 
@@ -103,6 +103,7 @@ editBlogViewController;
     [currentPost release];
     [currentPage release];
     [currentDirectoryPath release];
+	[currentLocation release];
 
     [photosDB release];
     [currentPicture release];
@@ -187,6 +188,8 @@ editBlogViewController;
 
         // set the current dir
         [fileManager changeCurrentDirectoryPath:self.currentDirectoryPath];
+		
+		currentLocation = [[CLLocation alloc] init];
 
         // allocate lists
 //		self->blogsList = [[NSMutableArray alloc] initWithCapacity:10];
@@ -1645,11 +1648,11 @@ editBlogViewController;
 	NSString *pwd = [self getPasswordFromKeychainInContextOfCurrentBlog:blog];
     NSString *fullURL = [blog valueForKey:@"xmlrpc"];
     NSString *blogid = [blog valueForKey:kBlogId];
-    //NSNumber *maxToFetch = [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:2] intValue]];
+    NSNumber *maxToFetch = [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:3] intValue]];
 	//Note: Changed this to accomodate 10-at-a-time updating of posts. kPostsDownloadCount seems to be associated with the number set when setting up the blog
 	//NSString *maxToFetch = nil;
 	//NSNumber *maxToFetch = [NSNumber numberWithInt:[[currentBlog valueForKey:@"totalPostsLoaded"] intValue]];
-	NSNumber *maxToFetch = [NSNumber numberWithInt:[[currentBlog valueForKey:@"totalPosts"] intValue]];
+	//NSNumber *maxToFetch = [NSNumber numberWithInt:[[currentBlog valueForKey:@"totalPosts"] intValue]];
 	//NSNumber *maxToFetch = [NSNumber numberWithInt:[[currentBlog valueForKey:@"totalPosts"] intValue]];
 	//NSInteger maxCopy = [NSNumber numberWithInt: [[currentBlog valueForKey:@"totalPosts"] intValue]];
 //	NSNumber *loadint = [NSNumber numberWithInt: [[currentBlog valueForKey:@"totalPosts"] intValue]];
@@ -1661,10 +1664,10 @@ editBlogViewController;
 	
 	
 	
-	NSArray *test = [NSArray arrayWithObjects:blogid, username, pwd, maxToFetch, nil ];
-	NSLog(@"the array for get recent posts %@",test);
+	//NSArray *test = [NSArray arrayWithObjects:blogid, username, pwd, maxToFetch, nil ];
+	//NSLog(@"the array for get recent posts %@",test);
 	
-	NSLog(@"currentblog %@", currentBlog);
+	//NSLog(@"currentblog %@", currentBlog);
 	
     //  ------------------------- invoke metaWeblog.getRecentPosts
     XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
@@ -1718,8 +1721,8 @@ editBlogViewController;
     while (post = [postsEnum nextObject]) {
         // add blogid and blog_host_name to post
 		
-		NSLog(@"this is the post %@", post);
-		NSLog(@"this is value in date_created_gmt %@", [post valueForKey:@"date_created_gmt"]);
+		//NSLog(@"this is the post %@", post);
+		//NSLog(@"this is value in date_created_gmt %@", [post valueForKey:@"date_created_gmt"]);
 		
         NSDate *postGMTDate = [post valueForKey:@"date_created_gmt"];
         NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:postGMTDate];
@@ -2154,24 +2157,24 @@ editBlogViewController;
 }
 
 //TODO: remove
-- (id)newDraftsBlog {
-    NSArray *blogInitValues = [NSArray arrayWithObjects:@"Local Drafts", @"", kDraftsHostName, @"iPhone",
-                               @"", kDraftsBlogIdStr, @"Local Drafts", @"xmlrpc url not set",
-                               @"", @"", @"", @"",
-                               [NSNumber numberWithInt:0], [NSNumber numberWithInt:10],
-                               [NSNumber numberWithInt:0], [NSNumber numberWithInt:0], 
-							   @"/xmlrpc.php", @"", 
-							   nil];
-								//@blog metadata
-									
-
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjects:blogInitValues forKeys:[self blogFieldNames]];
-
-    [dict setObject:@"0" forKey:@"kNextDraftIdStr"];
-    [dict retain];
-	NSLog(@"dict %@",dict);
-    return dict;
-}
+//- (id)newDraftsBlog {
+//    NSArray *blogInitValues = [NSArray arrayWithObjects:@"Local Drafts", @"", kDraftsHostName, @"iPhone",
+//                               @"", kDraftsBlogIdStr, @"Local Drafts", @"xmlrpc url not set",
+//                               @"", @"", @"", @"",
+//                               [NSNumber numberWithInt:0], [NSNumber numberWithInt:0],
+//                               [NSNumber numberWithInt:0], [NSNumber numberWithInt:0], 
+//							   @"/xmlrpc.php", @"", @"",
+//							   nil];
+//								//@blog metadata
+//									
+//
+//    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjects:blogInitValues forKeys:[self blogFieldNames]];
+//
+//    [dict setObject:@"0" forKey:@"kNextDraftIdStr"];
+//    [dict retain];
+//	NSLog(@"dict %@",dict);
+//    return dict;
+//}
 
 - (void)makeNewBlogCurrent {
     self->isLocaDraftsCurrent = NO;
@@ -2179,11 +2182,10 @@ editBlogViewController;
     NSArray *blogInitValues = [NSArray arrayWithObjects:@"", @"", @"", @"",
                                @"", @"", @"", @"xmlrpc url not set",
                                @"", @"", @"", @"",
-                               [NSNumber numberWithInt:0], [NSNumber numberWithInt:10],
+                               [NSNumber numberWithInt:0], [NSNumber numberWithInt:0],
                                [NSNumber numberWithInt:0], [NSNumber numberWithInt:0], 
-							   @"/xmlrpc.php", @"10 Recent Posts",
+							   @"/xmlrpc.php", @"25 Recent Items",
 							   nil];
-								//removed one @"" from the above line before "10 Recent Posts" to account for moving password to keychain
 								//@blog metadata
 	
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjects:blogInitValues forKeys:[self blogFieldNames]];
@@ -2947,6 +2949,8 @@ editBlogViewController;
 }
 
 - (BOOL)syncPagesForBlog:(id)blog {
+	//as of Trac ticket #291, this method should always return the MOST RECENT X number of posts
+	//X is chosen in the blog setup page with the selection "X Recent Items"
     [blog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
     // Parameters
     NSString *username = [blog valueForKey:@"username"];
@@ -2956,14 +2960,45 @@ editBlogViewController;
     NSString *blogid = [blog valueForKey:kBlogId];
 	NSLog(@"blogid is %@", blogid);
 	
+	//for #291
+	NSNumber *userSetMaxToFetch = [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:3] intValue]];
+	int loadLimit = [userSetMaxToFetch intValue];
+	
+	//end for #291
+	/*
+	 #291
+		Get pages metadata  (note, the api does not seem to allow a number to limit what comes back)
+		Parse metadata for MOST RECENT X number of pages
+		Sort the metadata by date putting highest date first
+		Use system.multicall to request each page
+		Parse the pages (remember the extra array "wrapper"
+		finally, use the line below to continue
+			NSMutableArray *pagesList = [NSMutableArray arrayWithArray:response];
+	 
+	 */
 
-    //  ------------------------- invoke metaWeblog.getRecentPosts
+    /*  This is the old code for getting all pages, changing for #291.  Keeping code for testing #291.  Delete when testing complete
+	//  ------------------------- invoke metaWeblog.getPages
     XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
     [postsReq setMethod:@"wp.getPages"
      withObjects:[NSArray arrayWithObjects:blogid, username, pwd, nil]];
 	
     id response = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
     [postsReq release];
+	 */
+	
+	//-----------------------invoke wp.getPageList instead of getPages for Trac #291
+	
+	XMLRPCRequest *pagesMetadata = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
+	[pagesMetadata setMethod:@"wp.getPageList"
+				 withObjects:[NSArray arrayWithObjects:blogid, username, pwd, nil]];
+	
+	id response = [self executeXMLRPCRequest:pagesMetadata byHandlingError:YES];
+	NSLog(@"the response %@", response);
+	//NSLog(@"the id, %@",postID);
+	[pagesMetadata release];
+	 
+	
 
     // TODO:
     // Check for fault
@@ -2971,25 +3006,107 @@ editBlogViewController;
     // provide meaningful messge to user
     if ((!response) || !([response isKindOfClass:[NSArray class]])) {
         [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-//		[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
         return NO;
     }
+	
+	//-----------------------sort the returned list with highest date first to ensure we get most recent pages
+	
+	NSSortDescriptor *sd = [[NSSortDescriptor alloc]
+							initWithKey:@"date_created_gmt" ascending:NO
+							selector:@selector(compare:)];
+	[response sortUsingDescriptors:[NSArray arrayWithObject:sd]];
+	[sd release];
+	//NSLog(@"the response %@", response);
+	
+	
+	//-----------------------get the top X number of date-sorted metadata points for pages... 
+	
+	NSEnumerator *pagesEnum = [response objectEnumerator];
+	NSMutableArray *refreshedPagesArray = [[NSMutableArray alloc] init];
+	NSDictionary *pageMetadataDict;
+	
+	NSInteger newPageCount = 0;
+	NSString *pageid = @"nil";
+	int pageIDInt;
+	
+	newPageCount = 0;
+	while (pageMetadataDict = [pagesEnum nextObject]) {
+		newPageCount ++;
+		
+		if (newPageCount <= loadLimit) {
+			[refreshedPagesArray addObject:pageMetadataDict];
+			[pageMetadataDict release];
+			
 
-    NSMutableArray *pagesList = [NSMutableArray arrayWithArray:response];
-	[self printArrayToLog:pagesList andArrayName:@"this is pagesList from syncPagesForBlog"];
+		}else {
+			//we should have the topmost pages in the array now, number of pages determined by user on blog edit/setup view...
+			//So, no need to continue, just break and move on.
+			break;
+		}	
+	}
+	
+	
+	//-----------------------...and wrap up a system.multicall using the metadata to request the full page	
+	
+	NSMutableArray *getMorePagesArray = [[NSMutableArray alloc] init];
+	
+	NSEnumerator *pagesEnum2 = [refreshedPagesArray objectEnumerator];
+	while (pageMetadataDict = [pagesEnum2 nextObject]) {
+		newPageCount ++;
 
-    NSFileManager *defaultFileManager = [NSFileManager defaultManager];
+		pageIDInt = [pageid intValue];
 
-    NSMutableArray *pageTitlesArray = [NSMutableArray array];
-
-    for (NSDictionary *page in pagesList) {
-        // add blogid and blog_host_name to post
-        NSMutableDictionary *updatedPage = [NSMutableDictionary dictionaryWithDictionary:page];
+			pageid = [pageMetadataDict valueForKey:@"page_id"];
+		
+			//make the dict to hold the values
+			NSMutableDictionary *dict2 = [[NSMutableDictionary alloc] init];
+			//add the methodName to the dict
+			[dict2 setValue:@"wp.getPage" forKey:@"methodName"];
+			//make an array with the "getPage" values and put it into the dict in the methodName key
+		    [dict2 setValue:[NSArray arrayWithObjects:blogid, pageid, username, pwd, nil] forKey:@"params"];
+		
+		//add the dict to the MutableArray that will get sent in the XMLRPC request
+		[getMorePagesArray addObject:dict2];
+		[dict2 release];
+		}
+	
+	//ask for the next X number of  pages via system.multicall using getMorePagesArray as the container for the "multi" api calls			
+	XMLRPCRequest *pagesReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
+	[pagesReq setMethod:@"system.multicall" withObject:getMorePagesArray];
+	NSArray *response2 = [self executeXMLRPCRequest:pagesReq byHandlingError:YES];
+	[pagesReq release];
+	//NSLog(@"response2 is %@", response2);
+	
+	//if error, turn off kIsSyncProcessRunning and return
+	if ((!response2) || !([response2 isKindOfClass:[NSArray class]])) {
+		[currentBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+		//			[[NSNotificationCenter defaultCenter] pageNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
+		[getMorePagesArray release];
+		return NO;
+	} //else {
+		
+		//------need these for work later in the method
+		NSFileManager *defaultFileManager = [NSFileManager defaultManager];
+		NSMutableArray *pageTitlesArray = [NSMutableArray array];
+		
+		
+		//-----------------------unravel the extra wrappers from the system.multicall response
+		NSArray *singlePageArray;
+		NSDictionary *page;
+//start here		
+		NSEnumerator *pagesEnum3 = [response2 objectEnumerator];
+		while (singlePageArray = [pagesEnum3 nextObject]) {
+		page = [singlePageArray objectAtIndex:0];
+			
+		//-----------------------continue with the old -syncPagesForBlog code
+		NSMutableDictionary *updatedPage = [NSMutableDictionary dictionaryWithDictionary:page];
+			NSLog(@"updatedPage %@", updatedPage);
 
         NSDate *pageGMTDate = [updatedPage valueForKey:@"date_created_gmt"];
         NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:pageGMTDate];
         NSDate *currentDate = [pageGMTDate addTimeInterval:(secs * +1)];
         [updatedPage setValue:currentDate forKey:@"date_created_gmt"];
+			NSLog(@"updatedPage %@", updatedPage);
 
         [updatedPage setValue:[blog valueForKey:kBlogId] forKey:kBlogId];
         [updatedPage setValue:[blog valueForKey:kBlogHostName] forKey:kBlogHostName];
@@ -3000,13 +3117,18 @@ editBlogViewController;
         [updatedPage writeToFile:path atomically:YES];
 
         [pageTitlesArray addObject:[self pageTitleForPage:updatedPage]];
-    }
+	
 
     // sort and save the postTitles list
-    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
-    [pageTitlesArray sortUsingDescriptors:[NSArray arrayWithObject:sd]];
-    [sd release];
+    NSSortDescriptor *sd2 = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
+    [pageTitlesArray sortUsingDescriptors:[NSArray arrayWithObject:sd2]];
+    [sd2 release];
     [blog setObject:[NSNumber numberWithInt:[pageTitlesArray count]] forKey:@"totalpages"];
+			NSNumber *totalPages = [blog valueForKey:@"totalpages"];
+			//CAN I USE totalpages here???
+			int previousNumberOfPages = [totalPages intValue];
+			NSLog(@"previous number of pages %d", previousNumberOfPages);
+			NSLog(@"titles array count %d") ,[pageTitlesArray count];
     [blog setObject:[NSNumber numberWithInt:1] forKey:@"newpages"];
 
     NSString *pathToCommentTitles = [self pathToPageTitles:blog];
@@ -3014,8 +3136,10 @@ editBlogViewController;
 
     [pageTitlesArray writeToFile:pathToCommentTitles atomically:YES];
     [self setPageTitlesList:pageTitlesArray];
+	}
+	[getMorePagesArray release];
     [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-    return YES;
+	return YES;
 }
 
 - (NSMutableDictionary *)pageTitleForPage:(NSDictionary *)aPage {
@@ -3169,12 +3293,12 @@ editBlogViewController;
     NSAutoreleasePool *ap = [[NSAutoreleasePool alloc] init];
     [aBlog retain];
 
-    [self syncPostsForBlog:aBlog];
+    // #291 // [self syncPostsForBlog:aBlog];
     [self generateTemplateForBlog:aBlog];
 
     if ([[currentBlog valueForKey:kSupportsPagesAndComments] boolValue]) {
         [self syncCommentsForBlog:aBlog];
-        [self syncPagesForBlog:aBlog];
+        // #291 // [self syncPagesForBlog:aBlog];
     }
 
     //Has been commented to avoid Empty Blog Creation.
@@ -3507,6 +3631,7 @@ editBlogViewController;
 
 - (BOOL)makeAutoSavedPostCurrentForCurrentBlog {
     NSMutableDictionary *post = [self autoSavedPostForCurrentBlog];
+	NSLog(@"makeAutoSavedPostCurrentForCurrentBlog.post: %@", post);
 	[self printDictToLog:post andDictName:@"the result of makeAutoSavedPostForCurrentBlog"];
 
     if (!post ||[post count] == 0)
@@ -3845,6 +3970,7 @@ editBlogViewController;
         [postParams setObject:[[aPost valueForKey:@"not_used_allow_comments"] stringValue] forKey:@"not_used_allow_comments"];
         [postParams setObject:[[aPost valueForKey:@"not_used_allow_pings"] stringValue] forKey:@"not_used_allow_pings"];
         [postParams setObject:[aPost valueForKey:@"wp_password"] forKey:@"wp_password"];
+		[postParams setObject:[aPost valueForKey:@"custom_fields"] forKey:@"custom_fields"];
         NSString *draftId = [aPost valueForKey:@"draftid"];
 		NSLog(@"draft id %@", draftId);
         NSDictionary *draftPost = [self currentPost];
@@ -3855,6 +3981,9 @@ editBlogViewController;
                          postParams,
                          nil
                         ];
+		
+		// Custom Fields
+		NSDictionary *customFields = [aPost valueForKey:@"custom_fields"];
 
         //TODO: take url from current post
         XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[currentBlog valueForKey:@"xmlrpc"]]];
@@ -3952,6 +4081,7 @@ editBlogViewController;
                          aPost,
                          nil
                         ];
+		
         //TODO: take url from current post
         XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[currentBlog valueForKey:@"xmlrpc"]]];
         [request setMethod:@"metaWeblog.editPost" withObjects:args];
@@ -4399,8 +4529,8 @@ editBlogViewController;
     NSString *fullURL = [blog valueForKey:@"xmlrpc"];
     NSString *blogid = [blog valueForKey:kBlogId];
     NSDictionary *commentsStructure = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kNumberOfCommentsToDisplay] forKey:@"number"];
-	NSLog(@"number of comments to display: %@", commentsStructure);
-	NSLog(@"blogid, username, pwd %@ : %@ : %@", blogid, username, pwd);
+	//NSLog(@"number of comments to display: %@", commentsStructure);
+	//NSLog(@"blogid: %@, username: %@, password: %@", blogid, username, pwd);
 	
 
     //  ------------------------- invoke metaWeblog.getRecentPosts

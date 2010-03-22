@@ -63,7 +63,7 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	[[WordPressAppDelegate sharedWordPressApp] resetCurrentBlogInUserDefaults];
-	[[WordPressAppDelegate sharedWordPressApp] setAutoRefreshMarkers];
+	//[[WordPressAppDelegate sharedWordPressApp] setAutoRefreshMarkers];
 }
 
 #pragma mark -

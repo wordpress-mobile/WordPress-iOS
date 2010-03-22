@@ -16,8 +16,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @implementation EditPostViewController
 
 @synthesize postDetailViewController, selectionTableViewController, segmentedTableViewController, leftView, customFieldsTableView;
-@synthesize infoText, urlField, bookMarksArray, selectedLinkRange, currentEditingTextField, isEditing;
-@synthesize customFieldsEditButton, editCustomFields, isCustomFieldsEnabledForThisPost, locationController, locationButton, locationSpinner;
+@synthesize infoText, urlField, bookMarksArray, selectedLinkRange, currentEditingTextField, isEditing, initialLocation;
+@synthesize customFieldsEditButton, editCustomFields, isCustomFieldsEnabledForThisPost, locationButton, locationSpinner;
 
 @synthesize popoverController;
 @synthesize popoverDoneButton;
@@ -27,17 +27,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSLog(@"inside PostDetailEditController:viewDidLoad, just called [super viewDidLoad]");
 
-	
-	// Begin getting location
-	locationController = [[LocationController alloc] init];
-	[locationController setDelegate:self];
-	[self getLocation:locationButton];
-    
     //customFieldsEditButton.hidden = YES;
     //customFieldsEditButton.enabled = NO;
-    
+
     titleTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
     tagsTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
     categoriesTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
@@ -47,45 +40,45 @@ NSTimeInterval kAnimationDuration = 0.3f;
     statusLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
     titleLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
     tagsLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
-    
+
     titleTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     tagsTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     [contentView bringSubviewToFront:textView];
-    
+
     if (!leftView) {
         leftView = [WPNavigationLeftButtonView createCopyOfView];
         [leftView setTitle:@"Posts"];
     }
-    
+
     [leftView setTitle:@"Posts"];
     [leftView setTarget:self withAction:@selector(cancelView:)];
-	
+
 	popoverDoneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(popoverDoneAction:)];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newCategoryCreatedNotificationReceived:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
-    
+
     //JOHNB TODO: Add a check here for the presence of custom fields in the data model
     // if there are, set isCustomFieldsEnabledForThisPost BOOL to true
     isCustomFieldsEnabledForThisPost = [self checkCustomFieldsMinusMetadata];
     //call a helper to set originY for textViewContentView
     [self postionTextViewContentView];
-	
+
 	if (editingDisabled) {
 		titleTextField.enabled = NO;
 		titleTextField.textColor = [UIColor grayColor];
-		
+
 		tagsTextField.enabled = NO;
 		tagsTextField.textColor = [UIColor grayColor];
-		
+
 		categoriesTextField.enabled = NO;
 		categoriesTextField.textColor = [UIColor grayColor];
-		
+
 		statusTextField.enabled = NO;
 		statusTextField.textColor = [UIColor grayColor];
-		
+
 		textView.editable = NO;
 	}
-	
+
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -95,23 +88,65 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 	[self dismissModalViewControllerAnimated:YES];
-    NSLog(@"inside PostDetailEditController:viewWillAppear, just called [super viewWillAppear:YES]");
-//	NSLog(@"inside PostDetailEditController:viewWillAppear, hasChanges equals:: %@", self.postDetailViewController.hasChanges);
-//	NSLog(@"BOOL = %d", (int)self.postDetailViewController.hasChanges);
-	NSLog(@"hasChanges = %@\n", (self.postDetailViewController.hasChanges ? @"YES" : @"NO")); 
-    isCustomFieldsEnabledForThisPost = [self checkCustomFieldsMinusMetadata];
-    
+    //NSLog(@"inside PostDetailEditController:viewWillAppear, just called [super viewWillAppear:YES]");
+	//NSLog(@"%@", [[BlogDataManager sharedDataManager] currentPost]);
+	//NSLog(@"inside PostDetailEditController:viewWillAppear, hasChanges equals:: %@", self.postDetailViewController.hasChanges);
+	//NSLog(@"BOOL = %d", (int)self.postDetailViewController.hasChanges);
+	//NSLog(@"hasChanges = %@\n", (self.postDetailViewController.hasChanges ? @"YES" : @"NO"));
+    //isCustomFieldsEnabledForThisPost = [self checkCustomFieldsMinusMetadata];
+    isCustomFieldsEnabledForThisPost = YES;
+
     if (isCustomFieldsEnabledForThisPost) {
         customFieldsEditButton.hidden = NO;
         tableViewForSelectingCustomFields.hidden = NO;
-        
-        //customFieldsEditButton.enabled = YES;
+
+        customFieldsEditButton.enabled = YES;
     } else {
         customFieldsEditButton.hidden = YES;
         tableViewForSelectingCustomFields.hidden = YES;
         //customFieldsEditButton.enabled = NO;
     }
-    
+
+	// Check that Geotagging is enabled
+	NSString *geotaggingSettingName = [NSString stringWithFormat:@"%@-Geotagging", [[[BlogDataManager sharedDataManager]  currentBlog] valueForKey:kBlogId]];
+	if(![[NSUserDefaults standardUserDefaults] boolForKey:geotaggingSettingName])
+	{
+		// If disabled, hide our geo button
+		locationButton.hidden = YES;
+	}
+	else {
+		// Otherwise, show the geo button, and get this party started
+		locationButton.hidden = NO;
+
+		// If the post has already been geotagged, reflect this in the icon, and store the
+		// location so we can determine any changes to location in the future
+		if([self isPostGeotagged])
+		{
+			[locationButton setImage:[UIImage imageNamed:@"hasLocation.png"] forState:UIControlStateNormal];
+
+			CLLocation *postLocation = [self getPostLocation];
+			if(postLocation != nil)
+			{
+				// If our location has changed from its initial value, show the Save button
+				if((initialLocation.coordinate.latitude != postLocation.coordinate.latitude) ||
+				   (initialLocation.coordinate.longitude != postLocation.coordinate.longitude))
+					postDetailViewController.hasChanges = YES;
+			}
+		}
+		else
+		{
+			// Post does not have a geotag at this point, so check for a removed geotag
+			if((initialLocation != nil) && ([self getPostLocation] == nil))
+				postDetailViewController.hasChanges = YES;
+
+			// Set our geo button back to normal
+			[locationButton setImage:[UIImage imageNamed:@"getLocation.png"] forState:UIControlStateNormal];
+		}
+
+		[locationButton setNeedsLayout];
+		[locationButton setNeedsDisplay];
+	}
+
     [self postionTextViewContentView];
     [self refreshUIForCurrentPost];
 }
@@ -152,6 +187,16 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 #pragma mark -
 
+- (BOOL)isPostPublished {
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	NSString *status = [dm statusDescriptionForStatus:[dm.currentPost valueForKey:@"post_status"] fromBlog:dm.currentBlog];
+
+	if([[status lowercaseString] isEqualToString:@"published"])
+		return YES;
+	else
+		return NO;
+}
+
 - (void)refreshUIForCompose {
     //	textView.alpha = 0.3f;
     //	textView.text = @"Tap here to begin writing";
@@ -172,14 +217,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
     NSString *description = [dm.currentPost valueForKey:@"description"];
     NSString *moreText = [dm.currentPost valueForKey:@"mt_text_more"];
-	
-	NSLog(@"description: %@", description);
-	NSLog(@"moreText: %@", moreText);
 
     if (!description ||[description length] == 0) {
         textViewPlaceHolderField.hidden = NO;
         textView.text = @"";
-		NSLog(@"just made textview nil");
     } else {
         textViewPlaceHolderField.hidden = YES;
 
@@ -187,7 +228,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			// To Do: when we show more tag label dynamically, we need to add label (if any) of more tag in the Character set string .
 			//NSRange moretagRange = [description rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"<!--more-->"] options:NSForcedOrderingSearch];
             textView.text = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", description, moreText];
-		}	
+		}
 		else
             textView.text = description;
     }
@@ -205,9 +246,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
         categoriesTextField.text = [cats componentsJoinedByString:@", "];
 	else
         categoriesTextField.text = @"";
-	
+
 	// workaround for odd text view behavior on iPad
 	[textView setContentOffset:CGPointZero animated:NO];
+
+	// Set our initial location so we can determine if the geotag has been updated later
+	initialLocation = [self getPostLocation];
 }
 
 - (void)populateSelectionsControllerWithCategories {
@@ -230,7 +274,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
     segmentedTableViewController.title = @"Categories";
     segmentedTableViewController.navigationItem.rightBarButtonItem = newCategoryBarButtonItem;
-	
+
     if (isNewCategory != YES) {
 		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
 			[(UINavigationController *)(self.popoverController.contentViewController) setViewControllers:[NSArray arrayWithObject:segmentedTableViewController] animated:NO];
@@ -365,6 +409,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     str = (str != nil ? str : @"");
     [dm.currentPost setValue:str forKey:@"title"];
 
+	//[self saveLocationDataToCustomFields];
+
     //TODO:JOHNBCustomFields -- probably want an entry here for custom_fields too
 }
 
@@ -384,12 +430,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (IBAction)showCategoriesViewAction:(id)sender {
 	//[self showEditPostModalViewWithAnimation:YES];
     [self populateSelectionsControllerWithCategories];
-	
+
 }
 
 - (IBAction)showStatusViewAction:(id)sender {
     [self populateSelectionsControllerWithStatuses];
-	
+
 }
 
 - (IBAction)showCustomFieldsTableView:(id)sender {
@@ -420,7 +466,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			frame.origin.y -= 170.0f;
 			//frame.origin.y -= 175.0f;
 			subView.frame = frame;
-		
+
 	   // remove "//" for custom fields }
 
 		[UIView commitAnimations];
@@ -452,7 +498,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			frame = subView.frame;
 			frame.origin.y = 0.0f;
 			subView.frame = frame;
-		
+
 		 // remove "//" for custom fields }
 
 		[UIView commitAnimations];
@@ -513,9 +559,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [addURLSourceAlert addSubview:infoText];
     [addURLSourceAlert addSubview:urlField];
     [infoText becomeFirstResponder];
-	
+
 	//deal with rotation
-	if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft) 
+	if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
 		|| (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight))
 	{
 		CGAffineTransform upTransform = CGAffineTransformMakeTranslation(0.0, 80.0);
@@ -524,7 +570,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		CGAffineTransform upTransform = CGAffineTransformMakeTranslation(0.0, 140.0);
 		[addURLSourceAlert setTransform:upTransform];
 	}
-	
+
     //[addURLSourceAlert setTransform:upTransform];
     [addURLSourceAlert setTag:2];
     [addURLSourceAlert show];
@@ -539,7 +585,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	
+
     if ([alertView tag] == 1) {
         if (buttonIndex == 1)
             [self showLinkView];else {
@@ -548,29 +594,29 @@ NSTimeInterval kAnimationDuration = 0.3f;
 				[delegate setAlertRunning:NO];
 			}
     }
-	
+
     if ([alertView tag] == 2) {
         if (buttonIndex == 1) {
             if ((urlField.text == nil) || ([urlField.text isEqualToString:@""])) {
                 [delegate setAlertRunning:NO];
                 return;
             }
-			
+
             if ((infoText.text == nil) || ([infoText.text isEqualToString:@""]))
                 infoText.text = urlField.text;
-			
+
             NSString *commentsStr = textView.text;
             NSRange rangeToReplace = [self selectedLinkRange];
             NSString *urlString = [self validateNewLinkInfo:urlField.text];
             NSString *aTagText = [NSString stringWithFormat:@"<a href=\"%@\">%@</a>", urlString, infoText.text];;
             textView.text = [commentsStr stringByReplacingOccurrencesOfString:[commentsStr substringWithRange:rangeToReplace] withString:aTagText options:NSCaseInsensitiveSearch range:rangeToReplace];
         }
-		
+
         dismiss = YES;
         [delegate setAlertRunning:NO];
         [textView touchesBegan:nil withEvent:nil];
     }
-	
+
     return;
 }
 
@@ -583,16 +629,16 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)textViewDidChangeSelection:(UITextView *)aTextView {
     if (!isTextViewEditing) {
         isTextViewEditing = YES;
-		
+
         [self updateTextViewPlacehoderFieldStatus];
-		
+
 		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
 			if ((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
 				[self setTextViewHeight:116];
 			}
-		
+
 			[self bringTextViewUp];
-			
+
 			UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
 										   target:self action:@selector(endTextEnteringButtonAction:)];
 			[postDetailViewController setLeftBarButtonItemForEditPost:doneButton];
@@ -601,12 +647,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
 }
 
-
-
-
-
 - (void)textViewDidBeginEditing:(UITextView *)aTextView {
-	
+
     isEditing = YES;
 
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
@@ -615,7 +657,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			[self setTextViewHeight:116];
 		}
 	}
-	
+
     dismiss = NO;
 
     if (!isTextViewEditing) {
@@ -625,7 +667,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
  		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
 			[self bringTextViewUp];
-		
+
 			UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
 										   target:self action:@selector(endTextEnteringButtonAction:)];
 			[postDetailViewController setLeftBarButtonItemForEditPost:doneButton];
@@ -638,19 +680,19 @@ NSTimeInterval kAnimationDuration = 0.3f;
 //this enables the "http helper" to work as expected
 //important is capturing &nbsp BEFORE the semicolon is added.  Not doing so causes a crash in the textViewDidChange method due to array overrun
 - (BOOL)textView:(UITextView *)aTextView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
-	
+
 	//if nothing has been entered yet, return YES to prevent crash when hitting delete
     if (text.length == 0) {
 		return YES;
     }
-	
-	
+
+
     // create final version of textView after the current text has been inserted
     NSMutableString *updatedText = [[NSMutableString alloc] initWithString:aTextView.text];
     [updatedText insertString:text atIndex:range.location];
-	
+
     NSRange replaceRange = range, endRange = range;
-	
+
     if (text.length > 1) {
         // handle paste
         replaceRange.length = text.length;
@@ -659,29 +701,28 @@ NSTimeInterval kAnimationDuration = 0.3f;
         replaceRange.length = 6;  // length of "&#160;" is 6 characters
         replaceRange.location -= 5; // look back one characters (length of "&#160;" minus one)
     }
-	
+
     // replace "&nbsp" with "&#160;" for the inserted range
     int replaceCount = [updatedText replaceOccurrencesOfString:@"&nbsp" withString:@"&#160;" options:NSCaseInsensitiveSearch range:replaceRange];
-	
+
     if (replaceCount > 0) {
         // update the textView's text
         aTextView.text = updatedText;
-		
+
         // leave cursor at end of inserted text
         endRange.location += text.length + replaceCount * 1; // length diff of "&nbsp" and "&#160;" is 1 character
-		
+
         [updatedText release];
-		
+
         // let the textView know that it should ingore the inserted text
         return NO;
     }
-	
+
     [updatedText release];
-	
+
     // let the textView know that it should handle the inserted text
     return YES;
 }
-
 
 - (void)textViewDidChange:(UITextView *)aTextView {
     postDetailViewController.hasChanges = YES;
@@ -696,9 +737,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     NSArray *stringArray = [NSArray arrayWithObjects:@"http:", @"ftp:", @"https:", @"www.", nil];
 	//NSString *str = [[aTextView text]stringByReplacingOccurrencesOfString: @"&nbsp;" withString: @"&#160"];
     NSString *str = [aTextView text];
-	//NSLog(@"this is str::-->  %@", str);
-	NSLog(@"this is str's count %d", str.length);
-	NSLog(@"this is the string from the textView %@", str);
     int i, j, count = [stringArray count];
     BOOL searchRes = NO;
 
@@ -715,7 +753,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		 subStrRange.location = range.location - j;
         subStrRange.length = j;
         [self setSelectedLinkRange:subStrRange];
-		
+
        NSString *subStr = [str substringWithRange:subStrRange];
 
         for (i = 0; i < count; i++) {
@@ -754,7 +792,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
     if (isTextViewEditing) {
         isTextViewEditing = NO;
-		
+
 		[self updateTextViewPlacehoderFieldStatus];
         NSString *text = aTextView.text;
         [[[BlogDataManager sharedDataManager] currentPost] setObject:text forKey:@"description"];
@@ -771,7 +809,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			[postDetailViewController setLeftBarButtonItemForEditPost:barItem];
 			[barItem release];
 		}
-        //NSLog(@"the text from aTextView is %@", text);
     }
 }
 
@@ -995,8 +1032,6 @@ editingInfo:(NSDictionary *)editingInfo {
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"inside cellForRow of PostDetailEditController");
-
     static NSString *CellIdentifier = @"Cell";
 
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -1004,7 +1039,6 @@ editingInfo:(NSDictionary *)editingInfo {
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
 
-        //NSLog(@"inside if cell == nil");
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 200, 25)];
         label.textAlignment = UITextAlignmentLeft;
         label.tag = kLabelTag;
@@ -1068,11 +1102,10 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
         for (int i = 0; i < dictsCount; i++) {
             NSString *tempKey = [[tempCustomFieldsArray objectAtIndex:i] objectForKey:@"key"];
-            NSLog(@"Strip Metadata tempKey is... %@", tempKey);
 
             //if tempKey contains an underscore, remove that object (NSDict with metadata) from the array and move on
-            if ([tempKey rangeOfString:@"_"].location != NSNotFound) {
-                NSLog(@"Found an underscore metadata 'member' and removing it %@", tempKey);
+            if(([tempKey rangeOfString:@"_"].location != NSNotFound) && ([tempKey rangeOfString:@"geo_"].location == NSNotFound)) {
+                NSLog(@"Removing metadata key: %@", tempKey);
                 [tempCustomFieldsArray removeObjectAtIndex:i];
                 //if I remove one, the count goes down and we stop too soon unless we subtract one from i
                 //and re-set dictsCount.  Doing this keeps us in sync with the actual array.count
@@ -1103,88 +1136,65 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 #pragma mark -
 #pragma mark Location Methods
 
-- (IBAction)getLocation:(id)sender {
-	// We don't have a location yet
-	if(![locationController hasLocation])
-	{
-		// Start the spinner and update our button state
-		[locationSpinner startAnimating];
-		[self.locationButton setHighlighted:NO];
-		[self.locationButton setSelected:YES];
-		
-		// Tell LocationController to start updating its location
-		[[locationController locationManager] startUpdatingLocation];
-	}
-	else { // We already have a location
-		// Show our map view and update our button state
-		[self showLocationMapView:sender];
-		[self.locationButton setHighlighted:YES];
-		[self.locationButton setSelected:NO];
-	}
-}
-
-- (void)locationUpdate:(CLLocation *)location {
-	// We got a successful location update
-	// Start the spinner and update our button state
-	[locationSpinner stopAnimating];
-	[self.locationButton setHighlighted:YES];
-	[self.locationButton setSelected:NO];
-}
-
-- (void)locationError:(NSError *)error {
-	// Our location update failed
-	// Stop the spinner and update our button state
-	[locationSpinner stopAnimating];
-	[self.locationButton setHighlighted:NO];
-	[self.locationButton setSelected:NO];
-}
-
-- (void)saveLocationDataToCustomFields {
-	// Stub method.
-	// Grab our mutable array of custom fields from BlogDataManager
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
-    NSMutableArray *customFieldsArray = [dm.currentPost valueForKey:@"custom_fields"];
-	
-	// Format our values
-	// Latitude
-	NSString *latitude = [NSString stringWithFormat:@"%lf", 
-						  locationController.locationManager.location.coordinate.latitude];
-	// Longitude
-	NSString *longitude = [NSString stringWithFormat:@"%lf", 
-						   locationController.locationManager.location.coordinate.longitude];
-	// Accuracy
-	NSString *accuracy = [NSString stringWithFormat:@"%d", 
-								  locationController.locationManager.location.horizontalAccuracy];
-	
-	// Add latitude, accuracy, longitude, address, and public
-	// WP API fields: geo_latitude, geo_longitude, geo_accuracy, geo_public
-	NSArray *keys = [NSArray arrayWithObjects:@"geo_latitude",@"geo_longitude", @"geo_accuracy", @"geo_public"];
-	NSArray *objects = [NSArray arrayWithObjects:latitude, longitude, accuracy];
-	NSDictionary *locationFields = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
-	
-	// Send our modified custom fields back to BlogDataManager
-	NSLog(@"Saving location data to custom fields...");
-	[customFieldsArray addObject:locationFields];
-	[dm.currentPost setValue:customFieldsArray forKey:@"custom_fields"];
-	NSLog(@"custom fields: %@", customFieldsArray);
+- (BOOL)isPostGeotagged {
+	if([self getPostLocation] != nil)
+		return YES;
+	else
+		return NO;
 }
 
 - (IBAction)showLocationMapView:(id)sender {
-	PostLocationViewController *locationView = [[PostLocationViewController alloc] init];
-	locationView.initialLocation = locationController.locationManager.location;
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-		locationView.contentSizeForViewInPopover = popoverController.contentViewController.contentSizeForViewInPopover;
-		locationView.navigationItem.rightBarButtonItem = popoverDoneButton;
-		[(UINavigationController *)(self.popoverController.contentViewController) setViewControllers:[NSArray arrayWithObject:locationView] animated:NO];
-		if ([sender isKindOfClass:[UIBarButtonItem class]])
-			[popoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-		else
-			[popoverController presentPopoverFromRect:[locationButton frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-	} else {
-		[self presentModalViewController:locationView animated:YES];
-	}
-	[locationView autorelease];
+	// Display the geotag view
+	PostLocationViewController *locationView = [[PostLocationViewController alloc] initWithNibName:@"PostLocationViewController" bundle:nil];
+	[postDetailViewController presentModalViewController:locationView animated:YES];
 }
+
+- (CLLocation *)getPostLocation {
+	CLLocation *result = nil;
+	double latitude = 0.0;
+	double longitude = 0.0;
+    NSArray *customFieldsArray = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"custom_fields"];
+
+	// Loop through the post's custom fields
+	for(NSDictionary *dict in customFieldsArray)
+	{
+		// Latitude
+		if([[dict objectForKey:@"key"] isEqualToString:@"geo_latitude"])
+			latitude = [[dict objectForKey:@"value"] doubleValue];
+
+		// Longitude
+		if([[dict objectForKey:@"key"] isEqualToString:@"geo_longitude"])
+			longitude = [[dict objectForKey:@"value"] doubleValue];
+
+		// If we have both lat and long, we have a geotag
+		if((latitude != 0.0) && (longitude != 0.0))
+		{
+			result = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
+			break;
+		}
+		else
+			result = nil;
+	}
+
+	return result;
+}
+
+//- (IBAction)showLocationMapView:(id)sender {
+//	PostLocationViewController *locationView = [[PostLocationViewController alloc] init];
+//	locationView.initialLocation = locationController.locationManager.location;
+//	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+//		locationView.contentSizeForViewInPopover = popoverController.contentViewController.contentSizeForViewInPopover;
+//		locationView.navigationItem.rightBarButtonItem = popoverDoneButton;
+//		[(UINavigationController *)(self.popoverController.contentViewController) setViewControllers:[NSArray arrayWithObject:locationView] animated:NO];
+//		if ([sender isKindOfClass:[UIBarButtonItem class]])
+//			[popoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+//		else
+//			[popoverController presentPopoverFromRect:[locationButton frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+//	} else {
+//		[self presentModalViewController:locationView animated:YES];
+//	}
+//	[locationView autorelease];
+//}
 
 #pragma mark -
 #pragma mark Keyboard management
@@ -1192,40 +1202,40 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 - (void)keyboardWillShow:(NSNotification *)notification;
 {
 	NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo];
-	
+
 	CGRect kbBounds = [[keyboardInfo objectForKey:UIKeyboardBoundsUserInfoKey] CGRectValue];
 	CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
 	UIViewAnimationCurve curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue];
-	
+
 	[UIView beginAnimations:nil context:nil];
-	
+
 	[UIView setAnimationCurve:curve];
 	[UIView setAnimationDuration:animationDuration];
-	
+
 	CGRect frame = textView.frame;
 	frame.size.height -= kbBounds.size.height;
 	textView.frame = frame;
-	
+
 	[UIView commitAnimations];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification;
 {
 	NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo];
-	
+
 	CGRect kbBounds = [[keyboardInfo objectForKey:UIKeyboardBoundsUserInfoKey] CGRectValue];
 	CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
 	UIViewAnimationCurve curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue];
-	
+
 	[UIView beginAnimations:nil context:nil];
-	
+
 	[UIView setAnimationCurve:curve];
 	[UIView setAnimationDuration:animationDuration];
-	
+
 	CGRect frame = textView.frame;
 	frame.size.height += kbBounds.size.height;
 	textView.frame = frame;
-	
+
 	[UIView commitAnimations];
 }
 
@@ -1239,7 +1249,7 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	
+
     [infoText release];
     [urlField release];
     [leftView release];
@@ -1247,7 +1257,6 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [segmentedTableViewController release];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
     [customFieldsTableView release];
-	[locationController release];
 	[locationButton release];
 	[locationSpinner release];
 	[popoverController release];

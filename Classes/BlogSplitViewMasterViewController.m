@@ -273,7 +273,7 @@ UIPopoverController *theBlogMenuPopoverController = [[UIPopoverController alloc]
 {
 	NSLog(@"Refreshed!");
 	[tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
-	[self performSelectorOnMainThread:@selector(updateSelection) withObject:nil waitUntilDone:YES];
+// JIW	[self performSelectorOnMainThread:@selector(updateSelection) withObject:nil waitUntilDone:YES];
 }
 
 #pragma mark KVO

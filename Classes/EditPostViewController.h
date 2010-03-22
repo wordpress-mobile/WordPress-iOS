@@ -4,7 +4,6 @@
 #import "WPImagePickerController.h"
 #import "CustomFieldsTableView.h"
 #import "EditPostModalViewController.h"
-#import "LocationController.h"
 
 #define kSelectionsStatusContext ((void *)1000)
 #define kSelectionsCategoriesContext ((void *)2000)
@@ -14,7 +13,7 @@
 @class WPSegmentedSelectionTableViewController;
 
 @interface EditPostViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
-                                                        UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, LocationControllerDelegate> {
+                                                        UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
     IBOutlet UITextView *textView;
     IBOutlet UITextField *titleTextField;
     IBOutlet UITextField *tagsTextField;
@@ -62,13 +61,15 @@
     NSUInteger originY;
 	//for setting textview height correctly because shouldAutorotate runs in the TabBarController that "owns" this class
 	NSUInteger textViewHeightForRotation;
-															
+
 	LocationController *locationController;
-	
+
 	UIBarButtonItem *popoverDoneButton;
 	UIPopoverController *popoverController;
-	
+
 	BOOL editingDisabled;
+
+	CLLocation *initialLocation;
 }
 
 @property (nonatomic, assign) PostViewController *postDetailViewController;
@@ -89,7 +90,7 @@
 @property (nonatomic, retain) UIButton *customFieldsEditButton;
 //@property (nonatomic, retain) UITableView *selectCustomFields;
 
-@property (nonatomic, retain) LocationController *locationController;
+@property (nonatomic, retain) CLLocation *initialLocation;
 @property (nonatomic, retain) IBOutlet UIButton *locationButton;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *locationSpinner;
 
@@ -128,10 +129,9 @@
 
 // Location methods
 - (IBAction)showLocationMapView:(id)sender;
-- (void)saveLocationDataToCustomFields;
-- (IBAction)getLocation:(id)sender;
-- (void)locationUpdate:(CLLocation *)location;
-- (void)locationError:(NSError *)error;
+- (BOOL)isPostPublished;
+- (BOOL)isPostGeotagged;
+- (CLLocation *)getPostLocation;
 
 - (IBAction)popoverDoneAction:(id)sender;
 

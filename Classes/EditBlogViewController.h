@@ -15,6 +15,7 @@
     IBOutlet UITableViewCell *passwordTableViewCell;
     IBOutlet UITableViewCell *noOfPostsTableViewCell;
 	IBOutlet UITableViewCell *blogHTTPAuthTableViewCell;
+	IBOutlet UITableViewCell *geotaggingTableViewCell;
 
     IBOutlet UITextField *blogURLTextField;
     IBOutlet UITextField *userNameTextField;
@@ -27,11 +28,13 @@
     IBOutlet UILabel *resizePhotoHintLabel;
     IBOutlet UITableViewCell *resizePhotoViewCell;
     IBOutlet UISwitch *resizePhotoControl;
+    IBOutlet UISwitch *geotaggingSwitch;
 
     IBOutlet UILabel *blogURLLabel;
     IBOutlet UILabel *userNameLabel;
     IBOutlet UILabel *passwordLabel;
     IBOutlet UILabel *noOfPostsLabel;
+    IBOutlet UILabel *geotaggingLabel;
 
     IBOutlet UIView *validationView;
 
@@ -54,5 +57,6 @@
 - (void)hideSpinner;
 - (void)showLocateXMLRPCModalViewWithAnimation:(BOOL)animate;
 - (void)setAuthEnabledText:(BOOL)authEnabled;
+- (void)changeGeotaggingSetting;
 
 @end
