@@ -360,13 +360,9 @@
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     CommentViewController *commentViewController = [[CommentViewController alloc] initWithNibName:@"CommentViewController" bundle:nil];
 	commentViewController.commentsViewController = self;
-	//[commentViewController showComment:commentsArray atIndex:index];
 	
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-		[self.navigationController pushViewController:commentViewController animated:YES];
-	} else {
-		[delegate.navigationController pushViewController:commentViewController animated:YES];
-	}
+	[commentViewController view]; // DWC kindakludge - make sure it's got a view
+	[delegate showContentDetailViewController:commentViewController];
 
     [commentViewController showComment:commentsArray atIndex:index];
     [commentViewController release];
