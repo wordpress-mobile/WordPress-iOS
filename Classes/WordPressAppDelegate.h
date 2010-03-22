@@ -33,4 +33,7 @@
 - (void)resetCurrentBlogInUserDefaults;
 - (BOOL)shouldLoadBlogFromUserDefaults;
 - (void)setAutoRefreshMarkers;
+
+- (void)showContentDetailViewController:(UIViewController *)viewController;
+
 @end

@@ -144,6 +144,16 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	[defaults setBool:true forKey:@"anyMorePages"];
 }
 
+- (void)showContentDetailViewController:(UIViewController *)viewController;
+{
+	if (self.navigationController) {
+		[self.navigationController pushViewController:viewController animated:YES];
+	}
+	else if (self.splitViewController) {
+		[(UINavigationController *)[self.splitViewController detailViewController] setViewControllers:[NSArray arrayWithObject:viewController] animated:NO];
+	}
+}
+
 #pragma mark -
 #pragma mark Private Methods
 

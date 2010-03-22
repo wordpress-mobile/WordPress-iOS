@@ -258,7 +258,9 @@
     }
 
     self.pageDetailsController.mode = editPage;
-    [delegate.navigationController pushViewController:self.pageDetailsController animated:YES];
+	
+	[self.pageDetailsController viewWillAppear:NO];
+	[delegate showContentDetailViewController:self.pageDetailsController];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

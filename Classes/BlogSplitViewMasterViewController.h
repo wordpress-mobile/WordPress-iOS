@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "BlogViewController.h"
+
 typedef enum _WPItemType {
 	kWPItemTypePost,
 	kWPItemTypePostDraft,
@@ -17,7 +19,7 @@ typedef enum _WPItemType {
 
 @class PostsViewController, CommentsViewController, PagesViewController;
 
-@interface BlogSplitViewMasterViewController : UIViewController <UITableViewDelegate> {
+@interface BlogSplitViewMasterViewController : BlogViewController <UITableViewDelegate> {
 	IBOutlet UITableView *tableView;
 	
 	WPItemType selectedItemType;
@@ -26,15 +28,6 @@ typedef enum _WPItemType {
 	id <UITableViewDataSource, UITableViewDelegate> currentDataSource;
 	NSIndexPath *currentIndexPath;
 	
-	IBOutlet UITabBarController *tabBarController;
-	
-	IBOutlet PostsViewController *postsViewController;
-	IBOutlet PagesViewController *pagesViewController;
-	IBOutlet CommentsViewController *commentsViewController;
-	
-	IBOutlet UIButton *commentsButton;
-	IBOutlet UISegmentedControl *segmentedControl;
-
 	IBOutlet UINavigationController *detailNavController;
 }
 
@@ -49,9 +42,6 @@ typedef enum _WPItemType {
 @property (nonatomic, retain) IBOutlet CommentsViewController *commentsViewController;
 
 @property (nonatomic, retain) IBOutlet UINavigationController *detailNavController;
-
-@property (nonatomic, retain) IBOutlet UIButton *commentsButton;
-@property (nonatomic, retain) IBOutlet UISegmentedControl *segmentedControl;
 
 - (void)currentBlogChanged;
 - (void)refreshBlogData;

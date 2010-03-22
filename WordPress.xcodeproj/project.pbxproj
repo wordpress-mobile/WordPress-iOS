@@ -25,6 +25,8 @@
 		03B1DF30113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B1DF2E113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.xib */; };
 		03B1E32B113DBDB300BBD1C6 /* PostViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B1E32A113DBDB300BBD1C6 /* PostViewController-iPad.xib */; };
 		03CF21ED0FE9F0C3008AD538 /* NSString+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CF21EC0FE9F0C3008AD538 /* NSString+Util.m */; };
+		03E26FDC1157FC2500D6D38A /* PageViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03D5AEF11146A2D700FC6044 /* PageViewController-iPad.xib */; };
+		03E26FDD1157FC2500D6D38A /* EditPageViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03D5AF731146AF2D00FC6044 /* EditPageViewController-iPad.xib */; };
 		03EB54B5100FFB5C004E82CD /* gravatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 03EB54B4100FFB5C004E82CD /* gravatar.jpg */; };
 		03EB590F10105076004E82CD /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EB590C10105076004E82CD /* RegexKitLite.m */; };
 		03EB591010105076004E82CD /* RegExProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EB590E10105076004E82CD /* RegExProcessor.m */; };
@@ -1092,6 +1094,8 @@
 				45F285DC1149BD020014D36C /* Icon_Spotlight.png in Resources */,
 				45F285DD1149BD020014D36C /* Icon_iPhone.png in Resources */,
 				45CD32191157D83D009E78D3 /* fabric.png in Resources */,
+				03E26FDC1157FC2500D6D38A /* PageViewController-iPad.xib in Resources */,
+				03E26FDD1157FC2500D6D38A /* EditPageViewController-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

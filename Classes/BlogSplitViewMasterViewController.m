@@ -33,9 +33,6 @@
 @synthesize commentsViewController;
 @synthesize detailNavController;
 
-@synthesize commentsButton;
-@synthesize segmentedControl;
-
 - (void)dealloc {
 	[[BlogDataManager sharedDataManager] removeObserver:self forKeyPath:@"currentPostIndex"];
 	[[BlogDataManager sharedDataManager] removeObserver:self forKeyPath:@"currentDraftIndex"];
@@ -53,9 +50,6 @@
 	[commentsViewController release], commentsViewController = nil;
 	
 	[detailNavController release], detailNavController = nil;
-
-	[commentsButton release], commentsButton = nil;
-	[segmentedControl release], segmentedControl = nil;
 
     [super dealloc];
 }
@@ -199,15 +193,15 @@ UIPopoverController *theBlogMenuPopoverController = [[UIPopoverController alloc]
 	return YES;
 }
 
-- (IBAction)commentsAction:(id)sender;
-{
-	commentsButton.selected = YES;
-	commentsButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
-	[tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:NO];
-	commentsViewController.navigationItem.title = @"All Blog Comments";
-	[commentsViewController refreshCommentsList];
-	[detailNavController setViewControllers:[NSArray arrayWithObject:commentsViewController] animated:NO];
-}
+//- (IBAction)commentsAction:(id)sender;
+//{
+//	commentsButton.selected = YES;
+//	commentsButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
+//	[tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:NO];
+//	commentsViewController.navigationItem.title = @"All Blog Comments";
+//	[commentsViewController refreshCommentsList];
+//	[detailNavController setViewControllers:[NSArray arrayWithObject:commentsViewController] animated:NO];
+//}
 
 #pragma mark -
 #pragma mark UITableViewDelegate
@@ -230,9 +224,6 @@ UIPopoverController *theBlogMenuPopoverController = [[UIPopoverController alloc]
 
 - (void)tableView:(UITableView *)theTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-	commentsButton.selected = NO;
-	commentsButton.titleLabel.shadowOffset = CGSizeMake(0, 1);
-	
 	[currentDataSource tableView:theTableView didSelectRowAtIndexPath:indexPath];
 	
 	UIViewController *detailViewController = nil;

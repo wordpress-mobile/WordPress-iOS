@@ -293,7 +293,9 @@
     }
 
     self.postDetailViewController.mode = editPost;
-    [delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
+	
+	[self.postDetailViewController refreshUIForCurrentPost];
+	[delegate showContentDetailViewController:self.postDetailViewController];
 }
 
 
