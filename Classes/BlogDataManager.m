@@ -1648,7 +1648,7 @@ editBlogViewController, currentLocation;
 	NSString *pwd = [self getPasswordFromKeychainInContextOfCurrentBlog:blog];
     NSString *fullURL = [blog valueForKey:@"xmlrpc"];
     NSString *blogid = [blog valueForKey:kBlogId];
-    NSNumber *maxToFetch = [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:2] intValue]];
+    NSNumber *maxToFetch = [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:3] intValue]];
 	//Note: Changed this to accomodate 10-at-a-time updating of posts. kPostsDownloadCount seems to be associated with the number set when setting up the blog
 	//NSString *maxToFetch = nil;
 	//NSNumber *maxToFetch = [NSNumber numberWithInt:[[currentBlog valueForKey:@"totalPostsLoaded"] intValue]];
@@ -2959,7 +2959,7 @@ editBlogViewController, currentLocation;
 	NSLog(@"blogid is %@", blogid);
 	
 	//for #291
-	NSNumber *userSetMaxToFetch = [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:2] intValue]];
+	NSNumber *userSetMaxToFetch = [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:3] intValue]];
 	int loadLimit = [userSetMaxToFetch intValue];
 	
 	//end for #291

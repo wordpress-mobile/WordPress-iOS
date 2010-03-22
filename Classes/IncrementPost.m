@@ -98,7 +98,7 @@
 	//CAN I USE totalposts here???
 	int previousNumberOfPosts = [totalPosts intValue];
 	NSLog(@"previous number of posts %d", previousNumberOfPosts);
-	NSNumber *userSetMaxToFetch = [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:2] intValue]];
+	NSNumber *userSetMaxToFetch = [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:3] intValue]];
 	int max = previousNumberOfPosts + ([userSetMaxToFetch intValue] + 50);
 	int loadLimit = [userSetMaxToFetch intValue];
 	NSNumber *numberOfPostsToGet = [NSNumber numberWithInt:max];
@@ -450,7 +450,7 @@
 	//CAN I USE totalpages here???
 	int previousNumberOfPages = [totalpages intValue];
 	NSLog(@"previous number of pages %d", previousNumberOfPages);
-	NSNumber *userSetMaxToFetch = [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:2] intValue]];
+	NSNumber *userSetMaxToFetch = [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:3] intValue]];
 	//is this possibly just a holder for # of items to download?  if so, then we're fine and don't need to reproduce it.  
 		//We should probably change the name to something like kNumberOfItemsToDownloadCount or something similar though...
 	//because pages are handled differently than posts in the current version, (pagesDownloadCount) will  need to be added to the pages datastructure
