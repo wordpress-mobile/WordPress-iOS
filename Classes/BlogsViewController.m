@@ -119,6 +119,7 @@
 		modalNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 		}
 
+	[UIPopoverController setCurrentPopoverController:NULL];
 	
 
 	[[WordPressAppDelegate sharedWordPressApp].splitViewController presentModalViewController:modalNavigationController animated:animate];
