@@ -27,7 +27,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 @synthesize window;
 @synthesize navigationController, alertRunning;
-@synthesize splitViewController;
+@synthesize splitViewController, firstLaunchController;
 
 - (id)init {
     if (!wordPressApp) {
@@ -95,8 +95,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	
 	if ([dataManager countOfBlogs] == 0)
 		{
-		CFirstLaunchViewController *theFirstLaunchViewController = [[[CFirstLaunchViewController alloc] initWithNibName:NULL bundle:NULL] autorelease];
-		UINavigationController *modalNavigationController = [[UINavigationController alloc] initWithRootViewController:theFirstLaunchViewController];
+		self.firstLaunchController = [[[CFirstLaunchViewController alloc] initWithNibName:NULL bundle:NULL] autorelease];
+		UINavigationController *modalNavigationController = [[UINavigationController alloc] initWithRootViewController:self.firstLaunchController];
 		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
 			modalNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 			modalNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;

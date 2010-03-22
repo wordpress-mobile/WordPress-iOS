@@ -154,6 +154,7 @@ Classes/XMLRPC/XMLRPCResponse.m -text
 Classes/XMLRPC/XMLValueDecoder.h -text
 Classes/XMLRPC/XMLValueDecoder.m -text
 Classes/blue-m.png -text svneol=unset#unset
+Classes/fabric.png -text svneol=unset#unset
 Classes/glossyButton-disabled.png -text svneol=unset#unset
 Classes/glossyButton-highlighted.png -text svneol=unset#unset
 Classes/glossyButton-normal.png -text svneol=unset#unset

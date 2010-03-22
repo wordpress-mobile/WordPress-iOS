@@ -46,7 +46,7 @@ return(theObject);
 UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
 [barButtonItem setTitle:@"My Blog"];
 [theNavigationItem setLeftBarButtonItem:barButtonItem animated:YES];
-[UIPopoverController setCurrentPopoverController:pc];
+//[UIPopoverController setCurrentPopoverController:pc];
 }
 
 // Called when the view is shown again in the split view, invalidating the button and popover controller

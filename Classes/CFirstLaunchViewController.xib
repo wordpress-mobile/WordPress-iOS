@@ -42,6 +42,18 @@
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
+					<object class="IBUIImageView" id="994469859">
+						<reference key="NSNextResponder" ref="355052634"/>
+						<int key="NSvFlags">274</int>
+						<string key="NSFrameSize">{540, 480}</string>
+						<reference key="NSSuperview" ref="355052634"/>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<object class="NSCustomResource" key="IBUIImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">fabric.png</string>
+						</object>
+					</object>
 					<object class="IBUILabel" id="813625263">
 						<reference key="NSNextResponder" ref="355052634"/>
 						<int key="NSvFlags">292</int>
@@ -58,9 +70,9 @@
 							<double key="NSSize">17</double>
 							<int key="NSfFlags">16</int>
 						</object>
-						<object class="NSColor" key="IBUITextColor">
+						<object class="NSColor" key="IBUITextColor" id="9132668">
 							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MCAwIDAAA</bytes>
+							<bytes key="NSRGB">MSAxIDEAA</bytes>
 						</object>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">1</int>
@@ -86,10 +98,7 @@
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MQA</bytes>
 						</object>
-						<object class="NSColor" key="IBUINormalTitleColor" id="9132668">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MSAxIDEAA</bytes>
-						</object>
+						<reference key="IBUINormalTitleColor" ref="9132668"/>
 						<object class="NSCustomResource" key="IBUINormalBackgroundImage" id="823610214">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">glossyButton-normal.png</string>
@@ -195,6 +204,7 @@
 							<reference ref="446769383"/>
 							<reference ref="388894249"/>
 							<reference ref="969266836"/>
+							<reference ref="994469859"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -218,6 +228,11 @@
 						<reference key="object" ref="969266836"/>
 						<reference key="parent" ref="355052634"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">16</int>
+						<reference key="object" ref="994469859"/>
+						<reference key="parent" ref="355052634"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -227,6 +242,7 @@
 					<string>-1.CustomClassName</string>
 					<string>-2.CustomClassName</string>
 					<string>15.IBPluginDependency</string>
+					<string>16.IBPluginDependency</string>
 					<string>4.IBPluginDependency</string>
 					<string>5.IBPluginDependency</string>
 					<string>6.IBPluginDependency</string>
@@ -237,6 +253,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>CFirstLaunchViewController</string>
 					<string>UIResponder</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -261,7 +278,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">15</int>
+			<int key="maxID">16</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -422,11 +439,13 @@
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>blue-m.png</string>
+				<string>fabric.png</string>
 				<string>glossyButton-normal.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>{100, 100}</string>
+				<string>{1024, 1024}</string>
 				<string>{320, 44}</string>
 			</object>
 		</object>
