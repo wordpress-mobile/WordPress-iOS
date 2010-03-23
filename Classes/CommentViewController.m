@@ -535,8 +535,7 @@
 //		myLabel2.font = [UIFont fontWithName:@"Zapfino" size:20];
 //		myLabel2.backgroundColor = [UIColor greenColor];
 	
-	pendingLabelHolder.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BORDER_COLOR;
-		pendingLabel.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
+		pendingLabelHolder.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
 
 		[labelHolder addSubview:pendingLabelHolder];
 		//[labelHolder sizeToFit];
