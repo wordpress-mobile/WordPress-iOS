@@ -39,6 +39,7 @@
 
 - (void)launchReplyToComments;
 - (void)launchEditComment;
+- (void)dismissEditViewController;
 
 @end
 
@@ -158,7 +159,7 @@
 	} else {
 		conditionalButtonTitle = @"Unapprove Comment";
 	}
-		 
+	
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@""
 															 delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
 													otherButtonTitles: conditionalButtonTitle, @"Mark Comment as Spam", @"Edit Comment",nil];
@@ -166,7 +167,11 @@
 	
 	actionSheet.tag = 301;
 	actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
-	[actionSheet showInView:self.view];
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		[actionSheet showFromBarButtonItem:spamButton1 animated:YES];
+	} else {
+		[actionSheet showInView:self.view];
+	}
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	[delegate setAlertRunning:YES];
 	
@@ -253,14 +258,30 @@
 		replyToCommentViewController.title = @"Comment Reply";
 	
 	
-    [delegate.navigationController pushViewController:self.replyToCommentViewController animated:YES];
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		[delegate.navigationController pushViewController:self.replyToCommentViewController animated:YES];
+	} else {
+		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:replyToCommentViewController] autorelease];
+		navController.modalPresentationStyle = UIModalPresentationFormSheet;
+		navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+		[self presentModalViewController:navController animated:YES];
+	}
 }
 
+- (void)dismissEditViewController;
+{
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+        [self.navigationController popViewControllerAnimated:YES];
+	}
+	else if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		[self dismissModalViewControllerAnimated:YES];
+	}
+}
 
 - (void)cancelView:(id)sender {
 	
 	if (!replyToCommentViewController.hasChanges && !editCommentViewController.hasChanges) {
-        [self.navigationController popViewControllerAnimated:YES];
+        [self dismissEditViewController];
 		//replyToCommentViewController.hasChanges = NO;
         return;
     }//else if (!editCommentViewController.hasChanges) {
@@ -309,8 +330,14 @@
 	editCommentViewController.currentIndex = currentIndex;
 	editCommentViewController.title = @"Edit Comment";
 	
-	
-    [delegate.navigationController pushViewController:self.editCommentViewController animated:YES];
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:editCommentViewController] autorelease];
+		navController.modalPresentationStyle = UIModalPresentationFormSheet;
+		navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+		[self presentModalViewController:navController animated:YES];
+	} else {
+		[delegate.navigationController pushViewController:self.editCommentViewController animated:YES];
+	}
 }
 
 	
@@ -324,8 +351,7 @@
     replyToCommentViewController.navigationItem.rightBarButtonItem = nil;
 //    [self stopTimer];
 //    [[BlogDataManager sharedDataManager] clearAutoSavedContext];
-    [self.navigationController popViewControllerAnimated:YES];
-	
+	[self dismissEditViewController];
 }
 
 - (void)cancel {
