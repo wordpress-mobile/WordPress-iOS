@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="7"/>
+			<integer value="16"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -57,18 +57,19 @@
 					<object class="IBUIButton" id="446769383">
 						<reference key="NSNextResponder" ref="355052634"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{90, 394}, {357, 44}}</string>
+						<string key="NSFrame">{{91, 451}, {357, 44}}</string>
 						<reference key="NSSuperview" ref="355052634"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<object class="NSFont" key="IBUIFont" id="68706268">
+						<object class="NSFont" key="IBUIFont" id="1064766639">
 							<string key="NSName">Helvetica-Bold</string>
-							<double key="NSSize">15</double>
+							<double key="NSSize">18</double>
 							<int key="NSfFlags">16</int>
 						</object>
-						<string key="IBUINormalTitle">I want to create a new blog on wordpress.com</string>
+						<string key="IBUITitleShadowOffset">{0, -1}</string>
+						<string key="IBUINormalTitle">Get a free blog at WordPress.com</string>
 						<object class="NSColor" key="IBUIHighlightedTitleColor" id="806339666">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MQA</bytes>
@@ -76,6 +77,10 @@
 						<object class="NSColor" key="IBUINormalTitleColor" id="9132668">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MSAxIDEAA</bytes>
+						</object>
+						<object class="NSColor" key="IBUINormalTitleShadowColor" id="454773989">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MCAwIDAgMC41AA</bytes>
 						</object>
 						<object class="NSCustomResource" key="IBUINormalBackgroundImage" id="240130430">
 							<string key="NSClassName">NSImage</string>
@@ -85,22 +90,24 @@
 					<object class="IBUIButton" id="388894249">
 						<reference key="NSNextResponder" ref="355052634"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{90, 342}, {357, 44}}</string>
+						<string key="NSFrame">{{91, 397}, {357, 44}}</string>
 						<reference key="NSSuperview" ref="355052634"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<reference key="IBUIFont" ref="68706268"/>
-						<string key="IBUINormalTitle">I already have my own WordPress blog</string>
+						<reference key="IBUIFont" ref="1064766639"/>
+						<string key="IBUITitleShadowOffset">{0, -1}</string>
+						<string key="IBUINormalTitle">Set up my WordPress blog</string>
 						<reference key="IBUIHighlightedTitleColor" ref="806339666"/>
 						<reference key="IBUINormalTitleColor" ref="9132668"/>
+						<reference key="IBUINormalTitleShadowColor" ref="454773989"/>
 						<reference key="IBUINormalBackgroundImage" ref="240130430"/>
 					</object>
 					<object class="IBUIImageView" id="692038632">
 						<reference key="NSNextResponder" ref="355052634"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{140, 40}, {256, 256}}</string>
+						<string key="NSFrame">{{141, 81}, {256, 256}}</string>
 						<reference key="NSSuperview" ref="355052634"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -111,7 +118,7 @@
 						</object>
 					</object>
 				</object>
-				<string key="NSFrameSize">{540, 480}</string>
+				<string key="NSFrameSize">{540, 576}</string>
 				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -228,7 +235,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{503, 291}, {540, 480}}</string>
+					<string>{{859, 215}, {540, 576}}</string>
 					<boolean value="YES"/>
 				</object>
 			</object>
