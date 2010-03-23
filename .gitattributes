@@ -155,6 +155,10 @@ Classes/XMLRPC/XMLValueDecoder.h -text
 Classes/XMLRPC/XMLValueDecoder.m -text
 Classes/blue-m.png -text svneol=unset#unset
 Classes/fabric.png -text svneol=unset#unset
+Classes/firstrun-background.png -text svneol=unset#unset
+Classes/firstrun-logo.png -text svneol=unset#unset
+Classes/firstrun-wholebutton-default.png -text svneol=unset#unset
+Classes/firstrun-wholebutton-selected.png -text svneol=unset#unset
 Classes/glossyButton-disabled.png -text svneol=unset#unset
 Classes/glossyButton-highlighted.png -text svneol=unset#unset
 Classes/glossyButton-normal.png -text svneol=unset#unset

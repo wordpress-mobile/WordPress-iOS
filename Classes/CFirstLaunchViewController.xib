@@ -45,44 +45,19 @@
 					<object class="IBUIImageView" id="994469859">
 						<reference key="NSNextResponder" ref="355052634"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrameSize">{540, 480}</string>
+						<string key="NSFrameSize">{540, 576}</string>
 						<reference key="NSSuperview" ref="355052634"/>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">fabric.png</string>
+							<string key="NSResourceName">firstrun-background.png</string>
 						</object>
-					</object>
-					<object class="IBUILabel" id="813625263">
-						<reference key="NSNextResponder" ref="355052634"/>
-						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{91, 20}, {357, 21}}</string>
-						<reference key="NSSuperview" ref="355052634"/>
-						<bool key="IBUIOpaque">NO</bool>
-						<bool key="IBUIClipsSubviews">YES</bool>
-						<int key="IBUIContentMode">7</int>
-						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<string key="IBUIText">Welcome to WordPress</string>
-						<object class="NSFont" key="IBUIFont">
-							<string key="NSName">Helvetica-Bold</string>
-							<double key="NSSize">17</double>
-							<int key="NSfFlags">16</int>
-						</object>
-						<object class="NSColor" key="IBUITextColor" id="9132668">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MSAxIDEAA</bytes>
-						</object>
-						<nil key="IBUIHighlightedColor"/>
-						<int key="IBUIBaselineAdjustment">1</int>
-						<float key="IBUIMinimumFontSize">10</float>
-						<int key="IBUITextAlignment">1</int>
 					</object>
 					<object class="IBUIButton" id="446769383">
 						<reference key="NSNextResponder" ref="355052634"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{91, 353}, {357, 44}}</string>
+						<string key="NSFrame">{{90, 394}, {357, 44}}</string>
 						<reference key="NSSuperview" ref="355052634"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -98,16 +73,19 @@
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MQA</bytes>
 						</object>
-						<reference key="IBUINormalTitleColor" ref="9132668"/>
-						<object class="NSCustomResource" key="IBUINormalBackgroundImage" id="823610214">
+						<object class="NSColor" key="IBUINormalTitleColor" id="9132668">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MSAxIDEAA</bytes>
+						</object>
+						<object class="NSCustomResource" key="IBUINormalBackgroundImage" id="240130430">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">glossyButton-normal.png</string>
+							<string key="NSResourceName">firstrun-wholebutton-default.png</string>
 						</object>
 					</object>
 					<object class="IBUIButton" id="388894249">
 						<reference key="NSNextResponder" ref="355052634"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{91, 301}, {357, 44}}</string>
+						<string key="NSFrame">{{90, 342}, {357, 44}}</string>
 						<reference key="NSSuperview" ref="355052634"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -117,19 +95,19 @@
 						<string key="IBUINormalTitle">I already have my own WordPress blog</string>
 						<reference key="IBUIHighlightedTitleColor" ref="806339666"/>
 						<reference key="IBUINormalTitleColor" ref="9132668"/>
-						<reference key="IBUINormalBackgroundImage" ref="823610214"/>
+						<reference key="IBUINormalBackgroundImage" ref="240130430"/>
 					</object>
-					<object class="IBUIImageView" id="969266836">
+					<object class="IBUIImageView" id="692038632">
 						<reference key="NSNextResponder" ref="355052634"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{219, 111}, {100, 100}}</string>
+						<string key="NSFrame">{{140, 40}, {256, 256}}</string>
 						<reference key="NSSuperview" ref="355052634"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">blue-m.png</string>
+							<string key="NSResourceName">firstrun-logo.png</string>
 						</object>
 					</object>
 				</object>
@@ -200,18 +178,12 @@
 						<reference key="object" ref="355052634"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="813625263"/>
+							<reference ref="994469859"/>
 							<reference ref="446769383"/>
 							<reference ref="388894249"/>
-							<reference ref="969266836"/>
-							<reference ref="994469859"/>
+							<reference ref="692038632"/>
 						</object>
 						<reference key="parent" ref="0"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">4</int>
-						<reference key="object" ref="813625263"/>
-						<reference key="parent" ref="355052634"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">5</int>
@@ -224,13 +196,13 @@
 						<reference key="parent" ref="355052634"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">15</int>
-						<reference key="object" ref="969266836"/>
+						<int key="objectID">16</int>
+						<reference key="object" ref="994469859"/>
 						<reference key="parent" ref="355052634"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">16</int>
-						<reference key="object" ref="994469859"/>
+						<int key="objectID">17</int>
+						<reference key="object" ref="692038632"/>
 						<reference key="parent" ref="355052634"/>
 					</object>
 				</object>
@@ -241,9 +213,8 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>-1.CustomClassName</string>
 					<string>-2.CustomClassName</string>
-					<string>15.IBPluginDependency</string>
 					<string>16.IBPluginDependency</string>
-					<string>4.IBPluginDependency</string>
+					<string>17.IBPluginDependency</string>
 					<string>5.IBPluginDependency</string>
 					<string>6.IBPluginDependency</string>
 					<string>7.IBEditorWindowLastContentRect</string>
@@ -253,7 +224,6 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>CFirstLaunchViewController</string>
 					<string>UIResponder</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -278,7 +248,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">16</int>
+			<int key="maxID">17</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -438,15 +408,15 @@
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>blue-m.png</string>
-				<string>fabric.png</string>
-				<string>glossyButton-normal.png</string>
+				<string>firstrun-background.png</string>
+				<string>firstrun-logo.png</string>
+				<string>firstrun-wholebutton-default.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>{100, 100}</string>
-				<string>{1024, 1024}</string>
-				<string>{320, 44}</string>
+				<string>{540, 576}</string>
+				<string>{256, 256}</string>
+				<string>{338, 44}</string>
 			</object>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">87</string>
