@@ -35,6 +35,10 @@
 	
 	self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
 	self.navigationItem.titleView = commentsViewController.segmentedControl;
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"DraftsUpdated" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"BlogsRefreshNotification" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"PagesUpdated" object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -44,6 +48,8 @@
 }
 
 - (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
     [super dealloc];
 }
 
@@ -86,6 +92,22 @@
 		}
 		
 		[viewController viewWillAppear:NO];
+}
+
+#pragma mark KVO callbacks
+
+- (void)refreshBlogs:(NSNotification *)notification;
+{
+	// should probably let each VC take care of these on their own,
+	// but that would probably also entail cleaning up the BlogDataManager
+	// notifications et al.
+	UIViewController *viewController = tabBarController.selectedViewController;
+	if (viewController == postsViewController) {
+		[postsViewController loadPosts];
+	}
+	else if (viewController == pagesViewController) {
+		[pagesViewController loadPages];
+	}
 }
 
 @end

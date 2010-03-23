@@ -54,6 +54,12 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blogsRefreshNotificationReceived:) name:@"BlogsRefreshNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBlogWithoutAnimation) name:@"NewBlogAdded" object:nil];
     
+	// restore blog for iPad
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		if ([[WordPressAppDelegate sharedWordPressApp] shouldLoadBlogFromUserDefaults]) {
+			[self showBlog:NO];
+		}
+	}
 }
 
 - (void)viewDidDisappear:(BOOL)animated {

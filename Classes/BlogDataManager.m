@@ -4580,7 +4580,9 @@ editBlogViewController, currentLocation;
     NSString *pathToCommentTitles = [self pathToCommentTitles:blog];
     [defaultFileManager removeItemAtPath:pathToCommentTitles error:nil];
     [commentTitlesArray writeToFile:pathToCommentTitles atomically:YES];
-
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentRefreshNotification" object:nil];
+	
     //[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
     return YES;
 }
@@ -4696,6 +4698,9 @@ editBlogViewController, currentLocation;
     [commentTitlesArray writeToFile:pathToCommentTitles atomically:YES];
     [commentsReqArray release];
     [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentRefreshNotification" object:nil];
+
     return YES;
 }
 
@@ -4785,6 +4790,9 @@ editBlogViewController, currentLocation;
     [commentsReqArray release];
 
     [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentRefreshNotification" object:nil];
+	
     return YES;
 }
 
@@ -4874,6 +4882,9 @@ editBlogViewController, currentLocation;
     [commentsReqArray release];
 
     [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentRefreshNotification" object:nil];
+	
     return YES;
 }
 
@@ -4960,6 +4971,9 @@ editBlogViewController, currentLocation;
     [commentsReqArray release];
 
     [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentRefreshNotification" object:nil];
+	
     return YES;
 }
 
@@ -5119,6 +5133,9 @@ editBlogViewController, currentLocation;
     [commentsReqArray release];
 	
     [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentRefreshNotification" object:nil];
+	
     return YES;
 }
 

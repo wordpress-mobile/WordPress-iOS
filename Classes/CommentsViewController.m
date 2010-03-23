@@ -48,6 +48,7 @@
 #pragma mark Memory Management
 
 - (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[segmentedControl release];
     [commentsArray release];
     [commentsDict release];
@@ -96,6 +97,8 @@
 	segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
 	segmentedControl.frame = CGRectMake(0, 0, 170, 30);
 	[segmentedControl addTarget:self action:@selector(reloadTableView) forControlEvents:UIControlEventValueChanged];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(commentsSynced:) name:@"CommentRefreshNotification" object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -513,6 +516,15 @@
 		}
 	}
     self.tabBarItem.badgeValue = badge;
+}
+
+#pragma mark -
+#pragma mark Notifications
+
+- (void)commentsSynced:(NSNotification *)notification;
+{
+	NSLog(@"Refreshing comments");
+	[self refreshCommentsList];
 }
 
 @end
