@@ -287,6 +287,10 @@
     [photosListController refreshData];
 
     [self updatePhotosBadge];
+	
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		[self editAction:self];
+	}
 }
 
 - (void)refreshUIForCurrentPost {

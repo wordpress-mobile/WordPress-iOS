@@ -108,11 +108,24 @@
 
 - (void)showAddPostView {
     [[BlogDataManager sharedDataManager] makeNewPostCurrent];
+	
+	self.postDetailViewController.mode = newPost;
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 
-    self.postDetailViewController.mode = newPost;
-
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    [delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		[delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
+	}
+	else if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		// unfortunately, the edit VC is pretty tightly coupled to the post detail VC, so we really want it to be current.
+		[delegate showContentDetailViewController:self.postDetailViewController];
+		// if the edit VC doesn't exist yet, the detail VC hasn't appeared yet;
+		// the UI will be refreshed on viewWillAppear.
+		// otherwise, we've gotta do it ourself.
+		// Not really the best way to do this in the long run.
+		if (self.postDetailViewController.editModalViewController) {
+			[self.postDetailViewController refreshUIForCompose];
+		}
+	}
 }
 
 - (PostViewController *)postDetailViewController {

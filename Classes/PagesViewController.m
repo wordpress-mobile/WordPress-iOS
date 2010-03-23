@@ -344,9 +344,21 @@
 
 - (void)showAddNewPage {
     [[BlogDataManager sharedDataManager] makeNewPageCurrent];
-    self.pageDetailsController.mode = newPage;
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    [delegate.navigationController pushViewController:self.pageDetailsController animated:YES];
+    
+	self.pageDetailsController.mode = newPage;
+	
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		[delegate.navigationController pushViewController:self.pageDetailsController animated:YES];
+	}
+	else if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		// see comments in PostsViewController -showAddPostView
+		[delegate showContentDetailViewController:self.pageDetailsController];
+		if (self.pageDetailsController.editModalViewController) {
+			[self.pageDetailsController editAction:self];
+		}
+	}
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

@@ -409,6 +409,13 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+	
+	// should add a refreshUIForCurrentPage to PageViewController mebbe
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		if (mode == newPage || mode == editPage) {
+			[self editAction:self];
+		}
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
