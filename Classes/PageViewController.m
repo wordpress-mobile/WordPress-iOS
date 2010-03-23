@@ -412,7 +412,7 @@
 	
 	// should add a refreshUIForCurrentPage to PageViewController mebbe
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-		if (mode == newPage || mode == editPage) {
+		if (mode == newPage) {
 			[self editAction:self];
 		}
 	}
