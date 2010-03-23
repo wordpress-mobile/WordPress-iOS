@@ -177,7 +177,8 @@
 		}
 	}
 	
-	[[[BlogDataManager sharedDataManager] currentPost] setValue:customFieldsArray forKey:@"custom_fields"];
+	if (customFieldsArray)
+		[[[BlogDataManager sharedDataManager] currentPost] setValue:customFieldsArray forKey:@"custom_fields"];
 	
 	[self dismiss:self];
 }
@@ -227,7 +228,8 @@
 	[customFieldsArray addObject:dictPublic];
 	
 	// Send our modified custom fields back to BlogDataManager
-	[dm.currentPost setValue:customFieldsArray forKey:@"custom_fields"];
+	if (customFieldsArray)
+		[dm.currentPost setValue:customFieldsArray forKey:@"custom_fields"];
 	
 	[self dismiss:self];
 }
