@@ -103,10 +103,10 @@
 	// notifications et al.
 	UIViewController *viewController = tabBarController.selectedViewController;
 	if (viewController == postsViewController) {
-		[postsViewController loadPosts];
+		[postsViewController.tableView reloadData];
 	}
 	else if (viewController == pagesViewController) {
-		[pagesViewController loadPages];
+		[pagesViewController.tableView reloadData];
 	}
 }
 
