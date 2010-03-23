@@ -7,7 +7,7 @@
 
 @interface WPPhotosListViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
     IBOutlet UITableView *tableView;
-    IBOutlet UITextField *countField;
+    IBOutlet UILabel *countField;
 
     UIImage *currentChoosenImage;
     WPImagePickerController *pickerController;
