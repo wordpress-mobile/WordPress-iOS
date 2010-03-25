@@ -39,6 +39,10 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"DraftsUpdated" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"BlogsRefreshNotification" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"PagesUpdated" object:nil];
+	
+	[postsViewController addObserver:self forKeyPath:@"selectedIndexPath" options:NSKeyValueObservingOptionNew context:nil];
+	[pagesViewController addObserver:self forKeyPath:@"selectedIndexPath" options:NSKeyValueObservingOptionNew context:nil];
+	[commentsViewController addObserver:self forKeyPath:@"selectedIndexPath" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -107,6 +111,19 @@
 	}
 	else if (viewController == pagesViewController) {
 		[pagesViewController.tableView reloadData];
+	}
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context;
+{
+	if ([keyPath isEqual:@"selectedIndexPath"]) {
+		id new = [change objectForKey:NSKeyValueChangeNewKey];
+		if (!new || new == [NSNull null])
+			return;
+		
+		if (object != postsViewController) postsViewController.selectedIndexPath = nil;
+		if (object != pagesViewController) pagesViewController.selectedIndexPath = nil;
+		if (object != commentsViewController) commentsViewController.selectedIndexPath = nil;
 	}
 }
 

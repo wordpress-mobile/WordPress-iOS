@@ -43,6 +43,7 @@
 @implementation CommentsViewController
 
 @synthesize editButtonItem, selectedComments, commentsArray, indexForCurrentPost, segmentedControl;
+@synthesize selectedIndexPath;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -135,7 +136,9 @@
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    [commentsTableView reloadData];
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		[commentsTableView reloadData];
+	}
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -271,6 +274,12 @@
     [editButtonItem setEnabled:([commentsArray count] > 0)];
     [self updateBadge];
     [commentsTableView reloadData];
+	
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		if (self.selectedIndexPath) {
+			[commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+		}
+	}
 }
 
 - (IBAction)deleteSelectedComments:(id)sender {
@@ -384,6 +393,12 @@
 
 	[self updateBadge];
     [commentsTableView reloadData];
+	
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		if (self.selectedIndexPath) {
+			[commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+		}
+	}
 }
 
 #pragma mark -
@@ -481,6 +496,7 @@
         [self tableView:tableView didCheckRowAtIndexPath:indexPath];
     } else {
         [self showCommentAtIndex:indexPath.row];
+		self.selectedIndexPath = indexPath;
     }
 }
 

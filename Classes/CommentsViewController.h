@@ -34,6 +34,8 @@
     
     int indexForCurrentPost;
 	UISegmentedControl *segmentedControl;
+	
+	NSIndexPath *selectedIndexPath;
 }
 
 @property (readonly) UIBarButtonItem *editButtonItem;
@@ -42,6 +44,8 @@
 @property int indexForCurrentPost;
 
 @property (nonatomic, retain) UISegmentedControl *segmentedControl;
+
+@property (nonatomic, retain) NSIndexPath *selectedIndexPath;
 
 - (IBAction)deleteSelectedComments:(id)sender;
 - (IBAction)approveSelectedComments:(id)sender;

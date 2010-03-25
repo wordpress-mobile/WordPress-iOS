@@ -19,12 +19,16 @@
     RefreshButtonView *refreshButton;
 	UIAlertView *progressAlert;
 	BOOL anyMorePosts;
+	
+	NSIndexPath *selectedIndexPath;
 }
 
 @property (readonly) UIBarButtonItem *newButtonItem;
 @property (nonatomic, retain) PostViewController *postDetailViewController;
 @property (nonatomic, retain) EditPostViewController *postDetailEditController;
 @property (nonatomic, assign) BOOL anyMorePosts;
+
+@property (nonatomic, retain) NSIndexPath *selectedIndexPath;
 
 - (void) addSpinnerToCell:(NSIndexPath *)indexPath;
 - (void) removeSpinnerFromCell:(NSIndexPath *)indexPath;

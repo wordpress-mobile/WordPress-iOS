@@ -34,6 +34,7 @@
 
 @synthesize newButtonItem, postDetailViewController, postDetailEditController;
 @synthesize anyMorePosts;
+@synthesize selectedIndexPath;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -86,12 +87,29 @@
 		}
 	}
 
-    if ([self.tableView indexPathForSelectedRow]) {
-        [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
-        [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
-    }
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		// iPhone table views should not appear selected
+		if ([self.tableView indexPathForSelectedRow]) {
+			[self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+			[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
+		}
+	} else if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		// sometimes, iPad table views should
+		if (self.selectedIndexPath) {
+			[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+		}
+	}
 
 	[self handleAutoSavedContext:0];
+	
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		BlogDataManager *mgr = [BlogDataManager sharedDataManager];
+		int currentDraftIndex = mgr.currentDraftIndex;
+		int currentPostIndex = mgr.currentPostIndex;
+		// the blog data manager doesn't always have these set. if one is negative, 
+		
+		NSLog(@"Appeared. Current draft: %d, current post: %d", currentDraftIndex, currentPostIndex);
+	}
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -301,6 +319,7 @@
         }
 
         [dataManager makePostAtIndexCurrent:indexPath.row];
+		self.selectedIndexPath = indexPath;
 
         self.postDetailViewController.hasChanges = NO;
     }
@@ -370,6 +389,12 @@
     [dm loadDraftTitlesForCurrentBlog];
 
     [self.tableView reloadData];
+	
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		if (self.selectedIndexPath) {
+			[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+		}
+	}
 }
 
 - (void)goToHome:(id)sender {

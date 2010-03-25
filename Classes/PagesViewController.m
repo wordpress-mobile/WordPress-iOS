@@ -37,6 +37,7 @@
 
 @synthesize newButtonItem, pageDetailViewController, pageDetailsController;
 @synthesize anyMorePages;
+@synthesize selectedIndexPath;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -81,6 +82,11 @@
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		if (self.selectedIndexPath) {
+			[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+		}
+	}
 	
 	if ([[Reachability sharedReachability] internetConnectionStatus])
 	{
@@ -253,6 +259,7 @@
         }
 
         [dataManager makePageAtIndexCurrent:indexPath.row];
+		self.selectedIndexPath = indexPath;
 
         self.pageDetailsController.hasChanges = NO;
     }
@@ -313,6 +320,12 @@
     [dm loadPageDraftTitlesForCurrentBlog];
 
     [self.tableView reloadData];
+	
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		if (self.selectedIndexPath) {
+			[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+		}
+	}
 }
 
 - (void)addRefreshButton {
