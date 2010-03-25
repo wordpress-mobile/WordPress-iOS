@@ -262,8 +262,9 @@
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             return;
         }
-
+		
         [dataManager makeDraftAtIndexCurrent:indexPath.row];
+		self.selectedIndexPath = indexPath;
 
     } else {
 		//handle the case when it's the last row and is the "get more posts" special cell
@@ -384,12 +385,27 @@
 
     [dm loadPostTitlesForCurrentBlog];
     [dm loadDraftTitlesForCurrentBlog];
+	
+	// this gets hit from a background thread on post deletion.
+	// calling UIKit from a background thread is crash city.
+	[self performSelectorOnMainThread:@selector(refreshPostList) withObject:nil waitUntilDone:NO];
+}
 
+- (void)refreshPostList;
+{
     [self.tableView reloadData];
 	
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
 		if (self.selectedIndexPath) {
+			// TODO: make this more general. Pages are going to want to do it as well.
+			if (self.selectedIndexPath.section >= [self numberOfSectionsInTableView:self.tableView]
+				|| self.selectedIndexPath.row >= [self tableView:self.tableView numberOfRowsInSection:self.selectedIndexPath.section])
+			{
+				return;
+			}
+			
 			[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+			[self tableView:self.tableView didSelectRowAtIndexPath:self.selectedIndexPath];
 		}
 	}
 }

@@ -214,6 +214,8 @@
         }
 
         [dataManager makePageDraftAtIndexCurrent:indexPath.row];
+		self.selectedIndexPath = indexPath;
+		
     } else {
 		//handle the case when it's the last row and is the "get more posts" special cell
 		if (indexPath.row == [[BlogDataManager sharedDataManager] countOfPageTitles]) {
@@ -324,12 +326,26 @@
 
     [dm loadPageTitlesForCurrentBlog];
     [dm loadPageDraftTitlesForCurrentBlog];
+	
+	// avoid calling UIKit on a background thread
+	[self performSelectorOnMainThread:@selector(refreshPageList) withObject:nil waitUntilDone:NO];
+}
 
+- (void)refreshPageList;
+{
     [self.tableView reloadData];
 	
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
 		if (self.selectedIndexPath) {
+			// TODO: make this more general. Pages are going to want to do it as well.
+			if (self.selectedIndexPath.section >= [self numberOfSectionsInTableView:self.tableView]
+				|| self.selectedIndexPath.row >= [self tableView:self.tableView numberOfRowsInSection:self.selectedIndexPath.section])
+			{
+				return;
+			}
+			
 			[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+			[self tableView:self.tableView didSelectRowAtIndexPath:self.selectedIndexPath];
 		}
 	}
 }
