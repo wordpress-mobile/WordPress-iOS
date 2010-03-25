@@ -315,6 +315,10 @@
 	commentsButton.enabled = ([commentsViewController.commentsArray count] > 0);
 
     [self updatePhotosBadge];
+	
+	if (mode == autorecoverPost) {
+		[self editAction:self];
+	}
 }
 
 - (void)updatePhotosBadge {

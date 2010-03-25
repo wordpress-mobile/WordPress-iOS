@@ -489,9 +489,9 @@
 		[delegate showContentDetailViewController:self.postDetailViewController];
 		// need a view, and a lot of setup happens in viewWillAppear
 		// TODO: clean up the post detail/edit/etc. view controller hierarchy!
-		[self.postDetailViewController view];
-		[self.postDetailViewController viewWillAppear:NO];
-		[self.postDetailViewController editAction:self];
+		if (self.postDetailViewController.editModalViewController) {
+			[self.postDetailViewController refreshUIForCompose];
+		}
 	}
 	else {
 		[delegate showContentDetailViewController:self.postDetailEditController];
