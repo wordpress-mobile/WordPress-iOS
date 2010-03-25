@@ -453,7 +453,9 @@
 		cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
 	}
 
-	
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		cell.accessoryType = UITableViewCellAccessoryNone;
+	}
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
