@@ -19,6 +19,16 @@
 self.delegate = self;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+[super viewDidAppear:animated];
+//
+
+
+NSLog(@"%d", UIInterfaceOrientationIsPortrait(self.masterNavigationController.interfaceOrientation));
+//if (self.interfaceOrientation == UIInterfaceOrientationPortrait
+}
+
 #pragma mark -
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
@@ -53,8 +63,6 @@ UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewCont
 - (void)splitViewController: (UISplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
 {
 [[[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem] setLeftBarButtonItem:NULL animated:YES];
-
-
 
 [UIPopoverController setCurrentPopoverController:NULL];
 }

@@ -829,11 +829,13 @@
 
 - (IBAction)previewAction:(id)sender;
 {
+	[UIPopoverController setCurrentPopoverController:NULL];
 	[editModalViewController setShowingFront:NO animated:YES];
 }
 
 - (IBAction)previewEditAction:(id)sender;
 {
+	[UIPopoverController setCurrentPopoverController:NULL];
 	[editModalViewController setShowingFront:YES animated:YES];
 }
 
