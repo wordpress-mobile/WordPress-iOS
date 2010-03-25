@@ -54,6 +54,10 @@
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
+	[postsViewController removeObserver:self forKeyPath:@"selectedIndexPath"];
+	[pagesViewController removeObserver:self forKeyPath:@"selectedIndexPath"];
+	[commentsViewController removeObserver:self forKeyPath:@"selectedIndexPath"];
+	
     [super dealloc];
 }
 

@@ -52,7 +52,9 @@
     
     [newButtonItem release];
     [refreshButton release];
-	    
+	
+	[selectedIndexPath release], selectedIndexPath = nil;
+
     [super dealloc];
 }
 
