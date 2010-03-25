@@ -52,6 +52,11 @@
 	}
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return YES;
+}
+
+
 - (CGSize)contentSizeForViewInPopover;
 {
 	return CGSizeMake(320.0, 320.0);

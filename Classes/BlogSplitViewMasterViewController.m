@@ -24,13 +24,13 @@
 @synthesize currentDataSource;
 @synthesize currentIndexPath;
 
-@synthesize tabBarController;
+//@synthesize tabBarController;
 
 @synthesize tableView;
 
-@synthesize postsViewController;
-@synthesize pagesViewController;
-@synthesize commentsViewController;
+//@synthesize postsViewController;
+//@synthesize pagesViewController;
+//@synthesize commentsViewController;
 @synthesize detailNavController;
 
 - (void)dealloc {
