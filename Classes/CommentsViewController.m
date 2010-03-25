@@ -13,6 +13,7 @@
 #import "WordPressAppDelegate.h"
 #import "WPProgressHUD.h"
 #import "Reachability.h"
+#import "CommentViewController.h"
 
 #define COMMENTS_SECTION        0
 #define NUM_SECTIONS            1
@@ -44,6 +45,7 @@
 
 @synthesize editButtonItem, selectedComments, commentsArray, indexForCurrentPost, segmentedControl;
 @synthesize selectedIndexPath;
+@synthesize commentViewController;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -57,6 +59,7 @@
     [editButtonItem release];
     [refreshButton release];
 	[selectedIndexPath release], selectedIndexPath = nil;
+	[commentViewController release], commentViewController = nil;
     [super dealloc];
 }
 
@@ -69,6 +72,17 @@
 {
 	float height = MIN([commentsArray count] * COMMENT_ROW_HEIGHT + REFRESH_BUTTON_HEIGHT + kSectionHeaderHight, 600);
 	return CGSizeMake(320.0, height);
+}
+
+- (CommentViewController *)commentViewController;
+{
+	if (!commentViewController) {
+		commentViewController = [[CommentViewController alloc] initWithNibName:@"CommentViewController" bundle:nil];
+		commentViewController.commentsViewController = self;
+		
+		[commentViewController view]; // DWC kindakludge - make sure it's got a view
+	}
+	return commentViewController;
 }
 
 #pragma mark -
@@ -279,6 +293,7 @@
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
 		if (self.selectedIndexPath) {
 			[commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+			[self showCommentAtIndex:self.selectedIndexPath.row];
 		}
 	}
 }
@@ -370,15 +385,13 @@
 }
 
 - (void)showCommentAtIndex:(int)index {
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    CommentViewController *commentViewController = [[CommentViewController alloc] initWithNibName:@"CommentViewController" bundle:nil];
-	commentViewController.commentsViewController = self;
+	if (index >= commentsArray.count)
+		return;
 	
-	[commentViewController view]; // DWC kindakludge - make sure it's got a view
-	[delegate showContentDetailViewController:commentViewController];
+    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate showContentDetailViewController:self.commentViewController];
 
-    [commentViewController showComment:commentsArray atIndex:index];
-    [commentViewController release];
+    [self.commentViewController showComment:commentsArray atIndex:index];
 }
 
 #pragma mark -
@@ -398,6 +411,7 @@
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
 		if (self.selectedIndexPath) {
 			[commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+			[self showCommentAtIndex:self.selectedIndexPath.row];
 		}
 	}
 }

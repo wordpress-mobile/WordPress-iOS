@@ -10,6 +10,7 @@
 #import "CommentsTableViewDelegate.h"
 #import "RefreshButtonView.h"
 
+@class CommentViewController;
 
 @interface CommentsViewController : UIViewController <UITableViewDataSource, CommentsTableViewDelegate> {
 @private
@@ -18,6 +19,8 @@
     IBOutlet UIToolbar *editToolbar;
     UIBarButtonItem *editButtonItem;
     RefreshButtonView *refreshButton;
+	
+	CommentViewController *commentViewController;
 
     IBOutlet UIBarButtonItem *approveButton;
     IBOutlet UIBarButtonItem *unapproveButton;
@@ -42,6 +45,8 @@
 @property (nonatomic, retain) NSMutableArray *selectedComments;
 @property (nonatomic, retain) NSMutableArray *commentsArray;
 @property int indexForCurrentPost;
+
+@property (nonatomic, retain) CommentViewController *commentViewController;
 
 @property (nonatomic, retain) UISegmentedControl *segmentedControl;
 
