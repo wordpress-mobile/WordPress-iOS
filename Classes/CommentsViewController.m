@@ -332,7 +332,8 @@
     BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
 
     [sharedDataManager performSelector:selector withObject:[self selectedComments] withObject:[sharedDataManager currentBlog]];
-
+	
+	// calling UIKit from a background thread is bad
 	[self performSelectorOnMainThread:@selector(refreshCommentsList) withObject:nil waitUntilDone:NO];
     [self setEditing:FALSE];
 
