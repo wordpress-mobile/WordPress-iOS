@@ -146,7 +146,6 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	[cancelButton release];
 	[comment release];
 	[commentDetails release];
-	[saveButton release];
 	[textViewText release];
 	[leftView release];
     [super dealloc];
