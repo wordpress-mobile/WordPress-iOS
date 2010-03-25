@@ -333,7 +333,7 @@
 
     [sharedDataManager performSelector:selector withObject:[self selectedComments] withObject:[sharedDataManager currentBlog]];
 
-    [self refreshCommentsList];
+	[self performSelectorOnMainThread:@selector(refreshCommentsList) withObject:nil waitUntilDone:NO];
     [self setEditing:FALSE];
 
     [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
@@ -407,13 +407,6 @@
 
 	[self updateBadge];
     [commentsTableView reloadData];
-	
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-		if (self.selectedIndexPath) {
-			[commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-			[self showCommentAtIndex:self.selectedIndexPath.row];
-		}
-	}
 }
 
 #pragma mark -
