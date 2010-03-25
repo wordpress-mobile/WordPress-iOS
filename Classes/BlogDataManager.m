@@ -3954,7 +3954,8 @@ editBlogViewController, currentLocation;
         [postParams setObject:[[aPost valueForKey:@"not_used_allow_comments"] stringValue] forKey:@"not_used_allow_comments"];
         [postParams setObject:[[aPost valueForKey:@"not_used_allow_pings"] stringValue] forKey:@"not_used_allow_pings"];
         [postParams setObject:[aPost valueForKey:@"wp_password"] forKey:@"wp_password"];
-		[postParams setObject:[aPost valueForKey:@"custom_fields"] forKey:@"custom_fields"];
+		if([aPost valueForKey:@"custom_fields"] != nil)
+			[postParams setObject:[aPost valueForKey:@"custom_fields"] forKey:@"custom_fields"];
         NSString *draftId = [aPost valueForKey:@"draftid"];
 		NSLog(@"draft id %@", draftId);
         NSDictionary *draftPost = [self currentPost];
