@@ -93,6 +93,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	}
 	self.navigationItem.leftBarButtonItem = cancelButton;
     [cancelButton release];
+	cancelButton = nil;
 	
 	comment = [commentDetails objectAtIndex:currentIndex];
 	if ([[comment valueForKey:@"status"] isEqualToString:@"hold"]) {
@@ -142,12 +143,19 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 
 - (void)dealloc {
 	[saveButton release];
+	saveButton = nil;
 	[doneButton release];
+	doneButton = nil;
 	[cancelButton release];
+	cancelButton = nil;
 	[comment release];
+	comment = nil;
 	[commentDetails release];
+	commentDetails = nil;
 	[textViewText release];
+	textViewText = nil;
 	[leftView release];
+	leftView = nil;
     [super dealloc];
 }
 
@@ -308,12 +316,14 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
         aTextView.selectedRange = endRange; 
 		
         [updatedText release];
+		updatedText = nil;
 		
         // let the textView know that it should ingore the inserted text
         return NO;
     }
 	
     [updatedText release];
+	updatedText = nil;
 	
     // let the textView know that it should handle the inserted text
     return YES;
@@ -364,6 +374,7 @@ if ([self isConnectedToHost]) {
 
 [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
 [progressAlert release];
+progressAlert = nil;
 hasChanges = NO;
 [commentViewController performSelectorOnMainThread:@selector(cancelView:) withObject:self waitUntilDone:YES];
 [pool release];
