@@ -103,15 +103,6 @@
 	}
 
 	[self handleAutoSavedContext:0];
-	
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-		BlogDataManager *mgr = [BlogDataManager sharedDataManager];
-		int currentDraftIndex = mgr.currentDraftIndex;
-		int currentPostIndex = mgr.currentPostIndex;
-		// the blog data manager doesn't always have these set. if one is negative, 
-		
-		NSLog(@"Appeared. Current draft: %d, current post: %d", currentDraftIndex, currentPostIndex);
-	}
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
