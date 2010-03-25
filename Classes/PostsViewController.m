@@ -485,7 +485,17 @@
 
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	[delegate setAlertRunning:NO];
-	[delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		[delegate showContentDetailViewController:self.postDetailViewController];
+		// need a view, and a lot of setup happens in viewWillAppear
+		// TODO: clean up the post detail/edit/etc. view controller hierarchy!
+		[self.postDetailViewController view];
+		[self.postDetailViewController viewWillAppear:NO];
+		[self.postDetailViewController editAction:self];
+	}
+	else {
+		[delegate showContentDetailViewController:self.postDetailEditController];
+	}
 }
 
 - (void) deletePostAtIndexPath:(id)object{
