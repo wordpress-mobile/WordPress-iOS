@@ -658,7 +658,7 @@
 
     self.navigationItem.title = [NSString stringWithFormat:@"%d of %d", currentIndex + 1, count];
 
-    if ([commentStatus isEqualToString:@"hold"] && wasLastCommentPending == NO) {
+    if ([commentStatus isEqualToString:@"hold"] && ![pendingLabelHolder superview]) {
         //[approveAndUnapproveButtonBar setHidden:NO];
         //[deleteButtonBar setHidden:YES];
 		[self insertPendingLabel];
@@ -667,7 +667,7 @@
 		[approveAndUnapproveButtonBar setHidden:YES];
 		[deleteButtonBar setHidden:NO];
 		
-	}else if ([commentStatus isEqualToString:@"hold"] && wasLastCommentPending == YES) {
+	}else if ([commentStatus isEqualToString:@"hold"] && [pendingLabelHolder superview]) {
 		//[self resizeCommentBodyLabel];
 		CGRect rect;
 		rect = commentBodyLabel.frame;
