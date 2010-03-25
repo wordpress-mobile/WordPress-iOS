@@ -5,6 +5,7 @@
 #import "Reachability.h"
 #import "NSString+Helpers.h"
 #import "CFirstLaunchViewController.h"
+#import "WordPressSplitViewController.h"
 
 @interface WordPressAppDelegate (Private)
 
@@ -150,7 +151,10 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		[self.navigationController pushViewController:viewController animated:YES];
 	}
 	else if (self.splitViewController) {
-		[(UINavigationController *)[self.splitViewController detailViewController] setViewControllers:[NSArray arrayWithObject:viewController] animated:NO];
+		UINavigationController *navController = self.splitViewController.detailNavigationController;
+		// preserve left bar button item: issue #379
+		viewController.navigationItem.leftBarButtonItem = navController.topViewController.navigationItem.leftBarButtonItem;
+		[navController setViewControllers:[NSArray arrayWithObject:viewController] animated:NO];
 	}
 }
 
