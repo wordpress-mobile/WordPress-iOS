@@ -8,6 +8,7 @@
 
 #import "PostLocationViewController.h"
 
+#import "UIPopoverController_Extensions.h"
 
 @implementation PostLocationViewController
 @synthesize map, locationController, buttonClose, buttonAction, initialLocation, toolbar;
@@ -30,6 +31,9 @@
 
 	// remove toolbar for iPad: we use it in a popover
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		// move geolocate button to the navigation bar
+		self.navigationItem.rightBarButtonItem = buttonAction;
+		// remove toolbar
 		CGRect toolbarFrame = toolbar.frame;
 		CGRect mapFrame = map.frame;
 		mapFrame.size.height += toolbarFrame.size.height;
@@ -58,7 +62,11 @@
 - (IBAction)dismiss:(id)sender {
 	[[locationController locationManager] stopUpdatingLocation];
 	locationController = nil;
-	[self dismissModalViewControllerAnimated:YES];
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		[[UIPopoverController currentPopoverController] dismissPopoverAnimated:YES];
+	} else {
+		[self dismissModalViewControllerAnimated:YES];
+	}
 }
 
 #pragma mark -

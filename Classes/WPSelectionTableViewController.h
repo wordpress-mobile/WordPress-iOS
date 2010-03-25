@@ -5,7 +5,7 @@ typedef enum _SelectionType {
     kCheckbox
 } WPSelectionType;
 
-@interface WPSelectionTableViewController : UIViewController {
+@interface WPSelectionTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate> {
     IBOutlet UITableView *tableView;
 
     NSArray *objects;

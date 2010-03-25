@@ -64,9 +64,6 @@
 
 	LocationController *locationController;
 
-	UIBarButtonItem *popoverDoneButton;
-	UIPopoverController *popoverController;
-
 	BOOL editingDisabled;
 
 	CLLocation *initialLocation;
@@ -93,9 +90,6 @@
 @property (nonatomic, retain) CLLocation *initialLocation;
 @property (nonatomic, retain) IBOutlet UIButton *locationButton;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *locationSpinner;
-
-@property (nonatomic, retain) UIBarButtonItem *popoverDoneButton;
-@property (nonatomic, retain) UIPopoverController *popoverController;
 
 - (void)refreshUIForCompose;
 - (void)refreshUIForCurrentPost;
@@ -132,7 +126,5 @@
 - (BOOL)isPostPublished;
 - (BOOL)isPostGeotagged;
 - (CLLocation *)getPostLocation;
-
-- (IBAction)popoverDoneAction:(id)sender;
 
 @end
