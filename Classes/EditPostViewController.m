@@ -1143,11 +1143,11 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 		return NO;
 }
 
-- (IBAction)showLocationMapView:(id)sender {
-	// Display the geotag view
-	PostLocationViewController *locationView = [[PostLocationViewController alloc] initWithNibName:@"PostLocationViewController" bundle:nil];
-	[postDetailViewController presentModalViewController:locationView animated:YES];
-}
+//- (IBAction)showLocationMapView:(id)sender {
+//	// Display the geotag view
+//	PostLocationViewController *locationView = [[PostLocationViewController alloc] initWithNibName:@"PostLocationViewController" bundle:nil];
+//	[postDetailViewController presentModalViewController:locationView animated:YES];
+//}
 
 - (CLLocation *)getPostLocation {
 	CLLocation *result = nil;
@@ -1179,22 +1179,22 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	return result;
 }
 
-//- (IBAction)showLocationMapView:(id)sender {
-//	PostLocationViewController *locationView = [[PostLocationViewController alloc] init];
-//	locationView.initialLocation = locationController.locationManager.location;
-//	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-//		locationView.contentSizeForViewInPopover = popoverController.contentViewController.contentSizeForViewInPopover;
-//		locationView.navigationItem.rightBarButtonItem = popoverDoneButton;
-//		[(UINavigationController *)(self.popoverController.contentViewController) setViewControllers:[NSArray arrayWithObject:locationView] animated:NO];
-//		if ([sender isKindOfClass:[UIBarButtonItem class]])
-//			[popoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-//		else
-//			[popoverController presentPopoverFromRect:[locationButton frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-//	} else {
-//		[self presentModalViewController:locationView animated:YES];
-//	}
-//	[locationView autorelease];
-//}
+- (IBAction)showLocationMapView:(id)sender {
+	PostLocationViewController *locationView = [[PostLocationViewController alloc] init];
+	locationView.initialLocation = locationController.locationManager.location;
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		locationView.contentSizeForViewInPopover = popoverController.contentViewController.contentSizeForViewInPopover;
+		locationView.navigationItem.rightBarButtonItem = popoverDoneButton;
+		[(UINavigationController *)(self.popoverController.contentViewController) setViewControllers:[NSArray arrayWithObject:locationView] animated:NO];
+		if ([sender isKindOfClass:[UIBarButtonItem class]])
+			[popoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		else
+			[popoverController presentPopoverFromRect:[locationButton frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	} else {
+		[self presentModalViewController:locationView animated:YES];
+	}
+	[locationView autorelease];
+}
 
 #pragma mark -
 #pragma mark Keyboard management
