@@ -18,4 +18,6 @@
     IBOutlet CommentsViewController *commentsViewController;
 }
 
+- (void)reselect;
+
 @end

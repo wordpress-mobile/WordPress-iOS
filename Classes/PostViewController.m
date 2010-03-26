@@ -15,6 +15,8 @@
 #import "FlippingViewController.h"
 #import "RotatingNavigationController.h"
 #import "UIPopoverController_Extensions.h"
+#import "WordPressSplitViewController.h"
+#import "BlogViewController.h"
 
 #define TAG_OFFSET 1010
 
@@ -855,6 +857,10 @@
 		[self dismissModalViewControllerAnimated:YES];
 		[[BlogDataManager sharedDataManager] loadDraftTitlesForCurrentBlog];
 		[[BlogDataManager sharedDataManager] loadPostTitlesForCurrentBlog];
+		
+		[WordPressAppDelegate sharedWordPressApp].splitViewController.detailNavigationController.viewControllers = NULL;
+		
+		[(BlogViewController *)[[WordPressAppDelegate sharedWordPressApp].splitViewController.masterNavigationController topViewController] reselect];
 	}
 }
 

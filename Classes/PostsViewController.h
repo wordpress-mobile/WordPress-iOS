@@ -35,5 +35,6 @@
 - (void) loadPosts;
 - (void) showAddPostView;
 
+- (void)reselect;
 
 @end
