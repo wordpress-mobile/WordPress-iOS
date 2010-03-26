@@ -385,13 +385,18 @@
     [cancelButton release];
 
     [super viewWillAppear:animated];
-
-    //Added to solve the title issue .
-    [tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
-    UIViewController *vc = [[tabController viewControllers] objectAtIndex:0];
-    WPLog(@"vc.title---%@", vc.title);
-    self.title = vc.title;
-    //
+	
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		//Added to solve the title issue .
+		[tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
+		UIViewController *vc = [[tabController viewControllers] objectAtIndex:0];
+		WPLog(@"vc.title---%@", vc.title);
+		self.title = vc.title;
+		//
+	}
+	else {
+		self.title = [[[BlogDataManager sharedDataManager] currentPage] valueForKey:@"title"];
+	}
 
     if (mode == editPage) {
         [pageDetailViewController refreshUIForCurrentPage];
