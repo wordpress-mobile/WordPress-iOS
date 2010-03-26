@@ -379,14 +379,14 @@
         self.rightBarButtonItemForEditPost = nil;
     }
 
-    // For Setting the Button with title Posts.
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
-    self.navigationItem.leftBarButtonItem = cancelButton;
-    [cancelButton release];
-
     [super viewWillAppear:animated];
 	
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		// For Setting the Button with title Posts.
+		UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
+		self.navigationItem.leftBarButtonItem = cancelButton;
+		[cancelButton release];
+
 		//Added to solve the title issue .
 		[tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
 		UIViewController *vc = [[tabController viewControllers] objectAtIndex:0];
