@@ -858,7 +858,9 @@
 		[[BlogDataManager sharedDataManager] loadDraftTitlesForCurrentBlog];
 		[[BlogDataManager sharedDataManager] loadPostTitlesForCurrentBlog];
 		
-		[(BlogViewController *)[[WordPressAppDelegate sharedWordPressApp].splitViewController.masterNavigationController topViewController] reselect];
+		UIViewController *theTopVC = [[WordPressAppDelegate sharedWordPressApp].splitViewController.masterNavigationController topViewController];
+		if ([theTopVC respondsToSelector:@selector(reselect)])
+			[theTopVC performSelector:@selector(reselect)];
 	}
 }
 
