@@ -858,8 +858,6 @@
 		[[BlogDataManager sharedDataManager] loadDraftTitlesForCurrentBlog];
 		[[BlogDataManager sharedDataManager] loadPostTitlesForCurrentBlog];
 		
-		[WordPressAppDelegate sharedWordPressApp].splitViewController.detailNavigationController.viewControllers = NULL;
-		
 		[(BlogViewController *)[[WordPressAppDelegate sharedWordPressApp].splitViewController.masterNavigationController topViewController] reselect];
 	}
 }
