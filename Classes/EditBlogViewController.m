@@ -402,6 +402,7 @@
 	if ([dm refreshCurrentBlog:url user:username]) {
         [dm.currentBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
         [dm wrapperForSyncPostsAndGetTemplateForBlog:dm.currentBlog];
+        [dm.currentBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
         [dm saveCurrentBlog];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"NewBlogAdded" object:nil];
         [self.navigationController dismissModalViewControllerAnimated:YES];
