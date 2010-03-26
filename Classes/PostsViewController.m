@@ -404,8 +404,7 @@
 				return;
 			}
 			
-			[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-			[self tableView:self.tableView didSelectRowAtIndexPath:self.selectedIndexPath];
+			[self reselect];
 		}
 	}
 }
@@ -583,6 +582,12 @@
 
 - (void)reselect;
 {
+// avoid selection if we have an autosaved post
+if ([[BlogDataManager sharedDataManager] hasAutosavedPost])
+	{
+	return;
+	}
+
 if (self.selectedIndexPath != NULL)
 	{
 	[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];

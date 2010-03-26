@@ -70,6 +70,7 @@ UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewCont
 // Called when the view controller is shown in a popover so the delegate can take action like hiding other popovers.
 - (void)splitViewController: (UISplitViewController*)svc popoverController: (UIPopoverController*)pc willPresentViewController:(UIViewController *)aViewController
 {
+	NSLog(@"Showing");
 }
 
 @end

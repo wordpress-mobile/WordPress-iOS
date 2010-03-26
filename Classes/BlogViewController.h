@@ -18,6 +18,11 @@
     IBOutlet CommentsViewController *commentsViewController;
 }
 
+@property (nonatomic, retain) UITabBarController *tabBarController;
+
 - (void)reselect;
+
+- (void)saveState;
+- (void)restoreState;
 
 @end

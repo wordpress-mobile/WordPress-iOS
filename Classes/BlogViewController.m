@@ -15,6 +15,7 @@
 
 @implementation BlogViewController
 
+@synthesize tabBarController;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -23,18 +24,20 @@
 
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
     self.title =[NSString decodeXMLCharactersIn:[[dm currentBlog] valueForKey:@"blogName"]] ;
-
-#if defined __IPHONE_3_0
-	[commentsViewController viewWillAppear:NO];
-#else if defined __IPHONE_2_0 
-    tabBarController.selectedIndex = 0;
-#endif
-    
-    [commentsViewController setIndexForCurrentPost:-2];
-    [commentsViewController refreshCommentsList];
 	
-	self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
-	self.navigationItem.titleView = commentsViewController.segmentedControl;
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	#if defined __IPHONE_3_0
+		[commentsViewController viewWillAppear:NO];
+	#else if defined __IPHONE_2_0 
+		tabBarController.selectedIndex = 0;
+	#endif
+		
+		[commentsViewController setIndexForCurrentPost:-2];
+		[commentsViewController refreshCommentsList];
+		
+		self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
+		self.navigationItem.titleView = commentsViewController.segmentedControl;
+	}
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"DraftsUpdated" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"BlogsRefreshNotification" object:nil];
@@ -46,7 +49,14 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    [tabBarController.selectedViewController viewWillAppear:animated];
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		[self restoreState];
+	}
+	else {
+		[tabBarController.selectedViewController viewWillAppear:animated];
+	}
+
+	
     [super viewWillAppear:animated];
     [[WordPressAppDelegate sharedWordPressApp] storeCurrentBlog];
 }
@@ -57,6 +67,8 @@
 	[postsViewController removeObserver:self forKeyPath:@"selectedIndexPath"];
 	[pagesViewController removeObserver:self forKeyPath:@"selectedIndexPath"];
 	[commentsViewController removeObserver:self forKeyPath:@"selectedIndexPath"];
+	
+	[tabBarController release], tabBarController = nil;
 	
     [super dealloc];
 }
@@ -135,6 +147,58 @@
 {
 if ([tabBarController.selectedViewController respondsToSelector:@selector(reselect)])
 	[tabBarController.selectedViewController performSelector:@selector(reselect)];
+}
+
+#pragma mark State saving
+
+- (void)saveState;
+{
+	NSString *vcName;
+	NSIndexPath *indexPath;
+	if (commentsViewController.selectedIndexPath) {
+		vcName = @"Comments";
+		indexPath = commentsViewController.selectedIndexPath;
+	}
+	else if	(postsViewController.selectedIndexPath) {
+		vcName = @"Posts";
+		indexPath = postsViewController.selectedIndexPath;
+	}
+	else if	(pagesViewController.selectedIndexPath) {
+		vcName = @"Pages";
+		indexPath = pagesViewController.selectedIndexPath;
+	}
+	[[NSUserDefaults standardUserDefaults] setObject:vcName forKey:@"WPSelectedContentType"];
+	[[NSUserDefaults standardUserDefaults] setInteger:indexPath.section forKey:@"WPSelectedIndexPathSection"];
+	[[NSUserDefaults standardUserDefaults] setInteger:indexPath.row forKey:@"WPSelectedIndexPathRow"];
+}
+
+- (void)restoreState;
+{
+	NSString *vcName = [[NSUserDefaults standardUserDefaults] objectForKey:@"WPSelectedContentType"];
+	if (vcName) {
+		int section = [[NSUserDefaults standardUserDefaults] integerForKey:@"WPSelectedIndexPathSection"];
+		int row = [[NSUserDefaults standardUserDefaults] integerForKey:@"WPSelectedIndexPathRow"];
+		NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:row inSection:section];
+		UIViewController *selectedViewController = nil;
+		if ([vcName isEqual:@"Comments"]) {
+			selectedViewController = commentsViewController;
+			commentsViewController.selectedIndexPath = selectedIndexPath;
+		}
+		else if	([vcName isEqual:@"Posts"]) {
+			selectedViewController = postsViewController;
+			postsViewController.selectedIndexPath = selectedIndexPath;
+		}
+		else if	([vcName isEqual:@"Pages"]) {
+			selectedViewController = pagesViewController;
+			pagesViewController.selectedIndexPath = selectedIndexPath;
+		}
+		
+		// show the view controller
+		if (selectedViewController) {
+			self.tabBarController.selectedViewController = selectedViewController;
+			[self tabBarController:self.tabBarController didSelectViewController:selectedViewController];
+		}
+	}
 }
 
 @end

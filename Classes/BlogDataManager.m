@@ -3625,6 +3625,10 @@ editBlogViewController, currentLocation;
     return -1;
 }
 
+- (BOOL)hasAutosavedPost {
+	return [[NSFileManager defaultManager] fileExistsAtPath:[self autoSavePathForTheCurrentBlog]];
+}
+
 - (id)autoSavedPostForCurrentBlog {
     return [NSMutableDictionary dictionaryWithContentsOfFile:[self autoSavePathForTheCurrentBlog]];
 }

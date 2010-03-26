@@ -228,6 +228,7 @@
 - (BOOL)deletePost;
 - (BOOL)autoSaveCurrentPost;
 - (BOOL)makeAutoSavedPostCurrentForCurrentBlog;
+- (BOOL)hasAutosavedPost;
 - (id)autoSavedPostForCurrentBlog;
 - (NSString *)blogDir:(id)aBlog;
 

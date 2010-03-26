@@ -6,6 +6,7 @@
 #import "NSString+Helpers.h"
 #import "CFirstLaunchViewController.h"
 #import "WordPressSplitViewController.h"
+#import "BlogViewController.h"
 
 @interface WordPressAppDelegate (Private)
 
@@ -116,6 +117,11 @@ static WordPressAppDelegate *wordPressApp = NULL;
 - (void)applicationWillTerminate:(UIApplication *)application {
     [dataManager saveBlogData];
     [self setAppBadge];
+	
+	UIViewController *topVC = self.splitViewController.masterNavigationController.topViewController;
+	if (topVC && [topVC isKindOfClass:[BlogViewController class]]) {
+		[(BlogViewController *)topVC saveState];
+	}
 }
 
 #pragma mark -

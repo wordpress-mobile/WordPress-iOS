@@ -297,7 +297,7 @@
 
 - (void)refreshUIForCurrentPost {
 //    [self setRightBarButtonItemForEditPost:nil];
-
+	
 	if (![[[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"title"] isEqualToString:@""]) {
 		self.navigationItem.title = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"title"];
 	}else{
