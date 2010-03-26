@@ -583,8 +583,11 @@
 
 - (void)reselect;
 {
-[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-[self tableView:self.tableView didSelectRowAtIndexPath:self.selectedIndexPath];
+if (self.selectedIndexPath != NULL)
+	{
+	[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+	[self tableView:self.tableView didSelectRowAtIndexPath:self.selectedIndexPath];
+	}
 }
 
 @end
