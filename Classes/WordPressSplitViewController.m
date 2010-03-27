@@ -14,11 +14,17 @@
 
 @implementation WordPressSplitViewController
 
+- (void)dealloc;
+{
+[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad
 {
 [super viewDidLoad];
 
 self.delegate = self;
+[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newBlogNotification:) name:@"NewBlogAdded" object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -33,6 +39,15 @@ NSLog(@"%@", [UIPopoverController currentPopoverController]);
 - (void)showPopoverIfNecessary;
 {
 if (UIInterfaceOrientationIsPortrait(self.masterNavigationController.interfaceOrientation) && !self.modalViewController)
+	{
+	UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
+	[[UIPopoverController currentPopoverController] presentPopoverFromBarButtonItem:theNavigationItem.leftBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	}
+}
+
+- (void)newBlogNotification:(NSNotification *)aNotification;
+{
+if (UIInterfaceOrientationIsPortrait(self.masterNavigationController.interfaceOrientation))
 	{
 	UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
 	[[UIPopoverController currentPopoverController] presentPopoverFromBarButtonItem:theNavigationItem.leftBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
