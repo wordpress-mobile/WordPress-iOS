@@ -26,8 +26,12 @@ self.delegate = self;
 [super viewDidAppear:animated];
 //
 
+NSLog(@"%@", [UIPopoverController currentPopoverController]);
+[self performSelector:@selector(showPopoverIfNecessary) withObject:nil afterDelay:0.1];
+}
 
-NSLog(@"%d", UIInterfaceOrientationIsPortrait(self.masterNavigationController.interfaceOrientation));
+- (void)showPopoverIfNecessary;
+{
 if (UIInterfaceOrientationIsPortrait(self.masterNavigationController.interfaceOrientation))
 	{
 	UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
