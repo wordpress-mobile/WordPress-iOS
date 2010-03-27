@@ -93,9 +93,9 @@
 		45B71DE5113EDAA100D0A33C /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 45B71DE4113EDAA100D0A33C /* Entitlements.plist */; };
 		45C73C25113C36F70024D0D2 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45C73C24113C36F70024D0D2 /* MainWindow-iPad.xib */; };
 		45CD32191157D83D009E78D3 /* fabric.png in Resources */ = {isa = PBXBuildFile; fileRef = 45CD32181157D83D009E78D3 /* fabric.png */; };
-		45F285DB1149BD020014D36C /* Icon_iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 45F285D81149BD020014D36C /* Icon_iPad.png */; };
+		45F285DB1149BD020014D36C /* icon-iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 45F285D81149BD020014D36C /* icon-iPad.png */; };
 		45F285DC1149BD020014D36C /* Icon_Spotlight.png in Resources */ = {isa = PBXBuildFile; fileRef = 45F285D91149BD020014D36C /* Icon_Spotlight.png */; };
-		45F285DD1149BD020014D36C /* Icon_iPhone.png in Resources */ = {isa = PBXBuildFile; fileRef = 45F285DA1149BD020014D36C /* Icon_iPhone.png */; };
+		45F285DD1149BD020014D36C /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 45F285DA1149BD020014D36C /* icon.png */; };
 		45FA648C1159055E00DB50C4 /* firstrun-wholebutton-default.png in Resources */ = {isa = PBXBuildFile; fileRef = 45FA648A1159055E00DB50C4 /* firstrun-wholebutton-default.png */; };
 		45FA648D1159055E00DB50C4 /* firstrun-wholebutton-selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 45FA648B1159055E00DB50C4 /* firstrun-wholebutton-selected.png */; };
 		45FA648F1159056A00DB50C4 /* firstrun-background.png in Resources */ = {isa = PBXBuildFile; fileRef = 45FA648E1159056A00DB50C4 /* firstrun-background.png */; };
@@ -319,9 +319,9 @@
 		45B71DE4113EDAA100D0A33C /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		45C73C24113C36F70024D0D2 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "Resources-iPad/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		45CD32181157D83D009E78D3 /* fabric.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fabric.png; sourceTree = "<group>"; };
-		45F285D81149BD020014D36C /* Icon_iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_iPad.png; sourceTree = "<group>"; };
+		45F285D81149BD020014D36C /* icon-iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-iPad.png"; sourceTree = "<group>"; };
 		45F285D91149BD020014D36C /* Icon_Spotlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_Spotlight.png; sourceTree = "<group>"; };
-		45F285DA1149BD020014D36C /* Icon_iPhone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_iPhone.png; sourceTree = "<group>"; };
+		45F285DA1149BD020014D36C /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		45FA648A1159055E00DB50C4 /* firstrun-wholebutton-default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "firstrun-wholebutton-default.png"; sourceTree = "<group>"; };
 		45FA648B1159055E00DB50C4 /* firstrun-wholebutton-selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "firstrun-wholebutton-selected.png"; sourceTree = "<group>"; };
 		45FA648E1159056A00DB50C4 /* firstrun-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "firstrun-background.png"; sourceTree = "<group>"; };
@@ -601,6 +601,9 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				45F285D81149BD020014D36C /* icon-iPad.png */,
+				45F285D91149BD020014D36C /* Icon_Spotlight.png */,
+				45F285DA1149BD020014D36C /* icon.png */,
 				6EDC0E8E105881A800F68A1D /* iTunesArtwork */,
 				ACFF1DC00E231EF600EC6BF5 /* Blog */,
 				C50E78130E71648100991509 /* Comments */,
@@ -673,9 +676,6 @@
 				03FF763211445F8E00DCFC6F /* EditPostViewController-iPad.xib */,
 				03D5AEF11146A2D700FC6044 /* PageViewController-iPad.xib */,
 				03D5AF731146AF2D00FC6044 /* EditPageViewController-iPad.xib */,
-				45F285D81149BD020014D36C /* Icon_iPad.png */,
-				45F285D91149BD020014D36C /* Icon_Spotlight.png */,
-				45F285DA1149BD020014D36C /* Icon_iPhone.png */,
 			);
 			name = "Resources-iPad";
 			sourceTree = "<group>";
@@ -1102,9 +1102,9 @@
 				4590D1BC1146BF56008F5D22 /* blue-m.png in Resources */,
 				4526DC551148072F0090C99D /* Default-Portrait.png in Resources */,
 				4526DC561148072F0090C99D /* Default-Landscape.png in Resources */,
-				45F285DB1149BD020014D36C /* Icon_iPad.png in Resources */,
+				45F285DB1149BD020014D36C /* icon-iPad.png in Resources */,
 				45F285DC1149BD020014D36C /* Icon_Spotlight.png in Resources */,
-				45F285DD1149BD020014D36C /* Icon_iPhone.png in Resources */,
+				45F285DD1149BD020014D36C /* icon.png in Resources */,
 				45CD32191157D83D009E78D3 /* fabric.png in Resources */,
 				03E26FDC1157FC2500D6D38A /* PageViewController-iPad.xib in Resources */,
 				03E26FDD1157FC2500D6D38A /* EditPageViewController-iPad.xib in Resources */,
@@ -1249,8 +1249,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Automattic, Inc.";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
@@ -1258,8 +1258,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_LDFLAGS = "-licucore";
 				PREBINDING = NO;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "A6B19650-383F-430F-8358-2A8CF11C1F00";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6B19650-383F-430F-8358-2A8CF11C1F00";
 				SDKROOT = iphoneos3.2;
 			};
 			name = Distribution;
