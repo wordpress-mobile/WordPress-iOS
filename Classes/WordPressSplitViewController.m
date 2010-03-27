@@ -32,7 +32,7 @@ NSLog(@"%@", [UIPopoverController currentPopoverController]);
 
 - (void)showPopoverIfNecessary;
 {
-if (UIInterfaceOrientationIsPortrait(self.masterNavigationController.interfaceOrientation))
+if (UIInterfaceOrientationIsPortrait(self.masterNavigationController.interfaceOrientation) && !self.modalViewController)
 	{
 	UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
 	[[UIPopoverController currentPopoverController] presentPopoverFromBarButtonItem:theNavigationItem.leftBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
