@@ -10,7 +10,6 @@
 
 
 @interface CFirstLaunchViewController : UIViewController {
-
 }
 
 - (IBAction)actionNewBlog:(id)inSender;

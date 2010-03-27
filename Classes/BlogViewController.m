@@ -19,7 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+	
     self.view = tabBarController.view;
 
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
@@ -55,7 +55,6 @@
 	else {
 		[tabBarController.selectedViewController viewWillAppear:animated];
 	}
-
 	
     [super viewWillAppear:animated];
     [[WordPressAppDelegate sharedWordPressApp] storeCurrentBlog];
@@ -174,6 +173,8 @@ if ([tabBarController.selectedViewController respondsToSelector:@selector(resele
 
 - (void)restoreState;
 {
+	if (stateRestored) return;
+	
 	NSString *vcName = [[NSUserDefaults standardUserDefaults] objectForKey:@"WPSelectedContentType"];
 	UIViewController *selectedViewController = postsViewController;
 	if (vcName) {
@@ -199,6 +200,8 @@ if ([tabBarController.selectedViewController respondsToSelector:@selector(resele
 		self.tabBarController.selectedViewController = selectedViewController;
 		[self tabBarController:self.tabBarController didSelectViewController:selectedViewController];
 	}
+	
+	stateRestored = YES;
 }
 
 @end

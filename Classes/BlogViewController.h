@@ -16,6 +16,8 @@
     IBOutlet PostsViewController *postsViewController;
     IBOutlet PagesViewController *pagesViewController;
     IBOutlet CommentsViewController *commentsViewController;
+	
+	BOOL stateRestored;
 }
 
 @property (nonatomic, retain) UITabBarController *tabBarController;

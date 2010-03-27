@@ -12,6 +12,8 @@
 #import "BlogDataManager.h"
 #import "CNewBlogSignupViewController.h"
 
+#import "UIPopoverController_Extensions.h"
+
 @implementation CFirstLaunchViewController
 
 - (void)dealloc
@@ -24,6 +26,11 @@
 [super viewDidLoad];
 //
 self.title = @"WordPress";
+}
+
+- (void)viewWillAppear:(BOOL)animated;
+{
+[[UIPopoverController currentPopoverController] dismissPopoverAnimated:NO];
 }
 
 - (void)viewDidUnload

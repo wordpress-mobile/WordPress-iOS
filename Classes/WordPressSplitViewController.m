@@ -8,6 +8,8 @@
 
 #import "WordPressSplitViewController.h"
 
+#import "BlogSplitViewDetailViewController.h"
+
 #import "UIPopoverController_Extensions.h"
 
 @implementation WordPressSplitViewController
@@ -26,7 +28,11 @@ self.delegate = self;
 
 
 NSLog(@"%d", UIInterfaceOrientationIsPortrait(self.masterNavigationController.interfaceOrientation));
-//if (self.interfaceOrientation == UIInterfaceOrientationPortrait
+if (UIInterfaceOrientationIsPortrait(self.masterNavigationController.interfaceOrientation))
+	{
+	UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
+	[[UIPopoverController currentPopoverController] presentPopoverFromBarButtonItem:theNavigationItem.leftBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	}
 }
 
 #pragma mark -
@@ -56,7 +62,10 @@ return(theObject);
 UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
 [barButtonItem setTitle:@"My Blog"];
 [theNavigationItem setLeftBarButtonItem:barButtonItem animated:YES];
-//[UIPopoverController setCurrentPopoverController:pc];
+if ([[self.detailNavigationController.viewControllers objectAtIndex:0] isKindOfClass:[BlogSplitViewDetailViewController class]])
+	{
+	[UIPopoverController setCurrentPopoverController:pc];
+	}
 }
 
 // Called when the view is shown again in the split view, invalidating the button and popover controller
@@ -70,7 +79,6 @@ UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewCont
 // Called when the view controller is shown in a popover so the delegate can take action like hiding other popovers.
 - (void)splitViewController: (UISplitViewController*)svc popoverController: (UIPopoverController*)pc willPresentViewController:(UIViewController *)aViewController
 {
-	NSLog(@"Showing");
 }
 
 @end
