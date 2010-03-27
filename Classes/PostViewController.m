@@ -566,6 +566,9 @@
 	if (mode != newPost && ![postStatus isEqualToString:@"Local Draft"]) { //don't load commentsViewController tab if it's a new post or a local draft since comments are irrelevant to a brand new post
 		if (commentsViewController == nil) {
 			commentsViewController = [[CommentsViewController alloc] initWithNibName:@"CommentsViewController" bundle:nil];
+			if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+				commentsViewController.isSecondaryViewController = YES;
+			}
 		}
 
 		commentsViewController.title = @"Comments";

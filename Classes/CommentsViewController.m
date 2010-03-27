@@ -46,6 +46,7 @@
 @synthesize editButtonItem, selectedComments, commentsArray, indexForCurrentPost, segmentedControl;
 @synthesize selectedIndexPath;
 @synthesize commentViewController;
+@synthesize isSecondaryViewController;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -291,7 +292,7 @@
     [commentsTableView reloadData];
 	
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-		if (self.selectedIndexPath) {
+		if (self.selectedIndexPath && !self.isSecondaryViewController) {
 			[commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 			[self showCommentAtIndex:self.selectedIndexPath.row];
 		}
@@ -389,8 +390,12 @@
 	if (index >= commentsArray.count)
 		return;
 	
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	[delegate showContentDetailViewController:self.commentViewController];
+	if (self.isSecondaryViewController) {
+		[self.navigationController pushViewController:self.commentViewController animated:YES];
+	} else {
+		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		[delegate showContentDetailViewController:self.commentViewController];
+	}
 
     [self.commentViewController showComment:commentsArray atIndex:index];
 }
@@ -461,7 +466,7 @@
 		cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
 	}
 
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad && !self.isSecondaryViewController) {
 		cell.accessoryType = UITableViewCellAccessoryNone;
 	}
 }

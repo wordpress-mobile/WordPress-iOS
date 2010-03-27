@@ -179,7 +179,7 @@
 	
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
 	
 //handle action sheet from trash button
 	if ([actionSheet tag] == 501) {
@@ -636,7 +636,7 @@
     NSString *commentBody = [[comment valueForKey:@"content"] trim];
     NSDate *createdAt = [comment valueForKey:@"date_created_gmt"];
     //NSString *commentStatus = [comment valueForKey:@"status"];
-	commentStatus = [comment valueForKey:@"status"];
+	commentStatus = [[comment valueForKey:@"status"] copy];
     NSString *authorEmail = [comment valueForKey:@"author_email"];
     NSString *authorUrl = [comment valueForKey:@"author_url"];
 

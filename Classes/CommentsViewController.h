@@ -39,6 +39,11 @@
 	UISegmentedControl *segmentedControl;
 	
 	NSIndexPath *selectedIndexPath;
+	
+	// added to distinguish a single posts's comments VC
+	// from the master VC's comments list.
+	// consider rethinking how this is done.
+	BOOL isSecondaryViewController;
 }
 
 @property (readonly) UIBarButtonItem *editButtonItem;
@@ -51,6 +56,8 @@
 @property (nonatomic, retain) UISegmentedControl *segmentedControl;
 
 @property (nonatomic, retain) NSIndexPath *selectedIndexPath;
+
+@property (nonatomic, assign) BOOL isSecondaryViewController;
 
 - (IBAction)deleteSelectedComments:(id)sender;
 - (IBAction)approveSelectedComments:(id)sender;
