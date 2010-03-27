@@ -31,6 +31,7 @@ self.title = @"WordPress";
 - (void)viewWillAppear:(BOOL)animated;
 {
 [[UIPopoverController currentPopoverController] dismissPopoverAnimated:NO];
+[UIPopoverController setCurrentPopoverController:nil];
 }
 
 - (void)viewDidUnload
