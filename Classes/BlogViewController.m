@@ -175,11 +175,11 @@ if ([tabBarController.selectedViewController respondsToSelector:@selector(resele
 - (void)restoreState;
 {
 	NSString *vcName = [[NSUserDefaults standardUserDefaults] objectForKey:@"WPSelectedContentType"];
+	UIViewController *selectedViewController = postsViewController;
 	if (vcName) {
 		int section = [[NSUserDefaults standardUserDefaults] integerForKey:@"WPSelectedIndexPathSection"];
 		int row = [[NSUserDefaults standardUserDefaults] integerForKey:@"WPSelectedIndexPathRow"];
 		NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:row inSection:section];
-		UIViewController *selectedViewController = nil;
 		if ([vcName isEqual:@"Comments"]) {
 			selectedViewController = commentsViewController;
 			commentsViewController.selectedIndexPath = selectedIndexPath;
@@ -192,12 +192,12 @@ if ([tabBarController.selectedViewController respondsToSelector:@selector(resele
 			selectedViewController = pagesViewController;
 			pagesViewController.selectedIndexPath = selectedIndexPath;
 		}
+	}
 		
-		// show the view controller
-		if (selectedViewController) {
-			self.tabBarController.selectedViewController = selectedViewController;
-			[self tabBarController:self.tabBarController didSelectViewController:selectedViewController];
-		}
+	// show the view controller
+	if (selectedViewController) {
+		self.tabBarController.selectedViewController = selectedViewController;
+		[self tabBarController:self.tabBarController didSelectViewController:selectedViewController];
 	}
 }
 
