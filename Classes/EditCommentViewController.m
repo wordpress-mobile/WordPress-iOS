@@ -151,7 +151,8 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
 		UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
 		if(UIInterfaceOrientationIsLandscape(interfaceOrientation)){
-			[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+		// private API
+//			[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
 		}
 	}
 }

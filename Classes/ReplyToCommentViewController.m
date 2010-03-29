@@ -202,7 +202,8 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
     [textView resignFirstResponder];
 	UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
 	if(UIInterfaceOrientationIsLandscape(interfaceOrientation)){
-		[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+	// private API
+//		[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
 	}
 	
 	

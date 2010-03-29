@@ -411,7 +411,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [textView resignFirstResponder];
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
 		if((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
-			[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+		// private API
+//			[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
 	}
 }
 
