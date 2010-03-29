@@ -22,6 +22,8 @@ Classes/BlogViewController.h -text
 Classes/BlogViewController.m -text
 Classes/BlogsViewController.h -text
 Classes/BlogsViewController.m -text
+Classes/CDeviceSupport.h -text
+Classes/CDeviceSupport.m -text
 Classes/CFirstLaunchViewController.h -text
 Classes/CFirstLaunchViewController.m -text
 Classes/CFirstLaunchViewController.xib -text
@@ -30,6 +32,8 @@ Classes/CInvisibleToolbar.m -text
 Classes/CNewBlogSignupViewController.h -text
 Classes/CNewBlogSignupViewController.m -text
 Classes/CNewBlogSignupViewController.xib -text
+Classes/CPopoverManager.h -text
+Classes/CPopoverManager.m -text
 Classes/CommentTableViewCell.h -text
 Classes/CommentTableViewCell.m -text
 Classes/CommentViewController.h -text
@@ -96,8 +100,6 @@ Classes/RotatingNavigationController.h -text
 Classes/RotatingNavigationController.m -text
 Classes/UIImage+INResizeImageAllocator.h -text
 Classes/UIImage+INResizeImageAllocator.m -text
-Classes/UIPopoverController_Extensions.h -text
-Classes/UIPopoverController_Extensions.m -text
 Classes/UIViewController+WPAnimation.h -text
 Classes/UIViewController+WPAnimation.m -text
 Classes/WPAddCategoryViewController.h -text
