@@ -163,8 +163,9 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
     pageDetailsController.navigationItem.leftBarButtonItem = barButton;
     [barButton release];
 	if((pageDetailsController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || 
-	   (pageDetailsController.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
-		[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+	   (pageDetailsController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)){
+		//[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+	}
 	
 }
 

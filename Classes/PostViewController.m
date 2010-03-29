@@ -564,32 +564,33 @@
 	
 
     //Code to disable landscape when alert is raised.
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-
-    if ([delegate isAlertRunning] == YES) {
-        return NO;
-    }
-
-    if ((interfaceOrientation == UIInterfaceOrientationPortrait) || (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
-        [postDetailEditController setTextViewHeight:202];
-		return YES;
-    }
-
-    if ((interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-        if (self.interfaceOrientation != interfaceOrientation) {
-            if (postDetailEditController.isEditing == NO) {
-              //  [postDetailEditController setTextViewHeight:57]; //#148
-            } else {
-                [postDetailEditController setTextViewHeight:116];
-				return YES;
-            }
-        }
-    }
-	
-	if ([tabController.selectedViewController.title isEqualToString:@"Settings"])
-		return NO;
-
-    //return YES;
+//    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+//
+//    if ([delegate isAlertRunning] == YES) {
+//        return NO;
+//    }
+//
+//    if ((interfaceOrientation == UIInterfaceOrientationPortrait) || (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
+//        [postDetailEditController setTextViewHeight:202];
+//		return YES;
+//    }
+//
+//    if ((interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+//        if (self.interfaceOrientation != interfaceOrientation) {
+//            if (postDetailEditController.isEditing == NO) {
+//              //  [postDetailEditController setTextViewHeight:57]; //#148
+//            } else {
+//                //[postDetailEditController setTextViewHeight:116];
+//				//return YES;
+//				return NO;
+//            }
+//        }
+//    }
+//	
+//	if ([tabController.selectedViewController.title isEqualToString:@"Settings"])
+//		return NO;
+//
+//    //return YES;
 	return NO; //trac ticket #148
 }
 

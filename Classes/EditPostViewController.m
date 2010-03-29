@@ -340,8 +340,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (IBAction)endTextEnteringButtonAction:(id)sender {
     [textView resignFirstResponder];
-	if((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
-		[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+	if((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)){
+		//[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+	}
 }
 
 - (IBAction)showCategoriesViewAction:(id)sender {

@@ -382,10 +382,10 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     //Code to disable landscape when alert is raised.
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-
-    if ([delegate isAlertRunning] == YES)
-        return NO;
+//    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+//
+//    if ([delegate isAlertRunning] == YES)
+//        return NO;
 
 //    if ([[[[self tabController] selectedViewController] title] isEqualToString:@"Photos"]) {
 //        if ((interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
@@ -395,23 +395,23 @@
 //        }
 //    }
 
-    if ((interfaceOrientation == UIInterfaceOrientationPortrait) || (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
+//    if ((interfaceOrientation == UIInterfaceOrientationPortrait) || (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
 //        if (pageDetailViewController.isEditing == NO) {
 //            [pageDetailViewController setTextViewHeight:287];
 //        } else {
            [pageDetailViewController setTextViewHeight:200];
-		   return YES;
-        }
+//		   return YES;
+//        }
 //    }
 
-    if ((interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-        if (pageDetailViewController.isEditing == NO) {
-            //[pageDetailViewController setTextViewHeight:137];
-        } else {
-            [pageDetailViewController setTextViewHeight:105];
-			return YES; //trac ticket #148
-        }
-    }
+//    if ((interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+//        if (pageDetailViewController.isEditing == NO) {
+//            //[pageDetailViewController setTextViewHeight:137];
+//        } else {
+//            [pageDetailViewController setTextViewHeight:105];
+//			return YES; //trac ticket #148
+//        }
+//    }
 
     //return YES;
 	return NO; //trac ticket #148
