@@ -142,7 +142,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		return YES;
 	}
 
@@ -279,7 +279,7 @@
         WPPublishOnEditController *publishOnEditController = [[WPPublishOnEditController alloc] initWithNibName:@"WPPublishOnEditController" bundle:nil];
         publishOnEditController.settingController = self;
 		publishOnEditController.title = @"Publish Date";
-		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		if (DeviceIsPad() == YES) {
 			[self.navigationController pushViewController:publishOnEditController animated:YES];
 		} else {
 			[postDetailViewController.navigationController pushViewController:publishOnEditController animated:YES];

@@ -4,7 +4,7 @@
 #import "WPSegmentedSelectionTableViewController.h"
 #import "WPNavigationLeftButtonView.h"
 
-#import "UIPopoverController_Extensions.h"
+#import "CPopoverManager.h"
 
 NSTimeInterval kAnimationDuration = 0.3f;
 
@@ -76,7 +76,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		textView.editable = NO;
 	}
 
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 	}
@@ -263,13 +263,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
     segmentedTableViewController.navigationItem.rightBarButtonItem = newCategoryBarButtonItem;
 
     if (isNewCategory != YES) {
-		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		if (DeviceIsPad() == YES) {
 			UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:segmentedTableViewController] autorelease];
 			UIPopoverController *popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
 			CGRect popoverRect = [self.view convertRect:[categoriesTextField frame] fromView:[categoriesTextField superview]];
 			popoverRect.size.width = MIN(popoverRect.size.width, 100); // the text field is actually really big
 			[popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-			[UIPopoverController setCurrentPopoverController:popover];
+			[[CPopoverManager instance] setCurrentPopoverController:popover];
 		} else {
 			[postDetailViewController.navigationController pushViewController:segmentedTableViewController animated:YES];
 		}
@@ -304,13 +304,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
     selectionTableViewController.title = @"Status";
     selectionTableViewController.navigationItem.rightBarButtonItem = nil;
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:selectionTableViewController] autorelease];
 		UIPopoverController *popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
 		CGRect popoverRect = [self.view convertRect:[statusTextField frame] fromView:[statusTextField superview]];
 		popoverRect.size.width = MIN(popoverRect.size.width, 100);
 		[popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-		[UIPopoverController setCurrentPopoverController:popover];
+		[[CPopoverManager instance] setCurrentPopoverController:popover];
 	} else {
 		[postDetailViewController.navigationController pushViewController:selectionTableViewController animated:YES];
 	}
@@ -365,8 +365,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (IBAction)showAddNewCategoryView:(id)sender
 {
     WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithNibName:@"WPAddCategoryViewController" bundle:nil];
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-		UIPopoverController *popover = [UIPopoverController currentPopoverController];
+	if (DeviceIsPad() == YES) {
+		UIPopoverController *popover = [[CPopoverManager instance] currentPopoverController];
 		[(UINavigationController *)(popover.contentViewController) pushViewController:addCategoryViewController animated:YES];
 	} else {
 		UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:addCategoryViewController];
@@ -409,10 +409,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (IBAction)endTextEnteringButtonAction:(id)sender {
     [textView resignFirstResponder];
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
-//		if((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
-		// private API
-//			[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+	if (DeviceIsPad() == NO) {
+		if((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
+			[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
 	}
 }
 
@@ -432,7 +431,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)bringTextViewUp {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		[UIView beginAnimations:nil context:NULL];
 		[UIView setAnimationDuration:kAnimationDuration];
 
@@ -464,7 +463,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)bringTextViewDown {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		[UIView beginAnimations:nil context:NULL];
 		[UIView setAnimationDuration:0.2];
 		subView.hidden = NO;
@@ -616,7 +615,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
         [self updateTextViewPlacehoderFieldStatus];
 
-		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		if (DeviceIsPad() == NO) {
 			if ((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
 				[self setTextViewHeight:116];
 			}
@@ -635,7 +634,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
     isEditing = YES;
 
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
 			|| (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
 			[self setTextViewHeight:116];
@@ -649,7 +648,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
         [self updateTextViewPlacehoderFieldStatus];
 
- 		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+ 		if (DeviceIsPad() == NO) {
 			[self bringTextViewUp];
 
 			UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
@@ -765,7 +764,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)aTextView {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		if ((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
 			[self setTextViewHeight:57];
 		}
@@ -781,7 +780,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         NSString *text = aTextView.text;
         [[[BlogDataManager sharedDataManager] currentPost] setObject:text forKey:@"description"];
 
-		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		if (DeviceIsPad() == NO) {
 			[self bringTextViewDown];
 
 			if (postDetailViewController.hasChanges == YES) {
@@ -798,7 +797,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField;
 {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		if (textField == categoriesTextField) {
 			[self populateSelectionsControllerWithCategories];
 			return NO;
@@ -1166,14 +1165,14 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 - (IBAction)showLocationMapView:(id)sender {
 	PostLocationViewController *locationView = [[PostLocationViewController alloc] init];
 	locationView.initialLocation = locationController.locationManager.location;
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:locationView] autorelease];
 		UIPopoverController *popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
 		if ([sender isKindOfClass:[UIBarButtonItem class]])
 			[popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		else
 			[popover presentPopoverFromRect:[locationButton frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-		[UIPopoverController setCurrentPopoverController:popover];
+		[[CPopoverManager instance] setCurrentPopoverController:popover];
 	} else {
 		[self presentModalViewController:locationView animated:YES];
 	}

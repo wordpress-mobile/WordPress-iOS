@@ -11,7 +11,7 @@
 #import "NSString+XMLExtensions.h" 
 #import "Blog.h"
 #import "BlogSplitViewMasterViewController.h"
-#import "UIPopoverController_Extensions.h"
+#import "CPopoverManager.h"
 
 @interface BlogsViewController (Private)
 
@@ -55,7 +55,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBlogWithoutAnimation) name:@"NewBlogAdded" object:nil];
     
 	// restore blog for iPad
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		if ([[WordPressAppDelegate sharedWordPressApp] shouldLoadBlogFromUserDefaults]) {
 			[self showBlog:NO];
 		}
@@ -120,12 +120,12 @@
 	
 	EditBlogViewController *blogDetailViewController = [[[EditBlogViewController alloc] initWithNibName:@"EditBlogViewController" bundle:nil] autorelease];
 	UINavigationController *modalNavigationController = [[UINavigationController alloc] initWithRootViewController:blogDetailViewController];
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		modalNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		modalNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 		}
 
-	[UIPopoverController setCurrentPopoverController:NULL];
+	[[CPopoverManager instance] setCurrentPopoverController:NULL];
 	
 
 	[[WordPressAppDelegate sharedWordPressApp].splitViewController presentModalViewController:modalNavigationController animated:animate];
@@ -194,8 +194,8 @@
 }
 
 - (void)tableView:(UITableView *)atableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-		[UIPopoverController setCurrentPopoverController:NULL];
+	if (DeviceIsPad() == YES)
+		[[CPopoverManager instance] setCurrentPopoverController:NULL];
 
     BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 

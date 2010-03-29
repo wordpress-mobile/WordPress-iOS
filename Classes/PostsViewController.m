@@ -89,13 +89,13 @@
 		}
 	}
 
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		// iPhone table views should not appear selected
 		if ([self.tableView indexPathForSelectedRow]) {
 			[self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
 			[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
 		}
-	} else if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	} else if (DeviceIsPad() == YES) {
 		// sometimes, iPad table views should
 		if (self.selectedIndexPath) {
 			[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
@@ -123,10 +123,10 @@
 	self.postDetailViewController.mode = newPost;
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		[delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
 	}
-	else if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	else if (DeviceIsPad() == YES) {
 		// unfortunately, the edit VC is pretty tightly coupled to the post detail VC, so we really want it to be current.
 		[delegate showContentDetailViewController:self.postDetailViewController];
 		// if the edit VC doesn't exist yet, the detail VC hasn't appeared yet;
@@ -141,7 +141,7 @@
 
 - (PostViewController *)postDetailViewController {
     if (postDetailViewController == nil) {
-		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		if (DeviceIsPad() == YES) {
 			postDetailViewController = [[PostViewController alloc] initWithNibName:@"PostViewController-iPad" bundle:nil];
 		} else {
 			postDetailViewController = [[PostViewController alloc] initWithNibName:@"PostViewController" bundle:nil];
@@ -158,7 +158,7 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
 
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		cell.accessoryType = UITableViewCellAccessoryNone;
 	}
 }
@@ -395,7 +395,7 @@
 {
     [self.tableView reloadData];
 	
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		if (self.selectedIndexPath) {
 			// TODO: make this more general. Pages are going to want to do it as well.
 			if (self.selectedIndexPath.section >= [self numberOfSectionsInTableView:self.tableView]
@@ -484,7 +484,7 @@
 
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	[delegate setAlertRunning:NO];
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		[delegate showContentDetailViewController:self.postDetailViewController];
 		// need a view, and a lot of setup happens in viewWillAppear
 		// TODO: clean up the post detail/edit/etc. view controller hierarchy!

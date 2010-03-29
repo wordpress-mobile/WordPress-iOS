@@ -12,7 +12,7 @@
 #import "BlogDataManager.h"
 #import "CNewBlogSignupViewController.h"
 
-#import "UIPopoverController_Extensions.h"
+#import "CPopoverManager.h"
 
 @implementation CFirstLaunchViewController
 

@@ -81,7 +81,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	NSLog(@"waga this is the text from textViewString %@", textViewText);
 	
 	[leftView setTarget:self withAction:@selector(cancelView:)];
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		cancelButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
 	} else {
 		cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelView:)];
@@ -148,7 +148,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 - (void)endTextEnteringButtonAction:(id)sender {
 	
     [textView resignFirstResponder];
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
 		if(UIInterfaceOrientationIsLandscape(interfaceOrientation)){
 		// private API
@@ -206,7 +206,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	//make the text view longer !!!! 
 	[self setTextViewHeight:440];
 	
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		[leftView setTitle:@"Cancel"];
 		UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:leftView];
 		self.navigationItem.leftBarButtonItem = barItem;	
@@ -219,7 +219,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	
 	
 	self.navigationItem.rightBarButtonItem = saveButton;
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		doneButton = [[UIBarButtonItem alloc] 
 					  initWithTitle:@"Done" 
 					  style:UIBarButtonItemStyleDone 
@@ -343,7 +343,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	[progressAlert release];
 	
 	self.hasChanges = NO;
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		[commentViewController cancelView:self];
 	}
 	

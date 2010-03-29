@@ -14,7 +14,7 @@
 #import "CInvisibleToolbar.h"
 #import "FlippingViewController.h"
 #import "RotatingNavigationController.h"
-#import "UIPopoverController_Extensions.h"
+#import "CPopoverManager.h"
 #import "WordPressSplitViewController.h"
 #import "BlogViewController.h"
 
@@ -109,7 +109,7 @@
         return;
     }
 
-//	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+//	if (DeviceIsPad() == NO) {
 		[postSettingsController endEditingAction:nil];
 		[postDetailEditController endEditingAction:nil];
 //	}
@@ -244,7 +244,7 @@
 
 		[self dismissEditView];
 
-		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		if (DeviceIsPad() == YES) {
 			[[BlogDataManager sharedDataManager] makePostWithPostIDCurrent:postId];
 		}
     }
@@ -290,7 +290,7 @@
 
     [self updatePhotosBadge];
 	
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		[self editAction:self];
 	}
 }
@@ -476,7 +476,7 @@
         saveButton.action = @selector(saveAction :);
     }
 
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone)
+	if (DeviceIsPad() == NO)
 	{
 			//conditionalLoadOfTabBarController is now referenced from viewWillAppear.  Solves Ticket #223 (crash when selecting comments from new post view)
 	    if (!leftView) {
@@ -490,7 +490,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	NSLog(@"inside PostViewController:viewWillAppear");
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
 			[postDetailEditController setTextViewHeight:202];
 		}
@@ -517,7 +517,7 @@
         self.rightBarButtonItemForEditPost = nil;
     }
 
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
 		self.leftBarButtonItemForEditPost = cancelButton;
 		[cancelButton release];
@@ -549,7 +549,7 @@
 
 	// post detail controllers
     if (postDetailEditController == nil) {
-		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		if (DeviceIsPad() == YES) {
 			postDetailEditController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController-iPad" bundle:nil];
 		} else {
 			postDetailEditController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil];
@@ -566,7 +566,7 @@
 	if (mode != newPost && ![postStatus isEqualToString:@"Local Draft"]) { //don't load commentsViewController tab if it's a new post or a local draft since comments are irrelevant to a brand new post
 		if (commentsViewController == nil) {
 			commentsViewController = [[CommentsViewController alloc] initWithNibName:@"CommentsViewController" bundle:nil];
-			if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+			if (DeviceIsPad() == YES) {
 				commentsViewController.isSecondaryViewController = YES;
 			}
 		}
@@ -604,7 +604,7 @@
     postSettingsController.postDetailViewController = self;
     [array addObject:postSettingsController];
 
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		// the iPad has two detail views
 		postDetailViewController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController-iPad" bundle:nil];
 		[postDetailViewController disableInteraction];
@@ -636,7 +636,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
 			[postDetailEditController setTextViewHeight:202];
 		}
@@ -661,7 +661,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	// iPad apps should always autorotate
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		return YES;
 	}
 
@@ -737,9 +737,9 @@
 
 - (UINavigationItem *)navigationItemForEditPost;
 {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		return self.navigationItem;
-	} else if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	} else if (DeviceIsPad() == YES) {
 		return postDetailEditController.navigationItem;
 	}
 	return nil;
@@ -752,18 +752,18 @@
 
 - (void)setLeftBarButtonItemForEditPost:(UIBarButtonItem *)item;
 {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		self.navigationItem.leftBarButtonItem = item;
-	} else if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	} else if (DeviceIsPad() == YES) {
 		postDetailEditController.navigationItem.leftBarButtonItem = item;
 	}
 }
 
 - (UIBarButtonItem *)rightBarButtonItemForEditPost;
 {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		return self.navigationItem.rightBarButtonItem;
-	} else if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	} else if (DeviceIsPad() == YES) {
 		return [editToolbar.items lastObject];
 	}
 	return nil;
@@ -771,9 +771,9 @@
 
 - (void)setRightBarButtonItemForEditPost:(UIBarButtonItem *)item;
 {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		self.navigationItem.rightBarButtonItem = item;
-	} else if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	} else if (DeviceIsPad() == YES) {
 		NSArray *currentItems = editToolbar.items;
 		if (currentItems.count < 1) return;
 		// TODO: uuuugly
@@ -809,7 +809,7 @@
 	UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:commentsViewController] autorelease];
 	UIPopoverController *popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
 	[popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-	[UIPopoverController setCurrentPopoverController:popover];
+	[[CPopoverManager instance] setCurrentPopoverController:popover];
 }
 
 - (IBAction)picturesAction:(id)sender;
@@ -818,7 +818,7 @@
 	UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:photosListController] autorelease];
 	UIPopoverController *popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
 	[popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-	[UIPopoverController setCurrentPopoverController:popover];
+	[[CPopoverManager instance] setCurrentPopoverController:popover];
 }
 
 - (IBAction)settingsAction:(id)sender;
@@ -827,7 +827,7 @@
 	UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:postSettingsController] autorelease];
 	UIPopoverController *popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
 	[popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-	[UIPopoverController setCurrentPopoverController:popover];
+	[[CPopoverManager instance] setCurrentPopoverController:popover];
 }
 
 - (IBAction)locationAction:(id)sender;
@@ -838,13 +838,13 @@
 
 - (IBAction)previewAction:(id)sender;
 {
-	[UIPopoverController setCurrentPopoverController:NULL];
+	[[CPopoverManager instance] setCurrentPopoverController:NULL];
 	[editModalViewController setShowingFront:NO animated:YES];
 }
 
 - (IBAction)previewEditAction:(id)sender;
 {
-	[UIPopoverController setCurrentPopoverController:NULL];
+	[[CPopoverManager instance] setCurrentPopoverController:NULL];
 	[editModalViewController setShowingFront:YES animated:YES];
 }
 
@@ -854,7 +854,7 @@
 
 - (void)dismissEditView;
 {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
         [self.navigationController popViewControllerAnimated:YES];
 	} else {
 		[self dismissModalViewControllerAnimated:YES];
@@ -882,7 +882,7 @@
 	// TODO: this is pretty kludgy
 	UIBarButtonItem *buttonItem = [editToolbar.items objectAtIndex:1];
 	[photoPickerPopover presentPopoverFromBarButtonItem:buttonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
-	[UIPopoverController setCurrentPopoverController:photoPickerPopover];
+	[[CPopoverManager instance] setCurrentPopoverController:photoPickerPopover];
 }
 
 - (void)hidePhotoListImagePicker;
@@ -892,7 +892,7 @@
 	// TODO: this is pretty kludgy
 	UIBarButtonItem *buttonItem = [editToolbar.items objectAtIndex:1];
 	[popoverController presentPopoverFromBarButtonItem:buttonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
-	[UIPopoverController setCurrentPopoverController:photoPickerPopover];
+	[[CPopoverManager instance] setCurrentPopoverController:photoPickerPopover];
 }
 
 @end

@@ -69,7 +69,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	[self passwordIntoKeychain];
 	[self restoreCurrentBlog];
 	
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone)
+	if (DeviceIsPad() == NO)
 	{
 		BlogsViewController *blogsViewController = [[BlogsViewController alloc] initWithStyle:UITableViewStylePlain];
 		UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:blogsViewController];
@@ -99,7 +99,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		{
 		self.firstLaunchController = [[[CFirstLaunchViewController alloc] initWithNibName:NULL bundle:NULL] autorelease];
 		UINavigationController *modalNavigationController = [[UINavigationController alloc] initWithRootViewController:self.firstLaunchController];
-		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		if (DeviceIsPad() == YES) {
 			modalNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 			modalNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 			}

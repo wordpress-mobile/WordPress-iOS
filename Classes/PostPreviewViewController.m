@@ -44,7 +44,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		return YES;
 	}
 
@@ -154,7 +154,7 @@
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		if (postDetailViewController.navigationItem.rightBarButtonItem == nil ||
 			postDetailViewController.navigationItem.rightBarButtonItem == postDetailViewController.saveButton) {
 			[self addProgressIndicator];
@@ -163,7 +163,7 @@
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)awebView {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		if ([awebView isLoading] == NO && postDetailViewController.navigationItem.rightBarButtonItem != nil &&
 			postDetailViewController.navigationItem.rightBarButtonItem != postDetailViewController.saveButton) {
 			postDetailViewController.navigationItem.rightBarButtonItem = (postDetailViewController.hasChanges ? postDetailViewController.saveButton : nil);
@@ -189,7 +189,7 @@
 }
 
 - (void)addProgressIndicator {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
 		UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
 		UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aiv];
@@ -204,7 +204,7 @@
 
 - (void)stopLoading {
     [webView stopLoading];
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		postDetailViewController.navigationItem.rightBarButtonItem = nil;
 	}
     isWebRefreshRequested = NO;

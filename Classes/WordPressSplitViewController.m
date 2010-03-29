@@ -10,13 +10,15 @@
 
 #import "BlogSplitViewDetailViewController.h"
 
-#import "UIPopoverController_Extensions.h"
+#import "CPopoverManager.h"
 
 @implementation WordPressSplitViewController
 
 - (void)dealloc;
 {
 [[NSNotificationCenter defaultCenter] removeObserver:self];
+//
+[super dealloc];
 }
 
 - (void)viewDidLoad
@@ -32,7 +34,7 @@ self.delegate = self;
 [super viewDidAppear:animated];
 //
 
-NSLog(@"%@", [UIPopoverController currentPopoverController]);
+NSLog(@"%@", [[CPopoverManager instance] currentPopoverController]);
 [self performSelector:@selector(showPopoverIfNecessary) withObject:nil afterDelay:0.1];
 }
 
@@ -41,7 +43,7 @@ NSLog(@"%@", [UIPopoverController currentPopoverController]);
 if (UIInterfaceOrientationIsPortrait(self.masterNavigationController.interfaceOrientation) && !self.modalViewController)
 	{
 	UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
-	[[UIPopoverController currentPopoverController] presentPopoverFromBarButtonItem:theNavigationItem.leftBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	[[[CPopoverManager instance] currentPopoverController] presentPopoverFromBarButtonItem:theNavigationItem.leftBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 	}
 }
 
@@ -50,7 +52,7 @@ if (UIInterfaceOrientationIsPortrait(self.masterNavigationController.interfaceOr
 if (UIInterfaceOrientationIsPortrait(self.masterNavigationController.interfaceOrientation))
 	{
 	UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
-	[[UIPopoverController currentPopoverController] presentPopoverFromBarButtonItem:theNavigationItem.leftBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	[[[CPopoverManager instance] currentPopoverController] presentPopoverFromBarButtonItem:theNavigationItem.leftBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 	}
 }
 
@@ -83,7 +85,7 @@ UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewCont
 [theNavigationItem setLeftBarButtonItem:barButtonItem animated:YES];
 if ([[self.detailNavigationController.viewControllers objectAtIndex:0] isKindOfClass:[BlogSplitViewDetailViewController class]])
 	{
-	[UIPopoverController setCurrentPopoverController:pc];
+	[[CPopoverManager instance] setCurrentPopoverController:pc];
 	}
 }
 
@@ -92,7 +94,7 @@ if ([[self.detailNavigationController.viewControllers objectAtIndex:0] isKindOfC
 {
 [[[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem] setLeftBarButtonItem:NULL animated:YES];
 
-[UIPopoverController setCurrentPopoverController:NULL];
+[[CPopoverManager instance] setCurrentPopoverController:NULL];
 }
 
 // Called when the view controller is shown in a popover so the delegate can take action like hiding other popovers.

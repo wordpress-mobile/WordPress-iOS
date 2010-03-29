@@ -12,7 +12,7 @@
 #import "PageViewController.h"
 #import "WPPhotosListViewController.h"
 #import "WordPressAppDelegate.h"
-#import "UIPopoverController_Extensions.h"
+#import "CPopoverManager.h"
 
 
 @interface EditPageViewController (private)
@@ -42,7 +42,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 }
 
 - (void)refreshUIForCurrentPage {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		self.navigationItem.rightBarButtonItem = nil;
 	}
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
@@ -166,7 +166,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
     [self postionTextViewContentView];
     customFieldsEditCell.hidden = YES;
 	
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 	}
@@ -183,7 +183,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 - (IBAction)endTextEnteringButtonAction:(id)sender {
     isTextViewEditing = NO;
     [pageContentTextView resignFirstResponder];
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:pageDetailsController.leftView];
 		pageDetailsController.navigationItem.leftBarButtonItem = barButton;
 		[barButton release];
@@ -240,7 +240,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		return YES;
 	}
 	
@@ -267,7 +267,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
         isTextViewEditing = YES;
 
-		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+		if (DeviceIsPad() == NO) {
 
 			if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
 				[self setTextViewHeight:105];
@@ -300,7 +300,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 - (void)textViewDidBeginEditing:(UITextView *)aTextView {
     isEditing = YES;
 
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
 			[self setTextViewHeight:105];
 		} else if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
@@ -324,7 +324,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 }
 
 - (void)bringTextViewUp {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		[UIView beginAnimations:nil context:NULL];
 		[UIView setAnimationDuration:kAnimationDuration1];
 
@@ -351,7 +351,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 }
 
 - (void)bringTextViewDown {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		[UIView beginAnimations:nil context:NULL];
 		[UIView setAnimationDuration:0.2];
 		subView.hidden = NO;
@@ -496,7 +496,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 	   if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
 		
 			[self setTextViewHeight:137];
@@ -598,7 +598,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
     selectionTableViewController.title = @"Status";
     selectionTableViewController.navigationItem.rightBarButtonItem = nil;
 	
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:selectionTableViewController] autorelease];
 		selectionTableViewController.contentSizeForViewInPopover = CGSizeMake(320, 152);
 		selectionTableViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(popoverDoneAction:)];
@@ -606,7 +606,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 		CGRect rect = statusTextField.frame;
 		rect.size.width = MIN(rect.size.width, 100);
 		[pc presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-		[UIPopoverController setCurrentPopoverController:pc];
+		[[CPopoverManager instance] setCurrentPopoverController:pc];
 	} else {
 		[pageDetailsController.navigationController pushViewController:selectionTableViewController animated:YES];
 	}
@@ -852,7 +852,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
 - (IBAction)popoverDoneAction:(id)sender;
 {
-[UIPopoverController setCurrentPopoverController:NULL];
+[[CPopoverManager instance] setCurrentPopoverController:NULL];
 }
 
 @end

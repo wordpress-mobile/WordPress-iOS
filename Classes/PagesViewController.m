@@ -84,7 +84,7 @@
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		if (self.selectedIndexPath) {
 			[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 		}
@@ -112,7 +112,7 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
 
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		cell.accessoryType = UITableViewCellAccessoryNone;
 	}
 }
@@ -335,7 +335,7 @@
 {
     [self.tableView reloadData];
 	
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		if (self.selectedIndexPath) {
 			// TODO: make this more general. Pages are going to want to do it as well.
 			if (self.selectedIndexPath.section >= [self numberOfSectionsInTableView:self.tableView]
@@ -384,10 +384,10 @@
 	
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		[delegate.navigationController pushViewController:self.pageDetailsController animated:YES];
 	}
-	else if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	else if (DeviceIsPad() == YES) {
 		// see comments in PostsViewController -showAddPostView
 		[delegate showContentDetailViewController:self.pageDetailsController];
 		if (self.pageDetailsController.editModalViewController) {
@@ -397,7 +397,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		return YES;
 	}
 
@@ -496,7 +496,7 @@
 
 - (void)setPageDetailsController {
     if (self.pageDetailsController == nil) {
-		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		if (DeviceIsPad() == YES) {
 			self.pageDetailsController = [[PageViewController alloc] initWithNibName:@"PageViewController-iPad" bundle:nil];
 		} else {
 			self.pageDetailsController = [[PageViewController alloc] initWithNibName:@"PageViewController" bundle:nil];

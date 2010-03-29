@@ -17,7 +17,7 @@
 
 #import "PostViewController.h"
 #import "PageViewController.h"
-#import "UIPopoverController_Extensions.h"
+#import "CPopoverManager.h"
 
 @implementation BlogSplitViewMasterViewController
 
@@ -183,7 +183,7 @@ UIPopoverController *theBlogMenuPopoverController = [[UIPopoverController alloc]
 
 [theBlogsViewController release];
 
-[UIPopoverController setCurrentPopoverController:theBlogMenuPopoverController];
+[[CPopoverManager instance] setCurrentPopoverController:theBlogMenuPopoverController];
 
 [theBlogMenuPopoverController release];
 }

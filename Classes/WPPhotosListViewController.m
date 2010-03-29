@@ -124,7 +124,7 @@ static inline double radians(double degrees) {
         WPImagePickerController *picker = [self pickerController];
         picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
 		
-		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		if (DeviceIsPad() == YES) {
 			// TODO: this is probably how we should do it on the iPhone as well
 			if (self.delegate && [self.delegate respondsToSelector:@selector(displayPhotoListImagePicker:)]) {
 				[self.delegate displayPhotoListImagePicker:picker];
@@ -315,7 +315,7 @@ editingInfo:(NSDictionary *)editingInfo {
 
     [self useImage:image];
 	
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		if (self.delegate && [self.delegate respondsToSelector:@selector(hidePhotoListImagePicker)]) {
 			[self.delegate hidePhotoListImagePicker];
 		}
@@ -336,7 +336,7 @@ editingInfo:(NSDictionary *)editingInfo {
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		if (self.delegate && [self.delegate respondsToSelector:@selector(hidePhotoListImagePicker)]) {
 			[self.delegate hidePhotoListImagePicker];
 		}
@@ -481,7 +481,7 @@ editingInfo:(NSDictionary *)editingInfo {
 //}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		return YES;
 	}
 

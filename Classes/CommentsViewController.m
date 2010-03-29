@@ -152,13 +152,13 @@
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		[commentsTableView reloadData];
 	}
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		return YES;
 	}
 
@@ -291,7 +291,7 @@
     [self updateBadge];
     [commentsTableView reloadData];
 	
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		if (self.selectedIndexPath && !self.isSecondaryViewController) {
 			[commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 			[self showCommentAtIndex:self.selectedIndexPath.row];
@@ -466,7 +466,7 @@
 		cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
 	}
 
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad && !self.isSecondaryViewController) {
+	if (DeviceIsPad() == YES && !self.isSecondaryViewController) {
 		cell.accessoryType = UITableViewCellAccessoryNone;
 	}
 }

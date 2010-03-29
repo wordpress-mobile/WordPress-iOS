@@ -25,7 +25,7 @@
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
     self.title =[NSString decodeXMLCharactersIn:[[dm currentBlog] valueForKey:@"blogName"]] ;
 	
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 	#if defined __IPHONE_3_0
 		[commentsViewController viewWillAppear:NO];
 	#else if defined __IPHONE_2_0 
@@ -49,7 +49,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		[self restoreState];
 	}
 	else {

@@ -18,7 +18,7 @@
 
 #import "FlippingViewController.h"
 #import "RotatingNavigationController.h"
-#import "UIPopoverController_Extensions.h"
+#import "CPopoverManager.h"
 
 #define TAG_OFFSET 1020
 
@@ -201,7 +201,7 @@
     NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:2];
 
     if (pageDetailViewController == nil) {
-		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+		if (DeviceIsPad() == YES) {
 			pageDetailViewController = [[EditPageViewController alloc] initWithNibName:@"EditPageViewController-iPad" bundle:nil];
 		} else {
 			pageDetailViewController = [[EditPageViewController alloc] initWithNibName:@"EditPageViewController" bundle:nil];
@@ -235,7 +235,7 @@
 
     [array addObject:photosListController];
 	
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		// the iPad has two detail views
 		pageDetailStaticViewController = [[EditPageViewController alloc] initWithNibName:@"EditPageViewController-iPad" bundle:nil];
 		[pageDetailStaticViewController disableInteraction];
@@ -263,7 +263,7 @@
 
     [array release];
 	
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone)
+	if (DeviceIsPad() == NO)
 	{
 		if (!leftView) {
 			leftView = [WPNavigationLeftButtonView createCopyOfView];
@@ -355,7 +355,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
 			if (pageDetailViewController.isEditing == NO) {
 				[pageDetailViewController setTextViewHeight:137];
@@ -381,7 +381,7 @@
 
     [super viewWillAppear:animated];
 	
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		// For Setting the Button with title Posts.
 		UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
 		self.navigationItem.leftBarButtonItem = cancelButton;
@@ -416,7 +416,7 @@
     [super viewDidAppear:animated];
 	
 	// should add a refreshUIForCurrentPage to PageViewController mebbe
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		if (mode == newPage) {
 			[self editAction:self];
 		}
@@ -424,7 +424,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
 			[pageDetailViewController setTextViewHeight:287];
 		}
@@ -448,7 +448,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		return YES;
 	}
 
@@ -466,7 +466,7 @@
 //        }
 //    }
 	
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		if ((interfaceOrientation == UIInterfaceOrientationPortrait) || (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
 	//        if (pageDetailViewController.isEditing == NO) {
 	//            [pageDetailViewController setTextViewHeight:287];
@@ -520,9 +520,9 @@
 
 - (UINavigationItem *)navigationItemForEditPost;
 {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		return self.navigationItem;
-	} else if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	} else if (DeviceIsPad() == YES) {
 		return pageDetailViewController.navigationItem;
 	}
 	return nil;
@@ -535,18 +535,18 @@
 
 - (void)setLeftBarButtonItemForEditPost:(UIBarButtonItem *)item;
 {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		self.navigationItem.leftBarButtonItem = item;
-	} else if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	} else if (DeviceIsPad() == YES) {
 		pageDetailViewController.navigationItem.leftBarButtonItem = item;
 	}
 }
 
 - (UIBarButtonItem *)rightBarButtonItemForEditPost;
 {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		return self.navigationItem.rightBarButtonItem;
-	} else if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	} else if (DeviceIsPad() == YES) {
 		return [editToolbar.items lastObject];
 	}
 	return nil;
@@ -554,9 +554,9 @@
 
 - (void)setRightBarButtonItemForEditPost:(UIBarButtonItem *)item;
 {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		self.navigationItem.rightBarButtonItem = item;
-	} else if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	} else if (DeviceIsPad() == YES) {
 		NSArray *currentItems = editToolbar.items;
 		if (currentItems.count < 1) return;
 		// TODO: uuuugly
@@ -592,12 +592,12 @@
 	UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:photosListController] autorelease];
 	UIPopoverController *popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
 	[popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-	[UIPopoverController setCurrentPopoverController:popover];
+	[[CPopoverManager instance] setCurrentPopoverController:popover];
 }
 
 - (void)dismissEditView;
 {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
         [self.navigationController popViewControllerAnimated:YES];
 	} else {
 		[self dismissModalViewControllerAnimated:YES];
@@ -617,7 +617,7 @@
 	picker.contentSizeForViewInPopover = photosListController.contentSizeForViewInPopover;
 	photoPickerPopover.contentViewController = picker;
 
-	[UIPopoverController setCurrentPopoverController:NULL];
+	[[CPopoverManager instance] setCurrentPopoverController:NULL];
 	
 	// TODO: this is pretty kludgy
 	UIBarButtonItem *buttonItem = [editToolbar.items objectAtIndex:0];

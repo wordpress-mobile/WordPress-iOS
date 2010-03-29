@@ -124,7 +124,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		return YES;
 	}
 
@@ -167,7 +167,7 @@
 	
 	actionSheet.tag = 301;
 	actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		[actionSheet showFromBarButtonItem:spamButton1 animated:YES];
 	} else {
 		[actionSheet showInView:self.view];
@@ -258,7 +258,7 @@
 		replyToCommentViewController.title = @"Comment Reply";
 	
 	
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
 		[delegate.navigationController pushViewController:self.replyToCommentViewController animated:YES];
 	} else {
 		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:replyToCommentViewController] autorelease];
@@ -270,10 +270,10 @@
 
 - (void)dismissEditViewController;
 {
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+	if (DeviceIsPad() == NO) {
         [self.navigationController popViewControllerAnimated:YES];
 	}
-	else if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	else if (DeviceIsPad() == YES) {
 		[self dismissModalViewControllerAnimated:YES];
 	}
 }
@@ -330,7 +330,7 @@
 	editCommentViewController.currentIndex = currentIndex;
 	editCommentViewController.title = @"Edit Comment";
 	
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+	if (DeviceIsPad() == YES) {
 		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:editCommentViewController] autorelease];
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
 		navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;

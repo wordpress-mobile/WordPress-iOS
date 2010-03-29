@@ -9,4 +9,6 @@
 	#import <CoreLocation/CoreLocation.h>
     #import "Constants.h"
     #import "NSString+Util.h"
+	
+	#import "CDeviceSupport.h"
 #endif
