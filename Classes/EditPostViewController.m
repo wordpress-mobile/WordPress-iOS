@@ -410,7 +410,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (IBAction)endTextEnteringButtonAction:(id)sender {
     [textView resignFirstResponder];
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
-		if((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
+//		if((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
 		// private API
 //			[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
 	}
