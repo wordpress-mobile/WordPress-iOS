@@ -2,8 +2,7 @@
 #import "Constants.h"
 
 @class BlogDataManager;
-@class CFirstLaunchViewController;
-@class WordPressSplitViewController;
+@class CFirstLaunchViewController;;
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate> {
 @private
@@ -11,7 +10,7 @@
 
     IBOutlet UIWindow *window;
     IBOutlet UINavigationController *navigationController;
-	IBOutlet WordPressSplitViewController *splitViewController;
+	IBOutlet UISplitViewController *splitViewController;
 	CFirstLaunchViewController *firstLaunchController;
     BOOL connectionStatus;
     BOOL alertRunning;
@@ -22,7 +21,9 @@
 
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) UINavigationController *navigationController;
-@property (nonatomic, retain) IBOutlet WordPressSplitViewController *splitViewController;
+@property (nonatomic, retain) IBOutlet UISplitViewController *splitViewController;
+@property (readonly, nonatomic, retain) UINavigationController *masterNavigationController;
+@property (readonly, nonatomic, retain) UINavigationController *detailNavigationController;
 @property (nonatomic, retain) CFirstLaunchViewController *firstLaunchController;
 @property (nonatomic, getter = isAlertRunning) BOOL alertRunning;
 

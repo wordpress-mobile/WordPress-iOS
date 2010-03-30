@@ -102,6 +102,8 @@ Classes/UIImage+INResizeImageAllocator.h -text
 Classes/UIImage+INResizeImageAllocator.m -text
 Classes/UIViewController+WPAnimation.h -text
 Classes/UIViewController+WPAnimation.m -text
+Classes/UIViewController_iPadExtensions.h -text
+Classes/UIViewController_iPadExtensions.m -text
 Classes/WPAddCategoryViewController.h -text
 Classes/WPAddCategoryViewController.m -text
 Classes/WPAsynchronousImageView.h -text
@@ -137,8 +139,6 @@ Classes/WPXMLReader.h -text
 Classes/WPXMLReader.m -text
 Classes/WordPressAppDelegate.h -text
 Classes/WordPressAppDelegate.m -text
-Classes/WordPressSplitViewController.h -text
-Classes/WordPressSplitViewController.m -text
 Classes/XMLRPC/XMLRPCConnection+Authentication.h -text
 Classes/XMLRPC/XMLRPCConnection+Authentication.m -text
 Classes/XMLRPC/XMLRPCConnection.h -text

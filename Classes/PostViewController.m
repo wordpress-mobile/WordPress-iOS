@@ -15,7 +15,6 @@
 #import "FlippingViewController.h"
 #import "RotatingNavigationController.h"
 #import "CPopoverManager.h"
-#import "WordPressSplitViewController.h"
 #import "BlogViewController.h"
 
 #define TAG_OFFSET 1010
@@ -861,7 +860,7 @@
 		[[BlogDataManager sharedDataManager] loadDraftTitlesForCurrentBlog];
 		[[BlogDataManager sharedDataManager] loadPostTitlesForCurrentBlog];
 		
-		UIViewController *theTopVC = [[WordPressAppDelegate sharedWordPressApp].splitViewController.masterNavigationController topViewController];
+		UIViewController *theTopVC = [[WordPressAppDelegate sharedWordPressApp].masterNavigationController topViewController];
 		if ([theTopVC respondsToSelector:@selector(reselect)])
 			[theTopVC performSelector:@selector(reselect)];
 	}

@@ -5,8 +5,10 @@
 #import "Reachability.h"
 #import "NSString+Helpers.h"
 #import "CFirstLaunchViewController.h"
-#import "WordPressSplitViewController.h"
 #import "BlogViewController.h"
+#import "BlogSplitViewDetailViewController.h"
+#import "CPopoverManager.h"
+#import "UIViewController_iPadExtensions.h"
 
 @interface WordPressAppDelegate (Private)
 
@@ -34,6 +36,13 @@ static WordPressAppDelegate *wordPressApp = NULL;
 - (id)init {
     if (!wordPressApp) {
         wordPressApp = [super init];
+		
+		if (DeviceIsPad())
+			{
+			[UIViewController youWillAutorotateOrYouWillDieMrBond];
+			}
+		
+		
         dataManager = [BlogDataManager sharedDataManager];
     }
 
@@ -60,41 +69,41 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
 	[self checkIfStatsShouldRun];
-	
+
     [[Reachability sharedReachability] setNetworkStatusNotificationsEnabled:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
-	
+
 	[self setAutoRefreshMarkers];
 	[self checkPagesAndCommentsSupported];
 	[self passwordIntoKeychain];
 	[self restoreCurrentBlog];
-	
+
 	if (DeviceIsPad() == NO)
 	{
 		BlogsViewController *blogsViewController = [[BlogsViewController alloc] initWithStyle:UITableViewStylePlain];
 		UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:blogsViewController];
 		self.navigationController = aNavigationController;
-		
+
 		[window addSubview:[navigationController view]];
 		[window makeKeyAndVisible];
 
-		
+
 		if ([self shouldLoadBlogFromUserDefaults]) {
 			[blogsViewController showBlog:NO];
 		}
-		
+
 		if ([dataManager countOfBlogs] == 0) {
 			[blogsViewController showBlogDetailModalViewForNewBlogWithAnimation:NO];
 		}
-		
+
 		[blogsViewController release];
-			
+
 		[self showSplashView];
 	}
 	else
 	{
 	[window addSubview:splitViewController.view];
-	
+
 	if ([dataManager countOfBlogs] == 0)
 		{
 		self.firstLaunchController = [[[CFirstLaunchViewController alloc] initWithNibName:NULL bundle:NULL] autorelease];
@@ -109,7 +118,12 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	else if ([dataManager countOfBlogs] == 1)
 		{
 		[dataManager makeBlogAtIndexCurrent:0];
-		}		
+		}
+
+	NSLog(@"? %d", [self.splitViewController shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationLandscapeLeft]);
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newBlogNotification:) name:@"NewBlogAdded" object:nil];
+	[self performSelector:@selector(showPopoverIfNecessary) withObject:nil afterDelay:0.1];
 	}
 
 }
@@ -117,8 +131,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
 - (void)applicationWillTerminate:(UIApplication *)application {
     [dataManager saveBlogData];
     [self setAppBadge];
-	
-	UIViewController *topVC = self.splitViewController.masterNavigationController.topViewController;
+
+	UIViewController *topVC = self.masterNavigationController.topViewController;
 	if (topVC && [topVC isKindOfClass:[BlogViewController class]]) {
 		[(BlogViewController *)topVC saveState];
 	}
@@ -143,7 +157,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)setAutoRefreshMarkers {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
+
 	[defaults setBool:true forKey:@"refreshCommentsRequired"];
 	[defaults setBool:true forKey:@"refreshPostsRequired"];
 	[defaults setBool:true forKey:@"refreshPagesRequired"];
@@ -157,7 +171,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		[self.navigationController pushViewController:viewController animated:YES];
 	}
 	else if (self.splitViewController) {
-		UINavigationController *navController = self.splitViewController.detailNavigationController;
+		UINavigationController *navController = self.detailNavigationController;
 		// preserve left bar button item: issue #379
 		viewController.navigationItem.leftBarButtonItem = navController.topViewController.navigationItem.leftBarButtonItem;
 		[navController setViewControllers:[NSArray arrayWithObject:viewController] animated:NO];
@@ -221,7 +235,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (BOOL)shouldLoadBlogFromUserDefaults {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
+
     if ([self indexForCurrentBlog] == [defaults integerForKey:kCurrentBlogIndex]) {
         return YES;
     }
@@ -238,8 +252,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
 - (void)storeCurrentBlog {
     NSDictionary *currentBlog = [dataManager currentBlog];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
-    if (currentBlog) {        
+
+    if (currentBlog) {
         [defaults setInteger:[self indexForCurrentBlog] forKey:kCurrentBlogIndex];
     }
     else {
@@ -256,7 +270,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
         if (currentBlogIndex >= 0) {
             [dataManager makeBlogAtIndexCurrent:currentBlogIndex];
         }
-    } 
+    }
     else {
         [dataManager resetCurrentBlog];
     }
@@ -284,9 +298,9 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void) passwordIntoKeychain {
-	//Code for Checking a Blog configured in 1.1 supports Pages & Comments 
+	//Code for Checking a Blog configured in 1.1 supports Pages & Comments
 	//When the iphone WP version upgraded from 1.1 to 1.2
-	
+
 	int i, blogsCount;
 	BlogDataManager *blogDataManager = [BlogDataManager sharedDataManager];
 	blogsCount = [blogDataManager countOfBlogs];
@@ -299,19 +313,19 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		[blogDataManager makeBlogAtIndexCurrent:i];
 		NSDictionary *blog = [blogDataManager blogAtIndex:i];
 	/*	NSString *url = [blog valueForKey:@"url"];
-		
+
 		if(url != nil && [url length] >= 7 && [url hasPrefix:@"http://"]) {
 			url = [url substringFromIndex:7];
 		}
-		
+
 		if(url != nil && [url length]) {
 			url = @"wordpress.com";
 		}
-	*/	
-		
+	*/
+
 		//JOHNB:This code removes pwd from data structure and puts it into keychain
 		//This code fires IF (and ONLY IF) there is a "pwd" key inside the currentBlog
-		
+
 		//if there is a "key" in "blog" that contains "pwd"
 		//copy the value associated (the blog's password) to a string
 		//get the other values needed from "blog" (username, url)
@@ -324,12 +338,12 @@ static WordPressAppDelegate *wordPressApp = NULL;
 			NSString *passwordForKeychain = [blog valueForKey:@"pwd"];
 			NSString *username = [blog valueForKey:@"username"];
 			NSString *urlForKeychain = [blog valueForKey:@"url"];
-			
+
 			//check for nil or an http prefix, remove prefix if exists
 			if(urlForKeychain != nil && [urlForKeychain length] >= 7 && [urlForKeychain hasPrefix:@"http://"]){
 				urlForKeychain = [urlForKeychain substringFromIndex:7];
 			}
-			
+
 			//log the values for debugging
 			//TODO:FIXME:REMOVE THIS CODE!
 			//NSLog(@"passwordForKeychain = %@ username = %@ urlForKeychain = %@", passwordForKeychain, username, urlForKeychain);
@@ -348,14 +362,14 @@ static WordPressAppDelegate *wordPressApp = NULL;
 			//So, I made a public method in BlogDataManager that just calls setCurrentBlog... avoiding the compiler error
 			//it just calls setCurrentBlog and passes the exact same object (blogCopy)
 			//OK - here is the call to the public method
-			
-			//[blogDataManager 
-			
+
+			//[blogDataManager
+
 			[blogDataManager replaceBlogWithBlog:blogCopy atIndex:i];
 			//JOHNB - I think this is unnecessary now that we have replaceBLogWithBlog
-			
+
 			//[blogDataManager callSetCurrentBlog:blogCopy];
-			
+
 			[blogCopy release];
 			//NSLog(@"inside the if... this implies we found pwd inside the blog NSDict");
 		}else {
@@ -365,7 +379,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void) checkIfStatsShouldRun {
-	
+
 	//check if statsDate exists in user defaults, if not, add it and run stats since this is obviously the first time
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	if (![defaults objectForKey:@"statsDate"]){
@@ -374,7 +388,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		//NSLog(@"date %@", theDate);
 		[defaults setObject:theDate forKey:@"statsDate"];
 		[self runStats];
-	}else{ 
+	}else{
 		//if statsDate existed, check if it's 7 days since last stats run, if it is > 7 days, run stats
 		NSDate *statsDate = [defaults objectForKey:@"statsDate"];
 		//NSLog(@"statsDate %@", statsDate);
@@ -388,68 +402,68 @@ static WordPressAppDelegate *wordPressApp = NULL;
 			}
 	}
 }
-		
+
 - (void) runStats{
 	//generate and post the stats data
 	/*
-	 - device_uuid – A unique identifier to the iPhone/iPod that the app is installed on. 
+	 - device_uuid – A unique identifier to the iPhone/iPod that the app is installed on.
 	 - app_version – the version number of the WP iPhone app
 	 - language – language setting for the device. What does that look like? Is it EN or English?
 	 - os_version – the version of the iPhone/iPod OS for the device
 	 - num_blogs – number of blogs configured in the WP iPhone app
-	 
+
 	 NSString *deviceType = [UIDevice currentDevice].model;
 	 if([deviceType isEqualToString:@"iPhone"])
 	 // it's an iPhone
-	 
+
 	 NSString *deviceType = [UIDevice currentDevice].model;
 	 NSLog(@"device string from currentDevice.model %@", deviceType);
-	 
+
 	 */
-	
-		
-		
+
+
+
 	NSString *deviceuuid = [[UIDevice currentDevice] uniqueIdentifier];
-	
+
 	NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
 	NSString *appversion = [info objectForKey:@"CFBundleVersion"];
 	[appversion stringByUrlEncoding];
 
 	NSLocale *locale = [NSLocale currentLocale];
-	
+
 	NSString *language = [locale objectForKey: NSLocaleIdentifier];
 	[language stringByUrlEncoding];
-	
+
 	NSString *osversion = [[UIDevice currentDevice] systemVersion];
 	[osversion stringByUrlEncoding];
-	
+
 	int num_blogs = [[BlogDataManager sharedDataManager] countOfBlogs];
 	NSString *numblogs = [NSString stringWithFormat:@"%d",num_blogs];
 	[numblogs stringByUrlEncoding];
-	
-	
+
+
 	//NSLog(@"UUID %@", deviceuuid);
 	//NSLog(@"app version %@",appversion);
 	//NSLog(@"language %@",language);
 	//NSLog(@"os_version, %@", osversion);
 	//NSLog(@"count of blogs %@",numblogs);
-	
+
 	//handle data coming back
 	[statsData release];
 	statsData = [[NSMutableData alloc] init];
-	
+
 	NSMutableURLRequest *theRequest=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://api.wordpress.org/iphoneapp/update-check/1.0/"]
 															cachePolicy:NSURLRequestUseProtocolCachePolicy
 														timeoutInterval:30.0];
-	
+
 	[theRequest setHTTPMethod:@"POST"];
 	[theRequest addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField: @"Content-Type"];
 	//create the body
 	NSMutableData *postBody = [NSMutableData data];
-						
-	
-	
-	[postBody appendData:[[NSString stringWithFormat:@"device_uuid=%@&app_version=%@&language=%@&os_version=%@&num_blogs=%@", 
+
+
+
+	[postBody appendData:[[NSString stringWithFormat:@"device_uuid=%@&app_version=%@&language=%@&os_version=%@&num_blogs=%@",
 										deviceuuid,
 										 appversion,
 											language,
@@ -458,16 +472,16 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	NSString *htmlStr = [[[NSString alloc] initWithData:postBody encoding:NSUTF8StringEncoding] autorelease];
 	NSLog(@"htmlStr %@", htmlStr);
 	[theRequest setHTTPBody:postBody];
-		
+
 	NSURLConnection *conn=[[[NSURLConnection alloc] initWithRequest:theRequest delegate:self]autorelease];
-	if (conn)   
-	{  
+	if (conn)
+	{
 		//NSLog(@"inside 'if conn' so connection should exist and inside else should not print to log");
-	}   
-	else   
-	{  
+	}
+	else
+	{
 		//NSLog(@"inside else - implies the 'download' could not be made");
-	}  	
+	}
 
 }
 
@@ -498,7 +512,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	//it should parse the "latest version" and the over the air download url and give user some opportunity to upgrade if version numbers don't match...
 	//all of this should get pulled out of WPAppDelegate and into it's own class... http request, check for stats methods, delegate methods for http, and present user with option to upgrade
 	NSString *statsDataString = [[NSString alloc] initWithData:statsData encoding:NSUTF8StringEncoding];
-	
+
 	NSLog(@"should be statsDataString %@", statsDataString);
 	//need to break this up based on the \n
 
@@ -534,6 +548,67 @@ didReceiveAuthenticationChallenge:
 - (void) handleAuthenticationCancelForChallenge: (NSURLAuthenticationChallenge *) aChallenge {
 
 }
+
+#pragma mark Split View
+
+- (UINavigationController *)masterNavigationController
+{
+id theObject = [self.splitViewController.viewControllers objectAtIndex:0];
+NSAssert([theObject isKindOfClass:[UINavigationController class]], @"That is not a nav controller");
+return(theObject);
+}
+
+- (UINavigationController *)detailNavigationController
+{
+id theObject = [self.splitViewController.viewControllers objectAtIndex:1];
+NSAssert([theObject isKindOfClass:[UINavigationController class]], @"That is not a nav controller");
+return(theObject);
+}
+
+// Called when a button should be added to a toolbar for a hidden view controller
+- (void)splitViewController: (UISplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc
+{
+UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
+[barButtonItem setTitle:@"My Blog"];
+[theNavigationItem setLeftBarButtonItem:barButtonItem animated:YES];
+if ([[self.detailNavigationController.viewControllers objectAtIndex:0] isKindOfClass:[BlogSplitViewDetailViewController class]])
+	{
+	[[CPopoverManager instance] setCurrentPopoverController:pc];
+	}
+}
+
+// Called when the view is shown again in the split view, invalidating the button and popover controller
+- (void)splitViewController: (UISplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
+{
+[[[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem] setLeftBarButtonItem:NULL animated:YES];
+
+[[CPopoverManager instance] setCurrentPopoverController:NULL];
+}
+
+// Called when the view controller is shown in a popover so the delegate can take action like hiding other popovers.
+- (void)splitViewController: (UISplitViewController*)svc popoverController: (UIPopoverController*)pc willPresentViewController:(UIViewController *)aViewController
+{
+}
+
+- (void)showPopoverIfNecessary;
+{
+if (UIInterfaceOrientationIsPortrait(self.masterNavigationController.interfaceOrientation))
+	{
+	UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
+	[[[CPopoverManager instance] currentPopoverController] presentPopoverFromBarButtonItem:theNavigationItem.leftBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	}
+}
+
+- (void)newBlogNotification:(NSNotification *)aNotification;
+{
+if (UIInterfaceOrientationIsPortrait(self.masterNavigationController.interfaceOrientation))
+	{
+	UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
+	[[[CPopoverManager instance] currentPopoverController] presentPopoverFromBarButtonItem:theNavigationItem.leftBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	}
+}
+
+
 
 
 @end
