@@ -24,13 +24,14 @@ else
 	method_exchangeImplementations(theOriginalMethod, theNewMethod);
 }
 
+#pragma mark -
 
 @implementation UIViewController (UIViewController_iPadExteions)
 
 + (void)youWillAutorotateOrYouWillDieMrBond
 {
 NSLog(@"youWillAutorotateOrYouWillDieMrBond");
-Swizzle(self, @selector(shouldAutorotateToInterfaceOrientation:), @selector(MyShouldAutorotateToInterfaceOrientation:), NULL);
+Swizzle([UIViewController class], @selector(shouldAutorotateToInterfaceOrientation:), @selector(MyShouldAutorotateToInterfaceOrientation:), NULL);
 }
 
 - (BOOL)MyShouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
