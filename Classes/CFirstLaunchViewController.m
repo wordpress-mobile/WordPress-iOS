@@ -26,6 +26,10 @@
 [super viewDidLoad];
 //
 self.title = @"WordPress";
+if ([[BlogDataManager sharedDataManager] countOfBlogs] > 0)
+	{
+	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(actionCancel:)] autorelease];
+	}
 }
 
 - (void)viewDidUnload
@@ -65,6 +69,11 @@ EditBlogViewController *blogDetailViewController = [[[EditBlogViewController all
 CNewBlogSignupViewController *theSignupViewController = [[[CNewBlogSignupViewController alloc] initWithNibName:NULL bundle:NULL] autorelease];
 [self.navigationController pushViewController:theSignupViewController animated:YES];
 
+}
+
+- (IBAction)actionCancel:(id)sender;
+{
+[self dismissModalViewControllerAnimated:YES];
 }
 
 @end
