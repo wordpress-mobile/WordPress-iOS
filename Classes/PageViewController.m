@@ -590,7 +590,7 @@
 {
 	photosListController.contentSizeForViewInPopover = photosListController.contentSizeForViewInPopover;
 	UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:photosListController] autorelease];
-	UIPopoverController *popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
+	UIPopoverController *popover = [[[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:navController] autorelease];
 	[popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 	[[CPopoverManager instance] setCurrentPopoverController:popover];
 }
@@ -612,7 +612,7 @@
 - (void)displayPhotoListImagePicker:(UIImagePickerController *)picker;
 {
 	if (!photoPickerPopover) {
-		photoPickerPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
+		photoPickerPopover = [[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:picker];
 	}
 	picker.contentSizeForViewInPopover = photosListController.contentSizeForViewInPopover;
 	photoPickerPopover.contentViewController = picker;

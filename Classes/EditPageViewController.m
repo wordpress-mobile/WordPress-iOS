@@ -602,7 +602,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:selectionTableViewController] autorelease];
 		selectionTableViewController.contentSizeForViewInPopover = CGSizeMake(320, 152);
 		selectionTableViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(popoverDoneAction:)];
-		UIPopoverController *pc = [[UIPopoverController alloc] initWithContentViewController:navController];
+		UIPopoverController *pc = [[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:navController];
 		CGRect rect = statusTextField.frame;
 		rect.size.width = MIN(rect.size.width, 100);
 		[pc presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];

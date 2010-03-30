@@ -177,7 +177,7 @@ theBlogsViewController.contentSizeForViewInPopover = CGSizeMake(320, 44 * [[Blog
 
 UINavigationController *theNavigationController = [[UINavigationController alloc] initWithRootViewController:theBlogsViewController];
 
-UIPopoverController *theBlogMenuPopoverController = [[UIPopoverController alloc] initWithContentViewController:theNavigationController];
+UIPopoverController *theBlogMenuPopoverController = [[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:theNavigationController];
 
 [theBlogMenuPopoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 

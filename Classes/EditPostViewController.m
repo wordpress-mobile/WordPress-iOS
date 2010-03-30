@@ -265,7 +265,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if (isNewCategory != YES) {
 		if (DeviceIsPad() == YES) {
 			UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:segmentedTableViewController] autorelease];
-			UIPopoverController *popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
+			UIPopoverController *popover = [[[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:navController] autorelease];
 			CGRect popoverRect = [self.view convertRect:[categoriesTextField frame] fromView:[categoriesTextField superview]];
 			popoverRect.size.width = MIN(popoverRect.size.width, 100); // the text field is actually really big
 			[popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
@@ -306,7 +306,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     selectionTableViewController.navigationItem.rightBarButtonItem = nil;
 	if (DeviceIsPad() == YES) {
 		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:selectionTableViewController] autorelease];
-		UIPopoverController *popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
+		UIPopoverController *popover = [[[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:navController] autorelease];
 		CGRect popoverRect = [self.view convertRect:[statusTextField frame] fromView:[statusTextField superview]];
 		popoverRect.size.width = MIN(popoverRect.size.width, 100);
 		[popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
@@ -1167,7 +1167,7 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	locationView.initialLocation = locationController.locationManager.location;
 	if (DeviceIsPad() == YES) {
 		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:locationView] autorelease];
-		UIPopoverController *popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
+		UIPopoverController *popover = [[[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:navController] autorelease];
 		if ([sender isKindOfClass:[UIBarButtonItem class]])
 			[popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		else
