@@ -120,15 +120,18 @@
 	
 	EditBlogViewController *blogDetailViewController = [[[EditBlogViewController alloc] initWithNibName:@"EditBlogViewController" bundle:nil] autorelease];
 	UINavigationController *modalNavigationController = [[UINavigationController alloc] initWithRootViewController:blogDetailViewController];
-	if (DeviceIsPad() == YES) {
+	if (DeviceIsPad() == YES)
+		{
 		modalNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		modalNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+		[[CPopoverManager instance] setCurrentPopoverController:NULL];
+		[[WordPressAppDelegate sharedWordPressApp].splitViewController presentModalViewController:modalNavigationController animated:animate];
+		}
+	else
+		{
+		[[WordPressAppDelegate sharedWordPressApp].navigationController presentModalViewController:modalNavigationController animated:animate];
 		}
 
-	[[CPopoverManager instance] setCurrentPopoverController:NULL];
-	
-
-	[[WordPressAppDelegate sharedWordPressApp].splitViewController presentModalViewController:modalNavigationController animated:animate];
 
 	[modalNavigationController release];
 }
