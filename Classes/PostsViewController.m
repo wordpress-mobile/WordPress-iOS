@@ -255,6 +255,9 @@
     dataManager.isLocaDraftsCurrent = (indexPath.section == LOCAL_DRAFTS_SECTION);
 
     if (indexPath.section == LOCAL_DRAFTS_SECTION) {
+		if ([dataManager numberOfDrafts] <= indexPath.row)
+			return;
+		
         id currentDraft = [dataManager draftTitleAtIndex:indexPath.row];
 
         // Bail out if we're in the middle of saving the draft.
