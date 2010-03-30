@@ -131,10 +131,12 @@ static WordPressAppDelegate *wordPressApp = NULL;
 - (void)applicationWillTerminate:(UIApplication *)application {
     [dataManager saveBlogData];
     [self setAppBadge];
-
-	UIViewController *topVC = self.masterNavigationController.topViewController;
-	if (topVC && [topVC isKindOfClass:[BlogViewController class]]) {
-		[(BlogViewController *)topVC saveState];
+	
+	if (DeviceIsPad()) {
+		UIViewController *topVC = self.masterNavigationController.topViewController;
+		if (topVC && [topVC isKindOfClass:[BlogViewController class]]) {
+			[(BlogViewController *)topVC saveState];
+		}
 	}
 }
 
