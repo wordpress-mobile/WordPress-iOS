@@ -592,10 +592,11 @@ if ([[self.detailNavigationController.viewControllers objectAtIndex:0] isKindOfC
 
 - (void)showPopoverIfNecessary;
 {
-if (UIInterfaceOrientationIsPortrait(self.masterNavigationController.interfaceOrientation))
+if (UIInterfaceOrientationIsPortrait(self.masterNavigationController.interfaceOrientation) && !self.splitViewController.modalViewController)
 	{
 	UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
 	[[[CPopoverManager instance] currentPopoverController] presentPopoverFromBarButtonItem:theNavigationItem.leftBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	[[[CPopoverManager instance] currentPopoverController] dismissPopoverAnimated:NO];
 	}
 }
 
