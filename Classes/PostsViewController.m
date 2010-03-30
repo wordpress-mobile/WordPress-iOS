@@ -493,7 +493,7 @@
 		}
 	}
 	else {
-		[delegate showContentDetailViewController:self.postDetailEditController];
+		[delegate showContentDetailViewController:self.postDetailViewController];
 	}
 }
 

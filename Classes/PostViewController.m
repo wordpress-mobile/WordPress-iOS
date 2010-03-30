@@ -317,7 +317,7 @@
 
     [self updatePhotosBadge];
 	
-	if (mode == autorecoverPost) {
+	if (mode == autorecoverPost && DeviceIsPad()) {
 		[self editAction:self];
 	}
 }
