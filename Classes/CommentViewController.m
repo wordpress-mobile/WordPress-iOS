@@ -136,6 +136,7 @@
 //    }
 	NSLog(@"inside CommentViewController's should autorotate");
 	return NO;
+	
 }
 
 #pragma mark -
@@ -252,7 +253,7 @@
 - (void)cancelView:(id)sender {
 	
 	if (!replyToCommentViewController.hasChanges && !editCommentViewController.hasChanges) {
-        [self.navigationController popViewControllerAnimated:YES];
+		[self.navigationController popViewControllerAnimated:YES];
 		//replyToCommentViewController.hasChanges = NO;
         return;
     }//else if (!editCommentViewController.hasChanges) {

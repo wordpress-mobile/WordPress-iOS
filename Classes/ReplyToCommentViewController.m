@@ -139,10 +139,8 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 - (void)dealloc {
 	[saveButton release];
 	[doneButton release];
-	[cancelButton release];
 	[comment release];
 	[commentDetails release];
-	[saveButton release];
 	[textViewText release];
 	[leftView release];
     [super dealloc];
@@ -189,10 +187,10 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 - (void)endTextEnteringButtonAction:(id)sender {
 	
     [textView resignFirstResponder];
-	UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
-	if(UIInterfaceOrientationIsLandscape(interfaceOrientation)){
-		[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
-	}
+	//UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
+	//if(UIInterfaceOrientationIsLandscape(interfaceOrientation)){
+		//[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+	//}
 	
 	
 }

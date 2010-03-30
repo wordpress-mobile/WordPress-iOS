@@ -138,7 +138,11 @@
 //	NSLog(@"inside commentsviewcontroller's should autorotate");
 //        return YES;
 //    }
-	return NO;
+	//return NO;
+	if(interfaceOrientation == UIInterfaceOrientationPortrait)
+		return YES;
+	
+	return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 #pragma mark -
