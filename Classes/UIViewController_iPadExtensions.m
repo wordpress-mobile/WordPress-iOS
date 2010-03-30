@@ -26,12 +26,12 @@ else
 
 #pragma mark -
 
-@implementation UIViewController (UIViewController_iPadExteions)
+@implementation UIViewController (UIViewController_iPadExtensions)
 
 + (void)youWillAutorotateOrYouWillDieMrBond
 {
 NSLog(@"youWillAutorotateOrYouWillDieMrBond");
-Swizzle([UIViewController class], @selector(shouldAutorotateToInterfaceOrientation:), @selector(MyShouldAutorotateToInterfaceOrientation:), NULL);
+Swizzle([NSClassFromString(@"UISplitViewController") class], @selector(shouldAutorotateToInterfaceOrientation:), @selector(MyShouldAutorotateToInterfaceOrientation:), NULL);
 }
 
 - (BOOL)MyShouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
