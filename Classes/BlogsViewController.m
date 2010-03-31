@@ -197,8 +197,8 @@
 }
 
 - (void)tableView:(UITableView *)atableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (DeviceIsPad() == YES)
-		[[CPopoverManager instance] setCurrentPopoverController:NULL];
+//	if (DeviceIsPad() == YES)
+//		[[CPopoverManager instance] setCurrentPopoverController:NULL];
 
     BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 
