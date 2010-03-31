@@ -4,6 +4,8 @@
 #import "WPSegmentedSelectionTableViewController.h"
 #import "WPNavigationLeftButtonView.h"
 
+#import "CPopoverManager.h"
+
 NSTimeInterval kAnimationDuration = 0.3f;
 
 @interface EditPostViewController (privates)
@@ -17,7 +19,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 @synthesize postDetailViewController, selectionTableViewController, segmentedTableViewController, leftView, customFieldsTableView;
 @synthesize infoText, urlField, bookMarksArray, selectedLinkRange, currentEditingTextField, isEditing, initialLocation;
-@synthesize customFieldsEditButton, editCustomFields, isCustomFieldsEnabledForThisPost, locationButton, locationSpinner;
+@synthesize customFieldsEditButton, editingDisabled, editCustomFields, isCustomFieldsEnabledForThisPost, locationButton, locationSpinner;
 
 #pragma mark -
 #pragma mark View Lifecycle Methods
@@ -27,7 +29,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
     //customFieldsEditButton.hidden = YES;
     //customFieldsEditButton.enabled = NO;
-    
+	
     titleTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
     tagsTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
     categoriesTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
@@ -37,26 +39,47 @@ NSTimeInterval kAnimationDuration = 0.3f;
     statusLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
     titleLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
     tagsLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
-    
+	
     titleTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     tagsTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     [contentView bringSubviewToFront:textView];
-    
+	
     if (!leftView) {
         leftView = [WPNavigationLeftButtonView createCopyOfView];
         [leftView setTitle:@"Posts"];
     }
-    
+	
     [leftView setTitle:@"Posts"];
     [leftView setTarget:self withAction:@selector(cancelView:)];
-    
+	
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newCategoryCreatedNotificationReceived:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
-    
+	
     //JOHNB TODO: Add a check here for the presence of custom fields in the data model
     // if there are, set isCustomFieldsEnabledForThisPost BOOL to true
     isCustomFieldsEnabledForThisPost = [self checkCustomFieldsMinusMetadata];
     //call a helper to set originY for textViewContentView
     [self postionTextViewContentView];
+	
+	if (editingDisabled) {
+		titleTextField.enabled = NO;
+		titleTextField.textColor = [UIColor grayColor];
+		
+		tagsTextField.enabled = NO;
+		tagsTextField.textColor = [UIColor grayColor];
+		
+		categoriesTextField.enabled = NO;
+		categoriesTextField.textColor = [UIColor grayColor];
+		
+		statusTextField.enabled = NO;
+		statusTextField.textColor = [UIColor grayColor];
+		
+		textView.editable = NO;
+	}
+	
+	if (DeviceIsPad() == YES) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -66,14 +89,14 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	//NSLog(@"%@", [[BlogDataManager sharedDataManager] currentPost]);
 	//NSLog(@"inside PostDetailEditController:viewWillAppear, hasChanges equals:: %@", self.postDetailViewController.hasChanges);
 	//NSLog(@"BOOL = %d", (int)self.postDetailViewController.hasChanges);
-	//NSLog(@"hasChanges = %@\n", (self.postDetailViewController.hasChanges ? @"YES" : @"NO")); 
+	//NSLog(@"hasChanges = %@\n", (self.postDetailViewController.hasChanges ? @"YES" : @"NO"));
     //isCustomFieldsEnabledForThisPost = [self checkCustomFieldsMinusMetadata];
-    isCustomFieldsEnabledForThisPost = YES;
+    isCustomFieldsEnabledForThisPost = NO;
 	
     if (isCustomFieldsEnabledForThisPost) {
         customFieldsEditButton.hidden = NO;
         tableViewForSelectingCustomFields.hidden = NO;
-        
+		
         customFieldsEditButton.enabled = YES;
     } else {
         customFieldsEditButton.hidden = YES;
@@ -102,9 +125,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			if(postLocation != nil)
 			{
 				// If our location has changed from its initial value, show the Save button
-				if((initialLocation.coordinate.latitude != postLocation.coordinate.latitude) || 
+				if((initialLocation.coordinate.latitude != postLocation.coordinate.latitude) ||
 				   (initialLocation.coordinate.longitude != postLocation.coordinate.longitude))
-					postDetailViewController.hasChanges = YES;	
+					postDetailViewController.hasChanges = YES;
 			}
 		}
 		else
@@ -120,13 +143,33 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[locationButton setNeedsLayout];
 		[locationButton setNeedsDisplay];
 	}
-    
+	
     [self postionTextViewContentView];
     [self refreshUIForCurrentPost];
 }
 
+- (void)viewDidAppear:(BOOL)animated;
+{
+	if (titleTextField.text.length < 1 && titleTextField.enabled) {
+		[titleTextField becomeFirstResponder];
+	}
+	else if (textView.editable) {
+		[textView becomeFirstResponder];
+	}
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
 	[self dismissModalViewControllerAnimated:YES];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
+{
+	return YES;
+}
+
+- (void)disableInteraction;
+{
+	editingDisabled = YES;
 }
 
 #pragma mark -
@@ -172,7 +215,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			// To Do: when we show more tag label dynamically, we need to add label (if any) of more tag in the Character set string .
 			//NSRange moretagRange = [description rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"<!--more-->"] options:NSForcedOrderingSearch];
             textView.text = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", description, moreText];
-		}	
+		}
 		else
             textView.text = description;
     }
@@ -187,8 +230,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
     NSArray *cats = [[dm currentPost] valueForKey:@"categories"];
 	
     if (status)
-        categoriesTextField.text = [cats componentsJoinedByString:@", "];else
-			categoriesTextField.text = @"";
+        categoriesTextField.text = [cats componentsJoinedByString:@", "];
+	else
+        categoriesTextField.text = @"";
+	
+	// workaround for odd text view behavior on iPad
+	[textView setContentOffset:CGPointZero animated:NO];
 	
 	// Set our initial location so we can determine if the geotag has been updated later
 	initialLocation = [self getPostLocation];
@@ -216,7 +263,16 @@ NSTimeInterval kAnimationDuration = 0.3f;
     segmentedTableViewController.navigationItem.rightBarButtonItem = newCategoryBarButtonItem;
 	
     if (isNewCategory != YES) {
-        [postDetailViewController.navigationController pushViewController:segmentedTableViewController animated:YES];
+		if (DeviceIsPad() == YES) {
+			UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:segmentedTableViewController] autorelease];
+			UIPopoverController *popover = [[[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:navController] autorelease];
+			CGRect popoverRect = [self.view convertRect:[categoriesTextField frame] fromView:[categoriesTextField superview]];
+			popoverRect.size.width = MIN(popoverRect.size.width, 100); // the text field is actually really big
+			[popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+			[[CPopoverManager instance] setCurrentPopoverController:popover];
+		} else {
+			[postDetailViewController.navigationController pushViewController:segmentedTableViewController animated:YES];
+		}
     }
 	
     isNewCategory = NO;
@@ -248,9 +304,17 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
     selectionTableViewController.title = @"Status";
     selectionTableViewController.navigationItem.rightBarButtonItem = nil;
-    [postDetailViewController.navigationController pushViewController:selectionTableViewController animated:YES];
-    [selectionTableViewController release];
-    selectionTableViewController = nil;
+	if (DeviceIsPad() == YES) {
+		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:selectionTableViewController] autorelease];
+		UIPopoverController *popover = [[[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:navController] autorelease];
+		CGRect popoverRect = [self.view convertRect:[statusTextField frame] fromView:[statusTextField superview]];
+		popoverRect.size.width = MIN(popoverRect.size.width, 100);
+		[popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		[[CPopoverManager instance] setCurrentPopoverController:popover];
+	} else {
+		[postDetailViewController.navigationController pushViewController:selectionTableViewController animated:YES];
+	}
+    [selectionTableViewController release], selectionTableViewController = nil;
 }
 
 - (void)populateCustomFieldsTableViewControllerWithCustomFields {
@@ -298,12 +362,17 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
 }
 
-- (IBAction)showAddNewCategoryView:(id)sender {
-	
+- (IBAction)showAddNewCategoryView:(id)sender
+{
     WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithNibName:@"WPAddCategoryViewController" bundle:nil];
-    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:addCategoryViewController];
-    [segmentedTableViewController presentModalViewController:nc animated:YES];
-    [nc release];
+	if (DeviceIsPad() == YES) {
+		UIPopoverController *popover = [[CPopoverManager instance] currentPopoverController];
+		[(UINavigationController *)(popover.contentViewController) pushViewController:addCategoryViewController animated:YES];
+	} else {
+		UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:addCategoryViewController];
+		[segmentedTableViewController presentModalViewController:nc animated:YES];
+		[nc release];
+	}
     [addCategoryViewController release];
 }
 
@@ -340,8 +409,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (IBAction)endTextEnteringButtonAction:(id)sender {
     [textView resignFirstResponder];
-	if((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
-		[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+	if (DeviceIsPad() == NO) {
+		//		if((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
+		//			[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+	}
 }
 
 - (IBAction)showCategoriesViewAction:(id)sender {
@@ -360,62 +431,66 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)bringTextViewUp {
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:kAnimationDuration];
-	
-	/*   This is for custom fields - IF we keep current UI... out for now until 1.5
-	 if (isCustomFieldsEnabledForThisPost) {
-	 CGRect frame = textViewContentView.frame;
-	 frame.origin.y -= 220.0f; //was 164, 214 is new value to accomodate custom fields "cell + other objects" in IB
-	 textViewContentView.frame = frame;
-	 
-	 frame = subView.frame;
-	 frame.origin.y -= 220.0f; //was 164
-	 subView.frame = frame;
-	 } else {
-	 */
-	CGRect frame = textViewContentView.frame;
-	frame.origin.y -= 170.0f;
-	textViewContentView.frame = frame;
-	
-	frame = subView.frame;
-	frame.origin.y -= 175.0f;
-	//frame.origin.y -= 175.0f;
-	subView.frame = frame;
-	
-	// remove "//" for custom fields }
-	
-    [UIView commitAnimations];
-    //[self.view setNeedsDisplay];
+	if (DeviceIsPad() == NO) {
+		[UIView beginAnimations:nil context:NULL];
+		[UIView setAnimationDuration:kAnimationDuration];
+		
+		/*   This is for custom fields - IF we keep current UI... out for now until 1.5
+		 if (isCustomFieldsEnabledForThisPost) {
+		 CGRect frame = textViewContentView.frame;
+		 frame.origin.y -= 220.0f; //was 164, 214 is new value to accomodate custom fields "cell + other objects" in IB
+		 textViewContentView.frame = frame;
+		 
+		 frame = subView.frame;
+		 frame.origin.y -= 220.0f; //was 164
+		 subView.frame = frame;
+		 } else {
+		 */
+		CGRect frame = textViewContentView.frame;
+		frame.origin.y -= 170.0f;
+		textViewContentView.frame = frame;
+		
+		frame = subView.frame;
+		frame.origin.y -= 170.0f;
+		//frame.origin.y -= 175.0f;
+		subView.frame = frame;
+		
+		// remove "//" for custom fields }
+		
+		[UIView commitAnimations];
+		//[self.view setNeedsDisplay];
+	}
 }
 
 - (void)bringTextViewDown {
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.2];
-    subView.hidden = NO;
-	
-	/*   This is for custom fields - IF we keep current UI... out for now until 1.5
-	 if (isCustomFieldsEnabledForThisPost) {
-	 CGRect frame = textViewContentView.frame;
-	 frame.origin.y += 220.0f; //was 164
-	 textViewContentView.frame = frame;
-	 
-	 frame = subView.frame;
-	 frame.origin.y += 220.0f; //was 164
-	 subView.frame = frame;
-	 } else {
-	 */
-	CGRect frame = textViewContentView.frame;
-	frame.origin.y += 170.0f;
-	textViewContentView.frame = frame;
-	
-	frame = subView.frame;
-	frame.origin.y = 0.0f;
-	subView.frame = frame;
-	
-	// remove "//" for custom fields }
-	
-    [UIView commitAnimations];
+	if (DeviceIsPad() == NO) {
+		[UIView beginAnimations:nil context:NULL];
+		[UIView setAnimationDuration:0.2];
+		subView.hidden = NO;
+		
+		/*   This is for custom fields - IF we keep current UI... out for now until 1.5
+		 if (isCustomFieldsEnabledForThisPost) {
+		 CGRect frame = textViewContentView.frame;
+		 frame.origin.y += 220.0f; //was 164
+		 textViewContentView.frame = frame;
+		 
+		 frame = subView.frame;
+		 frame.origin.y += 220.0f; //was 164
+		 subView.frame = frame;
+		 } else {
+		 */
+		CGRect frame = textViewContentView.frame;
+		frame.origin.y += 170.0f;
+		textViewContentView.frame = frame;
+		
+		frame = subView.frame;
+		frame.origin.y = 0.0f;
+		subView.frame = frame;
+		
+		// remove "//" for custom fields }
+		
+		[UIView commitAnimations];
+	}
 }
 
 - (void)updateTextViewPlacehoderFieldStatus {
@@ -474,7 +549,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [infoText becomeFirstResponder];
 	
 	//deal with rotation
-	if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft) 
+	if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
 		|| (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight))
 	{
 		CGAffineTransform upTransform = CGAffineTransformMakeTranslation(0.0, 80.0);
@@ -533,24 +608,25 @@ NSTimeInterval kAnimationDuration = 0.3f;
     return;
 }
 
-
 #pragma mark TextView & TextField Delegates
 - (void)textViewDidChangeSelection:(UITextView *)aTextView {
     if (!isTextViewEditing) {
         isTextViewEditing = YES;
 		
-        if ((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-            [self setTextViewHeight:116];
-        }
-		
         [self updateTextViewPlacehoderFieldStatus];
 		
-        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
-																	  target:self action:@selector(endTextEnteringButtonAction:)];
-		
-        postDetailViewController.navigationItem.leftBarButtonItem = doneButton;
-        [doneButton release];
-        [self bringTextViewUp];
+		if (DeviceIsPad() == NO) {
+			if ((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+				[self setTextViewHeight:116];
+			}
+			
+			[self bringTextViewUp];
+			
+			UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
+																		  target:self action:@selector(endTextEnteringButtonAction:)];
+			[postDetailViewController setLeftBarButtonItemForEditPost:doneButton];
+			[doneButton release];
+		}
     }
 }
 
@@ -558,12 +634,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
     isEditing = YES;
 	
-	if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
-		|| (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
-        [self setTextViewHeight:116];
-		
-		
-    }
+	if (DeviceIsPad() == NO) {
+		if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
+			|| (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
+			[self setTextViewHeight:116];
+		}
+	}
 	
     dismiss = NO;
 	
@@ -572,12 +648,14 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		
         [self updateTextViewPlacehoderFieldStatus];
 		
-        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
-																	  target:self action:@selector(endTextEnteringButtonAction:)];
-        postDetailViewController.navigationItem.leftBarButtonItem = doneButton;
-        [doneButton release];
-		
-        [self bringTextViewUp];
+ 		if (DeviceIsPad() == NO) {
+			[self bringTextViewUp];
+			
+			UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
+																		  target:self action:@selector(endTextEnteringButtonAction:)];
+			[postDetailViewController setLeftBarButtonItemForEditPost:doneButton];
+			[doneButton release];
+		}
     }
 }
 
@@ -616,7 +694,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		
         // leave cursor at end of inserted text
         endRange.location += text.length + replaceCount * 1; // length diff of "&nbsp" and "&#160;" is 1 character
-        aTextView.selectedRange = endRange; 
 		
         [updatedText release];
 		
@@ -662,18 +739,18 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		
 		NSString *subStr = [str substringWithRange:subStrRange];
 		
-        for (i = 0; i < count; i++) {
-            NSString *searchString = [stringArray objectAtIndex:i];
+		for (i = 0; i < count; i++) {
+			NSString *searchString = [stringArray objectAtIndex:i];
 			
-            if (searchRes = [subStr isEqualToString:[searchString capitalizedString]])
-                break;else if (searchRes = [subStr isEqualToString:[searchString lowercaseString]])
+			if (searchRes = [subStr isEqualToString:[searchString capitalizedString]])
+				break;else if (searchRes = [subStr isEqualToString:[searchString lowercaseString]])
 					break;else if (searchRes = [subStr isEqualToString:[searchString uppercaseString]])
 						break;
-        }
+		}
 		
-        if (searchRes)
-            break;
-    }
+		if (searchRes)
+			break;
+	}
 	
     if (searchRes && dismiss != YES) {
         [textView resignFirstResponder];
@@ -687,10 +764,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)aTextView {
-    if ((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-        [self setTextViewHeight:57];
+	if (DeviceIsPad() == NO) {
+		if ((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+			[self setTextViewHeight:57];
+		}
 	}
-	
 	
     isEditing = NO;
     dismiss = NO;
@@ -698,21 +776,43 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if (isTextViewEditing) {
         isTextViewEditing = NO;
 		
-        [self bringTextViewDown];
-		
-        if (postDetailViewController.hasChanges == YES) {
-            [leftView setTitle:@"Cancel"];
-        } else {
-            [leftView setTitle:@"Posts"];
-        }
-		
-        UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:leftView];
-        postDetailViewController.navigationItem.leftBarButtonItem = barItem;
-        [barItem release];
-        [self updateTextViewPlacehoderFieldStatus];
+		[self updateTextViewPlacehoderFieldStatus];
         NSString *text = aTextView.text;
         [[[BlogDataManager sharedDataManager] currentPost] setObject:text forKey:@"description"];
+		
+		if (DeviceIsPad() == NO) {
+			[self bringTextViewDown];
+			
+			if (postDetailViewController.hasChanges == YES) {
+				[leftView setTitle:@"Cancel"];
+			} else {
+				[leftView setTitle:@"Posts"];
+			}
+			UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:leftView];
+			[postDetailViewController setLeftBarButtonItemForEditPost:barItem];
+			[barItem release];
+		}
     }
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField;
+{
+	if (DeviceIsPad() == YES) {
+		if (textField == categoriesTextField) {
+			[self populateSelectionsControllerWithCategories];
+			return NO;
+		}
+		else if (textField == statusTextField) {
+			[self populateSelectionsControllerWithStatuses];
+			return NO;
+		}
+	}
+	return YES;
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+	return YES;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
@@ -728,8 +828,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
     self.currentEditingTextField = nil;
 	
     if (textField == titleTextField)
-        [[BlogDataManager sharedDataManager].currentPost setValue:textField.text forKey:@"title"];else if (textField == tagsTextField)
-			[[BlogDataManager sharedDataManager].currentPost setValue:tagsTextField.text forKey:@"mt_keywords"];
+        [[BlogDataManager sharedDataManager].currentPost setValue:textField.text forKey:@"title"];
+	else if (textField == tagsTextField)
+        [[BlogDataManager sharedDataManager].currentPost setValue:tagsTextField.text forKey:@"mt_keywords"];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -1020,15 +1121,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (BOOL)isPostGeotagged {
 	if([self getPostLocation] != nil)
-	{
-		NSLog(@"Post is geotagged.");
 		return YES;
-	}
 	else
-	{
-		NSLog(@"Post is not geotagged.");
 		return NO;
-	}
 }
 
 - (IBAction)showLocationMapView:(id)sender {
@@ -1076,6 +1171,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
     [infoText release];
     [urlField release];
     [leftView release];
