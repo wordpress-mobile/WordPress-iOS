@@ -248,7 +248,7 @@
 - (void)showReplyToCommentViewWithAnimation:(BOOL)animate {
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	
-		replyToCommentViewController = [[[ReplyToCommentViewController alloc] 
+		self.replyToCommentViewController = [[[ReplyToCommentViewController alloc] 
 										 initWithNibName:@"ReplyToCommentViewController" 
 										 bundle:nil]autorelease];
 		replyToCommentViewController.commentViewController = self;
@@ -321,7 +321,7 @@
 - (void)showEditCommentViewWithAnimation:(BOOL)animate {
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	
-	editCommentViewController = [[[EditCommentViewController alloc] 
+	self.editCommentViewController = [[[EditCommentViewController alloc] 
 									 initWithNibName:@"EditCommentViewController" 
 									 bundle:nil]autorelease];
 	editCommentViewController.commentViewController = self;

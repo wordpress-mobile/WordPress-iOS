@@ -108,11 +108,6 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	
 	[textView becomeFirstResponder];
 	[self testStringAccess];
-	
-
-	
-	
-	
 }
 
 -(void) viewWillDisappear: (BOOL) animated{
