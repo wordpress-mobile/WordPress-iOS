@@ -35,7 +35,7 @@
 
 
 @property (nonatomic, copy) NSMutableArray *commentDetails;
-@property (nonatomic, copy) NSMutableDictionary *comment;
+@property (nonatomic, retain) NSMutableDictionary *comment;
 @property (nonatomic, retain) UIBarButtonItem *saveButton;
 @property (nonatomic, retain) UIBarButtonItem *doneButton;
 @property (nonatomic, retain) UIBarButtonItem *cancelButton;

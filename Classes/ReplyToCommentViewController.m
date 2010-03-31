@@ -55,7 +55,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	[super viewDidLoad];
 	//foo = [[NSString alloc] initWithString: textView.text];
 	
-	comment = [[NSMutableDictionary alloc] init];
+	self.comment = [NSMutableDictionary dictionary];
 	
 	if (!saveButton) {
 	saveButton = [[UIBarButtonItem alloc] 
@@ -95,7 +95,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
     [cancelButton release];
 	cancelButton = nil;
 	
-	comment = [commentDetails objectAtIndex:currentIndex];
+	self.comment = [commentDetails objectAtIndex:currentIndex];
 	if ([[comment valueForKey:@"status"] isEqualToString:@"hold"]) {
 		NSLog(@"inside if of vwappear");
 		label.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
@@ -349,7 +349,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 
     progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Saving Reply..."];
     [progressAlert show];
-	comment = [commentDetails objectAtIndex:currentIndex];
+	self.comment = [commentDetails objectAtIndex:currentIndex];
 	[comment setValue:textView.text forKey:@"content"];	
     [self performSelectorInBackground:@selector(saveReplyBackgroundMethod:) withObject:nil];
 }
