@@ -91,7 +91,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	//NSLog(@"BOOL = %d", (int)self.postDetailViewController.hasChanges);
 	//NSLog(@"hasChanges = %@\n", (self.postDetailViewController.hasChanges ? @"YES" : @"NO"));
     //isCustomFieldsEnabledForThisPost = [self checkCustomFieldsMinusMetadata];
-    isCustomFieldsEnabledForThisPost = YES;
+    isCustomFieldsEnabledForThisPost = NO;
 
     if (isCustomFieldsEnabledForThisPost) {
         customFieldsEditButton.hidden = NO;
@@ -736,21 +736,21 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		 subStrRange.location = range.location - j;
         subStrRange.length = j;
         [self setSelectedLinkRange:subStrRange];
-
-       NSString *subStr = [str substringWithRange:subStrRange];
-
-        for (i = 0; i < count; i++) {
-            NSString *searchString = [stringArray objectAtIndex:i];
-
-            if (searchRes = [subStr isEqualToString:[searchString capitalizedString]])
-                break;else if (searchRes = [subStr isEqualToString:[searchString lowercaseString]])
-                break;else if (searchRes = [subStr isEqualToString:[searchString uppercaseString]])
-                break;
-        }
-
-        if (searchRes)
-            break;
-    }
+		
+		NSString *subStr = [str substringWithRange:subStrRange];
+		
+		for (i = 0; i < count; i++) {
+			NSString *searchString = [stringArray objectAtIndex:i];
+			
+			if (searchRes = [subStr isEqualToString:[searchString capitalizedString]])
+				break;else if (searchRes = [subStr isEqualToString:[searchString lowercaseString]])
+					break;else if (searchRes = [subStr isEqualToString:[searchString uppercaseString]])
+						break;
+		}
+		
+		if (searchRes)
+			break;
+	}
 
     if (searchRes && dismiss != YES) {
         [textView resignFirstResponder];
