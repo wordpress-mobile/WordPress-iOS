@@ -344,7 +344,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	
 	self.hasChanges = NO;
 	if (DeviceIsPad() == YES) {
-		[commentViewController cancelView:self];
+		[commentViewController performSelectorOnMainThread:@selector(cancelView:) withObject:self waitUntilDone:NO];
 	}
 	
 	[pool release];
