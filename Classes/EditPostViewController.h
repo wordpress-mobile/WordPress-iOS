@@ -47,6 +47,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
     BOOL isTextViewEditing;
     BOOL dismiss;
     BOOL isEditing;
+	BOOL editingDisabled;
     BOOL isNewCategory;
     BOOL editCustomFields;
     BOOL isCustomFieldsEnabledForThisPost;
@@ -77,6 +78,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
 @property (nonatomic) NSRange selectedLinkRange;
 @property (nonatomic, assign) UITextField *currentEditingTextField;
 @property (nonatomic, assign) BOOL isEditing;
+@property (nonatomic, assign) BOOL editingDisabled;
 @property (nonatomic, assign) BOOL editCustomFields;
 @property (nonatomic, assign) BOOL isCustomFieldsEnabledForThisPost;
 //@property (nonatomic, assign) NSUinteger originY;
@@ -106,6 +108,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
 //will be called when auto save method is called.
 - (void)updateValuesToCurrentPost;
 - (void)showLinkView;
+- (void)disableInteraction;
 
 - (IBAction)showAddNewCategoryView:(id)sender;
 - (IBAction)showCategoriesViewAction:(id)sender;

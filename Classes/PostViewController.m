@@ -606,7 +606,7 @@
 	if (DeviceIsPad() == YES) {
 		// the iPad has two detail views
 		postDetailViewController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController-iPad" bundle:nil];
-		[postDetailViewController disableInteraction];
+		//[postDetailViewController disableInteraction];
 
 		if (!editModalViewController) {
 			editModalViewController = [[FlippingViewController alloc] init];
