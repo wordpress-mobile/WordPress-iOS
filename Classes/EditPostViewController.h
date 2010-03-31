@@ -13,11 +13,11 @@
 @class WPSegmentedSelectionTableViewController;
 
 @interface EditPostViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
-                                                        UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
+UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
     IBOutlet UITextView *textView;
     IBOutlet UITextField *titleTextField;
     IBOutlet UITextField *tagsTextField;
-
+	
     IBOutlet UIView *contentView;
     IBOutlet UIView *subView;
     IBOutlet UITextField *statusTextField;
@@ -32,12 +32,12 @@
 	IBOutlet UITableView *tableViewForSelectingCustomFields;
 	IBOutlet UIButton *locationButton;
 	IBOutlet UIActivityIndicatorView *locationSpinner;
-
+	
     IBOutlet UIBarButtonItem *newCategoryBarButtonItem;
-
+	
     UIImage *currentChoosenImage;
     WPImagePickerController *pickerController;
-
+	
     WPSelectionTableViewController *selectionTableViewController;
     WPSegmentedSelectionTableViewController *segmentedTableViewController;
     PostViewController *postDetailViewController;
@@ -50,22 +50,19 @@
     BOOL isNewCategory;
     BOOL editCustomFields;
     BOOL isCustomFieldsEnabledForThisPost;
-
+	
     UITextField *infoText;
     UITextField *urlField;
     NSRange selectedLinkRange;
     NSMutableArray *bookMarksArray;
     UITextField *currentEditingTextField;
-
+	
     //also for Custom Fields to move text view up and down appropriately
     NSUInteger originY;
 	//for setting textview height correctly because shouldAutorotate runs in the TabBarController that "owns" this class
 	NSUInteger textViewHeightForRotation;
-
+	
 	LocationController *locationController;
-
-	BOOL editingDisabled;
-
 	CLLocation *initialLocation;
 }
 
@@ -91,6 +88,7 @@
 @property (nonatomic, retain) IBOutlet UIButton *locationButton;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *locationSpinner;
 
+
 - (void)refreshUIForCompose;
 - (void)refreshUIForCurrentPost;
 
@@ -108,8 +106,6 @@
 //will be called when auto save method is called.
 - (void)updateValuesToCurrentPost;
 - (void)showLinkView;
-
-- (void)disableInteraction;
 
 - (IBAction)showAddNewCategoryView:(id)sender;
 - (IBAction)showCategoriesViewAction:(id)sender;
