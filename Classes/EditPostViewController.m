@@ -1185,4 +1185,48 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [super dealloc];
 }
 
+#pragma mark -
+#pragma mark Keyboard management 
+ 
+- (void)keyboardWillShow:(NSNotification *)notification; 
+{ 
+        NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo]; 
+ 
+        CGRect kbBounds = [[keyboardInfo objectForKey:UIKeyboardBoundsUserInfoKey] CGRectValue]; 
+        CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue]; 
+        UIViewAnimationCurve curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue]; 
+ 
+        [UIView beginAnimations:nil context:nil]; 
+ 
+        [UIView setAnimationCurve:curve]; 
+        [UIView setAnimationDuration:animationDuration]; 
+ 
+        CGRect frame = textView.frame; 
+        frame.size.height -= kbBounds.size.height; 
+        textView.frame = frame; 
+ 
+        [UIView commitAnimations]; 
+} 
+ 
+- (void)keyboardWillHide:(NSNotification *)notification; 
+{ 
+        NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo]; 
+ 
+        CGRect kbBounds = [[keyboardInfo objectForKey:UIKeyboardBoundsUserInfoKey] CGRectValue]; 
+        CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue]; 
+        UIViewAnimationCurve curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue]; 
+ 
+        [UIView beginAnimations:nil context:nil]; 
+ 
+        [UIView setAnimationCurve:curve]; 
+        [UIView setAnimationDuration:animationDuration]; 
+ 
+        CGRect frame = textView.frame; 
+        frame.size.height += kbBounds.size.height; 
+        textView.frame = frame; 
+ 
+        [UIView commitAnimations]; 
+} 
+
+
 @end
