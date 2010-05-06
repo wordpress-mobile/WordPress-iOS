@@ -409,7 +409,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 										  osversion,
 										   numblogs] dataUsingEncoding:NSUTF8StringEncoding]];
 	NSString *htmlStr = [[[NSString alloc] initWithData:postBody encoding:NSUTF8StringEncoding] autorelease];
-	NSLog(@"htmlStr %@", htmlStr);
+	//NSLog(@"htmlStr %@", htmlStr);
 	[theRequest setHTTPBody:postBody];
 		
 	NSURLConnection *conn=[[[NSURLConnection alloc] initWithRequest:theRequest delegate:self]autorelease];
@@ -452,7 +452,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	//all of this should get pulled out of WPAppDelegate and into it's own class... http request, check for stats methods, delegate methods for http, and present user with option to upgrade
 	NSString *statsDataString = [[NSString alloc] initWithData:statsData encoding:NSUTF8StringEncoding];
 	
-	NSLog(@"should be statsDataString %@", statsDataString);
+	//NSLog(@"should be statsDataString %@", statsDataString);
 	//need to break this up based on the \n
 
 	[statsDataString release];

@@ -283,8 +283,9 @@ editBlogViewController, currentLocation;
 	} else {
 		userInfoResponse = [XMLRPCConnection sendSynchronousXMLRPCRequest:req];
 	}
+	
     NSError *err = [self errorWithResponse:userInfoResponse shouldHandle:shouldHandleFalg];
-
+	
     if (err)
         return err;
 
@@ -763,7 +764,7 @@ editBlogViewController, currentLocation;
 }
 
 - (BOOL)clearAutoSavedContext {
-	NSLog(@"inside clearAutoSavedContext");
+	//NSLog(@"inside clearAutoSavedContext");
     id aPost = [self autoSavedPostForCurrentBlog];
     [self deleteAllPhotosForPost:aPost forBlog:currentBlog];
 
@@ -776,7 +777,7 @@ editBlogViewController, currentLocation;
 }
 
 - (BOOL)removeAutoSavedCurrentPostFile {
-	NSLog(@"about to remove autosaved file BDM, removeAutoSavedCurrentPostFile");
+	//NSLog(@"about to remove autosaved file BDM, removeAutoSavedCurrentPostFile");
     NSString *fp = [self autoSavePathForTheCurrentBlog];
 
     if (fp)
@@ -981,7 +982,7 @@ editBlogViewController, currentLocation;
 	 */
 	
 	NSString *xmlrpcURL = [[@"http://" stringByAppendingString:url] stringByAppendingString:@"/xmlrpc.php"];
-	NSLog(@"xmlrpcURL %@", xmlrpcURL);
+	//NSLog(@"xmlrpcURL %@", xmlrpcURL);
 	XMLRPCRequest *listMethodsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpcURL]];
     [listMethodsReq setMethod:@"system.listMethods" withObjects:[NSArray array]];
     NSArray *listOfMethods = [self executeXMLRPCRequest:listMethodsReq byHandlingError:YES];
@@ -989,10 +990,10 @@ editBlogViewController, currentLocation;
     [listMethodsReq release];
 	
 	if ([listOfMethods isKindOfClass:[NSError class]]){
-		NSLog(@"returned an error, can't get to xmlrpc.php endpoint");
+		//NSLog(@"returned an error, can't get to xmlrpc.php endpoint");
 		
     } else {
-		NSLog(@"should have been successful ping of default xmlrpc endpoint");
+		//NSLog(@"should have been successful ping of default xmlrpc endpoint");
 		[currentBlog  setValue:xmlrpcURL forKey:@"xmlrpc"];
 	}
 	
@@ -1170,7 +1171,7 @@ editBlogViewController, currentLocation;
         blogURL = [NSString stringWithFormat:@"http://%@", blogURL];
 
     
-	NSLog(@"url from refreshCurrentBlog %@", blogURL);
+	//NSLog(@"url from refreshCurrentBlog %@", blogURL);
     [currentBlog setValue:(blogURL ? blogURL:@"")forKey:@"url"];
 
     NSString *xmlrpc = [self discoverxmlrpcurlForurl:url];
@@ -1212,7 +1213,7 @@ editBlogViewController, currentLocation;
 		//the next line will need to be commented out for testing (in the absence of a broken blog that has problems with the xmlrpc.php endpoint)
 		[self tryDefaultXMLRPCEndpoint:url]; //try the default endpoint of BlogURL.com/xmlrpc.php  If it returns a list of methods after a listMethods XMLRPC call, set currentBlog valueForKey:@"xmlrpc" equal to that.
       xmlrpc =  [currentBlog valueForKey:@"xmlrpc"];
-      NSLog(@"this is xmlrpc", xmlrpc);
+      //NSLog(@"this is xmlrpc", xmlrpc);
 
       if (xmlrpc == @"xmlrpc url not set") {//if xmlrpc is the default value set when the blog's array is built for the first time when attempting to add the blog...
 		  isProblemWithXMLRPC = YES;
@@ -1262,12 +1263,12 @@ editBlogViewController, currentLocation;
     XMLRPCRequest *reqUserInfo = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
     [reqUserInfo setMethod:@"blogger.getUserInfo" withObjects:[NSArray arrayWithObjects:@"ABCDEF012345", username, pwd, nil]];
 
-	NSLog(@"xmlrpc value: %@", xmlrpc);
+	//NSLog(@"xmlrpc value: %@", xmlrpc);
     NSDictionary *userInfo = [self executeXMLRPCRequest:reqUserInfo byHandlingError:YES];
     [reqUserInfo release];
 
     if (![userInfo isKindOfClass:[NSDictionary class]]){  //err occured.
-		NSLog(@"error occured on blogger.getUserInfo");
+		//NSLog(@"error occured on blogger.getUserInfo");
         return NO;
 	}
 
@@ -1288,19 +1289,19 @@ editBlogViewController, currentLocation;
 
     XMLRPCRequest *reqUsersBlogs = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
     [reqUsersBlogs setMethod:@"blogger.getUsersBlogs" withObjects:[NSArray arrayWithObjects:@"ABCDEF012345", username, pwd, nil]];
-	NSLog(@"reqUsersBlogs %@", reqUsersBlogs);
+	//NSLog(@"reqUsersBlogs %@", reqUsersBlogs);
 	
 
     // we are expecting an array to be returned in the response with one dictionary containing
     // the blog located by url used at login
     // If there is a fault, the returned object will be a dictionary with a fault element.
     // If the returned object is a NSArray, the, the object at index 0 will be the dictionary with blog info fields
-	NSLog(@"just before attempted getUsersBlogs");
+	//NSLog(@"just before attempted getUsersBlogs");
     NSArray *usersBlogsResponseArray = [self executeXMLRPCRequest:reqUsersBlogs byHandlingError:YES];
-	NSLog(@"just attempted getUsersBlogs");
+	//NSLog(@"just attempted getUsersBlogs");
 
 	[self printArrayToLog:usersBlogsResponseArray andArrayName:@"this is usersBlogsResponseArray from -refreshCurrentUser in BlogDataManager"];
-    NSLog(@"just before releasing reqUsersBlogs");
+    //NSLog(@"just before releasing reqUsersBlogs");
 	[reqUsersBlogs release];
     if (![usersBlogsResponseArray isKindOfClass:[NSArray class]])
         return NO;
@@ -1777,7 +1778,7 @@ editBlogViewController, currentLocation;
     [newPostTitlesList writeToFile:[self pathToPostTitles:blog]  atomically:YES];
     // increment blog counts and save blogs list
     [blog setObject:[NSNumber numberWithInt:[newPostTitlesList count]] forKey:@"totalPosts"];
-	NSLog(@"organizePostsForBlog postsArray count ### %d", [newPostTitlesList count]);
+	//NSLog(@"organizePostsForBlog postsArray count ### %d", [newPostTitlesList count]);
     [blog setObject:[NSNumber numberWithInt:newPostCount] forKey:@"newposts"];
     NSInteger blogIndex = [self indexForBlogid:[blog valueForKey:kBlogId] hostName:[blog valueForKey:kBlogHostName]];
 	
@@ -2199,7 +2200,7 @@ editBlogViewController, currentLocation;
     [dict setObject:[NSNumber numberWithInt:1] forKey:kLocationSetting];
     // setCurrentBlog will release current reference and make a mutable copy of this one
     [self setCurrentBlog:dict];
-	NSLog(@"currentblog %@", currentBlog);
+	//NSLog(@"currentblog %@", currentBlog);
 
     // reset the currentBlogIndex to -1 indicating new blog;
     currentBlogIndex = -1;
@@ -2843,7 +2844,7 @@ editBlogViewController, currentLocation;
 	//currentBlog = [[BlogDataManager sharedDataManager] currentBlog];
 	//NSString *blogid = [currentBlog valueForKey:@"blogid"];
 	NSString *pageid = [currentPage valueForKey:@"page_id"];
-	NSLog(@"pageid %@", pageid);
+	//NSLog(@"pageid %@", pageid);
 	
 	//NSString *bloggerAPIKey = @"ABCDEF012345";
 	//NSString *username = [currentBlog valueForKey:@"username"];
@@ -2854,8 +2855,8 @@ editBlogViewController, currentLocation;
 					 [self getPasswordFromKeychainInContextOfCurrentBlog:[self currentBlog]],
 					 [currentPage valueForKey:@"page_id"],
 					 nil];
-	NSLog(@"args to log: %@", args);
-	NSLog(@"currentPage %@", currentPage);
+	//NSLog(@"args to log: %@", args);
+	//NSLog(@"currentPage %@", currentPage);
 	
 	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[[self currentBlog] valueForKey:@"xmlrpc"]]];
 	[request setMethod:@"wp.deletePage" withObjects:args];
@@ -2864,11 +2865,11 @@ editBlogViewController, currentLocation;
         return NO;
 	
 	//NSArray *deleteArray2 = [[BlogDataManager sharedDataManager] executeXMLRPCRequest:request byHandlingError:NO];
-	NSLog(@"deleteDict: %@", deleteDict);
+	//NSLog(@"deleteDict: %@", deleteDict);
 	//NSLog(@"deleteArray2: %@", deleteArray2);
-	NSLog(@"about to release request");
+	//NSLog(@"about to release request");
 	[request release];
-	NSLog(@"released request about to return YES");
+	//NSLog(@"released request about to return YES");
 	return YES;
 }
 
@@ -2992,7 +2993,7 @@ editBlogViewController, currentLocation;
 				 withObjects:[NSArray arrayWithObjects:blogid, username, pwd, nil]];
 	
 	id response = [self executeXMLRPCRequest:pagesMetadata byHandlingError:YES];
-	NSLog(@"the response %@", response);
+	//NSLog(@"the response %@", response);
 	//NSLog(@"the id, %@",postID);
 	[pagesMetadata release];
 	 
@@ -3098,13 +3099,13 @@ editBlogViewController, currentLocation;
 			
 		//-----------------------continue with the old -syncPagesForBlog code
 		NSMutableDictionary *updatedPage = [NSMutableDictionary dictionaryWithDictionary:page];
-			NSLog(@"updatedPage %@", updatedPage);
+			//NSLog(@"updatedPage %@", updatedPage);
 
         NSDate *pageGMTDate = [updatedPage valueForKey:@"date_created_gmt"];
         NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:pageGMTDate];
         NSDate *currentDate = [pageGMTDate addTimeInterval:(secs * +1)];
         [updatedPage setValue:currentDate forKey:@"date_created_gmt"];
-			NSLog(@"updatedPage %@", updatedPage);
+			//NSLog(@"updatedPage %@", updatedPage);
 
         [updatedPage setValue:[blog valueForKey:kBlogId] forKey:kBlogId];
         [updatedPage setValue:[blog valueForKey:kBlogHostName] forKey:kBlogHostName];
@@ -3125,8 +3126,8 @@ editBlogViewController, currentLocation;
 			NSNumber *totalPages = [blog valueForKey:@"totalpages"];
 			//CAN I USE totalpages here???
 			int previousNumberOfPages = [totalPages intValue];
-			NSLog(@"previous number of pages %d", previousNumberOfPages);
-			NSLog(@"titles array count %d") ,[pageTitlesArray count];
+			//NSLog(@"previous number of pages %d", previousNumberOfPages);
+			//NSLog(@"titles array count %d") ,[pageTitlesArray count];
     [blog setObject:[NSNumber numberWithInt:1] forKey:@"newpages"];
 
     NSString *pathToCommentTitles = [self pathToPageTitles:blog];
@@ -3618,7 +3619,7 @@ editBlogViewController, currentLocation;
 
 - (BOOL)makeAutoSavedPostCurrentForCurrentBlog {
     NSMutableDictionary *post = [self autoSavedPostForCurrentBlog];
-	NSLog(@"makeAutoSavedPostCurrentForCurrentBlog.post: %@", post);
+	//NSLog(@"makeAutoSavedPostCurrentForCurrentBlog.post: %@", post);
 	[self printDictToLog:post andDictName:@"the result of makeAutoSavedPostForCurrentBlog"];
 
     if (!post ||[post count] == 0)
@@ -3796,7 +3797,7 @@ editBlogViewController, currentLocation;
 
     if (!(index >= 0 && index <[newPostTitlesList count])) {   //not existing post, new post
         [aBlog setObject:[NSNumber numberWithInt:[newPostTitlesList count]] forKey:@"totalPosts"];
-		NSLog(@"fectchNewPost newPostTitlesList count ### %d", [newPostTitlesList count]);
+		//NSLog(@"fectchNewPost newPostTitlesList count ### %d", [newPostTitlesList count]);
         [aBlog setObject:[NSNumber numberWithInt:1] forKey:@"newposts"];
     }
 
@@ -3886,7 +3887,7 @@ editBlogViewController, currentLocation;
         [self fectchNewPost:savedPostId formBlog:[self currentBlog]];
 
     [[self currentBlog] setObject:[NSNumber numberWithInt:[postsArray count]] forKey:@"totalPosts"];
-	NSLog(@"updatePostsTitlesFileAFterPostSaved postsArray count ### %d", [postsArray count]);
+	//NSLog(@"updatePostsTitlesFileAFterPostSaved postsArray count ### %d", [postsArray count]);
 }
 
 - (void)removeTempFileForUnSavedPost:(NSString *)postId {
@@ -3956,7 +3957,7 @@ editBlogViewController, currentLocation;
         [postParams setObject:[aPost valueForKey:@"wp_password"] forKey:@"wp_password"];
 		[postParams setObject:[aPost valueForKey:@"custom_fields"] forKey:@"custom_fields"];
         NSString *draftId = [aPost valueForKey:@"draftid"];
-		NSLog(@"draft id %@", draftId);
+		//NSLog(@"draft id %@", draftId);
         NSDictionary *draftPost = [self currentPost];
         NSArray *args = [NSArray arrayWithObjects:[currentBlog valueForKey:kBlogId],
                          [currentBlog valueForKey:@"username"],
@@ -4096,7 +4097,7 @@ editBlogViewController, currentLocation;
 					 //[aBlog valueForKey:@"pwd"], nil];
 					 [self getPasswordFromKeychainInContextOfCurrentBlog:[self currentBlog]],
 					 nil];
-	NSLog(@"args to log: %@", args);
+	//NSLog(@"args to log: %@", args);
 	
 	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[[self currentBlog] valueForKey:@"xmlrpc"]]];
 	[request setMethod:@"metaWeblog.deletePost" withObjects:args];
@@ -4105,11 +4106,11 @@ editBlogViewController, currentLocation;
         return NO;
 
 	//NSArray *deleteArray2 = [[BlogDataManager sharedDataManager] executeXMLRPCRequest:request byHandlingError:NO];
-	NSLog(@"deleteDict: %@", deleteDict);
+	//NSLog(@"deleteDict: %@", deleteDict);
 	//NSLog(@"deleteArray2: %@", deleteArray2);
-	NSLog(@"about to release request");
+	//NSLog(@"about to release request");
 	[request release];
-	NSLog(@"released request about to return YES");
+	//NSLog(@"released request about to return YES");
 	return YES;
 }
 - (void)resetCurrentPage {
@@ -4521,7 +4522,7 @@ editBlogViewController, currentLocation;
      withObjects:[NSArray arrayWithObjects:blogid, username, pwd, commentsStructure, nil]];
 
     NSMutableArray *commentsReceived = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
-	NSLog(@"TheARrayt: %@", commentsReceived);
+	NSLog(@"commentsReceived: %@", commentsReceived);
     [postsReq release];
 
     // TODO:
@@ -4975,7 +4976,7 @@ editBlogViewController, currentLocation;
         [dict setValue:@"wp.newComment" forKey:@"methodName"];
         [dict setValue:[NSArray arrayWithObjects:blogid, username, pwd, postid, commentStruct, nil] forKey:@"params"];
         [commentsReqArray addObject:dict];
-	NSLog(@"commentsReqArray whole shebang %@", commentsReqArray);
+	//NSLog(@"commentsReqArray whole shebang %@", commentsReqArray);
 		
         [dict release];
         XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
@@ -5055,7 +5056,7 @@ editBlogViewController, currentLocation;
         [dict setValue:@"wp.editComment" forKey:@"methodName"];
         [dict setValue:[NSArray arrayWithObjects:blogid, username, pwd, commentid, commentStruct, nil] forKey:@"params"];
         [commentsReqArray addObject:dict];
-	NSLog(@"this is comment dict %@", dict);
+	//NSLog(@"this is comment dict %@", dict);
 		
         [dict release];
 //    }
@@ -5395,13 +5396,13 @@ editBlogViewController, currentLocation;
 			
 			
 			-(void) deleteBlogFromKeychain:(NSString *)userName andBlogURL:(NSString *)blogURL{
-			NSLog(@"inside deleteBlogFromKeychain");
+			//NSLog(@"inside deleteBlogFromKeychain");
 			//Note: The Util will delete the entire keychain entry: (username, blogURL and password) we just don't need the password passed in to do that
 			//username and blogURL are also stored in the standard data structure - password is what we care about here
 			//username and blogURL are NOT deleted from the standard data structure (blogsList) at this point, that is handled separately
 			//This should only get called from the Remove Blog button of the Edit Blog view (code in BlogDetailModalViewController)
 			//call util's delete pwd function -- pass in username, and blogURL
-			NSLog(@"Inside deleteBlogFromKeychain... userName is %@ blogURL is %@", userName, blogURL);
+			//NSLog(@"Inside deleteBlogFromKeychain... userName is %@ blogURL is %@", userName, blogURL);
 			NSError *anError = nil;
 			[ SFHFKeychainUtils deleteItemForUsername: userName andServiceName: blogURL error:&anError ];
 			
@@ -5412,8 +5413,8 @@ editBlogViewController, currentLocation;
 		}
 
 - (void)printArrayToLog:(NSArray *)theArray andArrayName:(NSString *)theArrayName {
-    NSLog(@"Starting to print passed array (%@) to log", theArrayName);
-    NSLog(@"theArray: %@", theArray);
+    //NSLog(@"Starting to print passed array (%@) to log", theArrayName);
+    //NSLog(@"theArray: %@", theArray);
     //NSLog([theArray objectAtIndex:0]);
     //NSLog([theArray objectAtIndex:1]);
     //NSLog([theArray objectAtIndex:2]);
@@ -5422,8 +5423,8 @@ editBlogViewController, currentLocation;
 }
 
 - (void)printDictToLog:(NSDictionary *)theDict andDictName:(NSString *)theDictName {
-    NSLog(@"Starting to print passed Dict (%@) to log", theDictName);
-    NSLog(@"theDict: %@", theDict);
+    //NSLog(@"Starting to print passed Dict (%@) to log", theDictName);
+    //NSLog(@"theDict: %@", theDict);
 }
 
 @end
