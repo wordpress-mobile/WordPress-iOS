@@ -9,11 +9,15 @@
 
 @implementation WPProgressHUD
 
-@synthesize backgroundImage, activityIndicator, progressMessage, appDelegate;
+@synthesize backgroundImageView, activityIndicator, progressMessage, appDelegate;
 
 - (id)initWithLabel:(NSString *)text {
     if (self = [super init]) {
         self.appDelegate = [[UIApplication sharedApplication] delegate];
+		
+		backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WPpregressHUDBackground.png"]];
+		backgroundImageView.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin);
+		[self addSubview:backgroundImageView];
 
         progressMessage = [[UILabel alloc] initWithFrame:CGRectZero];
         progressMessage.textColor = [UIColor whiteColor];
@@ -24,40 +28,34 @@
         activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
         [activityIndicator startAnimating];
         [self addSubview:activityIndicator];
-
-        self.backgroundImage = [UIImage imageNamed:@"WPpregressHUDBackground.png"];
     }
 
     return self;
 }
 
 - (void)drawRect:(CGRect)rect {
-    CGSize backGroundImageSize = self.backgroundImage.size;
-    [backgroundImage drawInRect:CGRectMake(0, 0, backGroundImageSize.width, backGroundImageSize.height) blendMode:kCGBlendModeNormal alpha:0.8];
 }
 
 - (void)layoutSubviews {
     [progressMessage sizeToFit];
+	
+	progressMessage.center = backgroundImageView.center;
+	activityIndicator.center = backgroundImageView.center;
 
     CGRect textRect = progressMessage.frame;
-    textRect.origin.x = (CGRectGetWidth(self.bounds) - CGRectGetWidth(textRect)) / 2;
-    textRect.origin.y = (CGRectGetHeight(self.bounds) - CGRectGetHeight(textRect)) / 2;
     textRect.origin.y += 30.0;
-
     progressMessage.frame = textRect;
 
     CGRect activityRect = activityIndicator.frame;
-    activityRect.origin.x = (CGRectGetWidth(self.bounds) - CGRectGetWidth(activityRect)) / 2;
-    activityRect.origin.y = (CGRectGetHeight(self.bounds) - CGRectGetHeight(activityRect)) / 2;
     activityRect.origin.y -= 10.0;
-
     activityIndicator.frame = activityRect;
+	
     [self bringSubviewToFront:activityIndicator];
 }
 
 - (void)show {
     [super show];
-    CGSize backGroundImageSize = self.backgroundImage.size;
+    CGSize backGroundImageSize = self.backgroundImageView.image.size;
     self.bounds = CGRectMake(0, 0, backGroundImageSize.width, backGroundImageSize.height);
     [self.appDelegate setAlertRunning:YES];
 }

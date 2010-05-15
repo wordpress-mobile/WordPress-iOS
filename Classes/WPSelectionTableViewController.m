@@ -21,6 +21,11 @@
     return self;
 }
 
+- (CGSize)contentSizeForViewInPopover;
+{
+	return CGSizeMake(320.0, [objects count] * 44.0 + 20.0);
+}
+
 - (void)clean {
     [objects release];
     objects = nil;
@@ -187,6 +192,10 @@
 //}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	if (DeviceIsPad() == YES) {
+		return YES;
+	}
+
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 
     if ([delegate isAlertRunning] == YES)

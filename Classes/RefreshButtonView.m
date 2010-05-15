@@ -15,6 +15,7 @@
     if (self = [super initWithFrame:frame]) {
         UIImage *buttonImage = [UIImage imageNamed:REFRESH_BUTTON_ICON];
         button = [[UIButton alloc] initWithFrame:frame];
+        button.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
         [button setImage:buttonImage forState:UIControlStateNormal];
         [self addSubview:button];
 

@@ -12,7 +12,7 @@
 #import "PageViewController.h"
 #import "WPPhotosListViewController.h"
 #import "WordPressAppDelegate.h"
-
+#import "CPopoverManager.h"
 
 
 @interface EditPageViewController (private)
@@ -32,6 +32,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 @synthesize infoText, urlField, selectedLinkRange, currentEditingTextField, isEditing, isCustomFieldsEnabledForThisPage;
 @synthesize customFieldsEditCell;
 
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
         // Initialization code
@@ -41,7 +42,9 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 }
 
 - (void)refreshUIForCurrentPage {
-    self.navigationItem.rightBarButtonItem = nil;
+	if (DeviceIsPad() == NO) {
+		self.navigationItem.rightBarButtonItem = nil;
+	}
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 
     NSString *description = [dm.currentPage valueForKey:@"description"];
@@ -90,6 +93,11 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
     [pageDetailsController updatePhotosBadge];
 }
 
+- (void)disableInteraction;
+{
+	editingDisabled = YES;
+}
+
 - (void)viewWillAppear:(BOOL)animated {
    // pageDetailsController.hasChanges = NO;
  
@@ -123,6 +131,17 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
     [self postionTextViewContentView];
 
 	[self correctlySetStatusTextFieldText];
+	
+	if (editingDisabled) {
+		titleTextField.enabled = NO;
+		titleTextField.textColor = [UIColor grayColor];
+		
+		statusTextField.enabled = NO;
+		statusTextField.textColor = [UIColor grayColor];
+		
+		pageContentTextView.editable = NO;
+	}
+	
     [super viewWillAppear:animated];
 }
 
@@ -146,6 +165,11 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
     //call a helper to set the originY for textViewContentView
     [self postionTextViewContentView];
     customFieldsEditCell.hidden = YES;
+	
+	if (DeviceIsPad() == YES) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+	}
 }
 
 -(void) correctlySetStatusTextFieldText {
@@ -159,14 +183,15 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 - (IBAction)endTextEnteringButtonAction:(id)sender {
     isTextViewEditing = NO;
     [pageContentTextView resignFirstResponder];
-    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:pageDetailsController.leftView];
-    pageDetailsController.navigationItem.leftBarButtonItem = barButton;
-    [barButton release];
-	if((pageDetailsController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || 
-	   (pageDetailsController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)){
-		//[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+	if (DeviceIsPad() == NO) {
+		UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:pageDetailsController.leftView];
+		pageDetailsController.navigationItem.leftBarButtonItem = barButton;
+		[barButton release];
+//		if((pageDetailsController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || 
+//		   (pageDetailsController.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
+		   // private API
+//			[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
 	}
-	
 }
 
 - (IBAction)cancelView:(id)sender {
@@ -215,6 +240,10 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	if (DeviceIsPad() == YES) {
+		return YES;
+	}
+	
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 
     if ([delegate isAlertRunning] == YES)
@@ -232,36 +261,57 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 #pragma mark TextView & TextField Delegates
 - (void)textViewDidChangeSelection:(UITextView *)aTextView {
     if (!isTextViewEditing) {
-        pageDetailsController.hasChanges = YES;
-        hasChanges = YES;
+		// mmm, don't think so
+//        pageDetailsController.hasChanges = YES;
+//        hasChanges = YES;
 
         isTextViewEditing = YES;
 
-        if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-            [self setTextViewHeight:105];
-        } else if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
-            [self setTextViewHeight:200];
-        }
+		if (DeviceIsPad() == NO) {
+
+			if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+				[self setTextViewHeight:105];
+			} else if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
+				[self setTextViewHeight:200];
+			}
+			
+			[self bringTextViewUp];
+
+			UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
+										   target:self action:@selector(endTextEnteringButtonAction:)];
+
+			pageDetailsController.navigationItem.leftBarButtonItem = doneButton;
+			[doneButton release];
+		}
 
         [self updateTextViewPlacehoderFieldStatus];
-        [self bringTextViewUp];
-
-        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
-                                       target:self action:@selector(endTextEnteringButtonAction:)];
-
-        pageDetailsController.navigationItem.leftBarButtonItem = doneButton;
-        [doneButton release];
     }
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField;
+{
+	if (textField == statusTextField) {
+		[self populateSelectionsControllerWithStatuses];
+		return NO;
+	}
+	return YES;
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)aTextView {
     isEditing = YES;
 
-    if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-        [self setTextViewHeight:105];
-    } else if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
-        [self setTextViewHeight:200];
-    }
+	if (DeviceIsPad() == NO) {
+		if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+			[self setTextViewHeight:105];
+		} else if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
+			[self setTextViewHeight:200];
+		}
+		
+		UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
+															   target:self action:@selector(endTextEnteringButtonAction:)];
+		pageDetailsController.navigationItem.leftBarButtonItem = doneButton;
+		[doneButton release];
+	}
 
     dismiss = NO;
 
@@ -270,64 +320,62 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
     [self updateTextViewPlacehoderFieldStatus];
 
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
-                                   target:self action:@selector(endTextEnteringButtonAction:)];
-
-    pageDetailsController.navigationItem.leftBarButtonItem = doneButton;
-    [doneButton release];
-
     [self bringTextViewUp];
 }
 
 - (void)bringTextViewUp {
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:kAnimationDuration1];
+	if (DeviceIsPad() == NO) {
+		[UIView beginAnimations:nil context:NULL];
+		[UIView setAnimationDuration:kAnimationDuration1];
 
-    if (isCustomFieldsEnabledForThisPage) {
-        CGRect frame = textViewContentView.frame;
-        frame.origin.y -= 120.0f;
-        textViewContentView.frame = frame;
+		if (isCustomFieldsEnabledForThisPage) {
+			CGRect frame = textViewContentView.frame;
+			frame.origin.y -= 120.0f;
+			textViewContentView.frame = frame;
 
-        frame = subView.frame;
-        frame.origin.y -= 120.0f;
-        subView.frame = frame;
-    } else {
-        CGRect frame = textViewContentView.frame;
-        frame.origin.y -= 80.0f;
-        textViewContentView.frame = frame;
+			frame = subView.frame;
+			frame.origin.y -= 120.0f;
+			subView.frame = frame;
+		} else {
+			CGRect frame = textViewContentView.frame;
+			frame.origin.y -= 80.0f;
+			textViewContentView.frame = frame;
 
-        frame = subView.frame;
-        frame.origin.y -= 80.0f;
-        subView.frame = frame;
-    }
+			frame = subView.frame;
+			frame.origin.y -= 80.0f;
+			subView.frame = frame;
+		}
 
-    [UIView commitAnimations];
+		[UIView commitAnimations];
+	}
 }
 
 - (void)bringTextViewDown {
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.2];
-    subView.hidden = NO;
+	if (DeviceIsPad() == NO) {
+		[UIView beginAnimations:nil context:NULL];
+		[UIView setAnimationDuration:0.2];
+		subView.hidden = NO;
 
-    if (isCustomFieldsEnabledForThisPage) {
-        CGRect frame = textViewContentView.frame;
-        frame.origin.y += 60.0f;
-        textViewContentView.frame = frame;
+		if (isCustomFieldsEnabledForThisPage) {
+			CGRect frame = textViewContentView.frame;
+			frame.origin.y += 60.0f;
+			textViewContentView.frame = frame;
 
-        frame = subView.frame;
-        frame.origin.y = 0.0f;
-        subView.frame = frame;
-    } else {
-        CGRect frame = textViewContentView.frame;
-        frame.origin.y = 81.0f;
-        textViewContentView.frame = frame;
+			frame = subView.frame;
+			frame.origin.y = 0.0f;
+			subView.frame = frame;
+		} else {
+			CGRect frame = textViewContentView.frame;
+			frame.origin.y = 81.0f;
+			textViewContentView.frame = frame;
 
-        frame = subView.frame;
-        frame.origin.y = 0.0f;
-        subView.frame = frame;
-    }
+			frame = subView.frame;
+			frame.origin.y = 0.0f;
+			subView.frame = frame;
+		}
 
-    [UIView commitAnimations];
+		[UIView commitAnimations];
+	}
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
@@ -448,13 +496,15 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
-   if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-	
-        [self setTextViewHeight:137];
+	if (DeviceIsPad() == NO) {
+	   if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
 		
-    } else if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
-        [self setTextViewHeight:287];
-    }
+			[self setTextViewHeight:137];
+			
+		} else if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
+			[self setTextViewHeight:287];
+		}
+	}
 	
 	if((pageDetailsController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (pageDetailsController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)){
 		
@@ -547,7 +597,19 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
     selectionTableViewController.title = @"Status";
     selectionTableViewController.navigationItem.rightBarButtonItem = nil;
-    [pageDetailsController.navigationController pushViewController:selectionTableViewController animated:YES];
+	
+	if (DeviceIsPad() == YES) {
+		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:selectionTableViewController] autorelease];
+		selectionTableViewController.contentSizeForViewInPopover = CGSizeMake(320, 152);
+		selectionTableViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(popoverDoneAction:)];
+		UIPopoverController *pc = [[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:navController];
+		CGRect rect = statusTextField.frame;
+		rect.size.width = MIN(rect.size.width, 100);
+		[pc presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		[[CPopoverManager instance] setCurrentPopoverController:pc];
+	} else {
+		[pageDetailsController.navigationController pushViewController:selectionTableViewController animated:YES];
+	}
 }
 
 - (void)populateCustomFieldsTableViewControllerWithCustomFields {
@@ -587,6 +649,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 }
 
 - (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
     [pageDetailsController release];
     [selectionTableViewController release];
     //[customFieldsTableView release];
@@ -741,6 +804,55 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
     } else {
         return NO;
     }
+}
+
+
+#pragma mark -
+#pragma mark Keyboard management
+
+- (void)keyboardWillShow:(NSNotification *)notification;
+{
+	NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo];
+	
+	CGRect kbBounds = [[keyboardInfo objectForKey:UIKeyboardBoundsUserInfoKey] CGRectValue];
+	CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+	UIViewAnimationCurve curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue];
+	
+	[UIView beginAnimations:nil context:nil];
+	
+	[UIView setAnimationCurve:curve];
+	[UIView setAnimationDuration:animationDuration];
+	
+	CGRect frame = pageContentTextView.frame;
+	frame.size.height -= kbBounds.size.height;
+	pageContentTextView.frame = frame;
+	
+	[UIView commitAnimations];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification;
+{
+	NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo];
+	
+	CGRect kbBounds = [[keyboardInfo objectForKey:UIKeyboardBoundsUserInfoKey] CGRectValue];
+	CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+	UIViewAnimationCurve curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue];
+	
+	[UIView beginAnimations:nil context:nil];
+	
+	[UIView setAnimationCurve:curve];
+	[UIView setAnimationDuration:animationDuration];
+	
+	CGRect frame = pageContentTextView.frame;
+	frame.size.height += kbBounds.size.height;
+	pageContentTextView.frame = frame;
+	
+	[UIView commitAnimations];
+}
+
+- (IBAction)popoverDoneAction:(id)sender;
+{
+[[CPopoverManager instance] setCurrentPopoverController:NULL];
 }
 
 @end

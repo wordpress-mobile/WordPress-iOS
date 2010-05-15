@@ -32,6 +32,11 @@
     [super dealloc];
 }
 
+- (CGSize)contentSizeForViewInPopover;
+{
+	return CGSizeMake(320.0, 275.0);
+}
+
 - (void)endEditingAction:(id)sender {
     [passwordTextField resignFirstResponder];
 }
@@ -137,6 +142,10 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	if (DeviceIsPad() == YES) {
+		return YES;
+	}
+
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 
     if ([delegate isAlertRunning] == YES)
@@ -270,7 +279,11 @@
         WPPublishOnEditController *publishOnEditController = [[WPPublishOnEditController alloc] initWithNibName:@"WPPublishOnEditController" bundle:nil];
         publishOnEditController.settingController = self;
 		publishOnEditController.title = @"Publish Date";
-        [postDetailViewController.navigationController pushViewController:publishOnEditController animated:YES];
+		if (DeviceIsPad() == YES) {
+			[self.navigationController pushViewController:publishOnEditController animated:YES];
+		} else {
+			[postDetailViewController.navigationController pushViewController:publishOnEditController animated:YES];
+		}
         [publishOnEditController release];
     }
 

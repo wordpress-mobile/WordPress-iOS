@@ -152,9 +152,9 @@
 	{
 		NSLog(@"dict: %@", [dict objectForKey:@"key"]);
 		if(([[dict objectForKey:@"key"] isEqualToString:@"geo_latitude"]) ||
-			([[dict objectForKey:@"key"] isEqualToString:@"geo_longitude"]) ||
-			([[dict objectForKey:@"key"] isEqualToString:@"geo_accuracy"]) || 
-			([[dict objectForKey:@"key"] isEqualToString:@"geo_public"]))
+		   ([[dict objectForKey:@"key"] isEqualToString:@"geo_longitude"]) ||
+		   ([[dict objectForKey:@"key"] isEqualToString:@"geo_accuracy"]) || 
+		   ([[dict objectForKey:@"key"] isEqualToString:@"geo_public"]))
 		{
 			NSLog(@"removing dict: %@", [dict objectForKey:@"key"]);
 			[dict removeObjectForKey:@"key"];

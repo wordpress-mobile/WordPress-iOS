@@ -39,6 +39,7 @@
 
 - (void)launchReplyToComments;
 - (void)launchEditComment;
+- (void)dismissEditViewController;
 
 @end
 
@@ -63,6 +64,11 @@
 - (void)didReceiveMemoryWarning {
     WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning];
+}
+
+- (CGSize)contentSizeForViewInPopover;
+{
+	return CGSizeMake(320, 400);
 }
 
 #pragma mark -
@@ -118,7 +124,10 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	
+	if (DeviceIsPad() == YES) {
+		return YES;
+	}
+
 	//[super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 	if(UIInterfaceOrientationIsLandscape(self.commentsViewController.interfaceOrientation)){
 		NSLog(@"inside 999CVC if - landscape");
@@ -136,7 +145,6 @@
 //    }
 	NSLog(@"inside CommentViewController's should autorotate");
 	return NO;
-	
 }
 
 #pragma mark -
@@ -151,7 +159,7 @@
 	} else {
 		conditionalButtonTitle = @"Unapprove Comment";
 	}
-		 
+	
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@""
 															 delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
 													otherButtonTitles: conditionalButtonTitle, @"Mark Comment as Spam", @"Edit Comment",nil];
@@ -159,7 +167,11 @@
 	
 	actionSheet.tag = 301;
 	actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
-	[actionSheet showInView:self.view];
+	if (DeviceIsPad() == YES) {
+		[actionSheet showFromBarButtonItem:spamButton1 animated:YES];
+	} else {
+		[actionSheet showInView:self.view];
+	}
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	[delegate setAlertRunning:YES];
 	
@@ -167,7 +179,7 @@
 	
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
 	
 //handle action sheet from trash button
 	if ([actionSheet tag] == 501) {
@@ -236,7 +248,7 @@
 - (void)showReplyToCommentViewWithAnimation:(BOOL)animate {
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	
-		replyToCommentViewController = [[[ReplyToCommentViewController alloc] 
+		self.replyToCommentViewController = [[[ReplyToCommentViewController alloc] 
 										 initWithNibName:@"ReplyToCommentViewController" 
 										 bundle:nil]autorelease];
 		replyToCommentViewController.commentViewController = self;
@@ -246,14 +258,30 @@
 		replyToCommentViewController.title = @"Comment Reply";
 	
 	
-    [delegate.navigationController pushViewController:self.replyToCommentViewController animated:YES];
+	if (DeviceIsPad() == NO) {
+		[delegate.navigationController pushViewController:self.replyToCommentViewController animated:YES];
+	} else {
+		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:replyToCommentViewController] autorelease];
+		navController.modalPresentationStyle = UIModalPresentationFormSheet;
+		navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+		[self presentModalViewController:navController animated:YES];
+	}
 }
 
+- (void)dismissEditViewController;
+{
+	if (DeviceIsPad() == NO) {
+        [self.navigationController popViewControllerAnimated:YES];
+	}
+	else if (DeviceIsPad() == YES) {
+		[self dismissModalViewControllerAnimated:YES];
+	}
+}
 
 - (void)cancelView:(id)sender {
 	
 	if (!replyToCommentViewController.hasChanges && !editCommentViewController.hasChanges) {
-		[self.navigationController popViewControllerAnimated:YES];
+        [self dismissEditViewController];
 		//replyToCommentViewController.hasChanges = NO;
         return;
     }//else if (!editCommentViewController.hasChanges) {
@@ -293,7 +321,7 @@
 - (void)showEditCommentViewWithAnimation:(BOOL)animate {
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	
-	editCommentViewController = [[[EditCommentViewController alloc] 
+	self.editCommentViewController = [[[EditCommentViewController alloc] 
 									 initWithNibName:@"EditCommentViewController" 
 									 bundle:nil]autorelease];
 	editCommentViewController.commentViewController = self;
@@ -302,8 +330,14 @@
 	editCommentViewController.currentIndex = currentIndex;
 	editCommentViewController.title = @"Edit Comment";
 	
-	
-    [delegate.navigationController pushViewController:self.editCommentViewController animated:YES];
+	if (DeviceIsPad() == YES) {
+		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:editCommentViewController] autorelease];
+		navController.modalPresentationStyle = UIModalPresentationFormSheet;
+		navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+		[self presentModalViewController:navController animated:YES];
+	} else {
+		[delegate.navigationController pushViewController:self.editCommentViewController animated:YES];
+	}
 }
 
 	
@@ -317,8 +351,7 @@
     replyToCommentViewController.navigationItem.rightBarButtonItem = nil;
 //    [self stopTimer];
 //    [[BlogDataManager sharedDataManager] clearAutoSavedContext];
-    [self.navigationController popViewControllerAnimated:YES];
-	
+	[self dismissEditViewController];
 }
 
 - (void)cancel {
@@ -502,8 +535,7 @@
 //		myLabel2.font = [UIFont fontWithName:@"Zapfino" size:20];
 //		myLabel2.backgroundColor = [UIColor greenColor];
 	
-	pendingLabelHolder.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BORDER_COLOR;
-		pendingLabel.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
+		pendingLabelHolder.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
 
 		[labelHolder addSubview:pendingLabelHolder];
 		//[labelHolder sizeToFit];
@@ -604,7 +636,7 @@
     NSString *commentBody = [[comment valueForKey:@"content"] trim];
     NSDate *createdAt = [comment valueForKey:@"date_created_gmt"];
     //NSString *commentStatus = [comment valueForKey:@"status"];
-	commentStatus = [comment valueForKey:@"status"];
+	commentStatus = [[comment valueForKey:@"status"] copy];
     NSString *authorEmail = [comment valueForKey:@"author_email"];
     NSString *authorUrl = [comment valueForKey:@"author_url"];
 
@@ -626,7 +658,7 @@
 
     self.navigationItem.title = [NSString stringWithFormat:@"%d of %d", currentIndex + 1, count];
 
-    if ([commentStatus isEqualToString:@"hold"] && wasLastCommentPending == NO) {
+    if ([commentStatus isEqualToString:@"hold"] && ![pendingLabelHolder superview]) {
         //[approveAndUnapproveButtonBar setHidden:NO];
         //[deleteButtonBar setHidden:YES];
 		[self insertPendingLabel];
@@ -635,7 +667,7 @@
 		[approveAndUnapproveButtonBar setHidden:YES];
 		[deleteButtonBar setHidden:NO];
 		
-	}else if ([commentStatus isEqualToString:@"hold"] && wasLastCommentPending == YES) {
+	}else if ([commentStatus isEqualToString:@"hold"] && [pendingLabelHolder superview]) {
 		//[self resizeCommentBodyLabel];
 		CGRect rect;
 		rect = commentBodyLabel.frame;

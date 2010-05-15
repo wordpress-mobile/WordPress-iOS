@@ -55,7 +55,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	[super viewDidLoad];
 	//foo = [[NSString alloc] initWithString: textView.text];
 	
-	comment = [[NSMutableDictionary alloc] init];
+	self.comment = [NSMutableDictionary dictionary];
 	
 	if (!saveButton) {
 	saveButton = [[UIBarButtonItem alloc] 
@@ -86,11 +86,16 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	NSLog(@"waga this is the text from textViewString %@", textViewText);
 
 	[leftView setTarget:self withAction:@selector(cancelView:)];
-	cancelButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
+	if (DeviceIsPad() == NO) {
+		cancelButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
+	} else {
+		cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelView:)];
+	}
 	self.navigationItem.leftBarButtonItem = cancelButton;
     [cancelButton release];
+	cancelButton = nil;
 	
-	comment = [commentDetails objectAtIndex:currentIndex];
+	self.comment = [commentDetails objectAtIndex:currentIndex];
 	if ([[comment valueForKey:@"status"] isEqualToString:@"hold"]) {
 		NSLog(@"inside if of vwappear");
 		label.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
@@ -103,11 +108,6 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	
 	[textView becomeFirstResponder];
 	[self testStringAccess];
-	
-
-	
-	
-	
 }
 
 -(void) viewWillDisappear: (BOOL) animated{
@@ -138,11 +138,19 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 
 - (void)dealloc {
 	[saveButton release];
+	saveButton = nil;
 	[doneButton release];
+	doneButton = nil;
+	[cancelButton release];
+	cancelButton = nil;
 	[comment release];
+	comment = nil;
 	[commentDetails release];
+	commentDetails = nil;
 	[textViewText release];
+	textViewText = nil;
 	[leftView release];
+	leftView = nil;
     [super dealloc];
 }
 
@@ -150,7 +158,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 #pragma mark Button Override Methods
 
 - (void)cancelView:(id)sender {
-    [commentViewController cancelView:sender];
+    [commentViewController cancelView:self];
 	NSLog(@"inside replyToCommentViewController cancelView");
 	
 //    if (!hasChanges) {
@@ -187,10 +195,11 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 - (void)endTextEnteringButtonAction:(id)sender {
 	
     [textView resignFirstResponder];
-	//UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
-	//if(UIInterfaceOrientationIsLandscape(interfaceOrientation)){
-		//[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
-	//}
+	UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
+	if(UIInterfaceOrientationIsLandscape(interfaceOrientation)){
+	// private API
+//		[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+	}
 	
 	
 }
@@ -240,10 +249,12 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	//make the text view longer !!!! 
 	[self setTextViewHeight:460];
 	
-
-	[leftView setTitle:@"Cancel"];
-	UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:leftView];
-	self.navigationItem.leftBarButtonItem = barItem;	
+	if (DeviceIsPad() == NO) {
+		[leftView setTitle:@"Cancel"];
+		UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:leftView];
+		self.navigationItem.leftBarButtonItem = barItem;
+		[barItem release];	
+	}
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)aTextView {
@@ -251,14 +262,16 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	
 	
 	self.navigationItem.rightBarButtonItem = saveButton;
-	doneButton = [[UIBarButtonItem alloc] 
-								   initWithTitle:@"Done" 
-								   style:UIBarButtonItemStyleDone 
-								   target:self 
-								   action:@selector(endTextEnteringButtonAction:)];
 	
-	[self.navigationItem setLeftBarButtonItem:doneButton];
-
+	if (DeviceIsPad() == NO) {
+		doneButton = [[UIBarButtonItem alloc] 
+									   initWithTitle:@"Done" 
+									   style:UIBarButtonItemStyleDone 
+									   target:self 
+									   action:@selector(endTextEnteringButtonAction:)];
+		
+		[self.navigationItem setLeftBarButtonItem:doneButton];
+	}
 }
 
 
@@ -299,12 +312,14 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
         aTextView.selectedRange = endRange; 
 		
         [updatedText release];
+		updatedText = nil;
 		
         // let the textView know that it should ingore the inserted text
         return NO;
     }
 	
     [updatedText release];
+	updatedText = nil;
 	
     // let the textView know that it should handle the inserted text
     return YES;
@@ -334,13 +349,9 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 
     progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Saving Reply..."];
     [progressAlert show];
-	comment = [commentDetails objectAtIndex:currentIndex];
+	self.comment = [commentDetails objectAtIndex:currentIndex];
 	[comment setValue:textView.text forKey:@"content"];	
     [self performSelectorInBackground:@selector(saveReplyBackgroundMethod:) withObject:nil];
-	
-	[self.navigationController popViewControllerAnimated:YES];
-	
-
 }
 
 - (void)saveReplyBackgroundMethod:(id)sender {
@@ -359,6 +370,9 @@ if ([self isConnectedToHost]) {
 
 [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
 [progressAlert release];
+progressAlert = nil;
+hasChanges = NO;
+[commentViewController performSelectorOnMainThread:@selector(cancelView:) withObject:self waitUntilDone:YES];
 [pool release];
 }
 

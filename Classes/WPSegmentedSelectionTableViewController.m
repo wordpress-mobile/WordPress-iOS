@@ -44,6 +44,11 @@
     [super dealloc];
 }
 
+- (CGSize)contentSizeForViewInPopover;
+{
+	return CGSizeMake(320.0, [objects count] * 38.0 + 20.0);
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
     if (!flag) {
         if ([selectionDelegate respondsToSelector:@selector(selectionTableViewController:completedSelectionsWithContext:selectedObjects:haveChanges:)]) {

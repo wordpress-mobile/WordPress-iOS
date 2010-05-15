@@ -25,11 +25,9 @@
 @interface PagesViewController (Private)
 
 - (void)scrollToFirstCell;
-- (void)loadPages;
 - (void)setPageDetailsController;
 - (void)refreshHandler;
 - (void)syncPages;
-- (void)showAddNewPage;
 - (void)addRefreshButton;
 - (void)deletePageAtIndexPath;
 
@@ -39,6 +37,7 @@
 
 @synthesize newButtonItem, pageDetailViewController, pageDetailsController;
 @synthesize anyMorePages;
+@synthesize selectedIndexPath;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -53,7 +52,9 @@
     
     [newButtonItem release];
     [refreshButton release];
-	    
+	
+	[selectedIndexPath release], selectedIndexPath = nil;
+
     [super dealloc];
 }
 
@@ -83,6 +84,11 @@
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	
+	if (DeviceIsPad() == YES) {
+		if (self.selectedIndexPath) {
+			[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+		}
+	}
 	
 	if ([[Reachability sharedReachability] internetConnectionStatus])
 	{
@@ -105,6 +111,10 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
+
+	if (DeviceIsPad() == YES) {
+		cell.accessoryType = UITableViewCellAccessoryNone;
+	}
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -204,6 +214,8 @@
         }
 
         [dataManager makePageDraftAtIndexCurrent:indexPath.row];
+		self.selectedIndexPath = indexPath;
+		
     } else {
 		//handle the case when it's the last row and is the "get more posts" special cell
 		if (indexPath.row == [[BlogDataManager sharedDataManager] countOfPageTitles]) {
@@ -255,12 +267,15 @@
         }
 
         [dataManager makePageAtIndexCurrent:indexPath.row];
+		self.selectedIndexPath = indexPath;
 
         self.pageDetailsController.hasChanges = NO;
     }
 
     self.pageDetailsController.mode = editPage;
-    [delegate.navigationController pushViewController:self.pageDetailsController animated:YES];
+	
+	[self.pageDetailsController viewWillAppear:NO];
+	[delegate showContentDetailViewController:self.pageDetailsController];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -311,8 +326,28 @@
 
     [dm loadPageTitlesForCurrentBlog];
     [dm loadPageDraftTitlesForCurrentBlog];
+	
+	// avoid calling UIKit on a background thread
+	[self performSelectorOnMainThread:@selector(refreshPageList) withObject:nil waitUntilDone:NO];
+}
 
+- (void)refreshPageList;
+{
     [self.tableView reloadData];
+	
+	if (DeviceIsPad() == YES) {
+		if (self.selectedIndexPath) {
+			// TODO: make this more general. Pages are going to want to do it as well.
+			if (self.selectedIndexPath.section >= [self numberOfSectionsInTableView:self.tableView]
+				|| self.selectedIndexPath.row >= [self tableView:self.tableView numberOfRowsInSection:self.selectedIndexPath.section])
+			{
+				return;
+			}
+			
+			[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+			[self tableView:self.tableView didSelectRowAtIndexPath:self.selectedIndexPath];
+		}
+	}
 }
 
 - (void)addRefreshButton {
@@ -344,12 +379,28 @@
 
 - (void)showAddNewPage {
     [[BlogDataManager sharedDataManager] makeNewPageCurrent];
-    self.pageDetailsController.mode = newPage;
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    [delegate.navigationController pushViewController:self.pageDetailsController animated:YES];
+    
+	self.pageDetailsController.mode = newPage;
+	
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	
+	if (DeviceIsPad() == NO) {
+		[delegate.navigationController pushViewController:self.pageDetailsController animated:YES];
+	}
+	else if (DeviceIsPad() == YES) {
+		// see comments in PostsViewController -showAddPostView
+		[delegate showContentDetailViewController:self.pageDetailsController];
+		if (self.pageDetailsController.editModalViewController) {
+			[self.pageDetailsController editAction:self];
+		}
+	}
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	if (DeviceIsPad() == YES) {
+		return YES;
+	}
+
     //Code to disable landscape when alert is raised.
 
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
@@ -445,7 +496,11 @@
 
 - (void)setPageDetailsController {
     if (self.pageDetailsController == nil) {
-        self.pageDetailsController = [[PageViewController alloc] initWithNibName:@"PageViewController" bundle:nil];
+		if (DeviceIsPad() == YES) {
+			self.pageDetailsController = [[PageViewController alloc] initWithNibName:@"PageViewController-iPad" bundle:nil];
+		} else {
+			self.pageDetailsController = [[PageViewController alloc] initWithNibName:@"PageViewController" bundle:nil];
+		}
     }
 }
 

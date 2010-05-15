@@ -21,6 +21,8 @@
     PageViewController *pageDetailsController;
     RefreshButtonView *refreshButton;
 	BOOL anyMorePages;
+	
+	NSIndexPath *selectedIndexPath;
 }
 
 @property (readonly) UIBarButtonItem *newButtonItem;
@@ -29,7 +31,11 @@
 //@property (nonatomic, retain) PostTableViewCell	*cell;
 @property (nonatomic, assign) BOOL anyMorePages;
 
+@property (nonatomic, retain) NSIndexPath *selectedIndexPath;
+
 - (void) addSpinnerToCell:(NSIndexPath *)indexPath;
 - (void) removeSpinnerFromCell:(NSIndexPath *)indexPath;
+- (void) loadPages;
+- (void) showAddNewPage;
 
 @end

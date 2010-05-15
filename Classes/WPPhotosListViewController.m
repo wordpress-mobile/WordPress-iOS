@@ -22,6 +22,13 @@ static inline double radians(double degrees) {
 
 @synthesize postDetailViewController, pageDetailsController, tableView, delegate;
 
+@synthesize addButton;
+
+- (CGSize)contentSizeForViewInPopover;
+{
+	return CGSizeMake(320.0, 275.0);
+}
+
 - (IBAction)showPhotoUploadScreen:(id)sender {
     [self showPhotoPickerActionSheet];
 }
@@ -116,8 +123,15 @@ static inline double radians(double degrees) {
     if ([WPImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
         WPImagePickerController *picker = [self pickerController];
         picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-
-        [[(UIViewController *) delegate navigationController] presentModalViewController:picker animated:YES];
+		
+		if (DeviceIsPad() == YES) {
+			// TODO: this is probably how we should do it on the iPhone as well
+			if (self.delegate && [self.delegate respondsToSelector:@selector(displayPhotoListImagePicker:)]) {
+				[self.delegate displayPhotoListImagePicker:picker];
+			}
+		} else {
+			[[(UIViewController *) delegate navigationController] presentModalViewController:picker animated:YES];
+		}
     }
 }
 
@@ -300,7 +314,14 @@ editingInfo:(NSDictionary *)editingInfo {
         UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
 
     [self useImage:image];
-    [[picker parentViewController] dismissModalViewControllerAnimated:YES];
+	
+	if (DeviceIsPad() == YES) {
+		if (self.delegate && [self.delegate respondsToSelector:@selector(hidePhotoListImagePicker)]) {
+			[self.delegate hidePhotoListImagePicker];
+		}
+	} else {
+		[[picker parentViewController] dismissModalViewControllerAnimated:YES];
+	}
     [self clearPickerContrller];
     [self refreshData];
 
@@ -315,7 +336,13 @@ editingInfo:(NSDictionary *)editingInfo {
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    [[picker parentViewController] dismissModalViewControllerAnimated:YES];
+	if (DeviceIsPad() == YES) {
+		if (self.delegate && [self.delegate respondsToSelector:@selector(hidePhotoListImagePicker)]) {
+			[self.delegate hidePhotoListImagePicker];
+		}
+	} else {
+		[[picker parentViewController] dismissModalViewControllerAnimated:YES];
+	}
     [self clearPickerContrller];
     [tableView reloadData];
 }
@@ -454,6 +481,10 @@ editingInfo:(NSDictionary *)editingInfo {
 //}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	if (DeviceIsPad() == YES) {
+		return YES;
+	}
+
     WordPressAppDelegate *wpAppDelegate = [[UIApplication sharedApplication] delegate];
 
     if ([wpAppDelegate isAlertRunning] == YES) {

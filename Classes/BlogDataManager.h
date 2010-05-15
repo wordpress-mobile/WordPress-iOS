@@ -19,49 +19,49 @@
 #define kRSDErrorTag 901
 
 @interface BlogDataManager : NSObject {
-    @private
+@private
     NSArray *blogFieldNames;
     NSDictionary *blogFieldNamesByTag;
     NSDictionary *blogFieldTagsByName;
-
+	
     NSArray *postTitleFieldNames;
     NSDictionary *postTitleFieldNamesByTag;
     NSDictionary *postTitleFieldTagsByName;
-
+	
     NSArray *postFieldNames;
     NSDictionary *postFieldNamesByTag;
     NSDictionary *postFieldTagsByName;
-
+	
     NSArray *pictureFieldNames;
-
+	
     NSMutableArray *blogsList;
     NSMutableArray *postTitlesList, *draftTitlesList, *pageDraftTitlesList, *commentTitlesList, *pageTitlesList;
     NSMutableArray *photosDB;
-
+	
     NSMutableDictionary *currentBlog;
     BOOL isLocaDraftsCurrent;
     BOOL isPageLocalDraftsCurrent;
-
+	
     NSMutableDictionary *currentPost;
     NSArray *pageFieldNames;
-
+	
     NSMutableDictionary *currentPage;
-
+	
     NSMutableDictionary *currentPicture;
-
+	
     NSInteger currentPostIndex;
     NSInteger currentDraftIndex;
     NSInteger currentPageDraftIndex;
-
+	
     NSInteger currentBlogIndex;
     NSInteger currentPageIndex;
     int currentPictureIndex;
     int unsavedPostsCount;
-
+	
     NSString *currentDirectoryPath;
-
+	
     NSOperationQueue *asyncOperationsQueue;
-
+	
     NSOperationQueue *asyncPostsOperationsQueue;
     NSMutableDictionary *currentUnsavedDraft;
 	EditBlogViewController *editBlogViewController;
@@ -227,6 +227,7 @@
 - (BOOL)deletePost;
 - (BOOL)autoSaveCurrentPost;
 - (BOOL)makeAutoSavedPostCurrentForCurrentBlog;
+- (BOOL)hasAutosavedPost;
 - (id)autoSavedPostForCurrentBlog;
 - (NSString *)blogDir:(id)aBlog;
 

@@ -34,7 +34,7 @@
 }
 
 
-@property (nonatomic, retain) NSMutableArray *commentDetails;
+@property (nonatomic, copy) NSMutableArray *commentDetails;
 @property (nonatomic, retain) NSMutableDictionary *comment;
 @property (nonatomic, retain) UIBarButtonItem *saveButton;
 @property (nonatomic, retain) UIBarButtonItem *doneButton;
@@ -43,7 +43,7 @@
 @property (nonatomic, retain) CommentViewController *commentViewController;
 @property (nonatomic, retain) UILabel *label;
 @property (nonatomic) BOOL hasChanges;
-@property (nonatomic, retain) NSString *textViewText;
+@property (nonatomic, copy) NSString *textViewText;
 
 @property int currentIndex;
 

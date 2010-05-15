@@ -84,11 +84,21 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     self.title = @"Add Category";
-    self.navigationItem.leftBarButtonItem = cancelButtonItem;
+	// only show "cancel" button if we're presented in a modal view controller
+	// that is, if we are the root item of a UINavigationController
+	if ([self.parentViewController isKindOfClass:[UINavigationController class]]) {
+		UINavigationController *parent = (UINavigationController *)self.parentViewController;
+		if ([[parent viewControllers] objectAtIndex:0] == self)
+			self.navigationItem.leftBarButtonItem = cancelButtonItem;
+	}
     self.navigationItem.rightBarButtonItem = saveButtonItem;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	if (DeviceIsPad() == YES) {
+		return YES;
+	}
+
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 
     if ([delegate isAlertRunning] == YES) {

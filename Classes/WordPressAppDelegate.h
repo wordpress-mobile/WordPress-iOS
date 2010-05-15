@@ -2,6 +2,7 @@
 #import "Constants.h"
 
 @class BlogDataManager;
+@class CFirstLaunchViewController;;
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate> {
 @private
@@ -9,6 +10,8 @@
 
     IBOutlet UIWindow *window;
     IBOutlet UINavigationController *navigationController;
+	IBOutlet UISplitViewController *splitViewController;
+	CFirstLaunchViewController *firstLaunchController;
     BOOL connectionStatus;
     BOOL alertRunning;
 
@@ -18,6 +21,10 @@
 
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) UINavigationController *navigationController;
+@property (nonatomic, retain) IBOutlet UISplitViewController *splitViewController;
+@property (readonly, nonatomic, retain) UINavigationController *masterNavigationController;
+@property (readonly, nonatomic, retain) UINavigationController *detailNavigationController;
+@property (nonatomic, retain) CFirstLaunchViewController *firstLaunchController;
 @property (nonatomic, getter = isAlertRunning) BOOL alertRunning;
 
 + (WordPressAppDelegate *)sharedWordPressApp;
@@ -28,4 +35,7 @@
 - (void)resetCurrentBlogInUserDefaults;
 - (BOOL)shouldLoadBlogFromUserDefaults;
 - (void)setAutoRefreshMarkers;
+
+- (void)showContentDetailViewController:(UIViewController *)viewController;
+
 @end

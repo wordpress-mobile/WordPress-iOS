@@ -44,6 +44,10 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	if (DeviceIsPad() == YES) {
+		return YES;
+	}
+
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     
     if ([delegate isAlertRunning] == YES)
@@ -150,22 +154,26 @@
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
-    if (postDetailViewController.navigationItem.rightBarButtonItem == nil ||
-        postDetailViewController.navigationItem.rightBarButtonItem == postDetailViewController.saveButton) {
-        [self addProgressIndicator];
-    }
+	if (DeviceIsPad() == NO) {
+		if (postDetailViewController.navigationItem.rightBarButtonItem == nil ||
+			postDetailViewController.navigationItem.rightBarButtonItem == postDetailViewController.saveButton) {
+			[self addProgressIndicator];
+		}
+	}
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)awebView {
-    if ([awebView isLoading] == NO && postDetailViewController.navigationItem.rightBarButtonItem != nil &&
-        postDetailViewController.navigationItem.rightBarButtonItem != postDetailViewController.saveButton) {
-        postDetailViewController.navigationItem.rightBarButtonItem = (postDetailViewController.hasChanges ? postDetailViewController.saveButton : nil);
+	if (DeviceIsPad() == NO) {
+		if ([awebView isLoading] == NO && postDetailViewController.navigationItem.rightBarButtonItem != nil &&
+			postDetailViewController.navigationItem.rightBarButtonItem != postDetailViewController.saveButton) {
+			postDetailViewController.navigationItem.rightBarButtonItem = (postDetailViewController.hasChanges ? postDetailViewController.saveButton : nil);
 
-        if (postDetailViewController.tabController.selectedViewController == self)
-            postDetailViewController.navigationItem.title = self.title;
+			if (postDetailViewController.tabController.selectedViewController == self)
+				postDetailViewController.navigationItem.title = self.title;
 
-        isWebRefreshRequested = NO;
-    }
+			isWebRefreshRequested = NO;
+		}
+	}
 }
 
 - (BOOL)webView:(UIWebView *)awebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
@@ -181,20 +189,24 @@
 }
 
 - (void)addProgressIndicator {
-    NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
-    UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aiv];
-    [aiv startAnimating];
-    [aiv release];
-    
-    postDetailViewController.navigationItem.rightBarButtonItem = activityButtonItem;
-    [activityButtonItem release];
-    [apool release];
+	if (DeviceIsPad() == NO) {
+		NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
+		UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+		UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aiv];
+		[aiv startAnimating];
+		[aiv release];
+		
+		postDetailViewController.navigationItem.rightBarButtonItem = activityButtonItem;
+		[activityButtonItem release];
+		[apool release];
+	}
 }
 
 - (void)stopLoading {
     [webView stopLoading];
-    postDetailViewController.navigationItem.rightBarButtonItem = nil;
+	if (DeviceIsPad() == NO) {
+		postDetailViewController.navigationItem.rightBarButtonItem = nil;
+	}
     isWebRefreshRequested = NO;
 }
 

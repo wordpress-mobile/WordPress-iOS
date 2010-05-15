@@ -1,6 +1,7 @@
 * text=auto !eol
 /AboutWordpress.xib -text
 /AddBlogValidationBackground.png -text svneol=unset#unset
+/BlogViewController-iPad.xib -text
 /BlogViewController.xib -text
 Classes/AboutViewController.h -text
 Classes/AboutViewController.m -text
@@ -11,10 +12,28 @@ Classes/BlogDataManager.m -text
 Classes/BlogHTTPAuthenticationViewController.h -text
 Classes/BlogHTTPAuthenticationViewController.m -text
 Classes/BlogHTTPAuthenticationViewController.xib -text
+Classes/BlogSplitViewDetailViewController.h -text
+Classes/BlogSplitViewDetailViewController.m -text
+Classes/BlogSplitViewDetailViewController.xib -text
+Classes/BlogSplitViewMasterViewController.h -text
+Classes/BlogSplitViewMasterViewController.m -text
+Classes/BlogSplitViewMasterViewController.xib -text
 Classes/BlogViewController.h -text
 Classes/BlogViewController.m -text
 Classes/BlogsViewController.h -text
 Classes/BlogsViewController.m -text
+Classes/CDeviceSupport.h -text
+Classes/CDeviceSupport.m -text
+Classes/CFirstLaunchViewController.h -text
+Classes/CFirstLaunchViewController.m -text
+Classes/CFirstLaunchViewController.xib -text
+Classes/CInvisibleToolbar.h -text
+Classes/CInvisibleToolbar.m -text
+Classes/CNewBlogSignupViewController.h -text
+Classes/CNewBlogSignupViewController.m -text
+Classes/CNewBlogSignupViewController.xib -text
+Classes/CPopoverManager.h -text
+Classes/CPopoverManager.m -text
 Classes/CommentTableViewCell.h -text
 Classes/CommentTableViewCell.m -text
 Classes/CommentViewController.h -text
@@ -29,8 +48,11 @@ Classes/EditBlogViewController.h -text
 Classes/EditBlogViewController.m -text
 Classes/EditPageViewController.h -text
 Classes/EditPageViewController.m -text
+Classes/EditPostParentModalViewController.xib -text
 Classes/EditPostViewController.h -text
 Classes/EditPostViewController.m -text
+Classes/FlippingViewController.h -text
+Classes/FlippingViewController.m -text
 Classes/GravatarImageView.h -text
 Classes/GravatarImageView.m -text
 Classes/ImageCache.h -text
@@ -74,10 +96,14 @@ Classes/RegexKitLite.h -text
 Classes/RegexKitLite.m -text
 Classes/ResourcesTableViewSection.h -text
 Classes/ResourcesTableViewSection.m -text
+Classes/RotatingNavigationController.h -text
+Classes/RotatingNavigationController.m -text
 Classes/UIImage+INResizeImageAllocator.h -text
 Classes/UIImage+INResizeImageAllocator.m -text
 Classes/UIViewController+WPAnimation.h -text
 Classes/UIViewController+WPAnimation.m -text
+Classes/UIViewController_iPadExtensions.h -text
+Classes/UIViewController_iPadExtensions.m -text
 Classes/WPAddCategoryViewController.h -text
 Classes/WPAddCategoryViewController.m -text
 Classes/WPAsynchronousImageView.h -text
@@ -129,22 +155,46 @@ Classes/XMLRPC/XMLRPCResponse.h -text
 Classes/XMLRPC/XMLRPCResponse.m -text
 Classes/XMLRPC/XMLValueDecoder.h -text
 Classes/XMLRPC/XMLValueDecoder.m -text
+Classes/blue-m.png -text svneol=unset#unset
+Classes/fabric.png -text svneol=unset#unset
+Classes/firstrun-background.png -text svneol=unset#unset
+Classes/firstrun-logo.png -text svneol=unset#unset
+Classes/firstrun-wholebutton-default.png -text svneol=unset#unset
+Classes/firstrun-wholebutton-selected.png -text svneol=unset#unset
+Classes/glossyButton-disabled.png -text svneol=unset#unset
+Classes/glossyButton-highlighted.png -text svneol=unset#unset
+Classes/glossyButton-normal.png -text svneol=unset#unset
 /CommentViewController.xib -text
 /CommentsViewController.xib -text
+/Default-Landscape.png -text svneol=unset#unset
+/Default-Portrait.png -text svneol=unset#unset
 /Default.png -text
 /Disclosure[!!-~]Indicator.png -text
 /EditBlogViewController.xib -text
+/EditPageViewController-iPad.xib -text
 /EditPageViewController.xib -text
+/EditPostViewController-iPad.xib -text
 /EditPostViewController.xib -text
+/Entitlements.plist -text
+/Icon_Spotlight.png -text svneol=unset#unset
 /Info.plist -text
 /MainBackground.png -text
 /MainWindow.xib -text
+/PageViewController-iPad.xib -text
 /PageViewController.xib -text
 /PagesDraftsViewController.xib -text
 /PostPreviewViewController.xib -text
 /PostSettingsViewController.xib -text
+/PostViewController-iPad.xib -text
 /PostViewController.xib -text
+/RecentCommentButtonDeselected.png -text svneol=unset#unset
+/RecentCommentButtonSelected.png -text svneol=unset#unset
+Resources-iPad/MainWindow-iPad.xib -text
 /RoundedRectBlack.png -text
+/ToolbarIconCamera.png -text svneol=unset#unset
+/ToolbarIconEye.png -text svneol=unset#unset
+/ToolbarIconGear.png -text svneol=unset#unset
+/ToolbarIconLocation.png -text svneol=unset#unset
 /WPAddCategoryViewController.xib -text
 /WPCategoriesController.xib -text
 /WPPhotoViewController.xib -text
@@ -155,7 +205,6 @@ Classes/XMLRPC/XMLValueDecoder.m -text
 /WordPress.png -text
 WordPress.xcodeproj/project.pbxproj -text
 /WordPress_Prefix.pch -text
-/application-icon.png -text
 /backNav.png -text
 /backNavd.png -text
 /category_child.png -text
@@ -172,6 +221,8 @@ WordPress.xcodeproj/project.pbxproj -text
 /hasLocation.png -text
 /help.png -text
 /iTunesArtwork -text
+/icon-iPad.png -text
+/icon.png -text
 /license.txt -text
 /lock.png -text
 /main.m -text

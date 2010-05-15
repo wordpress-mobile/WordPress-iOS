@@ -120,6 +120,15 @@
     //[blogEditTable reloadData];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+	if (DeviceIsPad() == YES) {
+		return(YES);
+	} else {
+		return(toInterfaceOrientation == UIInterfaceOrientationPortrait);
+	}
+}
+
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 5;
 }
@@ -274,7 +283,9 @@
 - (void)addProgressIndicator {
     NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
 
+	validationView.frame = self.view.bounds;
     [self.view addSubview:validationView];
+	
     validationView.alpha = 0.0;
     [self.view bringSubviewToFront:validationView];
     [UIView beginAnimations:nil context:nil];
@@ -391,6 +402,7 @@
 	if ([dm refreshCurrentBlog:url user:username]) {
         [dm.currentBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
         [dm wrapperForSyncPostsAndGetTemplateForBlog:dm.currentBlog];
+        [dm.currentBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
         [dm saveCurrentBlog];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"NewBlogAdded" object:nil];
         [self.navigationController dismissModalViewControllerAnimated:YES];

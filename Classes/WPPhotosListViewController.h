@@ -7,7 +7,7 @@
 
 @interface WPPhotosListViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
     IBOutlet UITableView *tableView;
-    IBOutlet UITextField *countField;
+    IBOutlet UILabel *countField;
 
     UIImage *currentChoosenImage;
     WPImagePickerController *pickerController;
@@ -17,6 +17,8 @@
     PageViewController *pageDetailsController;
 
     BOOL isShowPhotoPickerActionSheet;
+	
+	IBOutlet UIBarButtonItem *addButton;
 }
 
 @property (nonatomic, assign) PostViewController *postDetailViewController;
@@ -24,6 +26,8 @@
 @property (nonatomic, assign) id <WPPhotosListProtocol> delegate;
 
 @property (nonatomic, retain) UITableView *tableView;
+
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *addButton;
 
 - (IBAction)addPhotoFromLibraryAction:(id)sender;
 - (IBAction)addPhotoFromCameraAction:(id)sender;

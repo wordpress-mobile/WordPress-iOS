@@ -14,6 +14,8 @@
 @class EditPostViewController, PostPreviewViewController, WPSelectionTableViewController, PostSettingsViewController, WPPhotosListViewController, PostsViewController, CommentsViewController;
 @class WPNavigationLeftButtonView;
 @class CustomFieldsDetailController, WPPublishOnEditController;
+@class CInvisibleToolbar;
+@class FlippingViewController;
 
 @interface PostViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate, WPPhotosListProtocol> {
     IBOutlet UITabBarController *tabController;
@@ -21,6 +23,7 @@
     IBOutlet UIView *photoEditingStatusView;
     UIBarButtonItem *saveButton;
 
+	EditPostViewController *postDetailViewController;
     EditPostViewController *postDetailEditController;
     PostPreviewViewController *postPreviewController;
     PostSettingsViewController *postSettingsController;
@@ -35,9 +38,25 @@
     BOOL hasChanges, isVisible;
     int mode;   //0 new, 1 edit, 2 autorecovery, 3 refresh
     NSTimer *autoSaveTimer;
+	
+	// iPad additions
+	IBOutlet UIToolbar *toolbar;
+	IBOutlet UIView *contentView;
+	UIPopoverController *popoverController;
+	UIPopoverController *photoPickerPopover;
+	
+	IBOutlet UIBarButtonItem *commentsButton;
+	IBOutlet UIBarButtonItem *photosButton;
+	IBOutlet UIBarButtonItem *settingsButton;
+	
+	IBOutlet UIToolbar *editToolbar;
+	IBOutlet UIToolbar *previewToolbar;
+	IBOutlet UIBarButtonItem *cancelEditButton;
+	FlippingViewController *editModalViewController;
 }
 
 @property (nonatomic, retain)   WPNavigationLeftButtonView *leftView;
+@property (nonatomic, retain)   EditPostViewController *postDetailViewController;
 @property (nonatomic, retain)   EditPostViewController *postDetailEditController;
 @property (nonatomic, retain)   PostPreviewViewController *postPreviewController;
 @property (nonatomic, retain)   PostSettingsViewController *postSettingsController;
@@ -52,9 +71,40 @@
 @property (readonly) UITabBarController *tabController;
 //@property (readonly) UITabBar *tabBar;
 
+@property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
+@property (nonatomic, retain) IBOutlet UIView *contentView;
+
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *commentsButton;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *photosButton;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *settingsButton;
+@property (nonatomic, retain) IBOutlet UIToolbar *editToolbar;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *cancelEditButton;
+@property (nonatomic, retain) FlippingViewController *editModalViewController;
+
 - (IBAction)cancelView:(id)sender;
 - (void)refreshUIForCompose;
 - (void)refreshUIForCurrentPost;
 - (void)updatePhotosBadge;
+
+- (UINavigationItem *)navigationItemForEditPost;
+@property (nonatomic, assign) UIBarButtonItem *leftBarButtonItemForEditPost;
+@property (nonatomic, assign) UIBarButtonItem *rightBarButtonItemForEditPost;
+
+- (IBAction)commentsAction:(id)sender;
+
+- (IBAction)editAction:(id)sender;
+
+- (IBAction)picturesAction:(id)sender;
+- (IBAction)settingsAction:(id)sender;
+- (IBAction)locationAction:(id)sender;
+
+- (IBAction)addPhotoAction:(id)sender;
+- (IBAction)previewAction:(id)sender;
+- (IBAction)previewEditAction:(id)sender;
+- (IBAction)previewPublishAction:(id)sender;
+
+- (IBAction)newPostAction:(id)sender;
+
+- (void)dismissEditView;
 
 @end

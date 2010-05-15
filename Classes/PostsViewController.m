@@ -20,8 +20,6 @@
 @interface PostsViewController (Private)
 
 - (void)scrollToFirstCell;
-- (void)loadPosts;
-- (void)showAddPostView;
 - (void)refreshHandler;
 - (void)syncPosts;
 //- (void) addSpinnerToCell:(NSIndexPath *)indexPath;
@@ -36,19 +34,23 @@
 
 @synthesize newButtonItem, postDetailViewController, postDetailEditController;
 @synthesize anyMorePosts;
+@synthesize selectedIndexPath;
 
 #pragma mark -
 #pragma mark Memory Management
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"AsynchronousPostIsPosted" object:nil];
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"DraftsUpdated" object:nil];
+
     [postDetailEditController release];
     [PostViewController release];
-    
+
     [newButtonItem release];
     [refreshButton release];
-    
+	
+	[selectedIndexPath release], selectedIndexPath = nil;
+
     [super dealloc];
 }
 
@@ -68,6 +70,7 @@
     [self addRefreshButton];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableViewAfterPostSaved:) name:@"AsynchronousPostIsPosted" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableAfterDraftSaved:) name:@"DraftsUpdated" object:nil];
 
     newButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
                      target:self
@@ -77,9 +80,9 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
     [self loadPosts];
-    
+
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	
+
 	if ([[Reachability sharedReachability] internetConnectionStatus])
 	{
 		if ([defaults boolForKey:@"refreshPostsRequired"]) {
@@ -87,12 +90,20 @@
 			[defaults setBool:false forKey:@"refreshPostsRequired"];
 		}
 	}
-	
-    if ([self.tableView indexPathForSelectedRow]) {
-        [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
-        [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
-    }
-	
+
+	if (DeviceIsPad() == NO) {
+		// iPhone table views should not appear selected
+		if ([self.tableView indexPathForSelectedRow]) {
+			[self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+			[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
+		}
+	} else if (DeviceIsPad() == YES) {
+		// sometimes, iPad table views should
+		if (self.selectedIndexPath) {
+			[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+		}
+	}
+
 	[self handleAutoSavedContext:0];
 }
 
@@ -110,16 +121,33 @@
 
 - (void)showAddPostView {
     [[BlogDataManager sharedDataManager] makeNewPostCurrent];
+	
+	self.postDetailViewController.mode = newPost;
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 
-    self.postDetailViewController.mode = newPost;
-
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    [delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
+	if (DeviceIsPad() == NO) {
+		[delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
+	}
+	else if (DeviceIsPad() == YES) {
+		// unfortunately, the edit VC is pretty tightly coupled to the post detail VC, so we really want it to be current.
+		[delegate showContentDetailViewController:self.postDetailViewController];
+		// if the edit VC doesn't exist yet, the detail VC hasn't appeared yet;
+		// the UI will be refreshed on viewWillAppear.
+		// otherwise, we've gotta do it ourself.
+		// Not really the best way to do this in the long run.
+		if (self.postDetailViewController.editModalViewController) {
+			[self.postDetailViewController refreshUIForCompose];
+		}
+	}
 }
 
 - (PostViewController *)postDetailViewController {
     if (postDetailViewController == nil) {
-        postDetailViewController = [[PostViewController alloc] initWithNibName:@"PostViewController" bundle:nil];
+		if (DeviceIsPad() == YES) {
+			postDetailViewController = [[PostViewController alloc] initWithNibName:@"PostViewController-iPad" bundle:nil];
+		} else {
+			postDetailViewController = [[PostViewController alloc] initWithNibName:@"PostViewController" bundle:nil];
+		}
         postDetailViewController.postsListController = self;
     }
 
@@ -131,6 +159,10 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
+
+	if (DeviceIsPad() == YES) {
+		cell.accessoryType = UITableViewCellAccessoryNone;
+	}
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -151,63 +183,63 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	
+
     if (section == LOCAL_DRAFTS_SECTION) {
         return [[BlogDataManager sharedDataManager] numberOfDrafts];
-		
+
     } else if ([defaults boolForKey:@"anyMorePosts"]) {
-		return [[BlogDataManager sharedDataManager] countOfPostTitles] + 1;
-		
+        return [[BlogDataManager sharedDataManager] countOfPostTitles] + 1;
+
 	}else {
 		return [[BlogDataManager sharedDataManager] countOfPostTitles];
-	}
+    }
 
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"PostCell";
     PostTableViewCell *cell = (PostTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-	
+
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
     id post = nil;
-	
+
     if (cell == nil) {
         cell = [[[PostTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
     }
-	
+
 
     if (indexPath.section == LOCAL_DRAFTS_SECTION) {
         post = [dm draftTitleAtIndex:indexPath.row];
-    } else { 
+    } else {
 		int count = [[BlogDataManager sharedDataManager] countOfPostTitles];
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-		
+
 		//handle the case when it's the last row and we need to return the modified "get more posts" cell
 		//note that it's not [[BlogDataManager sharedDataManager] countOfPostTitles] +1 because of the difference in the counting of the datasets
 		//also note that anyMorePosts has to be true or we won't do anything.  This balances with numberOfRowsInSection which only adds the extra row
 		//if anyMorePosts is true
 		if ([defaults boolForKey:@"anyMorePosts"])  {
-			
-			if (indexPath.row == count) {
-			
-				//set the labels.  The spinner will be activiated if the row is selected in didSelectRow...
-				//get the total number of posts on the blog, make a string and pump it into the cell
-				int totalPosts = [[BlogDataManager sharedDataManager] countOfPostTitles];
+
+		if (indexPath.row == count) {
+
+		//set the labels.  The spinner will be activiated if the row is selected in didSelectRow...
+		//get the total number of posts on the blog, make a string and pump it into the cell
+		int totalPosts = [[BlogDataManager sharedDataManager] countOfPostTitles];
 				//show "nothing" if this is the first time this view showed for a newly-loaded blog
 				if (totalPosts == 0) {
 					cell .contentView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
 					cell.accessoryType = UITableViewCellAccessoryNone;
 					return cell;
 				}else{
-					NSString * totalString = [NSString stringWithFormat:@"%d posts loaded", totalPosts];
-					[cell changeCellLabelsForUpdate:totalString:@"Load more posts":NO];
-					//prevent masking of the changes to font color etc that we want
-					cell.selectionStyle = UITableViewCellSelectionStyleNone;
-					return cell;
-				
+		NSString * totalString = [NSString stringWithFormat:@"%d posts loaded", totalPosts];
+			[cell changeCellLabelsForUpdate:totalString:@"Load more posts":NO];
+			//prevent masking of the changes to font color etc that we want
+			cell.selectionStyle = UITableViewCellSelectionStyleNone;
+		return cell;
+
 				}
 			}
-		}
+	}
 		//if it wasn't the last cell, proceed as normal.
         post = [dm postTitleAtIndex:indexPath.row];
     }
@@ -225,6 +257,9 @@
     dataManager.isLocaDraftsCurrent = (indexPath.section == LOCAL_DRAFTS_SECTION);
 
     if (indexPath.section == LOCAL_DRAFTS_SECTION) {
+		if ([dataManager numberOfDrafts] <= indexPath.row)
+			return;
+		
         id currentDraft = [dataManager draftTitleAtIndex:indexPath.row];
 
         // Bail out if we're in the middle of saving the draft.
@@ -232,51 +267,52 @@
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             return;
         }
-
-        [dataManager makeDraftAtIndexCurrent:indexPath.row];
 		
+        [dataManager makeDraftAtIndexCurrent:indexPath.row];
+		self.selectedIndexPath = indexPath;
+
     } else {
 		//handle the case when it's the last row and is the "get more posts" special cell
 		if (indexPath.row == [[BlogDataManager sharedDataManager] countOfPostTitles]) {
 			NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-			
+
 			//run the spinner in the background and change the text
 			[self performSelectorInBackground:@selector(addSpinnerToCell:) withObject:indexPath];
-			
+
 			// deselect the row.
 			[self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-			
+
 			//init the Increment Post helper class class
 			IncrementPost *incrementPost = [[IncrementPost alloc] init];
-			
+
 			//run the "get more" function in the IncrementPost class and get metadata, then parse metadata for next 10 and get 10 more
 			anyMorePosts = [incrementPost loadOlderPosts];
 			[defaults setBool:anyMorePosts forKey:@"anyMorePosts"];
 			//TODO: JOHNB if this fails we should surface an alert with useful error message.
 			//here or in incrementPost?  Perhaps a bool return?
-			
+
 			//release the helper class
 			[incrementPost release];
-			
+
 			//turn of spinner and change text
 			[self performSelectorInBackground:@selector(removeSpinnerFromCell:) withObject:indexPath];
-			
+
 			//refresh the post list
 			[self loadPosts];
-			
+
 			//get a reference to the cell
 			UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
-			
+
 			// solve the problem where the "load more" cell is reused and retains it's old formatting by forcing a redraw
 			NSLog(@"about to run setNeedsDisplay");
 			[cell setNeedsDisplay];
-			
-						
+
+
 			//return
 			return;
-			
+
 		}
-		
+
         id currentPost = [dataManager postTitleAtIndex:indexPath.row];
 
         // Bail out if we're in the middle of saving the post.
@@ -286,12 +322,15 @@
         }
 
         [dataManager makePostAtIndexCurrent:indexPath.row];
+		self.selectedIndexPath = indexPath;
 
         self.postDetailViewController.hasChanges = NO;
     }
 
     self.postDetailViewController.mode = editPost;
-    [delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
+	
+	[self.postDetailViewController refreshUIForCurrentPost];
+	[delegate showContentDetailViewController:self.postDetailViewController];
 }
 
 
@@ -320,9 +359,9 @@
 
 	progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Deleting Post..."];
 	[progressAlert show];
-	
+
 	[self performSelectorInBackground:@selector(deletePostAtIndexPath:) withObject:indexPath];
-	
+
 }
 
 #pragma mark -
@@ -346,13 +385,35 @@
 
 - (void)loadPosts {
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
-
-    dm.isLocaDraftsCurrent = NO;
+	
+	// commented out for bug #444: refreshing the list makes local drafts not save.
+	// doesn't seem to break anything.
+//    dm.isLocaDraftsCurrent = NO;
 
     [dm loadPostTitlesForCurrentBlog];
     [dm loadDraftTitlesForCurrentBlog];
+	
+	// this gets hit from a background thread on post deletion.
+	// calling UIKit from a background thread is crash city.
+	[self performSelectorOnMainThread:@selector(refreshPostList) withObject:nil waitUntilDone:NO];
+}
 
+- (void)refreshPostList;
+{
     [self.tableView reloadData];
+	
+	if (DeviceIsPad() == YES) {
+		if (self.selectedIndexPath) {
+			// TODO: make this more general. Pages are going to want to do it as well.
+			if (self.selectedIndexPath.section >= [self numberOfSectionsInTableView:self.tableView]
+				|| self.selectedIndexPath.row >= [self tableView:self.tableView numberOfRowsInSection:self.selectedIndexPath.section])
+			{
+				return;
+			}
+			
+			[self reselect];
+		}
+	}
 }
 
 - (void)goToHome:(id)sender {
@@ -423,23 +484,37 @@
     [self loadPosts];
 }
 
+- (void)updatePostsTableAfterDraftSaved:(NSNotification *)notification {
+	[self loadPosts];
+}
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     [[BlogDataManager sharedDataManager] removeAutoSavedCurrentPostFile];
     self.navigationItem.rightBarButtonItem = nil;
     self.postDetailViewController.mode = autorecoverPost;
-	
+
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	[delegate setAlertRunning:NO];
-	[delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
+	if (DeviceIsPad() == YES) {
+		[delegate showContentDetailViewController:self.postDetailViewController];
+		// need a view, and a lot of setup happens in viewWillAppear
+		// TODO: clean up the post detail/edit/etc. view controller hierarchy!
+		if (self.postDetailViewController.editModalViewController) {
+			[self.postDetailViewController refreshUIForCompose];
+		}
+	}
+	else {
+		[delegate showContentDetailViewController:self.postDetailViewController];
+	}
 }
 
 - (void) deletePostAtIndexPath:(id)object{
 	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-	
+
 	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 	//NewObj* pNew = (NewObj*)oldObj;
 	NSIndexPath *indexPath = (NSIndexPath*)object;
-	
+
     if (indexPath.section == LOCAL_DRAFTS_SECTION) {
         [dataManager deleteDraftAtIndex:indexPath.row forBlog:[dataManager currentBlog]];
 		[self syncPosts];
@@ -452,12 +527,12 @@
 															   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 				alert.tag = TAG_OFFSET;
 				[alert show];
-				
+
 				WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 				[delegate setAlertRunning:YES];
 				[alert release];
 				return;
-			}else{				
+			}else{
 				//if reachability is good, make post at index current, delete post, and refresh view (sync posts)
 				[dataManager makePostAtIndexCurrent:indexPath.row];
 				//delete post
@@ -465,15 +540,15 @@
 				[dataManager deletePost];
 				//resync posts
 				[self syncPosts];
-				
+
 			}
 		}
 	}
-	
+
 	[progressAlert dismissWithClickedButtonIndex:0 animated:YES];
     [progressAlert release];
     [pool release];
-	
+
 }
 
 #pragma mark -
@@ -482,38 +557,53 @@
 
 - (void) addSpinnerToCell:(NSIndexPath *)indexPath {
 	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
-	
+
 	//get the cell
 	UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
-	
+
 	//set the spinner (cast to PostTableView "type" in order to avoid warnings)
 	[((PostTableViewCell *)cell) runSpinner:YES];
-	
+
 	//set up variables for cell text values
 	int totalPosts = [[BlogDataManager sharedDataManager] countOfPostTitles];
 	NSString * totalString = [NSString stringWithFormat:@"%d posts loaded", totalPosts];
-	
+
 	//change the text in the cell to say "Loading" and change text color
 	[((PostTableViewCell *)cell) changeCellLabelsForUpdate:totalString:@"Loading more posts...":YES];
-	
+
 	[apool release];
 }
 
 - (void) removeSpinnerFromCell:(NSIndexPath *)indexPath {
 	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
-	
+
 	//get the cell
 	UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
-	
+
 	//set up variables for changing text values
 	//int totalPosts = [[BlogDataManager sharedDataManager] countOfPostTitles];
 	//NSString * totalString = [NSString stringWithFormat:@"%d posts loaded", totalPosts];
-	
+
 	//turn off the spinner and change the text
 	//[((PostTableViewCell *)cell) changeCellLabelsForUpdate:totalString:@"Load more posts...":NO];
 	[((PostTableViewCell *)cell) runSpinner:NO];
-	
+
 	[apool release];
+}
+
+- (void)reselect;
+{
+// avoid selection if we have an autosaved post
+if ([[BlogDataManager sharedDataManager] hasAutosavedPost])
+	{
+	return;
+	}
+
+if (self.selectedIndexPath != NULL)
+	{
+	[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+	[self tableView:self.tableView didSelectRowAtIndexPath:self.selectedIndexPath];
+	}
 }
 
 @end

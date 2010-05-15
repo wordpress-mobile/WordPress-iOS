@@ -13,6 +13,7 @@
 #import "WordPressAppDelegate.h"
 #import "WPProgressHUD.h"
 #import "Reachability.h"
+#import "CommentViewController.h"
 
 #define COMMENTS_SECTION        0
 #define NUM_SECTIONS            1
@@ -43,23 +44,46 @@
 @implementation CommentsViewController
 
 @synthesize editButtonItem, selectedComments, commentsArray, indexForCurrentPost, segmentedControl;
+@synthesize selectedIndexPath;
+@synthesize commentViewController;
+@synthesize isSecondaryViewController;
 
 #pragma mark -
 #pragma mark Memory Management
 
 - (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[segmentedControl release];
     [commentsArray release];
     [commentsDict release];
     [selectedComments release];
     [editButtonItem release];
     [refreshButton release];
+	[selectedIndexPath release], selectedIndexPath = nil;
+	[commentViewController release], commentViewController = nil;
     [super dealloc];
 }
 
 - (void)didReceiveMemoryWarning {
     WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning];
+}
+
+- (CGSize)contentSizeForViewInPopover;
+{
+	float height = MIN([commentsArray count] * COMMENT_ROW_HEIGHT + REFRESH_BUTTON_HEIGHT + kSectionHeaderHight, 600);
+	return CGSizeMake(320.0, height);
+}
+
+- (CommentViewController *)commentViewController;
+{
+	if (!commentViewController) {
+		commentViewController = [[CommentViewController alloc] initWithNibName:@"CommentViewController" bundle:nil];
+		commentViewController.commentsViewController = self;
+		
+		[commentViewController view]; // DWC kindakludge - make sure it's got a view
+	}
+	return commentViewController;
 }
 
 #pragma mark -
@@ -90,6 +114,8 @@
 	segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
 	segmentedControl.frame = CGRectMake(0, 0, 170, 30);
 	[segmentedControl addTarget:self action:@selector(reloadTableView) forControlEvents:UIControlEventValueChanged];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(commentsSynced:) name:@"CommentRefreshNotification" object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -126,10 +152,16 @@
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    [commentsTableView reloadData];
+	if (DeviceIsPad() == NO) {
+		[commentsTableView reloadData];
+	}
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	if (DeviceIsPad() == YES) {
+		return YES;
+	}
+
 //    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     
 //    if ([delegate isAlertRunning] == YES) {
@@ -138,11 +170,7 @@
 //	NSLog(@"inside commentsviewcontroller's should autorotate");
 //        return YES;
 //    }
-	//return NO;
-	if(interfaceOrientation == UIInterfaceOrientationPortrait)
-		return YES;
-	
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	return NO;
 }
 
 #pragma mark -
@@ -262,6 +290,13 @@
     [editButtonItem setEnabled:([commentsArray count] > 0)];
     [self updateBadge];
     [commentsTableView reloadData];
+	
+	if (DeviceIsPad() == YES) {
+		if (self.selectedIndexPath && !self.isSecondaryViewController) {
+			[commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+			[self showCommentAtIndex:self.selectedIndexPath.row];
+		}
+	}
 }
 
 - (IBAction)deleteSelectedComments:(id)sender {
@@ -298,8 +333,9 @@
     BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
 
     [sharedDataManager performSelector:selector withObject:[self selectedComments] withObject:[sharedDataManager currentBlog]];
-
-    [self refreshCommentsList];
+	
+	// calling UIKit from a background thread is bad
+	[self performSelectorOnMainThread:@selector(refreshCommentsList) withObject:nil waitUntilDone:NO];
     [self setEditing:FALSE];
 
     [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
@@ -351,15 +387,17 @@
 }
 
 - (void)showCommentAtIndex:(int)index {
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    CommentViewController *commentViewController = [[CommentViewController alloc] initWithNibName:@"CommentViewController" bundle:nil];
-	commentViewController.commentsViewController = self;
-	//[commentViewController showComment:commentsArray atIndex:index];
+	if (index >= commentsArray.count)
+		return;
 	
-    [delegate.navigationController pushViewController:commentViewController animated:YES];
+	if (self.isSecondaryViewController) {
+		[self.navigationController pushViewController:self.commentViewController animated:YES];
+	} else {
+		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+		[delegate showContentDetailViewController:self.commentViewController];
+	}
 
-    [commentViewController showComment:commentsArray atIndex:index];
-    [commentViewController release];
+    [self.commentViewController showComment:commentsArray atIndex:index];
 }
 
 #pragma mark -
@@ -428,7 +466,9 @@
 		cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
 	}
 
-	
+	if (DeviceIsPad() == YES && !self.isSecondaryViewController) {
+		cell.accessoryType = UITableViewCellAccessoryNone;
+	}
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -472,6 +512,7 @@
         [self tableView:tableView didCheckRowAtIndexPath:indexPath];
     } else {
         [self showCommentAtIndex:indexPath.row];
+		self.selectedIndexPath = indexPath;
     }
 }
 
@@ -507,6 +548,15 @@
 		}
 	}
     self.tabBarItem.badgeValue = badge;
+}
+
+#pragma mark -
+#pragma mark Notifications
+
+- (void)commentsSynced:(NSNotification *)notification;
+{
+	NSLog(@"Refreshing comments");
+	[self refreshCommentsList];
 }
 
 @end

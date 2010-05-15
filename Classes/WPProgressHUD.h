@@ -9,16 +9,16 @@
 #import "WordPressAppDelegate.h"
 
 @interface WPProgressHUD : UIAlertView {
-    UIImage *backgroundImage;
     UIActivityIndicatorView *activityIndicator;
     UILabel *progressMessage;
+	UIImageView *backgroundImageView;
 
     WordPressAppDelegate *appDelegate;
 }
 
-@property (nonatomic, assign) UIImage *backgroundImage;
 @property (nonatomic, assign) UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, retain) UILabel *progressMessage;
+@property (nonatomic, assign) UIImageView *backgroundImageView;
 @property (nonatomic, assign) WordPressAppDelegate *appDelegate;
 
 - (id)initWithLabel:(NSString *)text;

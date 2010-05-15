@@ -81,7 +81,11 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	NSLog(@"waga this is the text from textViewString %@", textViewText);
 	
 	[leftView setTarget:self withAction:@selector(cancelView:)];
-	cancelButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
+	if (DeviceIsPad() == NO) {
+		cancelButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
+	} else {
+		cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelView:)];
+	}
 	self.navigationItem.leftBarButtonItem = cancelButton;
     [cancelButton release];
 	
@@ -105,17 +109,6 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	[[NSNotificationCenter defaultCenter] removeObserver: self];
 	[[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
 }
-
-
- 
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
 
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
@@ -155,9 +148,12 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 - (void)endTextEnteringButtonAction:(id)sender {
 	
     [textView resignFirstResponder];
-	UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
-	if(UIInterfaceOrientationIsLandscape(interfaceOrientation)){
-	[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+	if (DeviceIsPad() == NO) {
+		UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
+		if(UIInterfaceOrientationIsLandscape(interfaceOrientation)){
+		// private API
+//			[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+		}
 	}
 }
 
@@ -210,10 +206,12 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	//make the text view longer !!!! 
 	[self setTextViewHeight:440];
 	
-	
-	[leftView setTitle:@"Cancel"];
-	UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:leftView];
-	self.navigationItem.leftBarButtonItem = barItem;	
+	if (DeviceIsPad() == NO) {
+		[leftView setTitle:@"Cancel"];
+		UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:leftView];
+		self.navigationItem.leftBarButtonItem = barItem;	
+		[barItem release];
+	}
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)aTextView {
@@ -221,14 +219,15 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	
 	
 	self.navigationItem.rightBarButtonItem = saveButton;
-	doneButton = [[UIBarButtonItem alloc] 
-				  initWithTitle:@"Done" 
-				  style:UIBarButtonItemStyleDone 
-				  target:self 
-				  action:@selector(endTextEnteringButtonAction:)];
-	
-	[self.navigationItem setLeftBarButtonItem:doneButton];
-	
+	if (DeviceIsPad() == NO) {
+		doneButton = [[UIBarButtonItem alloc] 
+					  initWithTitle:@"Done" 
+					  style:UIBarButtonItemStyleDone 
+					  target:self 
+					  action:@selector(endTextEnteringButtonAction:)];
+		
+		[self.navigationItem setLeftBarButtonItem:doneButton];
+	}
 }
 
 //replace "&nbsp" with a space @"&#160;" before Apple's broken TextView handling can do so and break things
@@ -342,6 +341,12 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	
 	[progressAlert dismissWithClickedButtonIndex:0 animated:YES];
 	[progressAlert release];
+	
+	self.hasChanges = NO;
+	if (DeviceIsPad() == YES) {
+		[commentViewController performSelectorOnMainThread:@selector(cancelView:) withObject:self waitUntilDone:NO];
+	}
+	
 	[pool release];
 }
 

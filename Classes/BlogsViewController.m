@@ -10,10 +10,12 @@
 #import <QuartzCore/QuartzCore.h>
 #import "NSString+XMLExtensions.h" 
 #import "Blog.h"
+#import "BlogSplitViewMasterViewController.h"
+#import "CPopoverManager.h"
 
 @interface BlogsViewController (Private)
 
-- (void)showBlogDetailModalViewForNewBlogWithAnimation;
+- (void)showBlogDetailModalViewForNewBlog:(id)inSender;
 - (void)showBlogDetailModalViewWithAnimation:(BOOL)animate;
 - (void)showBlogWithoutAnimation;
 - (void)edit:(id)sender;
@@ -46,12 +48,18 @@
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                target:self
-                                               action:@selector(showBlogDetailModalViewForNewBlogWithAnimation)] autorelease];
+                                               action:@selector(showBlogDetailModalViewForNewBlog:)] autorelease];
     self.tableView.allowsSelectionDuringEditing = YES;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blogsRefreshNotificationReceived:) name:@"BlogsRefreshNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBlogWithoutAnimation) name:@"NewBlogAdded" object:nil];
     
+	// restore blog for iPad
+	if (DeviceIsPad() == YES) {
+		if ([[WordPressAppDelegate sharedWordPressApp] shouldLoadBlogFromUserDefaults]) {
+			[self showBlog:NO];
+		}
+	}
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -97,7 +105,7 @@
 #pragma mark -
 #pragma mark Show Blog Detail Modal View
 
-- (void)showBlogDetailModalViewForNewBlogWithAnimation {
+- (void)showBlogDetailModalViewForNewBlog:(id)inSender {
     [self showBlogDetailModalViewForNewBlogWithAnimation:YES];
 }
 
@@ -109,12 +117,23 @@
 }
 
 - (void)showBlogDetailModalViewWithAnimation:(BOOL)animate {
-    EditBlogViewController *blogDetailViewController = [[[EditBlogViewController alloc] initWithNibName:@"EditBlogViewController" bundle:nil] autorelease];
-    UINavigationController *modalNavigationController = [[UINavigationController alloc] initWithRootViewController:blogDetailViewController];
+	
+	EditBlogViewController *blogDetailViewController = [[[EditBlogViewController alloc] initWithNibName:@"EditBlogViewController" bundle:nil] autorelease];
+	UINavigationController *modalNavigationController = [[UINavigationController alloc] initWithRootViewController:blogDetailViewController];
+	if (DeviceIsPad() == YES)
+		{
+		modalNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+		modalNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+		[[CPopoverManager instance] setCurrentPopoverController:NULL];
+		[[WordPressAppDelegate sharedWordPressApp].splitViewController presentModalViewController:modalNavigationController animated:animate];
+		}
+	else
+		{
+		[[WordPressAppDelegate sharedWordPressApp].navigationController presentModalViewController:modalNavigationController animated:animate];
+		}
 
-    [self.navigationController presentModalViewController:modalNavigationController animated:animate];
 
-    [modalNavigationController release];
+	[modalNavigationController release];
 }
 
 
@@ -140,9 +159,9 @@
 
     [Reachability sharedReachability].hostName = url;
 
-    BlogViewController *blogViewController = [[BlogViewController alloc] initWithNibName:@"BlogViewController" bundle:nil];
-    [self.navigationController pushViewController:blogViewController animated:animated];
-    [blogViewController release];
+	BlogViewController *blogViewController = [[BlogViewController alloc] initWithNibName:@"BlogViewController" bundle:nil];
+	[self.navigationController pushViewController:blogViewController animated:animated];
+	[blogViewController release];
 }
 
 #pragma mark -
@@ -178,6 +197,9 @@
 }
 
 - (void)tableView:(UITableView *)atableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+//	if (DeviceIsPad() == YES)
+//		[[CPopoverManager instance] setCurrentPopoverController:NULL];
+
     BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 
     if ([self.tableView cellForRowAtIndexPath:indexPath].editing) {
