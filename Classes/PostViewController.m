@@ -126,8 +126,8 @@
 }
 
 - (IBAction)saveAction:(id)sender {
-    //saveButton.title = @"Save";
-    NSLog(@"Inside Save Action");
+    //saveButton.title = @"Save"; 
+	NSLog(@"Inside Save Action");
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 
      if (![[dm.currentPost valueForKey:@"post_status"] isEqualToString:@"Local Draft"]) {
