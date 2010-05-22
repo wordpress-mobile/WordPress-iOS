@@ -103,6 +103,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	else
 	{
 	[window addSubview:splitViewController.view];
+	[window makeKeyAndVisible];
 
 	if ([dataManager countOfBlogs] == 0)
 		{
