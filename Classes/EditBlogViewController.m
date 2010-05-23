@@ -404,7 +404,6 @@
         [dm wrapperForSyncPostsAndGetTemplateForBlog:dm.currentBlog];
         [dm.currentBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
         [dm saveCurrentBlog];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"NewBlogAdded" object:nil];
         [self.navigationController dismissModalViewControllerAnimated:YES];
     } else {
 			if (dm.isProblemWithXMLRPC) {
@@ -415,6 +414,7 @@
 				return;
 			}
 	}
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 	[self changeGeotaggingSetting];
 }
 

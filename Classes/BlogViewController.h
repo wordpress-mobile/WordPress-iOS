@@ -23,8 +23,8 @@
 @property (nonatomic, retain) UITabBarController *tabBarController;
 
 - (void)reselect;
-
 - (void)saveState;
 - (void)restoreState;
+- (void)refreshBlogs:(NSNotification *)notification;
 
 @end

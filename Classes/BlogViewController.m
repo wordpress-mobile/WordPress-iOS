@@ -115,8 +115,7 @@
 
 #pragma mark KVO callbacks
 
-- (void)refreshBlogs:(NSNotification *)notification;
-{
+- (void)refreshBlogs:(NSNotification *)notification {
 	// should probably let each VC take care of these on their own,
 	// but that would probably also entail cleaning up the BlogDataManager
 	// notifications et al.
