@@ -137,6 +137,10 @@ Classes/WPSelectionTableViewController.h -text
 Classes/WPSelectionTableViewController.m -text
 Classes/WPXMLReader.h -text
 Classes/WPXMLReader.m -text
+Classes/WebSignupViewController.h -text
+Classes/WebSignupViewController.m -text
+Classes/WelcomeViewController.h -text
+Classes/WelcomeViewController.m -text
 Classes/WordPressAppDelegate.h -text
 Classes/WordPressAppDelegate.m -text
 Classes/XMLRPC/XMLRPCConnection+Authentication.h -text
@@ -202,6 +206,8 @@ Resources-iPad/MainWindow-iPad.xib -text
 /WPPublishOnEditController.xib -text
 /WPSelectionTableViewController.xib -text
 /WPpregressHUDBackground.png -text
+/WebSignupViewController.xib -text
+/WelcomeViewController.xib -text
 /WordPress.png -text
 WordPress.xcodeproj/project.pbxproj -text
 /WordPress_Prefix.pch -text
@@ -236,6 +242,9 @@ WordPress.xcodeproj/project.pbxproj -text
 /uncheck.png -text
 /uncrustify.cfg -text
 /up.png -text
+/welcome_bg.png -text
+/welcome_btn_normal.png -text
+/welcome_btn_over.png -text
 /write.png -text
 /xhtml1-transitional.dtd -text
 /xhtmlValidatorTemplate.xhtml -text
