@@ -9,6 +9,7 @@
 #import "BlogSplitViewDetailViewController.h"
 #import "CPopoverManager.h"
 #import "UIViewController_iPadExtensions.h"
+#import "WelcomeViewController.h"
 
 @interface WordPressAppDelegate (Private)
 
@@ -30,7 +31,7 @@
 static WordPressAppDelegate *wordPressApp = NULL;
 
 @synthesize window;
-@synthesize navigationController, alertRunning;
+@synthesize navigationController, alertRunning, welcomeViewController;
 @synthesize splitViewController, firstLaunchController;
 
 - (id)init {
@@ -61,6 +62,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
     [navigationController release];
     [window release];
     [dataManager release];
+	[welcomeViewController release];
     [super dealloc];
 }
 
@@ -94,6 +96,17 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 		if ([dataManager countOfBlogs] == 0) {
 			[blogsViewController showBlogDetailModalViewForNewBlogWithAnimation:NO];
+			WelcomeViewController *wViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
+			
+			[self setWelcomeViewController:wViewController];
+			
+			[wViewController release];
+			
+			UIView *controllersView = [welcomeViewController view];
+			
+			[window addSubview:controllersView];
+			
+			[window makeKeyAndVisible];
 		}
 
 		[blogsViewController release];
@@ -103,8 +116,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	else
 	{
 	[window addSubview:splitViewController.view];
-	[window makeKeyAndVisible];
-
 	if ([dataManager countOfBlogs] == 0)
 		{
 		self.firstLaunchController = [[[CFirstLaunchViewController alloc] initWithNibName:NULL bundle:NULL] autorelease];

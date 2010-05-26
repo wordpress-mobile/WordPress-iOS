@@ -2,10 +2,11 @@
 #import <Foundation/Foundation.h>
 #import "LocateXMLRPCViewController.h"
 
-@class BlogDataManager, WPSelectionTableViewController, BlogHTTPAuthenticationViewController;
+@class BlogDataManager, WPSelectionTableViewController, BlogHTTPAuthenticationViewController, WelcomeViewController;
 
 @interface EditBlogViewController : UIViewController <UITextFieldDelegate> {
     IBOutlet UIBarButtonItem *cancelBlogButton;
+	IBOutlet UIBarButtonItem *cancelSetupButton;
     IBOutlet UIBarButtonItem *saveBlogButton;
 
     IBOutlet UITableView *blogEditTable;
@@ -42,6 +43,7 @@
 
     NSDictionary *currentBlog;
 	
+	WelcomeViewController *welcomeViewController;
 	
 }
 
@@ -51,9 +53,12 @@
 @property (nonatomic, retain) NSDictionary *currentBlog;
 @property (nonatomic, retain) UITextField *blogURLTextField;
 
+@property (nonatomic, retain) WelcomeViewController *welcomeViewController;
+
 
 - (IBAction)saveBlog:(id)sender;
 - (IBAction)cancel:(id)sender;
+- (IBAction)cancelSetup:(id)sender;
 - (void)hideSpinner;
 - (void)showLocateXMLRPCModalViewWithAnimation:(BOOL)animate;
 - (void)setAuthEnabledText:(BOOL)authEnabled;

@@ -109,6 +109,13 @@
 		837576C411305C67002EAA27 /* gettingLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = 837576C111305C67002EAA27 /* gettingLocation.png */; };
 		837576C511305C67002EAA27 /* hasLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = 837576C211305C67002EAA27 /* hasLocation.png */; };
 		837576C611305C67002EAA27 /* getLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = 837576C311305C67002EAA27 /* getLocation.png */; };
+		8398EE3411ACE206000FE6E0 /* WebSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8398EE3111ACE206000FE6E0 /* WebSignupViewController.m */; };
+		8398EE3511ACE206000FE6E0 /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8398EE3311ACE206000FE6E0 /* WelcomeViewController.m */; };
+		8398EE9A11ACE63C000FE6E0 /* WebSignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8398EE9811ACE63C000FE6E0 /* WebSignupViewController.xib */; };
+		8398EE9B11ACE63C000FE6E0 /* WelcomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8398EE9911ACE63C000FE6E0 /* WelcomeViewController.xib */; };
+		8398EEA811ACE6F9000FE6E0 /* welcome_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 8398EEA511ACE6F9000FE6E0 /* welcome_bg.png */; };
+		8398EEA911ACE6F9000FE6E0 /* welcome_btn_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 8398EEA611ACE6F9000FE6E0 /* welcome_btn_normal.png */; };
+		8398EEAA11ACE6F9000FE6E0 /* welcome_btn_over.png in Resources */ = {isa = PBXBuildFile; fileRef = 8398EEA711ACE6F9000FE6E0 /* welcome_btn_over.png */; };
 		83A645D8112B8690000999A6 /* PostLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A645D6112B8690000999A6 /* PostLocationViewController.m */; };
 		83A645D9112B8690000999A6 /* PostLocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83A645D7112B8690000999A6 /* PostLocationViewController.xib */; };
 		83A64689112C5F75000999A6 /* PostSettingsHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A64688112C5F75000999A6 /* PostSettingsHelpViewController.m */; };
@@ -341,6 +348,15 @@
 		837576C111305C67002EAA27 /* gettingLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gettingLocation.png; sourceTree = "<group>"; };
 		837576C211305C67002EAA27 /* hasLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hasLocation.png; sourceTree = "<group>"; };
 		837576C311305C67002EAA27 /* getLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = getLocation.png; sourceTree = "<group>"; };
+		8398EE3011ACE206000FE6E0 /* WebSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSignupViewController.h; sourceTree = "<group>"; };
+		8398EE3111ACE206000FE6E0 /* WebSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebSignupViewController.m; sourceTree = "<group>"; };
+		8398EE3211ACE206000FE6E0 /* WelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeViewController.h; sourceTree = "<group>"; };
+		8398EE3311ACE206000FE6E0 /* WelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WelcomeViewController.m; sourceTree = "<group>"; };
+		8398EE9811ACE63C000FE6E0 /* WebSignupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WebSignupViewController.xib; sourceTree = "<group>"; };
+		8398EE9911ACE63C000FE6E0 /* WelcomeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WelcomeViewController.xib; sourceTree = "<group>"; };
+		8398EEA511ACE6F9000FE6E0 /* welcome_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = welcome_bg.png; sourceTree = "<group>"; };
+		8398EEA611ACE6F9000FE6E0 /* welcome_btn_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = welcome_btn_normal.png; sourceTree = "<group>"; };
+		8398EEA711ACE6F9000FE6E0 /* welcome_btn_over.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = welcome_btn_over.png; sourceTree = "<group>"; };
 		83A645D5112B8690000999A6 /* PostLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostLocationViewController.h; sourceTree = "<group>"; };
 		83A645D6112B8690000999A6 /* PostLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostLocationViewController.m; sourceTree = "<group>"; };
 		83A645D7112B8690000999A6 /* PostLocationViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PostLocationViewController.xib; path = Classes/PostLocationViewController.xib; sourceTree = "<group>"; };
@@ -730,6 +746,10 @@
 		AC34397B0E11443300E5D79B /* Blog */ = {
 			isa = PBXGroup;
 			children = (
+				8398EE3011ACE206000FE6E0 /* WebSignupViewController.h */,
+				8398EE3111ACE206000FE6E0 /* WebSignupViewController.m */,
+				8398EE3211ACE206000FE6E0 /* WelcomeViewController.h */,
+				8398EE3311ACE206000FE6E0 /* WelcomeViewController.m */,
 				03FF35C2100423A10066ED95 /* BlogViewController.h */,
 				03FF35C3100423A10066ED95 /* BlogViewController.m */,
 				28C286DF0D94DF7D0034E888 /* BlogsViewController.h */,
@@ -747,6 +767,9 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				8398EEA511ACE6F9000FE6E0 /* welcome_bg.png */,
+				8398EEA611ACE6F9000FE6E0 /* welcome_btn_normal.png */,
+				8398EEA711ACE6F9000FE6E0 /* welcome_btn_over.png */,
 				03FF79CF1144C54600DCFC6F /* RecentCommentButtonSelected.png */,
 				03FF79D01144C54600DCFC6F /* RecentCommentButtonDeselected.png */,
 				03FF762411445B1400DCFC6F /* ToolbarIconCamera.png */,
@@ -868,6 +891,8 @@
 				03FF35C4100423A10066ED95 /* BlogViewController.xib */,
 				AC2FB44B0E1D236A00DFE859 /* EditBlogViewController.xib */,
 				032BDCB510106E1B00E26F44 /* LocateXMLRPCViewController.xib */,
+				8398EE9811ACE63C000FE6E0 /* WebSignupViewController.xib */,
+				8398EE9911ACE63C000FE6E0 /* WelcomeViewController.xib */,
 			);
 			name = Blog;
 			sourceTree = "<group>";
@@ -1117,6 +1142,11 @@
 				45FA648D1159055E00DB50C4 /* firstrun-wholebutton-selected.png in Resources */,
 				45FA648F1159056A00DB50C4 /* firstrun-background.png in Resources */,
 				45FA6492115905A400DB50C4 /* firstrun-logo.png in Resources */,
+				8398EE9A11ACE63C000FE6E0 /* WebSignupViewController.xib in Resources */,
+				8398EE9B11ACE63C000FE6E0 /* WelcomeViewController.xib in Resources */,
+				8398EEA811ACE6F9000FE6E0 /* welcome_bg.png in Resources */,
+				8398EEA911ACE6F9000FE6E0 /* welcome_btn_normal.png in Resources */,
+				8398EEAA11ACE6F9000FE6E0 /* welcome_btn_over.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1207,6 +1237,8 @@
 				45F45AFD11614A0E0022D394 /* CDeviceSupport.m in Sources */,
 				45F45B3611614BA50022D394 /* CPopoverManager.m in Sources */,
 				458776B111623ED300906CEE /* UIViewController_iPadExtensions.m in Sources */,
+				8398EE3411ACE206000FE6E0 /* WebSignupViewController.m in Sources */,
+				8398EE3511ACE206000FE6E0 /* WelcomeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

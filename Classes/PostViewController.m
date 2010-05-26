@@ -491,7 +491,6 @@
 
 
 - (void)viewWillAppear:(BOOL)animated {
-	NSLog(@"inside PostViewController:viewWillAppear");
 	if (DeviceIsPad() == NO) {
 		if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
 			[postDetailEditController setTextViewHeight:202];

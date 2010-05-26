@@ -2,7 +2,9 @@
 #import "Constants.h"
 
 @class BlogDataManager;
-@class CFirstLaunchViewController;;
+@class CFirstLaunchViewController;
+@class WelcomeViewController;
+
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate> {
 @private
@@ -14,6 +16,8 @@
 	CFirstLaunchViewController *firstLaunchController;
     BOOL connectionStatus;
     BOOL alertRunning;
+	
+	WelcomeViewController *welcomeViewController;
 
     UIImageView *splashView;
 	NSMutableData *statsData;
@@ -26,6 +30,7 @@
 @property (readonly, nonatomic, retain) UINavigationController *detailNavigationController;
 @property (nonatomic, retain) CFirstLaunchViewController *firstLaunchController;
 @property (nonatomic, getter = isAlertRunning) BOOL alertRunning;
+@property (nonatomic, retain) WelcomeViewController *welcomeViewController;
 
 + (WordPressAppDelegate *)sharedWordPressApp;
 
