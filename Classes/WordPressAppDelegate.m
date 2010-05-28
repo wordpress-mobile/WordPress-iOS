@@ -393,23 +393,19 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void) checkIfStatsShouldRun {
-
 	//check if statsDate exists in user defaults, if not, add it and run stats since this is obviously the first time
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setObject:nil forKey:@"statsDate"];
 	if (![defaults objectForKey:@"statsDate"]){
-		//NSLog(@"not a statsDate in userdefaults");
 		NSDate *theDate = [NSDate date];
-		//NSLog(@"date %@", theDate);
 		[defaults setObject:theDate forKey:@"statsDate"];
 		[self runStats];
 	}else{
 		//if statsDate existed, check if it's 7 days since last stats run, if it is > 7 days, run stats
 		NSDate *statsDate = [defaults objectForKey:@"statsDate"];
-		//NSLog(@"statsDate %@", statsDate);
 			NSDate *today = [NSDate date];
 			NSTimeInterval difference = [today timeIntervalSinceDate:statsDate];
 			NSTimeInterval statsInterval = 7 * 24 * 60 * 60; //number of seconds in 30 days
-			//NSTimeInterval statsInterval = 1; //for testing and beta, if it's one second different, run again. will only happen on startup of app anyway...
 			if (difference > statsInterval) //if it's been more than 7 days since last stats run
 			{
 				[self runStats];
@@ -417,7 +413,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	}
 }
 
-- (void) runStats{
+- (void)runStats {
 	//generate and post the stats data
 	/*
 	 - device_uuid – A unique identifier to the iPhone/iPod that the app is installed on.
@@ -425,44 +421,28 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	 - language – language setting for the device. What does that look like? Is it EN or English?
 	 - os_version – the version of the iPhone/iPod OS for the device
 	 - num_blogs – number of blogs configured in the WP iPhone app
-
-	 NSString *deviceType = [UIDevice currentDevice].model;
-	 if([deviceType isEqualToString:@"iPhone"])
-	 // it's an iPhone
-
-	 NSString *deviceType = [UIDevice currentDevice].model;
-	 NSLog(@"device string from currentDevice.model %@", deviceType);
-
-	 */
-
-
-
+	 - device_model - kind of device on which the WP iPhone app is installed
+	*/
+	
+	NSString *deviceModel = [UIDevice currentDevice].model;
 	NSString *deviceuuid = [[UIDevice currentDevice] uniqueIdentifier];
-
 	NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
-	NSString *appversion = [info objectForKey:@"CFBundleVersion"];
-	[appversion stringByUrlEncoding];
-
+	NSString *appversion = [[info objectForKey:@"CFBundleVersion"] stringByUrlEncoding];
 	NSLocale *locale = [NSLocale currentLocale];
-
-	NSString *language = [locale objectForKey: NSLocaleIdentifier];
-	[language stringByUrlEncoding];
-
-	NSString *osversion = [[UIDevice currentDevice] systemVersion];
-	[osversion stringByUrlEncoding];
-
+	NSString *language = [[locale objectForKey: NSLocaleIdentifier] stringByUrlEncoding];
+	NSString *osversion = [[[UIDevice currentDevice] systemVersion] stringByUrlEncoding];
 	int num_blogs = [[BlogDataManager sharedDataManager] countOfBlogs];
-	NSString *numblogs = [NSString stringWithFormat:@"%d",num_blogs];
-	[numblogs stringByUrlEncoding];
-
+	NSString *numblogs = [[NSString stringWithFormat:@"%d", num_blogs] stringByUrlEncoding];
 
 	//NSLog(@"UUID %@", deviceuuid);
 	//NSLog(@"app version %@",appversion);
 	//NSLog(@"language %@",language);
 	//NSLog(@"os_version, %@", osversion);
 	//NSLog(@"count of blogs %@",numblogs);
+	//NSLog(@"device_model: %@", deviceModel);
 
 	//handle data coming back
+	// ** TODO @frsh: This needs to be completely redone with a custom helper class. ***
 	[statsData release];
 	statsData = [[NSMutableData alloc] init];
 
@@ -477,26 +457,17 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 
 
-	[postBody appendData:[[NSString stringWithFormat:@"device_uuid=%@&app_version=%@&language=%@&os_version=%@&num_blogs=%@",
+	[postBody appendData:[[NSString stringWithFormat:@"device_uuid=%@&app_version=%@&language=%@&os_version=%@&num_blogs=%@&device_model=%@",
 										deviceuuid,
 										 appversion,
 											language,
 										  osversion,
-										   numblogs] dataUsingEncoding:NSUTF8StringEncoding]];
+										   numblogs,
+											deviceModel] dataUsingEncoding:NSUTF8StringEncoding]];
 	NSString *htmlStr = [[[NSString alloc] initWithData:postBody encoding:NSUTF8StringEncoding] autorelease];
-	//NSLog(@"htmlStr %@", htmlStr);
 	[theRequest setHTTPBody:postBody];
 
-	NSURLConnection *conn=[[[NSURLConnection alloc] initWithRequest:theRequest delegate:self]autorelease];
-	if (conn)
-	{
-		//NSLog(@"inside 'if conn' so connection should exist and inside else should not print to log");
-	}
-	else
-	{
-		//NSLog(@"inside else - implies the 'download' could not be made");
-	}
-
+	NSURLConnection *conn = [[[NSURLConnection alloc] initWithRequest:theRequest delegate:self] autorelease];
 }
 
 #pragma mark NSURLConnection callbacks
@@ -506,7 +477,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	//NSLog(@"did recieve data");
 }
 
--(void) connection:(NSURLConnection *)connection
+-(void)connection:(NSURLConnection *)connection
   didFailWithError: (NSError *)error {
 	//NSLog(@"didFailWithError");
 	UIAlertView *errorAlert = [[UIAlertView alloc]
@@ -531,14 +502,11 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	//need to break this up based on the \n
 
 	[statsDataString release];
-
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
 	//NSLog (@"connectionDidReceiveResponse %@", response);
 }
-
-
 
 - (void)connection:(NSURLConnection *)connection
 didReceiveAuthenticationChallenge:
@@ -546,18 +514,12 @@ didReceiveAuthenticationChallenge:
 
 }
 
-
-
-
-
 - (void) handleAuthenticationOKForChallenge:
 (NSURLAuthenticationChallenge *) aChallenge
 								   withUser: (NSString*) username
 								   password: (NSString*) password {
 
 }
-
-
 
 - (void) handleAuthenticationCancelForChallenge: (NSURLAuthenticationChallenge *) aChallenge {
 
@@ -622,8 +584,5 @@ if (UIInterfaceOrientationIsPortrait(self.masterNavigationController.interfaceOr
 	[[[CPopoverManager instance] currentPopoverController] presentPopoverFromBarButtonItem:theNavigationItem.leftBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 	}
 }
-
-
-
 
 @end
