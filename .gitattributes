@@ -98,6 +98,8 @@ Classes/ResourcesTableViewSection.h -text
 Classes/ResourcesTableViewSection.m -text
 Classes/RotatingNavigationController.h -text
 Classes/RotatingNavigationController.m -text
+Classes/UIDevice-Hardware.h -text
+Classes/UIDevice-Hardware.m -text
 Classes/UIImage+INResizeImageAllocator.h -text
 Classes/UIImage+INResizeImageAllocator.m -text
 Classes/UIViewController+WPAnimation.h -text

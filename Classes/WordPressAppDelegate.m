@@ -395,6 +395,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 - (void) checkIfStatsShouldRun {
 	//check if statsDate exists in user defaults, if not, add it and run stats since this is obviously the first time
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	//[defaults setObject:nil forKey:@"statsDate"];		// Uncomment to debug stats
 	if (![defaults objectForKey:@"statsDate"]){
 		NSDate *theDate = [NSDate date];
 		[defaults setObject:theDate forKey:@"statsDate"];
@@ -423,7 +424,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	 - device_model - kind of device on which the WP iPhone app is installed
 	*/
 	
-	NSString *deviceModel = [[UIDevice currentDevice].model stringByUrlEncoding];
+	NSString *deviceModel = [[[UIDevice currentDevice] platformString] stringByUrlEncoding];
 	NSString *deviceuuid = [[UIDevice currentDevice] uniqueIdentifier];
 	NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
 	NSString *appversion = [[info objectForKey:@"CFBundleVersion"] stringByUrlEncoding];

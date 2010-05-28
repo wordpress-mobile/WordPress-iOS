@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "Constants.h"
+#import "UIDevice-Hardware.h"
 
 @class BlogDataManager;
 @class CFirstLaunchViewController;
