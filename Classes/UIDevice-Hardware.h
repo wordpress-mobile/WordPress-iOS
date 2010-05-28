@@ -1,5 +1,7 @@
 #import <UIKit/UIKit.h>
 
+#define IPHONE_SIMULATOR_NAMESTRING @"iPhone Simulator"
+#define IPAD_SIMULATOR_NAMESTRING @"iPad Simulator"
 #define IPHONE_1G_NAMESTRING @"iPhone 1G"
 #define IPHONE_3G_NAMESTRING @"iPhone 3G"
 #define IPHONE_3GS_NAMESTRING @"iPhone 3GS"

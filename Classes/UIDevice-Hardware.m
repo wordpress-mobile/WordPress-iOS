@@ -11,6 +11,7 @@
  iPod1,1   -> iPod touch 1G 
  iPod2,1   -> iPod touch 2G 
  iPad1,1   -> iPad 1G
+ i386	   -> iPhone/iPad Simulator
  */
 
 - (NSString *) platform
@@ -34,6 +35,12 @@
 	if ([platform isEqualToString:@"iPod1,1"])   return IPOD_1G_NAMESTRING;
 	if ([platform isEqualToString:@"iPod2,1"])   return IPOD_2G_NAMESTRING;
 	if ([platform isEqualToString:@"iPad1,1"])   return IPAD_1G_NAMESTRING;
+	if ([platform isEqualToString:@"i386"]) {
+		if(DeviceIsPad())
+			return IPAD_SIMULATOR_NAMESTRING;
+		else
+			return IPHONE_SIMULATOR_NAMESTRING;
+	}
 	return NULL;
 }
 @end
