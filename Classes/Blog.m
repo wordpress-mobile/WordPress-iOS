@@ -29,22 +29,18 @@
 }
 
 #pragma mark -
-#pragma mark psudo instance variables
-
+#pragma mark Pseudo instance variables
 - (UIImage *)favicon {
     NSDictionary *blog = [[BlogDataManager sharedDataManager] blogAtIndex:index];
-
     UIImage *faviconImage = nil;
     NSString *fileName = [NSString stringWithFormat:@"favicon-%@-%@.png", [blog objectForKey:kBlogHostName], [blog objectForKey:kBlogId]];
-
-    NSLog(@"filename: %@", fileName);
-
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *faviconFilePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:fileName];
 
     if ([[NSFileManager defaultManager] fileExistsAtPath:faviconFilePath] == YES) {
         faviconImage = [UIImage imageWithContentsOfFile:faviconFilePath];
-    } else {
+    }
+	else {
         NSString *faviconURL = [[NSString alloc] initWithFormat:@"%@/favicon.ico", [blog valueForKey:@"url"]];
         faviconImage = [[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:faviconURL]]] scaleImageToSize:CGSizeMake(16.0f, 16.0f)];
         [faviconURL release];

@@ -8,21 +8,14 @@
 
 #import "IncrementPost.h"
 
-
-
-
 @interface IncrementPost (private)
 
 - (void)loadBlogData;
 
 @end
 
-
 @implementation IncrementPost
-
-
 @synthesize currentBlog, currentPost, numberOfPostsCurrentlyLoaded, next10PostIdArray, dm;
-
 
 #pragma mark -
 #pragma mark Initialize and dealloc
@@ -33,7 +26,6 @@
 		[self loadBlogData];
 	 
     }
-	
     return self;
 }
 
@@ -48,23 +40,16 @@
 #pragma mark -
 #pragma mark init methods
 
-
 - (void)loadBlogData {
- dm = [BlogDataManager sharedDataManager];
- self.currentBlog = dm.currentBlog;
- self.currentPost = dm.currentPost;
-
- }
- 
- 
-
+	dm = [BlogDataManager sharedDataManager];
+	self.currentBlog = dm.currentBlog;
+	self.currentPost = dm.currentPost;
+}
 
 #pragma mark -
 #pragma mark Get More Posts/Refresh Posts
 
-
 -(BOOL)loadOlderPosts {
-	
 	//Code for Pages should be very similar.  Any point in refactoring to have one method work for both?
 		//Pro: it may be more elegant with one place to handle both...
 		//Con: Posts and Pages are different.  
@@ -81,14 +66,9 @@
 	[newPostTitlesList sortUsingDescriptors:[NSArray arrayWithObject:sd]];
 	[sd release];
 	
-	NSLog(@"newPostTitlesList sub 0 %@", newPostTitlesList);
-	
-	
- 
- //get the mt.getRecentPostTitles (post metadata) or whatever it was for 10 + numberOfPostsToDisplay
- 
- //  ------------------------- invoke metaWeblog.getRecentPosts
- [currentBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
+	//get the mt.getRecentPostTitles (post metadata) or whatever it was for 10 + numberOfPostsToDisplay
+	//  ------------------------- invoke metaWeblog.getRecentPosts
+	[currentBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
 	// Parameters
     NSString *username = [currentBlog valueForKey:@"username"];
 	NSString *pwd =	[dm getPasswordFromKeychainInContextOfCurrentBlog:currentBlog];
@@ -97,33 +77,26 @@
 	NSNumber *totalPosts = [currentBlog valueForKey:@"totalPosts"];
 	//CAN I USE totalposts here???
 	int previousNumberOfPosts = [totalPosts intValue];
-	NSLog(@"previous number of posts %d", previousNumberOfPosts);
 	NSNumber *userSetMaxToFetch = [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:3] intValue]];
 	int max = previousNumberOfPosts + ([userSetMaxToFetch intValue] + 50);
 	int loadLimit = [userSetMaxToFetch intValue];
 	NSNumber *numberOfPostsToGet = [NSNumber numberWithInt:max];
-	
+	XMLRPCRequest *postsMetadata = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
+	[postsMetadata setMethod:@"mt.getRecentPostTitles"
+	withObjects:[NSArray arrayWithObjects:blogid, username, pwd, numberOfPostsToGet, nil]];
 
-	
- XMLRPCRequest *postsMetadata = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
- [postsMetadata setMethod:@"mt.getRecentPostTitles"
-  withObjects:[NSArray arrayWithObjects:blogid, username, pwd, numberOfPostsToGet, nil]];
-  
- id response = [dm executeXMLRPCRequest:postsMetadata byHandlingError:YES];
-	NSLog(@"the response %@", response);
-	//NSLog(@"the id, %@",postID);
- [postsMetadata release];
- 
- // TODO:
- // Check for fault
- // check for nil or empty response
- // provide meaningful messge to user
- if ((!response) || !([response isKindOfClass:[NSArray class]])) {
- [currentBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
- //		[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
- return NO;
- }
+	id response = [dm executeXMLRPCRequest:postsMetadata byHandlingError:YES];
+	[postsMetadata release];
 
+	// TODO:
+	// Check for fault
+	// check for nil or empty response
+	// provide meaningful messge to user
+	if ((!response) || !([response isKindOfClass:[NSArray class]])) {
+		[currentBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+		//		[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
+		return NO;
+	}
 
 //parse the returned data for the "new" post ids
 //these will be the ids of posts that are "deeper" in the array than previousNumberOfPosts/@"totalPosts"
@@ -135,8 +108,6 @@
 		//TODO: JOHNB popup an alert view that says "All Posts have Been retrieved"
 		return NO;
 	}
-	
-
 	
 	NSEnumerator *postsEnum = [response objectEnumerator];
 	//NSMutableArray *onlyOlderPostsArray = [[NSMutableArray alloc] init];
@@ -162,9 +133,6 @@
 //	NSDate *lastKnownCreatedAt = [postGMTDate addTimeInterval:(secs * +1)];
 	
 	NSDate *lastKnownCreatedAt = [[newPostTitlesList objectAtIndex:0] valueForKey:@"date_created_gmt"];
-	
-	NSLog(@"lastKnownCreatedAt %@, postid, %@", lastKnownCreatedAt, postID2);
-	
 	//newPostCount = 0;
 	while (postMetadataDict = [postsEnum nextObject]) {
 		//newPostCount ++;
@@ -177,9 +145,6 @@
 		NSDate *newCreatedAt = [postGMTDate addTimeInterval:(secs * +1)];
 
 		//NSDate *newCreatedAt = [postMetadataDict valueForKey:@"dateCreated"];
-		NSLog(@"postID %@", postID);
-		NSLog(@"lastPostIDInt %d", lastPostIDInt);
-		NSLog(@"postID2 %@", postID2);
 		
 		//if the recently loaded metadata contains an id (postIDInt) that is greater than the last stored post id (lastPostIDInt)
 		//then ignore it and move to the next object, because we're only updating older items here, not items more recent
@@ -219,10 +184,9 @@
 		}
 	}
 	
-	NSLog(@"onlyOlderPostsArray %@", onlyOlderPostsArray);
-	NSLog(@"older posts array count %d", onlyOlderPostsArray.count);
+	//NSLog(@"onlyOlderPostsArray %@", onlyOlderPostsArray);
+	//NSLog(@"older posts array count %d", onlyOlderPostsArray.count);
 	
-
 	NSEnumerator *postsEnum2 = [onlyOlderPostsArray objectEnumerator];
 	//NSEnumerator *postsEnum2 = [response objectEnumerator];
 	//newPostCount = 0;
@@ -231,9 +195,9 @@
 		postID = [postMetadataDict valueForKey:@"postid"];
 		//postIDInt = [postID intValue];
 		//int oldPostCount = onlyOlderPostsArray.count;
-		NSLog(@"postID %@", postID);
-		NSLog(@"lastPostIDInt %d", lastPostIDInt);
-		NSLog(@"postID2 %@", postID2);
+		//NSLog(@"postID %@", postID);
+		//NSLog(@"lastPostIDInt %d", lastPostIDInt);
+		//NSLog(@"postID2 %@", postID2);
 		
 		//if the recently loaded metadata contains an id (postIDInt) that is greater than the last stored post id (lastPostIDInt)
 		//then ignore it and move to the next object, because we're only updating older items here, not items more recent
@@ -246,9 +210,9 @@
 		//if the old count of posts is less than the count of cycles through this loop, we're into the "new" data
 		//less than total count of the returned array so we don't fall off the end
 		//TODO: JOHNB TEST that a < 10 number of posts at the tail end of the total posts for a blog will pass through correctly
-		NSLog(@"previousNumberofPosts %d", previousNumberOfPosts);
-		NSLog(@"newPostCount  : %d", newPostCount);
-		NSLog(@"metadataCount  : %d", metadataCount);
+		//NSLog(@"previousNumberofPosts %d", previousNumberOfPosts);
+		//NSLog(@"newPostCount  : %d", newPostCount);
+		//NSLog(@"metadataCount  : %d", metadataCount);
 		
 		if (previousNumberOfPosts < newPostCount && newPostCount <= (previousNumberOfPosts + loadLimit ) ) {
 			//the above line probably gets me off in my array by the same number of posts added to the blog via a browser
@@ -277,7 +241,6 @@
 			[dict setValue:@"metaWeblog.getPost" forKey:@"methodName"];
 			//make an array with the "getPost" values and put it into the dict in the methodName key
 		    [dict setValue:[NSArray arrayWithObjects:postID, username, pwd, nil] forKey:@"params"];
-			NSLog(@"dict! %@", dict);
 			//add the dict to the MutableArray that will get sent in the XMLRPC request
 			[getMorePostsArray addObject:dict];
 			[dict release];
@@ -286,20 +249,20 @@
 	}
 	[onlyOlderPostsArray release];
 //ask for the next 10 posts via system.multicall using getMorePostsArray			
-		XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
-		[postsReq setMethod:@"system.multicall" withObject:getMorePostsArray];
-		NSArray *nextTenPosts = [dm executeXMLRPCRequest:postsReq byHandlingError:YES];
-		[postsReq release];
-	
-		//if error, turn off kIsSyncProcessRunning and return
-		if ((!nextTenPosts) || !([nextTenPosts isKindOfClass:[NSArray class]])) {
-		[currentBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-		//			[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
-		[getMorePostsArray release];
-		return NO;
-		} else {
-		//here is where we add data to the posts and write to the filesystem, and sort that list
-		//	///AFTER I HAVE AN ARRAY OF POST DICTS...
+	XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
+	[postsReq setMethod:@"system.multicall" withObject:getMorePostsArray];
+	NSArray *nextTenPosts = [dm executeXMLRPCRequest:postsReq byHandlingError:YES];
+	[postsReq release];
+
+	//if error, turn off kIsSyncProcessRunning and return
+	if ((!nextTenPosts) || !([nextTenPosts isKindOfClass:[NSArray class]])) {
+	[currentBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+	//			[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
+	[getMorePostsArray release];
+	return NO;
+	} else {
+	//here is where we add data to the posts and write to the filesystem, and sort that list
+	//	///AFTER I HAVE AN ARRAY OF POST DICTS...
 	
     // loop through each post
     // - add local_status, blogid and bloghost to the post
@@ -309,19 +272,17 @@
     // Sort and Save postTitles list
     // Update blog counts and save blogs list
 	
-    // get post titles from file
-//	NSMutableArray *newPostTitlesList;
-//    NSString *postTitlesPath = [dm pathToPostTitles:currentBlog];
-    NSFileManager *fm = [NSFileManager defaultManager];
-//	
-//    if ([fm fileExistsAtPath:postTitlesPath]) {
-//        newPostTitlesList = [NSMutableArray arrayWithContentsOfFile:postTitlesPath];
-//    } else {
-//        newPostTitlesList = [NSMutableArray arrayWithCapacity:30];
-//    }
+	// get post titles from file
+	//	NSMutableArray *newPostTitlesList;
+	//    NSString *postTitlesPath = [dm pathToPostTitles:currentBlog];
+	NSFileManager *fm = [NSFileManager defaultManager];
+	//	
+	//    if ([fm fileExistsAtPath:postTitlesPath]) {
+	//        newPostTitlesList = [NSMutableArray arrayWithContentsOfFile:postTitlesPath];
+	//    } else {
+	//        newPostTitlesList = [NSMutableArray arrayWithCapacity:30];
+	//    }
 	//[newPostTitlesList removeAllObjects];
-			
-			
 			
     // loop thru posts list and massage new posts data... see comments throughout.
     NSArray *singlePostArray;
@@ -350,11 +311,10 @@
         //		 yes: set the local-status to 'edit'
         //		 no: set the local_status to 'original'
         // no: increment new posts count
-		
         NSString *pathToPost = [dm getPathToPost:post forBlog:currentBlog];
-				
         if ([fm fileExistsAtPath:pathToPost]) {
-       } else {
+		}
+		else {
             [post setValue:@"original" forKey:@"local_status"];
             newPostCount++;
         }
@@ -368,12 +328,10 @@
 		//NSLog(@"postTitle %@", postTitle);
 		//NSLog(@"posttitleslist count is: %d", [newPostTitlesList count]);
 		
-	
 		//add the new post title to the list (shouldn't need to delete as all in here should be new)
         [newPostTitlesList addObject:postTitle];
 		//NSLog(@"newposttitleslist %@", newPostTitlesList);
     }
-	
 
     // sort and save the postTitles list
     NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
@@ -408,8 +366,6 @@
 	}else {
 		return YES;
 	}
-
-	
 }
 
 -(BOOL)loadOlderPages {

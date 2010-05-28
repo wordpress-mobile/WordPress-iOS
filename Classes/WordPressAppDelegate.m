@@ -423,7 +423,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	 - device_model - kind of device on which the WP iPhone app is installed
 	*/
 	
-	NSString *deviceModel = [UIDevice currentDevice].model;
+	NSString *deviceModel = [[UIDevice currentDevice].model stringByUrlEncoding];
 	NSString *deviceuuid = [[UIDevice currentDevice] uniqueIdentifier];
 	NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
 	NSString *appversion = [[info objectForKey:@"CFBundleVersion"] stringByUrlEncoding];

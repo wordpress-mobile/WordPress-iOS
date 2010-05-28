@@ -4573,7 +4573,6 @@ editBlogViewController, currentLocation;
 
 // sync comments for a given blog
 - (BOOL)syncCommentsForBlog:(id)blog showErrors:(BOOL)showErrors{
-	
     // Parameters
     NSString *username = [blog valueForKey:@"username"];
     //NSString *pwd = [blog valueForKey:@"pwd"];
@@ -4596,7 +4595,7 @@ editBlogViewController, currentLocation;
 	else{
 		commentsReceived = [self executeXMLRPCRequest:postsReq byHandlingError:NO];
 	}
-	NSLog(@"TheARrayt: %@", commentsReceived);
+	//NSLog(@"TheARrayt: %@", commentsReceived);
     [postsReq release];
 	
     // TODO:
