@@ -395,7 +395,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 - (void) checkIfStatsShouldRun {
 	//check if statsDate exists in user defaults, if not, add it and run stats since this is obviously the first time
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setObject:nil forKey:@"statsDate"];
 	if (![defaults objectForKey:@"statsDate"]){
 		NSDate *theDate = [NSDate date];
 		[defaults setObject:theDate forKey:@"statsDate"];
