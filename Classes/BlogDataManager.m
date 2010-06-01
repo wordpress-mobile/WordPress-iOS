@@ -2648,7 +2648,10 @@ editBlogViewController, currentLocation;
 }
 
 - (NSDictionary *)postTitleAtIndex:(NSUInteger)theIndex {
-    return [postTitlesList objectAtIndex:theIndex];
+	if(postTitlesList.count > 0)
+		return [postTitlesList objectAtIndex:theIndex];
+	else
+		return 0;
 }
 
 - (NSDictionary *)commentTitleAtIndex:(NSUInteger)theIndex {
