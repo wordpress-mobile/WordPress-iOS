@@ -165,9 +165,12 @@ if ([tabBarController.selectedViewController respondsToSelector:@selector(resele
 		vcName = @"Pages";
 		indexPath = pagesViewController.selectedIndexPath;
 	}
-	[[NSUserDefaults standardUserDefaults] setObject:vcName forKey:@"WPSelectedContentType"];
-	[[NSUserDefaults standardUserDefaults] setInteger:indexPath.section forKey:@"WPSelectedIndexPathSection"];
-	[[NSUserDefaults standardUserDefaults] setInteger:indexPath.row forKey:@"WPSelectedIndexPathRow"];
+	
+	if((vcName != nil) && (indexPath != nil)) {
+		[[NSUserDefaults standardUserDefaults] setObject:vcName forKey:@"WPSelectedContentType"];
+		[[NSUserDefaults standardUserDefaults] setInteger:indexPath.section forKey:@"WPSelectedIndexPathSection"];
+		[[NSUserDefaults standardUserDefaults] setInteger:indexPath.row forKey:@"WPSelectedIndexPathRow"];
+	}
 }
 
 - (void)restoreState;
