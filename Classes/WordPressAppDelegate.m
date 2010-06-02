@@ -137,7 +137,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newBlogNotification:) name:@"NewBlogAdded" object:nil];
 	[self performSelector:@selector(showPopoverIfNecessary) withObject:nil afterDelay:0.1];
 	}
-
+	[window makeKeyAndVisible];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
