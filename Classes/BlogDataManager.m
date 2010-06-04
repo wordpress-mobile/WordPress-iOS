@@ -285,7 +285,7 @@ editBlogViewController, currentLocation;
 	}
 	
     NSError *err = [self errorWithResponse:userInfoResponse shouldHandle:shouldHandleFalg];
-	
+
     if (err)
         return err;
 	
@@ -1156,10 +1156,8 @@ editBlogViewController, currentLocation;
     // 5. get Categories
     // 6. get Statuses
 	
-	int monkey = 3;
 	//get the password from keychain as we're not passing it in on the method call now
 	NSString *pwd = [self getBlogPasswordFromKeychainWithUsername:username andBlogName:url];
-	//NSString *pwd = @"wp4eva";
 	
     // Can have multiple usernames registered for the same blog
     NSString *blogHost = [NSString stringWithFormat:@"%@_%@", username, url];
@@ -1290,25 +1288,25 @@ editBlogViewController, currentLocation;
     // ------------------------------invoke blogger.getUsersBlogs
 	
     XMLRPCRequest *reqUsersBlogs = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
-    [reqUsersBlogs setMethod:@"wp.getUsersBlogs" withObjects:[NSArray arrayWithObjects:username, pwd, nil]];
-	NSLog(@"reqUsersBlogs %@", reqUsersBlogs);
+	[reqUsersBlogs setMethod:@"wp.getUsersBlogs" withObjects:[NSArray arrayWithObjects:username, pwd, nil]];
+	//NSLog(@"reqUsersBlogs %@", reqUsersBlogs);
 	
 	
     // we are expecting an array to be returned in the response with one dictionary containing
     // the blog located by url used at login
     // If there is a fault, the returned object will be a dictionary with a fault element.
     // If the returned object is a NSArray, the, the object at index 0 will be the dictionary with blog info fields
-	NSLog(@"just before attempted getUsersBlogs");
+	//NSLog(@"just before attempted getUsersBlogs");
     NSArray *usersBlogsResponseArray = [self executeXMLRPCRequest:reqUsersBlogs byHandlingError:YES];
-	NSLog(@"just attempted getUsersBlogs");
+	//NSLog(@"just attempted getUsersBlogs");
 	
 	[self printArrayToLog:usersBlogsResponseArray andArrayName:@"this is usersBlogsResponseArray from -refreshCurrentUser in BlogDataManager"];
-    NSLog(@"just before releasing reqUsersBlogs");
+    //NSLog(@"just before releasing reqUsersBlogs");
 	[reqUsersBlogs release];
     if (![usersBlogsResponseArray isKindOfClass:[NSArray class]])
         return NO;
 	
-	// loop through the user's accounts and save the blog records
+    // loop through the user's accounts and save the blog records
 	for(NSDictionary *usersBlogs in usersBlogsResponseArray) {
 		NSString *tempString = [usersBlogs valueForKey:@"blogName"];
 		NSLog([@"Setting up blog: " stringByAppendingString:tempString]);
@@ -2648,7 +2646,7 @@ editBlogViewController, currentLocation;
 }
 
 - (NSDictionary *)postTitleAtIndex:(NSUInteger)theIndex {
-	if(postTitlesList.count > 0)
+	if(postTitlesList.count >= theIndex)
 		return [postTitlesList objectAtIndex:theIndex];
 	else
 		return 0;
@@ -3335,7 +3333,7 @@ editBlogViewController, currentLocation;
     [self generateTemplateForBlog:aBlog];
 	
     if ([[currentBlog valueForKey:kSupportsPagesAndComments] boolValue]) {
-        [self syncCommentsForBlog:aBlog showErrors:TRUE];
+        [self syncCommentsForBlog:aBlog];
         // #291 // [self syncPagesForBlog:aBlog];
     }
 	
@@ -3360,7 +3358,7 @@ editBlogViewController, currentLocation;
     [self generateTemplateForBlog:aBlog];
 	
     if ([[currentBlog valueForKey:kSupportsPagesAndComments] boolValue]) {
-        [self syncCommentsForBlog:aBlog showErrors:FALSE];
+        //[self syncCommentsForBlog:aBlog showErrors:FALSE];
         // #291 // [self syncPagesForBlog:aBlog];
     }
 	
@@ -4567,7 +4565,7 @@ editBlogViewController, currentLocation;
 - (BOOL)syncCommentsForCurrentBlog {
     [currentBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
 	
-    [self syncCommentsForBlog:currentBlog showErrors:TRUE];
+    [self syncCommentsForBlog:currentBlog];
     [currentBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 	
     [self makeBlogAtIndexCurrent:currentBlogIndex];
@@ -4575,7 +4573,7 @@ editBlogViewController, currentLocation;
 }
 
 // sync comments for a given blog
-- (BOOL)syncCommentsForBlog:(id)blog showErrors:(BOOL)showErrors{
+- (BOOL)syncCommentsForBlog:(id)blog {
     // Parameters
     NSString *username = [blog valueForKey:@"username"];
     //NSString *pwd = [blog valueForKey:@"pwd"];
@@ -4591,14 +4589,9 @@ editBlogViewController, currentLocation;
     XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
     [postsReq setMethod:[NSString stringWithFormat:@"wp.getComments"]
 			withObjects:[NSArray arrayWithObjects:blogid, username, pwd, commentsStructure, nil]];
-	NSMutableArray *commentsReceived;
-	if (showErrors){
-		commentsReceived = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
-	}
-	else{
-		commentsReceived = [self executeXMLRPCRequest:postsReq byHandlingError:NO];
-	}
-	//NSLog(@"TheARrayt: %@", commentsReceived);
+	
+    NSMutableArray *commentsReceived = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
+	NSLog(@"commentsReceived: %@", commentsReceived);
     [postsReq release];
 	
     // TODO:
@@ -4639,6 +4632,8 @@ editBlogViewController, currentLocation;
     NSString *pathToCommentTitles = [self pathToCommentTitles:blog];
     [defaultFileManager removeItemAtPath:pathToCommentTitles error:nil];
     [commentTitlesArray writeToFile:pathToCommentTitles atomically:YES];
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentRefreshNotification" object:nil]; 
 	
     //[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
     return YES;
@@ -4849,7 +4844,7 @@ editBlogViewController, currentLocation;
     [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 	
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentRefreshNotification" object:nil]; 
-	
+
     return YES;
 }
 

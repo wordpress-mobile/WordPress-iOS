@@ -6,7 +6,6 @@
 @class CFirstLaunchViewController;
 @class WelcomeViewController;
 
-
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate> {
 @private
     BlogDataManager *dataManager;
@@ -17,7 +16,6 @@
 	CFirstLaunchViewController *firstLaunchController;
     BOOL connectionStatus;
     BOOL alertRunning;
-	
 	WelcomeViewController *welcomeViewController;
 
     UIImageView *splashView;

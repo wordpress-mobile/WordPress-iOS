@@ -31,8 +31,8 @@
 static WordPressAppDelegate *wordPressApp = NULL;
 
 @synthesize window;
-@synthesize navigationController, alertRunning, welcomeViewController;
-@synthesize splitViewController, firstLaunchController;
+@synthesize navigationController, alertRunning;
+@synthesize splitViewController, firstLaunchController, welcomeViewController;
 
 - (id)init {
     if (!wordPressApp) {
@@ -59,10 +59,10 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)dealloc {
+	[welcomeViewController release];
     [navigationController release];
     [window release];
     [dataManager release];
-	[welcomeViewController release];
     [super dealloc];
 }
 
@@ -87,8 +87,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		self.navigationController = aNavigationController;
 
 		[window addSubview:[navigationController view]];
-		[window makeKeyAndVisible];
-
 
 		if ([self shouldLoadBlogFromUserDefaults]) {
 			[blogsViewController showBlog:NO];
@@ -96,47 +94,43 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 		if ([dataManager countOfBlogs] == 0) {
 			[blogsViewController showBlogDetailModalViewForNewBlogWithAnimation:NO];
+			
 			WelcomeViewController *wViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
-			
 			[self setWelcomeViewController:wViewController];
-			
 			[wViewController release];
-			
 			UIView *controllersView = [welcomeViewController view];
-			
 			[window addSubview:controllersView];
-			
-			[window makeKeyAndVisible];
 		}
 
 		[blogsViewController release];
-
 		[self showSplashView];
 	}
 	else
 	{
-	[window addSubview:splitViewController.view];
-	if ([dataManager countOfBlogs] == 0)
+		[window addSubview:splitViewController.view];
+		[window makeKeyAndVisible];
+
+		if ([dataManager countOfBlogs] == 0)
 		{
-		self.firstLaunchController = [[[CFirstLaunchViewController alloc] initWithNibName:NULL bundle:NULL] autorelease];
-		UINavigationController *modalNavigationController = [[UINavigationController alloc] initWithRootViewController:self.firstLaunchController];
-		if (DeviceIsPad() == YES) {
-			modalNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-			modalNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-			}
-		[splitViewController presentModalViewController:modalNavigationController animated:YES];
-		[modalNavigationController release];
+			self.firstLaunchController = [[[CFirstLaunchViewController alloc] initWithNibName:NULL bundle:NULL] autorelease];
+			UINavigationController *modalNavigationController = [[UINavigationController alloc] initWithRootViewController:self.firstLaunchController];
+			if (DeviceIsPad() == YES) {
+				modalNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+				modalNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+				}
+			[splitViewController presentModalViewController:modalNavigationController animated:YES];
+			[modalNavigationController release];
 		}
-	else if ([dataManager countOfBlogs] == 1)
+		else if ([dataManager countOfBlogs] == 1)
 		{
-		[dataManager makeBlogAtIndexCurrent:0];
+			[dataManager makeBlogAtIndexCurrent:0];
 		}
 
-	NSLog(@"? %d", [self.splitViewController shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationLandscapeLeft]);
+		NSLog(@"? %d", [self.splitViewController shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationLandscapeLeft]);
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newBlogNotification:) name:@"NewBlogAdded" object:nil];
-	[self performSelector:@selector(showPopoverIfNecessary) withObject:nil afterDelay:0.1];
-	}
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newBlogNotification:) name:@"NewBlogAdded" object:nil];
+		[self performSelector:@selector(showPopoverIfNecessary) withObject:nil afterDelay:0.1];
+		}
 	[window makeKeyAndVisible];
 }
 
@@ -395,7 +389,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 - (void) checkIfStatsShouldRun {
 	//check if statsDate exists in user defaults, if not, add it and run stats since this is obviously the first time
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	//[defaults setObject:nil forKey:@"statsDate"];  // Uncomment line to force stats.
+	//[defaults setObject:nil forKey:@"statsDate"];  // Uncomment this line to force stats.
 	if (![defaults objectForKey:@"statsDate"]){
 		NSDate *theDate = [NSDate date];
 		[defaults setObject:theDate forKey:@"statsDate"];
@@ -403,13 +397,13 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	}else{
 		//if statsDate existed, check if it's 7 days since last stats run, if it is > 7 days, run stats
 		NSDate *statsDate = [defaults objectForKey:@"statsDate"];
-			NSDate *today = [NSDate date];
-			NSTimeInterval difference = [today timeIntervalSinceDate:statsDate];
-			NSTimeInterval statsInterval = 7 * 24 * 60 * 60; //number of seconds in 30 days
-			if (difference > statsInterval) //if it's been more than 7 days since last stats run
-			{
-				[self runStats];
-			}
+		NSDate *today = [NSDate date];
+		NSTimeInterval difference = [today timeIntervalSinceDate:statsDate];
+		NSTimeInterval statsInterval = 7 * 24 * 60 * 60; //number of seconds in 30 days
+		if (difference > statsInterval) //if it's been more than 7 days since last stats run
+		{
+			[self runStats];
+		}
 	}
 }
 
@@ -422,7 +416,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	 - os_version – the version of the iPhone/iPod OS for the device
 	 - num_blogs – number of blogs configured in the WP iPhone app
 	 - device_model - kind of device on which the WP iPhone app is installed
-	*/
+	 */
 	
 	NSString *deviceModel = [[[UIDevice currentDevice] platformString] stringByUrlEncoding];
 	NSString *deviceuuid = [[UIDevice currentDevice] uniqueIdentifier];
@@ -433,42 +427,42 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	NSString *osversion = [[[UIDevice currentDevice] systemVersion] stringByUrlEncoding];
 	int num_blogs = [[BlogDataManager sharedDataManager] countOfBlogs];
 	NSString *numblogs = [[NSString stringWithFormat:@"%d", num_blogs] stringByUrlEncoding];
-
+	
 	//NSLog(@"UUID %@", deviceuuid);
 	//NSLog(@"app version %@",appversion);
 	//NSLog(@"language %@",language);
 	//NSLog(@"os_version, %@", osversion);
 	//NSLog(@"count of blogs %@",numblogs);
 	//NSLog(@"device_model: %@", deviceModel);
-
+	
 	//handle data coming back
 	// ** TODO @frsh: This needs to be completely redone with a custom helper class. ***
 	[statsData release];
 	statsData = [[NSMutableData alloc] init];
-
+	
 	NSMutableURLRequest *theRequest=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://api.wordpress.org/iphoneapp/update-check/1.0/"]
 															cachePolicy:NSURLRequestUseProtocolCachePolicy
 														timeoutInterval:30.0];
-
+	
 	[theRequest setHTTPMethod:@"POST"];
 	[theRequest addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField: @"Content-Type"];
 	//create the body
 	NSMutableData *postBody = [NSMutableData data];
-
-
-
+	
 	[postBody appendData:[[NSString stringWithFormat:@"device_uuid=%@&app_version=%@&language=%@&os_version=%@&num_blogs=%@&device_model=%@",
-										deviceuuid,
-										 appversion,
-											language,
-										  osversion,
-										   numblogs,
-											deviceModel] dataUsingEncoding:NSUTF8StringEncoding]];
+						   deviceuuid,
+						   appversion,
+						   language,
+						   osversion,
+						   numblogs,
+						   deviceModel] dataUsingEncoding:NSUTF8StringEncoding]];
+	
 	NSString *htmlStr = [[[NSString alloc] initWithData:postBody encoding:NSUTF8StringEncoding] autorelease];
 	[theRequest setHTTPBody:postBody];
-
+	
 	NSURLConnection *conn = [[[NSURLConnection alloc] initWithRequest:theRequest delegate:self] autorelease];
 }
+
 
 #pragma mark NSURLConnection callbacks
 
@@ -477,7 +471,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	//NSLog(@"did recieve data");
 }
 
--(void)connection:(NSURLConnection *)connection
+-(void) connection:(NSURLConnection *)connection
   didFailWithError: (NSError *)error {
 	//NSLog(@"didFailWithError");
 	UIAlertView *errorAlert = [[UIAlertView alloc]
@@ -502,11 +496,14 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	//need to break this up based on the \n
 
 	[statsDataString release];
+
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
 	//NSLog (@"connectionDidReceiveResponse %@", response);
 }
+
+
 
 - (void)connection:(NSURLConnection *)connection
 didReceiveAuthenticationChallenge:
@@ -514,12 +511,18 @@ didReceiveAuthenticationChallenge:
 
 }
 
+
+
+
+
 - (void) handleAuthenticationOKForChallenge:
 (NSURLAuthenticationChallenge *) aChallenge
 								   withUser: (NSString*) username
 								   password: (NSString*) password {
 
 }
+
+
 
 - (void) handleAuthenticationCancelForChallenge: (NSURLAuthenticationChallenge *) aChallenge {
 
@@ -584,5 +587,8 @@ if (UIInterfaceOrientationIsPortrait(self.masterNavigationController.interfaceOr
 	[[[CPopoverManager instance] currentPopoverController] presentPopoverFromBarButtonItem:theNavigationItem.leftBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 	}
 }
+
+
+
 
 @end
