@@ -254,5 +254,6 @@ WordPress.xcodeproj/project.pbxproj -text
 /welcome_btn_normal.png -text
 /welcome_btn_over.png -text
 /write.png -text
+/write@2x.png -text
 /xhtml1-transitional.dtd -text
 /xhtmlValidatorTemplate.xhtml -text

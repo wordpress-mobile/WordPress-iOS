@@ -109,6 +109,7 @@
 		6EF6701711BE30020069703D /* hasLocation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EF6701511BE30020069703D /* hasLocation@2x.png */; };
 		6EF6701811BE30020069703D /* getLocation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EF6701611BE30020069703D /* getLocation@2x.png */; };
 		6EF6706211BE3B750069703D /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EF6706111BE3B750069703D /* icon@2x.png */; };
+		6EF6707811BE426D0069703D /* write@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EF6707711BE426D0069703D /* write@2x.png */; };
 		702CA0680F36FF0D00018B88 /* WPLabelFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 702CA0670F36FF0D00018B88 /* WPLabelFooterView.m */; };
 		7059CD210F332B6500A0660B /* WPCategoryTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 7059CD200F332B6500A0660B /* WPCategoryTree.m */; };
 		706D25F50F347F1200491666 /* category_child.png in Resources */ = {isa = PBXBuildFile; fileRef = 706D25F40F347F1200491666 /* category_child.png */; };
@@ -351,6 +352,7 @@
 		6EF6701611BE30020069703D /* getLocation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "getLocation@2x.png"; sourceTree = "<group>"; };
 		6EF6703E11BE36BE0069703D /* sync@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sync@2x.png"; sourceTree = "<group>"; };
 		6EF6706111BE3B750069703D /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
+		6EF6707711BE426D0069703D /* write@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "write@2x.png"; sourceTree = "<group>"; };
 		702CA0660F36FF0D00018B88 /* WPLabelFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLabelFooterView.h; sourceTree = "<group>"; };
 		702CA0670F36FF0D00018B88 /* WPLabelFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLabelFooterView.m; sourceTree = "<group>"; };
 		7059CD1F0F332B6500A0660B /* WPCategoryTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPCategoryTree.h; sourceTree = "<group>"; };
@@ -879,6 +881,7 @@
 				6EF66FEC11BE27BB0069703D /* settings@2x.png */,
 				ACFF1DE30E23265000EC6BF5 /* settings.png */,
 				AC600C080E20B80400D663AA /* write.png */,
+				6EF6707711BE426D0069703D /* write@2x.png */,
 				AC600C0A0E20B80400D663AA /* photos.png */,
 				AC600C0B0E20B80400D663AA /* preview.png */,
 			);
@@ -1177,6 +1180,7 @@
 				6EF6701711BE30020069703D /* hasLocation@2x.png in Resources */,
 				6EF6701811BE30020069703D /* getLocation@2x.png in Resources */,
 				6EF6706211BE3B750069703D /* icon@2x.png in Resources */,
+				6EF6707811BE426D0069703D /* write@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
