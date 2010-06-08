@@ -224,22 +224,29 @@ WordPress.xcodeproj/project.pbxproj -text
 /down.png -text
 /favicon.ico -text svneol=unset#unset
 /getLocation.png -text
+/getLocation@2x.png -text
 /gettingLocation.png -text
 /gravatar.jpg -text
 /hasLocation.png -text
+/hasLocation@2x.png -text
 /help.png -text
 /iTunesArtwork -text
 /icon-iPad.png -text
 /icon.png -text
+/icon@2x.png -text
 /license.txt -text
 /lock.png -text
 /main.m -text
 /pages.png -text
 /photos.png -text
+/photos@2x.png -text
 /posts.png -text
 /preview.png -text
+/preview@2x.png -text
 /settings.png -text
+/settings@2x.png -text
 /sync.png -text svneol=unset#unset
+/sync@2x.png -text
 /talk_bubbles.png -text svneol=unset#unset
 /uncheck.png -text
 /uncrustify.cfg -text
