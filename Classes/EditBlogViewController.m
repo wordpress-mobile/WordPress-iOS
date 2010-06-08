@@ -28,7 +28,7 @@
 @implementation EditBlogViewController
 
 @synthesize blogEditTable;
-@synthesize validationView;
+@synthesize validationView, progressLabel;
 @synthesize currentBlog;
 @synthesize blogURLTextField;
 
@@ -76,6 +76,8 @@
 	[geotaggingSwitch addTarget:self action:@selector(changeGeotaggingSetting) forControlEvents:UIControlEventAllTouchEvents];
 	
 	[self observeTextFields];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveProgressNotification:) name:@"AddNewBlogNotification" object:nil];
 }
 
 #ifdef __IPHONE_3_0
@@ -86,6 +88,7 @@
 
 #else
 - (void)dealloc {
+	[progressLabel release];
     [self stopObservingTextFields];
     [super dealloc];
 }
@@ -284,10 +287,17 @@
     NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
 
 	validationView.frame = self.view.bounds;
+	
+	if(DeviceIsPad())
+		progressLabel.frame = CGRectMake(125, 75, 302, 100);
+	else
+		progressLabel.frame = CGRectMake(15, 65, 302, 100);
+	
     [self.view addSubview:validationView];
 	
     validationView.alpha = 0.0;
     [self.view bringSubviewToFront:validationView];
+    [self.view bringSubviewToFront:progressLabel];
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.5];
     [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.view cache:YES];
@@ -471,6 +481,20 @@
     [self stopObservingTextField:blogURLTextField];
     [self stopObservingTextField:userNameTextField];
     [self stopObservingTextField:passwordTextField];
+}
+
+- (void)receiveProgressNotification:(NSNotification *)notification {
+	NSString *newMessage = [NSString stringWithFormat:@"Adding %@...", [notification object]];
+	[self performSelectorInBackground:@selector(updateProgressLabel:) withObject:newMessage];
+}
+
+- (void)updateProgressLabel:(NSString *)message {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	[progressLabel setText:message];
+	[self.view setNeedsDisplay];
+	
+	[pool release];
 }
 
 - (void)setAuthEnabledText:(BOOL)authEnabled {

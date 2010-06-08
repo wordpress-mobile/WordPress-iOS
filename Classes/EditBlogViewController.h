@@ -36,6 +36,7 @@
     IBOutlet UILabel *passwordLabel;
     IBOutlet UILabel *noOfPostsLabel;
     IBOutlet UILabel *geotaggingLabel;
+    IBOutlet UILabel *progressLabel;
 
     IBOutlet UIView *validationView;
 
@@ -49,11 +50,10 @@
 
 @property (nonatomic, assign) UITableView *blogEditTable;
 @property (nonatomic, retain) UIView *validationView;
-
 @property (nonatomic, retain) NSDictionary *currentBlog;
 @property (nonatomic, retain) UITextField *blogURLTextField;
-
 @property (nonatomic, retain) WelcomeViewController *welcomeViewController;
+@property (nonatomic, retain) IBOutlet UILabel *progressLabel;
 
 
 - (IBAction)saveBlog:(id)sender;
@@ -63,5 +63,7 @@
 - (void)showLocateXMLRPCModalViewWithAnimation:(BOOL)animate;
 - (void)setAuthEnabledText:(BOOL)authEnabled;
 - (void)changeGeotaggingSetting;
+- (void)receiveProgressNotification:(NSNotification *)notification;
+- (void)updateProgressLabel:(NSString *)message;
 
 @end

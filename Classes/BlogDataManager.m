@@ -1308,8 +1308,8 @@ editBlogViewController, currentLocation;
 	
     // loop through the user's accounts and save the blog records
 	for(NSDictionary *usersBlogs in usersBlogsResponseArray) {
-		NSString *tempString = [usersBlogs valueForKey:@"blogName"];
-		NSLog([@"Setting up blog: " stringByAppendingString:tempString]);
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"AddNewBlogNotification" object:[usersBlogs valueForKey:@"blogName"] userInfo:nil];
+		//NSLog(@"Adding new blog: %@...", [usersBlogs valueForKey:@"blogName"]);
 		
 		NSString *blogURL = [usersBlogs valueForKey:@"url"];
 		
@@ -3333,7 +3333,7 @@ editBlogViewController, currentLocation;
     [self generateTemplateForBlog:aBlog];
 	
     if ([[currentBlog valueForKey:kSupportsPagesAndComments] boolValue]) {
-        [self syncCommentsForBlog:aBlog];
+        //[self syncCommentsForBlog:aBlog];
         // #291 // [self syncPagesForBlog:aBlog];
     }
 	
