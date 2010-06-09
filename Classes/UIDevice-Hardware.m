@@ -7,7 +7,8 @@
 /*
  Platforms
  iPhone1,1 -> iPhone 1G
- iPhone1,2 -> iPhone 3G 
+ iPhone1,2 -> iPhone 3G
+ iPhone3,1 -> iPhone 4G 
  iPod1,1   -> iPod touch 1G 
  iPod2,1   -> iPod touch 2G 
  iPad1,1   -> iPad 1G
@@ -25,7 +26,7 @@
 	return platform;
 }
 
-- (NSString *) platformString
+- (NSString *)platformString
 {
 	NSString *platform = [self platform];
 	if ([platform isEqualToString:@"iPhone1,1"]) return IPHONE_1G_NAMESTRING;

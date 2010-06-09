@@ -6,6 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UIDevice-Hardware.h"
 
 @interface RefreshButtonView : UIView {
     UIButton *button;

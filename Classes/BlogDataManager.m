@@ -3333,7 +3333,7 @@ editBlogViewController, currentLocation;
     [self generateTemplateForBlog:aBlog];
 	
     if ([[currentBlog valueForKey:kSupportsPagesAndComments] boolValue]) {
-        //[self syncCommentsForBlog:aBlog];
+        [self syncCommentsForBlog:aBlog];
         // #291 // [self syncPagesForBlog:aBlog];
     }
 	
