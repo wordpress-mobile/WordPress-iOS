@@ -573,7 +573,7 @@
 		}
 
 		commentsViewController.title = @"Comments";
-		commentsViewController.tabBarItem.image = [UIImage imageNamed:@"talk_bubbles.png"];
+		commentsViewController.tabBarItem.image = [UIImage imageNamed:@"comments.png"];
 		[array addObject:commentsViewController];
 	}
 
