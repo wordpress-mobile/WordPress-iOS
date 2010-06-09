@@ -7,15 +7,11 @@
 
 #import "RefreshButtonView.h"
 
-#define REFRESH_BUTTON_ICON @"sync.png"
-
 @implementation RefreshButtonView
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        UIImage *buttonImage = [UIImage imageNamed:REFRESH_BUTTON_ICON];
-		if([[[UIDevice currentDevice] platformString] isEqualToString:@"iPhone 4G"])
-			buttonImage = [UIImage imageNamed:@"sync@2x.png"];
+        UIImage* buttonImage = [UIImage imageNamed:@"sync"];
 		
         button = [[UIButton alloc] initWithFrame:frame];
         button.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
