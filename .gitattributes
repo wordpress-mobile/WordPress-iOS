@@ -216,9 +216,12 @@ Resources-iPad/MainWindow-iPad.xib -text
 WordPress.xcodeproj/project.pbxproj -text
 /WordPress_Prefix.pch -text
 /backNav.png -text
+/backNav@2x.png -text
 /backNavd.png -text
+/backNavd@2x.png -text
 /category_child.png -text
 /check.png -text
+/check@2x.png -text
 /commentDelete.png -text
 /comments.png -text
 /comments@2x.png -text
@@ -257,6 +260,7 @@ WordPress.xcodeproj/project.pbxproj -text
 /talk_bubbles.png -text svneol=unset#unset
 /talk_bubbles@2x.png -text
 /uncheck.png -text
+/uncheck@2x.png -text
 /uncrustify.cfg -text
 /up.png -text
 /welcome_bg.png -text
