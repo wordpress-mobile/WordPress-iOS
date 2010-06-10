@@ -104,6 +104,9 @@
 		6E461BB011C0C06100B07942 /* uncheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E461BAE11C0C06100B07942 /* uncheck@2x.png */; };
 		6E461BE211C0C1CD00B07942 /* backNav@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E461BE011C0C1CD00B07942 /* backNav@2x.png */; };
 		6E461BE311C0C1CD00B07942 /* backNavd@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E461BE111C0C1CD00B07942 /* backNavd@2x.png */; };
+		6E61862011C0C465001E755E /* category_child@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E61861D11C0C465001E755E /* category_child@2x.png */; };
+		6E61862111C0C465001E755E /* down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E61861E11C0C465001E755E /* down@2x.png */; };
+		6E61862211C0C465001E755E /* up@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E61861F11C0C465001E755E /* up@2x.png */; };
 		6E81AC0411BF2D500072965C /* AddBlogValidationBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E81AC0311BF2D500072965C /* AddBlogValidationBackground@2x.png */; };
 		6E81AC2511BF34810072965C /* WPpregressHUDBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E81AC2411BF34810072965C /* WPpregressHUDBackground@2x.png */; };
 		6E8BE4F511BF4DC4002A13DD /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E8BE4F411BF4DC4002A13DD /* Default@2x.png */; };
@@ -360,6 +363,9 @@
 		6E461BAE11C0C06100B07942 /* uncheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "uncheck@2x.png"; sourceTree = "<group>"; };
 		6E461BE011C0C1CD00B07942 /* backNav@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backNav@2x.png"; sourceTree = "<group>"; };
 		6E461BE111C0C1CD00B07942 /* backNavd@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backNavd@2x.png"; sourceTree = "<group>"; };
+		6E61861D11C0C465001E755E /* category_child@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "category_child@2x.png"; sourceTree = "<group>"; };
+		6E61861E11C0C465001E755E /* down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "down@2x.png"; sourceTree = "<group>"; };
+		6E61861F11C0C465001E755E /* up@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "up@2x.png"; sourceTree = "<group>"; };
 		6E81AC0311BF2D500072965C /* AddBlogValidationBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AddBlogValidationBackground@2x.png"; sourceTree = "<group>"; };
 		6E81AC2411BF34810072965C /* WPpregressHUDBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WPpregressHUDBackground@2x.png"; sourceTree = "<group>"; };
 		6E8BE4F411BF4DC4002A13DD /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
@@ -850,6 +856,9 @@
 				C5B001CF0E82991300D13185 /* backNav.png */,
 				6E461BE011C0C1CD00B07942 /* backNav@2x.png */,
 				6E461BE111C0C1CD00B07942 /* backNavd@2x.png */,
+				6E61861D11C0C465001E755E /* category_child@2x.png */,
+				6E61861E11C0C465001E755E /* down@2x.png */,
+				6E61861F11C0C465001E755E /* up@2x.png */,
 				C5C273090E7EC9FE0034AA46 /* delete.png */,
 				C5C272E00E7EC00F0034AA46 /* check.png */,
 				6E461BAD11C0C06100B07942 /* check@2x.png */,
@@ -1235,6 +1244,9 @@
 				6E461BB011C0C06100B07942 /* uncheck@2x.png in Resources */,
 				6E461BE211C0C1CD00B07942 /* backNav@2x.png in Resources */,
 				6E461BE311C0C1CD00B07942 /* backNavd@2x.png in Resources */,
+				6E61862011C0C465001E755E /* category_child@2x.png in Resources */,
+				6E61862111C0C465001E755E /* down@2x.png in Resources */,
+				6E61862211C0C465001E755E /* up@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

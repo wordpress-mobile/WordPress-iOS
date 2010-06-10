@@ -220,6 +220,7 @@ WordPress.xcodeproj/project.pbxproj -text
 /backNavd.png -text
 /backNavd@2x.png -text
 /category_child.png -text
+/category_child@2x.png -text
 /check.png -text
 /check@2x.png -text
 /commentDelete.png -text
@@ -229,6 +230,7 @@ WordPress.xcodeproj/project.pbxproj -text
 /defaultPostTemplate_old.html -text
 /delete.png -text
 /down.png -text
+/down@2x.png -text
 /favicon.ico -text svneol=unset#unset
 /favicon@2x.ico -text
 /getLocation.png -text
@@ -263,6 +265,7 @@ WordPress.xcodeproj/project.pbxproj -text
 /uncheck@2x.png -text
 /uncrustify.cfg -text
 /up.png -text
+/up@2x.png -text
 /welcome_bg.png -text
 /welcome_bg@2x.png -text
 /welcome_btn_normal.png -text
