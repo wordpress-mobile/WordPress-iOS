@@ -233,6 +233,7 @@ WordPress.xcodeproj/project.pbxproj -text
 /down@2x.png -text
 /favicon.ico -text svneol=unset#unset
 /favicon@2x.ico -text
+/favicon@2x.png -text
 /getLocation.png -text
 /getLocation@2x.png -text
 /gettingLocation.png -text

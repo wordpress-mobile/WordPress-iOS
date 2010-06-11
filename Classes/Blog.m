@@ -46,7 +46,7 @@
         [faviconURL release];
 
         if (faviconImage == NULL) {
-            faviconImage = [UIImage imageNamed:@"favicon.ico"];
+            faviconImage = [UIImage imageNamed:@"favicon.png"];
         }
 
         [[NSFileManager defaultManager] createFileAtPath:faviconFilePath contents:UIImagePNGRepresentation(faviconImage) attributes:nil];
