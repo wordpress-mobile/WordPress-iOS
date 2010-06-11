@@ -121,7 +121,6 @@
 		6EC5B7F50F6747F5002609EE /* backNavd.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EC5B7F40F6747F5002609EE /* backNavd.png */; };
 		6ECC836C11C2AB1400A99A3D /* comments.png in Resources */ = {isa = PBXBuildFile; fileRef = 6ECC836B11C2AB1400A99A3D /* comments.png */; };
 		6ECC839D11C2B39C00A99A3D /* favicon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6ECC839B11C2B39C00A99A3D /* favicon@2x.png */; };
-		6ECC839E11C2B39C00A99A3D /* favicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6ECC839C11C2B39C00A99A3D /* favicon.png */; };
 		6EDC0E8F105881A800F68A1D /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 6EDC0E8E105881A800F68A1D /* iTunesArtwork */; };
 		6EF66FED11BE27BB0069703D /* photos@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EF66FEA11BE27BB0069703D /* photos@2x.png */; };
 		6EF66FEE11BE27BB0069703D /* preview@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EF66FEB11BE27BB0069703D /* preview@2x.png */; };
@@ -381,7 +380,6 @@
 		6EC5B7F40F6747F5002609EE /* backNavd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backNavd.png; sourceTree = "<group>"; };
 		6ECC836B11C2AB1400A99A3D /* comments.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = comments.png; sourceTree = "<group>"; };
 		6ECC839B11C2B39C00A99A3D /* favicon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "favicon@2x.png"; sourceTree = "<group>"; };
-		6ECC839C11C2B39C00A99A3D /* favicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = favicon.png; sourceTree = "<group>"; };
 		6EDC0E8E105881A800F68A1D /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		6EF66FEA11BE27BB0069703D /* photos@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photos@2x.png"; sourceTree = "<group>"; };
 		6EF66FEB11BE27BB0069703D /* preview@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "preview@2x.png"; sourceTree = "<group>"; };
@@ -847,7 +845,6 @@
 				CE1E3BC61005B3D500A7BD08 /* WPpregressHUDBackground.png */,
 				6E81AC2411BF34810072965C /* WPpregressHUDBackground@2x.png */,
 				6ECC839B11C2B39C00A99A3D /* favicon@2x.png */,
-				6ECC839C11C2B39C00A99A3D /* favicon.png */,
 				CEC7EFA50FC66081007B90D6 /* AddBlogValidationBackground.png */,
 				6E81AC0311BF2D500072965C /* AddBlogValidationBackground@2x.png */,
 				706D25F40F347F1200491666 /* category_child.png */,
@@ -1250,7 +1247,6 @@
 				6E61862211C0C465001E755E /* up@2x.png in Resources */,
 				6ECC836C11C2AB1400A99A3D /* comments.png in Resources */,
 				6ECC839D11C2B39C00A99A3D /* favicon@2x.png in Resources */,
-				6ECC839E11C2B39C00A99A3D /* favicon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1447,7 +1443,7 @@
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphonesimulator4.0;
+				SDKROOT = iphoneos4.0;
 			};
 			name = Debug;
 		};
