@@ -11,7 +11,7 @@
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        UIImage* buttonImage = [UIImage imageNamed:@"sync"];
+        UIImage* buttonImage = [UIImage imageNamed:@"sync.png"];
 		
         button = [[UIButton alloc] initWithFrame:frame];
         button.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
