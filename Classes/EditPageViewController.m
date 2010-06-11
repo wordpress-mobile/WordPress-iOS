@@ -302,9 +302,9 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 
 	if (DeviceIsPad() == NO) {
 		if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-			[self setTextViewHeight:105];
+			[self setTextViewHeight:50];
 		} else if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
-			[self setTextViewHeight:200];
+			[self setTextViewHeight:105];
 		}
 		
 		UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
@@ -337,12 +337,16 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 			frame.origin.y -= 120.0f;
 			subView.frame = frame;
 		} else {
+			float textHeight = -40.0f;
+			if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
+				textHeight = 40.0f;
+				
 			CGRect frame = textViewContentView.frame;
-			frame.origin.y -= 80.0f;
+			frame.origin.y += textHeight;
 			textViewContentView.frame = frame;
 
 			frame = subView.frame;
-			frame.origin.y -= 80.0f;
+			frame.origin.y += textHeight;
 			subView.frame = frame;
 		}
 

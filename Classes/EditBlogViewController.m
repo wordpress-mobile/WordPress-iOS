@@ -9,6 +9,7 @@
 #import "Reachability.h"
 #import "WPLabelFooterView.h"
 #import "BlogHTTPAuthenticationViewController.h"
+#import "WelcomeViewController.h"
 
 #define kResizePhotoSettingSectionHeight    80.0f
 
@@ -30,7 +31,7 @@
 @synthesize blogEditTable;
 @synthesize validationView, progressLabel;
 @synthesize currentBlog;
-@synthesize blogURLTextField;
+@synthesize blogURLTextField, welcomeViewController;
 
 
 - (void)disableLabel:(UILabel *)label andTextField:(UITextField *)textField {
@@ -46,20 +47,20 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+	
     currentBlog = [[BlogDataManager sharedDataManager] currentBlog];
-
+	
     noOfPostsTextField.text = [currentBlog valueForKey:kPostsDownloadCount];
 	//NSLog(@"kpostsdownloadcount %@",[currentBlog valueForKey:kPostsDownloadCount]);
-
+	
     self.navigationItem.rightBarButtonItem = saveBlogButton;
-
+	
     if ([[BlogDataManager sharedDataManager] countOfBlogs] > 0) {
         self.navigationItem.leftBarButtonItem = cancelBlogButton;
     } else {
-        self.navigationItem.leftBarButtonItem = nil;
+        self.navigationItem.leftBarButtonItem = cancelSetupButton;
     }
-
+	
     if ([self currentBlogIsNew]) {
         //[blogURLTextField becomeFirstResponder];	// Trac #353
         saveBlogButton.enabled = NO;
@@ -97,20 +98,20 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
+	
     // this UIViewController is about to re-appear, make sure we remove the current selection in our table view
     NSIndexPath *tableSelection = [blogEditTable indexPathForSelectedRow];
-
+	
     if (tableSelection != nil) {
         [blogEditTable deselectRowAtIndexPath:tableSelection animated:NO];
     }
-
+	
     // we retain this controller in the caller (RootViewController) so load view does not get called
     // everytime we navigate to the view
     // need to update the prompt and the title here as well as in loadView
     if ([self currentBlogIsNew]) {
         self.title = NSLocalizedString(@"Add Blog", @"EditBlogViewController_Title_AddBlog");
-			
+		
     } else {
         self.title = NSLocalizedString(@"Edit Blog", @"EditBlogViewController_Title_EditBlog");
 		NSString *geotaggingSettingName = [NSString stringWithFormat:@"%@-Geotagging", [currentBlog valueForKey:kBlogId]];
@@ -119,7 +120,7 @@
 		else
 			geotaggingSwitch.on = NO;
 	}
-
+	
     //[blogEditTable reloadData];
 }
 
@@ -140,7 +141,7 @@
     if (section == 0) {
         return 3;
     }
-
+	
     return 1;
 }
 
@@ -149,13 +150,13 @@
         case 0:
             if (indexPath.section == 0) {
                 NSString *urlString = [currentBlog objectForKey:@"url"];
-
+				
                 if (urlString) {
                     urlString = [urlString stringByReplacingOccurrencesOfString:@"http://" withString:@""];
                     urlString = [urlString stringByReplacingOccurrencesOfString:@"/xmlrpc.php" withString:@""];
                     blogURLTextField.text = urlString;
                 }
-
+				
                 blogURLTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
                 return blogURLTableViewCell;
             } else if (indexPath.section == 2) {
@@ -179,7 +180,7 @@
                 noOfPostsTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
                 return noOfPostsTableViewCell;
             }
-
+			
             break;
         case 1:
             if (indexPath.section == 0) {
@@ -189,35 +190,35 @@
             }
             
             break;
-
+			
         case 2:
             //passwordTextField.text = [currentBlog objectForKey:@"pwd"];
 			passwordTextField.text = [[BlogDataManager sharedDataManager] getPasswordFromKeychainInContextOfCurrentBlog:currentBlog];
             passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
             return passwordTableViewCell;
             break;
-
+			
         default:
             break;
     }
-
+	
     return nil;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     //if (section == 3) {
-        //This Class creates a view which contains label with color and font attributes and sets the label properties and it is used as footer view for section in tableview.
+	//This Class creates a view which contains label with color and font attributes and sets the label properties and it is used as footer view for section in tableview.
     //    WPLabelFooterView *labelView = [[[WPLabelFooterView alloc] initWithFrame:CGRectMake(0, 3, 300, 60)] autorelease];
-        //Sets the number of lines to be shown in the label.
+	//Sets the number of lines to be shown in the label.
     //    [labelView setNumberOfLines:(NSInteger) 3];
-        //Sets the text alignment of the label.
+	//Sets the text alignment of the label.
     //    [labelView setTextAlignment:UITextAlignmentCenter];
-        //Sets the text for the label.
+	//Sets the text for the label.
     //    [labelView setText:kResizePhotoSettingHintLabel];
-
+	
     //    return labelView;
     //}
-
+	
     return nil;
 }
 
@@ -225,7 +226,7 @@
     if (section == 3) {
         return kResizePhotoSettingSectionHeight;
     }
-
+	
     return 0.0f;
 }
 
@@ -245,20 +246,20 @@
 
 - (void)populateSelectionsControllerWithNoOfRecentPosts {
     WPSelectionTableViewController *selectionTableViewController = [[WPSelectionTableViewController alloc] initWithNibName:@"WPSelectionTableViewController" bundle:nil];
-
+	
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
-
+	
     NSArray *dataSource = [NSArray arrayWithObjects:@"10 Recent Items", @"25 Recent Items", @"50 Recent Items", @"100 Recent Items", nil];
-
+	
     NSString *curStatus = [[dm currentBlog] valueForKey:kPostsDownloadCount];
     // default value for number of posts is setin BlogDataManager.makeNewBlogCurrent
     NSArray *selObject = (curStatus == nil ? [NSArray arrayWithObject:[dataSource objectAtIndex:0]] : [NSArray arrayWithObject:curStatus]);
     [selectionTableViewController populateDataSource:dataSource
-     havingContext:nil
-     selectedObjects:selObject
-     selectionType:kRadio
-     andDelegate:self];
-
+									   havingContext:nil
+									 selectedObjects:selObject
+									   selectionType:kRadio
+										 andDelegate:self];
+	
     selectionTableViewController.title = @"Status";
     selectionTableViewController.navigationItem.rightBarButtonItem = nil;
     [self.navigationController pushViewController:selectionTableViewController animated:YES];
@@ -270,11 +271,11 @@
         [selctionController clean];
         return;
     }
-
+	
     BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
     [[dataManager currentBlog] setObject:[selectedObjects objectAtIndex:0] forKey:kPostsDownloadCount];
     noOfPostsTextField.text = [selectedObjects objectAtIndex:0];
-
+	
     [selctionController clean];
 }
 
@@ -283,9 +284,29 @@
     [self.navigationController dismissModalViewControllerAnimated:YES];
 }
 
+- (void)cancelSetup:(id)sender {
+	[UIView beginAnimations:nil context:nil];
+	[UIView setAnimationDuration:0.8];
+	[UIView setAnimationDelegate:self];
+	[UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:self.view.superview.superview.superview cache:YES];
+	
+	[UIView commitAnimations];
+	
+	WelcomeViewController *wViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
+	
+	[self setWelcomeViewController:wViewController];
+	
+	[wViewController release];
+	
+	UIView *controllersView = [welcomeViewController view];
+	
+	
+	[self.view.superview.superview.superview addSubview:controllersView];
+}
+
 - (void)addProgressIndicator {
     NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
-
+	
 	validationView.frame = self.view.bounds;
 	
 	if(DeviceIsPad())
@@ -303,22 +324,22 @@
     [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.view cache:YES];
     validationView.alpha = 0.7;
     [UIView commitAnimations];
-
+	
     [apool release];
 }
 
 - (void)removeProgressIndicator {
     NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
-
+	
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.5];
     [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.view cache:YES];
     [UIView setAnimationDelegate:self];
     validationView.alpha = 0.0;
     [UIView commitAnimations];
-
+	
     [validationView removeFromSuperview];
-
+	
     [apool release];
 }
 
@@ -338,7 +359,7 @@
 	NSString *authUsername = blogHTTPAuthViewController.blogHTTPAuthUsername.text;
 	NSString *authPassword = blogHTTPAuthViewController.blogHTTPAuthPassword.text;
 	BOOL authEnabled = blogHTTPAuthViewController.blogHTTPAuthEnabled.on;
-
+	
 	NSString *authBlogURL = [url stringByAppendingString:@"_auth"];
     [currentBlog setValue:url forKey:@"url"];
     [currentBlog setValue:username forKey:@"username"];
@@ -347,32 +368,32 @@
 	[[BlogDataManager sharedDataManager] updatePasswordInKeychain:pwd andUserName:username andBlogURL:url];
 	
 	//if (authEnabled) {
-		[currentBlog setValue:authUsername forKey:@"authUsername"];
-		[[BlogDataManager sharedDataManager] updatePasswordInKeychain:authPassword
-														  andUserName:authUsername
-														   andBlogURL:authBlogURL];
+	[currentBlog setValue:authUsername forKey:@"authUsername"];
+	[[BlogDataManager sharedDataManager] updatePasswordInKeychain:authPassword
+													  andUserName:authUsername
+													   andBlogURL:authBlogURL];
 	//}
-
+	
     [currentBlog setValue:value forKey:kResizePhotoSetting];
 }
 
-	
+
 - (void)saveBlog:(id)sender {
     [self showSpinner];
     [self setBlogAttributes];
-
+	
     if ([[Reachability sharedReachability] internetConnectionStatus] == NotReachable) {
         [[WordPressAppDelegate sharedWordPressApp] showErrorAlert:kNoInternetErrorMessage];
         return;
     }
-
+	
     if ([self currentBlogIsNew]) {
         [self createBlog];
-
+		
     } else {
         [self updateBlog];
     }
-
+	
     [self hideSpinner];
 	
 }
@@ -384,45 +405,45 @@
 	else
 		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:geotaggingSettingName];
 }
-	
+
 #pragma mark saveBlog
 - (void)createBlog {
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	dm.isProblemWithXMLRPC = NO;
 	// isProblem... gets set to YES inside BlogDataManager's refreshCurrentBlog method if there's a problem getting the xmlrpc endpoint url. 
 	// set to NO again later in this method if it was set to YES in refreshCurrentBlog.
-
+	
     NSString *username = [currentBlog valueForKey:@"username"];
     NSString *url = [currentBlog valueForKey:@"url"];
 	NSString *authUsername = [currentBlog valueForKey:@"authUsername"];
 	NSNumber *authEnabled = [currentBlog objectForKey:@"authEnabled"];
-
+	
     //NSDictionary *newBlog = [NSDictionary dictionaryWithObjectsAndKeys:username, @"username", pwd, @"pwd", url, @"url", nil];
 	//taking out @"pwd" here as it's in keychain now
 	
 	NSDictionary *newBlog = [NSDictionary dictionaryWithObjectsAndKeys:username, @"username", url, @"url", authEnabled, @"authEnabled", authUsername, @"authUsername", nil];
-
+	
     if ([dm doesBlogExists:newBlog]) {
         [[WordPressAppDelegate sharedWordPressApp] showErrorAlert:[NSString stringWithFormat:kBlogExistsErrorMessage, url]];
         return;
     }
-
+	
     //if ([dm refreshCurrentBlog:url user:username password:pwd]) {
-		//taking out @"pwd" here too...
+	//taking out @"pwd" here too...
 	if ([dm refreshCurrentBlog:url user:username]) {
         [dm.currentBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
         [dm wrapperForSyncPostsAndGetTemplateForBlog:dm.currentBlog];
         [dm.currentBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-        [dm saveCurrentBlog];
+        //[dm saveCurrentBlog];
         [self.navigationController dismissModalViewControllerAnimated:YES];
     } else {
-			if (dm.isProblemWithXMLRPC) {
-				//this handles the case of not getting the XMLRPC endpoint and launches a view to ask user for input
-				[self showLocateXMLRPCModalViewWithAnimation:YES];
-				saveBlogButton.title = @"Try Again";
-				dm.isProblemWithXMLRPC = NO;
-				return;
-			}
+		if (dm.isProblemWithXMLRPC) {
+			//this handles the case of not getting the XMLRPC endpoint and launches a view to ask user for input
+			[self showLocateXMLRPCModalViewWithAnimation:YES];
+			saveBlogButton.title = @"Try Again";
+			dm.isProblemWithXMLRPC = NO;
+			return;
+		}
 	}
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 	[self changeGeotaggingSetting];
@@ -430,17 +451,17 @@
 
 - (void)updateBlog {
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
-
+	
     NSString *username = [currentBlog valueForKey:@"username"];
     NSString *url = [currentBlog valueForKey:@"url"];
 	NSString *pwd = [dm getBlogPasswordFromKeychainWithUsername:username andBlogName:url];
-
+	
     if ([dm validateCurrentBlog:url user:username password:pwd]) {
         [dm performSelector:@selector(generateTemplateForBlog:) withObject:[[dm.currentBlog copy] autorelease]];
         [dm addSyncPostsForBlogToQueue:dm.currentBlog];
         [dm saveCurrentBlog];
 		[self changeGeotaggingSetting];
-
+		
         [self.navigationController dismissModalViewControllerAnimated:YES];
     }
 }
@@ -451,7 +472,7 @@
 }
 
 - (void)handleTextFieldChanged:(NSNotification *)note {
-
+	
     saveBlogButton.enabled = !([blogURLTextField.text isEmpty] ||
                                [userNameTextField.text isEmpty] ||
                                [passwordTextField.text isEmpty]);
@@ -462,7 +483,7 @@
                                              selector:@selector(handleTextFieldChanged:)
                                                  name:@"UITextFieldTextDidChangeNotification"
                                                object:textField];
-
+	
 }
 
 - (void)observeTextFields {
@@ -505,13 +526,13 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
-
+	
     if (textField == blogURLTextField) {
         [userNameTextField becomeFirstResponder];
     } else if (textField == userNameTextField) {
         [passwordTextField becomeFirstResponder];
     }
-
+	
     return YES;
 }
 
@@ -521,9 +542,9 @@
 - (void)showLocateXMLRPCModalViewWithAnimation:(BOOL)animate {
 	LocateXMLRPCViewController *locateXMLRPCViewController = [[[LocateXMLRPCViewController alloc] initWithNibName:@"LocateXMLRPCViewController" bundle:nil] autorelease];
 	UINavigationController *modalNavigationController = [[UINavigationController alloc] initWithRootViewController:locateXMLRPCViewController];
-		
+	
 	[self.navigationController presentModalViewController:modalNavigationController animated:animate];
-
+	
 	[modalNavigationController release];
 }
 

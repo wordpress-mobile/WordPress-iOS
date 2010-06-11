@@ -222,6 +222,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
     titleTextField.text = [dm.currentPost valueForKey:@"title"];
     tagsTextField.text = [dm.currentPost valueForKey:@"mt_keywords"];
+	NSLog(@"title is now %@ and tags are now %@.", titleTextField.text, tagsTextField.text);
 	
     NSString *status = [dm statusDescriptionForStatus:[dm.currentPost valueForKey:@"post_status"] fromBlog:dm.currentBlog];
     status = (status == nil ? @"" : status);
