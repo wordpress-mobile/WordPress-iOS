@@ -259,8 +259,6 @@ WordPress.xcodeproj/project.pbxproj -text
 /settings@2x.png -text
 /sync.png -text svneol=unset#unset
 /sync@2x.png -text
-/talk_bubbles.png -text svneol=unset#unset
-/talk_bubbles@2x.png -text
 /uncheck.png -text
 /uncheck@2x.png -text
 /uncrustify.cfg -text
