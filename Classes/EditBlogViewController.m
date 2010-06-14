@@ -78,6 +78,7 @@
 	
 	[self observeTextFields];
 	
+	progressLabel.hidden = YES;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveProgressNotification:) name:@"AddNewBlogNotification" object:nil];
 }
 
@@ -311,6 +312,7 @@
     NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
 	
 	validationView.frame = self.view.bounds;
+	progressLabel.hidden = NO;
 	
 	if(DeviceIsPad())
 		progressLabel.frame = CGRectMake(125, 75, 302, 100);
@@ -341,6 +343,7 @@
     validationView.alpha = 0.0;
     [UIView commitAnimations];
 	
+	progressLabel.hidden = YES;
     [validationView removeFromSuperview];
 	
     [apool release];

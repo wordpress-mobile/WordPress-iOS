@@ -85,11 +85,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 	[self dismissModalViewControllerAnimated:YES];
-    //NSLog(@"inside PostDetailEditController:viewWillAppear, just called [super viewWillAppear:YES]");
-	//NSLog(@"%@", [[BlogDataManager sharedDataManager] currentPost]);
-	//NSLog(@"inside PostDetailEditController:viewWillAppear, hasChanges equals:: %@", self.postDetailViewController.hasChanges);
-	//NSLog(@"BOOL = %d", (int)self.postDetailViewController.hasChanges);
-	//NSLog(@"hasChanges = %@\n", (self.postDetailViewController.hasChanges ? @"YES" : @"NO"));
     //isCustomFieldsEnabledForThisPost = [self checkCustomFieldsMinusMetadata];
     isCustomFieldsEnabledForThisPost = NO;
 	
@@ -222,7 +217,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
     titleTextField.text = [dm.currentPost valueForKey:@"title"];
     tagsTextField.text = [dm.currentPost valueForKey:@"mt_keywords"];
-	NSLog(@"title is now %@ and tags are now %@.", titleTextField.text, tagsTextField.text);
 	
     NSString *status = [dm statusDescriptionForStatus:[dm.currentPost valueForKey:@"post_status"] fromBlog:dm.currentBlog];
     status = (status == nil ? @"" : status);
