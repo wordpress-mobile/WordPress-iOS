@@ -285,23 +285,22 @@
 }
 
 - (void)cancelSetup:(id)sender {
-	[UIView beginAnimations:nil context:nil];
-	[UIView setAnimationDuration:0.8];
-	[UIView setAnimationDelegate:self];
-	[UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:self.view.superview.superview.superview cache:YES];
-	
-	[UIView commitAnimations];
-	
-	WelcomeViewController *wViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
-	
-	[self setWelcomeViewController:wViewController];
-	
-	[wViewController release];
-	
-	UIView *controllersView = [welcomeViewController view];
-	
-	
-	[self.view.superview.superview.superview addSubview:controllersView];
+	if(DeviceIsPad()) {
+		[self.navigationController popViewControllerAnimated:YES];
+	}
+	else {
+		[UIView beginAnimations:nil context:nil];
+		[UIView setAnimationDuration:0.8];
+		[UIView setAnimationDelegate:self];
+		[UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:self.view.superview.superview.superview cache:YES];
+		[UIView commitAnimations];
+		
+		WelcomeViewController *wViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
+		[self setWelcomeViewController:wViewController];
+		[wViewController release];
+		UIView *controllersView = [welcomeViewController view];
+		[self.view.superview.superview.superview addSubview:controllersView];
+	}
 }
 
 - (void)addProgressIndicator {
