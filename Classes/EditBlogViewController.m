@@ -289,6 +289,10 @@
 		[self.navigationController popViewControllerAnimated:YES];
 	}
 	else {
+		[blogURLTextField resignFirstResponder];
+		[userNameTextField resignFirstResponder];
+		[passwordTextField resignFirstResponder];
+		
 		[UIView beginAnimations:nil context:nil];
 		[UIView setAnimationDuration:0.8];
 		[UIView setAnimationDelegate:self];
