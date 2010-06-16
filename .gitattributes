@@ -184,6 +184,9 @@ Classes/glossyButton-normal.png -text svneol=unset#unset
 /EditPostViewController-iPad.xib -text
 /EditPostViewController.xib -text
 /Entitlements.plist -text
+/HttpHelper.h -text
+/HttpHelper.m -text
+/HttpHelperDelegate.h -text
 /Icon_Spotlight.png -text svneol=unset#unset
 /Info.plist -text
 /MainBackground.png -text
