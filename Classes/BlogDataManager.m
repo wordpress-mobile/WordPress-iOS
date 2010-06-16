@@ -2973,42 +2973,25 @@ editBlogViewController, currentLocation;
 
 - (BOOL)deletePage {
 	//calling method in PagesViewController (tableView:(UITableView *)tableView commitEditingStyle:) sets current page before calling this method.
-	//currentBlog = [[BlogDataManager sharedDataManager] currentBlog];
-	//NSString *blogid = [currentBlog valueForKey:@"blogid"];
-	NSString *pageid = [currentPage valueForKey:@"page_id"];
-	//NSLog(@"pageid %@", pageid);
-	
-	//NSString *bloggerAPIKey = @"ABCDEF012345";
-	//NSString *username = [currentBlog valueForKey:@"username"];
-	//NSLog(@"username %@" , username);
+	//NSString *pageid = [currentPage valueForKey:@"page_id"];
 	NSArray *args = [NSArray arrayWithObjects:
 					 [currentBlog valueForKey:@"blogid"],
 					 [currentBlog valueForKey:@"username"],
 					 [self getPasswordFromKeychainInContextOfCurrentBlog:[self currentBlog]],
 					 [currentPage valueForKey:@"page_id"],
 					 nil];
-	//NSLog(@"args to log: %@", args);
-	//NSLog(@"currentPage %@", currentPage);
-	
 	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[[self currentBlog] valueForKey:@"xmlrpc"]]];
 	[request setMethod:@"wp.deletePage" withObjects:args];
 	NSDictionary *deleteDict = [[BlogDataManager sharedDataManager] executeXMLRPCRequest:request byHandlingError:YES];
 	if (![deleteDict isKindOfClass:[NSDictionary class]])  //err occured.
         return NO;
-	
-	//NSArray *deleteArray2 = [[BlogDataManager sharedDataManager] executeXMLRPCRequest:request byHandlingError:NO];
-	//NSLog(@"deleteDict: %@", deleteDict);
-	//NSLog(@"deleteArray2: %@", deleteArray2);
-	//NSLog(@"about to release request");
 	[request release];
-	//NSLog(@"released request about to return YES");
 	return YES;
 }
 
 
 - (void)makeNewPageCurrent {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-	
     NSString *userid = [currentBlog valueForKey:@"userid"];
     userid = userid ? userid : @"";
     [dict setObject:userid forKey:@"userid"];
@@ -3020,15 +3003,6 @@ editBlogViewController, currentLocation;
     NSString *xmlrpc = [currentBlog valueForKey:@"xmlrpc"];
     xmlrpc = xmlrpc ? xmlrpc : @"";
     NSString *blogHost = [currentBlog valueForKey:kBlogHostName];
-	
-    /*self->pageFieldNames = [NSArray arrayWithObjects:@"dateCreated", @"userid",
-	 @"pageid", @"description", @"title", @"permalink",
-	 @"wp_password", @"wp_author_id", @"page_status",@"wp_author"
-	 @"mt_allow_comments", @"mt_allow_pings", @"wp_page_order",
-	 @"wp_page_parent_id", @"wp_page_template", @"wp_slug",kBlogId,
-	 kBlogHostName, @"wp_author_display_name",@"date_created_gmt",kAsyncPostFlag, nil];
-     */
-    //NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjects:pageInitValues  forKeys:[self pageFieldNames]];
 	
     [dict setObject:blogHost forKey:kBlogHostName];
     [dict setObject:blogid forKey:kBlogId];
@@ -3129,12 +3103,6 @@ editBlogViewController, currentLocation;
 	//NSLog(@"the id, %@",postID);
 	[pagesMetadata release];
 	
-	
-	
-    // TODO:
-    // Check for fault
-    // check for nil or empty response
-    // provide meaningful messge to user
     if ((!response) || !([response isKindOfClass:[NSArray class]])) {
         [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
         return NO;
@@ -3255,11 +3223,9 @@ editBlogViewController, currentLocation;
 		[pageTitlesArray sortUsingDescriptors:[NSArray arrayWithObject:sd2]];
 		[sd2 release];
 		[blog setObject:[NSNumber numberWithInt:[pageTitlesArray count]] forKey:@"totalpages"];
-		NSNumber *totalPages = [blog valueForKey:@"totalpages"];
+		//NSNumber *totalPages = [blog valueForKey:@"totalpages"];
 		//CAN I USE totalpages here???
-		int previousNumberOfPages = [totalPages intValue];
-		//NSLog(@"previous number of pages %d", previousNumberOfPages);
-		//NSLog(@"titles array count %d") ,[pageTitlesArray count];
+		//int previousNumberOfPages = [totalPages intValue];
 		[blog setObject:[NSNumber numberWithInt:1] forKey:@"newpages"];
 		
 		NSString *pathToCommentTitles = [self pathToPageTitles:blog];
@@ -3318,10 +3284,8 @@ editBlogViewController, currentLocation;
     NSString *pathToPage = [self pageFilePath:[self pageTitleAtIndex:theIndex] forBlog:currentBlog];
     [self setCurrentPage:[NSMutableDictionary dictionaryWithContentsOfFile:pathToPage]];
 	
-    // save the current index as well
     currentPageIndex = theIndex;
     currentPageDraftIndex = -1;
-	//	isPageLocalDraftsCurrent=NO;
     isLocaDraftsCurrent = NO;
 }
 
@@ -3385,9 +3349,7 @@ editBlogViewController, currentLocation;
     NSArray *sortDescriptors = [NSArray arrayWithObjects:dateCreatedSortDescriptor, nil];
     [newPostTitlesList sortUsingDescriptors:sortDescriptors];
     [dateCreatedSortDescriptor release];
-	
-    //[postDict writeToFile:[dm pathToPost:postDict forBlog:[dm currentBlog]] atomically:YES];
-    [postTitleDict release];
+	[postTitleDict release];
     [newPostTitlesList writeToFile:[self pathToPostTitles:[self currentBlog]]  atomically:YES];
     return postId;
 }
@@ -3445,7 +3407,7 @@ editBlogViewController, currentLocation;
 }
 
 // mod of wrapperForSyncPostsAndGetTemplateForBlog for multiple blog setup
-- (BOOL)newAccountPostsAndTemplateSync:(id)aBlog{
+- (BOOL)newAccountPostsAndTemplateSync:(id)aBlog {
     NSAutoreleasePool *ap = [[NSAutoreleasePool alloc] init];
     [aBlog retain];
 	
@@ -4132,7 +4094,7 @@ editBlogViewController, currentLocation;
 						 ];
 		
 		// Custom Fields
-		NSDictionary *customFields = [aPost valueForKey:@"custom_fields"];
+		//NSDictionary *customFields = [aPost valueForKey:@"custom_fields"];
 		
         //TODO: take url from current post
         XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[currentBlog valueForKey:@"xmlrpc"]]];

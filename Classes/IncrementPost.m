@@ -120,8 +120,8 @@
 	
 	NSString *postID = @"nil";
 	//int postIDInt;
-	int lastPostIDInt = [[[newPostTitlesList objectAtIndex:0] valueForKey:@"postid"] intValue];
-	NSString *postID2 = [[newPostTitlesList objectAtIndex:0] valueForKey:@"postid"];
+	//int lastPostIDInt = [[[newPostTitlesList objectAtIndex:0] valueForKey:@"postid"] intValue];
+	//NSString *postID2 = [[newPostTitlesList objectAtIndex:0] valueForKey:@"postid"];
 	
 //	NSDate *postGMTDate = [post valueForKey:@"date_created_gmt"];
 //	NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:postGMTDate];

@@ -24,16 +24,13 @@
 @property (nonatomic, assign) PostViewController *postDetailViewController;
 @property (nonatomic, assign) PageViewController *pageDetailsController;
 @property (nonatomic, assign) id <WPPhotosListProtocol> delegate;
-
 @property (nonatomic, retain) UITableView *tableView;
-
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *addButton;
 
 - (IBAction)addPhotoFromLibraryAction:(id)sender;
 - (IBAction)addPhotoFromCameraAction:(id)sender;
 - (IBAction)showPhotoUploadScreen:(id)sender;
 - (void)refreshData;
-
 - (void)pickPhotoFromCamera:(id)sender;
 - (void)pickPhotoFromPhotoLibrary:(id)sender;
 - (void)useImage:(UIImage *)theImage;

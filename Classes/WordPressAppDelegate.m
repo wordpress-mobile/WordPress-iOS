@@ -1,5 +1,4 @@
 #import "WordPressAppDelegate.h"
-
 #import "BlogsViewController.h"
 #import "BlogDataManager.h"
 #import "Reachability.h"
@@ -463,7 +462,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	NSURLConnection *conn = [[[NSURLConnection alloc] initWithRequest:theRequest delegate:self] autorelease];
 }
 
-
 #pragma mark NSURLConnection callbacks
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
@@ -484,7 +482,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	[errorAlert release];
 }
 
-
 - (void) connectionDidFinishLoading: (NSURLConnection*) connection {
 	//NSLog(@"connectionDidFinishLoading");
 	//process statsData here or call a helper method to do so.
@@ -503,26 +500,13 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	//NSLog (@"connectionDidReceiveResponse %@", response);
 }
 
-
-
-- (void)connection:(NSURLConnection *)connection
-didReceiveAuthenticationChallenge:
-(NSURLAuthenticationChallenge *)challenge {
+- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
 
 }
 
-
-
-
-
-- (void) handleAuthenticationOKForChallenge:
-(NSURLAuthenticationChallenge *) aChallenge
-								   withUser: (NSString*) username
-								   password: (NSString*) password {
+- (void) handleAuthenticationOKForChallenge:(NSURLAuthenticationChallenge *)aChallenge withUser:(NSString*)username password:(NSString*)password {
 
 }
-
-
 
 - (void) handleAuthenticationCancelForChallenge: (NSURLAuthenticationChallenge *) aChallenge {
 

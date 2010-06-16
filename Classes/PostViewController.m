@@ -879,6 +879,10 @@
 	}
 }
 
+- (IBAction)newPostAction:(id)sender {
+	
+}
+
 #pragma mark -
 #pragma mark Photo list delegate: iPad
 
@@ -905,6 +909,10 @@
 	UIBarButtonItem *buttonItem = [editToolbar.items objectAtIndex:1];
 	[popoverController presentPopoverFromBarButtonItem:buttonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
 	[[CPopoverManager instance] setCurrentPopoverController:photoPickerPopover];
+}
+
+- (IBAction)addPhotoAction:(id)sender {
+	
 }
 
 @end

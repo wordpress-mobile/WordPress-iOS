@@ -69,42 +69,32 @@
 @property (nonatomic)   BOOL hasChanges, isVisible;
 @property (nonatomic)   int mode;
 @property (readonly) UITabBarController *tabController;
-//@property (readonly) UITabBar *tabBar;
-
 @property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, retain) IBOutlet UIView *contentView;
-
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *commentsButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *photosButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *settingsButton;
 @property (nonatomic, retain) IBOutlet UIToolbar *editToolbar;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *cancelEditButton;
 @property (nonatomic, retain) FlippingViewController *editModalViewController;
+@property (nonatomic, assign) UIBarButtonItem *leftBarButtonItemForEditPost;
+@property (nonatomic, assign) UIBarButtonItem *rightBarButtonItemForEditPost;
 
 - (IBAction)cancelView:(id)sender;
 - (void)refreshUIForCompose;
 - (void)refreshUIForCurrentPost;
 - (void)updatePhotosBadge;
-
 - (UINavigationItem *)navigationItemForEditPost;
-@property (nonatomic, assign) UIBarButtonItem *leftBarButtonItemForEditPost;
-@property (nonatomic, assign) UIBarButtonItem *rightBarButtonItemForEditPost;
-
 - (IBAction)commentsAction:(id)sender;
-
 - (IBAction)editAction:(id)sender;
-
 - (IBAction)picturesAction:(id)sender;
 - (IBAction)settingsAction:(id)sender;
 - (IBAction)locationAction:(id)sender;
-
 - (IBAction)addPhotoAction:(id)sender;
 - (IBAction)previewAction:(id)sender;
 - (IBAction)previewEditAction:(id)sender;
 - (IBAction)previewPublishAction:(id)sender;
-
 - (IBAction)newPostAction:(id)sender;
-
 - (void)dismissEditView;
 
 @end

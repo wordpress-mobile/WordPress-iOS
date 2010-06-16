@@ -1,4 +1,4 @@
-    //
+//
 //  BlogSplitViewMasterViewController.m
 //  WordPress
 //
@@ -7,31 +7,18 @@
 //
 
 #import "BlogSplitViewMasterViewController.h"
-
 #import "BlogsViewController.h"
 #import "BlogDataManager.h"
-
 #import "PostsViewController.h"
 #import "PagesViewController.h"
 #import "CommentsViewController.h"
-
 #import "PostViewController.h"
 #import "PageViewController.h"
 #import "CPopoverManager.h"
 
 @implementation BlogSplitViewMasterViewController
 
-@synthesize currentDataSource;
-@synthesize currentIndexPath;
-
-//@synthesize tabBarController;
-
-@synthesize tableView;
-
-//@synthesize postsViewController;
-//@synthesize pagesViewController;
-//@synthesize commentsViewController;
-@synthesize detailNavController;
+@synthesize currentDataSource, currentIndexPath, tableView, detailNavController;
 
 - (void)dealloc {
 	[[BlogDataManager sharedDataManager] removeObserver:self forKeyPath:@"currentPostIndex"];
@@ -42,7 +29,6 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
 	[tabBarController release], tabBarController = nil;
-	
 	[tableView release], tableView = nil;
 	
 	[postsViewController release], postsViewController = nil;
@@ -290,6 +276,10 @@ UIPopoverController *theBlogMenuPopoverController = [[NSClassFromString(@"UIPopo
 	PageViewController *detailViewController = pagesViewController.pageDetailsController;
 	[self showDetailController:detailViewController];
 	[detailViewController editAction:self];
+}
+
+- (IBAction)commentsAction:(id)sender {
+	
 }
 
 - (void)refreshBlogs:(NSNotification *)notification;

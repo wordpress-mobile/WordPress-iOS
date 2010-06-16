@@ -11,30 +11,24 @@
 @interface PostsViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate> {
 @private
     UIBarButtonItem *newButtonItem;
-
-//    IBOutlet UITableView *postsTableView;
-
+	UIAlertView *progressAlert;
+	NSIndexPath *selectedIndexPath;
     PostViewController *postDetailViewController;
     EditPostViewController *postDetailEditController;
     RefreshButtonView *refreshButton;
-	UIAlertView *progressAlert;
 	BOOL anyMorePosts;
-	
-	NSIndexPath *selectedIndexPath;
 }
 
 @property (readonly) UIBarButtonItem *newButtonItem;
 @property (nonatomic, retain) PostViewController *postDetailViewController;
 @property (nonatomic, retain) EditPostViewController *postDetailEditController;
 @property (nonatomic, assign) BOOL anyMorePosts;
-
 @property (nonatomic, retain) NSIndexPath *selectedIndexPath;
 
-- (void) addSpinnerToCell:(NSIndexPath *)indexPath;
-- (void) removeSpinnerFromCell:(NSIndexPath *)indexPath;
-- (void) loadPosts;
-- (void) showAddPostView;
-
+- (void)addSpinnerToCell:(NSIndexPath *)indexPath;
+- (void)removeSpinnerFromCell:(NSIndexPath *)indexPath;
+- (void)loadPosts;
+- (void)showAddPostView;
 - (void)reselect;
 
 @end

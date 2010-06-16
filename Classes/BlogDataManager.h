@@ -140,6 +140,7 @@
 - (void)saveBlogData;
 - (NSString *)templateHTMLStringForBlog:(id)aBlog isDefaultTemplate:(BOOL *)flag;
 - (NSString *)defaultTemplateHTMLString;
+- (BOOL)newAccountPostsAndTemplateSync:(id)aBlog;
 
 #pragma mark Post Title metadata
 
@@ -192,6 +193,9 @@
 
 - (void)resetCurrentPage;
 - (void)resetCurrentPageDraft;
+- (NSString *)pathToPageTitles:(id)aBlog;
+- (NSString *)pageFilePath:(id)aPage forBlog:(id)aBlog;
+- (void)setPageTitlesList:(NSMutableArray *)newArray;
 
 #pragma mark Post metadata
 
@@ -230,8 +234,10 @@
 - (BOOL)hasAutosavedPost;
 - (id)autoSavedPostForCurrentBlog;
 - (NSString *)blogDir:(id)aBlog;
-
+- (BOOL)makePostWithPostIDCurrent:(NSString *)postID;
 - (BOOL)postDescriptionHasValidDescription:(id)aPost;
+- (NSMutableDictionary *)postTitleForPost:(NSDictionary *)aPost;
+- (NSMutableDictionary *)pageTitleForPage:(NSDictionary *)aPage;
 
 #pragma mark CategoriesCreation
 
