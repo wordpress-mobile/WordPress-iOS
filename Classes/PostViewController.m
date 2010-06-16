@@ -834,7 +834,17 @@
 
 - (IBAction)locationAction:(id)sender;
 {
-	[postDetailEditController showLocationMapView:sender];
+	if(DeviceIsPad()) {
+		PostLocationViewController *locationView = [[PostLocationViewController alloc] initWithNibName:@"PostLocationViewController" bundle:nil];
+		locationView.contentSizeForViewInPopover = locationView.contentSizeForViewInPopover;
+		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:locationView] autorelease];
+		UIPopoverController *popover = [[[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:navController] autorelease];
+		[popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		[[CPopoverManager instance] setCurrentPopoverController:popover];
+		[locationView release];
+	}
+	else
+		[postDetailEditController showLocationMapView:sender];
 }
 
 

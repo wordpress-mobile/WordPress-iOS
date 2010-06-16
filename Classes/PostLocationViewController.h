@@ -11,6 +11,7 @@
 #import "BlogDataManager.h"
 #import "LocationController.h"
 #import "PostAnnotation.h"
+#import "CPopoverManager.h"
 
 @interface PostLocationViewController : UIViewController <LocationControllerDelegate> {
 	IBOutlet MKMapView *map;

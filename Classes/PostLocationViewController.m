@@ -53,7 +53,11 @@
 - (IBAction)dismiss:(id)sender {
 	[[locationController locationManager] stopUpdatingLocation];
 	locationController = nil;
-	[self dismissModalViewControllerAnimated:YES];
+	
+	if(DeviceIsPad())
+		[[[CPopoverManager instance] currentPopoverController] dismissPopoverAnimated:YES];
+	else
+		[self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark -
@@ -150,13 +154,11 @@
 	NSMutableArray *customFieldsArray = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"custom_fields"];
 	for(NSMutableDictionary *dict in customFieldsArray)
 	{
-		NSLog(@"dict: %@", [dict objectForKey:@"key"]);
 		if(([[dict objectForKey:@"key"] isEqualToString:@"geo_latitude"]) ||
 		   ([[dict objectForKey:@"key"] isEqualToString:@"geo_longitude"]) ||
 		   ([[dict objectForKey:@"key"] isEqualToString:@"geo_accuracy"]) || 
 		   ([[dict objectForKey:@"key"] isEqualToString:@"geo_public"]))
 		{
-			NSLog(@"removing dict: %@", [dict objectForKey:@"key"]);
 			[dict removeObjectForKey:@"key"];
 			[dict removeObjectForKey:@"value"];
 		}
@@ -164,7 +166,14 @@
 	
 	[[[BlogDataManager sharedDataManager] currentPost] setValue:customFieldsArray forKey:@"custom_fields"];
 	
-	[self dismiss:self];
+	if(DeviceIsPad()) {
+		[map removeAnnotations:map.annotations];
+		buttonAction.title = @"Geotag";
+	}
+	else
+		[self dismiss:self];
+	
+	[[[BlogDataManager sharedDataManager] currentPost] setValue:@"YES" forKey:@"hasChanges"];
 }
 
 - (void)addLocation {
@@ -214,7 +223,17 @@
 	// Send our modified custom fields back to BlogDataManager
 	[dm.currentPost setValue:customFieldsArray forKey:@"custom_fields"];
 	
-	[self dismiss:self];
+	if(DeviceIsPad()) {
+		[self centerMapOn:locationController.locationManager.location];
+		PostAnnotation *pin = [[PostAnnotation alloc] initWithCoordinate:locationController.locationManager.location.coordinate];
+		pin.title = @"Post Location";
+		[self.map addAnnotation:pin];
+		buttonAction.title = @"Remove Geotag";
+	}
+	else
+		[self dismiss:self];
+	
+	[[[BlogDataManager sharedDataManager] currentPost] setValue:@"YES" forKey:@"hasChanges"];
 }
 
 #pragma mark -
