@@ -11,7 +11,7 @@
 
 @class EditPageViewController, PageViewController;
 
-@interface PagesViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate> {
+@interface PagesViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, UIAccelerometerDelegate> {
 @private
     UIBarButtonItem *newButtonItem;
 	UIAlertView *progressAlert;

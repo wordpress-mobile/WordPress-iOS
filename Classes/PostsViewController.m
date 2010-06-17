@@ -606,4 +606,9 @@ if (self.selectedIndexPath != NULL)
 	}
 }
 
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+	if(event.subtype == UIEventSubtypeMotionShake)
+		[self refreshPostList];
+}
+
 @end

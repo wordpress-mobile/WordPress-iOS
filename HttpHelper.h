@@ -18,16 +18,16 @@ typedef enum {
 @interface HTTPHelper : NSObject {
 	NSTimeInterval timeOut;
 	HTTPState state;
-	NSMutableData* dataSoFar;
-	NSURLConnection* connection;
+	NSMutableData *dataSoFar;
+	NSURLConnection *connection;
 	id<HTTPHelperDelegate> delegate;
 }
 
 @property NSTimeInterval timeOut;
 
-+ (HTTPHelper*) sharedInstance;
++ (HTTPHelper *)sharedInstance;
 - (NSError *)synchronousGetURLAsString:(NSString *)URLAsString replyData: (NSString**)dataStr;
 - (NSError *)synchronousPostUrlAsString:(NSString *)UrlAsString withRequest:(NSString *)requestString replyData:(NSString **)reply;
-- (void) asynchronousGetURLAsString: (NSString*) URLAsString delegate: (id<HTTPHelperDelegate>) delegate_;
+- (void)asynchronousGetURLAsString:(NSString *) URLAsString delegate: (id<HTTPHelperDelegate>) delegate_;
 
 @end

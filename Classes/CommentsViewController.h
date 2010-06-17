@@ -12,7 +12,7 @@
 
 @class CommentViewController;
 
-@interface CommentsViewController : UIViewController <UITableViewDataSource, CommentsTableViewDelegate> {
+@interface CommentsViewController : UIViewController <UITableViewDataSource, CommentsTableViewDelegate, UIAccelerometerDelegate> {
 @private
     IBOutlet UITableView *commentsTableView;
 

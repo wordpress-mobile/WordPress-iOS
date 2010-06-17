@@ -28,7 +28,7 @@ typedef enum _WPItemType {
 	id <UITableViewDataSource, UITableViewDelegate> currentDataSource;
 	NSIndexPath *currentIndexPath;
 	
-	IBOutlet UINavigationController *detailNavController;;
+	IBOutlet UINavigationController *detailNavController;
 }
 
 @property (nonatomic, assign) id <UITableViewDataSource, UITableViewDelegate> currentDataSource;

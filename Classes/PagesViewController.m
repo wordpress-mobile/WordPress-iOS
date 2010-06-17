@@ -509,4 +509,9 @@
     [delegate setAlertRunning:NO];
 }
 
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+	if(event.subtype == UIEventSubtypeMotionShake)
+		[self refreshPageList];
+}
+
 @end

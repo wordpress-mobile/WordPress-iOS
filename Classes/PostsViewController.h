@@ -8,7 +8,7 @@
 
 @class BlogDataManager, PostViewController, EditPostViewController;
 
-@interface PostsViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate> {
+@interface PostsViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, UIAccelerometerDelegate> {
 @private
     UIBarButtonItem *newButtonItem;
 	UIAlertView *progressAlert;

@@ -456,7 +456,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 						   numblogs,
 						   deviceModel] dataUsingEncoding:NSUTF8StringEncoding]];
 	
-	NSString *htmlStr = [[[NSString alloc] initWithData:postBody encoding:NSUTF8StringEncoding] autorelease];
+	//NSString *htmlStr = [[[NSString alloc] initWithData:postBody encoding:NSUTF8StringEncoding] autorelease];
 	[theRequest setHTTPBody:postBody];
 	
 	NSURLConnection *conn = [[[NSURLConnection alloc] initWithRequest:theRequest delegate:self] autorelease];

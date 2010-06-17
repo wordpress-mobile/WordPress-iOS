@@ -35,6 +35,8 @@ Classes/CNewBlogSignupViewController.m -text
 Classes/CNewBlogSignupViewController.xib -text
 Classes/CPopoverManager.h -text
 Classes/CPopoverManager.m -text
+Classes/Comment.h -text
+Classes/Comment.m -text
 Classes/CommentTableViewCell.h -text
 Classes/CommentTableViewCell.m -text
 Classes/CommentViewController.h -text
@@ -66,10 +68,14 @@ Classes/NSString+Util.h -text
 Classes/NSString+Util.m -text
 Classes/NSString+XMLExtensions.h -text
 Classes/NSString+XMLExtensions.m -text
+Classes/Page.h -text
+Classes/Page.m -text
 Classes/PageViewController.h -text
 Classes/PageViewController.m -text
 Classes/PagesViewController.h -text
 Classes/PagesViewController.m -text
+Classes/Post.h -text
+Classes/Post.m -text
 Classes/PostAnnotation.h -text
 Classes/PostAnnotation.m -text
 Classes/PostLocationViewController.h -text
@@ -115,6 +121,9 @@ Classes/WPCategoriesController.h -text
 Classes/WPCategoriesController.m -text
 Classes/WPCategoryTree.h -text
 Classes/WPCategoryTree.m -text
+Classes/WPDataController.h -text
+Classes/WPDataController.m -text
+Classes/WPDataControllerDelegate.h -text
 Classes/WPImagePickerController.h -text
 Classes/WPImagePickerController.m -text
 Classes/WPImageView.h -text

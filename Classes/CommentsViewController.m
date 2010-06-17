@@ -559,4 +559,9 @@
 	[self refreshCommentsList];
 }
 
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+	if(event.subtype == UIEventSubtypeMotionShake)
+		[self refreshCommentsList];
+}
+
 @end
