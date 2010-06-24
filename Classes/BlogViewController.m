@@ -46,6 +46,7 @@
 	[postsViewController addObserver:self forKeyPath:@"selectedIndexPath" options:NSKeyValueObservingOptionNew context:nil];
 	[pagesViewController addObserver:self forKeyPath:@"selectedIndexPath" options:NSKeyValueObservingOptionNew context:nil];
 	[commentsViewController addObserver:self forKeyPath:@"selectedIndexPath" options:NSKeyValueObservingOptionNew context:nil];
+	[statsViewController addObserver:self forKeyPath:@"selectedIndexPath" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -66,6 +67,7 @@
 	[postsViewController removeObserver:self forKeyPath:@"selectedIndexPath"];
 	[pagesViewController removeObserver:self forKeyPath:@"selectedIndexPath"];
 	[commentsViewController removeObserver:self forKeyPath:@"selectedIndexPath"];
+	[statsViewController removeObserver:self forKeyPath:@"selectedIndexPath"];
 	
 	[tabBarController release], tabBarController = nil;
 	
@@ -165,6 +167,10 @@ if ([tabBarController.selectedViewController respondsToSelector:@selector(resele
 		vcName = @"Pages";
 		indexPath = pagesViewController.selectedIndexPath;
 	}
+	else if	(statsViewController.selectedIndexPath) {
+		vcName = @"Stats";
+		indexPath = statsViewController.selectedIndexPath;
+	}
 	
 	if((vcName != nil) && (indexPath != nil)) {
 		[[NSUserDefaults standardUserDefaults] setObject:vcName forKey:@"WPSelectedContentType"];
@@ -192,6 +198,10 @@ if ([tabBarController.selectedViewController respondsToSelector:@selector(resele
 			postsViewController.selectedIndexPath = selectedIndexPath;
 		}
 		else if	([vcName isEqual:@"Pages"]) {
+			selectedViewController = pagesViewController;
+			pagesViewController.selectedIndexPath = selectedIndexPath;
+		}
+		else if	([vcName isEqual:@"Stats"]) {
 			selectedViewController = pagesViewController;
 			pagesViewController.selectedIndexPath = selectedIndexPath;
 		}

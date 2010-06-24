@@ -13,4 +13,5 @@
 @interface UIDevice (Hardware)
 - (NSString *) platform;
 - (NSString *) platformString;
+- (BOOL)hasMicrophone;
 @end

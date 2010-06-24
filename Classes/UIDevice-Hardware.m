@@ -44,4 +44,18 @@
 	}
 	return NULL;
 }
+
+- (BOOL)hasMicrophone {
+	NSString *platform = [self platform];
+	if ([platform isEqualToString:@"iPhone1,1"]) return YES;
+	if ([platform isEqualToString:@"iPhone1,2"]) return YES;
+	if ([platform isEqualToString:@"iPhone2,1"]) return YES;
+	if ([platform isEqualToString:@"iPhone3,1"]) return YES;
+	if ([platform isEqualToString:@"iPod1,1"])   return NO;
+	if ([platform isEqualToString:@"iPod2,1"])   return NO;
+	if ([platform isEqualToString:@"iPad1,1"])   return NO;
+	
+	return NO;
+}
+
 @end

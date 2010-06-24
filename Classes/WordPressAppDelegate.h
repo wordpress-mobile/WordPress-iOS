@@ -1,4 +1,5 @@
 #import <UIKit/UIKit.h>
+#import <CoreData/CoreData.h>
 #import "Constants.h"
 #import "UIDevice-Hardware.h"
 
@@ -20,6 +21,11 @@
 
     UIImageView *splashView;
 	NSMutableData *statsData;
+	
+@private
+    NSManagedObjectContext *managedObjectContext_;
+    NSManagedObjectModel *managedObjectModel_;
+    NSPersistentStoreCoordinator *persistentStoreCoordinator_;
 }
 
 @property (nonatomic, retain) UIWindow *window;
@@ -31,6 +37,12 @@
 @property (nonatomic, getter = isAlertRunning) BOOL alertRunning;
 @property (nonatomic, retain) WelcomeViewController *welcomeViewController;
 
+@property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
+- (NSString *)applicationDocumentsDirectory;
+
 + (WordPressAppDelegate *)sharedWordPressApp;
 
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message;
@@ -39,7 +51,6 @@
 - (void)resetCurrentBlogInUserDefaults;
 - (BOOL)shouldLoadBlogFromUserDefaults;
 - (void)setAutoRefreshMarkers;
-
 - (void)showContentDetailViewController:(UIViewController *)viewController;
 
 @end

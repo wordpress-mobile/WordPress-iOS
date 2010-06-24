@@ -5,6 +5,7 @@
 #import "PostPreviewViewController.h"
 #import "PostSettingsViewController.h"
 #import "WPPhotosListViewController.h"
+#import "MediaViewController.h"
 #import "WPNavigationLeftButtonView.h"
 #import "PostsViewController.h"
 #import "Reachability.h"
@@ -35,7 +36,9 @@
 
 @implementation PostViewController
 
-@synthesize postDetailViewController, postDetailEditController, postPreviewController, postSettingsController, postsListController, hasChanges, mode, tabController, photosListController, saveButton;
+@synthesize postDetailViewController, postDetailEditController, postPreviewController, postSettingsController, postsListController, hasChanges, mode, tabController, saveButton;
+@synthesize photosListController;
+@synthesize mediaController;
 @synthesize leftView, isVisible;
 @synthesize customFieldsDetailController;
 @synthesize commentsViewController;
@@ -84,6 +87,7 @@
     [postPreviewController release];
     [postSettingsController release];
     [photosListController release];
+	[mediaController release];
     [commentsViewController release];
     [saveButton release];
 
@@ -159,24 +163,24 @@
     }
 
     //Code for scaling image based on post settings
-	NSAutoreleasePool *pool=[[NSAutoreleasePool alloc] init];
-    NSArray *photosArray = [dm.currentPost valueForKey:@"Photos"];
-    NSString *filepath;
-
-    for (int i = 0; i <[photosArray count]; i++) {
-        filepath = [photosArray objectAtIndex:i];
-        NSString *imagePath = [NSString stringWithFormat:@"%@/%@", [dm blogDir:dm.currentBlog], filepath];
-        UIImage *scaledImage = [photosListController scaleAndRotateImage:[UIImage imageWithContentsOfFile:imagePath] scaleFlag:YES];
-        NSData *imageData = UIImageJPEGRepresentation(scaledImage, 0.5);
-        [imageData writeToFile:imagePath atomically:YES];
-
-		if(pool)
-			[pool release];
-
-		pool=[[NSAutoreleasePool alloc] init];
-
-    }
-	[pool release];
+	//NSAutoreleasePool *pool=[[NSAutoreleasePool alloc] init];
+//    NSArray *photosArray = [dm.currentPost valueForKey:@"Photos"];
+//    NSString *filepath;
+//
+//    for (int i = 0; i <[photosArray count]; i++) {
+//        filepath = [photosArray objectAtIndex:i];
+//        NSString *imagePath = [NSString stringWithFormat:@"%@/%@", [dm blogDir:dm.currentBlog], filepath];
+//        UIImage *scaledImage = [photosListController scaleAndRotateImage:[UIImage imageWithContentsOfFile:imagePath] scaleFlag:YES];
+//        NSData *imageData = UIImageJPEGRepresentation(scaledImage, 0.5);
+//        [imageData writeToFile:imagePath atomically:YES];
+//
+//		if(pool)
+//			[pool release];
+//
+//		pool=[[NSAutoreleasePool alloc] init];
+//
+//    }
+//	[pool release];
 
     //for handling more tag text.
     [(NSMutableDictionary *)[BlogDataManager sharedDataManager].currentPost setValue:@"" forKey:@"mt_text_more"];
@@ -285,7 +289,7 @@
 	[postDetailViewController refreshUIForCompose];
     [postDetailEditController refreshUIForCompose];
     [postSettingsController reloadData];
-    [photosListController refreshData];
+    //[photosListController refreshData];
 
     [self updatePhotosBadge];
 	
@@ -312,7 +316,7 @@
 	if (!DeviceIsPad())
 		[postDetailEditController refreshUIForCurrentPost];
     [postSettingsController reloadData];
-    [photosListController refreshData];
+    //[photosListController refreshData];
 
 	[commentsViewController setIndexForCurrentPost:[[BlogDataManager sharedDataManager] currentPostIndex]];
 	[commentsViewController refreshCommentsList];
@@ -326,21 +330,21 @@
 }
 
 - (void)updatePhotosBadge {
-    int photoCount = [[[BlogDataManager sharedDataManager].currentPost valueForKey:@"Photos"] count];
-
-	if (tabController) {
-		if (photoCount)
-			photosListController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d", photoCount];
-		else
-			photosListController.tabBarItem.badgeValue = nil;
-	} else if (toolbar) {
-		if (!photoCount)
-			photosButton.title = @"No Photos";
-		else if (photoCount == 1)
-			photosButton.title = @"1 Photo";
-		else
-			photosButton.title = [NSString stringWithFormat:@"%d Photos", photoCount];
-	}
+    //int photoCount = [[[BlogDataManager sharedDataManager].currentPost valueForKey:@"Photos"] count];
+//
+//	if (tabController) {
+//		if (photoCount)
+//			photosListController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d", photoCount];
+//		else
+//			photosListController.tabBarItem.badgeValue = nil;
+//	} else if (toolbar) {
+//		if (!photoCount)
+//			photosButton.title = @"No Photos";
+//		else if (photoCount == 1)
+//			photosButton.title = @"1 Photo";
+//		else
+//			photosButton.title = [NSString stringWithFormat:@"%d Photos", photoCount];
+//	}
 }
 
 #pragma mark -
@@ -581,11 +585,20 @@
         photosListController = [[WPPhotosListViewController alloc] initWithNibName:@"WPPhotosListViewController" bundle:nil];
     }
 
-    photosListController.title = @"Photos";
+    photosListController.title = @"Media";
     photosListController.tabBarItem.image = [UIImage imageNamed:@"photos.png"];
-    photosListController.delegate = self;
-
+	photosListController.delegate = self;
+	
     [array addObject:photosListController];
+	
+	//if (mediaController == nil) {
+//		mediaController = [[MediaViewController alloc] initWithNibName:@"MediaViewController" bundle:nil];
+//	}
+//	mediaController.title = @"Media";
+//	mediaController.tabBarItem.image = [UIImage imageNamed:@"photos.png"];
+//    mediaController.postDetailViewController = self;
+//
+//    [array addObject:mediaController];
 
     if (postPreviewController == nil) {
         postPreviewController = [[PostPreviewViewController alloc] initWithNibName:@"PostPreviewViewController" bundle:nil];
@@ -714,19 +727,19 @@
 }
 
 - (void)useImage:(UIImage *)theImage {
-    BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-    self.hasChanges = YES;
-
-    id currentPost = dataManager.currentPost;
-
-    if (![currentPost valueForKey:@"Photos"]) {
-        [currentPost setValue:[NSMutableArray array] forKey:@"Photos"];
-    }
-
-    UIImage *image = [photosListController scaleAndRotateImage:theImage scaleFlag:NO];
-    [[currentPost valueForKey:@"Photos"] addObject:[dataManager saveImage:image]];
-
-    [self updatePhotosBadge];
+    //BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
+//    self.hasChanges = YES;
+//
+//    id currentPost = dataManager.currentPost;
+//
+//    if (![currentPost valueForKey:@"Photos"]) {
+//        [currentPost setValue:[NSMutableArray array] forKey:@"Photos"];
+//    }
+//
+//    UIImage *image = [photosListController scaleAndRotateImage:theImage scaleFlag:NO];
+//    [[currentPost valueForKey:@"Photos"] addObject:[dataManager saveImage:image]];
+//
+//    [self updatePhotosBadge];
 }
 
 - (id)photosDataSource {
@@ -815,12 +828,12 @@
 }
 
 - (IBAction)picturesAction:(id)sender;
-{
-	photosListController.contentSizeForViewInPopover = photosListController.contentSizeForViewInPopover;
-	UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:photosListController] autorelease];
-	UIPopoverController *popover = [[[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:navController] autorelease];
-	[popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-	[[CPopoverManager instance] setCurrentPopoverController:popover];
+{//
+//	photosListController.contentSizeForViewInPopover = photosListController.contentSizeForViewInPopover;
+//	UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:photosListController] autorelease];
+//	UIPopoverController *popover = [[[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:navController] autorelease];
+//	[popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+//	[[CPopoverManager instance] setCurrentPopoverController:popover];
 }
 
 - (IBAction)settingsAction:(id)sender;
@@ -891,7 +904,7 @@
 	if (!photoPickerPopover) {
 		photoPickerPopover = [[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:picker];
 	}
-	picker.contentSizeForViewInPopover = photosListController.contentSizeForViewInPopover;
+	//picker.contentSizeForViewInPopover = photosListController.contentSizeForViewInPopover;
 	photoPickerPopover.contentViewController = picker;
 
 

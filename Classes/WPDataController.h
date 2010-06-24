@@ -27,7 +27,7 @@ typedef enum {
 
 + (WPDataController *)sharedInstance;
 
-- (Blog *)getBlog:(int)blogID;
+- (Blog *)getBlog:(int)blogID andPopulate:(BOOL)andPopulate;
 - (BOOL)addBlog:(Blog *)blog direction:(SyncDirection *)direction;
 - (BOOL)updateBlog:(Blog *)blog direction:(SyncDirection *)direction;
 - (BOOL)deleteBlog:(Blog *)blog direction:(SyncDirection *)direction;

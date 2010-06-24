@@ -55,7 +55,7 @@
 //        }
 
         [photosListController refreshData];
-        self.navigationItem.title = @"Photos";
+        self.navigationItem.title = @"Media";
     } else {
 //        [photoEditingStatusView removeFromSuperview];
         [pageDetailViewController refreshUIForCurrentPage];
@@ -219,7 +219,7 @@
     }
 
     pageDetailViewController.photosListController = photosListController;
-    photosListController.title = @"Photos";
+    photosListController.title = @"Media";
     photosListController.tabBarItem.image = [UIImage imageNamed:@"photos.png"];
 //	photosListController.pageDetailViewController = self.pageDetailViewController;
 //	photosListController.pageDetailsController = self;

@@ -7,7 +7,9 @@
 
 #import <UIKit/UIKit.h>
 
+
 @interface WPImagePickerController : UIImagePickerController {
+	
 }
 
 @end

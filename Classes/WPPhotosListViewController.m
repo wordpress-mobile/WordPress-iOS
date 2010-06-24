@@ -59,14 +59,31 @@ static inline double radians(double degrees) {
 - (void)showPhotoPickerActionSheet {
     isShowPhotoPickerActionSheet = YES;
 
-    // open a dialog with two custom buttons
-    if ([WPImagePickerController
-         isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+	// Check for video support
+	if([[UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera] containsObject:(NSString *)kUTTypeMovie]) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc]
                                       initWithTitle:@""
                                       delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
-                                      otherButtonTitles:@"Add Photo from Library", @"Take Photo with Camera",
-                                      nil];
+                                      otherButtonTitles:
+										  @"Add Media from Library", 
+										  @"Take Photo",
+										  @"Record Video",
+										  nil];
+        actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+        [actionSheet showInView:[(UIViewController *) delegate view]];
+        WordPressAppDelegate *wpAppDelegate = [[UIApplication sharedApplication] delegate];
+        [wpAppDelegate setAlertRunning:YES];
+		
+        [actionSheet release];	
+	}// Check for camera support
+    else if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc]
+                                      initWithTitle:@""
+                                      delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
+                                      otherButtonTitles:
+										  @"Add Photo from Library",
+										  @"Take Photo",
+										  nil];
         actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
         [actionSheet showInView:[(UIViewController *) delegate view]];
         WordPressAppDelegate *wpAppDelegate = [[UIApplication sharedApplication] delegate];
@@ -80,11 +97,17 @@ static inline double radians(double degrees) {
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (isShowPhotoPickerActionSheet) {
-        if (buttonIndex == 0)
-            [self pickPhotoFromPhotoLibrary:nil];else if (buttonIndex == 1)
-            [self pickPhotoFromCamera:nil];
-
-        //cancel
+		switch (buttonIndex) {
+			case 0:
+				[self pickPhotoFromPhotoLibrary:nil];
+				break;
+			case 1:
+				[self pickPhotoFromCamera:nil];
+				break;
+			case 2:
+				[self pickVideoFromCamera:nil];
+				break;
+		}
     } else {
         if (buttonIndex == 0) { //add
             [self useImage:currentChoosenImage];
@@ -118,6 +141,17 @@ static inline double radians(double degrees) {
     }
 }
 
+- (void)pickVideoFromCamera:(id)sender {
+	if([[UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera] containsObject:(NSString *)kUTTypeMovie]) {
+		UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+		picker.sourceType =  UIImagePickerControllerSourceTypeCamera;
+	    picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeMovie];
+		picker.delegate = self;
+		picker.allowsEditing = NO;
+        [[(UIViewController *) delegate navigationController] presentModalViewController:picker animated:YES];
+	}
+}
+
 - (void)pickPhotoFromPhotoLibrary:(id)sender {
 //	[[BlogDataManager sharedDataManager] makeNewPictureCurrent];
     if ([WPImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
@@ -133,6 +167,55 @@ static inline double radians(double degrees) {
 			[[(UIViewController *) delegate navigationController] presentModalViewController:picker animated:YES];
 		}
     }
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+	if([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.movie"]) {
+		NSString *video = [(NSURL *)[info valueForKey:UIImagePickerControllerMediaURL] absoluteString];
+		video = [[video substringFromIndex:16] retain];
+		if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(video))
+			UISaveVideoAtPathToSavedPhotosAlbum(video, self, @selector(video:didFinishSavingWithError:contextInfo:), video);
+		[[picker parentViewController] dismissModalViewControllerAnimated:YES];
+	}
+	else if([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.image"]) {
+		UIImage *image = [info valueForKey:@"UIImagePickerControllerOriginalImage"];
+		if (picker.sourceType == UIImagePickerControllerSourceTypeCamera)
+			UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+		
+		[self useImage:image];
+		
+		if (DeviceIsPad() == YES) {
+			if (self.delegate && [self.delegate respondsToSelector:@selector(hidePhotoListImagePicker)]) {
+				[self.delegate hidePhotoListImagePicker];
+			}
+		} else {
+			[[picker parentViewController] dismissModalViewControllerAnimated:YES];
+		}
+		[self clearPickerContrller];
+		[self refreshData];
+	}
+}
+
+- (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(NSString *)contextInfo{
+	NSString *file, *latestFile;
+	NSDate *latestDate = [NSDate distantPast];
+	NSDirectoryEnumerator *dirEnum = [[NSFileManager defaultManager] enumeratorAtPath:[[contextInfo stringByDeletingLastPathComponent]stringByDeletingLastPathComponent]];
+	while (file = [dirEnum nextObject]) {
+		if ([[file pathExtension] isEqualToString: @"jpg"]) {
+			if ([(NSDate *)[[dirEnum fileAttributes] valueForKey:@"NSFileModificationDate"] compare:latestDate] == NSOrderedDescending){
+				latestDate = [[dirEnum fileAttributes] valueForKey:@"NSFileModificationDate"];
+				latestFile = file;
+			}
+		}
+	}
+	latestFile = [NSTemporaryDirectory() stringByAppendingPathComponent:latestFile];
+	
+	NSURL *url = [NSURL fileURLWithPath:latestFile];
+	NSData *data = [NSData dataWithContentsOfURL:url];
+	UIImage *thumbnail = [[UIImage alloc] initWithData:data];
+	[self useImage:thumbnail];
+	[self clearPickerContrller];
+	[self refreshData];
 }
 
 - (UIImage *)fixImageOrientation:(UIImage *)img {
@@ -306,35 +389,6 @@ static inline double radians(double degrees) {
     return imageCopy;
 }
 
-- (void)imagePickerController:(UIImagePickerController *)picker
-didFinishPickingImage:(UIImage *)image
-editingInfo:(NSDictionary *)editingInfo {
-    // Add captured photo to iPhone photo library
-    if (picker.sourceType == UIImagePickerControllerSourceTypeCamera)
-        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-
-    [self useImage:image];
-	
-	if (DeviceIsPad() == YES) {
-		if (self.delegate && [self.delegate respondsToSelector:@selector(hidePhotoListImagePicker)]) {
-			[self.delegate hidePhotoListImagePicker];
-		}
-	} else {
-		[[picker parentViewController] dismissModalViewControllerAnimated:YES];
-	}
-    [self clearPickerContrller];
-    [self refreshData];
-
-//	currentChoosenImage = [image retain];
-//	isShowPhotoPickerActionSheet = NO;
-//	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@""
-//																													 delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
-//																									otherButtonTitles:@"Add and Select More", @"Add and Continue Editing", nil];
-//	actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
-//	[actionSheet showInView:picker.view];
-//	[actionSheet release];
-}
-
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
 	if (DeviceIsPad() == YES) {
 		if (self.delegate && [self.delegate respondsToSelector:@selector(hidePhotoListImagePicker)]) {
@@ -375,11 +429,11 @@ editingInfo:(NSDictionary *)editingInfo {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"Photos";
+    self.title = @"Media";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    self.title = @"Photos";
+    self.title = @"Media";
     [super viewWillAppear:animated];
     [(NSObject *) delegate performSelector:@selector(updatePhotosBadge)];
 }
@@ -394,7 +448,18 @@ editingInfo:(NSDictionary *)editingInfo {
     int count;
     count = [[delegate photosDataSource] count];
 
-    countField.text = [NSString stringWithFormat:@"%d Photos", count];
+	switch (count) {
+		case 0:
+			countField.text = [NSString stringWithFormat:@"No media.", count];
+			break;
+		case 1:
+			countField.text = [NSString stringWithFormat:@"%d item.", count];
+			break;
+		default:
+			countField.text = [NSString stringWithFormat:@"%d items.", count];
+			break;
+	}
+	
     return (count / NUM_COLS) + (count % NUM_COLS ? 1 : 0);
 }
 

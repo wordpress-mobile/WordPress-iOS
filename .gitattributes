@@ -62,6 +62,9 @@ Classes/ImageCache.h -text
 Classes/ImageCache.m -text
 Classes/LocationController.h -text
 Classes/LocationController.m -text
+Classes/MediaViewController.h -text
+Classes/MediaViewController.m -text
+Classes/MediaViewController.xib -text
 Classes/NSData+Base64.h -text
 Classes/NSData+Base64.m -text
 Classes/NSString+Util.h -text
@@ -105,6 +108,16 @@ Classes/ResourcesTableViewSection.h -text
 Classes/ResourcesTableViewSection.m -text
 Classes/RotatingNavigationController.h -text
 Classes/RotatingNavigationController.m -text
+Classes/StatsCategoryViewController.h -text
+Classes/StatsCategoryViewController.m -text
+Classes/StatsCategoryViewController.xib -text
+Classes/StatsCollection.h -text
+Classes/StatsCollection.m -text
+Classes/StatsItem.h -text
+Classes/StatsItem.m -text
+Classes/StatsViewController.h -text
+Classes/StatsViewController.m -text
+Classes/StatsViewController.xib -text
 Classes/UIDevice-Hardware.h -text
 Classes/UIDevice-Hardware.m -text
 Classes/UIImage+INResizeImageAllocator.h -text
@@ -153,6 +166,8 @@ Classes/WebSignupViewController.h -text
 Classes/WebSignupViewController.m -text
 Classes/WelcomeViewController.h -text
 Classes/WelcomeViewController.m -text
+Classes/WordPress.xcdatamodel/elements -text
+Classes/WordPress.xcdatamodel/layout -text
 Classes/WordPressAppDelegate.h -text
 Classes/WordPressAppDelegate.m -text
 Classes/XMLRPC/XMLRPCConnection+Authentication.h -text
@@ -200,6 +215,8 @@ Classes/glossyButton-normal.png -text svneol=unset#unset
 /Info.plist -text
 /MainBackground.png -text
 /MainWindow.xib -text
+/Media.h -text
+/Media.m -text
 /PageViewController-iPad.xib -text
 /PageViewController.xib -text
 /PagesDraftsViewController.xib -text
@@ -233,6 +250,8 @@ WordPress.xcodeproj/project.pbxproj -text
 /backNavd@2x.png -text
 /category_child.png -text
 /category_child@2x.png -text
+/chart.png -text
+/chart@2x.png -text
 /check.png -text
 /check@2x.png -text
 /commentDelete.png -text

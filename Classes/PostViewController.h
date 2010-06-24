@@ -11,7 +11,9 @@
 #define autorecoverPost 2
 #define refreshPost 3
 
-@class EditPostViewController, PostPreviewViewController, WPSelectionTableViewController, PostSettingsViewController, WPPhotosListViewController, PostsViewController, CommentsViewController;
+@class EditPostViewController, PostPreviewViewController, WPSelectionTableViewController, PostSettingsViewController, PostsViewController, CommentsViewController;
+@class WPPhotosListViewController;
+@class MediaViewController;
 @class WPNavigationLeftButtonView;
 @class CustomFieldsDetailController, WPPublishOnEditController;
 @class CInvisibleToolbar;
@@ -28,6 +30,7 @@
     PostPreviewViewController *postPreviewController;
     PostSettingsViewController *postSettingsController;
     WPPhotosListViewController *photosListController;
+	MediaViewController *mediaController;
     PostsViewController *postsListController;
     CommentsViewController *commentsViewController;
     
@@ -55,19 +58,20 @@
 	FlippingViewController *editModalViewController;
 }
 
-@property (nonatomic, retain)   WPNavigationLeftButtonView *leftView;
-@property (nonatomic, retain)   EditPostViewController *postDetailViewController;
-@property (nonatomic, retain)   EditPostViewController *postDetailEditController;
-@property (nonatomic, retain)   PostPreviewViewController *postPreviewController;
-@property (nonatomic, retain)   PostSettingsViewController *postSettingsController;
-@property (nonatomic, retain)   WPPhotosListViewController *photosListController;
-@property (nonatomic, retain)   CommentsViewController *commentsViewController;
-@property (nonatomic, retain)   CustomFieldsDetailController *customFieldsDetailController;
-@property (nonatomic, assign)   PostsViewController *postsListController;
-@property (nonatomic, assign)   UIViewController *selectedViewController;
+@property (nonatomic, retain) WPNavigationLeftButtonView *leftView;
+@property (nonatomic, retain) EditPostViewController *postDetailViewController;
+@property (nonatomic, retain) EditPostViewController *postDetailEditController;
+@property (nonatomic, retain) PostPreviewViewController *postPreviewController;
+@property (nonatomic, retain) PostSettingsViewController *postSettingsController;
+@property (nonatomic, retain) WPPhotosListViewController *photosListController;
+@property (nonatomic, retain) MediaViewController *mediaController;
+@property (nonatomic, retain) CommentsViewController *commentsViewController;
+@property (nonatomic, retain) CustomFieldsDetailController *customFieldsDetailController;
+@property (nonatomic, assign) PostsViewController *postsListController;
+@property (nonatomic, assign) UIViewController *selectedViewController;
 @property (nonatomic, readonly) UIBarButtonItem *saveButton;
-@property (nonatomic)   BOOL hasChanges, isVisible;
-@property (nonatomic)   int mode;
+@property (nonatomic) BOOL hasChanges, isVisible;
+@property (nonatomic) int mode;
 @property (readonly) UITabBarController *tabController;
 @property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, retain) IBOutlet UIView *contentView;

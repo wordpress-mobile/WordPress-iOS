@@ -1,9 +1,11 @@
 #import <UIKit/UIKit.h>
+#import <MobileCoreServices/UTCoreTypes.h>
 #import "WPPhotoViewController.h"
 #import "PostViewController.h"
 #import "PageViewController.h"
 #import "WPImageView.h"
 #import "WPImagePickerController.h"
+#import "UIDevice-Hardware.h"
 
 @interface WPPhotosListViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
     IBOutlet UITableView *tableView;
@@ -32,6 +34,7 @@
 - (IBAction)showPhotoUploadScreen:(id)sender;
 - (void)refreshData;
 - (void)pickPhotoFromCamera:(id)sender;
+- (void)pickVideoFromCamera:(id)sender;
 - (void)pickPhotoFromPhotoLibrary:(id)sender;
 - (void)useImage:(UIImage *)theImage;
 - (void)showPhotoPickerActionSheet;

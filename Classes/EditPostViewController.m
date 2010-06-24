@@ -971,6 +971,19 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [postDetailViewController updatePhotosBadge];
 }
 
+- (void)useVideo:(NSData *)theVideo {
+    BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
+    postDetailViewController.hasChanges = YES;
+	
+    id currentPost = dataManager.currentPost;
+	
+    if (![currentPost valueForKey:@"Videos"])
+        [currentPost setValue:[NSMutableArray array] forKey:@"Videos"];
+	
+    [[currentPost valueForKey:@"Videos"] addObject:[dataManager saveVideo:theVideo]];
+    [postDetailViewController updatePhotosBadge];
+}
+
 - (void)pictureChoosenNotificationReceived:(NSNotification *)aNotification {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"WPPhotoChoosen" object:nil];
 	
