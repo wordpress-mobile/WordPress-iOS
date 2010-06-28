@@ -585,7 +585,7 @@
         photosListController = [[WPPhotosListViewController alloc] initWithNibName:@"WPPhotosListViewController" bundle:nil];
     }
 
-    photosListController.title = @"Media";
+    photosListController.title = @"Photos";
     photosListController.tabBarItem.image = [UIImage imageNamed:@"photos.png"];
 	photosListController.delegate = self;
 	

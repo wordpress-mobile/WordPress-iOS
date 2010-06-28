@@ -60,23 +60,24 @@ static inline double radians(double degrees) {
     isShowPhotoPickerActionSheet = YES;
 
 	// Check for video support
-	if([[UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera] containsObject:(NSString *)kUTTypeMovie]) {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc]
-                                      initWithTitle:@""
-                                      delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
-                                      otherButtonTitles:
-										  @"Add Media from Library", 
-										  @"Take Photo",
-										  @"Record Video",
-										  nil];
-        actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-        [actionSheet showInView:[(UIViewController *) delegate view]];
-        WordPressAppDelegate *wpAppDelegate = [[UIApplication sharedApplication] delegate];
-        [wpAppDelegate setAlertRunning:YES];
-		
-        [actionSheet release];	
-	}// Check for camera support
-    else if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+	//if([[UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera] containsObject:(NSString *)kUTTypeMovie]) {
+//        UIActionSheet *actionSheet = [[UIActionSheet alloc]
+//                                      initWithTitle:@""
+//                                      delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
+//                                      otherButtonTitles:
+//										  @"Add Media from Library", 
+//										  @"Take Photo",
+//										  @"Record Video",
+//										  nil];
+//        actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+//        [actionSheet showInView:[(UIViewController *) delegate view]];
+//        WordPressAppDelegate *wpAppDelegate = [[UIApplication sharedApplication] delegate];
+//        [wpAppDelegate setAlertRunning:YES];
+//		
+//        [actionSheet release];	
+//	}// Check for camera support
+//    else 
+	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc]
                                       initWithTitle:@""
                                       delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
@@ -450,13 +451,13 @@ static inline double radians(double degrees) {
 
 	switch (count) {
 		case 0:
-			countField.text = [NSString stringWithFormat:@"No media.", count];
+			countField.text = [NSString stringWithFormat:@"No photos.", count];
 			break;
 		case 1:
-			countField.text = [NSString stringWithFormat:@"%d item.", count];
+			countField.text = [NSString stringWithFormat:@"%d photo.", count];
 			break;
 		default:
-			countField.text = [NSString stringWithFormat:@"%d items.", count];
+			countField.text = [NSString stringWithFormat:@"%d photos.", count];
 			break;
 	}
 	
