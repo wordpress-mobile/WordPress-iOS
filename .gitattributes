@@ -211,7 +211,12 @@ Classes/glossyButton-normal.png -text svneol=unset#unset
 /HttpHelper.h -text
 /HttpHelper.m -text
 /HttpHelperDelegate.h -text
-/Icon_Spotlight.png -text svneol=unset#unset
+/Icon-72.png -text
+/Icon-Small-50.png -text
+/Icon-Small.png -text
+/Icon-Small@2x.png -text
+/Icon.png -text svneol=unset#unset
+/Icon@2x.png -text svneol=unset#unset
 /Info.plist -text
 /MainBackground.png -text
 /MainWindow.xib -text
@@ -271,9 +276,6 @@ WordPress.xcodeproj/project.pbxproj -text
 /hasLocation@2x.png -text
 /help.png -text
 /iTunesArtwork -text
-/icon-iPad.png -text
-/icon.png -text
-/icon@2x.png -text
 /license.txt -text
 /lock.png -text
 /main.m -text
