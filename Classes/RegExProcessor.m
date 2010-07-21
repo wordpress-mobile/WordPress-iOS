@@ -11,9 +11,6 @@
 
 @implementation RegExProcessor
 
-
-
-
 - (NSString *) lookForXMLRPCEndpointInURLString:(NSString *) urlString {
 	
 	NSString * returnString = nil;
@@ -23,11 +20,6 @@
 	
 	NSString *regexString1 = @"rel=\"(EditURI)\"(.+\")";
 	NSString *regexString2 = @"(http://)([^\"]+)";
-		
-	NSLog(@"searchString: '%@'", searchString);
-	
-	NSLog(@"regexString1 : '%@'", regexString1); 
-	NSLog(@"regexString2 : '%@'", regexString2); 
 	
 	matchArray = [searchString componentsMatchedByRegex:regexString1]; // ≥ 3.0  
 	matchEnumerator = [matchArray objectEnumerator]; // ≥ 3.0  

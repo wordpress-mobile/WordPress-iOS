@@ -30,7 +30,7 @@
 static WordPressAppDelegate *wordPressApp = NULL;
 
 @synthesize window;
-@synthesize navigationController, alertRunning;
+@synthesize navigationController, alertRunning, isWPcomAuthenticated;
 @synthesize splitViewController, firstLaunchController, welcomeViewController;
 
 - (id)init {
@@ -44,6 +44,13 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		
 		
         dataManager = [BlogDataManager sharedDataManager];
+		
+		if([[NSUserDefaults standardUserDefaults] objectForKey:@"isWPcomAuthenticated"] != nil) {
+			NSString *tempIsAuthenticated = (NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"isWPcomAuthenticated"];
+			if([tempIsAuthenticated isEqualToString:@"1"])
+				self.isWPcomAuthenticated = YES;
+		}
+		[self performSelectorInBackground:@selector(checkWPcomAuthentication) withObject:nil];
     }
 
     return wordPressApp;
@@ -97,17 +104,11 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		}
 
 		if ([dataManager countOfBlogs] == 0) {
-			[blogsViewController showBlogDetailModalViewForNewBlogWithAnimation:NO];
-			
 			WelcomeViewController *wViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
-			[self setWelcomeViewController:wViewController];
-			[wViewController release];
-			UIView *controllersView = [welcomeViewController view];
-			[window addSubview:controllersView];
+			[self.navigationController pushViewController:wViewController animated:YES];
 		}
 
 		[blogsViewController release];
-		[self showSplashView];
 	}
 	else
 	{
@@ -345,6 +346,27 @@ static WordPressAppDelegate *wordPressApp = NULL;
         return YES;
     }
     return NO;
+}
+
+- (void)checkWPcomAuthentication {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	NSString *authURL = kWPcomXMLRPCUrl;
+	
+	if(([[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsername"] != nil) && 
+	   ([[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomPassword"] != nil)) {
+		isWPcomAuthenticated = [[WPDataController sharedInstance] authenticateUser:authURL 
+		  username:[[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsername"]
+		  password:[[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomPassword"]];
+	}
+	else
+		isWPcomAuthenticated = NO;
+	
+	if(isWPcomAuthenticated)
+		[[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"isWPcomAuthenticated"];
+	else
+		[[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"isWPcomAuthenticated"];
+	
+	[pool release];
 }
 
 - (int)indexForCurrentBlog {

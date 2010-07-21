@@ -6,6 +6,9 @@
 /BlogViewController.xib -text
 Classes/AboutViewController.h -text
 Classes/AboutViewController.m -text
+Classes/AddUsersBlogsViewController.h -text
+Classes/AddUsersBlogsViewController.m -text
+Classes/AddUsersBlogsViewController.xib -text
 Classes/Blog.h -text
 Classes/Blog.m -text
 Classes/BlogDataManager.h -text
@@ -162,6 +165,9 @@ Classes/WPSelectionTableViewController.h -text
 Classes/WPSelectionTableViewController.m -text
 Classes/WPXMLReader.h -text
 Classes/WPXMLReader.m -text
+Classes/WPcomLoginViewController.h -text
+Classes/WPcomLoginViewController.m -text
+Classes/WPcomLoginViewController.xib -text
 Classes/WebSignupViewController.h -text
 Classes/WebSignupViewController.m -text
 Classes/WelcomeViewController.h -text
@@ -278,6 +284,8 @@ WordPress.xcodeproj/project.pbxproj -text
 /iTunesArtwork -text
 /license.txt -text
 /lock.png -text
+/logo_stacked.png -text
+/logo_wpcom.png -text
 /main.m -text
 /pages.png -text
 /pages@2x.png -text

@@ -10,17 +10,11 @@
 
 
 @interface WebSignupViewController : UIViewController <UIWebViewDelegate>{
-
 	IBOutlet UIWebView *webView;
-	UIBarButtonItem *cancelBtn;
-	IBOutlet UIActivityIndicatorView *activityIndicator;
-	
+	UIActivityIndicatorView *spinner;
 }
 
 @property (nonatomic, retain) UIWebView *webView;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *cancelBtn;
-@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *activityIndicator;
-
--(IBAction)cancel:(id) sender;
+@property (nonatomic, retain) UIActivityIndicatorView *spinner;
 
 @end

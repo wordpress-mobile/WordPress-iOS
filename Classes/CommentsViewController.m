@@ -135,14 +135,12 @@
     
 	[self refreshCommentsList];
 	
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	
 	if ([[Reachability sharedReachability] internetConnectionStatus])
 	{
-		if ([defaults boolForKey:@"refreshCommentsRequired"]) {
+		//if ([defaults boolForKey:@"refreshCommentsRequired"]) {
 			[self refreshHandler];
-			[defaults setBool:false forKey:@"refreshCommentsRequired"];
-		}
+		//	[[NSUserDefaults standardUserDefaults] setBool:false forKey:@"refreshCommentsRequired"];
+		//}
 	}
 }
 
@@ -176,9 +174,6 @@
 #pragma mark -
 
 - (void) cancelView {
-	NSLog(@"inside Comments View Controller cancelView");
-	
-
 	[self.navigationController popViewControllerAnimated:YES];
 
 }
@@ -254,9 +249,8 @@
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
-    BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
-    [sharedBlogDataManager syncCommentsForCurrentBlog];
-    [sharedBlogDataManager loadCommentTitlesForCurrentBlog];
+    [[BlogDataManager sharedDataManager] syncCommentsForCurrentBlog];
+    [[BlogDataManager sharedDataManager] loadCommentTitlesForCurrentBlog];
 
     [self refreshCommentsList];
 
@@ -555,7 +549,6 @@
 
 - (void)commentsSynced:(NSNotification *)notification;
 {
-	NSLog(@"Refreshing comments");
 	[self refreshCommentsList];
 }
 

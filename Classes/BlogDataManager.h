@@ -97,6 +97,7 @@
 @property (nonatomic, assign) BOOL isLocaDraftsCurrent;
 @property (nonatomic, assign) BOOL isPageLocalDraftsCurrent;
 
+@property (nonatomic, assign) NSInteger currentBlogIndex;
 @property (nonatomic, copy, readonly) NSMutableDictionary *currentPost;
 @property (nonatomic, retain, readonly) NSArray *pageFieldNames;
 @property (nonatomic, retain) NSMutableDictionary *currentPage;
@@ -131,6 +132,7 @@
 - (void)makeLocalDraftsCurrent;
 - (void)saveCurrentBlog;
 - (void)resetCurrentBlog;
+- (void)setCurrentBlog:(NSMutableDictionary *)aBlog;
 - (void)savePhotosDB;
 - (void)removeCurrentBlog;
 //- (id)newDraftsBlog;
@@ -206,6 +208,7 @@
 #pragma mark Sync with Blog Host
 
 - (BOOL)refreshCurrentBlog:(NSString *)url user:(NSString *)username;
+- (BOOL)refreshCurrentBlogQuickly:(NSString *)url user:(NSString *)username;
 - (BOOL)validateCurrentBlog:(NSString *)url user:(NSString *)username password:(NSString *)pwd;
 - (BOOL)syncPostsForBlog:(id)blog;
 - (BOOL)syncPostsForCurrentBlog;

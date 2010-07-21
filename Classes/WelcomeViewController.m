@@ -7,71 +7,136 @@
 //
 
 #import "WelcomeViewController.h"
-#import "BlogsViewController.h"
-#import "WebSignupViewController.h"
-#import "QuartzCore/QuartzCore.h"
 
 @implementation WelcomeViewController
 
-@synthesize haveAccount;
-@synthesize newUser, navigationController, window, webSignupViewController, tagline;
+@synthesize tableView;
+
+#pragma mark -
+#pragma mark View lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-	tagline.text = [NSString stringWithFormat:@"%@%@%@", @"Start blogging from your ", [[UIDevice currentDevice] model], @" in seconds."];
-
+	self.navigationItem.title = @"Welcome";
 	
+	if([[BlogDataManager sharedDataManager] countOfBlogs] == 0)
+		self.navigationItem.backBarButtonItem = nil;
 }
 
--(IBAction) loadAccountSignup:(id) sender{
-	self.webSignupViewController = [[WebSignupViewController alloc] initWithNibName:@"WebSignupViewController" bundle:[NSBundle mainBundle]];
-	
-	//[self.view.superview makeKeyAndVisible];
-	
-	UIView *currentView = self.view;
-	UIView *theWindow = [currentView superview];
-	
-	// remove the current view and replace with myView1
-	//[currentView removeFromSuperview];
-	[self.view.superview addSubview:[webSignupViewController view]];
-	
-	// set up an animation for the transition between the views
-	CATransition *animation = [CATransition animation];
-	[animation setDuration:0.5];
-	[animation setType:kCATransitionPush];
-	[animation setSubtype:kCATransitionFromRight];
-	[animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-	
-	[[theWindow layer] addAnimation:animation forKey:@"CancelWebSignup"];
+#pragma mark -
+#pragma mark Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    // Return the number of sections.
+    return 1;
 }
 
--(IBAction) loadEditBlog:(id) sender{
-	[UIView beginAnimations:nil context:nil];
-	[UIView setAnimationDuration:0.8];
-	[UIView setAnimationDelegate:self];
-	[UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:self.view.superview cache:YES];
-	
-	[UIView commitAnimations];
-	[[self view]removeFromSuperview];
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	return 3;
 }
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 200)] autorelease];
+	UIImageView *logo = [[UIImageView alloc] initWithFrame:CGRectMake(56, 20, 206, 128)];
+	logo.image = [UIImage imageNamed:@"logo_stacked.png"];
+	[headerView addSubview:logo];
+	
+	UILabel *headerText = [[UILabel alloc] initWithFrame:CGRectMake(20, 135, 280, 72)];
+	headerText.backgroundColor = [UIColor clearColor];
+	headerText.textColor = [UIColor darkGrayColor];
+	headerText.font = [UIFont fontWithName:@"Georgia" size:14];
+	headerText.numberOfLines = 0;
+	headerText.textAlignment = UITextAlignmentCenter;
+	headerText.text = [NSString stringWithFormat:@"Start blogging from your %@ in seconds.", 
+					   [[UIDevice currentDevice] model]];
+	[headerView addSubview:headerText];
+	
+	return headerView;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return 200;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 55;
+}
+
+// Customize the appearance of table view cells.
+- (UITableViewCell *)tableView:(UITableView *)tv cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *CellIdentifier = @"Cell";
+    
+    UITableViewCell *cell = [tv dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+    }
+	
+	switch (indexPath.row) {
+		case 0:
+			cell.textLabel.text = @"Start a new blog at WordPress.com";
+			break;
+		case 1:
+			cell.textLabel.text = @"Add an existing WP.com blog";
+			break;
+		case 2:
+			cell.textLabel.text = @"Add an existing WP.org self-hosted site";
+			break;
+		default:
+			break;
+	}
+	//cell.textLabel.textAlignment = UITextAlignmentCenter;
+	cell.textLabel.numberOfLines = 0;
+	cell.textLabel.font = [UIFont boldSystemFontOfSize:15];
+	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	
+    return cell;
+}
+
+#pragma mark -
+#pragma mark Table view delegate
+
+- (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	int dummy = 0;
+	switch (indexPath.row) {
+		case 0:
+			dummy = indexPath.row;
+			WebSignupViewController *webSignup = [[WebSignupViewController alloc] initWithNibName:@"WebSignupViewController" bundle:[NSBundle mainBundle]];
+			[super.navigationController pushViewController:webSignup animated:YES];
+			break;
+		case 1:
+			dummy = indexPath.row;
+			AddUsersBlogsViewController *addBlogs = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
+			[super.navigationController pushViewController:addBlogs animated:YES];
+			break;
+		case 2:
+			dummy = indexPath.row;
+			EditBlogViewController *editBlog = [[EditBlogViewController alloc] initWithNibName:@"EditBlogViewController" bundle:nil];
+			[super.navigationController pushViewController:editBlog animated:YES];
+			break;
+		default:
+			break;
+	}
+	[tv deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark -
+#pragma mark Custom methods
+
+#pragma mark -
+#pragma mark Memory management
 
 - (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
 }
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
 }
 
 - (void)dealloc {
-	[haveAccount release];
-	[newUser release];
+	[tableView release];
     [super dealloc];
 }
 

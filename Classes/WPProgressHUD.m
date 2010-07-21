@@ -60,6 +60,11 @@
     [self.appDelegate setAlertRunning:YES];
 }
 
+- (void)dismiss {
+    [super dismiss];
+    [self.appDelegate setAlertRunning:NO];
+}
+
 - (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated {
     [super dismissWithClickedButtonIndex:buttonIndex animated:animated];
     [self.appDelegate setAlertRunning:NO];

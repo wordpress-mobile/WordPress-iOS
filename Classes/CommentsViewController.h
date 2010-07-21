@@ -59,4 +59,5 @@
 - (void)setIndexForCurrentPost:(int)index;
 - (void)showCommentAtIndex:(int)index;
 
+
 @end

@@ -22,5 +22,6 @@
 @property (nonatomic, assign) WordPressAppDelegate *appDelegate;
 
 - (id)initWithLabel:(NSString *)text;
+- (void)dismiss;
 
 @end

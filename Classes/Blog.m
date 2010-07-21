@@ -10,6 +10,7 @@
 #import "UIImage+INResizeImageAllocator.h"
 
 @implementation Blog
+@synthesize blogID, blogName, url, username, password, xmlrpc, isAdmin;
 
 @synthesize index;
 
@@ -25,6 +26,12 @@
 }
 
 - (void)dealloc {
+	[blogID release];
+	[blogName release];
+	[url release];
+	[username release];
+	[password release];
+	[xmlrpc release];
     [super dealloc];
 }
 
@@ -41,7 +48,7 @@
         faviconImage = [UIImage imageWithContentsOfFile:faviconFilePath];
     }
 	else {
-        NSString *faviconURL = [[NSString alloc] initWithFormat:@"%@/favicon.ico", [blog valueForKey:@"url"]];
+        NSString *faviconURL = [[NSString alloc] initWithFormat:@"%@favicon.ico", [blog valueForKey:@"url"]];
         faviconImage = [[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:faviconURL]]] scaleImageToSize:CGSizeMake(16.0f, 16.0f)];
         [faviconURL release];
 

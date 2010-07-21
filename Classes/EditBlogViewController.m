@@ -48,7 +48,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
-    currentBlog = [[BlogDataManager sharedDataManager] currentBlog];
+    currentBlog = [[NSMutableDictionary alloc] init];
+	[[BlogDataManager sharedDataManager] setCurrentBlog:currentBlog];
 	
     noOfPostsTextField.text = [currentBlog valueForKey:kPostsDownloadCount];
 	//NSLog(@"kpostsdownloadcount %@",[currentBlog valueForKey:kPostsDownloadCount]);
@@ -282,7 +283,7 @@
 
 - (void)cancel:(id)sender {
     [[BlogDataManager sharedDataManager] resetCurrentBlog];
-    [self.navigationController dismissModalViewControllerAnimated:YES];
+	[self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 - (void)cancelSetup:(id)sender {
@@ -293,18 +294,7 @@
 		[blogURLTextField resignFirstResponder];
 		[userNameTextField resignFirstResponder];
 		[passwordTextField resignFirstResponder];
-		
-		[UIView beginAnimations:nil context:nil];
-		[UIView setAnimationDuration:0.8];
-		[UIView setAnimationDelegate:self];
-		[UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:self.view.superview.superview.superview cache:YES];
-		[UIView commitAnimations];
-		
-		WelcomeViewController *wViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
-		[self setWelcomeViewController:wViewController];
-		[wViewController release];
-		UIView *controllersView = [welcomeViewController view];
-		[self.view.superview.superview.superview addSubview:controllersView];
+		[self.navigationController popToRootViewControllerAnimated:YES];
 	}
 }
 
@@ -358,7 +348,7 @@
 }
 
 - (void)setBlogAttributes {
-    NSString *username = userNameTextField.text;
+	NSString *username = userNameTextField.text;
     NSString *pwd = passwordTextField.text;
     NSString *url = [blogURLTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     NSNumber *value = [NSNumber numberWithBool:resizePhotoControl.on];
@@ -366,20 +356,19 @@
 	NSString *authPassword = blogHTTPAuthViewController.blogHTTPAuthPassword.text;
 	BOOL authEnabled = blogHTTPAuthViewController.blogHTTPAuthEnabled.on;
 	
-	NSString *authBlogURL = [url stringByAppendingString:@"_auth"];
+	NSLog(@"Blog Attributes: username: %@, pwd: %@, url:%@, value:%@, authUsername:%@, authPassword:%@",
+		  username, pwd, url, value, authUsername, authPassword);
+	
+	NSString *authBlogURL = [NSString stringWithFormat:@"%@_auth", url];
     [currentBlog setValue:url forKey:@"url"];
     [currentBlog setValue:username forKey:@"username"];
 	[currentBlog setValue:[NSNumber numberWithBool:authEnabled] forKey:@"authEnabled"];
-    //[currentBlog setValue:pwd forKey:@"pwd"];
 	[[BlogDataManager sharedDataManager] updatePasswordInKeychain:pwd andUserName:username andBlogURL:url];
 	
-	//if (authEnabled) {
 	[currentBlog setValue:authUsername forKey:@"authUsername"];
 	[[BlogDataManager sharedDataManager] updatePasswordInKeychain:authPassword
 													  andUserName:authUsername
 													   andBlogURL:authBlogURL];
-	//}
-	
     [currentBlog setValue:value forKey:kResizePhotoSetting];
 }
 
@@ -401,7 +390,7 @@
     }
 	
     [self hideSpinner];
-	
+	[self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 - (void)changeGeotaggingSetting {
@@ -423,6 +412,7 @@
     NSString *url = [currentBlog valueForKey:@"url"];
 	NSString *authUsername = [currentBlog valueForKey:@"authUsername"];
 	NSNumber *authEnabled = [currentBlog objectForKey:@"authEnabled"];
+	NSLog(@"username: %@, url:%@, authUsername: %@, authEnabled: %@", username, url, authUsername, authEnabled);
 	
     //NSDictionary *newBlog = [NSDictionary dictionaryWithObjectsAndKeys:username, @"username", pwd, @"pwd", url, @"url", nil];
 	//taking out @"pwd" here as it's in keychain now
@@ -434,13 +424,11 @@
         return;
     }
 	
-    //if ([dm refreshCurrentBlog:url user:username password:pwd]) {
-	//taking out @"pwd" here too...
 	if ([dm refreshCurrentBlog:url user:username]) {
         [dm.currentBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
         [dm wrapperForSyncPostsAndGetTemplateForBlog:dm.currentBlog];
         [dm.currentBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-        //[dm saveCurrentBlog];
+        [dm saveCurrentBlog];
         [self.navigationController dismissModalViewControllerAnimated:YES];
     } else {
 		if (dm.isProblemWithXMLRPC) {

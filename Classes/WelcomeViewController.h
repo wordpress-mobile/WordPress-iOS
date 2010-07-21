@@ -7,34 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QuartzCore/QuartzCore.h"
+#import "BlogsViewController.h"
+#import "WebSignupViewController.h"
+#import "AddUsersBlogsViewController.h"
+#import "EditBlogViewController.h"
+#import "BlogDataManager.h"
 
-@class	WebSignupViewController;
-
-@interface WelcomeViewController : UIViewController {
-
-	UIButton *haveAccount;
-	UIButton *newUser;
-	IBOutlet UINavigationController *navigationController;
-	IBOutlet UIWindow *window;
-	WebSignupViewController *webSignupViewController;
-	IBOutlet UILabel *tagline;
-	
+@interface WelcomeViewController : UIViewController<UITableViewDelegate> {
+	IBOutlet UITableView *tableView;
 }
 
-@property (nonatomic, retain) IBOutlet UIButton *haveAccount;
-
-@property (nonatomic, retain) IBOutlet UIButton	*newUser;
-
-@property (nonatomic, retain) UINavigationController *navigationController;
-
-@property (nonatomic, retain) UIWindow *window;
-
-@property (nonatomic, retain) IBOutlet UILabel *tagline;
-
-@property (nonatomic, retain) WebSignupViewController *webSignupViewController;
-
--(IBAction)loadAccountSignup:(id) sender;
-
--(IBAction)loadEditBlog:(id) sender;
+@property (nonatomic, retain) IBOutlet UITableView *tableView;
 
 @end

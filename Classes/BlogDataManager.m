@@ -91,7 +91,7 @@ static BlogDataManager *sharedDataManager;
 pictureFieldNames, postFieldNames, postFieldNamesByTag, postFieldTagsByName,
 postTitleFieldNames, postTitleFieldNamesByTag, postTitleFieldTagsByName, unsavedPostsCount, currentPageIndex, currentPage, pageFieldNames,
 currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLocaDraftsCurrent, isPageLocalDraftsCurrent, currentPostIndex, currentDraftIndex, currentPageDraftIndex, asyncPostsOperationsQueue, currentUnsavedDraft,
-editBlogViewController, currentLocation;
+editBlogViewController, currentLocation, currentBlogIndex;
 //BOOL for handling XMLRPC issues...  See LocateXMLRPCViewController
 @synthesize isProblemWithXMLRPC; 
 
@@ -1143,9 +1143,21 @@ editBlogViewController, currentLocation;
     return 0;
 }
 
-/*
- Get blog data from host
- */
+- (BOOL)refreshCurrentBlogQuickly:(NSString *)url user:(NSString *)username {
+	NSString *pwd = [self getBlogPasswordFromKeychainWithUsername:username andBlogName:url];
+    NSString *blogHost = [NSString stringWithFormat:@"%@_%@", username, url];
+	NSString *blogURL = [NSString stringWithString:url];
+	if (![blogURL hasPrefix:@"http"])
+        blogURL = [NSString stringWithFormat:@"http://%@", blogURL];
+    [currentBlog setValue:(blogURL ? blogURL:@"")forKey:@"url"];
+	NSString *blogID = [currentBlog valueForKey:@"blogID"];
+	NSString *blogName = [currentBlog valueForKey:@"blogName"];
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"AddNewBlogNotification" object:blogName userInfo:nil];
+	currentBlogIndex = -1;
+	[self saveBlogPasswordToKeychain:pwd andUserName:username andBlogURL:blogURL];
+    return YES;
+}
+
 - (BOOL)refreshCurrentBlog:(NSString *)url user:(NSString *)username {
 	// REFACTOR login method in BlogDetailModalViewControler so that all XML rpc interaction is handled from here
     // report exceptions back to caller
@@ -1166,6 +1178,7 @@ editBlogViewController, currentLocation;
     // We use this as the blog folder name
     [currentBlog setValue:blogHost forKey:kBlogHostName];
 	
+	NSLog(@"url: %@", url);
 	NSString *blogURL = [NSString stringWithString:url];
 	if (![blogURL hasPrefix:@"http"])
         blogURL = [NSString stringWithFormat:@"http://%@", blogURL];
@@ -1198,20 +1211,9 @@ editBlogViewController, currentLocation;
         return NO;
     }
 	
-	//Unique search string: ^^XMLRPC Endpoint
-    //This line is for testing to getting the XMLRPC endpoint directly from user without needing to create a "broken" blog for testing
-    //comment out the next line for normal running of the application, uncomment the line for testing.
-    //xmlrpc = nil;
-	
-	//the line just below: [self tryDefaultXMLRPCEndpoint:url]; will also need to be commented out (or not) depending on testing scenario...
-	
-	
     if (!xmlrpc) {//if xmlrpc is nill
-		//the next line will need to be commented out for testing (in the absence of a broken blog that has problems with the xmlrpc.php endpoint)
 		[self tryDefaultXMLRPCEndpoint:url]; //try the default endpoint of BlogURL.com/xmlrpc.php  If it returns a list of methods after a listMethods XMLRPC call, set currentBlog valueForKey:@"xmlrpc" equal to that.
-		xmlrpc =  [currentBlog valueForKey:@"xmlrpc"];
-		//NSLog(@"this is xmlrpc", xmlrpc);
-		
+		xmlrpc =  [currentBlog valueForKey:@"xmlrpc"];		
 		if (xmlrpc == @"xmlrpc url not set") {//if xmlrpc is the default value set when the blog's array is built for the first time when attempting to add the blog...
 			isProblemWithXMLRPC = YES;
 			UIAlertView *rsdError = [[UIAlertView alloc] initWithTitle:@"We could not find the XML-RPC service for your blog. Please check your network connection and try again. Or if you're self-hosted and changed your XMLRPC endpoint name, enter the full URL on the next page.  If the problem persists, please visit \"iphone.wordpress.org\" to report the problem."
@@ -1284,268 +1286,89 @@ editBlogViewController, currentLocation;
 	
 	XMLRPCRequest *reqUsersBlogs = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
 
-	if([[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomAutoBlogSetup"] != nil) {
-		[reqUsersBlogs setMethod:@"blogger.getUsersBlogs" withObjects:[NSArray arrayWithObjects:@"ABCDEF012345", username, pwd, nil]];
-		NSArray *usersBlogsResponseArray = [self executeXMLRPCRequest:reqUsersBlogs byHandlingError:YES];
-		NSDictionary *usersBlogs = [usersBlogsResponseArray objectAtIndex:0];
-		
-		// load blog fields into currentBlog
-		NSString *blogid = [usersBlogs valueForKey:kBlogId];
-		[currentBlog setValue:blogid ? blogid:@"" forKey:kBlogId];
-		
-		XMLRPCRequest *reqOptionsBlogs = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
-		[reqOptionsBlogs setMethod:@"wp.getOptions" withObjects:[NSArray arrayWithObjects:blogid, username, pwd, nil]];
-		NSDictionary *optionsDict = [self executeXMLRPCRequest:reqOptionsBlogs byHandlingError:YES];
-		
-		if (![optionsDict isKindOfClass:[NSDictionary class]])
-			return NO;
-		/*
-		 NSString *adminStr	= [usersBlogs valueForKey:@"isAdmin"];
-		 NSNumber *isAdmin = [NSNumber numberWithBool:(BOOL) (adminStr == kCFBooleanTrue)?YES:NO) ];
-		 */
-		[currentBlog setValue:@"" forKey:@"isAdmin"];
-		
-		//NSString *blogName = [[optionsDict valueForKey:@"blog_title"] valueForKey:@"value"];
-		NSString *blogName = [NSString decodeXMLCharactersIn:[[optionsDict valueForKey:@"blog_title"]valueForKey:@"value"]]; 
-		[currentBlog setValue:blogName ? blogName:@"" forKey:@"blogName"];
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"AddNewBlogNotification" object:blogName userInfo:nil];
-		
-		// Do not use this value
-		//NSString *xmlrpc = url;//[usersBlogs valueForKey:@"xmlrpc"];
-		//[currentBlog setValue:xmlrpc?xmlrpc:@"" forKey:@"xmlrpc"];
-		
-		// use the default value from the blog
-		// if RSD failed to find the endpoint
-		//TODO JOHNB: Ask Sunil what this is for...
-		if (!xmlrpc) {
-			xmlrpc = [usersBlogs valueForKey:@"xmlrpc"];
-			[currentBlog setValue:xmlrpc ? xmlrpc:@"" forKey:@"xmlrpc"];
-		}
-		
-		// ----------------------------------------------  retrieve blog categories
-		
-		// response will be array of category dictionaries
-		
-		// invoke wp.getCategories
-		XMLRPCRequest *reqCategories = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
-		[reqCategories setMethod:@"wp.getCategories" withObjects:[NSArray arrayWithObjects:blogid, username, pwd, nil]];
-		
-		NSArray *categories = [self executeXMLRPCRequest:reqCategories byHandlingError:YES];
-		[reqCategories release];
-		
-		if ([categories isKindOfClass:[NSArray class]]) {
-			// categoryName if blank will be set to id
-			
-			NSMutableArray *cats = [NSMutableArray arrayWithCapacity:15];
-			
-			for (NSDictionary *category in categories) {
-				NSString *categoryId = [category valueForKey:@"categoryId"];
-				NSString *categoryName = [category valueForKey:@"categoryName"];
-				
-				if (categoryName == nil ||[categoryName isEqualToString:@""]) {
-					NSMutableDictionary *cat = [category mutableCopy];
-					[cat setObject:categoryId forKey:@"categoryName"];
-					[cats addObject:cat];
-					[cat release];
-				} else {
-					[cats addObject:category];
-				}
-			}
-			
-			[currentBlog setObject:cats forKey:@"categories"];
-		} else {
-			return NO;
-		}
-		
-		// retrieve blog authors
-		// response will be array of author dictionaries
-		
-		// invoke wp.getAuthors
-		/* Friday, Aug 14 2009: Taking this out to test. If we don't use it, there's no need for it right now.
-		 XMLRPCRequest *getAuthorsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
-		 [getAuthorsReq setMethod:@"wp.getAuthors" withObjects:[NSArray arrayWithObjects:blogid, username, pwd, nil]];
-		 NSArray *authors = [self executeXMLRPCRequest:getAuthorsReq byHandlingError:YES];
-		 [getAuthorsReq release];
-		 
-		 if ([authors isKindOfClass:[NSArray class]]) { //might be an error.
-		 [currentBlog setObject:authors forKey:@"authors"];
-		 } else {
-		 return NO;
-		 }
-		 */
-		
-		// invoke wp.getPostStatusList
-		XMLRPCRequest *getPostStatusListReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
-		[getPostStatusListReq setMethod:@"wp.getPostStatusList" withObjects:[NSArray arrayWithObjects:blogid, username, pwd, nil]];
-		NSDictionary *postStatusList = [self executeXMLRPCRequest:getPostStatusListReq byHandlingError:YES];
-		[getPostStatusListReq release];
-		
-		if ([postStatusList isKindOfClass:[NSDictionary class]]) { //might be an error.
-			//keys are actual values, values are display strings.
-			[currentBlog setObject:postStatusList forKey:@"postStatusList"];
-		} else {
-			return NO;
-		}
-		
-		// invoke wp. getPageStatusList
-		XMLRPCRequest *getPageStatusListReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
-		[getPageStatusListReq setMethod:@"wp.getPageStatusList" withObjects:[NSArray arrayWithObjects:blogid, username, pwd, nil]];
-		NSDictionary *pageStatusList = [self executeXMLRPCRequest:getPageStatusListReq byHandlingError:YES];
-		[getPageStatusListReq release];
-		
-		if ([pageStatusList isKindOfClass:[NSDictionary class]]) { //might be an error.
-			//keys are actual values, values are display strings.
-			[currentBlog setObject:pageStatusList forKey:@"pageStatusList"];
-		} else {
-			return NO;
-		}
-		
-		//it's a new blog, set currentBlogIndex to -1
-		currentBlogIndex = -1;
-		[self saveBlogPasswordToKeychain:pwd andUserName:username andBlogURL:blogURL];
-		[self newAccountPostsAndTemplateSync:currentBlog];
-		[self saveCurrentBlog];
+	[reqUsersBlogs setMethod:@"blogger.getUsersBlogs" withObjects:[NSArray arrayWithObjects:@"ABCDEF012345", username, pwd, nil]];
+	NSArray *usersBlogsResponseArray = [self executeXMLRPCRequest:reqUsersBlogs byHandlingError:YES];
+	NSDictionary *usersBlogs = [usersBlogsResponseArray objectAtIndex:0];
+	
+	// load blog fields into currentBlog
+	NSString *blogid = [usersBlogs valueForKey:kBlogId];
+	[currentBlog setValue:blogid ? blogid:@"" forKey:kBlogId];
+	
+	XMLRPCRequest *reqOptionsBlogs = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
+	[reqOptionsBlogs setMethod:@"wp.getOptions" withObjects:[NSArray arrayWithObjects:blogid, username, pwd, nil]];
+	NSDictionary *optionsDict = [self executeXMLRPCRequest:reqOptionsBlogs byHandlingError:YES];
+	
+	if (![optionsDict isKindOfClass:[NSDictionary class]])
+		return NO;
+	[currentBlog setValue:@"" forKey:@"isAdmin"];
+	
+	NSString *blogName = [NSString decodeXMLCharactersIn:[[optionsDict valueForKey:@"blog_title"]valueForKey:@"value"]]; 
+	[currentBlog setValue:blogName ? blogName:@"" forKey:@"blogName"];
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"AddNewBlogNotification" object:blogName userInfo:nil];
+	
+	if (!xmlrpc) {
+		xmlrpc = [usersBlogs valueForKey:@"xmlrpc"];
+		[currentBlog setValue:xmlrpc ? xmlrpc:@"" forKey:@"xmlrpc"];
 	}
-	else {
-		[[NSUserDefaults standardUserDefaults] setValue:@"YES" forKey:@"WPcomAutoBlogSetup"];
+	XMLRPCRequest *reqCategories = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
+	[reqCategories setMethod:@"wp.getCategories" withObjects:[NSArray arrayWithObjects:blogid, username, pwd, nil]];
+	
+	NSArray *categories = [self executeXMLRPCRequest:reqCategories byHandlingError:YES];
+	[reqCategories release];
+	
+	if ([categories isKindOfClass:[NSArray class]]) {
+		NSMutableArray *cats = [NSMutableArray arrayWithCapacity:15];
 		
-		[reqUsersBlogs setMethod:@"wp.getUsersBlogs" withObjects:[NSArray arrayWithObjects:username, pwd, nil]];
-		NSArray *usersBlogsResponseArray = [self executeXMLRPCRequest:reqUsersBlogs byHandlingError:YES];		
-		[self printArrayToLog:usersBlogsResponseArray andArrayName:@"this is usersBlogsResponseArray from -refreshCurrentUser in BlogDataManager"];
-		
-		if (![usersBlogsResponseArray isKindOfClass:[NSArray class]])
-			return NO;
-		
-		// loop through the user's accounts and save the blog records
-		for(NSDictionary *usersBlogs in usersBlogsResponseArray) {
-			NSString *blogURL = [usersBlogs valueForKey:@"url"];
-			if([[self blogForId:[usersBlogs valueForKey:@"blogid"] hostName:blogURL] count] == 0) {
-				[[NSNotificationCenter defaultCenter] postNotificationName:@"AddNewBlogNotification" object:[usersBlogs valueForKey:@"blogName"] userInfo:nil];
-				
-				// remove trailing slash from url, if it exists
-				if ([blogURL hasSuffix:@"/"]){
-					blogURL = [blogURL substringToIndex:[blogURL length] - 1];
-				}
-				url = blogURL;
-				// get rid of the http:// for proper storage
-				if ([blogURL hasPrefix:@"http"]){
-					blogURL = [blogURL stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-				}
-				blogHost = [NSString stringWithFormat:@"%@_%@", username, blogURL];
-				
-				[currentBlog setValue:url ? url:@"" forKey:@"url"];
-				
-				// We use this as the blog folder name
-				[currentBlog setValue:blogHost ? blogHost:@"" forKey:kBlogHostName];
-				
-				NSString *tempXMLRPC = [usersBlogs valueForKey:@"xmlrpc"];
-				[currentBlog setValue:tempXMLRPC ? tempXMLRPC:@"" forKey:@"xmlrpc"];
-				xmlrpc = tempXMLRPC;
-				
-				//NSDictionary *usersBlogs = [usersBlogsResponseArray objectAtIndex:0];
-				
-				// load blog fields into currentBlog
-				NSString *blogid = [usersBlogs valueForKey:kBlogId];
-				[currentBlog setValue:blogid ? blogid:@"" forKey:kBlogId];
-				
-				XMLRPCRequest *reqOptionsBlogs = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
-				[reqOptionsBlogs setMethod:@"wp.getOptions" withObjects:[NSArray arrayWithObjects:blogid, username, pwd, nil]];
-				NSDictionary *optionsDict = [self executeXMLRPCRequest:reqOptionsBlogs byHandlingError:YES];
-				
-				if (![optionsDict isKindOfClass:[NSDictionary class]])
-					return NO;
-				
-				/*
-				 NSString *adminStr	= [usersBlogs valueForKey:@"isAdmin"];
-				 NSNumber *isAdmin = [NSNumber numberWithBool:(BOOL) (adminStr == kCFBooleanTrue)?YES:NO) ];
-				 */
-				[currentBlog setValue:@"" forKey:@"isAdmin"];
-				
-				//NSString *blogName = [[optionsDict valueForKey:@"blog_title"] valueForKey:@"value"];
-				NSString *blogName = [NSString decodeXMLCharactersIn:[[optionsDict valueForKey:@"blog_title"]valueForKey:@"value"]]; 
-				[currentBlog setValue:blogName ? blogName:@"" forKey:@"blogName"];
-				
-				// Do not use this value
-				//NSString *xmlrpc = url;//[usersBlogs valueForKey:@"xmlrpc"];
-				//[currentBlog setValue:xmlrpc?xmlrpc:@"" forKey:@"xmlrpc"];
-				
-				// use the default value from the blog
-				// if RSD failed to find the endpoint
-				//TODO JOHNB: Ask Sunil what this is for...
-				if (!xmlrpc) {
-					xmlrpc = [usersBlogs valueForKey:@"xmlrpc"];
-					[currentBlog setValue:xmlrpc ? xmlrpc:@"" forKey:@"xmlrpc"];
-				}
-				
-				// ----------------------------------------------  retrieve blog categories
-				
-				// response will be array of category dictionaries
-				
-				// invoke wp.getCategories
-				XMLRPCRequest *reqCategories = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
-				[reqCategories setMethod:@"wp.getCategories" withObjects:[NSArray arrayWithObjects:blogid, username, pwd, nil]];
-				
-				NSArray *categories = [self executeXMLRPCRequest:reqCategories byHandlingError:NO];
-				[reqCategories release];
-				
-				if ([categories isKindOfClass:[NSArray class]]) {
-					// categoryName if blank will be set to id
-					
-					NSMutableArray *cats = [NSMutableArray arrayWithCapacity:15];
-					
-					for (NSDictionary *category in categories) {
-						NSString *categoryId = [category valueForKey:@"categoryId"];
-						NSString *categoryName = [category valueForKey:@"categoryName"];
-						
-						if (categoryName == nil ||[categoryName isEqualToString:@""]) {
-							NSMutableDictionary *cat = [category mutableCopy];
-							[cat setObject:categoryId forKey:@"categoryName"];
-							[cats addObject:cat];
-							[cat release];
-						} else {
-							[cats addObject:category];
-						}
-					}
-					
-					[currentBlog setObject:cats forKey:@"categories"];
-				} else {
-					return NO;
-				}
-				
-				// invoke wp.getPostStatusList
-				XMLRPCRequest *getPostStatusListReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
-				[getPostStatusListReq setMethod:@"wp.getPostStatusList" withObjects:[NSArray arrayWithObjects:blogid, username, pwd, nil]];
-				NSDictionary *postStatusList = [self executeXMLRPCRequest:getPostStatusListReq byHandlingError:YES];
-				[getPostStatusListReq release];
-				
-				if ([postStatusList isKindOfClass:[NSDictionary class]]) { //might be an error.
-					//keys are actual values, values are display strings.
-					[currentBlog setObject:postStatusList forKey:@"postStatusList"];
-				} else {
-					return NO;
-				}
-				
-				// invoke wp. getPageStatusList
-				XMLRPCRequest *getPageStatusListReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
-				[getPageStatusListReq setMethod:@"wp.getPageStatusList" withObjects:[NSArray arrayWithObjects:blogid, username, pwd, nil]];
-				NSDictionary *pageStatusList = [self executeXMLRPCRequest:getPageStatusListReq byHandlingError:YES];
-				[getPageStatusListReq release];
-				
-				if ([pageStatusList isKindOfClass:[NSDictionary class]]) { //might be an error.
-					//keys are actual values, values are display strings.
-					[currentBlog setObject:pageStatusList forKey:@"pageStatusList"];
-				} else {
-					return NO;
-				}
-				
-				//it's a new blog, set currentBlogIndex to -1
-				currentBlogIndex = -1;
-				[self saveBlogPasswordToKeychain:pwd andUserName:username andBlogURL:blogURL];
-				[self newAccountPostsAndTemplateSync:currentBlog];
-				[self saveCurrentBlog];
+		for (NSDictionary *category in categories) {
+			NSString *categoryId = [category valueForKey:@"categoryId"];
+			NSString *categoryName = [category valueForKey:@"categoryName"];
+			
+			if (categoryName == nil ||[categoryName isEqualToString:@""]) {
+				NSMutableDictionary *cat = [category mutableCopy];
+				[cat setObject:categoryId forKey:@"categoryName"];
+				[cats addObject:cat];
+				[cat release];
+			} else {
+				[cats addObject:category];
 			}
 		}
+		
+		[currentBlog setObject:cats forKey:@"categories"];
+	} else {
+		return NO;
 	}
+	
+	// invoke wp.getPostStatusList
+	XMLRPCRequest *getPostStatusListReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
+	[getPostStatusListReq setMethod:@"wp.getPostStatusList" withObjects:[NSArray arrayWithObjects:blogid, username, pwd, nil]];
+	NSDictionary *postStatusList = [self executeXMLRPCRequest:getPostStatusListReq byHandlingError:YES];
+	[getPostStatusListReq release];
+	
+	if ([postStatusList isKindOfClass:[NSDictionary class]]) { //might be an error.
+		//keys are actual values, values are display strings.
+		[currentBlog setObject:postStatusList forKey:@"postStatusList"];
+	} else {
+		return NO;
+	}
+	
+	// invoke wp. getPageStatusList
+	XMLRPCRequest *getPageStatusListReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
+	[getPageStatusListReq setMethod:@"wp.getPageStatusList" withObjects:[NSArray arrayWithObjects:blogid, username, pwd, nil]];
+	NSDictionary *pageStatusList = [self executeXMLRPCRequest:getPageStatusListReq byHandlingError:YES];
+	[getPageStatusListReq release];
+	
+	if ([pageStatusList isKindOfClass:[NSDictionary class]]) { //might be an error.
+		//keys are actual values, values are display strings.
+		[currentBlog setObject:pageStatusList forKey:@"pageStatusList"];
+	} else {
+		return NO;
+	}
+	
+	//it's a new blog, set currentBlogIndex to -1
+	currentBlogIndex = -1;
+	[self saveBlogPasswordToKeychain:pwd andUserName:username andBlogURL:blogURL];
+	[self newAccountPostsAndTemplateSync:currentBlog];
+	[self saveCurrentBlog];
 	[reqUsersBlogs release];
 	
     return YES;
@@ -3063,7 +2886,6 @@ editBlogViewController, currentLocation;
 	NSString *pwd =	[self getPasswordFromKeychainInContextOfCurrentBlog:blog];
     NSString *fullURL = [blog valueForKey:@"xmlrpc"];
     NSString *blogid = [blog valueForKey:kBlogId];
-	NSLog(@"blogid is %@", blogid);
 	
 	//for #291
 	NSNumber *userSetMaxToFetch = [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:3] intValue]];
@@ -4648,7 +4470,6 @@ editBlogViewController, currentLocation;
 			withObjects:[NSArray arrayWithObjects:blogid, username, pwd, commentsStructure, nil]];
 	
     NSMutableArray *commentsReceived = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
-	NSLog(@"commentsReceived: %@", commentsReceived);
     [postsReq release];
 	
     // TODO:

@@ -17,6 +17,7 @@
 	CFirstLaunchViewController *firstLaunchController;
     BOOL connectionStatus;
     BOOL alertRunning;
+	BOOL isWPcomAuthenticated;
 	WelcomeViewController *welcomeViewController;
 
     UIImageView *splashView;
@@ -36,7 +37,7 @@
 @property (nonatomic, retain) CFirstLaunchViewController *firstLaunchController;
 @property (nonatomic, getter = isAlertRunning) BOOL alertRunning;
 @property (nonatomic, retain) WelcomeViewController *welcomeViewController;
-
+@property (nonatomic, assign) BOOL isWPcomAuthenticated;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
@@ -50,6 +51,8 @@
 - (void)storeCurrentBlog;
 - (void)resetCurrentBlogInUserDefaults;
 - (BOOL)shouldLoadBlogFromUserDefaults;
+- (BOOL)isWPcomAuthenticated;
+- (void)checkWPcomAuthentication;
 - (void)setAutoRefreshMarkers;
 - (void)showContentDetailViewController:(UIViewController *)viewController;
 
