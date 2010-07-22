@@ -1116,7 +1116,8 @@ editBlogViewController, currentLocation, currentBlogIndex;
 }
 
 - (int)checkXML_RPC_URL_IsRunningSupportedVersionOfWordPress:(NSString *)xmlrpcurl withPagesAndCommentsSupport:(BOOL *)isPagesAndCommentsSupported {
-    XMLRPCRequest *listMethodsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpcurl]];
+    NSLog(@"xmlrpcurl: %@", xmlrpcurl);
+	XMLRPCRequest *listMethodsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpcurl]];
     [listMethodsReq setMethod:@"system.listMethods" withObjects:[NSArray array]];
     NSArray *listOfMethods = [self executeXMLRPCRequest:listMethodsReq byHandlingError:YES];
     [listMethodsReq release];

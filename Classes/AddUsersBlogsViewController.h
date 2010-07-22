@@ -39,5 +39,6 @@
 - (void)updateFavicons;
 - (void)reloadTableView;
 - (void)createBlog:(Blog *)blog;
+- (void)cancelAddWPcomBlogs;
 
 @end

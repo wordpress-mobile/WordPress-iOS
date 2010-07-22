@@ -285,6 +285,8 @@ WordPress.xcodeproj/project.pbxproj -text
 /license.txt -text
 /lock.png -text
 /logo_stacked.png -text
+/logo_welcome.png -text
+/logo_welcome@2x.png -text
 /logo_wpcom.png -text
 /main.m -text
 /pages.png -text

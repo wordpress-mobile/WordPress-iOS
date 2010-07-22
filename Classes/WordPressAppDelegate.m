@@ -50,6 +50,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 			if([tempIsAuthenticated isEqualToString:@"1"])
 				self.isWPcomAuthenticated = YES;
 		}
+		isWPcomAuthenticated = NO;
 		[self performSelectorInBackground:@selector(checkWPcomAuthentication) withObject:nil];
     }
 
@@ -328,6 +329,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
         // Check network connectivity.
         if ([[Reachability sharedReachability] internetConnectionStatus]) {
             if (![blog valueForKey:kSupportsPagesAndComments]) {
+				[dataManager setCurrentBlog:blog];
                 [dataManager performSelectorInBackground:@selector(wrapperForSyncPagesAndCommentsForBlog:) withObject:blog];
             }
         }

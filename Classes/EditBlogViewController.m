@@ -56,12 +56,6 @@
 	
     self.navigationItem.rightBarButtonItem = saveBlogButton;
 	
-    if ([[BlogDataManager sharedDataManager] countOfBlogs] > 0) {
-        self.navigationItem.leftBarButtonItem = cancelBlogButton;
-    } else {
-        self.navigationItem.leftBarButtonItem = cancelSetupButton;
-    }
-	
     if ([self currentBlogIsNew]) {
         //[blogURLTextField becomeFirstResponder];	// Trac #353
         saveBlogButton.enabled = NO;
@@ -207,23 +201,6 @@
     return nil;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    //if (section == 3) {
-	//This Class creates a view which contains label with color and font attributes and sets the label properties and it is used as footer view for section in tableview.
-    //    WPLabelFooterView *labelView = [[[WPLabelFooterView alloc] initWithFrame:CGRectMake(0, 3, 300, 60)] autorelease];
-	//Sets the number of lines to be shown in the label.
-    //    [labelView setNumberOfLines:(NSInteger) 3];
-	//Sets the text alignment of the label.
-    //    [labelView setTextAlignment:UITextAlignmentCenter];
-	//Sets the text for the label.
-    //    [labelView setText:kResizePhotoSettingHintLabel];
-	
-    //    return labelView;
-    //}
-	
-    return nil;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     if (section == 3) {
         return kResizePhotoSettingSectionHeight;
@@ -279,11 +256,6 @@
     noOfPostsTextField.text = [selectedObjects objectAtIndex:0];
 	
     [selctionController clean];
-}
-
-- (void)cancel:(id)sender {
-    [[BlogDataManager sharedDataManager] resetCurrentBlog];
-	[self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 - (void)cancelSetup:(id)sender {

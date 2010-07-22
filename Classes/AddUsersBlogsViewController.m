@@ -30,14 +30,17 @@
 	self.tableView.tableHeaderView = headerView;
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableView) 
-												 name:@"didUpdateFavicons" object:nil];  
+												 name:@"didUpdateFavicons" object:nil];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancelAddWPcomBlogs) 
+												 name:@"didCancelWPcomLogin" object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	if(!appDelegate.isWPcomAuthenticated) {
 		WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController" bundle:nil];
-		[super.navigationController pushViewController:wpComLogin animated:YES];
+		[self.navigationController presentModalViewController:wpComLogin animated:YES];
 		[wpComLogin release];
 	}
 	else {
@@ -102,7 +105,6 @@
 	cell.textLabel.textAlignment = UITextAlignmentLeft;
 	
 	Blog *blog = [usersBlogs objectAtIndex:indexPath.row];
-	NSLog(@"blog.blogName: %@", blog.blogName);
 	if([selectedBlogs containsObject:blog.blogID])
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
 	else
@@ -178,7 +180,6 @@
 		self.tableView.tableFooterView = nil;
 		self.navigationItem.rightBarButtonItem.enabled = YES;
 	}
-	[self performSelectorOnMainThread:@selector(reloadTableView) withObject:nil waitUntilDone:NO];
 	[self performSelectorInBackground:@selector(updateFavicons) withObject:nil];
 	
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -188,25 +189,22 @@
 - (IBAction)saveSelectedBlogs:(id)sender {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	WPProgressHUD *progressView = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
-	appDelegate.alertRunning = YES;
 	[progressView show];
 	
 	for (Blog *blog in usersBlogs) {
 		if([selectedBlogs containsObject:blog.blogID]) {
 			[self createBlog:blog];
-			NSLog(@"Added %@ to BlogDataManager...", blog.blogName);
 		}
 	}
 	
 	[progressView dismiss];
-	appDelegate.alertRunning = NO;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	[super.navigationController popToRootViewControllerAnimated:YES];
+	[appDelegate.navigationController popToRootViewControllerAnimated:YES];
 }
 
 - (void)createBlog:(Blog *)blog {
 	blog.url = [blog.url stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-	blog.url = [blog.url stringByReplacingOccurrencesOfString:@".wordpress.com" withString:@""];
+	//blog.url = [blog.url stringByReplacingOccurrencesOfString:@".wordpress.com" withString:@""];
 	NSString *username = blog.username;
     NSString *pwd = blog.password;
     NSString *url = [blog.url stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -245,7 +243,6 @@
         [dm.currentBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
         [dm saveCurrentBlog];
 	}
-	[self.navigationController dismissModalViewControllerAnimated:YES];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 }
 
@@ -265,6 +262,11 @@
 	//}
 	[self.tableView reloadData];
 	[self.tableView setNeedsLayout];
+}
+
+- (void)cancelAddWPcomBlogs {
+	UIViewController *controller = [self.navigationController.viewControllers objectAtIndex:1];
+	[self.navigationController popToViewController:controller animated:NO];
 }
 
 #pragma mark -

@@ -10,18 +10,23 @@
 
 @implementation WelcomeViewController
 
-@synthesize tableView;
+@synthesize tableView, appDelegate, addUsersBlogsView;
 
 #pragma mark -
 #pragma mark View lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-	self.navigationItem.title = @"Welcome";
+	appDelegate = [WordPressAppDelegate sharedWordPressApp];
+	addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
 	
-	if([[BlogDataManager sharedDataManager] countOfBlogs] == 0)
+	if([[BlogDataManager sharedDataManager] countOfBlogs] == 0) {
 		self.navigationItem.backBarButtonItem = nil;
+		self.navigationItem.title = @"Welcome";
+	}
+	else {
+		self.navigationItem.title = @"Add Blog";
+	}
 }
 
 #pragma mark -
@@ -32,18 +37,17 @@
     return 1;
 }
 
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	return 3;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 200)] autorelease];
-	UIImageView *logo = [[UIImageView alloc] initWithFrame:CGRectMake(56, 20, 206, 128)];
-	logo.image = [UIImage imageNamed:@"logo_stacked.png"];
+	UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 252)] autorelease];
+	UIImageView *logo = [[UIImageView alloc] initWithFrame:CGRectMake(70, 15, 180, 180)];
+	logo.image = [UIImage imageNamed:@"logo_welcome"];
 	[headerView addSubview:logo];
 	
-	UILabel *headerText = [[UILabel alloc] initWithFrame:CGRectMake(20, 135, 280, 72)];
+	UILabel *headerText = [[UILabel alloc] initWithFrame:CGRectMake(20, 175, 280, 72)];
 	headerText.backgroundColor = [UIColor clearColor];
 	headerText.textColor = [UIColor darkGrayColor];
 	headerText.font = [UIFont fontWithName:@"Georgia" size:14];
@@ -57,7 +61,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	return 200;
+	return 235;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -78,10 +82,10 @@
 			cell.textLabel.text = @"Start a new blog at WordPress.com";
 			break;
 		case 1:
-			cell.textLabel.text = @"Add an existing WP.com blog";
+			cell.textLabel.text = @"Add existing WordPress.com blog";
 			break;
 		case 2:
-			cell.textLabel.text = @"Add an existing WP.org self-hosted site";
+			cell.textLabel.text = @"Add existing WordPress.org site";
 			break;
 		default:
 			break;
@@ -98,26 +102,29 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	int dummy = 0;
-	switch (indexPath.row) {
-		case 0:
-			dummy = indexPath.row;
-			WebSignupViewController *webSignup = [[WebSignupViewController alloc] initWithNibName:@"WebSignupViewController" bundle:[NSBundle mainBundle]];
-			[super.navigationController pushViewController:webSignup animated:YES];
-			break;
-		case 1:
-			dummy = indexPath.row;
-			AddUsersBlogsViewController *addBlogs = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
-			[super.navigationController pushViewController:addBlogs animated:YES];
-			break;
-		case 2:
-			dummy = indexPath.row;
-			EditBlogViewController *editBlog = [[EditBlogViewController alloc] initWithNibName:@"EditBlogViewController" bundle:nil];
-			[super.navigationController pushViewController:editBlog animated:YES];
-			break;
-		default:
-			break;
+	NSLog(@"inside didSelectRowAtIndexPath...");
+	
+	if(indexPath.row == 0) {
+		WebSignupViewController *webSignup = [[WebSignupViewController alloc] initWithNibName:@"WebSignupViewController" bundle:[NSBundle mainBundle]];
+		[super.navigationController pushViewController:webSignup animated:YES];
 	}
+	else if(indexPath.row == 1) {
+		NSLog(@"inside didSelectRowAtIndexPath case:1...");
+		if(appDelegate.isWPcomAuthenticated) {
+			NSLog(@"addUsersBlogsView animated:YES...");
+			[super.navigationController pushViewController:addUsersBlogsView animated:YES];
+		}
+		else {
+			NSLog(@"addUsersBlogsView animated:NO...");
+			[super.navigationController pushViewController:addUsersBlogsView animated:YES];
+		}
+	}
+	else if(indexPath.row == 2) {
+		EditBlogViewController *editBlog = [[EditBlogViewController alloc] initWithNibName:@"EditBlogViewController" bundle:nil];
+		[super.navigationController pushViewController:editBlog animated:YES];
+	}
+	
+	NSLog(@"about to call deselectRowAtIndexPath...");
 	[tv deselectRowAtIndexPath:indexPath animated:YES];
 }
 
@@ -136,7 +143,9 @@
 }
 
 - (void)dealloc {
+	[addUsersBlogsView release];
 	[tableView release];
+	[appDelegate release];
     [super dealloc];
 }
 

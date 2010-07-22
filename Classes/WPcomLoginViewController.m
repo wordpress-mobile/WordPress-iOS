@@ -10,7 +10,7 @@
 
 
 @implementation WPcomLoginViewController
-@synthesize footerText, buttonText, username, password, isAuthenticated, WPcomXMLRPCUrl;
+@synthesize footerText, buttonText, username, password, isAuthenticated, WPcomXMLRPCUrl, tableView;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -20,7 +20,7 @@
 	
 	footerText = @" ";
 	WPcomXMLRPCUrl = kWPcomXMLRPCUrl;
-	super.navigationItem.title = @"Sign In";
+	self.navigationItem.title = @"Sign In";
 	
 	if([[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsername"] != nil)
 		username = [[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsername"];
@@ -243,13 +243,18 @@
 	if(isAuthenticated) {
 		WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 		appDelegate.isWPcomAuthenticated = YES;
-		[super.navigationController popViewControllerAnimated:YES];
+		[self dismissModalViewControllerAnimated:YES];
 	}
 	else {
 		footerText = @"Sign in failed. Please try again.";
 		buttonText = @"Sign In";
 		[self.tableView reloadData];
 	}
+}
+
+- (IBAction)cancel:(id)sender {
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"didCancelWPcomLogin" object:nil];
+	[self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark -
@@ -269,6 +274,7 @@
 
 
 - (void)dealloc {
+	[tableView release];
 	[footerText release];
 	[buttonText release];
 	[username release];
