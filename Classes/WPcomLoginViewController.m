@@ -20,7 +20,7 @@
 	
 	footerText = @" ";
 	buttonText = @"Sign In";
-	WPcomXMLRPCUrl = kWPcomXMLRPCUrl;
+	WPcomXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
 	self.navigationItem.title = @"Sign In";
 	
 	if([[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsername"] != nil)
@@ -267,7 +267,6 @@
 	else {
 		footerText = @"Sign in failed. Please try again.";
 		buttonText = @"Sign In";
-		[self.tableView reloadData];
 	}
 	
 	[pool release];

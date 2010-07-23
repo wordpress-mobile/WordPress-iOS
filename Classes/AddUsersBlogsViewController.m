@@ -65,10 +65,10 @@
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
 	UIView *footerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 50)] autorelease];
 	if((usersBlogs.count == 0) && (!hasCompletedGetUsersBlogs)) {
-		UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(80, 0, 20, 20)];
-		spinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-		[spinner startAnimating];
-		[footerView addSubview:spinner];
+		UIActivityIndicatorView *footerSpinner = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(80, 0, 20, 20)];
+		footerSpinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+		[footerSpinner startAnimating];
+		[footerView addSubview:footerSpinner];
 		
 		UILabel *footerText = [[UILabel alloc] initWithFrame:CGRectMake(110, 0, 200, 20)];
 		footerText.backgroundColor = [UIColor clearColor];
@@ -169,10 +169,9 @@
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
-	NSString *url = kWPcomXMLRPCUrl;
-	usersBlogs = [[WPDataController sharedInstance] getBlogsForUsername:url 
-															   username:[[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsername"]
-															   password:[[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomPassword"]];
+	usersBlogs = [[WPDataController sharedInstance] getBlogsForUrl:@"https://wordpress.com/xmlrpc.php" 
+				   username:[[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsername"]
+				   password:[[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomPassword"]];
 	hasCompletedGetUsersBlogs = YES;
 	if(usersBlogs.count > 0) {
 		self.tableView.tableFooterView = nil;

@@ -11,6 +11,8 @@
 #import "XMLRPCConnection.h"
 #import "XMLRPCRequest.h"
 #import "XMLRPCResponse.h"
+#import "NSString+XMLExtensions.h"
+#import "RegexKitLite.h"
 #import "Blog.h"
 #import "Post.h"
 #import "Page.h"
@@ -34,7 +36,7 @@ typedef enum {
 
 // User
 - (BOOL)authenticateUser:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password;
-- (NSMutableArray *)getBlogsForUsername:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password;
+- (NSMutableArray *)getBlogsForUrl:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password;
 
 // Blog
 - (Blog *)getBlog:(int)blogID andPopulate:(BOOL)andPopulate;

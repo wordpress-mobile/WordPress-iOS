@@ -67,5 +67,3 @@
 
 #define kNoInternetErrorMessage                 @"No internet connection."
 #define kBlogExistsErrorMessage                 @"Blog '%@' already configured on this iPhone."
-
-#define kWPcomXMLRPCUrl							@"https://wordpress.com/xmlrpc.php";

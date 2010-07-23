@@ -21,5 +21,7 @@
 - (id)initWithIndex:(int)blogIndex;
 
 - (UIImage *)favicon;
+- (void)downloadFavicon;
+- (void)downloadFaviconInBackground;
 
 @end

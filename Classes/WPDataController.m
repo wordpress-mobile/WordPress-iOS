@@ -38,13 +38,13 @@
 #pragma mark User
 
 - (BOOL)authenticateUser:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password {
-	if((xmlrpc != nil) && (username != nil) && (password != nil) && ([self getBlogsForUsername:xmlrpc username:username password:password] != nil))
+	if((xmlrpc != nil) && (username != nil) && (password != nil) && ([self getBlogsForUrl:xmlrpc username:username password:password] != nil))
 		return YES;
 	else
 		return NO;
 }
 
-- (NSMutableArray *)getBlogsForUsername:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password {
+- (NSMutableArray *)getBlogsForUrl:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password {
 	NSMutableArray *usersBlogs = [[NSMutableArray alloc] init];
 	
 	XMLRPCRequest *xmlrpcUsersBlogs = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
@@ -57,13 +57,17 @@
 			if((int)[dictBlog valueForKey:@"isAdmin"] == 1) {
 				blog.isAdmin = [[dictBlog valueForKey:@"isAdmin"] boolValue];
 			}
-			blog.blogID = [dictBlog valueForKey:@"blogid"];
-			blog.blogName = [dictBlog valueForKey:@"blogName"];
-			blog.url = [dictBlog valueForKey:@"url"];
-			blog.host = [NSString stringWithFormat:@"%@_%@", blog.username, blog.url];
-			blog.xmlrpc = [dictBlog valueForKey:@"xmlrpc"];
 			blog.username = username;
 			blog.password = password;
+			blog.blogID = [dictBlog valueForKey:@"blogid"];
+			blog.blogName = [NSString decodeXMLCharactersIn:[dictBlog valueForKey:@"blogName"]];
+			blog.url = [dictBlog valueForKey:@"url"];
+			blog.host = [NSString stringWithFormat:@"%@_%@", 
+						 blog.username, 
+						 [blog.url stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""]];
+			if([blog.host hasSuffix:@"/"])
+				blog.host = [blog.host substringToIndex:[blog.host length] - 1];
+			blog.xmlrpc = [dictBlog valueForKey:@"xmlrpc"];
 			[usersBlogs addObject:blog];
 		}
 	}

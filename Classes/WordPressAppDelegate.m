@@ -345,7 +345,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)checkWPcomAuthentication {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	NSString *authURL = kWPcomXMLRPCUrl;
+	NSString *authURL = @"https://wordpress.com/xmlrpc.php";
 	
 	if(([[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsername"] != nil) && 
 	   ([[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomPassword"] != nil)) {
