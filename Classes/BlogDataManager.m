@@ -5147,6 +5147,7 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 					[self syncPagesForBlog:blog];
 				}
 				@catch (NSException * e) {}
+				appDelegate.lastBlogSync = [NSDate date];
 			}
 		}
 		else {

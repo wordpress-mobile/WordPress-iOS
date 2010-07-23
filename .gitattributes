@@ -125,6 +125,8 @@ Classes/UIDevice-Hardware.h -text
 Classes/UIDevice-Hardware.m -text
 Classes/UIImage+INResizeImageAllocator.h -text
 Classes/UIImage+INResizeImageAllocator.m -text
+Classes/UITableViewActivityCell.h -text
+Classes/UITableViewActivityCell.m -text
 Classes/UIViewController+WPAnimation.h -text
 Classes/UIViewController+WPAnimation.m -text
 Classes/UIViewController_iPadExtensions.h -text
@@ -243,6 +245,7 @@ Resources-iPad/MainWindow-iPad.xib -text
 /ToolbarIconEye.png -text svneol=unset#unset
 /ToolbarIconGear.png -text svneol=unset#unset
 /ToolbarIconLocation.png -text svneol=unset#unset
+/UITableViewActivityCell.xib -text
 /WPAddCategoryViewController.xib -text
 /WPCategoriesController.xib -text
 /WPPhotoViewController.xib -text
@@ -288,7 +291,9 @@ WordPress.xcodeproj/project.pbxproj -text
 /logo_welcome.png -text
 /logo_welcome@2x.png -text
 /logo_wpcom.png -text
+/logo_wpcom@2x.png -text
 /logo_wporg.png -text
+/logo_wporg@2x.png -text
 /main.m -text
 /pages.png -text
 /pages@2x.png -text

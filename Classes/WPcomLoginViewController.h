@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "WPDataController.h"
 #import "AddUsersBlogsViewController.h"
+#import "UITableViewActivityCell.h"
 
 @interface WPcomLoginViewController : UIViewController <UITableViewDelegate, UITextFieldDelegate> {
 	NSString *footerText, *buttonText, *username, *password, *WPcomXMLRPCUrl;
@@ -26,5 +27,6 @@
 - (void)selectPasswordField:(id)sender;
 - (void)signIn:(id)sender;
 - (IBAction)cancel:(id)sender;
+- (void)refreshTable;
 
 @end

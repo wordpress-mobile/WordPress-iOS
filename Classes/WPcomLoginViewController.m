@@ -70,8 +70,20 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	
 	UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"MyCell"];
+	UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[self.tableView dequeueReusableCellWithIdentifier:@"CustomCell"];
+	
+	if((indexPath.section == 1) && (activityCell == nil)) {
+		NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
+		for(id currentObject in topLevelObjects)
+		{
+			if([currentObject isKindOfClass:[UITableViewActivityCell class]])
+			{
+				activityCell = (UITableViewActivityCell *)currentObject;
+				break;
+			}
+		}
+	}
 	if (cell == nil) {
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault 
 									   reuseIdentifier:@"MyCell"] autorelease];
@@ -116,7 +128,7 @@
 		}
 	}
 	
-	if ([indexPath section] == 0) {
+	if (indexPath.section == 0) {
 		if ([indexPath row] == 0) {
 			cell.textLabel.text = @"Username";
 		}
@@ -124,20 +136,14 @@
 			cell.textLabel.text = @"Password";
 		}
 	}
-	else {
-		cell.textLabel.textAlignment = UITextAlignmentCenter;
+	else if(indexPath.section == 1) {
+		if(isSigningIn)
+			[activityCell.spinner startAnimating];
+		else
+			[activityCell.spinner stopAnimating];
 		
-		if(isSigningIn) {
-			UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-			UIImage *whitebg = [UIImage imageNamed:@"whitebg.png"];
-			cell.imageView.image = whitebg;
-			[cell.imageView addSubview:spinner];
-			[spinner startAnimating];
-			[whitebg release];
-			[spinner release];
-		}
-		
-		cell.textLabel.text = buttonText;
+		activityCell.textLabel.text = buttonText;
+		cell = activityCell;
 	}
 	return cell;    
 }
@@ -259,14 +265,15 @@
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	[self authenticate];
+	isSigningIn = NO;
 	if(isAuthenticated) {
 		[WordPressAppDelegate sharedWordPressApp].isWPcomAuthenticated = YES;
-		isSigningIn = NO;
 		[self dismissModalViewControllerAnimated:YES];
 	}
 	else {
 		footerText = @"Sign in failed. Please try again.";
 		buttonText = @"Sign In";
+		[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
 	}
 	
 	[pool release];
@@ -275,6 +282,10 @@
 - (IBAction)cancel:(id)sender {
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"didCancelWPcomLogin" object:nil];
 	[self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)refreshTable {
+	[self.tableView reloadData];
 }
 
 #pragma mark -
