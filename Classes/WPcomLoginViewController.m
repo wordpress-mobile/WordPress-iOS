@@ -10,7 +10,7 @@
 
 
 @implementation WPcomLoginViewController
-@synthesize footerText, buttonText, username, password, isAuthenticated, WPcomXMLRPCUrl, tableView;
+@synthesize footerText, buttonText, username, password, isAuthenticated, isSigningIn, WPcomXMLRPCUrl, tableView;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -19,6 +19,7 @@
     [super viewDidLoad];
 	
 	footerText = @" ";
+	buttonText = @"Sign In";
 	WPcomXMLRPCUrl = kWPcomXMLRPCUrl;
 	self.navigationItem.title = @"Sign In";
 	
@@ -36,6 +37,12 @@
 	logo.frame = CGRectMake(40, 20, 229, 43);
 	[headerView addSubview:logo];
 	self.tableView.tableHeaderView = headerView;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	
+	isSigningIn = NO;
 }
 
 #pragma mark -
@@ -79,9 +86,6 @@
 					loginTextField.placeholder = @"WordPress.com username";
 					loginTextField.keyboardType = UIKeyboardTypeEmailAddress;
 					loginTextField.returnKeyType = UIReturnKeyNext;
-					[loginTextField addTarget:self
-									   action:@selector(selectPasswordField:)
-							 forControlEvents:UIControlEventEditingDidEndOnExit];
 					loginTextField.tag = 0;
 					if(username != nil)
 						loginTextField.text = username;
@@ -109,8 +113,6 @@
 			[loginTextField setEnabled: YES];
 			
 			[cell addSubview:loginTextField];
-			
-			[loginTextField release];
 		}
 	}
 	
@@ -124,7 +126,18 @@
 	}
 	else {
 		cell.textLabel.textAlignment = UITextAlignmentCenter;
-		cell.textLabel.text = @"Sign in";
+		
+		if(isSigningIn) {
+			UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+			UIImage *whitebg = [UIImage imageNamed:@"whitebg.png"];
+			cell.imageView.image = whitebg;
+			[cell.imageView addSubview:spinner];
+			[spinner startAnimating];
+			[whitebg release];
+			[spinner release];
+		}
+		
+		cell.textLabel.text = buttonText;
 	}
 	return cell;    
 }
@@ -138,32 +151,36 @@
 			if(username == nil) {
 				footerText = @"Username is required.";
 				buttonText = @"Sign In";
+				[tv deselectRowAtIndexPath:indexPath animated:YES];
 				[tv reloadData];
 			}
 			else if(password == nil) {
 				footerText = @"Password is required.";
 				buttonText = @"Sign In";
+				[tv deselectRowAtIndexPath:indexPath animated:YES];
 				[tv reloadData];
 			}
 			else {
 				footerText = @" ";
-				buttonText = @"Signing In";
+				buttonText = @"Signing in...";
+				isSigningIn = YES;
+				[tv deselectRowAtIndexPath:indexPath animated:YES];
+				[NSThread sleepForTimeInterval:0.15];
 				[tv reloadData];
 				
-				[self signIn:self];
+				[self performSelectorInBackground:@selector(signIn:) withObject:self];
 			}
 			break;
 		default:
 			break;
 	}
-	[tv deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark -
 #pragma mark UITextField delegate methods
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-	//[textField resignFirstResponder];
+	[textField resignFirstResponder];
 	return YES;	
 }
 
@@ -239,10 +256,12 @@
 }
 
 - (void)signIn:(id)sender {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
 	[self authenticate];
 	if(isAuthenticated) {
-		WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-		appDelegate.isWPcomAuthenticated = YES;
+		[WordPressAppDelegate sharedWordPressApp].isWPcomAuthenticated = YES;
+		isSigningIn = NO;
 		[self dismissModalViewControllerAnimated:YES];
 	}
 	else {
@@ -250,6 +269,8 @@
 		buttonText = @"Sign In";
 		[self.tableView reloadData];
 	}
+	
+	[pool release];
 }
 
 - (IBAction)cancel:(id)sender {

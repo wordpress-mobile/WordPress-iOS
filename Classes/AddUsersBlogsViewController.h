@@ -22,6 +22,7 @@
 	NSMutableArray *selectedBlogs;
 	IBOutlet UITableView *tableView;
 	IBOutlet UIBarButtonItem *buttonAddSelected, *buttonSelectAll;
+	WPProgressHUD *spinner;
 }
 
 @property (nonatomic, assign) BOOL hasCompletedGetUsersBlogs;
@@ -29,6 +30,7 @@
 @property (nonatomic, retain) NSMutableArray *selectedBlogs;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *buttonAddSelected, *buttonSelectAll;
+@property (nonatomic, retain) WPProgressHUD *spinner;
 
 - (IBAction)selectAllBlogs:(id)sender;
 - (IBAction)deselectAllBlogs:(id)sender;
@@ -38,5 +40,7 @@
 - (void)reloadTableView;
 - (void)createBlog:(Blog *)blog;
 - (void)cancelAddWPcomBlogs;
+- (void)saveSelectedBlogsInBackground;
+- (void)didSaveSelectedBlogsInBackground;
 
 @end

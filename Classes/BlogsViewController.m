@@ -50,7 +50,6 @@
 	[self.tableView endEditing:YES];
 	appDelegate.selectedBlogID = nil;
 	[appDelegate syncBlogs];
-	NSLog(@"There are now %d blogs.", [[BlogDataManager sharedDataManager] countOfBlogs]);
 }
 
 - (void)blogsRefreshNotificationReceived:(id)notification {
@@ -71,16 +70,18 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"BlogCell";
     UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	Blog *blog = [[Blog alloc] initWithIndex:indexPath.row];
 
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
     }
+	
 #if defined __IPHONE_3_0
     cell.textLabel.text = [NSString decodeXMLCharactersIn:[[[BlogDataManager sharedDataManager] blogAtIndex:(indexPath.row)] valueForKey:@"blogName"]];
-    cell.imageView.image = [[[Blog alloc] initWithIndex:indexPath.row] favicon];
+    cell.imageView.image = [blog favicon];
 #else if defined __IPHONE_2_0
     cell.text = [NSString decodeXMLCharactersIn:[[[BlogDataManager sharedDataManager] blogAtIndex:(indexPath.row)] valueForKey:@"blogName"]];
-    cell.image = [[[Blog alloc] initWithIndex:indexPath.row] favicon];
+    cell.image = [blog favicon];
 #endif
 
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -94,7 +95,19 @@
 
     if ([self.tableView cellForRowAtIndexPath:indexPath].editing) {
         [[BlogDataManager sharedDataManager] copyBlogAtIndexCurrent:(indexPath.row)];
-        [self showBlogDetailModalViewWithAnimation:YES];
+        EditBlogViewController *blogDetailViewController = [[[EditBlogViewController alloc] initWithNibName:@"EditBlogViewController" bundle:nil] autorelease];
+		if (DeviceIsPad() == YES)
+		{
+			UINavigationController *modalNavigationController = [[UINavigationController alloc] initWithRootViewController:blogDetailViewController];
+			modalNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+			modalNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+			[[CPopoverManager instance] setCurrentPopoverController:NULL];
+			[[WordPressAppDelegate sharedWordPressApp].splitViewController presentModalViewController:modalNavigationController animated:YES];
+		}
+		else
+		{
+			[self.navigationController pushViewController:blogDetailViewController animated:YES];
+		}
 		
     } else {
         //if ([[[dataManager blogAtIndex:indexPath.row] valueForKey:@"kIsSyncProcessRunning"] intValue] == 1) {
@@ -113,6 +126,7 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete && [self canChangeCurrentBlog]) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsEditedNotification" object:nil];
         [[BlogDataManager sharedDataManager] makeBlogAtIndexCurrent:indexPath.row];
         [[BlogDataManager sharedDataManager] removeCurrentBlog];
 

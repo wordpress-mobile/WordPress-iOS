@@ -51,6 +51,7 @@
     activityIndicator.frame = activityRect;
 	
     [self bringSubviewToFront:activityIndicator];
+    [self bringSubviewToFront:progressMessage];
 }
 
 - (void)show {
@@ -58,10 +59,12 @@
     CGSize backGroundImageSize = self.backgroundImageView.image.size;
     self.bounds = CGRectMake(0, 0, backGroundImageSize.width, backGroundImageSize.height);
     [self.appDelegate setAlertRunning:YES];
+    [self bringSubviewToFront:activityIndicator];
+    [self bringSubviewToFront:progressMessage];
 }
 
 - (void)dismiss {
-    [super dismiss];
+    [super dismissWithClickedButtonIndex:0 animated:YES];
     [self.appDelegate setAlertRunning:NO];
 }
 

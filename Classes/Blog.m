@@ -10,12 +10,12 @@
 #import "UIImage+INResizeImageAllocator.h"
 
 @implementation Blog
-@synthesize blogID, blogName, url, username, password, xmlrpc, isAdmin;
+@synthesize blogID, blogName, url, host, username, password, xmlrpc, isAdmin;
 
 @synthesize index;
 
 #pragma mark -
-#pragma mark Initialize and dealloc
+#pragma mark Initialize
 
 - (id)initWithIndex:(int)blogIndex {
     if (self = [super init]) {
@@ -23,16 +23,6 @@
     }
 
     return self;
-}
-
-- (void)dealloc {
-	[blogID release];
-	[blogName release];
-	[url release];
-	[username release];
-	[password release];
-	[xmlrpc release];
-    [super dealloc];
 }
 
 #pragma mark -
@@ -61,6 +51,20 @@
     }
 
     return faviconImage;
+}
+
+#pragma mark -
+#pragma mark Dealloc
+
+- (void)dealloc {
+	[blogID release];
+	[blogName release];
+	[url release];
+	[host release];
+	[username release];
+	[password release];
+	[xmlrpc release];
+    [super dealloc];
 }
 
 @end

@@ -49,7 +49,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		isWPcomAuthenticated = NO;
 		[self performSelectorInBackground:@selector(checkWPcomAuthentication) withObject:nil];
     }
-	selectedBlogID = [[NSString alloc] init];
 
     return wordPressApp;
 }
@@ -164,6 +163,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 #pragma mark Public Methods
 
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message {
+	NSLog(@"Showing alert with title: %@", message);
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
                           message:message
                           delegate:nil

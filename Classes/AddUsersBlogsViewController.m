@@ -9,7 +9,7 @@
 #import "AddUsersBlogsViewController.h"
 
 @implementation AddUsersBlogsViewController
-@synthesize usersBlogs, selectedBlogs, tableView, buttonAddSelected, buttonSelectAll, hasCompletedGetUsersBlogs;
+@synthesize usersBlogs, selectedBlogs, tableView, buttonAddSelected, buttonSelectAll, hasCompletedGetUsersBlogs, spinner;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -186,19 +186,31 @@
 
 - (IBAction)saveSelectedBlogs:(id)sender {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	WPProgressHUD *spinner = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
+	spinner = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
 	[spinner show];
+	
+	[self performSelectorInBackground:@selector(saveSelectedBlogsInBackground) withObject:nil];
+}
+
+- (void)saveSelectedBlogsInBackground {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	for (Blog *blog in usersBlogs) {
 		if([selectedBlogs containsObject:blog.blogID]) {
 			[self createBlog:blog];
 		}
 	}
-	NSLog(@"finished saving blogs...");
 	
-	[spinner dismiss];
-	[spinner release];
+	[self performSelectorOnMainThread:@selector(didSaveSelectedBlogsInBackground) withObject:nil waitUntilDone:NO];
+	
+	[pool release];
+}
+
+- (void)didSaveSelectedBlogsInBackground {
+	[spinner dismissWithClickedButtonIndex:0 animated:YES];
+    [spinner release];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[appDelegate syncBlogs];
 	[appDelegate.navigationController popToRootViewControllerAnimated:YES];
 }
 
@@ -229,6 +241,7 @@
 		[newBlog setValue:url forKey:@"url"];
 		[newBlog setValue:blog.xmlrpc forKey:@"xmlrpc"];
 		[newBlog setValue:blog.blogID forKey:kBlogId];
+		[newBlog setValue:blog.host forKey:kBlogHostName];
 		[newBlog setValue:blog.blogName forKey:@"blogName"];
 		[newBlog setValue:username forKey:@"username"];
 		[newBlog setValue:authEnabled forKey:@"authEnabled"];

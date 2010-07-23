@@ -173,6 +173,7 @@
 		83A645D9112B8690000999A6 /* PostLocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83A645D7112B8690000999A6 /* PostLocationViewController.xib */; };
 		83A64689112C5F75000999A6 /* PostSettingsHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A64688112C5F75000999A6 /* PostSettingsHelpViewController.m */; };
 		83A646AB112C63E5000999A6 /* help.png in Resources */ = {isa = PBXBuildFile; fileRef = 83A646AA112C63E5000999A6 /* help.png */; };
+		83BC943C11F94AA00041141A /* whitebg.png in Resources */ = {isa = PBXBuildFile; fileRef = 83BC943B11F94AA00041141A /* whitebg.png */; };
 		83F352E611F7DA6A002326C3 /* logo_welcome.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F352E411F7DA6A002326C3 /* logo_welcome.png */; };
 		83F352E711F7DA6A002326C3 /* logo_welcome@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F352E511F7DA6A002326C3 /* logo_welcome@2x.png */; };
 		83F3E26011275E07004CD686 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E25F11275E07004CD686 /* MapKit.framework */; };
@@ -484,6 +485,7 @@
 		83A64687112C5F75000999A6 /* PostSettingsHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostSettingsHelpViewController.h; sourceTree = "<group>"; };
 		83A64688112C5F75000999A6 /* PostSettingsHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostSettingsHelpViewController.m; sourceTree = "<group>"; };
 		83A646AA112C63E5000999A6 /* help.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = help.png; sourceTree = "<group>"; };
+		83BC943B11F94AA00041141A /* whitebg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whitebg.png; sourceTree = "<group>"; };
 		83F352E411F7DA6A002326C3 /* logo_welcome.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_welcome.png; sourceTree = "<group>"; };
 		83F352E511F7DA6A002326C3 /* logo_welcome@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo_welcome@2x.png"; sourceTree = "<group>"; };
 		83F3E25F11275E07004CD686 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -981,6 +983,7 @@
 			isa = PBXGroup;
 			children = (
 				83610B1311F4B42D00421116 /* logos */,
+				83BC943B11F94AA00041141A /* whitebg.png */,
 				6E8BE56C11BF5782002A13DD /* sync.png */,
 				6E8BE56D11BF5782002A13DD /* sync@2x.png */,
 				8398EEA511ACE6F9000FE6E0 /* welcome_bg.png */,
@@ -1423,6 +1426,7 @@
 				83F352E611F7DA6A002326C3 /* logo_welcome.png in Resources */,
 				83F352E711F7DA6A002326C3 /* logo_welcome@2x.png in Resources */,
 				83832A0411F8C9CC00CB5FFE /* logo_wporg.png in Resources */,
+				83BC943C11F94AA00041141A /* whitebg.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -42,6 +42,7 @@
     NSMutableDictionary *currentBlog;
     BOOL isLocaDraftsCurrent;
     BOOL isPageLocalDraftsCurrent;
+	BOOL shouldStopSyncingBlogs;
 	
     NSMutableDictionary *currentPost;
     NSArray *pageFieldNames;
@@ -95,6 +96,7 @@
 @property (nonatomic, retain) NSMutableDictionary *currentPicture;
 
 @property (nonatomic, copy, readonly) NSMutableDictionary *currentBlog;
+@property (nonatomic, assign) BOOL shouldStopSyncingBlogs;
 @property (nonatomic, assign) BOOL isLocaDraftsCurrent;
 @property (nonatomic, assign) BOOL isPageLocalDraftsCurrent;
 
@@ -212,6 +214,7 @@
 - (BOOL)refreshCurrentBlogQuickly:(NSString *)url user:(NSString *)username;
 - (BOOL)validateCurrentBlog:(NSString *)url user:(NSString *)username password:(NSString *)pwd;
 - (void)syncBlogs;
+- (void)stopSyncingBlogs;
 - (BOOL)syncPostsForBlog:(id)blog;
 - (BOOL)syncPostsForCurrentBlog;
 - (BOOL)syncIncrementallyLoadedPostsForCurrentBlog:(NSArray *)recentPostsList;

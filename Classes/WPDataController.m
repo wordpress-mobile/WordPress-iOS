@@ -60,6 +60,7 @@
 			blog.blogID = [dictBlog valueForKey:@"blogid"];
 			blog.blogName = [dictBlog valueForKey:@"blogName"];
 			blog.url = [dictBlog valueForKey:@"url"];
+			blog.host = [NSString stringWithFormat:@"%@_%@", blog.username, blog.url];
 			blog.xmlrpc = [dictBlog valueForKey:@"xmlrpc"];
 			blog.username = username;
 			blog.password = password;

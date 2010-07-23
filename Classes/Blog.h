@@ -10,12 +10,12 @@
 @interface Blog : NSObject {
 @private
     int index;
-	NSString *blogID, *blogName, *url, *username, *password, *xmlrpc;
+	NSString *blogID, *blogName, *url, *host, *username, *password, *xmlrpc;
 	BOOL isAdmin;
 }
 
 @property int index;
-@property (nonatomic, retain) NSString *blogID, *blogName, *url, *username, *password, *xmlrpc;
+@property (nonatomic, retain) NSString *blogID, *blogName, *url, *host, *username, *password, *xmlrpc;
 @property (nonatomic, assign) BOOL isAdmin;
 
 - (id)initWithIndex:(int)blogIndex;

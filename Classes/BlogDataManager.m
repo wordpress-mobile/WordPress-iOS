@@ -91,7 +91,7 @@ static BlogDataManager *sharedDataManager;
 pictureFieldNames, postFieldNames, postFieldNamesByTag, postFieldTagsByName,
 postTitleFieldNames, postTitleFieldNamesByTag, postTitleFieldTagsByName, unsavedPostsCount, currentPageIndex, currentPage, pageFieldNames,
 currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLocaDraftsCurrent, isPageLocalDraftsCurrent, currentPostIndex, currentDraftIndex, currentPageDraftIndex, asyncPostsOperationsQueue, currentUnsavedDraft,
-editBlogViewController, currentLocation, currentBlogIndex;
+editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlogs;
 //BOOL for handling XMLRPC issues...  See LocateXMLRPCViewController
 @synthesize isProblemWithXMLRPC; 
 
@@ -174,6 +174,10 @@ editBlogViewController, currentLocation, currentBlogIndex;
         [asyncOperationsQueue setMaxConcurrentOperationCount:2];
         asyncPostsOperationsQueue = [[NSOperationQueue alloc] init];
         [asyncPostsOperationsQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self 
+												 selector:@selector(stopSyncingBlogs) 
+													 name:@"BlogsEditedNotification" object:nil];
 		
         // Set current directory for Wordpress app
         NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -1145,12 +1149,14 @@ editBlogViewController, currentLocation, currentBlogIndex;
 
 - (BOOL)refreshCurrentBlogQuickly:(NSString *)url user:(NSString *)username {
 	NSString *pwd = [self getBlogPasswordFromKeychainWithUsername:username andBlogName:url];
-    //NSString *blogHost = [NSString stringWithFormat:@"%@_%@", username, url];
+    NSString *blogHost = [NSString stringWithFormat:@"%@_%@", username, url];
+	[currentBlog setValue:blogHost forKey:kBlogHostName];
 	NSString *blogURL = [NSString stringWithString:url];
 	if (![blogURL hasPrefix:@"http"])
         blogURL = [NSString stringWithFormat:@"http://%@", blogURL];
     [currentBlog setValue:(blogURL ? blogURL:@"")forKey:@"url"];
-	//NSString *blogID = [currentBlog valueForKey:@"blogid"];
+	NSString *blogID = [currentBlog valueForKey:@"blogid"];
+	[currentBlog setValue:blogID forKey:kBlogId];
 	NSString *blogName = [currentBlog valueForKey:@"blogName"];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"AddNewBlogNotification" object:blogName userInfo:nil];
 	currentBlogIndex = -1;
@@ -3646,18 +3652,22 @@ editBlogViewController, currentLocation, currentBlogIndex;
     if (currentPostIndex == -1) {
         [draftTitles insertObject:postTitle atIndex:0];
 		
-        NSString *nextDraftID = [[[currentBlog valueForKey:@"kNextDraftIdStr"] retain] autorelease];
+        NSString *nextDraftID = [[currentBlog valueForKey:@"kNextDraftIdStr"] retain];
+		if(nextDraftID == nil)
+			nextDraftID = @"0";
         [currentBlog setObject:[[NSNumber numberWithInt:[nextDraftID intValue] + 1] stringValue] forKey:@"kNextDraftIdStr"];
         NSNumber *draftsCount = [currentBlog valueForKey:kDraftsCount];
         [currentBlog setObject:[NSNumber numberWithInt:[draftsCount intValue] + 1] forKey:kDraftsCount];
         [self saveBlogData];
 		
+		NSLog(@"nextDraftID: %@", nextDraftID);
         [currentPost setObject:nextDraftID forKey:@"draftid"];
         [postTitle setObject:nextDraftID forKey:@"draftid"];
 		
         [draftTitles writeToFile:[self pathToDraftTitlesForBlog:currentBlog]  atomically:YES];
         NSString *pathToDraft = [self pathToDraft:currentPost forBlog:currentBlog];
         [currentPost writeToFile:pathToDraft atomically:YES];
+		[nextDraftID release];
     } else {
         [postTitle setObject:[currentPost valueForKey:@"draftid"] forKey:@"draftid"];
 		
@@ -5114,7 +5124,12 @@ editBlogViewController, currentLocation, currentBlogIndex;
 	WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApp];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
-    for (NSDictionary *blog in blogsList) {
+    for (NSDictionary *blog in [blogsList mutableCopy]) {
+		if(self.shouldStopSyncingBlogs) {
+			self.shouldStopSyncingBlogs = NO;
+			break;
+		}
+		
 		if((appDelegate.selectedBlogID == nil) || 
 		   ((appDelegate.selectedBlogID != nil) && (![appDelegate.selectedBlogID isEqualToString:[blog objectForKey:@"blogid"]]))) {
 			NSString *url = [blog valueForKey:@"url"];
@@ -5126,11 +5141,13 @@ editBlogViewController, currentLocation, currentBlogIndex;
 			
 			[Reachability sharedReachability].hostName = url;
 			if ([[Reachability sharedReachability] internetConnectionStatus]) {
-				[self syncCommentsForBlog:blog];
-				[self syncPostsForBlog:blog];
-				[self syncPagesForBlog:blog];
+				@try {
+					[self syncCommentsForBlog:blog];
+					[self syncPostsForBlog:blog];
+					[self syncPagesForBlog:blog];
+				}
+				@catch (NSException * e) {}
 			}
-			NSLog(@"synced blog with URL: %@", [blog objectForKey:@"url"]);
 		}
 		else {
 			if(appDelegate.selectedBlogID == nil)
@@ -5144,6 +5161,10 @@ editBlogViewController, currentLocation, currentBlogIndex;
 	
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[pool release];
+}
+
+- (void)stopSyncingBlogs {
+	self.shouldStopSyncingBlogs = YES;
 }
 
 - (UIImage *)scaleAndRotateImage:(UIImage *)image {
