@@ -38,7 +38,7 @@
 #pragma mark User
 
 - (BOOL)authenticateUser:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password {
-	if([self getBlogsForUsername:xmlrpc username:username password:password] != nil)
+	if((xmlrpc != nil) && (username != nil) && (password != nil) && ([self getBlogsForUsername:xmlrpc username:username password:password] != nil))
 		return YES;
 	else
 		return NO;
@@ -58,9 +58,9 @@
 				blog.isAdmin = [[dictBlog valueForKey:@"isAdmin"] boolValue];
 			}
 			blog.blogID = [dictBlog valueForKey:@"blogid"];
-			blog.blogName = (NSString *)[dictBlog valueForKey:@"blogName"];
-			blog.url = (NSString *)[dictBlog valueForKey:@"url"];
-			blog.xmlrpc = (NSString *)[dictBlog valueForKey:@"xmlrpc"];
+			blog.blogName = [dictBlog valueForKey:@"blogName"];
+			blog.url = [dictBlog valueForKey:@"url"];
+			blog.xmlrpc = [dictBlog valueForKey:@"xmlrpc"];
 			blog.username = username;
 			blog.password = password;
 			[usersBlogs addObject:blog];

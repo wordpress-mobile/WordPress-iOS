@@ -22,7 +22,8 @@
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
 																							target:self
 																							action:@selector(showAddBlogView:)] autorelease];
-    self.tableView.allowsSelectionDuringEditing = YES;
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStyleBordered target:nil action:nil]; 
+	self.tableView.allowsSelectionDuringEditing = YES;
 	appDelegate = [WordPressAppDelegate sharedWordPressApp];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blogsRefreshNotificationReceived:) name:@"BlogsRefreshNotification" object:nil];
@@ -40,17 +41,16 @@
     [self cancel:self];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-	//[[WordPressAppDelegate sharedWordPressApp] resetCurrentBlogInUserDefaults];
-	//[[WordPressAppDelegate sharedWordPressApp] setAutoRefreshMarkers];
-}
-
 - (void)viewWillAppear:(BOOL)animated {
 	if([[BlogDataManager sharedDataManager] countOfBlogs] > 0)
 		self.navigationItem.leftBarButtonItem = self.editButtonItem;
+	else
+		self.navigationItem.leftBarButtonItem = nil;
 	[self.tableView reloadData];
 	[self.tableView endEditing:YES];
+	appDelegate.selectedBlogID = nil;
+	[appDelegate syncBlogs];
+	NSLog(@"There are now %d blogs.", [[BlogDataManager sharedDataManager] countOfBlogs]);
 }
 
 - (void)blogsRefreshNotificationReceived:(id)notification {
@@ -77,10 +77,10 @@
     }
 #if defined __IPHONE_3_0
     cell.textLabel.text = [NSString decodeXMLCharactersIn:[[[BlogDataManager sharedDataManager] blogAtIndex:(indexPath.row)] valueForKey:@"blogName"]];
-    cell.imageView.image = [[[[Blog alloc] initWithIndex:indexPath.row] autorelease] favicon];
+    cell.imageView.image = [[[Blog alloc] initWithIndex:indexPath.row] favicon];
 #else if defined __IPHONE_2_0
     cell.text = [NSString decodeXMLCharactersIn:[[[BlogDataManager sharedDataManager] blogAtIndex:(indexPath.row)] valueForKey:@"blogName"]];
-    cell.image = [[[[Blog alloc] initWithIndex:indexPath.row] autorelease] favicon];
+    cell.image = [[[Blog alloc] initWithIndex:indexPath.row] favicon];
 #endif
 
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -92,8 +92,6 @@
 //	if (DeviceIsPad() == YES)
 //		[[CPopoverManager instance] setCurrentPopoverController:NULL];
 
-    BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-
     if ([self.tableView cellForRowAtIndexPath:indexPath].editing) {
         [[BlogDataManager sharedDataManager] copyBlogAtIndexCurrent:(indexPath.row)];
         [self showBlogDetailModalViewWithAnimation:YES];
@@ -103,7 +101,9 @@
         //    [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
         //} else {
 			if ([self canChangeCurrentBlog]) {
-				[dataManager makeBlogAtIndexCurrent:(indexPath.row)];
+				[[BlogDataManager sharedDataManager] makeBlogAtIndexCurrent:(indexPath.row)];
+				appDelegate.selectedBlogID = [[[BlogDataManager sharedDataManager] 
+											   blogAtIndex:indexPath.row] objectForKey:@"blogid"];
 				[self showBlog:YES];
 			}
         //}
@@ -148,12 +148,12 @@
 #pragma mark Custom methods
 
 - (BOOL)canChangeCurrentBlog {
-	if ([UIApplication sharedApplication].networkActivityIndicatorVisible) {
-		UIAlertView *currentlyUpdatingAlert = [[UIAlertView alloc] initWithTitle:@"Currently Syncing" message:@"Please wait a few seconds and try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[currentlyUpdatingAlert show];
-		[currentlyUpdatingAlert release];
-		return NO;
-	}
+	//if ([UIApplication sharedApplication].networkActivityIndicatorVisible) {
+//		UIAlertView *currentlyUpdatingAlert = [[UIAlertView alloc] initWithTitle:@"Currently Syncing" message:@"Please wait a few seconds and try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//		[currentlyUpdatingAlert show];
+//		[currentlyUpdatingAlert release];
+//		return NO;
+//	}
 	return YES;
 }
 
@@ -165,7 +165,6 @@
 - (void)showAddBlogView:(id)sender {
 	WelcomeViewController *welcomeView = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:nil];
 	[self.navigationController pushViewController:welcomeView animated:YES];
-	[welcomeView release];
 }
 
 - (void)showBlogDetailModalViewForNewBlogWithAnimation:(BOOL)animate {

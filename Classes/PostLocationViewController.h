@@ -3,7 +3,7 @@
 //  WordPress
 //
 //  Created by Christopher Boyd on 2/16/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//  
 //
 
 #import <UIKit/UIKit.h>

@@ -20,14 +20,12 @@
 	BOOL hasCompletedGetUsersBlogs;
 	NSArray *usersBlogs;
 	NSMutableArray *selectedBlogs;
-	NSMutableDictionary *currentBlog;
 	IBOutlet UITableView *tableView;
 	IBOutlet UIBarButtonItem *buttonAddSelected, *buttonSelectAll;
 }
 
 @property (nonatomic, assign) BOOL hasCompletedGetUsersBlogs;
 @property (nonatomic, retain) NSArray *usersBlogs;
-@property (nonatomic, retain) NSMutableDictionary *currentBlog;
 @property (nonatomic, retain) NSMutableArray *selectedBlogs;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *buttonAddSelected, *buttonSelectAll;

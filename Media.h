@@ -3,7 +3,7 @@
 //  WordPress
 //
 //  Created by Chris Boyd on 6/23/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//  
 //
 
 #import <CoreData/CoreData.h>

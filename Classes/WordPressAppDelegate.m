@@ -15,21 +15,20 @@
 - (void)reachabilityChanged;
 - (void)setAppBadge;
 - (void)startupAnimationDone:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context;
-- (void)checkPagesAndCommentsSupported;
 - (void)storeCurrentBlog;
 - (void)restoreCurrentBlog;
 - (void)showSplashView;
 - (int)indexForCurrentBlog;
-- (void) passwordIntoKeychain;
-- (void) checkIfStatsShouldRun;
-- (void) runStats;
+- (void)passwordIntoKeychain;
+- (void)checkIfStatsShouldRun;
+- (void)runStats;
 @end
 
 @implementation WordPressAppDelegate
 
 static WordPressAppDelegate *wordPressApp = NULL;
 
-@synthesize window;
+@synthesize window, selectedBlogID, lastBlogSync;
 @synthesize navigationController, alertRunning, isWPcomAuthenticated;
 @synthesize splitViewController, firstLaunchController, welcomeViewController;
 
@@ -38,10 +37,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
         wordPressApp = [super init];
 		
 		if (DeviceIsPad())
-			{
 			[UIViewController youWillAutorotateOrYouWillDieMrBond];
-			}
-		
 		
         dataManager = [BlogDataManager sharedDataManager];
 		
@@ -53,6 +49,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		isWPcomAuthenticated = NO;
 		[self performSelectorInBackground:@selector(checkWPcomAuthentication) withObject:nil];
     }
+	selectedBlogID = [[NSString alloc] init];
 
     return wordPressApp;
 }
@@ -70,6 +67,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
     [navigationController release];
     [window release];
     [dataManager release];
+	[selectedBlogID release];
+	[lastBlogSync release];
     [super dealloc];
 }
 
@@ -78,12 +77,17 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
 	[self checkIfStatsShouldRun];
+	
+	if(getenv("NSZombieEnabled"))
+		NSLog(@"NSZombieEnabled!");
+	else if(getenv("NSAutoreleaseFreedObjectCheckEnabled"))
+		NSLog(@"NSAutoreleaseFreedObjectCheckEnabled enabled!");
 
     [[Reachability sharedReachability] setNetworkStatusNotificationsEnabled:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
 
 	[self setAutoRefreshMarkers];
-	[self checkPagesAndCommentsSupported];
+	[self syncBlogs];
 	[self passwordIntoKeychain];
 	[self restoreCurrentBlog];
 	
@@ -95,6 +99,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	if (DeviceIsPad() == NO)
 	{
 		BlogsViewController *blogsViewController = [[BlogsViewController alloc] initWithStyle:UITableViewStylePlain];
+		
 		UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:blogsViewController];
 		self.navigationController = aNavigationController;
 
@@ -106,10 +111,13 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 		if ([dataManager countOfBlogs] == 0) {
 			WelcomeViewController *wViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
-			[self.navigationController pushViewController:wViewController animated:YES];
+			[blogsViewController.navigationController pushViewController:wViewController animated:YES];
+		}
+		else {
+			blogsViewController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStyleBordered target:nil action:nil];
 		}
 
-		[blogsViewController release];
+		//[blogsViewController release];
 	}
 	else
 	{
@@ -189,6 +197,21 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		// preserve left bar button item: issue #379
 		viewController.navigationItem.leftBarButtonItem = navController.topViewController.navigationItem.leftBarButtonItem;
 		[navController setViewControllers:[NSArray arrayWithObject:viewController] animated:NO];
+	}
+}
+
+- (void)syncBlogs {
+	if(dataManager.countOfBlogs > 0) {
+		unsigned int unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit;
+		NSCalendar *sysCalendar = [NSCalendar currentCalendar];
+		NSDateComponents *timeSince = [sysCalendar components:unitFlags fromDate:self.lastBlogSync  toDate:[NSDate date] options:0];
+		
+		if([timeSince minute] > 5) {
+			self.lastBlogSync = [NSDate date];
+			[dataManager performSelectorInBackground:@selector(syncBlogs) withObject:nil];
+		}
+		else
+			NSLog(@"Skipping blog sync. It's only been %d minutes since last sync.", [timeSince minute]);
 	}
 }
 
@@ -304,36 +327,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)setAppBadge {
     [UIApplication sharedApplication].applicationIconBadgeNumber = [dataManager countOfAwaitingComments];
-}
-
-// Code for Checking a Blog configured in 1.1 supports Pages & Comments
-// When the iphone WP version upgraded from 1.1 to 1.2
-- (void)checkPagesAndCommentsSupported {
-    int blogsCount = [dataManager countOfBlogs];
-
-    for (int i = 0; i < blogsCount; i++) {
-        [dataManager makeBlogAtIndexCurrent:i];
-        NSDictionary *blog = [dataManager blogAtIndex:i];
-        NSString *url = [blog valueForKey:@"url"];
-
-        if (url != nil &&[url length] >= 7 &&[url hasPrefix:@"http://"]) {
-            url = [url substringFromIndex:7];
-        }
-
-        if (url != nil &&[url length]) {
-            url = @"wordpress.com";
-        }
-
-        [Reachability sharedReachability].hostName = url;
-
-        // Check network connectivity.
-        if ([[Reachability sharedReachability] internetConnectionStatus]) {
-            if (![blog valueForKey:kSupportsPagesAndComments]) {
-				[dataManager setCurrentBlog:blog];
-                [dataManager performSelectorInBackground:@selector(wrapperForSyncPagesAndCommentsForBlog:) withObject:blog];
-            }
-        }
-    }
 }
 
 - (void)resetCurrentBlogInUserDefaults {

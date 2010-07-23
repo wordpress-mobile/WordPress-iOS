@@ -27,12 +27,11 @@
 	NSString *matchedString = NULL; 
 	while((matchedString = [matchEnumerator nextObject]) != NULL) 
 	{ 
-		NSLog(@"The Matched String %lu: %lu '%@'", (u_long)++line, (u_long)[matchedString length], matchedString);
+		//NSLog(@"The Matched String %lu: %lu '%@'", (u_long)++line, (u_long)[matchedString length], matchedString);
 		//returnString = [matchedString stringByMatching:regexString2 capture:2L];
 		returnString = [matchedString stringByMatching:regexString2];
-		NSLog(@"The Returned String %lu: %lu '%@'", (u_long)++line, (u_long)[returnString length], returnString);
-		
-		NSLog(@"returnString equals %@", returnString);	} 
+	}
+	
 	return returnString;
 }
 

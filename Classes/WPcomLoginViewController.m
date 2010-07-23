@@ -132,23 +132,23 @@
 #pragma mark -
 #pragma mark Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	switch (indexPath.section) {
 		case 1:
 			if(username == nil) {
 				footerText = @"Username is required.";
 				buttonText = @"Sign In";
-				[tableView reloadData];
+				[tv reloadData];
 			}
 			else if(password == nil) {
 				footerText = @"Password is required.";
 				buttonText = @"Sign In";
-				[tableView reloadData];
+				[tv reloadData];
 			}
 			else {
 				footerText = @" ";
 				buttonText = @"Signing In";
-				[tableView reloadData];
+				[tv reloadData];
 				
 				[self signIn:self];
 			}
@@ -156,7 +156,7 @@
 		default:
 			break;
 	}
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	[tv deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark -

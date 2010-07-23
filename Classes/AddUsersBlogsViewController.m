@@ -9,7 +9,7 @@
 #import "AddUsersBlogsViewController.h"
 
 @implementation AddUsersBlogsViewController
-@synthesize usersBlogs, selectedBlogs, tableView, buttonAddSelected, buttonSelectAll, hasCompletedGetUsersBlogs, currentBlog;
+@synthesize usersBlogs, selectedBlogs, tableView, buttonAddSelected, buttonSelectAll, hasCompletedGetUsersBlogs;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -19,8 +19,6 @@
 	self.navigationItem.title = @"Select Blogs";
 	selectedBlogs = [[NSMutableArray alloc] init];
 	appDelegate = [WordPressAppDelegate sharedWordPressApp];
-    currentBlog = [[NSMutableDictionary alloc] init];
-	[[BlogDataManager sharedDataManager] setCurrentBlog:currentBlog];
 	
 	// Setup WPcom table header
 	UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 70)] autorelease];
@@ -188,16 +186,18 @@
 
 - (IBAction)saveSelectedBlogs:(id)sender {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	WPProgressHUD *progressView = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
-	[progressView show];
+	WPProgressHUD *spinner = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
+	[spinner show];
 	
 	for (Blog *blog in usersBlogs) {
 		if([selectedBlogs containsObject:blog.blogID]) {
 			[self createBlog:blog];
 		}
 	}
+	NSLog(@"finished saving blogs...");
 	
-	[progressView dismiss];
+	[spinner dismiss];
+	[spinner release];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[appDelegate.navigationController popToRootViewControllerAnimated:YES];
 }
@@ -206,42 +206,48 @@
 	blog.url = [blog.url stringByReplacingOccurrencesOfString:@"http://" withString:@""];
 	//blog.url = [blog.url stringByReplacingOccurrencesOfString:@".wordpress.com" withString:@""];
 	NSString *username = blog.username;
-    NSString *pwd = blog.password;
-    NSString *url = [blog.url stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    NSNumber *value = [NSNumber numberWithBool:NO];
+	NSString *pwd = blog.password;
+	NSString *url = [blog.url stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	NSNumber *value = [NSNumber numberWithBool:NO];
 	NSString *authUsername = blog.username;
 	NSString *authPassword = blog.password;
 	NSNumber *authEnabled = [NSNumber numberWithBool:YES];
 	NSString *authBlogURL = [NSString stringWithFormat:@"%@_auth", url];
-	[[BlogDataManager sharedDataManager] setCurrentBlogIndex:-1];
-    [currentBlog setValue:url forKey:@"url"];
-    [currentBlog setValue:blog.xmlrpc forKey:@"xmlrpc"];
-    [currentBlog setValue:blog.blogID forKey:kBlogId];
-    [currentBlog setValue:blog.blogName forKey:@"blogName"];
-    [currentBlog setValue:username forKey:@"username"];
-	[currentBlog setValue:authEnabled forKey:@"authEnabled"];
-	[[BlogDataManager sharedDataManager] updatePasswordInKeychain:pwd andUserName:username andBlogURL:url];
 	
-	[currentBlog setValue:authUsername forKey:@"authUsername"];
-	[[BlogDataManager sharedDataManager] updatePasswordInKeychain:authPassword
-													  andUserName:authUsername
-													   andBlogURL:authBlogURL];
-    [currentBlog setValue:value forKey:kResizePhotoSetting];
-	
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	dm.isProblemWithXMLRPC = NO;
-	
-	NSDictionary *newBlog = [NSDictionary dictionaryWithObjectsAndKeys:username, @"username", url, @"url", authEnabled, @"authEnabled", authUsername, @"authUsername", nil];
-	
-    if ([dm doesBlogExists:newBlog]) {
+	NSMutableDictionary *newBlog = [[NSMutableDictionary dictionaryWithObjectsAndKeys:
+									 username, @"username", 
+									 url, @"url", 
+									 authEnabled, @"authEnabled", 
+									 authUsername, @"authUsername", 
+									 nil] retain];
+    if ([[BlogDataManager sharedDataManager] doesBlogExist:newBlog]) {
         return;
 	}
 	else {
-		[dm setCurrentBlog:currentBlog];
-        [dm.currentBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
-        [dm wrapperForSyncPostsAndGetTemplateForBlog:dm.currentBlog];
-        [dm.currentBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-        [dm saveCurrentBlog];
+		[[BlogDataManager sharedDataManager] resetCurrentBlog];
+		
+		[newBlog setValue:url forKey:@"url"];
+		[newBlog setValue:blog.xmlrpc forKey:@"xmlrpc"];
+		[newBlog setValue:blog.blogID forKey:kBlogId];
+		[newBlog setValue:blog.blogName forKey:@"blogName"];
+		[newBlog setValue:username forKey:@"username"];
+		[newBlog setValue:authEnabled forKey:@"authEnabled"];
+		[[BlogDataManager sharedDataManager] updatePasswordInKeychain:pwd andUserName:username andBlogURL:url];
+		
+		[newBlog setValue:authUsername forKey:@"authUsername"];
+		[[BlogDataManager sharedDataManager] updatePasswordInKeychain:authPassword
+														  andUserName:authUsername
+														   andBlogURL:authBlogURL];
+		[newBlog setValue:value forKey:kResizePhotoSetting];
+		[newBlog setValue:[NSNumber numberWithBool:YES] forKey:kSupportsPagesAndComments];
+		
+		[BlogDataManager sharedDataManager].isProblemWithXMLRPC = NO;
+        [newBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
+        [[BlogDataManager sharedDataManager] wrapperForSyncPostsAndGetTemplateForBlog:[BlogDataManager sharedDataManager].currentBlog];
+        [newBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+		[[BlogDataManager sharedDataManager] setCurrentBlog:newBlog];
+		[BlogDataManager sharedDataManager].currentBlogIndex = -1;
+        [[BlogDataManager sharedDataManager] saveCurrentBlog];
 	}
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 }
@@ -284,19 +290,13 @@
 #pragma mark Memory management
 
 - (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
-    // Relinquish ownership any cached data, images, etc that aren't in use.
 }
 
 - (void)viewDidUnload {
-    // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
-    // For example: self.myOutlet = nil;
 }
 
 - (void)dealloc {
-	[currentBlog release];
 	[usersBlogs release];
 	[selectedBlogs release];
 	[tableView release];

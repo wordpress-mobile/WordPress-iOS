@@ -3,7 +3,7 @@
 //  WordPress
 //
 //  Created by Dan Roundhill on 5/6/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//  
 //
 
 #import "WebSignupViewController.h"

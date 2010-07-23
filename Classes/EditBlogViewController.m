@@ -391,7 +391,7 @@
 	
 	NSDictionary *newBlog = [NSDictionary dictionaryWithObjectsAndKeys:username, @"username", url, @"url", authEnabled, @"authEnabled", authUsername, @"authUsername", nil];
 	
-    if ([dm doesBlogExists:newBlog]) {
+    if ([dm doesBlogExist:newBlog]) {
         [[WordPressAppDelegate sharedWordPressApp] showErrorAlert:[NSString stringWithFormat:kBlogExistsErrorMessage, url]];
         return;
     }

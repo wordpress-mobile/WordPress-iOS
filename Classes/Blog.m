@@ -48,12 +48,13 @@
         faviconImage = [UIImage imageWithContentsOfFile:faviconFilePath];
     }
 	else {
-        NSString *faviconURL = [[NSString alloc] initWithFormat:@"%@favicon.ico", [blog valueForKey:@"url"]];
+        NSString *faviconURL = [NSString stringWithFormat:@"%@favicon.ico", [blog valueForKey:@"url"]];
+		if(![faviconURL hasPrefix:@"http://"])
+			faviconURL = [NSString stringWithFormat:@"http://%@", faviconURL];
         faviconImage = [[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:faviconURL]]] scaleImageToSize:CGSizeMake(16.0f, 16.0f)];
-        [faviconURL release];
 
         if (faviconImage == NULL) {
-            faviconImage = [UIImage imageNamed:@"favicon.png"];
+            faviconImage = [UIImage imageNamed:@"favicon"];
         }
 
         [[NSFileManager defaultManager] createFileAtPath:faviconFilePath contents:UIImagePNGRepresentation(faviconImage) attributes:nil];

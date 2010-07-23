@@ -137,10 +137,10 @@
 	
 	if ([[Reachability sharedReachability] internetConnectionStatus])
 	{
-		//if ([defaults boolForKey:@"refreshCommentsRequired"]) {
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:@"refreshCommentsRequired"]) {
 			[self refreshHandler];
-		//	[[NSUserDefaults standardUserDefaults] setBool:false forKey:@"refreshCommentsRequired"];
-		//}
+			[[NSUserDefaults standardUserDefaults] setBool:false forKey:@"refreshCommentsRequired"];
+		}
 	}
 }
 

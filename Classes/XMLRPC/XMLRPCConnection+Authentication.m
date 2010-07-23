@@ -25,15 +25,8 @@
 	
 	NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlres error:&err];
 	
-	if ([urlres isKindOfClass:[NSHTTPURLResponse class]]) {
-		NSLog(@"Received status code: %d %@", [(NSHTTPURLResponse *) urlres statusCode], 
-			  [NSHTTPURLResponse localizedStringForStatusCode:[(NSHTTPURLResponse *) urlres statusCode]]) ;
-	}
-	
-	if( err != NULL ) {
-		//TODO: we may need to create a XMLRPCResponse with the error. and return
+	if( err != NULL )
 		return (id) err;
-	}
 	
  	if (data != nil) {
 		NSString  *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];

@@ -6,6 +6,7 @@
 #import "RegExProcessor.h"
 #import "EditBlogViewController.h"
 #import "SFHFKeychainUtils.h"
+#import "Reachability.h"
 
 #define PictureObjectUploadedNotificationName @"PictureObjectUploadedNotificationName"
 #define WPNewCategoryCreatedAndUpdatedInBlogNotificationName @"WPNewCategoryCreatedAndUpdatedInBlog"
@@ -123,7 +124,7 @@
 #pragma mark Blog
 
 - (NSInteger)countOfBlogs;
-- (NSDictionary *)blogAtIndex:(NSUInteger)theIndex;
+- (NSMutableDictionary *)blogAtIndex:(NSUInteger)theIndex;
 - (NSDictionary *)blogForId:(NSString *)blogid hostName:(NSString *)hostname;
 - (NSInteger)indexForBlogid:(NSString *)blogid hostName:(NSString *)hostname;
 - (void)makeBlogAtIndexCurrent:(NSUInteger)theIndex;
@@ -142,7 +143,7 @@
 - (void)saveBlogData;
 - (NSString *)templateHTMLStringForBlog:(id)aBlog isDefaultTemplate:(BOOL *)flag;
 - (NSString *)defaultTemplateHTMLString;
-- (BOOL)newAccountPostsAndTemplateSync:(id)aBlog;
+- (void)newAccountPostsAndTemplateSync:(id)aBlog;
 
 #pragma mark Post Title metadata
 
@@ -210,13 +211,14 @@
 - (BOOL)refreshCurrentBlog:(NSString *)url user:(NSString *)username;
 - (BOOL)refreshCurrentBlogQuickly:(NSString *)url user:(NSString *)username;
 - (BOOL)validateCurrentBlog:(NSString *)url user:(NSString *)username password:(NSString *)pwd;
+- (void)syncBlogs;
 - (BOOL)syncPostsForBlog:(id)blog;
 - (BOOL)syncPostsForCurrentBlog;
 - (BOOL)syncIncrementallyLoadedPostsForCurrentBlog:(NSArray *)recentPostsList;
 - (BOOL)organizePostsForBlog:(id)blog withPostsArray:(NSArray *) recentPostsList;
 
 - (void)generateTemplateForBlog:(id)aBlog;
-- (BOOL)wrapperForSyncPostsAndGetTemplateForBlog:(id)aBlog;
+- (void)wrapperForSyncPostsAndGetTemplateForBlog:(id)aBlog;
 
 #pragma mark Post
 
@@ -313,7 +315,7 @@
 
 - (NSString *)pageStatusForStatusDescription:(NSString *)statusDescription fromBlog:(id)aBlog;
 
-- (BOOL)doesBlogExists:(NSDictionary *)aBlog;
+- (BOOL)doesBlogExist:(NSDictionary *)aBlog;
 
 //utils
 - (void)printArrayToLog:(NSArray *)theArray andArrayName:(NSString *)theArrayName;

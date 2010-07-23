@@ -50,14 +50,19 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+	
 	if (DeviceIsPad() == YES) {
 		[self restoreState];
 	}
 	else {
 		[tabBarController.selectedViewController viewWillAppear:animated];
 	}
+	[WordPressAppDelegate sharedWordPressApp].selectedBlogID = [[[BlogDataManager sharedDataManager] currentBlog] 
+																valueForKey:@"blogid"];
+	NSLog(@"currently selected blog ID is: %@", [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blogid"]);
+	NSLog(@"appDelegate.selectedBlogID is now %@", [WordPressAppDelegate sharedWordPressApp].selectedBlogID);
 	
-    [super viewWillAppear:animated];
     [[WordPressAppDelegate sharedWordPressApp] storeCurrentBlog];
 }
 
@@ -97,22 +102,22 @@
 }
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-		self.navigationItem.titleView = nil;
-		self.navigationItem.rightBarButtonItem = nil;
-		
-		if (viewController == postsViewController) {
-			self.navigationItem.rightBarButtonItem = postsViewController.newButtonItem;
-		} 
-		else if (viewController == pagesViewController) {
-			self.navigationItem.rightBarButtonItem = pagesViewController.newButtonItem;
-		} 
-		else if (viewController == commentsViewController) {
-			[commentsViewController setIndexForCurrentPost:-2];
-			self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
-			self.navigationItem.titleView = commentsViewController.segmentedControl;
-		}
-		
-		[viewController viewWillAppear:NO];
+	self.navigationItem.titleView = nil;
+	self.navigationItem.rightBarButtonItem = nil;
+	
+	if (viewController == postsViewController) {
+		self.navigationItem.rightBarButtonItem = postsViewController.newButtonItem;
+	} 
+	else if (viewController == pagesViewController) {
+		self.navigationItem.rightBarButtonItem = pagesViewController.newButtonItem;
+	} 
+	else if (viewController == commentsViewController) {
+		[commentsViewController setIndexForCurrentPost:-2];
+		self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
+		self.navigationItem.titleView = commentsViewController.segmentedControl;
+	}
+	
+	[viewController viewWillAppear:NO];
 }
 
 #pragma mark KVO callbacks

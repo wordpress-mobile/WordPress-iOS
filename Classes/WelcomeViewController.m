@@ -3,7 +3,7 @@
 //  WordPress
 //
 //  Created by Dan Roundhill on 5/5/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//  
 //
 
 #import "WelcomeViewController.h"
@@ -17,15 +17,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	
 	appDelegate = [WordPressAppDelegate sharedWordPressApp];
 	addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
-	
+}
+
+- (void)viewWillAppear:(BOOL)animated {
 	if([[BlogDataManager sharedDataManager] countOfBlogs] == 0) {
-		self.navigationItem.backBarButtonItem = nil;
 		self.navigationItem.title = @"Welcome";
+		[self.navigationItem setHidesBackButton:YES animated:YES];
 	}
 	else {
 		self.navigationItem.title = @"Add Blog";
+		[self.navigationItem setHidesBackButton:NO animated:YES];
 	}
 }
 
@@ -102,29 +106,22 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSLog(@"inside didSelectRowAtIndexPath...");
 	
 	if(indexPath.row == 0) {
 		WebSignupViewController *webSignup = [[WebSignupViewController alloc] initWithNibName:@"WebSignupViewController" bundle:[NSBundle mainBundle]];
-		[super.navigationController pushViewController:webSignup animated:YES];
+		[self.navigationController pushViewController:webSignup animated:YES];
 	}
 	else if(indexPath.row == 1) {
-		NSLog(@"inside didSelectRowAtIndexPath case:1...");
-		if(appDelegate.isWPcomAuthenticated) {
-			NSLog(@"addUsersBlogsView animated:YES...");
-			[super.navigationController pushViewController:addUsersBlogsView animated:YES];
-		}
-		else {
-			NSLog(@"addUsersBlogsView animated:NO...");
-			[super.navigationController pushViewController:addUsersBlogsView animated:YES];
-		}
+		if(appDelegate.isWPcomAuthenticated)
+			[self.navigationController pushViewController:addUsersBlogsView animated:YES];
+		else
+			[self.navigationController pushViewController:addUsersBlogsView animated:YES];
 	}
 	else if(indexPath.row == 2) {
 		EditBlogViewController *editBlog = [[EditBlogViewController alloc] initWithNibName:@"EditBlogViewController" bundle:nil];
-		[super.navigationController pushViewController:editBlog animated:YES];
+		[self.navigationController pushViewController:editBlog animated:YES];
 	}
 	
-	NSLog(@"about to call deselectRowAtIndexPath...");
 	[tv deselectRowAtIndexPath:indexPath animated:YES];
 }
 

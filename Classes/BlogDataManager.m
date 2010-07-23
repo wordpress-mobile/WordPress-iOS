@@ -410,7 +410,7 @@ editBlogViewController, currentLocation, currentBlogIndex;
 }
 
 - (void)addSyncPostsForBlogToQueue:(id)aBlog {
-    [aBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
+    //[aBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
     //TODO: Raise a notification so that post titles will reload data. if this blog is currently viewed.
     [self addAsyncOperation:@selector(syncPostsForBlog:) withArg:aBlog];
 }
@@ -1116,7 +1116,6 @@ editBlogViewController, currentLocation, currentBlogIndex;
 }
 
 - (int)checkXML_RPC_URL_IsRunningSupportedVersionOfWordPress:(NSString *)xmlrpcurl withPagesAndCommentsSupport:(BOOL *)isPagesAndCommentsSupported {
-    NSLog(@"xmlrpcurl: %@", xmlrpcurl);
 	XMLRPCRequest *listMethodsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpcurl]];
     [listMethodsReq setMethod:@"system.listMethods" withObjects:[NSArray array]];
     NSArray *listOfMethods = [self executeXMLRPCRequest:listMethodsReq byHandlingError:YES];
@@ -1146,12 +1145,12 @@ editBlogViewController, currentLocation, currentBlogIndex;
 
 - (BOOL)refreshCurrentBlogQuickly:(NSString *)url user:(NSString *)username {
 	NSString *pwd = [self getBlogPasswordFromKeychainWithUsername:username andBlogName:url];
-    NSString *blogHost = [NSString stringWithFormat:@"%@_%@", username, url];
+    //NSString *blogHost = [NSString stringWithFormat:@"%@_%@", username, url];
 	NSString *blogURL = [NSString stringWithString:url];
 	if (![blogURL hasPrefix:@"http"])
         blogURL = [NSString stringWithFormat:@"http://%@", blogURL];
     [currentBlog setValue:(blogURL ? blogURL:@"")forKey:@"url"];
-	NSString *blogID = [currentBlog valueForKey:@"blogID"];
+	//NSString *blogID = [currentBlog valueForKey:@"blogid"];
 	NSString *blogName = [currentBlog valueForKey:@"blogName"];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"AddNewBlogNotification" object:blogName userInfo:nil];
 	currentBlogIndex = -1;
@@ -1179,7 +1178,6 @@ editBlogViewController, currentLocation, currentBlogIndex;
     // We use this as the blog folder name
     [currentBlog setValue:blogHost forKey:kBlogHostName];
 	
-	NSLog(@"url: %@", url);
 	NSString *blogURL = [NSString stringWithString:url];
 	if (![blogURL hasPrefix:@"http"])
         blogURL = [NSString stringWithFormat:@"http://%@", blogURL];
@@ -1591,6 +1589,7 @@ editBlogViewController, currentLocation, currentBlogIndex;
 
 // sync posts for a given blog
 - (BOOL)syncPostsForBlog:(id)blog {
+	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
     if ([[blog valueForKey:kBlogId] isEqualToString:kDraftsBlogIdStr]) {
         [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
         return NO;
@@ -1612,12 +1611,6 @@ editBlogViewController, currentLocation, currentBlogIndex;
 	//	NSNumber *loadint = [NSNumber numberWithInt: [[currentBlog valueForKey:@"totalPosts"] intValue]];
 	//	int score = [loadint intValue];
 	//	NSString *myString35 = [NSString stringWithFormat:@"%d", loadint];
-	
-	
-	
-	
-	
-	
 	//NSArray *test = [NSArray arrayWithObjects:blogid, username, pwd, maxToFetch, nil ];
 	//NSLog(@"the array for get recent posts %@",test);
 	
@@ -1791,13 +1784,8 @@ editBlogViewController, currentLocation, currentBlogIndex;
 - (void)saveBlogData {
     NSString *blogsArchiveFilePath = [currentDirectoryPath stringByAppendingPathComponent:@"blogs.archive"];
 	
-    // Empty blogs list may signify all blogs at launch were deleted;
-    // check for existence of prior archive before saving
-    if ([blogsList count] || ([[NSFileManager defaultManager] fileExistsAtPath:blogsArchiveFilePath])) {
+    if ((blogsList.count > 0) || ([[NSFileManager defaultManager] fileExistsAtPath:blogsArchiveFilePath]))
         [NSKeyedArchiver archiveRootObject:blogsList toFile:blogsArchiveFilePath];
-    } else {
-        WPLog(@"No blogs in list. there is nothing to save!");
-    }
 }
 
 /*
@@ -2050,7 +2038,7 @@ editBlogViewController, currentLocation, currentBlogIndex;
     return [blogsList count];
 }
 
-- (NSDictionary *)blogAtIndex:(NSUInteger)theIndex {
+- (NSMutableDictionary *)blogAtIndex:(NSUInteger)theIndex {
     return [blogsList objectAtIndex:theIndex];
 }
 
@@ -2069,24 +2057,27 @@ editBlogViewController, currentLocation, currentBlogIndex;
     return [NSDictionary dictionary];
 }
 
-- (BOOL)doesBlogExists:(NSDictionary *)aBlog {
-    NSString *urlstr = [aBlog valueForKey:@"url"];
+- (BOOL)doesBlogExist:(NSDictionary *)aBlog {
+	BOOL result = NO;
+	NSString *blog1URL = [[NSString alloc] init];
+    NSString *blog2URL = [aBlog valueForKey:@"url"];
+	NSString *blog1Username = [[NSString alloc] init];
+    NSString *blog2Username = [aBlog valueForKey:@"username"];
 	
-    if (![urlstr hasPrefix:@"http"])
-        urlstr = [NSString stringWithFormat:@"http://%@", urlstr];
+	blog2URL = [blog2URL stringByReplacingOccurrencesOfRegex:@"\b(https?)://" withString:@""];
 	
-    NSMutableDictionary *tempBlog;
-    NSEnumerator *blogEnum = [blogsList objectEnumerator];
-	
-    while (tempBlog = [blogEnum nextObject]) {
-        if ([[tempBlog valueForKey:@"url"] isEqualToString:urlstr] &&
-            [[tempBlog valueForKey:@"username"] isEqualToString:[aBlog valueForKey:@"username"]]) {
-            //&&[[tempBlog valueForKey:@"pwd"] isEqualToString:[aBlog valueForKey:@"pwd"]]) {
-            return YES;
-        }
+    for(NSMutableDictionary *blog1 in blogsList) {
+		blog1URL = [blog1 valueForKey:@"url"];
+		blog1Username = [blog1 valueForKey:@"username"];
+		
+		if(([blog1URL isEqualToString:blog2URL]) && ([blog1Username isEqualToString:blog2Username]))
+			result = YES;
     }
 	
-    return NO;
+	if(result)
+		NSLog(@"blog with url %@ already exists.", blog2URL);
+	
+    return result;
 }
 
 - (NSString *)defaultTemplateHTMLString {
@@ -2180,17 +2171,13 @@ editBlogViewController, currentLocation, currentBlogIndex;
 }
 
 - (void)saveCurrentBlog {
-    if (isLocaDraftsCurrent) {
+    if ((isLocaDraftsCurrent) || (currentBlog == nil))
         return;
-    }
 	
-    // save it to the current index if set or add it
+	NSMutableDictionary *cb = [currentBlog mutableCopy];
+	[blogsList addObject:cb];
 	
     if (currentBlogIndex == -1) {
-        id cb = [currentBlog mutableCopy];
-        [blogsList addObject:cb];
-        [cb release];
-		
         //re-sort the blogs list to place the new blog at the proper index
         [self sortBlogData];
         [self saveBlogData];
@@ -2198,12 +2185,8 @@ editBlogViewController, currentLocation, currentBlogIndex;
         //find the index where the blog was placed
         currentBlogIndex = [self indexForBlogid:[currentBlog valueForKey:kBlogId]
 									   hostName:[currentBlog valueForKey:kBlogHostName]];
-    } else {
-        id cb = [currentBlog mutableCopy];
-        [blogsList replaceObjectAtIndex:currentBlogIndex withObject:cb];
-        [cb release];
-        // not need to re-sort here - we're not allowing change to blog name
     }
+	[cb release];
 }
 
 - (void)removeCurrentBlog {
@@ -2880,7 +2863,7 @@ editBlogViewController, currentLocation, currentBlogIndex;
 - (BOOL)syncPagesForBlog:(id)blog {
 	//as of Trac ticket #291, this method should always return the MOST RECENT X number of posts
 	//X is chosen in the blog setup page with the selection "X Recent Items"
-    [blog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
+    //[blog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
     // Parameters
     NSString *username = [blog valueForKey:@"username"];
     //NSString *pwd = [blog valueForKey:@"pwd"];
@@ -3205,8 +3188,8 @@ editBlogViewController, currentLocation, currentBlogIndex;
 // here we need to get the posts first and then we need to generate template.
 // these two should not run in parallel, other wise the generate template will create some dummy templates, categories which may get downloaded when we  syncPostsForBlog:
 // so these two should run in sequence. this is one way of doing it.
-- (BOOL)wrapperForSyncPostsAndGetTemplateForBlog:(id)aBlog {
-    NSAutoreleasePool *ap = [[NSAutoreleasePool alloc] init];
+- (void)wrapperForSyncPostsAndGetTemplateForBlog:(id)aBlog {
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     [aBlog retain];
 	
     // #291 // [self syncPostsForBlog:aBlog];
@@ -3217,21 +3200,15 @@ editBlogViewController, currentLocation, currentBlogIndex;
         // #291 // [self syncPagesForBlog:aBlog];
     }
 	
-    //Has been commented to avoid Empty Blog Creation.
-    //	[aBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-    //	[self saveCurrentBlog];
-	
     [self performSelectorOnMainThread:@selector(postBlogsRefreshNotificationInMainThread:) withObject:aBlog waitUntilDone:YES];
 	
     [aBlog release];
-    [ap release];
-	
-    return YES;
+    [pool release];
 }
 
 // mod of wrapperForSyncPostsAndGetTemplateForBlog for multiple blog setup
-- (BOOL)newAccountPostsAndTemplateSync:(id)aBlog {
-    NSAutoreleasePool *ap = [[NSAutoreleasePool alloc] init];
+- (void)newAccountPostsAndTemplateSync:(id)aBlog {
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     [aBlog retain];
 	
     // #291 // [self syncPostsForBlog:aBlog];
@@ -3249,7 +3226,7 @@ editBlogViewController, currentLocation, currentBlogIndex;
     [self performSelectorOnMainThread:@selector(postBlogsRefreshNotificationInMainThread:) withObject:aBlog waitUntilDone:YES];
 	
     [aBlog release];
-    [ap release];
+    [pool release];
 	
     return YES;
 }
@@ -4350,7 +4327,7 @@ editBlogViewController, currentLocation, currentBlogIndex;
 
 - (void)setCurrentBlog:(NSMutableDictionary *)aBlog {
     if (currentBlog != aBlog) {
-        [currentBlog release];
+        //[currentBlog release];
         currentBlog = [aBlog retain];
     }
 }
@@ -4443,7 +4420,7 @@ editBlogViewController, currentLocation, currentBlogIndex;
 }
 
 - (BOOL)syncCommentsForCurrentBlog {
-    [currentBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
+    //[currentBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
 	
     [self syncCommentsForBlog:currentBlog];
     [currentBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
@@ -4454,6 +4431,7 @@ editBlogViewController, currentLocation, currentBlogIndex;
 
 // sync comments for a given blog
 - (BOOL)syncCommentsForBlog:(id)blog {
+	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
     // Parameters
     NSString *username = [blog valueForKey:@"username"];
     //NSString *pwd = [blog valueForKey:@"pwd"];
@@ -5130,26 +5108,42 @@ editBlogViewController, currentLocation, currentBlogIndex;
     [delegate setAlertRunning:NO];
 }
 
-- (void)wrapperForSyncPagesAndCommentsForBlog:(id)aBlog {
-    NSAutoreleasePool *ap = [[NSAutoreleasePool alloc] init];
-    BOOL supportsPagesAndComments = NO;
-    [aBlog setValue:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
-    [self checkXML_RPC_URL_IsRunningSupportedVersionOfWordPress:[self discoverxmlrpcurlForurl:[aBlog valueForKey:@"url"]] withPagesAndCommentsSupport:&supportsPagesAndComments];
-    //TODO:JOHNB:in the middle of fixing issues with discoverxmlrpcurlForurl -(XML not dependable) and wonder if this call is necessary?
-	//shouldn't we just store the value for the endpoint in the currentBlog/blogsList datastructure and not task the iPhone with another battery-sucking
-	//network call here?
-	//I'm leaving that question for a time when I better understand what the underlying datastructure does and exactly what calls this...
-	[aBlog setValue:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+- (void)syncBlogs {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-    if (supportsPagesAndComments) {
-        [aBlog setValue:[NSNumber numberWithBool:YES]   forKey:kSupportsPagesAndCommentsServerCheck];
-    }
+	WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApp];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
-    [aBlog setValue:[NSNumber numberWithBool:supportsPagesAndComments]   forKey:kSupportsPagesAndComments];
-    [self saveCurrentBlog];
-    [self performSelectorOnMainThread:@selector(postBlogsRefreshNotificationInMainThread:) withObject:aBlog waitUntilDone:YES];
+    for (NSDictionary *blog in blogsList) {
+		if((appDelegate.selectedBlogID == nil) || 
+		   ((appDelegate.selectedBlogID != nil) && (![appDelegate.selectedBlogID isEqualToString:[blog objectForKey:@"blogid"]]))) {
+			NSString *url = [blog valueForKey:@"url"];
+			if (url != nil &&[url length] >= 7 &&[url hasPrefix:@"http://"])
+				url = [url substringFromIndex:7];
+			
+			if (url != nil &&[url length])
+				url = @"wordpress.com";
+			
+			[Reachability sharedReachability].hostName = url;
+			if ([[Reachability sharedReachability] internetConnectionStatus]) {
+				[self syncCommentsForBlog:blog];
+				[self syncPostsForBlog:blog];
+				[self syncPagesForBlog:blog];
+			}
+			NSLog(@"synced blog with URL: %@", [blog objectForKey:@"url"]);
+		}
+		else {
+			if(appDelegate.selectedBlogID == nil)
+				NSLog(@"skipping sync due to nil selectedBlogID.");
+			else
+				NSLog(@"skipping sync for currently selected blog with URL: %@", [blog objectForKey:@"url"]);
+		}
+
+	}
+	appDelegate.lastBlogSync = [NSDate date];
 	
-    [ap release];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[pool release];
 }
 
 - (UIImage *)scaleAndRotateImage:(UIImage *)image {
