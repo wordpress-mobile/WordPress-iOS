@@ -6,6 +6,9 @@
 /BlogViewController.xib -text
 Classes/AboutViewController.h -text
 Classes/AboutViewController.m -text
+Classes/AddSiteViewController.h -text
+Classes/AddSiteViewController.m -text
+Classes/AddSiteViewController.xib -text
 Classes/AddUsersBlogsViewController.h -text
 Classes/AddUsersBlogsViewController.m -text
 Classes/AddUsersBlogsViewController.xib -text

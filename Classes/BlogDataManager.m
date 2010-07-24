@@ -1623,6 +1623,7 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 	//NSLog(@"currentblog %@", currentBlog);
 	
     //  ------------------------- invoke metaWeblog.getRecentPosts
+	NSLog(@"About to get posts for blog. blogid:%@, username:%@, password:%@, url:%@, maxToFetch:%d", blogid, username, pwd, fullURL, maxToFetch);
     XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
     [postsReq setMethod:@"metaWeblog.getRecentPosts"
 			withObjects:[NSArray arrayWithObjects:blogid, username, pwd, maxToFetch, nil]];
@@ -2170,7 +2171,9 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 }
 
 - (void)makeBlogAtIndexCurrent:(NSUInteger)theIndex {
-    [self setCurrentBlog:[blogsList objectAtIndex:theIndex]];
+	if(blogsList.count > 0) {
+		[self setCurrentBlog:[blogsList objectAtIndex:theIndex]];
+	}
 	
     // save the current index as well
     currentBlogIndex = theIndex;
@@ -5151,10 +5154,7 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 			}
 		}
 		else {
-			if(appDelegate.selectedBlogID == nil)
-				NSLog(@"skipping sync due to nil selectedBlogID.");
-			else
-				NSLog(@"skipping sync for currently selected blog with URL: %@", [blog objectForKey:@"url"]);
+			NSLog(@"skipping sync for currently selected blog with URL: %@", [blog objectForKey:@"url"]);
 		}
 
 	}
@@ -5313,7 +5313,10 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 	
 	NSString * username = [theCurrentBlog valueForKey:@"username"];
 	NSString * url		= [theCurrentBlog valueForKey:@"url"];
+	NSLog(@"username:%@ url:%@", username, url);
 	url = [url stringByReplacingOccurrencesOfString:@"http://" withString:@""];
+	if([url hasSuffix:@"/"])
+		url = [url substringToIndex:url.length - 1];
 	//NSLog(@"inside getPasswordFromKeychainInContextofCurrentBlog %@, %@", username, url);
 	//!!TODO Trim url to eliminate http:// here!
 	

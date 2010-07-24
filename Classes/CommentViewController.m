@@ -624,9 +624,7 @@
 - (void)showComment:(NSArray *)comments atIndex:(int)index {
     currentIndex = index;
 	commentDetails = [comments mutableCopy];
-	NSLog(@"this is the NSArray commentDetails from showComment %@", commentDetails);
     NSDictionary *comment = [commentDetails objectAtIndex:currentIndex];
-	NSLog(@"this is the nsdict 'comment' from showComment %@", comment);
     
     static NSDateFormatter *dateFormatter = nil;
     int count = [commentDetails count];

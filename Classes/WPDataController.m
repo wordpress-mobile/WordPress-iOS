@@ -62,9 +62,18 @@
 			blog.blogID = [dictBlog valueForKey:@"blogid"];
 			blog.blogName = [NSString decodeXMLCharactersIn:[dictBlog valueForKey:@"blogName"]];
 			blog.url = [dictBlog valueForKey:@"url"];
-			blog.host = [NSString stringWithFormat:@"%@_%@", 
-						 blog.username, 
-						 [blog.url stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""]];
+			
+			NSRange textRange = [blog.url.lowercaseString rangeOfString:@"wordpress.com"];
+			if(textRange.location != NSNotFound)
+			{
+				blog.host = [NSString stringWithFormat:@"%@_%@", 
+							 blog.username, 
+							 [blog.url stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""]];
+			}
+			else {
+				blog.host = [blog.url stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""];
+			}
+
 			if([blog.host hasSuffix:@"/"])
 				blog.host = [blog.host substringToIndex:[blog.host length] - 1];
 			blog.xmlrpc = [dictBlog valueForKey:@"xmlrpc"];

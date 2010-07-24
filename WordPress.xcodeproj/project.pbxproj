@@ -157,6 +157,10 @@
 		8370D11F11FA4CD5009D650F /* logo_wporg.png in Resources */ = {isa = PBXBuildFile; fileRef = 8370D11B11FA4CD5009D650F /* logo_wporg.png */; };
 		8370D12011FA4CD5009D650F /* logo_wpcom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8370D11C11FA4CD5009D650F /* logo_wpcom@2x.png */; };
 		8370D12111FA4CD5009D650F /* logo_wpcom.png in Resources */ = {isa = PBXBuildFile; fileRef = 8370D11D11FA4CD5009D650F /* logo_wpcom.png */; };
+		8370D1BD11FA6295009D650F /* AddSiteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8370D1BB11FA6295009D650F /* AddSiteViewController.m */; };
+		8370D1BE11FA6295009D650F /* AddSiteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8370D1BC11FA6295009D650F /* AddSiteViewController.xib */; };
+		8370D1E811FA648F009D650F /* logo_welcome.png in Resources */ = {isa = PBXBuildFile; fileRef = 8370D1E611FA648F009D650F /* logo_welcome.png */; };
+		8370D1E911FA648F009D650F /* logo_welcome@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8370D1E711FA648F009D650F /* logo_welcome@2x.png */; };
 		837576C411305C67002EAA27 /* gettingLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = 837576C111305C67002EAA27 /* gettingLocation.png */; };
 		837576C511305C67002EAA27 /* hasLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = 837576C211305C67002EAA27 /* hasLocation.png */; };
 		837576C611305C67002EAA27 /* getLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = 837576C311305C67002EAA27 /* getLocation.png */; };
@@ -178,8 +182,6 @@
 		83A64689112C5F75000999A6 /* PostSettingsHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A64688112C5F75000999A6 /* PostSettingsHelpViewController.m */; };
 		83A646AB112C63E5000999A6 /* help.png in Resources */ = {isa = PBXBuildFile; fileRef = 83A646AA112C63E5000999A6 /* help.png */; };
 		83BC943C11F94AA00041141A /* whitebg.png in Resources */ = {isa = PBXBuildFile; fileRef = 83BC943B11F94AA00041141A /* whitebg.png */; };
-		83F352E611F7DA6A002326C3 /* logo_welcome.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F352E411F7DA6A002326C3 /* logo_welcome.png */; };
-		83F352E711F7DA6A002326C3 /* logo_welcome@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 83F352E511F7DA6A002326C3 /* logo_welcome@2x.png */; };
 		83F3E26011275E07004CD686 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E25F11275E07004CD686 /* MapKit.framework */; };
 		83F3E2BE11276357004CD686 /* LocationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F3E2BD11276357004CD686 /* LocationController.m */; };
 		83F3E2D311276371004CD686 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E2D211276371004CD686 /* CoreLocation.framework */; };
@@ -465,6 +467,11 @@
 		8370D11B11FA4CD5009D650F /* logo_wporg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_wporg.png; sourceTree = "<group>"; };
 		8370D11C11FA4CD5009D650F /* logo_wpcom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo_wpcom@2x.png"; sourceTree = "<group>"; };
 		8370D11D11FA4CD5009D650F /* logo_wpcom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_wpcom.png; sourceTree = "<group>"; };
+		8370D1BA11FA6295009D650F /* AddSiteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddSiteViewController.h; sourceTree = "<group>"; };
+		8370D1BB11FA6295009D650F /* AddSiteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddSiteViewController.m; sourceTree = "<group>"; };
+		8370D1BC11FA6295009D650F /* AddSiteViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AddSiteViewController.xib; path = Classes/AddSiteViewController.xib; sourceTree = "<group>"; };
+		8370D1E611FA648F009D650F /* logo_welcome.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_welcome.png; sourceTree = "<group>"; };
+		8370D1E711FA648F009D650F /* logo_welcome@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo_welcome@2x.png"; sourceTree = "<group>"; };
 		837576C111305C67002EAA27 /* gettingLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gettingLocation.png; sourceTree = "<group>"; };
 		837576C211305C67002EAA27 /* hasLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hasLocation.png; sourceTree = "<group>"; };
 		837576C311305C67002EAA27 /* getLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = getLocation.png; sourceTree = "<group>"; };
@@ -495,8 +502,6 @@
 		83A64688112C5F75000999A6 /* PostSettingsHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostSettingsHelpViewController.m; sourceTree = "<group>"; };
 		83A646AA112C63E5000999A6 /* help.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = help.png; sourceTree = "<group>"; };
 		83BC943B11F94AA00041141A /* whitebg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whitebg.png; sourceTree = "<group>"; };
-		83F352E411F7DA6A002326C3 /* logo_welcome.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_welcome.png; sourceTree = "<group>"; };
-		83F352E511F7DA6A002326C3 /* logo_welcome@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo_welcome@2x.png"; sourceTree = "<group>"; };
 		83F3E25F11275E07004CD686 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		83F3E2BC11276357004CD686 /* LocationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationController.h; sourceTree = "<group>"; };
 		83F3E2BD11276357004CD686 /* LocationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationController.m; sourceTree = "<group>"; };
@@ -892,12 +897,12 @@
 		83610B1311F4B42D00421116 /* logos */ = {
 			isa = PBXGroup;
 			children = (
+				8370D1E611FA648F009D650F /* logo_welcome.png */,
+				8370D1E711FA648F009D650F /* logo_welcome@2x.png */,
 				8370D11A11FA4CD5009D650F /* logo_wporg@2x.png */,
 				8370D11B11FA4CD5009D650F /* logo_wporg.png */,
 				8370D11C11FA4CD5009D650F /* logo_wpcom@2x.png */,
 				8370D11D11FA4CD5009D650F /* logo_wpcom.png */,
-				83F352E411F7DA6A002326C3 /* logo_welcome.png */,
-				83F352E511F7DA6A002326C3 /* logo_welcome@2x.png */,
 				831E3DA311F645C5005C573E /* logo_stacked.png */,
 			);
 			name = logos;
@@ -989,6 +994,8 @@
 				83610AA811F4AD2C00421116 /* WPcomLoginViewController.m */,
 				8369FF8E11F4F3BF003106C7 /* AddUsersBlogsViewController.h */,
 				8369FF8F11F4F3BF003106C7 /* AddUsersBlogsViewController.m */,
+				8370D1BA11FA6295009D650F /* AddSiteViewController.h */,
+				8370D1BB11FA6295009D650F /* AddSiteViewController.m */,
 			);
 			name = Blog;
 			sourceTree = "<group>";
@@ -1137,6 +1144,7 @@
 		ACFF1DC00E231EF600EC6BF5 /* Blog */ = {
 			isa = PBXGroup;
 			children = (
+				8370D1BC11FA6295009D650F /* AddSiteViewController.xib */,
 				8369FF9011F4F3BF003106C7 /* AddUsersBlogsViewController.xib */,
 				83610AA911F4AD2C00421116 /* WPcomLoginViewController.xib */,
 				F52BF2E610B1DC8F00AF4582 /* BlogHTTPAuthenticationViewController.xib */,
@@ -1434,8 +1442,6 @@
 				83610AAB11F4AD2C00421116 /* WPcomLoginViewController.xib in Resources */,
 				8369FF9211F4F3BF003106C7 /* AddUsersBlogsViewController.xib in Resources */,
 				831E3DA411F645C5005C573E /* logo_stacked.png in Resources */,
-				83F352E611F7DA6A002326C3 /* logo_welcome.png in Resources */,
-				83F352E711F7DA6A002326C3 /* logo_welcome@2x.png in Resources */,
 				83BC943C11F94AA00041141A /* whitebg.png in Resources */,
 				8370D10C11FA4A1B009D650F /* UITableViewActivityCell.xib in Resources */,
 				8370D11811FA4CCF009D650F /* welcome_bg.png in Resources */,
@@ -1444,6 +1450,9 @@
 				8370D11F11FA4CD5009D650F /* logo_wporg.png in Resources */,
 				8370D12011FA4CD5009D650F /* logo_wpcom@2x.png in Resources */,
 				8370D12111FA4CD5009D650F /* logo_wpcom.png in Resources */,
+				8370D1BE11FA6295009D650F /* AddSiteViewController.xib in Resources */,
+				8370D1E811FA648F009D650F /* logo_welcome.png in Resources */,
+				8370D1E911FA648F009D650F /* logo_welcome@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1552,6 +1561,7 @@
 				83610AAA11F4AD2C00421116 /* WPcomLoginViewController.m in Sources */,
 				8369FF9111F4F3BF003106C7 /* AddUsersBlogsViewController.m in Sources */,
 				8370D10A11FA499A009D650F /* UITableViewActivityCell.m in Sources */,
+				8370D1BD11FA6295009D650F /* AddSiteViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -33,7 +33,7 @@
 	
 	// Setup WPcom table header
 	UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 70)] autorelease];
-	UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wpcom.png"]];
+	UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wpcom"]];
 	logo.frame = CGRectMake(40, 20, 229, 43);
 	[headerView addSubview:logo];
 	self.tableView.tableHeaderView = headerView;

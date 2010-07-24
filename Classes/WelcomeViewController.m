@@ -10,7 +10,7 @@
 
 @implementation WelcomeViewController
 
-@synthesize tableView, appDelegate, addUsersBlogsView;
+@synthesize tableView, appDelegate, addUsersBlogsView, addSiteView;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -20,6 +20,9 @@
 	
 	appDelegate = [WordPressAppDelegate sharedWordPressApp];
 	addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
+	addSiteView = [[AddSiteViewController alloc] initWithNibName:@"AddSiteViewController" bundle:nil];
+	
+	self.tableView.backgroundColor = [UIColor clearColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -47,14 +50,14 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 	UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 252)] autorelease];
-	UIImageView *logo = [[UIImageView alloc] initWithFrame:CGRectMake(70, 15, 180, 180)];
+	UIImageView *logo = [[UIImageView alloc] initWithFrame:CGRectMake(82, 15, 150, 150)];
 	logo.image = [UIImage imageNamed:@"logo_welcome"];
 	[headerView addSubview:logo];
 	
-	UILabel *headerText = [[UILabel alloc] initWithFrame:CGRectMake(20, 175, 280, 72)];
+	UILabel *headerText = [[UILabel alloc] initWithFrame:CGRectMake(20, 145, 280, 105)];
 	headerText.backgroundColor = [UIColor clearColor];
 	headerText.textColor = [UIColor darkGrayColor];
-	headerText.font = [UIFont fontWithName:@"Georgia" size:14];
+	headerText.font = [UIFont fontWithName:@"Georgia" size:22];
 	headerText.numberOfLines = 0;
 	headerText.textAlignment = UITextAlignmentCenter;
 	headerText.text = [NSString stringWithFormat:@"Start blogging from your %@ in seconds.", 
@@ -118,8 +121,8 @@
 			[self.navigationController pushViewController:addUsersBlogsView animated:YES];
 	}
 	else if(indexPath.row == 2) {
-		EditBlogViewController *editBlog = [[EditBlogViewController alloc] initWithNibName:@"EditBlogViewController" bundle:nil];
-		[self.navigationController pushViewController:editBlog animated:YES];
+		//EditBlogViewController *editBlog = [[EditBlogViewController alloc] initWithNibName:@"EditBlogViewController" bundle:nil];
+		[self.navigationController pushViewController:addSiteView animated:YES];
 	}
 	
 	[tv deselectRowAtIndexPath:indexPath animated:YES];
@@ -140,6 +143,7 @@
 }
 
 - (void)dealloc {
+	[addSiteView release];
 	[addUsersBlogsView release];
 	[tableView release];
 	[appDelegate release];

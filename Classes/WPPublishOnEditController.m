@@ -55,37 +55,27 @@
 }
 
 - (void) moveDatePickerUp {
-			
-NSLog(@"inside moveDatePickerUp");
-[UIView beginAnimations:nil context:NULL];
-			
-CGRect frame = datePicker.frame;
-frame.origin.y -= 73.0f;
-datePicker.frame = frame;
+	[UIView beginAnimations:nil context:NULL];
+				
+	CGRect frame = datePicker.frame;
+	frame.origin.y -= 73.0f;
+	datePicker.frame = frame;
 
-[UIView commitAnimations];
-NSLog(@"just tried to commit animations inside WPPublishOnEditController : moveDatePickerUp");
-		}
-		
-		
+	[UIView commitAnimations];
+}
 		
 - (void) moveDatePickerDown {
-NSLog(@"inside moveDatePickerDown");
-[UIView beginAnimations:nil context:NULL];
-			
-CGRect frame = datePicker.frame;
-frame.origin.y += 73.0f;
-datePicker.frame = frame;
-			
-[UIView commitAnimations];
-NSLog(@"just tried to commit animations inside WPPublishOnEditController : moveDatePickerDown");
-		}
-
+	[UIView beginAnimations:nil context:NULL];
+				
+	CGRect frame = datePicker.frame;
+	frame.origin.y += 73.0f;
+	datePicker.frame = frame;
+				
+	[UIView commitAnimations];
+}
 
 - (void)didReceiveMemoryWarning {
-    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
-    // Release anything that's not essential, such as cached data
+    [super didReceiveMemoryWarning];
 }
 
 - (void)dealloc {

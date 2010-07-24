@@ -204,7 +204,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	if(dataManager.countOfBlogs > 0) {
 		unsigned int unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit;
 		NSCalendar *sysCalendar = [NSCalendar currentCalendar];
-		NSDateComponents *timeSince = [sysCalendar components:unitFlags fromDate:self.lastBlogSync  toDate:[NSDate date] options:0];
+		NSDateComponents *timeSince = [sysCalendar components:unitFlags fromDate:self.lastBlogSync toDate:[NSDate date] options:0];
 		
 		if([timeSince minute] > 5) {
 			[dataManager performSelectorInBackground:@selector(syncBlogs) withObject:nil];
