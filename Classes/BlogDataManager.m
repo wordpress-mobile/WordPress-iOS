@@ -1623,7 +1623,6 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 	//NSLog(@"currentblog %@", currentBlog);
 	
     //  ------------------------- invoke metaWeblog.getRecentPosts
-	NSLog(@"About to get posts for blog. blogid:%@, username:%@, password:%@, url:%@, maxToFetch:%d", blogid, username, pwd, fullURL, maxToFetch);
     XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
     [postsReq setMethod:@"metaWeblog.getRecentPosts"
 			withObjects:[NSArray arrayWithObjects:blogid, username, pwd, maxToFetch, nil]];
@@ -5310,13 +5309,10 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 
 
 -(NSString*) getPasswordFromKeychainInContextOfCurrentBlog:(NSDictionary *)theCurrentBlog {
-	
 	NSString * username = [theCurrentBlog valueForKey:@"username"];
 	NSString * url		= [theCurrentBlog valueForKey:@"url"];
 	NSLog(@"username:%@ url:%@", username, url);
 	url = [url stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-	if([url hasSuffix:@"/"])
-		url = [url substringToIndex:url.length - 1];
 	//NSLog(@"inside getPasswordFromKeychainInContextofCurrentBlog %@, %@", username, url);
 	//!!TODO Trim url to eliminate http:// here!
 	

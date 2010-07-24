@@ -357,10 +357,11 @@
 	if((url != nil) && (![url isEqualToString:@""])) {
 		if(![url hasPrefix:@"http"])
 			url = [NSString stringWithFormat:@"http://%@", url];
-		if(![url hasSuffix:@"/"])
-			url = [NSString stringWithFormat:@"%@/", url];
+		NSString *tempURL = url;
+		if(![tempURL hasSuffix:@"/"])
+			tempURL = [[NSString stringWithFormat:@"%@/xmlrpc.php", tempURL] retain];
 		[self performSelectorOnMainThread:@selector(setXMLRPCUrl:) 
-								withObject:[[NSString stringWithFormat:@"%@xmlrpc.php", url] retain]
+								withObject:tempURL
 								waitUntilDone:YES];
 		
 		XMLRPCRequest *xmlrpcMethodsRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
@@ -377,6 +378,7 @@
 		
 		[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
 	}
+	NSLog(@"xmlrpc:%@ url:%@", xmlrpc, url);
 	 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[pool release];
@@ -443,10 +445,14 @@
 }
 
 - (void)didAddSiteSuccessfully {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[spinner dismiss];
 	[self.navigationController popToRootViewControllerAnimated:YES];
+	
+	[pool release];
 }
 
 - (void)refreshTable {
