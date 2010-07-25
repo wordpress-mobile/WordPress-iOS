@@ -78,7 +78,6 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	self.hasChanges = NO;
 	//foo = textView.text;//so we can compare to set hasChanges correctly
 	textViewText = [[NSString alloc] initWithString: textView.text];
-	NSLog(@"waga this is the text from textViewString %@", textViewText);
 	
 	[leftView setTarget:self withAction:@selector(cancelView:)];
 	if (DeviceIsPad() == NO) {
@@ -91,17 +90,6 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	
 	comment = [commentDetails objectAtIndex:currentIndex];
 	textView.text =[[comment valueForKey:@"content"] trim];
-	
-	//if ([[comment valueForKey:@"status"] isEqualToString:@"hold"]) {
-//		NSLog(@"inside if of vwappear");
-//		label.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
-//		label.hidden = NO;
-//	} else {
-//		label.hidden = YES;
-		//
-		
-//	}
-	
 	[textView becomeFirstResponder];
 }
 
@@ -135,25 +123,24 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 
 - (void)cancelView:(id)sender {
     [commentViewController cancelView:sender];
-	NSLog(@"inside replyToCommentViewController cancelView");
 }
 
 #pragma mark -
 #pragma mark Helper Methods
 
-- (void) test{
+- (void)test {
+	// Huh???
 	NSLog(@"inside replyTOCommentViewController:test");
 }
 
 - (void)endTextEnteringButtonAction:(id)sender {
-	
     [textView resignFirstResponder];
 	if (DeviceIsPad() == NO) {
 		UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
-		if(UIInterfaceOrientationIsLandscape(interfaceOrientation)){
-		// private API
+		//if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
+//			// private API
 //			[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
-		}
+//		}
 	}
 }
 
@@ -169,10 +156,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	NSLog(@"inside EditCommentViewController's should autorotate");
-	
-		return YES;
-
+	return YES;
 }
 
 -(void) receivedRotate: (NSNotification*) notification
@@ -191,19 +175,11 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 #pragma mark -
 #pragma mark Text View Delegate Methods
 
-
-
-
 - (void)textViewDidEndEditing:(UITextView *)aTextView {
 	NSString *textString = textView.text;
-	//set hasChanges only if a change was made using textViewString
-	NSLog(@"just before accessing textViewString in did end editing");
-	NSLog(@"textviewText inside did end editing %@", self.textViewText);
 	if (![textString isEqualToString:textViewText]) {
 		self.hasChanges=YES;
 	}
-	
-	//make the text view longer !!!! 
 	[self setTextViewHeight:440];
 	
 	if (DeviceIsPad() == NO) {
@@ -215,9 +191,6 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)aTextView {
-	
-	
-	
 	self.navigationItem.rightBarButtonItem = saveButton;
 	if (DeviceIsPad() == NO) {
 		doneButton = [[UIBarButtonItem alloc] 
@@ -239,7 +212,6 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
     if (text.length == 0) {
 		return YES;
     }
-	
 	
     // create final version of textView after the current text has been inserted
     NSMutableString *updatedText = [[NSMutableString alloc] initWithString:aTextView.text];
@@ -279,10 +251,6 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
     return YES;
 }
 
-
-
-
-
 #pragma mark -
 #pragma mark Comment Handling Methods
 
@@ -300,15 +268,11 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 }
 
 - (void)initiateSaveCommentReply:(id)sender {
-	
 	[self endTextEnteringButtonAction: sender];
-//	[textView resignFirstResponder];
-//	[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
 	[self continueSaveCommentReply: sender];
 }
 	
 - (void)continueSaveCommentReply:(id)sender {
-	
 	comment = [commentDetails objectAtIndex:currentIndex];
 	[comment setValue:textView.text forKey:@"content"];	
 	commentViewController.wasLastCommentPending = YES;
@@ -323,7 +287,6 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 // saveEditBackgroundMethod...
 - (void)saveEditBackgroundMethod:(id)sender {
 	[self callBDMSaveCommentEdit:@selector(editComment:forBlog:)];
-	NSLog(@"after callBDMSaveCommentReply");
 }
 
 //callBDMSaveComment...  (Does this exist?)
@@ -349,8 +312,5 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	
 	[pool release];
 }
-
-
-
 
 @end

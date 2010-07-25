@@ -47,42 +47,52 @@
 - (NSMutableArray *)getBlogsForUrl:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password {
 	NSMutableArray *usersBlogs = [[NSMutableArray alloc] init];
 	
-	XMLRPCRequest *xmlrpcUsersBlogs = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
-	[xmlrpcUsersBlogs setMethod:@"wp.getUsersBlogs" withObjects:[NSArray arrayWithObjects:username, password, nil]];
-	NSArray *usersBlogsData = [self executeXMLRPCRequest:xmlrpcUsersBlogs];
-	
-	if([usersBlogsData class] != [NSError class]) {
-		for(NSDictionary *dictBlog in usersBlogsData) {
-			Blog *blog = [[Blog alloc] init];
-			if((int)[dictBlog valueForKey:@"isAdmin"] == 1) {
-				blog.isAdmin = [[dictBlog valueForKey:@"isAdmin"] boolValue];
+	@try {
+		XMLRPCRequest *xmlrpcUsersBlogs = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
+		[xmlrpcUsersBlogs setMethod:@"wp.getUsersBlogs" withObjects:[NSArray arrayWithObjects:username, password, nil]];
+		NSArray *usersBlogsData = [self executeXMLRPCRequest:xmlrpcUsersBlogs];
+		
+		if([usersBlogsData isKindOfClass:[NSArray class]]) {
+			for(NSDictionary *dictBlog in usersBlogsData) {
+				Blog *blog = [[Blog alloc] init];
+				if((int)[dictBlog valueForKey:@"isAdmin"] == 1) {
+					blog.isAdmin = [[dictBlog valueForKey:@"isAdmin"] boolValue];
+				}
+				blog.username = username;
+				blog.password = password;
+				if([[dictBlog objectForKey:@"blogid"] isKindOfClass:[NSString class]])
+					[blog setBlogID:[dictBlog objectForKey:@"blogid"]];
+				else
+					[blog setBlogID:[[dictBlog objectForKey:@"blogid"] stringValue]];
+				NSLog(@"blog.blogID is class: %@", [blog.blogID class]);
+				blog.blogName = [NSString decodeXMLCharactersIn:[dictBlog valueForKey:@"blogName"]];
+				blog.url = [dictBlog valueForKey:@"url"];
+				
+				NSRange textRange = [blog.url.lowercaseString rangeOfString:@"wordpress.com"];
+				if(textRange.location != NSNotFound)
+				{
+					blog.host = [NSString stringWithFormat:@"%@_%@", 
+								 blog.username, 
+								 [blog.url stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""]];
+				}
+				else {
+					blog.host = [blog.url stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""];
+				}
+				
+				if([blog.host hasSuffix:@"/"])
+					blog.host = [blog.host substringToIndex:[blog.host length] - 1];
+				blog.xmlrpc = [dictBlog valueForKey:@"xmlrpc"];
+				[usersBlogs addObject:blog];
+				[blog release];
 			}
-			blog.username = username;
-			blog.password = password;
-			blog.blogID = [dictBlog valueForKey:@"blogid"];
-			blog.blogName = [NSString decodeXMLCharactersIn:[dictBlog valueForKey:@"blogName"]];
-			blog.url = [dictBlog valueForKey:@"url"];
-			
-			NSRange textRange = [blog.url.lowercaseString rangeOfString:@"wordpress.com"];
-			if(textRange.location != NSNotFound)
-			{
-				blog.host = [NSString stringWithFormat:@"%@_%@", 
-							 blog.username, 
-							 [blog.url stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""]];
-			}
-			else {
-				blog.host = [blog.url stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""];
-			}
-
-			if([blog.host hasSuffix:@"/"])
-				blog.host = [blog.host substringToIndex:[blog.host length] - 1];
-			blog.xmlrpc = [dictBlog valueForKey:@"xmlrpc"];
-			[usersBlogs addObject:blog];
+		}
+		else {
+			usersBlogs = nil;
 		}
 	}
-	else {
-		usersBlogs = nil;
-	}
+	@catch (NSException * e) {}
+	@finally {}
+	
 	return usersBlogs;
 }
 
@@ -90,7 +100,7 @@
 #pragma mark Blog
 
 - (Blog *)getBlog:(int)blogID andPopulate:(BOOL)andPopulate {
-	Blog *blog = [[Blog alloc] init];
+	Blog *blog = [[[Blog alloc] init] autorelease];
 	return blog;
 }
 
@@ -110,7 +120,7 @@
 #pragma mark Post
 
 - (Post *)getPost:(int)postID {
-	Post *post = [[Post alloc] init];
+	Post *post = [[[Post alloc] init] autorelease];
 	return post;
 }
 
@@ -130,7 +140,7 @@
 #pragma mark Page
 
 - (Page *)getPage:(int)pageID {
-	Page *page = [[Page alloc] init];
+	Page *page = [[[Page alloc] init] autorelease];
 	return page;
 }
 
@@ -150,7 +160,7 @@
 #pragma mark Comment
 
 - (Comment *)getComment:(int)commentID {
-	Comment *comment = [[Comment alloc] init];
+	Comment *comment = [[[Comment alloc] init] autorelease];
 	return comment;
 }
 

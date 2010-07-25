@@ -11,29 +11,33 @@
 #import "WPDataController.h";
 #import "WPProgressHUD.h"
 #import "BlogDataManager.h"
+#import "AddUsersBlogsViewController.h"
+#import "Blog.h";
 
 @interface AddSiteViewController : UITableViewController<UITextFieldDelegate> {
-	WordPressAppDelegate *appDelegate;
 	WPProgressHUD *spinner;
+	AddUsersBlogsViewController *addUsersBlogsView;
 	NSString *footerText, *addButtonText, *url, *xmlrpc, *username, *password, *blogID, *blogName, *host;
 	NSArray *subsites;
 	BOOL isAuthenticating, isAuthenticated, isAdding, hasSubsites, hasValidXMLRPCurl;
 }
 
-@property (nonatomic, retain) WordPressAppDelegate *appDelegate;
 @property (nonatomic, retain) WPProgressHUD *spinner;
+@property (nonatomic, retain) AddUsersBlogsViewController *addUsersBlogsView;
 @property (nonatomic, retain) NSString *footerText, *addButtonText, *url, *xmlrpc, *username, *password, *blogID, *blogName, *host;
+@property (nonatomic, retain) NSArray *subsites;
 @property (nonatomic, assign) BOOL isAuthenticating, isAuthenticated, isAdding, hasSubsites, hasValidXMLRPCurl;
 
 - (void)getSubsites;
-- (void)didGetSubsitesSuccessfully;
 - (void)authenticate;
 - (void)didAuthenticateSuccessfully;
 - (void)addSite;
 - (void)addSiteInBackground;
 - (void)didAddSiteSuccessfully;
+- (void)addSiteFailed;
 - (void)refreshTable;
 - (void)getXMLRPCurl;
 - (void)setXMLRPCUrl:(NSString *)xmlrpcUrl;
+- (BOOL)blogExists;
 
 @end

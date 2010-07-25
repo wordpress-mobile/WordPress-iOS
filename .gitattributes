@@ -280,6 +280,7 @@ WordPress.xcodeproj/project.pbxproj -text
 /down.png -text
 /down@2x.png -text
 /favicon.png -text
+/favicon@2x.png -text
 /getLocation.png -text
 /getLocation@2x.png -text
 /gettingLocation.png -text

@@ -778,34 +778,25 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 - (BOOL)checkCustomFieldsMinusMetadata {
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
     NSMutableArray *tempCustomFieldsArray = [dm.currentPage valueForKey:@"custom_fields"];
-
-    //if there is anything (>=1) in the array, start proceessing, otherwise return NO
     if (tempCustomFieldsArray.count >= 1) {
-        //strip out any underscore-containing NSDicts inside the array, as this is metadata we don't need
         int dictsCount = [tempCustomFieldsArray count];
 
         for (int i = 0; i < dictsCount; i++) {
             NSString *tempKey = [[tempCustomFieldsArray objectAtIndex:i] objectForKey:@"key"];
-            NSLog(@"Strip Metadata tempKey is... %@", tempKey);
 
-            //if tempKey contains an underscore, remove that object (NSDict with metadata) from the array and move on
             if ([tempKey rangeOfString:@"_"].location != NSNotFound) {
-                NSLog(@"Found an underscore metadata 'member' and removing it %@", tempKey);
                 [tempCustomFieldsArray removeObjectAtIndex:i];
-                //if I remove one, the count goes down and we stop too soon unless we subtract one from i
-                //and re-set dictsCount.  Doing this keeps us in sync with the actual array.count
                 i--;
                 dictsCount = [tempCustomFieldsArray count];
             }
         }
 
-        //if the count of everything minus the metedata is one or greater, there is at least one custom field on this post, so return YES
-        if (dictsCount >= 1) {
-            return YES;
-        } else {
-            return NO;
-        }
-    } else {
+        if (dictsCount >= 1) 
+			return YES;
+		else
+			return NO;
+    }
+	else {
         return NO;
     }
 }

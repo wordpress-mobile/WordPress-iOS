@@ -87,7 +87,7 @@
 
 static BlogDataManager *sharedDataManager;
 
-@synthesize blogFieldNames, blogFieldNamesByTag, blogFieldTagsByName,
+@synthesize blogFieldNames, blogFieldNamesByTag, blogFieldTagsByName, selectedBlogID, 
 pictureFieldNames, postFieldNames, postFieldNamesByTag, postFieldTagsByName,
 postTitleFieldNames, postTitleFieldNamesByTag, postTitleFieldTagsByName, unsavedPostsCount, currentPageIndex, currentPage, pageFieldNames,
 currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLocaDraftsCurrent, isPageLocalDraftsCurrent, currentPostIndex, currentDraftIndex, currentPageDraftIndex, asyncPostsOperationsQueue, currentUnsavedDraft,
@@ -104,6 +104,7 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
     [currentPage release];
     [currentDirectoryPath release];
 	[currentLocation release];
+	[selectedBlogID release];
 	
     [photosDB release];
     [currentPicture release];
@@ -214,6 +215,7 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 
 - (BOOL)handleError:(NSError *)err {
     UIAlertView *alert1 = nil;
+	NSLog(@"handling error: %@", err);
 	
     if ([[err localizedDescription] isEqualToString:@"Bad login/pass combination."]) {
         alert1 = [[UIAlertView alloc] initWithTitle:@"Communication Error"
@@ -230,8 +232,7 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
     }
 	
     [alert1 show];
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    [delegate setAlertRunning:YES];
+    [[WordPressAppDelegate sharedWordPressApp] setAlertRunning:YES];
 	
     [alert1 release];
     return YES;
@@ -1078,15 +1079,9 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 		
         if (!htmlStr) {       // Handle the Servers which send Non UTF-8 Strings
             htmlStr = [[[NSString alloc] initWithData:data encoding:[NSString defaultCStringEncoding]] autorelease];
-            data = [htmlStr dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+            //data = [htmlStr dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
         }
 		
-		// NSError *parseError = nil;
-		// WPXMLReader *xmlReader = [[[WPXMLReader alloc] init] autorelease];
-        //[xmlReader parseXMLData:data parseError:&parseError];
-		// NSString *hosturl = xmlReader.hostUrl;
-		
-		//This is the "new" way of deriving xmlrpc endpoint...
 		RegExProcessor *regExProcessor = [[RegExProcessor alloc] init];
 		NSString *hosturl = [regExProcessor lookForXMLRPCEndpointInURLString:htmlStr];
 		[regExProcessor release];
@@ -1732,7 +1727,7 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
     [blog setObject:[NSNumber numberWithInt:[newPostTitlesList count]] forKey:@"totalPosts"];
 	//NSLog(@"organizePostsForBlog postsArray count ### %d", [newPostTitlesList count]);
     [blog setObject:[NSNumber numberWithInt:newPostCount] forKey:@"newposts"];
-    NSInteger blogIndex = [self indexForBlogid:[blog valueForKey:kBlogId] hostName:[blog valueForKey:kBlogHostName]];
+    NSInteger blogIndex = [self indexForBlogid:[blog valueForKey:kBlogId] url:[blog valueForKey:@"url"]];
 	
     if (blogIndex >= 0) {
         [self->blogsList replaceObjectAtIndex:blogIndex withObject:blog];
@@ -2065,23 +2060,16 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 
 - (BOOL)doesBlogExist:(NSDictionary *)aBlog {
 	BOOL result = NO;
-	NSString *blog1URL = [[NSString alloc] init];
-    NSString *blog2URL = [aBlog valueForKey:@"url"];
-	NSString *blog1Username = [[NSString alloc] init];
-    NSString *blog2Username = [aBlog valueForKey:@"username"];
-	
-	blog2URL = [blog2URL stringByReplacingOccurrencesOfRegex:@"\b(https?)://" withString:@""];
 	
     for(NSMutableDictionary *blog1 in blogsList) {
-		blog1URL = [blog1 valueForKey:@"url"];
-		blog1Username = [blog1 valueForKey:@"username"];
+		NSString *blog1URL = [blog1 valueForKey:@"url"];
+		NSString *blog1Username = [blog1 valueForKey:@"username"];
+		NSString *blog2URL = [[aBlog valueForKey:@"url"] stringByReplacingOccurrencesOfRegex:@"\b(https?)://" withString:@""];
+		NSString *blog2Username = [aBlog valueForKey:@"username"];
 		
 		if(([blog1URL isEqualToString:blog2URL]) && ([blog1Username isEqualToString:blog2Username]))
 			result = YES;
     }
-	
-	if(result)
-		NSLog(@"blog with url %@ already exists.", blog2URL);
 	
     return result;
 }
@@ -2192,7 +2180,8 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 		
         //find the index where the blog was placed
         currentBlogIndex = [self indexForBlogid:[currentBlog valueForKey:kBlogId]
-									   hostName:[currentBlog valueForKey:kBlogHostName]];
+									   url:[currentBlog valueForKey:@"url"]];
+		NSLog(@"currentBlogIndex: %d", currentBlogIndex);
     }
 	[cb release];
 }
@@ -2215,22 +2204,22 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
     currentBlogIndex = -3;
 }
 
-- (NSInteger)indexForBlogid:(NSString *)aBlogid hostName:(NSString *)hostname {
-    NSMutableDictionary *aBlog;
-    NSEnumerator *blogEnum = [blogsList objectEnumerator];
+- (NSInteger)indexForBlogid:(NSString *)blogID url:(NSString *)url {
     int index = 0;
+	int result = -1;
 	
-    while (aBlog = [blogEnum nextObject]) {
-        if ([[aBlog valueForKey:kBlogId] isEqualToString:aBlogid] &&
-            [[aBlog valueForKey:kBlogHostName] isEqualToString:hostname]) {
-            return index;
-        }
-		
+    for(NSMutableDictionary *blog in blogsList) {
+		NSLog(@"blogID is class: %@", [[blog objectForKey:kBlogId] class]);
+		if(([[blog objectForKey:kBlogId] isEqualToString:blogID]) && 
+		   ([[blog objectForKey:@"url"] isEqualToString:url])) {
+			result = index;
+			NSLog(@"returning result:%d", result);
+			break;
+		}
         index++;
     }
 	
-    // signal that blog id was not found
-    return -1;
+    return result;
 }
 
 #pragma mark PostTitle metadata
@@ -2798,10 +2787,11 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[[self currentBlog] valueForKey:@"xmlrpc"]]];
 	[request setMethod:@"wp.deletePage" withObjects:args];
 	NSDictionary *deleteDict = [[BlogDataManager sharedDataManager] executeXMLRPCRequest:request byHandlingError:YES];
+	[request release];
 	if (![deleteDict isKindOfClass:[NSDictionary class]])  //err occured.
         return NO;
-	[request release];
-	return YES;
+	else
+		return YES;
 }
 
 
@@ -2946,16 +2936,10 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 	while (pageMetadataDict = [pagesEnum nextObject]) {
 		newPageCount ++;
 		
-		if (newPageCount <= loadLimit) {
+		if (newPageCount <= loadLimit)
 			[refreshedPagesArray addObject:pageMetadataDict];
-			[pageMetadataDict release];
-			
-			
-		}else {
-			//we should have the topmost pages in the array now, number of pages determined by user on blog edit/setup view...
-			//So, no need to continue, just break and move on.
+		else
 			break;
-		}	
 	}
 	
 	
@@ -2966,22 +2950,14 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 	NSEnumerator *pagesEnum2 = [refreshedPagesArray objectEnumerator];
 	while (pageMetadataDict = [pagesEnum2 nextObject]) {
 		newPageCount ++;
-		
-		pageIDInt = [pageid intValue];
-		
 		pageid = [pageMetadataDict valueForKey:@"page_id"];
-		
-		//make the dict to hold the values
 		NSMutableDictionary *dict2 = [[NSMutableDictionary alloc] init];
-		//add the methodName to the dict
 		[dict2 setValue:@"wp.getPage" forKey:@"methodName"];
-		//make an array with the "getPage" values and put it into the dict in the methodName key
 		[dict2 setValue:[NSArray arrayWithObjects:blogid, pageid, username, pwd, nil] forKey:@"params"];
-		
-		//add the dict to the MutableArray that will get sent in the XMLRPC request
 		[getMorePagesArray addObject:dict2];
 		[dict2 release];
 	}
+	[refreshedPagesArray release];
 	
 	//ask for the next X number of  pages via system.multicall using getMorePagesArray as the container for the "multi" api calls			
 	XMLRPCRequest *pagesReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
@@ -4040,16 +4016,11 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[[self currentBlog] valueForKey:@"xmlrpc"]]];
 	[request setMethod:@"metaWeblog.deletePost" withObjects:args];
 	NSDictionary *deleteDict = [[BlogDataManager sharedDataManager] executeXMLRPCRequest:request byHandlingError:YES];
+	[request release];
 	if (![deleteDict isKindOfClass:[NSDictionary class]])  //err occured.
         return NO;
-	
-	//NSArray *deleteArray2 = [[BlogDataManager sharedDataManager] executeXMLRPCRequest:request byHandlingError:NO];
-	//NSLog(@"deleteDict: %@", deleteDict);
-	//NSLog(@"deleteArray2: %@", deleteArray2);
-	//NSLog(@"about to release request");
-	[request release];
-	//NSLog(@"released request about to return YES");
-	return YES;
+	else
+		return YES;
 }
 - (void)resetCurrentPage {
     currentPage = nil;
@@ -4925,9 +4896,9 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 	[dict setValue:@"wp.newComment" forKey:@"methodName"];
 	[dict setValue:[NSArray arrayWithObjects:blogid, username, pwd, postid, commentStruct, nil] forKey:@"params"];
 	[commentsReqArray addObject:dict];
-	//NSLog(@"commentsReqArray whole shebang %@", commentsReqArray);
-	
+	[commentStruct release];
 	[dict release];
+	
 	XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
 	[postsReq setMethod:@"system.multicall" withObject:commentsReqArray];
 	id result = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
@@ -4978,41 +4949,17 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 	[commentStruct setValue:[aComment valueForKey:@"author"] forKey:@"author"];
 	[commentStruct setValue:[aComment valueForKey:@"author_url"] forKey:@"author_url"];
 	[commentStruct setValue:[aComment valueForKey:@"author_email"] forKey:@"author_email"];
-    int commentsCount, i, count = [commentTitlesArray count];
+    int i, count = [commentTitlesArray count];
     NSMutableArray *commentsReqArray = [[NSMutableArray alloc] init];
-    commentsCount = [aComment count];
-	
-	//    for (i = 0; i < commentsCount; i++) {
-	//        NSMutableDictionary *commentsDict = [aComment objectAtIndex:i];
-	//NSMutableDictionary *commentsDict = aComment;
-	//        NSString *commentid = [commentsDict valueForKey:@"comment_id"];
-	// NSString *commentFilePath = [self commentFilePath:commentsDict forBlog:blog];
-	// NSDictionary *completeComment = [NSMutableDictionary dictionaryWithContentsOfFile:commentFilePath];
-	//punch the newly edited string into the Dict that will be going up to blog
-	//		[completeComment setValue:[aComment valueForKey:@"content"] forKey:@"content"];
-	//[commentStruct setValue:[theNewComment valueForKey:@"content"] forKey:@"content"];
-	//		
-	//        if ([[commentsDict valueForKey:@"status"] isEqualToString:@"approve"]) {
-	//            [aComment removeObjectAtIndex:i];
-	//            commentsCount--; i--;
-	//            continue;
-	//        }
-	
-	//        [commentsDict setValue:@"approve" forKey:@"status"];
-	//        [completeComment setValue:@"approve" forKey:@"status"];
 	
 	NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
 	[dict setValue:@"wp.editComment" forKey:@"methodName"];
 	[dict setValue:[NSArray arrayWithObjects:blogid, username, pwd, commentid, commentStruct, nil] forKey:@"params"];
 	[commentsReqArray addObject:dict];
-	//NSLog(@"this is comment dict %@", dict);
-	
+	[commentStruct release];
 	[dict release];
-	//    }
 	
-    commentsCount = [aComment count];
-	
-    if (commentsCount > 0) {
+    if (aComment.count > 0) {
         XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
         [postsReq setMethod:@"system.multicall" withObject:commentsReqArray];
         id result = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
@@ -5028,7 +4975,7 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
             [commentsReqArray release];
             return NO;
         } else {
-            for (int j = 0; j < commentsCount; j++) {
+            for (int j = 0; j < aComment.count; j++) {
                 NSDictionary *commentDict = aComment; // objectAtIndex:j];
 				
                 for (i = 0; i < count; i++) {
@@ -5122,18 +5069,16 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 
 - (void)syncBlogs {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApp];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
+	[WordPressAppDelegate sharedWordPressApp].lastBlogSync = [NSDate date];
     for (NSDictionary *blog in [blogsList mutableCopy]) {
 		if(self.shouldStopSyncingBlogs) {
 			self.shouldStopSyncingBlogs = NO;
 			break;
 		}
 		
-		if((appDelegate.selectedBlogID == nil) || 
-		   ((appDelegate.selectedBlogID != nil) && (![appDelegate.selectedBlogID isEqualToString:[blog objectForKey:@"blogid"]]))) {
+		if(([self.selectedBlogID isEqualToString:@""]) || (![self.selectedBlogID isEqualToString:[blog objectForKey:@"blogid"]])) {
 			NSString *url = [blog valueForKey:@"url"];
 			if (url != nil &&[url length] >= 7 &&[url hasPrefix:@"http://"])
 				url = [url substringFromIndex:7];
@@ -5149,7 +5094,6 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 					[self syncPagesForBlog:blog];
 				}
 				@catch (NSException * e) {}
-				appDelegate.lastBlogSync = [NSDate date];
 			}
 		}
 		else {
@@ -5157,7 +5101,6 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 		}
 
 	}
-	appDelegate.lastBlogSync = [NSDate date];
 	
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[pool release];
@@ -5311,7 +5254,6 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 -(NSString*) getPasswordFromKeychainInContextOfCurrentBlog:(NSDictionary *)theCurrentBlog {
 	NSString * username = [theCurrentBlog valueForKey:@"username"];
 	NSString * url		= [theCurrentBlog valueForKey:@"url"];
-	NSLog(@"username:%@ url:%@", username, url);
 	url = [url stringByReplacingOccurrencesOfString:@"http://" withString:@""];
 	//NSLog(@"inside getPasswordFromKeychainInContextofCurrentBlog %@, %@", username, url);
 	//!!TODO Trim url to eliminate http:// here!

@@ -9,7 +9,8 @@
 #import "AddUsersBlogsViewController.h"
 
 @implementation AddUsersBlogsViewController
-@synthesize usersBlogs, selectedBlogs, tableView, buttonAddSelected, buttonSelectAll, hasCompletedGetUsersBlogs, spinner;
+@synthesize usersBlogs, isWPcom, selectedBlogs, tableView, buttonAddSelected, buttonSelectAll, hasCompletedGetUsersBlogs;
+@synthesize spinner, username, password, url;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -21,10 +22,14 @@
 	appDelegate = [WordPressAppDelegate sharedWordPressApp];
 	
 	// Setup WPcom table header
+	NSString *logoFile = @"logo_wporg";
+	if(isWPcom)
+		logoFile = @"logo_wpcom";
 	UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 70)] autorelease];
-	UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wpcom"]];
+	UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:logoFile]];
 	logo.frame = CGRectMake(40, 20, 229, 43);
 	[headerView addSubview:logo];
+	[logo release];
 	self.tableView.tableHeaderView = headerView;
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableView) 
@@ -36,17 +41,21 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	if(!appDelegate.isWPcomAuthenticated) {
+	if((isWPcom) && (!appDelegate.isWPcomAuthenticated)) {
 		WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController" bundle:nil];
 		[self.navigationController presentModalViewController:wpComLogin animated:YES];
 		[wpComLogin release];
 	}
-	else {
-		if([[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsersBlogs"] != nil)
+	else if(isWPcom) {
+		if((usersBlogs == nil) && ([[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsersBlogs"] != nil))
 			usersBlogs = [[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsersBlogs"];
-		
+		else if(usersBlogs == nil)
+			[self performSelectorInBackground:@selector(refreshBlogs) withObject:nil];
+	}
+	else {
 		[self performSelectorInBackground:@selector(refreshBlogs) withObject:nil];
 	}
+
 }
 
 #pragma mark -
@@ -69,12 +78,14 @@
 		footerSpinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
 		[footerSpinner startAnimating];
 		[footerView addSubview:footerSpinner];
+		[footerSpinner release];
 		
 		UILabel *footerText = [[UILabel alloc] initWithFrame:CGRectMake(110, 0, 200, 20)];
 		footerText.backgroundColor = [UIColor clearColor];
 		footerText.textColor = [UIColor darkGrayColor];
 		footerText.text = @"Loading blogs...";
 		[footerView addSubview:footerText];
+		[footerText release];
 	}
 	else if((usersBlogs.count == 0) && (hasCompletedGetUsersBlogs)) {
 		UILabel *footerText = [[UILabel alloc] initWithFrame:CGRectMake(110, 0, 200, 20)];
@@ -82,6 +93,7 @@
 		footerText.textColor = [UIColor darkGrayColor];
 		footerText.text = @"No blogs found.";
 		[footerView addSubview:footerText];
+		[footerText release];
 	}
 
 	return footerView;
@@ -116,8 +128,7 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	Blog *selectedBlog = [[Blog alloc] init];
-	selectedBlog = [usersBlogs objectAtIndex:indexPath.row];
+	Blog *selectedBlog = [usersBlogs objectAtIndex:indexPath.row];
 	
 	if(![selectedBlogs containsObject:selectedBlog.blogID]) {
 		[selectedBlogs addObject:selectedBlog.blogID];
@@ -169,9 +180,15 @@
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
-	usersBlogs = [[WPDataController sharedInstance] getBlogsForUrl:@"https://wordpress.com/xmlrpc.php" 
-				   username:[[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsername"]
-				   password:[[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomPassword"]];
+	if(isWPcom) {
+		usersBlogs = [[WPDataController sharedInstance] getBlogsForUrl:@"https://wordpress.com/xmlrpc.php" 
+							  username:[[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsername"]
+							  password:[[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomPassword"]];
+	}
+	else {
+		usersBlogs = [[WPDataController sharedInstance] getBlogsForUrl:url username:username password:password];
+	}
+
 	hasCompletedGetUsersBlogs = YES;
 	if(usersBlogs.count > 0) {
 		self.tableView.tableFooterView = nil;
@@ -215,6 +232,8 @@
 
 - (void)createBlog:(Blog *)blog {
 	blog.url = [blog.url stringByReplacingOccurrencesOfString:@"http://" withString:@""];
+	if([blog.url hasSuffix:@"/"])
+		blog.url = [blog.url substringToIndex:blog.url.length-1];
 	//blog.url = [blog.url stringByReplacingOccurrencesOfString:@".wordpress.com" withString:@""];
 	NSString *username = blog.username;
 	NSString *pwd = blog.password;
@@ -231,15 +250,13 @@
 									 authEnabled, @"authEnabled", 
 									 authUsername, @"authUsername", 
 									 nil] retain];
-    if ([[BlogDataManager sharedDataManager] doesBlogExist:newBlog]) {
-        return;
-	}
-	else {
+    if (![[BlogDataManager sharedDataManager] doesBlogExist:newBlog]) {
 		[[BlogDataManager sharedDataManager] resetCurrentBlog];
 		
 		[newBlog setValue:url forKey:@"url"];
 		[newBlog setValue:blog.xmlrpc forKey:@"xmlrpc"];
 		[newBlog setValue:blog.blogID forKey:kBlogId];
+		NSLog(@"just set blog.blogID to: %@", blog.blogID);
 		[newBlog setValue:blog.host forKey:kBlogHostName];
 		[newBlog setValue:blog.blogName forKey:@"blogName"];
 		[newBlog setValue:username forKey:@"username"];
@@ -261,6 +278,7 @@
 		[BlogDataManager sharedDataManager].currentBlogIndex = -1;
         [[BlogDataManager sharedDataManager] saveCurrentBlog];
 	}
+	[newBlog release];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 }
 
@@ -309,6 +327,9 @@
 }
 
 - (void)dealloc {
+	[url release];
+	[username release];
+	[password release];
 	[usersBlogs release];
 	[selectedBlogs release];
 	[tableView release];

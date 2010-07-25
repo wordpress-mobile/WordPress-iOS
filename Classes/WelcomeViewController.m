@@ -20,6 +20,7 @@
 	
 	appDelegate = [WordPressAppDelegate sharedWordPressApp];
 	addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
+	addUsersBlogsView.isWPcom = YES;
 	addSiteView = [[AddSiteViewController alloc] initWithNibName:@"AddSiteViewController" bundle:nil];
 	
 	self.tableView.backgroundColor = [UIColor clearColor];
@@ -53,6 +54,7 @@
 	UIImageView *logo = [[UIImageView alloc] initWithFrame:CGRectMake(82, 15, 150, 150)];
 	logo.image = [UIImage imageNamed:@"logo_welcome"];
 	[headerView addSubview:logo];
+	[logo release];
 	
 	UILabel *headerText = [[UILabel alloc] initWithFrame:CGRectMake(20, 145, 280, 105)];
 	headerText.backgroundColor = [UIColor clearColor];
@@ -63,6 +65,7 @@
 	headerText.text = [NSString stringWithFormat:@"Start blogging from your %@ in seconds.", 
 					   [[UIDevice currentDevice] model]];
 	[headerView addSubview:headerText];
+	[headerText release];
 	
 	return headerView;
 }
@@ -113,6 +116,7 @@
 	if(indexPath.row == 0) {
 		WebSignupViewController *webSignup = [[WebSignupViewController alloc] initWithNibName:@"WebSignupViewController" bundle:[NSBundle mainBundle]];
 		[self.navigationController pushViewController:webSignup animated:YES];
+		[webSignup release];
 	}
 	else if(indexPath.row == 1) {
 		if(appDelegate.isWPcomAuthenticated)

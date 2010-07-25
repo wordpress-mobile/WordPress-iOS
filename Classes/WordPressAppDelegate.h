@@ -8,7 +8,6 @@
 @class WelcomeViewController;
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate> {
-	NSString *selectedBlogID;
 	NSDate *lastBlogSync;
 @private
     BlogDataManager *dataManager;
@@ -40,7 +39,6 @@
 @property (nonatomic, getter = isAlertRunning) BOOL alertRunning;
 @property (nonatomic, retain) WelcomeViewController *welcomeViewController;
 @property (nonatomic, assign) BOOL isWPcomAuthenticated;
-@property (nonatomic, retain) NSString *selectedBlogID;
 @property (nonatomic, retain) NSDate *lastBlogSync;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;

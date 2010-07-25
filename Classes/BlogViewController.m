@@ -58,10 +58,7 @@
 	else {
 		[tabBarController.selectedViewController viewWillAppear:animated];
 	}
-	[WordPressAppDelegate sharedWordPressApp].selectedBlogID = [[[BlogDataManager sharedDataManager] currentBlog] 
-																valueForKey:@"blogid"];
-	NSLog(@"currently selected blog ID is: %@", [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blogid"]);
-	NSLog(@"appDelegate.selectedBlogID is now %@", [WordPressAppDelegate sharedWordPressApp].selectedBlogID);
+	[[BlogDataManager sharedDataManager] setSelectedBlogID:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blogid"]];
 	
     [[WordPressAppDelegate sharedWordPressApp] storeCurrentBlog];
 }

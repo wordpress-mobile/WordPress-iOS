@@ -28,16 +28,14 @@ else
 
 @implementation UIViewController (UIViewController_iPadExtensions)
 
-+ (void)youWillAutorotateOrYouWillDieMrBond
-{
-NSLog(@"youWillAutorotateOrYouWillDieMrBond");
-Swizzle([NSClassFromString(@"UISplitViewController") class], @selector(shouldAutorotateToInterfaceOrientation:), @selector(MyShouldAutorotateToInterfaceOrientation:), NULL);
++ (void)youWillAutorotateOrYouWillDieMrBond {
+	//NSLog(@"youWillAutorotateOrYouWillDieMrBond");
+	Swizzle([NSClassFromString(@"UISplitViewController") class], @selector(shouldAutorotateToInterfaceOrientation:), @selector(MyShouldAutorotateToInterfaceOrientation:), NULL);
 }
 
-- (BOOL)MyShouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
-{
-NSLog(@"MyShouldAutorotateToInterfaceOrientation (%@)", self);
-return(YES);
+- (BOOL)MyShouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+	//NSLog(@"MyShouldAutorotateToInterfaceOrientation (%@)", self);
+	return(YES);
 }
 
 @end

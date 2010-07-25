@@ -130,8 +130,6 @@
 }
 
 - (IBAction)saveAction:(id)sender {
-    //saveButton.title = @"Save"; 
-	NSLog(@"Inside Save Action");
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 
      if (![[dm.currentPost valueForKey:@"post_status"] isEqualToString:@"Local Draft"]) {
@@ -150,7 +148,6 @@
 	 }
 
     if (!hasChanges) {
-		NSLog(@"No changes to save...");
         [self stopTimer];
 		[self dismissEditView];
         return;
@@ -161,28 +158,7 @@
 	{
 		[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
     }
-
-    //Code for scaling image based on post settings
-	//NSAutoreleasePool *pool=[[NSAutoreleasePool alloc] init];
-//    NSArray *photosArray = [dm.currentPost valueForKey:@"Photos"];
-//    NSString *filepath;
-//
-//    for (int i = 0; i <[photosArray count]; i++) {
-//        filepath = [photosArray objectAtIndex:i];
-//        NSString *imagePath = [NSString stringWithFormat:@"%@/%@", [dm blogDir:dm.currentBlog], filepath];
-//        UIImage *scaledImage = [photosListController scaleAndRotateImage:[UIImage imageWithContentsOfFile:imagePath] scaleFlag:YES];
-//        NSData *imageData = UIImageJPEGRepresentation(scaledImage, 0.5);
-//        [imageData writeToFile:imagePath atomically:YES];
-//
-//		if(pool)
-//			[pool release];
-//
-//		pool=[[NSAutoreleasePool alloc] init];
-//
-//    }
-//	[pool release];
-
-    //for handling more tag text.
+	
     [(NSMutableDictionary *)[BlogDataManager sharedDataManager].currentPost setValue:@"" forKey:@"mt_text_more"];
     [postSettingsController endEditingAction:nil];
     [postDetailEditController endEditingAction:nil];
@@ -241,10 +217,8 @@
 		[self savePostWithBlog:argsArray];
 
 		hasChanges = NO;
-//		[dm removeAutoSavedCurrentPostFile];
 
 		[self removeProgressIndicator];
-
 		[self dismissEditView];
 
 		if (DeviceIsPad() == YES) {
@@ -678,18 +652,7 @@
 	if (DeviceIsPad() == YES) {
 		return YES;
 	}
-
-	NSLog(@"inside PostViewController: should autorotate");
-//    if ([[[[self tabController] selectedViewController] title] isEqualToString:@"Photos"]) {
-//        if ((interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-//            [photosListController.view addSubview:photoEditingStatusView];
-//        } else if ((interfaceOrientation == UIInterfaceOrientationPortrait) || (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
-//            [photoEditingStatusView removeFromSuperview];
-//        }
-//    }
-
-
-    //Code to disable landscape when alert is raised.
+	
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 
     if ([delegate isAlertRunning] == YES) {

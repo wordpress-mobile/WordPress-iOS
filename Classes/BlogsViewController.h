@@ -18,10 +18,7 @@
 @class BlogDataManager, WordPressAppDelegate, EditBlogViewController, BlogViewController;
 
 @interface BlogsViewController : UITableViewController {
-	WordPressAppDelegate *appDelegate;
 }
-
-@property (nonatomic, retain) WordPressAppDelegate *appDelegate;
 
 - (void)showBlog:(BOOL)animated;
 - (void)showBlogDetailModalViewForNewBlogWithAnimation:(BOOL)animated;

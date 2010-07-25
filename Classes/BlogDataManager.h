@@ -7,6 +7,7 @@
 #import "EditBlogViewController.h"
 #import "SFHFKeychainUtils.h"
 #import "Reachability.h"
+#import "Blog.h"
 
 #define PictureObjectUploadedNotificationName @"PictureObjectUploadedNotificationName"
 #define WPNewCategoryCreatedAndUpdatedInBlogNotificationName @"WPNewCategoryCreatedAndUpdatedInBlog"
@@ -61,6 +62,7 @@
     int unsavedPostsCount;
 	
     NSString *currentDirectoryPath;
+	NSString *selectedBlogID;
 	
     NSOperationQueue *asyncOperationsQueue;
 	
@@ -76,7 +78,7 @@
 
 @property (nonatomic) NSInteger currentPostIndex, currentDraftIndex, currentPageDraftIndex, currentPageIndex;
 
-@property (nonatomic, copy) NSString *currentDirectoryPath;
+@property (nonatomic, copy) NSString *currentDirectoryPath, *selectedBlogID;
 
 // readonly - can be retained rather than copied
 @property (nonatomic, retain, readonly) NSArray *blogFieldNames;
@@ -128,7 +130,7 @@
 - (NSInteger)countOfBlogs;
 - (NSMutableDictionary *)blogAtIndex:(NSUInteger)theIndex;
 - (NSDictionary *)blogForId:(NSString *)blogid hostName:(NSString *)hostname;
-- (NSInteger)indexForBlogid:(NSString *)blogid hostName:(NSString *)hostname;
+- (NSInteger)indexForBlogid:(NSString *)blogid url:(NSString *)url;
 - (void)makeBlogAtIndexCurrent:(NSUInteger)theIndex;
 - (void)copyBlogAtIndexCurrent:(NSUInteger)theIndex;
 - (void)makeNewBlogCurrent;

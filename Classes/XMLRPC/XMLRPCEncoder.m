@@ -259,17 +259,12 @@
 	}
 	
 	[buffer appendString: @"</data></array></value>"];
-	//NSLog(@"string from xmlrpc array encoder %@", buffer);
-	
 	return (NSString *)buffer;
 }
 
-/* */
-- (NSString *)encodeDictionary: (NSDictionary *)dictionary
-{
+- (NSString *)encodeDictionary: (NSDictionary *)dictionary {
 	NSMutableString * buffer = [NSMutableString string];
 	NSEnumerator *enumerator = [dictionary keyEnumerator];
-	
 	[buffer appendString: @"<value><struct>"];
 	
 	NSString *key = nil;
@@ -282,23 +277,16 @@
 	}
 	
 	[buffer appendString: @"</struct></value>"];
-	//NSLog(@"string from xmlrpc dict encoder %@", buffer);
-	
 	return (NSString *)buffer;
 }
 
 #pragma mark -
 
-- (NSString *)encodeBoolean: (CFBooleanRef)boolean
-{
+- (NSString *)encodeBoolean:(CFBooleanRef)boolean {
 	if (boolean == kCFBooleanTrue)
-	{
 		return [self valueTag: @"boolean" value: @"true"];
-	}
 	else
-	{
 		return [self valueTag: @"boolean" value: @"false"];
-	}
 }
 
 - (NSString *)encodeNumber: (NSNumber *)number
@@ -311,11 +299,7 @@
 	return [self valueTag: @"string" value: string];
 }
 
-- (NSString *)encodeDate: (NSDate *)date
-{
-//	NSString *buffer = [date descriptionWithCalendarFormat: @"%Y%m%dT%H:%M:%S"
-//		timeZone: nil locale: nil];
-
+- (NSString *)encodeDate: (NSDate *)date {
 	NSCalendar *cal = [NSCalendar currentCalendar];	
 	NSDateComponents *comps = [cal components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit
 																	 fromDate:date];

@@ -11,8 +11,6 @@
 @end
 
 @implementation BlogsViewController
-@synthesize appDelegate;
-
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -24,14 +22,13 @@
 																							action:@selector(showAddBlogView:)] autorelease];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStyleBordered target:nil action:nil]; 
 	self.tableView.allowsSelectionDuringEditing = YES;
-	appDelegate = [WordPressAppDelegate sharedWordPressApp];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blogsRefreshNotificationReceived:) name:@"BlogsRefreshNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBlogWithoutAnimation) name:@"NewBlogAdded" object:nil];
     
 	// restore blog for iPad
 	if (DeviceIsPad() == YES) {
-		if (appDelegate.shouldLoadBlogFromUserDefaults) {
+		if ([WordPressAppDelegate sharedWordPressApp].shouldLoadBlogFromUserDefaults) {
 			[self showBlog:NO];
 		}
 	}
@@ -48,8 +45,8 @@
 		self.navigationItem.leftBarButtonItem = nil;
 	[self.tableView reloadData];
 	[self.tableView endEditing:YES];
-	appDelegate.selectedBlogID = nil;
-	[appDelegate syncBlogs];
+	[BlogDataManager sharedDataManager].selectedBlogID = @"";
+	[[WordPressAppDelegate sharedWordPressApp] syncBlogs];
 }
 
 - (void)blogsRefreshNotificationReceived:(id)notification {
@@ -85,6 +82,7 @@
 #endif
 
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	[blog release];
 
     return cell;
 }
@@ -95,7 +93,7 @@
 
     if ([self.tableView cellForRowAtIndexPath:indexPath].editing) {
         [[BlogDataManager sharedDataManager] copyBlogAtIndexCurrent:(indexPath.row)];
-        EditBlogViewController *blogDetailViewController = [[[EditBlogViewController alloc] initWithNibName:@"EditBlogViewController" bundle:nil] autorelease];
+        EditBlogViewController *blogDetailViewController = [[EditBlogViewController alloc] initWithNibName:@"EditBlogViewController" bundle:nil];
 		if (DeviceIsPad() == YES)
 		{
 			UINavigationController *modalNavigationController = [[UINavigationController alloc] initWithRootViewController:blogDetailViewController];
@@ -103,23 +101,20 @@
 			modalNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 			[[CPopoverManager instance] setCurrentPopoverController:NULL];
 			[[WordPressAppDelegate sharedWordPressApp].splitViewController presentModalViewController:modalNavigationController animated:YES];
+			[modalNavigationController release];
 		}
 		else
 		{
 			[self.navigationController pushViewController:blogDetailViewController animated:YES];
 		}
+		[blogDetailViewController release];
 		
-    } else {
-        //if ([[[dataManager blogAtIndex:indexPath.row] valueForKey:@"kIsSyncProcessRunning"] intValue] == 1) {
-        //    [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
-        //} else {
-			if ([self canChangeCurrentBlog]) {
-				[[BlogDataManager sharedDataManager] makeBlogAtIndexCurrent:(indexPath.row)];
-				appDelegate.selectedBlogID = [[[BlogDataManager sharedDataManager] 
-											   blogAtIndex:indexPath.row] objectForKey:@"blogid"];
-				[self showBlog:YES];
-			}
-        //}
+    }
+	else if ([self canChangeCurrentBlog]) {
+		[[BlogDataManager sharedDataManager] makeBlogAtIndexCurrent:(indexPath.row)];
+		[[BlogDataManager sharedDataManager] setSelectedBlogID:
+			[[[BlogDataManager sharedDataManager] blogAtIndex:indexPath.row] objectForKey:@"blogid"]];
+		[self showBlog:YES];
     }
 	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 }
@@ -179,6 +174,7 @@
 - (void)showAddBlogView:(id)sender {
 	WelcomeViewController *welcomeView = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:nil];
 	[self.navigationController pushViewController:welcomeView animated:YES];
+	[welcomeView release];
 }
 
 - (void)showBlogDetailModalViewForNewBlogWithAnimation:(BOOL)animate {

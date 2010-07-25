@@ -17,17 +17,19 @@
 
 @interface AddUsersBlogsViewController : UIViewController <UITableViewDelegate, HTTPHelperDelegate> {
 	WordPressAppDelegate *appDelegate;
-	BOOL hasCompletedGetUsersBlogs;
+	BOOL hasCompletedGetUsersBlogs, isWPcom;
 	NSArray *usersBlogs;
 	NSMutableArray *selectedBlogs;
+	NSString *username, *url, *password;
 	IBOutlet UITableView *tableView;
 	IBOutlet UIBarButtonItem *buttonAddSelected, *buttonSelectAll;
 	WPProgressHUD *spinner;
 }
 
-@property (nonatomic, assign) BOOL hasCompletedGetUsersBlogs;
+@property (nonatomic, assign) BOOL hasCompletedGetUsersBlogs, isWPcom;
 @property (nonatomic, retain) NSArray *usersBlogs;
 @property (nonatomic, retain) NSMutableArray *selectedBlogs;
+@property (nonatomic, retain) NSString *username, *url, *password;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *buttonAddSelected, *buttonSelectAll;
 @property (nonatomic, retain) WPProgressHUD *spinner;

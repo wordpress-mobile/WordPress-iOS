@@ -28,7 +28,7 @@
 
 static WordPressAppDelegate *wordPressApp = NULL;
 
-@synthesize window, selectedBlogID, lastBlogSync;
+@synthesize window, lastBlogSync;
 @synthesize navigationController, alertRunning, isWPcomAuthenticated;
 @synthesize splitViewController, firstLaunchController, welcomeViewController;
 
@@ -66,7 +66,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
     [navigationController release];
     [window release];
     [dataManager release];
-	[selectedBlogID release];
 	[lastBlogSync release];
     [super dealloc];
 }
@@ -111,12 +110,13 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		if ([dataManager countOfBlogs] == 0) {
 			WelcomeViewController *wViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
 			[blogsViewController.navigationController pushViewController:wViewController animated:YES];
+			[wViewController release];
 		}
 		else {
 			blogsViewController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStyleBordered target:nil action:nil];
 		}
 
-		//[blogsViewController release];
+		[blogsViewController release];
 	}
 	else
 	{
@@ -365,9 +365,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (int)indexForCurrentBlog {
     NSDictionary *currentBlog = [dataManager currentBlog];
-    NSString *currentBlogId = [currentBlog objectForKey:kBlogId];
-    NSString *currentBlogHostName = [currentBlog objectForKey:kBlogHostName];
-    return [dataManager indexForBlogid:currentBlogId hostName:currentBlogHostName];
+    return [dataManager indexForBlogid:[currentBlog objectForKey:kBlogId] url:[currentBlog objectForKey:@"url"]];
 }
 
 - (void)storeCurrentBlog {
@@ -574,6 +572,9 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	[theRequest setHTTPBody:postBody];
 	
 	NSURLConnection *conn = [[[NSURLConnection alloc] initWithRequest:theRequest delegate:self] autorelease];
+	if(conn){
+		// This is just to keep Analyzer from complaining.
+	}
 }
 
 #pragma mark NSURLConnection callbacks

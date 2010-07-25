@@ -7,9 +7,9 @@
 #import "AddSiteViewController.h"
 
 @implementation AddSiteViewController
-@synthesize appDelegate, spinner, footerText, addButtonText, url, xmlrpc, username, password;
-@synthesize isAuthenticating, isAuthenticated, isAdding, hasSubsites;
-@synthesize hasValidXMLRPCurl, blogID, blogName, host;
+@synthesize spinner, footerText, addButtonText, url, xmlrpc, username, password;
+@synthesize isAuthenticating, isAuthenticated, isAdding, hasSubsites, subsites;
+@synthesize hasValidXMLRPCurl, blogID, blogName, host, addUsersBlogsView;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -19,13 +19,16 @@
 	hasValidXMLRPCurl = YES;	// Assume true until proven wrong.
 	addButtonText = @"Add Site";
 	self.navigationItem.title = @"Add Site";
-	spinner = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
+	[spinner initWithLabel:@"Saving..."];
+	addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
+	addUsersBlogsView.isWPcom = NO;
 	
 	// Setup WPorg table header
 	UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 70)] autorelease];
 	UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wporg"]];
 	logo.frame = CGRectMake(40, 20, 229, 43);
 	[headerView addSubview:logo];
+	[logo release];
 	self.tableView.tableHeaderView = headerView;
 }
 
@@ -33,7 +36,7 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 4;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -46,14 +49,11 @@
 			break;
 		case 1:
 			if(hasSubsites)
-				return 1;	// Select Subsites
+				return 2;	// Select Subsites
 			else
-				return 0;	// (invisible)
+				return 1;	// Settings
 			break;
 		case 2:
-			return 1;		// Settings
-			break;
-		case 3:
 			return 1;		// Add Site
 			break;
 		default:
@@ -85,25 +85,26 @@
 				if (indexPath.row == 0) {
 					addTextField.placeholder = @"http://myexamplesite.com";
 					addTextField.keyboardType = UIKeyboardTypeEmailAddress;
-					addTextField.returnKeyType = UIReturnKeyDone;
-					addTextField.tag = 0;
+					addTextField.returnKeyType = UIReturnKeyNext;
 					if(url != nil)
 						addTextField.text = url;
 				}
 				else if(indexPath.row == 1) {
 					addTextField.placeholder = @"WordPress username.";
 					addTextField.keyboardType = UIKeyboardTypeDefault;
-					addTextField.returnKeyType = UIReturnKeyDone;
-					addTextField.tag = 1;
+					addTextField.returnKeyType = UIReturnKeyNext;
+					NSLog(@"username: %@", username);
 					if(username != nil)
 						addTextField.text = username;
 				}
 				else if(indexPath.row == 2) {
 					addTextField.placeholder = @"WordPress password.";
 					addTextField.keyboardType = UIKeyboardTypeDefault;
-					addTextField.returnKeyType = UIReturnKeyDone;
+					if(xmlrpc != nil)
+						addTextField.returnKeyType = UIReturnKeyDone;
+					else
+						addTextField.returnKeyType = UIReturnKeyNext;
 					addTextField.secureTextEntry = YES;
-					addTextField.tag = 1;
 					if(password != nil)
 						addTextField.text = password;
 				}
@@ -111,11 +112,11 @@
 					addTextField.placeholder = @"http://myexamplesite.com/xmlrpc.php";
 					addTextField.keyboardType = UIKeyboardTypeDefault;
 					addTextField.returnKeyType = UIReturnKeyDone;
-					addTextField.tag = 1;
 					if(xmlrpc != nil)
 						addTextField.text = xmlrpc;
 				}
 			}           
+			addTextField.tag = indexPath.row;
 			addTextField.backgroundColor = [UIColor whiteColor];
 			addTextField.autocorrectionType = UITextAutocorrectionTypeNo;
 			addTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -126,6 +127,7 @@
 			[addTextField setEnabled: YES];
 			
 			[cell addSubview:addTextField];
+			[addTextField release];
 		}
 	}
     
@@ -148,17 +150,17 @@
 		}
 	}
 	else if(indexPath.section == 1) {
-		if(hasSubsites) {
+		if((indexPath.row == 0) && (hasSubsites)) {
 			cell.textLabel.text = @"Select Sites";
 			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 			cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", subsites.count];
 		}
+		else if(((indexPath.row == 0) && (!hasSubsites)) || (indexPath.row == 1)) {
+			cell.textLabel.text = @"Settings";
+			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		}
 	}
 	else if(indexPath.section == 2) {
-		cell.textLabel.text = @"Settings";
-		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-	}
-	else if(indexPath.section == 3) {
 		cell.textLabel.textAlignment = UITextAlignmentCenter;
 		cell.textLabel.text = addButtonText;
 	}
@@ -208,23 +210,30 @@
 			
 			break;
 		case 1:
-			// Sub sites
-			[tv deselectRowAtIndexPath:indexPath animated:YES];
+			if((hasSubsites) && (indexPath.row == 0)) {
+				// Select Sites
+				[self.navigationController pushViewController:addUsersBlogsView animated:YES];
+				[tv deselectRowAtIndexPath:indexPath animated:YES];
+			}
+			else if(indexPath.row == 1) {
+				// Settings
+				[tv deselectRowAtIndexPath:indexPath animated:YES];
+			}
 			break;
 		case 2:
-			// Settings
+			// Add Site
+			if(![self blogExists]) {
+				footerText = nil;
+				addButtonText = @"Adding Site...";
+				isAdding = YES;
+				[tv deselectRowAtIndexPath:indexPath animated:YES];
+				[NSThread sleepForTimeInterval:0.15];
+				[tv reloadData];
+				
+				[self performSelectorInBackground:@selector(addSite) withObject:nil];
+			}
 			[tv deselectRowAtIndexPath:indexPath animated:YES];
 			break;
-		case 3:
-			// Add Site
-			footerText = nil;
-			addButtonText = @"Adding Site...";
-			isAdding = YES;
-			[tv deselectRowAtIndexPath:indexPath animated:YES];
-			[NSThread sleepForTimeInterval:0.15];
-			[tv reloadData];
-			
-			[self performSelectorInBackground:@selector(addSite) withObject:nil];
 		default:
 			[tv deselectRowAtIndexPath:indexPath animated:YES];
 			break;
@@ -248,7 +257,7 @@
 			if([textField.text isEqualToString:@""])
 				footerText = @"URL is required.";
 			else {
-				url = textField.text;
+				[self setUrl:textField.text];
 				footerText = nil;
 				[self performSelectorInBackground:@selector(getXMLRPCurl) withObject:nil];
 			}
@@ -257,7 +266,7 @@
 			if([textField.text isEqualToString:@""])
 				footerText = @"Username is required.";
 			else {
-				username = textField.text;
+				[self setUsername:textField.text];
 				footerText = nil;
 			}
 			break;
@@ -265,7 +274,7 @@
 			if([textField.text isEqualToString:@""])
 				footerText = @"Password is required.";
 			else {
-				password = textField.text;
+				[self setPassword:textField.text];
 				footerText = nil;
 			}
 			break;
@@ -273,7 +282,7 @@
 			if((!hasValidXMLRPCurl) && ([textField.text isEqualToString:@""]))
 				footerText = @"XMLRPC endpoint wasn't found. Please enter it manually.";
 			else {
-				xmlrpc = textField.text;
+				[self setXmlrpc:textField.text];
 				hasValidXMLRPCurl = YES;
 				footerText = nil;
 			}
@@ -285,7 +294,7 @@
 	[self.tableView reloadData];
 	
 	if((url != nil) && (username != nil) && (password != nil) && (xmlrpc != nil)) {
-		[self authenticate];
+		[self performSelectorInBackground:@selector(authenticate) withObject:nil];
 	}
 }
 
@@ -294,27 +303,17 @@
 
 - (void)getSubsites {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	footerText = @"Checking for sub sites...";
+	
+	footerText = @"Checking for sites...";
 	[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
 	
-	@try {
-		subsites = [[WPDataController sharedInstance] getBlogsForUrl:xmlrpc username:username password:password];
-		[self didGetSubsitesSuccessfully];
-		[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
-	}
-	@catch (NSException * e) {}
-	@finally {
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	}
-	
-	[pool release];
-}
-
-- (void)didGetSubsitesSuccessfully {
+	subsites = [[WPDataController sharedInstance] getBlogsForUrl:xmlrpc username:username password:password];
 	if(subsites.count > 1) {
 		hasSubsites = YES;
+		[addUsersBlogsView setUrl:xmlrpc];
+		[addUsersBlogsView setUsername:username];
+		[addUsersBlogsView setPassword:password];
 	}
 	else if(subsites.count == 1) {
 		Blog *blog = [subsites objectAtIndex:0];
@@ -322,7 +321,20 @@
 		blogID = blog.blogID;
 		blogName = blog.blogName;
 	}
-	footerText = @"";
+	
+	if(![self blogExists]) {
+		if(isAuthenticated) 
+			footerText = @"Good to go.";
+		else
+			footerText = @"";
+	}
+	else
+		footerText = @"Site has already been added.";
+	
+	[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
+	
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[pool release];
 }
 
 - (void)authenticate {
@@ -378,10 +390,25 @@
 		
 		[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
 	}
-	NSLog(@"xmlrpc:%@ url:%@", xmlrpc, url);
 	 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[pool release];
+}
+
+- (BOOL)blogExists {
+	BOOL result = NO;
+	//NSString *authPassword = password;
+	NSNumber *authEnabled = [NSNumber numberWithBool:NO];
+	//NSString *authBlogURL = [NSString stringWithFormat:@"%@_auth", url];
+	NSMutableDictionary *newBlog = [[NSMutableDictionary dictionaryWithObjectsAndKeys:
+									 username, @"username", 
+									 url, @"url", 
+									 authEnabled, @"authEnabled", 
+									 username, @"authUsername", 
+									 nil] retain];
+	result = [[BlogDataManager sharedDataManager] doesBlogExist:newBlog];
+	[newBlog release];
+	return result;
 }
 
 - (void)setXMLRPCUrl:(NSString *)xmlrpcUrl {
@@ -408,36 +435,33 @@
 									 authEnabled, @"authEnabled", 
 									 authUsername, @"authUsername", 
 									 nil] retain];
-    if ([[BlogDataManager sharedDataManager] doesBlogExist:newBlog]) {
-        return;
-	}
-	else {
-		[[BlogDataManager sharedDataManager] resetCurrentBlog];
-		
-		[newBlog setValue:blogID forKey:kBlogId];
-		[newBlog setValue:host forKey:kBlogHostName];
-		[newBlog setValue:blogName forKey:@"blogName"];
-		[newBlog setValue:url forKey:@"url"];
-		[newBlog setValue:xmlrpc forKey:@"xmlrpc"];
-		[newBlog setValue:username forKey:@"username"];
-		[newBlog setValue:authEnabled forKey:@"authEnabled"];
-		[[BlogDataManager sharedDataManager] updatePasswordInKeychain:password andUserName:username andBlogURL:host];
-		
-		[newBlog setValue:authUsername forKey:@"authUsername"];
-		[[BlogDataManager sharedDataManager] updatePasswordInKeychain:authPassword
-														  andUserName:authUsername
-														   andBlogURL:authBlogURL];
-		//[newBlog setValue:value forKey:kResizePhotoSetting];
-		[newBlog setValue:[NSNumber numberWithBool:YES] forKey:kSupportsPagesAndComments];
-		
-		[BlogDataManager sharedDataManager].isProblemWithXMLRPC = NO;
-        [newBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
-        [[BlogDataManager sharedDataManager] wrapperForSyncPostsAndGetTemplateForBlog:[BlogDataManager sharedDataManager].currentBlog];
-        [newBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-		[[BlogDataManager sharedDataManager] setCurrentBlog:newBlog];
-		[BlogDataManager sharedDataManager].currentBlogIndex = -1;
-        [[BlogDataManager sharedDataManager] saveCurrentBlog];
-	}
+	
+	[[BlogDataManager sharedDataManager] resetCurrentBlog];
+	
+	[newBlog setValue:blogID forKey:kBlogId];
+	[newBlog setValue:host forKey:kBlogHostName];
+	[newBlog setValue:blogName forKey:@"blogName"];
+	[newBlog setValue:url forKey:@"url"];
+	[newBlog setValue:xmlrpc forKey:@"xmlrpc"];
+	[newBlog setValue:username forKey:@"username"];
+	[newBlog setValue:authEnabled forKey:@"authEnabled"];
+	[[BlogDataManager sharedDataManager] updatePasswordInKeychain:password andUserName:username andBlogURL:host];
+	
+	[newBlog setValue:authUsername forKey:@"authUsername"];
+	[[BlogDataManager sharedDataManager] updatePasswordInKeychain:authPassword
+													  andUserName:authUsername
+													   andBlogURL:authBlogURL];
+	//[newBlog setValue:value forKey:kResizePhotoSetting];
+	[newBlog setValue:[NSNumber numberWithBool:YES] forKey:kSupportsPagesAndComments];
+	
+	[BlogDataManager sharedDataManager].isProblemWithXMLRPC = NO;
+	[newBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
+	[[BlogDataManager sharedDataManager] wrapperForSyncPostsAndGetTemplateForBlog:[BlogDataManager sharedDataManager].currentBlog];
+	[newBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+	[[BlogDataManager sharedDataManager] setCurrentBlog:newBlog];
+	[BlogDataManager sharedDataManager].currentBlogIndex = -1;
+	[[BlogDataManager sharedDataManager] saveCurrentBlog];
+	[newBlog release];
 	
 	[self performSelectorOnMainThread:@selector(didAddSiteSuccessfully) withObject:nil waitUntilDone:NO];
 	
@@ -451,6 +475,16 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[spinner dismiss];
 	[self.navigationController popToRootViewControllerAnimated:YES];
+	
+	[pool release];
+}
+
+- (void)addSiteFailed {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[spinner dismiss];
+	[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
 	
 	[pool release];
 }
@@ -471,17 +505,22 @@
 
 
 - (void)dealloc {
+	[subsites release];
+	[addUsersBlogsView release];
 	[blogID release];
 	[blogName release];
 	[host release];
-	[appDelegate release];
 	[spinner release];
 	[footerText release];
 	[addButtonText release];
 	[url release];
+	url = nil;
 	[xmlrpc release];
+	xmlrpc = nil;
 	[username release];
+	username = nil;
 	[password release];
+	password = nil;
     [super dealloc];
 }
 

@@ -194,8 +194,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)refreshUIForCurrentPost {
-	NSLog(@"refreshUIForCurrentPost");
-	//TODO:JOHNBCustomFields: It's possible we want an entry here, not sure yet
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	
     NSString *description = [dm.currentPost valueForKey:@"description"];
@@ -562,7 +560,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)setTextViewHeight:(float)height {
-	NSLog(@"setTextViewHeight");
     CGRect frame = textView.frame;
     frame.size.height = height;
     textView.frame = frame;
@@ -1070,19 +1067,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 #pragma mark -
 #pragma mark Custom Fields methods
 - (void)postionTextViewContentView {
-	NSLog(@"postionTextViewContentView");
-	//removing custom fields code for now.  will integrate into 1.4 if time allows
-	//    if (isCustomFieldsEnabledForThisPost) {
-	//        originY = 214.0f;
-	//        CGRect frame = textViewContentView.frame;
-	//        frame.origin.y = originY;
-	//        [textViewContentView setFrame:frame];
-	//    } else {
 	originY = 164.0f;
 	CGRect frame = textViewContentView.frame;
 	frame.origin.y = originY;
 	[textViewContentView setFrame:frame];
-	//    }
 }
 
 - (BOOL)checkCustomFieldsMinusMetadata {
@@ -1099,7 +1087,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			
             //if tempKey contains an underscore, remove that object (NSDict with metadata) from the array and move on
             if(([tempKey rangeOfString:@"_"].location != NSNotFound) && ([tempKey rangeOfString:@"geo_"].location == NSNotFound)) {
-                NSLog(@"Removing metadata key: %@", tempKey);
                 [tempCustomFieldsArray removeObjectAtIndex:i];
                 //if I remove one, the count goes down and we stop too soon unless we subtract one from i
                 //and re-set dictsCount.  Doing this keeps us in sync with the actual array.count
@@ -1222,23 +1209,22 @@ NSTimeInterval kAnimationDuration = 0.3f;
  
 - (void)keyboardWillHide:(NSNotification *)notification; 
 { 
-	NSLog(@"keyboardWillHide");
-        NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo]; 
- 
-        CGRect kbBounds = [[keyboardInfo objectForKey:UIKeyboardBoundsUserInfoKey] CGRectValue]; 
-        CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue]; 
-        UIViewAnimationCurve curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue]; 
- 
-        [UIView beginAnimations:nil context:nil]; 
- 
-        [UIView setAnimationCurve:curve]; 
-        [UIView setAnimationDuration:animationDuration]; 
- 
-        CGRect frame = textView.frame; 
-        frame.size.height += kbBounds.size.height; 
-        textView.frame = frame; 
- 
-        [UIView commitAnimations]; 
+	NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo]; 
+
+	CGRect kbBounds = [[keyboardInfo objectForKey:UIKeyboardBoundsUserInfoKey] CGRectValue]; 
+	CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue]; 
+	UIViewAnimationCurve curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue]; 
+
+	[UIView beginAnimations:nil context:nil]; 
+
+	[UIView setAnimationCurve:curve]; 
+	[UIView setAnimationDuration:animationDuration]; 
+
+	CGRect frame = textView.frame; 
+	frame.size.height += kbBounds.size.height; 
+	textView.frame = frame; 
+
+	[UIView commitAnimations]; 
 } 
 
 

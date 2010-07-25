@@ -44,7 +44,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"DraftsUpdated" object:nil];
 
     [postDetailEditController release];
-    [PostViewController release];
+    [postDetailViewController release];
 
     [newButtonItem release];
     [refreshButton release];

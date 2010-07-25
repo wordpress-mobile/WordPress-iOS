@@ -36,6 +36,7 @@
 	UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wpcom"]];
 	logo.frame = CGRectMake(40, 20, 229, 43);
 	[headerView addSubview:logo];
+	[logo release];
 	self.tableView.tableHeaderView = headerView;
 }
 
@@ -125,6 +126,7 @@
 			[loginTextField setEnabled: YES];
 			
 			[cell addSubview:loginTextField];
+			[loginTextField release];
 		}
 	}
 	
@@ -258,7 +260,6 @@
 	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
 	UITextField *textField = [cell.contentView.subviews objectAtIndex:0];
 	[textField becomeFirstResponder];
-	[indexPath release];
 }
 
 - (void)signIn:(id)sender {
