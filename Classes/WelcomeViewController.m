@@ -10,7 +10,7 @@
 
 @implementation WelcomeViewController
 
-@synthesize tableView, appDelegate, addUsersBlogsView, addSiteView;
+@synthesize tableView, addUsersBlogsView, addSiteView;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -18,7 +18,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
-	appDelegate = [WordPressAppDelegate sharedWordPressApp];
 	addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
 	addUsersBlogsView.isWPcom = YES;
 	addSiteView = [[AddSiteViewController alloc] initWithNibName:@"AddSiteViewController" bundle:nil];
@@ -119,6 +118,7 @@
 		[webSignup release];
 	}
 	else if(indexPath.row == 1) {
+		WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 		if(appDelegate.isWPcomAuthenticated)
 			[self.navigationController pushViewController:addUsersBlogsView animated:YES];
 		else
@@ -150,7 +150,6 @@
 	[addSiteView release];
 	[addUsersBlogsView release];
 	[tableView release];
-	[appDelegate release];
     [super dealloc];
 }
 

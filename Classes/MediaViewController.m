@@ -317,7 +317,6 @@
 
 
 - (void)dealloc {
-	[wpAppDelegate release];
 	[postDetailViewController release];
 	[addButton release];
 	[managedObjectContext release];

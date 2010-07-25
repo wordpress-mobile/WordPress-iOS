@@ -24,7 +24,6 @@
 }
 
 - (void)dealloc {
-	[appDelegate release];
 	[super dealloc];
 }
 
@@ -64,7 +63,6 @@
 					[blog setBlogID:[dictBlog objectForKey:@"blogid"]];
 				else
 					[blog setBlogID:[[dictBlog objectForKey:@"blogid"] stringValue]];
-				NSLog(@"blog.blogID is class: %@", [blog.blogID class]);
 				blog.blogName = [NSString decodeXMLCharactersIn:[dictBlog valueForKey:@"blogName"]];
 				blog.url = [dictBlog valueForKey:@"url"];
 				

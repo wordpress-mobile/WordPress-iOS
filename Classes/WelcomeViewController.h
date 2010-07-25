@@ -17,13 +17,11 @@
 
 @interface WelcomeViewController : UIViewController<UITableViewDelegate> {
 	IBOutlet UITableView *tableView;
-	WordPressAppDelegate *appDelegate;
 	AddUsersBlogsViewController *addUsersBlogsView;
 	AddSiteViewController *addSiteView;
 }
 
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
-@property (nonatomic, retain) WordPressAppDelegate *appDelegate;
 @property (nonatomic, retain) AddUsersBlogsViewController *addUsersBlogsView;
 @property (nonatomic, retain) AddSiteViewController *addSiteView;
 

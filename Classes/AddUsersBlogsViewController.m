@@ -235,14 +235,14 @@
 	if([blog.url hasSuffix:@"/"])
 		blog.url = [blog.url substringToIndex:blog.url.length-1];
 	//blog.url = [blog.url stringByReplacingOccurrencesOfString:@".wordpress.com" withString:@""];
-	NSString *username = blog.username;
-	NSString *pwd = blog.password;
-	NSString *url = [blog.url stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	url= [blog.url stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	username = blog.username;
+	password = blog.password;
 	NSNumber *value = [NSNumber numberWithBool:NO];
 	NSString *authUsername = blog.username;
 	NSString *authPassword = blog.password;
 	NSNumber *authEnabled = [NSNumber numberWithBool:YES];
-	NSString *authBlogURL = [NSString stringWithFormat:@"%@_auth", url];
+	NSString *authBlogURL = [NSString stringWithFormat:@"%@_auth", blog.url];
 	
 	NSMutableDictionary *newBlog = [[NSMutableDictionary dictionaryWithObjectsAndKeys:
 									 username, @"username", 
@@ -253,15 +253,14 @@
     if (![[BlogDataManager sharedDataManager] doesBlogExist:newBlog]) {
 		[[BlogDataManager sharedDataManager] resetCurrentBlog];
 		
-		[newBlog setValue:url forKey:@"url"];
+		[newBlog setValue:blog.url forKey:@"url"];
 		[newBlog setValue:blog.xmlrpc forKey:@"xmlrpc"];
 		[newBlog setValue:blog.blogID forKey:kBlogId];
-		NSLog(@"just set blog.blogID to: %@", blog.blogID);
 		[newBlog setValue:blog.host forKey:kBlogHostName];
 		[newBlog setValue:blog.blogName forKey:@"blogName"];
 		[newBlog setValue:username forKey:@"username"];
 		[newBlog setValue:authEnabled forKey:@"authEnabled"];
-		[[BlogDataManager sharedDataManager] updatePasswordInKeychain:pwd andUserName:username andBlogURL:url];
+		[[BlogDataManager sharedDataManager] updatePasswordInKeychain:password andUserName:username andBlogURL:url];
 		
 		[newBlog setValue:authUsername forKey:@"authUsername"];
 		[[BlogDataManager sharedDataManager] updatePasswordInKeychain:authPassword

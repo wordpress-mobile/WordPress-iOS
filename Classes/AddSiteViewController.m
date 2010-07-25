@@ -93,7 +93,6 @@
 					addTextField.placeholder = @"WordPress username.";
 					addTextField.keyboardType = UIKeyboardTypeDefault;
 					addTextField.returnKeyType = UIReturnKeyNext;
-					NSLog(@"username: %@", username);
 					if(username != nil)
 						addTextField.text = username;
 				}
@@ -469,14 +468,10 @@
 }
 
 - (void)didAddSiteSuccessfully {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[spinner dismiss];
 	[self.navigationController popToRootViewControllerAnimated:YES];
-	
-	[pool release];
 }
 
 - (void)addSiteFailed {

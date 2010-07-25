@@ -328,9 +328,6 @@
 	NSString *authPassword = blogHTTPAuthViewController.blogHTTPAuthPassword.text;
 	BOOL authEnabled = blogHTTPAuthViewController.blogHTTPAuthEnabled.on;
 	
-	NSLog(@"Blog Attributes: username: %@, pwd: %@, url:%@, value:%@, authUsername:%@, authPassword:%@",
-		  username, pwd, url, value, authUsername, authPassword);
-	
 	NSString *authBlogURL = [NSString stringWithFormat:@"%@_auth", url];
     [currentBlog setValue:url forKey:@"url"];
     [currentBlog setValue:username forKey:@"username"];

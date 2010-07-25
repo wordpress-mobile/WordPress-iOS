@@ -46,7 +46,8 @@
 	[self.tableView reloadData];
 	[self.tableView endEditing:YES];
 	[BlogDataManager sharedDataManager].selectedBlogID = @"";
-	[[WordPressAppDelegate sharedWordPressApp] syncBlogs];
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[delegate syncBlogs];
 }
 
 - (void)blogsRefreshNotificationReceived:(id)notification {

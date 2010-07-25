@@ -2181,7 +2181,6 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
         //find the index where the blog was placed
         currentBlogIndex = [self indexForBlogid:[currentBlog valueForKey:kBlogId]
 									   url:[currentBlog valueForKey:@"url"]];
-		NSLog(@"currentBlogIndex: %d", currentBlogIndex);
     }
 	[cb release];
 }
@@ -2209,11 +2208,9 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 	int result = -1;
 	
     for(NSMutableDictionary *blog in blogsList) {
-		NSLog(@"blogID is class: %@", [[blog objectForKey:kBlogId] class]);
 		if(([[blog objectForKey:kBlogId] isEqualToString:blogID]) && 
 		   ([[blog objectForKey:@"url"] isEqualToString:url])) {
 			result = index;
-			NSLog(@"returning result:%d", result);
 			break;
 		}
         index++;
