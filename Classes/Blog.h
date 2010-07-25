@@ -12,11 +12,13 @@
     int index;
 	NSString *blogID, *blogName, *url, *host, *username, *password, *xmlrpc;
 	BOOL isAdmin;
+	NSMutableDictionary *settings;
 }
 
 @property int index;
 @property (nonatomic, retain) NSString *blogID, *blogName, *url, *host, *username, *password, *xmlrpc;
 @property (nonatomic, assign) BOOL isAdmin;
+@property (nonatomic, retain) NSMutableDictionary *settings;
 
 - (id)initWithIndex:(int)blogIndex;
 

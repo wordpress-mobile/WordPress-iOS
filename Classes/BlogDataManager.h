@@ -216,9 +216,12 @@
 - (BOOL)refreshCurrentBlogQuickly:(NSString *)url user:(NSString *)username;
 - (BOOL)validateCurrentBlog:(NSString *)url user:(NSString *)username password:(NSString *)pwd;
 - (void)syncBlogs;
+- (void)syncBlogCategoriesAndStatuses;
 - (void)stopSyncingBlogs;
 - (BOOL)syncPostsForBlog:(id)blog;
 - (BOOL)syncPostsForCurrentBlog;
+- (void)syncCategoriesForBlog:(NSMutableDictionary *)aBlog;
+- (void)syncStatusesForBlog:(NSMutableDictionary *)aBlog;
 - (BOOL)syncIncrementallyLoadedPostsForCurrentBlog:(NSArray *)recentPostsList;
 - (BOOL)organizePostsForBlog:(id)blog withPostsArray:(NSArray *) recentPostsList;
 

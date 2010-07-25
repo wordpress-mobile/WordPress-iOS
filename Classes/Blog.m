@@ -10,7 +10,7 @@
 #import "UIImage+INResizeImageAllocator.h"
 
 @implementation Blog
-@synthesize blogID, blogName, url, host, username, password, xmlrpc, isAdmin;
+@synthesize blogID, blogName, url, host, username, password, xmlrpc, isAdmin, settings;
 
 @synthesize index;
 
@@ -77,6 +77,7 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
+	[settings release];
 	[blogID release];
 	[blogName release];
 	[url release];

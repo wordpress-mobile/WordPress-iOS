@@ -2,6 +2,7 @@
 #import <CoreData/CoreData.h>
 #import "Constants.h"
 #import "UIDevice-Hardware.h"
+#import "Blog.h"
 
 @class BlogDataManager;
 @class CFirstLaunchViewController;
@@ -9,6 +10,7 @@
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate> {
 	NSDate *lastBlogSync;
+	Blog *currentBlog;
 @private
     BlogDataManager *dataManager;
 
@@ -40,6 +42,7 @@
 @property (nonatomic, retain) WelcomeViewController *welcomeViewController;
 @property (nonatomic, assign) BOOL isWPcomAuthenticated;
 @property (nonatomic, retain) NSDate *lastBlogSync;
+@property (nonatomic, retain) Blog *currentBlog;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
@@ -58,5 +61,6 @@
 - (void)setAutoRefreshMarkers;
 - (void)showContentDetailViewController:(UIViewController *)viewController;
 - (void)syncBlogs;
+- (void)syncBlogCategoriesAndStatuses;
 
 @end

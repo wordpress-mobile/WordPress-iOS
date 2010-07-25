@@ -214,8 +214,19 @@
 				[self.navigationController pushViewController:addUsersBlogsView animated:YES];
 				[tv deselectRowAtIndexPath:indexPath animated:YES];
 			}
-			else if(indexPath.row == 1) {
+			else if(((!hasSubsites) && (indexPath.row == 0)) || (indexPath.row == 1)) {
 				// Settings
+				WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+				if(appDelegate.currentBlog == nil) {
+					Blog *currentBlog = [[Blog alloc] init];
+					[appDelegate setCurrentBlog:currentBlog];
+					[currentBlog release];
+					NSLog(@"Just created new appDelegate.currentBlog: %@", appDelegate.currentBlog);
+				}
+				BlogSettingsViewController *settingsView = [[BlogSettingsViewController alloc] initWithNibName:@"BlogSettingsViewController" bundle:nil];
+				[self.navigationController pushViewController:settingsView animated:YES];
+				[settingsView release];
+				
 				[tv deselectRowAtIndexPath:indexPath animated:YES];
 			}
 			break;
@@ -247,7 +258,7 @@
 	return YES;	
 }
 
-- (void) textFieldDidEndEditing: (UITextField *) textField {
+- (void)textFieldDidEndEditing: (UITextField *) textField {
     UITableViewCell *cell = (UITableViewCell *)[textField superview];
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 	
@@ -468,9 +479,12 @@
 }
 
 - (void)didAddSiteSuccessfully {
+	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[spinner dismiss];
+	[appDelegate syncBlogCategoriesAndStatuses];
+	[appDelegate syncBlogs];
 	[self.navigationController popToRootViewControllerAnimated:YES];
 }
 

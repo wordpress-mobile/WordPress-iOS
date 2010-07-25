@@ -1448,145 +1448,70 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 	}
 }
 
+- (void)syncCategoriesForBlog:(NSMutableDictionary *)aBlog {
+	NSString *xmlrpc = [aBlog valueForKey:@"xmlrpc"];
+	
+	NSString *pwd = [self getBlogPasswordFromKeychainWithUsername:[aBlog valueForKey:@"username"] andBlogName:[aBlog valueForKey:@"url"]];
+	XMLRPCRequest *reqCategories = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
+	[reqCategories setMethod:@"wp.getCategories" withObjects: [NSArray arrayWithObjects:
+																[aBlog valueForKey:@"blogid"], 
+																[aBlog valueForKey:@"username"], 
+																pwd, 
+																nil]];
+	
+	NSArray *categories = [self executeXMLRPCRequest:reqCategories byHandlingError:YES];
+	[reqCategories release];
+	
+	if ([categories isKindOfClass:[NSArray class]]) {
+		NSMutableArray *cats = [NSMutableArray arrayWithCapacity:15];
+		
+		for (NSDictionary *category in categories) {
+			NSString *categoryId = [category valueForKey:@"categoryId"];
+			NSString *categoryName = [category valueForKey:@"categoryName"];
+			
+			if (categoryName == nil ||[categoryName isEqualToString:@""]) {
+				NSMutableDictionary *cat = [category mutableCopy];
+				[cat setObject:categoryId forKey:@"categoryName"];
+				[cats addObject:cat];
+				[cat release];
+			} else {
+				[cats addObject:category];
+			}
+		}
+		[aBlog setObject:cats forKey:@"categories"];
+	}
+}
 
-
-// sync posts for a given blog
-//- (BOOL)syncPostsForBlog:(id)blog {
-//    if ([[blog valueForKey:kBlogId] isEqualToString:kDraftsBlogIdStr]) {
-//        [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-//        return NO;
-//    }
-//
-//    // Parameters
-//    NSString *username = [blog valueForKey:@"username"];
-//    //NSString *pwd = [blog valueForKey:@"pwd"];
-//	NSString *pwd = [self getPasswordFromKeychainInContextOfCurrentBlog:blog];
-//    NSString *fullURL = [blog valueForKey:@"xmlrpc"];
-//    NSString *blogid = [blog valueForKey:kBlogId];
-//    //NSNumber *maxToFetch = [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:2] intValue]];
-//	//Note: Changed this and added "totalPostsLoaded" to BDM datastructure to accomodate 10-at-a-time updating of posts.
-//	NSNumber *maxToFetch = [currentBlog valueForKey:@"totalPostsLoaded"];
-//
-//    //  ------------------------- invoke metaWeblog.getRecentPosts
-//    XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
-//    [postsReq setMethod:@"metaWeblog.getRecentPosts"
-//     withObjects:[NSArray arrayWithObjects:blogid, username, pwd, maxToFetch, nil]];
-//
-//    NSArray *recentPostsList = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
-//    [postsReq release];
-//
-//    // TODO:
-//    // Check for fault
-//    // check for nil or empty response
-//    // provide meaningful messge to user
-//    if ((!recentPostsList) || !([recentPostsList isKindOfClass:[NSArray class]])) {
-//        [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-////		[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
-//        return NO;
-//    }
-//
-//    // loop through each post
-//    // - add local_status, blogid and bloghost to the pos
-//    // - save the post
-//    // - count new posts
-//    // - add/replace postTitle for post
-//    // Sort and Save postTitles list
-//    // Update blog counts and save blogs list
-//
-//    // get post titles from file
-//    NSMutableArray *newPostTitlesList;
-//    NSString *postTitlesPath = [self pathToPostTitles:blog];
-//    NSFileManager *fm = [NSFileManager defaultManager];
-//
-//    if ([fm fileExistsAtPath:postTitlesPath]) {
-//        newPostTitlesList = [NSMutableArray arrayWithContentsOfFile:postTitlesPath];
-//    } else {
-//        newPostTitlesList = [NSMutableArray arrayWithCapacity:30];
-//    }
-//
-//    // loop thru posts list
-//    NSEnumerator *postsEnum = [recentPostsList objectEnumerator];
-//    NSDictionary *post;
-//    NSInteger newPostCount = 0;
-//    [newPostTitlesList removeAllObjects];
-//
-//    while (post = [postsEnum nextObject]) {
-//        // add blogid and blog_host_name to post
-//
-//        NSDate *postGMTDate = [post valueForKey:@"date_created_gmt"];
-//        NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:postGMTDate];
-//        NSDate *currentDate = [postGMTDate addTimeInterval:(secs * +1)];
-//        [post setValue:currentDate forKey:@"date_created_gmt"];
-//
-//        [post setValue:[blog valueForKey:kBlogId] forKey:kBlogId];
-//        [post setValue:[blog valueForKey:kBlogHostName] forKey:kBlogHostName];
-//
-//        // Check if the post already exists
-//        // yes: check if a local draft exists
-//        //		 yes: set the local-status to 'edit'
-//        //		 no: set the local_status to 'original'
-//        // no: increment new posts count
-//
-//        NSString *pathToPost = [self pathToPost:post forBlog:blog];
-//
-//        if ([fm fileExistsAtPath:pathToPost]) {
-//            //TODO: if we implement drafts as a logical blog we may not need this logic any more.
-////			if([fm fileExistsAtPath:pathToDraft]) {
-////				[post setValue:@"edit" forKey:@"local_status"];
-////			} else {
-////				[post setValue:@"original" forKey:@"local_status"];
-////			}
-//        } else {
-//            [post setValue:@"original" forKey:@"local_status"];
-//            newPostCount++;
-//        }
-//
-//        // write the new post
-//        [post writeToFile:pathToPost atomically:YES];
-//
-//        // make a post title using the post
-//        NSMutableDictionary *postTitle = [self postTitleForPost:post];
-//
-//        // delete existing postTitle and add new post title to list
-//        NSInteger index = [self indexOfPostTitle:postTitle inList:(NSArray *)newPostTitlesList];
-//
-//        if (index != -1) {
-//            [newPostTitlesList removeObjectAtIndex:index];
-//        }
-//
-//        [newPostTitlesList addObject:postTitle];
-//    }
-//
-//    [self deletedPostsForExistingPosts:newPostTitlesList ofBlog:currentBlog andNewPosts:recentPostsList];
-//
-//    // sort and save the postTitles list
-//    NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
-//    [newPostTitlesList sortUsingDescriptors:[NSArray arrayWithObject:sd]];
-//    [sd release];
-//    [newPostTitlesList writeToFile:[self pathToPostTitles:blog]  atomically:YES];
-//    // increment blog counts and save blogs list
-//    [blog setObject:[NSNumber numberWithInt:[newPostTitlesList count]] forKey:@"totalPosts"];
-//    [blog setObject:[NSNumber numberWithInt:newPostCount] forKey:@"newposts"];
-//    NSInteger blogIndex = [self indexForBlogid:[blog valueForKey:kBlogId] hostName:[blog valueForKey:kBlogHostName]];
-//
-//    if (blogIndex >= 0) {
-//        [self->blogsList replaceObjectAtIndex:blogIndex withObject:blog];
-//    } else {
-////		[self->blogsList addObject:blog];
-//    }
-//
-////Commented code as per ticket#102
-////	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-////
-////	[self saveBlogData];
-//
-////	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
-//    [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-//    [self performSelectorOnMainThread:@selector(postBlogsRefreshNotificationInMainThread:) withObject:blog waitUntilDone:NO];
-//    return YES;
-//}
-//TODO JohnB remove the above commented method or remove the "split" methods below.
-//split the syncPostsForBlog to enable use of the "sync" part by the "load-10-at-a-time" enhancement
+- (void)syncStatusesForBlog:(NSMutableDictionary *)aBlog {
+	NSString *xmlrpc = [aBlog valueForKey:@"xmlrpc"];
+	NSString *pwd = [self getBlogPasswordFromKeychainWithUsername:[aBlog valueForKey:@"username"] andBlogName:[aBlog valueForKey:@"url"]];
+	
+	// Post status
+	XMLRPCRequest *getPostStatusListReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
+	[getPostStatusListReq setMethod:@"wp.getPostStatusList" withObjects:[NSArray arrayWithObjects:
+																		 [aBlog valueForKey:@"blogid"], 
+																		 [aBlog valueForKey:@"username"], 
+																		 pwd, 
+																		 nil]];
+	NSDictionary *postStatusList = [self executeXMLRPCRequest:getPostStatusListReq byHandlingError:YES];
+	[getPostStatusListReq release];
+	
+	if ([postStatusList isKindOfClass:[NSDictionary class]])
+		[aBlog setObject:postStatusList forKey:@"postStatusList"];
+	
+	// Page status
+	XMLRPCRequest *getPageStatusListReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
+	[getPageStatusListReq setMethod:@"wp.getPageStatusList" withObjects:[NSArray arrayWithObjects:
+																		 [aBlog valueForKey:@"blogid"], 
+																		 [aBlog valueForKey:@"username"], 
+																		 pwd, 
+																		 nil]];
+	NSDictionary *pageStatusList = [self executeXMLRPCRequest:getPageStatusListReq byHandlingError:YES];
+	[getPageStatusListReq release];
+	
+	if ([pageStatusList isKindOfClass:[NSDictionary class]])
+		[aBlog setObject:pageStatusList forKey:@"pageStatusList"];
+}
 
 // sync posts for a given blog
 - (BOOL)syncPostsForBlog:(id)blog {
@@ -5066,10 +4991,11 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 
 - (void)syncBlogs {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
-	[WordPressAppDelegate sharedWordPressApp].lastBlogSync = [NSDate date];
-    for (NSDictionary *blog in [blogsList mutableCopy]) {
+	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+	appDelegate.lastBlogSync = [NSDate date];
+    for (NSMutableDictionary *blog in [blogsList mutableCopy]) {
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 		if(self.shouldStopSyncingBlogs) {
 			self.shouldStopSyncingBlogs = NO;
 			break;
@@ -5086,6 +5012,7 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 			[Reachability sharedReachability].hostName = url;
 			if ([[Reachability sharedReachability] internetConnectionStatus]) {
 				@try {
+					NSLog(@"Syncing blog with URL: %@", [blog valueForKey:@"url"]);
 					[self syncCommentsForBlog:blog];
 					[self syncPostsForBlog:blog];
 					[self syncPagesForBlog:blog];
@@ -5093,13 +5020,43 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 				@catch (NSException * e) {}
 			}
 		}
-		else {
-			NSLog(@"skipping sync for currently selected blog with URL: %@", [blog objectForKey:@"url"]);
-		}
-
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	}
 	
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[pool release];
+}
+
+- (void)syncBlogCategoriesAndStatuses {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+    for (NSMutableDictionary *blog in [blogsList mutableCopy]) {
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+		if(self.shouldStopSyncingBlogs) {
+			self.shouldStopSyncingBlogs = NO;
+			break;
+		}
+		
+		if(([self.selectedBlogID isEqualToString:@""]) || (![self.selectedBlogID isEqualToString:[blog objectForKey:@"blogid"]])) {
+			NSString *url = [blog valueForKey:@"url"];
+			if (url != nil &&[url length] >= 7 &&[url hasPrefix:@"http://"])
+				url = [url substringFromIndex:7];
+			
+			if (url != nil &&[url length])
+				url = @"wordpress.com";
+			
+			[Reachability sharedReachability].hostName = url;
+			if ([[Reachability sharedReachability] internetConnectionStatus]) {
+				@try {
+					NSLog(@"Syncing categories and statuses for blog with URL: %@", [blog valueForKey:@"url"]);
+					[self syncCategoriesForBlog:blog];
+					[self syncStatusesForBlog:blog];
+				}
+				@catch (NSException * e) {}
+			}
+		}
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	}
+	
 	[pool release];
 }
 

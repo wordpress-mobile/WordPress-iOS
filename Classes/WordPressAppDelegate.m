@@ -28,7 +28,7 @@
 
 static WordPressAppDelegate *wordPressApp = NULL;
 
-@synthesize window, lastBlogSync;
+@synthesize window, lastBlogSync, currentBlog;
 @synthesize navigationController, alertRunning, isWPcomAuthenticated;
 @synthesize splitViewController, firstLaunchController, welcomeViewController;
 
@@ -67,6 +67,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
     [window release];
     [dataManager release];
 	[lastBlogSync release];
+	[currentBlog release];
     [super dealloc];
 }
 
@@ -85,6 +86,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
 
 	[self setAutoRefreshMarkers];
+	[self syncBlogCategoriesAndStatuses];
 	[self syncBlogs];
 	[self passwordIntoKeychain];
 	[self restoreCurrentBlog];
@@ -206,11 +208,16 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		NSCalendar *sysCalendar = [NSCalendar currentCalendar];
 		NSDateComponents *timeSince = [sysCalendar components:unitFlags fromDate:self.lastBlogSync toDate:[NSDate date] options:0];
 		
-		if([timeSince minute] > 5) {
+		if((self.lastBlogSync == nil) || ([timeSince minute] > 10)) {
+			NSLog(@"Syncing blogs...");
 			[dataManager performSelectorInBackground:@selector(syncBlogs) withObject:nil];
 		}
-		else
-			NSLog(@"Skipping blog sync. It's only been %d minutes since last sync.", [timeSince minute]);
+	}
+}
+
+- (void)syncBlogCategoriesAndStatuses {
+	if(dataManager.countOfBlogs > 0) {
+		[dataManager performSelectorInBackground:@selector(syncBlogCategoriesAndStatuses) withObject:nil];
 	}
 }
 
@@ -364,15 +371,15 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (int)indexForCurrentBlog {
-    NSDictionary *currentBlog = [dataManager currentBlog];
-    return [dataManager indexForBlogid:[currentBlog objectForKey:kBlogId] url:[currentBlog objectForKey:@"url"]];
+    NSDictionary *currentBDMBlog = [dataManager currentBlog];
+    return [dataManager indexForBlogid:[currentBDMBlog objectForKey:kBlogId] url:[currentBDMBlog objectForKey:@"url"]];
 }
 
 - (void)storeCurrentBlog {
-    NSDictionary *currentBlog = [dataManager currentBlog];
+    NSDictionary *currentBDMBlog = [dataManager currentBlog];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
-    if (currentBlog) {
+    if (currentBDMBlog) {
         [defaults setInteger:[self indexForCurrentBlog] forKey:kCurrentBlogIndex];
     }
     else {

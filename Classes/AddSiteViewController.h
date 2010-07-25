@@ -12,6 +12,7 @@
 #import "WPProgressHUD.h"
 #import "BlogDataManager.h"
 #import "AddUsersBlogsViewController.h"
+#import "BlogSettingsViewController.h"
 #import "Blog.h";
 
 @interface AddSiteViewController : UITableViewController<UITextFieldDelegate> {
