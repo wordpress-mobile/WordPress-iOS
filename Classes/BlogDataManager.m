@@ -88,7 +88,7 @@
 static BlogDataManager *sharedDataManager;
 
 @synthesize blogFieldNames, blogFieldNamesByTag, blogFieldTagsByName, selectedBlogID, 
-pictureFieldNames, postFieldNames, postFieldNamesByTag, postFieldTagsByName,
+pictureFieldNames, postFieldNames, postFieldNamesByTag, postFieldTagsByName, isSyncingCommentsAndStatuses,
 postTitleFieldNames, postTitleFieldNamesByTag, postTitleFieldTagsByName, unsavedPostsCount, currentPageIndex, currentPage, pageFieldNames,
 currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLocaDraftsCurrent, isPageLocalDraftsCurrent, currentPostIndex, currentDraftIndex, currentPageDraftIndex, asyncPostsOperationsQueue, currentUnsavedDraft,
 editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlogs;
@@ -1450,8 +1450,13 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 
 - (void)syncCategoriesForBlog:(NSMutableDictionary *)aBlog {
 	NSString *xmlrpc = [aBlog valueForKey:@"xmlrpc"];
+	NSString *url = [aBlog valueForKey:@"url"];
+	if([url hasPrefix:@"http"])
+		url = [url stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""];
+	if([url hasSuffix:@"/"])
+	   url = [url substringToIndex:url.length-1];
 	
-	NSString *pwd = [self getBlogPasswordFromKeychainWithUsername:[aBlog valueForKey:@"username"] andBlogName:[aBlog valueForKey:@"url"]];
+	NSString *pwd = [self getBlogPasswordFromKeychainWithUsername:[aBlog valueForKey:@"username"] andBlogName:url];
 	XMLRPCRequest *reqCategories = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
 	[reqCategories setMethod:@"wp.getCategories" withObjects: [NSArray arrayWithObjects:
 																[aBlog valueForKey:@"blogid"], 
@@ -1484,7 +1489,12 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 
 - (void)syncStatusesForBlog:(NSMutableDictionary *)aBlog {
 	NSString *xmlrpc = [aBlog valueForKey:@"xmlrpc"];
-	NSString *pwd = [self getBlogPasswordFromKeychainWithUsername:[aBlog valueForKey:@"username"] andBlogName:[aBlog valueForKey:@"url"]];
+	NSString *url = [aBlog valueForKey:@"url"];
+	if([url hasPrefix:@"http"])
+		url = [url stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""];
+	if([url hasSuffix:@"/"])
+	   url = [url substringToIndex:url.length-1];
+	NSString *pwd = [self getBlogPasswordFromKeychainWithUsername:[aBlog valueForKey:@"username"] andBlogName:url];
 	
 	// Post status
 	XMLRPCRequest *getPostStatusListReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
@@ -5029,32 +5039,58 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 - (void)syncBlogCategoriesAndStatuses {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-    for (NSMutableDictionary *blog in [blogsList mutableCopy]) {
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-		if(self.shouldStopSyncingBlogs) {
-			self.shouldStopSyncingBlogs = NO;
-			break;
-		}
-		
-		if(([self.selectedBlogID isEqualToString:@""]) || (![self.selectedBlogID isEqualToString:[blog objectForKey:@"blogid"]])) {
-			NSString *url = [blog valueForKey:@"url"];
-			if (url != nil &&[url length] >= 7 &&[url hasPrefix:@"http://"])
-				url = [url substringFromIndex:7];
-			
-			if (url != nil &&[url length])
-				url = @"wordpress.com";
-			
-			[Reachability sharedReachability].hostName = url;
-			if ([[Reachability sharedReachability] internetConnectionStatus]) {
-				@try {
-					NSLog(@"Syncing categories and statuses for blog with URL: %@", [blog valueForKey:@"url"]);
-					[self syncCategoriesForBlog:blog];
-					[self syncStatusesForBlog:blog];
-				}
-				@catch (NSException * e) {}
+	if(!isSyncingCommentsAndStatuses) {
+		self.isSyncingCommentsAndStatuses = YES;
+		NSDateFormatter *df = [[NSDateFormatter alloc] init];
+		[df setDateFormat:@"yyyy-MM-dd"];
+		NSDate *minDate = [df dateFromString:@"2010-01-01"];
+		for (NSMutableDictionary *blog in [blogsList mutableCopy]) {
+			[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+			if(self.shouldStopSyncingBlogs) {
+				self.shouldStopSyncingBlogs = NO;
+				break;
 			}
+			
+			NSDate *lastCategorySync;
+			if([blog objectForKey:@"lastCategorySync"] != nil)
+				lastCategorySync = [df dateFromString:[blog objectForKey:@"lastCategorySync"]];
+			else
+				lastCategorySync = minDate;
+			
+			unsigned int unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit;
+			NSCalendar *sysCalendar = [NSCalendar currentCalendar];
+			NSDateComponents *timeSince = [sysCalendar components:unitFlags fromDate:lastCategorySync toDate:[NSDate date] options:0];
+			
+			// Proceed only if we haven't synced for at least 1 day
+			if([timeSince day] > 1) {
+				if(([self.selectedBlogID isEqualToString:@""]) || (![self.selectedBlogID isEqualToString:[blog objectForKey:@"blogid"]])) {
+					NSString *url = [blog valueForKey:@"url"];
+					if (url != nil &&[url length] >= 7 &&[url hasPrefix:@"http://"])
+						url = [url substringFromIndex:7];
+					
+					if (url != nil &&[url length])
+						url = @"wordpress.com";
+					
+					[Reachability sharedReachability].hostName = url;
+					if ([[Reachability sharedReachability] internetConnectionStatus]) {
+						@try {
+							NSLog(@"Syncing categories and statuses for blog with URL: %@", [blog valueForKey:@"url"]);
+							[self syncCategoriesForBlog:blog];
+							[self syncStatusesForBlog:blog];
+							[blog setObject:[df stringFromDate:[NSDate date]] forKey:@"lastCategorySync"];
+						}
+						@catch (NSException * e) {}
+					}
+				}
+			}
+			else {
+				NSLog(@"Skipping category and status sync for blog with URL: %@", [blog valueForKey:@"url"]);
+			}
+			
+			
+			[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 		}
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+		self.isSyncingCommentsAndStatuses = NO;
 	}
 	
 	[pool release];

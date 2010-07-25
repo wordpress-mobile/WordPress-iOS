@@ -471,6 +471,8 @@
 	[[BlogDataManager sharedDataManager] setCurrentBlog:newBlog];
 	[BlogDataManager sharedDataManager].currentBlogIndex = -1;
 	[[BlogDataManager sharedDataManager] saveCurrentBlog];
+	[[BlogDataManager sharedDataManager] syncCategoriesForBlog:newBlog];
+	[[BlogDataManager sharedDataManager] syncStatusesForBlog:newBlog];
 	[newBlog release];
 	
 	[self performSelectorOnMainThread:@selector(didAddSiteSuccessfully) withObject:nil waitUntilDone:NO];
@@ -483,7 +485,6 @@
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[spinner dismiss];
-	[appDelegate syncBlogCategoriesAndStatuses];
 	[appDelegate syncBlogs];
 	[self.navigationController popToRootViewControllerAnimated:YES];
 }

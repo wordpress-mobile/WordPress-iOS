@@ -44,6 +44,7 @@
     BOOL isLocaDraftsCurrent;
     BOOL isPageLocalDraftsCurrent;
 	BOOL shouldStopSyncingBlogs;
+	BOOL isSyncingCommentsAndStatuses;
 	
     NSMutableDictionary *currentPost;
     NSArray *pageFieldNames;
@@ -99,6 +100,7 @@
 
 @property (nonatomic, copy, readonly) NSMutableDictionary *currentBlog;
 @property (nonatomic, assign) BOOL shouldStopSyncingBlogs;
+@property (nonatomic, assign) BOOL isSyncingCommentsAndStatuses;
 @property (nonatomic, assign) BOOL isLocaDraftsCurrent;
 @property (nonatomic, assign) BOOL isPageLocalDraftsCurrent;
 
