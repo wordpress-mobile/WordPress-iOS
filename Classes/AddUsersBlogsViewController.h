@@ -16,6 +16,7 @@
 #import "BlogDataManager.h"
 
 @interface AddUsersBlogsViewController : UIViewController <UITableViewDelegate, HTTPHelperDelegate> {
+	WordPressAppDelegate *appDelegate;
 	BOOL hasCompletedGetUsersBlogs, isWPcom;
 	NSArray *usersBlogs;
 	NSMutableArray *selectedBlogs;

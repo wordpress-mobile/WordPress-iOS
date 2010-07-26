@@ -130,6 +130,7 @@
 
         if ([[BlogDataManager sharedDataManager] countOfBlogs] == 0) {
             self.navigationItem.leftBarButtonItem = nil;
+			[self.tableView setEditing:NO animated:YES];
         }
     }
 }

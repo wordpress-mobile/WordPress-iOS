@@ -16,6 +16,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+	
 	hasValidXMLRPCurl = YES;	// Assume true until proven wrong.
 	addButtonText = @"Add Site";
 	self.navigationItem.title = @"Add Site";
@@ -30,6 +32,18 @@
 	[headerView addSubview:logo];
 	[logo release];
 	self.tableView.tableHeaderView = headerView;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	if(appDelegate.currentBlog == nil)
+		appDelegate.currentBlog = [[NSMutableDictionary alloc] init];
+	else {
+		NSLog(@"appDelegate.currentBlog.geotagging: %@", [appDelegate.currentBlog valueForKey:@"geotagging"]);
+		NSLog(@"appDelegate.currentBlog.resize: %@", [appDelegate.currentBlog valueForKey:kResizePhotoSetting]);
+		NSLog(@"appDelegate.currentBlog.postsdownload: %@", [appDelegate.currentBlog valueForKey:kPostsDownloadCount]);
+		NSLog(@"appDelegate.currentBlog.authenabled: %@", [appDelegate.currentBlog valueForKey:@"authEnabled"]);
+	}
+
 }
 
 #pragma mark -
@@ -83,7 +97,7 @@
 			addTextField.textColor = [UIColor blackColor];
 			if ([indexPath section] == 0) {
 				if (indexPath.row == 0) {
-					addTextField.placeholder = @"http://myexamplesite.com";
+					addTextField.placeholder = @"http://myawesomesite.com";
 					addTextField.keyboardType = UIKeyboardTypeEmailAddress;
 					addTextField.returnKeyType = UIReturnKeyNext;
 					if(url != nil)
@@ -108,25 +122,27 @@
 						addTextField.text = password;
 				}
 				else if(indexPath.row == 2) {
-					addTextField.placeholder = @"http://myexamplesite.com/xmlrpc.php";
+					addTextField.placeholder = @"http://myawesomesite.com/xmlrpc.php";
 					addTextField.keyboardType = UIKeyboardTypeDefault;
 					addTextField.returnKeyType = UIReturnKeyDone;
 					if(xmlrpc != nil)
 						addTextField.text = xmlrpc;
 				}
-			}           
-			addTextField.tag = indexPath.row;
-			addTextField.backgroundColor = [UIColor whiteColor];
-			addTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-			addTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-			addTextField.textAlignment = UITextAlignmentLeft;
-			addTextField.delegate = self;
-			
-			addTextField.clearButtonMode = UITextFieldViewModeNever;
-			[addTextField setEnabled: YES];
-			
-			[cell addSubview:addTextField];
-			[addTextField release];
+				
+				addTextField.tag = indexPath.row;
+				addTextField.backgroundColor = [UIColor whiteColor];
+				addTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+				addTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+				addTextField.textAlignment = UITextAlignmentLeft;
+				addTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+				addTextField.delegate = self;
+				
+				addTextField.clearButtonMode = UITextFieldViewModeNever;
+				[addTextField setEnabled: YES];
+				
+				[cell addSubview:addTextField];
+				[addTextField release];
+			}
 		}
 	}
     
@@ -216,13 +232,10 @@
 			}
 			else if(((!hasSubsites) && (indexPath.row == 0)) || (indexPath.row == 1)) {
 				// Settings
-				WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-				if(appDelegate.currentBlog == nil) {
-					Blog *currentBlog = [[Blog alloc] init];
-					[appDelegate setCurrentBlog:currentBlog];
-					[currentBlog release];
-					NSLog(@"Just created new appDelegate.currentBlog: %@", appDelegate.currentBlog);
-				}
+				if(url != nil)
+					[appDelegate.currentBlog setObject:url forKey:@"url"];
+				if(username != nil)
+					[appDelegate.currentBlog setObject:username forKey:@"username"];
 				BlogSettingsViewController *settingsView = [[BlogSettingsViewController alloc] initWithNibName:@"BlogSettingsViewController" bundle:nil];
 				[self.navigationController pushViewController:settingsView animated:YES];
 				[settingsView release];
@@ -233,7 +246,7 @@
 		case 2:
 			// Add Site
 			if(![self blogExists]) {
-				footerText = nil;
+				footerText = @" ";
 				addButtonText = @"Adding Site...";
 				isAdding = YES;
 				[tv deselectRowAtIndexPath:indexPath animated:YES];
@@ -264,7 +277,7 @@
 	
 	switch (indexPath.row) {
 		case 0:
-			if([textField.text isEqualToString:@""])
+			if(((username != nil) && (password != nil)) && ([textField.text isEqualToString:@""]))
 				footerText = @"URL is required.";
 			else {
 				[self setUrl:textField.text];
@@ -273,7 +286,7 @@
 			}
 			break;
 		case 1:
-			if([textField.text isEqualToString:@""])
+			if(((url != nil) && (password != nil)) && ([textField.text isEqualToString:@""]))
 				footerText = @"Username is required.";
 			else {
 				[self setUsername:textField.text];
@@ -281,7 +294,7 @@
 			}
 			break;
 		case 2:
-			if([textField.text isEqualToString:@""])
+			if(((username != nil) && (username != nil)) && ([textField.text isEqualToString:@""]))
 				footerText = @"Password is required.";
 			else {
 				[self setPassword:textField.text];
@@ -289,7 +302,7 @@
 			}
 			break;
 		case 3:
-			if((!hasValidXMLRPCurl) && ([textField.text isEqualToString:@""]))
+			if(((!hasValidXMLRPCurl) && (username != nil) && (password != nil)) && ([textField.text isEqualToString:@""]))
 				footerText = @"XMLRPC endpoint wasn't found. Please enter it manually.";
 			else {
 				[self setXmlrpc:textField.text];
@@ -301,11 +314,11 @@
 			break;
 	}
 	
-	[self.tableView reloadData];
-	
 	if((url != nil) && (username != nil) && (password != nil) && (xmlrpc != nil)) {
 		[self performSelectorInBackground:@selector(authenticate) withObject:nil];
 	}
+	
+	[self.tableView reloadData];
 }
 
 #pragma mark -
@@ -356,11 +369,11 @@
 	
 	isAuthenticated = [[WPDataController sharedInstance] authenticateUser:xmlrpc username:username password:password];
 	if(isAuthenticated) {
-		footerText = @"Authentication successful.";
+		footerText = @"Authenticated successfully.";
 		[self didAuthenticateSuccessfully];
 	}
 	else
-		footerText = @"Authentication failed.";
+		footerText = @"Incorrect username or password.";
 	[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -437,7 +450,7 @@
 	
 	NSString *authUsername = username;
 	NSString *authPassword = password;
-	NSNumber *authEnabled = [NSNumber numberWithBool:NO];
+	NSNumber *authEnabled = [appDelegate.currentBlog valueForKey:@"authEnabled"];
 	NSString *authBlogURL = [NSString stringWithFormat:@"%@_auth", url];
 	NSMutableDictionary *newBlog = [[NSMutableDictionary dictionaryWithObjectsAndKeys:
 									 username, @"username", 
@@ -461,7 +474,9 @@
 	[[BlogDataManager sharedDataManager] updatePasswordInKeychain:authPassword
 													  andUserName:authUsername
 													   andBlogURL:authBlogURL];
-	//[newBlog setValue:value forKey:kResizePhotoSetting];
+	[newBlog setValue:[appDelegate.currentBlog valueForKey:kResizePhotoSetting] forKey:kResizePhotoSetting];
+	[newBlog setValue:[appDelegate.currentBlog valueForKey:kPostsDownloadCount] forKey:kResizePhotoSetting];
+	[newBlog setValue:[appDelegate.currentBlog valueForKey:kGeolocationSetting] forKey:kGeolocationSetting];
 	[newBlog setValue:[NSNumber numberWithBool:YES] forKey:kSupportsPagesAndComments];
 	
 	[BlogDataManager sharedDataManager].isProblemWithXMLRPC = NO;
@@ -481,12 +496,16 @@
 }
 
 - (void)didAddSiteSuccessfully {
-	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[spinner dismiss];
 	[appDelegate syncBlogs];
 	[self.navigationController popToRootViewControllerAnimated:YES];
+	appDelegate.currentBlog = nil;
+	
+	[pool release];
 }
 
 - (void)addSiteFailed {
@@ -516,6 +535,7 @@
 
 - (void)dealloc {
 	[subsites release];
+	subsites = nil;
 	[addUsersBlogsView release];
 	[blogID release];
 	[blogName release];

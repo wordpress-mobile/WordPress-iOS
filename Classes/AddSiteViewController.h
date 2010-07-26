@@ -16,6 +16,7 @@
 #import "Blog.h";
 
 @interface AddSiteViewController : UITableViewController<UITextFieldDelegate> {
+	WordPressAppDelegate *appDelegate;
 	WPProgressHUD *spinner;
 	AddUsersBlogsViewController *addUsersBlogsView;
 	NSString *footerText, *addButtonText, *url, *xmlrpc, *username, *password, *blogID, *blogName, *host;

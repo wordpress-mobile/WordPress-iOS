@@ -10,7 +10,7 @@
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate> {
 	NSDate *lastBlogSync;
-	Blog *currentBlog;
+	NSMutableDictionary *currentBlog;
 @private
     BlogDataManager *dataManager;
 
@@ -42,7 +42,7 @@
 @property (nonatomic, retain) WelcomeViewController *welcomeViewController;
 @property (nonatomic, assign) BOOL isWPcomAuthenticated;
 @property (nonatomic, retain) NSDate *lastBlogSync;
-@property (nonatomic, retain) Blog *currentBlog;
+@property (nonatomic, retain) NSMutableDictionary *currentBlog;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;

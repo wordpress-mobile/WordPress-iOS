@@ -19,6 +19,7 @@
     [super viewDidLoad];
 	self.navigationItem.title = @"Select Blogs";
 	selectedBlogs = [[NSMutableArray alloc] init];
+	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	
 	// Setup WPcom table header
 	NSString *logoFile = @"logo_wporg";
@@ -41,7 +42,6 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	
-	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	if((isWPcom) && (!appDelegate.isWPcomAuthenticated)) {
 		WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController" bundle:nil];
 		[self.navigationController presentModalViewController:wpComLogin animated:YES];
@@ -224,7 +224,6 @@
 }
 
 - (void)didSaveSelectedBlogsInBackground {
-	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	[spinner dismissWithClickedButtonIndex:0 animated:YES];
     [spinner release];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;

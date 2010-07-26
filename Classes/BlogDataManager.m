@@ -2477,7 +2477,7 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 }
 
 - (NSDictionary *)postTitleAtIndex:(NSUInteger)theIndex {
-	if(postTitlesList.count >= theIndex)
+	if((postTitlesList.count >= theIndex) && ([postTitlesList objectAtIndex:theIndex] != nil))
 		return [postTitlesList objectAtIndex:theIndex];
 	else
 		return 0;
@@ -5005,7 +5005,6 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	appDelegate.lastBlogSync = [NSDate date];
     for (NSMutableDictionary *blog in [blogsList mutableCopy]) {
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 		if(self.shouldStopSyncingBlogs) {
 			self.shouldStopSyncingBlogs = NO;
 			break;
@@ -5030,7 +5029,6 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 				@catch (NSException * e) {}
 			}
 		}
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	}
 	
 	[pool release];
