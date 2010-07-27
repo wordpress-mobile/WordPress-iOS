@@ -33,9 +33,9 @@
 	
 	[postsViewController release], postsViewController = nil;
 	[pagesViewController release], pagesViewController = nil;
-	[commentsViewController release], commentsViewController = nil;
 	
 	[detailNavController release], detailNavController = nil;
+    [commentsViewController release], commentsViewController = nil;
 
     [super dealloc];
 }

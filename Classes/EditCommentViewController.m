@@ -136,7 +136,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 - (void)endTextEnteringButtonAction:(id)sender {
     [textView resignFirstResponder];
 	if (DeviceIsPad() == NO) {
-		UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
+		//UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
 		//if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
 //			// private API
 //			[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];

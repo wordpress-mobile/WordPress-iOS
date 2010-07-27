@@ -137,7 +137,7 @@
     int count = [customFieldsArray count];
 
     for (int i = 0; i < count; i++) {
-        NSString *tempKey = [[customFieldsArray objectAtIndex:i] objectForKey:@"key"];
+        //NSString *tempKey = [[customFieldsArray objectAtIndex:i] objectForKey:@"key"];
         if ([rowString isEqualToString:[[customFieldsArray objectAtIndex:i] objectForKey:@"key"]]) {
             oneCustomFieldDict = [customFieldsArray objectAtIndex:i];
             return oneCustomFieldDict;

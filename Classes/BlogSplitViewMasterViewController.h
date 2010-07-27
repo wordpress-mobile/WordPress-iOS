@@ -36,7 +36,6 @@ typedef enum _WPItemType {
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet PostsViewController *postsViewController;
 @property (nonatomic, retain) IBOutlet PagesViewController *pagesViewController;
-@property (nonatomic, retain) IBOutlet CommentsViewController *commentsViewController;
 @property (nonatomic, retain) IBOutlet UINavigationController *detailNavController;
 
 - (void)currentBlogChanged;

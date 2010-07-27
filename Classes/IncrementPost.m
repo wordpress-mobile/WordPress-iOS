@@ -345,8 +345,7 @@
     [currentBlog setObject:[NSNumber numberWithInt:[newPostTitlesList count]] forKey:@"totalPosts"];
 	[currentBlog setObject:[NSNumber numberWithInt:newPostCount] forKey:@"newposts"];
 			
-    NSInteger blogIndex = [dm indexForBlogid:[currentBlog valueForKey:kBlogId] hostName:[currentBlog valueForKey:@"url"]];
-	
+    NSInteger blogIndex = [dm indexForBlogid:[currentBlog valueForKey:kBlogId] url:[currentBlog valueForKey:@"url"]];
     if (blogIndex >= 0) {
         //[dm->blogsList replaceObjectAtIndex:blogIndex withObject:currentBlog];
 		[dm updateBlogsListByIndex:blogIndex withDict:currentBlog];

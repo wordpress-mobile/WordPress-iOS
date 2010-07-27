@@ -2862,7 +2862,7 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 	
 	NSInteger newPageCount = 0;
 	NSString *pageid = @"nil";
-	int pageIDInt;
+	//int pageIDInt;
 	
 	newPageCount = 0;
 	while (pageMetadataDict = [pagesEnum nextObject]) {
@@ -3122,7 +3122,6 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
     [pool release];
 }
 
-// mod of wrapperForSyncPostsAndGetTemplateForBlog for multiple blog setup
 - (void)newAccountPostsAndTemplateSync:(id)aBlog {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     [aBlog retain];
@@ -3143,8 +3142,6 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 	
     [aBlog release];
     [pool release];
-	
-    return YES;
 }
 
 //TODO: preview based on template.
