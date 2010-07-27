@@ -2475,7 +2475,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs;
 }
 
 - (NSDictionary *)postTitleAtIndex:(NSUInteger)theIndex {
-	if((postTitlesList != nil) && (postTitlesList.count >= theIndex) && ([postTitlesList objectAtIndex:theIndex] != nil))
+	if((postTitlesList != nil) && (postTitlesList.count >= 0) && ([postTitlesList objectAtIndex:theIndex] != nil))
 		return [postTitlesList objectAtIndex:theIndex];
 	else
 		return 0;

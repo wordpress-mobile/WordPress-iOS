@@ -117,6 +117,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			geolocationSetting = YES;
 		}
 	}
+	else
+		geolocationSetting = [[[[BlogDataManager sharedDataManager] currentBlog] objectForKey:kGeolocationSetting] boolValue];
 	
 	if(geolocationSetting == YES) {
 		// Geolocation enabled, let's get this party started.
