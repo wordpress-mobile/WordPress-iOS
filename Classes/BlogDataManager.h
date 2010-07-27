@@ -4,7 +4,6 @@
 #import "XMLRPCRequest.h"
 #import "XMLRPCConnection.h"
 #import "RegExProcessor.h"
-#import "EditBlogViewController.h"
 #import "SFHFKeychainUtils.h"
 #import "Reachability.h"
 #import "Blog.h"
@@ -69,7 +68,6 @@
 	
     NSOperationQueue *asyncPostsOperationsQueue;
     NSMutableDictionary *currentUnsavedDraft;
-	EditBlogViewController *editBlogViewController;
 	
 	BOOL isProblemWithXMLRPC;
 	CLLocation *currentLocation;
@@ -111,7 +109,6 @@
 @property (nonatomic, readonly) NSOperationQueue *asyncPostsOperationsQueue;
 @property (nonatomic) int unsavedPostsCount;
 @property (nonatomic, retain) NSMutableDictionary *currentUnsavedDraft;
-@property (nonatomic, retain) EditBlogViewController *editBlogViewController;
 @property (nonatomic, retain) CLLocation *currentLocation;
 //BOOLs for handling XMLRPC issues...  See LocateXMLRPCViewController
 @property BOOL isProblemWithXMLRPC; 

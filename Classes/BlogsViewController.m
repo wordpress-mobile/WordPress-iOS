@@ -94,7 +94,12 @@
 
     if ([self.tableView cellForRowAtIndexPath:indexPath].editing) {
         [[BlogDataManager sharedDataManager] copyBlogAtIndexCurrent:(indexPath.row)];
-        EditBlogViewController *blogDetailViewController = [[EditBlogViewController alloc] initWithNibName:@"EditBlogViewController" bundle:nil];
+        EditSiteViewController *blogDetailViewController = [[EditSiteViewController alloc] initWithNibName:@"EditSiteViewController" bundle:nil];
+		blogDetailViewController.blogName = [[[BlogDataManager sharedDataManager] blogAtIndex:indexPath.row] objectForKey:@"blogName"];
+		blogDetailViewController.blogID = [[[BlogDataManager sharedDataManager] blogAtIndex:indexPath.row] objectForKey:kBlogId];
+		blogDetailViewController.url = [[[BlogDataManager sharedDataManager] blogAtIndex:indexPath.row] objectForKey:@"url"];
+		blogDetailViewController.host = [[[BlogDataManager sharedDataManager] blogAtIndex:indexPath.row] objectForKey:kBlogHostName];
+
 		if (DeviceIsPad() == YES)
 		{
 			UINavigationController *modalNavigationController = [[UINavigationController alloc] initWithRootViewController:blogDetailViewController];
@@ -187,8 +192,7 @@
 }
 
 - (void)showBlogDetailModalViewWithAnimation:(BOOL)animate {
-	
-	EditBlogViewController *blogDetailViewController = [[[EditBlogViewController alloc] initWithNibName:@"EditBlogViewController" bundle:nil] autorelease];
+	EditSiteViewController *blogDetailViewController = [[[EditSiteViewController alloc] initWithNibName:@"EditSiteViewController" bundle:nil] autorelease];
 	UINavigationController *modalNavigationController = [[UINavigationController alloc] initWithRootViewController:blogDetailViewController];
 	if (DeviceIsPad() == YES)
 	{

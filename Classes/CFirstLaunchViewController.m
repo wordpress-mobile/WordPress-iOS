@@ -8,7 +8,7 @@
 
 #import "CFirstLaunchViewController.h"
 
-#import "EditBlogViewController.h"
+#import "EditSiteViewController.h"
 #import "BlogDataManager.h"
 #import "CNewBlogSignupViewController.h"
 
@@ -56,7 +56,7 @@ return YES;
 
 - (IBAction)actionNewBlog:(id)inSender
 {
-EditBlogViewController *blogDetailViewController = [[[EditBlogViewController alloc] initWithNibName:@"EditBlogViewController" bundle:nil] autorelease];
+EditSiteViewController *blogDetailViewController = [[[EditSiteViewController alloc] initWithNibName:@"EditSiteViewController" bundle:nil] autorelease];
 
 [[BlogDataManager sharedDataManager] makeNewBlogCurrent];
 

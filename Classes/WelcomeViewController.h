@@ -11,7 +11,7 @@
 #import "WebSignupViewController.h"
 #import "AddUsersBlogsViewController.h"
 #import "AddSiteViewController.h"
-#import "EditBlogViewController.h"
+#import "EditSiteViewController.h"
 #import "BlogDataManager.h"
 
 @interface WelcomeViewController : UIViewController<UITableViewDelegate> {

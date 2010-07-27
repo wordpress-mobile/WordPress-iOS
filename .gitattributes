@@ -16,8 +16,6 @@ Classes/Blog.h -text
 Classes/Blog.m -text
 Classes/BlogDataManager.h -text
 Classes/BlogDataManager.m -text
-Classes/BlogHTTPAuthenticationViewController.h -text
-Classes/BlogHTTPAuthenticationViewController.m -text
 Classes/BlogHTTPAuthenticationViewController.xib -text
 Classes/BlogSettingsViewController.h -text
 Classes/BlogSettingsViewController.m -text
@@ -56,13 +54,14 @@ Classes/CommentsViewController.m -text
 Classes/Constants.h -text
 Classes/DashboardViewController.h -text
 Classes/DashboardViewController.m -text
-Classes/EditBlogViewController.h -text
-Classes/EditBlogViewController.m -text
 Classes/EditPageViewController.h -text
 Classes/EditPageViewController.m -text
 Classes/EditPostParentModalViewController.xib -text
 Classes/EditPostViewController.h -text
 Classes/EditPostViewController.m -text
+Classes/EditSiteViewController.h -text
+Classes/EditSiteViewController.m -text
+Classes/EditSiteViewController.xib -text
 Classes/FlippingViewController.h -text
 Classes/FlippingViewController.m -text
 Classes/GravatarImageView.h -text
@@ -220,7 +219,6 @@ Classes/glossyButton-normal.png -text svneol=unset#unset
 /Default.png -text
 /Default@2x.png -text
 /Disclosure[!!-~]Indicator.png -text
-/EditBlogViewController.xib -text
 /EditPageViewController-iPad.xib -text
 /EditPageViewController.xib -text
 /EditPostViewController-iPad.xib -text

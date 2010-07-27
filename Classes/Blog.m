@@ -35,7 +35,7 @@
 	fileName = [fileName stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""];
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *faviconFilePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:fileName];
-
+	
     if ([[NSFileManager defaultManager] fileExistsAtPath:faviconFilePath] == YES) {
         faviconImage = [UIImage imageWithContentsOfFile:faviconFilePath];
     }
@@ -55,7 +55,7 @@
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
     NSDictionary *blog = [[BlogDataManager sharedDataManager] blogAtIndex:index];
-	NSString *faviconURL = [NSString stringWithFormat:@"%@favicon.ico", [blog valueForKey:@"url"]];
+	NSString *faviconURL = [NSString stringWithFormat:@"%@/favicon.ico", [blog valueForKey:@"url"]];
 	if(![faviconURL hasPrefix:@"http"])
 		faviconURL = [NSString stringWithFormat:@"http://%@", faviconURL];
 	
@@ -69,6 +69,7 @@
 		//[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 		[[NSFileManager defaultManager] createFileAtPath:faviconFilePath contents:UIImagePNGRepresentation(faviconImage) attributes:nil];
 	}
+
 	
 	[pool release];
 }

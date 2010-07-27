@@ -91,7 +91,7 @@ static BlogDataManager *sharedDataManager;
 pictureFieldNames, postFieldNames, postFieldNamesByTag, postFieldTagsByName, isSyncingCommentsAndStatuses,
 postTitleFieldNames, postTitleFieldNamesByTag, postTitleFieldTagsByName, unsavedPostsCount, currentPageIndex, currentPage, pageFieldNames,
 currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLocaDraftsCurrent, isPageLocalDraftsCurrent, currentPostIndex, currentDraftIndex, currentPageDraftIndex, asyncPostsOperationsQueue, currentUnsavedDraft,
-editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlogs;
+currentLocation, currentBlogIndex, shouldStopSyncingBlogs;
 //BOOL for handling XMLRPC issues...  See LocateXMLRPCViewController
 @synthesize isProblemWithXMLRPC; 
 
@@ -1719,7 +1719,6 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 
 - (void)saveBlogData {
     NSString *blogsArchiveFilePath = [currentDirectoryPath stringByAppendingPathComponent:@"blogs.archive"];
-	
     if ((blogsList.count > 0) || ([[NSFileManager defaultManager] fileExistsAtPath:blogsArchiveFilePath]))
         [NSKeyedArchiver archiveRootObject:blogsList toFile:blogsArchiveFilePath];
 }
@@ -2106,17 +2105,16 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
         return;
 	
 	NSMutableDictionary *cb = [currentBlog mutableCopy];
-	[blogsList addObject:cb];
-	
     if (currentBlogIndex == -1) {
+		[blogsList addObject:cb];
         //re-sort the blogs list to place the new blog at the proper index
         [self sortBlogData];
-        [self saveBlogData];
 		
         //find the index where the blog was placed
         currentBlogIndex = [self indexForBlogid:[currentBlog valueForKey:kBlogId]
 									   url:[currentBlog valueForKey:@"url"]];
     }
+	[self saveBlogData];
 	[cb release];
 }
 
@@ -2128,7 +2126,7 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
     }
 }
 
-- (void) updateBlogsListByIndex:(NSInteger )blogIndex withDict:(NSDictionary *)aBlog{
+- (void)updateBlogsListByIndex:(NSInteger )blogIndex withDict:(NSDictionary *)aBlog{
 	[blogsList replaceObjectAtIndex:blogIndex withObject:aBlog];
 	//this exists so I can touch blogsList from IncrementPost
 }
@@ -2477,7 +2475,7 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 }
 
 - (NSDictionary *)postTitleAtIndex:(NSUInteger)theIndex {
-	if((postTitlesList.count >= theIndex) && ([postTitlesList objectAtIndex:theIndex] != nil))
+	if((postTitlesList != nil) && (postTitlesList.count >= theIndex) && ([postTitlesList objectAtIndex:theIndex] != nil))
 		return [postTitlesList objectAtIndex:theIndex];
 	else
 		return 0;
@@ -5018,7 +5016,6 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 			[Reachability sharedReachability].hostName = url;
 			if ([[Reachability sharedReachability] internetConnectionStatus]) {
 				@try {
-					NSLog(@"Syncing blog with URL: %@", [blog valueForKey:@"url"]);
 					[self syncCommentsForBlog:blog];
 					[self syncPostsForBlog:blog];
 					[self syncPagesForBlog:blog];
@@ -5069,7 +5066,6 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 					[Reachability sharedReachability].hostName = url;
 					if ([[Reachability sharedReachability] internetConnectionStatus]) {
 						@try {
-							NSLog(@"Syncing categories and statuses for blog with URL: %@", [blog valueForKey:@"url"]);
 							[self syncCategoriesForBlog:blog];
 							[self syncStatusesForBlog:blog];
 							[blog setObject:[df stringFromDate:[NSDate date]] forKey:@"lastCategorySync"];
@@ -5078,10 +5074,6 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
 					}
 				}
 			}
-			else {
-				NSLog(@"Skipping category and status sync for blog with URL: %@", [blog valueForKey:@"url"]);
-			}
-			
 			
 			[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 		}
@@ -5236,20 +5228,14 @@ editBlogViewController, currentLocation, currentBlogIndex, shouldStopSyncingBlog
  */
 
 
--(NSString*) getPasswordFromKeychainInContextOfCurrentBlog:(NSDictionary *)theCurrentBlog {
+- (NSString *)getPasswordFromKeychainInContextOfCurrentBlog:(NSDictionary *)theCurrentBlog {
 	NSString * username = [theCurrentBlog valueForKey:@"username"];
-	NSString * url		= [theCurrentBlog valueForKey:@"url"];
+	NSString * url = [theCurrentBlog valueForKey:@"url"];
 	url = [url stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-	//NSLog(@"inside getPasswordFromKeychainInContextofCurrentBlog %@, %@", username, url);
-	//!!TODO Trim url to eliminate http:// here!
 	
-	//url = [url stringByReplacingOccurrencesOfString:@"www." withString:@""];
 	if ((username == @"") || (url == @"")) {
 		NSString *password = @"";
-		//NSLog(@"getPasswordFromKeychainInContextofCurrentBlog... password is empty %@", password);
 		return password;
-		
-		//if username and url are empty, it's a new blog and there is no entry yet, just return an empty string
 	}else{
 		NSString * password = [self getBlogPasswordFromKeychainWithUsername:username andBlogName:url];
 		return password;

@@ -99,15 +99,27 @@ NSTimeInterval kAnimationDuration = 0.3f;
         //customFieldsEditButton.enabled = NO;
     }
 	
-	// Check that Geotagging is enabled
-	NSString *geotaggingSettingName = [NSString stringWithFormat:@"%@-Geotagging", [[[BlogDataManager sharedDataManager]  currentBlog] valueForKey:kBlogId]];
-	if(![[NSUserDefaults standardUserDefaults] boolForKey:geotaggingSettingName])
-	{
-		// If disabled, hide our geo button
-		locationButton.hidden = YES;
+	// Update older geolocation setting to new format
+	BOOL geolocationSetting = NO;
+	NSString *geotaggingSettingName = [NSString stringWithFormat:@"%@-Geotagging", [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:kBlogId]];
+	
+	if([[[BlogDataManager sharedDataManager] currentBlog] objectForKey:kGeolocationSetting] == nil) {
+		NSLog(@"Updating old geolocation setting to new format...");
+		if(![[NSUserDefaults standardUserDefaults] boolForKey:geotaggingSettingName])
+		{
+			[[[BlogDataManager sharedDataManager] currentBlog] setValue:@"NO" forKey:kGeolocationSetting];
+			[[NSUserDefaults standardUserDefaults] removeObjectForKey:geotaggingSettingName];
+			geolocationSetting = NO;
+		}
+		else {
+			[[[BlogDataManager sharedDataManager] currentBlog] setValue:@"YES" forKey:kGeolocationSetting];
+			[[NSUserDefaults standardUserDefaults] removeObjectForKey:geotaggingSettingName];
+			geolocationSetting = YES;
+		}
 	}
-	else {
-		// Otherwise, show the geo button, and get this party started
+	
+	if(geolocationSetting == YES) {
+		// Geolocation enabled, let's get this party started.
 		locationButton.hidden = NO;
 		
 		// If the post has already been geotagged, reflect this in the icon, and store the
@@ -134,10 +146,14 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			// Set our geo button back to normal
 			[locationButton setImage:[UIImage imageNamed:@"getLocation.png"] forState:UIControlStateNormal];
 		}
-		
-		[locationButton setNeedsLayout];
-		[locationButton setNeedsDisplay];
 	}
+	else {
+		// Geolocation disabled, hide our geo button.
+		locationButton.hidden = YES;
+	}
+	
+	[locationButton setNeedsLayout];
+	[locationButton setNeedsDisplay];
 	
     [self postionTextViewContentView];
     [self refreshUIForCurrentPost];

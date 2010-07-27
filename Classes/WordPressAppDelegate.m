@@ -209,7 +209,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		NSDateComponents *timeSince = [sysCalendar components:unitFlags fromDate:self.lastBlogSync toDate:[NSDate date] options:0];
 		
 		if((self.lastBlogSync == nil) || ([timeSince minute] > 10)) {
-			NSLog(@"Syncing blogs...");
 			[dataManager performSelectorInBackground:@selector(syncBlogs) withObject:nil];
 		}
 	}

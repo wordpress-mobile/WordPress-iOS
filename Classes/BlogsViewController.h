@@ -4,7 +4,6 @@
 #import "WordPressAppDelegate.h"
 #import "AboutViewController.h"
 #import "BlogViewController.h"
-#import "EditBlogViewController.h"
 #import "BlogDataManager.h"
 #import "Reachability.h"
 #import "PostsViewController.h"
@@ -15,7 +14,7 @@
 #import "BlogSplitViewMasterViewController.h"
 #import "CPopoverManager.h"
 
-@class BlogDataManager, WordPressAppDelegate, EditBlogViewController, BlogViewController;
+@class BlogDataManager, WordPressAppDelegate, EditSiteViewController, BlogViewController;
 
 @interface BlogsViewController : UITableViewController {
 }
