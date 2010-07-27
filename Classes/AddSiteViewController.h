@@ -3,7 +3,6 @@
 //  WordPress
 //
 //  Created by Chris Boyd on 7/23/10.
-//  Copyright 2010 WordPress. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -45,5 +44,6 @@
 - (BOOL)blogExists;
 - (void)keyboardWillShow:(NSNotification *)notification;
 - (void)keyboardWillHide:(NSNotification *)notification;
+- (void)urlDidChange;
 
 @end

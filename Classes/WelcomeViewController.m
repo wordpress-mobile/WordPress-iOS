@@ -1,9 +1,8 @@
-    //
+//
 //  WelcomeViewController.m
 //  WordPress
 //
 //  Created by Dan Roundhill on 5/5/10.
-//  
 //
 
 #import "WelcomeViewController.h"

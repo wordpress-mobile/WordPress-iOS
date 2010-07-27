@@ -3,7 +3,6 @@
 //  WordPress
 //
 //  Created by Chris Boyd on 7/25/10.
-//  Copyright 2010 WordPress. All rights reserved.
 //
 
 #import "BlogSettingsViewController.h"

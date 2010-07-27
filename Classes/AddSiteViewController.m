@@ -112,7 +112,6 @@
 					addTextField.placeholder = @"http://myawesomesite.com";
 					addTextField.keyboardType = UIKeyboardTypeEmailAddress;
 					addTextField.returnKeyType = UIReturnKeyDone;
-					NSLog(@"Setting addTextField.text to url: %@", url);
 					if(url != nil)
 						addTextField.text = url;
 				}
@@ -311,6 +310,7 @@
 				footerText = @"URL is required.";
 			else {
 				[self setUrl:textField.text];
+                [self urlDidChange];
 				footerText = nil;
 				[self performSelectorInBackground:@selector(getXMLRPCurl) withObject:nil];
 			}
@@ -440,8 +440,6 @@
 		else {
 			hasValidXMLRPCurl = YES;
 		}
-		
-		[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
 	}
 	 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -466,6 +464,27 @@
 
 - (void)setXMLRPCUrl:(NSString *)xmlrpcUrl {
 	xmlrpc = xmlrpcUrl;
+}
+
+- (void)urlDidChange {
+    NSInteger numSections = [self numberOfSectionsInTableView:self.tableView];
+    BOOL didFindUrlTextField = NO;
+	for(NSInteger s = 0; s < numSections; s++) { 
+		NSInteger numRowsInSection = [self tableView:self.tableView numberOfRowsInSection:s]; 
+		for(NSInteger r = 0; r < numRowsInSection; r++) {
+			UITableViewCell *cell = (UITableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:r inSection:s]]; 
+			for(UIView *subview in cell.contentView.subviews) {
+                if([subview isKindOfClass:[UITextField class]]) {
+                    UITextField *textField = (UITextField *)subview;
+                    textField.text = url;
+                    didFindUrlTextField = YES;
+                    break;
+                }
+            }
+            if(didFindUrlTextField)
+                break;
+        }
+    }
 }
 
 - (void)addSite {

@@ -3,7 +3,6 @@
 //  WordPress
 //
 //  Created by John Bickerstaff on 7/11/09.
-// 
 //
 
 #import "LocateXMLRPCViewController.h"
