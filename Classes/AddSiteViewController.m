@@ -8,8 +8,8 @@
 
 @implementation AddSiteViewController
 @synthesize spinner, footerText, addButtonText, url, xmlrpc, username, password;
-@synthesize isAuthenticating, isAuthenticated, isAdding, hasSubsites, subsites;
-@synthesize hasValidXMLRPCurl, blogID, blogName, host, addUsersBlogsView;
+@synthesize isAuthenticating, isAuthenticated, isAdding, hasSubsites, subsites, viewDidMove, keyboardIsVisible;
+@synthesize hasValidXMLRPCurl, blogID, blogName, host, addUsersBlogsView, activeTextField;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -37,13 +37,22 @@
 - (void)viewWillAppear:(BOOL)animated {
 	if(appDelegate.currentBlog == nil)
 		appDelegate.currentBlog = [[NSMutableDictionary alloc] init];
-	else {
-		NSLog(@"appDelegate.currentBlog.geotagging: %@", [appDelegate.currentBlog valueForKey:@"geotagging"]);
-		NSLog(@"appDelegate.currentBlog.resize: %@", [appDelegate.currentBlog valueForKey:kResizePhotoSetting]);
-		NSLog(@"appDelegate.currentBlog.postsdownload: %@", [appDelegate.currentBlog valueForKey:kPostsDownloadCount]);
-		NSLog(@"appDelegate.currentBlog.authenabled: %@", [appDelegate.currentBlog valueForKey:@"authEnabled"]);
-	}
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) 
+												 name:UIKeyboardWillShowNotification
+											   object:self.view.window];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) 
+												 name:UIKeyboardWillHideNotification
+											   object:nil];
+}
 
+- (void)viewWillDisappear:(BOOL)animated {
+	[[NSNotificationCenter defaultCenter] removeObserver:self
+													name:UIKeyboardWillShowNotification object:nil];
+	
+	[[NSNotificationCenter defaultCenter] removeObserver:self
+													name:UIKeyboardWillHideNotification object:nil];
+	[super viewWillDisappear:animated];
 }
 
 #pragma mark -
@@ -79,8 +88,10 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
+	static NSString *activityCellIdentifier = @"ActivityCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[self.tableView dequeueReusableCellWithIdentifier:activityCellIdentifier];
     if (cell == nil) {
 		UITableViewCellStyle cellStyle;
 		if((indexPath.section == 1) && (hasSubsites))
@@ -97,16 +108,18 @@
 			addTextField.textColor = [UIColor blackColor];
 			if ([indexPath section] == 0) {
 				if (indexPath.row == 0) {
+					activeTextField = addTextField;
 					addTextField.placeholder = @"http://myawesomesite.com";
 					addTextField.keyboardType = UIKeyboardTypeEmailAddress;
-					addTextField.returnKeyType = UIReturnKeyNext;
+					addTextField.returnKeyType = UIReturnKeyDone;
+					NSLog(@"Setting addTextField.text to url: %@", url);
 					if(url != nil)
 						addTextField.text = url;
 				}
 				else if(indexPath.row == 1) {
 					addTextField.placeholder = @"WordPress username.";
 					addTextField.keyboardType = UIKeyboardTypeDefault;
-					addTextField.returnKeyType = UIReturnKeyNext;
+					addTextField.returnKeyType = UIReturnKeyDone;
 					if(username != nil)
 						addTextField.text = username;
 				}
@@ -116,7 +129,7 @@
 					if(xmlrpc != nil)
 						addTextField.returnKeyType = UIReturnKeyDone;
 					else
-						addTextField.returnKeyType = UIReturnKeyNext;
+						addTextField.returnKeyType = UIReturnKeyDone;
 					addTextField.secureTextEntry = YES;
 					if(password != nil)
 						addTextField.text = password;
@@ -142,6 +155,18 @@
 				
 				[cell addSubview:addTextField];
 				[addTextField release];
+			}
+		}
+	}
+	
+	if(activityCell == nil) {
+		NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
+		for(id currentObject in topLevelObjects)
+		{
+			if([currentObject isKindOfClass:[UITableViewActivityCell class]])
+			{
+				activityCell = (UITableViewActivityCell *)currentObject;
+				break;
 			}
 		}
 	}
@@ -176,7 +201,6 @@
 		}
 	}
 	else if(indexPath.section == 2) {
-		cell.textLabel.textAlignment = UITextAlignmentCenter;
 		cell.textLabel.text = addButtonText;
 	}
     
@@ -236,6 +260,8 @@
 					[appDelegate.currentBlog setObject:url forKey:@"url"];
 				if(username != nil)
 					[appDelegate.currentBlog setObject:username forKey:@"username"];
+				[activeTextField becomeFirstResponder];
+				[activeTextField resignFirstResponder];
 				BlogSettingsViewController *settingsView = [[BlogSettingsViewController alloc] initWithNibName:@"BlogSettingsViewController" bundle:nil];
 				[self.navigationController pushViewController:settingsView animated:YES];
 				[settingsView release];
@@ -269,6 +295,10 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 	[textField resignFirstResponder];
 	return YES;	
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    activeTextField = textField;
 }
 
 - (void)textFieldDidEndEditing: (UITextField *) textField {
@@ -318,7 +348,7 @@
 		[self performSelectorInBackground:@selector(authenticate) withObject:nil];
 	}
 	
-	[self.tableView reloadData];
+	activeTextField = nil;
 }
 
 #pragma mark -
@@ -391,7 +421,7 @@
 	
 	if((url != nil) && (![url isEqualToString:@""])) {
 		if(![url hasPrefix:@"http"])
-			url = [NSString stringWithFormat:@"http://%@", url];
+			url = [[NSString stringWithFormat:@"http://%@", url] retain];
 		NSString *tempURL = url;
 		if(![tempURL hasSuffix:@"/"])
 			tempURL = [[NSString stringWithFormat:@"%@/xmlrpc.php", tempURL] retain];
@@ -448,9 +478,10 @@
 - (void)addSiteInBackground {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	NSString *authUsername = username;
-	NSString *authPassword = password;
+	NSString *authUsername = [appDelegate.currentBlog valueForKey:@"authUsername"];
+	NSString *authPassword = [appDelegate.currentBlog valueForKey:@"authPassword"];
 	NSNumber *authEnabled = [appDelegate.currentBlog valueForKey:@"authEnabled"];
+	
 	NSString *authBlogURL = [NSString stringWithFormat:@"%@_auth", url];
 	NSMutableDictionary *newBlog = [[NSMutableDictionary dictionaryWithObjectsAndKeys:
 									 username, @"username", 
@@ -470,10 +501,11 @@
 	[newBlog setValue:authEnabled forKey:@"authEnabled"];
 	[[BlogDataManager sharedDataManager] updatePasswordInKeychain:password andUserName:username andBlogURL:host];
 	
-	[newBlog setValue:authUsername forKey:@"authUsername"];
-	[[BlogDataManager sharedDataManager] updatePasswordInKeychain:authPassword
-													  andUserName:authUsername
-													   andBlogURL:authBlogURL];
+	if([authEnabled isEqualToNumber:[NSNumber numberWithInt:1]]) {
+		[[BlogDataManager sharedDataManager] updatePasswordInKeychain:authPassword
+														  andUserName:authUsername
+														   andBlogURL:authBlogURL];
+	}
 	[newBlog setValue:[appDelegate.currentBlog valueForKey:kResizePhotoSetting] forKey:kResizePhotoSetting];
 	[newBlog setValue:[appDelegate.currentBlog valueForKey:kPostsDownloadCount] forKey:kResizePhotoSetting];
 	[newBlog setValue:[appDelegate.currentBlog valueForKey:kGeolocationSetting] forKey:kGeolocationSetting];
@@ -520,6 +552,50 @@
 
 - (void)refreshTable {
 	[self.tableView reloadData];
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+    if (keyboardIsVisible)
+        return;
+	
+	if(activeTextField.tag > 0) {
+		NSDictionary *info = [notification userInfo];
+		NSValue *aValue = [info objectForKey:UIKeyboardBoundsUserInfoKey];
+		CGSize keyboardSize = [aValue CGRectValue].size;
+		
+		NSTimeInterval animationDuration = 0.300000011920929;
+		CGRect frame = self.view.frame;
+		frame.origin.y -= keyboardSize.height-104;
+		frame.size.height += keyboardSize.height-104;
+		[UIView beginAnimations:@"ResizeForKeyboard" context:nil];
+		[UIView setAnimationDuration:animationDuration];
+		self.view.frame = frame;
+		[UIView commitAnimations];
+		
+		viewDidMove = YES;
+		keyboardIsVisible = YES;
+	}
+}
+
+- (void)keyboardWillHide:(NSNotification *)aNotification {
+    if(viewDidMove) {
+        NSDictionary *info = [aNotification userInfo];
+        NSValue *aValue = [info objectForKey:UIKeyboardBoundsUserInfoKey];
+        CGSize keyboardSize = [aValue CGRectValue].size;
+		
+        NSTimeInterval animationDuration = 0.300000011920929;
+        CGRect frame = self.view.frame;
+        frame.origin.y += keyboardSize.height-104;
+        frame.size.height -= keyboardSize.height-104;
+        [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
+        [UIView setAnimationDuration:animationDuration];
+        self.view.frame = frame;
+        [UIView commitAnimations];
+		
+        viewDidMove = NO;
+    }
+	
+    keyboardIsVisible = NO;
 }
 
 #pragma mark -

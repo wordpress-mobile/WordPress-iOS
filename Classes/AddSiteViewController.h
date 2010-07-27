@@ -19,16 +19,18 @@
 	WordPressAppDelegate *appDelegate;
 	WPProgressHUD *spinner;
 	AddUsersBlogsViewController *addUsersBlogsView;
+	UITextField *activeTextField;
 	NSString *footerText, *addButtonText, *url, *xmlrpc, *username, *password, *blogID, *blogName, *host;
 	NSArray *subsites;
-	BOOL isAuthenticating, isAuthenticated, isAdding, hasSubsites, hasValidXMLRPCurl;
+	BOOL isAuthenticating, isAuthenticated, isAdding, hasSubsites, hasValidXMLRPCurl, viewDidMove, keyboardIsVisible;
 }
 
 @property (nonatomic, retain) WPProgressHUD *spinner;
 @property (nonatomic, retain) AddUsersBlogsViewController *addUsersBlogsView;
+@property (nonatomic, retain) UITextField *activeTextField;
 @property (nonatomic, retain) NSString *footerText, *addButtonText, *url, *xmlrpc, *username, *password, *blogID, *blogName, *host;
 @property (nonatomic, retain) NSArray *subsites;
-@property (nonatomic, assign) BOOL isAuthenticating, isAuthenticated, isAdding, hasSubsites, hasValidXMLRPCurl;
+@property (nonatomic, assign) BOOL isAuthenticating, isAuthenticated, isAdding, hasSubsites, hasValidXMLRPCurl, viewDidMove, keyboardIsVisible;
 
 - (void)getSubsites;
 - (void)authenticate;
@@ -41,5 +43,7 @@
 - (void)getXMLRPCurl;
 - (void)setXMLRPCUrl:(NSString *)xmlrpcUrl;
 - (BOOL)blogExists;
+- (void)keyboardWillShow:(NSNotification *)notification;
+- (void)keyboardWillHide:(NSNotification *)notification;
 
 @end

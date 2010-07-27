@@ -9,7 +9,7 @@
 #import "BlogSettingsViewController.h"
 
 @implementation BlogSettingsViewController
-@synthesize tableView, recentItems, actionSheet, isSaving, buttonText;
+@synthesize tableView, recentItems, actionSheet, isSaving, viewDidMove, keyboardIsVisible, buttonText;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -32,6 +32,22 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 	NSLog(@"Editing settings for currentBlog: %@", [appDelegate.currentBlog objectForKey:@"url"]);
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) 
+												 name:UIKeyboardWillShowNotification
+											   object:self.view.window];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) 
+												 name:UIKeyboardWillHideNotification
+											   object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[[NSNotificationCenter defaultCenter] removeObserver:self
+													name:UIKeyboardWillShowNotification object:nil];
+	
+	[[NSNotificationCenter defaultCenter] removeObserver:self
+													name:UIKeyboardWillHideNotification object:nil];
+	[super viewWillDisappear:animated];
 }
 
 #pragma mark -
@@ -61,12 +77,12 @@
 	return result;
 }
 
-// Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tv cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	// TODO: Double-check for performance drain later
     static NSString *normalCellIdentifier = @"Cell";
     static NSString *switchCellIdentifier = @"SwitchCell";
     static NSString *activityCellIdentifier = @"ActivityCell";
+	static NSString *textCellIdentifier = @"TextCell";
     
     UITableViewCell *cell = [tv dequeueReusableCellWithIdentifier:normalCellIdentifier];
     if (cell == nil) {
@@ -110,11 +126,10 @@
 					break;
 				case 1:
 					switchCell.textLabel.text = @"Geotagging";
-					NSString *oldGeotaggingSettingName = [NSString stringWithFormat:@"%@-Geotagging", [appDelegate.currentBlog valueForKey:kBlogId]];
 					if([appDelegate.currentBlog objectForKey:kGeolocationSetting] != nil)
 						switchCell.cellSwitch.on = [[appDelegate.currentBlog objectForKey:kGeolocationSetting] boolValue];
-					else if(![[NSUserDefaults standardUserDefaults] boolForKey:oldGeotaggingSettingName])
-						switchCell.cellSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:oldGeotaggingSettingName];
+					else
+						switchCell.cellSwitch.on = YES;
 					cell = switchCell;
 					cell.tag = 1;
 					break;
@@ -132,6 +147,14 @@
 			}
 			break;
 		case 1:
+			cell.tag = 3;
+			UITableViewCell *textCell = [tv dequeueReusableCellWithIdentifier:textCellIdentifier];
+			if (textCell == nil) {
+				textCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:textCellIdentifier] autorelease];
+			}
+			UITextField *loginTextField = [[UITextField alloc] initWithFrame:CGRectMake(110, 10, 185, 30)];
+			loginTextField.adjustsFontSizeToFitWidth = YES;
+			loginTextField.textColor = [UIColor blackColor];
 			switch (indexPath.row) {
 				case 0:
 					switchCell.textLabel.text = @"Authentication";
@@ -139,17 +162,51 @@
 					cell = switchCell;
 					cell.tag = 3;
 					break;
-
 				case 1:
-					cell.textLabel.text = @"Username";
-					cell.tag = 4;
+					textCell.textLabel.text = @"Username";
+					loginTextField.placeholder = @"HTTP Auth Username";
+					loginTextField.keyboardType = UIKeyboardTypeEmailAddress;
+					loginTextField.returnKeyType = UIReturnKeyDone;
+					if([appDelegate.currentBlog objectForKey:@"authUsername"] != nil)
+						loginTextField.text = [appDelegate.currentBlog objectForKey:@"authUsername"];
+					else if([appDelegate.currentBlog objectForKey:@"username"] != nil)
+						loginTextField.text = [appDelegate.currentBlog objectForKey:@"username"];
+					textCell.tag = 4;
+					loginTextField.backgroundColor = [UIColor whiteColor];
+					loginTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+					loginTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+					loginTextField.textAlignment = UITextAlignmentLeft;
+					loginTextField.delegate = self;
+					
+					loginTextField.clearButtonMode = UITextFieldViewModeNever;
+					[loginTextField setEnabled: YES];
+					
+					[textCell addSubview:loginTextField];
+					[loginTextField release];
+					cell = textCell;
 					break;
 				case 2:
-					cell.textLabel.text = @"Password";
-					cell.tag = 5;
+					textCell.textLabel.text = @"Password";
+					loginTextField.placeholder = @"HTTP Auth Password";
+					loginTextField.keyboardType = UIKeyboardTypeDefault;
+					loginTextField.returnKeyType = UIReturnKeyDone;
+					loginTextField.secureTextEntry = YES;
+					textCell.tag = 5;
+					loginTextField.backgroundColor = [UIColor whiteColor];
+					loginTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+					loginTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+					loginTextField.textAlignment = UITextAlignmentLeft;
+					loginTextField.delegate = self;
+					
+					loginTextField.clearButtonMode = UITextFieldViewModeNever;
+					[loginTextField setEnabled: YES];
+					
+					[textCell addSubview:loginTextField];
+					[loginTextField release];
+					cell = textCell;
 					break;
 				default:
-					break;
+					break;           
 			}
 			break;
 		case 2:
@@ -162,7 +219,6 @@
 			cell = activityCell;
 			cell.tag = 5;
 			break;
-
 		default:
 			break;
 	}
@@ -232,6 +288,22 @@
 }
 
 #pragma mark -
+#pragma mark UITextField delegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+	[textField resignFirstResponder];
+	return YES;	
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    activeTextField = textField;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    activeTextField = nil;
+}
+
+#pragma mark -
 #pragma mark Custom methods
 
 - (IBAction)showPicker:(id)sender {
@@ -292,10 +364,10 @@
 						case 0:
 							switch (r) {
 								case 0:
-									[appDelegate.currentBlog setObject:[self transformedValue:cellSwitch.on] forKey:kResizePhotoSetting];
+									[appDelegate.currentBlog setValue:[self transformedValue:cellSwitch.on] forKey:kResizePhotoSetting];
 									break;
 								case 1:
-									[appDelegate.currentBlog setObject:[self transformedValue:cellSwitch.on] forKey:kGeolocationSetting];
+									[appDelegate.currentBlog setValue:[self transformedValue:cellSwitch.on] forKey:kGeolocationSetting];
 									break;
 								default:
 									break;
@@ -304,7 +376,10 @@
 						case 1:
 							switch (r) {
 								case 0:
-									[appDelegate.currentBlog setValue:[self transformedValue:cellSwitch.on] forKey:@"authEnabled"];
+									if(cellSwitch.on)
+										[appDelegate.currentBlog setValue:[NSNumber numberWithInt:1] forKey:@"authEnabled"];
+									else
+										[appDelegate.currentBlog setValue:[NSNumber numberWithInt:0] forKey:@"authEnabled"];
 									break;
 								default:
 									break;
@@ -320,10 +395,10 @@
 						case 1:
 							switch (r) {
 								case 1:
-									[appDelegate.currentBlog setObject:cellText.text forKey:@"authUsername"];
+									[appDelegate.currentBlog setValue:cellText.text forKey:@"authUsername"];
 									break;
 								case 2:
-									[appDelegate.currentBlog setObject:cellText.text forKey:@"authPassword"];
+									[appDelegate.currentBlog setValue:cellText.text forKey:@"authPassword"];
 									break;
 								default:
 									break;
@@ -343,6 +418,48 @@
 		return @"YES";
 	else
 		return @"NO";
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+    if (keyboardIsVisible)
+        return;
+	
+	NSDictionary *info = [notification userInfo];
+	NSValue *aValue = [info objectForKey:UIKeyboardBoundsUserInfoKey];
+	CGSize keyboardSize = [aValue CGRectValue].size;
+	
+	NSTimeInterval animationDuration = 0.300000011920929;
+	CGRect frame = self.view.frame;
+	frame.origin.y -= keyboardSize.height-35;
+	frame.size.height += keyboardSize.height-35;
+	[UIView beginAnimations:@"ResizeForKeyboard" context:nil];
+	[UIView setAnimationDuration:animationDuration];
+	self.view.frame = frame;
+	[UIView commitAnimations];
+	
+	viewDidMove = YES;
+    keyboardIsVisible = YES;
+}
+
+- (void)keyboardWillHide:(NSNotification *)aNotification {
+    if (viewDidMove) {
+        NSDictionary *info = [aNotification userInfo];
+        NSValue *aValue = [info objectForKey:UIKeyboardBoundsUserInfoKey];
+        CGSize keyboardSize = [aValue CGRectValue].size;
+		
+        NSTimeInterval animationDuration = 0.300000011920929;
+        CGRect frame = self.view.frame;
+        frame.origin.y += keyboardSize.height-35;
+        frame.size.height -= keyboardSize.height-35;
+        [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
+        [UIView setAnimationDuration:animationDuration];
+        self.view.frame = frame;
+        [UIView commitAnimations];
+		
+        viewDidMove = NO;
+    }
+	
+    keyboardIsVisible = NO;
 }
 
 #pragma mark -

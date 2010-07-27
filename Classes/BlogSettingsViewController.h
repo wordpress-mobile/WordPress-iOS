@@ -11,16 +11,17 @@
 #import "BlogDataManager.h"
 #import "UITableViewActivityCell.h"
 
-@interface BlogSettingsViewController : UIViewController<UITableViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate> {
+@interface BlogSettingsViewController : UIViewController<UITableViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, UIPickerViewDelegate> {
 	WordPressAppDelegate *appDelegate;
-	BOOL isSaving;
+	BOOL isSaving, viewDidMove, keyboardIsVisible;
 	NSString *buttonText;
 	IBOutlet UITableView *tableView;
+	UITextField *activeTextField;
 	UIActionSheet *actionSheet;
 	NSArray *recentItems;
 }
 
-@property (nonatomic, assign) BOOL isSaving;
+@property (nonatomic, assign) BOOL isSaving, viewDidMove, keyboardIsVisible;
 @property (nonatomic, retain) NSString *buttonText;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) UIActionSheet *actionSheet;
@@ -31,5 +32,7 @@
 - (int)selectedRecentItemsIndex;
 - (void)processRowValues;
 - (NSString *)transformedValue:(BOOL)value;
+- (void)keyboardWillShow:(NSNotification *)notification;
+- (void)keyboardWillHide:(NSNotification *)notification;
 
 @end
