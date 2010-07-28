@@ -91,7 +91,7 @@ static BlogDataManager *sharedDataManager;
 pictureFieldNames, postFieldNames, postFieldNamesByTag, postFieldTagsByName, isSyncingCommentsAndStatuses,
 postTitleFieldNames, postTitleFieldNamesByTag, postTitleFieldTagsByName, unsavedPostsCount, currentPageIndex, currentPage, pageFieldNames,
 currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLocaDraftsCurrent, isPageLocalDraftsCurrent, currentPostIndex, currentDraftIndex, currentPageDraftIndex, asyncPostsOperationsQueue, currentUnsavedDraft,
-currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
+currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, blogsList;
 //BOOL for handling XMLRPC issues...  See LocateXMLRPCViewController
 @synthesize isProblemWithXMLRPC; 
 
@@ -1584,16 +1584,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
 	
     if (blogIndex >= 0) {
         [self->blogsList replaceObjectAtIndex:blogIndex withObject:blog];
-    } else {
-		//		[self->blogsList addObject:blog];
     }
-	
-	//Commented code as per ticket#102
-	//	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-	//
-	//	[self saveBlogData];
-	
-	//	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
     [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
     [self performSelectorOnMainThread:@selector(postBlogsRefreshNotificationInMainThread:) withObject:blog waitUntilDone:NO];
     return YES;

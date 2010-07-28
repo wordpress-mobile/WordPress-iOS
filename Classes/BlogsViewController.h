@@ -4,6 +4,7 @@
 #import "WordPressAppDelegate.h"
 #import "AboutViewController.h"
 #import "BlogViewController.h"
+#import "EditSiteViewController.h"
 #import "BlogDataManager.h"
 #import "Reachability.h"
 #import "PostsViewController.h"
@@ -14,12 +15,21 @@
 #import "BlogSplitViewMasterViewController.h"
 #import "CPopoverManager.h"
 
-@class BlogDataManager, WordPressAppDelegate, EditSiteViewController, BlogViewController;
-
 @interface BlogsViewController : UITableViewController {
+	NSMutableArray *blogsList;
 }
+
+@property (nonatomic, retain) NSMutableArray *blogsList;
 
 - (void)showBlog:(BOOL)animated;
 - (void)showBlogDetailModalViewForNewBlogWithAnimation:(BOOL)animated;
+- (void)deleteBlog:(NSIndexPath *)indexPath;
+- (void)didDeleteBlogSuccessfully:(NSIndexPath *)indexPath;
+- (void)showBlogDetailModalViewForNewBlog:(id)inSender;
+- (void)showBlogDetailModalViewWithAnimation:(BOOL)animate;
+- (void)showBlogWithoutAnimation;
+- (void)edit:(id)sender;
+- (void)cancel:(id)sender;
+- (BOOL)canChangeCurrentBlog;
 
 @end

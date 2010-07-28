@@ -1,16 +1,7 @@
 #import "BlogsViewController.h"
 
-@interface BlogsViewController (Private)
-
-- (void)showBlogDetailModalViewForNewBlog:(id)inSender;
-- (void)showBlogDetailModalViewWithAnimation:(BOOL)animate;
-- (void)showBlogWithoutAnimation;
-- (void)edit:(id)sender;
-- (void)cancel:(id)sender;
-- (BOOL)canChangeCurrentBlog;
-@end
-
 @implementation BlogsViewController
+@synthesize blogsList;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -22,6 +13,8 @@
 																							action:@selector(showAddBlogView:)] autorelease];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStyleBordered target:nil action:nil]; 
 	self.tableView.allowsSelectionDuringEditing = YES;
+	
+	self.blogsList = [[[BlogDataManager sharedDataManager] blogsList] mutableCopy];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blogsRefreshNotificationReceived:) name:@"BlogsRefreshNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBlogWithoutAnimation) name:@"NewBlogAdded" object:nil];
@@ -50,6 +43,12 @@
 	[delegate syncBlogs];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"BlogsRefreshNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"NewBlogAdded" object:nil];
+	[super viewWillDisappear:animated];
+}
+
 - (void)blogsRefreshNotificationReceived:(id)notification {
     [self.tableView reloadData];
 }
@@ -62,7 +61,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [[BlogDataManager sharedDataManager] countOfBlogs];
+    return blogsList.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -75,10 +74,10 @@
     }
 	
 #if defined __IPHONE_3_0
-    cell.textLabel.text = [NSString decodeXMLCharactersIn:[[[BlogDataManager sharedDataManager] blogAtIndex:(indexPath.row)] valueForKey:@"blogName"]];
+    cell.textLabel.text = [NSString decodeXMLCharactersIn:[[blogsList objectAtIndex:(indexPath.row)] valueForKey:@"blogName"]];
     cell.imageView.image = [blog favicon];
 #else if defined __IPHONE_2_0
-    cell.text = [NSString decodeXMLCharactersIn:[[[BlogDataManager sharedDataManager] blogAtIndex:(indexPath.row)] valueForKey:@"blogName"]];
+    cell.text = [NSString decodeXMLCharactersIn:[[blogsList objectAtIndex:(indexPath.row)] valueForKey:@"blogName"]];
     cell.image = [blog favicon];
 #endif
 
@@ -89,9 +88,6 @@
 }
 
 - (void)tableView:(UITableView *)atableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//	if (DeviceIsPad() == YES)
-//		[[CPopoverManager instance] setCurrentPopoverController:NULL];
-
     if ([self.tableView cellForRowAtIndexPath:indexPath].editing) {
         [[BlogDataManager sharedDataManager] copyBlogAtIndexCurrent:(indexPath.row)];
         EditSiteViewController *blogDetailViewController = [[EditSiteViewController alloc] initWithNibName:@"EditSiteViewController" bundle:nil];
@@ -119,7 +115,7 @@
 	else if ([self canChangeCurrentBlog]) {
 		[[BlogDataManager sharedDataManager] makeBlogAtIndexCurrent:(indexPath.row)];
 		[[BlogDataManager sharedDataManager] setSelectedBlogID:
-			[[[BlogDataManager sharedDataManager] blogAtIndex:indexPath.row] objectForKey:@"blogid"]];
+		[[[BlogDataManager sharedDataManager] blogAtIndex:indexPath.row] objectForKey:@"blogid"]];
 		[self showBlog:YES];
     }
 	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
@@ -127,16 +123,12 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete && [self canChangeCurrentBlog]) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsEditedNotification" object:nil];
-        [[BlogDataManager sharedDataManager] makeBlogAtIndexCurrent:indexPath.row];
-        [[BlogDataManager sharedDataManager] removeCurrentBlog];
-
-        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
-
-        if ([[BlogDataManager sharedDataManager] countOfBlogs] == 0) {
-            self.navigationItem.leftBarButtonItem = nil;
-			[self.tableView setEditing:NO animated:YES];
-        }
+		[tableView beginUpdates];
+		[self performSelectorInBackground:@selector(deleteBlog:) withObject:indexPath];
+		[blogsList removeObjectAtIndex:indexPath.row];
+		[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+						 withRowAnimation:UITableViewRowAnimationFade];
+		[tableView endUpdates];
     }
 }
 
@@ -164,15 +156,8 @@
 #pragma mark Custom methods
 
 - (BOOL)canChangeCurrentBlog {
-	//if ([UIApplication sharedApplication].networkActivityIndicatorVisible) {
-//		UIAlertView *currentlyUpdatingAlert = [[UIAlertView alloc] initWithTitle:@"Currently Syncing" message:@"Please wait a few seconds and try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//		[currentlyUpdatingAlert show];
-//		[currentlyUpdatingAlert release];
-//		return NO;
-//	}
 	return YES;
 }
-
 
 - (void)showBlogDetailModalViewForNewBlog:(id)inSender {
     [self showBlogDetailModalViewForNewBlogWithAnimation:YES];
@@ -233,6 +218,25 @@
 	[blogViewController release];
 }
 
+- (void)deleteBlog:(NSIndexPath *)indexPath {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	[[BlogDataManager sharedDataManager] makeBlogAtIndexCurrent:indexPath.row];
+	[[BlogDataManager sharedDataManager] removeCurrentBlog];
+	
+	[self performSelectorOnMainThread:@selector(didDeleteBlogSuccessfully:) withObject:indexPath waitUntilDone:NO];
+	
+	[pool release];
+}
+
+- (void)didDeleteBlogSuccessfully:(NSIndexPath *)indexPath {
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsEditedNotification" object:nil];
+	if ([[BlogDataManager sharedDataManager] countOfBlogs] == 0) {
+		self.navigationItem.leftBarButtonItem = nil;
+		[self.tableView setEditing:NO animated:YES];
+	}
+}
+
 #pragma mark -
 #pragma mark Memory Management
 
@@ -242,8 +246,7 @@
 }
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"BlogsRefreshNotification" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"NewBlogAdded" object:nil];
+	[blogsList release];
     [super dealloc];
 }
 

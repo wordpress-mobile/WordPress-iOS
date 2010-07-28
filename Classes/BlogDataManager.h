@@ -20,6 +20,7 @@
 #define kRSDErrorTag 901
 
 @interface BlogDataManager : NSObject {
+    NSMutableArray *blogsList;
 @private
     NSArray *blogFieldNames;
     NSDictionary *blogFieldNamesByTag;
@@ -34,8 +35,6 @@
     NSDictionary *postFieldTagsByName;
 	
     NSArray *pictureFieldNames;
-	
-    NSMutableArray *blogsList;
     NSMutableArray *postTitlesList, *draftTitlesList, *pageDraftTitlesList, *commentTitlesList, *pageTitlesList;
     NSMutableArray *photosDB;
 	
@@ -96,6 +95,7 @@
 @property (nonatomic, retain, readonly) NSArray *pictureFieldNames;
 @property (nonatomic, retain) NSMutableArray *photosDB;
 @property (nonatomic, retain) NSMutableDictionary *currentPicture;
+@property (nonatomic, retain) NSMutableArray *blogsList;
 
 @property (nonatomic, copy, readonly) NSMutableDictionary *currentBlog;
 @property (nonatomic, assign) BOOL shouldStopSyncingBlogs, isSyncingCommentsAndStatuses, isLocaDraftsCurrent;
