@@ -37,6 +37,7 @@
 	[headerView addSubview:logo];
 	[logo release];
 	self.tableView.tableHeaderView = headerView;
+	self.tableView.backgroundColor = [UIColor clearColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -268,7 +269,7 @@
 	isSigningIn = NO;
 	if(isAuthenticated) {
 		[WordPressAppDelegate sharedWordPressApp].isWPcomAuthenticated = YES;
-		[self dismissModalViewControllerAnimated:YES];
+		[super dismissModalViewControllerAnimated:YES];
 	}
 	else {
 		footerText = @"Sign in failed. Please try again.";

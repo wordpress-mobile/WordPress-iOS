@@ -130,7 +130,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 
 - (void)test {
 	// Huh???
-	NSLog(@"inside replyTOCommentViewController:test");
+	// NSLog(@"inside replyTOCommentViewController:test");
 }
 
 - (void)endTextEnteringButtonAction:(id)sender {
@@ -145,7 +145,6 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 }
 
 - (void)setTextViewHeight:(float)height {
-	NSLog(@"inside setTextViewHeight: %f", height);
 	[UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:kAnimationDuration3];
     CGRect frame = textView.frame;
@@ -162,11 +161,10 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 -(void) receivedRotate: (NSNotification*) notification
 {
 	UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
-	if(UIInterfaceOrientationIsLandscape(interfaceOrientation)){
-		NSLog(@"inside EditCVC new method - landscape");
+	if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
 		[self setTextViewHeight:130];
-	}else {
-		NSLog(@"inside EditCVC newmethod - portriat");
+	}
+	else {
 		//[self setTextViewHeight:225];
 		[self setTextViewHeight:440];
 	}

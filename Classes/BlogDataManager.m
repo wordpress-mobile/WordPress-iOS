@@ -91,7 +91,7 @@ static BlogDataManager *sharedDataManager;
 pictureFieldNames, postFieldNames, postFieldNamesByTag, postFieldTagsByName, isSyncingCommentsAndStatuses,
 postTitleFieldNames, postTitleFieldNamesByTag, postTitleFieldTagsByName, unsavedPostsCount, currentPageIndex, currentPage, pageFieldNames,
 currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLocaDraftsCurrent, isPageLocalDraftsCurrent, currentPostIndex, currentDraftIndex, currentPageDraftIndex, asyncPostsOperationsQueue, currentUnsavedDraft,
-currentLocation, currentBlogIndex, shouldStopSyncingBlogs;
+currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
 //BOOL for handling XMLRPC issues...  See LocateXMLRPCViewController
 @synthesize isProblemWithXMLRPC; 
 
@@ -201,6 +201,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs;
 		//		self->postTitlesList = [[NSMutableArray alloc] initWithCapacity:50];
 		//		self->draftTitlesList = [[NSMutableArray alloc] initWithCapacity:50];
 		//
+		self.shouldDisplayErrors = YES;
     }
 	
     return self;
@@ -214,28 +215,33 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs;
 }
 
 - (BOOL)handleError:(NSError *)err {
-    UIAlertView *alert1 = nil;
-	NSLog(@"handling error: %@", err);
+	if(self.shouldDisplayErrors == YES) {
+		NSLog(@"Showing error: %@", err);
+		UIAlertView *alert1 = nil;
+		
+		if ([[err localizedDescription] isEqualToString:@"Bad login/pass combination."]) {
+			alert1 = [[UIAlertView alloc] initWithTitle:@"Communication Error"
+												message:@"Bad user name or password."
+											   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		} else if ([err code] == NSURLErrorUserCancelledAuthentication) {
+			alert1 = [[UIAlertView alloc] initWithTitle:@"Communication Error"
+												message:@"Bad HTTP Authentication user name or password."
+											   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		} else {
+			alert1 = [[UIAlertView alloc] initWithTitle:@"Communication Error"
+												message:[err localizedDescription]
+											   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		}
+		
+		[alert1 show];
+		[[WordPressAppDelegate sharedWordPressApp] setAlertRunning:YES];
+		
+		[alert1 release];
+	}
+	else
+		NSLog(@"Hiding error: %@", err);
 	
-    if ([[err localizedDescription] isEqualToString:@"Bad login/pass combination."]) {
-        alert1 = [[UIAlertView alloc] initWithTitle:@"Communication Error"
-											message:@"Bad user name or password."
-										   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    } else if ([err code] == NSURLErrorUserCancelledAuthentication) {
-        alert1 = [[UIAlertView alloc] initWithTitle:@"Communication Error"
-											message:@"Bad HTTP Authentication user name or password."
-										   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    } else {
-        alert1 = [[UIAlertView alloc] initWithTitle:@"Communication Error"
-											message:[err localizedDescription]
-										   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    }
-	
-    [alert1 show];
-    [[WordPressAppDelegate sharedWordPressApp] setAlertRunning:YES];
-	
-    [alert1 release];
-    return YES;
+	return YES;
 }
 
 - (NSError *)errorWithResponse:(XMLRPCResponse *)res shouldHandle:(BOOL)shouldHandleFlag {
@@ -4997,10 +5003,13 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs;
 - (void)syncBlogs {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
+	NSLog(@"Suppressing error messages...");
+	self.shouldDisplayErrors = NO;
 	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	appDelegate.lastBlogSync = [NSDate date];
     for (NSMutableDictionary *blog in [blogsList mutableCopy]) {
 		if(self.shouldStopSyncingBlogs) {
+			NSLog(@"Stopping blog sync...");
 			self.shouldStopSyncingBlogs = NO;
 			break;
 		}
@@ -5020,10 +5029,15 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs;
 					[self syncPostsForBlog:blog];
 					[self syncPagesForBlog:blog];
 				}
-				@catch (NSException * e) {}
+				@catch (NSException * e) {
+					NSLog(@"Stopping blog sync due to error...");
+					self.shouldDisplayErrors = YES;
+				}
 			}
 		}
 	}
+	NSLog(@"Blog sync finished. Showing error messages...");
+	self.shouldDisplayErrors = YES;
 	
 	[pool release];
 }

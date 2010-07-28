@@ -30,6 +30,7 @@
 	[headerView addSubview:logo];
 	[logo release];
 	self.tableView.tableHeaderView = headerView;
+	self.tableView.backgroundColor = [UIColor clearColor];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableView) 
 												 name:@"didUpdateFavicons" object:nil];

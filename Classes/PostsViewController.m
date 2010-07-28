@@ -304,9 +304,7 @@
 			UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
 
 			// solve the problem where the "load more" cell is reused and retains it's old formatting by forcing a redraw
-			NSLog(@"about to run setNeedsDisplay");
 			[cell setNeedsDisplay];
-
 
 			//return
 			return;
@@ -422,7 +420,7 @@
 }
 
 - (BOOL)handleAutoSavedContext:(NSInteger)tag {
-	NSLog(@"inside handleAutoSavedContext");
+	NSLog(@"Autosaving...");
     if ([[BlogDataManager sharedDataManager] makeAutoSavedPostCurrentForCurrentBlog]) {
         NSString *title = [[BlogDataManager sharedDataManager].currentPost valueForKey:@"title"];
         title = (title == nil ? @"" : title);

@@ -48,13 +48,26 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 252)] autorelease];
-	UIImageView *logo = [[UIImageView alloc] initWithFrame:CGRectMake(82, 15, 150, 150)];
-	logo.image = [UIImage imageNamed:@"logo_welcome"];
+	CGRect headerViewFrame = CGRectMake(0, 0, 320, 252);
+	CGRect logoViewFrame = CGRectMake(82, 15, 150, 150);
+	CGRect headerTextFrame = CGRectMake(20, 145, 280, 105);
+	NSString *logoName = @"logo_welcome";
+	
+	if(DeviceIsPad() == YES) {
+		headerViewFrame = CGRectMake(0, 0, 500, 252);
+		logoViewFrame = CGRectMake(175, 15, 150, 150);
+		headerTextFrame = CGRectMake(25, 80, 450, 252);
+		logoName = @"logo_welcome.png";
+	}
+	
+		
+	UIView *headerView = [[[UIView alloc] initWithFrame:headerViewFrame] autorelease];
+	UIImageView *logo = [[UIImageView alloc] initWithFrame:logoViewFrame];
+	logo.image = [UIImage imageNamed:logoName];
 	[headerView addSubview:logo];
 	[logo release];
 	
-	UILabel *headerText = [[UILabel alloc] initWithFrame:CGRectMake(20, 145, 280, 105)];
+	UILabel *headerText = [[UILabel alloc] initWithFrame:headerTextFrame];
 	headerText.backgroundColor = [UIColor clearColor];
 	headerText.textColor = [UIColor darkGrayColor];
 	headerText.font = [UIFont fontWithName:@"Georgia" size:22];
@@ -101,6 +114,8 @@
 	//cell.textLabel.textAlignment = UITextAlignmentCenter;
 	cell.textLabel.numberOfLines = 0;
 	cell.textLabel.font = [UIFont boldSystemFontOfSize:15];
+	if(DeviceIsPad() == YES)
+		cell.textLabel.font = [UIFont boldSystemFontOfSize:20];
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
     return cell;

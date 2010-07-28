@@ -32,14 +32,8 @@ Classes/BlogsViewController.h -text
 Classes/BlogsViewController.m -text
 Classes/CDeviceSupport.h -text
 Classes/CDeviceSupport.m -text
-Classes/CFirstLaunchViewController.h -text
-Classes/CFirstLaunchViewController.m -text
-Classes/CFirstLaunchViewController.xib -text
 Classes/CInvisibleToolbar.h -text
 Classes/CInvisibleToolbar.m -text
-Classes/CNewBlogSignupViewController.h -text
-Classes/CNewBlogSignupViewController.m -text
-Classes/CNewBlogSignupViewController.xib -text
 Classes/CPopoverManager.h -text
 Classes/CPopoverManager.m -text
 Classes/Comment.h -text
@@ -265,6 +259,7 @@ Resources-iPad/MainWindow-iPad.xib -text
 /WPpregressHUDBackground.png -text
 /WPpregressHUDBackground@2x.png -text
 /WebSignupViewController.xib -text
+/WelcomeViewController-iPad.xib -text
 /WelcomeViewController.xib -text
 WordPress.xcodeproj/project.pbxproj -text
 /WordPress_Prefix.pch -text

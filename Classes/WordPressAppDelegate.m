@@ -3,7 +3,6 @@
 #import "BlogDataManager.h"
 #import "Reachability.h"
 #import "NSString+Helpers.h"
-#import "CFirstLaunchViewController.h"
 #import "BlogViewController.h"
 #import "BlogSplitViewDetailViewController.h"
 #import "CPopoverManager.h"
@@ -30,7 +29,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 @synthesize window, lastBlogSync, currentBlog;
 @synthesize navigationController, alertRunning, isWPcomAuthenticated;
-@synthesize splitViewController, firstLaunchController, welcomeViewController;
+@synthesize splitViewController;
 
 - (id)init {
     if (!wordPressApp) {
@@ -62,7 +61,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)dealloc {
-	[welcomeViewController release];
     [navigationController release];
     [window release];
     [dataManager release];
@@ -95,11 +93,10 @@ static WordPressAppDelegate *wordPressApp = NULL;
     if (!context) {
         NSLog(@"\nCould not create *context for self");
     }
-
-	if (DeviceIsPad() == NO)
+	
+	BlogsViewController *blogsViewController = [[BlogsViewController alloc] initWithStyle:UITableViewStylePlain];
+	if(DeviceIsPad() == NO)
 	{
-		BlogsViewController *blogsViewController = [[BlogsViewController alloc] initWithStyle:UITableViewStylePlain];
-		
 		UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:blogsViewController];
 		self.navigationController = aNavigationController;
 
@@ -127,14 +124,14 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 		if ([dataManager countOfBlogs] == 0)
 		{
-			self.firstLaunchController = [[[CFirstLaunchViewController alloc] initWithNibName:NULL bundle:NULL] autorelease];
-			UINavigationController *modalNavigationController = [[UINavigationController alloc] initWithRootViewController:self.firstLaunchController];
-			if (DeviceIsPad() == YES) {
-				modalNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-				modalNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-				}
-			[splitViewController presentModalViewController:modalNavigationController animated:YES];
-			[modalNavigationController release];
+			WelcomeViewController *welcomeViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController-iPad" bundle:nil];
+			UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:welcomeViewController];
+			aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+			aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+			self.navigationController = aNavigationController;
+			[splitViewController presentModalViewController:aNavigationController animated:YES];
+			[aNavigationController release];
+			[welcomeViewController release];
 		}
 		else if ([dataManager countOfBlogs] == 1)
 		{
@@ -587,12 +584,10 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
 	[statsData appendData: data];
-	//NSLog(@"did recieve data");
 }
 
 -(void) connection:(NSURLConnection *)connection
   didFailWithError: (NSError *)error {
-	//NSLog(@"didFailWithError");
 	UIAlertView *errorAlert = [[UIAlertView alloc]
 							   initWithTitle: [error localizedDescription]
 							   message: [error localizedFailureReason]
@@ -604,21 +599,12 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void) connectionDidFinishLoading: (NSURLConnection*) connection {
-	//NSLog(@"connectionDidFinishLoading");
-	//process statsData here or call a helper method to do so.
-	//it should parse the "latest version" and the over the air download url and give user some opportunity to upgrade if version numbers don't match...
-	//all of this should get pulled out of WPAppDelegate and into it's own class... http request, check for stats methods, delegate methods for http, and present user with option to upgrade
 	NSString *statsDataString = [[NSString alloc] initWithData:statsData encoding:NSUTF8StringEncoding];
-
-	//NSLog(@"should be statsDataString %@", statsDataString);
-	//need to break this up based on the \n
-
 	[statsDataString release];
 
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-	//NSLog (@"connectionDidReceiveResponse %@", response);
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
@@ -649,24 +635,22 @@ NSAssert([theObject isKindOfClass:[UINavigationController class]], @"That is not
 return(theObject);
 }
 
-// Called when a button should be added to a toolbar for a hidden view controller
 - (void)splitViewController: (UISplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc
 {
-UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
-[barButtonItem setTitle:@"My Blog"];
-[theNavigationItem setLeftBarButtonItem:barButtonItem animated:YES];
-if ([[self.detailNavigationController.viewControllers objectAtIndex:0] isKindOfClass:[BlogSplitViewDetailViewController class]])
+	UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
+	[barButtonItem setTitle:@"My Blog"];
+	[theNavigationItem setLeftBarButtonItem:barButtonItem animated:YES];
+	if ([[self.detailNavigationController.viewControllers objectAtIndex:0] isKindOfClass:[BlogSplitViewDetailViewController class]])
 	{
-	[[CPopoverManager instance] setCurrentPopoverController:pc];
+		[[CPopoverManager instance] setCurrentPopoverController:pc];
 	}
 }
 
 // Called when the view is shown again in the split view, invalidating the button and popover controller
-- (void)splitViewController: (UISplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
-{
-[[[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem] setLeftBarButtonItem:NULL animated:YES];
+- (void)splitViewController: (UISplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem {
+	[[[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem] setLeftBarButtonItem:NULL animated:YES];
 
-[[CPopoverManager instance] setCurrentPopoverController:NULL];
+	[[CPopoverManager instance] setCurrentPopoverController:NULL];
 }
 
 // Called when the view controller is shown in a popover so the delegate can take action like hiding other popovers.

@@ -83,7 +83,6 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	self.hasChanges = NO;
 	//foo = textView.text;//so we can compare to set hasChanges correctly
 	textViewText = [[NSString alloc] initWithString: textView.text];
-	NSLog(@"waga this is the text from textViewString %@", textViewText);
 
 	[leftView setTarget:self withAction:@selector(cancelView:)];
 	if (DeviceIsPad() == NO) {
@@ -97,7 +96,6 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	
 	self.comment = [commentDetails objectAtIndex:currentIndex];
 	if ([[comment valueForKey:@"status"] isEqualToString:@"hold"]) {
-		NSLog(@"inside if of vwappear");
 		label.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
 		label.hidden = NO;
 	} else {
@@ -159,36 +157,12 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 
 - (void)cancelView:(id)sender {
     [commentViewController cancelView:self];
-	NSLog(@"inside replyToCommentViewController cancelView");
-	
-//    if (!hasChanges) {
-//        //[self stopTimer];
-        //[commentViewController.navigationController popViewControllerAnimated:YES];
-	//[commentViewController.navigationController popViewControllerAnimated:YES];
-//        return;
-//    }
-//	
-//	
-//	
-//    //[postSettingsController endEditingAction:nil];
-//    //[postDetailEditController endEditingAction:nil];
-//	
-//    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
-//															 delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Discard"
-//													otherButtonTitles:nil];
-//    actionSheet.tag = 401;
-//    actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
-//    [actionSheet showInView:self.view];
-//    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-//    [delegate setAlertRunning:YES];
-//	
-//    [actionSheet release];
 }
 
 #pragma mark -
 #pragma mark Helper Methods
 
-- (void) test{
+- (void)test {
 	NSLog(@"inside replyTOCommentViewController:test");
 }
 
@@ -205,7 +179,6 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 }
 
 - (void)setTextViewHeight:(float)height {
-	NSLog(@"inside setTextViewHeight %f", height);
 	[UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:kAnimationDuration2];
     CGRect frame = textView.frame;
@@ -216,18 +189,16 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	NSLog(@"inside ReplyToCommentViewController's should autorotate");
-		return YES;
+	return YES;
 }
 
 -(void) receivedRotate: (NSNotification*) notification
 {
 	UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
-		if(UIInterfaceOrientationIsLandscape(interfaceOrientation)){
-			NSLog(@"inside RTCVC new method - landscape");
+		if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
 			[self setTextViewHeight:130];
-		}else {
-			NSLog(@"inside RTCVC newmethod - portriat");
+		}
+		else {
 			[self setTextViewHeight:225];
 		}
 }
@@ -239,9 +210,6 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 
 - (void)textViewDidEndEditing:(UITextView *)aTextView {
 	NSString *textString = textView.text;
-	//set hasChanges only if a change was made using textViewString
-	NSLog(@"just before accessing textViewString in did end editing");
-	NSLog(@"textviewText inside did end editing %@", self.textViewText);
 	if (![textString isEqualToString:textViewText]) {
 		self.hasChanges=YES;
 	}
@@ -356,7 +324,6 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 
 - (void)saveReplyBackgroundMethod:(id)sender {
 	[self callBDMSaveCommentReply:@selector(replyToComment:forBlog:)];
-	NSLog(@"after callBDMSaveCommentReply");
 }
 
 - (void)callBDMSaveCommentReply:(SEL)selector {

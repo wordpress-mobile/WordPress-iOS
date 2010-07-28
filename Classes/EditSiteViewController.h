@@ -14,10 +14,11 @@
 #import "BlogSettingsViewController.h"
 #import "Blog.h";
 
-@interface EditSiteViewController : UITableViewController<UITextFieldDelegate> {
+@interface EditSiteViewController : UIViewController <UITableViewDelegate, UITextFieldDelegate> {
 	WordPressAppDelegate *appDelegate;
 	WPProgressHUD *spinner;
 	//AddUsersBlogsViewController *addUsersBlogsView;
+	IBOutlet UITableView *tableView;
 	UITextField *activeTextField;
 	NSString *footerText, *addButtonText, *url, *xmlrpc, *username, *password, *blogID, *blogName, *host;
 	NSArray *subsites;
@@ -27,6 +28,7 @@
 
 @property (nonatomic, retain) WPProgressHUD *spinner;
 //@property (nonatomic, retain) AddUsersBlogsViewController *addUsersBlogsView;
+@property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) UITextField *activeTextField;
 @property (nonatomic, retain) NSString *footerText, *addButtonText, *url, *xmlrpc, *username, *password, *blogID, *blogName, *host;
 @property (nonatomic, retain) NSArray *subsites;

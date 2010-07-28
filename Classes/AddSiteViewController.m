@@ -7,7 +7,7 @@
 #import "AddSiteViewController.h"
 
 @implementation AddSiteViewController
-@synthesize spinner, footerText, addButtonText, url, xmlrpc, username, password;
+@synthesize spinner, footerText, addButtonText, url, xmlrpc, username, password, tableView;
 @synthesize isAuthenticating, isAuthenticated, isAdding, hasSubsites, subsites, viewDidMove, keyboardIsVisible;
 @synthesize hasValidXMLRPCurl, blogID, blogName, host, addUsersBlogsView, activeTextField;
 
@@ -32,6 +32,7 @@
 	[headerView addSubview:logo];
 	[logo release];
 	self.tableView.tableHeaderView = headerView;
+	self.tableView.backgroundColor = [UIColor clearColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -58,11 +59,11 @@
 #pragma mark -
 #pragma mark Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tv {
     return 3;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tv numberOfRowsInSection:(NSInteger)section {
     switch (section) {
 		case 0:
 			if(hasValidXMLRPCurl)
@@ -86,11 +87,11 @@
 }
 
 // Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tv cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
 	static NSString *activityCellIdentifier = @"ActivityCell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = [tv dequeueReusableCellWithIdentifier:CellIdentifier];
 	UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[self.tableView dequeueReusableCellWithIdentifier:activityCellIdentifier];
     if (cell == nil) {
 		UITableViewCellStyle cellStyle;
@@ -206,11 +207,11 @@
     return cell;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (NSString *)tableView:(UITableView *)tv titleForHeaderInSection:(NSInteger)section {
 	return nil;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+- (NSString *)tableView:(UITableView *)tv titleForFooterInSection:(NSInteger)section {
 	if(section == 0)
 		return footerText;
 	
@@ -526,7 +527,6 @@
 														   andBlogURL:authBlogURL];
 	}
 	[newBlog setValue:[appDelegate.currentBlog valueForKey:kResizePhotoSetting] forKey:kResizePhotoSetting];
-	NSLog(@"resizephotosetting:%@", [appDelegate.currentBlog valueForKey:kResizePhotoSetting]);
 	[newBlog setValue:[appDelegate.currentBlog valueForKey:kPostsDownloadCount] forKey:kPostsDownloadCount];
 	[newBlog setValue:[appDelegate.currentBlog valueForKey:kGeolocationSetting] forKey:kGeolocationSetting];
 	[newBlog setValue:[NSNumber numberWithBool:YES] forKey:kSupportsPagesAndComments];
@@ -630,6 +630,7 @@
 
 
 - (void)dealloc {
+	[tableView release];
 	[subsites release];
 	subsites = nil;
 	[addUsersBlogsView release];

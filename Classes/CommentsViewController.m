@@ -159,15 +159,6 @@
 	if (DeviceIsPad() == YES) {
 		return YES;
 	}
-
-//    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    
-//    if ([delegate isAlertRunning] == YES) {
-//        return NO;
-//    } else {
-//	NSLog(@"inside commentsviewcontroller's should autorotate");
-//        return YES;
-//    }
 	return NO;
 }
 

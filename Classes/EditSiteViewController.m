@@ -9,7 +9,7 @@
 @implementation EditSiteViewController
 @synthesize spinner, footerText, addButtonText, url, xmlrpc, username, password, isWPcom;
 @synthesize isAuthenticating, isAuthenticated, isSaving, hasSubsites, subsites, viewDidMove, keyboardIsVisible;
-@synthesize hasValidXMLRPCurl, blogID, blogName, host, activeTextField, blogIndex;
+@synthesize hasValidXMLRPCurl, blogID, blogName, host, activeTextField, blogIndex, tableView;
 //@synthesize addUsersBlogsView;
 
 #pragma mark -
@@ -61,6 +61,7 @@
 	[headerLabel release];
 	
 	self.tableView.tableHeaderView = headerView;
+	self.tableView.backgroundColor = [UIColor clearColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -90,11 +91,11 @@
 #pragma mark -
 #pragma mark Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tv {
     return 3;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tv numberOfRowsInSection:(NSInteger)section {
     switch (section) {
 		case 0:
 			if(hasValidXMLRPCurl)
@@ -118,11 +119,11 @@
 }
 
 // Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tv cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
 	static NSString *activityCellIdentifier = @"ActivityCell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = [tv dequeueReusableCellWithIdentifier:CellIdentifier];
 	UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[self.tableView dequeueReusableCellWithIdentifier:activityCellIdentifier];
     if (cell == nil) {
 		UITableViewCellStyle cellStyle;
@@ -238,7 +239,7 @@
     return cell;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+- (NSString *)tableView:(UITableView *)tv titleForFooterInSection:(NSInteger)section {
 	if(section == 0)
 		return footerText;
 	
@@ -651,6 +652,7 @@
 	[subsites release];
 	subsites = nil;
 	//[addUsersBlogsView release];
+	[tableView release];
 	[blogID release];
 	[blogName release];
 	[host release];

@@ -5,8 +5,6 @@
 #import "Blog.h"
 
 @class BlogDataManager;
-@class CFirstLaunchViewController;
-@class WelcomeViewController;
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate> {
 	NSDate *lastBlogSync;
@@ -17,11 +15,9 @@
     IBOutlet UIWindow *window;
     IBOutlet UINavigationController *navigationController;
 	IBOutlet UISplitViewController *splitViewController;
-	CFirstLaunchViewController *firstLaunchController;
     BOOL connectionStatus;
     BOOL alertRunning;
 	BOOL isWPcomAuthenticated;
-	WelcomeViewController *welcomeViewController;
 
     UIImageView *splashView;
 	NSMutableData *statsData;
@@ -37,9 +33,7 @@
 @property (nonatomic, retain) IBOutlet UISplitViewController *splitViewController;
 @property (readonly, nonatomic, retain) UINavigationController *masterNavigationController;
 @property (readonly, nonatomic, retain) UINavigationController *detailNavigationController;
-@property (nonatomic, retain) CFirstLaunchViewController *firstLaunchController;
 @property (nonatomic, getter = isAlertRunning) BOOL alertRunning;
-@property (nonatomic, retain) WelcomeViewController *welcomeViewController;
 @property (nonatomic, assign) BOOL isWPcomAuthenticated;
 @property (nonatomic, retain) NSDate *lastBlogSync;
 @property (nonatomic, retain) NSMutableDictionary *currentBlog;

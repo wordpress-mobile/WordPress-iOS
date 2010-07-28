@@ -690,19 +690,19 @@
 }
 
 - (void)useImage:(UIImage *)theImage {
-    //BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-//    self.hasChanges = YES;
-//
-//    id currentPost = dataManager.currentPost;
-//
-//    if (![currentPost valueForKey:@"Photos"]) {
-//        [currentPost setValue:[NSMutableArray array] forKey:@"Photos"];
-//    }
-//
-//    UIImage *image = [photosListController scaleAndRotateImage:theImage scaleFlag:NO];
-//    [[currentPost valueForKey:@"Photos"] addObject:[dataManager saveImage:image]];
-//
-//    [self updatePhotosBadge];
+    BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
+    self.hasChanges = YES;
+
+    id currentPost = dataManager.currentPost;
+
+    if (![currentPost valueForKey:@"Photos"]) {
+        [currentPost setValue:[NSMutableArray array] forKey:@"Photos"];
+    }
+
+    UIImage *image = [photosListController scaleAndRotateImage:theImage scaleFlag:NO];
+    [[currentPost valueForKey:@"Photos"] addObject:[dataManager saveImage:image]];
+
+    [self updatePhotosBadge];
 }
 
 - (id)photosDataSource {

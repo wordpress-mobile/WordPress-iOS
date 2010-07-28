@@ -111,12 +111,9 @@
 
 #pragma mark 
 #pragma mark Save Endpoint
-
 - (void) saveUserEnteredXMLRPCEndpointToCurrentBlog:(UITextField *)textField{
-	
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	NSString *xmlrpc = textField.text;
-	NSLog(@"xmlrpc is %@", xmlrpc);
 	[dm.currentBlog setObject:xmlrpc forKey:@"xmlrpc"];
 }
 

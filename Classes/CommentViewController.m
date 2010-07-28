@@ -95,17 +95,9 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [self performSelector:@selector(reachabilityChanged)];
-	//[self updateCommentText];
-	//if ([commentStatus isEqualToString:@"hold"]) {
-//		wasLastCommentPending = YES;
-//	}else{
-		wasLastCommentPending = NO;
-//	}
+	wasLastCommentPending = NO;
 
     [super viewWillAppear:animated];
-	
-	//NSDictionary *comment = [commentDetails objectAtIndex:currentIndex];
-	NSLog(@"commentStatus is: %@", commentStatus);	
 }
 
 - (void)reachabilityChanged {
@@ -127,23 +119,6 @@
 	if (DeviceIsPad() == YES) {
 		return YES;
 	}
-
-	//[super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-	if(UIInterfaceOrientationIsLandscape(self.commentsViewController.interfaceOrientation)){
-		NSLog(@"inside 999CVC if - landscape");
-	}else {
-		NSLog(@"inside 999CVC if - portriat");
-	}
-		
-		
-//    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-//
-//    if ([delegate isAlertRunning] == YES) {
-//        return NO;
-//    } else {
-//        return YES;
-//    }
-	NSLog(@"inside CommentViewController's should autorotate");
 	return NO;
 }
 
@@ -205,8 +180,7 @@
 	}
 		
 	
-	NSLog(@"buttonIndex is: %d", buttonIndex);
-//handle action sheet for approve/spam/edit
+	//handle action sheet for approve/spam/edit
     if ([actionSheet tag] == 301) {
         if (buttonIndex == 0) {  //Approve/Unapprove conditional button was selected
 			if ([self isApprove]) {
@@ -309,7 +283,6 @@
     [delegate setAlertRunning:YES];
 	
     [actionSheet release];
-	NSLog(@"last line of cancelView");
 }
 
 - (void)launchEditComment {
@@ -354,10 +327,7 @@
 	[self dismissEditViewController];
 }
 
-- (void)cancel {
-    //hasChanges = YES;
-	NSLog(@"first line of CommentViewControler:cancel");
-	
+- (void)cancel {	
     if ([[replyToCommentViewController.leftView title] isEqualToString:@"Comment"])
         [replyToCommentViewController.leftView setTitle:@"Cancel"];
 }
@@ -660,7 +630,6 @@
         //[approveAndUnapproveButtonBar setHidden:NO];
         //[deleteButtonBar setHidden:YES];
 		[self insertPendingLabel];
-		NSLog(@"inside if commentStatus is hold");
 		//[self resizeCommentBodyLabel];//:wasLastCommentPending];
 		[approveAndUnapproveButtonBar setHidden:YES];
 		[deleteButtonBar setHidden:NO];

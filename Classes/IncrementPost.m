@@ -110,27 +110,11 @@
 	}
 	
 	NSEnumerator *postsEnum = [response objectEnumerator];
-	//NSMutableArray *onlyOlderPostsArray = [[NSMutableArray alloc] init];
 	NSMutableArray *onlyOlderPostsArray = [[NSMutableArray alloc] init];
 	NSDictionary *postMetadataDict;
-	//NSMutableDictionary *postRequestDict;
 	NSInteger newPostCount = 0;
 	NSMutableArray *getMorePostsArray = [[NSMutableArray alloc] init];
-	
-	
 	NSString *postID = @"nil";
-	//int postIDInt;
-	//int lastPostIDInt = [[[newPostTitlesList objectAtIndex:0] valueForKey:@"postid"] intValue];
-	//NSString *postID2 = [[newPostTitlesList objectAtIndex:0] valueForKey:@"postid"];
-	
-//	NSDate *postGMTDate = [post valueForKey:@"date_created_gmt"];
-//	NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:postGMTDate];
-//	NSDate *currentDate = [postGMTDate addTimeInterval:(secs * +1)];
-//	[post setValue:currentDate forKey:@"date_created_gmt"];
-	
-//	NSDate *postGMTDate = [[newPostTitlesList objectAtIndex:0] valueForKey:@"date_created_gmt"];
-//	NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:postGMTDate];
-//	NSDate *lastKnownCreatedAt = [postGMTDate addTimeInterval:(secs * +1)];
 	
 	NSDate *lastKnownCreatedAt = [[newPostTitlesList objectAtIndex:0] valueForKey:@"date_created_gmt"];
 	//newPostCount = 0;
@@ -143,97 +127,32 @@
 		NSDate *postGMTDate = [postMetadataDict valueForKey:@"date_created_gmt"];
 		NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:postGMTDate];
 		NSDate *newCreatedAt = [postGMTDate addTimeInterval:(secs * +1)];
-
-		//NSDate *newCreatedAt = [postMetadataDict valueForKey:@"dateCreated"];
 		
-		//if the recently loaded metadata contains an id (postIDInt) that is greater than the last stored post id (lastPostIDInt)
-		//then ignore it and move to the next object, because we're only updating older items here, not items more recent
-		//than the last refresh.
-		//int offset = 0;
-		//if (newCreatedAt < lastKnownCreatedAt)
-			//if ([newCreatedAt laterDate:lastKnownCreatedAt] ) {
-			
-			//if (laterDate: {
-			//NSDate *)laterDate:(NSDate *)anotherDate
-		
+		int foo = 0;
 		switch ([newCreatedAt compare:lastKnownCreatedAt]){
 			case NSOrderedAscending:
-				NSLog(@"NSOrderedAscending");
-				NSLog(@"newCreatedAt [%@ ]should be earlier than lastKnownCreatedAt [%@]", newCreatedAt, lastKnownCreatedAt);
+				foo = 1;
 				NSDate *test = [newCreatedAt laterDate:lastKnownCreatedAt];
-				NSLog(@"the later date %@", test);
-				NSLog(@"This got into NSOrderedAscending and probably should be saved (left smaller than right) %@", postMetadataDict);
-				NSLog(@"lastKnownCreatedAt %@, ", lastKnownCreatedAt);
 				[onlyOlderPostsArray addObject:postMetadataDict];
 				//[postMetadataDict release];
 				break;
 			case NSOrderedSame:
-				NSLog(@"NSOrderedSame");
-				NSLog(@"this is same... keep? %@", postMetadataDict);
-				NSLog(@"lastKnownCreatedAt %@, ", lastKnownCreatedAt);
 				[onlyOlderPostsArray addObject:postMetadataDict];
 				//[postMetadataDict release];
 				break;
 			case NSOrderedDescending:
-				NSLog(@"NSOrderedDescending");
-				NSLog(@"probably not keeping?  Left greater than Right %@", postMetadataDict);
-				NSLog(@"lastKnownCreatedAt %@, ", lastKnownCreatedAt);
-				//[onlyOlderPostsArray addObject:postMetadataDict];
-				//[postMetadataDict release];
 				break;
 		}
 	}
 	
-	//NSLog(@"onlyOlderPostsArray %@", onlyOlderPostsArray);
-	//NSLog(@"older posts array count %d", onlyOlderPostsArray.count);
-	
 	NSEnumerator *postsEnum2 = [onlyOlderPostsArray objectEnumerator];
-	//NSEnumerator *postsEnum2 = [response objectEnumerator];
-	//newPostCount = 0;
 	while (postMetadataDict = [postsEnum2 nextObject]) {
 		newPostCount ++;
 		postID = [postMetadataDict valueForKey:@"postid"];
-		//postIDInt = [postID intValue];
-		//int oldPostCount = onlyOlderPostsArray.count;
-		//NSLog(@"postID %@", postID);
-		//NSLog(@"lastPostIDInt %d", lastPostIDInt);
-		//NSLog(@"postID2 %@", postID2);
-		
-		//if the recently loaded metadata contains an id (postIDInt) that is greater than the last stored post id (lastPostIDInt)
-		//then ignore it and move to the next object, because we're only updating older items here, not items more recent
-		//than the last refresh.
-//		if (postIDInt > lastPostIDInt) {
-//			//[newPostTitlesList removeObjectAtIndex:newPostCount];
-//			[postsEnum nextObject];
-//			NSLog(@"just ran nextObject line");
-//		}
-		//if the old count of posts is less than the count of cycles through this loop, we're into the "new" data
-		//less than total count of the returned array so we don't fall off the end
-		//TODO: JOHNB TEST that a < 10 number of posts at the tail end of the total posts for a blog will pass through correctly
-		//NSLog(@"previousNumberofPosts %d", previousNumberOfPosts);
-		//NSLog(@"newPostCount  : %d", newPostCount);
-		//NSLog(@"metadataCount  : %d", metadataCount);
 		
 		if (previousNumberOfPosts < newPostCount && newPostCount <= (previousNumberOfPosts + loadLimit ) ) {
-			//the above line probably gets me off in my array by the same number of posts added to the blog via a browser
-			//gotta fix that somehow so I don't add the last item twice below...
-			//probably have to make an array of posts with an id of less than lastPostIDInt and only operate on that
-			
 			//get the postid
 			postID = [postMetadataDict valueForKey:@"postid"];
-			
-			//turn it into an int for mathematical comparison to the latest postid for the last refresh
-//			postIDInt = [postID intValue];
-//			NSLog(@"postID %@", postID);
-//			NSLog(@"lastPostIDInt %d", lastPostIDInt);
-//			NSLog(@"postID2 %@", postID2);
-			
-			/*
-			if the current post id (int value) is greater than the latest id stored in the PostTitlesList at the last refresh
-			don't add to the getMorePosts array, because we're not updating new items (posts) with this method.
-			we're only updating older items (posts) and the user will have to hit refresh to get this one.
-			 */
-			//if (!postIDInt < lastPostIDInt) {
 			
 			//make the dict to hold the values
 			NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
@@ -244,7 +163,6 @@
 			//add the dict to the MutableArray that will get sent in the XMLRPC request
 			[getMorePostsArray addObject:dict];
 			[dict release];
-			//}
 		}
 	}
 	[onlyOlderPostsArray release];
@@ -321,16 +239,12 @@
 		
         // write the new post
         [post writeToFile:pathToPost atomically:YES];
-		NSLog(@"this is the post %@", post);
 		
         // make a post title using the post
         NSMutableDictionary *postTitle = [dm postTitleForPost:post];
-		//NSLog(@"postTitle %@", postTitle);
-		//NSLog(@"posttitleslist count is: %d", [newPostTitlesList count]);
 		
 		//add the new post title to the list (shouldn't need to delete as all in here should be new)
         [newPostTitlesList addObject:postTitle];
-		//NSLog(@"newposttitleslist %@", newPostTitlesList);
     }
 
     // sort and save the postTitles list
@@ -338,10 +252,8 @@
     [newPostTitlesList sortUsingDescriptors:[NSArray arrayWithObject:sd]];
     [sd release];
     [newPostTitlesList writeToFile:[dm pathToPostTitles:currentBlog]  atomically:YES];
-	NSLog(@"newPostTitlesList %@", newPostTitlesList);
 			
     // increment blog counts and save blogs list
-	//NSLog(@"posttitleslist count is: %d", [newPostTitlesList count]);
     [currentBlog setObject:[NSNumber numberWithInt:[newPostTitlesList count]] forKey:@"totalPosts"];
 	[currentBlog setObject:[NSNumber numberWithInt:newPostCount] forKey:@"newposts"];
 			
@@ -385,10 +297,6 @@
 	[newPageTitlesList sortUsingDescriptors:[NSArray arrayWithObject:sd]];
 	[sd release];
 	
-	NSLog(@"newPageTitlesList %@", newPageTitlesList);
-	
-	
-	
 	//get the mt.getRecentPageTitles (page metadata) or whatever it was for 10 + numberOfPagesToDisplay
 	
 	//  ------------------------- invoke metaWeblog.getRecentPages
@@ -404,7 +312,6 @@
 	NSNumber *totalpages = [currentBlog valueForKey:@"totalpages"];
 	//CAN I USE totalpages here???
 	int previousNumberOfPages = [totalpages intValue];
-	NSLog(@"previous number of pages %d", previousNumberOfPages);
 	NSNumber *userSetMaxToFetch = [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:3] intValue]];
 	//is this possibly just a holder for # of items to download?  if so, then we're fine and don't need to reproduce it.  
 		//We should probably change the name to something like kNumberOfItemsToDownloadCount or something similar though...
@@ -422,8 +329,6 @@
 				 withObjects:[NSArray arrayWithObjects:blogid, username, pwd, numberOfPagesToGet, nil]];
 	
 	id response = [dm executeXMLRPCRequest:pagesMetadata byHandlingError:YES];
-	NSLog(@"the response %@", response);
-	//NSLog(@"the id, %@",pageID);
 	[pagesMetadata release];
 	
 	// TODO:
@@ -466,7 +371,6 @@
 		
 	NSDate *lastKnownCreatedAt = [[newPageTitlesList objectAtIndex:0] valueForKey:@"date_created_gmt"];
 	
-	NSLog(@"lastKnownCreatedAt %@, pageid, %@", lastKnownCreatedAt, pageID2);
 	
 	//newPageCount = 0;
 	while (pageMetadataDict = [pagesEnum nextObject]) {
@@ -480,57 +384,29 @@
 		NSDate *newCreatedAt = [pageGMTDate addTimeInterval:(secs * +1)];
 		
 		//NSDate *newCreatedAt = [pageMetadataDict valueForKey:@"dateCreated"];
-		NSLog(@"pageID %@", pageID);
-		NSLog(@"lastPageIDInt %d", lastPageIDInt);
-		NSLog(@"pageID2 %@", pageID2);
 		
 		//if the recently loaded metadata contains a date that is greater than the last stored page date 
 		//then ignore it and move to the next object, because we're only updating older items here, not items more recent
 		//than the last refresh.
+		int foo = 0;
 		switch ([newCreatedAt compare:lastKnownCreatedAt]){
 			case NSOrderedAscending:
-				NSLog(@"NSOrderedAscending");
-				NSLog(@"newCreatedAt [%@ ]should be earlier than lastKnownCreatedAt [%@]", newCreatedAt, lastKnownCreatedAt);
-				NSDate *test = [newCreatedAt laterDate:lastKnownCreatedAt];
-				NSLog(@"the later date %@", test);
-				NSLog(@"This got into NSOrderedAscending and probably should be saved (left smaller than right) %@", pageMetadataDict);
-				NSLog(@"lastKnownCreatedAt %@, ", lastKnownCreatedAt);
+				foo = 1;
 				[onlyOlderPagesArray addObject:pageMetadataDict];
-				//[pageMetadataDict release];
 				break;
 			case NSOrderedSame:
-				NSLog(@"NSOrderedSame");
-				NSLog(@"this is same... keep? %@", pageMetadataDict);
-				NSLog(@"lastKnownCreatedAt %@, ", lastKnownCreatedAt);
-				//[onlyOlderPagesArray addObject:pageMetadataDict];
-				//[pageMetadataDict release];
 				break;
 			case NSOrderedDescending:
-				NSLog(@"NSOrderedDescending");
-				NSLog(@"probably not keeping?  Left greater than Right %@", pageMetadataDict);
-				NSLog(@"lastKnownCreatedAt %@, ", lastKnownCreatedAt);
-				//[onlyOlderPagesArray addObject:pageMetadataDict];
-				//[pageMetadataDict release];
 				break;
 		}
 
 	}
-	
-	//NSLog(@"onlyOlderPagesArray FIRST %@", onlyOlderPagesArray);
-	//NSLog(@"older pages array count %d", onlyOlderPagesArray.count);
-	
 	
 	NSSortDescriptor *sd3 = [[NSSortDescriptor alloc]
 							initWithKey:@"date_created_gmt" ascending:NO
 							selector:@selector(compare:)];
 	[onlyOlderPagesArray sortUsingDescriptors:[NSArray arrayWithObject:sd3]];
 	[sd3 release];
-	
-	//NSLog(@"onlyOlderPagesArray %@", onlyOlderPagesArray);
-	//NSLog(@"older pages array count %d", onlyOlderPagesArray.count);
-
-	
-	
 	
 	NSEnumerator *pagesEnum2 = [onlyOlderPagesArray objectEnumerator];
 	//int olderPagesArrayCount = onlyOlderPagesArray.count;
@@ -542,8 +418,6 @@
 		numberOfPagesToRequest = loadLimit;
 	}
 
-	
-		
 	for (int i = 0; i < numberOfPagesToRequest; i++) {
 		pageMetadataDict = [pagesEnum2 nextObject];
 		pageID = [pageMetadataDict valueForKey:@"page_id"];
@@ -562,16 +436,11 @@
 	}
 	[onlyOlderPagesArray release];
 	
-	NSLog(@"getMorePagesArray %@", getMorePagesArray);
-	NSLog(@"getMorePagesArray %d", getMorePagesArray.count);
-	
-
 	//ask for the next X pages via system.multicall using getMorePagesArray			
 	XMLRPCRequest *pagesReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
 	[pagesReq setMethod:@"system.multicall" withObject:getMorePagesArray];
 	NSArray *response2 = [dm executeXMLRPCRequest:pagesReq byHandlingError:YES];
 	[pagesReq release];
- 	NSLog(@"response2 %@", response2);
 	
 	//if error, turn off kIsSyncProcessRunning and return
 	if ((!response2) || !([response2 isKindOfClass:[NSArray class]])) {
@@ -602,13 +471,11 @@
 		
 		//-----------------------continue with the old -syncPagesForBlog code
 		NSMutableDictionary *updatedPage = [NSMutableDictionary dictionaryWithDictionary:page];
-		NSLog(@"updatedPage %@", updatedPage);
 		
         NSDate *pageGMTDate = [updatedPage valueForKey:@"date_created_gmt"];
         NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:pageGMTDate];
         NSDate *currentDate = [pageGMTDate addTimeInterval:(secs * +1)];
         [updatedPage setValue:currentDate forKey:@"date_created_gmt"];
-		NSLog(@"updatedPage %@", updatedPage);
 		
         [updatedPage setValue:[currentBlog valueForKey:kBlogId] forKey:kBlogId];
         [updatedPage setValue:[currentBlog valueForKey:kBlogHostName] forKey:kBlogHostName];
@@ -626,11 +493,6 @@
 		[newPageTitlesList sortUsingDescriptors:[NSArray arrayWithObject:sd2]];
 		[sd2 release];
 		[currentBlog setObject:[NSNumber numberWithInt:[newPageTitlesList count]] forKey:@"totalpages"];
-		NSNumber *totalPages = [currentBlog valueForKey:@"totalpages"];
-		//CAN I USE totalpages here???
-		int previousNumberOfPages = [totalPages intValue];
-		NSLog(@"previous number of pages %d", previousNumberOfPages);
-		NSLog(@"titles array count %d") ,[newPageTitlesList count];
 		[currentBlog setObject:[NSNumber numberWithInt:1] forKey:@"newpages"];
 		
 		NSString *pathToCommentTitles = [dm pathToPageTitles:currentBlog];

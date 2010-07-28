@@ -284,9 +284,8 @@ UIPopoverController *theBlogMenuPopoverController = [[NSClassFromString(@"UIPopo
 
 - (void)refreshBlogs:(NSNotification *)notification;
 {
+	// This needs to go away
 	NSLog(@"Refreshed!");
-//	[tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
-// JIW	[self performSelectorOnMainThread:@selector(updateSelection) withObject:nil waitUntilDone:YES];
 }
 
 #pragma mark KVO
@@ -302,19 +301,15 @@ UIPopoverController *theBlogMenuPopoverController = [[NSClassFromString(@"UIPopo
 		WPItemType newItemType;
 		if ([keyPath isEqual:@"currentDraftIndex"]) {
 			newItemType = kWPItemTypePostDraft;
-			NSLog(@"SHOULD SHOW DRAFT #%@", new);
 		}
 		if ([keyPath isEqual:@"currentPostIndex"]) {
 			newItemType = kWPItemTypePost;
-			NSLog(@"SHOULD SHOW POST #%@", new);
 		}
 		if ([keyPath isEqual:@"currentPageIndex"]) {
 			newItemType = kWPItemTypePage;
-			NSLog(@"SHOULD SHOW PAGE #%@", new);
 		}
 		if ([keyPath isEqual:@"currentPageDraftIndex"]) {
 			newItemType = kWPItemTypePageDraft;
-			NSLog(@"SHOULD SHOW PAGE DRAFT #%@", new);
 		}
 		
 		if (newItemType != selectedItemType || newSelectedIndex != selectedItemIndex) {

@@ -70,7 +70,6 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"inside cellForRow");
     static NSString *CellIdentifier = @"Cell";
 
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -116,8 +115,6 @@
 
     if (row == 0) {
         textField.text = [customFieldsDict valueForKey:@"key"];
-        NSLog(@"text field text is: %@", textField.text);
-        NSLog(@"customFieldsDict:ValueForKey is %@", [customFieldsDict valueForKey:@"key"]);
     } else if (row == 1) {
         textField.text = [customFieldsDict valueForKey:@"value"];
     }
@@ -139,13 +136,7 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 #pragma mark Text Field Delegate Methods
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-    NSLog(@"inside textFieldDidBeginEditing");
     self.textFieldBeingEdited = textField;
-    //postDetailViewController.hasChanges = YES;
-    //self.navigationItem.rightBarButtonItem = self.saveButtonItem;
-    //[self.view setNeedsDisplay];
-    //postDetailViewController.navigationItem.rightBarButtonItem = saveButtonItem;
-    //[self.view setNeedsDisplay];
 
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
                                    target:self action:@selector(textFieldDone:)];
@@ -165,17 +156,9 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         [dm printDictToLog:customFieldsDict andDictName:@"test from textFieldDidEndEditing, CustomFieldsEditView... isn't it key and value"];
     }
 
-    //[[BlogDataManager sharedDataManager].currentPost setValue:tagsTextField.text forKey:@"mt_keywords"];
-    //write back to the datastructure in what?  currentPost eventually...
-    //ahh... get the id and use that, eh?
-    //[self writeCustomFieldsToCurrentPostUsingID];
-
     postDetailViewController.hasChanges = YES;
     pageDetailsController.hasChanges = YES;
     self.navigationItem.rightBarButtonItem = saveButtonItem;
-
-    //[self.navigationController popViewControllerAnimated:YES];
-    NSLog(@"inside CustomFieldsDetailController, a call to postDetailViewController's hasChanges gave this: %d", postDetailViewController.hasChanges);
 }
 
 #pragma mark -
@@ -183,25 +166,11 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)loadData:(NSDictionary *)theDict andNewCustomFieldBool:(BOOL)theBool {
     isNewCustomField = theBool;
-    NSLog(@"Got to here...");
     customFieldsDict = [[NSMutableDictionary alloc] initWithDictionary:theDict];
-    NSLog(@"and now here after assigning the Dict");
-    //keyField.text	= [customFieldsDict valueForKey:@"key"];
-    //valueField.text = [customFieldsDict valueForKey:@"value"];
     [self.tableView reloadData];
 }
 
 - (void)writeCustomFieldsToCurrentPostOrPageUsingID {
-    //in this method:
-    // Check if text fields are empty: if so, return after doing nothing
-    // Check if it is a newly created Custom Field (isNewCustomField) and given that text fields were not empty, add to datastructure
-    // Finally, if we drop through those first two conditions...
-    //get the id from customFieldsDict and use it to write changes to
-    //currentPost:custom_fields in the correct spot (based on id)
-
-    //don't write anything to datastructure if Key field is nil
-    //instead, just return
-
     NSString *testStringName = [customFieldsDict valueForKey:@"key"];
 
     //NSString * testStringValue = [customFieldsDict valueForKey:@"value"];
@@ -219,30 +188,7 @@ willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         tempCustomFieldsArray = [dm.currentPage valueForKey:@"custom_fields"];
     }
 
-    //if it's a newly created custom field, and it passed the @"" test above, a somewhat different "write" function
-//	if (isNewCustomField) {
-//		//create a dict
-//		NSMutableDictionary *newCustomFieldDict = [[NSMutableDictionary alloc] initWithDictionary:customFieldsDict];
-//		//get rid of id since the server doesn't need that for a new one
-//		//server requires this to be missing in order to recognize this as a *new* custom field
-//		[newCustomFieldDict removeObjectForKey:@"id"];
-//
-//		//add the dict to the temp array (that mirrors custom_fields)
-//
-//		[tempCustomFieldsArray addObject:newCustomFieldDict];
-//
-//		[dm.currentPost setValue:tempCustomFieldsArray forKey:@"custom_fields"];
-//
-//		NSArray *tempArray = [dm.currentPost valueForKey:@"custom_fields"];
-//		[dm printArrayToLog:tempArray andArrayName:@"copy of currentPost:custom_fields from CustomFieldsEditView AFTER edit. This is from the if new custom stanza"];
-//
-//		return; //?  Don't go past here, although the else should take care of it
-//
-//	}else{
-
     NSString *ID = [customFieldsDict valueForKey:@"id"];
-
-    //NSLog(@"tempCustomFieldsArray count is.... %@", tempCustomFieldsArray.count);
     if (tempCustomFieldsArray.count >= 1) {
         int dictsCount = [tempCustomFieldsArray count];
 
