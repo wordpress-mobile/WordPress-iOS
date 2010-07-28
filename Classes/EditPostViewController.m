@@ -887,14 +887,14 @@ NSTimeInterval kAnimationDuration = 0.3f;
                        delegate:self
                        cancelButtonTitle:@"Cancel"
                        destructiveButtonTitle:nil
-                       otherButtonTitles:@"Add Photo from Library", @"Take Photo with Camera", nil];
+                       otherButtonTitles:@"Add Media from Library", @"Take Photo with Camera", nil];
     } else {
         actionSheet = [[UIActionSheet alloc]
                        initWithTitle:@""
                        delegate:self
                        cancelButtonTitle:@"Cancel"
                        destructiveButtonTitle:nil
-                       otherButtonTitles:@"Add Photo from Library", nil];
+                       otherButtonTitles:@"Add Media from Library", nil];
     }
 	
     actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
@@ -908,19 +908,19 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (isShowPhotoPickerActionSheet) {
         if (buttonIndex == 0)
-            [self pickPhotoFromPhotoLibrary:nil];else
-				[self pickPhotoFromCamera:nil];
-    } else {
-        if (buttonIndex == 0) { //add
+            [self pickPhotoFromPhotoLibrary:nil];
+		else
+			[self pickPhotoFromCamera:nil];
+    }
+	else {
+        if (buttonIndex == 0) {
             [self useImage:currentChoosenImage];
-        } else if (buttonIndex == 1) { //add and return
+        }
+		else if (buttonIndex == 1) {
             [self useImage:currentChoosenImage];
-            //	[picker popViewControllerAnimated:YES];
             WPImagePickerController *picker = [self pickerController];
             [[picker parentViewController] dismissModalViewControllerAnimated:YES];
             [self clearPickerContrller];
-        } else {
-            //do nothing
         }
 		
         WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
@@ -938,7 +938,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
         WPImagePickerController *picker = [self pickerController];
         picker.sourceType = UIImagePickerControllerSourceTypeCamera;
 		
-        // Picker is displayed asynchronously.
         [[postDetailViewController navigationController] presentModalViewController:picker animated:YES];
     }
 }
@@ -949,7 +948,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if ([WPImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
         WPImagePickerController *picker = [self pickerController];
         picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        // Picker is displayed asynchronously.
         [postDetailViewController.navigationController presentModalViewController:picker animated:YES];
     }
 }
@@ -974,7 +972,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [[picker parentViewController] dismissModalViewControllerAnimated:YES];
 }
 
-// Implement this method in your code to do something with the image.
 - (void)useImage:(UIImage *)theImage {
     BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
     postDetailViewController.hasChanges = YES;
@@ -988,18 +985,18 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [postDetailViewController updatePhotosBadge];
 }
 
-- (void)useVideo:(NSData *)theVideo {
-    BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-    postDetailViewController.hasChanges = YES;
-	
-    id currentPost = dataManager.currentPost;
-	
-    if (![currentPost valueForKey:@"Videos"])
-        [currentPost setValue:[NSMutableArray array] forKey:@"Videos"];
-	
-    //[[currentPost valueForKey:@"Videos"] addObject:[dataManager saveVideo:theVideo]];
-    [postDetailViewController updatePhotosBadge];
-}
+//- (void)useVideo:(NSData *)theVideo {
+//    BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
+//    postDetailViewController.hasChanges = YES;
+//	
+//    id currentPost = dataManager.currentPost;
+//	
+//    if (![currentPost valueForKey:@"Videos"])
+//        [currentPost setValue:[NSMutableArray array] forKey:@"Videos"];
+//	
+//    [[currentPost valueForKey:@"Videos"] addObject:[dataManager saveVideo:theVideo]];
+//    [postDetailViewController updatePhotosBadge];
+//}
 
 - (void)pictureChoosenNotificationReceived:(NSNotification *)aNotification {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"WPPhotoChoosen" object:nil];

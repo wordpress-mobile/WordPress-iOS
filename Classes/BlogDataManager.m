@@ -320,10 +320,8 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
 
 #pragma mark -
 
-//syncronous method
-//you can access the current context.
+// syncronous method
 - (void)addSendPictureMsgToQueue:(id)aPicture {
-    //create args
     NSData *pictData = UIImagePNGRepresentation([aPicture valueForKey:@"pictureData"]);
 	
     if (pictData == nil) {
@@ -339,19 +337,11 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
         return;
     }
 	
-    //test code
-    if (![self countOfBlogs]) {
+    if (![self countOfBlogs])
         return;
-    }
-	
-	//	[self makeBlogAtIndexCurrent:[self countOfBlogs]-1];
-	
-    if (!currentBlog) {
+		
+    if (!currentBlog)
         return;
-    }
-	
-	//	NSString *name = [[[aPicture valueForKey:@"pictureFilePath"] stringByDeletingPathExtension] lastPathComponent];
-	//	name = ( name == nil ? @"", name );
 	
     NSString *desc = [aPicture valueForKey:@"pictureCaption"];
     desc = (desc == nil ? @"" : desc);
@@ -392,11 +382,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
 //asyncronous method
 //you have to get every thing with the arg prepared by the syncronous method
 - (void)sendPictureAsyncronously:(id)aPictureInfo {
-    //create an xmlrpc request
-    //perform the operation
-    //if success then update the picture object.
-	//	[[aPictureInfo valueForKey:@"pictureObj"] setValue:[NSNumber numberWithInt:1] forKey:pictureStatus];
-	
     XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[aPictureInfo valueForKey:kURL]]];
     [request setMethod:[aPictureInfo valueForKey:kMETHOD] withObjects:[aPictureInfo valueForKey:kMETHODARGS]];
 	
@@ -404,7 +389,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
     id pictObj = [aPictureInfo valueForKey:@"pictureObj"];
     [request release];
 	
-	//	XMLRPCResponse *response = [XMLRPCConnection sendSynchronousXMLRPCRequest:request];
     if ([response isKindOfClass:[NSError class]]) {
         [pictObj setValue:[response fault] forKey:@"faultString"];
         [pictObj setValue:[NSNumber numberWithInt:-1] forKey:pictureStatus];
@@ -412,8 +396,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
         [pictObj setValue:[NSNumber numberWithInt:2] forKey:pictureStatus];
         [pictObj removeObjectForKey:@"faultString"];
         [pictObj setValue:[response valueForKey:@"url"] forKey:pictureURL];
-		//		[pictObj setValue:[response valueForKey:@"file"] forKey:pictureURL];
-		//		[pictObj setValue:[response valueForKey:@"type"] forKey:pictureURL];
     }
 	
     [[NSNotificationCenter defaultCenter] postNotificationName:PictureObjectUploadedNotificationName object:pictObj];
@@ -421,8 +403,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
 }
 
 - (void)addSyncPostsForBlogToQueue:(id)aBlog {
-    //[aBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
-    //TODO: Raise a notification so that post titles will reload data. if this blog is currently viewed.
     [self addAsyncOperation:@selector(syncPostsForBlog:) withArg:aBlog];
 }
 
@@ -460,14 +440,11 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
     [imageParms setValue:@"image/png" forKey:@"type"];
     [imageParms setValue:pictData forKey:@"bits"];
     [imageParms setValue:@"iPhoneImage.png" forKey:@"name"];
-    //	[imageParms setValue:categories forKey:@"categories"];
-    //	[imageParms setValue:desc forKey:@"description"];
 	
     id blog = [self blogForId:[currentPost valueForKey:kBlogId] hostName:[currentPost valueForKey:kBlogHostName]];
 	
     NSArray *args = [NSArray arrayWithObjects:[blog valueForKey:kBlogId],
                      [blog valueForKey:@"username"],
-                     //[blog valueForKey:@"pwd"],
 					 [self getPasswordFromKeychainInContextOfCurrentBlog:blog],
                      imageParms,
                      nil
@@ -479,11 +456,10 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
     id response = [self executeXMLRPCRequest:request byHandlingError:YES];
     [request release];
 	
-    if ([response isKindOfClass:[NSError class]]) {
+    if ([response isKindOfClass:[NSError class]])
         return nil;
-    } else {
+	else
         return [response valueForKey:@"url"];
-    }
 	
     return nil;
 }
@@ -502,14 +478,11 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
     [imageParms setValue:@"image/jpeg" forKey:@"type"];
     [imageParms setValue:pictData forKey:@"bits"];
     [imageParms setValue:[filePath lastPathComponent] forKey:@"name"];
-    //	[imageParms setValue:categories forKey:@"categories"];
-    //	[imageParms setValue:desc forKey:@"description"];
 	
     id blog = [self blogForId:[currentPost valueForKey:kBlogId] hostName:[currentPost valueForKey:kBlogHostName]];
 	
     NSArray *args = [NSArray arrayWithObjects:[blog valueForKey:kBlogId],
                      [blog valueForKey:@"username"],
-                     //[blog valueForKey:@"pwd"],
 					 [self getPasswordFromKeychainInContextOfCurrentBlog:blog],
                      imageParms,
                      nil
@@ -521,18 +494,15 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
     id response = [self executeXMLRPCRequest:request byHandlingError:YES];
     [request release];
 	
-    if ([response isKindOfClass:[NSError class]]) {
+    if ([response isKindOfClass:[NSError class]])
         return nil;
-    } else {
+	else
         return [response valueForKey:@"url"];
-    }
 	
     return nil;
 }
 
 - (NSString *)pagePictureURLForPicturePathBySendingToServer:(NSString *)filePath {
-    //	UIImage *pict = [UIImage imageWithContentsOfFile:filePath];
-    //UIImagePNGRepresentation(pict);s
     NSData *pictData = [NSData dataWithContentsOfFile:filePath];
 	
     if (pictData == nil) {
@@ -544,10 +514,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
     [imageParms setValue:@"image/jpeg" forKey:@"type"];
     [imageParms setValue:pictData forKey:@"bits"];
     [imageParms setValue:[filePath lastPathComponent] forKey:@"name"];
-    //	[imageParms setValue:categories forKey:@"categories"];
-    //	[imageParms setValue:desc forKey:@"description"];
 	
-    //id blog = [self blogForId:[currentPost valueForKey:kBlogId] hostName:[currentPost valueForKey:kBlogHostName]];
     id blog = [self blogForId:[currentPage valueForKey:kBlogId] hostName:[currentPage valueForKey:kBlogHostName]];
 	
     NSArray *args = [NSArray arrayWithObjects:[blog valueForKey:kBlogId],
@@ -564,11 +531,10 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
     id response = [self executeXMLRPCRequest:request byHandlingError:YES];
     [request release];
 	
-    if ([response isKindOfClass:[NSError class]]) {
+    if ([response isKindOfClass:[NSError class]])
         return nil;
-    } else {
+    else
         return [response valueForKey:@"url"];
-    }
 	
     return nil;
 }
@@ -616,7 +582,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
     BOOL firstImage = YES;
     BOOL paraOpen = NO;
 	
-	//	for( i=count-1; i >=0 ; i-- )
     for (i = 0; i <= count - 1; i++) {
         curPath = [photos objectAtIndex:i];
         NSString *filePAth = [NSString stringWithFormat:@"%@/%@", [self blogDir:currentBlog], curPath];
@@ -640,7 +605,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
 				}
 				
 				[self deleteImageNamed:curPath forBlog:currentBlog];
-				//			[photos removeLastObject];
 			}
     }
 	
@@ -706,7 +670,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
     BOOL firstImage = YES;
     BOOL paraOpen = NO;
 	
-	//	for( i=count-1; i >=0 ; i-- )
     for (i = 0; i <= count - 1; i++) {
         curPath = [photos objectAtIndex:i];
         NSString *filePAth = [NSString stringWithFormat:@"%@/%@", [self blogDir:currentBlog], curPath];
@@ -730,7 +693,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
 				}
 				
 				[self deleteImageNamed:curPath forBlog:currentBlog];
-				//[photos removeLastObject];
 			}
     }
 	
@@ -744,12 +706,8 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
 
 #pragma mark File Paths
 
-//TODO: Why can't we create complete folder structure when we save the blog?
-// So that we can reduse the file system references.
 - (NSString *)blogDir:(id)aBlog {
     NSString *blogHostDir = [currentDirectoryPath stringByAppendingPathComponent:[aBlog objectForKey:kBlogHostName]];
-    // note that when the local drafts is set as current blog, a fake blogid "localdrafts" is used
-    // this will resolve to a dir called "localdrafts" which is what we want
     NSString *blogDir = [blogHostDir stringByAppendingPathComponent:[aBlog objectForKey:kBlogId]];
     NSString *localDraftsDir = [blogDir stringByAppendingPathComponent:@"localDrafts"];
 	
@@ -757,7 +715,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
     BOOL isDirectory;
 	
     if (!([fm fileExistsAtPath:blogDir isDirectory:&isDirectory] && isDirectory)) {
-        // [fm createDirectoryAtPath:blogHostDir attributes:nil];
         [fm createDirectoryAtPath:blogHostDir withIntermediateDirectories:YES attributes:nil error:nil];
         [fm createDirectoryAtPath:blogDir attributes:nil];
         [fm createDirectoryAtPath:localDraftsDir attributes:nil];
@@ -775,7 +732,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
 }
 
 - (BOOL)clearAutoSavedContext {
-	//NSLog(@"inside clearAutoSavedContext");
     id aPost = [self autoSavedPostForCurrentBlog];
     [self deleteAllPhotosForPost:aPost forBlog:currentBlog];
 	
@@ -788,7 +744,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
 }
 
 - (BOOL)removeAutoSavedCurrentPostFile {
-	//NSLog(@"about to remove autosaved file BDM, removeAutoSavedCurrentPostFile");
     NSString *fp = [self autoSavePathForTheCurrentBlog];
 	
     if (fp)
@@ -980,40 +935,22 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
 #pragma mark Blog data
 
 
-- (void) tryDefaultXMLRPCEndpoint: (NSString *) url{
-	/*
-	 add http:// and "/xmlrpc.php"to url
-	 try the listMethods XMLRPC Call
-	 log the returned array (might be an error, might be a list of methods)
-	 
-	 if the returned array is an error, 
-	 log "I can't access the url"
-	 else
-	 set xmlrpc value in blog data manger
-	 */
-	
+- (void)tryDefaultXMLRPCEndpoint:(NSString *)url {
 	NSString *xmlrpcURL = [[@"http://" stringByAppendingString:url] stringByAppendingString:@"/xmlrpc.php"];
-	//NSLog(@"xmlrpcURL %@", xmlrpcURL);
+	
 	XMLRPCRequest *listMethodsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpcURL]];
     [listMethodsReq setMethod:@"system.listMethods" withObjects:[NSArray array]];
     NSArray *listOfMethods = [self executeXMLRPCRequest:listMethodsReq byHandlingError:YES];
 	[self printArrayToLog:listOfMethods andArrayName:@"list of methods from LocateXMLRPC...:-saveXMLRPCLocation"];
     [listMethodsReq release];
 	
-	if ([listOfMethods isKindOfClass:[NSError class]]){
-		//NSLog(@"returned an error, can't get to xmlrpc.php endpoint");
-		
-    } else {
-		//NSLog(@"should have been successful ping of default xmlrpc endpoint");
+	// XML-RPC endpoint is kosher.
+	if (![listOfMethods isKindOfClass:[NSError class]])
 		[currentBlog  setValue:xmlrpcURL forKey:@"xmlrpc"];
-	}
 	
 }
 
-//This method gets the XML output of the appropriate XMLRPC endpoint
-//http:///mydomain.com/xmlrpc.php?rsd is what should be coming in as hosturl
 - (NSString *)xmlurl:(NSString *)hosturl {
-    //Handeled if HostUrl is nil from server.
     if (!hosturl)
         return nil;
 	
@@ -1022,7 +959,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
 											timeoutInterval:60.0];
     NSData *data = [NSURLConnection sendSynchronousRequest:theRequest returningResponse:NULL error:NULL];
 	
-    // NSString *xmlstr = [NSString stringWithUTF8String:[data bytes]];
     NSString *xmlstr = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
 	
     if ([data length] > 0) {
@@ -1105,9 +1041,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
     if ([xmlrpc isKindOfClass:[NSError class]] || !xmlrpc) {
         xmlrpc = [blogURL stringByAppendingString:[currentBlog valueForKey:@"xmlrpcsuffix"]];
     }
-	
-    //  ------------------------- invoke login & getUserInfo
-	
+		
     XMLRPCRequest *reqUserInfo = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
     [reqUserInfo setMethod:@"blogger.getUserInfo" withObjects:[NSArray arrayWithObjects:@"ABCDEF012345", username, pwd, nil]];
 	
@@ -1370,7 +1304,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
 		return NO;
 	}
 	
-	//it's a new blog, set currentBlogIndex to -1
 	currentBlogIndex = -1;
 	[self saveBlogPasswordToKeychain:pwd andUserName:username andBlogURL:blogURL];
 	[self newAccountPostsAndTemplateSync:currentBlog];
@@ -1529,7 +1462,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
 		[aBlog setObject:pageStatusList forKey:@"pageStatusList"];
 }
 
-// sync posts for a given blog
 - (BOOL)syncPostsForBlog:(id)blog {
 	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
     if ([[blog valueForKey:kBlogId] isEqualToString:kDraftsBlogIdStr]) {
@@ -1537,28 +1469,12 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
         return NO;
     }
 	
-    // Parameters
     NSString *username = [blog valueForKey:@"username"];
-    //NSString *pwd = [blog valueForKey:@"pwd"];
 	NSString *pwd = [self getPasswordFromKeychainInContextOfCurrentBlog:blog];
     NSString *fullURL = [blog valueForKey:@"xmlrpc"];
     NSString *blogid = [blog valueForKey:kBlogId];
     NSNumber *maxToFetch = [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:3] intValue]];
-	//Note: Changed this to accomodate 10-at-a-time updating of posts. kPostsDownloadCount seems to be associated with the number set when setting up the blog
-	//NSString *maxToFetch = nil;
-	//NSNumber *maxToFetch = [NSNumber numberWithInt:[[currentBlog valueForKey:@"totalPostsLoaded"] intValue]];
-	//NSNumber *maxToFetch = [NSNumber numberWithInt:[[currentBlog valueForKey:@"totalPosts"] intValue]];
-	//NSNumber *maxToFetch = [NSNumber numberWithInt:[[currentBlog valueForKey:@"totalPosts"] intValue]];
-	//NSInteger maxCopy = [NSNumber numberWithInt: [[currentBlog valueForKey:@"totalPosts"] intValue]];
-	//	NSNumber *loadint = [NSNumber numberWithInt: [[currentBlog valueForKey:@"totalPosts"] intValue]];
-	//	int score = [loadint intValue];
-	//	NSString *myString35 = [NSString stringWithFormat:@"%d", loadint];
-	//NSArray *test = [NSArray arrayWithObjects:blogid, username, pwd, maxToFetch, nil ];
-	//NSLog(@"the array for get recent posts %@",test);
 	
-	//NSLog(@"currentblog %@", currentBlog);
-	
-    //  ------------------------- invoke metaWeblog.getRecentPosts
     XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
     [postsReq setMethod:@"metaWeblog.getRecentPosts"
 			withObjects:[NSArray arrayWithObjects:blogid, username, pwd, maxToFetch, nil]];
@@ -1566,15 +1482,11 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors;
     NSArray *recentPostsList = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
     [postsReq release];
 	
-    // TODO:
-    // Check for fault
-    // check for nil or empty response
-    // provide meaningful message to user
     if ((!recentPostsList) || !([recentPostsList isKindOfClass:[NSArray class]])) {
         [blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-		//		[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:blog userInfo:nil];
         return NO;
     }
+	
 	return [self organizePostsForBlog:blog withPostsArray:recentPostsList];
 	
 }

@@ -369,12 +369,11 @@
 		[addUsersBlogsView setUsername:username];
 		[addUsersBlogsView setPassword:password];
 	}
-	else if(subsites.count == 1) {
-		Blog *blog = [subsites objectAtIndex:0];
-		host = blog.host;
-		blogID = blog.blogID;
-		blogName = blog.blogName;
-	}
+	
+	Blog *blog = [subsites objectAtIndex:0];
+	host = blog.host;
+	blogID = blog.blogID;
+	blogName = blog.blogName;
 	
 	if(![self blogExists]) {
 		if(isAuthenticated) 

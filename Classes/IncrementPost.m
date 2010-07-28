@@ -132,7 +132,6 @@
 		switch ([newCreatedAt compare:lastKnownCreatedAt]){
 			case NSOrderedAscending:
 				foo = 1;
-				NSDate *test = [newCreatedAt laterDate:lastKnownCreatedAt];
 				[onlyOlderPostsArray addObject:postMetadataDict];
 				//[postMetadataDict release];
 				break;
@@ -365,12 +364,7 @@
 	
 	
 	NSString *pageID = @"nil";
-	//int pageIDInt;
-	int lastPageIDInt = [[[newPageTitlesList objectAtIndex:0] valueForKey:@"pageid"] intValue];
-	NSString *pageID2 = [[newPageTitlesList objectAtIndex:0] valueForKey:@"pageid"];
-		
 	NSDate *lastKnownCreatedAt = [[newPageTitlesList objectAtIndex:0] valueForKey:@"date_created_gmt"];
-	
 	
 	//newPageCount = 0;
 	while (pageMetadataDict = [pagesEnum nextObject]) {
