@@ -27,7 +27,7 @@
 
 static WordPressAppDelegate *wordPressApp = NULL;
 
-@synthesize window, lastBlogSync, currentBlog;
+@synthesize window, currentBlog;
 @synthesize navigationController, alertRunning, isWPcomAuthenticated;
 @synthesize splitViewController;
 
@@ -64,7 +64,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
     [navigationController release];
     [window release];
     [dataManager release];
-	[lastBlogSync release];
 	[currentBlog release];
     [super dealloc];
 }
@@ -86,6 +85,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	[self setAutoRefreshMarkers];
 	[self syncBlogCategoriesAndStatuses];
 	[self syncBlogs];
+	[self startSyncTimer];
 	[self passwordIntoKeychain];
 	[self restoreCurrentBlog];
 	
@@ -186,8 +186,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	[defaults setBool:true forKey:@"anyMorePages"];
 }
 
-- (void)showContentDetailViewController:(UIViewController *)viewController;
-{
+- (void)showContentDetailViewController:(UIViewController *)viewController {
 	if (self.navigationController) {
 		[self.navigationController pushViewController:viewController animated:YES];
 	}
@@ -200,21 +199,37 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)syncBlogs {
-	if(dataManager.countOfBlogs > 0) {
-		unsigned int unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit;
-		NSCalendar *sysCalendar = [NSCalendar currentCalendar];
-		NSDateComponents *timeSince = [sysCalendar components:unitFlags fromDate:self.lastBlogSync toDate:[NSDate date] options:0];
-		
-		if((self.lastBlogSync == nil) || ([timeSince minute] > 10)) {
-			[dataManager performSelectorInBackground:@selector(syncBlogs) withObject:nil];
-		}
-	}
+	[dataManager performSelectorInBackground:@selector(syncBlogsInBackground) withObject:nil];
 }
 
 - (void)syncBlogCategoriesAndStatuses {
 	if(dataManager.countOfBlogs > 0) {
 		[dataManager performSelectorInBackground:@selector(syncBlogCategoriesAndStatuses) withObject:nil];
 	}
+}
+
+- (void)startSyncTimer {
+	NSThread *syncThread = [[NSThread alloc] initWithTarget:self selector:@selector(startSyncTimerThread) object:nil];
+	[syncThread start];
+}
+
+- (void)startSyncTimerThread {
+	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+	
+	NSTimer *syncTimer = [NSTimer timerWithTimeInterval:600.0
+											 target:self
+										   selector:@selector(syncTick:)
+										   userInfo:nil
+											repeats:YES];
+	NSRunLoop* runLoop = [NSRunLoop currentRunLoop];
+	[runLoop addTimer:syncTimer forMode:NSRunLoopCommonModes];
+	[runLoop run];
+	
+	[pool release];
+}
+
+- (void)syncTick:(NSTimer *)timer {
+	[dataManager syncBlogs];
 }
 
 #pragma mark -
@@ -367,39 +382,28 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (int)indexForCurrentBlog {
-    NSDictionary *currentBDMBlog = [dataManager currentBlog];
-    return [dataManager indexForBlogid:[currentBDMBlog objectForKey:kBlogId] url:[currentBDMBlog objectForKey:@"url"]];
+    return [dataManager indexForBlogid:[[dataManager currentBlog] objectForKey:kBlogId] 
+								   url:[[dataManager currentBlog] objectForKey:@"url"]];
 }
 
 - (void)storeCurrentBlog {
-    NSDictionary *currentBDMBlog = [dataManager currentBlog];
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
-    if (currentBDMBlog) {
-        [defaults setInteger:[self indexForCurrentBlog] forKey:kCurrentBlogIndex];
-    }
-    else {
-        [defaults removeObjectForKey:kCurrentBlogIndex];
-    }
+    if([dataManager currentBlog])
+        [[NSUserDefaults standardUserDefaults] setInteger:[self indexForCurrentBlog] forKey:kCurrentBlogIndex];
+    else
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kCurrentBlogIndex];
 }
 
 - (void)restoreCurrentBlog {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
-    if ([defaults objectForKey:kCurrentBlogIndex]) {
-        int currentBlogIndex = [defaults integerForKey:kCurrentBlogIndex];
-        // Sanity check.
-        if (currentBlogIndex >= 0) {
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:kCurrentBlogIndex]) {
+        int currentBlogIndex = [[NSUserDefaults standardUserDefaults] integerForKey:kCurrentBlogIndex];
+        if (currentBlogIndex >= 0) 
             [dataManager makeBlogAtIndexCurrent:currentBlogIndex];
-        }
     }
-    else {
+    else
         [dataManager resetCurrentBlog];
-    }
 }
 
 - (void)showSplashView {
-
     splashView = [[UIImageView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     splashView.image = [UIImage imageNamed:@"Default.png"];
     [window addSubview:splashView];

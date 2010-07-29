@@ -41,6 +41,7 @@
     NSMutableDictionary *currentBlog;
     BOOL isLocaDraftsCurrent;
     BOOL isPageLocalDraftsCurrent;
+	BOOL isSyncingBlogs;
 	BOOL shouldStopSyncingBlogs;
 	BOOL isSyncingCommentsAndStatuses;
 	BOOL shouldDisplayErrors;
@@ -99,7 +100,7 @@
 
 @property (nonatomic, copy, readonly) NSMutableDictionary *currentBlog;
 @property (nonatomic, assign) BOOL shouldStopSyncingBlogs, isSyncingCommentsAndStatuses, isLocaDraftsCurrent;
-@property (nonatomic, assign) BOOL isPageLocalDraftsCurrent, shouldDisplayErrors;
+@property (nonatomic, assign) BOOL isPageLocalDraftsCurrent, shouldDisplayErrors, isSyncingBlogs;
 
 @property (nonatomic, assign) NSInteger currentBlogIndex;
 @property (nonatomic, copy, readonly) NSMutableDictionary *currentPost;
@@ -214,6 +215,7 @@
 - (BOOL)refreshCurrentBlogQuickly:(NSString *)url user:(NSString *)username;
 - (BOOL)validateCurrentBlog:(NSString *)url user:(NSString *)username password:(NSString *)pwd;
 - (void)syncBlogs;
+- (void)syncBlogsInBackground;
 - (void)syncBlogCategoriesAndStatuses;
 - (void)stopSyncingBlogs;
 - (BOOL)syncPostsForBlog:(id)blog;

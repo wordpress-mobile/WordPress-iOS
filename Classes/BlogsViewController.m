@@ -7,21 +7,21 @@
 #pragma mark View lifecycle
 
 - (void)viewDidLoad {
+	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+	
     self.title = NSLocalizedString(@"Blogs", @"RootViewController_Title");
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
 																							target:self
 																							action:@selector(showAddBlogView:)] autorelease];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStyleBordered target:nil action:nil]; 
 	self.tableView.allowsSelectionDuringEditing = YES;
-	
-	self.blogsList = [[[BlogDataManager sharedDataManager] blogsList] mutableCopy];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blogsRefreshNotificationReceived:) name:@"BlogsRefreshNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBlogWithoutAnimation) name:@"NewBlogAdded" object:nil];
     
 	// restore blog for iPad
 	if (DeviceIsPad() == YES) {
-		if ([WordPressAppDelegate sharedWordPressApp].shouldLoadBlogFromUserDefaults) {
+		if (appDelegate.shouldLoadBlogFromUserDefaults) {
 			[self showBlog:NO];
 		}
 	}
@@ -36,11 +36,13 @@
 		self.navigationItem.leftBarButtonItem = self.editButtonItem;
 	else
 		self.navigationItem.leftBarButtonItem = nil;
+	
+	self.blogsList = nil;
+	self.blogsList = [[[BlogDataManager sharedDataManager] blogsList] mutableCopy];
+	
 	[self.tableView reloadData];
 	[self.tableView endEditing:YES];
-	[BlogDataManager sharedDataManager].selectedBlogID = @"";
-	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	[delegate syncBlogs];
+	[BlogDataManager sharedDataManager].selectedBlogID = nil;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -230,10 +232,18 @@
 }
 
 - (void)didDeleteBlogSuccessfully:(NSIndexPath *)indexPath {
+	[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = YES;
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsEditedNotification" object:nil];
 	if ([[BlogDataManager sharedDataManager] countOfBlogs] == 0) {
 		self.navigationItem.leftBarButtonItem = nil;
 		[self.tableView setEditing:NO animated:YES];
+	}
+}
+
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+	NSLog(@"Shake detected. Refreshing...");
+	if(event.subtype == UIEventSubtypeMotionShake){
+		
 	}
 }
 

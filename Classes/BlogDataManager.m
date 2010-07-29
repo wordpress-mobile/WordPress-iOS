@@ -87,7 +87,7 @@
 
 static BlogDataManager *sharedDataManager;
 
-@synthesize blogFieldNames, blogFieldNamesByTag, blogFieldTagsByName, selectedBlogID, 
+@synthesize blogFieldNames, blogFieldNamesByTag, blogFieldTagsByName, selectedBlogID, isSyncingBlogs,
 pictureFieldNames, postFieldNames, postFieldNamesByTag, postFieldTagsByName, isSyncingCommentsAndStatuses,
 postTitleFieldNames, postTitleFieldNamesByTag, postTitleFieldTagsByName, unsavedPostsCount, currentPageIndex, currentPage, pageFieldNames,
 currentBlog, currentPost, currentDirectoryPath, photosDB, currentPicture, isLocaDraftsCurrent, isPageLocalDraftsCurrent, currentPostIndex, currentDraftIndex, currentPageDraftIndex, asyncPostsOperationsQueue, currentUnsavedDraft,
@@ -238,8 +238,8 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 		
 		[alert1 release];
 	}
-	else
-		NSLog(@"Hiding error: %@", err);
+	//else
+	//	NSLog(@"Hiding error: %@", err);
 	
 	return YES;
 }
@@ -4903,58 +4903,73 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
     [delegate setAlertRunning:NO];
 }
 
-- (void)syncBlogs {
+- (void)syncBlogsInBackground {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	NSLog(@"Suppressing error messages...");
-	self.shouldDisplayErrors = NO;
-	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-	appDelegate.lastBlogSync = [NSDate date];
-    for (NSMutableDictionary *blog in [blogsList mutableCopy]) {
-		if(self.shouldStopSyncingBlogs) {
-			NSLog(@"Stopping blog sync...");
-			self.shouldStopSyncingBlogs = NO;
-			break;
-		}
-		
-		if(([self.selectedBlogID isEqualToString:@""]) || (![self.selectedBlogID isEqualToString:[blog objectForKey:@"blogid"]])) {
-			NSString *url = [blog valueForKey:@"url"];
-			if (url != nil &&[url length] >= 7 &&[url hasPrefix:@"http://"])
-				url = [url substringFromIndex:7];
-			
-			if (url != nil &&[url length])
-				url = @"wordpress.com";
-			
-			[Reachability sharedReachability].hostName = url;
-			if ([[Reachability sharedReachability] internetConnectionStatus]) {
-				@try {
-					[self syncCommentsForBlog:blog];
-					[self syncPostsForBlog:blog];
-					[self syncPagesForBlog:blog];
-				}
-				@catch (NSException * e) {
-					NSLog(@"Stopping blog sync due to error...");
-					self.shouldDisplayErrors = YES;
-				}
-			}
-		}
-	}
-	NSLog(@"Blog sync finished. Showing error messages...");
-	self.shouldDisplayErrors = YES;
+	[self syncBlogs];
 	
 	[pool release];
+}
+
+- (void)syncBlogs {
+	if((isSyncingBlogs == NO) && (blogsList.count > 0)) {
+		self.isSyncingBlogs = YES;
+		NSLog(@"Syncing blogs...");
+		
+		self.shouldDisplayErrors = NO;
+		
+		for (NSMutableDictionary *blog in [blogsList mutableCopy]) {
+			if(self.shouldStopSyncingBlogs) {
+				NSLog(@"Stopping blog sync due to shouldStopSyncingBlogs signal.");
+				self.shouldStopSyncingBlogs = NO;
+				break;
+			}
+			
+			if((self.selectedBlogID == nil) || (![self.selectedBlogID isEqualToString:[blog objectForKey:@"blogid"]])) {
+				NSString *url = [blog valueForKey:@"url"];
+				if (url != nil &&[url length] >= 7 &&[url hasPrefix:@"http://"])
+					url = [url substringFromIndex:7];
+				
+				if (url != nil &&[url length])
+					url = @"wordpress.com";
+				
+				[Reachability sharedReachability].hostName = url;
+				if ([[Reachability sharedReachability] internetConnectionStatus]) {
+					@try {
+						[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+						[self syncCommentsForBlog:blog];
+						[self syncPostsForBlog:blog];
+						[self syncPagesForBlog:blog];
+					}
+					@catch (NSException * e) {
+						NSLog(@"Stopping blog sync due to error.");
+						self.shouldDisplayErrors = YES;
+						self.isSyncingBlogs = NO;
+					}
+					@finally {
+						[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+					}
+				}
+			}
+			else
+				NSLog(@"Skipping sync for currently selected blog: %@", [blog objectForKey:@"url"]);
+		}
+		NSLog(@"Blog sync finished.");
+		self.shouldDisplayErrors = YES;
+		self.isSyncingBlogs = NO;
+	}
 }
 
 - (void)syncBlogCategoriesAndStatuses {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	if(!isSyncingCommentsAndStatuses) {
+	if(self.isSyncingCommentsAndStatuses == NO) {
 		self.isSyncingCommentsAndStatuses = YES;
+		
 		NSDateFormatter *df = [[NSDateFormatter alloc] init];
 		[df setDateFormat:@"yyyy-MM-dd"];
 		NSDate *minDate = [df dateFromString:@"2010-01-01"];
 		for (NSMutableDictionary *blog in [blogsList mutableCopy]) {
-			[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 			if(self.shouldStopSyncingBlogs) {
 				self.shouldStopSyncingBlogs = NO;
 				break;
@@ -4972,7 +4987,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 			
 			// Proceed only if we haven't synced for at least 1 day
 			if([timeSince day] > 1) {
-				if(([self.selectedBlogID isEqualToString:@""]) || (![self.selectedBlogID isEqualToString:[blog objectForKey:@"blogid"]])) {
+				if((self.selectedBlogID == nil) || (![self.selectedBlogID isEqualToString:[blog objectForKey:@"blogid"]])) {
 					NSString *url = [blog valueForKey:@"url"];
 					if (url != nil &&[url length] >= 7 &&[url hasPrefix:@"http://"])
 						url = [url substringFromIndex:7];
@@ -4991,8 +5006,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 					}
 				}
 			}
-			
-			[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 		}
 		self.isSyncingCommentsAndStatuses = NO;
 	}

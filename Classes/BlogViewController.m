@@ -145,10 +145,9 @@
 	}
 }
 
-- (void)reselect
-{
-if ([tabBarController.selectedViewController respondsToSelector:@selector(reselect)])
-	[tabBarController.selectedViewController performSelector:@selector(reselect)];
+- (void)reselect {
+	if ([tabBarController.selectedViewController respondsToSelector:@selector(reselect)])
+		[tabBarController.selectedViewController performSelector:@selector(reselect)];
 }
 
 #pragma mark State saving

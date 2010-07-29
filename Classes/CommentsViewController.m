@@ -538,12 +538,12 @@
 #pragma mark -
 #pragma mark Notifications
 
-- (void)commentsSynced:(NSNotification *)notification;
-{
+- (void)commentsSynced:(NSNotification *)notification {
 	[self refreshCommentsList];
 }
 
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+	NSLog(@"Shake detected. Refreshing...");
 	if(event.subtype == UIEventSubtypeMotionShake)
 		[self refreshCommentsList];
 }

@@ -7,7 +7,6 @@
 @class BlogDataManager;
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate> {
-	NSDate *lastBlogSync;
 	NSMutableDictionary *currentBlog;
 @private
     BlogDataManager *dataManager;
@@ -35,7 +34,6 @@
 @property (readonly, nonatomic, retain) UINavigationController *detailNavigationController;
 @property (nonatomic, getter = isAlertRunning) BOOL alertRunning;
 @property (nonatomic, assign) BOOL isWPcomAuthenticated;
-@property (nonatomic, retain) NSDate *lastBlogSync;
 @property (nonatomic, retain) NSMutableDictionary *currentBlog;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
@@ -56,5 +54,8 @@
 - (void)showContentDetailViewController:(UIViewController *)viewController;
 - (void)syncBlogs;
 - (void)syncBlogCategoriesAndStatuses;
+- (void)syncTick:(NSTimer *)timer;
+- (void)startSyncTimer;
+- (void)startSyncTimerThread;
 
 @end

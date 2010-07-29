@@ -504,8 +504,10 @@
 }
 
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
-	if(event.subtype == UIEventSubtypeMotionShake)
-		[self refreshPageList];
+	NSLog(@"Shake detected. Refreshing...");
+	if(event.subtype == UIEventSubtypeMotionShake) {
+		[self refreshHandler];
+	}
 }
 
 @end

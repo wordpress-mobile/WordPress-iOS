@@ -605,6 +605,7 @@ if (self.selectedIndexPath != NULL)
 }
 
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+	NSLog(@"Shake detected. Refreshing...");
 	if(event.subtype == UIEventSubtypeMotionShake)
 		[self refreshPostList];
 }

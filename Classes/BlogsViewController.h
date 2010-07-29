@@ -15,8 +15,9 @@
 #import "BlogSplitViewMasterViewController.h"
 #import "CPopoverManager.h"
 
-@interface BlogsViewController : UITableViewController {
+@interface BlogsViewController : UITableViewController <UIAccelerometerDelegate> {
 	NSMutableArray *blogsList;
+	WordPressAppDelegate *appDelegate;
 }
 
 @property (nonatomic, retain) NSMutableArray *blogsList;

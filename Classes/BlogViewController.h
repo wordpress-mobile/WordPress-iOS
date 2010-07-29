@@ -11,7 +11,7 @@
 #import "CommentsViewController.h"
 #import "StatsViewController.h"
 
-@interface BlogViewController : UIViewController <UITabBarControllerDelegate> {
+@interface BlogViewController : UIViewController <UITabBarControllerDelegate, UIAccelerometerDelegate> {
     IBOutlet UITabBarController *tabBarController;
 
     IBOutlet PostsViewController *postsViewController;
