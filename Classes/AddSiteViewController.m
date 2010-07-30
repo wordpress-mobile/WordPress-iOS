@@ -9,7 +9,7 @@
 @implementation AddSiteViewController
 @synthesize spinner, footerText, addButtonText, url, xmlrpc, username, password, tableView;
 @synthesize isAuthenticating, isAuthenticated, isAdding, hasSubsites, subsites, viewDidMove, keyboardIsVisible;
-@synthesize hasValidXMLRPCurl, blogID, blogName, host, addUsersBlogsView, activeTextField;
+@synthesize hasValidXMLRPCurl, addUsersBlogsView, activeTextField;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -26,13 +26,27 @@
 	addUsersBlogsView.isWPcom = NO;
 	
 	// Setup WPorg table header
-	UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 70)] autorelease];
-	UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wporg"]];
-	logo.frame = CGRectMake(40, 20, 229, 43);
+	CGRect headerFrame = CGRectMake(0, 0, 320, 70);
+	CGRect logoFrame = CGRectMake(40, 20, 229, 43);
+	NSString *logoFile = @"logo_wporg";
+	if(DeviceIsPad() == YES) {
+		logoFile = @"logo_wporg.png";
+		logoFrame = CGRectMake(150, 20, 229, 43);
+	}
+	else if([UIDevice currentDevice].model == IPHONE_1G_NAMESTRING) {
+		logoFile = @"logo_wporg.png";
+	}
+	UIView *headerView = [[[UIView alloc] initWithFrame:headerFrame] autorelease];
+	UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:logoFile]];
+	logo.frame = logoFrame;
 	[headerView addSubview:logo];
 	[logo release];
 	self.tableView.tableHeaderView = headerView;
 	self.tableView.backgroundColor = [UIColor clearColor];
+	
+	if(DeviceIsPad()) {
+		[self.tableView setBackgroundView:nil];
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -104,27 +118,31 @@
 		cell.accessoryType = UITableViewCellAccessoryNone;
 		
 		if ([indexPath section] == 0) {
-			UITextField *addTextField = [[UITextField alloc] initWithFrame:CGRectMake(110, 10, 185, 30)];
+			CGRect textFrame = CGRectMake(110, 10, 185, 30);
+			if(DeviceIsPad()){
+				textFrame = CGRectMake(150, 12, 350, 42);
+			}
+			UITextField *addTextField = [[UITextField alloc] initWithFrame:textFrame];
 			addTextField.adjustsFontSizeToFitWidth = YES;
 			addTextField.textColor = [UIColor blackColor];
 			if ([indexPath section] == 0) {
 				if (indexPath.row == 0) {
 					activeTextField = addTextField;
 					addTextField.placeholder = @"http://example.com";
-					addTextField.keyboardType = UIKeyboardTypeEmailAddress;
+					addTextField.keyboardType = UIKeyboardTypeDefault;
 					addTextField.returnKeyType = UIReturnKeyDone;
 					if(url != nil)
 						addTextField.text = url;
 				}
 				else if(indexPath.row == 1) {
-					addTextField.placeholder = @"WordPress username.";
+					addTextField.placeholder = @"WordPress username";
 					addTextField.keyboardType = UIKeyboardTypeDefault;
 					addTextField.returnKeyType = UIReturnKeyDone;
 					if(username != nil)
 						addTextField.text = username;
 				}
 				else if(indexPath.row == 2) {
-					addTextField.placeholder = @"WordPress password.";
+					addTextField.placeholder = @"WordPress password";
 					addTextField.keyboardType = UIKeyboardTypeDefault;
 					if(xmlrpc != nil)
 						addTextField.returnKeyType = UIReturnKeyDone;
@@ -142,8 +160,11 @@
 						addTextField.text = xmlrpc;
 				}
 				
+				if(DeviceIsPad() == YES)
+					addTextField.backgroundColor = [UIColor clearColor];
+				else
+					addTextField.backgroundColor = [UIColor whiteColor];
 				addTextField.tag = indexPath.row;
-				addTextField.backgroundColor = [UIColor whiteColor];
 				addTextField.autocorrectionType = UITextAutocorrectionTypeNo;
 				addTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 				addTextField.textAlignment = UITextAlignmentLeft;
@@ -201,7 +222,12 @@
 		}
 	}
 	else if(indexPath.section == 2) {
-		cell.textLabel.text = addButtonText;
+		activityCell.textLabel.text = addButtonText;
+		if(isAdding)
+			[activityCell.spinner startAnimating];
+		else
+			[activityCell.spinner stopAnimating];
+		cell = activityCell;
 	}
     
     return cell;
@@ -235,7 +261,7 @@
 				footerText = @"Password is required.";
 			}
 			else if((!hasValidXMLRPCurl) && (xmlrpc == nil)) {
-				footerText = @"XMLRPC endpoint not found. Please enter it manually.";
+				footerText = @"XMLRPC endpoint wasn't found. Please enter it manually.";
 			}
 			addButtonText = @"Add Site";
 			
@@ -271,7 +297,7 @@
 			break;
 		case 2:
 			// Add Site
-			if(![self blogExists]) {
+			if([self blogExists] == NO) {
 				footerText = @" ";
 				addButtonText = @"Adding Site...";
 				isAdding = YES;
@@ -279,7 +305,12 @@
 				[NSThread sleepForTimeInterval:0.15];
 				[tv reloadData];
 				
-				[self performSelectorInBackground:@selector(addSite) withObject:nil];
+				if(isAuthenticated == NO)
+					[self authenticate];
+				else if(isAuthenticated == YES) {
+					[tv deselectRowAtIndexPath:indexPath animated:YES];
+					[self addSite];
+				}
 			}
 			[tv deselectRowAtIndexPath:indexPath animated:YES];
 			break;
@@ -313,7 +344,7 @@
 				[self setUrl:textField.text];
                 [self urlDidChange];
 				footerText = nil;
-				[self performSelectorInBackground:@selector(getXMLRPCurl) withObject:nil];
+				[self getXMLRPCurl];
 			}
 			break;
 		case 1:
@@ -346,36 +377,28 @@
 	}
 	
 	if((url != nil) && (username != nil) && (password != nil) && (xmlrpc != nil)) {
-		[self performSelectorInBackground:@selector(authenticate) withObject:nil];
+		[self authenticate];
 	}
-	
-	activeTextField = nil;
 }
 
 #pragma mark -
 #pragma mark Custom methods
 
 - (void)getSubsites {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	footerText = @"Checking for sites...";
-	[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
+	[self refreshTable];
 	
-	subsites = [[WPDataController sharedInstance] getBlogsForUrl:xmlrpc username:username password:password];
-	if(subsites.count > 1) {
+	subsites = [[[WPDataController sharedInstance] getBlogsForUrl:xmlrpc username:username password:password] retain];
+	if((subsites != nil) && (subsites.count > 1)) {
 		hasSubsites = YES;
 		[addUsersBlogsView setUrl:xmlrpc];
 		[addUsersBlogsView setUsername:username];
 		[addUsersBlogsView setPassword:password];
 	}
 	
-	Blog *blog = [subsites objectAtIndex:0];
-	host = blog.host;
-	blogID = blog.blogID;
-	blogName = blog.blogName;
-	
-	if(![self blogExists]) {
+	if([self blogExists] == NO) {
 		if(isAuthenticated) 
 			footerText = @"Good to go.";
 		else
@@ -384,40 +407,51 @@
 	else
 		footerText = @"Site has already been added.";
 	
-	[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
+	[self refreshTable];
+	
+	Blog *blog = [subsites objectAtIndex:0];
+	[appDelegate.currentBlog setValue:blog.hostURL forKey:@"host"];
+	[appDelegate.currentBlog setValue:blog.blogID forKey:@"blogID"];
+	[appDelegate.currentBlog setValue:blog.blogName forKey:@"blogName"];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	[pool release];
 }
 
 - (void)authenticate {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	
 	footerText = @"Authenticating...";
-	[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
+	[self refreshTable];
 	
 	isAuthenticated = [[WPDataController sharedInstance] authenticateUser:xmlrpc username:username password:password];
 	if(isAuthenticated) {
 		footerText = @"Authenticated successfully.";
 		[self didAuthenticateSuccessfully];
 	}
-	else
+	else {
 		footerText = @"Incorrect username or password.";
-	[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
+		isAdding = NO;
+		addButtonText = @"Add Site";
+	}
+	[self refreshTable];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	
-	[pool release];
 }
 
 - (void)didAuthenticateSuccessfully {
-	[self getSubsites];
+	if((isAdding == NO) || ((username == nil) || (password == nil) || (xmlrpc == nil)))
+		[self getSubsites];
+	else if((username != nil) && (password != nil) && (xmlrpc != nil) && 
+			([appDelegate.currentBlog valueForKey:@"host"] != nil) && ([appDelegate.currentBlog valueForKey:@"blogID"] != nil)) {
+		[self addSite];
+	}
+
 }
 
 - (void)getXMLRPCurl {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	
+	[BlogDataManager sharedDataManager].shouldDisplayErrors = NO;
 	
 	if((url != nil) && (![url isEqualToString:@""])) {
 		if(![url hasPrefix:@"http"])
@@ -441,9 +475,10 @@
 			hasValidXMLRPCurl = YES;
 		}
 	}
-	 
+
+	[BlogDataManager sharedDataManager].shouldDisplayErrors = YES;
+	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	[pool release];
 }
 
 - (BOOL)blogExists {
@@ -458,7 +493,9 @@
 									 username, @"authUsername", 
 									 nil] retain];
 	result = [[BlogDataManager sharedDataManager] doesBlogExist:newBlog];
+	
 	[newBlog release];
+	
 	return result;
 }
 
@@ -491,12 +528,6 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	[spinner show];
 	
-	[self performSelectorInBackground:@selector(addSiteInBackground) withObject:nil];
-}
-
-- (void)addSiteInBackground {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
 	NSString *authUsername = [appDelegate.currentBlog valueForKey:@"authUsername"];
 	NSString *authPassword = [appDelegate.currentBlog valueForKey:@"authPassword"];
 	NSNumber *authEnabled = [appDelegate.currentBlog valueForKey:@"authEnabled"];
@@ -510,15 +541,14 @@
 									 nil] retain];
 	
 	[[BlogDataManager sharedDataManager] resetCurrentBlog];
-	
-	[newBlog setValue:blogID forKey:kBlogId];
-	[newBlog setValue:host forKey:kBlogHostName];
-	[newBlog setValue:blogName forKey:@"blogName"];
+	[newBlog setValue:[appDelegate.currentBlog valueForKey:@"blogID"] forKey:kBlogId];
+	[newBlog setValue:[appDelegate.currentBlog valueForKey:@"host"] forKey:kBlogHostName];
+	[newBlog setValue:[appDelegate.currentBlog valueForKey:@"blogName"] forKey:@"blogName"];
 	[newBlog setValue:url forKey:@"url"];
 	[newBlog setValue:xmlrpc forKey:@"xmlrpc"];
 	[newBlog setValue:username forKey:@"username"];
 	[newBlog setValue:authEnabled forKey:@"authEnabled"];
-	[[BlogDataManager sharedDataManager] updatePasswordInKeychain:password andUserName:username andBlogURL:host];
+	[[BlogDataManager sharedDataManager] updatePasswordInKeychain:self.password andUserName:self.username andBlogURL:[appDelegate.currentBlog valueForKey:@"host"]];
 	
 	if([authEnabled isEqualToNumber:[NSNumber numberWithInt:1]]) {
 		[[BlogDataManager sharedDataManager] updatePasswordInKeychain:authPassword
@@ -541,32 +571,28 @@
 	[[BlogDataManager sharedDataManager] syncStatusesForBlog:newBlog];
 	[newBlog release];
 	
-	[self performSelectorOnMainThread:@selector(didAddSiteSuccessfully) withObject:nil waitUntilDone:NO];
-	
-	[pool release];
+	[self didAddSiteSuccessfully];
 }
 
 - (void)didAddSiteSuccessfully {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[spinner dismiss];
 	[appDelegate syncBlogs];
-	[self.navigationController popToRootViewControllerAnimated:YES];
+	[activeTextField becomeFirstResponder];
+	[activeTextField resignFirstResponder];
+	if(DeviceIsPad())
+		[appDelegate.navigationController dismissModalViewControllerAnimated:YES];
+	else
+		[self.navigationController popToRootViewControllerAnimated:YES];
 	appDelegate.currentBlog = nil;
-	
-	[pool release];
+	isAdding = NO;
 }
 
 - (void)addSiteFailed {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[spinner dismiss];
-	[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
-	
-	[pool release];
+	[self refreshTable];
 }
 
 - (void)refreshTable {
@@ -633,9 +659,6 @@
 	[subsites release];
 	subsites = nil;
 	[addUsersBlogsView release];
-	[blogID release];
-	[blogName release];
-	[host release];
 	[spinner release];
 	[footerText release];
 	[addButtonText release];

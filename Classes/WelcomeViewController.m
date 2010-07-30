@@ -19,9 +19,14 @@
 	
 	addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
 	addUsersBlogsView.isWPcom = YES;
-	addSiteView = [[AddSiteViewController alloc] initWithNibName:@"AddSiteViewController" bundle:nil];
+	NSString *addSiteNibName = @"AddSiteViewController";
+	if(DeviceIsPad() == YES)
+		addSiteNibName = @"AddSiteViewController-iPad";
+	addSiteView = [[AddSiteViewController alloc] initWithNibName:addSiteNibName bundle:nil];
 	
 	self.tableView.backgroundColor = [UIColor clearColor];
+	if(DeviceIsPad())
+		self.tableView.backgroundView = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -128,9 +133,11 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	
 	if(indexPath.row == 0) {
-		WebSignupViewController *webSignup = [[WebSignupViewController alloc] initWithNibName:@"WebSignupViewController" bundle:[NSBundle mainBundle]];
+		NSString *newNibName = @"WebSignupViewController";
+		if(DeviceIsPad() == YES)
+			newNibName = @"WebSignupViewController-iPad";
+		WebSignupViewController *webSignup = [[WebSignupViewController alloc] initWithNibName:newNibName bundle:[NSBundle mainBundle]];
 		[self.navigationController pushViewController:webSignup animated:YES];
 		[webSignup release];
 	}
@@ -138,8 +145,11 @@
 		WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 		if(appDelegate.isWPcomAuthenticated)
 			[self.navigationController pushViewController:addUsersBlogsView animated:YES];
-		else
-			[self.navigationController pushViewController:addUsersBlogsView animated:YES];
+		else if(DeviceIsPad() == YES) {
+			WPcomLoginViewController *wpLoginView = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController-iPad" bundle:nil];
+			[self.navigationController pushViewController:wpLoginView animated:YES];
+			[wpLoginView release];
+		}
 	}
 	else if(indexPath.row == 2) {
 		//EditBlogViewController *editBlog = [[EditBlogViewController alloc] initWithNibName:@"EditBlogViewController" bundle:nil];

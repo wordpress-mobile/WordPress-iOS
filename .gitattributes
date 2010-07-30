@@ -2,6 +2,8 @@
 /AboutWordpress.xib -text
 /AddBlogValidationBackground.png -text svneol=unset#unset
 /AddBlogValidationBackground@2x.png -text
+/AddSiteViewController-iPad.xib -text
+/AddUsersBlogsViewController-iPad.xib -text
 /BlogViewController-iPad.xib -text
 /BlogViewController.xib -text
 Classes/AboutViewController.h -text
@@ -256,8 +258,10 @@ Resources-iPad/MainWindow-iPad.xib -text
 /WPPhotosListViewController.xib -text
 /WPPublishOnEditController.xib -text
 /WPSelectionTableViewController.xib -text
+/WPcomLoginViewController-iPad.xib -text
 /WPpregressHUDBackground.png -text
 /WPpregressHUDBackground@2x.png -text
+/WebSignupViewController-iPad.xib -text
 /WebSignupViewController.xib -text
 /WelcomeViewController-iPad.xib -text
 /WelcomeViewController.xib -text

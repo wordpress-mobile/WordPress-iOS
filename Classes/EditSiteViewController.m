@@ -400,7 +400,7 @@
 	}
 	else if(subsites.count == 1) {
 		Blog *blog = [subsites objectAtIndex:0];
-		host = blog.host;
+		host = blog.hostURL;
 		blogID = blog.blogID;
 		blogName = blog.blogName;
 	}

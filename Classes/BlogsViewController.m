@@ -167,7 +167,19 @@
 
 - (void)showAddBlogView:(id)sender {
 	WelcomeViewController *welcomeView = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:nil];
-	[self.navigationController pushViewController:welcomeView animated:YES];
+	if(DeviceIsPad() == YES) {
+		WelcomeViewController *welcomeViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController-iPad" bundle:nil];
+		UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:welcomeViewController];
+		aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+		aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+		appDelegate.navigationController = aNavigationController;
+		[appDelegate.splitViewController presentModalViewController:aNavigationController animated:YES];
+		[aNavigationController release];
+		[welcomeViewController release];
+	}
+	else {
+		[self.navigationController pushViewController:welcomeView animated:YES];
+	}
 	[welcomeView release];
 }
 

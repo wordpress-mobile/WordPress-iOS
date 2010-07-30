@@ -31,13 +31,26 @@
 		[self authenticate];
 	
 	// Setup WPcom table header
-	UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 70)] autorelease];
-	UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wpcom"]];
-	logo.frame = CGRectMake(40, 20, 229, 43);
+	CGRect headerFrame = CGRectMake(0, 0, 320, 70);
+	CGRect logoFrame = CGRectMake(40, 20, 229, 43);
+	NSString *logoFile = @"logo_wpcom";
+	if(DeviceIsPad() == YES) {
+		logoFile = @"logo_wpcom@2x.png";
+		logoFrame = CGRectMake(150, 20, 229, 43);
+	}
+	else if([UIDevice currentDevice].model == IPHONE_1G_NAMESTRING) {
+		logoFile = @"logo_wpcom.png";
+	}
+	UIView *headerView = [[[UIView alloc] initWithFrame:headerFrame] autorelease];
+	UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:logoFile]];
+	logo.frame = logoFrame;
 	[headerView addSubview:logo];
 	[logo release];
 	self.tableView.tableHeaderView = headerView;
 	self.tableView.backgroundColor = [UIColor clearColor];
+	
+	if(DeviceIsPad())
+		self.tableView.backgroundView = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -91,14 +104,18 @@
 		cell.accessoryType = UITableViewCellAccessoryNone;
 		
 		if ([indexPath section] == 0) {
-			UITextField *loginTextField = [[UITextField alloc] initWithFrame:CGRectMake(110, 10, 185, 30)];
+			CGRect textFrame = CGRectMake(110, 10, 185, 30);
+			if(DeviceIsPad()){
+				textFrame = CGRectMake(150, 12, 350, 42);
+			}
+			UITextField *loginTextField = [[UITextField alloc] initWithFrame:textFrame];
 			loginTextField.adjustsFontSizeToFitWidth = YES;
 			loginTextField.textColor = [UIColor blackColor];
 			if ([indexPath section] == 0) {
 				if ([indexPath row] == 0) {
 					loginTextField.placeholder = @"WordPress.com username";
 					loginTextField.keyboardType = UIKeyboardTypeEmailAddress;
-					loginTextField.returnKeyType = UIReturnKeyNext;
+					loginTextField.returnKeyType = UIReturnKeyDone;
 					loginTextField.tag = 0;
 					if(username != nil)
 						loginTextField.text = username;
@@ -107,23 +124,26 @@
 					loginTextField.placeholder = @"WordPress.com password";
 					loginTextField.keyboardType = UIKeyboardTypeDefault;
 					loginTextField.returnKeyType = UIReturnKeyDone;
-					[loginTextField addTarget:self
-									   action:@selector(signIn:)
-							 forControlEvents:UIControlEventEditingDidEndOnExit];
 					loginTextField.secureTextEntry = YES;
 					loginTextField.tag = 1;
 					if(password != nil)
 						loginTextField.text = password;
 				}
-			}           
-			loginTextField.backgroundColor = [UIColor whiteColor];
+			}
+			if(DeviceIsPad() == YES)
+				loginTextField.backgroundColor = [UIColor clearColor];
+			else
+				loginTextField.backgroundColor = [UIColor whiteColor];
 			loginTextField.autocorrectionType = UITextAutocorrectionTypeNo;
 			loginTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 			loginTextField.textAlignment = UITextAlignmentLeft;
 			loginTextField.delegate = self;
 			
 			loginTextField.clearButtonMode = UITextFieldViewModeNever;
-			[loginTextField setEnabled: YES];
+			[loginTextField setEnabled:YES];
+			
+			if(isSigningIn)
+				[loginTextField resignFirstResponder];
 			
 			[cell addSubview:loginTextField];
 			[loginTextField release];
@@ -154,25 +174,23 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[tv deselectRowAtIndexPath:indexPath animated:YES];
 	switch (indexPath.section) {
 		case 1:
 			if(username == nil) {
 				footerText = @"Username is required.";
 				buttonText = @"Sign In";
-				[tv deselectRowAtIndexPath:indexPath animated:YES];
 				[tv reloadData];
 			}
 			else if(password == nil) {
 				footerText = @"Password is required.";
 				buttonText = @"Sign In";
-				[tv deselectRowAtIndexPath:indexPath animated:YES];
 				[tv reloadData];
 			}
 			else {
 				footerText = @" ";
 				buttonText = @"Signing in...";
 				isSigningIn = YES;
-				[tv deselectRowAtIndexPath:indexPath animated:YES];
 				[NSThread sleepForTimeInterval:0.15];
 				[tv reloadData];
 				
@@ -189,7 +207,7 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 	[textField resignFirstResponder];
-	return YES;	
+	return NO;	
 }
 
 - (void) textFieldDidEndEditing: (UITextField *) textField {
@@ -218,8 +236,8 @@
 		default:
 			break;
 	}
-	
 	[self.tableView reloadData];
+	[textField resignFirstResponder];
 }
 
 #pragma mark -
@@ -269,7 +287,17 @@
 	isSigningIn = NO;
 	if(isAuthenticated) {
 		[WordPressAppDelegate sharedWordPressApp].isWPcomAuthenticated = YES;
-		[super dismissModalViewControllerAnimated:YES];
+		if(DeviceIsPad() == YES) {
+			AddUsersBlogsViewController *addSiteView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController-iPad" bundle:nil];
+			addSiteView.isWPcom = YES;
+			addSiteView.username = username;
+			addSiteView.password = password;
+			[self.navigationController pushViewController:addSiteView animated:YES];
+			[addSiteView release];
+		}
+		else {
+			[super dismissModalViewControllerAnimated:YES];
+		}
 	}
 	else {
 		footerText = @"Sign in failed. Please try again.";

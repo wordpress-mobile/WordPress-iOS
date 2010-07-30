@@ -12,6 +12,10 @@
 @synthesize webView, spinner;
 
 - (void)viewDidLoad {
+	if(DeviceIsPad() == YES) {
+		self.view.frame = CGRectMake(0, 0, 500, 400);
+	}
+	
 	self.navigationItem.title = @"Sign Up";
 	spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
 	spinner.hidesWhenStopped = YES;

@@ -3,7 +3,6 @@
 //  WordPress
 //
 //  Created by Chris Boyd on 6/17/10.
-//  Copyright 2010 WordPress. All rights reserved.
 //
 
 #import "WPDataController.h"
@@ -46,6 +45,8 @@
 - (NSMutableArray *)getBlogsForUrl:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password {
 	NSMutableArray *usersBlogs = [[NSMutableArray alloc] init];
 	
+	NSLog(@"getting blogs for url:%@ with username:%@ and password:%@", xmlrpc, username, password);
+	
 	@try {
 		XMLRPCRequest *xmlrpcUsersBlogs = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
 		[xmlrpcUsersBlogs setMethod:@"wp.getUsersBlogs" withObjects:[NSArray arrayWithObjects:username, password, nil]];
@@ -69,16 +70,16 @@
 				NSRange textRange = [blog.url.lowercaseString rangeOfString:@"wordpress.com"];
 				if(textRange.location != NSNotFound)
 				{
-					blog.host = [NSString stringWithFormat:@"%@_%@", 
+					blog.hostURL = [NSString stringWithFormat:@"%@_%@", 
 								 blog.username, 
 								 [blog.url stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""]];
 				}
 				else {
-					blog.host = [blog.url stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""];
+					blog.hostURL = [blog.url stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""];
 				}
 				
-				if([blog.host hasSuffix:@"/"])
-					blog.host = [blog.host substringToIndex:[blog.host length] - 1];
+				if([blog.hostURL hasSuffix:@"/"])
+					blog.hostURL = [blog.hostURL substringToIndex:[blog.hostURL length] - 1];
 				blog.xmlrpc = [dictBlog valueForKey:@"xmlrpc"];
 				[usersBlogs addObject:blog];
 				[blog release];

@@ -10,7 +10,7 @@
 #import "UIImage+INResizeImageAllocator.h"
 
 @implementation Blog
-@synthesize blogID, blogName, url, host, username, password, xmlrpc, isAdmin, settings;
+@synthesize blogID, blogName, url, hostURL, username, password, xmlrpc, isAdmin, settings;
 
 @synthesize index;
 
@@ -82,7 +82,7 @@
 	[blogID release];
 	[blogName release];
 	[url release];
-	[host release];
+	[hostURL release];
 	[username release];
 	[password release];
 	[xmlrpc release];

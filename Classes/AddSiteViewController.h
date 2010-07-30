@@ -7,6 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import "WordPressAppDelegate.h";
+#import "UIDevice-Hardware.h"
 #import "WPDataController.h";
 #import "WPProgressHUD.h"
 #import "BlogDataManager.h"
@@ -20,7 +21,7 @@
 	AddUsersBlogsViewController *addUsersBlogsView;
 	IBOutlet UITableView *tableView;
 	UITextField *activeTextField;
-	NSString *footerText, *addButtonText, *url, *xmlrpc, *username, *password, *blogID, *blogName, *host;
+	NSString *footerText, *addButtonText, *url, *xmlrpc, *username, *password;
 	NSArray *subsites;
 	BOOL isAuthenticating, isAuthenticated, isAdding, hasSubsites, hasValidXMLRPCurl, viewDidMove, keyboardIsVisible;
 }
@@ -29,7 +30,7 @@
 @property (nonatomic, retain) AddUsersBlogsViewController *addUsersBlogsView;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) UITextField *activeTextField;
-@property (nonatomic, retain) NSString *footerText, *addButtonText, *url, *xmlrpc, *username, *password, *blogID, *blogName, *host;
+@property (nonatomic, retain) NSString *footerText, *addButtonText, *url, *xmlrpc, *username, *password;
 @property (nonatomic, retain) NSArray *subsites;
 @property (nonatomic, assign) BOOL isAuthenticating, isAuthenticated, isAdding, hasSubsites, hasValidXMLRPCurl, viewDidMove, keyboardIsVisible;
 
@@ -37,7 +38,6 @@
 - (void)authenticate;
 - (void)didAuthenticateSuccessfully;
 - (void)addSite;
-- (void)addSiteInBackground;
 - (void)didAddSiteSuccessfully;
 - (void)addSiteFailed;
 - (void)refreshTable;

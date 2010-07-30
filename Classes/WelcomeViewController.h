@@ -11,6 +11,7 @@
 #import "WebSignupViewController.h"
 #import "AddUsersBlogsViewController.h"
 #import "AddSiteViewController.h"
+#import "WPcomLoginViewController.h"
 #import "EditSiteViewController.h"
 #import "BlogDataManager.h"
 

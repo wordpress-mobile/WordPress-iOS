@@ -21,19 +21,31 @@
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	
 	// Setup WPcom table header
+	CGRect headerFrame = CGRectMake(0, 0, 320, 70);
+	CGRect logoFrame = CGRectMake(40, 20, 229, 43);
 	NSString *logoFile = @"logo_wporg";
-	if(isWPcom)
+	if(isWPcom == YES)
 		logoFile = @"logo_wpcom";
-	UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 70)] autorelease];
+	if(DeviceIsPad() == YES) {
+		logoFile = [NSString stringWithFormat:@"%@@2x.png", logoFile];
+		logoFrame = CGRectMake(150, 20, 229, 43);
+	}
+	else if([UIDevice currentDevice].model == IPHONE_1G_NAMESTRING) {
+		logoFile = [NSString stringWithFormat:@"%@.png", logoFile];
+	}
+	UIView *headerView = [[[UIView alloc] initWithFrame:headerFrame] autorelease];
 	UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:logoFile]];
-	logo.frame = CGRectMake(40, 20, 229, 43);
+	logo.frame = logoFrame;
 	[headerView addSubview:logo];
 	[logo release];
 	self.tableView.tableHeaderView = headerView;
 	self.tableView.backgroundColor = [UIColor clearColor];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableView) 
-												 name:@"didUpdateFavicons" object:nil];
+	//[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView:) 
+	//											 name:@"didUpdateFavicons" object:nil];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView:) 
+												 name:@"didUpdateTableData" object:nil];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancelAddWPcomBlogs) 
 												 name:@"didCancelWPcomLogin" object:nil];
@@ -43,18 +55,28 @@
 	[super viewWillAppear:animated];
 	
 	if((isWPcom) && (!appDelegate.isWPcomAuthenticated)) {
-		WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController" bundle:nil];
-		[self.navigationController presentModalViewController:wpComLogin animated:YES];
-		[wpComLogin release];
+		if(DeviceIsPad() == YES) {
+			WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController-iPad" bundle:nil];	
+			[self.navigationController pushViewController:wpComLogin animated:YES];
+			[wpComLogin release];
+		}
+		else {
+			WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController" bundle:nil];	
+			[self.navigationController presentModalViewController:wpComLogin animated:YES];
+			[wpComLogin release];
+		}
+
 	}
 	else if(isWPcom) {
 		if((usersBlogs == nil) && ([[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsersBlogs"] != nil))
 			usersBlogs = [[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsersBlogs"];
 		else if(usersBlogs == nil)
-			[self performSelectorInBackground:@selector(refreshBlogs) withObject:nil];
+			[self refreshBlogs];
+			//[self performSelectorInBackground:@selector(refreshBlogs) withObject:nil];
 	}
 	else {
-		[self performSelectorInBackground:@selector(refreshBlogs) withObject:nil];
+		[self refreshBlogs];
+		//[self performSelectorInBackground:@selector(refreshBlogs) withObject:nil];
 	}
 
 }
@@ -73,15 +95,23 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-	UIView *footerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 50)] autorelease];
+	CGRect footerFrame = CGRectMake(0, 0, 320, 50);
+	CGRect footerSpinnerFrame = CGRectMake(80, 0, 20, 20);
+	CGRect footerTextFrame = CGRectMake(110, 0, 200, 20);
+	if(DeviceIsPad() == YES) {
+		footerFrame = CGRectMake(0, 0, 550, 50);
+		footerSpinnerFrame = CGRectMake(190, 0, 20, 20);
+		footerTextFrame = CGRectMake(220, 0, 200, 20);
+	}
+	UIView *footerView = [[[UIView alloc] initWithFrame:footerFrame] autorelease];
 	if((usersBlogs.count == 0) && (!hasCompletedGetUsersBlogs)) {
-		UIActivityIndicatorView *footerSpinner = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(80, 0, 20, 20)];
+		UIActivityIndicatorView *footerSpinner = [[UIActivityIndicatorView alloc] initWithFrame:footerSpinnerFrame];
 		footerSpinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
 		[footerSpinner startAnimating];
 		[footerView addSubview:footerSpinner];
 		[footerSpinner release];
 		
-		UILabel *footerText = [[UILabel alloc] initWithFrame:CGRectMake(110, 0, 200, 20)];
+		UILabel *footerText = [[UILabel alloc] initWithFrame:footerTextFrame];
 		footerText.backgroundColor = [UIColor clearColor];
 		footerText.textColor = [UIColor darkGrayColor];
 		footerText.text = @"Loading blogs...";
@@ -165,14 +195,14 @@
 	for(Blog *blog in usersBlogs) {
 		[selectedBlogs addObject:blog.blogID];
 	}
-	[self reloadTableView];
+	[self.tableView reloadData];
 	buttonSelectAll.title = @"Deselect All";
 	buttonSelectAll.action = @selector(deselectAllBlogs:);
 }
 
 - (void)deselectAllBlogs:(id)sender {
 	[selectedBlogs removeAllObjects];
-	[self reloadTableView];
+	[self.tableView reloadData];
 	buttonSelectAll.title = @"Select All";
 	buttonSelectAll.action = @selector(selectAllBlogs:);
 }
@@ -192,8 +222,9 @@
 
 	hasCompletedGetUsersBlogs = YES;
 	if(usersBlogs.count > 0) {
-		self.tableView.tableFooterView = nil;
+		//self.tableView.tableFooterView = nil;
 		self.navigationItem.rightBarButtonItem.enabled = YES;
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"didUpdateTableData" object:nil];
 	}
 	[self performSelectorInBackground:@selector(updateFavicons) withObject:nil];
 	
@@ -229,7 +260,14 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[appDelegate syncBlogCategoriesAndStatuses];
 	[appDelegate syncBlogs];
-	[appDelegate.navigationController popToRootViewControllerAnimated:YES];
+	
+	if(DeviceIsPad() == YES) {
+		[appDelegate.navigationController popToRootViewControllerAnimated:YES];
+		[appDelegate.splitViewController dismissModalViewControllerAnimated:YES];
+	}
+	else {
+		[appDelegate.navigationController popToRootViewControllerAnimated:YES];
+	}
 }
 
 - (void)createBlog:(Blog *)blog {
@@ -258,7 +296,7 @@
 		[newBlog setValue:blog.url forKey:@"url"];
 		[newBlog setValue:blog.xmlrpc forKey:@"xmlrpc"];
 		[newBlog setValue:blog.blogID forKey:kBlogId];
-		[newBlog setValue:blog.host forKey:kBlogHostName];
+		[newBlog setValue:blog.hostURL forKey:kBlogHostName];
 		[newBlog setValue:blog.blogName forKey:@"blogName"];
 		[newBlog setValue:username forKey:@"username"];
 		[newBlog setValue:authEnabled forKey:@"authEnabled"];
@@ -293,12 +331,12 @@
 	[pool release];
 }
 
-- (void)reloadTableView {
-	//if(usersBlogs.count > 0) {
-	//	// Save usersBlogs to persistent data store.
-	//}
+- (void)refreshTableView:(NSNotification *)notifcation {
+	[self performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+}
+												
+- (void)reloadData {
 	[self.tableView reloadData];
-	[self.tableView setNeedsLayout];
 }
 
 - (void)cancelAddWPcomBlogs {

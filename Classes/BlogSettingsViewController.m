@@ -96,6 +96,11 @@
 			if([currentObject isKindOfClass:[UITableViewSwitchCell class]])
 			{
 				switchCell = (UITableViewSwitchCell *)currentObject;
+				
+				if(DeviceIsPad() == YES) {
+					switchCell.cellSwitch.frame = CGRectMake(370, 8, 100, 50);
+				}
+				
 				break;
 			}
 		}
@@ -108,6 +113,9 @@
 			if([currentObject isKindOfClass:[UITableViewActivityCell class]])
 			{
 				activityCell = (UITableViewActivityCell *)currentObject;
+				if(DeviceIsPad() == YES) {
+					activityCell.textLabel.frame = CGRectMake(140, 5, 200, 40);
+				}
 				break;
 			}
 		}
@@ -119,6 +127,7 @@
 				case 0:
 					switchCell.textLabel.text = @"Resize Photos";
 					switchCell.cellSwitch.on = [[appDelegate.currentBlog objectForKey:kResizePhotoSetting] boolValue];
+					
 					cell = switchCell;
 					cell.tag = 0;
 					break;
@@ -150,7 +159,11 @@
 			if (textCell == nil) {
 				textCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:textCellIdentifier] autorelease];
 			}
-			UITextField *loginTextField = [[UITextField alloc] initWithFrame:CGRectMake(110, 10, 185, 30)];
+			CGRect textFieldFrame = CGRectMake(110, 10, 185, 30);
+			if(DeviceIsPad() == YES) {
+				textFieldFrame = CGRectMake(200, 10, 300, 30);
+			}
+			UITextField *loginTextField = [[UITextField alloc] initWithFrame:textFieldFrame];
 			loginTextField.adjustsFontSizeToFitWidth = YES;
 			loginTextField.textColor = [UIColor blackColor];
 			switch (indexPath.row) {
@@ -170,7 +183,12 @@
 					else if([appDelegate.currentBlog objectForKey:@"username"] != nil)
 						loginTextField.text = [appDelegate.currentBlog objectForKey:@"username"];
 					textCell.tag = 4;
-					loginTextField.backgroundColor = [UIColor whiteColor];
+					
+					if(DeviceIsPad() == YES)
+						loginTextField.backgroundColor = [UIColor clearColor];
+					else
+						loginTextField.backgroundColor = [UIColor whiteColor];
+					
 					loginTextField.autocorrectionType = UITextAutocorrectionTypeNo;
 					loginTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 					loginTextField.textAlignment = UITextAlignmentLeft;
@@ -190,7 +208,12 @@
 					loginTextField.returnKeyType = UIReturnKeyDone;
 					loginTextField.secureTextEntry = YES;
 					textCell.tag = 5;
-					loginTextField.backgroundColor = [UIColor whiteColor];
+					
+					if(DeviceIsPad() == YES)
+						loginTextField.backgroundColor = [UIColor clearColor];
+					else
+						loginTextField.backgroundColor = [UIColor whiteColor];
+					
 					loginTextField.autocorrectionType = UITextAutocorrectionTypeNo;
 					loginTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 					loginTextField.textAlignment = UITextAlignmentLeft;

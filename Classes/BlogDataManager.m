@@ -4936,7 +4936,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 				[Reachability sharedReachability].hostName = url;
 				if ([[Reachability sharedReachability] internetConnectionStatus]) {
 					@try {
-						[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 						[self syncCommentsForBlog:blog];
 						[self syncPostsForBlog:blog];
 						[self syncPagesForBlog:blog];
@@ -4947,7 +4946,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 						self.isSyncingBlogs = NO;
 					}
 					@finally {
-						[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 					}
 				}
 			}

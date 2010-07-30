@@ -148,6 +148,10 @@
 		835871C9120096AC007682CB /* WelcomeViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 835871C8120096AC007682CB /* WelcomeViewController-iPad.xib */; };
 		83610AAA11F4AD2C00421116 /* WPcomLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83610AA811F4AD2C00421116 /* WPcomLoginViewController.m */; };
 		83610AAB11F4AD2C00421116 /* WPcomLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83610AA911F4AD2C00421116 /* WPcomLoginViewController.xib */; };
+		8362C1041201E7CE00599347 /* WebSignupViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8362C1031201E7CE00599347 /* WebSignupViewController-iPad.xib */; };
+		8362C12A1201EA9700599347 /* WPcomLoginViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8362C1291201EA9700599347 /* WPcomLoginViewController-iPad.xib */; };
+		8362C1C6120229BC00599347 /* AddSiteViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8362C1C5120229BC00599347 /* AddSiteViewController-iPad.xib */; };
+		8362C54612027BC300599347 /* AddUsersBlogsViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8362C54512027BC300599347 /* AddUsersBlogsViewController-iPad.xib */; };
 		8369FF9111F4F3BF003106C7 /* AddUsersBlogsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8369FF8F11F4F3BF003106C7 /* AddUsersBlogsViewController.m */; };
 		8369FF9211F4F3BF003106C7 /* AddUsersBlogsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8369FF9011F4F3BF003106C7 /* AddUsersBlogsViewController.xib */; };
 		836FC97C11FC98B3007E1D73 /* BlogSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 836FC97A11FC98B3007E1D73 /* BlogSettingsViewController.m */; };
@@ -458,6 +462,10 @@
 		83610AA711F4AD2C00421116 /* WPcomLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPcomLoginViewController.h; sourceTree = "<group>"; };
 		83610AA811F4AD2C00421116 /* WPcomLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPcomLoginViewController.m; sourceTree = "<group>"; };
 		83610AA911F4AD2C00421116 /* WPcomLoginViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = WPcomLoginViewController.xib; path = Classes/WPcomLoginViewController.xib; sourceTree = "<group>"; };
+		8362C1031201E7CE00599347 /* WebSignupViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "WebSignupViewController-iPad.xib"; sourceTree = "<group>"; };
+		8362C1291201EA9700599347 /* WPcomLoginViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "WPcomLoginViewController-iPad.xib"; sourceTree = "<group>"; };
+		8362C1C5120229BC00599347 /* AddSiteViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "AddSiteViewController-iPad.xib"; sourceTree = "<group>"; };
+		8362C54512027BC300599347 /* AddUsersBlogsViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "AddUsersBlogsViewController-iPad.xib"; sourceTree = "<group>"; };
 		8369FF8E11F4F3BF003106C7 /* AddUsersBlogsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddUsersBlogsViewController.h; sourceTree = "<group>"; };
 		8369FF8F11F4F3BF003106C7 /* AddUsersBlogsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddUsersBlogsViewController.m; sourceTree = "<group>"; };
 		8369FF9011F4F3BF003106C7 /* AddUsersBlogsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AddUsersBlogsViewController.xib; path = Classes/AddUsersBlogsViewController.xib; sourceTree = "<group>"; };
@@ -864,6 +872,10 @@
 				03D5AEF11146A2D700FC6044 /* PageViewController-iPad.xib */,
 				03D5AF731146AF2D00FC6044 /* EditPageViewController-iPad.xib */,
 				835871C8120096AC007682CB /* WelcomeViewController-iPad.xib */,
+				8362C1031201E7CE00599347 /* WebSignupViewController-iPad.xib */,
+				8362C1291201EA9700599347 /* WPcomLoginViewController-iPad.xib */,
+				8362C1C5120229BC00599347 /* AddSiteViewController-iPad.xib */,
+				8362C54512027BC300599347 /* AddUsersBlogsViewController-iPad.xib */,
 			);
 			name = "Resources-iPad";
 			sourceTree = "<group>";
@@ -1481,6 +1493,10 @@
 				8320B5E111FCA6EF00607422 /* UITableViewSegmentedControlCell.xib in Resources */,
 				8333FE0E11FF6EF200A495C1 /* EditSiteViewController.xib in Resources */,
 				835871C9120096AC007682CB /* WelcomeViewController-iPad.xib in Resources */,
+				8362C1041201E7CE00599347 /* WebSignupViewController-iPad.xib in Resources */,
+				8362C12A1201EA9700599347 /* WPcomLoginViewController-iPad.xib in Resources */,
+				8362C1C6120229BC00599347 /* AddSiteViewController-iPad.xib in Resources */,
+				8362C54612027BC300599347 /* AddUsersBlogsViewController-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1693,7 +1709,7 @@
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "882CD8C8-FA90-47BF-B698-1B8A5209D59E";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "882CD8C8-FA90-47BF-B698-1B8A5209D59E";
-				SDKROOT = iphoneos4.0;
+				SDKROOT = iphoneos3.2;
 			};
 			name = Debug;
 		};
