@@ -150,6 +150,12 @@
 			[self.navigationController pushViewController:wpLoginView animated:YES];
 			[wpLoginView release];
 		}
+		else {
+			WPcomLoginViewController *wpLoginView = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController" bundle:nil];
+			[self.navigationController presentModalViewController:wpLoginView animated:YES];
+			[self.navigationController pushViewController:addUsersBlogsView animated:YES];
+			[wpLoginView release];
+		}
 	}
 	else if(indexPath.row == 2) {
 		//EditBlogViewController *editBlog = [[EditBlogViewController alloc] initWithNibName:@"EditBlogViewController" bundle:nil];
