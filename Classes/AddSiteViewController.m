@@ -9,7 +9,7 @@
 @implementation AddSiteViewController
 @synthesize spinner, footerText, addButtonText, url, xmlrpc, username, password, tableView;
 @synthesize isAuthenticating, isAuthenticated, isAdding, hasSubsites, subsites, viewDidMove, keyboardIsVisible;
-@synthesize hasValidXMLRPCurl, addUsersBlogsView, activeTextField;
+@synthesize hasValidXMLRPCurl, addUsersBlogsView, activeTextField, blogID, host, blogName;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -306,10 +306,10 @@
 				[tv reloadData];
 				
 				if(isAuthenticated == NO)
-					[self authenticate];
+					[self performSelectorInBackground:@selector(authenticate) withObject:nil];
 				else if(isAuthenticated == YES) {
 					[tv deselectRowAtIndexPath:indexPath animated:YES];
-					[self addSite];
+					[self performSelectorInBackground:@selector(addSite) withObject:nil];
 				}
 			}
 			[tv deselectRowAtIndexPath:indexPath animated:YES];
@@ -344,7 +344,7 @@
 				[self setUrl:textField.text];
                 [self urlDidChange];
 				footerText = nil;
-				[self getXMLRPCurl];
+				[self performSelectorInBackground:@selector(getXMLRPCurl) withObject:nil];
 			}
 			break;
 		case 1:
@@ -385,14 +385,23 @@
 #pragma mark Custom methods
 
 - (void)getSubsites {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	footerText = @"Checking for sites...";
 	[self refreshTable];
 	
 	subsites = [[[WPDataController sharedInstance] getBlogsForUrl:xmlrpc username:username password:password] retain];
-	if((subsites != nil) && (subsites.count > 1)) {
+	[self performSelectorOnMainThread:@selector(didGetSubsitesSuccessfully:) withObject:subsites waitUntilDone:NO];
+	
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[pool release];
+}
+
+- (void)didGetSubsitesSuccessfully:(NSArray *)results {
+	if((results != nil) && (results.count > 1)) {
 		hasSubsites = YES;
+		[self setSubsites:results];
 		[addUsersBlogsView setUrl:xmlrpc];
 		[addUsersBlogsView setUsername:username];
 		[addUsersBlogsView setPassword:password];
@@ -410,14 +419,13 @@
 	[self refreshTable];
 	
 	Blog *blog = [subsites objectAtIndex:0];
-	[appDelegate.currentBlog setValue:blog.hostURL forKey:@"host"];
-	[appDelegate.currentBlog setValue:blog.blogID forKey:@"blogID"];
-	[appDelegate.currentBlog setValue:blog.blogName forKey:@"blogName"];
-	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	host = blog.hostURL;
+	blogName = blog.blogName;
+	blogID = blog.blogID;
 }
 
 - (void)authenticate {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	footerText = @"Authenticating...";
@@ -426,7 +434,7 @@
 	isAuthenticated = [[WPDataController sharedInstance] authenticateUser:xmlrpc username:username password:password];
 	if(isAuthenticated) {
 		footerText = @"Authenticated successfully.";
-		[self didAuthenticateSuccessfully];
+		[self performSelectorOnMainThread:@selector(didAuthenticateSuccessfully) withObject:nil waitUntilDone:NO];
 	}
 	else {
 		footerText = @"Incorrect username or password.";
@@ -436,19 +444,18 @@
 	[self refreshTable];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[pool release];
 }
 
 - (void)didAuthenticateSuccessfully {
 	if((isAdding == NO) || ((username == nil) || (password == nil) || (xmlrpc == nil)))
-		[self getSubsites];
-	else if((username != nil) && (password != nil) && (xmlrpc != nil) && 
-			([appDelegate.currentBlog valueForKey:@"host"] != nil) && ([appDelegate.currentBlog valueForKey:@"blogID"] != nil)) {
-		[self addSite];
-	}
-
+		[self performSelectorInBackground:@selector(getSubsites) withObject:nil];
+	else if((username != nil) && (password != nil) && (xmlrpc != nil) && (host != nil) && (blogID!= nil))
+		[self performSelectorInBackground:@selector(addSite) withObject:nil];
 }
 
 - (void)getXMLRPCurl {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	[BlogDataManager sharedDataManager].shouldDisplayErrors = NO;
@@ -479,6 +486,7 @@
 	[BlogDataManager sharedDataManager].shouldDisplayErrors = YES;
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[pool release];
 }
 
 - (BOOL)blogExists {
@@ -525,6 +533,7 @@
 }
 
 - (void)addSite {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	[spinner show];
 	
@@ -541,14 +550,14 @@
 									 nil] retain];
 	
 	[[BlogDataManager sharedDataManager] resetCurrentBlog];
-	[newBlog setValue:[appDelegate.currentBlog valueForKey:@"blogID"] forKey:kBlogId];
-	[newBlog setValue:[appDelegate.currentBlog valueForKey:@"host"] forKey:kBlogHostName];
-	[newBlog setValue:[appDelegate.currentBlog valueForKey:@"blogName"] forKey:@"blogName"];
+	[newBlog setValue:blogID forKey:kBlogId];
+	[newBlog setValue:host forKey:kBlogHostName];
+	[newBlog setValue:blogName forKey:@"blogName"];
 	[newBlog setValue:url forKey:@"url"];
 	[newBlog setValue:xmlrpc forKey:@"xmlrpc"];
 	[newBlog setValue:username forKey:@"username"];
 	[newBlog setValue:authEnabled forKey:@"authEnabled"];
-	[[BlogDataManager sharedDataManager] updatePasswordInKeychain:self.password andUserName:self.username andBlogURL:[appDelegate.currentBlog valueForKey:@"host"]];
+	[[BlogDataManager sharedDataManager] updatePasswordInKeychain:self.password andUserName:self.username andBlogURL:host];
 	
 	if([authEnabled isEqualToNumber:[NSNumber numberWithInt:1]]) {
 		[[BlogDataManager sharedDataManager] updatePasswordInKeychain:authPassword
@@ -571,7 +580,8 @@
 	[[BlogDataManager sharedDataManager] syncStatusesForBlog:newBlog];
 	[newBlog release];
 	
-	[self didAddSiteSuccessfully];
+	[self performSelectorOnMainThread:@selector(didAddSiteSuccessfully) withObject:nil waitUntilDone:NO];
+	[pool release];
 }
 
 - (void)didAddSiteSuccessfully {
@@ -579,8 +589,10 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[spinner dismiss];
 	[appDelegate syncBlogs];
-	[activeTextField becomeFirstResponder];
-	[activeTextField resignFirstResponder];
+	if(activeTextField != nil) {
+		[activeTextField becomeFirstResponder];
+		[activeTextField resignFirstResponder];
+	}
 	if(DeviceIsPad())
 		[appDelegate.navigationController dismissModalViewControllerAnimated:YES];
 	else
@@ -670,6 +682,9 @@
 	username = nil;
 	[password release];
 	password = nil;
+	[blogID release];
+	[blogName release];
+	[host release];
     [super dealloc];
 }
 

@@ -21,7 +21,7 @@
 	AddUsersBlogsViewController *addUsersBlogsView;
 	IBOutlet UITableView *tableView;
 	UITextField *activeTextField;
-	NSString *footerText, *addButtonText, *url, *xmlrpc, *username, *password;
+	NSString *footerText, *addButtonText, *url, *xmlrpc, *username, *password, *blogID, *host, *blogName;
 	NSArray *subsites;
 	BOOL isAuthenticating, isAuthenticated, isAdding, hasSubsites, hasValidXMLRPCurl, viewDidMove, keyboardIsVisible;
 }
@@ -30,11 +30,12 @@
 @property (nonatomic, retain) AddUsersBlogsViewController *addUsersBlogsView;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) UITextField *activeTextField;
-@property (nonatomic, retain) NSString *footerText, *addButtonText, *url, *xmlrpc, *username, *password;
+@property (nonatomic, retain) NSString *footerText, *addButtonText, *url, *xmlrpc, *username, *password, *blogID, *host, *blogName;
 @property (nonatomic, retain) NSArray *subsites;
 @property (nonatomic, assign) BOOL isAuthenticating, isAuthenticated, isAdding, hasSubsites, hasValidXMLRPCurl, viewDidMove, keyboardIsVisible;
 
 - (void)getSubsites;
+- (void)didGetSubsitesSuccessfully:(NSArray *)subsites;
 - (void)authenticate;
 - (void)didAuthenticateSuccessfully;
 - (void)addSite;

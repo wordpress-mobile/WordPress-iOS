@@ -44,9 +44,7 @@
 
 - (NSMutableArray *)getBlogsForUrl:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password {
 	NSMutableArray *usersBlogs = [[NSMutableArray alloc] init];
-	
-	NSLog(@"getting blogs for url:%@ with username:%@ and password:%@", xmlrpc, username, password);
-	
+		
 	@try {
 		XMLRPCRequest *xmlrpcUsersBlogs = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
 		[xmlrpcUsersBlogs setMethod:@"wp.getUsersBlogs" withObjects:[NSArray arrayWithObjects:username, password, nil]];
