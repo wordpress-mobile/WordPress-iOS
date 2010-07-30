@@ -25,4 +25,6 @@
 @property (nonatomic, retain) AddUsersBlogsViewController *addUsersBlogsView;
 @property (nonatomic, retain) AddSiteViewController *addSiteView;
 
+- (IBAction)cancel:(id)sender;
+
 @end

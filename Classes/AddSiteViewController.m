@@ -9,7 +9,7 @@
 @implementation AddSiteViewController
 @synthesize spinner, footerText, addButtonText, url, xmlrpc, username, password, tableView;
 @synthesize isAuthenticating, isAuthenticated, isAdding, hasSubsites, subsites, viewDidMove, keyboardIsVisible;
-@synthesize hasValidXMLRPCurl, addUsersBlogsView, activeTextField, blogID, host, blogName;
+@synthesize hasValidXMLRPCurl, addUsersBlogsView, activeTextField, blogID, host, blogName, hasCheckedForSubsites;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -187,6 +187,10 @@
 			if([currentObject isKindOfClass:[UITableViewActivityCell class]])
 			{
 				activityCell = (UITableViewActivityCell *)currentObject;
+				if(DeviceIsPad() == YES) {
+					activityCell.textLabel.frame = CGRectMake(90, 4, 300, 40);
+				}
+				
 				break;
 			}
 		}
@@ -307,6 +311,9 @@
 				
 				if(isAuthenticated == NO)
 					[self performSelectorInBackground:@selector(authenticate) withObject:nil];
+				else if(hasCheckedForSubsites == NO) {
+					[self performSelectorInBackground:@selector(getSubsites) withObject:nil];
+				}
 				else if(isAuthenticated == YES) {
 					[tv deselectRowAtIndexPath:indexPath animated:YES];
 					[self performSelectorInBackground:@selector(addSite) withObject:nil];
@@ -324,6 +331,7 @@
 #pragma mark UITextField methods
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
+	[textField endEditing:YES];
 	[textField resignFirstResponder];
 	return YES;	
 }
@@ -332,7 +340,7 @@
     activeTextField = textField;
 }
 
-- (void)textFieldDidEndEditing: (UITextField *) textField {
+- (void)textFieldDidEndEditing: (UITextField *)textField {
     UITableViewCell *cell = (UITableViewCell *)[textField superview];
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 	
@@ -399,6 +407,7 @@
 }
 
 - (void)didGetSubsitesSuccessfully:(NSArray *)results {
+	hasCheckedForSubsites = YES;
 	if((results != nil) && (results.count > 1)) {
 		hasSubsites = YES;
 		[self setSubsites:results];
@@ -419,9 +428,12 @@
 	[self refreshTable];
 	
 	Blog *blog = [subsites objectAtIndex:0];
-	host = blog.hostURL;
-	blogName = blog.blogName;
-	blogID = blog.blogID;
+	[self setHost:blog.hostURL];
+	[self setBlogID:blog.blogID];
+	[self setBlogName:blog.blogName];
+	
+	if(isAdding)
+		[self performSelectorInBackground:@selector(addSite) withObject:nil];
 }
 
 - (void)authenticate {
@@ -557,8 +569,14 @@
 	[newBlog setValue:xmlrpc forKey:@"xmlrpc"];
 	[newBlog setValue:username forKey:@"username"];
 	[newBlog setValue:authEnabled forKey:@"authEnabled"];
-	[[BlogDataManager sharedDataManager] updatePasswordInKeychain:self.password andUserName:self.username andBlogURL:host];
-	
+	[[BlogDataManager sharedDataManager] updatePasswordInKeychain:self.password andUserName:self.username andBlogURL:self.host];
+	NSLog(@"newBlog.blogID:%@ newBlog.blogName:%@ newBlog.url:%@ newBlog.xmlrpc:%@, newBlog.username:%@ newBlog.host:%@",
+		  [newBlog valueForKey:kBlogId], 
+		  [newBlog valueForKey:@"blogName"], 
+		  [newBlog valueForKey:@"url"], 
+		  [newBlog valueForKey:@"xmlrpc"], 
+		  [newBlog valueForKey:@"username"], 
+		  [newBlog valueForKey:kBlogHostName]);
 	if([authEnabled isEqualToNumber:[NSNumber numberWithInt:1]]) {
 		[[BlogDataManager sharedDataManager] updatePasswordInKeychain:authPassword
 														  andUserName:authUsername

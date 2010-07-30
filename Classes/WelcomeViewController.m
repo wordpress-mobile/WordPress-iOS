@@ -25,8 +25,14 @@
 	addSiteView = [[AddSiteViewController alloc] initWithNibName:addSiteNibName bundle:nil];
 	
 	self.tableView.backgroundColor = [UIColor clearColor];
-	if(DeviceIsPad())
+	if(DeviceIsPad()) {
 		self.tableView.backgroundView = nil;
+		UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] 
+										 initWithTitle:@"Cancel" 
+										 style:UIBarButtonItemStylePlain 
+										 target:self action:@selector(cancel:)];
+		self.navigationItem.leftBarButtonItem = cancelButton;
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -167,6 +173,10 @@
 
 #pragma mark -
 #pragma mark Custom methods
+
+- (IBAction)cancel:(id)sender {
+	[super dismissModalViewControllerAnimated:YES];
+}
 
 #pragma mark -
 #pragma mark Memory management
