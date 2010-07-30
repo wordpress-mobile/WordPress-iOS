@@ -198,7 +198,6 @@
 					[loginTextField setEnabled: YES];
 					
 					[textCell addSubview:loginTextField];
-					[loginTextField release];
 					cell = textCell;
 					break;
 				case 2:
@@ -223,12 +222,12 @@
 					[loginTextField setEnabled: YES];
 					
 					[textCell addSubview:loginTextField];
-					[loginTextField release];
 					cell = textCell;
 					break;
 				default:
 					break;           
 			}
+			[loginTextField release];
 			break;
 		case 2:
 			if(isSaving)
@@ -339,6 +338,7 @@
 	pickerView.dataSource = self;
 	[pickerView selectRow:[self selectedRecentItemsIndex] inComponent:0 animated:YES];
 	[actionSheet addSubview:pickerView];
+	[pickerView release];
 	
 	UISegmentedControl *closeButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@"Done"]];
 	closeButton.momentary = YES; 

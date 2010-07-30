@@ -121,7 +121,7 @@
 	while (postMetadataDict = [postsEnum nextObject]) {
 		//newPostCount ++;
 	
-		postID = [postMetadataDict valueForKey:@"postid"];
+		//postID = [postMetadataDict valueForKey:@"postid"];
 		//postIDInt = [postID intValue];
 		
 		NSDate *postGMTDate = [postMetadataDict valueForKey:@"date_created_gmt"];
@@ -147,7 +147,7 @@
 	NSEnumerator *postsEnum2 = [onlyOlderPostsArray objectEnumerator];
 	while (postMetadataDict = [postsEnum2 nextObject]) {
 		newPostCount ++;
-		postID = [postMetadataDict valueForKey:@"postid"];
+		//postID = [postMetadataDict valueForKey:@"postid"];
 		
 		if (previousNumberOfPosts < newPostCount && newPostCount <= (previousNumberOfPosts + loadLimit ) ) {
 			//get the postid
@@ -370,7 +370,7 @@
 	while (pageMetadataDict = [pagesEnum nextObject]) {
 		//newPageCount ++;
 		
-		pageID = [pageMetadataDict valueForKey:@"page_id"];
+		//pageID = [pageMetadataDict valueForKey:@"page_id"];
 		//pageIDInt = [pageID intValue];
 		
 		NSDate *pageGMTDate = [pageMetadataDict valueForKey:@"date_created_gmt"];

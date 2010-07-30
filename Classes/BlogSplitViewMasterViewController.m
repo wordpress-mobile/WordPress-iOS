@@ -104,15 +104,16 @@
 		case 0:
 			newDataSource = postsViewController;
 			[postsViewController loadPosts];
+			self.currentDataSource = newDataSource;
 			break;
 		case 1:
 			newDataSource = pagesViewController;
 			[pagesViewController loadPages];
+			self.currentDataSource = newDataSource;
 			break;
 		default:
 			break;
 	}
-	self.currentDataSource = newDataSource;
 	[self updateSelection];
 }
 

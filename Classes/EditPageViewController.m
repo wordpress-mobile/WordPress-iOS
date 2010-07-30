@@ -611,6 +611,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 		rect.size.width = MIN(rect.size.width, 100);
 		[pc presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		[[CPopoverManager instance] setCurrentPopoverController:pc];
+		[pc release];
 	} else {
 		[pageDetailsController.navigationController pushViewController:selectionTableViewController animated:YES];
 	}

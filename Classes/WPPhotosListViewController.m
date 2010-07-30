@@ -150,6 +150,7 @@ static inline double radians(double degrees) {
 		picker.delegate = self;
 		picker.allowsEditing = NO;
         [[(UIViewController *) delegate navigationController] presentModalViewController:picker animated:YES];
+		[picker release];
 	}
 }
 
@@ -177,6 +178,7 @@ static inline double radians(double degrees) {
 		if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(video))
 			UISaveVideoAtPathToSavedPhotosAlbum(video, self, @selector(video:didFinishSavingWithError:contextInfo:), video);
 		[[picker parentViewController] dismissModalViewControllerAnimated:YES];
+		[video release];
 	}
 	else if([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.image"]) {
 		UIImage *image = [info valueForKey:@"UIImagePickerControllerOriginalImage"];

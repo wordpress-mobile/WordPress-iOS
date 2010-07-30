@@ -186,8 +186,8 @@
 				[addTextField setEnabled: YES];
 				
 				[cell addSubview:addTextField];
-				[addTextField release];
 			}
+			[addTextField release];
 		}
 	}
 	
@@ -233,7 +233,8 @@
 		}
 	}
 	else if(indexPath.section == 2) {
-		cell.textLabel.text = addButtonText;
+		activityCell.textLabel.text = addButtonText;
+		cell = activityCell;
 	}
     
     return cell;
@@ -548,7 +549,6 @@
 	[[BlogDataManager sharedDataManager] saveCurrentBlog];
 	[[BlogDataManager sharedDataManager] syncCategoriesForBlog:updatedBlog];
 	[[BlogDataManager sharedDataManager] syncStatusesForBlog:updatedBlog];
-	[updatedBlog release];
 	
 	[self performSelectorOnMainThread:@selector(didSaveSiteSuccessfully) withObject:nil waitUntilDone:NO];
 	

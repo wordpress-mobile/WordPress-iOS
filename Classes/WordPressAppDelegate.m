@@ -114,8 +114,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		else {
 			blogsViewController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStyleBordered target:nil action:nil];
 		}
-
-		[blogsViewController release];
 	}
 	else
 	{
@@ -142,7 +140,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newBlogNotification:) name:@"NewBlogAdded" object:nil];
 		[self performSelector:@selector(showPopoverIfNecessary) withObject:nil afterDelay:0.1];
-		}
+	}
+	[blogsViewController release];
 	[window makeKeyAndVisible];
 }
 
@@ -211,6 +210,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 - (void)startSyncTimer {
 	NSThread *syncThread = [[NSThread alloc] initWithTarget:self selector:@selector(startSyncTimerThread) object:nil];
 	[syncThread start];
+	[syncThread release];
 }
 
 - (void)startSyncTimerThread {

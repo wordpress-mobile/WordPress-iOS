@@ -87,8 +87,7 @@ NSString *XMLRPCReceivedResponseNotification = @"XML-RPC Successfully Received R
 		returningResponse: &urlres error: &err];
 	
 	
-		if ([urlres isKindOfClass:[NSHTTPURLResponse class]]) {
-		
+	if ([urlres isKindOfClass:[NSHTTPURLResponse class]]) {
 		//NSLog(@"Received status code: %d %@", [(NSHTTPURLResponse *) urlres statusCode], 
 		//	  [NSHTTPURLResponse localizedStringForStatusCode:[(NSHTTPURLResponse *) urlres statusCode]]) ;
 	}
@@ -119,20 +118,14 @@ NSString *XMLRPCReceivedResponseNotification = @"XML-RPC Successfully Received R
 					NSString *errorIntString = [NSString stringWithFormat:@"%d", [(NSHTTPURLResponse *) urlres statusCode]];
 					NSString *stringForStatusCode = [NSHTTPURLResponse localizedStringForStatusCode:[(NSHTTPURLResponse *) urlres statusCode]];
 					NSString *errorString = [[errorIntString stringByAppendingString:@" "] stringByAppendingString:stringForStatusCode];
-			
 					NSInteger code = -1; //This is not significant, just a number with no meaning
 					NSDictionary *usrInfo = [NSDictionary dictionaryWithObject:errorString forKey:NSLocalizedDescriptionKey];
 					err = [NSError errorWithDomain:@"org.wordpress.iphone" code:code userInfo:usrInfo];
 					return (id) err;
 			}
 	     }
-				
-			
 		
-			
-		
-		
-		//[str release];
+		[str release];
 		return [[[XMLRPCResponse alloc] initWithData: data] autorelease];
 	}
 

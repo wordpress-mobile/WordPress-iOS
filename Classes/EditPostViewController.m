@@ -1143,6 +1143,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	// Display the geotag view
 	PostLocationViewController *locationView = [[PostLocationViewController alloc] initWithNibName:@"PostLocationViewController" bundle:nil];
 	[postDetailViewController presentModalViewController:locationView animated:YES];
+	[locationView release];
 }
 
 - (CLLocation *)getPostLocation {
@@ -1165,7 +1166,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		// If we have both lat and long, we have a geotag
 		if((latitude != 0.0) && (longitude != 0.0))
 		{
-			result = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
+			result = [[[CLLocation alloc] initWithLatitude:latitude longitude:longitude] autorelease];
 			break;
 		}
 		else

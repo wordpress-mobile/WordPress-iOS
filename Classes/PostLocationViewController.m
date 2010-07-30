@@ -30,6 +30,7 @@
 		PostAnnotation *pin = [[PostAnnotation alloc] initWithCoordinate:postLocation.coordinate];
 		pin.title = @"Post Location";
 		[self.map addAnnotation:pin];
+		[pin release];
 		
 		buttonAction.title = @"Remove Geotag";
 	}
@@ -133,7 +134,7 @@
 		// If we have both lat and long, we have a geotag
 		if((latitude != 0.0) && (longitude != 0.0))
 		{
-			result = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
+			result = [[[CLLocation alloc] initWithLatitude:latitude longitude:longitude] autorelease];
 			break;
 		}
 		else
@@ -177,13 +178,12 @@
 }
 
 - (void)addLocation {
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
     NSMutableArray *customFieldsArray;
 	
-	if([dm.currentPost valueForKey:@"custom_fields"] == nil)
-		customFieldsArray = [[NSMutableArray alloc] init];
+	if([[BlogDataManager sharedDataManager].currentPost valueForKey:@"custom_fields"] != nil)
+		customFieldsArray = [[BlogDataManager sharedDataManager].currentPost objectForKey:@"custom_fields"];
 	else
-		customFieldsArray = [dm.currentPost objectForKey:@"custom_fields"];
+		customFieldsArray = [[NSMutableArray alloc] init];
 	
 	// Format our values
 	// Latitude
@@ -204,36 +204,41 @@
 	[dictLatitude setValue:@"geo_latitude" forKey:@"key"];
 	[dictLatitude setValue:latitude forKey:@"value"];
 	[customFieldsArray addObject:dictLatitude];
+	[dictLatitude release];
 	
 	NSMutableDictionary *dictLongitude = [[NSMutableDictionary alloc] init];
 	[dictLongitude setValue:@"geo_longitude" forKey:@"key"];
 	[dictLongitude setValue:longitude forKey:@"value"];
 	[customFieldsArray addObject:dictLongitude];
+	[dictLongitude release];
 	
 	NSMutableDictionary *dictAccuracy = [[NSMutableDictionary alloc] init];
 	[dictAccuracy setValue:@"geo_accuracy" forKey:@"key"];
 	[dictAccuracy setValue:[NSNumber numberWithInt:5] forKey:@"value"];
 	[customFieldsArray addObject:dictAccuracy];
+	[dictAccuracy release];
 	
 	NSMutableDictionary *dictPublic = [[NSMutableDictionary alloc] init];
 	[dictPublic setValue:@"geo_public" forKey:@"key"];
 	[dictPublic setValue:@"1" forKey:@"value"];
 	[customFieldsArray addObject:dictPublic];
+	[dictPublic release];
 	
 	// Send our modified custom fields back to BlogDataManager
-	[dm.currentPost setValue:customFieldsArray forKey:@"custom_fields"];
+	[[BlogDataManager sharedDataManager].currentPost setValue:customFieldsArray forKey:@"custom_fields"];
 	
-	if(DeviceIsPad()) {
+	if(DeviceIsPad() == YES) {
 		[self centerMapOn:locationController.locationManager.location];
 		PostAnnotation *pin = [[PostAnnotation alloc] initWithCoordinate:locationController.locationManager.location.coordinate];
 		pin.title = @"Post Location";
 		[self.map addAnnotation:pin];
 		buttonAction.title = @"Remove Geotag";
+		[pin release];
 	}
 	else
 		[self dismiss:self];
 	
-	[[[BlogDataManager sharedDataManager] currentPost] setValue:@"YES" forKey:@"hasChanges"];
+	[[BlogDataManager sharedDataManager].currentPost setValue:@"YES" forKey:@"hasChanges"];
 }
 
 #pragma mark -

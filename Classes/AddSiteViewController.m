@@ -175,8 +175,8 @@
 				[addTextField setEnabled: YES];
 				
 				[cell addSubview:addTextField];
-				[addTextField release];
 			}
+			[addTextField release];
 		}
 	}
 	
@@ -570,13 +570,13 @@
 	[newBlog setValue:username forKey:@"username"];
 	[newBlog setValue:authEnabled forKey:@"authEnabled"];
 	[[BlogDataManager sharedDataManager] updatePasswordInKeychain:self.password andUserName:self.username andBlogURL:self.host];
-	NSLog(@"newBlog.blogID:%@ newBlog.blogName:%@ newBlog.url:%@ newBlog.xmlrpc:%@, newBlog.username:%@ newBlog.host:%@",
-		  [newBlog valueForKey:kBlogId], 
-		  [newBlog valueForKey:@"blogName"], 
-		  [newBlog valueForKey:@"url"], 
-		  [newBlog valueForKey:@"xmlrpc"], 
-		  [newBlog valueForKey:@"username"], 
-		  [newBlog valueForKey:kBlogHostName]);
+	//NSLog(@"newBlog.blogID:%@ newBlog.blogName:%@ newBlog.url:%@ newBlog.xmlrpc:%@, newBlog.username:%@ newBlog.host:%@",
+//		  [newBlog valueForKey:kBlogId], 
+//		  [newBlog valueForKey:@"blogName"], 
+//		  [newBlog valueForKey:@"url"], 
+//		  [newBlog valueForKey:@"xmlrpc"], 
+//		  [newBlog valueForKey:@"username"], 
+//		  [newBlog valueForKey:kBlogHostName]);
 	if([authEnabled isEqualToNumber:[NSNumber numberWithInt:1]]) {
 		[[BlogDataManager sharedDataManager] updatePasswordInKeychain:authPassword
 														  andUserName:authUsername
