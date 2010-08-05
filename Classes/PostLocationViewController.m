@@ -181,7 +181,7 @@
     NSMutableArray *customFieldsArray;
 	
 	if([[BlogDataManager sharedDataManager].currentPost valueForKey:@"custom_fields"] != nil)
-		customFieldsArray = [[BlogDataManager sharedDataManager].currentPost objectForKey:@"custom_fields"];
+		customFieldsArray = [[[BlogDataManager sharedDataManager].currentPost objectForKey:@"custom_fields"] retain];
 	else
 		customFieldsArray = [[NSMutableArray alloc] init];
 	
@@ -238,6 +238,7 @@
 	else
 		[self dismiss:self];
 	
+	[customFieldsArray release];
 	[[BlogDataManager sharedDataManager].currentPost setValue:@"YES" forKey:@"hasChanges"];
 }
 

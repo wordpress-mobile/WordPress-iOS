@@ -7,8 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "XMLRPCRequest.h"
-#import "XMLRPCConnection.h"
 #import "BlogDataManager.h"
 
 @interface IncrementPost : NSObject {

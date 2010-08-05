@@ -3,13 +3,20 @@
 //
 
 #ifdef __OBJC__
+	// Core Frameworks
 	#import <Foundation/Foundation.h>
 	#import <UIKit/UIKit.h>
-
 	#import <CoreLocation/CoreLocation.h>
 	#import <CoreData/CoreData.h>
+
+	// 3rd Party
+	#import "RegexkitLite.h"	//http://regexkit.sourceforge.net/
+	#import "XMLRPCRequest.h"	//http://github.com/eczarny/xmlrpc
+	#import "XMLRPCResponse.h"
+	#import "XMLRPCConnection.h"
+
+	// Project-specific
     #import "Constants.h"
     #import "NSString+Util.h"
-	
 	#import "CDeviceSupport.h"
 #endif

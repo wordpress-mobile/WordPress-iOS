@@ -1,9 +1,11 @@
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 #import <MapKit/MapKit.h>
 #import "WPPhotosListProtocol.h"
 #import "BlogDataManager.h"
 #import "LocationController.h"
 #import "PostLocationViewController.h"
+#import "WPMediaUploader.h"
 
 //refactoring "mode"
 #define newPost 0
@@ -37,10 +39,12 @@
     UIViewController *selectedViewController;
     WPNavigationLeftButtonView *leftView;
     CustomFieldsDetailController *customFieldsDetailController;
+	WPMediaUploader *videoUploader;
 
     BOOL hasChanges, isVisible;
     int mode;   //0 new, 1 edit, 2 autorecovery, 3 refresh
     NSTimer *autoSaveTimer;
+	
 	
 	// iPad additions
 	IBOutlet UIToolbar *toolbar;
@@ -67,6 +71,7 @@
 @property (nonatomic, retain) MediaViewController *mediaController;
 @property (nonatomic, retain) CommentsViewController *commentsViewController;
 @property (nonatomic, retain) CustomFieldsDetailController *customFieldsDetailController;
+@property (nonatomic, retain) WPMediaUploader *videoUploader;
 @property (nonatomic, assign) PostsViewController *postsListController;
 @property (nonatomic, assign) UIViewController *selectedViewController;
 @property (nonatomic, readonly) UIBarButtonItem *saveButton;
@@ -100,5 +105,6 @@
 - (IBAction)previewPublishAction:(id)sender;
 - (IBAction)newPostAction:(id)sender;
 - (void)dismissEditView;
+- (void)videoDidUploadSuccessfully;
 
 @end

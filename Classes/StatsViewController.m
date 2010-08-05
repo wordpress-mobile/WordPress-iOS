@@ -119,56 +119,47 @@
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	[delegate showContentDetailViewController:categoryView];
 	[tv deselectRowAtIndexPath:indexPath animated:YES];
+	[categoryView release];
 }
 
 #pragma mark -
 #pragma mark Custom Methods
 
-- (NSArray *)menuData {
-	NSMutableArray *menu;
+- (NSMutableArray *)menuData {
+	NSMutableArray *menu = [[[NSMutableArray alloc] init] autorelease];
 	int intCategory = (int)category;
 	
 	switch (intCategory) {
 		case 0:
-			menu = [[NSMutableArray alloc] initWithObjects:
-				@"Views", 
-				@"Referrers", 
-				@"Top Posts & Pages", 
-				@"Clicks",
-				@"Search Engine Terms", 
-				nil];
+			[menu addObject:@"Views"];
+			[menu addObject:@"Referrers"];
+			[menu addObject:@"Top Posts & Pages"];
+			[menu addObject:@"Clicks"];
+			[menu addObject:@"Search Engine Terms"];
 			break;
 		case 1:
 			self.navigationItem.title = @"Referrers";
-			menu = [[NSMutableArray alloc] initWithObjects:
-				@"Referrer 1", 
-				@"Referrer 2", 
-				@"Referrer 3", 
-				nil];
+			[menu addObject:@"Referrer 1"];
+			[menu addObject:@"Referrer 2"];
+			[menu addObject:@"Referrer 3"];
 			break;
 		case 2:
 			self.navigationItem.title = @"Top Posts & Pages";
-			menu = [[NSMutableArray alloc] initWithObjects:
-				@"Post 1", 
-				@"Post 2", 
-				@"Post 3",
-				nil];
+			[menu addObject:@"Post 1"];
+			[menu addObject:@"Post 2"];
+			[menu addObject:@"Post 3"];
 			break;
 		case 3:
 			self.navigationItem.title = @"Clicks";
-			menu = [[NSMutableArray alloc] initWithObjects:
-				@"Click 1", 
-				@"Click 2", 
-				@"Click 3", 
-				nil];
+			[menu addObject:@"Click 1"];
+			[menu addObject:@"Click 2"];
+			[menu addObject:@"Click 3"];
 			break;
 		case 4:
 			self.navigationItem.title = @"Search Engine Terms";
-			menu = [[NSMutableArray alloc] initWithObjects:
-				@"Term 1", 
-				@"Term 2", 
-				@"Term 3", 
-				nil];
+			[menu addObject:@"Term 1"];
+			[menu addObject:@"Term 2"];
+			[menu addObject:@"Term 3"];
 			break;
 	}
 	

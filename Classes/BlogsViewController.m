@@ -264,6 +264,7 @@
 
 - (void)didReceiveMemoryWarning {
     WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+	[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = YES;
     [super didReceiveMemoryWarning];
 }
 

@@ -16,11 +16,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	//AddUsersBlogsViewController *addBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
+
 	
 	footerText = @" ";
 	buttonText = @"Sign In";
 	WPcomXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
 	self.navigationItem.title = @"Sign In";
+	//addBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
 	
 	if([[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsername"] != nil)
 		username = [[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsername"];
@@ -291,12 +294,10 @@
 	if(isAuthenticated) {
 		[WordPressAppDelegate sharedWordPressApp].isWPcomAuthenticated = YES;
 		if(DeviceIsPad() == YES) {
-			AddUsersBlogsViewController *addSiteView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController-iPad" bundle:nil];
-			addSiteView.isWPcom = YES;
-			addSiteView.username = username;
-			addSiteView.password = password;
-			[self.navigationController pushViewController:addSiteView animated:YES];
-			[addSiteView release];
+			//addBlogsView.isWPcom = YES;
+//			[addBlogsView setUsername:self.username];
+//			[addBlogsView setPassword:self.password];
+//			[self.navigationController pushViewController:addBlogsView animated:YES];
 		}
 		else {
 			[super dismissModalViewControllerAnimated:YES];
@@ -324,15 +325,10 @@
 #pragma mark Memory management
 
 - (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Relinquish ownership any cached data, images, etc that aren't in use.
+    [super didReceiveMemoryWarning];    
 }
 
 - (void)viewDidUnload {
-    // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
-    // For example: self.myOutlet = nil;
 }
 
 

@@ -156,23 +156,21 @@
 #pragma mark -
 
 
-- (IBAction)blogMenuAction:(id)sender;
-{
-BlogsViewController *theBlogsViewController = [[BlogsViewController alloc] initWithStyle:UITableViewStylePlain];
-// TODO - this is a bit of a hack. Should move to BlogsViewController really.
-theBlogsViewController.contentSizeForViewInPopover = CGSizeMake(320, 44 * [[BlogDataManager sharedDataManager] countOfBlogs]);
+- (IBAction)blogMenuAction:(id)sender; {
+	BlogsViewController *theBlogsViewController = [[BlogsViewController alloc] initWithStyle:UITableViewStylePlain];
+	
+	// TODO - this is a bit of a hack. Should move to BlogsViewController really.
+	theBlogsViewController.contentSizeForViewInPopover = CGSizeMake(320, 44 * [[BlogDataManager sharedDataManager] countOfBlogs]);
 
-UINavigationController *theNavigationController = [[UINavigationController alloc] initWithRootViewController:theBlogsViewController];
+	UINavigationController *theNavigationController = [[UINavigationController alloc] initWithRootViewController:theBlogsViewController];
+	UIPopoverController *theBlogMenuPopoverController = [[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:theNavigationController];
 
-UIPopoverController *theBlogMenuPopoverController = [[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:theNavigationController];
+	[theBlogMenuPopoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	[[CPopoverManager instance] setCurrentPopoverController:theBlogMenuPopoverController];
 
-[theBlogMenuPopoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-
-[theBlogsViewController release];
-
-[[CPopoverManager instance] setCurrentPopoverController:theBlogMenuPopoverController];
-
-[theBlogMenuPopoverController release];
+	[theBlogMenuPopoverController release];
+	[theNavigationController release];
+	[theBlogsViewController release];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;

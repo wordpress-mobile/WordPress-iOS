@@ -1,23 +1,10 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
-#import "XMLRPCResponse.h"
-#import "XMLRPCRequest.h"
-#import "XMLRPCConnection.h"
 #import "RegExProcessor.h"
 #import "SFHFKeychainUtils.h"
 #import "Reachability.h"
 #import "Blog.h"
-
-#define PictureObjectUploadedNotificationName @"PictureObjectUploadedNotificationName"
-#define WPNewCategoryCreatedAndUpdatedInBlogNotificationName @"WPNewCategoryCreatedAndUpdatedInBlog"
-
-#define kPostsDownloadCount @"postsDownloadCount"
-//#define kPagesDownloadCount @"pagesDownloadCount"
-#define kDraftsBlogIdStr @"localDrafts"
-#define kDraftsHostName @"iPhone"
-
-#define kUnsupportedWordpressVersionTag 900
-#define kRSDErrorTag 901
+#import "NSData+Base64.h"
 
 @interface BlogDataManager : NSObject {
     NSMutableArray *blogsList;
@@ -274,9 +261,10 @@
 
 - (void)loadPictures;
 
-#pragma mark Image
+#pragma mark Media
 
 - (NSString *)saveImage:(UIImage *)aImage;
+- (NSString *)saveVideo:(NSData *)video withThumbnail:(NSString *)thumbnail;
 - (UIImage *)imageNamed:(NSString *)name forBlog:(id)blog;
 - (BOOL)deleteImageNamed:(NSString *)name forBlog:(id)blog;
 - (UIImage *)thumbnailImageNamed:(NSString *)name forBlog:(id)blog;

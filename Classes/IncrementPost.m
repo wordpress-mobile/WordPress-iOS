@@ -128,10 +128,8 @@
 		NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:postGMTDate];
 		NSDate *newCreatedAt = [postGMTDate addTimeInterval:(secs * +1)];
 		
-		int foo = 0;
 		switch ([newCreatedAt compare:lastKnownCreatedAt]){
 			case NSOrderedAscending:
-				foo = 1;
 				[onlyOlderPostsArray addObject:postMetadataDict];
 				//[postMetadataDict release];
 				break;
@@ -382,10 +380,8 @@
 		//if the recently loaded metadata contains a date that is greater than the last stored page date 
 		//then ignore it and move to the next object, because we're only updating older items here, not items more recent
 		//than the last refresh.
-		int foo = 0;
 		switch ([newCreatedAt compare:lastKnownCreatedAt]){
 			case NSOrderedAscending:
-				foo = 1;
 				[onlyOlderPagesArray addObject:pageMetadataDict];
 				break;
 			case NSOrderedSame:

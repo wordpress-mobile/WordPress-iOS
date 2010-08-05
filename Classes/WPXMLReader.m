@@ -11,7 +11,7 @@
 
 @synthesize hostUrl;
 
-- (void)parseXMLData:(NSData *)data parseError:(NSError * *)error {
+- (void)parseXMLData:(NSData *)data parseError:(NSError **)error {
     NSXMLParser *parser = [[NSXMLParser alloc] initWithData:data];
     // Set self as the delegate of the parser so that it will receive the parser delegate methods callbacks.
     [parser setDelegate:self];

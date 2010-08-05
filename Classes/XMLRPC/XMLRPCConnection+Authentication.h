@@ -6,8 +6,6 @@
 //  Copyright 2009 __MyCompanyName__. All rights reserved.
 //
 
-#import "XMLRPCConnection.h"
-
 @class XMLRPCResponse;
 
 @interface XMLRPCConnection (Authentication)

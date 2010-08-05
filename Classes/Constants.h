@@ -68,3 +68,21 @@
 
 #define kNoInternetErrorMessage                 @"No internet connection."
 #define kBlogExistsErrorMessage                 @"Blog '%@' already configured on this iPhone."
+
+#define PictureObjectUploadedNotificationName @"PictureObjectUploadedNotificationName"
+#define VideoSaved @"VideoSavedNotification"
+#define VideoUploadChunk @"VideoUploadChunk"
+#define VideoUploadSuccessful @"VideoUploadSuccessful"
+#define VideoUploadFailed @"VideoUploadFailed"
+#define WPNewCategoryCreatedAndUpdatedInBlogNotificationName @"WPNewCategoryCreatedAndUpdatedInBlog"
+#define kURL @"URL"
+#define kMETHOD @"METHOD"
+#define kMETHODARGS @"METHODARGS"
+
+#define kPostsDownloadCount @"postsDownloadCount"
+//#define kPagesDownloadCount @"pagesDownloadCount"
+#define kDraftsBlogIdStr @"localDrafts"
+#define kDraftsHostName @"iPhone"
+
+#define kUnsupportedWordpressVersionTag 900
+#define kRSDErrorTag 901

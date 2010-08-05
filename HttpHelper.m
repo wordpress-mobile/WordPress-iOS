@@ -82,8 +82,7 @@
 	[request setTimeoutInterval:10];
 	
 	NSHTTPURLResponse *response = NULL;
-	NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-	returnData = nil;
+	[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
 	[request release];
 	
 	return error;

@@ -8,11 +8,6 @@
 #import "XMLRPCConnection+Authentication.h"
 #import "LocateXMLRPCViewController.h"
 
-
-#define kURL @"URL"
-#define kMETHOD @"METHOD"
-#define kMETHODARGS @"METHODARGS"
-
 #define pictureData @"pictureData"
 #define pictureStatus @"pictureStatus"
 #define pictureCaption @"pictureCaption"
@@ -1817,6 +1812,29 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
     CFRelease(myUUID);
 	
     return returnValue;
+}
+
+- (NSString *)saveVideo:(NSData *)video withThumbnail:(NSString *)thumbnail {
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	[formatter setDateFormat:@"yyyyMMdd-hhmmss"];
+	NSString *filename = [NSString stringWithFormat:@"%@.mov", [formatter stringFromDate:[NSDate date]]];
+	NSString *filepath = [NSString stringWithFormat:@"%@/m_%@", [self blogDir:currentBlog], filename];
+	
+	@try {
+		// Save the video to the blog's directory
+		[video writeToFile:filepath atomically:YES];
+		[[NSNotificationCenter defaultCenter] postNotificationName:VideoSaved object:filename];
+	}
+	@catch (NSException *ex) {
+		NSLog(@"Video upload failed with exception: %@", ex);
+		[[NSNotificationCenter defaultCenter] postNotificationName:VideoUploadFailed object:nil];
+	}
+	@finally {
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	}
+	
+	[formatter release];
+	return filepath;
 }
 
 - (UIImage *)thumbnailImageNamed:(NSString *)name forBlog:(id)blog {
@@ -5006,6 +5024,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 			}
 		}
 		self.isSyncingCommentsAndStatuses = NO;
+		[df release];
 	}
 	
 	[pool release];

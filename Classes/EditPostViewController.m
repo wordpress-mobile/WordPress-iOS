@@ -53,6 +53,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [leftView setTarget:self withAction:@selector(cancelView:)];
 	
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newCategoryCreatedNotificationReceived:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoUploadedNofificationReceived:) name:VideoUploadSuccessful object:nil];
+
 	
     //JOHNB TODO: Add a check here for the presence of custom fields in the data model
     // if there are, set isCustomFieldsEnabledForThisPost BOOL to true
@@ -131,7 +133,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			[locationButton setImage:[UIImage imageNamed:@"hasLocation.png"] forState:UIControlStateNormal];
 			
 			CLLocation *postLocation = [self getPostLocation];
-			if(postLocation != nil)
+			if((postLocation != nil) && (initialLocation != nil))
 			{
 				// If our location has changed from its initial value, show the Save button
 				if((initialLocation.coordinate.latitude != postLocation.coordinate.latitude) ||
@@ -250,7 +252,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[textView setContentOffset:CGPointZero animated:NO];
 	
 	// Set our initial location so we can determine if the geotag has been updated later
-	initialLocation = [self getPostLocation];
+	[self setInitialLocation:[self getPostLocation]];
 }
 
 - (void)populateSelectionsControllerWithCategories {
@@ -876,102 +878,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     return pickerController;
 }
 
-- (void)showPhotoPickerActionSheet {
-    isShowPhotoPickerActionSheet = YES;
-    // open a dialog with two custom buttons
-    UIActionSheet *actionSheet;
-	
-    if ([WPImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        actionSheet = [[UIActionSheet alloc]
-                       initWithTitle:@""
-                       delegate:self
-                       cancelButtonTitle:@"Cancel"
-                       destructiveButtonTitle:nil
-                       otherButtonTitles:@"Add Media from Library", @"Take Photo with Camera", nil];
-    } else {
-        actionSheet = [[UIActionSheet alloc]
-                       initWithTitle:@""
-                       delegate:self
-                       cancelButtonTitle:@"Cancel"
-                       destructiveButtonTitle:nil
-                       otherButtonTitles:@"Add Media from Library", nil];
-    }
-	
-    actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-    [actionSheet showInView:self.view];
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    [delegate setAlertRunning:YES];
-	
-    [actionSheet release];
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (isShowPhotoPickerActionSheet) {
-        if (buttonIndex == 0)
-            [self pickPhotoFromPhotoLibrary:nil];
-		else
-			[self pickPhotoFromCamera:nil];
-    }
-	else {
-        if (buttonIndex == 0) {
-            [self useImage:currentChoosenImage];
-        }
-		else if (buttonIndex == 1) {
-            [self useImage:currentChoosenImage];
-            WPImagePickerController *picker = [self pickerController];
-            [[picker parentViewController] dismissModalViewControllerAnimated:YES];
-            [self clearPickerContrller];
-        }
-		
-        WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-        [delegate setAlertRunning:NO];
-		
-        [currentChoosenImage release];
-        currentChoosenImage = nil;
-    }
-}
-
-- (void)pickPhotoFromCamera:(id)sender {
-    [[BlogDataManager sharedDataManager] makeNewPictureCurrent];
-	
-    if ([WPImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        WPImagePickerController *picker = [self pickerController];
-        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-		
-        [[postDetailViewController navigationController] presentModalViewController:picker animated:YES];
-    }
-}
-
-- (void)pickPhotoFromPhotoLibrary:(id)sender {
-    [[BlogDataManager sharedDataManager] makeNewPictureCurrent];
-	
-    if ([WPImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-        WPImagePickerController *picker = [self pickerController];
-        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        [postDetailViewController.navigationController presentModalViewController:picker animated:YES];
-    }
-}
-
-- (void)imagePickerController:(UIImagePickerController *)picker
-		didFinishPickingImage:(UIImage *)image
-				  editingInfo:(NSDictionary *)editingInfo {
-    currentChoosenImage = [image retain];
-    isShowPhotoPickerActionSheet = NO;
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@""
-															 delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
-													otherButtonTitles:@"Add and Select More", @"Add and Continue Editing", nil];
-    actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
-    [actionSheet showInView:self.view];
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    [delegate setAlertRunning:NO];
-	
-    [actionSheet release];
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    [[picker parentViewController] dismissModalViewControllerAnimated:YES];
-}
-
 - (void)useImage:(UIImage *)theImage {
     BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
     postDetailViewController.hasChanges = YES;
@@ -985,19 +891,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [postDetailViewController updatePhotosBadge];
 }
 
-//- (void)useVideo:(NSData *)theVideo {
-//    BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-//    postDetailViewController.hasChanges = YES;
-//	
-//    id currentPost = dataManager.currentPost;
-//	
-//    if (![currentPost valueForKey:@"Videos"])
-//        [currentPost setValue:[NSMutableArray array] forKey:@"Videos"];
-//	
-//    [[currentPost valueForKey:@"Videos"] addObject:[dataManager saveVideo:theVideo]];
-//    [postDetailViewController updatePhotosBadge];
-//}
-
 - (void)pictureChoosenNotificationReceived:(NSNotification *)aNotification {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"WPPhotoChoosen" object:nil];
 	
@@ -1005,6 +898,43 @@ NSTimeInterval kAnimationDuration = 0.3f;
     NSString *curText = textView.text;
     curText = (curText == nil ? @"" : curText);
     textView.text = [curText stringByAppendingString:[NSString stringWithFormat:@"<img src=\"%@\" alt=\"\" />", pictureURL]];
+}
+
+- (void)videoUploadedNofificationReceived:(NSNotification *)notification {
+    NSDictionary *videoMeta = [notification userInfo];
+    NSString *currentText = textView.text;
+    currentText = (currentText == nil ? @"" : currentText);
+	
+	NSString *html = @"";
+	if([videoMeta objectForKey:@"shortcode"] != nil)
+		html = [videoMeta objectForKey:@"shortcode"];
+	else if([videoMeta objectForKey:@"url"] != nil) {
+		NSString *width = @"360";
+		NSString *height = @"480";
+		
+		if([[UIDevice currentDevice] model] == IPHONE_3GS_NAMESTRING) {
+			width = @"360";
+			height = @"480";
+		}
+		
+		NSString *url = [videoMeta objectForKey:@"url"];
+		html = [NSString stringWithFormat:@"<object width=\"%@\" height=\"%@\""
+						  "classid=\"clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B\""
+						  "codebase=\"http://www.apple.com/qtactivex/qtplugin.cab\">"
+						  "<param name=\"src\" value=\"%@\">"
+						  "<param name=\"autoplay\" value=\"true\">"
+						  "<param name=\"controller\" value=\"false\">"
+						  "<embed src=\"%@\" width=\"%@\" height=\"%@\""
+						  "autoplay=\"true\" controller=\"false\""
+						  "pluginspage=\"http://www.apple.com/quicktime/download/\">"
+						  "</embed></object>",
+						  width, height, url,
+						  url, width, height];
+	}
+	if(![textView.text isEqualToString:@""])
+		html = [NSString stringWithFormat:@"<br/>%@", html];
+	textView.text = [currentText stringByAppendingString:html];
+	[[BlogDataManager sharedDataManager].currentPost setValue:@"YES" forKey:@"hasChanges"];
 }
 
 - (void)readBookmarksFile {

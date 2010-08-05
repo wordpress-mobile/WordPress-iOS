@@ -7,7 +7,6 @@
 
 #import "LocateXMLRPCViewController.h"
 #import "BlogDataManager.h"
-#import "XMLRPCRequest.h"
 #import "WordPressAppDelegate.h"
 
 

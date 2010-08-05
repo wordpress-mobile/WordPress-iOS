@@ -66,9 +66,6 @@ Classes/ImageCache.h -text
 Classes/ImageCache.m -text
 Classes/LocationController.h -text
 Classes/LocationController.m -text
-Classes/MediaViewController.h -text
-Classes/MediaViewController.m -text
-Classes/MediaViewController.xib -text
 Classes/NSData+Base64.h -text
 Classes/NSData+Base64.m -text
 Classes/NSString+Util.h -text
@@ -106,8 +103,6 @@ Classes/RefreshButtonView.h -text
 Classes/RefreshButtonView.m -text
 Classes/RegExProcessor.h -text
 Classes/RegExProcessor.m -text
-Classes/RegexKitLite.h -text
-Classes/RegexKitLite.m -text
 Classes/ResourcesTableViewSection.h -text
 Classes/ResourcesTableViewSection.m -text
 Classes/RotatingNavigationController.h -text
@@ -155,6 +150,8 @@ Classes/WPLabel.h -text
 Classes/WPLabel.m -text
 Classes/WPLabelFooterView.h -text
 Classes/WPLabelFooterView.m -text
+Classes/WPMediaUploader.h -text
+Classes/WPMediaUploader.m -text
 Classes/WPNavigationLeftButtonView.h -text
 Classes/WPNavigationLeftButtonView.m -text
 Classes/WPPhotoViewController.h -text
@@ -185,20 +182,6 @@ Classes/WordPressAppDelegate.h -text
 Classes/WordPressAppDelegate.m -text
 Classes/XMLRPC/XMLRPCConnection+Authentication.h -text
 Classes/XMLRPC/XMLRPCConnection+Authentication.m -text
-Classes/XMLRPC/XMLRPCConnection.h -text
-Classes/XMLRPC/XMLRPCConnection.m -text
-Classes/XMLRPC/XMLRPCDecoder.h -text
-Classes/XMLRPC/XMLRPCDecoder.m -text
-Classes/XMLRPC/XMLRPCEncoder.h -text
-Classes/XMLRPC/XMLRPCEncoder.m -text
-Classes/XMLRPC/XMLRPCExtensions.h -text
-Classes/XMLRPC/XMLRPCExtensions.m -text
-Classes/XMLRPC/XMLRPCRequest.h -text
-Classes/XMLRPC/XMLRPCRequest.m -text
-Classes/XMLRPC/XMLRPCResponse.h -text
-Classes/XMLRPC/XMLRPCResponse.m -text
-Classes/XMLRPC/XMLValueDecoder.h -text
-Classes/XMLRPC/XMLValueDecoder.m -text
 Classes/blue-m.png -text svneol=unset#unset
 Classes/fabric.png -text svneol=unset#unset
 Classes/firstrun-background.png -text svneol=unset#unset
@@ -243,6 +226,8 @@ Classes/glossyButton-normal.png -text svneol=unset#unset
 /PostViewController.xib -text
 /RecentCommentButtonDeselected.png -text svneol=unset#unset
 /RecentCommentButtonSelected.png -text svneol=unset#unset
+/RegexKitLite.h -text
+/RegexKitLite.m -text
 Resources-iPad/MainWindow-iPad.xib -text
 /RoundedRectBlack.png -text
 /ToolbarIconCamera.png -text svneol=unset#unset
@@ -254,6 +239,7 @@ Resources-iPad/MainWindow-iPad.xib -text
 /UITableViewSwitchCell.xib -text
 /WPAddCategoryViewController.xib -text
 /WPCategoriesController.xib -text
+/WPMediaUploader.xib -text
 /WPPhotoViewController.xib -text
 /WPPhotosListViewController.xib -text
 /WPPublishOnEditController.xib -text
@@ -267,6 +253,20 @@ Resources-iPad/MainWindow-iPad.xib -text
 /WelcomeViewController.xib -text
 WordPress.xcodeproj/project.pbxproj -text
 /WordPress_Prefix.pch -text
+/XMLRPCConnection.h -text
+/XMLRPCConnection.m -text
+/XMLRPCDecoder.h -text
+/XMLRPCDecoder.m -text
+/XMLRPCEncoder.h -text
+/XMLRPCEncoder.m -text
+/XMLRPCExtensions.h -text
+/XMLRPCExtensions.m -text
+/XMLRPCRequest.h -text
+/XMLRPCRequest.m -text
+/XMLRPCResponse.h -text
+/XMLRPCResponse.m -text
+/XMLValueDecoder.h -text
+/XMLValueDecoder.m -text
 /backNav.png -text
 /backNav@2x.png -text
 /backNavd.png -text

@@ -9,7 +9,6 @@
 #import "XMLRPCConnection+Authentication.h"
 #import "NSString+Util.h"
 #import "NSData+Base64.h"
-#import "XMLRPCResponse.h"
 
 @implementation XMLRPCConnection (Authentication)
 

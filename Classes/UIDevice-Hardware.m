@@ -8,6 +8,7 @@
  Platforms
  iPhone1,1 -> iPhone 1G
  iPhone1,2 -> iPhone 3G
+ iPhone2,1 -> iPhone 3GS
  iPhone3,1 -> iPhone 4G 
  iPod1,1   -> iPod touch 1G 
  iPod2,1   -> iPod touch 2G 

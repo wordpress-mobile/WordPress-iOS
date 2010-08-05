@@ -208,7 +208,6 @@
 }
 
 - (void)refreshBlogs {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	if(isWPcom) {
@@ -229,7 +228,6 @@
 	[self performSelectorInBackground:@selector(updateFavicons) withObject:nil];
 	
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	[pool release];
 }
 
 - (IBAction)saveSelectedBlogs:(id)sender {
@@ -284,12 +282,12 @@
 	NSNumber *authEnabled = [NSNumber numberWithBool:YES];
 	NSString *authBlogURL = [NSString stringWithFormat:@"%@_auth", blog.url];
 	
-	NSMutableDictionary *newBlog = [[NSMutableDictionary dictionaryWithObjectsAndKeys:
+	NSMutableDictionary *newBlog = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 									 username, @"username", 
 									 url, @"url", 
 									 authEnabled, @"authEnabled", 
 									 authUsername, @"authUsername", 
-									 nil] retain];
+									 nil];
     if (![[BlogDataManager sharedDataManager] doesBlogExist:newBlog]) {
 		[[BlogDataManager sharedDataManager] resetCurrentBlog];
 		
@@ -317,7 +315,6 @@
 		[BlogDataManager sharedDataManager].currentBlogIndex = -1;
         [[BlogDataManager sharedDataManager] saveCurrentBlog];
 	}
-	[newBlog release];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 }
 

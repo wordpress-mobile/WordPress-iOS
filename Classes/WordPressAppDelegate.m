@@ -221,7 +221,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 										   selector:@selector(syncTick:)
 										   userInfo:nil
 											repeats:YES];
-	NSRunLoop* runLoop = [NSRunLoop currentRunLoop];
+	NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
 	[runLoop addTimer:syncTimer forMode:NSRunLoopCommonModes];
 	[runLoop run];
 	

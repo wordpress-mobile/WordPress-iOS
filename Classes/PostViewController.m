@@ -5,7 +5,6 @@
 #import "PostPreviewViewController.h"
 #import "PostSettingsViewController.h"
 #import "WPPhotosListViewController.h"
-#import "MediaViewController.h"
 #import "WPNavigationLeftButtonView.h"
 #import "PostsViewController.h"
 #import "Reachability.h"
@@ -43,7 +42,7 @@
 @synthesize customFieldsDetailController;
 @synthesize commentsViewController;
 @synthesize selectedViewController;
-
+@synthesize videoUploader;
 @synthesize toolbar;
 @synthesize contentView;
 
@@ -90,7 +89,7 @@
 	[mediaController release];
     [commentsViewController release];
     [saveButton release];
-
+	[videoUploader release];
 	[toolbar release];
 	[contentView release];
 	[photoPickerPopover release];
@@ -464,6 +463,9 @@
 			[leftView setTitle:@"Posts"];
 		}
 	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoDidUploadSuccessfully) name:VideoUploadSuccessful object:nil];
+	videoUploader = [[WPMediaUploader alloc] initWithNibName:@"WPMediaUploader" bundle:nil];
+
 }
 //shouldAutorotateToInterfaceOrientation
 
@@ -559,7 +561,7 @@
         photosListController = [[WPPhotosListViewController alloc] initWithNibName:@"WPPhotosListViewController" bundle:nil];
     }
 
-    photosListController.title = @"Photos";
+    photosListController.title = @"Media";
     photosListController.tabBarItem.image = [UIImage imageNamed:@"photos.png"];
 	photosListController.delegate = self;
 	
@@ -689,7 +691,7 @@
     }
 }
 
-- (void)useImage:(UIImage *)theImage {
+- (void)useVideo:(NSData *)video withThumbnail:(NSString *)thumbnailURL andFilename:(NSString *)filename {
     BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
     self.hasChanges = YES;
 
@@ -698,10 +700,59 @@
     if (![currentPost valueForKey:@"Photos"]) {
         [currentPost setValue:[NSMutableArray array] forKey:@"Photos"];
     }
+	
+	NSString *filepath = [dataManager saveVideo:video withThumbnail:thumbnailURL];
+	
+	[videoUploader setVideo:video];
+	[videoUploader setFilename:filename];
+	
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSDictionary *fileAttributes = [fileManager fileAttributesAtPath:filepath traverseLink:YES];
+	if(fileAttributes != nil)
+		[videoUploader setFilesize:[[fileAttributes objectForKey:@"NSFileSize"] floatValue]];
+	[videoUploader start];
+	
+	[videoUploader.view setFrame:CGRectMake(0, 480, 320, 40)];
+	[UIView beginAnimations:@"Adding VideoUploader" context:nil];
+	[UIView setAnimationDuration:0.4];
+	[videoUploader.view setFrame:CGRectMake(0, 324, 320, 40)];
+	[photosListController.view addSubview:videoUploader.view];
+	[UIView commitAnimations];
+	
+    [[currentPost valueForKey:@"Videos"] addObject:video];
 
+    [self updatePhotosBadge];
+}
+
+- (void)videoDidUploadSuccessfully {
+	[UIView beginAnimations:@"Removing VideoUploader" context:nil];
+	[UIView setAnimationDuration:0.4];
+	[UIView setAnimationDelegate:videoUploader.view];
+	[UIView setAnimationDidStopSelector:@selector(removeVideoUploader:finished:context:)];
+	[videoUploader.view setFrame:CGRectMake(0, 480, 320, 40)];
+	[UIView commitAnimations];
+	photosListController.isAddingMedia = NO;
+	[photosListController refreshData];
+}
+
+-(void)removeVideoUploader:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
+	[videoUploader.view removeFromSuperview];
+	[videoUploader reset];
+}
+
+- (void)useImage:(UIImage *)theImage {
+    BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
+    self.hasChanges = YES;
+	
+    id currentPost = dataManager.currentPost;
+	
+    if (![currentPost valueForKey:@"Photos"]) {
+        [currentPost setValue:[NSMutableArray array] forKey:@"Photos"];
+    }
+	
     UIImage *image = [photosListController scaleAndRotateImage:theImage scaleFlag:NO];
     [[currentPost valueForKey:@"Photos"] addObject:[dataManager saveImage:image]];
-
+	
     [self updatePhotosBadge];
 }
 

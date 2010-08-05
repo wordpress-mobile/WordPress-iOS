@@ -154,26 +154,36 @@
 
 - (void)saveState;
 {
-	NSString *vcName;
-	NSIndexPath *indexPath;
+	NSString *vcName = @"";
+	NSIndexPath *indexPath = [NSIndexPath indexPathWithIndex:0];
+	BOOL hasVCName = NO;
+	BOOL hasIndexPath = NO;
 	if (commentsViewController.selectedIndexPath) {
 		vcName = @"Comments";
 		indexPath = commentsViewController.selectedIndexPath;
+		hasVCName = YES;
+		hasIndexPath = YES;
 	}
 	else if	(postsViewController.selectedIndexPath) {
 		vcName = @"Posts";
 		indexPath = postsViewController.selectedIndexPath;
+		hasVCName = YES;
+		hasIndexPath = YES;
 	}
 	else if	(pagesViewController.selectedIndexPath) {
 		vcName = @"Pages";
 		indexPath = pagesViewController.selectedIndexPath;
+		hasVCName = YES;
+		hasIndexPath = YES;
 	}
 	else if	(statsViewController.selectedIndexPath) {
 		vcName = @"Stats";
 		indexPath = statsViewController.selectedIndexPath;
+		hasVCName = YES;
+		hasIndexPath = YES;
 	}
 	
-	if((vcName != nil) && (indexPath != nil)) {
+	if((hasVCName == YES) && (hasIndexPath == YES)) {
 		[[NSUserDefaults standardUserDefaults] setObject:vcName forKey:@"WPSelectedContentType"];
 		[[NSUserDefaults standardUserDefaults] setInteger:indexPath.section forKey:@"WPSelectedIndexPathSection"];
 		[[NSUserDefaults standardUserDefaults] setInteger:indexPath.row forKey:@"WPSelectedIndexPathRow"];

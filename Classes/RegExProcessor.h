@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RegexKitLite.h"
 
 @interface RegExProcessor : NSObject {
 
