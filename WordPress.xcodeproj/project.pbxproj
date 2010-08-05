@@ -208,8 +208,6 @@
 		A01C58B90E2682AD00D411F2 /* Disclosure Indicator.png in Resources */ = {isa = PBXBuildFile; fileRef = A01C58B80E2682AD00D411F2 /* Disclosure Indicator.png */; };
 		A0E293F10E21027E00C6919C /* WPAddCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */; };
 		A0E293FE0E21037200C6919C /* WPAddCategoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0E293FD0E21037200C6919C /* WPAddCategoryViewController.xib */; };
-		A0F128BA0E1F82A400867E18 /* AboutWordpress.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0F128B90E1F82A400867E18 /* AboutWordpress.xib */; };
-		A0F129CB0E1FAD4F00867E18 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0F129CA0E1FAD4F00867E18 /* AboutViewController.m */; };
 		AC3437BE0E10F7BC00E5D79B /* EditPostViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC3437BD0E10F7BC00E5D79B /* EditPostViewController.xib */; };
 		AC3D2C110E2222430064A705 /* RoundedRectBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = AC3D2C100E2222430064A705 /* RoundedRectBlack.png */; };
 		AC512F830E20D2AE00B7DA32 /* WPPhotosListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC512F820E20D2AE00B7DA32 /* WPPhotosListViewController.m */; };
@@ -561,9 +559,6 @@
 		A0E293EF0E21027E00C6919C /* WPAddCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAddCategoryViewController.h; sourceTree = "<group>"; };
 		A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAddCategoryViewController.m; sourceTree = "<group>"; };
 		A0E293FD0E21037200C6919C /* WPAddCategoryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WPAddCategoryViewController.xib; sourceTree = "<group>"; };
-		A0F128B90E1F82A400867E18 /* AboutWordpress.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AboutWordpress.xib; sourceTree = "<group>"; };
-		A0F129C90E1FAD4F00867E18 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
-		A0F129CA0E1FAD4F00867E18 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		AC3437BD0E10F7BC00E5D79B /* EditPostViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditPostViewController.xib; sourceTree = "<group>"; };
 		AC3D2C100E2222430064A705 /* RoundedRectBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RoundedRectBlack.png; sourceTree = "<group>"; };
 		AC512F810E20D2AE00B7DA32 /* WPPhotosListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPPhotosListViewController.h; sourceTree = "<group>"; };
@@ -816,7 +811,6 @@
 				ACAC7B690E1F8C0700AC7074 /* WPSelectionTableViewController.xib */,
 				A0E293FD0E21037200C6919C /* WPAddCategoryViewController.xib */,
 				28AD735F0D9D9599002E5188 /* MainWindow.xib */,
-				A0F128B90E1F82A400867E18 /* AboutWordpress.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 			);
 			name = Resources;
@@ -1020,8 +1014,6 @@
 				AC3439790E11434600E5D79B /* Post */,
 				AC512F800E20D28500B7DA32 /* Utils */,
 				8320B5CF11FCA3EA00607422 /* Cells */,
-				A0F129C90E1FAD4F00867E18 /* AboutViewController.h */,
-				A0F129CA0E1FAD4F00867E18 /* AboutViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1356,7 +1348,6 @@
 				ACBAB6090E121CF700F38795 /* PostSettingsViewController.xib in Resources */,
 				ACBAB67D0E1247CC00F38795 /* PostPreviewViewController.xib in Resources */,
 				ACAC7B6A0E1F8C0700AC7074 /* WPSelectionTableViewController.xib in Resources */,
-				A0F128BA0E1F82A400867E18 /* AboutWordpress.xib in Resources */,
 				AC600C0C0E20B80400D663AA /* write.png in Resources */,
 				AC600C0E0E20B80400D663AA /* photos.png in Resources */,
 				AC600C0F0E20B80400D663AA /* preview.png in Resources */,
@@ -1517,7 +1508,6 @@
 				ACBAB6860E1247F700F38795 /* PostPreviewViewController.m in Sources */,
 				ACAC79C60E1F50EB00AC7074 /* WPSelectionTableViewController.m in Sources */,
 				ACAC7BEB0E1F9E0C00AC7074 /* WPPublishOnEditController.m in Sources */,
-				A0F129CB0E1FAD4F00867E18 /* AboutViewController.m in Sources */,
 				AC512F830E20D2AE00B7DA32 /* WPPhotosListViewController.m in Sources */,
 				AC512FCB0E20D6BB00B7DA32 /* WPPhotoViewController.m in Sources */,
 				A0E293F10E21027E00C6919C /* WPAddCategoryViewController.m in Sources */,

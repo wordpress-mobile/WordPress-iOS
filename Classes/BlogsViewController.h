@@ -2,7 +2,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import "NSString+XMLExtensions.h" 
 #import "WordPressAppDelegate.h"
-#import "AboutViewController.h"
 #import "BlogViewController.h"
 #import "EditSiteViewController.h"
 #import "BlogDataManager.h"
