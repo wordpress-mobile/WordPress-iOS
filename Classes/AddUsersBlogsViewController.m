@@ -312,10 +312,6 @@
         [[BlogDataManager sharedDataManager] wrapperForSyncPostsAndGetTemplateForBlog:[BlogDataManager sharedDataManager].currentBlog];
         [newBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 		[[BlogDataManager sharedDataManager] setCurrentBlog:newBlog];
-		[[BlogDataManager sharedDataManager] syncCategoriesForBlog:[BlogDataManager sharedDataManager].currentBlog];
-		[[BlogDataManager sharedDataManager] syncStatusesForBlog:[BlogDataManager sharedDataManager].currentBlog];
-		NSLog(@"Syncing statuses for blog with URL:%@", 
-			  [[[BlogDataManager sharedDataManager] currentBlog] objectForKey:@"url"]);
 		[BlogDataManager sharedDataManager].currentBlogIndex = -1;
         [[BlogDataManager sharedDataManager] saveCurrentBlog];
 	}

@@ -23,7 +23,7 @@
     self.view = tabBarController.view;
 
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
-    self.title =[NSString decodeXMLCharactersIn:[[dm currentBlog] valueForKey:@"blogName"]] ;
+    self.title =[NSString decodeXMLCharactersIn:[[dm currentBlog] valueForKey:@"blogName"]];
 	
 	if (DeviceIsPad() == NO) {
 	#if defined __IPHONE_3_0

@@ -102,8 +102,13 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
 - (void)pickPhotoFromPhotoLibrary:(id)sender;
 - (void)useImage:(UIImage *)theImage;
 - (void)showPhotoPickerActionSheet;
-
 - (void)endEditingAction:(id)sender;
+
+- (void)syncCategories;
+- (void)refreshCategory;
+- (void)syncStatuses;
+- (void)refreshStatus;
+- (void)syncCategoriesAndStatuses;
 
 //will be called when auto save method is called.
 - (void)updateValuesToCurrentPost;

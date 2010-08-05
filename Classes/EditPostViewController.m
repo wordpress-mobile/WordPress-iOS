@@ -87,6 +87,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 	[self dismissModalViewControllerAnimated:YES];
+	[self syncCategoriesAndStatuses];
     //isCustomFieldsEnabledForThisPost = [self checkCustomFieldsMinusMetadata];
     isCustomFieldsEnabledForThisPost = NO;
 	
@@ -290,6 +291,49 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
 	
     isNewCategory = NO;
+}
+
+- (void)syncCategories {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	[[BlogDataManager sharedDataManager] syncCategoriesForBlog:[BlogDataManager sharedDataManager].currentBlog];
+	[self performSelectorOnMainThread:@selector(refreshCategory) withObject:nil waitUntilDone:NO];
+	
+	[pool release];
+}
+
+- (void)refreshCategory {
+    NSArray *cats = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"categories"];
+	NSString *status = [[BlogDataManager sharedDataManager] statusDescriptionForStatus:
+						[[BlogDataManager sharedDataManager].currentPost valueForKey:@"post_status"] 
+																			  fromBlog:[BlogDataManager sharedDataManager].currentBlog];
+	
+    if(status)
+        categoriesTextField.text = [cats componentsJoinedByString:@", "];
+	else
+        categoriesTextField.text = @"";
+}
+
+- (void)syncStatuses {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	[[BlogDataManager sharedDataManager] syncStatusesForBlog:[BlogDataManager sharedDataManager].currentBlog];
+	[self performSelectorOnMainThread:@selector(refreshStatus) withObject:nil waitUntilDone:NO];
+	
+	[pool release];
+}
+
+- (void)refreshStatus {
+	NSString *status = [[BlogDataManager sharedDataManager] statusDescriptionForStatus:
+						[[BlogDataManager sharedDataManager].currentPost valueForKey:@"post_status"] 
+							fromBlog:[BlogDataManager sharedDataManager].currentBlog];
+    status = (status == nil ? @"" : status);
+    statusTextField.text = status;
+}
+
+- (void)syncCategoriesAndStatuses {
+	[self performSelectorInBackground:@selector(syncCategories) withObject:nil];
+	[self performSelectorInBackground:@selector(syncStatuses) withObject:nil];
 }
 
 - (void)populateSelectionsControllerWithStatuses {
