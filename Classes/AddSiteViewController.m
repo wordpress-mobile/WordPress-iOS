@@ -594,8 +594,10 @@
 	[[BlogDataManager sharedDataManager] setCurrentBlog:newBlog];
 	[BlogDataManager sharedDataManager].currentBlogIndex = -1;
 	[[BlogDataManager sharedDataManager] saveCurrentBlog];
-	[[BlogDataManager sharedDataManager] syncCategoriesForBlog:newBlog];
-	[[BlogDataManager sharedDataManager] syncStatusesForBlog:newBlog];
+	[[BlogDataManager sharedDataManager] syncCategoriesForBlog:[BlogDataManager sharedDataManager].currentBlog];
+	[[BlogDataManager sharedDataManager] syncStatusesForBlog:[BlogDataManager sharedDataManager].currentBlog];
+	NSLog(@"Syncing statuses for blog with URL:%@", 
+		  [[[BlogDataManager sharedDataManager] currentBlog] objectForKey:@"url"]);
 	[newBlog release];
 	
 	[self performSelectorOnMainThread:@selector(didAddSiteSuccessfully) withObject:nil waitUntilDone:NO];
