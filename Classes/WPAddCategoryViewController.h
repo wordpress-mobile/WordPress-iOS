@@ -19,5 +19,6 @@
 
 - (IBAction)cancelAddCategory:(id)sender;
 - (IBAction)saveAddCategory:(id)sender;
+- (void)removeProgressIndicator;
 
 @end

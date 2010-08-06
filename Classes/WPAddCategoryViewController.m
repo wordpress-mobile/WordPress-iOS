@@ -24,12 +24,7 @@
 }
 
 - (void)removeProgressIndicator {
-    //wait incase the other thread did not complete its work.
-    while (self.navigationItem.rightBarButtonItem == saveButtonItem) {
-        [[NSRunLoop currentRunLoop] runUntilDate:[[NSDate date] addTimeInterval:0.1]];
-    }
-
-    self.navigationItem.rightBarButtonItem = saveButtonItem;
+	self.navigationItem.rightBarButtonItem = saveButtonItem;
 	
 }
 
