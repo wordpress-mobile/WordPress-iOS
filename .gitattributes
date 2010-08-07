@@ -310,6 +310,7 @@ WordPress.xcodeproj/project.pbxproj -text
 /posts@2x.png -text
 /preview.png -text
 /preview@2x.png -text
+/sample.mov -text
 /settings.png -text
 /settings@2x.png -text
 /sync.png -text svneol=unset#unset
