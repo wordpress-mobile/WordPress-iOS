@@ -134,6 +134,7 @@
 		8320B5E111FCA6EF00607422 /* UITableViewSegmentedControlCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8320B5E011FCA6EF00607422 /* UITableViewSegmentedControlCell.xib */; };
 		83241CF21208B18A00F0DA59 /* WPMediaUploader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83241CF11208B18A00F0DA59 /* WPMediaUploader.xib */; };
 		83241CF61208B26D00F0DA59 /* WPMediaUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 83241CF51208B26D00F0DA59 /* WPMediaUploader.m */; };
+		83290397120CF50E000A965A /* sample.mov in Resources */ = {isa = PBXBuildFile; fileRef = 83290396120CF50E000A965A /* sample.mov */; };
 		832D4F53120A71EE001708D4 /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 832D4F52120A71EE001708D4 /* RegexKitLite.m */; };
 		8333FE0E11FF6EF200A495C1 /* EditSiteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8333FE0D11FF6EF200A495C1 /* EditSiteViewController.xib */; };
 		833F59F611C95DE400789837 /* HttpHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 833F59F411C95DE400789837 /* HttpHelper.m */; };
@@ -446,6 +447,7 @@
 		83241CF11208B18A00F0DA59 /* WPMediaUploader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WPMediaUploader.xib; sourceTree = "<group>"; };
 		83241CF41208B26D00F0DA59 /* WPMediaUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPMediaUploader.h; sourceTree = "<group>"; };
 		83241CF51208B26D00F0DA59 /* WPMediaUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPMediaUploader.m; sourceTree = "<group>"; };
+		83290396120CF50E000A965A /* sample.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = sample.mov; sourceTree = "<group>"; };
 		832D4F51120A71EE001708D4 /* RegexKitLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegexKitLite.h; sourceTree = "<group>"; };
 		832D4F52120A71EE001708D4 /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
 		832D509C120A7CDF001708D4 /* XMLRPC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XMLRPC.framework; path = /Users/chris/Documents/Workspace/XMLRPC/build/Development/XMLRPC.framework; sourceTree = "<absolute>"; };
@@ -798,6 +800,7 @@
 				C50E78130E71648100991509 /* Comments */,
 				29FF132C0FE70EFF00CFB908 /* Custom Fields */,
 				AC512F790E20D25E00B7DA32 /* Images */,
+				83290399120CF517000A965A /* Videos */,
 				EC4696CB0EA759EA0040EE8E /* Pages */,
 				ACFF1DC10E231F0B00EC6BF5 /* Post */,
 				8320B5D711FCA4EE00607422 /* Cells */,
@@ -910,6 +913,14 @@
 				8320B5E011FCA6EF00607422 /* UITableViewSegmentedControlCell.xib */,
 			);
 			name = Cells;
+			sourceTree = "<group>";
+		};
+		83290399120CF517000A965A /* Videos */ = {
+			isa = PBXGroup;
+			children = (
+				83290396120CF50E000A965A /* sample.mov */,
+			);
+			name = Videos;
 			sourceTree = "<group>";
 		};
 		83418A5711C9F50D00ACF00C /* Data */ = {
@@ -1487,6 +1498,7 @@
 				8362C1C6120229BC00599347 /* AddSiteViewController-iPad.xib in Resources */,
 				8362C54612027BC300599347 /* AddUsersBlogsViewController-iPad.xib in Resources */,
 				83241CF21208B18A00F0DA59 /* WPMediaUploader.xib in Resources */,
+				83290397120CF50E000A965A /* sample.mov in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

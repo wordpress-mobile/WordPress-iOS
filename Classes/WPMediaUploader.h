@@ -16,6 +16,7 @@
 	NSString *filename;
 	NSData *video;
 	float filesize;
+	MediaOrientation orientation;
 	
 	NSURLConnection *connection;
 	NSURLRequest *urlRequest;
@@ -27,6 +28,7 @@
 @property (nonatomic, retain) IBOutlet UIProgressView *progressView;
 @property (nonatomic, retain) NSString *filename;
 @property (nonatomic, assign) float filesize;
+@property (nonatomic, assign) MediaOrientation orientation;
 @property (nonatomic, retain) NSData *video;
 @property (nonatomic, retain) NSURLConnection *connection;
 @property (nonatomic, retain) NSURLRequest *urlRequest;

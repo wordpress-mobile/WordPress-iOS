@@ -56,6 +56,7 @@
 #define kResizePhotoSetting                     @"ResizePhotoSetting"
 #define kGeolocationSetting						@"GeolocationSetting"
 #define kLocationSetting						@"LocationSetting"
+#define kSupportsVideoPress						@"SupportsVideoPress"
 #define kAsyncPostFlag                          @"async_post"
 #define kSupportsPagesAndComments               @"SupportsPagesAndComments"
 #define kVersionAlertShown                      @"VersionAlertShown"
@@ -86,3 +87,8 @@
 
 #define kUnsupportedWordpressVersionTag 900
 #define kRSDErrorTag 901
+
+typedef enum {
+	kPortrait,
+	kLandscape
+} MediaOrientation;

@@ -7,21 +7,16 @@
 #import "WPImagePickerController.h"
 #import "UIDevice-Hardware.h"
 
-typedef enum {
-kPortrait,
-kLandscape
-} VideoOrientation;
-
 @interface WPPhotosListViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
     IBOutlet UITableView *tableView;
     IBOutlet UILabel *messageLabel;
 	IBOutlet UIActivityIndicatorView *spinner;
 	IBOutlet UIBarButtonItem *addButton;
 	IBOutlet UIToolbar *toolbar;
-	VideoOrientation videoOrientation;
+	MediaOrientation videoOrientation;
 
     UIImage *currentChoosenImage;
-	NSDictionary *currentVideo;
+	NSMutableDictionary *currentVideo;
     WPImagePickerController *pickerController;
 
     id<WPPhotosListProtocol> delegate;
@@ -40,8 +35,8 @@ kLandscape
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
 @property (nonatomic, retain) IBOutlet UILabel *messageLabel;
 @property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
-@property (nonatomic, assign) VideoOrientation videoOrientation;
-@property (nonatomic, retain) NSDictionary *currentVideo;
+@property (nonatomic, assign) MediaOrientation videoOrientation;
+@property (nonatomic, retain) NSMutableDictionary *currentVideo;
 @property (nonatomic, assign) BOOL isShowingMediaPickerActionSheet, isShowingChangeOrientationActionSheet, didChangeOrientationDuringRecord;
 @property (nonatomic, assign) BOOL isAddingMedia, isLibraryMedia;
 
@@ -53,11 +48,11 @@ kLandscape
 - (void)pickVideoFromCamera:(id)sender;
 - (void)pickPhotoFromPhotoLibrary:(id)sender;
 - (void)useImage:(UIImage *)theImage;
-- (void)useVideo:(NSData *)video withThumbnail:(NSString *)thumbnailURL andFilename:(NSString *)filename;
+- (void)useVideo:(NSData *)video withThumbnail:(NSString *)thumbnailURL;
 - (void)showPhotoPickerActionSheet;
 - (UIImage *)scaleAndRotateImage:(UIImage *)image scaleFlag:(BOOL)aFlag;
 - (BOOL)supportsVideo;
-- (VideoOrientation)interpretOrientation:(UIDeviceOrientation)theOrientation;
+- (MediaOrientation)interpretOrientation:(UIDeviceOrientation)theOrientation;
 - (void)deviceDidRotate:(NSNotification *)notification;
 - (void)showOrientationChangedActionSheet;
 - (void)processRecordedVideo;

@@ -11,17 +11,16 @@
 @private
     int index;
 	NSString *blogID, *blogName, *url, *hostURL, *username, *password, *xmlrpc;
-	BOOL isAdmin;
+	BOOL isAdmin, hasVideoPress;
 	NSMutableDictionary *settings;
 }
 
 @property int index;
 @property (nonatomic, retain) NSString *blogID, *blogName, *url, *hostURL, *username, *password, *xmlrpc;
-@property (nonatomic, assign) BOOL isAdmin;
+@property (nonatomic, assign) BOOL isAdmin, hasVideoPress;
 @property (nonatomic, retain) NSMutableDictionary *settings;
 
 - (id)initWithIndex:(int)blogIndex;
-
 - (UIImage *)favicon;
 - (void)downloadFavicon;
 - (void)downloadFaviconInBackground;

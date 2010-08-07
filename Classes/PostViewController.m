@@ -691,7 +691,7 @@
     }
 }
 
-- (void)useVideo:(NSData *)video withThumbnail:(NSString *)thumbnailURL andFilename:(NSString *)filename {
+- (void)useVideo:(NSData *)video withThumbnail:(NSString *)thumbnailURL andFilename:(NSString *)filename andOrientation:(MediaOrientation) orientation {
     BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
     self.hasChanges = YES;
 
@@ -705,6 +705,8 @@
 	
 	[videoUploader setVideo:video];
 	[videoUploader setFilename:filename];
+	NSLog(@"setting orientation to: %d", orientation);
+	[videoUploader setOrientation:orientation];
 	
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSDictionary *fileAttributes = [fileManager fileAttributesAtPath:filepath traverseLink:YES];

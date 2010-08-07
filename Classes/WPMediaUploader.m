@@ -8,7 +8,7 @@
 
 
 @implementation WPMediaUploader
-@synthesize messageLabel, progressView, filename, video, payload, connection, urlResponse, urlRequest, filesize;
+@synthesize messageLabel, progressView, filename, video, payload, connection, urlResponse, urlRequest, filesize, orientation;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -143,10 +143,12 @@
 					if([responseMeta objectForKey:@"url"] != nil)
 						[videoMeta setObject:[responseMeta objectForKey:@"url"] forKey:@"url"];
 					
-					if(videoMeta.count > 0)
+					if(videoMeta.count > 0) {
+						[videoMeta setValue:[NSNumber numberWithInt:orientation] forKey:@"orientation"];
 						[[NSNotificationCenter defaultCenter] postNotificationName:VideoUploadSuccessful 
 																			object:self 
 																		  userInfo:videoMeta];
+					}
 					[videoMeta release];
 				}
 				

@@ -10,7 +10,7 @@
 @protocol WPPhotosListProtocol
 
 - (void)useImage:(UIImage *)theImage;
-- (void)useVideo:(NSData *)video withThumbnail:(NSString *)thumbnailURL andFilename:(NSString *)filename;
+- (void)useVideo:(NSData *)video withThumbnail:(NSString *)thumbnailURL andFilename:(NSString *)filename andOrientation:(MediaOrientation)orientation;
 - (id)photosDataSource;
 - (void)updatePhotosBadge;
 - (void)setHasChanges:(BOOL)aFlag;

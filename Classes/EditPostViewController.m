@@ -947,18 +947,31 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)videoUploadedNofificationReceived:(NSNotification *)notification {
     NSDictionary *videoMeta = [notification userInfo];
     NSString *currentText = textView.text;
-    currentText = (currentText == nil ? @"" : currentText);
+	MediaOrientation videoOrientation = kPortrait;
+	if(([videoMeta objectForKey:@"orientation"] != nil) && ([videoMeta objectForKey:@"orientation"] == [NSNumber numberWithInt:1]))
+		videoOrientation = kLandscape;
 	
 	NSString *html = @"";
+	if(currentText == nil)
+		currentText = html;
 	if([videoMeta objectForKey:@"shortcode"] != nil)
 		html = [videoMeta objectForKey:@"shortcode"];
 	else if([videoMeta objectForKey:@"url"] != nil) {
 		NSString *width = @"360";
-		NSString *height = @"480";
+		NSString *height = @"496";
+		if(videoOrientation == kLandscape) {
+			width = @"480";
+			height = @"376";
+		}
 		
 		if([[UIDevice currentDevice] model] == IPHONE_3GS_NAMESTRING) {
+			// Leaving this as is until I have better data about iPhone 4 vs. 3GS video size
 			width = @"360";
-			height = @"480";
+			height = @"496";
+			if(videoOrientation == kLandscape) {
+				width = @"480";
+				height = @"376";
+			}
 		}
 		
 		NSString *url = [videoMeta objectForKey:@"url"];
@@ -966,15 +979,16 @@ NSTimeInterval kAnimationDuration = 0.3f;
 						  "classid=\"clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B\""
 						  "codebase=\"http://www.apple.com/qtactivex/qtplugin.cab\">"
 						  "<param name=\"src\" value=\"%@\">"
-						  "<param name=\"autoplay\" value=\"true\">"
-						  "<param name=\"controller\" value=\"false\">"
+						  "<param name=\"autoplay\" value=\"false\">"
+						  "<param name=\"controller\" value=\"true\">"
 						  "<embed src=\"%@\" width=\"%@\" height=\"%@\""
-						  "autoplay=\"true\" controller=\"false\""
+						  "autoplay=\"false\" controller=\"true\" type=\"video/quicktime\""
 						  "pluginspage=\"http://www.apple.com/quicktime/download/\">"
 						  "</embed></object>",
 						  width, height, url,
 						  url, width, height];
 	}
+	
 	if(![textView.text isEqualToString:@""])
 		html = [NSString stringWithFormat:@"<br/>%@", html];
 	textView.text = [currentText stringByAppendingString:html];

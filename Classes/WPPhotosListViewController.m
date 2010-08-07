@@ -252,14 +252,13 @@ static inline double radians(double degrees) {
 	else if(isShowingChangeOrientationActionSheet == YES) {
 		switch (buttonIndex) {
 			case 0:
-				self.videoOrientation = kPortrait;
-				break;
-			case 1:
 				self.videoOrientation = kLandscape;
+				break;
 			default:
 				self.videoOrientation = kPortrait;
 				break;
 		}
+		NSLog(@"set orientation to: %d", self.videoOrientation);
 		[self processRecordedVideo];
 		[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
 	}
@@ -292,8 +291,8 @@ static inline double radians(double degrees) {
 	[picker release];
 }
 
-- (VideoOrientation)interpretOrientation:(UIDeviceOrientation)theOrientation {
-	VideoOrientation result = kPortrait;
+- (MediaOrientation)interpretOrientation:(UIDeviceOrientation)theOrientation {
+	MediaOrientation result = kPortrait;
 	switch (theOrientation) {
 		case UIDeviceOrientationPortrait:
 			result = kPortrait;
@@ -351,6 +350,7 @@ static inline double radians(double degrees) {
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	if([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.movie"]) {
 		[self refreshData];
 		self.currentVideo = [info retain];
@@ -358,9 +358,8 @@ static inline double radians(double degrees) {
 			[self showOrientationChangedActionSheet];
 		else if(self.isLibraryMedia == NO)
 			[self processRecordedVideo];
-		else {
+		else
 			[self processLibraryVideo];
-		}
 	}
 	else if([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.image"]) {
 		UIImage *image = [info valueForKey:@"UIImagePickerControllerOriginalImage"];
@@ -379,6 +378,7 @@ static inline double radians(double degrees) {
 }
 
 - (void)processRecordedVideo {
+	[self.currentVideo setValue:[NSNumber numberWithInt:videoOrientation] forKey:@"orientation"];
 	NSString *tempVideoPath = [(NSURL *)[currentVideo valueForKey:UIImagePickerControllerMediaURL] absoluteString];
 	tempVideoPath = [[tempVideoPath substringFromIndex:16] retain];
 	if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(tempVideoPath))
@@ -390,6 +390,7 @@ static inline double radians(double degrees) {
 }
 
 - (void)processLibraryVideo {
+	[self.currentVideo setValue:[NSNumber numberWithInt:videoOrientation] forKey:@"orientation"];
 	NSString *tempVideoPath = [(NSURL *)[currentVideo valueForKey:UIImagePickerControllerMediaURL] absoluteString];
 	tempVideoPath = [[tempVideoPath substringFromIndex:16] retain];
 	NSData *videoData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:tempVideoPath]];
@@ -648,7 +649,12 @@ static inline double radians(double degrees) {
 	NSString *filepath = [NSString stringWithFormat:@"%@/m_%@", [dm blogDir:currentBlog], filename];
 	
 	[video writeToFile:filepath atomically:YES];
-	[delegate useVideo:video withThumbnail:thumbnailURL andFilename:filename];
+	NSLog(@"calling delegate.useVideo with orientation: %d", self.videoOrientation);
+	[delegate useVideo:video withThumbnail:thumbnailURL andFilename:filename andOrientation:self.videoOrientation];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(deviceDidRotate:)
+												 name:@"UIDeviceOrientationDidChangeNotification" object:nil];
 	[formatter release];
 	[self refreshData];
 }

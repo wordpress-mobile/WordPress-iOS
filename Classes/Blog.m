@@ -11,8 +11,7 @@
 
 @implementation Blog
 @synthesize blogID, blogName, url, hostURL, username, password, xmlrpc, isAdmin, settings;
-
-@synthesize index;
+@synthesize index, hasVideoPress;
 
 #pragma mark -
 #pragma mark Initialize
