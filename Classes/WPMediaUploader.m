@@ -22,9 +22,11 @@
 
 - (void)start {
 	[self reset];
+	[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = YES;
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	// Build our XML-RPC request
+	NSLog(@"Setting parameters...");
 	NSMutableDictionary *videoParams = [NSMutableDictionary dictionary];
 	[videoParams setValue:@"video/quicktime" forKey:@"type"];
 	[videoParams setValue:video forKey:@"bits"];
@@ -32,23 +34,31 @@
 	[videoParams setValue:nil forKey:@"categories"];
 	[videoParams setValue:@"" forKey:@"description"];
 	
+	NSLog(@"Setting arguments...");
 	NSArray *args = [NSArray arrayWithObjects:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:kBlogId],
 					 [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"username"],
 					 [[BlogDataManager sharedDataManager] getPasswordFromKeychainInContextOfCurrentBlog:[[BlogDataManager sharedDataManager] currentBlog]],
 					 videoParams, nil];
 	
+	NSLog(@"Setting xmlrpc parameters...");
 	NSMutableDictionary *xmlrpcParams = [[NSMutableDictionary alloc] init];
 	[xmlrpcParams setObject:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"xmlrpc"] forKey:kURL];
 	[xmlrpcParams setObject:@"metaWeblog.newMediaObject" forKey:kMETHOD];
 	[xmlrpcParams setObject:args forKey:kMETHODARGS];
+	[args release];
 	
 	// Execute the XML-RPC request
+	NSLog(@"Executing xmlrpc request...");
 	XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[xmlrpcParams valueForKey:kURL]]];
 	[xmlrpcRequest setMethod:[xmlrpcParams valueForKey:kMETHOD] withObjects:[xmlrpcParams valueForKey:kMETHODARGS]];
+	[xmlrpcParams release];
 	
-	urlRequest = [xmlrpcRequest request];
+	NSLog(@"Creating URL request...");
+	[self createURLRequest:xmlrpcRequest];
+	NSLog(@"Creating URL connection...");
 	connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
 	if (connection) {
+		NSLog(@"Creating payload...");
 		payload = [[NSMutableData data] retain];
 	}
 	else {
@@ -58,18 +68,50 @@
 		[alert show];
 		[alert release];
 	}
-	[xmlrpcParams release];
 	[xmlrpcRequest release];
 }
 
 - (void)stop {
 	[connection cancel];
+	[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = NO;
 }
 
 - (void)reset {
 	self.messageLabel.text = @"Uploading video...";
 	self.progressView.progress = 0.0;
 	self.progressView.hidden = NO;
+	[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = NO;
+}
+
+- (void)createURLRequest:(XMLRPCRequest *)xmlrpc {
+	NSMutableURLRequest *_request = [[NSMutableURLRequest alloc] initWithURL:xmlrpc.host];
+	NSNumber *length = [NSNumber numberWithInt:[video length]];
+	
+	if (video != nil) {
+		[_request setHTTPMethod: @"POST"];
+		
+		if ([_request valueForHTTPHeaderField: @"Content-Length"] == nil)
+		{
+			[_request addValue: @"text/xml" forHTTPHeaderField: @"Content-Type"];
+		}
+		else
+		{
+			[_request setValue: @"text/xml" forHTTPHeaderField: @"Content-Type"];
+		}
+		
+		if ([_request valueForHTTPHeaderField: @"Content-Length"] == nil)
+		{
+			[_request addValue: [length stringValue] forHTTPHeaderField: @"Content-Length"];
+		}
+		else
+		{
+			[_request setValue: [length stringValue] forHTTPHeaderField: @"Content-Length"];
+		}
+		
+		[_request setHTTPBody: video];
+		
+		urlRequest = (NSURLRequest *)_request;
+	}
 }
 
 #pragma mark -
@@ -107,6 +149,7 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)conn {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = NO;
 	self.progressView.progress = 1.0;
 	conn = nil;
 	

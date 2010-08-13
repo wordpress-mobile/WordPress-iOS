@@ -46,8 +46,9 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"BlogsRefreshNotification" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"NewBlogAdded" object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+    //[[NSNotificationCenter defaultCenter] removeObserver:self name:@"BlogsRefreshNotification" object:nil];
+    //[[NSNotificationCenter defaultCenter] removeObserver:self name:@"NewBlogAdded" object:nil];
 	[super viewWillDisappear:animated];
 }
 

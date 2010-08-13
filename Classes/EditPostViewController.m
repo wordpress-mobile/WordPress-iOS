@@ -3,7 +3,6 @@
 #import "BlogDataManager.h"
 #import "WPSegmentedSelectionTableViewController.h"
 #import "WPNavigationLeftButtonView.h"
-
 #import "CPopoverManager.h"
 
 NSTimeInterval kAnimationDuration = 0.3f;
@@ -19,27 +18,26 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 @synthesize postDetailViewController, selectionTableViewController, segmentedTableViewController, leftView, customFieldsTableView;
 @synthesize infoText, urlField, bookMarksArray, selectedLinkRange, currentEditingTextField, isEditing, initialLocation;
-@synthesize customFieldsEditButton, editingDisabled, editCustomFields, isCustomFieldsEnabledForThisPost, locationButton, locationSpinner;
+@synthesize editingDisabled, editCustomFields, isCustomFieldsEnabledForThisPost, statuses, isLocalDraft;
+@synthesize textView, contentView, subView, textViewContentView, statusTextField, categoriesTextField, titleTextField;
+@synthesize tagsTextField, textViewPlaceHolderField, tagsLabel, statusLabel, categoriesLabel, titleLabel, customFieldsEditButton;
+@synthesize tableViewForSelectingCustomFields, locationButton, locationSpinner, newCategoryBarButtonItem, autosaveButton;
 
 #pragma mark -
-#pragma mark View Lifecycle Methods
+#pragma mark View lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
-    //customFieldsEditButton.hidden = YES;
-    //customFieldsEditButton.enabled = NO;
-	
+	statuses = [NSArray arrayWithObjects:@"Local Draft", @"Draft", @"Private", @"Pending Review", @"Published", nil];
     titleTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
     tagsTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
     categoriesTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
     statusTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
-    //tagsTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
     categoriesLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
     statusLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
     titleLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
     tagsLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
-	
     titleTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     tagsTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     [contentView bringSubviewToFront:textView];
@@ -54,7 +52,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newCategoryCreatedNotificationReceived:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoUploadedNofificationReceived:) name:VideoUploadSuccessful object:nil];
-
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkAutosaves:) name:@"AutosaveNotification" object:nil];
+	//[self hideAutosaveButton];
 	
     //JOHNB TODO: Add a check here for the presence of custom fields in the data model
     // if there are, set isCustomFieldsEnabledForThisPost BOOL to true
@@ -169,13 +168,20 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	if (titleTextField.text.length < 1 && titleTextField.enabled) {
 		[titleTextField becomeFirstResponder];
 	}
-	else if (textView.editable) {
-		[textView becomeFirstResponder];
-	}
+	// This is annoying:
+	//else if (textView.editable) {
+	//	[textView becomeFirstResponder];
+	//}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+	[self refreshUIForCompose];
 	[self dismissModalViewControllerAnimated:YES];
+	[titleTextField resignFirstResponder];
+	[tagsTextField resignFirstResponder];
+	[categoriesTextField resignFirstResponder];
+	[statusTextField resignFirstResponder];
+	[textView resignFirstResponder];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
@@ -191,63 +197,115 @@ NSTimeInterval kAnimationDuration = 0.3f;
 #pragma mark -
 
 - (BOOL)isPostPublished {
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	NSString *status = [dm statusDescriptionForStatus:[dm.currentPost valueForKey:@"post_status"] fromBlog:dm.currentBlog];
-	
-	if([[status lowercaseString] isEqualToString:@"published"])
-		return YES;
-	else
+	if(isLocalDraft == YES) {
 		return NO;
+	}
+	else {
+		BlogDataManager *dm = [BlogDataManager sharedDataManager];
+		NSString *status = [dm statusDescriptionForStatus:[dm.currentPost valueForKey:@"post_status"] fromBlog:dm.currentBlog];
+		
+		if([[status lowercaseString] isEqualToString:@"published"])
+			return YES;
+		else
+			return NO;
+	}
 }
 
 - (void)refreshUIForCompose {
-    //	textView.alpha = 0.3f;
-    //	textView.text = @"Tap here to begin writing";
     titleTextField.text = @"";
     tagsTextField.text = @"";
     textView.text = @"";
     textViewPlaceHolderField.hidden = NO;
     categoriesTextField.text = @"";
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
-    NSString *status = [dm statusDescriptionForStatus:[dm.currentPost valueForKey:@"post_status"] fromBlog:dm.currentBlog];
-    status = (status == nil ? @"" : status);
-    statusTextField.text = status;
+	statusTextField.text = @"Local Draft";
+	self.isLocalDraft = YES;
 }
 
 - (void)refreshUIForCurrentPost {
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	
-    NSString *description = [dm.currentPost valueForKey:@"description"];
-    NSString *moreText = [dm.currentPost valueForKey:@"mt_text_more"];
-	
-    if (!description ||[description length] == 0) {
-        textViewPlaceHolderField.hidden = NO;
-        textView.text = @"";
-    } else {
-        textViewPlaceHolderField.hidden = YES;
+	if(appDelegate.postID != nil) {
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];   
 		
-        if ((moreText != NULL) && ([moreText length] > 0)){
-			// To Do: when we show more tag label dynamically, we need to add label (if any) of more tag in the Character set string .
-			//NSRange moretagRange = [description rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"<!--more-->"] options:NSForcedOrderingSearch];
-            textView.text = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", description, moreText];
+		isLocalDraft = YES;
+		NSFetchRequest *request = [[NSFetchRequest alloc] init];  
+		[request setEntity:entity];
+		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateModified" ascending:NO];  
+		NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];  
+		[request setSortDescriptors:sortDescriptors];  
+		[sortDescriptor release];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(uniqueID like %@)", appDelegate.postID];
+		[request setPredicate:predicate];  
+		NSError *error;  
+		NSMutableArray *mutableFetchResults = [[appDelegate.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];   
+		
+		if (!mutableFetchResults) {  
+			// Handle the error.  
+			// This is a serious error and should advise the user to restart the application  
+		}   
+		
+		Post *post = [mutableFetchResults objectAtIndex:0];
+		[mutableFetchResults release];
+		[request release];
+		
+		if(post != nil) {
+			postDetailViewController.navigationItem.title = post.postTitle;
+			self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back"
+														style:UIBarButtonItemStyleBordered target:nil action:nil];
+			
+			titleTextField.text = post.postTitle;
+			tagsTextField.text = post.tags;
+			statusTextField.text = post.status;
+			
+			categoriesTextField.text = post.categories;
+			
+			if(post.content == nil) {
+				textViewPlaceHolderField.hidden = NO;
+				textView.text = @"";
+			}
+			else {
+				textViewPlaceHolderField.hidden = YES;
+				textView.text = post.content;
+			}
+			
+			[postDetailViewController setPost:post];
 		}
+	}
+	else {
+		isLocalDraft = NO;
+		NSString *description = [dm.currentPost valueForKey:@"description"];
+		NSString *moreText = [dm.currentPost valueForKey:@"mt_text_more"];
+		
+		if (!description ||[description length] == 0) {
+			textViewPlaceHolderField.hidden = NO;
+			textView.text = @"";
+		} else {
+			textViewPlaceHolderField.hidden = YES;
+			
+			if ((moreText != NULL) && ([moreText length] > 0)){
+				// To Do: when we show more tag label dynamically, we need to add label (if any) of more tag in the Character set string .
+				//NSRange moretagRange = [description rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"<!--more-->"] options:NSForcedOrderingSearch];
+				textView.text = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", description, moreText];
+			}
+			else
+				textView.text = description;
+		}
+		
+		titleTextField.text = [dm.currentPost valueForKey:@"title"];
+		tagsTextField.text = [dm.currentPost valueForKey:@"mt_keywords"];
+		
+		NSString *status = [dm statusDescriptionForStatus:[dm.currentPost valueForKey:@"post_status"] fromBlog:dm.currentBlog];
+		status = (status == nil ? @"" : status);
+		statusTextField.text = status;
+		
+		NSArray *cats = [[dm currentPost] valueForKey:@"categories"];
+		if(status)
+			categoriesTextField.text = [cats componentsJoinedByString:@", "];
 		else
-            textView.text = description;
-    }
-	
-    titleTextField.text = [dm.currentPost valueForKey:@"title"];
-    tagsTextField.text = [dm.currentPost valueForKey:@"mt_keywords"];
-	
-    NSString *status = [dm statusDescriptionForStatus:[dm.currentPost valueForKey:@"post_status"] fromBlog:dm.currentBlog];
-    status = (status == nil ? @"" : status);
-    statusTextField.text = status;
-	
-    NSArray *cats = [[dm currentPost] valueForKey:@"categories"];
-	
-    if (status)
-        categoriesTextField.text = [cats componentsJoinedByString:@", "];
-	else
-        categoriesTextField.text = @"";
+			categoriesTextField.text = @"";
+			
+	}
 	
 	// workaround for odd text view behavior on iPad
 	[textView setContentOffset:CGPointZero animated:NO];
@@ -256,17 +314,36 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[self setInitialLocation:[self getPostLocation]];
 }
 
+- (void)refreshCurrentPostForUI {
+	if(self.isLocalDraft == YES) {
+		WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+		[appDelegate setPostID:postDetailViewController.post.uniqueID];
+		[postDetailViewController.post setPostTitle:titleTextField.text];
+		[postDetailViewController.post setTags:tagsTextField.text];
+		[postDetailViewController.post setCategories:categoriesTextField.text];
+		[postDetailViewController.post setStatus:statusTextField.text];
+		[postDetailViewController.post setContent:textView.text];
+		[postDetailViewController dataSave];
+	}
+}
+
 - (void)populateSelectionsControllerWithCategories {
     if (segmentedTableViewController == nil)
         segmentedTableViewController = [[WPSegmentedSelectionTableViewController alloc] initWithNibName:@"WPSelectionTableViewController" bundle:nil];
 	
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
-    NSArray *cats = [[dm currentBlog] valueForKey:@"categories"];
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	NSArray *cats = [[dm currentBlog] valueForKey:@"categories"];
+	NSArray *selObject;
 	
-    NSArray *selObject = [[dm currentPost] valueForKey:@"categories"];
-	
-    if (selObject == nil)
-        selObject = [NSArray array];
+	if(isLocalDraft == YES) {
+		selObject = [postDetailViewController.post.categories componentsSeparatedByString:@", "];
+	}
+	else {
+		selObject = [[dm currentPost] valueForKey:@"categories"];
+		
+		if (selObject == nil)
+			selObject = [NSArray array];
+	}
 	
     [segmentedTableViewController populateDataSource:cats    //datasorce
 									   havingContext:kSelectionsCategoriesContext
@@ -286,6 +363,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			[popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 			[[CPopoverManager instance] setCurrentPopoverController:popover];
 		} else {
+			[self refreshCurrentPostForUI];
 			[postDetailViewController.navigationController pushViewController:segmentedTableViewController animated:YES];
 		}
     }
@@ -303,15 +381,21 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)refreshCategory {
-    NSArray *cats = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"categories"];
-	NSString *status = [[BlogDataManager sharedDataManager] statusDescriptionForStatus:
-						[[BlogDataManager sharedDataManager].currentPost valueForKey:@"post_status"] 
-																			  fromBlog:[BlogDataManager sharedDataManager].currentBlog];
-	
-    if(status)
-        categoriesTextField.text = [cats componentsJoinedByString:@", "];
-	else
-        categoriesTextField.text = @"";
+    NSArray *cats;
+	if(isLocalDraft == YES) {
+		categoriesTextField.text = postDetailViewController.post.categories;
+	}
+	else {
+		cats = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"categories"];
+		NSString *status = [[BlogDataManager sharedDataManager] statusDescriptionForStatus:
+							[[BlogDataManager sharedDataManager].currentPost valueForKey:@"post_status"] 
+																				  fromBlog:[BlogDataManager sharedDataManager].currentBlog];
+		
+		if(status)
+			categoriesTextField.text = [cats componentsJoinedByString:@", "];
+		else
+			categoriesTextField.text = @"";
+	}
 }
 
 - (void)syncStatuses {
@@ -324,11 +408,16 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)refreshStatus {
-	NSString *status = [[BlogDataManager sharedDataManager] statusDescriptionForStatus:
-						[[BlogDataManager sharedDataManager].currentPost valueForKey:@"post_status"] 
-							fromBlog:[BlogDataManager sharedDataManager].currentBlog];
-    status = (status == nil ? @"" : status);
-    statusTextField.text = status;
+	if(isLocalDraft == YES) {
+		statusTextField.text = postDetailViewController.post.status;
+	}
+	else {
+		NSString *status = [[BlogDataManager sharedDataManager] statusDescriptionForStatus:
+							[[BlogDataManager sharedDataManager].currentPost valueForKey:@"post_status"] 
+																	 fromBlog:[BlogDataManager sharedDataManager].currentBlog];
+		status = (status == nil ? @"" : status);
+		statusTextField.text = status;
+	}
 }
 
 - (void)syncCategoriesAndStatuses {
@@ -348,10 +437,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
 						   [postStatusList valueForKey:@"pending"],
 						   [postStatusList valueForKey:@"draft"], nil];
 	
-    if (dm.isLocaDraftsCurrent || dm.currentPostIndex == -1)
+    if ((isLocalDraft == YES) || (dm.isLocaDraftsCurrent == YES) || (dm.currentPostIndex == -1))
         dataSource = [dataSource arrayByAddingObject:@"Local Draft"];
 	
     NSString *curStatus = [dm statusDescriptionForStatus:[dm.currentPost valueForKey:@"post_status"] fromBlog:dm.currentBlog];
+	if(isLocalDraft == YES)
+		curStatus = @"Local Draft";
+	
     NSArray *selObject = (curStatus == nil ? [NSArray array] : [NSArray arrayWithObject:curStatus]);
 	
     [selectionTableViewController populateDataSource:dataSource
@@ -370,6 +462,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		[[CPopoverManager instance] setCurrentPopoverController:popover];
 	} else {
+		[self refreshCurrentPostForUI];
 		[postDetailViewController.navigationController pushViewController:selectionTableViewController animated:YES];
 	}
     [selectionTableViewController release], selectionTableViewController = nil;
@@ -383,6 +476,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     customFieldsTableView.postDetailViewController = self.postDetailViewController;
     //load the CustomFieldsTableView  Note: customFieldsTableView loads some data in viewDidLoad
     [customFieldsTableView setIsPost:YES]; //since we're dealing with posts here
+	[self refreshCurrentPostForUI];
     [postDetailViewController.navigationController pushViewController:customFieldsTableView animated:YES];
 }
 
@@ -392,22 +486,45 @@ NSTimeInterval kAnimationDuration = 0.3f;
         return;
     }
 	
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	
-    if (selContext == kSelectionsStatusContext) {
-        NSString *curStatus = [selectedObjects lastObject];
-        NSString *status = [dm statusForStatusDescription:curStatus fromBlog:dm.currentBlog];
+	if(isLocalDraft == YES) {
+		if (selContext == kSelectionsStatusContext) {
+			[postDetailViewController.post setStatus:[selectedObjects lastObject]];
+			statusTextField.text = postDetailViewController.post.status;
+			
+			if([[postDetailViewController.post.status lowercaseString] isEqualToString:@"published"]) {
+				// Convert Local Draft post to BDM post
+				[[BlogDataManager sharedDataManager] makeNewPostCurrent];
+				[self updateValuesToCurrentPost];
+				NSString *status = [[BlogDataManager sharedDataManager] statusForStatusDescription:statusTextField.text fromBlog:[BlogDataManager sharedDataManager].currentBlog];
+				if (status)
+					[[[BlogDataManager sharedDataManager] currentPost] setObject:status forKey:@"post_status"];
+				[postDetailViewController.post setIsLocalDraft:[NSNumber numberWithInt:0]];
+				self.isLocalDraft = NO;
+			}
+		}
 		
-        if (status) {
-            [[dm currentPost] setObject:status forKey:@"post_status"];
-            statusTextField.text = curStatus;
-        }
-    }
-	
-    if (selContext == kSelectionsCategoriesContext) {
-        [[dm currentPost] setObject:selectedObjects forKey:@"categories"];
-        categoriesTextField.text = [selectedObjects componentsJoinedByString:@", "];
-    }
+		if (selContext == kSelectionsCategoriesContext) {
+			[postDetailViewController.post setCategories:[selectedObjects componentsJoinedByString:@", "]];
+			categoriesTextField.text = postDetailViewController.post.categories;
+		}
+	}
+	else {
+		BlogDataManager *dm = [BlogDataManager sharedDataManager];
+		
+		if (selContext == kSelectionsStatusContext) {
+			NSString *curStatus = [selectedObjects lastObject];
+			NSString *status = [dm statusForStatusDescription:curStatus fromBlog:dm.currentBlog];
+			if (status) {
+				[[dm currentPost] setObject:status forKey:@"post_status"];
+				statusTextField.text = curStatus;
+			}
+		}
+		
+		if (selContext == kSelectionsCategoriesContext) {
+			[[dm currentPost] setObject:selectedObjects forKey:@"categories"];
+			categoriesTextField.text = [selectedObjects componentsJoinedByString:@", "];
+		}
+	}
 	
     [selctionController clean];
     postDetailViewController.hasChanges = YES;
@@ -425,6 +542,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithNibName:@"WPAddCategoryViewController" bundle:nil];
 	if (DeviceIsPad() == YES) {
 		UIPopoverController *popover = [[CPopoverManager instance] currentPopoverController];
+		[self refreshCurrentPostForUI];
 		[(UINavigationController *)(popover.contentViewController) pushViewController:addCategoryViewController animated:YES];
 	} else {
 		UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:addCategoryViewController];
@@ -492,31 +610,19 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	if (DeviceIsPad() == NO) {
 		[UIView beginAnimations:nil context:NULL];
 		[UIView setAnimationDuration:kAnimationDuration];
+		subView.hidden = YES;
 		
-		/*   This is for custom fields - IF we keep current UI... out for now until 1.5
-		 if (isCustomFieldsEnabledForThisPost) {
-		 CGRect frame = textViewContentView.frame;
-		 frame.origin.y -= 220.0f; //was 164, 214 is new value to accomodate custom fields "cell + other objects" in IB
-		 textViewContentView.frame = frame;
-		 
-		 frame = subView.frame;
-		 frame.origin.y -= 220.0f; //was 164
-		 subView.frame = frame;
-		 } else {
-		 */
 		CGRect frame = textViewContentView.frame;
 		frame.origin.y -= 170.0f;
 		textViewContentView.frame = frame;
 		
 		frame = subView.frame;
 		frame.origin.y -= 170.0f;
-		//frame.origin.y -= 175.0f;
 		subView.frame = frame;
 		
-		// remove "//" for custom fields }
+		[postDetailViewController hideAutosaveButton];
 		
 		[UIView commitAnimations];
-		//[self.view setNeedsDisplay];
 	}
 }
 
@@ -526,17 +632,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[UIView setAnimationDuration:0.2];
 		subView.hidden = NO;
 		
-		/*   This is for custom fields - IF we keep current UI... out for now until 1.5
-		 if (isCustomFieldsEnabledForThisPost) {
-		 CGRect frame = textViewContentView.frame;
-		 frame.origin.y += 220.0f; //was 164
-		 textViewContentView.frame = frame;
-		 
-		 frame = subView.frame;
-		 frame.origin.y += 220.0f; //was 164
-		 subView.frame = frame;
-		 } else {
-		 */
 		CGRect frame = textViewContentView.frame;
 		frame.origin.y += 170.0f;
 		textViewContentView.frame = frame;
@@ -545,9 +640,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		frame.origin.y = 0.0f;
 		subView.frame = frame;
 		
-		// remove "//" for custom fields }
-		
 		[UIView commitAnimations];
+		[postDetailViewController viewWillAppear:YES];
 	}
 }
 
@@ -1061,7 +1155,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 //}
 
 #pragma mark -
-#pragma mark Table Delegate Methods
+#pragma mark Table delegate
 - (NSIndexPath *)tableView:(UITableView *)tableView
   willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     return nil;
@@ -1114,11 +1208,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)showEditPostModalViewWithAnimation:(BOOL)animate {
 	EditPostModalViewController *editPostModalViewController = [[[EditPostModalViewController alloc] initWithNibName:@"EditPostModalViewController" bundle:nil] autorelease];
+	[self refreshCurrentPostForUI];
 	[postDetailViewController.navigationController pushViewController:editPostModalViewController animated:animate];
 }
 
 #pragma mark -
-#pragma mark Location Methods
+#pragma mark Location methods
 
 - (BOOL)isPostGeotagged {
 	if([self getPostLocation] != nil)
@@ -1165,35 +1260,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 #pragma mark -
-#pragma mark Memory Stuff
-
-- (void)didReceiveMemoryWarning {
-    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [super didReceiveMemoryWarning];
-}
-
-- (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	
-    [infoText release];
-    [urlField release];
-    [leftView release];
-    [bookMarksArray release];
-    [segmentedTableViewController release];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
-    [customFieldsTableView release];
-	[locationButton release];
-	[locationSpinner release];
-    [super dealloc];
-}
-
-#pragma mark -
 #pragma mark Keyboard management 
- 
+
 - (void)keyboardWillShow:(NSNotification *)notification; 
 {
 	NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo];
-
+	
 	CGRect keyboardBounds;
     [[notification.userInfo valueForKey:UIKeyboardBoundsUserInfoKey] getValue:&keyboardBounds];
     NSInteger kbSizeH = keyboardBounds.size.height;	
@@ -1203,33 +1275,97 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[UIView beginAnimations:nil context:nil];
 	[UIView setAnimationCurve:curve];
 	[UIView setAnimationDuration:animationDuration];
-
+	
 	CGRect frame = textView.frame;
 	frame.size.height = kbSizeH + 280;
 	textView.frame = frame;
-
+	
 	[UIView commitAnimations]; 
 } 
- 
+
 - (void)keyboardWillHide:(NSNotification *)notification; 
 { 
 	NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo]; 
-
+	
 	CGRect kbBounds = [[keyboardInfo objectForKey:UIKeyboardBoundsUserInfoKey] CGRectValue]; 
 	CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue]; 
 	UIViewAnimationCurve curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue]; 
-
+	
 	[UIView beginAnimations:nil context:nil]; 
-
+	
 	[UIView setAnimationCurve:curve]; 
 	[UIView setAnimationDuration:animationDuration]; 
-
+	
 	CGRect frame = textView.frame; 
 	frame.size.height += kbBounds.size.height; 
 	textView.frame = frame; 
-
+	
 	[UIView commitAnimations]; 
-} 
+}
+
+#pragma mark -
+#pragma mark UIPickerView delegate
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)thePickerView {	
+	return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)thePickerView numberOfRowsInComponent:(NSInteger)component {
+	return [statuses count];
+}
+
+- (NSString *)pickerView:(UIPickerView *)thePickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+	return [statuses objectAtIndex:row];
+}
+
+- (void)pickerView:(UIPickerView *)thePickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+	self.statusTextField.text = [statuses objectAtIndex:row];
+}
+
+#pragma mark -
+#pragma mark Memory management
+
+- (void)didReceiveMemoryWarning {
+    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+    [super didReceiveMemoryWarning];
+}
+
+#pragma mark -
+#pragma mark Dealloc
+
+- (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[autosaveButton release];
+	[statuses release];
+	[textView release];
+	[contentView release];
+	[subView release];
+	[textViewContentView release];
+	[statusTextField release];
+	[categoriesTextField release];
+	[titleTextField release];
+	[tagsTextField release];
+	[textViewPlaceHolderField release];
+	[tagsLabel release];
+	[statusLabel release];
+	[categoriesLabel release];
+	[titleLabel release];
+	[customFieldsEditButton release];
+	[tableViewForSelectingCustomFields release];
+	[locationButton release];
+	[locationSpinner release];
+	[newCategoryBarButtonItem release];
+    [infoText release];
+    [urlField release];
+    [leftView release];
+    [bookMarksArray release];
+    [segmentedTableViewController release];
+    [customFieldsTableView release];
+	[locationButton release];
+	[locationSpinner release];
+    [super dealloc];
+}
 
 
 @end

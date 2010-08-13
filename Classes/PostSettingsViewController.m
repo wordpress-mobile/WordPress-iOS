@@ -17,8 +17,8 @@
 
 @implementation PostSettingsViewController
 
-@synthesize postDetailViewController, tableView, passwordTextField, commentsSwitchControl;
-@synthesize pingsSwitchControl; //, customFieldsSwitchControl;
+@synthesize postDetailViewController, tableView, passwordTextField, publishOnTextField, commentsSwitchControl;
+@synthesize pingsSwitchControl, resizePhotoControl;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -29,6 +29,12 @@
 }
 
 - (void)dealloc {
+	[publishOnTextField release];
+	[passwordTextField release];
+	[pingsSwitchControl release];
+	[resizePhotoControl release];
+	[commentsSwitchControl release];
+	[tableView release];
     [super dealloc];
 }
 

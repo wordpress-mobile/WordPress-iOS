@@ -11,6 +11,12 @@ Classes/AddSiteViewController.xib -text
 Classes/AddUsersBlogsViewController.h -text
 Classes/AddUsersBlogsViewController.m -text
 Classes/AddUsersBlogsViewController.xib -text
+Classes/AutosaveContentViewController.h -text
+Classes/AutosaveContentViewController.m -text
+Classes/AutosaveContentViewController.xib -text
+Classes/AutosaveViewController.h -text
+Classes/AutosaveViewController.m -text
+Classes/AutosaveViewController.xib -text
 Classes/Blog.h -text
 Classes/Blog.m -text
 Classes/BlogDataManager.h -text
@@ -227,6 +233,8 @@ Classes/glossyButton-normal.png -text svneol=unset#unset
 /RegexKitLite.m -text
 Resources-iPad/MainWindow-iPad.xib -text
 /RoundedRectBlack.png -text
+Settings.bundle/Root.plist -text
+Settings.bundle/en.lproj/Root.strings -text
 /ToolbarIconCamera.png -text svneol=unset#unset
 /ToolbarIconEye.png -text svneol=unset#unset
 /ToolbarIconGear.png -text svneol=unset#unset
@@ -264,6 +272,8 @@ WordPress.xcodeproj/project.pbxproj -text
 /XMLRPCResponse.m -text
 /XMLValueDecoder.h -text
 /XMLValueDecoder.m -text
+/autosave.png -text
+/autosave@2x.png -text
 /backNav.png -text
 /backNav@2x.png -text
 /backNavd.png -text

@@ -62,29 +62,38 @@
 }
 
 - (void)setPost:(NSDictionary *)value {
-    post = value;
-
-    static NSDateFormatter *dateFormatter = nil;
-
-    if (dateFormatter == nil) {
-        dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        [dateFormatter setDateStyle:NSDateFormatterLongStyle];
-    }
-
-    NSString *title = [[post valueForKey:@"title"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-
-    if (title == nil || ([title length] == 0)) {
-        title = @"(no title)";
-    }
-
-    nameLabel.text = title;
-
-    NSDate *date = [post valueForKey:@"date_created_gmt"];
-    dateLabel.text = [dateFormatter stringFromDate:date];
-
-    BOOL newSaving = [[post valueForKey:kAsyncPostFlag] boolValue];
-    saving = newSaving;
+	if(value != nil) {
+		post = value;
+		
+		static NSDateFormatter *dateFormatter = nil;
+		
+		if (dateFormatter == nil) {
+			dateFormatter = [[NSDateFormatter alloc] init];
+			[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+			[dateFormatter setDateStyle:NSDateFormatterLongStyle];
+		}
+		
+		NSString *title = [[post valueForKey:@"title"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+		
+		if (title == nil || ([title length] == 0)) {
+			title = @"(no title)";
+		}
+		
+		nameLabel.text = title;
+		
+		NSDate *date = [post valueForKey:@"date_created_gmt"];
+		dateLabel.text = [dateFormatter stringFromDate:date];
+		
+		@try {
+			if([[post valueForKey:kAsyncPostFlag] isEqualToNumber:[NSNumber numberWithInt:0]])
+				saving = NO;
+			else
+				saving = YES;
+		}
+		@catch (NSException * e) {
+			saving = NO;
+		}
+	}
 }
 
 - (void)prepareForReuse{

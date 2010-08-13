@@ -43,5 +43,6 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)conn;
 - (void)connection:(NSURLConnection *)conn didFailWithError:(NSError *)error;
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite;
+- (void)createURLRequest:(XMLRPCRequest *)xmlrpc;
 
 @end

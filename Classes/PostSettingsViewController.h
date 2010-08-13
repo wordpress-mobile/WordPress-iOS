@@ -12,40 +12,28 @@
     IBOutlet UITableViewCell *passwordTableViewCell;
     IBOutlet UITableViewCell *passwordHintTableViewCell;
     IBOutlet UITableViewCell *resizePhotoViewCell;
-//	IBOutlet UITableViewCell *customFieldsCell;
-
     IBOutlet UITextField *passwordTextField;
     IBOutlet UILabel *publishOnTextField;
-
     IBOutlet UILabel *passwordLabel;
     IBOutlet UILabel *publishOnLabel;
-
     IBOutlet UISwitch *commentsSwitchControl;
     IBOutlet UISwitch *pingsSwitchControl;
     IBOutlet UISwitch *resizePhotoControl;
     IBOutlet UISwitch *customFieldsSwitchControl;
-
     IBOutlet UILabel *resizePhotoLabel;
     IBOutlet UITableViewCell *resizePhotoHintTableViewCell;
-
     PostViewController *postDetailViewController;
 }
 
 @property (nonatomic, assign) PostViewController *postDetailViewController;
-@property (readonly) UITableView *tableView;
-@property (readonly) UITextField *passwordTextField;
-
-@property (readonly) UISwitch *commentsSwitchControl;
-@property (readonly) UISwitch *pingsSwitchControl;
-//@property (readonly) UISwitch *customFieldsSwitchControl;
+@property (nonatomic, retain) UITableView *tableView;
+@property (nonatomic, retain) UITextField *passwordTextField;
+@property (nonatomic, retain) UILabel *publishOnTextField;
+@property (nonatomic, retain) UISwitch *commentsSwitchControl, *pingsSwitchControl, *resizePhotoControl;
 
 - (void)reloadData;
-
 - (void)endEditingAction:(id)sender;
-//will be called when auto save method is called.
 - (void)updateValuesToCurrentPost;
-
-// Handles display of PostSettingsHelpViewController
 - (void)setupHelpButton;
 - (IBAction)helpButtonClicked:(id)sender;
 

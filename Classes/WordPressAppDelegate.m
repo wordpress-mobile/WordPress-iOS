@@ -27,7 +27,7 @@
 
 static WordPressAppDelegate *wordPressApp = NULL;
 
-@synthesize window, currentBlog;
+@synthesize window, currentBlog, postID;
 @synthesize navigationController, alertRunning, isWPcomAuthenticated;
 @synthesize splitViewController;
 
@@ -61,6 +61,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)dealloc {
+	[postID release];
     [navigationController release];
     [window release];
     [dataManager release];
@@ -141,6 +142,11 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newBlogNotification:) name:@"NewBlogAdded" object:nil];
 		[self performSelector:@selector(showPopoverIfNecessary) withObject:nil afterDelay:0.1];
 	}
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(deleteLocalDraft:)
+												 name:@"LocalDraftWasPublishedSuccessfully" object:nil];
+	
 	[blogsViewController release];
 	[window makeKeyAndVisible];
 }
@@ -230,6 +236,42 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)syncTick:(NSTimer *)timer {
 	[dataManager syncBlogs];
+}
+
+- (void)deleteLocalDraft:(NSNotification *)notification {
+	NSString *uniqueID = [[notification userInfo] objectForKey:@"uniqueID"];
+	
+	if(uniqueID != nil) {
+		NSLog(@"deleting local draft: %@", uniqueID);
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Post" inManagedObjectContext:self.managedObjectContext];   
+		NSFetchRequest *request = [[NSFetchRequest alloc] init];  
+		[request setEntity:entity];   
+		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateModified" ascending:NO];  
+		NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];  
+		[request setSortDescriptors:sortDescriptors];  
+		[sortDescriptor release];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(uniqueID == %@)", uniqueID];
+		[request setPredicate:predicate];
+		NSError *error;  
+		NSMutableArray *postsToDelete = [[self.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];   
+		
+		if (!postsToDelete) {  
+			// Bad. Srsly.
+		}
+		
+		for (NSManagedObject *post in postsToDelete) {
+			[self.managedObjectContext deleteObject:post];
+		}
+		
+		if (![self.managedObjectContext save:&error]) {
+			NSLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+			exit(-1);
+		}
+		
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"DraftsUpdated" object:nil];
+		[postsToDelete release];
+		[request release];
+	}
 }
 
 #pragma mark -

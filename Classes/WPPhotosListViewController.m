@@ -390,17 +390,20 @@ static inline double radians(double degrees) {
 }
 
 - (void)processLibraryVideo {
-	[self.currentVideo setValue:[NSNumber numberWithInt:videoOrientation] forKey:@"orientation"];
-	NSString *tempVideoPath = [(NSURL *)[currentVideo valueForKey:UIImagePickerControllerMediaURL] absoluteString];
-	tempVideoPath = [[tempVideoPath substringFromIndex:16] retain];
-	NSData *videoData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:tempVideoPath]];
-	[self useVideo:videoData withThumbnail:@""];
-	self.currentVideo = nil;
-	[tempVideoPath release];
-	
-	self.isLibraryMedia = NO;
-	[self clearPickerContrller];
-	[self refreshData];
+	if([[currentVideo valueForKey:UIImagePickerControllerMediaURL] absoluteString] != nil) {
+		NSLog(@"Processing Photo Library video with path: %@", [[currentVideo valueForKey:UIImagePickerControllerMediaURL] absoluteString]);
+		[self.currentVideo setValue:[NSNumber numberWithInt:videoOrientation] forKey:@"orientation"];
+		NSString *tempVideoPath = [(NSURL *)[currentVideo valueForKey:UIImagePickerControllerMediaURL] absoluteString];
+		tempVideoPath = [[tempVideoPath substringFromIndex:16] retain];
+		NSData *videoData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:tempVideoPath]];
+		[self useVideo:videoData withThumbnail:@""];
+		self.currentVideo = nil;
+		[tempVideoPath release];
+		
+		self.isLibraryMedia = NO;
+		[self clearPickerContrller];
+		[self refreshData];
+	}
 }
 
 - (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(NSString *)contextInfo {

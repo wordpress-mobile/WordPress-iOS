@@ -20,6 +20,7 @@
 
     UIImageView *splashView;
 	NSMutableData *statsData;
+	NSString *postID;
 	
 	// Core Data
     NSManagedObjectContext *managedObjectContext_;
@@ -35,6 +36,7 @@
 @property (nonatomic, getter = isAlertRunning) BOOL alertRunning;
 @property (nonatomic, assign) BOOL isWPcomAuthenticated;
 @property (nonatomic, retain) NSMutableDictionary *currentBlog;
+@property (nonatomic, retain) NSString *postID;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
@@ -57,5 +59,6 @@
 - (void)syncTick:(NSTimer *)timer;
 - (void)startSyncTimer;
 - (void)startSyncTimerThread;
+- (void)deleteLocalDraft:(NSNotification *)notification;
 
 @end

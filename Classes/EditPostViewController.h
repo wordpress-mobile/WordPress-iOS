@@ -1,9 +1,11 @@
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 #import "PostViewController.h"
 #import "WPAddCategoryViewController.h"
 #import "WPImagePickerController.h"
 #import "CustomFieldsTableView.h"
 #import "EditPostModalViewController.h"
+#import "Post.h"
 
 #define kSelectionsStatusContext ((void *)1000)
 #define kSelectionsCategoriesContext ((void *)2000)
@@ -13,11 +15,20 @@
 @class WPSegmentedSelectionTableViewController;
 
 @interface EditPostViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
-UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
+UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDelegate> {
+    BOOL isShowPhotoPickerActionSheet;
+    BOOL isTextViewEditing;
+    BOOL dismiss;
+    BOOL isEditing;
+	BOOL editingDisabled;
+    BOOL isNewCategory;
+    BOOL editCustomFields;
+    BOOL isCustomFieldsEnabledForThisPost;
+	BOOL isLocalDraft;
+	
     IBOutlet UITextView *textView;
     IBOutlet UITextField *titleTextField;
     IBOutlet UITextField *tagsTextField;
-	
     IBOutlet UIView *contentView;
     IBOutlet UIView *subView;
     IBOutlet UITextField *statusTextField;
@@ -28,43 +39,30 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
     IBOutlet UILabel *titleLabel;
     IBOutlet UIView *textViewContentView;
     IBOutlet UITextField *textViewPlaceHolderField;
-    IBOutlet UIButton *customFieldsEditButton;
+    IBOutlet UIButton *customFieldsEditButton, *autosaveButton;
 	IBOutlet UITableView *tableViewForSelectingCustomFields;
 	IBOutlet UIButton *locationButton;
 	IBOutlet UIActivityIndicatorView *locationSpinner;
-	
     IBOutlet UIBarButtonItem *newCategoryBarButtonItem;
 	
-    UIImage *currentChoosenImage;
     WPImagePickerController *pickerController;
-	
     WPSelectionTableViewController *selectionTableViewController;
     WPSegmentedSelectionTableViewController *segmentedTableViewController;
     PostViewController *postDetailViewController;
     WPNavigationLeftButtonView *leftView;
     CustomFieldsTableView *customFieldsTableView;
-    BOOL isShowPhotoPickerActionSheet;
-    BOOL isTextViewEditing;
-    BOOL dismiss;
-    BOOL isEditing;
-	BOOL editingDisabled;
-    BOOL isNewCategory;
-    BOOL editCustomFields;
-    BOOL isCustomFieldsEnabledForThisPost;
+	LocationController *locationController;
 	
+    UIImage *currentChoosenImage;
     UITextField *infoText;
     UITextField *urlField;
     NSRange selectedLinkRange;
     NSMutableArray *bookMarksArray;
     UITextField *currentEditingTextField;
-	
-    //also for Custom Fields to move text view up and down appropriately
     NSUInteger originY;
-	//for setting textview height correctly because shouldAutorotate runs in the TabBarController that "owns" this class
 	NSUInteger textViewHeightForRotation;
-	
-	LocationController *locationController;
 	CLLocation *initialLocation;
+	NSArray *statuses;
 }
 
 @property (nonatomic, assign) PostViewController *postDetailViewController;
@@ -77,25 +75,24 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
 @property (nonatomic, retain) NSMutableArray *bookMarksArray;
 @property (nonatomic) NSRange selectedLinkRange;
 @property (nonatomic, assign) UITextField *currentEditingTextField;
-@property (nonatomic, assign) BOOL isEditing;
-@property (nonatomic, assign) BOOL editingDisabled;
-@property (nonatomic, assign) BOOL editCustomFields;
-@property (nonatomic, assign) BOOL isCustomFieldsEnabledForThisPost;
-//@property (nonatomic, assign) NSUinteger originY;
-
-@property (nonatomic, retain) UIButton *customFieldsEditButton;
-//@property (nonatomic, retain) UITableView *selectCustomFields;
-
+@property (nonatomic, assign) BOOL isEditing, editingDisabled, editCustomFields, isCustomFieldsEnabledForThisPost;
+@property (nonatomic, assign) BOOL isLocalDraft;
+@property (nonatomic, retain) UIButton *customFieldsEditButton, *autosaveButton;
 @property (nonatomic, retain) CLLocation *initialLocation;
 @property (nonatomic, retain) IBOutlet UIButton *locationButton;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *locationSpinner;
-
+@property (nonatomic, retain) IBOutlet UITextView *textView;
+@property (nonatomic, retain) IBOutlet UIView *contentView, *subView, *textViewContentView;;
+@property (nonatomic, retain) IBOutlet UITextField *statusTextField, *categoriesTextField, *titleTextField, *tagsTextField, *textViewPlaceHolderField;
+@property (nonatomic, retain) IBOutlet UILabel *tagsLabel, *statusLabel, *categoriesLabel, *titleLabel;
+@property (nonatomic, retain) IBOutlet UITableView *tableViewForSelectingCustomFields;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *newCategoryBarButtonItem;
+@property (nonatomic, retain) NSArray *statuses;
 
 - (void)refreshUIForCompose;
 - (void)refreshUIForCurrentPost;
-
+- (void)refreshCurrentPostForUI;
 - (void)setTextViewHeight:(float)height;
-
 - (IBAction)showPhotoUploadScreen:(id)sender;
 - (IBAction)endTextEnteringButtonAction:(id)sender;
 - (void)pickPhotoFromCamera:(id)sender;
@@ -103,14 +100,15 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
 - (void)useImage:(UIImage *)theImage;
 - (void)showPhotoPickerActionSheet;
 - (void)endEditingAction:(id)sender;
-
 - (void)syncCategories;
 - (void)refreshCategory;
 - (void)syncStatuses;
 - (void)refreshStatus;
 - (void)syncCategoriesAndStatuses;
+- (void)bringTextViewUp;
+- (void)bringTextViewDown;
 
-//will be called when auto save method is called.
+// Autosave
 - (void)updateValuesToCurrentPost;
 - (void)showLinkView;
 - (void)disableInteraction;
@@ -120,15 +118,14 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
 - (IBAction)showStatusViewAction:(id)sender;
 - (IBAction)showCustomFieldsTableView:(id)sender;
 - (NSString *)validateNewLinkInfo:(NSString *)urlText;
-
-// methods for dealing with custom fields
 - (void)postionTextViewContentView;
 - (BOOL)checkCustomFieldsMinusMetadata;
 
-// Location methods
+// Location
 - (IBAction)showLocationMapView:(id)sender;
 - (BOOL)isPostPublished;
 - (BOOL)isPostGeotagged;
 - (CLLocation *)getPostLocation;
+
 
 @end

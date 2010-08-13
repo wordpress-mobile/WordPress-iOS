@@ -36,26 +36,228 @@
 @implementation PostViewController
 
 @synthesize postDetailViewController, postDetailEditController, postPreviewController, postSettingsController, postsListController, hasChanges, mode, tabController, saveButton;
-@synthesize photosListController;
-@synthesize mediaController;
-@synthesize leftView, isVisible;
-@synthesize customFieldsDetailController;
-@synthesize commentsViewController;
-@synthesize selectedViewController;
-@synthesize videoUploader;
-@synthesize toolbar;
-@synthesize contentView;
-
-@synthesize commentsButton;
-@synthesize photosButton;
-@synthesize settingsButton;
-
-@synthesize editToolbar;
-@synthesize cancelEditButton;
-@synthesize editModalViewController;
+@synthesize photosListController, leftView, isVisible, customFieldsDetailController, commentsViewController;
+@synthesize selectedViewController, videoUploader, toolbar, contentView, commentsButton, photosButton, hasSaved;
+@synthesize settingsButton, editToolbar, cancelEditButton, editModalViewController, post, didConvertDraftToPublished;
+@synthesize payload, connection, urlResponse, urlRequest, appDelegate, autosaveView, autosaveButton, isShowingAutosaves;
 
 @dynamic leftBarButtonItemForEditPost;
 @dynamic rightBarButtonItemForEditPost;
+
+#pragma mark -
+#pragma mark View lifecycle
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+	
+    if (!saveButton) {
+        saveButton = [[UIBarButtonItem alloc] init];
+        saveButton.title = @"Save";
+        saveButton.target = self;
+        saveButton.style = UIBarButtonItemStyleDone;
+        saveButton.action = @selector(saveAction:);
+    }
+	
+	if (DeviceIsPad() == NO)
+	{
+		//conditionalLoadOfTabBarController is now referenced from viewWillAppear.  Solves Ticket #223 (crash when selecting comments from new post view)
+	    if (!leftView) {
+			leftView = [WPNavigationLeftButtonView createCopyOfView];
+			[leftView setTitle:@"Posts"];
+		}
+	}
+	
+	videoUploader = [[WPMediaUploader alloc] initWithNibName:@"WPMediaUploader" bundle:nil];
+	autosaveView = [[AutosaveViewController alloc] initWithNibName:@"AutosaveViewController" bundle:nil];
+}
+//shouldAutorotateToInterfaceOrientation
+
+
+- (void)viewWillAppear:(BOOL)animated {
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoDidUploadSuccessfully) name:VideoUploadSuccessful object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restoreFromAutosave:) name:@"RestoreFromAutosaveNotification" object:nil];
+	if (DeviceIsPad() == NO) {
+		if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
+			[postDetailEditController setTextViewHeight:202];
+		}
+		
+		if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+			if (postDetailEditController.isEditing == NO) {
+				//[postDetailEditController setTextViewHeight:57]; //#148
+			} else {
+				[postDetailEditController setTextViewHeight:116];
+			}
+		}
+	}
+	
+    [leftView setTarget:self withAction:@selector(cancelView:)];
+	
+    if (hasChanges == YES) {
+        if ([[leftView title] isEqualToString:@"Posts"]) {
+            [leftView setTitle:@"Cancel"];
+        }
+		
+        self.rightBarButtonItemForEditPost = saveButton;
+    } else {
+        [leftView setTitle:@"Posts"];
+        self.rightBarButtonItemForEditPost = nil;
+    }
+	
+	if (DeviceIsPad() == NO) {
+		UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
+		self.leftBarButtonItemForEditPost = cancelButton;
+		[cancelButton release];
+	}
+	
+    [super viewWillAppear:animated];
+	[self conditionalLoadOfTabBarController];
+	
+    if (mode == editPost) {
+        [self refreshUIForCurrentPost];
+    } else if (mode == newPost) {
+        [self refreshUIForCompose];
+    } else if (mode == autorecoverPost) {
+        [self refreshUIForCurrentPost];
+        self.hasChanges = YES;
+    }
+	
+    if (mode != newPost)
+		mode = refreshPost;
+    [commentsViewController setIndexForCurrentPost:[[BlogDataManager sharedDataManager] currentPostIndex]];
+    [[tabController selectedViewController] viewWillAppear:animated];
+	
+	isVisible = YES;
+	
+	if(self.autosaveButton == nil)
+		self.autosaveButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	[self.autosaveButton setImage:[UIImage imageNamed:@"autosave"] forState:UIControlStateNormal];
+	[self checkAutosaves];
+}
+
+- (void)conditionalLoadOfTabBarController {
+	// Icons designed by, and included with permission of, IconBuffet | iconbuffet.com
+    NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:5];
+	
+	// post detail controllers
+    if (postDetailEditController == nil) {
+		if (DeviceIsPad() == YES) {
+			postDetailEditController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController-iPad" bundle:nil];
+		} else {
+			postDetailEditController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil];
+		}
+    }
+	
+    postDetailEditController.title = @"Write";
+    postDetailEditController.tabBarItem.image = [UIImage imageNamed:@"write.png"];
+    postDetailEditController.postDetailViewController = self;
+    [array addObject:postDetailEditController];
+	
+	autosaveView.postDetailViewController = self;
+	
+    //if (mode == 1 || mode == 2 || mode == 3) { //don't load this tab if mode == 0 (new post) since comments are irrelevant to a brand new post
+	NSString *postStatus = [[BlogDataManager sharedDataManager].currentPost valueForKey:@"post_status"];
+	if (mode != newPost && ![postStatus isEqualToString:@"Local Draft"]) { //don't load commentsViewController tab if it's a new post or a local draft since comments are irrelevant to a brand new post
+		if (commentsViewController == nil) {
+			commentsViewController = [[CommentsViewController alloc] initWithNibName:@"CommentsViewController" bundle:nil];
+			if (DeviceIsPad() == YES) {
+				commentsViewController.isSecondaryViewController = YES;
+			}
+		}
+		
+		commentsViewController.title = @"Comments";
+		commentsViewController.tabBarItem.image = [UIImage imageNamed:@"comments.png"];
+		[array addObject:commentsViewController];
+	}
+	
+    if (photosListController == nil) {
+        photosListController = [[WPPhotosListViewController alloc] initWithNibName:@"WPPhotosListViewController" bundle:nil];
+    }
+	
+    photosListController.title = @"Media";
+    photosListController.tabBarItem.image = [UIImage imageNamed:@"photos.png"];
+	photosListController.delegate = self;
+	
+    [array addObject:photosListController];
+	
+	//if (mediaController == nil) {
+	//		mediaController = [[MediaViewController alloc] initWithNibName:@"MediaViewController" bundle:nil];
+	//	}
+	//	mediaController.title = @"Media";
+	//	mediaController.tabBarItem.image = [UIImage imageNamed:@"photos.png"];
+	//    mediaController.postDetailViewController = self;
+	//
+	//    [array addObject:mediaController];
+	
+    if (postPreviewController == nil) {
+        postPreviewController = [[PostPreviewViewController alloc] initWithNibName:@"PostPreviewViewController" bundle:nil];
+    }
+	
+    postPreviewController.title = @"Preview";
+    postPreviewController.tabBarItem.image = [UIImage imageNamed:@"preview.png"];
+    postPreviewController.postDetailViewController = self;
+    [array addObject:postPreviewController];
+	
+    if (postSettingsController == nil) {
+        postSettingsController = [[PostSettingsViewController alloc] initWithNibName:@"PostSettingsViewController" bundle:nil];
+    }
+	
+    postSettingsController.title = @"Settings";
+    postSettingsController.tabBarItem.image = [UIImage imageNamed:@"settings.png"];
+    postSettingsController.postDetailViewController = self;
+    [array addObject:postSettingsController];
+	
+	if (DeviceIsPad() == YES) {
+		// the iPad has two detail views
+		postDetailViewController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController-iPad" bundle:nil];
+		[postDetailViewController disableInteraction];
+		
+		if (!editModalViewController) {
+			editModalViewController = [[FlippingViewController alloc] init];
+			
+			RotatingNavigationController *editNav = [[[RotatingNavigationController alloc] initWithRootViewController:postDetailEditController] autorelease];
+			editModalViewController.frontViewController = editNav;
+			postDetailEditController.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:editToolbar] autorelease];
+			postDetailEditController.navigationItem.leftBarButtonItem = cancelEditButton;
+			
+			RotatingNavigationController *previewNav = [[[RotatingNavigationController alloc] initWithRootViewController:postPreviewController] autorelease];
+			editModalViewController.backViewController = previewNav;
+			postPreviewController.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:previewToolbar] autorelease];
+		}
+	}
+	
+	if (tabController) {
+		tabController.viewControllers = array;
+		self.view = tabController.view;
+	}
+	else {
+		postDetailViewController.view.frame = contentView.bounds;
+		[contentView addSubview:postDetailViewController.view];
+	}
+	
+    [array release];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	if (DeviceIsPad() == NO) {
+		if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+			[postDetailEditController setTextViewHeight:202];
+		}
+	}
+	
+	//    [photoEditingStatusView removeFromSuperview];
+	
+    if (postDetailEditController.currentEditingTextField)
+        [postDetailEditController.currentEditingTextField resignFirstResponder];
+	
+    [super viewWillDisappear:animated];
+	if (mode != newPost)
+		mode = refreshPost;
+    [postPreviewController stopLoading];
+	isVisible = NO;
+	
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
     [selectedViewController viewWillDisappear:NO];
@@ -80,30 +282,6 @@
     selectedViewController = viewController;
 }
 
-- (void)dealloc {
-    [leftView release];
-    [postDetailEditController release];
-    [postPreviewController release];
-    [postSettingsController release];
-    [photosListController release];
-	[mediaController release];
-    [commentsViewController release];
-    [saveButton release];
-	[videoUploader release];
-	[toolbar release];
-	[contentView release];
-	[photoPickerPopover release];
-	[commentsButton release];
-	[photosButton release];
-	[settingsButton release];
-
-	[editModalViewController release];
-
-    [self stopTimer];
-
-    [super dealloc];
-}
-
 - (IBAction)cancelView:(id)sender {
     if (!hasChanges) {
         [self stopTimer];
@@ -122,124 +300,141 @@
     actionSheet.tag = 201;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
     [actionSheet showInView:self.view];
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    [delegate setAlertRunning:YES];
+    [appDelegate setAlertRunning:YES];
 
     [actionSheet release];
 }
 
 - (IBAction)saveAction:(id)sender {
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
-
-     if (![[dm.currentPost valueForKey:@"post_status"] isEqualToString:@"Local Draft"]) {
-        if ([[Reachability sharedReachability] internetConnectionStatus] == NotReachable) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Communication Error."
-                                  message:@"no internet connection."
-                                  delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            alert.tag = TAG_OFFSET;
-            [alert show];
-
-            WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-            [delegate setAlertRunning:YES];
-            [alert release];
-            return;
-        }
-	 }
-
-    if (!hasChanges) {
-        [self stopTimer];
-		[self dismissEditView];
-        return;
-    }
-
-	NSString *postStatus = [dm.currentPost valueForKey:@"post_status"];
-	if( ![postStatus isEqual:@"Local Draft"] )
-	{
-		[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
-    }
+	[postDetailEditController bringTextViewDown];
 	
-    [(NSMutableDictionary *)[BlogDataManager sharedDataManager].currentPost setValue:@"" forKey:@"mt_text_more"];
-    [postSettingsController endEditingAction:nil];
-    [postDetailEditController endEditingAction:nil];
+	if((post != nil) && (post.wasLocalDraft == [NSNumber numberWithInt:1]) && (post.isLocalDraft == [NSNumber numberWithInt:0]))
+		self.didConvertDraftToPublished = YES;
 
-    NSString *description = [dm.currentPost valueForKey:@"description"];
-    NSString *title = [dm.currentPost valueForKey:@"title"];
-    NSArray *photos = [dm.currentPost valueForKey:@"Photos"];
+     if((post == nil) || (post.isLocalDraft == [NSNumber numberWithInt:0])) {
+		if ([[Reachability sharedReachability] internetConnectionStatus] == NotReachable) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Communication Error."
+			message:@"no internet connection."
+			delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			alert.tag = TAG_OFFSET;
+			[alert show];
 
-    if ((!description ||[description isEqualToString:@""]) &&
-        (!title ||[title isEqualToString:@""]) &&
-        (!photos || ([photos count] == 0))) {
-        NSString *msg = [NSString stringWithFormat:@"Please provide either a title or description or attach photos to the post before saving."];
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Post Error"
-                              message:msg
-                              delegate:self
-                              cancelButtonTitle:nil
-                              otherButtonTitles:@"OK", nil];
-        alert.tag = TAG_OFFSET;
-        [alert show];
+			[appDelegate setAlertRunning:YES];
+			[alert release];
+		}
+		else {
+			if (!hasChanges) {
+				[self stopTimer];
+				[self dismissEditView];
+			}
+			else {
+				//NSString *postStatus = [dm.currentPost valueForKey:@"post_status"];
+				[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
+				
+				[(NSMutableDictionary *)[BlogDataManager sharedDataManager].currentPost setValue:@"" forKey:@"mt_text_more"];
+				[postSettingsController endEditingAction:nil];
+				[postDetailEditController endEditingAction:nil];
+				
+				NSString *description = [dm.currentPost valueForKey:@"description"];
+				NSString *title = [dm.currentPost valueForKey:@"title"];
+				NSArray *photos = [dm.currentPost valueForKey:@"Photos"];
+				
+				if ((!description ||[description isEqualToString:@""]) &&
+					(!title ||[title isEqualToString:@""]) &&
+					(!photos || ([photos count] == 0))) {
+					NSString *msg = [NSString stringWithFormat:@"Please provide either a title or description or attach photos to the post before saving."];
+					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Post Error"
+																	message:msg
+																   delegate:self
+														  cancelButtonTitle:nil
+														  otherButtonTitles:@"OK", nil];
+					alert.tag = TAG_OFFSET;
+					[alert show];
+					[appDelegate setAlertRunning:YES];
+					[alert release];
+					
+					[self cancel];
+				}
+				else if (![dm postDescriptionHasValidDescription:dm.currentPost]) {
+					[self cancel];
+				}
+				else {
+					NSMutableArray *params = [[[NSMutableArray alloc] initWithObjects:dm.currentPost, dm.currentBlog, nil] autorelease];
+					BOOL isCurrentPostDraft = dm.isLocaDraftsCurrent;
+					
+					if (isCurrentPostDraft)
+						[dm saveCurrentPostAsDraftWithAsyncPostFlag];
+					
+					NSString *postId = [dm savePostsFileWithAsynPostFlag:[params objectAtIndex:0]];
+					NSMutableArray *argsArray = [NSMutableArray arrayWithArray:params];
+					int count = [argsArray count];
+					[argsArray insertObject:postId atIndex:count];
+					
+					[self savePostWithBlog:argsArray];
+					[self verifyPublishSuccessful];
+					
+					hasChanges = NO;
+					
+					[self removeProgressIndicator];
+					[self dismissEditView];
+					
+					if (DeviceIsPad() == YES) {
+						[[BlogDataManager sharedDataManager] makePostWithPostIDCurrent:postId];
+					}
+				}
+				[self dataSave];
+			}
+		}
 
-        WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-        [delegate setAlertRunning:YES];
-
-        [alert release];
-
-        [self cancel];
-        return;
-    }
-
-    if (![dm postDescriptionHasValidDescription:dm.currentPost]) {
-        [self cancel];
-        return;
-    }
-
-   // NSString *postStatus = [dm.currentPost valueForKey:@"post_status"];
-	//[self.navigationController popViewControllerAnimated:YES];
-    if ([postStatus isEqual:@"Local Draft"])
-	{
+	}
+	else {
 		[self saveAsDraft];
 	}
-	else
-	{
-       // [self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
-        //Need to release params
-        NSMutableArray *params = [[[NSMutableArray alloc] initWithObjects:dm.currentPost, dm.currentBlog, nil] autorelease];
-        BOOL isCurrentPostDraft = dm.isLocaDraftsCurrent;
-
-        if (isCurrentPostDraft)
-            [dm saveCurrentPostAsDraftWithAsyncPostFlag];
-
-		NSString *postId = [dm savePostsFileWithAsynPostFlag:[params objectAtIndex:0]];
-		NSMutableArray *argsArray = [NSMutableArray arrayWithArray:params];
-		int count = [argsArray count];
-		[argsArray insertObject:postId atIndex:count];
-
-		[self savePostWithBlog:argsArray];
-
-		hasChanges = NO;
-
-		[self removeProgressIndicator];
-		[self dismissEditView];
-
-		if (DeviceIsPad() == YES) {
-			[[BlogDataManager sharedDataManager] makePostWithPostIDCurrent:postId];
-		}
-    }
 }
 
 - (void)autoSaveCurrentPost:(NSTimer *)aTimer {
-    if (hasChanges) {
-        [postDetailViewController updateValuesToCurrentPost];
-        [postDetailEditController updateValuesToCurrentPost];
-        [postSettingsController updateValuesToCurrentPost];
+	if (hasChanges) {
+		NSLog(@"Autosaving...");
+		BlogDataManager *dm = [BlogDataManager sharedDataManager];
+		post = (Post *)[NSEntityDescription insertNewObjectForEntityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];
 
-        BlogDataManager *dm = [BlogDataManager sharedDataManager];
-        [dm autoSaveCurrentPost];
+		NSString *uniqueID = [[NSProcessInfo processInfo] globallyUniqueString];
+		[post setUniqueID:uniqueID];
+		if(postDetailEditController.isLocalDraft == YES)
+			[post setIsLocalDraft:[NSNumber numberWithInt:1]];
+		else
+			[post setIsLocalDraft:[NSNumber numberWithInt:0]];
+		[post setIsAutosave:[NSNumber numberWithInt:1]];
+		[post setIsHidden:[NSNumber numberWithInt:1]];
+		if([postDetailEditController isPostPublished] == YES)
+			[post setIsPublished:[NSNumber numberWithInt:1]];
+		else
+			[post setIsPublished:[NSNumber numberWithInt:0]];
+		[post setBlogID:[[dm currentBlog] valueForKey:@"blogid"]];
+
+		if([post.postID isEqualToString:@"-1"]) {
+			if(([[dm currentPost] valueForKey:@"postid"] != nil) && (![[[dm currentPost] valueForKey:@"postid"] isEqualToString:@""]))
+				[post setPostID:[[dm currentPost] valueForKey:@"postid"]];
+			else
+				[post setPostID:appDelegate.postID];
+		}
+		
+		[post setPostTitle:postDetailEditController.titleTextField.text];
+		[post setContent:postDetailEditController.textView.text];
+		[post setDateCreated:[NSDate date]];
+		[post setStatus:postDetailEditController.statusTextField.text];
+		if(postSettingsController.passwordTextField.text != nil)
+			[post setPassword:postSettingsController.passwordTextField.text];
+		[post setShouldResizePhotos:[NSNumber numberWithInt:postSettingsController.resizePhotoControl.on]];
+		[self dataSave];
+		[self checkAutosaves];
     }
 }
 
 - (void)startTimer {
     if (!autoSaveTimer) {
-        autoSaveTimer = [[NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(autoSaveCurrentPost:) userInfo:nil repeats:YES] retain];
+        autoSaveTimer = [[NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(autoSaveCurrentPost:) userInfo:nil repeats:YES] retain];
     }
 }
 
@@ -254,7 +449,15 @@
 - (void)refreshUIForCompose {
 	if (hasChanges == NO)
 		[self setRightBarButtonItemForEditPost:nil];
-
+	
+	if(post == nil) {
+		post = (Post *)[NSEntityDescription insertNewObjectForEntityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];
+		[post setUniqueID:[[NSProcessInfo processInfo] globallyUniqueString]];
+		[post setStatus:@"Local Draft"];
+		post.wasLocalDraft = [NSNumber numberWithInt:1];
+	}
+	[appDelegate setPostID:post.uniqueID];
+	
     [tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
     UIViewController *vc = [[tabController viewControllers] objectAtIndex:0];
     self.title = vc.title;
@@ -269,6 +472,7 @@
 	if (DeviceIsPad() == YES) {
 		[self editAction:self];
 	}
+	[self checkAutosaves];
 }
 
 - (void)refreshUIForCurrentPost {
@@ -300,6 +504,7 @@
 	if (mode == autorecoverPost && DeviceIsPad()) {
 		[self editAction:self];
 	}
+	[self checkAutosaves];
 }
 
 - (void)updatePhotosBadge {
@@ -324,15 +529,18 @@
 #pragma mark UIActionSheetDelegate methods
 
 - (void)addProgressIndicator {
-    NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
-    UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aiv];
-    [aiv startAnimating];
-    [aiv release];
-
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    spinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+    [spinner startAnimating];
+	
+	UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:spinner];
     [self setRightBarButtonItemForEditPost:activityButtonItem];
+    [spinner release];
     [activityButtonItem release];
-    [apool release];
+	
+	[pool release];
 }
 
 - (void)removeProgressIndicator {
@@ -346,23 +554,43 @@
     }
 }
 
-- (void)saveAsDraft {
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
-    [dm saveCurrentPostAsDraft];
-    hasChanges = NO;
-    self.rightBarButtonItemForEditPost = nil;
-    [self stopTimer];
-    [dm removeAutoSavedCurrentPostFile];
+- (void)saveAsDraft {	
+	if(post == nil) {
+		post = (Post *)[NSEntityDescription insertNewObjectForEntityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];
+		NSString *uniqueID = [[NSProcessInfo processInfo] globallyUniqueString];
+		[post setUniqueID:uniqueID];
+		NSLog(@"just set autosave unique ID to: %@", uniqueID);
+	}
+	
+	[post setIsLocalDraft:[NSNumber numberWithInt:1]];
+	[post setWasLocalDraft:[NSNumber numberWithInt:1]];
+	[post setIsAutosave:[NSNumber numberWithInt:0]];
+	[post setIsPublished:[NSNumber numberWithInt:0]];
+	[post setBlogID:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blogid"]];
+	[post setPostTitle:postDetailEditController.titleTextField.text];
+	[post setContent:postDetailEditController.textView.text];
+	[post setDateCreated:[NSDate date]];
+	if(postSettingsController.passwordTextField.text != nil)
+		[post setPassword:postSettingsController.passwordTextField.text];
+	[post setShouldResizePhotos:[NSNumber numberWithInt:postSettingsController.resizePhotoControl.on]];
+	[self dataSave];
     [self discard];
 }
 
 - (void)discard {
     hasChanges = NO;
     self.rightBarButtonItemForEditPost = nil;
+	self.post = nil;
     [self stopTimer];
-    [[BlogDataManager sharedDataManager] clearAutoSavedContext];
-
 	[self dismissEditView];
+}
+
+- (void)dataSave {
+    NSError *error;
+    if (![appDelegate.managedObjectContext save:&error]) {
+        NSLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+        exit(-1);
+    }
 }
 
 - (void)cancel {
@@ -411,8 +639,7 @@
         }
     }
 
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    [delegate setAlertRunning:NO];
+    [appDelegate setAlertRunning:NO];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -420,8 +647,7 @@
         [self discard];
     }
 
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    [delegate setAlertRunning:NO];
+    [appDelegate setAlertRunning:NO];
 }
 
 - (void)setHasChanges:(BOOL)aFlag {
@@ -442,210 +668,11 @@
 }
 
 #pragma mark -
-#pragma mark View lifecycle
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-
-    if (!saveButton) {
-        saveButton = [[UIBarButtonItem alloc] init];
-        saveButton.title = @"Save";
-        saveButton.target = self;
-        saveButton.style = UIBarButtonItemStyleDone;
-        saveButton.action = @selector(saveAction :);
-    }
-
-	if (DeviceIsPad() == NO)
-	{
-			//conditionalLoadOfTabBarController is now referenced from viewWillAppear.  Solves Ticket #223 (crash when selecting comments from new post view)
-	    if (!leftView) {
-			leftView = [WPNavigationLeftButtonView createCopyOfView];
-			[leftView setTitle:@"Posts"];
-		}
-	}
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoDidUploadSuccessfully) name:VideoUploadSuccessful object:nil];
-	videoUploader = [[WPMediaUploader alloc] initWithNibName:@"WPMediaUploader" bundle:nil];
-
-}
-//shouldAutorotateToInterfaceOrientation
-
-
-- (void)viewWillAppear:(BOOL)animated {
-	if (DeviceIsPad() == NO) {
-		if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
-			[postDetailEditController setTextViewHeight:202];
-		}
-
-		if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-			if (postDetailEditController.isEditing == NO) {
-				//[postDetailEditController setTextViewHeight:57]; //#148
-			} else {
-				[postDetailEditController setTextViewHeight:116];
-			}
-		}
-	}
-
-    [leftView setTarget:self withAction:@selector(cancelView:)];
-
-    if (hasChanges == YES) {
-        if ([[leftView title] isEqualToString:@"Posts"]) {
-            [leftView setTitle:@"Cancel"];
-        }
-
-        self.rightBarButtonItemForEditPost = saveButton;
-    } else {
-        [leftView setTitle:@"Posts"];
-        self.rightBarButtonItemForEditPost = nil;
-    }
-
-	if (DeviceIsPad() == NO) {
-		UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
-		self.leftBarButtonItemForEditPost = cancelButton;
-		[cancelButton release];
-	}
-
-    [super viewWillAppear:animated];
-	[self conditionalLoadOfTabBarController];
-
-    if (mode == editPost) {
-        [self refreshUIForCurrentPost];
-    } else if (mode == newPost) {
-        [self refreshUIForCompose];
-    } else if (mode == autorecoverPost) {
-        [self refreshUIForCurrentPost];
-        self.hasChanges = YES;
-    }
-
-    if (mode != newPost)
-		mode = refreshPost;
-    [commentsViewController setIndexForCurrentPost:[[BlogDataManager sharedDataManager] currentPostIndex]];
-    [[tabController selectedViewController] viewWillAppear:animated];
-
-	isVisible = YES;
-}
-
-- (void)conditionalLoadOfTabBarController {
-	// Icons designed by, and included with permission of, IconBuffet | iconbuffet.com
-    NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:5];
-
-	// post detail controllers
-    if (postDetailEditController == nil) {
-		if (DeviceIsPad() == YES) {
-			postDetailEditController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController-iPad" bundle:nil];
-		} else {
-			postDetailEditController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil];
-		}
-    }
-
-    postDetailEditController.title = @"Write";
-    postDetailEditController.tabBarItem.image = [UIImage imageNamed:@"write.png"];
-    postDetailEditController.postDetailViewController = self;
-    [array addObject:postDetailEditController];
-
-    //if (mode == 1 || mode == 2 || mode == 3) { //don't load this tab if mode == 0 (new post) since comments are irrelevant to a brand new post
-	NSString *postStatus = [[BlogDataManager sharedDataManager].currentPost valueForKey:@"post_status"];
-	if (mode != newPost && ![postStatus isEqualToString:@"Local Draft"]) { //don't load commentsViewController tab if it's a new post or a local draft since comments are irrelevant to a brand new post
-		if (commentsViewController == nil) {
-			commentsViewController = [[CommentsViewController alloc] initWithNibName:@"CommentsViewController" bundle:nil];
-			if (DeviceIsPad() == YES) {
-				commentsViewController.isSecondaryViewController = YES;
-			}
-		}
-
-		commentsViewController.title = @"Comments";
-		commentsViewController.tabBarItem.image = [UIImage imageNamed:@"comments.png"];
-		[array addObject:commentsViewController];
-	}
-
-    if (photosListController == nil) {
-        photosListController = [[WPPhotosListViewController alloc] initWithNibName:@"WPPhotosListViewController" bundle:nil];
-    }
-
-    photosListController.title = @"Media";
-    photosListController.tabBarItem.image = [UIImage imageNamed:@"photos.png"];
-	photosListController.delegate = self;
-	
-    [array addObject:photosListController];
-	
-	//if (mediaController == nil) {
-//		mediaController = [[MediaViewController alloc] initWithNibName:@"MediaViewController" bundle:nil];
-//	}
-//	mediaController.title = @"Media";
-//	mediaController.tabBarItem.image = [UIImage imageNamed:@"photos.png"];
-//    mediaController.postDetailViewController = self;
-//
-//    [array addObject:mediaController];
-
-    if (postPreviewController == nil) {
-        postPreviewController = [[PostPreviewViewController alloc] initWithNibName:@"PostPreviewViewController" bundle:nil];
-    }
-
-    postPreviewController.title = @"Preview";
-    postPreviewController.tabBarItem.image = [UIImage imageNamed:@"preview.png"];
-    postPreviewController.postDetailViewController = self;
-    [array addObject:postPreviewController];
-
-    if (postSettingsController == nil) {
-        postSettingsController = [[PostSettingsViewController alloc] initWithNibName:@"PostSettingsViewController" bundle:nil];
-    }
-
-    postSettingsController.title = @"Settings";
-    postSettingsController.tabBarItem.image = [UIImage imageNamed:@"settings.png"];
-    postSettingsController.postDetailViewController = self;
-    [array addObject:postSettingsController];
-
-	if (DeviceIsPad() == YES) {
-		// the iPad has two detail views
-		postDetailViewController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController-iPad" bundle:nil];
-		[postDetailViewController disableInteraction];
-
-		if (!editModalViewController) {
-			editModalViewController = [[FlippingViewController alloc] init];
-
-			RotatingNavigationController *editNav = [[[RotatingNavigationController alloc] initWithRootViewController:postDetailEditController] autorelease];
-			editModalViewController.frontViewController = editNav;
-			postDetailEditController.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:editToolbar] autorelease];
-			postDetailEditController.navigationItem.leftBarButtonItem = cancelEditButton;
-
-			RotatingNavigationController *previewNav = [[[RotatingNavigationController alloc] initWithRootViewController:postPreviewController] autorelease];
-			editModalViewController.backViewController = previewNav;
-			postPreviewController.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:previewToolbar] autorelease];
-		}
-	}
-
-	if (tabController) {
-		tabController.viewControllers = array;
-		self.view = tabController.view;
-	}
-	else {
-		postDetailViewController.view.frame = contentView.bounds;
-		[contentView addSubview:postDetailViewController.view];
-	}
-
-    [array release];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-	if (DeviceIsPad() == NO) {
-		if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-			[postDetailEditController setTextViewHeight:202];
-		}
-	}
-
-//    [photoEditingStatusView removeFromSuperview];
-
-    if (postDetailEditController.currentEditingTextField)
-        [postDetailEditController.currentEditingTextField resignFirstResponder];
-
-    [super viewWillDisappear:animated];
-   if (mode != newPost)
-	   mode = refreshPost;
-    [postPreviewController stopLoading];
-	isVisible = NO;
-}
+#pragma mark Memory management
 
 - (void)didReceiveMemoryWarning {
     WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+	[self dataSave];
     [super didReceiveMemoryWarning];
 }
 
@@ -655,9 +682,7 @@
 		return YES;
 	}
 	
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-
-    if ([delegate isAlertRunning] == YES) {
+    if ([appDelegate isAlertRunning] == YES) {
         return NO;
     }
 
@@ -708,10 +733,12 @@
 	NSLog(@"setting orientation to: %d", orientation);
 	[videoUploader setOrientation:orientation];
 	
+	NSLog(@"Setting file attributes...");
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSDictionary *fileAttributes = [fileManager fileAttributesAtPath:filepath traverseLink:YES];
 	if(fileAttributes != nil)
 		[videoUploader setFilesize:[[fileAttributes objectForKey:@"NSFileSize"] floatValue]];
+	NSLog(@"Starting upload...");
 	[videoUploader start];
 	
 	[videoUploader.view setFrame:CGRectMake(0, 480, 320, 40)];
@@ -765,8 +792,7 @@
 #pragma mark -
 #pragma mark iPad actions
 
-- (UINavigationItem *)navigationItemForEditPost;
-{
+- (UINavigationItem *)navigationItemForEditPost {
 	if (DeviceIsPad() == NO) {
 		return self.navigationItem;
 	} else if (DeviceIsPad() == YES) {
@@ -775,13 +801,11 @@
 	return nil;
 }
 
-- (UIBarButtonItem *)leftBarButtonItemForEditPost;
-{
+- (UIBarButtonItem *)leftBarButtonItemForEditPost {
 	return [self navigationItemForEditPost].leftBarButtonItem;
 }
 
-- (void)setLeftBarButtonItemForEditPost:(UIBarButtonItem *)item;
-{
+- (void)setLeftBarButtonItemForEditPost:(UIBarButtonItem *)item {
 	if (DeviceIsPad() == NO) {
 		self.navigationItem.leftBarButtonItem = item;
 	} else if (DeviceIsPad() == YES) {
@@ -789,14 +813,25 @@
 	}
 }
 
-- (UIBarButtonItem *)rightBarButtonItemForEditPost;
-{
+- (UIBarButtonItem *)rightBarButtonItemForEditPost {
 	if (DeviceIsPad() == NO) {
 		return self.navigationItem.rightBarButtonItem;
 	} else if (DeviceIsPad() == YES) {
 		return [editToolbar.items lastObject];
 	}
 	return nil;
+}
+
+- (void)publish:(id)sender {
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	[dm.currentPost setObject:@"publish" forKey:@"post_status"];
+	[self saveAction:sender];
+}
+
+- (void)saveAsDraft:(id)sender {
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	[dm.currentPost setObject:@"draft" forKey:@"post_status"];
+	[self saveAction:sender];
 }
 
 - (void)setRightBarButtonItemForEditPost:(UIBarButtonItem *)item;
@@ -913,6 +948,267 @@
 }
 
 #pragma mark -
+#pragma mark Autosave methods
+
+// TODO: Move Autosave data methods to their own class
+
+- (IBAction)toggleAutosaves:(id)sender {
+	if(self.isShowingAutosaves == NO)
+		[self showAutosaves];
+	else
+		[self hideAutosaves];
+}
+
+- (void)showAutosaves {
+	[autosaveView refreshTable];
+	[UIView beginAnimations:nil context:nil];
+	[UIView setAnimationDuration:1.0];
+	[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight
+						   forView:postDetailEditController.view
+							 cache:YES];
+	[postDetailEditController.view addSubview:autosaveView.view];
+	[UIView commitAnimations];
+	
+	self.isShowingAutosaves = YES;
+}
+
+- (void)hideAutosaves {
+	[UIView beginAnimations:nil context:nil];
+	[UIView setAnimationDuration:1.0];
+	[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight
+						   forView:postDetailEditController.view
+							 cache:YES];
+	[autosaveView.view removeFromSuperview];
+	[UIView commitAnimations];
+	
+	self.isShowingAutosaves = NO;
+}
+
+- (void)showAutosaveButton {	
+	[self.autosaveButton setAlpha:0.50];
+	self.autosaveButton.tag = 999;
+	[self.autosaveButton setHidden:NO];
+	int topOfViewStack = appDelegate.navigationController.viewControllers.count - 1;
+	
+	CGPoint centerOfWindow = [[[appDelegate.navigationController.viewControllers objectAtIndex:topOfViewStack] view] convertPoint:
+							  [[appDelegate.navigationController.viewControllers objectAtIndex:topOfViewStack] view].center toView:nil];
+	int yPos = centerOfWindow.y+120;
+	if(yPos > 328)
+		yPos = 328;
+	self.autosaveButton.frame = CGRectMake(centerOfWindow.x+120, yPos, 20, 20);
+
+	[self.autosaveButton addTarget:self action:@selector(toggleAutosaves:) forControlEvents:UIControlEventTouchUpInside];
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:2.0];
+	[[[appDelegate.navigationController.viewControllers objectAtIndex:topOfViewStack] view] insertSubview:self.autosaveButton atIndex:0];
+	[[[appDelegate.navigationController.viewControllers objectAtIndex:topOfViewStack] view] bringSubviewToFront:self.autosaveButton];
+	[UIView commitAnimations];
+}
+
+- (void)hideAutosaveButton {
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:15.0];
+	[self.autosaveButton removeFromSuperview];
+	[UIView commitAnimations];
+}
+
+- (void)checkAutosaves {
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	NSString *postID;
+	if(([[dm currentPost] valueForKey:@"postid"] != nil) && (![[[dm currentPost] valueForKey:@"postid"] isEqualToString:@""])) {
+		postID = [[dm currentPost] valueForKey:@"postid"];
+	}
+	else {
+		postID = appDelegate.postID;
+	}
+	
+	if((postID != nil) && (appDelegate.managedObjectContext != nil)) {
+		// Define our table/entity to use  
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];   
+		
+		// Setup the fetch request  
+		NSFetchRequest *request = [[NSFetchRequest alloc] init];  
+		[request setEntity:entity];   
+		
+		// Define how we will sort the records  
+		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];  
+		NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];  
+		[request setSortDescriptors:sortDescriptors];  
+		[sortDescriptor release];
+			
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:
+								  @"(isAutosave == YES) AND (isDeleted == NO) AND (postID like %@)", postID];
+		[request setPredicate:predicate];	
+		
+		// Fetch the records and handle an error  
+		NSError *error;  
+		NSMutableArray *mutableFetchResults = [[appDelegate.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];   
+		
+		if (!mutableFetchResults) {  
+			// Handle the error.  
+			// This is a serious error and should advise the user to restart the application  
+		}
+		
+		if(mutableFetchResults.count > 0) {
+			[autosaveView.autosaves removeAllObjects];
+			for (NSManagedObject *obj in mutableFetchResults) {
+				Post *autosave = (Post *)[obj retain];
+				[autosaveView.autosaves addObject:autosave];
+			}
+			if(mutableFetchResults.count > 7) {
+				Post *lastPost = (Post *)[mutableFetchResults objectAtIndex:6];
+				NSLog(@"Deleting posts older than: %@", lastPost.dateCreated);
+				[self deleteAutosavesOlderThan:lastPost.dateCreated];
+			}
+			[self showAutosaveButton];
+		}
+		else
+			[self hideAutosaveButton];
+		
+		// Save our fetched data to an array
+		[mutableFetchResults release];
+		[request release];
+	}
+}
+
+- (void)restoreFromAutosave:(NSNotification *)notification {
+	NSDictionary *restoreData = [notification userInfo];
+	NSString *uniqueID = [restoreData objectForKey:@"uniqueID"];
+	
+	// Define our table/entity to use  
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];   
+	
+	// Setup the fetch request  
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];  
+	[request setEntity:entity];   
+	
+	// Define how we will sort the records  
+	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];  
+	NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];  
+	[request setSortDescriptors:sortDescriptors];  
+	[sortDescriptor release];
+	
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:
+							  @"(isAutosave == YES) AND (isDeleted == NO) AND (uniqueID like %@)", uniqueID];
+	[request setPredicate:predicate];	
+	
+	// Fetch the records and handle an error  
+	NSError *error;  
+	NSMutableArray *mutableFetchResults = [[appDelegate.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];   
+	
+	if (!mutableFetchResults) {  
+		// Handle the error.  
+		// This is a serious error and should advise the user to restart the application  
+	}
+	
+	if(mutableFetchResults.count > 0) {
+		Post *restorePost = [mutableFetchResults objectAtIndex:0];
+		
+		if([restorePost.isLocalDraft isEqualToNumber:[NSNumber numberWithInt:1]]) {
+			appDelegate.postID = restorePost.uniqueID;
+			[postDetailEditController refreshUIForCurrentPost];
+		}
+		else {
+			NSLog(@"restorePost: %@", restorePost);
+			BlogDataManager *dm = [BlogDataManager sharedDataManager];
+			[dm makePostWithPostIDCurrent:restorePost.postID];
+			NSLog(@"dm.currentPost: %@", [dm currentPost]);
+			if(restorePost.postTitle != nil)
+				[[dm currentPost] setObject:restorePost.postTitle forKey:@"title"];
+			if(restorePost.content != nil)
+				[[dm currentPost] setObject:restorePost.content forKey:@"description"];
+			if(restorePost.tags != nil)
+				[[dm currentPost] setObject:restorePost.tags forKey:@"mt_keywords"];
+			if(restorePost.categories != nil)
+				[[dm currentPost] setObject:[restorePost.categories componentsSeparatedByString:@", "] forKey:@"categories"];
+			if(restorePost.status != nil)
+				[[dm currentPost] setObject:restorePost.status forKey:@"post_status"];
+			
+			[self refreshUIForCurrentPost];
+		}
+		
+		[self refreshUIForCurrentPost];
+		[self deleteAutosavesForPost:restorePost];
+		[autosaveView resetAutosaves];
+		[self toggleAutosaves:self];
+		[self hideAutosaveButton];
+	}
+	[mutableFetchResults release];
+	[request release];
+	
+	hasChanges = YES;
+	self.rightBarButtonItemForEditPost = saveButton;
+}
+
+- (void)deleteAutosavesForPost:(Post *)restorePost {
+	// Define our table/entity to use  
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];   
+	
+	// Setup the fetch request  
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];  
+	[request setEntity:entity];   
+	
+	// Define how we will sort the records  
+	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];  
+	NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];  
+	[request setSortDescriptors:sortDescriptors];  
+	[sortDescriptor release];
+	
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:
+							  @"(isAutosave == YES) AND (postID like %@)", restorePost.postID];
+	[request setPredicate:predicate];	
+	
+	// Fetch the records and handle an error  
+	NSError *error;  
+	NSMutableArray *mutableFetchResults = [[appDelegate.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];   
+	
+	if (!mutableFetchResults) {  
+		// Handle the error.  
+		// This is a serious error and should advise the user to restart the application  
+	}
+	
+	for(NSManagedObject *obj in mutableFetchResults) {
+		Post *deletePost = (Post *)obj;
+		if(deletePost.uniqueID != restorePost.uniqueID)
+			[appDelegate.managedObjectContext deleteObject:obj];
+	}
+	[self dataSave];
+}
+
+- (void)deleteAutosavesOlderThan:(NSDate *)date {
+	// Define our table/entity to use  
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];   
+	
+	// Setup the fetch request  
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];  
+	[request setEntity:entity];   
+	
+	// Define how we will sort the records  
+	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];  
+	NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];  
+	[request setSortDescriptors:sortDescriptors];  
+	[sortDescriptor release];
+	
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:
+							  @"(isAutosave == YES) AND (dateCreated > %@)", date];
+	[request setPredicate:predicate];	
+	
+	// Fetch the records and handle an error  
+	NSError *error;  
+	NSMutableArray *mutableFetchResults = [[appDelegate.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];   
+	
+	if (!mutableFetchResults) {  
+		// Handle the error.  
+		// This is a serious error and should advise the user to restart the application  
+	}
+	
+	for(NSManagedObject *obj in mutableFetchResults) {
+		[appDelegate.managedObjectContext deleteObject:obj];
+	}
+	[appDelegate.managedObjectContext processPendingChanges];
+}
+
+#pragma mark -
 #pragma mark Photo list delegate: iPad
 
 - (void)displayPhotoListImagePicker:(UIImagePickerController *)picker;
@@ -942,6 +1238,125 @@
 
 - (IBAction)addPhotoAction:(id)sender {
 	
+}
+
+#pragma mark -
+#pragma mark NSURLConnection delegate
+
+- (void)verifyPublishSuccessful {
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	NSLog(@"appDelegate.postID: %@", appDelegate.postID);
+	
+	NSArray *params = [NSArray arrayWithObjects:
+					   appDelegate.postID,
+					   [[dm currentBlog] objectForKey:@"username"],
+					   [dm getPasswordFromKeychainInContextOfCurrentBlog:[dm currentBlog]],
+					   nil];
+	
+	// Execute the XML-RPC request
+	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[[dm currentBlog] valueForKey:@"xmlrpc"]]];
+	[request setMethod:@"metaWeblog.getPost" withObjects:params];
+	[params release];
+	
+	connection = [[NSURLConnection alloc] initWithRequest:[request request] delegate:self];
+	if (connection) {
+		payload = [[NSMutableData data] retain];
+	}
+	//[xmlrpcRequest release];
+}
+
+- (void)stop {
+	[connection cancel];
+}
+
+- (void)connection:(NSURLConnection *)conn didReceiveResponse:(NSURLResponse *)response {	
+	[self.payload setLength:0];
+	[self setUrlResponse:response];
+}
+
+- (void)connection:(NSURLConnection *)conn didReceiveData:(NSData *)data {
+	[self.payload appendData:data];
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)conn {
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	conn = nil;
+	
+	if(payload != nil)
+	{
+		NSString  *str = [[NSString alloc] initWithData:payload encoding:NSUTF8StringEncoding];
+		if ( ! str ) {
+			str = [[NSString alloc] initWithData:payload encoding:[NSString defaultCStringEncoding]];
+			payload = (NSMutableData *)[[str dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES] retain];
+		}
+		
+		if ([urlResponse isKindOfClass:[NSHTTPURLResponse class]]) {
+			if ([(NSHTTPURLResponse *)urlResponse statusCode] < 400) {
+				XMLRPCResponse *xmlrpcResponse = [[XMLRPCResponse alloc] initWithData:payload];
+				
+				
+				if (![xmlrpcResponse isKindOfClass:[NSError class]]) {
+					NSDictionary *responseMeta = [xmlrpcResponse object];
+					NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+					[f setNumberStyle:NSNumberFormatterDecimalStyle];
+					NSNumber *publishedPostID = [f numberFromString:appDelegate.postID];
+					NSNumber *newPostID = [responseMeta valueForKey:@"postid"];
+					[f release];
+					if([publishedPostID isEqualToNumber:newPostID]) {
+						[appDelegate setPostID:nil];
+						NSDictionary *info = [[NSDictionary alloc] initWithObjectsAndKeys:post.uniqueID, @"uniqueID", nil];
+						[[NSNotificationCenter defaultCenter] postNotificationName:@"LocalDraftWasPublishedSuccessfully" object:nil userInfo:info];
+						[self setPost:nil];
+						[info release];
+					}
+				}
+				
+				[xmlrpcResponse release];
+			}
+			
+		}
+		
+		[str release];
+	}
+}
+
+- (void)connection:(NSURLConnection *)conn didFailWithError:(NSError *)error {
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[self setPost:nil];
+	[appDelegate setPostID:nil];
+}
+
+#pragma mark -
+#pragma mark Dealloc
+
+- (void)dealloc {
+	[autosaveButton release];
+	[autosaveView release];
+	[payload release];
+	[connection release];
+	[urlResponse release];
+	[urlRequest release];
+	[post release];
+    [leftView release];
+    [postDetailEditController release];
+    [postPreviewController release];
+    [postSettingsController release];
+    [photosListController release];
+    [commentsViewController release];
+    [saveButton release];
+	[videoUploader release];
+	[toolbar release];
+	[contentView release];
+	[photoPickerPopover release];
+	[commentsButton release];
+	[photosButton release];
+	[settingsButton release];
+	[editModalViewController release];
+	
+    [self stopTimer];
+	
+    [super dealloc];
 }
 
 @end
