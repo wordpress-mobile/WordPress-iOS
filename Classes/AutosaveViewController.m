@@ -122,7 +122,7 @@
 }
 
 - (void)doAutosaveReport {
-	NSLog(@"Total of %d autosaves on this device.", autosaves.count);	
+	NSLog(@"Total of %d autosaves on this device.", [autosaveManager totalAutosavesOnDevice]);
 }
 
 #pragma mark -

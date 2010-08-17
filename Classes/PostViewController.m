@@ -415,8 +415,12 @@
 
 		if(appDelegate.postID != nil)
 			[autosave setPostID:appDelegate.postID];
-		else if(([[dm currentPost] valueForKey:@"postid"] != nil) && (![[[dm currentPost] valueForKey:@"postid"] isEqualToString:@""]))
-			[autosave setPostID:[[dm currentPost] valueForKey:@"postid"]];
+		else if(([[dm currentPost] valueForKey:@"postid"] != nil) && (![[[dm currentPost] valueForKey:@"postid"] isEqualToString:@""])) {
+			NSString *autosavePostID = [NSString stringWithFormat:@"%@-%@",
+										[[dm currentBlog] valueForKey:@"url"],
+										[[dm currentPost] valueForKey:@"postid"]];
+			[autosave setPostID:autosavePostID];
+		}
 		else
 			[autosave setPostID:appDelegate.postID];
 		
@@ -1010,15 +1014,16 @@
 - (void)checkAutosaves {
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	if(([[dm currentPost] valueForKey:@"postid"] != nil) && (![[[dm currentPost] valueForKey:@"postid"] isEqualToString:@""])) {
-		appDelegate.postID = [[dm currentPost] valueForKey:@"postid"];
+		NSString *autosavePostID = [NSString stringWithFormat:@"%@-%@",
+									[[dm currentBlog] valueForKey:@"url"],
+									[[dm currentPost] valueForKey:@"postid"]];
+		[appDelegate setPostID:autosavePostID];
 	}
 	
 	if((appDelegate.postID != nil) && (appDelegate.managedObjectContext != nil)) {
 		[autosaveView setPostID:appDelegate.postID];
 		[autosaveView resetAutosaves];
-		NSLog(@"about to call the autosave if line...");
 		if(([autosaveView autosaves] != nil) && ([[autosaveView autosaves] count] > 0)) {
-			NSLog(@"successfully called the autosave if line...");
 			[self showAutosaveButton];
 		}
 		else

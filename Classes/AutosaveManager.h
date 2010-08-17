@@ -26,5 +26,6 @@
 - (void)removeOlderThan:(NSDate *)date;
 - (void)removeAll;
 - (void)dataSave;
+- (int)totalAutosavesOnDevice;
 
 @end

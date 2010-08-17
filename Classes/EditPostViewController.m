@@ -244,9 +244,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		NSLog(@"refreshing for appDelegate.postID: %@", appDelegate.postID);  
 		
 		Post *post = [[draftManager get:appDelegate.postID] retain];
-		NSLog(@"post: %@", post);
-		
 		if(post != nil) {
+			if([[post isLocalDraft] isEqualToNumber:[NSNumber numberWithInt:1]])
+				self.isLocalDraft = YES;
 			postDetailViewController.navigationItem.title = post.postTitle;
 			self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back"
 														style:UIBarButtonItemStyleBordered target:nil action:nil];
@@ -364,6 +364,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			[[CPopoverManager instance] setCurrentPopoverController:popover];
 		} else {
 			[self refreshCurrentPostForUI];
+			postDetailViewController.mode = editPost;
 			[postDetailViewController.navigationController pushViewController:segmentedTableViewController animated:YES];
 		}
     }
@@ -409,7 +410,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)refreshStatus {
 	if(isLocalDraft == YES) {
-		statusTextField.text = postDetailViewController.post.status;
+		statusTextField.text = @"Local Draft";
 	}
 	else {
 		NSString *status = [[BlogDataManager sharedDataManager] statusDescriptionForStatus:
@@ -507,6 +508,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			[postDetailViewController.post setCategories:[selectedObjects componentsJoinedByString:@", "]];
 			categoriesTextField.text = postDetailViewController.post.categories;
 		}
+		
+		[self refreshUIForCurrentPost];
 	}
 	else {
 		BlogDataManager *dm = [BlogDataManager sharedDataManager];

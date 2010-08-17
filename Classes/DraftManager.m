@@ -35,6 +35,7 @@
 	Post *post = nil;
 	if((items != nil) && (items.count > 0)) {
 		post = [items objectAtIndex:0];
+		NSLog(@"draftManager post: %@", post);
 	}
 	else {
 		post = (Post *)[NSEntityDescription insertNewObjectForEntityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];

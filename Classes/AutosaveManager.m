@@ -71,15 +71,25 @@
 	
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:
 							  @"(isAutosave == YES) AND (postID like %@)", postID];
-	[request setPredicate:predicate];	
+	[request setPredicate:predicate];
+	
+	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];
+	NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+	[request setSortDescriptors:sortDescriptors];
 	
 	NSError *error;
 	NSArray *items = [appDelegate.managedObjectContext executeFetchRequest:request error:&error];
 	[request release];
 	
+	int autosaveCount = 0;
 	for(Post *autosave in items) {
-		[results addObject:autosave];
+		if(autosaveCount <= 7)
+			[results addObject:autosave];
+		else
+			[self remove:autosave];
+		autosaveCount++;
 	}
+	NSLog(@"total of %d autosaves for postID: %@", results.count, postID);
 	
 	return results;
 }
@@ -97,6 +107,10 @@
 	[request release];
 	
 	return items;
+}
+
+- (int)totalAutosavesOnDevice {
+	return [self getAll].count;
 }
 
 - (void)save:(Post *)post {
