@@ -7,6 +7,10 @@
 
 #import "AutosaveContentViewController.h"
 
+#define FONT_SIZE 14.0f
+#define CELL_CONTENT_WIDTH 320.0f
+#define CELL_CONTENT_MARGIN 10.0f
+
 @implementation AutosaveContentViewController
 @synthesize autosavePost;
 
@@ -71,33 +75,76 @@
     static NSString *CellIdentifier = @"Cell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	UILabel *label = nil;
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-		cell.textLabel.font = [UIFont systemFontOfSize:14.0];
+		
+		label = [[UILabel alloc] initWithFrame:CGRectZero];
+		[label setLineBreakMode:UILineBreakModeWordWrap];
+		[label setMinimumFontSize:FONT_SIZE];
+		[label setNumberOfLines:0];
+		[label setFont:[UIFont systemFontOfSize:FONT_SIZE]];
+		[label setTag:1];
+		
+		[[cell contentView] addSubview:label];
+		[label release];
 	}
+	if (!label)
+		label = (UILabel*)[cell viewWithTag:1];
     
 	switch (indexPath.section) {
 		case 0:
-			cell.textLabel.text = autosavePost.postTitle;
+			label.text = autosavePost.postTitle;
 			break;
 		case 1:
-			cell.textLabel.text = autosavePost.tags;
+			label.text = autosavePost.tags;
 			break;
 		case 2:
-			cell.textLabel.text = autosavePost.categories;
+			label.text = autosavePost.categories;
 			break;
 		case 3:
-			cell.textLabel.text = autosavePost.status;
+			label.text = autosavePost.status;
 			break;
 		case 4:
-			cell.textLabel.text = autosavePost.content;
+			label.text = autosavePost.content;
 			break;
 		default:
-			cell.textLabel.text = nil;
+			label.text = nil;
 			break;
 	}
+	CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+	CGSize size = [label.text sizeWithFont:[UIFont systemFontOfSize:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+	
+	[label setFrame:CGRectMake(CELL_CONTENT_MARGIN, CELL_CONTENT_MARGIN, CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), MAX(size.height, 44.0f))];
     
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath; {
+	NSString *text = @"";
+	switch (indexPath.section) {
+		case 0:
+			text = autosavePost.postTitle;
+			break;
+		case 1:
+			text = autosavePost.tags;
+			break;
+		case 2:
+			text = autosavePost.categories;
+			break;
+		case 3:
+			text = autosavePost.status;
+			break;
+		case 4:
+			text = autosavePost.content;
+			break;
+	}
+	
+	CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+	CGSize size = [text sizeWithFont:[UIFont systemFontOfSize:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+	CGFloat height = MAX(size.height, 44.0f);
+	
+	return height + (CELL_CONTENT_MARGIN * 2);
 }
 
 

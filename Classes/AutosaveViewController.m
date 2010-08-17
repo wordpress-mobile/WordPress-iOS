@@ -10,7 +10,7 @@
 
 @class PostViewController;
 @implementation AutosaveViewController
-@synthesize tableView, autosaves, appDelegate, buttonView, restorePost, contentView, postDetailViewController;
+@synthesize tableView, autosaves, appDelegate, postID, buttonView, restorePost, contentView, postDetailViewController, autosaveManager;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -22,15 +22,13 @@
 	self.tableView.backgroundView = nil;
 	
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-	
 	contentView = [[AutosaveContentViewController alloc] initWithNibName:@"AutosaveContentViewController" bundle:nil];
-	
-	[self doAutosaveReport];
+	autosaveManager = [[AutosaveManager alloc] init];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	[super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-	self.autosaves = [[NSMutableArray alloc] init];
+	autosaveManager = [[AutosaveManager alloc] init];
 	return self;
 }
 
@@ -75,12 +73,11 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tv accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
 	int topOfViewStack = appDelegate.navigationController.viewControllers.count - 1;
 	[contentView setAutosavePost:[autosaves objectAtIndex:indexPath.row]];
 	UINavigationController *myController = [[appDelegate.navigationController.viewControllers objectAtIndex:topOfViewStack] navigationController];
 	[myController pushViewController:contentView animated:YES];
-	[postDetailViewController setIsShowingAutosaves:YES];
 }
 
 #pragma mark -
@@ -115,40 +112,17 @@
 #pragma mark Custom methods
 
 - (void)refreshTable {
-	[self.tableView reloadData];
+	[tableView reloadData];
 }
 
 - (void)resetAutosaves {
-	[autosaves removeAllObjects];
+	self.autosaves = [autosaveManager getForPostID:postID];
+	[self doAutosaveReport];
+	[self refreshTable];
 }
 
 - (void)doAutosaveReport {
-	// Define our table/entity to use  
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];   
-	
-	// Setup the fetch request  
-	NSFetchRequest *request = [[NSFetchRequest alloc] init];  
-	[request setEntity:entity];   
-	
-	// Define how we will sort the records  
-	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];  
-	NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];  
-	[request setSortDescriptors:sortDescriptors];  
-	[sortDescriptor release];
-	
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(isAutosave == YES)"];
-	[request setPredicate:predicate];	
-	
-	// Fetch the records and handle an error  
-	NSError *error;  
-	NSMutableArray *mutableFetchResults = [[appDelegate.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];   
-	
-	if (!mutableFetchResults) {  
-		// Handle the error.  
-		// This is a serious error and should advise the user to restart the application  
-	}
-	
-	NSLog(@"Total of %d autosaves on this device.", mutableFetchResults.count);	
+	NSLog(@"Total of %d autosaves on this device.", autosaves.count);	
 }
 
 #pragma mark -
@@ -165,6 +139,8 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
+	[postID release];
+	[autosaveManager release];
 	[postDetailViewController release];
 	[contentView release];
 	[restorePost release];

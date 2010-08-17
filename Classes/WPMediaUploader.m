@@ -45,7 +45,6 @@
 	[xmlrpcParams setObject:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"xmlrpc"] forKey:kURL];
 	[xmlrpcParams setObject:@"metaWeblog.newMediaObject" forKey:kMETHOD];
 	[xmlrpcParams setObject:args forKey:kMETHODARGS];
-	[args release];
 	
 	// Execute the XML-RPC request
 	NSLog(@"Executing xmlrpc request...");

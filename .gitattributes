@@ -3,6 +3,7 @@
 /AddBlogValidationBackground@2x.png -text
 /AddSiteViewController-iPad.xib -text
 /AddUsersBlogsViewController-iPad.xib -text
+/Beta-Info.plist -text
 /BlogViewController-iPad.xib -text
 /BlogViewController.xib -text
 Classes/AddSiteViewController.h -text
@@ -14,6 +15,8 @@ Classes/AddUsersBlogsViewController.xib -text
 Classes/AutosaveContentViewController.h -text
 Classes/AutosaveContentViewController.m -text
 Classes/AutosaveContentViewController.xib -text
+Classes/AutosaveManager.h -text
+Classes/AutosaveManager.m -text
 Classes/AutosaveViewController.h -text
 Classes/AutosaveViewController.m -text
 Classes/AutosaveViewController.xib -text
@@ -53,6 +56,8 @@ Classes/CommentsViewController.m -text
 Classes/Constants.h -text
 Classes/DashboardViewController.h -text
 Classes/DashboardViewController.m -text
+Classes/DraftManager.h -text
+Classes/DraftManager.m -text
 Classes/EditPageViewController.h -text
 Classes/EditPageViewController.m -text
 Classes/EditPostParentModalViewController.xib -text

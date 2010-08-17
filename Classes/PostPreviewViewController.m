@@ -36,6 +36,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self refreshWebView];
+	[postDetailViewController hideAutosaveButton];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

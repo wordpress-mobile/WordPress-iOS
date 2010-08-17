@@ -34,8 +34,9 @@
 @dynamic author;
 @dynamic uniqueID;
 @dynamic wasLocalDraft;
-@dynamic isDeleted;
+@dynamic wasDeleted;
 @dynamic isHidden;
+@dynamic note;
 
 - (NSDictionary *)legacyPost {
 	NSMutableDictionary *convertedPost = [[[NSMutableDictionary alloc] init] autorelease];

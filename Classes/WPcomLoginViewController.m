@@ -123,6 +123,7 @@
 					loginTextField.keyboardType = UIKeyboardTypeEmailAddress;
 					loginTextField.returnKeyType = UIReturnKeyDone;
 					loginTextField.tag = 0;
+					loginTextField.delegate = self;
 					if(username != nil)
 						loginTextField.text = username;
 				}
@@ -132,6 +133,7 @@
 					loginTextField.returnKeyType = UIReturnKeyDone;
 					loginTextField.secureTextEntry = YES;
 					loginTextField.tag = 1;
+					loginTextField.delegate = self;
 					if(password != nil)
 						loginTextField.text = password;
 				}
@@ -165,10 +167,14 @@
 		}
 	}
 	else if(indexPath.section == 1) {
-		if(isSigningIn)
+		if(isSigningIn) {
 			[activityCell.spinner startAnimating];
-		else
+			buttonText = @"Signing In...";
+		}
+		else {
 			[activityCell.spinner stopAnimating];
+			buttonText = @"Sign In";
+		}
 		
 		activityCell.textLabel.text = buttonText;
 		cell = activityCell;
@@ -212,11 +218,19 @@
 #pragma mark UITextField delegate methods
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
+	NSLog(@"textfield.tag: %d", textField.tag);
 	[textField resignFirstResponder];
-	return NO;	
+	
+	if((textField.tag == 1) && (username != nil) && (password != nil)) {
+		isSigningIn = YES;
+		[self refreshTable];
+		[self performSelectorInBackground:@selector(signIn:) withObject:self];
+	}
+	
+	return YES;	
 }
 
-- (void) textFieldDidEndEditing: (UITextField *) textField {
+- (void)textFieldDidEndEditing: (UITextField *) textField {
     UITableViewCell *cell = (UITableViewCell *)[textField superview];
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 	

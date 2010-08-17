@@ -9,6 +9,8 @@
 #import "WPMediaUploader.h"
 #import "Post.h"
 #import "AutosaveViewController.h"
+#import "AutosaveManager.h"
+#import "DraftManager.h"
 
 //refactoring "mode"
 #define newPost 0
@@ -37,6 +39,8 @@
     PostsViewController *postsListController;
     CommentsViewController *commentsViewController;
 	Post *post;
+	AutosaveManager *autosaveManager;
+	DraftManager *draftManager;
     
     UIViewController *selectedViewController;
     WPNavigationLeftButtonView *leftView;
@@ -103,6 +107,8 @@
 @property (nonatomic, retain) NSMutableData *payload;
 @property (nonatomic, retain) WordPressAppDelegate *appDelegate;
 @property (nonatomic, retain) IBOutlet AutosaveViewController *autosaveView;
+@property (nonatomic, retain) AutosaveManager *autosaveManager;
+@property (nonatomic, retain) DraftManager *draftManager;
 
 - (IBAction)cancelView:(id)sender;
 - (void)refreshUIForCompose;
@@ -111,9 +117,9 @@
 - (UINavigationItem *)navigationItemForEditPost;
 - (IBAction)commentsAction:(id)sender;
 - (IBAction)editAction:(id)sender;
-- (void)dataSave;
 - (void)publish:(id)sender;
-- (void)saveAsDraft:(id)sender;
+- (IBAction)saveAsDraft;
+- (void)saveAsDraft:(BOOL)andDiscard;
 - (IBAction)picturesAction:(id)sender;
 - (IBAction)settingsAction:(id)sender;
 - (IBAction)locationAction:(id)sender;
@@ -131,8 +137,6 @@
 - (void)hideAutosaveButton;
 - (void)checkAutosaves;
 - (void)restoreFromAutosave:(NSNotification *)notification;
-- (void)deleteAutosavesForPost:(Post *)restorePost;
-- (void)deleteAutosavesOlderThan:(NSDate *)date;
 - (void)showAutosaves;
 - (void)hideAutosaves;
 

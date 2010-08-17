@@ -43,6 +43,7 @@ static inline double radians(double degrees) {
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(deviceDidRotate:)
 												 name:@"UIDeviceOrientationDidChangeNotification" object:nil];
+	[postDetailViewController hideAutosaveButton];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

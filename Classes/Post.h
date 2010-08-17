@@ -36,8 +36,9 @@
 @property (nonatomic, retain) NSString * categories;
 @property (nonatomic, retain) NSString * author;
 @property (nonatomic, retain) NSString * uniqueID;
-@property (nonatomic, retain) NSNumber * isDeleted;
+@property (nonatomic, retain) NSNumber * wasDeleted;
 @property (nonatomic, retain) NSNumber * isHidden;
+@property (nonatomic, retain) NSString * note;
 
 - (NSDictionary *)legacyPost;
 

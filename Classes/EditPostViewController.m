@@ -84,6 +84,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+	
     [super viewWillAppear:animated];
 	[self dismissModalViewControllerAnimated:YES];
 	[self syncCategoriesAndStatuses];
@@ -160,7 +162,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[locationButton setNeedsDisplay];
 	
     [self postionTextViewContentView];
-    [self refreshUIForCurrentPost];
 }
 
 - (void)viewDidAppear:(BOOL)animated;
@@ -182,6 +183,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[categoriesTextField resignFirstResponder];
 	[statusTextField resignFirstResponder];
 	[textView resignFirstResponder];
+	[postDetailViewController hideAutosaveButton];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
@@ -212,6 +214,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)refreshUIForCompose {
+	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+	
+	self.navigationItem.title = @"Write";
     titleTextField.text = @"";
     tagsTextField.text = @"";
     textView.text = @"";
@@ -219,35 +224,27 @@ NSTimeInterval kAnimationDuration = 0.3f;
     categoriesTextField.text = @"";
 	statusTextField.text = @"Local Draft";
 	self.isLocalDraft = YES;
+	
+	postDetailViewController.post = [postDetailViewController.draftManager get:nil];
+	[postDetailViewController.post setStatus:@"Local Draft"];
+	postDetailViewController.post.wasLocalDraft = [NSNumber numberWithInt:1];
+	postDetailViewController.post.isLocalDraft = [NSNumber numberWithInt:1];
+	postDetailViewController.post.isPublished = [NSNumber numberWithInt:0];
+	appDelegate.postID = postDetailViewController.post.postID;
+	postDetailViewController.autosaveView.postID = postDetailViewController.post.postID;
 }
 
 - (void)refreshUIForCurrentPost {
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+	AutosaveManager *autosaveManager = [[AutosaveManager alloc] init];
+	DraftManager *draftManager = [[DraftManager alloc] init];
 	
 	if(appDelegate.postID != nil) {
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];   
+		NSLog(@"refreshing for appDelegate.postID: %@", appDelegate.postID);  
 		
-		isLocalDraft = YES;
-		NSFetchRequest *request = [[NSFetchRequest alloc] init];  
-		[request setEntity:entity];
-		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateModified" ascending:NO];  
-		NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];  
-		[request setSortDescriptors:sortDescriptors];  
-		[sortDescriptor release];
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(uniqueID like %@)", appDelegate.postID];
-		[request setPredicate:predicate];  
-		NSError *error;  
-		NSMutableArray *mutableFetchResults = [[appDelegate.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];   
-		
-		if (!mutableFetchResults) {  
-			// Handle the error.  
-			// This is a serious error and should advise the user to restart the application  
-		}   
-		
-		Post *post = [mutableFetchResults objectAtIndex:0];
-		[mutableFetchResults release];
-		[request release];
+		Post *post = [[draftManager get:appDelegate.postID] retain];
+		NSLog(@"post: %@", post);
 		
 		if(post != nil) {
 			postDetailViewController.navigationItem.title = post.postTitle;
@@ -273,7 +270,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		}
 	}
 	else {
-		isLocalDraft = NO;
+		NSLog(@"refreshing for existing post...");
+		self.isLocalDraft = NO;
 		NSString *description = [dm.currentPost valueForKey:@"description"];
 		NSString *moreText = [dm.currentPost valueForKey:@"mt_text_more"];
 		
@@ -312,6 +310,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
 	// Set our initial location so we can determine if the geotag has been updated later
 	[self setInitialLocation:[self getPostLocation]];
+	
+	[draftManager release];
+	[autosaveManager release];
 }
 
 - (void)refreshCurrentPostForUI {
@@ -323,7 +324,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[postDetailViewController.post setCategories:categoriesTextField.text];
 		[postDetailViewController.post setStatus:statusTextField.text];
 		[postDetailViewController.post setContent:textView.text];
-		[postDetailViewController dataSave];
 	}
 }
 
@@ -641,7 +641,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		subView.frame = frame;
 		
 		[UIView commitAnimations];
-		[postDetailViewController viewWillAppear:YES];
+		[postDetailViewController checkAutosaves];
 	}
 }
 

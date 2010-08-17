@@ -24,7 +24,6 @@
 - (void)startTimer;
 - (void)stopTimer;
 
-- (void)saveAsDraft;
 - (void)discard;
 - (void)cancel;
 - (void)conditionalLoadOfTabBarController;//to solve issue with crash when selecting comments tab from "new" (newPost) post editing view
@@ -40,6 +39,7 @@
 @synthesize selectedViewController, videoUploader, toolbar, contentView, commentsButton, photosButton, hasSaved;
 @synthesize settingsButton, editToolbar, cancelEditButton, editModalViewController, post, didConvertDraftToPublished;
 @synthesize payload, connection, urlResponse, urlRequest, appDelegate, autosaveView, autosaveButton, isShowingAutosaves;
+@synthesize autosaveManager, draftManager;
 
 @dynamic leftBarButtonItemForEditPost;
 @dynamic rightBarButtonItemForEditPost;
@@ -50,6 +50,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+	hasSaved = NO;
 	
     if (!saveButton) {
         saveButton = [[UIBarButtonItem alloc] init];
@@ -70,6 +71,8 @@
 	
 	videoUploader = [[WPMediaUploader alloc] initWithNibName:@"WPMediaUploader" bundle:nil];
 	autosaveView = [[AutosaveViewController alloc] initWithNibName:@"AutosaveViewController" bundle:nil];
+	autosaveManager = [[AutosaveManager alloc] init];
+	draftManager = [[DraftManager alloc] init];
 }
 //shouldAutorotateToInterfaceOrientation
 
@@ -308,6 +311,7 @@
 - (IBAction)saveAction:(id)sender {
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	[postDetailEditController bringTextViewDown];
+	hasSaved = YES;
 	
 	if((post != nil) && (post.wasLocalDraft == [NSNumber numberWithInt:1]) && (post.isLocalDraft == [NSNumber numberWithInt:0]))
 		self.didConvertDraftToPublished = YES;
@@ -383,7 +387,6 @@
 						[[BlogDataManager sharedDataManager] makePostWithPostIDCurrent:postId];
 					}
 				}
-				[self dataSave];
 			}
 		}
 
@@ -395,39 +398,37 @@
 
 - (void)autoSaveCurrentPost:(NSTimer *)aTimer {
 	if (hasChanges) {
-		NSLog(@"Autosaving...");
 		BlogDataManager *dm = [BlogDataManager sharedDataManager];
-		post = (Post *)[NSEntityDescription insertNewObjectForEntityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];
-
-		NSString *uniqueID = [[NSProcessInfo processInfo] globallyUniqueString];
-		[post setUniqueID:uniqueID];
-		if(postDetailEditController.isLocalDraft == YES)
-			[post setIsLocalDraft:[NSNumber numberWithInt:1]];
-		else
-			[post setIsLocalDraft:[NSNumber numberWithInt:0]];
-		[post setIsAutosave:[NSNumber numberWithInt:1]];
-		[post setIsHidden:[NSNumber numberWithInt:1]];
-		if([postDetailEditController isPostPublished] == YES)
-			[post setIsPublished:[NSNumber numberWithInt:1]];
-		else
-			[post setIsPublished:[NSNumber numberWithInt:0]];
-		[post setBlogID:[[dm currentBlog] valueForKey:@"blogid"]];
-
-		if([post.postID isEqualToString:@"-1"]) {
-			if(([[dm currentPost] valueForKey:@"postid"] != nil) && (![[[dm currentPost] valueForKey:@"postid"] isEqualToString:@""]))
-				[post setPostID:[[dm currentPost] valueForKey:@"postid"]];
-			else
-				[post setPostID:appDelegate.postID];
-		}
+		Post *autosave = [autosaveManager get:nil];
 		
-		[post setPostTitle:postDetailEditController.titleTextField.text];
-		[post setContent:postDetailEditController.textView.text];
-		[post setDateCreated:[NSDate date]];
-		[post setStatus:postDetailEditController.statusTextField.text];
+		if(postDetailEditController.isLocalDraft == YES)
+			[autosave setIsLocalDraft:[NSNumber numberWithInt:1]];
+		else
+			[autosave setIsLocalDraft:[NSNumber numberWithInt:0]];
+		[autosave setIsAutosave:[NSNumber numberWithInt:1]];
+		[autosave setIsHidden:[NSNumber numberWithInt:1]];
+		if([postDetailEditController isPostPublished] == YES)
+			[autosave setIsPublished:[NSNumber numberWithInt:1]];
+		else
+			[autosave setIsPublished:[NSNumber numberWithInt:0]];
+		[autosave setBlogID:[[dm currentBlog] valueForKey:@"blogid"]];
+
+		if(appDelegate.postID != nil)
+			[autosave setPostID:appDelegate.postID];
+		else if(([[dm currentPost] valueForKey:@"postid"] != nil) && (![[[dm currentPost] valueForKey:@"postid"] isEqualToString:@""]))
+			[autosave setPostID:[[dm currentPost] valueForKey:@"postid"]];
+		else
+			[autosave setPostID:appDelegate.postID];
+		
+		[autosave setPostTitle:postDetailEditController.titleTextField.text];
+		[autosave setContent:postDetailEditController.textView.text];
+		[autosave setDateCreated:[NSDate date]];
+		[autosave setStatus:postDetailEditController.statusTextField.text];
 		if(postSettingsController.passwordTextField.text != nil)
-			[post setPassword:postSettingsController.passwordTextField.text];
-		[post setShouldResizePhotos:[NSNumber numberWithInt:postSettingsController.resizePhotoControl.on]];
-		[self dataSave];
+			[autosave setPassword:postSettingsController.passwordTextField.text];
+		[autosave setShouldResizePhotos:[NSNumber numberWithInt:postSettingsController.resizePhotoControl.on]];
+		NSLog(@"autosaving...");
+		[autosaveManager save:autosave];
 		[self checkAutosaves];
     }
 }
@@ -450,14 +451,6 @@
 	if (hasChanges == NO)
 		[self setRightBarButtonItemForEditPost:nil];
 	
-	if(post == nil) {
-		post = (Post *)[NSEntityDescription insertNewObjectForEntityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];
-		[post setUniqueID:[[NSProcessInfo processInfo] globallyUniqueString]];
-		[post setStatus:@"Local Draft"];
-		post.wasLocalDraft = [NSNumber numberWithInt:1];
-	}
-	[appDelegate setPostID:post.uniqueID];
-	
     [tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
     UIViewController *vc = [[tabController viewControllers] objectAtIndex:0];
     self.title = vc.title;
@@ -476,28 +469,33 @@
 }
 
 - (void)refreshUIForCurrentPost {
-//    [self setRightBarButtonItemForEditPost:nil];
+	autosaveView.postID = appDelegate.postID;
 	
-	if (![[[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"title"] isEqualToString:@""]) {
-		self.navigationItem.title = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"title"];
-	}else{
-		self.navigationItem.title = @"Write";
+	if(post != nil) {
+		
 	}
-
-    [tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
-    UIViewController *vc = [[tabController viewControllers] objectAtIndex:0];
-    self.title = vc.title;
-    [postDetailViewController refreshUIForCurrentPost];
-	// avoid overwriting restored post when list is refreshed and reselected.
-	// this is a bandaid for bug #445
-	if (!DeviceIsPad())
-		[postDetailEditController refreshUIForCurrentPost];
-    [postSettingsController reloadData];
-    //[photosListController refreshData];
-
-	[commentsViewController setIndexForCurrentPost:[[BlogDataManager sharedDataManager] currentPostIndex]];
-	[commentsViewController refreshCommentsList];
-	commentsButton.enabled = ([commentsViewController.commentsArray count] > 0);
+	else {
+		if (![[[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"title"] isEqualToString:@""]) {
+			self.navigationItem.title = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"title"];
+		}else{
+			self.navigationItem.title = @"Write";
+		}
+		
+		[tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
+		UIViewController *vc = [[tabController viewControllers] objectAtIndex:0];
+		self.title = vc.title;
+		[postDetailViewController refreshUIForCurrentPost];
+		// avoid overwriting restored post when list is refreshed and reselected.
+		// this is a bandaid for bug #445
+		if (!DeviceIsPad())
+			[postDetailEditController refreshUIForCurrentPost];
+		[postSettingsController reloadData];
+		//[photosListController refreshData];
+		
+		[commentsViewController setIndexForCurrentPost:[[BlogDataManager sharedDataManager] currentPostIndex]];
+		[commentsViewController refreshCommentsList];
+		commentsButton.enabled = ([commentsViewController.commentsArray count] > 0);
+	}
 
     [self updatePhotosBadge];
 	
@@ -554,14 +552,18 @@
     }
 }
 
-- (void)saveAsDraft {	
-	if(post == nil) {
-		post = (Post *)[NSEntityDescription insertNewObjectForEntityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];
-		NSString *uniqueID = [[NSProcessInfo processInfo] globallyUniqueString];
-		[post setUniqueID:uniqueID];
-		NSLog(@"just set autosave unique ID to: %@", uniqueID);
-	}
+- (IBAction)saveAsDraft {
+	[self saveAsDraft:YES];
+}
+
+- (void)saveAsDraft:(BOOL)andDiscard {
+	hasSaved = YES;
 	
+	if((post != nil) && (appDelegate.postID != nil))
+		post = [draftManager get:appDelegate.postID];
+	else
+		post = [draftManager get:nil];
+	NSLog(@"post is now: %@", post);
 	[post setIsLocalDraft:[NSNumber numberWithInt:1]];
 	[post setWasLocalDraft:[NSNumber numberWithInt:1]];
 	[post setIsAutosave:[NSNumber numberWithInt:0]];
@@ -573,24 +575,20 @@
 	if(postSettingsController.passwordTextField.text != nil)
 		[post setPassword:postSettingsController.passwordTextField.text];
 	[post setShouldResizePhotos:[NSNumber numberWithInt:postSettingsController.resizePhotoControl.on]];
-	[self dataSave];
-    [self discard];
+	[draftManager save:post];
+	[postsListController loadPosts];
+	NSLog(@"post: %@", post);
+	
+	if(andDiscard == YES)
+		[self discard];
 }
 
 - (void)discard {
     hasChanges = NO;
     self.rightBarButtonItemForEditPost = nil;
-	self.post = nil;
+	[self setPost:nil];
     [self stopTimer];
 	[self dismissEditView];
-}
-
-- (void)dataSave {
-    NSError *error;
-    if (![appDelegate.managedObjectContext save:&error]) {
-        NSLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
-        exit(-1);
-    }
 }
 
 - (void)cancel {
@@ -828,12 +826,6 @@
 	[self saveAction:sender];
 }
 
-- (void)saveAsDraft:(id)sender {
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	[dm.currentPost setObject:@"draft" forKey:@"post_status"];
-	[self saveAction:sender];
-}
-
 - (void)setRightBarButtonItemForEditPost:(UIBarButtonItem *)item;
 {
 	if (DeviceIsPad() == NO) {
@@ -953,6 +945,8 @@
 // TODO: Move Autosave data methods to their own class
 
 - (IBAction)toggleAutosaves:(id)sender {
+	mode = editPost;
+	
 	if(self.isShowingAutosaves == NO)
 		[self showAutosaves];
 	else
@@ -960,7 +954,8 @@
 }
 
 - (void)showAutosaves {
-	[autosaveView refreshTable];
+	autosaveView.postID = appDelegate.postID;
+	[autosaveView resetAutosaves];
 	[UIView beginAnimations:nil context:nil];
 	[UIView setAnimationDuration:1.0];
 	[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight
@@ -1014,198 +1009,68 @@
 
 - (void)checkAutosaves {
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	NSString *postID;
 	if(([[dm currentPost] valueForKey:@"postid"] != nil) && (![[[dm currentPost] valueForKey:@"postid"] isEqualToString:@""])) {
-		postID = [[dm currentPost] valueForKey:@"postid"];
-	}
-	else {
-		postID = appDelegate.postID;
+		appDelegate.postID = [[dm currentPost] valueForKey:@"postid"];
 	}
 	
-	if((postID != nil) && (appDelegate.managedObjectContext != nil)) {
-		// Define our table/entity to use  
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];   
-		
-		// Setup the fetch request  
-		NSFetchRequest *request = [[NSFetchRequest alloc] init];  
-		[request setEntity:entity];   
-		
-		// Define how we will sort the records  
-		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];  
-		NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];  
-		[request setSortDescriptors:sortDescriptors];  
-		[sortDescriptor release];
-			
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:
-								  @"(isAutosave == YES) AND (isDeleted == NO) AND (postID like %@)", postID];
-		[request setPredicate:predicate];	
-		
-		// Fetch the records and handle an error  
-		NSError *error;  
-		NSMutableArray *mutableFetchResults = [[appDelegate.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];   
-		
-		if (!mutableFetchResults) {  
-			// Handle the error.  
-			// This is a serious error and should advise the user to restart the application  
-		}
-		
-		if(mutableFetchResults.count > 0) {
-			[autosaveView.autosaves removeAllObjects];
-			for (NSManagedObject *obj in mutableFetchResults) {
-				Post *autosave = (Post *)[obj retain];
-				[autosaveView.autosaves addObject:autosave];
-			}
-			if(mutableFetchResults.count > 7) {
-				Post *lastPost = (Post *)[mutableFetchResults objectAtIndex:6];
-				NSLog(@"Deleting posts older than: %@", lastPost.dateCreated);
-				[self deleteAutosavesOlderThan:lastPost.dateCreated];
-			}
+	if((appDelegate.postID != nil) && (appDelegate.managedObjectContext != nil)) {
+		[autosaveView setPostID:appDelegate.postID];
+		[autosaveView resetAutosaves];
+		NSLog(@"about to call the autosave if line...");
+		if(([autosaveView autosaves] != nil) && ([[autosaveView autosaves] count] > 0)) {
+			NSLog(@"successfully called the autosave if line...");
 			[self showAutosaveButton];
 		}
 		else
 			[self hideAutosaveButton];
-		
-		// Save our fetched data to an array
-		[mutableFetchResults release];
-		[request release];
 	}
 }
 
 - (void)restoreFromAutosave:(NSNotification *)notification {
 	NSDictionary *restoreData = [notification userInfo];
-	NSString *uniqueID = [restoreData objectForKey:@"uniqueID"];
+	NSString *uniqueID = [restoreData objectForKey:@"uniqueID"];	
+	Post *autosave = [autosaveManager get:uniqueID];
 	
-	// Define our table/entity to use  
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];   
-	
-	// Setup the fetch request  
-	NSFetchRequest *request = [[NSFetchRequest alloc] init];  
-	[request setEntity:entity];   
-	
-	// Define how we will sort the records  
-	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];  
-	NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];  
-	[request setSortDescriptors:sortDescriptors];  
-	[sortDescriptor release];
-	
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:
-							  @"(isAutosave == YES) AND (isDeleted == NO) AND (uniqueID like %@)", uniqueID];
-	[request setPredicate:predicate];	
-	
-	// Fetch the records and handle an error  
-	NSError *error;  
-	NSMutableArray *mutableFetchResults = [[appDelegate.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];   
-	
-	if (!mutableFetchResults) {  
-		// Handle the error.  
-		// This is a serious error and should advise the user to restart the application  
-	}
-	
-	if(mutableFetchResults.count > 0) {
-		Post *restorePost = [mutableFetchResults objectAtIndex:0];
-		
-		if([restorePost.isLocalDraft isEqualToNumber:[NSNumber numberWithInt:1]]) {
-			appDelegate.postID = restorePost.uniqueID;
+	//appDelegate.postID = autosave.uniqueID;
+//	[postDetailEditController refreshUIForCurrentPost];
+	if(autosave != nil) {
+		if([autosave.isPublished isEqualToNumber:[NSNumber numberWithInt:0]]) {
+			[post setPostTitle:autosave.postTitle];
+			[post setContent:autosave.content];
+			[post setTags:autosave.tags];
+			[post setCategories:autosave.categories];
+			[post setStatus:autosave.status];
+			[post setPostID:autosave.postID];
 			[postDetailEditController refreshUIForCurrentPost];
 		}
 		else {
-			NSLog(@"restorePost: %@", restorePost);
 			BlogDataManager *dm = [BlogDataManager sharedDataManager];
-			[dm makePostWithPostIDCurrent:restorePost.postID];
-			NSLog(@"dm.currentPost: %@", [dm currentPost]);
-			if(restorePost.postTitle != nil)
-				[[dm currentPost] setObject:restorePost.postTitle forKey:@"title"];
-			if(restorePost.content != nil)
-				[[dm currentPost] setObject:restorePost.content forKey:@"description"];
-			if(restorePost.tags != nil)
-				[[dm currentPost] setObject:restorePost.tags forKey:@"mt_keywords"];
-			if(restorePost.categories != nil)
-				[[dm currentPost] setObject:[restorePost.categories componentsSeparatedByString:@", "] forKey:@"categories"];
-			if(restorePost.status != nil)
-				[[dm currentPost] setObject:restorePost.status forKey:@"post_status"];
+			[dm makePostWithPostIDCurrent:autosave.postID];
+			if(autosave.postTitle != nil)
+				[[dm currentPost] setObject:autosave.postTitle forKey:@"title"];
+			if(autosave.content != nil)
+				[[dm currentPost] setObject:autosave.content forKey:@"description"];
+			if(autosave.tags != nil)
+				[[dm currentPost] setObject:autosave.tags forKey:@"mt_keywords"];
+			if(autosave.categories != nil)
+				[[dm currentPost] setObject:[autosave.categories componentsSeparatedByString:@", "] forKey:@"categories"];
+			if(autosave.status != nil) {
+				autosave.status = [dm statusDescriptionForStatus:autosave.status fromBlog:[dm currentBlog]];
+				[[dm currentPost] setValue:autosave.status forKey:@"post_status"];
+			}
 			
 			[self refreshUIForCurrentPost];
 		}
 		
 		[self refreshUIForCurrentPost];
-		[self deleteAutosavesForPost:restorePost];
+		[autosaveManager removeAllForPostID:autosave.postID];
 		[autosaveView resetAutosaves];
 		[self toggleAutosaves:self];
 		[self hideAutosaveButton];
 	}
-	[mutableFetchResults release];
-	[request release];
 	
 	hasChanges = YES;
 	self.rightBarButtonItemForEditPost = saveButton;
-}
-
-- (void)deleteAutosavesForPost:(Post *)restorePost {
-	// Define our table/entity to use  
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];   
-	
-	// Setup the fetch request  
-	NSFetchRequest *request = [[NSFetchRequest alloc] init];  
-	[request setEntity:entity];   
-	
-	// Define how we will sort the records  
-	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];  
-	NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];  
-	[request setSortDescriptors:sortDescriptors];  
-	[sortDescriptor release];
-	
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:
-							  @"(isAutosave == YES) AND (postID like %@)", restorePost.postID];
-	[request setPredicate:predicate];	
-	
-	// Fetch the records and handle an error  
-	NSError *error;  
-	NSMutableArray *mutableFetchResults = [[appDelegate.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];   
-	
-	if (!mutableFetchResults) {  
-		// Handle the error.  
-		// This is a serious error and should advise the user to restart the application  
-	}
-	
-	for(NSManagedObject *obj in mutableFetchResults) {
-		Post *deletePost = (Post *)obj;
-		if(deletePost.uniqueID != restorePost.uniqueID)
-			[appDelegate.managedObjectContext deleteObject:obj];
-	}
-	[self dataSave];
-}
-
-- (void)deleteAutosavesOlderThan:(NSDate *)date {
-	// Define our table/entity to use  
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];   
-	
-	// Setup the fetch request  
-	NSFetchRequest *request = [[NSFetchRequest alloc] init];  
-	[request setEntity:entity];   
-	
-	// Define how we will sort the records  
-	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];  
-	NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];  
-	[request setSortDescriptors:sortDescriptors];  
-	[sortDescriptor release];
-	
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:
-							  @"(isAutosave == YES) AND (dateCreated > %@)", date];
-	[request setPredicate:predicate];	
-	
-	// Fetch the records and handle an error  
-	NSError *error;  
-	NSMutableArray *mutableFetchResults = [[appDelegate.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];   
-	
-	if (!mutableFetchResults) {  
-		// Handle the error.  
-		// This is a serious error and should advise the user to restart the application  
-	}
-	
-	for(NSManagedObject *obj in mutableFetchResults) {
-		[appDelegate.managedObjectContext deleteObject:obj];
-	}
-	[appDelegate.managedObjectContext processPendingChanges];
 }
 
 #pragma mark -
@@ -1331,6 +1196,8 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
+	[autosaveManager release];
+	[draftManager release];
 	[autosaveButton release];
 	[autosaveView release];
 	[payload release];

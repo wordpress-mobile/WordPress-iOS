@@ -145,6 +145,7 @@
     }
 
     if (indexPath.section == LOCAL_DRAFTS_SECTION) {
+		NSLog(@"drafts.count: %d", drafts.count);
 		cell.post = [[drafts objectAtIndex:indexPath.row] legacyPost];
     } 
 	else {
@@ -168,8 +169,7 @@
 				}
 			}
 			else {
-				if([[dm postTitleAtIndex:indexPath.row] class] != [NSNumber class])
-					[cell setPost:[dm postTitleAtIndex:indexPath.row]];
+				[cell setPost:[dm postTitleAtIndex:indexPath.row]];
 			}
 		}
     }
