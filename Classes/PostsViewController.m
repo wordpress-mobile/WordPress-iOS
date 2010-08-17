@@ -178,7 +178,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
+    BlogDataManager *dm = [BlogDataManager sharedDataManager];
     WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
 	
 	postDetailViewController = nil;
@@ -193,10 +193,11 @@
 		Post *post = [[self drafts] objectAtIndex:indexPath.row];
 		[appDelegate setPostID:[post uniqueID]];
 		self.selectedIndexPath = indexPath;
+		[dm resetCurrentPost];
     } 
 	else {
 		//handle the case when it's the last row and is the "get more posts" special cell
-		if (indexPath.row == [[BlogDataManager sharedDataManager] countOfPostTitles]) {
+		if (indexPath.row == [dm countOfPostTitles]) {
 			NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
 			//run the spinner in the background and change the text
@@ -232,7 +233,7 @@
 
 		}
 
-        id currentPost = [dataManager postTitleAtIndex:indexPath.row];
+        id currentPost = [dm postTitleAtIndex:indexPath.row];
 
         // Bail out if we're in the middle of saving the post.
         if ([[currentPost valueForKey:kAsyncPostFlag] intValue] == 1) {
@@ -240,9 +241,7 @@
             return;
         }
 
-        [dataManager makePostAtIndexCurrent:indexPath.row];
-		if(indexPath.section == LOCAL_DRAFTS_SECTION)
-			[appDelegate setPostID:[[dataManager currentPost] objectForKey:@"postid"]];
+        [dm makePostAtIndexCurrent:indexPath.row];
 		
         postDetailViewController.postsListController = self;
 		self.selectedIndexPath = indexPath;

@@ -240,7 +240,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	AutosaveManager *autosaveManager = [[AutosaveManager alloc] init];
 	DraftManager *draftManager = [[DraftManager alloc] init];
 	
-	if(appDelegate.postID != nil) {
+	if(([[dm currentPost] objectForKey:@"postid"] == nil) && (appDelegate.postID != nil) && (appDelegate.postID.length > 6)) {
 		NSLog(@"refreshing for appDelegate.postID: %@", appDelegate.postID);  
 		
 		Post *post = [[draftManager get:appDelegate.postID] retain];

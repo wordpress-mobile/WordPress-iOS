@@ -1031,8 +1031,6 @@
 	NSString *uniqueID = [restoreData objectForKey:@"uniqueID"];	
 	Post *autosave = [autosaveManager get:uniqueID];
 	
-	//appDelegate.postID = autosave.uniqueID;
-//	[postDetailEditController refreshUIForCurrentPost];
 	if(autosave != nil) {
 		if([autosave.isPublished isEqualToNumber:[NSNumber numberWithInt:0]]) {
 			[post setPostTitle:autosave.postTitle];
@@ -1045,6 +1043,8 @@
 		}
 		else {
 			BlogDataManager *dm = [BlogDataManager sharedDataManager];
+			NSLog(@"autosave.postID: %@", autosave.postID);
+			appDelegate.postID = autosave.postID;
 			[dm makePostWithPostIDCurrent:autosave.postID];
 			if(autosave.postTitle != nil)
 				[[dm currentPost] setObject:autosave.postTitle forKey:@"title"];
@@ -1059,10 +1059,9 @@
 				[[dm currentPost] setValue:autosave.status forKey:@"post_status"];
 			}
 			
-			[self refreshUIForCurrentPost];
+			NSLog(@"[dm currentPost]: %@", [dm currentPost]);
+			[postDetailEditController refreshUIForCurrentPost];
 		}
-		
-		[self refreshUIForCurrentPost];
 		[autosaveManager removeAllForPostID:autosave.postID];
 		[autosaveView resetAutosaves];
 		[self toggleAutosaves:self];
