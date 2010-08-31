@@ -100,7 +100,7 @@
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
-			<string>Media</string>
+			<string>Images</string>
 		</dict>
 		<dict>
 			<key>Type</key>
@@ -117,6 +117,7 @@
 				<string>1</string>
 				<string>2</string>
 				<string>3</string>
+				<string>4</string>
 			</array>
 			<key>Titles</key>
 			<array>
@@ -124,6 +125,7 @@
 				<string>Small</string>
 				<string>Medium</string>
 				<string>Large</string>
+				<string>Disabled</string>
 			</array>
 		</dict>
 	</array>

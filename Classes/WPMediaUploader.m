@@ -60,7 +60,7 @@
 	XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[xmlrpcParams valueForKey:kURL]]];
 	[xmlrpcRequest setMethod:[xmlrpcParams valueForKey:kMETHOD] withObjects:[xmlrpcParams valueForKey:kMETHODARGS]];
 	[xmlrpcParams release];
-	NSLog(@"xmlrpcRequest: %@", xmlrpcRequest);
+	//NSLog(@"xmlrpcRequest: %@", xmlrpcRequest);
 	
 	NSLog(@"Creating URL request...");
 	[self createURLRequest:xmlrpcRequest];

@@ -96,12 +96,12 @@
 			else
 				cell.textLabel.text = media.filename;
 			NSString *filesizeString = nil;
-			if([media.filesize intValue] > 1024)
-				filesizeString = [NSString stringWithFormat:@"%d MB", ([media.filesize intValue]/1024)];
+			if([media.filesize floatValue] > 1024)
+				filesizeString = [NSString stringWithFormat:@"%.2f MB", ([media.filesize floatValue]/1024)];
 			else
-				filesizeString = [NSString stringWithFormat:@"%d KB", [media.filesize intValue]];
+				filesizeString = [NSString stringWithFormat:@"%.2f KB", [media.filesize floatValue]];
 			
-			cell.detailTextLabel.text = [NSString stringWithFormat:@"%d x %d pixels. %@", 
+			cell.detailTextLabel.text = [NSString stringWithFormat:@"%d x %d %@", 
 										 [media.width intValue], [media.height intValue], filesizeString];
 			break;
 		case 1:
@@ -309,21 +309,22 @@
 	else if(isShowingResizeActionSheet == YES) {
 		switch (buttonIndex) {
 			case 0:
+				[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
 				[self useImage:[self resizeImage:currentImage toSize:kResizeSmall]];
 				break;
 			case 1:
+				[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
 				[self useImage:[self resizeImage:currentImage toSize:kResizeMedium]];
 				break;
 			case 2:
+				[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
 				[self useImage:[self resizeImage:currentImage toSize:kResizeLarge]];
 				break;
 			default:
+				[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
 				[self useImage:currentImage];
 				break;
 		}
-		NSLog(@"set orientation to: %d", self.currentOrientation);
-		[self processRecordedVideo];
-		[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
 	}
 	else {
         [appDelegate setAlertRunning:NO];
@@ -406,7 +407,7 @@
 	isShowingResizeActionSheet = YES;
 	UIActionSheet *resizeActionSheet = [[UIActionSheet alloc] initWithTitle:@"Resize image?" 
 																		delegate:self 
-															   cancelButtonTitle:@"Cancel" 
+															   cancelButtonTitle:@"Use Original" 
 														  destructiveButtonTitle:nil 
 															   otherButtonTitles:@"Small", @"Medium", @"Large", nil];
 	[resizeActionSheet showInView:super.tabBarController.view];
@@ -448,6 +449,9 @@
 				break;
 			case 3:
 				[self useImage:[self resizeImage:currentImage toSize:kResizeLarge]];
+				break;
+			case 4:
+				[self useImage:currentImage];
 				break;
 			default:
 				[self showResizeActionSheet];
