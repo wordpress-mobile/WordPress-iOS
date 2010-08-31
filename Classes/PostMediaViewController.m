@@ -27,7 +27,6 @@
 	photos = [[NSMutableArray alloc] init];
 	videos = [[NSMutableArray alloc] init];
 	
-	[self performSelectorInBackground:@selector(checkVideoEnabled) withObject:nil];
 	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
 	self.picker = [[UIImagePickerController alloc] init];
 	self.picker.delegate = self;
@@ -45,6 +44,7 @@
 	
 	[self refreshMedia];
 	
+	[self performSelectorInBackground:@selector(checkVideoEnabled) withObject:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:VideoUploadSuccessful object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:ImageUploadSuccessful object:nil];
 }
@@ -728,7 +728,8 @@
 
 - (BOOL)supportsVideo {
 	if(([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] == YES) && 
-	   ([[UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera] containsObject:(NSString *)kUTTypeMovie]))
+	   ([[UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera] containsObject:(NSString *)kUTTypeMovie]) && 
+	   (self.videoEnabled == YES))
 		return YES;
 	else
 		return NO;
@@ -763,95 +764,45 @@
 - (void)checkVideoEnabled {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	//NSRange isWPcomBlog = [[[[[BlogDataManager sharedDataManager] currentBlog] objectForKey:@"url"] lowercaseString] 
-//						   rangeOfString:[@"wordpress.com" lowercaseString]];
-//	if(isWPcomBlog.location != NSNotFound) {
-//		// Build our XML-RPC request
-//		NSLog(@"Setting parameters...");
-//		NSMutableDictionary *mediaParams = [NSMutableDictionary dictionary];
-//		
-//		if(mediaType == kImage) {
-//			[mediaParams setValue:@"image/jpeg" forKey:@"type"];
-//			self.messageLabel.text = @"Uploading image...";
-//		}
-//		else if(mediaType == kVideo) {
-//			[mediaParams setValue:@"video/quicktime" forKey:@"type"];
-//			self.messageLabel.text = @"Uploading video...";
-//		}
-//		[self.messageLabel setNeedsLayout];
-//		
-//		[mediaParams setValue:filename forKey:@"name"];
-//		[mediaParams setValue:bits forKey:@"bits"];
-//		
-//		NSLog(@"Setting arguments...");
-//		NSArray *args = [NSArray arrayWithObjects:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:kBlogId],
-//						 [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"username"],
-//						 [[BlogDataManager sharedDataManager] getPasswordFromKeychainInContextOfCurrentBlog:[[BlogDataManager sharedDataManager] currentBlog]],
-//						 mediaParams, nil];
-//		
-//		NSLog(@"Setting xmlrpc parameters...");
-//		NSMutableDictionary *xmlrpcParams = [[NSMutableDictionary alloc] init];
-//		[xmlrpcParams setObject:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"xmlrpc"] forKey:kURL];
-//		[xmlrpcParams setObject:@"metaWeblog.newMediaObject" forKey:kMETHOD];
-//		[xmlrpcParams setObject:args forKey:kMETHODARGS];
-//		
-//		// Execute the XML-RPC request
-//		NSLog(@"Executing xmlrpc request...");
-//		XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[xmlrpcParams valueForKey:kURL]]];
-//		[xmlrpcRequest setMethod:[xmlrpcParams valueForKey:kMETHOD] withObjects:[xmlrpcParams valueForKey:kMETHODARGS]];
-//		[xmlrpcParams release];
-//		//NSLog(@"xmlrpcRequest: %@", xmlrpcRequest);
-//		
-//		[self createURLRequest:xmlrpcRequest];
-//		connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
-//		if (connection) {
-//			NSLog(@"Creating payload...");
-//			payload = [[NSMutableData data] retain];
-//		}
-//		else {
-//			UIAlertView *alert = [[UIAlertView alloc] init];
-//			[alert addButtonWithTitle:@"OK"];
-//			[alert setTitle:@"Unable to start upload."];
-//			[alert show];
-//			[alert release];
-//		}
-//		[xmlrpcRequest release];
-//	}
-//	else
-//		videoEnabled = YES;
+	@try {
+		NSArray *args = [NSArray arrayWithObjects:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:kBlogId],
+						 [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"username"],
+						 [[BlogDataManager sharedDataManager] getPasswordFromKeychainInContextOfCurrentBlog:[[BlogDataManager sharedDataManager] currentBlog]], nil];
+		
+		NSMutableDictionary *xmlrpcParams = [[NSMutableDictionary alloc] init];
+		[xmlrpcParams setObject:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"xmlrpc"] forKey:kURL];
+		[xmlrpcParams setObject:@"wpcom.getFeatures" forKey:kMETHOD];
+		[xmlrpcParams setObject:args forKey:kMETHODARGS];
+		
+		XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[xmlrpcParams valueForKey:kURL]]];
+		[request setMethod:[xmlrpcParams valueForKey:kMETHOD] withObjects:[xmlrpcParams valueForKey:kMETHODARGS]];
+		[xmlrpcParams release];
+		
+		XMLRPCResponse *response = [XMLRPCConnection sendSynchronousXMLRPCRequest:request];
+		if(([response.object isKindOfClass:[NSDictionary class]] == YES) && ([response.object objectForKey:@"videopress_enabled"] != nil))
+			self.videoEnabled = [[response.object objectForKey:@"videopress_enabled"] boolValue];
+		else if(([response.object isKindOfClass:[NSDictionary class]] == YES) && ([response.object objectForKey:@"faultCode"] != nil)) {
+			if([[response.object objectForKey:@"faultCode"] intValue] == -32601)
+				self.videoEnabled = YES;
+			else
+				self.videoEnabled = NO;
+		}
+		else
+			self.videoEnabled = YES;
+		
+		[request release];
+	}
+	@catch (NSException * e) {
+		self.videoEnabled = YES;
+	}
+	@finally {
+		if(self.videoEnabled)
+			NSLog(@"Video enabled!");
+		else
+			NSLog(@"Video disabled!");
+	}
 	
 	[pool release];
-}
-
-- (void)createURLRequest:(XMLRPCRequest *)xmlrpc {
-	//NSMutableURLRequest *_request = [[NSMutableURLRequest alloc] initWithURL:xmlrpc.host];
-//	NSNumber *length = [NSNumber numberWithInt:[bits length]];
-//	
-//	if (bits != nil) {
-//		[_request setHTTPMethod: @"POST"];
-//		
-//		if ([_request valueForHTTPHeaderField: @"Content-Length"] == nil)
-//		{
-//			[_request addValue: @"text/xml" forHTTPHeaderField: @"Content-Type"];
-//		}
-//		else
-//		{
-//			[_request setValue: @"text/xml" forHTTPHeaderField: @"Content-Type"];
-//		}
-//		
-//		if ([_request valueForHTTPHeaderField: @"Content-Length"] == nil)
-//		{
-//			[_request addValue: [length stringValue] forHTTPHeaderField: @"Content-Length"];
-//		}
-//		else
-//		{
-//			[_request setValue: [length stringValue] forHTTPHeaderField: @"Content-Length"];
-//		}
-//		
-//		[_request setHTTPBody: bits];
-//		
-//		urlRequest = (NSURLRequest *)_request;
-//	}
 }
 
 #pragma mark -
