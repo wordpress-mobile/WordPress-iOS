@@ -13,8 +13,9 @@
 	IBOutlet UILabel *messageLabel;
 	IBOutlet UIProgressView *progressView;
 	
+	MediaType mediaType;
 	NSString *filename;
-	NSData *video;
+	NSData *bits;
 	float filesize;
 	MediaOrientation orientation;
 	
@@ -26,10 +27,11 @@
 
 @property (nonatomic, retain) IBOutlet UILabel *messageLabel;
 @property (nonatomic, retain) IBOutlet UIProgressView *progressView;
+@property (nonatomic, assign) MediaType mediaType;
 @property (nonatomic, retain) NSString *filename;
 @property (nonatomic, assign) float filesize;
 @property (nonatomic, assign) MediaOrientation orientation;
-@property (nonatomic, retain) NSData *video;
+@property (nonatomic, retain) NSData *bits;
 @property (nonatomic, retain) NSURLConnection *connection;
 @property (nonatomic, retain) NSURLRequest *urlRequest;
 @property (nonatomic, retain) NSURLResponse *urlResponse;

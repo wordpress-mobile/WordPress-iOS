@@ -29,6 +29,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
+	self.navigationItem.title = @"Write";
 	statuses = [NSArray arrayWithObjects:@"Local Draft", @"Draft", @"Private", @"Pending Review", @"Published", nil];
     titleTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
     tagsTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
@@ -51,6 +52,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [leftView setTarget:self withAction:@selector(cancelView:)];
 	
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newCategoryCreatedNotificationReceived:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(imageUploadedNofificationReceived:) name:ImageUploadSuccessful object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoUploadedNofificationReceived:) name:VideoUploadSuccessful object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkAutosaves:) name:@"AutosaveNotification" object:nil];
 	//[self hideAutosaveButton];
@@ -81,10 +83,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 	}
+	
+	[self restoreUnsavedPost];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+	//WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	
     [super viewWillAppear:animated];
 	[self dismissModalViewControllerAnimated:YES];
@@ -162,6 +166,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[locationButton setNeedsDisplay];
 	
     [self postionTextViewContentView];
+	[postDetailViewController checkAutosaves];
+	postDetailViewController.navigationItem.title = @"Write";
 }
 
 - (void)viewDidAppear:(BOOL)animated;
@@ -176,7 +182,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-	[self refreshUIForCompose];
 	[self dismissModalViewControllerAnimated:YES];
 	[titleTextField resignFirstResponder];
 	[tagsTextField resignFirstResponder];
@@ -364,7 +369,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			[[CPopoverManager instance] setCurrentPopoverController:popover];
 		} else {
 			[self refreshCurrentPostForUI];
-			postDetailViewController.mode = editPost;
+			postDetailViewController.editMode = kEditPost;
 			[postDetailViewController.navigationController pushViewController:segmentedTableViewController animated:YES];
 		}
     }
@@ -531,6 +536,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
     [selctionController clean];
     postDetailViewController.hasChanges = YES;
+	[self preserveUnsavedPost];
 }
 
 - (void)newCategoryCreatedNotificationReceived:(NSNotification *)notification {
@@ -627,6 +633,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		
 		[UIView commitAnimations];
 	}
+	[self preserveUnsavedPost];
 }
 
 - (void)bringTextViewDown {
@@ -646,12 +653,14 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[UIView commitAnimations];
 		[postDetailViewController checkAutosaves];
 	}
+	[self preserveUnsavedPost];
 }
 
 - (void)updateTextViewPlacehoderFieldStatus {
     if ([textView.text length] == 0) {
         textViewPlaceHolderField.hidden = NO;
-    } else {
+    }
+	else {
         textViewPlaceHolderField.hidden = YES;
     }
 }
@@ -916,6 +925,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         [delegate setAlertRunning:YES];
         [linkAlert release];
     }
+	[self preserveUnsavedPost];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)aTextView {
@@ -948,6 +958,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			[barItem release];
 		}
     }
+	[self preserveUnsavedPost];
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField;
@@ -977,6 +988,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if (postDetailViewController.navigationItem.leftBarButtonItem.style == UIBarButtonItemStyleDone) {
         [self textViewDidEndEditing:textView];
     }
+	[self preserveUnsavedPost];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
@@ -986,6 +998,84 @@ NSTimeInterval kAnimationDuration = 0.3f;
         [[BlogDataManager sharedDataManager].currentPost setValue:textField.text forKey:@"title"];
 	else if (textField == tagsTextField)
         [[BlogDataManager sharedDataManager].currentPost setValue:tagsTextField.text forKey:@"mt_keywords"];
+	
+	[self preserveUnsavedPost];
+}
+
+- (void)preserveUnsavedPost {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	BOOL hasUnsavedPost = NO;
+	
+	if([titleTextField.text isEqualToString:@""] == NO) {
+		[defaults setObject:titleTextField.text forKey:@"unsavedpost_title"];
+		hasUnsavedPost = YES;
+	}
+	
+	if([tagsTextField.text isEqualToString:@""] == NO){
+		[defaults setObject:tagsTextField.text forKey:@"unsavedpost_tags"];
+		hasUnsavedPost = YES;
+	}
+	
+	if([categoriesTextField.text isEqualToString:@""] == NO) {
+		[defaults setObject:categoriesTextField.text forKey:@"unsavedpost_categories"];
+		hasUnsavedPost = YES;
+	}
+	
+	if([statusTextField.text isEqualToString:@""] == NO) {
+		[defaults setObject:statusTextField.text forKey:@"unsavedpost_status"];
+		hasUnsavedPost = YES;	
+	}
+	
+	if([textView.text isEqualToString:@""] == NO) {
+		[defaults setObject:textView.text forKey:@"unsavedpost_content"];
+		hasUnsavedPost = YES;
+	}
+	
+	if(hasUnsavedPost == YES)
+		[defaults setBool:YES forKey:@"unsavedpost_ihasone"];
+}
+
+- (void)clearUnsavedPost {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	
+	[defaults removeObjectForKey:@"unsavedpost_title"];
+	[defaults removeObjectForKey:@"unsavedpost_tags"];
+	[defaults removeObjectForKey:@"unsavedpost_categories"];
+	[defaults removeObjectForKey:@"unsavedpost_status"];
+	[defaults removeObjectForKey:@"unsavedpost_content"];
+	[defaults removeObjectForKey:@"unsavedpost_ihasone"];
+}
+
+- (void)restoreUnsavedPost {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	
+	if([defaults boolForKey:@"unsavedpost_ihasone"] == YES) {
+		if ([defaults objectForKey:@"unsavedpost_title"] != nil) {
+			[[BlogDataManager sharedDataManager].currentPost setValue:[defaults objectForKey:@"unsavedpost_title"] forKey:@"title"];
+			titleTextField.text = [defaults objectForKey:@"unsavedpost_title"];
+		}
+		
+		if ([defaults objectForKey:@"unsavedpost_tags"] != nil) {
+			[[BlogDataManager sharedDataManager].currentPost setValue:[defaults objectForKey:@"unsavedpost_tags"] forKey:@"mt_keywords"];
+			tagsTextField.text = [defaults objectForKey:@"unsavedpost_tags"];
+		}
+		
+		if ([defaults objectForKey:@"unsavedpost_categories"] != nil) {
+			categoriesTextField.text = [defaults objectForKey:@"unsavedpost_categories"];
+		}
+		
+		if ([defaults objectForKey:@"unsavedpost_status"] != nil) {
+			statusTextField.text = [defaults objectForKey:@"unsavedpost_status"];
+		}
+		
+		if ([defaults objectForKey:@"unsavedpost_content"] != nil) {
+			textView.text = [defaults objectForKey:@"unsavedpost_content"];
+			textViewPlaceHolderField.hidden = YES;
+		}
+		postDetailViewController.hasChanges = YES;
+	}
+	
+	[self clearUnsavedPost];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -1039,6 +1129,57 @@ NSTimeInterval kAnimationDuration = 0.3f;
     NSString *curText = textView.text;
     curText = (curText == nil ? @"" : curText);
     textView.text = [curText stringByAppendingString:[NSString stringWithFormat:@"<img src=\"%@\" alt=\"\" />", pictureURL]];
+}
+
+- (void)imageUploadedNofificationReceived:(NSNotification *)notification {
+//    NSDictionary *videoMeta = [notification userInfo];
+//    NSString *currentText = textView.text;
+//	MediaOrientation videoOrientation = kPortrait;
+//	if(([videoMeta objectForKey:@"orientation"] != nil) && ([videoMeta objectForKey:@"orientation"] == [NSNumber numberWithInt:1]))
+//		videoOrientation = kLandscape;
+//	
+//	NSString *html = @"";
+//	if(currentText == nil)
+//		currentText = html;
+//	if([videoMeta objectForKey:@"shortcode"] != nil)
+//		html = [videoMeta objectForKey:@"shortcode"];
+//	else if([videoMeta objectForKey:@"url"] != nil) {
+//		NSString *width = @"360";
+//		NSString *height = @"496";
+//		if(videoOrientation == kLandscape) {
+//			width = @"480";
+//			height = @"376";
+//		}
+//		
+//		if([[UIDevice currentDevice] model] == IPHONE_3GS_NAMESTRING) {
+//			// Leaving this as is until I have better data about iPhone 4 vs. 3GS video size
+//			width = @"360";
+//			height = @"496";
+//			if(videoOrientation == kLandscape) {
+//				width = @"480";
+//				height = @"376";
+//			}
+//		}
+//		
+//		NSString *url = [videoMeta objectForKey:@"url"];
+//		html = [NSString stringWithFormat:@"<object width=\"%@\" height=\"%@\""
+//				"classid=\"clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B\""
+//				"codebase=\"http://www.apple.com/qtactivex/qtplugin.cab\">"
+//				"<param name=\"src\" value=\"%@\">"
+//				"<param name=\"autoplay\" value=\"false\">"
+//				"<param name=\"controller\" value=\"true\">"
+//				"<embed src=\"%@\" width=\"%@\" height=\"%@\""
+//				"autoplay=\"false\" controller=\"true\" type=\"video/quicktime\""
+//				"pluginspage=\"http://www.apple.com/quicktime/download/\">"
+//				"</embed></object>",
+//				width, height, url,
+//				url, width, height];
+//	}
+//	
+//	if(![textView.text isEqualToString:@""])
+//		html = [NSString stringWithFormat:@"<br/>%@", html];
+//	textView.text = [currentText stringByAppendingString:html];
+//	[[BlogDataManager sharedDataManager].currentPost setValue:@"YES" forKey:@"hasChanges"];
 }
 
 - (void)videoUploadedNofificationReceived:(NSNotification *)notification {

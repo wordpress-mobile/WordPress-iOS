@@ -28,7 +28,7 @@
 NSTimeInterval kAnimationDuration1 = 0.3f;
 
 @implementation EditPageViewController
-@synthesize mode, selectionTableViewController, pageDetailsController, photosListController, customFieldsTableView;
+@synthesize editMode, selectionTableViewController, pageDetailsController, photosListController, customFieldsTableView;
 @synthesize infoText, urlField, selectedLinkRange, currentEditingTextField, isEditing, isCustomFieldsEnabledForThisPage;
 @synthesize customFieldsEditCell;
 
@@ -102,8 +102,9 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
    // pageDetailsController.hasChanges = NO;
  
 
-    if (mode == editPage)
-        [self refreshUIForCurrentPage];else if (mode == newPage)
+    if(self.editMode == kEditPage)
+        [self refreshUIForCurrentPage];
+	else if (self.editMode == kNewPage)
         [self refreshUIForNewPage];
 
 //	CGRect frame = subView.frame;
@@ -645,7 +646,7 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
     pageDetailsController.hasChanges = NO;
     [titleTextField resignFirstResponder];
     [pageContentTextView resignFirstResponder];
-    mode = refreshPage;
+    self.editMode = kRefreshPage;
 }
 
 - (void)didReceiveMemoryWarning {

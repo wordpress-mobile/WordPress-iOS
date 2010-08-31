@@ -62,6 +62,9 @@
 	
 	self.tableView.tableHeaderView = headerView;
 	self.tableView.backgroundColor = [UIColor clearColor];
+	
+	if(DeviceIsPad())
+		self.tableView.backgroundView = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {

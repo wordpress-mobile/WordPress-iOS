@@ -169,9 +169,6 @@
 			postDetailViewController.navigationItem.rightBarButtonItem != postDetailViewController.saveButton) {
 			postDetailViewController.navigationItem.rightBarButtonItem = (postDetailViewController.hasChanges ? postDetailViewController.saveButton : nil);
 
-			if (postDetailViewController.tabController.selectedViewController == self)
-				postDetailViewController.navigationItem.title = self.title;
-
 			isWebRefreshRequested = NO;
 		}
 	}

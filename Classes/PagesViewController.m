@@ -266,7 +266,7 @@
         self.pageDetailsController.hasChanges = NO;
     }
 
-    self.pageDetailsController.mode = editPage;
+    self.pageDetailsController.editMode = kEditPage;
 	
 	[self.pageDetailsController viewWillAppear:NO];
 	[delegate showContentDetailViewController:self.pageDetailsController];
@@ -374,7 +374,7 @@
 - (void)showAddNewPage {
     [[BlogDataManager sharedDataManager] makeNewPageCurrent];
     
-	self.pageDetailsController.mode = newPage;
+	self.pageDetailsController.editMode = kNewPage;
 	
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	

@@ -31,7 +31,7 @@
 @implementation PostsViewController
 
 @synthesize newButtonItem, postDetailViewController, postDetailEditController;
-@synthesize anyMorePosts, selectedIndexPath, drafts;
+@synthesize anyMorePosts, selectedIndexPath, drafts, draftManager;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -39,8 +39,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+	draftManager = [[DraftManager alloc] init];
     self.tableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
-
     [self addRefreshButton];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableViewAfterPostSaved:) name:@"AsynchronousPostIsPosted" object:nil];
@@ -138,14 +138,13 @@
     PostTableViewCell *cell = (PostTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
-    id post = nil;
+    //id post = nil;
 
     if (cell == nil) {
         cell = [[[PostTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
     }
 
     if (indexPath.section == LOCAL_DRAFTS_SECTION) {
-		NSLog(@"drafts.count: %d", drafts.count);
 		cell.post = [[drafts objectAtIndex:indexPath.row] legacyPost];
     } 
 	else {
@@ -248,7 +247,7 @@
         self.postDetailViewController.hasChanges = NO;
     }
 
-    self.postDetailViewController.mode = editPost;
+    self.postDetailViewController.editMode = kEditPost;
 	[self.postDetailViewController refreshUIForCurrentPost];
 	[appDelegate showContentDetailViewController:self.postDetailViewController];
 }
@@ -303,14 +302,13 @@
 }
 
 - (void)loadPosts {
-	[self fetchDrafts];
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	self.drafts = [draftManager getForBlog:[[dm currentBlog] valueForKey:@"blogid"]];
     [dm loadPostTitlesForCurrentBlog];
 	[self performSelectorOnMainThread:@selector(refreshPostList) withObject:nil waitUntilDone:NO];
 }
 
-- (void)refreshPostList;
-{
+- (void)refreshPostList {
     [self.tableView reloadData];
 	
 	if (DeviceIsPad() == YES) {
@@ -402,7 +400,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     [[BlogDataManager sharedDataManager] removeAutoSavedCurrentPostFile];
     self.navigationItem.rightBarButtonItem = nil;
-    self.postDetailViewController.mode = autorecoverPost;
+    self.postDetailViewController.editMode = kAutorecoverPost;
 	
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	[delegate setAlertRunning:NO];
@@ -482,16 +480,14 @@
 	[apool release];
 }
 
-- (void) removeSpinnerFromCell:(NSIndexPath *)indexPath {
+- (void)removeSpinnerFromCell:(NSIndexPath *)indexPath {
 	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
 	UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
 	[((PostTableViewCell *)cell) runSpinner:NO];
 	[apool release];
 }
 
-- (void)reselect;
-{
-	// avoid selection if we have an autosaved post
+- (void)reselect {
 	if ([[BlogDataManager sharedDataManager] hasAutosavedPost])
 		return;
 	
@@ -507,16 +503,17 @@
 		[self refreshPostList];
 }
 
-
 - (void)showAddPostView {
 	if(postDetailViewController == nil)
 		postDetailViewController = [[PostViewController alloc] initWithNibName:@"PostViewController" bundle:nil];
     [[BlogDataManager sharedDataManager] makeNewPostCurrent];
 	
-	self.postDetailViewController.mode = newPost;
+	self.postDetailViewController.editMode = kNewPost;
+	self.postDetailViewController.title = @"Write";
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	
 	if (DeviceIsPad() == NO) {
+		[self.postDetailViewController refreshUIForCompose];
 		[delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
 	}
 	else if (DeviceIsPad() == YES) {
@@ -531,42 +528,6 @@
 	}
 }
 
-- (void)fetchDrafts {
-	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-	
-    // Define our table/entity to use  
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];   
-	
-    // Setup the fetch request  
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];  
-    [request setEntity:entity];   
-	
-    // Define how we will sort the records  
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateModified" ascending:NO];  
-    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];  
-    [request setSortDescriptors:sortDescriptors];  
-    [sortDescriptor release];
-	
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:
-							  @"(isLocalDraft == YES) AND (isAutosave == NO) AND (blogID == %@)", 
-							  [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blogid"]];
-	[request setPredicate:predicate];
-	
-    // Fetch the records and handle an error  
-    NSError *error;  
-    NSMutableArray *mutableFetchResults = [[appDelegate.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];   
-	
-    if (!mutableFetchResults) {  
-        // Handle the error.  
-        // This is a serious error and should advise the user to restart the application  
-    }   
-	
-    // Save our fetched data to an array  
-    [self setDrafts:mutableFetchResults];  
-    [mutableFetchResults release];
-    [request release];
-}
-
 #pragma mark -
 #pragma mark Dealloc
 
@@ -574,6 +535,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"AsynchronousPostIsPosted" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"DraftsUpdated" object:nil];
 	
+	[draftManager release];
     [postDetailEditController release];
     [postDetailViewController release];
     [newButtonItem release];

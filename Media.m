@@ -13,7 +13,7 @@
 
 @dynamic mediaType;
 @dynamic remoteURL;
-@dynamic ID;
+@dynamic uniqueID;
 @dynamic width;
 @dynamic longitude;
 @dynamic latitude;
@@ -21,8 +21,13 @@
 @dynamic title;
 @dynamic thumbnail;
 @dynamic postID;
+@dynamic blogID;
+@dynamic blogURL;
 @dynamic height;
 @dynamic localURL;
+@dynamic filename;
+@dynamic filesize;
+@dynamic caption;
 @dynamic creationDate;
 
 @end

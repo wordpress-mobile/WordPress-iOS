@@ -40,8 +40,9 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		
         dataManager = [BlogDataManager sharedDataManager];
 		
-		if([[NSUserDefaults standardUserDefaults] objectForKey:@"isWPcomAuthenticated"] != nil) {
-			NSString *tempIsAuthenticated = (NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"isWPcomAuthenticated"];
+		if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] != nil) {
+			NSString *tempIsAuthenticated = (NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"];
+			NSLog(@"isWPcomAuthenticated: %@", tempIsAuthenticated);
 			if([tempIsAuthenticated isEqualToString:@"1"])
 				self.isWPcomAuthenticated = YES;
 		}
@@ -406,19 +407,19 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	NSString *authURL = @"https://wordpress.com/xmlrpc.php";
 	
-	if(([[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsername"] != nil) && 
-	   ([[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomPassword"] != nil)) {
+	if(([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil) && 
+	   ([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"] != nil)) {
 		isWPcomAuthenticated = [[WPDataController sharedInstance] authenticateUser:authURL 
-		  username:[[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsername"]
-		  password:[[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomPassword"]];
+		  username:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"]
+		  password:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"]];
 	}
 	else
 		isWPcomAuthenticated = NO;
 	
 	if(isWPcomAuthenticated)
-		[[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"isWPcomAuthenticated"];
+		[[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"wpcom_authenticated_flag"];
 	else
-		[[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"isWPcomAuthenticated"];
+		[[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"wpcom_authenticated_flag"];
 	
 	[pool release];
 }

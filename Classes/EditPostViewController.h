@@ -112,6 +112,9 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (void)updateValuesToCurrentPost;
 - (void)showLinkView;
 - (void)disableInteraction;
+- (void)preserveUnsavedPost;
+- (void)clearUnsavedPost;
+- (void)restoreUnsavedPost;
 
 - (IBAction)showAddNewCategoryView:(id)sender;
 - (IBAction)showCategoriesViewAction:(id)sender;

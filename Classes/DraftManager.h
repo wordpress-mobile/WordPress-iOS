@@ -14,6 +14,7 @@
 }
 
 - (Post *)get:(NSString *)uniqueID;
+- (NSMutableArray *)getForBlog:(NSString *)blogID;
 - (BOOL)exists:(NSString *)uniqueID;
 - (void)save:(Post *)post;
 - (void)insert:(Post *)post;

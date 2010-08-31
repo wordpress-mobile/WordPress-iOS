@@ -8,7 +8,8 @@
 
 
 @implementation WPMediaUploader
-@synthesize messageLabel, progressView, filename, video, payload, connection, urlResponse, urlRequest, filesize, orientation;
+@synthesize messageLabel, mediaType, progressView, filename, bits, payload, connection, urlResponse, urlRequest;
+@synthesize filesize, orientation;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -27,18 +28,26 @@
 	
 	// Build our XML-RPC request
 	NSLog(@"Setting parameters...");
-	NSMutableDictionary *videoParams = [NSMutableDictionary dictionary];
-	[videoParams setValue:@"video/quicktime" forKey:@"type"];
-	[videoParams setValue:video forKey:@"bits"];
-	[videoParams setValue:filename forKey:@"name"];
-	[videoParams setValue:nil forKey:@"categories"];
-	[videoParams setValue:@"" forKey:@"description"];
+	NSMutableDictionary *mediaParams = [NSMutableDictionary dictionary];
+	
+	if(mediaType == kImage) {
+		[mediaParams setValue:@"image/jpeg" forKey:@"type"];
+		self.messageLabel.text = @"Uploading image...";
+	}
+	else if(mediaType == kVideo) {
+		[mediaParams setValue:@"video/quicktime" forKey:@"type"];
+		self.messageLabel.text = @"Uploading video...";
+	}
+	[self.messageLabel setNeedsLayout];
+	
+	[mediaParams setValue:filename forKey:@"name"];
+	[mediaParams setValue:bits forKey:@"bits"];
 	
 	NSLog(@"Setting arguments...");
 	NSArray *args = [NSArray arrayWithObjects:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:kBlogId],
 					 [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"username"],
 					 [[BlogDataManager sharedDataManager] getPasswordFromKeychainInContextOfCurrentBlog:[[BlogDataManager sharedDataManager] currentBlog]],
-					 videoParams, nil];
+					 mediaParams, nil];
 	
 	NSLog(@"Setting xmlrpc parameters...");
 	NSMutableDictionary *xmlrpcParams = [[NSMutableDictionary alloc] init];
@@ -51,6 +60,7 @@
 	XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[xmlrpcParams valueForKey:kURL]]];
 	[xmlrpcRequest setMethod:[xmlrpcParams valueForKey:kMETHOD] withObjects:[xmlrpcParams valueForKey:kMETHODARGS]];
 	[xmlrpcParams release];
+	NSLog(@"xmlrpcRequest: %@", xmlrpcRequest);
 	
 	NSLog(@"Creating URL request...");
 	[self createURLRequest:xmlrpcRequest];
@@ -76,7 +86,7 @@
 }
 
 - (void)reset {
-	self.messageLabel.text = @"Uploading video...";
+	self.messageLabel.text = @"Uploading media...";
 	self.progressView.progress = 0.0;
 	self.progressView.hidden = NO;
 	[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = NO;
@@ -84,9 +94,9 @@
 
 - (void)createURLRequest:(XMLRPCRequest *)xmlrpc {
 	NSMutableURLRequest *_request = [[NSMutableURLRequest alloc] initWithURL:xmlrpc.host];
-	NSNumber *length = [NSNumber numberWithInt:[video length]];
+	NSNumber *length = [NSNumber numberWithInt:[bits length]];
 	
-	if (video != nil) {
+	if (bits != nil) {
 		[_request setHTTPMethod: @"POST"];
 		
 		if ([_request valueForHTTPHeaderField: @"Content-Length"] == nil)
@@ -107,7 +117,7 @@
 			[_request setValue: [length stringValue] forHTTPHeaderField: @"Content-Length"];
 		}
 		
-		[_request setHTTPBody: video];
+		[_request setHTTPBody: bits];
 		
 		urlRequest = (NSURLRequest *)_request;
 	}
@@ -177,7 +187,8 @@
 				if ([xmlrpcResponse isKindOfClass:[NSError class]]) {
 					[[NSNotificationCenter defaultCenter] postNotificationName:VideoUploadFailed object:nil];
 				}
-				else {
+				else if(mediaType == kVideo) {
+					NSLog(@"responseMeta: %@", responseMeta);
 					NSMutableDictionary *videoMeta = [[NSMutableDictionary alloc] init];
 					if([responseMeta objectForKey:@"videopress_shortcode"] != nil)
 						[videoMeta setObject:[responseMeta objectForKey:@"videopress_shortcode"] forKey:@"shortcode"];
@@ -193,6 +204,14 @@
 					}
 					[videoMeta release];
 				}
+				else if(mediaType == kImage) {
+					NSLog(@"responseMeta: %@", responseMeta);
+					NSMutableDictionary *imageMeta = [[NSMutableDictionary alloc] init];
+					[[NSNotificationCenter defaultCenter] postNotificationName:ImageUploadSuccessful 
+																		object:self 
+																	  userInfo:imageMeta];
+				}
+
 				
 				[xmlrpcResponse release];
 			}
@@ -220,7 +239,7 @@
 	[urlRequest release];
 	[payload release];
 	[filename release];
-	[video release];
+	[bits release];
 	[messageLabel release];
 	[progressView release];
     [super dealloc];

@@ -15,9 +15,9 @@
 
 @implementation WPPhotosListViewController
 
-static inline double radians(double degrees) {
-    return degrees * M_PI / 180;
-}
+//static inline double radians(double degrees) {
+//    return degrees * M_PI / 180;
+//}
 
 @synthesize postDetailViewController, pageDetailsController, tableView, delegate, videoOrientation, addButton, currentVideo, spinner, messageLabel;
 @synthesize isShowingMediaPickerActionSheet, isShowingChangeOrientationActionSheet, didChangeOrientationDuringRecord, isAddingMedia;
@@ -29,6 +29,7 @@ static inline double radians(double degrees) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Media";
+	[postDetailViewController hideAutosaveButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -62,6 +63,7 @@ static inline double radians(double degrees) {
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
     int count = [[delegate photosDataSource] count];
 	return (count / NUM_COLS) + (count % NUM_COLS ? 1 : 0);
+	NSLog(@"photos rowcount: %d", count);
 }
 
 - (CGFloat)tableView:(UITableView *)aTableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

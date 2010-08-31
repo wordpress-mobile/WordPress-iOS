@@ -1,11 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "RefreshButtonView.h"
+#import "DraftManager.h"
 #import "Post.h";
-
-#define newPost 0
-#define editPost 1
-#define autorecoverPost 2
-#define refreshPost 3
 
 @class BlogDataManager, PostViewController, EditPostViewController;
 
@@ -17,6 +13,7 @@
     PostViewController *postDetailViewController;
     EditPostViewController *postDetailEditController;
     RefreshButtonView *refreshButton;
+	DraftManager *draftManager;
 	BOOL anyMorePosts;
 	
     NSMutableArray *drafts;
@@ -25,6 +22,7 @@
 @property (readonly) UIBarButtonItem *newButtonItem;
 @property (nonatomic, retain) PostViewController *postDetailViewController;
 @property (nonatomic, retain) EditPostViewController *postDetailEditController;
+@property (nonatomic, retain) DraftManager *draftManager;
 @property (nonatomic, assign) BOOL anyMorePosts;
 @property (nonatomic, retain) NSIndexPath *selectedIndexPath;
 @property (nonatomic, retain) NSMutableArray *drafts;
@@ -34,6 +32,5 @@
 - (void)loadPosts;
 - (void)showAddPostView;
 - (void)reselect;
-- (void)fetchDrafts;
 
 @end

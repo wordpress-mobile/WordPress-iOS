@@ -73,6 +73,8 @@
 #define PictureObjectUploadedNotificationName @"PictureObjectUploadedNotificationName"
 #define VideoSaved @"VideoSavedNotification"
 #define VideoUploadChunk @"VideoUploadChunk"
+#define ImageUploadSuccessful @"ImageUploadSuccessful"
+#define ImageUploadFailed @"ImageUploadFailed"
 #define VideoUploadSuccessful @"VideoUploadSuccessful"
 #define VideoUploadFailed @"VideoUploadFailed"
 #define WPNewCategoryCreatedAndUpdatedInBlogNotificationName @"WPNewCategoryCreatedAndUpdatedInBlog"
@@ -89,6 +91,31 @@
 #define kRSDErrorTag 901
 
 typedef enum {
+	kImage,
+	kVideo
+} MediaType;
+
+typedef enum {
+	kResizeSmall,
+	kResizeMedium,
+	kResizeLarge
+} MediaResize;
+
+typedef enum {
 	kPortrait,
 	kLandscape
 } MediaOrientation;
+
+typedef enum {
+	kNewPost,
+	kEditPost,
+	kAutorecoverPost,
+	kRefreshPost
+} EditPostMode;
+
+typedef enum {
+	kNewPage,
+	kEditPage,
+	kAutorecoverPage,
+	kRefreshPage
+} EditPageMode;

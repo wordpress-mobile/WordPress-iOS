@@ -89,7 +89,7 @@
 			[self remove:autosave];
 		autosaveCount++;
 	}
-	NSLog(@"total of %d autosaves for postID: %@", results.count, postID);
+	//NSLog(@"total of %d autosaves for postID: %@", results.count, postID);
 	
 	return results;
 }
@@ -126,8 +126,9 @@
 }
 
 - (void)remove:(Post *)post {
-	[appDelegate.managedObjectContext deleteObject:post];
-	[appDelegate.managedObjectContext processPendingChanges];
+	NSManagedObject *objectToDelete = post;
+	[appDelegate.managedObjectContext deleteObject:objectToDelete];
+	[self dataSave];
 }
 
 - (BOOL)hasAutosaves:(NSString *)postID {
@@ -144,6 +145,7 @@
 }					   
 					   
 - (void)removeAll {
+	NSLog(@"Removing all autosaves...");
 	for(Post *post in [self getAll]) {
 		[appDelegate.managedObjectContext deleteObject:post];
 	}

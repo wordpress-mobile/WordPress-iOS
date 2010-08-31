@@ -35,7 +35,6 @@
 	Post *post = nil;
 	if((items != nil) && (items.count > 0)) {
 		post = [items objectAtIndex:0];
-		NSLog(@"draftManager post: %@", post);
 	}
 	else {
 		post = (Post *)[NSEntityDescription insertNewObjectForEntityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];
@@ -43,6 +42,39 @@
 		[post setPostID:post.uniqueID];
 	}
 	return post;
+}
+
+- (NSMutableArray *)getForBlog:(NSString *)blogID {
+	NSMutableArray *results = [[NSMutableArray alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];   	
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];  
+    [request setEntity:entity];   
+	
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateModified" ascending:NO];  
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];  
+    [request setSortDescriptors:sortDescriptors];  
+    [sortDescriptor release];
+	
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:
+							  @"(isLocalDraft == YES) AND (isAutosave == NO) AND (blogID == %@)", blogID];
+	[request setPredicate:predicate];
+	
+    NSError *error;  
+    NSMutableArray *mutableFetchResults = [[appDelegate.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];   
+	
+    if (!mutableFetchResults) {  
+        // Handle the error.  
+        // This is a serious error and should advise the user to restart the application  
+    }   
+	
+	for(Post *draft in mutableFetchResults) {
+		[results addObject:draft];
+	}
+	
+    [mutableFetchResults release];
+    [request release];
+	
+	return results;
 }
 
 - (BOOL)exists:(NSString *)uniqueID {
@@ -84,8 +116,9 @@
 }
 
 - (void)remove:(Post *)post {
-	[appDelegate.managedObjectContext deleteObject:post];
-	[appDelegate.managedObjectContext processPendingChanges];
+	NSManagedObject *objectToDelete = post;
+	[appDelegate.managedObjectContext deleteObject:objectToDelete];
+	[self dataSave];
 }
 
 - (void)dataSave {

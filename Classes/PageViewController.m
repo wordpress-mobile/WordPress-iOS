@@ -33,9 +33,8 @@
 
 @implementation PageViewController
 
-@synthesize pageDetailViewController, pagesListController, hasChanges, mode, tabController, photosListController, saveButton;
-@synthesize leftView;
-
+@synthesize pageDetailViewController, pagesListController, hasChanges, tabController, photosListController, saveButton;
+@synthesize leftView, editMode;
 @synthesize pageDetailStaticViewController;
 @synthesize toolbar;
 @synthesize contentView;
@@ -206,7 +205,7 @@
 		} else {
 			pageDetailViewController = [[EditPageViewController alloc] initWithNibName:@"EditPageViewController" bundle:nil];
 		}
-        pageDetailViewController.mode = self.mode;
+        pageDetailViewController.editMode = self.editMode;
     }
 
     pageDetailViewController.pageDetailsController = self;
@@ -398,11 +397,11 @@
 		self.title = [[[BlogDataManager sharedDataManager] currentPage] valueForKey:@"title"];
 	}
 
-    if (mode == editPage) {
+    if(self.editMode == kEditPage) {
         [pageDetailViewController refreshUIForCurrentPage];
 		[pageDetailStaticViewController refreshUIForCurrentPage];
 	}
-	else if (mode == newPage) {
+	else if(self.editMode == kNewPage) {
         [pageDetailViewController refreshUIForNewPage];
 		[pageDetailStaticViewController refreshUIForNewPage];
 	}
@@ -417,7 +416,7 @@
 	
 	// should add a refreshUIForCurrentPage to PageViewController mebbe
 	if (DeviceIsPad() == YES) {
-		if (mode == newPage) {
+		if (self.editMode == kNewPage) {
 			[self editAction:self];
 		}
 	}

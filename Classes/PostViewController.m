@@ -4,7 +4,6 @@
 #import "EditPostViewController.h"
 #import "PostPreviewViewController.h"
 #import "PostSettingsViewController.h"
-#import "WPPhotosListViewController.h"
 #import "WPNavigationLeftButtonView.h"
 #import "PostsViewController.h"
 #import "Reachability.h"
@@ -34,12 +33,12 @@
 
 @implementation PostViewController
 
-@synthesize postDetailViewController, postDetailEditController, postPreviewController, postSettingsController, postsListController, hasChanges, mode, tabController, saveButton;
-@synthesize photosListController, leftView, isVisible, customFieldsDetailController, commentsViewController;
-@synthesize selectedViewController, videoUploader, toolbar, contentView, commentsButton, photosButton, hasSaved;
+@synthesize postDetailViewController, postDetailEditController, postPreviewController, postSettingsController, postsListController, hasChanges, tabController, saveButton;
+@synthesize mediaViewController, leftView, isVisible, customFieldsDetailController, commentsViewController;
+@synthesize selectedViewController, toolbar, contentView, commentsButton, photosButton, hasSaved;
 @synthesize settingsButton, editToolbar, cancelEditButton, editModalViewController, post, didConvertDraftToPublished;
 @synthesize payload, connection, urlResponse, urlRequest, appDelegate, autosaveView, autosaveButton, isShowingAutosaves;
-@synthesize autosaveManager, draftManager;
+@synthesize autosaveManager, draftManager, editMode;
 
 @dynamic leftBarButtonItemForEditPost;
 @dynamic rightBarButtonItemForEditPost;
@@ -51,6 +50,12 @@
     [super viewDidLoad];
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	hasSaved = NO;
+	
+	BOOL clearAutosaves = [[NSUserDefaults standardUserDefaults] boolForKey:@"autosave_clear_preference"];
+	if(clearAutosaves == YES) {
+		[autosaveManager removeAll];
+		[[NSUserDefaults standardUserDefaults] setValue:NO forKey:@"autosave_clear_preference"];
+	}
 	
     if (!saveButton) {
         saveButton = [[UIBarButtonItem alloc] init];
@@ -69,7 +74,6 @@
 		}
 	}
 	
-	videoUploader = [[WPMediaUploader alloc] initWithNibName:@"WPMediaUploader" bundle:nil];
 	autosaveView = [[AutosaveViewController alloc] initWithNibName:@"AutosaveViewController" bundle:nil];
 	autosaveManager = [[AutosaveManager alloc] init];
 	draftManager = [[DraftManager alloc] init];
@@ -78,7 +82,6 @@
 
 
 - (void)viewWillAppear:(BOOL)animated {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoDidUploadSuccessfully) name:VideoUploadSuccessful object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restoreFromAutosave:) name:@"RestoreFromAutosaveNotification" object:nil];
 	if (DeviceIsPad() == NO) {
 		if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
@@ -116,17 +119,20 @@
     [super viewWillAppear:animated];
 	[self conditionalLoadOfTabBarController];
 	
-    if (mode == editPost) {
+    if(self.editMode == kEditPost) {
         [self refreshUIForCurrentPost];
-    } else if (mode == newPost) {
-        [self refreshUIForCompose];
-    } else if (mode == autorecoverPost) {
+    }
+	else if(self.editMode == kNewPost) {
+        //[self refreshUIForCompose];
+    }
+	else if (self.editMode == kAutorecoverPost) {
         [self refreshUIForCurrentPost];
         self.hasChanges = YES;
     }
 	
-    if (mode != newPost)
-		mode = refreshPost;
+    if (self.editMode != kNewPost)
+		self.editMode = kRefreshPost;
+	
     [commentsViewController setIndexForCurrentPost:[[BlogDataManager sharedDataManager] currentPostIndex]];
     [[tabController selectedViewController] viewWillAppear:animated];
 	
@@ -160,7 +166,7 @@
 	
     //if (mode == 1 || mode == 2 || mode == 3) { //don't load this tab if mode == 0 (new post) since comments are irrelevant to a brand new post
 	NSString *postStatus = [[BlogDataManager sharedDataManager].currentPost valueForKey:@"post_status"];
-	if (mode != newPost && ![postStatus isEqualToString:@"Local Draft"]) { //don't load commentsViewController tab if it's a new post or a local draft since comments are irrelevant to a brand new post
+	if (editMode != kNewPost && ![postStatus isEqualToString:@"Local Draft"]) { //don't load commentsViewController tab if it's a new post or a local draft since comments are irrelevant to a brand new post
 		if (commentsViewController == nil) {
 			commentsViewController = [[CommentsViewController alloc] initWithNibName:@"CommentsViewController" bundle:nil];
 			if (DeviceIsPad() == YES) {
@@ -173,24 +179,15 @@
 		[array addObject:commentsViewController];
 	}
 	
-    if (photosListController == nil) {
-        photosListController = [[WPPhotosListViewController alloc] initWithNibName:@"WPPhotosListViewController" bundle:nil];
+    if (mediaViewController == nil) {
+        mediaViewController = [[PostMediaViewController alloc] initWithNibName:@"PostMediaViewController" bundle:nil];
     }
 	
-    photosListController.title = @"Media";
-    photosListController.tabBarItem.image = [UIImage imageNamed:@"photos.png"];
-	photosListController.delegate = self;
+    mediaViewController.title = @"Media";
+    mediaViewController.tabBarItem.image = [UIImage imageNamed:@"photos.png"];
+	mediaViewController.postDetailViewController = self;
 	
-    [array addObject:photosListController];
-	
-	//if (mediaController == nil) {
-	//		mediaController = [[MediaViewController alloc] initWithNibName:@"MediaViewController" bundle:nil];
-	//	}
-	//	mediaController.title = @"Media";
-	//	mediaController.tabBarItem.image = [UIImage imageNamed:@"photos.png"];
-	//    mediaController.postDetailViewController = self;
-	//
-	//    [array addObject:mediaController];
+    [array addObject:mediaViewController];
 	
     if (postPreviewController == nil) {
         postPreviewController = [[PostPreviewViewController alloc] initWithNibName:@"PostPreviewViewController" bundle:nil];
@@ -254,8 +251,8 @@
         [postDetailEditController.currentEditingTextField resignFirstResponder];
 	
     [super viewWillDisappear:animated];
-	if (mode != newPost)
-		mode = refreshPost;
+	if(self.editMode != kNewPost)
+		self.editMode = kRefreshPost;
     [postPreviewController stopLoading];
 	isVisible = NO;
 	
@@ -386,10 +383,12 @@
 					if (DeviceIsPad() == YES) {
 						[[BlogDataManager sharedDataManager] makePostWithPostIDCurrent:postId];
 					}
+					
+					[postDetailEditController clearUnsavedPost];
+					[self refreshUIForCompose];
 				}
 			}
 		}
-
 	}
 	else {
 		[self saveAsDraft];
@@ -397,6 +396,8 @@
 }
 
 - (void)autoSaveCurrentPost:(NSTimer *)aTimer {
+	NSLog(@"autosaving...");
+	[postDetailEditController preserveUnsavedPost];
 	if (hasChanges) {
 		BlogDataManager *dm = [BlogDataManager sharedDataManager];
 		Post *autosave = [autosaveManager get:nil];
@@ -431,15 +432,21 @@
 		if(postSettingsController.passwordTextField.text != nil)
 			[autosave setPassword:postSettingsController.passwordTextField.text];
 		[autosave setShouldResizePhotos:[NSNumber numberWithInt:postSettingsController.resizePhotoControl.on]];
-		NSLog(@"autosaving...");
 		[autosaveManager save:autosave];
 		[self checkAutosaves];
     }
 }
 
 - (void)startTimer {
-    if (!autoSaveTimer) {
-        autoSaveTimer = [[NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(autoSaveCurrentPost:) userInfo:nil repeats:YES] retain];
+	BOOL autosaveEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"autosave_enabled_preference"];
+    if ((!autoSaveTimer) && (autosaveEnabled == YES)) {
+		NSString *autosaveIntervalString = [[NSUserDefaults standardUserDefaults] stringForKey:@"autosave_frequency_preference"];
+		int autosaveInterval = [autosaveIntervalString intValue];
+		autosaveInterval = autosaveInterval * 60;
+		if(autosaveInterval < 60)
+			autosaveInterval = 60;
+		
+        autoSaveTimer = [[NSTimer scheduledTimerWithTimeInterval:autosaveInterval target:self selector:@selector(autoSaveCurrentPost:) userInfo:nil repeats:YES] retain];
     }
 }
 
@@ -452,12 +459,11 @@
 }
 
 - (void)refreshUIForCompose {
+	postDetailViewController.navigationItem.title = @"Write";
 	if (hasChanges == NO)
 		[self setRightBarButtonItemForEditPost:nil];
 	
     [tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
-    UIViewController *vc = [[tabController viewControllers] objectAtIndex:0];
-    self.title = vc.title;
 
 	[postDetailViewController refreshUIForCompose];
     [postDetailEditController refreshUIForCompose];
@@ -503,28 +509,28 @@
 
     [self updatePhotosBadge];
 	
-	if (mode == autorecoverPost && DeviceIsPad()) {
+	if (self.editMode == kAutorecoverPost && DeviceIsPad()) {
 		[self editAction:self];
 	}
 	[self checkAutosaves];
 }
 
 - (void)updatePhotosBadge {
-    //int photoCount = [[[BlogDataManager sharedDataManager].currentPost valueForKey:@"Photos"] count];
-//
-//	if (tabController) {
-//		if (photoCount)
-//			photosListController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d", photoCount];
-//		else
-//			photosListController.tabBarItem.badgeValue = nil;
-//	} else if (toolbar) {
-//		if (!photoCount)
-//			photosButton.title = @"No Photos";
-//		else if (photoCount == 1)
-//			photosButton.title = @"1 Photo";
-//		else
-//			photosButton.title = [NSString stringWithFormat:@"%d Photos", photoCount];
-//	}
+    int photoCount = [[[BlogDataManager sharedDataManager].currentPost valueForKey:@"Photos"] count];
+
+	if (tabController) {
+		if (photoCount)
+			mediaViewController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d", photoCount];
+		else
+			mediaViewController.tabBarItem.badgeValue = nil;
+	} else if (toolbar) {
+		if (!photoCount)
+			photosButton.title = @"No media";
+		else if (photoCount == 1)
+			photosButton.title = @"1 media item.";
+		else
+			photosButton.title = [NSString stringWithFormat:@"%d media items.", photoCount];
+	}
 }
 
 #pragma mark -
@@ -567,7 +573,6 @@
 		post = [draftManager get:appDelegate.postID];
 	else
 		post = [draftManager get:nil];
-	NSLog(@"post is now: %@", post);
 	[post setIsLocalDraft:[NSNumber numberWithInt:1]];
 	[post setWasLocalDraft:[NSNumber numberWithInt:1]];
 	[post setIsAutosave:[NSNumber numberWithInt:0]];
@@ -581,7 +586,9 @@
 	[post setShouldResizePhotos:[NSNumber numberWithInt:postSettingsController.resizePhotoControl.on]];
 	[draftManager save:post];
 	[postsListController loadPosts];
-	NSLog(@"post: %@", post);
+	
+	[postDetailEditController clearUnsavedPost];
+	[self refreshUIForCompose];
 	
 	if(andDiscard == YES)
 		[self discard];
@@ -590,6 +597,8 @@
 - (void)discard {
     hasChanges = NO;
     self.rightBarButtonItemForEditPost = nil;
+	[postDetailEditController clearUnsavedPost];
+	[self refreshUIForCompose];
 	[self setPost:nil];
     [self stopTimer];
 	[self dismissEditView];
@@ -718,59 +727,6 @@
     }
 }
 
-- (void)useVideo:(NSData *)video withThumbnail:(NSString *)thumbnailURL andFilename:(NSString *)filename andOrientation:(MediaOrientation) orientation {
-    BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-    self.hasChanges = YES;
-
-    id currentPost = dataManager.currentPost;
-
-    if (![currentPost valueForKey:@"Photos"]) {
-        [currentPost setValue:[NSMutableArray array] forKey:@"Photos"];
-    }
-	
-	NSString *filepath = [dataManager saveVideo:video withThumbnail:thumbnailURL];
-	
-	[videoUploader setVideo:video];
-	[videoUploader setFilename:filename];
-	NSLog(@"setting orientation to: %d", orientation);
-	[videoUploader setOrientation:orientation];
-	
-	NSLog(@"Setting file attributes...");
-	NSFileManager *fileManager = [NSFileManager defaultManager];
-	NSDictionary *fileAttributes = [fileManager fileAttributesAtPath:filepath traverseLink:YES];
-	if(fileAttributes != nil)
-		[videoUploader setFilesize:[[fileAttributes objectForKey:@"NSFileSize"] floatValue]];
-	NSLog(@"Starting upload...");
-	[videoUploader start];
-	
-	[videoUploader.view setFrame:CGRectMake(0, 480, 320, 40)];
-	[UIView beginAnimations:@"Adding VideoUploader" context:nil];
-	[UIView setAnimationDuration:0.4];
-	[videoUploader.view setFrame:CGRectMake(0, 324, 320, 40)];
-	[photosListController.view addSubview:videoUploader.view];
-	[UIView commitAnimations];
-	
-    [[currentPost valueForKey:@"Videos"] addObject:video];
-
-    [self updatePhotosBadge];
-}
-
-- (void)videoDidUploadSuccessfully {
-	[UIView beginAnimations:@"Removing VideoUploader" context:nil];
-	[UIView setAnimationDuration:0.4];
-	[UIView setAnimationDelegate:videoUploader.view];
-	[UIView setAnimationDidStopSelector:@selector(removeVideoUploader:finished:context:)];
-	[videoUploader.view setFrame:CGRectMake(0, 480, 320, 40)];
-	[UIView commitAnimations];
-	photosListController.isAddingMedia = NO;
-	[photosListController refreshData];
-}
-
--(void)removeVideoUploader:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
-	[videoUploader.view removeFromSuperview];
-	[videoUploader reset];
-}
-
 - (void)useImage:(UIImage *)theImage {
     BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
     self.hasChanges = YES;
@@ -781,7 +737,7 @@
         [currentPost setValue:[NSMutableArray array] forKey:@"Photos"];
     }
 	
-    UIImage *image = [photosListController scaleAndRotateImage:theImage scaleFlag:NO];
+    UIImage *image = [mediaViewController scaleAndRotateImage:theImage scaleFlag:NO];
     [[currentPost valueForKey:@"Photos"] addObject:[dataManager saveImage:image]];
 	
     [self updatePhotosBadge];
@@ -940,7 +896,11 @@
 }
 
 - (IBAction)newPostAction:(id)sender {
-	
+	[self refreshUIForCompose];
+}
+
+- (void)setMode:(EditPostMode)newMode {
+	self.editMode = newMode;
 }
 
 #pragma mark -
@@ -949,7 +909,7 @@
 // TODO: Move Autosave data methods to their own class
 
 - (IBAction)toggleAutosaves:(id)sender {
-	mode = editPost;
+	self.editMode = kEditPost;
 	
 	if(self.isShowingAutosaves == NO)
 		[self showAutosaves];
@@ -994,7 +954,7 @@
 	int yPos = centerOfWindow.y+120;
 	if(yPos > 328)
 		yPos = 328;
-	self.autosaveButton.frame = CGRectMake(centerOfWindow.x+120, yPos, 20, 20);
+	self.autosaveButton.frame = CGRectMake(centerOfWindow.x+120, yPos, 40, 40);
 
 	[self.autosaveButton addTarget:self action:@selector(toggleAutosaves:) forControlEvents:UIControlEventTouchUpInside];
 	[UIView beginAnimations:nil context:NULL];
@@ -1213,10 +1173,9 @@
     [postDetailEditController release];
     [postPreviewController release];
     [postSettingsController release];
-    [photosListController release];
+    [mediaViewController release];
     [commentsViewController release];
     [saveButton release];
-	[videoUploader release];
 	[toolbar release];
 	[contentView release];
 	[photoPickerPopover release];

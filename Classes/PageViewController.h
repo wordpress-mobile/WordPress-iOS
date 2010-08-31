@@ -26,7 +26,7 @@
     WPNavigationLeftButtonView *leftView;
 
     BOOL hasChanges;
-    int mode;   //0 new, 1 edit, 2 autorecovery, 3 refresh
+	EditPageMode editMode;
 	
 	// iPad additions
 	IBOutlet UIToolbar *toolbar;
@@ -48,7 +48,7 @@
 @property (nonatomic, readonly) UIBarButtonItem *saveButton;
 
 @property (nonatomic) BOOL hasChanges;
-@property (nonatomic) int mode;
+@property (nonatomic, assign) EditPageMode editMode;
 
 @property (readonly) UITabBarController *tabController;
 

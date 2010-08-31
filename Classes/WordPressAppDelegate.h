@@ -4,7 +4,7 @@
 #import "UIDevice-Hardware.h"
 #import "Blog.h"
 
-@class BlogDataManager;
+@class BlogDataManager, AutosaveManager;
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate> {
 	NSMutableDictionary *currentBlog;

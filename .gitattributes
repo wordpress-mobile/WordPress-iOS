@@ -74,6 +74,8 @@ Classes/ImageCache.h -text
 Classes/ImageCache.m -text
 Classes/LocationController.h -text
 Classes/LocationController.m -text
+Classes/MediaManager.h -text
+Classes/MediaManager.m -text
 Classes/NSData+Base64.h -text
 Classes/NSData+Base64.m -text
 Classes/NSString+Util.h -text
@@ -93,6 +95,9 @@ Classes/PostAnnotation.m -text
 Classes/PostLocationViewController.h -text
 Classes/PostLocationViewController.m -text
 Classes/PostLocationViewController.xib -text
+Classes/PostMediaViewController.h -text
+Classes/PostMediaViewController.m -text
+Classes/PostMediaViewController.xib -text
 Classes/PostPreviewViewController.h -text
 Classes/PostPreviewViewController.m -text
 Classes/PostSettingsHelpViewController.h -text
@@ -244,6 +249,12 @@ Settings.bundle/en.lproj/Root.strings -text
 /ToolbarIconEye.png -text svneol=unset#unset
 /ToolbarIconGear.png -text svneol=unset#unset
 /ToolbarIconLocation.png -text svneol=unset#unset
+/UIImage+Alpha.h -text
+/UIImage+Alpha.m -text
+/UIImage+Resize.h -text
+/UIImage+Resize.m -text
+/UIImage+RoundedCorner.h -text
+/UIImage+RoundedCorner.m -text
 /UITableViewActivityCell.xib -text
 /UITableViewSegmentedControlCell.xib -text
 /UITableViewSwitchCell.xib -text
@@ -335,6 +346,7 @@ WordPress.xcodeproj/project.pbxproj -text
 /uncrustify.cfg -text
 /up.png -text
 /up@2x.png -text
+/video_thumbnail.png -text
 /welcome_bg.png -text
 /welcome_bg@2x.png -text
 /welcome_btn_normal.png -text

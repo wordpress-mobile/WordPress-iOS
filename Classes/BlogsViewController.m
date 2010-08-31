@@ -43,6 +43,9 @@
 	[self.tableView reloadData];
 	[self.tableView endEditing:YES];
 	[BlogDataManager sharedDataManager].selectedBlogID = nil;
+	
+	self.tableView.editing = NO;
+	[self cancel:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

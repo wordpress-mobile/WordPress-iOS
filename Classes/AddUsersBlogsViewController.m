@@ -212,8 +212,8 @@
 	
 	if(isWPcom) {
 		usersBlogs = [[WPDataController sharedInstance] getBlogsForUrl:@"https://wordpress.com/xmlrpc.php" 
-							  username:[[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsername"]
-							  password:[[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomPassword"]];
+							  username:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"]
+							  password:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"]];
 	}
 	else {
 		usersBlogs = [[WPDataController sharedInstance] getBlogsForUrl:url username:username password:password];

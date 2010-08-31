@@ -96,6 +96,22 @@
 	[tv deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+-(void)tableView:(UITableView*)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath {
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+	// If row is deleted, remove it from the list.
+	if (editingStyle == UITableViewCellEditingStyleDelete)
+	{
+		Post *post = [autosaves objectAtIndex:indexPath.row];
+		[autosaveManager remove:post];
+		[autosaves removeObjectAtIndex:indexPath.row];
+		
+		[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		[self refreshTable];
+	}
+}
+
 #pragma mark -
 #pragma mark UIAlertView delegate
 
@@ -122,7 +138,7 @@
 }
 
 - (void)doAutosaveReport {
-	NSLog(@"Total of %d autosaves on this device.", [autosaveManager totalAutosavesOnDevice]);
+	//NSLog(@"Total of %d autosaves on this device.", [autosaveManager totalAutosavesOnDevice]);
 }
 
 #pragma mark -

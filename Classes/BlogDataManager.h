@@ -264,7 +264,6 @@
 #pragma mark Media
 
 - (NSString *)saveImage:(UIImage *)aImage;
-- (NSString *)saveVideo:(NSData *)video withThumbnail:(NSString *)thumbnail;
 - (UIImage *)imageNamed:(NSString *)name forBlog:(id)blog;
 - (BOOL)deleteImageNamed:(NSString *)name forBlog:(id)blog;
 - (UIImage *)thumbnailImageNamed:(NSString *)name forBlog:(id)blog;

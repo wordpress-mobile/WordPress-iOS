@@ -25,10 +25,10 @@
 	self.navigationItem.title = @"Sign In";
 	//addBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
 	
-	if([[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsername"] != nil)
-		username = [[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsername"];
-	if([[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomPassword"] != nil)
-		password = [[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomPassword"];
+	if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil)
+		username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
+	if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"] != nil)
+		password = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"];
 	
 	if((![username isEqualToString:@""]) && (![password isEqualToString:@""]))
 		[self authenticate];
@@ -187,7 +187,19 @@
 
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tv deselectRowAtIndexPath:indexPath animated:YES];
+	int foo = 0;
 	switch (indexPath.section) {
+		case 0:
+			foo = 1;
+			UITableViewCell *cell = (UITableViewCell *)[tv cellForRowAtIndexPath:indexPath];
+			
+			for(UIView *subview in cell.subviews) {
+				if([subview isKindOfClass:[UITextField class]] == YES) {
+					UITextField *tempTextField = (UITextField *)subview;
+					[tempTextField becomeFirstResponder];
+				}
+			}
+			break;
 		case 1:
 			if(username == nil) {
 				footerText = @"Username is required.";
@@ -265,20 +277,20 @@
 
 - (void)saveLoginData {
 	if(![username isEqualToString:@""])
-		[[NSUserDefaults standardUserDefaults] setObject:username forKey:@"WPcomUsername"];
+		[[NSUserDefaults standardUserDefaults] setObject:username forKey:@"wpcom_username_preference"];
 	if(![password isEqualToString:@""])
-		[[NSUserDefaults standardUserDefaults] setObject:password forKey:@"WPcomPassword"];
+		[[NSUserDefaults standardUserDefaults] setObject:password forKey:@"wpcom_password_preference"];
 	
 	if(isAuthenticated)
-		[[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"isWPcomAuthenticated"];
+		[[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"wpcom_authenticated_flag"];
 	else
-		[[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"isWPcomAuthenticated"];
+		[[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"wpcom_authenticated_flag"];
 }
 
 - (void)clearLoginData {
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"WPcomUsername"];
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"WPcomPassword"];
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"isWPcomAuthenticated"];
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_password_preference"];
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_authenticated_flag"];
 }
 
 - (BOOL)authenticate {
