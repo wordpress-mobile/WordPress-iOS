@@ -9,7 +9,7 @@
 
 @implementation WPMediaUploader
 @synthesize messageLabel, mediaType, progressView, filename, bits, payload, connection, urlResponse, urlRequest;
-@synthesize filesize, orientation;
+@synthesize filesize, orientation, xmlrpcURL, xmlrpcHost;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -27,7 +27,6 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	// Build our XML-RPC request
-	NSLog(@"Setting parameters...");
 	NSMutableDictionary *mediaParams = [NSMutableDictionary dictionary];
 	
 	if(mediaType == kImage) {
@@ -43,31 +42,25 @@
 	[mediaParams setValue:filename forKey:@"name"];
 	[mediaParams setValue:bits forKey:@"bits"];
 	
-	NSLog(@"Setting arguments...");
 	NSArray *args = [NSArray arrayWithObjects:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:kBlogId],
 					 [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"username"],
 					 [[BlogDataManager sharedDataManager] getPasswordFromKeychainInContextOfCurrentBlog:[[BlogDataManager sharedDataManager] currentBlog]],
 					 mediaParams, nil];
 	
-	NSLog(@"Setting xmlrpc parameters...");
 	NSMutableDictionary *xmlrpcParams = [[NSMutableDictionary alloc] init];
-	[xmlrpcParams setObject:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"xmlrpc"] forKey:kURL];
 	[xmlrpcParams setObject:@"metaWeblog.newMediaObject" forKey:kMETHOD];
+    self.xmlrpcURL = [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"xmlrpc"];
+	self.xmlrpcHost = [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"url"];
 	[xmlrpcParams setObject:args forKey:kMETHODARGS];
 	
 	// Execute the XML-RPC request
-	NSLog(@"Executing xmlrpc request...");
-	XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[xmlrpcParams valueForKey:kURL]]];
+	XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:self.xmlrpcHost]];
 	[xmlrpcRequest setMethod:[xmlrpcParams valueForKey:kMETHOD] withObjects:[xmlrpcParams valueForKey:kMETHODARGS]];
 	[xmlrpcParams release];
-	//NSLog(@"xmlrpcRequest: %@", xmlrpcRequest);
 	
-	NSLog(@"Creating URL request...");
 	[self createURLRequest:xmlrpcRequest];
-	NSLog(@"Creating URL connection...");
 	connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
 	if (connection) {
-		NSLog(@"Creating payload...");
 		payload = [[NSMutableData data] retain];
 	}
 	else {
@@ -93,7 +86,7 @@
 }
 
 - (void)createURLRequest:(XMLRPCRequest *)xmlrpc {
-	NSMutableURLRequest *_request = [[NSMutableURLRequest alloc] initWithURL:xmlrpc.host];
+	NSMutableURLRequest *_request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:self.xmlrpcURL]];
 	NSNumber *length = [NSNumber numberWithInt:[bits length]];
 	
 	if (bits != nil) {
@@ -117,7 +110,7 @@
 			[_request setValue: [length stringValue] forHTTPHeaderField: @"Content-Length"];
 		}
 		
-		[_request setHTTPBody: bits];
+		[_request setHTTPBody:[xmlrpc.source dataUsingEncoding:NSUTF8StringEncoding]];
 		
 		urlRequest = (NSURLRequest *)_request;
 	}
@@ -234,6 +227,8 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
+	[xmlrpcURL release];
+	[xmlrpcHost release];
 	[connection release];
 	[urlResponse release];
 	[urlRequest release];

@@ -156,7 +156,7 @@
 }
 
 - (NSString *)description {
-	return [NSString stringWithFormat:@"\nhost: %@ \nuser-agent: %@\nmethod: %@\nobjects:%@\nsource:%@", 
+	return [NSString stringWithFormat:@"\nhost: %@\nuser-agent: %@\nmethod: %@\nobjects:%@\nsource:%@", 
 			self.host, self.userAgent, self.method, self.objects, self.source];
 }
 

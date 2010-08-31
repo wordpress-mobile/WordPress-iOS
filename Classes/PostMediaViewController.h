@@ -34,7 +34,7 @@ static inline double radians(double degrees) {
 	IBOutlet UISegmentedControl *mediaTypeControl;
 	
 	BOOL hasPhotos, hasVideos, isAddingMedia, isShowingMediaPickerActionSheet, isShowingChangeOrientationActionSheet;
-	BOOL isLibraryMedia, didChangeOrientationDuringRecord, isShowingResizeActionSheet;
+	BOOL isLibraryMedia, didChangeOrientationDuringRecord, isShowingResizeActionSheet, videoEnabled;
 	NSString *postID, *blogURL;
 	
 	NSMutableArray *photos, *videos;
@@ -50,7 +50,7 @@ static inline double radians(double degrees) {
 @property (nonatomic, retain) IBOutlet UILabel *messageLabel;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *mediaTypeControl;
 @property (nonatomic, assign) BOOL hasPhotos, hasVideos, isAddingMedia, isShowingMediaPickerActionSheet, isShowingChangeOrientationActionSheet;
-@property (nonatomic, assign) BOOL isLibraryMedia, didChangeOrientationDuringRecord, isShowingResizeActionSheet;
+@property (nonatomic, assign) BOOL isLibraryMedia, didChangeOrientationDuringRecord, isShowingResizeActionSheet, videoEnabled;
 @property (nonatomic, retain) NSString *postID, *blogURL;
 @property (nonatomic, retain) NSMutableArray *photos, *videos;
 @property (nonatomic, assign) WordPressAppDelegate *appDelegate;
@@ -89,5 +89,7 @@ static inline double radians(double degrees) {
 - (void)uploadMedia:(NSData *)bits withFilename:(NSString *)filename andMediaType:(MediaType)mediaType;
 - (void)updateMediaCount;
 - (NSString *)getUUID;
+- (void)checkVideoEnabled;
+- (void)createURLRequest:(XMLRPCRequest *)xmlrpc;
 
 @end

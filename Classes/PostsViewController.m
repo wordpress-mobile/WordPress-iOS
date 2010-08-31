@@ -81,6 +81,8 @@
 	}
 
 	[self handleAutoSavedContext:0];
+	
+	NSLog(@"selected blog ID: %@", [[[BlogDataManager sharedDataManager] currentBlog] objectForKey:kBlogId]);
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

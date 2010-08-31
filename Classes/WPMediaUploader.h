@@ -14,10 +14,10 @@
 	IBOutlet UIProgressView *progressView;
 	
 	MediaType mediaType;
-	NSString *filename;
+	MediaOrientation orientation;
+	NSString *filename, *xmlrpcURL, *xmlrpcHost;
 	NSData *bits;
 	float filesize;
-	MediaOrientation orientation;
 	
 	NSURLConnection *connection;
 	NSURLRequest *urlRequest;
@@ -28,7 +28,7 @@
 @property (nonatomic, retain) IBOutlet UILabel *messageLabel;
 @property (nonatomic, retain) IBOutlet UIProgressView *progressView;
 @property (nonatomic, assign) MediaType mediaType;
-@property (nonatomic, retain) NSString *filename;
+@property (nonatomic, retain) NSString *filename, *xmlrpcURL, *xmlrpcHost;
 @property (nonatomic, assign) float filesize;
 @property (nonatomic, assign) MediaOrientation orientation;
 @property (nonatomic, retain) NSData *bits;

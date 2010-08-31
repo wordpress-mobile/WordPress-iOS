@@ -13,7 +13,7 @@
 @synthesize isShowingMediaPickerActionSheet, currentOrientation, isShowingChangeOrientationActionSheet, spinner;
 @synthesize currentImage, currentVideo, isLibraryMedia, didChangeOrientationDuringRecord, messageLabel;
 @synthesize picker, postDetailViewController, mediaManager, postID, blogURL, mediaTypeControl, mediaUploader;
-@synthesize isShowingResizeActionSheet;
+@synthesize isShowingResizeActionSheet, videoEnabled;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -27,6 +27,7 @@
 	photos = [[NSMutableArray alloc] init];
 	videos = [[NSMutableArray alloc] init];
 	
+	[self performSelectorInBackground:@selector(checkVideoEnabled) withObject:nil];
 	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
 	self.picker = [[UIImagePickerController alloc] init];
 	self.picker.delegate = self;
@@ -757,6 +758,100 @@
 			NSLog(@"movie orientation changed to: %d", self.currentOrientation);
 		}
 	}
+}
+
+- (void)checkVideoEnabled {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	//NSRange isWPcomBlog = [[[[[BlogDataManager sharedDataManager] currentBlog] objectForKey:@"url"] lowercaseString] 
+//						   rangeOfString:[@"wordpress.com" lowercaseString]];
+//	if(isWPcomBlog.location != NSNotFound) {
+//		// Build our XML-RPC request
+//		NSLog(@"Setting parameters...");
+//		NSMutableDictionary *mediaParams = [NSMutableDictionary dictionary];
+//		
+//		if(mediaType == kImage) {
+//			[mediaParams setValue:@"image/jpeg" forKey:@"type"];
+//			self.messageLabel.text = @"Uploading image...";
+//		}
+//		else if(mediaType == kVideo) {
+//			[mediaParams setValue:@"video/quicktime" forKey:@"type"];
+//			self.messageLabel.text = @"Uploading video...";
+//		}
+//		[self.messageLabel setNeedsLayout];
+//		
+//		[mediaParams setValue:filename forKey:@"name"];
+//		[mediaParams setValue:bits forKey:@"bits"];
+//		
+//		NSLog(@"Setting arguments...");
+//		NSArray *args = [NSArray arrayWithObjects:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:kBlogId],
+//						 [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"username"],
+//						 [[BlogDataManager sharedDataManager] getPasswordFromKeychainInContextOfCurrentBlog:[[BlogDataManager sharedDataManager] currentBlog]],
+//						 mediaParams, nil];
+//		
+//		NSLog(@"Setting xmlrpc parameters...");
+//		NSMutableDictionary *xmlrpcParams = [[NSMutableDictionary alloc] init];
+//		[xmlrpcParams setObject:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"xmlrpc"] forKey:kURL];
+//		[xmlrpcParams setObject:@"metaWeblog.newMediaObject" forKey:kMETHOD];
+//		[xmlrpcParams setObject:args forKey:kMETHODARGS];
+//		
+//		// Execute the XML-RPC request
+//		NSLog(@"Executing xmlrpc request...");
+//		XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[xmlrpcParams valueForKey:kURL]]];
+//		[xmlrpcRequest setMethod:[xmlrpcParams valueForKey:kMETHOD] withObjects:[xmlrpcParams valueForKey:kMETHODARGS]];
+//		[xmlrpcParams release];
+//		//NSLog(@"xmlrpcRequest: %@", xmlrpcRequest);
+//		
+//		[self createURLRequest:xmlrpcRequest];
+//		connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
+//		if (connection) {
+//			NSLog(@"Creating payload...");
+//			payload = [[NSMutableData data] retain];
+//		}
+//		else {
+//			UIAlertView *alert = [[UIAlertView alloc] init];
+//			[alert addButtonWithTitle:@"OK"];
+//			[alert setTitle:@"Unable to start upload."];
+//			[alert show];
+//			[alert release];
+//		}
+//		[xmlrpcRequest release];
+//	}
+//	else
+//		videoEnabled = YES;
+	
+	[pool release];
+}
+
+- (void)createURLRequest:(XMLRPCRequest *)xmlrpc {
+	//NSMutableURLRequest *_request = [[NSMutableURLRequest alloc] initWithURL:xmlrpc.host];
+//	NSNumber *length = [NSNumber numberWithInt:[bits length]];
+//	
+//	if (bits != nil) {
+//		[_request setHTTPMethod: @"POST"];
+//		
+//		if ([_request valueForHTTPHeaderField: @"Content-Length"] == nil)
+//		{
+//			[_request addValue: @"text/xml" forHTTPHeaderField: @"Content-Type"];
+//		}
+//		else
+//		{
+//			[_request setValue: @"text/xml" forHTTPHeaderField: @"Content-Type"];
+//		}
+//		
+//		if ([_request valueForHTTPHeaderField: @"Content-Length"] == nil)
+//		{
+//			[_request addValue: [length stringValue] forHTTPHeaderField: @"Content-Length"];
+//		}
+//		else
+//		{
+//			[_request setValue: [length stringValue] forHTTPHeaderField: @"Content-Length"];
+//		}
+//		
+//		[_request setHTTPBody: bits];
+//		
+//		urlRequest = (NSURLRequest *)_request;
+//	}
 }
 
 #pragma mark -
