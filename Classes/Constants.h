@@ -98,7 +98,8 @@ typedef enum {
 typedef enum {
 	kResizeSmall,
 	kResizeMedium,
-	kResizeLarge
+	kResizeLarge,
+	kResizeExtraLarge
 } MediaResize;
 
 typedef enum {

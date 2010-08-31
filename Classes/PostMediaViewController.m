@@ -20,6 +20,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	[self performSelectorInBackground:@selector(checkVideoEnabled) withObject:nil];
 	
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	mediaUploader = [[WPMediaUploader alloc] initWithNibName:@"WPMediaUploader" bundle:nil];
@@ -321,9 +322,9 @@
 				[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
 				[self useImage:[self resizeImage:currentImage toSize:kResizeLarge]];
 				break;
-			default:
+			case 3:
 				[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
-				[self useImage:currentImage];
+				[self useImage:[self resizeImage:currentImage toSize:kResizeExtraLarge]];
 				break;
 		}
 	}
@@ -339,6 +340,7 @@
 	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+		picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
         [appDelegate.navigationController presentModalViewController:picker animated:YES];
     }
 }
@@ -406,9 +408,9 @@
 
 - (void)showResizeActionSheet {
 	isShowingResizeActionSheet = YES;
-	UIActionSheet *resizeActionSheet = [[UIActionSheet alloc] initWithTitle:@"Resize image?" 
+	UIActionSheet *resizeActionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose Image Size" 
 																		delegate:self 
-															   cancelButtonTitle:@"Use Original" 
+															   cancelButtonTitle:@"Original" 
 														  destructiveButtonTitle:nil 
 															   otherButtonTitles:@"Small", @"Medium", @"Large", nil];
 	[resizeActionSheet showInView:super.tabBarController.view];
@@ -452,7 +454,7 @@
 				[self useImage:[self resizeImage:currentImage toSize:kResizeLarge]];
 				break;
 			case 4:
-				[self useImage:currentImage];
+				[self useImage:[self resizeImage:currentImage toSize:kResizeExtraLarge]];
 				break;
 			default:
 				[self showResizeActionSheet];
@@ -486,6 +488,9 @@
 			MPMoviePlayerController *mp = [[MPMoviePlayerController alloc] initWithContentURL:contentURL];
 			thumbnail = [mp thumbnailImageAtTime:(NSTimeInterval)2.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
 		}
+		else {
+			thumbnail = [UIImage imageNamed:@"video_thumbnail"];
+		}
 		
 		NSData *videoData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:videoPath]];
 		[self useVideo:videoData withThumbnail:thumbnail];
@@ -502,12 +507,14 @@
 	NSURL *contentURL = [NSURL fileURLWithPath:videoPath];
 	UIImage *thumbnail = nil;
 	
-	NSLog(@"osVersion: %f", osVersion);
-	
 	if(osVersion >= 3.2) {
 		MPMoviePlayerController *mp = [[MPMoviePlayerController alloc] initWithContentURL:contentURL];
 		thumbnail = [mp thumbnailImageAtTime:(NSTimeInterval)2.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
 	}
+	else {
+		thumbnail = [UIImage imageNamed:@"video_thumbnail"];
+	}
+
 	
 	NSData *videoData = [NSData dataWithContentsOfURL:contentURL];
 	[self useVideo:videoData withThumbnail:thumbnail];
@@ -563,17 +570,19 @@
 
 
 - (UIImage *)resizeImage:(UIImage *)original toSize:(MediaResize)resize {
-	CGSize smallSize, mediumSize, largeSize;
+	CGSize smallSize, mediumSize, largeSize, extraLargeSize;
 	switch (currentOrientation) {
 		case kPortrait:
 			smallSize = CGSizeMake(160, 240);
 			mediumSize = CGSizeMake(320, 480);
 			largeSize = CGSizeMake(640, 960);
+			extraLargeSize = CGSizeMake(1200, 1800);
 			break;
 		case kLandscape:
 			smallSize = CGSizeMake(240, 160);
 			mediumSize = CGSizeMake(480, 320);
 			largeSize = CGSizeMake(960, 640);
+			extraLargeSize = CGSizeMake(1800, 1200);
 	}
 	
 	UIImage *resizedImage = original;
@@ -586,6 +595,9 @@
 			break;
 		case kResizeLarge:
 			resizedImage = [original resizedImage:largeSize interpolationQuality:kCGInterpolationHigh];
+			break;
+		case kResizeExtraLarge:
+			resizedImage = [original resizedImage:extraLargeSize interpolationQuality:kCGInterpolationHigh];
 			break;
 		default:
 			break;
