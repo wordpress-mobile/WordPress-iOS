@@ -20,7 +20,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	[self performSelectorInBackground:@selector(checkVideoEnabled) withObject:nil];
+	//[self performSelectorInBackground:@selector(checkVideoEnabled) withObject:nil];
 	
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	mediaUploader = [[WPMediaUploader alloc] initWithNibName:@"WPMediaUploader" bundle:nil];
@@ -103,7 +103,7 @@
 			else
 				filesizeString = [NSString stringWithFormat:@"%.2f KB", [media.filesize floatValue]];
 			
-			cell.detailTextLabel.text = [NSString stringWithFormat:@"%d x %d %@", 
+			cell.detailTextLabel.text = [NSString stringWithFormat:@"%dx%d %@", 
 										 [media.width intValue], [media.height intValue], filesizeString];
 			break;
 		case 1:
@@ -576,13 +576,13 @@
 			smallSize = CGSizeMake(160, 240);
 			mediumSize = CGSizeMake(320, 480);
 			largeSize = CGSizeMake(640, 960);
-			extraLargeSize = CGSizeMake(1200, 1800);
+			extraLargeSize = CGSizeMake(1000, 1500);
 			break;
 		case kLandscape:
 			smallSize = CGSizeMake(240, 160);
 			mediumSize = CGSizeMake(480, 320);
 			largeSize = CGSizeMake(960, 640);
-			extraLargeSize = CGSizeMake(1800, 1200);
+			extraLargeSize = CGSizeMake(1000, 1500);
 	}
 	
 	UIImage *resizedImage = original;

@@ -240,6 +240,11 @@
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	[[BlogDataManager sharedDataManager] makeBlogAtIndexCurrent:indexPath.row];
+	
+	MediaManager *mediaManager = [[MediaManager alloc] init];
+	[mediaManager removeForBlogURL:[[[BlogDataManager sharedDataManager] currentBlog] objectForKey:@"url"]];
+	[mediaManager release];
+	
 	[[BlogDataManager sharedDataManager] removeCurrentBlog];
 	
 	[self performSelectorOnMainThread:@selector(didDeleteBlogSuccessfully:) withObject:indexPath waitUntilDone:NO];

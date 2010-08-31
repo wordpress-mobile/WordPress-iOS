@@ -18,7 +18,7 @@
 @implementation PostSettingsViewController
 
 @synthesize postDetailViewController, tableView, passwordTextField, publishOnTextField, commentsSwitchControl;
-@synthesize pingsSwitchControl, resizePhotoControl;
+@synthesize pingsSwitchControl;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -32,7 +32,6 @@
 	[publishOnTextField release];
 	[passwordTextField release];
 	[pingsSwitchControl release];
-	[resizePhotoControl release];
 	[commentsSwitchControl release];
 	[tableView release];
     [super dealloc];
@@ -109,19 +108,9 @@
     [publishOnTextField setMinimumFontSize:14];
     [publishOnTextField setAdjustsFontSizeToFitWidth:YES];
 
-    resizePhotoLabel.font = [UIFont boldSystemFontOfSize:17.0f];
-
     [commentsSwitchControl addTarget:self action:@selector(controlEventValueChanged:) forControlEvents:UIControlEventValueChanged];
     [pingsSwitchControl addTarget:self action:@selector(controlEventValueChanged:) forControlEvents:UIControlEventValueChanged];
     [customFieldsSwitchControl addTarget:self action:@selector(controlEventValueChanged:) forControlEvents:UIControlEventValueChanged];
-
-    [resizePhotoControl addTarget:self action:@selector(changeResizePhotosOptions) forControlEvents:UIControlEventAllTouchEvents];
-}
-
-- (void)changeResizePhotosOptions {
-    postDetailViewController.hasChanges = YES;
-    [[BlogDataManager sharedDataManager].currentPost setValue:[NSNumber numberWithInt:resizePhotoControl.on]
-     forKey:kResizePhotoSetting];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -167,7 +156,7 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -190,7 +179,6 @@
     if (commentsSwitchControl == sender)
         [[BlogDataManager sharedDataManager].currentPost setValue:[NSNumber numberWithInt:commentsSwitchControl.on] forKey:@"not_used_allow_comments"];else if (pingsSwitchControl == sender)
         [[BlogDataManager sharedDataManager].currentPost setValue:[NSNumber numberWithInt:pingsSwitchControl.on] forKey:@"not_used_allow_pings"];else if (customFieldsSwitchControl == sender) {
-        //TODO:JOHNB CustomFields  do something similar here, but first add the appropriate value to current post build in Blog Data Manager
         [[BlogDataManager sharedDataManager].currentPost setValue:[NSNumber numberWithInt:customFieldsSwitchControl.on] forKey:@"custom_fields_enabled"];
     }
 }
@@ -210,25 +198,6 @@
             [dateFormatter release];
             return publishOnTableViewCell;
         }
-//		case 1:
-//		{
-//
-//			if (indexPath.row == 0) {
-//				tagsTextField.text = [post valueForKey:@"mt_keywords"];
-//				tagsTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-//				return tagsTableViewCell;
-//			}
-//			else {
-//				NSArray *array = [[dataManager currentPost] valueForKey:@"categories"];
-//				categoriesTextField.text = [array componentsJoinedByString:@", "];
-//				return categoriesTableViewCell;
-//			}
-//
-//		}
-//		case 2:
-//			commentsSwitchControl.on = [[post valueForKey:@"not_used_allow_comments"] intValue];
-//			pingsSwitchControl.on = [[post valueForKey:@"not_used_allow_pings"] intValue];
-//			return pingsTableViewCell;
         case 1:
 
             if (indexPath.row == 0) {
@@ -236,21 +205,7 @@
                 passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
                 return passwordTableViewCell;
             }
-
             break;
-        case 2:
-
-            if (indexPath.row == 0) {
-                NSNumber *value = [post valueForKey:kResizePhotoSetting];
-
-                if (value == nil) {
-                    value = [NSNumber numberWithInt:0];
-                    [post setValue:value forKey:kResizePhotoSetting];
-                }
-
-                resizePhotoControl.on = [value boolValue];
-                return resizePhotoViewCell;
-            }
         default:
             break;
     }

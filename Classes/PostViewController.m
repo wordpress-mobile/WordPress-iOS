@@ -431,7 +431,6 @@
 		[autosave setStatus:postDetailEditController.statusTextField.text];
 		if(postSettingsController.passwordTextField.text != nil)
 			[autosave setPassword:postSettingsController.passwordTextField.text];
-		[autosave setShouldResizePhotos:[NSNumber numberWithInt:postSettingsController.resizePhotoControl.on]];
 		[autosaveManager save:autosave];
 		[self checkAutosaves];
     }
@@ -583,7 +582,6 @@
 	[post setDateCreated:[NSDate date]];
 	if(postSettingsController.passwordTextField.text != nil)
 		[post setPassword:postSettingsController.passwordTextField.text];
-	[post setShouldResizePhotos:[NSNumber numberWithInt:postSettingsController.resizePhotoControl.on]];
 	[draftManager save:post];
 	[postsListController loadPosts];
 	

@@ -5,6 +5,7 @@
 #import "BlogViewController.h"
 #import "EditSiteViewController.h"
 #import "BlogDataManager.h"
+#import "MediaManager.h"
 #import "Reachability.h"
 #import "PostsViewController.h"
 #import "WelcomeViewController.h"

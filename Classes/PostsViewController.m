@@ -31,7 +31,7 @@
 @implementation PostsViewController
 
 @synthesize newButtonItem, postDetailViewController, postDetailEditController;
-@synthesize anyMorePosts, selectedIndexPath, drafts, draftManager;
+@synthesize anyMorePosts, selectedIndexPath, drafts, draftManager, mediaManager;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -273,6 +273,7 @@
 	progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Deleting Post..."];
 	[progressAlert show];
 	[self performSelectorInBackground:@selector(deletePostAtIndexPath:) withObject:indexPath];
+	
 }
 
 #pragma mark -
@@ -428,6 +429,9 @@
 	NSIndexPath *indexPath = (NSIndexPath*)object;
 	
     if (indexPath.section == LOCAL_DRAFTS_SECTION) {
+		Post *draft = [drafts objectAtIndex:indexPath.row];
+		[mediaManager removeForPostID:draft.postID andBlogURL:[[[BlogDataManager sharedDataManager] currentBlog] objectForKey:@"url"]];
+		
 		NSManagedObject *objectToDelete = [drafts objectAtIndex:indexPath.row];
 		[appDelegate.managedObjectContext deleteObject:objectToDelete];
 		
@@ -454,9 +458,12 @@
 				[delegate setAlertRunning:YES];
 				[alert release];
 				return;
-			}else{
+			}
+			else{
 				//if reachability is good, make post at index current, delete post, and refresh view (sync posts)
 				[dataManager makePostAtIndexCurrent:indexPath.row];
+				[mediaManager removeForPostID:[[[BlogDataManager sharedDataManager] currentPost] objectForKey:@"postid"] 
+								   andBlogURL:[[[BlogDataManager sharedDataManager] currentBlog] objectForKey:@"url"]];
 				//delete post
 				//if ([dataManager deletePage]){
 				[dataManager deletePost];
@@ -537,6 +544,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"AsynchronousPostIsPosted" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"DraftsUpdated" object:nil];
 	
+	[mediaManager release];
 	[draftManager release];
     [postDetailEditController release];
     [postDetailViewController release];

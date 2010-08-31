@@ -11,17 +11,13 @@
     IBOutlet UITableViewCell *publishOnTableViewCell;
     IBOutlet UITableViewCell *passwordTableViewCell;
     IBOutlet UITableViewCell *passwordHintTableViewCell;
-    IBOutlet UITableViewCell *resizePhotoViewCell;
     IBOutlet UITextField *passwordTextField;
     IBOutlet UILabel *publishOnTextField;
     IBOutlet UILabel *passwordLabel;
     IBOutlet UILabel *publishOnLabel;
     IBOutlet UISwitch *commentsSwitchControl;
     IBOutlet UISwitch *pingsSwitchControl;
-    IBOutlet UISwitch *resizePhotoControl;
     IBOutlet UISwitch *customFieldsSwitchControl;
-    IBOutlet UILabel *resizePhotoLabel;
-    IBOutlet UITableViewCell *resizePhotoHintTableViewCell;
     PostViewController *postDetailViewController;
 }
 
@@ -29,7 +25,7 @@
 @property (nonatomic, retain) UITableView *tableView;
 @property (nonatomic, retain) UITextField *passwordTextField;
 @property (nonatomic, retain) UILabel *publishOnTextField;
-@property (nonatomic, retain) UISwitch *commentsSwitchControl, *pingsSwitchControl, *resizePhotoControl;
+@property (nonatomic, retain) UISwitch *commentsSwitchControl, *pingsSwitchControl;
 
 - (void)reloadData;
 - (void)endEditingAction:(id)sender;

@@ -72,6 +72,30 @@
 	return results;
 }
 
+- (NSMutableArray *)getForBlogURL:(NSString *)blogURL {
+	NSArray *items = nil;
+	NSMutableArray *results = [[NSMutableArray alloc] init];
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	
+	if(blogURL != nil) {
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Media" inManagedObjectContext:appDelegate.managedObjectContext];
+		[request setEntity:entity];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(blogURL like %@)", blogURL];
+		[request setPredicate:predicate];
+		
+		NSError *error;
+		items = [appDelegate.managedObjectContext executeFetchRequest:request error:&error];
+		
+		for(Media *media in items) {
+			[results addObject:media];
+		}
+		
+		[request release];
+	}
+	
+	return results;
+}
+
 - (BOOL)exists:(NSString *)uniqueID {
 	NSArray *items = nil;
 	if(uniqueID != nil) {
@@ -117,12 +141,62 @@
 	[self dataSave];
 }
 
+- (void)removeForPostID:(NSString *)postID andBlogURL:(NSString *)blogURL {
+	NSError *error;
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSMutableArray *images = [self getForPostID:postID andBlogURL:blogURL andMediaType:kImage];
+	NSMutableArray *videos = [self getForPostID:postID andBlogURL:blogURL andMediaType:kVideo];
+	
+	for(Media *image in images) {
+		[fileManager removeItemAtURL:[NSURL fileURLWithPath:image.localURL] error:&error];
+		NSManagedObject *objectToDelete = image;
+		[appDelegate.managedObjectContext deleteObject:objectToDelete];
+	}
+	
+	for(Media *video in videos) {
+		[fileManager removeItemAtURL:[NSURL fileURLWithPath:video.localURL] error:&error];
+		NSManagedObject *objectToDelete = video;
+		[appDelegate.managedObjectContext deleteObject:objectToDelete];
+	}
+	
+	[self dataSave];
+	[self doReport];
+}
+
+- (void)removeForBlogURL:(NSString *)blogURL {
+	NSError *error;
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSMutableArray *items = [self getForBlogURL:blogURL];
+	
+	for(Media *media in items) {
+		[fileManager removeItemAtURL:[NSURL fileURLWithPath:media.localURL] error:&error];
+		NSManagedObject *objectToDelete = media;
+		[appDelegate.managedObjectContext deleteObject:objectToDelete];
+	}
+	
+	[self dataSave];
+	[self doReport];
+}
+
 - (void)dataSave {
     NSError *error;
     if (![appDelegate.managedObjectContext save:&error]) {
         NSLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
         exit(-1);
     }
+}
+
+- (void)doReport {
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Media" inManagedObjectContext:appDelegate.managedObjectContext];
+	[request setEntity:entity];
+	
+	NSError *error;
+	NSMutableArray *items = [appDelegate.managedObjectContext executeFetchRequest:request error:&error];
+	
+	NSLog(@"%d total media objects on this device.", items.count);
+	
+	[request release];
 }
 
 @end

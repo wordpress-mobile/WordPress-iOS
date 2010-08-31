@@ -230,7 +230,6 @@
 #pragma mark UITextField delegate methods
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-	NSLog(@"textfield.tag: %d", textField.tag);
 	[textField resignFirstResponder];
 	
 	if((textField.tag == 1) && (username != nil) && (password != nil)) {

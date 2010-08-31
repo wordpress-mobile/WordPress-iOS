@@ -79,7 +79,6 @@ static inline double radians(double degrees) {
 - (void)processLibraryVideo;
 - (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(NSString *)contextInfo;
 - (UIImage *)fixImageOrientation:(UIImage *)img;
-- (UIImage *)scaleAndRotateImage:(UIImage *)image scaleFlag:(BOOL)aFlag;
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker;
 - (void)useImage:(UIImage *)theImage;
 - (void)useVideo:(NSData *)video withThumbnail:(UIImage *)thumbnail;
@@ -90,6 +89,5 @@ static inline double radians(double degrees) {
 - (void)updateMediaCount;
 - (NSString *)getUUID;
 - (void)checkVideoEnabled;
-- (void)createURLRequest:(XMLRPCRequest *)xmlrpc;
 
 @end
