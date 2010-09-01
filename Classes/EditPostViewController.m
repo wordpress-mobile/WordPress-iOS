@@ -84,6 +84,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 	}
 	
+	self.statusTextField.text = @"Local Draft";
 	[self restoreUnsavedPost];
 }
 
@@ -220,6 +221,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)refreshUIForCompose {
 	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	
 	self.navigationItem.title = @"Write";
     titleTextField.text = @"";
@@ -227,11 +229,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
     textView.text = @"";
     textViewPlaceHolderField.hidden = NO;
     categoriesTextField.text = @"";
-	statusTextField.text = @"Local Draft";
 	self.isLocalDraft = YES;
 	
-	postDetailViewController.post = [postDetailViewController.draftManager get:nil];
 	[postDetailViewController.post setStatus:@"Local Draft"];
+	statusTextField.text = @"Local Draft";
+	NSLog(@"statusTextField.text: %@", statusTextField.text);
+	postDetailViewController.post = [postDetailViewController.draftManager get:nil];
 	postDetailViewController.post.wasLocalDraft = [NSNumber numberWithInt:1];
 	postDetailViewController.post.isLocalDraft = [NSNumber numberWithInt:1];
 	postDetailViewController.post.isPublished = [NSNumber numberWithInt:0];
@@ -506,6 +509,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 					[[[BlogDataManager sharedDataManager] currentPost] setObject:status forKey:@"post_status"];
 				[postDetailViewController.post setIsLocalDraft:[NSNumber numberWithInt:0]];
 				self.isLocalDraft = NO;
+			}
+			else if([[postDetailViewController.post.status lowercaseString] isEqualToString:@"local draft"]) {
+				[postDetailViewController.post setIsLocalDraft:[NSNumber numberWithInt:1]];
+				self.isLocalDraft = YES;
 			}
 		}
 		

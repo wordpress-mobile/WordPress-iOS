@@ -52,6 +52,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+	[self removemediaUploader:nil finished:nil context:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[super viewWillDisappear:animated];
 }
@@ -271,10 +272,10 @@
 				break;
 			case 3:
 				if(buttonIndex == 0) {
-					[self useImage:currentImage];
+					[self pickPhotoFromPhotoLibrary:nil];
 				}
 				else if(buttonIndex == 1) {
-					[self useImage:currentImage];
+					[self pickPhotoFromCamera:self];
 				}
 				else {
 					[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
@@ -332,7 +333,7 @@
 				break;
 			case 3:
 				[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
-				[self useImage:[self resizeImage:currentImage toSize:kResizeExtraLarge]];
+				[self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
 				break;
 		}
 	}
@@ -462,7 +463,7 @@
 				[self useImage:[self resizeImage:currentImage toSize:kResizeLarge]];
 				break;
 			case 4:
-				[self useImage:[self resizeImage:currentImage toSize:kResizeExtraLarge]];
+				[self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
 				break;
 			default:
 				[self showResizeActionSheet];
@@ -578,19 +579,19 @@
 
 
 - (UIImage *)resizeImage:(UIImage *)original toSize:(MediaResize)resize {
-	CGSize smallSize, mediumSize, largeSize, extraLargeSize;
+	CGSize smallSize, mediumSize, largeSize, originalSize;
 	switch (currentOrientation) {
 		case kPortrait:
 			smallSize = CGSizeMake(160, 240);
 			mediumSize = CGSizeMake(320, 480);
 			largeSize = CGSizeMake(640, 960);
-			extraLargeSize = CGSizeMake(1000, 1500);
+			originalSize = CGSizeMake(2592, 1936);
 			break;
 		case kLandscape:
 			smallSize = CGSizeMake(240, 160);
 			mediumSize = CGSizeMake(480, 320);
 			largeSize = CGSizeMake(960, 640);
-			extraLargeSize = CGSizeMake(1000, 1500);
+			originalSize = CGSizeMake(1936, 2592);
 	}
 	
 	UIImage *resizedImage = original;
@@ -604,8 +605,8 @@
 		case kResizeLarge:
 			resizedImage = [original resizedImage:largeSize interpolationQuality:kCGInterpolationHigh];
 			break;
-		case kResizeExtraLarge:
-			resizedImage = [original resizedImage:extraLargeSize interpolationQuality:kCGInterpolationHigh];
+		case kResizeOriginal:
+			resizedImage = [original resizedImage:originalSize interpolationQuality:kCGInterpolationHigh];
 			break;
 		default:
 			break;
@@ -767,6 +768,7 @@
 }
 
 - (void)mediaUploadFailed:(NSNotification *)notification {
+	[NSThread sleepForTimeInterval:1];
 	[UIView beginAnimations:@"Removing mediaUploader" context:nil];
 	[UIView setAnimationDuration:0.4];
 	[UIView setAnimationDelegate:mediaUploader.view];
@@ -777,7 +779,7 @@
 	[self refreshMedia];
 }
 
--(void)removemediaUploader:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
+- (void)removemediaUploader:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
 	[mediaUploader.view removeFromSuperview];
 	[mediaUploader reset];
 }
