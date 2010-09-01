@@ -48,6 +48,7 @@
 	[self performSelectorInBackground:@selector(checkVideoEnabled) withObject:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:VideoUploadSuccessful object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:ImageUploadSuccessful object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaUploadFailed:) name:VideoUploadFailed object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -89,6 +90,7 @@
 	}
     
 	Media *media = nil;
+	NSString *filesizeString = nil;
 	switch (mediaTypeControl.selectedSegmentIndex) {
 		case 0:
 			media = [photos objectAtIndex:indexPath.row];
@@ -97,7 +99,6 @@
 				cell.textLabel.text = media.title;
 			else
 				cell.textLabel.text = media.filename;
-			NSString *filesizeString = nil;
 			if([media.filesize floatValue] > 1024)
 				filesizeString = [NSString stringWithFormat:@"%.2f MB", ([media.filesize floatValue]/1024)];
 			else
@@ -119,7 +120,13 @@
 			
 			long min = (long)cellMP.duration / 60;    // divide two longs, truncates
 			long sec = (long)cellMP.duration % 60;    // remainder of long divide
-			cell.detailTextLabel.text = [NSString stringWithFormat:@"Duration: %02d:%02d", min, sec];
+			
+			if([media.filesize floatValue] > 1024)
+				filesizeString = [NSString stringWithFormat:@"%.2f MB", ([media.filesize floatValue]/1024)];
+			else
+				filesizeString = [NSString stringWithFormat:@"%.2f KB", [media.filesize floatValue]];
+			
+			cell.detailTextLabel.text = [NSString stringWithFormat:@"%02d:%02d %@", min, sec, filesizeString];
 			break;
 		default:
 			break;
@@ -128,6 +135,7 @@
 	[cell.imageView setClipsToBounds:NO];
 	[cell.imageView setFrame:CGRectMake(0, 0, 75, 75)];
 	[cell.imageView setContentMode:UIViewContentModeScaleAspectFill];
+	filesizeString = nil;
     
     return cell;
 }
@@ -748,6 +756,17 @@
 }
 
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification {
+	[UIView beginAnimations:@"Removing mediaUploader" context:nil];
+	[UIView setAnimationDuration:0.4];
+	[UIView setAnimationDelegate:mediaUploader.view];
+	[UIView setAnimationDidStopSelector:@selector(removemediaUploader:finished:context:)];
+	[mediaUploader.view setFrame:CGRectMake(0, 480, 320, 40)];
+	[UIView commitAnimations];
+	self.isAddingMedia = NO;
+	[self refreshMedia];
+}
+
+- (void)mediaUploadFailed:(NSNotification *)notification {
 	[UIView beginAnimations:@"Removing mediaUploader" context:nil];
 	[UIView setAnimationDuration:0.4];
 	[UIView setAnimationDelegate:mediaUploader.view];

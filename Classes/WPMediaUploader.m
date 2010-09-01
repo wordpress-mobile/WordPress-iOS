@@ -171,7 +171,9 @@
 				//NSInteger code = -1; //This is not significant, just a number with no meaning
 				//NSDictionary *usrInfo = [NSDictionary dictionaryWithObject:errorString forKey:NSLocalizedDescriptionKey];
 				//NSError *err = [NSError errorWithDomain:@"org.wordpress.iphone" code:code userInfo:usrInfo];
+				NSLog(@"urlResponse: %@", urlResponse);
 				self.messageLabel.text = errorString;
+				[[NSNotificationCenter defaultCenter] postNotificationName:VideoUploadFailed object:nil];
 			}
 			else {
 				XMLRPCResponse *xmlrpcResponse = [[XMLRPCResponse alloc] initWithData:payload];
@@ -216,6 +218,7 @@
 }
 
 - (void)connection:(NSURLConnection *)conn didFailWithError:(NSError *)error {
+	NSLog(@"error: %@", error);
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[payload setLength:0];
 	self.messageLabel.text = @"Upload failed. Please try again.";
