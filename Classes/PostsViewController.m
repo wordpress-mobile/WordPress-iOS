@@ -80,9 +80,7 @@
 		}
 	}
 
-	[self handleAutoSavedContext:0];
-	
-	NSLog(@"selected blog ID: %@", [[[BlogDataManager sharedDataManager] currentBlog] objectForKey:kBlogId]);
+	[self handleAutoSavedContext:0];	
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

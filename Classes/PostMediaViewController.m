@@ -585,13 +585,23 @@
 			smallSize = CGSizeMake(160, 240);
 			mediumSize = CGSizeMake(320, 480);
 			largeSize = CGSizeMake(640, 960);
-			originalSize = CGSizeMake(2592, 1936);
+			if([[UIDevice currentDevice] platformString] == IPHONE_4G_NAMESTRING)
+				originalSize = CGSizeMake(2592, 1936);
+			else if([[UIDevice currentDevice] platformString] == IPHONE_3GS_NAMESTRING)
+				originalSize = CGSizeMake(2048, 1536);
+			else if([[UIDevice currentDevice] platformString] == IPHONE_3G_NAMESTRING)
+				originalSize = CGSizeMake(1600, 1200);
 			break;
 		case kLandscape:
 			smallSize = CGSizeMake(240, 160);
 			mediumSize = CGSizeMake(480, 320);
 			largeSize = CGSizeMake(960, 640);
-			originalSize = CGSizeMake(1936, 2592);
+			if([[UIDevice currentDevice] platformString] == IPHONE_4G_NAMESTRING)
+				originalSize = CGSizeMake(1936, 2592);
+			else if([[UIDevice currentDevice] platformString] == IPHONE_3GS_NAMESTRING)
+				originalSize = CGSizeMake(1536, 2048);
+			else if([[UIDevice currentDevice] platformString] == IPHONE_3G_NAMESTRING)
+				originalSize = CGSizeMake(1200, 1600);
 	}
 	
 	UIImage *resizedImage = original;
