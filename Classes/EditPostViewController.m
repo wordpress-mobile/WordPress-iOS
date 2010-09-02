@@ -220,9 +220,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)refreshUIForCompose {
-	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	
 	self.navigationItem.title = @"Write";
     titleTextField.text = @"";
     tagsTextField.text = @"";
@@ -230,7 +227,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     textViewPlaceHolderField.hidden = NO;
     categoriesTextField.text = @"";
 	self.isLocalDraft = YES;
-	
 	[postDetailViewController.post setStatus:@"Local Draft"];
 	statusTextField.text = @"Local Draft";
 	NSLog(@"statusTextField.text: %@", statusTextField.text);
@@ -386,7 +382,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)refreshCategory {
     NSArray *cats;
 	if(isLocalDraft == YES) {
-		categoriesTextField.text = postDetailViewController.post.categories;
+		if(postDetailViewController.post.categories != nil)
+			categoriesTextField.text = postDetailViewController.post.categories;
+		else
+			categoriesTextField.text = @"";
 	}
 	else {
 		cats = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"categories"];

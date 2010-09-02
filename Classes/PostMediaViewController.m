@@ -38,8 +38,10 @@
 	
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	self.blogURL = [[dm currentBlog] objectForKey:@"url"];
-	if([[[dm currentPost] objectForKey:@"postid"] isEqualToString:@""] == NO)
+	if((([[dm currentPost] objectForKey:@"postid"] != nil)) && ([[[dm currentPost] objectForKey:@"postid"] isEqualToString:@""] == NO))
 		self.postID = [[dm currentPost] objectForKey:@"postid"];
+	else if(appDelegate.postID != nil)
+		self.postID = appDelegate.postID;
 	else
 		self.postID = @"unsavedpost";
 	

@@ -591,6 +591,8 @@
 	[post setBlogID:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blogid"]];
 	[post setPostTitle:postDetailEditController.titleTextField.text];
 	[post setContent:postDetailEditController.textView.text];
+	[post setCategories:postDetailEditController.categoriesTextField.text];
+	[post setTags:postDetailEditController.tagsTextField.text];
 	[post setDateCreated:[NSDate date]];
 	if(postSettingsController.passwordTextField.text != nil)
 		[post setPassword:postSettingsController.passwordTextField.text];
