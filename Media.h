@@ -14,6 +14,7 @@
 
 @property (nonatomic, retain) NSString * mediaType;
 @property (nonatomic, retain) NSString * remoteURL;
+@property (nonatomic, retain) NSString * shortcode;
 @property (nonatomic, retain) NSString * uniqueID;
 @property (nonatomic, retain) NSNumber * width;
 @property (nonatomic, retain) NSNumber * longitude;
@@ -27,7 +28,6 @@
 @property (nonatomic, retain) NSString * filename;
 @property (nonatomic, retain) NSNumber * filesize;
 @property (nonatomic, retain) NSNumber * height;
-@property (nonatomic, retain) NSString * localURL;
 @property (nonatomic, retain) NSString * caption;
 @property (nonatomic, retain) NSDate * creationDate;
 

@@ -14,6 +14,7 @@
 #import "BlogDataManager.h"
 #import "MediaManager.h"
 #import "WPMediaUploader.h"
+#import "PostMediaEditViewController.h"
 
 @class PostViewController;
 

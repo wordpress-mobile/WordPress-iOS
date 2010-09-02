@@ -131,6 +131,8 @@
 		831C9ED612162AF700B1EACE /* DraftManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 831C9ED512162AF700B1EACE /* DraftManager.m */; };
 		831C9ED912162B0100B1EACE /* AutosaveManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 831C9ED812162B0100B1EACE /* AutosaveManager.m */; };
 		831E3DA411F645C5005C573E /* logo_stacked.png in Resources */ = {isa = PBXBuildFile; fileRef = 831E3DA311F645C5005C573E /* logo_stacked.png */; };
+		831F315A122DE3EE005E33CD /* PostMediaEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 831F3158122DE3EE005E33CD /* PostMediaEditViewController.m */; };
+		831F315B122DE3EE005E33CD /* PostMediaEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 831F3159122DE3EE005E33CD /* PostMediaEditViewController.xib */; };
 		8320B5D611FCA41200607422 /* UITableViewSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8320B5D511FCA41200607422 /* UITableViewSwitchCell.m */; };
 		8320B5D911FCA50400607422 /* UITableViewSwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8320B5D811FCA50400607422 /* UITableViewSwitchCell.xib */; };
 		8320B5DF11FCA62600607422 /* UITableViewSegmentedControlCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8320B5DE11FCA62600607422 /* UITableViewSegmentedControlCell.m */; };
@@ -463,6 +465,9 @@
 		831C9ED712162B0100B1EACE /* AutosaveManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutosaveManager.h; sourceTree = "<group>"; };
 		831C9ED812162B0100B1EACE /* AutosaveManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutosaveManager.m; sourceTree = "<group>"; };
 		831E3DA311F645C5005C573E /* logo_stacked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_stacked.png; sourceTree = "<group>"; };
+		831F3157122DE3EE005E33CD /* PostMediaEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostMediaEditViewController.h; sourceTree = "<group>"; };
+		831F3158122DE3EE005E33CD /* PostMediaEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostMediaEditViewController.m; sourceTree = "<group>"; };
+		831F3159122DE3EE005E33CD /* PostMediaEditViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PostMediaEditViewController.xib; path = Classes/PostMediaEditViewController.xib; sourceTree = "<group>"; };
 		8320B5D411FCA41200607422 /* UITableViewSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableViewSwitchCell.h; sourceTree = "<group>"; };
 		8320B5D511FCA41200607422 /* UITableViewSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableViewSwitchCell.m; sourceTree = "<group>"; };
 		8320B5D811FCA50400607422 /* UITableViewSwitchCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UITableViewSwitchCell.xib; sourceTree = "<group>"; };
@@ -1090,6 +1095,8 @@
 				83A64688112C5F75000999A6 /* PostSettingsHelpViewController.m */,
 				8383178512270E980047B476 /* PostMediaViewController.h */,
 				8383178612270E980047B476 /* PostMediaViewController.m */,
+				831F3157122DE3EE005E33CD /* PostMediaEditViewController.h */,
+				831F3158122DE3EE005E33CD /* PostMediaEditViewController.m */,
 			);
 			name = Post;
 			sourceTree = "<group>";
@@ -1283,6 +1290,7 @@
 		ACFF1DC10E231F0B00EC6BF5 /* Post */ = {
 			isa = PBXGroup;
 			children = (
+				831F3159122DE3EE005E33CD /* PostMediaEditViewController.xib */,
 				8383178712270E980047B476 /* PostMediaViewController.xib */,
 				83D3DD371215D5EC00600B4B /* AutosaveContentViewController.xib */,
 				839FE9131214AA52004D20E6 /* AutosaveViewController.xib */,
@@ -1613,6 +1621,7 @@
 				83D3DDB81215DC7900600B4B /* Settings.bundle in Resources */,
 				8383178912270E980047B476 /* PostMediaViewController.xib in Resources */,
 				834CAEA7122D56DC003DDF49 /* video_thumbnail.png in Resources */,
+				831F315B122DE3EE005E33CD /* PostMediaEditViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1737,6 +1746,7 @@
 				834CAE7C122D528A003DDF49 /* UIImage+Resize.m in Sources */,
 				834CAE9F122D56B1003DDF49 /* UIImage+Alpha.m in Sources */,
 				834CAEA0122D56B1003DDF49 /* UIImage+RoundedCorner.m in Sources */,
+				831F315A122DE3EE005E33CD /* PostMediaEditViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -92,6 +92,10 @@
     
 	Media *media = nil;
 	NSString *filesizeString = nil;
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDirectory = [paths objectAtIndex:0];
+	NSString *filepath;
+	
 	switch (mediaTypeControl.selectedSegmentIndex) {
 		case 0:
 			media = [photos objectAtIndex:indexPath.row];
@@ -111,7 +115,8 @@
 		case 1:
 			media = [videos objectAtIndex:indexPath.row];
 			if(cellMP == nil) {
-				cellMP = [[[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:media.localURL]] autorelease];
+				filepath = [documentsDirectory stringByAppendingPathComponent:media.filename];
+				cellMP = [[[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:filepath]] autorelease];
 			}
 			cell.imageView.image = [UIImage imageWithData:media.thumbnail];
 			if(media.title != nil)
@@ -149,6 +154,21 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	PostMediaEditViewController *mediaEditView = [[PostMediaEditViewController alloc] initWithNibName:@"PostMediaEditViewController" bundle:nil];
+	switch (mediaTypeControl.selectedSegmentIndex) {
+		case 0:
+			[mediaEditView setMediaType:kImage];
+			[mediaEditView setMedia:[photos objectAtIndex:indexPath.row]];
+			break;
+		case 1:
+			[mediaEditView setMediaType:kVideo];
+			[mediaEditView setMedia:[videos objectAtIndex:indexPath.row]];
+			break;
+		default:
+			break;
+	}
+	[appDelegate.navigationController pushViewController:mediaEditView animated:YES];
+	[mediaEditView release];
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
@@ -589,7 +609,7 @@
 				originalSize = CGSizeMake(2592, 1936);
 			else if([[UIDevice currentDevice] platformString] == IPHONE_3GS_NAMESTRING)
 				originalSize = CGSizeMake(2048, 1536);
-			else if([[UIDevice currentDevice] platformString] == IPHONE_3G_NAMESTRING)
+			else
 				originalSize = CGSizeMake(1600, 1200);
 			break;
 		case kLandscape:
@@ -600,7 +620,7 @@
 				originalSize = CGSizeMake(1936, 2592);
 			else if([[UIDevice currentDevice] platformString] == IPHONE_3GS_NAMESTRING)
 				originalSize = CGSizeMake(1536, 2048);
-			else if([[UIDevice currentDevice] platformString] == IPHONE_3G_NAMESTRING)
+			else
 				originalSize = CGSizeMake(1200, 1600);
 	}
 	
@@ -648,10 +668,9 @@
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectory = [paths objectAtIndex:0];
 	NSString *filename = [NSString stringWithFormat:@"%@.jpg", [formatter stringFromDate:[NSDate date]]];
-	NSString *filepath = [NSString stringWithFormat:@"%@/%@", [[dm currentBlog] objectForKey:@"url"], filename];
-	filepath = [documentsDirectory stringByAppendingPathComponent:filepath];
+	NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
 	[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
-	NSLog(@"saved image to file: %@", filepath);
+	NSLog(@"saved image to file: %@", imageMedia.filename);
 	
 	imageMedia.postID = self.postID;
 	imageMedia.blogID = [currentBlog valueForKey:@"blogid"];
@@ -659,7 +678,6 @@
 	imageMedia.creationDate = [NSDate date];
 	imageMedia.filename = filename;
 	imageMedia.filesize = [NSNumber numberWithInt:(imageData.length/1024)];
-	imageMedia.localURL = filepath;
 	imageMedia.mediaType = @"image";
 	imageMedia.thumbnail = UIImageJPEGRepresentation(imageThumbnail, 1.0);
 	imageMedia.width = [NSNumber numberWithInt:theImage.size.width];
@@ -690,10 +708,9 @@
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectory = [paths objectAtIndex:0];
 	NSString *filename = [NSString stringWithFormat:@"%@.mov", [formatter stringFromDate:[NSDate date]]];
-	NSString *filepath = [NSString stringWithFormat:@"%@/%@", [[dm currentBlog] objectForKey:@"url"], filename];
-	filepath = [documentsDirectory stringByAppendingPathComponent:filepath];
+	NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
 	[fileManager createFileAtPath:filepath contents:video attributes:nil];
-	NSLog(@"saved video to file: %@", filepath);
+	NSLog(@"saved video to file: %@", videoMedia.filename);
 	
 	// Save to local database
 	videoMedia.postID = self.postID;
@@ -702,7 +719,6 @@
 	videoMedia.creationDate = [NSDate date];
 	videoMedia.filename = filename;
 	videoMedia.filesize = [NSNumber numberWithInt:(video.length/1024)];
-	videoMedia.localURL = filepath;
 	videoMedia.mediaType = @"video";
 	videoMedia.thumbnail = UIImageJPEGRepresentation(videoThumbnail, 1.0);
 	[mediaManager save:videoMedia];

@@ -32,16 +32,14 @@
 		[request release];
 	}
 	
-	Post *post = nil;
-	if((items != nil) && (items.count > 0)) {
-		post = [items objectAtIndex:0];
-	}
-	else {
-		post = (Post *)[NSEntityDescription insertNewObjectForEntityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];
+	if((items == nil) || (items.count == 0)) {
+		Post *post = [NSEntityDescription insertNewObjectForEntityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];
 		[post setUniqueID:[[NSProcessInfo processInfo] globallyUniqueString]];
 		[post setPostID:post.uniqueID];
+		return post;
 	}
-	return post;
+	
+	return [items objectAtIndex:0];
 }
 
 - (NSMutableArray *)getForBlog:(NSString *)blogID {

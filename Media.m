@@ -13,6 +13,7 @@
 
 @dynamic mediaType;
 @dynamic remoteURL;
+@dynamic shortcode;
 @dynamic uniqueID;
 @dynamic width;
 @dynamic longitude;
@@ -24,7 +25,6 @@
 @dynamic blogID;
 @dynamic blogURL;
 @dynamic height;
-@dynamic localURL;
 @dynamic filename;
 @dynamic filesize;
 @dynamic caption;

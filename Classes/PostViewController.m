@@ -310,10 +310,10 @@
 	[postDetailEditController bringTextViewDown];
 	hasSaved = YES;
 	
-	if((post != nil) && (post.wasLocalDraft == [NSNumber numberWithInt:1]) && (post.isLocalDraft == [NSNumber numberWithInt:0]))
+	if((self.post != nil) && (post.wasLocalDraft == [NSNumber numberWithInt:1]) && (post.isLocalDraft == [NSNumber numberWithInt:0]))
 		self.didConvertDraftToPublished = YES;
 
-     if((post == nil) || (post.isLocalDraft == [NSNumber numberWithInt:0])) {
+     if((self.post == nil) || (self.post.isLocalDraft == [NSNumber numberWithInt:0])) {
 		if ([[Reachability sharedReachability] internetConnectionStatus] == NotReachable) {
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Communication Error."
 			message:@"no internet connection."
@@ -458,7 +458,19 @@
 }
 
 - (void)refreshUIForCompose {
+	if(draftManager == nil)
+		draftManager = [[DraftManager alloc] init];
+	
 	postDetailViewController.navigationItem.title = @"Write";
+	
+	post = nil;
+	post = [draftManager get:appDelegate.postID];
+	[self.post setWasLocalDraft:[NSNumber numberWithInt:1]];
+	[self.post setIsLocalDraft:[NSNumber numberWithInt:1]];
+	[self.post setIsPublished:[NSNumber numberWithInt:0]];
+	appDelegate.postID = self.post.postID;
+	self.autosaveView.postID = self.post.postID;
+	
 	if (hasChanges == NO)
 		[self setRightBarButtonItemForEditPost:nil];
 	
@@ -597,7 +609,6 @@
     self.rightBarButtonItemForEditPost = nil;
 	[postDetailEditController clearUnsavedPost];
 	[self refreshUIForCompose];
-	[self setPost:nil];
     [self stopTimer];
 	[self dismissEditView];
 }

@@ -25,5 +25,6 @@
 - (void)removeForBlogURL:(NSString *)blogURL;
 - (void)removeForPostID:(NSString *)postID andBlogURL:(NSString *)blogURL;
 - (void)dataSave;
+- (void)doReport;
 
 @end

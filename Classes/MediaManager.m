@@ -144,17 +144,22 @@
 - (void)removeForPostID:(NSString *)postID andBlogURL:(NSString *)blogURL {
 	NSError *error;
 	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDirectory = [paths objectAtIndex:0];
 	NSMutableArray *images = [self getForPostID:postID andBlogURL:blogURL andMediaType:kImage];
 	NSMutableArray *videos = [self getForPostID:postID andBlogURL:blogURL andMediaType:kVideo];
+	NSString *filepath;
 	
 	for(Media *image in images) {
-		[fileManager removeItemAtURL:[NSURL fileURLWithPath:image.localURL] error:&error];
+		filepath = [documentsDirectory stringByAppendingPathComponent:image.filename];
+		[fileManager removeItemAtURL:[NSURL fileURLWithPath:filepath] error:&error];
 		NSManagedObject *objectToDelete = image;
 		[appDelegate.managedObjectContext deleteObject:objectToDelete];
 	}
 	
 	for(Media *video in videos) {
-		[fileManager removeItemAtURL:[NSURL fileURLWithPath:video.localURL] error:&error];
+		filepath = [documentsDirectory stringByAppendingPathComponent:video.filename];
+		[fileManager removeItemAtURL:[NSURL fileURLWithPath:filepath] error:&error];
 		NSManagedObject *objectToDelete = video;
 		[appDelegate.managedObjectContext deleteObject:objectToDelete];
 	}
@@ -166,10 +171,14 @@
 - (void)removeForBlogURL:(NSString *)blogURL {
 	NSError *error;
 	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDirectory = [paths objectAtIndex:0];
 	NSMutableArray *items = [self getForBlogURL:blogURL];
+	NSString *filepath;
 	
 	for(Media *media in items) {
-		[fileManager removeItemAtURL:[NSURL fileURLWithPath:media.localURL] error:&error];
+		filepath = [documentsDirectory stringByAppendingPathComponent:media.filename];
+		[fileManager removeItemAtURL:[NSURL fileURLWithPath:filepath] error:&error];
 		NSManagedObject *objectToDelete = media;
 		[appDelegate.managedObjectContext deleteObject:objectToDelete];
 	}
@@ -192,7 +201,7 @@
 	[request setEntity:entity];
 	
 	NSError *error;
-	NSMutableArray *items = [appDelegate.managedObjectContext executeFetchRequest:request error:&error];
+	NSArray *items = [appDelegate.managedObjectContext executeFetchRequest:request error:&error];
 	
 	NSLog(@"%d total media objects on this device.", items.count);
 	

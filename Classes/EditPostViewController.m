@@ -234,12 +234,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[postDetailViewController.post setStatus:@"Local Draft"];
 	statusTextField.text = @"Local Draft";
 	NSLog(@"statusTextField.text: %@", statusTextField.text);
-	postDetailViewController.post = [postDetailViewController.draftManager get:nil];
-	postDetailViewController.post.wasLocalDraft = [NSNumber numberWithInt:1];
-	postDetailViewController.post.isLocalDraft = [NSNumber numberWithInt:1];
-	postDetailViewController.post.isPublished = [NSNumber numberWithInt:0];
-	appDelegate.postID = postDetailViewController.post.postID;
-	postDetailViewController.autosaveView.postID = postDetailViewController.post.postID;
 }
 
 - (void)refreshUIForCurrentPost {
@@ -500,19 +494,19 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			[postDetailViewController.post setStatus:[selectedObjects lastObject]];
 			statusTextField.text = postDetailViewController.post.status;
 			
-			if([[postDetailViewController.post.status lowercaseString] isEqualToString:@"published"]) {
+			if([[postDetailViewController.post.status lowercaseString] isEqualToString:@"local draft"]) {
+				[postDetailViewController.post setIsLocalDraft:[NSNumber numberWithInt:1]];
+				self.isLocalDraft = YES;
+			}
+			else {
+				NSString *status = [[BlogDataManager sharedDataManager] statusForStatusDescription:statusTextField.text fromBlog:[BlogDataManager sharedDataManager].currentBlog];
 				// Convert Local Draft post to BDM post
 				[[BlogDataManager sharedDataManager] makeNewPostCurrent];
 				[self updateValuesToCurrentPost];
-				NSString *status = [[BlogDataManager sharedDataManager] statusForStatusDescription:statusTextField.text fromBlog:[BlogDataManager sharedDataManager].currentBlog];
 				if (status)
 					[[[BlogDataManager sharedDataManager] currentPost] setObject:status forKey:@"post_status"];
 				[postDetailViewController.post setIsLocalDraft:[NSNumber numberWithInt:0]];
 				self.isLocalDraft = NO;
-			}
-			else if([[postDetailViewController.post.status lowercaseString] isEqualToString:@"local draft"]) {
-				[postDetailViewController.post setIsLocalDraft:[NSNumber numberWithInt:1]];
-				self.isLocalDraft = YES;
 			}
 		}
 		
