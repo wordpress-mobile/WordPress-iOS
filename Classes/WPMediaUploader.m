@@ -183,7 +183,6 @@
 					[[NSNotificationCenter defaultCenter] postNotificationName:VideoUploadFailed object:nil];
 				}
 				else if(mediaType == kVideo) {
-					NSLog(@"responseMeta: %@", responseMeta);
 					NSMutableDictionary *videoMeta = [[NSMutableDictionary alloc] init];
 					if([responseMeta objectForKey:@"videopress_shortcode"] != nil)
 						[videoMeta setObject:[responseMeta objectForKey:@"videopress_shortcode"] forKey:@"shortcode"];
@@ -200,11 +199,13 @@
 					[videoMeta release];
 				}
 				else if(mediaType == kImage) {
-					NSLog(@"responseMeta: %@", responseMeta);
 					NSMutableDictionary *imageMeta = [[NSMutableDictionary alloc] init];
+					if([responseMeta objectForKey:@"url"] != nil)
+						[imageMeta setObject:[responseMeta objectForKey:@"url"] forKey:@"url"];
 					[[NSNotificationCenter defaultCenter] postNotificationName:ImageUploadSuccessful 
 																		object:self 
 																	  userInfo:imageMeta];
+					[imageMeta release];
 				}
 
 				

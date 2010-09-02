@@ -36,7 +36,7 @@ static inline double radians(double degrees) {
 	
 	BOOL hasPhotos, hasVideos, isAddingMedia, isShowingMediaPickerActionSheet, isShowingChangeOrientationActionSheet;
 	BOOL isLibraryMedia, didChangeOrientationDuringRecord, isShowingResizeActionSheet, videoEnabled;
-	NSString *postID, *blogURL;
+	NSString *postID, *blogURL, *uploadID;
 	
 	NSMutableArray *photos, *videos;
 	UIDeviceOrientation currentOrientation;
@@ -52,7 +52,7 @@ static inline double radians(double degrees) {
 @property (nonatomic, retain) IBOutlet UISegmentedControl *mediaTypeControl;
 @property (nonatomic, assign) BOOL hasPhotos, hasVideos, isAddingMedia, isShowingMediaPickerActionSheet, isShowingChangeOrientationActionSheet;
 @property (nonatomic, assign) BOOL isLibraryMedia, didChangeOrientationDuringRecord, isShowingResizeActionSheet, videoEnabled;
-@property (nonatomic, retain) NSString *postID, *blogURL;
+@property (nonatomic, retain) NSString *postID, *blogURL, *uploadID;
 @property (nonatomic, retain) NSMutableArray *photos, *videos;
 @property (nonatomic, assign) WordPressAppDelegate *appDelegate;
 @property (nonatomic, assign) PostViewController *postDetailViewController;

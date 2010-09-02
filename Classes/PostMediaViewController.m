@@ -13,7 +13,7 @@
 @synthesize isShowingMediaPickerActionSheet, currentOrientation, isShowingChangeOrientationActionSheet, spinner;
 @synthesize currentImage, currentVideo, isLibraryMedia, didChangeOrientationDuringRecord, messageLabel;
 @synthesize picker, postDetailViewController, mediaManager, postID, blogURL, mediaTypeControl, mediaUploader;
-@synthesize isShowingResizeActionSheet, videoEnabled;
+@synthesize isShowingResizeActionSheet, videoEnabled, uploadID;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -51,6 +51,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:VideoUploadSuccessful object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:ImageUploadSuccessful object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaUploadFailed:) name:VideoUploadFailed object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaUploadFailed:) name:ImageUploadFailed object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -687,6 +688,7 @@
 	[mediaManager save:imageMedia];
 	
 	// Save to remote server
+	self.uploadID = imageMedia.uniqueID;
 	[self uploadMedia:imageData withFilename:filename andMediaType:kImage];
 	
 	//[self updatePhotosBadge];
@@ -726,6 +728,7 @@
 	[mediaManager save:videoMedia];
 	
 	// Save to remote server
+	self.uploadID = videoMedia.uniqueID;
 	[self uploadMedia:video withFilename:filename andMediaType:kVideo];
 	
 	//[self updatePhotosBadge];
@@ -785,6 +788,15 @@
 }
 
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification {
+	if(self.uploadID != nil) {
+		NSDictionary *mediaData = [notification userInfo];
+		Media *media = [mediaManager get:self.uploadID];
+		media.remoteURL = [mediaData objectForKey:@"url"];
+		media.shortcode = [mediaData objectForKey:@"shortcode"];
+		[mediaManager update:media];
+		self.uploadID = nil;
+	}
+	
 	[UIView beginAnimations:@"Removing mediaUploader" context:nil];
 	[UIView setAnimationDuration:0.4];
 	[UIView setAnimationDelegate:mediaUploader.view];
@@ -877,6 +889,7 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
+	[uploadID release];
 	[mediaUploader release];
 	[mediaTypeControl release];
 	[blogURL release];
