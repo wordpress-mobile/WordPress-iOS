@@ -13,14 +13,22 @@
 @synthesize isShowingMediaPickerActionSheet, currentOrientation, isShowingChangeOrientationActionSheet, spinner;
 @synthesize currentImage, currentVideo, isLibraryMedia, didChangeOrientationDuringRecord, messageLabel;
 @synthesize picker, postDetailViewController, mediaManager, postID, blogURL, mediaTypeControl, mediaUploader;
-@synthesize isShowingResizeActionSheet, videoEnabled, uploadID;
+@synthesize isShowingResizeActionSheet, videoEnabled, uploadID, videoPressCheckBlogURL, isCheckingVideoCapability;
 
 #pragma mark -
 #pragma mark View lifecycle
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+		self.blogURL = [[[BlogDataManager sharedDataManager] currentBlog] objectForKey:@"url"];
+		[self performSelectorInBackground:@selector(checkVideoEnabled) withObject:nil];
+    }
+	
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-	//[self performSelectorInBackground:@selector(checkVideoEnabled) withObject:nil];
 	
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	mediaUploader = [[WPMediaUploader alloc] initWithNibName:@"WPMediaUploader" bundle:nil];
@@ -37,7 +45,7 @@
 	[super viewWillAppear:animated];
 	
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	self.blogURL = [[dm currentBlog] objectForKey:@"url"];
+	
 	if((([[dm currentPost] objectForKey:@"postid"] != nil)) && ([[[dm currentPost] objectForKey:@"postid"] isEqualToString:@""] == NO))
 		self.postID = [[dm currentPost] objectForKey:@"postid"];
 	else if(appDelegate.postID != nil)
@@ -47,7 +55,6 @@
 	
 	[self refreshMedia];
 	
-	[self performSelectorInBackground:@selector(checkVideoEnabled) withObject:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:VideoUploadSuccessful object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:ImageUploadSuccessful object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaUploadFailed:) name:VideoUploadFailed object:nil];
@@ -832,42 +839,50 @@
 - (void)checkVideoEnabled {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	@try {
-		NSArray *args = [NSArray arrayWithObjects:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:kBlogId],
-						 [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"username"],
-						 [[BlogDataManager sharedDataManager] getPasswordFromKeychainInContextOfCurrentBlog:[[BlogDataManager sharedDataManager] currentBlog]], nil];
+	if(self.isCheckingVideoCapability == NO) {
+		self.isCheckingVideoCapability = YES;
+		self.videoPressCheckBlogURL = self.blogURL;
+		NSLog(@"just set videoPressCheckBlogURL to %@", videoPressCheckBlogURL);
 		
-		NSMutableDictionary *xmlrpcParams = [[NSMutableDictionary alloc] init];
-		[xmlrpcParams setObject:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"xmlrpc"] forKey:kURL];
-		[xmlrpcParams setObject:@"wpcom.getFeatures" forKey:kMETHOD];
-		[xmlrpcParams setObject:args forKey:kMETHODARGS];
-		
-		XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[xmlrpcParams valueForKey:kURL]]];
-		[request setMethod:[xmlrpcParams valueForKey:kMETHOD] withObjects:[xmlrpcParams valueForKey:kMETHODARGS]];
-		[xmlrpcParams release];
-		
-		XMLRPCResponse *response = [XMLRPCConnection sendSynchronousXMLRPCRequest:request];
-		if(([response.object isKindOfClass:[NSDictionary class]] == YES) && ([response.object objectForKey:@"videopress_enabled"] != nil))
-			self.videoEnabled = [[response.object objectForKey:@"videopress_enabled"] boolValue];
-		else if(([response.object isKindOfClass:[NSDictionary class]] == YES) && ([response.object objectForKey:@"faultCode"] != nil)) {
-			if([[response.object objectForKey:@"faultCode"] intValue] == -32601)
-				self.videoEnabled = YES;
+		@try {
+			NSArray *args = [NSArray arrayWithObjects:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:kBlogId],
+							 [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"username"],
+							 [[BlogDataManager sharedDataManager] getPasswordFromKeychainInContextOfCurrentBlog:[[BlogDataManager sharedDataManager] currentBlog]], nil];
+			
+			NSMutableDictionary *xmlrpcParams = [[NSMutableDictionary alloc] init];
+			[xmlrpcParams setObject:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"xmlrpc"] forKey:kURL];
+			[xmlrpcParams setObject:@"wpcom.getFeatures" forKey:kMETHOD];
+			[xmlrpcParams setObject:args forKey:kMETHODARGS];
+			
+			XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[xmlrpcParams valueForKey:kURL]]];
+			[request setMethod:[xmlrpcParams valueForKey:kMETHOD] withObjects:[xmlrpcParams valueForKey:kMETHODARGS]];
+			[xmlrpcParams release];
+			
+			XMLRPCResponse *response = [XMLRPCConnection sendSynchronousXMLRPCRequest:request];
+			if(([response.object isKindOfClass:[NSDictionary class]] == YES) && ([response.object objectForKey:@"videopress_enabled"] != nil))
+				self.videoEnabled = [[response.object objectForKey:@"videopress_enabled"] boolValue];
+			else if(([response.object isKindOfClass:[NSDictionary class]] == YES) && ([response.object objectForKey:@"faultCode"] != nil)) {
+				if([[response.object objectForKey:@"faultCode"] intValue] == -32601)
+					self.videoEnabled = YES;
+				else
+					self.videoEnabled = NO;
+			}
 			else
-				self.videoEnabled = NO;
+				self.videoEnabled = YES;
+			
+			[request release];
 		}
-		else
+		@catch (NSException * e) {
 			self.videoEnabled = YES;
-		
-		[request release];
-	}
-	@catch (NSException * e) {
-		self.videoEnabled = YES;
-	}
-	@finally {
-		if(self.videoEnabled)
-			NSLog(@"Video enabled!");
-		else
-			NSLog(@"Video disabled!");
+		}
+		@finally {
+			if(self.videoEnabled)
+				NSLog(@"VideoPress enabled!");
+			else
+				NSLog(@"VideoPress disabled!");
+			
+			self.isCheckingVideoCapability = NO;
+		}
 	}
 	
 	[pool release];
@@ -884,6 +899,7 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
+	[videoPressCheckBlogURL release];
 	[uploadID release];
 	[mediaUploader release];
 	[mediaTypeControl release];
