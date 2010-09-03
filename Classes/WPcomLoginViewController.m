@@ -9,21 +9,18 @@
 
 
 @implementation WPcomLoginViewController
-@synthesize footerText, buttonText, username, password, isAuthenticated, isSigningIn, WPcomXMLRPCUrl, tableView;
+@synthesize footerText, buttonText, username, password, isAuthenticated, isSigningIn, WPcomXMLRPCUrl, tableView, appDelegate;
 
 #pragma mark -
 #pragma mark View lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	//AddUsersBlogsViewController *addBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
-
 	
 	footerText = @" ";
 	buttonText = @"Sign In";
 	WPcomXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
 	self.navigationItem.title = @"Sign In";
-	//addBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
 	
 	if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil)
 		username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
@@ -188,19 +185,30 @@
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tv deselectRowAtIndexPath:indexPath animated:YES];
 	int foo = 0;
+		
 	switch (indexPath.section) {
 		case 0:
 			foo = 1;
 			UITableViewCell *cell = (UITableViewCell *)[tv cellForRowAtIndexPath:indexPath];
-			
 			for(UIView *subview in cell.subviews) {
 				if([subview isKindOfClass:[UITextField class]] == YES) {
 					UITextField *tempTextField = (UITextField *)subview;
 					[tempTextField becomeFirstResponder];
+					break;
 				}
 			}
 			break;
 		case 1:
+			NSLog(@"sign in button clicked...");
+			for(int i = 0; i < 2; i++) {
+				UITableViewCell *cell = (UITableViewCell *)[tv cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+				for(UIView *subview in cell.subviews) {
+					if([subview isKindOfClass:[UITextField class]] == YES) {
+						UITextField *tempTextField = (UITextField *)subview;
+						[self textFieldDidEndEditing:tempTextField];
+					}
+				}
+			}
 			if(username == nil) {
 				footerText = @"Username is required.";
 				buttonText = @"Sign In";
@@ -241,13 +249,14 @@
 	return YES;	
 }
 
-- (void)textFieldDidEndEditing: (UITextField *) textField {
+- (void)textFieldDidEndEditing:(UITextField *)textField {
     UITableViewCell *cell = (UITableViewCell *)[textField superview];
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+	NSLog(@"indexPath.section: %d indexPath.row: %d textField.text: %@", indexPath.section, indexPath.row, textField.text);
 	
 	switch (indexPath.row) {
 		case 0:
-			if([textField.text isEqualToString:@""]) {
+			if((textField.text != nil) && ([textField.text isEqualToString:@""])) {
 				footerText = @"Username is required.";
 			}
 			else {
@@ -256,7 +265,7 @@
 			}
 			break;
 		case 1:
-			if([textField.text isEqualToString:@""]) {
+			if((textField.text != nil) && ([textField.text isEqualToString:@""])) {
 				footerText = @"Password is required.";
 			}
 			else {
@@ -267,6 +276,9 @@
 		default:
 			break;
 	}
+	
+	NSLog(@"username: %@ password: %@", username, password);
+	
 	[self.tableView reloadData];
 	[textField resignFirstResponder];
 }
@@ -319,10 +331,13 @@
 	if(isAuthenticated) {
 		[WordPressAppDelegate sharedWordPressApp].isWPcomAuthenticated = YES;
 		if(DeviceIsPad() == YES) {
-			//addBlogsView.isWPcom = YES;
-//			[addBlogsView setUsername:self.username];
-//			[addBlogsView setPassword:self.password];
-//			[self.navigationController pushViewController:addBlogsView animated:YES];
+			AddUsersBlogsViewController *addBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
+			addBlogsView.isWPcom = YES;
+			[addBlogsView setUsername:self.username];
+			[addBlogsView setPassword:self.password];
+			[self.navigationController pushViewController:addBlogsView animated:YES];
+			[addBlogsView release];
+			
 		}
 		else {
 			[super dismissModalViewControllerAnimated:YES];
