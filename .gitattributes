@@ -133,6 +133,8 @@ Classes/StatsItem.m -text
 Classes/StatsViewController.h -text
 Classes/StatsViewController.m -text
 Classes/StatsViewController.xib -text
+Classes/TransparentToolbar.h -text
+Classes/TransparentToolbar.m -text
 Classes/UIDevice-Hardware.h -text
 Classes/UIDevice-Hardware.m -text
 Classes/UIImage+INResizeImageAllocator.h -text

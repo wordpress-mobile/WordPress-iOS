@@ -205,18 +205,21 @@ NSTimeInterval kAnimationDuration = 0.3f;
 #pragma mark -
 
 - (BOOL)isPostPublished {
+	BOOL result = NO;
 	if(isLocalDraft == YES) {
-		return NO;
+		result = NO;
 	}
 	else {
 		BlogDataManager *dm = [BlogDataManager sharedDataManager];
 		NSString *status = [dm statusDescriptionForStatus:[dm.currentPost valueForKey:@"post_status"] fromBlog:dm.currentBlog];
 		
 		if([[status lowercaseString] isEqualToString:@"published"])
-			return YES;
+			result = YES;
 		else
-			return NO;
+			result = NO;
 	}
+	
+	return result;
 }
 
 - (void)refreshUIForCompose {

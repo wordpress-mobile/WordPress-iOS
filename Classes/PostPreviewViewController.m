@@ -156,19 +156,13 @@
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
 	if (DeviceIsPad() == NO) {
-		if (postDetailViewController.navigationItem.rightBarButtonItem == nil ||
-			postDetailViewController.navigationItem.rightBarButtonItem == postDetailViewController.saveButton) {
-			[self addProgressIndicator];
-		}
+		[self addProgressIndicator];
 	}
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)awebView {
 	if (DeviceIsPad() == NO) {
-		if ([awebView isLoading] == NO && postDetailViewController.navigationItem.rightBarButtonItem != nil &&
-			postDetailViewController.navigationItem.rightBarButtonItem != postDetailViewController.saveButton) {
-			postDetailViewController.navigationItem.rightBarButtonItem = (postDetailViewController.hasChanges ? postDetailViewController.saveButton : nil);
-
+		if ([awebView isLoading] == NO && postDetailViewController.navigationItem.rightBarButtonItem != nil) {
 			isWebRefreshRequested = NO;
 		}
 	}

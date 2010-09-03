@@ -10,6 +10,7 @@
 #import "AutosaveViewController.h"
 #import "AutosaveManager.h"
 #import "DraftManager.h"
+#import "TransparentToolbar.h"
 
 @class EditPostViewController, PostPreviewViewController, WPSelectionTableViewController, PostSettingsViewController, PostsViewController, CommentsViewController;
 @class WPNavigationLeftButtonView;
@@ -19,7 +20,6 @@
 
 @interface PostViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate> {
     IBOutlet UITabBarController *tabController;
-    UIBarButtonItem *saveButton;
 
 	EditPostViewController *postDetailViewController;
     EditPostViewController *postDetailEditController;
@@ -73,7 +73,6 @@
 @property (nonatomic, retain) CustomFieldsDetailController *customFieldsDetailController;
 @property (nonatomic, assign) PostsViewController *postsListController;
 @property (nonatomic, assign) UIViewController *selectedViewController;
-@property (nonatomic, readonly) UIBarButtonItem *saveButton;
 @property (nonatomic, assign) BOOL hasChanges, hasSaved, isVisible, didConvertDraftToPublished, isShowingAutosaves;
 @property (nonatomic, assign) EditPostMode editMode;
 @property (readonly) UITabBarController *tabController;
@@ -87,7 +86,6 @@
 @property (nonatomic, retain) IBOutlet UIButton *autosaveButton;
 @property (nonatomic, retain) FlippingViewController *editModalViewController;
 @property (nonatomic, assign) UIBarButtonItem *leftBarButtonItemForEditPost;
-@property (nonatomic, assign) UIBarButtonItem *rightBarButtonItemForEditPost;
 @property (nonatomic, retain) Post *post;
 @property (nonatomic, retain) NSURLConnection *connection;
 @property (nonatomic, retain) NSURLRequest *urlRequest;
@@ -127,5 +125,6 @@
 - (void)showAutosaves;
 - (void)hideAutosaves;
 - (void)setMode:(EditPostMode)newMode;
+- (void)refreshButtons;
 
 @end
