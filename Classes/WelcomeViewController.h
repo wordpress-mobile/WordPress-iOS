@@ -14,16 +14,19 @@
 #import "WPcomLoginViewController.h"
 #import "EditSiteViewController.h"
 #import "BlogDataManager.h"
+#import "WordPressAppDelegate.h"
 
 @interface WelcomeViewController : UIViewController<UITableViewDelegate> {
 	IBOutlet UITableView *tableView;
 	AddUsersBlogsViewController *addUsersBlogsView;
 	AddSiteViewController *addSiteView;
+	WordPressAppDelegate *appDelegate;
 }
 
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) AddUsersBlogsViewController *addUsersBlogsView;
 @property (nonatomic, retain) AddSiteViewController *addSiteView;
+@property (nonatomic, assign) WordPressAppDelegate *appDelegate;
 
 - (IBAction)cancel:(id)sender;
 

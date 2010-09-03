@@ -2382,8 +2382,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 }
 
 - (NSDictionary *)postTitleAtIndex:(NSUInteger)theIndex {
-	if((postTitlesList != nil) && (postTitlesList.count >= theIndex) && ([postTitlesList objectAtIndex:theIndex] != nil)) {
-		//NSLog(@"postTitlesList.objectAtIndex: %@", [postTitlesList objectAtIndex:theIndex]);
+	if((postTitlesList != nil) && (postTitlesList.count >= 1)  && (postTitlesList.count >= theIndex) && ([postTitlesList objectAtIndex:theIndex] != nil)) {
 		return [postTitlesList objectAtIndex:theIndex];
 	}
 	else {

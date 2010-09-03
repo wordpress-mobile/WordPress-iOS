@@ -9,7 +9,8 @@
 
 @implementation WelcomeViewController
 
-@synthesize tableView, addUsersBlogsView, addSiteView;
+@synthesize tableView, addUsersBlogsView, addSiteView, appDelegate
+;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -44,6 +45,26 @@
 		self.navigationItem.title = @"Add Blog";
 		[self.navigationItem setHidesBackButton:NO animated:YES];
 	}
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	if(DeviceIsPad()) {
+		switch (interfaceOrientation) {
+			case UIInterfaceOrientationPortrait:
+				[appDelegate.navigationController presentModalViewController:self animated:YES];
+				break;
+			case UIInterfaceOrientationPortraitUpsideDown:
+				[appDelegate.navigationController presentModalViewController:self animated:YES];
+				break;
+			case UIInterfaceOrientationLandscapeLeft:
+				[appDelegate.splitViewController presentModalViewController:self animated:YES];
+				break;
+			case UIInterfaceOrientationLandscapeRight:
+				[appDelegate.splitViewController presentModalViewController:self animated:YES];
+				break;
+		}
+	}
+	return YES;
 }
 
 #pragma mark -
