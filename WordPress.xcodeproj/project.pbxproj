@@ -229,10 +229,8 @@
 		A0E293FE0E21037200C6919C /* WPAddCategoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0E293FD0E21037200C6919C /* WPAddCategoryViewController.xib */; };
 		AC3437BE0E10F7BC00E5D79B /* EditPostViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC3437BD0E10F7BC00E5D79B /* EditPostViewController.xib */; };
 		AC3D2C110E2222430064A705 /* RoundedRectBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = AC3D2C100E2222430064A705 /* RoundedRectBlack.png */; };
-		AC512F830E20D2AE00B7DA32 /* WPPhotosListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC512F820E20D2AE00B7DA32 /* WPPhotosListViewController.m */; };
 		AC512FC40E20D61C00B7DA32 /* WPPhotosListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC512FC30E20D61C00B7DA32 /* WPPhotosListViewController.xib */; };
 		AC512FC80E20D68100B7DA32 /* WPPhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AC512FC70E20D68100B7DA32 /* WPPhotoViewController.xib */; };
-		AC512FCB0E20D6BB00B7DA32 /* WPPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC512FCA0E20D6BB00B7DA32 /* WPPhotoViewController.m */; };
 		AC600C0C0E20B80400D663AA /* write.png in Resources */ = {isa = PBXBuildFile; fileRef = AC600C080E20B80400D663AA /* write.png */; };
 		AC600C0E0E20B80400D663AA /* photos.png in Resources */ = {isa = PBXBuildFile; fileRef = AC600C0A0E20B80400D663AA /* photos.png */; };
 		AC600C0F0E20B80400D663AA /* preview.png in Resources */ = {isa = PBXBuildFile; fileRef = AC600C0B0E20B80400D663AA /* preview.png */; };
@@ -294,7 +292,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		021751A50EB8412E0032D429 /* WPPhotosListProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPPhotosListProtocol.h; sourceTree = "<group>"; };
 		030DB993113C4BE6002FF1A2 /* BlogViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "BlogViewController-iPad.xib"; sourceTree = "<group>"; };
 		031663050FFB151A0045D052 /* PostTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostTableViewCell.h; sourceTree = "<group>"; };
 		031663060FFB151A0045D052 /* PostTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostTableViewCell.m; sourceTree = "<group>"; };
@@ -456,7 +453,6 @@
 		8302C4591228173E00B7A208 /* MediaManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaManager.m; sourceTree = "<group>"; };
 		8309BA9B1231559800442B12 /* TransparentToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransparentToolbar.h; sourceTree = "<group>"; };
 		8309BA9C1231559800442B12 /* TransparentToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransparentToolbar.m; sourceTree = "<group>"; };
-		830E06471215FB11002696D9 /* Beta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beta.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		830E06491215FB11002696D9 /* Beta-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Beta-Info.plist"; sourceTree = "<group>"; };
 		831C9ED412162AF700B1EACE /* DraftManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraftManager.h; sourceTree = "<group>"; };
 		831C9ED512162AF700B1EACE /* DraftManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraftManager.m; sourceTree = "<group>"; };
@@ -611,12 +607,8 @@
 		A0E293FD0E21037200C6919C /* WPAddCategoryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WPAddCategoryViewController.xib; sourceTree = "<group>"; };
 		AC3437BD0E10F7BC00E5D79B /* EditPostViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditPostViewController.xib; sourceTree = "<group>"; };
 		AC3D2C100E2222430064A705 /* RoundedRectBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RoundedRectBlack.png; sourceTree = "<group>"; };
-		AC512F810E20D2AE00B7DA32 /* WPPhotosListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPPhotosListViewController.h; sourceTree = "<group>"; };
-		AC512F820E20D2AE00B7DA32 /* WPPhotosListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPPhotosListViewController.m; sourceTree = "<group>"; };
 		AC512FC30E20D61C00B7DA32 /* WPPhotosListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WPPhotosListViewController.xib; sourceTree = "<group>"; };
 		AC512FC70E20D68100B7DA32 /* WPPhotoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WPPhotoViewController.xib; sourceTree = "<group>"; };
-		AC512FC90E20D6BB00B7DA32 /* WPPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPPhotoViewController.h; sourceTree = "<group>"; };
-		AC512FCA0E20D6BB00B7DA32 /* WPPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPPhotoViewController.m; sourceTree = "<group>"; };
 		AC600C080E20B80400D663AA /* write.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = write.png; sourceTree = "<group>"; };
 		AC600C0A0E20B80400D663AA /* photos.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = photos.png; sourceTree = "<group>"; };
 		AC600C0B0E20B80400D663AA /* preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preview.png; sourceTree = "<group>"; };
@@ -706,13 +698,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		830E06451215FB11002696D9 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -793,7 +778,6 @@
 			isa = PBXGroup;
 			children = (
 				1D6058910D05DD3D006BFB54 /* WordPress.app */,
-				830E06471215FB11002696D9 /* Beta.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1234,11 +1218,6 @@
 				ACAC79C50E1F50EB00AC7074 /* WPSelectionTableViewController.m */,
 				C55A90D70E8026C500E1C9B5 /* WPSegmentedSelectionTableViewController.h */,
 				C55A90D80E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m */,
-				021751A50EB8412E0032D429 /* WPPhotosListProtocol.h */,
-				AC512F810E20D2AE00B7DA32 /* WPPhotosListViewController.h */,
-				AC512F820E20D2AE00B7DA32 /* WPPhotosListViewController.m */,
-				AC512FC90E20D6BB00B7DA32 /* WPPhotoViewController.h */,
-				AC512FCA0E20D6BB00B7DA32 /* WPPhotoViewController.m */,
 				CEFC8B5710057D0A0052604A /* WPProgressHUD.h */,
 				CEFC8B5810057D0A0052604A /* WPProgressHUD.m */,
 				C57AD5E10F2A10BC00A1717C /* WPXMLReader.h */,
@@ -1415,23 +1394,6 @@
 			productReference = 1D6058910D05DD3D006BFB54 /* WordPress.app */;
 			productType = "com.apple.product-type.application";
 		};
-		830E06461215FB11002696D9 /* Beta */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 830E064E1215FB11002696D9 /* Build configuration list for PBXNativeTarget "Beta" */;
-			buildPhases = (
-				830E06431215FB11002696D9 /* Resources */,
-				830E06441215FB11002696D9 /* Sources */,
-				830E06451215FB11002696D9 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = Beta;
-			productName = Beta;
-			productReference = 830E06471215FB11002696D9 /* Beta.app */;
-			productType = "com.apple.product-type.application";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1455,7 +1417,6 @@
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* WordPress */,
-				830E06461215FB11002696D9 /* Beta */,
 			);
 		};
 /* End PBXProject section */
@@ -1621,13 +1582,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		830E06431215FB11002696D9 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1646,8 +1600,6 @@
 				ACBAB6860E1247F700F38795 /* PostPreviewViewController.m in Sources */,
 				ACAC79C60E1F50EB00AC7074 /* WPSelectionTableViewController.m in Sources */,
 				ACAC7BEB0E1F9E0C00AC7074 /* WPPublishOnEditController.m in Sources */,
-				AC512F830E20D2AE00B7DA32 /* WPPhotosListViewController.m in Sources */,
-				AC512FCB0E20D6BB00B7DA32 /* WPPhotoViewController.m in Sources */,
 				A0E293F10E21027E00C6919C /* WPAddCategoryViewController.m in Sources */,
 				A00593C20E224A1B0087E1FB /* WPImageView.m in Sources */,
 				A01C54230E24E4ED00D411F2 /* Reachability.m in Sources */,
@@ -1743,13 +1695,6 @@
 				834CAEA0122D56B1003DDF49 /* UIImage+RoundedCorner.m in Sources */,
 				831F315A122DE3EE005E33CD /* PostMediaEditViewController.m in Sources */,
 				8309BA9D1231559800442B12 /* TransparentToolbar.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		830E06441215FB11002696D9 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1852,100 +1797,6 @@
 			};
 			name = Distribution;
 		};
-		830E064A1215FB11002696D9 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/UIKit.framework/Headers/UIKit.h";
-				INFOPLIST_FILE = "Beta-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					UIKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = Beta;
-				SDKROOT = iphoneos4.0;
-			};
-			name = Debug;
-		};
-		830E064B1215FB11002696D9 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/UIKit.framework/Headers/UIKit.h";
-				INFOPLIST_FILE = "Beta-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					UIKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = Beta;
-				SDKROOT = iphoneos4.0;
-				ZERO_LINK = NO;
-			};
-			name = Release;
-		};
-		830E064C1215FB11002696D9 /* Distribution */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/UIKit.framework/Headers/UIKit.h";
-				INFOPLIST_FILE = "Beta-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					UIKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = Beta;
-				SDKROOT = iphoneos4.0;
-			};
-			name = Distribution;
-		};
-		830E064D1215FB11002696D9 /* Beta */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Chris Boyd";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Chris Boyd";
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/UIKit.framework/Headers/UIKit.h";
-				INFOPLIST_FILE = "Beta-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					UIKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = Beta;
-				PROVISIONING_PROFILE = "B9D0A0DB-6B34-490D-9C36-4FE6CEC73424";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B9D0A0DB-6B34-490D-9C36-4FE6CEC73424";
-				SDKROOT = iphoneos4.0;
-			};
-			name = Beta;
-		};
 		83D3E0201215F89F00600B4B /* Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2044,17 +1895,6 @@
 				1D6058950D05DD3E006BFB54 /* Release */,
 				2F30B4C20E342FDF00211B15 /* Distribution */,
 				83D3E0211215F89F00600B4B /* Beta */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		830E064E1215FB11002696D9 /* Build configuration list for PBXNativeTarget "Beta" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				830E064A1215FB11002696D9 /* Debug */,
-				830E064B1215FB11002696D9 /* Release */,
-				830E064C1215FB11002696D9 /* Distribution */,
-				830E064D1215FB11002696D9 /* Beta */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

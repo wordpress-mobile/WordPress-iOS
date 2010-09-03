@@ -6,14 +6,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "WPPhotosListProtocol.h"
 #import "LocationController.h"
 
-@class EditPageViewController, PostPreviewViewController, WPSelectionTableViewController, WPPhotosListViewController, PagesViewController;
+@class EditPageViewController, PostPreviewViewController, WPSelectionTableViewController, PagesViewController;
 @class WPNavigationLeftButtonView;
 @class FlippingViewController;
 
-@interface PageViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate, WPPhotosListProtocol> {
+@interface PageViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate> {
     IBOutlet UITabBarController *tabController;
     IBOutlet UIView *photoEditingStatusView;
 
@@ -21,7 +20,6 @@
 
     EditPageViewController *pageDetailViewController;
     EditPageViewController *pageDetailStaticViewController;
-    WPPhotosListViewController *photosListController;
     PagesViewController *pagesListController;
     WPNavigationLeftButtonView *leftView;
 
@@ -42,7 +40,6 @@
 @property (nonatomic, retain) WPNavigationLeftButtonView *leftView;
 @property (nonatomic, retain) EditPageViewController *pageDetailViewController;
 @property (nonatomic, retain) EditPageViewController *pageDetailStaticViewController;
-@property (nonatomic, retain) WPPhotosListViewController *photosListController;
 @property (nonatomic, assign) PagesViewController *pagesListController;
 
 @property (nonatomic, readonly) UIBarButtonItem *saveButton;

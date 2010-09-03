@@ -172,11 +172,6 @@ Classes/WPMediaUploader.h -text
 Classes/WPMediaUploader.m -text
 Classes/WPNavigationLeftButtonView.h -text
 Classes/WPNavigationLeftButtonView.m -text
-Classes/WPPhotoViewController.h -text
-Classes/WPPhotoViewController.m -text
-Classes/WPPhotosListProtocol.h -text
-Classes/WPPhotosListViewController.h -text
-Classes/WPPhotosListViewController.m -text
 Classes/WPProgressHUD.h -text
 Classes/WPProgressHUD.m -text
 Classes/WPPublishOnEditController.h -text

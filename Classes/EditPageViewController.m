@@ -10,7 +10,6 @@
 #import "BlogDataManager.h"
 #import "WPNavigationLeftButtonView.h"
 #import "PageViewController.h"
-#import "WPPhotosListViewController.h"
 #import "WordPressAppDelegate.h"
 #import "CPopoverManager.h"
 

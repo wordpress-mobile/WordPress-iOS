@@ -14,7 +14,6 @@
 #import "Reachability.h"
 #import "WordPressAppDelegate.h"
 #import "WPNavigationLeftButtonView.h"
-#import "WPPhotosListViewController.h"
 
 #import "FlippingViewController.h"
 #import "RotatingNavigationController.h"
@@ -33,7 +32,7 @@
 
 @implementation PageViewController
 
-@synthesize pageDetailViewController, pagesListController, hasChanges, tabController, photosListController, saveButton;
+@synthesize pageDetailViewController, pagesListController, hasChanges, tabController, saveButton;
 @synthesize leftView, editMode;
 @synthesize pageDetailStaticViewController;
 @synthesize toolbar;
@@ -53,7 +52,6 @@
 //            [photoEditingStatusView removeFromSuperview];
 //        }
 
-        [photosListController refreshData];
         self.navigationItem.title = @"Media";
     } else {
 //        [photoEditingStatusView removeFromSuperview];
@@ -75,17 +73,11 @@
 - (void)dealloc {
     [leftView release];
     [pageDetailViewController release];
-    [photosListController release];
     [saveButton release];
     [super dealloc];
 }
 
 - (void)updatePhotosBadge {
-    int photoCount = [[[BlogDataManager sharedDataManager].currentPage valueForKey:@"Photos"] count];
-
-    if (photoCount)
-        photosListController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%d", photoCount];else
-        photosListController.tabBarItem.badgeValue = nil;
 }
 
 #pragma mark - UIActionSheetDelegate
@@ -213,26 +205,13 @@
     pageDetailViewController.tabBarItem.image = [UIImage imageNamed:@"write.png"];
     [array addObject:pageDetailViewController];
 
-    if (photosListController == nil) {
-        photosListController = [[WPPhotosListViewController alloc] initWithNibName:@"WPPhotosListViewController" bundle:nil];
-    }
-
-    pageDetailViewController.photosListController = photosListController;
-    photosListController.title = @"Media";
-    photosListController.tabBarItem.image = [UIImage imageNamed:@"photos.png"];
-//	photosListController.pageDetailViewController = self.pageDetailViewController;
-//	photosListController.pageDetailsController = self;
-    photosListController.delegate = self;
-
     if (!saveButton) {
         saveButton = [[UIBarButtonItem alloc] init];
         saveButton.title = @"Save";
         saveButton.target = self;
         saveButton.style = UIBarButtonItemStyleDone;
-        saveButton.action = @selector(savePageAction :);
+        saveButton.action = @selector(savePageAction:);
     }
-
-    [array addObject:photosListController];
 	
 	if (DeviceIsPad() == YES) {
 		// the iPad has two detail views
@@ -497,16 +476,6 @@
 }
 
 - (void)useImage:(UIImage *)theImage {
-    BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-    self.hasChanges = YES;
-
-    id currentPage = dataManager.currentPage;
-
-    if (![currentPage valueForKey:@"Photos"])
-        [currentPage setValue:[NSMutableArray array] forKey:@"Photos"];
-
-    UIImage *image = [photosListController scaleAndRotateImage:theImage scaleFlag:YES];
-    [[currentPage valueForKey:@"Photos"] addObject:[dataManager saveImage:image]];
 
     [self updatePhotosBadge];
 }
@@ -576,8 +545,7 @@
 	}
 }
 
-- (IBAction)editAction:(id)sender;
-{
+- (IBAction)editAction:(id)sender {
 	[pageDetailViewController refreshUIForCurrentPage];
 	[editModalViewController setShowingFront:YES animated:NO];
 	editModalViewController.modalPresentationStyle = UIModalPresentationPageSheet;
@@ -585,13 +553,11 @@
 	[self.splitViewController presentModalViewController:editModalViewController animated:YES];
 }
 
-- (IBAction)picturesAction:(id)sender;
-{
-	photosListController.contentSizeForViewInPopover = photosListController.contentSizeForViewInPopover;
-	UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:photosListController] autorelease];
-	UIPopoverController *popover = [[[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:navController] autorelease];
-	[popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-	[[CPopoverManager instance] setCurrentPopoverController:popover];
+- (IBAction)picturesAction:(id)sender {
+	//UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:photosListController] autorelease];
+//	UIPopoverController *popover = [[[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:navController] autorelease];
+//	[popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+//	[[CPopoverManager instance] setCurrentPopoverController:popover];
 }
 
 - (void)dismissEditView;
@@ -608,19 +574,18 @@
 #pragma mark -
 #pragma mark Photo list delegate: iPad
 
-- (void)displayPhotoListImagePicker:(UIImagePickerController *)picker;
-{
-	if (!photoPickerPopover) {
-		photoPickerPopover = [[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:picker];
-	}
-	picker.contentSizeForViewInPopover = photosListController.contentSizeForViewInPopover;
-	photoPickerPopover.contentViewController = picker;
-
-	[[CPopoverManager instance] setCurrentPopoverController:NULL];
-	
-	// TODO: this is pretty kludgy
-	UIBarButtonItem *buttonItem = [editToolbar.items objectAtIndex:0];
-	[photoPickerPopover presentPopoverFromBarButtonItem:buttonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
+- (void)displayPhotoListImagePicker:(UIImagePickerController *)picker {
+//	if (!photoPickerPopover) {
+//		photoPickerPopover = [[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:picker];
+//	}
+//	picker.contentSizeForViewInPopover = photosListController.contentSizeForViewInPopover;
+//	photoPickerPopover.contentViewController = picker;
+//
+//	[[CPopoverManager instance] setCurrentPopoverController:NULL];
+//	
+//	// TODO: this is pretty kludgy
+//	UIBarButtonItem *buttonItem = [editToolbar.items objectAtIndex:0];
+//	[photoPickerPopover presentPopoverFromBarButtonItem:buttonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
 }
 
 - (void)hidePhotoListImagePicker;

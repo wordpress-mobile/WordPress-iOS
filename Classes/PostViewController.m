@@ -728,7 +728,6 @@
 
 - (void)didReceiveMemoryWarning {
     WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
-	[self dataSave];
     [super didReceiveMemoryWarning];
 }
 
