@@ -287,21 +287,19 @@
 		switch (actionSheet.numberOfButtons) {
 			case 2:
 				if(buttonIndex == 0)
-					[self pickPhotoFromPhotoLibrary:nil];
+					[self pickPhotoFromPhotoLibrary:self];
 				else {
-					[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
 					self.isAddingMedia = NO;
 				}
 				break;
 			case 3:
 				if(buttonIndex == 0) {
-					[self pickPhotoFromPhotoLibrary:nil];
+					[self pickPhotoFromPhotoLibrary:self];
 				}
 				else if(buttonIndex == 1) {
 					[self pickPhotoFromCamera:self];
 				}
 				else {
-					[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
 					self.isAddingMedia = NO;
 				}
 				break;
@@ -317,7 +315,6 @@
 						[self pickVideoFromCamera:self];
 						break;
 					default:
-						[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
 						self.isAddingMedia = NO;
 						break;
 				}
@@ -338,27 +335,24 @@
 		}
 		NSLog(@"set orientation to: %d", self.currentOrientation);
 		[self processRecordedVideo];
-		[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
+		self.isShowingChangeOrientationActionSheet = NO;
 	}
 	else if(isShowingResizeActionSheet == YES) {
 		switch (buttonIndex) {
 			case 0:
-				[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
 				[self useImage:[self resizeImage:currentImage toSize:kResizeSmall]];
 				break;
 			case 1:
-				[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
 				[self useImage:[self resizeImage:currentImage toSize:kResizeMedium]];
 				break;
 			case 2:
-				[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
 				[self useImage:[self resizeImage:currentImage toSize:kResizeLarge]];
 				break;
 			case 3:
-				[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
 				[self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
 				break;
 		}
+		self.isShowingResizeActionSheet = NO;
 	}
 	else {
         [appDelegate setAlertRunning:NO];
@@ -366,6 +360,7 @@
         [currentImage release];
         currentImage = nil;
 	}
+	[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
 }
 
 - (void)pickPhotoFromCamera:(id)sender {
@@ -439,18 +434,19 @@
 }
 
 - (void)showResizeActionSheet {
-	isShowingResizeActionSheet = YES;
-	UIActionSheet *resizeActionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose Image Size" 
-																		delegate:self 
-															   cancelButtonTitle:@"Original" 
-														  destructiveButtonTitle:nil 
-															   otherButtonTitles:@"Small", @"Medium", @"Large", nil];
-	[resizeActionSheet showInView:super.tabBarController.view];
-	[resizeActionSheet release];
+	if(self.isShowingResizeActionSheet == NO) {
+		isShowingResizeActionSheet = YES;
+		UIActionSheet *resizeActionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose Image Size" 
+																	   delegate:self 
+															  cancelButtonTitle:@"Original" 
+														 destructiveButtonTitle:nil 
+															  otherButtonTitles:@"Small", @"Medium", @"Large", nil];
+		[resizeActionSheet showInView:super.tabBarController.view];
+		[resizeActionSheet release];
+	}
 }
 
 - (void)imagePickerController:(UIImagePickerController *)myPicker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	if([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.movie"]) {
 		[self refreshMedia];
 		self.currentVideo = [info retain];
@@ -600,7 +596,6 @@
     return oimg;
 }
 
-
 - (UIImage *)resizeImage:(UIImage *)original toSize:(MediaResize)resize {
 	CGSize smallSize, mediumSize, largeSize, originalSize;
 	switch (currentOrientation) {
@@ -657,7 +652,6 @@
 }
 
 - (void)useImage:(UIImage *)theImage {
-	
 	Media *imageMedia = [mediaManager get:nil];
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	NSDictionary *currentBlog = [dm currentBlog];
@@ -665,7 +659,6 @@
 	UIImage *imageThumbnail = [self generateThumbnailFromImage:theImage andSize:CGSizeMake(75, 75)];
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 	[formatter setDateFormat:@"yyyyMMdd-hhmmss"];
-	
 	
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -680,6 +673,7 @@
 	imageMedia.blogURL = self.blogURL;
 	imageMedia.creationDate = [NSDate date];
 	imageMedia.filename = filename;
+	imageMedia.localURL = filepath;
 	imageMedia.filesize = [NSNumber numberWithInt:(imageData.length/1024)];
 	imageMedia.mediaType = @"image";
 	imageMedia.thumbnail = UIImageJPEGRepresentation(imageThumbnail, 1.0);
@@ -722,6 +716,7 @@
 	videoMedia.blogURL = self.blogURL;
 	videoMedia.creationDate = [NSDate date];
 	videoMedia.filename = filename;
+	videoMedia.localURL = filepath;
 	videoMedia.filesize = [NSNumber numberWithInt:(video.length/1024)];
 	videoMedia.mediaType = @"video";
 	videoMedia.thumbnail = UIImageJPEGRepresentation(videoThumbnail, 1.0);

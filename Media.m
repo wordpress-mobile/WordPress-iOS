@@ -13,6 +13,7 @@
 
 @dynamic mediaType;
 @dynamic remoteURL;
+@dynamic localURL;
 @dynamic shortcode;
 @dynamic uniqueID;
 @dynamic width;

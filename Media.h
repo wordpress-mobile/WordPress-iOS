@@ -14,6 +14,7 @@
 
 @property (nonatomic, retain) NSString * mediaType;
 @property (nonatomic, retain) NSString * remoteURL;
+@property (nonatomic, retain) NSString * localURL;
 @property (nonatomic, retain) NSString * shortcode;
 @property (nonatomic, retain) NSString * uniqueID;
 @property (nonatomic, retain) NSNumber * width;
