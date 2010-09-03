@@ -16,7 +16,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 @implementation EditPostViewController
 
-@synthesize postDetailViewController, selectionTableViewController, segmentedTableViewController, leftView, customFieldsTableView;
+@synthesize postDetailViewController, selectionTableViewController, segmentedTableViewController, leftView;
 @synthesize infoText, urlField, bookMarksArray, selectedLinkRange, currentEditingTextField, isEditing, initialLocation;
 @synthesize editingDisabled, editCustomFields, isCustomFieldsEnabledForThisPost, statuses, isLocalDraft;
 @synthesize textView, contentView, subView, textViewContentView, statusTextField, categoriesTextField, titleTextField;
@@ -473,18 +473,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [selectionTableViewController release], selectionTableViewController = nil;
 }
 
-- (void)populateCustomFieldsTableViewControllerWithCustomFields {
-    //initialize the new view if it doesn't exist
-    if (customFieldsTableView == nil)
-        customFieldsTableView = [[CustomFieldsTableView alloc] initWithNibName:@"CustomFieldsTableView" bundle:nil];
-	
-    customFieldsTableView.postDetailViewController = self.postDetailViewController;
-    //load the CustomFieldsTableView  Note: customFieldsTableView loads some data in viewDidLoad
-    [customFieldsTableView setIsPost:YES]; //since we're dealing with posts here
-	[self refreshCurrentPostForUI];
-    [postDetailViewController.navigationController pushViewController:customFieldsTableView animated:YES];
-}
-
 - (void)selectionTableViewController:(WPSelectionTableViewController *)selctionController completedSelectionsWithContext:(void *)selContext selectedObjects:(NSArray *)selectedObjects haveChanges:(BOOL)isChanged {
     if (!isChanged) {
         [selctionController clean];
@@ -612,10 +600,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (IBAction)showStatusViewAction:(id)sender {
     [self populateSelectionsControllerWithStatuses];
 	
-}
-
-- (IBAction)showCustomFieldsTableView:(id)sender {
-    [self populateCustomFieldsTableViewControllerWithCustomFields];
 }
 
 - (void)bringTextViewUp {
@@ -1097,11 +1081,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     return YES;
 }
 
-- (IBAction)showPhotoUploadScreen:(id)sender;
-{
-    [self showPhotoPickerActionSheet];
-}
-
 - (WPImagePickerController *)pickerController {
     if (pickerController == nil) {
         pickerController = [[WPImagePickerController alloc] init];
@@ -1275,7 +1254,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 200, 25)];
         label.textAlignment = UITextAlignmentLeft;
-        label.tag = kLabelTag;
+        //label.tag = kLabelTag;
         label.font = [UIFont systemFontOfSize:16];
         label.textColor = [UIColor grayColor];
         [cell.contentView addSubview:label];
@@ -1284,10 +1263,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
     NSUInteger row = [indexPath row];
 	
-    UILabel *label = (UILabel *)[cell viewWithTag:kLabelTag];
+    //UILabel *label = (UILabel *)[cell viewWithTag:kLabelTag];
 	
     if (row == 0) {
-        label.text = @"Edit Custom Fields";
+        //label.text = @"Edit Custom Fields";
         //label.font = [UIFont systemFontOfSize:16 ];
     } else {
         //do nothing because we've only got one cell right now
@@ -1348,15 +1327,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     } else {
         return NO;
     }
-}
-
-#pragma mark -
-#pragma mark Show EditPostModalView (Modal View)
-
-- (void)showEditPostModalViewWithAnimation:(BOOL)animate {
-	EditPostModalViewController *editPostModalViewController = [[[EditPostModalViewController alloc] initWithNibName:@"EditPostModalViewController" bundle:nil] autorelease];
-	[self refreshCurrentPostForUI];
-	[postDetailViewController.navigationController pushViewController:editPostModalViewController animated:animate];
 }
 
 #pragma mark -
@@ -1508,7 +1478,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [leftView release];
     [bookMarksArray release];
     [segmentedTableViewController release];
-    [customFieldsTableView release];
 	[locationButton release];
 	[locationSpinner release];
     [super dealloc];

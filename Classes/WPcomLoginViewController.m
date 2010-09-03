@@ -59,6 +59,26 @@
 	isSigningIn = NO;
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+//	if(DeviceIsPad()) {
+//		switch (interfaceOrientation) {
+//			case UIInterfaceOrientationPortrait:
+//				[appDelegate.navigationController presentModalViewController:self animated:YES];
+//				break;
+//			case UIInterfaceOrientationPortraitUpsideDown:
+//				[appDelegate.navigationController presentModalViewController:self animated:YES];
+//				break;
+//			case UIInterfaceOrientationLandscapeLeft:
+//				[appDelegate.splitViewController presentModalViewController:self animated:YES];
+//				break;
+//			case UIInterfaceOrientationLandscapeRight:
+//				[appDelegate.splitViewController presentModalViewController:self animated:YES];
+//				break;
+//		}
+//	}
+	return YES;
+}
+
 #pragma mark -
 #pragma mark Table view data source
 
@@ -199,7 +219,6 @@
 			}
 			break;
 		case 1:
-			NSLog(@"sign in button clicked...");
 			for(int i = 0; i < 2; i++) {
 				UITableViewCell *cell = (UITableViewCell *)[tv cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
 				for(UIView *subview in cell.subviews) {
@@ -252,7 +271,6 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     UITableViewCell *cell = (UITableViewCell *)[textField superview];
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-	NSLog(@"indexPath.section: %d indexPath.row: %d textField.text: %@", indexPath.section, indexPath.row, textField.text);
 	
 	switch (indexPath.row) {
 		case 0:
@@ -276,8 +294,6 @@
 		default:
 			break;
 	}
-	
-	NSLog(@"username: %@ password: %@", username, password);
 	
 	[self.tableView reloadData];
 	[textField resignFirstResponder];

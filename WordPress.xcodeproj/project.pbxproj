@@ -52,8 +52,6 @@
 		2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2906F810110CDA8900169D56 /* EditCommentViewController.m */; };
 		2906F813110CDA8900169D56 /* EditCommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2906F811110CDA8900169D56 /* EditCommentViewController.xib */; };
 		292CED001027259000BD407D /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 292CECFF1027259000BD407D /* SFHFKeychainUtils.m */; };
-		2962F4721094EDD400F284B7 /* EditPostModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2962F4701094EDD400F284B7 /* EditPostModalViewController.m */; };
-		2962F4731094EDD400F284B7 /* EditPostModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2962F4711094EDD400F284B7 /* EditPostModalViewController.xib */; };
 		296526FE105810E100597FA3 /* NSString+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 296526FD105810E100597FA3 /* NSString+Helpers.m */; };
 		296890780FE971DC00770264 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296890770FE971DC00770264 /* Security.framework */; };
 		2994EEEE10DF0FCD008336A6 /* ReplyToCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2994EEEC10DF0FCD008336A6 /* ReplyToCommentViewController.m */; };
@@ -365,9 +363,6 @@
 		2906F811110CDA8900169D56 /* EditCommentViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditCommentViewController.xib; sourceTree = "<group>"; };
 		292CECFE1027259000BD407D /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
 		292CECFF1027259000BD407D /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
-		2962F46F1094EDD400F284B7 /* EditPostModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditPostModalViewController.h; sourceTree = "<group>"; };
-		2962F4701094EDD400F284B7 /* EditPostModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditPostModalViewController.m; sourceTree = "<group>"; };
-		2962F4711094EDD400F284B7 /* EditPostModalViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditPostModalViewController.xib; path = Classes/EditPostModalViewController.xib; sourceTree = "<group>"; };
 		296526FC105810E100597FA3 /* NSString+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Helpers.h"; sourceTree = "<group>"; };
 		296526FD105810E100597FA3 /* NSString+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Helpers.m"; sourceTree = "<group>"; };
 		296890770FE971DC00770264 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -1090,8 +1085,6 @@
 				2F706C290DFB8A5200B43086 /* PostViewController.m */,
 				2F970F720DF92274006BD934 /* PostsViewController.h */,
 				2F970F730DF92274006BD934 /* PostsViewController.m */,
-				2962F46F1094EDD400F284B7 /* EditPostModalViewController.h */,
-				2962F4701094EDD400F284B7 /* EditPostModalViewController.m */,
 				83A645D5112B8690000999A6 /* PostLocationViewController.h */,
 				83A645D6112B8690000999A6 /* PostLocationViewController.m */,
 				83A64687112C5F75000999A6 /* PostSettingsHelpViewController.h */,
@@ -1304,7 +1297,6 @@
 				ACBAB67C0E1247CC00F38795 /* PostPreviewViewController.xib */,
 				ACBAB6080E121CF700F38795 /* PostSettingsViewController.xib */,
 				ACC156BA0E10D73100D6E1A0 /* PostViewController.xib */,
-				2962F4711094EDD400F284B7 /* EditPostModalViewController.xib */,
 				83241CF11208B18A00F0DA59 /* WPMediaUploader.xib */,
 			);
 			name = Post;
@@ -1520,7 +1512,6 @@
 				CE31B4311022644F00BC060C /* posts.png in Resources */,
 				6EDC0E8F105881A800F68A1D /* iTunesArtwork in Resources */,
 				29B666331061315800CABB70 /* MainBackground.png in Resources */,
-				2962F4731094EDD400F284B7 /* EditPostModalViewController.xib in Resources */,
 				F52BF2E810B1DC8F00AF4582 /* BlogHTTPAuthenticationViewController.xib in Resources */,
 				2994EEEF10DF0FCD008336A6 /* ReplyToCommentViewController.xib in Resources */,
 				2906F813110CDA8900169D56 /* EditCommentViewController.xib in Resources */,
@@ -1693,7 +1684,6 @@
 				032BD74F101FCF59006F0017 /* ResourcesTableViewSection.m in Sources */,
 				292CED001027259000BD407D /* SFHFKeychainUtils.m in Sources */,
 				296526FE105810E100597FA3 /* NSString+Helpers.m in Sources */,
-				2962F4721094EDD400F284B7 /* EditPostModalViewController.m in Sources */,
 				F5A4EF3510B32F68002BF126 /* XMLRPCConnection+Authentication.m in Sources */,
 				F5A4EF6810B34147002BF126 /* NSData+Base64.m in Sources */,
 				2994EEEE10DF0FCD008336A6 /* ReplyToCommentViewController.m in Sources */,
@@ -2014,7 +2004,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
-				MACOSX_DEPLOYMENT_TARGET = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-licucore";
 				PREBINDING = NO;

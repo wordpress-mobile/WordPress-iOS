@@ -508,9 +508,7 @@
 	[self.post setIsPublished:[NSNumber numberWithInt:0]];
 	appDelegate.postID = self.post.postID;
 	self.autosaveView.postID = self.post.postID;
-	
-	if (hasChanges == NO)
-		[self setRightBarButtonItemForEditPost:nil];
+	[self refreshButtons];
 	
     [tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
 
@@ -593,7 +591,7 @@
     [spinner startAnimating];
 	
 	UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:spinner];
-    [self setRightBarButtonItemForEditPost:activityButtonItem];
+	[self refreshButtons];
     [spinner release];
     [activityButtonItem release];
 	
@@ -772,26 +770,6 @@
     if ([tabController.selectedViewController.title isEqualToString:@"Settings"]) {
         [postSettingsController.tableView reloadData];
     }
-}
-
-- (void)useImage:(UIImage *)theImage {
-    BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-    self.hasChanges = YES;
-	
-    id currentPost = dataManager.currentPost;
-	
-    if (![currentPost valueForKey:@"Photos"]) {
-        [currentPost setValue:[NSMutableArray array] forKey:@"Photos"];
-    }
-	
-    UIImage *image = [mediaViewController scaleAndRotateImage:theImage scaleFlag:NO];
-    [[currentPost valueForKey:@"Photos"] addObject:[dataManager saveImage:image]];
-	
-    [self updatePhotosBadge];
-}
-
-- (id)photosDataSource {
-    return [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"Photos"];
 }
 
 #pragma mark -

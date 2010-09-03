@@ -193,14 +193,14 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)showContentDetailViewController:(UIViewController *)viewController {
-	if (self.navigationController) {
-		[self.navigationController pushViewController:viewController animated:YES];
-	}
-	else if (self.splitViewController) {
+	if (self.splitViewController) {
 		UINavigationController *navController = self.detailNavigationController;
 		// preserve left bar button item: issue #379
 		viewController.navigationItem.leftBarButtonItem = navController.topViewController.navigationItem.leftBarButtonItem;
 		[navController setViewControllers:[NSArray arrayWithObject:viewController] animated:NO];
+	}
+	else if (self.navigationController) {
+		[self.navigationController pushViewController:viewController animated:YES];
 	}
 }
 
@@ -632,14 +632,14 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	}
 }
 
+#pragma mark -
 #pragma mark NSURLConnection callbacks
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
 	[statsData appendData: data];
 }
 
--(void) connection:(NSURLConnection *)connection
-  didFailWithError: (NSError *)error {
+- (void)connection:(NSURLConnection *)connection didFailWithError: (NSError *)error {
 	UIAlertView *errorAlert = [[UIAlertView alloc]
 							   initWithTitle: [error localizedDescription]
 							   message: [error localizedFailureReason]
@@ -667,28 +667,26 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 }
 
-- (void) handleAuthenticationCancelForChallenge: (NSURLAuthenticationChallenge *) aChallenge {
+- (void) handleAuthenticationCancelForChallenge: (NSURLAuthenticationChallenge *)aChallenge {
 
 }
 
+#pragma mark -
 #pragma mark Split View
 
-- (UINavigationController *)masterNavigationController
-{
-id theObject = [self.splitViewController.viewControllers objectAtIndex:0];
-NSAssert([theObject isKindOfClass:[UINavigationController class]], @"That is not a nav controller");
-return(theObject);
+- (UINavigationController *)masterNavigationController {
+	id theObject = [self.splitViewController.viewControllers objectAtIndex:0];
+	NSAssert([theObject isKindOfClass:[UINavigationController class]], @"That is not a nav controller");
+	return(theObject);
 }
 
-- (UINavigationController *)detailNavigationController
-{
-id theObject = [self.splitViewController.viewControllers objectAtIndex:1];
-NSAssert([theObject isKindOfClass:[UINavigationController class]], @"That is not a nav controller");
-return(theObject);
+- (UINavigationController *)detailNavigationController {
+	id theObject = [self.splitViewController.viewControllers objectAtIndex:1];
+	NSAssert([theObject isKindOfClass:[UINavigationController class]], @"That is not a nav controller");
+	return(theObject);
 }
 
-- (void)splitViewController: (UISplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc
-{
+- (void)splitViewController: (UISplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc {
 	UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
 	[barButtonItem setTitle:@"My Blog"];
 	[theNavigationItem setLeftBarButtonItem:barButtonItem animated:YES];
@@ -698,38 +696,29 @@ return(theObject);
 	}
 }
 
-// Called when the view is shown again in the split view, invalidating the button and popover controller
 - (void)splitViewController: (UISplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem {
 	[[[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem] setLeftBarButtonItem:NULL animated:YES];
 
 	[[CPopoverManager instance] setCurrentPopoverController:NULL];
 }
 
-// Called when the view controller is shown in a popover so the delegate can take action like hiding other popovers.
-- (void)splitViewController: (UISplitViewController*)svc popoverController: (UIPopoverController*)pc willPresentViewController:(UIViewController *)aViewController
-{
+- (void)splitViewController: (UISplitViewController*)svc popoverController: (UIPopoverController*)pc willPresentViewController:(UIViewController *)aViewController {
 }
 
-- (void)showPopoverIfNecessary;
-{
-if (UIInterfaceOrientationIsPortrait(self.masterNavigationController.interfaceOrientation) && !self.splitViewController.modalViewController)
-	{
-	UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
-	[[[CPopoverManager instance] currentPopoverController] presentPopoverFromBarButtonItem:theNavigationItem.leftBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-	[[[CPopoverManager instance] currentPopoverController] dismissPopoverAnimated:NO];
+- (void)showPopoverIfNecessary {
+	if (UIInterfaceOrientationIsPortrait(self.masterNavigationController.interfaceOrientation) && !self.splitViewController.modalViewController) {
+		UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
+		[[[CPopoverManager instance] currentPopoverController] presentPopoverFromBarButtonItem:theNavigationItem.leftBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		[[[CPopoverManager instance] currentPopoverController] dismissPopoverAnimated:NO];
 	}
 }
 
-- (void)newBlogNotification:(NSNotification *)aNotification;
-{
-if (UIInterfaceOrientationIsPortrait(self.masterNavigationController.interfaceOrientation))
-	{
-	UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
-	[[[CPopoverManager instance] currentPopoverController] presentPopoverFromBarButtonItem:theNavigationItem.leftBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+- (void)newBlogNotification:(NSNotification *)aNotification {
+	if (UIInterfaceOrientationIsPortrait(self.masterNavigationController.interfaceOrientation)) {
+		UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
+		[[[CPopoverManager instance] currentPopoverController] presentPopoverFromBarButtonItem:theNavigationItem.leftBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 	}
 }
-
-
 
 
 @end

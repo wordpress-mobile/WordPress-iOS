@@ -169,7 +169,6 @@
 		[webSignup release];
 	}
 	else if(indexPath.row == 1) {
-		WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 		if(appDelegate.isWPcomAuthenticated)
 			[self.navigationController pushViewController:addUsersBlogsView animated:YES];
 		else if(DeviceIsPad() == YES) {

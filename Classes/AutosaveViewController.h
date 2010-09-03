@@ -16,7 +16,7 @@
 @interface AutosaveViewController : UIViewController<UITableViewDelegate, UIAlertViewDelegate> {
 	IBOutlet UITableView *tableView;
 	IBOutlet UIView *buttonView;
-	NSArray *autosaves;
+	NSMutableArray *autosaves;
 	NSString *postID;
 	WordPressAppDelegate *appDelegate;
 	Post *restorePost;
@@ -27,7 +27,7 @@
 
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet UIView *buttonView;
-@property (nonatomic, retain) NSArray *autosaves;
+@property (nonatomic, retain) NSMutableArray *autosaves;
 @property (nonatomic, retain) NSString *postID;
 @property (nonatomic, retain) WordPressAppDelegate *appDelegate;
 @property (nonatomic, retain) Post *restorePost;

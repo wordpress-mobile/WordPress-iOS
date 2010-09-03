@@ -3,8 +3,6 @@
 #import "PostViewController.h"
 #import "WPAddCategoryViewController.h"
 #import "WPImagePickerController.h"
-#import "CustomFieldsTableView.h"
-#import "EditPostModalViewController.h"
 #import "Post.h"
 
 #define kSelectionsStatusContext ((void *)1000)
@@ -50,7 +48,6 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
     WPSegmentedSelectionTableViewController *segmentedTableViewController;
     PostViewController *postDetailViewController;
     WPNavigationLeftButtonView *leftView;
-    CustomFieldsTableView *customFieldsTableView;
 	LocationController *locationController;
 	
     UIImage *currentChoosenImage;
@@ -69,7 +66,6 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 @property (nonatomic, retain) WPSelectionTableViewController *selectionTableViewController;
 @property (nonatomic, retain) WPSegmentedSelectionTableViewController *segmentedTableViewController;
 @property (nonatomic, retain) WPNavigationLeftButtonView *leftView;
-@property (nonatomic, retain) CustomFieldsTableView *customFieldsTableView;
 @property (nonatomic, retain) UITextField *infoText;
 @property (nonatomic, retain) UITextField *urlField;
 @property (nonatomic, retain) NSMutableArray *bookMarksArray;
@@ -93,12 +89,12 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (void)refreshUIForCurrentPost;
 - (void)refreshCurrentPostForUI;
 - (void)setTextViewHeight:(float)height;
-- (IBAction)showPhotoUploadScreen:(id)sender;
 - (IBAction)endTextEnteringButtonAction:(id)sender;
-- (void)pickPhotoFromCamera:(id)sender;
-- (void)pickPhotoFromPhotoLibrary:(id)sender;
 - (void)useImage:(UIImage *)theImage;
-- (void)showPhotoPickerActionSheet;
+//- (void)showPhotoPickerActionSheet;
+//- (void)pickPhotoFromCamera:(id)sender;
+//- (void)pickPhotoFromPhotoLibrary:(id)sender;
+//- (IBAction)showPhotoUploadScreen:(id)sender;
 - (void)endEditingAction:(id)sender;
 - (void)syncCategories;
 - (void)refreshCategory;
@@ -119,7 +115,6 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (IBAction)showAddNewCategoryView:(id)sender;
 - (IBAction)showCategoriesViewAction:(id)sender;
 - (IBAction)showStatusViewAction:(id)sender;
-- (IBAction)showCustomFieldsTableView:(id)sender;
 - (NSString *)validateNewLinkInfo:(NSString *)urlText;
 - (void)postionTextViewContentView;
 - (BOOL)checkCustomFieldsMinusMetadata;
