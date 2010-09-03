@@ -34,9 +34,9 @@ typedef enum _WPItemType {
 @property (nonatomic, assign) id <UITableViewDataSource, UITableViewDelegate> currentDataSource;
 @property (nonatomic, retain) NSIndexPath *currentIndexPath;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
-@property (nonatomic, retain) IBOutlet PostsViewController *postsViewController;
-@property (nonatomic, retain) IBOutlet PagesViewController *pagesViewController;
-@property (nonatomic, retain) IBOutlet UINavigationController *detailNavController;
+//@property (nonatomic, retain) IBOutlet PostsViewController *postsViewController;
+//@property (nonatomic, retain) IBOutlet PagesViewController *pagesViewController;
+//@property (nonatomic, retain) IBOutlet UINavigationController *detailNavController;
 
 - (void)currentBlogChanged;
 - (void)refreshBlogData;

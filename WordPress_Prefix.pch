@@ -10,8 +10,8 @@
 	#import <CoreData/CoreData.h>
 
 	// 3rd Party
-	#import "RegexkitLite.h"	//http://regexkit.sourceforge.net/
-	#import "XMLRPCRequest.h"	//http://github.com/eczarny/xmlrpc
+	#import "RegexkitLite.h"
+	#import "XMLRPCRequest.h"
 	#import "XMLRPCResponse.h"
 	#import "XMLRPCConnection.h"
 

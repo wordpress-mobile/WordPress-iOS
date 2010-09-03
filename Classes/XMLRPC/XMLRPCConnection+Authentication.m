@@ -3,7 +3,6 @@
 //  WordPress
 //
 //  Created by Jeff Stieler on 11/17/09.
-//  Copyright 2009 __MyCompanyName__. All rights reserved.
 //
 
 #import "XMLRPCConnection+Authentication.h"
@@ -20,7 +19,8 @@
 	NSMutableURLRequest *request = [[xmlRequest request] mutableCopy];
 	
 	NSString *format = [NSString stringWithFormat:@"%@:%@", username, password];
-	[request addValue:[NSString stringWithFormat:@"Basic %@", [format base64Encoding]] forHTTPHeaderField:@"Authorization"];
+	NSData *formatData = [format dataUsingEncoding:NSASCIIStringEncoding];
+	[request addValue:[NSString stringWithFormat:@"Basic %@", [formatData base64EncodedString]] forHTTPHeaderField:@"Authorization"];
 	
 	NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlres error:&err];
 	

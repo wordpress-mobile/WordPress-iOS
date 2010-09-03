@@ -453,7 +453,6 @@
 		8302C4591228173E00B7A208 /* MediaManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaManager.m; sourceTree = "<group>"; };
 		8309BA9B1231559800442B12 /* TransparentToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransparentToolbar.h; sourceTree = "<group>"; };
 		8309BA9C1231559800442B12 /* TransparentToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransparentToolbar.m; sourceTree = "<group>"; };
-		830E06491215FB11002696D9 /* Beta-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Beta-Info.plist"; sourceTree = "<group>"; };
 		831C9ED412162AF700B1EACE /* DraftManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraftManager.h; sourceTree = "<group>"; };
 		831C9ED512162AF700B1EACE /* DraftManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraftManager.m; sourceTree = "<group>"; };
 		831C9ED712162B0100B1EACE /* AutosaveManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutosaveManager.h; sourceTree = "<group>"; };
@@ -474,7 +473,6 @@
 		83290396120CF50E000A965A /* sample.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = sample.mov; sourceTree = "<group>"; };
 		832D4F51120A71EE001708D4 /* RegexKitLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegexKitLite.h; sourceTree = "<group>"; };
 		832D4F52120A71EE001708D4 /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
-		832D509C120A7CDF001708D4 /* XMLRPC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XMLRPC.framework; path = /Users/chris/Documents/Workspace/XMLRPC/build/Development/XMLRPC.framework; sourceTree = "<absolute>"; };
 		8333FE0D11FF6EF200A495C1 /* EditSiteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditSiteViewController.xib; path = Classes/EditSiteViewController.xib; sourceTree = "<group>"; };
 		833AF259114575A50016DE8F /* PostAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostAnnotation.h; sourceTree = "<group>"; };
 		833AF25A114575A50016DE8F /* PostAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostAnnotation.m; sourceTree = "<group>"; };
@@ -805,7 +803,6 @@
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				45B71DE4113EDAA100D0A33C /* Entitlements.plist */,
 				83D3DDB71215DC7900600B4B /* Settings.bundle */,
-				830E06491215FB11002696D9 /* Beta-Info.plist */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -875,7 +872,6 @@
 				83F3E25F11275E07004CD686 /* MapKit.framework */,
 				83F3E2D211276371004CD686 /* CoreLocation.framework */,
 				8355D7D811D260AA00A61362 /* CoreData.framework */,
-				832D509C120A7CDF001708D4 /* XMLRPC.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1712,7 +1708,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(DEVELOPER_DIR)/Local/Frameworks\"",
-					"\"$(SRCROOT)/../../../Downloads/eczarny-xmlrpc-9495d45/build/Development\"",
 					"\"$(SRCROOT)/../XMLRPC/build/Development\"",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1739,7 +1734,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(DEVELOPER_DIR)/Local/Frameworks\"",
-					"\"$(SRCROOT)/../../../Downloads/eczarny-xmlrpc-9495d45/build/Development\"",
 					"\"$(SRCROOT)/../XMLRPC/build/Development\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1764,6 +1758,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_LDFLAGS = "-licucore";
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "";
@@ -1783,7 +1778,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(DEVELOPER_DIR)/Local/Frameworks\"",
-					"\"$(SRCROOT)/../../../Downloads/eczarny-xmlrpc-9495d45/build/Development\"",
 					"\"$(SRCROOT)/../XMLRPC/build/Development\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1809,6 +1803,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_LDFLAGS = "-licucore";
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "";
@@ -1828,7 +1823,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(DEVELOPER_DIR)/Local/Frameworks\"",
-					"\"$(SRCROOT)/../../../Downloads/eczarny-xmlrpc-9495d45/build/Development\"",
 					"\"$(SRCROOT)/../XMLRPC/build/Development\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1877,6 +1871,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_LDFLAGS = "-licucore";
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "882CD8C8-FA90-47BF-B698-1B8A5209D59E";

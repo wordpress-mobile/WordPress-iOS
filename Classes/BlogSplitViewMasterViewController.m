@@ -18,7 +18,7 @@
 
 @implementation BlogSplitViewMasterViewController
 
-@synthesize currentDataSource, currentIndexPath, tableView, detailNavController;
+@synthesize currentDataSource, currentIndexPath, tableView;
 
 - (void)dealloc {
 	[[BlogDataManager sharedDataManager] removeObserver:self forKeyPath:@"currentPostIndex"];

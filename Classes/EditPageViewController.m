@@ -66,7 +66,6 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	[self correctlySetStatusTextFieldText];
 	
 	[pageDetailsController updatePhotosBadge];
-    [photosListController refreshData];
 }
 
 - (void)refreshUIForNewPage {
@@ -88,7 +87,6 @@ NSTimeInterval kAnimationDuration1 = 0.3f;
 	
 	[self correctlySetStatusTextFieldText];
 
-    [photosListController refreshData];
     [pageDetailsController updatePhotosBadge];
 }
 
