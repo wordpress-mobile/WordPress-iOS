@@ -7,13 +7,6 @@
 
 NSTimeInterval kAnimationDuration = 0.3f;
 
-@interface EditPostViewController (privates)
-
-- (void)clearPickerContrller;
-- (void)showEditPostModalViewWithAnimation:(BOOL)animate;
-
-@end
-
 @implementation EditPostViewController
 
 @synthesize postDetailViewController, selectionTableViewController, segmentedTableViewController, leftView;

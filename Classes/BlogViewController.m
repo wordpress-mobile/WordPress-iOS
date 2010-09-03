@@ -46,7 +46,6 @@
 	[postsViewController addObserver:self forKeyPath:@"selectedIndexPath" options:NSKeyValueObservingOptionNew context:nil];
 	[pagesViewController addObserver:self forKeyPath:@"selectedIndexPath" options:NSKeyValueObservingOptionNew context:nil];
 	[commentsViewController addObserver:self forKeyPath:@"selectedIndexPath" options:NSKeyValueObservingOptionNew context:nil];
-	[statsViewController addObserver:self forKeyPath:@"selectedIndexPath" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -68,9 +67,7 @@
 	
 	[postsViewController removeObserver:self forKeyPath:@"selectedIndexPath"];
 	[pagesViewController removeObserver:self forKeyPath:@"selectedIndexPath"];
-	[commentsViewController removeObserver:self forKeyPath:@"selectedIndexPath"];
-	[statsViewController removeObserver:self forKeyPath:@"selectedIndexPath"];
-	
+	[commentsViewController removeObserver:self forKeyPath:@"selectedIndexPath"];	
 	[tabBarController release], tabBarController = nil;
 	
     [super dealloc];
@@ -173,12 +170,6 @@
 	else if	(pagesViewController.selectedIndexPath) {
 		vcName = @"Pages";
 		indexPath = pagesViewController.selectedIndexPath;
-		hasVCName = YES;
-		hasIndexPath = YES;
-	}
-	else if	(statsViewController.selectedIndexPath) {
-		vcName = @"Stats";
-		indexPath = statsViewController.selectedIndexPath;
 		hasVCName = YES;
 		hasIndexPath = YES;
 	}

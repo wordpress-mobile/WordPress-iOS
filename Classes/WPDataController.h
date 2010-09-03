@@ -11,7 +11,6 @@
 #import "NSString+XMLExtensions.h"
 #import "Blog.h"
 #import "Post.h"
-#import "Page.h"
 #import "Comment.h"
 #import "WordPressAppDelegate.h"
 

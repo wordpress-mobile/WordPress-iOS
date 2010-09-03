@@ -11,7 +11,6 @@
 #import "EditPageViewController.h"
 #import "PageViewController.h"
 #import "PostTableViewCell.h"
-#import "WordPressAppDelegate.h"
 #import "Reachability.h"
 #import "WPProgressHUD.h"
 #import "IncrementPost.h"
@@ -34,34 +33,8 @@
 @end
 
 @implementation PagesViewController
-
-@synthesize newButtonItem, pageDetailViewController, pageDetailsController;
-@synthesize anyMorePages;
-@synthesize selectedIndexPath;
-
-#pragma mark -
-#pragma mark Memory Management
-
-- (void)dealloc {
-    if (pageDetailViewController != nil) {
-        [pageDetailViewController autorelease];
-        pageDetailViewController = nil;
-    }
-    
-    [pageDetailsController release];
-    
-    [newButtonItem release];
-    [refreshButton release];
-	
-	[selectedIndexPath release], selectedIndexPath = nil;
-
-    [super dealloc];
-}
-
-- (void)didReceiveMemoryWarning {
-    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [super didReceiveMemoryWarning];
-}
+@synthesize newButtonItem, pageDetailViewController, pageDetailsController, anyMorePages, selectedIndexPath, draftManager;
+@synthesize appDelegate;
 
 #pragma mark -
 #pragma mark View Lifecycle
@@ -69,6 +42,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
+	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     self.tableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
 
     [self addRefreshButton];
@@ -99,11 +73,16 @@
 	}	
 	
 	[self loadPages];
-    
-//    if ([self.tableView indexPathForSelectedRow]) {
-//        [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
-//        [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
-//    }
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	if (DeviceIsPad() == YES)
+		return YES;
+	
+    if ([appDelegate isAlertRunning] == YES)
+        return NO;
+	
+    return YES;
 }
 
 #pragma mark -
@@ -136,32 +115,29 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	
-    if (section == LOCAL_DRAFTS_SECTION) {
+    if (section == LOCAL_DRAFTS_SECTION)
         return [[BlogDataManager sharedDataManager] numberOfPageDrafts];
-		
-    } else if ([defaults boolForKey:@"anyMorePages"]) {
+	else if ([defaults boolForKey:@"anyMorePages"] == YES)
         return [[BlogDataManager sharedDataManager] countOfPageTitles] +1;
-		
-    } else {
+	else
 		return [[BlogDataManager sharedDataManager] countOfPageTitles];
-	}
-
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	
     static NSString *CellIdentifier = @"PageCell";
     PostTableViewCell *cell = (PostTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
     id page = nil;
-	
     if (cell == nil) {
         cell = [[[PostTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
     }
 	
     if (indexPath.section == LOCAL_DRAFTS_SECTION) {
         page = [dm pageDraftTitleAtIndex:indexPath.row];
-    } else {
+    } 
+	else {
 		int count = [[BlogDataManager sharedDataManager] countOfPageTitles];
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		//handle the case when it's the last row and we need to return the modified "get more posts" cell
@@ -192,14 +168,12 @@
 	
     return cell;
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    //NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    dataManager.isLocaDraftsCurrent = (indexPath.section == LOCAL_DRAFTS_SECTION);
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 
     if (indexPath.section == LOCAL_DRAFTS_SECTION) {
-        id currentDraft = [dataManager pageDraftTitleAtIndex:indexPath.row];
+        id currentDraft = [dm pageDraftTitleAtIndex:indexPath.row];
 
         // Bail out if we're in the middle of saving the draft.
         if ([[currentDraft valueForKey:kAsyncPostFlag] intValue] == 1) {
@@ -207,60 +181,36 @@
             return;
         }
 
-        [dataManager makePageDraftAtIndexCurrent:indexPath.row];
+        [dm makePageDraftAtIndexCurrent:indexPath.row];
 		self.selectedIndexPath = indexPath;
 		
-    } else {
-		//handle the case when it's the last row and is the "get more posts" special cell
+    }
+	else {
 		if (indexPath.row == [[BlogDataManager sharedDataManager] countOfPageTitles]) {
 			NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 			
-			//run the spinner in the background and change the text
 			[self performSelectorInBackground:@selector(addSpinnerToCell:) withObject:indexPath];
-			
-			// deselect the row.
 			[self.tableView deselectRowAtIndexPath:indexPath animated:NO];
 			
-			//init the Increment Post helper class class
 			IncrementPost *incrementPost = [[IncrementPost alloc] init];
-			
-			//run the "get more" function in the IncrementPost class and get metadata, then parse metadata for next 10 and get 10 more
 			anyMorePages = [incrementPost loadOlderPages];
 			[defaults setBool:anyMorePages forKey:@"anyMorePages"];
-			//TODO: JOHNB if this fails we should surface an alert with useful error message.
-			//here or in incrementPost?  Perhaps a bool return?
-			
-			//release the helper class
 			[incrementPost release];
 			
-			//turn of spinner and change text
 			[self performSelectorInBackground:@selector(removeSpinnerFromCell:) withObject:indexPath];
-			
-			//refresh the post list
 			[self loadPages];
 			
-			//get a reference to the cell
 			UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
-			
-			// solve the problem where the "load more" cell is reused and retains it's old formatting by forcing a redraw
 			[cell setNeedsDisplay];
-			
-			
-			//return
-			return;
-			
 		}
 		
-		
-        id page = [dataManager pageTitleAtIndex:indexPath.row];
-
-        // Bail out if we're in the middle of saving the page.
+        id page = [dm pageTitleAtIndex:indexPath.row];
         if ([[page valueForKey:kAsyncPostFlag] intValue] == 1) {
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             return;
         }
 
-        [dataManager makePageAtIndexCurrent:indexPath.row];
+        [dm makePageAtIndexCurrent:indexPath.row];
 		self.selectedIndexPath = indexPath;
 
         self.pageDetailsController.hasChanges = NO;
@@ -269,7 +219,7 @@
     self.pageDetailsController.editMode = kEditPage;
 	
 	[self.pageDetailsController viewWillAppear:NO];
-	[delegate showContentDetailViewController:self.pageDetailsController];
+	[appDelegate showContentDetailViewController:self.pageDetailsController];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -286,7 +236,6 @@
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-	
 	progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Deleting Page..."];
 	[progressAlert show];
 	
@@ -295,7 +244,7 @@
 
 
 #pragma mark -
-#pragma mark Private Methods
+#pragma mark Custom Methods
 
 - (void)scrollToFirstCell {
     NSIndexPath *indexPath = NULL;
@@ -325,8 +274,7 @@
 	[self performSelectorOnMainThread:@selector(refreshPageList) withObject:nil waitUntilDone:NO];
 }
 
-- (void)refreshPageList;
-{
+- (void)refreshPageList {
     [self.tableView reloadData];
 	
 	if (DeviceIsPad() == YES) {
@@ -375,50 +323,29 @@
     [[BlogDataManager sharedDataManager] makeNewPageCurrent];
     
 	self.pageDetailsController.editMode = kNewPage;
-	
-	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	
 	if (DeviceIsPad() == NO) {
-		[delegate.navigationController pushViewController:self.pageDetailsController animated:YES];
+		[appDelegate.navigationController pushViewController:self.pageDetailsController animated:YES];
 	}
 	else if (DeviceIsPad() == YES) {
-		// see comments in PostsViewController -showAddPostView
-		[delegate showContentDetailViewController:self.pageDetailsController];
+		[appDelegate showContentDetailViewController:self.pageDetailsController];
 		if (self.pageDetailsController.editModalViewController) {
 			[self.pageDetailsController editAction:self];
 		}
 	}
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if (DeviceIsPad() == YES) {
-		return YES;
-	}
-
-    //Code to disable landscape when alert is raised.
-
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-
-    if ([delegate isAlertRunning] == YES)
-        return NO;
-
-    // Return YES for supported orientations
-    return YES;
-}
-
 - (void) deletePageAtIndexPath:(id)object{
 	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 	
 	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-	
 	NSIndexPath *indexPath = (NSIndexPath*)object;
 	
     if (indexPath.section == LOCAL_DRAFTS_SECTION) {
         [dataManager deletePageDraftAtIndex:indexPath.row forBlog:[dataManager currentBlog]];
 		[self loadPages];
-    } else {
+    }
+	else {
 		if (indexPath.section == PAGES_SECTION){
-			//check for reachability
 			if ([[Reachability sharedReachability] internetConnectionStatus] == NotReachable) {
 				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Communication Error."
 																message:@"no internet connection."
@@ -430,64 +357,42 @@
 				[delegate setAlertRunning:YES];
 				[alert release];
 				return;
-			}else{				
-				//if reachability is good, make page at index current, delete page, and refresh view (load pages)
+			}
+			else {				
 				[dataManager makePageAtIndexCurrent:indexPath.row];
-				//delete page
 				[dataManager deletePage];
-				//resync pages
-				[self syncPages];
-				
+				[self syncPages];				
 			}
 		}
 	}
 	
 	[progressAlert dismissWithClickedButtonIndex:0 animated:YES];
     [progressAlert release];
-    [pool release];
 	
+    [pool release];
 }
 
-#pragma mark -
-#pragma mark Helper Methods for "Load More" cell
 - (void) addSpinnerToCell:(NSIndexPath *)indexPath {
 	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
 	
-	//get the cell
 	UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
-	
-	//set the spinner (cast to PostTableView "type" in order to avoid warnings)
 	[((PostTableViewCell *)cell) runSpinner:YES];
 	
-	//set up variables for cell text values
 	int totalPages = [[BlogDataManager sharedDataManager] countOfPageTitles];
 	NSString * totalString = [NSString stringWithFormat:@"%d pages loaded", totalPages];
-	
-	//change the text in the cell to say "Loading" and change text color
 	[((PostTableViewCell *)cell) changeCellLabelsForUpdate:totalString:@"Loading more pages...":YES];
 	
 	[apool release];
 }
 
-- (void) removeSpinnerFromCell:(NSIndexPath *)indexPath {
+- (void)removeSpinnerFromCell:(NSIndexPath *)indexPath {
 	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
 	
-	//get the cell
 	UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
-	
-	//set up variables for changing text values
-	//int totalPages = [[BlogDataManager sharedDataManager] countOfPostTitles];
-	//NSString * totalString = [NSString stringWithFormat:@"%d pages loaded", totalPages];
-	
-	//turn off the spinner and change the text
-	//[((PostTableViewCell *)cell) changeCellLabelsForUpdate:totalString:@"Load more pages...":NO];
 	[((PostTableViewCell *)cell) runSpinner:NO];
 	
 	[apool release];
 }
-
-#pragma mark -
-
 - (void)setPageDetailsController {
     if (self.pageDetailsController == nil) {
 		if (DeviceIsPad() == YES) {
@@ -508,6 +413,27 @@
 	if(event.subtype == UIEventSubtypeMotionShake) {
 		[self refreshHandler];
 	}
+}
+
+
+#pragma mark -
+#pragma mark Memory Management
+
+- (void)didReceiveMemoryWarning {
+    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+    [super didReceiveMemoryWarning];
+}
+
+#pragma mark -
+#pragma mark Dealloc
+
+- (void)dealloc {
+	[pageDetailViewController release];
+    [pageDetailsController release];
+    [newButtonItem release];
+    [refreshButton release];
+	[selectedIndexPath release];
+    [super dealloc];
 }
 
 @end

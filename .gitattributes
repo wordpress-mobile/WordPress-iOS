@@ -81,8 +81,6 @@ Classes/NSString+Util.h -text
 Classes/NSString+Util.m -text
 Classes/NSString+XMLExtensions.h -text
 Classes/NSString+XMLExtensions.m -text
-Classes/Page.h -text
-Classes/Page.m -text
 Classes/PageViewController.h -text
 Classes/PageViewController.m -text
 Classes/PagesViewController.h -text
@@ -122,15 +120,7 @@ Classes/ResourcesTableViewSection.h -text
 Classes/ResourcesTableViewSection.m -text
 Classes/RotatingNavigationController.h -text
 Classes/RotatingNavigationController.m -text
-Classes/StatsCategoryViewController.h -text
-Classes/StatsCategoryViewController.m -text
 Classes/StatsCategoryViewController.xib -text
-Classes/StatsCollection.h -text
-Classes/StatsCollection.m -text
-Classes/StatsItem.h -text
-Classes/StatsItem.m -text
-Classes/StatsViewController.h -text
-Classes/StatsViewController.m -text
 Classes/StatsViewController.xib -text
 Classes/TransparentToolbar.h -text
 Classes/TransparentToolbar.m -text

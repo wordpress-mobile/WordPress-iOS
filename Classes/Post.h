@@ -28,6 +28,7 @@
 @property (nonatomic, retain) NSString * blogID;
 @property (nonatomic, retain) NSDate * dateModified;
 @property (nonatomic, retain) NSString * postTitle;
+@property (nonatomic, retain) NSString * postType;
 @property (nonatomic, retain) NSNumber * isAutosave;
 @property (nonatomic, retain) NSNumber * wasLocalDraft;
 @property (nonatomic, retain) NSString * excerpt;

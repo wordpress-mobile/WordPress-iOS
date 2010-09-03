@@ -26,6 +26,7 @@
 @dynamic blogID;
 @dynamic dateModified;
 @dynamic postTitle;
+@dynamic postType;
 @dynamic isAutosave;
 @dynamic excerpt;
 @dynamic password;
