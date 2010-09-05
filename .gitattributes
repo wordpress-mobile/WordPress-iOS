@@ -59,6 +59,7 @@ Classes/DraftManager.h -text
 Classes/DraftManager.m -text
 Classes/EditPageViewController.h -text
 Classes/EditPageViewController.m -text
+Classes/EditPageViewController.xib -text
 Classes/EditPostParentModalViewController.xib -text
 Classes/EditPostViewController.h -text
 Classes/EditPostViewController.m -text
@@ -134,6 +135,8 @@ Classes/UITableViewSegmentedControlCell.h -text
 Classes/UITableViewSegmentedControlCell.m -text
 Classes/UITableViewSwitchCell.h -text
 Classes/UITableViewSwitchCell.m -text
+Classes/UITextViewCell.h -text
+Classes/UITextViewCell.m -text
 Classes/UIViewController+WPAnimation.h -text
 Classes/UIViewController+WPAnimation.m -text
 Classes/UIViewController_iPadExtensions.h -text
@@ -201,7 +204,6 @@ Classes/glossyButton-normal.png -text svneol=unset#unset
 /Default@2x.png -text
 /Disclosure[!!-~]Indicator.png -text
 /EditPageViewController-iPad.xib -text
-/EditPageViewController.xib -text
 /EditPostViewController-iPad.xib -text
 /EditPostViewController.xib -text
 /Entitlements.plist -text
@@ -217,11 +219,12 @@ Classes/glossyButton-normal.png -text svneol=unset#unset
 /Info.plist -text
 /MainBackground.png -text
 /MainWindow.xib -text
+/ManagedObjectCloner.h -text
+/ManagedObjectCloner.m -text
 /Media.h -text
 /Media.m -text
 /PageViewController-iPad.xib -text
 /PageViewController.xib -text
-/PagesDraftsViewController.xib -text
 /PostPreviewViewController.xib -text
 /PostSettingsViewController.xib -text
 /PostViewController-iPad.xib -text
@@ -247,6 +250,7 @@ Settings.bundle/en.lproj/Root.strings -text
 /UITableViewActivityCell.xib -text
 /UITableViewSegmentedControlCell.xib -text
 /UITableViewSwitchCell.xib -text
+/UITextViewCell.xib -text
 /WPAddCategoryViewController.xib -text
 /WPCategoriesController.xib -text
 /WPMediaUploader.xib -text

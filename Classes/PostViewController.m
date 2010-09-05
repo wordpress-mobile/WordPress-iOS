@@ -7,7 +7,6 @@
 #import "WPNavigationLeftButtonView.h"
 #import "PostsViewController.h"
 #import "Reachability.h"
-#import "CustomFieldsDetailController.h"
 #import "CommentsViewController.h"
 #import "WPPublishOnEditController.h"
 #import "CInvisibleToolbar.h"

@@ -13,7 +13,6 @@
 #import "PagesViewController.h"
 #import "CommentsViewController.h"
 #import "PostViewController.h"
-#import "PageViewController.h"
 #import "CPopoverManager.h"
 
 @implementation BlogSplitViewMasterViewController
@@ -216,7 +215,9 @@
 		detailViewController = postsViewController.postDetailViewController;
 	}
 	else if (currentDataSource == pagesViewController) {
-		detailViewController = pagesViewController.pageDetailsController;
+		PageViewController *pageViewController = [[PageViewController alloc] initWithNibName:@"PageViewController" bundle:nil];
+		detailViewController = pageViewController;
+		[pageViewController release];
 	}
 	
 	if (detailViewController) {
@@ -268,13 +269,14 @@
 	[detailViewController editAction:self];
 }
 
-- (IBAction)newPageAction:(id)sender;
-{
+- (IBAction)newPageAction:(id)sender {
 	[pagesViewController showAddNewPage];
 	
-	PageViewController *detailViewController = pagesViewController.pageDetailsController;
+	PageViewController *detailViewController = [[PageViewController alloc] initWithNibName:@"PageViewController" bundle:nil];
 	[self showDetailController:detailViewController];
-	[detailViewController editAction:self];
+	[detailViewController release];
+	
+	//[detailViewController editAction:self];
 }
 
 - (IBAction)commentsAction:(id)sender {

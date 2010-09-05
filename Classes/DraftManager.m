@@ -36,13 +36,16 @@
 		Post *post = [NSEntityDescription insertNewObjectForEntityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];
 		[post setUniqueID:[[NSProcessInfo processInfo] globallyUniqueString]];
 		[post setPostID:post.uniqueID];
+		[post setStatus:@"Local Draft"];
+		[post setIsLocalDraft:[NSNumber numberWithInt:1]];
+		[post setIsPublished:[NSNumber numberWithInt:0]];
 		return post;
 	}
 	
 	return [items objectAtIndex:0];
 }
 
-- (NSMutableArray *)getForBlog:(NSString *)blogID {
+- (NSMutableArray *)getType:(NSString *)postType forBlog:(NSString *)blogID {
 	NSMutableArray *results = [[NSMutableArray alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];   	
     NSFetchRequest *request = [[NSFetchRequest alloc] init];  
@@ -54,7 +57,7 @@
     [sortDescriptor release];
 	
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:
-							  @"(isLocalDraft == YES) AND (isAutosave == NO) AND (blogID == %@)", blogID];
+							  @"(isLocalDraft == YES) AND (isAutosave == NO) AND (blogID == %@) AND (postType like %@)", blogID, postType];
 	[request setPredicate:predicate];
 	
     NSError *error;  
@@ -95,7 +98,6 @@
 }
 
 - (void)save:(Post *)post {
-	NSLog(@"saving draft: %@", post);
 	if((post.uniqueID == nil) || ([self exists:post.uniqueID] == NO)) {
 		[post setUniqueID:[[NSProcessInfo processInfo] globallyUniqueString]];
 		[self insert:post];

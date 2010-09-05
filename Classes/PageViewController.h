@@ -2,72 +2,45 @@
 //  PageViewController.h
 //  WordPress
 //
-//  Created by Janakiram on 01/11/08.
+//  Created by Chris Boyd on 9/4/10.
 //
 
 #import <UIKit/UIKit.h>
-#import "LocationController.h"
+#import "TransparentToolbar.h"
+#import "WordPressAppDelegate.h"
+#import "BlogDataManager.h"
+#import "DraftManager.h"
+#import "Post.h"
 
-@class EditPageViewController, PostPreviewViewController, WPSelectionTableViewController, PagesViewController;
-@class WPNavigationLeftButtonView;
-@class FlippingViewController;
+@protocol PageViewControllerProtocol
 
-@interface PageViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate> {
-    IBOutlet UITabBarController *tabController;
-    IBOutlet UIView *photoEditingStatusView;
+@property (nonatomic, retain) NSString *selectedPostID;
+@property (nonatomic, assign) int selectedBDMIndex;
 
-    UIBarButtonItem *saveButton;
+- (IBAction)saveAction:(id)sender;
+- (IBAction)publishAction:(id)sender;
+- (IBAction)cancelAction:(id)sender;
+- (IBAction)dismiss:(id)sender;
+- (void)refreshButtons:(BOOL)hasChanges keyboard:(BOOL)isShowingKeyboard;
 
-    EditPageViewController *pageDetailViewController;
-    EditPageViewController *pageDetailStaticViewController;
-    PagesViewController *pagesListController;
-    WPNavigationLeftButtonView *leftView;
+@end
 
-    BOOL hasChanges;
-	EditPageMode editMode;
+@interface PageViewController : UIViewController <PageViewControllerProtocol, UITabBarDelegate> {
+	IBOutlet UITabBarController *tabController;
 	
-	// iPad additions
-	IBOutlet UIToolbar *toolbar;
-	IBOutlet UIView *contentView;
-	UIPopoverController *popoverController;
-	UIPopoverController *photoPickerPopover;
+	NSString *selectedPostID;
+	int selectedBDMIndex;
+	BOOL isPublished;
 	
-	IBOutlet UIToolbar *editToolbar;
-	IBOutlet UIBarButtonItem *cancelEditButton;
-	FlippingViewController *editModalViewController;
+	BlogDataManager *dm;
+	WordPressAppDelegate *appDelegate;
 }
 
-@property (nonatomic, retain) WPNavigationLeftButtonView *leftView;
-@property (nonatomic, retain) EditPageViewController *pageDetailViewController;
-@property (nonatomic, retain) EditPageViewController *pageDetailStaticViewController;
-@property (nonatomic, assign) PagesViewController *pagesListController;
+@property (nonatomic, retain) IBOutlet UITabBarController *tabController;
+@property (nonatomic, assign) BOOL isPublished;
+@property (nonatomic, assign) BlogDataManager *dm;
+@property (nonatomic, assign) WordPressAppDelegate *appDelegate;
 
-@property (nonatomic, readonly) UIBarButtonItem *saveButton;
-
-@property (nonatomic) BOOL hasChanges;
-@property (nonatomic, assign) EditPageMode editMode;
-
-@property (readonly) UITabBarController *tabController;
-
-@property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
-@property (nonatomic, retain) IBOutlet UIView *contentView;
-
-@property (nonatomic, retain) IBOutlet UIToolbar *editToolbar;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *cancelEditButton;
-@property (nonatomic, retain) FlippingViewController *editModalViewController;
-
-- (UINavigationItem *)navigationItemForEditPost;
-@property (nonatomic, assign) UIBarButtonItem *leftBarButtonItemForEditPost;
-@property (nonatomic, assign) UIBarButtonItem *rightBarButtonItemForEditPost;
-
-- (void)updatePhotosBadge;
-- (IBAction)savePageAction:(id)sender;
-- (IBAction)cancelView:(id)sender;
-//- (void)addAsyncPostOperation:(SEL)anOperation withArg:(id)anArg;
-
-- (IBAction)editAction:(id)sender;
-- (IBAction)picturesAction:(id)sender;
-
-- (void)dismissEditView;
+- (void)setupBackButton;
 
 @end

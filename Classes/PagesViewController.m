@@ -7,14 +7,6 @@
 
 #import "PagesViewController.h"
 
-#import "BlogDataManager.h"
-#import "EditPageViewController.h"
-#import "PageViewController.h"
-#import "PostTableViewCell.h"
-#import "Reachability.h"
-#import "WPProgressHUD.h"
-#import "IncrementPost.h"
-
 #define LOCAL_DRAFTS_SECTION    0
 #define PAGES_SECTION           1
 #define NUM_SECTIONS            2
@@ -33,8 +25,7 @@
 @end
 
 @implementation PagesViewController
-@synthesize newButtonItem, pageDetailViewController, pageDetailsController, anyMorePages, selectedIndexPath, draftManager;
-@synthesize appDelegate;
+@synthesize newButtonItem, anyMorePages, selectedIndexPath, draftManager, appDelegate, tabController, drafts, mediaManager;
 
 #pragma mark -
 #pragma mark View Lifecycle
@@ -43,18 +34,21 @@
     [super viewDidLoad];
 	
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+	draftManager = [[DraftManager alloc] init];
+	
     self.tableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
-
     [self addRefreshButton];
-    [self setPageDetailsController];
 
     newButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
                      target:self
                      action:@selector(showAddNewPage)];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePagesTableAfterDraftSaved:) name:@"DraftsUpdated" object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+	self.navigationItem.title = [[[BlogDataManager sharedDataManager] currentBlog] objectForKey:@"title"];
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	
@@ -73,6 +67,10 @@
 	}	
 	
 	[self loadPages];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -102,21 +100,20 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     if (section == LOCAL_DRAFTS_SECTION) {
-        if ([[BlogDataManager sharedDataManager] numberOfPageDrafts] > 0) {
-            return @"Local Drafts";
-        } else {
-            return NULL;
-        }
-    } else {
-        return @"Pages";
+        if (drafts.count > 0)
+			return @"Local Drafts";
+		else
+			return nil;
     }
+	else
+        return @"Pages";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	
     if (section == LOCAL_DRAFTS_SECTION)
-        return [[BlogDataManager sharedDataManager] numberOfPageDrafts];
+        return drafts.count;
 	else if ([defaults boolForKey:@"anyMorePages"] == YES)
         return [[BlogDataManager sharedDataManager] countOfPageTitles] +1;
 	else
@@ -135,7 +132,7 @@
     }
 	
     if (indexPath.section == LOCAL_DRAFTS_SECTION) {
-        page = [dm pageDraftTitleAtIndex:indexPath.row];
+		cell.post = [[drafts objectAtIndex:indexPath.row] legacyPost];
     } 
 	else {
 		int count = [[BlogDataManager sharedDataManager] countOfPageTitles];
@@ -162,9 +159,9 @@
 		}
 		//if it wasn't the last cell, proceed as normal.
         page = [dm pageTitleAtIndex:indexPath.row];
+		
+		cell.post = page;
     }
-	
-    cell.post = page;
 	
     return cell;
 }
@@ -173,17 +170,14 @@
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 
     if (indexPath.section == LOCAL_DRAFTS_SECTION) {
-        id currentDraft = [dm pageDraftTitleAtIndex:indexPath.row];
-
-        // Bail out if we're in the middle of saving the draft.
-        if ([[currentDraft valueForKey:kAsyncPostFlag] intValue] == 1) {
-            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-            return;
-        }
-
-        [dm makePageDraftAtIndexCurrent:indexPath.row];
-		self.selectedIndexPath = indexPath;
+		Post *page = [drafts objectAtIndex:indexPath.row];
 		
+		PageViewController *pageViewController = [[PageViewController alloc] initWithNibName:@"PageViewController" bundle:nil];
+		[pageViewController setSelectedPostID:page.uniqueID];
+		[appDelegate showContentDetailViewController:pageViewController];
+		[pageViewController release];
+		
+		self.selectedIndexPath = indexPath;
     }
 	else {
 		if (indexPath.row == [[BlogDataManager sharedDataManager] countOfPageTitles]) {
@@ -212,14 +206,8 @@
 
         [dm makePageAtIndexCurrent:indexPath.row];
 		self.selectedIndexPath = indexPath;
-
-        self.pageDetailsController.hasChanges = NO;
     }
-
-    self.pageDetailsController.editMode = kEditPage;
 	
-	[self.pageDetailsController viewWillAppear:NO];
-	[appDelegate showContentDetailViewController:self.pageDetailsController];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -264,11 +252,10 @@
 
 - (void)loadPages {
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
-
-    dm.isLocaDraftsCurrent = NO;
-
     [dm loadPageTitlesForCurrentBlog];
-    [dm loadPageDraftTitlesForCurrentBlog];
+	[dm loadPostTitlesForCurrentBlog];
+	
+	self.drafts = [draftManager getType:@"page" forBlog:[dm.currentBlog valueForKey:@"blogid"]];
 	
 	// avoid calling UIKit on a background thread
 	[self performSelectorOnMainThread:@selector(refreshPageList) withObject:nil waitUntilDone:NO];
@@ -321,27 +308,38 @@
 
 - (void)showAddNewPage {
     [[BlogDataManager sharedDataManager] makeNewPageCurrent];
-    
-	self.pageDetailsController.editMode = kNewPage;
-	if (DeviceIsPad() == NO) {
-		[appDelegate.navigationController pushViewController:self.pageDetailsController animated:YES];
-	}
-	else if (DeviceIsPad() == YES) {
-		[appDelegate showContentDetailViewController:self.pageDetailsController];
-		if (self.pageDetailsController.editModalViewController) {
-			[self.pageDetailsController editAction:self];
-		}
-	}
+	
+	UIBarButtonItem *backButton = [[UIBarButtonItem alloc] init];
+	backButton.title = @"Pages";
+	self.navigationItem.backBarButtonItem = backButton;
+	[backButton release]; 
+	
+	PageViewController *pageViewController = [[PageViewController alloc] initWithNibName:@"PageViewController" bundle:nil];
+	[appDelegate showContentDetailViewController:pageViewController];
+	[pageViewController release];
 }
 
-- (void) deletePageAtIndexPath:(id)object{
+- (void)deletePageAtIndexPath:(id)object{
 	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 	
 	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 	NSIndexPath *indexPath = (NSIndexPath*)object;
 	
     if (indexPath.section == LOCAL_DRAFTS_SECTION) {
-        [dataManager deletePageDraftAtIndex:indexPath.row forBlog:[dataManager currentBlog]];
+		Post *draft = [drafts objectAtIndex:indexPath.row];
+		[mediaManager removeForPostID:draft.postID andBlogURL:[[[BlogDataManager sharedDataManager] currentBlog] objectForKey:@"url"]];
+		
+		NSManagedObject *objectToDelete = [drafts objectAtIndex:indexPath.row];
+		[appDelegate.managedObjectContext deleteObject:objectToDelete];
+		
+        // Commit the change.
+        NSError *error;
+        if (![appDelegate.managedObjectContext save:&error]) {
+			NSLog(@"Severe error when trying to delete local draft. Error: %@", error);
+        }
+		
+		[drafts removeObjectAtIndex:indexPath.row];
+        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
 		[self loadPages];
     }
 	else {
@@ -372,7 +370,7 @@
     [pool release];
 }
 
-- (void) addSpinnerToCell:(NSIndexPath *)indexPath {
+- (void)addSpinnerToCell:(NSIndexPath *)indexPath {
 	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
 	
 	UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
@@ -393,15 +391,6 @@
 	
 	[apool release];
 }
-- (void)setPageDetailsController {
-    if (self.pageDetailsController == nil) {
-		if (DeviceIsPad() == YES) {
-			self.pageDetailsController = [[PageViewController alloc] initWithNibName:@"PageViewController-iPad" bundle:nil];
-		} else {
-			self.pageDetailsController = [[PageViewController alloc] initWithNibName:@"PageViewController" bundle:nil];
-		}
-    }
-}
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
@@ -415,6 +404,11 @@
 	}
 }
 
+- (void)updatePagesTableAfterDraftSaved:(NSNotification *)notification {
+    BlogDataManager *dm = [BlogDataManager sharedDataManager];
+    [dm loadPageTitlesForCurrentBlog];
+	[self loadPages];
+}
 
 #pragma mark -
 #pragma mark Memory Management
@@ -428,8 +422,10 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
-	[pageDetailViewController release];
-    [pageDetailsController release];
+	[draftManager release];
+	[mediaManager release];
+	[drafts release];
+	[tabController release];
     [newButtonItem release];
     [refreshButton release];
 	[selectedIndexPath release];

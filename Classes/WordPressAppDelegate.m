@@ -46,7 +46,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 			if([tempIsAuthenticated isEqualToString:@"1"])
 				self.isWPcomAuthenticated = YES;
 		}
-		isWPcomAuthenticated = NO;
 		[self performSelectorInBackground:@selector(checkWPcomAuthentication) withObject:nil];
     }
 

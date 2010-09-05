@@ -18,6 +18,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
+	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+	
 	addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
 	addUsersBlogsView.isWPcom = YES;
 	NSString *addSiteNibName = @"AddSiteViewController";

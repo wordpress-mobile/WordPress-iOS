@@ -2561,8 +2561,10 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 		
         [request release];
 		
-        if (![response isKindOfClass:[NSError class]])
+        if (![response isKindOfClass:[NSError class]]) {
             successFlag = YES;
+			[currentPage setValue:response forKey:@"pageid"];
+		}
 		
         //if it is a draft and we successfully published then remove from drafts.
         if (isLocaDraftsCurrent && ![response isKindOfClass:[NSError class]]) {

@@ -304,7 +304,7 @@
 
 - (void)loadPosts {
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	self.drafts = [draftManager getForBlog:[[dm currentBlog] valueForKey:@"blogid"]];
+	self.drafts = [draftManager getType:@"post" forBlog:[[dm currentBlog] valueForKey:@"blogid"]];
     [dm loadPostTitlesForCurrentBlog];
 	[self performSelectorOnMainThread:@selector(refreshPostList) withObject:nil waitUntilDone:NO];
 }
@@ -395,6 +395,8 @@
 }
 
 - (void)updatePostsTableAfterDraftSaved:(NSNotification *)notification {
+    BlogDataManager *dm = [BlogDataManager sharedDataManager];
+    [dm loadPostTitlesForCurrentBlog];
 	[self loadPosts];
 }
 

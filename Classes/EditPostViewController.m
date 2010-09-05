@@ -225,7 +225,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	self.isLocalDraft = YES;
 	[postDetailViewController.post setStatus:@"Local Draft"];
 	statusTextField.text = @"Local Draft";
-	NSLog(@"statusTextField.text: %@", statusTextField.text);
 }
 
 - (void)refreshUIForCurrentPost {

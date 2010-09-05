@@ -2,93 +2,77 @@
 //  EditPageViewController.h
 //  WordPress
 //
-//  Created by Janakiram on 01/11/08.
+//  Created by Chris Boyd on 9/4/10.
 //
 
 #import <UIKit/UIKit.h>
-#import "CustomFieldsTableView.h"
+#import "WordPressAppDelegate.h"
+#import "BlogDataManager.h"
+#import "DraftManager.h"
+#import "Post.h"
+#import "UITextViewCell.h"
+#import "PageViewController.h"
+#import "ManagedObjectCloner.h"
+#import "WPProgressHUD.h"
 
-@class WPNavigationLeftButtonView;
-@class WPSelectionTableViewController;
-@class PageViewController;
-@class WPPhotosListViewController;
-
-@interface EditPageViewController : UIViewController<UIActionSheetDelegate, UITextViewDelegate> {
-    IBOutlet UITextView *pageContentTextView;
-    IBOutlet UITextField *titleTextField;
-    IBOutlet UIView *contentView;
-    IBOutlet UIView *subView;
-    IBOutlet UITextField *statusTextField;
-    IBOutlet UITextField *categoriesTextField;
-    IBOutlet UILabel *statusLabel;
-    IBOutlet UILabel *categoriesLabel;
-    IBOutlet UILabel *titleLabel;
-    IBOutlet UIView *textViewContentView;
-    IBOutlet UITextField *textViewPlaceHolderField;
-    IBOutlet UITableViewCell *customFieldsEditCell;
+@interface EditPageViewController : UIViewController <UITableViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UIActionSheetDelegate, UITextFieldDelegate, UITextViewDelegate> {
+	IBOutlet UITableView *table;	
+	IBOutlet UIActionSheet *actionSheet;
+	IBOutlet UITextView *contentTextView;
+	IBOutlet UITextField *titleTextField;
+	IBOutlet WPProgressHUD *spinner;
 	
-	BOOL editingDisabled;
-
-    UITextField *infoText;
-    UITextField *urlField;
-    WPSelectionTableViewController *selectionTableViewController;
-    PageViewController *pageDetailsController;
-
-    CustomFieldsTableView *customFieldsTableView;
-    WPPhotosListViewController *photosListController;
-
-    BOOL dismiss;
-    BOOL isEditing;
-	EditPageMode editMode;
-    BOOL hasChanges;
-    BOOL isTextViewEditing;
-    NSRange selectedLinkRange;
-    UITextField *currentEditingTextField;
-    BOOL isCustomFieldsEnabledForThisPage;
-
-    //also for Custom Fields to move text view up and down appropriately
-    NSUInteger originY;
+	BOOL isShowingKeyboard, isLocalDraft;
+	NSNumber *selectedSection;
+	NSMutableArray *statuses;
+	NSString *originalTitle, *originalStatus, *originalContent;
+	NSURLConnection *connection;
+	NSURLRequest *urlRequest;
+	NSURLResponse *urlResponse;
+	NSMutableData *payload;
 	
-	UIPopoverController *popover;
+	id<PageViewControllerProtocol> delegate;
+	BlogDataManager *dm;
+	WordPressAppDelegate *appDelegate;
+	DraftManager *draftManager;
+	PageViewController *pageDetailView;
+	Post *page;
 }
 
-@property (nonatomic, retain) PageViewController *pageDetailsController;
-@property (nonatomic, retain) WPSelectionTableViewController *selectionTableViewController;
-@property (nonatomic, assign) EditPageMode editMode;
-@property (nonatomic, retain) CustomFieldsTableView *customFieldsTableView;
-@property (nonatomic, assign) WPPhotosListViewController *photosListController;
-@property (nonatomic, retain) UITextField *infoText;
-@property (nonatomic, retain) UITextField *urlField;
-@property (nonatomic) NSRange selectedLinkRange;
-@property (nonatomic, assign) UITextField *currentEditingTextField;
-@property (nonatomic, assign) BOOL isEditing;
-@property (nonatomic, assign) BOOL isCustomFieldsEnabledForThisPage;
+@property (nonatomic, retain) IBOutlet UITableView *table;
+@property (nonatomic, retain) IBOutlet UIActionSheet *actionSheet;
+@property (nonatomic, retain) IBOutlet UITextView *contentTextView;
+@property (nonatomic, retain) IBOutlet UITextField *titleTextField;
+@property (nonatomic, retain) IBOutlet WPProgressHUD *spinner;
+@property (nonatomic, assign) BOOL isShowingKeyboard, isLocalDraft;
+@property (nonatomic, assign) NSNumber *selectedSection;
+@property (nonatomic, retain) NSMutableArray *statuses;
+@property (nonatomic, retain) NSString *originalTitle, *originalStatus, *originalContent;
+@property (nonatomic, retain) NSURLConnection *connection;
+@property (nonatomic, retain) NSURLRequest *urlRequest;
+@property (nonatomic, retain) NSURLResponse *urlResponse;
+@property (nonatomic, retain) NSMutableData *payload;
+@property (nonatomic, assign) id <PageViewControllerProtocol> delegate;
+@property (nonatomic, assign) BlogDataManager *dm;
+@property (nonatomic, assign) WordPressAppDelegate *appDelegate;
+@property (nonatomic, retain) DraftManager *draftManager;
+@property (nonatomic, assign) PageViewController *pageDetailView;
+@property (nonatomic, retain) Post *page;
 
-@property (nonatomic, retain) UITableViewCell *customFieldsEditCell;
-
-- (IBAction)showStatusViewAction:(id)sender;
-- (IBAction)showCustomFieldsTableView:(id)sender;
-- (void)populateCustomFieldsTableViewControllerWithCustomFields;
-- (void)endEditingAction:(id)sender;
-- (void)refreshUIForCurrentPage;
-- (void)refreshUIForNewPage;
-
-- (void)disableInteraction;
-
-- (NSString *)validateNewLinkInfo:(NSString *)urlText;
-- (void)showLinkView;
-- (void)setTextViewHeight:(float)height;
-
-#pragma mark -
-#pragma mark Custom Fields Methods
-
-- (BOOL)checkCustomFieldsMinusMetadata;
-- (void)postionTextViewContentView;
-
-#pragma mark -
-#pragma mark Custom Fields Methods
-
-- (BOOL)checkCustomFieldsMinusMetadata;
-- (void)postionTextViewContentView;
+- (void)setupPage;
+- (void)refreshTable;
+- (void)refreshButtons;
+- (void)refreshStatuses;
+- (void)refreshPage;
+- (IBAction)showStatusPicker:(id)sender;
+- (IBAction)hideStatusPicker:(id)sender;
+- (NSInteger)indexForStatus:(NSString *)status;
+- (void)hideKeyboard:(NSNotification *)notification;
+- (void)keyboardWillShow:(NSNotification *)notification;
+- (void)keyboardWillHide:(NSNotification *)notification;
+- (void)save;
+- (void)publish;
+- (void)verifyPublishSuccessful;
+- (BOOL)hasChanges;
 
 @end

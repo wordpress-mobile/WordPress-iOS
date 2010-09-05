@@ -273,7 +273,6 @@
 
 - (void)didSaveSelectedBlogsInBackground {
 	[spinner dismissWithClickedButtonIndex:0 animated:YES];
-    [spinner release];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[appDelegate syncBlogCategoriesAndStatuses];
 	[appDelegate syncBlogs];
