@@ -41,6 +41,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"EditPageViewShouldDisappear" object:nil];
 	[super viewWillDisappear:animated];
 }
 

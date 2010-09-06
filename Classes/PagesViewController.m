@@ -54,8 +54,7 @@
 		}
 	}
 	
-	if ([[Reachability sharedReachability] internetConnectionStatus])
-	{
+	if ([[Reachability sharedReachability] internetConnectionStatus]) {
 		if ([defaults boolForKey:@"refreshPagesRequired"]) {
 			[self refreshHandler];
 			[defaults setBool:false forKey:@"refreshPagesRequired"];

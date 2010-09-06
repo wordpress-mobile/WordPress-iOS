@@ -11,7 +11,7 @@
 
 @implementation EditPageViewController
 
-@synthesize table, dm, appDelegate, statuses, actionSheet, isShowingKeyboard, pageDetailView, delegate;
+@synthesize table, dm, appDelegate, actionSheet, isShowingKeyboard, pageDetailView, delegate;
 @synthesize contentTextView, selectedSection, titleTextField, isLocalDraft, originalTitle, originalStatus, originalContent;
 @synthesize page, connection, urlRequest, urlResponse, payload, spinner;
 
@@ -32,7 +32,6 @@
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	pageDetailView = (PageViewController *)self.tabBarController.parentViewController;
 	dm = [BlogDataManager sharedDataManager];
-	statuses = [[NSMutableArray alloc] init];
 	
 	[self setupPage];
 	
@@ -42,6 +41,8 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(save) name:@"EditPageViewShouldSave" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(publish) name:@"EditPageViewShouldPublish" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancel) name:@"EditPageViewShouldCancel" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewWillDisppear:) name:@"EditPageViewShouldDisappear" object:nil];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -49,6 +50,9 @@
 }
 
 - (void)viewWillDisppear:(BOOL)animated {
+	if((self.isLocalDraft == YES) && ([self hasChanges] == NO))
+		[appDelegate.managedObjectContext rollback];
+	
 	[super viewWillDisappear:animated];
 }
 
@@ -154,8 +158,8 @@
 					cell.textLabel.text = @"Status";
 					
 					cell.detailTextLabel.font = [UIFont systemFontOfSize:16.0];
-					if(page.status != nil)
-						cell.detailTextLabel.text = page.status;
+					if(self.page.status != nil)
+						cell.detailTextLabel.text = [delegate.pageManager.statuses objectForKey:self.page.status];
 					cell.detailTextLabel.textAlignment = UITextAlignmentLeft;
 					break;
 				default:
@@ -202,7 +206,6 @@
 					// Nothing
 					break;
 				case 1:
-					[self refreshStatuses];
 					[self showStatusPicker:self];
 				default:
 					break;
@@ -228,15 +231,15 @@
 }
 
 - (NSInteger)pickerView:(UIPickerView *)thePickerView numberOfRowsInComponent:(NSInteger)component {
-	return [statuses count];
+	return [delegate.pageManager.statuses count];
 }
 
 - (NSString *)pickerView:(UIPickerView *)thePickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-	return [statuses objectAtIndex:row];
+	return [[delegate.pageManager.statuses allValues] objectAtIndex:row];
 }
 
 - (void)pickerView:(UIPickerView *)thePickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-	[self.page setStatus:[statuses objectAtIndex:row]];
+	[self.page setStatus:[[[delegate.pageManager.statuses allKeys] objectAtIndex:row] retain]];
 	[self hideStatusPicker:self];
 	[self refreshButtons];
 }
@@ -308,6 +311,9 @@
 
 - (void)setupPage {
 	if(self.page == nil) {
+		if(delegate.pageManager == nil)
+			delegate.pageManager = [[PageManager alloc] initWithXMLRPCUrl:[dm.currentBlog objectForKey:@"xmlrpc"]];
+		
 		if(delegate.selectedPostID != nil) {
 			self.page = [[delegate.draftManager get:delegate.selectedPostID] retain];
 			if(self.page.uniqueID == delegate.selectedPostID) {
@@ -323,28 +329,30 @@
 				NSDictionary *existingPage = [delegate.pageManager getPage:[nf numberFromString:delegate.selectedPostID]];
 				[nf release];
 				
+				self.page.postID = delegate.selectedPostID;
 				self.page.postTitle = [existingPage objectForKey:@"title"];
-				self.page.status = [dm pageStatusDescriptionForStatus:[existingPage objectForKey:@"page_status"] fromBlog:dm.currentBlog];
+				[self.page setStatus:[existingPage objectForKey:@"page_status"]];
 				self.page.content = [existingPage objectForKey:@"description"];
+				
+				[delegate.pageManager.statuses removeObjectForKey:kLocalDraftKey];
 			}
 		}
 		else {
 			// New page
 			self.isLocalDraft = YES;
 			[self setPage:[[delegate.draftManager get:nil] retain]];
-			[self.page setStatus:@"Local Draft"];
 			[self.page setIsPublished:[NSNumber numberWithInt:0]];
 			[self.page setIsLocalDraft:[NSNumber numberWithInt:1]];
 			[self.page setPostType:@"page"];
 			[self.page setBlogID:[dm.currentBlog objectForKey:@"blogid"]];
 			[self.page setDateCreated:[NSDate date]];
+			[self.page setStatus:@"local-draft"];
 		}
 		[self setOriginalTitle:self.page.postTitle];
 		[self setOriginalStatus:self.page.status];
 		[self setOriginalContent:self.page.content];
 	}
 	
-	[self refreshStatuses];
 	[self refreshButtons];
 }
 
@@ -355,18 +363,6 @@
 
 - (void)refreshButtons {
 	[delegate refreshButtons:[self hasChanges] keyboard:self.isShowingKeyboard];
-}
-
-- (void)refreshStatuses {
-    NSDictionary *postStatusList = [[dm currentBlog] valueForKey:@"postStatusList"];
-	for (id key in postStatusList) {
-		if(![statuses containsObject:[postStatusList objectForKey:key]]) {
-			[statuses addObject:[[postStatusList objectForKey:key] retain]];
-		}
-	}
-	
-	if((self.isLocalDraft == YES) && (![statuses containsObject:@"Local Draft"]))
-		[statuses addObject:@"Local Draft"];
 }
 
 - (void)refreshPage {
@@ -409,7 +405,7 @@
 	NSInteger result = -1;
 	
 	int index = 0;
-	for(NSString *item in statuses) {
+	for(NSString *item in delegate.pageManager.statuses) {
 		if([[item lowercaseString] isEqualToString:[status lowercaseString]]) {
 			result = index;
 			break;
@@ -461,7 +457,7 @@
 	[titleTextField resignFirstResponder];
 	[contentTextView resignFirstResponder];
 	
-	if(![[self.page.status lowercaseString] isEqualToString:@"local draft"])
+	if(![[self.page.status lowercaseString] isEqualToString:@"local-draft"])
 		self.isLocalDraft = NO;
 	
 	spinner = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
@@ -479,21 +475,12 @@
 		[self performSelectorOnMainThread:@selector(didSavePageInBackground) withObject:nil waitUntilDone:NO];
 	}
 	else {
-//		if(delegate.selectedBDMIndex > -1)
-//			[dm makePageAtIndexCurrent:delegate.selectedBDMIndex];
-//		else
-//			[dm makeNewPageCurrent];
-//		
-//		[dm.currentPage setObject:self.page.postTitle forKey:@"title"];
-//		[dm.currentPage setObject:self.page.status forKey:@"post_status"];
-//		[dm.currentPage setObject:self.page.status forKey:@"page_status"];
-//		[dm.currentPage setObject:self.page.content forKey:@"description"];
-//		
-//		BOOL result = [dm savePage:dm.currentPage];
-//		if(result == YES) {
-//			[self.page setPostID:[NSString stringWithFormat:@"%@", [dm.currentPage objectForKey:@"pageid"]]];
-//			[self performSelectorOnMainThread:@selector(verifyPublishSuccessful) withObject:nil waitUntilDone:NO];
-//		}
+		if(delegate.selectedPostID == nil)
+			[delegate.pageManager createPage:self.page];
+		else
+			[delegate.pageManager savePage:self.page];
+		
+		[self performSelectorOnMainThread:@selector(didSavePageInBackground) withObject:nil waitUntilDone:NO];
 	}
 	
 	[pool release];
@@ -520,85 +507,16 @@
 	if((page.content != nil) && (![page.content isEqualToString:originalContent]))
 		result = YES;
 	
+	if((result == NO) && (self.isLocalDraft)) {
+		if(page.postTitle != nil)
+			result = YES;
+		if(page.status != nil)
+			result = YES;
+		if(page.content != nil)
+			result = YES;
+	}
+	
 	return result;
-}
-
-- (void)verifyPublishSuccessful {
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	
-	NSArray *params = [NSArray arrayWithObjects:
-					   [dm.currentBlog valueForKey:@"blogid"],
-					   self.page.postID,
-					   [[dm currentBlog] objectForKey:@"username"],
-					   [dm getPasswordFromKeychainInContextOfCurrentBlog:dm.currentBlog],
-					   nil];
-	
-	// Execute the XML-RPC request
-	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[dm.currentBlog valueForKey:@"xmlrpc"]]];
-	[request setMethod:@"wp.getPage" withObjects:params];
-	[params release];
-	
-	connection = [[NSURLConnection alloc] initWithRequest:[request request] delegate:self];
-	if (connection) {
-		payload = [[NSMutableData data] retain];
-	}
-}
-
-- (void)stop {
-	[connection cancel];
-}
-
-- (void)connection:(NSURLConnection *)conn didReceiveResponse:(NSURLResponse *)response {	
-	[self.payload setLength:0];
-	[self setUrlResponse:response];
-}
-
-- (void)connection:(NSURLConnection *)conn didReceiveData:(NSData *)data {
-	[self.payload appendData:data];
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)conn {
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	conn = nil;
-	
-	if(payload != nil)
-	{
-		NSString  *str = [[NSString alloc] initWithData:payload encoding:NSUTF8StringEncoding];
-		if ( ! str ) {
-			str = [[NSString alloc] initWithData:payload encoding:[NSString defaultCStringEncoding]];
-			payload = (NSMutableData *)[[str dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES] retain];
-		}
-		
-		if ([urlResponse isKindOfClass:[NSHTTPURLResponse class]]) {
-			if ([(NSHTTPURLResponse *)urlResponse statusCode] < 400) {
-				XMLRPCResponse *xmlrpcResponse = [[XMLRPCResponse alloc] initWithData:payload];
-				
-				if (![xmlrpcResponse isKindOfClass:[NSError class]]) {
-					NSDictionary *responseMeta = [xmlrpcResponse object];
-					NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
-					[f setNumberStyle:NSNumberFormatterDecimalStyle];
-					NSNumber *publishedPageID = [f numberFromString:self.page.postID];
-					NSNumber *newPageID = [responseMeta valueForKey:@"page_id"];
-					[f release];
-					if([publishedPageID isEqualToNumber:newPageID]) {
-						// Publish was successful
-						NSDictionary *info = [[NSDictionary alloc] initWithObjectsAndKeys:self.page.uniqueID, @"uniqueID", nil];
-						[[NSNotificationCenter defaultCenter] postNotificationName:@"LocalDraftWasPublishedSuccessfully" object:nil userInfo:info];
-						[self didSavePageInBackground];
-					}
-				}
-				
-				[xmlrpcResponse release];
-			}
-			
-		}
-		
-		[str release];
-	}
-}
-
-- (void)connection:(NSURLConnection *)conn didFailWithError:(NSError *)error {
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 #pragma mark -
@@ -625,7 +543,6 @@
 	[selectedSection release];
 	[contentTextView release];
 	[actionSheet release];
-	[statuses release];
 	[table release];
     [super dealloc];
 }

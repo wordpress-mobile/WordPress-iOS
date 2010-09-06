@@ -239,7 +239,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)deleteLocalDraft:(NSNotification *)notification {
-	NSString *uniqueID = [[notification userInfo] objectForKey:@"uniqueID"];
+	NSString *uniqueID = [notification object];
 	
 	if(uniqueID != nil) {
 		NSLog(@"deleting local draft: %@", uniqueID);

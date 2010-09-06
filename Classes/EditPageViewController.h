@@ -25,7 +25,6 @@
 	
 	BOOL isShowingKeyboard, isLocalDraft;
 	NSNumber *selectedSection;
-	NSMutableArray *statuses;
 	NSString *originalTitle, *originalStatus, *originalContent;
 	
 	NSURLConnection *connection;
@@ -47,7 +46,6 @@
 @property (nonatomic, retain) IBOutlet WPProgressHUD *spinner;
 @property (nonatomic, assign) BOOL isShowingKeyboard, isLocalDraft;
 @property (nonatomic, assign) NSNumber *selectedSection;
-@property (nonatomic, retain) NSMutableArray *statuses;
 @property (nonatomic, retain) NSString *originalTitle, *originalStatus, *originalContent;
 @property (nonatomic, retain) NSURLConnection *connection;
 @property (nonatomic, retain) NSURLRequest *urlRequest;
@@ -62,7 +60,6 @@
 - (void)setupPage;
 - (void)refreshTable;
 - (void)refreshButtons;
-- (void)refreshStatuses;
 - (void)refreshPage;
 - (IBAction)showStatusPicker:(id)sender;
 - (IBAction)hideStatusPicker:(id)sender;
@@ -72,7 +69,6 @@
 - (void)keyboardWillHide:(NSNotification *)notification;
 - (void)save;
 - (void)publish;
-- (void)verifyPublishSuccessful;
 - (BOOL)hasChanges;
 
 @end

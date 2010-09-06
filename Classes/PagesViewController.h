@@ -58,8 +58,8 @@
 - (void)scrollToFirstCell;
 - (void)refreshHandler;
 - (void)addRefreshButton;
-- (void)deleteDraftAtIndexPath:(NSIndexPath *)indexPath;
 - (void)deletePageAtIndexPath:(NSIndexPath *)indexPath;
+- (void)didDeleteDraftAtIndexPath:(NSIndexPath *)indexPath;
 - (void)didDeletePageAtIndexPath:(NSIndexPath *)indexPath;
 - (void)refreshTable;
 - (NSDate *)localDateFromGMT:(NSDate *)sourceDate;

@@ -44,7 +44,10 @@
 	
 	[convertedPost setValue:self.postTitle forKey:@"title"];
 	[convertedPost setValue:self.author forKey:@"author"];
-	[convertedPost setValue:[self.status lowercaseString] forKey:@"post_status"];
+	if([self.postType isEqualToString:@"page"])
+		[convertedPost setValue:[self.status lowercaseString] forKey:@"page_status"];
+	else
+		[convertedPost setValue:[self.status lowercaseString] forKey:@"post_status"];
 	[convertedPost setValue:self.tags forKey:@"mt_keywords"];
 	[convertedPost setValue:[self.categories componentsSeparatedByString:@", "] forKey:@"categories"];
 	[convertedPost setValue:self.dateCreated forKey:@"date_created_gmt"];
