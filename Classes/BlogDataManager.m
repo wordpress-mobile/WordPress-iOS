@@ -2701,12 +2701,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 }
 
 - (BOOL)syncPagesForBlog:(id)blog {
-	//as of Trac ticket #291, this method should always return the MOST RECENT X number of posts
-	//X is chosen in the blog setup page with the selection "X Recent Items"
-    //[blog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
-    // Parameters
     NSString *username = [blog valueForKey:@"username"];
-    //NSString *pwd = [blog valueForKey:@"pwd"];
 	NSString *pwd =	[self getPasswordFromKeychainInContextOfCurrentBlog:blog];
     NSString *fullURL = [blog valueForKey:@"xmlrpc"];
     NSString *blogid = [blog valueForKey:kBlogId];
@@ -2715,38 +2710,13 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 	NSNumber *userSetMaxToFetch = [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:3] intValue]];
 	int loadLimit = [userSetMaxToFetch intValue];
 	
-	//end for #291
-	/*
-	 #291
-	 Get pages metadata  (note, the api does not seem to allow a number to limit what comes back)
-	 Parse metadata for MOST RECENT X number of pages
-	 Sort the metadata by date putting highest date first
-	 Use system.multicall to request each page
-	 Parse the pages (remember the extra array "wrapper"
-	 finally, use the line below to continue
-	 NSMutableArray *pagesList = [NSMutableArray arrayWithArray:response];
-	 
-	 */
-	
-    /*  This is the old code for getting all pages, changing for #291.  Keeping code for testing #291.  Delete when testing complete
-	 //  ------------------------- invoke metaWeblog.getPages
-	 XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
-	 [postsReq setMethod:@"wp.getPages"
-     withObjects:[NSArray arrayWithObjects:blogid, username, pwd, nil]];
-	 
-	 id response = [self executeXMLRPCRequest:postsReq byHandlingError:YES];
-	 [postsReq release];
-	 */
-	
-	//-----------------------invoke wp.getPageList instead of getPages for Trac #291
-	
 	XMLRPCRequest *pagesMetadata = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
-	[pagesMetadata setMethod:@"wp.getPageList"
-				 withObjects:[NSArray arrayWithObjects:blogid, username, pwd, nil]];
+	[pagesMetadata setMethod:@"wp.getPageList" withObjects:[NSArray arrayWithObjects:blogid, username, pwd, nil]];
 	
 	id response = [self executeXMLRPCRequest:pagesMetadata byHandlingError:YES];
-	//NSLog(@"the response %@", response);
-	//NSLog(@"the id, %@",postID);
+	
+	//NSLog(@"response %@", response);
+	
 	[pagesMetadata release];
 	
     if ((!response) || !([response isKindOfClass:[NSArray class]])) {
@@ -2764,15 +2734,11 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 	//NSLog(@"the response %@", response);
 	
 	
-	//-----------------------get the top X number of date-sorted metadata points for pages... 
-	
 	NSEnumerator *pagesEnum = [response objectEnumerator];
 	NSMutableArray *refreshedPagesArray = [[NSMutableArray alloc] init];
 	NSDictionary *pageMetadataDict;
-	
 	NSInteger newPageCount = 0;
 	NSString *pageid = @"nil";
-	//int pageIDInt;
 	
 	newPageCount = 0;
 	while (pageMetadataDict = [pagesEnum nextObject]) {
@@ -2785,10 +2751,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 	}
 	
 	
-	//-----------------------...and wrap up a system.multicall using the metadata to request the full page	
-	
 	NSMutableArray *getMorePagesArray = [[NSMutableArray alloc] init];
-	
 	NSEnumerator *pagesEnum2 = [refreshedPagesArray objectEnumerator];
 	while (pageMetadataDict = [pagesEnum2 nextObject]) {
 		newPageCount ++;
@@ -2843,21 +2806,14 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
         [updatedPage setValue:[blog valueForKey:kBlogHostName] forKey:kBlogHostName];
 		
         NSString *path = [self pageFilePath:updatedPage forBlog:blog];
-		
         [defaultFileManager removeItemAtPath:path error:nil];
         [updatedPage writeToFile:path atomically:YES];
-		
         [pageTitlesArray addObject:[self pageTitleForPage:updatedPage]];
 		
-		
-		// sort and save the postTitles list
 		NSSortDescriptor *sd2 = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
 		[pageTitlesArray sortUsingDescriptors:[NSArray arrayWithObject:sd2]];
 		[sd2 release];
 		[blog setObject:[NSNumber numberWithInt:[pageTitlesArray count]] forKey:@"totalpages"];
-		//NSNumber *totalPages = [blog valueForKey:@"totalpages"];
-		//CAN I USE totalpages here???
-		//int previousNumberOfPages = [totalPages intValue];
 		[blog setObject:[NSNumber numberWithInt:1] forKey:@"newpages"];
 		
 		NSString *pathToCommentTitles = [self pathToPageTitles:blog];

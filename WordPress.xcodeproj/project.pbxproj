@@ -204,6 +204,7 @@
 		83A64689112C5F75000999A6 /* PostSettingsHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A64688112C5F75000999A6 /* PostSettingsHelpViewController.m */; };
 		83A646AB112C63E5000999A6 /* help.png in Resources */ = {isa = PBXBuildFile; fileRef = 83A646AA112C63E5000999A6 /* help.png */; };
 		83BC943C11F94AA00041141A /* whitebg.png in Resources */ = {isa = PBXBuildFile; fileRef = 83BC943B11F94AA00041141A /* whitebg.png */; };
+		83CAC78A12354031003DFA20 /* PageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CAC78912354031003DFA20 /* PageManager.m */; };
 		83D180FA12329B1A002DCCB0 /* EditPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D180F812329B1A002DCCB0 /* EditPageViewController.m */; };
 		83D180FB12329B1A002DCCB0 /* EditPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83D180F912329B1A002DCCB0 /* EditPageViewController.xib */; };
 		83D181A01232A0DA002DCCB0 /* PageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D1819F1232A0DA002DCCB0 /* PageViewController.m */; };
@@ -562,6 +563,8 @@
 		83A64688112C5F75000999A6 /* PostSettingsHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostSettingsHelpViewController.m; sourceTree = "<group>"; };
 		83A646AA112C63E5000999A6 /* help.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = help.png; sourceTree = "<group>"; };
 		83BC943B11F94AA00041141A /* whitebg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whitebg.png; sourceTree = "<group>"; };
+		83CAC78812354031003DFA20 /* PageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageManager.h; sourceTree = "<group>"; };
+		83CAC78912354031003DFA20 /* PageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageManager.m; sourceTree = "<group>"; };
 		83D180F712329B1A002DCCB0 /* EditPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditPageViewController.h; sourceTree = "<group>"; };
 		83D180F812329B1A002DCCB0 /* EditPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditPageViewController.m; sourceTree = "<group>"; };
 		83D180F912329B1A002DCCB0 /* EditPageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditPageViewController.xib; path = Classes/EditPageViewController.xib; sourceTree = "<group>"; };
@@ -938,6 +941,8 @@
 				831C9ED812162B0100B1EACE /* AutosaveManager.m */,
 				8302C4581228173E00B7A208 /* MediaManager.h */,
 				8302C4591228173E00B7A208 /* MediaManager.m */,
+				83CAC78812354031003DFA20 /* PageManager.h */,
+				83CAC78912354031003DFA20 /* PageManager.m */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -1641,6 +1646,7 @@
 				83D181A01232A0DA002DCCB0 /* PageViewController.m in Sources */,
 				83297B86123344FD00FB2C7D /* UITextViewCell.m in Sources */,
 				838025D01233F97C0051BBDB /* ManagedObjectCloner.m in Sources */,
+				83CAC78A12354031003DFA20 /* PageManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

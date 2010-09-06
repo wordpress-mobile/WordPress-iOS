@@ -8,12 +8,13 @@
 #import <UIKit/UIKit.h>
 #import "WordPressAppDelegate.h"
 #import "BlogDataManager.h"
-#import "DraftManager.h"
 #import "Post.h"
 #import "UITextViewCell.h"
 #import "PageViewController.h"
 #import "ManagedObjectCloner.h"
 #import "WPProgressHUD.h"
+
+@class DraftManager, PageManager;
 
 @interface EditPageViewController : UIViewController <UITableViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UIActionSheetDelegate, UITextFieldDelegate, UITextViewDelegate> {
 	IBOutlet UITableView *table;	
@@ -26,6 +27,7 @@
 	NSNumber *selectedSection;
 	NSMutableArray *statuses;
 	NSString *originalTitle, *originalStatus, *originalContent;
+	
 	NSURLConnection *connection;
 	NSURLRequest *urlRequest;
 	NSURLResponse *urlResponse;
@@ -34,7 +36,6 @@
 	id<PageViewControllerProtocol> delegate;
 	BlogDataManager *dm;
 	WordPressAppDelegate *appDelegate;
-	DraftManager *draftManager;
 	PageViewController *pageDetailView;
 	Post *page;
 }
@@ -55,7 +56,6 @@
 @property (nonatomic, assign) id <PageViewControllerProtocol> delegate;
 @property (nonatomic, assign) BlogDataManager *dm;
 @property (nonatomic, assign) WordPressAppDelegate *appDelegate;
-@property (nonatomic, retain) DraftManager *draftManager;
 @property (nonatomic, assign) PageViewController *pageDetailView;
 @property (nonatomic, retain) Post *page;
 

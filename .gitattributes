@@ -82,6 +82,8 @@ Classes/NSString+Util.h -text
 Classes/NSString+Util.m -text
 Classes/NSString+XMLExtensions.h -text
 Classes/NSString+XMLExtensions.m -text
+Classes/PageManager.h -text
+Classes/PageManager.m -text
 Classes/PageViewController.h -text
 Classes/PageViewController.m -text
 Classes/PagesViewController.h -text

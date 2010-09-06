@@ -10,6 +10,7 @@
 #import "RefreshButtonView.h"
 #import "PostTableViewCell.h"
 #import "PageViewController.h"
+#import "PageManager.h"
 #import "DraftManager.h"
 #import "MediaManager.h"
 #import "BlogDataManager.h"
@@ -21,30 +22,46 @@
 @interface PagesViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, UIAccelerometerDelegate> {
 	IBOutlet UITabBarController *tabController;
     UIBarButtonItem *newButtonItem;
-	UIAlertView *progressAlert;
+	UIActivityIndicatorView *spinner;
 	
+	BlogDataManager *dm;
 	WordPressAppDelegate *appDelegate;
+	PageManager *pageManager;
 	DraftManager *draftManager;
 	MediaManager *mediaManager;
     RefreshButtonView *refreshButton;
-	BOOL anyMorePages;
+	WPProgressHUD *progressAlert;
 	
 	NSIndexPath *selectedIndexPath;
-	NSMutableArray *drafts;
+	NSMutableArray *drafts, *pages, *visiblePages;
+	int loadLimit;
 }
 
 @property (nonatomic, retain) IBOutlet UITabBarController *tabController;
 @property (nonatomic, assign) WordPressAppDelegate *appDelegate;
 @property (readonly) UIBarButtonItem *newButtonItem;
+@property (nonatomic, assign) BlogDataManager *dm;
+@property (nonatomic, retain) PageManager *pageManager;
 @property (nonatomic, retain) DraftManager *draftManager;
 @property (nonatomic, retain) MediaManager *mediaManager;
 @property (nonatomic, assign) BOOL anyMorePages;
 @property (nonatomic, retain) NSIndexPath *selectedIndexPath;
-@property (nonatomic, retain) NSMutableArray *drafts;
+@property (nonatomic, retain) NSMutableArray *drafts, *pages, *visiblePages;
+@property (nonatomic, retain) UIActivityIndicatorView *spinner;
+@property (nonatomic, retain) WPProgressHUD *progressAlert;
+@property (nonatomic, assign) int loadLimit;
 
 - (void)addSpinnerToCell:(NSIndexPath *)indexPath;
 - (void)removeSpinnerFromCell:(NSIndexPath *)indexPath;
 - (void)loadPages;
 - (void)showAddNewPage;
+- (void)scrollToFirstCell;
+- (void)refreshHandler;
+- (void)addRefreshButton;
+- (void)deleteDraftAtIndexPath:(NSIndexPath *)indexPath;
+- (void)deletePageAtIndexPath:(NSIndexPath *)indexPath;
+- (void)didDeletePageAtIndexPath:(NSIndexPath *)indexPath;
+- (void)refreshTable;
+- (NSDate *)localDateFromGMT:(NSDate *)sourceDate;
 
 @end

@@ -394,7 +394,6 @@
 	[buttonText release];
 	[username release];
 	[password release];
-	WPcomXMLRPCUrl = nil;
 	[WPcomXMLRPCUrl release];
     [super dealloc];
 }

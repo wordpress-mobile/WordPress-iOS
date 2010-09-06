@@ -11,7 +11,7 @@
 
 @implementation EditPageViewController
 
-@synthesize table, dm, appDelegate, statuses, actionSheet, draftManager, isShowingKeyboard, pageDetailView, delegate;
+@synthesize table, dm, appDelegate, statuses, actionSheet, isShowingKeyboard, pageDetailView, delegate;
 @synthesize contentTextView, selectedSection, titleTextField, isLocalDraft, originalTitle, originalStatus, originalContent;
 @synthesize page, connection, urlRequest, urlResponse, payload, spinner;
 
@@ -33,7 +33,6 @@
 	pageDetailView = (PageViewController *)self.tabBarController.parentViewController;
 	dm = [BlogDataManager sharedDataManager];
 	statuses = [[NSMutableArray alloc] init];
-	draftManager = [[DraftManager alloc] init];
 	
 	[self setupPage];
 	
@@ -310,7 +309,7 @@
 - (void)setupPage {
 	if(self.page == nil) {
 		if(delegate.selectedPostID != nil) {
-			self.page = [[draftManager get:delegate.selectedPostID] retain];
+			self.page = [[delegate.draftManager get:delegate.selectedPostID] retain];
 			if(self.page.uniqueID == delegate.selectedPostID) {
 				// Load from Core Data
 				
@@ -318,17 +317,21 @@
 				self.isLocalDraft = YES;
 			}
 			else {
-				// Load from BlogDataManager
-				[dm makePageAtIndexCurrent:delegate.selectedBDMIndex];
-				self.page.postTitle = [[dm currentPage] objectForKey:@"title"];
-				self.page.status = [[dm currentPage] objectForKey:@"status"];
-				self.page.content = [[dm currentPage] objectForKey:@"description"];
+				// Load from PageManager
+				NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+				[nf setNumberStyle:NSNumberFormatterDecimalStyle];
+				NSDictionary *existingPage = [delegate.pageManager getPage:[nf numberFromString:delegate.selectedPostID]];
+				[nf release];
+				
+				self.page.postTitle = [existingPage objectForKey:@"title"];
+				self.page.status = [dm pageStatusDescriptionForStatus:[existingPage objectForKey:@"page_status"] fromBlog:dm.currentBlog];
+				self.page.content = [existingPage objectForKey:@"description"];
 			}
 		}
 		else {
 			// New page
 			self.isLocalDraft = YES;
-			[self setPage:[[draftManager get:nil] retain]];
+			[self setPage:[[delegate.draftManager get:nil] retain]];
 			[self.page setStatus:@"Local Draft"];
 			[self.page setIsPublished:[NSNumber numberWithInt:0]];
 			[self.page setIsLocalDraft:[NSNumber numberWithInt:1]];
@@ -472,25 +475,25 @@
 	[self.page setPostType:@"page"];
 	
 	if(self.isLocalDraft == YES) {
-		[draftManager save:self.page];
+		[delegate.draftManager save:self.page];
 		[self performSelectorOnMainThread:@selector(didSavePageInBackground) withObject:nil waitUntilDone:NO];
 	}
 	else {
-		if(delegate.selectedBDMIndex > -1)
-			[dm makePageAtIndexCurrent:delegate.selectedBDMIndex];
-		else
-			[dm makeNewPageCurrent];
-		
-		[dm.currentPage setObject:self.page.postTitle forKey:@"title"];
-		[dm.currentPage setObject:self.page.status forKey:@"post_status"];
-		[dm.currentPage setObject:self.page.status forKey:@"page_status"];
-		[dm.currentPage setObject:self.page.content forKey:@"description"];
-		
-		BOOL result = [dm savePage:dm.currentPage];
-		if(result == YES) {
-			[self.page setPostID:[NSString stringWithFormat:@"%@", [dm.currentPage objectForKey:@"pageid"]]];
-			[self performSelectorOnMainThread:@selector(verifyPublishSuccessful) withObject:nil waitUntilDone:NO];
-		}
+//		if(delegate.selectedBDMIndex > -1)
+//			[dm makePageAtIndexCurrent:delegate.selectedBDMIndex];
+//		else
+//			[dm makeNewPageCurrent];
+//		
+//		[dm.currentPage setObject:self.page.postTitle forKey:@"title"];
+//		[dm.currentPage setObject:self.page.status forKey:@"post_status"];
+//		[dm.currentPage setObject:self.page.status forKey:@"page_status"];
+//		[dm.currentPage setObject:self.page.content forKey:@"description"];
+//		
+//		BOOL result = [dm savePage:dm.currentPage];
+//		if(result == YES) {
+//			[self.page setPostID:[NSString stringWithFormat:@"%@", [dm.currentPage objectForKey:@"pageid"]]];
+//			[self performSelectorOnMainThread:@selector(verifyPublishSuccessful) withObject:nil waitUntilDone:NO];
+//		}
 	}
 	
 	[pool release];
@@ -621,7 +624,6 @@
 	[titleTextField release];
 	[selectedSection release];
 	[contentTextView release];
-	[draftManager release];
 	[actionSheet release];
 	[statuses release];
 	[table release];

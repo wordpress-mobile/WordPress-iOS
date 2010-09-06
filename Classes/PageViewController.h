@@ -9,13 +9,15 @@
 #import "TransparentToolbar.h"
 #import "WordPressAppDelegate.h"
 #import "BlogDataManager.h"
+#import "PageManager.h"
 #import "DraftManager.h"
 #import "Post.h"
 
 @protocol PageViewControllerProtocol
 
 @property (nonatomic, retain) NSString *selectedPostID;
-@property (nonatomic, assign) int selectedBDMIndex;
+@property (nonatomic, retain) DraftManager *draftManager;
+@property (nonatomic, retain) PageManager *pageManager;
 
 - (IBAction)saveAction:(id)sender;
 - (IBAction)publishAction:(id)sender;
@@ -34,6 +36,8 @@
 	
 	BlogDataManager *dm;
 	WordPressAppDelegate *appDelegate;
+	DraftManager *draftManager;
+	PageManager *pageManager;
 }
 
 @property (nonatomic, retain) IBOutlet UITabBarController *tabController;

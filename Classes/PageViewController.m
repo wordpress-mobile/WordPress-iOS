@@ -8,14 +8,13 @@
 #import "PageViewController.h"
 
 @implementation PageViewController
-@synthesize tabController, appDelegate, dm, selectedBDMIndex, selectedPostID, isPublished;
+@synthesize tabController, appDelegate, dm, selectedPostID, isPublished, pageManager, draftManager;
 
 #pragma mark -
 #pragma mark View lifecycle
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-		selectedBDMIndex = -1;
 		[self setupBackButton];
     }
 	
@@ -27,6 +26,10 @@
 	
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	dm = [BlogDataManager sharedDataManager];
+	draftManager = [[DraftManager alloc] init];
+	
+	if(pageManager == nil)
+		pageManager = [[PageManager alloc] initWithXMLRPCUrl:[dm.currentBlog objectForKey:@"xmlrpc"]];
 	
 	self.navigationItem.title = @"Write";
 	self.view = tabController.view;
@@ -65,7 +68,7 @@
 		[saveButton release];
 	}
 	
-	if(self.isPublished == NO) {
+	if((self.isPublished == NO) && (hasChanges == YES)) {
 		if(buttons.count > 0) {
 			buttonBar.frame = CGRectMake(0, 0, 130, 44);
 			UIBarButtonItem *spacer = [[UIBarButtonItem alloc]
@@ -127,7 +130,6 @@
 
 - (IBAction)dismiss:(id)sender {
 	self.selectedPostID = nil;
-	self.selectedBDMIndex = -1;
 	[self.navigationController popViewControllerAnimated:YES];
 }
 
