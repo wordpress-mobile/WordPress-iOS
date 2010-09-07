@@ -22,7 +22,6 @@
 @interface PagesViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, UIAccelerometerDelegate> {
 	IBOutlet UITabBarController *tabController;
     UIBarButtonItem *newButtonItem;
-	UIActivityIndicatorView *spinner;
 	
 	BlogDataManager *dm;
 	WordPressAppDelegate *appDelegate;
@@ -47,12 +46,9 @@
 @property (nonatomic, assign) BOOL anyMorePages;
 @property (nonatomic, retain) NSIndexPath *selectedIndexPath;
 @property (nonatomic, retain) NSMutableArray *drafts, *pages;
-@property (nonatomic, retain) UIActivityIndicatorView *spinner;
 @property (nonatomic, retain) WPProgressHUD *progressAlert;
 @property (nonatomic, assign) int loadLimit;
 
-- (void)addSpinnerToCell:(NSIndexPath *)indexPath;
-- (void)removeSpinnerFromCell:(NSIndexPath *)indexPath;
 - (void)loadPages;
 - (void)showAddNewPage;
 - (void)refreshHandler;
@@ -64,7 +60,6 @@
 - (NSDate *)localDateFromGMT:(NSDate *)sourceDate;
 - (void)loadMore;
 - (void)loadMoreInBackground;
-- (void)didLoadMore;
 - (void)addNewPage:(NSNotification *)notification;
 
 @end

@@ -126,7 +126,6 @@
 		831C9ED612162AF700B1EACE /* DraftManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 831C9ED512162AF700B1EACE /* DraftManager.m */; };
 		831C9ED912162B0100B1EACE /* AutosaveManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 831C9ED812162B0100B1EACE /* AutosaveManager.m */; };
 		831E3DA411F645C5005C573E /* logo_stacked.png in Resources */ = {isa = PBXBuildFile; fileRef = 831E3DA311F645C5005C573E /* logo_stacked.png */; };
-		831F315A122DE3EE005E33CD /* PostMediaEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 831F3158122DE3EE005E33CD /* PostMediaEditViewController.m */; };
 		831F315B122DE3EE005E33CD /* PostMediaEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 831F3159122DE3EE005E33CD /* PostMediaEditViewController.xib */; };
 		8320B5D611FCA41200607422 /* UITableViewSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8320B5D511FCA41200607422 /* UITableViewSwitchCell.m */; };
 		8320B5D911FCA50400607422 /* UITableViewSwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8320B5D811FCA50400607422 /* UITableViewSwitchCell.xib */; };
@@ -207,6 +206,8 @@
 		83CAC78A12354031003DFA20 /* PageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CAC78912354031003DFA20 /* PageManager.m */; };
 		83CACE951235A003003DFA20 /* UILoadMoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CACE941235A003003DFA20 /* UILoadMoreCell.m */; };
 		83CACE9F1235A102003DFA20 /* UILoadMoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83CACE9E1235A102003DFA20 /* UILoadMoreCell.xib */; };
+		83CAD2ED1235E21E003DFA20 /* UITextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CAD2EC1235E21E003DFA20 /* UITextFieldCell.m */; };
+		83CAD2EF1235E253003DFA20 /* UITextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83CAD2EE1235E253003DFA20 /* UITextFieldCell.xib */; };
 		83D180FA12329B1A002DCCB0 /* EditPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D180F812329B1A002DCCB0 /* EditPageViewController.m */; };
 		83D180FB12329B1A002DCCB0 /* EditPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83D180F912329B1A002DCCB0 /* EditPageViewController.xib */; };
 		83D181A01232A0DA002DCCB0 /* PageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D1819F1232A0DA002DCCB0 /* PageViewController.m */; };
@@ -449,8 +450,6 @@
 		831C9ED712162B0100B1EACE /* AutosaveManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutosaveManager.h; sourceTree = "<group>"; };
 		831C9ED812162B0100B1EACE /* AutosaveManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutosaveManager.m; sourceTree = "<group>"; };
 		831E3DA311F645C5005C573E /* logo_stacked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_stacked.png; sourceTree = "<group>"; };
-		831F3157122DE3EE005E33CD /* PostMediaEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostMediaEditViewController.h; sourceTree = "<group>"; };
-		831F3158122DE3EE005E33CD /* PostMediaEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostMediaEditViewController.m; sourceTree = "<group>"; };
 		831F3159122DE3EE005E33CD /* PostMediaEditViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PostMediaEditViewController.xib; path = Classes/PostMediaEditViewController.xib; sourceTree = "<group>"; };
 		8320B5D411FCA41200607422 /* UITableViewSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableViewSwitchCell.h; sourceTree = "<group>"; };
 		8320B5D511FCA41200607422 /* UITableViewSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableViewSwitchCell.m; sourceTree = "<group>"; };
@@ -570,6 +569,9 @@
 		83CACE931235A003003DFA20 /* UILoadMoreCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UILoadMoreCell.h; sourceTree = "<group>"; };
 		83CACE941235A003003DFA20 /* UILoadMoreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UILoadMoreCell.m; sourceTree = "<group>"; };
 		83CACE9E1235A102003DFA20 /* UILoadMoreCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UILoadMoreCell.xib; sourceTree = "<group>"; };
+		83CAD2EB1235E21E003DFA20 /* UITextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITextFieldCell.h; sourceTree = "<group>"; };
+		83CAD2EC1235E21E003DFA20 /* UITextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITextFieldCell.m; sourceTree = "<group>"; };
+		83CAD2EE1235E253003DFA20 /* UITextFieldCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UITextFieldCell.xib; sourceTree = "<group>"; };
 		83D180F712329B1A002DCCB0 /* EditPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditPageViewController.h; sourceTree = "<group>"; };
 		83D180F812329B1A002DCCB0 /* EditPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditPageViewController.m; sourceTree = "<group>"; };
 		83D180F912329B1A002DCCB0 /* EditPageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditPageViewController.xib; path = Classes/EditPageViewController.xib; sourceTree = "<group>"; };
@@ -913,6 +915,8 @@
 				83297B85123344FD00FB2C7D /* UITextViewCell.m */,
 				83CACE931235A003003DFA20 /* UILoadMoreCell.h */,
 				83CACE941235A003003DFA20 /* UILoadMoreCell.m */,
+				83CAD2EB1235E21E003DFA20 /* UITextFieldCell.h */,
+				83CAD2EC1235E21E003DFA20 /* UITextFieldCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -925,6 +929,7 @@
 				8320B5E011FCA6EF00607422 /* UITableViewSegmentedControlCell.xib */,
 				83297B871233457000FB2C7D /* UITextViewCell.xib */,
 				83CACE9E1235A102003DFA20 /* UILoadMoreCell.xib */,
+				83CAD2EE1235E253003DFA20 /* UITextFieldCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -1042,8 +1047,6 @@
 				83A64688112C5F75000999A6 /* PostSettingsHelpViewController.m */,
 				8383178512270E980047B476 /* PostMediaViewController.h */,
 				8383178612270E980047B476 /* PostMediaViewController.m */,
-				831F3157122DE3EE005E33CD /* PostMediaEditViewController.h */,
-				831F3158122DE3EE005E33CD /* PostMediaEditViewController.m */,
 			);
 			name = Post;
 			sourceTree = "<group>";
@@ -1544,6 +1547,7 @@
 				83D180FB12329B1A002DCCB0 /* EditPageViewController.xib in Resources */,
 				83297B881233457000FB2C7D /* UITextViewCell.xib in Resources */,
 				83CACE9F1235A102003DFA20 /* UILoadMoreCell.xib in Resources */,
+				83CAD2EF1235E253003DFA20 /* UITextFieldCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1649,7 +1653,6 @@
 				834CAE7C122D528A003DDF49 /* UIImage+Resize.m in Sources */,
 				834CAE9F122D56B1003DDF49 /* UIImage+Alpha.m in Sources */,
 				834CAEA0122D56B1003DDF49 /* UIImage+RoundedCorner.m in Sources */,
-				831F315A122DE3EE005E33CD /* PostMediaEditViewController.m in Sources */,
 				8309BA9D1231559800442B12 /* TransparentToolbar.m in Sources */,
 				83D180FA12329B1A002DCCB0 /* EditPageViewController.m in Sources */,
 				83D181A01232A0DA002DCCB0 /* PageViewController.m in Sources */,
@@ -1657,6 +1660,7 @@
 				838025D01233F97C0051BBDB /* ManagedObjectCloner.m in Sources */,
 				83CAC78A12354031003DFA20 /* PageManager.m in Sources */,
 				83CACE951235A003003DFA20 /* UILoadMoreCell.m in Sources */,
+				83CAD2ED1235E21E003DFA20 /* UITextFieldCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

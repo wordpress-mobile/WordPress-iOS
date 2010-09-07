@@ -13,18 +13,10 @@
 
 @synthesize table, dm, appDelegate, actionSheet, isShowingKeyboard, pageDetailView, delegate;
 @synthesize contentTextView, selectedSection, titleTextField, isLocalDraft, originalTitle, originalStatus, originalContent;
-@synthesize page, connection, urlRequest, urlResponse, payload, spinner;
+@synthesize page, connection, urlRequest, urlResponse, payload, spinner, resignTextFieldButton;
 
 #pragma mark -
 #pragma mark View lifecycle
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-		// Init from XIB
-    }
-	
-    return self;
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -32,11 +24,13 @@
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	pageDetailView = (PageViewController *)self.tabBarController.parentViewController;
 	dm = [BlogDataManager sharedDataManager];
+	[delegate.pageManager syncStatuses];
 	
 	[self setupPage];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resignTextField:) name:UITextViewTextDidBeginEditingNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideKeyboard:) name:@"EditPageViewShouldHideKeyboard" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(save) name:@"EditPageViewShouldSave" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(publish) name:@"EditPageViewShouldPublish" object:nil];
@@ -106,6 +100,11 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
     }
 	
+	UITextFieldCell *textCell = (UITextFieldCell *) [tableView dequeueReusableCellWithIdentifier:kCellTextField_ID];
+	if (textCell == nil) {
+        textCell = [UITextFieldCell createNewTextCellFromNib];
+    }
+	
 	UITextViewCell *contentCell = (UITextViewCell *) [tableView dequeueReusableCellWithIdentifier:kCellTextView_ID];
 	if (contentCell == nil) {
         contentCell = [UITextViewCell createNewTextCellFromNib];
@@ -115,37 +114,15 @@
 		case 0:
 			switch (indexPath.row) {
 				case 0:
-					cell.textLabel.font = [UIFont systemFontOfSize:16.0];
-					cell.textLabel.text = @"Title";
-					cell.textLabel.textColor = [UIColor grayColor];
-					
-					CGRect textFrame;
-					UIColor *backgroundColor = [UIColor whiteColor];
-					if(DeviceIsPad())
-						textFrame = CGRectMake(50, 14, 350, 42);
-					else
-						textFrame = CGRectMake(50, 12, 265, 30);
-					
-					UITextField *cellTextField = [[UITextField alloc] initWithFrame:textFrame];
-					cellTextField.font = [UIFont systemFontOfSize:15.0];
-					cellTextField.adjustsFontSizeToFitWidth = NO;
-					cellTextField.textColor = [UIColor blackColor];
-					cellTextField.backgroundColor = backgroundColor;
-					cellTextField.placeholder = @"Page Title";
-					cellTextField.tag = 1;
-					cellTextField.delegate = self;
+					textCell.titleLabel.text = @"Title";
+					//textCell.titleLabel.textColor = [UIColor grayColor];
+					textCell.textField.placeholder = @"Page Title";
+					textCell.textField.tag = 1;
+					textCell.textField.delegate = self;
 					if(page.postTitle != nil)
-						cellTextField.text = page.postTitle;
-					cellTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-					cellTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-					cellTextField.textAlignment = UITextAlignmentLeft;
-					cellTextField.delegate = self;
-					
-					cellTextField.clearButtonMode = UITextFieldViewModeNever;
-					[cellTextField setEnabled:YES];
-					
-					[cell addSubview:cellTextField];
-					titleTextField = cellTextField;			
+						textCell.textField.text = page.postTitle;
+					titleTextField = [textCell.textField retain];
+					cell = textCell;
 					break;
 				case 1:
 					cell.textLabel.font = [UIFont systemFontOfSize:16.0];
@@ -243,10 +220,10 @@
 #pragma mark UITextField delegate methods
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-	[textField resignFirstResponder];
+	//[textField resignFirstResponder];
+	return YES;	
 	[self refreshPage];
 	[self refreshTable];
-	return YES;	
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
@@ -436,6 +413,7 @@
 - (void)keyboardWillShow:(NSNotification *)notification {
 	self.isShowingKeyboard = YES;
 	[self checkPublishable];
+	[self.view bringSubviewToFront:resignTextFieldButton];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
@@ -536,6 +514,18 @@
 	[self refreshButtons];
 }
 
+- (IBAction)resignTextField:(id)sender {
+	[titleTextField resignFirstResponder];
+	UITableViewCell *cell = [table cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+	for(UIView *subview in cell.contentView.subviews) {
+		if([subview isKindOfClass:[UITextView class]]) {
+			[subview becomeFirstResponder];
+			break;
+		}
+	}
+	[self.view sendSubviewToBack:resignTextFieldButton];
+}
+
 #pragma mark -
 #pragma mark Memory management
 
@@ -550,6 +540,7 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
+	[resignTextFieldButton release];
 	[spinner release];
 	[connection release];
 	[urlRequest release];

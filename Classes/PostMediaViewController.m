@@ -164,21 +164,29 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	PostMediaEditViewController *mediaEditView = [[PostMediaEditViewController alloc] initWithNibName:@"PostMediaEditViewController" bundle:nil];
+	int foo = 0;
+	Media *media = [photos objectAtIndex:indexPath.row];
 	switch (mediaTypeControl.selectedSegmentIndex) {
 		case 0:
-			[mediaEditView setMediaType:kImage];
-			[mediaEditView setMedia:[photos objectAtIndex:indexPath.row]];
+			foo = indexPath.row;
+			UIViewController *photoViewController = [[UIViewController alloc] init];
+			UIImageView *photoView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:media.localURL]];
+			[photoViewController.view addSubview:photoView];
+			[appDelegate.navigationController pushViewController:photoViewController animated:YES];
+			[photoViewController release];
 			break;
 		case 1:
-			[mediaEditView setMediaType:kVideo];
-			[mediaEditView setMedia:[videos objectAtIndex:indexPath.row]];
+			foo = indexPath.row;
+			MPMoviePlayerController *player = [[MPMoviePlayerController alloc] initWithContentURL:
+											   [NSURL fileURLWithPath:media.localURL]];
+			player.view.frame = self.view.frame;
+			[self.view addSubview:player.view];
+			[player play];
+			[player release];
 			break;
 		default:
 			break;
 	}
-	[appDelegate.navigationController pushViewController:mediaEditView animated:YES];
-	[mediaEditView release];
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 

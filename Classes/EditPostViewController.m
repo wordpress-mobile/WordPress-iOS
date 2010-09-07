@@ -104,9 +104,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	// Update older geolocation setting to new format
 	BOOL geolocationSetting = NO;
 	NSString *geotaggingSettingName = [NSString stringWithFormat:@"%@-Geotagging", [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:kBlogId]];
-	
 	if([[[BlogDataManager sharedDataManager] currentBlog] objectForKey:kGeolocationSetting] == nil) {
-		NSLog(@"Updating old geolocation setting to new format...");
 		if(![[NSUserDefaults standardUserDefaults] boolForKey:geotaggingSettingName])
 		{
 			[[[BlogDataManager sharedDataManager] currentBlog] setValue:@"NO" forKey:kGeolocationSetting];
@@ -233,9 +231,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	AutosaveManager *autosaveManager = [[AutosaveManager alloc] init];
 	DraftManager *draftManager = [[DraftManager alloc] init];
 	
-	if(([[dm currentPost] objectForKey:@"postid"] == nil) && (appDelegate.postID != nil) && (appDelegate.postID.length > 6)) {
-		NSLog(@"refreshing for appDelegate.postID: %@", appDelegate.postID);  
-		
+	if(([[dm currentPost] objectForKey:@"postid"] == nil) && (appDelegate.postID != nil) && (appDelegate.postID.length > 6)) {		
 		Post *post = [[draftManager get:appDelegate.postID] retain];
 		if(post != nil) {
 			if([[post isLocalDraft] isEqualToNumber:[NSNumber numberWithInt:1]])
@@ -263,7 +259,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		}
 	}
 	else {
-		NSLog(@"refreshing for existing post...");
 		self.isLocalDraft = NO;
 		NSString *description = [dm.currentPost valueForKey:@"description"];
 		NSString *moreText = [dm.currentPost valueForKey:@"mt_text_more"];

@@ -46,17 +46,21 @@
 @property (nonatomic, assign) BOOL isGettingPages;
 
 - (id)initWithXMLRPCUrl:(NSString *)xmlrpc;
-- (void)loadSavedPages;
+- (void)loadData;
+- (void)storeData;
 - (NSDictionary *)downloadPage:(NSNumber *)pageID;
 - (void)syncPages;
+- (void)syncPage:(NSNumber *)pageID;
 - (void)didSyncPages;
 - (void)syncStatuses;
+- (void)syncStatusesInBackground;
 - (NSDictionary *)getPage:(NSNumber *)pageID;
 - (void)addPage:(NSDictionary *)page;
 - (void)getPages;
 - (void)getPagesInBackground;
 - (void)didGetPages;
 - (BOOL)hasPageWithID:(NSNumber *)pageID;
+- (int)indexForPageID:(NSNumber *)pageID;
 - (id)executeXMLRPCRequest:(XMLRPCRequest *)xmlrpcRequest;
 - (void)createPage:(Post *)page;
 - (void)savePage:(Post *)page;

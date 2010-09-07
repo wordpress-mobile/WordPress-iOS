@@ -95,8 +95,6 @@ Classes/PostAnnotation.m -text
 Classes/PostLocationViewController.h -text
 Classes/PostLocationViewController.m -text
 Classes/PostLocationViewController.xib -text
-Classes/PostMediaEditViewController.h -text
-Classes/PostMediaEditViewController.m -text
 Classes/PostMediaEditViewController.xib -text
 Classes/PostMediaViewController.h -text
 Classes/PostMediaViewController.m -text
@@ -139,6 +137,8 @@ Classes/UITableViewSegmentedControlCell.h -text
 Classes/UITableViewSegmentedControlCell.m -text
 Classes/UITableViewSwitchCell.h -text
 Classes/UITableViewSwitchCell.m -text
+Classes/UITextFieldCell.h -text
+Classes/UITextFieldCell.m -text
 Classes/UITextViewCell.h -text
 Classes/UITextViewCell.m -text
 Classes/UIViewController+WPAnimation.h -text
@@ -255,6 +255,7 @@ Settings.bundle/en.lproj/Root.strings -text
 /UITableViewActivityCell.xib -text
 /UITableViewSegmentedControlCell.xib -text
 /UITableViewSwitchCell.xib -text
+/UITextFieldCell.xib -text
 /UITextViewCell.xib -text
 /WPAddCategoryViewController.xib -text
 /WPCategoriesController.xib -text

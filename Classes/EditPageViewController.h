@@ -10,6 +10,7 @@
 #import "BlogDataManager.h"
 #import "Post.h"
 #import "UITextViewCell.h"
+#import "UITextFieldCell.h"
 #import "PageViewController.h"
 #import "ManagedObjectCloner.h"
 #import "WPProgressHUD.h"
@@ -21,6 +22,7 @@
 	IBOutlet UIActionSheet *actionSheet;
 	IBOutlet UITextView *contentTextView;
 	IBOutlet UITextField *titleTextField;
+	IBOutlet UIButton *resignTextFieldButton;
 	IBOutlet WPProgressHUD *spinner;
 	
 	BOOL isShowingKeyboard, isLocalDraft;
@@ -43,6 +45,7 @@
 @property (nonatomic, retain) IBOutlet UIActionSheet *actionSheet;
 @property (nonatomic, retain) IBOutlet UITextView *contentTextView;
 @property (nonatomic, retain) IBOutlet UITextField *titleTextField;
+@property (nonatomic, retain) IBOutlet IBOutlet UIButton *resignTextFieldButton;
 @property (nonatomic, retain) IBOutlet WPProgressHUD *spinner;
 @property (nonatomic, assign) BOOL isShowingKeyboard, isLocalDraft;
 @property (nonatomic, assign) NSNumber *selectedSection;
@@ -63,6 +66,7 @@
 - (void)refreshPage;
 - (IBAction)showStatusPicker:(id)sender;
 - (IBAction)hideStatusPicker:(id)sender;
+- (IBAction)resignTextField:(id)sender;
 - (NSInteger)indexForStatus:(NSString *)status;
 - (void)hideKeyboard:(NSNotification *)notification;
 - (void)keyboardWillShow:(NSNotification *)notification;

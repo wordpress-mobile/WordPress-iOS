@@ -11,7 +11,7 @@
 
 @implementation PagesViewController
 @synthesize newButtonItem, anyMorePages, selectedIndexPath, draftManager, appDelegate, tabController, drafts, mediaManager, dm;
-@synthesize pageManager, progressAlert, spinner, loadLimit, pages;
+@synthesize pageManager, progressAlert, loadLimit, pages;
 
 #pragma mark -
 #pragma mark View Lifecycle
@@ -24,7 +24,6 @@
 	pageManager = [[PageManager alloc] initWithXMLRPCUrl:[dm.currentBlog valueForKey:@"xmlrpc"]];
 	draftManager = [[DraftManager alloc] init];
 	pages = [[NSMutableArray alloc] init];
-	spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 	
 	loadLimit = [[dm.currentBlog valueForKey:kPostsDownloadCount] intValue];
 	if(loadLimit < 10)
@@ -37,7 +36,7 @@
                      target:self
                      action:@selector(showAddNewPage)];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePagesTableAfterDraftSaved:) name:@"DraftsUpdated" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadPages) name:@"DraftsUpdated" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable) name:@"DidSyncPages" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadPages) name:@"DidGetPages" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewPage:) name:@"DidCreatePage" object:nil];
@@ -82,14 +81,6 @@
 #pragma mark -
 #pragma mark UITableViewDataSource Methods
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
-
-	if (DeviceIsPad() == YES) {
-		cell.accessoryType = UITableViewCellAccessoryNone;
-	}
-}
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	if(pages.count < pageManager.pages.count)
 		return 3;
@@ -117,7 +108,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	int result = 0;
-	NSLog(@"pages.count: %d", pages.count);
 	switch (section) {
 		case 0:
 			result = drafts.count;
@@ -144,11 +134,13 @@
 	
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 	[formatter setDateStyle:NSDateFormatterLongStyle];
-	[formatter setTimeStyle:NSDateFormatterMediumStyle];
+	[formatter setTimeStyle:NSDateFormatterShortStyle];
 	
     if (pageCell == nil) {
         pageCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:pageCellIdentifier] autorelease];
-    }
+		pageCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		pageCell.detailTextLabel.textColor = [UIColor lightGrayColor];
+	}
 	
 	UILoadMoreCell *loadCell = (UILoadMoreCell *)[tableView dequeueReusableCellWithIdentifier:kCellLoadMore_ID];
 	if (loadCell == nil) {
@@ -160,11 +152,17 @@
 			foo = indexPath.row;
 			Post *page = [drafts objectAtIndex:indexPath.row];
 			pageCell.textLabel.text = page.postTitle;
+			if((pageCell.textLabel.text == nil) || ([pageCell.textLabel.text length] == 0)) {
+				pageCell.textLabel.text = @"(no title)";
+			}
 			pageCell.detailTextLabel.text = [formatter stringFromDate:page.dateCreated];
 			result = pageCell;
 			break;
 		case 1:
 			pageCell.textLabel.text = [[pages objectAtIndex:indexPath.row] objectForKey:@"title"];
+			if((pageCell.textLabel.text == nil) || ([pageCell.textLabel.text length] == 0)) {
+				pageCell.textLabel.text = @"(no title)";
+			}
 			pageCell.detailTextLabel.text = [formatter stringFromDate:[self localDateFromGMT:[[pages objectAtIndex:indexPath.row] objectForKey:@"date_created_gmt"]]];
 			result = pageCell;
 			break;
@@ -183,6 +181,30 @@
 	
 	[formatter release];
     return result;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	switch (indexPath.section) {
+		case 0:
+			cell.textLabel.font = [UIFont boldSystemFontOfSize:MAIN_FONT_SIZE];
+			cell.detailTextLabel.font = [UIFont systemFontOfSize:DATE_FONT_SIZE];
+			cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
+			break;
+		case 1:
+			cell.textLabel.font = [UIFont boldSystemFontOfSize:MAIN_FONT_SIZE];
+			cell.detailTextLabel.font = [UIFont systemFontOfSize:DATE_FONT_SIZE];
+			cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
+			break;
+		case 2:
+			cell.backgroundView = nil;
+			break;
+		default:
+			break;
+	}
+	
+	if (DeviceIsPad() == YES) {
+		cell.accessoryType = UITableViewCellAccessoryNone;
+	}
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -235,10 +257,6 @@
     return kSectionHeaderHight;
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-	return YES;
-}
-
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Deleting..."];
 	[progressAlert show];
@@ -250,8 +268,6 @@
 #pragma mark Custom Methods
 
 - (void)loadMore {
-	NSLog(@"loading more cells...");
-	
 	UILoadMoreCell *loadCell = (UILoadMoreCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
 	loadCell.mainLabel.text = @"Loading more pages...";
 	loadCell.mainLabel.textColor = [UIColor grayColor];
@@ -276,13 +292,9 @@
 		}
 	}
 	
-	[self performSelectorOnMainThread:@selector(didLoadMore) withObject:nil waitUntilDone:NO];
+	[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
 	
 	[pool release];
-}
-
-- (void)didLoadMore {
-	[self refreshTable];
 }
 
 - (void)loadPages {
@@ -334,28 +346,6 @@
 	[pageViewController release];
 }
 
-- (void)addSpinnerToCell:(NSIndexPath *)indexPath {
-	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
-	
-	UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
-	[((PostTableViewCell *)cell) runSpinner:YES];
-	
-	int totalPages = [[BlogDataManager sharedDataManager] countOfPageTitles];
-	NSString * totalString = [NSString stringWithFormat:@"%d pages loaded", totalPages];
-	[((PostTableViewCell *)cell) changeCellLabelsForUpdate:totalString:@"Loading more pages...":YES];
-	
-	[apool release];
-}
-
-- (void)removeSpinnerFromCell:(NSIndexPath *)indexPath {
-	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
-	
-	UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
-	[((PostTableViewCell *)cell) runSpinner:NO];
-	
-	[apool release];
-}
-
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     [appDelegate setAlertRunning:NO];
 }
@@ -365,11 +355,6 @@
 	if(event.subtype == UIEventSubtypeMotionShake) {
 		[self refreshHandler];
 	}
-}
-
-- (void)updatePagesTableAfterDraftSaved:(NSNotification *)notification {
-    [dm loadPageTitlesForCurrentBlog];
-	[self loadPages];
 }
 
 - (void)deletePageAtIndexPath:(NSIndexPath *)indexPath {
@@ -465,7 +450,6 @@
 
 - (void)dealloc {
 	[progressAlert release];
-	[spinner release];
 	[pageManager release];
 	[pages release];
 	[draftManager release];

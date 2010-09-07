@@ -313,7 +313,10 @@
 		[newBlog setValue:blog.xmlrpc forKey:@"xmlrpc"];
 		[newBlog setValue:blog.blogID forKey:kBlogId];
 		[newBlog setValue:blog.hostURL forKey:kBlogHostName];
+		[newBlog setValue:[appDelegate.currentBlog valueForKey:kResizePhotoSetting] forKey:kResizePhotoSetting];
 		[newBlog setValue:@"10" forKey:kPostsDownloadCount];
+		[newBlog setValue:[NSNumber numberWithBool:NO] forKey:kGeolocationSetting];
+		[newBlog setValue:[NSNumber numberWithBool:YES] forKey:kSupportsPagesAndComments];
 		[newBlog setValue:blog.blogName forKey:@"blogName"];
 		[newBlog setValue:username forKey:@"username"];
 		[newBlog setValue:authEnabled forKey:@"authEnabled"];
