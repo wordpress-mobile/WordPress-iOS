@@ -14,6 +14,7 @@
 #import "BlogDataManager.h"
 #import "MediaManager.h"
 #import "WPMediaUploader.h"
+#import "MediaObjectViewController.h"
 
 @class PostViewController;
 
@@ -91,5 +92,7 @@ static inline double radians(double degrees) {
 - (void)updateMediaCount;
 - (NSString *)getUUID;
 - (void)checkVideoEnabled;
+- (void)deleteMedia:(Media *)media;
+- (void)shouldDeleteMedia:(NSNotification *)notification;
 
 @end

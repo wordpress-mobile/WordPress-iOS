@@ -59,6 +59,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:ImageUploadSuccessful object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaUploadFailed:) name:VideoUploadFailed object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaUploadFailed:) name:ImageUploadFailed object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shouldDeleteMedia:) name:@"ShouldDeleteMedia"	object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -165,28 +166,23 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	int foo = 0;
-	Media *media = [photos objectAtIndex:indexPath.row];
+	MediaObjectViewController *mediaView = [[MediaObjectViewController alloc] initWithNibName:@"MediaObjectView" bundle:nil];
 	switch (mediaTypeControl.selectedSegmentIndex) {
 		case 0:
 			foo = indexPath.row;
-			UIViewController *photoViewController = [[UIViewController alloc] init];
-			UIImageView *photoView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:media.localURL]];
-			[photoViewController.view addSubview:photoView];
-			[appDelegate.navigationController pushViewController:photoViewController animated:YES];
-			[photoViewController release];
+			Media *photo = [photos objectAtIndex:indexPath.row];
+			mediaView.media = photo;
 			break;
 		case 1:
 			foo = indexPath.row;
-			MPMoviePlayerController *player = [[MPMoviePlayerController alloc] initWithContentURL:
-											   [NSURL fileURLWithPath:media.localURL]];
-			player.view.frame = self.view.frame;
-			[self.view addSubview:player.view];
-			[player play];
-			[player release];
+			Media *video = [videos objectAtIndex:indexPath.row];
+			mediaView.media = video;
 			break;
 		default:
 			break;
 	}
+	[appDelegate.navigationController pushViewController:mediaView animated:YES];
+	[mediaView release];
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
@@ -197,17 +193,10 @@
 	// If row is deleted, remove it from the list.
 	if (editingStyle == UITableViewCellEditingStyleDelete)
 	{
-		if(mediaTypeControl.selectedSegmentIndex == 0) {
-			Media *photo = [photos objectAtIndex:indexPath.row];
-			[mediaManager remove:photo];
-			[photos removeObjectAtIndex:indexPath.row];
-		}
-		else if(mediaTypeControl.selectedSegmentIndex == 1) {
-			Media *video = [videos objectAtIndex:indexPath.row];
-			[mediaManager remove:video];
-			[videos removeObjectAtIndex:indexPath.row];
-		}
-		[self updateMediaCount];
+		if(mediaTypeControl.selectedSegmentIndex == 0)
+			[self deleteMedia:[photos objectAtIndex:indexPath.row]];
+		else if(mediaTypeControl.selectedSegmentIndex == 1)
+			[self deleteMedia:[videos objectAtIndex:indexPath.row]];
 		
 		[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
 	}
@@ -686,6 +675,7 @@
 	imageMedia.postID = self.postID;
 	imageMedia.blogID = [currentBlog valueForKey:@"blogid"];
 	imageMedia.blogURL = self.blogURL;
+	NSLog(@"saved image with blogURL: %@", self.blogURL);
 	imageMedia.creationDate = [NSDate date];
 	imageMedia.filename = filename;
 	imageMedia.localURL = filepath;
@@ -729,6 +719,7 @@
 	videoMedia.postID = self.postID;
 	videoMedia.blogID = [currentBlog valueForKey:@"blogid"];
 	videoMedia.blogURL = self.blogURL;
+	NSLog(@"saved video with blogURL: %@", self.blogURL);
 	videoMedia.creationDate = [NSDate date];
 	videoMedia.filename = filename;
 	videoMedia.localURL = filepath;
@@ -894,6 +885,35 @@
 	}
 	
 	[pool release];
+}
+
+- (void)deleteMedia:(Media *)media {
+	if([mediaManager exists:media.uniqueID] == YES) {
+		NSLog(@"deleting media...");
+		if([media.mediaType isEqualToString:@"image"]) {
+			int index = 0;
+			for(Media *photo in photos) {
+				if([photo.uniqueID isEqualToString:media.uniqueID] == YES)
+					[photos removeObjectAtIndex:index];
+				index++;
+			}
+		}
+		else if([media.mediaType isEqualToString:@"video"]) {
+			int index = 0;
+			for(Media *video in videos) {
+				if([video.uniqueID isEqualToString:media.uniqueID] == YES)
+					[videos removeObjectAtIndex:index];
+				index++;
+			}
+		}
+		[mediaManager remove:media];
+		[self refreshMedia];
+		NSLog(@"deleted media.");
+	}
+}
+
+- (void)shouldDeleteMedia:(NSNotification *)notification {
+	[self deleteMedia:[notification object]];
 }
 
 #pragma mark -

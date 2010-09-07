@@ -76,6 +76,8 @@ Classes/LocationController.h -text
 Classes/LocationController.m -text
 Classes/MediaManager.h -text
 Classes/MediaManager.m -text
+Classes/MediaObjectViewController.h -text
+Classes/MediaObjectViewController.m -text
 Classes/NSData+Base64.h -text
 Classes/NSData+Base64.m -text
 Classes/NSString+Util.h -text
@@ -227,6 +229,7 @@ Classes/glossyButton-normal.png -text svneol=unset#unset
 /ManagedObjectCloner.m -text
 /Media.h -text
 /Media.m -text
+/MediaObjectView.xib -text
 /PageViewController-iPad.xib -text
 /PageViewController.xib -text
 /PostPreviewViewController.xib -text

@@ -11,7 +11,7 @@
 
 @implementation EditPageViewController
 
-@synthesize table, dm, appDelegate, actionSheet, isShowingKeyboard, pageDetailView, delegate;
+@synthesize table, dm, appDelegate, actionSheet, isShowingKeyboard, pageDetailView, delegate, statuses;
 @synthesize contentTextView, selectedSection, titleTextField, isLocalDraft, originalTitle, originalStatus, originalContent;
 @synthesize page, connection, urlRequest, urlResponse, payload, spinner, resignTextFieldButton;
 
@@ -24,7 +24,16 @@
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	pageDetailView = (PageViewController *)self.tabBarController.parentViewController;
 	dm = [BlogDataManager sharedDataManager];
-	[delegate.pageManager syncStatuses];
+	statuses = [[NSMutableDictionary alloc] init];
+	
+	if((delegate.pageManager.statuses == nil) || (delegate.pageManager.statuses.count == 0)) {
+		[statuses setObject:@"Local Draft" forKey:[NSString stringWithString:kLocalDraftKey]];
+		[delegate.pageManager syncStatuses];
+	}
+	else {
+		statuses = [delegate.pageManager.statuses mutableCopy];
+	}
+
 	
 	[self setupPage];
 	
@@ -131,7 +140,7 @@
 					
 					cell.detailTextLabel.font = [UIFont systemFontOfSize:16.0];
 					if(self.page.status != nil)
-						cell.detailTextLabel.text = [delegate.pageManager.statuses objectForKey:self.page.status];
+						cell.detailTextLabel.text = [statuses objectForKey:self.page.status];
 					cell.detailTextLabel.textAlignment = UITextAlignmentLeft;
 					break;
 				default:
@@ -203,15 +212,15 @@
 }
 
 - (NSInteger)pickerView:(UIPickerView *)thePickerView numberOfRowsInComponent:(NSInteger)component {
-	return [delegate.pageManager.statuses count];
+	return statuses.count;
 }
 
 - (NSString *)pickerView:(UIPickerView *)thePickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-	return [[delegate.pageManager.statuses allValues] objectAtIndex:row];
+	return [[statuses allValues] objectAtIndex:row];
 }
 
 - (void)pickerView:(UIPickerView *)thePickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-	[self.page setStatus:[[[delegate.pageManager.statuses allKeys] objectAtIndex:row] retain]];
+	[self.page setStatus:[[[statuses allKeys] objectAtIndex:row] retain]];
 	[self hideStatusPicker:self];
 	[self checkPublishable];
 }
@@ -309,7 +318,7 @@
 				[self.page setStatus:[existingPage objectForKey:@"page_status"]];
 				self.page.content = [existingPage objectForKey:@"description"];
 				
-				[delegate.pageManager.statuses removeObjectForKey:kLocalDraftKey];
+				[statuses removeObjectForKey:kLocalDraftKey];
 			}
 		}
 		else {
@@ -383,7 +392,7 @@
 	NSInteger result = -1;
 	
 	int index = 0;
-	for(NSString *item in delegate.pageManager.statuses) {
+	for(NSString *item in statuses) {
 		if([[item lowercaseString] isEqualToString:[status lowercaseString]]) {
 			result = index;
 			break;
@@ -425,11 +434,17 @@
 	[titleTextField resignFirstResponder];
 	[contentTextView resignFirstResponder];
 	
+	self.page.status = @"publish";
+	if(self.isLocalDraft == YES) {
+		self.isLocalDraft = NO;
+		
+		// If the page started out as a Local Draft, remove the selectedPostID field so it will move forward as a Create.
+		if([originalStatus isEqualToString:@"local-draft"] == YES)
+			delegate.selectedPostID = nil;
+	}
+	
 	spinner = [[WPProgressHUD alloc] initWithLabel:@"Publishing..."];
 	[spinner show];
-	
-	self.isLocalDraft = NO;
-	self.page.status = @"publish";
 	[self performSelectorInBackground:@selector(saveInBackground) withObject:nil];
 }
 
@@ -437,18 +452,16 @@
 	[titleTextField resignFirstResponder];
 	[contentTextView resignFirstResponder];
 	
-	if(![[self.page.status lowercaseString] isEqualToString:@"local-draft"]) {
+	if((self.isLocalDraft == YES) && (![[self.page.status lowercaseString] isEqualToString:@"local-draft"])) {
 		self.isLocalDraft = NO;
 		
 		// If the page started out as a Local Draft, remove the selectedPostID field so it will move forward as a Create.
 		if([originalStatus isEqualToString:@"local-draft"] == YES)
 			delegate.selectedPostID = nil;
-		
-		[self performSelectorInBackground:@selector(saveInBackground) withObject:nil];
 	}
-	
 	spinner = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
 	[spinner show];
+	[self performSelectorInBackground:@selector(saveInBackground) withObject:nil];
 }
 
 - (void)saveInBackground {
@@ -540,6 +553,7 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
+	[statuses release];
 	[resignTextFieldButton release];
 	[spinner release];
 	[connection release];

@@ -126,7 +126,6 @@
 		831C9ED612162AF700B1EACE /* DraftManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 831C9ED512162AF700B1EACE /* DraftManager.m */; };
 		831C9ED912162B0100B1EACE /* AutosaveManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 831C9ED812162B0100B1EACE /* AutosaveManager.m */; };
 		831E3DA411F645C5005C573E /* logo_stacked.png in Resources */ = {isa = PBXBuildFile; fileRef = 831E3DA311F645C5005C573E /* logo_stacked.png */; };
-		831F315B122DE3EE005E33CD /* PostMediaEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 831F3159122DE3EE005E33CD /* PostMediaEditViewController.xib */; };
 		8320B5D611FCA41200607422 /* UITableViewSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8320B5D511FCA41200607422 /* UITableViewSwitchCell.m */; };
 		8320B5D911FCA50400607422 /* UITableViewSwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8320B5D811FCA50400607422 /* UITableViewSwitchCell.xib */; };
 		8320B5DF11FCA62600607422 /* UITableViewSegmentedControlCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8320B5DE11FCA62600607422 /* UITableViewSegmentedControlCell.m */; };
@@ -208,6 +207,8 @@
 		83CACE9F1235A102003DFA20 /* UILoadMoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83CACE9E1235A102003DFA20 /* UILoadMoreCell.xib */; };
 		83CAD2ED1235E21E003DFA20 /* UITextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CAD2EC1235E21E003DFA20 /* UITextFieldCell.m */; };
 		83CAD2EF1235E253003DFA20 /* UITextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83CAD2EE1235E253003DFA20 /* UITextFieldCell.xib */; };
+		83CAD41D1235F854003DFA20 /* MediaObjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CAD41B1235F854003DFA20 /* MediaObjectViewController.m */; };
+		83CAD4211235F9F4003DFA20 /* MediaObjectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83CAD4201235F9F4003DFA20 /* MediaObjectView.xib */; };
 		83D180FA12329B1A002DCCB0 /* EditPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D180F812329B1A002DCCB0 /* EditPageViewController.m */; };
 		83D180FB12329B1A002DCCB0 /* EditPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83D180F912329B1A002DCCB0 /* EditPageViewController.xib */; };
 		83D181A01232A0DA002DCCB0 /* PageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D1819F1232A0DA002DCCB0 /* PageViewController.m */; };
@@ -450,7 +451,6 @@
 		831C9ED712162B0100B1EACE /* AutosaveManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutosaveManager.h; sourceTree = "<group>"; };
 		831C9ED812162B0100B1EACE /* AutosaveManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutosaveManager.m; sourceTree = "<group>"; };
 		831E3DA311F645C5005C573E /* logo_stacked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_stacked.png; sourceTree = "<group>"; };
-		831F3159122DE3EE005E33CD /* PostMediaEditViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PostMediaEditViewController.xib; path = Classes/PostMediaEditViewController.xib; sourceTree = "<group>"; };
 		8320B5D411FCA41200607422 /* UITableViewSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableViewSwitchCell.h; sourceTree = "<group>"; };
 		8320B5D511FCA41200607422 /* UITableViewSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableViewSwitchCell.m; sourceTree = "<group>"; };
 		8320B5D811FCA50400607422 /* UITableViewSwitchCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UITableViewSwitchCell.xib; sourceTree = "<group>"; };
@@ -572,6 +572,9 @@
 		83CAD2EB1235E21E003DFA20 /* UITextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITextFieldCell.h; sourceTree = "<group>"; };
 		83CAD2EC1235E21E003DFA20 /* UITextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITextFieldCell.m; sourceTree = "<group>"; };
 		83CAD2EE1235E253003DFA20 /* UITextFieldCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UITextFieldCell.xib; sourceTree = "<group>"; };
+		83CAD41A1235F854003DFA20 /* MediaObjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaObjectViewController.h; sourceTree = "<group>"; };
+		83CAD41B1235F854003DFA20 /* MediaObjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaObjectViewController.m; sourceTree = "<group>"; };
+		83CAD4201235F9F4003DFA20 /* MediaObjectView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MediaObjectView.xib; sourceTree = "<group>"; };
 		83D180F712329B1A002DCCB0 /* EditPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditPageViewController.h; sourceTree = "<group>"; };
 		83D180F812329B1A002DCCB0 /* EditPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditPageViewController.m; sourceTree = "<group>"; };
 		83D180F912329B1A002DCCB0 /* EditPageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditPageViewController.xib; path = Classes/EditPageViewController.xib; sourceTree = "<group>"; };
@@ -822,7 +825,7 @@
 				ACFF1DC00E231EF600EC6BF5 /* Blog */,
 				C50E78130E71648100991509 /* Comments */,
 				AC512F790E20D25E00B7DA32 /* Images */,
-				83290399120CF517000A965A /* Videos */,
+				83290399120CF517000A965A /* Media */,
 				EC4696CB0EA759EA0040EE8E /* Pages */,
 				ACFF1DC10E231F0B00EC6BF5 /* Post */,
 				8320B5D711FCA4EE00607422 /* Cells */,
@@ -934,12 +937,14 @@
 			name = Cells;
 			sourceTree = "<group>";
 		};
-		83290399120CF517000A965A /* Videos */ = {
+		83290399120CF517000A965A /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				83CAD4201235F9F4003DFA20 /* MediaObjectView.xib */,
+				8383178712270E980047B476 /* PostMediaViewController.xib */,
 				83290396120CF50E000A965A /* sample.mov */,
 			);
-			name = Videos;
+			name = Media;
 			sourceTree = "<group>";
 		};
 		83418A5711C9F50D00ACF00C /* Data */ = {
@@ -1024,6 +1029,17 @@
 			name = Admin;
 			sourceTree = "<group>";
 		};
+		83CAD4191235F823003DFA20 /* Media */ = {
+			isa = PBXGroup;
+			children = (
+				8383178512270E980047B476 /* PostMediaViewController.h */,
+				8383178612270E980047B476 /* PostMediaViewController.m */,
+				83CAD41A1235F854003DFA20 /* MediaObjectViewController.h */,
+				83CAD41B1235F854003DFA20 /* MediaObjectViewController.m */,
+			);
+			name = Media;
+			sourceTree = "<group>";
+		};
 		AC3439790E11434600E5D79B /* Post */ = {
 			isa = PBXGroup;
 			children = (
@@ -1045,8 +1061,6 @@
 				83A645D6112B8690000999A6 /* PostLocationViewController.m */,
 				83A64687112C5F75000999A6 /* PostSettingsHelpViewController.h */,
 				83A64688112C5F75000999A6 /* PostSettingsHelpViewController.m */,
-				8383178512270E980047B476 /* PostMediaViewController.h */,
-				8383178612270E980047B476 /* PostMediaViewController.m */,
 			);
 			name = Post;
 			sourceTree = "<group>";
@@ -1062,6 +1076,7 @@
 				C533CF320E6D3AB3000C3DE8 /* Comments */,
 				EC4696A80EA74DAC0040EE8E /* Pages */,
 				AC3439790E11434600E5D79B /* Post */,
+				83CAD4191235F823003DFA20 /* Media */,
 				AC512F800E20D28500B7DA32 /* Utils */,
 				8320B5CF11FCA3EA00607422 /* Cells */,
 			);
@@ -1236,8 +1251,6 @@
 		ACFF1DC10E231F0B00EC6BF5 /* Post */ = {
 			isa = PBXGroup;
 			children = (
-				831F3159122DE3EE005E33CD /* PostMediaEditViewController.xib */,
-				8383178712270E980047B476 /* PostMediaViewController.xib */,
 				83D3DD371215D5EC00600B4B /* AutosaveContentViewController.xib */,
 				839FE9131214AA52004D20E6 /* AutosaveViewController.xib */,
 				83A645D7112B8690000999A6 /* PostLocationViewController.xib */,
@@ -1543,11 +1556,11 @@
 				83D3DDB81215DC7900600B4B /* Settings.bundle in Resources */,
 				8383178912270E980047B476 /* PostMediaViewController.xib in Resources */,
 				834CAEA7122D56DC003DDF49 /* video_thumbnail.png in Resources */,
-				831F315B122DE3EE005E33CD /* PostMediaEditViewController.xib in Resources */,
 				83D180FB12329B1A002DCCB0 /* EditPageViewController.xib in Resources */,
 				83297B881233457000FB2C7D /* UITextViewCell.xib in Resources */,
 				83CACE9F1235A102003DFA20 /* UILoadMoreCell.xib in Resources */,
 				83CAD2EF1235E253003DFA20 /* UITextFieldCell.xib in Resources */,
+				83CAD4211235F9F4003DFA20 /* MediaObjectView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1661,6 +1674,7 @@
 				83CAC78A12354031003DFA20 /* PageManager.m in Sources */,
 				83CACE951235A003003DFA20 /* UILoadMoreCell.m in Sources */,
 				83CAD2ED1235E21E003DFA20 /* UITextFieldCell.m in Sources */,
+				83CAD41D1235F854003DFA20 /* MediaObjectViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

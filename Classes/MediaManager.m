@@ -40,6 +40,9 @@
 		media = (Media *)[NSEntityDescription insertNewObjectForEntityForName:@"Media" inManagedObjectContext:appDelegate.managedObjectContext];
 		[media setUniqueID:[[NSProcessInfo processInfo] globallyUniqueString]];
 	}
+	
+	[self doReport];
+	
 	return media;
 }
 
@@ -69,6 +72,8 @@
 		[request release];
 	}
 	
+	[self doReport];
+	
 	return results;
 }
 
@@ -93,6 +98,8 @@
 		[request release];
 	}
 	
+	[self doReport];
+	
 	return results;
 }
 
@@ -111,6 +118,8 @@
 		[request release];
 	}
 	
+	[self doReport];
+	
 	if((items != nil) && (items.count > 0))
 		return YES;
 	else
@@ -125,6 +134,8 @@
 	else {
 		[self update:media];
 	}
+	
+	[self doReport];
 }
 
 - (void)insert:(Media *)media {
@@ -138,7 +149,7 @@
 - (void)remove:(Media *)media {
 	NSManagedObject *objectToDelete = media;
 	[appDelegate.managedObjectContext deleteObject:objectToDelete];
-	[self dataSave];
+	[appDelegate.managedObjectContext processPendingChanges];
 }
 
 - (void)removeForPostID:(NSString *)postID andBlogURL:(NSString *)blogURL {
@@ -165,7 +176,6 @@
 	}
 	
 	[self dataSave];
-	[self doReport];
 }
 
 - (void)removeForBlogURL:(NSString *)blogURL {
@@ -184,7 +194,6 @@
 	}
 	
 	[self dataSave];
-	[self doReport];
 }
 
 - (void)dataSave {
@@ -193,6 +202,8 @@
         NSLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
         exit(-1);
     }
+	
+	[self doReport];
 }
 
 - (void)doReport {

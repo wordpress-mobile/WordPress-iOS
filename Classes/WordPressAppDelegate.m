@@ -42,7 +42,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		
 		if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] != nil) {
 			NSString *tempIsAuthenticated = (NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"];
-			NSLog(@"isWPcomAuthenticated: %@", tempIsAuthenticated);
 			if([tempIsAuthenticated isEqualToString:@"1"])
 				self.isWPcomAuthenticated = YES;
 		}

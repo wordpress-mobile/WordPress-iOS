@@ -8,21 +8,15 @@
 #import "PageManager.h"
 
 @implementation PageManager
-@synthesize appDelegate, dm, xmlrpcURL, connection, payload, urlRequest, urlResponse, pages, saveKey, statuses, pageIDs, isGettingPages;
+@synthesize appDelegate, dm, xmlrpcURL, connection, payload, urlRequest, urlResponse, pages, saveKey, statuses, pageIDs;
+@synthesize statusKey, isGettingPages;
 
 #pragma mark -
 #pragma mark Initialize
 
 - (id)init {
     if((self = [super init])) {
-		appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-		dm = [BlogDataManager sharedDataManager];
-		saveKey = [[NSString stringWithFormat:@"pages-%@", [dm.currentBlog valueForKey:kBlogHostName]] retain];
-		pages = [[NSMutableArray alloc] init];
-		pageIDs = [[NSMutableArray alloc] init];
-		statuses = [[NSMutableDictionary alloc] init];
-		[statuses setObject:@"Local Draft" forKey:[NSString stringWithString:kLocalDraftKey]];
-		
+		[self initObjects];
 		[self loadData];
     }
     return self;
@@ -30,18 +24,26 @@
 
 - (id)initWithXMLRPCUrl:(NSString *)xmlrpc {
     if((self = [super init])) {
-		appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-		dm = [BlogDataManager sharedDataManager];
-		saveKey = [[NSString stringWithFormat:@"pages-%@", [dm.currentBlog valueForKey:kBlogHostName]] retain];
-		pages = [[NSMutableArray alloc] init];
-		pageIDs = [[NSMutableArray alloc] init];
-		statuses = [[NSMutableDictionary alloc] init];
-		[statuses setObject:@"Local Draft" forKey:[NSString stringWithString:kLocalDraftKey]];
+		[self initObjects];
 		[self loadData];
 		
 		self.xmlrpcURL = [NSURL URLWithString:xmlrpc];
     }
     return self;
+}
+
+- (void)initObjects {
+	pages = [[NSMutableArray alloc] init];
+	pageIDs = [[NSMutableArray alloc] init];
+	statuses = [[NSMutableDictionary alloc] init];
+	
+	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+	dm = [BlogDataManager sharedDataManager];
+	saveKey = [[NSString stringWithFormat:@"pages-%@", [dm.currentBlog valueForKey:kBlogHostName]] retain];
+	statusKey = [[NSString stringWithFormat:@"statuses-%@", [dm.currentBlog valueForKey:kBlogHostName]] retain];
+	
+	[self loadStatuses];
+	[self syncStatuses];
 }
 
 #pragma mark -
@@ -55,6 +57,17 @@
 		}
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"DidSyncPages" object:nil];
 	}
+}
+
+- (void)loadStatuses {
+	if([[NSUserDefaults standardUserDefaults] objectForKey:statusKey] != nil) {
+		NSDictionary *savedStatuses = [[NSUserDefaults standardUserDefaults] objectForKey:statusKey];
+		for(NSString *key in savedStatuses) {
+			[statuses setObject:[savedStatuses objectForKey:key] forKey:key];
+		}
+	}
+	else
+		[statuses setObject:@"Local Draft" forKey:[NSString stringWithString:kLocalDraftKey]];
 }
 
 - (void)syncPages {
@@ -121,6 +134,7 @@
 					[statuses setObject:[status capitalizedString] forKey:status];
 			}
 			[statuses setObject:@"Local Draft" forKey:[NSString stringWithString:kLocalDraftKey]];
+			[[NSUserDefaults standardUserDefaults] setObject:statuses forKey:statusKey];
 		}
 		
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -479,6 +493,7 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
+	[statusKey release];
 	[pageIDs release];
 	[statuses release];
 	[saveKey release];

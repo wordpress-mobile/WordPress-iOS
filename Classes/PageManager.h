@@ -28,7 +28,7 @@
 	NSMutableData *payload;
 	NSMutableArray *pages, *pageIDs;
 	NSMutableDictionary *statuses;
-	NSString *saveKey;
+	NSString *saveKey, *statusKey;
 	
 	BOOL isGettingPages;
 }
@@ -42,11 +42,13 @@
 @property (nonatomic, retain) NSMutableData *payload;
 @property (nonatomic, retain) NSMutableArray *pages, *pageIDs;
 @property (nonatomic, retain) NSMutableDictionary *statuses;
-@property (nonatomic, retain) NSString *saveKey;
+@property (nonatomic, retain) NSString *saveKey, *statusKey;
 @property (nonatomic, assign) BOOL isGettingPages;
 
+- (void)initObjects;
 - (id)initWithXMLRPCUrl:(NSString *)xmlrpc;
 - (void)loadData;
+- (void)loadStatuses;
 - (void)storeData;
 - (NSDictionary *)downloadPage:(NSNumber *)pageID;
 - (void)syncPages;

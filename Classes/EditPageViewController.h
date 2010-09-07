@@ -28,6 +28,7 @@
 	BOOL isShowingKeyboard, isLocalDraft;
 	NSNumber *selectedSection;
 	NSString *originalTitle, *originalStatus, *originalContent;
+	NSMutableDictionary *statuses;
 	
 	NSURLConnection *connection;
 	NSURLRequest *urlRequest;
@@ -54,6 +55,7 @@
 @property (nonatomic, retain) NSURLRequest *urlRequest;
 @property (nonatomic, retain) NSURLResponse *urlResponse;
 @property (nonatomic, retain) NSMutableData *payload;
+@property (nonatomic, retain) NSMutableDictionary *statuses;
 @property (nonatomic, assign) id <PageViewControllerProtocol> delegate;
 @property (nonatomic, assign) BlogDataManager *dm;
 @property (nonatomic, assign) WordPressAppDelegate *appDelegate;
