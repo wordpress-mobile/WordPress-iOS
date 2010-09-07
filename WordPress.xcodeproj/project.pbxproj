@@ -205,6 +205,8 @@
 		83A646AB112C63E5000999A6 /* help.png in Resources */ = {isa = PBXBuildFile; fileRef = 83A646AA112C63E5000999A6 /* help.png */; };
 		83BC943C11F94AA00041141A /* whitebg.png in Resources */ = {isa = PBXBuildFile; fileRef = 83BC943B11F94AA00041141A /* whitebg.png */; };
 		83CAC78A12354031003DFA20 /* PageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CAC78912354031003DFA20 /* PageManager.m */; };
+		83CACE951235A003003DFA20 /* UILoadMoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CACE941235A003003DFA20 /* UILoadMoreCell.m */; };
+		83CACE9F1235A102003DFA20 /* UILoadMoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83CACE9E1235A102003DFA20 /* UILoadMoreCell.xib */; };
 		83D180FA12329B1A002DCCB0 /* EditPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D180F812329B1A002DCCB0 /* EditPageViewController.m */; };
 		83D180FB12329B1A002DCCB0 /* EditPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83D180F912329B1A002DCCB0 /* EditPageViewController.xib */; };
 		83D181A01232A0DA002DCCB0 /* PageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D1819F1232A0DA002DCCB0 /* PageViewController.m */; };
@@ -565,6 +567,9 @@
 		83BC943B11F94AA00041141A /* whitebg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whitebg.png; sourceTree = "<group>"; };
 		83CAC78812354031003DFA20 /* PageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageManager.h; sourceTree = "<group>"; };
 		83CAC78912354031003DFA20 /* PageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageManager.m; sourceTree = "<group>"; };
+		83CACE931235A003003DFA20 /* UILoadMoreCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UILoadMoreCell.h; sourceTree = "<group>"; };
+		83CACE941235A003003DFA20 /* UILoadMoreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UILoadMoreCell.m; sourceTree = "<group>"; };
+		83CACE9E1235A102003DFA20 /* UILoadMoreCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UILoadMoreCell.xib; sourceTree = "<group>"; };
 		83D180F712329B1A002DCCB0 /* EditPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditPageViewController.h; sourceTree = "<group>"; };
 		83D180F812329B1A002DCCB0 /* EditPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditPageViewController.m; sourceTree = "<group>"; };
 		83D180F912329B1A002DCCB0 /* EditPageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = EditPageViewController.xib; path = Classes/EditPageViewController.xib; sourceTree = "<group>"; };
@@ -906,6 +911,8 @@
 				8320B5DE11FCA62600607422 /* UITableViewSegmentedControlCell.m */,
 				83297B84123344FD00FB2C7D /* UITextViewCell.h */,
 				83297B85123344FD00FB2C7D /* UITextViewCell.m */,
+				83CACE931235A003003DFA20 /* UILoadMoreCell.h */,
+				83CACE941235A003003DFA20 /* UILoadMoreCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -917,6 +924,7 @@
 				8320B5D811FCA50400607422 /* UITableViewSwitchCell.xib */,
 				8320B5E011FCA6EF00607422 /* UITableViewSegmentedControlCell.xib */,
 				83297B871233457000FB2C7D /* UITextViewCell.xib */,
+				83CACE9E1235A102003DFA20 /* UILoadMoreCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -1535,6 +1543,7 @@
 				831F315B122DE3EE005E33CD /* PostMediaEditViewController.xib in Resources */,
 				83D180FB12329B1A002DCCB0 /* EditPageViewController.xib in Resources */,
 				83297B881233457000FB2C7D /* UITextViewCell.xib in Resources */,
+				83CACE9F1235A102003DFA20 /* UILoadMoreCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1647,6 +1656,7 @@
 				83297B86123344FD00FB2C7D /* UITextViewCell.m in Sources */,
 				838025D01233F97C0051BBDB /* ManagedObjectCloner.m in Sources */,
 				83CAC78A12354031003DFA20 /* PageManager.m in Sources */,
+				83CACE951235A003003DFA20 /* UILoadMoreCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

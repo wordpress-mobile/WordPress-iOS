@@ -8,7 +8,7 @@
 #import "PageViewController.h"
 
 @implementation PageViewController
-@synthesize tabController, appDelegate, dm, selectedPostID, isPublished, pageManager, draftManager;
+@synthesize tabController, appDelegate, dm, selectedPostID, isPublished, pageManager, draftManager, canPublish;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -85,7 +85,10 @@
 		publishButton.target = self;
 		publishButton.style = UIBarButtonItemStyleDone;
 		publishButton.action = @selector(publishAction:);
+		if(self.canPublish == NO)
+			publishButton.enabled = NO;
 		[buttons addObject:publishButton];
+		
 		[publishButton release];
 	}
 	else {

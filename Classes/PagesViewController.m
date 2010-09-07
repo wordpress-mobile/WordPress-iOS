@@ -11,7 +11,7 @@
 
 @implementation PagesViewController
 @synthesize newButtonItem, anyMorePages, selectedIndexPath, draftManager, appDelegate, tabController, drafts, mediaManager, dm;
-@synthesize visiblePages, pageManager, pages, progressAlert, spinner, loadLimit;
+@synthesize pageManager, progressAlert, spinner, loadLimit, pages;
 
 #pragma mark -
 #pragma mark View Lifecycle
@@ -24,13 +24,12 @@
 	pageManager = [[PageManager alloc] initWithXMLRPCUrl:[dm.currentBlog valueForKey:@"xmlrpc"]];
 	draftManager = [[DraftManager alloc] init];
 	pages = [[NSMutableArray alloc] init];
-	visiblePages = [[NSMutableArray alloc] init];
+	spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 	
-	loadLimit = [[[dm.currentBlog valueForKey:kPostsDownloadCount] substringToIndex:3] intValue];
+	loadLimit = [[dm.currentBlog valueForKey:kPostsDownloadCount] intValue];
 	if(loadLimit < 10)
 		loadLimit = 10;
 	
-	NSLog(@"loadLimit: %d", loadLimit);
     self.tableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
     [self addRefreshButton];
 
@@ -39,7 +38,8 @@
                      action:@selector(showAddNewPage)];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePagesTableAfterDraftSaved:) name:@"DraftsUpdated" object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadPages) name:@"DidSyncPages" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable) name:@"DidSyncPages" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadPages) name:@"DidGetPages" object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -90,7 +90,10 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+	if(pages.count < pageManager.pages.count)
+		return 3;
+	else
+		return 2;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -119,8 +122,12 @@
 			result = drafts.count;
 			break;
 		case 1:
-			result = visiblePages.count;
+			result = pages.count;
 			break;
+		case 2:
+			result = 1;
+			break;
+
 		default:
 			break;
 	}
@@ -143,6 +150,11 @@
         pageCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:pageCellIdentifier] autorelease];
     }
 	
+	UILoadMoreCell *loadCell = (UILoadMoreCell *)[tableView dequeueReusableCellWithIdentifier:kCellLoadMore_ID];
+	if (loadCell == nil) {
+        loadCell = [UILoadMoreCell createNewLoadMoreCellFromNib];
+    }
+	
 	switch (indexPath.section) {
 		case 0:
 			foo = indexPath.row;
@@ -152,9 +164,18 @@
 			result = pageCell;
 			break;
 		case 1:
-			pageCell.textLabel.text = [[visiblePages objectAtIndex:indexPath.row] objectForKey:@"title"];
-			pageCell.detailTextLabel.text = [formatter stringFromDate:[self localDateFromGMT:[[visiblePages objectAtIndex:indexPath.row] objectForKey:@"date_created_gmt"]]];
+			pageCell.textLabel.text = [[pages objectAtIndex:indexPath.row] objectForKey:@"title"];
+			pageCell.detailTextLabel.text = [formatter stringFromDate:[self localDateFromGMT:[[pages objectAtIndex:indexPath.row] objectForKey:@"date_created_gmt"]]];
 			result = pageCell;
+			break;
+		case 2:
+			loadCell.backgroundColor = [UIColor grayColor];
+			loadCell.mainLabel.text = @"Load more pages.";
+			if(pageManager.isGettingPages == YES)
+				loadCell.subtitleLabel.text = [NSString stringWithFormat:@"%d pages loaded. Fetching total...", pages.count];
+			else
+				loadCell.subtitleLabel.text = [NSString stringWithFormat:@"%d pages loaded. %d total.", pages.count, self.pageManager.pages.count];
+			result = loadCell;
 			break;
 		default:
 			break;
@@ -180,12 +201,16 @@
 		case 1:
 			[pageViewController setPageManager:self.pageManager];
 			
-			NSNumber *pageID = [[visiblePages objectAtIndex:indexPath.row] objectForKey:@"page_id"];
+			NSNumber *pageID = [[pages objectAtIndex:indexPath.row] objectForKey:@"page_id"];
 			[pageViewController setSelectedPostID:[pageID stringValue]];
 			[appDelegate showContentDetailViewController:pageViewController];
 			
 			self.selectedIndexPath = indexPath;
 			break;
+		case 2:
+			[self loadMore];
+			break;
+
 		default:
 			break;
 	}
@@ -195,7 +220,15 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return POST_ROW_HEIGHT;
+	CGFloat result = POST_ROW_HEIGHT;
+	switch (indexPath.section) {
+		case 2:
+			result = 60.0;
+			break;
+		default:
+			break;
+	}
+    return result;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -213,37 +246,43 @@
 	[self performSelectorInBackground:@selector(deletePageAtIndexPath:) withObject:indexPath];
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-	UIView *result = nil;
-	
-	switch (section) {
-		case 1:
-			// Build Load More view
-			break;
-		default:
-			break;
-	}
-	
-	return result;
-}
-
 #pragma mark -
 #pragma mark Custom Methods
 
-- (void)scrollToFirstCell {
-    NSIndexPath *indexPath = NULL;
-    
-    if ([self tableView:self.tableView numberOfRowsInSection:0] > 0) {
-        NSUInteger indexes[] = {0, 0};
-        indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
-    } else if ([self tableView:self.tableView numberOfRowsInSection:1] > 0) {
-        NSUInteger indexes[] = {1, 0};
-        indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
-    }
-    
-    if (indexPath) {
-        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
-    }
+- (void)loadMore {
+	NSLog(@"loading more cells...");
+	
+	UILoadMoreCell *loadCell = (UILoadMoreCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+	loadCell.mainLabel.text = @"Loading more pages...";
+	loadCell.mainLabel.textColor = [UIColor grayColor];
+	[loadCell.spinner startAnimating];
+	
+	[self performSelectorInBackground:@selector(loadMoreInBackground) withObject:nil];
+}
+
+- (void)loadMoreInBackground {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	[NSThread sleepForTimeInterval:0.75];
+	
+	int pageCount = 0;
+	for(NSDictionary *page in pageManager.pages) {
+		if((pageCount < loadLimit) && (![pages containsObject:page])) {
+			[pages addObject:page];
+			pageCount++;
+		}
+		else if(pageCount >= loadLimit) {
+			break;
+		}
+	}
+	
+	[self performSelectorOnMainThread:@selector(didLoadMore) withObject:nil waitUntilDone:NO];
+	
+	[pool release];
+}
+
+- (void)didLoadMore {
+	[self refreshTable];
 }
 
 - (void)loadPages {
@@ -252,13 +291,13 @@
 	
 	int pageCount = 0;
 	[pages removeAllObjects];
-	[visiblePages removeAllObjects];
 	for(NSDictionary *page in pageManager.pages) {
-		[pages addObject:page];
-		
-		if(pageCount < loadLimit)
-			[visiblePages addObject:page];
-		pageCount++;
+		if(pageCount < loadLimit) {
+			[pages addObject:page];
+			pageCount++;
+		}
+		else
+			break;
 	}
 	
 	[self refreshTable];
@@ -361,7 +400,7 @@
 			[alert release];
 		}
 		else {
-			NSNumber *pageID = [[visiblePages objectAtIndex:indexPath.row] objectForKey:@"page_id"];
+			NSNumber *pageID = [[pages objectAtIndex:indexPath.row] objectForKey:@"page_id"];
 			BOOL result = [pageManager deletePage:pageID];
 			[progressAlert dismissWithClickedButtonIndex:0 animated:YES];
 			[progressAlert release];
@@ -382,7 +421,6 @@
 
 - (void)didDeletePageAtIndexPath:(NSIndexPath *)indexPath {
 	[pages removeObjectAtIndex:indexPath.row];
-	[visiblePages removeObjectAtIndex:indexPath.row];
 	[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
 	[self loadPages];
 	[progressAlert dismiss];
@@ -419,7 +457,6 @@
 	[progressAlert release];
 	[spinner release];
 	[pageManager release];
-	[visiblePages release];
 	[pages release];
 	[draftManager release];
 	[mediaManager release];

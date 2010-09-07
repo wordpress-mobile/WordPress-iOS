@@ -8,7 +8,7 @@
 #import "PageManager.h"
 
 @implementation PageManager
-@synthesize appDelegate, dm, xmlrpcURL, connection, payload, urlRequest, urlResponse, pages, saveKey, statuses;
+@synthesize appDelegate, dm, xmlrpcURL, connection, payload, urlRequest, urlResponse, pages, saveKey, statuses, pageIDs, isGettingPages;
 
 #pragma mark -
 #pragma mark Initialize
@@ -19,6 +19,7 @@
 		dm = [BlogDataManager sharedDataManager];
 		saveKey = [[NSString stringWithFormat:@"pages-%@", [dm.currentBlog valueForKey:kBlogHostName]] retain];
 		pages = [[NSMutableArray alloc] init];
+		pageIDs = [[NSMutableArray alloc] init];
 		statuses = [[NSMutableDictionary alloc] init];
 		[statuses setObject:@"Local Draft" forKey:[NSString stringWithString:kLocalDraftKey]];
 		
@@ -33,6 +34,7 @@
 		dm = [BlogDataManager sharedDataManager];
 		saveKey = [[NSString stringWithFormat:@"pages-%@", [dm.currentBlog valueForKey:kBlogHostName]] retain];
 		pages = [[NSMutableArray alloc] init];
+		pageIDs = [[NSMutableArray alloc] init];
 		statuses = [[NSMutableDictionary alloc] init];
 		[statuses setObject:@"Local Draft" forKey:[NSString stringWithString:kLocalDraftKey]];
 		[self loadSavedPages];
@@ -68,7 +70,7 @@
 	
 	// Execute the XML-RPC request
 	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:xmlrpcURL];
-	[request setMethod:@"wp.getPages" withObjects:params];
+	[request setMethod:@"wp.getPageList" withObjects:params];
 	
 	connection = [[NSURLConnection alloc] initWithRequest:[request request] delegate:self];
 	if (connection) {
@@ -77,6 +79,10 @@
 }
 
 - (void)didSyncPages {
+	// Sort
+	NSSortDescriptor *sortByDate = [NSSortDescriptor sortDescriptorWithKey:@"date_created_gmt" ascending:NO];
+	[pages sortUsingDescriptors:[NSArray arrayWithObject:sortByDate]];
+	
 	// Save page data for offline
 	[[NSUserDefaults standardUserDefaults] setObject:pages forKey:saveKey];
 	[[NSUserDefaults standardUserDefaults] synchronize];
@@ -129,31 +135,75 @@
 	}
 	
 	if(result == nil) {
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-		
-		// We haven't downloaded the page in the background yet, so get it synchronously
-		NSArray *params = [NSArray arrayWithObjects:
-						 [dm.currentBlog valueForKey:kBlogId], 
-						 [pageID stringValue],
-						 [dm.currentBlog valueForKey:@"username"],
-						 [dm getPasswordFromKeychainInContextOfCurrentBlog:dm.currentBlog], nil];
-		XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:xmlrpcURL];
-		[request setMethod:@"wp.getPage" withObjects:params];
-		id page = [self executeXMLRPCRequest:request];
-		
-		if([page isKindOfClass:[NSDictionary class]]) {
-			// Success
-			result = page;
-		}
-		else {
-			// Failure
-			NSLog(@"error: %@", page);
-		}
-		
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+		result = [self downloadPage:(NSNumber *)pageID];
 	}
 	
 	return result;
+}
+
+- (NSDictionary *)downloadPage:(NSNumber *)pageID {
+	NSDictionary *result = nil;
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	
+	// We haven't downloaded the page in the background yet, so get it synchronously
+	NSArray *params = [NSArray arrayWithObjects:
+					   [dm.currentBlog valueForKey:kBlogId], 
+					   [pageID stringValue],
+					   [dm.currentBlog valueForKey:@"username"],
+					   [dm getPasswordFromKeychainInContextOfCurrentBlog:dm.currentBlog], nil];
+	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:xmlrpcURL];
+	[request setMethod:@"wp.getPage" withObjects:params];
+	id page = [self executeXMLRPCRequest:request];
+	
+	if([page isKindOfClass:[NSDictionary class]]) {
+		// Success
+		result = page;
+	}
+	else {
+		// Failure
+		NSLog(@"error: %@", page);
+	}
+	
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	return result;
+}
+
+- (void)addPage:(NSDictionary *)page {
+	[pages addObject:page];
+}
+
+- (void)getPages {
+	if(isGettingPages == NO) {
+		isGettingPages = YES;
+		[pages removeAllObjects];
+		[self performSelectorInBackground:@selector(getPagesInBackground) withObject:nil];
+	}
+}
+
+- (void)getPagesInBackground {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	for(NSNumber *pageID in pageIDs) {
+		NSDictionary *page = [self getPage:pageID];
+		[self performSelectorOnMainThread:@selector(addPage:) withObject:page waitUntilDone:NO];
+	}
+	
+	isGettingPages = NO;
+	[self performSelectorOnMainThread:@selector(didGetPages) withObject:nil waitUntilDone:NO];
+	
+	[pool release];
+}
+
+- (void)didGetPages {
+	// Sort
+	NSSortDescriptor *sortByDate = [NSSortDescriptor sortDescriptorWithKey:@"date_created_gmt" ascending:NO];
+	[pages sortUsingDescriptors:[NSArray arrayWithObject:sortByDate]];
+	
+	// Save page data for offline
+	[[NSUserDefaults standardUserDefaults] setObject:pages forKey:saveKey];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"DidGetPages" object:nil];
 }
 
 - (BOOL)hasPageWithID:(NSNumber *)pageID {
@@ -187,7 +237,7 @@
 	[request setMethod:@"wp.newPage" withObjects:params];
 	
 	id response = [self executeXMLRPCRequest:request];
-	if([response intValue] > -1) {
+	if(![response isKindOfClass:[NSDictionary class]]) {
 		// Success
 		NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
 		[f setNumberStyle:NSNumberFormatterDecimalStyle];
@@ -221,14 +271,12 @@
 	[request setMethod:@"wp.editPage" withObjects:params];
 	
 	id response = [self executeXMLRPCRequest:request];
-	NSLog(@"savePage response: %@", response);
 	if([response intValue] == 1) {
 		// Success
 		[self performSelectorOnMainThread:@selector(syncPages) withObject:nil waitUntilDone:NO];
 	}
 	else {
 		// Failure
-		NSLog(@"wp.newPage failed: %@", response);
 	}
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -337,20 +385,31 @@
 				if ([xmlrpcResponse isKindOfClass:[XMLRPCResponse class]]) {
 					NSDictionary *responseMeta = [xmlrpcResponse object];
 					
-					if(![responseMeta isKindOfClass:[NSError class]]) {
-						// Handle response here.
-						if(responseMeta.count > 0) {
-							[pages removeAllObjects];
-							for(NSDictionary *page in responseMeta) {
-								[pages addObject:page];
+					if(isGettingPages == NO) {
+						if(![responseMeta isKindOfClass:[NSError class]]) {
+							[pageIDs removeAllObjects];
+							// Handle response here.
+							if(responseMeta.count > 0) {
+								NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+								[f setNumberStyle:NSNumberFormatterDecimalStyle];
+								for(NSDictionary *page in responseMeta) {
+									NSNumber *pageID = [f numberFromString:[page valueForKey:@"page_id"]];
+									[pageIDs addObject:pageID];
+								}
+								[f release];
 							}
+							
+							if(pageIDs.count > 0)
+								[self performSelectorOnMainThread:@selector(getPages) withObject:nil waitUntilDone:NO];
+							else
+								[[NSNotificationCenter defaultCenter] postNotificationName:@"DidSyncPages" object:nil];
 						}
-						
-						[self didSyncPages];
+						else {
+							NSLog(@"error syncing pages: %@", responseMeta);
+						}
 					}
-					else {
-						NSLog(@"error syncing pages: %@", responseMeta);
-					}
+					else
+						[[NSNotificationCenter defaultCenter] postNotificationName:@"DidSyncPages" object:nil];
 
 				}
 				
@@ -395,6 +454,7 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
+	[pageIDs release];
 	[statuses release];
 	[saveKey release];
 	[xmlrpcURL release];

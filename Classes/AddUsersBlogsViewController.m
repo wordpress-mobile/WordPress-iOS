@@ -313,6 +313,7 @@
 		[newBlog setValue:blog.xmlrpc forKey:@"xmlrpc"];
 		[newBlog setValue:blog.blogID forKey:kBlogId];
 		[newBlog setValue:blog.hostURL forKey:kBlogHostName];
+		[newBlog setValue:@"10" forKey:kPostsDownloadCount];
 		[newBlog setValue:blog.blogName forKey:@"blogName"];
 		[newBlog setValue:username forKey:@"username"];
 		[newBlog setValue:authEnabled forKey:@"authEnabled"];

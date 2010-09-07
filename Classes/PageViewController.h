@@ -18,6 +18,7 @@
 @property (nonatomic, retain) NSString *selectedPostID;
 @property (nonatomic, retain) DraftManager *draftManager;
 @property (nonatomic, retain) PageManager *pageManager;
+@property (nonatomic, assign) BOOL canPublish;
 
 - (IBAction)saveAction:(id)sender;
 - (IBAction)publishAction:(id)sender;
@@ -32,7 +33,7 @@
 	
 	NSString *selectedPostID;
 	int selectedBDMIndex;
-	BOOL isPublished;
+	BOOL isPublished, canPublish;
 	
 	BlogDataManager *dm;
 	WordPressAppDelegate *appDelegate;

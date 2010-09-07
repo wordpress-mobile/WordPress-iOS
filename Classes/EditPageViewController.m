@@ -120,16 +120,11 @@
 					cell.textLabel.textColor = [UIColor grayColor];
 					
 					CGRect textFrame;
-					UIColor *backgroundColor;
-					if(DeviceIsPad()){
+					UIColor *backgroundColor = [UIColor whiteColor];
+					if(DeviceIsPad())
 						textFrame = CGRectMake(50, 14, 350, 42);
-						backgroundColor = [UIColor clearColor];
-					}
-					else {
-						textFrame = CGRectMake(50, 12, 185, 30);
-						backgroundColor = [UIColor whiteColor];
-					}
-					
+					else
+						textFrame = CGRectMake(50, 12, 265, 30);
 					
 					UITextField *cellTextField = [[UITextField alloc] initWithFrame:textFrame];
 					cellTextField.font = [UIFont systemFontOfSize:15.0];
@@ -241,7 +236,7 @@
 - (void)pickerView:(UIPickerView *)thePickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
 	[self.page setStatus:[[[delegate.pageManager.statuses allKeys] objectAtIndex:row] retain]];
 	[self hideStatusPicker:self];
-	[self refreshButtons];
+	[self checkPublishable];
 }
 
 #pragma mark -
@@ -256,6 +251,7 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 	selectedSection = [NSNumber numberWithInt:0];
+	[self checkPublishable];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
@@ -272,6 +268,7 @@
 	CGRect sectionRect = [self.table rectForSection:1];
 	sectionRect.size.height = self.table.frame.size.height;
 	[self.table scrollRectToVisible:sectionRect animated:YES];
+	[self checkPublishable];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
@@ -303,6 +300,7 @@
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+	[self refreshPage];
     return TRUE;
 }
 
@@ -353,12 +351,12 @@
 		[self setOriginalContent:self.page.content];
 	}
 	
-	[self refreshButtons];
+	[self checkPublishable];
 }
 
 - (void)refreshTable {
 	[self.table reloadData];
-	[self refreshButtons];
+	[self checkPublishable];
 }
 
 - (void)refreshButtons {
@@ -368,6 +366,7 @@
 - (void)refreshPage {
 	[self.page setPostTitle:titleTextField.text];
 	[self.page setContent:contentTextView.text];
+	[self checkPublishable];
 }
 
 - (IBAction)showStatusPicker:(id)sender {
@@ -394,11 +393,13 @@
 	
 	[actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 	[actionSheet setBounds:CGRectMake(0, 0, 320, 485)];
+	[self checkPublishable];
 }
 
 - (IBAction)hideStatusPicker:(id)sender {
 	[actionSheet dismissWithClickedButtonIndex:0 animated:YES];
 	[self refreshTable];
+	[self checkPublishable];
 }
 
 - (NSInteger)indexForStatus:(NSString *)status {
@@ -429,16 +430,17 @@
 		[contentTextView resignFirstResponder];
 	}
 	[titleTextField resignFirstResponder];
+	[self checkPublishable];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification {
 	self.isShowingKeyboard = YES;
-	[self refreshButtons];
+	[self checkPublishable];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
 	self.isShowingKeyboard = NO;
-	[self refreshButtons];
+	[self checkPublishable];
 }
 
 - (void)publish {
@@ -517,6 +519,15 @@
 	}
 	
 	return result;
+}
+
+- (void)checkPublishable {
+	if((page.postTitle != nil) && (![page.postTitle isEqualToString:@""]) &&
+	   (page.status != nil) && (![page.status isEqualToString:@""]) &&
+	   (page.content != nil) && (![page.content isEqualToString:@""])) {
+		delegate.canPublish = YES;
+	}
+	[self refreshButtons];
 }
 
 #pragma mark -

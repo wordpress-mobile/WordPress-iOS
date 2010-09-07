@@ -131,6 +131,8 @@ Classes/UIDevice-Hardware.h -text
 Classes/UIDevice-Hardware.m -text
 Classes/UIImage+INResizeImageAllocator.h -text
 Classes/UIImage+INResizeImageAllocator.m -text
+Classes/UILoadMoreCell.h -text
+Classes/UILoadMoreCell.m -text
 Classes/UITableViewActivityCell.h -text
 Classes/UITableViewActivityCell.m -text
 Classes/UITableViewSegmentedControlCell.h -text
@@ -249,6 +251,7 @@ Settings.bundle/en.lproj/Root.strings -text
 /UIImage+Resize.m -text
 /UIImage+RoundedCorner.h -text
 /UIImage+RoundedCorner.m -text
+/UILoadMoreCell.xib -text
 /UITableViewActivityCell.xib -text
 /UITableViewSegmentedControlCell.xib -text
 /UITableViewSwitchCell.xib -text

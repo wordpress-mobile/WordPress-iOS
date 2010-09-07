@@ -70,5 +70,6 @@
 - (void)save;
 - (void)publish;
 - (BOOL)hasChanges;
+- (void)checkPublishable;
 
 @end

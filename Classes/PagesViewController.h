@@ -16,7 +16,7 @@
 #import "BlogDataManager.h"
 #import "Reachability.h"
 #import "WPProgressHUD.h"
-#import "IncrementPost.h"
+#import "UILoadMoreCell.h"
 #import "Post.h"
 
 @interface PagesViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, UIAccelerometerDelegate> {
@@ -33,7 +33,7 @@
 	WPProgressHUD *progressAlert;
 	
 	NSIndexPath *selectedIndexPath;
-	NSMutableArray *drafts, *pages, *visiblePages;
+	NSMutableArray *drafts, *pages;
 	int loadLimit;
 }
 
@@ -46,7 +46,7 @@
 @property (nonatomic, retain) MediaManager *mediaManager;
 @property (nonatomic, assign) BOOL anyMorePages;
 @property (nonatomic, retain) NSIndexPath *selectedIndexPath;
-@property (nonatomic, retain) NSMutableArray *drafts, *pages, *visiblePages;
+@property (nonatomic, retain) NSMutableArray *drafts, *pages;
 @property (nonatomic, retain) UIActivityIndicatorView *spinner;
 @property (nonatomic, retain) WPProgressHUD *progressAlert;
 @property (nonatomic, assign) int loadLimit;
@@ -55,7 +55,6 @@
 - (void)removeSpinnerFromCell:(NSIndexPath *)indexPath;
 - (void)loadPages;
 - (void)showAddNewPage;
-- (void)scrollToFirstCell;
 - (void)refreshHandler;
 - (void)addRefreshButton;
 - (void)deletePageAtIndexPath:(NSIndexPath *)indexPath;
@@ -63,5 +62,8 @@
 - (void)didDeletePageAtIndexPath:(NSIndexPath *)indexPath;
 - (void)refreshTable;
 - (NSDate *)localDateFromGMT:(NSDate *)sourceDate;
+- (void)loadMore;
+- (void)loadMoreInBackground;
+- (void)didLoadMore;
 
 @end

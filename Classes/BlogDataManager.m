@@ -1468,7 +1468,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 	NSString *pwd = [self getPasswordFromKeychainInContextOfCurrentBlog:blog];
     NSString *fullURL = [blog valueForKey:@"xmlrpc"];
     NSString *blogid = [blog valueForKey:kBlogId];
-    NSNumber *maxToFetch = [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:3] intValue]];
+    NSNumber *maxToFetch = [NSNumber numberWithInt:[[currentBlog valueForKey:kPostsDownloadCount] intValue]];
 	
     XMLRPCRequest *postsReq = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:fullURL]];
     [postsReq setMethod:@"metaWeblog.getRecentPosts"
@@ -4899,7 +4899,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 					@try {
 						[self syncCommentsForBlog:blog];
 						[self syncPostsForBlog:blog];
-						[self syncPagesForBlog:blog];
 					}
 					@catch (NSException * e) {
 						NSLog(@"Stopping blog sync due to error.");

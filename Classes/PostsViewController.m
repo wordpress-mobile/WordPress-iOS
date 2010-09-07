@@ -151,25 +151,23 @@
 		int count = [[BlogDataManager sharedDataManager] countOfPostTitles];
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		
-		if ([defaults boolForKey:@"anyMorePosts"])  {
-			if (indexPath.row == count) {
-				int totalPosts = [[BlogDataManager sharedDataManager] countOfPostTitles];
-				if (totalPosts == 0) {
-					cell.contentView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
-					cell.accessoryType = UITableViewCellAccessoryNone;
-					return cell;
-				}
-				else {
-					NSString * totalString = [NSString stringWithFormat:@"%d posts loaded", totalPosts];
-					[cell changeCellLabelsForUpdate:totalString:@"Load more posts":NO];
-					//prevent masking of the changes to font color etc that we want
-					cell.selectionStyle = UITableViewCellSelectionStyleNone;
-					return cell;
-				}
+		if (indexPath.row == count) {
+			int totalPosts = [[BlogDataManager sharedDataManager] countOfPostTitles];
+			if (totalPosts == 0) {
+				cell.contentView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
+				cell.accessoryType = UITableViewCellAccessoryNone;
+				return cell;
 			}
 			else {
-				[cell setPost:[dm postTitleAtIndex:indexPath.row]];
+				NSString *totalString = [NSString stringWithFormat:@"%d posts loaded", totalPosts];
+				[cell changeCellLabelsForUpdate:totalString:@"Load more posts":NO];
+				//prevent masking of the changes to font color etc that we want
+				cell.selectionStyle = UITableViewCellSelectionStyleNone;
+				return cell;
 			}
+		}
+		else {
+			[cell setPost:[dm postTitleAtIndex:indexPath.row]];
 		}
     }
 

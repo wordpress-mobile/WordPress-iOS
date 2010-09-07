@@ -77,7 +77,7 @@
 	NSNumber *totalPosts = [currentBlog valueForKey:@"totalPosts"];
 	//CAN I USE totalposts here???
 	int previousNumberOfPosts = [totalPosts intValue];
-	NSNumber *userSetMaxToFetch = [NSNumber numberWithInt:[[[currentBlog valueForKey:kPostsDownloadCount] substringToIndex:3] intValue]];
+	NSNumber *userSetMaxToFetch = [NSNumber numberWithInt:[[currentBlog valueForKey:kPostsDownloadCount] intValue]];
 	int max = previousNumberOfPosts + ([userSetMaxToFetch intValue] + 50);
 	int loadLimit = [userSetMaxToFetch intValue];
 	NSNumber *numberOfPostsToGet = [NSNumber numberWithInt:max];

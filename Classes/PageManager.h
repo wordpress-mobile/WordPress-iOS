@@ -26,9 +26,11 @@
 	NSURLRequest *urlRequest;
 	NSURLResponse *urlResponse;
 	NSMutableData *payload;
-	NSMutableArray *pages;
+	NSMutableArray *pages, *pageIDs;
 	NSMutableDictionary *statuses;
 	NSString *saveKey;
+	
+	BOOL isGettingPages;
 }
 
 @property (nonatomic, assign) WordPressAppDelegate *appDelegate;
@@ -38,16 +40,22 @@
 @property (nonatomic, retain) NSURLRequest *urlRequest;
 @property (nonatomic, retain) NSURLResponse *urlResponse;
 @property (nonatomic, retain) NSMutableData *payload;
-@property (nonatomic, retain) NSMutableArray *pages;
+@property (nonatomic, retain) NSMutableArray *pages, *pageIDs;
 @property (nonatomic, retain) NSMutableDictionary *statuses;
 @property (nonatomic, retain) NSString *saveKey;
+@property (nonatomic, assign) BOOL isGettingPages;
 
 - (id)initWithXMLRPCUrl:(NSString *)xmlrpc;
 - (void)loadSavedPages;
+- (NSDictionary *)downloadPage:(NSNumber *)pageID;
 - (void)syncPages;
 - (void)didSyncPages;
 - (void)syncStatuses;
 - (NSDictionary *)getPage:(NSNumber *)pageID;
+- (void)addPage:(NSDictionary *)page;
+- (void)getPages;
+- (void)getPagesInBackground;
+- (void)didGetPages;
 - (BOOL)hasPageWithID:(NSNumber *)pageID;
 - (id)executeXMLRPCRequest:(XMLRPCRequest *)xmlrpcRequest;
 - (void)createPage:(Post *)page;
