@@ -9,6 +9,7 @@
 #import "WordPressAppDelegate.h"
 #import "BlogDataManager.h"
 #import "Post.h"
+#import "Media.h"
 #import "UITextViewCell.h"
 #import "UITextFieldCell.h"
 #import "PageViewController.h"
@@ -77,5 +78,7 @@
 - (void)publish;
 - (BOOL)hasChanges;
 - (void)checkPublishable;
+- (void)insertMediaAbove:(NSNotification *)notification;
+- (void)insertMediaBelow:(NSNotification *)notification;
 
 @end

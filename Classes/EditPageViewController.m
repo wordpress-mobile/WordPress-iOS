@@ -45,7 +45,8 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(publish) name:@"EditPageViewShouldPublish" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancel) name:@"EditPageViewShouldCancel" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewWillDisppear:) name:@"EditPageViewShouldDisappear" object:nil];
-
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaAbove:) name:@"ShouldInsertMediaAbove" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:@"ShouldInsertMediaBelow" object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -467,6 +468,8 @@
 - (void)saveInBackground {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
+	self.page.postTitle = titleTextField.text;
+	self.page.content = contentTextView.text;
 	[self.page setPostType:@"page"];
 	
 	if(self.isLocalDraft == YES) {
@@ -537,6 +540,22 @@
 		}
 	}
 	[self.view sendSubviewToBack:resignTextFieldButton];
+}
+
+- (void)insertMediaAbove:(NSNotification *)notification {
+	Media *media = [notification object];
+	
+	NSMutableString *content = [[[NSMutableString alloc] initWithString:media.html] autorelease];
+	[content appendString:[NSString stringWithFormat:@"<br/><br/>%@", contentTextView.text]];
+    contentTextView.text = content;
+}
+
+- (void)insertMediaBelow:(NSNotification *)notification {
+	Media *media = [notification object];
+	
+	NSMutableString *content = [[[NSMutableString alloc] initWithString:contentTextView.text] autorelease];
+	[content appendString:[NSString stringWithFormat:@"<br/><br/>%@", media.html]];
+    contentTextView.text = content;
 }
 
 #pragma mark -

@@ -30,7 +30,9 @@
 @property (nonatomic, retain) NSNumber * filesize;
 @property (nonatomic, retain) NSNumber * height;
 @property (nonatomic, retain) NSString * caption;
+@property (nonatomic, retain) NSString * orientation;
 @property (nonatomic, retain) NSDate * creationDate;
+@property (nonatomic, readonly) NSString * html;
 
 @end
 

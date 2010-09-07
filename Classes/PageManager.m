@@ -374,7 +374,6 @@
 			[[NSNotificationCenter defaultCenter] postNotificationName:@"DidCreatePage" object:newPage];
 			[[NSNotificationCenter defaultCenter] postNotificationName:@"LocalDraftWasPublishedSuccessfully" object:uniqueID];
 			result = YES;
-			[self performSelectorOnMainThread:@selector(syncPages) withObject:nil waitUntilDone:NO];
 		}
 	}
 	

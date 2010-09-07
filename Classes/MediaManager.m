@@ -41,8 +41,6 @@
 		[media setUniqueID:[[NSProcessInfo processInfo] globallyUniqueString]];
 	}
 	
-	[self doReport];
-	
 	return media;
 }
 
@@ -72,8 +70,6 @@
 		[request release];
 	}
 	
-	[self doReport];
-	
 	return results;
 }
 
@@ -98,8 +94,6 @@
 		[request release];
 	}
 	
-	[self doReport];
-	
 	return results;
 }
 
@@ -118,8 +112,6 @@
 		[request release];
 	}
 	
-	[self doReport];
-	
 	if((items != nil) && (items.count > 0))
 		return YES;
 	else
@@ -134,8 +126,6 @@
 	else {
 		[self update:media];
 	}
-	
-	[self doReport];
 }
 
 - (void)insert:(Media *)media {
@@ -150,6 +140,7 @@
 	NSManagedObject *objectToDelete = media;
 	[appDelegate.managedObjectContext deleteObject:objectToDelete];
 	[appDelegate.managedObjectContext processPendingChanges];
+	[self dataSave];
 }
 
 - (void)removeForPostID:(NSString *)postID andBlogURL:(NSString *)blogURL {

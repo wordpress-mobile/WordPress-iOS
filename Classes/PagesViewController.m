@@ -36,10 +36,11 @@
                      target:self
                      action:@selector(showAddNewPage)];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadPages) name:@"DraftsUpdated" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable) name:@"DidSyncPages" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadPages) name:@"DidGetPages" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewPage:) name:@"DidCreatePage" object:nil];
+	
+	[self loadPages];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -59,9 +60,9 @@
 			[self refreshHandler];
 			[defaults setBool:false forKey:@"refreshPagesRequired"];
 		}
-	}	
+	}
 	
-	[self loadPages];
+	[self refreshTable];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -121,6 +122,7 @@
 		default:
 			break;
 	}
+	NSLog(@"rowcount is now: %d", result);
 	
 	return result;
 }
@@ -299,6 +301,7 @@
 
 - (void)loadPages {
     [refreshButton startAnimating];
+	[self refreshTable];
 	self.drafts = [draftManager getType:@"page" forBlog:[dm.currentBlog valueForKey:@"blogid"]];
 	
 	int pageCount = 0;
@@ -433,7 +436,6 @@
 - (void)addNewPage:(NSNotification *)notification {
 	NSDictionary *newPage = [(NSDictionary *)[notification object] retain];
 	[pages insertObject:newPage atIndex:0];
-	NSLog(@"added new page: %@", newPage);
 	[self refreshTable];
 }
 

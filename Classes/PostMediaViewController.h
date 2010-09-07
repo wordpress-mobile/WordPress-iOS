@@ -27,6 +27,7 @@ static inline double radians(double degrees) {
 	PostViewController *postDetailViewController;
 	MediaManager *mediaManager;
 	WPMediaUploader *mediaUploader;
+	BlogDataManager *dm;
 	
 	IBOutlet UITableView *table;
 	IBOutlet UIBarButtonItem *addMediaButton;
@@ -62,6 +63,7 @@ static inline double radians(double degrees) {
 @property (nonatomic, retain) UIImage *currentImage;
 @property (nonatomic, retain) UIImagePickerController *picker;
 @property (nonatomic, retain) NSMutableDictionary *currentVideo;
+@property (nonatomic, assign) BlogDataManager *dm;
 
 - (IBAction)refreshMedia;
 - (void)scaleAndRotateImage:(UIImage *)image;
@@ -94,5 +96,7 @@ static inline double radians(double degrees) {
 - (void)checkVideoEnabled;
 - (void)deleteMedia:(Media *)media;
 - (void)shouldDeleteMedia:(NSNotification *)notification;
+- (void)refreshProperties;
+- (void)initObjects;
 
 @end

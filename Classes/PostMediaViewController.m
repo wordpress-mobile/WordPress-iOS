@@ -9,7 +9,7 @@
 #import "PostMediaViewController.h"
 
 @implementation PostMediaViewController
-@synthesize table, addMediaButton, hasPhotos, hasVideos, isAddingMedia, photos, videos, appDelegate;
+@synthesize table, addMediaButton, hasPhotos, hasVideos, isAddingMedia, photos, videos, appDelegate, dm;
 @synthesize isShowingMediaPickerActionSheet, currentOrientation, isShowingChangeOrientationActionSheet, spinner;
 @synthesize currentImage, currentVideo, isLibraryMedia, didChangeOrientationDuringRecord, messageLabel;
 @synthesize picker, postDetailViewController, mediaManager, postID, blogURL, mediaTypeControl, mediaUploader;
@@ -18,10 +18,19 @@
 #pragma mark -
 #pragma mark View lifecycle
 
+- (void)initObjects {
+	dm = [BlogDataManager sharedDataManager];
+	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+	mediaUploader = [[WPMediaUploader alloc] initWithNibName:@"WPMediaUploader" bundle:nil];
+	mediaManager = [[MediaManager alloc] init];
+	photos = [[NSMutableArray alloc] init];
+	videos = [[NSMutableArray alloc] init];
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-		self.blogURL = [[[BlogDataManager sharedDataManager] currentBlog] objectForKey:@"url"];
-		[self performSelectorInBackground:@selector(checkVideoEnabled) withObject:nil];
+		[self initObjects];
+		[self refreshProperties];
     }
 	
     return self;
@@ -30,30 +39,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
-	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-	mediaUploader = [[WPMediaUploader alloc] initWithNibName:@"WPMediaUploader" bundle:nil];
-	mediaManager = [[MediaManager alloc] init];
-	photos = [[NSMutableArray alloc] init];
-	videos = [[NSMutableArray alloc] init];
-	
 	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
 	self.picker = [[UIImagePickerController alloc] init];
 	self.picker.delegate = self;
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
 	
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	
-	if((([[dm currentPost] objectForKey:@"postid"] != nil)) && ([[[dm currentPost] objectForKey:@"postid"] isEqualToString:@""] == NO))
-		self.postID = [[dm currentPost] objectForKey:@"postid"];
-	else if(appDelegate.postID != nil)
-		self.postID = appDelegate.postID;
-	else
-		self.postID = @"unsavedpost";
-	
-	[self refreshMedia];
+	[self initObjects];
+	[self refreshProperties];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:VideoUploadSuccessful object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:ImageUploadSuccessful object:nil];
@@ -62,10 +53,20 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shouldDeleteMedia:) name:@"ShouldDeleteMedia"	object:nil];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	
+	[self refreshProperties];
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
 	[self removemediaUploader:nil finished:nil context:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[super viewWillDisappear:animated];
+}
+
+- (void)viewDidUnload {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[super viewDidUnload];
 }
 
 #pragma mark -
@@ -200,6 +201,7 @@
 		
 		[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
 	}
+	[self refreshMedia];
 }
 
 #pragma mark -
@@ -657,7 +659,6 @@
 
 - (void)useImage:(UIImage *)theImage {
 	Media *imageMedia = [mediaManager get:nil];
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	NSDictionary *currentBlog = [dm currentBlog];
 	NSData *imageData = UIImageJPEGRepresentation(theImage, 1.0);
 	UIImage *imageThumbnail = [self generateThumbnailFromImage:theImage andSize:CGSizeMake(75, 75)];
@@ -670,12 +671,14 @@
 	NSString *filename = [NSString stringWithFormat:@"%@.jpg", [formatter stringFromDate:[NSDate date]]];
 	NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
 	[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
-	NSLog(@"saved image to file: %@", imageMedia.filename);
 	
 	imageMedia.postID = self.postID;
 	imageMedia.blogID = [currentBlog valueForKey:@"blogid"];
 	imageMedia.blogURL = self.blogURL;
-	NSLog(@"saved image with blogURL: %@", self.blogURL);
+	if(currentOrientation == kLandscape)
+		imageMedia.orientation = @"landscape";
+	else
+		imageMedia.orientation = @"portrait";
 	imageMedia.creationDate = [NSDate date];
 	imageMedia.filename = filename;
 	imageMedia.localURL = filepath;
@@ -700,7 +703,6 @@
 
 - (void)useVideo:(NSData *)video withThumbnail:(UIImage *)thumbnail {
 	Media *videoMedia = [mediaManager get:nil];
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	NSDictionary *currentBlog = [dm currentBlog];
 	UIImage *videoThumbnail = [self generateThumbnailFromImage:thumbnail andSize:CGSizeMake(75, 75)];
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -713,13 +715,15 @@
 	NSString *filename = [NSString stringWithFormat:@"%@.mov", [formatter stringFromDate:[NSDate date]]];
 	NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
 	[fileManager createFileAtPath:filepath contents:video attributes:nil];
-	NSLog(@"saved video to file: %@", videoMedia.filename);
 	
 	// Save to local database
 	videoMedia.postID = self.postID;
 	videoMedia.blogID = [currentBlog valueForKey:@"blogid"];
 	videoMedia.blogURL = self.blogURL;
-	NSLog(@"saved video with blogURL: %@", self.blogURL);
+	if(currentOrientation == kLandscape)
+		videoMedia.orientation = @"landscape";
+	else
+		videoMedia.orientation = @"portrait";
 	videoMedia.creationDate = [NSDate date];
 	videoMedia.filename = filename;
 	videoMedia.localURL = filepath;
@@ -794,6 +798,7 @@
 		Media *media = [mediaManager get:self.uploadID];
 		media.remoteURL = [mediaData objectForKey:@"url"];
 		media.shortcode = [mediaData objectForKey:@"shortcode"];
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
 		[mediaManager update:media];
 		self.uploadID = nil;
 	}
@@ -888,32 +893,61 @@
 }
 
 - (void)deleteMedia:(Media *)media {
+	// TO DO: Gross.
 	if([mediaManager exists:media.uniqueID] == YES) {
-		NSLog(@"deleting media...");
+		NSMutableArray *photoIndexesToRemove = [[NSMutableArray alloc] init];
+		NSMutableArray *videoIndexesToRemove = [[NSMutableArray alloc] init];
 		if([media.mediaType isEqualToString:@"image"]) {
 			int index = 0;
 			for(Media *photo in photos) {
-				if([photo.uniqueID isEqualToString:media.uniqueID] == YES)
-					[photos removeObjectAtIndex:index];
+				if([photo.uniqueID isEqualToString:media.uniqueID] == YES) {
+					[photoIndexesToRemove addObject:[NSNumber numberWithInt:index]];
+				}
 				index++;
 			}
 		}
 		else if([media.mediaType isEqualToString:@"video"]) {
 			int index = 0;
 			for(Media *video in videos) {
-				if([video.uniqueID isEqualToString:media.uniqueID] == YES)
-					[videos removeObjectAtIndex:index];
+				if([video.uniqueID isEqualToString:media.uniqueID] == YES) {
+					[videoIndexesToRemove addObject:[NSNumber numberWithInt:index]];
+				}
 				index++;
 			}
 		}
-		[mediaManager remove:media];
-		[self refreshMedia];
+		
+		for(NSNumber *index in photoIndexesToRemove) {
+			[mediaManager remove:[photos objectAtIndex:[index intValue]]];
+			[photos removeObjectAtIndex:[index intValue]];
+		}
+		
+		for(NSNumber *index in videoIndexesToRemove) {
+			[mediaManager remove:[videos objectAtIndex:[index intValue]]];
+			[videos removeObjectAtIndex:[index intValue]];
+		}
+		
 		NSLog(@"deleted media.");
 	}
 }
 
 - (void)shouldDeleteMedia:(NSNotification *)notification {
 	[self deleteMedia:[notification object]];
+}
+
+- (void)refreshProperties {
+	self.blogURL = [dm.currentBlog objectForKey:@"url"];
+	
+	if((([dm.currentPost objectForKey:@"postid"] != nil)) && ([[dm.currentPost objectForKey:@"postid"] isEqualToString:@""] == NO))
+		self.postID = [dm.currentPage objectForKey:@"postid"];
+	else if((([dm.currentPage objectForKey:@"page_id"] != nil)) && ([[dm.currentPage objectForKey:@"page_id"] isEqualToString:@""] == NO))
+		self.postID = [dm.currentPage objectForKey:@"page_id"];
+	else if(appDelegate.postID != nil)
+		self.postID = appDelegate.postID;
+	else
+		self.postID = @"unsavedpost";
+	
+	[self refreshMedia];
+	[self performSelectorInBackground:@selector(checkVideoEnabled) withObject:nil];
 }
 
 #pragma mark -

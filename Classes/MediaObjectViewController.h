@@ -16,6 +16,7 @@
 	MPMoviePlayerController *videoPlayer;
 	UIImageView *imageView;
 	UIButton *deleteButton, *insertButton;
+	BOOL isDeleting, isInserting;
 }
 
 @property (nonatomic, retain) Media *media;
@@ -23,6 +24,7 @@
 @property (nonatomic, retain) IBOutlet MPMoviePlayerController *videoPlayer;
 @property (nonatomic, retain) IBOutlet UIImageView *imageView;
 @property (nonatomic, retain) IBOutlet UIButton *deleteButton, *insertButton;
+@property (nonatomic, assign) BOOL isDeleting, isInserting;
 
 - (IBAction)deleteObject:(id)sender;
 - (IBAction)insertObject:(id)sender;

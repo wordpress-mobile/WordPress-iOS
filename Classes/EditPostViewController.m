@@ -630,6 +630,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[self preserveUnsavedPost];
 }
 
+- (void)insertMedia:(BOOL)above notification:(NSNotification *)notification {
+	Media *media = [notification object];
+	NSLog(@"media: %@", media);
+	
+	//if(above == YES)
+}
+
 - (void)updateTextViewPlacehoderFieldStatus {
     if ([textView.text length] == 0) {
         textViewPlaceHolderField.hidden = NO;
@@ -1068,138 +1075,20 @@ NSTimeInterval kAnimationDuration = 0.3f;
     return YES;
 }
 
-- (WPImagePickerController *)pickerController {
-    if (pickerController == nil) {
-        pickerController = [[WPImagePickerController alloc] init];
-        pickerController.delegate = self;
-        pickerController.allowsImageEditing = NO;
-    }
+- (void)insertMediaAbove:(NSNotification *)notification {
+	Media *media = [notification object];
 	
-    return pickerController;
+	NSMutableString *content = [[[NSMutableString alloc] initWithString:media.html] autorelease];
+	[content appendString:[NSString stringWithFormat:@"<br/><br/>%@", contentTextView.text]];
+    contentTextView.text = content;
 }
 
-- (void)useImage:(UIImage *)theImage {
-    BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-    postDetailViewController.hasChanges = YES;
+- (void)insertMediaBelow:(NSNotification *)notification {
+	Media *media = [notification object];
 	
-    id currentPost = dataManager.currentPost;
-	
-    if (![currentPost valueForKey:@"Photos"])
-        [currentPost setValue:[NSMutableArray array] forKey:@"Photos"];
-	
-    [[currentPost valueForKey:@"Photos"] addObject:[dataManager saveImage:theImage]];
-    [postDetailViewController updatePhotosBadge];
-}
-
-- (void)pictureChoosenNotificationReceived:(NSNotification *)aNotification {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"WPPhotoChoosen" object:nil];
-	
-    NSString *pictureURL = [[aNotification userInfo] valueForKey:@"pictureURL"];
-    NSString *curText = textView.text;
-    curText = (curText == nil ? @"" : curText);
-    textView.text = [curText stringByAppendingString:[NSString stringWithFormat:@"<img src=\"%@\" alt=\"\" />", pictureURL]];
-}
-
-- (void)imageUploadedNofificationReceived:(NSNotification *)notification {
-//    NSDictionary *videoMeta = [notification userInfo];
-//    NSString *currentText = textView.text;
-//	MediaOrientation videoOrientation = kPortrait;
-//	if(([videoMeta objectForKey:@"orientation"] != nil) && ([videoMeta objectForKey:@"orientation"] == [NSNumber numberWithInt:1]))
-//		videoOrientation = kLandscape;
-//	
-//	NSString *html = @"";
-//	if(currentText == nil)
-//		currentText = html;
-//	if([videoMeta objectForKey:@"shortcode"] != nil)
-//		html = [videoMeta objectForKey:@"shortcode"];
-//	else if([videoMeta objectForKey:@"url"] != nil) {
-//		NSString *width = @"360";
-//		NSString *height = @"496";
-//		if(videoOrientation == kLandscape) {
-//			width = @"480";
-//			height = @"376";
-//		}
-//		
-//		if([[UIDevice currentDevice] model] == IPHONE_3GS_NAMESTRING) {
-//			// Leaving this as is until I have better data about iPhone 4 vs. 3GS video size
-//			width = @"360";
-//			height = @"496";
-//			if(videoOrientation == kLandscape) {
-//				width = @"480";
-//				height = @"376";
-//			}
-//		}
-//		
-//		NSString *url = [videoMeta objectForKey:@"url"];
-//		html = [NSString stringWithFormat:@"<object width=\"%@\" height=\"%@\""
-//				"classid=\"clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B\""
-//				"codebase=\"http://www.apple.com/qtactivex/qtplugin.cab\">"
-//				"<param name=\"src\" value=\"%@\">"
-//				"<param name=\"autoplay\" value=\"false\">"
-//				"<param name=\"controller\" value=\"true\">"
-//				"<embed src=\"%@\" width=\"%@\" height=\"%@\""
-//				"autoplay=\"false\" controller=\"true\" type=\"video/quicktime\""
-//				"pluginspage=\"http://www.apple.com/quicktime/download/\">"
-//				"</embed></object>",
-//				width, height, url,
-//				url, width, height];
-//	}
-//	
-//	if(![textView.text isEqualToString:@""])
-//		html = [NSString stringWithFormat:@"<br/>%@", html];
-//	textView.text = [currentText stringByAppendingString:html];
-//	[[BlogDataManager sharedDataManager].currentPost setValue:@"YES" forKey:@"hasChanges"];
-}
-
-- (void)videoUploadedNofificationReceived:(NSNotification *)notification {
-    NSDictionary *videoMeta = [notification userInfo];
-    NSString *currentText = textView.text;
-	MediaOrientation videoOrientation = kPortrait;
-	if(([videoMeta objectForKey:@"orientation"] != nil) && ([videoMeta objectForKey:@"orientation"] == [NSNumber numberWithInt:1]))
-		videoOrientation = kLandscape;
-	
-	NSString *html = @"";
-	if(currentText == nil)
-		currentText = html;
-	if([videoMeta objectForKey:@"shortcode"] != nil)
-		html = [videoMeta objectForKey:@"shortcode"];
-	else if([videoMeta objectForKey:@"url"] != nil) {
-		NSString *width = @"360";
-		NSString *height = @"496";
-		if(videoOrientation == kLandscape) {
-			width = @"480";
-			height = @"376";
-		}
-		
-		if([[UIDevice currentDevice] model] == IPHONE_3GS_NAMESTRING) {
-			// Leaving this as is until I have better data about iPhone 4 vs. 3GS video size
-			width = @"360";
-			height = @"496";
-			if(videoOrientation == kLandscape) {
-				width = @"480";
-				height = @"376";
-			}
-		}
-		
-		NSString *url = [videoMeta objectForKey:@"url"];
-		html = [NSString stringWithFormat:@"<object width=\"%@\" height=\"%@\""
-						  "classid=\"clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B\""
-						  "codebase=\"http://www.apple.com/qtactivex/qtplugin.cab\">"
-						  "<param name=\"src\" value=\"%@\">"
-						  "<param name=\"autoplay\" value=\"false\">"
-						  "<param name=\"controller\" value=\"true\">"
-						  "<embed src=\"%@\" width=\"%@\" height=\"%@\""
-						  "autoplay=\"false\" controller=\"true\" type=\"video/quicktime\""
-						  "pluginspage=\"http://www.apple.com/quicktime/download/\">"
-						  "</embed></object>",
-						  width, height, url,
-						  url, width, height];
-	}
-	
-	if(![textView.text isEqualToString:@""])
-		html = [NSString stringWithFormat:@"<br/>%@", html];
-	textView.text = [currentText stringByAppendingString:html];
-	[[BlogDataManager sharedDataManager].currentPost setValue:@"YES" forKey:@"hasChanges"];
+	NSMutableString *content = [[[NSMutableString alloc] initWithString:contentTextView.text] autorelease];
+	[content appendString:[NSString stringWithFormat:@"<br/><br/>%@", media.html]];
+    contentTextView.text = content;
 }
 
 - (void)readBookmarksFile {

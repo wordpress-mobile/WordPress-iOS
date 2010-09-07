@@ -85,24 +85,20 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *newCategoryBarButtonItem;
 @property (nonatomic, retain) NSArray *statuses;
 
+// UI
 - (void)refreshUIForCompose;
 - (void)refreshUIForCurrentPost;
 - (void)refreshCurrentPostForUI;
 - (void)setTextViewHeight:(float)height;
 - (IBAction)endTextEnteringButtonAction:(id)sender;
-- (void)useImage:(UIImage *)theImage;
-//- (void)showPhotoPickerActionSheet;
-//- (void)pickPhotoFromCamera:(id)sender;
-//- (void)pickPhotoFromPhotoLibrary:(id)sender;
-//- (IBAction)showPhotoUploadScreen:(id)sender;
 - (void)endEditingAction:(id)sender;
-- (void)syncCategories;
 - (void)refreshCategory;
 - (void)syncStatuses;
 - (void)refreshStatus;
 - (void)syncCategoriesAndStatuses;
 - (void)bringTextViewUp;
 - (void)bringTextViewDown;
+- (void)insertMedia:(BOOL)above notification:(NSNotification *)notification;
 
 // Autosave
 - (void)updateValuesToCurrentPost;
@@ -112,6 +108,8 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (void)clearUnsavedPost;
 - (void)restoreUnsavedPost;
 
+// Categories
+- (void)syncCategories;
 - (IBAction)showAddNewCategoryView:(id)sender;
 - (IBAction)showCategoriesViewAction:(id)sender;
 - (IBAction)showStatusViewAction:(id)sender;
