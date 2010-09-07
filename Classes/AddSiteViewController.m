@@ -33,7 +33,7 @@
 		logoFile = @"logo_wporg.png";
 		logoFrame = CGRectMake(150, 20, 229, 43);
 	}
-	else if([UIDevice currentDevice].model == IPHONE_1G_NAMESTRING) {
+	else if([[UIDevice currentDevice] platformString] == IPHONE_1G_NAMESTRING) {
 		logoFile = @"logo_wporg.png";
 	}
 	UIView *headerView = [[[UIView alloc] initWithFrame:headerFrame] autorelease];
