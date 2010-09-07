@@ -94,7 +94,7 @@
 		logoName = @"logo_welcome.png";
 	}
 	
-	if([[UIDevice currentDevice] systemName] == IPHONE_1G_NAMESTRING)
+	if([[UIDevice currentDevice] platformString] == IPHONE_1G_NAMESTRING)
 		logoName = @"logo_welcome.png";
 	
 		
