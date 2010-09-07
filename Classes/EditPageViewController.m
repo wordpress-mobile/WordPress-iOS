@@ -459,12 +459,18 @@
 	[titleTextField resignFirstResponder];
 	[contentTextView resignFirstResponder];
 	
-	if(![[self.page.status lowercaseString] isEqualToString:@"local-draft"])
+	if(![[self.page.status lowercaseString] isEqualToString:@"local-draft"]) {
 		self.isLocalDraft = NO;
+		
+		// If the page started out as a Local Draft, remove the selectedPostID field so it will move forward as a Create.
+		if([originalStatus isEqualToString:@"local-draft"] == YES)
+			delegate.selectedPostID = nil;
+		
+		[self performSelectorInBackground:@selector(saveInBackground) withObject:nil];
+	}
 	
 	spinner = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
 	[spinner show];
-	[self performSelectorInBackground:@selector(saveInBackground) withObject:nil];
 }
 
 - (void)saveInBackground {

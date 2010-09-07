@@ -40,6 +40,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePagesTableAfterDraftSaved:) name:@"DraftsUpdated" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable) name:@"DidSyncPages" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadPages) name:@"DidGetPages" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewPage:) name:@"DidCreatePage" object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -116,7 +117,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	int result = 0;
-	
+	NSLog(@"pages.count: %d", pages.count);
 	switch (section) {
 		case 0:
 			result = drafts.count;
@@ -127,7 +128,6 @@
 		case 2:
 			result = 1;
 			break;
-
 		default:
 			break;
 	}
@@ -300,6 +300,9 @@
 			break;
 	}
 	
+	NSSortDescriptor *sortByDate = [NSSortDescriptor sortDescriptorWithKey:@"date_created_gmt" ascending:NO];
+	[pages sortUsingDescriptors:[NSArray arrayWithObject:sortByDate]];
+	
 	[self refreshTable];
     [refreshButton stopAnimating];
 }
@@ -440,6 +443,13 @@
 	
 	NSDate *result = [[[NSDate alloc] initWithTimeInterval:interval sinceDate:sourceDate] autorelease];
 	return result;
+}
+
+- (void)addNewPage:(NSNotification *)notification {
+	NSDictionary *newPage = [(NSDictionary *)[notification object] retain];
+	[pages insertObject:newPage atIndex:0];
+	NSLog(@"added new page: %@", newPage);
+	[self refreshTable];
 }
 
 #pragma mark -

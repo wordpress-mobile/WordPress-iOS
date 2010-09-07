@@ -65,5 +65,6 @@
 - (void)loadMore;
 - (void)loadMoreInBackground;
 - (void)didLoadMore;
+- (void)addNewPage:(NSNotification *)notification;
 
 @end

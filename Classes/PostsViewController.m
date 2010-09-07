@@ -149,7 +149,6 @@
     } 
 	else {
 		int count = [[BlogDataManager sharedDataManager] countOfPostTitles];
-		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		
 		if (indexPath.row == count) {
 			int totalPosts = [[BlogDataManager sharedDataManager] countOfPostTitles];

@@ -95,7 +95,7 @@
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	if ([[Reachability sharedReachability] internetConnectionStatus]) {
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+		//[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 		
 		NSArray *params = [NSArray arrayWithObjects:
 						   [dm.currentBlog valueForKey:kBlogId],
@@ -117,7 +117,7 @@
 			[statuses setObject:@"Local Draft" forKey:[NSString stringWithString:kLocalDraftKey]];
 		}
 		
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+		//[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	}
 	
 	[pool release];
@@ -125,13 +125,15 @@
 
 - (NSDictionary *)getPage:(NSNumber *)pageID {
 	NSDictionary *result = nil;
-	for(NSDictionary *page in pages) {
-		NSNumber *thisPageID = [page objectForKey:@"page_id"];
-		if((thisPageID != nil) && ([thisPageID isEqualToNumber:pageID])) {
-			result = page;
-			break;
+	if(isGettingPages == NO) {
+		for(NSDictionary *page in pages) {
+			NSNumber *thisPageID = [page objectForKey:@"page_id"];
+			if((thisPageID != nil) && ([thisPageID isEqualToNumber:pageID])) {
+				result = page;
+				break;
+			}
+			
 		}
-		
 	}
 	
 	if(result == nil) {
@@ -169,7 +171,7 @@
 }
 
 - (void)addPage:(NSDictionary *)page {
-	[pages addObject:page];
+	[pages insertObject:page atIndex:0];
 }
 
 - (void)getPages {
@@ -271,12 +273,13 @@
 	[request setMethod:@"wp.editPage" withObjects:params];
 	
 	id response = [self executeXMLRPCRequest:request];
-	if([response intValue] == 1) {
+	if(![response isKindOfClass:[NSDictionary class]]) {
 		// Success
 		[self performSelectorOnMainThread:@selector(syncPages) withObject:nil waitUntilDone:NO];
 	}
 	else {
 		// Failure
+		NSLog(@"wp.editPage failed: %@", response);
 	}
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -318,31 +321,21 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	BOOL result = NO;
-	NSArray *params = [NSArray arrayWithObjects:
-					   [dm.currentBlog valueForKey:@"blogid"],
-					   [pageID stringValue],
-					   [dm.currentBlog objectForKey:@"username"],
-					   [dm getPasswordFromKeychainInContextOfCurrentBlog:dm.currentBlog], nil];
 	
-	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:xmlrpcURL];
-	[request setMethod:@"wp.getPage" withObjects:params];
-	[params release];
-	
-	XMLRPCResponse *response = [self executeXMLRPCRequest:request];
-	if([response isKindOfClass:[NSDictionary class]]) {
+	NSDictionary *newPage = [self downloadPage:pageID];
+	if(newPage != nil) {
 		NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
 		[f setNumberStyle:NSNumberFormatterDecimalStyle];
-		NSNumber *newPageID = [response valueForKey:@"page_id"];
+		NSNumber *newPageID = [newPage valueForKey:@"page_id"];
 		[f release];
 		if([pageID isEqualToNumber:newPageID]) {
 			// Publish was successful
+			[self performSelectorOnMainThread:@selector(addPage:) withObject:newPage waitUntilDone:NO];
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"DidCreatePage" object:newPage];
 			[[NSNotificationCenter defaultCenter] postNotificationName:@"LocalDraftWasPublishedSuccessfully" object:uniqueID];
 			result = YES;
 			[self performSelectorOnMainThread:@selector(syncPages) withObject:nil waitUntilDone:NO];
 		}
-	}
-	else {
-		// Failure
 	}
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
