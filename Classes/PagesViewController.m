@@ -122,7 +122,6 @@
 		default:
 			break;
 	}
-	NSLog(@"rowcount is now: %d", result);
 	
 	return result;
 }

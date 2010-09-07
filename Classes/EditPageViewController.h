@@ -81,4 +81,9 @@
 - (void)insertMediaAbove:(NSNotification *)notification;
 - (void)insertMediaBelow:(NSNotification *)notification;
 
+// Recovery
+- (void)preserveUnsavedPage;
+- (void)clearUnsavedPage;
+- (void)restoreUnsavedPage;
+
 @end

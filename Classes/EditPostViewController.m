@@ -45,9 +45,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [leftView setTarget:self withAction:@selector(cancelView:)];
 	
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newCategoryCreatedNotificationReceived:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(imageUploadedNofificationReceived:) name:ImageUploadSuccessful object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoUploadedNofificationReceived:) name:VideoUploadSuccessful object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkAutosaves:) name:@"AutosaveNotification" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaAbove:) name:@"ShouldInsertMediaAbove" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:@"ShouldInsertMediaBelow" object:nil];
 	//[self hideAutosaveButton];
 	
     //JOHNB TODO: Add a check here for the presence of custom fields in the data model
@@ -630,13 +630,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[self preserveUnsavedPost];
 }
 
-- (void)insertMedia:(BOOL)above notification:(NSNotification *)notification {
-	Media *media = [notification object];
-	NSLog(@"media: %@", media);
-	
-	//if(above == YES)
-}
-
 - (void)updateTextViewPlacehoderFieldStatus {
     if ([textView.text length] == 0) {
         textViewPlaceHolderField.hidden = NO;
@@ -1079,16 +1072,18 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	Media *media = [notification object];
 	
 	NSMutableString *content = [[[NSMutableString alloc] initWithString:media.html] autorelease];
-	[content appendString:[NSString stringWithFormat:@"<br/><br/>%@", contentTextView.text]];
-    contentTextView.text = content;
+	[content appendString:[NSString stringWithFormat:@"<br/><br/>%@", textView.text]];
+    textView.text = content;
+    postDetailViewController.hasChanges = YES;
 }
 
 - (void)insertMediaBelow:(NSNotification *)notification {
 	Media *media = [notification object];
 	
-	NSMutableString *content = [[[NSMutableString alloc] initWithString:contentTextView.text] autorelease];
+	NSMutableString *content = [[[NSMutableString alloc] initWithString:textView.text] autorelease];
 	[content appendString:[NSString stringWithFormat:@"<br/><br/>%@", media.html]];
-    contentTextView.text = content;
+    textView.text = content;
+    postDetailViewController.hasChanges = YES;
 }
 
 - (void)readBookmarksFile {

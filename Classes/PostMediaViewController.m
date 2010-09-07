@@ -938,7 +938,7 @@
 	self.blogURL = [dm.currentBlog objectForKey:@"url"];
 	
 	if((([dm.currentPost objectForKey:@"postid"] != nil)) && ([[dm.currentPost objectForKey:@"postid"] isEqualToString:@""] == NO))
-		self.postID = [dm.currentPage objectForKey:@"postid"];
+		self.postID = [dm.currentPost objectForKey:@"postid"];
 	else if((([dm.currentPage objectForKey:@"page_id"] != nil)) && ([[dm.currentPage objectForKey:@"page_id"] isEqualToString:@""] == NO))
 		self.postID = [dm.currentPage objectForKey:@"page_id"];
 	else if(appDelegate.postID != nil)

@@ -98,7 +98,10 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (void)syncCategoriesAndStatuses;
 - (void)bringTextViewUp;
 - (void)bringTextViewDown;
-- (void)insertMedia:(BOOL)above notification:(NSNotification *)notification;
+
+// Media
+- (void)insertMediaAbove:(NSNotification *)notification;
+- (void)insertMediaBelow:(NSNotification *)notification;
 
 // Autosave
 - (void)updateValuesToCurrentPost;

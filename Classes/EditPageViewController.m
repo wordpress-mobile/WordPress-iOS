@@ -33,7 +33,6 @@
 	else {
 		statuses = [delegate.pageManager.statuses mutableCopy];
 	}
-
 	
 	[self setupPage];
 	
@@ -256,6 +255,7 @@
 	sectionRect.size.height = self.table.frame.size.height;
 	[self.table scrollRectToVisible:sectionRect animated:YES];
 	[self checkPublishable];
+	[self preserveUnsavedPage];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
@@ -282,6 +282,7 @@
 	}
 	
 	[textView resignFirstResponder];
+	[self preserveUnsavedPage];
 	[self refreshPage];
 	[self refreshTable];
 }
@@ -332,6 +333,8 @@
 			[self.page setBlogID:[dm.currentBlog objectForKey:@"blogid"]];
 			[self.page setDateCreated:[NSDate date]];
 			[self.page setStatus:@"local-draft"];
+			
+			[self restoreUnsavedPage];
 		}
 		[self setOriginalTitle:self.page.postTitle];
 		[self setOriginalStatus:self.page.status];
@@ -381,11 +384,13 @@
 	[actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 	[actionSheet setBounds:CGRectMake(0, 0, 320, 485)];
 	[self checkPublishable];
+	[self preserveUnsavedPage];
 }
 
 - (IBAction)hideStatusPicker:(id)sender {
 	[actionSheet dismissWithClickedButtonIndex:0 animated:YES];
 	[self refreshTable];
+	[self preserveUnsavedPage];
 	[self checkPublishable];
 }
 
@@ -423,12 +428,14 @@
 - (void)keyboardWillShow:(NSNotification *)notification {
 	self.isShowingKeyboard = YES;
 	[self checkPublishable];
+	[self preserveUnsavedPage];
 	[self.view bringSubviewToFront:resignTextFieldButton];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
 	self.isShowingKeyboard = NO;
 	[self checkPublishable];
+	[self preserveUnsavedPage];
 }
 
 - (void)publish {
@@ -484,6 +491,7 @@
 		
 		[self performSelectorOnMainThread:@selector(didSavePageInBackground) withObject:nil waitUntilDone:NO];
 	}
+	[self clearUnsavedPage];
 	
 	[pool release];
 }
@@ -556,6 +564,56 @@
 	NSMutableString *content = [[[NSMutableString alloc] initWithString:contentTextView.text] autorelease];
 	[content appendString:[NSString stringWithFormat:@"<br/><br/>%@", media.html]];
     contentTextView.text = content;
+}
+
+#pragma mark -
+#pragma mark Page recovery
+
+- (void)preserveUnsavedPage {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	BOOL hasUnsavedPage = NO;
+	
+	if((titleTextField.text != nil) && ([titleTextField.text isEqualToString:@""] == NO)) {
+		[defaults setObject:titleTextField.text forKey:@"unsavedpage_title"];
+		hasUnsavedPage = YES;
+	}
+	
+	if((contentTextView.text != nil) && ([contentTextView.text isEqualToString:@""] == NO)) {
+		[defaults setObject:contentTextView.text forKey:@"unsavedpage_content"];
+		hasUnsavedPage = YES;
+	}
+	
+	if(hasUnsavedPage == YES) {
+		[defaults setObject:[NSNumber numberWithBool:YES] forKey:@"unsavedpage_ihasone"];
+		[defaults synchronize];
+	}
+}
+
+- (void)clearUnsavedPage {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults removeObjectForKey:@"unsavedpage_title"];
+	[defaults removeObjectForKey:@"unsavedpage_content"];
+	[defaults removeObjectForKey:@"unsavedpage_ihasone"];
+}
+
+- (void)restoreUnsavedPage {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	
+	if([defaults objectForKey:@"unsavedpage_ihasone"] != nil) {
+		if ([defaults objectForKey:@"unsavedpage_title"] != nil) {
+			self.page.postTitle = [defaults objectForKey:@"unsavedpage_title"];
+		}
+		
+		if ([defaults objectForKey:@"unsavedpage_content"] != nil) {
+			self.page.content = [defaults objectForKey:@"unsavedpage_content"];
+		}
+		[self refreshTable];
+		
+		NSLog(@"restoring unsaved post:\ntitle:%@\ncontent:%@", 
+			  titleTextField.text, contentTextView.text);
+	}
+	
+	[self clearUnsavedPage];
 }
 
 #pragma mark -
