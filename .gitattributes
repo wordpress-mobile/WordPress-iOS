@@ -97,6 +97,8 @@ Classes/PostAnnotation.m -text
 Classes/PostLocationViewController.h -text
 Classes/PostLocationViewController.m -text
 Classes/PostLocationViewController.xib -text
+Classes/PostManager.h -text
+Classes/PostManager.m -text
 Classes/PostMediaViewController.h -text
 Classes/PostMediaViewController.m -text
 Classes/PostMediaViewController.xib -text
