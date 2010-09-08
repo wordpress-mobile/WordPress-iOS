@@ -791,7 +791,6 @@
 		NSDictionary *fileAttributes = [fileManager fileAttributesAtPath:filename traverseLink:YES];
 		if(fileAttributes != nil)
 			[mediaUploader setFilesize:[[fileAttributes objectForKey:@"NSFileSize"] floatValue]];
-		NSLog(@"Starting upload...");
 		[mediaUploader start];
 		
 		if(DeviceIsPad() == YES)

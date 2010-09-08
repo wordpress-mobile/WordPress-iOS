@@ -44,6 +44,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [leftView setTitle:@"Posts"];
     [leftView setTarget:self withAction:@selector(cancelView:)];
 	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideKeyboard:) name:@"EditPostViewShouldHideKeyboard" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(save) name:@"EditPostViewShouldSave" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(publish) name:@"EditPostViewShouldPublish" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newCategoryCreatedNotificationReceived:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
@@ -72,11 +75,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		statusTextField.textColor = [UIColor grayColor];
 		
 		textView.editable = NO;
-	}
-	
-	if (DeviceIsPad() == YES) {
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 	}
 	
 	self.statusTextField.text = @"Local Draft";
@@ -215,6 +213,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)refreshUIForCompose {
+	self.isLocalDraft = YES;
+	postDetailViewController.wasLocalDraft = YES;
 	self.navigationItem.title = @"Write";
     titleTextField.text = @"";
     tagsTextField.text = @"";
@@ -232,7 +232,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	AutosaveManager *autosaveManager = [[AutosaveManager alloc] init];
 	DraftManager *draftManager = [[DraftManager alloc] init];
 	
-	if(([[dm currentPost] objectForKey:@"postid"] == nil) && (appDelegate.postID != nil) && (appDelegate.postID.length > 6)) {		
+	NSString *currentPostID = nil;
+	if(([dm.currentPost objectForKey:@"postid"] != nil) && ([dm.currentPost objectForKey:@"postid"] != @""))
+		currentPostID = [dm.currentPost objectForKey:@"postid"];
+	
+	if((currentPostID == nil) && (appDelegate.postID != nil) && (appDelegate.postID.length > 6)) {		
 		Post *post = [[draftManager get:appDelegate.postID] retain];
 		if(post != nil) {
 			if([[post isLocalDraft] isEqualToNumber:[NSNumber numberWithInt:1]])
@@ -246,8 +250,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			statusTextField.text = post.status;
 			categoriesTextField.text = post.categories;
 			
-			NSLog(@"titleTextField.text: %@\ntagsTextField.text: %@\nstatusTextField.text: %@\ncategoriesTextField.text: %@",
-				  titleTextField.text, tagsTextField.text, statusTextField.text, categoriesTextField.text);
 			
 			if(post.content == nil) {
 				textViewPlaceHolderField.hidden = NO;
@@ -262,7 +264,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		}
 	}
 	else {
-		NSLog(@"currentPost: %@", dm.currentPost);
 		self.isLocalDraft = NO;
 		NSString *description = [dm.currentPost valueForKey:@"description"];
 		NSString *moreText = [dm.currentPost valueForKey:@"mt_text_more"];
@@ -285,8 +286,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		if(titleTextField == nil)
 			titleTextField = [[UITextField alloc] init];
 		titleTextField.text = [dm.currentPost valueForKey:@"title"];
-		NSLog(@"titleTextField: %@", titleTextField);
-		NSLog(@"dm.currentPost.title: %@", [dm.currentPost valueForKey:@"title"]);
 		tagsTextField.text = [dm.currentPost valueForKey:@"mt_keywords"];
 		
 		NSString *status = [dm statusDescriptionForStatus:[dm.currentPost valueForKey:@"post_status"] fromBlog:dm.currentBlog];
@@ -298,9 +297,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			categoriesTextField.text = [cats componentsJoinedByString:@", "];
 		else
 			categoriesTextField.text = @"";
-		
-		NSLog(@"titleTextField.text: %@\ntagsTextField.text: %@\nstatusTextField.text: %@\ncategoriesTextField.text: %@",
-			  titleTextField.text, tagsTextField.text, statusTextField.text, categoriesTextField.text);
 			
 	}
 	
@@ -315,6 +311,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)refreshCurrentPostForUI {
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	if(self.isLocalDraft == YES) {
 		WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 		[appDelegate setPostID:postDetailViewController.post.uniqueID];
@@ -324,6 +321,16 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[postDetailViewController.post setStatus:statusTextField.text];
 		[postDetailViewController.post setContent:textView.text];
 	}
+	if(titleTextField.text != nil)
+		[dm.currentPost setObject:titleTextField.text forKey:@"title"];
+	if(tagsTextField.text != nil)
+		[dm.currentPost setObject:[tagsTextField.text lowercaseString] forKey:@"mt_keywords"];
+	if(categoriesTextField.text != nil)
+		[dm.currentPost setObject:[categoriesTextField.text componentsSeparatedByString:@", "] forKey:@"categories"];
+	if(statusTextField.text != nil)
+		[dm.currentPost setObject:statusTextField.text forKey:@"status"];
+	if(textView.text != nil)
+		[dm.currentPost setObject:textView.text forKey:@"description"];
 }
 
 - (void)populateSelectionsControllerWithCategories {
@@ -396,8 +403,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 							[[BlogDataManager sharedDataManager].currentPost valueForKey:@"post_status"] 
 																				  fromBlog:[BlogDataManager sharedDataManager].currentBlog];
 		
-		if(status)
+		if(status) {
 			categoriesTextField.text = [cats componentsJoinedByString:@", "];
+		}
 		else
 			categoriesTextField.text = @"";
 	}
@@ -530,6 +538,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [selctionController clean];
     postDetailViewController.hasChanges = YES;
 	[self preserveUnsavedPost];
+	[postDetailViewController refreshButtons];
 }
 
 - (void)newCategoryCreatedNotificationReceived:(NSNotification *)notification {
@@ -774,8 +783,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			
 			[self bringTextViewUp];
 			
-			UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
-																		  target:self action:@selector(endTextEnteringButtonAction:)];
+			// Done button
+			UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] init];
+			doneButton.target = self;
+			doneButton.style = UIBarButtonItemStyleBordered;
+			doneButton.title = @"Done";
+			doneButton.action = @selector(endTextEnteringButtonAction:);
 			[postDetailViewController setLeftBarButtonItemForEditPost:doneButton];
 			[doneButton release];
 		}
@@ -783,7 +796,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)aTextView {
-	
     isEditing = YES;
 	
 	if (DeviceIsPad() == NO) {
@@ -809,6 +821,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			[doneButton release];
 		}
     }
+	[postDetailViewController refreshButtons];
 }
 
 //replace "&nbsp" with a space @"&#160;" before Apple's broken TextView handling can do so and break things
@@ -1223,8 +1236,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 #pragma mark Location methods
 
 - (BOOL)isPostGeotagged {
-	if([self getPostLocation] != nil)
+	if([self getPostLocation] != nil) {
+		postDetailViewController.hasChanges = YES;
 		return YES;
+	}
 	else
 		return NO;
 }
@@ -1269,9 +1284,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
 #pragma mark -
 #pragma mark Keyboard management 
 
-- (void)keyboardWillShow:(NSNotification *)notification; 
-{
+- (void)keyboardWillShow:(NSNotification *)notification {
 	NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo];
+	
+	postDetailViewController.isShowingKeyboard = YES;
+	[postDetailViewController refreshButtons];
 	
 	CGRect keyboardBounds;
     [[notification.userInfo valueForKey:UIKeyboardBoundsUserInfoKey] getValue:&keyboardBounds];
@@ -1287,27 +1304,31 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	frame.size.height = kbSizeH + 280;
 	textView.frame = frame;
 	
-	[UIView commitAnimations]; 
-} 
+	[UIView commitAnimations];
+}
 
-- (void)keyboardWillHide:(NSNotification *)notification; 
-{ 
-	NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo]; 
-	
-	CGRect kbBounds = [[keyboardInfo objectForKey:UIKeyboardBoundsUserInfoKey] CGRectValue]; 
-	CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue]; 
-	UIViewAnimationCurve curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue]; 
-	
-	[UIView beginAnimations:nil context:nil]; 
-	
-	[UIView setAnimationCurve:curve]; 
-	[UIView setAnimationDuration:animationDuration]; 
-	
-	CGRect frame = textView.frame; 
-	frame.size.height += kbBounds.size.height; 
-	textView.frame = frame; 
-	
-	[UIView commitAnimations]; 
+- (void)keyboardWillHide:(NSNotification *)notification {
+	NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo];
+	if(textView != nil) {
+		
+		postDetailViewController.isShowingKeyboard = NO;
+		[postDetailViewController refreshButtons];
+		
+		CGRect kbBounds = [[keyboardInfo objectForKey:UIKeyboardBoundsUserInfoKey] CGRectValue]; 
+		CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue]; 
+		UIViewAnimationCurve curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue]; 
+		
+		[UIView beginAnimations:nil context:nil]; 
+		[UIView setAnimationCurve:curve]; 
+		[UIView setAnimationDuration:animationDuration]; 
+		
+		CGRect frame = textView.frame; 
+		frame.size.height += kbBounds.size.height;
+		
+		textView.frame = frame; 
+		
+		[UIView commitAnimations];
+	}
 }
 
 #pragma mark -

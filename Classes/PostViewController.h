@@ -17,7 +17,7 @@
 @class WPNavigationLeftButtonView, WPPublishOnEditController, CInvisibleToolbar, FlippingViewController;
 
 @interface PostViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate> {
-    IBOutlet UITabBarController *tabController;
+	WordPressAppDelegate *appDelegate;
 
 	EditPostViewController *postDetailViewController;
     EditPostViewController *postDetailEditController;
@@ -29,12 +29,14 @@
 	Post *post;
 	AutosaveManager *autosaveManager;
 	DraftManager *draftManager;
+	BlogDataManager *dm;
     
     UIViewController *selectedViewController;
     WPNavigationLeftButtonView *leftView;
 	WPProgressHUD *spinner;
 
-    BOOL hasChanges, hasSaved, isVisible, didConvertDraftToPublished, isShowingAutosaves;
+    BOOL hasChanges, hasSaved, isVisible, didConvertDraftToPublished, isShowingAutosaves, isPublishing, isShowingKeyboard;
+	BOOL wasLocalDraft;
     EditPostMode editMode;
     NSTimer *autoSaveTimer;
 	NSURLConnection *connection;
@@ -48,6 +50,7 @@
 	UIPopoverController *popoverController;
 	UIPopoverController *photoPickerPopover;
 	
+    IBOutlet UITabBarController *tabController;
 	IBOutlet UIBarButtonItem *commentsButton;
 	IBOutlet UIBarButtonItem *photosButton;
 	IBOutlet UIBarButtonItem *settingsButton;
@@ -56,8 +59,6 @@
 	IBOutlet UIToolbar *previewToolbar;
 	IBOutlet UIBarButtonItem *cancelEditButton;
 	IBOutlet AutosaveViewController *autosaveView;
-	
-	WordPressAppDelegate *appDelegate;
 }
 
 @property (nonatomic, retain) WPNavigationLeftButtonView *leftView;
@@ -69,7 +70,8 @@
 @property (nonatomic, retain) IBOutlet CommentsViewController *commentsViewController;
 @property (nonatomic, assign) PostsViewController *postsListController;
 @property (nonatomic, assign) UIViewController *selectedViewController;
-@property (nonatomic, assign) BOOL hasChanges, hasSaved, isVisible, didConvertDraftToPublished, isShowingAutosaves;
+@property (nonatomic, assign) BOOL hasChanges, hasSaved, isVisible, didConvertDraftToPublished, isShowingAutosaves, isPublishing;
+@property (nonatomic, assign) BOOL isShowingKeyboard, wasLocalDraft;
 @property (nonatomic, assign) EditPostMode editMode;
 @property (readonly) UITabBarController *tabController;
 @property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
@@ -91,6 +93,7 @@
 @property (nonatomic, retain) AutosaveManager *autosaveManager;
 @property (nonatomic, retain) DraftManager *draftManager;
 @property (nonatomic, retain) WPProgressHUD *spinner;
+@property (nonatomic, assign) BlogDataManager *dm;
 
 - (IBAction)cancelView:(id)sender;
 - (void)refreshUIForCompose;

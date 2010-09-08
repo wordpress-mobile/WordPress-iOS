@@ -3631,7 +3631,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
     }
 	
     NSNumber *postStatus = [aPost valueForKey:@"isLocalDraft"];
-	
     if (currentPostIndex == -1 || ([postStatus intValue] == 1)) {
         NSMutableDictionary *postParams = [NSMutableDictionary dictionary];
 		
@@ -4172,14 +4171,18 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 - (NSString *)statusForStatusDescription:(NSString *)statusDescription fromBlog:(id)aBlog {
     if ([statusDescription isEqual:@"Local Draft"])
         return statusDescription;
+	else if(statusDescription == nil)
+		return @"";
 	
     NSDictionary *postStatusList = [aBlog valueForKey:@"postStatusList"];
-    NSArray *dataSource = [postStatusList allValues];
-    int index = [dataSource indexOfObject:statusDescription];
-	
-    if (index != -1) {
-        return [[postStatusList allKeys] objectAtIndex:index];
-    }
+	if((postStatusList != nil) && (postStatusList.count > 0)) {
+		NSArray *dataSource = [postStatusList allValues];
+		int index = [dataSource indexOfObject:statusDescription];
+		
+		if(index != -1) {
+			return [[postStatusList allKeys] objectAtIndex:index];
+		}
+	}
 	
     return nil;
 }

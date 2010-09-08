@@ -139,6 +139,7 @@
 		833F59F611C95DE400789837 /* HttpHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 833F59F411C95DE400789837 /* HttpHelper.m */; };
 		83418A5611C9F50800ACF00C /* WPDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83418A5511C9F50800ACF00C /* WPDataController.m */; };
 		83418AAA11C9FA6E00ACF00C /* Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = 83418AA911C9FA6E00ACF00C /* Comment.m */; };
+		8343D93C1237CFD9003DD6D3 /* PostManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8343D93B1237CFD9003DD6D3 /* PostManager.m */; };
 		834CAE7C122D528A003DDF49 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 834CAE7B122D528A003DDF49 /* UIImage+Resize.m */; };
 		834CAE9F122D56B1003DDF49 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 834CAE9D122D56B1003DDF49 /* UIImage+Alpha.m */; };
 		834CAEA0122D56B1003DDF49 /* UIImage+RoundedCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = 834CAE9E122D56B1003DDF49 /* UIImage+RoundedCorner.m */; };
@@ -478,6 +479,8 @@
 		83418A6111C9F62200ACF00C /* WPDataControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPDataControllerDelegate.h; sourceTree = "<group>"; };
 		83418AA811C9FA6E00ACF00C /* Comment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Comment.h; sourceTree = "<group>"; };
 		83418AA911C9FA6E00ACF00C /* Comment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Comment.m; sourceTree = "<group>"; };
+		8343D93A1237CFD9003DD6D3 /* PostManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostManager.h; sourceTree = "<group>"; };
+		8343D93B1237CFD9003DD6D3 /* PostManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostManager.m; sourceTree = "<group>"; };
 		834CAE7A122D528A003DDF49 /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
 		834CAE7B122D528A003DDF49 /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
 		834CAE9B122D56B1003DDF49 /* UIImage+Alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Alpha.h"; sourceTree = "<group>"; };
@@ -957,6 +960,8 @@
 				8302C4591228173E00B7A208 /* MediaManager.m */,
 				83CAC78812354031003DFA20 /* PageManager.h */,
 				83CAC78912354031003DFA20 /* PageManager.m */,
+				8343D93A1237CFD9003DD6D3 /* PostManager.h */,
+				8343D93B1237CFD9003DD6D3 /* PostManager.m */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -1715,6 +1720,7 @@
 				83CACE951235A003003DFA20 /* UILoadMoreCell.m in Sources */,
 				83CAD2ED1235E21E003DFA20 /* UITextFieldCell.m in Sources */,
 				83CAD41D1235F854003DFA20 /* MediaObjectViewController.m in Sources */,
+				8343D93C1237CFD9003DD6D3 /* PostManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1872,7 +1878,7 @@
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-licucore";
@@ -1894,13 +1900,13 @@
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_LDFLAGS = "-licucore";
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "0D86A283-4B39-4013-AFA5-6370DD13062E";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0D86A283-4B39-4013-AFA5-6370DD13062E";
-				SDKROOT = iphoneos4.0;
+				SDKROOT = iphoneos3.2;
 			};
 			name = Release;
 		};

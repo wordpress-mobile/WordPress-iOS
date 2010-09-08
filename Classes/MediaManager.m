@@ -193,8 +193,6 @@
         NSLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
         exit(-1);
     }
-	
-	[self doReport];
 }
 
 - (void)doReport {

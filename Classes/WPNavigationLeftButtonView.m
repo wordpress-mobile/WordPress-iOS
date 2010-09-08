@@ -1,8 +1,7 @@
 #import "WPNavigationLeftButtonView.h"
 
 @implementation WPNavigationLeftButtonView
-
-@dynamic title;
+@synthesize title, addButton;
 
 + (WPNavigationLeftButtonView *)createCopyOfView  {
     return [[WPNavigationLeftButtonView alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
@@ -44,8 +43,18 @@
     return self;
 }
 
+- (void)updateButton:(NSString *)text newStyle:(UIBarButtonItemStyle)style {
+	self.addButton.titleLabel.text = text;
+	
+	[addButton setBackgroundImage:nil forState:UIControlStateNormal];
+	[addButton setBackgroundImage:nil forState:UIControlStateHighlighted];
+	[addButton setBackgroundImage:nil forState:UIControlStateSelected];
+	
+}
+
 - (void)dealloc {
     [addButton release];
+	[title release];
     [super dealloc];
 }
 

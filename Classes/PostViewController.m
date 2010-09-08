@@ -24,18 +24,17 @@
 
 - (void)discard;
 - (void)cancel;
-- (void)savePostWithBlog:(NSMutableArray *)arrayPost;
 
 @end
 
 @implementation PostViewController
 
 @synthesize postDetailViewController, postDetailEditController, postPreviewController, postSettingsController, postsListController, hasChanges, tabController;
-@synthesize mediaViewController, leftView, isVisible, commentsViewController, spinner;
+@synthesize mediaViewController, leftView, isVisible, commentsViewController, spinner, isPublishing, dm;
 @synthesize selectedViewController, toolbar, contentView, commentsButton, photosButton, hasSaved;
-@synthesize settingsButton, editToolbar, cancelEditButton, post, didConvertDraftToPublished;
+@synthesize settingsButton, editToolbar, cancelEditButton, post, didConvertDraftToPublished, isShowingKeyboard;
 @synthesize payload, connection, urlResponse, urlRequest, appDelegate, autosaveView, autosaveButton, isShowingAutosaves;
-@synthesize autosaveManager, draftManager, editMode;
+@synthesize autosaveManager, draftManager, editMode, wasLocalDraft;
 
 @dynamic leftBarButtonItemForEditPost;
 
@@ -44,11 +43,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	dm = [BlogDataManager sharedDataManager];
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	autosaveView = [[AutosaveViewController alloc] initWithNibName:@"AutosaveViewController" bundle:nil];
 	autosaveManager = [[AutosaveManager alloc] init];
 	draftManager = [[DraftManager alloc] init];
+	
+	spinner = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
 	hasSaved = NO;
+	postDetailEditController.postDetailViewController = self;
 	
 	if(editMode == kNewPost) {
 		NSMutableArray *tabs = [NSMutableArray arrayWithArray:tabController.viewControllers];
@@ -67,6 +70,15 @@
 			leftView = [WPNavigationLeftButtonView createCopyOfView];
 			[leftView setTitle:@"Posts"];
 		}
+	}
+	
+    if(self.editMode == kEditPost)
+        [self refreshUIForCurrentPost];
+	else if(self.editMode == kNewPost)
+        [self refreshUIForCompose];
+	else if (self.editMode == kAutorecoverPost) {
+        [self refreshUIForCurrentPost];
+        self.hasChanges = YES;
 	}
 	
 	[self refreshButtons];
@@ -106,14 +118,6 @@
 		[cancelButton release];
 	}
 	
-    if(self.editMode == kEditPost)
-        [self refreshUIForCurrentPost];
-	//else if(self.editMode == kNewPost)
-        //[self refreshUIForCompose];
-	else if (self.editMode == kAutorecoverPost)
-        [self refreshUIForCurrentPost];
-        self.hasChanges = YES;
-	
     if(self.editMode != kNewPost)
 		self.editMode = kRefreshPost;
 	
@@ -131,7 +135,7 @@
 }
 
 - (void)refreshButtons {
-	if(hasChanges == YES) {
+	if(self.hasChanges == YES) {
 		TransparentToolbar *buttonBar = [[TransparentToolbar alloc] initWithFrame:CGRectMake(0, 0, 124, 44)];
 		NSMutableArray *buttons = [[NSMutableArray alloc] initWithCapacity:3];
 		
@@ -201,6 +205,10 @@
     selectedViewController = viewController;
 }
 
+- (IBAction)cancelAction:(id)sender {
+	[postDetailEditController bringTextViewDown];
+}
+
 - (IBAction)cancelView:(id)sender {
     if (!hasChanges) {
         [self stopTimer];
@@ -222,7 +230,13 @@
 }
 
 - (IBAction)saveAction:(id)sender {
-	spinner = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
+	if(isPublishing == NO)
+		spinner.progressMessage.text = @"Saving...";
+	else
+		spinner.progressMessage.text = @"Publishing...";
+	
+	[self.postDetailEditController refreshCurrentPostForUI];
+	
 	[spinner show];
 	[self performSelectorInBackground:@selector(saveInBackground) withObject:nil];
 }
@@ -230,7 +244,6 @@
 - (void)saveInBackground {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	[postDetailEditController bringTextViewDown];
 	hasSaved = YES;
 	
@@ -254,10 +267,8 @@
 				[self dismissEditView];
 			}
 			else {
-				
 				[(NSMutableDictionary *)[BlogDataManager sharedDataManager].currentPost setValue:@"" forKey:@"mt_text_more"];
 				[postSettingsController endEditingAction:nil];
-				[postDetailEditController endEditingAction:nil];
 				
 				NSString *description = [dm.currentPost valueForKey:@"description"];
 				NSString *title = [dm.currentPost valueForKey:@"title"];
@@ -283,30 +294,31 @@
 					[self cancel];
 				}
 				else {
-					NSMutableArray *params = [[[NSMutableArray alloc] initWithObjects:dm.currentPost, dm.currentBlog, nil] autorelease];
-					BOOL isCurrentPostDraft = dm.isLocaDraftsCurrent;
-					
-					if (isCurrentPostDraft)
-						[dm saveCurrentPostAsDraftWithAsyncPostFlag];
-					
-					NSString *postId = [dm savePostsFileWithAsynPostFlag:[params objectAtIndex:0]];
-					NSMutableArray *argsArray = [NSMutableArray arrayWithArray:params];
-					int count = [argsArray count];
-					[argsArray insertObject:postId atIndex:count];
-					
-					[self savePostWithBlog:argsArray];
-					[self verifyPublishSuccessful];
-					
-					hasChanges = NO;
-					
-					[self dismissEditView];
-					
-					if (DeviceIsPad() == YES) {
-						[[BlogDataManager sharedDataManager] makePostWithPostIDCurrent:postId];
+					if(wasLocalDraft == YES) {
+						[dm.currentPost setObject:[NSNumber numberWithInt:1] forKey:@"isLocalDraft"];
+						wasLocalDraft = YES;
 					}
 					
-					[postDetailEditController clearUnsavedPost];
-					[self refreshUIForCompose];
+					BOOL savePostStatus = [dm savePost:dm.currentPost];
+					NSString *postID = [dm.currentPost objectForKey:@"postid"];
+					NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+					[self stopTimer];
+					
+					if(savePostStatus == YES) {
+						[dm removeAutoSavedCurrentPostFile];
+						[dict setValue:postID forKey:@"savedPostId"];
+						[dict setValue:[[dm currentPost] valueForKey:@"postid"] forKey:@"originalPostId"];
+						[dict setValue:[NSNumber numberWithInt:0] forKey:@"isCurrentPostDraft"];
+					}
+					
+					if(wasLocalDraft == NO)
+						[[NSNotificationCenter defaultCenter] postNotificationName:@"AsynchronousPostIsPosted" object:nil userInfo:dict];
+					
+					[dict release];
+					
+					if (DeviceIsPad() == YES) {
+						[[BlogDataManager sharedDataManager] makePostWithPostIDCurrent:postID];
+					}
 				}
 			}
 		}
@@ -321,13 +333,19 @@
 }
 
 - (void)didSaveInBackground {
+	isPublishing = NO;
+	hasChanges = NO;
+	[self refreshUIForCompose];
+	[self verifyPublishSuccessful];
+	if(DeviceIsPad() == NO)
+		[self.navigationController popViewControllerAnimated:YES];
+	[postDetailEditController clearUnsavedPost];
 	[spinner dismissWithClickedButtonIndex:0 animated:YES];
 }
 
 - (void)autoSaveCurrentPost:(NSTimer *)aTimer {
 	[postDetailEditController preserveUnsavedPost];
 	if (hasChanges) {
-		BlogDataManager *dm = [BlogDataManager sharedDataManager];
 		Post *autosave = [autosaveManager get:nil];
 		
 		if(postDetailEditController.isLocalDraft == YES)
@@ -489,7 +507,7 @@
 	[postsListController loadPosts];
 	
 	[postDetailEditController clearUnsavedPost];
-	[self refreshUIForCompose];
+	[self performSelectorOnMainThread:@selector(didSaveInBackground) withObject:nil waitUntilDone:NO];
 	
 	if(andDiscard == YES)
 		[self discard];
@@ -499,9 +517,9 @@
     hasChanges = NO;
 	[self refreshButtons];
 	[postDetailEditController clearUnsavedPost];
-	[self refreshUIForCompose];
     [self stopTimer];
-	[self dismissEditView];
+	if(DeviceIsPad() == NO)
+		[self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)cancel {
@@ -509,34 +527,6 @@
 
     if ([[leftView title] isEqualToString:@"Posts"])
         [leftView setTitle:@"Cancel"];
-}
-
-- (void)savePostWithBlog:(NSMutableArray *)arrayPost {
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
-    NSString *postId = [arrayPost lastObject];
-    BOOL isCurrentPostDraft = dm.isLocaDraftsCurrent;
-
-    BOOL savePostStatus = [dm savePost:[arrayPost objectAtIndex:0]];
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    [self stopTimer];
-
-    if (savePostStatus) {
-		[dm removeAutoSavedCurrentPostFile];
-        [dict setValue:postId forKey:@"savedPostId"];
-        [dict setValue:[[dm currentPost] valueForKey:@"postid"] forKey:@"originalPostId"];
-        [dict setValue:[NSNumber numberWithInt:isCurrentPostDraft] forKey:@"isCurrentPostDraft"];
-
-	} else {
-        [dm removeTempFileForUnSavedPost:postId];
-
-        if (isCurrentPostDraft) {
-            [dm restoreUnsavedDraft];
-        }
-    }
-
-    hasChanges = YES;
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"AsynchronousPostIsPosted" object:nil userInfo:dict];
-    [dict release];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -643,11 +633,10 @@
 }
 
 - (void)setLeftBarButtonItemForEditPost:(UIBarButtonItem *)item {
-	if (DeviceIsPad() == NO) {
+	if (DeviceIsPad() == NO)
 		self.navigationItem.leftBarButtonItem = item;
-	} else if (DeviceIsPad() == YES) {
+	else if (DeviceIsPad() == YES)
 		postDetailEditController.navigationItem.leftBarButtonItem = item;
-	}
 }
 
 - (UIBarButtonItem *)rightBarButtonItemForEditPost {
@@ -660,9 +649,7 @@
 }
 
 - (void)publish:(id)sender {
-	spinner = [[WPProgressHUD alloc] initWithLabel:@"Publishing..."];
-	[spinner show];
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	isPublishing = YES;
 	
 	if(post.isLocalDraft == [NSNumber numberWithInt:1]) {
 		post.isLocalDraft = [NSNumber numberWithInt:0];
@@ -725,7 +712,7 @@
 
 - (void)dismissEditView {
 	if (DeviceIsPad() == NO) {
-        [self.navigationController popViewControllerAnimated:YES];
+        [appDelegate.navigationController popViewControllerAnimated:YES];
 	} else {
 		[self dismissModalViewControllerAnimated:YES];
 		[[BlogDataManager sharedDataManager] loadDraftTitlesForCurrentBlog];
@@ -811,7 +798,6 @@
 }
 
 - (void)checkAutosaves {
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	if(([[dm currentPost] valueForKey:@"postid"] != nil) && (![[[dm currentPost] valueForKey:@"postid"] isEqualToString:@""])) {
 		NSString *autosavePostID = [NSString stringWithFormat:@"%@-%@",
 									[[dm currentBlog] valueForKey:@"url"],
@@ -846,7 +832,6 @@
 			[postDetailEditController refreshUIForCurrentPost];
 		}
 		else {
-			BlogDataManager *dm = [BlogDataManager sharedDataManager];
 			appDelegate.postID = autosave.postID;
 			[dm makePostWithPostIDCurrent:autosave.postID];
 			if(autosave.postTitle != nil)
@@ -911,7 +896,6 @@
 
 - (void)verifyPublishSuccessful {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	
 	NSArray *params = [NSArray arrayWithObjects:
 					   appDelegate.postID,

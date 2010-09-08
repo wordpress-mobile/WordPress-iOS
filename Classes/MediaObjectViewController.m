@@ -21,7 +21,6 @@
 	
 	if((media != nil) && ([media.mediaType isEqualToString:@"video"])) {
 		self.navigationItem.title = @"Video";
-		appDelegate.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 		videoPlayer = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL fileURLWithPath:media.localURL]];
 		[videoPlayer prepareToPlay];
 		videoPlayer.view.frame = self.view.frame;

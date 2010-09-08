@@ -13,7 +13,7 @@
 
 - (id)initWithLabel:(NSString *)text {
     if (self = [super init]) {
-        self.appDelegate = [[UIApplication sharedApplication] delegate];
+        self.appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 		
 		backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WPpregressHUDBackground.png"]];
 		backgroundImageView.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin);
@@ -58,6 +58,7 @@
     [super show];
     CGSize backGroundImageSize = self.backgroundImageView.image.size;
     self.bounds = CGRectMake(0, 0, backGroundImageSize.width, backGroundImageSize.height);
+	[self layoutSubviews];
     [self.appDelegate setAlertRunning:YES];
     [self bringSubviewToFront:activityIndicator];
     [self bringSubviewToFront:progressMessage];
