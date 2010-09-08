@@ -51,20 +51,20 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	if(DeviceIsPad()) {
-		switch (interfaceOrientation) {
-			case UIInterfaceOrientationPortrait:
-				[appDelegate.navigationController presentModalViewController:self animated:YES];
-				break;
-			case UIInterfaceOrientationPortraitUpsideDown:
-				[appDelegate.navigationController presentModalViewController:self animated:YES];
-				break;
-			case UIInterfaceOrientationLandscapeLeft:
-				[appDelegate.splitViewController presentModalViewController:self animated:YES];
-				break;
-			case UIInterfaceOrientationLandscapeRight:
-				[appDelegate.splitViewController presentModalViewController:self animated:YES];
-				break;
-		}
+		//switch (interfaceOrientation) {
+//			case UIInterfaceOrientationPortrait:
+//				[appDelegate.navigationController presentModalViewController:self animated:YES];
+//				break;
+//			case UIInterfaceOrientationPortraitUpsideDown:
+//				[appDelegate.navigationController presentModalViewController:self animated:YES];
+//				break;
+//			case UIInterfaceOrientationLandscapeLeft:
+//				[appDelegate.splitViewController presentModalViewController:self animated:YES];
+//				break;
+//			case UIInterfaceOrientationLandscapeRight:
+//				[appDelegate.splitViewController presentModalViewController:self animated:YES];
+//				break;
+//		}
 	}
 	return YES;
 }

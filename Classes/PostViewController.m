@@ -216,9 +216,12 @@
 		[array addObject:commentsViewController];
 	}
 	
-    if (mediaViewController == nil) {
-        mediaViewController = [[PostMediaViewController alloc] initWithNibName:@"PostMediaViewController" bundle:nil];
-    }
+	if(DeviceIsPad() == YES) {
+		mediaViewController = nil;
+		mediaViewController = [[PostMediaViewController alloc] initWithNibName:@"PostMediaViewController-iPad" bundle:nil];
+	}
+	else if(mediaViewController == nil)
+		mediaViewController = [[PostMediaViewController alloc] initWithNibName:@"PostMediaViewController" bundle:nil];
 	
     mediaViewController.title = @"Media";
     mediaViewController.tabBarItem.image = [UIImage imageNamed:@"photos.png"];

@@ -9,19 +9,23 @@
 #import "PostMediaViewController.h"
 
 @implementation PostMediaViewController
-@synthesize table, addMediaButton, hasPhotos, hasVideos, isAddingMedia, photos, videos, appDelegate, dm;
+@synthesize table, addMediaButton, hasPhotos, hasVideos, isAddingMedia, photos, videos, appDelegate, dm, addPopover;
 @synthesize isShowingMediaPickerActionSheet, currentOrientation, isShowingChangeOrientationActionSheet, spinner;
-@synthesize currentImage, currentVideo, isLibraryMedia, didChangeOrientationDuringRecord, messageLabel;
-@synthesize picker, postDetailViewController, mediaManager, postID, blogURL, mediaTypeControl, mediaUploader;
+@synthesize currentImage, currentVideo, isLibraryMedia, didChangeOrientationDuringRecord, messageLabel, topToolbar;
+@synthesize picker, postDetailViewController, mediaManager, postID, blogURL, mediaTypeControl, mediaUploader, bottomToolbar;
 @synthesize isShowingResizeActionSheet, videoEnabled, uploadID, videoPressCheckBlogURL, isCheckingVideoCapability;
 
 #pragma mark -
 #pragma mark View lifecycle
 
 - (void)initObjects {
+	if(DeviceIsPad() == YES)
+		mediaUploader = [[WPMediaUploader alloc] initWithNibName:@"WPMediaUploader-iPad" bundle:nil];
+	else
+		mediaUploader = [[WPMediaUploader alloc] initWithNibName:@"WPMediaUploader" bundle:nil];
+	
 	dm = [BlogDataManager sharedDataManager];
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-	mediaUploader = [[WPMediaUploader alloc] initWithNibName:@"WPMediaUploader" bundle:nil];
 	mediaManager = [[MediaManager alloc] init];
 	photos = [[NSMutableArray alloc] init];
 	videos = [[NSMutableArray alloc] init];
@@ -60,13 +64,17 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-	[self removemediaUploader:nil finished:nil context:nil];
+	[self removemediaUploader:nil finished:YES context:nil];
 	[super viewWillDisappear:animated];
 }
 
 - (void)viewDidUnload {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[super viewDidUnload];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return YES;
 }
 
 #pragma mark -
@@ -182,7 +190,10 @@
 		default:
 			break;
 	}
-	[appDelegate.navigationController pushViewController:mediaView animated:YES];
+	if(DeviceIsPad() == YES)
+		[appDelegate.splitViewController presentModalViewController:mediaView animated:YES];
+	else
+		[appDelegate.navigationController pushViewController:mediaView animated:YES];
 	[mediaView release];
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -424,7 +435,13 @@
 		[picker setMediaTypes:availableMediaTypes];
         picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
 		isLibraryMedia = YES;
-        [appDelegate.navigationController presentModalViewController:picker animated:YES];
+		
+		if(DeviceIsPad() == YES) {
+			addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
+			[addPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		}
+		else
+			[appDelegate.navigationController presentModalViewController:picker animated:YES];
     }
 }
 
@@ -471,7 +488,9 @@
 		
 		NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
 		[nf setNumberStyle:NSNumberFormatterDecimalStyle];
-		NSNumber *resizePreference = [nf numberFromString:[[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"]];
+		NSNumber *resizePreference = [NSNumber numberWithInt:-1];
+		if([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil)
+			resizePreference = [nf numberFromString:[[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"]];
 		[nf release];
 		
 		switch ([resizePreference intValue]) {
@@ -495,6 +514,7 @@
 				break;
 		}
 	}
+	[addPopover dismissPopoverAnimated:YES];
 	[picker dismissModalViewControllerAnimated:YES];
 }
 
@@ -754,6 +774,11 @@
 
 - (void)uploadMedia:(NSData *)bits withFilename:(NSString *)filename andMediaType:(MediaType)mediaType {
 	@try {
+		CGRect iPhoneFrameStart = CGRectMake(0, 480, 320, 40);
+		CGRect iPhoneFrameEnd = CGRectMake(0, 324, 320, 40);
+		CGRect iPadFrameStart = CGRectMake(30, self.view.frame.size.height, bottomToolbar.frame.size.width-300, bottomToolbar.frame.size.height);
+		CGRect iPadFrameEnd = CGRectMake(30, self.view.frame.size.height - 44, bottomToolbar.frame.size.width-300, bottomToolbar.frame.size.height);
+		
 		NSFileManager *fileManager = [NSFileManager defaultManager];
 		[mediaUploader setBits:bits];
 		[mediaUploader setFilename:filename];
@@ -766,10 +791,16 @@
 		NSLog(@"Starting upload...");
 		[mediaUploader start];
 		
-		[mediaUploader.view setFrame:CGRectMake(0, 480, 320, 40)];
+		if(DeviceIsPad() == YES)
+			[mediaUploader.view setFrame:iPadFrameStart];
+		else
+			[mediaUploader.view setFrame:iPhoneFrameStart];
 		[UIView beginAnimations:@"Adding mediaUploader" context:nil];
 		[UIView setAnimationDuration:0.4];
-		[mediaUploader.view setFrame:CGRectMake(0, 324, 320, 40)];
+		if(DeviceIsPad() == YES)
+			[mediaUploader.view setFrame:iPadFrameEnd];
+		else
+			[mediaUploader.view setFrame:iPhoneFrameEnd];
 		[self.view addSubview:mediaUploader.view];
 		[UIView commitAnimations];
 		[[NSNotificationCenter defaultCenter] postNotificationName:VideoSaved object:filename];
@@ -805,9 +836,9 @@
 	
 	[UIView beginAnimations:@"Removing mediaUploader" context:nil];
 	[UIView setAnimationDuration:0.4];
-	[UIView setAnimationDelegate:mediaUploader.view];
+	[UIView setAnimationDelegate:self];
 	[UIView setAnimationDidStopSelector:@selector(removemediaUploader:finished:context:)];
-	[mediaUploader.view setFrame:CGRectMake(0, 480, 320, 40)];
+	[mediaUploader.view setFrame:CGRectMake(0, self.view.frame.size.height + 800, 320, 40)];
 	[UIView commitAnimations];
 	self.isAddingMedia = NO;
 	[self refreshMedia];
@@ -817,7 +848,7 @@
 	[NSThread sleepForTimeInterval:1];
 	[UIView beginAnimations:@"Removing mediaUploader" context:nil];
 	[UIView setAnimationDuration:0.4];
-	[UIView setAnimationDelegate:mediaUploader.view];
+	[UIView setAnimationDelegate:self];
 	[UIView setAnimationDidStopSelector:@selector(removemediaUploader:finished:context:)];
 	[mediaUploader.view setFrame:CGRectMake(0, 480, 320, 40)];
 	[UIView commitAnimations];
@@ -825,7 +856,7 @@
 	[self refreshMedia];
 }
 
-- (void)removemediaUploader:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
+- (void)removemediaUploader:(NSString *)animationID finished:(BOOL)finished context:(void *)context {
 	[mediaUploader.view removeFromSuperview];
 	[mediaUploader reset];
 }
@@ -961,6 +992,9 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
+	[addPopover release];
+	[topToolbar release];
+	[bottomToolbar release];
 	[videoPressCheckBlogURL release];
 	[uploadID release];
 	[mediaUploader release];

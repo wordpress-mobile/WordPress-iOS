@@ -34,6 +34,8 @@ static inline double radians(double degrees) {
 	IBOutlet UIActivityIndicatorView *spinner;
 	IBOutlet UILabel *messageLabel;
 	IBOutlet UISegmentedControl *mediaTypeControl;
+	IBOutlet UIToolbar *topToolbar, *bottomToolbar;
+	IBOutlet UIPopoverController *addPopover;
 	
 	BOOL hasPhotos, hasVideos, isAddingMedia, isShowingMediaPickerActionSheet, isShowingChangeOrientationActionSheet;
 	BOOL isLibraryMedia, didChangeOrientationDuringRecord, isShowingResizeActionSheet, videoEnabled, isCheckingVideoCapability;
@@ -51,6 +53,8 @@ static inline double radians(double degrees) {
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
 @property (nonatomic, retain) IBOutlet UILabel *messageLabel;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *mediaTypeControl;
+@property (nonatomic, retain) IBOutlet UIToolbar *topToolbar, *bottomToolbar;
+@property (nonatomic, retain) IBOutlet IBOutlet UIPopoverController *addPopover;
 @property (nonatomic, assign) BOOL hasPhotos, hasVideos, isAddingMedia, isShowingMediaPickerActionSheet, isShowingChangeOrientationActionSheet;
 @property (nonatomic, assign) BOOL isLibraryMedia, didChangeOrientationDuringRecord, isShowingResizeActionSheet, videoEnabled, isCheckingVideoCapability;
 @property (nonatomic, retain) NSString *postID, *blogURL, *uploadID, *videoPressCheckBlogURL;
@@ -87,7 +91,7 @@ static inline double radians(double degrees) {
 - (void)useVideo:(NSData *)video withThumbnail:(UIImage *)thumbnail;
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification;
 - (void)mediaUploadFailed:(NSNotification *)notification;
-- (void)removemediaUploader:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context;
+- (void)removemediaUploader:(NSString *)animationID finished:(BOOL)finished context:(void *)context;
 - (BOOL)supportsVideo;
 - (UIImage *)generateThumbnailFromImage:(UIImage *)theImage andSize:(CGSize)targetSize;
 - (void)uploadMedia:(NSData *)bits withFilename:(NSString *)filename andMediaType:(MediaType)mediaType;

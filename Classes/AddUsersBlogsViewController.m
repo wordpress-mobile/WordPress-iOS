@@ -41,9 +41,6 @@
 	self.tableView.tableHeaderView = headerView;
 	self.tableView.backgroundColor = [UIColor clearColor];
 	
-	//[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView:) 
-	//											 name:@"didUpdateFavicons" object:nil];
-	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView:) 
 												 name:@"didUpdateTableData" object:nil];
 	
@@ -72,31 +69,22 @@
 			usersBlogs = [[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsersBlogs"];
 		else if(usersBlogs == nil)
 			[self refreshBlogs];
-			//[self performSelectorInBackground:@selector(refreshBlogs) withObject:nil];
 	}
 	else {
 		[self refreshBlogs];
-		//[self performSelectorInBackground:@selector(refreshBlogs) withObject:nil];
+	}
+	
+	if(DeviceIsPad() == YES) {
+		UIBarButtonItem *topAddSelectedButton = [[UIBarButtonItem alloc] initWithTitle:@"Add Selected" 
+																				 style:UIBarButtonItemStyleDone 
+																				target:self 
+																				action:@selector(saveSelectedBlogs:)];
+		self.navigationItem.rightBarButtonItem = topAddSelectedButton;
+		[topAddSelectedButton release];
 	}
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	//	if(DeviceIsPad()) {
-	//		switch (interfaceOrientation) {
-	//			case UIInterfaceOrientationPortrait:
-	//				[appDelegate.navigationController presentModalViewController:self animated:YES];
-	//				break;
-	//			case UIInterfaceOrientationPortraitUpsideDown:
-	//				[appDelegate.navigationController presentModalViewController:self animated:YES];
-	//				break;
-	//			case UIInterfaceOrientationLandscapeLeft:
-	//				[appDelegate.splitViewController presentModalViewController:self animated:YES];
-	//				break;
-	//			case UIInterfaceOrientationLandscapeRight:
-	//				[appDelegate.splitViewController presentModalViewController:self animated:YES];
-	//				break;
-	//		}
-	//	}
 	return YES;
 }
 
@@ -104,7 +92,6 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
     return 1;
 }
 
@@ -153,7 +140,6 @@
 	return 60;
 }
 
-// Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tv cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
     

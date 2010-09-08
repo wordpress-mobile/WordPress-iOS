@@ -217,6 +217,8 @@
 		83D3DD381215D5EC00600B4B /* AutosaveContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D3DD361215D5EC00600B4B /* AutosaveContentViewController.m */; };
 		83D3DD391215D5EC00600B4B /* AutosaveContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83D3DD371215D5EC00600B4B /* AutosaveContentViewController.xib */; };
 		83D3DDB81215DC7900600B4B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 83D3DDB71215DC7900600B4B /* Settings.bundle */; };
+		83F1F9A21236FBF600069F99 /* PostMediaViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83F1F9A11236FBF600069F99 /* PostMediaViewController-iPad.xib */; };
+		83F1FA581237073B00069F99 /* WPMediaUploader-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83F1FA571237073B00069F99 /* WPMediaUploader-iPad.xib */; };
 		83F3E26011275E07004CD686 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E25F11275E07004CD686 /* MapKit.framework */; };
 		83F3E2BE11276357004CD686 /* LocationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F3E2BD11276357004CD686 /* LocationController.m */; };
 		83F3E2D311276371004CD686 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E2D211276371004CD686 /* CoreLocation.framework */; };
@@ -586,6 +588,8 @@
 		83D3DD361215D5EC00600B4B /* AutosaveContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutosaveContentViewController.m; sourceTree = "<group>"; };
 		83D3DD371215D5EC00600B4B /* AutosaveContentViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AutosaveContentViewController.xib; path = Classes/AutosaveContentViewController.xib; sourceTree = "<group>"; };
 		83D3DDB71215DC7900600B4B /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		83F1F9A11236FBF600069F99 /* PostMediaViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "PostMediaViewController-iPad.xib"; sourceTree = "<group>"; };
+		83F1FA571237073B00069F99 /* WPMediaUploader-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "WPMediaUploader-iPad.xib"; sourceTree = "<group>"; };
 		83F3E25F11275E07004CD686 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		83F3E2BC11276357004CD686 /* LocationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationController.h; sourceTree = "<group>"; };
 		83F3E2BD11276357004CD686 /* LocationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationController.m; sourceTree = "<group>"; };
@@ -899,6 +903,8 @@
 				8362C1291201EA9700599347 /* WPcomLoginViewController-iPad.xib */,
 				8362C1C5120229BC00599347 /* AddSiteViewController-iPad.xib */,
 				8362C54512027BC300599347 /* AddUsersBlogsViewController-iPad.xib */,
+				83F1F9A11236FBF600069F99 /* PostMediaViewController-iPad.xib */,
+				83F1FA571237073B00069F99 /* WPMediaUploader-iPad.xib */,
 			);
 			name = "Resources-iPad";
 			sourceTree = "<group>";
@@ -1561,6 +1567,8 @@
 				83CACE9F1235A102003DFA20 /* UILoadMoreCell.xib in Resources */,
 				83CAD2EF1235E253003DFA20 /* UITextFieldCell.xib in Resources */,
 				83CAD4211235F9F4003DFA20 /* MediaObjectView.xib in Resources */,
+				83F1F9A21236FBF600069F99 /* PostMediaViewController-iPad.xib in Resources */,
+				83F1FA581237073B00069F99 /* WPMediaUploader-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

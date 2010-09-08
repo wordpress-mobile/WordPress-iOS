@@ -231,6 +231,7 @@ Classes/glossyButton-normal.png -text svneol=unset#unset
 /MediaObjectView.xib -text
 /PageViewController-iPad.xib -text
 /PageViewController.xib -text
+/PostMediaViewController-iPad.xib -text
 /PostPreviewViewController.xib -text
 /PostSettingsViewController.xib -text
 /PostViewController-iPad.xib -text
@@ -261,6 +262,7 @@ Settings.bundle/en.lproj/Root.strings -text
 /UITextViewCell.xib -text
 /WPAddCategoryViewController.xib -text
 /WPCategoriesController.xib -text
+/WPMediaUploader-iPad.xib -text
 /WPMediaUploader.xib -text
 /WPPhotoViewController.xib -text
 /WPPhotosListViewController.xib -text
