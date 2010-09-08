@@ -43,6 +43,8 @@
     self.tableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
     [self addRefreshButton];
 
+	// ShouldRefreshPosts
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableViewAfterPostSaved:) name:@"ShouldRefreshPosts" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableViewAfterPostSaved:) name:@"AsynchronousPostIsPosted" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableAfterDraftSaved:) name:@"DraftsUpdated" object:nil];
 

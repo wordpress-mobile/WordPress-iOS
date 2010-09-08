@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="104"/>
+			<integer value="85"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -39,7 +39,7 @@
 			</object>
 			<object class="IBUIView" id="333657908">
 				<nil key="NSNextResponder"/>
-				<int key="NSvFlags">292</int>
+				<int key="NSvFlags">256</int>
 				<string key="NSFrameSize">{768, 1004}</string>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -60,47 +60,48 @@
 				</object>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 				<bool key="IBUIHorizontal">NO</bool>
-				<object class="IBUIViewController" key="IBUISelectedViewController" id="505254143">
-					<string key="IBUITitle">Comments</string>
-					<object class="IBUITabBarItem" key="IBUITabBarItem" id="355096163">
-						<string key="IBUITitle">Comments</string>
+				<object class="IBUIViewController" key="IBUISelectedViewController" id="770080114">
+					<object class="IBUITabBarItem" key="IBUITabBarItem" id="333287633">
+						<string key="IBUITitle">Write</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">comments.png</string>
+							<string key="NSResourceName">write.png</string>
 						</object>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<reference key="IBUITabBar"/>
 					</object>
-					<reference key="IBUIToolbarItems" ref="0"/>
 					<reference key="IBUIParentViewController" ref="790608488"/>
-					<string key="IBUINibName">CommentsViewController</string>
+					<string key="IBUINibName">EditPostViewController-iPad</string>
 					<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
 						<int key="interfaceOrientation">1</int>
 					</object>
+					<bool key="IBUIWantsFullScreenLayout">YES</bool>
 					<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					<bool key="IBUIHorizontal">NO</bool>
 				</object>
 				<object class="NSMutableArray" key="IBUIViewControllers">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<object class="IBUIViewController" id="770080114">
-						<object class="IBUITabBarItem" key="IBUITabBarItem" id="333287633">
-							<string key="IBUITitle">Write</string>
+					<reference ref="770080114"/>
+					<object class="IBUIViewController" id="505254143">
+						<string key="IBUITitle">Comments</string>
+						<object class="IBUITabBarItem" key="IBUITabBarItem" id="355096163">
+							<string key="IBUITitle">Comments</string>
 							<object class="NSCustomResource" key="IBUIImage">
 								<string key="NSClassName">NSImage</string>
-								<string key="NSResourceName">write.png</string>
+								<string key="NSResourceName">comments.png</string>
 							</object>
 							<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							<reference key="IBUITabBar"/>
 						</object>
+						<reference key="IBUIToolbarItems" ref="0"/>
 						<reference key="IBUIParentViewController" ref="790608488"/>
-						<string key="IBUINibName">EditPostViewController-iPad</string>
+						<string key="IBUINibName">CommentsViewController</string>
 						<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
 							<int key="interfaceOrientation">1</int>
 						</object>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<bool key="IBUIHorizontal">NO</bool>
 					</object>
-					<reference ref="505254143"/>
 					<object class="IBUIViewController" id="316076777">
 						<object class="IBUITabBarItem" key="IBUITabBarItem" id="415413413">
 							<string key="IBUITitle">Media</string>

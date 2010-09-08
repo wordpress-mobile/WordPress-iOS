@@ -57,7 +57,7 @@
 #pragma mark Custom methods
 
 - (void)refreshButtons:(BOOL)hasChanges keyboard:(BOOL)isShowingKeyboard {
-	TransparentToolbar *buttonBar = [[TransparentToolbar alloc] initWithFrame:CGRectMake(0, 0, 70, 44)];
+	TransparentToolbar *buttonBar = [[TransparentToolbar alloc] initWithFrame:CGRectMake(0, 0, 55, 44)];
 	NSMutableArray *buttons = [[NSMutableArray alloc] initWithCapacity:3];
 	
 	if(hasChanges == YES) {
@@ -72,7 +72,7 @@
 	
 	if((self.isPublished == NO) && (hasChanges == YES)) {
 		if(buttons.count > 0) {
-			buttonBar.frame = CGRectMake(0, 0, 130, 44);
+			buttonBar.frame = CGRectMake(0, 0, 125, 44);
 			UIBarButtonItem *spacer = [[UIBarButtonItem alloc]
 									   initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
 									   target:nil

@@ -339,6 +339,13 @@
 	[self verifyPublishSuccessful];
 	if(DeviceIsPad() == NO)
 		[self.navigationController popViewControllerAnimated:YES];
+	else {
+		if(wasLocalDraft == YES)
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"DraftsUpdated" object:nil];
+		else
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldRefreshPosts" object:nil];
+		
+	}
 	[postDetailEditController clearUnsavedPost];
 	[spinner dismissWithClickedButtonIndex:0 animated:YES];
 }

@@ -346,6 +346,8 @@
 				self.page.postTitle = [existingPage objectForKey:@"title"];
 				[self.page setStatus:[existingPage objectForKey:@"page_status"]];
 				self.page.content = [existingPage objectForKey:@"description"];
+				[self.page setIsPublished:[NSNumber numberWithInt:1]];
+				delegate.isPublished = YES;
 				
 				[statuses removeObjectForKey:kLocalDraftKey];
 			}
@@ -355,6 +357,7 @@
 			self.isLocalDraft = YES;
 			[self setPage:[[delegate.draftManager get:nil] retain]];
 			[self.page setIsPublished:[NSNumber numberWithInt:0]];
+			delegate.isPublished = NO;
 			[self.page setIsLocalDraft:[NSNumber numberWithInt:1]];
 			[self.page setPostType:@"page"];
 			[self.page setBlogID:[dm.currentBlog objectForKey:@"blogid"]];
