@@ -12,6 +12,7 @@
 #import "LocationController.h"
 #import "PostAnnotation.h"
 #import "CPopoverManager.h"
+#import "WordPressAppDelegate.h"
 
 @interface PostLocationViewController : UIViewController <LocationControllerDelegate> {
 	IBOutlet MKMapView *map;

@@ -109,9 +109,9 @@
 }
 
 - (IBAction)showLocationMapView:(id)sender {
-	// Display the geotag view
+	WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	PostLocationViewController *locationView = [[PostLocationViewController alloc] initWithNibName:@"PostLocationViewController" bundle:nil];
-	[self presentModalViewController:locationView animated:YES];
+	[delegate.navigationController presentModalViewController:locationView animated:YES];
 }
 
 - (CLLocation *)getPostLocation {
