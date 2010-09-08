@@ -24,12 +24,14 @@
 	IBOutlet UITextView *contentTextView;
 	IBOutlet UITextField *titleTextField;
 	IBOutlet UIButton *resignTextFieldButton;
+	IBOutlet UIPopoverController *statusPopover;
 	IBOutlet WPProgressHUD *spinner;
 	
 	BOOL isShowingKeyboard, isLocalDraft;
 	NSNumber *selectedSection;
 	NSString *originalTitle, *originalStatus, *originalContent;
 	NSMutableDictionary *statuses;
+	UIViewController *pickerViewController;
 	
 	NSURLConnection *connection;
 	NSURLRequest *urlRequest;
@@ -47,8 +49,9 @@
 @property (nonatomic, retain) IBOutlet UIActionSheet *actionSheet;
 @property (nonatomic, retain) IBOutlet UITextView *contentTextView;
 @property (nonatomic, retain) IBOutlet UITextField *titleTextField;
-@property (nonatomic, retain) IBOutlet IBOutlet UIButton *resignTextFieldButton;
+@property (nonatomic, retain) IBOutlet UIButton *resignTextFieldButton;
 @property (nonatomic, retain) IBOutlet WPProgressHUD *spinner;
+@property (nonatomic, retain) IBOutlet UIPopoverController *statusPopover;
 @property (nonatomic, assign) BOOL isShowingKeyboard, isLocalDraft;
 @property (nonatomic, assign) NSNumber *selectedSection;
 @property (nonatomic, retain) NSString *originalTitle, *originalStatus, *originalContent;
@@ -57,6 +60,7 @@
 @property (nonatomic, retain) NSURLResponse *urlResponse;
 @property (nonatomic, retain) NSMutableData *payload;
 @property (nonatomic, retain) NSMutableDictionary *statuses;
+@property (nonatomic, retain) UIViewController *pickerViewController;
 @property (nonatomic, assign) id <PageViewControllerProtocol> delegate;
 @property (nonatomic, assign) BlogDataManager *dm;
 @property (nonatomic, assign) WordPressAppDelegate *appDelegate;
@@ -69,6 +73,7 @@
 - (void)refreshPage;
 - (IBAction)showStatusPicker:(id)sender;
 - (IBAction)hideStatusPicker:(id)sender;
+- (IBAction)showStatusPopover:(id)sender;
 - (IBAction)resignTextField:(id)sender;
 - (NSInteger)indexForStatus:(NSString *)status;
 - (void)hideKeyboard:(NSNotification *)notification;

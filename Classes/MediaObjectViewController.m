@@ -50,7 +50,10 @@
 			case 0:
 				NSLog(@"deleting...");
 				[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldDeleteMedia" object:media];
-				[self.navigationController popViewControllerAnimated:YES];
+				if(DeviceIsPad() == YES)
+					[self dismissModalViewControllerAnimated:YES];
+				else
+					[self.navigationController popViewControllerAnimated:YES];
 				break;
 			case 1:
 				NSLog(@"cancelling...");
@@ -64,12 +67,18 @@
 			case 0:
 				NSLog(@"inserting media above...");
 				[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaAbove" object:media];
-				[self.navigationController popViewControllerAnimated:YES];
+				if(DeviceIsPad() == YES)
+					[self dismissModalViewControllerAnimated:YES];
+				else
+					[self.navigationController popViewControllerAnimated:YES];
 				break;
 			case 1:
 				NSLog(@"inserting media below...");
 				[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
-				[self.navigationController popViewControllerAnimated:YES];
+				if(DeviceIsPad() == YES)
+					[self dismissModalViewControllerAnimated:YES];
+				else
+					[self.navigationController popViewControllerAnimated:YES];
 				break;
 			case 2:
 				NSLog(@"cancelling...");

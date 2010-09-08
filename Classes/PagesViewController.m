@@ -210,7 +210,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	int foo = 0;
-	PageViewController *pageViewController = [[PageViewController alloc] initWithNibName:@"PageViewController" bundle:nil];
+	PageViewController *pageViewController;
+	if(DeviceIsPad() == YES)
+		pageViewController = [[PageViewController alloc] initWithNibName:@"PageViewController-iPad" bundle:nil];
+	else
+		pageViewController = [[PageViewController alloc] initWithNibName:@"PageViewController" bundle:nil];
 
 	switch (indexPath.section) {
 		case 0:
@@ -226,7 +230,11 @@
 			
 			NSNumber *pageID = [[pages objectAtIndex:indexPath.row] objectForKey:@"page_id"];
 			[pageViewController setSelectedPostID:[pageID stringValue]];
-			[appDelegate showContentDetailViewController:pageViewController];
+			
+			if(DeviceIsPad() == YES)
+				[appDelegate showContentDetailViewController:pageViewController];
+			else
+				[appDelegate showContentDetailViewController:pageViewController];
 			
 			self.selectedIndexPath = indexPath;
 			break;
@@ -343,7 +351,11 @@
 	self.navigationItem.backBarButtonItem = backButton;
 	[backButton release]; 
 	
-	PageViewController *pageViewController = [[PageViewController alloc] initWithNibName:@"PageViewController" bundle:nil];
+	PageViewController *pageViewController;
+	if(DeviceIsPad() == YES)
+		pageViewController = [[PageViewController alloc] initWithNibName:@"PageViewController-iPad" bundle:nil];
+	else
+		pageViewController = [[PageViewController alloc] initWithNibName:@"PageViewController" bundle:nil];
 	[appDelegate showContentDetailViewController:pageViewController];
 	[pageViewController release];
 }
@@ -435,6 +447,8 @@
 - (void)addNewPage:(NSNotification *)notification {
 	NSDictionary *newPage = [(NSDictionary *)[notification object] retain];
 	[pages insertObject:newPage atIndex:0];
+	[drafts removeAllObjects];
+	drafts = [draftManager getType:@"page" forBlog:[dm.currentBlog valueForKey:@"blogid"]];
 	[self refreshTable];
 }
 

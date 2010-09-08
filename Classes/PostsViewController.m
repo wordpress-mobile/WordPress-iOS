@@ -311,6 +311,7 @@
 	
 	if (DeviceIsPad() == YES) {
 		if (self.selectedIndexPath) {
+			self.drafts = [draftManager getType:@"post" forBlog:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blogid"]];
 			// TODO: make this more general. Pages are going to want to do it as well.
 			if (self.selectedIndexPath.section >= [self numberOfSectionsInTableView:self.tableView]
 				|| self.selectedIndexPath.row >= [self tableView:self.tableView numberOfRowsInSection:self.selectedIndexPath.section])
@@ -523,14 +524,8 @@
 		[delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
 	}
 	else if (DeviceIsPad() == YES) {
+		[self.postDetailViewController refreshUIForCompose];
 		[delegate showContentDetailViewController:self.postDetailViewController];
-		// if the edit VC doesn't exist yet, the detail VC hasn't appeared yet;
-		// the UI will be refreshed on viewWillAppear.
-		// otherwise, we've gotta do it ourself.
-		// Not really the best way to do this in the long run.
-		if (self.postDetailViewController.editModalViewController) {
-			[self.postDetailViewController refreshUIForCompose];
-		}
 	}
 }
 

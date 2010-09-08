@@ -263,6 +263,7 @@
 			RotatingNavigationController *previewNav = [[[RotatingNavigationController alloc] initWithRootViewController:postPreviewController] autorelease];
 			editModalViewController.backViewController = previewNav;
 			postPreviewController.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:previewToolbar] autorelease];
+			
 		}
 	}
 	
@@ -899,9 +900,23 @@
 		[postDetailEditController showLocationMapView:sender];
 }
 
+- (IBAction)mediaAction:(id)sender {
+	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+		if(DeviceIsPad() == YES) {
+			UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+			NSArray *availableMediaTypes = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+			[picker setMediaTypes:availableMediaTypes];
+			picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+			picker.delegate = mediaViewController;
+			UIPopoverController *addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
+			[addPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+			[[CPopoverManager instance] setCurrentPopoverController:addPopover];
+			[picker release];
+		}
+    }
+}
 
-- (IBAction)previewAction:(id)sender;
-{
+- (IBAction)previewAction:(id)sender {
 	[[CPopoverManager instance] setCurrentPopoverController:NULL];
 	[editModalViewController setShowingFront:NO animated:YES];
 }

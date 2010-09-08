@@ -12,7 +12,8 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="272"/>
+			<integer value="281"/>
+			<integer value="324"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -38,7 +39,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="137710398">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -59,6 +60,7 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 387}</string>
+				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
@@ -66,36 +68,32 @@
 						<int key="NSID">2</int>
 					</object>
 				</object>
-				<object class="IBUISimulatedNavigationBarMetrics" key="IBUISimulatedTopBarMetrics" id="785263646">
+				<object class="IBUISimulatedNavigationBarMetrics" key="IBUISimulatedTopBarMetrics">
 					<bool key="IBUIPrompted">NO</bool>
 				</object>
 				<object class="IBUISimulatedTabBarMetrics" key="IBUISimulatedBottomBarMetrics"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
-			<object class="IBUITabBarController" id="118670528">
-				<string key="IBUITitle">Write</string>
+			<object class="IBUITabBarController" id="57282528">
 				<object class="IBUISimulatedTabBarMetrics" key="IBUISimulatedBottomBarMetrics"/>
-				<reference key="IBUISimulatedTopBarMetrics" ref="785263646"/>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
 				<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
 					<int key="interfaceOrientation">1</int>
 				</object>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				<bool key="IBUIHorizontal">NO</bool>
-				<object class="IBUIViewController" key="IBUISelectedViewController" id="387599788">
-					<string key="IBUITitle">Write</string>
-					<object class="IBUITabBarItem" key="IBUITabBarItem" id="306193987">
-						<string key="IBUITitle">Write</string>
+				<object class="IBUIViewController" key="IBUISelectedViewController" id="484142378">
+					<object class="IBUITabBarItem" key="IBUITabBarItem" id="564947150">
+						<string key="IBUITitle">Photos</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">write.png</string>
+							<string key="NSResourceName">photos.png</string>
 						</object>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<reference key="IBUITabBar"/>
 					</object>
-					<reference key="IBUIToolbarItems" ref="0"/>
-					<reference key="IBUIParentViewController" ref="118670528"/>
-					<string key="IBUINibName">EditPageViewController</string>
+					<reference key="IBUIParentViewController" ref="57282528"/>
+					<string key="IBUINibName">PostMediaViewController</string>
 					<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
 						<int key="interfaceOrientation">1</int>
 					</object>
@@ -104,29 +102,27 @@
 				</object>
 				<object class="NSMutableArray" key="IBUIViewControllers">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<reference ref="387599788"/>
-					<object class="IBUIViewController" id="606192283">
-						<string key="IBUITitle">Media</string>
-						<object class="IBUITabBarItem" key="IBUITabBarItem" id="489847188">
-							<string key="IBUITitle">Media</string>
+					<object class="IBUIViewController" id="1018591736">
+						<object class="IBUITabBarItem" key="IBUITabBarItem" id="659868310">
+							<string key="IBUITitle">Write</string>
 							<object class="NSCustomResource" key="IBUIImage">
 								<string key="NSClassName">NSImage</string>
-								<string key="NSResourceName">photos.png</string>
+								<string key="NSResourceName">write.png</string>
 							</object>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							<reference key="IBUITabBar"/>
 						</object>
-						<reference key="IBUIToolbarItems" ref="0"/>
-						<reference key="IBUIParentViewController" ref="118670528"/>
-						<string key="IBUINibName">PostMediaViewController</string>
+						<reference key="IBUIParentViewController" ref="57282528"/>
+						<string key="IBUINibName">EditPageViewController</string>
 						<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
 							<int key="interfaceOrientation">1</int>
 						</object>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<bool key="IBUIHorizontal">NO</bool>
 					</object>
+					<reference ref="484142378"/>
 				</object>
-				<object class="IBUITabBar" key="IBUITabBar" id="275066071">
+				<object class="IBUITabBar" key="IBUITabBar" id="271635871">
 					<nil key="NSNextResponder"/>
 					<int key="NSvFlags">266</int>
 					<string key="NSFrame">{{129, 330}, {163, 49}}</string>
@@ -143,14 +139,6 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">tabController</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="118670528"/>
-					</object>
-					<int key="connectionID">278</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">view</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="137710398"/>
@@ -159,19 +147,19 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">delegate</string>
-						<reference key="source" ref="118670528"/>
-						<reference key="destination" ref="372490531"/>
+						<string key="label">tabController</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="57282528"/>
 					</object>
-					<int key="connectionID">283</int>
+					<int key="connectionID">327</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">delegate</string>
-						<reference key="source" ref="387599788"/>
+						<reference key="source" ref="1018591736"/>
 						<reference key="destination" ref="372490531"/>
 					</object>
-					<int key="connectionID">319</int>
+					<int key="connectionID">328</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -195,22 +183,6 @@
 						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">272</int>
-						<reference key="object" ref="118670528"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="275066071"/>
-							<reference ref="387599788"/>
-							<reference ref="606192283"/>
-						</object>
-						<reference key="parent" ref="0"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">273</int>
-						<reference key="object" ref="275066071"/>
-						<reference key="parent" ref="118670528"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">281</int>
 						<reference key="object" ref="137710398"/>
 						<object class="NSMutableArray" key="children">
@@ -218,34 +190,6 @@
 							<reference ref="798824998"/>
 						</object>
 						<reference key="parent" ref="0"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">312</int>
-						<reference key="object" ref="387599788"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="306193987"/>
-						</object>
-						<reference key="parent" ref="118670528"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">313</int>
-						<reference key="object" ref="306193987"/>
-						<reference key="parent" ref="387599788"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">314</int>
-						<reference key="object" ref="606192283"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="489847188"/>
-						</object>
-						<reference key="parent" ref="118670528"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">315</int>
-						<reference key="object" ref="489847188"/>
-						<reference key="parent" ref="606192283"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">316</int>
@@ -261,6 +205,50 @@
 						<reference key="object" ref="437810259"/>
 						<reference key="parent" ref="798824998"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">321</int>
+						<reference key="object" ref="57282528"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="271635871"/>
+							<reference ref="1018591736"/>
+							<reference ref="484142378"/>
+						</object>
+						<reference key="parent" ref="0"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">322</int>
+						<reference key="object" ref="271635871"/>
+						<reference key="parent" ref="57282528"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">323</int>
+						<reference key="object" ref="1018591736"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="659868310"/>
+						</object>
+						<reference key="parent" ref="57282528"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">324</int>
+						<reference key="object" ref="484142378"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="564947150"/>
+						</object>
+						<reference key="parent" ref="57282528"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">325</int>
+						<reference key="object" ref="564947150"/>
+						<reference key="parent" ref="484142378"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">326</int>
+						<reference key="object" ref="659868310"/>
+						<reference key="parent" ref="1018591736"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -269,27 +257,35 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>-1.CustomClassName</string>
 					<string>-2.CustomClassName</string>
-					<string>272.IBEditorWindowLastContentRect</string>
-					<string>272.IBPluginDependency</string>
-					<string>273.IBPluginDependency</string>
 					<string>281.IBEditorWindowLastContentRect</string>
 					<string>281.IBPluginDependency</string>
-					<string>312.CustomClassName</string>
-					<string>314.CustomClassName</string>
 					<string>316.IBPluginDependency</string>
 					<string>317.IBPluginDependency</string>
+					<string>321.IBEditorWindowLastContentRect</string>
+					<string>321.IBPluginDependency</string>
+					<string>322.IBPluginDependency</string>
+					<string>323.CustomClassName</string>
+					<string>323.IBPluginDependency</string>
+					<string>324.CustomClassName</string>
+					<string>324.IBPluginDependency</string>
+					<string>325.IBPluginDependency</string>
+					<string>326.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>PageViewController</string>
 					<string>UIResponder</string>
-					<string>{{13, 409}, {320, 480}}</string>
+					<string>{{0, 515}, {320, 480}}</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{0, 515}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>EditPageViewController</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>PostMediaViewController</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
@@ -310,7 +306,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">319</int>
+			<int key="maxID">328</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -323,10 +319,14 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>hideStatusPicker:</string>
+							<string>resignTextField:</string>
 							<string>showStatusPicker:</string>
+							<string>showStatusPopover:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 						</object>
@@ -336,7 +336,9 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>hideStatusPicker:</string>
+							<string>resignTextField:</string>
 							<string>showStatusPicker:</string>
+							<string>showStatusPopover:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -345,7 +347,15 @@
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
+								<string key="name">resignTextField:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
 								<string key="name">showStatusPicker:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">showStatusPopover:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 						</object>
@@ -357,6 +367,9 @@
 							<string>actionSheet</string>
 							<string>contentTextView</string>
 							<string>delegate</string>
+							<string>resignTextFieldButton</string>
+							<string>spinner</string>
+							<string>statusPopover</string>
 							<string>table</string>
 							<string>titleTextField</string>
 						</object>
@@ -365,6 +378,9 @@
 							<string>UIActionSheet</string>
 							<string>UITextView</string>
 							<string>id</string>
+							<string>UIButton</string>
+							<string>WPProgressHUD</string>
+							<string>UIPopoverController</string>
 							<string>UITableView</string>
 							<string>UITextField</string>
 						</object>
@@ -376,6 +392,9 @@
 							<string>actionSheet</string>
 							<string>contentTextView</string>
 							<string>delegate</string>
+							<string>resignTextFieldButton</string>
+							<string>spinner</string>
+							<string>statusPopover</string>
 							<string>table</string>
 							<string>titleTextField</string>
 						</object>
@@ -392,6 +411,18 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">delegate</string>
 								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">resignTextFieldButton</string>
+								<string key="candidateClassName">UIButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">spinner</string>
+								<string key="candidateClassName">WPProgressHUD</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">statusPopover</string>
+								<string key="candidateClassName">UIPopoverController</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">table</string>
@@ -503,18 +534,24 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>addMediaButton</string>
+							<string>addPopover</string>
+							<string>bottomToolbar</string>
 							<string>mediaTypeControl</string>
 							<string>messageLabel</string>
 							<string>spinner</string>
 							<string>table</string>
+							<string>topToolbar</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIBarButtonItem</string>
+							<string>UIPopoverController</string>
+							<string>UIToolbar</string>
 							<string>UISegmentedControl</string>
 							<string>UILabel</string>
 							<string>UIActivityIndicatorView</string>
 							<string>UITableView</string>
+							<string>UIToolbar</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -522,16 +559,27 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>addMediaButton</string>
+							<string>addPopover</string>
+							<string>bottomToolbar</string>
 							<string>mediaTypeControl</string>
 							<string>messageLabel</string>
 							<string>spinner</string>
 							<string>table</string>
+							<string>topToolbar</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBToOneOutletInfo">
 								<string key="name">addMediaButton</string>
 								<string key="candidateClassName">UIBarButtonItem</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">addPopover</string>
+								<string key="candidateClassName">UIPopoverController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">bottomToolbar</string>
+								<string key="candidateClassName">UIToolbar</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">mediaTypeControl</string>
@@ -548,6 +596,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">table</string>
 								<string key="candidateClassName">UITableView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">topToolbar</string>
+								<string key="candidateClassName">UIToolbar</string>
 							</object>
 						</object>
 					</object>
@@ -568,6 +620,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">Classes/UIViewController_iPadExtensions.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">WPProgressHUD</string>
+					<string key="superclassName">UIAlertView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/WPProgressHUD.h</string>
 					</object>
 				</object>
 			</object>

@@ -9,6 +9,7 @@
 #import "TransparentToolbar.h"
 #import "WordPressAppDelegate.h"
 #import "BlogDataManager.h"
+#import "PostMediaViewController.h"
 #import "PageManager.h"
 #import "DraftManager.h"
 #import "Post.h"
@@ -27,6 +28,8 @@
 - (void)refreshButtons:(BOOL)hasChanges keyboard:(BOOL)isShowingKeyboard;
 
 @end
+
+@class EditPageViewController;
 
 @interface PageViewController : UIViewController <PageViewControllerProtocol, UITabBarDelegate> {
 	IBOutlet UITabBarController *tabController;

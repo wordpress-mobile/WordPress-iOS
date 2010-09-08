@@ -1,4 +1,4 @@
-    //
+//
 //  PageViewController.m
 //  WordPress
 //
@@ -6,6 +6,7 @@
 //
 
 #import "PageViewController.h"
+#import "EditPageViewController.h"
 
 @implementation PageViewController
 @synthesize tabController, appDelegate, dm, selectedPostID, isPublished, pageManager, draftManager, canPublish;

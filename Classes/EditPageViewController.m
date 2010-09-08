@@ -11,9 +11,9 @@
 
 @implementation EditPageViewController
 
-@synthesize table, dm, appDelegate, actionSheet, isShowingKeyboard, pageDetailView, delegate, statuses;
+@synthesize table, dm, appDelegate, actionSheet, isShowingKeyboard, pageDetailView, delegate, statuses, pickerViewController;
 @synthesize contentTextView, selectedSection, titleTextField, isLocalDraft, originalTitle, originalStatus, originalContent;
-@synthesize page, connection, urlRequest, urlResponse, payload, spinner, resignTextFieldButton;
+@synthesize page, connection, urlRequest, urlResponse, payload, spinner, resignTextFieldButton, statusPopover;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -35,6 +35,11 @@
 	}
 	
 	[self setupPage];
+	
+	if(DeviceIsPad() == YES) {
+		[resignTextFieldButton removeFromSuperview];
+		//resignTextFieldButton.frame = CGRectMake(0, 90, 1000, 1000);
+	}
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -91,7 +96,10 @@
 			result = 45;
 			break;
 		case 1:
-			result = kUITextViewCellRowHeight;
+			if(DeviceIsPad() == YES)
+				result = self.view.frame.size.height - 90;
+			else
+				result = kUITextViewCellRowHeight;
 			break;
 		default:
 			break;
@@ -124,13 +132,16 @@
 			switch (indexPath.row) {
 				case 0:
 					textCell.titleLabel.text = @"Title";
-					//textCell.titleLabel.textColor = [UIColor grayColor];
 					textCell.textField.placeholder = @"Page Title";
 					textCell.textField.tag = 1;
 					textCell.textField.delegate = self;
 					if(page.postTitle != nil)
 						textCell.textField.text = page.postTitle;
 					titleTextField = [textCell.textField retain];
+					
+					if(DeviceIsPad() == YES)
+						titleTextField.frame = CGRectMake(80, 5, self.view.frame.size.width - 50, titleTextField.frame.size.height);
+					
 					cell = textCell;
 					break;
 				case 1:
@@ -162,6 +173,9 @@
 			contentCell.textView.tag = 2;
 			contentCell.textView.delegate = self;
 			
+			if(DeviceIsPad() == YES)
+				contentCell.textView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 90);
+			
 			if(page.content != nil)
 				contentCell.textView.text = page.content;
 			cell = contentCell;
@@ -187,7 +201,10 @@
 					// Nothing
 					break;
 				case 1:
-					[self showStatusPicker:self];
+					if(DeviceIsPad() == YES)
+						[self showStatusPopover:self];
+					else
+						[self showStatusPicker:self];
 				default:
 					break;
 			}
@@ -221,7 +238,13 @@
 
 - (void)pickerView:(UIPickerView *)thePickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
 	[self.page setStatus:[[[statuses allKeys] objectAtIndex:row] retain]];
-	[self hideStatusPicker:self];
+	
+	if(DeviceIsPad() == YES)
+		[statusPopover dismissPopoverAnimated:YES];
+	else
+		[self hideStatusPicker:self];
+	
+	[self refreshTable];
 	[self checkPublishable];
 }
 
@@ -238,6 +261,7 @@
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 	selectedSection = [NSNumber numberWithInt:0];
 	[self checkPublishable];
+	[self.view bringSubviewToFront:resignTextFieldButton];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
@@ -249,18 +273,18 @@
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
 	selectedSection = [NSNumber numberWithInt:1];
-	self.view.frame = CGRectMake(0, 0, 320, 199);
-	
-	CGRect sectionRect = [self.table rectForSection:1];
-	sectionRect.size.height = self.table.frame.size.height;
-	[self.table scrollRectToVisible:sectionRect animated:YES];
+	if(DeviceIsPad() == NO) {
+		CGRect sectionRect = [self.table rectForSection:1];
+		sectionRect.size.height = self.table.frame.size.height;
+		[self.table scrollRectToVisible:sectionRect animated:YES];
+		self.view.frame = CGRectMake(0, 0, 320, 199);
+	}
 	[self checkPublishable];
 	[self preserveUnsavedPage];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
 	selectedSection = nil;
-	self.view.frame = CGRectMake(0, 0, 320, 365);
 	
 	UITableViewCell *cell = [table cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
 	for(UIView *subview in cell.contentView.subviews) {
@@ -269,14 +293,17 @@
 			break;
 		}
 	}
-	
-	if(contentTextView != nil) {
-		contentTextView.frame = CGRectMake(0, 90, 320, contentTextView.contentSize.height);
+	if(DeviceIsPad() == NO) {
+		if(contentTextView != nil) {
+			contentTextView.frame = CGRectMake(0, 90, 320, contentTextView.contentSize.height);
+		}
+		
+		CGRect sectionRect = [self.table rectForSection:0];
+		sectionRect.size.height = self.table.frame.size.height;
+		[self.table scrollRectToVisible:sectionRect animated:YES];
+		self.view.frame = CGRectMake(0, 0, 320, 365);
 	}
 	
-	CGRect sectionRect = [self.table rectForSection:0];
-	sectionRect.size.height = self.table.frame.size.height;
-	[self.table scrollRectToVisible:sectionRect animated:YES];
 	if(textView.text != nil) {
 		[self.page setContent:[NSString stringWithFormat:@"%@", textView.text]];
 	}
@@ -341,7 +368,7 @@
 		[self setOriginalContent:self.page.content];
 	}
 	
-	[self checkPublishable];
+	[self refreshTable];
 }
 
 - (void)refreshTable {
@@ -383,6 +410,25 @@
 	
 	[actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 	[actionSheet setBounds:CGRectMake(0, 0, 320, 485)];
+	[self checkPublishable];
+	[self preserveUnsavedPage];
+}
+
+- (IBAction)showStatusPopover:(id)sender {
+	CGRect pickerFrame = CGRectMake(0, 0, 300, 200);
+	UIPickerView *pickerView = [[UIPickerView alloc] initWithFrame:pickerFrame];
+	pickerView.showsSelectionIndicator = YES;
+	pickerView.delegate = self;
+	pickerView.dataSource = self;
+    [pickerView selectRow:[self indexForStatus:page.status] inComponent:0 animated:YES];
+	pickerViewController = [[UIViewController alloc] init];
+	pickerViewController.view.frame = pickerFrame;
+	[pickerViewController.view addSubview:pickerView];
+	
+	statusPopover = [[UIPopoverController alloc] initWithContentViewController:pickerViewController];
+	[statusPopover setPopoverContentSize:CGSizeMake(300.0, 200.0)];
+	[statusPopover presentPopoverFromRect:CGRectMake(self.view.frame.size.width-210, 30, 50, 50) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+	
 	[self checkPublishable];
 	[self preserveUnsavedPage];
 }
@@ -630,6 +676,8 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
+	[pickerViewController release];
+	[statusPopover release];
 	[statuses release];
 	[resignTextFieldButton release];
 	[spinner release];

@@ -24,7 +24,6 @@
 		03B1DF30113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B1DF2E113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.xib */; };
 		03B1E32B113DBDB300BBD1C6 /* PostViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B1E32A113DBDB300BBD1C6 /* PostViewController-iPad.xib */; };
 		03CF21ED0FE9F0C3008AD538 /* NSString+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CF21EC0FE9F0C3008AD538 /* NSString+Util.m */; };
-		03E26FDC1157FC2500D6D38A /* PageViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03D5AEF11146A2D700FC6044 /* PageViewController-iPad.xib */; };
 		03E26FDD1157FC2500D6D38A /* EditPageViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03D5AF731146AF2D00FC6044 /* EditPageViewController-iPad.xib */; };
 		03EB54B5100FFB5C004E82CD /* gravatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 03EB54B4100FFB5C004E82CD /* gravatar.jpg */; };
 		03EB591010105076004E82CD /* RegExProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EB590E10105076004E82CD /* RegExProcessor.m */; };
@@ -219,6 +218,7 @@
 		83D3DDB81215DC7900600B4B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 83D3DDB71215DC7900600B4B /* Settings.bundle */; };
 		83F1F9A21236FBF600069F99 /* PostMediaViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83F1F9A11236FBF600069F99 /* PostMediaViewController-iPad.xib */; };
 		83F1FA581237073B00069F99 /* WPMediaUploader-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83F1FA571237073B00069F99 /* WPMediaUploader-iPad.xib */; };
+		83F1FCAC1237494D00069F99 /* PageViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83F1FCAB1237494D00069F99 /* PageViewController-iPad.xib */; };
 		83F3E26011275E07004CD686 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E25F11275E07004CD686 /* MapKit.framework */; };
 		83F3E2BE11276357004CD686 /* LocationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F3E2BD11276357004CD686 /* LocationController.m */; };
 		83F3E2D311276371004CD686 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E2D211276371004CD686 /* CoreLocation.framework */; };
@@ -322,7 +322,6 @@
 		03B1E32A113DBDB300BBD1C6 /* PostViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "PostViewController-iPad.xib"; sourceTree = "<group>"; };
 		03CF21EB0FE9F0C3008AD538 /* NSString+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Util.h"; sourceTree = "<group>"; };
 		03CF21EC0FE9F0C3008AD538 /* NSString+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Util.m"; sourceTree = "<group>"; };
-		03D5AEF11146A2D700FC6044 /* PageViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "PageViewController-iPad.xib"; sourceTree = "<group>"; };
 		03D5AF731146AF2D00FC6044 /* EditPageViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "EditPageViewController-iPad.xib"; sourceTree = "<group>"; };
 		03EB54B4100FFB5C004E82CD /* gravatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = gravatar.jpg; sourceTree = "<group>"; };
 		03EB590D10105076004E82CD /* RegExProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegExProcessor.h; sourceTree = "<group>"; };
@@ -590,6 +589,7 @@
 		83D3DDB71215DC7900600B4B /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		83F1F9A11236FBF600069F99 /* PostMediaViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "PostMediaViewController-iPad.xib"; sourceTree = "<group>"; };
 		83F1FA571237073B00069F99 /* WPMediaUploader-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "WPMediaUploader-iPad.xib"; sourceTree = "<group>"; };
+		83F1FCAB1237494D00069F99 /* PageViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "PageViewController-iPad.xib"; sourceTree = "<group>"; };
 		83F3E25F11275E07004CD686 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		83F3E2BC11276357004CD686 /* LocationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationController.h; sourceTree = "<group>"; };
 		83F3E2BD11276357004CD686 /* LocationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationController.m; sourceTree = "<group>"; };
@@ -888,23 +888,13 @@
 		45C73C23113C36F50024D0D2 /* Resources-iPad */ = {
 			isa = PBXGroup;
 			children = (
+				83F1FCA7123748EF00069F99 /* Blogs */,
+				83F1FCA6123748E300069F99 /* Posts */,
+				83F1FCA5123748DF00069F99 /* Pages */,
+				83F1FCA4123748DB00069F99 /* Media */,
 				4526DC531148072F0090C99D /* Default-Portrait.png */,
 				4526DC541148072F0090C99D /* Default-Landscape.png */,
 				45C73C24113C36F70024D0D2 /* MainWindow-iPad.xib */,
-				030DB993113C4BE6002FF1A2 /* BlogViewController-iPad.xib */,
-				03B1DF29113D87C400BBD1C6 /* BlogSplitViewMasterViewController.xib */,
-				03B1DF2E113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.xib */,
-				03B1E32A113DBDB300BBD1C6 /* PostViewController-iPad.xib */,
-				03FF763211445F8E00DCFC6F /* EditPostViewController-iPad.xib */,
-				03D5AEF11146A2D700FC6044 /* PageViewController-iPad.xib */,
-				03D5AF731146AF2D00FC6044 /* EditPageViewController-iPad.xib */,
-				835871C8120096AC007682CB /* WelcomeViewController-iPad.xib */,
-				8362C1031201E7CE00599347 /* WebSignupViewController-iPad.xib */,
-				8362C1291201EA9700599347 /* WPcomLoginViewController-iPad.xib */,
-				8362C1C5120229BC00599347 /* AddSiteViewController-iPad.xib */,
-				8362C54512027BC300599347 /* AddUsersBlogsViewController-iPad.xib */,
-				83F1F9A11236FBF600069F99 /* PostMediaViewController-iPad.xib */,
-				83F1FA571237073B00069F99 /* WPMediaUploader-iPad.xib */,
 			);
 			name = "Resources-iPad";
 			sourceTree = "<group>";
@@ -1044,6 +1034,48 @@
 				83CAD41B1235F854003DFA20 /* MediaObjectViewController.m */,
 			);
 			name = Media;
+			sourceTree = "<group>";
+		};
+		83F1FCA4123748DB00069F99 /* Media */ = {
+			isa = PBXGroup;
+			children = (
+				83F1F9A11236FBF600069F99 /* PostMediaViewController-iPad.xib */,
+				83F1FA571237073B00069F99 /* WPMediaUploader-iPad.xib */,
+			);
+			name = Media;
+			sourceTree = "<group>";
+		};
+		83F1FCA5123748DF00069F99 /* Pages */ = {
+			isa = PBXGroup;
+			children = (
+				03D5AF731146AF2D00FC6044 /* EditPageViewController-iPad.xib */,
+				83F1FCAB1237494D00069F99 /* PageViewController-iPad.xib */,
+			);
+			name = Pages;
+			sourceTree = "<group>";
+		};
+		83F1FCA6123748E300069F99 /* Posts */ = {
+			isa = PBXGroup;
+			children = (
+				03FF763211445F8E00DCFC6F /* EditPostViewController-iPad.xib */,
+				03B1E32A113DBDB300BBD1C6 /* PostViewController-iPad.xib */,
+			);
+			name = Posts;
+			sourceTree = "<group>";
+		};
+		83F1FCA7123748EF00069F99 /* Blogs */ = {
+			isa = PBXGroup;
+			children = (
+				835871C8120096AC007682CB /* WelcomeViewController-iPad.xib */,
+				8362C1291201EA9700599347 /* WPcomLoginViewController-iPad.xib */,
+				8362C1C5120229BC00599347 /* AddSiteViewController-iPad.xib */,
+				8362C54512027BC300599347 /* AddUsersBlogsViewController-iPad.xib */,
+				8362C1031201E7CE00599347 /* WebSignupViewController-iPad.xib */,
+				03B1DF29113D87C400BBD1C6 /* BlogSplitViewMasterViewController.xib */,
+				03B1DF2E113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.xib */,
+				030DB993113C4BE6002FF1A2 /* BlogViewController-iPad.xib */,
+			);
+			name = Blogs;
 			sourceTree = "<group>";
 		};
 		AC3439790E11434600E5D79B /* Post */ = {
@@ -1488,7 +1520,6 @@
 				45F285DB1149BD020014D36C /* Icon-72.png in Resources */,
 				45F285DD1149BD020014D36C /* Icon.png in Resources */,
 				45CD32191157D83D009E78D3 /* fabric.png in Resources */,
-				03E26FDC1157FC2500D6D38A /* PageViewController-iPad.xib in Resources */,
 				03E26FDD1157FC2500D6D38A /* EditPageViewController-iPad.xib in Resources */,
 				45FA648C1159055E00DB50C4 /* firstrun-wholebutton-default.png in Resources */,
 				45FA648D1159055E00DB50C4 /* firstrun-wholebutton-selected.png in Resources */,
@@ -1569,6 +1600,7 @@
 				83CAD4211235F9F4003DFA20 /* MediaObjectView.xib in Resources */,
 				83F1F9A21236FBF600069F99 /* PostMediaViewController-iPad.xib in Resources */,
 				83F1FA581237073B00069F99 /* WPMediaUploader-iPad.xib in Resources */,
+				83F1FCAC1237494D00069F99 /* PageViewController-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

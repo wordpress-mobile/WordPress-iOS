@@ -111,6 +111,7 @@
 - (IBAction)locationAction:(id)sender;
 - (IBAction)addPhotoAction:(id)sender;
 - (IBAction)previewAction:(id)sender;
+- (IBAction)mediaAction:(id)sender;
 - (IBAction)previewEditAction:(id)sender;
 - (IBAction)previewPublishAction:(id)sender;
 - (IBAction)newPostAction:(id)sender;

@@ -464,7 +464,10 @@
 															  cancelButtonTitle:@"Original" 
 														 destructiveButtonTitle:nil 
 															  otherButtonTitles:@"Small", @"Medium", @"Large", nil];
-		[resizeActionSheet showInView:super.tabBarController.view];
+		if(super.tabBarController.view != nil)
+			[resizeActionSheet showInView:super.tabBarController.view];
+		else if(DeviceIsPad() == YES)
+			[resizeActionSheet showInView:appDelegate.splitViewController.view];
 		[resizeActionSheet release];
 	}
 }

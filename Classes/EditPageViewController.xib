@@ -68,7 +68,9 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{-207, 84}, {735, 138}}</string>
 						<reference key="NSSuperview" ref="796269668"/>
+						<reference key="IBUIBackgroundColor" ref="84079630"/>
 						<bool key="IBUIOpaque">NO</bool>
+						<float key="IBUIAlpha">0.0</float>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
@@ -80,7 +82,7 @@
 						<reference key="IBUIHighlightedTitleColor" ref="84079630"/>
 						<object class="NSColor" key="IBUINormalTitleColor">
 							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+							<bytes key="NSRGB">MC4xOTYwNzg0MzE0IDAuMzA5ODAzOTIxNiAwLjUyMTU2ODYyNzUAA</bytes>
 						</object>
 						<object class="NSColor" key="IBUINormalTitleShadowColor">
 							<int key="NSColorSpace">3</int>
@@ -254,9 +256,11 @@
 							<string>hideStatusPicker:</string>
 							<string>resignTextField:</string>
 							<string>showStatusPicker:</string>
+							<string>showStatusPopover:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -269,6 +273,7 @@
 							<string>hideStatusPicker:</string>
 							<string>resignTextField:</string>
 							<string>showStatusPicker:</string>
+							<string>showStatusPopover:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -284,6 +289,10 @@
 								<string key="name">showStatusPicker:</string>
 								<string key="candidateClassName">id</string>
 							</object>
+							<object class="IBActionInfo">
+								<string key="name">showStatusPopover:</string>
+								<string key="candidateClassName">id</string>
+							</object>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="outlets">
@@ -295,6 +304,7 @@
 							<string>delegate</string>
 							<string>resignTextFieldButton</string>
 							<string>spinner</string>
+							<string>statusPopover</string>
 							<string>table</string>
 							<string>titleTextField</string>
 						</object>
@@ -305,6 +315,7 @@
 							<string>id</string>
 							<string>UIButton</string>
 							<string>WPProgressHUD</string>
+							<string>UIPopoverController</string>
 							<string>UITableView</string>
 							<string>UITextField</string>
 						</object>
@@ -318,6 +329,7 @@
 							<string>delegate</string>
 							<string>resignTextFieldButton</string>
 							<string>spinner</string>
+							<string>statusPopover</string>
 							<string>table</string>
 							<string>titleTextField</string>
 						</object>
@@ -342,6 +354,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">spinner</string>
 								<string key="candidateClassName">WPProgressHUD</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">statusPopover</string>
+								<string key="candidateClassName">UIPopoverController</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">table</string>
