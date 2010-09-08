@@ -62,23 +62,6 @@
 				</object>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 				<bool key="IBUIHorizontal">NO</bool>
-				<object class="IBUIViewController" key="IBUISelectedViewController" id="1029705109">
-					<object class="IBUITabBarItem" key="IBUITabBarItem" id="1059903232">
-						<string key="IBUITitle">Media</string>
-						<object class="NSCustomResource" key="IBUIImage">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">photos.png</string>
-						</object>
-						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-					</object>
-					<reference key="IBUIParentViewController" ref="366612516"/>
-					<string key="IBUINibName">PostMediaViewController-iPad</string>
-					<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
-						<int key="interfaceOrientation">1</int>
-					</object>
-					<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-					<bool key="IBUIHorizontal">NO</bool>
-				</object>
 				<object class="NSMutableArray" key="IBUIViewControllers">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIViewController" id="811444133">
@@ -98,7 +81,23 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<bool key="IBUIHorizontal">NO</bool>
 					</object>
-					<reference ref="1029705109"/>
+					<object class="IBUIViewController" id="1029705109">
+						<object class="IBUITabBarItem" key="IBUITabBarItem" id="1059903232">
+							<string key="IBUITitle">Media</string>
+							<object class="NSCustomResource" key="IBUIImage">
+								<string key="NSClassName">NSImage</string>
+								<string key="NSResourceName">photos.png</string>
+							</object>
+							<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						</object>
+						<reference key="IBUIParentViewController" ref="366612516"/>
+						<string key="IBUINibName">PostMediaViewController-iPad</string>
+						<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
+							<int key="interfaceOrientation">1</int>
+						</object>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<bool key="IBUIHorizontal">NO</bool>
+					</object>
 				</object>
 				<object class="IBUITabBar" key="IBUITabBar" id="21440387">
 					<nil key="NSNextResponder"/>
@@ -262,7 +261,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">11</int>
+			<int key="maxID">15</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

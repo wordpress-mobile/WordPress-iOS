@@ -147,7 +147,7 @@
 					<object class="IBUITextView" id="567447811">
 						<reference key="NSNextResponder" ref="208215467"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrame">{{0, 180}, {768, 824}}</string>
+						<string key="NSFrame">{{0, 181}, {768, 824}}</string>
 						<reference key="NSSuperview" ref="208215467"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -383,6 +383,46 @@
 					</object>
 					<int key="connectionID">46</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">textViewContentView</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="567447811"/>
+					</object>
+					<int key="connectionID">47</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">titleLabel</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="24565972"/>
+					</object>
+					<int key="connectionID">48</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">categoriesLabel</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="637579335"/>
+					</object>
+					<int key="connectionID">49</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">contentView</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="567447811"/>
+					</object>
+					<int key="connectionID">50</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">statusLabel</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="356232751"/>
+					</object>
+					<int key="connectionID">51</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -551,7 +591,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">46</int>
+			<int key="maxID">51</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

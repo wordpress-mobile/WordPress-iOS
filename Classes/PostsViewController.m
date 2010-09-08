@@ -233,7 +233,6 @@
 
         // Bail out if we're in the middle of saving the post.
         if ([[currentPost valueForKey:kAsyncPostFlag] intValue] == 1) {
-            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             return;
         }
 
@@ -247,6 +246,8 @@
     self.postDetailViewController.editMode = kEditPost;
 	[self.postDetailViewController refreshUIForCurrentPost];
 	[appDelegate showContentDetailViewController:self.postDetailViewController];
+	
+	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -407,11 +408,6 @@
 	[delegate setAlertRunning:NO];
 	if (DeviceIsPad() == YES) {
 		[delegate showContentDetailViewController:self.postDetailViewController];
-		// need a view, and a lot of setup happens in viewWillAppear
-		// TODO: clean up the post detail/edit/etc. view controller hierarchy!
-		if (self.postDetailViewController.editModalViewController) {
-			[self.postDetailViewController refreshUIForCompose];
-		}
 	}
 	else {
 		[delegate showContentDetailViewController:self.postDetailViewController];
@@ -511,20 +507,23 @@
 }
 
 - (void)showAddPostView {
-	if(postDetailViewController == nil)
-		postDetailViewController = [[PostViewController alloc] initWithNibName:@"PostViewController" bundle:nil];
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     [[BlogDataManager sharedDataManager] makeNewPostCurrent];
 	
+	if(postDetailViewController == nil) {
+		if(DeviceIsPad() == YES)
+			self.postDetailViewController = [[PostViewController alloc] initWithNibName:@"PostViewController-iPad" bundle:nil];
+		else
+			self.postDetailViewController = [[PostViewController alloc] initWithNibName:@"PostViewController" bundle:nil];
+	}
 	self.postDetailViewController.editMode = kNewPost;
 	self.postDetailViewController.title = @"Write";
-	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	[self.postDetailViewController refreshUIForCompose];
 	
 	if (DeviceIsPad() == NO) {
-		[self.postDetailViewController refreshUIForCompose];
 		[delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
 	}
 	else if (DeviceIsPad() == YES) {
-		[self.postDetailViewController refreshUIForCompose];
 		[delegate showContentDetailViewController:self.postDetailViewController];
 	}
 }

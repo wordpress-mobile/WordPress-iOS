@@ -24,18 +24,16 @@
 
 - (void)discard;
 - (void)cancel;
-- (void)conditionalLoadOfTabBarController;//to solve issue with crash when selecting comments tab from "new" (newPost) post editing view
 - (void)savePostWithBlog:(NSMutableArray *)arrayPost;
-- (void)removeProgressIndicator;
 
 @end
 
 @implementation PostViewController
 
 @synthesize postDetailViewController, postDetailEditController, postPreviewController, postSettingsController, postsListController, hasChanges, tabController;
-@synthesize mediaViewController, leftView, isVisible, customFieldsDetailController, commentsViewController;
+@synthesize mediaViewController, leftView, isVisible, commentsViewController, spinner;
 @synthesize selectedViewController, toolbar, contentView, commentsButton, photosButton, hasSaved;
-@synthesize settingsButton, editToolbar, cancelEditButton, editModalViewController, post, didConvertDraftToPublished;
+@synthesize settingsButton, editToolbar, cancelEditButton, post, didConvertDraftToPublished;
 @synthesize payload, connection, urlResponse, urlRequest, appDelegate, autosaveView, autosaveButton, isShowingAutosaves;
 @synthesize autosaveManager, draftManager, editMode;
 
@@ -47,7 +45,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+	autosaveView = [[AutosaveViewController alloc] initWithNibName:@"AutosaveViewController" bundle:nil];
+	autosaveManager = [[AutosaveManager alloc] init];
+	draftManager = [[DraftManager alloc] init];
 	hasSaved = NO;
+	
+	if(editMode == kNewPost) {
+		NSMutableArray *tabs = [NSMutableArray arrayWithArray:tabController.viewControllers];
+		[tabs removeObjectAtIndex:1];
+		[tabController setViewControllers:tabs];
+	}
 	
 	BOOL clearAutosaves = [[NSUserDefaults standardUserDefaults] boolForKey:@"autosave_clear_preference"];
 	if(clearAutosaves == YES) {
@@ -55,26 +62,20 @@
 		[[NSUserDefaults standardUserDefaults] setValue:NO forKey:@"autosave_clear_preference"];
 	}
 	
-	if (DeviceIsPad() == NO)
-	{
-		//conditionalLoadOfTabBarController is now referenced from viewWillAppear.  Solves Ticket #223 (crash when selecting comments from new post view)
+	if (DeviceIsPad() == NO) {
 	    if (!leftView) {
 			leftView = [WPNavigationLeftButtonView createCopyOfView];
 			[leftView setTitle:@"Posts"];
 		}
 	}
 	
-	autosaveView = [[AutosaveViewController alloc] initWithNibName:@"AutosaveViewController" bundle:nil];
-	autosaveManager = [[AutosaveManager alloc] init];
-	draftManager = [[DraftManager alloc] init];
-	
 	[self refreshButtons];
+	self.view = tabController.view;
 }
-//shouldAutorotateToInterfaceOrientation
-
 
 - (void)viewWillAppear:(BOOL)animated {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restoreFromAutosave:) name:@"RestoreFromAutosaveNotification" object:nil];
+    [super viewWillAppear:animated];
+	
 	if (DeviceIsPad() == NO) {
 		if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
 			[postDetailEditController setTextViewHeight:202];
@@ -99,40 +100,34 @@
         [leftView setTitle:@"Posts"];
     }
 	
-	[self refreshButtons];
-	
 	if (DeviceIsPad() == NO) {
 		UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
 		self.leftBarButtonItemForEditPost = cancelButton;
 		[cancelButton release];
 	}
 	
-    [super viewWillAppear:animated];
-	[self conditionalLoadOfTabBarController];
-	
-    if(self.editMode == kEditPost) {
+    if(self.editMode == kEditPost)
         [self refreshUIForCurrentPost];
-    }
-	else if(self.editMode == kNewPost) {
+	//else if(self.editMode == kNewPost)
         //[self refreshUIForCompose];
-    }
-	else if (self.editMode == kAutorecoverPost) {
+	else if (self.editMode == kAutorecoverPost)
         [self refreshUIForCurrentPost];
         self.hasChanges = YES;
-    }
 	
-    if (self.editMode != kNewPost)
+    if(self.editMode != kNewPost)
 		self.editMode = kRefreshPost;
 	
     [commentsViewController setIndexForCurrentPost:[[BlogDataManager sharedDataManager] currentPostIndex]];
     [[tabController selectedViewController] viewWillAppear:animated];
 	
 	isVisible = YES;
-	
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restoreFromAutosave:) name:@"RestoreFromAutosaveNotification" object:nil];
 	if(self.autosaveButton == nil)
 		self.autosaveButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	[self.autosaveButton setImage:[UIImage imageNamed:@"autosave"] forState:UIControlStateNormal];
 	[self checkAutosaves];
+	[self refreshButtons];
 }
 
 - (void)refreshButtons {
@@ -181,104 +176,6 @@
 	}
 }
 
-- (void)conditionalLoadOfTabBarController {
-	// Icons designed by, and included with permission of, IconBuffet | iconbuffet.com
-    NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:5];
-	
-	// post detail controllers
-    if (postDetailEditController == nil) {
-		if (DeviceIsPad() == YES) {
-			postDetailEditController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController-iPad" bundle:nil];
-		} else {
-			postDetailEditController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil];
-		}
-    }
-	
-    postDetailEditController.title = @"Write";
-    postDetailEditController.tabBarItem.image = [UIImage imageNamed:@"write.png"];
-    postDetailEditController.postDetailViewController = self;
-    [array addObject:postDetailEditController];
-	
-	autosaveView.postDetailViewController = self;
-	
-    //if (mode == 1 || mode == 2 || mode == 3) { //don't load this tab if mode == 0 (new post) since comments are irrelevant to a brand new post
-	NSString *postStatus = [[BlogDataManager sharedDataManager].currentPost valueForKey:@"post_status"];
-	if (editMode != kNewPost && ![postStatus isEqualToString:@"Local Draft"]) { //don't load commentsViewController tab if it's a new post or a local draft since comments are irrelevant to a brand new post
-		if (commentsViewController == nil) {
-			commentsViewController = [[CommentsViewController alloc] initWithNibName:@"CommentsViewController" bundle:nil];
-			if (DeviceIsPad() == YES) {
-				commentsViewController.isSecondaryViewController = YES;
-			}
-		}
-		
-		commentsViewController.title = @"Comments";
-		commentsViewController.tabBarItem.image = [UIImage imageNamed:@"comments.png"];
-		[array addObject:commentsViewController];
-	}
-	
-	if(DeviceIsPad() == YES) {
-		mediaViewController = nil;
-		mediaViewController = [[PostMediaViewController alloc] initWithNibName:@"PostMediaViewController-iPad" bundle:nil];
-	}
-	else if(mediaViewController == nil)
-		mediaViewController = [[PostMediaViewController alloc] initWithNibName:@"PostMediaViewController" bundle:nil];
-	
-    mediaViewController.title = @"Media";
-    mediaViewController.tabBarItem.image = [UIImage imageNamed:@"photos.png"];
-	mediaViewController.postDetailViewController = self;
-	
-    [array addObject:mediaViewController];
-	
-    if (postPreviewController == nil) {
-        postPreviewController = [[PostPreviewViewController alloc] initWithNibName:@"PostPreviewViewController" bundle:nil];
-    }
-	
-    postPreviewController.title = @"Preview";
-    postPreviewController.tabBarItem.image = [UIImage imageNamed:@"preview.png"];
-    postPreviewController.postDetailViewController = self;
-    [array addObject:postPreviewController];
-	
-    if (postSettingsController == nil) {
-        postSettingsController = [[PostSettingsViewController alloc] initWithNibName:@"PostSettingsViewController" bundle:nil];
-    }
-	
-    postSettingsController.title = @"Settings";
-    postSettingsController.tabBarItem.image = [UIImage imageNamed:@"settings.png"];
-    postSettingsController.postDetailViewController = self;
-    [array addObject:postSettingsController];
-	
-	if (DeviceIsPad() == YES) {
-		// the iPad has two detail views
-		postDetailViewController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController-iPad" bundle:nil];
-		[postDetailViewController disableInteraction];
-		
-		if (!editModalViewController) {
-			editModalViewController = [[FlippingViewController alloc] init];
-			
-			RotatingNavigationController *editNav = [[[RotatingNavigationController alloc] initWithRootViewController:postDetailEditController] autorelease];
-			editModalViewController.frontViewController = editNav;
-			postDetailEditController.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:editToolbar] autorelease];
-			postDetailEditController.navigationItem.leftBarButtonItem = cancelEditButton;
-			
-			RotatingNavigationController *previewNav = [[[RotatingNavigationController alloc] initWithRootViewController:postPreviewController] autorelease];
-			editModalViewController.backViewController = previewNav;
-			postPreviewController.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:previewToolbar] autorelease];
-			
-		}
-	}
-	
-	if (tabController) {
-		tabController.viewControllers = array;
-		self.view = tabController.view;
-	}
-	else {
-		postDetailViewController.view.frame = contentView.bounds;
-		[contentView addSubview:postDetailViewController.view];
-	}
-	
-    [array release];
-}
-
 - (void)viewWillDisappear:(BOOL)animated {
 	if (DeviceIsPad() == NO) {
 		if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
@@ -291,35 +188,16 @@
     if (postDetailEditController.currentEditingTextField)
         [postDetailEditController.currentEditingTextField resignFirstResponder];
 	
-    [super viewWillDisappear:animated];
 	if(self.editMode != kNewPost)
 		self.editMode = kRefreshPost;
     [postPreviewController stopLoading];
 	isVisible = NO;
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+    [super viewWillDisappear:animated];
 }
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-    [selectedViewController viewWillDisappear:NO];
-    [viewController viewWillAppear:NO];
-
-//    if (viewController == photosListController) {
-//        if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-//            [photosListController.view addSubview:photoEditingStatusView];
-//        } else if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
-//            [photoEditingStatusView removeFromSuperview];
-//        }
-//    }
-//    else {
-//        [photoEditingStatusView removeFromSuperview];
-//    }
-
-    if (hasChanges && DeviceIsPad()) {
-        [leftView setTitle:@"Cancel"];
-		[self refreshButtons];
-    }
-
     selectedViewController = viewController;
 }
 
@@ -329,11 +207,8 @@
 		[self dismissEditView];
         return;
     }
-
-//	if (DeviceIsPad() == NO) {
-		[postSettingsController endEditingAction:nil];
-		[postDetailEditController endEditingAction:nil];
-//	}
+	[postSettingsController endEditingAction:nil];
+	[postDetailEditController endEditingAction:nil];
 
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
                                   delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Discard"
@@ -371,8 +246,6 @@
 				[self dismissEditView];
 			}
 			else {
-				//NSString *postStatus = [dm.currentPost valueForKey:@"post_status"];
-				[self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
 				
 				[(NSMutableDictionary *)[BlogDataManager sharedDataManager].currentPost setValue:@"" forKey:@"mt_text_more"];
 				[postSettingsController endEditingAction:nil];
@@ -418,7 +291,6 @@
 					
 					hasChanges = NO;
 					
-					[self removeProgressIndicator];
 					[self dismissEditView];
 					
 					if (DeviceIsPad() == YES) {
@@ -434,6 +306,7 @@
 	else {
 		[self saveAsDraft];
 	}
+	[spinner dismissWithClickedButtonIndex:0 animated:YES];
 }
 
 - (void)autoSaveCurrentPost:(NSTimer *)aTimer {
@@ -520,34 +393,17 @@
     //[photosListController refreshData];
 
     [self updatePhotosBadge];
-	
-	if (DeviceIsPad() == YES) {
-		[self editAction:self];
-	}
 	[self checkAutosaves];
 }
 
 - (void)refreshUIForCurrentPost {
 	autosaveView.postID = appDelegate.postID;
 	
-	if(post != nil) {
-		
-	}
-	else {
-		if (![[[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"title"] isEqualToString:@""]) {
-			self.navigationItem.title = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"title"];
-		}else{
-			self.navigationItem.title = @"Write";
-		}
+	if(post == nil) {
+		self.navigationItem.title = @"Write";
 		
 		[tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
-		UIViewController *vc = [[tabController viewControllers] objectAtIndex:0];
-		self.title = vc.title;
-		[postDetailViewController refreshUIForCurrentPost];
-		// avoid overwriting restored post when list is refreshed and reselected.
-		// this is a bandaid for bug #445
-		if (!DeviceIsPad())
-			[postDetailEditController refreshUIForCurrentPost];
+		[postDetailViewController refreshUIForCurrentPost];[postDetailEditController refreshUIForCurrentPost];
 		[postSettingsController reloadData];
 		//[photosListController refreshData];
 		
@@ -584,30 +440,6 @@
 
 #pragma mark -
 #pragma mark UIActionSheetDelegate methods
-
-- (void)addProgressIndicator {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    spinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
-    [spinner startAnimating];
-	
-	UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:spinner];
-	[self refreshButtons];
-    [spinner release];
-    [activityButtonItem release];
-	
-	[pool release];
-}
-
-- (void)removeProgressIndicator {
-    if (hasChanges) {
-        if ([[leftView title] isEqualToString:@"Posts"] || [[self.leftBarButtonItemForEditPost title] isEqualToString:@"Done"])
-            [leftView setTitle:@"Cancel"];
-    }
-	
-	[self refreshButtons];
-}
 
 - (IBAction)saveAsDraft {
 	[self saveAsDraft:YES];
@@ -659,6 +491,9 @@
 }
 
 - (void)savePostWithBlog:(NSMutableArray *)arrayPost {
+	spinner = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
+	[spinner show];
+	
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
     NSString *postId = [arrayPost lastObject];
     BOOL isCurrentPostDraft = dm.isLocaDraftsCurrent;
@@ -807,6 +642,8 @@
 }
 
 - (void)publish:(id)sender {
+	spinner = [[WPProgressHUD alloc] initWithLabel:@"Publishing..."];
+	[spinner show];
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	
 	if(post.isLocalDraft == [NSNumber numberWithInt:1]) {
@@ -848,45 +685,13 @@
 	}
 }
 
-- (IBAction)editAction:(id)sender;
-{
+- (IBAction)editAction:(id)sender {
+	self.editMode = kEditPost;
 	[postDetailEditController refreshUIForCurrentPost];
-	[editModalViewController setShowingFront:YES animated:NO];
-	editModalViewController.modalPresentationStyle = UIModalPresentationPageSheet;
-	editModalViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-	[self.splitViewController presentModalViewController:editModalViewController animated:YES];
+	[appDelegate showContentDetailViewController:self.postDetailViewController];
 }
 
-- (IBAction)commentsAction:(id)sender;
-{
-	// why is this necessary?
-	commentsViewController.contentSizeForViewInPopover = commentsViewController.contentSizeForViewInPopover;
-	UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:commentsViewController] autorelease];
-	UIPopoverController *popover = [[[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:navController] autorelease];
-	[popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-	[[CPopoverManager instance] setCurrentPopoverController:popover];
-}
-
-- (IBAction)picturesAction:(id)sender;
-{//
-//	photosListController.contentSizeForViewInPopover = photosListController.contentSizeForViewInPopover;
-//	UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:photosListController] autorelease];
-//	UIPopoverController *popover = [[[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:navController] autorelease];
-//	[popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-//	[[CPopoverManager instance] setCurrentPopoverController:popover];
-}
-
-- (IBAction)settingsAction:(id)sender;
-{
-	postSettingsController.contentSizeForViewInPopover = postSettingsController.contentSizeForViewInPopover;
-	UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:postSettingsController] autorelease];
-	UIPopoverController *popover = [[[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:navController] autorelease];
-	[popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-	[[CPopoverManager instance] setCurrentPopoverController:popover];
-}
-
-- (IBAction)locationAction:(id)sender;
-{
+- (IBAction)locationAction:(id)sender {
 	if(DeviceIsPad()) {
 		PostLocationViewController *locationView = [[PostLocationViewController alloc] initWithNibName:@"PostLocationViewController" bundle:nil];
 		locationView.contentSizeForViewInPopover = locationView.contentSizeForViewInPopover;
@@ -900,39 +705,7 @@
 		[postDetailEditController showLocationMapView:sender];
 }
 
-- (IBAction)mediaAction:(id)sender {
-	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-		if(DeviceIsPad() == YES) {
-			UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-			NSArray *availableMediaTypes = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-			[picker setMediaTypes:availableMediaTypes];
-			picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-			picker.delegate = mediaViewController;
-			UIPopoverController *addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
-			[addPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-			[[CPopoverManager instance] setCurrentPopoverController:addPopover];
-			[picker release];
-		}
-    }
-}
-
-- (IBAction)previewAction:(id)sender {
-	[[CPopoverManager instance] setCurrentPopoverController:NULL];
-	[editModalViewController setShowingFront:NO animated:YES];
-}
-
-- (IBAction)previewEditAction:(id)sender;
-{
-	[[CPopoverManager instance] setCurrentPopoverController:NULL];
-	[editModalViewController setShowingFront:YES animated:YES];
-}
-
-- (IBAction)previewPublishAction:(id)sender;
-{
-}
-
-- (void)dismissEditView;
-{
+- (void)dismissEditView {
 	if (DeviceIsPad() == NO) {
         [self.navigationController popViewControllerAnimated:YES];
 	} else {
@@ -946,9 +719,6 @@
 	}
 }
 
-- (IBAction)newPostAction:(id)sender {
-	[self refreshUIForCompose];
-}
 
 - (void)setMode:(EditPostMode)newMode {
 	self.editMode = newMode;
@@ -1229,10 +999,7 @@
 	[commentsButton release];
 	[photosButton release];
 	[settingsButton release];
-	[editModalViewController release];
-	
     [self stopTimer];
-	
     [super dealloc];
 }
 

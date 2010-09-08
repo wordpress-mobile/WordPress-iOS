@@ -11,12 +11,10 @@
 #import "AutosaveManager.h"
 #import "DraftManager.h"
 #import "TransparentToolbar.h"
+#import "WPProgressHUD.h"
 
 @class EditPostViewController, PostPreviewViewController, WPSelectionTableViewController, PostSettingsViewController, PostsViewController, CommentsViewController;
-@class WPNavigationLeftButtonView;
-@class CustomFieldsDetailController, WPPublishOnEditController;
-@class CInvisibleToolbar;
-@class FlippingViewController;
+@class WPNavigationLeftButtonView, WPPublishOnEditController, CInvisibleToolbar, FlippingViewController;
 
 @interface PostViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate> {
     IBOutlet UITabBarController *tabController;
@@ -34,7 +32,7 @@
     
     UIViewController *selectedViewController;
     WPNavigationLeftButtonView *leftView;
-    CustomFieldsDetailController *customFieldsDetailController;
+	WPProgressHUD *spinner;
 
     BOOL hasChanges, hasSaved, isVisible, didConvertDraftToPublished, isShowingAutosaves;
     EditPostMode editMode;
@@ -58,19 +56,17 @@
 	IBOutlet UIToolbar *previewToolbar;
 	IBOutlet UIBarButtonItem *cancelEditButton;
 	IBOutlet AutosaveViewController *autosaveView;
-	FlippingViewController *editModalViewController;
 	
 	WordPressAppDelegate *appDelegate;
 }
 
 @property (nonatomic, retain) WPNavigationLeftButtonView *leftView;
 @property (nonatomic, retain) EditPostViewController *postDetailViewController;
-@property (nonatomic, retain) EditPostViewController *postDetailEditController;
-@property (nonatomic, retain) PostPreviewViewController *postPreviewController;
-@property (nonatomic, retain) PostSettingsViewController *postSettingsController;
-@property (nonatomic, retain) PostMediaViewController *mediaViewController;
-@property (nonatomic, retain) CommentsViewController *commentsViewController;
-@property (nonatomic, retain) CustomFieldsDetailController *customFieldsDetailController;
+@property (nonatomic, retain) IBOutlet EditPostViewController *postDetailEditController;
+@property (nonatomic, retain) IBOutlet PostPreviewViewController *postPreviewController;
+@property (nonatomic, retain) IBOutlet PostSettingsViewController *postSettingsController;
+@property (nonatomic, retain) IBOutlet PostMediaViewController *mediaViewController;
+@property (nonatomic, retain) IBOutlet CommentsViewController *commentsViewController;
 @property (nonatomic, assign) PostsViewController *postsListController;
 @property (nonatomic, assign) UIViewController *selectedViewController;
 @property (nonatomic, assign) BOOL hasChanges, hasSaved, isVisible, didConvertDraftToPublished, isShowingAutosaves;
@@ -84,7 +80,6 @@
 @property (nonatomic, retain) IBOutlet UIToolbar *editToolbar;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *cancelEditButton;
 @property (nonatomic, retain) IBOutlet UIButton *autosaveButton;
-@property (nonatomic, retain) FlippingViewController *editModalViewController;
 @property (nonatomic, assign) UIBarButtonItem *leftBarButtonItemForEditPost;
 @property (nonatomic, retain) Post *post;
 @property (nonatomic, retain) NSURLConnection *connection;
@@ -95,26 +90,18 @@
 @property (nonatomic, retain) IBOutlet AutosaveViewController *autosaveView;
 @property (nonatomic, retain) AutosaveManager *autosaveManager;
 @property (nonatomic, retain) DraftManager *draftManager;
+@property (nonatomic, retain) WPProgressHUD *spinner;
 
 - (IBAction)cancelView:(id)sender;
 - (void)refreshUIForCompose;
 - (void)refreshUIForCurrentPost;
 - (void)updatePhotosBadge;
 - (UINavigationItem *)navigationItemForEditPost;
-- (IBAction)commentsAction:(id)sender;
 - (IBAction)editAction:(id)sender;
 - (void)publish:(id)sender;
 - (IBAction)saveAsDraft;
 - (void)saveAsDraft:(BOOL)andDiscard;
-- (IBAction)picturesAction:(id)sender;
-- (IBAction)settingsAction:(id)sender;
 - (IBAction)locationAction:(id)sender;
-- (IBAction)addPhotoAction:(id)sender;
-- (IBAction)previewAction:(id)sender;
-- (IBAction)mediaAction:(id)sender;
-- (IBAction)previewEditAction:(id)sender;
-- (IBAction)previewPublishAction:(id)sender;
-- (IBAction)newPostAction:(id)sender;
 - (void)dismissEditView;
 - (void)verifyPublishSuccessful;
 - (void)stop;

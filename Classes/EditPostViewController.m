@@ -44,8 +44,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [leftView setTitle:@"Posts"];
     [leftView setTarget:self withAction:@selector(cancelView:)];
 	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(save) name:@"EditPostViewShouldSave" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(publish) name:@"EditPostViewShouldPublish" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newCategoryCreatedNotificationReceived:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkAutosaves:) name:@"AutosaveNotification" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkAutosaves) name:@"AutosaveNotification" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaAbove:) name:@"ShouldInsertMediaAbove" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:@"ShouldInsertMediaBelow" object:nil];
 	//[self hideAutosaveButton];
@@ -174,6 +176,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[self dismissModalViewControllerAnimated:YES];
 	[titleTextField resignFirstResponder];
 	[tagsTextField resignFirstResponder];
@@ -183,13 +186,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[postDetailViewController hideAutosaveButton];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
-{
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
 	return YES;
 }
 
-- (void)disableInteraction;
-{
+- (void)disableInteraction {
 	editingDisabled = YES;
 }
 
@@ -243,8 +244,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			titleTextField.text = post.postTitle;
 			tagsTextField.text = post.tags;
 			statusTextField.text = post.status;
-			
 			categoriesTextField.text = post.categories;
+			
+			NSLog(@"titleTextField.text: %@\ntagsTextField.text: %@\nstatusTextField.text: %@\ncategoriesTextField.text: %@",
+				  titleTextField.text, tagsTextField.text, statusTextField.text, categoriesTextField.text);
 			
 			if(post.content == nil) {
 				textViewPlaceHolderField.hidden = NO;
@@ -259,6 +262,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		}
 	}
 	else {
+		NSLog(@"currentPost: %@", dm.currentPost);
 		self.isLocalDraft = NO;
 		NSString *description = [dm.currentPost valueForKey:@"description"];
 		NSString *moreText = [dm.currentPost valueForKey:@"mt_text_more"];
@@ -278,7 +282,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
 				textView.text = description;
 		}
 		
+		if(titleTextField == nil)
+			titleTextField = [[UITextField alloc] init];
 		titleTextField.text = [dm.currentPost valueForKey:@"title"];
+		NSLog(@"titleTextField: %@", titleTextField);
+		NSLog(@"dm.currentPost.title: %@", [dm.currentPost valueForKey:@"title"]);
 		tagsTextField.text = [dm.currentPost valueForKey:@"mt_keywords"];
 		
 		NSString *status = [dm statusDescriptionForStatus:[dm.currentPost valueForKey:@"post_status"] fromBlog:dm.currentBlog];
@@ -290,6 +298,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			categoriesTextField.text = [cats componentsJoinedByString:@", "];
 		else
 			categoriesTextField.text = @"";
+		
+		NSLog(@"titleTextField.text: %@\ntagsTextField.text: %@\nstatusTextField.text: %@\ncategoriesTextField.text: %@",
+			  titleTextField.text, tagsTextField.text, statusTextField.text, categoriesTextField.text);
 			
 	}
 	
@@ -1327,8 +1338,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 #pragma mark Dealloc
 
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[autosaveButton release];
 	[statuses release];
 	[textView release];

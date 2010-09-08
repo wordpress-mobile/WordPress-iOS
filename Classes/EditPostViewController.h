@@ -2,7 +2,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import "PostViewController.h"
 #import "WPAddCategoryViewController.h"
-#import "WPImagePickerController.h"
 #import "Post.h"
 
 #define kSelectionsStatusContext ((void *)1000)
@@ -43,7 +42,6 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 	IBOutlet UIActivityIndicatorView *locationSpinner;
     IBOutlet UIBarButtonItem *newCategoryBarButtonItem;
 	
-    WPImagePickerController *pickerController;
     WPSelectionTableViewController *selectionTableViewController;
     WPSegmentedSelectionTableViewController *segmentedTableViewController;
     PostViewController *postDetailViewController;
