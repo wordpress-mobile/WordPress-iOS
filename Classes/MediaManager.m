@@ -154,14 +154,14 @@
 	
 	for(Media *image in images) {
 		filepath = [documentsDirectory stringByAppendingPathComponent:image.filename];
-		[fileManager removeItemAtURL:[NSURL fileURLWithPath:filepath] error:&error];
+		[fileManager removeItemAtPath:filepath error:&error];
 		NSManagedObject *objectToDelete = image;
 		[appDelegate.managedObjectContext deleteObject:objectToDelete];
 	}
 	
 	for(Media *video in videos) {
 		filepath = [documentsDirectory stringByAppendingPathComponent:video.filename];
-		[fileManager removeItemAtURL:[NSURL fileURLWithPath:filepath] error:&error];
+		[fileManager removeItemAtPath:filepath error:&error];
 		NSManagedObject *objectToDelete = video;
 		[appDelegate.managedObjectContext deleteObject:objectToDelete];
 	}
@@ -179,7 +179,7 @@
 	
 	for(Media *media in items) {
 		filepath = [documentsDirectory stringByAppendingPathComponent:media.filename];
-		[fileManager removeItemAtURL:[NSURL fileURLWithPath:filepath] error:&error];
+		[fileManager removeItemAtPath:filepath error:&error];
 		NSManagedObject *objectToDelete = media;
 		[appDelegate.managedObjectContext deleteObject:objectToDelete];
 	}

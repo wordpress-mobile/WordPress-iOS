@@ -23,7 +23,7 @@ typedef enum
 @end
 
 
-@interface XMLValueDecoder : NSObject <ValueDecoderProtocol, NSXMLParserDelegate>
+@interface XMLValueDecoder : NSObject <ValueDecoderProtocol>
 {
 	id parentParser;
 	id parentDecoder;

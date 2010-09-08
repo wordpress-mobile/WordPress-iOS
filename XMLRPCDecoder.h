@@ -29,7 +29,7 @@
 #import <Foundation/Foundation.h>
 #import "XMLValueDecoder.h"
 
-@interface XMLRPCDecoder : NSObject <NSXMLParserDelegate>
+@interface XMLRPCDecoder : NSObject
 {
 	NSXMLParser *_parser;
 	BOOL _isFault;
