@@ -1005,8 +1005,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		hasUnsavedPost = YES;
 	}
 	
-	if(hasUnsavedPost == YES)
+	if(hasUnsavedPost == YES) {
 		[defaults setBool:YES forKey:@"unsavedpost_ihasone"];
+		[defaults synchronize];
+	}
 }
 
 - (void)clearUnsavedPost {

@@ -866,7 +866,6 @@
 		if(self.currentOrientation != [self interpretOrientation:[[UIDevice currentDevice] orientation]]) {
 			self.currentOrientation = [self interpretOrientation:[[UIDevice currentDevice] orientation]];
 			didChangeOrientationDuringRecord = YES;
-			NSLog(@"movie orientation changed to: %d", self.currentOrientation);
 		}
 	}
 }
@@ -877,7 +876,6 @@
 	if(self.isCheckingVideoCapability == NO) {
 		self.isCheckingVideoCapability = YES;
 		self.videoPressCheckBlogURL = self.blogURL;
-		NSLog(@"just set videoPressCheckBlogURL to %@", videoPressCheckBlogURL);
 		
 		@try {
 			NSArray *args = [NSArray arrayWithObjects:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:kBlogId],
@@ -911,11 +909,6 @@
 			self.videoEnabled = YES;
 		}
 		@finally {
-			if(self.videoEnabled)
-				NSLog(@"VideoPress enabled!");
-			else
-				NSLog(@"VideoPress disabled!");
-			
 			self.isCheckingVideoCapability = NO;
 		}
 	}

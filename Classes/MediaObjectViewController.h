@@ -7,10 +7,12 @@
 
 #import <UIKit/UIKit.h>
 #import <MediaPlayer/MediaPlayer.h>
+#import "WordPressAppDelegate.h"
 #import "MediaManager.h"
 #import "Media.h"
 
 @interface MediaObjectViewController : UIViewController <UIActionSheetDelegate> {
+	WordPressAppDelegate *appDelegate;
 	Media *media;
 	MediaManager *mediaManager;
 	MPMoviePlayerController *videoPlayer;
@@ -19,6 +21,7 @@
 	BOOL isDeleting, isInserting;
 }
 
+@property (nonatomic, assign) WordPressAppDelegate *appDelegate;
 @property (nonatomic, retain) Media *media;
 @property (nonatomic, retain) MediaManager *mediaManager;
 @property (nonatomic, retain) IBOutlet MPMoviePlayerController *videoPlayer;

@@ -314,8 +314,8 @@
 			break;
 	}
 	
-	NSSortDescriptor *sortByDate = [NSSortDescriptor sortDescriptorWithKey:@"date_created_gmt" ascending:NO];
-	[pages sortUsingDescriptors:[NSArray arrayWithObject:sortByDate]];
+	NSSortDescriptor *pageSorter = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
+	[pages sortUsingDescriptors:[NSArray arrayWithObject:pageSorter]];
 	
 	[self refreshTable];
     [refreshButton stopAnimating];

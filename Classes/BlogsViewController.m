@@ -50,12 +50,12 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-    //[[NSNotificationCenter defaultCenter] removeObserver:self name:@"BlogsRefreshNotification" object:nil];
-    //[[NSNotificationCenter defaultCenter] removeObserver:self name:@"NewBlogAdded" object:nil];
 	[super viewWillDisappear:animated];
 }
 
-- (void)blogsRefreshNotificationReceived:(id)notification {
+- (void)blogsRefreshNotificationReceived:(NSNotification *)notification {
+	self.blogsList = nil;
+	self.blogsList = [[[BlogDataManager sharedDataManager] blogsList] mutableCopy];
     [self.tableView reloadData];
 }
 

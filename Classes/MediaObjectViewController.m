@@ -10,16 +10,18 @@
 
 @implementation MediaObjectViewController
 
-@synthesize media, mediaManager, imageView, videoPlayer, deleteButton, insertButton, isDeleting, isInserting;
+@synthesize media, mediaManager, imageView, videoPlayer, deleteButton, insertButton, isDeleting, isInserting, appDelegate;
 
 #pragma mark -
 #pragma mark View lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	
 	if((media != nil) && ([media.mediaType isEqualToString:@"video"])) {
 		self.navigationItem.title = @"Video";
+		appDelegate.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 		videoPlayer = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL fileURLWithPath:media.localURL]];
 		[videoPlayer prepareToPlay];
 		videoPlayer.view.frame = self.view.frame;
@@ -120,6 +122,7 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
+	[appDelegate release];
 	[insertButton release];
 	[deleteButton release];
 	[media release];

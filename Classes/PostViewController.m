@@ -436,7 +436,6 @@
 }
 
 - (void)autoSaveCurrentPost:(NSTimer *)aTimer {
-	NSLog(@"autosaving...");
 	[postDetailEditController preserveUnsavedPost];
 	if (hasChanges) {
 		BlogDataManager *dm = [BlogDataManager sharedDataManager];
@@ -1045,7 +1044,6 @@
 		}
 		else {
 			BlogDataManager *dm = [BlogDataManager sharedDataManager];
-			NSLog(@"autosave.postID: %@", autosave.postID);
 			appDelegate.postID = autosave.postID;
 			[dm makePostWithPostIDCurrent:autosave.postID];
 			if(autosave.postTitle != nil)
@@ -1061,7 +1059,6 @@
 				[[dm currentPost] setValue:autosave.status forKey:@"post_status"];
 			}
 			
-			NSLog(@"[dm currentPost]: %@", [dm currentPost]);
 			[postDetailEditController refreshUIForCurrentPost];
 		}
 		[autosaveManager removeAllForPostID:autosave.postID];
@@ -1112,7 +1109,6 @@
 - (void)verifyPublishSuccessful {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	NSLog(@"appDelegate.postID: %@", appDelegate.postID);
 	
 	NSArray *params = [NSArray arrayWithObjects:
 					   appDelegate.postID,
