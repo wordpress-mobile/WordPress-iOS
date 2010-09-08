@@ -361,10 +361,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			popoverRect.size.width = MIN(popoverRect.size.width, 100); // the text field is actually really big
 			[popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 			[[CPopoverManager instance] setCurrentPopoverController:popover];
-		} else {
+		}
+		else {
+			WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 			[self refreshCurrentPostForUI];
 			postDetailViewController.editMode = kEditPost;
-			[postDetailViewController.navigationController pushViewController:segmentedTableViewController animated:YES];
+			[delegate.navigationController pushViewController:segmentedTableViewController animated:YES];
 		}
     }
 	
@@ -464,9 +466,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		popoverRect.size.width = MIN(popoverRect.size.width, 100);
 		[popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		[[CPopoverManager instance] setCurrentPopoverController:popover];
-	} else {
+	}
+	else {
+		WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 		[self refreshCurrentPostForUI];
-		[postDetailViewController.navigationController pushViewController:selectionTableViewController animated:YES];
+		[delegate.navigationController pushViewController:selectionTableViewController animated:YES];
 	}
     [selectionTableViewController release], selectionTableViewController = nil;
 }
@@ -597,7 +601,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (IBAction)showStatusViewAction:(id)sender {
     [self populateSelectionsControllerWithStatuses];
-	
 }
 
 - (void)bringTextViewUp {
@@ -1227,9 +1230,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (IBAction)showLocationMapView:(id)sender {
-	// Display the geotag view
+	WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	PostLocationViewController *locationView = [[PostLocationViewController alloc] initWithNibName:@"PostLocationViewController" bundle:nil];
-	[postDetailViewController presentModalViewController:locationView animated:YES];
+	[delegate.navigationController presentModalViewController:locationView animated:YES];
 	[locationView release];
 }
 

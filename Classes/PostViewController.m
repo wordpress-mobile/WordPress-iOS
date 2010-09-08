@@ -222,21 +222,29 @@
 }
 
 - (IBAction)saveAction:(id)sender {
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	spinner = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
+	[spinner show];
+	[self performSelectorInBackground:@selector(saveInBackground) withObject:nil];
+}
+
+- (void)saveInBackground {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	[postDetailEditController bringTextViewDown];
 	hasSaved = YES;
 	
 	if((self.post != nil) && (post.wasLocalDraft == [NSNumber numberWithInt:1]) && (post.isLocalDraft == [NSNumber numberWithInt:0]))
 		self.didConvertDraftToPublished = YES;
-
-     if((self.post == nil) || (self.post.isLocalDraft == [NSNumber numberWithInt:0])) {
+	
+	if((self.post == nil) || (self.post.isLocalDraft == [NSNumber numberWithInt:0])) {
 		if ([[Reachability sharedReachability] internetConnectionStatus] == NotReachable) {
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Communication Error."
-			message:@"no internet connection."
-			delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+															message:@"no internet connection."
+														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			alert.tag = TAG_OFFSET;
 			[alert show];
-
+			
 			[appDelegate setAlertRunning:YES];
 			[alert release];
 		}
@@ -306,6 +314,13 @@
 	else {
 		[self saveAsDraft];
 	}
+	
+	[self performSelectorOnMainThread:@selector(didSaveInBackground) withObject:nil waitUntilDone:NO];
+	
+	[pool release];
+}
+
+- (void)didSaveInBackground {
 	[spinner dismissWithClickedButtonIndex:0 animated:YES];
 }
 
@@ -375,6 +390,12 @@
 		draftManager = [[DraftManager alloc] init];
 	
 	postDetailViewController.navigationItem.title = @"Write";
+	
+	if(tabController.viewControllers.count > 4) {
+		NSMutableArray *tabs = [NSMutableArray arrayWithArray:tabController.viewControllers];
+		[tabs removeObjectAtIndex:1];
+		[tabController setViewControllers:tabs];
+	}
 	
 	post = nil;
 	post = [draftManager get:appDelegate.postID];
@@ -491,9 +512,6 @@
 }
 
 - (void)savePostWithBlog:(NSMutableArray *)arrayPost {
-	spinner = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
-	[spinner show];
-	
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
     NSString *postId = [arrayPost lastObject];
     BOOL isCurrentPostDraft = dm.isLocaDraftsCurrent;
