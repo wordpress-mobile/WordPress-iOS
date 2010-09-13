@@ -3745,7 +3745,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 		
 		[appDelegate setPostID:[NSString stringWithFormat:@"%@", response]];
         [self fectchNewPost:response formBlog:currentBlog];
-        //[currentPost setValue:response forKey:@"postid"];
+        [currentPost setValue:response forKey:@"postid"];
     } else {
         [currentPost setValue:[aPost valueForKey:@"userid"] forKey:@"userid"];
 		
@@ -4113,7 +4113,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 
 - (void)setCurrentPost:(NSMutableDictionary *)aPost {
     if (currentPost != aPost) {
-        [currentPost release];
+		currentPost = nil;
         currentPost = [aPost retain];
     }
 }

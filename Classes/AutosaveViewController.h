@@ -38,5 +38,6 @@
 - (void)refreshTable;
 - (void)resetAutosaves;
 - (void)doAutosaveReport;
+- (IBAction)hideAutosaves:(id)sender;
 
 @end

@@ -90,7 +90,7 @@
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Title</key>
-			<string>Clear All</string>
+			<string>Reset</string>
 			<key>Key</key>
 			<string>autosave_clear_preference</string>
 			<key>DefaultValue</key>

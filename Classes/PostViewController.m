@@ -33,7 +33,7 @@
 @synthesize mediaViewController, leftView, isVisible, commentsViewController, spinner, isPublishing, dm;
 @synthesize selectedViewController, toolbar, contentView, commentsButton, photosButton, hasSaved;
 @synthesize settingsButton, editToolbar, cancelEditButton, post, didConvertDraftToPublished, isShowingKeyboard;
-@synthesize payload, connection, urlResponse, urlRequest, appDelegate, autosaveView, autosaveButton, isShowingAutosaves;
+@synthesize payload, connection, urlResponse, urlRequest, appDelegate, autosaveView, isShowingAutosaves;
 @synthesize autosaveManager, draftManager, editMode, wasLocalDraft;
 
 @dynamic leftBarButtonItemForEditPost;
@@ -52,6 +52,10 @@
 	spinner = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
 	hasSaved = NO;
 	postDetailEditController.postDetailViewController = self;
+	postPreviewController.postDetailViewController = self;
+	postSettingsController.postDetailViewController = self;
+	mediaViewController.postDetailViewController = self;
+	autosaveView.postDetailViewController = self;
 	
 	if(editMode == kNewPost) {
 		NSMutableArray *tabs = [NSMutableArray arrayWithArray:tabController.viewControllers];
@@ -80,7 +84,7 @@
         [self refreshUIForCurrentPost];
         self.hasChanges = YES;
 	}
-	
+
 	[self refreshButtons];
 	self.view = tabController.view;
 }
@@ -127,9 +131,6 @@
 	isVisible = YES;
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restoreFromAutosave:) name:@"RestoreFromAutosaveNotification" object:nil];
-	if(self.autosaveButton == nil)
-		self.autosaveButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	[self.autosaveButton setImage:[UIImage imageNamed:@"autosave"] forState:UIControlStateNormal];
 	[self checkAutosaves];
 	[self refreshButtons];
 }
@@ -267,6 +268,14 @@
 				[self dismissEditView];
 			}
 			else {
+				if(post.isLocalDraft == [NSNumber numberWithInt:1]) {
+					post.isLocalDraft = [NSNumber numberWithInt:0];
+					post.wasLocalDraft = [NSNumber numberWithInt:1];
+					
+					[[BlogDataManager sharedDataManager] makeNewPostCurrent];
+					[postDetailEditController updateValuesToCurrentPost];
+					postDetailEditController.isLocalDraft = NO;
+				}
 				[(NSMutableDictionary *)[BlogDataManager sharedDataManager].currentPost setValue:@"" forKey:@"mt_text_more"];
 				[postSettingsController endEditingAction:nil];
 				
@@ -307,6 +316,7 @@
 					if(savePostStatus == YES) {
 						[dm removeAutoSavedCurrentPostFile];
 						[dict setValue:postID forKey:@"savedPostId"];
+						[appDelegate setPostID:postID];
 						[dict setValue:[[dm currentPost] valueForKey:@"postid"] forKey:@"originalPostId"];
 						[dict setValue:[NSNumber numberWithInt:0] forKey:@"isCurrentPostDraft"];
 					}
@@ -319,6 +329,8 @@
 					if (DeviceIsPad() == YES) {
 						[[BlogDataManager sharedDataManager] makePostWithPostIDCurrent:postID];
 					}
+					
+					[postID release];
 				}
 			}
 		}
@@ -337,8 +349,9 @@
 	hasChanges = NO;
 	[self refreshUIForCompose];
 	[self verifyPublishSuccessful];
-	if(DeviceIsPad() == NO)
-		[self.navigationController popViewControllerAnimated:YES];
+	if(DeviceIsPad() == NO) {
+		//[self.navigationController popViewControllerAnimated:YES];
+	}
 	else {
 		if(wasLocalDraft == YES)
 			[[NSNotificationCenter defaultCenter] postNotificationName:@"DraftsUpdated" object:nil];
@@ -776,34 +789,6 @@
 	self.isShowingAutosaves = NO;
 }
 
-- (void)showAutosaveButton {	
-	[self.autosaveButton setAlpha:0.50];
-	self.autosaveButton.tag = 999;
-	[self.autosaveButton setHidden:NO];
-	int topOfViewStack = appDelegate.navigationController.viewControllers.count - 1;
-	
-	CGPoint centerOfWindow = [[[appDelegate.navigationController.viewControllers objectAtIndex:topOfViewStack] view] convertPoint:
-							  [[appDelegate.navigationController.viewControllers objectAtIndex:topOfViewStack] view].center toView:nil];
-	int yPos = centerOfWindow.y+120;
-	if(yPos > 328)
-		yPos = 328;
-	self.autosaveButton.frame = CGRectMake(centerOfWindow.x+120, yPos, 40, 40);
-
-	[self.autosaveButton addTarget:self action:@selector(toggleAutosaves:) forControlEvents:UIControlEventTouchUpInside];
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:2.0];
-	[[[appDelegate.navigationController.viewControllers objectAtIndex:topOfViewStack] view] insertSubview:self.autosaveButton atIndex:0];
-	[[[appDelegate.navigationController.viewControllers objectAtIndex:topOfViewStack] view] bringSubviewToFront:self.autosaveButton];
-	[UIView commitAnimations];
-}
-
-- (void)hideAutosaveButton {
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:15.0];
-	[self.autosaveButton removeFromSuperview];
-	[UIView commitAnimations];
-}
-
 - (void)checkAutosaves {
 	if(([[dm currentPost] valueForKey:@"postid"] != nil) && (![[[dm currentPost] valueForKey:@"postid"] isEqualToString:@""])) {
 		NSString *autosavePostID = [NSString stringWithFormat:@"%@-%@",
@@ -816,10 +801,10 @@
 		[autosaveView setPostID:appDelegate.postID];
 		[autosaveView resetAutosaves];
 		if(([autosaveView autosaves] != nil) && ([[autosaveView autosaves] count] > 0)) {
-			[self showAutosaveButton];
+			[postDetailEditController showAutosaveButton];
 		}
 		else
-			[self hideAutosaveButton];
+			[postDetailEditController hideAutosaveButton];
 	}
 }
 
@@ -859,7 +844,7 @@
 		[autosaveManager removeAllForPostID:autosave.postID];
 		[autosaveView resetAutosaves];
 		[self toggleAutosaves:self];
-		[self hideAutosaveButton];
+		[postDetailEditController hideAutosaveButton];
 	}
 	
 	hasChanges = YES;
@@ -906,12 +891,12 @@
 	
 	NSArray *params = [NSArray arrayWithObjects:
 					   appDelegate.postID,
-					   [[dm currentBlog] objectForKey:@"username"],
-					   [dm getPasswordFromKeychainInContextOfCurrentBlog:[dm currentBlog]],
+					   [dm.currentBlog objectForKey:@"username"],
+					   [dm getPasswordFromKeychainInContextOfCurrentBlog:dm.currentBlog],
 					   nil];
 	
 	// Execute the XML-RPC request
-	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[[dm currentBlog] valueForKey:@"xmlrpc"]]];
+	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[dm.currentBlog valueForKey:@"xmlrpc"]]];
 	[request setMethod:@"metaWeblog.getPost" withObjects:params];
 	[params release];
 	
@@ -989,7 +974,6 @@
 - (void)dealloc {
 	[autosaveManager release];
 	[draftManager release];
-	[autosaveButton release];
 	[autosaveView release];
 	[payload release];
 	[connection release];

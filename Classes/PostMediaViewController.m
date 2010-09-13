@@ -205,10 +205,14 @@
 	// If row is deleted, remove it from the list.
 	if (editingStyle == UITableViewCellEditingStyleDelete)
 	{
-		if(mediaTypeControl.selectedSegmentIndex == 0)
+		if(mediaTypeControl.selectedSegmentIndex == 0) {
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldRemoveMedia" object:[photos objectAtIndex:indexPath.row]];
 			[self deleteMedia:[photos objectAtIndex:indexPath.row]];
-		else if(mediaTypeControl.selectedSegmentIndex == 1)
+		}
+		else if(mediaTypeControl.selectedSegmentIndex == 1) {
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldRemoveMedia" object:[videos objectAtIndex:indexPath.row]];
 			[self deleteMedia:[videos objectAtIndex:indexPath.row]];
+		}
 		
 		[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
 	}

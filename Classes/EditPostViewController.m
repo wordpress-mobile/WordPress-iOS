@@ -53,6 +53,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkAutosaves) name:@"AutosaveNotification" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaAbove:) name:@"ShouldInsertMediaAbove" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:@"ShouldInsertMediaBelow" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];
 	//[self hideAutosaveButton];
 	
     //JOHNB TODO: Add a check here for the presence of custom fields in the data model
@@ -83,7 +84,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)viewWillAppear:(BOOL)animated {
 	//WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-	
     [super viewWillAppear:animated];
 	[self dismissModalViewControllerAnimated:YES];
 	[self syncCategoriesAndStatuses];
@@ -162,8 +162,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	postDetailViewController.navigationItem.title = @"Write";
 }
 
-- (void)viewDidAppear:(BOOL)animated;
-{
+- (void)viewDidAppear:(BOOL)animated {
 	if (titleTextField.text.length < 1 && titleTextField.enabled) {
 		[titleTextField becomeFirstResponder];
 	}
@@ -181,7 +180,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[categoriesTextField resignFirstResponder];
 	[statusTextField resignFirstResponder];
 	[textView resignFirstResponder];
-	[postDetailViewController hideAutosaveButton];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -514,8 +512,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			[postDetailViewController.post setCategories:[selectedObjects componentsJoinedByString:@", "]];
 			categoriesTextField.text = postDetailViewController.post.categories;
 		}
-		
-		[self refreshUIForCurrentPost];
 	}
 	else {
 		BlogDataManager *dm = [BlogDataManager sharedDataManager];
@@ -618,15 +614,15 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[UIView setAnimationDuration:kAnimationDuration];
 		subView.hidden = YES;
 		
-		CGRect frame = textViewContentView.frame;
+		CGRect frame = textView.frame;
 		frame.origin.y -= 170.0f;
-		textViewContentView.frame = frame;
+		textView.frame = frame;
 		
 		frame = subView.frame;
 		frame.origin.y -= 170.0f;
 		subView.frame = frame;
 		
-		[postDetailViewController hideAutosaveButton];
+		[self hideAutosaveButton];
 		
 		[UIView commitAnimations];
 	}
@@ -639,9 +635,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[UIView setAnimationDuration:0.2];
 		subView.hidden = NO;
 		
-		CGRect frame = textViewContentView.frame;
+		CGRect frame = textView.frame;
 		frame.origin.y += 170.0f;
-		textViewContentView.frame = frame;
+		textView.frame = frame;
 		
 		frame = subView.frame;
 		frame.origin.y = 0.0f;
@@ -654,12 +650,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)updateTextViewPlacehoderFieldStatus {
-    if ([textView.text length] == 0) {
-        textViewPlaceHolderField.hidden = NO;
-    }
-	else {
+	if(textView.text.length > 0)
         textViewPlaceHolderField.hidden = YES;
-    }
+	else
+        textViewPlaceHolderField.hidden = NO;
 }
 
 
@@ -834,7 +828,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		return YES;
     }
 	
-	
     // create final version of textView after the current text has been inserted
     NSMutableString *updatedText = [[NSMutableString alloc] initWithString:aTextView.text];
     [updatedText insertString:text atIndex:range.location];
@@ -926,6 +919,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
         [delegate setAlertRunning:YES];
         [linkAlert release];
     }
+	else {
+		[textView scrollRangeToVisible:NSMakeRange(textView.text.length, 0)];
+	}
+	
 	[self preserveUnsavedPost];
 }
 
@@ -1118,6 +1115,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
     postDetailViewController.hasChanges = YES;
 }
 
+- (void)removeMedia:(NSNotification *)notification {
+	Media *media = (Media *)[notification object];
+	textView.text = [textView.text stringByReplacingOccurrencesOfString:media.html withString:@""];
+}
+
 - (void)readBookmarksFile {
     bookMarksArray = [[NSMutableArray alloc] init];
     //NSDictionary *bookMarksDict=[NSMutableDictionary dictionaryWithContentsOfFile:@"/Users/sridharrao/Library/Safari/Bookmarks.plist"];
@@ -1281,6 +1283,30 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	return result;
 }
 
+- (void)showAutosaveButton {
+	NSLog(@"showing autosave button...");
+	[self.autosaveButton setHidden:NO];
+	[self.autosaveButton setAlpha:0.50];
+	[self.view bringSubviewToFront:self.autosaveButton];
+//	[UIView beginAnimations:nil context:NULL];
+//	[UIView setAnimationDuration:2.0];
+//	[UIView commitAnimations];
+}
+
+- (void)hideAutosaveButton {
+	NSLog(@"hiding autosave button...");
+	[self.autosaveButton setHidden:YES];
+	[self.autosaveButton setAlpha:0.0];
+	[self.view sendSubviewToBack:self.autosaveButton];
+//	[UIView beginAnimations:nil context:NULL];
+//	[UIView setAnimationDuration:5.0];
+//	[UIView commitAnimations];
+}
+
+- (IBAction)showAutosaves:(id)sender {
+	[postDetailViewController showAutosaves];
+}
+
 #pragma mark -
 #pragma mark Keyboard management 
 
@@ -1310,7 +1336,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)keyboardWillHide:(NSNotification *)notification {
 	NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo];
 	if(textView != nil) {
-		
 		postDetailViewController.isShowingKeyboard = NO;
 		[postDetailViewController refreshButtons];
 		

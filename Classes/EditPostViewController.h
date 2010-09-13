@@ -100,6 +100,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 // Media
 - (void)insertMediaAbove:(NSNotification *)notification;
 - (void)insertMediaBelow:(NSNotification *)notification;
+- (void)removeMedia:(NSNotification *)notification;
 
 // Autosave
 - (void)updateValuesToCurrentPost;
@@ -108,6 +109,9 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (void)preserveUnsavedPost;
 - (void)clearUnsavedPost;
 - (void)restoreUnsavedPost;
+- (void)showAutosaveButton;
+- (void)hideAutosaveButton;
+- (IBAction)showAutosaves:(id)sender;
 
 // Categories
 - (void)syncCategories;

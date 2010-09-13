@@ -54,7 +54,6 @@
 	IBOutlet UIBarButtonItem *commentsButton;
 	IBOutlet UIBarButtonItem *photosButton;
 	IBOutlet UIBarButtonItem *settingsButton;
-	IBOutlet UIButton *autosaveButton;
 	IBOutlet UIToolbar *editToolbar;
 	IBOutlet UIToolbar *previewToolbar;
 	IBOutlet UIBarButtonItem *cancelEditButton;
@@ -81,7 +80,6 @@
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *settingsButton;
 @property (nonatomic, retain) IBOutlet UIToolbar *editToolbar;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *cancelEditButton;
-@property (nonatomic, retain) IBOutlet UIButton *autosaveButton;
 @property (nonatomic, assign) UIBarButtonItem *leftBarButtonItemForEditPost;
 @property (nonatomic, retain) Post *post;
 @property (nonatomic, retain) NSURLConnection *connection;
@@ -109,8 +107,6 @@
 - (void)verifyPublishSuccessful;
 - (void)stop;
 - (IBAction)toggleAutosaves:(id)sender;
-- (void)showAutosaveButton;
-- (void)hideAutosaveButton;
 - (void)checkAutosaves;
 - (void)restoreFromAutosave:(NSNotification *)notification;
 - (void)showAutosaves;

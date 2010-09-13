@@ -117,7 +117,6 @@
     [super viewWillAppear:animated];
     [self reloadData];
 	[self setupHelpButton];
-	[postDetailViewController hideAutosaveButton];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

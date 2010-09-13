@@ -7,6 +7,7 @@
 //
 
 #import "AutosaveViewController.h"
+#import "PostViewController.h"
 
 @class PostViewController;
 @implementation AutosaveViewController
@@ -139,6 +140,10 @@
 
 - (void)doAutosaveReport {
 	//NSLog(@"Total of %d autosaves on this device.", [autosaveManager totalAutosavesOnDevice]);
+}
+
+- (IBAction)hideAutosaves:(id)sender {
+	[postDetailViewController hideAutosaves];
 }
 
 #pragma mark -
