@@ -213,6 +213,7 @@ Classes/glossyButton-normal.png -text svneol=unset#unset
 /EditPageViewController-iPad.xib -text
 /EditPostViewController-iPad.xib -text
 /EditPostViewController.xib -text
+/EditSiteViewController-iPad.xib -text
 /Entitlements.plist -text
 /HttpHelper.h -text
 /HttpHelper.m -text
