@@ -88,7 +88,7 @@
 					<object class="IBUIButton" id="50303345">
 						<reference key="NSNextResponder" ref="451707836"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{283, 327}, {33, 31}}</string>
+						<string key="NSFrame">{{279, 324}, {33, 31}}</string>
 						<reference key="NSSuperview" ref="451707836"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<float key="IBUIAlpha">0.5</float>

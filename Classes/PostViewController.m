@@ -46,6 +46,7 @@
 	dm = [BlogDataManager sharedDataManager];
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	autosaveView = [[AutosaveViewController alloc] initWithNibName:@"AutosaveViewController" bundle:nil];
+	postPreviewController = [[PostPreviewViewController alloc] initWithNibName:@"PostPreviewViewController" bundle:nil];
 	autosaveManager = [[AutosaveManager alloc] init];
 	draftManager = [[DraftManager alloc] init];
 	

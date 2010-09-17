@@ -225,6 +225,14 @@
 					</object>
 					<int key="connectionID">284</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">commentsViewController</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="67688907"/>
+					</object>
+					<int key="connectionID">288</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -398,7 +406,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">287</int>
+			<int key="maxID">288</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -406,6 +414,17 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">AutosaveViewController</string>
 					<string key="superclassName">UIViewController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">hideAutosaves:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">hideAutosaves:</string>
+						<object class="IBActionInfo" key="NS.object.0">
+							<string key="name">hideAutosaves:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</object>
 					<object class="NSMutableDictionary" key="outlets">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
@@ -567,12 +586,14 @@
 							<string>endEditingAction:</string>
 							<string>endTextEnteringButtonAction:</string>
 							<string>showAddNewCategoryView:</string>
+							<string>showAutosaves:</string>
 							<string>showCategoriesViewAction:</string>
 							<string>showLocationMapView:</string>
 							<string>showStatusViewAction:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -588,6 +609,7 @@
 							<string>endEditingAction:</string>
 							<string>endTextEnteringButtonAction:</string>
 							<string>showAddNewCategoryView:</string>
+							<string>showAutosaves:</string>
 							<string>showCategoriesViewAction:</string>
 							<string>showLocationMapView:</string>
 							<string>showStatusViewAction:</string>
@@ -604,6 +626,10 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">showAddNewCategoryView:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">showAutosaves:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -1146,7 +1172,6 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>autosaveButton</string>
 							<string>autosaveView</string>
 							<string>cancelEditButton</string>
 							<string>commentsButton</string>
@@ -1165,7 +1190,6 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>UIButton</string>
 							<string>AutosaveViewController</string>
 							<string>UIBarButtonItem</string>
 							<string>UIBarButtonItem</string>
@@ -1187,7 +1211,6 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>autosaveButton</string>
 							<string>autosaveView</string>
 							<string>cancelEditButton</string>
 							<string>commentsButton</string>
@@ -1206,10 +1229,6 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBToOneOutletInfo">
-								<string key="name">autosaveButton</string>
-								<string key="candidateClassName">UIButton</string>
-							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">autosaveView</string>
 								<string key="candidateClassName">AutosaveViewController</string>

@@ -612,18 +612,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	if (DeviceIsPad() == NO) {
 		[UIView beginAnimations:nil context:NULL];
 		[UIView setAnimationDuration:kAnimationDuration];
-		subView.hidden = YES;
+		//subView.hidden = YES;
 		
-		CGRect frame = textView.frame;
-		frame.origin.y -= 170.0f;
-		textView.frame = frame;
-		
-		frame = subView.frame;
-		frame.origin.y -= 170.0f;
-		subView.frame = frame;
+		// resize textview
 		
 		[self hideAutosaveButton];
-		
 		[UIView commitAnimations];
 	}
 	[self preserveUnsavedPost];
@@ -633,15 +626,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	if (DeviceIsPad() == NO) {
 		[UIView beginAnimations:nil context:NULL];
 		[UIView setAnimationDuration:0.2];
-		subView.hidden = NO;
+		//subView.hidden = NO;
 		
-		CGRect frame = textView.frame;
-		frame.origin.y += 170.0f;
-		textView.frame = frame;
-		
-		frame = subView.frame;
-		frame.origin.y = 0.0f;
-		subView.frame = frame;
+		// resize textview
 		
 		[UIView commitAnimations];
 		[postDetailViewController checkAutosaves];
@@ -695,6 +682,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     urlField.borderStyle = UITextBorderStyleRoundedRect;
     infoText.keyboardAppearance = UIKeyboardAppearanceAlert;
     urlField.keyboardAppearance = UIKeyboardAppearanceAlert;
+	infoText.keyboardType = UIKeyboardTypeDefault;
+	urlField.keyboardType = UIKeyboardTypeURL;
     [addURLSourceAlert addButtonWithTitle:@"Cancel"];
     [addURLSourceAlert addButtonWithTitle:@"Save"];
     addURLSourceAlert.title = @"Make a Link\n\n\n\n";
