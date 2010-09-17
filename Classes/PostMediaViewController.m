@@ -633,9 +633,9 @@
 	CGSize smallSize, mediumSize, largeSize, originalSize;
 	switch (currentOrientation) {
 		case kPortrait:
-			smallSize = CGSizeMake(160, 240);
-			mediumSize = CGSizeMake(320, 480);
-			largeSize = CGSizeMake(640, 960);
+			smallSize = CGSizeMake(180, 240);
+			mediumSize = CGSizeMake(360, 480);
+			largeSize = CGSizeMake(640, 480);
 			if([[UIDevice currentDevice] platformString] == IPHONE_4G_NAMESTRING)
 				originalSize = CGSizeMake(2592, 1936);
 			else if([[UIDevice currentDevice] platformString] == IPHONE_3GS_NAMESTRING)
@@ -644,9 +644,9 @@
 				originalSize = CGSizeMake(1600, 1200);
 			break;
 		case kLandscape:
-			smallSize = CGSizeMake(240, 160);
-			mediumSize = CGSizeMake(480, 320);
-			largeSize = CGSizeMake(960, 640);
+			smallSize = CGSizeMake(240, 180);
+			mediumSize = CGSizeMake(480, 360);
+			largeSize = CGSizeMake(480, 640);
 			if([[UIDevice currentDevice] platformString] == IPHONE_4G_NAMESTRING)
 				originalSize = CGSizeMake(1936, 2592);
 			else if([[UIDevice currentDevice] platformString] == IPHONE_3GS_NAMESTRING)

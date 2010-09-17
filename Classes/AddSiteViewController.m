@@ -444,7 +444,6 @@
 	[self refreshTable];
 	
 	XMLRPCResponse *xmlrpcCheck = [[WPDataController sharedInstance] checkXMLRPC:xmlrpc username:username password:password];
-	NSLog(@"xmlrpcCheck: %@", xmlrpcCheck);
 	if(![xmlrpcCheck isKindOfClass:[NSError class]]) {
 		isAuthenticated = [[WPDataController sharedInstance] authenticateUser:xmlrpc username:username password:password];
 		if(isAuthenticated == YES) {
