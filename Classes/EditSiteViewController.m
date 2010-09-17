@@ -36,35 +36,20 @@
 		self.navigationItem.title = @"Edit Site";
 	}
 	
-	hasValidXMLRPCurl = YES;	// Assume true until proven wrong.
+	hasValidXMLRPCurl = YES;
 	addButtonText = @"Save";
 	[spinner initWithLabel:@"Saving..."];
-	//addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
-	//addUsersBlogsView.isWPcom = isWPcom;
-		
-	// Setup WPorg table header
-	UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 85)] autorelease];
-	UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:logoName]];
-	logo.frame = CGRectMake(40, 20, 229, 43);
-	[headerView addSubview:logo];
-	[logo release];
-	
-	UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 55, 320, 50)];
-	headerLabel.text = blogName;
-	headerLabel.textAlignment = UITextAlignmentCenter;
-	headerLabel.textColor = [UIColor colorWithRed: 76/255.0 green: 86/255.0 blue: 108/255.0 alpha:1.0];
-	headerLabel.font = [ UIFont boldSystemFontOfSize: 17 ];
-	headerLabel.shadowColor = [UIColor whiteColor];
-	headerLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-	headerLabel.backgroundColor = [ UIColor clearColor ]; 
-	[headerView addSubview:headerLabel];
-	[headerLabel release];
-	
-	self.tableView.tableHeaderView = headerView;
 	self.tableView.backgroundColor = [UIColor clearColor];
 	
-	if(DeviceIsPad())
+	if(DeviceIsPad() == YES) {
 		self.tableView.backgroundView = nil;
+		
+		UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" 
+											style:UIBarButtonItemStyleBordered 
+											target:self action:@selector(cancel:)];
+		self.navigationItem.leftBarButtonItem = cancelButton;
+		[cancelButton release];
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -89,6 +74,9 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self
 													name:UIKeyboardWillHideNotification object:nil];
 	[super viewWillDisappear:animated];
+}
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	return YES;
 }
 
 #pragma mark -
@@ -241,6 +229,18 @@
 	}
     
     return cell;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	NSString *result = nil;
+	switch (section) {
+		case 0:
+			result = blogName;
+			break;
+		default:
+			break;
+	}
+	return result;
 }
 
 - (NSString *)tableView:(UITableView *)tv titleForFooterInSection:(NSInteger)section {
@@ -565,10 +565,20 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[spinner dismiss];
 	[appDelegate syncBlogs];
-	[self.navigationController popToRootViewControllerAnimated:YES];
+	if(DeviceIsPad() == YES)
+		[self dismissModalViewControllerAnimated:YES];
+	else
+		[self.navigationController popToRootViewControllerAnimated:YES];
 	appDelegate.currentBlog = nil;
 	
 	[pool release];
+}
+
+- (IBAction)cancel:(id)sender {
+	if(DeviceIsPad() == YES)
+		[self dismissModalViewControllerAnimated:YES];
+	else
+		[self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 - (void)saveSiteFailed {

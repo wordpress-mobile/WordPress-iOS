@@ -50,5 +50,6 @@
 - (void)keyboardWillHide:(NSNotification *)notification;
 - (void)urlDidChange;
 - (void)loadSiteData;
+- (IBAction)cancel:(id)sender;
 
 @end

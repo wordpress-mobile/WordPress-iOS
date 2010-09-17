@@ -96,26 +96,31 @@
 - (void)tableView:(UITableView *)atableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([self.tableView cellForRowAtIndexPath:indexPath].editing) {
         [[BlogDataManager sharedDataManager] copyBlogAtIndexCurrent:(indexPath.row)];
-        EditSiteViewController *blogDetailViewController = [[EditSiteViewController alloc] initWithNibName:@"EditSiteViewController" bundle:nil];
-		blogDetailViewController.blogName = [[[BlogDataManager sharedDataManager] blogAtIndex:indexPath.row] objectForKey:@"blogName"];
-		blogDetailViewController.blogID = [[[BlogDataManager sharedDataManager] blogAtIndex:indexPath.row] objectForKey:kBlogId];
-		blogDetailViewController.url = [[[BlogDataManager sharedDataManager] blogAtIndex:indexPath.row] objectForKey:@"url"];
-		blogDetailViewController.host = [[[BlogDataManager sharedDataManager] blogAtIndex:indexPath.row] objectForKey:kBlogHostName];
-
+		
+		EditSiteViewController *editSiteViewController;
 		if (DeviceIsPad() == YES)
-		{
-			UINavigationController *modalNavigationController = [[UINavigationController alloc] initWithRootViewController:blogDetailViewController];
-			modalNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-			modalNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-			[[CPopoverManager instance] setCurrentPopoverController:NULL];
-			[[WordPressAppDelegate sharedWordPressApp].splitViewController presentModalViewController:modalNavigationController animated:YES];
-			[modalNavigationController release];
-		}
+			editSiteViewController = [[EditSiteViewController alloc] initWithNibName:@"EditSiteViewController-iPad" bundle:nil];
 		else
-		{
-			[self.navigationController pushViewController:blogDetailViewController animated:YES];
+			editSiteViewController = [[EditSiteViewController alloc] initWithNibName:@"EditSiteViewController" bundle:nil];
+		
+		editSiteViewController.blogName = [[[BlogDataManager sharedDataManager] blogAtIndex:indexPath.row] objectForKey:@"blogName"];
+		editSiteViewController.blogID = [[[BlogDataManager sharedDataManager] blogAtIndex:indexPath.row] objectForKey:kBlogId];
+		editSiteViewController.url = [[[BlogDataManager sharedDataManager] blogAtIndex:indexPath.row] objectForKey:@"url"];
+		editSiteViewController.host = [[[BlogDataManager sharedDataManager] blogAtIndex:indexPath.row] objectForKey:kBlogHostName];
+		
+		if(DeviceIsPad() == YES) {
+			UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:editSiteViewController];
+			aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+			aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+			appDelegate.navigationController = aNavigationController;
+			[appDelegate.splitViewController presentModalViewController:aNavigationController animated:YES];
+			[aNavigationController release];
 		}
-		[blogDetailViewController release];
+		else {
+			[self.navigationController pushViewController:editSiteViewController animated:YES];
+		}
+		
+		[editSiteViewController release];
 		
     }
 	else if ([self canChangeCurrentBlog]) {

@@ -174,6 +174,7 @@
 		837576C411305C67002EAA27 /* gettingLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = 837576C111305C67002EAA27 /* gettingLocation.png */; };
 		837576C511305C67002EAA27 /* hasLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = 837576C211305C67002EAA27 /* hasLocation.png */; };
 		837576C611305C67002EAA27 /* getLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = 837576C311305C67002EAA27 /* getLocation.png */; };
+		837593AE1243ECD500D04C93 /* EditSiteViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 837593AD1243ECD500D04C93 /* EditSiteViewController-iPad.xib */; };
 		837614F8120A7FB2005CCB33 /* XMLRPCConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 837614EB120A7FB2005CCB33 /* XMLRPCConnection.m */; };
 		837614F9120A7FB2005CCB33 /* XMLRPCDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 837614ED120A7FB2005CCB33 /* XMLRPCDecoder.m */; };
 		837614FA120A7FB2005CCB33 /* XMLRPCEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 837614EF120A7FB2005CCB33 /* XMLRPCEncoder.m */; };
@@ -524,6 +525,7 @@
 		837576C111305C67002EAA27 /* gettingLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gettingLocation.png; sourceTree = "<group>"; };
 		837576C211305C67002EAA27 /* hasLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hasLocation.png; sourceTree = "<group>"; };
 		837576C311305C67002EAA27 /* getLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = getLocation.png; sourceTree = "<group>"; };
+		837593AD1243ECD500D04C93 /* EditSiteViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "EditSiteViewController-iPad.xib"; sourceTree = "<group>"; };
 		837614EA120A7FB2005CCB33 /* XMLRPCConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCConnection.h; sourceTree = "<group>"; };
 		837614EB120A7FB2005CCB33 /* XMLRPCConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLRPCConnection.m; sourceTree = "<group>"; };
 		837614EC120A7FB2005CCB33 /* XMLRPCDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCDecoder.h; sourceTree = "<group>"; };
@@ -1074,6 +1076,7 @@
 				835871C8120096AC007682CB /* WelcomeViewController-iPad.xib */,
 				8362C1291201EA9700599347 /* WPcomLoginViewController-iPad.xib */,
 				8362C1C5120229BC00599347 /* AddSiteViewController-iPad.xib */,
+				837593AD1243ECD500D04C93 /* EditSiteViewController-iPad.xib */,
 				8362C54512027BC300599347 /* AddUsersBlogsViewController-iPad.xib */,
 				8362C1031201E7CE00599347 /* WebSignupViewController-iPad.xib */,
 				03B1DF29113D87C400BBD1C6 /* BlogSplitViewMasterViewController.xib */,
@@ -1607,6 +1610,7 @@
 				83F1F9A21236FBF600069F99 /* PostMediaViewController-iPad.xib in Resources */,
 				83F1FA581237073B00069F99 /* WPMediaUploader-iPad.xib in Resources */,
 				83F1FCAC1237494D00069F99 /* PageViewController-iPad.xib in Resources */,
+				837593AE1243ECD500D04C93 /* EditSiteViewController-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
