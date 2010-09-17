@@ -1273,7 +1273,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)showAutosaveButton {
-	NSLog(@"showing autosave button...");
 	[self.autosaveButton setHidden:NO];
 	[self.autosaveButton setAlpha:0.50];
 	[self.view bringSubviewToFront:self.autosaveButton];
@@ -1283,7 +1282,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)hideAutosaveButton {
-	NSLog(@"hiding autosave button...");
 	[self.autosaveButton setHidden:YES];
 	[self.autosaveButton setAlpha:0.0];
 	[self.view sendSubviewToBack:self.autosaveButton];

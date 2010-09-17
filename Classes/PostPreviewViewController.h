@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "PostViewController.h"
 
-@interface PostPreviewViewController : UIViewController {
+@interface PostPreviewViewController : UIViewController <UIWebViewDelegate> {
     IBOutlet UIWebView *webView;
     BOOL isWebRefreshRequested;
 

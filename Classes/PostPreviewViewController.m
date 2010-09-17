@@ -19,6 +19,7 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
         // Initialization code
+		webView.delegate = self;
 		[self refreshWebView];
     }
 
@@ -33,6 +34,11 @@
 
 #pragma mark -
 #pragma mark View Lifecycle Methods
+
+- (void)viewDidLoad {
+	webView.delegate = self;
+	[self refreshWebView];
+}
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -147,7 +153,8 @@
         } else {
             [webView loadHTMLString:[NSString stringWithFormat:@"%@<p>%@</p>", @"", photosMessage] baseURL:nil];
         }
-    } else {
+    }
+	else {
         [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:link]]];
     }
 
@@ -182,15 +189,11 @@
 
 - (void)addProgressIndicator {
 	if (DeviceIsPad() == NO) {
-		NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
 		UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
 		UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aiv];
 		[aiv startAnimating];
 		[aiv release];
-		
 		postDetailViewController.navigationItem.rightBarButtonItem = activityButtonItem;
-		[activityButtonItem release];
-		[apool release];
 	}
 }
 

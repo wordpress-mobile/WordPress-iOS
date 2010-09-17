@@ -49,6 +49,7 @@
 	
 	[self initObjects];
 	[self refreshProperties];
+	[self performSelectorInBackground:@selector(checkVideoEnabled) withObject:nil];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:VideoUploadSuccessful object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:ImageUploadSuccessful object:nil];
@@ -977,7 +978,6 @@
 		self.postID = @"unsavedpost";
 	
 	[self refreshMedia];
-	[self performSelectorInBackground:@selector(checkVideoEnabled) withObject:nil];
 }
 
 #pragma mark -
