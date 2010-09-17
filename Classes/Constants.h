@@ -15,6 +15,7 @@
 #define kTextFieldHeight        20.0
 #define kTextFieldFontSize      18.0
 #define kTextFieldFont          @"Arial"
+#define kTextViewPlaceholder	@"Tap here to begin writing."
 
 #define kDisabledTextColor      [UIColor grayColor]
 

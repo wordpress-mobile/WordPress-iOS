@@ -23,6 +23,8 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
     BOOL isCustomFieldsEnabledForThisPost;
 	BOOL isLocalDraft;
 	
+	CGRect normalTextFrame;
+	
     IBOutlet UITextView *textView;
     IBOutlet UITextField *titleTextField;
     IBOutlet UITextField *tagsTextField;
@@ -71,6 +73,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 @property (nonatomic, assign) UITextField *currentEditingTextField;
 @property (nonatomic, assign) BOOL isEditing, editingDisabled, editCustomFields, isCustomFieldsEnabledForThisPost;
 @property (nonatomic, assign) BOOL isLocalDraft;
+@property (nonatomic, assign) CGRect normalTextFrame;
 @property (nonatomic, retain) UIButton *customFieldsEditButton, *autosaveButton;
 @property (nonatomic, retain) CLLocation *initialLocation;
 @property (nonatomic, retain) IBOutlet UIButton *locationButton;
@@ -94,8 +97,6 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (void)syncStatuses;
 - (void)refreshStatus;
 - (void)syncCategoriesAndStatuses;
-- (void)bringTextViewUp;
-- (void)bringTextViewDown;
 
 // Media
 - (void)insertMediaAbove:(NSNotification *)notification;
@@ -119,7 +120,6 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (IBAction)showCategoriesViewAction:(id)sender;
 - (IBAction)showStatusViewAction:(id)sender;
 - (NSString *)validateNewLinkInfo:(NSString *)urlText;
-- (void)postionTextViewContentView;
 - (BOOL)checkCustomFieldsMinusMetadata;
 
 // Location

@@ -28,6 +28,7 @@
 	IBOutlet WPProgressHUD *spinner;
 	
 	BOOL isShowingKeyboard, isLocalDraft;
+	CGRect normalTableFrame;
 	NSNumber *selectedSection;
 	NSString *originalTitle, *originalStatus, *originalContent;
 	NSMutableDictionary *statuses;
@@ -53,6 +54,7 @@
 @property (nonatomic, retain) IBOutlet WPProgressHUD *spinner;
 @property (nonatomic, retain) IBOutlet UIPopoverController *statusPopover;
 @property (nonatomic, assign) BOOL isShowingKeyboard, isLocalDraft;
+@property (nonatomic, assign) CGRect normalTableFrame;
 @property (nonatomic, assign) NSNumber *selectedSection;
 @property (nonatomic, retain) NSString *originalTitle, *originalStatus, *originalContent;
 @property (nonatomic, retain) NSURLConnection *connection;

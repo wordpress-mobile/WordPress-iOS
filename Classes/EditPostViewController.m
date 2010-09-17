@@ -11,7 +11,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 @synthesize postDetailViewController, selectionTableViewController, segmentedTableViewController, leftView;
 @synthesize infoText, urlField, bookMarksArray, selectedLinkRange, currentEditingTextField, isEditing, initialLocation;
-@synthesize editingDisabled, editCustomFields, isCustomFieldsEnabledForThisPost, statuses, isLocalDraft;
+@synthesize editingDisabled, editCustomFields, isCustomFieldsEnabledForThisPost, statuses, isLocalDraft, normalTextFrame;
 @synthesize textView, contentView, subView, textViewContentView, statusTextField, categoriesTextField, titleTextField;
 @synthesize tagsTextField, textViewPlaceHolderField, tagsLabel, statusLabel, categoriesLabel, titleLabel, customFieldsEditButton;
 @synthesize tableViewForSelectingCustomFields, locationButton, locationSpinner, newCategoryBarButtonItem, autosaveButton;
@@ -35,6 +35,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
     titleTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     tagsTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     [contentView bringSubviewToFront:textView];
+	
+	if(DeviceIsPad() == NO)
+		normalTextFrame = CGRectMake(0, 166, 360, 220);
+	else
+		normalTextFrame = CGRectMake(0, 220, 768, 824);
 	
     if (!leftView) {
         leftView = [WPNavigationLeftButtonView createCopyOfView];
@@ -60,7 +65,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     // if there are, set isCustomFieldsEnabledForThisPost BOOL to true
     isCustomFieldsEnabledForThisPost = [self checkCustomFieldsMinusMetadata];
     //call a helper to set originY for textViewContentView
-    [self postionTextViewContentView];
 	
 	if (editingDisabled) {
 		titleTextField.enabled = NO;
@@ -157,7 +161,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[locationButton setNeedsLayout];
 	[locationButton setNeedsDisplay];
 	
-    [self postionTextViewContentView];
 	[postDetailViewController checkAutosaves];
 	postDetailViewController.navigationItem.title = @"Write";
 }
@@ -216,12 +219,17 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	self.navigationItem.title = @"Write";
     titleTextField.text = @"";
     tagsTextField.text = @"";
-    textView.text = @"";
+	[textView setText:kTextViewPlaceholder];
+	[textView setTextColor:[UIColor lightGrayColor]];
     textViewPlaceHolderField.hidden = NO;
     categoriesTextField.text = @"";
 	self.isLocalDraft = YES;
 	[postDetailViewController.post setStatus:@"Local Draft"];
 	statusTextField.text = @"Local Draft";
+	
+	if (titleTextField.text.length < 1 && titleTextField.enabled) {
+		[titleTextField becomeFirstResponder];
+	}
 }
 
 - (void)refreshUIForCurrentPost {
@@ -608,42 +616,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [self populateSelectionsControllerWithStatuses];
 }
 
-- (void)bringTextViewUp {
-	if (DeviceIsPad() == NO) {
-		[UIView beginAnimations:nil context:NULL];
-		[UIView setAnimationDuration:kAnimationDuration];
-		//subView.hidden = YES;
-		
-		// resize textview
-		
-		[self hideAutosaveButton];
-		[UIView commitAnimations];
-	}
-	[self preserveUnsavedPost];
-}
-
-- (void)bringTextViewDown {
-	if (DeviceIsPad() == NO) {
-		[UIView beginAnimations:nil context:NULL];
-		[UIView setAnimationDuration:0.2];
-		//subView.hidden = NO;
-		
-		// resize textview
-		
-		[UIView commitAnimations];
-		[postDetailViewController checkAutosaves];
-	}
-	[self preserveUnsavedPost];
-}
-
-- (void)updateTextViewPlacehoderFieldStatus {
-	if(textView.text.length > 0)
-        textViewPlaceHolderField.hidden = YES;
-	else
-        textViewPlaceHolderField.hidden = NO;
-}
-
-
 //code to append http:// if protocol part is not there as part of urlText.
 - (NSString *)validateNewLinkInfo:(NSString *)urlText {
     NSArray *stringArray = [NSArray arrayWithObjects:@"http:", @"ftp:", @"https:", nil];
@@ -757,14 +729,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if (!isTextViewEditing) {
         isTextViewEditing = YES;
 		
-        [self updateTextViewPlacehoderFieldStatus];
-		
 		if (DeviceIsPad() == NO) {
 			if ((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
 				[self setTextViewHeight:116];
 			}
-			
-			[self bringTextViewUp];
 			
 			// Done button
 			UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] init];
@@ -780,6 +748,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)textViewDidBeginEditing:(UITextView *)aTextView {
     isEditing = YES;
+	if([textView.text isEqualToString:kTextViewPlaceholder] == YES) {
+		textView.text = @"";
+	}
+	[textView setTextColor:[UIColor blackColor]];
 	
 	if (DeviceIsPad() == NO) {
 		if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
@@ -793,11 +765,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if (!isTextViewEditing) {
         isTextViewEditing = YES;
 		
-        [self updateTextViewPlacehoderFieldStatus];
-		
  		if (DeviceIsPad() == NO) {
-			[self bringTextViewUp];
-			
 			UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
 																		  target:self action:@selector(endTextEnteringButtonAction:)];
 			[postDetailViewController setLeftBarButtonItemForEditPost:doneButton];
@@ -856,7 +824,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)textViewDidChange:(UITextView *)aTextView {
     postDetailViewController.hasChanges = YES;
-    [self updateTextViewPlacehoderFieldStatus];
 	
     if (dismiss == YES) {
         dismiss = NO;
@@ -922,19 +889,25 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		}
 	}
 	
+	if([textView.text isEqualToString:@""] == YES) {
+		textView.text = kTextViewPlaceholder;
+		[textView setTextColor:[UIColor lightGrayColor]];
+	}
+	else {
+		[textView setTextColor:[UIColor blackColor]];
+	}
+
+	
     isEditing = NO;
     dismiss = NO;
 	
     if (isTextViewEditing) {
         isTextViewEditing = NO;
 		
-		[self updateTextViewPlacehoderFieldStatus];
         NSString *text = aTextView.text;
         [[[BlogDataManager sharedDataManager] currentPost] setObject:text forKey:@"description"];
 		
 		if (DeviceIsPad() == NO) {
-			[self bringTextViewDown];
-			
 			if (postDetailViewController.hasChanges == YES) {
 				[leftView setTitle:@"Cancel"];
 			} else {
@@ -948,8 +921,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[self preserveUnsavedPost];
 }
 
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField;
-{
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
 	if (DeviceIsPad() == YES) {
 		if (textField == categoriesTextField) {
 			[self populateSelectionsControllerWithCategories];
@@ -963,14 +935,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	return YES;
 }
 
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
-{
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
 	return YES;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     self.currentEditingTextField = textField;
-    [self updateTextViewPlacehoderFieldStatus];
 	
     if (postDetailViewController.navigationItem.leftBarButtonItem.style == UIBarButtonItemStyleDone) {
         [self textViewDidEndEditing:textView];
@@ -1013,7 +983,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		hasUnsavedPost = YES;	
 	}
 	
-	if([textView.text isEqualToString:@""] == NO) {
+	if(([textView.text isEqualToString:@""] == NO) && ([textView.text isEqualToString:kTextViewPlaceholder] == NO)) {
 		[defaults setObject:textView.text forKey:@"unsavedpost_content"];
 		hasUnsavedPost = YES;
 	}
@@ -1183,12 +1153,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 #pragma mark -
 #pragma mark Custom Fields methods
-- (void)postionTextViewContentView {
-	originY = 164.0f;
-	CGRect frame = textViewContentView.frame;
-	frame.origin.y = originY;
-	[textViewContentView setFrame:frame];
-}
 
 - (BOOL)checkCustomFieldsMinusMetadata {
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
@@ -1299,34 +1263,35 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)keyboardWillShow:(NSNotification *)notification {
 	NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo];
-	
 	postDetailViewController.isShowingKeyboard = YES;
 	[postDetailViewController refreshButtons];
 	
-	CGRect keyboardBounds;
-    [[notification.userInfo valueForKey:UIKeyboardBoundsUserInfoKey] getValue:&keyboardBounds];
-    NSInteger kbSizeH = keyboardBounds.size.height;	
+	if(DeviceIsPad() == NO) {
+		CGRect keyboardBounds;
+		[[notification.userInfo valueForKey:UIKeyboardBoundsUserInfoKey] getValue:&keyboardBounds];
+		NSInteger kbSizeH = keyboardBounds.size.height;	
+		
+		CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+		UIViewAnimationCurve curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue];
+		[UIView beginAnimations:nil context:nil];
+		[UIView setAnimationCurve:curve];
+		[UIView setAnimationDuration:animationDuration];
+		
+		CGRect keyboardFrame = CGRectMake (0, 0, normalTextFrame.size.width, kbSizeH);
+		[textView setFrame:keyboardFrame];
+		
+		[UIView commitAnimations];
+	}
 	
-	CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
-	UIViewAnimationCurve curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue];
-	[UIView beginAnimations:nil context:nil];
-	[UIView setAnimationCurve:curve];
-	[UIView setAnimationDuration:animationDuration];
-	
-	CGRect frame = textView.frame;
-	frame.size.height = kbSizeH + 280;
-	textView.frame = frame;
-	
-	[UIView commitAnimations];
+	[self preserveUnsavedPost];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
 	NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo];
-	if(textView != nil) {
+	if((textView != nil) && (DeviceIsPad() == NO)) {
 		postDetailViewController.isShowingKeyboard = NO;
 		[postDetailViewController refreshButtons];
 		
-		CGRect kbBounds = [[keyboardInfo objectForKey:UIKeyboardBoundsUserInfoKey] CGRectValue]; 
 		CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue]; 
 		UIViewAnimationCurve curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue]; 
 		
@@ -1334,12 +1299,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[UIView setAnimationCurve:curve]; 
 		[UIView setAnimationDuration:animationDuration]; 
 		
-		CGRect frame = textView.frame; 
-		frame.size.height += kbBounds.size.height;
-		
-		textView.frame = frame; 
+		[textView setFrame:normalTextFrame];
 		
 		[UIView commitAnimations];
+		[self preserveUnsavedPost];
 	}
 }
 

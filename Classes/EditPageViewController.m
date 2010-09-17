@@ -13,7 +13,7 @@
 
 @synthesize table, dm, appDelegate, actionSheet, isShowingKeyboard, pageDetailView, delegate, statuses, pickerViewController;
 @synthesize contentTextView, selectedSection, titleTextField, isLocalDraft, originalTitle, originalStatus, originalContent;
-@synthesize page, connection, urlRequest, urlResponse, payload, spinner, resignTextFieldButton, statusPopover;
+@synthesize page, connection, urlRequest, urlResponse, payload, spinner, resignTextFieldButton, statusPopover, normalTableFrame;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -38,8 +38,12 @@
 	
 	if(DeviceIsPad() == YES) {
 		[resignTextFieldButton removeFromSuperview];
-		//resignTextFieldButton.frame = CGRectMake(0, 90, 1000, 1000);
+		normalTableFrame = CGRectMake(0, 0, 320, 367);
 	}
+	else {
+		normalTableFrame = CGRectMake(0, 0, 768, 900);
+	}
+
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -273,12 +277,10 @@
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
 	selectedSection = [NSNumber numberWithInt:1];
-	if(DeviceIsPad() == NO) {
-		CGRect sectionRect = [self.table rectForSection:1];
-		sectionRect.size.height = self.table.frame.size.height;
-		[self.table scrollRectToVisible:sectionRect animated:YES];
-		self.view.frame = CGRectMake(0, 0, 320, 199);
-	}
+	
+    UITableViewCell *cell = (UITableViewCell*) [[textView superview] superview];
+    [table scrollToRowAtIndexPath:[table indexPathForCell:cell] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+	
 	[self checkPublishable];
 	[self preserveUnsavedPage];
 }
@@ -293,16 +295,8 @@
 			break;
 		}
 	}
-	if(DeviceIsPad() == NO) {
-		if(contentTextView != nil) {
-			contentTextView.frame = CGRectMake(0, 90, 320, contentTextView.contentSize.height);
-		}
-		
-		CGRect sectionRect = [self.table rectForSection:0];
-		sectionRect.size.height = self.table.frame.size.height;
-		[self.table scrollRectToVisible:sectionRect animated:YES];
-		self.view.frame = CGRectMake(0, 0, 320, 365);
-	}
+	
+	[self.table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
 	
 	if(textView.text != nil) {
 		[self.page setContent:[NSString stringWithFormat:@"%@", textView.text]];
@@ -475,14 +469,56 @@
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification {
+	NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo];
 	self.isShowingKeyboard = YES;
+	
+	if(DeviceIsPad() == NO) {
+		CGRect keyboardBounds;
+		[[notification.userInfo valueForKey:UIKeyboardBoundsUserInfoKey] getValue: &keyboardBounds];
+		float keyboardHeight = keyboardBounds.size.height;
+		
+		CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+		UIViewAnimationCurve curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue];
+		
+		[UIView beginAnimations:nil context:nil]; 
+		[UIView setAnimationCurve:curve]; 
+		[UIView setAnimationDuration:animationDuration]; 
+        [UIView setAnimationBeginsFromCurrentState:YES];
+		
+        CGRect frame = self.view.frame;
+        frame.size.height -= keyboardHeight;
+        self.view.frame = frame;
+		
+		[UIView commitAnimations];
+	}
+	
 	[self checkPublishable];
 	[self preserveUnsavedPage];
 	[self.view bringSubviewToFront:resignTextFieldButton];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
+	NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo];
 	self.isShowingKeyboard = NO;
+	if((contentTextView != nil) && (DeviceIsPad() == NO)) {
+		CGRect keyboardBounds;
+		[[notification.userInfo valueForKey:UIKeyboardBoundsUserInfoKey] getValue: &keyboardBounds];
+		float keyboardHeight = keyboardBounds.size.height;
+		
+		CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+		UIViewAnimationCurve curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue];
+		
+		[UIView beginAnimations:nil context:nil]; 
+		[UIView setAnimationCurve:curve]; 
+		[UIView setAnimationDuration:animationDuration]; 
+        [UIView setAnimationBeginsFromCurrentState:YES];
+		
+        CGRect frame = self.view.frame;
+        frame.size.height += keyboardHeight;
+        self.view.frame = frame;
+		
+		[UIView commitAnimations];
+	}
 	[self checkPublishable];
 	[self preserveUnsavedPage];
 }
@@ -628,7 +664,8 @@
 		hasUnsavedPage = YES;
 	}
 	
-	if((contentTextView.text != nil) && ([contentTextView.text isEqualToString:@""] == NO)) {
+	if((contentTextView.text != nil) && ([contentTextView.text isEqualToString:@""] == NO) && 
+	   ([contentTextView.text isEqualToString:kTextViewPlaceholder] == NO)) {
 		[defaults setObject:contentTextView.text forKey:@"unsavedpage_content"];
 		hasUnsavedPage = YES;
 	}

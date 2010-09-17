@@ -208,7 +208,7 @@
 }
 
 - (IBAction)cancelAction:(id)sender {
-	[postDetailEditController bringTextViewDown];
+	[postDetailEditController.textView resignFirstResponder];
 }
 
 - (IBAction)cancelView:(id)sender {
@@ -246,7 +246,7 @@
 - (void)saveInBackground {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	[postDetailEditController bringTextViewDown];
+	[postDetailEditController.textView resignFirstResponder];
 	hasSaved = YES;
 	
 	if((self.post != nil) && (post.wasLocalDraft == [NSNumber numberWithInt:1]) && (post.isLocalDraft == [NSNumber numberWithInt:0]))
