@@ -35,6 +35,12 @@
 #pragma mark -
 #pragma mark User
 
+- (XMLRPCResponse *)checkXMLRPC:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password {
+	XMLRPCRequest *xmlrpcUsersBlogs = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
+	[xmlrpcUsersBlogs setMethod:@"wp.getUsersBlogs" withObjects:[NSArray arrayWithObjects:username, password, nil]];
+	return [self executeXMLRPCRequest:xmlrpcUsersBlogs];
+}
+
 - (BOOL)authenticateUser:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password {
 	BOOL result = NO;
 	if((xmlrpc != nil) && (username != nil) && (password != nil) && ([self getBlogsForUrl:xmlrpc username:username password:password] != nil))
@@ -82,9 +88,6 @@
 			   [blog setXmlrpc:[dictBlog valueForKey:@"xmlrpc"]];
 			   [usersBlogs addObject:blog];
 			}
-		}
-		else {
-			usersBlogs = nil;
 		}
 		//[xmlrpcUsersBlogs release];
 	}

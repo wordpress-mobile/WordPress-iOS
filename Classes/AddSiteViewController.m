@@ -443,13 +443,23 @@
 	footerText = @"Authenticating...";
 	[self refreshTable];
 	
-	isAuthenticated = [[WPDataController sharedInstance] authenticateUser:xmlrpc username:username password:password];
-	if(isAuthenticated) {
-		footerText = @"Authenticated successfully.";
-		[self performSelectorOnMainThread:@selector(didAuthenticateSuccessfully) withObject:nil waitUntilDone:NO];
+	XMLRPCResponse *xmlrpcCheck = [[WPDataController sharedInstance] checkXMLRPC:xmlrpc username:username password:password];
+	NSLog(@"xmlrpcCheck: %@", xmlrpcCheck);
+	if(![xmlrpcCheck isKindOfClass:[NSError class]]) {
+		isAuthenticated = [[WPDataController sharedInstance] authenticateUser:xmlrpc username:username password:password];
+		if(isAuthenticated == YES) {
+			footerText = @"Authenticated successfully.";
+			[self performSelectorOnMainThread:@selector(didAuthenticateSuccessfully) withObject:nil waitUntilDone:NO];
+		}
+		else {
+			isAdding = NO;
+			addButtonText = @"Add Site";
+			footerText = @"Incorrect username or password.";
+		}
 	}
 	else {
-		footerText = @"Incorrect username or password.";
+		NSError *error = (NSError *)xmlrpcCheck;
+		footerText = [error localizedDescription];
 		isAdding = NO;
 		addButtonText = @"Add Site";
 	}

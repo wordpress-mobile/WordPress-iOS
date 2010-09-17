@@ -29,10 +29,9 @@ typedef enum {
 
 + (WPDataController *)sharedInstance;
 
-// User
+- (XMLRPCResponse *)checkXMLRPC:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password;
 - (BOOL)authenticateUser:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password;
 - (NSMutableArray *)getBlogsForUrl:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password;
-// XMLRPC
 - (id)executeXMLRPCRequest:(XMLRPCRequest *)req;
 - (NSError *)errorWithResponse:(XMLRPCResponse *)res;
 
