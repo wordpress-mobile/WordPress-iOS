@@ -127,35 +127,27 @@
 			addTextField.textColor = [UIColor blackColor];
 			if ([indexPath section] == 0) {
 				if (indexPath.row == 0) {
-					activeTextField = addTextField;
 					addTextField.placeholder = @"http://example.com";
-					addTextField.keyboardType = UIKeyboardTypeDefault;
-					addTextField.returnKeyType = UIReturnKeyDone;
+					addTextField.keyboardType = UIKeyboardTypeURL;
 					if(url != nil)
 						addTextField.text = url;
 				}
 				else if(indexPath.row == 1) {
 					addTextField.placeholder = @"WordPress username";
 					addTextField.keyboardType = UIKeyboardTypeDefault;
-					addTextField.returnKeyType = UIReturnKeyDone;
 					if(username != nil)
 						addTextField.text = username;
 				}
 				else if(indexPath.row == 2) {
 					addTextField.placeholder = @"WordPress password";
 					addTextField.keyboardType = UIKeyboardTypeDefault;
-					if(xmlrpc != nil)
-						addTextField.returnKeyType = UIReturnKeyDone;
-					else
-						addTextField.returnKeyType = UIReturnKeyDone;
 					addTextField.secureTextEntry = YES;
 					if(password != nil)
 						addTextField.text = password;
 				}
 				else if(indexPath.row == 2) {
 					addTextField.placeholder = @"http://example.com/xmlrpc.php";
-					addTextField.keyboardType = UIKeyboardTypeDefault;
-					addTextField.returnKeyType = UIReturnKeyDone;
+					addTextField.keyboardType = UIKeyboardTypeURL;
 					if(xmlrpc != nil)
 						addTextField.text = xmlrpc;
 				}
@@ -170,6 +162,7 @@
 				addTextField.textAlignment = UITextAlignmentLeft;
 				addTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 				addTextField.delegate = self;
+				addTextField.returnKeyType = UIReturnKeyDone;
 				
 				addTextField.clearButtonMode = UITextFieldViewModeNever;
 				[addTextField setEnabled: YES];
@@ -375,7 +368,7 @@
 			if(((!hasValidXMLRPCurl) && (username != nil) && (password != nil)) && ([textField.text isEqualToString:@""]))
 				footerText = @"XMLRPC endpoint wasn't found. Please enter it manually.";
 			else {
-				[self setXmlrpc:textField.text];
+				[self setXMLRPCUrl:activeTextField.text];
 				hasValidXMLRPCurl = YES;
 				footerText = nil;
 			}
@@ -458,7 +451,10 @@
 	}
 	else {
 		NSError *error = (NSError *)xmlrpcCheck;
-		footerText = [error localizedDescription];
+		if([[[error localizedDescription] lowercaseString] isEqualToString:@"404 not found"] == YES)
+			footerText = @"XML-RPC endpoint not found. Please enter it manually.";
+		else
+			footerText = [error localizedDescription];
 		isAdding = NO;
 		addButtonText = @"Add Site";
 	}
@@ -572,20 +568,17 @@
 	
 	[[BlogDataManager sharedDataManager] resetCurrentBlog];
 	[newBlog setValue:blogID forKey:kBlogId];
-	[newBlog setValue:host forKey:kBlogHostName];
+	NSString *hostURL = [[NSString alloc] initWithFormat:@"%@", 
+						 [host stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""]];
+	[newBlog setValue:hostURL forKey:kBlogHostName];
+	[hostURL release];
+	
 	[newBlog setValue:blogName forKey:@"blogName"];
 	[newBlog setValue:url forKey:@"url"];
 	[newBlog setValue:xmlrpc forKey:@"xmlrpc"];
 	[newBlog setValue:username forKey:@"username"];
 	[newBlog setValue:authEnabled forKey:@"authEnabled"];
 	[[BlogDataManager sharedDataManager] updatePasswordInKeychain:self.password andUserName:self.username andBlogURL:self.host];
-	//NSLog(@"newBlog.blogID:%@ newBlog.blogName:%@ newBlog.url:%@ newBlog.xmlrpc:%@, newBlog.username:%@ newBlog.host:%@",
-//		  [newBlog valueForKey:kBlogId], 
-//		  [newBlog valueForKey:@"blogName"], 
-//		  [newBlog valueForKey:@"url"], 
-//		  [newBlog valueForKey:@"xmlrpc"], 
-//		  [newBlog valueForKey:@"username"], 
-//		  [newBlog valueForKey:kBlogHostName]);
 	if([authEnabled isEqualToNumber:[NSNumber numberWithInt:1]]) {
 		[[BlogDataManager sharedDataManager] updatePasswordInKeychain:authPassword
 														  andUserName:authUsername
@@ -605,8 +598,6 @@
 	[[BlogDataManager sharedDataManager] saveCurrentBlog];
 	[[BlogDataManager sharedDataManager] syncCategoriesForBlog:[BlogDataManager sharedDataManager].currentBlog];
 	[[BlogDataManager sharedDataManager] syncStatusesForBlog:[BlogDataManager sharedDataManager].currentBlog];
-	NSLog(@"Syncing statuses for blog with URL:%@", 
-		  [[[BlogDataManager sharedDataManager] currentBlog] objectForKey:@"url"]);
 	[newBlog release];
 	
 	[self performSelectorOnMainThread:@selector(didAddSiteSuccessfully) withObject:nil waitUntilDone:NO];

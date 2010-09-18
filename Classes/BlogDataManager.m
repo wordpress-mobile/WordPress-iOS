@@ -1391,6 +1391,12 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 	   url = [url substringToIndex:url.length-1];
 	
 	NSString *pwd = [self getBlogPasswordFromKeychainWithUsername:[aBlog valueForKey:@"username"] andBlogName:url];
+	
+	NSLog(@"xmlrpc: %@", xmlrpc);
+	NSLog(@"url: %@", url);
+	NSLog(@"username: %@", [aBlog valueForKey:@"username"]);
+	NSLog(@"password: %@", pwd);
+	
 	XMLRPCRequest *reqCategories = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
 	[reqCategories setMethod:@"wp.getCategories" withObjects: [NSArray arrayWithObjects:
 																[aBlog valueForKey:@"blogid"], 
