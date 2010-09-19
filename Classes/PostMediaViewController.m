@@ -632,10 +632,14 @@
 
 - (UIImage *)resizeImage:(UIImage *)original toSize:(MediaResize)resize {
 	CGSize smallSize, mediumSize, largeSize, originalSize;
-	switch (currentOrientation) {
-		case kPortrait:
-			smallSize = CGSizeMake(180, 240);
-			mediumSize = CGSizeMake(360, 480);
+	UIImageOrientation orientation = original.imageOrientation; 
+ 	switch (orientation) { 
+		case UIImageOrientationUp: 
+		case UIImageOrientationUpMirrored:
+		case UIImageOrientationDown: 
+		case UIImageOrientationDownMirrored:
+			smallSize = CGSizeMake(240, 180);
+			mediumSize = CGSizeMake(480, 360);
 			largeSize = CGSizeMake(640, 480);
 			if([[UIDevice currentDevice] platformString] == IPHONE_4G_NAMESTRING)
 				originalSize = CGSizeMake(2592, 1936);
@@ -644,9 +648,12 @@
 			else
 				originalSize = CGSizeMake(1600, 1200);
 			break;
-		case kLandscape:
-			smallSize = CGSizeMake(240, 180);
-			mediumSize = CGSizeMake(480, 360);
+		case UIImageOrientationLeft:
+		case UIImageOrientationLeftMirrored:
+		case UIImageOrientationRight:
+		case UIImageOrientationRightMirrored:
+			smallSize = CGSizeMake(180, 240);
+			mediumSize = CGSizeMake(360, 480);
 			largeSize = CGSizeMake(480, 640);
 			if([[UIDevice currentDevice] platformString] == IPHONE_4G_NAMESTRING)
 				originalSize = CGSizeMake(1936, 2592);
