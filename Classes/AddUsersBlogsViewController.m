@@ -85,7 +85,10 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	return YES;
+	if(DeviceIsPad() == YES)
+		return YES;
+	else
+		return NO;
 }
 
 #pragma mark -

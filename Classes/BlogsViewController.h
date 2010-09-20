@@ -32,5 +32,6 @@
 - (void)edit:(id)sender;
 - (void)cancel:(id)sender;
 - (BOOL)canChangeCurrentBlog;
+- (void)blogsRefreshNotificationReceived:(NSNotification *)notification;
 
 @end

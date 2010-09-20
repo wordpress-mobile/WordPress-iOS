@@ -70,6 +70,13 @@
 	[super viewWillDisappear:animated];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	if(DeviceIsPad() == YES)
+		return YES;
+	else
+		return NO;
+}
+
 #pragma mark -
 #pragma mark Table view data source
 
