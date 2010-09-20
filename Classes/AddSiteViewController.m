@@ -272,29 +272,31 @@
 			
 			break;
 		case 1:
-			if((hasSubsites) && (indexPath.row == 0)) {
-				// Select Sites
-				[self.navigationController pushViewController:addUsersBlogsView animated:YES];
-				[tv deselectRowAtIndexPath:indexPath animated:YES];
-			}
-			else if(((!hasSubsites) && (indexPath.row == 0)) || (indexPath.row == 1)) {
-				// Settings
-				if(url != nil)
-					[appDelegate.currentBlog setObject:url forKey:@"url"];
-				if(username != nil)
-					[appDelegate.currentBlog setObject:username forKey:@"username"];
-				[activeTextField becomeFirstResponder];
-				[activeTextField resignFirstResponder];
-				BlogSettingsViewController *settingsView = [[BlogSettingsViewController alloc] initWithNibName:@"BlogSettingsViewController" bundle:nil];
-				[self.navigationController pushViewController:settingsView animated:YES];
-				[settingsView release];
-				
-				[tv deselectRowAtIndexPath:indexPath animated:YES];
+			if(isAdding == NO) {
+				if((hasSubsites) && (indexPath.row == 0)) {
+					// Select Sites
+					[self.navigationController pushViewController:addUsersBlogsView animated:YES];
+					[tv deselectRowAtIndexPath:indexPath animated:YES];
+				}
+				else if(((!hasSubsites) && (indexPath.row == 0)) || (indexPath.row == 1)) {
+					// Settings
+					if(url != nil)
+						[appDelegate.currentBlog setObject:url forKey:@"url"];
+					if(username != nil)
+						[appDelegate.currentBlog setObject:username forKey:@"username"];
+					[activeTextField becomeFirstResponder];
+					[activeTextField resignFirstResponder];
+					BlogSettingsViewController *settingsView = [[BlogSettingsViewController alloc] initWithNibName:@"BlogSettingsViewController" bundle:nil];
+					[self.navigationController pushViewController:settingsView animated:YES];
+					[settingsView release];
+					
+					[tv deselectRowAtIndexPath:indexPath animated:YES];
+				}
 			}
 			break;
 		case 2:
 			// Add Site
-			if([self blogExists] == NO) {
+			if(([self blogExists] == NO) && (isAdding == NO)) {
 				footerText = @" ";
 				addButtonText = @"Adding Site...";
 				isAdding = YES;
