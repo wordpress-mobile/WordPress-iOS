@@ -50,23 +50,12 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	BOOL result = NO;
 	if(DeviceIsPad()) {
-		//switch (interfaceOrientation) {
-//			case UIInterfaceOrientationPortrait:
-//				[appDelegate.navigationController presentModalViewController:self animated:YES];
-//				break;
-//			case UIInterfaceOrientationPortraitUpsideDown:
-//				[appDelegate.navigationController presentModalViewController:self animated:YES];
-//				break;
-//			case UIInterfaceOrientationLandscapeLeft:
-//				[appDelegate.splitViewController presentModalViewController:self animated:YES];
-//				break;
-//			case UIInterfaceOrientationLandscapeRight:
-//				[appDelegate.splitViewController presentModalViewController:self animated:YES];
-//				break;
-//		}
+		result = YES;
 	}
-	return YES;
+	
+	return result;
 }
 
 #pragma mark -
