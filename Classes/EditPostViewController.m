@@ -35,11 +35,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     titleTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     tagsTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     [contentView bringSubviewToFront:textView];
-	
-	if(DeviceIsPad() == NO)
-		normalTextFrame = CGRectMake(0, 166, 360, 220);
-	else
-		normalTextFrame = CGRectMake(0, 220, 768, 824);
+	normalTextFrame = textView.frame;
 	
     if (!leftView) {
         leftView = [WPNavigationLeftButtonView createCopyOfView];
@@ -52,6 +48,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideKeyboard:) name:@"EditPostViewShouldHideKeyboard" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceDidRotate:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(save) name:@"EditPostViewShouldSave" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(publish) name:@"EditPostViewShouldPublish" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newCategoryCreatedNotificationReceived:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
@@ -681,12 +678,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [addURLSourceAlert release];
 }
 
-- (void)setTextViewHeight:(float)height {
-    CGRect frame = textView.frame;
-    frame.size.height = height;
-    textView.frame = frame;
-}
-
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	
@@ -730,10 +721,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
         isTextViewEditing = YES;
 		
 		if (DeviceIsPad() == NO) {
-			if ((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-				[self setTextViewHeight:116];
-			}
-			
 			// Done button
 			UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] init];
 			doneButton.target = self;
@@ -752,13 +739,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		textView.text = @"";
 	}
 	[textView setTextColor:[UIColor blackColor]];
-	
-	if (DeviceIsPad() == NO) {
-		if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
-			|| (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
-			[self setTextViewHeight:116];
-		}
-	}
+	[self positionTextView:nil];
 	
     dismiss = NO;
 	
@@ -883,11 +864,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)aTextView {
-	if (DeviceIsPad() == NO) {
-		if ((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-			[self setTextViewHeight:57];
-		}
-	}
+	currentEditingTextField = nil;
+	textView.frame = normalTextFrame;
 	
 	if([textView.text isEqualToString:@""] == YES) {
 		textView.text = kTextViewPlaceholder;
@@ -957,6 +935,55 @@ NSTimeInterval kAnimationDuration = 0.3f;
         [[BlogDataManager sharedDataManager].currentPost setValue:tagsTextField.text forKey:@"mt_keywords"];
 	
 	[self preserveUnsavedPost];
+}
+
+- (void)positionTextView:(NSDictionary *)keyboardInfo {
+	CGFloat animationDuration = 0.3;
+	UIViewAnimationCurve curve = 0.3;
+	if(keyboardInfo != nil) {
+		animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+		
+		curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue];
+	}
+		
+	[UIView beginAnimations:nil context:nil];
+	[UIView setAnimationCurve:curve];
+	[UIView setAnimationDuration:animationDuration];
+	CGRect keyboardFrame, keyboardBounds;
+	
+	if(DeviceIsPad() == YES) {
+		if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
+			|| (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
+			keyboardFrame = CGRectMake(0, 0, textView.frame.size.width, 350);
+			
+			[textView setFrame:keyboardFrame];
+		}
+		else {
+			keyboardFrame = CGRectMake(0, 180, textView.frame.size.width, 700);
+			keyboardBounds = CGRectMake(0, 180, textView.frame.size.width, 700);
+			
+			[textView setFrame:keyboardFrame];
+			[textView setBounds:keyboardBounds];
+		}
+		
+		[self.view bringSubviewToFront:textView];
+	}
+	else {
+		if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
+			|| (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
+			keyboardFrame = CGRectMake (0, 0, textView.frame.size.width, 130);
+		}
+		else {
+			keyboardFrame = CGRectMake (0, 180, textView.frame.size.width, 210);
+		}
+		
+		[textView setFrame:keyboardFrame];
+	}
+	[UIView commitAnimations];
+}
+
+- (void)deviceDidRotate:(NSNotification *)notification {
+	[self positionTextView:nil];
 }
 
 - (void)preserveUnsavedPost {
@@ -1262,48 +1289,30 @@ NSTimeInterval kAnimationDuration = 0.3f;
 #pragma mark Keyboard management 
 
 - (void)keyboardWillShow:(NSNotification *)notification {
-	NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo];
+	//NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo];
 	postDetailViewController.isShowingKeyboard = YES;
 	[postDetailViewController refreshButtons];
-	
-	if(DeviceIsPad() == NO) {
-		CGRect keyboardBounds;
-		[[notification.userInfo valueForKey:UIKeyboardBoundsUserInfoKey] getValue:&keyboardBounds];
-		NSInteger kbSizeH = keyboardBounds.size.height;	
-		
-		CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
-		UIViewAnimationCurve curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue];
-		[UIView beginAnimations:nil context:nil];
-		[UIView setAnimationCurve:curve];
-		[UIView setAnimationDuration:animationDuration];
-		
-		CGRect keyboardFrame = CGRectMake (0, 0, normalTextFrame.size.width, kbSizeH);
-		[textView setFrame:keyboardFrame];
-		
-		[UIView commitAnimations];
-	}
 	
 	[self preserveUnsavedPost];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
 	NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo];
-	if((textView != nil) && (DeviceIsPad() == NO)) {
-		postDetailViewController.isShowingKeyboard = NO;
-		[postDetailViewController refreshButtons];
-		
-		CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue]; 
-		UIViewAnimationCurve curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue]; 
-		
-		[UIView beginAnimations:nil context:nil]; 
-		[UIView setAnimationCurve:curve]; 
-		[UIView setAnimationDuration:animationDuration]; 
-		
-		[textView setFrame:normalTextFrame];
-		
-		[UIView commitAnimations];
-		[self preserveUnsavedPost];
-	}
+	postDetailViewController.isShowingKeyboard = NO;
+	[postDetailViewController refreshButtons];
+	
+	CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue]; 
+	UIViewAnimationCurve curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue]; 
+	
+	[UIView beginAnimations:nil context:nil]; 
+	[UIView setAnimationCurve:curve]; 
+	[UIView setAnimationDuration:animationDuration]; 
+	
+	[textView setFrame:normalTextFrame];
+	
+	[UIView commitAnimations];
+	
+	[self preserveUnsavedPost];
 }
 
 #pragma mark -

@@ -90,13 +90,14 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (void)refreshUIForCompose;
 - (void)refreshUIForCurrentPost;
 - (void)refreshCurrentPostForUI;
-- (void)setTextViewHeight:(float)height;
 - (IBAction)endTextEnteringButtonAction:(id)sender;
 - (void)endEditingAction:(id)sender;
 - (void)refreshCategory;
 - (void)syncStatuses;
 - (void)refreshStatus;
 - (void)syncCategoriesAndStatuses;
+- (void)positionTextView:(NSDictionary *)keyboardInfo;
+- (void)deviceDidRotate:(NSNotification *)notification;
 
 // Media
 - (void)insertMediaAbove:(NSNotification *)notification;

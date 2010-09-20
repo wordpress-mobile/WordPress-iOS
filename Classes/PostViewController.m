@@ -95,14 +95,14 @@
 	
 	if (DeviceIsPad() == NO) {
 		if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
-			[postDetailEditController setTextViewHeight:202];
+			//[postDetailEditController setTextViewHeight:202];
 		}
 		
 		if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
 			if (postDetailEditController.isEditing == NO) {
 				//[postDetailEditController setTextViewHeight:57]; //#148
 			} else {
-				[postDetailEditController setTextViewHeight:116];
+				//[postDetailEditController setTextViewHeight:116];
 			}
 		}
 	}
@@ -185,7 +185,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
 	if (DeviceIsPad() == NO) {
 		if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-			[postDetailEditController setTextViewHeight:202];
+			//[postDetailEditController setTextViewHeight:202];
 		}
 	}
 	
@@ -608,7 +608,7 @@
     }
 
     if ((interfaceOrientation == UIInterfaceOrientationPortrait) || (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
-        [postDetailEditController setTextViewHeight:202];
+        //[postDetailEditController setTextViewHeight:202];
 		return YES;
     }
 
@@ -617,7 +617,7 @@
             if (postDetailEditController.isEditing == NO) {
               //  [postDetailEditController setTextViewHeight:57]; //#148
             } else {
-                [postDetailEditController setTextViewHeight:116];
+                //[postDetailEditController setTextViewHeight:116];
 				return YES;
             }
         }

@@ -43,6 +43,8 @@
 	else {
 		normalTableFrame = CGRectMake(0, 0, 768, 900);
 	}
+	
+	contentTextView.backgroundColor = [UIColor blueColor];
 
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
