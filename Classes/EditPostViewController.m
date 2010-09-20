@@ -183,7 +183,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-	return YES;
+	if(DeviceIsPad() == YES)
+		return YES;
 }
 
 - (void)disableInteraction {
@@ -974,7 +975,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			keyboardFrame = CGRectMake (0, 0, textView.frame.size.width, 130);
 		}
 		else {
-			keyboardFrame = CGRectMake (0, 180, textView.frame.size.width, 210);
+			keyboardFrame = CGRectMake (0, 0, textView.frame.size.width, 210);
 		}
 		
 		[textView setFrame:keyboardFrame];
@@ -983,7 +984,17 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)deviceDidRotate:(NSNotification *)notification {
-	[self positionTextView:nil];
+	UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+	switch (orientation) { 
+		case UIDeviceOrientationLandscapeLeft: 
+		case UIDeviceOrientationLandscapeRight:
+			//textView.frame = CGRectMake(textView.frame.origin.x, textView.frame.origin.y, ?, textView.frame.size.height);
+			break;
+		case UIDeviceOrientationPortrait:
+		case UIDeviceOrientationPortraitUpsideDown:
+			//textView.frame = CGRectMake(textView.frame.origin.x, textView.frame.origin.y, ?, textView.frame.size.height);
+			break;
+	}
 }
 
 - (void)preserveUnsavedPost {

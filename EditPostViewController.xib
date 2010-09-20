@@ -469,12 +469,7 @@
 								<int key="NSvFlags">282</int>
 								<string key="NSFrame">{{0, 166}, {320, 202}}</string>
 								<reference key="NSSuperview" ref="180411387"/>
-								<object class="NSColor" key="IBUIBackgroundColor">
-									<int key="NSColorSpace">6</int>
-									<string key="NSCatalogName">System</string>
-									<string key="NSColorName">keyboardFocusIndicatorColor</string>
-									<reference key="NSColor" ref="674153153"/>
-								</object>
+								<reference key="IBUIBackgroundColor" ref="640135287"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIMultipleTouchEnabled">YES</bool>
