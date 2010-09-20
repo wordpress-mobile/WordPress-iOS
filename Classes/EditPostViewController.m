@@ -185,6 +185,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
 	if(DeviceIsPad() == YES)
 		return YES;
+	else
+		return NO;
 }
 
 - (void)disableInteraction {

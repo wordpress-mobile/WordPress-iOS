@@ -75,8 +75,12 @@
 													name:UIKeyboardWillHideNotification object:nil];
 	[super viewWillDisappear:animated];
 }
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	return YES;
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+	if(DeviceIsPad() == YES)
+		return YES;
+	else
+		return NO;
 }
 
 #pragma mark -

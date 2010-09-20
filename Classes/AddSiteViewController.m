@@ -502,7 +502,29 @@
 		[xmlrpcMethodsRequest release];
 		
 		if([xmlrpcMethods isKindOfClass:[NSError class]]) {
-			hasValidXMLRPCurl = NO;
+			NSString *regEx = @"http(s)?://[^\"]*\\.php";
+			NSString *html = [NSString stringWithContentsOfURL:[NSURL URLWithString:url]];
+			NSString *match = [html stringByMatching:regEx];
+			if([match isEqual:@""] == NO) {
+				XMLRPCRequest *xmlrpcMethodsRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:match]];
+				[xmlrpcMethodsRequest setMethod:@"system.listMethods" withObjects:[NSArray array]];
+				NSArray *xmlrpcMethods = [[BlogDataManager sharedDataManager] executeXMLRPCRequest:xmlrpcMethodsRequest byHandlingError:YES];
+				[xmlrpcMethodsRequest release];
+				
+				if(![xmlrpcMethods isKindOfClass:[NSError class]]) {
+					[self performSelectorOnMainThread:@selector(setXMLRPCUrl:) 
+										   withObject:match
+										waitUntilDone:YES];
+					hasValidXMLRPCurl = YES;
+				}
+				else {
+					hasValidXMLRPCurl = NO;
+				}
+
+			}
+			else {
+				hasValidXMLRPCurl = NO;
+			}
 		}
 		else {
 			hasValidXMLRPCurl = YES;
@@ -534,7 +556,7 @@
 }
 
 - (void)setXMLRPCUrl:(NSString *)xmlrpcUrl {
-	xmlrpc = xmlrpcUrl;
+	xmlrpc = [xmlrpcUrl retain];
 }
 
 - (void)urlDidChange {
