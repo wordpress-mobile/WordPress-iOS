@@ -278,11 +278,11 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 - (id)executeXMLRPCRequest:(XMLRPCRequest *)req byHandlingError:(BOOL)shouldHandleFalg {
 	
 	BOOL httpAuthEnabled = [[currentBlog objectForKey:@"authEnabled"] boolValue];
-	NSString *httpAuthUsername = [currentBlog valueForKey:@"authUsername"];
-	NSString *httpAuthPassword = [self getHTTPPasswordFromKeychainInContextOfCurrentBlog:currentBlog];
 	
 	XMLRPCResponse *userInfoResponse = nil;
 	if (httpAuthEnabled) {
+		NSString *httpAuthUsername = [currentBlog valueForKey:@"authUsername"];
+		NSString *httpAuthPassword = [self getHTTPPasswordFromKeychainInContextOfCurrentBlog:currentBlog];
 		userInfoResponse = [XMLRPCConnection sendSynchronousXMLRPCRequest:req
 															 withUsername:httpAuthUsername
 															  andPassword:httpAuthPassword];
@@ -1391,12 +1391,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 	   url = [url substringToIndex:url.length-1];
 	
 	NSString *pwd = [self getBlogPasswordFromKeychainWithUsername:[aBlog valueForKey:@"username"] andBlogName:url];
-	
-	NSLog(@"xmlrpc: %@", xmlrpc);
-	NSLog(@"url: %@", url);
-	NSLog(@"username: %@", [aBlog valueForKey:@"username"]);
-	NSLog(@"password: %@", pwd);
-	
 	XMLRPCRequest *reqCategories = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
 	[reqCategories setMethod:@"wp.getCategories" withObjects: [NSArray arrayWithObjects:
 																[aBlog valueForKey:@"blogid"], 
@@ -5143,33 +5137,46 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 
 - (NSString *)getHTTPPasswordFromKeychainInContextOfCurrentBlog:(NSDictionary *)theCurrentBlog {
 	NSString *httpAuthUsername = [theCurrentBlog valueForKey:@"authUsername"];
-	NSString *blogURL = [[theCurrentBlog valueForKey:@"url"] stringByReplacingOccurrencesOfString:@"http://" withString:@""];
+	NSString *blogURL = [[theCurrentBlog valueForKey:@"url"] stringByReplacingOccurrencesOfRegex:@"http(s)?://" withString:@""];
 	NSString *blogAuthURL = [blogURL stringByAppendingString:@"_auth"];
 	return [self getBlogPasswordFromKeychainWithUsername:httpAuthUsername andBlogName:blogAuthURL];
 }
 
 
--(NSString*) getBlogPasswordFromKeychainWithUsername:(NSString *)userName andBlogName:(NSString *)blogURL {
+-(NSString*)getBlogPasswordFromKeychainWithUsername:(NSString *)userName andBlogName:(NSString *)blogURL {
 	//make a "blank" string to hold our password
 	NSString * keychainPWD = @"";
 	//call the keychain util's getPassword function, passing in the userName and blogURL we got from the method that called this one
 	// and set our blank string equal to the result of this call
 	NSError *anError = nil;
 	keychainPWD = [SFHFKeychainUtils getPasswordForUsername : userName andServiceName : blogURL error:&anError];
+		
+	if(anError != nil) {
+		NSLog(@"keychain get error: %@", anError);
+		
+		// Try again with www stripped from the URL
+		blogURL = [blogURL stringByReplacingOccurrencesOfString:@"www." withString:@""];
+		keychainPWD = [SFHFKeychainUtils getPasswordForUsername : userName andServiceName : blogURL error:&anError];
+	}
+	
 	//return the resulting string to the calling function as a string
 	//NSLog(@"Inside getBlogPasswordFromKeychainWithUsername... keychainPWD is %@", keychainPWD);
 	return keychainPWD;	
 }
 
 
--(void) saveBlogPasswordToKeychain:(NSString *)password andUserName:(NSString *)userName andBlogURL:(NSString *)blogURL {
+-(void)saveBlogPasswordToKeychain:(NSString *)password andUserName:(NSString *)userName andBlogURL:(NSString *)blogURL {
 	//call util's store password function, pass in the password, the username and the blogURL (blogURL = servicename for the Util's code)
 	//note that there is an updateExisting BOOL in the util call below, whereby you can tell the code NOT to modify, but only create if not in keychain already
 	//this isn't implemented in the method call for this method, but could be if needed.  Currently hard-coded to FALSE because this code path
 	//should only ever get called for a "create" kind of scenario from the Add Blog view's Save button.  (code in: BlogDetailModalViewController)
 	//NSLog(@"Inside saveBlogPasswordToKeychain... password is %@ userName is %@ blogURL is %@", password, userName, blogURL);
 	NSError *anError = nil; 
-	[ SFHFKeychainUtils storeUsername:userName andPassword:password forServiceName:blogURL updateExisting:FALSE error:&anError ];
+		
+	[SFHFKeychainUtils storeUsername:userName andPassword:password forServiceName:blogURL updateExisting:FALSE error:&anError];
+	
+	if(anError != nil)
+		NSLog(@"keychain save error: %@", anError);
 }
 
 -(void) updatePasswordInKeychain:(NSString *)password andUserName:(NSString *)userName andBlogURL:(NSString *)blogURL{

@@ -559,8 +559,6 @@
 	NSString *authUsername = [appDelegate.currentBlog valueForKey:@"authUsername"];
 	NSString *authPassword = [appDelegate.currentBlog valueForKey:@"authPassword"];
 	NSNumber *authEnabled = [appDelegate.currentBlog valueForKey:@"authEnabled"];
-	
-	NSString *authBlogURL = [NSString stringWithFormat:@"%@_auth", url];
 	NSMutableDictionary *newBlog = [[NSMutableDictionary dictionaryWithObjectsAndKeys:
 									 username, @"username", 
 									 url, @"url", 
@@ -572,6 +570,9 @@
 	[newBlog setValue:blogID forKey:kBlogId];
 	NSString *hostURL = [[NSString alloc] initWithFormat:@"%@", 
 						 [host stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""]];
+	self.host = hostURL;
+	
+	NSString *authBlogURL = [NSString stringWithFormat:@"%@_auth", self.host];
 	[newBlog setValue:hostURL forKey:kBlogHostName];
 	[hostURL release];
 	
@@ -580,7 +581,11 @@
 	[newBlog setValue:xmlrpc forKey:@"xmlrpc"];
 	[newBlog setValue:username forKey:@"username"];
 	[newBlog setValue:authEnabled forKey:@"authEnabled"];
-	[[BlogDataManager sharedDataManager] updatePasswordInKeychain:self.password andUserName:self.username andBlogURL:self.host];
+	
+	[[BlogDataManager sharedDataManager] saveBlogPasswordToKeychain:self.password 
+														andUserName:self.username 
+														 andBlogURL:[self.url stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""]];
+	
 	if([authEnabled isEqualToNumber:[NSNumber numberWithInt:1]]) {
 		[[BlogDataManager sharedDataManager] updatePasswordInKeychain:authPassword
 														  andUserName:authUsername
