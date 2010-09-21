@@ -98,6 +98,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (void)syncCategoriesAndStatuses;
 - (void)positionTextView:(NSDictionary *)keyboardInfo;
 - (void)deviceDidRotate:(NSNotification *)notification;
+- (void)resignTextView;
 
 // Media
 - (void)insertMediaAbove:(NSNotification *)notification;

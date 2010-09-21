@@ -130,10 +130,12 @@
 
 - (void)insert:(Media *)media {
 	[self dataSave];
+	[appDelegate.managedObjectContext processPendingChanges];
 }
 
 - (void)update:(Media *)media {
 	[self dataSave];
+	[appDelegate.managedObjectContext processPendingChanges];
 }
 
 - (void)remove:(Media *)media {

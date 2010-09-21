@@ -616,6 +616,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [self populateSelectionsControllerWithStatuses];
 }
 
+- (void)resignTextView {
+	[textView resignFirstResponder];
+}
+
 //code to append http:// if protocol part is not there as part of urlText.
 - (NSString *)validateNewLinkInfo:(NSString *)urlText {
     NSArray *stringArray = [NSArray arrayWithObjects:@"http:", @"ftp:", @"https:", nil];
@@ -1321,7 +1325,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[UIView setAnimationCurve:curve]; 
 	[UIView setAnimationDuration:animationDuration]; 
 	
-	[textView setFrame:normalTextFrame];
+	if(textView != nil)
+		[textView setFrame:normalTextFrame];
 	
 	[UIView commitAnimations];
 	

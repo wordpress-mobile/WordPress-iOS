@@ -109,15 +109,18 @@
 
 - (void)insert:(Post *)post {
 	[self dataSave];
+	[appDelegate.managedObjectContext processPendingChanges];
 }
 
 - (void)update:(Post *)post {
 	[self dataSave];
+	[appDelegate.managedObjectContext processPendingChanges];
 }
 
 - (void)remove:(Post *)post {
 	NSManagedObject *objectToDelete = post;
 	[appDelegate.managedObjectContext deleteObject:objectToDelete];
+	[appDelegate.managedObjectContext processPendingChanges];
 	[self dataSave];
 }
 

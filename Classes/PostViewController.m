@@ -243,10 +243,13 @@
 	[self performSelectorInBackground:@selector(saveInBackground) withObject:nil];
 }
 
+- (void)resignTextView {
+	[postDetailEditController resignTextView];
+}
+
 - (void)saveInBackground {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	[postDetailEditController.textView resignFirstResponder];
 	hasSaved = YES;
 	
 	if((self.post != nil) && (post.wasLocalDraft == [NSNumber numberWithInt:1]) && (post.isLocalDraft == [NSNumber numberWithInt:0]))
@@ -348,6 +351,7 @@
 - (void)didSaveInBackground {
 	isPublishing = NO;
 	hasChanges = NO;
+	[postDetailEditController resignTextView];
 	[self refreshUIForCompose];
 	[self verifyPublishSuccessful];
 	if(DeviceIsPad() == NO) {
@@ -437,7 +441,7 @@
 	}
 	
 	post = nil;
-	post = [draftManager get:appDelegate.postID];
+	post = [[draftManager get:appDelegate.postID] retain];
 	[self.post setWasLocalDraft:[NSNumber numberWithInt:1]];
 	[self.post setIsLocalDraft:[NSNumber numberWithInt:1]];
 	[self.post setIsPublished:[NSNumber numberWithInt:0]];
