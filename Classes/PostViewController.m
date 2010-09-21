@@ -351,7 +351,7 @@
 	[self refreshUIForCompose];
 	[self verifyPublishSuccessful];
 	if(DeviceIsPad() == NO) {
-		//[self.navigationController popViewControllerAnimated:YES];
+		[self.navigationController popViewControllerAnimated:YES];
 	}
 	else {
 		if(wasLocalDraft == YES)

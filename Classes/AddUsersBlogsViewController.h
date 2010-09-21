@@ -37,6 +37,7 @@
 - (void)refreshBlogs;
 - (IBAction)saveSelectedBlogs:(id)sender;
 - (void)updateFavicons;
+- (void)reloadData;
 - (void)refreshTableView:(NSNotification *)notifcation;
 - (void)createBlog:(Blog *)blog;
 - (void)cancelAddWPcomBlogs;

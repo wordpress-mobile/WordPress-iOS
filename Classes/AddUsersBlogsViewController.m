@@ -51,7 +51,9 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	
+	NSLog(@"checking WPcom authentication...");
 	if((isWPcom) && (!appDelegate.isWPcomAuthenticated)) {
+		NSLog(@"not WPcom authenticated...");
 		if(DeviceIsPad() == YES) {
 			WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController-iPad" bundle:nil];	
 			[self.navigationController pushViewController:wpComLogin animated:YES];
@@ -62,13 +64,18 @@
 			[self.navigationController presentModalViewController:wpComLogin animated:YES];
 			[wpComLogin release];
 		}
-
 	}
 	else if(isWPcom) {
-		if((usersBlogs == nil) && ([[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsersBlogs"] != nil))
+		NSLog(@"is WPcom authenticated. pushing WPcomUsersBlogs view...");
+		if((usersBlogs == nil) && ([[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsersBlogs"] != nil)) {
+			NSLog(@"Loading cached usersBlogs data...");
 			usersBlogs = [[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsersBlogs"];
-		else if(usersBlogs == nil)
+			NSLog(@"Loaded cached usersBlogs data.");
+		}
+		else if(usersBlogs == nil) {
+			NSLog(@"No cached usersBlogs data...");
 			[self refreshBlogs];
+		}
 	}
 	else {
 		[self refreshBlogs];
@@ -258,6 +265,12 @@
 }
 
 - (void)refreshBlogs {
+	[self performSelectorInBackground:@selector(refreshBlogsInBackground) withObject:nil];
+}
+
+- (void)refreshBlogsInBackground {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	if(isWPcom) {
@@ -271,13 +284,17 @@
 
 	hasCompletedGetUsersBlogs = YES;
 	if(usersBlogs.count > 0) {
-		//self.tableView.tableFooterView = nil;
+		// TODO: Store blog list in Core Data
+		//[[NSUserDefaults standardUserDefaults] setObject:usersBlogs forKey:@"WPcomUsersBlogs"];
+		
 		self.navigationItem.rightBarButtonItem.enabled = YES;
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"didUpdateTableData" object:nil];
 	}
 	[self performSelectorInBackground:@selector(updateFavicons) withObject:nil];
 	
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	
+	[pool release];
 }
 
 - (IBAction)saveSelectedBlogs:(id)sender {
@@ -384,7 +401,7 @@
 }
 
 - (void)refreshTableView:(NSNotification *)notifcation {
-	[self performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+	[self reloadData];
 }
 												
 - (void)reloadData {

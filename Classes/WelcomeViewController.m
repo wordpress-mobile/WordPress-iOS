@@ -19,6 +19,7 @@
     [super viewDidLoad];
 	
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+	[appDelegate checkWPcomAuthentication];
 	
 	NSString *addSiteNibName = @"AddSiteViewController";
 	if(DeviceIsPad() == YES)

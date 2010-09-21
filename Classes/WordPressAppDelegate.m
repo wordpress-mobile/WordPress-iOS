@@ -407,8 +407,9 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		  username:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"]
 		  password:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"]];
 	}
-	else
+	else {
 		isWPcomAuthenticated = NO;
+	}
 	
 	if(isWPcomAuthenticated)
 		[[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"wpcom_authenticated_flag"];

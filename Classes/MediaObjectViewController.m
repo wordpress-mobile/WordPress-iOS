@@ -64,7 +64,6 @@
 	else if(isInserting == YES) {
 		switch (buttonIndex) {
 			case 0:
-				NSLog(@"inserting media above...");
 				[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaAbove" object:media];
 				if(DeviceIsPad() == YES)
 					[self dismissModalViewControllerAnimated:YES];
@@ -72,15 +71,11 @@
 					[self.navigationController popViewControllerAnimated:YES];
 				break;
 			case 1:
-				NSLog(@"inserting media below...");
 				[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
 				if(DeviceIsPad() == YES)
 					[self dismissModalViewControllerAnimated:YES];
 				else
 					[self.navigationController popViewControllerAnimated:YES];
-				break;
-			case 2:
-				NSLog(@"cancelling...");
 				break;
 			default:
 				break;
