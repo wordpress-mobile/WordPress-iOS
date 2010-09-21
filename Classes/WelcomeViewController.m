@@ -9,7 +9,7 @@
 
 @implementation WelcomeViewController
 
-@synthesize tableView, addUsersBlogsView, addSiteView, appDelegate
+@synthesize tableView, addSiteView, appDelegate
 ;
 
 #pragma mark -
@@ -20,8 +20,6 @@
 	
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	
-	addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
-	addUsersBlogsView.isWPcom = YES;
 	NSString *addSiteNibName = @"AddSiteViewController";
 	if(DeviceIsPad() == YES)
 		addSiteNibName = @"AddSiteViewController-iPad";
@@ -158,18 +156,26 @@
 		[webSignup release];
 	}
 	else if(indexPath.row == 1) {
-		if(appDelegate.isWPcomAuthenticated)
+		if(appDelegate.isWPcomAuthenticated) {
+			AddUsersBlogsViewController *addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
+			addUsersBlogsView.isWPcom = YES;
 			[self.navigationController pushViewController:addUsersBlogsView animated:YES];
+			[addUsersBlogsView release];
+		}
 		else if(DeviceIsPad() == YES) {
 			WPcomLoginViewController *wpLoginView = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController-iPad" bundle:nil];
 			[self.navigationController pushViewController:wpLoginView animated:YES];
 			[wpLoginView release];
 		}
 		else {
+			AddUsersBlogsViewController *addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
+			addUsersBlogsView.isWPcom = YES;
+			
 			WPcomLoginViewController *wpLoginView = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController" bundle:nil];
 			[self.navigationController presentModalViewController:wpLoginView animated:YES];
 			[self.navigationController pushViewController:addUsersBlogsView animated:YES];
 			[wpLoginView release];
+			[addUsersBlogsView release];
 		}
 	}
 	else if(indexPath.row == 2) {
@@ -200,7 +206,6 @@
 
 - (void)dealloc {
 	[addSiteView release];
-	[addUsersBlogsView release];
 	[tableView release];
     [super dealloc];
 }

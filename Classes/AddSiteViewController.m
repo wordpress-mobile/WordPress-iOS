@@ -170,8 +170,7 @@
 				addTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 				addTextField.delegate = self;
 				addTextField.returnKeyType = UIReturnKeyDone;
-				
-				addTextField.clearButtonMode = UITextFieldViewModeNever;
+				[addTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
 				[addTextField setEnabled: YES];
 				
 				[cell addSubview:addTextField];
@@ -291,8 +290,10 @@
 						[appDelegate.currentBlog setObject:url forKey:@"url"];
 					if(username != nil)
 						[appDelegate.currentBlog setObject:username forKey:@"username"];
-					[activeTextField becomeFirstResponder];
-					[activeTextField resignFirstResponder];
+					if(activeTextField != nil) {
+						[activeTextField becomeFirstResponder];
+						[activeTextField resignFirstResponder];
+					}
 					BlogSettingsViewController *settingsView = [[BlogSettingsViewController alloc] initWithNibName:@"BlogSettingsViewController" bundle:nil];
 					[self.navigationController pushViewController:settingsView animated:YES];
 					[settingsView release];
@@ -348,8 +349,10 @@
 	
 	switch (indexPath.row) {
 		case 0:
-			if(((username != nil) && (password != nil)) && ([textField.text isEqualToString:@""]))
+			if(((username != nil) && (password != nil)) && ([textField.text isEqualToString:@""])) {
 				footerText = @"URL is required.";
+				[self setUrl:textField.text];
+			}
 			else {
 				[self setUrl:textField.text];
                 [self urlDidChange];
@@ -358,24 +361,29 @@
 			}
 			break;
 		case 1:
-			if(((url != nil) && (password != nil)) && ([textField.text isEqualToString:@""]))
+			if(((url != nil) && (password != nil)) && ([textField.text isEqualToString:@""])) {
 				footerText = @"Username is required.";
-			else {
 				[self setUsername:textField.text];
+			}
+			else {
 				footerText = nil;
+				[self setUsername:textField.text];
 			}
 			break;
 		case 2:
-			if(((username != nil) && (username != nil)) && ([textField.text isEqualToString:@""]))
+			if(((username != nil) && (username != nil)) && ([textField.text isEqualToString:@""])) {
 				footerText = @"Password is required.";
-			else {
 				[self setPassword:textField.text];
+			}
+			else {
 				footerText = nil;
+				[self setPassword:textField.text];
 			}
 			break;
 		case 3:
-			if(((!hasValidXMLRPCurl) && (username != nil) && (password != nil)) && ([textField.text isEqualToString:@""]))
+			if(((!hasValidXMLRPCurl) && (username != nil) && (password != nil)) && ([textField.text isEqualToString:@""])) {
 				footerText = @"XMLRPC endpoint wasn't found. Please enter it manually.";
+			}
 			else {
 				[self setXMLRPCUrl:activeTextField.text];
 				hasValidXMLRPCurl = YES;
@@ -386,9 +394,32 @@
 			break;
 	}
 	
+	[self refreshTable];
+	
 	if((url != nil) && (username != nil) && (password != nil) && (xmlrpc != nil)) {
 		[self authenticate];
 	}
+	
+	activeTextField = nil;
+}
+
+- (void)textFieldDidChange:(UITextField *)textField {
+//	switch (textField.tag) {
+//		case 0:
+//			url = textField.text;
+//			break;
+//		case 1:
+//			username = textField.text;
+//			break;
+//		case 2:
+//			password = textField.text;
+//			break;
+//		case 3:
+//			xmlrpc = textField.text;
+//			break;
+//		default:
+//			break;
+//	}
 }
 
 #pragma mark -
@@ -429,13 +460,18 @@
 	
 	[self refreshTable];
 	
-	Blog *blog = [subsites objectAtIndex:0];
-	[self setHost:blog.hostURL];
-	[self setBlogID:blog.blogID];
-	[self setBlogName:blog.blogName];
-	
-	if(isAdding)
-		[self performSelectorInBackground:@selector(addSite) withObject:nil];
+	@try {
+		Blog *blog = [subsites objectAtIndex:0];
+		[self setHost:blog.hostURL];
+		[self setBlogID:blog.blogID];
+		[self setBlogName:blog.blogName];
+		
+		if(isAdding)
+			[self performSelectorInBackground:@selector(addSite) withObject:nil];
+	}
+	@catch (NSException * e) {
+		NSLog(@"Error adding site: %@", e);
+	}
 }
 
 - (void)authenticate {

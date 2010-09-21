@@ -85,7 +85,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if(DeviceIsPad() == YES)
+	if((DeviceIsPad() == YES) || (interfaceOrientation == UIInterfaceOrientationPortrait))
 		return YES;
 	else
 		return NO;
@@ -95,52 +95,70 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return 2;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return usersBlogs.count;
+	int result = 0;
+	switch (section) {
+		case 0:
+			result = usersBlogs.count;
+			break;
+		case 1:
+			result = 1;
+			break;
+		default:
+			break;
+	}
+	return result;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
 	CGRect footerFrame = CGRectMake(0, 0, 320, 50);
-	CGRect footerSpinnerFrame = CGRectMake(80, 0, 20, 20);
-	CGRect footerTextFrame = CGRectMake(110, 0, 200, 20);
-	if(DeviceIsPad() == YES) {
-		footerFrame = CGRectMake(0, 0, 550, 50);
-		footerSpinnerFrame = CGRectMake(190, 0, 20, 20);
-		footerTextFrame = CGRectMake(220, 0, 200, 20);
-	}
 	UIView *footerView = [[[UIView alloc] initWithFrame:footerFrame] autorelease];
-	if((usersBlogs.count == 0) && (!hasCompletedGetUsersBlogs)) {
-		UIActivityIndicatorView *footerSpinner = [[UIActivityIndicatorView alloc] initWithFrame:footerSpinnerFrame];
-		footerSpinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-		[footerSpinner startAnimating];
-		[footerView addSubview:footerSpinner];
-		[footerSpinner release];
-		
-		UILabel *footerText = [[UILabel alloc] initWithFrame:footerTextFrame];
-		footerText.backgroundColor = [UIColor clearColor];
-		footerText.textColor = [UIColor darkGrayColor];
-		footerText.text = @"Loading blogs...";
-		[footerView addSubview:footerText];
-		[footerText release];
-	}
-	else if((usersBlogs.count == 0) && (hasCompletedGetUsersBlogs)) {
-		UILabel *footerText = [[UILabel alloc] initWithFrame:CGRectMake(110, 0, 200, 20)];
-		footerText.backgroundColor = [UIColor clearColor];
-		footerText.textColor = [UIColor darkGrayColor];
-		footerText.text = @"No blogs found.";
-		[footerView addSubview:footerText];
-		[footerText release];
+	if(section == 0) {
+		CGRect footerSpinnerFrame = CGRectMake(80, 0, 20, 20);
+		CGRect footerTextFrame = CGRectMake(110, 0, 200, 20);
+		if(DeviceIsPad() == YES) {
+			footerFrame = CGRectMake(0, 0, 550, 50);
+			footerSpinnerFrame = CGRectMake(190, 0, 20, 20);
+			footerTextFrame = CGRectMake(220, 0, 200, 20);
+		}
+		if((usersBlogs.count == 0) && (!hasCompletedGetUsersBlogs)) {
+			UIActivityIndicatorView *footerSpinner = [[UIActivityIndicatorView alloc] initWithFrame:footerSpinnerFrame];
+			footerSpinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+			[footerSpinner startAnimating];
+			[footerView addSubview:footerSpinner];
+			[footerSpinner release];
+			
+			UILabel *footerText = [[UILabel alloc] initWithFrame:footerTextFrame];
+			footerText.backgroundColor = [UIColor clearColor];
+			footerText.textColor = [UIColor darkGrayColor];
+			footerText.text = @"Loading blogs...";
+			[footerView addSubview:footerText];
+			[footerText release];
+		}
+		else if((usersBlogs.count == 0) && (hasCompletedGetUsersBlogs)) {
+			UILabel *footerText = [[UILabel alloc] initWithFrame:CGRectMake(110, 0, 200, 20)];
+			footerText.backgroundColor = [UIColor clearColor];
+			footerText.textColor = [UIColor darkGrayColor];
+			footerText.text = @"No blogs found.";
+			[footerView addSubview:footerText];
+			[footerText release];
+		}
 	}
 
 	return footerView;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-	return 60;
+	if((section == 0) && (usersBlogs.count == 0))
+		return 60;
+	else if(section == 1)
+		return 100;
+	else
+		return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tv cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -151,14 +169,24 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
 	
-	cell.textLabel.textAlignment = UITextAlignmentLeft;
-	
-	Blog *blog = [usersBlogs objectAtIndex:indexPath.row];
-	if([selectedBlogs containsObject:blog.blogID])
-		cell.accessoryType = UITableViewCellAccessoryCheckmark;
-	else
-		cell.accessoryType = UITableViewCellAccessoryNone;
-	cell.textLabel.text = blog.blogName;
+	switch (indexPath.section) {
+		case 0:
+			cell.textLabel.textAlignment = UITextAlignmentLeft;
+			
+			Blog *blog = [usersBlogs objectAtIndex:indexPath.row];
+			if([selectedBlogs containsObject:blog.blogID])
+				cell.accessoryType = UITableViewCellAccessoryCheckmark;
+			else
+				cell.accessoryType = UITableViewCellAccessoryNone;
+			cell.textLabel.text = blog.blogName;
+			break;
+		case 1:
+			cell.textLabel.textAlignment = UITextAlignmentCenter;
+			cell.text = @"Sign Out";
+			break;
+		default:
+			break;
+	}
 	
     return cell;
 }
@@ -169,28 +197,33 @@
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	Blog *selectedBlog = [usersBlogs objectAtIndex:indexPath.row];
 	
-	if(![selectedBlogs containsObject:selectedBlog.blogID]) {
-		[selectedBlogs addObject:selectedBlog.blogID];
-	}
-	else {
-		int indexToRemove = -1;
-		int count = 0;
-		for (NSString *blogID in selectedBlogs) {
-			if([blogID isEqualToString:selectedBlog.blogID]) {
-				indexToRemove = count;
-				break;
-			}
-			count++;
+	if(indexPath.section == 0) {
+		if(![selectedBlogs containsObject:selectedBlog.blogID]) {
+			[selectedBlogs addObject:selectedBlog.blogID];
 		}
-		if(indexToRemove > -1)
-			[selectedBlogs removeObjectAtIndex:indexToRemove];
+		else {
+			int indexToRemove = -1;
+			int count = 0;
+			for (NSString *blogID in selectedBlogs) {
+				if([blogID isEqualToString:selectedBlog.blogID]) {
+					indexToRemove = count;
+					break;
+				}
+				count++;
+			}
+			if(indexToRemove > -1)
+				[selectedBlogs removeObjectAtIndex:indexToRemove];
+		}
+		[tv reloadData];
+		
+		if(selectedBlogs.count == usersBlogs.count)
+			[self selectAllBlogs:self];
+		else if(selectedBlogs.count == 0)
+			[self deselectAllBlogs:self];
 	}
-	[tv reloadData];
-	
-	if(selectedBlogs.count == usersBlogs.count)
-		[self selectAllBlogs:self];
-	else if(selectedBlogs.count == 0)
-		[self deselectAllBlogs:self];
+	else if(indexPath.section == 1) {
+		[self signOut];
+	}
 
 	[tv deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -213,6 +246,15 @@
 	[self.tableView reloadData];
 	buttonSelectAll.title = @"Select All";
 	buttonSelectAll.action = @selector(selectAllBlogs:);
+}
+
+- (void)signOut {
+	appDelegate.isWPcomAuthenticated = NO;
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_password_preference"];
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_authenticated_flag"];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+	[self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)refreshBlogs {
@@ -242,6 +284,8 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	spinner = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
 	[spinner show];
+	
+	[[NSUserDefaults standardUserDefaults] setBool:true forKey:@"refreshCommentsRequired"];
 	
 	[self performSelectorInBackground:@selector(saveSelectedBlogsInBackground) withObject:nil];
 }

@@ -48,5 +48,6 @@
 - (void)keyboardWillShow:(NSNotification *)notification;
 - (void)keyboardWillHide:(NSNotification *)notification;
 - (void)urlDidChange;
+- (void)textFieldDidChange:(UITextField *)textField;
 
 @end

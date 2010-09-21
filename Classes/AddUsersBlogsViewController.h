@@ -42,5 +42,6 @@
 - (void)cancelAddWPcomBlogs;
 - (void)saveSelectedBlogsInBackground;
 - (void)didSaveSelectedBlogsInBackground;
+- (void)signOut;
 
 @end

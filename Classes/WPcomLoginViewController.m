@@ -299,12 +299,14 @@
 		[[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"wpcom_authenticated_flag"];
 	else
 		[[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"wpcom_authenticated_flag"];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)clearLoginData {
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_password_preference"];
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_authenticated_flag"];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (BOOL)authenticate {
