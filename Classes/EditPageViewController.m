@@ -44,9 +44,6 @@
 		normalTableFrame = CGRectMake(0, 0, 768, 900);
 	}
 	
-	contentTextView.backgroundColor = [UIColor blueColor];
-
-	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resignTextField:) name:UITextViewTextDidBeginEditingNotification object:nil];
@@ -174,6 +171,9 @@
 			else {
 				backgroundColor = [UIColor whiteColor];
 			}
+			
+			// Uncomment the following line for debugging UITextView position
+			// backgroundColor = [UIColor blueColor];
 			
 			contentCell.textView.backgroundColor = backgroundColor;
 			contentCell.textView.tag = 2;

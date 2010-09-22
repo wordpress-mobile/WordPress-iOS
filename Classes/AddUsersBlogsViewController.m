@@ -66,14 +66,10 @@
 		}
 	}
 	else if(isWPcom) {
-		NSLog(@"is WPcom authenticated. pushing WPcomUsersBlogs view...");
 		if((usersBlogs == nil) && ([[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsersBlogs"] != nil)) {
-			NSLog(@"Loading cached usersBlogs data...");
 			usersBlogs = [[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsersBlogs"];
-			NSLog(@"Loaded cached usersBlogs data.");
 		}
 		else if(usersBlogs == nil) {
-			NSLog(@"No cached usersBlogs data...");
 			[self refreshBlogs];
 		}
 	}
@@ -202,9 +198,9 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	Blog *selectedBlog = [usersBlogs objectAtIndex:indexPath.row];
-	
 	if(indexPath.section == 0) {
+		Blog *selectedBlog = [usersBlogs objectAtIndex:indexPath.row];
+		
 		if(![selectedBlogs containsObject:selectedBlog.blogID]) {
 			[selectedBlogs addObject:selectedBlog.blogID];
 		}

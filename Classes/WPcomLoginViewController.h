@@ -30,5 +30,6 @@
 - (void)signIn:(id)sender;
 - (IBAction)cancel:(id)sender;
 - (void)refreshTable;
+- (void)didSignInSuccessfully;
 
 @end

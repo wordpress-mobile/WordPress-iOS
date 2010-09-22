@@ -43,8 +43,10 @@
 
 - (BOOL)authenticateUser:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password {
 	BOOL result = NO;
-	if((xmlrpc != nil) && (username != nil) && (password != nil) && ([self getBlogsForUrl:xmlrpc username:username password:password] != nil))
-		result = YES;
+	if((xmlrpc != nil) && (username != nil) && (password != nil)) {
+		if([self getBlogsForUrl:xmlrpc username:username password:password] != nil)
+			result = YES;
+	}
 	return result;
 }
 
@@ -89,10 +91,12 @@
 			   [usersBlogs addObject:blog];
 			}
 		}
-		//[xmlrpcUsersBlogs release];
+		else
+			usersBlogs = nil;
 	}
-	@catch (NSException * e) {}
-	@finally {}
+	@catch (NSException * e) {
+		usersBlogs = nil;
+	}
 	
 	return usersBlogs;
 }

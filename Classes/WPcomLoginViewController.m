@@ -335,18 +335,7 @@
 	isSigningIn = NO;
 	if(isAuthenticated) {
 		[WordPressAppDelegate sharedWordPressApp].isWPcomAuthenticated = YES;
-		if(DeviceIsPad() == YES) {
-			AddUsersBlogsViewController *addBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
-			addBlogsView.isWPcom = YES;
-			[addBlogsView setUsername:self.username];
-			[addBlogsView setPassword:self.password];
-			[self.navigationController pushViewController:addBlogsView animated:YES];
-			[addBlogsView release];
-			
-		}
-		else {
-			[super dismissModalViewControllerAnimated:YES];
-		}
+		[self performSelectorOnMainThread:@selector(didSignInSuccessfully) withObject:nil waitUntilDone:NO];
 	}
 	else {
 		footerText = @"Sign in failed. Please try again.";
@@ -355,6 +344,20 @@
 	}
 	
 	[pool release];
+}
+
+- (void)didSignInSuccessfully {
+	if(DeviceIsPad() == YES) {
+		AddUsersBlogsViewController *addBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
+		addBlogsView.isWPcom = YES;
+		[addBlogsView setUsername:self.username];
+		[addBlogsView setPassword:self.password];
+		[addBlogsView release];
+		[self.navigationController pushViewController:addBlogsView animated:YES];
+	}
+	else {
+		[super dismissModalViewControllerAnimated:YES];
+	}
 }
 
 - (IBAction)cancel:(id)sender {
