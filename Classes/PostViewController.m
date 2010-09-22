@@ -21,7 +21,6 @@
 
 - (void)startTimer;
 - (void)stopTimer;
-
 - (void)discard;
 - (void)cancel;
 
@@ -352,7 +351,11 @@
 	isPublishing = NO;
 	hasChanges = NO;
 	[postDetailEditController resignTextView];
-	[self refreshUIForCompose];
+	
+	if(DeviceIsPad() == YES)
+		[self refreshUIForCurrentPost];
+	else
+		[self refreshUIForCompose];
 	[self verifyPublishSuccessful];
 	if(DeviceIsPad() == NO) {
 		[self.navigationController popViewControllerAnimated:YES];
