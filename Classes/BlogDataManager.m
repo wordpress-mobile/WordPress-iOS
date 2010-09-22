@@ -2386,7 +2386,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 		return [postTitlesList objectAtIndex:theIndex];
 	}
 	else {
-		NSLog(@"nil condition.");
 		return 0;
 	}
 }
@@ -5152,7 +5151,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 	keychainPWD = [SFHFKeychainUtils getPasswordForUsername : userName andServiceName : blogURL error:&anError];
 		
 	if(anError != nil) {
-		NSLog(@"keychain get error: %@", anError);
+		NSLog(@"keychain get error: %@ userName: %@ blogURL: %@", anError, userName, blogURL);
 		
 		// Try again with www stripped from the URL
 		blogURL = [blogURL stringByReplacingOccurrencesOfString:@"www." withString:@""];
