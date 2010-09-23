@@ -11,6 +11,7 @@
 @implementation MediaObjectViewController
 
 @synthesize media, mediaManager, imageView, videoPlayer, deleteButton, insertButton, isDeleting, isInserting, appDelegate;
+@synthesize scrollView;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -41,21 +42,51 @@
 }
 
 #pragma mark -
+#pragma mark UIScrollView delegate
+
+-(UIView *) viewForZoomingInScrollView:(UIScrollView *)scrollView {
+    return imageView;
+}
+
+- (void)scrollViewDidZoom:(UIScrollView *)pScrollView {
+	CGRect innerFrame = imageView.frame;
+	CGRect scrollerBounds = pScrollView.bounds;
+	
+	if ((innerFrame.size.width < scrollerBounds.size.width) || (innerFrame.size.height < scrollerBounds.size.height))
+	{
+		CGFloat tempx = imageView.center.x - ( scrollerBounds.size.width / 2 );
+		CGFloat tempy = imageView.center.y - ( scrollerBounds.size.height / 2 );
+		CGPoint myScrollViewOffset = CGPointMake( tempx, tempy);
+		
+		pScrollView.contentOffset = myScrollViewOffset;
+	}
+	
+	UIEdgeInsets anEdgeInset = { 0, 0, 0, 0};
+	if(scrollerBounds.size.width > innerFrame.size.width)
+	{
+		anEdgeInset.left = (scrollerBounds.size.width - innerFrame.size.width) / 2;
+		anEdgeInset.right = -anEdgeInset.left;
+	}
+	if(scrollerBounds.size.height > innerFrame.size.height)
+	{
+		anEdgeInset.top = (scrollerBounds.size.height - innerFrame.size.height) / 2;
+		anEdgeInset.bottom = -anEdgeInset.top;
+	}
+	pScrollView.contentInset = anEdgeInset;
+}
+
+#pragma mark -
 #pragma mark UIActionSheet delegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if(isDeleting == YES) {
 		switch (buttonIndex) {
 			case 0:
-				NSLog(@"deleting...");
 				[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldDeleteMedia" object:media];
 				if(DeviceIsPad() == YES)
 					[self dismissModalViewControllerAnimated:YES];
 				else
 					[self.navigationController popViewControllerAnimated:YES];
-				break;
-			case 1:
-				NSLog(@"cancelling...");
 				break;
 			default:
 				break;
@@ -125,6 +156,7 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
+	[scrollView release];
 	[appDelegate release];
 	[insertButton release];
 	[deleteButton release];
