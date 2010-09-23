@@ -116,13 +116,17 @@
     CGImageRef imageRef = self.CGImage;
     
     // Build a context that's the same dimensions as the new size
+	CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(imageRef);
+	if((bitmapInfo == kCGImageAlphaLast) || (bitmapInfo == kCGImageAlphaNone))
+		bitmapInfo = kCGImageAlphaNoneSkipLast;
+		
     CGContextRef bitmap = CGBitmapContextCreate(NULL,
                                                 newRect.size.width,
                                                 newRect.size.height,
                                                 CGImageGetBitsPerComponent(imageRef),
                                                 0,
                                                 CGImageGetColorSpace(imageRef),
-                                                CGImageGetBitmapInfo(imageRef));
+                                                bitmapInfo);
     
     // Rotate and/or flip the image if required by its orientation
     CGContextConcatCTM(bitmap, transform);

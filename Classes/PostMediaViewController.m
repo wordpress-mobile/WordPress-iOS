@@ -663,21 +663,28 @@
 				originalSize = CGSizeMake(1200, 1600);
 	}
 	
+	// Resize the image using the selected dimensions
 	UIImage *resizedImage = original;
 	switch (resize) {
 		case kResizeSmall:
-			resizedImage = [original resizedImage:smallSize interpolationQuality:kCGInterpolationHigh];
+			resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFill 
+														  bounds:smallSize 
+											interpolationQuality:kCGInterpolationHigh];
 			break;
 		case kResizeMedium:
-			resizedImage = [original resizedImage:mediumSize interpolationQuality:kCGInterpolationHigh];
+			resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFill 
+														  bounds:mediumSize 
+											interpolationQuality:kCGInterpolationHigh];
 			break;
 		case kResizeLarge:
-			resizedImage = [original resizedImage:largeSize interpolationQuality:kCGInterpolationHigh];
+			resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFill 
+														  bounds:largeSize 
+											interpolationQuality:kCGInterpolationHigh];
 			break;
 		case kResizeOriginal:
-			resizedImage = [original resizedImage:originalSize interpolationQuality:kCGInterpolationHigh];
-			break;
-		default:
+			resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFill 
+														  bounds:originalSize 
+											interpolationQuality:kCGInterpolationHigh];
 			break;
 	}
 	return resizedImage;
@@ -695,7 +702,7 @@
 - (void)useImage:(UIImage *)theImage {
 	Media *imageMedia = [mediaManager get:nil];
 	NSDictionary *currentBlog = [dm currentBlog];
-	NSData *imageData = UIImageJPEGRepresentation(theImage, 0.85);
+	NSData *imageData = UIImageJPEGRepresentation(theImage, 0.90);
 	UIImage *imageThumbnail = [self generateThumbnailFromImage:theImage andSize:CGSizeMake(75, 75)];
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 	[formatter setDateFormat:@"yyyyMMdd-hhmmss"];
@@ -719,7 +726,7 @@
 	imageMedia.localURL = filepath;
 	imageMedia.filesize = [NSNumber numberWithInt:(imageData.length/1024)];
 	imageMedia.mediaType = @"image";
-	imageMedia.thumbnail = UIImageJPEGRepresentation(imageThumbnail, 0.85);
+	imageMedia.thumbnail = UIImageJPEGRepresentation(imageThumbnail, 0.90);
 	imageMedia.width = [NSNumber numberWithInt:theImage.size.width];
 	imageMedia.height = [NSNumber numberWithInt:theImage.size.height];
 	[mediaManager save:imageMedia];
