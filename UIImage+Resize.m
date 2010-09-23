@@ -34,7 +34,7 @@
           transparentBorder:(NSUInteger)borderSize
                cornerRadius:(NSUInteger)cornerRadius
        interpolationQuality:(CGInterpolationQuality)quality {
-    UIImage *resizedImage = [self resizedImageWithContentMode:UIViewContentModeScaleAspectFill
+    UIImage *resizedImage = [self resizedImageWithContentMode:UIViewContentModeScaleAspectFit
                                                        bounds:CGSizeMake(thumbnailSize, thumbnailSize)
                                          interpolationQuality:quality];
     
