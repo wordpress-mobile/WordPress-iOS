@@ -695,7 +695,7 @@
 - (void)useImage:(UIImage *)theImage {
 	Media *imageMedia = [mediaManager get:nil];
 	NSDictionary *currentBlog = [dm currentBlog];
-	NSData *imageData = UIImageJPEGRepresentation(theImage, 1.0);
+	NSData *imageData = UIImageJPEGRepresentation(theImage, 0.85);
 	UIImage *imageThumbnail = [self generateThumbnailFromImage:theImage andSize:CGSizeMake(75, 75)];
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 	[formatter setDateFormat:@"yyyyMMdd-hhmmss"];
@@ -719,7 +719,7 @@
 	imageMedia.localURL = filepath;
 	imageMedia.filesize = [NSNumber numberWithInt:(imageData.length/1024)];
 	imageMedia.mediaType = @"image";
-	imageMedia.thumbnail = UIImageJPEGRepresentation(imageThumbnail, 1.0);
+	imageMedia.thumbnail = UIImageJPEGRepresentation(imageThumbnail, 0.85);
 	imageMedia.width = [NSNumber numberWithInt:theImage.size.width];
 	imageMedia.height = [NSNumber numberWithInt:theImage.size.height];
 	[mediaManager save:imageMedia];

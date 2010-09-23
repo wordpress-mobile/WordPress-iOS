@@ -51,9 +51,7 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	
-	NSLog(@"checking WPcom authentication...");
 	if((isWPcom) && (!appDelegate.isWPcomAuthenticated)) {
-		NSLog(@"not WPcom authenticated...");
 		if(DeviceIsPad() == YES) {
 			WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController-iPad" bundle:nil];	
 			[self.navigationController pushViewController:wpComLogin animated:YES];

@@ -321,7 +321,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
     }
     
     NSURL *storeURL = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"WordPress.sqlite"]];
-    NSLog(@"storeURL: %@", storeURL);
 	
 	// This is important for automatic version migration. Leave it here!
 	NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
