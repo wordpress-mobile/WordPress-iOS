@@ -949,15 +949,17 @@
 					NSDictionary *responseMeta = [xmlrpcResponse object];
 					NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
 					[f setNumberStyle:NSNumberFormatterDecimalStyle];
-					NSNumber *publishedPostID = [f numberFromString:appDelegate.postID];
-					NSNumber *newPostID = [responseMeta valueForKey:@"postid"];
-					[f release];
-					if([publishedPostID isEqualToNumber:newPostID]) {
-						[appDelegate setPostID:nil];
-						NSDictionary *info = [[NSDictionary alloc] initWithObjectsAndKeys:post.uniqueID, @"uniqueID", nil];
-						[[NSNotificationCenter defaultCenter] postNotificationName:@"LocalDraftWasPublishedSuccessfully" object:nil userInfo:info];
-						[self setPost:nil];
-						[info release];
+					if(appDelegate.postID != nil) {
+						NSNumber *publishedPostID = [f numberFromString:appDelegate.postID];
+						NSNumber *newPostID = [responseMeta valueForKey:@"postid"];
+						[f release];
+						if([publishedPostID isEqualToNumber:newPostID]) {
+							[appDelegate setPostID:nil];
+							NSDictionary *info = [[NSDictionary alloc] initWithObjectsAndKeys:post.uniqueID, @"uniqueID", nil];
+							[[NSNotificationCenter defaultCenter] postNotificationName:@"LocalDraftWasPublishedSuccessfully" object:nil userInfo:info];
+							[self setPost:nil];
+							[info release];
+						}
 					}
 				}
 				

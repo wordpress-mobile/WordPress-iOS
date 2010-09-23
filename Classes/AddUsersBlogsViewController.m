@@ -30,7 +30,7 @@
 		logoFile = [NSString stringWithFormat:@"%@@2x.png", logoFile];
 		logoFrame = CGRectMake(150, 20, 229, 43);
 	}
-	else if([UIDevice currentDevice].model == IPHONE_1G_NAMESTRING) {
+	else if([[UIDevice currentDevice] platformString] == IPHONE_1G_NAMESTRING) {
 		logoFile = [NSString stringWithFormat:@"%@.png", logoFile];
 	}
 	UIView *headerView = [[[UIView alloc] initWithFrame:headerFrame] autorelease];
