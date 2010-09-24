@@ -194,6 +194,7 @@
 
 - (void)addPage:(NSDictionary *)page {
 	[pages insertObject:page atIndex:0];
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"DidAddPage" object:nil];
 }
 
 - (void)getPages {
