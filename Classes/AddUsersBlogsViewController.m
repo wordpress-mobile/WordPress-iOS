@@ -183,6 +183,7 @@
 			break;
 		case 1:
 			cell.textLabel.textAlignment = UITextAlignmentCenter;
+			cell.accessoryType = UITableViewCellAccessoryNone;
 			cell.text = @"Sign Out";
 			break;
 		default:
