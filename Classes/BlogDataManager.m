@@ -4875,48 +4875,46 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 }
 
 - (void)syncBlogs {
-	if((isSyncingBlogs == NO) && (blogsList.count > 0)) {
-		self.isSyncingBlogs = YES;
-		NSLog(@"Syncing blogs...");
-		
-		self.shouldDisplayErrors = NO;
-		
-		for (NSMutableDictionary *blog in [blogsList mutableCopy]) {
-			if(self.shouldStopSyncingBlogs) {
-				NSLog(@"Stopping blog sync due to shouldStopSyncingBlogs signal.");
-				self.shouldStopSyncingBlogs = NO;
-				break;
-			}
+	@try {
+		if((isSyncingBlogs == NO) && (blogsList.count > 0)) {
+			self.isSyncingBlogs = YES;
+			NSLog(@"Syncing blogs...");
 			
-			if((self.selectedBlogID == nil) || (![self.selectedBlogID isEqualToString:[blog objectForKey:@"blogid"]])) {
-				NSString *url = [blog valueForKey:@"url"];
-				if (url != nil &&[url length] >= 7 &&[url hasPrefix:@"http://"])
-					url = [url substringFromIndex:7];
+			self.shouldDisplayErrors = NO;
+			
+			for (NSMutableDictionary *blog in [blogsList mutableCopy]) {
+				if(self.shouldStopSyncingBlogs) {
+					NSLog(@"Stopping blog sync due to shouldStopSyncingBlogs signal.");
+					self.shouldStopSyncingBlogs = NO;
+					break;
+				}
 				
-				if (url != nil &&[url length])
-					url = @"wordpress.com";
-				
-				[Reachability sharedReachability].hostName = url;
-				if ([[Reachability sharedReachability] internetConnectionStatus]) {
-					@try {
-						if(self.shouldStopSyncingBlogs == NO)
-							[self syncCommentsForBlog:blog];
-						if(self.shouldStopSyncingBlogs == NO)
-							[self syncPostsForBlog:blog];
-					}
-					@catch (NSException * e) {
-						NSLog(@"Stopping blog sync due to error.");
-						self.shouldDisplayErrors = YES;
-						self.isSyncingBlogs = NO;
-					}
-					@finally {
+				if((self.selectedBlogID == nil) || (![self.selectedBlogID isEqualToString:[blog objectForKey:@"blogid"]])) {
+					NSString *url = [blog valueForKey:@"url"];
+					if (url != nil &&[url length] >= 7 &&[url hasPrefix:@"http://"])
+						url = [url substringFromIndex:7];
+					
+					if (url != nil &&[url length])
+						url = @"wordpress.com";
+					
+					[Reachability sharedReachability].hostName = url;
+					if ([[Reachability sharedReachability] internetConnectionStatus]) {
+							if(self.shouldStopSyncingBlogs == NO)
+								[self syncCommentsForBlog:blog];
+							if(self.shouldStopSyncingBlogs == NO)
+								[self syncPostsForBlog:blog];
 					}
 				}
+				else
+					NSLog(@"Skipping sync for currently selected blog: %@", [blog objectForKey:@"url"]);
 			}
-			else
-				NSLog(@"Skipping sync for currently selected blog: %@", [blog objectForKey:@"url"]);
 		}
-		NSLog(@"Blog sync finished.");
+		
+		self.shouldDisplayErrors = YES;
+		self.isSyncingBlogs = NO;
+	}
+	@catch (NSException * e) {
+		NSLog(@"Stopping blog sync due to error.");
 		self.shouldDisplayErrors = YES;
 		self.isSyncingBlogs = NO;
 	}

@@ -136,7 +136,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 			[dataManager makeBlogAtIndexCurrent:0];
 		}
 
-		NSLog(@"? %d", [self.splitViewController shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationLandscapeLeft]);
+		//NSLog(@"? %d", [self.splitViewController shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationLandscapeLeft]);
 
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newBlogNotification:) name:@"NewBlogAdded" object:nil];
 		[self performSelector:@selector(showPopoverIfNecessary) withObject:nil afterDelay:0.1];
