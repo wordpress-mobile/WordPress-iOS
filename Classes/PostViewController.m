@@ -57,8 +57,10 @@
 	mediaViewController.postDetailViewController = self;
 	autosaveView.postDetailViewController = self;
 	
-	autosavePopover = [[UIPopoverController alloc] initWithContentViewController:autosaveView];
-	[autosavePopover setPopoverContentSize:CGSizeMake(300.0, 400.0)];
+	if(DeviceIsPad() == YES) {
+		autosavePopover = [[UIPopoverController alloc] initWithContentViewController:autosaveView];
+		[autosavePopover setPopoverContentSize:CGSizeMake(300.0, 400.0)];
+	}
 	
 	if(editMode == kNewPost) {
 		NSMutableArray *tabs = [NSMutableArray arrayWithArray:tabController.viewControllers];
