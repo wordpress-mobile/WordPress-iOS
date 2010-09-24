@@ -11,7 +11,8 @@
 
 @class PostViewController;
 @implementation AutosaveViewController
-@synthesize tableView, autosaves, appDelegate, postID, buttonView, restorePost, contentView, postDetailViewController, autosaveManager;
+@synthesize tableView, autosaves, appDelegate, postID, buttonView, restorePost, contentView, postDetailViewController;
+@synthesize autosaveManager, hideButton;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -21,6 +22,11 @@
 	self.navigationItem.title = @"Autosaves";
 	self.tableView.backgroundColor = [UIColor clearColor];
 	self.tableView.backgroundView = nil;
+	
+	if(DeviceIsPad() == YES) {
+		hideButton.hidden = YES;
+		hideButton.enabled = NO;
+	}
 	
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	contentView = [[AutosaveContentViewController alloc] initWithNibName:@"AutosaveContentViewController" bundle:nil];
@@ -160,6 +166,7 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
+	[hideButton release];
 	[postID release];
 	[autosaveManager release];
 	[postDetailViewController release];

@@ -33,7 +33,7 @@
 @synthesize selectedViewController, toolbar, contentView, commentsButton, photosButton, hasSaved;
 @synthesize settingsButton, editToolbar, cancelEditButton, post, didConvertDraftToPublished, isShowingKeyboard;
 @synthesize payload, connection, urlResponse, urlRequest, appDelegate, autosaveView, isShowingAutosaves;
-@synthesize autosaveManager, draftManager, editMode, wasLocalDraft;
+@synthesize autosaveManager, draftManager, editMode, wasLocalDraft, autosavePopover;
 
 @dynamic leftBarButtonItemForEditPost;
 
@@ -56,6 +56,9 @@
 	postSettingsController.postDetailViewController = self;
 	mediaViewController.postDetailViewController = self;
 	autosaveView.postDetailViewController = self;
+	
+	autosavePopover = [[UIPopoverController alloc] initWithContentViewController:autosaveView];
+	[autosavePopover setPopoverContentSize:CGSizeMake(300.0, 400.0)];
 	
 	if(editMode == kNewPost) {
 		NSMutableArray *tabs = [NSMutableArray arrayWithArray:tabController.viewControllers];
@@ -774,13 +777,21 @@
 - (void)showAutosaves {
 	autosaveView.postID = appDelegate.postID;
 	[autosaveView resetAutosaves];
-	[UIView beginAnimations:nil context:nil];
-	[UIView setAnimationDuration:1.0];
-	[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight
-						   forView:postDetailEditController.view
-							 cache:YES];
-	[postDetailEditController.view addSubview:autosaveView.view];
-	[UIView commitAnimations];
+	
+	if(DeviceIsPad() == NO) {
+		[UIView beginAnimations:nil context:nil];
+		[UIView setAnimationDuration:1.0];
+		[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight
+							   forView:postDetailEditController.view
+								 cache:YES];
+		[postDetailEditController.view addSubview:autosaveView.view];
+		[UIView commitAnimations];
+	}
+	else {
+		[autosavePopover presentPopoverFromRect:CGRectMake(self.view.frame.size.width-30, self.view.frame.size.height-100, 50, 50) 
+										 inView:self.view permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
+		[[CPopoverManager instance] setCurrentPopoverController:autosavePopover];
+	}
 	
 	self.isShowingAutosaves = YES;
 }
@@ -854,6 +865,9 @@
 		[self toggleAutosaves:self];
 		[postDetailEditController hideAutosaveButton];
 	}
+	
+	if(DeviceIsPad() == YES)
+		[autosavePopover dismissPopoverAnimated:YES];
 	
 	hasChanges = YES;
 	[self refreshButtons];
@@ -982,6 +996,7 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
+	[autosavePopover release];
 	[autosaveManager release];
 	[draftManager release];
 	[autosaveView release];

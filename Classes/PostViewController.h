@@ -32,6 +32,7 @@
 	BlogDataManager *dm;
     
     UIViewController *selectedViewController;
+	UIPopoverController *autosavePopover;
     WPNavigationLeftButtonView *leftView;
 	WPProgressHUD *spinner;
 
@@ -68,6 +69,7 @@
 @property (nonatomic, retain) IBOutlet PostMediaViewController *mediaViewController;
 @property (nonatomic, retain) IBOutlet CommentsViewController *commentsViewController;
 @property (nonatomic, assign) PostsViewController *postsListController;
+@property (nonatomic, retain) UIPopoverController *autosavePopover;
 @property (nonatomic, assign) UIViewController *selectedViewController;
 @property (nonatomic, assign) BOOL hasChanges, hasSaved, isVisible, didConvertDraftToPublished, isShowingAutosaves, isPublishing;
 @property (nonatomic, assign) BOOL isShowingKeyboard, wasLocalDraft;

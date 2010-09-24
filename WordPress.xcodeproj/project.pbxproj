@@ -224,7 +224,6 @@
 		83F3E26011275E07004CD686 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E25F11275E07004CD686 /* MapKit.framework */; };
 		83F3E2BE11276357004CD686 /* LocationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F3E2BD11276357004CD686 /* LocationController.m */; };
 		83F3E2D311276371004CD686 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E2D211276371004CD686 /* CoreLocation.framework */; };
-		83F976051249621E00A681BB /* 2.6.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 83F976031249621E00A681BB /* 2.6.xcdatamodeld */; };
 		83FB4D3F122C38F700DB9506 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83FB4D3E122C38F700DB9506 /* MediaPlayer.framework */; };
 		83FEFC7611FF6C5A0078B462 /* EditSiteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FEFC7411FF6C5A0078B462 /* EditSiteViewController.m */; };
 		A00593C20E224A1B0087E1FB /* WPImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = A00593C10E224A1B0087E1FB /* WPImageView.m */; };
@@ -823,7 +822,6 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				83F976031249621E00A681BB /* 2.6.xcdatamodeld */,
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				6EDC0E8E105881A800F68A1D /* iTunesArtwork */,
 				45F285DA1149BD020014D36C /* Icon.png */,
@@ -1728,7 +1726,6 @@
 				83CAD2ED1235E21E003DFA20 /* UITextFieldCell.m in Sources */,
 				83CAD41D1235F854003DFA20 /* MediaObjectViewController.m in Sources */,
 				8343D93C1237CFD9003DD6D3 /* PostManager.m in Sources */,
-				83F976051249621E00A681BB /* 2.6.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1943,17 +1940,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		83F976031249621E00A681BB /* 2.6.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-			);
-			path = 2.6.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
 }
