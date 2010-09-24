@@ -1100,6 +1100,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)insertMediaAbove:(NSNotification *)notification {
 	Media *media = [notification object];
 	
+	NSLog(@"received media object: %@", media);
 	NSMutableString *content = [[[NSMutableString alloc] initWithString:media.html] autorelease];
 	[content appendString:[NSString stringWithFormat:@"<br/><br/>%@", textView.text]];
     textView.text = content;

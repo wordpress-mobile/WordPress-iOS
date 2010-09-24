@@ -33,7 +33,7 @@
 @dynamic creationDate;
 
 - (NSString *)html {
-	NSString *result = nil;
+	NSString *result = @"";
 	
 	if(self.mediaType != nil) {
 		if([self.mediaType isEqualToString:@"image"]) {

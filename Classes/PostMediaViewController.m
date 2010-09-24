@@ -847,6 +847,7 @@
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification {
 	if(self.uploadID != nil) {
 		NSDictionary *mediaData = [notification userInfo];
+		NSLog(@"mediaData: %@", mediaData);
 		Media *media = [mediaManager get:self.uploadID];
 		media.remoteURL = [mediaData objectForKey:@"url"];
 		media.shortcode = [mediaData objectForKey:@"shortcode"];
@@ -866,9 +867,8 @@
 }
 
 - (void)mediaUploadFailed:(NSNotification *)notification {
-	[NSThread sleepForTimeInterval:1];
 	[UIView beginAnimations:@"Removing mediaUploader" context:nil];
-	[UIView setAnimationDuration:0.4];
+	[UIView setAnimationDuration:4.0];
 	[UIView setAnimationDelegate:self];
 	[UIView setAnimationDidStopSelector:@selector(removemediaUploader:finished:context:)];
 	[mediaUploader.view setFrame:CGRectMake(0, 480, 320, 40)];

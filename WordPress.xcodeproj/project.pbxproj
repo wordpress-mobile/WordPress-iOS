@@ -1035,6 +1035,8 @@
 		83CAD4191235F823003DFA20 /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				83241CF41208B26D00F0DA59 /* WPMediaUploader.h */,
+				83241CF51208B26D00F0DA59 /* WPMediaUploader.m */,
 				8383178512270E980047B476 /* PostMediaViewController.h */,
 				8383178612270E980047B476 /* PostMediaViewController.m */,
 				83CAD41A1235F854003DFA20 /* MediaObjectViewController.h */,
@@ -1254,8 +1256,6 @@
 				C57AD5E00F2A10BC00A1717C /* WPXMLReader.m */,
 				83F3E2BC11276357004CD686 /* LocationController.h */,
 				83F3E2BD11276357004CD686 /* LocationController.m */,
-				83241CF41208B26D00F0DA59 /* WPMediaUploader.h */,
-				83241CF51208B26D00F0DA59 /* WPMediaUploader.m */,
 				8309BA9B1231559800442B12 /* TransparentToolbar.h */,
 				8309BA9C1231559800442B12 /* TransparentToolbar.m */,
 			);

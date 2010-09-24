@@ -5178,7 +5178,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 		NSLog(@"keychain save error: %@", anError);
 }
 
--(void) updatePasswordInKeychain:(NSString *)password andUserName:(NSString *)userName andBlogURL:(NSString *)blogURL{
+-(void)updatePasswordInKeychain:(NSString *)password andUserName:(NSString *)userName andBlogURL:(NSString *)blogURL{
 	//call util's update pwd function - pass in the "new" password, the username and the blogURL (blogURL = servicename for the Util's code)
 	//note that there is an updateExisting BOOL in the util call below, whereby you can tell the code NOT to modify, but only create if not in keychain already
 	//this isn't implemented in the method call for this method, but could be if needed.  Currently hard-coded to TRUE here because this code path

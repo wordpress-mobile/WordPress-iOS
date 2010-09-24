@@ -164,14 +164,11 @@
 		}
 		
 		if ([urlResponse isKindOfClass:[NSHTTPURLResponse class]]) {
+			NSLog(@"urlResponse.statusCode: %d", [urlResponse statusCode]);
 			if ([(NSHTTPURLResponse *)urlResponse statusCode] >= 400) {
 				NSString *errorIntString = [NSString stringWithFormat:@"%d", [(NSHTTPURLResponse *)urlResponse statusCode]];
 				NSString *stringForStatusCode = [NSHTTPURLResponse localizedStringForStatusCode:[(NSHTTPURLResponse *)urlResponse statusCode]];
 				NSString *errorString = [[errorIntString stringByAppendingString:@" "] stringByAppendingString:stringForStatusCode];
-				//NSInteger code = -1; //This is not significant, just a number with no meaning
-				//NSDictionary *usrInfo = [NSDictionary dictionaryWithObject:errorString forKey:NSLocalizedDescriptionKey];
-				//NSError *err = [NSError errorWithDomain:@"org.wordpress.iphone" code:code userInfo:usrInfo];
-				NSLog(@"urlResponse: %@", urlResponse);
 				self.messageLabel.text = errorString;
 				[[NSNotificationCenter defaultCenter] postNotificationName:VideoUploadFailed object:nil];
 			}
@@ -225,6 +222,11 @@
 	self.messageLabel.text = @"Upload failed. Please try again.";
 	self.progressView.hidden = YES;
 	[self.view setNeedsDisplay];
+	
+	if(self.mediaType == kImage)
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"ImageUploadFailed" object:nil];
+	else if(self.mediaType == kVideo)
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"VideoUploadFailed" object:nil];
 }
 
 #pragma mark -
