@@ -145,6 +145,7 @@
 
 - (void)edit:(id)sender {
 	if ([self canChangeCurrentBlog]) {
+		[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = YES;
 		UIBarButtonItem *cancelButton = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
 																		  style:UIBarButtonItemStyleDone
 																		 target:self
@@ -155,6 +156,7 @@
 }
 
 - (void)cancel:(id)sender {
+	[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = NO;
     UIBarButtonItem *editButton = [[[UIBarButtonItem alloc] initWithTitle:@"Edit"
 																	style:UIBarButtonItemStylePlain
 																   target:self
@@ -244,6 +246,7 @@
 - (void)deleteBlog:(NSIndexPath *)indexPath {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
+	[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = YES;
 	[[BlogDataManager sharedDataManager] makeBlogAtIndexCurrent:indexPath.row];
 	
 	MediaManager *mediaManager = [[MediaManager alloc] init];

@@ -4899,8 +4899,10 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 				[Reachability sharedReachability].hostName = url;
 				if ([[Reachability sharedReachability] internetConnectionStatus]) {
 					@try {
-						[self syncCommentsForBlog:blog];
-						[self syncPostsForBlog:blog];
+						if(self.shouldStopSyncingBlogs == NO)
+							[self syncCommentsForBlog:blog];
+						if(self.shouldStopSyncingBlogs == NO)
+							[self syncPostsForBlog:blog];
 					}
 					@catch (NSException * e) {
 						NSLog(@"Stopping blog sync due to error.");
