@@ -1754,7 +1754,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				PRODUCT_NAME = WordPress;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos4.1;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = i386;
 			};
@@ -1797,7 +1797,7 @@
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos3.2;
+				SDKROOT = iphoneos4.2;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Distribution;
@@ -1842,7 +1842,7 @@
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos3.2;
+				SDKROOT = iphoneos4.2;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Beta;
@@ -1889,7 +1889,7 @@
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "882CD8C8-FA90-47BF-B698-1B8A5209D59E";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "882CD8C8-FA90-47BF-B698-1B8A5209D59E";
-				SDKROOT = iphoneos3.2;
+				SDKROOT = iphoneos4.2;
 			};
 			name = Debug;
 		};
@@ -1910,7 +1910,7 @@
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "0D86A283-4B39-4013-AFA5-6370DD13062E";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0D86A283-4B39-4013-AFA5-6370DD13062E";
-				SDKROOT = iphoneos3.2;
+				SDKROOT = iphoneos4.2;
 			};
 			name = Release;
 		};

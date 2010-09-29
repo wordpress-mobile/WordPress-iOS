@@ -348,12 +348,12 @@
 
 - (void)didSignInSuccessfully {
 	if(DeviceIsPad() == YES) {
-		AddUsersBlogsViewController *addBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
+		AddUsersBlogsViewController *addBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController-iPad" bundle:nil];
 		addBlogsView.isWPcom = YES;
 		[addBlogsView setUsername:self.username];
 		[addBlogsView setPassword:self.password];
-		[addBlogsView release];
 		[self.navigationController pushViewController:addBlogsView animated:YES];
+		[addBlogsView release];
 	}
 	else {
 		[super dismissModalViewControllerAnimated:YES];

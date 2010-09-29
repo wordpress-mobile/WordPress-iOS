@@ -33,6 +33,7 @@
 	else if([[UIDevice currentDevice] platformString] == IPHONE_1G_NAMESTRING) {
 		logoFile = [NSString stringWithFormat:@"%@.png", logoFile];
 	}
+	
 	UIView *headerView = [[[UIView alloc] initWithFrame:headerFrame] autorelease];
 	UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:logoFile]];
 	logo.frame = logoFrame;

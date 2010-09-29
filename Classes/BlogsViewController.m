@@ -59,6 +59,10 @@
     [self.tableView reloadData];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return YES;
+}
+
 #pragma mark -
 #pragma mark UITableView Delegate Methods
 
