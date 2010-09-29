@@ -5,6 +5,24 @@
 /AddUsersBlogsViewController-iPad.xib -text
 /BlogViewController-iPad.xib -text
 /BlogViewController.xib -text
+/CXMLDocument.h -text
+/CXMLDocument.m -text
+/CXMLDocument_PrivateExtensions.h -text
+/CXMLDocument_PrivateExtensions.m -text
+/CXMLElement.h -text
+/CXMLElement.m -text
+/CXMLElement_CreationExtensions.h -text
+/CXMLElement_CreationExtensions.m -text
+/CXMLElement_ElementTreeExtensions.h -text
+/CXMLElement_ElementTreeExtensions.m -text
+/CXMLNamespaceNode.h -text
+/CXMLNamespaceNode.m -text
+/CXMLNode.h -text
+/CXMLNode.m -text
+/CXMLNode_PrivateExtensions.h -text
+/CXMLNode_PrivateExtensions.m -text
+/CXMLNode_XPathExtensions.h -text
+/CXMLNode_XPathExtensions.m -text
 Classes/AddSiteViewController.h -text
 Classes/AddSiteViewController.m -text
 Classes/AddSiteViewController.xib -text
@@ -205,6 +223,10 @@ Classes/glossyButton-highlighted.png -text svneol=unset#unset
 Classes/glossyButton-normal.png -text svneol=unset#unset
 /CommentViewController.xib -text
 /CommentsViewController.xib -text
+Creation/CXMLDocument_CreationExtensions.h -text
+Creation/CXMLDocument_CreationExtensions.m -text
+Creation/CXMLNode_CreationExtensions.h -text
+Creation/CXMLNode_CreationExtensions.m -text
 /Default-Landscape.png -text svneol=unset#unset
 /Default-Portrait.png -text svneol=unset#unset
 /Default.png -text
@@ -247,10 +269,13 @@ Resources-iPad/MainWindow-iPad.xib -text
 /RoundedRectBlack.png -text
 Settings.bundle/Root.plist -text
 Settings.bundle/en.lproj/Root.strings -text
+Tidy/CTidy.h -text
+Tidy/CTidy.m -text
 /ToolbarIconCamera.png -text svneol=unset#unset
 /ToolbarIconEye.png -text svneol=unset#unset
 /ToolbarIconGear.png -text svneol=unset#unset
 /ToolbarIconLocation.png -text svneol=unset#unset
+/TouchXML.h -text
 /UIImage+Alpha.h -text
 /UIImage+Alpha.m -text
 /UIImage+Resize.h -text
