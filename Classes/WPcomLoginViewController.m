@@ -348,6 +348,8 @@
 
 - (void)didSignInSuccessfully {
 	if(DeviceIsPad() == YES) {
+		isSigningIn = NO;
+		[self refreshTable];
 		AddUsersBlogsViewController *addBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController-iPad" bundle:nil];
 		addBlogsView.isWPcom = YES;
 		[addBlogsView setUsername:self.username];
