@@ -519,14 +519,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		if (selContext == kSelectionsCategoriesContext) {
 			[postDetailViewController.post setCategories:[selectedObjects componentsJoinedByString:@", "]];
 			categoriesTextField.text = postDetailViewController.post.categories;
-			
-			if(self.isLocalDraft == NO) {
-				[[BlogDataManager sharedDataManager] makeNewPostCurrent]; 
-				[self updateValuesToCurrentPost]; 
-				[[[BlogDataManager sharedDataManager] currentPost] setObject:selectedObjects forKey:@"categories"]; 
-				[postDetailViewController.post setIsLocalDraft:[NSNumber numberWithInt:0]]; 
-				self.isLocalDraft = NO; 
-			}
 		}
 	}
 	else {

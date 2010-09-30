@@ -12,7 +12,6 @@
 #import "DraftManager.h"
 #import "TransparentToolbar.h"
 #import "WPProgressHUD.h"
-#import "CTidy.h"
 
 @class EditPostViewController, PostPreviewViewController, WPSelectionTableViewController, PostSettingsViewController, PostsViewController, CommentsViewController;
 @class WPNavigationLeftButtonView, WPPublishOnEditController, CInvisibleToolbar, FlippingViewController;

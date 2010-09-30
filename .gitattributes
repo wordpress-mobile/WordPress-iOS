@@ -269,8 +269,6 @@ Resources-iPad/MainWindow-iPad.xib -text
 /RoundedRectBlack.png -text
 Settings.bundle/Root.plist -text
 Settings.bundle/en.lproj/Root.strings -text
-Tidy/CTidy.h -text
-Tidy/CTidy.m -text
 /ToolbarIconCamera.png -text svneol=unset#unset
 /ToolbarIconEye.png -text svneol=unset#unset
 /ToolbarIconGear.png -text svneol=unset#unset
