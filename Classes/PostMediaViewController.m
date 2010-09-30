@@ -527,37 +527,54 @@
 }
 
 - (void)processRecordedVideo {
+	NSLog(@"processRecordedVideo...");
 	[self.currentVideo setValue:[NSNumber numberWithInt:currentOrientation] forKey:@"orientation"];
 	NSString *tempVideoPath = [(NSURL *)[currentVideo valueForKey:UIImagePickerControllerMediaURL] absoluteString];
 	tempVideoPath = [[tempVideoPath substringFromIndex:16] retain];
-	if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(tempVideoPath))
+	NSLog(@"about to save to photo album...");
+	if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(tempVideoPath)) {
+		NSLog(@"saving to photo album...");
 		UISaveVideoAtPathToSavedPhotosAlbum(tempVideoPath, self, @selector(video:didFinishSavingWithError:contextInfo:), tempVideoPath);
+	}
+	else {
+		NSLog(@"skipped save to photo album...");
+	}
 	[tempVideoPath release];
 	
 	[self refreshMedia];
 }
 
 - (void)processLibraryVideo {
+	NSLog(@"processLibraryVideo...");
 	if([[currentVideo valueForKey:UIImagePickerControllerMediaURL] absoluteString] != nil) {
 		float osVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
+		NSLog(@"osVersion: %f", osVersion);
 		[self.currentVideo setValue:[NSNumber numberWithInt:currentOrientation] forKey:@"orientation"];
+		NSLog(@"currentVideo.orientation: %@", [currentVideo objectForKey:@"orientation"]);
 		NSString *videoPath = [(NSURL *)[currentVideo valueForKey:UIImagePickerControllerMediaURL] absoluteString];
 		videoPath = [[videoPath substringFromIndex:16] retain];
 		NSURL *contentURL = [NSURL fileURLWithPath:videoPath];
 		UIImage *thumbnail = nil;
 		
+		NSLog(@"about to get thumbnail from contentURL: %@", contentURL);
 		if(osVersion >= 3.2) {
+			NSLog(@"OS is >= 3.2, using thumbnailImageAtTime...");
 			MPMoviePlayerController *mp = [[MPMoviePlayerController alloc] initWithContentURL:contentURL];
 			thumbnail = [mp thumbnailImageAtTime:(NSTimeInterval)2.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
+			NSLog(@"Successfully got thumbnail from movie...");
 		}
 		else {
+			NSLog(@"OS is < 3.2, using default thumbnail image...");
 			thumbnail = [UIImage imageNamed:@"video_thumbnail"];
 		}
 		
+		NSLog(@"Converting video to bytes for upload...");
 		NSData *videoData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:videoPath]];
+		NSLog(@"calling useVideo...");
 		[self useVideo:videoData withThumbnail:thumbnail];
 		self.currentVideo = nil;
 		self.isLibraryMedia = NO;
+		NSLog(@"refreshing media...");
 		[self refreshMedia];
 		
 		[videoPath release];

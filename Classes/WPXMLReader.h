@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface WPXMLReader : NSObject {
+@interface WPXMLReader : NSObject <NSXMLParserDelegate> {
     NSString *hostUrl;
 }
 

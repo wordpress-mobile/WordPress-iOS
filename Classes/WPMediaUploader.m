@@ -164,7 +164,6 @@
 		}
 		
 		if ([urlResponse isKindOfClass:[NSHTTPURLResponse class]]) {
-			NSLog(@"urlResponse.statusCode: %d", [urlResponse statusCode]);
 			if ([(NSHTTPURLResponse *)urlResponse statusCode] >= 400) {
 				NSString *errorIntString = [NSString stringWithFormat:@"%d", [(NSHTTPURLResponse *)urlResponse statusCode]];
 				NSString *stringForStatusCode = [NSHTTPURLResponse localizedStringForStatusCode:[(NSHTTPURLResponse *)urlResponse statusCode]];
