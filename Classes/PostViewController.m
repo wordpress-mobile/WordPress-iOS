@@ -958,8 +958,30 @@
 		
 		if ([urlResponse isKindOfClass:[NSHTTPURLResponse class]]) {
 			if ([(NSHTTPURLResponse *)urlResponse statusCode] < 400) {
-				XMLRPCResponse *xmlrpcResponse = [[XMLRPCResponse alloc] initWithData:payload];
+				// Danilo's fix for #297: Get rid of weird characters before the xml preamble 
+				int responseLength = [str length]; 
+				int charIndex = 0; 
+				for( ; charIndex < responseLength; charIndex++) {
+					unichar testChar = [str characterAtIndex:charIndex];
+					if(testChar == 60) { 
+						break;
+					}
+				}
+				if(charIndex != 0) { 
+					str = [str substringFromIndex: charIndex]; 
+				} 
 				
+				NSError *error = nil;
+				NSString *cleanedString = [[CTidy tidy] tidyString:str inputFormat:TidyFormat_XML outputFormat:TidyFormat_XML diagnostics:NULL error:&error]; 
+				if(error == nil)
+					payload = nil;
+					payload = [[NSMutableData alloc] init];
+					[payload setData:[cleanedString dataUsingEncoding: NSUTF8StringEncoding]]; 
+				}
+			
+				// end #297
+				
+				XMLRPCResponse *xmlrpcResponse = [[XMLRPCResponse alloc] initWithData:payload];
 				
 				if (![xmlrpcResponse isKindOfClass:[NSError class]]) {
 					NSDictionary *responseMeta = [xmlrpcResponse object];
@@ -981,9 +1003,6 @@
 				
 				[xmlrpcResponse release];
 			}
-			
-		}
-		
 		[str release];
 	}
 }

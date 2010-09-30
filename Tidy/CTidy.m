@@ -27,8 +27,6 @@
 //  OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#ifdef TOUCHXMLUSETIDY
-
 #import "CTidy.h"
 
 @interface CTidy ()
@@ -224,5 +222,3 @@ return(theString);
 }
 
 @end
-
-#endif /* TOUCHXMLUSETIDY */
