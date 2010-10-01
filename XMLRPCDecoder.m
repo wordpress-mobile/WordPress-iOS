@@ -40,25 +40,26 @@
 	if (self = [super init])
 	{
 		NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-		NSLog(@"parser.dataString: %@", dataString);
 		
-		_parser = [[NSXMLParser alloc] initWithData:data];
-//		_parent = CFXMLTreeCreateFromData(kCFAllocatorDefault, (CFDataRef)data,
-//			NULL, kCFXMLParserSkipWhitespace, kCFXMLNodeCurrentVersion);
+		if(dataString.length > 0) {
+			_parser = [[NSXMLParser alloc] initWithData:data];
+			//		_parent = CFXMLTreeCreateFromData(kCFAllocatorDefault, (CFDataRef)data,
+			//			NULL, kCFXMLParserSkipWhitespace, kCFXMLNodeCurrentVersion);
 			
-		// Set self as the delegate of the parser so that it will receive the parser delegate methods callbacks.
-		[_parser setDelegate:self];
-		// Depending on the XML document you're parsing, you may want to enable these features of NSXMLParser.
-		[_parser setShouldProcessNamespaces:YES];
-		[_parser setShouldReportNamespacePrefixes:YES];
-		[_parser setShouldResolveExternalEntities:YES];
-				
-		if (_parser == nil)
-		{
-			return nil;
+			// Set self as the delegate of the parser so that it will receive the parser delegate methods callbacks.
+			[_parser setDelegate:self];
+			// Depending on the XML document you're parsing, you may want to enable these features of NSXMLParser.
+			[_parser setShouldProcessNamespaces:NO];
+			[_parser setShouldReportNamespacePrefixes:NO];
+			[_parser setShouldResolveExternalEntities:YES];
+			
+			if (_parser == nil)
+			{
+				return nil;
+			}
+			
+			_isFault = FALSE;
 		}
-		
-		_isFault = FALSE;
 	}
 	
 	return self;

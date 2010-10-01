@@ -54,7 +54,7 @@
 		if ( _object == nil )
 		{
 			_isParseError = TRUE;
-			NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Parse Error. Please check input values.", NSLocalizedDescriptionKey, nil];
+			NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Parse Error. Please check your XML-RPC endpoint.", NSLocalizedDescriptionKey, nil];
 			_object = [[NSError errorWithDomain:@"come.effigent.iphone.parseerror" code:-1 userInfo:usrInfo] retain];
 		}
 		else if( [_object isKindOfClass:[NSError class]] )
