@@ -63,7 +63,7 @@
 	if(DeviceIsPad() == YES)
 		return YES;
 	else
-		return NO;
+		return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 #pragma mark -

@@ -398,6 +398,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)checkWPcomAuthentication {
+	NSLog(@"checking wpcom authentication...");
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	NSString *authURL = @"https://wordpress.com/xmlrpc.php";
 	
@@ -417,6 +418,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		[[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"wpcom_authenticated_flag"];
 	
 	[pool release];
+	NSLog(@"done checking wpcom authentication...");
 }
 
 - (int)indexForCurrentBlog {

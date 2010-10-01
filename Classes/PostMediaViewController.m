@@ -776,14 +776,17 @@
 	[formatter setDateFormat:@"yyyyMMdd-hhmmss"];
 	
 	// Save to local file
+	NSLog(@"saving to local file...");
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectory = [paths objectAtIndex:0];
 	NSString *filename = [NSString stringWithFormat:@"%@.mov", [formatter stringFromDate:[NSDate date]]];
 	NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
 	[fileManager createFileAtPath:filepath contents:video attributes:nil];
+	NSLog(@"successfully saved to local file...");
 	
 	// Save to local database
+	NSLog(@"saving to core data...");
 	videoMedia.postID = self.postID;
 	videoMedia.blogID = [currentBlog valueForKey:@"blogid"];
 	videoMedia.blogURL = self.blogURL;
@@ -798,10 +801,13 @@
 	videoMedia.mediaType = @"video";
 	videoMedia.thumbnail = UIImageJPEGRepresentation(videoThumbnail, 1.0);
 	[mediaManager save:videoMedia];
+	NSLog(@"successfully saved to core data...");
 	
 	// Save to remote server
+	NSLog(@"uploading to server...");
 	self.uploadID = videoMedia.uniqueID;
 	[self uploadMedia:video withFilename:filename andMediaType:kVideo];
+	NSLog(@"successfully uploaded to server...");
 	
 	//[self updatePhotosBadge];
 	

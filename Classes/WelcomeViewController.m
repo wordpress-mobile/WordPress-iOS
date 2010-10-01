@@ -19,7 +19,7 @@
     [super viewDidLoad];
 	
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-	[appDelegate checkWPcomAuthentication];
+	//[appDelegate checkWPcomAuthentication];
 	
 	NSString *addSiteNibName = @"AddSiteViewController";
 	if(DeviceIsPad() == YES)
@@ -52,7 +52,7 @@
 	if(DeviceIsPad() == YES)
 		return YES;
 	else
-		return NO;
+		return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 #pragma mark -
