@@ -159,7 +159,6 @@ NSString *XMLRPCReceivedResponseNotification = @"XML-RPC Successfully Received R
 
 - (void)connection: (NSURLConnection *)connection didReceiveData: (NSData *)data
 {
-	NSLog(@"did receive data.");
 	[_data appendData: data];
 }
 

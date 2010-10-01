@@ -582,19 +582,27 @@
 }
 
 - (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(NSString *)contextInfo {
+	NSLog(@"Successfully recorded video...");
 	float osVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
+	NSLog(@"osVersion: %f", osVersion);
 	NSURL *contentURL = [NSURL fileURLWithPath:videoPath];
+	NSLog(@"contentURL: %@", contentURL);
 	UIImage *thumbnail = nil;
 	
+	NSLog(@"about to get thumbnail from contentURL: %@", contentURL);
 	if(osVersion >= 3.2) {
+		NSLog(@"OS is >= 3.2, using thumbnailImageAtTime...");
 		MPMoviePlayerController *mp = [[MPMoviePlayerController alloc] initWithContentURL:contentURL];
 		thumbnail = [mp thumbnailImageAtTime:(NSTimeInterval)2.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
+		NSLog(@"Successfully got thumbnail from movie...");
 	}
 	else {
+		NSLog(@"OS is < 3.2, using default thumbnail image...");
 		thumbnail = [UIImage imageNamed:@"video_thumbnail"];
 	}
 
 	
+	NSLog(@"Converting video to bytes for upload...");
 	NSData *videoData = [NSData dataWithContentsOfURL:contentURL];
 	[self useVideo:videoData withThumbnail:thumbnail];
 	currentVideo = nil;

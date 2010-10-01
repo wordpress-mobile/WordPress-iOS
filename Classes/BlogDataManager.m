@@ -287,7 +287,12 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 															 withUsername:httpAuthUsername
 															  andPassword:httpAuthPassword];
 	} else {
-		userInfoResponse = [XMLRPCConnection sendSynchronousXMLRPCRequest:req];
+		@try {
+			userInfoResponse = [XMLRPCConnection sendSynchronousXMLRPCRequest:req];
+		}
+		@catch (NSException * e) {
+			NSLog(@"executeXMLRPCRequest failed: %@", e);
+		}
 	}
 	
     NSError *err = [self errorWithResponse:userInfoResponse shouldHandle:shouldHandleFalg];
