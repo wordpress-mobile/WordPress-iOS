@@ -398,6 +398,7 @@
 	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
 	picker.sourceType =  UIImagePickerControllerSourceTypeCamera;
 	picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeMovie];
+	picker.videoQuality = UIImagePickerControllerQualityTypeLow;
 	[appDelegate.navigationController presentModalViewController:picker animated:YES];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -769,11 +770,13 @@
 }
 
 - (void)useVideo:(NSData *)video withThumbnail:(UIImage *)thumbnail {
+	NSLog(@"generating video thumbnail...");
 	Media *videoMedia = [mediaManager get:nil];
 	NSDictionary *currentBlog = [dm currentBlog];
 	UIImage *videoThumbnail = [self generateThumbnailFromImage:thumbnail andSize:CGSizeMake(75, 75)];
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 	[formatter setDateFormat:@"yyyyMMdd-hhmmss"];
+	NSLog(@"successfully generated video thumbnail...");
 	
 	// Save to local file
 	NSLog(@"saving to local file...");

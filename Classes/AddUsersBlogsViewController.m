@@ -275,7 +275,7 @@
 							  password:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"]];
 	}
 	else {
-		usersBlogs = [[WPDataController sharedInstance] getBlogsForUrl:url username:username password:password];
+		usersBlogs = [[[WPDataController sharedInstance] getBlogsForUrl:url username:username password:password] retain];
 	}
 
 	hasCompletedGetUsersBlogs = YES;
@@ -336,6 +336,7 @@
 	blog.url = [blog.url stringByReplacingOccurrencesOfString:@"http://" withString:@""];
 	if([blog.url hasSuffix:@"/"])
 		blog.url = [blog.url substringToIndex:blog.url.length-1];
+	blog.hostURL = [blog.url stringByReplacingOccurrencesOfString:@"www." withString:@""];
 	//blog.url = [blog.url stringByReplacingOccurrencesOfString:@".wordpress.com" withString:@""];
 	url= [blog.url stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 	username = blog.username;
