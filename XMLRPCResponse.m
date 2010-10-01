@@ -83,7 +83,10 @@
 {
 	if (_isFault)
 	{
-		return [_object objectForKey: @"faultCode"];
+		if(![_object isKindOfClass:[NSError class]])
+			return [_object objectForKey: @"faultCode"];
+		else
+			return [NSNumber numberWithInt:0];
 	}
 	
 	return nil;
@@ -93,7 +96,10 @@
 {
 	if (_isFault)
 	{
-		return [_object objectForKey: @"faultString"];
+		if(![_object isKindOfClass:[NSError class]])
+			return [_object objectForKey: @"faultString"];
+		else
+			return [(NSError *)_object localizedDescription];
 	}
 	
 	return nil;

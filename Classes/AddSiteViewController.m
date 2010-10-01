@@ -130,7 +130,7 @@
 				textFrame = CGRectMake(150, 12, 350, 42);
 			}
 			UITextField *addTextField = [[UITextField alloc] initWithFrame:textFrame];
-			addTextField.adjustsFontSizeToFitWidth = YES;
+			//addTextField.adjustsFontSizeToFitWidth = YES;
 			addTextField.textColor = [UIColor blackColor];
 			if ([indexPath section] == 0) {
 				if (indexPath.row == 0) {
@@ -707,23 +707,21 @@
     if (keyboardIsVisible)
         return;
 	
-	if(activeTextField.tag > 0) {
-		NSDictionary *info = [notification userInfo];
-		NSValue *aValue = [info objectForKey:UIKeyboardBoundsUserInfoKey];
-		CGSize keyboardSize = [aValue CGRectValue].size;
-		
-		NSTimeInterval animationDuration = 0.300000011920929;
-		CGRect frame = self.view.frame;
-		frame.origin.y -= keyboardSize.height-104;
-		frame.size.height += keyboardSize.height-104;
-		[UIView beginAnimations:@"ResizeForKeyboard" context:nil];
-		[UIView setAnimationDuration:animationDuration];
-		self.view.frame = frame;
-		[UIView commitAnimations];
-		
-		viewDidMove = YES;
-		keyboardIsVisible = YES;
-	}
+	NSDictionary *info = [notification userInfo];
+	NSValue *aValue = [info objectForKey:UIKeyboardBoundsUserInfoKey];
+	CGSize keyboardSize = [aValue CGRectValue].size;
+	
+	NSTimeInterval animationDuration = 0.300000011920929;
+	CGRect frame = self.view.frame;
+	frame.origin.y -= keyboardSize.height-140;
+	frame.size.height += keyboardSize.height-140;
+	[UIView beginAnimations:@"ResizeForKeyboard" context:nil];
+	[UIView setAnimationDuration:animationDuration];
+	self.view.frame = frame;
+	[UIView commitAnimations];
+	
+	viewDidMove = YES;
+	keyboardIsVisible = YES;
 }
 
 - (void)keyboardWillHide:(NSNotification *)aNotification {
@@ -734,8 +732,8 @@
 		
         NSTimeInterval animationDuration = 0.300000011920929;
         CGRect frame = self.view.frame;
-        frame.origin.y += keyboardSize.height-104;
-        frame.size.height -= keyboardSize.height-104;
+        frame.origin.y += keyboardSize.height-140;
+        frame.size.height -= keyboardSize.height-140;
         [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
         [UIView setAnimationDuration:animationDuration];
         self.view.frame = frame;
