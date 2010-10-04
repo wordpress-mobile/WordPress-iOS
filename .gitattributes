@@ -1,4 +1,20 @@
 * text=auto !eol
+/ASIAuthenticationDialog.h -text
+/ASIAuthenticationDialog.m -text
+/ASICacheDelegate.h -text
+/ASIDownloadCache.h -text
+/ASIDownloadCache.m -text
+/ASIFormDataRequest.h -text
+/ASIFormDataRequest.m -text
+/ASIHTTPRequest.h -text
+/ASIHTTPRequest.m -text
+/ASIHTTPRequestConfig.h -text
+/ASIHTTPRequestDelegate.h -text
+/ASIInputStream.h -text
+/ASIInputStream.m -text
+/ASINetworkQueue.h -text
+/ASINetworkQueue.m -text
+/ASIProgressDelegate.h -text
 /AddBlogValidationBackground.png -text svneol=unset#unset
 /AddBlogValidationBackground@2x.png -text
 /AddSiteViewController-iPad.xib -text
@@ -261,6 +277,8 @@ Creation/CXMLNode_CreationExtensions.m -text
 /PostSettingsViewController.xib -text
 /PostViewController-iPad.xib -text
 /PostViewController.xib -text
+/Reachability2.h -text
+/Reachability2.m -text
 /RecentCommentButtonDeselected.png -text svneol=unset#unset
 /RecentCommentButtonSelected.png -text svneol=unset#unset
 /RegexKitLite.h -text
