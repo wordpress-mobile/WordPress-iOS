@@ -14,7 +14,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @synthesize editingDisabled, editCustomFields, isCustomFieldsEnabledForThisPost, statuses, isLocalDraft, normalTextFrame;
 @synthesize textView, contentView, subView, textViewContentView, statusTextField, categoriesTextField, titleTextField;
 @synthesize tagsTextField, textViewPlaceHolderField, tagsLabel, statusLabel, categoriesLabel, titleLabel, customFieldsEditButton;
-@synthesize tableViewForSelectingCustomFields, locationButton, locationSpinner, newCategoryBarButtonItem, autosaveButton;
+@synthesize locationButton, locationSpinner, newCategoryBarButtonItem, autosaveButton;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -86,21 +86,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)viewWillAppear:(BOOL)animated {
 	//WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     [super viewWillAppear:animated];
-	[self dismissModalViewControllerAnimated:YES];
+	//[self dismissModalViewControllerAnimated:YES];
 	[self syncCategoriesAndStatuses];
     //isCustomFieldsEnabledForThisPost = [self checkCustomFieldsMinusMetadata];
     isCustomFieldsEnabledForThisPost = NO;
-	
-    if (isCustomFieldsEnabledForThisPost) {
-        customFieldsEditButton.hidden = NO;
-        tableViewForSelectingCustomFields.hidden = NO;
-		
-        customFieldsEditButton.enabled = YES;
-    } else {
-        customFieldsEditButton.hidden = YES;
-        tableViewForSelectingCustomFields.hidden = YES;
-        //customFieldsEditButton.enabled = NO;
-    }
 	
 	// Update older geolocation setting to new format
 	BOOL geolocationSetting = NO;
@@ -167,7 +156,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[self dismissModalViewControllerAnimated:YES];
+	//[self dismissModalViewControllerAnimated:YES];
 	[titleTextField resignFirstResponder];
 	[tagsTextField resignFirstResponder];
 	[categoriesTextField resignFirstResponder];
@@ -1383,7 +1372,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[categoriesLabel release];
 	[titleLabel release];
 	[customFieldsEditButton release];
-	[tableViewForSelectingCustomFields release];
 	[locationButton release];
 	[locationSpinner release];
 	[newCategoryBarButtonItem release];

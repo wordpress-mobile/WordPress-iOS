@@ -39,7 +39,6 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
     IBOutlet UIView *textViewContentView;
     IBOutlet UITextField *textViewPlaceHolderField;
     IBOutlet UIButton *customFieldsEditButton, *autosaveButton;
-	IBOutlet UITableView *tableViewForSelectingCustomFields;
 	IBOutlet UIButton *locationButton;
 	IBOutlet UIActivityIndicatorView *locationSpinner;
     IBOutlet UIBarButtonItem *newCategoryBarButtonItem;
@@ -82,7 +81,6 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 @property (nonatomic, retain) IBOutlet UIView *contentView, *subView, *textViewContentView;;
 @property (nonatomic, retain) IBOutlet UITextField *statusTextField, *categoriesTextField, *titleTextField, *tagsTextField, *textViewPlaceHolderField;
 @property (nonatomic, retain) IBOutlet UILabel *tagsLabel, *statusLabel, *categoriesLabel, *titleLabel;
-@property (nonatomic, retain) IBOutlet UITableView *tableViewForSelectingCustomFields;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *newCategoryBarButtonItem;
 @property (nonatomic, retain) NSArray *statuses;
 

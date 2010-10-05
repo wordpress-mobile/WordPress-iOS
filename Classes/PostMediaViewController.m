@@ -545,17 +545,11 @@
 }
 
 - (void)processRecordedVideo {
-	NSLog(@"processRecordedVideo...");
 	[self.currentVideo setValue:[NSNumber numberWithInt:currentOrientation] forKey:@"orientation"];
 	NSString *tempVideoPath = [(NSURL *)[currentVideo valueForKey:UIImagePickerControllerMediaURL] absoluteString];
 	tempVideoPath = [[tempVideoPath substringFromIndex:16] retain];
-	NSLog(@"about to save to photo album...");
 	if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(tempVideoPath)) {
-		NSLog(@"saving to photo album...");
 		UISaveVideoAtPathToSavedPhotosAlbum(tempVideoPath, self, @selector(video:didFinishSavingWithError:contextInfo:), tempVideoPath);
-	}
-	else {
-		NSLog(@"skipped save to photo album...");
 	}
 	[tempVideoPath release];
 	
@@ -566,30 +560,26 @@
 	if([[currentVideo valueForKey:UIImagePickerControllerMediaURL] absoluteString] != nil) {
 		float osVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
 		[self.currentVideo setValue:[NSNumber numberWithInt:currentOrientation] forKey:@"orientation"];
+		
+		// Determine the video's library path
 		NSString *videoPath = [(NSURL *)[currentVideo valueForKey:UIImagePickerControllerMediaURL] absoluteString];
 		videoPath = [[videoPath substringFromIndex:16] retain];
 		NSURL *contentURL = [NSURL fileURLWithPath:videoPath];
-		UIImage *thumbnail = nil;
 		
-		NSLog(@"about to get thumbnail from contentURL: %@", contentURL);
+		// If we're using iOS 3.2 or greater, we can grab a thumbnail using this method
+		UIImage *thumbnail;
 		if(osVersion >= 3.2) {
-			NSLog(@"OS is >= 3.2, using thumbnailImageAtTime...");
 			MPMoviePlayerController *mp = [[MPMoviePlayerController alloc] initWithContentURL:contentURL];
 			thumbnail = [mp thumbnailImageAtTime:(NSTimeInterval)2.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
-			NSLog(@"Successfully got thumbnail from movie...");
 		}
 		else {
-			NSLog(@"OS is < 3.2, using default thumbnail image...");
+			// If not, we'll just use the default thumbnail for now.
 			thumbnail = [UIImage imageNamed:@"video_thumbnail"];
 		}
 		
-		NSLog(@"Converting video to bytes for upload...");
-		NSData *videoData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:videoPath]];
-		NSLog(@"calling useVideo...");
-		[self useVideo:videoData withThumbnail:thumbnail];
+		[self useVideo:videoPath withThumbnail:thumbnail];
 		self.currentVideo = nil;
 		self.isLibraryMedia = NO;
-		NSLog(@"refreshing media...");
 		[self refreshMedia];
 		
 		[videoPath release];
@@ -597,29 +587,21 @@
 }
 
 - (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(NSString *)contextInfo {
-	NSLog(@"Successfully recorded video...");
 	float osVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
-	NSLog(@"osVersion: %f", osVersion);
 	NSURL *contentURL = [NSURL fileURLWithPath:videoPath];
-	NSLog(@"contentURL: %@", contentURL);
 	UIImage *thumbnail = nil;
 	
-	NSLog(@"about to get thumbnail from contentURL: %@", contentURL);
+	// If we're using iOS 3.2 or greater, we can grab a thumbnail using this method
 	if(osVersion >= 3.2) {
-		NSLog(@"OS is >= 3.2, using thumbnailImageAtTime...");
 		MPMoviePlayerController *mp = [[MPMoviePlayerController alloc] initWithContentURL:contentURL];
 		thumbnail = [mp thumbnailImageAtTime:(NSTimeInterval)2.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
-		NSLog(@"Successfully got thumbnail from movie...");
 	}
 	else {
-		NSLog(@"OS is < 3.2, using default thumbnail image...");
+		// If not, we'll just use the default thumbnail for now.
 		thumbnail = [UIImage imageNamed:@"video_thumbnail"];
 	}
 	
-	
-	NSLog(@"Converting video to bytes for upload...");
-	NSData *videoData = [NSData dataWithContentsOfURL:contentURL];
-	[self useVideo:videoData withThumbnail:thumbnail];
+	[self useVideo:videoPath withThumbnail:thumbnail];
 	currentVideo = nil;
 }
 
@@ -783,54 +765,72 @@
 	[self refreshMedia];
 }
 
-- (void)useVideo:(NSData *)video withThumbnail:(UIImage *)thumbnail {
-	NSLog(@"generating video thumbnail...");
+- (void)useVideo:(NSString *)videoURL withThumbnail:(UIImage *)thumbnail {
 	Media *videoMedia = [mediaManager get:nil];
 	NSDictionary *currentBlog = [dm currentBlog];
 	UIImage *videoThumbnail = [self generateThumbnailFromImage:thumbnail andSize:CGSizeMake(75, 75)];
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 	[formatter setDateFormat:@"yyyyMMdd-hhmmss"];
-	NSLog(@"successfully generated video thumbnail...");
 	
 	// Save to local file
-	NSLog(@"saving to local file...");
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectory = [paths objectAtIndex:0];
 	NSString *filename = [NSString stringWithFormat:@"%@.mov", [formatter stringFromDate:[NSDate date]]];
 	NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
-	[fileManager createFileAtPath:filepath contents:video attributes:nil];
-	NSLog(@"successfully saved to local file...");
 	
-	// Save to local database
-	NSLog(@"saving to core data...");
-	videoMedia.postID = self.postID;
-	videoMedia.blogID = [currentBlog valueForKey:@"blogid"];
-	videoMedia.blogURL = self.blogURL;
-	if(currentOrientation == kLandscape)
-		videoMedia.orientation = @"landscape";
-	else
-		videoMedia.orientation = @"portrait";
-	videoMedia.creationDate = [NSDate date];
-	videoMedia.filename = filename;
-	videoMedia.localURL = filepath;
-	videoMedia.filesize = [NSNumber numberWithInt:(video.length/1024)];
-	videoMedia.mediaType = @"video";
-	videoMedia.thumbnail = UIImageJPEGRepresentation(videoThumbnail, 1.0);
-	[mediaManager save:videoMedia];
-	NSLog(@"successfully saved to core data...");
+	// Copy the video from temp to blog directory
+	NSDictionary *attributes;
+	NSError *error = nil;
+	BOOL copySuccess;
+	if ((attributes = [fileManager fileAttributesAtPath:videoURL traverseLink:YES]) != nil) {
+		if([fileManager isReadableFileAtPath:videoURL] == YES)
+			copySuccess = [fileManager copyItemAtPath:videoURL toPath:filepath error:&error];
+	}
 	
-	// Save to remote server
-	NSLog(@"uploading to server...");
-	self.uploadID = videoMedia.uniqueID;
-	[self uploadMedia:video withFilename:filename andLocalURL:videoMedia.localURL andMediaType:kVideo];
-	
-	//[self updatePhotosBadge];
-	
-	self.mediaTypeControl.selectedSegmentIndex = 1;
-	isAddingMedia = NO;
-	[formatter release];
-	[self refreshMedia];
+	if(copySuccess == YES) {
+		// Save to local database
+		videoMedia.postID = self.postID;
+		videoMedia.blogID = [currentBlog valueForKey:@"blogid"];
+		videoMedia.blogURL = self.blogURL;
+		if(currentOrientation == kLandscape)
+			videoMedia.orientation = @"landscape";
+		else
+			videoMedia.orientation = @"portrait";
+		videoMedia.creationDate = [NSDate date];
+		videoMedia.filename = filename;
+		videoMedia.localURL = filepath;
+		videoMedia.filesize = [NSNumber numberWithInt:([[attributes objectForKey: NSFileSize] intValue]/1024)];
+		videoMedia.mediaType = @"video";
+		videoMedia.thumbnail = UIImageJPEGRepresentation(videoThumbnail, 1.0);
+		[mediaManager save:videoMedia];
+		CGImageRef cgVideoThumbnail = thumbnail.CGImage;
+		NSUInteger videoWidth = CGImageGetWidth(cgVideoThumbnail);
+		NSUInteger videoHeight = CGImageGetHeight(cgVideoThumbnail);
+		videoMedia.width = [NSNumber numberWithInt:videoWidth];
+		videoMedia.height = [NSNumber numberWithInt:videoHeight];
+		NSLog(@"video thumbnail dimensions - width: %@ height: %@", videoMedia.width, videoMedia.height);
+		
+		// Save to remote server
+		self.uploadID = videoMedia.uniqueID;
+		[self uploadMedia:nil withFilename:filename andLocalURL:videoMedia.localURL andMediaType:kVideo];
+		
+		//[self updatePhotosBadge];
+		
+		self.mediaTypeControl.selectedSegmentIndex = 1;
+		isAddingMedia = NO;
+		[formatter release];
+		[self refreshMedia];
+	}
+	else {
+		UIAlertView *videoAlert = [[UIAlertView alloc] initWithTitle:@"Error Copying Video" 
+															 message:@"There was an error copying the video for upload. Please try again."
+															delegate:self
+												   cancelButtonTitle:@"OK" 
+												   otherButtonTitles:nil];
+		[videoAlert show];
+		[videoAlert release];
+	}
 }
 
 - (NSString *)getUUID

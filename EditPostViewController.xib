@@ -732,14 +732,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">tableViewForSelectingCustomFields</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="766280205"/>
-					</object>
-					<int key="connectionID">360</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">locationButton</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="956232196"/>
@@ -1150,7 +1142,6 @@
 							<string>statusLabel</string>
 							<string>statusTextField</string>
 							<string>subView</string>
-							<string>tableViewForSelectingCustomFields</string>
 							<string>tagsLabel</string>
 							<string>tagsTextField</string>
 							<string>textView</string>
@@ -1172,7 +1163,6 @@
 							<string>UILabel</string>
 							<string>UITextField</string>
 							<string>UIView</string>
-							<string>UITableView</string>
 							<string>UILabel</string>
 							<string>UITextField</string>
 							<string>UITextView</string>
@@ -1197,7 +1187,6 @@
 							<string>statusLabel</string>
 							<string>statusTextField</string>
 							<string>subView</string>
-							<string>tableViewForSelectingCustomFields</string>
 							<string>tagsLabel</string>
 							<string>tagsTextField</string>
 							<string>textView</string>
@@ -1251,10 +1240,6 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">subView</string>
 								<string key="candidateClassName">UIView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">tableViewForSelectingCustomFields</string>
-								<string key="candidateClassName">UITableView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">tagsLabel</string>
@@ -1370,13 +1355,6 @@
 					<string key="className">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">Foundation.framework/Headers/NSNetServices.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">Foundation.framework/Headers/NSObject.h</string>
 					</object>
 				</object>
@@ -1384,21 +1362,7 @@
 					<string key="className">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">Foundation.framework/Headers/NSPort.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">Foundation.framework/Headers/NSRunLoop.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">Foundation.framework/Headers/NSStream.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1420,13 +1384,6 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">Foundation.framework/Headers/NSURLConnection.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">Foundation.framework/Headers/NSXMLParser.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

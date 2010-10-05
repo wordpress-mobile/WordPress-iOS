@@ -88,7 +88,7 @@ static inline double radians(double degrees) {
 - (UIImage *)fixImageOrientation:(UIImage *)img;
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker;
 - (void)useImage:(UIImage *)theImage;
-- (void)useVideo:(NSData *)video withThumbnail:(UIImage *)thumbnail;
+- (void)useVideo:(NSString *)videoURL withThumbnail:(UIImage *)thumbnail;
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification;
 - (void)mediaUploadFailed:(NSNotification *)notification;
 - (void)removemediaUploader:(NSString *)animationID finished:(BOOL)finished context:(void *)context;
