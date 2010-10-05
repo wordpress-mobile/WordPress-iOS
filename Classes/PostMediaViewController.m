@@ -104,7 +104,6 @@
     static NSString *CellIdentifier = @"Cell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-	MPMoviePlayerController *cellMP = nil;
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
 	}
@@ -112,8 +111,6 @@
 	Media *media = nil;
 	NSString *filesizeString = nil;
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-	NSString *documentsDirectory = [paths objectAtIndex:0];
-	NSString *filepath;
 	
 	switch (mediaTypeControl.selectedSegmentIndex) {
 		case 0:
@@ -133,18 +130,14 @@
 			break;
 		case 1:
 			media = [videos objectAtIndex:indexPath.row];
-			if(cellMP == nil) {
-				filepath = [documentsDirectory stringByAppendingPathComponent:media.filename];
-				cellMP = [[[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:filepath]] autorelease];
-			}
 			cell.imageView.image = [UIImage imageWithData:media.thumbnail];
 			if(media.title != nil)
 				cell.textLabel.text = media.title;
 			else
 				cell.textLabel.text = media.filename;
 			
-			long min = (long)cellMP.duration / 60;    // divide two longs, truncates
-			long sec = (long)cellMP.duration % 60;    // remainder of long divide
+			long min = (long)media.length / 60;    // divide two longs, truncates
+			long sec = (long)media.length % 60;    // remainder of long divide
 			
 			if([media.filesize floatValue] > 1024)
 				filesizeString = [NSString stringWithFormat:@"%.2f MB", ([media.filesize floatValue]/1024)];
@@ -496,7 +489,6 @@
 	if([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.movie"]) {
 		[self refreshMedia];
 		self.currentVideo = [info retain];
-		NSLog(@"currentVideo: %@", currentVideo);
 		if(self.didChangeOrientationDuringRecord == YES)
 			[self showOrientationChangedActionSheet];
 		else if(self.isLibraryMedia == NO)
@@ -573,16 +565,18 @@
 		
 		// If we're using iOS 3.2 or greater, we can grab a thumbnail using this method
 		UIImage *thumbnail;
+		float duration = 0.0;
 		if(osVersion >= 3.2) {
 			MPMoviePlayerController *mp = [[MPMoviePlayerController alloc] initWithContentURL:contentURL];
 			thumbnail = [mp thumbnailImageAtTime:(NSTimeInterval)2.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
+			duration = [mp duration];
 		}
 		else {
 			// If not, we'll just use the default thumbnail for now.
 			thumbnail = [UIImage imageNamed:@"video_thumbnail"];
 		}
 		
-		[self useVideo:videoPath withThumbnail:thumbnail];
+		[self useVideo:videoPath withThumbnail:thumbnail andDuration:duration];
 		self.currentVideo = nil;
 		self.isLibraryMedia = NO;
 		[self refreshMedia];
@@ -594,19 +588,21 @@
 - (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(NSString *)contextInfo {
 	float osVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
 	NSURL *contentURL = [NSURL fileURLWithPath:videoPath];
-	UIImage *thumbnail = nil;
 	
 	// If we're using iOS 3.2 or greater, we can grab a thumbnail using this method
+	UIImage *thumbnail = nil;
+	float duration = 0.0;
 	if(osVersion >= 3.2) {
 		MPMoviePlayerController *mp = [[MPMoviePlayerController alloc] initWithContentURL:contentURL];
 		thumbnail = [mp thumbnailImageAtTime:(NSTimeInterval)2.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
+		duration = [mp duration];
 	}
 	else {
 		// If not, we'll just use the default thumbnail for now.
 		thumbnail = [UIImage imageNamed:@"video_thumbnail"];
 	}
 	
-	[self useVideo:videoPath withThumbnail:thumbnail];
+	[self useVideo:videoPath withThumbnail:thumbnail andDuration:duration];
 	currentVideo = nil;
 }
 
@@ -770,7 +766,7 @@
 	[self refreshMedia];
 }
 
-- (void)useVideo:(NSString *)videoURL withThumbnail:(UIImage *)thumbnail {
+- (void)useVideo:(NSString *)videoURL withThumbnail:(UIImage *)thumbnail andDuration:(float)duration {
 	Media *videoMedia = [mediaManager get:nil];
 	NSDictionary *currentBlog = [dm currentBlog];
 	UIImage *videoThumbnail = [self generateThumbnailFromImage:thumbnail andSize:CGSizeMake(75, 75)];
@@ -808,6 +804,7 @@
 		videoMedia.filesize = [NSNumber numberWithInt:([[attributes objectForKey: NSFileSize] intValue]/1024)];
 		videoMedia.mediaType = @"video";
 		videoMedia.thumbnail = UIImageJPEGRepresentation(videoThumbnail, 1.0);
+		videoMedia.length = [NSNumber numberWithFloat:duration];
 		[mediaManager save:videoMedia];
 		CGImageRef cgVideoThumbnail = thumbnail.CGImage;
 		NSUInteger videoWidth = CGImageGetWidth(cgVideoThumbnail);

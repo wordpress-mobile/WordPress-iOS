@@ -103,17 +103,24 @@
 
 - (BOOL)exists:(NSString *)uniqueID {
 	NSArray *items = nil;
-	if(uniqueID != nil) {
-		NSFetchRequest *request = [[NSFetchRequest alloc] init];
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Media" inManagedObjectContext:appDelegate.managedObjectContext];
-		[request setEntity:entity];
-		
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(uniqueID like %@)", uniqueID];
-		[request setPredicate:predicate];
-		
-		NSError *error;
-		items = [appDelegate.managedObjectContext executeFetchRequest:request error:&error];
-		[request release];
+	
+	@try {
+		if(uniqueID != nil) {
+			NSFetchRequest *request = [[NSFetchRequest alloc] init];
+			NSEntityDescription *entity = [NSEntityDescription entityForName:@"Media" inManagedObjectContext:appDelegate.managedObjectContext];
+			[request setEntity:entity];
+			
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(uniqueID like %@)", uniqueID];
+			[request setPredicate:predicate];
+			
+			NSError *error;
+			items = [appDelegate.managedObjectContext executeFetchRequest:request error:&error];
+			[request release];
+		}
+	}
+	@catch (NSException * e) {
+		NSLog(@"error checking existence of media: %@", e);
+		items = nil;
 	}
 	
 	if((items != nil) && (items.count > 0))
