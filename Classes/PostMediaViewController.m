@@ -229,6 +229,11 @@
 	else {
 		photos = [[mediaManager getForPostID:self.uniqueID andBlogURL:self.blogURL andMediaType:kImage] retain];
 		videos = [[mediaManager getForPostID:self.uniqueID andBlogURL:self.blogURL andMediaType:kVideo] retain];
+		
+		if(photos.count == 0)
+			photos = [[mediaManager getForBlogURL:self.blogURL andMediaType:kImage] retain];
+		if(videos.count == 0)
+			videos = [[mediaManager getForBlogURL:self.blogURL andMediaType:kVideo] retain];
 	}
 	[self updateMediaCount];
     [self.table reloadData];
@@ -900,15 +905,16 @@
 }
 
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification {
-	NSLog(@"successfully uploaded to server...");
 	if(self.uploadID != nil) {
 		NSDictionary *mediaData = [notification userInfo];
-		NSLog(@"mediaData: %@", mediaData);
+		NSLog(@"getting media object for update: %@", self.uploadID);
 		Media *media = [mediaManager get:self.uploadID];
 		media.remoteURL = [mediaData objectForKey:@"url"];
 		media.shortcode = [mediaData objectForKey:@"shortcode"];
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
 		[mediaManager update:media];
+		media = [mediaManager get:self.uploadID];
+		NSLog(@"updated media object: %@", media);
 		self.uploadID = nil;
 	}
 	

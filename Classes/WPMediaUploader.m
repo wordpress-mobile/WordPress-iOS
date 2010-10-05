@@ -178,24 +178,30 @@
 	NSUInteger chunkSize = 100 * 1024;
 	NSUInteger offset = 0;
 	while(offset < fileLength) {
+		[originalFile seekToFileOffset:offset];
 		NSData *chunk = [originalFile readDataOfLength:chunkSize];
 		offset += chunkSize;
 		
-		NSString *base64EncodedChunkString = [chunk base64EncodedString];
-		NSData *base64EncodedChunk = [base64EncodedChunkString dataUsingEncoding:NSASCIIStringEncoding];
+		NSData *serializedChunk = [NSPropertyListSerialization dataFromPropertyList:chunk format:NSPropertyListXMLFormat_v1_0 errorDescription:NULL];
+		NSString *serializedString =  [[NSString alloc] initWithData:serializedChunk encoding:NSASCIIStringEncoding];
+		NSRange r = [serializedString rangeOfString:@"<data>"];
+		serializedString = [serializedString substringFromIndex:r.location+7];
+		r = [serializedString rangeOfString:@"</data>"];
+		serializedString = [serializedString substringToIndex:r.location-1];
 		
+		assert(encodedFile != nil);
+		
+		NSData *base64EncodedChunk = [serializedString dataUsingEncoding:NSASCIIStringEncoding];
+		[encodedFile truncateFileAtOffset:[encodedFile seekToEndOfFile]];
 		[encodedFile writeData:base64EncodedChunk];
 		
-		base64EncodedChunkString = nil;
+//		NSString *contentString = [[NSString alloc] initWithData:base64EncodedChunk encoding:NSUTF8StringEncoding];
+//		NSLog(@"contentString: %@", contentString);
+//		[contentString release];
+		
 		base64EncodedChunk = nil;
 		
 		[self updateProgress:[NSNumber numberWithInt:offset] total:[NSNumber numberWithInt:fileLength]];
-		
-		NSString *newline = @"/r/n";
-		NSData *newlineChunk = [newline dataUsingEncoding:NSASCIIStringEncoding];
-		[encodedFile writeData:newlineChunk];
-		newline = nil;
-		newlineChunk = nil;
 	}
 	
 	// Add the suffix to close out the xml payload
@@ -271,7 +277,6 @@
 #pragma mark ASIHTTPRequest delegate
 
 - (void)requestFinished:(ASIHTTPRequest *)request {
-	NSLog(@"request successful.");
 	[[NSFileManager defaultManager] removeItemAtURL:[NSURL fileURLWithPath:self.localEncodedURL] error:NULL];
 	
 	XMLRPCResponse *xmlrpcResponse = [[XMLRPCResponse alloc] initWithData:[request responseData]];

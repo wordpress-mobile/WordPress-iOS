@@ -73,15 +73,19 @@
 	return results;
 }
 
-- (NSMutableArray *)getForBlogURL:(NSString *)blogURL {
+- (NSMutableArray *)getForBlogURL:(NSString *)blogURL andMediaType:(MediaType)mediaType {
 	NSArray *items = nil;
 	NSMutableArray *results = [[NSMutableArray alloc] init];
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	
 	if(blogURL != nil) {
+		NSString *mediaTypeString = @"image";
+		if(mediaType == kVideo)
+			mediaTypeString = @"video";
 		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Media" inManagedObjectContext:appDelegate.managedObjectContext];
 		[request setEntity:entity];
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(blogURL like %@)", blogURL];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:
+								  @"(blogURL like %@) AND (mediaType like %@)", blogURL, mediaTypeString];
 		[request setPredicate:predicate];
 		
 		NSError *error;
@@ -176,7 +180,10 @@
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectory = [paths objectAtIndex:0];
-	NSMutableArray *items = [self getForBlogURL:blogURL];
+	NSMutableArray *items = [self getForBlogURL:blogURL andMediaType:kImage];
+	for(Media *video in [self getForBlogURL:blogURL andMediaType:kVideo]) {
+		[items addObject:video];
+	};
 	NSString *filepath;
 	
 	for(Media *media in items) {
