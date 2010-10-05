@@ -3,6 +3,7 @@
 //  WordPress
 //
 //  Created by Chris Boyd on 9/6/10.
+//  Code is poetry.
 //
 
 #import <UIKit/UIKit.h>

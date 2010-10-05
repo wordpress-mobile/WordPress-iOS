@@ -3,7 +3,7 @@
 //  WordPress
 //
 //  Created by Chris Boyd on 8/26/10.
-//  Copyright 2010 WordPress. All rights reserved.
+//  Code is poetry.
 //
 
 #import "PostMediaViewController.h"
@@ -12,8 +12,8 @@
 @synthesize table, addMediaButton, hasPhotos, hasVideos, isAddingMedia, photos, videos, appDelegate, dm, addPopover;
 @synthesize isShowingMediaPickerActionSheet, currentOrientation, isShowingChangeOrientationActionSheet, spinner;
 @synthesize currentImage, currentVideo, isLibraryMedia, didChangeOrientationDuringRecord, messageLabel, topToolbar;
-@synthesize picker, postDetailViewController, mediaManager, postID, blogURL, mediaTypeControl, mediaUploader, bottomToolbar;
-@synthesize isShowingResizeActionSheet, videoEnabled, uploadID, videoPressCheckBlogURL, isCheckingVideoCapability;
+@synthesize postDetailViewController, mediaManager, postID, blogURL, mediaTypeControl, mediaUploader, bottomToolbar;
+@synthesize isShowingResizeActionSheet, videoEnabled, uploadID, videoPressCheckBlogURL, isCheckingVideoCapability, uniqueID;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -44,9 +44,6 @@
     [super viewDidLoad];
 	
 	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
-	self.picker = [[UIImagePickerController alloc] init];
-	self.picker.delegate = self;
-	
 	[self initObjects];
 	[self refreshProperties];
 	[self performSelectorInBackground:@selector(checkVideoEnabled) withObject:nil];
@@ -60,8 +57,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	
-	[self refreshProperties];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -75,7 +70,10 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return YES;
+	if(interfaceOrientation == UIInterfaceOrientationPortrait)
+		return YES;
+	else
+		return NO;
 }
 
 #pragma mark -
@@ -229,8 +227,8 @@
 		[self.spinner startAnimating];
 	}
 	else {
-		photos = [[mediaManager getForPostID:self.postID andBlogURL:self.blogURL andMediaType:kImage] retain];
-		videos = [[mediaManager getForPostID:self.postID andBlogURL:self.blogURL andMediaType:kVideo] retain];
+		photos = [[mediaManager getForPostID:self.uniqueID andBlogURL:self.blogURL andMediaType:kImage] retain];
+		videos = [[mediaManager getForPostID:self.uniqueID andBlogURL:self.blogURL andMediaType:kVideo] retain];
 	}
 	[self updateMediaCount];
     [self.table reloadData];
@@ -355,7 +353,6 @@
 				self.currentOrientation = kPortrait;
 				break;
 		}
-		NSLog(@"set orientation to: %d", self.currentOrientation);
 		[self processRecordedVideo];
 		self.isShowingChangeOrientationActionSheet = NO;
 	}
@@ -386,15 +383,22 @@
 }
 
 - (void)pickPhotoFromCamera:(id)sender {
+	UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+	picker.delegate = self;
+	picker.allowsEditing = YES;
 	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         picker.sourceType = UIImagePickerControllerSourceTypeCamera;
 		picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
         [appDelegate.navigationController presentModalViewController:picker animated:YES];
     }
+	[picker release];
 }
 
 - (void)pickVideoFromCamera:(id)sender {
+	UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+	picker.delegate = self;
+	picker.allowsEditing = YES;
 	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
 	picker.sourceType =  UIImagePickerControllerSourceTypeCamera;
 	picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeMovie];
@@ -404,6 +408,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(deviceDidRotate:)
 												 name:@"UIDeviceOrientationDidChangeNotification" object:nil];
+	[picker release];
 }
 
 - (MediaOrientation)interpretOrientation:(UIDeviceOrientation)theOrientation {
@@ -436,6 +441,9 @@
 }
 
 - (void)pickPhotoFromPhotoLibrary:(id)sender {
+	UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+	picker.delegate = self;
+	picker.allowsEditing = YES;
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
 		NSArray *availableMediaTypes = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
 		[picker setMediaTypes:availableMediaTypes];
@@ -449,6 +457,7 @@
 		else
 			[appDelegate.navigationController presentModalViewController:picker animated:YES];
     }
+	[picker release];
 }
 
 - (void)showOrientationChangedActionSheet {
@@ -470,28 +479,34 @@
 															  cancelButtonTitle:@"Original" 
 														 destructiveButtonTitle:nil 
 															  otherButtonTitles:@"Small", @"Medium", @"Large", nil];
-		if(super.tabBarController.view != nil)
-			[resizeActionSheet showInView:super.tabBarController.view];
-		else if(DeviceIsPad() == YES)
+		if(DeviceIsPad() == YES)
 			[resizeActionSheet showInView:appDelegate.splitViewController.view];
+		else
+			[resizeActionSheet showInView:super.tabBarController.view];
 		[resizeActionSheet release];
 	}
 }
 
-- (void)imagePickerController:(UIImagePickerController *)myPicker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
 	if([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.movie"]) {
 		[self refreshMedia];
 		self.currentVideo = [info retain];
+		NSLog(@"currentVideo: %@", currentVideo);
 		if(self.didChangeOrientationDuringRecord == YES)
 			[self showOrientationChangedActionSheet];
 		else if(self.isLibraryMedia == NO)
 			[self processRecordedVideo];
 		else
 			[self processLibraryVideo];
+		
+		if(DeviceIsPad() == YES)
+			[addPopover dismissPopoverAnimated:YES];
+		else
+			[appDelegate.navigationController dismissModalViewControllerAnimated:YES];
 	}
 	else if([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.image"]) {
 		UIImage *image = [info valueForKey:@"UIImagePickerControllerOriginalImage"];
-		if (myPicker.sourceType == UIImagePickerControllerSourceTypeCamera)
+		if (picker.sourceType == UIImagePickerControllerSourceTypeCamera)
 			UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
 		currentImage = [image retain];
 		
@@ -522,9 +537,11 @@
 				[self showResizeActionSheet];
 				break;
 		}
+		if(DeviceIsPad() == YES)
+			[addPopover dismissPopoverAnimated:YES];
+		else
+			[appDelegate.navigationController dismissModalViewControllerAnimated:YES];
 	}
-	[addPopover dismissPopoverAnimated:YES];
-	[picker dismissModalViewControllerAnimated:YES];
 }
 
 - (void)processRecordedVideo {
@@ -546,12 +563,9 @@
 }
 
 - (void)processLibraryVideo {
-	NSLog(@"processLibraryVideo...");
 	if([[currentVideo valueForKey:UIImagePickerControllerMediaURL] absoluteString] != nil) {
 		float osVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
-		NSLog(@"osVersion: %f", osVersion);
 		[self.currentVideo setValue:[NSNumber numberWithInt:currentOrientation] forKey:@"orientation"];
-		NSLog(@"currentVideo.orientation: %@", [currentVideo objectForKey:@"orientation"]);
 		NSString *videoPath = [(NSURL *)[currentVideo valueForKey:UIImagePickerControllerMediaURL] absoluteString];
 		videoPath = [[videoPath substringFromIndex:16] retain];
 		NSURL *contentURL = [NSURL fileURLWithPath:videoPath];
@@ -601,7 +615,7 @@
 		NSLog(@"OS is < 3.2, using default thumbnail image...");
 		thumbnail = [UIImage imageNamed:@"video_thumbnail"];
 	}
-
+	
 	
 	NSLog(@"Converting video to bytes for upload...");
 	NSData *videoData = [NSData dataWithContentsOfURL:contentURL];
@@ -720,9 +734,9 @@
 	return [theImage thumbnailImage:75 transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
 }
 
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)myPicker {
-	[[myPicker parentViewController] dismissModalViewControllerAnimated:YES];
-    [self refreshMedia];
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+	[appDelegate.navigationController dismissModalViewControllerAnimated:YES];
+    //[self refreshMedia];
 }
 
 - (void)useImage:(UIImage *)theImage {
@@ -759,7 +773,7 @@
 	
 	// Save to remote server
 	self.uploadID = imageMedia.uniqueID;
-	[self uploadMedia:imageData withFilename:filename andMediaType:kImage];
+	[self uploadMedia:imageData withFilename:filename andLocalURL:imageMedia.localURL andMediaType:kImage];
 	
 	//[self updatePhotosBadge];
 	
@@ -809,8 +823,7 @@
 	// Save to remote server
 	NSLog(@"uploading to server...");
 	self.uploadID = videoMedia.uniqueID;
-	[self uploadMedia:video withFilename:filename andMediaType:kVideo];
-	NSLog(@"successfully uploaded to server...");
+	[self uploadMedia:video withFilename:filename andLocalURL:videoMedia.localURL andMediaType:kVideo];
 	
 	//[self updatePhotosBadge];
 	
@@ -828,7 +841,7 @@
 	return [(NSString *)string autorelease];
 }
 
-- (void)uploadMedia:(NSData *)bits withFilename:(NSString *)filename andMediaType:(MediaType)mediaType {
+- (void)uploadMedia:(NSData *)bits withFilename:(NSString *)filename andLocalURL:(NSString *)localURL andMediaType:(MediaType)mediaType {
 	@try {
 		CGRect iPhoneFrameStart = CGRectMake(0, 480, 320, 40);
 		CGRect iPhoneFrameEnd = CGRectMake(0, 324, 320, 40);
@@ -836,7 +849,15 @@
 		CGRect iPadFrameEnd = CGRectMake(30, self.view.frame.size.height - 44, bottomToolbar.frame.size.width-300, bottomToolbar.frame.size.height);
 		
 		NSFileManager *fileManager = [NSFileManager defaultManager];
-		[mediaUploader setBits:bits];
+		
+		if(mediaType == kImage) {
+			[mediaUploader setBits:bits];
+			[mediaUploader setLocalURL:localURL];
+		}
+		else if(mediaType == kVideo) {
+			[mediaUploader setLocalURL:localURL];
+		}
+		
 		[mediaUploader setFilename:filename];
 		[mediaUploader setOrientation:currentOrientation];
 		[mediaUploader setMediaType:mediaType];
@@ -879,6 +900,7 @@
 }
 
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification {
+	NSLog(@"successfully uploaded to server...");
 	if(self.uploadID != nil) {
 		NSDictionary *mediaData = [notification userInfo];
 		NSLog(@"mediaData: %@", mediaData);
@@ -933,32 +955,39 @@
 		self.videoPressCheckBlogURL = self.blogURL;
 		
 		@try {
-			NSArray *args = [NSArray arrayWithObjects:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:kBlogId],
-							 [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"username"],
-							 [[BlogDataManager sharedDataManager] getPasswordFromKeychainInContextOfCurrentBlog:[[BlogDataManager sharedDataManager] currentBlog]], nil];
+			NSRange textRange = [[self.videoPressCheckBlogURL lowercaseString] rangeOfString:@"wordpress.com"];
 			
-			NSMutableDictionary *xmlrpcParams = [[NSMutableDictionary alloc] init];
-			[xmlrpcParams setObject:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"xmlrpc"] forKey:kURL];
-			[xmlrpcParams setObject:@"wpcom.getFeatures" forKey:kMETHOD];
-			[xmlrpcParams setObject:args forKey:kMETHODARGS];
-			
-			XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[xmlrpcParams valueForKey:kURL]]];
-			[request setMethod:[xmlrpcParams valueForKey:kMETHOD] withObjects:[xmlrpcParams valueForKey:kMETHODARGS]];
-			[xmlrpcParams release];
-			
-			XMLRPCResponse *response = [XMLRPCConnection sendSynchronousXMLRPCRequest:request];
-			if(([response.object isKindOfClass:[NSDictionary class]] == YES) && ([response.object objectForKey:@"videopress_enabled"] != nil))
-				self.videoEnabled = [[response.object objectForKey:@"videopress_enabled"] boolValue];
-			else if(([response.object isKindOfClass:[NSDictionary class]] == YES) && ([response.object objectForKey:@"faultCode"] != nil)) {
-				if([[response.object objectForKey:@"faultCode"] intValue] == -32601)
-					self.videoEnabled = YES;
+			if(textRange.location != NSNotFound)
+			{
+				NSArray *args = [NSArray arrayWithObjects:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:kBlogId],
+								 [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"username"],
+								 [[BlogDataManager sharedDataManager] getPasswordFromKeychainInContextOfCurrentBlog:[[BlogDataManager sharedDataManager] currentBlog]], nil];
+				
+				NSMutableDictionary *xmlrpcParams = [[NSMutableDictionary alloc] init];
+				[xmlrpcParams setObject:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"xmlrpc"] forKey:kURL];
+				[xmlrpcParams setObject:@"wpcom.getFeatures" forKey:kMETHOD];
+				[xmlrpcParams setObject:args forKey:kMETHODARGS];
+				
+				XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[xmlrpcParams valueForKey:kURL]]];
+				[request setMethod:[xmlrpcParams valueForKey:kMETHOD] withObjects:[xmlrpcParams valueForKey:kMETHODARGS]];
+				[xmlrpcParams release];
+				
+				XMLRPCResponse *response = [XMLRPCConnection sendSynchronousXMLRPCRequest:request];
+				if(([response.object isKindOfClass:[NSDictionary class]] == YES) && ([response.object objectForKey:@"videopress_enabled"] != nil))
+					self.videoEnabled = [[response.object objectForKey:@"videopress_enabled"] boolValue];
+				else if(([response.object isKindOfClass:[NSDictionary class]] == YES) && ([response.object objectForKey:@"faultCode"] != nil)) {
+					if([[response.object objectForKey:@"faultCode"] intValue] == -32601)
+						self.videoEnabled = YES;
+					else
+						self.videoEnabled = NO;
+				}
 				else
-					self.videoEnabled = NO;
+					self.videoEnabled = YES;
+				
+				[request release];
 			}
 			else
 				self.videoEnabled = YES;
-			
-			[request release];
 		}
 		@catch (NSException * e) {
 			self.videoEnabled = YES;
@@ -1039,6 +1068,7 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
+	[uniqueID release];
 	[addPopover release];
 	[topToolbar release];
 	[bottomToolbar release];
@@ -1049,7 +1079,6 @@
 	[blogURL release];
 	[postID release];
 	[mediaManager release];
-	[picker release];
 	[messageLabel release];
 	[currentVideo release];
 	[currentImage release];

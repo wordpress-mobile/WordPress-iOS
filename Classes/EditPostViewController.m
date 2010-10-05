@@ -163,13 +163,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-	if (titleTextField.text.length < 1 && titleTextField.enabled) {
-		[titleTextField becomeFirstResponder];
-	}
-	// This is annoying:
-	//else if (textView.editable) {
-	//	[textView becomeFirstResponder];
-	//}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -226,10 +219,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	self.isLocalDraft = YES;
 	[postDetailViewController.post setStatus:@"Local Draft"];
 	statusTextField.text = @"Local Draft";
-	
-	if (titleTextField.text.length < 1 && titleTextField.enabled) {
-		[titleTextField becomeFirstResponder];
-	}
 }
 
 - (void)refreshUIForCurrentPost {
@@ -1099,22 +1088,35 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)insertMediaAbove:(NSNotification *)notification {
 	Media *media = [notification object];
+	NSString *prefix = @"<br/><br/>";
 	
-	NSLog(@"received media object: %@", media);
+	if([textView.text isEqualToString:kTextViewPlaceholder]) {
+        textView.textColor = [UIColor blackColor];
+		textView.text = @"";
+		prefix = @"";
+	}
+	
 	NSMutableString *content = [[[NSMutableString alloc] initWithString:media.html] autorelease];
-	[content appendString:[NSString stringWithFormat:@"<br/><br/>%@", textView.text]];
+	[content appendString:[NSString stringWithFormat:@"%@%@", prefix, textView.text]];
     textView.text = content;
     postDetailViewController.hasChanges = YES;
 }
 
 - (void)insertMediaBelow:(NSNotification *)notification {
 	Media *media = [notification object];
+	NSString *prefix = @"<br/><br/>";
+	
+	if([textView.text isEqualToString:kTextViewPlaceholder]) {
+        textView.textColor = [UIColor blackColor];
+		textView.text = @"";
+		prefix = @"";
+	}
 	
 	if(textView.text == nil)
 		textView.text = @"";
 	
 	NSMutableString *content = [[[NSMutableString alloc] initWithString:textView.text] autorelease];
-	[content appendString:[NSString stringWithFormat:@"<br/><br/>%@", media.html]];
+	[content appendString:[NSString stringWithFormat:@"%@%@", prefix, media.html]];
     textView.text = content;
     postDetailViewController.hasChanges = YES;
 }

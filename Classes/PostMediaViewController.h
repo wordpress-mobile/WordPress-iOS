@@ -3,6 +3,7 @@
 //  WordPress
 //
 //  Created by Chris Boyd on 8/26/10.
+//  Code is poetry.
 //
 
 #import <UIKit/UIKit.h>
@@ -40,12 +41,11 @@ static inline double radians(double degrees) {
 	
 	BOOL hasPhotos, hasVideos, isAddingMedia, isShowingMediaPickerActionSheet, isShowingChangeOrientationActionSheet;
 	BOOL isLibraryMedia, didChangeOrientationDuringRecord, isShowingResizeActionSheet, videoEnabled, isCheckingVideoCapability;
-	NSString *postID, *blogURL, *uploadID, *videoPressCheckBlogURL;
+	NSString *postID, *blogURL, *uploadID, *videoPressCheckBlogURL, *uniqueID;
 	
 	NSMutableArray *photos, *videos;
 	UIDeviceOrientation currentOrientation;
     UIImage *currentImage;
-	UIImagePickerController *picker;
 	NSMutableDictionary *currentVideo;
 }
 
@@ -58,7 +58,7 @@ static inline double radians(double degrees) {
 @property (nonatomic, retain) IBOutlet IBOutlet UIPopoverController *addPopover;
 @property (nonatomic, assign) BOOL hasPhotos, hasVideos, isAddingMedia, isShowingMediaPickerActionSheet, isShowingChangeOrientationActionSheet;
 @property (nonatomic, assign) BOOL isLibraryMedia, didChangeOrientationDuringRecord, isShowingResizeActionSheet, videoEnabled, isCheckingVideoCapability;
-@property (nonatomic, retain) NSString *postID, *blogURL, *uploadID, *videoPressCheckBlogURL;
+@property (nonatomic, retain) NSString *postID, *blogURL, *uploadID, *videoPressCheckBlogURL, *uniqueID;
 @property (nonatomic, retain) NSMutableArray *photos, *videos;
 @property (nonatomic, assign) WordPressAppDelegate *appDelegate;
 @property (nonatomic, assign) PostViewController *postDetailViewController;
@@ -66,7 +66,6 @@ static inline double radians(double degrees) {
 @property (nonatomic, retain) WPMediaUploader *mediaUploader;
 @property (nonatomic, assign) UIDeviceOrientation currentOrientation;
 @property (nonatomic, retain) UIImage *currentImage;
-@property (nonatomic, retain) UIImagePickerController *picker;
 @property (nonatomic, retain) NSMutableDictionary *currentVideo;
 @property (nonatomic, assign) BlogDataManager *dm;
 
@@ -95,7 +94,7 @@ static inline double radians(double degrees) {
 - (void)removemediaUploader:(NSString *)animationID finished:(BOOL)finished context:(void *)context;
 - (BOOL)supportsVideo;
 - (UIImage *)generateThumbnailFromImage:(UIImage *)theImage andSize:(CGSize)targetSize;
-- (void)uploadMedia:(NSData *)bits withFilename:(NSString *)filename andMediaType:(MediaType)mediaType;
+- (void)uploadMedia:(NSData *)bits withFilename:(NSString *)filename andLocalURL:(NSString *)localURL andMediaType:(MediaType)mediaType;
 - (void)updateMediaCount;
 - (NSString *)getUUID;
 - (void)checkVideoEnabled;

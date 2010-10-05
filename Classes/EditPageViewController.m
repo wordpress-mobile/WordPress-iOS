@@ -641,6 +641,9 @@
 - (void)insertMediaAbove:(NSNotification *)notification {
 	Media *media = [notification object];
 	
+	if([contentTextView.text isEqualToString:kTextViewPlaceholder])
+		contentTextView.text = @"";
+	
 	NSMutableString *content = [[[NSMutableString alloc] initWithString:media.html] autorelease];
 	[content appendString:[NSString stringWithFormat:@"<br/><br/>%@", contentTextView.text]];
     contentTextView.text = content;
@@ -648,6 +651,9 @@
 
 - (void)insertMediaBelow:(NSNotification *)notification {
 	Media *media = [notification object];
+	
+	if([contentTextView.text isEqualToString:kTextViewPlaceholder])
+		contentTextView.text = @"";
 	
 	NSMutableString *content = [[[NSMutableString alloc] initWithString:contentTextView.text] autorelease];
 	[content appendString:[NSString stringWithFormat:@"<br/><br/>%@", media.html]];

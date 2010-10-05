@@ -3,48 +3,52 @@
 //  WordPress
 //
 //  Created by Chris Boyd on 8/3/10.
-//  Copyright 2010 WordPress. All rights reserved.
+//  Code is poetry.
 //
 
 #import <UIKit/UIKit.h>
 #import "BlogDataManager.h"
+#import "NSData+Base64.h"
+#import "ASIFormDataRequest.h"
 
-@interface WPMediaUploader : UIViewController {
-	IBOutlet UILabel *messageLabel;
-	IBOutlet UIProgressView *progressView;
+enum {
+	kSendBufferSize = 32768
+};
+
+@interface WPMediaUploader : UIViewController <ASIHTTPRequestDelegate> {
+	UILabel *messageLabel;
+	UIProgressView *progressView;
+    UIButton *stopButton;
 	
 	MediaType mediaType;
 	MediaOrientation orientation;
-	NSString *filename, *xmlrpcURL, *xmlrpcHost;
+	NSString *filename, *xmlrpcURL, *xmlrpcHost, *localURL, *localEncodedURL;
 	NSData *bits;
 	float filesize;
-	
-	NSURLConnection *connection;
-	NSURLRequest *urlRequest;
-	NSURLResponse *urlResponse;
-	NSMutableData *payload;
 }
 
 @property (nonatomic, retain) IBOutlet UILabel *messageLabel;
 @property (nonatomic, retain) IBOutlet UIProgressView *progressView;
+@property (nonatomic, retain) IBOutlet UIButton *stopButton;
 @property (nonatomic, assign) MediaType mediaType;
-@property (nonatomic, retain) NSString *filename, *xmlrpcURL, *xmlrpcHost;
+@property (nonatomic, retain) NSString *filename, *xmlrpcURL, *xmlrpcHost, *localURL, *localEncodedURL;
 @property (nonatomic, assign) float filesize;
 @property (nonatomic, assign) MediaOrientation orientation;
 @property (nonatomic, retain) NSData *bits;
-@property (nonatomic, retain) NSURLConnection *connection;
-@property (nonatomic, retain) NSURLRequest *urlRequest;
-@property (nonatomic, retain) NSURLResponse *urlResponse;
-@property (nonatomic, retain) NSMutableData *payload;
 
 - (void)start;
 - (void)stop;
+- (void)stopWithStatus:(NSString *)status;
+- (void)stopWithNotificationName:(NSString *)notificationName;
+- (void)send;
+- (void)finishWithNotificationName:(NSString *)notificationName object:(NSObject *)object userInfo:(NSDictionary *)userInfo;
 - (void)reset;
-- (void)connection:(NSURLConnection *)conn didReceiveResponse:(NSURLResponse *)response;
-- (void)connection:(NSURLConnection *)conn didReceiveData:(NSData *)data;
-- (void)connectionDidFinishLoading:(NSURLConnection *)conn;
-- (void)connection:(NSURLConnection *)conn didFailWithError:(NSError *)error;
-- (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite;
-- (void)createURLRequest:(XMLRPCRequest *)xmlrpc;
+- (IBAction)cancelAction:(id)sender;
+- (void)updateStatus:(NSString *)status;
+- (NSString *)xmlrpcPrefix;
+- (NSString *)xmlrpcSuffix;
+- (void)updateProgress:(NSNumber *)current total:(NSNumber *)total;
+- (void)base64EncodeFile;
+- (void)base64EncodeImage;
 
 @end

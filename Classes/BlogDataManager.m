@@ -710,9 +710,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
     NSString *blogHostDir = [currentDirectoryPath stringByAppendingPathComponent:[aBlog objectForKey:kBlogHostName]];
     NSString *blogDir = [blogHostDir stringByAppendingPathComponent:[aBlog objectForKey:kBlogId]];
     NSString *localDraftsDir = [blogDir stringByAppendingPathComponent:@"localDrafts"];
-	
-	NSLog(@"blogHostDir: %@ blogDir: %@ localDraftsDir: %@", blogHostDir, blogDir, localDraftsDir);
-	
     NSFileManager *fm = [NSFileManager defaultManager];
     BOOL isDirectory;
 	
@@ -4884,14 +4881,11 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 - (void)syncBlogs {
 	@try {
 		if((isSyncingBlogs == NO) && (blogsList.count > 0)) {
-			self.isSyncingBlogs = YES;
-			NSLog(@"Syncing blogs...");
-			
+			self.isSyncingBlogs = YES;			
 			self.shouldDisplayErrors = NO;
 			
 			for (NSMutableDictionary *blog in [blogsList mutableCopy]) {
 				if(self.shouldStopSyncingBlogs) {
-					NSLog(@"Stopping blog sync due to shouldStopSyncingBlogs signal.");
 					self.shouldStopSyncingBlogs = NO;
 					break;
 				}
@@ -4912,8 +4906,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 								[self syncPostsForBlog:blog];
 					}
 				}
-				else
-					NSLog(@"Skipping sync for currently selected blog: %@", [blog objectForKey:@"url"]);
 			}
 		}
 		
@@ -4921,7 +4913,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 		self.isSyncingBlogs = NO;
 	}
 	@catch (NSException * e) {
-		NSLog(@"Stopping blog sync due to error.");
 		self.shouldDisplayErrors = YES;
 		self.isSyncingBlogs = NO;
 	}
@@ -5131,18 +5122,30 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 	NSString * username = [theCurrentBlog valueForKey:@"username"];
 	NSString * url		= [theCurrentBlog valueForKey:@"url"];
 	url = [url stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-	//NSLog(@"inside getPasswordFromKeychainInContextofCurrentBlog %@, %@", username, url);
+	NSLog(@"inside getPasswordFromKeychainInContextofCurrentBlog %@, %@", username, url);
 	//!!TODO Trim url to eliminate http:// here!
 	
 	//url = [url stringByReplacingOccurrencesOfString:@"www." withString:@""];
 	if ((username == @"") || (url == @"")) {
 		NSString *password = @"";
-		//NSLog(@"getPasswordFromKeychainInContextofCurrentBlog... password is empty %@", password);
+		NSLog(@"getPasswordFromKeychainInContextofCurrentBlog... password is empty %@", password);
 		return password;
 		
 		//if username and url are empty, it's a new blog and there is no entry yet, just return an empty string
-	}else{
-		NSString * password = [self getBlogPasswordFromKeychainWithUsername:username andBlogName:url];
+	}
+	else {
+		NSString *password = [self getBlogPasswordFromKeychainWithUsername:username andBlogName:url];
+		
+		if(password == nil) {
+			NSLog(@"password is nil. trying again...");
+			url = [[theCurrentBlog valueForKey:@"url"] stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""];
+			password = [self getBlogPasswordFromKeychainWithUsername:username andBlogName:url];
+			
+			if(password != nil)
+				NSLog(@"found password using 2nd option.");
+		}
+		
+		NSLog(@"getPasswordFromKeychainInContextofCurrentBlog... password is %@", password);
 		return password;
 	}
 	
