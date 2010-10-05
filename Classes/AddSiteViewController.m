@@ -657,7 +657,12 @@
 														   andBlogURL:authBlogURL];
 	}
 	[newBlog setValue:[appDelegate.currentBlog valueForKey:kResizePhotoSetting] forKey:kResizePhotoSetting];
-	[newBlog setValue:[NSNumber numberWithInt:10] forKey:kPostsDownloadCount];
+	if ([appDelegate.currentBlog valueForKey:kResizePhotoSetting] == nil){
+		[newBlog setValue:[NSNumber numberWithInt:10] forKey:kPostsDownloadCount];
+	}
+	else {
+		[newBlog setValue:[appDelegate.currentBlog valueForKey:kPostsDownloadCount] forKey:kPostsDownloadCount];
+	}
 	[newBlog setValue:[appDelegate.currentBlog valueForKey:kGeolocationSetting] forKey:kGeolocationSetting];
 	[newBlog setValue:[NSNumber numberWithBool:YES] forKey:kSupportsPagesAndComments];
 	
