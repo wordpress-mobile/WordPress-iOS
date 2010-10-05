@@ -657,7 +657,7 @@
 														   andBlogURL:authBlogURL];
 	}
 	[newBlog setValue:[appDelegate.currentBlog valueForKey:kResizePhotoSetting] forKey:kResizePhotoSetting];
-	[newBlog setValue:[appDelegate.currentBlog valueForKey:kPostsDownloadCount] forKey:kPostsDownloadCount];
+	[newBlog setValue:[NSNumber numberWithInt:10] forKey:kPostsDownloadCount];
 	[newBlog setValue:[appDelegate.currentBlog valueForKey:kGeolocationSetting] forKey:kGeolocationSetting];
 	[newBlog setValue:[NSNumber numberWithBool:YES] forKey:kSupportsPagesAndComments];
 	
