@@ -202,8 +202,9 @@
 	[originalFile seekToFileOffset:0];
 	
 	// For base64, each chunk *MUST* be a multiple of 3
-	NSUInteger chunkSize = 3600;
+	NSUInteger chunkSize = 24000;
 	NSUInteger offset = 0;
+	NSAutoreleasePool *chunkPool = [[NSAutoreleasePool alloc] init];
 	while(offset < fileLength) {
 		// Read the next chunk from the input file
 		[originalFile seekToFileOffset:offset];
@@ -224,11 +225,21 @@
 		NSData *base64EncodedChunk = [serializedString dataUsingEncoding:NSASCIIStringEncoding];
 		[encodedFile truncateFileAtOffset:[encodedFile seekToEndOfFile]];
 		[encodedFile writeData:base64EncodedChunk];
+		
+		// Cleanup
 		base64EncodedChunk = nil;
+		serializedChunk = nil;
+		serializedString = nil;
+		chunk = nil;
 		
 		// Update the progress bar
 		[self updateProgress:[NSNumber numberWithInt:offset] total:[NSNumber numberWithInt:fileLength]];
+		
+		// Drain and recreate the pool
+		[chunkPool release];
+		chunkPool = [[NSAutoreleasePool alloc] init];
 	}
+	[chunkPool release];
 	
 	// Add the suffix to close out the xml payload
 	NSString *suffix = [self xmlrpcSuffix];
