@@ -413,13 +413,35 @@
 	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
 	picker.sourceType =  UIImagePickerControllerSourceTypeCamera;
 	picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeMovie];
-	picker.videoQuality = UIImagePickerControllerQualityTypeLow;
-	[appDelegate.navigationController presentModalViewController:picker animated:YES];
+	picker.videoQuality = UIImagePickerControllerQualityTypeMedium;
+	
+	if([[NSUserDefaults standardUserDefaults] objectForKey:@"video_quality_preference"] != nil) {
+		NSString *quality = [[NSUserDefaults standardUserDefaults] objectForKey:@"video_quality_preference"];
+		switch ([quality intValue]) {
+			case 0:
+				picker.videoQuality = UIImagePickerControllerQualityTypeHigh;
+				break;
+			case 1:
+				picker.videoQuality = UIImagePickerControllerQualityTypeMedium;
+				break;
+			case 2:
+				picker.videoQuality = UIImagePickerControllerQualityTypeLow;
+				break;
+			case 3:
+				picker.videoQuality = UIImagePickerControllerQualityType640x480;
+				break;
+			default:
+				picker.videoQuality = UIImagePickerControllerQualityTypeMedium;
+				break;
+		}
+	}
+	
+	//[[[UIApplication sharedApplication] keyWindow] setRootViewController:picker];
+	[postDetailViewController presentModalViewController:picker animated:YES];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(deviceDidRotate:)
 												 name:@"UIDeviceOrientationDidChangeNotification" object:nil];
-	[picker release];
 }
 
 - (MediaOrientation)interpretOrientation:(UIDeviceOrientation)theOrientation {
@@ -465,10 +487,11 @@
 			addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
 			[addPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		}
-		else
-			[appDelegate.navigationController presentModalViewController:picker animated:YES];
+		else {
+			//[[[UIApplication sharedApplication] keyWindow] setRootViewController:picker];
+			[postDetailViewController presentModalViewController:picker animated:YES];
+		}
     }
-	[picker release];
 }
 
 - (void)showOrientationChangedActionSheet {
@@ -508,11 +531,6 @@
 			[self processRecordedVideo];
 		else
 			[self processLibraryVideo];
-		
-		if(DeviceIsPad() == YES)
-			[addPopover dismissPopoverAnimated:YES];
-		else
-			[appDelegate.navigationController dismissModalViewControllerAnimated:YES];
 	}
 	else if([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.image"]) {
 		UIImage *image = [info valueForKey:@"UIImagePickerControllerOriginalImage"];
@@ -547,10 +565,13 @@
 				[self showResizeActionSheet];
 				break;
 		}
-		if(DeviceIsPad() == YES)
-			[addPopover dismissPopoverAnimated:YES];
-		else
-			[appDelegate.navigationController dismissModalViewControllerAnimated:YES];
+	}
+	
+	if(DeviceIsPad() == YES)
+		[addPopover dismissPopoverAnimated:YES];
+	else {
+		[postDetailViewController dismissModalViewControllerAnimated:NO];
+		[picker release];
 	}
 }
 

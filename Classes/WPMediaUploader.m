@@ -107,8 +107,8 @@
 		isWPcom = YES;
 	
 	if((self.mediaType == kVideo) && (!isWPcom)) {
-		if([[NSUserDefaults standardUserDefaults] objectForKey:@"video_upload_preference"] != nil) {
-			NSNumber *videoPreference = [[NSUserDefaults standardUserDefaults] objectForKey:@"video_upload_preference"];
+		if([[NSUserDefaults standardUserDefaults] objectForKey:@"video_api_preference"] != nil) {
+			NSString *videoPreference = [[NSUserDefaults standardUserDefaults] objectForKey:@"video_api_preference"];
 			
 			switch ([videoPreference intValue]) {
 				case 0:
@@ -196,12 +196,12 @@
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
 	switch (buttonIndex) {
 		case 1:
-			[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:1] forKey:@"video_upload_preference"];
+			[[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"video_api_preference"];
 			[[NSUserDefaults standardUserDefaults] synchronize];
 			[self sendAtomPub];
 			break;
 		case 2:
-			[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:2] forKey:@"video_upload_preference"];
+			[[NSUserDefaults standardUserDefaults] setObject:@"2" forKey:@"video_api_preference"];
 			[[NSUserDefaults standardUserDefaults] synchronize];
 			[self base64EncodeFile];
 			break;
@@ -403,7 +403,8 @@
 		NSMutableDictionary *videoMeta = [[NSMutableDictionary alloc] init];
 		if(isAtomPub) {
 			NSString *regEx = @"src=\"([^\"]*)\"";
-			NSString *link = [[request responseString] stringByMatching:regEx capture:0];
+			NSString *link = [[request responseString] stringByMatching:regEx capture:1];
+			link = [link stringByReplacingOccurrencesOfString:@"\"" withString:@""];
 			[videoMeta setObject:link forKey:@"url"];
 			[self finishWithNotificationName:VideoUploadSuccessful object:nil userInfo:videoMeta];
 			NSLog(@"atomPub remote media link: %@", link);

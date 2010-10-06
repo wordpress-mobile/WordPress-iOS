@@ -3197,7 +3197,12 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
     if ([day length] == 1)
         day = [NSString stringWithFormat:@"0%@", day];
 	
-    NSString *hour = [NSString stringWithFormat:@"%d", [comps hour]];
+	NSDate *localDate = [NSDate date];
+	NSDateFormatter *df = [[NSDateFormatter alloc] init];
+	[df setDateFormat:@"HH"];
+	NSString *hour = [df stringFromDate:localDate];
+	[df release];
+    //NSString *hour = [NSString stringWithFormat:@"%d", [gmtDate hour]];
 	
     if ([hour length] == 1)
         hour = [NSString stringWithFormat:@"0%@", hour];
@@ -3252,7 +3257,10 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
     [dict setObject:@"Local Draft" forKey:@"post_status"];
     [dict setObject:@"Local Draft" forKey:@"post_status_description"];
 	
-    [dict setObject:[NSDate date] forKey:@"date_created_gmt"];
+	NSTimeInterval timeZoneOffset = [[NSTimeZone defaultTimeZone] secondsFromGMT]; // You could also use the systemTimeZone method
+	NSTimeInterval gmtTimeInterval = [localDate timeIntervalSinceReferenceDate] - timeZoneOffset;
+	NSDate *gmtDate = [NSDate dateWithTimeIntervalSinceReferenceDate:gmtTimeInterval];
+    [dict setObject:gmtDate forKey:@"date_created_gmt"];
     [dict setObject:[NSNumber numberWithBool:0] forKey:@"isLocalDraft"];
     [dict setObject:@"" forKey:@"wp_password"];
     [dict setObject:@"" forKey:@"mt_keywords"];
@@ -3261,6 +3269,8 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
     [dict setObject:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
     [dict setObject:[NSNumber numberWithInt:0] forKey:@"not_used_allow_comments"];
     [dict setObject:@"" forKey:@"mt_keywords"];
+	
+	NSLog(@"dict: %@", dict);
 	
     NSNumber *value = [currentBlog valueForKey:kResizePhotoSetting];
 	

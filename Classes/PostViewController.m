@@ -282,6 +282,7 @@
 					
 					[[BlogDataManager sharedDataManager] makeNewPostCurrent];
 					[postDetailEditController updateValuesToCurrentPost];
+					
 					postDetailEditController.isLocalDraft = NO;
 				}
 				[(NSMutableDictionary *)[BlogDataManager sharedDataManager].currentPost setValue:@"" forKey:@"mt_text_more"];
@@ -695,6 +696,7 @@
 	postDetailEditController.statusTextField.text = [dm statusDescriptionForStatus:@"Published" fromBlog:dm.currentBlog];
 	
 	[dm.currentPost setObject:@"publish" forKey:@"post_status"];
+	
 	[self saveAction:sender];
 }
 

@@ -68,7 +68,9 @@
 						  @"<video src=\"%@\" controls=\"controls\" width=\"%@\" height=\"%@\">"
 						  "Your browser does not support the video tag"
 						  "</video>",
-						 self.remoteURL, embedWidth, embedHeight];
+						  [self.remoteURL stringByReplacingOccurrencesOfString:@"\"" withString:@""], 
+						  embedWidth, 
+						  embedHeight];
 		}
 	}
 	

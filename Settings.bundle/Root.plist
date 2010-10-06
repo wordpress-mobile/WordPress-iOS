@@ -132,9 +132,9 @@
 			<key>Type</key>
 			<string>PSMultiValueSpecifier</string>
 			<key>Title</key>
-			<string>Video Uploads</string>
+			<string>Video API</string>
 			<key>Key</key>
-			<string>video_upload_preference</string>
+			<string>video_api_preference</string>
 			<key>DefaultValue</key>
 			<string>2</string>
 			<key>Values</key>
@@ -146,8 +146,32 @@
 			<key>Titles</key>
 			<array>
 				<string>Always Ask</string>
-				<string>Use AtomPub</string>
-				<string>Use XML-RPC</string>
+				<string>AtomPub</string>
+				<string>XML-RPC</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Video Quality</string>
+			<key>Key</key>
+			<string>video_quality_preference</string>
+			<key>DefaultValue</key>
+			<string>1</string>
+			<key>Values</key>
+			<array>
+				<string>0</string>
+				<string>3</string>
+				<string>1</string>
+				<string>2</string>
+			</array>
+			<key>Titles</key>
+			<array>
+				<string>High</string>
+				<string>640x480</string>
+				<string>Medium</string>
+				<string>Low</string>
 			</array>
 		</dict>
 	</array>
