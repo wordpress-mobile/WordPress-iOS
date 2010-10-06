@@ -200,13 +200,19 @@
 	[originalFile seekToEndOfFile];
 	NSUInteger fileLength = [originalFile offsetInFile];
 	[originalFile seekToFileOffset:0];
+	
+	// For base64, each chunk *MUST* be a multiple of 3
 	NSUInteger chunkSize = 3600;
 	NSUInteger offset = 0;
 	while(offset < fileLength) {
+		// Read the next chunk from the input file
 		[originalFile seekToFileOffset:offset];
 		NSData *chunk = [originalFile readDataOfLength:chunkSize];
+		
+		// Update our offset
 		offset += chunkSize;
 		
+		// Base64 encode the input chunk
 		NSData *serializedChunk = [NSPropertyListSerialization dataFromPropertyList:chunk format:NSPropertyListXMLFormat_v1_0 errorDescription:NULL];
 		NSString *serializedString =  [[NSString alloc] initWithData:serializedChunk encoding:NSASCIIStringEncoding];
 		NSRange r = [serializedString rangeOfString:@"<data>"];
@@ -214,14 +220,13 @@
 		r = [serializedString rangeOfString:@"</data>"];
 		serializedString = [serializedString substringToIndex:r.location-1];
 		
-		assert(encodedFile != nil);
-		
+		// Write the base64 encoded chunk to our output file
 		NSData *base64EncodedChunk = [serializedString dataUsingEncoding:NSASCIIStringEncoding];
 		[encodedFile truncateFileAtOffset:[encodedFile seekToEndOfFile]];
 		[encodedFile writeData:base64EncodedChunk];
-		
 		base64EncodedChunk = nil;
 		
+		// Update the progress bar
 		[self updateProgress:[NSNumber numberWithInt:offset] total:[NSNumber numberWithInt:fileLength]];
 	}
 	
