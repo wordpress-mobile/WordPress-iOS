@@ -41,7 +41,10 @@
 	dm.shouldStopSyncingBlogs = YES;
 	self.xmlrpcURL = [dm.currentBlog valueForKey:@"xmlrpc"];
 	
-	[self send];
+	if(isAtomEnabled == YES)
+		[self send];
+	else
+		[self performSelectorInBackground:@selector(base64EncodeFile) withObject:nil];
 }
 
 - (void)stop {
@@ -62,29 +65,39 @@
 - (void)send {
 	[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Uploading media..." waitUntilDone:NO];
 	
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	NSString *blogURL = [dm.currentBlog objectForKey:@"url"];
-	
-	NSURL *atomURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/wp-app.php/attachments", blogURL]];
-	
-	NSDictionary *attributes = [[NSFileManager defaultManager] fileAttributesAtPath:self.localURL traverseLink: NO];
-	NSString *contentType = @"image/jpeg";
-	if(self.mediaType == kVideo)
-		contentType = @"video/mp4";
-	NSString *username = [dm.currentBlog objectForKey:@"username"];
-	NSString *password = [dm getPasswordFromKeychainInContextOfCurrentBlog:dm.currentBlog];
-	
-	ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:atomURL];
-	[request setUsername:username];
-	[request setPassword:password];
-	[request setRequestMethod:@"POST"];
-	[request addRequestHeader:@"Content-Type" value:contentType];
-	[request addRequestHeader:@"Content-Length" value:[NSString stringWithFormat:@"@d",[[attributes objectForKey:NSFileSize] intValue]]];
-	[request setShouldStreamPostDataFromDisk:YES];
-	[request setPostBodyFilePath:self.localURL];
-	[request setDelegate:self];
-	[request setUploadProgressDelegate:self.progressView];
-	[request startAsynchronous];
+	if(isAtomEnabled) {
+		BlogDataManager *dm = [BlogDataManager sharedDataManager];
+		NSString *blogURL = [dm.currentBlog objectForKey:@"url"];
+		
+		NSURL *atomURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/wp-app.php/attachments", blogURL]];
+		
+		NSDictionary *attributes = [[NSFileManager defaultManager] fileAttributesAtPath:self.localURL traverseLink: NO];
+		NSString *contentType = @"image/jpeg";
+		if(self.mediaType == kVideo)
+			contentType = @"video/mp4";
+		NSString *username = [dm.currentBlog objectForKey:@"username"];
+		NSString *password = [dm getPasswordFromKeychainInContextOfCurrentBlog:dm.currentBlog];
+		
+		ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:atomURL];
+		[request setUsername:username];
+		[request setPassword:password];
+		[request setRequestMethod:@"POST"];
+		[request addRequestHeader:@"Content-Type" value:contentType];
+		[request addRequestHeader:@"Content-Length" value:[NSString stringWithFormat:@"@d",[[attributes objectForKey:NSFileSize] intValue]]];
+		[request setShouldStreamPostDataFromDisk:YES];
+		[request setPostBodyFilePath:self.localURL];
+		[request setDelegate:self];
+		[request setUploadProgressDelegate:self.progressView];
+		[request startAsynchronous];
+	}
+	else {
+		ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:self.xmlrpcURL]];
+		[request setDelegate:self];
+		[request setShouldStreamPostDataFromDisk:YES];
+		[request appendPostDataFromFile:self.localEncodedURL];
+		[request setUploadProgressDelegate:self.progressView];
+		[request startAsynchronous];
+	}
 }
 
 - (void)finishWithNotificationName:(NSString *)notificationName object:(NSObject *)object userInfo:(NSDictionary *)userInfo {
@@ -207,10 +220,6 @@
 		[encodedFile truncateFileAtOffset:[encodedFile seekToEndOfFile]];
 		[encodedFile writeData:base64EncodedChunk];
 		
-//		NSString *contentString = [[NSString alloc] initWithData:base64EncodedChunk encoding:NSUTF8StringEncoding];
-//		NSLog(@"contentString: %@", contentString);
-//		[contentString release];
-		
 		base64EncodedChunk = nil;
 		
 		[self updateProgress:[NSNumber numberWithInt:offset] total:[NSNumber numberWithInt:fileLength]];
@@ -289,39 +298,36 @@
 #pragma mark ASIHTTPRequest delegate
 
 - (void)requestFinished:(ASIHTTPRequest *)request {
-	NSLog(@"request succeeded: %@", [request responseString]);
-	[self finishWithNotificationName:VideoUploadSuccessful object:nil userInfo:nil];
+	[[NSFileManager defaultManager] removeItemAtURL:[NSURL fileURLWithPath:self.localEncodedURL] error:NULL];
 	
-//	[[NSFileManager defaultManager] removeItemAtURL:[NSURL fileURLWithPath:self.localEncodedURL] error:NULL];
+	XMLRPCResponse *xmlrpcResponse = [[XMLRPCResponse alloc] initWithData:[request responseData]];
+	NSDictionary *responseMeta = [xmlrpcResponse object];
+	if ([xmlrpcResponse isKindOfClass:[NSError class]]) {
+		[self finishWithNotificationName:VideoUploadFailed object:nil userInfo:nil];
+	}
+	else if(mediaType == kVideo) {
+			NSMutableDictionary *videoMeta = [[NSMutableDictionary alloc] init];
+		if([responseMeta objectForKey:@"videopress_shortcode"] != nil)
+			[videoMeta setObject:[responseMeta objectForKey:@"videopress_shortcode"] forKey:@"shortcode"];
 	
-//	XMLRPCResponse *xmlrpcResponse = [[XMLRPCResponse alloc] initWithData:[request responseData]];
-//	NSDictionary *responseMeta = [xmlrpcResponse object];
-//	if ([xmlrpcResponse isKindOfClass:[NSError class]]) {
-//		[self finishWithNotificationName:VideoUploadFailed object:nil userInfo:nil];
-//	}
-//	else if(mediaType == kVideo) {
-//			NSMutableDictionary *videoMeta = [[NSMutableDictionary alloc] init];
-//		if([responseMeta objectForKey:@"videopress_shortcode"] != nil)
-//			[videoMeta setObject:[responseMeta objectForKey:@"videopress_shortcode"] forKey:@"shortcode"];
-//	
-//		if([responseMeta objectForKey:@"url"] != nil)
-//			[videoMeta setObject:[responseMeta objectForKey:@"url"] forKey:@"url"];
-//
-//		if(videoMeta.count > 0) {
-//			[videoMeta setValue:[NSNumber numberWithInt:orientation] forKey:@"orientation"];
-//			[self finishWithNotificationName:VideoUploadSuccessful object:nil userInfo:videoMeta];
-//		}
-//		[videoMeta release];
-//	}
-//	else if(mediaType == kImage) {
-//			NSMutableDictionary *imageMeta = [[NSMutableDictionary alloc] init];
-//		if([responseMeta objectForKey:@"url"] != nil)
-//			[imageMeta setObject:[responseMeta objectForKey:@"url"] forKey:@"url"];
-//		[self finishWithNotificationName:ImageUploadSuccessful object:nil userInfo:imageMeta];
-//		[imageMeta release];
-//	}
-//	
-//	[xmlrpcResponse release];
+		if([responseMeta objectForKey:@"url"] != nil)
+			[videoMeta setObject:[responseMeta objectForKey:@"url"] forKey:@"url"];
+
+		if(videoMeta.count > 0) {
+			[videoMeta setValue:[NSNumber numberWithInt:orientation] forKey:@"orientation"];
+			[self finishWithNotificationName:VideoUploadSuccessful object:nil userInfo:videoMeta];
+		}
+		[videoMeta release];
+	}
+	else if(mediaType == kImage) {
+			NSMutableDictionary *imageMeta = [[NSMutableDictionary alloc] init];
+		if([responseMeta objectForKey:@"url"] != nil)
+			[imageMeta setObject:[responseMeta objectForKey:@"url"] forKey:@"url"];
+		[self finishWithNotificationName:ImageUploadSuccessful object:nil userInfo:imageMeta];
+		[imageMeta release];
+	}
+	
+	[xmlrpcResponse release];
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request {
