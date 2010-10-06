@@ -77,9 +77,8 @@
 	NSArray *params = [NSArray arrayWithObjects:
 					   [dm.currentBlog valueForKey:@"blogid"],
 					   [dm.currentBlog objectForKey:@"username"],
-					   password,
-					   nil];
-	NSLog(@"syncPages.params: %@", params);
+					   password, nil];
+	//NSLog(@"syncPages.params: %@", params);
 	
 	// Execute the XML-RPC request
 	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:xmlrpcURL];
@@ -89,11 +88,13 @@
 	if (connection) {
 		payload = [[NSMutableData data] retain];
 	}
+	[request release];
 }
 
 - (void)didSyncPages {
 	NSSortDescriptor *pageSorter = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
 	[pages sortUsingDescriptors:[NSArray arrayWithObject:pageSorter]];
+	[pageSorter release];
 	
 	[self storeData];
 	
@@ -125,7 +126,7 @@
 						   nil];
 		XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:xmlrpcURL];
 		[request setMethod:@"wp.getPageStatusList" withObjects:params];
-		NSLog(@"syncStatusesInBackground.params: %@", params);
+		//NSLog(@"syncStatusesInBackground.params: %@", params);
 		id response = [self executeXMLRPCRequest:request];
 		
 		if([response isKindOfClass:[NSDictionary class]]) {
@@ -140,6 +141,7 @@
 			[statuses setObject:@"Local Draft" forKey:[NSString stringWithString:kLocalDraftKey]];
 			[[NSUserDefaults standardUserDefaults] setObject:statuses forKey:statusKey];
 		}
+		[request release];
 		
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	}
@@ -179,7 +181,7 @@
 						   [dm.currentBlog valueForKey:@"username"],
 						   password,
 						   nil];
-		NSLog(@"downloadPage.params: %@", params);
+		//NSLog(@"downloadPage.params: %@", params);
 		XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:xmlrpcURL];
 		[request setMethod:@"wp.getPage" withObjects:params];
 		id page = [self executeXMLRPCRequest:request];
@@ -192,6 +194,7 @@
 			// Failure
 			NSLog(@"error: %@", page);
 		}
+		[request release];
 		
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	}
@@ -229,6 +232,7 @@
 - (void)didGetPages {
 	NSSortDescriptor *pageSorter = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
 	[pages sortUsingDescriptors:[NSArray arrayWithObject:pageSorter]];
+	[pageSorter release];
 	
 	[self storeData];
 	
@@ -294,6 +298,7 @@
 		// Failure
 		NSLog(@"wp.newPage failed: %@", response);
 	}
+	[request release];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
@@ -329,6 +334,7 @@
 		// Failure
 		NSLog(@"wp.editPage failed: %@", response);
 	}
+	[request release];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
@@ -359,6 +365,7 @@
 		else {
 			// Failure
 		}
+		[request release];
 		
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	}
@@ -434,7 +441,7 @@
 							[pageIDs removeAllObjects];
 							// Handle response here.
 							NSLog(@"responseMeta: %@", responseMeta);
-							if(responseMeta.count > 0) {
+							if([responseMeta objectForKey:@"faultCode"] == nil) {
 								NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
 								[f setNumberStyle:NSNumberFormatterDecimalStyle];
 								for(NSDictionary *page in responseMeta) {

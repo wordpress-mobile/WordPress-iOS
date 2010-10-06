@@ -213,6 +213,7 @@
 		83A645D9112B8690000999A6 /* PostLocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83A645D7112B8690000999A6 /* PostLocationViewController.xib */; };
 		83A64689112C5F75000999A6 /* PostSettingsHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A64688112C5F75000999A6 /* PostSettingsHelpViewController.m */; };
 		83A646AB112C63E5000999A6 /* help.png in Resources */ = {isa = PBXBuildFile; fileRef = 83A646AA112C63E5000999A6 /* help.png */; };
+		83ABDD78125D30F700A421B2 /* BlogSettingsView-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83ABDD77125D30F700A421B2 /* BlogSettingsView-iPad.xib */; };
 		83BC943C11F94AA00041141A /* whitebg.png in Resources */ = {isa = PBXBuildFile; fileRef = 83BC943B11F94AA00041141A /* whitebg.png */; };
 		83CAC78A12354031003DFA20 /* PageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CAC78912354031003DFA20 /* PageManager.m */; };
 		83CACE951235A003003DFA20 /* UILoadMoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CACE941235A003003DFA20 /* UILoadMoreCell.m */; };
@@ -602,6 +603,7 @@
 		83A64687112C5F75000999A6 /* PostSettingsHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostSettingsHelpViewController.h; sourceTree = "<group>"; };
 		83A64688112C5F75000999A6 /* PostSettingsHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostSettingsHelpViewController.m; sourceTree = "<group>"; };
 		83A646AA112C63E5000999A6 /* help.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = help.png; sourceTree = "<group>"; };
+		83ABDD77125D30F700A421B2 /* BlogSettingsView-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "BlogSettingsView-iPad.xib"; sourceTree = "<group>"; };
 		83BC943B11F94AA00041141A /* whitebg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whitebg.png; sourceTree = "<group>"; };
 		83CAC78812354031003DFA20 /* PageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageManager.h; sourceTree = "<group>"; };
 		83CAC78912354031003DFA20 /* PageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageManager.m; sourceTree = "<group>"; };
@@ -1139,6 +1141,7 @@
 		83F1FCA7123748EF00069F99 /* Blogs */ = {
 			isa = PBXGroup;
 			children = (
+				83ABDD77125D30F700A421B2 /* BlogSettingsView-iPad.xib */,
 				835871C8120096AC007682CB /* WelcomeViewController-iPad.xib */,
 				8362C1291201EA9700599347 /* WPcomLoginViewController-iPad.xib */,
 				8362C1C5120229BC00599347 /* AddSiteViewController-iPad.xib */,
@@ -1674,6 +1677,7 @@
 				83F1FA581237073B00069F99 /* WPMediaUploader-iPad.xib in Resources */,
 				83F1FCAC1237494D00069F99 /* PageViewController-iPad.xib in Resources */,
 				837593AE1243ECD500D04C93 /* EditSiteViewController-iPad.xib in Resources */,
+				83ABDD78125D30F700A421B2 /* BlogSettingsView-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

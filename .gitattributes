@@ -19,6 +19,7 @@
 /AddBlogValidationBackground@2x.png -text
 /AddSiteViewController-iPad.xib -text
 /AddUsersBlogsViewController-iPad.xib -text
+/BlogSettingsView-iPad.xib -text
 /BlogViewController-iPad.xib -text
 /BlogViewController.xib -text
 /CXMLDocument.h -text

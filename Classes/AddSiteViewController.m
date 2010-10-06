@@ -247,6 +247,13 @@
 	return nil;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+	if(section == 0)
+		return 50.0;
+	
+	return 0.0;
+}
+
 #pragma mark -
 #pragma mark Table view delegate
 
@@ -294,7 +301,12 @@
 						[activeTextField becomeFirstResponder];
 						[activeTextField resignFirstResponder];
 					}
-					BlogSettingsViewController *settingsView = [[BlogSettingsViewController alloc] initWithNibName:@"BlogSettingsViewController" bundle:nil];
+					
+					BlogSettingsViewController *settingsView;
+					if(DeviceIsPad())
+						settingsView = [[BlogSettingsViewController alloc] initWithNibName:@"BlogSettingsView-iPad" bundle:nil];
+					else
+						settingsView = [[BlogSettingsViewController alloc] initWithNibName:@"BlogSettingsViewController" bundle:nil];
 					[self.navigationController pushViewController:settingsView animated:YES];
 					[settingsView release];
 					
