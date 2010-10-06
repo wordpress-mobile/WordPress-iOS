@@ -917,7 +917,6 @@
 		[[NSNotificationCenter defaultCenter] postNotificationName:VideoSaved object:filename];
 	}
 	@catch (NSException *ex) {
-		NSLog(@"Video save failed with exception: %@", ex);
 		[[NSNotificationCenter defaultCenter] postNotificationName:VideoUploadFailed object:nil];
 	}
 	@finally {

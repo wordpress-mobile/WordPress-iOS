@@ -712,20 +712,22 @@
     if (keyboardIsVisible)
         return;
 	
-	NSDictionary *info = [notification userInfo];
-	NSValue *aValue = [info objectForKey:UIKeyboardBoundsUserInfoKey];
-	CGSize keyboardSize = [aValue CGRectValue].size;
-	
-	NSTimeInterval animationDuration = 0.300000011920929;
-	CGRect frame = self.view.frame;
-	frame.origin.y -= keyboardSize.height-140;
-	frame.size.height += keyboardSize.height-140;
-	[UIView beginAnimations:@"ResizeForKeyboard" context:nil];
-	[UIView setAnimationDuration:animationDuration];
-	self.view.frame = frame;
-	[UIView commitAnimations];
-	
-	viewDidMove = YES;
+	if(!DeviceIsPad()) {
+		NSDictionary *info = [notification userInfo];
+		NSValue *aValue = [info objectForKey:UIKeyboardBoundsUserInfoKey];
+		CGSize keyboardSize = [aValue CGRectValue].size;
+		
+		NSTimeInterval animationDuration = 0.300000011920929;
+		CGRect frame = self.view.frame;
+		frame.origin.y -= keyboardSize.height-140;
+		frame.size.height += keyboardSize.height-140;
+		[UIView beginAnimations:@"ResizeForKeyboard" context:nil];
+		[UIView setAnimationDuration:animationDuration];
+		self.view.frame = frame;
+		[UIView commitAnimations];
+		
+		viewDidMove = YES;
+	}
 	keyboardIsVisible = YES;
 }
 

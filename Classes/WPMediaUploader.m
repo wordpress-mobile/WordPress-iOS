@@ -407,10 +407,9 @@
 			link = [link stringByReplacingOccurrencesOfString:@"\"" withString:@""];
 			[videoMeta setObject:link forKey:@"url"];
 			[self finishWithNotificationName:VideoUploadSuccessful object:nil userInfo:videoMeta];
-			NSLog(@"atomPub remote media link: %@", link);
 		}
 		else {
-			[[NSFileManager defaultManager] removeItemAtURL:[NSURL fileURLWithPath:self.localEncodedURL] error:NULL];
+			[[NSFileManager defaultManager] removeItemAtPath:self.localURL error:NULL];
 			XMLRPCResponse *xmlrpcResponse = [[XMLRPCResponse alloc] initWithData:[request responseData]];
 			NSDictionary *responseMeta = [xmlrpcResponse object];
 			if ([xmlrpcResponse isKindOfClass:[NSError class]]) {
@@ -464,7 +463,7 @@
 		[self stopWithNotificationName:@"VideoUploadFailed"];
 	
 	if(!isAtomPub)
-		[[NSFileManager defaultManager] removeItemAtURL:[NSURL fileURLWithPath:self.localEncodedURL] error:NULL];
+		[[NSFileManager defaultManager]  removeItemAtPath:self.localURL error:NULL];
 }
 
 - (void)connection:(NSURLConnection *)conn didFailWithError:(NSError *)error {
