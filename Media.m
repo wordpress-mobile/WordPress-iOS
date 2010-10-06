@@ -48,6 +48,19 @@
 						  self.remoteURL, self.caption, self.width, self.height];
 		}
 		else if([self.mediaType isEqualToString:@"video"]) {
+			NSString *embedWidth = [NSString stringWithFormat:@"%@", self.width];
+			NSString *embedHeight= [NSString stringWithFormat:@"%@", self.height];
+			
+			// Check for landscape resize
+			if((self.width > self.height) && (self.width > 640)) {
+				embedWidth = @"640";
+				embedHeight = @"360";
+			}
+			else if((self.height > self.width) && (self.height > 640)) {
+				embedHeight = @"640";
+				embedWidth = @"360";
+			}
+			
 			if(self.shortcode != nil)
 				result = self.shortcode;
 			else if(self.remoteURL != nil)
@@ -55,7 +68,7 @@
 						  @"<video src=\"%@\" controls=\"controls\" width=\"%@\" height=\"%@\">"
 						  "Your browser does not support the video tag"
 						  "</video>",
-						 self.remoteURL, self.width, self.height];
+						 self.remoteURL, embedWidth, embedHeight];
 		}
 	}
 	

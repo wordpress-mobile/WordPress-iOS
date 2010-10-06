@@ -824,7 +824,6 @@
 		NSUInteger videoHeight = CGImageGetHeight(cgVideoThumbnail);
 		videoMedia.width = [NSNumber numberWithInt:videoWidth];
 		videoMedia.height = [NSNumber numberWithInt:videoHeight];
-		NSLog(@"video thumbnail dimensions - width: %@ height: %@", videoMedia.width, videoMedia.height);
 		
 		// Save to remote server
 		self.uploadID = videoMedia.uniqueID;
