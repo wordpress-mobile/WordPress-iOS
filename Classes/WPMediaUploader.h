@@ -25,6 +25,7 @@ enum {
 	NSString *filename, *xmlrpcURL, *xmlrpcHost, *localURL, *localEncodedURL;
 	NSData *bits;
 	float filesize;
+	BOOL isAtomEnabled;
 }
 
 @property (nonatomic, retain) IBOutlet UILabel *messageLabel;
@@ -35,6 +36,7 @@ enum {
 @property (nonatomic, assign) float filesize;
 @property (nonatomic, assign) MediaOrientation orientation;
 @property (nonatomic, retain) NSData *bits;
+@property (nonatomic, assign) BOOL isAtomEnabled;
 
 - (void)start;
 - (void)stop;

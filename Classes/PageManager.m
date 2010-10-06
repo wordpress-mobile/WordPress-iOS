@@ -9,7 +9,7 @@
 
 @implementation PageManager
 @synthesize appDelegate, dm, xmlrpcURL, connection, payload, urlRequest, urlResponse, pages, saveKey, statuses, pageIDs;
-@synthesize statusKey, isGettingPages;
+@synthesize statusKey, isGettingPages, password;
 
 #pragma mark -
 #pragma mark Initialize
@@ -39,6 +39,7 @@
 	
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	dm = [BlogDataManager sharedDataManager];
+	password = [dm getPasswordFromKeychainInContextOfCurrentBlog:dm.currentBlog];
 	saveKey = [[NSString stringWithFormat:@"pages-%@", [dm.currentBlog valueForKey:kBlogHostName]] retain];
 	statusKey = [[NSString stringWithFormat:@"statuses-%@", [dm.currentBlog valueForKey:kBlogHostName]] retain];
 	
@@ -76,8 +77,9 @@
 	NSArray *params = [NSArray arrayWithObjects:
 					   [dm.currentBlog valueForKey:@"blogid"],
 					   [dm.currentBlog objectForKey:@"username"],
-					   [dm getPasswordFromKeychainInContextOfCurrentBlog:dm.currentBlog],
+					   password,
 					   nil];
+	NSLog(@"syncPages.params: %@", params);
 	
 	// Execute the XML-RPC request
 	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:xmlrpcURL];
@@ -119,9 +121,11 @@
 		NSArray *params = [NSArray arrayWithObjects:
 						   [dm.currentBlog valueForKey:kBlogId],
 						   [dm.currentBlog valueForKey:@"username"],
-						   [dm getPasswordFromKeychainInContextOfCurrentBlog:dm.currentBlog], nil];
+						   password,
+						   nil];
 		XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:xmlrpcURL];
 		[request setMethod:@"wp.getPageStatusList" withObjects:params];
+		NSLog(@"syncStatusesInBackground.params: %@", params);
 		id response = [self executeXMLRPCRequest:request];
 		
 		if([response isKindOfClass:[NSDictionary class]]) {
@@ -173,7 +177,9 @@
 						   [dm.currentBlog valueForKey:kBlogId], 
 						   [pageID stringValue],
 						   [dm.currentBlog valueForKey:@"username"],
-						   [dm getPasswordFromKeychainInContextOfCurrentBlog:dm.currentBlog], nil];
+						   password,
+						   nil];
+		NSLog(@"downloadPage.params: %@", params);
 		XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:xmlrpcURL];
 		[request setMethod:@"wp.getPage" withObjects:params];
 		id page = [self executeXMLRPCRequest:request];
@@ -267,7 +273,7 @@
 	NSArray *params = [NSArray arrayWithObjects:
 					   [dm.currentBlog valueForKey:kBlogId],
 					   [dm.currentBlog valueForKey:@"username"],
-					   [dm getPasswordFromKeychainInContextOfCurrentBlog:dm.currentBlog],
+					   password,
 					   [page legacyPost],
 					   shouldPublish, nil];
 	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:xmlrpcURL];
@@ -304,7 +310,7 @@
 					   [dm.currentBlog valueForKey:kBlogId],
 					   page.postID,
 					   [dm.currentBlog valueForKey:@"username"],
-					   [dm getPasswordFromKeychainInContextOfCurrentBlog:dm.currentBlog],
+					   password,
 					   [page legacyPost], nil];
 	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:xmlrpcURL];
 	[request setMethod:@"wp.editPage" withObjects:params];
@@ -337,7 +343,7 @@
 		NSArray *params = [NSArray arrayWithObjects:
 						   [dm.currentBlog valueForKey:kBlogId],
 						   [dm.currentBlog valueForKey:@"username"],
-						   [dm getPasswordFromKeychainInContextOfCurrentBlog:dm.currentBlog],
+						   password,
 						   [pageID stringValue], nil];
 		XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:xmlrpcURL];
 		[request setMethod:@"wp.deletePage" withObjects:params];
@@ -427,6 +433,7 @@
 						if(![responseMeta isKindOfClass:[NSError class]]) {
 							[pageIDs removeAllObjects];
 							// Handle response here.
+							NSLog(@"responseMeta: %@", responseMeta);
 							if(responseMeta.count > 0) {
 								NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
 								[f setNumberStyle:NSNumberFormatterDecimalStyle];
@@ -492,6 +499,7 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
+	[password release];
 	[statusKey release];
 	[pageIDs release];
 	[statuses release];

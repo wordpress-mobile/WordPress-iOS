@@ -5141,7 +5141,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 			
 			// Try last resort password url
 			if(password == nil) {
-				url = [NSString stringWithFormat:@"http://%@", [theCurrentBlog valueForKey:@"url"]];
+				url = [NSString stringWithFormat:@"%@/", [theCurrentBlog valueForKey:@"url"]];
 				password = [self getBlogPasswordFromKeychainWithUsername:username andBlogName:url];
 			}
 

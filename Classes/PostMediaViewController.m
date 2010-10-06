@@ -110,7 +110,6 @@
     
 	Media *media = nil;
 	NSString *filesizeString = nil;
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	
 	switch (mediaTypeControl.selectedSegmentIndex) {
 		case 0:

@@ -28,7 +28,7 @@
 	NSMutableData *payload;
 	NSMutableArray *pages, *pageIDs;
 	NSMutableDictionary *statuses;
-	NSString *saveKey, *statusKey;
+	NSString *saveKey, *statusKey, *password;
 	
 	BOOL isGettingPages;
 }
@@ -42,7 +42,7 @@
 @property (nonatomic, retain) NSMutableData *payload;
 @property (nonatomic, retain) NSMutableArray *pages, *pageIDs;
 @property (nonatomic, retain) NSMutableDictionary *statuses;
-@property (nonatomic, retain) NSString *saveKey, *statusKey;
+@property (nonatomic, retain) NSString *saveKey, *statusKey, *password;
 @property (nonatomic, assign) BOOL isGettingPages;
 
 - (void)initObjects;

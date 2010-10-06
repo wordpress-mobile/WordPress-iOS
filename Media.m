@@ -61,7 +61,7 @@
 						  "autoplay=\"false\" controller=\"true\" type=\"video/quicktime\""
 						  "pluginspage=\"http://www.apple.com/quicktime/download/\">"
 						  "</embed></object>",
-						 self.width, self.height, self.remoteURL, self.remoteURL, self.width, self.height];
+						 self.width, self.height, self.remoteURL, self.remoteURL, self.width, self.height+16];
 		}
 	}
 	
