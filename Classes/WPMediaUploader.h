@@ -15,7 +15,7 @@ enum {
 	kSendBufferSize = 32768
 };
 
-@interface WPMediaUploader : UIViewController <ASIHTTPRequestDelegate> {
+@interface WPMediaUploader : UIViewController <ASIHTTPRequestDelegate, UIAlertViewDelegate> {
 	UILabel *messageLabel;
 	UIProgressView *progressView;
     UIButton *stopButton;
@@ -25,7 +25,7 @@ enum {
 	NSString *filename, *xmlrpcURL, *xmlrpcHost, *localURL, *localEncodedURL;
 	NSData *bits;
 	float filesize;
-	BOOL isAtomEnabled;
+	BOOL isAtomPub;
 }
 
 @property (nonatomic, retain) IBOutlet UILabel *messageLabel;
@@ -36,21 +36,25 @@ enum {
 @property (nonatomic, assign) float filesize;
 @property (nonatomic, assign) MediaOrientation orientation;
 @property (nonatomic, retain) NSData *bits;
-@property (nonatomic, assign) BOOL isAtomEnabled;
+@property (nonatomic, assign) BOOL isAtomPub;
 
 - (void)start;
 - (void)stop;
 - (void)stopWithStatus:(NSString *)status;
 - (void)stopWithNotificationName:(NSString *)notificationName;
-- (void)send;
 - (void)finishWithNotificationName:(NSString *)notificationName object:(NSObject *)object userInfo:(NSDictionary *)userInfo;
 - (void)reset;
 - (IBAction)cancelAction:(id)sender;
 - (void)updateStatus:(NSString *)status;
 - (NSString *)xmlrpcPrefix;
 - (NSString *)xmlrpcSuffix;
-- (void)updateProgress:(NSNumber *)current total:(NSNumber *)total;
+- (void)updateProgress:(NSDictionary *)values;
 - (void)base64EncodeFile;
 - (void)base64EncodeImage;
+- (void)checkAtomPub;
+- (void)showAPIAlert;
+- (void)buildXMLRPC;
+- (void)sendXMLRPC;
+- (void)sendAtomPub;
 
 @end

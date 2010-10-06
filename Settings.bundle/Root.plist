@@ -100,13 +100,13 @@
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
-			<string>Images</string>
+			<string>Media</string>
 		</dict>
 		<dict>
 			<key>Type</key>
 			<string>PSMultiValueSpecifier</string>
 			<key>Title</key>
-			<string>Resize</string>
+			<string>Image Resize</string>
 			<key>Key</key>
 			<string>media_resize_preference</string>
 			<key>DefaultValue</key>
@@ -126,6 +126,28 @@
 				<string>Medium</string>
 				<string>Large</string>
 				<string>Disabled</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Video Uploads</string>
+			<key>Key</key>
+			<string>video_upload_preference</string>
+			<key>DefaultValue</key>
+			<string>2</string>
+			<key>Values</key>
+			<array>
+				<string>0</string>
+				<string>1</string>
+				<string>2</string>
+			</array>
+			<key>Titles</key>
+			<array>
+				<string>Always Ask</string>
+				<string>Use AtomPub</string>
+				<string>Use XML-RPC</string>
 			</array>
 		</dict>
 	</array>

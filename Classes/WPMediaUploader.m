@@ -8,7 +8,7 @@
 #import "WPMediaUploader.h"
 
 @implementation WPMediaUploader
-@synthesize messageLabel, mediaType, progressView, filename, bits, localEncodedURL, isAtomEnabled;
+@synthesize messageLabel, mediaType, progressView, filename, bits, localEncodedURL, isAtomPub;
 @synthesize filesize, orientation, xmlrpcURL, xmlrpcHost, localURL, stopButton;
 
 #pragma mark -
@@ -26,7 +26,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(send) name:@"FileEncodeSuccessful" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendXMLRPC) name:@"FileEncodeSuccessful" object:nil];
 }
 
 #pragma mark -
@@ -41,10 +41,7 @@
 	dm.shouldStopSyncingBlogs = YES;
 	self.xmlrpcURL = [dm.currentBlog valueForKey:@"xmlrpc"];
 	
-	if(isAtomEnabled == YES)
-		[self send];
-	else
-		[self performSelectorInBackground:@selector(base64EncodeFile) withObject:nil];
+	[self checkAtomPub];
 }
 
 - (void)stop {
@@ -60,44 +57,6 @@
 - (void)stopWithNotificationName:(NSString *)notificationName {
 	[self stop];
 	[[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
-}
-
-- (void)send {
-	[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Uploading media..." waitUntilDone:NO];
-	
-	if(isAtomEnabled) {
-		BlogDataManager *dm = [BlogDataManager sharedDataManager];
-		NSString *blogURL = [dm.currentBlog objectForKey:@"url"];
-		
-		NSURL *atomURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/wp-app.php/attachments", blogURL]];
-		
-		NSDictionary *attributes = [[NSFileManager defaultManager] fileAttributesAtPath:self.localURL traverseLink: NO];
-		NSString *contentType = @"image/jpeg";
-		if(self.mediaType == kVideo)
-			contentType = @"video/mp4";
-		NSString *username = [dm.currentBlog objectForKey:@"username"];
-		NSString *password = [dm getPasswordFromKeychainInContextOfCurrentBlog:dm.currentBlog];
-		
-		ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:atomURL];
-		[request setUsername:username];
-		[request setPassword:password];
-		[request setRequestMethod:@"POST"];
-		[request addRequestHeader:@"Content-Type" value:contentType];
-		[request addRequestHeader:@"Content-Length" value:[NSString stringWithFormat:@"@d",[[attributes objectForKey:NSFileSize] intValue]]];
-		[request setShouldStreamPostDataFromDisk:YES];
-		[request setPostBodyFilePath:self.localURL];
-		[request setDelegate:self];
-		[request setUploadProgressDelegate:self.progressView];
-		[request startAsynchronous];
-	}
-	else {
-		ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:self.xmlrpcURL]];
-		[request setDelegate:self];
-		[request setShouldStreamPostDataFromDisk:YES];
-		[request appendPostDataFromFile:self.localEncodedURL];
-		[request setUploadProgressDelegate:self.progressView];
-		[request startAsynchronous];
-	}
 }
 
 - (void)finishWithNotificationName:(NSString *)notificationName object:(NSObject *)object userInfo:(NSDictionary *)userInfo {
@@ -125,10 +84,131 @@
 	[self.view setNeedsLayout];
 }
 
-- (void)updateProgress:(NSNumber *)current total:(NSNumber *)total {
-	float currentFloat = [current floatValue];
-	float totalFloat = [total floatValue];
+- (void)updateProgress:(NSDictionary *)values {
+	float currentFloat = [[values objectForKey:@"current"] floatValue];
+	float totalFloat = [[values objectForKey:@"total"] floatValue];
 	self.progressView.progress = currentFloat/totalFloat;
+}
+
+- (void)showAPIAlert {
+	UIAlertView *atomPubAlert = [[UIAlertView alloc] initWithTitle:@"Remote Publishing" 
+														   message:@"Video uploads work best with the AtomPub API. You can enable it by going to Settings > Writing > Remote Publishing, checking the box next to \"Atom Publishing Protocol\", then pressing Save Changes." 
+														  delegate:self 
+												 cancelButtonTitle:@"XML-RPC" 
+												 otherButtonTitles:@"AtomPub", nil];
+	[atomPubAlert show];
+	[atomPubAlert release];
+}
+
+- (void)checkAtomPub {
+	BOOL isWPcom = NO;
+	NSRange range = [self.xmlrpcURL rangeOfString:@"wordpress.com"];
+	if(range.location != NSNotFound)
+		isWPcom = YES;
+	
+	if((self.mediaType == kVideo) && (!isWPcom)) {
+		if([[NSUserDefaults standardUserDefaults] objectForKey:@"video_upload_preference"] != nil) {
+			NSNumber *videoPreference = [[NSUserDefaults standardUserDefaults] objectForKey:@"video_upload_preference"];
+			
+			switch ([videoPreference intValue]) {
+				case 0:
+					[self showAPIAlert];
+					break;
+				case 1:
+					[self sendAtomPub];
+					break;
+				case 2:
+					[self buildXMLRPC];
+					break;
+				default:
+					[self buildXMLRPC];
+					break;
+			}
+		}
+		else {
+			[self showAPIAlert];
+		}
+	}
+	else {
+		[self buildXMLRPC];
+	}
+}
+
+- (void)buildXMLRPC {
+	self.progressView.hidden = YES;
+	[self performSelectorInBackground:@selector(base64EncodeFile) withObject:nil];
+}
+
+- (void)sendXMLRPC {
+	self.progressView.hidden = NO;
+	
+	if(self.mediaType == kImage)
+		[self updateStatus:@"Uploading image..."];
+	else if(self.mediaType == kVideo)
+		[self updateStatus:@"Uploading video..."];
+	
+	ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:self.xmlrpcURL]];
+	[request setDelegate:self];
+	[request setShouldStreamPostDataFromDisk:YES];
+	[request appendPostDataFromFile:self.localEncodedURL];
+	[request setUploadProgressDelegate:self.progressView];
+	[request setTimeOutSeconds:600];
+	[request startAsynchronous];
+}
+
+- (void)sendAtomPub {
+	self.progressView.hidden = NO;
+	isAtomPub = YES;
+	
+	if(self.mediaType == kImage)
+		[self updateStatus:@"Uploading image..."];
+	else if(self.mediaType == kVideo)
+		[self updateStatus:@"Uploading video..."];
+	
+	BlogDataManager *dm = [BlogDataManager sharedDataManager];
+	NSString *blogURL = [dm.currentBlog objectForKey:@"url"];
+	
+	NSURL *atomURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/wp-app.php/attachments", blogURL]];
+	
+	NSDictionary *attributes = [[NSFileManager defaultManager] fileAttributesAtPath:self.localURL traverseLink: NO];
+	NSString *contentType = @"image/jpeg";
+	if(self.mediaType == kVideo)
+		contentType = @"video/mp4";
+	NSString *username = [dm.currentBlog objectForKey:@"username"];
+	NSString *password = [dm getPasswordFromKeychainInContextOfCurrentBlog:dm.currentBlog];
+	
+	ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:atomURL];
+	[request setUsername:username];
+	[request setPassword:password];
+	[request setRequestMethod:@"POST"];
+	[request addRequestHeader:@"Content-Type" value:contentType];
+	[request addRequestHeader:@"Content-Length" value:[NSString stringWithFormat:@"@d",[[attributes objectForKey:NSFileSize] intValue]]];
+	[request setShouldStreamPostDataFromDisk:YES];
+	[request setPostBodyFilePath:self.localURL];
+	[request setDelegate:self];
+	[request setUploadProgressDelegate:self.progressView];
+	[request startAsynchronous];
+}
+		   
+#pragma mark -
+#pragma mark UIAlertView delegate
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+	switch (buttonIndex) {
+		case 1:
+			[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:1] forKey:@"video_upload_preference"];
+			[[NSUserDefaults standardUserDefaults] synchronize];
+			[self sendAtomPub];
+			break;
+		case 2:
+			[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:2] forKey:@"video_upload_preference"];
+			[[NSUserDefaults standardUserDefaults] synchronize];
+			[self base64EncodeFile];
+			break;
+		default:
+			[self base64EncodeFile];
+			break;
+	}
 }
 
 #pragma mark -
@@ -201,6 +281,7 @@
 	NSUInteger fileLength = [originalFile offsetInFile];
 	[originalFile seekToFileOffset:0];
 	
+	// Many thanks to GregInYEG and eskimo1@apple.com:
 	// For base64, each chunk *MUST* be a multiple of 3
 	NSUInteger chunkSize = 24000;
 	NSUInteger offset = 0;
@@ -231,9 +312,6 @@
 		serializedChunk = nil;
 		serializedString = nil;
 		chunk = nil;
-		
-		// Update the progress bar
-		[self updateProgress:[NSNumber numberWithInt:offset] total:[NSNumber numberWithInt:fileLength]];
 		
 		// Drain and recreate the pool
 		[chunkPool release];
@@ -314,44 +392,73 @@
 #pragma mark ASIHTTPRequest delegate
 
 - (void)requestFinished:(ASIHTTPRequest *)request {
-	[[NSFileManager defaultManager] removeItemAtURL:[NSURL fileURLWithPath:self.localEncodedURL] error:NULL];
-	
-	XMLRPCResponse *xmlrpcResponse = [[XMLRPCResponse alloc] initWithData:[request responseData]];
-	NSDictionary *responseMeta = [xmlrpcResponse object];
-	if ([xmlrpcResponse isKindOfClass:[NSError class]]) {
-		[self finishWithNotificationName:VideoUploadFailed object:nil userInfo:nil];
-	}
-	else if(mediaType == kVideo) {
-			NSMutableDictionary *videoMeta = [[NSMutableDictionary alloc] init];
-		if([responseMeta objectForKey:@"videopress_shortcode"] != nil)
-			[videoMeta setObject:[responseMeta objectForKey:@"videopress_shortcode"] forKey:@"shortcode"];
-	
-		if([responseMeta objectForKey:@"url"] != nil)
-			[videoMeta setObject:[responseMeta objectForKey:@"url"] forKey:@"url"];
-
-		if(videoMeta.count > 0) {
-			[videoMeta setValue:[NSNumber numberWithInt:orientation] forKey:@"orientation"];
+	NSLog(@"request.responseString: %@", [request responseString]);
+	if(![[request responseString] isEmpty]) {
+		NSMutableDictionary *videoMeta = [[NSMutableDictionary alloc] init];
+		if(isAtomPub) {
+			NSString *regEx = @"src=\"([^\"]*)\"";
+			NSString *link = [[request responseString] stringByMatching:regEx capture:0];
+			[videoMeta setObject:link forKey:@"url"];
 			[self finishWithNotificationName:VideoUploadSuccessful object:nil userInfo:videoMeta];
+			NSLog(@"atomPub remote media link: %@", link);
+		}
+		else {
+			[[NSFileManager defaultManager] removeItemAtURL:[NSURL fileURLWithPath:self.localEncodedURL] error:NULL];
+			XMLRPCResponse *xmlrpcResponse = [[XMLRPCResponse alloc] initWithData:[request responseData]];
+			NSDictionary *responseMeta = [xmlrpcResponse object];
+			if ([xmlrpcResponse isKindOfClass:[NSError class]]) {
+				[self finishWithNotificationName:VideoUploadFailed object:nil userInfo:nil];
+			}
+			else if(mediaType == kVideo) {
+				if([responseMeta objectForKey:@"videopress_shortcode"] != nil)
+					[videoMeta setObject:[responseMeta objectForKey:@"videopress_shortcode"] forKey:@"shortcode"];
+				
+				if([responseMeta objectForKey:@"url"] != nil)
+					[videoMeta setObject:[responseMeta objectForKey:@"url"] forKey:@"url"];
+				
+				if(videoMeta.count > 0) {
+					[videoMeta setValue:[NSNumber numberWithInt:orientation] forKey:@"orientation"];
+					[self finishWithNotificationName:VideoUploadSuccessful object:nil userInfo:videoMeta];
+				}
+				[videoMeta release];
+			}
+			else if(mediaType == kImage) {
+				NSMutableDictionary *imageMeta = [[NSMutableDictionary alloc] init];
+				if([responseMeta objectForKey:@"url"] != nil)
+					[imageMeta setObject:[responseMeta objectForKey:@"url"] forKey:@"url"];
+				[self finishWithNotificationName:ImageUploadSuccessful object:nil userInfo:imageMeta];
+				[imageMeta release];
+			}
+			
+			[xmlrpcResponse release];
 		}
 		[videoMeta release];
 	}
-	else if(mediaType == kImage) {
-			NSMutableDictionary *imageMeta = [[NSMutableDictionary alloc] init];
-		if([responseMeta objectForKey:@"url"] != nil)
-			[imageMeta setObject:[responseMeta objectForKey:@"url"] forKey:@"url"];
-		[self finishWithNotificationName:ImageUploadSuccessful object:nil userInfo:imageMeta];
-		[imageMeta release];
+	else {
+		[self updateStatus:@"Upload failed. Please try again."];
+		
+		[NSThread sleepForTimeInterval:2.0];
+		
+		if(self.mediaType == kImage)
+			[self stopWithNotificationName:@"ImageUploadFailed"];
+		else if(self.mediaType == kVideo)
+			[self stopWithNotificationName:@"VideoUploadFailed"];
 	}
-	
-	[xmlrpcResponse release];
+
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request {
-	NSLog(@"request failed.");
-	NSError *error = [request error];
-	NSLog(@"requestFailed: %@", [error localizedDescription]);
+	[self updateStatus:@"Upload failed. Please try again."];
 	
-	[[NSFileManager defaultManager] removeItemAtURL:[NSURL fileURLWithPath:self.localEncodedURL] error:NULL];
+	[NSThread sleepForTimeInterval:2.0];
+	
+	if(self.mediaType == kImage)
+		[self stopWithNotificationName:@"ImageUploadFailed"];
+	else if(self.mediaType == kVideo)
+		[self stopWithNotificationName:@"VideoUploadFailed"];
+	
+	if(!isAtomPub)
+		[[NSFileManager defaultManager] removeItemAtURL:[NSURL fileURLWithPath:self.localEncodedURL] error:NULL];
 }
 
 - (void)connection:(NSURLConnection *)conn didFailWithError:(NSError *)error {

@@ -903,14 +903,12 @@
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification {
 	if(self.uploadID != nil) {
 		NSDictionary *mediaData = [notification userInfo];
-		NSLog(@"getting media object for update: %@", self.uploadID);
 		Media *media = [mediaManager get:self.uploadID];
 		media.remoteURL = [mediaData objectForKey:@"url"];
 		media.shortcode = [mediaData objectForKey:@"shortcode"];
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
 		[mediaManager update:media];
 		media = [mediaManager get:self.uploadID];
-		NSLog(@"updated media object: %@", media);
 		self.uploadID = nil;
 	}
 	
@@ -1035,8 +1033,6 @@
 			[mediaManager remove:[videos objectAtIndex:[index intValue]]];
 			[videos removeObjectAtIndex:[index intValue]];
 		}
-		
-		NSLog(@"deleted media.");
 	}
 }
 
