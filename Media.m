@@ -52,11 +52,11 @@
 			NSString *embedHeight= [NSString stringWithFormat:@"%@", self.height];
 			
 			// Check for landscape resize
-			if((self.width > self.height) && (self.width > 640)) {
+			if(([self.width intValue] > [self.height intValue]) && ([self.width intValue] > 640)) {
 				embedWidth = @"640";
 				embedHeight = @"360";
 			}
-			else if((self.height > self.width) && (self.height > 640)) {
+			else if(([self.height intValue] > [self.width intValue]) && ([self.height intValue] > 640)) {
 				embedHeight = @"640";
 				embedWidth = @"360";
 			}
