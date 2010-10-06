@@ -328,7 +328,10 @@
 	[encodedFile closeFile];
 	
 	// We're done
-	[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Media encoded." waitUntilDone:NO];
+	if(self.mediaType == kImage)
+		[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Uploading image..." waitUntilDone:NO];
+	else if(self.mediaType == kVideo)
+		[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Uploading video..." waitUntilDone:NO];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"FileEncodeSuccessful" object:nil];
 	
 	[pool release];
@@ -371,7 +374,10 @@
 		[encodedFile closeFile];
 		
 		// We're done
-		[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Media encoded." waitUntilDone:NO];
+		if(self.mediaType == kImage)
+			[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Uploading image..." waitUntilDone:NO];
+		else if(self.mediaType == kVideo)
+			[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Uploading video..." waitUntilDone:NO];
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"FileEncodeSuccessful" object:nil];
 	}
 	
@@ -432,7 +438,6 @@
 			
 			[xmlrpcResponse release];
 		}
-		[videoMeta release];
 	}
 	else {
 		[self updateStatus:@"Upload failed. Please try again."];

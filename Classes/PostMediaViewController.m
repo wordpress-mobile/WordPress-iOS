@@ -135,15 +135,29 @@
 			else
 				cell.textLabel.text = media.filename;
 			
-			long min = (long)media.length / 60;    // divide two longs, truncates
-			long sec = (long)media.length % 60;    // remainder of long divide
+			NSNumber *valueForDisplay = [NSNumber numberWithDouble:[media.length doubleValue]];
+			NSNumber *days = [NSNumber numberWithDouble:
+								   ([valueForDisplay doubleValue] / 86400)];
+			NSNumber *hours = [NSNumber numberWithDouble:
+									(([valueForDisplay doubleValue] / 3600) -
+									 ([days intValue] * 24))];
+			NSNumber *minutes = [NSNumber numberWithDouble:
+									  (([valueForDisplay doubleValue] / 60) -
+									   ([days intValue] * 24 * 60) -
+									   ([hours intValue] * 60))];
+			NSNumber *seconds = [NSNumber numberWithInt:([valueForDisplay intValue] % 60)];
 			
 			if([media.filesize floatValue] > 1024)
 				filesizeString = [NSString stringWithFormat:@"%.2f MB", ([media.filesize floatValue]/1024)];
 			else
 				filesizeString = [NSString stringWithFormat:@"%.2f KB", [media.filesize floatValue]];
 			
-			cell.detailTextLabel.text = [NSString stringWithFormat:@"%02d:%02d %@", min, sec, filesizeString];
+			cell.detailTextLabel.text = [NSString stringWithFormat:
+										 @"%02d:%02d:%02d %@",
+										 [hours intValue],
+										 [minutes intValue],
+										 [seconds intValue], 
+										 filesizeString];
 			break;
 		default:
 			break;
