@@ -281,7 +281,7 @@
 	NSUInteger fileLength = [originalFile offsetInFile];
 	[originalFile seekToFileOffset:0];
 	
-	// Many thanks to GregInYEG and eskimo1@apple.com:
+	// Many thanks to GregInYEG from StackOverflow and eskimo1 from Apple:
 	// For base64, each chunk *MUST* be a multiple of 3
 	NSUInteger chunkSize = 24000;
 	NSUInteger offset = 0;

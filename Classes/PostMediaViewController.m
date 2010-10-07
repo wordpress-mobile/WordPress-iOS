@@ -187,6 +187,7 @@
 		case 0:
 			foo = indexPath.row;
 			Media *photo = [photos objectAtIndex:indexPath.row];
+			NSLog(@"loading object: %@", photo);
 			[mediaView setMedia:photo];
 			break;
 		case 1:
