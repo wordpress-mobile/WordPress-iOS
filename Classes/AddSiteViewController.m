@@ -239,21 +239,14 @@
 }
 
 - (NSString *)tableView:(UITableView *)tv titleForHeaderInSection:(NSInteger)section {
-	return nil;
+	return @"";
 }
 
 - (NSString *)tableView:(UITableView *)tv titleForFooterInSection:(NSInteger)section {
-	if(section == 0)
+	if((section == 0) && (footerText != nil))
 		return footerText;
 	
-	return nil;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-	if(section == 0)
-		return 50.0;
-	
-	return 0.0;
+	return @"";
 }
 
 #pragma mark -
@@ -472,8 +465,6 @@
 	else
 		footerText = @"Site has already been added.";
 	
-	[self refreshTable];
-	
 	@try {
 		Blog *blog = [subsites objectAtIndex:0];
 		[self setHost:blog.hostURL];
@@ -486,6 +477,8 @@
 	@catch (NSException * e) {
 		NSLog(@"Error adding site: %@", e);
 	}
+	
+	[self refreshTable];
 }
 
 - (void)authenticate {
@@ -510,14 +503,15 @@
 	}
 	else {
 		NSError *error = (NSError *)xmlrpcCheck;
+		NSLog(@"error: %@", [error localizedDescription]);
 		if([[[error localizedDescription] lowercaseString] isEqualToString:@"404 not found"] == YES)
 			footerText = @"XML-RPC endpoint not found. Please enter it manually.";
 		else
-			footerText = [error localizedDescription];
+			[self setFooterText:[NSString stringWithFormat:@"%@", [error localizedDescription]]];
 		isAdding = NO;
 		addButtonText = @"Add Site";
 	}
-	[self refreshTable];
+	[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[pool release];
@@ -699,7 +693,6 @@
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[spinner dismiss];
-	[appDelegate syncBlogs];
 	if(activeTextField != nil) {
 		[activeTextField becomeFirstResponder];
 		[activeTextField resignFirstResponder];
@@ -779,20 +772,15 @@
 
 - (void)dealloc {
 	[tableView release];
-	[subsites release];
-	subsites = nil;
+	[subsites release], subsites = nil;
 	[addUsersBlogsView release];
 	[spinner release];
 	[footerText release];
 	[addButtonText release];
-	[url release];
-	url = nil;
-	[xmlrpc release];
-	xmlrpc = nil;
-	[username release];
-	username = nil;
-	[password release];
-	password = nil;
+	[url release], url = nil;
+	[xmlrpc release], xmlrpc = nil;
+	[username release], username = nil;
+	[password release], password = nil;
 	[blogID release];
 	[blogName release];
 	[host release];

@@ -50,6 +50,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+	[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = YES;
 	
 	if (DeviceIsPad() == YES) {
 		[self restoreState];

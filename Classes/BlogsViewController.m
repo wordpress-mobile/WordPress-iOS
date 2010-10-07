@@ -32,6 +32,10 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+	[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = NO;
+//	[appDelegate syncBlogs];
+//	[appDelegate syncBlogCategoriesAndStatuses];
+	
 	if([[BlogDataManager sharedDataManager] countOfBlogs] > 0)
 		self.navigationItem.leftBarButtonItem = self.editButtonItem;
 	else
@@ -49,6 +53,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+	[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = YES;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[super viewWillDisappear:animated];
 }

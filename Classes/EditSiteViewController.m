@@ -568,7 +568,6 @@
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[spinner dismiss];
-	[appDelegate syncBlogs];
 	if(DeviceIsPad() == YES)
 		[self dismissModalViewControllerAnimated:YES];
 	else

@@ -320,8 +320,8 @@
 - (void)didSaveSelectedBlogsInBackground {
 	[spinner dismissWithClickedButtonIndex:0 animated:YES];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	[appDelegate syncBlogCategoriesAndStatuses];
-	[appDelegate syncBlogs];
+//	[appDelegate syncBlogCategoriesAndStatuses];
+//	[appDelegate syncBlogs];
 	
 	if(DeviceIsPad() == YES) {
 		[appDelegate.navigationController popToRootViewControllerAnimated:YES];
@@ -356,7 +356,7 @@
     if (![[BlogDataManager sharedDataManager] doesBlogExist:newBlog]) {
 		[[BlogDataManager sharedDataManager] resetCurrentBlog];
 		
-		[newBlog setValue:blog.url forKey:@"url"];
+		[newBlog setValue:[blog.url stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] forKey:@"url"];
 		[newBlog setValue:blog.xmlrpc forKey:@"xmlrpc"];
 		[newBlog setValue:blog.blogID forKey:kBlogId];
 		[newBlog setValue:blog.hostURL forKey:kBlogHostName];

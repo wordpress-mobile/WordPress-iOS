@@ -175,6 +175,12 @@
 			</array>
 		</dict>
 		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string></string>
+		</dict>
+		<dict>
 			<key>Key</key>
 			<string>version_preference</string>
 			<key>Type</key>

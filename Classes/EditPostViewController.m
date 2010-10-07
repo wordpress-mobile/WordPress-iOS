@@ -308,7 +308,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	if(titleTextField.text != nil)
 		[dm.currentPost setObject:titleTextField.text forKey:@"title"];
 	if(tagsTextField.text != nil)
-		[dm.currentPost setObject:[tagsTextField.text lowercaseString] forKey:@"mt_keywords"];
+		[dm.currentPost setObject:tagsTextField.text forKey:@"mt_keywords"];
 	if(categoriesTextField.text != nil)
 		[dm.currentPost setObject:[categoriesTextField.text componentsSeparatedByString:@", "] forKey:@"categories"];
 	if(statusTextField.text != nil)

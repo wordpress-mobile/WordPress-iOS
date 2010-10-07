@@ -23,9 +23,6 @@
 		mediaUploader = [[WPMediaUploader alloc] initWithNibName:@"WPMediaUploader-iPad" bundle:nil];
 	else
 		mediaUploader = [[WPMediaUploader alloc] initWithNibName:@"WPMediaUploader" bundle:nil];
-	
-	dm = [BlogDataManager sharedDataManager];
-	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	mediaManager = [[MediaManager alloc] init];
 	photos = [[NSMutableArray alloc] init];
 	videos = [[NSMutableArray alloc] init];
@@ -44,6 +41,10 @@
     [super viewDidLoad];
 	
 	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
+	
+	dm = [BlogDataManager sharedDataManager];
+	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+	
 	[self initObjects];
 	[self refreshProperties];
 	[self performSelectorInBackground:@selector(checkVideoEnabled) withObject:nil];
@@ -180,17 +181,18 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	int foo = 0;
+	
 	MediaObjectViewController *mediaView = [[MediaObjectViewController alloc] initWithNibName:@"MediaObjectView" bundle:nil];
 	switch (mediaTypeControl.selectedSegmentIndex) {
 		case 0:
 			foo = indexPath.row;
 			Media *photo = [photos objectAtIndex:indexPath.row];
-			mediaView.media = photo;
+			[mediaView setMedia:photo];
 			break;
 		case 1:
 			foo = indexPath.row;
 			Media *video = [videos objectAtIndex:indexPath.row];
-			mediaView.media = video;
+			[mediaView setMedia:video];
 			break;
 		default:
 			break;
@@ -993,10 +995,11 @@
 			
 			if(textRange.location != NSNotFound)
 			{
+				NSString *username = [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"username"];
+				NSString *password = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"];
 				NSArray *args = [NSArray arrayWithObjects:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:kBlogId],
-								 [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"username"],
-								 [[BlogDataManager sharedDataManager] getPasswordFromKeychainInContextOfCurrentBlog:[[BlogDataManager sharedDataManager] currentBlog]], nil];
-				
+								 username, password, nil];
+								
 				NSMutableDictionary *xmlrpcParams = [[NSMutableDictionary alloc] init];
 				[xmlrpcParams setObject:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"xmlrpc"] forKey:kURL];
 				[xmlrpcParams setObject:@"wpcom.getFeatures" forKey:kMETHOD];

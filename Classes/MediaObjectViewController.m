@@ -29,8 +29,12 @@
 		[self.view addSubview:videoPlayer.view];
 	}
 	else if((media != nil) && ([media.mediaType isEqualToString:@"image"])) {
+		NSLog(@"loading image: %@", media.localURL);
 		self.navigationItem.title = @"Image";
 		imageView.image = [UIImage imageWithContentsOfFile:media.localURL];
+		if((imageView.image == nil) && (media.remoteURL != nil)) {
+			imageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:media.remoteURL]]];
+		}
 	}
 }
 
@@ -45,7 +49,7 @@
 #pragma mark -
 #pragma mark UIScrollView delegate
 
--(UIView *) viewForZoomingInScrollView:(UIScrollView *)scrollView {
+-(UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
     return imageView;
 }
 
@@ -158,7 +162,6 @@
 
 - (void)dealloc {
 	[scrollView release];
-	[appDelegate release];
 	[insertButton release];
 	[deleteButton release];
 	[media release];

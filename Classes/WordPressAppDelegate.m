@@ -87,9 +87,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
 
 	[self setAutoRefreshMarkers];
-	[self syncBlogCategoriesAndStatuses];
-	[self syncBlogs];
-	[self startSyncTimer];
 	[self passwordIntoKeychain];
 	[self restoreCurrentBlog];
 	
@@ -402,7 +399,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)checkWPcomAuthentication {
-	NSLog(@"checking wpcom authentication...");
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	NSString *authURL = @"https://wordpress.com/xmlrpc.php";
 	
@@ -422,7 +418,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		[[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"wpcom_authenticated_flag"];
 	
 	[pool release];
-	NSLog(@"done checking wpcom authentication...");
 }
 
 - (int)indexForCurrentBlog {

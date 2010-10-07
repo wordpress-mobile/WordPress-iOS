@@ -1402,7 +1402,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 																pwd, 
 																nil]];
 	
-	NSArray *categories = [self executeXMLRPCRequest:reqCategories byHandlingError:YES];
+	NSArray *categories = [self executeXMLRPCRequest:reqCategories byHandlingError:NO];
 	[reqCategories release];
 	
 	if ([categories isKindOfClass:[NSArray class]]) {
@@ -1441,7 +1441,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 																		 [aBlog valueForKey:@"username"], 
 																		 pwd, 
 																		 nil]];
-	NSDictionary *postStatusList = [self executeXMLRPCRequest:getPostStatusListReq byHandlingError:YES];
+	NSDictionary *postStatusList = [self executeXMLRPCRequest:getPostStatusListReq byHandlingError:NO];
 	[getPostStatusListReq release];
 	
 	if ([postStatusList isKindOfClass:[NSDictionary class]])
@@ -1454,7 +1454,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 																		 [aBlog valueForKey:@"username"], 
 																		 pwd, 
 																		 nil]];
-	NSDictionary *pageStatusList = [self executeXMLRPCRequest:getPageStatusListReq byHandlingError:YES];
+	NSDictionary *pageStatusList = [self executeXMLRPCRequest:getPageStatusListReq byHandlingError:NO];
 	[getPageStatusListReq release];
 	
 	if ([pageStatusList isKindOfClass:[NSDictionary class]])
@@ -3270,8 +3270,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
     [dict setObject:[NSNumber numberWithInt:0] forKey:@"not_used_allow_comments"];
     [dict setObject:@"" forKey:@"mt_keywords"];
 	
-	NSLog(@"dict: %@", dict);
-	
     NSNumber *value = [currentBlog valueForKey:kResizePhotoSetting];
 	
     if (!value) {
@@ -4231,7 +4229,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
     // Parameters
     NSString *username = [blog valueForKey:@"username"];
     //NSString *pwd = [blog valueForKey:@"pwd"];
-	NSString *pwd =	[self getPasswordFromKeychainInContextOfCurrentBlog:blog];		
+	NSString *pwd =	[self getPasswordFromKeychainInContextOfCurrentBlog:blog];
     NSString *fullURL = [blog valueForKey:@"xmlrpc"];
     NSString *blogid = [blog valueForKey:kBlogId];
     NSDictionary *commentsStructure = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kNumberOfCommentsToDisplay] forKey:@"number"];
@@ -5129,18 +5127,14 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 
 
 -(NSString*)getPasswordFromKeychainInContextOfCurrentBlog:(NSDictionary *)theCurrentBlog {
-	
+	// TODO: This is horrendous.
 	NSString * username = [theCurrentBlog valueForKey:@"username"];
 	NSString * url		= [theCurrentBlog valueForKey:@"url"];
 	url = [url stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-	//!!TODO Trim url to eliminate http:// here!
 	
-	//url = [url stringByReplacingOccurrencesOfString:@"www." withString:@""];
 	if ((username == @"") || (url == @"")) {
 		NSString *password = @"";
 		return password;
-		
-		//if username and url are empty, it's a new blog and there is no entry yet, just return an empty string
 	}
 	else {
 		NSString *password = [self getBlogPasswordFromKeychainWithUsername:username andBlogName:url];
@@ -5150,16 +5144,30 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 			url = [[theCurrentBlog valueForKey:@"url"] stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""];
 			password = [self getBlogPasswordFromKeychainWithUsername:username andBlogName:url];
 			
-			// Try last resort password url
+			// Try last resort with hostName
 			if(password == nil) {
-				url = [NSString stringWithFormat:@"%@/", [theCurrentBlog valueForKey:@"url"]];
-				password = [self getBlogPasswordFromKeychainWithUsername:username andBlogName:url];
+				password = [self getBlogPasswordFromKeychainWithUsername:username 
+															 andBlogName:[theCurrentBlog objectForKey:kBlogHostName]];
+				
+				// Try WPcom stored password
+				NSRange wpComTextRange = [[[theCurrentBlog valueForKey:@"url"] lowercaseString] rangeOfString:@"wordpress.com"];
+				NSRange a8cTextRange = [[[theCurrentBlog valueForKey:@"url"] lowercaseString] rangeOfString:@"automattic.com"];
+				if((password == nil) && 
+				   (wpComTextRange.location != NSNotFound) &&
+				   ([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"] != nil)) {
+					password = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"];
+				}
+				else if((password == nil) && 
+					   (a8cTextRange.location != NSNotFound) &&
+					   ([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"] != nil)) {
+					password = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"];
+				}
+
 			}
 
 		}
 		return password;
 	}
-	
 }
 
 - (NSString *)getHTTPPasswordFromKeychainInContextOfCurrentBlog:(NSDictionary *)theCurrentBlog {
