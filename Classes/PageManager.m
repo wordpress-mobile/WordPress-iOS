@@ -39,7 +39,8 @@
 	
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	dm = [BlogDataManager sharedDataManager];
-	password = [dm getPasswordFromKeychainInContextOfCurrentBlog:dm.currentBlog];
+	password = [[dm getPasswordFromKeychainInContextOfCurrentBlog:dm.currentBlog] retain];
+	
 	saveKey = [[NSString stringWithFormat:@"pages-%@", [dm.currentBlog valueForKey:kBlogHostName]] retain];
 	statusKey = [[NSString stringWithFormat:@"statuses-%@", [dm.currentBlog valueForKey:kBlogHostName]] retain];
 	
@@ -439,9 +440,9 @@
 					if(isGettingPages == NO) {
 						if(![responseMeta isKindOfClass:[NSError class]]) {
 							[pageIDs removeAllObjects];
+							
 							// Handle response here.
-							NSLog(@"responseMeta: %@", responseMeta);
-							if([responseMeta objectForKey:@"faultCode"] == nil) {
+							if([responseMeta isKindOfClass:[NSArray class]]) {
 								NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
 								[f setNumberStyle:NSNumberFormatterDecimalStyle];
 								for(NSDictionary *page in responseMeta) {
