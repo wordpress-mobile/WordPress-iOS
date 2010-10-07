@@ -19,6 +19,7 @@
 	UITextField *activeTextField;
 	UIActionSheet *actionSheet;
 	NSArray *recentItems;
+	UIPopoverController *recentItemsPopover;
 }
 
 @property (nonatomic, assign) BOOL isSaving, viewDidMove, keyboardIsVisible;
@@ -26,6 +27,7 @@
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) UIActionSheet *actionSheet;
 @property (nonatomic, retain) NSArray *recentItems;
+@property (nonatomic, retain) UIPopoverController *recentItemsPopover;
 
 - (IBAction)showPicker:(id)sender;
 - (IBAction)hidePicker:(id)sender;

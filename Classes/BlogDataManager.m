@@ -4901,19 +4901,20 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 				}
 				
 				if((self.selectedBlogID == nil) || (![self.selectedBlogID isEqualToString:[blog objectForKey:@"blogid"]])) {
+					NSLog(@"selectedBlogID: %@ syncBlog: %@", self.selectedBlogID, [blog objectForKey:@"blogid"]);
+					
 					NSString *url = [blog valueForKey:@"url"];
 					if (url != nil &&[url length] >= 7 &&[url hasPrefix:@"http://"])
 						url = [url substringFromIndex:7];
 					
-					if (url != nil &&[url length])
-						url = @"wordpress.com";
+					NSLog(@"about to sync blog: %@", url);
 					
 					[Reachability sharedReachability].hostName = url;
 					if ([[Reachability sharedReachability] internetConnectionStatus]) {
-							if(self.shouldStopSyncingBlogs == NO)
-								[self syncCommentsForBlog:blog];
-							if(self.shouldStopSyncingBlogs == NO)
-								[self syncPostsForBlog:blog];
+						if(self.shouldStopSyncingBlogs == NO)
+							[self syncCommentsForBlog:blog];
+						if(self.shouldStopSyncingBlogs == NO)
+							[self syncPostsForBlog:blog];
 					}
 				}
 			}

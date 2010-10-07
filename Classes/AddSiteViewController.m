@@ -50,6 +50,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+	[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = YES;
 	if(appDelegate.currentBlog == nil)
 		appDelegate.currentBlog = [[NSMutableDictionary alloc] init];
 	
@@ -62,6 +63,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+	[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = NO;
 	[[NSNotificationCenter defaultCenter] removeObserver:self
 													name:UIKeyboardWillShowNotification object:nil];
 	

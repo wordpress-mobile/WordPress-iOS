@@ -45,6 +45,10 @@ static WordPressAppDelegate *wordPressApp = NULL;
 			if([tempIsAuthenticated isEqualToString:@"1"])
 				self.isWPcomAuthenticated = YES;
 		}
+		
+		NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+		[[NSUserDefaults standardUserDefaults] setObject:appVersion forKey:@"version_preference"];
+		
 		[self performSelectorInBackground:@selector(checkWPcomAuthentication) withObject:nil];
     }
 

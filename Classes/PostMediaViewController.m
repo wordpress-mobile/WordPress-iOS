@@ -442,6 +442,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(deviceDidRotate:)
 												 name:@"UIDeviceOrientationDidChangeNotification" object:nil];
+	[picker release];
 }
 
 - (MediaOrientation)interpretOrientation:(UIDeviceOrientation)theOrientation {
@@ -492,6 +493,7 @@
 			[postDetailViewController presentModalViewController:picker animated:YES];
 		}
     }
+	[picker release];
 }
 
 - (void)showOrientationChangedActionSheet {
@@ -571,7 +573,6 @@
 		[addPopover dismissPopoverAnimated:YES];
 	else {
 		[postDetailViewController dismissModalViewControllerAnimated:NO];
-		[picker release];
 	}
 }
 

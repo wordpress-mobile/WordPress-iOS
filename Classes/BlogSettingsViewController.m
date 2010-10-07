@@ -8,7 +8,7 @@
 #import "BlogSettingsViewController.h"
 
 @implementation BlogSettingsViewController
-@synthesize tableView, recentItems, actionSheet, isSaving, viewDidMove, keyboardIsVisible, buttonText;
+@synthesize tableView, recentItems, actionSheet, isSaving, viewDidMove, keyboardIsVisible, buttonText, recentItemsPopover;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -349,7 +349,6 @@
 	pickerView.dataSource = self;
 	[pickerView selectRow:[self selectedRecentItemsIndex] inComponent:0 animated:YES];
 	[actionSheet addSubview:pickerView];
-	[pickerView release];
 	
 	UISegmentedControl *closeButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@"Done"]];
 	closeButton.momentary = YES; 
@@ -358,11 +357,17 @@
 	closeButton.tintColor = [UIColor blackColor];
 	[closeButton addTarget:self action:@selector(hidePicker:) forControlEvents:UIControlEventValueChanged];
 	[actionSheet addSubview:closeButton];
-	[closeButton release];
 	
-	[actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
-	
+	if(DeviceIsPad()) {
+	}
+	else {
+		[actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+	}
 	[actionSheet setBounds:CGRectMake(0, 0, 320, 485)];
+	
+	[actionSheet release];
+	[pickerView release];
+	[closeButton release];
 }
 
 - (IBAction)hidePicker:(id)sender {
@@ -505,6 +510,7 @@
 }
 
 - (void)dealloc {
+	[recentItemsPopover release];
 	[buttonText release];
 	[actionSheet release];
 	[tableView release];
