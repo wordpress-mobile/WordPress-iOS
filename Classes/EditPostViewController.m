@@ -866,6 +866,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
     if (isTextViewEditing) {
         isTextViewEditing = NO;
+		[self positionTextView:nil];
 		
         NSString *text = aTextView.text;
         [[[BlogDataManager sharedDataManager] currentPost] setObject:text forKey:@"description"];
@@ -936,48 +937,92 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[UIView setAnimationDuration:animationDuration];
 	CGRect keyboardFrame, keyboardBounds;
 	
-	if(DeviceIsPad() == YES) {
-		if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
-			|| (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
-			keyboardFrame = CGRectMake(0, 0, textView.frame.size.width, 350);
+	// Reposition TextView for editing mode or normal mode based on device and orientation
+	
+	if(isEditing) {
+		// Editing mode
+		
+		// iPad
+		if(DeviceIsPad() == YES) {
+			if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
+				|| (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
+				// Landscape
+				keyboardFrame = CGRectMake(0, 0, textView.frame.size.width, 350);
+				
+				[textView setFrame:keyboardFrame];
+			}
+			else {
+				// Portrait
+				keyboardFrame = CGRectMake(0, 180, textView.frame.size.width, 700);
+				keyboardBounds = CGRectMake(0, 180, textView.frame.size.width, 700);
+				
+				[textView setFrame:keyboardFrame];
+				[textView setBounds:keyboardBounds];
+			}
 			
-			[textView setFrame:keyboardFrame];
+			[self.view bringSubviewToFront:textView];
 		}
 		else {
-			keyboardFrame = CGRectMake(0, 180, textView.frame.size.width, 700);
-			keyboardBounds = CGRectMake(0, 180, textView.frame.size.width, 700);
+			// iPhone
+			if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
+				|| (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
+				// Landscape
+				keyboardFrame = CGRectMake (0, 0, 480, 130);
+			}
+			else {
+				// Portrait
+				keyboardFrame = CGRectMake (0, 0, 320, 210);
+			}
 			
 			[textView setFrame:keyboardFrame];
-			[textView setBounds:keyboardBounds];
 		}
-		
-		[self.view bringSubviewToFront:textView];
 	}
 	else {
-		if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
-			|| (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
-			keyboardFrame = CGRectMake (0, 0, textView.frame.size.width, 130);
+		// Normal mode
+		
+		// iPad
+		if(DeviceIsPad() == YES) {
+			if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
+				|| (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
+				// Landscape
+				keyboardFrame = CGRectMake(0, 165, textView.frame.size.width, normalTextFrame.size.height);
+				
+				[textView setFrame:keyboardFrame];
+			}
+			else {
+				// Portrait
+				keyboardFrame = CGRectMake(0, 165, textView.frame.size.width, normalTextFrame.size.height);
+				keyboardBounds = CGRectMake(0, 165, textView.frame.size.width, normalTextFrame.size.height);
+				
+				[textView setFrame:keyboardFrame];
+				[textView setBounds:keyboardBounds];
+			}
+			
+			[self.view bringSubviewToFront:textView];
 		}
 		else {
-			keyboardFrame = CGRectMake (0, 0, textView.frame.size.width, 210);
+			// iPhone
+			if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
+				|| (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
+				// Landscape
+				keyboardFrame = CGRectMake(0, 165, 480, normalTextFrame.size.height);
+			}
+			else {
+				// Portrait
+				keyboardFrame = CGRectMake(0, 165, 320, normalTextFrame.size.height);
+			}
+			
+			[textView setFrame:keyboardFrame];
 		}
-		
-		[textView setFrame:keyboardFrame];
 	}
+	
 	[UIView commitAnimations];
 }
 
 - (void)deviceDidRotate:(NSNotification *)notification {
-	UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-	switch (orientation) { 
-		case UIDeviceOrientationLandscapeLeft: 
-		case UIDeviceOrientationLandscapeRight:
-			//textView.frame = CGRectMake(textView.frame.origin.x, textView.frame.origin.y, ?, textView.frame.size.height);
-			break;
-		case UIDeviceOrientationPortrait:
-		case UIDeviceOrientationPortraitUpsideDown:
-			//textView.frame = CGRectMake(textView.frame.origin.x, textView.frame.origin.y, ?, textView.frame.size.height);
-			break;
+	// If we're editing, adjust the textview
+	if(self.isEditing) {
+		[self positionTextView:nil];
 	}
 }
 
@@ -1310,17 +1355,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	postDetailViewController.isShowingKeyboard = NO;
 	[postDetailViewController refreshButtons];
 	
-	CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue]; 
-	UIViewAnimationCurve curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue]; 
-	
-	[UIView beginAnimations:nil context:nil]; 
-	[UIView setAnimationCurve:curve]; 
-	[UIView setAnimationDuration:animationDuration]; 
-	
-	if(textView != nil)
-		[textView setFrame:normalTextFrame];
-	
-	[UIView commitAnimations];
+//	CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue]; 
+//	UIViewAnimationCurve curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue]; 
+//	
+//	[UIView beginAnimations:nil context:nil]; 
+//	[UIView setAnimationCurve:curve]; 
+//	[UIView setAnimationDuration:animationDuration]; 
+//	[UIView commitAnimations];
 	
 	[self preserveUnsavedPost];
 }

@@ -15,7 +15,7 @@
 #import "BlogSplitViewMasterViewController.h"
 #import "CPopoverManager.h"
 
-@interface BlogsViewController : UITableViewController <UIAccelerometerDelegate> {
+@interface BlogsViewController : UITableViewController <UIAccelerometerDelegate, UIAlertViewDelegate> {
 	NSMutableArray *blogsList;
 	WordPressAppDelegate *appDelegate;
 }

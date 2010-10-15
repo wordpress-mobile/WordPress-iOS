@@ -25,6 +25,34 @@
 			[self showBlog:NO];
 		}
 	}
+	
+	// Check to see if we should prompt about rating in the App Store
+	NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+	if([prefs objectForKey:@"launch_count"] == nil) {
+		// Create the launch count pref
+		[prefs setObject:[NSNumber numberWithInt:1] forKey:@"launch_count"];
+	}
+	else if(([prefs objectForKey:@"launch_count"] == [NSNumber numberWithInt:20]) && 
+			([prefs objectForKey:@"has_displayed_rating_prompt"] == nil)) {
+		// Display the alert
+		UIAlertView *ratingAlert = [[UIAlertView alloc] initWithTitle:@"App Store Rating" 
+															  message:@"If you like WordPress for iOS, we'd appreciate it if you could leave us a rating in the App Store. Would you like to do that now?" 
+															 delegate:self 
+													cancelButtonTitle:@"No" 
+													otherButtonTitles:@"Yes", nil];
+		[ratingAlert show];
+		[ratingAlert release];
+		
+		// Don't bug them again
+		[prefs setObject:@"1" forKey:@"has_displayed_rating_prompt"];
+	}
+	else if([[prefs objectForKey:@"launch_count"] intValue] < 20) {
+		// Increment our launch count
+		int launchCount = [[prefs objectForKey:@"launch_count"] intValue];
+		launchCount++;
+		[prefs setObject:[NSNumber numberWithInt:launchCount] forKey:@"launch_count"];
+	}
+	[prefs synchronize];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -282,6 +310,16 @@
 	NSLog(@"Shake detected. Refreshing...");
 	if(event.subtype == UIEventSubtypeMotionShake){
 		
+	}
+}
+
+#pragma mark -
+#pragma mark UIAlertView delegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if(buttonIndex == 1) {
+		// Take them to the App Store
+		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:kAppStoreURL]];
 	}
 }
 

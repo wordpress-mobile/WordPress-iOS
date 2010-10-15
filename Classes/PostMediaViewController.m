@@ -399,14 +399,13 @@
 - (void)pickPhotoFromCamera:(id)sender {
 	UIImagePickerController *picker = [[UIImagePickerController alloc] init];
 	picker.delegate = self;
-	picker.allowsEditing = YES;
+	picker.allowsEditing = NO;
 	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         picker.sourceType = UIImagePickerControllerSourceTypeCamera;
 		picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
-        [appDelegate.navigationController presentModalViewController:picker animated:YES];
+        [postDetailViewController presentModalViewController:picker animated:YES];
     }
-	[picker release];
 }
 
 - (void)pickVideoFromCamera:(id)sender {
@@ -445,7 +444,6 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(deviceDidRotate:)
 												 name:@"UIDeviceOrientationDidChangeNotification" object:nil];
-	[picker release];
 }
 
 - (MediaOrientation)interpretOrientation:(UIDeviceOrientation)theOrientation {
@@ -496,7 +494,6 @@
 			[postDetailViewController presentModalViewController:picker animated:YES];
 		}
     }
-	[picker release];
 }
 
 - (void)showOrientationChangedActionSheet {
@@ -518,10 +515,7 @@
 															  cancelButtonTitle:@"Original" 
 														 destructiveButtonTitle:nil 
 															  otherButtonTitles:@"Small", @"Medium", @"Large", nil];
-		if(DeviceIsPad() == YES)
-			[resizeActionSheet showInView:appDelegate.splitViewController.view];
-		else
-			[resizeActionSheet showInView:super.tabBarController.view];
+		[resizeActionSheet showInView:self.view];
 		[resizeActionSheet release];
 	}
 }
@@ -572,10 +566,12 @@
 		}
 	}
 	
+	[picker release];
+	
 	if(DeviceIsPad() == YES)
 		[addPopover dismissPopoverAnimated:YES];
 	else {
-		[postDetailViewController dismissModalViewControllerAnimated:NO];
+		[picker dismissModalViewControllerAnimated:YES];
 	}
 }
 
@@ -756,7 +752,7 @@
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-	[appDelegate.navigationController dismissModalViewControllerAnimated:YES];
+	[postDetailViewController dismissModalViewControllerAnimated:YES];
     //[self refreshMedia];
 }
 
@@ -1076,6 +1072,7 @@
 
 - (void)shouldDeleteMedia:(NSNotification *)notification {
 	[self deleteMedia:[notification object]];
+	[self refreshMedia];
 }
 
 - (void)refreshProperties {

@@ -321,6 +321,7 @@
 					NSString *postID = [dm.currentPost objectForKey:@"postid"];
 					NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
 					[self stopTimer];
+					NSLog(@"dm.currentPost: %@", dm.currentPost);
 					
 					if(savePostStatus == YES) {
 						[dm removeAutoSavedCurrentPostFile];
@@ -337,6 +338,7 @@
 					
 					if (DeviceIsPad() == YES) {
 						[[BlogDataManager sharedDataManager] makePostWithPostIDCurrent:postID];
+						NSLog(@"dm.currentPost: %@", dm.currentPost);
 					}
 					
 					[postID release];
@@ -696,6 +698,7 @@
 	postDetailEditController.statusTextField.text = [dm statusDescriptionForStatus:@"Published" fromBlog:dm.currentBlog];
 	
 	[dm.currentPost setObject:@"publish" forKey:@"post_status"];
+	NSLog(@"dm.currentPost: %@", dm.currentPost);
 	
 	[self saveAction:sender];
 }
@@ -813,21 +816,28 @@
 }
 
 - (void)checkAutosaves {
-	if(([[dm currentPost] valueForKey:@"postid"] != nil) && (![[[dm currentPost] valueForKey:@"postid"] isEqualToString:@""])) {
-		NSString *autosavePostID = [NSString stringWithFormat:@"%@-%@",
-									[[dm currentBlog] valueForKey:@"url"],
-									[[dm currentPost] valueForKey:@"postid"]];
-		[appDelegate setPostID:autosavePostID];
-	}
-	
-	if((appDelegate.postID != nil) && (appDelegate.managedObjectContext != nil)) {
-		[autosaveView setPostID:appDelegate.postID];
-		[autosaveView resetAutosaves];
-		if(([autosaveView autosaves] != nil) && ([[autosaveView autosaves] count] > 0)) {
-			[postDetailEditController showAutosaveButton];
+	@try {
+		if(dm.currentPost != nil) {
+			if(([[dm currentPost] valueForKey:@"postid"] != nil) && (![[[dm currentPost] valueForKey:@"postid"] isEqualToString:@""])) {
+				NSString *autosavePostID = [NSString stringWithFormat:@"%@-%@",
+											[[dm currentBlog] valueForKey:@"url"],
+											[[dm currentPost] valueForKey:@"postid"]];
+				[appDelegate setPostID:autosavePostID];
+			}
+			
+			if((appDelegate.postID != nil) && (appDelegate.managedObjectContext != nil)) {
+				[autosaveView setPostID:appDelegate.postID];
+				[autosaveView resetAutosaves];
+				if(([autosaveView autosaves] != nil) && ([[autosaveView autosaves] count] > 0)) {
+					[postDetailEditController showAutosaveButton];
+				}
+				else
+					[postDetailEditController hideAutosaveButton];
+			}
 		}
-		else
-			[postDetailEditController hideAutosaveButton];
+	}
+	@catch (NSException * e) {
+		NSLog(@"error checking autosaves: %@", e);
 	}
 }
 

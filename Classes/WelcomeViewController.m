@@ -126,10 +126,10 @@
 			cell.textLabel.text = @"Start a new blog at WordPress.com";
 			break;
 		case 1:
-			cell.textLabel.text = @"Add existing WordPress.com blog";
+			cell.textLabel.text = @"Add blog hosted at WordPress.com";
 			break;
 		case 2:
-			cell.textLabel.text = @"Add existing WordPress.org site";
+			cell.textLabel.text = @"Add self-hosted WordPress blog";
 			break;
 		default:
 			break;

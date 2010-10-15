@@ -44,7 +44,7 @@
 				result = self.shortcode;
 			else if(self.remoteURL != nil)
 				result = [NSString stringWithFormat:
-						  @"<img src=\"%@\" alt=\"%@\" width=\"%@\" height=\"%@\" class=\"alignnone size-full\" />",
+						  @"<img src=\"%@\" alt=\"%@\" class=\"alignnone size-full\" />",
 						  self.remoteURL, self.caption, self.width, self.height];
 		}
 		else if([self.mediaType isEqualToString:@"video"]) {

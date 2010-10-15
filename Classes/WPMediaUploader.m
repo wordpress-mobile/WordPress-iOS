@@ -398,7 +398,6 @@
 #pragma mark ASIHTTPRequest delegate
 
 - (void)requestFinished:(ASIHTTPRequest *)request {
-	NSLog(@"request.responseString: %@", [request responseString]);
 	if(![[request responseString] isEmpty]) {
 		NSMutableDictionary *videoMeta = [[NSMutableDictionary alloc] init];
 		if(isAtomPub) {

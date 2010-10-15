@@ -3658,11 +3658,24 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
         [postParams setObject:description forKey:@"description"];
         [postParams setObject:[aPost valueForKey:@"categories"] forKey:@"categories"];
 		
-        NSDate *date = [aPost valueForKey:@"date_created_gmt"];
-        NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:date];
-        NSDate *gmtDate = [date addTimeInterval:(secs * -1)];
+        //NSDate *date = [aPost valueForKey:@"date_created_gmt"];
+        //NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:date];
+        //NSDate *gmtDate = [date addTimeInterval:(secs * -1)];
         //[postParams setObject:gmtDate forKey:@"dateCreated"];
-        [postParams setObject:gmtDate forKey:@"date_created_gmt"];
+        //[postParams setObject:gmtDate forKey:@"date_created_gmt"];
+		
+		// dateCreated
+		NSDate *now = [NSDate date];
+		[postParams setObject:now forKey:@"dateCreated"];
+		
+		// date_created_gmt
+		// 20091113T12:30:00Z
+//		NSDateFormatter *df =[[NSDateFormatter alloc] init];
+//		[df setDateFormat:@"yyyyMMdd'T'hh:mm:ss'Z'"];
+//		NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:now];
+//        NSDate *gmtDate = [now addTimeInterval:secs];
+//		[postParams setObject:[df stringFromDate:gmtDate] forKey:@"date_created_gmt"];
+//		[df release];
 		
         NSString *post_status = [aPost valueForKey:@"post_status"];
 		
@@ -3676,9 +3689,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
         [postParams setObject:[aPost valueForKey:@"wp_password"] forKey:@"wp_password"];
 		if([aPost valueForKey:@"custom_fields"] != nil)
 			[postParams setObject:[aPost valueForKey:@"custom_fields"] forKey:@"custom_fields"];
-        NSString *draftId = [aPost valueForKey:@"draftid"];
-		//NSLog(@"draft id %@", draftId);
-        NSDictionary *draftPost = [self currentPost];
         NSArray *args = [NSArray arrayWithObjects:[currentBlog valueForKey:kBlogId],
                          [currentBlog valueForKey:@"username"],
                          //[currentBlog valueForKey:@"pwd"],
@@ -3687,72 +3697,22 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
                          nil
 						 ];
 		
-		// Custom Fields
-		//NSDictionary *customFields = [aPost valueForKey:@"custom_fields"];
+		NSLog(@"saving post with args: %@", args);
 		
-        //TODO: take url from current post
+		// Build and execute the XML-RPC request
         XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[currentBlog valueForKey:@"xmlrpc"]]];
         [request setMethod:@"metaWeblog.newPost" withObjects:args];
-		
-        id response = [self executeXMLRPCRequest:request byHandlingError:YES];
+		NSLog(@"xml-rpc request for save: %@", request);
+        id response = [self executeXMLRPCRequest:request byHandlingError:NO];
         [request release];
-		//begin JohnB's new code for ticket #152
-		//TODO: SUNIL here is where I catch the error if the network has gone away during the save and the XMLRPC request failed...
-		[self printDictToLog:postParams andDictName:@"postParams"];
-		//if network fails or the XMLRPCRequest fails for any reason
+		
+		// Check the response
 		if ([response isKindOfClass:[NSError class]]) {
-			[self printArrayToLog:response andArrayName:@"the response, should be error if printed to log"];
+			NSLog(@"xml-rpc response for save: %@", response);
+			
 			successFlag = NO;
-			//TODO: Check if the blog title already exists
-			//[aPost setObject:@"Local Draft" forKey:@"post_status"];
-			//			[self saveCurrentPostAsDraftWithAsyncPostFlag];
-			
-			
-			//[self autoSaveCurrentPost];
-			//[self saveCurrentPostAsDraft];
-			//			NSString *titleStr = [NSString stringWithFormat:@"There was a network error saving your post. Post was saved as Local Draft to preserve your work", title];
-			//			UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"Error Saving Post"
-			//															 message:titleStr
-			//															delegate:self
-			//												   cancelButtonTitle:nil
-			//												   otherButtonTitles:@"OK", nil];
-			
-			//alert1.tag = tag;
-			
-			//			[alert1 show];
-			//WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-			//[delegate setAlertRunning:YES];
-			
-			//			[alert1 release];
-			
 			return successFlag;
 		}
-		//end JohnB's new code for ticket #152
-		
-        //if it is a draft and we successfully published then remove from drafts.
-        if (![response isKindOfClass:[NSError class]]) {
-            successFlag = YES;
-            NSMutableArray *draftTitles = [self draftTitlesForBlog:currentBlog];
-            int draftsCount = [draftTitles count];
-			
-            for (int i = 0; i < draftsCount; i++) {
-                NSDictionary *draftDict = [draftTitles objectAtIndex:i];
-				
-                if ([[draftDict valueForKey:@"draftid"] isEqualToString:draftId]) {
-                    [draftTitles removeObjectAtIndex:i];
-                    [draftTitles writeToFile:[self pathToDraftTitlesForBlog:currentBlog] atomically:YES];
-                    [currentBlog setObject:[NSNumber numberWithInt:[draftTitles count]] forKey:kDraftsCount];
-                    [self saveBlogData];
-                    NSString *pathToPost = [self pathToDraft:draftPost forBlog:currentBlog];
-                    NSFileManager *defaultFileManager = [NSFileManager defaultManager];
-					
-                    if ([defaultFileManager fileExistsAtPath:pathToPost])
-                        [defaultFileManager removeItemAtPath:pathToPost error:nil];
-					
-                    break;
-                }
-            }
-        }
 		
 		[appDelegate setPostID:[NSString stringWithFormat:@"%@", response]];
         [self fectchNewPost:response formBlog:currentBlog];
@@ -3760,7 +3720,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
     } else {
         [currentPost setValue:[aPost valueForKey:@"userid"] forKey:@"userid"];
 		
-        //Added for resolving Ticket#113.
+        // Fix for #113.
         if ([aPost valueForKey:@"sticky"] != nil) {
             if ([[aPost valueForKey:@"sticky"] intValue] == 0) {
                 [aPost setValue:[NSNumber numberWithInt:0] forKey:@"sticky"];

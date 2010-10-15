@@ -71,7 +71,13 @@
 					[blog setBlogID:[dictBlog objectForKey:@"blogid"]];
 				else
 					[blog setBlogID:[[dictBlog objectForKey:@"blogid"] stringValue]];
-				[blog setBlogName:[NSString decodeXMLCharactersIn:[dictBlog valueForKey:@"blogName"]]];
+				NSString *blogName = [NSString decodeXMLCharactersIn:[dictBlog valueForKey:@"blogName"]];
+				
+				if([blogName isEqualToString:@""] == YES)
+					[blog setBlogName:[dictBlog valueForKey:@"url"]]; 
+				else
+					[blog setBlogName:blogName];
+				
 				[blog setUrl:[dictBlog valueForKey:@"url"]];
 				
 				NSRange textRange = [blog.url.lowercaseString rangeOfString:@"wordpress.com"];

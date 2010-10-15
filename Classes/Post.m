@@ -50,7 +50,7 @@
 		[convertedPost setValue:[self.status lowercaseString] forKey:@"post_status"];
 	[convertedPost setValue:self.tags forKey:@"mt_keywords"];
 	[convertedPost setValue:[self.categories componentsSeparatedByString:@", "] forKey:@"categories"];
-	[convertedPost setValue:self.dateCreated forKey:@"date_created_gmt"];
+	[convertedPost setValue:self.dateCreated forKey:@"dateCreated"];
 	[convertedPost setValue:self.content forKey:@"description"];
 	
 	NSMutableArray *customFields = [[NSMutableArray alloc] init];

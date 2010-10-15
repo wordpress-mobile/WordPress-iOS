@@ -16,6 +16,7 @@
 #define kTextFieldFontSize      18.0
 #define kTextFieldFont          @"Arial"
 #define kTextViewPlaceholder	@"Tap here to begin writing."
+#define kAppStoreURL			@"http://itunes.apple.com/us/app/wordpress/id335703880?mt=8"
 
 #define kDisabledTextColor      [UIColor grayColor]
 
