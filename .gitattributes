@@ -22,8 +22,12 @@
 /BlogSettingsView-iPad.xib -text
 /BlogViewController-iPad.xib -text
 /BlogViewController.xib -text
+/CTidy.h -text
+/CTidy.m -text
 /CXMLDocument.h -text
 /CXMLDocument.m -text
+/CXMLDocument_CreationExtensions.h -text
+/CXMLDocument_CreationExtensions.m -text
 /CXMLDocument_PrivateExtensions.h -text
 /CXMLDocument_PrivateExtensions.m -text
 /CXMLElement.h -text
@@ -36,6 +40,8 @@
 /CXMLNamespaceNode.m -text
 /CXMLNode.h -text
 /CXMLNode.m -text
+/CXMLNode_CreationExtensions.h -text
+/CXMLNode_CreationExtensions.m -text
 /CXMLNode_PrivateExtensions.h -text
 /CXMLNode_PrivateExtensions.m -text
 /CXMLNode_XPathExtensions.h -text
