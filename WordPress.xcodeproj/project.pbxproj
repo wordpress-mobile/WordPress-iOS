@@ -196,6 +196,18 @@
 		838025D01233F97C0051BBDB /* ManagedObjectCloner.m in Sources */ = {isa = PBXBuildFile; fileRef = 838025CF1233F97C0051BBDB /* ManagedObjectCloner.m */; };
 		8383178812270E980047B476 /* PostMediaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8383178612270E980047B476 /* PostMediaViewController.m */; };
 		8383178912270E980047B476 /* PostMediaViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8383178712270E980047B476 /* PostMediaViewController.xib */; };
+		8388FABA1269585C00304909 /* CTidy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388FAB91269585C00304909 /* CTidy.m */; };
+		8388FABF1269586400304909 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388FABC1269586400304909 /* CXMLDocument_CreationExtensions.m */; };
+		8388FAC01269586400304909 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388FABE1269586400304909 /* CXMLNode_CreationExtensions.m */; };
+		8388FAD4126958E700304909 /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388FAC2126958E700304909 /* CXMLDocument_PrivateExtensions.m */; };
+		8388FAD5126958E700304909 /* CXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388FAC4126958E700304909 /* CXMLDocument.m */; };
+		8388FAD6126958E700304909 /* CXMLElement_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388FAC6126958E700304909 /* CXMLElement_CreationExtensions.m */; };
+		8388FAD7126958E700304909 /* CXMLElement_ElementTreeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388FAC8126958E700304909 /* CXMLElement_ElementTreeExtensions.m */; };
+		8388FAD8126958E700304909 /* CXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388FACA126958E700304909 /* CXMLElement.m */; };
+		8388FAD9126958E700304909 /* CXMLNamespaceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388FACC126958E700304909 /* CXMLNamespaceNode.m */; };
+		8388FADA126958E700304909 /* CXMLNode_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388FACE126958E700304909 /* CXMLNode_PrivateExtensions.m */; };
+		8388FADB126958E700304909 /* CXMLNode_XPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388FAD0126958E700304909 /* CXMLNode_XPathExtensions.m */; };
+		8388FADC126958E700304909 /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388FAD2126958E700304909 /* CXMLNode.m */; };
 		838A477911AF9BE9004FA306 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 838A477811AF9BE9004FA306 /* UIDevice-Hardware.m */; };
 		838C672E1210C3C300B09CA3 /* Post.m in Sources */ = {isa = PBXBuildFile; fileRef = 838C672D1210C3C300B09CA3 /* Post.m */; };
 		8395B19411FB6F1900CCA337 /* favicon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8395B19311FB6F1900CCA337 /* favicon@2x.png */; };
@@ -579,6 +591,31 @@
 		8383178512270E980047B476 /* PostMediaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostMediaViewController.h; sourceTree = "<group>"; };
 		8383178612270E980047B476 /* PostMediaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostMediaViewController.m; sourceTree = "<group>"; };
 		8383178712270E980047B476 /* PostMediaViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PostMediaViewController.xib; path = Classes/PostMediaViewController.xib; sourceTree = "<group>"; };
+		8388FAB81269585C00304909 /* CTidy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTidy.h; sourceTree = "<group>"; };
+		8388FAB91269585C00304909 /* CTidy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTidy.m; sourceTree = "<group>"; };
+		8388FABB1269586400304909 /* CXMLDocument_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_CreationExtensions.h; sourceTree = "<group>"; };
+		8388FABC1269586400304909 /* CXMLDocument_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument_CreationExtensions.m; sourceTree = "<group>"; };
+		8388FABD1269586400304909 /* CXMLNode_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode_CreationExtensions.h; sourceTree = "<group>"; };
+		8388FABE1269586400304909 /* CXMLNode_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNode_CreationExtensions.m; sourceTree = "<group>"; };
+		8388FAC1126958E700304909 /* CXMLDocument_PrivateExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_PrivateExtensions.h; sourceTree = "<group>"; };
+		8388FAC2126958E700304909 /* CXMLDocument_PrivateExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument_PrivateExtensions.m; sourceTree = "<group>"; };
+		8388FAC3126958E700304909 /* CXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument.h; sourceTree = "<group>"; };
+		8388FAC4126958E700304909 /* CXMLDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument.m; sourceTree = "<group>"; };
+		8388FAC5126958E700304909 /* CXMLElement_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLElement_CreationExtensions.h; sourceTree = "<group>"; };
+		8388FAC6126958E700304909 /* CXMLElement_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLElement_CreationExtensions.m; sourceTree = "<group>"; };
+		8388FAC7126958E700304909 /* CXMLElement_ElementTreeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLElement_ElementTreeExtensions.h; sourceTree = "<group>"; };
+		8388FAC8126958E700304909 /* CXMLElement_ElementTreeExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLElement_ElementTreeExtensions.m; sourceTree = "<group>"; };
+		8388FAC9126958E700304909 /* CXMLElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLElement.h; sourceTree = "<group>"; };
+		8388FACA126958E700304909 /* CXMLElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLElement.m; sourceTree = "<group>"; };
+		8388FACB126958E700304909 /* CXMLNamespaceNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNamespaceNode.h; sourceTree = "<group>"; };
+		8388FACC126958E700304909 /* CXMLNamespaceNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNamespaceNode.m; sourceTree = "<group>"; };
+		8388FACD126958E700304909 /* CXMLNode_PrivateExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode_PrivateExtensions.h; sourceTree = "<group>"; };
+		8388FACE126958E700304909 /* CXMLNode_PrivateExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNode_PrivateExtensions.m; sourceTree = "<group>"; };
+		8388FACF126958E700304909 /* CXMLNode_XPathExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode_XPathExtensions.h; sourceTree = "<group>"; };
+		8388FAD0126958E700304909 /* CXMLNode_XPathExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNode_XPathExtensions.m; sourceTree = "<group>"; };
+		8388FAD1126958E700304909 /* CXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode.h; sourceTree = "<group>"; };
+		8388FAD2126958E700304909 /* CXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNode.m; sourceTree = "<group>"; };
+		8388FAD3126958E700304909 /* TouchXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchXML.h; sourceTree = "<group>"; };
 		838A477711AF9BE9004FA306 /* UIDevice-Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice-Hardware.h"; sourceTree = "<group>"; };
 		838A477811AF9BE9004FA306 /* UIDevice-Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice-Hardware.m"; sourceTree = "<group>"; };
 		838C672C1210C3C300B09CA3 /* Post.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Post.h; sourceTree = "<group>"; };
@@ -840,6 +877,7 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				8388FA801269580400304909 /* TouchXML */,
 				834CE85F1256E7EE0046A4A3 /* ASIHTTPRequest */,
 				834CAEA2122D56B7003DDF49 /* UIImage */,
 				837614E8120A7FA3005CCB33 /* XMLRPC */,
@@ -1080,6 +1118,54 @@
 				837614F7120A7FB2005CCB33 /* XMLValueDecoder.m */,
 			);
 			name = XMLRPC;
+			sourceTree = "<group>";
+		};
+		8388FA801269580400304909 /* TouchXML */ = {
+			isa = PBXGroup;
+			children = (
+				8388FAC1126958E700304909 /* CXMLDocument_PrivateExtensions.h */,
+				8388FAC2126958E700304909 /* CXMLDocument_PrivateExtensions.m */,
+				8388FAC3126958E700304909 /* CXMLDocument.h */,
+				8388FAC4126958E700304909 /* CXMLDocument.m */,
+				8388FAC5126958E700304909 /* CXMLElement_CreationExtensions.h */,
+				8388FAC6126958E700304909 /* CXMLElement_CreationExtensions.m */,
+				8388FAC7126958E700304909 /* CXMLElement_ElementTreeExtensions.h */,
+				8388FAC8126958E700304909 /* CXMLElement_ElementTreeExtensions.m */,
+				8388FAC9126958E700304909 /* CXMLElement.h */,
+				8388FACA126958E700304909 /* CXMLElement.m */,
+				8388FACB126958E700304909 /* CXMLNamespaceNode.h */,
+				8388FACC126958E700304909 /* CXMLNamespaceNode.m */,
+				8388FACD126958E700304909 /* CXMLNode_PrivateExtensions.h */,
+				8388FACE126958E700304909 /* CXMLNode_PrivateExtensions.m */,
+				8388FACF126958E700304909 /* CXMLNode_XPathExtensions.h */,
+				8388FAD0126958E700304909 /* CXMLNode_XPathExtensions.m */,
+				8388FAD1126958E700304909 /* CXMLNode.h */,
+				8388FAD2126958E700304909 /* CXMLNode.m */,
+				8388FAD3126958E700304909 /* TouchXML.h */,
+				8388FAA71269585300304909 /* Tidy */,
+				8388FAA61269584E00304909 /* Creation */,
+			);
+			name = TouchXML;
+			sourceTree = "<group>";
+		};
+		8388FAA61269584E00304909 /* Creation */ = {
+			isa = PBXGroup;
+			children = (
+				8388FABB1269586400304909 /* CXMLDocument_CreationExtensions.h */,
+				8388FABC1269586400304909 /* CXMLDocument_CreationExtensions.m */,
+				8388FABD1269586400304909 /* CXMLNode_CreationExtensions.h */,
+				8388FABE1269586400304909 /* CXMLNode_CreationExtensions.m */,
+			);
+			name = Creation;
+			sourceTree = "<group>";
+		};
+		8388FAA71269585300304909 /* Tidy */ = {
+			isa = PBXGroup;
+			children = (
+				8388FAB81269585C00304909 /* CTidy.h */,
+				8388FAB91269585C00304909 /* CTidy.m */,
+			);
+			name = Tidy;
 			sourceTree = "<group>";
 		};
 		83A4A7CD11CD7E5E0075A7C3 /* Admin */ = {
@@ -1800,6 +1886,18 @@
 				834CE8751256E7F60046A4A3 /* ASIInputStream.m in Sources */,
 				834CE8761256E7F60046A4A3 /* ASINetworkQueue.m in Sources */,
 				834CE8791256E8050046A4A3 /* Reachability2.m in Sources */,
+				8388FABA1269585C00304909 /* CTidy.m in Sources */,
+				8388FABF1269586400304909 /* CXMLDocument_CreationExtensions.m in Sources */,
+				8388FAC01269586400304909 /* CXMLNode_CreationExtensions.m in Sources */,
+				8388FAD4126958E700304909 /* CXMLDocument_PrivateExtensions.m in Sources */,
+				8388FAD5126958E700304909 /* CXMLDocument.m in Sources */,
+				8388FAD6126958E700304909 /* CXMLElement_CreationExtensions.m in Sources */,
+				8388FAD7126958E700304909 /* CXMLElement_ElementTreeExtensions.m in Sources */,
+				8388FAD8126958E700304909 /* CXMLElement.m in Sources */,
+				8388FAD9126958E700304909 /* CXMLNamespaceNode.m in Sources */,
+				8388FADA126958E700304909 /* CXMLNode_PrivateExtensions.m in Sources */,
+				8388FADB126958E700304909 /* CXMLNode_XPathExtensions.m in Sources */,
+				8388FADC126958E700304909 /* CXMLNode.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1958,10 +2056,14 @@
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = "-licucore";
+				OTHER_LDFLAGS = (
+					"-lxml2",
+					"-licucore",
+				);
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "2F0554EE-DF96-4C04-8CD2-E7516B4F4515";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "514FFA26-203E-4857-81CA-0E5F7579BDC6";

@@ -251,7 +251,7 @@
 	[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding media..." waitUntilDone:NO];
 	
 	NSFileHandle *originalFile, *encodedFile;
-	self.localEncodedURL = [NSString stringWithFormat:@"%@-base64.xml", self.localURL];
+	self.localEncodedURL = [[NSString stringWithFormat:@"%@-base64.xml", self.localURL] retain];
 	
 	// Open the original video file for reading
 	originalFile = [NSFileHandle fileHandleForReadingAtPath:self.localURL];
@@ -440,6 +440,7 @@
 	}
 	else {
 		[self updateStatus:@"Upload failed. Please try again."];
+		NSLog(@"connection failed: %@", [request responseData]);
 		
 		[NSThread sleepForTimeInterval:2.0];
 		
@@ -453,6 +454,7 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request {
 	[self updateStatus:@"Upload failed. Please try again."];
+	NSLog(@"connection failed: %@", [request responseData]);
 	
 	[NSThread sleepForTimeInterval:2.0];
 	

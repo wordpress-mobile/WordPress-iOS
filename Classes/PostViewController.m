@@ -818,7 +818,7 @@
 - (void)checkAutosaves {
 	@try {
 		if(dm.currentPost != nil) {
-			if(([[dm currentPost] valueForKey:@"postid"] != nil) && (![[[dm currentPost] valueForKey:@"postid"] isEqualToString:@""])) {
+			if(([[dm currentPost] objectForKey:@"postid"] != nil) && (![[[dm currentPost] objectForKey:@"postid"] isEqualToString:@""])) {
 				NSString *autosavePostID = [NSString stringWithFormat:@"%@-%@",
 											[[dm currentBlog] valueForKey:@"url"],
 											[[dm currentPost] valueForKey:@"postid"]];
