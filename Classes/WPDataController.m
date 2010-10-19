@@ -35,10 +35,32 @@
 #pragma mark -
 #pragma mark User
 
-- (XMLRPCResponse *)checkXMLRPC:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password {
-	XMLRPCRequest *xmlrpcUsersBlogs = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
-	[xmlrpcUsersBlogs setMethod:@"wp.getUsersBlogs" withObjects:[NSArray arrayWithObjects:username, password, nil]];
-	return [self executeXMLRPCRequest:xmlrpcUsersBlogs];
+- (BOOL)checkXMLRPC:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password {
+	BOOL result = NO;
+	
+	ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:xmlrpc]];
+	[request setRequestMethod:@"POST"];
+	[request setShouldPresentCredentialsBeforeChallenge:NO];
+	[request setShouldPresentAuthenticationDialog:YES];
+	[request setUseKeychainPersistence:YES];
+	
+	XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
+	[xmlrpcRequest setMethod:@"wp.getUsersBlogs" withObjects:[NSArray arrayWithObjects:username, password, nil]];
+	[request appendPostData:[[xmlrpcRequest source] dataUsingEncoding:NSUTF8StringEncoding]];
+	[request startSynchronous];
+	[xmlrpcRequest release];
+	
+	NSError *error = [request error];
+	if (!error) {
+		CXMLDocument *xml = [[[CXMLDocument alloc] initWithXMLString:[request responseString] options:0 error:nil] autorelease];
+		CXMLElement *node = [xml nodeForXPath:@"//methodResponse" error:nil];
+		if(node != nil)
+			result = YES;
+		else
+			result = NO;
+	}
+	
+	return result;
 }
 
 - (BOOL)authenticateUser:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password {

@@ -8,11 +8,13 @@
 
 #import <Foundation/Foundation.h>
 #import "WPDataControllerDelegate.h"
+#import "ASIHTTPRequest.h"
 #import "NSString+XMLExtensions.h"
 #import "Blog.h"
 #import "Post.h"
 #import "Comment.h"
 #import "WordPressAppDelegate.h"
+#import "TouchXML.h"
 
 typedef enum {
 	SyncDirectionLocal,
@@ -29,7 +31,7 @@ typedef enum {
 
 + (WPDataController *)sharedInstance;
 
-- (XMLRPCResponse *)checkXMLRPC:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password;
+- (BOOL)checkXMLRPC:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password;
 - (BOOL)authenticateUser:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password;
 - (NSMutableArray *)getBlogsForUrl:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password;
 - (id)executeXMLRPCRequest:(XMLRPCRequest *)req;

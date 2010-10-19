@@ -1124,7 +1124,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	Media *media = [notification object];
 	NSString *prefix = @"<br/><br/>";
 	
-	if([textView.text isEqualToString:kTextViewPlaceholder]) {
+	if(textView.text == nil)
+		textView.text = @"";
+	else if([textView.text isEqualToString:kTextViewPlaceholder]) {
         textView.textColor = [UIColor blackColor];
 		textView.text = @"";
 		prefix = @"";
@@ -1140,14 +1142,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	Media *media = [notification object];
 	NSString *prefix = @"<br/><br/>";
 	
-	if([textView.text isEqualToString:kTextViewPlaceholder]) {
+	if(textView.text == nil)
+		textView.text = @"";
+	else if([textView.text isEqualToString:kTextViewPlaceholder]) {
         textView.textColor = [UIColor blackColor];
 		textView.text = @"";
 		prefix = @"";
 	}
-	
-	if(textView.text == nil)
-		textView.text = @"";
 	
 	NSMutableString *content = [[[NSMutableString alloc] initWithString:textView.text] autorelease];
 	[content appendString:[NSString stringWithFormat:@"%@%@", prefix, media.html]];

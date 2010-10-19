@@ -14,6 +14,7 @@
 #import "AddUsersBlogsViewController.h"
 #import "BlogSettingsViewController.h"
 #import "Blog.h";
+#import "TouchXML.h"
 
 @interface AddSiteViewController : UIViewController <UITableViewDelegate, UITextFieldDelegate> {
 	WordPressAppDelegate *appDelegate;
