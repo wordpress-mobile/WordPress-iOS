@@ -18,6 +18,7 @@
 }
 
 - (Media *)get:(NSString *)uniqueID {
+	NSLog(@"getting media with unique ID: %@", uniqueID);
 	NSArray *items = nil;
 	if(uniqueID != nil) {
 		NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -130,6 +131,7 @@
 }
 
 - (void)save:(Media *)media {
+	NSLog(@"saving media: %@", media);
 	if((media.uniqueID == nil) || ([self exists:media.uniqueID] == NO)) {
 		[media setUniqueID:[[NSProcessInfo processInfo] globallyUniqueString]];
 		[self insert:media];

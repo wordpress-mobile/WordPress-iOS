@@ -10,6 +10,7 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import <MobileCoreServices/UTCoreTypes.h>
+#import <AssetsLibrary/AssetsLibrary.h>
 #import "UIDevice-Hardware.h"
 #import "UIImage+Resize.h"
 #import "WordPressAppDelegate.h"
@@ -17,6 +18,10 @@
 #import "MediaManager.h"
 #import "WPMediaUploader.h"
 #import "MediaObjectViewController.h"
+#import "WPImagePickerController.h"
+
+typedef void (^ALAssetsLibraryAssetForURLResultBlock)(ALAsset *asset);
+typedef void (^ALAssetsLibraryAccessFailureBlock)(NSError *error);
 
 @class PostViewController;
 
@@ -30,6 +35,8 @@ static inline double radians(double degrees) {
 	MediaManager *mediaManager;
 	WPMediaUploader *mediaUploader;
 	BlogDataManager *dm;
+	UIImagePickerController *picker;
+	UIViewController *pickerContainer;
 	
 	IBOutlet UITableView *table;
 	IBOutlet UIBarButtonItem *addMediaButton;
@@ -68,6 +75,8 @@ static inline double radians(double degrees) {
 @property (nonatomic, retain) UIImage *currentImage;
 @property (nonatomic, retain) NSMutableDictionary *currentVideo;
 @property (nonatomic, assign) BlogDataManager *dm;
+@property (nonatomic, retain) UIImagePickerController *picker;
+@property (nonatomic, retain) UIViewController *pickerContainer;
 
 - (IBAction)refreshMedia;
 - (void)scaleAndRotateImage:(UIImage *)image;

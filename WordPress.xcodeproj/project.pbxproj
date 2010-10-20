@@ -160,6 +160,7 @@
 		8355D67E11D13EAD00A61362 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8355D67D11D13EAD00A61362 /* MobileCoreServices.framework */; };
 		8355D7D911D260AA00A61362 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8355D7D811D260AA00A61362 /* CoreData.framework */; };
 		835871C9120096AC007682CB /* WelcomeViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 835871C8120096AC007682CB /* WelcomeViewController-iPad.xib */; };
+		835E2403126E66E50085940B /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 835E2402126E66E50085940B /* AssetsLibrary.framework */; };
 		83610AAA11F4AD2C00421116 /* WPcomLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83610AA811F4AD2C00421116 /* WPcomLoginViewController.m */; };
 		83610AAB11F4AD2C00421116 /* WPcomLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83610AA911F4AD2C00421116 /* WPcomLoginViewController.xib */; };
 		8362C1041201E7CE00599347 /* WebSignupViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8362C1031201E7CE00599347 /* WebSignupViewController-iPad.xib */; };
@@ -541,6 +542,7 @@
 		8355D67D11D13EAD00A61362 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		8355D7D811D260AA00A61362 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		835871C8120096AC007682CB /* WelcomeViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "WelcomeViewController-iPad.xib"; sourceTree = "<group>"; };
+		835E2402126E66E50085940B /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		83610AA711F4AD2C00421116 /* WPcomLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPcomLoginViewController.h; sourceTree = "<group>"; };
 		83610AA811F4AD2C00421116 /* WPcomLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPcomLoginViewController.m; sourceTree = "<group>"; };
 		83610AA911F4AD2C00421116 /* WPcomLoginViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = WPcomLoginViewController.xib; path = Classes/WPcomLoginViewController.xib; sourceTree = "<group>"; };
@@ -771,6 +773,7 @@
 				834CE7341256D0DE0046A4A3 /* CFNetwork.framework in Frameworks */,
 				834CE7381256D0F60046A4A3 /* CoreGraphics.framework in Frameworks */,
 				834CE73C1256D0FF0046A4A3 /* libz.1.2.3.dylib in Frameworks */,
+				835E2403126E66E50085940B /* AssetsLibrary.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -945,6 +948,7 @@
 				83F3E25F11275E07004CD686 /* MapKit.framework */,
 				83F3E2D211276371004CD686 /* CoreLocation.framework */,
 				8355D7D811D260AA00A61362 /* CoreData.framework */,
+				835E2402126E66E50085940B /* AssetsLibrary.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

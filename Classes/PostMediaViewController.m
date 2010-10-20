@@ -9,8 +9,8 @@
 #import "PostMediaViewController.h"
 
 @implementation PostMediaViewController
-@synthesize table, addMediaButton, hasPhotos, hasVideos, isAddingMedia, photos, videos, appDelegate, dm, addPopover;
-@synthesize isShowingMediaPickerActionSheet, currentOrientation, isShowingChangeOrientationActionSheet, spinner;
+@synthesize table, addMediaButton, hasPhotos, hasVideos, isAddingMedia, photos, videos, appDelegate, dm, addPopover, picker;
+@synthesize isShowingMediaPickerActionSheet, currentOrientation, isShowingChangeOrientationActionSheet, spinner, pickerContainer;
 @synthesize currentImage, currentVideo, isLibraryMedia, didChangeOrientationDuringRecord, messageLabel, topToolbar;
 @synthesize postDetailViewController, mediaManager, postID, blogURL, mediaTypeControl, mediaUploader, bottomToolbar;
 @synthesize isShowingResizeActionSheet, videoEnabled, uploadID, videoPressCheckBlogURL, isCheckingVideoCapability, uniqueID;
@@ -44,6 +44,9 @@
 	
 	dm = [BlogDataManager sharedDataManager];
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+	picker = [[WPImagePickerController alloc] init];
+	picker.delegate = self;
+	picker.allowsEditing = NO;
 	
 	[self initObjects];
 	[self refreshProperties];
@@ -68,13 +71,6 @@
 - (void)viewDidUnload {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[super viewDidUnload];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if(interfaceOrientation == UIInterfaceOrientationPortrait)
-		return YES;
-	else
-		return NO;
 }
 
 #pragma mark -
@@ -187,7 +183,6 @@
 		case 0:
 			foo = indexPath.row;
 			Media *photo = [photos objectAtIndex:indexPath.row];
-			NSLog(@"loading object: %@", photo);
 			[mediaView setMedia:photo];
 			break;
 		case 1:
@@ -397,21 +392,22 @@
 }
 
 - (void)pickPhotoFromCamera:(id)sender {
-	UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-	picker.delegate = self;
-	picker.allowsEditing = NO;
 	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         picker.sourceType = UIImagePickerControllerSourceTypeCamera;
 		picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
-        [postDetailViewController presentModalViewController:picker animated:YES];
+		
+		if(pickerContainer == nil)
+			pickerContainer = [[UIViewController alloc] init];
+		
+		pickerContainer.view.frame = CGRectMake(0, 0, 320, 480);
+		[appDelegate.navigationController.view addSubview:pickerContainer.view];
+		[appDelegate.navigationController.view bringSubviewToFront:pickerContainer.view];
+		[pickerContainer presentModalViewController:picker animated:YES];
     }
 }
 
 - (void)pickVideoFromCamera:(id)sender {
-	UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-	picker.delegate = self;
-	picker.allowsEditing = YES;
 	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
 	picker.sourceType =  UIImagePickerControllerSourceTypeCamera;
 	picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeMovie];
@@ -438,8 +434,13 @@
 		}
 	}
 	
-	//[[[UIApplication sharedApplication] keyWindow] setRootViewController:picker];
-	[postDetailViewController presentModalViewController:picker animated:YES];
+	if(pickerContainer == nil)
+		pickerContainer = [[UIViewController alloc] init];
+	
+	pickerContainer.view.frame = CGRectMake(0, 0, 320, 480);
+	[appDelegate.navigationController.view addSubview:pickerContainer.view];
+	[appDelegate.navigationController.view bringSubviewToFront:pickerContainer.view];
+	[pickerContainer presentModalViewController:picker animated:YES];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(deviceDidRotate:)
@@ -476,9 +477,6 @@
 }
 
 - (void)pickPhotoFromPhotoLibrary:(id)sender {
-	UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-	picker.delegate = self;
-	picker.allowsEditing = YES;
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
 		NSArray *availableMediaTypes = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
 		[picker setMediaTypes:availableMediaTypes];
@@ -490,8 +488,13 @@
 			[addPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		}
 		else {
-			//[[[UIApplication sharedApplication] keyWindow] setRootViewController:picker];
-			[postDetailViewController presentModalViewController:picker animated:YES];
+			if(pickerContainer == nil)
+				pickerContainer = [[UIViewController alloc] init];
+			
+			pickerContainer.view.frame = CGRectMake(0, 0, 320, 480);
+			[appDelegate.navigationController.view addSubview:pickerContainer.view];
+			[appDelegate.navigationController.view bringSubviewToFront:pickerContainer.view];
+			[pickerContainer presentModalViewController:picker animated:YES];
 		}
     }
 }
@@ -520,7 +523,7 @@
 	}
 }
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+- (void)imagePickerController:(UIImagePickerController *)thePicker didFinishPickingMediaWithInfo:(NSDictionary *)info {
 	if([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.movie"]) {
 		[self refreshMedia];
 		self.currentVideo = [info retain];
@@ -529,11 +532,11 @@
 		else if(self.isLibraryMedia == NO)
 			[self processRecordedVideo];
 		else
-			[self processLibraryVideo];
+			[self performSelectorOnMainThread:@selector(processLibraryVideo) withObject:nil waitUntilDone:NO];
 	}
 	else if([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.image"]) {
 		UIImage *image = [info valueForKey:@"UIImagePickerControllerOriginalImage"];
-		if (picker.sourceType == UIImagePickerControllerSourceTypeCamera)
+		if (thePicker.sourceType == UIImagePickerControllerSourceTypeCamera)
 			UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
 		currentImage = [image retain];
 		
@@ -558,24 +561,36 @@
 				[self useImage:[self resizeImage:currentImage toSize:kResizeLarge]];
 				break;
 			case 4:
-				[self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
+				[self useImage:currentImage];
 				break;
 			default:
 				[self showResizeActionSheet];
 				break;
 		}
-	}
-	
-	[picker release];
-	
-	if(DeviceIsPad() == YES)
-		[addPopover dismissPopoverAnimated:YES];
-	else {
-		[picker dismissModalViewControllerAnimated:YES];
+		
+		if(DeviceIsPad() == YES)
+			[addPopover dismissPopoverAnimated:YES];
+		else {
+			[pickerContainer dismissModalViewControllerAnimated:NO];
+			pickerContainer.view.frame = CGRectMake(0, 2000, 0, 0);
+		}
 	}
 }
 
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+	[pickerContainer dismissModalViewControllerAnimated:NO];
+	pickerContainer.view.frame = CGRectMake(0, 2000, 0, 0);
+}
+
 - (void)processRecordedVideo {
+	if(DeviceIsPad() == YES)
+		[addPopover dismissPopoverAnimated:YES];
+	else {
+		NSLog(@"pickerContainer: %@", pickerContainer);
+		[pickerContainer dismissModalViewControllerAnimated:NO];
+		pickerContainer.view.frame = CGRectMake(0, 2000, 0, 0);
+	}
+	
 	[self.currentVideo setValue:[NSNumber numberWithInt:currentOrientation] forKey:@"orientation"];
 	NSString *tempVideoPath = [(NSURL *)[currentVideo valueForKey:UIImagePickerControllerMediaURL] absoluteString];
 	tempVideoPath = [[tempVideoPath substringFromIndex:16] retain];
@@ -588,13 +603,23 @@
 }
 
 - (void)processLibraryVideo {
-	if([[currentVideo valueForKey:UIImagePickerControllerMediaURL] absoluteString] != nil) {
+	NSURL *videoURL = [currentVideo valueForKey:UIImagePickerControllerMediaURL];
+	if(videoURL == nil)
+		videoURL = [currentVideo valueForKey:UIImagePickerControllerReferenceURL];
+	
+	if(videoURL != nil) {
+		if(DeviceIsPad() == YES)
+			[addPopover dismissPopoverAnimated:YES];
+		else {
+			[pickerContainer dismissModalViewControllerAnimated:NO];
+			pickerContainer.view.frame = CGRectMake(0, 2000, 0, 0);
+		}
+		
 		float osVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
 		[self.currentVideo setValue:[NSNumber numberWithInt:currentOrientation] forKey:@"orientation"];
 		
 		// Determine the video's library path
-		NSString *videoPath = [(NSURL *)[currentVideo valueForKey:UIImagePickerControllerMediaURL] absoluteString];
-		videoPath = [[videoPath substringFromIndex:16] retain];
+		NSString *videoPath = [[[videoURL absoluteString] substringFromIndex:16] retain];
 		NSURL *contentURL = [NSURL fileURLWithPath:videoPath];
 		
 		// If we're using iOS 3.2 or greater, we can grab a thumbnail using this method
@@ -614,8 +639,6 @@
 		self.currentVideo = nil;
 		self.isLibraryMedia = NO;
 		[self refreshMedia];
-		
-		[videoPath release];
 	}
 }
 
@@ -751,11 +774,6 @@
 	return [theImage thumbnailImage:75 transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
 }
 
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-	[postDetailViewController dismissModalViewControllerAnimated:YES];
-    //[self refreshMedia];
-}
-
 - (void)useImage:(UIImage *)theImage {
 	Media *imageMedia = [mediaManager get:nil];
 	NSDictionary *currentBlog = [dm currentBlog];
@@ -801,29 +819,36 @@
 }
 
 - (void)useVideo:(NSString *)videoURL withThumbnail:(UIImage *)thumbnail andDuration:(float)duration {
-	Media *videoMedia = [mediaManager get:nil];
+	BOOL copySuccess;
+	Media *videoMedia;
+	NSDictionary *attributes;
 	NSDictionary *currentBlog = [dm currentBlog];
 	UIImage *videoThumbnail = [self generateThumbnailFromImage:thumbnail andSize:CGSizeMake(75, 75)];
-	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	[formatter setDateFormat:@"yyyyMMdd-hhmmss"];
 	
 	// Save to local file
-	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	[formatter setDateFormat:@"yyyyMMdd-hhmmss"];	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectory = [paths objectAtIndex:0];
-	NSString *filename = [NSString stringWithFormat:@"%@.mov", [formatter stringFromDate:[NSDate date]]];
-	NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
+	NSString *filename = [[NSString stringWithFormat:@"%@.mov", [formatter stringFromDate:[NSDate date]]] retain];
+	NSString *filepath = [[documentsDirectory stringByAppendingPathComponent:filename] retain];
 	
-	// Copy the video from temp to blog directory
-	NSDictionary *attributes;
-	NSError *error = nil;
-	BOOL copySuccess;
-	if ((attributes = [fileManager fileAttributesAtPath:videoURL traverseLink:YES]) != nil) {
-		if([fileManager isReadableFileAtPath:videoURL] == YES)
-			copySuccess = [fileManager copyItemAtPath:videoURL toPath:filepath error:&error];
+	if(videoURL != nil) {
+		// Copy the video from temp to blog directory
+		NSError *error = nil;
+		if ((attributes = [fileManager fileAttributesAtPath:videoURL traverseLink:YES]) != nil) {
+			if([fileManager isReadableFileAtPath:videoURL] == YES)
+				copySuccess = [fileManager copyItemAtPath:videoURL toPath:filepath error:&error];
+		}
 	}
 	
 	if(copySuccess == YES) {
+		[mediaManager doReport];
+		videoMedia = [(Media *)[NSEntityDescription insertNewObjectForEntityForName:@"Media" 
+															 inManagedObjectContext:appDelegate.managedObjectContext] retain];
+		[videoMedia setUniqueID:[[NSProcessInfo processInfo] globallyUniqueString]];
+		[mediaManager doReport];
+		
 		// Save to local database
 		videoMedia.postID = self.postID;
 		videoMedia.blogID = [currentBlog valueForKey:@"blogid"];
@@ -833,18 +858,26 @@
 		else
 			videoMedia.orientation = @"portrait";
 		videoMedia.creationDate = [NSDate date];
-		videoMedia.filename = filename;
-		videoMedia.localURL = filepath;
+		[videoMedia setFilename:filename];
+		[videoMedia setLocalURL:filepath];
+		
 		videoMedia.filesize = [NSNumber numberWithInt:([[attributes objectForKey: NSFileSize] intValue]/1024)];
 		videoMedia.mediaType = @"video";
 		videoMedia.thumbnail = UIImageJPEGRepresentation(videoThumbnail, 1.0);
 		videoMedia.length = [NSNumber numberWithFloat:duration];
-		[mediaManager save:videoMedia];
 		CGImageRef cgVideoThumbnail = thumbnail.CGImage;
 		NSUInteger videoWidth = CGImageGetWidth(cgVideoThumbnail);
 		NSUInteger videoHeight = CGImageGetHeight(cgVideoThumbnail);
 		videoMedia.width = [NSNumber numberWithInt:videoWidth];
 		videoMedia.height = [NSNumber numberWithInt:videoHeight];
+		
+		// Save to db
+		[mediaManager doReport];
+		NSError *error;
+		if (![appDelegate.managedObjectContext save:&error]) {
+			NSLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+			exit(-1);
+		}
 		
 		// Save to remote server
 		self.uploadID = videoMedia.uniqueID;
@@ -935,14 +968,14 @@
 
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification {
 	if(self.uploadID != nil) {
-		NSDictionary *mediaData = [notification userInfo];
-		Media *media = [mediaManager get:self.uploadID];
-		media.remoteURL = [mediaData objectForKey:@"url"];
-		media.shortcode = [mediaData objectForKey:@"shortcode"];
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
-		[mediaManager update:media];
-		media = [mediaManager get:self.uploadID];
-		self.uploadID = nil;
+//		NSDictionary *mediaData = [notification userInfo];
+//		Media *media = [mediaManager get:self.uploadID];
+//		media.remoteURL = [mediaData objectForKey:@"url"];
+//		media.shortcode = [mediaData objectForKey:@"shortcode"];
+//		[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
+//		[mediaManager update:media];
+//		media = [mediaManager get:self.uploadID];
+//		self.uploadID = nil;
 	}
 	
 	[UIView beginAnimations:@"Removing mediaUploader" context:nil];
@@ -1101,6 +1134,7 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
+	[picker release], picker = nil;
 	[uniqueID release];
 	[addPopover release];
 	[topToolbar release];

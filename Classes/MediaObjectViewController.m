@@ -29,7 +29,6 @@
 		[self.view addSubview:videoPlayer.view];
 	}
 	else if((media != nil) && ([media.mediaType isEqualToString:@"image"])) {
-		NSLog(@"loading image: %@", media.localURL);
 		self.navigationItem.title = @"Image";
 		imageView.image = [UIImage imageWithContentsOfFile:media.localURL];
 		if((imageView.image == nil) && (media.remoteURL != nil)) {
@@ -161,13 +160,13 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
-	[scrollView release];
-	[insertButton release];
-	[deleteButton release];
-	[media release];
-	[mediaManager release];
-	[imageView release];
-	[videoPlayer release];
+	[scrollView release], scrollView = nil;
+	[insertButton release], insertButton = nil;
+	[deleteButton release], deleteButton = nil;
+	[media release], media = nil;
+	[mediaManager release], mediaManager = nil;
+	[imageView release], imageView = nil;
+	[videoPlayer release], videoPlayer = nil;
     [super dealloc];
 }
 

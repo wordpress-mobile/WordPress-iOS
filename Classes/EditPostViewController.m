@@ -1121,7 +1121,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)insertMediaAbove:(NSNotification *)notification {
-	Media *media = [notification object];
+	Media *media = (Media *)[notification object];
 	NSString *prefix = @"<br/><br/>";
 	
 	if(textView.text == nil)
@@ -1139,7 +1139,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)insertMediaBelow:(NSNotification *)notification {
-	Media *media = [notification object];
+	Media *media = (Media *)[notification object];
 	NSString *prefix = @"<br/><br/>";
 	
 	if(textView.text == nil)
@@ -1422,8 +1422,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [leftView release];
     [bookMarksArray release];
     [segmentedTableViewController release];
-	[locationButton release];
-	[locationSpinner release];
     [super dealloc];
 }
 
