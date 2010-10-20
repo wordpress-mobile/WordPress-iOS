@@ -63,14 +63,38 @@
 			
 			if(self.shortcode != nil)
 				result = self.shortcode;
-			else if(self.remoteURL != nil)
-				result = [NSString stringWithFormat:
-						  @"<video src=\"%@\" controls=\"controls\" width=\"%@\" height=\"%@\">"
-						  "Your browser does not support the video tag"
-						  "</video>",
-						  [self.remoteURL stringByReplacingOccurrencesOfString:@"\"" withString:@""], 
-						  embedWidth, 
-						  embedHeight];
+			else if(self.remoteURL != nil) {
+				self.remoteURL = [self.remoteURL stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+				NSNumber *htmlPreference = [NSNumber numberWithInt:
+											[[[NSUserDefaults standardUserDefaults] 
+											  objectForKey:@"video_html_preference"] intValue]];
+				
+				if([htmlPreference intValue] == 0) {
+					// Use HTML 5 <video> tag
+					result = [NSString stringWithFormat:
+							  @"<video src=\"%@\" controls=\"controls\" width=\"%@\" height=\"%@\">"
+							  "Your browser does not support the video tag"
+							  "</video>",
+							  self.remoteURL, 
+							  embedWidth, 
+							  embedHeight];
+				}
+				else {
+					// Use HTML 4 <object><embed> tags
+					result = [NSString stringWithFormat:
+							  @"<object classid=\"clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B\""
+							  "codebase=\"http://www.apple.com/qtactivex/qtplugin.cab\""
+							  "width=\"%@\" height=\"%@\">"
+							  "<param name=\"src\" value=\"%@\">"
+							  "<embed src=\"%@\""
+							  "width=\"%@\" height=\"%@\" type=\"video/quicktime\""
+							  "pluginspage=\"http://www.apple.com/quicktime/download/\""
+							  "/></object>",
+							  embedWidth, embedHeight, self.remoteURL, self.remoteURL, embedWidth, embedHeight];
+				}
+				
+				NSLog(@"media.html: %@", result);
+			}
 		}
 	}
 	

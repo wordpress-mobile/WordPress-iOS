@@ -91,6 +91,7 @@
 
 #define kUnsupportedWordpressVersionTag 900
 #define kRSDErrorTag 901
+#define kCrashAlertTag 902
 
 typedef enum {
 	kImage,
