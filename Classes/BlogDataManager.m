@@ -3479,7 +3479,9 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
     XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[aBlog valueForKey:@"xmlrpc"]]];
     [request setMethod:@"metaWeblog.getPost" withObjects:args];
 	
+	// Fetch the post using XML-RPC
     id post = [self executeXMLRPCRequest:request byHandlingError:YES];
+    [request release];
 	
 	if ([post isKindOfClass:[NSError class]]) {
         return nil;
@@ -3489,10 +3491,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
     NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:postGMTDate];
     NSDate *currentDate = [postGMTDate addTimeInterval:(secs * +1)];
     [post setValue:currentDate forKey:@"date_created_gmt"];
-    [post setValue:[NSString stringWithFormat:@"%@", [post valueForKey:@"postid"]]  forKey:@"postid"];
-    [request release];
-	
-	
+
     [post setValue:[aBlog valueForKey:kBlogId] forKey:kBlogId];
     [post setValue:[aBlog valueForKey:kBlogHostName] forKey:kBlogHostName];
     [post setValue:@"original" forKey:@"local_status"];
