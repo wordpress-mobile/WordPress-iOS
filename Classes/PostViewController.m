@@ -321,7 +321,6 @@
 					NSString *postID = [dm.currentPost objectForKey:@"postid"];
 					NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
 					[self stopTimer];
-					NSLog(@"dm.currentPost: %@", dm.currentPost);
 					
 					if(savePostStatus == YES) {
 						[dm removeAutoSavedCurrentPostFile];
@@ -338,7 +337,6 @@
 					
 					if (DeviceIsPad() == YES) {
 						[[BlogDataManager sharedDataManager] makePostWithPostIDCurrent:postID];
-						NSLog(@"dm.currentPost: %@", dm.currentPost);
 					}
 					
 					[postID release];
@@ -698,7 +696,6 @@
 	postDetailEditController.statusTextField.text = [dm statusDescriptionForStatus:@"Published" fromBlog:dm.currentBlog];
 	
 	[dm.currentPost setObject:@"publish" forKey:@"post_status"];
-	NSLog(@"dm.currentPost: %@", dm.currentPost);
 	
 	[self saveAction:sender];
 }
@@ -820,10 +817,10 @@
 		if(dm.currentPost != nil) {
 			NSNumber *postID = [NSNumber numberWithInt:-1];
 			
-			if(([dm currentPost]) && (![[[dm currentPost] objectForKey:@"postid"] isEqualToString:@""]))
+			if(([dm currentPost]) && ([[[dm currentPost] objectForKey:@"postid"] isKindOfClass:[NSString class]]) && (![[[dm currentPost] objectForKey:@"postid"] isEqualToString:@""]))
 				postID = [NSNumber numberWithInt:[[[dm currentPost] objectForKey:@"postid"] intValue]];
-			
-			NSLog(@"postID: %@", postID);
+			else if(([dm currentPost]) && ([[[dm currentPost] objectForKey:@"postid"] isKindOfClass:[NSNumber class]]))
+				postID = [[dm currentPost] objectForKey:@"postid"];
 			
 			if([postID intValue] != -1) {
 				NSString *autosavePostID = [NSString stringWithFormat:@"%@-%@", [[dm currentBlog] valueForKey:@"url"], postID];

@@ -968,14 +968,14 @@
 
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification {
 	if(self.uploadID != nil) {
-//		NSDictionary *mediaData = [notification userInfo];
-//		Media *media = [mediaManager get:self.uploadID];
-//		media.remoteURL = [mediaData objectForKey:@"url"];
-//		media.shortcode = [mediaData objectForKey:@"shortcode"];
-//		[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
-//		[mediaManager update:media];
-//		media = [mediaManager get:self.uploadID];
-//		self.uploadID = nil;
+		NSDictionary *mediaData = [notification userInfo];
+		Media *media = [mediaManager get:self.uploadID];
+		media.remoteURL = [mediaData objectForKey:@"url"];
+		media.shortcode = [mediaData objectForKey:@"shortcode"];
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
+		[mediaManager update:media];
+		media = [mediaManager get:self.uploadID];
+		self.uploadID = nil;
 	}
 	
 	[UIView beginAnimations:@"Removing mediaUploader" context:nil];

@@ -3695,20 +3695,15 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
                          postParams,
                          nil
 						 ];
-		
-		NSLog(@"saving post with args: %@", args);
-		
+				
 		// Build and execute the XML-RPC request
         XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[currentBlog valueForKey:@"xmlrpc"]]];
         [request setMethod:@"metaWeblog.newPost" withObjects:args];
-		NSLog(@"xml-rpc request for save: %@", request);
         id response = [self executeXMLRPCRequest:request byHandlingError:NO];
         [request release];
 		
 		// Check the response
-		if ([response isKindOfClass:[NSError class]]) {
-			NSLog(@"xml-rpc response for save: %@", response);
-			
+		if ([response isKindOfClass:[NSError class]]) {			
 			successFlag = NO;
 			return successFlag;
 		}

@@ -44,8 +44,8 @@
 				result = self.shortcode;
 			else if(self.remoteURL != nil)
 				result = [NSString stringWithFormat:
-						  @"<img src=\"%@\" alt=\"%@\" class=\"alignnone size-full\" />",
-						  self.remoteURL, self.caption, self.width, self.height];
+						  @"<a href=\"%@\"><img src=\"%@\" alt=\"%@\" class=\"alignnone size-full\" /></a>",
+						  self.remoteURL, self.remoteURL, self.caption, self.width, self.height];
 		}
 		else if([self.mediaType isEqualToString:@"video"]) {
 			NSString *embedWidth = [NSString stringWithFormat:@"%@", self.width];

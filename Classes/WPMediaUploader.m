@@ -429,6 +429,7 @@
 			}
 			else if(mediaType == kImage) {
 				NSMutableDictionary *imageMeta = [[NSMutableDictionary alloc] init];
+				
 				if([responseMeta objectForKey:@"url"] != nil)
 					[imageMeta setObject:[responseMeta objectForKey:@"url"] forKey:@"url"];
 				[self finishWithNotificationName:ImageUploadSuccessful object:nil userInfo:imageMeta];
