@@ -154,7 +154,7 @@
 				case 2:
 					cell.textLabel.text = @"Recent Items";
 					if([appDelegate.currentBlog valueForKey:kPostsDownloadCount] != nil)
-						cell.detailTextLabel.text = [appDelegate.currentBlog valueForKey:kPostsDownloadCount];
+						cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", [appDelegate.currentBlog valueForKey:kPostsDownloadCount]];
 					else {
 						cell.detailTextLabel.text = [recentItems objectAtIndex:0];
 					}
@@ -365,7 +365,6 @@
 	}
 	[actionSheet setBounds:CGRectMake(0, 0, 320, 485)];
 	
-	[actionSheet release];
 	[pickerView release];
 	[closeButton release];
 }

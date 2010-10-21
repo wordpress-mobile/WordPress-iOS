@@ -665,8 +665,7 @@
 
 
 - (void)dealloc {
-	[subsites release];
-	subsites = nil;
+	[subsites release], subsites = nil;
 	//[addUsersBlogsView release];
 	[tableView release];
 	[blogID release];
@@ -675,14 +674,10 @@
 	[spinner release];
 	[footerText release];
 	[addButtonText release];
-	[url release];
-	url = nil;
-	[xmlrpc release];
-	xmlrpc = nil;
-	[username release];
-	username = nil;
-	[password release];
-	password = nil;
+	[url release], url = nil;
+	[xmlrpc release], xmlrpc = nil;
+	[username release], username = nil;
+	[password release], password = nil;
     [super dealloc];
 }
 
