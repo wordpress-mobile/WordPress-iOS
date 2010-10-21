@@ -182,15 +182,17 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		NSLog(@"Could not parse crash report");
 		[crashReporter purgePendingCrashReport];
 	}
+	else {
+		UIAlertView *crashAlert = [[UIAlertView alloc] initWithTitle:@"Crash Detected" 
+															 message:@"It looks like WordPress crashed the last time you used it. Would you like to help us resolve the issue by sending a crash report?" 
+															delegate:self
+												   cancelButtonTitle:@"No Thanks"
+												   otherButtonTitles:@"Sure", nil];
+		crashAlert.tag = kCrashAlertTag;
+		[crashAlert show];
+		[crashAlert release];
+	}
 	
-	UIAlertView *crashAlert = [[UIAlertView alloc] initWithTitle:@"Crash Detected" 
-														 message:@"It looks like WordPress crashed the last time you used it. Would you like to help us resolve the issue by sending a crash report?" 
-														delegate:self
-											   cancelButtonTitle:@"No Thanks"
-											   otherButtonTitles:@"Sure", nil];
-	crashAlert.tag = kCrashAlertTag;
-	[crashAlert show];
-	[crashAlert release];
 	return;
 }
 
@@ -420,21 +422,31 @@ static WordPressAppDelegate *wordPressApp = NULL;
         }
     }
 	else if(alertView.tag == kCrashAlertTag) {
-		PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
-		
 		// User confirmed send crash report
 		if(buttonIndex == 1) {
-			// Create a mail message with the crash report
-			MFMailComposeViewController *controller = [[MFMailComposeViewController alloc] init];
-			NSString *subject = [NSString stringWithFormat:@"WordPress %@ Crash Report", 
-								 [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
-			[controller setSubject:subject];
-			[controller setMessageBody:@"Please see the attached crash report." isHTML:NO];
-			[self.navigationController presentModalViewController:controller animated:YES];
-			[controller release];
+			PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
+			NSError *error;
+			NSData *crashData = [crashReporter loadPendingCrashReportDataAndReturnError: &error];
+			if(crashData != nil) {
+				PLCrashReport *report = [[[PLCrashReport alloc] initWithData:crashData error: &error] autorelease];
+				if (report == nil) {
+					NSLog(@"Could not parse crash report");
+				}
+				else {
+					// Create a mail message with the crash report
+					MFMailComposeViewController *controller = [[MFMailComposeViewController alloc] init];
+					NSString *subject = [NSString stringWithFormat:@"WordPress %@ Crash Report", 
+							 [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
+					[controller setSubject:subject];
+					[controller setMessageBody:@"Please see the attached crash report." isHTML:NO];
+					[controller addAttachmentData:crashData mimeType:@"text/html" fileName:@"crash.log"];
+					[self.navigationController presentModalViewController:controller animated:YES];
+					[controller release];
+				}
+			}
+			
+			[crashReporter purgePendingCrashReport];
 		}
-		
-		[crashReporter purgePendingCrashReport];
 	}
 
     self.alertRunning = NO;

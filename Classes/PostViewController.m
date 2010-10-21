@@ -814,8 +814,9 @@
 
 - (void)checkAutosaves {
 	@try {
-		if(dm.currentPost != nil) {
+		if([dm currentPost] != NULL) {
 			NSNumber *postID = [NSNumber numberWithInt:-1];
+			NSLog(@"dm.currentPost: %@", [dm currentPost]);
 			
 			if(([dm currentPost]) && ([[[dm currentPost] objectForKey:@"postid"] isKindOfClass:[NSString class]]) && (![[[dm currentPost] objectForKey:@"postid"] isEqualToString:@""]))
 				postID = [NSNumber numberWithInt:[[[dm currentPost] objectForKey:@"postid"] intValue]];

@@ -28,31 +28,51 @@
 	
 	// Check to see if we should prompt about rating in the App Store
 	NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+	if([prefs objectForKey:@"first_launch"] == nil) {
+		// Create the first launch timestamp
+		[prefs setObject:[NSDate date] forKey:@"first_launch"];
+	}
+	
+	// Check for a launch counter
 	if([prefs objectForKey:@"launch_count"] == nil) {
-		// Create the launch count pref
+		// If it doesn't exist, add it starting at 1
 		[prefs setObject:[NSNumber numberWithInt:1] forKey:@"launch_count"];
 	}
-	else if(([prefs objectForKey:@"launch_count"] == [NSNumber numberWithInt:20]) && 
-			([prefs objectForKey:@"has_displayed_rating_prompt"] == nil)) {
-		// Display the alert
-		UIAlertView *ratingAlert = [[UIAlertView alloc] initWithTitle:@"App Store Rating" 
-															  message:@"If you like WordPress for iOS, we'd appreciate it if you could leave us a rating in the App Store. Would you like to do that now?" 
-															 delegate:self 
-													cancelButtonTitle:@"No" 
-													otherButtonTitles:@"Yes", nil];
-		[ratingAlert show];
-		[ratingAlert release];
+	else {
+		NSDate *startDate = [prefs objectForKey:@"first_launch"];
+		NSDate *endDate = [NSDate date];
+		NSTimeInterval startDiff = [startDate timeIntervalSinceNow];
+		NSTimeInterval endDiff = [endDate timeIntervalSinceNow];
+		NSTimeInterval dateDiff = startDiff - endDiff;
 		
-		// Don't bug them again
-		[prefs setObject:@"1" forKey:@"has_displayed_rating_prompt"];
+		int daysSinceFirstLaunch = (dateDiff / 86400);
+		NSLog(@"it has been %d days since first launch.", daysSinceFirstLaunch);
+		
+		// If we've been using the app for 30+ days and launched it 20 times...
+		if((daysSinceFirstLaunch > 30) && 
+		   ([[prefs objectForKey:@"launch_count"] isEqualToNumber:[NSNumber numberWithInt:20]]) && 
+		   ([prefs objectForKey:@"has_displayed_rating_prompt"] == nil)) {
+			
+			// If this is the 20th launch, display the alert
+			UIAlertView *ratingAlert = [[UIAlertView alloc] initWithTitle:@"App Store Rating" 
+																  message:@"If you like WordPress for iOS, we'd appreciate it if you could leave us a rating in the App Store. Would you like to do that now?" 
+																 delegate:self 
+														cancelButtonTitle:@"No" 
+														otherButtonTitles:@"Yes", nil];
+			[ratingAlert show];
+			[ratingAlert release];
+			
+			// Don't bug them again
+			[prefs setObject:@"1" forKey:@"has_displayed_rating_prompt"];
+		}
+		else if([[prefs objectForKey:@"launch_count"] intValue] < 20) {
+			// Increment our launch count
+			int launchCount = [[prefs objectForKey:@"launch_count"] intValue];
+			launchCount++;
+			[prefs setObject:[NSNumber numberWithInt:launchCount] forKey:@"launch_count"];
+		}
+		[prefs synchronize];
 	}
-	else if([[prefs objectForKey:@"launch_count"] intValue] < 20) {
-		// Increment our launch count
-		int launchCount = [[prefs objectForKey:@"launch_count"] intValue];
-		launchCount++;
-		[prefs setObject:[NSNumber numberWithInt:launchCount] forKey:@"launch_count"];
-	}
-	[prefs synchronize];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
