@@ -3589,7 +3589,16 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
     for (int i = 0; i < postsCount; i++) {
         NSMutableDictionary *postDict = [postsArray objectAtIndex:i];
 		
-        if ([[postDict valueForKey:@"postid"] isEqualToString:savedPostId]) {
+		if([[postDict valueForKey:@"postid"] isKindOfClass:[NSNumber class]]) {
+			NSNumber *postID = [postDict objectForKey:@"postid"];
+			if([postID intValue] == [savedPostId intValue]) {
+				if ([savedPostId hasPrefix:@"n"])
+					[postsArray removeObjectAtIndex:i];
+				else
+					[postDict setValue:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
+			}
+		}
+        else if ([[postDict valueForKey:@"postid"] isEqualToString:savedPostId]) {
             if ([savedPostId hasPrefix:@"n"])
                 [postsArray removeObjectAtIndex:i];else
 					[postDict setValue:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
@@ -3657,24 +3666,16 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
         [postParams setObject:description forKey:@"description"];
         [postParams setObject:[aPost valueForKey:@"categories"] forKey:@"categories"];
 		
-        //NSDate *date = [aPost valueForKey:@"date_created_gmt"];
-        //NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:date];
-        //NSDate *gmtDate = [date addTimeInterval:(secs * -1)];
-        //[postParams setObject:gmtDate forKey:@"dateCreated"];
-        //[postParams setObject:gmtDate forKey:@"date_created_gmt"];
-		
-		// dateCreated
+		// dateCreated & date_created_gmt
 		NSDate *now = [NSDate date];
-		[postParams setObject:now forKey:@"dateCreated"];
+		NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:now];
+        NSDate *gmtDate = [now addTimeInterval:(secs * -1)];
+		[postParams setObject:gmtDate forKey:@"dateCreated"];
+		[postParams setObject:gmtDate forKey:@"date_created_gmt"];
 		
-		// date_created_gmt
-		// 20091113T12:30:00Z
-//		NSDateFormatter *df =[[NSDateFormatter alloc] init];
-//		[df setDateFormat:@"yyyyMMdd'T'hh:mm:ss'Z'"];
-//		NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:now];
-//        NSDate *gmtDate = [now addTimeInterval:secs];
-//		[postParams setObject:[df stringFromDate:gmtDate] forKey:@"date_created_gmt"];
-//		[df release];
+		NSLog(@"dateCreated: %@ date_created_gmt: %@", 
+			  [postParams objectForKey:@"dateCreated"], 
+			  [postParams objectForKey:@"date_created_gmt"]);
 		
         NSString *post_status = [aPost valueForKey:@"post_status"];
 		

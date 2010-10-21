@@ -466,7 +466,7 @@
     //[photosListController refreshData];
 
     [self updatePhotosBadge];
-	[self checkAutosaves];
+	//[self checkAutosaves];
 }
 
 - (void)refreshUIForCurrentPost {
@@ -815,16 +815,20 @@
 - (void)checkAutosaves {
 	@try {
 		if([dm currentPost] != NULL) {
-			NSNumber *postID = [NSNumber numberWithInt:-1];
-			NSLog(@"dm.currentPost: %@", [dm currentPost]);
+			NSNumber *myPostID = [NSNumber numberWithInt:-1];
+			NSDictionary *currentPost = [dm currentPost];
+			if((currentPost != nil) && ([currentPost objectForKey:@"postid"])) {
+				myPostID = [currentPost objectForKey:@"postid"];
+				
+				if(myPostID != nil) {
+					// NSNumber
+					if(![myPostID isKindOfClass:[NSNumber class]])
+						myPostID = [NSNumber numberWithInt:[[[dm currentPost] objectForKey:@"postid"] intValue]];
+				}
+			}
 			
-			if(([dm currentPost]) && ([[[dm currentPost] objectForKey:@"postid"] isKindOfClass:[NSString class]]) && (![[[dm currentPost] objectForKey:@"postid"] isEqualToString:@""]))
-				postID = [NSNumber numberWithInt:[[[dm currentPost] objectForKey:@"postid"] intValue]];
-			else if(([dm currentPost]) && ([[[dm currentPost] objectForKey:@"postid"] isKindOfClass:[NSNumber class]]))
-				postID = [[dm currentPost] objectForKey:@"postid"];
-			
-			if([postID intValue] != -1) {
-				NSString *autosavePostID = [NSString stringWithFormat:@"%@-%@", [[dm currentBlog] valueForKey:@"url"], postID];
+			if([myPostID intValue] != -1) {
+				NSString *autosavePostID = [NSString stringWithFormat:@"%@-%@", [[dm currentBlog] valueForKey:@"url"], myPostID];
 				[appDelegate setPostID:autosavePostID];
 			}
 			

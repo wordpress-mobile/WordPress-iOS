@@ -446,9 +446,9 @@
 		[NSThread sleepForTimeInterval:2.0];
 		
 		if(self.mediaType == kImage)
-			[self stopWithNotificationName:@"ImageUploadFailed"];
+			[self finishWithNotificationName:ImageUploadFailed object:nil userInfo:nil];
 		else if(self.mediaType == kVideo)
-			[self stopWithNotificationName:@"VideoUploadFailed"];
+			[self finishWithNotificationName:VideoUploadFailed object:nil userInfo:nil];
 	}
 
 }
