@@ -7,7 +7,7 @@
 #import "AddSiteViewController.h"
 
 @implementation AddSiteViewController
-@synthesize spinner, footerText, addButtonText, url, xmlrpc, username, password, tableView;
+@synthesize spinner, footerText, addButtonText, url, xmlrpc, username, password, tableView, isGettingXMLRPCURL;
 @synthesize isAuthenticating, isAuthenticated, isAdding, hasSubsites, subsites, viewDidMove, keyboardIsVisible;
 @synthesize hasValidXMLRPCurl, addUsersBlogsView, activeTextField, blogID, host, blogName, hasCheckedForSubsites;
 
@@ -136,7 +136,7 @@
 			addTextField.textColor = [UIColor blackColor];
 			if ([indexPath section] == 0) {
 				if (indexPath.row == 0) {
-					addTextField.placeholder = @"http://example.com";
+					addTextField.placeholder = @"myawesomeblog.com";
 					addTextField.keyboardType = UIKeyboardTypeURL;
 					if(url != nil)
 						addTextField.text = url;
@@ -358,12 +358,13 @@
 		case 0:
 			if(((username != nil) && (password != nil)) && ([textField.text isEqualToString:@""])) {
 				footerText = @"URL is required.";
-				[self setUrl:textField.text];
+				url = nil;
 			}
 			else {
 				[self setUrl:textField.text];
                 [self urlDidChange];
 				footerText = nil;
+				xmlrpc = nil;
 				[self performSelectorInBackground:@selector(getXMLRPCurl) withObject:nil];
 			}
 			break;
@@ -404,7 +405,7 @@
 	[self refreshTable];
 	
 	if((url != nil) && (username != nil) && (password != nil) && (xmlrpc != nil)) {
-		[self authenticate];
+		[self performSelectorInBackground:@selector(authenticate) withObject:nil];
 	}
 	
 	activeTextField = nil;
@@ -487,13 +488,13 @@
 	
 	footerText = @"Authenticating...";
 	[self refreshTable];
-
+	
 	// Check for HTTP auth first
 	ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:xmlrpc]];
 	[request setShouldPresentCredentialsBeforeChallenge:NO];
 	[request startSynchronous];
 	
-	if([[WPDataController sharedInstance] checkXMLRPC:xmlrpc username:username password:password]) {
+	if(xmlrpc != nil) {
 		isAuthenticated = [[WPDataController sharedInstance] authenticateUser:xmlrpc username:username password:password];
 		if(isAuthenticated == YES) {
 			footerText = @"Authenticated successfully.";
@@ -527,34 +528,27 @@
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
-	[BlogDataManager sharedDataManager].shouldDisplayErrors = NO;
-	
-	if((url != nil) && (![url isEqualToString:@""])) {
-		if(![url hasPrefix:@"http"])
-			url = [[NSString stringWithFormat:@"http://%@", url] retain];
-		NSString *tempURL = url;
-		if(![tempURL hasSuffix:@"/"])
-			tempURL = [[NSString stringWithFormat:@"%@/xmlrpc.php", tempURL] retain];
-		[self performSelectorOnMainThread:@selector(setXMLRPCUrl:) 
-								withObject:tempURL
-								waitUntilDone:YES];
+	if((!isGettingXMLRPCURL) && (xmlrpc == nil)) {
+		NSLog(@"getting xml-rpc url...");
+		isGettingXMLRPCURL = YES;
+		[BlogDataManager sharedDataManager].shouldDisplayErrors = NO;
 		
-		// Check for HTTP auth first
-		ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:xmlrpc]];
-		[request setRequestMethod:@"POST"];
-		[request setShouldPresentCredentialsBeforeChallenge:NO];
-		[request setShouldPresentAuthenticationDialog:YES];
-		[request setUseKeychainPersistence:YES];
-		[request setDelegate:self];
+		if((url != nil) && (![url isEqualToString:@""])) {
+			if(![url hasPrefix:@"http"])
+				url = [[NSString stringWithFormat:@"http://%@", url] retain];
+			
+			// Grab our XML-RPC url
+			ASIHTTPRequest *htmlRequest = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
+			[htmlRequest setShouldPresentCredentialsBeforeChallenge:NO];
+			[htmlRequest setShouldPresentAuthenticationDialog:YES];
+			[htmlRequest setUseKeychainPersistence:YES];
+			[htmlRequest setDelegate:self];
+			[htmlRequest startAsynchronous];
+			[htmlRequest release];
+		}
 		
-		XMLRPCRequest *xmlrpcTest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
-		[xmlrpcTest setMethod:@"system.listMethods" withObjects:[NSArray array]];
-		[request appendPostData:[[xmlrpcTest source] dataUsingEncoding:NSUTF8StringEncoding]];
-		
-		[request startAsynchronous];
+		[BlogDataManager sharedDataManager].shouldDisplayErrors = YES;
 	}
-
-	[BlogDataManager sharedDataManager].shouldDisplayErrors = YES;
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[pool release];
@@ -569,11 +563,7 @@
 - (void)requestFinished:(ASIHTTPRequest *)request {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
-	// Use when fetching text data
-	NSString *responseString = [request responseString];
-	
 	// Success.
-	
 	// Check to see if we should store HTTP Auth credentials
 	NSDictionary *credentials = [request findCredentials];
 	if(credentials != nil) {
@@ -585,14 +575,56 @@
 		[appDelegate.currentBlog setObject:[NSNumber numberWithInt:0] forKey:@"authEnabled"];
 	}
 	
-	// Let's double check our XML-RPC endpoint for validity
-	CXMLDocument *xml = [[[CXMLDocument alloc] initWithXMLString:responseString options:0 error:nil] autorelease];
-	NSArray *xmlrpcMethods = [xml nodesForXPath:@"//params/param/value/array/data/*" error:nil];
-	if(xmlrpcMethods.count > 0)
-		self.hasValidXMLRPCurl = YES;
-	else
-		self.hasValidXMLRPCurl = NO;
+	// We're looking for: <link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://myblog.com/xmlrpc.php?rsd" />
+	NSString *html = [request responseString];
+	NSString *rsdURL = [html stringByMatching:@"<link rel=\"EditURI\" type=\"application/rsd\\+xml\" title=\"RSD\" href=\"([^\"]*)\"[^/]*/>" capture:1];
 	
+	// We found a valid RSD document, now try to parse the XML
+	NSError *rsdError;
+	CXMLDocument *rsdXML = [[[CXMLDocument alloc] initWithContentsOfURL:[NSURL URLWithString:rsdURL] options:0 error:&rsdError] autorelease];
+	if(!rsdError) {
+		CXMLElement *serviceXML = [[[rsdXML rootElement] children] objectAtIndex:1];
+		for(CXMLElement *api in [[[serviceXML elementsForName:@"apis"] objectAtIndex:0] elementsForName:@"api"]) {
+			if([[[api attributeForName:@"name"] stringValue] isEqualToString:@"WordPress"]) {
+				// Bingo! We found the WordPress XML-RPC element
+				self.xmlrpc = [[api attributeForName:@"apiLink"] stringValue];
+				
+				ASIHTTPRequest *xmlrpcRequest = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:xmlrpc]];
+				[xmlrpcRequest setRequestMethod:@"POST"];
+				[xmlrpcRequest setShouldPresentCredentialsBeforeChallenge:NO];
+				[xmlrpcRequest setShouldPresentAuthenticationDialog:YES];
+				[xmlrpcRequest setUseKeychainPersistence:YES];
+				
+				XMLRPCRequest *xmlrpcTest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
+				[xmlrpcTest setMethod:@"system.listMethods" withObjects:[NSArray array]];
+				[xmlrpcRequest appendPostData:[[xmlrpcTest source] dataUsingEncoding:NSUTF8StringEncoding]];
+				[xmlrpcRequest startSynchronous];
+				
+				NSError *error = [xmlrpcRequest error];
+				if(!error) {
+					// Let's double check our XML-RPC endpoint for validity
+					CXMLDocument *xml = [[[CXMLDocument alloc] initWithXMLString:[xmlrpcRequest responseString] options:0 error:nil] autorelease];
+					NSArray *xmlrpcMethods = [xml nodesForXPath:@"//params/param/value/array/data/*" error:nil];
+					if(xmlrpcMethods.count > 0)
+						self.hasValidXMLRPCurl = YES;
+					else
+						self.hasValidXMLRPCurl = NO;
+				}
+				else {
+					self.hasValidXMLRPCurl = NO;
+				}
+
+			}
+		}
+		NSLog(@"got xml-rpc url: %@", xmlrpc);
+	}
+	else {
+		// RSD document was invalid
+		footerText = [rsdError localizedDescription];
+		[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
+	}
+	
+	isGettingXMLRPCURL = NO;
 	[self refreshTable];
 }
 

@@ -603,7 +603,7 @@
 }
 
 - (void)processLibraryVideo {
-	NSURL *videoURL = [currentVideo valueForKey:UIImagePickerControllerMediaURL];
+	NSURL *videoURL = [[currentVideo valueForKey:UIImagePickerControllerMediaURL] retain];
 	if(videoURL == nil)
 		videoURL = [currentVideo valueForKey:UIImagePickerControllerReferenceURL];
 	
@@ -639,7 +639,9 @@
 		self.currentVideo = nil;
 		self.isLibraryMedia = NO;
 		[self refreshMedia];
+		[videoPath release];
 	}
+	[videoURL release];
 }
 
 - (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(NSString *)contextInfo {

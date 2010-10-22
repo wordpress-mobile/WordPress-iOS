@@ -24,7 +24,7 @@
 	UITextField *activeTextField;
 	NSString *footerText, *addButtonText, *url, *xmlrpc, *username, *password, *blogID, *host, *blogName;
 	NSArray *subsites;
-	BOOL isAuthenticating, isAuthenticated, isAdding, hasSubsites, hasValidXMLRPCurl, viewDidMove, keyboardIsVisible, hasCheckedForSubsites;
+	BOOL isAuthenticating, isAuthenticated, isGettingXMLRPCURL, isAdding, hasSubsites, hasValidXMLRPCurl, viewDidMove, keyboardIsVisible, hasCheckedForSubsites;
 }
 
 @property (nonatomic, retain) WPProgressHUD *spinner;
@@ -33,7 +33,7 @@
 @property (nonatomic, retain) UITextField *activeTextField;
 @property (nonatomic, retain) NSString *footerText, *addButtonText, *url, *xmlrpc, *username, *password, *blogID, *host, *blogName;
 @property (nonatomic, retain) NSArray *subsites;
-@property (nonatomic, assign) BOOL isAuthenticating, isAuthenticated, isAdding, hasSubsites, hasValidXMLRPCurl, viewDidMove, keyboardIsVisible, hasCheckedForSubsites;
+@property (nonatomic, assign) BOOL isAuthenticating, isAuthenticated, isGettingXMLRPCURL, isAdding, hasSubsites, hasValidXMLRPCurl, viewDidMove, keyboardIsVisible, hasCheckedForSubsites;
 
 - (void)getSubsites;
 - (void)didGetSubsitesSuccessfully:(NSArray *)subsites;

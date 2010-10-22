@@ -18,12 +18,10 @@
 
 @interface WelcomeViewController : UIViewController<UITableViewDelegate> {
 	IBOutlet UITableView *tableView;
-	AddSiteViewController *addSiteView;
 	WordPressAppDelegate *appDelegate;
 }
 
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
-@property (nonatomic, retain) AddSiteViewController *addSiteView;
 @property (nonatomic, assign) WordPressAppDelegate *appDelegate;
 
 - (IBAction)cancel:(id)sender;

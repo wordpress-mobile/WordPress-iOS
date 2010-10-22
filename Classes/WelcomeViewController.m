@@ -9,7 +9,7 @@
 
 @implementation WelcomeViewController
 
-@synthesize tableView, addSiteView, appDelegate
+@synthesize tableView, appDelegate
 ;
 
 #pragma mark -
@@ -20,11 +20,6 @@
 	
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	//[appDelegate checkWPcomAuthentication];
-	
-	NSString *addSiteNibName = @"AddSiteViewController";
-	if(DeviceIsPad() == YES)
-		addSiteNibName = @"AddSiteViewController-iPad";
-	addSiteView = [[AddSiteViewController alloc] initWithNibName:addSiteNibName bundle:nil];
 	
 	self.tableView.backgroundColor = [UIColor clearColor];
 	if(DeviceIsPad()) {
@@ -180,7 +175,10 @@
 		}
 	}
 	else if(indexPath.row == 2) {
-		//EditBlogViewController *editBlog = [[EditBlogViewController alloc] initWithNibName:@"EditBlogViewController" bundle:nil];
+		NSString *addSiteNibName = @"AddSiteViewController";
+		if(DeviceIsPad() == YES)
+			addSiteNibName = @"AddSiteViewController-iPad";
+		AddSiteViewController *addSiteView = [[AddSiteViewController alloc] initWithNibName:addSiteNibName bundle:nil];
 		[self.navigationController pushViewController:addSiteView animated:YES];
 	}
 	
@@ -206,7 +204,6 @@
 }
 
 - (void)dealloc {
-	[addSiteView release];
 	[tableView release];
     [super dealloc];
 }
