@@ -10,6 +10,7 @@
 #import "BlogDataManager.h"
 #import "NSData+Base64.h"
 #import "ASIFormDataRequest.h"
+#import "NSString+XMLExtensions.h"
 
 enum {
 	kSendBufferSize = 32768

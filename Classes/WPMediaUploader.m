@@ -218,7 +218,9 @@
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	NSString *blogID =  [dm.currentBlog valueForKey:kBlogId];
 	NSString *username = [dm.currentBlog valueForKey:@"username"];
+	username = [NSString encodeXMLCharactersIn:username];
 	NSString *password = [dm getPasswordFromKeychainInContextOfCurrentBlog:dm.currentBlog];
+	password = [NSString encodeXMLCharactersIn:password];
 	
 	NSString *type = @"image/jpeg";
 	if(self.mediaType == kVideo)
@@ -274,7 +276,7 @@
 	
 	// Add our XML-RPC payload prefix
 	NSString *prefix = [self xmlrpcPrefix];
-	[encodedFile writeData:[prefix dataUsingEncoding:NSASCIIStringEncoding]];
+	[encodedFile writeData:[prefix dataUsingEncoding:NSUTF8StringEncoding]];
 	
 	// Read data in chunks from the original file
 	[originalFile seekToEndOfFile];
@@ -296,14 +298,14 @@
 		
 		// Base64 encode the input chunk
 		NSData *serializedChunk = [NSPropertyListSerialization dataFromPropertyList:chunk format:NSPropertyListXMLFormat_v1_0 errorDescription:NULL];
-		NSString *serializedString =  [[NSString alloc] initWithData:serializedChunk encoding:NSASCIIStringEncoding];
+		NSString *serializedString =  [[NSString alloc] initWithData:serializedChunk encoding:NSUTF8StringEncoding];
 		NSRange r = [serializedString rangeOfString:@"<data>"];
 		serializedString = [serializedString substringFromIndex:r.location+7];
 		r = [serializedString rangeOfString:@"</data>"];
 		serializedString = [serializedString substringToIndex:r.location-1];
 		
 		// Write the base64 encoded chunk to our output file
-		NSData *base64EncodedChunk = [serializedString dataUsingEncoding:NSASCIIStringEncoding];
+		NSData *base64EncodedChunk = [serializedString dataUsingEncoding:NSUTF8StringEncoding];
 		[encodedFile truncateFileAtOffset:[encodedFile seekToEndOfFile]];
 		[encodedFile writeData:base64EncodedChunk];
 		
@@ -321,7 +323,7 @@
 	
 	// Add the suffix to close out the xml payload
 	NSString *suffix = [self xmlrpcSuffix];
-	[encodedFile writeData:[suffix dataUsingEncoding:NSASCIIStringEncoding]];
+	[encodedFile writeData:[suffix dataUsingEncoding:NSUTF8StringEncoding]];
 	
 	// Close the two files
 	[originalFile closeFile];
@@ -398,6 +400,7 @@
 #pragma mark ASIHTTPRequest delegate
 
 - (void)requestFinished:(ASIHTTPRequest *)request {
+	NSLog(@"connection finished: %@", [request responseString]);
 	if(![[request responseString] isEmpty]) {
 		NSMutableDictionary *videoMeta = [[NSMutableDictionary alloc] init];
 		if(isAtomPub) {
