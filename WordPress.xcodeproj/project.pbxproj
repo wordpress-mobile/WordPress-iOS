@@ -162,7 +162,7 @@
 		8355D67E11D13EAD00A61362 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8355D67D11D13EAD00A61362 /* MobileCoreServices.framework */; };
 		8355D7D911D260AA00A61362 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8355D7D811D260AA00A61362 /* CoreData.framework */; };
 		835871C9120096AC007682CB /* WelcomeViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 835871C8120096AC007682CB /* WelcomeViewController-iPad.xib */; };
-		835E2403126E66E50085940B /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 835E2402126E66E50085940B /* AssetsLibrary.framework */; };
+		835E2403126E66E50085940B /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 835E2402126E66E50085940B /* AssetsLibrary.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		83610AAA11F4AD2C00421116 /* WPcomLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83610AA811F4AD2C00421116 /* WPcomLoginViewController.m */; };
 		83610AAB11F4AD2C00421116 /* WPcomLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83610AA911F4AD2C00421116 /* WPcomLoginViewController.xib */; };
 		8362C1041201E7CE00599347 /* WebSignupViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8362C1031201E7CE00599347 /* WebSignupViewController-iPad.xib */; };
@@ -1985,8 +1985,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Chris Boyd";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Chris Boyd";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Automattic, Inc.";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
@@ -1996,8 +1996,8 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_LDFLAGS = "-licucore";
 				PREBINDING = NO;
-				PROVISIONING_PROFILE = "839A0B2F-AEC8-4611-810D-28380B45BE87";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "839A0B2F-AEC8-4611-810D-28380B45BE87";
+				PROVISIONING_PROFILE = "9A3694F5-2E62-4591-806B-B8AA745D033B";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9A3694F5-2E62-4591-806B-B8AA745D033B";
 				SDKROOT = iphoneos4.1;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -2019,8 +2019,13 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+				OTHER_LDFLAGS = (
+					"-lxml2",
+					"-licucore",
+				);
 				PRODUCT_NAME = WordPress;
 				STRIP_INSTALLED_PRODUCT = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";

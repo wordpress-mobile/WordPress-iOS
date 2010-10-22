@@ -186,7 +186,11 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		if([[NSUserDefaults standardUserDefaults] objectForKey:@"crash_report_dontbug"] == nil) {
 			// Display CrashReportViewController
 			CrashReportViewController *crashReportView = [[CrashReportViewController alloc] initWithNibName:@"CrashReportView" bundle:nil];
-			[self.navigationController pushViewController:crashReportView animated:YES];
+			
+			if(DeviceIsPad())
+				[splitViewController presentModalViewController:crashReportView animated:YES];
+			else
+				[self.navigationController pushViewController:crashReportView animated:YES];
 			[crashReportView release];
 		}
 		else {

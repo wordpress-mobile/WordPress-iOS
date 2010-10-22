@@ -277,7 +277,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		statusTextField.text = status;
 		
 		NSArray *cats = [[dm currentPost] valueForKey:@"categories"];
-		if(status)
+		if((status) && (cats.count > 0))
 			categoriesTextField.text = [cats componentsJoinedByString:@", "];
 		else
 			categoriesTextField.text = @"";
@@ -387,11 +387,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 							[[BlogDataManager sharedDataManager].currentPost valueForKey:@"post_status"] 
 																				  fromBlog:[BlogDataManager sharedDataManager].currentBlog];
 		
-		if(status) {
-			if ([cats count] > 0){
-				categoriesTextField.text = [cats componentsJoinedByString:@", "];
-			}
-		}
+		if((status) && (cats.count > 0))
+			categoriesTextField.text = [cats componentsJoinedByString:@", "];
 		else
 			categoriesTextField.text = @"";
 	}

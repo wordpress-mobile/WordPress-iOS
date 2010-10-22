@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="1"/>
+			<integer value="6"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -64,7 +64,7 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">It looks like WordPress for iOS crashed the last time you used it. Would you like to help us resolve the issue by sending a crash report?</string>
+						<string key="IBUIText">It looks like WordPress for iOS crashed the last time you used it. You can help us resolve the issue by sending a crash report.</string>
 						<object class="NSFont" key="IBUIFont">
 							<string key="NSName">Georgia</string>
 							<double key="NSSize">18</double>

@@ -44,7 +44,7 @@
 			[controller setToRecipients:[NSArray arrayWithObject:@"chris@automattic.com"]];
 			[controller setSubject:subject];
 			[controller setMessageBody:@"Please see the attached crash report." isHTML:NO];
-			[controller addAttachmentData:crashData mimeType:@"text/html" fileName:@"crash.log"];
+			[controller addAttachmentData:crashData mimeType:@"application/octet-stream" fileName:@"CrashReport.plcrash"];
 			[self presentModalViewController:controller animated:YES];
 			[controller release];
 		}
