@@ -8,7 +8,7 @@
 
 @class BlogDataManager, AutosaveManager;
 
-@interface WordPressAppDelegate : NSObject <UIApplicationDelegate> {
+@interface WordPressAppDelegate : NSObject <UIApplicationDelegate, MFMailComposeViewControllerDelegate> {
 	NSMutableDictionary *currentBlog;
 @private
     BlogDataManager *dataManager;

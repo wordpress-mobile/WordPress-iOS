@@ -437,6 +437,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 					MFMailComposeViewController *controller = [[MFMailComposeViewController alloc] init];
 					NSString *subject = [NSString stringWithFormat:@"WordPress %@ Crash Report", 
 							 [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
+					[controller setMailComposeDelegate:self];
 					[controller setSubject:subject];
 					[controller setMessageBody:@"Please see the attached crash report." isHTML:NO];
 					[controller addAttachmentData:crashData mimeType:@"text/html" fileName:@"crash.log"];
@@ -450,6 +451,10 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	}
 
     self.alertRunning = NO;
+}
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error  {    
+    [[controller parentViewController] dismissModalViewControllerAnimated:YES];
 }
 
 - (void)setAppBadge {
