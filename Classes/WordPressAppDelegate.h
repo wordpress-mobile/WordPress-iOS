@@ -1,14 +1,14 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
-#import <MessageUI/MessageUI.h>
 #import <CrashReporter/CrashReporter.h>
 #import "Constants.h"
 #import "UIDevice-Hardware.h"
 #import "Blog.h"
+#import "CrashReportViewController.h"
 
 @class BlogDataManager, AutosaveManager;
 
-@interface WordPressAppDelegate : NSObject <UIApplicationDelegate, MFMailComposeViewControllerDelegate> {
+@interface WordPressAppDelegate : NSObject <UIApplicationDelegate> {
 	NSMutableDictionary *currentBlog;
 @private
     BlogDataManager *dataManager;

@@ -173,6 +173,8 @@
 		8369FF9211F4F3BF003106C7 /* AddUsersBlogsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8369FF9011F4F3BF003106C7 /* AddUsersBlogsViewController.xib */; };
 		836FC97C11FC98B3007E1D73 /* BlogSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 836FC97A11FC98B3007E1D73 /* BlogSettingsViewController.m */; };
 		836FC97D11FC98B3007E1D73 /* BlogSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 836FC97B11FC98B3007E1D73 /* BlogSettingsViewController.xib */; };
+		836FECEB12715E2A000309D8 /* CrashReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 836FECE912715E2A000309D8 /* CrashReportViewController.m */; };
+		836FECEC12715E2A000309D8 /* CrashReportView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 836FECEA12715E2A000309D8 /* CrashReportView.xib */; };
 		8370D10A11FA499A009D650F /* UITableViewActivityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8370D10911FA499A009D650F /* UITableViewActivityCell.m */; };
 		8370D10C11FA4A1B009D650F /* UITableViewActivityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8370D10B11FA4A1B009D650F /* UITableViewActivityCell.xib */; };
 		8370D11811FA4CCF009D650F /* welcome_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 8370D11611FA4CCF009D650F /* welcome_bg.png */; };
@@ -560,6 +562,9 @@
 		836FC97911FC98B3007E1D73 /* BlogSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogSettingsViewController.h; sourceTree = "<group>"; };
 		836FC97A11FC98B3007E1D73 /* BlogSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogSettingsViewController.m; sourceTree = "<group>"; };
 		836FC97B11FC98B3007E1D73 /* BlogSettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = BlogSettingsViewController.xib; path = Classes/BlogSettingsViewController.xib; sourceTree = "<group>"; };
+		836FECE812715E2A000309D8 /* CrashReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CrashReportViewController.h; sourceTree = "<group>"; };
+		836FECE912715E2A000309D8 /* CrashReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CrashReportViewController.m; sourceTree = "<group>"; };
+		836FECEA12715E2A000309D8 /* CrashReportView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = CrashReportView.xib; path = Classes/CrashReportView.xib; sourceTree = "<group>"; };
 		8370D10811FA499A009D650F /* UITableViewActivityCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableViewActivityCell.h; sourceTree = "<group>"; };
 		8370D10911FA499A009D650F /* UITableViewActivityCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableViewActivityCell.m; sourceTree = "<group>"; };
 		8370D10B11FA4A1B009D650F /* UITableViewActivityCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UITableViewActivityCell.xib; sourceTree = "<group>"; };
@@ -926,6 +931,7 @@
 				2FAE97040E33B21600CA8540 /* defaultPostTemplate_old.html */,
 				2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */,
 				2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */,
+				836FECEA12715E2A000309D8 /* CrashReportView.xib */,
 				ACE287510E2E4381004F5145 /* WPPublishOnEditController.xib */,
 				AC512FC70E20D68100B7DA32 /* WPPhotoViewController.xib */,
 				AC512FC30E20D61C00B7DA32 /* WPPhotosListViewController.xib */,
@@ -1423,6 +1429,8 @@
 				83F3E2BD11276357004CD686 /* LocationController.m */,
 				8309BA9B1231559800442B12 /* TransparentToolbar.h */,
 				8309BA9C1231559800442B12 /* TransparentToolbar.m */,
+				836FECE812715E2A000309D8 /* CrashReportViewController.h */,
+				836FECE912715E2A000309D8 /* CrashReportViewController.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -1776,6 +1784,7 @@
 				83F1FCAC1237494D00069F99 /* PageViewController-iPad.xib in Resources */,
 				837593AE1243ECD500D04C93 /* EditSiteViewController-iPad.xib in Resources */,
 				83ABDD78125D30F700A421B2 /* BlogSettingsView-iPad.xib in Resources */,
+				836FECEC12715E2A000309D8 /* CrashReportView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1910,6 +1919,7 @@
 				8388FADA126958E700304909 /* CXMLNode_PrivateExtensions.m in Sources */,
 				8388FADB126958E700304909 /* CXMLNode_XPathExtensions.m in Sources */,
 				8388FADC126958E700304909 /* CXMLNode.m in Sources */,
+				836FECEB12715E2A000309D8 /* CrashReportViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

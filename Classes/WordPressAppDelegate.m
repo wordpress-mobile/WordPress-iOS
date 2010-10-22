@@ -183,14 +183,15 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		[crashReporter purgePendingCrashReport];
 	}
 	else {
-		UIAlertView *crashAlert = [[UIAlertView alloc] initWithTitle:@"Crash Detected" 
-															 message:@"It looks like WordPress crashed the last time you used it. Would you like to help us resolve the issue by sending a crash report?" 
-															delegate:self
-												   cancelButtonTitle:@"No Thanks"
-												   otherButtonTitles:@"Sure", nil];
-		crashAlert.tag = kCrashAlertTag;
-		[crashAlert show];
-		[crashAlert release];
+		if([[NSUserDefaults standardUserDefaults] objectForKey:@"crash_report_dontbug"] == nil) {
+			// Display CrashReportViewController
+			CrashReportViewController *crashReportView = [[CrashReportViewController alloc] initWithNibName:@"CrashReportView" bundle:nil];
+			[self.navigationController pushViewController:crashReportView animated:YES];
+			[crashReportView release];
+		}
+		else {
+			[crashReporter purgePendingCrashReport];
+		}
 	}
 	
 	return;
@@ -421,40 +422,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://iphone.wordpress.org"]];
         }
     }
-	else if(alertView.tag == kCrashAlertTag) {
-		// User confirmed send crash report
-		if(buttonIndex == 1) {
-			PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
-			NSError *error;
-			NSData *crashData = [crashReporter loadPendingCrashReportDataAndReturnError: &error];
-			if(crashData != nil) {
-				PLCrashReport *report = [[[PLCrashReport alloc] initWithData:crashData error: &error] autorelease];
-				if (report == nil) {
-					NSLog(@"Could not parse crash report");
-				}
-				else {
-					// Create a mail message with the crash report
-					MFMailComposeViewController *controller = [[MFMailComposeViewController alloc] init];
-					NSString *subject = [NSString stringWithFormat:@"WordPress %@ Crash Report", 
-							 [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
-					[controller setMailComposeDelegate:self];
-					[controller setSubject:subject];
-					[controller setMessageBody:@"Please see the attached crash report." isHTML:NO];
-					[controller addAttachmentData:crashData mimeType:@"text/html" fileName:@"crash.log"];
-					[self.navigationController presentModalViewController:controller animated:YES];
-					[controller release];
-				}
-			}
-			
-			[crashReporter purgePendingCrashReport];
-		}
-	}
 
     self.alertRunning = NO;
-}
-
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error  {    
-    [[controller parentViewController] dismissModalViewControllerAnimated:YES];
 }
 
 - (void)setAppBadge {
