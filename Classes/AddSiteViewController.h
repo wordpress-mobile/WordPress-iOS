@@ -45,6 +45,7 @@
 - (void)refreshTable;
 - (void)getXMLRPCurl;
 - (void)setXMLRPCUrl:(NSString *)xmlrpcUrl;
+- (void)verifyXMLRPC:(NSString *)html;
 - (BOOL)blogExists;
 - (void)keyboardWillShow:(NSNotification *)notification;
 - (void)keyboardWillHide:(NSNotification *)notification;

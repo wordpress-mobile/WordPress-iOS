@@ -401,33 +401,16 @@
 		default:
 			break;
 	}
-	
-	[self refreshTable];
-	
 	if((url != nil) && (username != nil) && (password != nil) && (xmlrpc != nil)) {
 		[self performSelectorInBackground:@selector(authenticate) withObject:nil];
 	}
+	
+	[self refreshTable];
 	
 	activeTextField = nil;
 }
 
 - (void)textFieldDidChange:(UITextField *)textField {
-//	switch (textField.tag) {
-//		case 0:
-//			url = textField.text;
-//			break;
-//		case 1:
-//			username = textField.text;
-//			break;
-//		case 2:
-//			password = textField.text;
-//			break;
-//		case 3:
-//			xmlrpc = textField.text;
-//			break;
-//		default:
-//			break;
-//	}
 }
 
 #pragma mark -
@@ -575,8 +558,24 @@
 		[appDelegate.currentBlog setObject:[NSNumber numberWithInt:0] forKey:@"authEnabled"];
 	}
 	
+	[self performSelectorInBackground:@selector(verifyXMLRPC:) withObject:[request responseString]];
+	
+	isGettingXMLRPCURL = NO;
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)request {
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	
+	NSError *error = [request error];
+	footerText = [NSString stringWithFormat:@"%@.", [error localizedDescription]];
+	self.hasValidXMLRPCurl = NO;
+	[self refreshTable];
+}
+
+- (void)verifyXMLRPC:(NSString *)html {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
 	// We're looking for: <link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://myblog.com/xmlrpc.php?rsd" />
-	NSString *html = [request responseString];
 	NSString *rsdURL = [html stringByMatching:@"<link rel=\"EditURI\" type=\"application/rsd\\+xml\" title=\"RSD\" href=\"([^\"]*)\"[^/]*/>" capture:1];
 	
 	// We found a valid RSD document, now try to parse the XML
@@ -613,7 +612,7 @@
 				else {
 					self.hasValidXMLRPCurl = NO;
 				}
-
+				
 			}
 		}
 		NSLog(@"got xml-rpc url: %@", xmlrpc);
@@ -623,18 +622,9 @@
 		footerText = [rsdError localizedDescription];
 		[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
 	}
-	
-	isGettingXMLRPCURL = NO;
-	[self refreshTable];
-}
-
-- (void)requestFailed:(ASIHTTPRequest *)request {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
-	NSError *error = [request error];
-	footerText = [NSString stringWithFormat:@"%@.", [error localizedDescription]];
-	self.hasValidXMLRPCurl = NO;
-	[self refreshTable];
+	[pool release];
 }
 
 - (BOOL)blogExists {
