@@ -388,7 +388,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 																				  fromBlog:[BlogDataManager sharedDataManager].currentBlog];
 		
 		if(status) {
-			categoriesTextField.text = [cats componentsJoinedByString:@", "];
+			if ([cats count] > 0){
+				categoriesTextField.text = [cats componentsJoinedByString:@", "];
+			}
 		}
 		else
 			categoriesTextField.text = @"";
