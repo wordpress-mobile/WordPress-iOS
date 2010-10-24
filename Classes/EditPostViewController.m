@@ -313,8 +313,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[dm.currentPost setObject:[categoriesTextField.text componentsSeparatedByString:@", "] forKey:@"categories"];
 	if(statusTextField.text != nil)
 		[dm.currentPost setObject:statusTextField.text forKey:@"status"];
-	if(textView.text != nil)
+	if((textView.text != nil) && (![textView.text isEqualToString:kTextViewPlaceholder]))
 		[dm.currentPost setObject:textView.text forKey:@"description"];
+	else
+		[dm.currentPost setObject:@"" forKey:@"description"];
 }
 
 - (void)populateSelectionsControllerWithCategories {

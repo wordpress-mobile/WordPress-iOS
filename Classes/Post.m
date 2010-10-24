@@ -42,6 +42,7 @@
 - (NSDictionary *)legacyPost {
 	NSMutableDictionary *convertedPost = [[[NSMutableDictionary alloc] init] autorelease];
 	
+	[convertedPost setValue:self.postID forKey:@"postid"];
 	[convertedPost setValue:self.postTitle forKey:@"title"];
 	[convertedPost setValue:self.author forKey:@"author"];
 	if([self.postType isEqualToString:@"page"])

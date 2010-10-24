@@ -44,7 +44,6 @@
     [self addRefreshButton];
 
 	// ShouldRefreshPosts
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableViewAfterPostSaved:) name:@"ShouldRefreshPosts" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableViewAfterPostSaved:) name:@"AsynchronousPostIsPosted" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableAfterDraftSaved:) name:@"DraftsUpdated" object:nil];
 
@@ -83,6 +82,11 @@
 	}
 
 	[self handleAutoSavedContext:0];	
+}
+
+- (void)viewDidUnload {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+	[super viewDidUnload];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -239,7 +243,7 @@
         }
 
         [dm makePostAtIndexCurrent:indexPath.row];
-		
+		[postDetailViewController refreshUIForCurrentPost];
         postDetailViewController.postsListController = self;
 		self.selectedIndexPath = indexPath;
         self.postDetailViewController.hasChanges = NO;
@@ -303,13 +307,16 @@
 }
 
 - (void)loadPosts {
+	NSLog(@"loadPosts...");
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	self.drafts = [draftManager getType:@"post" forBlog:[[dm currentBlog] valueForKey:@"blogid"]];
+    dm.isLocaDraftsCurrent = NO;
     [dm loadPostTitlesForCurrentBlog];
 	[self performSelectorOnMainThread:@selector(refreshPostList) withObject:nil waitUntilDone:NO];
 }
 
 - (void)refreshPostList {
+	NSLog(@"refreshPostList...");
     [self.tableView reloadData];
 	
 	if (DeviceIsPad() == YES) {
@@ -369,9 +376,11 @@
 - (void)refreshHandler {
     [refreshButton startAnimating];
     [self performSelectorInBackground:@selector(syncPosts) withObject:nil];
+    [self loadPosts];
 }
 
 - (void)syncPosts {
+	NSLog(@"syncPosts...");
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
@@ -379,6 +388,7 @@
     [dm syncPostsForCurrentBlog];
     [self loadPosts];
 	[dm downloadAllCategoriesForBlog:[dm currentBlog]];
+	[self performSelectorOnMainThread:@selector(refreshPostList) withObject:nil waitUntilDone:NO];
 	
     [refreshButton stopAnimating];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -387,12 +397,17 @@
 
 - (void)updatePostsTableViewAfterPostSaved:(NSNotification *)notification {
     NSDictionary *postIdsDict = [notification userInfo];
+	NSLog(@"postIdsDict: %@", postIdsDict);
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	
     [dm updatePostsTitlesFileAfterPostSaved:(NSMutableDictionary *)postIdsDict];
     [dm loadPostTitlesForCurrentBlog];
-	
+	[self syncPosts];
     [self loadPosts];
+	[self refreshPostList];
+	[self syncPosts];
+	[self refreshPostList];
+	[self refreshPostList];
 }
 
 - (void)updatePostsTableAfterDraftSaved:(NSNotification *)notification {
@@ -461,11 +476,12 @@
 				[mediaManager removeForPostID:[[[BlogDataManager sharedDataManager] currentPost] objectForKey:@"postid"] 
 								   andBlogURL:[[[BlogDataManager sharedDataManager] currentBlog] objectForKey:@"url"]];
 				//delete post
-				//if ([dataManager deletePage]){
 				[dataManager deletePost];
-				//resync posts
-				[self syncPosts];
 				
+				//resync posts
+				[dataManager loadPostTitlesForCurrentBlog];
+				[self syncPosts];
+				[self loadPosts];
 			}
 		}
 	}
@@ -534,9 +550,6 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"AsynchronousPostIsPosted" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"DraftsUpdated" object:nil];
-	
 	[mediaManager release];
 	[draftManager release];
     [postDetailEditController release];

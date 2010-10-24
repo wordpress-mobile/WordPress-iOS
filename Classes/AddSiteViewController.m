@@ -764,6 +764,7 @@
 	[[BlogDataManager sharedDataManager] saveCurrentBlog];
 	[[BlogDataManager sharedDataManager] syncCategoriesForBlog:[BlogDataManager sharedDataManager].currentBlog];
 	[[BlogDataManager sharedDataManager] syncStatusesForBlog:[BlogDataManager sharedDataManager].currentBlog];
+	[[BlogDataManager sharedDataManager] syncPostsForBlog:[BlogDataManager sharedDataManager].currentBlog];
 	[newBlog release];
 	
 	[self performSelectorOnMainThread:@selector(didAddSiteSuccessfully) withObject:nil waitUntilDone:NO];

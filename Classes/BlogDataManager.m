@@ -1492,103 +1492,100 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 
 // Consider splitting here so that this second part can be used by the "increment 10 more posts" thing
 - (BOOL)organizePostsForBlog:(id)blog withPostsArray:(NSArray *) recentPostsList {
-	if(shouldStopSyncingBlogs == NO) {
-		
-		//TODO: JOHNB reverse this split and put this method back together...
-		// loop through each post
-		// - add local_status, blogid and bloghost to the pos
-		// - save the post
-		// - count new posts
-		// - add/replace postTitle for post
-		// Sort and Save postTitles list
-		// Update blog counts and save blogs list
-		
-		// get post titles from file
-		NSMutableArray *newPostTitlesList;
-		NSString *postTitlesPath = [self pathToPostTitles:blog];
-		NSFileManager *fm = [NSFileManager defaultManager];
-		
-		if ([fm fileExistsAtPath:postTitlesPath]) {
-			newPostTitlesList = [NSMutableArray arrayWithContentsOfFile:postTitlesPath];
-		} else {
-			newPostTitlesList = [NSMutableArray arrayWithCapacity:30];
-		}
-		
-		// loop thru posts list
-		NSEnumerator *postsEnum = [recentPostsList objectEnumerator];
-		NSDictionary *post;
-		NSInteger newPostCount = 0;
-		[newPostTitlesList removeAllObjects];
-		
-		while (post = [postsEnum nextObject]) {
-			// add blogid and blog_host_name to post
-			
-			//NSLog(@"this is the post %@", post);
-			//NSLog(@"this is value in date_created_gmt %@", [post valueForKey:@"date_created_gmt"]);
-			
-			NSDate *postGMTDate = [post valueForKey:@"date_created_gmt"];
-			NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:postGMTDate];
-			NSDate *currentDate = [postGMTDate addTimeInterval:(secs * +1)];
-			[post setValue:currentDate forKey:@"date_created_gmt"];
-			
-			[post setValue:[blog valueForKey:kBlogId] forKey:kBlogId];
-			[post setValue:[blog valueForKey:kBlogHostName] forKey:kBlogHostName];
-			
-			// Check if the post already exists
-			// yes: check if a local draft exists
-			//		 yes: set the local-status to 'edit'
-			//		 no: set the local_status to 'original'
-			// no: increment new posts count
-			
-			NSString *pathToPost = [self pathToPost:post forBlog:blog];
-			
-			if ([fm fileExistsAtPath:pathToPost]) {
-				//TODO: if we implement drafts as a logical blog we may not need this logic any more.
-				//			if([fm fileExistsAtPath:pathToDraft]) {
-				//				[post setValue:@"edit" forKey:@"local_status"];
-				//			} else {
-				//				[post setValue:@"original" forKey:@"local_status"];
-				//			}
-			} else {
-				[post setValue:@"original" forKey:@"local_status"];
-				newPostCount++;
-			}
-			
-			// write the new post
-			[post writeToFile:pathToPost atomically:YES];
-			
-			// make a post title using the post
-			NSMutableDictionary *postTitle = [self postTitleForPost:post];
-			
-			// delete existing postTitle and add new post title to list
-			NSInteger index = [self indexOfPostTitle:postTitle inList:(NSArray *)newPostTitlesList];
-			
-			if (index != -1) {
-				[newPostTitlesList removeObjectAtIndex:index];
-			}
-			
-			[newPostTitlesList addObject:postTitle];
-		}
-		
-		[self deletedPostsForExistingPosts:newPostTitlesList ofBlog:currentBlog andNewPosts:recentPostsList];
-		
-		// sort and save the postTitles list
-		NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
-		[newPostTitlesList sortUsingDescriptors:[NSArray arrayWithObject:sd]];
-		[sd release];
-		[newPostTitlesList writeToFile:[self pathToPostTitles:blog]  atomically:YES];
-		// increment blog counts and save blogs list
-		[blog setObject:[NSNumber numberWithInt:[newPostTitlesList count]] forKey:@"totalPosts"];
-		//NSLog(@"organizePostsForBlog postsArray count ### %d", [newPostTitlesList count]);
-		[blog setObject:[NSNumber numberWithInt:newPostCount] forKey:@"newposts"];
-		NSInteger blogIndex = [self indexForBlogid:[blog valueForKey:kBlogId] url:[blog valueForKey:@"url"]];
-		
-		if (blogIndex >= 0) {
-			[self->blogsList replaceObjectAtIndex:blogIndex withObject:blog];
-		}
-		[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-		[self performSelectorOnMainThread:@selector(postBlogsRefreshNotificationInMainThread:) withObject:blog waitUntilDone:NO];
+	//TODO: JOHNB reverse this split and put this method back together...
+	// loop through each post
+	// - add local_status, blogid and bloghost to the pos
+	// - save the post
+	// - count new posts
+	// - add/replace postTitle for post
+	// Sort and Save postTitles list
+	// Update blog counts and save blogs list
+	
+	// get post titles from file
+	NSMutableArray *newPostTitlesList;
+	NSString *postTitlesPath = [self pathToPostTitles:blog];
+	NSFileManager *fm = [NSFileManager defaultManager];
+	
+	if ([fm fileExistsAtPath:postTitlesPath]) {
+		newPostTitlesList = [NSMutableArray arrayWithContentsOfFile:postTitlesPath];
+	} else {
+		newPostTitlesList = [NSMutableArray arrayWithCapacity:30];
 	}
+	
+	// loop thru posts list
+	NSEnumerator *postsEnum = [recentPostsList objectEnumerator];
+	NSDictionary *post;
+	NSInteger newPostCount = 0;
+	[newPostTitlesList removeAllObjects];
+	
+	while (post = [postsEnum nextObject]) {
+		// add blogid and blog_host_name to post
+		
+		//NSLog(@"this is the post %@", post);
+		//NSLog(@"this is value in date_created_gmt %@", [post valueForKey:@"date_created_gmt"]);
+		
+		NSDate *postGMTDate = [post valueForKey:@"date_created_gmt"];
+		NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:postGMTDate];
+		NSDate *currentDate = [postGMTDate addTimeInterval:(secs * +1)];
+		[post setValue:currentDate forKey:@"date_created_gmt"];
+		
+		[post setValue:[blog valueForKey:kBlogId] forKey:kBlogId];
+		[post setValue:[blog valueForKey:kBlogHostName] forKey:kBlogHostName];
+		
+		// Check if the post already exists
+		// yes: check if a local draft exists
+		//		 yes: set the local-status to 'edit'
+		//		 no: set the local_status to 'original'
+		// no: increment new posts count
+		
+		NSString *pathToPost = [self pathToPost:post forBlog:blog];
+		
+		if ([fm fileExistsAtPath:pathToPost]) {
+			//TODO: if we implement drafts as a logical blog we may not need this logic any more.
+			//			if([fm fileExistsAtPath:pathToDraft]) {
+			//				[post setValue:@"edit" forKey:@"local_status"];
+			//			} else {
+			//				[post setValue:@"original" forKey:@"local_status"];
+			//			}
+		} else {
+			[post setValue:@"original" forKey:@"local_status"];
+			newPostCount++;
+		}
+		
+		// write the new post
+		[post writeToFile:pathToPost atomically:YES];
+		
+		// make a post title using the post
+		NSMutableDictionary *postTitle = [self postTitleForPost:post];
+		
+		// delete existing postTitle and add new post title to list
+		NSInteger index = [self indexOfPostTitle:postTitle inList:(NSArray *)newPostTitlesList];
+		
+		if (index != -1) {
+			[newPostTitlesList removeObjectAtIndex:index];
+		}
+		
+		[newPostTitlesList addObject:postTitle];
+	}
+	
+	[self deletedPostsForExistingPosts:newPostTitlesList ofBlog:currentBlog andNewPosts:recentPostsList];
+	
+	// sort and save the postTitles list
+	NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
+	[newPostTitlesList sortUsingDescriptors:[NSArray arrayWithObject:sd]];
+	[sd release];
+	[newPostTitlesList writeToFile:[self pathToPostTitles:blog]  atomically:YES];
+	// increment blog counts and save blogs list
+	[blog setObject:[NSNumber numberWithInt:[newPostTitlesList count]] forKey:@"totalPosts"];
+	//NSLog(@"organizePostsForBlog postsArray count ### %d", [newPostTitlesList count]);
+	[blog setObject:[NSNumber numberWithInt:newPostCount] forKey:@"newposts"];
+	NSInteger blogIndex = [self indexForBlogid:[blog valueForKey:kBlogId] url:[blog valueForKey:@"url"]];
+	
+	if (blogIndex >= 0) {
+		[self->blogsList replaceObjectAtIndex:blogIndex withObject:blog];
+	}
+	[blog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
+	[self performSelectorOnMainThread:@selector(postBlogsRefreshNotificationInMainThread:) withObject:blog waitUntilDone:NO];
     return YES;
 }
 
@@ -2390,7 +2387,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 		return [postTitlesList objectAtIndex:theIndex];
 	}
 	else {
-		return 0;
+		return nil;
 	}
 }
 
@@ -3521,7 +3518,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 	
     [post setValue:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
     [post writeToFile:[self pathToPost:post forBlog:aBlog] atomically:YES];;
-    [newPostTitlesList writeToFile:[self pathToPostTitles:aBlog]  atomically:YES];
+    [newPostTitlesList writeToFile:[self pathToPostTitles:aBlog] atomically:YES];
 	
     return post;
 }
@@ -3584,6 +3581,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 	
     NSString *postTitlesPath = [self pathToPostTitles:[self currentBlog]];
     NSMutableArray *postsArray = [NSMutableArray arrayWithContentsOfFile:postTitlesPath];
+	NSLog(@"postsArray: %@", postsArray);
     int postsCount = [postsArray count];
 	
     for (int i = 0; i < postsCount; i++) {
@@ -3600,8 +3598,9 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 		}
         else if ([[postDict valueForKey:@"postid"] isEqualToString:savedPostId]) {
             if ([savedPostId hasPrefix:@"n"])
-                [postsArray removeObjectAtIndex:i];else
-					[postDict setValue:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
+                [postsArray removeObjectAtIndex:i];
+			else
+				[postDict setValue:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
 			
             break;
         }

@@ -194,9 +194,7 @@
 	}
 	
 	//    [photoEditingStatusView removeFromSuperview];
-	
-    if (postDetailEditController.currentEditingTextField)
-        [postDetailEditController.currentEditingTextField resignFirstResponder];
+	[self performSelectorOnMainThread:@selector(dismissKeyboard) withObject:nil waitUntilDone:NO];
 	
 	if(self.editMode != kNewPost)
 		self.editMode = kRefreshPost;
@@ -205,6 +203,11 @@
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
     [super viewWillDisappear:animated];
+}
+
+- (void)dismissKeyboard {
+    if (postDetailEditController.currentEditingTextField)
+        [postDetailEditController.currentEditingTextField resignFirstResponder];
 }
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
@@ -254,6 +257,7 @@
 - (void)saveInBackground {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
+	NSMutableDictionary *dict = [[[NSMutableDictionary alloc] init] autorelease];
 	hasSaved = YES;
 	
 	if((self.post != nil) && (post.wasLocalDraft == [NSNumber numberWithInt:1]) && (post.isLocalDraft == [NSNumber numberWithInt:0]))
@@ -318,22 +322,18 @@
 					}
 					
 					BOOL savePostStatus = [dm savePost:dm.currentPost];
-					NSString *postID = [dm.currentPost objectForKey:@"postid"];
-					NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+					NSString *postID = [[NSString stringWithFormat:@"%@", [dm.currentPost objectForKey:@"postid"]] retain];
 					[self stopTimer];
 					
 					if(savePostStatus == YES) {
 						[dm removeAutoSavedCurrentPostFile];
 						[dict setValue:postID forKey:@"savedPostId"];
 						[appDelegate setPostID:postID];
-						[dict setValue:[[dm currentPost] valueForKey:@"postid"] forKey:@"originalPostId"];
+						[dict setValue:postID forKey:@"originalPostId"];
 						[dict setValue:[NSNumber numberWithInt:0] forKey:@"isCurrentPostDraft"];
+						[dict setValue:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
+		
 					}
-					
-					if(wasLocalDraft == NO)
-						[[NSNotificationCenter defaultCenter] postNotificationName:@"AsynchronousPostIsPosted" object:nil userInfo:dict];
-					
-					[dict release];
 					
 					if (DeviceIsPad() == YES) {
 						[[BlogDataManager sharedDataManager] makePostWithPostIDCurrent:postID];
@@ -348,12 +348,12 @@
 		[self saveAsDraft];
 	}
 	
-	[self performSelectorOnMainThread:@selector(didSaveInBackground) withObject:nil waitUntilDone:NO];
+	[self performSelectorOnMainThread:@selector(didSaveInBackground:) withObject:dict waitUntilDone:NO];
 	
 	[pool release];
 }
 
-- (void)didSaveInBackground {
+- (void)didSaveInBackground:(NSDictionary *)dict {
 	isPublishing = NO;
 	hasChanges = NO;
 	[postDetailEditController resignTextView];
@@ -370,7 +370,7 @@
 		if(wasLocalDraft == YES)
 			[[NSNotificationCenter defaultCenter] postNotificationName:@"DraftsUpdated" object:nil];
 		else
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldRefreshPosts" object:nil];
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"AsynchronousPostIsPosted" object:nil userInfo:dict];
 		
 	}
 	[postDetailEditController clearUnsavedPost];
@@ -541,7 +541,7 @@
 	[postsListController loadPosts];
 	
 	[postDetailEditController clearUnsavedPost];
-	[self performSelectorOnMainThread:@selector(didSaveInBackground) withObject:nil waitUntilDone:NO];
+	[self performSelectorOnMainThread:@selector(didSaveInBackground:) withObject:nil waitUntilDone:NO];
 	
 	if(andDiscard == YES)
 		[self discard];

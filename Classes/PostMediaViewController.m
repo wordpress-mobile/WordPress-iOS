@@ -1112,11 +1112,18 @@
 
 - (void)refreshProperties {
 	self.blogURL = [dm.currentBlog objectForKey:@"url"];
+	NSString *postIDString = nil;
+	if([dm.currentPost objectForKey:@"postid"] != nil)
+		postIDString = [NSString stringWithFormat:@"%@", [dm.currentPost objectForKey:@"postid"]];
 	
-	if((([dm.currentPost objectForKey:@"postid"] != nil)) && ([[dm.currentPost objectForKey:@"postid"] isEqualToString:@""] == NO))
-		self.postID = [dm.currentPost objectForKey:@"postid"];
-	else if((([dm.currentPage objectForKey:@"page_id"] != nil)) && ([[dm.currentPage objectForKey:@"page_id"] isEqualToString:@""] == NO))
-		self.postID = [dm.currentPage objectForKey:@"page_id"];
+	NSString *pageIDString = nil;
+	if([dm.currentPost objectForKey:@"page_id"] != nil)
+		pageIDString = [NSString stringWithFormat:@"%@", [dm.currentPost objectForKey:@"page_id"]];
+	
+	if(((postIDString != nil)) && ([postIDString isEqualToString:@""] == NO))
+		self.postID = postIDString;
+	else if(((pageIDString != nil)) && ([pageIDString isEqualToString:@""] == NO))
+		self.postID = pageIDString;
 	else if(appDelegate.postID != nil)
 		self.postID = appDelegate.postID;
 	else

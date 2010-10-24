@@ -21,6 +21,11 @@
 	[super viewWillAppear:YES];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+	[[PLCrashReporter sharedReporter] purgePendingCrashReport];
+	[super viewWillDisappear:YES];
+}
+
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
 	[self dismissModalViewControllerAnimated:YES];
 	[self finish];
@@ -37,14 +42,24 @@
 		}
 		else if([MFMailComposeViewController canSendMail]) {
 			// Create a mail message with the crash report
+			NSMutableString *body = [NSMutableString stringWithString:@"Please see the attached crash report."];
 			MFMailComposeViewController *controller = [[MFMailComposeViewController alloc] init];
 			NSString *subject = [NSString stringWithFormat:@"WordPress %@ Crash Report", 
 								 [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
 			[controller setMailComposeDelegate:self];
-			[controller setToRecipients:[NSArray arrayWithObject:@"chris@automattic.com"]];
+			[controller setToRecipients:[NSArray arrayWithObject:@"crashreport@automattic.com"]];
 			[controller setSubject:subject];
-			[controller setMessageBody:@"Please see the attached crash report." isHTML:NO];
-			[controller addAttachmentData:crashData mimeType:@"application/octet-stream" fileName:@"CrashReport.plcrash"];
+			
+			// Add specific exception info if available
+			if(report.hasExceptionInfo) {
+				[body appendFormat:@"Exception %@ -- %@\n", report.exceptionInfo.exceptionName, report.exceptionInfo.exceptionReason];
+			}
+			
+			// Set the message body and add the log as an attachment
+			[controller setMessageBody:body isHTML:NO];
+			[controller addAttachmentData:crashData mimeType:@"application/octet-stream" fileName:@"crash.log"];
+			
+			// Present and release
 			[self presentModalViewController:controller animated:YES];
 			[controller release];
 		}
@@ -61,7 +76,6 @@
 }
 
 - (void)finish {
-	[[PLCrashReporter sharedReporter] purgePendingCrashReport];
 	[self.navigationController popViewControllerAnimated:YES];
 }
 
