@@ -187,8 +187,14 @@ static WordPressAppDelegate *wordPressApp = NULL;
 			// Display CrashReportViewController
 			CrashReportViewController *crashReportView = [[CrashReportViewController alloc] initWithNibName:@"CrashReportView" bundle:nil];
 			
-			if(DeviceIsPad())
-				[splitViewController presentModalViewController:crashReportView animated:YES];
+			if(DeviceIsPad()) {
+				UINavigationController *crashNavController = [[UINavigationController alloc] initWithRootViewController:crashReportView];
+				crashNavController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+				crashNavController.modalPresentationStyle = UIModalPresentationFormSheet;
+				self.navigationController = crashNavController;
+				[splitViewController presentModalViewController:crashNavController animated:YES];
+				[crashNavController release];
+			}
 			else
 				[self.navigationController pushViewController:crashReportView animated:YES];
 			[crashReportView release];

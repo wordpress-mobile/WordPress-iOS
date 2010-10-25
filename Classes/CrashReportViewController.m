@@ -76,7 +76,10 @@
 }
 
 - (void)finish {
-	[self.navigationController popViewControllerAnimated:YES];
+	if(DeviceIsPad())
+		[super.navigationController dismissModalViewControllerAnimated:YES];
+	else
+		[self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -136,7 +136,7 @@
 			addTextField.textColor = [UIColor blackColor];
 			if ([indexPath section] == 0) {
 				if (indexPath.row == 0) {
-					addTextField.placeholder = @"myawesomeblog.com";
+					addTextField.placeholder = @"yourawesomeblog.com";
 					addTextField.keyboardType = UIKeyboardTypeURL;
 					if(url != nil)
 						addTextField.text = url;
@@ -470,7 +470,7 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	footerText = @"Authenticating...";
-	[self refreshTable];
+	[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
 	
 	// Check for HTTP auth first
 	ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:xmlrpc]];
@@ -503,7 +503,7 @@
 - (void)didAuthenticateSuccessfully {
 	if((isAdding == NO) || ((username == nil) || (password == nil) || (xmlrpc == nil)))
 		[self performSelectorInBackground:@selector(getSubsites) withObject:nil];
-	else if((username != nil) && (password != nil) && (xmlrpc != nil) && (host != nil) && (blogID!= nil))
+	else if((username != nil) && (password != nil) && (xmlrpc != nil))
 		[self performSelectorInBackground:@selector(addSite) withObject:nil];
 }
 
@@ -780,12 +780,14 @@
 		[activeTextField becomeFirstResponder];
 		[activeTextField resignFirstResponder];
 	}
+	
+	appDelegate.currentBlog = nil;
+	isAdding = NO;
+	
 	if(DeviceIsPad())
 		[appDelegate.navigationController dismissModalViewControllerAnimated:YES];
 	else
 		[self.navigationController popToRootViewControllerAnimated:YES];
-	appDelegate.currentBlog = nil;
-	isAdding = NO;
 }
 
 - (void)addSiteFailed {

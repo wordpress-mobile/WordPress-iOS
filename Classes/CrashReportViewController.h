@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 #import <CrashReporter/CrashReporter.h>
+#import "WordPressAppDelegate.h"
 
 @interface CrashReportViewController : UIViewController <MFMailComposeViewControllerDelegate>  {
 	NSData *crashData;

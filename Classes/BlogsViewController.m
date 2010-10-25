@@ -28,10 +28,6 @@
 	
 	// Check to see if we should prompt about rating in the App Store
 	NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-	if([prefs objectForKey:@"first_launch"] == nil) {
-		// Create the first launch timestamp
-		[prefs setObject:[NSDate date] forKey:@"first_launch"];
-	}
 	
 	// Check for a launch counter
 	if([prefs objectForKey:@"launch_count"] == nil) {
@@ -39,21 +35,11 @@
 		[prefs setObject:[NSNumber numberWithInt:1] forKey:@"launch_count"];
 	}
 	else {
-		NSDate *startDate = [prefs objectForKey:@"first_launch"];
-		NSDate *endDate = [NSDate date];
-		NSTimeInterval startDiff = [startDate timeIntervalSinceNow];
-		NSTimeInterval endDiff = [endDate timeIntervalSinceNow];
-		NSTimeInterval dateDiff = startDiff - endDiff;
-		
-		int daysSinceFirstLaunch = (dateDiff / 86400);
-		NSLog(@"it has been %d days since first launch.", daysSinceFirstLaunch);
-		
-		// If we've been using the app for 30+ days and launched it 20 times...
-		if((daysSinceFirstLaunch > 30) && 
-		   ([[prefs objectForKey:@"launch_count"] isEqualToNumber:[NSNumber numberWithInt:20]]) && 
+		// If we've launched the app 30 times...
+		if(([[prefs objectForKey:@"launch_count"] isEqualToNumber:[NSNumber numberWithInt:30]]) && 
 		   ([prefs objectForKey:@"has_displayed_rating_prompt"] == nil)) {
 			
-			// If this is the 20th launch, display the alert
+			// If this is the 30th launch, display the alert
 			UIAlertView *ratingAlert = [[UIAlertView alloc] initWithTitle:@"App Store Rating" 
 																  message:@"If you like WordPress for iOS, we'd appreciate it if you could leave us a rating in the App Store. Would you like to do that now?" 
 																 delegate:self 
@@ -65,7 +51,7 @@
 			// Don't bug them again
 			[prefs setObject:@"1" forKey:@"has_displayed_rating_prompt"];
 		}
-		else if([[prefs objectForKey:@"launch_count"] intValue] < 20) {
+		else if([[prefs objectForKey:@"launch_count"] intValue] < 30) {
 			// Increment our launch count
 			int launchCount = [[prefs objectForKey:@"launch_count"] intValue];
 			launchCount++;
