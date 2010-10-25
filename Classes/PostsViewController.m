@@ -54,6 +54,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+	
+	// Force a crash for CrashReporter
+	NSLog(@"crash time! %@", 1);
+	
     [self loadPosts];
 	
 	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];

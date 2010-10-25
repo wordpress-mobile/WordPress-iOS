@@ -67,7 +67,7 @@
 			[controller addAttachmentData:crashData mimeType:@"application/octet-stream" fileName:@"crash.log"];
 			
 			// Present and release
-			[self presentModalViewController:controller animated:YES];
+			[self presentModalViewController:controller animated:NO];
 			[controller release];
 		}
 	}
@@ -83,8 +83,10 @@
 }
 
 - (void)finish {
-	if(DeviceIsPad())
-		[super.navigationController dismissModalViewControllerAnimated:YES];
+	if(DeviceIsPad()) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"CrashReporterIsFinished" object:nil];
+		[self dismissModalViewControllerAnimated:YES];
+	}
 	else
 		[self.navigationController popViewControllerAnimated:YES];
 }

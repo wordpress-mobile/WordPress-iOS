@@ -16,6 +16,7 @@
     IBOutlet UIWindow *window;
     IBOutlet UINavigationController *navigationController;
 	IBOutlet UISplitViewController *splitViewController;
+	CrashReportViewController *crashReportView;
     BOOL connectionStatus;
     BOOL alertRunning;
 	BOOL isWPcomAuthenticated;
@@ -33,6 +34,7 @@
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) UINavigationController *navigationController;
 @property (nonatomic, retain) IBOutlet UISplitViewController *splitViewController;
+@property (nonatomic, retain) CrashReportViewController *crashReportView;
 @property (readonly, nonatomic, retain) UINavigationController *masterNavigationController;
 @property (readonly, nonatomic, retain) UINavigationController *detailNavigationController;
 @property (nonatomic, getter = isAlertRunning) BOOL alertRunning;
@@ -63,5 +65,6 @@
 - (void)startSyncTimer;
 - (void)startSyncTimerThread;
 - (void)deleteLocalDraft:(NSNotification *)notification;
+- (void)dismissCrashReporter:(NSNotification *)notification;
 
 @end

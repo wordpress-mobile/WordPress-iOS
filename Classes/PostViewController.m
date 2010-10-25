@@ -359,17 +359,23 @@
 	// Hide the keyboard
 	[postDetailEditController resignTextView];
 	
-	// If this was a save and not a publish, post a message
-	if(!post.wasLocalDraft)
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"AsynchronousPostIsPosted" object:nil userInfo:dict];
-	
 	if(DeviceIsPad() == YES) {
 		// Refresh the UI for updated values
 		[self refreshUIForCurrentPost];
+		
+		// Make sure our Posts list refreshes
+		if(post.wasLocalDraft)
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"DraftsUpdated" object:nil userInfo:dict];
+		else
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"AsynchronousPostIsPosted" object:nil userInfo:dict];
 	}
 	else {
 		// Refresh the UI for a new post
 		[self refreshUIForCompose];
+		
+		// If this was a save and not a publish, post a message
+		if(!post.wasLocalDraft)
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"AsynchronousPostIsPosted" object:nil userInfo:dict];
 		
 		// Back out to Posts list
 		[self.navigationController popViewControllerAnimated:YES];

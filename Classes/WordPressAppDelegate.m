@@ -29,7 +29,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 @synthesize window, currentBlog, postID;
 @synthesize navigationController, alertRunning, isWPcomAuthenticated;
-@synthesize splitViewController;
+@synthesize splitViewController, crashReportView;
 
 - (id)init {
     if (!wordPressApp) {
@@ -64,6 +64,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)dealloc {
+	[crashReportView release];
 	[postID release];
     [navigationController release];
     [window release];
@@ -96,6 +97,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
     }
 	
 	BlogsViewController *blogsViewController = [[BlogsViewController alloc] initWithStyle:UITableViewStylePlain];
+	crashReportView = [[CrashReportViewController alloc] initWithNibName:@"CrashReportView" bundle:nil];
+	
 	if(DeviceIsPad() == NO)
 	{
 		UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:blogsViewController];
@@ -143,9 +146,15 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		[self performSelector:@selector(showPopoverIfNecessary) withObject:nil afterDelay:0.1];
 	}
 	
+	// Add listeners
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(deleteLocalDraft:)
 												 name:@"LocalDraftWasPublishedSuccessfully" object:nil];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(dismissCrashReporter:)
+												 name:@"CrashReporterIsFinished" object:nil];
+	
 	
 	// Check for pending crash reports
 	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
@@ -185,19 +194,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	else {
 		if([[NSUserDefaults standardUserDefaults] objectForKey:@"crash_report_dontbug"] == nil) {
 			// Display CrashReportViewController
-			CrashReportViewController *crashReportView = [[CrashReportViewController alloc] initWithNibName:@"CrashReportView" bundle:nil];
-			
-			if(DeviceIsPad()) {
-				UINavigationController *crashNavController = [[UINavigationController alloc] initWithRootViewController:crashReportView];
-				crashNavController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-				crashNavController.modalPresentationStyle = UIModalPresentationFormSheet;
-				self.navigationController = crashNavController;
-				[splitViewController presentModalViewController:crashNavController animated:YES];
-				[crashNavController release];
-			}
-			else
+			if(!DeviceIsPad())
 				[self.navigationController pushViewController:crashReportView animated:YES];
-			[crashReportView release];
 		}
 		else {
 			[crashReporter purgePendingCrashReport];
@@ -205,6 +203,14 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	}
 	
 	return;
+}
+
+- (void)dismissCrashReporter:(NSNotification *)notification {
+	if(DeviceIsPad()) {
+		[splitViewController dismissModalViewControllerAnimated:NO];
+		crashReportView.view.frame = CGRectMake(0, 1000, 0, 0);
+		[crashReportView.view removeFromSuperview];
+	}
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
