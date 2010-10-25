@@ -364,6 +364,7 @@
 		[self refreshUIForCompose];
 	[self verifyPublishSuccessful];
 	if(DeviceIsPad() == NO) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"AsynchronousPostIsPosted" object:nil userInfo:dict];
 		[self.navigationController popViewControllerAnimated:YES];
 	}
 	else {

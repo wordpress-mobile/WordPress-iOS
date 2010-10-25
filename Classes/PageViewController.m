@@ -135,7 +135,9 @@
 
 - (IBAction)dismiss:(id)sender {
 	self.selectedPostID = nil;
-	[self.navigationController popViewControllerAnimated:YES];
+	
+	if(DeviceIsPad() == NO)
+		[self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)setupBackButton {

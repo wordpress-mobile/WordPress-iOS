@@ -59,9 +59,6 @@
 		}
 		[prefs synchronize];
 	}
-	
-	// Force a crash for testing purposes
-	//NSInteger thisLineOfCodeWillCrashTheAppOnAnIntelMac = 1/0;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {

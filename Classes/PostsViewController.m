@@ -398,18 +398,15 @@
 	
     [dm updatePostsTitlesFileAfterPostSaved:(NSMutableDictionary *)postIdsDict];
     [dm loadPostTitlesForCurrentBlog];
-	[self syncPosts];
-    [self loadPosts];
-	[self refreshPostList];
-	[self syncPosts];
-	[self refreshPostList];
-	[self refreshPostList];
+	[self refreshHandler];
+	[self.tableView reloadData];
 }
 
 - (void)updatePostsTableAfterDraftSaved:(NSNotification *)notification {
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
     [dm loadPostTitlesForCurrentBlog];
-	[self loadPosts];
+	[self refreshHandler];
+	[self.tableView reloadData];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {

@@ -587,6 +587,7 @@
 - (void)didSavePageInBackground {
 	[spinner dismissWithClickedButtonIndex:0 animated:YES];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[delegate dismiss:self];
 }
 
 - (void)cancel {
@@ -646,6 +647,7 @@
 	NSMutableString *content = [[[NSMutableString alloc] initWithString:media.html] autorelease];
 	[content appendString:[NSString stringWithFormat:@"<br/><br/>%@", contentTextView.text]];
     contentTextView.text = content;
+	[delegate refreshButtons:YES keyboard:NO];
 }
 
 - (void)insertMediaBelow:(NSNotification *)notification {
@@ -657,6 +659,7 @@
 	NSMutableString *content = [[[NSMutableString alloc] initWithString:contentTextView.text] autorelease];
 	[content appendString:[NSString stringWithFormat:@"<br/><br/>%@", media.html]];
     contentTextView.text = content;
+	[delegate refreshButtons:YES keyboard:NO];
 }
 
 #pragma mark -
