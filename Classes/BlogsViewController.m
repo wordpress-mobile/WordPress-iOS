@@ -36,7 +36,7 @@
 	}
 	else {
 		// If we've launched the app 30 times...
-		if(([[prefs objectForKey:@"launch_count"] isEqualToNumber:[NSNumber numberWithInt:30]]) && 
+		if(([[prefs objectForKey:@"launch_count"] isEqualToNumber:[NSNumber numberWithInt:50]]) && 
 		   ([prefs objectForKey:@"has_displayed_rating_prompt"] == nil)) {
 			
 			// If this is the 30th launch, display the alert
@@ -51,7 +51,7 @@
 			// Don't bug them again
 			[prefs setObject:@"1" forKey:@"has_displayed_rating_prompt"];
 		}
-		else if([[prefs objectForKey:@"launch_count"] intValue] < 30) {
+		else if([[prefs objectForKey:@"launch_count"] intValue] < 50) {
 			// Increment our launch count
 			int launchCount = [[prefs objectForKey:@"launch_count"] intValue];
 			launchCount++;

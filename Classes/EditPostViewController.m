@@ -936,12 +936,15 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[UIView beginAnimations:nil context:nil];
 	[UIView setAnimationCurve:curve];
 	[UIView setAnimationDuration:animationDuration];
-	CGRect keyboardFrame, keyboardBounds;
+	CGRect keyboardFrame;
 	
 	// Reposition TextView for editing mode or normal mode based on device and orientation
 	
 	if(isEditing) {
 		// Editing mode
+		
+		// Save time: Uncomment this line when you're debugging UITextView positioning
+		//textView.backgroundColor = [UIColor blueColor];
 		
 		// iPad
 		if(DeviceIsPad() == YES) {
@@ -954,11 +957,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			}
 			else {
 				// Portrait
-				keyboardFrame = CGRectMake(0, 180, textView.frame.size.width, 700);
-				keyboardBounds = CGRectMake(0, 180, textView.frame.size.width, 700);
+				keyboardFrame = CGRectMake(0, 0, textView.frame.size.width, 700);
 				
 				[textView setFrame:keyboardFrame];
-				[textView setBounds:keyboardBounds];
 			}
 			
 			[self.view bringSubviewToFront:textView];
@@ -986,17 +987,15 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
 				|| (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
 				// Landscape
-				keyboardFrame = CGRectMake(0, 165, textView.frame.size.width, normalTextFrame.size.height);
+				keyboardFrame = CGRectMake(0, 180, textView.frame.size.width, normalTextFrame.size.height);
 				
 				[textView setFrame:keyboardFrame];
 			}
 			else {
 				// Portrait
-				keyboardFrame = CGRectMake(0, 165, textView.frame.size.width, normalTextFrame.size.height);
-				keyboardBounds = CGRectMake(0, 165, textView.frame.size.width, normalTextFrame.size.height);
+				keyboardFrame = CGRectMake(0, 180, textView.frame.size.width, normalTextFrame.size.height);
 				
 				[textView setFrame:keyboardFrame];
-				[textView setBounds:keyboardBounds];
 			}
 			
 			[self.view bringSubviewToFront:textView];
