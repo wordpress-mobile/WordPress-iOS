@@ -307,7 +307,6 @@
 }
 
 - (void)loadPosts {
-	NSLog(@"loadPosts...");
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	self.drafts = [draftManager getType:@"post" forBlog:[[dm currentBlog] valueForKey:@"blogid"]];
     dm.isLocaDraftsCurrent = NO;
@@ -316,7 +315,6 @@
 }
 
 - (void)refreshPostList {
-	NSLog(@"refreshPostList...");
     [self.tableView reloadData];
 	
 	if (DeviceIsPad() == YES) {
@@ -380,7 +378,6 @@
 }
 
 - (void)syncPosts {
-	NSLog(@"syncPosts...");
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
@@ -397,7 +394,6 @@
 
 - (void)updatePostsTableViewAfterPostSaved:(NSNotification *)notification {
     NSDictionary *postIdsDict = [notification userInfo];
-	NSLog(@"postIdsDict: %@", postIdsDict);
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	
     [dm updatePostsTitlesFileAfterPostSaved:(NSMutableDictionary *)postIdsDict];

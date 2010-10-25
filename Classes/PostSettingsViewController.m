@@ -241,7 +241,7 @@
         publishOnEditController.settingController = self;
 		publishOnEditController.title = @"Publish Date";
 		if (DeviceIsPad() == YES) {
-			[self.navigationController pushViewController:publishOnEditController animated:YES];
+			[postDetailViewController.navigationController pushViewController:publishOnEditController animated:YES];
 		} else {
 			[postDetailViewController.navigationController pushViewController:publishOnEditController animated:YES];
 		}

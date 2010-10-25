@@ -658,6 +658,7 @@
 	else {
 		self.hasValidXMLRPCurl = NO;
 	}
+	[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
 	
 	isGettingXMLRPCURL = NO;
 }

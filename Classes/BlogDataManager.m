@@ -3581,7 +3581,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 	
     NSString *postTitlesPath = [self pathToPostTitles:[self currentBlog]];
     NSMutableArray *postsArray = [NSMutableArray arrayWithContentsOfFile:postTitlesPath];
-	NSLog(@"postsArray: %@", postsArray);
     int postsCount = [postsArray count];
 	
     for (int i = 0; i < postsCount; i++) {
