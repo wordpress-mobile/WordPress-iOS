@@ -332,7 +332,6 @@
 						[dict setValue:postID forKey:@"originalPostId"];
 						[dict setValue:[NSNumber numberWithInt:0] forKey:@"isCurrentPostDraft"];
 						[dict setValue:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
-		
 					}
 					
 					if (DeviceIsPad() == YES) {
@@ -356,25 +355,33 @@
 - (void)didSaveInBackground:(NSDictionary *)dict {
 	isPublishing = NO;
 	hasChanges = NO;
+	
+	// Hide the keyboard
 	[postDetailEditController resignTextView];
 	
-	if(DeviceIsPad() == YES)
-		[self refreshUIForCurrentPost];
-	else
-		[self refreshUIForCompose];
-	[self verifyPublishSuccessful];
-	if(DeviceIsPad() == NO) {
+	// If this was a save and not a publish, post a message
+	if(!post.wasLocalDraft)
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"AsynchronousPostIsPosted" object:nil userInfo:dict];
-		[self.navigationController popViewControllerAnimated:YES];
+	
+	if(DeviceIsPad() == YES) {
+		// Refresh the UI for updated values
+		[self refreshUIForCurrentPost];
 	}
 	else {
-		if(wasLocalDraft == YES)
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"DraftsUpdated" object:nil];
-		else
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"AsynchronousPostIsPosted" object:nil userInfo:dict];
+		// Refresh the UI for a new post
+		[self refreshUIForCompose];
 		
+		// Back out to Posts list
+		[self.navigationController popViewControllerAnimated:YES];
 	}
+	
+	// Verify that our post truly was successful
+	[self verifyPublishSuccessful];
+	
+	// Clear recovery data
 	[postDetailEditController clearUnsavedPost];
+	
+	// Dismiss spinner
 	[spinner dismissWithClickedButtonIndex:0 animated:YES];
 }
 

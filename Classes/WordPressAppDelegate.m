@@ -324,7 +324,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 			exit(-1);
 		}
 		
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"DraftsUpdated" object:nil];
 		[postsToDelete release];
 		[request release];
 	}
