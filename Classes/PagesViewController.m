@@ -376,8 +376,7 @@
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
     if (indexPath.section == 0) {
-		Post *draft = [drafts objectAtIndex:indexPath.row];
-		[mediaManager removeForPostID:draft.postID andBlogURL:[[[BlogDataManager sharedDataManager] currentBlog] objectForKey:@"url"]];
+		[mediaManager removeForPostID:[(Post *)[drafts objectAtIndex:indexPath.row] postID] andBlogURL:[[[BlogDataManager sharedDataManager] currentBlog] objectForKey:@"url"]];
 		
 		NSManagedObject *objectToDelete = [drafts objectAtIndex:indexPath.row];
 		[appDelegate.managedObjectContext deleteObject:objectToDelete];
@@ -388,8 +387,6 @@
 			NSLog(@"Severe error when trying to delete local draft. Error: %@", error);
         }
 		
-		[progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-		[progressAlert release];
 		[self performSelectorOnMainThread:@selector(didDeleteDraftAtIndexPath:) withObject:indexPath waitUntilDone:NO];
     }
 	else if(indexPath.section == 1){
@@ -400,13 +397,10 @@
 			alert.tag = TAG_OFFSET;
 			[alert show];
 			[appDelegate setAlertRunning:YES];
-			[alert release];
 		}
 		else {
 			NSNumber *pageID = [[pages objectAtIndex:indexPath.row] objectForKey:@"page_id"];
 			BOOL result = [pageManager deletePage:pageID];
-			[progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-			[progressAlert release];
 			if(result == YES)
 				[self performSelectorOnMainThread:@selector(didDeletePageAtIndexPath:) withObject:indexPath waitUntilDone:NO];
 		}
@@ -416,17 +410,19 @@
 }
 
 - (void)didDeleteDraftAtIndexPath:(NSIndexPath *)indexPath {
+	[progressAlert dismissWithClickedButtonIndex:0 animated:YES];
 	[drafts removeObjectAtIndex:indexPath.row];
 	[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
+	[self refreshTable];
 	[self loadPages];
-	[progressAlert dismiss];
 }
 
 - (void)didDeletePageAtIndexPath:(NSIndexPath *)indexPath {
+	[progressAlert dismissWithClickedButtonIndex:0 animated:YES];
 	[pages removeObjectAtIndex:indexPath.row];
 	[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
+	[self refreshTable];
 	[self loadPages];
-	[progressAlert dismiss];
 }
 
 - (void)refreshTable {

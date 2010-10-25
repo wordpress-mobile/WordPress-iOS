@@ -26,6 +26,13 @@
 	[super viewWillDisappear:YES];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	if(DeviceIsPad() == YES)
+		return YES;
+	else
+		return NO;
+}
+
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
 	[self dismissModalViewControllerAnimated:YES];
 	[self finish];

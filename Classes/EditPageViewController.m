@@ -467,7 +467,8 @@
 		[contentTextView resignFirstResponder];
 	}
 	[titleTextField resignFirstResponder];
-	[self checkPublishable];
+	if(page != nil)
+		[self checkPublishable];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification {
@@ -584,10 +585,8 @@
 }
 
 - (void)didSavePageInBackground {
-	[self hideKeyboard:nil];
 	[spinner dismissWithClickedButtonIndex:0 animated:YES];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	[delegate dismiss:self];
 }
 
 - (void)cancel {
