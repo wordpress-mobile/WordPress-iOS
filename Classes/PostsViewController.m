@@ -56,7 +56,7 @@
 	[super viewWillAppear:animated];
 	
 	// Force a crash for CrashReporter
-	NSLog(@"crash time! %@", 1);
+	//NSLog(@"crash time! %@", 1);
 	
     [self loadPosts];
 	

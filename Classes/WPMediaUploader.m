@@ -91,13 +91,13 @@
 }
 
 - (void)showAPIAlert {
-	UIAlertView *atomPubAlert = [[UIAlertView alloc] initWithTitle:@"Remote Publishing" 
-														   message:@"Video uploads work best with the AtomPub API. You can enable it by going to Settings > Writing > Remote Publishing, checking the box next to \"Atom Publishing Protocol\", then pressing Save Changes." 
-														  delegate:self 
-												 cancelButtonTitle:@"XML-RPC" 
-												 otherButtonTitles:@"AtomPub", nil];
-	[atomPubAlert show];
-	[atomPubAlert release];
+//	UIAlertView *atomPubAlert = [[UIAlertView alloc] initWithTitle:@"Remote Publishing" 
+//														   message:@"Video uploads work best with the AtomPub API. You can enable it by going to Settings > Writing > Remote Publishing, checking the box next to \"Atom Publishing Protocol\", then pressing Save Changes." 
+//														  delegate:self 
+//												 cancelButtonTitle:@"XML-RPC" 
+//												 otherButtonTitles:@"AtomPub", nil];
+//	[atomPubAlert show];
+//	[atomPubAlert release];
 }
 
 - (void)checkAtomPub {
@@ -112,7 +112,7 @@
 			
 			switch ([videoPreference intValue]) {
 				case 0:
-					[self showAPIAlert];
+					[self buildXMLRPC];
 					break;
 				case 1:
 					[self sendAtomPub];
@@ -126,8 +126,9 @@
 			}
 		}
 		else {
-			[self showAPIAlert];
+			[self buildXMLRPC];
 		}
+
 	}
 	else {
 		[self buildXMLRPC];

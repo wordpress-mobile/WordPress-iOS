@@ -139,13 +139,11 @@
 			<string>2</string>
 			<key>Values</key>
 			<array>
-				<string>0</string>
 				<string>1</string>
 				<string>2</string>
 			</array>
 			<key>Titles</key>
 			<array>
-				<string>Always Ask</string>
 				<string>AtomPub</string>
 				<string>XML-RPC</string>
 			</array>

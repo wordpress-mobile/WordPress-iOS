@@ -81,15 +81,16 @@
 				}
 				else {
 					// Use HTML 4 <object><embed> tags
-					embedHeight = [NSString stringWithFormat:@"%d", ([embedHeight intValue] + 20)];
+					embedHeight = [NSString stringWithFormat:@"%d", ([embedHeight intValue] + 16)];
 					result = [NSString stringWithFormat:
 							  @"<object classid=\"clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B\""
 							  "codebase=\"http://www.apple.com/qtactivex/qtplugin.cab\""
 							  "width=\"%@\" height=\"%@\">"
 							  "<param name=\"src\" value=\"%@\">"
-							  "<embed src=\"%@\""
-							  "width=\"%@\" height=\"%@\" type=\"video/quicktime\""
-							  "pluginspage=\"http://www.apple.com/quicktime/download/\""
+							  "<param name=\"autoplay\" value=\"false\">"
+							  "<embed src=\"%@\" autoplay=\"false\" "
+							  "width=\"%@\" height=\"%@\" type=\"video/quicktime\" "
+							  "pluginspage=\"http://www.apple.com/quicktime/download/\" "
 							  "/></object>",
 							  embedWidth, embedHeight, self.remoteURL, self.remoteURL, embedWidth, embedHeight];
 				}
