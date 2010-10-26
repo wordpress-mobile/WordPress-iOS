@@ -70,6 +70,9 @@
 			[self presentModalViewController:controller animated:NO];
 			[controller release];
 		}
+		else {
+			[self finish];
+		}
 	}
 }
 
