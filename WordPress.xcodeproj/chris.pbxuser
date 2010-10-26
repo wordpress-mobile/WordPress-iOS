@@ -1,0 +1,1855 @@
+// !$*UTF8*$!
+{
+	031663050FFB151A0045D052 /* PostTableViewCell.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {750, 585}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 693}";
+		};
+	};
+	031663060FFB151A0045D052 /* PostTableViewCell.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {908, 2795}}";
+			sepNavSelRange = "{1418, 0}";
+			sepNavVisRange = "{1241, 707}";
+		};
+	};
+	0395885E100DA2DA00850742 /* ImageCache.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {750, 386}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 329}";
+		};
+	};
+	03B1DF28113D87C400BBD1C6 /* BlogSplitViewMasterViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1335, 4030}}";
+			sepNavSelRange = "{1946, 13}";
+			sepNavVisRange = "{1350, 1520}";
+		};
+	};
+	03FF35C2100423A10066ED95 /* BlogViewController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {750, 421}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 751}";
+		};
+	};
+	03FF35C3100423A10066ED95 /* BlogViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 2873}}";
+			sepNavSelRange = "{426, 0}";
+			sepNavVisRange = "{298, 447}";
+		};
+	};
+	1D3623240D0F684500981E51 /* WordPressAppDelegate.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {750, 988}}";
+			sepNavSelRange = "{536, 0}";
+			sepNavVisRange = "{24, 1098}";
+		};
+	};
+	1D3623250D0F684500981E51 /* WordPressAppDelegate.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1062, 10036}}";
+			sepNavSelRange = "{24586, 39}";
+			sepNavVisRange = "{23976, 1701}";
+		};
+	};
+	1D6058900D05DD3D006BFB54 /* WordPress */ = {
+		activeExec = 0;
+		executables = (
+			83C1A1CA125EE14900E411B9 /* WordPress */,
+		);
+	};
+	28C286DF0D94DF7D0034E888 /* BlogsViewController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {750, 494}}";
+			sepNavSelRange = "{603, 0}";
+			sepNavVisRange = "{94, 1158}";
+		};
+	};
+	28C286E00D94DF7D0034E888 /* BlogsViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1461, 4459}}";
+			sepNavSelRange = "{1586, 0}";
+			sepNavVisRange = "{1266, 817}";
+		};
+	};
+	29A84CA3112E485100CDDB06 /* IncrementPost.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {857, 403}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 736}";
+		};
+	};
+	29A84CA4112E485100CDDB06 /* IncrementPost.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {922, 6994}}";
+			sepNavSelRange = "{10592, 40}";
+			sepNavVisRange = "{9989, 1274}";
+		};
+	};
+	29B97313FDCFA39411CA2CEA /* Project object */ = {
+		activeBuildConfigurationName = Debug;
+		activeExecutable = 83C1A1CA125EE14900E411B9 /* WordPress */;
+		activeSDKPreference = iphoneos4.1;
+		activeTarget = 1D6058900D05DD3D006BFB54 /* WordPress */;
+		addToTargets = (
+			1D6058900D05DD3D006BFB54 /* WordPress */,
+		);
+		breakpoints = (
+			83ADA0D11273CE2B00581EC3 /* BlogDataManager.m:2390 */,
+			83ADA14B1273D4F800581EC3 /* BlogDataManager.m:1382 */,
+		);
+		codeSenseManager = 83C1A1EA125EE16700E411B9 /* Code sense */;
+		executables = (
+			83C1A1CA125EE14900E411B9 /* WordPress */,
+		);
+		perUserDictionary = {
+			"PBXConfiguration.PBXBreakpointsDataSource.v1:1CA23EDF0692099D00951B8B" = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXBreakpointsDataSource_BreakpointID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					20,
+					263,
+					20,
+					163,
+					163,
+					93,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXBreakpointsDataSource_ActionID,
+					PBXBreakpointsDataSource_TypeID,
+					PBXBreakpointsDataSource_BreakpointID,
+					PBXBreakpointsDataSource_UseID,
+					PBXBreakpointsDataSource_LocationID,
+					PBXBreakpointsDataSource_ConditionID,
+					PBXBreakpointsDataSource_IgnoreCountID,
+					PBXBreakpointsDataSource_ContinueID,
+				);
+			};
+			PBXConfiguration.PBXFileTableDataSource3.PBXExecutablesDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXExecutablesDataSource_NameID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					22,
+					300,
+					460,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXExecutablesDataSource_ActiveFlagID,
+					PBXExecutablesDataSource_NameID,
+					PBXExecutablesDataSource_CommentsID,
+				);
+			};
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					572,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXConfiguration.PBXTargetDataSource.PBXTargetDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					532,
+					60,
+					20,
+					48,
+					43,
+					43,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXTargetDataSource_PrimaryAttribute,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 309763488;
+			PBXWorkspaceStateSaveDate = 309763488;
+		};
+		perUserProjectItems = {
+			83034D84126E998E005A24D0 /* PBXTextBookmark */ = 83034D84126E998E005A24D0 /* PBXTextBookmark */;
+			83043D02126F916700EC9953 /* PBXTextBookmark */ = 83043D02126F916700EC9953 /* PBXTextBookmark */;
+			83043D4F126F968C00EC9953 /* PBXTextBookmark */ = 83043D4F126F968C00EC9953 /* PBXTextBookmark */;
+			8306CAFE12760E7700BCC586 /* PBXTextBookmark */ = 8306CAFE12760E7700BCC586 /* PBXTextBookmark */;
+			8306CB2612761B4500BCC586 /* PBXTextBookmark */ = 8306CB2612761B4500BCC586 /* PBXTextBookmark */;
+			8306CB2712761B4500BCC586 /* PBXTextBookmark */ = 8306CB2712761B4500BCC586 /* PBXTextBookmark */;
+			8306CB2E12761C2500BCC586 /* PBXTextBookmark */ = 8306CB2E12761C2500BCC586 /* PBXTextBookmark */;
+			8306CB391276265500BCC586 /* PBXTextBookmark */ = 8306CB391276265500BCC586 /* PBXTextBookmark */;
+			8306CB7E12762A9000BCC586 /* PBXTextBookmark */ = 8306CB7E12762A9000BCC586 /* PBXTextBookmark */;
+			8306CBBB12762E1800BCC586 /* PBXTextBookmark */ = 8306CBBB12762E1800BCC586 /* PBXTextBookmark */;
+			8306CC051276341A00BCC586 /* PBXTextBookmark */ = 8306CC051276341A00BCC586 /* PBXTextBookmark */;
+			8306CC56127637C300BCC586 /* PBXTextBookmark */ = 8306CC56127637C300BCC586 /* PBXTextBookmark */;
+			8306CC821276392400BCC586 /* PBXTextBookmark */ = 8306CC821276392400BCC586 /* PBXTextBookmark */;
+			8306CC981276398C00BCC586 /* PBXTextBookmark */ = 8306CC981276398C00BCC586 /* PBXTextBookmark */;
+			8306CD1B12763EA700BCC586 /* PBXTextBookmark */ = 8306CD1B12763EA700BCC586 /* PBXTextBookmark */;
+			8306CD2E12763EFF00BCC586 /* PBXTextBookmark */ = 8306CD2E12763EFF00BCC586 /* PBXTextBookmark */;
+			8306CD5E1276415600BCC586 /* PBXTextBookmark */ = 8306CD5E1276415600BCC586 /* PBXTextBookmark */;
+			8306CD5F1276415600BCC586 /* PBXTextBookmark */ = 8306CD5F1276415600BCC586 /* PBXTextBookmark */;
+			8306CD6D1276437A00BCC586 /* PBXTextBookmark */ = 8306CD6D1276437A00BCC586 /* PBXTextBookmark */;
+			8306CD791276455A00BCC586 /* PBXTextBookmark */ = 8306CD791276455A00BCC586 /* PBXTextBookmark */;
+			8306CD871276462E00BCC586 /* PlistBookmark */ = 8306CD871276462E00BCC586 /* PlistBookmark */;
+			8306CD911276477300BCC586 /* PBXTextBookmark */ = 8306CD911276477300BCC586 /* PBXTextBookmark */;
+			8306CDCA1276493A00BCC586 /* PBXTextBookmark */ = 8306CDCA1276493A00BCC586 /* PBXTextBookmark */;
+			8306CDDA127649B800BCC586 /* PBXTextBookmark */ = 8306CDDA127649B800BCC586 /* PBXTextBookmark */;
+			8306CE0C127667B800BCC586 /* PBXTextBookmark */ = 8306CE0C127667B800BCC586 /* PBXTextBookmark */;
+			8306CE2712766B6300BCC586 /* PBXTextBookmark */ = 8306CE2712766B6300BCC586 /* PBXTextBookmark */;
+			831C2D701271772D00DE2EDE /* PBXTextBookmark */ = 831C2D701271772D00DE2EDE /* PBXTextBookmark */;
+			831C72B51274F46400C56295 /* PBXTextBookmark */ = 831C72B51274F46400C56295 /* PBXTextBookmark */;
+			8345BAE4127144A2009DBCAA /* PBXTextBookmark */ = 8345BAE4127144A2009DBCAA /* PBXTextBookmark */;
+			8345BBB112714E28009DBCAA /* PBXTextBookmark */ = 8345BBB112714E28009DBCAA /* PBXTextBookmark */;
+			8345BBBE12714F0F009DBCAA /* PBXTextBookmark */ = 8345BBBE12714F0F009DBCAA /* PBXTextBookmark */;
+			8345BBCB12714FCC009DBCAA /* PBXTextBookmark */ = 8345BBCB12714FCC009DBCAA /* PBXTextBookmark */;
+			8345BBF71271527D009DBCAA /* PBXTextBookmark */ = 8345BBF71271527D009DBCAA /* PBXTextBookmark */;
+			8345BBF81271527D009DBCAA /* PBXTextBookmark */ = 8345BBF81271527D009DBCAA /* PBXTextBookmark */;
+			835B1CA8126D1DA300C926C4 /* PBXTextBookmark */ = 835B1CA8126D1DA300C926C4 /* PBXTextBookmark */;
+			835B1CC7126D1E8700C926C4 /* PBXTextBookmark */ = 835B1CC7126D1E8700C926C4 /* PBXTextBookmark */;
+			835B1CE7126D1F9D00C926C4 /* PBXTextBookmark */ = 835B1CE7126D1F9D00C926C4 /* PBXTextBookmark */;
+			835E2006126E1D840085940B /* PBXTextBookmark */ = 835E2006126E1D840085940B /* PBXTextBookmark */;
+			835E2009126E1D840085940B /* PBXTextBookmark */ = 835E2009126E1D840085940B /* PBXTextBookmark */;
+			835E200A126E1D840085940B /* PBXTextBookmark */ = 835E200A126E1D840085940B /* PBXTextBookmark */;
+			835FA0F4126394830083041D /* PBXTextBookmark */ = 835FA0F4126394830083041D /* PBXTextBookmark */;
+			836FECF412716069000309D8 /* PBXTextBookmark */ = 836FECF412716069000309D8 /* PBXTextBookmark */;
+			836FECF512716069000309D8 /* PBXTextBookmark */ = 836FECF512716069000309D8 /* PBXTextBookmark */;
+			836FED3E12716633000309D8 /* PBXBookmark */ = 836FED3E12716633000309D8 /* PBXBookmark */;
+			836FEE1B12716B01000309D8 /* PBXTextBookmark */ = 836FEE1B12716B01000309D8 /* PBXTextBookmark */;
+			836FEEC812716F79000309D8 /* PBXTextBookmark */ = 836FEEC812716F79000309D8 /* PBXTextBookmark */;
+			836FEEC912716F79000309D8 /* PBXTextBookmark */ = 836FEEC912716F79000309D8 /* PBXTextBookmark */;
+			836FEECA12716F79000309D8 /* PBXTextBookmark */ = 836FEECA12716F79000309D8 /* PBXTextBookmark */;
+			836FEEDE12717016000309D8 /* PBXTextBookmark */ = 836FEEDE12717016000309D8 /* PBXTextBookmark */;
+			836FEEE012717016000309D8 /* PBXTextBookmark */ = 836FEEE012717016000309D8 /* PBXTextBookmark */;
+			837C2B30126CEBE9006B6E29 /* PBXTextBookmark */ = 837C2B30126CEBE9006B6E29 /* PBXTextBookmark */;
+			837C2B33126CF21F006B6E29 /* PBXTextBookmark */ = 837C2B33126CF21F006B6E29 /* PBXTextBookmark */;
+			837C2BB0126D0D82006B6E29 /* PBXTextBookmark */ = 837C2BB0126D0D82006B6E29 /* PBXTextBookmark */;
+			837C2BB1126D0D82006B6E29 /* PBXTextBookmark */ = 837C2BB1126D0D82006B6E29 /* PBXTextBookmark */;
+			837C2BBD126D108A006B6E29 /* PBXTextBookmark */ = 837C2BBD126D108A006B6E29 /* PBXTextBookmark */;
+			839A29041270A8A20037A696 /* PBXTextBookmark */ = 839A29041270A8A20037A696 /* PBXTextBookmark */;
+			839A29BD1270B8210037A696 /* PBXTextBookmark */ = 839A29BD1270B8210037A696 /* PBXTextBookmark */;
+			839A29C41270B8400037A696 /* PBXTextBookmark */ = 839A29C41270B8400037A696 /* PBXTextBookmark */;
+			839A29CA1270FEBE0037A696 /* PBXTextBookmark */ = 839A29CA1270FEBE0037A696 /* PBXTextBookmark */;
+			839A2A11127117590037A696 /* PBXTextBookmark */ = 839A2A11127117590037A696 /* PBXTextBookmark */;
+			839A2A1D1271178A0037A696 /* PBXTextBookmark */ = 839A2A1D1271178A0037A696 /* PBXTextBookmark */;
+			839A2A1E1271178A0037A696 /* PBXTextBookmark */ = 839A2A1E1271178A0037A696 /* PBXTextBookmark */;
+			839C6D821271E02500B1EF62 /* PBXTextBookmark */ = 839C6D821271E02500B1EF62 /* PBXTextBookmark */;
+			83AD9E5A1273516B00581EC3 /* PBXTextBookmark */ = 83AD9E5A1273516B00581EC3 /* PBXTextBookmark */;
+			83AD9E601273590300581EC3 /* PBXTextBookmark */ = 83AD9E601273590300581EC3 /* PBXTextBookmark */;
+			83AD9E641273590300581EC3 /* PBXTextBookmark */ = 83AD9E641273590300581EC3 /* PBXTextBookmark */;
+			83AD9E961273610100581EC3 /* PBXTextBookmark */ = 83AD9E961273610100581EC3 /* PBXTextBookmark */;
+			83AD9EB3127362BB00581EC3 /* PBXTextBookmark */ = 83AD9EB3127362BB00581EC3 /* PBXTextBookmark */;
+			83AD9EB9127362F500581EC3 /* PBXTextBookmark */ = 83AD9EB9127362F500581EC3 /* PBXTextBookmark */;
+			83AD9F1C12736A7B00581EC3 /* PBXTextBookmark */ = 83AD9F1C12736A7B00581EC3 /* PBXTextBookmark */;
+			83AD9FC01273842000581EC3 /* PBXTextBookmark */ = 83AD9FC01273842000581EC3 /* PBXTextBookmark */;
+			83ADA0831273C9C800581EC3 /* PBXTextBookmark */ = 83ADA0831273C9C800581EC3 /* PBXTextBookmark */;
+			83ADA0861273C9C800581EC3 /* PBXTextBookmark */ = 83ADA0861273C9C800581EC3 /* PBXTextBookmark */;
+			83ADA0A11273CB3B00581EC3 /* PBXTextBookmark */ = 83ADA0A11273CB3B00581EC3 /* PBXTextBookmark */;
+			83ADA1511273D5CE00581EC3 /* PBXTextBookmark */ = 83ADA1511273D5CE00581EC3 /* PBXTextBookmark */;
+			83ADA1531273D5CE00581EC3 /* PBXTextBookmark */ = 83ADA1531273D5CE00581EC3 /* PBXTextBookmark */;
+			83ADA1601273D82F00581EC3 /* PBXTextBookmark */ = 83ADA1601273D82F00581EC3 /* PBXTextBookmark */;
+			83B55FA6126F409D00C0AEAE /* PBXTextBookmark */ = 83B55FA6126F409D00C0AEAE /* PBXTextBookmark */;
+			83B55FBA126F422300C0AEAE /* PBXTextBookmark */ = 83B55FBA126F422300C0AEAE /* PBXTextBookmark */;
+			83B56022126F4B9D00C0AEAE /* PBXTextBookmark */ = 83B56022126F4B9D00C0AEAE /* PBXTextBookmark */;
+			83B56023126F4B9D00C0AEAE /* PBXTextBookmark */ = 83B56023126F4B9D00C0AEAE /* PBXTextBookmark */;
+			83B56027126F4B9D00C0AEAE /* PBXTextBookmark */ = 83B56027126F4B9D00C0AEAE /* PBXTextBookmark */;
+			83B56056126F504800C0AEAE /* PBXTextBookmark */ = 83B56056126F504800C0AEAE /* PBXTextBookmark */;
+			83C71F661264B93E00330165 /* PBXTextBookmark */ = 83C71F661264B93E00330165 /* PBXTextBookmark */;
+			83CC700112769ED5007643DE /* PBXTextBookmark */ = 83CC700112769ED5007643DE /* PBXTextBookmark */;
+			83CC700212769ED5007643DE /* PBXTextBookmark */ = 83CC700212769ED5007643DE /* PBXTextBookmark */;
+			83CC700312769ED5007643DE /* PBXTextBookmark */ = 83CC700312769ED5007643DE /* PBXTextBookmark */;
+			83CC70121276A00B007643DE /* PBXTextBookmark */ = 83CC70121276A00B007643DE /* PBXTextBookmark */;
+			83CC70951276A710007643DE /* PBXTextBookmark */ = 83CC70951276A710007643DE /* PBXTextBookmark */;
+			83CC70961276A710007643DE /* XCBuildMessageTextBookmark */ = 83CC70961276A710007643DE /* XCBuildMessageTextBookmark */;
+			83CC70A71276A9B8007643DE /* PBXTextBookmark */ = 83CC70A71276A9B8007643DE /* PBXTextBookmark */;
+			83EB83C81268FB6000204293 /* PBXTextBookmark */ = 83EB83C81268FB6000204293 /* PBXTextBookmark */;
+			83EDE7BF1275F3040073E156 /* PlistBookmark */ = 83EDE7BF1275F3040073E156 /* PlistBookmark */;
+		};
+		sourceControlManager = 83C1A1E9125EE16700E411B9 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	2A7F72000E70F8C900E48A1F /* CommentViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {857, 9048}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 729}";
+		};
+	};
+	2F706AA30DFB24C500B43086 /* BlogDataManager.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {796, 4745}}";
+			sepNavSelRange = "{5475, 28}";
+			sepNavVisRange = "{4915, 1053}";
+		};
+	};
+	2F706AA40DFB24C500B43086 /* BlogDataManager.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1097, 67990}}";
+			sepNavSelRange = "{135550, 13}";
+			sepNavVisRange = "{89447, 906}";
+		};
+	};
+	2F706C280DFB8A5200B43086 /* PostViewController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1146, 1703}}";
+			sepNavSelRange = "{1482, 8}";
+			sepNavVisRange = "{413, 1360}";
+		};
+	};
+	2F706C290DFB8A5200B43086 /* PostViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 14131}}";
+			sepNavSelRange = "{12650, 0}";
+			sepNavVisRange = "{12534, 607}";
+			sepNavWindowFrame = "{{15, 309}, {832, 714}}";
+		};
+	};
+	2F970F720DF92274006BD934 /* PostsViewController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {894, 507}}";
+			sepNavSelRange = "{654, 0}";
+			sepNavVisRange = "{132, 1174}";
+		};
+	};
+	2F970F730DF92274006BD934 /* PostsViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1132, 7371}}";
+			sepNavSelRange = "{1883, 0}";
+			sepNavVisRange = "{1573, 566}";
+		};
+	};
+	2F970F970DF929B8006BD934 /* Constants.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1181, 1638}}";
+			sepNavSelRange = "{3935, 0}";
+			sepNavVisRange = "{3602, 622}";
+		};
+	};
+	2FAE97050E33B21600CA8540 /* license.txt */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {750, 3692}}";
+			sepNavSelRange = "{714, 0}";
+			sepNavVisRange = "{0, 1545}";
+		};
+	};
+	459A4CD21157CAD100127C74 /* PostAnnotation.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {750, 431}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 388}";
+		};
+	};
+	45F45AFC11614A0E0022D394 /* CDeviceSupport.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {750, 431}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 384}";
+		};
+	};
+	8302C4591228173E00B7A208 /* MediaManager.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 3224}}";
+			sepNavSelRange = "{3969, 0}";
+			sepNavVisRange = "{3860, 317}";
+		};
+	};
+	83034D84126E998E005A24D0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 83CAD41B1235F854003DFA20 /* MediaObjectViewController.m */;
+		name = "MediaObjectViewController.m: 142";
+		rLen = 0;
+		rLoc = 4359;
+		rType = 0;
+		vrLen = 882;
+		vrLoc = 3965;
+	};
+	83043CEE126F8E5A00EC9953 /* Root.plist */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text.plist.xml;
+		name = Root.plist;
+		path = /Users/chris/Documents/Workspace/2.6.2/Settings.bundle/Root.plist;
+		sourceTree = "<absolute>";
+	};
+	83043D02126F916700EC9953 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 8350E49411D2C71E00A7B073 /* Media.h */;
+		name = "Media.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1211;
+		vrLoc = 3;
+	};
+	83043D4F126F968C00EC9953 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 29A84CA3112E485100CDDB06 /* IncrementPost.h */;
+		name = "IncrementPost.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 736;
+		vrLoc = 0;
+	};
+	8306CAFE12760E7700BCC586 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = CE4E33D10FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m */;
+		name = "UIImage+INResizeImageAllocator.m: 7";
+		rLen = 0;
+		rLoc = 216;
+		rType = 0;
+		vrLen = 534;
+		vrLoc = 0;
+	};
+	8306CB2612761B4500BCC586 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 834CAE7B122D528A003DDF49 /* UIImage+Resize.m */;
+		name = "UIImage+Resize.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1878;
+		vrLoc = 0;
+	};
+	8306CB2712761B4500BCC586 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 83D1819E1232A0DA002DCCB0 /* PageViewController.h */;
+		name = "PageViewController.h: 14";
+		rLen = 0;
+		rLoc = 286;
+		rType = 0;
+		vrLen = 1070;
+		vrLoc = 45;
+	};
+	8306CB2E12761C2500BCC586 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 83D180F812329B1A002DCCB0 /* EditPageViewController.m */;
+		name = "EditPageViewController.m: 589";
+		rLen = 0;
+		rLoc = 19400;
+		rType = 0;
+		vrLen = 1090;
+		vrLoc = 18745;
+	};
+	8306CB391276265500BCC586 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 83D1819F1232A0DA002DCCB0 /* PageViewController.m */;
+		name = "PageViewController.m: 117";
+		rLen = 0;
+		rLoc = 3464;
+		rType = 0;
+		vrLen = 997;
+		vrLoc = 3370;
+	};
+	8306CB7E12762A9000BCC586 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 03B1DF28113D87C400BBD1C6 /* BlogSplitViewMasterViewController.m */;
+		name = "BlogSplitViewMasterViewController.m: 52";
+		rLen = 13;
+		rLoc = 1946;
+		rType = 0;
+		vrLen = 1520;
+		vrLoc = 1350;
+	};
+	8306CBBB12762E1800BCC586 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 83D3DD361215D5EC00600B4B /* AutosaveContentViewController.m */;
+		name = "AutosaveContentViewController.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 597;
+		vrLoc = 0;
+	};
+	8306CC051276341A00BCC586 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 2F706C290DFB8A5200B43086 /* PostViewController.m */;
+		name = "PostViewController.m: 370";
+		rLen = 0;
+		rLoc = 12650;
+		rType = 0;
+		vrLen = 1078;
+		vrLoc = 12393;
+	};
+	8306CC56127637C300BCC586 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 03FF35C2100423A10066ED95 /* BlogViewController.h */;
+		name = "BlogViewController.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 751;
+		vrLoc = 0;
+	};
+	8306CC821276392400BCC586 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 836FECE812715E2A000309D8 /* CrashReportViewController.h */;
+		name = "CrashReportViewController.h: 11";
+		rLen = 0;
+		rLoc = 241;
+		rType = 0;
+		vrLen = 522;
+		vrLoc = 0;
+	};
+	8306CC981276398C00BCC586 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 1D3623240D0F684500981E51 /* WordPressAppDelegate.h */;
+		name = "WordPressAppDelegate.h: 19";
+		rLen = 0;
+		rLoc = 536;
+		rType = 0;
+		vrLen = 1098;
+		vrLoc = 24;
+	};
+	8306CD1B12763EA700BCC586 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = CE19466F1017F86D002BE752 /* DashboardViewController.h */;
+		name = "DashboardViewController.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 731;
+		vrLoc = 0;
+	};
+	8306CD2E12763EFF00BCC586 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 2F706C280DFB8A5200B43086 /* PostViewController.h */;
+		name = "PostViewController.h: 39";
+		rLen = 8;
+		rLoc = 1482;
+		rType = 0;
+		vrLen = 1360;
+		vrLoc = 413;
+	};
+	8306CD5E1276415600BCC586 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 2F706AA40DFB24C500B43086 /* BlogDataManager.m */;
+		name = "BlogDataManager.m: 3466";
+		rLen = 13;
+		rLoc = 135550;
+		rType = 0;
+		vrLen = 906;
+		vrLoc = 89447;
+	};
+	8306CD5F1276415600BCC586 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 2F970F730DF92274006BD934 /* PostsViewController.m */;
+		name = "PostsViewController.m: 59";
+		rLen = 0;
+		rLoc = 1883;
+		rType = 0;
+		vrLen = 1259;
+		vrLoc = 1099;
+	};
+	8306CD6D1276437A00BCC586 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 8350E49511D2C71E00A7B073 /* Media.m */;
+		name = "Media.m: 90";
+		rLen = 0;
+		rLoc = 2702;
+		rType = 0;
+		vrLen = 1235;
+		vrLoc = 1833;
+	};
+	8306CD791276455A00BCC586 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 83241CF51208B26D00F0DA59 /* WPMediaUploader.m */;
+		name = "WPMediaUploader.m: 110";
+		rLen = 20;
+		rLoc = 3379;
+		rType = 0;
+		vrLen = 1178;
+		vrLoc = 2585;
+	};
+	8306CD871276462E00BCC586 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = 83043CEE126F8E5A00EC9953 /* Root.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+		);
+		name = /Users/chris/Documents/Workspace/2.6.2/Settings.bundle/Root.plist;
+		rLen = 0;
+		rLoc = 9223372036854775808;
+	};
+	8306CD911276477300BCC586 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = EC4696FE0EA75D460040EE8E /* PagesViewController.m */;
+		name = "PagesViewController.m: 405";
+		rLen = 0;
+		rLoc = 12870;
+		rType = 0;
+		vrLen = 1101;
+		vrLoc = 12637;
+	};
+	8306CDCA1276493A00BCC586 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 2F970F970DF929B8006BD934 /* Constants.h */;
+		name = "Constants.h: 94";
+		rLen = 0;
+		rLoc = 3935;
+		rType = 0;
+		vrLen = 622;
+		vrLoc = 3602;
+	};
+	8306CDDA127649B800BCC586 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 8388FAD1126958E700304909 /* CXMLNode.h */;
+		name = "CXMLNode.h: 32";
+		rLen = 6;
+		rLoc = 1288;
+		rType = 0;
+		vrLen = 1341;
+		vrLoc = 0;
+	};
+	8306CE0C127667B800BCC586 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 03FF35C3100423A10066ED95 /* BlogViewController.m */;
+		name = "BlogViewController.m: 23";
+		rLen = 0;
+		rLoc = 426;
+		rType = 0;
+		vrLen = 968;
+		vrLoc = 88;
+	};
+	8306CE2712766B6300BCC586 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 28C286E00D94DF7D0034E888 /* BlogsViewController.m */;
+		name = "BlogsViewController.m: 39";
+		rLen = 0;
+		rLoc = 1586;
+		rType = 0;
+		vrLen = 1323;
+		vrLoc = 1060;
+	};
+	831C2D701271772D00DE2EDE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 83F3E2BC11276357004CD686 /* LocationController.h */;
+		name = "LocationController.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 711;
+		vrLoc = 0;
+	};
+	831C72B51274F46400C56295 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */;
+		name = "PostSettingsViewController.m: 244";
+		rLen = 0;
+		rLoc = 8088;
+		rType = 0;
+		vrLen = 1251;
+		vrLoc = 7474;
+	};
+	831C9ED512162AF700B1EACE /* DraftManager.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 1794}}";
+			sepNavSelRange = "{663, 0}";
+			sepNavVisRange = "{293, 861}";
+		};
+	};
+	83241CF41208B26D00F0DA59 /* WPMediaUploader.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {750, 884}}";
+			sepNavSelRange = "{211, 0}";
+			sepNavVisRange = "{0, 640}";
+		};
+	};
+	83241CF51208B26D00F0DA59 /* WPMediaUploader.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1895, 6526}}";
+			sepNavSelRange = "{3379, 20}";
+			sepNavVisRange = "{3107, 508}";
+		};
+	};
+	833F598811C9305700789837 /* HttpHelperDelegate.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {750, 431}}";
+			sepNavSelRange = "{35, 138}";
+			sepNavVisRange = "{0, 173}";
+		};
+	};
+	833F59F411C95DE400789837 /* HttpHelper.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {964, 1755}}";
+			sepNavSelRange = "{257, 0}";
+			sepNavVisRange = "{0, 954}";
+		};
+	};
+	833F59F511C95DE400789837 /* HttpHelper.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {929, 431}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 932}";
+		};
+	};
+	83418A5411C9F50800ACF00C /* WPDataController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {810, 533}}";
+			sepNavSelRange = "{42, 0}";
+			sepNavVisRange = "{132, 995}";
+		};
+	};
+	83418A5511C9F50800ACF00C /* WPDataController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {908, 2314}}";
+			sepNavSelRange = "{2006, 0}";
+			sepNavVisRange = "{573, 1414}";
+		};
+	};
+	83418A6111C9F62200ACF00C /* WPDataControllerDelegate.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {857, 421}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 212}";
+		};
+	};
+	8343D93A1237CFD9003DD6D3 /* PostManager.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {857, 1027}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 724}";
+		};
+	};
+	8343D93B1237CFD9003DD6D3 /* PostManager.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {857, 6565}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{4538, 830}";
+		};
+	};
+	8345BAE4127144A2009DBCAA /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 8388FAC4126958E700304909 /* CXMLDocument.m */;
+		name = "CXMLDocument.m: 161";
+		rLen = 0;
+		rLoc = 4818;
+		rType = 0;
+		vrLen = 930;
+		vrLoc = 4395;
+	};
+	8345BBB112714E28009DBCAA /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 8398EE3211ACE206000FE6E0 /* WelcomeViewController.h */;
+		name = "WelcomeViewController.h: 24";
+		rLen = 0;
+		rLoc = 635;
+		rType = 0;
+		vrLen = 739;
+		vrLoc = 0;
+	};
+	8345BBBE12714F0F009DBCAA /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 8398EE3311ACE206000FE6E0 /* WelcomeViewController.m */;
+		name = "WelcomeViewController.m: 181";
+		rLen = 0;
+		rLoc = 6224;
+		rType = 0;
+		vrLen = 1419;
+		vrLoc = 5157;
+	};
+	8345BBCB12714FCC009DBCAA /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 8369FF8E11F4F3BF003106C7 /* AddUsersBlogsViewController.h */;
+		name = "AddUsersBlogsViewController.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1183;
+		vrLoc = 0;
+	};
+	8345BBF71271527D009DBCAA /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 83418A5411C9F50800ACF00C /* WPDataController.h */;
+		name = "WPDataController.h: 4";
+		rLen = 0;
+		rLoc = 42;
+		rType = 0;
+		vrLen = 995;
+		vrLoc = 132;
+	};
+	8345BBF81271527D009DBCAA /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 83418A5511C9F50800ACF00C /* WPDataController.m */;
+		name = "WPDataController.m: 71";
+		rLen = 0;
+		rLoc = 2006;
+		rType = 0;
+		vrLen = 1414;
+		vrLoc = 573;
+	};
+	834CAE7B122D528A003DDF49 /* UIImage+Resize.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1986, 2496}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 566}";
+		};
+	};
+	834CE8681256E7F60046A4A3 /* ASIHTTPRequest.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1853, 11258}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{34850, 1525}";
+		};
+	};
+	834CE8691256E7F60046A4A3 /* ASIHTTPRequest.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 55263}}";
+			sepNavSelRange = "{61364, 0}";
+			sepNavVisRange = "{61053, 567}";
+		};
+	};
+	834CE86B1256E7F60046A4A3 /* ASIHTTPRequestDelegate.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {880, 442}}";
+			sepNavSelRange = "{507, 30}";
+			sepNavVisRange = "{3, 1430}";
+		};
+	};
+	834CE86E1256E7F60046A4A3 /* ASINetworkQueue.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1153, 1339}}";
+			sepNavSelRange = "{480, 11}";
+			sepNavVisRange = "{0, 1172}";
+		};
+	};
+	8350E49411D2C71E00A7B073 /* Media.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {857, 507}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{3, 1211}";
+		};
+	};
+	8350E49511D2C71E00A7B073 /* Media.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {796, 1391}}";
+			sepNavSelRange = "{2702, 0}";
+			sepNavVisRange = "{1833, 1235}";
+		};
+	};
+	835B1CA8126D1DA300C926C4 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 834CE86B1256E7F60046A4A3 /* ASIHTTPRequestDelegate.h */;
+		name = "ASIHTTPRequestDelegate.h: 18";
+		rLen = 30;
+		rLoc = 507;
+		rType = 0;
+		vrLen = 1430;
+		vrLoc = 3;
+	};
+	835B1CC7126D1E8700C926C4 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 834CE8691256E7F60046A4A3 /* ASIHTTPRequest.m */;
+		name = "ASIHTTPRequest.m: 2165";
+		rLen = 0;
+		rLoc = 81844;
+		rType = 0;
+		vrLen = 1217;
+		vrLoc = 81376;
+	};
+	835B1CE7126D1F9D00C926C4 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 8388FAC3126958E700304909 /* CXMLDocument.h */;
+		name = "CXMLDocument.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1186;
+		vrLoc = 1268;
+	};
+	835E2006126E1D840085940B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 2A7F72000E70F8C900E48A1F /* CommentViewController.m */;
+		name = "CommentViewController.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 729;
+		vrLoc = 0;
+	};
+	835E2009126E1D840085940B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = C5E3AE330E93F3C5008755FF /* WPImagePickerController.h */;
+		name = "WPImagePickerController.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 191;
+		vrLoc = 0;
+	};
+	835E200A126E1D840085940B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = C5E3AE340E93F3C5008755FF /* WPImagePickerController.m */;
+		name = "WPImagePickerController.m: 8";
+		rLen = 23;
+		rLoc = 101;
+		rType = 0;
+		vrLen = 784;
+		vrLoc = 0;
+	};
+	835FA0F4126394830083041D /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 83418A6111C9F62200ACF00C /* WPDataControllerDelegate.h */;
+		name = "WPDataControllerDelegate.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 212;
+		vrLoc = 0;
+	};
+	83610AA811F4AD2C00421116 /* WPcomLoginViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1083, 5057}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{9611, 926}";
+		};
+	};
+	8369FF8E11F4F3BF003106C7 /* AddUsersBlogsViewController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {750, 624}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1183}";
+		};
+	};
+	8369FF8F11F4F3BF003106C7 /* AddUsersBlogsViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1048, 5850}}";
+			sepNavSelRange = "{1845, 0}";
+			sepNavVisRange = "{1929, 1199}";
+		};
+	};
+	836FC97911FC98B3007E1D73 /* BlogSettingsViewController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 533}}";
+			sepNavSelRange = "{249, 0}";
+			sepNavVisRange = "{0, 539}";
+		};
+	};
+	836FC97A11FC98B3007E1D73 /* BlogSettingsViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 6786}}";
+			sepNavSelRange = "{15438, 0}";
+			sepNavVisRange = "{642, 605}";
+		};
+	};
+	836FECE812715E2A000309D8 /* CrashReportViewController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 325}}";
+			sepNavSelRange = "{241, 0}";
+			sepNavVisRange = "{0, 363}";
+		};
+	};
+	836FECE912715E2A000309D8 /* CrashReportViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1013, 1456}}";
+			sepNavSelRange = "{2503, 0}";
+			sepNavVisRange = "{2504, 664}";
+		};
+	};
+	836FECF412716069000309D8 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 45F45AFC11614A0E0022D394 /* CDeviceSupport.m */;
+		name = "CDeviceSupport.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 384;
+		vrLoc = 0;
+	};
+	836FECF512716069000309D8 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 459A4CD21157CAD100127C74 /* PostAnnotation.h */;
+		name = "PostAnnotation.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 388;
+		vrLoc = 0;
+	};
+	836FED3E12716633000309D8 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 8398EEA611ACE6F9000FE6E0 /* welcome_btn_normal.png */;
+	};
+	836FEE1B12716B01000309D8 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 28C286DF0D94DF7D0034E888 /* BlogsViewController.h */;
+		name = "BlogsViewController.h: 18";
+		rLen = 0;
+		rLoc = 603;
+		rType = 0;
+		vrLen = 1158;
+		vrLoc = 94;
+	};
+	836FEEC812716F79000309D8 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 833F59F411C95DE400789837 /* HttpHelper.m */;
+		name = "HttpHelper.m: 14";
+		rLen = 0;
+		rLoc = 257;
+		rType = 0;
+		vrLen = 954;
+		vrLoc = 0;
+	};
+	836FEEC912716F79000309D8 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 833F59F511C95DE400789837 /* HttpHelper.h */;
+		name = "HttpHelper.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 932;
+		vrLoc = 0;
+	};
+	836FEECA12716F79000309D8 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 833F598811C9305700789837 /* HttpHelperDelegate.h */;
+		name = "HttpHelperDelegate.h: 3";
+		rLen = 138;
+		rLoc = 35;
+		rType = 0;
+		vrLen = 173;
+		vrLoc = 0;
+	};
+	836FEEDE12717016000309D8 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 83D180F712329B1A002DCCB0 /* EditPageViewController.h */;
+		name = "EditPageViewController.h: 42";
+		rLen = 8;
+		rLoc = 1213;
+		rType = 0;
+		vrLen = 1151;
+		vrLoc = 192;
+	};
+	836FEEE012717016000309D8 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 834CE86E1256E7F60046A4A3 /* ASINetworkQueue.h */;
+		name = "ASINetworkQueue.h: 16";
+		rLen = 11;
+		rLoc = 480;
+		rType = 0;
+		vrLen = 1172;
+		vrLoc = 0;
+	};
+	8370D1BA11FA6295009D650F /* AddSiteViewController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1314, 741}}";
+			sepNavSelRange = "{1668, 27}";
+			sepNavVisRange = "{0, 1324}";
+		};
+	};
+	8370D1BB11FA6295009D650F /* AddSiteViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 11453}}";
+			sepNavSelRange = "{27816, 0}";
+			sepNavVisRange = "{27650, 324}";
+		};
+	};
+	837614EA120A7FB2005CCB33 /* XMLRPCConnection.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {857, 767}}";
+			sepNavSelRange = "{444, 0}";
+			sepNavVisRange = "{0, 1205}";
+		};
+	};
+	837614EE120A7FB2005CCB33 /* XMLRPCEncoder.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {750, 663}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{608, 857}";
+		};
+	};
+	837614EF120A7FB2005CCB33 /* XMLRPCEncoder.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {750, 4173}}";
+			sepNavSelRange = "{1183, 35}";
+			sepNavVisRange = "{0, 1336}";
+		};
+	};
+	837614F3120A7FB2005CCB33 /* XMLRPCRequest.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {915, 2080}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{1805, 528}";
+		};
+	};
+	837C2B30126CEBE9006B6E29 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 8343D93A1237CFD9003DD6D3 /* PostManager.h */;
+		name = "PostManager.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 724;
+		vrLoc = 0;
+	};
+	837C2B33126CF21F006B6E29 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 8343D93B1237CFD9003DD6D3 /* PostManager.m */;
+		name = "PostManager.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 830;
+		vrLoc = 4538;
+	};
+	837C2BB0126D0D82006B6E29 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = ACAC7BE90E1F9E0C00AC7074 /* WPPublishOnEditController.h */;
+		name = "WPPublishOnEditController.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 505;
+		vrLoc = 0;
+	};
+	837C2BB1126D0D82006B6E29 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = C55A90D70E8026C500E1C9B5 /* WPSegmentedSelectionTableViewController.h */;
+		name = "WPSegmentedSelectionTableViewController.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 675;
+		vrLoc = 0;
+	};
+	837C2BBD126D108A006B6E29 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = ACAC7BEA0E1F9E0C00AC7074 /* WPPublishOnEditController.m */;
+		name = "WPPublishOnEditController.m: 5";
+		rLen = 0;
+		rLoc = 168;
+		rType = 0;
+		vrLen = 993;
+		vrLoc = 0;
+	};
+	8383178512270E980047B476 /* PostMediaViewController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1083, 1508}}";
+			sepNavSelRange = "{5258, 7}";
+			sepNavVisRange = "{788, 1340}";
+		};
+	};
+	8383178612270E980047B476 /* PostMediaViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {964, 15158}}";
+			sepNavSelRange = "{21437, 75}";
+			sepNavVisRange = "{21302, 1409}";
+		};
+	};
+	8388FAC3126958E700304909 /* CXMLDocument.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {964, 884}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{1268, 1186}";
+		};
+	};
+	8388FAC4126958E700304909 /* CXMLDocument.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1258, 3198}}";
+			sepNavSelRange = "{4818, 0}";
+			sepNavVisRange = "{4373, 555}";
+		};
+	};
+	8388FAD1126958E700304909 /* CXMLNode.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {750, 1040}}";
+			sepNavSelRange = "{1288, 6}";
+			sepNavVisRange = "{0, 1341}";
+		};
+	};
+	838C672C1210C3C300B09CA3 /* Post.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {750, 650}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{459, 1181}";
+		};
+	};
+	838C672D1210C3C300B09CA3 /* Post.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {750, 897}}";
+			sepNavSelRange = "{860, 0}";
+			sepNavVisRange = "{585, 1330}";
+			sepNavWindowFrame = "{{15, 309}, {832, 714}}";
+		};
+	};
+	8398EE3211ACE206000FE6E0 /* WelcomeViewController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {750, 443}}";
+			sepNavSelRange = "{635, 0}";
+			sepNavVisRange = "{0, 739}";
+		};
+	};
+	8398EE3311ACE206000FE6E0 /* WelcomeViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1111, 2795}}";
+			sepNavSelRange = "{6224, 0}";
+			sepNavVisRange = "{5996, 529}";
+		};
+	};
+	839A29041270A8A20037A696 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 834CE8681256E7F60046A4A3 /* ASIHTTPRequest.h */;
+		name = "ASIHTTPRequest.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1525;
+		vrLoc = 34850;
+	};
+	839A29BD1270B8210037A696 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 83FEFC7411FF6C5A0078B462 /* EditSiteViewController.m */;
+		name = "EditSiteViewController.m: 670";
+		rLen = 0;
+		rLoc = 21879;
+		rType = 0;
+		vrLen = 503;
+		vrLoc = 21668;
+	};
+	839A29C41270B8400037A696 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 836FC97A11FC98B3007E1D73 /* BlogSettingsViewController.m */;
+		name = "BlogSettingsViewController.m: 367";
+		rLen = 0;
+		rLoc = 11406;
+		rType = 0;
+		vrLen = 1195;
+		vrLoc = 10080;
+	};
+	839A29CA1270FEBE0037A696 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 836FC97911FC98B3007E1D73 /* BlogSettingsViewController.h */;
+		name = "BlogSettingsViewController.h: 12";
+		rLen = 0;
+		rLoc = 249;
+		rType = 0;
+		vrLen = 1076;
+		vrLoc = 0;
+	};
+	839A2A11127117590037A696 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 837614F3120A7FB2005CCB33 /* XMLRPCRequest.m */;
+		name = "XMLRPCRequest.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 528;
+		vrLoc = 1805;
+	};
+	839A2A1D1271178A0037A696 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 837614EE120A7FB2005CCB33 /* XMLRPCEncoder.h */;
+		name = "XMLRPCEncoder.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 857;
+		vrLoc = 608;
+	};
+	839A2A1E1271178A0037A696 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 837614EF120A7FB2005CCB33 /* XMLRPCEncoder.m */;
+		name = "XMLRPCEncoder.m: 29";
+		rLen = 35;
+		rLoc = 1183;
+		rType = 0;
+		vrLen = 1336;
+		vrLoc = 0;
+	};
+	839C6D821271E02500B1EF62 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = ACC156CA0E10E67600D6E1A0 /* EditPostViewController.h */;
+		name = "EditPostViewController.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1151;
+		vrLoc = 0;
+	};
+	83AD9E5A1273516B00581EC3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 031663050FFB151A0045D052 /* PostTableViewCell.h */;
+		name = "PostTableViewCell.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 693;
+		vrLoc = 0;
+	};
+	83AD9E601273590300581EC3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = C5B001C00E82971C00D13185 /* WPNavigationLeftButtonView.h */;
+		name = "WPNavigationLeftButtonView.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 497;
+		vrLoc = 0;
+	};
+	83AD9E641273590300581EC3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 83241CF41208B26D00F0DA59 /* WPMediaUploader.h */;
+		name = "WPMediaUploader.h: 12";
+		rLen = 0;
+		rLoc = 211;
+		rType = 0;
+		vrLen = 640;
+		vrLoc = 0;
+	};
+	83AD9E961273610100581EC3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 838C672C1210C3C300B09CA3 /* Post.h */;
+		name = "Post.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1181;
+		vrLoc = 459;
+	};
+	83AD9EB3127362BB00581EC3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 831C9ED512162AF700B1EACE /* DraftManager.m */;
+		name = "DraftManager.m: 27";
+		rLen = 0;
+		rLoc = 663;
+		rType = 0;
+		vrLen = 861;
+		vrLoc = 293;
+	};
+	83AD9EB9127362F500581EC3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 838C672D1210C3C300B09CA3 /* Post.m */;
+		name = "Post.m: 45";
+		rLen = 0;
+		rLoc = 860;
+		rType = 0;
+		vrLen = 1330;
+		vrLoc = 585;
+	};
+	83AD9F1C12736A7B00581EC3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 2F706AA30DFB24C500B43086 /* BlogDataManager.h */;
+		name = "BlogDataManager.h: 157";
+		rLen = 28;
+		rLoc = 5475;
+		rType = 0;
+		vrLen = 1053;
+		vrLoc = 4915;
+	};
+	83AD9FC01273842000581EC3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 2F970F720DF92274006BD934 /* PostsViewController.h */;
+		name = "PostsViewController.h: 19";
+		rLen = 0;
+		rLoc = 654;
+		rType = 0;
+		vrLen = 1174;
+		vrLoc = 132;
+	};
+	83ADA0831273C9C800581EC3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 83FEFC7311FF6C5A0078B462 /* EditSiteViewController.h */;
+		name = "EditSiteViewController.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1006;
+		vrLoc = 0;
+	};
+	83ADA0861273C9C800581EC3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 2FAE97050E33B21600CA8540 /* license.txt */;
+		name = "license.txt: 16";
+		rLen = 0;
+		rLoc = 714;
+		rType = 0;
+		vrLen = 1545;
+		vrLoc = 0;
+	};
+	83ADA0A11273CB3B00581EC3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 0395885E100DA2DA00850742 /* ImageCache.h */;
+		name = "ImageCache.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 329;
+		vrLoc = 0;
+	};
+	83ADA0D11273CE2B00581EC3 /* BlogDataManager.m:2390 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = 2F706AA40DFB24C500B43086 /* BlogDataManager.m */;
+		functionName = "-postTitleAtIndex:";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 2390;
+		location = WordPress;
+		modificationTime = 309766481.259705;
+		originalNumberOfMultipleMatches = 1;
+		state = 2;
+	};
+	83ADA14B1273D4F800581EC3 /* BlogDataManager.m:1382 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = 2F706AA40DFB24C500B43086 /* BlogDataManager.m */;
+		functionName = "-syncIncrementallyLoadedPostsForCurrentBlog:";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 1382;
+		location = WordPress;
+		modificationTime = 309766481.544538;
+		originalNumberOfMultipleMatches = 1;
+		state = 1;
+	};
+	83ADA1511273D5CE00581EC3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 29A84CA4112E485100CDDB06 /* IncrementPost.m */;
+		name = "IncrementPost.m: 268";
+		rLen = 40;
+		rLoc = 10592;
+		rType = 0;
+		vrLen = 1274;
+		vrLoc = 9989;
+	};
+	83ADA1531273D5CE00581EC3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = CEBD3EAA0FF1BA3B00C1396E /* Blog.m */;
+		name = "Blog.m: 68";
+		rLen = 24;
+		rLoc = 2563;
+		rType = 0;
+		vrLen = 1112;
+		vrLoc = 1885;
+	};
+	83ADA1601273D82F00581EC3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 8383178512270E980047B476 /* PostMediaViewController.h */;
+		name = "PostMediaViewController.h: 110";
+		rLen = 7;
+		rLoc = 5258;
+		rType = 0;
+		vrLen = 1340;
+		vrLoc = 788;
+	};
+	83B55FA6126F409D00C0AEAE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 83610AA811F4AD2C00421116 /* WPcomLoginViewController.m */;
+		name = "WPcomLoginViewController.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 926;
+		vrLoc = 9611;
+	};
+	83B55FBA126F422300C0AEAE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 8369FF8F11F4F3BF003106C7 /* AddUsersBlogsViewController.m */;
+		name = "AddUsersBlogsViewController.m: 55";
+		rLen = 0;
+		rLoc = 1845;
+		rType = 0;
+		vrLen = 1199;
+		vrLoc = 1929;
+	};
+	83B56022126F4B9D00C0AEAE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */;
+		name = "CommentsViewController.m: 527";
+		rLen = 5;
+		rLoc = 17300;
+		rType = 0;
+		vrLen = 717;
+		vrLoc = 16919;
+	};
+	83B56023126F4B9D00C0AEAE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = CE1946701017F86D002BE752 /* DashboardViewController.m */;
+		name = "DashboardViewController.m: 312";
+		rLen = 5;
+		rLoc = 10296;
+		rType = 0;
+		vrLen = 1054;
+		vrLoc = 9504;
+	};
+	83B56027126F4B9D00C0AEAE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 83CAD41A1235F854003DFA20 /* MediaObjectViewController.h */;
+		name = "MediaObjectViewController.h: 27";
+		rLen = 0;
+		rLoc = 706;
+		rType = 0;
+		vrLen = 1107;
+		vrLoc = 3;
+	};
+	83B56056126F504800C0AEAE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 8302C4591228173E00B7A208 /* MediaManager.m */;
+		name = "MediaManager.m: 133";
+		rLen = 0;
+		rLoc = 3969;
+		rType = 0;
+		vrLen = 739;
+		vrLoc = 3488;
+	};
+	83C1A1CA125EE14900E411B9 /* WordPress */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 1;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+			{
+				active = YES;
+				name = NSZombiesEnabled;
+				value = YES;
+			},
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = WordPress;
+		savedGlobals = {
+		};
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+		variableFormatDictionary = {
+		};
+	};
+	83C1A1E9125EE16700E411B9 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	83C1A1EA125EE16700E411B9 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	83C71F661264B93E00330165 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 837614EA120A7FB2005CCB33 /* XMLRPCConnection.h */;
+		name = "XMLRPCConnection.h: 14";
+		rLen = 0;
+		rLoc = 444;
+		rType = 0;
+		vrLen = 1205;
+		vrLoc = 0;
+	};
+	83CAD41A1235F854003DFA20 /* MediaObjectViewController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {857, 494}}";
+			sepNavSelRange = "{706, 0}";
+			sepNavVisRange = "{3, 1107}";
+		};
+	};
+	83CAD41B1235F854003DFA20 /* MediaObjectViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {857, 2314}}";
+			sepNavSelRange = "{4359, 0}";
+			sepNavVisRange = "{3965, 882}";
+		};
+	};
+	83CC700112769ED5007643DE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 836FECE912715E2A000309D8 /* CrashReportViewController.m */;
+		name = "CrashReportViewController.m: 75";
+		rLen = 0;
+		rLoc = 2503;
+		rType = 0;
+		vrLen = 664;
+		vrLoc = 2504;
+	};
+	83CC700212769ED5007643DE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 8370D1BA11FA6295009D650F /* AddSiteViewController.h */;
+		name = "AddSiteViewController.h: 41";
+		rLen = 27;
+		rLoc = 1668;
+		rType = 0;
+		vrLen = 1324;
+		vrLoc = 0;
+	};
+	83CC700312769ED5007643DE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 1D3623250D0F684500981E51 /* WordPressAppDelegate.m */;
+		name = "WordPressAppDelegate.m: 645";
+		rLen = 39;
+		rLoc = 24586;
+		rType = 0;
+		vrLen = 1701;
+		vrLoc = 23976;
+	};
+	83CC70121276A00B007643DE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 8383178612270E980047B476 /* PostMediaViewController.m */;
+		name = "PostMediaViewController.m: 618";
+		rLen = 75;
+		rLoc = 21437;
+		rType = 0;
+		vrLen = 1409;
+		vrLoc = 21302;
+	};
+	83CC70951276A710007643DE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 8370D1BB11FA6295009D650F /* AddSiteViewController.m */;
+		name = "AddSiteViewController.m: 777";
+		rLen = 0;
+		rLoc = 27128;
+		rType = 0;
+		vrLen = 1414;
+		vrLoc = 26334;
+	};
+	83CC70961276A710007643DE /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "Unused variable 'keyboardInfo'";
+		fRef = ACC156CB0E10E67600D6E1A0 /* EditPostViewController.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 1354;
+		rType = 1;
+	};
+	83CC70A71276A9B8007643DE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = ACC156CB0E10E67600D6E1A0 /* EditPostViewController.m */;
+		name = "EditPostViewController.m: 1355";
+		rLen = 73;
+		rLoc = 51546;
+		rType = 0;
+		vrLen = 1204;
+		vrLoc = 51022;
+	};
+	83D180F712329B1A002DCCB0 /* EditPageViewController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1314, 1261}}";
+			sepNavSelRange = "{1213, 8}";
+			sepNavVisRange = "{192, 1151}";
+		};
+	};
+	83D180F812329B1A002DCCB0 /* EditPageViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 9685}}";
+			sepNavSelRange = "{21740, 0}";
+			sepNavVisRange = "{21244, 640}";
+		};
+	};
+	83D1819E1232A0DA002DCCB0 /* PageViewController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {750, 702}}";
+			sepNavSelRange = "{286, 0}";
+			sepNavVisRange = "{45, 1070}";
+		};
+	};
+	83D1819F1232A0DA002DCCB0 /* PageViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 2405}}";
+			sepNavSelRange = "{3971, 0}";
+			sepNavVisRange = "{3771, 460}";
+		};
+	};
+	83D3DD361215D5EC00600B4B /* AutosaveContentViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {750, 2496}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 597}";
+		};
+	};
+	83EB83C81268FB6000204293 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 031663060FFB151A0045D052 /* PostTableViewCell.m */;
+		name = "PostTableViewCell.m: 64";
+		rLen = 0;
+		rLoc = 1418;
+		rType = 0;
+		vrLen = 707;
+		vrLoc = 1241;
+	};
+	83EDE7BF1275F3040073E156 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = 8D1107310486CEB800E47090 /* Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+			LSRequiresIPhoneOS,
+		);
+		name = /Users/chris/Documents/Workspace/2.6.2/Info.plist;
+		rLen = 0;
+		rLoc = 9223372036854775808;
+	};
+	83F3E2BC11276357004CD686 /* LocationController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {750, 473}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 711}";
+		};
+	};
+	83FEFC7311FF6C5A0078B462 /* EditSiteViewController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {929, 715}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1006}";
+		};
+	};
+	83FEFC7411FF6C5A0078B462 /* EditSiteViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1083, 8931}}";
+			sepNavSelRange = "{21879, 0}";
+			sepNavVisRange = "{21668, 503}";
+		};
+	};
+	ACAC7BE90E1F9E0C00AC7074 /* WPPublishOnEditController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {857, 427}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 505}";
+		};
+	};
+	ACAC7BEA0E1F9E0C00AC7074 /* WPPublishOnEditController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 1105}}";
+			sepNavSelRange = "{168, 0}";
+			sepNavVisRange = "{0, 535}";
+		};
+	};
+	ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1083, 3328}}";
+			sepNavSelRange = "{8088, 0}";
+			sepNavVisRange = "{7949, 585}";
+		};
+	};
+	ACC156CA0E10E67600D6E1A0 /* EditPostViewController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {999, 1794}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1151}";
+		};
+	};
+	ACC156CB0E10E67600D6E1A0 /* EditPostViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {999, 18642}}";
+			sepNavSelRange = "{51546, 73}";
+			sepNavVisRange = "{51022, 1204}";
+		};
+	};
+	C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1006, 7410}}";
+			sepNavSelRange = "{17300, 5}";
+			sepNavVisRange = "{16919, 717}";
+		};
+	};
+	C55A90D70E8026C500E1C9B5 /* WPSegmentedSelectionTableViewController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {901, 427}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 675}";
+		};
+	};
+	C5B001C00E82971C00D13185 /* WPNavigationLeftButtonView.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {750, 386}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 497}";
+		};
+	};
+	C5E3AE330E93F3C5008755FF /* WPImagePickerController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {857, 406}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 191}";
+		};
+	};
+	C5E3AE340E93F3C5008755FF /* WPImagePickerController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {857, 585}}";
+			sepNavSelRange = "{101, 23}";
+			sepNavVisRange = "{0, 784}";
+		};
+	};
+	CE19466F1017F86D002BE752 /* DashboardViewController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {750, 421}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 731}";
+		};
+	};
+	CE1946701017F86D002BE752 /* DashboardViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1062, 4394}}";
+			sepNavSelRange = "{10296, 5}";
+			sepNavVisRange = "{9504, 1054}";
+		};
+	};
+	CE4E33D10FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {750, 505}}";
+			sepNavSelRange = "{216, 0}";
+			sepNavVisRange = "{0, 534}";
+		};
+	};
+	CEBD3EAA0FF1BA3B00C1396E /* Blog.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1132, 1326}}";
+			sepNavSelRange = "{2309, 0}";
+			sepNavVisRange = "{2210, 626}";
+		};
+	};
+	EC4696FE0EA75D460040EE8E /* PagesViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1244, 6032}}";
+			sepNavSelRange = "{12984, 0}";
+			sepNavVisRange = "{12654, 622}";
+		};
+	};
+}
