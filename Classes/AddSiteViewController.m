@@ -177,7 +177,7 @@
 				
 				[cell addSubview:addTextField];
 			}
-			[addTextField release];
+			//[addTextField release];
 		}
 	}
 	
@@ -773,7 +773,8 @@
 }
 
 - (void)didAddSiteSuccessfully {
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
+	if(!DeviceIsPad())
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[spinner dismiss];
 	if(activeTextField != nil) {
