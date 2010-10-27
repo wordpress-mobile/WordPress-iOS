@@ -244,7 +244,7 @@
 		if (DeviceIsPad() == YES) {
 			publishOnEditController.contentSizeForViewInPopover = CGSizeMake(320.0, 300.0);
 			datePopover = [[UIPopoverController alloc] initWithContentViewController:publishOnEditController];
-			[datePopover presentPopoverFromRect:CGRectMake(self.view.frame.size.width-100, 30, 100, 50) 
+			[datePopover presentPopoverFromRect:CGRectMake(self.view.frame.size.width-200, 30, 50, 50) 
 										 inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 			[[CPopoverManager instance] setCurrentPopoverController:datePopover]; 
 		} else {

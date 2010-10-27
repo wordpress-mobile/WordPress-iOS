@@ -1352,7 +1352,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
-	NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo];
+	//NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo];
 	postDetailViewController.isShowingKeyboard = NO;
 	[postDetailViewController refreshButtons];
 	
