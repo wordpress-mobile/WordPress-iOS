@@ -18,13 +18,13 @@
 @implementation PostSettingsViewController
 
 @synthesize postDetailViewController, tableView, passwordTextField, publishOnTextField, commentsSwitchControl;
-@synthesize pingsSwitchControl;
+@synthesize pingsSwitchControl, datePopover;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
         // Initialization code
     }
-
+	
     return self;
 }
 
@@ -34,6 +34,7 @@
 	[pingsSwitchControl release];
 	[commentsSwitchControl release];
 	[tableView release];
+	[datePopover release];
     [super dealloc];
 }
 
@@ -48,17 +49,17 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     postDetailViewController.hasChanges = YES;
-
-//	if (passwordTextField == textField)
-//		[self keyboardWillShow:YES];
+	
+	//	if (passwordTextField == textField)
+	//		[self keyboardWillShow:YES];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     postDetailViewController.hasChanges = YES;
-
-//	if (passwordTextField == textField)
-//		[self keyboardWillShow:NO];
-
+	
+	//	if (passwordTextField == textField)
+	//		[self keyboardWillShow:NO];
+	
     [[BlogDataManager sharedDataManager].currentPost setValue:textField.text forKey:@"wp_password"];
 }
 
@@ -82,7 +83,7 @@
     // Make changes to the view's frame inside the animation block. They will be animated instead
     // of taking place immediately.
     CGRect rect = self.view.frame;
-
+	
     if (movedUp) {
         // If moving up, not only decrease the origin but increase the height so the view
         // covers the entire screen behind the keyboard.
@@ -93,9 +94,9 @@
         rect.origin.y += kOFFSET_FOR_KEYBOARD;
         rect.size.height -= kOFFSET_FOR_KEYBOARD;
     }
-
+	
     self.view.frame = rect;
-
+	
     [UIView commitAnimations];
 }
 
@@ -104,10 +105,10 @@
     publishOnLabel.font = [UIFont boldSystemFontOfSize:17.0f];
     passwordTextField.font = [UIFont systemFontOfSize:16];
     publishOnTextField.font = [UIFont systemFontOfSize:14];
-
+	
     [publishOnTextField setMinimumFontSize:14];
     [publishOnTextField setAdjustsFontSizeToFitWidth:YES];
-
+	
     [commentsSwitchControl addTarget:self action:@selector(controlEventValueChanged:) forControlEvents:UIControlEventValueChanged];
     [pingsSwitchControl addTarget:self action:@selector(controlEventValueChanged:) forControlEvents:UIControlEventValueChanged];
     [customFieldsSwitchControl addTarget:self action:@selector(controlEventValueChanged:) forControlEvents:UIControlEventValueChanged];
@@ -140,12 +141,12 @@
 	if (DeviceIsPad() == YES) {
 		return YES;
 	}
-
+	
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-
+	
     if ([delegate isAlertRunning] == YES)
         return NO;
-
+	
     // Return YES for supported orientations
     return YES;
 }
@@ -165,28 +166,28 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     if (section == 1)
         return kPasswordFooterSectionHeight;
-
+	
     if (section == 2)
         return kResizePhotoSettingSectionHeight;
-
+	
     return 0.0f;
 }
 
 - (IBAction)controlEventValueChanged:(id)sender {
     postDetailViewController.hasChanges = YES;
-
+	
     if (commentsSwitchControl == sender)
         [[BlogDataManager sharedDataManager].currentPost setValue:[NSNumber numberWithInt:commentsSwitchControl.on] forKey:@"not_used_allow_comments"];else if (pingsSwitchControl == sender)
-        [[BlogDataManager sharedDataManager].currentPost setValue:[NSNumber numberWithInt:pingsSwitchControl.on] forKey:@"not_used_allow_pings"];else if (customFieldsSwitchControl == sender) {
-        [[BlogDataManager sharedDataManager].currentPost setValue:[NSNumber numberWithInt:customFieldsSwitchControl.on] forKey:@"custom_fields_enabled"];
-    }
+			[[BlogDataManager sharedDataManager].currentPost setValue:[NSNumber numberWithInt:pingsSwitchControl.on] forKey:@"not_used_allow_pings"];else if (customFieldsSwitchControl == sender) {
+				[[BlogDataManager sharedDataManager].currentPost setValue:[NSNumber numberWithInt:customFieldsSwitchControl.on] forKey:@"custom_fields_enabled"];
+			}
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-
+	
     NSMutableDictionary *post = [dataManager currentPost];
-
+	
     switch (indexPath.section) {
         case 0:
         {
@@ -198,7 +199,7 @@
             return publishOnTableViewCell;
         }
         case 1:
-
+			
             if (indexPath.row == 0) {
                 passwordTextField.text = [post valueForKey:@"wp_password"];
                 passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -208,7 +209,7 @@
         default:
             break;
     }
-
+	
     // Configure the cell
     return nil;
 }
@@ -220,11 +221,11 @@
 //will be called when auto save method is called.
 - (void)updateValuesToCurrentPost {
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
-
+	
     NSString *str = passwordTextField.text;
     str = (str != nil ? str : @"");
     [dm.currentPost setValue:str forKey:@"wp_password"];
-
+	
     //[dm.currentPost setValue:[NSNumber numberWithInt:customFieldsSwitchControl.on] forKey:@"custom_fields_enabled"];
     //[dm printDictToLog:dm.currentPost andArrayName:@"from update values: currentPost"];
 }
@@ -241,13 +242,17 @@
         publishOnEditController.settingController = self;
 		publishOnEditController.title = @"Publish Date";
 		if (DeviceIsPad() == YES) {
-			[postDetailViewController.navigationController pushViewController:publishOnEditController animated:YES];
+			publishOnEditController.contentSizeForViewInPopover = CGSizeMake(320.0, 300.0);
+			datePopover = [[UIPopoverController alloc] initWithContentViewController:publishOnEditController];
+			[datePopover presentPopoverFromRect:CGRectMake(self.view.frame.size.width-100, 30, 100, 50) 
+										 inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+			[[CPopoverManager instance] setCurrentPopoverController:datePopover]; 
 		} else {
 			[postDetailViewController.navigationController pushViewController:publishOnEditController animated:YES];
 		}
         [publishOnEditController release];
     }
-
+	
     [atableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
 }
 

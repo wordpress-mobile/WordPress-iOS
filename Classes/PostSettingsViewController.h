@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "PostViewController.h"
 #import "PostSettingsHelpViewController.h"
+#import "CPopoverManager.h"
 
 // the amount of vertical shift upwards keep the text field in view as the keyboard appears
 #define kOFFSET_FOR_KEYBOARD                    150.0
@@ -18,6 +19,7 @@
     IBOutlet UISwitch *commentsSwitchControl;
     IBOutlet UISwitch *pingsSwitchControl;
     IBOutlet UISwitch *customFieldsSwitchControl;
+	IBOutlet UIPopoverController *datePopover;
     PostViewController *postDetailViewController;
 }
 
@@ -26,6 +28,7 @@
 @property (nonatomic, retain) UITextField *passwordTextField;
 @property (nonatomic, retain) UILabel *publishOnTextField;
 @property (nonatomic, retain) UISwitch *commentsSwitchControl, *pingsSwitchControl;
+@property (nonatomic, retain) IBOutlet UIPopoverController *datePopover;
 
 - (void)reloadData;
 - (void)endEditingAction:(id)sender;
