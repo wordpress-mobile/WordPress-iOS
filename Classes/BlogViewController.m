@@ -46,6 +46,7 @@
 	[postsViewController addObserver:self forKeyPath:@"selectedIndexPath" options:NSKeyValueObservingOptionNew context:nil];
 	[pagesViewController addObserver:self forKeyPath:@"selectedIndexPath" options:NSKeyValueObservingOptionNew context:nil];
 	[commentsViewController addObserver:self forKeyPath:@"selectedIndexPath" options:NSKeyValueObservingOptionNew context:nil];
+	[statsTableViewController addObserver:self forKeyPath:@"selectedIndexPath" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -110,6 +111,9 @@
 		[commentsViewController setIndexForCurrentPost:-2];
 		self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
 		self.navigationItem.titleView = commentsViewController.segmentedControl;
+	}
+	else if (viewController == statsTableViewController) {
+		self.navigationItem.rightBarButtonItem = statsTableViewController.refreshButtonItem;
 	}
 	
 	[viewController viewWillAppear:NO];

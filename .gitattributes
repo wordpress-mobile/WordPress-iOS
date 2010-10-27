@@ -169,7 +169,17 @@ Classes/ResourcesTableViewSection.m -text
 Classes/RotatingNavigationController.h -text
 Classes/RotatingNavigationController.m -text
 Classes/StatsCategoryViewController.xib -text
-Classes/StatsViewController.xib -text
+Classes/StatsChartViewController.h -text
+Classes/StatsChartViewController.m -text
+Classes/StatsChartViewController.xib -text
+Classes/StatsPageControlViewController.h -text
+Classes/StatsPageControlViewController.m -text
+Classes/StatsPageControlViewController.xib -text
+Classes/StatsTableCell.h -text
+Classes/StatsTableCell.m -text
+Classes/StatsTableViewController.h -text
+Classes/StatsTableViewController.m -text
+Classes/StatsTableViewController.xib -text
 Classes/TransparentToolbar.h -text
 Classes/TransparentToolbar.m -text
 Classes/UIDevice-Hardware.h -text
@@ -247,6 +257,8 @@ Classes/firstrun-wholebutton-selected.png -text svneol=unset#unset
 Classes/glossyButton-disabled.png -text svneol=unset#unset
 Classes/glossyButton-highlighted.png -text svneol=unset#unset
 Classes/glossyButton-normal.png -text svneol=unset#unset
+Classes/stats.png -text
+Classes/stats@2x.png -text
 /CommentViewController.xib -text
 /CommentsViewController.xib -text
 Creation/CXMLDocument_CreationExtensions.h -text

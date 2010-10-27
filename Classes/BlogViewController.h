@@ -9,12 +9,14 @@
 #import "PostsViewController.h"
 #import "PagesViewController.h"
 #import "CommentsViewController.h"
+#import "StatsTableViewController.h"
 
 @interface BlogViewController : UIViewController <UITabBarControllerDelegate, UIAccelerometerDelegate> {
     IBOutlet UITabBarController *tabBarController;
     IBOutlet PostsViewController *postsViewController;
     IBOutlet PagesViewController *pagesViewController;
     IBOutlet CommentsViewController *commentsViewController;
+	IBOutlet StatsTableViewController *statsTableViewController;
 	BOOL stateRestored;
 }
 
