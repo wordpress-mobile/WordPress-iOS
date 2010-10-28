@@ -515,8 +515,8 @@ statsPageControlViewController, noDataError, refreshButtonItem;
 		[[connectionInfo objectForKey:@"chartMonthsData"] appendData:data];
 }
 
-- (void) connectionDidFinishLoading: (NSURLConnection*) connection {
-	NSMutableDictionary *connectionInfo = CFDictionaryGetValue(connectionToInfoMapping, connection);
+- (void)connectionDidFinishLoading: (NSURLConnection*) connection {
+	NSMutableDictionary *connectionInfo = [connection valueForKey:@"connectionToInfoMapping"];
 	NSString *xmlString = [[NSString alloc] initWithString: @""]; 
 	//get the key name
 	NSArray *keys = [connectionInfo allKeys];
@@ -594,7 +594,7 @@ statsPageControlViewController, noDataError, refreshButtonItem;
 	//												 message:[error errorInfo] 
 	//												delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
 	//[alert show];
-	NSLog(@"ERROR: %@", [error errorInfo]);
+	NSLog(@"ERROR: %@", [error localizedDescription]);
 	
 	[connection autorelease];
 }
