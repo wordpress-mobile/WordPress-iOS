@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "StatsViewController.h"
+
 
 @interface StatsChartViewController : UIViewController {
 	NSString *chartURL;

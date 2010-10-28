@@ -14,6 +14,7 @@
 #import "WPProgressHUD.h"
 #import "StatsPageControlViewController.h"
 
+
 @interface StatsTableViewController : UITableViewController <UIAlertViewDelegate, NSXMLParserDelegate>{
 	
 	NSMutableArray *viewsData;

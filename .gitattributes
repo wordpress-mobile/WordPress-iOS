@@ -242,6 +242,8 @@ Classes/WebSignupViewController.h -text
 Classes/WebSignupViewController.m -text
 Classes/WelcomeViewController.h -text
 Classes/WelcomeViewController.m -text
+Classes/WordPress.xcdatamodel/elements -text
+Classes/WordPress.xcdatamodel/layout -text
 Classes/WordPressAppDelegate.h -text
 Classes/WordPressAppDelegate.m -text
 Classes/XMLRPC/XMLRPCConnection+Authentication.h -text
@@ -259,24 +261,6 @@ Classes/stats.png -text
 Classes/stats@2x.png -text
 /CommentViewController.xib -text
 /CommentsViewController.xib -text
-CrashReporter.framework/CrashReporter -text
-CrashReporter.framework/Headers -text
-CrashReporter.framework/Resources -text
-CrashReporter.framework/Versions/A/CrashReporter -text
-CrashReporter.framework/Versions/A/Headers/CrashReporter.h -text
-CrashReporter.framework/Versions/A/Headers/PLCrashReport.h -text
-CrashReporter.framework/Versions/A/Headers/PLCrashReportApplicationInfo.h -text
-CrashReporter.framework/Versions/A/Headers/PLCrashReportBinaryImageInfo.h -text
-CrashReporter.framework/Versions/A/Headers/PLCrashReportExceptionInfo.h -text
-CrashReporter.framework/Versions/A/Headers/PLCrashReportFormatter.h -text
-CrashReporter.framework/Versions/A/Headers/PLCrashReportProcessInfo.h -text
-CrashReporter.framework/Versions/A/Headers/PLCrashReportSignalInfo.h -text
-CrashReporter.framework/Versions/A/Headers/PLCrashReportSystemInfo.h -text
-CrashReporter.framework/Versions/A/Headers/PLCrashReportTextFormatter.h -text
-CrashReporter.framework/Versions/A/Headers/PLCrashReportThreadInfo.h -text
-CrashReporter.framework/Versions/A/Headers/PLCrashReporter.h -text
-CrashReporter.framework/Versions/A/Resources/Info.plist -text
-CrashReporter.framework/Versions/Current -text
 Creation/CXMLDocument_CreationExtensions.h -text
 Creation/CXMLDocument_CreationExtensions.m -text
 Creation/CXMLNode_CreationExtensions.h -text
@@ -424,7 +408,6 @@ WordPress.xcodeproj/project.pbxproj -text
 /sample.mov -text
 /settings.png -text
 /settings@2x.png -text
-/stats.png -text
 /sync.png -text svneol=unset#unset
 /sync@2x.png -text
 /uncheck.png -text
