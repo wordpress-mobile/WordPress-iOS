@@ -206,7 +206,6 @@
 		83884590127A103C006E4555 /* StatsPageControlViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8388458A127A103C006E4555 /* StatsPageControlViewController.xib */; };
 		83884591127A103C006E4555 /* StatsTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388458C127A103C006E4555 /* StatsTableCell.m */; };
 		83884599127A108C006E4555 /* StatsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83884598127A108C006E4555 /* StatsTableViewController.xib */; };
-		838845BE127A14D5006E4555 /* WordPress.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 838845BD127A14D5006E4555 /* WordPress.xcdatamodel */; };
 		8388FABA1269585C00304909 /* CTidy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388FAB91269585C00304909 /* CTidy.m */; };
 		8388FABF1269586400304909 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388FABC1269586400304909 /* CXMLDocument_CreationExtensions.m */; };
 		8388FAC01269586400304909 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388FABE1269586400304909 /* CXMLNode_CreationExtensions.m */; };
@@ -617,7 +616,6 @@
 		8388458B127A103C006E4555 /* StatsTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsTableCell.h; sourceTree = "<group>"; };
 		8388458C127A103C006E4555 /* StatsTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsTableCell.m; sourceTree = "<group>"; };
 		83884598127A108C006E4555 /* StatsTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = StatsTableViewController.xib; path = Classes/StatsTableViewController.xib; sourceTree = "<group>"; };
-		838845BD127A14D5006E4555 /* WordPress.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = WordPress.xcdatamodel; sourceTree = "<group>"; };
 		8388FAB81269585C00304909 /* CTidy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTidy.h; sourceTree = "<group>"; };
 		8388FAB91269585C00304909 /* CTidy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTidy.m; sourceTree = "<group>"; };
 		8388FABB1269586400304909 /* CXMLDocument_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_CreationExtensions.h; sourceTree = "<group>"; };
@@ -929,7 +927,6 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				838845BD127A14D5006E4555 /* WordPress.xcdatamodel */,
 				6EDC0E8E105881A800F68A1D /* iTunesArtwork */,
 				45F285DA1149BD020014D36C /* Icon.png */,
 				6EF6706111BE3B750069703D /* Icon@2x.png */,
@@ -1971,7 +1968,6 @@
 				8388458D127A103C006E4555 /* StatsChartViewController.m in Sources */,
 				8388458F127A103C006E4555 /* StatsPageControlViewController.m in Sources */,
 				83884591127A103C006E4555 /* StatsTableCell.m in Sources */,
-				838845BE127A14D5006E4555 /* WordPress.xcdatamodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
