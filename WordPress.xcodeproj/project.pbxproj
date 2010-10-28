@@ -206,6 +206,7 @@
 		83884590127A103C006E4555 /* StatsPageControlViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8388458A127A103C006E4555 /* StatsPageControlViewController.xib */; };
 		83884591127A103C006E4555 /* StatsTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388458C127A103C006E4555 /* StatsTableCell.m */; };
 		83884599127A108C006E4555 /* StatsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83884598127A108C006E4555 /* StatsTableViewController.xib */; };
+		838845BE127A14D5006E4555 /* WordPress.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 838845BD127A14D5006E4555 /* WordPress.xcdatamodel */; };
 		8388FABA1269585C00304909 /* CTidy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388FAB91269585C00304909 /* CTidy.m */; };
 		8388FABF1269586400304909 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388FABC1269586400304909 /* CXMLDocument_CreationExtensions.m */; };
 		8388FAC01269586400304909 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388FABE1269586400304909 /* CXMLNode_CreationExtensions.m */; };
@@ -253,7 +254,6 @@
 		83D3DD381215D5EC00600B4B /* AutosaveContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D3DD361215D5EC00600B4B /* AutosaveContentViewController.m */; };
 		83D3DD391215D5EC00600B4B /* AutosaveContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83D3DD371215D5EC00600B4B /* AutosaveContentViewController.xib */; };
 		83D3DDB81215DC7900600B4B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 83D3DDB71215DC7900600B4B /* Settings.bundle */; };
-		83ED25FA1279D9E100AACA0B /* WordPress.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 83ED25F91279D9E100AACA0B /* WordPress.xcdatamodeld */; };
 		83F1F9A21236FBF600069F99 /* PostMediaViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83F1F9A11236FBF600069F99 /* PostMediaViewController-iPad.xib */; };
 		83F1FA581237073B00069F99 /* WPMediaUploader-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83F1FA571237073B00069F99 /* WPMediaUploader-iPad.xib */; };
 		83F1FCAC1237494D00069F99 /* PageViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83F1FCAB1237494D00069F99 /* PageViewController-iPad.xib */; };
@@ -548,7 +548,6 @@
 		834CE8701256E7F60046A4A3 /* ASIProgressDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIProgressDelegate.h; sourceTree = "<group>"; };
 		834CE8771256E8050046A4A3 /* Reachability2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability2.h; sourceTree = "<group>"; };
 		834CE8781256E8050046A4A3 /* Reachability2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability2.m; sourceTree = "<group>"; };
-		8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = WordPress.xcdatamodel; sourceTree = "<group>"; };
 		8350E49411D2C71E00A7B073 /* Media.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Media.h; path = ../Media.h; sourceTree = "<group>"; };
 		8350E49511D2C71E00A7B073 /* Media.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Media.m; path = ../Media.m; sourceTree = "<group>"; };
 		8355D67D11D13EAD00A61362 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -618,6 +617,7 @@
 		8388458B127A103C006E4555 /* StatsTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsTableCell.h; sourceTree = "<group>"; };
 		8388458C127A103C006E4555 /* StatsTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsTableCell.m; sourceTree = "<group>"; };
 		83884598127A108C006E4555 /* StatsTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = StatsTableViewController.xib; path = Classes/StatsTableViewController.xib; sourceTree = "<group>"; };
+		838845BD127A14D5006E4555 /* WordPress.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = WordPress.xcdatamodel; sourceTree = "<group>"; };
 		8388FAB81269585C00304909 /* CTidy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTidy.h; sourceTree = "<group>"; };
 		8388FAB91269585C00304909 /* CTidy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTidy.m; sourceTree = "<group>"; };
 		8388FABB1269586400304909 /* CXMLDocument_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_CreationExtensions.h; sourceTree = "<group>"; };
@@ -693,7 +693,6 @@
 		83D3DD361215D5EC00600B4B /* AutosaveContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutosaveContentViewController.m; sourceTree = "<group>"; };
 		83D3DD371215D5EC00600B4B /* AutosaveContentViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AutosaveContentViewController.xib; path = Classes/AutosaveContentViewController.xib; sourceTree = "<group>"; };
 		83D3DDB71215DC7900600B4B /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		83ED25FB1279D9E100AACA0B /* WordPress 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 2.xcdatamodel"; sourceTree = "<group>"; };
 		83F1F9A11236FBF600069F99 /* PostMediaViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "PostMediaViewController-iPad.xib"; sourceTree = "<group>"; };
 		83F1FA571237073B00069F99 /* WPMediaUploader-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "WPMediaUploader-iPad.xib"; sourceTree = "<group>"; };
 		83F1FCAB1237494D00069F99 /* PageViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "PageViewController-iPad.xib"; sourceTree = "<group>"; };
@@ -930,7 +929,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				83ED25F91279D9E100AACA0B /* WordPress.xcdatamodeld */,
+				838845BD127A14D5006E4555 /* WordPress.xcdatamodel */,
 				6EDC0E8E105881A800F68A1D /* iTunesArtwork */,
 				45F285DA1149BD020014D36C /* Icon.png */,
 				6EF6706111BE3B750069703D /* Icon@2x.png */,
@@ -1909,7 +1908,6 @@
 				833F59F611C95DE400789837 /* HttpHelper.m in Sources */,
 				83418A5611C9F50800ACF00C /* WPDataController.m in Sources */,
 				83418AAA11C9FA6E00ACF00C /* Comment.m in Sources */,
-				83ED25FA1279D9E100AACA0B /* WordPress.xcdatamodeld in Sources */,
 				8350E49611D2C71E00A7B073 /* Media.m in Sources */,
 				83610AAA11F4AD2C00421116 /* WPcomLoginViewController.m in Sources */,
 				8369FF9111F4F3BF003106C7 /* AddUsersBlogsViewController.m in Sources */,
@@ -1973,6 +1971,7 @@
 				8388458D127A103C006E4555 /* StatsChartViewController.m in Sources */,
 				8388458F127A103C006E4555 /* StatsPageControlViewController.m in Sources */,
 				83884591127A103C006E4555 /* StatsTableCell.m in Sources */,
+				838845BE127A14D5006E4555 /* WordPress.xcdatamodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2214,21 +2213,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		83ED25F91279D9E100AACA0B /* WordPress.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
-				83ED25FB1279D9E100AACA0B /* WordPress 2.xcdatamodel */,
-			);
-			currentVersion = 8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */;
-			name = WordPress.xcdatamodeld;
-			path = Classes/WordPress.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
 }
