@@ -90,7 +90,7 @@ static NSArray *__pageControlColorList = nil;
     [connection release];
     connection=nil;
 	
-	UIImage *image = [[UIImage alloc] initWithData:imgData cache:NO];
+	UIImage *image = [[UIImage alloc] initWithData:imgData];
 	//add header image to uitable
 	chart.image = image;
 	if(!spinner.hidden)

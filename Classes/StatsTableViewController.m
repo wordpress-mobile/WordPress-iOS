@@ -19,7 +19,7 @@
 @synthesize viewsData, postViewsData, referrersData, searchTermsData, clicksData, reportTitle, 
 selectedIndexPath, currentBlog, statsData, currentProperty, rootTag, 
 statsTableData, leftColumn, rightColumn, spinner, xArray, yArray, xValues, yValues, wpcomLoginTable, 
-statsPageControlViewController, noDataError, refreshButtonItem;
+statsPageControlViewController, noDataError, refreshButtonItem, refreshReportItem;
 #define LABEL_TAG 1 
 #define VALUE_TAG 2 
 #define FIRST_CELL_IDENTIFIER @"TrailItemCell" 
@@ -594,7 +594,7 @@ statsPageControlViewController, noDataError, refreshButtonItem;
 	//												 message:[error errorInfo] 
 	//												delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
 	//[alert show];
-	NSLog(@"ERROR: %@", [error errorInfo]);
+	NSLog(@"ERROR: %@", [error localizedDescription]);
 	
 	[connection autorelease];
 }
