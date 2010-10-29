@@ -11,7 +11,7 @@
 
 
 @implementation StatsPageControlViewController
-@synthesize scrollView, pageControl, viewControllers, chart1URL, chart2URL, chart3URL;
+@synthesize scrollView, pageControl, viewControllers, chart1URL, chart2URL, chart3URL, chart1Error, chart2Error, chart3Error;
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -90,12 +90,26 @@
 	
 	switch (chartID){
 		case 1:
-			[controller loadImageFromURL: chart1URL];
+			if (chart1Error)
+			{
+				controller.showError;
+			}
+			else {
+				[controller loadImageFromURL: chart1URL];
+			}
 			break;
 		case 2:
+			if (chart2Error)
+			{
+				controller.noData = TRUE;
+			}
 			[controller loadImageFromURL: chart2URL];
 			break;	
 		case 3:
+			if (chart3Error)
+			{
+				controller.noData = TRUE;
+			}
 			[controller loadImageFromURL: chart3URL];
 			NSLog(@"Chart 3: %@", chart3URL);
 			break;

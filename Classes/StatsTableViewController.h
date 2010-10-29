@@ -43,7 +43,6 @@
 	StatsPageControlViewController *statsPageControlViewController;
 	int requestType;
 	CFMutableDictionaryRef connectionToInfoMapping;
-	IBOutlet UILabel *noDataError;
 	BOOL foundStatsData, statsAPIAlertShowing, canceledAPIKeyAlert;
 	UIBarButtonItem *refreshButtonItem;
 
@@ -55,7 +54,6 @@
 @property (nonatomic, retain) NSMutableArray *searchTermsData;
 @property (nonatomic, retain) NSMutableArray *clicksData;
 @property (nonatomic, retain) NSString *reportTitle;
-
 @property (nonatomic, retain) NSIndexPath *selectedIndexPath;
 @property (nonatomic, copy, readonly) NSMutableDictionary *currentBlog;
 @property (nonatomic, retain) NSMutableData *statsData;
@@ -64,7 +62,6 @@
 @property (nonatomic, retain) NSMutableArray *statsTableData;
 @property (nonatomic, retain) NSString *rightColumn;
 @property (nonatomic, retain) NSString *leftColumn;
-@property (readonly) UIBarButtonItem *refreshReportItem;
 @property (nonatomic, retain) WPProgressHUD *spinner;
 @property (nonatomic, retain) NSString *xValues;
 @property (nonatomic, retain) NSString *yValues;
@@ -72,12 +69,10 @@
 @property (nonatomic, retain) NSMutableArray *yArray;
 @property (nonatomic, retain) UITableView *wpcomLoginTable;
 @property (nonatomic, retain) StatsPageControlViewController *statsPageControlViewController;
-@property (nonatomic, retain) IBOutlet UILabel *noDataError; 
 @property (readonly) UIBarButtonItem *refreshButtonItem;
 - (void) initStats;
-- (void) getUserApiKey;
-- (void) refreshStats;
+- (void) getUserAPIKey;
 - (void) startParsingStats: (NSString*) xmlString withReportType: (NSString*) reportType;
 - (void) refreshStats: (int) titleIndex reportInterval: (int) intervalIndex;
-
+- (void) showNoDataFoundError;
 @end

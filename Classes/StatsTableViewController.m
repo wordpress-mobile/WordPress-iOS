@@ -19,7 +19,7 @@
 @synthesize viewsData, postViewsData, referrersData, searchTermsData, clicksData, reportTitle, 
 selectedIndexPath, currentBlog, statsData, currentProperty, rootTag, 
 statsTableData, leftColumn, rightColumn, spinner, xArray, yArray, xValues, yValues, wpcomLoginTable, 
-statsPageControlViewController, noDataError, refreshButtonItem, refreshReportItem;
+statsPageControlViewController, refreshButtonItem;
 #define LABEL_TAG 1 
 #define VALUE_TAG 2 
 #define FIRST_CELL_IDENTIFIER @"TrailItemCell" 
@@ -128,10 +128,6 @@ statsPageControlViewController, noDataError, refreshButtonItem, refreshReportIte
 - (void) refreshStats: (int) titleIndex reportInterval: (int) intervalIndex {
 	//load stats into NSMutableArray objects
 	foundStatsData = FALSE;
-	//[statsTableViewController.view setHidden:TRUE]; 
-	if (noDataError.hidden == FALSE){
-		[noDataError setHidden:TRUE];
-	}
 	int days;
 	NSString *report = [[NSString alloc] init];
 	NSString *period = [[NSString alloc] init];
@@ -294,7 +290,8 @@ statsPageControlViewController, noDataError, refreshButtonItem, refreshReportIte
 		if ([reportType isEqualToString:@"chartDaysData"] || [reportType isEqualToString:@"chartWeeksData"] || [reportType isEqualToString:@"chartMonthsData"]){
 			[spinner dismiss];
 			NSString *chartViewURL = [[NSString alloc] init];
-			NSString *xValues = [xArray componentsJoinedByString:@","];
+			xValues = [[NSString alloc] init];
+			xValues = [xArray componentsJoinedByString:@","];
 			NSArray *sorted = [xArray sortedArrayUsingSelector:@selector(compare:)];
 			
 			//calculate some variables for the google chart
@@ -337,24 +334,26 @@ statsPageControlViewController, noDataError, refreshButtonItem, refreshReportIte
 			NSString *dateValues = [[NSString alloc] initWithString: @""];
 			NSString *tempString = [[NSString alloc] initWithString: @""];
 			if ([reportType isEqualToString:@"chartDaysData"]){
-				
 				for (NSString *dateVal in yArray) {
 					[df setDateFormat:@"yyyy-MM-dd"];
 					NSDate *tempDate = [df dateFromString: dateVal];
-					tempString =[tempDate descriptionWithCalendarFormat:@"%w" timeZone:nil locale:nil];
-					if ([tempString isEqualToString:@"0"] || [tempString isEqualToString:@"6"]){
+					NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+					NSDateComponents *dateComponents = [gregorian components:(NSDayCalendarUnit) fromDate:tempDate];
+					NSInteger day = [dateComponents day];
+					[gregorian release];
+					if (day == 0 || day == 6){
 						tempString = @"S";
 					}
-					else if ([tempString isEqualToString:@"1"]){
+					else if (day == 1){
 						tempString = @"M";
 					}
-					else if ([tempString isEqualToString:@"2"] || [tempString isEqualToString:@"4"]){
+					else if (day == 2 || day == 4){
 						tempString = @"T";
 					}
-					else if ([tempString isEqualToString:@"3"]){
+					else if (day == 3){
 						tempString = @"W";
 					}
-					else if ([tempString isEqualToString:@"5"]){
+					else if (day == 5){
 						tempString = @"F";
 					}
 					
@@ -370,44 +369,47 @@ statsPageControlViewController, noDataError, refreshButtonItem, refreshReportIte
 			}
 			else if ([reportType isEqualToString:@"chartMonthsData"]){
 				for (NSString *dateVal in yArray) {
+					NSString *month = [[NSString alloc] initWithString: @""];
 					[df setDateFormat:@"yyyy-MM"];
 					NSDate *tempDate = [df dateFromString: dateVal];
-					[df setDateFormat:@"MM"];
-					NSString *month = [df stringFromDate:tempDate];
-					if ([month isEqualToString:@"01"]){
+					NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+					NSDateComponents *dateComponents = [gregorian components:(NSMonthCalendarUnit) fromDate:tempDate];
+					NSInteger i_month = [dateComponents month];
+					[gregorian release];
+					if (i_month == 1){
 						month = @"Jan";
 					}
-					else if ([month isEqualToString:@"02"]){
+					else if (i_month == 2){
 						month = @"Feb";
 					}
-					else if ([month isEqualToString:@"03"]){
+					else if (i_month == 3){
 						month = @"Mar";
 					}
-					else if ([month isEqualToString:@"04"]){
+					else if (i_month == 4){
 						month = @"Apr";
 					}
-					else if ([month isEqualToString:@"05"]){
+					else if (i_month == 5){
 						month = @"May";
 					}
-					else if ([month isEqualToString:@"06"]){
+					else if (i_month == 6){
 						month = @"Jun";
 					}
-					else if ([month isEqualToString:@"07"]){
+					else if (i_month == 7){
 						month = @"Jul";
 					}
-					else if ([month isEqualToString:@"08"]){
+					else if (i_month == 8){
 						month = @"Aug";
 					}
-					else if ([month isEqualToString:@"09"]){
+					else if (i_month == 9){
 						month = @"Sep";
 					}
-					else if ([month isEqualToString:@"10"]){
+					else if (i_month == 10){
 						month = @"Oct";
 					}
-					else if ([month isEqualToString:@"11"]){
+					else if (i_month == 11){
 						month = @"Nov";
 					}
-					else if ([month isEqualToString:@"12"]){
+					else if (i_month == 12){
 						month = @"Dec";
 					}
 					[dateCSV addObject: month];
@@ -415,8 +417,6 @@ statsPageControlViewController, noDataError, refreshButtonItem, refreshReportIte
 				
 			}
 			dateValues = [dateCSV componentsJoinedByString:@"|"];
-			
-			
 			chartViewURL = [chartViewURL stringByAppendingFormat: @"http://chart.apis.google.com/chart?chts=464646,20&cht=bvs&chbh=a&chd=t:%@&chs=640x336&chl=%@&chxt=y&chds=%d,%d&chxr=0,%d,%d,%d&chf=c,lg,90,E2E2E2,0,FEFEFE,0.5&chco=a3bcd3&chls=4&chxs=0,464646,14,0,t|1,464646,14,0,_", xValues, dateValues, minBuffer,maxBuffer, minBuffer,maxBuffer, yInterval];
 			NSLog(@"google chart url: %@", chartViewURL);
 			chartViewURL = [chartViewURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -432,6 +432,15 @@ statsPageControlViewController, noDataError, refreshButtonItem, refreshReportIte
 			else if ([reportType isEqualToString:@"chartMonthsData"]){
 				statsPageControlViewController.chart3URL = chartViewURL;
 				[statsPageControlViewController refreshImage: 3];
+				//check the other charts
+				if (statsPageControlViewController.chart2URL == nil) {
+					statsPageControlViewController.chart2Error = TRUE;
+					[statsPageControlViewController refreshImage: 2];
+				}
+				else if (statsPageControlViewController.chart1URL == nil) {
+					statsPageControlViewController.chart1Error = TRUE;
+					[statsPageControlViewController refreshImage: 1];
+				}
 			}
 		} //end chartData if statement
 		else{
@@ -461,16 +470,19 @@ statsPageControlViewController, noDataError, refreshButtonItem, refreshReportIte
 	else {
 		NSLog(@"No data returned! oh noes!");
 		if (!foundStatsData && ![reportType isEqualToString:@"apiKeyData"]){
-			[self.tableView.tableHeaderView removeFromSuperview];
-			[noDataError setHidden: FALSE];
+			[self showNoDataFoundError];
 		}
 		
 	}
 	[self.view setHidden:FALSE];
 	[spinner dismissWithClickedButtonIndex:0 animated:YES];
-	
-	
-	
+}
+
+-(void) showNoDataFoundError{
+	[self.tableView.tableHeaderView removeFromSuperview];
+	UILabel *errorMsg = [[UILabel alloc] init];
+	errorMsg.text = @"No stats data found.  Please try again later.";
+	self.tableView.tableHeaderView = errorMsg;
 }
 
 /*  NSURLConnection Methods  */
@@ -494,7 +506,7 @@ statsPageControlViewController, noDataError, refreshButtonItem, refreshReportIte
 
 - (void) connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
 	//add the data to the corresponding NSURLConnection object
-	NSMutableDictionary *connectionInfo = CFDictionaryGetValue(connectionToInfoMapping, connection);
+	const NSMutableDictionary *connectionInfo = CFDictionaryGetValue(connectionToInfoMapping, connection);
 	if ([connectionInfo objectForKey:@"apiKeyData"] != nil)
 		[[connectionInfo objectForKey:@"apiKeyData"] appendData:data];
 	else if ([connectionInfo objectForKey:@"postViewsData"] != nil)
@@ -516,7 +528,7 @@ statsPageControlViewController, noDataError, refreshButtonItem, refreshReportIte
 }
 
 - (void) connectionDidFinishLoading: (NSURLConnection*) connection {
-	NSMutableDictionary *connectionInfo = CFDictionaryGetValue(connectionToInfoMapping, connection);
+	const NSMutableDictionary *connectionInfo = CFDictionaryGetValue(connectionToInfoMapping, connection);
 	NSString *xmlString = [[NSString alloc] initWithString: @""]; 
 	//get the key name
 	NSArray *keys = [connectionInfo allKeys];
@@ -742,8 +754,9 @@ statsPageControlViewController, noDataError, refreshButtonItem, refreshReportIte
 			break;
 	}
 	
-	NSString *leftColumn = [row objectAtIndex:0];
-	NSString *rightColumn = [row objectAtIndex:1];
+
+	leftColumn = [[NSString alloc] initWithString: [row objectAtIndex:0]];
+	rightColumn = [[NSString alloc] initWithString: [row objectAtIndex:1]];
 	
 
 	NSString *MyIdentifier = [NSString stringWithFormat:@"MyIdentifier %i", indexPath.row];
@@ -852,7 +865,6 @@ statsPageControlViewController, noDataError, refreshButtonItem, refreshReportIte
 	[searchTermsData release];
 	[clicksData release];
 	[reportTitle release];
-	
 	[selectedIndexPath release];
 	[currentBlog release];
 	[statsData release];
@@ -868,8 +880,6 @@ statsPageControlViewController, noDataError, refreshButtonItem, refreshReportIte
 	[yValues release];
 	[wpcomLoginTable release];
 	[statsPageControlViewController release];
-	[noDataError release];
-	
 	[super dealloc];
 }
 

@@ -12,7 +12,7 @@
 
 static NSArray *__pageControlColorList = nil;
 
-@synthesize pageNumberLabel, chart, chartURL, spinner;
+@synthesize chartTitleLabel, chart, chartURL, spinner, noData;
 
 // Creates the color list the first time this method is invoked. Returns one color object from the list.
 + (UIColor *)pageControlColorWithIndex:(NSUInteger)index {
@@ -40,7 +40,7 @@ static NSArray *__pageControlColorList = nil;
 	[spinner release];
 	[chartURL release];
 	[chart release];
-    [pageNumberLabel release];
+    [chartTitleLabel release];
     [super dealloc];
 }
 
@@ -59,7 +59,7 @@ static NSArray *__pageControlColorList = nil;
 			chartTitle = @"Months";
 			break;
 	}
-    pageNumberLabel.text = chartTitle;
+    chartTitleLabel.text = chartTitle;
 	[chartTitle release];
     //self.view.backgroundColor = [StatsChartViewController pageControlColorWithIndex:pageNumber];
 	
@@ -85,16 +85,24 @@ static NSArray *__pageControlColorList = nil;
     //TODO error handling, what if connection is nil?
 }
 
+-(void) showError{
+	if(!spinner.hidden)
+		spinner.hidden=YES;
+	chartTitleLabel.text = @"No chart data found.";
+}
+
 - (void)connectionDidFinishLoading:(NSURLConnection*)theConnection {
 	
     [connection release];
     connection=nil;
-	
 	UIImage *image = [[UIImage alloc] initWithData:imgData];
 	//add header image to uitable
 	chart.image = image;
 	if(!spinner.hidden)
 		spinner.hidden=YES;
+
+
+	
     //[imgData release];
     //imgData=nil;
 }

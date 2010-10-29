@@ -22,6 +22,7 @@
         progressMessage = [[UILabel alloc] initWithFrame:CGRectZero];
         progressMessage.textColor = [UIColor whiteColor];
         progressMessage.backgroundColor = [UIColor clearColor];
+		progressMessage.font = [UIFont fontWithName:@"Helvetica" size:(14.0)];
         progressMessage.text = text;
         [self addSubview:progressMessage];
 
