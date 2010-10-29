@@ -101,16 +101,20 @@
 		case 2:
 			if (chart2Error)
 			{
-				controller.noData = TRUE;
+				controller.showError;
 			}
-			[controller loadImageFromURL: chart2URL];
+			else {
+				[controller loadImageFromURL: chart2URL];
+			}
 			break;	
 		case 3:
 			if (chart3Error)
 			{
-				controller.noData = TRUE;
+				controller.showError;
 			}
-			[controller loadImageFromURL: chart3URL];
+			else {
+				[controller loadImageFromURL: chart3URL];
+			}
 			NSLog(@"Chart 3: %@", chart3URL);
 			break;
 	}

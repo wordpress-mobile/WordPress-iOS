@@ -12,7 +12,7 @@
 
 static NSArray *__pageControlColorList = nil;
 
-@synthesize chartTitleLabel, chart, chartURL, spinner, noData;
+@synthesize chartTitleLabel, chart, chartURL, spinner;
 
 // Creates the color list the first time this method is invoked. Returns one color object from the list.
 + (UIColor *)pageControlColorWithIndex:(NSUInteger)index {
