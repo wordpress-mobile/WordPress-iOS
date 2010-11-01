@@ -338,22 +338,22 @@ statsPageControlViewController, refreshButtonItem;
 					[df setDateFormat:@"yyyy-MM-dd"];
 					NSDate *tempDate = [df dateFromString: dateVal];
 					NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-					NSDateComponents *dateComponents = [gregorian components:(NSDayCalendarUnit) fromDate:tempDate];
-					NSInteger day = [dateComponents day];
+					NSDateComponents *dateComponents = [gregorian components:(NSWeekdayCalendarUnit) fromDate:tempDate];
+					NSInteger day = [dateComponents weekday];
 					[gregorian release];
-					if (day == 0 || day == 6){
+					if (day == 1 || day == 7){
 						tempString = @"S";
 					}
-					else if (day == 1){
+					else if (day == 2){
 						tempString = @"M";
 					}
-					else if (day == 2 || day == 4){
+					else if (day == 3 || day == 5){
 						tempString = @"T";
 					}
-					else if (day == 3){
+					else if (day == 4){
 						tempString = @"W";
 					}
-					else if (day == 5){
+					else if (day == 6){
 						tempString = @"F";
 					}
 					
