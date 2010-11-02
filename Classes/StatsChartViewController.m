@@ -28,6 +28,9 @@ static NSArray *__pageControlColorList = nil;
 // Load the view nib and initialize the pageNumber ivar.
 - (id)initWithPageNumber:(int)page {
     if (self = [super initWithNibName:@"StatsChartViewController" bundle:nil]) {
+		if (DeviceIsPad()){
+			[self initWithNibName:@"StatsChartViewController-iPad" bundle:nil];
+		}
         pageNumber = page;
 		if (chartURL != nil){
 		
@@ -46,6 +49,7 @@ static NSArray *__pageControlColorList = nil;
 
 // Set the label and background color when the view has finished loading.
 - (void)viewDidLoad {
+	
 	//chart = [[UIImageView alloc] initWithImage:chartImage];
 	NSString *chartTitle = [[NSString alloc] initWithString:@""];
 	switch (pageNumber) {

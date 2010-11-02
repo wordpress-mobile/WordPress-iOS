@@ -70,6 +70,7 @@
 	[postsViewController removeObserver:self forKeyPath:@"selectedIndexPath"];
 	[pagesViewController removeObserver:self forKeyPath:@"selectedIndexPath"];
 	[commentsViewController removeObserver:self forKeyPath:@"selectedIndexPath"];	
+	[statsTableViewController removeObserver:self forKeyPath:@"selectedIndexPath"];
 	[tabBarController release], tabBarController = nil;
 	
     [super dealloc];
@@ -178,6 +179,12 @@
 		hasVCName = YES;
 		hasIndexPath = YES;
 	}
+	else if	(statsTableViewController.selectedIndexPath) {
+		vcName = @"Statss";
+		indexPath = statsTableViewController.selectedIndexPath;
+		hasVCName = YES;
+		hasIndexPath = YES;
+	}
 	
 	if((hasVCName == YES) && (hasIndexPath == YES)) {
 		[[NSUserDefaults standardUserDefaults] setObject:vcName forKey:@"WPSelectedContentType"];
@@ -209,8 +216,8 @@
 			pagesViewController.selectedIndexPath = selectedIndexPath;
 		}
 		else if	([vcName isEqual:@"Stats"]) {
-			selectedViewController = pagesViewController;
-			pagesViewController.selectedIndexPath = selectedIndexPath;
+			selectedViewController = statsTableViewController;
+			statsTableViewController.selectedIndexPath = selectedIndexPath;
 		}
 	}
 		

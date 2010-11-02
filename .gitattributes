@@ -187,9 +187,11 @@ Classes/ResourcesTableViewSection.m -text
 Classes/RotatingNavigationController.h -text
 Classes/RotatingNavigationController.m -text
 Classes/StatsCategoryViewController.xib -text
+Classes/StatsChartViewController-iPad.xib -text
 Classes/StatsChartViewController.h -text
 Classes/StatsChartViewController.m -text
 Classes/StatsChartViewController.xib -text
+Classes/StatsPageControlViewController-iPad.xib -text
 Classes/StatsPageControlViewController.h -text
 Classes/StatsPageControlViewController.m -text
 Classes/StatsPageControlViewController.xib -text
@@ -243,6 +245,8 @@ Classes/WPMediaUploader.h -text
 Classes/WPMediaUploader.m -text
 Classes/WPNavigationLeftButtonView.h -text
 Classes/WPNavigationLeftButtonView.m -text
+Classes/WPPageControl.h -text
+Classes/WPPageControl.m -text
 Classes/WPProgressHUD.h -text
 Classes/WPProgressHUD.m -text
 Classes/WPPublishOnEditController.h -text
@@ -415,6 +419,10 @@ WordPress.xcodeproj/project.pbxproj -text
 /logo_wporg.png -text
 /logo_wporg@2x.png -text
 /main.m -text
+/page_control_blue.png -text
+/page_control_blue@2x.png -text
+/page_control_blue_active.png -text
+/page_control_blue_active@2x.png -text
 /pages.png -text
 /pages@2x.png -text
 /photos.png -text

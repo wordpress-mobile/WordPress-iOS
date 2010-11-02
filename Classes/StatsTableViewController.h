@@ -23,8 +23,6 @@
 	NSMutableArray *searchTermsData;
 	NSMutableArray *clicksData;
 	NSString *reportTitle;
-	
-	NSIndexPath *selectedIndexPath;
 	NSMutableDictionary *currentBlog;
 	WordPressAppDelegate *appDelegate;
 	NSMutableData *statsData;
@@ -45,6 +43,7 @@
 	CFMutableDictionaryRef connectionToInfoMapping;
 	BOOL foundStatsData, statsAPIAlertShowing, canceledAPIKeyAlert;
 	UIBarButtonItem *refreshButtonItem;
+	NSIndexPath *selectedIndexPath;
 
 }
 
@@ -54,7 +53,6 @@
 @property (nonatomic, retain) NSMutableArray *searchTermsData;
 @property (nonatomic, retain) NSMutableArray *clicksData;
 @property (nonatomic, retain) NSString *reportTitle;
-@property (nonatomic, retain) NSIndexPath *selectedIndexPath;
 @property (nonatomic, copy, readonly) NSMutableDictionary *currentBlog;
 @property (nonatomic, retain) NSMutableData *statsData;
 @property (nonatomic, retain) NSMutableString *currentProperty;
@@ -70,6 +68,7 @@
 @property (nonatomic, retain) UITableView *wpcomLoginTable;
 @property (nonatomic, retain) StatsPageControlViewController *statsPageControlViewController;
 @property (readonly) UIBarButtonItem *refreshButtonItem;
+@property (nonatomic, retain) NSIndexPath *selectedIndexPath;
 - (void) initStats;
 - (void) getUserAPIKey;
 - (void) startParsingStats: (NSString*) xmlString withReportType: (NSString*) reportType;

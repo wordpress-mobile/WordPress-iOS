@@ -12,19 +12,44 @@
 #import "UITableViewActivityCell.h"
 #import "WPcomLoginViewController.h"
 #import "Reachability.h"
+#import "CPopoverManager.h"
 
 
 @implementation StatsTableViewController
 
-@synthesize viewsData, postViewsData, referrersData, searchTermsData, clicksData, reportTitle, 
-selectedIndexPath, currentBlog, statsData, currentProperty, rootTag, 
+@synthesize viewsData, postViewsData, referrersData, searchTermsData, clicksData, reportTitle,
+currentBlog, statsData, currentProperty, rootTag, 
 statsTableData, leftColumn, rightColumn, spinner, xArray, yArray, xValues, yValues, wpcomLoginTable, 
-statsPageControlViewController, refreshButtonItem;
+statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 #define LABEL_TAG 1 
 #define VALUE_TAG 2 
 #define FIRST_CELL_IDENTIFIER @"TrailItemCell" 
 #define SECOND_CELL_IDENTIFIER @"RegularCell" 
 
+- (void)dealloc {
+	[viewsData release];
+	[postViewsData release];
+	[referrersData release];
+	[searchTermsData release];
+	[clicksData release];
+	[reportTitle release];
+	[currentBlog release];
+	[statsData release];
+	[currentProperty release];
+	[rootTag release];
+	[statsTableData release];
+	[leftColumn release];
+	[rightColumn release];
+	[spinner release];
+	[xArray release];
+	[yArray release];
+	[xValues release];
+	[yValues release];
+	[wpcomLoginTable release];
+	[statsPageControlViewController release];
+	[selectedIndexPath release];
+	[super dealloc];
+}
 
 - (void)viewDidLoad {
 	self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
@@ -43,10 +68,22 @@ statsPageControlViewController, refreshButtonItem;
 														&kCFTypeDictionaryValueCallBacks);
 	
 	refreshButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(initStats)];
+	
+	if (DeviceIsPad() == YES) {
+		self.navigationItem.rightBarButtonItem = refreshButtonItem;
+		[self.view removeFromSuperview];
+		[statsPageControlViewController initWithNibName:@"StatsPageControlViewController-iPad" bundle:nil];
+		[self initWithNibName:@"StatsTableViewConroller-iPad" bundle:nil];
+		[appDelegate showContentDetailViewController:self];
+	}
+	
 }
 
+
+
 - (void) viewWillAppear:(BOOL)animated {
-	//set right navigation button item
+	
+	selectedIndexPath =  [NSIndexPath indexPathForRow:0 inSection:0];
 	if([[Reachability sharedReachability] internetConnectionStatus] == NotReachable) {
 		UIAlertView *errorView = [[UIAlertView alloc] 
 								  initWithTitle: @"Communication Error" 
@@ -58,6 +95,11 @@ statsPageControlViewController, refreshButtonItem;
 	}
 	else
 	{
+		if (DeviceIsPad() == YES) {
+			[[[CPopoverManager instance] currentPopoverController] dismissPopoverAnimated:YES];
+			[appDelegate showContentDetailViewController:self];
+		}
+		
 		//get this party started!
 		if (!canceledAPIKeyAlert && !foundStatsData)
 			[self initStats]; 
@@ -104,22 +146,34 @@ statsPageControlViewController, refreshButtonItem;
 	}
 	else 
 	{
+		BOOL presentDialog = TRUE;
+		if (dotorgLogin == TRUE && appDelegate.isWPcomAuthenticated == FALSE)
+		{
+			presentDialog = FALSE;
+			dotorgLogin = FALSE;
+		}
+		
+		if (presentDialog) {
+			dotorgLogin = TRUE;
+		
 		if(DeviceIsPad() == YES) {
 			WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController-iPad" bundle:nil];	
 			[self.navigationController pushViewController:wpComLogin animated:YES];
 			[wpComLogin release];
 		}
 		else {
+			dotorgLogin = TRUE;
 			WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController" bundle:nil];	
 			[appDelegate.navigationController presentModalViewController:wpComLogin animated:YES];
 			[wpComLogin release];
 		}
 		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"WordPress.com Stats" 
-														 message:@"To load stats for your blog you will need to have the WordPress.com stats plugin installed and correctly configured." 
+														 message:@"To load stats for your blog you will need to have the WordPress.com stats plugin installed and correctly configured as well as your WordPress.com login." 
 														delegate:self cancelButtonTitle:@"Learn More" otherButtonTitles:nil] autorelease];
 		alert.tag = 1;
 		[alert addButtonWithTitle:@"I'm Ready!"];
 		[alert show];
+		}
 		
 	}
 	
@@ -417,7 +471,7 @@ statsPageControlViewController, refreshButtonItem;
 				
 			}
 			dateValues = [dateCSV componentsJoinedByString:@"|"];
-			chartViewURL = [chartViewURL stringByAppendingFormat: @"http://chart.apis.google.com/chart?chts=464646,20&cht=bvs&chbh=a&chd=t:%@&chs=640x336&chl=%@&chxt=y&chds=%d,%d&chxr=0,%d,%d,%d&chf=c,lg,90,E2E2E2,0,FEFEFE,0.5&chco=a3bcd3&chls=4&chxs=0,464646,14,0,t|1,464646,14,0,_", xValues, dateValues, minBuffer,maxBuffer, minBuffer,maxBuffer, yInterval];
+			chartViewURL = [chartViewURL stringByAppendingFormat: @"http://chart.apis.google.com/chart?chts=464646,20&cht=bvs&chg=100,20,1,0&chbh=a&chd=t:%@&chs=560x320&chl=%@&chxt=y,x&chds=%d,%d&chxr=0,%d,%d,%d&chf=c,lg,90,FFFFFF,0,FFFFFF,0.5&chco=a3bcd3&chls=4&chxs=0,464646,20,0,t|1,464646,20,0,t", xValues, dateValues, minBuffer,maxBuffer, minBuffer,maxBuffer, yInterval];
 			NSLog(@"google chart url: %@", chartViewURL);
 			chartViewURL = [chartViewURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 			statsRequest = TRUE;
@@ -707,7 +761,7 @@ statsPageControlViewController, refreshButtonItem;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-	tableView.backgroundColor = [UIColor clearColor];
+	//tableView.backgroundColor = [UIColor clearColor];
 	int count = 0;
 	switch (section) {
 		case 0:
@@ -766,29 +820,32 @@ statsPageControlViewController, refreshButtonItem;
 	//if (cell == nil) {
 		cell = [[[StatsTableCell alloc] initWithFrame:CGRectZero reuseIdentifier:MyIdentifier] autorelease];
 		if (viewsData != nil) {
-		UILabel *label = [[[UILabel	alloc] initWithFrame:CGRectMake(10.0, 0, 130.0, 
+		UILabel *label = [[[UILabel	alloc] initWithFrame:CGRectMake(14.0, 0, 140.0, 
 																	tableView.rowHeight)] autorelease]; 
 		
 
 		
 		[cell addColumn:140];
 		label.tag = LABEL_TAG; 
-		label.font = [UIFont systemFontOfSize:12.0]; 
+		label.font = [UIFont boldSystemFontOfSize:14.0]; 
+			if (indexPath.section == 0 || indexPath.section == 1){
+				label.numberOfLines = 2;
+			}
 		label.text = leftColumn;
 		label.textAlignment = UITextAlignmentLeft; 
-		label.textColor = [UIColor grayColor]; 
+		label.textColor = [UIColor blackColor]; 
 		label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | 
 		UIViewAutoresizingFlexibleHeight; 
 		[cell.contentView addSubview:label]; 
 		
-		label =  [[[UILabel	alloc] initWithFrame:CGRectMake(160.0, 0, 130.0, 
+		label =  [[[UILabel	alloc] initWithFrame:CGRectMake(160.0, 0, 120.0, 
 															tableView.rowHeight)] autorelease]; 
 		[cell addColumn:130];
 		label.tag = VALUE_TAG; 
-		label.font = [UIFont systemFontOfSize:12.0]; 
+		label.font = [UIFont systemFontOfSize:16.0]; 
 		label.text = rightColumn;
-		label.textAlignment = UITextAlignmentLeft; 
-		label.textColor = [UIColor grayColor]; 
+		label.textAlignment = UITextAlignmentRight; 
+		label.textColor = [[UIColor alloc] initWithRed:40.0 / 255 green:82.0 / 255 blue:137.0 / 255 alpha:1.0]; 
 		label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | 
 		UIViewAutoresizingFlexibleHeight; 
 		[cell.contentView addSubview:label];
@@ -808,7 +865,7 @@ statsPageControlViewController, refreshButtonItem;
 	switch (section) {
 		case 0:
 			if (viewsData != nil){
-				reportName = @"Views";
+				reportName = @"Daily Views";
 			}
 			break;
 		case 1:
@@ -840,6 +897,7 @@ statsPageControlViewController, refreshButtonItem;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+	selectedIndexPath = nil;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -855,32 +913,6 @@ statsPageControlViewController, refreshButtonItem;
 - (void)didReceiveMemoryWarning {
 	[super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
 	// Release anything that's not essential, such as cached data
-}
-
-
-- (void)dealloc {
-	[viewsData release];
-	[postViewsData release];
-	[referrersData release];
-	[searchTermsData release];
-	[clicksData release];
-	[reportTitle release];
-	[selectedIndexPath release];
-	[currentBlog release];
-	[statsData release];
-	[currentProperty release];
-	[rootTag release];
-	[statsTableData release];
-	[leftColumn release];
-	[rightColumn release];
-	[spinner release];
-	[xArray release];
-	[yArray release];
-	[xValues release];
-	[yValues release];
-	[wpcomLoginTable release];
-	[statsPageControlViewController release];
-	[super dealloc];
 }
 
 @end
