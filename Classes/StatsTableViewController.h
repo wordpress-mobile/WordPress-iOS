@@ -44,6 +44,7 @@
 	BOOL foundStatsData, statsAPIAlertShowing, canceledAPIKeyAlert;
 	UIBarButtonItem *refreshButtonItem;
 	NSIndexPath *selectedIndexPath;
+	int loadMorePostViews, loadMoreReferrers, loadMoreSearchTerms, loadMoreClicks;
 
 }
 

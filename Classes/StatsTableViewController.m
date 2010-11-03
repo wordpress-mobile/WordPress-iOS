@@ -52,9 +52,15 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 }
 
 - (void)viewDidLoad {
+	
+	loadMorePostViews = 10;
+	loadMoreReferrers = 10;
+	loadMoreSearchTerms = 10;
+	loadMoreClicks = 10;
+	
 	self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
 	self.view.frame = CGRectMake(0, 0, 320, 460);
-	self.tableView.allowsSelection = NO;
+	//self.tableView.allowsSelection = NO;
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	
 	//init the spinner
@@ -768,50 +774,107 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 			count = [viewsData count];
 			break;
 		case 1:
-			count = [postViewsData count];
+			if (loadMorePostViews >= [postViewsData count]){
+				count = [postViewsData count];
+			}
+			else {
+				count = loadMorePostViews + 1;
+			}
 			break;
 		case 2:
-			count = [referrersData count];
+			if (loadMoreReferrers >= [referrersData count]){
+				count = [referrersData count];
+			}
+			else {
+				count = loadMoreReferrers + 1;
+			}
 			break;
 		case 3:
-			count = [searchTermsData count];
+			if (loadMoreSearchTerms >= [searchTermsData count]){
+				count = [searchTermsData count];
+			}
+			else {
+				count = loadMoreSearchTerms + 1;
+			}
 			break;
 		case 4:
-			count = [clicksData count];
+			if (loadMoreClicks >= [clicksData count]){
+				count = [clicksData count];
+			}
+			else {
+				count = loadMoreClicks + 1;
+			}
 			break;
-	}
-	if (count > 10){
-		count = 10;
 	}
 	return count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	
+	BOOL addLoadMoreFooter = FALSE;
 	NSArray *row = [[NSArray alloc] init];
 	switch (indexPath.section) {
 		case 0:
 			row = [viewsData objectAtIndex:indexPath.row];
 			break;
 		case 1:
-			row = [postViewsData objectAtIndex:indexPath.row];
+			if (indexPath.row == loadMorePostViews){
+				addLoadMoreFooter = TRUE;
+			}
+			else {
+				if ((indexPath.row + 1) > [postViewsData count]){
+					row = [postViewsData objectAtIndex:(indexPath.row - 1)];
+				}
+				else {
+					row = [postViewsData objectAtIndex:indexPath.row];
+				}
+			}
 			break;
 		case 2:
-			row = [referrersData objectAtIndex:indexPath.row];
+			if (indexPath.row == loadMoreReferrers){
+				addLoadMoreFooter = TRUE;
+			}
+			else {
+				if ((indexPath.row + 1) > [referrersData count]){
+					row = [referrersData objectAtIndex:(indexPath.row - 1)];
+				}
+				else {
+					row = [referrersData objectAtIndex:indexPath.row];
+				}
+			}
 			break;
 		case 3:
-			row = [searchTermsData objectAtIndex:indexPath.row];
+			if (indexPath.row == loadMoreSearchTerms){
+				addLoadMoreFooter = TRUE;
+			}
+			else {
+				if ((indexPath.row + 1) > [searchTermsData count]){
+					row = [searchTermsData objectAtIndex:(indexPath.row - 1)];
+				}
+				else {
+					row = [searchTermsData objectAtIndex:indexPath.row];
+				}
+			}
 			break;
 		case 4:
-			row = [clicksData objectAtIndex:indexPath.row];
+			if (indexPath.row == loadMoreClicks){
+				addLoadMoreFooter = TRUE;
+			}
+			else {
+				if ((indexPath.row + 1) > [clicksData count]){
+					row = [clicksData objectAtIndex:(indexPath.row - 1)];
+				}
+				else {
+					row = [clicksData objectAtIndex:indexPath.row];
+				}
+			}
 			break;
 	}
 	
-
+	if (!addLoadMoreFooter){
 	leftColumn = [[NSString alloc] initWithString: [row objectAtIndex:0]];
 	rightColumn = [[NSString alloc] initWithString: [row objectAtIndex:1]];
-	
+	}
 
 	NSString *MyIdentifier = [NSString stringWithFormat:@"MyIdentifier %i", indexPath.row];
 	
@@ -820,35 +883,48 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 	//if (cell == nil) {
 		cell = [[[StatsTableCell alloc] initWithFrame:CGRectZero reuseIdentifier:MyIdentifier] autorelease];
 		if (viewsData != nil) {
-		UILabel *label = [[[UILabel	alloc] initWithFrame:CGRectMake(14.0, 0, 140.0, 
-																	tableView.rowHeight)] autorelease]; 
-		
 
-		
-		[cell addColumn:140];
+		UILabel *label = [[[UILabel	alloc] initWithFrame:CGRectMake(14.0, 0, 140.0, 
+																		tableView.rowHeight)] autorelease]; 
+			
+		if (addLoadMoreFooter){
+			[cell addColumn:280];
+			label.frame = CGRectMake(14.0, 0, 266.0, tableView.rowHeight);
+			label.font = [UIFont systemFontOfSize:14.0]; 
+			label.text = @"Show more...";
+			label.textAlignment = UITextAlignmentCenter; 
+		}
+		else {
+			[cell addColumn:140];
+			cell.selectionStyle = UITableViewCellSelectionStyleNone;
+			label.font = [UIFont boldSystemFontOfSize:14.0]; 
+			label.text = leftColumn;
+			label.textAlignment = UITextAlignmentLeft; 
+		}
+			
 		label.tag = LABEL_TAG; 
-		label.font = [UIFont boldSystemFontOfSize:14.0]; 
-			if (indexPath.section == 0 || indexPath.section == 1){
-				label.numberOfLines = 2;
-			}
-		label.text = leftColumn;
-		label.textAlignment = UITextAlignmentLeft; 
+		if (indexPath.section == 0 || indexPath.section == 1){
+			label.numberOfLines = 2;
+		}
+		
 		label.textColor = [UIColor blackColor]; 
 		label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | 
 		UIViewAutoresizingFlexibleHeight; 
 		[cell.contentView addSubview:label]; 
 		
-		label =  [[[UILabel	alloc] initWithFrame:CGRectMake(160.0, 0, 120.0, 
-															tableView.rowHeight)] autorelease]; 
-		[cell addColumn:130];
-		label.tag = VALUE_TAG; 
-		label.font = [UIFont systemFontOfSize:16.0]; 
-		label.text = rightColumn;
-		label.textAlignment = UITextAlignmentRight; 
-		label.textColor = [[UIColor alloc] initWithRed:40.0 / 255 green:82.0 / 255 blue:137.0 / 255 alpha:1.0]; 
-		label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | 
-		UIViewAutoresizingFlexibleHeight; 
-		[cell.contentView addSubview:label];
+		label =  [[[UILabel	alloc] initWithFrame:CGRectMake(160.0, 0, 120.0, tableView.rowHeight)] autorelease]; 
+		
+		if (!addLoadMoreFooter){
+			[cell addColumn:130];
+			label.tag = VALUE_TAG; 
+			label.font = [UIFont systemFontOfSize:16.0]; 
+			label.text = rightColumn;
+			label.textAlignment = UITextAlignmentRight; 
+			label.textColor = [[UIColor alloc] initWithRed:40.0 / 255 green:82.0 / 255 blue:137.0 / 255 alpha:1.0]; 
+			label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | 
+			UIViewAutoresizingFlexibleHeight; 
+			[cell.contentView addSubview:label];
+		}
 		}
 	//}
 	
@@ -858,6 +934,32 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	// Navigation logic
+	switch (indexPath.section) {
+		case 1:
+			if (indexPath.row == loadMorePostViews){
+				loadMorePostViews += 10;
+				[self.tableView reloadData];
+			}
+			break;
+		case 2:
+			if (indexPath.row == loadMoreReferrers){
+				loadMoreReferrers += 10;
+				[self.tableView reloadData];
+			}
+			break;
+		case 3:
+			if (indexPath.row == loadMoreSearchTerms){
+				loadMoreSearchTerms += 10;
+				[self.tableView reloadData];
+			}
+			break;
+		case 4:
+			if (indexPath.row == loadMoreClicks){
+				loadMoreClicks += 10;
+				[self.tableView reloadData];
+			}
+			break;
+	}
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
