@@ -74,6 +74,7 @@
 
 - (NSMutableArray *)getBlogsForUrl:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password {
 	NSMutableArray *usersBlogs = [[NSMutableArray alloc] init];
+	NSLog(@"getting blogs for URL: %@ username: %@ password: %@", xmlrpc, username, password);
 		
 	@try {
 		XMLRPCRequest *xmlrpcUsersBlogs = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
@@ -119,11 +120,28 @@
 			   [usersBlogs addObject:blog];
 			}
 		}
-		else
+		else if([usersBlogsData isKindOfClass:[NSError class]]) {
+			NSError *error = (NSError *)usersBlogsData;
+			NSString *errorMessage = [error localizedDescription];
+			
 			usersBlogs = nil;
+			
+			if([errorMessage isEqualToString:@"The operation couldn’t be completed. (NSXMLParserErrorDomain error 4.)"])
+				errorMessage = @"Your blog's XML-RPC endpoint was found but it isn't communicating properly. Try disabling plugins or contacting your host.";
+			else if([errorMessage isEqualToString:@"Bad login/pass combination."])
+				errorMessage = nil;
+			
+			if(errorMessage != nil)
+				[appDelegate showAlertWithTitle:@"XML-RPC Error" message:errorMessage];
+		}
+		else {
+			usersBlogs = nil;
+			NSLog(@"getBlogsForUrl failed: %@", usersBlogsData);
+		}
 	}
 	@catch (NSException * e) {
 		usersBlogs = nil;
+		NSLog(@"getBlogsForUrl failed: %@", e);
 	}
 	
 	return usersBlogs;

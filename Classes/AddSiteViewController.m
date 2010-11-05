@@ -17,10 +17,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+	footerText = @" ";
 	
 	hasValidXMLRPCurl = YES;	// Assume true until proven wrong.
-	addButtonText = @"Add Site";
-	self.navigationItem.title = @"Add Site";
+	addButtonText = @"Add Blog";
+	self.navigationItem.title = @"Add Blog";
 	[spinner initWithLabel:@"Saving..."];
 	addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
 	addUsersBlogsView.isWPcom = NO;
@@ -127,13 +128,14 @@
 		cell.accessoryType = UITableViewCellAccessoryNone;
 		
 		if ([indexPath section] == 0) {
-			CGRect textFrame = CGRectMake(110, 10, 185, 30);
+			CGRect textFrame = CGRectMake(110, 10, 200, 22);
 			if(DeviceIsPad()){
 				textFrame = CGRectMake(150, 12, 350, 42);
 			}
 			UITextField *addTextField = [[UITextField alloc] initWithFrame:textFrame];
-			//addTextField.adjustsFontSizeToFitWidth = YES;
+			addTextField.adjustsFontSizeToFitWidth = NO;
 			addTextField.textColor = [UIColor blackColor];
+			addTextField.font = [UIFont systemFontOfSize:16.0];
 			if ([indexPath section] == 0) {
 				if (indexPath.row == 0) {
 					addTextField.placeholder = @"yourawesomeblog.com";
@@ -169,7 +171,7 @@
 				addTextField.autocorrectionType = UITextAutocorrectionTypeNo;
 				addTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 				addTextField.textAlignment = UITextAlignmentLeft;
-				addTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+				addTextField.clearButtonMode = UITextFieldViewModeAlways;
 				addTextField.delegate = self;
 				addTextField.returnKeyType = UIReturnKeyDone;
 				[addTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
@@ -257,18 +259,18 @@
 	switch (indexPath.section) {
 		case 0:
 			if(url == nil) {
-				footerText = @"URL is required.";
+				footerText = @"The URL field is empty.";
 			}
 			else if(username == nil) {
-				footerText = @"Username is required.";
+				footerText = @"The username field is empty.";
 			}
 			else if(password == nil) {
-				footerText = @"Password is required.";
+				footerText = @"The password field is empty.";
 			}
 			else if((!hasValidXMLRPCurl) && (xmlrpc == nil)) {
 				footerText = @"XMLRPC endpoint wasn't found. Please enter it manually.";
 			}
-			addButtonText = @"Add Site";
+			addButtonText = @"Add Blog";
 			
 			for(UIView *subview in cell.subviews) {
 				if(subview.class == [UITextField class]) {
@@ -311,9 +313,9 @@
 			break;
 		case 2:
 			// Add Site
-			if(([self blogExists] == NO) && (isAdding == NO)) {
+			if(([self blogExists] == NO) && (isAdding == NO) && (url != nil) && (![url isEqualToString:@""])) {
 				footerText = @" ";
-				addButtonText = @"Adding Site...";
+				addButtonText = @"Adding Blog...";
 				isAdding = YES;
 				[tv deselectRowAtIndexPath:indexPath animated:YES];
 				[NSThread sleepForTimeInterval:0.15];
@@ -328,6 +330,18 @@
 					[tv deselectRowAtIndexPath:indexPath animated:YES];
 					[self performSelectorInBackground:@selector(addSite) withObject:nil];
 				}
+			}
+			else if((url == nil) || ([url isEqualToString:@""])) {
+				footerText = @"The URL field is empty.";
+				[tv reloadData];
+			}
+			else if((username == nil) || ([username isEqualToString:@""])) {
+				footerText = @"The username field is empty.";
+				[tv reloadData];
+			}
+			else if((password == nil) || ([password isEqualToString:@""])) {
+				footerText = @"The password field is empty.";
+				[tv reloadData];
 			}
 			[tv deselectRowAtIndexPath:indexPath animated:YES];
 			break;
@@ -357,34 +371,34 @@
 	switch (indexPath.row) {
 		case 0:
 			if(((username != nil) && (password != nil)) && ([textField.text isEqualToString:@""])) {
-				footerText = @"URL is required.";
+				footerText = @"The URL field is empty.";
 				url = nil;
 			}
 			else {
 				[self setUrl:textField.text];
                 [self urlDidChange];
-				footerText = nil;
+				footerText = @" ";
 				xmlrpc = nil;
 				[self performSelectorInBackground:@selector(getXMLRPCurl) withObject:nil];
 			}
 			break;
 		case 1:
 			if(((url != nil) && (password != nil)) && ([textField.text isEqualToString:@""])) {
-				footerText = @"Username is required.";
+				footerText = @"The username field is empty.";
 				[self setUsername:textField.text];
 			}
 			else {
-				footerText = nil;
+				footerText = @" ";
 				[self setUsername:textField.text];
 			}
 			break;
 		case 2:
 			if(((username != nil) && (username != nil)) && ([textField.text isEqualToString:@""])) {
-				footerText = @"Password is required.";
+				footerText = @"The password field is empty.";
 				[self setPassword:textField.text];
 			}
 			else {
-				footerText = nil;
+				footerText = @" ";
 				[self setPassword:textField.text];
 			}
 			break;
@@ -395,7 +409,7 @@
 			else {
 				[self setXMLRPCUrl:activeTextField.text];
 				hasValidXMLRPCurl = YES;
-				footerText = nil;
+				footerText = @" ";
 			}
 			break;
 		default:
@@ -444,10 +458,10 @@
 		if(isAuthenticated) 
 			footerText = @"Good to go.";
 		else
-			footerText = @"";
+			footerText = @" ";
 	}
 	else
-		footerText = @"Site has already been added.";
+		footerText = @"Blog has already been added.";
 	
 	@try {
 		Blog *blog = [subsites objectAtIndex:0];
@@ -469,32 +483,51 @@
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
-	footerText = @"Authenticating...";
-	[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
-	
-	// Check for HTTP auth first
-	ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:xmlrpc]];
-	[request setShouldPresentCredentialsBeforeChallenge:NO];
-	[request startSynchronous];
-	
-	if(xmlrpc != nil) {
-		isAuthenticated = [[WPDataController sharedInstance] authenticateUser:xmlrpc username:username password:password];
-		if(isAuthenticated == YES) {
-			footerText = @"Authenticated successfully.";
-			[self performSelectorOnMainThread:@selector(didAuthenticateSuccessfully) withObject:nil waitUntilDone:NO];
-		}
-		else {
-			isAdding = NO;
-			addButtonText = @"Add Site";
-			footerText = @"Incorrect username or password.";
+	if((username != nil) && (password != nil) && (![username isEqualToString:@""]) && (![password isEqualToString:@""])) {
+		footerText = @"Authenticating...";
+		[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
+		
+		if(xmlrpc == nil)
+			[self getXMLRPCUrlSynchronously];
+		
+		// Check for HTTP auth first
+		if(xmlrpc != nil) {
+			ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:xmlrpc]];
+			[request setShouldPresentCredentialsBeforeChallenge:NO];
+			[request startSynchronous];
+			
+			if(xmlrpc != nil) {
+				isAuthenticated = [[WPDataController sharedInstance] authenticateUser:xmlrpc username:username password:password];
+				if(isAuthenticated == YES) {
+					footerText = @"Authenticated successfully.";
+					[self performSelectorOnMainThread:@selector(didAuthenticateSuccessfully) withObject:nil waitUntilDone:NO];
+				}
+				else {
+					isAdding = NO;
+					addButtonText = @"Add Blog";
+					footerText = @"Incorrect username or password.";
+				}
+			}
+			else {
+				footerText = @"XML-RPC endpoint not found. Please enter it manually.";
+				isAdding = NO;
+				addButtonText = @"Add Blog";
+			}
+			[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
 		}
 	}
-	else {
-		footerText = @"XML-RPC endpoint not found. Please enter it manually.";
+	else if((username == nil) || ([username isEqualToString:@""])) {
 		isAdding = NO;
-		addButtonText = @"Add Site";
+		addButtonText = @"Add Blog";
+		footerText = @"The username field is empty.";
+		[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
 	}
-	[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
+	else if((password == nil) || ([password isEqualToString:@""])) {
+		isAdding = NO;
+		addButtonText = @"Add Blog";
+		footerText = @"The password field is empty.";
+		[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
+	}
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[pool release];
@@ -536,6 +569,67 @@
 	[pool release];
 }
 
+- (void)getXMLRPCUrlSynchronously {
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	
+	if((url != nil) && (![url isEqualToString:@""])) {
+		if(![url hasPrefix:@"http"])
+			url = [[NSString stringWithFormat:@"http://%@", url] retain];
+	}
+	
+	// Start by just trying URL + /xmlrpc.php
+	NSString *xmlrpcURL = [url stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	if(![xmlrpcURL hasSuffix:@"/"])
+		xmlrpcURL = [NSString stringWithFormat:@"%@/xmlrpc.php", xmlrpcURL];
+	else
+		xmlrpcURL = [NSString stringWithFormat:@"%@xmlrpc.php", xmlrpcURL];
+	
+	ASIHTTPRequest *xmlrpcRequest = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:xmlrpcURL]];
+	[xmlrpcRequest setShouldPresentCredentialsBeforeChallenge:NO];
+	[xmlrpcRequest setShouldPresentAuthenticationDialog:YES];
+	[xmlrpcRequest setUseKeychainPersistence:YES];
+	[xmlrpcRequest setDelegate:self];
+	[xmlrpcRequest startSynchronous];
+	
+	NSError *error = [xmlrpcRequest error];
+	if(!error) {
+		NSString *responseString = [xmlrpcRequest responseString];
+		
+		if([responseString rangeOfString:@"XML-RPC server accepts POST requests only."].location != NSNotFound)
+			[self verifyXMLRPCurl:xmlrpcURL];
+		else {
+			// We're looking for: <link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://myblog.com/xmlrpc.php?rsd" />
+			NSString *rsdURL = [responseString stringByMatching:@"<link rel=\"EditURI\" type=\"application/rsd\\+xml\" title=\"RSD\" href=\"([^\"]*)\"[^/]*/>" capture:1];
+			
+			// We found a valid RSD document, now try to parse the XML
+			NSError *rsdError;
+			if(rsdURL != nil) {
+				CXMLDocument *rsdXML = [[[CXMLDocument alloc] initWithContentsOfURL:[NSURL URLWithString:rsdURL] options:0 error:&rsdError] autorelease];
+				if(!rsdError) {
+					CXMLElement *serviceXML = [[[rsdXML rootElement] children] objectAtIndex:1];
+					for(CXMLElement *api in [[[serviceXML elementsForName:@"apis"] objectAtIndex:0] elementsForName:@"api"]) {
+						if([[[api attributeForName:@"name"] stringValue] isEqualToString:@"WordPress"]) {
+							// Bingo! We found the WordPress XML-RPC element
+							[self verifyXMLRPCurl:[[api attributeForName:@"apiLink"] stringValue]];
+						}
+					}
+				}
+				else {
+					// RSD document was invalid
+					footerText = [rsdError localizedDescription];
+					[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
+				}
+			}
+			else {
+				self.hasValidXMLRPCurl = NO;
+				[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
+			}
+		}
+	}
+	
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+}
+
 - (void)requestStarted:(ASIHTTPRequest *)request {
 }
 
@@ -544,6 +638,8 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	
+	//NSLog(@"requestFinished: %@", [request responseString]);
 	
 	// Success.
 	// Check to see if we should store HTTP Auth credentials
@@ -575,7 +671,15 @@
 	if(!error) {
 		NSString *responseString = [xmlrpcRequest responseString];
 		if([responseString rangeOfString:@"XML-RPC server accepts POST requests only."].location != NSNotFound)
-			[self verifyXMLRPCurl:xmlrpcURL];
+			[self verifyXMLRPCurl:xmlrpcURL];	// Success
+		else if([responseString isEqualToString:@""]) {
+			// XML-RPC isn't enabled
+			self.footerText = @"It looks like XML-RPC isn't enabled on your blog. You can enable it by going to "
+			"Settings > Writing > Remote Publishing.\n\nIf you're sure XML-RPC is enabled, try setting the XML-RPC endpoint manually using the field above.";
+			self.hasValidXMLRPCurl = NO;
+			self.isGettingXMLRPCURL = NO;
+			[self refreshTable];
+		}
 		else {
 			// We're looking for: <link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://myblog.com/xmlrpc.php?rsd" />
 			NSString *rsdURL = [[request responseString] stringByMatching:@"<link rel=\"EditURI\" type=\"application/rsd\\+xml\" title=\"RSD\" href=\"([^\"]*)\"[^/]*/>" capture:1];
@@ -594,6 +698,8 @@
 	self.footerText = [NSString stringWithFormat:@"%@.", [error localizedDescription]];
 	self.hasValidXMLRPCurl = NO;
 	self.isGettingXMLRPCURL = NO;
+	self.isAdding = NO;
+	addButtonText = @"Add Blog";
 	[self refreshTable];
 }
 

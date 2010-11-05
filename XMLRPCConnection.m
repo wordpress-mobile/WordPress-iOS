@@ -82,6 +82,9 @@ NSString *XMLRPCReceivedResponseNotification = @"XML-RPC Successfully Received R
 	NSURLResponse *urlres;
 	//NSHTTPURLResponse *urlres;
 	
+	//NSString *requestString = [[NSString alloc] initWithData:[[request request] HTTPBody] encoding:NSASCIIStringEncoding];
+	//NSLog(@"request headers: %@", [[request request] allHTTPHeaderFields]);
+	
 	NSError *err = NULL;
 	NSData *data = [NSURLConnection sendSynchronousRequest: [request request] 
 		returningResponse: &urlres error: &err];
@@ -102,6 +105,7 @@ NSString *XMLRPCReceivedResponseNotification = @"XML-RPC Successfully Received R
  	if (data != nil)
 	{
 		NSString  *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+		//NSLog(@"response: %@", str);
 		if ( ! str ) {
 			str = [[NSString alloc] initWithData:data encoding:[NSString defaultCStringEncoding]];
 			data = [str dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];

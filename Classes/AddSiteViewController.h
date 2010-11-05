@@ -44,6 +44,7 @@
 - (void)addSiteFailed;
 - (void)refreshTable;
 - (void)getXMLRPCurl;
+- (void)getXMLRPCUrlSynchronously;
 - (void)setXMLRPCUrl:(NSString *)xmlrpcUrl;
 - (void)verifyRSDurl:(NSString *)rsdURL;
 - (void)verifyXMLRPCurl:(NSString *)xmlrpcURL;

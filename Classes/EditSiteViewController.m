@@ -273,7 +273,7 @@
 			else if((!hasValidXMLRPCurl) && (xmlrpc == nil)) {
 				footerText = @"XMLRPC endpoint not found. Please enter it manually.";
 			}
-			addButtonText = @"Add Site";
+			addButtonText = @"Add Blog";
 			
 			for(UIView *subview in cell.subviews) {
 				if(subview.class == [UITextField class]) {
