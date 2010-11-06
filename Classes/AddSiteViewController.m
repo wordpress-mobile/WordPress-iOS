@@ -128,7 +128,7 @@
 		cell.accessoryType = UITableViewCellAccessoryNone;
 		
 		if ([indexPath section] == 0) {
-			CGRect textFrame = CGRectMake(110, 10, 200, 22);
+			CGRect textFrame = CGRectMake(110, 11, 200, 22);
 			if(DeviceIsPad()){
 				textFrame = CGRectMake(150, 12, 350, 42);
 			}
@@ -140,6 +140,7 @@
 				if (indexPath.row == 0) {
 					addTextField.placeholder = @"yourawesomeblog.com";
 					addTextField.keyboardType = UIKeyboardTypeURL;
+					addTextField.returnKeyType = UIReturnKeyNext;
 					if(url != nil)
 						addTextField.text = url;
 				}
@@ -148,6 +149,7 @@
 					addTextField.keyboardType = UIKeyboardTypeDefault;
 					if(username != nil)
 						addTextField.text = username;
+					addTextField.returnKeyType = UIReturnKeyNext;
 				}
 				else if(indexPath.row == 2) {
 					addTextField.placeholder = @"WordPress password";
@@ -155,12 +157,14 @@
 					addTextField.secureTextEntry = YES;
 					if(password != nil)
 						addTextField.text = password;
+					addTextField.returnKeyType = UIReturnKeyDone;
 				}
 				else if(indexPath.row == 2) {
 					addTextField.placeholder = @"http://example.com/xmlrpc.php";
 					addTextField.keyboardType = UIKeyboardTypeURL;
 					if(xmlrpc != nil)
 						addTextField.text = xmlrpc;
+					addTextField.returnKeyType = UIReturnKeyDone;
 				}
 				
 				if(DeviceIsPad() == YES)
@@ -173,7 +177,6 @@
 				addTextField.textAlignment = UITextAlignmentLeft;
 				addTextField.clearButtonMode = UITextFieldViewModeAlways;
 				addTextField.delegate = self;
-				addTextField.returnKeyType = UIReturnKeyDone;
 				[addTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
 				[addTextField setEnabled: YES];
 				
@@ -355,8 +358,33 @@
 #pragma mark UITextField methods
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-	[textField endEditing:YES];
-	[textField resignFirstResponder];
+	UITableViewCell *cell = nil;
+	UITextField *nextField = nil;
+	switch (textField.tag) {
+		case 0:
+			[textField endEditing:YES];
+			cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+			if(cell != nil) {
+				nextField = (UITextField*)[cell viewWithTag:1];
+				if(nextField != nil)
+					[nextField becomeFirstResponder];
+			}
+			break;
+		case 1:
+			[textField endEditing:YES];
+			cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2
+																	   inSection:0]];
+			if(cell != nil) {
+				nextField = (UITextField*)[cell viewWithTag:2];
+				if(nextField != nil)
+					[nextField becomeFirstResponder];
+			}
+			break;
+		default:
+			[textField endEditing:YES];
+			[textField resignFirstResponder];
+			break;
+	}
 	return YES;	
 }
 

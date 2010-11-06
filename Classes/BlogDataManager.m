@@ -5149,7 +5149,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 	//note that there is an updateExisting BOOL in the util call below, whereby you can tell the code NOT to modify, but only create if not in keychain already
 	//this isn't implemented in the method call for this method, but could be if needed.  Currently hard-coded to FALSE because this code path
 	//should only ever get called for a "create" kind of scenario from the Add Blog view's Save button.  (code in: BlogDetailModalViewController)
-	NSLog(@"Inside saveBlogPasswordToKeychain... password is %@ userName is %@ blogURL is %@", password, userName, blogURL);
+	//NSLog(@"Inside saveBlogPasswordToKeychain... password is %@ userName is %@ blogURL is %@", password, userName, blogURL);
 	
 	NSError *anError = nil; 
 	[SFHFKeychainUtils storeUsername:userName andPassword:password forServiceName:blogURL updateExisting:FALSE error:&anError ];
@@ -5160,7 +5160,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 	//note that there is an updateExisting BOOL in the util call below, whereby you can tell the code NOT to modify, but only create if not in keychain already
 	//this isn't implemented in the method call for this method, but could be if needed.  Currently hard-coded to TRUE here because this code path
 	//gets called for an "update" kind of scenario from the Edit Blog view's Save button.  (code in: BlogDetailModalViewController)
-	NSLog(@"Inside updatePasswordInKeychain... password is %@ userName is %@ blogURL is %@", password, userName, blogURL);
+	//NSLog(@"Inside updatePasswordInKeychain... password is %@ userName is %@ blogURL is %@", password, userName, blogURL);
 	NSError *anError = nil;
 	[ SFHFKeychainUtils storeUsername:userName andPassword:password forServiceName:blogURL updateExisting:TRUE error:&anError ];
 }
