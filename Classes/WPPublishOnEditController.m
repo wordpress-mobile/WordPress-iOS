@@ -17,9 +17,11 @@
         [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
     }
 
-    BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-    datePicker.date = [[dataManager currentPost] valueForKey:@"date_created_gmt"];
-    dateLabel.text = [dateFormatter stringFromDate:[[dataManager currentPost] valueForKey:@"date_created_gmt"]];
+    //BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
+	if (settingController.postDetailViewController.post.dateCreated != nil){
+		datePicker.date = settingController.postDetailViewController.post.dateCreated;
+		dateLabel.text = [dateFormatter stringFromDate:settingController.postDetailViewController.post.dateCreated];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -33,8 +35,9 @@
 
 - (IBAction)datePickerValueChanged:(id)sender {
     [dateLabel setText:[dateFormatter stringFromDate:datePicker.date]];
-    [[[BlogDataManager sharedDataManager] currentPost] setValue:datePicker.date forKey:@"date_created_gmt"];
-//	[[[BlogDataManager sharedDataManager] currentPost] setValue:datePicker.date forKey:@"dateCreated"];
+	//[[[BlogDataManager sharedDataManager] currentPost] setValue:datePicker.date forKey:@"date_created_gmt"];
+	//[[[BlogDataManager sharedDataManager] currentPost] setValue:datePicker.date forKey:@"dateCreated"];
+	settingController.postDetailViewController.post.dateCreated = datePicker.date;
     settingController.postDetailViewController.hasChanges = YES;
 }
 

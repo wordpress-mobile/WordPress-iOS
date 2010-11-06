@@ -60,7 +60,8 @@
 	//	if (passwordTextField == textField)
 	//		[self keyboardWillShow:NO];
 	
-    [[BlogDataManager sharedDataManager].currentPost setValue:textField.text forKey:@"wp_password"];
+    //[[BlogDataManager sharedDataManager].currentPost setValue:textField.text forKey:@"wp_password"];
+	postDetailViewController.post.password = textField.text;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -184,9 +185,8 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-	
-    NSMutableDictionary *post = [dataManager currentPost];
+    //BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
+    //NSMutableDictionary *post = [dataManager currentPost];
 	
     switch (indexPath.section) {
         case 0:
@@ -194,14 +194,14 @@
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateStyle:NSDateFormatterFullStyle];
             [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
-            publishOnTextField.text = [dateFormatter stringFromDate:[[dataManager currentPost] valueForKey:@"date_created_gmt"]];
+            publishOnTextField.text = [dateFormatter stringFromDate:postDetailViewController.post.dateCreated];
             [dateFormatter release];
             return publishOnTableViewCell;
         }
         case 1:
 			
             if (indexPath.row == 0) {
-                passwordTextField.text = [post valueForKey:@"wp_password"];
+                passwordTextField.text = postDetailViewController.post.password;
                 passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
                 return passwordTableViewCell;
             }
@@ -220,19 +220,21 @@
 
 //will be called when auto save method is called.
 - (void)updateValuesToCurrentPost {
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
+    //BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	
     NSString *str = passwordTextField.text;
     str = (str != nil ? str : @"");
-    [dm.currentPost setValue:str forKey:@"wp_password"];
+    //[dm.currentPost setValue:str forKey:@"wp_password"];
+	postDetailViewController.post.password = str;
 	
     //[dm.currentPost setValue:[NSNumber numberWithInt:customFieldsSwitchControl.on] forKey:@"custom_fields_enabled"];
     //[dm printDictToLog:dm.currentPost andArrayName:@"from update values: currentPost"];
 }
 
 - (void)reloadData {
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
-    passwordTextField.text = [dm.currentPost valueForKey:@"wp_password"];
+    //BlogDataManager *dm = [BlogDataManager sharedDataManager];
+    passwordTextField.text = postDetailViewController.post.password;
+	
     [tableView reloadData];
 }
 

@@ -548,7 +548,12 @@
 	[post setContent:postDetailEditController.textView.text];
 	[post setCategories:postDetailEditController.categoriesTextField.text];
 	[post setTags:postDetailEditController.tagsTextField.text];
-	[post setDateCreated:[NSDate date]];
+	if (post.dateCreated == nil){
+		[post setDateCreated:[NSDate date]];
+	}
+	else {
+		[post setDateCreated:post.dateCreated];
+	}
 	if(postSettingsController.passwordTextField.text != nil)
 		[post setPassword:postSettingsController.passwordTextField.text];
 	[draftManager save:post];
