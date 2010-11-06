@@ -74,7 +74,6 @@
 
 - (NSMutableArray *)getBlogsForUrl:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password {
 	NSMutableArray *usersBlogs = [[NSMutableArray alloc] init];
-	NSLog(@"getting blogs for URL: %@ username: %@ password: %@", xmlrpc, username, password);
 		
 	@try {
 		XMLRPCRequest *xmlrpcUsersBlogs = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];

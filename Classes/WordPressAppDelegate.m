@@ -494,13 +494,19 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)restoreCurrentBlog {
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:kCurrentBlogIndex]) {
-        int currentBlogIndex = [[NSUserDefaults standardUserDefaults] integerForKey:kCurrentBlogIndex];
-        if (currentBlogIndex >= 0) 
-            [dataManager makeBlogAtIndexCurrent:currentBlogIndex];
-    }
-    else
-        [dataManager resetCurrentBlog];
+	@try {
+		if ([[NSUserDefaults standardUserDefaults] objectForKey:kCurrentBlogIndex]) {
+			int currentBlogIndex = [[NSUserDefaults standardUserDefaults] integerForKey:kCurrentBlogIndex];
+			if (currentBlogIndex >= 0) 
+				[dataManager makeBlogAtIndexCurrent:currentBlogIndex];
+		}
+		else
+			[dataManager resetCurrentBlog];
+	}
+	@catch (NSException * e) {
+		NSLog(@"error calling restoreCurrentBlog: %@", e);
+		[dataManager resetCurrentBlog];
+	}
 }
 
 - (void)showSplashView {

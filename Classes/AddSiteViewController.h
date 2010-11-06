@@ -48,6 +48,7 @@
 - (void)setXMLRPCUrl:(NSString *)xmlrpcUrl;
 - (void)verifyRSDurl:(NSString *)rsdURL;
 - (void)verifyXMLRPCurl:(NSString *)xmlrpcURL;
+- (void)verifyXMLRPCurlInBackground:(NSString *)xmlrpcURL;
 - (BOOL)blogExists;
 - (void)keyboardWillShow:(NSNotification *)notification;
 - (void)keyboardWillHide:(NSNotification *)notification;

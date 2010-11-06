@@ -46,7 +46,7 @@
 	[postsViewController addObserver:self forKeyPath:@"selectedIndexPath" options:NSKeyValueObservingOptionNew context:nil];
 	[pagesViewController addObserver:self forKeyPath:@"selectedIndexPath" options:NSKeyValueObservingOptionNew context:nil];
 	[commentsViewController addObserver:self forKeyPath:@"selectedIndexPath" options:NSKeyValueObservingOptionNew context:nil];
-	[statsTableViewController addObserver:self forKeyPath:@"selectedIndexPath" options:NSKeyValueObservingOptionNew context:nil];
+	//[statsTableViewController addObserver:self forKeyPath:@"selectedIndexPath" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -70,7 +70,7 @@
 	[postsViewController removeObserver:self forKeyPath:@"selectedIndexPath"];
 	[pagesViewController removeObserver:self forKeyPath:@"selectedIndexPath"];
 	[commentsViewController removeObserver:self forKeyPath:@"selectedIndexPath"];	
-	[statsTableViewController removeObserver:self forKeyPath:@"selectedIndexPath"];
+	//[statsTableViewController removeObserver:self forKeyPath:@"selectedIndexPath"];
 	[tabBarController release], tabBarController = nil;
 	
     [super dealloc];
@@ -113,9 +113,9 @@
 		self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
 		self.navigationItem.titleView = commentsViewController.segmentedControl;
 	}
-	else if (viewController == statsTableViewController) {
-		self.navigationItem.rightBarButtonItem = statsTableViewController.refreshButtonItem;
-	}
+//	else if (viewController == statsTableViewController) {
+//		self.navigationItem.rightBarButtonItem = statsTableViewController.refreshButtonItem;
+//	}
 	
 	[viewController viewWillAppear:NO];
 }
@@ -179,12 +179,12 @@
 		hasVCName = YES;
 		hasIndexPath = YES;
 	}
-	else if	(statsTableViewController.selectedIndexPath) {
-		vcName = @"Statss";
-		indexPath = statsTableViewController.selectedIndexPath;
-		hasVCName = YES;
-		hasIndexPath = YES;
-	}
+//	else if	(statsTableViewController.selectedIndexPath) {
+//		vcName = @"Statss";
+//		indexPath = statsTableViewController.selectedIndexPath;
+//		hasVCName = YES;
+//		hasIndexPath = YES;
+//	}
 	
 	if((hasVCName == YES) && (hasIndexPath == YES)) {
 		[[NSUserDefaults standardUserDefaults] setObject:vcName forKey:@"WPSelectedContentType"];
@@ -215,10 +215,10 @@
 			selectedViewController = pagesViewController;
 			pagesViewController.selectedIndexPath = selectedIndexPath;
 		}
-		else if	([vcName isEqual:@"Stats"]) {
-			selectedViewController = statsTableViewController;
-			statsTableViewController.selectedIndexPath = selectedIndexPath;
-		}
+//		else if	([vcName isEqual:@"Stats"]) {
+//			selectedViewController = statsTableViewController;
+//			statsTableViewController.selectedIndexPath = selectedIndexPath;
+//		}
 	}
 		
 	// show the view controller

@@ -211,7 +211,7 @@
 				cell.textLabel.text = @"Password";
 				break;
 			case 3:
-				cell.textLabel.text = @"XMLRPC";
+				cell.textLabel.text = @"XML-RPC";
 				break;
 			default:
 				break;
@@ -377,6 +377,7 @@
 			else {
 				[self setUrl:textField.text];
                 [self urlDidChange];
+				self.hasCheckedForSubsites = NO;
 				footerText = @" ";
 				xmlrpc = nil;
 				[self performSelectorInBackground:@selector(getXMLRPCurl) withObject:nil];
@@ -534,7 +535,7 @@
 }
 
 - (void)didAuthenticateSuccessfully {
-	if((isAdding == NO) || ((username == nil) || (password == nil) || (xmlrpc == nil)))
+	if((isAdding == NO) || ((username == nil) || (password == nil) || (xmlrpc == nil) || (hasCheckedForSubsites == NO)))
 		[self performSelectorInBackground:@selector(getSubsites) withObject:nil];
 	else if((username != nil) && (password != nil) && (xmlrpc != nil))
 		[self performSelectorInBackground:@selector(addSite) withObject:nil];
@@ -596,7 +597,7 @@
 		NSString *responseString = [xmlrpcRequest responseString];
 		
 		if([responseString rangeOfString:@"XML-RPC server accepts POST requests only."].location != NSNotFound)
-			[self verifyXMLRPCurl:xmlrpcURL];
+			[self performSelectorInBackground:@selector(verifyXMLRPCurlInBackground:) withObject:xmlrpcURL];
 		else {
 			// We're looking for: <link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://myblog.com/xmlrpc.php?rsd" />
 			NSString *rsdURL = [responseString stringByMatching:@"<link rel=\"EditURI\" type=\"application/rsd\\+xml\" title=\"RSD\" href=\"([^\"]*)\"[^/]*/>" capture:1];
@@ -671,7 +672,7 @@
 	if(!error) {
 		NSString *responseString = [xmlrpcRequest responseString];
 		if([responseString rangeOfString:@"XML-RPC server accepts POST requests only."].location != NSNotFound)
-			[self verifyXMLRPCurl:xmlrpcURL];	// Success
+			[self performSelectorInBackground:@selector(verifyXMLRPCurlInBackground:) withObject:xmlrpcURL]; // Success
 		else if([responseString isEqualToString:@""]) {
 			// XML-RPC isn't enabled
 			self.footerText = @"It looks like XML-RPC isn't enabled on your blog. You can enable it by going to "
@@ -694,9 +695,19 @@
 - (void)requestFailed:(ASIHTTPRequest *)request {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
-	NSError *error = [request error];
-	self.footerText = [NSString stringWithFormat:@"%@.", [error localizedDescription]];
 	self.hasValidXMLRPCurl = NO;
+	
+	NSError *error = [request error];
+	NSString *errorMessage = [error localizedDescription];
+	if([errorMessage isEqualToString:@"A connection failure occurred"]) {
+		errorMessage = @"Couldn't connect to URL";
+		
+		// Fake out hasValidXMLRPCurl so we don't confuse the user.
+		// Right now the main problem is the URL field.
+		self.hasValidXMLRPCurl = YES;
+	}
+	
+	self.footerText = [NSString stringWithFormat:@"%@.", errorMessage];
 	self.isGettingXMLRPCURL = NO;
 	self.isAdding = NO;
 	addButtonText = @"Add Blog";
@@ -758,15 +769,25 @@
 			self.hasValidXMLRPCurl = YES;
 			self.xmlrpc = xmlrpcURL;
 		}
-		else
+		else {
 			self.hasValidXMLRPCurl = NO;
+			[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
+		}
 	}
 	else {
 		self.hasValidXMLRPCurl = NO;
+		[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
 	}
-	[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
 	
 	isGettingXMLRPCURL = NO;
+}
+
+- (void)verifyXMLRPCurlInBackground:(NSString *)xmlrpcURL {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	[self verifyXMLRPCurl:xmlrpcURL];
+	
+	[pool release];
 }
 
 - (BOOL)blogExists {
@@ -829,8 +850,12 @@
 	
 	[[BlogDataManager sharedDataManager] resetCurrentBlog];
 	[newBlog setValue:blogID forKey:kBlogId];
+	
+	if(self.host == nil)
+		self.host = [NSString stringWithString:self.url];
+		
 	NSString *hostURL = [[NSString alloc] initWithFormat:@"%@", 
-						 [host stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""]];
+						 [self.host stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""]];
 	self.host = hostURL;
 	
 	NSString *authBlogURL = [NSString stringWithFormat:@"%@_auth", self.host];
@@ -867,6 +892,9 @@
 	[[BlogDataManager sharedDataManager] wrapperForSyncPostsAndGetTemplateForBlog:[BlogDataManager sharedDataManager].currentBlog];
 	[newBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 	[[BlogDataManager sharedDataManager] setCurrentBlog:newBlog];
+	
+	NSLog(@"saving newBlog: %@", newBlog);
+	
 	[BlogDataManager sharedDataManager].currentBlogIndex = -1;
 	[[BlogDataManager sharedDataManager] saveCurrentBlog];
 	[[BlogDataManager sharedDataManager] syncCategoriesForBlog:[BlogDataManager sharedDataManager].currentBlog];
