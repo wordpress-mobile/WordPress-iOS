@@ -515,10 +515,10 @@
 		isShowingResizeActionSheet = YES;
 		UIActionSheet *resizeActionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose Image Size" 
 																	   delegate:self 
-															  cancelButtonTitle:@"Original" 
+															  cancelButtonTitle:nil 
 														 destructiveButtonTitle:nil 
-															  otherButtonTitles:@"Small", @"Medium", @"Large", nil];
-		[resizeActionSheet showInView:self.view];
+															  otherButtonTitles:@"Small", @"Medium", @"Large", @"Original", nil];
+		[resizeActionSheet showInView:super.tabBarController.view];
 		[resizeActionSheet release];
 	}
 }
