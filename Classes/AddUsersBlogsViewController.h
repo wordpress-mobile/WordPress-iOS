@@ -20,7 +20,7 @@
 	NSMutableArray *selectedBlogs;
 	NSString *username, *url, *password;
 	IBOutlet UITableView *tableView;
-	IBOutlet UIBarButtonItem *buttonAddSelected, *buttonSelectAll;
+	IBOutlet UIBarButtonItem *buttonAddSelected, *buttonSelectAll, *topAddSelectedButton;
 	WPProgressHUD *spinner;
 }
 
@@ -29,7 +29,7 @@
 @property (nonatomic, retain) NSMutableArray *selectedBlogs;
 @property (nonatomic, retain) NSString *username, *url, *password;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *buttonAddSelected, *buttonSelectAll;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *buttonAddSelected, *buttonSelectAll, *topAddSelectedButton;
 @property (nonatomic, retain) WPProgressHUD *spinner;
 
 - (IBAction)selectAllBlogs:(id)sender;
@@ -44,5 +44,6 @@
 - (void)saveSelectedBlogsInBackground;
 - (void)didSaveSelectedBlogsInBackground;
 - (void)signOut;
+- (void)checkAddSelectedButtonStatus;
 
 @end

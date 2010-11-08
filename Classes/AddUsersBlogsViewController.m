@@ -9,7 +9,7 @@
 
 @implementation AddUsersBlogsViewController
 @synthesize usersBlogs, isWPcom, selectedBlogs, tableView, buttonAddSelected, buttonSelectAll, hasCompletedGetUsersBlogs;
-@synthesize spinner, username, password, url;
+@synthesize spinner, username, password, url, topAddSelectedButton;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -77,13 +77,16 @@
 	}
 	
 	if(DeviceIsPad() == YES) {
-		UIBarButtonItem *topAddSelectedButton = [[UIBarButtonItem alloc] initWithTitle:@"Add Selected" 
+		topAddSelectedButton = [[UIBarButtonItem alloc] initWithTitle:@"Add Selected" 
 																				 style:UIBarButtonItemStyleDone 
 																				target:self 
 																				action:@selector(saveSelectedBlogs:)];
 		self.navigationItem.rightBarButtonItem = topAddSelectedButton;
-		[topAddSelectedButton release];
+		topAddSelectedButton.enabled = FALSE;
 	}
+	
+	buttonAddSelected.enabled = FALSE;
+	
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -199,6 +202,7 @@
 
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if(indexPath.section == 0) {
+		
 		Blog *selectedBlog = [usersBlogs objectAtIndex:indexPath.row];
 		
 		if(![selectedBlogs containsObject:selectedBlog.blogID]) {
@@ -227,6 +231,9 @@
 	else if(indexPath.section == 1) {
 		[self signOut];
 	}
+	
+	[self checkAddSelectedButtonStatus];
+
 
 	[tv deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -283,7 +290,6 @@
 		// TODO: Store blog list in Core Data
 		//[[NSUserDefaults standardUserDefaults] setObject:usersBlogs forKey:@"WPcomUsersBlogs"];
 		
-		self.navigationItem.rightBarButtonItem.enabled = YES;
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"didUpdateTableData" object:nil];
 	}
 	[self performSelectorInBackground:@selector(updateFavicons) withObject:nil];
@@ -421,6 +427,21 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
+-(void) checkAddSelectedButtonStatus {
+	//disable the 'Add Selected' button if they have selected 0 blogs, trac #521
+	if (selectedBlogs.count == 0) {
+		buttonAddSelected.enabled = FALSE;
+		if (DeviceIsPad())
+			topAddSelectedButton.enabled = FALSE;
+	}
+	else {
+		buttonAddSelected.enabled = TRUE;
+		if (DeviceIsPad())
+			topAddSelectedButton.enabled = TRUE;
+	}
+	
+}
+
 #pragma mark -
 #pragma mark Memory management
 
@@ -440,6 +461,7 @@
 	[tableView release];
 	[buttonAddSelected release];
 	[buttonSelectAll release];
+	[topAddSelectedButton release];
     [super dealloc];
 }
 
