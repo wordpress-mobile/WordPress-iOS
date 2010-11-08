@@ -3647,12 +3647,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
         return successFlag;
     }
 	
-	for (id key in aPost) {
-		
-        NSLog(@"key: %@, value: %@", key, [aPost objectForKey:key]);
-		
-    }
-	
     NSNumber *postStatus = [aPost valueForKey:@"isLocalDraft"];
     if (currentPostIndex == -1 || ([postStatus intValue] == 1)) {
         NSMutableDictionary *postParams = [NSMutableDictionary dictionary];
