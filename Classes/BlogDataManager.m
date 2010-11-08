@@ -3647,6 +3647,12 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
         return successFlag;
     }
 	
+	for (id key in aPost) {
+		
+        NSLog(@"key: %@, value: %@", key, [aPost objectForKey:key]);
+		
+    }
+	
     NSNumber *postStatus = [aPost valueForKey:@"isLocalDraft"];
     if (currentPostIndex == -1 || ([postStatus intValue] == 1)) {
         NSMutableDictionary *postParams = [NSMutableDictionary dictionary];
@@ -3665,11 +3671,27 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
         [postParams setObject:[aPost valueForKey:@"categories"] forKey:@"categories"];
 		
 		// dateCreated & date_created_gmt
-		NSDate *now = [NSDate date];
-		NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:now];
-        NSDate *gmtDate = [now addTimeInterval:(secs * -1)];
-		[postParams setObject:gmtDate forKey:@"dateCreated"];
-		[postParams setObject:gmtDate forKey:@"date_created_gmt"];
+		if ([aPost valueForKey:@"dateCreated"] != nil){
+			NSDate *pubDate = [aPost valueForKey:@"dateCreated"];
+			NSTimeZone* currentTimeZone = [NSTimeZone localTimeZone];
+			if ([currentTimeZone.abbreviation isEqualToString:@"GMT"]){
+				[postParams setObject:pubDate forKey:@"dateCreated"];
+				[postParams setObject:pubDate forKey:@"date_created_gmt"];
+			}
+			else {
+				NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:pubDate];
+				NSDate *gmtDate = [pubDate addTimeInterval:(secs * -1)];
+				[postParams setObject:gmtDate forKey:@"dateCreated"];
+				[postParams setObject:gmtDate forKey:@"date_created_gmt"];
+			}
+		}
+		else {
+			NSDate *now = [NSDate date];
+			NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:now];
+			NSDate *gmtDate = [now addTimeInterval:(secs * -1)];
+			[postParams setObject:gmtDate forKey:@"dateCreated"];
+			[postParams setObject:gmtDate forKey:@"date_created_gmt"];
+		}
 		
 		NSLog(@"dateCreated: %@ date_created_gmt: %@", 
 			  [postParams objectForKey:@"dateCreated"], 

@@ -22,6 +22,9 @@
 		datePicker.date = settingController.postDetailViewController.post.dateCreated;
 		dateLabel.text = [dateFormatter stringFromDate:settingController.postDetailViewController.post.dateCreated];
 	}
+	else {
+		datePicker.date = [NSDate date];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

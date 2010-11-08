@@ -290,6 +290,17 @@
 					postDetailEditController.isLocalDraft = NO;
 				}
 				[(NSMutableDictionary *)[BlogDataManager sharedDataManager].currentPost setValue:@"" forKey:@"mt_text_more"];
+				
+				if (post.dateCreated == nil){
+					[dm.currentPost setObject:[NSDate date] forKey:@"dateCreated"];
+				}
+				else {
+					[dm.currentPost setObject:post.dateCreated forKey:@"dateCreated"];
+				}
+				
+				if(postSettingsController.passwordTextField.text != nil)
+					[dm.currentPost setObject:postSettingsController.passwordTextField.text forKey:@"wp_password"];
+				
 				[postSettingsController endEditingAction:nil];
 				
 				NSString *description = [dm.currentPost valueForKey:@"description"];
