@@ -62,11 +62,15 @@
 		[autosavePopover setPopoverContentSize:CGSizeMake(300.0, 400.0)];
 	}
 	
-	if(editMode == kNewPost) {
+	if (appDelegate.postID != nil)
+		post = [draftManager get:appDelegate.postID];
+	
+	if(editMode == kNewPost || post.isLocalDraft) {
 		NSMutableArray *tabs = [NSMutableArray arrayWithArray:tabController.viewControllers];
 		[tabs removeObjectAtIndex:1];
 		[tabController setViewControllers:tabs];
 	}
+	post = nil;
 	
 	BOOL clearAutosaves = [[NSUserDefaults standardUserDefaults] boolForKey:@"autosave_clear_preference"];
 	if(clearAutosaves == YES) {
@@ -501,7 +505,8 @@
 		self.navigationItem.title = @"Write";
 		
 		[tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
-		[postDetailViewController refreshUIForCurrentPost];[postDetailEditController refreshUIForCurrentPost];
+		[postDetailViewController refreshUIForCurrentPost];
+		[postDetailEditController refreshUIForCurrentPost];
 		[postSettingsController reloadData];
 		//[photosListController refreshData];
 		
