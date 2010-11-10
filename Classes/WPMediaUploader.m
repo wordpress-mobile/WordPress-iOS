@@ -402,6 +402,7 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request {
 	if(![[request responseString] isEmpty]) {
+		NSLog(@"response: %@", [request responseString]);
 		NSMutableDictionary *videoMeta = [[NSMutableDictionary alloc] init];
 		if(isAtomPub) {
 			NSString *regEx = @"src=\"([^\"]*)\"";
@@ -416,6 +417,18 @@
 			NSDictionary *responseMeta = [xmlrpcResponse object];
 			if ([xmlrpcResponse isKindOfClass:[NSError class]]) {
 				[self finishWithNotificationName:VideoUploadFailed object:nil userInfo:nil];
+			}
+			else if([responseMeta valueForKey:@"faultString"] != nil) {
+				UIAlertView *uploadAlert = [[UIAlertView alloc] initWithTitle:@"Upload Failed" 
+																	  message:[responseMeta valueForKey:@"faultString"]
+																	 delegate:self 
+															cancelButtonTitle:@"OK" otherButtonTitles:nil];
+				[uploadAlert show];
+				[uploadAlert release];
+				if(mediaType == kVideo)
+					[self finishWithNotificationName:VideoUploadFailed object:nil userInfo:nil];
+				else if(mediaType == kImage)
+					[self finishWithNotificationName:ImageUploadFailed object:nil userInfo:nil];
 			}
 			else if(mediaType == kVideo) {
 				if([responseMeta objectForKey:@"videopress_shortcode"] != nil)

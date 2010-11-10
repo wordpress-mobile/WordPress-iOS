@@ -189,10 +189,6 @@
 					loginTextField.placeholder = @"HTTP Auth Username";
 					loginTextField.keyboardType = UIKeyboardTypeEmailAddress;
 					loginTextField.returnKeyType = UIReturnKeyDone;
-					if([appDelegate.currentBlog objectForKey:@"authUsername"] != nil)
-						loginTextField.text = [appDelegate.currentBlog objectForKey:@"authUsername"];
-					else if([appDelegate.currentBlog objectForKey:@"username"] != nil)
-						loginTextField.text = [appDelegate.currentBlog objectForKey:@"username"];
 					textCell.tag = 4;
 					
 					if(DeviceIsPad() == YES)
