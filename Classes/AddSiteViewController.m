@@ -25,6 +25,7 @@
 	[spinner initWithLabel:@"Saving..."];
 	addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
 	addUsersBlogsView.isWPcom = NO;
+    isAuthenticating = NO;
 	
 	// Setup WPorg table header
 	CGRect headerFrame = CGRectMake(0, 0, 320, 70);
@@ -233,6 +234,14 @@
 	}
 	else if(indexPath.section == 2) {
 		activityCell.textLabel.text = addButtonText;
+        if (isAuthenticating) {
+            activityCell.textLabel.textColor = [UIColor lightGrayColor];
+            activityCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        } else {
+            activityCell.textLabel.textColor = [UIColor blackColor];
+            activityCell.selectionStyle = UITableViewCellSelectionStyleBlue;
+        }
+
 		if(isAdding)
 			[activityCell.spinner startAnimating];
 		else
@@ -256,6 +265,13 @@
 
 #pragma mark -
 #pragma mark Table view delegate
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ((indexPath.section == 2) && isAuthenticating) {
+        return nil;
+    }
+    return indexPath;
+}
 
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell *cell = [tv cellForRowAtIndexPath:indexPath];
@@ -325,7 +341,7 @@
 				[tv reloadData];
 				
 				if(isAuthenticated == NO)
-					[self performSelectorInBackground:@selector(authenticate) withObject:nil];
+                    [self authenticateInBackground];
 				else if(hasCheckedForSubsites == NO) {
 					[self performSelectorInBackground:@selector(getSubsites) withObject:nil];
 				}
@@ -445,7 +461,7 @@
 			break;
 	}
 	if((url != nil) && (username != nil) && (password != nil) && (xmlrpc != nil)) {
-		[self performSelectorInBackground:@selector(authenticate) withObject:nil];
+        [self authenticateInBackground];
 	}
 	
 	[self refreshTable];
@@ -542,31 +558,42 @@
 				isAdding = NO;
 				addButtonText = @"Add Blog";
 			}
-			[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
+			[self performSelectorOnMainThread:@selector(didFailAuthentication) withObject:nil waitUntilDone:NO];
 		}
 	}
 	else if((username == nil) || ([username isEqualToString:@""])) {
 		isAdding = NO;
 		addButtonText = @"Add Blog";
 		footerText = @"The username field is empty.";
-		[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
+		[self performSelectorOnMainThread:@selector(didFailAuthentication) withObject:nil waitUntilDone:NO];
 	}
 	else if((password == nil) || ([password isEqualToString:@""])) {
 		isAdding = NO;
 		addButtonText = @"Add Blog";
 		footerText = @"The password field is empty.";
-		[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
+		[self performSelectorOnMainThread:@selector(didFailAuthentication) withObject:nil waitUntilDone:NO];
 	}
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[pool release];
 }
 
+- (void)authenticateInBackground {
+    isAuthenticating = YES;
+    [self performSelectorInBackground:@selector(authenticate) withObject:nil];
+}
+
 - (void)didAuthenticateSuccessfully {
+    isAuthenticating = NO;
 	if((isAdding == NO) || ((username == nil) || (password == nil) || (xmlrpc == nil) || (hasCheckedForSubsites == NO)))
 		[self performSelectorInBackground:@selector(getSubsites) withObject:nil];
 	else if((username != nil) && (password != nil) && (xmlrpc != nil))
 		[self performSelectorInBackground:@selector(addSite) withObject:nil];
+}
+
+- (void)didFailAuthentication {
+    isAuthenticating = NO;
+    [self refreshTable];
 }
 
 - (void)getXMLRPCurl {

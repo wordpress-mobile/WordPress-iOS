@@ -38,7 +38,9 @@
 - (void)getSubsites;
 - (void)didGetSubsitesSuccessfully:(NSArray *)subsites;
 - (void)authenticate;
+- (void)authenticateInBackground;
 - (void)didAuthenticateSuccessfully;
+- (void)didFailAuthentication;
 - (void)addSite;
 - (void)didAddSiteSuccessfully;
 - (void)addSiteFailed;
