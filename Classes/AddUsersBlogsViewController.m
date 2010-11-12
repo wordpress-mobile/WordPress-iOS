@@ -234,7 +234,6 @@
 	
 	[self checkAddSelectedButtonStatus];
 
-
 	[tv deselectRowAtIndexPath:indexPath animated:YES];
 }
 
@@ -249,6 +248,7 @@
 	[self.tableView reloadData];
 	buttonSelectAll.title = @"Deselect All";
 	buttonSelectAll.action = @selector(deselectAllBlogs:);
+	[self checkAddSelectedButtonStatus];
 }
 
 - (void)deselectAllBlogs:(id)sender {
@@ -256,6 +256,7 @@
 	[self.tableView reloadData];
 	buttonSelectAll.title = @"Select All";
 	buttonSelectAll.action = @selector(selectAllBlogs:);
+	[self checkAddSelectedButtonStatus];
 }
 
 - (void)signOut {
@@ -427,7 +428,7 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
--(void) checkAddSelectedButtonStatus {
+-(void)checkAddSelectedButtonStatus {
 	//disable the 'Add Selected' button if they have selected 0 blogs, trac #521
 	if (selectedBlogs.count == 0) {
 		buttonAddSelected.enabled = FALSE;
