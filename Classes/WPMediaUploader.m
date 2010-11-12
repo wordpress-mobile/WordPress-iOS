@@ -45,6 +45,7 @@
 }
 
 - (void)stop {
+    [request cancel];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = NO;
 }
@@ -148,13 +149,14 @@
 	else if(self.mediaType == kVideo)
 		[self updateStatus:@"Uploading video..."];
 	
-	ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:self.xmlrpcURL]];
+	request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:self.xmlrpcURL]];
 	[request setDelegate:self];
 	[request setShouldStreamPostDataFromDisk:YES];
 	[request appendPostDataFromFile:self.localEncodedURL];
 	[request setUploadProgressDelegate:self.progressView];
 	[request setTimeOutSeconds:600];
 	[request startAsynchronous];
+    [request retain];
 }
 
 - (void)sendAtomPub {
@@ -178,7 +180,7 @@
 	NSString *username = [dm.currentBlog objectForKey:@"username"];
 	NSString *password = [dm getPasswordFromKeychainInContextOfCurrentBlog:dm.currentBlog];
 	
-	ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:atomURL];
+	request = [ASIFormDataRequest requestWithURL:atomURL];
 	[request setUsername:username];
 	[request setPassword:password];
 	[request setRequestMethod:@"POST"];
@@ -189,6 +191,7 @@
 	[request setDelegate:self];
 	[request setUploadProgressDelegate:self.progressView];
 	[request startAsynchronous];
+    [request retain];
 }
 		   
 #pragma mark -
@@ -400,7 +403,7 @@
 
 #pragma mark ASIHTTPRequest delegate
 
-- (void)requestFinished:(ASIHTTPRequest *)request {
+- (void)requestFinished:(ASIHTTPRequest *)req {
 	if(![[request responseString] isEmpty]) {
 		NSLog(@"response: %@", [request responseString]);
 		NSMutableDictionary *videoMeta = [[NSMutableDictionary alloc] init];
@@ -467,9 +470,10 @@
 			[self finishWithNotificationName:VideoUploadFailed object:nil userInfo:nil];
 	}
 
+    [request release]; request = nil;
 }
 
-- (void)requestFailed:(ASIHTTPRequest *)request {
+- (void)requestFailed:(ASIHTTPRequest *)req {
 	[self updateStatus:@"Upload failed. Please try again."];
 	NSLog(@"connection failed: %@", [request responseData]);
 	
@@ -482,6 +486,8 @@
 	
 	if(!isAtomPub)
 		[[NSFileManager defaultManager]  removeItemAtPath:self.localURL error:NULL];
+
+    [request release]; request = nil;
 }
 
 - (void)connection:(NSURLConnection *)conn didFailWithError:(NSError *)error {
@@ -492,6 +498,8 @@
 		[self stopWithNotificationName:@"ImageUploadFailed"];
 	else if(self.mediaType == kVideo)
 		[self stopWithNotificationName:@"VideoUploadFailed"];
+
+    [request release]; request = nil;
 }
 
 #pragma mark -
@@ -499,7 +507,8 @@
 
 - (void)dealloc {
     [self stopWithStatus:@"Stopped"];
-	
+
+    [request release];
 	[stopButton release];
 	[localURL release];
 	[xmlrpcURL release];

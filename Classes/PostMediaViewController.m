@@ -1132,6 +1132,18 @@
 	[self refreshMedia];
 }
 
+- (IBAction)cancelPendingUpload:(id)sender {
+    if (mediaUploader) {
+        [mediaUploader cancelAction:self];
+        [self removemediaUploader:nil finished:YES context:nil];
+        if (self.uploadID != nil) {
+            Media *media = [mediaManager get:self.uploadID];
+            [self deleteMedia:media];
+            [self refreshMedia];
+        }
+    }
+}
+
 #pragma mark -
 #pragma mark Memory management
 

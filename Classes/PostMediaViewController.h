@@ -110,6 +110,7 @@ static inline double radians(double degrees) {
 - (void)deleteMedia:(Media *)media;
 - (void)shouldDeleteMedia:(NSNotification *)notification;
 - (void)refreshProperties;
+- (IBAction)cancelPendingUpload:(id)sender;
 - (void)initObjects;
 
 @end

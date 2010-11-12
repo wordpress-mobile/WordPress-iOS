@@ -225,6 +225,7 @@
 - (IBAction)cancelView:(id)sender {
     if (!hasChanges) {
         [self stopTimer];
+        [mediaViewController cancelPendingUpload:self];
 		[self dismissEditView];
         return;
     }
@@ -586,6 +587,7 @@
     hasChanges = NO;
 	[self refreshButtons];
 	[postDetailEditController clearUnsavedPost];
+    [mediaViewController cancelPendingUpload:self];
     [self stopTimer];
 	if(DeviceIsPad() == NO)
 		[self.navigationController popViewControllerAnimated:YES];

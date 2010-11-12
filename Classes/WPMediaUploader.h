@@ -23,6 +23,7 @@ enum {
 	
 	MediaType mediaType;
 	MediaOrientation orientation;
+    ASIFormDataRequest *request;
 	NSString *filename, *xmlrpcURL, *xmlrpcHost, *localURL, *localEncodedURL;
 	NSData *bits;
 	float filesize;
