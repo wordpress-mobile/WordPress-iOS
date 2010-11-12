@@ -22,7 +22,7 @@
 
 #define OTHER_LABEL_WIDTH           220
 #define DATE_LABEL_HEIGHT           20
-#define NAME_LABEL_HEIGHT           17
+#define NAME_LABEL_HEIGHT           19
 #define URL_LABEL_HEIGHT            15
 #define POST_LABEL_HEIGHT           15
 
