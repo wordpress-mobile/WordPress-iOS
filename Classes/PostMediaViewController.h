@@ -29,7 +29,7 @@ static inline double radians(double degrees) {
     return degrees * M_PI / 180;
 }
 
-@interface PostMediaViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate> {
+@interface PostMediaViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate, UIPopoverControllerDelegate> {
 	WordPressAppDelegate *appDelegate;
 	PostViewController *postDetailViewController;
 	MediaManager *mediaManager;

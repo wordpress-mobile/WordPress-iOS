@@ -484,8 +484,11 @@
 		isLibraryMedia = YES;
 		
 		if(DeviceIsPad() == YES) {
-			addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
-			[addPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            if (addPopover == nil) {
+                addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
+                addPopover.delegate = self;
+                [addPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            }
 		}
 		else {
 			if(pickerContainer == nil)
@@ -497,6 +500,11 @@
 			[pickerContainer presentModalViewController:picker animated:YES];
 		}
     }
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+    [addPopover release];
+    addPopover = nil;
 }
 
 - (void)showOrientationChangedActionSheet {
