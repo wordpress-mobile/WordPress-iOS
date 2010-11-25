@@ -131,7 +131,7 @@
 		cell.accessoryType = UITableViewCellAccessoryNone;
 		
 		if ([indexPath section] == 0) {
-			UITextField *addTextField = [[UITextField alloc] initWithFrame:CGRectMake(110, 10, 185, 30)];
+			UITextField *addTextField = [[UITextField alloc] initWithFrame:CGRectMake(140, 10, 185, 30)];
 			addTextField.adjustsFontSizeToFitWidth = YES;
 			addTextField.textColor = [UIColor blackColor];
 			if ([indexPath section] == 0) {
@@ -170,7 +170,7 @@
 				}
 				
 				addTextField.tag = indexPath.row;
-				addTextField.backgroundColor = [UIColor whiteColor];
+				addTextField.backgroundColor = [UIColor clearColor];
 				addTextField.autocorrectionType = UITextAutocorrectionTypeNo;
 				addTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 				addTextField.textAlignment = UITextAlignmentLeft;
