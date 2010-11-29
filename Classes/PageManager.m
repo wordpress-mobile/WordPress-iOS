@@ -354,7 +354,6 @@
 						   [pageID stringValue], nil];
 		XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:xmlrpcURL];
 		[request setMethod:@"wp.deletePage" withObjects:params];
-		[params release];
 		
 		NSString *response = (NSString *)[self executeXMLRPCRequest:request];
 		if([response intValue] == 1) {
@@ -366,7 +365,6 @@
 		else {
 			// Failure
 		}
-		[request release];
 		
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	}

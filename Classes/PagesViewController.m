@@ -405,8 +405,7 @@
 				[self performSelectorOnMainThread:@selector(didDeletePageAtIndexPath:) withObject:indexPath waitUntilDone:NO];
 		}
 	}
-	
-    [pool release];
+	[pool release];
 }
 
 - (void)didDeleteDraftAtIndexPath:(NSIndexPath *)indexPath {
