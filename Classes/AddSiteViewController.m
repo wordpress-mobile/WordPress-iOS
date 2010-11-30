@@ -754,7 +754,7 @@
 	
 	NSError *error = [request error];
 	NSString *errorMessage = [error localizedDescription];
-	if([errorMessage isEqualToString:@"A connection failure occurred"]) {
+	if((ASIConnectionFailureErrorType == [error code]) || (ASIRequestTimedOutErrorType == [error code])) {
 		errorMessage = @"Couldn't connect to URL";
 		
 		// Fake out hasValidXMLRPCurl so we don't confuse the user.
