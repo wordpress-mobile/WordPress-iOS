@@ -144,6 +144,7 @@
 					addTextField.returnKeyType = UIReturnKeyNext;
 					if(url != nil)
 						addTextField.text = url;
+                    urlTextField = addTextField;
 				}
 				else if(indexPath.row == 1) {
 					addTextField.placeholder = @"WordPress username";
@@ -416,7 +417,7 @@
 		case 0:
 			if(((username != nil) && (password != nil)) && ([textField.text isEqualToString:@""])) {
 				footerText = @"The URL field is empty.";
-				url = nil;
+				self.url = nil;
 			}
 			else {
 				[self setUrl:textField.text];
@@ -428,7 +429,7 @@
 			}
 			break;
 		case 1:
-			if(((url != nil) && (password != nil)) && ([textField.text isEqualToString:@""])) {
+			if(((self.url != nil) && (password != nil)) && ([textField.text isEqualToString:@""])) {
 				footerText = @"The username field is empty.";
 				[self setUsername:textField.text];
 			}
@@ -460,7 +461,7 @@
 		default:
 			break;
 	}
-	if((url != nil) && (username != nil) && (password != nil) && (xmlrpc != nil)) {
+	if((self.url != nil) && (username != nil) && (password != nil) && (xmlrpc != nil)) {
         [self authenticateInBackground];
 	}
 	
@@ -604,15 +605,16 @@
 		isGettingXMLRPCURL = YES;
 		[BlogDataManager sharedDataManager].shouldDisplayErrors = NO;
 		
-		if((url != nil) && (![url isEqualToString:@""])) {
-			if(![url hasPrefix:@"http"])
-				url = [[NSString stringWithFormat:@"http://%@", url] retain];
+		if((self.url != nil) && (![url isEqualToString:@""])) {
+			if(![self.url hasPrefix:@"http"])
+				self.url = [NSString stringWithFormat:@"http://%@", self.url];
 			
 			// Grab our XML-RPC url
-			ASIHTTPRequest *htmlRequest = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
+			ASIHTTPRequest *htmlRequest = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:self.url]];
 			[htmlRequest setShouldPresentCredentialsBeforeChallenge:NO];
 			[htmlRequest setShouldPresentAuthenticationDialog:YES];
 			[htmlRequest setUseKeychainPersistence:YES];
+            [htmlRequest setShouldUseRFC2616RedirectBehaviour:YES];
 			[htmlRequest setDelegate:self];
 			[htmlRequest startAsynchronous];
 			[htmlRequest release];
@@ -628,13 +630,13 @@
 - (void)getXMLRPCUrlSynchronously {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
-	if((url != nil) && (![url isEqualToString:@""])) {
-		if(![url hasPrefix:@"http"])
-			url = [[NSString stringWithFormat:@"http://%@", url] retain];
+	if((self.url != nil) && (![url isEqualToString:@""])) {
+		if(![self.url hasPrefix:@"http"])
+			self.url = [NSString stringWithFormat:@"http://%@", url];
 	}
 	
 	// Start by just trying URL + /xmlrpc.php
-	NSString *xmlrpcURL = [url stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	NSString *xmlrpcURL = [self.url stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 	if(![xmlrpcURL hasSuffix:@"/"])
 		xmlrpcURL = [NSString stringWithFormat:@"%@/xmlrpc.php", xmlrpcURL];
 	else
@@ -690,6 +692,12 @@
 }
 
 - (void)requestReceivedResponseHeaders:(ASIHTTPRequest *)request {
+    NSDictionary *headers = [request responseHeaders];
+    NSString *redirect = [headers objectForKey:@"Location"];
+    if (redirect != nil) {
+        [self setUrl:redirect];
+        [self urlDidChange];
+    }
 }
 
 - (void)requestFinished:(ASIHTTPRequest *)request {
@@ -710,12 +718,11 @@
 	}
 	
 	// Start by just trying URL + /xmlrpc.php
-	NSString *xmlrpcURL;
-	url = [url stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-	if(![url hasSuffix:@"/"])
-		xmlrpcURL = [NSString stringWithFormat:@"%@/xmlrpc.php", url];
+	NSString *xmlrpcURL = [self.url stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	if(![xmlrpcURL hasSuffix:@"/"])
+		xmlrpcURL = [NSString stringWithFormat:@"%@/xmlrpc.php", xmlrpcURL];
 	else
-		xmlrpcURL = [NSString stringWithFormat:@"%@xmlrpc.php", url];
+		xmlrpcURL = [NSString stringWithFormat:@"%@xmlrpc.php", xmlrpcURL];
 	
 	ASIHTTPRequest *xmlrpcRequest = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:xmlrpcURL]];
 	[xmlrpcRequest setRequestMethod:@"GET"];
@@ -868,23 +875,8 @@
 }
 
 - (void)urlDidChange {
-    NSInteger numSections = [self numberOfSectionsInTableView:self.tableView];
-    BOOL didFindUrlTextField = NO;
-	for(NSInteger s = 0; s < numSections; s++) { 
-		NSInteger numRowsInSection = [self tableView:self.tableView numberOfRowsInSection:s]; 
-		for(NSInteger r = 0; r < numRowsInSection; r++) {
-			UITableViewCell *cell = (UITableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:r inSection:s]]; 
-			for(UIView *subview in cell.contentView.subviews) {
-                if([subview isKindOfClass:[UITextField class]]) {
-                    UITextField *textField = (UITextField *)subview;
-                    textField.text = url;
-                    didFindUrlTextField = YES;
-                    break;
-                }
-            }
-            if(didFindUrlTextField)
-                break;
-        }
+    if (urlTextField != nil) {
+        urlTextField.text = self.url;
     }
 }
 
@@ -1047,6 +1039,7 @@
 
 - (void)dealloc {
 	[tableView release];
+    [urlTextField release];
 	[subsites release], subsites = nil;
 	[addUsersBlogsView release];
 	[spinner release];

@@ -21,7 +21,7 @@
 	WPProgressHUD *spinner;
 	AddUsersBlogsViewController *addUsersBlogsView;
 	IBOutlet UITableView *tableView;
-	UITextField *activeTextField;
+	UITextField *activeTextField, *urlTextField;
 	NSString *footerText, *addButtonText, *url, *xmlrpc, *username, *password, *blogID, *host, *blogName;
 	NSArray *subsites;
 	BOOL isAuthenticating, isAuthenticated, isGettingXMLRPCURL, isAdding, hasSubsites, hasValidXMLRPCurl, viewDidMove, keyboardIsVisible, hasCheckedForSubsites;
