@@ -143,7 +143,7 @@
 					addTextField.keyboardType = UIKeyboardTypeURL;
 					addTextField.returnKeyType = UIReturnKeyNext;
 					if(url != nil)
-						addTextField.text = url;
+						addTextField.text = self.url;
                     urlTextField = addTextField;
 				}
 				else if(indexPath.row == 1) {
@@ -632,7 +632,7 @@
 	
 	if((self.url != nil) && (![url isEqualToString:@""])) {
 		if(![self.url hasPrefix:@"http"])
-			self.url = [NSString stringWithFormat:@"http://%@", url];
+			self.url = [NSString stringWithFormat:@"http://%@", self.url];
 	}
 	
 	// Start by just trying URL + /xmlrpc.php
@@ -859,7 +859,7 @@
 	//NSString *authBlogURL = [NSString stringWithFormat:@"%@_auth", url];
 	NSMutableDictionary *newBlog = [[NSMutableDictionary dictionaryWithObjectsAndKeys:
 									 username, @"username", 
-									 url, @"url", 
+									 self.url, @"url", 
 									 authEnabled, @"authEnabled", 
 									 username, @"authUsername", 
 									 nil] retain];
@@ -890,7 +890,7 @@
 	NSNumber *authEnabled = [appDelegate.currentBlog valueForKey:@"authEnabled"];
 	NSMutableDictionary *newBlog = [[NSMutableDictionary dictionaryWithObjectsAndKeys:
 									 username, @"username", 
-									 url, @"url", 
+									 self.url, @"url", 
 									 authEnabled, @"authEnabled", 
 									 authUsername, @"authUsername", 
 									 nil] retain];
