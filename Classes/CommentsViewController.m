@@ -265,8 +265,6 @@
         [selectedComments removeAllObjects];
     }
 
-    [self reloadTableView];
-
     for (NSDictionary *dict in commentsArray) {
         NSString *str = [dict valueForKey:@"comment_id"];
         [commentsDict setValue:dict forKey:str];
@@ -274,7 +272,7 @@
     
     [editButtonItem setEnabled:([commentsArray count] > 0)];
     [self updateBadge];
-    [commentsTableView reloadData];
+	[self reloadTableView];
 	
 	if (DeviceIsPad() == YES) {
 		if (self.selectedIndexPath && !self.isSecondaryViewController) {
@@ -320,7 +318,7 @@
     [sharedDataManager performSelector:selector withObject:[self selectedComments] withObject:[sharedDataManager currentBlog]];
 	
 	// calling UIKit from a background thread is bad
-	[self performSelectorOnMainThread:@selector(refreshCommentsList) withObject:nil waitUntilDone:NO];
+	[commentsTableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
     [self setEditing:FALSE];
 
     [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
@@ -507,18 +505,22 @@
 - (void)tableView:(UITableView *)tableView didCheckRowAtIndexPath:(NSIndexPath *)indexPath {
     CommentTableViewCell *cell = (CommentTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
     NSDictionary *comment = cell.comment;
-
+	
+	//danroundhill - added nil check based on crash reports
+	if (comment != nil){
+	
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
 
-    if ([selectedComments containsObject:comment]) {
-        cell.checked = NO;
-        [selectedComments removeObject:comment];
-    } else {
-        cell.checked = YES;
-        [selectedComments addObject:comment];
-    }
+		if ([selectedComments containsObject:comment]) {
+			cell.checked = NO;
+			[selectedComments removeObject:comment];
+		} else {
+			cell.checked = YES;
+			[selectedComments addObject:comment];
+		}
 
-    [self updateSelectedComments];
+		[self updateSelectedComments];
+	}
 }
 
 #pragma mark -
