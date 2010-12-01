@@ -228,11 +228,13 @@
 			else {
 				footerText = @" ";
 				buttonText = @"Signing in...";
-				isSigningIn = YES;
+				
 				[NSThread sleepForTimeInterval:0.15];
 				[tv reloadData];
-				
-				[self performSelectorInBackground:@selector(signIn:) withObject:self];
+				if (!isSigningIn){
+					isSigningIn = YES;
+					[self performSelectorInBackground:@selector(signIn:) withObject:self];
+				}
 			}
 			break;
 		default:
@@ -247,9 +249,11 @@
 	[textField resignFirstResponder];
 	
 	if((textField.tag == 1) && (username != nil) && (password != nil)) {
-		isSigningIn = YES;
-		[self refreshTable];
-		[self performSelectorInBackground:@selector(signIn:) withObject:self];
+		if (!isSigningIn){
+			isSigningIn = YES;
+			[self refreshTable];
+			[self performSelectorInBackground:@selector(signIn:) withObject:self];
+		}
 	}
 	
 	return YES;	
@@ -265,7 +269,10 @@
 				footerText = @"Username is required.";
 			}
 			else {
+				username = [[NSString alloc] init];
 				username = textField.text;
+				username = [[[username stringByReplacingOccurrencesOfString:@" " withString:@""] lowercaseString] retain];
+				textField.text = username;
 				footerText = @" ";
 			}
 			break;
@@ -332,7 +339,6 @@
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	[self authenticate];
-	isSigningIn = NO;
 	if(isAuthenticated) {
 		[WordPressAppDelegate sharedWordPressApp].isWPcomAuthenticated = YES;
 		[self performSelectorOnMainThread:@selector(didSignInSuccessfully) withObject:nil waitUntilDone:NO];
@@ -342,7 +348,7 @@
 		buttonText = @"Sign In";
 		[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
 	}
-	
+	isSigningIn = NO;
 	[pool release];
 }
 
