@@ -321,6 +321,8 @@
 - (void)refreshPostList {
     [self.tableView reloadData];
 	
+	//danroundhill: commenting this out for now, it causes the selected index to 'blink' 3 or 4 times while the refresh is occuring on iPad. Not sure what the point of this code is anyways...
+	/*
 	if (DeviceIsPad() == YES) {
 		if (self.selectedIndexPath) {
 			self.drafts = [draftManager getType:@"post" forBlog:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blogid"]];
@@ -333,7 +335,7 @@
 			
 			[self reselect];
 		}
-	}
+	}*/
 }
 
 - (void)goToHome:(id)sender {
