@@ -1133,9 +1133,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	}
 	
 	NSMutableString *content = [[[NSMutableString alloc] initWithString:media.html] autorelease];
-	[content appendString:[NSString stringWithFormat:@"%@%@", prefix, textView.text]];
-    textView.text = content;
-    postDetailViewController.hasChanges = YES;
+	NSRange imgHTML = [textView.text rangeOfString:content];
+	if (imgHTML.location == NSNotFound) {
+		[content appendString:[NSString stringWithFormat:@"%@%@", prefix, textView.text]];
+		textView.text = content;
+		postDetailViewController.hasChanges = YES;
+	}
 }
 
 - (void)insertMediaBelow:(NSNotification *)notification {
@@ -1151,9 +1154,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	}
 	
 	NSMutableString *content = [[[NSMutableString alloc] initWithString:textView.text] autorelease];
-	[content appendString:[NSString stringWithFormat:@"%@%@", prefix, media.html]];
-    textView.text = content;
-    postDetailViewController.hasChanges = YES;
+	NSRange imgHTML = [content rangeOfString:media.html];
+	if (imgHTML.location == NSNotFound) {
+		[content appendString:[NSString stringWithFormat:@"%@%@", prefix, media.html]];
+		textView.text = content;
+		postDetailViewController.hasChanges = YES;
+	}
 }
 
 - (void)removeMedia:(NSNotification *)notification {

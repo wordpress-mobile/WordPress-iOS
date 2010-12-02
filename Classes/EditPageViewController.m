@@ -580,13 +580,22 @@
 		[self performSelectorOnMainThread:@selector(didSavePageInBackground) withObject:nil waitUntilDone:NO];
 	}
 	[self clearUnsavedPage];
-	
 	[pool release];
 }
 
 - (void)didSavePageInBackground {
 	[spinner dismissWithClickedButtonIndex:0 animated:YES];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	
+	if(DeviceIsPad() == YES) {
+		
+		// Make sure our Pages list refreshes
+		if(page.wasLocalDraft)
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"PagesUpdated" object:nil ];
+		else
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"AsynchronousPostIsPosted" object:nil ];
+	}
+	
 	[delegate dismiss:self];
 }
 
@@ -643,11 +652,14 @@
 	
 	if((contentTextView.text == nil) || ([contentTextView.text isEqualToString:kTextViewPlaceholder]))
 		contentTextView.text = @"";
-	
+
 	NSMutableString *content = [[[NSMutableString alloc] initWithString:media.html] autorelease];
-	[content appendString:[NSString stringWithFormat:@"<br/><br/>%@", contentTextView.text]];
-    contentTextView.text = content;
-	[delegate refreshButtons:YES keyboard:NO];
+	NSRange imgHTML = [contentTextView.text rangeOfString:content];
+	if (imgHTML.location == NSNotFound) {
+		[content appendString:[NSString stringWithFormat:@"<br/><br/>%@", contentTextView.text]];
+		contentTextView.text = content;
+		[delegate refreshButtons:YES keyboard:NO];
+	}
 }
 
 - (void)insertMediaBelow:(NSNotification *)notification {
@@ -655,11 +667,14 @@
 	
 	if((contentTextView.text == nil) || ([contentTextView.text isEqualToString:kTextViewPlaceholder]))
 		contentTextView.text = @"";
-	
+
 	NSMutableString *content = [[[NSMutableString alloc] initWithString:contentTextView.text] autorelease];
-	[content appendString:[NSString stringWithFormat:@"<br/><br/>%@", media.html]];
-    contentTextView.text = content;
-	[delegate refreshButtons:YES keyboard:NO];
+	NSRange imgHTML = [content rangeOfString:media.html];
+	if (imgHTML.location == NSNotFound) {
+		[content appendString:[NSString stringWithFormat:@"<br/><br/>%@", media.html]];
+		contentTextView.text = content;
+		[delegate refreshButtons:YES keyboard:NO];
+	}
 }
 
 #pragma mark -
