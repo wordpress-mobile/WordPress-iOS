@@ -70,8 +70,18 @@
     [self.appDelegate setAlertRunning:NO];
 }
 
-- (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated {
+// Wrapper to dismiss in main thread
+- (void)realDismissWithArgs:(NSArray *)args {
+    NSInteger buttonIndex = [[args objectAtIndex:0] intValue];
+    BOOL animated = [[args objectAtIndex:1] boolValue];
     [super dismissWithClickedButtonIndex:buttonIndex animated:animated];
+}
+
+- (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated {
+    // We can only interact with UIKit from the main thread
+    [super performSelectorOnMainThread:@selector(realDismissWithArgs:)
+                            withObject:[NSArray arrayWithObjects:[NSNumber numberWithInt:buttonIndex], [NSNumber numberWithBool:animated],nil]
+                         waitUntilDone:YES];
     [self.appDelegate setAlertRunning:NO];
 }
 
