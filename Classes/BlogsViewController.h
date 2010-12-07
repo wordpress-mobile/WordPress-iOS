@@ -26,8 +26,6 @@
 - (void)showBlogDetailModalViewForNewBlogWithAnimation:(BOOL)animated;
 - (void)deleteBlog:(NSIndexPath *)indexPath;
 - (void)didDeleteBlogSuccessfully:(NSIndexPath *)indexPath;
-- (void)showBlogDetailModalViewForNewBlog:(id)inSender;
-- (void)showBlogDetailModalViewWithAnimation:(BOOL)animate;
 - (void)showBlogWithoutAnimation;
 - (void)edit:(id)sender;
 - (void)cancel:(id)sender;

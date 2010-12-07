@@ -216,9 +216,6 @@
 	return YES;
 }
 
-- (void)showBlogDetailModalViewForNewBlog:(id)inSender {
-    [self showBlogDetailModalViewForNewBlogWithAnimation:YES];
-}
 
 - (void)showAddBlogView:(id)sender {
 	WelcomeViewController *welcomeView = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:nil];
@@ -236,32 +233,6 @@
 		[self.navigationController pushViewController:welcomeView animated:YES];
 	}
 	[welcomeView release];
-}
-
-- (void)showBlogDetailModalViewForNewBlogWithAnimation:(BOOL)animate {
-	if ([self canChangeCurrentBlog]) {
-		[[BlogDataManager sharedDataManager] makeNewBlogCurrent];
-		[self showBlogDetailModalViewWithAnimation:animate];
-	}
-}
-
-- (void)showBlogDetailModalViewWithAnimation:(BOOL)animate {
-	EditSiteViewController *blogDetailViewController = [[[EditSiteViewController alloc] initWithNibName:@"EditSiteViewController" bundle:nil] autorelease];
-	UINavigationController *modalNavigationController = [[UINavigationController alloc] initWithRootViewController:blogDetailViewController];
-	if (DeviceIsPad() == YES)
-	{
-		modalNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-		modalNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-		[[CPopoverManager instance] setCurrentPopoverController:NULL];
-		[[WordPressAppDelegate sharedWordPressApp].splitViewController presentModalViewController:modalNavigationController animated:animate];
-	}
-	else
-	{
-		[[WordPressAppDelegate sharedWordPressApp].navigationController presentModalViewController:modalNavigationController animated:animate];
-	}
-	
-	
-	[modalNavigationController release];
 }
 
 - (void)showBlogWithoutAnimation {
