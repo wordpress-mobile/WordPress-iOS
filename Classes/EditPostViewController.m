@@ -843,7 +843,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         [linkAlert release];
     }
 	else {
-		[textView scrollRangeToVisible:NSMakeRange(textView.text.length, 0)];
+		[textView scrollRangeToVisible:textView.selectedRange];
 	}
 	
 	[self preserveUnsavedPost];
