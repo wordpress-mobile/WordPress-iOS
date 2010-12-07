@@ -146,6 +146,7 @@
 		else
 			editSiteViewController = [[EditSiteViewController alloc] initWithNibName:@"EditSiteViewController" bundle:nil];
 		
+        editSiteViewController.blogIndex = indexPath.row;
 		editSiteViewController.blogName = [[[BlogDataManager sharedDataManager] blogAtIndex:indexPath.row] objectForKey:@"blogName"];
 		editSiteViewController.blogID = [[[BlogDataManager sharedDataManager] blogAtIndex:indexPath.row] objectForKey:kBlogId];
 		editSiteViewController.url = [[[BlogDataManager sharedDataManager] blogAtIndex:indexPath.row] objectForKey:@"url"];

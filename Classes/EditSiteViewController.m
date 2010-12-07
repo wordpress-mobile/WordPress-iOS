@@ -19,7 +19,6 @@
     [super viewDidLoad];
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	
-	blogIndex = [[BlogDataManager sharedDataManager] indexForBlogid:blogID url:url];
 	NSMutableDictionary *currentBlog = (NSMutableDictionary *)[[BlogDataManager sharedDataManager] blogAtIndex:blogIndex];
 	appDelegate.currentBlog = currentBlog;
 	
