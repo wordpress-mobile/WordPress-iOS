@@ -388,10 +388,11 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	
-    [dm syncPostsForCurrentBlog];
-    [self loadPosts];
-	[dm downloadAllCategoriesForBlog:[dm currentBlog]];
-	[self performSelectorOnMainThread:@selector(refreshPostList) withObject:nil waitUntilDone:NO];
+    if ([dm syncPostsForCurrentBlog]) {
+        [self loadPosts];
+        [dm downloadAllCategoriesForBlog:[dm currentBlog]];
+        [self performSelectorOnMainThread:@selector(refreshPostList) withObject:nil waitUntilDone:NO];
+    }
 	
     [refreshButton stopAnimating];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;

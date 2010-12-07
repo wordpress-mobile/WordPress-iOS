@@ -1361,12 +1361,12 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 	
     [currentBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
 	
-    [self syncPostsForBlog:currentBlog];
+    BOOL result = [self syncPostsForBlog:currentBlog];
     [currentBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
 	
     [self makeBlogAtIndexCurrent:currentBlogIndex];
 	
-    return YES;
+    return result;
 }
 
 
