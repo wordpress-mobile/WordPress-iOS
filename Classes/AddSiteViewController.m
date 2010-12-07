@@ -290,7 +290,11 @@
 			else if((!hasValidXMLRPCurl) && (xmlrpc == nil)) {
 				footerText = @"XMLRPC endpoint wasn't found. Please enter it manually.";
 			}
-			addButtonText = @"Add Blog";
+
+			if(hasSubsites)
+				addButtonText = @"Add Blogs";
+			else
+				addButtonText = @"Add Blog";
 			
 			for(UIView *subview in cell.subviews) {
 				if(subview.class == [UITextField class]) {
@@ -334,21 +338,28 @@
 		case 2:
 			// Add Site
 			if(([self blogExists] == NO) && (isAdding == NO) && (url != nil) && (![url isEqualToString:@""])) {
-				footerText = @" ";
-				addButtonText = @"Adding Blog...";
-				isAdding = YES;
-				[tv deselectRowAtIndexPath:indexPath animated:YES];
-				[NSThread sleepForTimeInterval:0.15];
-				[tv reloadData];
-				
-				if(isAuthenticated == NO)
-                    [self authenticateInBackground];
-				else if(hasCheckedForSubsites == NO) {
-					[self performSelectorInBackground:@selector(getSubsites) withObject:nil];
-				}
-				else if(isAuthenticated == YES) {
+				if(isAuthenticated == YES && hasSubsites) {
+					// shows the Select Sites screen
+					[self.navigationController pushViewController:addUsersBlogsView animated:YES];
 					[tv deselectRowAtIndexPath:indexPath animated:YES];
-					[self performSelectorInBackground:@selector(addSite) withObject:nil];
+					[tv reloadData];
+				} else {
+					footerText = @" ";
+					addButtonText = @"Adding Blog...";
+					isAdding = YES;
+					[tv deselectRowAtIndexPath:indexPath animated:YES];
+					[NSThread sleepForTimeInterval:0.15];
+					[tv reloadData];
+
+					if(isAuthenticated == NO)
+						[self authenticateInBackground];
+					else if(hasCheckedForSubsites == NO) {
+						[self performSelectorInBackground:@selector(getSubsites) withObject:nil];
+					}
+					else if(isAuthenticated == YES) {
+						[tv deselectRowAtIndexPath:indexPath animated:YES];
+						[self performSelectorInBackground:@selector(addSite) withObject:nil];
+					}
 				}
 			}
 			else if((url == nil) || ([url isEqualToString:@""])) {
@@ -500,6 +511,11 @@
 		[addUsersBlogsView setPassword:password];
 	}
 	
+	if(hasSubsites)
+		addButtonText = @"Add Blogs";
+	else
+		addButtonText = @"Add Blog";
+
 	if([self blogExists] == NO) {
 		if(isAuthenticated) 
 			footerText = @"Good to go.";

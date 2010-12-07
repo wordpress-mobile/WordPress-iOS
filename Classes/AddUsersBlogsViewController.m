@@ -87,6 +87,7 @@
 	
 	buttonAddSelected.enabled = FALSE;
 	
+	[self checkAddSelectedButtonStatus];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
