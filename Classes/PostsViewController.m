@@ -195,7 +195,6 @@
 	}
 
     if (indexPath.section == LOCAL_DRAFTS_SECTION) {
-		[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 		Post *post = [[self drafts] objectAtIndex:indexPath.row];
 		[appDelegate setPostID:[post uniqueID]];
 		self.selectedIndexPath = indexPath;
@@ -208,9 +207,6 @@
 
 			//run the spinner in the background and change the text
 			[self performSelectorInBackground:@selector(addSpinnerToCell:) withObject:indexPath];
-
-			// deselect the row.
-			[self.tableView deselectRowAtIndexPath:indexPath animated:NO];
 
 			//init the Increment Post helper class class
 			IncrementPost *incrementPost = [[IncrementPost alloc] init];
@@ -257,7 +253,8 @@
 	[self.postDetailViewController refreshUIForCurrentPost];
 	[appDelegate showContentDetailViewController:self.postDetailViewController];
 	
-	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+	if (!DeviceIsPad())
+		[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

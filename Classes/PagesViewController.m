@@ -41,7 +41,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadPages) name:@"DidAddPage" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewPage:) name:@"DidCreatePage" object:nil];
 	
-	[self loadPages];
+	//[self loadPages];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -245,7 +245,9 @@
 			break;
 	}
 	
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	if (!DeviceIsPad())
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	
 	[pageViewController release];
 }
 
