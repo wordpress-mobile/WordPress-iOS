@@ -38,7 +38,7 @@
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable) name:@"DidSyncPages" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadPages) name:@"DidGetPages" object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadPages) name:@"DidAddPage" object:nil];
+//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadPages) name:@"DidAddPage" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewPage:) name:@"DidCreatePage" object:nil];
 	
 	//[self loadPages];
