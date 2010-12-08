@@ -1023,7 +1023,7 @@
 					[f setNumberStyle:NSNumberFormatterDecimalStyle];
 					if(appDelegate.postID != nil) {
 						NSNumber *publishedPostID = [f numberFromString:appDelegate.postID];
-						NSNumber *newPostID = [responseMeta valueForKey:@"postid"];
+						NSNumber *newPostID = [responseMeta objectForKey:@"postid"];
 						[f release];
 						if([publishedPostID isEqualToNumber:newPostID]) {
 							[appDelegate setPostID:nil];
