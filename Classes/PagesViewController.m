@@ -446,9 +446,8 @@
 	NSDictionary *newPage = [(NSDictionary *)[notification object] retain];
 	[pages insertObject:newPage atIndex:0];
     [newPage release];
-	[drafts removeAllObjects];
-	drafts = [draftManager getType:@"page" forBlog:[dm.currentBlog valueForKey:@"blogid"]];
-    [drafts retain];
+	[self.drafts removeAllObjects];
+	self.drafts = [draftManager getType:@"page" forBlog:[dm.currentBlog valueForKey:@"blogid"]];
 
 	[self refreshTable];
 }
