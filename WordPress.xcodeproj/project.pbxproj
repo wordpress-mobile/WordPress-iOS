@@ -1932,9 +1932,6 @@
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(DEVELOPER_DIR)/Local/Frameworks\"",
-					"\"$(SRCROOT)/../../iOS Libraries\"",
-					"\"$(SRCROOT)/../PLCrashReporter/build/Debug-iphone\"",
 					"\"$(SRCROOT)/Classes\"",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
