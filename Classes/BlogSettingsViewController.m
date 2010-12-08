@@ -271,11 +271,14 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell *cell = [[UITableViewCell alloc] init];
 	switch (indexPath.section) {
 		case 0:
 			switch (indexPath.row) {
 				case 2:
-					[self showPicker:self];
+					
+					cell = [tableView cellForRowAtIndexPath:indexPath];
+					[self showPicker:self withCell: cell];
 					break;
 				default:
 					break;
@@ -312,6 +315,7 @@
 
 - (void)pickerView:(UIPickerView *)thePickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
 	[appDelegate.currentBlog setValue:[recentItems objectAtIndex:row] forKey:kPostsDownloadCount];
+	[tableView reloadData];
 }
 
 #pragma mark -
@@ -333,36 +337,55 @@
 #pragma mark -
 #pragma mark Custom methods
 
-- (IBAction)showPicker:(id)sender {
+- (IBAction)showPicker:(id)sender withCell:(UITableViewCell*)cell{
 	[self processRowValues];
-	actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:nil cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
-	[actionSheet setActionSheetStyle:UIActionSheetStyleBlackTranslucent];
 	
-	CGRect pickerFrame = CGRectMake(0, 40, 0, 0);
+	CGRect pickerFrame;
+	if (DeviceIsPad())
+		pickerFrame = CGRectMake(0, 0, 320, 216);  
+	else 
+		pickerFrame = CGRectMake(0, 40, 0, 0);
+
 	UIPickerView *pickerView = [[UIPickerView alloc] initWithFrame:pickerFrame];
 	pickerView.showsSelectionIndicator = YES;
 	pickerView.delegate = self;
 	pickerView.dataSource = self;
 	[pickerView selectRow:[self selectedRecentItemsIndex] inComponent:0 animated:YES];
-	[actionSheet addSubview:pickerView];
 	
-	UISegmentedControl *closeButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@"Done"]];
-	closeButton.momentary = YES; 
-	closeButton.frame = CGRectMake(260, 7.0f, 50.0f, 30.0f);
-	closeButton.segmentedControlStyle = UISegmentedControlStyleBar;
-	closeButton.tintColor = [UIColor blackColor];
-	[closeButton addTarget:self action:@selector(hidePicker:) forControlEvents:UIControlEventValueChanged];
-	[actionSheet addSubview:closeButton];
-	
-	if(DeviceIsPad()) {
+	if (DeviceIsPad()) { 
+		//show picker in uipopovercontroller for iPad
+		UIViewController* popoverContent = [[UIViewController alloc]
+											init];
+		UIView* popoverView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 216)];
+		[popoverView addSubview:pickerView];
+		popoverContent.view = popoverView;
+		popoverContent.contentSizeForViewInPopover =CGSizeMake(320, 216);
+		
+		recentItemsPopover = [[UIPopoverController alloc] initWithContentViewController:popoverContent];
+		[recentItemsPopover presentPopoverFromRect:cell.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		
+		[popoverView release];
+		[popoverContent release];
 	}
 	else {
+		actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:nil cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+		[actionSheet setActionSheetStyle:UIActionSheetStyleBlackTranslucent];
+		[actionSheet addSubview:pickerView];
+		
+		UISegmentedControl *closeButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@"Done"]];
+		closeButton.momentary = YES; 
+		closeButton.frame = CGRectMake(260, 7.0f, 50.0f, 30.0f);
+		closeButton.segmentedControlStyle = UISegmentedControlStyleBar;
+		closeButton.tintColor = [UIColor blackColor];
+		[closeButton addTarget:self action:@selector(hidePicker:) forControlEvents:UIControlEventValueChanged];
+		[actionSheet addSubview:closeButton];
+		[closeButton release];
+		
 		[actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+		[actionSheet setBounds:CGRectMake(0, 0, 320, 485)];
 	}
-	[actionSheet setBounds:CGRectMake(0, 0, 320, 485)];
 	
 	[pickerView release];
-	[closeButton release];
 }
 
 - (IBAction)hidePicker:(id)sender {

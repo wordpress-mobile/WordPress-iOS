@@ -29,7 +29,7 @@
 @property (nonatomic, retain) NSArray *recentItems;
 @property (nonatomic, retain) UIPopoverController *recentItemsPopover;
 
-- (IBAction)showPicker:(id)sender;
+- (IBAction)showPicker:(id)sender withCell:(UITableViewCell *)cell;
 - (IBAction)hidePicker:(id)sender;
 - (int)selectedRecentItemsIndex;
 - (void)processRowValues;

@@ -297,7 +297,13 @@
 					[appDelegate.currentBlog setObject:username forKey:@"username"];
 				[activeTextField becomeFirstResponder];
 				[activeTextField resignFirstResponder];
-				BlogSettingsViewController *settingsView = [[BlogSettingsViewController alloc] initWithNibName:@"BlogSettingsViewController" bundle:nil];
+				BlogSettingsViewController *settingsView;
+				
+				if (DeviceIsPad())
+					settingsView = [[BlogSettingsViewController alloc] initWithNibName:@"BlogSettingsViewController-iPad" bundle:nil];
+				else 
+					settingsView = [[BlogSettingsViewController alloc] initWithNibName:@"BlogSettingsViewController" bundle:nil];
+				
 				[self.navigationController pushViewController:settingsView animated:YES];
 				[settingsView release];
 				
