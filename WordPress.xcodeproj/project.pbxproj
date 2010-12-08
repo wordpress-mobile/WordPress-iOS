@@ -66,6 +66,7 @@
 		2FAE970A0E33B21600CA8540 /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97050E33B21600CA8540 /* license.txt */; };
 		2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */; };
 		2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */; };
+		3789C598129EA5E600ADA91C /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3789C597129EA5E600ADA91C /* CrashReporter.framework */; };
 		4526DC551148072F0090C99D /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 4526DC531148072F0090C99D /* Default-Portrait.png */; };
 		4526DC561148072F0090C99D /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 4526DC541148072F0090C99D /* Default-Landscape.png */; };
 		458776B111623ED300906CEE /* UIViewController_iPadExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 458776B011623ED300906CEE /* UIViewController_iPadExtensions.m */; };
@@ -122,7 +123,6 @@
 		706D25F50F347F1200491666 /* category_child.png in Resources */ = {isa = PBXBuildFile; fileRef = 706D25F40F347F1200491666 /* category_child.png */; };
 		8302C45A1228173E00B7A208 /* MediaManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8302C4591228173E00B7A208 /* MediaManager.m */; };
 		83043E55126FA31400EC9953 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83043E54126FA31400EC9953 /* MessageUI.framework */; };
-		83043F76126FA9E300EC9953 /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83043F75126FA9E300EC9953 /* CrashReporter.framework */; };
 		8309BA9D1231559800442B12 /* TransparentToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8309BA9C1231559800442B12 /* TransparentToolbar.m */; };
 		831C9ED612162AF700B1EACE /* DraftManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 831C9ED512162AF700B1EACE /* DraftManager.m */; };
 		831C9ED912162B0100B1EACE /* AutosaveManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 831C9ED812162B0100B1EACE /* AutosaveManager.m */; };
@@ -229,7 +229,7 @@
 		83A645D9112B8690000999A6 /* PostLocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83A645D7112B8690000999A6 /* PostLocationViewController.xib */; };
 		83A64689112C5F75000999A6 /* PostSettingsHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A64688112C5F75000999A6 /* PostSettingsHelpViewController.m */; };
 		83A646AB112C63E5000999A6 /* help.png in Resources */ = {isa = PBXBuildFile; fileRef = 83A646AA112C63E5000999A6 /* help.png */; };
-		83ABDD78125D30F700A421B2 /* BlogSettingsView-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83ABDD77125D30F700A421B2 /* BlogSettingsView-iPad.xib */; };
+		83ABDD78125D30F700A421B2 /* BlogSettingsViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83ABDD77125D30F700A421B2 /* BlogSettingsViewController-iPad.xib */; };
 		83BC943C11F94AA00041141A /* whitebg.png in Resources */ = {isa = PBXBuildFile; fileRef = 83BC943B11F94AA00041141A /* whitebg.png */; };
 		83CAC78A12354031003DFA20 /* PageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CAC78912354031003DFA20 /* PageManager.m */; };
 		83CACE951235A003003DFA20 /* UILoadMoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CACE941235A003003DFA20 /* UILoadMoreCell.m */; };
@@ -411,6 +411,7 @@
 		2FAE97050E33B21600CA8540 /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.txt; sourceTree = "<group>"; };
 		2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xhtml1-transitional.dtd"; sourceTree = "<group>"; };
 		2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = xhtmlValidatorTemplate.xhtml; sourceTree = "<group>"; };
+		3789C597129EA5E600ADA91C /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CrashReporter.framework; path = Classes/CrashReporter.framework; sourceTree = "<group>"; };
 		4526DC531148072F0090C99D /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait.png"; sourceTree = "<group>"; };
 		4526DC541148072F0090C99D /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
 		458776AF11623ED300906CEE /* UIViewController_iPadExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewController_iPadExtensions.h; sourceTree = "<group>"; };
@@ -475,7 +476,6 @@
 		8302C4581228173E00B7A208 /* MediaManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaManager.h; sourceTree = "<group>"; };
 		8302C4591228173E00B7A208 /* MediaManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaManager.m; sourceTree = "<group>"; };
 		83043E54126FA31400EC9953 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		83043F75126FA9E300EC9953 /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CrashReporter.framework; path = "../PLCrashReporter/build/Debug-iphone/CrashReporter.framework"; sourceTree = SOURCE_ROOT; };
 		8309BA9B1231559800442B12 /* TransparentToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransparentToolbar.h; sourceTree = "<group>"; };
 		8309BA9C1231559800442B12 /* TransparentToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransparentToolbar.m; sourceTree = "<group>"; };
 		831C9ED412162AF700B1EACE /* DraftManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraftManager.h; sourceTree = "<group>"; };
@@ -649,7 +649,7 @@
 		83A64687112C5F75000999A6 /* PostSettingsHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostSettingsHelpViewController.h; sourceTree = "<group>"; };
 		83A64688112C5F75000999A6 /* PostSettingsHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostSettingsHelpViewController.m; sourceTree = "<group>"; };
 		83A646AA112C63E5000999A6 /* help.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = help.png; sourceTree = "<group>"; };
-		83ABDD77125D30F700A421B2 /* BlogSettingsView-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "BlogSettingsView-iPad.xib"; sourceTree = "<group>"; };
+		83ABDD77125D30F700A421B2 /* BlogSettingsViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "BlogSettingsViewController-iPad.xib"; sourceTree = "<group>"; };
 		83BC943B11F94AA00041141A /* whitebg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whitebg.png; sourceTree = "<group>"; };
 		83CAC78812354031003DFA20 /* PageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageManager.h; sourceTree = "<group>"; };
 		83CAC78912354031003DFA20 /* PageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageManager.m; sourceTree = "<group>"; };
@@ -782,7 +782,7 @@
 				834CE73C1256D0FF0046A4A3 /* libz.1.2.3.dylib in Frameworks */,
 				835E2403126E66E50085940B /* AssetsLibrary.framework in Frameworks */,
 				83043E55126FA31400EC9953 /* MessageUI.framework in Frameworks */,
-				83043F76126FA9E300EC9953 /* CrashReporter.framework in Frameworks */,
+				3789C598129EA5E600ADA91C /* CrashReporter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -944,7 +944,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				83043F75126FA9E300EC9953 /* CrashReporter.framework */,
+				3789C597129EA5E600ADA91C /* CrashReporter.framework */,
 				834CE7331256D0DE0046A4A3 /* CFNetwork.framework */,
 				834CE7371256D0F60046A4A3 /* CoreGraphics.framework */,
 				834CE73B1256D0FF0046A4A3 /* libz.1.2.3.dylib */,
@@ -1242,7 +1242,7 @@
 		83F1FCA7123748EF00069F99 /* Blogs */ = {
 			isa = PBXGroup;
 			children = (
-				83ABDD77125D30F700A421B2 /* BlogSettingsView-iPad.xib */,
+				83ABDD77125D30F700A421B2 /* BlogSettingsViewController-iPad.xib */,
 				835871C8120096AC007682CB /* WelcomeViewController-iPad.xib */,
 				8362C1291201EA9700599347 /* WPcomLoginViewController-iPad.xib */,
 				8362C1C5120229BC00599347 /* AddSiteViewController-iPad.xib */,
@@ -1779,7 +1779,7 @@
 				83F1FA581237073B00069F99 /* WPMediaUploader-iPad.xib in Resources */,
 				83F1FCAC1237494D00069F99 /* PageViewController-iPad.xib in Resources */,
 				837593AE1243ECD500D04C93 /* EditSiteViewController-iPad.xib in Resources */,
-				83ABDD78125D30F700A421B2 /* BlogSettingsView-iPad.xib in Resources */,
+				83ABDD78125D30F700A421B2 /* BlogSettingsViewController-iPad.xib in Resources */,
 				836FECEC12715E2A000309D8 /* CrashReportView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1935,6 +1935,7 @@
 					"\"$(DEVELOPER_DIR)/Local/Frameworks\"",
 					"\"$(SRCROOT)/../../iOS Libraries\"",
 					"\"$(SRCROOT)/../PLCrashReporter/build/Debug-iphone\"",
+					"\"$(SRCROOT)/Classes\"",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1966,6 +1967,7 @@
 					"\"$(DEVELOPER_DIR)/Local/Frameworks\"",
 					"\"$(SRCROOT)/../../iOS Libraries\"",
 					"\"$(SRCROOT)/../PLCrashReporter/build/Debug-iphone\"",
+					"\"$(SRCROOT)/Classes\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
@@ -2011,6 +2013,7 @@
 					"\"$(DEVELOPER_DIR)/Local/Frameworks\"",
 					"\"$(SRCROOT)/../../iOS Libraries\"",
 					"\"$(SRCROOT)/../PLCrashReporter/build/Debug-iphone\"",
+					"\"$(SRCROOT)/Classes\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
@@ -2063,6 +2066,7 @@
 					"\"$(SRCROOT)/../XMLRPC/build/Development\"",
 					"\"$(SRCROOT)/../../iOS Libraries\"",
 					"\"$(SRCROOT)/../PLCrashReporter/build/Debug-iphone\"",
+					"\"$(SRCROOT)/Classes\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
