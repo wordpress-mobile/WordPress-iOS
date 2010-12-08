@@ -143,6 +143,7 @@
 	actionSheet.tag = 301;
 	actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
 	if (DeviceIsPad() == YES) {
+        spamButton1.enabled = NO;
 		[actionSheet showFromBarButtonItem:spamButton1 animated:YES];
 	} else {
 		[actionSheet showInView:self.view];
@@ -182,6 +183,7 @@
 	
 	//handle action sheet for approve/spam/edit
     if ([actionSheet tag] == 301) {
+        spamButton1.enabled = YES;
         if (buttonIndex == 0) {  //Approve/Unapprove conditional button was selected
 			if ([self isApprove]) {
 				[self approveComment:nil];
