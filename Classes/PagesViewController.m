@@ -448,6 +448,8 @@
     [newPage release];
 	[drafts removeAllObjects];
 	drafts = [draftManager getType:@"page" forBlog:[dm.currentBlog valueForKey:@"blogid"]];
+    [drafts retain];
+
 	[self refreshTable];
 }
 
