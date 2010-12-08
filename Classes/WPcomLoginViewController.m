@@ -191,11 +191,10 @@
 
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tv deselectRowAtIndexPath:indexPath animated:YES];
-	int foo = 0;
 		
 	switch (indexPath.section) {
 		case 0:
-			foo = 1;
+        {
 			UITableViewCell *cell = (UITableViewCell *)[tv cellForRowAtIndexPath:indexPath];
 			for(UIView *subview in cell.subviews) {
 				if([subview isKindOfClass:[UITextField class]] == YES) {
@@ -205,6 +204,7 @@
 				}
 			}
 			break;
+        }
 		case 1:
 			for(int i = 0; i < 2; i++) {
 				UITableViewCell *cell = (UITableViewCell *)[tv cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];

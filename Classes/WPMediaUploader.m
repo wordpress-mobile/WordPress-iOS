@@ -457,7 +457,8 @@
 			
 			[xmlrpcResponse release];
 		}
-	}
+        [videoMeta release];
+    }
 	else {
 		[self updateStatus:@"Upload failed. Please try again."];
 		NSLog(@"connection failed: %@", [request responseData]);

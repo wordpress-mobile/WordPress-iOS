@@ -175,11 +175,15 @@
 		}
 	}
 	else if(indexPath.row == 2) {
-		NSString *addSiteNibName = @"AddSiteViewController";
-		if(DeviceIsPad() == YES)
-			addSiteNibName = @"AddSiteViewController-iPad";
-		AddSiteViewController *addSiteView = [[AddSiteViewController alloc] initWithNibName:addSiteNibName bundle:nil];
+        AddSiteViewController *addSiteView;
+		if(DeviceIsPad() == YES) {
+            addSiteView = [[AddSiteViewController alloc] initWithNibName:@"AddSiteViewController-iPad" bundle:nil];
+        } else {
+            addSiteView = [[AddSiteViewController alloc] initWithNibName:@"AddSiteViewController" bundle:nil];
+        }
+
 		[self.navigationController pushViewController:addSiteView animated:YES];
+        [addSiteView release];
 	}
 	
 	[tv deselectRowAtIndexPath:indexPath animated:YES];

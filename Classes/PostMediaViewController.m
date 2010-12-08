@@ -176,20 +176,21 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	int foo = 0;
 	
 	MediaObjectViewController *mediaView = [[MediaObjectViewController alloc] initWithNibName:@"MediaObjectView" bundle:nil];
 	switch (mediaTypeControl.selectedSegmentIndex) {
 		case 0:
-			foo = indexPath.row;
+        {
 			Media *photo = [photos objectAtIndex:indexPath.row];
 			[mediaView setMedia:photo];
 			break;
+        }
 		case 1:
-			foo = indexPath.row;
+        {
 			Media *video = [videos objectAtIndex:indexPath.row];
 			[mediaView setMedia:video];
 			break;
+        }
 		default:
 			break;
 	}
@@ -246,7 +247,7 @@
 
 - (void)updateMediaCount {
 	int mediaCount = 0;
-	NSString *mediaTypeString = [[NSString alloc] init];
+	NSString *mediaTypeString;
 	switch (mediaTypeControl.selectedSegmentIndex) {
 		case 0:
 			mediaCount = photos.count;
@@ -257,6 +258,7 @@
 			mediaTypeString = @"video";
 			break;
 		default:
+            mediaTypeString = @"";
 			break;
 	}
 	
@@ -641,6 +643,7 @@
 			MPMoviePlayerController *mp = [[MPMoviePlayerController alloc] initWithContentURL:contentURL];
 			thumbnail = [mp thumbnailImageAtTime:(NSTimeInterval)2.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
 			duration = [mp duration];
+            [mp release];
 		}
 		else {
 			// If not, we'll just use the default thumbnail for now.
@@ -667,6 +670,7 @@
 		MPMoviePlayerController *mp = [[MPMoviePlayerController alloc] initWithContentURL:contentURL];
 		thumbnail = [mp thumbnailImageAtTime:(NSTimeInterval)2.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
 		duration = [mp duration];
+        [mp release];
 	}
 	else {
 		// If not, we'll just use the default thumbnail for now.
@@ -833,7 +837,7 @@
 }
 
 - (void)useVideo:(NSString *)videoURL withThumbnail:(UIImage *)thumbnail andDuration:(float)duration {
-	BOOL copySuccess;
+	BOOL copySuccess = FALSE;
 	Media *videoMedia;
 	NSDictionary *attributes;
 	NSDictionary *currentBlog = [dm currentBlog];
@@ -901,7 +905,6 @@
 		
 		self.mediaTypeControl.selectedSegmentIndex = 1;
 		isAddingMedia = NO;
-		[formatter release];
 		[self refreshMedia];
 	}
 	else {
@@ -913,6 +916,9 @@
 		[videoAlert show];
 		[videoAlert release];
 	}
+    [formatter release];
+    [filename release];
+    [filepath release];
 }
 
 - (NSString *)getUUID
@@ -988,7 +994,6 @@
 		media.shortcode = [mediaData objectForKey:@"shortcode"];
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
 		[mediaManager update:media];
-		media = [mediaManager get:self.uploadID];
 		self.uploadID = nil;
 	}
 	
@@ -1109,11 +1114,13 @@
 			[mediaManager remove:[photos objectAtIndex:[index intValue]]];
 			[photos removeObjectAtIndex:[index intValue]];
 		}
+        [photoIndexesToRemove release];
 		
 		for(NSNumber *index in videoIndexesToRemove) {
 			[mediaManager remove:[videos objectAtIndex:[index intValue]]];
 			[videos removeObjectAtIndex:[index intValue]];
 		}
+        [videoIndexesToRemove release];
 	}
 }
 

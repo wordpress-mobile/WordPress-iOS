@@ -23,7 +23,6 @@
 @property (nonatomic, retain) NSMutableArray *blogsList;
 
 - (void)showBlog:(BOOL)animated;
-- (void)showBlogDetailModalViewForNewBlogWithAnimation:(BOOL)animated;
 - (void)deleteBlog:(NSIndexPath *)indexPath;
 - (void)didDeleteBlogSuccessfully:(NSIndexPath *)indexPath;
 - (void)showBlogWithoutAnimation;

@@ -22,14 +22,12 @@
 	NSMutableDictionary *currentBlog = (NSMutableDictionary *)[[BlogDataManager sharedDataManager] blogAtIndex:blogIndex];
 	appDelegate.currentBlog = currentBlog;
 	
-    NSString *logoName = @"logo_wporg";
 	NSRange range = [self.url rangeOfString:@"wordpress.com"];
 	if(range.location != NSNotFound)
 		isWPcom = YES;
 	
 	if(isWPcom == YES) {
 		self.navigationItem.title = @"Edit Blog";
-        logoName = @"logo_wpcom";
 	}
 	else {
 		self.navigationItem.title = @"Edit Site";

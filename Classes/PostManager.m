@@ -84,6 +84,7 @@
 	[request setMethod:@"wp.getPostList" withObjects:params];
 	
 	connection = [[NSURLConnection alloc] initWithRequest:[request request] delegate:self];
+    [request release];
 	if (connection) {
 		payload = [[NSMutableData data] retain];
 	}
@@ -92,7 +93,8 @@
 - (void)didSyncPosts {
 	NSSortDescriptor *postSorter = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
 	[posts sortUsingDescriptors:[NSArray arrayWithObject:postSorter]];
-	
+	[postSorter release];
+
 	[self storeData];
 	
 	// Post notification
@@ -104,6 +106,8 @@
 	int updateIndex = [self indexForPostID:postID];
 	if((updateIndex > -1) && (post != nil))
 		[posts replaceObjectAtIndex:updateIndex withObject:post];
+
+    [post release];
 }
 
 - (void)syncStatuses {
@@ -222,6 +226,7 @@
 - (void)didGetPosts {
 	NSSortDescriptor *postSorter = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
 	[posts sortUsingDescriptors:[NSArray arrayWithObject:postSorter]];
+    [postSorter release];
 	
 	[self storeData];
 	
@@ -294,10 +299,6 @@
 - (void)savePost:(Post *)post {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
-	NSString *shouldPublish = @"false";
-	if([post.status isEqualToString:@"publish"])
-		shouldPublish = @"true";
-	
 	// We haven't downloaded the post in the background yet, so get it synchronously
 	NSArray *params = [NSArray arrayWithObjects:
 					   [dm.currentBlog valueForKey:kBlogId],
@@ -340,7 +341,6 @@
 						   [postID stringValue], nil];
 		XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:xmlrpcURL];
 		[request setMethod:@"wp.deletePost" withObjects:params];
-		[params release];
 		
 		NSString *response = (NSString *)[self executeXMLRPCRequest:request];
 		if([response intValue] == 1) {

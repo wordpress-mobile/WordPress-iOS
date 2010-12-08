@@ -108,6 +108,7 @@
 	int updateIndex = [self indexForPageID:pageID];
 	if((updateIndex > -1) && (page != nil))
 		[pages replaceObjectAtIndex:updateIndex withObject:page];
+    [page release];
 }
 
 - (void)syncStatuses {
@@ -306,10 +307,6 @@
 
 - (void)savePage:(Post *)page {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	
-	NSString *shouldPublish = @"false";
-	if([page.status isEqualToString:@"publish"])
-		shouldPublish = @"true";
 	
 	// We haven't downloaded the page in the background yet, so get it synchronously
 	NSArray *params = [NSArray arrayWithObjects:

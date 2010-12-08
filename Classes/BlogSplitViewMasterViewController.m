@@ -217,7 +217,6 @@
 	else if (currentDataSource == pagesViewController) {
 		PageViewController *pageViewController = [[PageViewController alloc] initWithNibName:@"PageViewController" bundle:nil];
 		detailViewController = pageViewController;
-		[pageViewController release];
 	}
 	
 	if (detailViewController) {
@@ -299,7 +298,7 @@
 		if (newSelectedIndex < 0)
 			return;
 		
-		WPItemType newItemType;
+		WPItemType newItemType = -1;
 		if ([keyPath isEqual:@"currentDraftIndex"]) {
 			newItemType = kWPItemTypePostDraft;
 		}

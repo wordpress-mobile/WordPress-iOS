@@ -46,7 +46,7 @@
 
 - (NSMutableArray *)getForPostID:(NSString *)postID andBlogURL:(NSString *)blogURL andMediaType:(MediaType)mediaType {
 	NSArray *items = nil;
-	NSMutableArray *results = [[NSMutableArray alloc] init];
+	NSMutableArray *results = [[[NSMutableArray alloc] init] autorelease];
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	
 	if(postID != nil) {
@@ -67,15 +67,15 @@
 			[results addObject:media];
 		}
 		
-		[request release];
 	}
+    [request release];
 	
 	return results;
 }
 
 - (NSMutableArray *)getForBlogURL:(NSString *)blogURL andMediaType:(MediaType)mediaType {
 	NSArray *items = nil;
-	NSMutableArray *results = [[NSMutableArray alloc] init];
+	NSMutableArray *results = [[[NSMutableArray alloc] init] autorelease];
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	
 	if(blogURL != nil) {
@@ -95,8 +95,8 @@
 			[results addObject:media];
 		}
 		
-		[request release];
 	}
+    [request release];
 	
 	return results;
 }

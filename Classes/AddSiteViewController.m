@@ -137,54 +137,52 @@
 			addTextField.adjustsFontSizeToFitWidth = NO;
 			addTextField.textColor = [UIColor blackColor];
 			addTextField.font = [UIFont systemFontOfSize:16.0];
-			if ([indexPath section] == 0) {
-				if (indexPath.row == 0) {
-					addTextField.placeholder = @"yourawesomeblog.com";
-					addTextField.keyboardType = UIKeyboardTypeURL;
-					addTextField.returnKeyType = UIReturnKeyNext;
-					if(url != nil)
-						addTextField.text = self.url;
-                    urlTextField = addTextField;
-				}
-				else if(indexPath.row == 1) {
-					addTextField.placeholder = @"WordPress username";
-					addTextField.keyboardType = UIKeyboardTypeDefault;
-					if(username != nil)
-						addTextField.text = username;
-					addTextField.returnKeyType = UIReturnKeyNext;
-				}
-				else if(indexPath.row == 2) {
-					addTextField.placeholder = @"WordPress password";
-					addTextField.keyboardType = UIKeyboardTypeDefault;
-					addTextField.secureTextEntry = YES;
-					if(password != nil)
-						addTextField.text = password;
-					addTextField.returnKeyType = UIReturnKeyDone;
-				}
-				else if(indexPath.row == 2) {
-					addTextField.placeholder = @"http://example.com/xmlrpc.php";
-					addTextField.keyboardType = UIKeyboardTypeURL;
-					if(xmlrpc != nil)
-						addTextField.text = xmlrpc;
-					addTextField.returnKeyType = UIReturnKeyDone;
-				}
-				
-				if(DeviceIsPad() == YES)
-					addTextField.backgroundColor = [UIColor clearColor];
-				else
-					addTextField.backgroundColor = [UIColor whiteColor];
-				addTextField.tag = indexPath.row;
-				addTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-				addTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-				addTextField.textAlignment = UITextAlignmentLeft;
-				addTextField.clearButtonMode = UITextFieldViewModeAlways;
-				addTextField.delegate = self;
-				[addTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-				[addTextField setEnabled: YES];
-				
-				[cell addSubview:addTextField];
-			}
-			//[addTextField release];
+            if (indexPath.row == 0) {
+                addTextField.placeholder = @"yourawesomeblog.com";
+                addTextField.keyboardType = UIKeyboardTypeURL;
+                addTextField.returnKeyType = UIReturnKeyNext;
+                if(url != nil)
+                    addTextField.text = self.url;
+                urlTextField = addTextField;
+            }
+            else if(indexPath.row == 1) {
+                addTextField.placeholder = @"WordPress username";
+                addTextField.keyboardType = UIKeyboardTypeDefault;
+                if(username != nil)
+                    addTextField.text = username;
+                addTextField.returnKeyType = UIReturnKeyNext;
+            }
+            else if(indexPath.row == 2) {
+                addTextField.placeholder = @"WordPress password";
+                addTextField.keyboardType = UIKeyboardTypeDefault;
+                addTextField.secureTextEntry = YES;
+                if(password != nil)
+                    addTextField.text = password;
+                addTextField.returnKeyType = UIReturnKeyDone;
+            }
+            else if(indexPath.row == 2) {
+                addTextField.placeholder = @"http://example.com/xmlrpc.php";
+                addTextField.keyboardType = UIKeyboardTypeURL;
+                if(xmlrpc != nil)
+                    addTextField.text = xmlrpc;
+                addTextField.returnKeyType = UIReturnKeyDone;
+            }
+
+            if(DeviceIsPad() == YES)
+                addTextField.backgroundColor = [UIColor clearColor];
+            else
+                addTextField.backgroundColor = [UIColor whiteColor];
+            addTextField.tag = indexPath.row;
+            addTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+            addTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+            addTextField.textAlignment = UITextAlignmentLeft;
+            addTextField.clearButtonMode = UITextFieldViewModeAlways;
+            addTextField.delegate = self;
+            [addTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+            [addTextField setEnabled: YES];
+
+            [cell addSubview:addTextField];
+			[addTextField release];
 		}
 	}
 	
@@ -557,6 +555,7 @@
 			ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:xmlrpc]];
 			[request setShouldPresentCredentialsBeforeChallenge:NO];
 			[request startSynchronous];
+            [request release];
 			
 			if(xmlrpc != nil) {
 				isAuthenticated = [[WPDataController sharedInstance] authenticateUser:xmlrpc username:username password:password];
@@ -766,6 +765,7 @@
 			[self performSelectorInBackground:@selector(verifyRSDurl:) withObject:rsdURL];
 		}
 	}
+    [xmlrpcRequest release];
 	
 	self.isGettingXMLRPCURL = NO;
 }
@@ -836,6 +836,7 @@
 	XMLRPCRequest *xmlrpcTest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpcURL]];
 	[xmlrpcTest setMethod:@"system.listMethods" withObjects:[NSArray array]];
 	[xmlrpcRequest appendPostData:[[xmlrpcTest source] dataUsingEncoding:NSUTF8StringEncoding]];
+    [xmlrpcTest release];
 	[xmlrpcRequest startSynchronous];
 	
 	NSError *error = [xmlrpcRequest error];
@@ -856,7 +857,8 @@
 		self.hasValidXMLRPCurl = NO;
 		[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
 	}
-	
+	[xmlrpcRequest release];
+
 	isGettingXMLRPCURL = NO;
 }
 

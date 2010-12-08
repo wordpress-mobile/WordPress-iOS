@@ -127,7 +127,6 @@
 		CGRect footerSpinnerFrame = CGRectMake(80, 0, 20, 20);
 		CGRect footerTextFrame = CGRectMake(110, 0, 200, 20);
 		if(DeviceIsPad() == YES) {
-			footerFrame = CGRectMake(0, 0, 550, 50);
 			footerSpinnerFrame = CGRectMake(190, 0, 20, 20);
 			footerTextFrame = CGRectMake(220, 0, 200, 20);
 		}

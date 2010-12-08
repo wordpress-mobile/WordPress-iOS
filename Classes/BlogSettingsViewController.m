@@ -271,12 +271,11 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell *cell = [[UITableViewCell alloc] init];
+	UITableViewCell *cell;
 	switch (indexPath.section) {
 		case 0:
 			switch (indexPath.row) {
 				case 2:
-					
 					cell = [tableView cellForRowAtIndexPath:indexPath];
 					[self showPicker:self withCell: cell];
 					break;

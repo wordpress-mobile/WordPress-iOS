@@ -128,7 +128,6 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	int foo = 0;
     static NSString *pageCellIdentifier = @"PageCell";
 	
     UITableViewCell *pageCell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:pageCellIdentifier];
@@ -151,8 +150,8 @@
 	
 	switch (indexPath.section) {
 		case 0:
-			foo = indexPath.row;
-			Post *page = [drafts objectAtIndex:indexPath.row];
+        {
+            Post *page = [drafts objectAtIndex:indexPath.row];
 			pageCell.textLabel.text = page.postTitle;
 			if((pageCell.textLabel.text == nil) || ([pageCell.textLabel.text length] == 0)) {
 				pageCell.textLabel.text = @"(no title)";
@@ -160,6 +159,7 @@
 			pageCell.detailTextLabel.text = [formatter stringFromDate:page.dateCreated];
 			result = pageCell;
 			break;
+        }
 		case 1:
 			pageCell.textLabel.text = [[pages objectAtIndex:indexPath.row] objectForKey:@"title"];
 			if((pageCell.textLabel.text == nil) || ([pageCell.textLabel.text length] == 0)) {
@@ -168,7 +168,7 @@
 			pageCell.detailTextLabel.text = [formatter stringFromDate:[self localDateFromGMT:[[pages objectAtIndex:indexPath.row] objectForKey:@"date_created_gmt"]]];
 			result = pageCell;
 			break;
-		case 2:
+		default:
 			loadCell.backgroundColor = [UIColor grayColor];
 			loadCell.mainLabel.text = @"Load more pages.";
 			if(pageManager.isGettingPages == YES)
@@ -176,8 +176,6 @@
 			else
 				loadCell.subtitleLabel.text = [NSString stringWithFormat:@"%d pages loaded. %d total.", pages.count, self.pageManager.pages.count];
 			result = loadCell;
-			break;
-		default:
 			break;
 	}
 	
@@ -210,7 +208,6 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	int foo = 0;
 	PageViewController *pageViewController;
 	if(DeviceIsPad() == YES)
 		pageViewController = [[PageViewController alloc] initWithNibName:@"PageViewController-iPad" bundle:nil];
@@ -219,13 +216,14 @@
 
 	switch (indexPath.section) {
 		case 0:
-			foo = indexPath.row;
+        {
 			Post *page = [drafts objectAtIndex:indexPath.row];
 			[pageViewController setSelectedPostID:page.uniqueID];
 			[appDelegate showContentDetailViewController:pageViewController];
 			
 			self.selectedIndexPath = indexPath;
 			break;
+        }
 		case 1:
 			[pageViewController setPageManager:self.pageManager];
 			
@@ -325,6 +323,7 @@
 	
 	NSSortDescriptor *pageSorter = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
 	[pages sortUsingDescriptors:[NSArray arrayWithObject:pageSorter]];
+    [pageSorter release];
 	
 	[self refreshTable];
     [refreshButton stopAnimating];
@@ -396,6 +395,7 @@
 														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			alert.tag = TAG_OFFSET;
 			[alert show];
+            [alert release];
 			[appDelegate setAlertRunning:YES];
 		}
 		else {
@@ -443,6 +443,7 @@
 - (void)addNewPage:(NSNotification *)notification {
 	NSDictionary *newPage = [(NSDictionary *)[notification object] retain];
 	[pages insertObject:newPage atIndex:0];
+    [newPage release];
 	[drafts removeAllObjects];
 	drafts = [draftManager getType:@"page" forBlog:[dm.currentBlog valueForKey:@"blogid"]];
 	[self refreshTable];

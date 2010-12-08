@@ -110,7 +110,8 @@ NSString *XMLRPCReceivedResponseNotification = @"XML-RPC Successfully Received R
 			str = [[NSString alloc] initWithData:data encoding:[NSString defaultCStringEncoding]];
 			data = [str dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
 		}
-			
+        [str release];
+
 			//Check for HTML code 400 or greater in response statusCode (from header) and throw error if so
 			if ([urlres isKindOfClass:[NSHTTPURLResponse class]]) {
 				
@@ -130,7 +131,6 @@ NSString *XMLRPCReceivedResponseNotification = @"XML-RPC Successfully Received R
 			}
 	     }
 		
-		[str release];
 		return [[[XMLRPCResponse alloc] initWithData: data] autorelease];
 	}
 

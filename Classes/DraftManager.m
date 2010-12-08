@@ -46,7 +46,7 @@
 }
 
 - (NSMutableArray *)getType:(NSString *)postType forBlog:(NSString *)blogID {
-	NSMutableArray *results = [[NSMutableArray alloc] init];
+	NSMutableArray *results = [[[NSMutableArray alloc] init] autorelease];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];   	
     NSFetchRequest *request = [[NSFetchRequest alloc] init];  
     [request setEntity:entity];   

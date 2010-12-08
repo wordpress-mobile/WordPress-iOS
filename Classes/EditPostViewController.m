@@ -245,6 +245,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			}
 			
 			[postDetailViewController setPost:post];
+            [post release];
 		}
 	}
 	else {

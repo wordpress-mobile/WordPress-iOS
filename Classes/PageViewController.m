@@ -118,6 +118,7 @@
 		leftButton.action = @selector(cancelAction:);
 	}
 	else {
+        [leftButton release];
 		leftButton = nil;
 	}
 	

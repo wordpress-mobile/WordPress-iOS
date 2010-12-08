@@ -112,6 +112,7 @@
 	WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	PostLocationViewController *locationView = [[PostLocationViewController alloc] initWithNibName:@"PostLocationViewController" bundle:nil];
 	[delegate.navigationController presentModalViewController:locationView animated:YES];
+    [locationView release];
 }
 
 - (CLLocation *)getPostLocation {

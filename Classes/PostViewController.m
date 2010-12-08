@@ -978,9 +978,9 @@
 	// Execute the XML-RPC request
 	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[dm.currentBlog valueForKey:@"xmlrpc"]]];
 	[request setMethod:@"metaWeblog.getPost" withObjects:params];
-	[params release];
 	
 	connection = [[NSURLConnection alloc] initWithRequest:[request request] delegate:self];
+    [request release];
 	if (connection) {
 		payload = [[NSMutableData data] retain];
 	}
@@ -1024,7 +1024,6 @@
 					if(appDelegate.postID != nil) {
 						NSNumber *publishedPostID = [f numberFromString:appDelegate.postID];
 						NSNumber *newPostID = [responseMeta objectForKey:@"postid"];
-						[f release];
 						if([publishedPostID isEqualToNumber:newPostID]) {
 							[appDelegate setPostID:nil];
 							NSDictionary *info = [[NSDictionary alloc] initWithObjectsAndKeys:post.uniqueID, @"uniqueID", nil];
@@ -1033,6 +1032,7 @@
 							[info release];
 						}
 					}
+                    [f release];
 				}
 				
 				[xmlrpcResponse release];

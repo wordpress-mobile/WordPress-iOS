@@ -75,7 +75,9 @@
 	
 	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];
 	NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+    [sortDescriptor release];
 	[request setSortDescriptors:sortDescriptors];
+    [sortDescriptors release];
 	
 	NSError *error;
 	NSArray *items = [appDelegate.managedObjectContext executeFetchRequest:request error:&error];

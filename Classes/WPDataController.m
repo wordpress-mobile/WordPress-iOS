@@ -59,6 +59,7 @@
 		else
 			result = NO;
 	}
+    [request release];
 	
 	return result;
 }

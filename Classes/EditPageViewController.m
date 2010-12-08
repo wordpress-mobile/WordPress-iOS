@@ -112,7 +112,6 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	int row = 0;
     static NSString *CellIdentifier = @"Cell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -163,7 +162,7 @@
 			
 			break;
 		case 1:
-			row = 0;
+        {
 			UIColor *backgroundColor;
 			if(DeviceIsPad()){
 				backgroundColor = [UIColor clearColor];
@@ -187,6 +186,7 @@
 			cell = contentCell;
 			contentTextView = [contentCell.textView retain];
 			break;
+        }
 		default:
 			break;
 	}
@@ -243,7 +243,7 @@
 }
 
 - (void)pickerView:(UIPickerView *)thePickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-	[self.page setStatus:[[[statuses allKeys] objectAtIndex:row] retain]];
+	[self.page setStatus:[[statuses allKeys] objectAtIndex:row]];
 	
 	if(DeviceIsPad() == YES)
 		[statusPopover dismissPopoverAnimated:YES];
@@ -423,6 +423,7 @@
 	pickerViewController = [[UIViewController alloc] init];
 	pickerViewController.view.frame = pickerFrame;
 	[pickerViewController.view addSubview:pickerView];
+    [pickerView release];
 	
 	statusPopover = [[UIPopoverController alloc] initWithContentViewController:pickerViewController];
 	[statusPopover setPopoverContentSize:CGSizeMake(300.0, 200.0)];
