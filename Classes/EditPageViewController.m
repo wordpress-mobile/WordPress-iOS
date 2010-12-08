@@ -558,14 +558,15 @@
 	}
 	spinner = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
 	[spinner show];
+
+    self.page.postTitle = titleTextField.text;
+	self.page.content = contentTextView.text;
 	[self performSelectorInBackground:@selector(saveInBackground) withObject:nil];
 }
 
 - (void)saveInBackground {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	self.page.postTitle = titleTextField.text;
-	self.page.content = contentTextView.text;
 	[self.page setPostType:@"page"];
 	
 	if(self.isLocalDraft == YES) {
