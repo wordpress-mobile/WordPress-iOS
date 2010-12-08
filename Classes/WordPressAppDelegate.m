@@ -129,7 +129,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 			WelcomeViewController *welcomeViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController-iPad" bundle:nil];
 			UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:welcomeViewController];
 			aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-			aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+			aNavigationController.modalPresentationStyle = UIModalPresentationPageSheet;
 			self.navigationController = aNavigationController;
 			[splitViewController presentModalViewController:aNavigationController animated:YES];
 			[aNavigationController release];

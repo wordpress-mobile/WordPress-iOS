@@ -25,6 +25,7 @@
 	
 	NSURLRequest *request = [NSURLRequest requestWithURL:
 								[NSURL URLWithString:@"http://wordpress.com/signup?ref=wp-iphone"]];
+    self.webView.scalesPageToFit = YES;
 	[self.webView loadRequest:request];
 }
 
