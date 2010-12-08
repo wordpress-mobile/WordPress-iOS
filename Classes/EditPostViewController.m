@@ -791,7 +791,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)textViewDidChange:(UITextView *)aTextView {
-    postDetailViewController.hasChanges = YES;
+	[postDetailViewController setHasChanges:YES];
 	
     if (dismiss == YES) {
         dismiss = NO;

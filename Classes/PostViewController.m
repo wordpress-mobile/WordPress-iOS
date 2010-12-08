@@ -390,7 +390,9 @@
 		[self refreshUIForCompose];
 		
 		// If this was a save and not a publish, post a message
-		if(!post.wasLocalDraft)
+		if(post.wasLocalDraft)
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"DraftsUpdated" object:nil userInfo:dict];
+		else
 			[[NSNotificationCenter defaultCenter] postNotificationName:@"AsynchronousPostIsPosted" object:nil userInfo:dict];
 		
 		// Back out to Posts list
@@ -577,7 +579,6 @@
 	[postsListController loadPosts];
 	
 	[postDetailEditController clearUnsavedPost];
-	[self performSelectorOnMainThread:@selector(didSaveInBackground:) withObject:nil waitUntilDone:NO];
 	
 	if(andDiscard == YES)
 		[self discard];
@@ -589,8 +590,6 @@
 	[postDetailEditController clearUnsavedPost];
     [mediaViewController cancelPendingUpload:self];
     [self stopTimer];
-	if(DeviceIsPad() == NO)
-		[self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)cancel {
@@ -1024,13 +1023,19 @@
 					if(appDelegate.postID != nil) {
 						NSNumber *publishedPostID = [f numberFromString:appDelegate.postID];
 						NSNumber *newPostID = [responseMeta objectForKey:@"postid"];
-						if([publishedPostID isEqualToNumber:newPostID]) {
-							[appDelegate setPostID:nil];
-							NSDictionary *info = [[NSDictionary alloc] initWithObjectsAndKeys:post.uniqueID, @"uniqueID", nil];
-							[[NSNotificationCenter defaultCenter] postNotificationName:@"LocalDraftWasPublishedSuccessfully" object:nil userInfo:info];
-							[self setPost:nil];
-							[info release];
-						}
+						@try {
+							if([publishedPostID isEqualToNumber:newPostID]) {
+								[appDelegate setPostID:nil];
+								NSDictionary *info = [[NSDictionary alloc] initWithObjectsAndKeys:post.uniqueID, @"uniqueID", nil];
+								[[NSNotificationCenter defaultCenter] postNotificationName:@"LocalDraftWasPublishedSuccessfully" object:nil userInfo:info];
+								[self setPost:nil];
+								[info release];
+							}
+						} 
+						@catch (id exception) {
+							NSLog(@"%@", exception);
+						} 
+						
 					}
                     [f release];
 				}
