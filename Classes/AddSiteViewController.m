@@ -1056,7 +1056,6 @@
 
 
 - (void)dealloc {
-	[tableView release];
     [urlTextField release];
 	[subsites release], subsites = nil;
 	[addUsersBlogsView release];
