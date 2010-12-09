@@ -11,7 +11,6 @@
 @synthesize isAuthenticating, isAuthenticated, isSaving, hasSubsites, subsites, viewDidMove, keyboardIsVisible;
 @synthesize hasValidXMLRPCurl, blogID, blogName, host, activeTextField, blogIndex, tableView;
 //@synthesize addUsersBlogsView;
-
 #pragma mark -
 #pragma mark View lifecycle
 
@@ -293,8 +292,8 @@
 					[appDelegate.currentBlog setObject:url forKey:@"url"];
 				if(username != nil)
 					[appDelegate.currentBlog setObject:username forKey:@"username"];
-				[activeTextField becomeFirstResponder];
-				[activeTextField resignFirstResponder];
+				//[activeTextField becomeFirstResponder];
+				//[activeTextField resignFirstResponder];
 				BlogSettingsViewController *settingsView;
 				
 				if (DeviceIsPad())
