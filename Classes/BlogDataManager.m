@@ -1881,7 +1881,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
     return [blogsList count];
 }
 
-- (NSMutableDictionary *)blogAtIndex:(NSUInteger)theIndex {
+- (NSMutableDictionary *)blogAtIndex:(NSInteger)theIndex {
     return [blogsList objectAtIndex:theIndex];
 }
 
@@ -1990,7 +1990,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
     self->isLocaDraftsCurrent = YES;
 }
 
-- (void)copyBlogAtIndexCurrent:(NSUInteger)theIndex {
+- (void)copyBlogAtIndexCurrent:(NSInteger)theIndex {
     id cb = [[blogsList objectAtIndex:theIndex] mutableCopy];
     [self setCurrentBlog:cb];
     [cb release];
@@ -1999,8 +1999,8 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
     currentBlogIndex = theIndex;
 }
 
-- (void)makeBlogAtIndexCurrent:(NSUInteger)theIndex {
-	if(blogsList.count > 0) {
+- (void)makeBlogAtIndexCurrent:(NSInteger)theIndex {
+	if((blogsList.count > 0) && (theIndex > 0) && (theIndex < blogsList.count)) {
 		[self setCurrentBlog:[blogsList objectAtIndex:theIndex]];
 	}
 	

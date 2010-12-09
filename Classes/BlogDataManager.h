@@ -114,11 +114,11 @@
 #pragma mark Blog
 
 - (NSInteger)countOfBlogs;
-- (NSMutableDictionary *)blogAtIndex:(NSUInteger)theIndex;
+- (NSMutableDictionary *)blogAtIndex:(NSInteger)theIndex;
 - (NSDictionary *)blogForId:(NSString *)blogid hostName:(NSString *)hostname;
 - (NSInteger)indexForBlogid:(NSString *)blogid url:(NSString *)url;
-- (void)makeBlogAtIndexCurrent:(NSUInteger)theIndex;
-- (void)copyBlogAtIndexCurrent:(NSUInteger)theIndex;
+- (void)makeBlogAtIndexCurrent:(NSInteger)theIndex;
+- (void)copyBlogAtIndexCurrent:(NSInteger)theIndex;
 - (void)makeNewBlogCurrent;
 - (void)makeLocalDraftsCurrent;
 - (void)saveCurrentBlog;
