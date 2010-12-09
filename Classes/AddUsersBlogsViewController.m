@@ -16,6 +16,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    [FlurryAPI logEvent:@"AddUsersBlogs"];
 	self.navigationItem.title = @"Select Blogs";
 	selectedBlogs = [[NSMutableArray alloc] init];
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];

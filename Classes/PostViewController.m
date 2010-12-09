@@ -42,6 +42,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [FlurryAPI logEvent:@"Post"];
+
 	dm = [BlogDataManager sharedDataManager];
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	autosaveView = [[AutosaveViewController alloc] initWithNibName:@"AutosaveViewController" bundle:nil];
@@ -223,12 +225,14 @@
 }
 
 - (IBAction)cancelView:(id)sender {
+    [FlurryAPI logEvent:@"Post#cancelView"];
     if (!hasChanges) {
         [self stopTimer];
         [mediaViewController cancelPendingUpload:self];
 		[self dismissEditView];
         return;
     }
+    [FlurryAPI logEvent:@"Post#cancelView(actionSheet)"];
 	[postSettingsController endEditingAction:nil];
 	[postDetailEditController endEditingAction:nil];
 
@@ -244,10 +248,13 @@
 }
 
 - (IBAction)saveAction:(id)sender {
-	if(isPublishing == NO)
+	if(isPublishing == NO) {
+        [FlurryAPI logEvent:@"Post#saveAction(save)"];
 		spinner.progressMessage.text = @"Saving...";
-	else
+	} else {
+        [FlurryAPI logEvent:@"Post#saveAction(publish)"];
 		spinner.progressMessage.text = @"Publishing...";
+    }
 	
 	[self.postDetailEditController refreshCurrentPostForUI];
 	
@@ -575,6 +582,7 @@
 }
 
 - (void)saveAsDraft:(BOOL)andDiscard {
+    [FlurryAPI logEvent:@"Post#actionSheet_saveAsDraft"];
 	hasSaved = YES;
 	
 	if((post != nil) && (appDelegate.postID != nil))
@@ -609,6 +617,7 @@
 }
 
 - (void)discard {
+    [FlurryAPI logEvent:@"Post#actionSheet_discard"];
     hasChanges = NO;
 	[self refreshButtons];
 	[postDetailEditController clearUnsavedPost];
@@ -617,6 +626,7 @@
 }
 
 - (void)cancel {
+    [FlurryAPI logEvent:@"Post#actionSheet_cancel"];
     hasChanges = YES;
 
     if ([[leftView title] isEqualToString:@"Posts"])
@@ -744,6 +754,7 @@
 }
 
 - (void)publish:(id)sender {
+    [FlurryAPI logEvent:@"Post#publish"];
 	isPublishing = YES;
 	
 	if(post.isLocalDraft == [NSNumber numberWithInt:1]) {

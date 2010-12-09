@@ -39,6 +39,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [FlurryAPI logEvent:@"PostMedia"];
 	
 	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
 	

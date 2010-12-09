@@ -8,6 +8,7 @@
 
 - (void)viewDidLoad {
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+    [FlurryAPI logEvent:@"Blogs"];
 	
     self.title = NSLocalizedString(@"Blogs", @"RootViewController_Title");
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd

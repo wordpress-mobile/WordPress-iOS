@@ -36,6 +36,7 @@
 #pragma mark View Lifecycle Methods
 
 - (void)viewDidLoad {
+    [FlurryAPI logEvent:@"PostPreview"];
 	webView.delegate = self;
 	[self refreshWebView];
 }

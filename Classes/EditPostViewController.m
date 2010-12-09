@@ -21,7 +21,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	
+    [FlurryAPI logEvent:@"EditPost"];
+
 	self.navigationItem.title = @"Write";
 	statuses = [NSArray arrayWithObjects:@"Local Draft", @"Draft", @"Private", @"Pending Review", @"Published", nil];
     titleTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];

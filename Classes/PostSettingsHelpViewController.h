@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Constants.h"
+#import "WordPressAppDelegate.h"
 
 @interface PostSettingsHelpViewController : UITableViewController {
 	NSMutableDictionary *helpContent;

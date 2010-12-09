@@ -298,6 +298,9 @@ Creation/CXMLNode_CreationExtensions.m -text
 /EditPostViewController.xib -text
 /EditSiteViewController-iPad.xib -text
 /Entitlements.plist -text
+FlurryLib/FlurryAPI.h -text
+FlurryLib/FlurryAdDelegate.h -text
+FlurryLib/libFlurry.a -text svneol=unset#unset
 /HttpHelper.h -text
 /HttpHelper.m -text
 /HttpHelperDelegate.h -text

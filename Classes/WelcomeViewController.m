@@ -20,6 +20,7 @@
 	
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	//[appDelegate checkWPcomAuthentication];
+    [FlurryAPI logEvent:@"Welcome"];
 	
 	self.tableView.backgroundColor = [UIColor clearColor];
 	if(DeviceIsPad()) {

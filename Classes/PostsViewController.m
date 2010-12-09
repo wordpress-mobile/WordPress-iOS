@@ -38,6 +38,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [FlurryAPI logEvent:@"Posts"];
 
 	draftManager = [[DraftManager alloc] init];
     self.tableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;

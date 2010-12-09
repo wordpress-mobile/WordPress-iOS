@@ -16,6 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [FlurryAPI logEvent:@"AddSite"];
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	footerText = @" ";
 	

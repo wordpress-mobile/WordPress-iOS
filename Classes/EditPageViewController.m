@@ -20,6 +20,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [FlurryAPI logEvent:@"EditPage"];
 		
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	pageDetailView = (PageViewController *)self.tabBarController.parentViewController;
@@ -273,6 +274,9 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField {
 	selectedSection = nil;
 	[textField resignFirstResponder];
+    if ([textField.text isEqualToString:@"#%#"]) {
+        [NSException raise:@"Test exception" format:@"Nothing bad, actually"];
+    }
 	[self refreshPage];
 	[self refreshTable];
 }

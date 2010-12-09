@@ -19,7 +19,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	
+    [FlurryAPI logEvent:@"Blog"];
+
     self.view = tabBarController.view;
 
     BlogDataManager *dm = [BlogDataManager sharedDataManager];

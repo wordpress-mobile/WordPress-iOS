@@ -17,6 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [FlurryAPI logEvent:@"PostLocation"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

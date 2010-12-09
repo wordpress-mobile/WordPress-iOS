@@ -17,6 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
+    [FlurryAPI logEvent:@"WPcomLogin"];
 	footerText = @" ";
 	buttonText = @"Sign In";
 	WPcomXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";

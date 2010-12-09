@@ -12,6 +12,7 @@
 @synthesize webView, spinner;
 
 - (void)viewDidLoad {
+    [FlurryAPI logEvent:@"WebSignup"];
 	if(DeviceIsPad() == YES) {
 		self.view.frame = CGRectMake(0, 0, 500, 400);
 	}

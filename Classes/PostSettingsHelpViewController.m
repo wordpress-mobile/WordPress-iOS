@@ -17,6 +17,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [FlurryAPI logEvent:@"PostSettingsHelp"];
+
 	helpContent = [[NSMutableDictionary alloc] init];
 	
 	// Add hint content

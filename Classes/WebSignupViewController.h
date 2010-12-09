@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "WordPressAppDelegate.h"
 
 @interface WebSignupViewController : UIViewController <UIWebViewDelegate>{
 	IBOutlet UIWebView *webView;

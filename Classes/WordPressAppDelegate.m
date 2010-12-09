@@ -23,6 +23,20 @@
 - (void)runStats;
 @end
 
+NSUncaughtExceptionHandler *defaultExceptionHandler;
+void uncaughtExceptionHandler(NSException *exception) {
+    NSArray *backtrace = [exception callStackSymbols];
+    NSString *platform = [[UIDevice currentDevice] platform];
+    NSString *version = [[UIDevice currentDevice] systemVersion];
+    NSString *message = [NSString stringWithFormat:@"device: %@. os: %@. backtrace:\n%@",
+                         platform,
+                         version,
+                         backtrace];
+    NSLog(@"Logging error (%@|%@): %@\n%@", platform, version, [exception reason], backtrace);
+    [FlurryAPI logError:@"Uncaught" message:message exception:exception];
+	defaultExceptionHandler(exception);
+}
+
 @implementation WordPressAppDelegate
 
 static WordPressAppDelegate *wordPressApp = NULL;
@@ -78,6 +92,12 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
 	[self checkIfStatsShouldRun];
+#ifndef DEBUG
+#error Need Flurry api key for distribution
+#endif
+    [FlurryAPI startSession:@"NPFZWR9J1MI9QU1ICU9H"]; // FIXME: set up real api key for distribution
+	[FlurryAPI setSessionReportsOnPauseEnabled:YES];
+
 	
 	if(getenv("NSZombieEnabled"))
 		NSLog(@"NSZombieEnabled!");
@@ -167,7 +187,10 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	// Enable the Crash Reporter
 	if (![crashReporter enableCrashReporterAndReturnError: &error])
 		NSLog(@"Warning: Could not enable crash reporter: %@", error);
-	
+
+    defaultExceptionHandler = NSGetUncaughtExceptionHandler();
+	NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
+
 	[blogsViewController release];
 	[window makeKeyAndVisible];
 }
