@@ -41,7 +41,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadPages) name:@"DidGetPages" object:nil];
 //	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadPages) name:@"DidAddPage" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewPage:) name:@"DidCreatePage" object:nil];
-	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshAfterSave) name:@"RefreshPageList" object:nil];
 	//[self loadPages];
 }
 
@@ -309,10 +309,9 @@
 }
 
 - (void)loadPages {
-    [refreshButton startAnimating];
-	[self refreshTable];
+     [refreshButton startAnimating];
 	self.drafts = [draftManager getType:@"page" forBlog:[dm.currentBlog valueForKey:@"blogid"]];
-	
+	[self refreshTable];
 	int pageCount = 0;
 	[pages removeAllObjects];
 	for(NSDictionary *page in pageManager.pages) {
@@ -327,6 +326,14 @@
 	NSSortDescriptor *pageSorter = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
 	[pages sortUsingDescriptors:[NSArray arrayWithObject:pageSorter]];
     [pageSorter release];
+	
+	[self refreshTable];
+    [refreshButton stopAnimating];
+}
+
+- (void)refreshAfterSave {
+	[refreshButton startAnimating];
+	self.drafts = [draftManager getType:@"page" forBlog:[dm.currentBlog valueForKey:@"blogid"]];
 	
 	[self refreshTable];
     [refreshButton stopAnimating];

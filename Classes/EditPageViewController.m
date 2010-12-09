@@ -597,10 +597,12 @@
 		
 		// Make sure our Pages list refreshes
 		if(page.wasLocalDraft)
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"PagesUpdated" object:nil ];
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"PagesUpdated" object:nil];
 		else
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"AsynchronousPostIsPosted" object:nil ];
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"AsynchronousPostIsPosted" object:nil];
 	}
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshPageList" object:nil];
+	
 	
 	[delegate dismiss:self];
 }
