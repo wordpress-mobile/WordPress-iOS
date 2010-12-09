@@ -126,7 +126,7 @@
 				if ([indexPath row] == 0) {
 					loginTextField.placeholder = @"WordPress.com username";
 					loginTextField.keyboardType = UIKeyboardTypeEmailAddress;
-					loginTextField.returnKeyType = UIReturnKeyDone;
+					loginTextField.returnKeyType = UIReturnKeyNext;
 					loginTextField.tag = 0;
 					loginTextField.delegate = self;
 					if(username != nil)
@@ -249,14 +249,29 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 	[textField resignFirstResponder];
 	
-	if((textField.tag == 1) && (username != nil) && (password != nil)) {
-		if (!isSigningIn){
-			isSigningIn = YES;
-			[self refreshTable];
-			[self performSelectorInBackground:@selector(signIn:) withObject:self];
-		}
+	UITableViewCell *cell = nil;
+    UITextField *nextField = nil;
+    switch (textField.tag) {
+        case 0:
+            [textField endEditing:YES];
+            cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+            if(cell != nil) {
+                nextField = (UITextField*)[cell viewWithTag:1];
+                if(nextField != nil)
+                    [nextField becomeFirstResponder];
+            }
+            break;
+        case 1:
+            if((username != nil) && (password != nil)) {
+                if (!isSigningIn){
+                    isSigningIn = YES;
+                    [self refreshTable];
+                    [self performSelectorInBackground:@selector(signIn:) withObject:self];
+                }
+            }
+            break;
 	}
-	
+
 	return YES;	
 }
 
