@@ -580,8 +580,9 @@
 	
 	[postDetailEditController clearUnsavedPost];
 	
-	if(andDiscard == YES)
+	if(andDiscard == YES){
 		[self discard];
+	}
 }
 
 - (void)discard {
@@ -603,6 +604,7 @@
     if ([actionSheet tag] == 201) {
         if (buttonIndex == 0) {
             [self discard];
+			[self dismissEditView];
         }
 
         if (buttonIndex == 1) {
