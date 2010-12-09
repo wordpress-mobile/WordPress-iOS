@@ -23,6 +23,12 @@
 - (void)runStats;
 @end
 
+NSString *CrashFilePath() {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    return [documentsDirectory stringByAppendingPathComponent:@"crash_data.txt"];
+}
+
 NSUncaughtExceptionHandler *defaultExceptionHandler;
 void uncaughtExceptionHandler(NSException *exception) {
     NSArray *backtrace = [exception callStackSymbols];
@@ -33,6 +39,10 @@ void uncaughtExceptionHandler(NSException *exception) {
                          version,
                          backtrace];
     NSLog(@"Logging error (%@|%@): %@\n%@", platform, version, [exception reason], backtrace);
+
+    NSString *ourCrash = [NSString stringWithFormat:@"Logging error (%@|%@): %@\n%@", platform, version, [exception reason], backtrace];
+    [ourCrash writeToFile:CrashFilePath() atomically:NO];
+
     [FlurryAPI logError:@"Uncaught" message:message exception:exception];
 	defaultExceptionHandler(exception);
 }

@@ -23,6 +23,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[[PLCrashReporter sharedReporter] purgePendingCrashReport];
+    [[NSFileManager defaultManager] removeItemAtPath:CrashFilePath() error:nil];
 	[super viewWillDisappear:YES];
 }
 
@@ -65,6 +66,11 @@
 			// Set the message body and add the log as an attachment
 			[controller setMessageBody:body isHTML:NO];
 			[controller addAttachmentData:crashData mimeType:@"application/octet-stream" fileName:@"crash.log"];
+
+            if ([[NSFileManager defaultManager] fileExistsAtPath:CrashFilePath()]) {
+                NSString *ourCrash = [NSString stringWithContentsOfFile:CrashFilePath()];
+                [controller addAttachmentData:[ourCrash dataUsingEncoding:NSUTF8StringEncoding] mimeType:@"text/plain" fileName:@"crash_data.txt"];
+            }
 			
 			// Present and release
 			[self presentModalViewController:controller animated:NO];
