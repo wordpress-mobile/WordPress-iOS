@@ -348,6 +348,12 @@
 						[dict setValue:postID forKey:@"originalPostId"];
 						[dict setValue:[NSNumber numberWithInt:0] forKey:@"isCurrentPostDraft"];
 						[dict setValue:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
+					} else {
+						//this is just a generic error message that should appear when the publication went wrong
+						[self performSelectorOnMainThread:@selector(showError) withObject:nil waitUntilDone:NO];
+						[postID release];
+						[pool release];
+						return;
 					}
 					
 					if (DeviceIsPad() == YES) {
@@ -366,6 +372,23 @@
 	[self performSelectorOnMainThread:@selector(didSaveInBackground:) withObject:dict waitUntilDone:NO];
 	
 	[pool release];
+}
+
+- (void)showError {
+	NSString *msg = [NSString stringWithFormat:@"Sorry, something went wrong."];
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Post Error"
+                                                    message:msg
+                                                   delegate:self
+                                          cancelButtonTitle:nil
+                                          otherButtonTitles:@"OK", nil];
+	alert.tag = TAG_OFFSET;
+	[alert show];
+	[appDelegate setAlertRunning:YES];
+	[alert release];
+
+	// Dismiss spinner
+	[spinner dismissWithClickedButtonIndex:0 animated:YES];
+	return;
 }
 
 - (void)didSaveInBackground:(NSDictionary *)dict {

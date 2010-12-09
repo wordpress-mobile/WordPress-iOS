@@ -115,5 +115,5 @@
 - (void)hideAutosaves;
 - (void)setMode:(EditPostMode)newMode;
 - (void)refreshButtons;
-
+- (void)showError;
 @end

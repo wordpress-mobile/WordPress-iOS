@@ -3721,7 +3721,9 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 		if ([response isKindOfClass:[NSError class]]) {			
 			successFlag = NO;
 			return successFlag;
-		}
+		} else {
+            successFlag = YES;
+        }
 		
 		[appDelegate setPostID:[NSString stringWithFormat:@"%@", response]];
         [self fectchNewPost:response formBlog:currentBlog];
