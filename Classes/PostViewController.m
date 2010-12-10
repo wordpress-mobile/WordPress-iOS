@@ -313,8 +313,6 @@
 				if(postSettingsController.passwordTextField.text != nil)
 					[dm.currentPost setObject:postSettingsController.passwordTextField.text forKey:@"wp_password"];
 				
-				[postSettingsController endEditingAction:nil];
-				
 				NSString *description = [dm.currentPost valueForKey:@"description"];
 				NSString *title = [dm.currentPost valueForKey:@"title"];
 				NSArray *photos = [dm.currentPost valueForKey:@"Photos"];
