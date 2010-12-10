@@ -44,7 +44,9 @@
 }
 
 - (void)endEditingAction:(id)sender {
+	if (passwordTextField != nil){
     [passwordTextField resignFirstResponder];
+	}
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
