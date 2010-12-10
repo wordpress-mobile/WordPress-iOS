@@ -116,6 +116,7 @@
 	[segmentedControl addTarget:self action:@selector(reloadTableView) forControlEvents:UIControlEventValueChanged];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(commentsSynced:) name:@"CommentRefreshNotification" object:nil];
+	[self setEditing:NO];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
