@@ -594,7 +594,7 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
 	if(DeviceIsPad() == YES) {
-		
+		[self refreshButtons];
 		// Make sure our Pages list refreshes
 		if(page.wasLocalDraft)
 			[[NSNotificationCenter defaultCenter] postNotificationName:@"PagesUpdated" object:nil];

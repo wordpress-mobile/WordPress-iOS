@@ -106,6 +106,7 @@
 		self.navigationItem.rightBarButtonItem = nil;
 	
 	// Left side
+	if (!DeviceIsPad()){
 	UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] init];
 	leftButton.target = self;
 	leftButton.style = UIBarButtonItemStyleBordered;
@@ -125,6 +126,7 @@
 	
 	self.navigationItem.leftBarButtonItem = leftButton;
 	[leftButton release];
+	}
 	
 	[buttonBar setItems:buttons animated:NO];
 	[buttons release];
