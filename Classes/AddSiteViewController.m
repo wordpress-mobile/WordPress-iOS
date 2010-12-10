@@ -567,7 +567,7 @@
 				else {
 					isAdding = NO;
 					addButtonText = @"Add Blog";
-					footerText = @"Incorrect username or password.";
+					footerText = @"Connection error.";
 				}
 			}
 			else {

@@ -128,8 +128,8 @@
 			
 			if([errorMessage isEqualToString:@"The operation couldn’t be completed. (NSXMLParserErrorDomain error 4.)"])
 				errorMessage = @"Your blog's XML-RPC endpoint was found but it isn't communicating properly. Try disabling plugins or contacting your host.";
-			else if([errorMessage isEqualToString:@"Bad login/pass combination."])
-				errorMessage = nil;
+			//else if([errorMessage isEqualToString:@"Bad login/pass combination."])
+				//errorMessage = nil;
 			
 			if(errorMessage != nil)
 				[appDelegate showAlertWithTitle:@"XML-RPC Error" message:errorMessage];

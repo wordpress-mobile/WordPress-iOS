@@ -64,7 +64,7 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tv {
-    return 3;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tv numberOfRowsInSection:(NSInteger)section {
@@ -75,9 +75,6 @@
 			result = 3;
 			break;
 		case 1:
-			result = 3;
-			break;
-		case 2:
 			result = 1;
 			break;
 		default:
@@ -92,7 +89,6 @@
     static NSString *normalCellIdentifier = @"Cell";
     static NSString *switchCellIdentifier = @"SwitchCell";
     static NSString *activityCellIdentifier = @"ActivityCell";
-	static NSString *textCellIdentifier = @"TextCell";
     
     UITableViewCell *cell = [tv dequeueReusableCellWithIdentifier:normalCellIdentifier];
     if (cell == nil) {
@@ -166,78 +162,6 @@
 			}
 			break;
 		case 1:
-			cell.tag = 3;
-			UITableViewCell *textCell = [tv dequeueReusableCellWithIdentifier:textCellIdentifier];
-			if (textCell == nil) {
-				textCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:textCellIdentifier] autorelease];
-			}
-			CGRect textFieldFrame = CGRectMake(110, 10, 185, 30);
-			if(DeviceIsPad() == YES) {
-				textFieldFrame = CGRectMake(200, 10, 300, 30);
-			}
-			UITextField *loginTextField = [[UITextField alloc] initWithFrame:textFieldFrame];
-			loginTextField.adjustsFontSizeToFitWidth = YES;
-			loginTextField.textColor = [UIColor blackColor];
-			switch (indexPath.row) {
-				case 0:
-					switchCell.textLabel.text = @"Authentication";
-					switchCell.cellSwitch.on = [[appDelegate.currentBlog objectForKey:@"authEnabled"] boolValue];
-					cell = switchCell;
-					cell.tag = 3;
-					break;
-				case 1:
-					textCell.textLabel.text = @"Username";
-					loginTextField.placeholder = @"HTTP Auth Username";
-					loginTextField.keyboardType = UIKeyboardTypeEmailAddress;
-					loginTextField.returnKeyType = UIReturnKeyDone;
-					textCell.tag = 4;
-					
-					if(DeviceIsPad() == YES)
-						loginTextField.backgroundColor = [UIColor clearColor];
-					else
-						loginTextField.backgroundColor = [UIColor whiteColor];
-					
-					loginTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-					loginTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-					loginTextField.textAlignment = UITextAlignmentLeft;
-					loginTextField.delegate = self;
-					
-					loginTextField.clearButtonMode = UITextFieldViewModeNever;
-					[loginTextField setEnabled: YES];
-					
-					[textCell addSubview:loginTextField];
-					cell = textCell;
-					break;
-				case 2:
-					textCell.textLabel.text = @"Password";
-					loginTextField.placeholder = @"HTTP Auth Password";
-					loginTextField.keyboardType = UIKeyboardTypeDefault;
-					loginTextField.returnKeyType = UIReturnKeyDone;
-					loginTextField.secureTextEntry = YES;
-					textCell.tag = 5;
-					
-					if(DeviceIsPad() == YES)
-						loginTextField.backgroundColor = [UIColor clearColor];
-					else
-						loginTextField.backgroundColor = [UIColor whiteColor];
-					
-					loginTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-					loginTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-					loginTextField.textAlignment = UITextAlignmentLeft;
-					loginTextField.delegate = self;
-					
-					loginTextField.clearButtonMode = UITextFieldViewModeNever;
-					[loginTextField setEnabled: YES];
-					
-					[textCell addSubview:loginTextField];
-					cell = textCell;
-					break;
-				default:
-					break;           
-			}
-			[loginTextField release];
-			break;
-		case 2:
 			if(isSaving)
 				[activityCell.spinner startAnimating];
 			else
@@ -257,13 +181,13 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	NSString *result = @"";
 	
-	switch (section) {
+	/*switch (section) {
 		case 1:
 			result = @"HTTP";
 			break;
 		default:
 			break;
-	}
+	}*/
 	
 	return result;
 }
@@ -284,7 +208,7 @@
 					break;
 			}
 			break;
-		case 2:
+		case 1:
 			// Save Settings
 			buttonText = @"Saving...";
 			isSaving = YES;
@@ -423,37 +347,6 @@
 									break;
 								case 1:
 									[appDelegate.currentBlog setValue:[self transformedValue:cellSwitch.on] forKey:kGeolocationSetting];
-									break;
-								default:
-									break;
-							}
-							break;
-						case 1:
-							switch (r) {
-								case 0:
-									if(cellSwitch.on)
-										[appDelegate.currentBlog setValue:[NSNumber numberWithInt:1] forKey:@"authEnabled"];
-									else
-										[appDelegate.currentBlog setValue:[NSNumber numberWithInt:0] forKey:@"authEnabled"];
-									break;
-								default:
-									break;
-							}
-							break;
-						default:
-							break;
-					}
-				}
-				if([subview isKindOfClass:[UITextField class]]) {
-					UITextField *cellText = (UITextField *)subview;
-					switch (s) {
-						case 1:
-							switch (r) {
-								case 1:
-									[appDelegate.currentBlog setValue:cellText.text forKey:@"authUsername"];
-									break;
-								case 2:
-									[appDelegate.currentBlog setValue:cellText.text forKey:@"authPassword"];
 									break;
 								default:
 									break;
