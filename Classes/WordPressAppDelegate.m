@@ -258,6 +258,10 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	}
 }
 
+- (void)applicationDidEnterBackground:(UIApplication *)application {
+    [self applicationWillTerminate:application];
+}
+
 #pragma mark -
 #pragma mark Public Methods
 
