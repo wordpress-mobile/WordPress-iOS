@@ -314,7 +314,7 @@
 	[self refreshTable];
 }
 
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+- (void)textViewDidChange:(UITextView *)textView {
 	[self refreshPage];
     return TRUE;
 }
