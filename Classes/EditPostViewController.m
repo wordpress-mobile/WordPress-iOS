@@ -492,6 +492,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 				[self updateValuesToCurrentPost];
 				if (status)
 					[[[BlogDataManager sharedDataManager] currentPost] setObject:status forKey:@"post_status"];
+                [[[BlogDataManager sharedDataManager] currentPost] setObject:[[postDetailViewController.post categories] componentsSeparatedByString:@", "] forKey:@"categories"];
 				[postDetailViewController.post setIsLocalDraft:[NSNumber numberWithInt:0]];
 				self.isLocalDraft = NO;
 			}
