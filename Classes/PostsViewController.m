@@ -82,6 +82,7 @@
 	} else if (DeviceIsPad() == YES) {
 		// sometimes, iPad table views should
 		if (self.selectedIndexPath) {
+			int test = selectedIndexPath.row;
 			[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 		}
 	}

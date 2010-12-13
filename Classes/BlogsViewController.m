@@ -16,9 +16,6 @@
 																							action:@selector(showAddBlogView:)] autorelease];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStyleBordered target:nil action:nil]; 
 	self.tableView.allowsSelectionDuringEditing = YES;
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blogsRefreshNotificationReceived:) name:@"BlogsRefreshNotification" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBlogWithoutAnimation) name:@"NewBlogAdded" object:nil];
     
 	// restore blog for iPad
 	if (DeviceIsPad() == YES) {
@@ -71,10 +68,10 @@
 //	[appDelegate syncBlogs];
 //	[appDelegate syncBlogCategoriesAndStatuses];
 	
-	if([[BlogDataManager sharedDataManager] countOfBlogs] > 0)
-		self.navigationItem.leftBarButtonItem = self.editButtonItem;
-	else
-		self.navigationItem.leftBarButtonItem = nil;
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blogsRefreshNotificationReceived:) name:@"BlogsRefreshNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBlogWithoutAnimation) name:@"NewBlogAdded" object:nil];
+	
+	[self checkEditButton];
 	
 	self.blogsList = nil;
 	self.blogsList = [[[BlogDataManager sharedDataManager] blogsList] mutableCopy];
@@ -93,10 +90,18 @@
 	[super viewWillDisappear:animated];
 }
 
+- (void) checkEditButton{
+	if([[BlogDataManager sharedDataManager] countOfBlogs] > 0)
+		self.navigationItem.leftBarButtonItem = self.editButtonItem;
+	else
+		self.navigationItem.leftBarButtonItem = nil;
+}
+
 - (void)blogsRefreshNotificationReceived:(NSNotification *)notification {
 	self.blogsList = nil;
 	self.blogsList = [[[BlogDataManager sharedDataManager] blogsList] mutableCopy];
     [self.tableView reloadData];
+	[self checkEditButton];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -169,6 +174,7 @@
 		
     }
 	else if ([self canChangeCurrentBlog]) {
+		int test = indexPath.row;
 		[[BlogDataManager sharedDataManager] makeBlogAtIndexCurrent:(indexPath.row)];
 		[[BlogDataManager sharedDataManager] setSelectedBlogID:
 		[[[BlogDataManager sharedDataManager] blogAtIndex:indexPath.row] objectForKey:@"blogid"]];

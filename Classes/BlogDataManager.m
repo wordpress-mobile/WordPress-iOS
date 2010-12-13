@@ -2000,7 +2000,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 }
 
 - (void)makeBlogAtIndexCurrent:(NSInteger)theIndex {
-	if((blogsList.count > 0) && (theIndex > 0) && (theIndex < blogsList.count)) {
+	if((blogsList.count > 0) && (theIndex < blogsList.count)) {
 		[self setCurrentBlog:[blogsList objectAtIndex:theIndex]];
 	}
 	
