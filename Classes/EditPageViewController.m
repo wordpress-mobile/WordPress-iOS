@@ -535,12 +535,15 @@
 	[titleTextField resignFirstResponder];
 	[contentTextView resignFirstResponder];
 	
-	self.page.status = @"publish";
+	// If the page started out as a Local Draft, set the status to publish.
+	if([self.page.status isEqualToString:kLocalDraftKey] == YES)
+		self.page.status = @"publish";
+	
 	if(self.isLocalDraft == YES) {
 		self.isLocalDraft = NO;
 		
 		// If the page started out as a Local Draft, remove the selectedPostID field so it will move forward as a Create.
-		if([originalStatus isEqualToString:@"local-draft"] == YES)
+		if([originalStatus isEqualToString:kLocalDraftKey] == YES)
 			delegate.selectedPostID = nil;
 	}
 	
