@@ -275,6 +275,14 @@
 	[self performSelectorInBackground:@selector(deletePageAtIndexPath:) withObject:indexPath];
 }
 
+- (UITableViewCellEditingStyle)tableView:(UITableView *)aTableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+	// Detemine if we are refreshing the pages
+	if (pageManager.isGettingPages) {
+		return UITableViewCellEditingStyleNone;     
+	}
+	return UITableViewCellEditingStyleDelete;
+}
+
 #pragma mark -
 #pragma mark Custom Methods
 
@@ -422,7 +430,7 @@
 	[progressAlert dismissWithClickedButtonIndex:0 animated:YES];
 	[drafts removeObjectAtIndex:indexPath.row];
 	[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
-	[self refreshTable];
+	//[self refreshTable];
 	[self loadPages];
 }
 
