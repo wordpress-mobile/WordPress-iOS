@@ -199,11 +199,22 @@
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
 	switch (buttonIndex) {
-		case 1:
-			[[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"video_api_preference"];
-			[[NSUserDefaults standardUserDefaults] synchronize];
-			[self sendAtomPub];
+		case 0:
 			break;
+		case 1:
+		{
+			NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
+			if ([buttonTitle isEqualToString:@"Yes"]){
+				[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://videopress.com"]];
+			}
+			else{
+				[[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"video_api_preference"];
+				[[NSUserDefaults standardUserDefaults] synchronize];
+				[self sendAtomPub];
+			}
+			[buttonTitle release];
+			break;
+		}
 		case 2:
 			[[NSUserDefaults standardUserDefaults] setObject:@"2" forKey:@"video_api_preference"];
 			[[NSUserDefaults standardUserDefaults] synchronize];
@@ -407,7 +418,19 @@
 	if(![[request responseString] isEmpty]) {
 		NSLog(@"response: %@", [request responseString]);
 		NSMutableDictionary *videoMeta = [[NSMutableDictionary alloc] init];
-		if(isAtomPub) {
+		if ([[request responseString] rangeOfString:@"AtomPub services are disabled"].location != NSNotFound){
+			UIAlertView *uploadAlert = [[UIAlertView alloc] initWithTitle:@"Upload Failed" 
+													 message:[request responseString] 
+													delegate:self
+										   cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[uploadAlert show];
+			[uploadAlert release];
+			if(mediaType == kVideo)
+				[self finishWithNotificationName:VideoUploadFailed object:nil userInfo:nil];
+			else if(mediaType == kImage)
+				[self finishWithNotificationName:ImageUploadFailed object:nil userInfo:nil];
+		}
+		else if(isAtomPub) {
 			NSString *regEx = @"src=\"([^\"]*)\"";
 			NSString *link = [[request responseString] stringByMatching:regEx capture:1];
 			link = [link stringByReplacingOccurrencesOfString:@"\"" withString:@""];
@@ -422,16 +445,29 @@
 				[self finishWithNotificationName:VideoUploadFailed object:nil userInfo:nil];
 			}
 			else if([responseMeta valueForKey:@"faultString"] != nil) {
-				UIAlertView *uploadAlert = [[UIAlertView alloc] initWithTitle:@"Upload Failed" 
-																	  message:[responseMeta valueForKey:@"faultString"]
-																	 delegate:self 
-															cancelButtonTitle:@"OK" otherButtonTitles:nil];
+				NSString *faultString = [responseMeta valueForKey:@"faultString"];
+				UIAlertView *uploadAlert;
+				if ([faultString rangeOfString:@"Invalid file type"].location == NSNotFound){
+					uploadAlert = [[UIAlertView alloc] initWithTitle:@"Upload Failed" 
+															 message:faultString 
+															delegate:self
+												   cancelButtonTitle:@"OK" otherButtonTitles:nil];
+				}
+				else {
+					faultString = @"You can upload videos to your blog with VideoPress. Would you like to learn more about VideoPress now?";
+					uploadAlert = [[UIAlertView alloc] initWithTitle:@"Upload Failed" 
+															 message:faultString 
+															delegate:self
+												   cancelButtonTitle:@"No" otherButtonTitles:nil];
+					[uploadAlert addButtonWithTitle:@"Yes"];
+				}
 				[uploadAlert show];
 				[uploadAlert release];
 				if(mediaType == kVideo)
 					[self finishWithNotificationName:VideoUploadFailed object:nil userInfo:nil];
 				else if(mediaType == kImage)
 					[self finishWithNotificationName:ImageUploadFailed object:nil userInfo:nil];
+				[faultString release];
 			}
 			else if(mediaType == kVideo) {
 				if([responseMeta objectForKey:@"videopress_shortcode"] != nil)

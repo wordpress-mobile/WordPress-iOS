@@ -548,6 +548,11 @@
 			[self processRecordedVideo];
 		else
 			[self performSelectorOnMainThread:@selector(processLibraryVideo) withObject:nil waitUntilDone:NO];
+		
+		if(DeviceIsPad() == YES){
+			[addPopover dismissPopoverAnimated:YES];
+			addPopover = nil;
+		}
 	}
 	else if([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.image"]) {
 		UIImage *image = [info valueForKey:@"UIImagePickerControllerOriginalImage"];
@@ -583,8 +588,10 @@
 				break;
 		}
 		
-		if(DeviceIsPad() == YES)
+		if(DeviceIsPad() == YES){
 			[addPopover dismissPopoverAnimated:YES];
+			addPopover = nil;
+		}
 		else {
 			[pickerContainer dismissModalViewControllerAnimated:NO];
 			pickerContainer.view.frame = CGRectMake(0, 2000, 0, 0);
@@ -1009,11 +1016,15 @@
 }
 
 - (void)mediaUploadFailed:(NSNotification *)notification {
+	if (self.uploadID != nil) {
+		Media *media = [mediaManager get:self.uploadID];
+		[self deleteMedia:media];
+	}
 	[UIView beginAnimations:@"Removing mediaUploader" context:nil];
 	[UIView setAnimationDuration:4.0];
 	[UIView setAnimationDelegate:self];
 	[UIView setAnimationDidStopSelector:@selector(removemediaUploader:finished:context:)];
-	[mediaUploader.view setFrame:CGRectMake(0, 480, 320, 40)];
+	[mediaUploader.view setFrame:CGRectMake(0, self.view.frame.size.height + 800, 320, 40)];
 	[UIView commitAnimations];
 	self.isAddingMedia = NO;
 	[self refreshMedia];
