@@ -444,7 +444,6 @@
 					[videoMeta setValue:[NSNumber numberWithInt:orientation] forKey:@"orientation"];
 					[self finishWithNotificationName:VideoUploadSuccessful object:nil userInfo:videoMeta];
 				}
-				[videoMeta release];
 			}
 			else if(mediaType == kImage) {
 				NSMutableDictionary *imageMeta = [[NSMutableDictionary alloc] init];
