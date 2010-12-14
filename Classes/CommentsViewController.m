@@ -251,9 +251,8 @@
     if ([delegate isAlertRunning]) {
         [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
         [progressAlert release];
-    } else {
-        [refreshButton stopAnimating];
-    }
+	}
+	[refreshButton stopAnimating];
 
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     [pool release];
