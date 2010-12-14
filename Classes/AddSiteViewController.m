@@ -132,7 +132,7 @@
 		if ([indexPath section] == 0) {
 			CGRect textFrame = CGRectMake(110, 11, 200, 22);
 			if(DeviceIsPad()){
-				textFrame = CGRectMake(150, 12, 350, 42);
+				textFrame = CGRectMake(150, 12, 350, 22);
 			}
 			UITextField *addTextField = [[UITextField alloc] initWithFrame:textFrame];
 			addTextField.adjustsFontSizeToFitWidth = NO;
