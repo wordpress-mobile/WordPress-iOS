@@ -42,6 +42,12 @@
     [super viewDidUnload];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    if (videoPlayer) {
+        [videoPlayer stop];
+    }
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return YES;
 }
