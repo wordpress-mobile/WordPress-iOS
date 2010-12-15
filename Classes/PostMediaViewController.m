@@ -998,6 +998,14 @@
 	if(self.uploadID != nil) {
 		NSDictionary *mediaData = [notification userInfo];
 		Media *media = [mediaManager get:self.uploadID];
+        if (media == nil) {
+            // FIXME: media deleted during upload should cancel the upload. In the meantime, we'll try not to crash
+            NSLog(@"Media deleted while uploading (%@)", self.uploadID);
+            [FlurryAPI logError:@"MediaDeleted"
+                        message:[NSString stringWithFormat:@"Media deleted while uploading (%@)", self.uploadID]
+                          error:nil];
+            return;
+        }
 		media.remoteURL = [mediaData objectForKey:@"url"];
 		media.shortcode = [mediaData objectForKey:@"shortcode"];
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
