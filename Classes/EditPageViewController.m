@@ -316,7 +316,6 @@
 
 - (void)textViewDidChange:(UITextView *)textView {
 	[self refreshPage];
-    return TRUE;
 }
 
 #pragma mark -

@@ -7,7 +7,7 @@
 //
 
 #import "CrashReportViewController.h"
-
+NSString *CrashFilePath();
 @implementation CrashReportViewController
 @synthesize crashData;
 
