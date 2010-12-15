@@ -678,7 +678,7 @@
 			// We found a valid RSD document, now try to parse the XML
 			NSError *rsdError;
 			if(rsdURL != nil) {
-				CXMLDocument *rsdXML = [[[CXMLDocument alloc] initWithContentsOfURL:[NSURL URLWithString:rsdURL] options:0 error:&rsdError] autorelease];
+				CXMLDocument *rsdXML = [[[CXMLDocument alloc] initWithContentsOfURL:[NSURL URLWithString:rsdURL] options:CXMLDocumentTidyXML error:&rsdError] autorelease];
 				if(!rsdError) {
 					CXMLElement *serviceXML = [[[rsdXML rootElement] children] objectAtIndex:1];
 					for(CXMLElement *api in [[[serviceXML elementsForName:@"apis"] objectAtIndex:0] elementsForName:@"api"]) {
@@ -799,7 +799,7 @@
 	// We found a valid RSD document, now try to parse the XML
 	NSError *rsdError;
 	if(rsdURL != nil) {
-		CXMLDocument *rsdXML = [[[CXMLDocument alloc] initWithContentsOfURL:[NSURL URLWithString:rsdURL] options:0 error:&rsdError] autorelease];
+		CXMLDocument *rsdXML = [[[CXMLDocument alloc] initWithContentsOfURL:[NSURL URLWithString:rsdURL] options:CXMLDocumentTidyXML error:&rsdError] autorelease];
 		if(!rsdError) {
 			CXMLElement *serviceXML = [[[rsdXML rootElement] children] objectAtIndex:1];
 			for(CXMLElement *api in [[[serviceXML elementsForName:@"apis"] objectAtIndex:0] elementsForName:@"api"]) {
@@ -843,7 +843,7 @@
 	NSError *error = [xmlrpcRequest error];
 	if(!error) {
 		// Let's double check our XML-RPC endpoint for validity
-		CXMLDocument *xml = [[[CXMLDocument alloc] initWithXMLString:[xmlrpcRequest responseString] options:0 error:nil] autorelease];
+		CXMLDocument *xml = [[[CXMLDocument alloc] initWithXMLString:[xmlrpcRequest responseString] options:CXMLDocumentTidyXML error:nil] autorelease];
 		NSArray *xmlrpcMethods = [xml nodesForXPath:@"//params/param/value/array/data/*" error:nil];
 		if(xmlrpcMethods.count > 0) {
 			self.hasValidXMLRPCurl = YES;
