@@ -960,7 +960,7 @@
 	[[BlogDataManager sharedDataManager] setCurrentBlog:newBlog];
 	
 	NSLog(@"saving newBlog: %@", newBlog);
-    [FlurryAPI logEvent:@"AddSite#NewBlog" withParameters:[NSDictionary dictionaryWithObjectsAndKeys:authEnabled, @"auth", nil];
+    [FlurryAPI logEvent:@"AddSite#NewBlog" withParameters:[NSDictionary dictionaryWithObjectsAndKeys:authEnabled, @"auth", nil]];
 	
 	[BlogDataManager sharedDataManager].currentBlogIndex = -1;
 	[[BlogDataManager sharedDataManager] saveCurrentBlog];
