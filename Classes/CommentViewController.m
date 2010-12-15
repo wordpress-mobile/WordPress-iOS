@@ -256,7 +256,7 @@
 
 - (void)cancelView:(id)sender {
 	
-	if (!replyToCommentViewController.hasChanges && !editCommentViewController.hasChanges) {
+	if (!replyToCommentViewController.hasChanges || !editCommentViewController.hasChanges) {
         [self dismissEditViewController];
 		//replyToCommentViewController.hasChanges = NO;
         return;
