@@ -197,7 +197,7 @@
 - (void)edit:(id)sender {
 	if ([self canChangeCurrentBlog]) {
 		[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = YES;
-		UIBarButtonItem *cancelButton = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+		UIBarButtonItem *cancelButton = [[[UIBarButtonItem alloc] initWithTitle:@"Done"
 																		  style:UIBarButtonItemStyleDone
 																		 target:self
 																		 action:@selector(cancel:)] autorelease];
