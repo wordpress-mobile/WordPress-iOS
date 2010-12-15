@@ -59,7 +59,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	
 	if (!saveButton) {
 	saveButton = [[UIBarButtonItem alloc] 
-				  initWithTitle:@"Save" 
+				  initWithTitle:@"Reply" 
 				  style:UIBarButtonItemStyleDone
 				  target:self 
 				  action:@selector(initiateSaveCommentReply:)];
@@ -315,7 +315,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 
 - (void)initiateSaveCommentReply:(id)sender {
 
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Saving Reply..."];
+    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Sending Reply..."];
     [progressAlert show];
 	self.comment = [commentDetails objectAtIndex:currentIndex];
 	[comment setValue:textView.text forKey:@"content"];	
