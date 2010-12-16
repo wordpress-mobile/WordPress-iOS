@@ -53,7 +53,8 @@
 	[self refreshProperties];
 	[self performSelectorInBackground:@selector(checkVideoEnabled) withObject:nil];
 	
-	}
+    [self addNotifications];
+}
 
 
 - (void)addNotifications {
