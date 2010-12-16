@@ -218,6 +218,11 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
     selectedViewController = viewController;
+	if (selectedViewController == mediaViewController) {
+		[mediaViewController addNotifications];
+	} else {
+		[mediaViewController removeNotifications];
+	}
 }
 
 - (IBAction)cancelAction:(id)sender {
@@ -435,6 +440,10 @@
 	
 	// Dismiss spinner
 	[spinner dismissWithClickedButtonIndex:0 animated:YES];
+
+	// TODO: remove the mediaViewController notifications - this is pretty kludgy
+	[FlurryAPI logEvent:@"PostView#didSaveInBackground"];
+	[mediaViewController removeNotifications];
 }
 
 - (void)autoSaveCurrentPost:(NSTimer *)aTimer {
@@ -612,6 +621,10 @@
 	if(andDiscard == YES){
 		[self discard];
 	}
+
+	// TODO: remove the mediaViewController notifications - this is pretty kludgy
+	[FlurryAPI logEvent:@"PostView#saveAsDraft:"];
+	[mediaViewController removeNotifications];
 }
 
 - (void)discard {
@@ -621,6 +634,9 @@
 	[postDetailEditController clearUnsavedPost];
     [mediaViewController cancelPendingUpload:self];
     [self stopTimer];
+
+	// TODO: remove the mediaViewController notifications - this is pretty kludgy
+	[mediaViewController removeNotifications];
 }
 
 - (void)cancel {
@@ -827,6 +843,10 @@
 		if ([theTopVC respondsToSelector:@selector(reselect)])
 			[theTopVC performSelector:@selector(reselect)];
 	}
+
+	// TODO: remove the mediaViewController notifications - this is pretty kludgy
+	[FlurryAPI logEvent:@"PostView#dismissEditView"];
+	[mediaViewController removeNotifications];
 }
 
 

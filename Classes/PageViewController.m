@@ -9,7 +9,7 @@
 #import "EditPageViewController.h"
 
 @implementation PageViewController
-@synthesize tabController, appDelegate, dm, selectedPostID, isPublished, pageManager, draftManager, canPublish;
+@synthesize tabController, mediaViewController, appDelegate, dm, selectedPostID, isPublished, pageManager, draftManager, canPublish;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -52,6 +52,11 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
     tabBarController.title = @"Write";
+	if (viewController == mediaViewController) {
+		[mediaViewController addNotifications];
+	} else {
+		[mediaViewController removeNotifications];
+	}
 }
 
 #pragma mark -
@@ -138,6 +143,8 @@
 }
 
 - (IBAction)dismiss:(id)sender {
+	// TODO: remove the mediaViewController notifications - this is pretty kludgy
+	[mediaViewController removeNotifications];
 	self.selectedPostID = nil;
 	
 	if(DeviceIsPad() == NO)
@@ -152,10 +159,14 @@
 }
 
 - (IBAction)saveAction:(id)sender {
+	// TODO: remove the mediaViewController notifications - this is pretty kludgy
+	[mediaViewController removeNotifications];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"EditPageViewShouldSave" object:nil];
 }
 
 - (IBAction)publishAction:(id)sender {
+	// TODO: remove the mediaViewController notifications - this is pretty kludgy
+	[mediaViewController removeNotifications];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"EditPageViewShouldPublish" object:nil];
 }
 
@@ -178,6 +189,7 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
+	[mediaViewController release];
 	[selectedPostID release];
 	[tabController release];
     [super dealloc];

@@ -42,11 +42,13 @@
 	WordPressAppDelegate *appDelegate;
 	DraftManager *draftManager;
 	PageManager *pageManager;
+	PostMediaViewController *mediaViewController;
 }
 
 @property (nonatomic, retain) IBOutlet UITabBarController *tabController;
 @property (nonatomic, assign) BlogDataManager *dm;
 @property (nonatomic, assign) WordPressAppDelegate *appDelegate;
+@property (nonatomic, retain) IBOutlet PostMediaViewController *mediaViewController;
 
 - (void)setupBackButton;
 

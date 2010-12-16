@@ -112,5 +112,7 @@ static inline double radians(double degrees) {
 - (void)refreshProperties;
 - (IBAction)cancelPendingUpload:(id)sender;
 - (void)initObjects;
+- (void)addNotifications;
+- (void)removeNotifications;
 
 @end
