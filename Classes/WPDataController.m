@@ -52,7 +52,7 @@
 	
 	NSError *error = [request error];
 	if (!error) {
-		CXMLDocument *xml = [[[CXMLDocument alloc] initWithXMLString:[request responseString] options:0 error:nil] autorelease];
+		CXMLDocument *xml = [[[CXMLDocument alloc] initWithXMLString:[request responseString] options:CXMLDocumentTidyXML error:nil] autorelease];
 		CXMLElement *node = [[xml nodesForXPath:@"//methodResponse" error:nil] objectAtIndex:0];
 		if(node != nil)
 			result = YES;

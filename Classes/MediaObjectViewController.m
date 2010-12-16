@@ -21,6 +21,7 @@
     [super viewDidLoad];
     [FlurryAPI logEvent:@"MediaObject"];
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+	NSLog(@"media: %@", media);
 	
 	if((media != nil) && ([media.mediaType isEqualToString:@"video"])) {
 		self.navigationItem.title = @"Video";

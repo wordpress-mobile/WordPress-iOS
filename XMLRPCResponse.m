@@ -28,6 +28,7 @@
 
 #import "XMLRPCResponse.h"
 #import "XMLRPCDecoder.h"
+#import "CTidy.h"
 
 @implementation XMLRPCResponse
 
@@ -40,6 +41,45 @@
 
 	if (self = [super init])
 	{
+		
+		//cleaning the XML-RPC response message
+		NSString  *str = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+		//get rid of weird characters before the xml preamble
+		int responseLenght = [str length];
+		//NSLog (@"String length is %i", responseLenght);
+		int charIndex = 0;
+		
+		for( ; charIndex < responseLenght; charIndex++) {
+			unichar testChar = [str characterAtIndex:charIndex];
+			if(testChar == 60) {
+				//NSLog (@"found the correct start char at index %i", charIndex);
+				break;
+			} else {
+				//NSLog (@"invalid response char at index %i", charIndex );
+			}
+		} //end for
+		
+		if(charIndex != 0) {
+			str = [str substringFromIndex: charIndex];
+		}
+		
+		//NSLog (@"--begin tidy process");
+		NSError *theError = NULL;
+		NSString *cleanedString = [[CTidy tidy] tidyString:str inputFormat:TidyFormat_XML outputFormat:TidyFormat_XML diagnostics:NULL error:&theError];
+		
+		if( theError != NULL )
+		{
+			//TODO: we may need to create a XMLRPCResponse with the error. and return
+			return (id) theError;
+		}
+        //NSLog (@"cleaned response msg: %@", cleanedString);
+        //NSLog (@"--end tidy process");
+		
+		data = nil;
+		data = [NSData dataWithData:[cleanedString dataUsingEncoding: NSUTF8StringEncoding]];
+		// data should be cleaned here!
+		
+		
 		XMLRPCDecoder *decoder = [[[XMLRPCDecoder alloc] initWithData: data] autorelease];
 		
 		if (decoder == nil)

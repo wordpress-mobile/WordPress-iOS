@@ -174,7 +174,7 @@
 		
     }
 	else if ([self canChangeCurrentBlog]) {
-		int test = indexPath.row;
+		//int test = indexPath.row;
 		[[BlogDataManager sharedDataManager] makeBlogAtIndexCurrent:(indexPath.row)];
 		[[BlogDataManager sharedDataManager] setSelectedBlogID:
 		[[[BlogDataManager sharedDataManager] blogAtIndex:indexPath.row] objectForKey:@"blogid"]];

@@ -727,6 +727,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	if([textView.text isEqualToString:kTextViewPlaceholder] == YES) {
 		textView.text = @"";
 	}
+	
 	[textView setTextColor:[UIColor blackColor]];
 	[self positionTextView:nil];
 	
@@ -1130,6 +1131,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	if(textView.text == nil)
 		textView.text = @"";
 	else if([textView.text isEqualToString:kTextViewPlaceholder]) {
+		textViewPlaceHolderField.hidden = YES;
         textView.textColor = [UIColor blackColor];
 		textView.text = @"";
 		prefix = @"";
@@ -1151,6 +1153,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	if(textView.text == nil)
 		textView.text = @"";
 	else if([textView.text isEqualToString:kTextViewPlaceholder]) {
+		textViewPlaceHolderField.hidden = YES;
         textView.textColor = [UIColor blackColor];
 		textView.text = @"";
 		prefix = @"";
