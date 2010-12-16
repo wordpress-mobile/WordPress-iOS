@@ -2320,6 +2320,7 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-Wno-format-security";
 				OTHER_LDFLAGS = (
 					"-lxml2",
 					"-licucore",

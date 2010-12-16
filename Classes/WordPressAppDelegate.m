@@ -102,9 +102,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
 	[self checkIfStatsShouldRun];
-#ifndef DEBUG
-#warning Need Flurry api key for distribution
-#endif
+	
     [FlurryAPI startSession:@"NPFZWR9J1MI9QU1ICU9H"]; // FIXME: set up real api key for distribution
 	[FlurryAPI setSessionReportsOnPauseEnabled:YES];
 
