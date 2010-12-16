@@ -659,6 +659,7 @@
 			MPMoviePlayerController *mp = [[MPMoviePlayerController alloc] initWithContentURL:contentURL];
 			thumbnail = [mp thumbnailImageAtTime:(NSTimeInterval)2.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
 			duration = [mp duration];
+            [mp stop];
             [mp release];
 		}
 		else {
@@ -686,6 +687,7 @@
 		MPMoviePlayerController *mp = [[MPMoviePlayerController alloc] initWithContentURL:contentURL];
 		thumbnail = [mp thumbnailImageAtTime:(NSTimeInterval)2.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
 		duration = [mp duration];
+        [mp stop];
         [mp release];
 	}
 	else {
