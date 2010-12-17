@@ -2156,9 +2156,6 @@
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(DEVELOPER_DIR)/Local/Frameworks\"",
-					"\"$(SRCROOT)/../../iOS Libraries\"",
-					"\"$(SRCROOT)/../PLCrashReporter/build/Debug-iphone\"",
 					"\"$(SRCROOT)/Classes\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2207,9 +2204,6 @@
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(DEVELOPER_DIR)/Local/Frameworks\"",
-					"\"$(SRCROOT)/../../iOS Libraries\"",
-					"\"$(SRCROOT)/../PLCrashReporter/build/Debug-iphone\"",
 					"\"$(SRCROOT)/Classes\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2264,10 +2258,6 @@
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(DEVELOPER_DIR)/Local/Frameworks\"",
-					"\"$(SRCROOT)/../XMLRPC/build/Development\"",
-					"\"$(SRCROOT)/../../iOS Libraries\"",
-					"\"$(SRCROOT)/../PLCrashReporter/build/Debug-iphone\"",
 					"\"$(SRCROOT)/Classes\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
