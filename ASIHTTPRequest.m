@@ -11,25 +11,26 @@
 //  See: http://developer.apple.com/samplecode/ImageClient/listing37.html
 
 #import "ASIHTTPRequest.h"
-#import <zlib.h>
+
 #if TARGET_OS_IPHONE
-#import "Reachability2.h"
+#import "Reachability.h"
 #import "ASIAuthenticationDialog.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #else
 #import <SystemConfiguration/SystemConfiguration.h>
 #endif
 #import "ASIInputStream.h"
-
+#import "ASIDataDecompressor.h"
+#import "ASIDataCompressor.h"
 
 // Automatically set on build
-NSString *ASIHTTPRequestVersion = @"v1.7-56 2010-08-30";
+NSString *ASIHTTPRequestVersion = @"v1.8-26 2010-12-15";
 
 NSString* const NetworkRequestErrorDomain = @"ASIHTTPRequestErrorDomain";
 
 static NSString *ASIHTTPRequestRunLoopMode = @"ASIHTTPRequestRunLoopMode";
 
-static const CFOptionFlags kNetworkEvents = kCFStreamEventOpenCompleted | kCFStreamEventHasBytesAvailable | kCFStreamEventEndEncountered | kCFStreamEventErrorOccurred;
+static const CFOptionFlags kNetworkEvents =  kCFStreamEventHasBytesAvailable | kCFStreamEventEndEncountered | kCFStreamEventErrorOccurred;
 
 // In memory caches of credentials, used on when useSessionPersistence is YES
 static NSMutableArray *sessionCredentialsStore = nil;
@@ -62,11 +63,6 @@ static NSError *ASITooMuchRedirectionError;
 
 static NSMutableArray *bandwidthUsageTracker = nil;
 static unsigned long averageBandwidthUsedPerSecond = 0;
-
-static SEL queueRequestStartedSelector = nil;
-static SEL queueRequestReceivedResponseHeadersSelector = nil;
-static SEL queueRequestFinishedSelector = nil;
-static SEL queueRequestFailedSelector = nil;
 
 
 // These are used for queuing persistent connections on the same connection
@@ -116,7 +112,7 @@ static NSRecursiveLock *sessionCookiesLock = nil;
 
 // This lock ensures delegates only receive one notification that authentication is required at once
 // When using ASIAuthenticationDialogs, it also ensures only one dialog is shown at once
-// If a request can't aquire the lock immediately, it means a dialog is being shown or a delegate is handling the authentication challenge
+// If a request can't acquire the lock immediately, it means a dialog is being shown or a delegate is handling the authentication challenge
 // Once it gets the lock, it will try to look for existing credentials again rather than showing the dialog / notifying the delegate
 // This is so it can make use of any credentials supplied for the other request, if they are appropriate
 static NSRecursiveLock *delegateAuthenticationLock = nil;
@@ -154,20 +150,31 @@ static NSOperationQueue *sharedQueue = nil;
 - (void)scheduleReadStream;
 - (void)unscheduleReadStream;
 
-- (BOOL)askDelegateForCredentials;
-- (BOOL)askDelegateForProxyCredentials;
+- (BOOL)willAskDelegateForCredentials;
+- (BOOL)willAskDelegateForProxyCredentials;
+- (void)askDelegateForProxyCredentials;
+- (void)askDelegateForCredentials;
+- (void)failAuthentication;
+
 + (void)measureBandwidthUsage;
 + (void)recordBandwidthUsage;
+
 - (void)startRequest;
 - (void)updateStatus:(NSTimer *)timer;
 - (void)checkRequestStatus;
-
+- (void)reportFailure;
+- (void)reportFinished;
 - (void)markAsFinished;
 - (void)performRedirect;
 - (BOOL)shouldTimeOut;
 
++ (void)performInvocation:(NSInvocation *)invocation onTarget:(id *)target releasingObject:(id)objectToRelease;
++ (void)hideNetworkActivityIndicatorAfterDelay;
++ (void)hideNetworkActivityIndicatorIfNeeeded;
++ (void)runRequests;
 
-- (BOOL)useDataFromCache;
+
+- (void)useDataFromCache;
 
 // Called to update the size of a partial download when starting a request, or retrying after a timeout
 - (void)updatePartialDownloadSize;
@@ -177,27 +184,33 @@ static NSOperationQueue *sharedQueue = nil;
 + (void)unsubscribeFromNetworkReachabilityNotifications;
 // Called when the status of the network changes
 + (void)reachabilityChanged:(NSNotification *)note;
-
-- (void)failAuthentication;
-
 #endif
+
+#if NS_BLOCKS_AVAILABLE
+- (void)performBlockOnMainThread:(ASIBasicBlock)block;
+- (void)releaseBlocksOnMainThread;
++ (void)releaseBlocks:(NSArray *)blocks;
+- (void)callBlock:(ASIBasicBlock)block;
+#endif
+
+
+
+
 
 @property (assign) BOOL complete;
 @property (retain) NSArray *responseCookies;
 @property (assign) int responseStatusCode;
 @property (retain, nonatomic) NSDate *lastActivityTime;
-@property (assign) unsigned long long contentLength;
+
 @property (assign) unsigned long long partialDownloadSize;
 @property (assign, nonatomic) unsigned long long uploadBufferSize;
-@property (assign) NSStringEncoding responseEncoding;
 @property (retain, nonatomic) NSOutputStream *postBodyWriteStream;
 @property (retain, nonatomic) NSInputStream *postBodyReadStream;
-@property (assign) unsigned long long totalBytesRead;
-@property (assign) unsigned long long totalBytesSent;
 @property (assign, nonatomic) unsigned long long lastBytesRead;
 @property (assign, nonatomic) unsigned long long lastBytesSent;
 @property (retain) NSRecursiveLock *cancelledLock;
 @property (retain, nonatomic) NSOutputStream *fileDownloadOutputStream;
+@property (retain, nonatomic) NSOutputStream *inflatedFileDownloadOutputStream;
 @property (assign) int authenticationRetryCount;
 @property (assign) int proxyAuthenticationRetryCount;
 @property (assign, nonatomic) BOOL updatedProgress;
@@ -220,6 +233,7 @@ static NSOperationQueue *sharedQueue = nil;
 @property (assign, nonatomic) NSString *runLoopMode;
 @property (retain, nonatomic) NSTimer *statusTimer;
 @property (assign) BOOL didUseCachedResponse;
+@property (retain, nonatomic) NSURL *redirectURL;
 @end
 
 
@@ -230,10 +244,6 @@ static NSOperationQueue *sharedQueue = nil;
 + (void)initialize
 {
 	if (self == [ASIHTTPRequest class]) {
-		queueRequestStartedSelector = @selector(requestStarted:);
-		queueRequestReceivedResponseHeadersSelector = @selector(requestReceivedResponseHeaders:);
-		queueRequestFinishedSelector = @selector(requestFinished:);
-		queueRequestFailedSelector = @selector(requestFailed:);
 		persistentConnectionsPool = [[NSMutableArray alloc] init];
 		connectionsLock = [[NSRecursiveLock alloc] init];
 		progressLock = [[NSRecursiveLock alloc] init];
@@ -242,12 +252,11 @@ static NSOperationQueue *sharedQueue = nil;
 		sessionCredentialsLock = [[NSRecursiveLock alloc] init];
 		delegateAuthenticationLock = [[NSRecursiveLock alloc] init];
 		bandwidthUsageTracker = [[NSMutableArray alloc] initWithCapacity:5];
-		ASIRequestTimedOutError = [[NSError errorWithDomain:NetworkRequestErrorDomain code:ASIRequestTimedOutErrorType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"The request timed out",NSLocalizedDescriptionKey,nil]] retain];	
-		ASIAuthenticationError = [[NSError errorWithDomain:NetworkRequestErrorDomain code:ASIAuthenticationErrorType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Authentication needed",NSLocalizedDescriptionKey,nil]] retain];
-		ASIRequestCancelledError = [[NSError errorWithDomain:NetworkRequestErrorDomain code:ASIRequestCancelledErrorType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"The request was cancelled",NSLocalizedDescriptionKey,nil]] retain];
-		ASIUnableToCreateRequestError = [[NSError errorWithDomain:NetworkRequestErrorDomain code:ASIUnableToCreateRequestErrorType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Unable to create request (bad url?)",NSLocalizedDescriptionKey,nil]] retain];
-		ASITooMuchRedirectionError = [[NSError errorWithDomain:NetworkRequestErrorDomain code:ASITooMuchRedirectionErrorType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"The request failed because it redirected too many times",NSLocalizedDescriptionKey,nil]] retain];	
-
+		ASIRequestTimedOutError = [[NSError alloc] initWithDomain:NetworkRequestErrorDomain code:ASIRequestTimedOutErrorType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"The request timed out",NSLocalizedDescriptionKey,nil]];  
+		ASIAuthenticationError = [[NSError alloc] initWithDomain:NetworkRequestErrorDomain code:ASIAuthenticationErrorType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Authentication needed",NSLocalizedDescriptionKey,nil]];
+		ASIRequestCancelledError = [[NSError alloc] initWithDomain:NetworkRequestErrorDomain code:ASIRequestCancelledErrorType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"The request was cancelled",NSLocalizedDescriptionKey,nil]];
+		ASIUnableToCreateRequestError = [[NSError alloc] initWithDomain:NetworkRequestErrorDomain code:ASIUnableToCreateRequestErrorType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Unable to create request (bad url?)",NSLocalizedDescriptionKey,nil]];
+		ASITooMuchRedirectionError = [[NSError alloc] initWithDomain:NetworkRequestErrorDomain code:ASITooMuchRedirectionErrorType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"The request failed because it redirected too many times",NSLocalizedDescriptionKey,nil]];
 		sharedQueue = [[NSOperationQueue alloc] init];
 		[sharedQueue setMaxConcurrentOperationCount:4];
 
@@ -269,6 +278,7 @@ static NSOperationQueue *sharedQueue = nil;
 	[self setShouldResetDownloadProgress:YES];
 	[self setShouldResetUploadProgress:YES];
 	[self setAllowCompressedResponse:YES];
+	[self setShouldWaitToInflateCompressedResponses:YES];
 	[self setDefaultResponseEncoding:NSISOLatin1StringEncoding];
 	[self setShouldPresentProxyAuthenticationDialog:YES];
 	
@@ -278,7 +288,8 @@ static NSOperationQueue *sharedQueue = nil;
 	[self setValidatesSecureCertificate:YES];
 	[self setRequestCookies:[[[NSMutableArray alloc] init] autorelease]];
 	[self setDidStartSelector:@selector(requestStarted:)];
-	[self setDidReceiveResponseHeadersSelector:@selector(requestReceivedResponseHeaders:)];
+	[self setDidReceiveResponseHeadersSelector:@selector(request:didReceiveResponseHeaders:)];
+	[self setWillRedirectSelector:@selector(request:willRedirectToURL:)];
 	[self setDidFinishSelector:@selector(requestFinished:)];
 	[self setDidFailSelector:@selector(requestFailed:)];
 	[self setDidReceiveDataSelector:@selector(request:didReceiveData:)];
@@ -295,7 +306,7 @@ static NSOperationQueue *sharedQueue = nil;
 
 + (id)requestWithURL:(NSURL *)newURL usingCache:(id <ASICacheDelegate>)cache
 {
-	return [self requestWithURL:newURL usingCache:cache andCachePolicy:ASIDefaultCachePolicy];
+	return [self requestWithURL:newURL usingCache:cache andCachePolicy:ASIUseDefaultCachePolicy];
 }
 
 + (id)requestWithURL:(NSURL *)newURL usingCache:(id <ASICacheDelegate>)cache andCachePolicy:(ASICachePolicy)policy
@@ -331,7 +342,9 @@ static NSOperationQueue *sharedQueue = nil;
 	[requestCookies release];
 	[downloadDestinationPath release];
 	[temporaryFileDownloadPath release];
+	[temporaryUncompressedDataDownloadPath release];
 	[fileDownloadOutputStream release];
+	[inflatedFileDownloadOutputStream release];
 	[username release];
 	[password release];
 	[domain release];
@@ -363,8 +376,83 @@ static NSOperationQueue *sharedQueue = nil;
 	[responseStatusMessage release];
 	[connectionInfo release];
 	[requestID release];
+	[dataDecompressor release];
+
+	#if NS_BLOCKS_AVAILABLE
+	[self releaseBlocksOnMainThread];
+	#endif
+
 	[super dealloc];
 }
+
+#if NS_BLOCKS_AVAILABLE
+- (void)releaseBlocksOnMainThread
+{
+	NSMutableArray *blocks = [NSMutableArray array];
+	if (completionBlock) {
+		[blocks addObject:completionBlock];
+		[completionBlock release];
+		completionBlock = nil;
+	}
+	if (failureBlock) {
+		[blocks addObject:failureBlock];
+		[failureBlock release];
+		failureBlock = nil;
+	}
+	if (startedBlock) {
+		[blocks addObject:startedBlock];
+		[startedBlock release];
+		startedBlock = nil;
+	}
+	if (headersReceivedBlock) {
+		[blocks addObject:headersReceivedBlock];
+		[headersReceivedBlock release];
+		headersReceivedBlock = nil;
+	}
+	if (bytesReceivedBlock) {
+		[blocks addObject:bytesReceivedBlock];
+		[bytesReceivedBlock release];
+		bytesReceivedBlock = nil;
+	}
+	if (bytesSentBlock) {
+		[blocks addObject:bytesSentBlock];
+		[bytesSentBlock release];
+		bytesSentBlock = nil;
+	}
+	if (downloadSizeIncrementedBlock) {
+		[blocks addObject:downloadSizeIncrementedBlock];
+		[downloadSizeIncrementedBlock release];
+		downloadSizeIncrementedBlock = nil;
+	}
+	if (uploadSizeIncrementedBlock) {
+		[blocks addObject:uploadSizeIncrementedBlock];
+		[uploadSizeIncrementedBlock release];
+		uploadSizeIncrementedBlock = nil;
+	}
+	if (dataReceivedBlock) {
+		[blocks addObject:dataReceivedBlock];
+		[dataReceivedBlock release];
+		dataReceivedBlock = nil;
+	}
+	if (proxyAuthenticationNeededBlock) {
+		[blocks addObject:proxyAuthenticationNeededBlock];
+		[proxyAuthenticationNeededBlock release];
+		proxyAuthenticationNeededBlock = nil;
+	}
+	if (authenticationNeededBlock) {
+		[blocks addObject:authenticationNeededBlock];
+		[authenticationNeededBlock release];
+		authenticationNeededBlock = nil;
+	}
+	[[self class] performSelectorOnMainThread:@selector(releaseBlocks:) withObject:blocks waitUntilDone:[NSThread isMainThread]];
+}
+// Always called on main thread
++ (void)releaseBlocks:(NSArray *)blocks
+{
+	// Blocks will be released when this method exits
+}
+#endif
+
 
 #pragma mark setup request
 
@@ -380,6 +468,7 @@ static NSOperationQueue *sharedQueue = nil;
 // postLength must be set by the time this function is complete
 - (void)buildPostBody
 {
+
 	if ([self haveBuiltPostBody]) {
 		return;
 	}
@@ -393,25 +482,39 @@ static NSOperationQueue *sharedQueue = nil;
 			[self setPostBodyWriteStream:nil];
 		}
 
-		NSError *err = nil;
+		
 		NSString *path;
 		if ([self shouldCompressRequestBody]) {
-			[self setCompressedPostBodyFilePath:[NSTemporaryDirectory() stringByAppendingPathComponent:[[NSProcessInfo processInfo] globallyUniqueString]]];
-			[ASIHTTPRequest compressDataFromFile:[self postBodyFilePath] toFile:[self compressedPostBodyFilePath]];
+			if (![self compressedPostBodyFilePath]) {
+				[self setCompressedPostBodyFilePath:[NSTemporaryDirectory() stringByAppendingPathComponent:[[NSProcessInfo processInfo] globallyUniqueString]]];
+				
+				NSError *err = nil;
+				if (![ASIDataCompressor compressDataFromFile:[self postBodyFilePath] toFile:[self compressedPostBodyFilePath] error:&err]) {
+					[self failWithError:err];
+					return;
+				}
+			}
 			path = [self compressedPostBodyFilePath];
 		} else {
 			path = [self postBodyFilePath];
 		}
-		[self setPostLength:[[[NSFileManager defaultManager] attributesOfItemAtPath:path error:&err] fileSize]];
+		NSError *err = nil;
+		[self setPostLength:[[[[[NSFileManager alloc] init] autorelease] attributesOfItemAtPath:path error:&err] fileSize]];
 		if (err) {
-			[self failWithError:[NSError errorWithDomain:NetworkRequestErrorDomain code:ASIFileManagementError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Failed to get attributes for file at path '@%'",path],NSLocalizedDescriptionKey,error,NSUnderlyingErrorKey,nil]]];
+			[self failWithError:[NSError errorWithDomain:NetworkRequestErrorDomain code:ASIFileManagementError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Failed to get attributes for file at path '%@'",path],NSLocalizedDescriptionKey,error,NSUnderlyingErrorKey,nil]]];
 			return;
 		}
 		
 	// Otherwise, we have an in-memory request body
 	} else {
 		if ([self shouldCompressRequestBody]) {
-			[self setCompressedPostBody:[ASIHTTPRequest compressData:[self postBody]]];
+			NSError *err = nil;
+			NSData *compressedBody = [ASIDataCompressor compressData:[self postBody] error:&err];
+			if (err) {
+				[self failWithError:err];
+				return;
+			}
+			[self setCompressedPostBody:compressedBody];
 			[self setPostLength:[[self compressedPostBody] length]];
 		} else {
 			[self setPostLength:[[self postBody] length]];
@@ -425,6 +528,7 @@ static NSOperationQueue *sharedQueue = nil;
 		[self addRequestHeader:@"Content-Length" value:[NSString stringWithFormat:@"%llu",[self postLength]]];
 	}
 	[self setHaveBuiltPostBody:YES];
+
 }
 
 // Sets up storage for the post body
@@ -481,6 +585,40 @@ static NSOperationQueue *sharedQueue = nil;
 	[stream close];
 }
 
+- (NSURL *)url
+{
+	[[self cancelledLock] lock];
+	NSURL *u = url;
+	[[self cancelledLock] unlock];
+	return u;
+}
+
+
+- (void)setURL:(NSURL *)newURL
+{
+	[[self cancelledLock] lock];
+	if ([newURL isEqual:[self url]]) {
+		[[self cancelledLock] unlock];
+		return;
+	}
+	[url release];
+	url = [newURL retain];
+	if (requestAuthentication) {
+		CFRelease(requestAuthentication);
+		requestAuthentication = NULL;
+	}
+	if (proxyAuthentication) {
+		CFRelease(proxyAuthentication);
+		proxyAuthentication = NULL;
+	}
+	if (request) {
+		CFRelease(request);
+		request = NULL;
+	}
+	[self setRedirectURL:nil];
+	[[self cancelledLock] unlock];
+}
+
 - (id)delegate
 {
 	[[self cancelledLock] lock];
@@ -534,17 +672,37 @@ static NSOperationQueue *sharedQueue = nil;
 	[self setComplete:YES];
 	[self cancelLoad];
 	
-	[[self retain] autorelease];
+	CFRetain(self);
     [self willChangeValueForKey:@"isCancelled"];
     cancelled = YES;
     [self didChangeValueForKey:@"isCancelled"];
     
 	[[self cancelledLock] unlock];
+	CFRelease(self);
 }
 
 - (void)cancel
 {
     [self performSelector:@selector(cancelOnRequestThread) onThread:[[self class] threadForRequest:self] withObject:nil waitUntilDone:NO];    
+}
+
+- (void)clearDelegatesAndCancel
+{
+	[[self cancelledLock] lock];
+
+	// Clear delegates
+	[self setDelegate:nil];
+	[self setQueue:nil];
+	[self setDownloadProgressDelegate:nil];
+	[self setUploadProgressDelegate:nil];
+
+	#if NS_BLOCKS_AVAILABLE
+	// Clear blocks
+	[self releaseBlocksOnMainThread];
+	#endif
+
+	[[self cancelledLock] unlock];
+	[self cancel];
 }
 
 
@@ -578,11 +736,12 @@ static NSOperationQueue *sharedQueue = nil;
 
 - (NSData *)responseData
 {	
-	if ([self isResponseCompressed]) {
-		return [ASIHTTPRequest uncompressZippedData:[self rawResponseData]];
+	if ([self isResponseCompressed] && [self shouldWaitToInflateCompressedResponses]) {
+		return [ASIDataDecompressor uncompressData:[self rawResponseData] error:NULL];
 	} else {
 		return [self rawResponseData];
 	}
+	return nil;
 }
 
 #pragma mark running a request
@@ -644,6 +803,24 @@ static NSOperationQueue *sharedQueue = nil;
 		
 		[[self cancelledLock] lock];
 		
+		#if TARGET_OS_IPHONE && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_4_0
+		if ([ASIHTTPRequest isMultitaskingSupported] && [self shouldContinueWhenAppEntersBackground]) {
+			backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+				// Synchronize the cleanup call on the main thread in case
+				// the task actually finishes at around the same time.
+				dispatch_async(dispatch_get_main_queue(), ^{
+					if (backgroundTask != UIBackgroundTaskInvalid)
+					{
+						[[UIApplication sharedApplication] endBackgroundTask:backgroundTask];
+						backgroundTask = UIBackgroundTaskInvalid;
+						[self cancel];
+					}
+				});
+			}];
+		}
+		#endif
+
+
 		// A HEAD request generated by an ASINetworkQueue may have set the error already. If so, we should not proceed.
 		if ([self error]) {
 			[self setComplete:YES];
@@ -690,19 +867,22 @@ static NSOperationQueue *sharedQueue = nil;
 		[self buildRequestHeaders];
 		
 		if ([self downloadCache]) {
-			if ([self cachePolicy] == ASIDefaultCachePolicy) {
+
+			// If this request should use the default policy, set its policy to the download cache's default policy
+			if (![self cachePolicy]) {
 				[self setCachePolicy:[[self downloadCache] defaultCachePolicy]];
 			}
 
-			// See if we should pull from the cache rather than fetching the data
-			if ([self cachePolicy] == ASIOnlyLoadIfNotCachedCachePolicy) {
-				if ([self useDataFromCache]) {
-					return;
-				}
-			} else if ([self cachePolicy] == ASIReloadIfDifferentCachePolicy) {
+			// If have have cached data that is valid for this request, use that and stop
+			if ([[self downloadCache] canUseCachedDataForRequest:self]) {
+				[self useDataFromCache];
+				return;
+			}
 
-				// Force a conditional GET if we have a cached version of this content already
-				NSDictionary *cachedHeaders = [[self downloadCache] cachedHeadersForRequest:self];
+			// If cached data is stale, or we have been told to ask the server if it has been modified anyway, we need to add headers for a conditional GET
+			if ([self cachePolicy] & (ASIAskServerIfModifiedWhenStaleCachePolicy|ASIAskServerIfModifiedCachePolicy)) {
+
+				NSDictionary *cachedHeaders = [[self downloadCache] cachedResponseHeadersForURL:[self url]];
 				if (cachedHeaders) {
 					NSString *etag = [cachedHeaders objectForKey:@"Etag"];
 					if (etag) {
@@ -863,11 +1043,13 @@ static NSOperationQueue *sharedQueue = nil;
 
 - (void)updatePartialDownloadSize
 {
-	if ([self allowResumeForFileDownloads] && [self downloadDestinationPath] && [self temporaryFileDownloadPath] && [[NSFileManager defaultManager] fileExistsAtPath:[self temporaryFileDownloadPath]]) {
+	NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
+
+	if ([self allowResumeForFileDownloads] && [self downloadDestinationPath] && [self temporaryFileDownloadPath] && [fileManager fileExistsAtPath:[self temporaryFileDownloadPath]]) {
 		NSError *err = nil;
-		[self setPartialDownloadSize:[[[NSFileManager defaultManager] attributesOfItemAtPath:[self temporaryFileDownloadPath] error:&err] fileSize]];
+		[self setPartialDownloadSize:[[fileManager attributesOfItemAtPath:[self temporaryFileDownloadPath] error:&err] fileSize]];
 		if (err) {
-			[self failWithError:[NSError errorWithDomain:NetworkRequestErrorDomain code:ASIFileManagementError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Failed to get attributes for file at path '@%'",[self temporaryFileDownloadPath]],NSLocalizedDescriptionKey,error,NSUnderlyingErrorKey,nil]]];
+			[self failWithError:[NSError errorWithDomain:NetworkRequestErrorDomain code:ASIFileManagementError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Failed to get attributes for file at path '%@'",[self temporaryFileDownloadPath]],NSLocalizedDescriptionKey,error,NSUnderlyingErrorKey,nil]]];
 			return;
 		}
 	}
@@ -879,7 +1061,7 @@ static NSOperationQueue *sharedQueue = nil;
 		return;
 	}
 	
-	[self requestStarted];
+	[self performSelectorOnMainThread:@selector(requestStarted) withObject:nil waitUntilDone:[NSThread isMainThread]];
 	
 	[self setDownloadComplete:NO];
 	[self setComplete:NO];
@@ -906,14 +1088,16 @@ static NSOperationQueue *sharedQueue = nil;
     //
 	// Create the stream for the request
 	//
-	
+
+	NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
+
 	[self setReadStreamIsScheduled:NO];
 	
 	// Do we need to stream the request body from disk
-	if ([self shouldStreamPostDataFromDisk] && [self postBodyFilePath] && [[NSFileManager defaultManager] fileExistsAtPath:[self postBodyFilePath]]) {
+	if ([self shouldStreamPostDataFromDisk] && [self postBodyFilePath] && [fileManager fileExistsAtPath:[self postBodyFilePath]]) {
 		
 		// Are we gzipping the request body?
-		if ([self compressedPostBodyFilePath] && [[NSFileManager defaultManager] fileExistsAtPath:[self compressedPostBodyFilePath]]) {
+		if ([self compressedPostBodyFilePath] && [fileManager fileExistsAtPath:[self compressedPostBodyFilePath]]) {
 			[self setPostBodyReadStream:[ASIInputStream inputStreamWithFileAtPath:[self compressedPostBodyFilePath] request:self]];
 		} else {
 			[self setPostBodyReadStream:[ASIInputStream inputStreamWithFileAtPath:[self postBodyFilePath] request:self]];
@@ -921,7 +1105,7 @@ static NSOperationQueue *sharedQueue = nil;
 		[self setReadStream:[(NSInputStream *)CFReadStreamCreateForStreamedHTTPRequest(kCFAllocatorDefault, request,(CFReadStreamRef)[self postBodyReadStream]) autorelease]];
     } else {
 		
-		// If we have a request body, we'll stream it from memory using our custom stream, so that we can measure bandwidth use and it can be bandwidth-throttled if nescessary
+		// If we have a request body, we'll stream it from memory using our custom stream, so that we can measure bandwidth use and it can be bandwidth-throttled if necessary
 		if ([self postBody] && [[self postBody] length] > 0) {
 			if ([self shouldCompressRequestBody] && [self compressedPostBody]) {
 				[self setPostBodyReadStream:[ASIInputStream inputStreamWithData:[self compressedPostBody] request:self]];
@@ -1195,7 +1379,7 @@ static NSOperationQueue *sharedQueue = nil;
 
 - (void)setStatusTimer:(NSTimer *)timer
 {
-	[self retain];
+	CFRetain(self);
 	// We must invalidate the old timer here, not before we've created and scheduled a new timer
 	// This is because the timer may be the only thing retaining an asynchronous request
 	if (statusTimer && timer != statusTimer) {
@@ -1203,7 +1387,7 @@ static NSOperationQueue *sharedQueue = nil;
 		[statusTimer release];
 	}
 	statusTimer = [timer retain];
-	[self release];
+	CFRelease(self);
 }
 
 // This gets fired every 1/4 of a second to update the progress and work out if we need to timeout
@@ -1217,6 +1401,7 @@ static NSOperationQueue *sharedQueue = nil;
 
 - (void)performRedirect
 {
+	[self setURL:[self redirectURL]];
 	[self setComplete:YES];
 	[self setNeedsRedirect:NO];
 	[self setRedirectCount:[self redirectCount]+1];
@@ -1229,6 +1414,13 @@ static NSOperationQueue *sharedQueue = nil;
 		// Go all the way back to the beginning and build the request again, so that we can apply any new cookies
 		[self main];
 	}
+}
+
+// Called by delegate to resume loading with a new url after the delegate received request:willRedirectToURL:
+- (void)redirectToURL:(NSURL *)newURL
+{
+	[self setRedirectURL:newURL];
+	[self performSelector:@selector(performRedirect) onThread:[[self class] threadForRequest:self] withObject:nil waitUntilDone:NO];
 }
 
 - (BOOL)shouldTimeOut
@@ -1255,7 +1447,6 @@ static NSOperationQueue *sharedQueue = nil;
 {
 	// We won't let the request cancel while we're updating progress / checking for a timeout
 	[[self cancelledLock] lock];
-	
 	// See if our NSOperationQueue told us to cancel
 	if ([self isCancelled] || [self complete]) {
 		[[self cancelledLock] unlock];
@@ -1324,6 +1515,7 @@ static NSOperationQueue *sharedQueue = nil;
     [self destroyReadStream];
 	
 	[[self postBodyReadStream] close];
+	[self setPostBodyReadStream:nil];
 	
     if ([self rawResponseData]) {
 		[self setRawResponseData:nil];
@@ -1331,55 +1523,26 @@ static NSOperationQueue *sharedQueue = nil;
 	// If we were downloading to a file
 	} else if ([self temporaryFileDownloadPath]) {
 		[[self fileDownloadOutputStream] close];
+		[self setFileDownloadOutputStream:nil];
+		
+		[[self inflatedFileDownloadOutputStream] close];
+		[self setInflatedFileDownloadOutputStream:nil];
 		
 		// If we haven't said we might want to resume, let's remove the temporary file too
 		if (![self allowResumeForFileDownloads]) {
 			[self removeTemporaryDownloadFile];
 		}
+		[self removeTemporaryUncompressedDownloadFile];
 	}
 	
 	// Clean up any temporary file used to store request body for streaming
 	if (![self authenticationNeeded] && [self didCreateTemporaryPostDataFile]) {
-		[self removePostDataFile];
+		[self removeTemporaryUploadFile];
+		[self removeTemporaryCompressedUploadFile];
 		[self setDidCreateTemporaryPostDataFile:NO];
 	}
 	
 	[self setResponseHeaders:nil];
-}
-
-
-- (void)removeTemporaryDownloadFile
-{
-	if ([self temporaryFileDownloadPath]) {
-		if ([[NSFileManager defaultManager] fileExistsAtPath:[self temporaryFileDownloadPath]]) {
-			NSError *removeError = nil;
-			[[NSFileManager defaultManager] removeItemAtPath:[self temporaryFileDownloadPath] error:&removeError];
-			if (removeError) {
-				[self failWithError:[NSError errorWithDomain:NetworkRequestErrorDomain code:ASIFileManagementError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Failed to delete file at path '%@'",[self temporaryFileDownloadPath]],NSLocalizedDescriptionKey,removeError,NSUnderlyingErrorKey,nil]]];
-			}
-		}
-		[self setTemporaryFileDownloadPath:nil];
-	}
-}
-
-- (void)removePostDataFile
-{
-	if ([self postBodyFilePath]) {
-		NSError *removeError = nil;
-		[[NSFileManager defaultManager] removeItemAtPath:[self postBodyFilePath] error:&removeError];
-		if (removeError) {
-			[self failWithError:[NSError errorWithDomain:NetworkRequestErrorDomain code:ASIFileManagementError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Failed to delete file at path '%@'",[self postBodyFilePath]],NSLocalizedDescriptionKey,removeError,NSUnderlyingErrorKey,nil]]];
-		}
-		[self setPostBodyFilePath:nil];
-	}
-	if ([self compressedPostBodyFilePath]) {
-		NSError *removeError = nil;
-		[[NSFileManager defaultManager] removeItemAtPath:[self compressedPostBodyFilePath] error:&removeError];
-		if (removeError) {
-			[self failWithError:[NSError errorWithDomain:NetworkRequestErrorDomain code:ASIFileManagementError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Failed to delete file at path '%@'",[self compressedPostBodyFilePath]],NSLocalizedDescriptionKey,removeError,NSUnderlyingErrorKey,nil]]];
-		}
-		[self setCompressedPostBodyFilePath:nil];
-	}
 }
 
 #pragma mark HEAD request
@@ -1455,7 +1618,7 @@ static NSOperationQueue *sharedQueue = nil;
 	#if !TARGET_OS_IPHONE
 	// If the uploadProgressDelegate is an NSProgressIndicator, we set its MaxValue to 1.0 so we can update it as if it were a UIProgressView
 	double max = 1.0;
-	[ASIHTTPRequest performSelector:@selector(setMaxValue:) onTarget:&uploadProgressDelegate withObject:nil amount:&max];
+	[ASIHTTPRequest performSelector:@selector(setMaxValue:) onTarget:&uploadProgressDelegate withObject:nil amount:&max callerToRetain:nil];
 	#endif
 	[[self cancelledLock] unlock];
 }
@@ -1476,7 +1639,7 @@ static NSOperationQueue *sharedQueue = nil;
 	#if !TARGET_OS_IPHONE
 	// If the downloadProgressDelegate is an NSProgressIndicator, we set its MaxValue to 1.0 so we can update it as if it were a UIProgressView
 	double max = 1.0;
-	[ASIHTTPRequest performSelector:@selector(setMaxValue:) onTarget:&downloadProgressDelegate withObject:nil amount:&max];	
+	[ASIHTTPRequest performSelector:@selector(setMaxValue:) onTarget:&downloadProgressDelegate withObject:nil amount:&max callerToRetain:nil];	
 	#endif
 	[[self cancelledLock] unlock];
 }
@@ -1505,13 +1668,19 @@ static NSOperationQueue *sharedQueue = nil;
 		return;
 	}
 
-	[ASIHTTPRequest performSelector:@selector(request:didReceiveBytes:) onTarget:&queue withObject:self amount:&value];
-	[ASIHTTPRequest performSelector:@selector(request:didReceiveBytes:) onTarget:&downloadProgressDelegate withObject:self amount:&value];
+	[ASIHTTPRequest performSelector:@selector(request:didReceiveBytes:) onTarget:&queue withObject:self amount:&value callerToRetain:self];
+	[ASIHTTPRequest performSelector:@selector(request:didReceiveBytes:) onTarget:&downloadProgressDelegate withObject:self amount:&value callerToRetain:self];
+
 	[ASIHTTPRequest updateProgressIndicator:&downloadProgressDelegate withProgress:[self totalBytesRead]+[self partialDownloadSize] ofTotal:[self contentLength]+[self partialDownloadSize]];
-		
+
+	#if NS_BLOCKS_AVAILABLE
+    if (bytesReceivedBlock) {
+		unsigned long long totalSize = [self contentLength] + [self partialDownloadSize];
+		[self performBlockOnMainThread:^{ if (bytesReceivedBlock) { bytesReceivedBlock(value, totalSize); }}];
+    }
+	#endif
 	[self setLastBytesRead:bytesReadSoFar];
 }
-
 
 - (void)updateUploadProgress
 {
@@ -1544,50 +1713,79 @@ static NSOperationQueue *sharedQueue = nil;
 		return;
 	}
 	
-	[ASIHTTPRequest performSelector:@selector(request:didSendBytes:) onTarget:&queue withObject:self amount:&value];
-	[ASIHTTPRequest performSelector:@selector(request:didSendBytes:) onTarget:&uploadProgressDelegate withObject:self amount:&value];
+	[ASIHTTPRequest performSelector:@selector(request:didSendBytes:) onTarget:&queue withObject:self amount:&value callerToRetain:self];
+	[ASIHTTPRequest performSelector:@selector(request:didSendBytes:) onTarget:&uploadProgressDelegate withObject:self amount:&value callerToRetain:self];
 	[ASIHTTPRequest updateProgressIndicator:&uploadProgressDelegate withProgress:[self totalBytesSent]-[self uploadBufferSize] ofTotal:[self postLength]-[self uploadBufferSize]];
+
+	#if NS_BLOCKS_AVAILABLE
+    if(bytesSentBlock){
+		unsigned long long totalSize = [self postLength];
+		[self performBlockOnMainThread:^{ if (bytesSentBlock) { bytesSentBlock(value, totalSize); }}];
+	}
+	#endif
 }
 
 
 - (void)incrementDownloadSizeBy:(long long)length
 {
-	[ASIHTTPRequest performSelector:@selector(request:incrementDownloadSizeBy:) onTarget:&queue withObject:self amount:&length];
-	[ASIHTTPRequest performSelector:@selector(request:incrementDownloadSizeBy:) onTarget:&downloadProgressDelegate withObject:self amount:&length];
-}
+	[ASIHTTPRequest performSelector:@selector(request:incrementDownloadSizeBy:) onTarget:&queue withObject:self amount:&length callerToRetain:self];
+	[ASIHTTPRequest performSelector:@selector(request:incrementDownloadSizeBy:) onTarget:&downloadProgressDelegate withObject:self amount:&length callerToRetain:self];
 
+	#if NS_BLOCKS_AVAILABLE
+    if(downloadSizeIncrementedBlock){
+		[self performBlockOnMainThread:^{ if (downloadSizeIncrementedBlock) { downloadSizeIncrementedBlock(length); }}];
+    }
+	#endif
+}
 
 - (void)incrementUploadSizeBy:(long long)length
 {
-	[ASIHTTPRequest performSelector:@selector(request:incrementUploadSizeBy:) onTarget:&queue withObject:self amount:&length];
-	[ASIHTTPRequest performSelector:@selector(request:incrementUploadSizeBy:) onTarget:&uploadProgressDelegate withObject:self amount:&length];
+	[ASIHTTPRequest performSelector:@selector(request:incrementUploadSizeBy:) onTarget:&queue withObject:self amount:&length callerToRetain:self];
+	[ASIHTTPRequest performSelector:@selector(request:incrementUploadSizeBy:) onTarget:&uploadProgressDelegate withObject:self amount:&length callerToRetain:self];
+
+	#if NS_BLOCKS_AVAILABLE
+    if(uploadSizeIncrementedBlock) {
+		[self performBlockOnMainThread:^{ if (uploadSizeIncrementedBlock) { uploadSizeIncrementedBlock(length); }}];
+    }
+	#endif
 }
 
 
 -(void)removeUploadProgressSoFar
 {
 	long long progressToRemove = -[self totalBytesSent];
-	[ASIHTTPRequest performSelector:@selector(request:didSendBytes:) onTarget:&queue withObject:self amount:&progressToRemove];
-	[ASIHTTPRequest performSelector:@selector(request:didSendBytes:) onTarget:&uploadProgressDelegate withObject:self amount:&progressToRemove];
+	[ASIHTTPRequest performSelector:@selector(request:didSendBytes:) onTarget:&queue withObject:self amount:&progressToRemove callerToRetain:self];
+	[ASIHTTPRequest performSelector:@selector(request:didSendBytes:) onTarget:&uploadProgressDelegate withObject:self amount:&progressToRemove callerToRetain:self];
 	[ASIHTTPRequest updateProgressIndicator:&uploadProgressDelegate withProgress:0 ofTotal:[self postLength]];
+
+	#if NS_BLOCKS_AVAILABLE
+    if(bytesSentBlock){
+		unsigned long long totalSize = [self postLength];
+		[self performBlockOnMainThread:^{  if (bytesSentBlock) { bytesSentBlock(progressToRemove, totalSize); }}];
+	}
+	#endif
 }
 
-+ (void)performInvocation:(NSInvocation *)invocation onTarget:(id *)target
+#if NS_BLOCKS_AVAILABLE
+- (void)performBlockOnMainThread:(ASIBasicBlock)block
 {
-    if (*target && [*target respondsToSelector:invocation.selector])
-    {
-        [invocation invokeWithTarget:*target];
-    }
-    [invocation release];
-    [self autorelease];
+	[self performSelectorOnMainThread:@selector(callBlock:) withObject:[[block copy] autorelease] waitUntilDone:[NSThread isMainThread]];
 }
 
-+ (void)performSelector:(SEL)selector onTarget:(id *)target withObject:(id)object amount:(void *)amount
+- (void)callBlock:(ASIBasicBlock)block
+{
+	block();
+}
+#endif
+
+
++ (void)performSelector:(SEL)selector onTarget:(id *)target withObject:(id)object amount:(void *)amount callerToRetain:(id)callerToRetain
 {
 	if ([*target respondsToSelector:selector]) {
 		NSMethodSignature *signature = nil;
-		signature = [[*target class] instanceMethodSignatureForSelector:selector];
-		NSInvocation *invocation = [[NSInvocation invocationWithMethodSignature:signature] retain];
+		signature = [*target methodSignatureForSelector:selector];
+		NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+
 		[invocation setSelector:selector];
 		
 		int argumentNumber = 2;
@@ -1595,7 +1793,7 @@ static NSOperationQueue *sharedQueue = nil;
 		// If we got an object parameter, we pass a pointer to the object pointer
 		if (object) {
 			[invocation setArgument:&object atIndex:argumentNumber];
-			argumentNumber++;	
+			argumentNumber++;
 		}
 		
 		// For the amount we'll just pass the pointer directly so NSInvocation will call the method using the number itself rather than a pointer to it
@@ -1603,17 +1801,37 @@ static NSOperationQueue *sharedQueue = nil;
 			[invocation setArgument:amount atIndex:argumentNumber];
 		}
 
-        SEL callback = @selector(performInvocation:onTarget:);
+        SEL callback = @selector(performInvocation:onTarget:releasingObject:);
         NSMethodSignature *cbSignature = [ASIHTTPRequest methodSignatureForSelector:callback];
         NSInvocation *cbInvocation = [NSInvocation invocationWithMethodSignature:cbSignature];
         [cbInvocation setSelector:callback];
         [cbInvocation setTarget:self];
         [cbInvocation setArgument:&invocation atIndex:2];
         [cbInvocation setArgument:&target atIndex:3];
-        
-        [self retain]; // ensure we stay around for the duration of the callback
+		if (callerToRetain) {
+			[cbInvocation setArgument:&callerToRetain atIndex:4];
+		}
+
+		CFRetain(invocation);
+
+		// Used to pass in a request that we must retain until after the call
+		// We're using CFRetain rather than [callerToRetain retain] so things to avoid earthquakes when using garbage collection
+		if (callerToRetain) {
+			CFRetain(callerToRetain);
+		}
         [cbInvocation performSelectorOnMainThread:@selector(invoke) withObject:nil waitUntilDone:[NSThread isMainThread]];
     }
+}
+
++ (void)performInvocation:(NSInvocation *)invocation onTarget:(id *)target releasingObject:(id)objectToRelease
+{
+    if (*target && [*target respondsToSelector:[invocation selector]]) {
+        [invocation invokeWithTarget:*target];
+    }
+	CFRelease(invocation);
+	if (objectToRelease) {
+		CFRelease(objectToRelease);
+	}
 }
 	
 	
@@ -1622,7 +1840,7 @@ static NSOperationQueue *sharedQueue = nil;
 	#if TARGET_OS_IPHONE
 		// Cocoa Touch: UIProgressView
 		SEL selector = @selector(setProgress:);
-		float progressAmount = (progress*1.0f)/(total*1.0f);
+		float progressAmount = (float)((progress*1.0)/(total*1.0));
 		
 	#else
 		// Cocoa: NSProgressIndicator
@@ -1635,69 +1853,83 @@ static NSOperationQueue *sharedQueue = nil;
 	}
 	
 	[progressLock lock];
-	[ASIHTTPRequest performSelector:selector onTarget:indicator withObject:nil amount:&progressAmount];
+	[ASIHTTPRequest performSelector:selector onTarget:indicator withObject:nil amount:&progressAmount callerToRetain:nil];
 	[progressLock unlock];
 }
 
 
-#pragma mark handling request complete / failure
+#pragma mark talking to delegates / calling blocks
 
-- (void)callSelectorCallback:(SEL *)selectorPtr withTarget:(id *)targetPtr request:(ASIHTTPRequest *)request
-{
-	id target = *targetPtr;
-	SEL selector = *selectorPtr;
-	if (selector && target && [target respondsToSelector:selector]) {
-		[target performSelector:selector withObject:self];
-	}
-}
-
-// Call a selector for a delegate on the main thread
-// As either the delegate or the selector may be changed before we get
-// to run on the main thread, they are passed as pointers, which we only
-// dereference on the main thread just before we call the selector
-- (void)callSelectorOnMainThread:(SEL *)selector forDelegate:(id *)target
-{
-	if (!*selector || !*target)
-		return;
-	
-	SEL callback = @selector(callSelectorCallback:withTarget:request:);
-	NSMethodSignature *signature = [ASIHTTPRequest instanceMethodSignatureForSelector:callback];
-	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-	[invocation setSelector:callback];
-	[invocation setTarget:self];
-	[invocation setArgument:&selector atIndex:2];
-	[invocation setArgument:&target atIndex:3];
-	[invocation setArgument:&self atIndex:4];
-	
-	// Force the invocation to retain this request until after we have performed the callback
-    [invocation retainArguments];
-	[invocation performSelectorOnMainThread:@selector(invoke) withObject:nil waitUntilDone:[NSThread isMainThread]];
-}
-
-
-
-- (void)requestReceivedResponseHeaders
-{
-	if ([self error] || [self mainRequest]) {
-		return;
-	}
-	// Let the delegate know we have started
-	[self callSelectorOnMainThread:&didReceiveResponseHeadersSelector forDelegate:&delegate];
-	
-	// Let the queue know we have started
-	[self callSelectorOnMainThread:&queueRequestReceivedResponseHeadersSelector forDelegate:&queue];
-}
-
+/* ALWAYS CALLED ON MAIN THREAD! */
 - (void)requestStarted
 {
 	if ([self error] || [self mainRequest]) {
 		return;
 	}
-	// Let the delegate know we have started
-	[self callSelectorOnMainThread:&didStartSelector forDelegate:&delegate];
-	
-	// Let the queue know we have started
-	[self callSelectorOnMainThread:&queueRequestStartedSelector forDelegate:&queue];
+	if (delegate && [delegate respondsToSelector:didStartSelector]) {
+		[delegate performSelector:didStartSelector withObject:self];
+	}
+	if (queue && [queue respondsToSelector:@selector(requestStarted:)]) {
+		[queue performSelector:@selector(requestStarted:) withObject:self];
+	}
+	#if NS_BLOCKS_AVAILABLE
+	if(startedBlock){
+		startedBlock();
+	}
+	#endif
+}
+
+/* ALWAYS CALLED ON MAIN THREAD! */
+- (void)requestRedirected
+{
+	if ([self error] || [self mainRequest]) {
+		return;
+	}
+
+	if([[self delegate] respondsToSelector:@selector(requestRedirected:)]){
+		[[self delegate] performSelector:@selector(requestRedirected:) withObject:self];
+	}
+	#if NS_BLOCKS_AVAILABLE
+	if(requestRedirectedBlock){
+		requestRedirectedBlock();
+	}
+	#endif
+}
+
+
+/* ALWAYS CALLED ON MAIN THREAD! */
+- (void)requestReceivedResponseHeaders:(NSMutableDictionary *)newResponseHeaders
+{
+	if ([self error] || [self mainRequest]) {
+		return;
+	}
+
+	if (delegate && [delegate respondsToSelector:didReceiveResponseHeadersSelector]) {
+		[delegate performSelector:didReceiveResponseHeadersSelector withObject:self withObject:newResponseHeaders];
+	}
+	if (queue && [queue respondsToSelector:@selector(request:didReceiveResponseHeaders:)]) {
+		[queue performSelector:@selector(request:didReceiveResponseHeaders:) withObject:self withObject:newResponseHeaders];
+	}
+    
+	#if NS_BLOCKS_AVAILABLE
+	if(headersReceivedBlock){
+		headersReceivedBlock(newResponseHeaders);
+    }
+	#endif
+}
+
+/* ALWAYS CALLED ON MAIN THREAD! */
+- (void)requestWillRedirectToURL:(NSURL *)newURL
+{
+	if ([self error] || [self mainRequest]) {
+		return;
+	}
+	if (delegate && [delegate respondsToSelector:willRedirectSelector]) {
+		[delegate performSelector:willRedirectSelector withObject:self withObject:newURL];
+	}
+	if (queue && [queue respondsToSelector:@selector(request:willRedirectToURL:)]) {
+		[queue performSelector:@selector(request:willRedirectToURL:) withObject:self withObject:newURL];
+	}
 }
 
 // Subclasses might override this method to process the result in the same thread
@@ -1710,21 +1942,53 @@ static NSOperationQueue *sharedQueue = nil;
 	if ([self error] || [self mainRequest]) {
 		return;
 	}
-	// Let the delegate know we are done
-	[self callSelectorOnMainThread:&didFinishSelector forDelegate:&delegate];
-	
-	// Let the queue know we are done
-	[self callSelectorOnMainThread:&queueRequestFinishedSelector forDelegate:&queue];
+	[self performSelectorOnMainThread:@selector(reportFinished) withObject:nil waitUntilDone:[NSThread isMainThread]];
 }
 
+/* ALWAYS CALLED ON MAIN THREAD! */
+- (void)reportFinished
+{
+	if (delegate && [delegate respondsToSelector:didFinishSelector]) {
+		[delegate performSelector:didFinishSelector withObject:self];
+	}
+	if (queue && [queue respondsToSelector:@selector(requestFinished:)]) {
+		[queue performSelector:@selector(requestFinished:) withObject:self];
+	}
+#if NS_BLOCKS_AVAILABLE
+	if(completionBlock){
+		completionBlock();
+	}
+#endif
+}
 
+/* ALWAYS CALLED ON MAIN THREAD! */
 - (void)reportFailure
 {
-    // Let the delegate know something went wrong
-	[self callSelectorOnMainThread:&didFailSelector forDelegate:&delegate];
-	
-	// Let the queue know something went wrong
-	[self callSelectorOnMainThread:&queueRequestFailedSelector forDelegate:&queue];
+	if (delegate && [delegate respondsToSelector:didFailSelector]) {
+		[delegate performSelector:didFailSelector withObject:self];
+	}
+	if (queue && [queue respondsToSelector:@selector(requestFailed:)]) {
+		[queue performSelector:@selector(requestFailed:) withObject:self];
+	}
+	#if NS_BLOCKS_AVAILABLE
+    if(failureBlock){
+        failureBlock();
+    }
+	#endif
+}
+
+/* ALWAYS CALLED ON MAIN THREAD! */
+- (void)passOnReceivedData:(NSData *)data
+{
+	if (delegate && [delegate respondsToSelector:didReceiveDataSelector]) {
+		[delegate performSelector:didReceiveDataSelector withObject:self withObject:data];
+	}
+
+	#if NS_BLOCKS_AVAILABLE
+	if (dataReceivedBlock) {
+		dataReceivedBlock(data);
+	}
+	#endif
 }
 
 // Subclasses might override this method to perform error handling in the same thread
@@ -1755,10 +2019,9 @@ static NSOperationQueue *sharedQueue = nil;
 		return;
 	}
 	
-	if ([self downloadCache] && [self cachePolicy] == ASIUseCacheIfLoadFailsCachePolicy) {
-		if ([self useDataFromCache]) {
-			return;
-		}
+	if ([self downloadCache] && ([self cachePolicy] & ASIFallbackToCacheIfLoadFailsCachePolicy)) {
+		[self useDataFromCache];
+		return;
 	}
 	
 	
@@ -1772,7 +2035,7 @@ static NSOperationQueue *sharedQueue = nil;
 		[failedRequest setError:theError];
 	}
 
-    [failedRequest reportFailure];
+	[failedRequest performSelectorOnMainThread:@selector(reportFailure) withObject:nil waitUntilDone:[NSThread isMainThread]];
 	
     if (!inProgress)
     {
@@ -1780,10 +2043,7 @@ static NSOperationQueue *sharedQueue = nil;
         // "markAsFinished" will be at the start of main() when we are started
         return;
     }
-	// markAsFinished may well cause this object to be dealloced
-	[self retain];
 	[self markAsFinished];
-	[self release];
 }
 
 #pragma mark parsing HTTP response headers
@@ -1817,11 +2077,13 @@ static NSOperationQueue *sharedQueue = nil;
 	[self setResponseStatusCode:(int)CFHTTPMessageGetResponseStatusCode(message)];
 	[self setResponseStatusMessage:[(NSString *)CFHTTPMessageCopyResponseStatusLine(message) autorelease]];
 	
-	if ([self downloadCache] && [self cachePolicy] == ASIReloadIfDifferentCachePolicy) {
-		if ([self useDataFromCache]) {
-			CFRelease(message);
-			return;
-		}
+	if ([self downloadCache] && ([[self downloadCache] canUseCachedDataForRequest:self])) {
+		// Read the response from the cache
+		[self useDataFromCache];
+		// Update the response headers (this will usually move the expiry date into the future)
+		[[self downloadCache] storeResponseForRequest:self maxAge:[self secondsToCache]];
+		CFRelease(message);
+		return;
 	}
 
 	// Is the server response a challenge for credentials?
@@ -1850,7 +2112,7 @@ static NSOperationQueue *sharedQueue = nil;
 		}
 	}
 
-	// Handle response text encoding
+	// Read response textEncoding
 	[self parseStringEncodingFromHeaders];
 
 	// Handle cookies
@@ -1873,6 +2135,8 @@ static NSOperationQueue *sharedQueue = nil;
 	// Note that ASIHTTPRequest does not currently support 305 Use Proxy
 	if ([self shouldRedirect] && [responseHeaders valueForKey:@"Location"]) {
 		if (([self responseStatusCode] > 300 && [self responseStatusCode] < 304) || [self responseStatusCode] == 307) {
+            
+			[self performSelectorOnMainThread:@selector(requestRedirected) withObject:nil waitUntilDone:[NSThread isMainThread]];
 			
 			// By default, we redirect 301 and 302 response codes as GET requests
 			// According to RFC 2616 this is wrong, but this is what most browsers do, so it's probably what you're expecting to happen
@@ -1904,7 +2168,7 @@ static NSOperationQueue *sharedQueue = nil;
 
 			// Force the redirected request to rebuild the request headers (if not a 303, it will re-use old ones, and add any new ones)
 			
-			[self setURL:[[NSURL URLWithString:[responseHeaders valueForKey:@"Location"] relativeToURL:[self url]] absoluteURL]];
+			[self setRedirectURL:[[NSURL URLWithString:[responseHeaders valueForKey:@"Location"] relativeToURL:[self url]] absoluteURL]];
 			[self setNeedsRedirect:YES];
 			
 			// Clear the request cookies
@@ -1928,7 +2192,7 @@ static NSOperationQueue *sharedQueue = nil;
 		}
 
 		if (cLength) {
-			SInt32 length = CFStringGetIntValue((CFStringRef)cLength);
+			unsigned long long length = strtoull([cLength UTF8String], NULL, 0);
 
 			// Workaround for Apache HEAD requests for dynamically generated content returning the wrong Content-Length when using gzip
 			if ([self mainRequest] && [self allowCompressedResponse] && length == 20 && [self showAccurateProgress] && [self shouldResetDownloadProgress]) {
@@ -1992,34 +2256,20 @@ static NSOperationQueue *sharedQueue = nil;
 	}
 
 	CFRelease(message);
-	[self requestReceivedResponseHeaders];
+	[self performSelectorOnMainThread:@selector(requestReceivedResponseHeaders:) withObject:[[[self responseHeaders] copy] autorelease] waitUntilDone:[NSThread isMainThread]];
 }
 
-// Handle response text encoding
-// If the Content-Type header specified an encoding, we'll use that, otherwise we use defaultStringEncoding (which defaults to NSISOLatin1StringEncoding)
 - (void)parseStringEncodingFromHeaders
 {
-	NSString *contentType = [[self responseHeaders] objectForKey:@"Content-Type"];
-	NSStringEncoding encoding = [self defaultResponseEncoding];
-	if (contentType) {
-
-		NSString *charsetSeparator = @"charset=";
-		NSScanner *charsetScanner = [NSScanner scannerWithString: contentType];
-		NSString *IANAEncoding = nil;
-
-		if ([charsetScanner scanUpToString: charsetSeparator intoString: NULL] && [charsetScanner scanLocation] < [contentType length]) {
-			[charsetScanner setScanLocation: [charsetScanner scanLocation] + [charsetSeparator length]];
-			[charsetScanner scanUpToString: @";" intoString: &IANAEncoding];
-		}
-
-		if (IANAEncoding) {
-			CFStringEncoding cfEncoding = CFStringConvertIANACharSetNameToEncoding((CFStringRef)IANAEncoding);
-			if (cfEncoding != kCFStringEncodingInvalidId) {
-				encoding = CFStringConvertEncodingToNSStringEncoding(cfEncoding);
-			}
-		}
+	// Handle response text encoding
+	NSStringEncoding charset = 0;
+	NSString *mimeType = nil;
+	[[self class] parseMimeType:&mimeType andResponseEncoding:&charset fromContentType:[[self responseHeaders] valueForKey:@"Content-Type"]];
+	if (charset != 0) {
+		[self setResponseEncoding:charset];
+	} else {
+		[self setResponseEncoding:[self defaultResponseEncoding]];
 	}
-	[self setResponseEncoding:encoding];
 }
 
 #pragma mark http authentication
@@ -2162,7 +2412,7 @@ static NSOperationQueue *sharedQueue = nil;
 	NSMutableDictionary *newCredentials = [[[NSMutableDictionary alloc] init] autorelease];
 	
 	// Is an account domain needed? (used currently for NTLM only)
-	if((requestAuthentication != nil) && (CFHTTPAuthenticationRequiresAccountDomain(requestAuthentication))) {
+	if (CFHTTPAuthenticationRequiresAccountDomain(requestAuthentication)) {
 		if (!domain) {
 			[self setDomain:@""];
 		}
@@ -2212,6 +2462,11 @@ static NSOperationQueue *sharedQueue = nil;
 // Called by delegate or authentication dialog to resume loading once authentication info has been populated
 - (void)retryUsingSuppliedCredentials
 {
+	//If the url was changed by the delegate, our CFHTTPMessageRef will be NULL and we'll go back to the start
+	if (!request) {
+		[self performSelector:@selector(main) onThread:[[self class] threadForRequest:self] withObject:nil waitUntilDone:NO];
+		return;
+	}
 	[self performSelector:@selector(attemptToApplyCredentialsAndResume) onThread:[[self class] threadForRequest:self] withObject:nil waitUntilDone:NO];
 }
 
@@ -2241,9 +2496,8 @@ static NSOperationQueue *sharedQueue = nil;
 }
 
 
-- (BOOL)askDelegateForProxyCredentials
+- (BOOL)willAskDelegateForProxyCredentials
 {
-
 	// If we have a delegate, we'll see if it can handle proxyAuthenticationNeededForRequest:.
 	// Otherwise, we'll try the queue (if this request is part of one) and it will pass the message on to its own delegate
 	id authenticationDelegate = [self delegate];
@@ -2251,11 +2505,89 @@ static NSOperationQueue *sharedQueue = nil;
 		authenticationDelegate = [self queue];
 	}
 	
+	BOOL delegateOrBlockWillHandleAuthentication = NO;
+
 	if ([authenticationDelegate respondsToSelector:@selector(proxyAuthenticationNeededForRequest:)]) {
-		[authenticationDelegate performSelectorOnMainThread:@selector(proxyAuthenticationNeededForRequest:) withObject:self waitUntilDone:[NSThread isMainThread]];
-		return YES;
+		delegateOrBlockWillHandleAuthentication = YES;
 	}
-	return NO;
+
+	#if NS_BLOCKS_AVAILABLE
+	if(proxyAuthenticationNeededBlock){
+		delegateOrBlockWillHandleAuthentication = YES;
+	}
+	#endif
+
+	if (delegateOrBlockWillHandleAuthentication) {
+		[self performSelectorOnMainThread:@selector(askDelegateForProxyCredentials) withObject:nil waitUntilDone:NO];
+	}
+	
+	return delegateOrBlockWillHandleAuthentication;
+}
+
+/* ALWAYS CALLED ON MAIN THREAD! */
+- (void)askDelegateForProxyCredentials
+{
+	id authenticationDelegate = [self delegate];
+	if (!authenticationDelegate) {
+		authenticationDelegate = [self queue];
+	}
+	if ([authenticationDelegate respondsToSelector:@selector(proxyAuthenticationNeededForRequest:)]) {
+		[authenticationDelegate performSelector:@selector(proxyAuthenticationNeededForRequest:) withObject:self];
+		return;
+	}
+	#if NS_BLOCKS_AVAILABLE
+	if(proxyAuthenticationNeededBlock){
+		proxyAuthenticationNeededBlock();
+	}
+	#endif
+}
+
+
+- (BOOL)willAskDelegateForCredentials
+{
+	// If we have a delegate, we'll see if it can handle proxyAuthenticationNeededForRequest:.
+	// Otherwise, we'll try the queue (if this request is part of one) and it will pass the message on to its own delegate
+	id authenticationDelegate = [self delegate];
+	if (!authenticationDelegate) {
+		authenticationDelegate = [self queue];
+	}
+
+	BOOL delegateOrBlockWillHandleAuthentication = NO;
+
+	if ([authenticationDelegate respondsToSelector:@selector(authenticationNeededForRequest:)]) {
+		delegateOrBlockWillHandleAuthentication = YES;
+	}
+
+	#if NS_BLOCKS_AVAILABLE
+	if (authenticationNeededBlock) {
+		delegateOrBlockWillHandleAuthentication = YES;
+	}
+	#endif
+
+	if (delegateOrBlockWillHandleAuthentication) {
+		[self performSelectorOnMainThread:@selector(askDelegateForCredentials) withObject:nil waitUntilDone:NO];
+	}
+	return delegateOrBlockWillHandleAuthentication;
+}
+
+/* ALWAYS CALLED ON MAIN THREAD! */
+- (void)askDelegateForCredentials
+{
+	id authenticationDelegate = [self delegate];
+	if (!authenticationDelegate) {
+		authenticationDelegate = [self queue];
+	}
+	
+	if ([authenticationDelegate respondsToSelector:@selector(authenticationNeededForRequest:)]) {
+		[authenticationDelegate performSelector:@selector(authenticationNeededForRequest:) withObject:self];
+		return;
+	}
+	
+	#if NS_BLOCKS_AVAILABLE
+	if (authenticationNeededBlock) {
+		authenticationNeededBlock();
+	}
+	#endif	
 }
 
 - (void)attemptToApplyProxyCredentialsAndResume
@@ -2323,7 +2655,7 @@ static NSOperationQueue *sharedQueue = nil;
 			
 			[self setLastActivityTime:nil];
 			
-			if ([self askDelegateForProxyCredentials]) {
+			if ([self willAskDelegateForProxyCredentials]) {
 				[self attemptToApplyProxyCredentialsAndResume];
 				[delegateAuthenticationLock unlock];
 				return;
@@ -2395,7 +2727,7 @@ static NSOperationQueue *sharedQueue = nil;
 			return;
 		}
 		
-		if ([self askDelegateForProxyCredentials]) {
+		if ([self willAskDelegateForProxyCredentials]) {
 			[delegateAuthenticationLock unlock];
 			return;
 		}
@@ -2427,21 +2759,7 @@ static NSOperationQueue *sharedQueue = nil;
 #endif
 }
 
-- (BOOL)askDelegateForCredentials
-{
-	// If we have a delegate, we'll see if it can handle proxyAuthenticationNeededForRequest:.
-	// Otherwise, we'll try the queue (if this request is part of one) and it will pass the message on to its own delegate
-	id authenticationDelegate = [self delegate];
-	if (!authenticationDelegate) {
-		authenticationDelegate = [self queue];
-	}
-	
-	if ([authenticationDelegate respondsToSelector:@selector(authenticationNeededForRequest:)]) {
-		[authenticationDelegate performSelectorOnMainThread:@selector(authenticationNeededForRequest:) withObject:self waitUntilDone:[NSThread isMainThread]];
-		return YES;
-	}
-	return NO;
-}
+
 
 - (void)attemptToApplyCredentialsAndResume
 {
@@ -2511,7 +2829,7 @@ static NSOperationQueue *sharedQueue = nil;
 			
 			[self setLastActivityTime:nil];
 			
-			if ([self askDelegateForCredentials]) {
+			if ([self willAskDelegateForCredentials]) {
 				[delegateAuthenticationLock unlock];
 				return;
 			}
@@ -2578,7 +2896,7 @@ static NSOperationQueue *sharedQueue = nil;
 			}
 			return;
 		}
-		if ([self askDelegateForCredentials]) {
+		if ([self willAskDelegateForCredentials]) {
 			[delegateAuthenticationLock unlock];
 			return;
 		}
@@ -2607,7 +2925,6 @@ static NSOperationQueue *sharedQueue = nil;
 - (void)handleNetworkEvent:(CFStreamEventType)type
 {	
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[[self retain] autorelease];
 
 	[[self cancelledLock] lock];
 	
@@ -2616,7 +2933,9 @@ static NSOperationQueue *sharedQueue = nil;
 		[pool release];
 		return;
 	}
-	
+
+	CFRetain(self);
+
     // Dispatch the stream events.
     switch (type) {
         case kCFStreamEventHasBytesAvailable:
@@ -2640,21 +2959,30 @@ static NSOperationQueue *sharedQueue = nil;
 	[[self cancelledLock] unlock];
 	
 	if ([self downloadComplete] && [self needsRedirect]) {
-		[self performRedirect];
+
+		// We must lock again to ensure delegate / queue aren't changed while we check them
+		[[self cancelledLock] lock];
+		// Here we perform an initial check to see if either the delegate or the queue wants to be asked about the redirect, because if not we should redirect straight away
+		// We will check again on the main thread later
+		BOOL needToAskDelegateAboutRedirect = (([self delegate] && [[self delegate] respondsToSelector:[self willRedirectSelector]]) || ([self queue] && [[self queue] respondsToSelector:@selector(request:willRedirectToURL:)]));
+		[[self cancelledLock] unlock];
+
+		// Either the delegate or the queue's delegate is interested in being told when we are about to redirect
+		if (needToAskDelegateAboutRedirect) {
+			NSURL *newURL = [[[self redirectURL] copy] autorelease];
+			[self setRedirectURL:nil];
+			[self performSelectorOnMainThread:@selector(requestWillRedirectToURL:) withObject:newURL waitUntilDone:[NSThread isMainThread]];
+
+		// If neither the delegate nor the queue's delegate implement request:willRedirectToURL:, we will redirect automatically
+		} else {
+			[self performRedirect];
+		}
 	} else if ([self downloadComplete] && [self authenticationNeeded]) {
 		[self attemptToApplyCredentialsAndResume];
 	}
-	[pool release];
-}
 
-// This runs on the main thread to run the given invocation on the current delegate
-- (void)invocateDelegate:(NSInvocation *)invocation
-{
-    if (delegate && [delegate respondsToSelector:invocation.selector])
-    {
-        [invocation invokeWithTarget:delegate];
-    }
-    [invocation release];
+	CFRelease(self);
+	[pool release];
 }
 
 - (void)handleBytesAvailable
@@ -2713,6 +3041,20 @@ static NSOperationQueue *sharedQueue = nil;
 		
 	// If zero bytes were read, wait for the EOF to come.
     } else if (bytesRead) {
+
+		// If we are inflating the response on the fly
+		NSData *inflatedData = nil;
+		if ([self isResponseCompressed] && ![self shouldWaitToInflateCompressedResponses]) {
+			if (![self dataDecompressor]) {
+				[self setDataDecompressor:[ASIDataDecompressor decompressor]];
+			}
+			NSError *err = nil;
+			inflatedData = [[self dataDecompressor] uncompressBytes:buffer length:bytesRead error:&err];
+			if (err) {
+				[self failWithError:err];
+				return;
+			}
+		}
 		
 		[self setTotalBytesRead:[self totalBytesRead]+bytesRead];
 		[self setLastActivityTime:[NSDate date]];
@@ -2725,21 +3067,30 @@ static NSOperationQueue *sharedQueue = nil;
 			return;
 		}
 		
-		// Does the delegate want to handle the data manually?
+		BOOL dataWillBeHandledExternally = NO;
 		if ([[self delegate] respondsToSelector:[self didReceiveDataSelector]]) {
-			NSMethodSignature *signature = [[[self delegate] class] instanceMethodSignatureForSelector:[self didReceiveDataSelector]];
-			NSInvocation *invocation = [[NSInvocation invocationWithMethodSignature:signature] retain];
-			[invocation setSelector:[self didReceiveDataSelector]];
-			[invocation setArgument:&self atIndex:2];
-			NSData *data = [NSData dataWithBytes:buffer length:bytesRead];
-			[invocation setArgument:&data atIndex:3];
-			[invocation retainArguments];
-            [self performSelectorOnMainThread:@selector(invocateDelegate:) withObject:invocation waitUntilDone:[NSThread isMainThread]];
+			dataWillBeHandledExternally = YES;
+		}
+		#if NS_BLOCKS_AVAILABLE
+		if (dataReceivedBlock) {
+			dataWillBeHandledExternally = YES;
+		}
+		#endif
+		// Does the delegate want to handle the data manually?
+		if (dataWillBeHandledExternally) {
 
+			NSData *data = nil;
+			if ([self isResponseCompressed] && ![self shouldWaitToInflateCompressedResponses]) {
+				data = inflatedData;
+			} else {
+				data = [NSData dataWithBytes:buffer length:bytesRead];
+			}
+			[self performSelectorOnMainThread:@selector(passOnReceivedData:) withObject:data waitUntilDone:[NSThread isMainThread]];
+			
 		// Are we downloading to a file?
 		} else if ([self downloadDestinationPath]) {
+			BOOL append = NO;
 			if (![self fileDownloadOutputStream]) {
-				BOOL append = NO;
 				if (![self temporaryFileDownloadPath]) {
 					[self setTemporaryFileDownloadPath:[NSTemporaryDirectory() stringByAppendingPathComponent:[[NSProcessInfo processInfo] globallyUniqueString]]];
 				} else if ([self allowResumeForFileDownloads] && [[self requestHeaders] objectForKey:@"Range"]) {
@@ -2753,23 +3104,43 @@ static NSOperationQueue *sharedQueue = nil;
 
 				[self setFileDownloadOutputStream:[[[NSOutputStream alloc] initToFileAtPath:[self temporaryFileDownloadPath] append:append] autorelease]];
 				[[self fileDownloadOutputStream] open];
+
 			}
 			[[self fileDownloadOutputStream] write:buffer maxLength:bytesRead];
+
+			if ([self isResponseCompressed] && ![self shouldWaitToInflateCompressedResponses]) {
+				
+				if (![self inflatedFileDownloadOutputStream]) {
+					if (![self temporaryUncompressedDataDownloadPath]) {
+						[self setTemporaryUncompressedDataDownloadPath:[NSTemporaryDirectory() stringByAppendingPathComponent:[[NSProcessInfo processInfo] globallyUniqueString]]];
+					}
+					
+					[self setInflatedFileDownloadOutputStream:[[[NSOutputStream alloc] initToFileAtPath:[self temporaryUncompressedDataDownloadPath] append:append] autorelease]];
+					[[self inflatedFileDownloadOutputStream] open];
+				}
+
+				[[self inflatedFileDownloadOutputStream] write:[inflatedData bytes] maxLength:[inflatedData length]];
+			}
+
 			
 		//Otherwise, let's add the data to our in-memory store
 		} else {
-			[rawResponseData appendBytes:buffer length:bytesRead];
+			if ([self isResponseCompressed] && ![self shouldWaitToInflateCompressedResponses]) {
+				[rawResponseData appendData:inflatedData];
+			} else {
+				[rawResponseData appendBytes:buffer length:bytesRead];
+			}
 		}
     }
-
 }
 
 - (void)handleStreamComplete
 {	
+
 #if DEBUG_REQUEST_STATUS
 	NSLog(@"Request %@ finished downloading data (%qu bytes)",self, [self totalBytesRead]);
 #endif
-	
+	[self setStatusTimer:nil];
 	[self setDownloadComplete:YES];
 	
 	if (![self responseHeaders]) {
@@ -2781,48 +3152,67 @@ static NSOperationQueue *sharedQueue = nil;
 	[self setLastBytesSent:totalBytesSent];	
 	[self setTotalBytesSent:[NSMakeCollectable([(NSNumber *)CFReadStreamCopyProperty((CFReadStreamRef)[self readStream], kCFStreamPropertyHTTPRequestBytesWrittenCount) autorelease]) unsignedLongLongValue]];
 	[self setComplete:YES];
+	if (![self contentLength]) {
+		[self setContentLength:[self totalBytesRead]];
+	}
 	[self updateProgressIndicators];
 
 	
 	[[self postBodyReadStream] close];
+	[self setPostBodyReadStream:nil];
 	
+	[self setDataDecompressor:nil];
+
 	NSError *fileError = nil;
 	
 	// Delete up the request body temporary file, if it exists
 	if ([self didCreateTemporaryPostDataFile] && ![self authenticationNeeded]) {
-		[self removePostDataFile];
+		[self removeTemporaryUploadFile];
+		[self removeTemporaryCompressedUploadFile];
 	}
 	
 	// Close the output stream as we're done writing to the file
 	if ([self temporaryFileDownloadPath]) {
+		
 		[[self fileDownloadOutputStream] close];
 		[self setFileDownloadOutputStream:nil];
-		
+
+		[[self inflatedFileDownloadOutputStream] close];
+		[self setInflatedFileDownloadOutputStream:nil];
+
 		// If we are going to redirect and we are resuming, let's ignore this download
 		if ([self shouldRedirect] && [self needsRedirect] && [self allowResumeForFileDownloads]) {
 		
-		// Decompress the file (if necessary) directly to the destination path
 		} else if ([self isResponseCompressed]) {
-			int decompressionStatus = [ASIHTTPRequest uncompressZippedDataFromFile:[self temporaryFileDownloadPath] toFile:[self downloadDestinationPath]];
-			if (decompressionStatus != Z_OK) {
-				fileError = [NSError errorWithDomain:NetworkRequestErrorDomain code:ASIFileManagementError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Decompression of %@ failed with code %hi",[self temporaryFileDownloadPath],decompressionStatus],NSLocalizedDescriptionKey,nil]];
+			
+			// Decompress the file directly to the destination path
+			if ([self shouldWaitToInflateCompressedResponses]) {
+				[ASIDataDecompressor uncompressDataFromFile:[self temporaryFileDownloadPath] toFile:[self downloadDestinationPath] error:&fileError];
+
+			// Response should already have been inflated, move the temporary file to the destination path
+			} else {
+				NSError *moveError = nil;
+				[[[[NSFileManager alloc] init] autorelease] moveItemAtPath:[self temporaryUncompressedDataDownloadPath] toPath:[self downloadDestinationPath] error:&moveError];
+				if (moveError) {
+					fileError = [NSError errorWithDomain:NetworkRequestErrorDomain code:ASIFileManagementError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Failed to move file from '%@' to '%@'",[self temporaryFileDownloadPath],[self downloadDestinationPath]],NSLocalizedDescriptionKey,moveError,NSUnderlyingErrorKey,nil]];
+				}
+				[self setTemporaryUncompressedDataDownloadPath:nil];
+
 			}
 			[self removeTemporaryDownloadFile];
+
 		} else {
-			
 	
 			//Remove any file at the destination path
 			NSError *moveError = nil;
-			if ([[NSFileManager defaultManager] fileExistsAtPath:[self downloadDestinationPath]]) {
-				[[NSFileManager defaultManager] removeItemAtPath:[self downloadDestinationPath] error:&moveError];
-				if (moveError) {
-					fileError = [NSError errorWithDomain:NetworkRequestErrorDomain code:ASIFileManagementError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Unable to remove file at path '%@'",[self downloadDestinationPath]],NSLocalizedDescriptionKey,moveError,NSUnderlyingErrorKey,nil]];
-				}
+			if (![[self class] removeFileAtPath:[self downloadDestinationPath] error:&moveError]) {
+				fileError = moveError;
+
 			}
-					
+
 			//Move the temporary file to the destination path
 			if (!fileError) {
-				[[NSFileManager defaultManager] moveItemAtPath:[self temporaryFileDownloadPath] toPath:[self downloadDestinationPath] error:&moveError];
+				[[[[NSFileManager alloc] init] autorelease] moveItemAtPath:[self temporaryFileDownloadPath] toPath:[self downloadDestinationPath] error:&moveError];
 				if (moveError) {
 					fileError = [NSError errorWithDomain:NetworkRequestErrorDomain code:ASIFileManagementError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Failed to move file from '%@' to '%@'",[self temporaryFileDownloadPath],[self downloadDestinationPath]],NSLocalizedDescriptionKey,moveError,NSUnderlyingErrorKey,nil]];
 				}
@@ -2855,6 +3245,7 @@ static NSOperationQueue *sharedQueue = nil;
 		[self destroyReadStream];
 	}
 	
+
 	if (![self needsRedirect] && ![self authenticationNeeded] && ![self didUseCachedResponse]) {
 		
 		if (fileError) {
@@ -2867,15 +3258,15 @@ static NSOperationQueue *sharedQueue = nil;
 		
 	// If request has asked delegate or ASIAuthenticationDialog for credentials
 	} else if ([self authenticationNeeded]) {
-		[self setStatusTimer:nil];
 		CFRunLoopStop(CFRunLoopGetCurrent());
 	}
+
 }
 
 - (void)markAsFinished
 {
 	// Autoreleased requests may well be dealloced here otherwise
-	[self retain];
+	CFRetain(self);
 
 	// dealloc won't be called when running with GC, so we'll clean these up now
 	if (request) {
@@ -2897,7 +3288,6 @@ static NSOperationQueue *sharedQueue = nil;
         [self willChangeValueForKey:@"isExecuting"];
 
 	[self setInProgress:NO];
-	[self setStatusTimer:nil];
     finished = YES;
 
     if (wasInProgress)
@@ -2907,60 +3297,64 @@ static NSOperationQueue *sharedQueue = nil;
 
 	CFRunLoopStop(CFRunLoopGetCurrent());
 
-	[self release];
+	#if TARGET_OS_IPHONE && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_4_0
+	if ([ASIHTTPRequest isMultitaskingSupported] && [self shouldContinueWhenAppEntersBackground]) {
+		dispatch_async(dispatch_get_main_queue(), ^{
+			if (backgroundTask != UIBackgroundTaskInvalid) {
+				[[UIApplication sharedApplication] endBackgroundTask:backgroundTask];
+				backgroundTask = UIBackgroundTaskInvalid;
+			}
+		});
+	}
+	#endif
+	CFRelease(self);
 }
 
-- (BOOL)useDataFromCache
+- (void)useDataFromCache
 {
-	NSDictionary *headers = [[self downloadCache] cachedHeadersForRequest:self];
-	if (!headers) {
-		return NO;
-	}
-	NSString *dataPath = [[self downloadCache] pathToCachedResponseDataForRequest:self];
-	if (!dataPath) {
-		return NO;
-	}
-	
-	if ([self cachePolicy] == ASIReloadIfDifferentCachePolicy) {
-		if (![[self downloadCache] isCachedDataCurrentForRequest:self]) {
-			[[self downloadCache] removeCachedDataForRequest:self];
-			return NO;
-		}
-	}
+	NSDictionary *headers = [[self downloadCache] cachedResponseHeadersForURL:[self url]];
+	NSString *dataPath = [[self downloadCache] pathToCachedResponseDataForURL:[self url]];
 
-	// only 200 responses are stored in the cache, so let the client know
-	// this was a successful response
-	[self setResponseStatusCode:200];
-        
-	[self setDidUseCachedResponse:YES];
-	
 	ASIHTTPRequest *theRequest = self;
 	if ([self mainRequest]) {
 		theRequest = [self mainRequest];
 	}
-	[theRequest setResponseHeaders:headers];
-	if ([theRequest downloadDestinationPath]) {
-		[theRequest setDownloadDestinationPath:dataPath];
-	} else {
-		[theRequest setRawResponseData:[NSMutableData dataWithContentsOfFile:dataPath]];
+
+	if (headers && dataPath) {
+
+		// only 200 responses are stored in the cache, so let the client know
+		// this was a successful response
+		[self setResponseStatusCode:200];
+
+		[self setDidUseCachedResponse:YES];
+
+		[theRequest setResponseHeaders:headers];
+		if ([theRequest downloadDestinationPath]) {
+			[theRequest setDownloadDestinationPath:dataPath];
+		} else {
+			[theRequest setRawResponseData:[NSMutableData dataWithData:[[self downloadCache] cachedResponseDataForURL:[self url]]]];
+		}
+		[theRequest setContentLength:[[[self responseHeaders] objectForKey:@"Content-Length"] longLongValue]];
+		[theRequest setTotalBytesRead:[self contentLength]];
+
+		[theRequest parseStringEncodingFromHeaders];
+
+		[theRequest setResponseCookies:[NSHTTPCookie cookiesWithResponseHeaderFields:headers forURL:[self url]]];
 	}
-	[theRequest setContentLength:[[[self responseHeaders] objectForKey:@"Content-Length"] longLongValue]];
-	[theRequest setTotalBytesRead:[self contentLength]];
-
-	[theRequest parseStringEncodingFromHeaders];
-
-	[theRequest setResponseCookies:[NSHTTPCookie cookiesWithResponseHeaderFields:headers forURL:[self url]]];
-
 	[theRequest setComplete:YES];
 	[theRequest setDownloadComplete:YES];
 	
+	// If we're pulling data from the cache without contacting the server at all, we won't have set originalURL yet
+	if ([self redirectCount] == 0) {
+		[theRequest setOriginalURL:[theRequest url]];
+	}
+
 	[theRequest updateProgressIndicators];
 	[theRequest requestFinished];
 	[theRequest markAsFinished];	
 	if ([self mainRequest]) {
 		[self markAsFinished];
 	}
-	return YES;
 }
 
 - (BOOL)retryUsingNewConnection
@@ -3023,32 +3417,15 @@ static NSOperationQueue *sharedQueue = nil;
 
 #pragma mark managing the read stream
 
-
-
 - (void)destroyReadStream
 {
     if ([self readStream]) {
-		CFReadStreamSetClient((CFReadStreamRef)[self readStream], kCFStreamEventNone, NULL, NULL);
-		[connectionsLock lock];
-
-		if ([self readStreamIsScheduled]) {
-			runningRequestCount--;
-			if (shouldUpdateNetworkActivityIndicator && runningRequestCount == 0) {
-				// Wait half a second before turning off the indicator
-				// This can prevent flicker when you have a single request finish and then immediately start another request
-				// We will cancel hiding the activity indicator if we start again
-				[[self class] performSelector:@selector(hideNetworkActivityIndicator) withObject:nil afterDelay:0.5];
-			}
-		}
-
-		[self setReadStreamIsScheduled:NO];
-
+		[self unscheduleReadStream];
 		if (![self connectionCanBeReused]) {
 			[[self readStream] removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:[self runLoopMode]];
 			[[self readStream] close];
 		}
 		[self setReadStream:nil];
-		[connectionsLock unlock];
     }	
 }
 
@@ -3059,13 +3436,14 @@ static NSOperationQueue *sharedQueue = nil;
 		[connectionsLock lock];
 		runningRequestCount++;
 		if (shouldUpdateNetworkActivityIndicator) {
-			[NSObject cancelPreviousPerformRequestsWithTarget:[self class] selector:@selector(hideNetworkActivityIndicator) object:nil];
 			[[self class] showNetworkActivityIndicator];
 		}
 		[connectionsLock unlock];
 
 		// Reset the timeout
 		[self setLastActivityTime:[NSDate date]];
+		CFStreamClientContext ctxt = {0, self, NULL, NULL, NULL};
+		CFReadStreamSetClient((CFReadStreamRef)[self readStream], kNetworkEvents, ReadStreamClientCallBack, &ctxt);
 		[[self readStream] scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:[self runLoopMode]];
 		[self setReadStreamIsScheduled:YES];
 	}
@@ -3079,17 +3457,88 @@ static NSOperationQueue *sharedQueue = nil;
 		[connectionsLock lock];
 		runningRequestCount--;
 		if (shouldUpdateNetworkActivityIndicator && runningRequestCount == 0) {
-			// Wait half a second before turning off the indicator
+			// This call will wait half a second before turning off the indicator
 			// This can prevent flicker when you have a single request finish and then immediately start another request
-			// We will cancel hiding the activity indicator if we start again
-			[[self class] performSelector:@selector(hideNetworkActivityIndicator) withObject:nil afterDelay:0.5];
+			// We run this on the main thread because we have no guarantee this thread will have a runloop in 0.5 seconds time
+			// We don't bother the cancel this call if we start a new request, because we'll check if requests are running before we hide it
+			[[self class] performSelectorOnMainThread:@selector(hideNetworkActivityIndicatorAfterDelay) withObject:nil waitUntilDone:[NSThread isMainThread]];
 		}
 		[connectionsLock unlock];
 
+		CFReadStreamSetClient((CFReadStreamRef)[self readStream], kCFStreamEventNone, NULL, NULL);
 		[[self readStream] removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:[self runLoopMode]];
 		[self setReadStreamIsScheduled:NO];
 	}
 }
+
+#pragma mark cleanup
+
+- (BOOL)removeTemporaryDownloadFile
+{
+	NSError *err = nil;
+	if ([self temporaryFileDownloadPath]) {
+		if (![[self class] removeFileAtPath:[self temporaryFileDownloadPath] error:&err]) {
+			[self failWithError:err];
+		}
+		[self setTemporaryFileDownloadPath:nil];
+	}
+	return (!err);
+}
+
+- (BOOL)removeTemporaryUncompressedDownloadFile
+{
+	NSError *err = nil;
+	if ([self temporaryUncompressedDataDownloadPath]) {
+		if (![[self class] removeFileAtPath:[self temporaryUncompressedDataDownloadPath] error:&err]) {
+			[self failWithError:err];
+		}
+		[self setTemporaryUncompressedDataDownloadPath:nil];
+	}
+	return (!err);
+}
+
+- (BOOL)removeTemporaryUploadFile
+{
+	NSError *err = nil;
+	if ([self postBodyFilePath]) {
+		if (![[self class] removeFileAtPath:[self postBodyFilePath] error:&err]) {
+			[self failWithError:err];
+		}
+		[self setPostBodyFilePath:nil];
+	}
+	return (!err);
+}
+
+- (BOOL)removeTemporaryCompressedUploadFile
+{
+	NSError *err = nil;
+	if ([self compressedPostBodyFilePath]) {
+		if (![[self class] removeFileAtPath:[self compressedPostBodyFilePath] error:&err]) {
+			[self failWithError:err];
+		}
+		[self setCompressedPostBodyFilePath:nil];
+	}
+	return (!err);
+}
+
++ (BOOL)removeFileAtPath:(NSString *)path error:(NSError **)err
+{
+	NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
+
+	if ([fileManager fileExistsAtPath:path]) {
+		NSError *removeError = nil;
+		[fileManager removeItemAtPath:path error:&removeError];
+		if (removeError) {
+			if (err) {
+				*err = [NSError errorWithDomain:NetworkRequestErrorDomain code:ASIFileManagementError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Failed to delete file at path '%@'",path],NSLocalizedDescriptionKey,removeError,NSUnderlyingErrorKey,nil]];
+			}
+			return NO;
+		}
+	}
+	return YES;
+}
+
+
 
 #pragma mark persistent connections
 
@@ -3296,7 +3745,7 @@ static NSOperationQueue *sharedQueue = nil;
 	NSMutableArray *sessionCredentialsList = [[self class] sessionCredentialsStore];
 	// Find an exact match (same url)
 	for (NSDictionary *theCredentials in sessionCredentialsList) {
-		if ([[theCredentials objectForKey:@"URL"] isEqual:[self url]]) {
+		if ([(NSURL*)[theCredentials objectForKey:@"URL"] isEqual:[self url]]) {
 			// /Just a sanity check to ensure we never choose credentials from a different realm. Can't really do more than that, as either this request or the stored credentials may not have a realm when the other does
 			if (![self responseStatusCode] || (![theCredentials objectForKey:@"AuthenticationRealm"] || [[theCredentials objectForKey:@"AuthenticationRealm"] isEqualToString:[self authenticationRealm]])) {
 				[sessionCredentialsLock unlock];
@@ -3413,278 +3862,6 @@ static NSOperationQueue *sharedQueue = nil;
 	[[[self class] defaultCache] clearCachedResponsesForStoragePolicy:ASICacheForSessionDurationCacheStoragePolicy];
 }
 
-#pragma mark gzip decompression
-
-//
-// Contributed by Shaun Harrison of Enormego, see: http://developers.enormego.com/view/asihttprequest_gzip
-// Based on this: http://deusty.blogspot.com/2007/07/gzip-compressiondecompression.html
-//
-+ (NSData *)uncompressZippedData:(NSData*)compressedData
-{
-	if ([compressedData length] == 0) return compressedData;
-	
-	NSUInteger full_length = [compressedData length];
-	NSUInteger half_length = [compressedData length] / 2;
-	
-	NSMutableData *decompressed = [NSMutableData dataWithLength: full_length + half_length];
-	BOOL done = NO;
-	int status;
-	
-	z_stream strm;
-	strm.next_in = (Bytef *)[compressedData bytes];
-	strm.avail_in = (unsigned int)[compressedData length];
-	strm.total_out = 0;
-	strm.zalloc = Z_NULL;
-	strm.zfree = Z_NULL;
-	
-	if (inflateInit2(&strm, (15+32)) != Z_OK) return nil;
-	
-	while (!done) {
-		// Make sure we have enough room and reset the lengths.
-		if (strm.total_out >= [decompressed length]) {
-			[decompressed increaseLengthBy: half_length];
-		}
-		strm.next_out = [decompressed mutableBytes] + strm.total_out;
-		strm.avail_out = (unsigned int)([decompressed length] - strm.total_out);
-		
-		// Inflate another chunk.
-		status = inflate (&strm, Z_SYNC_FLUSH);
-		if (status == Z_STREAM_END) {
-			done = YES;
-		} else if (status != Z_OK) {
-			break;
-		}
-	}
-	if (inflateEnd (&strm) != Z_OK) return nil;
-	
-	// Set real length.
-	if (done) {
-		[decompressed setLength: strm.total_out];
-		return [NSData dataWithData: decompressed];
-	} else {
-		return nil;
-	}
-}
-
-// NOTE: To debug this method, turn off Data Formatters in Xcode or you'll crash on closeFile
-+ (int)uncompressZippedDataFromFile:(NSString *)sourcePath toFile:(NSString *)destinationPath
-{
-	// Create an empty file at the destination path
-	if (![[NSFileManager defaultManager] createFileAtPath:destinationPath contents:[NSData data] attributes:nil]) {
-		return 1;
-	}
-	
-	// Get a FILE struct for the source file
-	NSFileHandle *inputFileHandle = [NSFileHandle fileHandleForReadingAtPath:sourcePath];
-	FILE *source = fdopen([inputFileHandle fileDescriptor], "r");
-	
-	// Get a FILE struct for the destination path
-	NSFileHandle *outputFileHandle = [NSFileHandle fileHandleForWritingAtPath:destinationPath];
-	FILE *dest = fdopen([outputFileHandle fileDescriptor], "w");
-	
-	
-	// Uncompress data in source and save in destination
-	int status = [ASIHTTPRequest uncompressZippedDataFromSource:source toDestination:dest];
-	
-	// Close the files
-	fclose(dest);
-	fclose(source);
-	[inputFileHandle closeFile];
-	[outputFileHandle closeFile];	
-	return status;
-}
-
-//
-// From the zlib sample code by Mark Adler, code here:
-//	http://www.zlib.net/zpipe.c
-//
-#define CHUNK 16384
-
-+ (int)uncompressZippedDataFromSource:(FILE *)source toDestination:(FILE *)dest
-{
-    int ret;
-    unsigned have;
-    z_stream strm;
-    unsigned char in[CHUNK];
-    unsigned char out[CHUNK];
-	
-    /* allocate inflate state */
-    strm.zalloc = Z_NULL;
-    strm.zfree = Z_NULL;
-    strm.opaque = Z_NULL;
-    strm.avail_in = 0;
-    strm.next_in = Z_NULL;
-    ret = inflateInit2(&strm, (15+32));
-    if (ret != Z_OK)
-        return ret;
-	
-    /* decompress until deflate stream ends or end of file */
-    do {
-        strm.avail_in = (unsigned int)fread(in, 1, CHUNK, source);
-        if (ferror(source)) {
-            (void)inflateEnd(&strm);
-            return Z_ERRNO;
-        }
-        if (strm.avail_in == 0)
-            break;
-        strm.next_in = in;
-		
-        /* run inflate() on input until output buffer not full */
-        do {
-            strm.avail_out = CHUNK;
-            strm.next_out = out;
-            ret = inflate(&strm, Z_NO_FLUSH);
-            assert(ret != Z_STREAM_ERROR);  /* state not clobbered */
-            switch (ret) {
-				case Z_NEED_DICT:
-					ret = Z_DATA_ERROR;     /* and fall through */
-				case Z_DATA_ERROR:
-				case Z_MEM_ERROR:
-					(void)inflateEnd(&strm);
-					return ret;
-            }
-            have = CHUNK - strm.avail_out;
-            if (fwrite(&out, 1, have, dest) != have || ferror(dest)) {
-                (void)inflateEnd(&strm);
-                return Z_ERRNO;
-            }
-        } while (strm.avail_out == 0);
-		
-        /* done when inflate() says it's done */
-    } while (ret != Z_STREAM_END);
-	
-    /* clean up and return */
-    (void)inflateEnd(&strm);
-    return ret == Z_STREAM_END ? Z_OK : Z_DATA_ERROR;
-}
-
-
-#pragma mark gzip compression
-
-// Based on this from Robbie Hanson: http://deusty.blogspot.com/2007/07/gzip-compressiondecompression.html
-
-+ (NSData *)compressData:(NSData*)uncompressedData
-{
-	if ([uncompressedData length] == 0) return uncompressedData;
-	
-	z_stream strm;
-	
-	strm.zalloc = Z_NULL;
-	strm.zfree = Z_NULL;
-	strm.opaque = Z_NULL;
-	strm.total_out = 0;
-	strm.next_in=(Bytef *)[uncompressedData bytes];
-	strm.avail_in = (unsigned int)[uncompressedData length];
-	
-	// Compresssion Levels:
-	//   Z_NO_COMPRESSION
-	//   Z_BEST_SPEED
-	//   Z_BEST_COMPRESSION
-	//   Z_DEFAULT_COMPRESSION
-	
-	if (deflateInit2(&strm, Z_DEFAULT_COMPRESSION, Z_DEFLATED, (15+16), 8, Z_DEFAULT_STRATEGY) != Z_OK) return nil;
-	
-	NSMutableData *compressed = [NSMutableData dataWithLength:16384];  // 16K chunks for expansion
-	
-	do {
-		
-		if (strm.total_out >= [compressed length])
-			[compressed increaseLengthBy: 16384];
-		
-		strm.next_out = [compressed mutableBytes] + strm.total_out;
-		strm.avail_out = (unsigned int)([compressed length] - strm.total_out);
-		
-		deflate(&strm, Z_FINISH);  
-		
-	} while (strm.avail_out == 0);
-	
-	deflateEnd(&strm);
-	
-	[compressed setLength: strm.total_out];
-	return [NSData dataWithData:compressed];
-}
-
-// NOTE: To debug this method, turn off Data Formatters in Xcode or you'll crash on closeFile
-+ (int)compressDataFromFile:(NSString *)sourcePath toFile:(NSString *)destinationPath
-{
-	// Create an empty file at the destination path
-	[[NSFileManager defaultManager] createFileAtPath:destinationPath contents:[NSData data] attributes:nil];
-	
-	// Get a FILE struct for the source file
-	NSFileHandle *inputFileHandle = [NSFileHandle fileHandleForReadingAtPath:sourcePath];
-	FILE *source = fdopen([inputFileHandle fileDescriptor], "r");
-
-	// Get a FILE struct for the destination path
-	NSFileHandle *outputFileHandle = [NSFileHandle fileHandleForWritingAtPath:destinationPath];
-	FILE *dest = fdopen([outputFileHandle fileDescriptor], "w");
-
-	// compress data in source and save in destination
-	int status = [ASIHTTPRequest compressDataFromSource:source toDestination:dest];
-
-	// Close the files
-	fclose(dest);
-	fclose(source);
-	
-	// We have to close both of these explictly because CFReadStreamCreateForStreamedHTTPRequest() seems to go bonkers otherwise
-	[inputFileHandle closeFile];
-	[outputFileHandle closeFile];
-
-	return status;
-}
-
-//
-// Also from the zlib sample code  at http://www.zlib.net/zpipe.c
-// 
-+ (int)compressDataFromSource:(FILE *)source toDestination:(FILE *)dest
-{
-    int ret, flush;
-    unsigned have;
-    z_stream strm;
-    unsigned char in[CHUNK];
-    unsigned char out[CHUNK];
-	
-    /* allocate deflate state */
-    strm.zalloc = Z_NULL;
-    strm.zfree = Z_NULL;
-    strm.opaque = Z_NULL;
-    ret = deflateInit2(&strm, Z_DEFAULT_COMPRESSION, Z_DEFLATED, (15+16), 8, Z_DEFAULT_STRATEGY);
-    if (ret != Z_OK)
-        return ret;
-	
-    /* compress until end of file */
-    do {
-        strm.avail_in = (unsigned int)fread(in, 1, CHUNK, source);
-        if (ferror(source)) {
-            (void)deflateEnd(&strm);
-            return Z_ERRNO;
-        }
-        flush = feof(source) ? Z_FINISH : Z_NO_FLUSH;
-        strm.next_in = in;
-		
-        /* run deflate() on input until output buffer not full, finish
-		 compression if all of source has been read in */
-        do {
-            strm.avail_out = CHUNK;
-            strm.next_out = out;
-            ret = deflate(&strm, flush);    /* no bad return value */
-            assert(ret != Z_STREAM_ERROR);  /* state not clobbered */
-            have = CHUNK - strm.avail_out;
-            if (fwrite(out, 1, have, dest) != have || ferror(dest)) {
-                (void)deflateEnd(&strm);
-                return Z_ERRNO;
-            }
-        } while (strm.avail_out == 0);
-        assert(strm.avail_in == 0);     /* all input will be used */
-		
-        /* done when last data in file processed */
-    } while (flush != Z_FINISH);
-    assert(ret == Z_STREAM_END);        /* stream will be complete */
-	
-    /* clean up and return */
-    (void)deflateEnd(&strm);
-    return Z_OK;
-}
-
 #pragma mark get user agent
 
 + (NSString *)defaultUserAgentString
@@ -3779,7 +3956,7 @@ static NSOperationQueue *sharedQueue = nil;
 
 + (NSString *)mimeTypeForFileAtPath:(NSString *)path
 {
-	if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+	if (![[[[NSFileManager alloc] init] autorelease] fileExistsAtPath:path]) {
 		return nil;
 	}
 	// Borrowed from http://stackoverflow.com/questions/2439020/wheres-the-iphone-mime-type-database
@@ -3985,7 +4162,7 @@ static NSOperationQueue *sharedQueue = nil;
 
 + (void)registerForNetworkReachabilityNotifications
 {
-	[[Reachability2 reachabilityForInternetConnection] startNotifier];
+	[[Reachability reachabilityForInternetConnection] startNotifier];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
 }
 
@@ -3997,7 +4174,7 @@ static NSOperationQueue *sharedQueue = nil;
 
 + (BOOL)isNetworkReachableViaWWAN
 {
-	return ([[Reachability2 reachabilityForInternetConnection] currentReachabilityStatus] == ReachableViaWWAN);	
+	return ([[Reachability reachabilityForInternetConnection] currentReachabilityStatus] == ReachableViaWWAN);	
 }
 
 + (void)reachabilityChanged:(NSNotification *)note
@@ -4062,6 +4239,22 @@ static NSOperationQueue *sharedQueue = nil;
 }
 
 
+/* Always called on main thread */
++ (void)hideNetworkActivityIndicatorAfterDelay
+{
+	[self performSelector:@selector(hideNetworkActivityIndicatorIfNeeeded) withObject:nil afterDelay:0.5];
+}
+
++ (void)hideNetworkActivityIndicatorIfNeeeded
+{
+	[connectionsLock lock];
+	if (runningRequestCount == 0) {
+		[self hideNetworkActivityIndicator];
+	}
+	[connectionsLock unlock];
+}
+
+
 #pragma mark threading behaviour
 
 // In the default implementation, all requests run in a single background thread
@@ -4087,7 +4280,8 @@ static NSOperationQueue *sharedQueue = nil;
 	CFRunLoopSourceRef source = CFRunLoopSourceCreate(kCFAllocatorDefault, 0, &context);
 	CFRunLoopAddSource(CFRunLoopGetCurrent(), source, kCFRunLoopDefaultMode);
 
-	while (1) {
+    BOOL runAlways = YES; // Introduced to cheat Static Analyzer
+	while (runAlways) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		CFRunLoopRun();
 		[pool release];
@@ -4099,6 +4293,17 @@ static NSOperationQueue *sharedQueue = nil;
 }
 
 #pragma mark miscellany 
+
+#if TARGET_OS_IPHONE
++ (BOOL)isMultitaskingSupported
+{
+	BOOL multiTaskingSupported = NO;
+	if ([[UIDevice currentDevice] respondsToSelector:@selector(isMultitaskingSupported)]) {
+		multiTaskingSupported = [(id)[UIDevice currentDevice] isMultitaskingSupported];
+	}
+	return multiTaskingSupported;
+}
+#endif
 
 // From: http://www.cocoadev.com/index.pl?BaseSixtyFour
 
@@ -4153,6 +4358,106 @@ static NSOperationQueue *sharedQueue = nil;
 	return [formatter dateFromString:string];
 }
 
++ (void)parseMimeType:(NSString **)mimeType andResponseEncoding:(NSStringEncoding *)stringEncoding fromContentType:(NSString *)contentType
+{
+	if (!contentType) {
+		return;
+	}
+	NSScanner *charsetScanner = [NSScanner scannerWithString: contentType];
+	if (![charsetScanner scanUpToString:@";" intoString:mimeType] || [charsetScanner scanLocation] == [contentType length]) {
+		*mimeType = [contentType stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+		return;
+	}
+	*mimeType = [*mimeType stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	NSString *charsetSeparator = @"charset=";
+	NSString *IANAEncoding = nil;
+
+	if ([charsetScanner scanUpToString: charsetSeparator intoString: NULL] && [charsetScanner scanLocation] < [contentType length]) {
+		[charsetScanner setScanLocation: [charsetScanner scanLocation] + [charsetSeparator length]];
+		[charsetScanner scanUpToString: @";" intoString: &IANAEncoding];
+	}
+
+	if (IANAEncoding) {
+		CFStringEncoding cfEncoding = CFStringConvertIANACharSetNameToEncoding((CFStringRef)IANAEncoding);
+		if (cfEncoding != kCFStringEncodingInvalidId) {
+			*stringEncoding = CFStringConvertEncodingToNSStringEncoding(cfEncoding);
+		}
+	}
+}
+
+#pragma mark -
+#pragma mark blocks
+#if NS_BLOCKS_AVAILABLE
+- (void)setStartedBlock:(ASIBasicBlock)aStartedBlock
+{
+	[startedBlock release];
+	startedBlock = [aStartedBlock copy];
+}
+
+- (void)setHeadersReceivedBlock:(ASIHeadersBlock)aReceivedBlock
+{
+	[headersReceivedBlock release];
+	headersReceivedBlock = [aReceivedBlock copy];
+}
+
+- (void)setCompletionBlock:(ASIBasicBlock)aCompletionBlock
+{
+	[completionBlock release];
+	completionBlock = [aCompletionBlock copy];
+}
+
+- (void)setFailedBlock:(ASIBasicBlock)aFailedBlock
+{
+	[failureBlock release];
+	failureBlock = [aFailedBlock copy];
+}
+
+- (void)setBytesReceivedBlock:(ASIProgressBlock)aBytesReceivedBlock
+{
+	[bytesReceivedBlock release];
+	bytesReceivedBlock = [aBytesReceivedBlock copy];
+}
+
+- (void)setBytesSentBlock:(ASIProgressBlock)aBytesSentBlock
+{
+	[bytesSentBlock release];
+	bytesSentBlock = [aBytesSentBlock copy];
+}
+
+- (void)setDownloadSizeIncrementedBlock:(ASISizeBlock)aDownloadSizeIncrementedBlock{
+	[downloadSizeIncrementedBlock release];
+	downloadSizeIncrementedBlock = [aDownloadSizeIncrementedBlock copy];
+}
+
+- (void)setUploadSizeIncrementedBlock:(ASISizeBlock)anUploadSizeIncrementedBlock
+{
+	[uploadSizeIncrementedBlock release];
+	uploadSizeIncrementedBlock = [anUploadSizeIncrementedBlock copy];
+}
+
+- (void)setDataReceivedBlock:(ASIDataBlock)aReceivedBlock
+{
+	[dataReceivedBlock release];
+	dataReceivedBlock = [aReceivedBlock copy];
+}
+
+- (void)setAuthenticationNeededBlock:(ASIBasicBlock)anAuthenticationBlock
+{
+	[authenticationNeededBlock release];
+	authenticationNeededBlock = [anAuthenticationBlock copy];
+}
+- (void)setProxyAuthenticationNeededBlock:(ASIBasicBlock)aProxyAuthenticationBlock
+{
+	[proxyAuthenticationNeededBlock release];
+	proxyAuthenticationNeededBlock = [aProxyAuthenticationBlock copy];
+}
+- (void)setRequestRedirectedBlock:(ASIBasicBlock)aRedirectBlock
+{
+	[requestRedirectedBlock release];
+	requestRedirectedBlock = [aRedirectBlock copy];
+}
+#endif
+
 #pragma mark ===
 
 @synthesize username;
@@ -4172,8 +4477,10 @@ static NSOperationQueue *sharedQueue = nil;
 @synthesize useCookiePersistence;
 @synthesize downloadDestinationPath;
 @synthesize temporaryFileDownloadPath;
+@synthesize temporaryUncompressedDataDownloadPath;
 @synthesize didStartSelector;
 @synthesize didReceiveResponseHeadersSelector;
+@synthesize willRedirectSelector;
 @synthesize didFinishSelector;
 @synthesize didFailSelector;
 @synthesize didReceiveDataSelector;
@@ -4220,6 +4527,7 @@ static NSOperationQueue *sharedQueue = nil;
 @synthesize cancelledLock;
 @synthesize haveBuiltPostBody;
 @synthesize fileDownloadOutputStream;
+@synthesize inflatedFileDownloadOutputStream;
 @synthesize authenticationRetryCount;
 @synthesize proxyAuthenticationRetryCount;
 @synthesize updatedProgress;
@@ -4261,4 +4569,10 @@ static NSOperationQueue *sharedQueue = nil;
 @synthesize didUseCachedResponse;
 @synthesize secondsToCache;
 @synthesize clientCertificates;
+@synthesize redirectURL;
+#if TARGET_OS_IPHONE && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_4_0
+@synthesize shouldContinueWhenAppEntersBackground;
+#endif
+@synthesize dataDecompressor;
+@synthesize shouldWaitToInflateCompressedResponses;
 @end

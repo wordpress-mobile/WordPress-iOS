@@ -2,6 +2,10 @@
 /ASIAuthenticationDialog.h -text
 /ASIAuthenticationDialog.m -text
 /ASICacheDelegate.h -text
+/ASIDataCompressor.h -text
+/ASIDataCompressor.m -text
+/ASIDataDecompressor.h -text
+/ASIDataDecompressor.m -text
 /ASIDownloadCache.h -text
 /ASIDownloadCache.m -text
 /ASIFormDataRequest.h -text
@@ -177,8 +181,6 @@ Classes/PostViewController.h -text
 Classes/PostViewController.m -text
 Classes/PostsViewController.h -text
 Classes/PostsViewController.m -text
-Classes/Reachability.h -text
-Classes/Reachability.m -text
 Classes/RefreshButtonView.h -text
 Classes/RefreshButtonView.m -text
 Classes/RegExProcessor.h -text
@@ -252,6 +254,8 @@ Classes/WPProgressHUD.h -text
 Classes/WPProgressHUD.m -text
 Classes/WPPublishOnEditController.h -text
 Classes/WPPublishOnEditController.m -text
+Classes/WPReachability.h -text
+Classes/WPReachability.m -text
 Classes/WPSegmentedSelectionTableViewController.h -text
 Classes/WPSegmentedSelectionTableViewController.m -text
 Classes/WPSelectionTableViewController.h -text
@@ -325,8 +329,8 @@ FlurryLib/libFlurry.a -text svneol=unset#unset
 /PostSettingsViewController.xib -text
 /PostViewController-iPad.xib -text
 /PostViewController.xib -text
-/Reachability2.h -text
-/Reachability2.m -text
+Reachability/Reachability.h -text
+Reachability/Reachability.m -text
 /RecentCommentButtonDeselected.png -text svneol=unset#unset
 /RecentCommentButtonSelected.png -text svneol=unset#unset
 /RegexKitLite.h -text

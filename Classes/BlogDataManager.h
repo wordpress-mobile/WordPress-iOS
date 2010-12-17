@@ -2,7 +2,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import "RegExProcessor.h"
 #import "SFHFKeychainUtils.h"
-#import "Reachability.h"
+#import "WPReachability.h"
 #import "Blog.h"
 #import "NSData+Base64.h"
 

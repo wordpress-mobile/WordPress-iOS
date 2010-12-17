@@ -1,7 +1,7 @@
 #import "WPAddCategoryViewController.h"
 #import "PostSettingsViewController.h"
 #import "WordPressAppDelegate.h"
-#import "Reachability.h"
+#import "WPReachability.h"
 
 @implementation WPAddCategoryViewController
 
@@ -51,7 +51,7 @@
 
 
 
-    if ([[Reachability sharedReachability] remoteHostStatus] != NotReachable)
+    if ([[WPReachability sharedReachability] remoteHostStatus] != NotReachable)
         [self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
 
 

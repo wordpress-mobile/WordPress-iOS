@@ -1,7 +1,7 @@
 #import "WordPressAppDelegate.h"
 #import "BlogsViewController.h"
 #import "BlogDataManager.h"
-#import "Reachability.h"
+#import "WPReachability.h"
 #import "NSString+Helpers.h"
 #import "BlogViewController.h"
 #import "BlogSplitViewDetailViewController.h"
@@ -112,7 +112,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	else if(getenv("NSAutoreleaseFreedObjectCheckEnabled"))
 		NSLog(@"NSAutoreleaseFreedObjectCheckEnabled enabled!");
 
-    [[Reachability sharedReachability] setNetworkStatusNotificationsEnabled:YES];
+    [[WPReachability sharedReachability] setNetworkStatusNotificationsEnabled:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
 
 	[self setAutoRefreshMarkers];
@@ -463,7 +463,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 #pragma mark Private Methods
 
 - (void)reachabilityChanged {
-    connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
+    connectionStatus = ([[WPReachability sharedReachability] remoteHostStatus] != NotReachable);
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {

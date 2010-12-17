@@ -134,7 +134,7 @@ extern NSString *const kInternetConnection;
 extern NSString *const kLocalWiFiConnection;
 extern NSString *const kReachabilityChangedNotification;
 
-@interface Reachability2: NSObject {
+@interface Reachability: NSObject {
 	
 @private
 	NSString                *key_;
@@ -145,27 +145,27 @@ extern NSString *const kReachabilityChangedNotification;
 @property (copy) NSString *key; // Atomic because network operations are asynchronous.
 
 // Designated Initializer.
-- (Reachability2 *) initWithReachabilityRef: (SCNetworkReachabilityRef) ref;
+- (Reachability *) initWithReachabilityRef: (SCNetworkReachabilityRef) ref;
 
 // Use to check the reachability of a particular host name. 
-+ (Reachability2 *) reachabilityWithHostName: (NSString*) hostName;
++ (Reachability *) reachabilityWithHostName: (NSString*) hostName;
 
 // Use to check the reachability of a particular IP address. 
-+ (Reachability2 *) reachabilityWithAddress: (const struct sockaddr_in*) hostAddress;
++ (Reachability *) reachabilityWithAddress: (const struct sockaddr_in*) hostAddress;
 
 // Use to check whether the default route is available.  
 // Should be used to, at minimum, establish network connectivity.
-+ (Reachability2 *) reachabilityForInternetConnection;
++ (Reachability *) reachabilityForInternetConnection;
 
 // Use to check whether a local wifi connection is available.
-+ (Reachability2 *) reachabilityForLocalWiFi;
++ (Reachability *) reachabilityForLocalWiFi;
 
 //Start listening for reachability notifications on the current run loop.
 - (BOOL) startNotifier;
 - (void)  stopNotifier;
 
 // Comparison routines to enable choosing actions in a notification.
-- (BOOL) isEqual: (Reachability2 *) r;
+- (BOOL) isEqual: (Reachability *) r;
 
 // These are the status tests.
 - (NetworkStatus) currentReachabilityStatus;

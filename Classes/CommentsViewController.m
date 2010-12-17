@@ -12,7 +12,7 @@
 #import "CommentViewController.h"
 #import "WordPressAppDelegate.h"
 #import "WPProgressHUD.h"
-#import "Reachability.h"
+#import "WPReachability.h"
 #import "CommentViewController.h"
 
 #define COMMENTS_SECTION        0
@@ -136,7 +136,7 @@
     
 	[self refreshCommentsList];
 	
-	if ([[Reachability sharedReachability] internetConnectionStatus])
+	if ([[WPReachability sharedReachability] internetConnectionStatus])
 	{
 		if([[NSUserDefaults standardUserDefaults] boolForKey:@"refreshCommentsRequired"]) {
 			[self refreshHandler];

@@ -9,7 +9,7 @@
 #import "ReplyToCommentViewController.h"
 #import "BlogDataManager.h"
 #import "WPProgressHUD.h"
-#import "Reachability.h"
+#import "WPReachability.h"
 
 NSTimeInterval kAnimationDuration2 = 0.3f;
 
@@ -301,7 +301,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 #pragma mark Comment Handling Methods
 
 - (BOOL)isConnectedToHost {
-    if (![[Reachability sharedReachability] remoteHostStatus] != NotReachable) {
+    if (![[WPReachability sharedReachability] remoteHostStatus] != NotReachable) {
         UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:@"No connection to host."
 																	  message:@"Operation is not supported now."
 																	 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];

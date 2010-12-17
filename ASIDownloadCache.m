@@ -16,7 +16,7 @@ static NSString *sessionCacheFolder = @"SessionStore";
 static NSString *permanentCacheFolder = @"PermanentStore";
 
 @interface ASIDownloadCache ()
-+ (NSString *)keyForRequest:(ASIHTTPRequest *)request;
++ (NSString *)keyForURL:(NSURL *)url;
 @end
 
 @implementation ASIDownloadCache
@@ -25,7 +25,7 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 {
 	self = [super init];
 	[self setShouldRespectCacheControlHeaders:YES];
-	[self setDefaultCachePolicy:ASIReloadIfDifferentCachePolicy];
+	[self setDefaultCachePolicy:ASIUseDefaultCachePolicy];
 	[self setAccessLock:[[[NSRecursiveLock alloc] init] autorelease]];
 	return self;
 }
@@ -34,7 +34,7 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 {
 	if (!sharedCache) {
 		sharedCache = [[self alloc] init];
-		[sharedCache setStoragePath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"ASIHTTPRequestCache"]];
+		[sharedCache setStoragePath:[[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"ASIHTTPRequestCache"]];
 
 	}
 	return sharedCache;
@@ -62,16 +62,19 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 	[self clearCachedResponsesForStoragePolicy:ASICacheForSessionDurationCacheStoragePolicy];
 	[storagePath release];
 	storagePath = [path retain];
+
+	NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
+
 	BOOL isDirectory = NO;
 	NSArray *directories = [NSArray arrayWithObjects:path,[path stringByAppendingPathComponent:sessionCacheFolder],[path stringByAppendingPathComponent:permanentCacheFolder],nil];
 	for (NSString *directory in directories) {
-		BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:directory isDirectory:&isDirectory];
+		BOOL exists = [fileManager fileExistsAtPath:directory isDirectory:&isDirectory];
 		if (exists && !isDirectory) {
 			[[self accessLock] unlock];
 			[NSException raise:@"FileExistsAtCachePath" format:@"Cannot create a directory for the cache at '%@', because a file already exists",directory];
 		} else if (!exists) {
-			[[NSFileManager defaultManager] createDirectoryAtPath:directory withIntermediateDirectories:NO attributes:nil error:nil];
-			if (![[NSFileManager defaultManager] fileExistsAtPath:directory]) {
+			[fileManager createDirectoryAtPath:directory withIntermediateDirectories:NO attributes:nil error:nil];
+			if (![fileManager fileExistsAtPath:directory]) {
 				[[self accessLock] unlock];
 				[NSException raise:@"FailedToCreateCacheDirectory" format:@"Failed to create a directory for the cache at '%@'",directory];
 			}
@@ -85,7 +88,7 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 {
 	[[self accessLock] lock];
 	
-	if ([request error] || ![request responseHeaders] || ([request responseStatusCode] != 200)) {
+	if ([request error] || ![request responseHeaders] || ([request responseStatusCode] != 200) || ([request cachePolicy] & ASIDoNotWriteToCacheCachePolicy)) {
 		[[self accessLock] unlock];
 		return;
 	}
@@ -94,26 +97,9 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 		[[self accessLock] unlock];
 		return;
 	}
-	
-	// If the request is set to use the default policy, use this cache's default policy
-	ASICachePolicy policy = [request cachePolicy];
-	if (policy == ASIDefaultCachePolicy) {
-		policy = [self defaultCachePolicy];
-	}
-	
-	if (policy == ASIIgnoreCachePolicy) {
-		[[self accessLock] unlock];
-		return;
-	}
-	NSString *path = nil;
-	if ([request cacheStoragePolicy] == ASICacheForSessionDurationCacheStoragePolicy) {
-		path = [[self storagePath] stringByAppendingPathComponent:sessionCacheFolder];
-	} else {
-		path = [[self storagePath] stringByAppendingPathComponent:permanentCacheFolder];
-	}
-	path = [path stringByAppendingPathComponent:[[self class] keyForRequest:request]];
-	NSString *metadataPath = [path stringByAppendingPathExtension:@"cachedheaders"];
-	NSString *dataPath = [path stringByAppendingPathExtension:@"cacheddata"];
+
+	NSString *headerPath = [self pathToStoreCachedResponseHeadersForRequest:request];
+	NSString *dataPath = [self pathToStoreCachedResponseDataForRequest:request];
 	
 	NSMutableDictionary *responseHeaders = [NSMutableDictionary dictionaryWithDictionary:[request responseHeaders]];
 	if ([request isResponseCompressed]) {
@@ -125,75 +111,129 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 	}
 	// We use this special key to help expire the request when we get a max-age header
 	[responseHeaders setObject:[[[self class] rfc1123DateFormatter] stringFromDate:[NSDate date]] forKey:@"X-ASIHTTPRequest-Fetch-date"];
-	[responseHeaders writeToFile:metadataPath atomically:NO];
+	[responseHeaders writeToFile:headerPath atomically:NO];
 	
 	if ([request responseData]) {
 		[[request responseData] writeToFile:dataPath atomically:NO];
-	} else if ([request downloadDestinationPath]) {
+	} else if ([request downloadDestinationPath] && ![[request downloadDestinationPath] isEqualToString:dataPath]) {
 		NSError *error = nil;
-		[[NSFileManager defaultManager] copyItemAtPath:[request downloadDestinationPath] toPath:dataPath error:&error];
+		[[[[NSFileManager alloc] init] autorelease] copyItemAtPath:[request downloadDestinationPath] toPath:dataPath error:&error];
 	}
 	[[self accessLock] unlock];
 }
 
-- (NSDictionary *)cachedHeadersForRequest:(ASIHTTPRequest *)request
+- (NSDictionary *)cachedResponseHeadersForURL:(NSURL *)url
 {
-	[[self accessLock] lock];
-	if (![self storagePath]) {
-		[[self accessLock] unlock];
-		return nil;
+	NSString *path = [self pathToCachedResponseHeadersForURL:url];
+	if (path) {
+		return [NSDictionary dictionaryWithContentsOfFile:path];
 	}
-	// Look in the session store
-	NSString *path = [[self storagePath] stringByAppendingPathComponent:sessionCacheFolder];
-	NSString *dataPath = [path stringByAppendingPathComponent:[[[self class] keyForRequest:request] stringByAppendingPathExtension:@"cachedheaders"]];
-	if ([[NSFileManager defaultManager] fileExistsAtPath:dataPath]) {
-		[[self accessLock] unlock];
-		return [NSDictionary dictionaryWithContentsOfFile:dataPath];
-	}
-	// Look in the permanent store
-	path = [[self storagePath] stringByAppendingPathComponent:permanentCacheFolder];
-	dataPath = [path stringByAppendingPathComponent:[[[self class] keyForRequest:request] stringByAppendingPathExtension:@"cachedheaders"]];
-	if ([[NSFileManager defaultManager] fileExistsAtPath:dataPath]) {
-		[[self accessLock] unlock];
-		return [NSDictionary dictionaryWithContentsOfFile:dataPath];
-	}
-	[[self accessLock] unlock];
 	return nil;
 }
-							  
-- (NSData *)cachedResponseDataForRequest:(ASIHTTPRequest *)request
+
+- (NSData *)cachedResponseDataForURL:(NSURL *)url
 {
-	NSString *path = [self pathToCachedResponseDataForRequest:request];
+	NSString *path = [self pathToCachedResponseDataForURL:url];
 	if (path) {
 		return [NSData dataWithContentsOfFile:path];
 	}
 	return nil;
 }
 
-- (NSString *)pathToCachedResponseDataForRequest:(ASIHTTPRequest *)request
+- (NSString *)pathToCachedResponseDataForURL:(NSURL *)url
 {
 	[[self accessLock] lock];
 	if (![self storagePath]) {
 		[[self accessLock] unlock];
 		return nil;
 	}
+	// Grab the file extension, if there is one. We do this so we can save the cached response with the same file extension - this is important if you want to display locally cached data in a web view 
+	NSString *extension = [[url path] pathExtension];
+	if (![extension length]) {
+		extension = @"html";
+	}
+
+	NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
+
 	// Look in the session store
 	NSString *path = [[self storagePath] stringByAppendingPathComponent:sessionCacheFolder];
-	NSString *dataPath = [path stringByAppendingPathComponent:[[[self class] keyForRequest:request] stringByAppendingPathExtension:@"cacheddata"]];
-	if ([[NSFileManager defaultManager] fileExistsAtPath:dataPath]) {
+	NSString *dataPath = [path stringByAppendingPathComponent:[[[self class] keyForURL:url] stringByAppendingPathExtension:extension]];
+	if ([fileManager fileExistsAtPath:dataPath]) {
 		[[self accessLock] unlock];
 		return dataPath;
 	}
 	// Look in the permanent store
 	path = [[self storagePath] stringByAppendingPathComponent:permanentCacheFolder];
-	dataPath = [path stringByAppendingPathComponent:[[[self class] keyForRequest:request] stringByAppendingPathExtension:@"cacheddata"]];
-	if ([[NSFileManager defaultManager] fileExistsAtPath:dataPath]) {
+	dataPath = [path stringByAppendingPathComponent:[[[self class] keyForURL:url] stringByAppendingPathExtension:extension]];
+	if ([fileManager fileExistsAtPath:dataPath]) {
 		[[self accessLock] unlock];
 		return dataPath;
 	}
 	[[self accessLock] unlock];
 	return nil;
 }
+
+- (NSString *)pathToCachedResponseHeadersForURL:(NSURL *)url
+{
+	[[self accessLock] lock];
+	if (![self storagePath]) {
+		[[self accessLock] unlock];
+		return nil;
+	}
+
+	NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
+
+	// Look in the session store
+	NSString *path = [[self storagePath] stringByAppendingPathComponent:sessionCacheFolder];
+	NSString *dataPath = [path stringByAppendingPathComponent:[[[self class] keyForURL:url] stringByAppendingPathExtension:@"cachedheaders"]];
+	if ([fileManager fileExistsAtPath:dataPath]) {
+		[[self accessLock] unlock];
+		return dataPath;
+	}
+	// Look in the permanent store
+	path = [[self storagePath] stringByAppendingPathComponent:permanentCacheFolder];
+	dataPath = [path stringByAppendingPathComponent:[[[self class] keyForURL:url] stringByAppendingPathExtension:@"cachedheaders"]];
+	if ([fileManager fileExistsAtPath:dataPath]) {
+		[[self accessLock] unlock];
+		return dataPath;
+	}
+	[[self accessLock] unlock];
+	return nil;
+}
+
+- (NSString *)pathToStoreCachedResponseDataForRequest:(ASIHTTPRequest *)request
+{
+	[[self accessLock] lock];
+	if (![self storagePath]) {
+		[[self accessLock] unlock];
+		return nil;
+	}
+
+	NSString *path = [[self storagePath] stringByAppendingPathComponent:([request cacheStoragePolicy] == ASICacheForSessionDurationCacheStoragePolicy ? sessionCacheFolder : permanentCacheFolder)];
+
+	// Grab the file extension, if there is one. We do this so we can save the cached response with the same file extension - this is important if you want to display locally cached data in a web view 
+	NSString *extension = [[[request url] path] pathExtension];
+	if (![extension length]) {
+		extension = @"html";
+	}
+	path =  [path stringByAppendingPathComponent:[[[self class] keyForURL:[request url]] stringByAppendingPathExtension:extension]];
+	[[self accessLock] unlock];
+	return path;
+}
+
+- (NSString *)pathToStoreCachedResponseHeadersForRequest:(ASIHTTPRequest *)request
+{
+	[[self accessLock] lock];
+	if (![self storagePath]) {
+		[[self accessLock] unlock];
+		return nil;
+	}
+	NSString *path = [[self storagePath] stringByAppendingPathComponent:([request cacheStoragePolicy] == ASICacheForSessionDurationCacheStoragePolicy ? sessionCacheFolder : permanentCacheFolder)];
+	path =  [path stringByAppendingPathComponent:[[[self class] keyForURL:[request url]] stringByAppendingPathExtension:@"cachedheaders"]];
+	[[self accessLock] unlock];
+	return path;
+}
+
 
 - (void)removeCachedDataForRequest:(ASIHTTPRequest *)request
 {
@@ -202,18 +242,21 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 		[[self accessLock] unlock];
 		return;
 	}
-	NSString *cachedHeadersPath = [[self storagePath] stringByAppendingPathComponent:[[[self class] keyForRequest:request] stringByAppendingPathExtension:@"cachedheaders"]];
+
+	NSString *cachedHeadersPath = [self pathToCachedResponseHeadersForURL:[request url]];
 	if (!cachedHeadersPath) {
 		[[self accessLock] unlock];
 		return;
 	}
-	NSString *dataPath = [self pathToCachedResponseDataForRequest:request];
+	NSString *dataPath = [self pathToCachedResponseDataForURL:[request url]];
 	if (!dataPath) {
 		[[self accessLock] unlock];
 		return;
 	}
-	[[NSFileManager defaultManager] removeItemAtPath:cachedHeadersPath error:NULL];
-	[[NSFileManager defaultManager] removeItemAtPath:dataPath error:NULL];
+
+	NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
+	[fileManager removeItemAtPath:cachedHeadersPath error:NULL];
+	[fileManager removeItemAtPath:dataPath error:NULL];
 	[[self accessLock] unlock];
 }
 
@@ -224,51 +267,27 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 		[[self accessLock] unlock];
 		return NO;
 	}
-	NSDictionary *cachedHeaders = [self cachedHeadersForRequest:request];
+	NSDictionary *cachedHeaders = [self cachedResponseHeadersForURL:[request url]];
 	if (!cachedHeaders) {
 		[[self accessLock] unlock];
 		return NO;
 	}
-	NSString *dataPath = [self pathToCachedResponseDataForRequest:request];
+	NSString *dataPath = [self pathToCachedResponseDataForURL:[request url]];
 	if (!dataPath) {
 		[[self accessLock] unlock];
 		return NO;
 	}
 
-	if ([self shouldRespectCacheControlHeaders]) {
-
-		// Look for an Expires header to see if the content is out of data
-		NSString *expires = [cachedHeaders objectForKey:@"Expires"];
-		if (expires) {
-			if ([[ASIHTTPRequest dateFromRFC1123String:expires] timeIntervalSinceNow] < 0) {
-				[[self accessLock] unlock];
-				return NO;
-			}
-		}
-		// Look for a max-age header
-		NSString *cacheControl = [[cachedHeaders objectForKey:@"Cache-Control"] lowercaseString];
-		if (cacheControl) {
-			NSScanner *scanner = [NSScanner scannerWithString:cacheControl];
-			if ([scanner scanString:@"max-age" intoString:NULL]) {
-				[scanner scanString:@"=" intoString:NULL];
-				NSTimeInterval maxAge = 0;
-				[scanner scanDouble:&maxAge];
-				NSDate *fetchDate = [ASIHTTPRequest dateFromRFC1123String:[cachedHeaders objectForKey:@"X-ASIHTTPRequest-Fetch-date"]];
-
-				NSDate *expiryDate = [[[NSDate alloc] initWithTimeInterval:maxAge sinceDate:fetchDate] autorelease];
-
-				if ([expiryDate timeIntervalSinceNow] < 0) {
-					[[self accessLock] unlock];
-					return NO;
-				}
-			}
-		}
-		
-	}
-	
 	// If we already have response headers for this request, check to see if the new content is different
-	if ([request responseHeaders] && [request responseStatusCode] != 304) {
-		// If the Etag or Last-Modified date are different from the one we have, fetch the document again
+	if ([request responseHeaders]) {
+
+		// New content is not different
+		if ([request responseStatusCode] == 304) {
+			[[self accessLock] unlock];
+			return YES;
+		}
+
+		// If the Etag or Last-Modified date are different from the one we have, we'll have to fetch this resource again
 		NSArray *headersToCompare = [NSArray arrayWithObjects:@"Etag",@"Last-Modified",nil];
 		for (NSString *header in headersToCompare) {
 			if (![[[request responseHeaders] objectForKey:header] isEqualToString:[cachedHeaders objectForKey:header]]) {
@@ -277,6 +296,47 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 			}
 		}
 	}
+
+	if ([self shouldRespectCacheControlHeaders]) {
+
+		// Look for a max-age header
+		NSString *cacheControl = [[cachedHeaders objectForKey:@"Cache-Control"] lowercaseString];
+		if (cacheControl) {
+			NSScanner *scanner = [NSScanner scannerWithString:cacheControl];
+			[scanner scanUpToString:@"max-age" intoString:NULL];
+			if ([scanner scanString:@"max-age" intoString:NULL]) {
+				[scanner scanString:@"=" intoString:NULL];
+				NSTimeInterval maxAge = 0;
+				[scanner scanDouble:&maxAge];
+
+				NSDate *fetchDate = [ASIHTTPRequest dateFromRFC1123String:[cachedHeaders objectForKey:@"X-ASIHTTPRequest-Fetch-date"]];
+				NSDate *expiryDate = [[[NSDate alloc] initWithTimeInterval:maxAge sinceDate:fetchDate] autorelease];
+
+				if ([expiryDate timeIntervalSinceNow] >= 0) {
+					[[self accessLock] unlock];
+					return YES;
+				}
+				// RFC 2612 says max-age must override any Expires header
+				[[self accessLock] unlock];
+				return NO;
+			}
+		}
+
+		// Look for an Expires header to see if the content is out of date
+		NSString *expires = [cachedHeaders objectForKey:@"Expires"];
+		if (expires) {
+			if ([[ASIHTTPRequest dateFromRFC1123String:expires] timeIntervalSinceNow] >= 0) {
+				[[self accessLock] unlock];
+				return YES;
+			}
+		}
+
+		// No explicit expiration time sent by the server
+		[[self accessLock] unlock];
+		return NO;
+	}
+	
+
 	[[self accessLock] unlock];
 	return YES;
 }
@@ -293,8 +353,8 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 - (void)setDefaultCachePolicy:(ASICachePolicy)cachePolicy
 {
 	[[self accessLock] lock];
-	if (cachePolicy == ASIDefaultCachePolicy) {
-		defaultCachePolicy = ASIReloadIfDifferentCachePolicy;
+	if (!cachePolicy) {
+		defaultCachePolicy = ASIAskServerIfModifiedWhenStaleCachePolicy;
 	}  else {
 		defaultCachePolicy = cachePolicy;	
 	}
@@ -308,32 +368,27 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 		[[self accessLock] unlock];
 		return;
 	}
-	NSString *path;
-	if (storagePolicy == ASICachePermanentlyCacheStoragePolicy) {
-		path = [[self storagePath] stringByAppendingPathComponent:permanentCacheFolder];
-	} else {
-		path = [[self storagePath] stringByAppendingPathComponent:sessionCacheFolder];
-	}
+	NSString *path = [[self storagePath] stringByAppendingPathComponent:(storagePolicy == ASICacheForSessionDurationCacheStoragePolicy ? sessionCacheFolder : permanentCacheFolder)];
+
+	NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
+
 	BOOL isDirectory = NO;
-	BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDirectory];
-	if (exists && !isDirectory || !exists) {
+	BOOL exists = [fileManager fileExistsAtPath:path isDirectory:&isDirectory];
+	if (!exists || !isDirectory) {
 		[[self accessLock] unlock];
 		return;
 	}
 	NSError *error = nil;
-	NSArray *cacheFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:&error];
+	NSArray *cacheFiles = [fileManager contentsOfDirectoryAtPath:path error:&error];
 	if (error) {
 		[[self accessLock] unlock];
 		[NSException raise:@"FailedToTraverseCacheDirectory" format:@"Listing cache directory failed at path '%@'",path];	
 	}
 	for (NSString *file in cacheFiles) {
-		NSString *extension = [file pathExtension];
-		if ([extension isEqualToString:@"cacheddata"] || [extension isEqualToString:@"cachedheaders"]) {
-			[[NSFileManager defaultManager] removeItemAtPath:[path stringByAppendingPathComponent:file] error:&error];
-			if (error) {
-				[[self accessLock] unlock];
-				[NSException raise:@"FailedToRemoveCacheFile" format:@"Failed to remove cached data at path '%@'",path];	
-			}
+		[fileManager removeItemAtPath:[path stringByAppendingPathComponent:file] error:&error];
+		if (error) {
+			[[self accessLock] unlock];
+			[NSException raise:@"FailedToRemoveCacheFile" format:@"Failed to remove cached data at path '%@'",path];
 		}
 	}
 	[[self accessLock] unlock];
@@ -357,9 +412,14 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 }
 
 // Borrowed from: http://stackoverflow.com/questions/652300/using-md5-hash-on-a-string-in-cocoa
-+ (NSString *)keyForRequest:(ASIHTTPRequest *)request
++ (NSString *)keyForURL:(NSURL *)url
 {
-	const char *cStr = [[[request url] absoluteString] UTF8String];
+	NSString *urlString = [url absoluteString];
+	// Strip trailing slashes so http://allseeing-i.com/ASIHTTPRequest/ is cached the same as http://allseeing-i.com/ASIHTTPRequest
+	if ([[urlString substringFromIndex:[urlString length]-1] isEqualToString:@"/"]) {
+		urlString = [urlString substringToIndex:[urlString length]-1];
+	}
+	const char *cStr = [urlString UTF8String];
 	unsigned char result[16];
 	CC_MD5(cStr, (CC_LONG)strlen(cStr), result);
 	return [NSString stringWithFormat:@"%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7],result[8], result[9], result[10], result[11],result[12], result[13], result[14], result[15]]; 	
@@ -379,6 +439,49 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 	return dateFormatter;
 }
 
+
+- (BOOL)canUseCachedDataForRequest:(ASIHTTPRequest *)request
+{
+	// Ensure the request is allowed to read from the cache
+	if ([request cachePolicy] & ASIDoNotReadFromCacheCachePolicy) {
+		return NO;
+
+	// If we don't want to load the request whatever happens, always pretend we have cached data even if we don't
+	} else if ([request cachePolicy] & ASIDontLoadCachePolicy) {
+		return YES;
+	}
+
+	NSDictionary *headers = [self cachedResponseHeadersForURL:[request url]];
+	if (!headers) {
+		return NO;
+	}
+	NSString *dataPath = [self pathToCachedResponseDataForURL:[request url]];
+	if (!dataPath) {
+		return NO;
+	}
+
+	// If we get here, we have cached data
+
+	// If we have cached data, we can use it
+	if ([request cachePolicy] & ASIOnlyLoadIfNotCachedCachePolicy) {
+		return YES;
+
+	// If we have cached data that is current, we can use it
+	} else if ([request cachePolicy] & ASIAskServerIfModifiedWhenStaleCachePolicy) {
+		if ([self isCachedDataCurrentForRequest:request]) {
+			return YES;
+		}
+
+	// If we've got headers from a conditional GET and the cached data is still current, we can use it
+	} else if ([request cachePolicy] & ASIAskServerIfModifiedCachePolicy) {
+		if (![request responseHeaders]) {
+			return NO;
+		} else if ([self isCachedDataCurrentForRequest:request]) {
+			return YES;
+		}
+	}
+	return NO;
+}
 
 @synthesize storagePath;
 @synthesize defaultCachePolicy;

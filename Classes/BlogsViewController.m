@@ -258,7 +258,7 @@
         url = @"wordpress.com";
     }
 	
-    [Reachability sharedReachability].hostName = url;
+    [WPReachability sharedReachability].hostName = url;
 	
 	BlogViewController *blogViewController = [[BlogViewController alloc] initWithNibName:@"BlogViewController" bundle:nil];
 	[self.navigationController pushViewController:blogViewController animated:animated];

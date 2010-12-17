@@ -6,7 +6,7 @@
 #import "PostSettingsViewController.h"
 #import "WPNavigationLeftButtonView.h"
 #import "PostsViewController.h"
-#import "Reachability.h"
+#import "WPReachability.h"
 #import "CommentsViewController.h"
 #import "WPPublishOnEditController.h"
 #import "CInvisibleToolbar.h"
@@ -281,7 +281,7 @@
 		self.didConvertDraftToPublished = YES;
 	
 	if((self.post == nil) || (self.post.isLocalDraft == [NSNumber numberWithInt:0])) {
-		if ([[Reachability sharedReachability] internetConnectionStatus] == NotReachable) {
+		if ([[WPReachability sharedReachability] internetConnectionStatus] == NotReachable) {
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Communication Error."
 															message:@"no internet connection."
 														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];

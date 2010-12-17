@@ -57,7 +57,7 @@
 		}
 	}
 	
-	if ([[Reachability sharedReachability] internetConnectionStatus]) {
+	if ([[WPReachability sharedReachability] internetConnectionStatus]) {
 		if ([defaults boolForKey:@"refreshPagesRequired"]) {
 			[self refreshHandler];
 			[defaults setBool:false forKey:@"refreshPagesRequired"];
@@ -407,7 +407,7 @@
 		[self performSelectorOnMainThread:@selector(didDeleteDraftAtIndexPath:) withObject:indexPath waitUntilDone:NO];
     }
 	else if(indexPath.section == 1){
-		if ([[Reachability sharedReachability] internetConnectionStatus] == NotReachable) {
+		if ([[WPReachability sharedReachability] internetConnectionStatus] == NotReachable) {
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Communication Error."
 															message:@"no internet connection."
 														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];

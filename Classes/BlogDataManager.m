@@ -4878,8 +4878,8 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 					
 					NSLog(@"about to sync blog: %@", url);
 					
-					[Reachability sharedReachability].hostName = url;
-					if ([[Reachability sharedReachability] internetConnectionStatus]) {
+					[WPReachability sharedReachability].hostName = url;
+					if ([[WPReachability sharedReachability] internetConnectionStatus]) {
 						if(self.shouldStopSyncingBlogs == NO)
 							[self syncCommentsForBlog:blog];
 						if(self.shouldStopSyncingBlogs == NO)
@@ -4933,8 +4933,8 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 					if (url != nil &&[url length])
 						url = @"wordpress.com";
 					
-					[Reachability sharedReachability].hostName = url;
-					if ([[Reachability sharedReachability] internetConnectionStatus]) {
+					[WPReachability sharedReachability].hostName = url;
+					if ([[WPReachability sharedReachability] internetConnectionStatus]) {
 						@try {
 							[self syncCategoriesForBlog:blog];
 							[self syncStatusesForBlog:blog];

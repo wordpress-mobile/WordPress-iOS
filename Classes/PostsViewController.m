@@ -6,7 +6,7 @@
 #import "UIViewController+WPAnimation.h"
 #import "WordPressAppDelegate.h"
 #import "WPNavigationLeftButtonView.h"
-#import "Reachability.h"
+#import "WPReachability.h"
 #import "WPProgressHUD.h"
 #import "IncrementPost.h"
 
@@ -65,7 +65,7 @@
 	appDelegate.postID = nil;
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
-	if ([[Reachability sharedReachability] internetConnectionStatus])
+	if ([[WPReachability sharedReachability] internetConnectionStatus])
 	{
 		if ([defaults boolForKey:@"refreshPostsRequired"]) {
 			[self refreshHandler];
@@ -456,7 +456,7 @@
 	else {
 		if (indexPath.section == POSTS_SECTION) {
 			//check for reachability
-			if ([[Reachability sharedReachability] internetConnectionStatus] == NotReachable) {
+			if ([[WPReachability sharedReachability] internetConnectionStatus] == NotReachable) {
 				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Communication Error."
 																message:@"no internet connection."
 															   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];

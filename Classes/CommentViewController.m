@@ -7,7 +7,7 @@
 
 #import "CommentViewController.h"
 #import "BlogDataManager.h"
-#import "Reachability.h"
+#import "WPReachability.h"
 #import "WordPressAppDelegate.h"
 #import "WPProgressHUD.h"
 
@@ -101,7 +101,7 @@
 }
 
 - (void)reachabilityChanged {
-    connectionStatus = ([[Reachability sharedReachability] remoteHostStatus] != NotReachable);
+    connectionStatus = ([[WPReachability sharedReachability] remoteHostStatus] != NotReachable);
     UIColor *textColor = connectionStatus == YES ? [UIColor blackColor] : [UIColor grayColor];
 
     commentAuthorLabel.textColor = textColor;
@@ -401,7 +401,7 @@
 }
 
 - (BOOL)isConnectedToHost {
-    if (![[Reachability sharedReachability] remoteHostStatus] != NotReachable) {
+    if (![[WPReachability sharedReachability] remoteHostStatus] != NotReachable) {
         UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:@"No connection to host."
                                             message:@"Operation is not supported now."
                                             delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];

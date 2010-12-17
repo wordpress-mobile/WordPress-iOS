@@ -117,7 +117,7 @@
 - (void)syncStatusesInBackground {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	if ([[Reachability sharedReachability] internetConnectionStatus]) {
+	if ([[WPReachability sharedReachability] internetConnectionStatus]) {
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 		
 		NSArray *params = [NSArray arrayWithObjects:
@@ -169,7 +169,7 @@
 
 - (NSDictionary *)downloadPost:(NSNumber *)postID {
 	NSDictionary *result = nil;
-	if ([[Reachability sharedReachability] internetConnectionStatus]) {
+	if ([[WPReachability sharedReachability] internetConnectionStatus]) {
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 		
 		// We haven't downloaded the post in the background yet, so get it synchronously

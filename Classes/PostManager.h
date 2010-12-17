@@ -8,7 +8,7 @@
 #import <Foundation/Foundation.h>
 #import "WordPressAppDelegate.h"
 #import "BlogDataManager.h"
-#import "Reachability.h"
+#import "WPReachability.h"
 #import "HttpHelper.h"
 #import "XMLRPCConnection+Authentication.h"
 #import "XMLRPCRequest.h"

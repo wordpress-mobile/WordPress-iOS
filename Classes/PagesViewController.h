@@ -14,7 +14,7 @@
 #import "DraftManager.h"
 #import "MediaManager.h"
 #import "BlogDataManager.h"
-#import "Reachability.h"
+#import "WPReachability.h"
 #import "WPProgressHUD.h"
 #import "UILoadMoreCell.h"
 #import "Post.h"

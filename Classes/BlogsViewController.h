@@ -6,7 +6,7 @@
 #import "EditSiteViewController.h"
 #import "BlogDataManager.h"
 #import "MediaManager.h"
-#import "Reachability.h"
+#import "WPReachability.h"
 #import "PostsViewController.h"
 #import "WelcomeViewController.h"
 #import "WordPressAppDelegate.h"

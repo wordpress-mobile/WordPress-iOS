@@ -15,7 +15,7 @@
 
    =====================
 
-   File: Reachability.m
+   File: WPReachability.m
    Abstract: SystemConfiguration framework wrapper.
 
    Version: 1.4
@@ -67,16 +67,16 @@
 #import <ifaddrs.h>
 #include <netdb.h>
 
-#import "Reachability.h"
+#import "WPReachability.h"
 #import <SystemConfiguration/SCNetworkReachability.h>
 
 static NSString *kLinkLocalAddressKey = @"169.254.0.0";
 static NSString *kDefaultRouteKey = @"0.0.0.0";
 
-static Reachability *_sharedReachability;
+static WPReachability *_sharedReachability;
 
 // A class extension that declares internal methods for this class.
-@interface Reachability ()
+@interface WPReachability ()
 - (BOOL)isAdHocWiFiNetworkAvailableFlags:(SCNetworkReachabilityFlags *)outFlags;
 - (BOOL)isNetworkAvailableFlags:(SCNetworkReachabilityFlags *)outFlags;
 - (BOOL)isReachableWithoutRequiringConnection:(SCNetworkReachabilityFlags)flags;
@@ -86,17 +86,17 @@ static Reachability *_sharedReachability;
 - (void)stopListeningForReachabilityChanges;
 @end
 
-@implementation Reachability
+@implementation WPReachability
 
 @synthesize networkStatusNotificationsEnabled = _networkStatusNotificationsEnabled;
 @synthesize hostName = _hostName;
 @synthesize address = _address;
 @synthesize reachabilityQueries = _reachabilityQueries;
 
-+ (Reachability *)sharedReachability {
++ (WPReachability *)sharedReachability {
     if (!_sharedReachability) {
-        _sharedReachability = [[Reachability alloc] init];
-        // Clients of Reachability will typically call [[Reachability sharedReachability] setHostName:]
+        _sharedReachability = [[WPReachability alloc] init];
+        // Clients of WPReachability will typically call [[WPReachability sharedReachability] setHostName:]
         // before calling one of the status methods.
         _sharedReachability.hostName = nil;
         _sharedReachability.address = nil;
@@ -162,7 +162,7 @@ static Reachability *_sharedReachability;
 // This returns YES if the address 169.254.0.0 is reachable without requiring a connection.
 - (BOOL)isAdHocWiFiNetworkAvailableFlags:(SCNetworkReachabilityFlags *)outFlags {
     // Look in the cache of reachability queries for one that matches this query.
-    ReachabilityQuery *query = [self.reachabilityQueries objectForKey:kLinkLocalAddressKey];
+    WPReachabilityQuery *query = [self.reachabilityQueries objectForKey:kLinkLocalAddressKey];
     SCNetworkReachabilityRef adHocWiFiNetworkReachability = query.reachabilityRef;
 
     // If a cached reachability query was not found, create one.
@@ -178,7 +178,7 @@ static Reachability *_sharedReachability;
 
         adHocWiFiNetworkReachability = SCNetworkReachabilityCreateWithAddress(NULL, (struct sockaddr *)&sin);
 
-        query = [[[ReachabilityQuery alloc] init] autorelease];
+        query = [[[WPReachabilityQuery alloc] init] autorelease];
         query.hostNameOrAddress = kLinkLocalAddressKey;
         query.reachabilityRef = adHocWiFiNetworkReachability;
 
@@ -190,7 +190,7 @@ static Reachability *_sharedReachability;
     // If an existing SCNetworkReachabilityRef was found in the cache, we can reuse it and register
     // to receive notifications from it in the current run loop, which may be different than the run loop
     // that was previously used when registering the SCNetworkReachabilityRef for notifications.
-    // -scheduleOnRunLoop: will schedule only if network status notifications are enabled in the Reachability instance.
+    // -scheduleOnRunLoop: will schedule only if network status notifications are enabled in the WPReachability instance.
     // By default, they are not enabled.
     [query scheduleOnRunLoop:[NSRunLoop currentRunLoop]];
 
@@ -211,8 +211,8 @@ static Reachability *_sharedReachability;
     return [self isReachableWithoutRequiringConnection:addressReachabilityFlags];
 }
 
-// ReachabilityCallback is registered as the callback for network state changes in startListeningForReachabilityChanges.
-static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReachabilityFlags flags, void *info) {
+// WPReachabilityCallback is registered as the callback for network state changes in startListeningForReachabilityChanges.
+static void WPReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReachabilityFlags flags, void *info) {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
     // Post a notification to notify the client that the network reachability changed.
@@ -225,7 +225,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 // requiring a connection, a network interface is available. We'll have to do more work to
 // determine which network interface is available.
 - (BOOL)isNetworkAvailableFlags:(SCNetworkReachabilityFlags *)outFlags {
-    ReachabilityQuery *query = [self.reachabilityQueries objectForKey:kDefaultRouteKey];
+    WPReachabilityQuery *query = [self.reachabilityQueries objectForKey:kDefaultRouteKey];
     SCNetworkReachabilityRef defaultRouteReachability = query.reachabilityRef;
 
     if (!defaultRouteReachability) {
@@ -236,7 +236,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 
         defaultRouteReachability = SCNetworkReachabilityCreateWithAddress(NULL, (struct sockaddr *)&zeroAddress);
 
-        ReachabilityQuery *query = [[[ReachabilityQuery alloc] init] autorelease];
+        WPReachabilityQuery *query = [[[WPReachabilityQuery alloc] init] autorelease];
         query.hostNameOrAddress = kDefaultRouteKey;
         query.reachabilityRef = defaultRouteReachability;
 
@@ -247,7 +247,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
     // If an existing SCNetworkReachabilityRef was found in the cache, we can reuse it and register
     // to receive notifications from it in the current run loop, which may be different than the run loop
     // that was previously used when registering the SCNetworkReachabilityRef for notifications.
-    // -scheduleOnRunLoop: will schedule only if network status notifications are enabled in the Reachability instance.
+    // -scheduleOnRunLoop: will schedule only if network status notifications are enabled in the WPReachability instance.
     // By default, they are not enabled.
     [query scheduleOnRunLoop:[NSRunLoop currentRunLoop]];
 
@@ -274,7 +274,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
     // Walk through the cache that holds SCNetworkReachabilityRefs for reachability
     // queries to particular hosts or addresses.
     NSEnumerator *enumerator = [self.reachabilityQueries objectEnumerator];
-    ReachabilityQuery *reachabilityQuery;
+    WPReachabilityQuery *reachabilityQuery;
 
     while (reachabilityQuery = [enumerator nextObject]) {
         CFArrayRef runLoops = reachabilityQuery.runLoops;
@@ -301,7 +301,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
     }
 
     // Look in the cache for an existing SCNetworkReachabilityRef for hostName.
-    ReachabilityQuery *cachedQuery = [self.reachabilityQueries objectForKey:hostName];
+    WPReachabilityQuery *cachedQuery = [self.reachabilityQueries objectForKey:hostName];
     SCNetworkReachabilityRef reachabilityRefForHostName = cachedQuery.reachabilityRef;
 
     if (reachabilityRefForHostName) {
@@ -313,7 +313,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 
     NSAssert1(reachabilityRefForHostName != NULL, @"Failed to create SCNetworkReachabilityRef for host: %@", hostName);
 
-    ReachabilityQuery *query = [[[ReachabilityQuery alloc] init] autorelease];
+    WPReachabilityQuery *query = [[[WPReachabilityQuery alloc] init] autorelease];
     query.hostNameOrAddress = hostName;
     query.reachabilityRef = reachabilityRefForHostName;
 
@@ -321,7 +321,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
     // If an existing SCNetworkReachabilityRef was found in the cache, we can reuse it and register
     // to receive notifications from it in the current run loop, which may be different than the run loop
     // that was previously used when registering the SCNetworkReachabilityRef for notifications.
-    // -scheduleOnRunLoop: will schedule only if network status notifications are enabled in the Reachability instance.
+    // -scheduleOnRunLoop: will schedule only if network status notifications are enabled in the WPReachability instance.
     // By default, they are not enabled.
     [query scheduleOnRunLoop:[NSRunLoop currentRunLoop]];
 
@@ -351,7 +351,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
     }
 
     // Look in the cache for an existing SCNetworkReachabilityRef for addressString.
-    ReachabilityQuery *cachedQuery = [self.reachabilityQueries objectForKey:addressString];
+    WPReachabilityQuery *cachedQuery = [self.reachabilityQueries objectForKey:addressString];
     SCNetworkReachabilityRef reachabilityRefForAddress = cachedQuery.reachabilityRef;
 
     if (reachabilityRefForAddress) {
@@ -363,7 +363,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 
     NSAssert1(reachabilityRefForAddress != NULL, @"Failed to create SCNetworkReachabilityRef for address: %@", addressString);
 
-    ReachabilityQuery *query = [[[ReachabilityQuery alloc] init] autorelease];
+    WPReachabilityQuery *query = [[[WPReachabilityQuery alloc] init] autorelease];
     query.hostNameOrAddress = addressString;
     query.reachabilityRef = reachabilityRefForAddress;
 
@@ -371,7 +371,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
     // If an existing SCNetworkReachabilityRef was found in the cache, we can reuse it and register
     // to receive notifications from it in the current run loop, which may be different than the run loop
     // that was previously used when registering the SCNetworkReachabilityRef for notifications.
-    // -scheduleOnRunLoop: will schedule only if network status notifications are enabled in the Reachability instance.
+    // -scheduleOnRunLoop: will schedule only if network status notifications are enabled in the WPReachability instance.
     // By default, they are not enabled.
     [query scheduleOnRunLoop:[NSRunLoop currentRunLoop]];
 
@@ -435,7 +435,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 
        Note: Knowing that the device has an Internet connection is not the same as
        knowing if the device can reach a particular host. To know that, use
-       -[Reachability remoteHostStatus].
+       -[WPReachability remoteHostStatus].
      */
 
     SCNetworkReachabilityFlags defaultRouteFlags;
@@ -500,11 +500,11 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 
 @end
 
-@interface ReachabilityQuery ()
+@interface WPReachabilityQuery ()
 - (CFRunLoopRef)startListeningForReachabilityChanges:(SCNetworkReachabilityRef)reachability onRunLoop:(CFRunLoopRef)runLoop;
 @end
 
-@implementation ReachabilityQuery
+@implementation WPReachabilityQuery
 
 @synthesize reachabilityRef = _reachabilityRef;
 @synthesize runLoops = _runLoops;
@@ -541,7 +541,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 
 - (void)scheduleOnRunLoop:(NSRunLoop *)inRunLoop {
     // Only register for network state changes if the client has specifically enabled them.
-    if ([[Reachability sharedReachability] networkStatusNotificationsEnabled] == NO) {
+    if ([[WPReachability sharedReachability] networkStatusNotificationsEnabled] == NO) {
         return;
     }
 
@@ -578,7 +578,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
     }
 
     SCNetworkReachabilityContext context = {0, self, NULL, NULL, NULL};
-    SCNetworkReachabilitySetCallback(reachability, ReachabilityCallback, &context);
+    SCNetworkReachabilitySetCallback(reachability, WPReachabilityCallback, &context);
     SCNetworkReachabilityScheduleWithRunLoop(reachability, runLoop, kCFRunLoopDefaultMode);
 
     return runLoop;
