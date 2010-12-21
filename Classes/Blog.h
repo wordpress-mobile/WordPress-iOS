@@ -7,22 +7,20 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Blog : NSObject {
-@private
-    int index;
-	NSString *blogID, *blogName, *url, *hostURL, *username, *password, *xmlrpc;
-	BOOL isAdmin, hasVideoPress;
-	NSMutableDictionary *settings;
+@interface Blog : NSManagedObject {
 }
 
-@property int index;
-@property (nonatomic, retain) NSString *blogID, *blogName, *url, *hostURL, *username, *password, *xmlrpc;
-@property (nonatomic, assign) BOOL isAdmin, hasVideoPress;
-@property (nonatomic, retain) NSMutableDictionary *settings;
+@property (nonatomic, retain) NSNumber *blogID;
+@property (nonatomic, retain) NSString *blogName, *url, *username, *password, *xmlrpc;
+@property (readonly) NSString *hostURL;
+@property (nonatomic, assign) NSNumber *isAdmin;
 
-- (id)initWithIndex:(int)blogIndex;
 - (UIImage *)favicon;
 - (void)downloadFavicon;
 - (void)downloadFaviconInBackground;
+- (BOOL)isWPcom;
++ (BOOL)blogExistsForURL:(NSString *)theURL withContext:(NSManagedObjectContext *)moc;
++ (Blog *)createFromDictionary:(NSDictionary *)blogInfo withContext:(NSManagedObjectContext *)moc;
++ (NSInteger)countWithContext:(NSManagedObjectContext *)moc;
 
 @end

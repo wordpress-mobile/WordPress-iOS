@@ -100,7 +100,7 @@
 			label.text = autosavePost.tags;
 			break;
 		case 2:
-			label.text = autosavePost.categories;
+			label.text = [autosavePost categoriesText];
 			break;
 		case 3:
 			label.text = autosavePost.status;
@@ -130,7 +130,7 @@
 			text = autosavePost.tags;
 			break;
 		case 2:
-			text = autosavePost.categories;
+			text = [autosavePost categoriesText];
 			break;
 		case 3:
 			text = autosavePost.status;

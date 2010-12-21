@@ -22,7 +22,8 @@
 	AddUsersBlogsViewController *addUsersBlogsView;
 	IBOutlet UITableView *tableView;
 	UITextField *activeTextField, *urlTextField;
-	NSString *footerText, *addButtonText, *url, *xmlrpc, *username, *password, *blogID, *host, *blogName;
+	NSString *footerText, *addButtonText, *url, *xmlrpc, *username, *password, *host, *blogName;
+    NSNumber *blogID;
 	NSArray *subsites;
 	BOOL isAuthenticating, isAuthenticated, isGettingXMLRPCURL, isAdding, hasSubsites, hasValidXMLRPCurl, viewDidMove, keyboardIsVisible, hasCheckedForSubsites;
 }
@@ -31,30 +32,9 @@
 @property (nonatomic, retain) AddUsersBlogsViewController *addUsersBlogsView;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) UITextField *activeTextField;
-@property (nonatomic, retain) NSString *footerText, *addButtonText, *url, *xmlrpc, *username, *password, *blogID, *host, *blogName;
+@property (nonatomic, retain) NSString *footerText, *addButtonText, *url, *xmlrpc, *username, *password, *host, *blogName;
+@property (nonatomic, retain) NSNumber *blogID;
 @property (nonatomic, retain) NSArray *subsites;
 @property (nonatomic, assign) BOOL isAuthenticating, isAuthenticated, isGettingXMLRPCURL, isAdding, hasSubsites, hasValidXMLRPCurl, viewDidMove, keyboardIsVisible, hasCheckedForSubsites;
-
-- (void)getSubsites;
-- (void)didGetSubsitesSuccessfully:(NSArray *)subsites;
-- (void)authenticate;
-- (void)authenticateInBackground;
-- (void)didAuthenticateSuccessfully;
-- (void)didFailAuthentication;
-- (void)addSite;
-- (void)didAddSiteSuccessfully;
-- (void)addSiteFailed;
-- (void)refreshTable;
-- (void)getXMLRPCurl;
-- (void)getXMLRPCUrlSynchronously;
-- (void)setXMLRPCUrl:(NSString *)xmlrpcUrl;
-- (void)verifyRSDurl:(NSString *)rsdURL;
-- (void)verifyXMLRPCurl:(NSString *)xmlrpcURL;
-- (void)verifyXMLRPCurlInBackground:(NSString *)xmlrpcURL;
-- (BOOL)blogExists;
-- (void)keyboardWillShow:(NSNotification *)notification;
-- (void)keyboardWillHide:(NSNotification *)notification;
-- (void)urlDidChange;
-- (void)textFieldDidChange:(UITextField *)textField;
 
 @end

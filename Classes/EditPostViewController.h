@@ -12,7 +12,7 @@
 @class WPSegmentedSelectionTableViewController;
 
 @interface EditPostViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
-UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDelegate> {
+UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDelegate,UIPopoverControllerDelegate> {
     BOOL isShowPhotoPickerActionSheet;
     BOOL isTextViewEditing;
     BOOL dismiss;
@@ -59,6 +59,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 	NSUInteger textViewHeightForRotation;
 	CLLocation *initialLocation;
 	NSArray *statuses;
+    NSMutableArray *selectedCategories;
 }
 
 @property (nonatomic, assign) PostViewController *postDetailViewController;
@@ -83,6 +84,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 @property (nonatomic, retain) IBOutlet UILabel *tagsLabel, *statusLabel, *categoriesLabel, *titleLabel;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *newCategoryBarButtonItem;
 @property (nonatomic, retain) NSArray *statuses;
+@property (nonatomic, retain) NSMutableArray *selectedCategories;
 
 // UI
 - (void)refreshUIForCompose;
@@ -121,6 +123,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (IBAction)showStatusViewAction:(id)sender;
 - (NSString *)validateNewLinkInfo:(NSString *)urlText;
 - (BOOL)checkCustomFieldsMinusMetadata;
+- (NSString *)selectedCategoriesText;
 
 // Location
 - (IBAction)showLocationMapView:(id)sender;

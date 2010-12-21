@@ -15,7 +15,7 @@ typedef enum {
 	CommentStatusSpam
 } CommentStatus;
 
-@interface Comment : NSObject {
+@interface Comment : NSManagedObject {
 
 }
 

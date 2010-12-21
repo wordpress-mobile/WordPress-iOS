@@ -180,12 +180,12 @@
 		case 0:
 			cell.textLabel.textAlignment = UITextAlignmentLeft;
 			
-			Blog *blog = [usersBlogs objectAtIndex:indexPath.row];
-			if([selectedBlogs containsObject:blog.blogID])
+			NSDictionary *blog = [usersBlogs objectAtIndex:indexPath.row];
+			if([selectedBlogs containsObject:[blog valueForKey:@"blogid"]])
 				cell.accessoryType = UITableViewCellAccessoryCheckmark;
 			else
 				cell.accessoryType = UITableViewCellAccessoryNone;
-			cell.textLabel.text = blog.blogName;
+			cell.textLabel.text = [blog valueForKey:@"blogName"];
 			break;
 		case 1:
 			cell.textLabel.textAlignment = UITextAlignmentCenter;
@@ -205,16 +205,16 @@
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if(indexPath.section == 0) {
 		
-		Blog *selectedBlog = [usersBlogs objectAtIndex:indexPath.row];
+		NSDictionary *selectedBlog = [usersBlogs objectAtIndex:indexPath.row];
 		
-		if(![selectedBlogs containsObject:selectedBlog.blogID]) {
-			[selectedBlogs addObject:selectedBlog.blogID];
+		if(![selectedBlogs containsObject:[selectedBlog valueForKey:@"blogid"]]) {
+			[selectedBlogs addObject:[selectedBlog valueForKey:@"blogid"]];
 		}
 		else {
 			int indexToRemove = -1;
 			int count = 0;
 			for (NSString *blogID in selectedBlogs) {
-				if([blogID isEqualToString:selectedBlog.blogID]) {
+				if([blogID isEqualToString:[selectedBlog valueForKey:@"blogid"]]) {
 					indexToRemove = count;
 					break;
 				}
@@ -244,8 +244,8 @@
 									   
 - (void)selectAllBlogs:(id)sender {
 	[selectedBlogs removeAllObjects];
-	for(Blog *blog in usersBlogs) {
-		[selectedBlogs addObject:blog.blogID];
+	for(NSDictionary *blog in usersBlogs) {
+		[selectedBlogs addObject:[blog valueForKey:@"blogid"]];
 	}
 	[self.tableView reloadData];
 	buttonSelectAll.title = @"Deselect All";
@@ -263,8 +263,11 @@
 
 - (void)signOut {
 	appDelegate.isWPcomAuthenticated = NO;
+    NSError *error = nil;
+    [SFHFKeychainUtils deleteItemForUsername:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"]
+                              andServiceName:@"WordPress.com"
+                                       error:&error];
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_password_preference"];
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_authenticated_flag"];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 	[self.navigationController popViewControllerAnimated:YES];
@@ -280,14 +283,20 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	if(isWPcom) {
-		usersBlogs = [[WPDataController sharedInstance] getBlogsForUrl:@"https://wordpress.com/xmlrpc.php" 
+        NSError *error = nil;
+        NSString *wpcom_password = [SFHFKeychainUtils getPasswordForUsername:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"]
+                                                        andServiceName:@"WordPress.com"
+                                                                 error:&error];
+
+		usersBlogs = [[[WPDataController sharedInstance] getBlogsForUrl:@"https://wordpress.com/xmlrpc.php"
 							  username:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"]
-							  password:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"]];
+							  password:wpcom_password] retain];
 	}
 	else {
-		usersBlogs = [[[WPDataController sharedInstance] getBlogsForUrl:url username:username password:password] retain];
+		usersBlogs = [[[WPDataController sharedInstance] getBlogsForUrl:url username:self.username password:self.password] retain];
 	}
 
+    NSLog(@"usersBlogs: %@", usersBlogs);
 	hasCompletedGetUsersBlogs = YES;
 	if(usersBlogs.count > 0) {
 		// TODO: Store blog list in Core Data
@@ -304,30 +313,38 @@
 
 - (IBAction)saveSelectedBlogs:(id)sender {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	spinner = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
-	[spinner show];
+//	spinner = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
+//	[spinner show];
 	
 	[[NSUserDefaults standardUserDefaults] setBool:true forKey:@"refreshCommentsRequired"];
 	
-	[self performSelectorInBackground:@selector(saveSelectedBlogsInBackground) withObject:nil];
-}
+    NSError *error = nil;
+    if (isWPcom) {
+        NSLog(@"saveSelectedBlogs. username: %@, usersBlogs: %@", username, usersBlogs);
+        self.username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
+        self.password = [SFHFKeychainUtils getPasswordForUsername:username
+                                              andServiceName:@"WordPress.com"
+                                                       error:&error];
+        NSLog(@"saveSelectedBlogs. username: %@, usersBlogs: %@", username, usersBlogs);
+    } else {
+        NSLog(@"saveSelectedBlogs. username: %@, usersBlogs: %@", username, usersBlogs);
+    }
 
-- (void)saveSelectedBlogsInBackground {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	for (Blog *blog in usersBlogs) {
-		if([selectedBlogs containsObject:blog.blogID]) {
+    for (NSDictionary *blog in usersBlogs) {
+		if([selectedBlogs containsObject:[blog valueForKey:@"blogid"]]) {
 			[self createBlog:blog];
 		}
 	}
-	
-	[self performSelectorOnMainThread:@selector(didSaveSelectedBlogsInBackground) withObject:nil waitUntilDone:NO];
-	
-	[pool release];
+
+    [appDelegate.managedObjectContext save:&error];
+    if (error != nil) {
+        NSLog(@"Error adding blogs: %@", [error localizedDescription]);
+    }
+    [self didSaveSelectedBlogsInBackground];
 }
 
 - (void)didSaveSelectedBlogsInBackground {
-	[spinner dismissWithClickedButtonIndex:0 animated:YES];
+//	[spinner dismissWithClickedButtonIndex:0 animated:YES];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 //	[appDelegate syncBlogCategoriesAndStatuses];
 //	[appDelegate syncBlogs];
@@ -341,58 +358,12 @@
 	}
 }
 
-- (void)createBlog:(Blog *)blog {
-	blog.url = [blog.url stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-	if([blog.url hasSuffix:@"/"])
-		blog.url = [blog.url substringToIndex:blog.url.length-1];
-	blog.hostURL = [blog.url stringByReplacingOccurrencesOfString:@"www." withString:@""];
-	//blog.url = [blog.url stringByReplacingOccurrencesOfString:@".wordpress.com" withString:@""];
-	url= [blog.url stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-	username = blog.username;
-	password = blog.password;
-	NSNumber *value = [NSNumber numberWithBool:NO];
-	NSString *authUsername = blog.username;
-	NSString *authPassword = blog.password;
-	NSNumber *authEnabled = [NSNumber numberWithBool:YES];
-	NSString *authBlogURL = [NSString stringWithFormat:@"%@_auth", blog.url];
-	
-	NSMutableDictionary *newBlog = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-									 username, @"username", 
-									 url, @"url", 
-									 authEnabled, @"authEnabled", 
-									 authUsername, @"authUsername", 
-									 nil];
-    if (![[BlogDataManager sharedDataManager] doesBlogExist:newBlog]) {
-		[[BlogDataManager sharedDataManager] resetCurrentBlog];
-		
-		[newBlog setValue:[blog.url stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] forKey:@"url"];
-		[newBlog setValue:blog.xmlrpc forKey:@"xmlrpc"];
-		[newBlog setValue:blog.blogID forKey:kBlogId];
-		[newBlog setValue:blog.hostURL forKey:kBlogHostName];
-		[newBlog setValue:[appDelegate.currentBlog valueForKey:kResizePhotoSetting] forKey:kResizePhotoSetting];
-		[newBlog setValue:@"10" forKey:kPostsDownloadCount];
-		[newBlog setValue:[NSNumber numberWithBool:NO] forKey:kGeolocationSetting];
-		[newBlog setValue:[NSNumber numberWithBool:YES] forKey:kSupportsPagesAndComments];
-		[newBlog setValue:blog.blogName forKey:@"blogName"];
-		[newBlog setValue:username forKey:@"username"];
-		[newBlog setValue:authEnabled forKey:@"authEnabled"];
-		[[BlogDataManager sharedDataManager] updatePasswordInKeychain:password andUserName:username andBlogURL:url];
-		
-		[newBlog setValue:authUsername forKey:@"authUsername"];
-		[[BlogDataManager sharedDataManager] updatePasswordInKeychain:authPassword
-														  andUserName:authUsername
-														   andBlogURL:authBlogURL];
-		[newBlog setValue:value forKey:kResizePhotoSetting];
-		[newBlog setValue:[NSNumber numberWithBool:YES] forKey:kSupportsPagesAndComments];
-		
-		[BlogDataManager sharedDataManager].isProblemWithXMLRPC = NO;
-        [newBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
-        [[BlogDataManager sharedDataManager] wrapperForSyncPostsAndGetTemplateForBlog:[BlogDataManager sharedDataManager].currentBlog];
-        [newBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-		[[BlogDataManager sharedDataManager] setCurrentBlog:newBlog];
-		[BlogDataManager sharedDataManager].currentBlogIndex = -1;
-        [[BlogDataManager sharedDataManager] saveCurrentBlog];
-	}
+- (void)createBlog:(NSDictionary *)blogInfo {
+    NSMutableDictionary *newBlog = [NSMutableDictionary dictionaryWithDictionary:blogInfo];
+    [newBlog setObject:self.username forKey:@"username"];
+    [newBlog setObject:self.password forKey:@"password"];
+    NSLog(@"creating blog: %@", newBlog);
+    [Blog createFromDictionary:newBlog withContext:appDelegate.managedObjectContext];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 }
 
@@ -456,9 +427,9 @@
 }
 
 - (void)dealloc {
+	self.username = nil;
+    self.password = nil;
 	[url release];
-	[username release];
-	[password release];
 	[usersBlogs release];
 	[selectedBlogs release];
 	[tableView release];

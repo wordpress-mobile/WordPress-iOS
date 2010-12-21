@@ -28,6 +28,8 @@ typedef enum _SelectionType {
 - (NSArray *)selectedObjects;
 - (void *)curContext;
 - (BOOL)haveChanges;
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated;
+- (void)popViewControllerAnimated:(BOOL) animated;
 
 - (void)clean;
 

@@ -15,14 +15,16 @@
 #import "BlogSplitViewMasterViewController.h"
 #import "CPopoverManager.h"
 
-@interface BlogsViewController : UITableViewController <UIAccelerometerDelegate, UIAlertViewDelegate> {
+@interface BlogsViewController : UITableViewController <NSFetchedResultsControllerDelegate, UIAccelerometerDelegate, UIAlertViewDelegate> {
 	NSMutableArray *blogsList;
 	WordPressAppDelegate *appDelegate;
+    NSFetchedResultsController *resultsController;
 }
 
 @property (nonatomic, retain) NSMutableArray *blogsList;
+@property (nonatomic, retain) NSFetchedResultsController *resultsController;
 
-- (void)showBlog:(BOOL)animated;
+- (void)showBlog:(Blog *)blog animated:(BOOL)animated;
 - (void)deleteBlog:(NSIndexPath *)indexPath;
 - (void)didDeleteBlogSuccessfully:(NSIndexPath *)indexPath;
 - (void)showBlogWithoutAnimation;

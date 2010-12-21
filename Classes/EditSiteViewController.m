@@ -7,9 +7,9 @@
 #import "EditSiteViewController.h"
 
 @implementation EditSiteViewController
-@synthesize spinner, footerText, addButtonText, url, xmlrpc, username, password, isWPcom;
+@synthesize spinner, footerText, addButtonText, password;
 @synthesize isAuthenticating, isAuthenticated, isSaving, hasSubsites, subsites, viewDidMove, keyboardIsVisible;
-@synthesize hasValidXMLRPCurl, blogID, blogName, host, activeTextField, blogIndex, tableView;
+@synthesize hasValidXMLRPCurl, blog, activeTextField, blogIndex, tableView;
 //@synthesize addUsersBlogsView;
 #pragma mark -
 #pragma mark View lifecycle
@@ -18,20 +18,22 @@
     [super viewDidLoad];
     [FlurryAPI logEvent:@"EditSite"];
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    // We save the context now, so we can do a proper rollback if the user cancels the edition
+    NSError *error;
+    if (![appDelegate.managedObjectContext save:&error]) {
+        NSLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+        exit(-1);
+    }
 	
-	NSMutableDictionary *currentBlog = (NSMutableDictionary *)[[BlogDataManager sharedDataManager] blogAtIndex:blogIndex];
-	appDelegate.currentBlog = currentBlog;
-	
-	NSRange range = [self.url rangeOfString:@"wordpress.com"];
-	if(range.location != NSNotFound)
-		isWPcom = YES;
-	
-	if(isWPcom == YES) {
+	if([blog isWPcom] == YES) {
 		self.navigationItem.title = @"Edit Blog";
 	}
 	else {
 		self.navigationItem.title = @"Edit Site";
 	}
+    self.password = [SFHFKeychainUtils getPasswordForUsername:blog.username andServiceName:blog.url error:&error];
+    NSLog(@"editing blog: %@", blog);
 	
 	hasValidXMLRPCurl = YES;
 	addButtonText = @"Save";
@@ -50,12 +52,6 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	[self loadSiteData];
-	
-	NSRange range = [self.url rangeOfString:@"wordpress.com"];
-	if(range.location != NSNotFound)
-		isWPcom = YES;
-	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) 
 												 name:UIKeyboardWillShowNotification
 											   object:self.view.window];
@@ -137,20 +133,20 @@
 					addTextField.placeholder = @"http://example.com";
 					addTextField.keyboardType = UIKeyboardTypeEmailAddress;
 					addTextField.returnKeyType = UIReturnKeyDone;
-					if(url != nil)
-						addTextField.text = url;
+					if(blog.url != nil)
+						addTextField.text = blog.url;
 				}
 				else if(indexPath.row == 1) {
 					addTextField.placeholder = @"WordPress username.";
 					addTextField.keyboardType = UIKeyboardTypeDefault;
 					addTextField.returnKeyType = UIReturnKeyDone;
-					if(username != nil)
-						addTextField.text = username;
+					if(blog.username != nil)
+						addTextField.text = blog.username;
 				}
 				else if(indexPath.row == 2) {
 					addTextField.placeholder = @"WordPress password.";
 					addTextField.keyboardType = UIKeyboardTypeDefault;
-					if(xmlrpc != nil)
+					if(blog.xmlrpc != nil)
 						addTextField.returnKeyType = UIReturnKeyDone;
 					else
 						addTextField.returnKeyType = UIReturnKeyDone;
@@ -162,8 +158,8 @@
 					addTextField.placeholder = @"http://example.com/xmlrpc.php";
 					addTextField.keyboardType = UIKeyboardTypeDefault;
 					addTextField.returnKeyType = UIReturnKeyDone;
-					if(xmlrpc != nil)
-						addTextField.text = xmlrpc;
+					if(blog.xmlrpc != nil)
+						addTextField.text = blog.xmlrpc;
 				}
 				
 				addTextField.tag = indexPath.row;
@@ -236,7 +232,7 @@
 	NSString *result = nil;
 	switch (section) {
 		case 0:
-			result = blogName;
+			result = blog.blogName;
 			break;
 		default:
 			break;
@@ -258,16 +254,16 @@
 	UITableViewCell *cell = [tv cellForRowAtIndexPath:indexPath];
 	switch (indexPath.section) {
 		case 0:
-			if(url == nil) {
+			if(blog.url == nil) {
 				footerText = @"URL is required.";
 			}
-			else if(username == nil) {
+			else if(blog.username == nil) {
 				footerText = @"Username is required.";
 			}
 			else if(password == nil) {
 				footerText = @"Password is required.";
 			}
-			else if((!hasValidXMLRPCurl) && (xmlrpc == nil)) {
+			else if((!hasValidXMLRPCurl) && (blog.xmlrpc == nil)) {
 				footerText = @"XMLRPC endpoint not found. Please enter it manually.";
 			}
 			addButtonText = @"Add Blog";
@@ -288,13 +284,6 @@
 				[tv deselectRowAtIndexPath:indexPath animated:YES];
 			}
 			else if(((!hasSubsites) && (indexPath.row == 0)) || (indexPath.row == 1)) {
-				// Settings
-				if(url != nil)
-					[appDelegate.currentBlog setObject:url forKey:@"url"];
-				if(username != nil)
-					[appDelegate.currentBlog setObject:username forKey:@"username"];
-				//[activeTextField becomeFirstResponder];
-				//[activeTextField resignFirstResponder];
 				BlogSettingsViewController *settingsView;
 				
 				if (DeviceIsPad())
@@ -310,16 +299,15 @@
 			break;
 		case 2:
 			// Save Site
-			if([self blogExists]) {
-				footerText = @" ";
-				addButtonText = @"Saving Site...";
-				isSaving = YES;
-				[tv deselectRowAtIndexPath:indexPath animated:YES];
-				[NSThread sleepForTimeInterval:0.15];
-				[tv reloadData];
-				
-				[self performSelectorInBackground:@selector(saveSite) withObject:nil];
-			}
+            footerText = @" ";
+            addButtonText = @"Saving Site...";
+            isSaving = YES;
+            [tv deselectRowAtIndexPath:indexPath animated:YES];
+            [NSThread sleepForTimeInterval:0.15];
+            [tv reloadData];
+
+            [self performSelectorInBackground:@selector(saveSite) withObject:nil];
+
 			[tv deselectRowAtIndexPath:indexPath animated:YES];
 			break;
 		default:
@@ -346,26 +334,26 @@
 	
 	switch (indexPath.row) {
 		case 0:
-			if(((username != nil) && (password != nil)) && ([textField.text isEqualToString:@""]))
+			if(((blog.username != nil) && (password != nil)) && ([textField.text isEqualToString:@""]))
 				footerText = @"URL is required.";
 			else {
-				[self setUrl:textField.text];
+				blog.url = textField.text;
                 [self urlDidChange];
 				footerText = nil;
-				if(isWPcom == NO)
+				if([blog isWPcom] == NO)
 					[self performSelectorInBackground:@selector(getXMLRPCurl) withObject:nil];
 			}
 			break;
 		case 1:
-			if(((url != nil) && (password != nil)) && ([textField.text isEqualToString:@""]))
+			if(((blog.url != nil) && (password != nil)) && ([textField.text isEqualToString:@""]))
 				footerText = @"Username is required.";
 			else {
-				[self setUsername:textField.text];
+				[blog setUsername:textField.text];
 				footerText = nil;
 			}
 			break;
 		case 2:
-			if(((username != nil) && (username != nil)) && ([textField.text isEqualToString:@""]))
+			if(((blog.username != nil) && (blog.username != nil)) && ([textField.text isEqualToString:@""]))
 				footerText = @"Password is required.";
 			else {
 				[self setPassword:textField.text];
@@ -373,10 +361,10 @@
 			}
 			break;
 		case 3:
-			if(((isWPcom == NO) && (!hasValidXMLRPCurl) && (username != nil) && (password != nil)) && ([textField.text isEqualToString:@""]))
+			if((([blog isWPcom] == NO) && (!hasValidXMLRPCurl) && (blog.username != nil) && (password != nil)) && ([textField.text isEqualToString:@""]))
 				footerText = @"XMLRPC endpoint wasn't found. Please enter it manually.";
 			else {
-				[self setXmlrpc:textField.text];
+				[blog setXmlrpc:textField.text];
 				hasValidXMLRPCurl = YES;
 				footerText = nil;
 			}
@@ -385,7 +373,7 @@
 			break;
 	}
 	
-	if((url != nil) && (username != nil) && (password != nil) && (xmlrpc != nil)) {
+	if((blog.url != nil) && (blog.username != nil) && (password != nil) && (blog.xmlrpc != nil)) {
 		[self performSelectorInBackground:@selector(authenticate) withObject:nil];
 	}
 	
@@ -395,37 +383,6 @@
 #pragma mark -
 #pragma mark Custom methods
 
-- (void)getSubsites {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	
-	footerText = @"Checking for sites...";
-	[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
-	
-	subsites = [[[WPDataController sharedInstance] getBlogsForUrl:xmlrpc username:username password:password] copy];
-	if(subsites.count > 1) {
-		hasSubsites = YES;
-		//[addUsersBlogsView setUrl:xmlrpc];
-		//[addUsersBlogsView setUsername:username];
-		//[addUsersBlogsView setPassword:password];
-	}
-	else if(subsites.count == 1) {
-		Blog *blog = [subsites objectAtIndex:0];
-		host = blog.hostURL;
-		blogID = blog.blogID;
-		blogName = blog.blogName;
-	}
-	
-	if([self blogExists] && isAuthenticated) {
-		footerText = @"Good to go.";
-	}
-	
-	[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
-	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	[pool release];
-}
-
 - (void)authenticate {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
@@ -433,10 +390,9 @@
 	footerText = @"Authenticating...";
 	[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
 	
-	isAuthenticated = [[WPDataController sharedInstance] authenticateUser:xmlrpc username:username password:password];
+	isAuthenticated = [[WPDataController sharedInstance] authenticateUser:blog.xmlrpc username:blog.username password:password];
 	if(isAuthenticated) {
 		footerText = @"Authenticated successfully.";
-		[self didAuthenticateSuccessfully];
 	}
 	else
 		footerText = @"Incorrect username or password.";
@@ -447,26 +403,21 @@
 	[pool release];
 }
 
-- (void)didAuthenticateSuccessfully {
-	if(isWPcom == NO)
-		[self getSubsites];
-}
-
 - (void)getXMLRPCurl {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
-	if((url != nil) && (![url isEqualToString:@""])) {
-		if(![url hasPrefix:@"http"])
-			url = [[NSString stringWithFormat:@"http://%@", url] retain];
-		NSString *tempURL = url;
+	if((blog.url != nil) && (![blog.url isEqualToString:@""])) {
+		if(![blog.url hasPrefix:@"http"])
+			blog.url = [[NSString stringWithFormat:@"http://%@", blog.url] retain];
+		NSString *tempURL = blog.url;
 		if(![tempURL hasSuffix:@"/"])
 			tempURL = [[NSString stringWithFormat:@"%@/xmlrpc.php", tempURL] retain];
 		[self performSelectorOnMainThread:@selector(setXMLRPCUrl:) 
                                withObject:tempURL
                             waitUntilDone:YES];
 		
-		XMLRPCRequest *xmlrpcMethodsRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
+		XMLRPCRequest *xmlrpcMethodsRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:blog.xmlrpc]];
 		[xmlrpcMethodsRequest setMethod:@"system.listMethods" withObjects:[NSArray array]];
 		NSArray *xmlrpcMethods = [[BlogDataManager sharedDataManager] executeXMLRPCRequest:xmlrpcMethodsRequest byHandlingError:YES];
 		[xmlrpcMethodsRequest release];
@@ -483,15 +434,8 @@
 	[pool release];
 }
 
-- (BOOL)blogExists {
-	if([[BlogDataManager sharedDataManager] indexForBlogid:blogID url:url] > -1)
-		return YES;
-	else
-		return NO;
-}
-
 - (void)setXMLRPCUrl:(NSString *)xmlrpcUrl {
-	xmlrpc = xmlrpcUrl;
+	blog.xmlrpc = xmlrpcUrl;
 }
 
 - (void)urlDidChange {
@@ -504,7 +448,7 @@
 			for(UIView *subview in cell.contentView.subviews) {
                 if([subview isKindOfClass:[UITextField class]]) {
                     UITextField *textField = (UITextField *)subview;
-                    textField.text = url;
+                    textField.text = blog.url;
                     didFindUrlTextField = YES;
                     break;
                 }
@@ -529,17 +473,14 @@
 	NSString *authPassword = [appDelegate.currentBlog valueForKey:@"authPassword"];
 	NSNumber *authEnabled = [appDelegate.currentBlog valueForKey:@"authEnabled"];
 	
-	NSString *authBlogURL = [NSString stringWithFormat:@"%@_auth", url];
+	NSString *authBlogURL = [NSString stringWithFormat:@"%@_auth", blog.url];
 	NSMutableDictionary *updatedBlog = [[BlogDataManager sharedDataManager] blogAtIndex:blogIndex];
 	
-	[updatedBlog setValue:blogID forKey:kBlogId];
-	[updatedBlog setValue:host forKey:kBlogHostName];
-	[updatedBlog setValue:blogName forKey:@"blogName"];
-	[updatedBlog setValue:url forKey:@"url"];
-	[updatedBlog setValue:xmlrpc forKey:@"xmlrpc"];
-	[updatedBlog setValue:username forKey:@"username"];
-	[updatedBlog setValue:authEnabled forKey:@"authEnabled"];
-	[[BlogDataManager sharedDataManager] updatePasswordInKeychain:password andUserName:username andBlogURL:host];
+    NSError *error = nil;
+    [SFHFKeychainUtils storeUsername:blog.username
+                         andPassword:password
+                      forServiceName:blog.hostURL
+                      updateExisting:YES error:&error];
 	
 	if([authEnabled isEqualToNumber:[NSNumber numberWithInt:1]]) {
 		[[BlogDataManager sharedDataManager] updatePasswordInKeychain:authPassword
@@ -549,7 +490,6 @@
 	[updatedBlog setValue:[appDelegate.currentBlog valueForKey:kResizePhotoSetting] forKey:kResizePhotoSetting];
 	[updatedBlog setValue:[appDelegate.currentBlog valueForKey:kPostsDownloadCount] forKey:kPostsDownloadCount];
 	[updatedBlog setValue:[appDelegate.currentBlog valueForKey:kGeolocationSetting] forKey:kGeolocationSetting];
-	[updatedBlog setValue:[NSNumber numberWithBool:YES] forKey:kSupportsPagesAndComments];
 	
 	[BlogDataManager sharedDataManager].isProblemWithXMLRPC = NO;
 	[updatedBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
@@ -581,6 +521,7 @@
 }
 
 - (IBAction)cancel:(id)sender {
+    [appDelegate.managedObjectContext rollback];
 	if(DeviceIsPad() == YES)
 		[self dismissModalViewControllerAnimated:YES];
 	else
@@ -645,17 +586,6 @@
     keyboardIsVisible = NO;
 }
 
-- (void)loadSiteData {
-	NSDictionary *site = [[BlogDataManager sharedDataManager] blogForId:blogID hostName:host];
-	self.blogName = [site valueForKey:@"blogName"];
-	self.url = [site valueForKey:@"url"];
-	self.username = [site valueForKey:@"username"];
-	[self setPassword:[[BlogDataManager sharedDataManager] getPasswordFromKeychainInContextOfCurrentBlog:site]];
-	xmlrpc = [site valueForKey:@"xmlrpc"];
-	
-	[self.tableView reloadData];
-}
-
 #pragma mark -
 #pragma mark Memory management
 
@@ -671,15 +601,9 @@
 	[subsites release], subsites = nil;
 	//[addUsersBlogsView release];
 	[tableView release];
-	[blogID release];
-	[blogName release];
-	[host release];
 	[spinner release];
 	[footerText release];
 	[addButtonText release];
-	[url release], url = nil;
-	[xmlrpc release], xmlrpc = nil;
-	[username release], username = nil;
 	[password release], password = nil;
     [super dealloc];
 }

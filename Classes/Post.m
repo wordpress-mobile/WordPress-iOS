@@ -50,7 +50,7 @@
 	else
 		[convertedPost setValue:[self.status lowercaseString] forKey:@"post_status"];
 	[convertedPost setValue:self.tags forKey:@"mt_keywords"];
-	[convertedPost setValue:[self.categories componentsSeparatedByString:@", "] forKey:@"categories"];
+ 	[convertedPost setValue:self.categories forKey:@"categories"];
 	[convertedPost setValue:self.content forKey:@"description"];
 	[convertedPost setValue:self.dateCreated forKey:@"dateCreated"];
 	
@@ -68,6 +68,83 @@
 	[customFields release];
 	
 	return convertedPost;
+}
+
+- (NSString *)categoriesText {
+    NSMutableArray *categoryLabels = [NSMutableArray arrayWithCapacity:[self.categories count]];
+    NSMutableSet *categories = self.categories;
+    for (Category *category in categories) {
+        [categoryLabels addObject:category.categoryName];
+    }
+    return [categoryLabels componentsJoinedByString:@", "];
+}
+
+- (NSArray *)categoriesDict {
+    NSMutableArray *result = [NSMutableArray array];
+    for (Category *category in self.categories) {
+        NSDictionary *categoryDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                      category.categoryId,
+                                      @"categoryId",
+                                      category.categoryName,
+                                      @"categoryName",
+                                      category.parentId,
+                                      @"parentId",
+                                      category.desc,
+                                      @"description",
+                                      category.htmlUrl,
+                                      @"htmlUrl",
+                                      category.rssUrl,
+                                      @"rssUrl", nil];
+        [result addObject:categoryDict];
+    }
+
+    return result;
+}
+
+- (void)setCategoriesDict:(NSArray *)categoriesDict {
+    [self setValue:[NSMutableSet new] forKey:@"categories"];
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+    for (NSDictionary *categoryDict in categoriesDict) {
+        Category *category;
+        NSArray *items;
+        @try {
+            NSFetchRequest *request = [[NSFetchRequest alloc] init];
+            NSEntityDescription *entity = [NSEntityDescription entityForName:@"Category"
+                                                      inManagedObjectContext:appDelegate.managedObjectContext];
+            [request setEntity:entity];
+
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(categoryId like %@) AND (blogId like %@)",
+                                      [categoryDict objectForKey:@"categoryId"],
+                                      self.blogID];
+            [request setPredicate:predicate];
+
+            NSError *error;
+            items = [appDelegate.managedObjectContext executeFetchRequest:request error:&error];
+            [request release];
+        }
+        @catch (NSException *e) {
+            NSLog(@"error checking existence of category: %@", e);
+            items = nil;
+        }
+
+        if ((items != nil) && (items.count > 0)) {
+            // Already exists
+            category = [items objectAtIndex:0];
+        } else {
+            category = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:appDelegate.managedObjectContext];;
+            [category setCategoryId:[categoryDict objectForKey:@"categoryId"]];
+            [category setCategoryName:[categoryDict objectForKey:@"categoryName"]];
+            [category setDesc:[categoryDict objectForKey:@"description"]];
+            [category setHtmlUrl:[categoryDict objectForKey:@"htmlUrl"]];
+            [category setRssUrl:[categoryDict objectForKey:@"rssUrl"]];
+            [category setParentId:[categoryDict objectForKey:@"parentId"]];
+            [category setBlogId:self.blogID];
+        }
+
+        NSMutableSet *categories = [self mutableSetValueForKey:@"categories"];
+        [categories addObject:category];
+        [self setValue:categories forKey:@"categories"];
+    }
 }
 
 @end

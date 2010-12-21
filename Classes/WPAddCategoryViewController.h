@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
-#import "WPSelectionTableViewController.h"
+#import "WPSegmentedSelectionTableViewController.h"
 #import "BlogDataManager.h"
+#import "Category.h"
 
 #define kParentCategoriesContext ((void *)999)
 
@@ -15,6 +16,8 @@
 
     IBOutlet UIBarButtonItem *saveButtonItem;
     IBOutlet UIBarButtonItem *cancelButtonItem;
+
+    NSDictionary *parentCat;
 }
 
 - (IBAction)cancelAddCategory:(id)sender;

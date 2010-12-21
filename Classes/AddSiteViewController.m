@@ -6,6 +6,30 @@
 
 #import "AddSiteViewController.h"
 
+@interface AddSiteViewController(PrivateMethods)
+- (void)getSubsites;
+- (void)didGetSubsitesSuccessfully:(NSArray *)subsites;
+- (void)authenticate;
+- (void)authenticateInBackground;
+- (void)didAuthenticateSuccessfully;
+- (void)didFailAuthentication;
+- (void)addSite;
+- (void)didAddSiteSuccessfully;
+- (void)addSiteFailed;
+- (void)refreshTable;
+- (void)getXMLRPCurl;
+- (void)getXMLRPCUrlSynchronously;
+- (void)setXMLRPCUrl:(NSString *)xmlrpcUrl;
+- (void)verifyRSDurl:(NSString *)rsdURL;
+- (void)verifyXMLRPCurl:(NSString *)xmlrpcURL;
+- (void)verifyXMLRPCurlInBackground:(NSString *)xmlrpcURL;
+- (BOOL)blogExists;
+- (void)keyboardWillShow:(NSNotification *)notification;
+- (void)keyboardWillHide:(NSNotification *)notification;
+- (void)urlDidChange;
+@end
+
+
 @implementation AddSiteViewController
 @synthesize spinner, footerText, addButtonText, url, xmlrpc, username, password, tableView, isGettingXMLRPCURL;
 @synthesize isAuthenticating, isAuthenticated, isAdding, hasSubsites, subsites, viewDidMove, keyboardIsVisible;
@@ -357,7 +381,7 @@
 					}
 					else if(isAuthenticated == YES) {
 						[tv deselectRowAtIndexPath:indexPath animated:YES];
-						[self performSelectorInBackground:@selector(addSite) withObject:nil];
+                        [self addSite];
 					}
 				}
 			}
@@ -502,12 +526,15 @@
 
 - (void)didGetSubsitesSuccessfully:(NSArray *)results {
 	hasCheckedForSubsites = YES;
-	if((results != nil) && (results.count > 1)) {
-		hasSubsites = YES;
+	if (results != nil) {
 		[self setSubsites:results];
-		[addUsersBlogsView setUrl:xmlrpc];
-		[addUsersBlogsView setUsername:username];
-		[addUsersBlogsView setPassword:password];
+
+        if (results.count > 1) {
+            hasSubsites = YES;
+            [addUsersBlogsView setUrl:xmlrpc];
+            [addUsersBlogsView setUsername:username];
+            [addUsersBlogsView setPassword:password];
+        }
 	}
 	
 	if(hasSubsites)
@@ -525,13 +552,8 @@
 		footerText = @"Blog has already been added.";
 	
 	@try {
-		Blog *blog = [subsites objectAtIndex:0];
-		[self setHost:blog.hostURL];
-		[self setBlogID:blog.blogID];
-		[self setBlogName:blog.blogName];
-		
 		if(isAdding)
-			[self performSelectorInBackground:@selector(addSite) withObject:nil];
+            [self addSite];
 	}
 	@catch (NSException * e) {
 		NSLog(@"Error adding site: %@", e);
@@ -605,7 +627,7 @@
 	if((isAdding == NO) || ((username == nil) || (password == nil) || (xmlrpc == nil) || (hasCheckedForSubsites == NO)))
 		[self performSelectorInBackground:@selector(getSubsites) withObject:nil];
 	else if((username != nil) && (password != nil) && (xmlrpc != nil))
-		[self performSelectorInBackground:@selector(addSite) withObject:nil];
+        [self addSite];
 }
 
 - (void)didFailAuthentication {
@@ -707,7 +729,7 @@
 - (void)requestStarted:(ASIHTTPRequest *)request {
 }
 
-- (void)requestReceivedResponseHeaders:(ASIHTTPRequest *)request {
+- (void)requestRedirected:(ASIHTTPRequest *)request {
     NSDictionary *headers = [request responseHeaders];
     NSString *redirect = [headers objectForKey:@"Location"];
     if (redirect != nil) {
@@ -719,19 +741,9 @@
 - (void)requestFinished:(ASIHTTPRequest *)request {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
-	//NSLog(@"requestFinished: %@", [request responseString]);
+//	NSLog(@"requestFinished: %@", [request responseString]);
 	
 	// Success.
-	// Check to see if we should store HTTP Auth credentials
-	NSDictionary *credentials = [request findCredentials];
-	if(credentials != nil) {
-		[appDelegate.currentBlog setObject:[credentials objectForKey:@"kCFHTTPAuthenticationUsername"] forKey:@"authUsername"];
-		[appDelegate.currentBlog setObject:[credentials objectForKey:@"kCFHTTPAuthenticationPassword"] forKey:@"authPassword"];
-		[appDelegate.currentBlog setObject:[NSNumber numberWithInt:1] forKey:@"authEnabled"];
-	}
-	else {
-		[appDelegate.currentBlog setObject:[NSNumber numberWithInt:0] forKey:@"authEnabled"];
-	}
 	
 	// Start by just trying URL + /xmlrpc.php
 	NSString *xmlrpcURL = [self.url stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -843,6 +855,7 @@
 	NSError *error = [xmlrpcRequest error];
 	if(!error) {
 		// Let's double check our XML-RPC endpoint for validity
+        NSLog(@"verified xmlrpc (%@): %@", xmlrpcURL, [xmlrpcRequest responseString]);
 		CXMLDocument *xml = [[[CXMLDocument alloc] initWithXMLString:[xmlrpcRequest responseString] options:CXMLDocumentTidyXML error:nil] autorelease];
 		NSArray *xmlrpcMethods = [xml nodesForXPath:@"//params/param/value/array/data/*" error:nil];
 		if(xmlrpcMethods.count > 0) {
@@ -900,76 +913,28 @@
 }
 
 - (void)addSite {
+    if (hasSubsites) {
+        [self.navigationController pushViewController:addUsersBlogsView animated:YES];
+        isAdding = NO;
+        return;
+    }
+
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	[spinner show];
-	
-	NSString *authUsername = [appDelegate.currentBlog valueForKey:@"authUsername"];
-	NSString *authPassword = [appDelegate.currentBlog valueForKey:@"authPassword"];
-	NSNumber *authEnabled = [appDelegate.currentBlog valueForKey:@"authEnabled"];
-	NSMutableDictionary *newBlog = [[NSMutableDictionary dictionaryWithObjectsAndKeys:
-									 username, @"username", 
-									 self.url, @"url", 
-									 authEnabled, @"authEnabled", 
-									 authUsername, @"authUsername", 
-									 nil] retain];
-	
-	[[BlogDataManager sharedDataManager] resetCurrentBlog];
-	[newBlog setValue:blogID forKey:kBlogId];
-	
-	if(self.host == nil)
-		self.host = [NSString stringWithString:self.url];
-		
-	NSString *hostURL = [[NSString alloc] initWithFormat:@"%@", 
-						 [self.host stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""]];
-	self.host = hostURL;
-	
-	NSString *authBlogURL = [NSString stringWithFormat:@"%@_auth", self.host];
-	[newBlog setValue:hostURL forKey:kBlogHostName];
-	[hostURL release];
-	
-	[newBlog setValue:blogName forKey:@"blogName"];
-	[newBlog setValue:url forKey:@"url"];
-	[newBlog setValue:xmlrpc forKey:@"xmlrpc"];
-	[newBlog setValue:username forKey:@"username"];
-	[newBlog setValue:authEnabled forKey:@"authEnabled"];
-	
-	[[BlogDataManager sharedDataManager] saveBlogPasswordToKeychain:self.password 
-														andUserName:self.username 
-														 andBlogURL:[self.url stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""]];
-	
-	if([authEnabled isEqualToNumber:[NSNumber numberWithInt:1]]) {
-		[[BlogDataManager sharedDataManager] updatePasswordInKeychain:authPassword
-														  andUserName:authUsername
-														   andBlogURL:authBlogURL];
-	}
-	[newBlog setValue:[appDelegate.currentBlog valueForKey:kResizePhotoSetting] forKey:kResizePhotoSetting];
-	if ([appDelegate.currentBlog valueForKey:kResizePhotoSetting] == nil){
-		[newBlog setValue:[NSNumber numberWithInt:10] forKey:kPostsDownloadCount];
-	}
-	else {
-		[newBlog setValue:[appDelegate.currentBlog valueForKey:kPostsDownloadCount] forKey:kPostsDownloadCount];
-	}
-	[newBlog setValue:[appDelegate.currentBlog valueForKey:kGeolocationSetting] forKey:kGeolocationSetting];
-	[newBlog setValue:[NSNumber numberWithBool:YES] forKey:kSupportsPagesAndComments];
-	
-	[BlogDataManager sharedDataManager].isProblemWithXMLRPC = NO;
-	[newBlog setObject:[NSNumber numberWithInt:1] forKey:@"kIsSyncProcessRunning"];
-	[[BlogDataManager sharedDataManager] wrapperForSyncPostsAndGetTemplateForBlog:[BlogDataManager sharedDataManager].currentBlog];
-	[newBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
-	[[BlogDataManager sharedDataManager] setCurrentBlog:newBlog];
-	
+
+	NSMutableDictionary *newBlog = [subsites objectAtIndex:0];
+
 	NSLog(@"saving newBlog: %@", newBlog);
-    [FlurryAPI logEvent:@"AddSite#NewBlog" withParameters:[NSDictionary dictionaryWithObjectsAndKeys:authEnabled, @"auth", nil]];
-	
-	[BlogDataManager sharedDataManager].currentBlogIndex = -1;
-	[[BlogDataManager sharedDataManager] saveCurrentBlog];
-	[[BlogDataManager sharedDataManager] syncCategoriesForBlog:[BlogDataManager sharedDataManager].currentBlog];
-	[[BlogDataManager sharedDataManager] syncStatusesForBlog:[BlogDataManager sharedDataManager].currentBlog];
-	[[BlogDataManager sharedDataManager] syncPostsForBlog:[BlogDataManager sharedDataManager].currentBlog];
-	[newBlog release];
-	
-	[self performSelectorOnMainThread:@selector(didAddSiteSuccessfully) withObject:nil waitUntilDone:NO];
+    [Blog createFromDictionary:newBlog withContext:appDelegate.managedObjectContext];
+    [FlurryAPI logEvent:@"AddSite#NewBlog"];
+    NSError *error = nil;
+    if (![appDelegate.managedObjectContext save:&error]) {
+        NSLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+        exit(-1);
+    }
+
+	[self didAddSiteSuccessfully];
 	[pool release];
 }
 

@@ -20,24 +20,24 @@
 	//AddUsersBlogsViewController *addUsersBlogsView;
 	IBOutlet UITableView *tableView;
 	UITextField *activeTextField;
-	NSString *footerText, *addButtonText, *url, *xmlrpc, *username, *password, *blogID, *blogName, *host;
+	NSString *footerText, *addButtonText, *password;
 	NSArray *subsites;
-	BOOL isAuthenticating, isAuthenticated, isSaving, hasSubsites, hasValidXMLRPCurl, viewDidMove, keyboardIsVisible, isWPcom;
+	BOOL isAuthenticating, isAuthenticated, isSaving, hasSubsites, hasValidXMLRPCurl, viewDidMove, keyboardIsVisible;
 	int blogIndex;
+    Blog *blog;
 }
 
 @property (nonatomic, retain) WPProgressHUD *spinner;
 //@property (nonatomic, retain) AddUsersBlogsViewController *addUsersBlogsView;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) UITextField *activeTextField;
-@property (nonatomic, retain) NSString *footerText, *addButtonText, *url, *xmlrpc, *username, *password, *blogID, *blogName, *host;
+@property (nonatomic, retain) NSString *footerText, *addButtonText, *password;
 @property (nonatomic, retain) NSArray *subsites;
-@property (nonatomic, assign) BOOL isAuthenticating, isAuthenticated, isSaving, hasSubsites, hasValidXMLRPCurl, viewDidMove, keyboardIsVisible, isWPcom;
+@property (nonatomic, assign) BOOL isAuthenticating, isAuthenticated, isSaving, hasSubsites, hasValidXMLRPCurl, viewDidMove, keyboardIsVisible;
 @property (nonatomic, assign) int blogIndex;
+@property (nonatomic, retain) Blog *blog;
 
-- (void)getSubsites;
 - (void)authenticate;
-- (void)didAuthenticateSuccessfully;
 - (void)saveSite;
 - (void)saveSiteInBackground;
 - (void)didSaveSiteSuccessfully;
@@ -45,11 +45,9 @@
 - (void)refreshTable;
 - (void)getXMLRPCurl;
 - (void)setXMLRPCUrl:(NSString *)xmlrpcUrl;
-- (BOOL)blogExists;
 - (void)keyboardWillShow:(NSNotification *)notification;
 - (void)keyboardWillHide:(NSNotification *)notification;
 - (void)urlDidChange;
-- (void)loadSiteData;
 - (IBAction)cancel:(id)sender;
 
 @end

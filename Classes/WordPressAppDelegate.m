@@ -18,7 +18,6 @@
 - (void)restoreCurrentBlog;
 - (void)showSplashView;
 - (int)indexForCurrentBlog;
-- (void)passwordIntoKeychain;
 - (void)checkIfStatsShouldRun;
 - (void)runStats;
 @end
@@ -119,7 +118,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
 
 	[self setAutoRefreshMarkers];
-	[self passwordIntoKeychain];
 	[self restoreCurrentBlog];
 	
 	NSManagedObjectContext *context = [self managedObjectContext];
@@ -138,10 +136,10 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		[window addSubview:[navigationController view]];
 
 		if ([self shouldLoadBlogFromUserDefaults]) {
-			[blogsViewController showBlog:NO];
+//			[blogsViewController showBlog:NO];
 		}
 
-		if ([dataManager countOfBlogs] == 0) {
+		if ([Blog countWithContext:context] == 0) {
 			WelcomeViewController *wViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
 			[blogsViewController.navigationController pushViewController:wViewController animated:YES];
 			[wViewController release];
@@ -155,7 +153,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		[window addSubview:splitViewController.view];
 		[window makeKeyAndVisible];
 
-		if ([dataManager countOfBlogs] == 0)
+		if ([Blog countWithContext:context] == 0)
 		{
 			WelcomeViewController *welcomeViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController-iPad" bundle:nil];
 			UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:welcomeViewController];
@@ -166,7 +164,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 			[aNavigationController release];
 			[welcomeViewController release];
 		}
-		else if ([dataManager countOfBlogs] == 1)
+		else if ([Blog countWithContext:context] == 1)
 		{
 			[dataManager makeBlogAtIndexCurrent:0];
 		}
@@ -308,7 +306,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)syncBlogCategoriesAndStatuses {
-	if(dataManager.countOfBlogs > 0) {
+	if([Blog countWithContext:[self managedObjectContext]] > 0) {
 		[dataManager performSelectorInBackground:@selector(syncBlogCategoriesAndStatuses) withObject:nil];
 	}
 }
@@ -404,7 +402,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
     if (managedObjectModel_ != nil) {
         return managedObjectModel_;
     }
-    NSString *modelPath = [[NSBundle mainBundle] pathForResource:@"WordPress" ofType:@"mom"];
+    NSString *modelPath = [[NSBundle mainBundle] pathForResource:@"WordPress" ofType:@"momd"];
     NSURL *modelURL = [NSURL fileURLWithPath:modelPath];
     managedObjectModel_ = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];    
     return managedObjectModel_;
@@ -424,8 +422,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	
 	// This is important for automatic version migration. Leave it here!
 	NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
-							 [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
-							 [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
+							 [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption, nil];
 	
 	NSError *error = nil;
     persistentStoreCoordinator_ = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
@@ -501,11 +498,17 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	NSString *authURL = @"https://wordpress.com/xmlrpc.php";
 	
-	if(([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil) && 
-	   ([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"] != nil)) {
-		isWPcomAuthenticated = [[WPDataController sharedInstance] authenticateUser:authURL 
-		  username:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"]
-		  password:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"]];
+	if(([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil)) {
+        NSError *error = nil;
+        NSString *password = [SFHFKeychainUtils getPasswordForUsername:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"]
+                                                        andServiceName:@"WordPress.com"
+                                                                 error:&error];
+        
+        if (password != nil) {
+            isWPcomAuthenticated = [[WPDataController sharedInstance] authenticateUser:authURL 
+                                                                              username:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"]
+                                                                              password:password];            
+        }        
 	}
 	else {
 		isWPcomAuthenticated = NO;
@@ -567,87 +570,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
     [splashView release];
 }
 
-- (void) passwordIntoKeychain {
-	//Code for Checking a Blog configured in 1.1 supports Pages & Comments
-	//When the iphone WP version upgraded from 1.1 to 1.2
-
-	int i, blogsCount;
-	BlogDataManager *blogDataManager = [BlogDataManager sharedDataManager];
-	blogsCount = [blogDataManager countOfBlogs];
-	for(i=0;i<blogsCount;i++)
-	{
-		//Make blog at index as current blog for checking presence of password in datastructure instead of keychain
-		//this should only happen when migrating from an old version that stored password in data strucutre into this new
-		//version that stores it into keychain.  Ultimately (after a year or so?) we can probably remove this code entirely
-		//since everyone should be upgraded by then
-		[blogDataManager makeBlogAtIndexCurrent:i];
-		NSDictionary *blog = [blogDataManager blogAtIndex:i];
-	/*	NSString *url = [blog valueForKey:@"url"];
-
-		if(url != nil && [url length] >= 7 && [url hasPrefix:@"http://"]) {
-			url = [url substringFromIndex:7];
-		}
-
-		if(url != nil && [url length]) {
-			url = @"wordpress.com";
-		}
-	*/
-
-		//JOHNB:This code removes pwd from data structure and puts it into keychain
-		//This code fires IF (and ONLY IF) there is a "pwd" key inside the currentBlog
-
-		//if there is a "key" in "blog" that contains "pwd"
-		//copy the value associated (the blog's password) to a string
-		//get the other values needed from "blog" (username, url)
-		//put that password string into the keychain using password, username, url
-		//REMOVE the "pwd" object from the NSDictionary
-		NSArray *keysFromDict = [blog allKeys];
-		if ([keysFromDict containsObject:@"pwd"]){
-			NSMutableDictionary *blogCopy = [[NSMutableDictionary alloc]initWithDictionary:blog];
-			//get the values from blog NSDict
-			NSString *passwordForKeychain = [blog valueForKey:@"pwd"];
-			NSString *username = [blog valueForKey:@"username"];
-			NSString *urlForKeychain = [blog valueForKey:@"url"];
-
-			//check for nil or an http prefix, remove prefix if exists
-			if(urlForKeychain != nil && [urlForKeychain length] >= 7 && [urlForKeychain hasPrefix:@"http://"]){
-				urlForKeychain = [urlForKeychain substringFromIndex:7];
-			}
-
-			//log the values for debugging
-			//TODO:FIXME:REMOVE THIS CODE!
-			//NSLog(@"passwordForKeychain = %@ username = %@ urlForKeychain = %@", passwordForKeychain, username, urlForKeychain);
-			//save the password to the keychain using the necessary extra values
-			[blogDataManager saveBlogPasswordToKeychain:(passwordForKeychain?passwordForKeychain:@"") andUserName:username andBlogURL:urlForKeychain];
-			//remove the pwd from the data structure henceforth
-			//NSLog(@"before removeObjectForKey");
-			//NSLog(@"This is the value before the remove %@", [blogCopy objectForKey:@"pwd"]);
-			[blogCopy removeObjectForKey:@"pwd"];
-			//[blogCopy setObject:@"asdf" forKey:@"pwd"];
-			//NSLog(@"Just ran: [blogCopy removeObjectForKey: @'pwd'] Saving Modified blog via setCurrentBlog as per usual");
-			//NSLog(@"after removeObjectForKey");
-			//NSLog(@"This is the value after the remove %@", [blogCopy objectForKey:@"pwd"]);
-			//save blog by using BlogDataManager setCurrentBlog - which copies the blog passed in OVER the current blog if it's different
-			// compiler was unhappy with this because setCurrentBlog is a private method of the BlogDataManager class
-			//So, I made a public method in BlogDataManager that just calls setCurrentBlog... avoiding the compiler error
-			//it just calls setCurrentBlog and passes the exact same object (blogCopy)
-			//OK - here is the call to the public method
-
-			//[blogDataManager
-
-			[blogDataManager replaceBlogWithBlog:blogCopy atIndex:i];
-			//JOHNB - I think this is unnecessary now that we have replaceBLogWithBlog
-
-			//[blogDataManager callSetCurrentBlog:blogCopy];
-
-			[blogCopy release];
-			//NSLog(@"inside the if... this implies we found pwd inside the blog NSDict");
-		}else {
-			//NSLog(@"We did NOT find pwd inside the blog NSDict and thus did not go through the if");
-		}
-}
-}
-
 - (void) checkIfStatsShouldRun {
 	//check if statsDate exists in user defaults, if not, add it and run stats since this is obviously the first time
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -687,7 +609,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	NSLocale *locale = [NSLocale currentLocale];
 	NSString *language = [[locale objectForKey: NSLocaleIdentifier] stringByUrlEncoding];
 	NSString *osversion = [[[UIDevice currentDevice] systemVersion] stringByUrlEncoding];
-	int num_blogs = [[BlogDataManager sharedDataManager] countOfBlogs];
+	int num_blogs = [Blog countWithContext:[self managedObjectContext]];
 	NSString *numblogs = [[NSString stringWithFormat:@"%d", num_blogs] stringByUrlEncoding];
 	
 	//NSLog(@"UUID %@", deviceuuid);

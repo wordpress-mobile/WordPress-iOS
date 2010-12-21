@@ -18,9 +18,11 @@
     IBOutlet CommentsViewController *commentsViewController;
 	IBOutlet StatsTableViewController *statsTableViewController;
 	BOOL stateRestored;
+    Blog *blog;
 }
 
 @property (nonatomic, retain) UITabBarController *tabBarController;
+@property (nonatomic, retain) Blog *blog;
 
 - (void)reselect;
 - (void)saveState;

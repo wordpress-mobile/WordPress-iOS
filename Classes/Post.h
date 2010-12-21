@@ -6,7 +6,9 @@
 //
 
 #import <CoreData/CoreData.h>
-
+#import "WordPressAppDelegate.h"
+#import "Category.h"
+#import "Blog.h"
 
 @interface Post :  NSManagedObject  
 {
@@ -34,7 +36,8 @@
 @property (nonatomic, retain) NSString * excerpt;
 @property (nonatomic, retain) NSString * password;
 @property (nonatomic, retain) NSDate * datePublished;
-@property (nonatomic, retain) NSString * categories;
+@property (nonatomic, retain) NSMutableSet * categories;
+@property (nonatomic, assign) NSArray * categoriesDict;
 @property (nonatomic, retain) NSString * author;
 @property (nonatomic, retain) NSString * uniqueID;
 @property (nonatomic, retain) NSNumber * wasDeleted;
@@ -42,7 +45,7 @@
 @property (nonatomic, retain) NSString * note;
 
 - (NSDictionary *)legacyPost;
-
+- (NSString *)categoriesText;
 @end
 
 

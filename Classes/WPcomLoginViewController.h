@@ -23,13 +23,4 @@
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, assign) WordPressAppDelegate *appDelegate;
 
-- (void)saveLoginData;
-- (BOOL)authenticate;
-- (void)clearLoginData;
-- (void)selectPasswordField:(id)sender;
-- (void)signIn:(id)sender;
-- (IBAction)cancel:(id)sender;
-- (void)refreshTable;
-- (void)didSignInSuccessfully;
-
 @end

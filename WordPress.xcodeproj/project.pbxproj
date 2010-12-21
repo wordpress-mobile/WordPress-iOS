@@ -148,7 +148,6 @@
 		834CAEA7122D56DC003DDF49 /* video_thumbnail.png in Resources */ = {isa = PBXBuildFile; fileRef = 834CAEA6122D56DC003DDF49 /* video_thumbnail.png */; };
 		834CE5FE1256B2360046A4A3 /* WPReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 834CE5FC1256B2360046A4A3 /* WPReachability.m */; };
 		834CE7341256D0DE0046A4A3 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834CE7331256D0DE0046A4A3 /* CFNetwork.framework */; };
-		834CE7381256D0F60046A4A3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834CE7371256D0F60046A4A3 /* CoreGraphics.framework */; };
 		834CE73C1256D0FF0046A4A3 /* libz.1.2.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 834CE73B1256D0FF0046A4A3 /* libz.1.2.3.dylib */; };
 		834CE8711256E7F60046A4A3 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 834CE8621256E7F60046A4A3 /* ASIAuthenticationDialog.m */; };
 		834CE8721256E7F60046A4A3 /* ASIDownloadCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 834CE8651256E7F60046A4A3 /* ASIDownloadCache.m */; };
@@ -156,7 +155,6 @@
 		834CE8741256E7F60046A4A3 /* ASIHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 834CE8691256E7F60046A4A3 /* ASIHTTPRequest.m */; };
 		834CE8751256E7F60046A4A3 /* ASIInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 834CE86D1256E7F60046A4A3 /* ASIInputStream.m */; };
 		834CE8761256E7F60046A4A3 /* ASINetworkQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 834CE86F1256E7F60046A4A3 /* ASINetworkQueue.m */; };
-		8350E15A11D28B4A00A7B073 /* WordPress.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */; };
 		8350E49611D2C71E00A7B073 /* Media.m in Sources */ = {isa = PBXBuildFile; fileRef = 8350E49511D2C71E00A7B073 /* Media.m */; };
 		8355D67E11D13EAD00A61362 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8355D67D11D13EAD00A61362 /* MobileCoreServices.framework */; };
 		8355D7D911D260AA00A61362 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8355D7D811D260AA00A61362 /* CoreData.framework */; };
@@ -304,6 +302,9 @@
 		E10D665F12BB7C49002F0C78 /* ASIDataDecompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = E10D665D12BB7C49002F0C78 /* ASIDataDecompressor.m */; };
 		E10D666212BB7C67002F0C78 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = E10D666112BB7C67002F0C78 /* Reachability.m */; };
 		E1208C0D12A6D41C008F1FB7 /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1208C0C12A6D41C008F1FB7 /* libFlurry.a */; };
+		E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */; };
+		E125445612BF5B3900D87A0A /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E125445512BF5B3900D87A0A /* Category.m */; };
+		E125451812BF68F900D87A0A /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = E125451712BF68F900D87A0A /* Page.m */; };
 		E19F29AD12B8BC22008FF660 /* access.c in Sources */ = {isa = PBXBuildFile; fileRef = E19F297912B8BC22008FF660 /* access.c */; };
 		E19F29AE12B8BC22008FF660 /* alloc.c in Sources */ = {isa = PBXBuildFile; fileRef = E19F297B12B8BC22008FF660 /* alloc.c */; };
 		E19F29AF12B8BC22008FF660 /* attrask.c in Sources */ = {isa = PBXBuildFile; fileRef = E19F297C12B8BC22008FF660 /* attrask.c */; };
@@ -568,7 +569,7 @@
 		834CE86E1256E7F60046A4A3 /* ASINetworkQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASINetworkQueue.h; sourceTree = "<group>"; };
 		834CE86F1256E7F60046A4A3 /* ASINetworkQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASINetworkQueue.m; sourceTree = "<group>"; };
 		834CE8701256E7F60046A4A3 /* ASIProgressDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIProgressDelegate.h; sourceTree = "<group>"; };
-		8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; name = WordPress.xcdatamodel; path = Classes/WordPress.xcdatamodel; sourceTree = "<group>"; };
+		8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = WordPress.xcdatamodel; sourceTree = "<group>"; };
 		8350E49411D2C71E00A7B073 /* Media.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Media.h; path = ../Media.h; sourceTree = "<group>"; };
 		8350E49511D2C71E00A7B073 /* Media.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Media.m; path = ../Media.m; sourceTree = "<group>"; };
 		8355D67D11D13EAD00A61362 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -785,6 +786,11 @@
 		E10D666112BB7C67002F0C78 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = Reachability/Reachability.m; sourceTree = "<group>"; };
 		E1208C0B12A6D41C008F1FB7 /* FlurryAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryAPI.h; sourceTree = "<group>"; };
 		E1208C0C12A6D41C008F1FB7 /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry.a; sourceTree = "<group>"; };
+		E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 2.xcdatamodel"; sourceTree = "<group>"; };
+		E125445412BF5B3900D87A0A /* Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Category.h; sourceTree = "<group>"; };
+		E125445512BF5B3900D87A0A /* Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Category.m; sourceTree = "<group>"; };
+		E125451612BF68F900D87A0A /* Page.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Page.h; sourceTree = "<group>"; };
+		E125451712BF68F900D87A0A /* Page.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Page.m; sourceTree = "<group>"; };
 		E19F297912B8BC22008FF660 /* access.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = access.c; sourceTree = "<group>"; };
 		E19F297A12B8BC22008FF660 /* access.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = access.h; sourceTree = "<group>"; };
 		E19F297B12B8BC22008FF660 /* alloc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alloc.c; sourceTree = "<group>"; };
@@ -865,7 +871,6 @@
 				8355D7D911D260AA00A61362 /* CoreData.framework in Frameworks */,
 				83FB4D3F122C38F700DB9506 /* MediaPlayer.framework in Frameworks */,
 				834CE7341256D0DE0046A4A3 /* CFNetwork.framework in Frameworks */,
-				834CE7381256D0F60046A4A3 /* CoreGraphics.framework in Frameworks */,
 				834CE73C1256D0FF0046A4A3 /* libz.1.2.3.dylib in Frameworks */,
 				835E2403126E66E50085940B /* AssetsLibrary.framework in Frameworks */,
 				83043E55126FA31400EC9953 /* MessageUI.framework in Frameworks */,
@@ -998,7 +1003,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
+				E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */,
 				6EDC0E8E105881A800F68A1D /* iTunesArtwork */,
 				45F285DA1149BD020014D36C /* Icon.png */,
 				6EF6706111BE3B750069703D /* Icon@2x.png */,
@@ -1057,6 +1062,8 @@
 		2F706A870DFB229B00B43086 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E125445412BF5B3900D87A0A /* Category.h */,
+				E125445512BF5B3900D87A0A /* Category.m */,
 				838C672C1210C3C300B09CA3 /* Post.h */,
 				838C672D1210C3C300B09CA3 /* Post.m */,
 				8350E49411D2C71E00A7B073 /* Media.h */,
@@ -1069,6 +1076,8 @@
 				29A84CA4112E485100CDDB06 /* IncrementPost.m */,
 				833AF259114575A50016DE8F /* PostAnnotation.h */,
 				833AF25A114575A50016DE8F /* PostAnnotation.m */,
+				E125451612BF68F900D87A0A /* Page.h */,
+				E125451712BF68F900D87A0A /* Page.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -2018,7 +2027,7 @@
 				833F59F611C95DE400789837 /* HttpHelper.m in Sources */,
 				83418A5611C9F50800ACF00C /* WPDataController.m in Sources */,
 				83418AAA11C9FA6E00ACF00C /* Comment.m in Sources */,
-				8350E15A11D28B4A00A7B073 /* WordPress.xcdatamodel in Sources */,
+				E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */,
 				8350E49611D2C71E00A7B073 /* Media.m in Sources */,
 				83610AAA11F4AD2C00421116 /* WPcomLoginViewController.m in Sources */,
 				8369FF9111F4F3BF003106C7 /* AddUsersBlogsViewController.m in Sources */,
@@ -2106,6 +2115,8 @@
 				E10D665E12BB7C49002F0C78 /* ASIDataCompressor.m in Sources */,
 				E10D665F12BB7C49002F0C78 /* ASIDataDecompressor.m in Sources */,
 				E10D666212BB7C67002F0C78 /* Reachability.m in Sources */,
+				E125445612BF5B3900D87A0A /* Category.m in Sources */,
+				E125451812BF68F900D87A0A /* Page.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2360,6 +2371,21 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
+				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
+			);
+			currentVersion = E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */;
+			name = WordPress.xcdatamodeld;
+			path = Classes/WordPress.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
 }

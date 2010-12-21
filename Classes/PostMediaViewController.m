@@ -1075,8 +1075,12 @@
 			
 			if(textRange.location != NSNotFound)
 			{
+                NSError *error = nil;
 				NSString *username = [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"username"];
-				NSString *password = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"];
+				NSString *password = [SFHFKeychainUtils getPasswordForUsername:username
+                                                                            andServiceName:@"WordPress.com"
+                                                                                     error:&error];
+
 				NSArray *args = [NSArray arrayWithObjects:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:kBlogId],
 								 username, password, nil];
 								

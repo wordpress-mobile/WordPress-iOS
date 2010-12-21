@@ -603,7 +603,7 @@
 	[post setBlogID:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blogid"]];
 	[post setPostTitle:postDetailEditController.titleTextField.text];
 	[post setContent:postDetailEditController.textView.text];
-	[post setCategories:postDetailEditController.categoriesTextField.text];
+	[post setCategoriesDict:postDetailEditController.selectedCategories];
 	[post setTags:postDetailEditController.tagsTextField.text];
 	if (post.dateCreated == nil){
 		[post setDateCreated:[NSDate date]];
@@ -963,7 +963,7 @@
 			if(autosave.tags != nil)
 				[[dm currentPost] setObject:autosave.tags forKey:@"mt_keywords"];
 			if(autosave.categories != nil)
-				[[dm currentPost] setObject:[autosave.categories componentsSeparatedByString:@", "] forKey:@"categories"];
+				[[dm currentPost] setObject:autosave.categories forKey:@"categories"];
 			if(autosave.status != nil) {
 				autosave.status = [dm statusDescriptionForStatus:autosave.status fromBlog:[dm currentBlog]];
 				[[dm currentPost] setValue:autosave.status forKey:@"post_status"];

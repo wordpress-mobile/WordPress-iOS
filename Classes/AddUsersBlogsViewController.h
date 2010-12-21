@@ -39,9 +39,8 @@
 - (void)updateFavicons;
 - (void)reloadData;
 - (void)refreshTableView:(NSNotification *)notifcation;
-- (void)createBlog:(Blog *)blog;
+- (void)createBlog:(NSDictionary *)blogInfo;
 - (void)cancelAddWPcomBlogs;
-- (void)saveSelectedBlogsInBackground;
 - (void)didSaveSelectedBlogsInBackground;
 - (void)signOut;
 - (void)checkAddSelectedButtonStatus;

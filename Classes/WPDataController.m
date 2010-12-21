@@ -82,43 +82,8 @@
 		NSArray *usersBlogsData = [self executeXMLRPCRequest:xmlrpcUsersBlogs];
 		
 		if([usersBlogsData isKindOfClass:[NSArray class]]) {
-			for(NSDictionary *dictBlog in usersBlogsData) {
-				Blog *blog = [[Blog alloc] init];
-				if((int)[dictBlog valueForKey:@"isAdmin"] == 1)
-					blog.isAdmin = [[dictBlog valueForKey:@"isAdmin"] boolValue];
-				
-				[blog setUsername:username];
-				[blog setPassword:password];
-				
-				if([[dictBlog objectForKey:@"blogid"] isKindOfClass:[NSString class]])
-					[blog setBlogID:[dictBlog objectForKey:@"blogid"]];
-				else
-					[blog setBlogID:[[dictBlog objectForKey:@"blogid"] stringValue]];
-				NSString *blogName = [NSString decodeXMLCharactersIn:[dictBlog valueForKey:@"blogName"]];
-				
-				if([blogName isEqualToString:@""] == YES)
-					[blog setBlogName:[dictBlog valueForKey:@"url"]]; 
-				else
-					[blog setBlogName:blogName];
-				
-				[blog setUrl:[dictBlog valueForKey:@"url"]];
-				
-				NSRange textRange = [blog.url.lowercaseString rangeOfString:@"wordpress.com"];
-				NSString *hostURL = [[NSString alloc] initWithFormat:@"%@", 
-									 [blog.url stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""]];
-				if(textRange.location != NSNotFound)
-				{
-					hostURL = [NSString stringWithFormat:@"%@_%@", blog.username, 
-										 [blog.url stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""]];
-				}
-								   
-			   if([hostURL hasSuffix:@"/"])
-				   hostURL = [hostURL substringToIndex:[hostURL length] - 1];
-								   
-			   [blog setHostURL:hostURL];
-			   [blog setXmlrpc:[dictBlog valueForKey:@"xmlrpc"]];
-			   [usersBlogs addObject:blog];
-			}
+            [usersBlogs release];
+            usersBlogs = [NSArray arrayWithArray:usersBlogsData];
 		}
 		else if([usersBlogsData isKindOfClass:[NSError class]]) {
 			NSError *error = (NSError *)usersBlogsData;

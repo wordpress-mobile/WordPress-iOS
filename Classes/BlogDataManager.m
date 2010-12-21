@@ -1190,9 +1190,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
         [unsupportedWordpress release];
         return NO;
     }
-	
-    [currentBlog setValue:[NSNumber numberWithBool:supportsPagesAndComments]   forKey:kSupportsPagesAndComments];
-	
+		
     [currentBlog setValue:xmlrpc ? xmlrpc:@"" forKey:@"xmlrpc"];
     [currentBlog setValue:(username ? username:@"")forKey:@"username"];
 	
@@ -2977,10 +2975,8 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
     // #291 // [self syncPostsForBlog:aBlog];
     [self generateTemplateForBlog:aBlog];
 	
-    if ([[currentBlog valueForKey:kSupportsPagesAndComments] boolValue]) {
-        [self syncCommentsForBlog:aBlog];
-        // #291 // [self syncPagesForBlog:aBlog];
-    }
+    [self syncCommentsForBlog:aBlog];
+    // #291 // [self syncPagesForBlog:aBlog];
 	
     [self performSelectorOnMainThread:@selector(postBlogsRefreshNotificationInMainThread:) withObject:aBlog waitUntilDone:YES];
 	
@@ -2994,12 +2990,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 	
     // #291 // [self syncPostsForBlog:aBlog];
     [self generateTemplateForBlog:aBlog];
-	
-    if ([[currentBlog valueForKey:kSupportsPagesAndComments] boolValue]) {
-        //[self syncCommentsForBlog:aBlog showErrors:FALSE];
-        // #291 // [self syncPagesForBlog:aBlog];
-    }
-	
+		
     //Has been commented to avoid Empty Blog Creation.
     //	[aBlog setObject:[NSNumber numberWithInt:0] forKey:@"kIsSyncProcessRunning"];
     //	[self saveCurrentBlog];

@@ -101,7 +101,22 @@
     [super dismissModalViewControllerAnimated:(BOOL)animated];
 }
 
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    flag = YES;
+    if (self.navigationController) {
+        [self.navigationController pushViewController:viewController animated:animated];
+    }
+}
+
+- (void)popViewControllerAnimated:(BOOL) animated {
+    flag = NO;
+    if (self.navigationController) {
+        [self.navigationController popViewControllerAnimated:animated];
+    }
+}
+
 - (void)viewWillAppear:(BOOL)animated {
+    flag = NO;
     [super viewWillAppear:animated];
     [tableView reloadData];
 }
@@ -137,9 +152,9 @@
     }
 
 #if defined __IPHONE_3_0
-    cell.textLabel.text = [objects objectAtIndex:indexPath.row];
+    cell.textLabel.text = [[objects objectAtIndex:indexPath.row] valueForKey:@"categoryName"];
 #else if defined __IPHONE_2_0
-    cell.text = [objects objectAtIndex:indexPath.row];
+    cell.text = [[objects objectAtIndex:indexPath.row] valueForKey:@"categoryName"];
 #endif
 
     BOOL curStatus = [[selectionStatusOfObjects objectAtIndex:indexPath.row] boolValue];

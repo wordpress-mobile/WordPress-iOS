@@ -9,8 +9,7 @@
 
 @implementation WelcomeViewController
 
-@synthesize tableView, appDelegate
-;
+@synthesize tableView, appDelegate;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -19,7 +18,6 @@
     [super viewDidLoad];
 	
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-	//[appDelegate checkWPcomAuthentication];
     [FlurryAPI logEvent:@"Welcome"];
 	
 	self.tableView.backgroundColor = [UIColor clearColor];
@@ -34,7 +32,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	if([[BlogDataManager sharedDataManager] countOfBlogs] == 0) {
+	if([Blog countWithContext:appDelegate.managedObjectContext] == 0) {
 		self.navigationItem.title = @"Welcome";
 		[self.navigationItem setHidesBackButton:YES animated:YES];
 	}
@@ -144,7 +142,7 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if(indexPath.row == 0) {
+	if(indexPath.row == 0) { // Start a new blog at WordPress.com
 		NSString *newNibName = @"WebSignupViewController";
 		if(DeviceIsPad() == YES)
 			newNibName = @"WebSignupViewController-iPad";
@@ -152,10 +150,23 @@
 		[self.navigationController pushViewController:webSignup animated:YES];
 		[webSignup release];
 	}
-	else if(indexPath.row == 1) {
+	else if(indexPath.row == 1) { // Add blog hosted at WordPress.com
+        NSString *username = nil;
+        NSString *password = nil;
+
+        if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil) {
+            NSError *error = nil;
+            username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
+            password = [SFHFKeychainUtils getPasswordForUsername:username
+                                                  andServiceName:@"WordPress.com"
+                                                           error:&error];
+        }
+
 		if(appDelegate.isWPcomAuthenticated) {
 			AddUsersBlogsViewController *addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
 			addUsersBlogsView.isWPcom = YES;
+            [addUsersBlogsView setUsername:username];
+            [addUsersBlogsView setPassword:password];
 			[self.navigationController pushViewController:addUsersBlogsView animated:YES];
 			[addUsersBlogsView release];
 		}
@@ -167,15 +178,11 @@
 		else {
 			AddUsersBlogsViewController *addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
 			addUsersBlogsView.isWPcom = YES;
-			
-			WPcomLoginViewController *wpLoginView = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController" bundle:nil];
-			[self.navigationController presentModalViewController:wpLoginView animated:YES];
 			[self.navigationController pushViewController:addUsersBlogsView animated:YES];
-			[wpLoginView release];
 			[addUsersBlogsView release];
 		}
 	}
-	else if(indexPath.row == 2) {
+	else if(indexPath.row == 2) { // Add self-hosted WordPress.org blog
         AddSiteViewController *addSiteView;
 		if(DeviceIsPad() == YES) {
             addSiteView = [[AddSiteViewController alloc] initWithNibName:@"AddSiteViewController-iPad" bundle:nil];
@@ -209,7 +216,7 @@
 }
 
 - (void)dealloc {
-	[tableView release];
+	self.tableView = nil;
     [super dealloc];
 }
 

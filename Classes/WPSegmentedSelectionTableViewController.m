@@ -57,7 +57,7 @@
 
             for (i = 0; i < count; i++) {
                 if ([[self.selectionStatusOfObjects objectAtIndex:i] boolValue] == YES) {
-                    [result addObject:[[objects objectAtIndex:i] objectForKey:@"categoryName"]];
+                    [result addObject:[objects objectAtIndex:i]];
                 }
             }
 
@@ -104,12 +104,11 @@
     for (i = 0; i < count; i++) {
         NSMutableDictionary *category = [objects objectAtIndex:i];
         NSString *parentID = [category objectForKey:@"parentId"];
-        NSString *catName = [category objectForKey:@"categoryName"];
 
         BOOL isFound = NO;
 
         for (k = 0; k <[selObjects count]; k++) {
-            if ([[selObjects objectAtIndex:k] isEqualToString:catName]) {
+            if ([[[selObjects objectAtIndex:k] objectForKey:@"categoryId"] isEqualToString:[category objectForKey:@"categoryId"]]) {
                 [selectionStatusOfObjects addObject:[NSNumber numberWithBool:YES]];
                 isFound = YES;
                 break;

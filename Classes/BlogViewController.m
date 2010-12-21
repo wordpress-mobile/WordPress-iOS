@@ -15,7 +15,7 @@
 
 @implementation BlogViewController
 
-@synthesize tabBarController;
+@synthesize tabBarController, blog;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -23,8 +23,7 @@
 
     self.view = tabBarController.view;
 
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
-    self.title =[NSString decodeXMLCharactersIn:[[dm currentBlog] valueForKey:@"blogName"]];
+    self.title =[NSString decodeXMLCharactersIn:[blog valueForKey:@"blogName"]];
 	
 	if (DeviceIsPad() == NO) {
 	#if defined __IPHONE_3_0
@@ -89,14 +88,7 @@
 #pragma mark UITabBarControllerDelegate Methods
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
-
-    if (viewController == pagesViewController || viewController == commentsViewController) {
-        // Enable pages and comments tabs only if they are supported.
-        return [[[dm currentBlog] valueForKey:kSupportsPagesAndComments] boolValue];
-    } else {
-        return YES;
-    }
+    return YES;
 }
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
