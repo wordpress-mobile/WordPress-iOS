@@ -2411,6 +2411,9 @@ static NSOperationQueue *sharedQueue = nil;
 {
 	NSMutableDictionary *newCredentials = [[[NSMutableDictionary alloc] init] autorelease];
 	
+    if (requestAuthentication == nil) {
+        return nil;
+    }
 	// Is an account domain needed? (used currently for NTLM only)
 	if (CFHTTPAuthenticationRequiresAccountDomain(requestAuthentication)) {
 		if (!domain) {
