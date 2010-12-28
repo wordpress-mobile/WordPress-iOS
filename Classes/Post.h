@@ -8,45 +8,46 @@
 #import <CoreData/CoreData.h>
 #import "WordPressAppDelegate.h"
 #import "Category.h"
-#import "Blog.h"
+#import "AbstractPost.h"
 
-@interface Post :  NSManagedObject  
+@interface Post :  AbstractPost  
 {
 }
 
-@property (nonatomic, retain) NSString * content;
+#pragma mark -
+#pragma mark Properties
+#pragma mark     Attributes
 @property (nonatomic, retain) NSString * geolocation;
-@property (nonatomic, retain) NSNumber * shouldResizePhotos;
-@property (nonatomic, retain) NSString * status;
-@property (nonatomic, retain) NSString * tags;
-@property (nonatomic, retain) NSString * shortlink;
-@property (nonatomic, retain) NSNumber * isLocalDraft;
-@property (nonatomic, retain) NSNumber * isPublished;
-@property (nonatomic, retain) NSString * permalink;
-@property (nonatomic, retain) NSString * postID;
-@property (nonatomic, retain) NSDate * dateCreated;
-@property (nonatomic, retain) NSDate * dateAutosaved;
-@property (nonatomic, retain) NSDate * dateDeleted;
-@property (nonatomic, retain) NSString * blogID;
-@property (nonatomic, retain) NSDate * dateModified;
-@property (nonatomic, retain) NSString * postTitle;
-@property (nonatomic, retain) NSString * postType;
-@property (nonatomic, retain) NSNumber * isAutosave;
-@property (nonatomic, retain) NSNumber * wasLocalDraft;
-@property (nonatomic, retain) NSString * excerpt;
 @property (nonatomic, retain) NSString * password;
-@property (nonatomic, retain) NSDate * datePublished;
+@property (nonatomic, retain) NSString * tags;
+
+#pragma mark     Relationships
 @property (nonatomic, retain) NSMutableSet * categories;
-@property (nonatomic, assign) NSArray * categoriesDict;
-@property (nonatomic, retain) NSString * author;
-@property (nonatomic, retain) NSString * uniqueID;
-@property (nonatomic, retain) NSNumber * wasDeleted;
-@property (nonatomic, retain) NSNumber * isHidden;
-@property (nonatomic, retain) NSString * note;
+@property (nonatomic, retain) NSMutableSet * comments;
 
-- (NSDictionary *)legacyPost;
+#pragma mark     Helpers
+// Categories wrapper for category selection in posts
+@property (nonatomic, retain) NSArray * categoriesDict;
+
+#pragma mark -
+#pragma mark Methods
+#pragma mark     Helpers
+// Returns categories as a comma-separated list
 - (NSString *)categoriesText;
+- (void)setCategoriesFromNames:(NSArray *)categoryNames;
+
+#pragma mark     Data Management
+// Save changes to disk
+- (void)save;
+// Autosave for local drafts
+- (void)autosave;
+
+#pragma mark Class Methods
+// Creates an empty local post associated with blog
++ (Post *)newDraftForBlog:(Blog *)blog;
++ (Post *)findWithBlog:(Blog *)blog andPostID:(NSNumber *)postID;
+// Takes the NSDictionary from a XMLRPC call and creates or updates a post
++ (Post *)createOrReplaceFromDictionary:(NSDictionary *)postInfo forBlog:(Blog *)blog;
++ (NSArray *)availableStatuses;
+
 @end
-
-
-

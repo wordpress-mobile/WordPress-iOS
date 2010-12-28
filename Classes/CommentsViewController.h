@@ -9,6 +9,7 @@
 
 #import "CommentsTableViewDelegate.h"
 #import "RefreshButtonView.h"
+#import "Blog.h"
 
 @class CommentViewController;
 
@@ -50,6 +51,7 @@
 @property (nonatomic, retain) UISegmentedControl *segmentedControl;
 @property (nonatomic, retain) NSIndexPath *selectedIndexPath;
 @property (nonatomic, assign) BOOL isSecondaryViewController;
+@property (nonatomic, retain) Blog *blog;
 
 - (IBAction)deleteSelectedComments:(id)sender;
 - (IBAction)approveSelectedComments:(id)sender;

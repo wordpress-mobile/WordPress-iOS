@@ -48,6 +48,7 @@
 @property (nonatomic, retain) NSMutableArray *drafts, *pages;
 @property (nonatomic, retain) WPProgressHUD *progressAlert;
 @property (nonatomic, assign) int loadLimit;
+@property (nonatomic, retain) Blog *blog;
 
 - (void)loadPages;
 - (void)showAddNewPage;

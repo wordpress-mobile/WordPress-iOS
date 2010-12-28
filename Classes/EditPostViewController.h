@@ -38,7 +38,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
     IBOutlet UILabel *titleLabel;
     IBOutlet UIView *textViewContentView;
     IBOutlet UITextField *textViewPlaceHolderField;
-    IBOutlet UIButton *customFieldsEditButton, *autosaveButton;
+    IBOutlet UIButton *customFieldsEditButton;
 	IBOutlet UIButton *locationButton;
 	IBOutlet UIActivityIndicatorView *locationSpinner;
     IBOutlet UIBarButtonItem *newCategoryBarButtonItem;
@@ -74,7 +74,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 @property (nonatomic, assign) BOOL isEditing, editingDisabled, editCustomFields, isCustomFieldsEnabledForThisPost;
 @property (nonatomic, assign) BOOL isLocalDraft;
 @property (nonatomic, assign) CGRect normalTextFrame;
-@property (nonatomic, retain) UIButton *customFieldsEditButton, *autosaveButton;
+@property (nonatomic, retain) UIButton *customFieldsEditButton;
 @property (nonatomic, retain) CLLocation *initialLocation;
 @property (nonatomic, retain) IBOutlet UIButton *locationButton;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *locationSpinner;
@@ -93,31 +93,20 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (IBAction)endTextEnteringButtonAction:(id)sender;
 - (void)endEditingAction:(id)sender;
 - (void)refreshCategory;
-- (void)syncStatuses;
 - (void)refreshStatus;
-- (void)syncCategoriesAndStatuses;
 - (void)positionTextView:(NSDictionary *)keyboardInfo;
 - (void)deviceDidRotate:(NSNotification *)notification;
 - (void)resignTextView;
+- (void)updateValuesToCurrentPost;
+- (void)showLinkView;
+- (void)disableInteraction;
 
 // Media
 - (void)insertMediaAbove:(NSNotification *)notification;
 - (void)insertMediaBelow:(NSNotification *)notification;
 - (void)removeMedia:(NSNotification *)notification;
 
-// Autosave
-- (void)updateValuesToCurrentPost;
-- (void)showLinkView;
-- (void)disableInteraction;
-- (void)preserveUnsavedPost;
-- (void)clearUnsavedPost;
-- (void)restoreUnsavedPost;
-- (void)showAutosaveButton;
-- (void)hideAutosaveButton;
-- (IBAction)showAutosaves:(id)sender;
-
 // Categories
-- (void)syncCategories;
 - (IBAction)showAddNewCategoryView:(id)sender;
 - (IBAction)showCategoriesViewAction:(id)sender;
 - (IBAction)showStatusViewAction:(id)sender;

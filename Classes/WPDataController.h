@@ -15,6 +15,7 @@
 #import "Comment.h"
 #import "WordPressAppDelegate.h"
 #import "TouchXML.h"
+#import "SFHFKeychainUtils.h"
 
 typedef enum {
 	SyncDirectionLocal,
@@ -31,10 +32,15 @@ typedef enum {
 
 + (WPDataController *)sharedInstance;
 
+#pragma mark -
+#pragma mark User
 - (BOOL)checkXMLRPC:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password;
 - (BOOL)authenticateUser:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password;
 - (NSMutableArray *)getBlogsForUrl:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password;
-- (id)executeXMLRPCRequest:(XMLRPCRequest *)req;
-- (NSError *)errorWithResponse:(XMLRPCResponse *)res;
+- (NSMutableArray *)getCategoriesForBlog:(Blog *)blog;
+
+#pragma mark -
+#pragma mark Blog
+- (NSMutableArray *)getRecentPostsForBlog:(Blog *)blog;
 
 @end

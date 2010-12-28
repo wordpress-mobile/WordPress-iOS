@@ -294,7 +294,7 @@
 		[f release];
 		
 		[self storeData];
-		[self verifyPublishSuccessful:newPageID localDraftID:page.uniqueID];
+//		[self verifyPublishSuccessful:newPageID localDraftID:page.uniqueID];
 	}
 	else {
 		// Failure

@@ -12,6 +12,7 @@
 @implementation PagesViewController
 @synthesize newButtonItem, anyMorePages, selectedIndexPath, draftManager, appDelegate, tabController, drafts, mediaManager, dm;
 @synthesize pageManager, progressAlert, loadLimit, pages;
+@synthesize blog;
 
 #pragma mark -
 #pragma mark View Lifecycle
@@ -218,8 +219,8 @@
 	switch (indexPath.section) {
 		case 0:
         {
-			Post *page = [drafts objectAtIndex:indexPath.row];
-			[pageViewController setSelectedPostID:page.uniqueID];
+//			Post *page = [drafts objectAtIndex:indexPath.row];
+//			[pageViewController setSelectedPostID:page.uniqueID];
 			[appDelegate showContentDetailViewController:pageViewController];
 			
 			self.selectedIndexPath = indexPath;

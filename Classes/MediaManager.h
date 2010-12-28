@@ -15,7 +15,7 @@
 }
 
 - (Media *)get:(NSString *)uniqueID;
-- (NSMutableArray *)getForPostID:(NSString *)postID andBlogURL:(NSString *)blogURL andMediaType:(MediaType)mediaType;
+- (NSMutableArray *)getForPostID:(NSNumber *)postID andBlogURL:(NSString *)blogURL andMediaType:(MediaType)mediaType;
 - (NSMutableArray *)getForBlogURL:(NSString *)blogURL andMediaType:(MediaType)mediaType;
 - (BOOL)exists:(NSString *)uniqueID;
 - (void)save:(Media *)media;
@@ -23,7 +23,7 @@
 - (void)update:(Media *)media;
 - (void)remove:(Media *)media;
 - (void)removeForBlogURL:(NSString *)blogURL;
-- (void)removeForPostID:(NSString *)postID andBlogURL:(NSString *)blogURL;
+- (void)removeForPostID:(NSNumber *)postID andBlogURL:(NSString *)blogURL;
 - (void)dataSave;
 - (void)doReport;
 

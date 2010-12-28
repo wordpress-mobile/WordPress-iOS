@@ -539,10 +539,6 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
     return nil;
 }
 
-- (BOOL)postDescriptionHasValidDescription:(id)aPost {
-    return YES;
-}
-
 - (NSString *)imageTagForPath:(NSString *)path andURL:(NSString *)urlStr {
     NSArray *comps = [path componentsSeparatedByString:@"_"];
 	

@@ -6,9 +6,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Post.h"
 
 #define POST_ROW_HEIGHT         60
-#define LOCAL_DRAFTS_ROW_HEIGHT 44
 
 #define LEFT_OFFSET             10
 #define RIGHT_OFFSET            280
@@ -23,7 +23,7 @@
 #define POST_LOCK_IMAGE         @"lock.png"
 
 @interface PostTableViewCell : UITableViewCell {
-    NSDictionary *post;
+    Post *post;
 
     UILabel *nameLabel;
     UILabel *dateLabel;
@@ -32,7 +32,7 @@
 	BOOL gettingMore;
 }
 
-@property (readwrite, assign) NSDictionary *post;
+@property (readwrite, assign) Post *post;
 
 - (void)changeCellLabelsForUpdate:(NSString *)postTotalString:(NSString *) loadingString:(BOOL)isLoading;
 - (void)runSpinner:(BOOL)value;

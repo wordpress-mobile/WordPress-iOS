@@ -24,7 +24,7 @@
 		[request setEntity:entity];
 		
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:
-								  @"(isLocalDraft == YES) AND (uniqueID like %@)", uniqueID];
+								  @"(local == YES)"];
 		[request setPredicate:predicate];
 		
 		NSError *error;
@@ -34,11 +34,8 @@
 	
 	if((items == nil) || (items.count == 0)) {
 		Post *post = [NSEntityDescription insertNewObjectForEntityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];
-		[post setUniqueID:[[NSProcessInfo processInfo] globallyUniqueString]];
-		[post setPostID:post.uniqueID];
-		[post setStatus:@"Local Draft"];
-		[post setIsLocalDraft:[NSNumber numberWithInt:1]];
-		[post setIsPublished:[NSNumber numberWithInt:0]];
+		post.status = @"Local Draft";
+        post.local = YES;
 		return post;
 	}
 	
@@ -57,7 +54,7 @@
     [sortDescriptor release];
 	
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:
-							  @"(isLocalDraft == YES) AND (isAutosave == NO) AND (blogID == %@) AND (postType like %@)", blogID, postType];
+							  @"(local == YES) AND (blogID == %@)", blogID];
 	[request setPredicate:predicate];
 	
     NSError *error;  
@@ -84,7 +81,7 @@
 	[request setEntity:entity];
 	
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:
-							  @"(isLocalDraft == YES) AND (uniqueID like %@)", uniqueID];
+							  @"(local == YES)"];
 	[request setPredicate:predicate];	
 	
 	NSError *error;
@@ -98,8 +95,7 @@
 }
 
 - (void)save:(Post *)post {
-	if((post.uniqueID == nil) || ([self exists:post.uniqueID] == NO)) {
-		[post setUniqueID:[[NSProcessInfo processInfo] globallyUniqueString]];
+	if(post.postID == nil) {
 		[self insert:post];
 	}
 	else {

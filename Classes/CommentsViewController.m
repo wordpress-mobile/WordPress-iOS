@@ -47,6 +47,7 @@
 @synthesize selectedIndexPath;
 @synthesize commentViewController;
 @synthesize isSecondaryViewController;
+@synthesize blog;
 
 #pragma mark -
 #pragma mark Memory Management

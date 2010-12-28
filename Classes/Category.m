@@ -8,9 +8,23 @@
 
 #import "Category.h"
 
+@interface Category(PrivateMethods)
++ (Category *)newCategoryForBlog:(Blog *)blog;
+@end
 
 @implementation Category
-@dynamic categoryId, categoryName, desc, htmlUrl, parentId, rssUrl, posts, blogId;
+@dynamic categoryID, categoryName, parentID, posts;
+@dynamic blog;
+
++ (Category *)newCategoryForBlog:(Blog *)blog {
+    Category *category = [[Category alloc] initWithEntity:[NSEntityDescription entityForName:@"Category"
+                                                          inManagedObjectContext:[blog managedObjectContext]]
+               insertIntoManagedObjectContext:[blog managedObjectContext]];
+    
+    category.blog = blog;
+    
+    return category;
+}
 
 + (BOOL)existsName:(NSString *)name forBlogId:(NSString *)blogId withParentId:(NSString *)parentId {
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -45,4 +59,35 @@
     }
 
 }
+
++ (Category *)findWithBlog:(Blog *)blog andCategoryID:(NSNumber *)categoryID {
+    NSSet *results = [blog.categories filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"categoryID == %@",categoryID]];
+    
+    if (results && (results.count > 0)) {
+        return [[results allObjects] objectAtIndex:0];
+    }
+    return nil;    
+}
+
++ (Category *)createOrReplaceFromDictionary:(NSDictionary *)categoryInfo forBlog:(Blog *)blog {
+    if ([categoryInfo objectForKey:@"categoryId"] == nil) {
+        return nil;
+    }
+    if ([categoryInfo objectForKey:@"categoryName"] == nil) {
+        return nil;
+    }
+
+    Category *category = [self findWithBlog:blog andCategoryID:[[categoryInfo objectForKey:@"categoryId"] numericValue]];
+    
+    if (category == nil) {
+        category = [[Category newCategoryForBlog:blog] autorelease];
+    }
+    
+    category.categoryID     = [[categoryInfo objectForKey:@"categoryId"] numericValue];
+    category.categoryName   = [categoryInfo objectForKey:@"categoryName"];
+    category.parentID       = [[categoryInfo objectForKey:@"parentId"] numericValue];
+    
+    return category;
+}
+
 @end

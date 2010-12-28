@@ -152,9 +152,9 @@
     }
 
 #if defined __IPHONE_3_0
-    cell.textLabel.text = [[objects objectAtIndex:indexPath.row] valueForKey:@"categoryName"];
+    cell.textLabel.text = [objects objectAtIndex:indexPath.row];
 #else if defined __IPHONE_2_0
-    cell.text = [[objects objectAtIndex:indexPath.row] valueForKey:@"categoryName"];
+    cell.text = [objects objectAtIndex:indexPath.row];
 #endif
 
     BOOL curStatus = [[selectionStatusOfObjects objectAtIndex:indexPath.row] boolValue];

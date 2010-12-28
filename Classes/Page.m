@@ -10,5 +10,6 @@
 
 
 @implementation Page
+@dynamic parentID;
 
 @end

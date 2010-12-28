@@ -7,8 +7,11 @@
 
 #import "WPDataController.h"
 
-@interface WPDataController()
+@interface WPDataController(PrivateMethods)
 - (id) init;
+- (NSArray *)getXMLRPCArgsForBlog:(Blog *)blog  withExtraArgs:(NSArray *)args;
+- (id)executeXMLRPCRequest:(XMLRPCRequest *)req;
+- (NSError *)errorWithResponse:(XMLRPCResponse *)res;
 @end
 
 @implementation WPDataController
@@ -111,8 +114,55 @@
 	
 	return usersBlogs;
 }
+
+#pragma mark -
+#pragma mark Blog
+
+- (NSString *)passwordForBlog:(Blog *)blog {
+    NSError *error;
+    return [SFHFKeychainUtils getPasswordForUsername:blog.username
+                                      andServiceName:blog.url
+                                               error:&error];
+}
+
+- (NSMutableArray *)getRecentPostsForBlog:(Blog *)blog {
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:blog.xmlrpc]];
+    // TODO: use app-wide setting for number of posts
+    NSArray *args = [NSArray arrayWithObject:[NSNumber numberWithInt:10]];
+	[xmlrpcRequest setMethod:@"metaWeblog.getRecentPosts" withObjects:[self getXMLRPCArgsForBlog:blog withExtraArgs:args]];
+    NSArray *recentPosts = [self executeXMLRPCRequest:xmlrpcRequest];
+	[xmlrpcRequest release];
+    
+    return [NSMutableArray arrayWithArray:recentPosts];
+}
+
+- (NSMutableArray *)getCategoriesForBlog:(Blog *)blog {
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:blog.xmlrpc]];
+	[xmlrpcRequest setMethod:@"wp.getCategories" withObjects:[self getXMLRPCArgsForBlog:blog withExtraArgs:nil]];
+	
+    NSArray *categories = [self executeXMLRPCRequest:xmlrpcRequest];
+    [xmlrpcRequest release];
+
+    return [NSMutableArray arrayWithArray:categories];
+}
+
 #pragma mark -
 #pragma mark XMLRPC
+
+- (NSArray *)getXMLRPCArgsForBlog:(Blog *)blog  withExtraArgs:(NSArray *)args {
+    int size = 3;
+    if (args != nil) {
+        size += [args count];
+    }
+    
+    NSMutableArray *result = [NSMutableArray arrayWithCapacity:size];
+    [result addObject:blog.blogID];
+    [result addObject:blog.username];
+    [result addObject:[self passwordForBlog:blog]];
+    [result addObjectsFromArray:args];
+    
+    return [NSArray arrayWithArray:result];
+}
 
 - (id)executeXMLRPCRequest:(XMLRPCRequest *)req {
 	XMLRPCResponse *userInfoResponse = nil;

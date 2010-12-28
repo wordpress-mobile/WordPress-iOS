@@ -14,11 +14,20 @@
 @property (nonatomic, retain) NSString *blogName, *url, *username, *password, *xmlrpc;
 @property (readonly) NSString *hostURL;
 @property (nonatomic, assign) NSNumber *isAdmin;
+@property (nonatomic, retain) NSSet *posts;
+@property (nonatomic, retain) NSSet *categories;
 
 - (UIImage *)favicon;
 - (void)downloadFavicon;
-- (void)downloadFaviconInBackground;
 - (BOOL)isWPcom;
+
+#pragma mark -
+#pragma mark Synchronization
+- (BOOL)syncPostsWithError:(NSError **)error;
+- (BOOL)syncCategoriesWithError:(NSError **)error;
+
+#pragma mark -
+#pragma mark Class methods
 + (BOOL)blogExistsForURL:(NSString *)theURL withContext:(NSManagedObjectContext *)moc;
 + (Blog *)createFromDictionary:(NSDictionary *)blogInfo withContext:(NSManagedObjectContext *)moc;
 + (NSInteger)countWithContext:(NSManagedObjectContext *)moc;

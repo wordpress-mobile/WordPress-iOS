@@ -328,7 +328,7 @@
 		
 		if(delegate.selectedPostID != nil) {
 			self.page = [[delegate.draftManager get:delegate.selectedPostID] retain];
-			if(self.page.uniqueID == delegate.selectedPostID) {
+			if(self.page.postID == delegate.selectedPostID) {
 				// Load from Core Data
 				
 				// Change this line when we rid ourselves of BlogDataManager
@@ -598,10 +598,10 @@
 	if(DeviceIsPad() == YES) {
 		[self refreshButtons];
 		// Make sure our Pages list refreshes
-		if(page.wasLocalDraft)
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"PagesUpdated" object:nil];
-		else
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"AsynchronousPostIsPosted" object:nil];
+//		if(page.wasLocalDraft)
+//			[[NSNotificationCenter defaultCenter] postNotificationName:@"PagesUpdated" object:nil];
+//		else
+//			[[NSNotificationCenter defaultCenter] postNotificationName:@"AsynchronousPostIsPosted" object:nil];
 	}
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshPageList" object:nil];
 	

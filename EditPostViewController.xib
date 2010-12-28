@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">544</int>
-		<string key="IBDocument.SystemVersion">10F569</string>
-		<string key="IBDocument.InterfaceBuilderVersion">804</string>
-		<string key="IBDocument.AppKitVersion">1038.29</string>
+		<string key="IBDocument.SystemVersion">10H574</string>
+		<string key="IBDocument.InterfaceBuilderVersion">823</string>
+		<string key="IBDocument.AppKitVersion">1038.35</string>
 		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">123</string>
+			<string key="NS.object.0">132</string>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -263,7 +263,7 @@
 											<int key="NSColorSpace">1</int>
 											<bytes key="NSRGB">MC4xOTYwNzg0MyAwLjMwOTgwMzkzIDAuNTIxNTY4NjYAA</bytes>
 										</object>
-										<object class="NSColor" key="IBUINormalTitleShadowColor" id="611902050">
+										<object class="NSColor" key="IBUINormalTitleShadowColor">
 											<int key="NSColorSpace">3</int>
 											<bytes key="NSWhite">MC41AA</bytes>
 										</object>
@@ -486,28 +486,6 @@
 								<object class="IBUITextInputTraits" key="IBUITextInputTraits">
 									<int key="IBUIAutocapitalizationType">2</int>
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								</object>
-							</object>
-							<object class="IBUIButton" id="25128393">
-								<reference key="NSNextResponder" ref="180411387"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{279, 324}, {33, 31}}</string>
-								<reference key="NSSuperview" ref="180411387"/>
-								<bool key="IBUIOpaque">NO</bool>
-								<float key="IBUIAlpha">0.5</float>
-								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<int key="IBUIContentHorizontalAlignment">0</int>
-								<int key="IBUIContentVerticalAlignment">0</int>
-								<reference key="IBUIFont" ref="637615118"/>
-								<reference key="IBUIHighlightedTitleColor" ref="640135287"/>
-								<object class="NSColor" key="IBUINormalTitleColor">
-									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
-								</object>
-								<reference key="IBUINormalTitleShadowColor" ref="611902050"/>
-								<object class="NSCustomResource" key="IBUINormalImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">autosave.png</string>
 								</object>
 							</object>
 						</object>
@@ -755,23 +733,6 @@
 					</object>
 					<int key="connectionID">372</int>
 				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">autosaveButton</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="25128393"/>
-					</object>
-					<int key="connectionID">378</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">showAutosaves:</string>
-						<reference key="source" ref="25128393"/>
-						<reference key="destination" ref="372490531"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">379</int>
-				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -815,7 +776,6 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="735874146"/>
 							<reference ref="766280205"/>
-							<reference ref="25128393"/>
 							<reference ref="966140404"/>
 						</object>
 						<reference key="parent" ref="1066218360"/>
@@ -950,11 +910,6 @@
 						<reference key="parent" ref="735874146"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">377</int>
-						<reference key="object" ref="25128393"/>
-						<reference key="parent" ref="180411387"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">181</int>
 						<reference key="object" ref="966140404"/>
 						<reference key="parent" ref="180411387"/>
@@ -993,7 +948,6 @@
 					<string>348.IBPluginDependency</string>
 					<string>366.IBPluginDependency</string>
 					<string>368.IBPluginDependency</string>
-					<string>377.IBPluginDependency</string>
 					<string>54.IBEditorWindowLastContentRect</string>
 					<string>54.IBPluginDependency</string>
 				</object>
@@ -1028,7 +982,6 @@
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">P4AAAL+AAADBoAAAwyIAAA</bytes>
 					</object>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1067,14 +1020,12 @@
 							<string>endEditingAction:</string>
 							<string>endTextEnteringButtonAction:</string>
 							<string>showAddNewCategoryView:</string>
-							<string>showAutosaves:</string>
 							<string>showCategoriesViewAction:</string>
 							<string>showLocationMapView:</string>
 							<string>showStatusViewAction:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -1090,7 +1041,6 @@
 							<string>endEditingAction:</string>
 							<string>endTextEnteringButtonAction:</string>
 							<string>showAddNewCategoryView:</string>
-							<string>showAutosaves:</string>
 							<string>showCategoriesViewAction:</string>
 							<string>showLocationMapView:</string>
 							<string>showStatusViewAction:</string>
@@ -1107,10 +1057,6 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">showAddNewCategoryView:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">showAutosaves:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -1131,7 +1077,6 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>autosaveButton</string>
 							<string>categoriesLabel</string>
 							<string>categoriesTextField</string>
 							<string>contentView</string>
@@ -1152,7 +1097,6 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>UIButton</string>
 							<string>UILabel</string>
 							<string>UITextField</string>
 							<string>UIView</string>
@@ -1176,7 +1120,6 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>autosaveButton</string>
 							<string>categoriesLabel</string>
 							<string>categoriesTextField</string>
 							<string>contentView</string>
@@ -1197,10 +1140,6 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBToOneOutletInfo">
-								<string key="name">autosaveButton</string>
-								<string key="candidateClassName">UIButton</string>
-							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">categoriesLabel</string>
 								<string key="candidateClassName">UILabel</string>
@@ -1403,7 +1342,7 @@
 		</object>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.iPhoneOS</string>
-			<integer value="1024" key="NS.object.0"/>
+			<integer value="1056" key="NS.object.0"/>
 		</object>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.InterfaceBuilder3</string>
@@ -1416,17 +1355,15 @@
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>autosave.png</string>
 				<string>getLocation.png</string>
 				<string>hasLocation.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>{20, 20}</string>
 				<string>{29, 29}</string>
 				<string>{29, 29}</string>
 			</object>
 		</object>
-		<string key="IBCocoaTouchPluginVersion">123</string>
+		<string key="IBCocoaTouchPluginVersion">132</string>
 	</data>
 </archive>

@@ -12,5 +12,6 @@
 
 - (bool)isEmpty;
 - (NSString *)trim;
+- (NSNumber *)numericValue;
 
 @end

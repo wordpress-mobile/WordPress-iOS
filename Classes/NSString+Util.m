@@ -19,4 +19,8 @@
     return [self stringByTrimmingCharactersInSet:set];
 }
 
+- (NSNumber *)numericValue {
+    return [NSNumber numberWithInt:[self intValue]];
+}
+
 @end

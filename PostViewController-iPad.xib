@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="7.10">
 	<data>
-		<int key="IBDocument.SystemTarget">1024</int>
-		<string key="IBDocument.SystemVersion">10F569</string>
-		<string key="IBDocument.InterfaceBuilderVersion">788</string>
-		<string key="IBDocument.AppKitVersion">1038.29</string>
+		<int key="IBDocument.SystemTarget">1056</int>
+		<string key="IBDocument.SystemVersion">10H574</string>
+		<string key="IBDocument.InterfaceBuilderVersion">823</string>
+		<string key="IBDocument.AppKitVersion">1038.35</string>
 		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">117</string>
+			<string key="NS.object.0">132</string>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -375,7 +375,7 @@
 					<string>UIResponder</string>
 					<string>CommentsViewController</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{0, 73}, {783, 933}}</string>
+					<string>{{47, 0}, {783, 856}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>EditPostViewController</string>
@@ -409,46 +409,6 @@
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<object class="IBPartialClassDescription">
-					<string key="className">AutosaveViewController</string>
-					<string key="superclassName">UIViewController</string>
-					<object class="NSMutableDictionary" key="outlets">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>buttonView</string>
-							<string>tableView</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>UIView</string>
-							<string>UITableView</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>buttonView</string>
-							<string>tableView</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBToOneOutletInfo">
-								<string key="name">buttonView</string>
-								<string key="candidateClassName">UIView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">tableView</string>
-								<string key="candidateClassName">UITableView</string>
-							</object>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Classes/AutosaveViewController.h</string>
-					</object>
-				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">CommentsViewController</string>
 					<string key="superclassName">UIViewController</string>
@@ -630,7 +590,6 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>autosaveButton</string>
 							<string>categoriesLabel</string>
 							<string>categoriesTextField</string>
 							<string>contentView</string>
@@ -641,7 +600,6 @@
 							<string>statusLabel</string>
 							<string>statusTextField</string>
 							<string>subView</string>
-							<string>tableViewForSelectingCustomFields</string>
 							<string>tagsLabel</string>
 							<string>tagsTextField</string>
 							<string>textView</string>
@@ -652,7 +610,6 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>UIButton</string>
 							<string>UILabel</string>
 							<string>UITextField</string>
 							<string>UIView</string>
@@ -663,7 +620,6 @@
 							<string>UILabel</string>
 							<string>UITextField</string>
 							<string>UIView</string>
-							<string>UITableView</string>
 							<string>UILabel</string>
 							<string>UITextField</string>
 							<string>UITextView</string>
@@ -677,7 +633,6 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>autosaveButton</string>
 							<string>categoriesLabel</string>
 							<string>categoriesTextField</string>
 							<string>contentView</string>
@@ -688,7 +643,6 @@
 							<string>statusLabel</string>
 							<string>statusTextField</string>
 							<string>subView</string>
-							<string>tableViewForSelectingCustomFields</string>
 							<string>tagsLabel</string>
 							<string>tagsTextField</string>
 							<string>textView</string>
@@ -699,10 +653,6 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBToOneOutletInfo">
-								<string key="name">autosaveButton</string>
-								<string key="candidateClassName">UIButton</string>
-							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">categoriesLabel</string>
 								<string key="candidateClassName">UILabel</string>
@@ -742,10 +692,6 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">subView</string>
 								<string key="candidateClassName">UIView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">tableViewForSelectingCustomFields</string>
-								<string key="candidateClassName">UITableView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">tagsLabel</string>
@@ -796,6 +742,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>cancelPendingUpload:</string>
 							<string>pickPhotoFromCamera:</string>
 							<string>pickPhotoFromPhotoLibrary:</string>
 							<string>pickVideoFromCamera:</string>
@@ -804,6 +751,7 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -815,6 +763,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>cancelPendingUpload:</string>
 							<string>pickPhotoFromCamera:</string>
 							<string>pickPhotoFromPhotoLibrary:</string>
 							<string>pickVideoFromCamera:</string>
@@ -823,6 +772,10 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBActionInfo">
+								<string key="name">cancelPendingUpload:</string>
+								<string key="candidateClassName">id</string>
+							</object>
 							<object class="IBActionInfo">
 								<string key="name">pickPhotoFromCamera:</string>
 								<string key="candidateClassName">id</string>
@@ -984,6 +937,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>commentsSwitchControl</string>
 							<string>customFieldsSwitchControl</string>
+							<string>datePopover</string>
 							<string>passwordHintTableViewCell</string>
 							<string>passwordLabel</string>
 							<string>passwordTableViewCell</string>
@@ -999,6 +953,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UISwitch</string>
 							<string>UISwitch</string>
+							<string>UIPopoverController</string>
 							<string>UITableViewCell</string>
 							<string>UILabel</string>
 							<string>UITableViewCell</string>
@@ -1017,6 +972,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>commentsSwitchControl</string>
 							<string>customFieldsSwitchControl</string>
+							<string>datePopover</string>
 							<string>passwordHintTableViewCell</string>
 							<string>passwordLabel</string>
 							<string>passwordTableViewCell</string>
@@ -1037,6 +993,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">customFieldsSwitchControl</string>
 								<string key="candidateClassName">UISwitch</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">datePopover</string>
+								<string key="candidateClassName">UIPopoverController</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">passwordHintTableViewCell</string>
@@ -1097,11 +1057,9 @@
 							<string>locationAction:</string>
 							<string>publish:</string>
 							<string>saveAsDraft</string>
-							<string>toggleAutosaves:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -1118,7 +1076,6 @@
 							<string>locationAction:</string>
 							<string>publish:</string>
 							<string>saveAsDraft</string>
-							<string>toggleAutosaves:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1142,18 +1099,12 @@
 								<string key="name">saveAsDraft</string>
 								<string key="candidateClassName">id</string>
 							</object>
-							<object class="IBActionInfo">
-								<string key="name">toggleAutosaves:</string>
-								<string key="candidateClassName">id</string>
-							</object>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="outlets">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>autosaveButton</string>
-							<string>autosaveView</string>
 							<string>cancelEditButton</string>
 							<string>commentsButton</string>
 							<string>commentsViewController</string>
@@ -1171,8 +1122,6 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>UIButton</string>
-							<string>AutosaveViewController</string>
 							<string>UIBarButtonItem</string>
 							<string>UIBarButtonItem</string>
 							<string>CommentsViewController</string>
@@ -1193,8 +1142,6 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>autosaveButton</string>
-							<string>autosaveView</string>
 							<string>cancelEditButton</string>
 							<string>commentsButton</string>
 							<string>commentsViewController</string>
@@ -1212,14 +1159,6 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBToOneOutletInfo">
-								<string key="name">autosaveButton</string>
-								<string key="candidateClassName">UIButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">autosaveView</string>
-								<string key="candidateClassName">AutosaveViewController</string>
-							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">cancelEditButton</string>
 								<string key="candidateClassName">UIBarButtonItem</string>
@@ -1339,13 +1278,6 @@
 					<string key="className">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">Foundation.framework/Headers/NSNetServices.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">Foundation.framework/Headers/NSObject.h</string>
 					</object>
 				</object>
@@ -1353,21 +1285,7 @@
 					<string key="className">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">Foundation.framework/Headers/NSPort.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">Foundation.framework/Headers/NSRunLoop.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">Foundation.framework/Headers/NSStream.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1392,13 +1310,6 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">Foundation.framework/Headers/NSXMLParser.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
 					<string key="className">UIViewController</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBFrameworkSource</string>
@@ -1411,7 +1322,7 @@
 		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.iPhoneOS</string>
-			<integer value="1024" key="NS.object.0"/>
+			<integer value="1056" key="NS.object.0"/>
 		</object>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.InterfaceBuilder3</string>
@@ -1439,6 +1350,6 @@
 				<string>{24, 24}</string>
 			</object>
 		</object>
-		<string key="IBCocoaTouchPluginVersion">117</string>
+		<string key="IBCocoaTouchPluginVersion">132</string>
 	</data>
 </archive>

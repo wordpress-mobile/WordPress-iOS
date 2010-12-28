@@ -14,7 +14,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @synthesize editingDisabled, editCustomFields, isCustomFieldsEnabledForThisPost, statuses, isLocalDraft, normalTextFrame;
 @synthesize textView, contentView, subView, textViewContentView, statusTextField, categoriesTextField, titleTextField;
 @synthesize tagsTextField, textViewPlaceHolderField, tagsLabel, statusLabel, categoriesLabel, titleLabel, customFieldsEditButton;
-@synthesize locationButton, locationSpinner, newCategoryBarButtonItem, autosaveButton;
+@synthesize locationButton, locationSpinner, newCategoryBarButtonItem;
 @synthesize selectedCategories;
 
 #pragma mark -
@@ -55,11 +55,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(save) name:@"EditPostViewShouldSave" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(publish) name:@"EditPostViewShouldPublish" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newCategoryCreatedNotificationReceived:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkAutosaves) name:@"AutosaveNotification" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaAbove:) name:@"ShouldInsertMediaAbove" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:@"ShouldInsertMediaBelow" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];
-	//[self hideAutosaveButton];
 	
     //JOHNB TODO: Add a check here for the presence of custom fields in the data model
     // if there are, set isCustomFieldsEnabledForThisPost BOOL to true
@@ -83,14 +81,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	}
 	
 	self.statusTextField.text = @"Local Draft";
-	[self restoreUnsavedPost];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	//WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     [super viewWillAppear:animated];
 	//[self dismissModalViewControllerAnimated:YES];
-	[self syncCategoriesAndStatuses];
     //isCustomFieldsEnabledForThisPost = [self checkCustomFieldsMinusMetadata];
     isCustomFieldsEnabledForThisPost = NO;
 	
@@ -150,7 +146,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[locationButton setNeedsLayout];
 	[locationButton setNeedsDisplay];
 	
-	[postDetailViewController checkAutosaves];
 	postDetailViewController.navigationItem.title = @"Write";
 }
 
@@ -237,7 +232,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)refreshUIForCompose {
 	self.isLocalDraft = YES;
-	postDetailViewController.wasLocalDraft = YES;
 	self.navigationItem.title = @"Write";
     titleTextField.text = @"";
     tagsTextField.text = @"";
@@ -251,92 +245,43 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)refreshUIForCurrentPost {
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-	AutosaveManager *autosaveManager = [[AutosaveManager alloc] init];
-	DraftManager *draftManager = [[DraftManager alloc] init];
-	
-	NSString *currentPostID = nil;
-	if(([dm.currentPost objectForKey:@"postid"] != nil) && ([dm.currentPost objectForKey:@"postid"] != @""))
-		currentPostID = [dm.currentPost objectForKey:@"postid"];
-	
-	if((currentPostID == nil) && (appDelegate.postID != nil) && (appDelegate.postID.length > 6)) {		
-		Post *post = [[draftManager get:appDelegate.postID] retain];
-		if(post != nil) {
-			if([[post isLocalDraft] isEqualToNumber:[NSNumber numberWithInt:1]])
-				self.isLocalDraft = YES;
-			postDetailViewController.navigationItem.title = post.postTitle;
-			self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back"
-														style:UIBarButtonItemStyleBordered target:nil action:nil];
-			
-			titleTextField.text = post.postTitle;
-			tagsTextField.text = post.tags;
-			statusTextField.text = post.status;
-			categoriesTextField.text = [post categoriesText];
-            [selectedCategories setArray:post.categoriesDict];
-			
-			
-			if(post.content == nil) {
-				textViewPlaceHolderField.hidden = NO;
-				textView.text = @"";
-			}
-			else {
-				textViewPlaceHolderField.hidden = YES;
-				textView.text = post.content;
-			}
-			
-			[postDetailViewController setPost:post];
-            [post release];
-		}
-	}
-	else {
-		self.isLocalDraft = NO;
-		NSString *description = [dm.currentPost valueForKey:@"description"];
-		NSString *moreText = [dm.currentPost valueForKey:@"mt_text_more"];
-		
-		if (!description ||[description length] == 0) {
-			textViewPlaceHolderField.hidden = NO;
-			textView.text = @"";
-		} else {
-			textViewPlaceHolderField.hidden = YES;
-			
-			if ((moreText != NULL) && ([moreText length] > 0)){
-				// To Do: when we show more tag label dynamically, we need to add label (if any) of more tag in the Character set string .
-				//NSRange moretagRange = [description rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"<!--more-->"] options:NSForcedOrderingSearch];
-				textView.text = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", description, moreText];
-			}
-			else
-				textView.text = description;
-		}
-		
-		if(titleTextField == nil)
-			titleTextField = [[UITextField alloc] init];
-		titleTextField.text = [dm.currentPost valueForKey:@"title"];
-		tagsTextField.text = [dm.currentPost valueForKey:@"mt_keywords"];
-		
-		NSString *status = [dm statusDescriptionForStatus:[dm.currentPost valueForKey:@"post_status"] fromBlog:dm.currentBlog];
-		status = (status == nil ? @"" : status);
-		statusTextField.text = status;
-		
-		[self refreshCategory];
-			
-	}
-	
+    Post *post = postDetailViewController.post;
+	if(post.local) {		
+        self.isLocalDraft = YES;
+    }
+
+    if ([post.postTitle length] > 0) {
+        postDetailViewController.navigationItem.title = post.postTitle;
+    }
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back"
+                                                style:UIBarButtonItemStyleBordered target:nil action:nil];
+
+    self.isLocalDraft = post.local;
+    titleTextField.text = post.postTitle;
+    tagsTextField.text = post.tags;
+    statusTextField.text = post.statusTitle;
+    categoriesTextField.text = [post categoriesText];
+    [selectedCategories setArray:[post categoriesDict]];
+    
+    if(post.content == nil) {
+        textViewPlaceHolderField.hidden = NO;
+        textView.text = @"";
+    }
+    else {
+        textViewPlaceHolderField.hidden = YES;
+        textView.text = post.content;
+    }
+
 	// workaround for odd text view behavior on iPad
 	[textView setContentOffset:CGPointZero animated:NO];
-	
+
 	// Set our initial location so we can determine if the geotag has been updated later
 	[self setInitialLocation:[self getPostLocation]];
-	
-	[draftManager release];
-	[autosaveManager release];
 }
 
 - (void)refreshCurrentPostForUI {
 	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	if(self.isLocalDraft == YES) {
-		WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-		[appDelegate setPostID:postDetailViewController.post.uniqueID];
 		[postDetailViewController.post setPostTitle:titleTextField.text];
 		[postDetailViewController.post setTags:tagsTextField.text];
 		[postDetailViewController.post setCategoriesDict:selectedCategories];
@@ -409,60 +354,22 @@ NSTimeInterval kAnimationDuration = 0.3f;
     isNewCategory = NO;
 }
 
-- (void)syncCategories {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	[[BlogDataManager sharedDataManager] syncCategoriesForBlog:[BlogDataManager sharedDataManager].currentBlog];
-	[self performSelectorOnMainThread:@selector(refreshCategory) withObject:nil waitUntilDone:NO];
-	
-	[pool release];
-}
-
-- (void)syncStatuses {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	[[BlogDataManager sharedDataManager] syncStatusesForBlog:[BlogDataManager sharedDataManager].currentBlog];
-	[self performSelectorOnMainThread:@selector(refreshStatus) withObject:nil waitUntilDone:NO];
-	
-	[pool release];
-}
-
 - (void)refreshStatus {
 	if(isLocalDraft == YES) {
 		statusTextField.text = @"Local Draft";
 	}
 	else {
-		NSString *status = [[BlogDataManager sharedDataManager] statusDescriptionForStatus:
-							[[BlogDataManager sharedDataManager].currentPost valueForKey:@"post_status"] 
-																	 fromBlog:[BlogDataManager sharedDataManager].currentBlog];
-		status = (status == nil ? @"" : status);
-		statusTextField.text = status;
+		statusTextField.text = postDetailViewController.post.statusTitle;
 	}
-}
-
-- (void)syncCategoriesAndStatuses {
-	[self performSelectorInBackground:@selector(syncCategories) withObject:nil];
-	[self performSelectorInBackground:@selector(syncStatuses) withObject:nil];
 }
 
 - (void)populateSelectionsControllerWithStatuses {
     if (selectionTableViewController == nil)
         selectionTableViewController = [[WPSelectionTableViewController alloc] initWithNibName:@"WPSelectionTableViewController" bundle:nil];
 	
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
-    NSDictionary *postStatusList = [[dm currentBlog] valueForKey:@"postStatusList"];
-    NSArray *dataSource = [NSArray arrayWithObjects:
-						   [postStatusList valueForKey:@"publish"],
-						   [postStatusList valueForKey:@"private"],
-						   [postStatusList valueForKey:@"pending"],
-						   [postStatusList valueForKey:@"draft"], nil];
+    NSArray *dataSource = [Post availableStatuses];
 	
-    if ((isLocalDraft == YES) || (dm.isLocaDraftsCurrent == YES) || (dm.currentPostIndex == -1))
-        dataSource = [dataSource arrayByAddingObject:@"Local Draft"];
-	
-    NSString *curStatus = [dm statusDescriptionForStatus:[dm.currentPost valueForKey:@"post_status"] fromBlog:dm.currentBlog];
-	if(isLocalDraft == YES)
-		curStatus = @"Local Draft";
+    NSString *curStatus = postDetailViewController.post.statusTitle;
 	
     NSArray *selObject = (curStatus == nil ? [NSArray array] : [NSArray arrayWithObject:curStatus]);
 	
@@ -495,57 +402,31 @@ NSTimeInterval kAnimationDuration = 0.3f;
         [selctionController clean];
         return;
     }
-	
-	if(isLocalDraft == YES) {
-		if (selContext == kSelectionsStatusContext) {
-			[postDetailViewController.post setStatus:[selectedObjects lastObject]];
-			statusTextField.text = postDetailViewController.post.status;
-			
-			if([[postDetailViewController.post.status lowercaseString] isEqualToString:@"local draft"]) {
-				[postDetailViewController.post setIsLocalDraft:[NSNumber numberWithInt:1]];
-				self.isLocalDraft = YES;
-			}
-			else {
-				NSString *status = [[BlogDataManager sharedDataManager] statusForStatusDescription:statusTextField.text fromBlog:[BlogDataManager sharedDataManager].currentBlog];
-				// Convert Local Draft post to BDM post
-				[[BlogDataManager sharedDataManager] makeNewPostCurrent];
-				[self updateValuesToCurrentPost];
-				if (status)
-					[[[BlogDataManager sharedDataManager] currentPost] setObject:status forKey:@"post_status"];
-                [[[BlogDataManager sharedDataManager] currentPost] setObject:[postDetailViewController.post categories] forKey:@"categories"];
-				[postDetailViewController.post setIsLocalDraft:[NSNumber numberWithInt:0]];
-				self.isLocalDraft = NO;
-			}
-		}
-		
-		if (selContext == kSelectionsCategoriesContext) {
-			[postDetailViewController.post setCategoriesDict:selectedObjects];
-            [selectedCategories setArray:selectedObjects];
-			categoriesTextField.text = [postDetailViewController.post categoriesText];
-		}
-	}
-	else {
-		BlogDataManager *dm = [BlogDataManager sharedDataManager];
-		
-		if (selContext == kSelectionsStatusContext) {
-			NSString *curStatus = [selectedObjects lastObject];
-			NSString *status = [dm statusForStatusDescription:curStatus fromBlog:dm.currentBlog];
-			if (status) {
-				[[dm currentPost] setObject:status forKey:@"post_status"];
-				statusTextField.text = curStatus;
-			}
-		}
-		
-		if (selContext == kSelectionsCategoriesContext) {
-			[[dm currentPost] setObject:selectedObjects forKey:@"categories"];
-            [selectedCategories setArray:selectedObjects];
-			categoriesTextField.text = [selectedObjects componentsJoinedByString:@", "];
-		}
-	}
+
+    if (selContext == kSelectionsStatusContext) {
+        NSString *curStatus = [selectedObjects lastObject];
+        postDetailViewController.post.statusTitle = curStatus;
+        statusTextField.text = curStatus;
+        if (isLocalDraft) {
+            if([curStatus isEqualToString:@"Local Draft"]) {
+                postDetailViewController.post.local = YES;
+                self.isLocalDraft = YES;
+            }
+            else {
+                postDetailViewController.post.local = NO;
+                self.isLocalDraft = NO;
+            }
+        }
+    }
+    
+    if (selContext == kSelectionsCategoriesContext) {
+        postDetailViewController.post.categoriesDict = selectedObjects;
+        [selectedCategories setArray:selectedObjects];
+        categoriesTextField.text = [selectedObjects componentsJoinedByString:@", "];
+    }
 	
     [selctionController clean];
     postDetailViewController.hasChanges = YES;
-	[self preserveUnsavedPost];
 	[postDetailViewController refreshButtons];
 }
 
@@ -869,9 +750,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
 	else {
 		[textView scrollRangeToVisible:textView.selectedRange];
-	}
-	
-	[self preserveUnsavedPost];
+	}	
 }
 
 - (void)textViewDidEndEditing:(UITextView *)aTextView {
@@ -895,7 +774,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[self positionTextView:nil];
 		
         NSString *text = aTextView.text;
-        [[[BlogDataManager sharedDataManager] currentPost] setObject:text forKey:@"description"];
+        postDetailViewController.post.content = text;
 		
 		if (DeviceIsPad() == NO) {
 			if (postDetailViewController.hasChanges == YES) {
@@ -908,7 +787,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			[barItem release];
 		}
     }
-	[self preserveUnsavedPost];
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
@@ -935,18 +813,26 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if (postDetailViewController.navigationItem.leftBarButtonItem.style == UIBarButtonItemStyleDone) {
         [self textViewDidEndEditing:textView];
     }
-	[self preserveUnsavedPost];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     self.currentEditingTextField = nil;
 	
-    if (textField == titleTextField)
-        [[BlogDataManager sharedDataManager].currentPost setValue:textField.text forKey:@"title"];
+    if (textField == titleTextField) {
+        postDetailViewController.post.postTitle = textField.text;
+        
+        // FIXME: this should be -[PostsViewController updateTitle]
+        if ([postDetailViewController.post.postTitle length] > 0) {
+            postDetailViewController.navigationItem.title = postDetailViewController.post.postTitle;
+        } else {
+            postDetailViewController.navigationItem.title = @"Write";
+        }
+
+    }
 	else if (textField == tagsTextField)
-        [[BlogDataManager sharedDataManager].currentPost setValue:tagsTextField.text forKey:@"mt_keywords"];
-	
-	[self preserveUnsavedPost];
+        postDetailViewController.post.tags = tagsTextField.text;
+    
+    [postDetailViewController.post autosave];
 }
 
 - (void)positionTextView:(NSDictionary *)keyboardInfo {
@@ -1049,85 +935,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	if(self.isEditing) {
 		[self positionTextView:nil];
 	}
-}
-
-- (void)preserveUnsavedPost {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	BOOL hasUnsavedPost = NO;
-	
-	if([titleTextField.text isEqualToString:@""] == NO) {
-		[defaults setObject:titleTextField.text forKey:@"unsavedpost_title"];
-		hasUnsavedPost = YES;
-	}
-	
-	if([tagsTextField.text isEqualToString:@""] == NO){
-		[defaults setObject:tagsTextField.text forKey:@"unsavedpost_tags"];
-		hasUnsavedPost = YES;
-	}
-	
-	if([categoriesTextField.text isEqualToString:@""] == NO) {
-		[defaults setObject:selectedCategories forKey:@"unsavedpost_categories"];
-		hasUnsavedPost = YES;
-	}
-	
-	if([statusTextField.text isEqualToString:@""] == NO) {
-		[defaults setObject:statusTextField.text forKey:@"unsavedpost_status"];
-		hasUnsavedPost = YES;	
-	}
-	
-	if(([textView.text isEqualToString:@""] == NO) && ([textView.text isEqualToString:kTextViewPlaceholder] == NO)) {
-		[defaults setObject:textView.text forKey:@"unsavedpost_content"];
-		hasUnsavedPost = YES;
-	}
-	
-	if(hasUnsavedPost == YES) {
-		[defaults setBool:YES forKey:@"unsavedpost_ihasone"];
-		[defaults synchronize];
-	}
-}
-
-- (void)clearUnsavedPost {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	
-	[defaults removeObjectForKey:@"unsavedpost_title"];
-	[defaults removeObjectForKey:@"unsavedpost_tags"];
-	[defaults removeObjectForKey:@"unsavedpost_categories"];
-	[defaults removeObjectForKey:@"unsavedpost_status"];
-	[defaults removeObjectForKey:@"unsavedpost_content"];
-	[defaults removeObjectForKey:@"unsavedpost_ihasone"];
-}
-
-- (void)restoreUnsavedPost {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	
-	if([defaults boolForKey:@"unsavedpost_ihasone"] == YES) {
-		if ([defaults objectForKey:@"unsavedpost_title"] != nil) {
-			[[BlogDataManager sharedDataManager].currentPost setValue:[defaults objectForKey:@"unsavedpost_title"] forKey:@"title"];
-			titleTextField.text = [defaults objectForKey:@"unsavedpost_title"];
-		}
-		
-		if ([defaults objectForKey:@"unsavedpost_tags"] != nil) {
-			[[BlogDataManager sharedDataManager].currentPost setValue:[defaults objectForKey:@"unsavedpost_tags"] forKey:@"mt_keywords"];
-			tagsTextField.text = [defaults objectForKey:@"unsavedpost_tags"];
-		}
-		
-		if ([defaults objectForKey:@"unsavedpost_categories"] != nil) {
-            [selectedCategories setArray:[defaults objectForKey:@"unsavedpost_categories"]];
-			categoriesTextField.text = [self selectedCategoriesText];
-		}
-		
-		if ([defaults objectForKey:@"unsavedpost_status"] != nil) {
-			statusTextField.text = [defaults objectForKey:@"unsavedpost_status"];
-		}
-		
-		if ([defaults objectForKey:@"unsavedpost_content"] != nil) {
-			textView.text = [defaults objectForKey:@"unsavedpost_content"];
-			textViewPlaceHolderField.hidden = YES;
-		}
-		postDetailViewController.hasChanges = YES;
-	}
-	
-	[self clearUnsavedPost];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -1352,53 +1159,17 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	return result;
 }
 
-- (void)showAutosaveButton {
-	[self.autosaveButton setHidden:NO];
-	[self.autosaveButton setAlpha:0.50];
-	[self.view bringSubviewToFront:self.autosaveButton];
-//	[UIView beginAnimations:nil context:NULL];
-//	[UIView setAnimationDuration:2.0];
-//	[UIView commitAnimations];
-}
-
-- (void)hideAutosaveButton {
-	[self.autosaveButton setHidden:YES];
-	[self.autosaveButton setAlpha:0.0];
-	[self.view sendSubviewToBack:self.autosaveButton];
-//	[UIView beginAnimations:nil context:NULL];
-//	[UIView setAnimationDuration:5.0];
-//	[UIView commitAnimations];
-}
-
-- (IBAction)showAutosaves:(id)sender {
-	[postDetailViewController showAutosaves];
-}
-
 #pragma mark -
 #pragma mark Keyboard management 
 
 - (void)keyboardWillShow:(NSNotification *)notification {
-	//NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo];
 	postDetailViewController.isShowingKeyboard = YES;
 	[postDetailViewController refreshButtons];
-	
-	[self preserveUnsavedPost];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
-	//NSDictionary *keyboardInfo = (NSDictionary *)[notification userInfo];
 	postDetailViewController.isShowingKeyboard = NO;
 	[postDetailViewController refreshButtons];
-	
-//	CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue]; 
-//	UIViewAnimationCurve curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue]; 
-//	
-//	[UIView beginAnimations:nil context:nil]; 
-//	[UIView setAnimationCurve:curve]; 
-//	[UIView setAnimationDuration:animationDuration]; 
-//	[UIView commitAnimations];
-	
-	[self preserveUnsavedPost];
 }
 
 #pragma mark -
@@ -1446,7 +1217,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 #pragma mark Dealloc
 
 - (void)dealloc {
-	[autosaveButton release];
 	[statuses release];
     [selectedCategories release];
 	[textView release];

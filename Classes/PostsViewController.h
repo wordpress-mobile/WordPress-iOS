@@ -6,19 +6,10 @@
 
 @class BlogDataManager, PostViewController, EditPostViewController;
 
-@interface PostsViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, UIAccelerometerDelegate> {
+@interface PostsViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, UIAccelerometerDelegate, NSFetchedResultsControllerDelegate> {
 @private
-    UIBarButtonItem *newButtonItem;
 	UIAlertView *progressAlert;
-	NSIndexPath *selectedIndexPath;
-    PostViewController *postDetailViewController;
-    EditPostViewController *postDetailEditController;
-    RefreshButtonView *refreshButton;
-	DraftManager *draftManager;
-	MediaManager *mediaManager;
-	BOOL anyMorePosts;
-	
-    NSMutableArray *drafts;
+    RefreshButtonView *refreshButton;	
 }
 
 @property (readonly) UIBarButtonItem *newButtonItem;
@@ -29,10 +20,11 @@
 @property (nonatomic, assign) BOOL anyMorePosts;
 @property (nonatomic, retain) NSIndexPath *selectedIndexPath;
 @property (nonatomic, retain) NSMutableArray *drafts;
+@property (nonatomic, retain) NSFetchedResultsController *resultsController;
+@property (nonatomic, retain) Blog *blog;
 
 - (void)addSpinnerToCell:(NSIndexPath *)indexPath;
 - (void)removeSpinnerFromCell:(NSIndexPath *)indexPath;
-- (void)loadPosts;
 - (void)showAddPostView;
 - (void)reselect;
 

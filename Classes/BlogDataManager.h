@@ -235,7 +235,6 @@
 - (id)autoSavedPostForCurrentBlog;
 - (NSString *)blogDir:(id)aBlog;
 - (BOOL)makePostWithPostIDCurrent:(NSString *)postID;
-- (BOOL)postDescriptionHasValidDescription:(id)aPost;
 - (NSMutableDictionary *)postTitleForPost:(NSDictionary *)aPost;
 - (NSMutableDictionary *)pageTitleForPage:(NSDictionary *)aPage;
 

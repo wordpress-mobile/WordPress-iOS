@@ -44,7 +44,7 @@
 	return media;
 }
 
-- (NSMutableArray *)getForPostID:(NSString *)postID andBlogURL:(NSString *)blogURL andMediaType:(MediaType)mediaType {
+- (NSMutableArray *)getForPostID:(NSNumber *)postID andBlogURL:(NSString *)blogURL andMediaType:(MediaType)mediaType {
 	NSArray *items = nil;
 	NSMutableArray *results = [[[NSMutableArray alloc] init] autorelease];
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -156,7 +156,7 @@
 	[self dataSave];
 }
 
-- (void)removeForPostID:(NSString *)postID andBlogURL:(NSString *)blogURL {
+- (void)removeForPostID:(NSNumber *)postID andBlogURL:(NSString *)blogURL {
 	NSError *error;
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);

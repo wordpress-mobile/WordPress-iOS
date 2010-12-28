@@ -61,7 +61,7 @@
     }
 }
 
-- (void)setPost:(NSDictionary *)value {
+- (void)setPost:(Post *)value {
 	if(value != nil) {
 		post = value;
 		
@@ -73,7 +73,7 @@
 			[dateFormatter setDateStyle:NSDateFormatterLongStyle];
 		}
 		
-		NSString *title = [[post valueForKey:@"title"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+		NSString *title = [[post valueForKey:@"postTitle"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 		
 		if (title == nil || ([title length] == 0)) {
 			title = @"(no title)";
@@ -81,7 +81,7 @@
 		
 		nameLabel.text = title;
 		
-		NSDate *date = [post valueForKey:@"date_created_gmt"];
+		NSDate *date = [post valueForKey:@"dateCreated"];
 		dateLabel.text = [dateFormatter stringFromDate:date];
 		
 		@try {

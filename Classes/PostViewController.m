@@ -19,8 +19,6 @@
 
 @interface PostViewController (Private)
 
-- (void)startTimer;
-- (void)stopTimer;
 - (void)discard;
 - (void)cancel;
 
@@ -29,11 +27,11 @@
 @implementation PostViewController
 
 @synthesize postDetailViewController, postDetailEditController, postPreviewController, postSettingsController, postsListController, hasChanges, tabController;
-@synthesize mediaViewController, leftView, isVisible, commentsViewController, spinner, isPublishing, dm;
+@synthesize mediaViewController, leftView, isVisible, commentsViewController, spinner, isPublishing;
 @synthesize selectedViewController, toolbar, contentView, commentsButton, photosButton, hasSaved;
-@synthesize settingsButton, editToolbar, cancelEditButton, post, didConvertDraftToPublished, isShowingKeyboard;
-@synthesize payload, connection, urlResponse, urlRequest, appDelegate, autosaveView, isShowingAutosaves;
-@synthesize autosaveManager, draftManager, editMode, wasLocalDraft, autosavePopover;
+@synthesize settingsButton, editToolbar, cancelEditButton, post, isShowingKeyboard;
+@synthesize payload, connection, urlResponse, urlRequest, appDelegate;
+@synthesize editMode;
 
 @dynamic leftBarButtonItemForEditPost;
 
@@ -44,42 +42,22 @@
     [super viewDidLoad];
     [FlurryAPI logEvent:@"Post"];
 
-	dm = [BlogDataManager sharedDataManager];
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-	autosaveView = [[AutosaveViewController alloc] initWithNibName:@"AutosaveViewController" bundle:nil];
 	postPreviewController = [[PostPreviewViewController alloc] initWithNibName:@"PostPreviewViewController" bundle:nil];
-	autosaveManager = [[AutosaveManager alloc] init];
-	draftManager = [[DraftManager alloc] init];
-	
+
 	spinner = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
 	hasSaved = NO;
 	postDetailEditController.postDetailViewController = self;
 	postPreviewController.postDetailViewController = self;
 	postSettingsController.postDetailViewController = self;
 	mediaViewController.postDetailViewController = self;
-	autosaveView.postDetailViewController = self;
-	
-	if(DeviceIsPad() == YES) {
-		autosavePopover = [[UIPopoverController alloc] initWithContentViewController:autosaveView];
-		[autosavePopover setPopoverContentSize:CGSizeMake(300.0, 400.0)];
-	}
-	
-	if (appDelegate.postID != nil)
-		post = [draftManager get:appDelegate.postID];
-	
-	if(editMode == kNewPost || post.isLocalDraft) {
+
+	if (editMode == kNewPost) {
 		NSMutableArray *tabs = [NSMutableArray arrayWithArray:tabController.viewControllers];
 		[tabs removeObjectAtIndex:1];
 		[tabController setViewControllers:tabs];
 	}
-	post = nil;
-	
-	BOOL clearAutosaves = [[NSUserDefaults standardUserDefaults] boolForKey:@"autosave_clear_preference"];
-	if(clearAutosaves == YES) {
-		[autosaveManager removeAll];
-		[[NSUserDefaults standardUserDefaults] setValue:NO forKey:@"autosave_clear_preference"];
-	}
-	
+		
 	if (DeviceIsPad() == NO) {
 	    if (!leftView) {
 			leftView = [WPNavigationLeftButtonView createCopyOfView];
@@ -103,20 +81,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 	
-	if (DeviceIsPad() == NO) {
-		if ((self.interfaceOrientation == UIInterfaceOrientationPortrait) || (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
-			//[postDetailEditController setTextViewHeight:202];
-		}
-		
-		if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-			if (postDetailEditController.isEditing == NO) {
-				//[postDetailEditController setTextViewHeight:57]; //#148
-			} else {
-				//[postDetailEditController setTextViewHeight:116];
-			}
-		}
-	}
-	
     [leftView setTarget:self withAction:@selector(cancelView:)];
 	
     if (hasChanges == YES) {
@@ -136,13 +100,10 @@
     if(self.editMode != kNewPost)
 		self.editMode = kRefreshPost;
 	
-    [commentsViewController setIndexForCurrentPost:[[BlogDataManager sharedDataManager] currentPostIndex]];
     [[tabController selectedViewController] viewWillAppear:animated];
 	
 	isVisible = YES;
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restoreFromAutosave:) name:@"RestoreFromAutosaveNotification" object:nil];
-	[self checkAutosaves];
 	[self refreshButtons];
 }
 
@@ -193,13 +154,6 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-	if (DeviceIsPad() == NO) {
-		if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-			//[postDetailEditController setTextViewHeight:202];
-		}
-	}
-	
-	//    [photoEditingStatusView removeFromSuperview];
 	[self performSelectorOnMainThread:@selector(dismissKeyboard) withObject:nil waitUntilDone:NO];
 	
 	if(self.editMode != kNewPost)
@@ -232,7 +186,6 @@
 - (IBAction)cancelView:(id)sender {
     [FlurryAPI logEvent:@"Post#cancelView"];
     if (!hasChanges) {
-        [self stopTimer];
         [mediaViewController cancelPendingUpload:self];
 		[self dismissEditView];
         return;
@@ -276,11 +229,8 @@
 	
 	NSMutableDictionary *dict = [[[NSMutableDictionary alloc] init] autorelease];
 	hasSaved = YES;
-	
-	if((self.post != nil) && (post.wasLocalDraft == [NSNumber numberWithInt:1]) && (post.isLocalDraft == [NSNumber numberWithInt:0]))
-		self.didConvertDraftToPublished = YES;
-	
-	if((self.post == nil) || (self.post.isLocalDraft == [NSNumber numberWithInt:0])) {
+		
+	if((self.post == nil) || (!self.post.local)) {
 		if ([[WPReachability sharedReachability] internetConnectionStatus] == NotReachable) {
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Communication Error."
 															message:@"no internet connection."
@@ -293,14 +243,10 @@
 		}
 		else {
 			if (!hasChanges) {
-				[self stopTimer];
 				[self dismissEditView];
 			}
 			else {
-				if(post.isLocalDraft == [NSNumber numberWithInt:1]) {
-					post.isLocalDraft = [NSNumber numberWithInt:0];
-					post.wasLocalDraft = [NSNumber numberWithInt:1];
-					
+				if(post.local) {					
 					[[BlogDataManager sharedDataManager] makeNewPostCurrent];
 					[postDetailEditController updateValuesToCurrentPost];
 					
@@ -309,18 +255,15 @@
 				[(NSMutableDictionary *)[BlogDataManager sharedDataManager].currentPost setValue:@"" forKey:@"mt_text_more"];
 				
 				if (post.dateCreated == nil){
-					[dm.currentPost setObject:[NSDate date] forKey:@"dateCreated"];
-				}
-				else {
-					[dm.currentPost setObject:post.dateCreated forKey:@"dateCreated"];
+                    post.dateCreated = [NSDate date];
 				}
 				
 				if(postSettingsController.passwordTextField.text != nil)
-					[dm.currentPost setObject:postSettingsController.passwordTextField.text forKey:@"wp_password"];
+                    post.password = postSettingsController.passwordTextField.text;
 				
-				NSString *description = [dm.currentPost valueForKey:@"description"];
-				NSString *title = [dm.currentPost valueForKey:@"title"];
-				NSArray *photos = [dm.currentPost valueForKey:@"Photos"];
+				NSString *description = post.content;
+				NSString *title = post.postTitle;
+				NSArray *photos = [NSArray array]; // FIXME !
 				
 				if ((!description ||[description isEqualToString:@""]) &&
 					(!title ||[title isEqualToString:@""]) &&
@@ -338,21 +281,11 @@
 					
 					[self cancel];
 				}
-				else if (![dm postDescriptionHasValidDescription:dm.currentPost]) {
-					[self cancel];
-				}
-				else {
-					if(wasLocalDraft == YES) {
-						[dm.currentPost setObject:[NSNumber numberWithInt:1] forKey:@"isLocalDraft"];
-						wasLocalDraft = YES;
-					}
-					
-					BOOL savePostStatus = [dm savePost:dm.currentPost];
-					NSString *postID = [[NSString stringWithFormat:@"%@", [dm.currentPost objectForKey:@"postid"]] retain];
-					[self stopTimer];
-					
+				else {					
+					//BOOL savePostStatus = [dm savePost:dm.currentPost];
+//					NSString *postID = [[NSString stringWithFormat:@"%@", [dm.currentPost objectForKey:@"postid"]] retain];
+/*					
 					if(savePostStatus == YES) {
-						[dm removeAutoSavedCurrentPostFile];
 						[dict setValue:postID forKey:@"savedPostId"];
 						[appDelegate setPostID:postID];
 						[dict setValue:postID forKey:@"originalPostId"];
@@ -365,12 +298,13 @@
 						[pool release];
 						return;
 					}
-					
+ 
 					if (DeviceIsPad() == YES) {
 						[[BlogDataManager sharedDataManager] makePostWithPostIDCurrent:postID];
 					}
 					
 					[postID release];
+ */					
 				}
 			}
 		}
@@ -413,20 +347,20 @@
 		[self refreshUIForCurrentPost];
 		
 		// Make sure our Posts list refreshes
-		if(post.wasLocalDraft)
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"DraftsUpdated" object:nil userInfo:dict];
-		else
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"AsynchronousPostIsPosted" object:nil userInfo:dict];
+//		if(post.wasLocalDraft)
+//			[[NSNotificationCenter defaultCenter] postNotificationName:@"DraftsUpdated" object:nil userInfo:dict];
+//		else
+//			[[NSNotificationCenter defaultCenter] postNotificationName:@"AsynchronousPostIsPosted" object:nil userInfo:dict];
 	}
 	else {
 		// Refresh the UI for a new post
 		[self refreshUIForCompose];
 		
 		// If this was a save and not a publish, post a message
-		if(post.wasLocalDraft)
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"DraftsUpdated" object:nil userInfo:dict];
-		else
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"AsynchronousPostIsPosted" object:nil userInfo:dict];
+//		if(post.wasLocalDraft)
+//			[[NSNotificationCenter defaultCenter] postNotificationName:@"DraftsUpdated" object:nil userInfo:dict];
+//		else
+//			[[NSNotificationCenter defaultCenter] postNotificationName:@"AsynchronousPostIsPosted" object:nil userInfo:dict];
 		
 		// Back out to Posts list
 		[self.navigationController popViewControllerAnimated:YES];
@@ -434,9 +368,6 @@
 	
 	// Verify that our post truly was successful
 	[self verifyPublishSuccessful];
-	
-	// Clear recovery data
-	[postDetailEditController clearUnsavedPost];
 	
 	// Dismiss spinner
 	[spinner dismissWithClickedButtonIndex:0 animated:YES];
@@ -446,85 +377,9 @@
 	[mediaViewController removeNotifications];
 }
 
-- (void)autoSaveCurrentPost:(NSTimer *)aTimer {
-	[postDetailEditController preserveUnsavedPost];
-	if (hasChanges) {
-		Post *autosave = [autosaveManager get:nil];
-		
-		if(postDetailEditController.isLocalDraft == YES)
-			[autosave setIsLocalDraft:[NSNumber numberWithInt:1]];
-		else
-			[autosave setIsLocalDraft:[NSNumber numberWithInt:0]];
-		[autosave setIsAutosave:[NSNumber numberWithInt:1]];
-		[autosave setIsHidden:[NSNumber numberWithInt:1]];
-		if([postDetailEditController isPostPublished] == YES)
-			[autosave setIsPublished:[NSNumber numberWithInt:1]];
-		else
-			[autosave setIsPublished:[NSNumber numberWithInt:0]];
-		[autosave setBlogID:[[dm currentBlog] valueForKey:@"blogid"]];
-
-		if(appDelegate.postID != nil)
-			[autosave setPostID:appDelegate.postID];
-		else if(([[dm currentPost] valueForKey:@"postid"] != nil) && (![[[dm currentPost] valueForKey:@"postid"] isEqualToString:@""])) {
-			NSString *autosavePostID = [NSString stringWithFormat:@"%@-%@",
-										[[dm currentBlog] valueForKey:@"url"],
-										[[dm currentPost] valueForKey:@"postid"]];
-			[autosave setPostID:autosavePostID];
-		}
-		else
-			[autosave setPostID:appDelegate.postID];
-		
-		[autosave setPostTitle:postDetailEditController.titleTextField.text];
-		[autosave setContent:postDetailEditController.textView.text];
-		[autosave setDateCreated:[NSDate date]];
-		[autosave setStatus:postDetailEditController.statusTextField.text];
-		if(postSettingsController.passwordTextField.text != nil)
-			[autosave setPassword:postSettingsController.passwordTextField.text];
-		[autosaveManager save:autosave];
-		[self checkAutosaves];
-    }
-}
-
-- (void)startTimer {
-	BOOL autosaveEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"autosave_enabled_preference"];
-    if ((!autoSaveTimer) && (autosaveEnabled == YES)) {
-		NSString *autosaveIntervalString = [[NSUserDefaults standardUserDefaults] stringForKey:@"autosave_frequency_preference"];
-		int autosaveInterval = [autosaveIntervalString intValue];
-		autosaveInterval = autosaveInterval * 60;
-		if(autosaveInterval < 60)
-			autosaveInterval = 60;
-		
-        autoSaveTimer = [[NSTimer scheduledTimerWithTimeInterval:autosaveInterval target:self selector:@selector(autoSaveCurrentPost:) userInfo:nil repeats:YES] retain];
-    }
-}
-
-- (void)stopTimer {
-    if (autoSaveTimer) {
-        [autoSaveTimer invalidate];
-        [autoSaveTimer release];
-        autoSaveTimer = nil;
-    }
-}
-
 - (void)refreshUIForCompose {
-	if(draftManager == nil)
-		draftManager = [[DraftManager alloc] init];
-	
 	postDetailViewController.navigationItem.title = @"Write";
 	
-	if(tabController.viewControllers.count > 4) {
-		NSMutableArray *tabs = [NSMutableArray arrayWithArray:tabController.viewControllers];
-		[tabs removeObjectAtIndex:1];
-		[tabController setViewControllers:tabs];
-	}
-	
-	post = nil;
-	post = [[draftManager get:appDelegate.postID] retain];
-	[self.post setWasLocalDraft:[NSNumber numberWithInt:1]];
-	[self.post setIsLocalDraft:[NSNumber numberWithInt:1]];
-	[self.post setIsPublished:[NSNumber numberWithInt:0]];
-	appDelegate.postID = self.post.postID;
-	self.autosaveView.postID = self.post.postID;
 	[self refreshButtons];
 	
     [tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
@@ -535,14 +390,11 @@
     //[photosListController refreshData];
 
     [self updatePhotosBadge];
-	//[self checkAutosaves];
 }
 
-- (void)refreshUIForCurrentPost {
-	autosaveView.postID = appDelegate.postID;
-	
-	if(post == nil) {
-		self.navigationItem.title = @"Write";
+- (void)refreshUIForCurrentPost {	
+	if(post != nil) {
+		self.navigationItem.title = post.postTitle;
 		
 		[tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
 		[postDetailViewController refreshUIForCurrentPost];
@@ -560,7 +412,6 @@
 	if (self.editMode == kAutorecoverPost && DeviceIsPad()) {
 		[self editAction:self];
 	}
-	[self checkAutosaves];
 }
 
 - (void)updatePhotosBadge {
@@ -592,15 +443,7 @@
     [FlurryAPI logEvent:@"Post#actionSheet_saveAsDraft"];
 	hasSaved = YES;
 	
-	if((post != nil) && (appDelegate.postID != nil))
-		post = [draftManager get:appDelegate.postID];
-	else
-		post = [draftManager get:nil];
-	[post setIsLocalDraft:[NSNumber numberWithInt:1]];
-	[post setWasLocalDraft:[NSNumber numberWithInt:1]];
-	[post setIsAutosave:[NSNumber numberWithInt:0]];
-	[post setIsPublished:[NSNumber numberWithInt:0]];
-	[post setBlogID:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blogid"]];
+    post.local = YES;
 	[post setPostTitle:postDetailEditController.titleTextField.text];
 	[post setContent:postDetailEditController.textView.text];
 	[post setCategoriesDict:postDetailEditController.selectedCategories];
@@ -613,10 +456,7 @@
 	}
 	if(postSettingsController.passwordTextField.text != nil)
 		[post setPassword:postSettingsController.passwordTextField.text];
-	[draftManager save:post];
-	[postsListController loadPosts];
-	
-	[postDetailEditController clearUnsavedPost];
+	[post save];
 	
 	if(andDiscard == YES){
 		[self discard];
@@ -631,9 +471,7 @@
     [FlurryAPI logEvent:@"Post#actionSheet_discard"];
     hasChanges = NO;
 	[self refreshButtons];
-	[postDetailEditController clearUnsavedPost];
     [mediaViewController cancelPendingUpload:self];
-    [self stopTimer];
 
 	// TODO: remove the mediaViewController notifications - this is pretty kludgy
 	[mediaViewController removeNotifications];
@@ -671,9 +509,6 @@
 }
 
 - (void)setHasChanges:(BOOL)aFlag {
-    if (hasChanges == NO && aFlag == YES)
-        [self startTimer];
-
     hasChanges = aFlag;
 
     if (hasChanges) {
@@ -770,18 +605,12 @@
 - (void)publish:(id)sender {
     [FlurryAPI logEvent:@"Post#publish"];
 	isPublishing = YES;
+
+	[postDetailEditController updateValuesToCurrentPost];
+    postDetailEditController.isLocalDraft = NO;
+	postDetailEditController.statusTextField.text = @"Published";
 	
-	if(post.isLocalDraft == [NSNumber numberWithInt:1]) {
-		post.isLocalDraft = [NSNumber numberWithInt:0];
-		post.wasLocalDraft = [NSNumber numberWithInt:1];
-		
-		[[BlogDataManager sharedDataManager] makeNewPostCurrent];
-		[postDetailEditController updateValuesToCurrentPost];
-		postDetailEditController.isLocalDraft = NO;
-	}
-	postDetailEditController.statusTextField.text = [dm statusDescriptionForStatus:@"Published" fromBlog:dm.currentBlog];
-	
-	[dm.currentPost setObject:@"publish" forKey:@"post_status"];
+    post.status = @"publish";
 	
 	[self saveAction:sender];
 }
@@ -855,136 +684,6 @@
 }
 
 #pragma mark -
-#pragma mark Autosave methods
-
-// TODO: Move Autosave data methods to their own class
-
-- (IBAction)toggleAutosaves:(id)sender {
-	self.editMode = kEditPost;
-	
-	if(self.isShowingAutosaves == NO)
-		[self showAutosaves];
-	else
-		[self hideAutosaves];
-}
-
-- (void)showAutosaves {
-	autosaveView.postID = appDelegate.postID;
-	[autosaveView resetAutosaves];
-	
-	if(DeviceIsPad() == NO) {
-		[UIView beginAnimations:nil context:nil];
-		[UIView setAnimationDuration:1.0];
-		[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight
-							   forView:postDetailEditController.view
-								 cache:YES];
-		[postDetailEditController.view addSubview:autosaveView.view];
-		[UIView commitAnimations];
-	}
-	else {
-		[autosavePopover presentPopoverFromRect:CGRectMake(self.view.frame.size.width-30, self.view.frame.size.height-100, 50, 50) 
-										 inView:self.view permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
-		[[CPopoverManager instance] setCurrentPopoverController:autosavePopover];
-	}
-	
-	self.isShowingAutosaves = YES;
-}
-
-- (void)hideAutosaves {
-	[UIView beginAnimations:nil context:nil];
-	[UIView setAnimationDuration:1.0];
-	[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight
-						   forView:postDetailEditController.view
-							 cache:YES];
-	[autosaveView.view removeFromSuperview];
-	[UIView commitAnimations];
-	
-	self.isShowingAutosaves = NO;
-}
-
-- (void)checkAutosaves {
-	@try {
-		if([dm currentPost] != NULL) {
-			NSNumber *myPostID = [NSNumber numberWithInt:-1];
-			NSDictionary *currentPost = [dm currentPost];
-			if((currentPost != nil) && ([currentPost objectForKey:@"postid"])) {
-				myPostID = [currentPost objectForKey:@"postid"];
-				
-				if(myPostID != nil) {
-					// NSNumber
-					if(![myPostID isKindOfClass:[NSNumber class]])
-						myPostID = [NSNumber numberWithInt:[[[dm currentPost] objectForKey:@"postid"] intValue]];
-				}
-			}
-			
-			if([myPostID intValue] != -1) {
-				NSString *autosavePostID = [NSString stringWithFormat:@"%@-%@", [[dm currentBlog] valueForKey:@"url"], myPostID];
-				[appDelegate setPostID:autosavePostID];
-			}
-			
-			if((appDelegate.postID != nil) && (appDelegate.managedObjectContext != nil)) {
-				[autosaveView setPostID:appDelegate.postID];
-				[autosaveView resetAutosaves];
-				if(([autosaveView autosaves] != nil) && ([[autosaveView autosaves] count] > 0)) {
-					[postDetailEditController showAutosaveButton];
-				}
-				else
-					[postDetailEditController hideAutosaveButton];
-			}
-		}
-	}
-	@catch (NSException * e) {
-		NSLog(@"error checking autosaves: %@", e);
-	}
-}
-
-- (void)restoreFromAutosave:(NSNotification *)notification {
-	NSDictionary *restoreData = [notification userInfo];
-	NSString *uniqueID = [restoreData objectForKey:@"uniqueID"];	
-	Post *autosave = [autosaveManager get:uniqueID];
-	
-	if(autosave != nil) {
-		if([autosave.isPublished isEqualToNumber:[NSNumber numberWithInt:0]]) {
-			[post setPostTitle:autosave.postTitle];
-			[post setContent:autosave.content];
-			[post setTags:autosave.tags];
-			[post setCategories:autosave.categories];
-			[post setStatus:autosave.status];
-			[post setPostID:autosave.postID];
-			[postDetailEditController refreshUIForCurrentPost];
-		}
-		else {
-			appDelegate.postID = autosave.postID;
-			[dm makePostWithPostIDCurrent:autosave.postID];
-			if(autosave.postTitle != nil)
-				[[dm currentPost] setObject:autosave.postTitle forKey:@"title"];
-			if(autosave.content != nil)
-				[[dm currentPost] setObject:autosave.content forKey:@"description"];
-			if(autosave.tags != nil)
-				[[dm currentPost] setObject:autosave.tags forKey:@"mt_keywords"];
-			if(autosave.categories != nil)
-				[[dm currentPost] setObject:autosave.categories forKey:@"categories"];
-			if(autosave.status != nil) {
-				autosave.status = [dm statusDescriptionForStatus:autosave.status fromBlog:[dm currentBlog]];
-				[[dm currentPost] setValue:autosave.status forKey:@"post_status"];
-			}
-			
-			[postDetailEditController refreshUIForCurrentPost];
-		}
-		[autosaveManager removeAllForPostID:autosave.postID];
-		[autosaveView resetAutosaves];
-		[self toggleAutosaves:self];
-		[postDetailEditController hideAutosaveButton];
-	}
-	
-	if(DeviceIsPad() == YES)
-		[autosavePopover dismissPopoverAnimated:YES];
-	
-	hasChanges = YES;
-	[self refreshButtons];
-}
-
-#pragma mark -
 #pragma mark Photo list delegate: iPad
 
 - (void)displayPhotoListImagePicker:(UIImagePickerController *)picker;
@@ -1024,12 +723,12 @@
 	
 	NSArray *params = [NSArray arrayWithObjects:
 					   appDelegate.postID,
-					   [dm.currentBlog objectForKey:@"username"],
-					   [dm getPasswordFromKeychainInContextOfCurrentBlog:dm.currentBlog],
+                       self.post.blog.username,
+					   self.post.blog.password,
 					   nil];
 	
 	// Execute the XML-RPC request
-	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[dm.currentBlog valueForKey:@"xmlrpc"]]];
+	XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:self.post.blog.xmlrpc]];
 	[request setMethod:@"metaWeblog.getPost" withObjects:params];
 	
 	connection = [[NSURLConnection alloc] initWithRequest:[request request] delegate:self];
@@ -1080,7 +779,7 @@
 						@try {
 							if([publishedPostID isEqualToNumber:newPostID]) {
 								[appDelegate setPostID:nil];
-								NSDictionary *info = [[NSDictionary alloc] initWithObjectsAndKeys:post.uniqueID, @"uniqueID", nil];
+								NSDictionary *info = [[NSDictionary alloc] initWithObjectsAndKeys:post.postID, @"postID", nil];
 								[[NSNotificationCenter defaultCenter] postNotificationName:@"LocalDraftWasPublishedSuccessfully" object:nil userInfo:info];
 								[self setPost:nil];
 								[info release];
@@ -1113,28 +812,25 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
-	[autosavePopover release];
-	[autosaveManager release];
-	[draftManager release];
-	[autosaveView release];
-	[payload release];
-	[connection release];
-	[urlResponse release];
-	[urlRequest release];
-	[post release];
+    self.post = nil;
+
+    [payload release];
+    [connection release];
+    [urlResponse release];
+    [urlRequest release];
     [leftView release];
     [postDetailEditController release];
     [postPreviewController release];
     [postSettingsController release];
     [mediaViewController release];
     [commentsViewController release];
-	[toolbar release];
-	[contentView release];
-	[photoPickerPopover release];
-	[commentsButton release];
-	[photosButton release];
-	[settingsButton release];
-    [self stopTimer];
+    [toolbar release];
+    [contentView release];
+    [photoPickerPopover release];
+    [commentsButton release];
+    [photosButton release];
+    [settingsButton release];
+
     [super dealloc];
 }
 

@@ -7,10 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Post.h"
+#import "AbstractPost.h"
 
-@interface Page : Post {
+@interface Page : AbstractPost {
 
 }
+@property (nonatomic, retain) NSNumber * parentID;
 
 @end

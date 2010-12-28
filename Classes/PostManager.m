@@ -286,7 +286,7 @@
 		[f release];
 		
 		[self storeData];
-		[self verifyPublishSuccessful:newpostID localDraftID:post.uniqueID];
+		[self verifyPublishSuccessful:newpostID localDraftID:post.postID];
 	}
 	else {
 		// Failure

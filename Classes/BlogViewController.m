@@ -39,6 +39,10 @@
 		self.navigationItem.titleView = commentsViewController.segmentedControl;
 	}
 	
+    postsViewController.blog = self.blog;
+    pagesViewController.blog = self.blog;
+    commentsViewController.blog = self.blog;
+    
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"DraftsUpdated" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"BlogsRefreshNotification" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"PagesUpdated" object:nil];
@@ -51,17 +55,13 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-	[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = YES;
 	
 	if (DeviceIsPad() == YES) {
 		[self restoreState];
 	}
 	else {
 		[tabBarController.selectedViewController viewWillAppear:animated];
-	}
-	[[BlogDataManager sharedDataManager] setSelectedBlogID:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"blogid"]];
-	
-    [[WordPressAppDelegate sharedWordPressApp] storeCurrentBlog];
+	}	
 }
 
 - (void)dealloc {
@@ -72,6 +72,7 @@
 	[commentsViewController removeObserver:self forKeyPath:@"selectedIndexPath"];	
 	//[statsTableViewController removeObserver:self forKeyPath:@"selectedIndexPath"];
 	[tabBarController release], tabBarController = nil;
+    self.blog = nil;
 	
     [super dealloc];
 }

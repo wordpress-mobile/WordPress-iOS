@@ -138,15 +138,15 @@
 			switch (indexPath.row) {
 				case 0:
 					switchCell.textLabel.text = @"Resize Photos";
-					switchCell.cellSwitch.on = [[appDelegate.currentBlog objectForKey:kResizePhotoSetting] boolValue];
+					switchCell.cellSwitch.on = [[appDelegate.currentBlog valueForKey:kResizePhotoSetting] boolValue];
 					
 					cell = switchCell;
 					cell.tag = 0;
 					break;
 				case 1:
 					switchCell.textLabel.text = @"Geotagging";
-					if([appDelegate.currentBlog objectForKey:kGeolocationSetting] != nil)
-						switchCell.cellSwitch.on = [[appDelegate.currentBlog objectForKey:kGeolocationSetting] boolValue];
+					if([appDelegate.currentBlog valueForKey:kGeolocationSetting] != nil)
+						switchCell.cellSwitch.on = [[appDelegate.currentBlog valueForKey:kGeolocationSetting] boolValue];
 					else
 						switchCell.cellSwitch.on = YES;
 					cell = switchCell;
@@ -181,7 +181,7 @@
 			switch (indexPath.row) {
 				case 0:
 					switchCell.textLabel.text = @"Authentication";
-					switchCell.cellSwitch.on = [[appDelegate.currentBlog objectForKey:@"authEnabled"] boolValue];
+					switchCell.cellSwitch.on = [[appDelegate.currentBlog valueForKey:@"authEnabled"] boolValue];
 					cell = switchCell;
 					cell.tag = 3;
 					break;

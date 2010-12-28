@@ -338,9 +338,9 @@
 				else if(((!hasSubsites) && (indexPath.row == 0)) || (indexPath.row == 1)) {
 					// Settings
 					if(url != nil)
-						[appDelegate.currentBlog setObject:url forKey:@"url"];
+						[appDelegate.currentBlog setValue:url forKey:@"url"];
 					if(username != nil)
-						[appDelegate.currentBlog setObject:username forKey:@"username"];
+						[appDelegate.currentBlog setValue:username forKey:@"username"];
 					if(activeTextField != nil) {
 						[activeTextField becomeFirstResponder];
 						[activeTextField resignFirstResponder];

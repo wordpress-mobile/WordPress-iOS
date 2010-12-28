@@ -242,13 +242,13 @@
 		[self.spinner startAnimating];
 	}
 	else {
-		photos = [[mediaManager getForPostID:self.uniqueID andBlogURL:self.blogURL andMediaType:kImage] retain];
-		videos = [[mediaManager getForPostID:self.uniqueID andBlogURL:self.blogURL andMediaType:kVideo] retain];
+//		photos = [[mediaManager getForPostID:self.postDetailViewController.post.postID andBlogURL:self.blogURL andMediaType:kImage] retain];
+//		videos = [[mediaManager getForPostID:self.postDetailViewController.post.postID andBlogURL:self.blogURL andMediaType:kVideo] retain];
 		
-		if(photos.count == 0)
-			photos = [[mediaManager getForBlogURL:self.blogURL andMediaType:kImage] retain];
-		if(videos.count == 0)
-			videos = [[mediaManager getForBlogURL:self.blogURL andMediaType:kVideo] retain];
+//		if(photos.count == 0)
+//			photos = [[mediaManager getForBlogURL:self.blogURL andMediaType:kImage] retain];
+//		if(videos.count == 0)
+//			videos = [[mediaManager getForBlogURL:self.blogURL andMediaType:kVideo] retain];
 	}
 	[self updateMediaCount];
     [self.table reloadData];

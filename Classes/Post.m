@@ -7,73 +7,97 @@
 
 #import "Post.h"
 
+@interface Post(PrivateMethods)
++ (Post *)newPostForBlog:(Blog *)blog;
+- (void)updateLocalType;
+@end
 
 @implementation Post 
 
-@dynamic content;
-@dynamic geolocation;
-@dynamic shouldResizePhotos;
-@dynamic status;
-@dynamic tags;
-@dynamic shortlink;
-@dynamic isLocalDraft;
-@dynamic isPublished;
-@dynamic permalink;
-@dynamic postID;
-@dynamic dateCreated;
-@dynamic dateAutosaved;
-@dynamic dateDeleted;
-@dynamic blogID;
-@dynamic dateModified;
-@dynamic postTitle;
-@dynamic postType;
-@dynamic isAutosave;
-@dynamic excerpt;
-@dynamic password;
-@dynamic datePublished;
-@dynamic categories;
-@dynamic author;
-@dynamic uniqueID;
-@dynamic wasLocalDraft;
-@dynamic wasDeleted;
-@dynamic isHidden;
-@dynamic note;
+@dynamic geolocation, password, tags;
+@dynamic categories, comments;
 
-- (NSDictionary *)legacyPost {
-	NSMutableDictionary *convertedPost = [[[NSMutableDictionary alloc] init] autorelease];
-	
-	[convertedPost setValue:self.postID forKey:@"postid"];
-	[convertedPost setValue:self.postTitle forKey:@"title"];
-	[convertedPost setValue:self.author forKey:@"author"];
-	if([self.postType isEqualToString:@"page"])
-		[convertedPost setValue:[self.status lowercaseString] forKey:@"page_status"];
-	else
-		[convertedPost setValue:[self.status lowercaseString] forKey:@"post_status"];
-	[convertedPost setValue:self.tags forKey:@"mt_keywords"];
- 	[convertedPost setValue:self.categories forKey:@"categories"];
-	[convertedPost setValue:self.content forKey:@"description"];
-	[convertedPost setValue:self.dateCreated forKey:@"dateCreated"];
-	
-	NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:self.dateCreated];
-	NSDate *gmtDate = [self.dateCreated addTimeInterval:(secs * -1)];
-	[convertedPost setValue:gmtDate forKey:@"date_created_gmt"];
-	
-	NSMutableArray *customFields = [[NSMutableArray alloc] init];
-	NSMutableDictionary *localDraftUniqueID = [[NSMutableDictionary alloc] init];
-	[localDraftUniqueID setValue:@"localDraftUniqueID" forKey:@"key"];
-	[localDraftUniqueID setValue:self.uniqueID forKey:@"value"];
-	[customFields addObject:localDraftUniqueID];
-	[localDraftUniqueID release];
-	[convertedPost setValue:customFields forKey:@"custom_fields"];
-	[customFields release];
-	
-	return convertedPost;
++ (Post *)newPostForBlog:(Blog *)blog {
+    Post *post = [[Post alloc] initWithEntity:[NSEntityDescription entityForName:@"Post"
+                                                          inManagedObjectContext:[blog managedObjectContext]]
+               insertIntoManagedObjectContext:[blog managedObjectContext]];
+
+    post.blog = blog;
+    post.local = NO;
+    
+    return post;
+}
+
++ (Post *)newDraftForBlog:(Blog *)blog {
+    Post *post = [self newPostForBlog:blog];
+    post.local = YES;
+    [post updateLocalType];
+    post.dateCreated = [NSDate date];
+    
+    return post;
+}
+
++ (Post *)findWithBlog:(Blog *)blog andPostID:(NSNumber *)postID {
+    NSSet *results = [blog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"postID == %@",postID]];
+    
+    if (results && (results.count > 0)) {
+        return [[results allObjects] objectAtIndex:0];
+    }
+    return nil;
+}
+
++ (Post *)createOrReplaceFromDictionary:(NSDictionary *)postInfo forBlog:(Blog *)blog {
+    Post *post = [self findWithBlog:blog andPostID:[[postInfo objectForKey:@"postid"] numericValue]];
+    
+    if (post == nil) {
+        post = [[Post newPostForBlog:blog] autorelease];
+    }
+    
+    post.postTitle      = [postInfo objectForKey:@"title"];
+    post.postID         = [[postInfo objectForKey:@"postid"] numericValue];
+    post.content        = [postInfo objectForKey:@"description"];
+    post.dateCreated    = [postInfo objectForKey:@"dateCreated"];
+    post.status         = [postInfo objectForKey:@"post_status"];
+    NSLog(@"postInfo: %@", postInfo);
+    if ([postInfo objectForKey:@"categories"]) {
+        [post setCategoriesFromNames:[postInfo objectForKey:@"categories"]];
+    }
+    
+    return post;
+}
+
++ (NSArray *)availableStatuses {
+    return [NSArray arrayWithObjects:
+            @"Local Draft",
+            @"Draft",
+            @"Pending review",
+            @"Private",
+            @"Published",
+            nil];
+}
+
+- (void)save {    
+    NSError *error;
+    if (![[self managedObjectContext] save:&error]) {
+        NSLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+        exit(-1);
+    }
+}
+
+- (void)autosave {
+    if (self.local) {
+        NSError *error;
+        if (![[self managedObjectContext] save:&error]) {
+            // We better not crash on autosave
+            NSLog(@"[Autosave] Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+            [FlurryAPI logError:@"Autosave" message:[error localizedDescription] error:error];
+        }
+    }
 }
 
 - (NSString *)categoriesText {
     NSMutableArray *categoryLabels = [NSMutableArray arrayWithCapacity:[self.categories count]];
-    NSMutableSet *categories = self.categories;
-    for (Category *category in categories) {
+    for (Category *category in self.categories) {
         [categoryLabels addObject:category.categoryName];
     }
     return [categoryLabels componentsJoinedByString:@", "];
@@ -83,22 +107,27 @@
     NSMutableArray *result = [NSMutableArray array];
     for (Category *category in self.categories) {
         NSDictionary *categoryDict = [NSDictionary dictionaryWithObjectsAndKeys:
-                                      category.categoryId,
+                                      category.categoryID,
                                       @"categoryId",
                                       category.categoryName,
                                       @"categoryName",
-                                      category.parentId,
+                                      category.parentID,
                                       @"parentId",
-                                      category.desc,
-                                      @"description",
-                                      category.htmlUrl,
-                                      @"htmlUrl",
-                                      category.rssUrl,
-                                      @"rssUrl", nil];
+                                      nil];
         [result addObject:categoryDict];
     }
 
     return result;
+}
+
+- (void)setCategoriesFromNames:(NSArray *)categoryNames {
+    [self.categories removeAllObjects];
+    for (NSString *categoryName in categoryNames) {
+        NSSet *results = [self.blog.categories filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"categoryName == %@", categoryName]];
+        if (results && (results.count > 0)) {
+            [self.categories addObject:[[results allObjects] objectAtIndex:0]];
+        }
+    }
 }
 
 - (void)setCategoriesDict:(NSArray *)categoriesDict {
@@ -115,7 +144,7 @@
 
             NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(categoryId like %@) AND (blogId like %@)",
                                       [categoryDict objectForKey:@"categoryId"],
-                                      self.blogID];
+                                      self.blog.blogID];
             [request setPredicate:predicate];
 
             NSError *error;
@@ -132,19 +161,27 @@
             category = [items objectAtIndex:0];
         } else {
             category = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:appDelegate.managedObjectContext];;
-            [category setCategoryId:[categoryDict objectForKey:@"categoryId"]];
+            [category setCategoryID:[categoryDict objectForKey:@"categoryId"]];
             [category setCategoryName:[categoryDict objectForKey:@"categoryName"]];
-            [category setDesc:[categoryDict objectForKey:@"description"]];
-            [category setHtmlUrl:[categoryDict objectForKey:@"htmlUrl"]];
-            [category setRssUrl:[categoryDict objectForKey:@"rssUrl"]];
-            [category setParentId:[categoryDict objectForKey:@"parentId"]];
-            [category setBlogId:self.blogID];
+            [category setParentID:[categoryDict objectForKey:@"parentId"]];
+            [category setBlog:self.blog];
         }
 
         NSMutableSet *categories = [self mutableSetValueForKey:@"categories"];
         [categories addObject:category];
         [self setValue:categories forKey:@"categories"];
     }
+}
+
+#pragma mark -
+#pragma mark Private Methods
+- (void)updateLocalType {
+    if (self.local) {
+        self.localType = @"Local Draft";
+    } else {
+        self.localType = @"Post";
+    }
+    
 }
 
 @end

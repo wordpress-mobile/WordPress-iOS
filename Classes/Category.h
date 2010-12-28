@@ -13,14 +13,15 @@
 @interface Category : NSManagedObject {
 
 }
-@property (nonatomic, retain) NSString *categoryId;
+@property (nonatomic, retain) NSNumber *categoryID;
 @property (nonatomic, retain) NSString *categoryName;
-@property (nonatomic, retain) NSString *desc;
-@property (nonatomic, retain) NSString *htmlUrl;
-@property (nonatomic, retain) NSString *parentId;
-@property (nonatomic, retain) NSString *rssUrl;
-@property (nonatomic, retain) NSArray *posts;
-@property (nonatomic, retain) NSString *blogId;
+@property (nonatomic, retain) NSNumber *parentID;
+@property (nonatomic, retain) NSMutableSet *posts;
+@property (nonatomic, retain) Blog *blog;
 
 + (BOOL)existsName:(NSString *)name forBlogId:(NSString *)blogId withParentId:(NSString *)parentId;
++ (Category *)findWithBlog:(Blog *)blog andCategoryID:(NSNumber *)categoryID;
+// Takes the NSDictionary from a XMLRPC call and creates or updates a post
++ (Category *)createOrReplaceFromDictionary:(NSDictionary *)categoryInfo forBlog:(Blog *)blog;
+
 @end

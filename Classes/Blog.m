@@ -8,10 +8,12 @@
 #import "Blog.h"
 #import "BlogDataManager.h"
 #import "UIImage+INResizeImageAllocator.h"
+#import "WPDataController.h"
 
 @implementation Blog
 @dynamic blogID, blogName, url, username, password, xmlrpc;
 @dynamic isAdmin;
+@dynamic posts, categories;
 
 #pragma mark -
 #pragma mark Custom methods
@@ -90,10 +92,6 @@
     return faviconImage;
 }
 
-- (void)downloadFavicon {
-	[self performSelectorInBackground:@selector(downloadFaviconInBackground) withObject:nil];
-}
-
 - (void)downloadFaviconInBackground {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
@@ -116,6 +114,10 @@
 	[pool release];
 }
 
+- (void)downloadFavicon {
+	[self performSelectorInBackground:@selector(downloadFaviconInBackground) withObject:nil];
+}
+
 - (NSString *)hostURL {
     NSString *result = [NSString stringWithFormat:@"%@",
                          [self.url stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""]];
@@ -129,6 +131,60 @@
 - (BOOL)isWPcom {
     NSRange range = [self.url rangeOfString:@"wordpress.com"];
 	return (range.location != NSNotFound);
+}
+
+
+#pragma mark -
+#pragma mark Synchronization
+
+- (BOOL)syncPostsFromResults:(NSMutableArray *)posts {
+    for (NSDictionary *postInfo in posts) {
+        [Post createOrReplaceFromDictionary:postInfo forBlog:self];
+    }
+    NSError *error = nil;
+    if (![[self managedObjectContext] save:&error]) {
+        NSLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+        exit(-1);
+    }
+    return YES;
+}
+
+- (BOOL)syncPostsWithError:(NSError **)error {    
+    NSMutableArray *posts = [[WPDataController sharedInstance] getRecentPostsForBlog:self];
+    if ([posts isKindOfClass:[NSError class]]) {
+        *error = (NSError *)posts;
+        // TODO: show alert to user?
+        NSLog(@"Error syncing blog posts: %@", [*error localizedDescription]);
+        return NO;
+    }
+    [self performSelectorOnMainThread:@selector(syncPostsFromResults:) withObject:posts waitUntilDone:YES];
+
+    return YES;
+}
+
+- (BOOL)syncCategoriesFromResults:(NSMutableArray *)categories {
+    for (NSDictionary *categoryInfo in categories) {
+        [Category createOrReplaceFromDictionary:categoryInfo forBlog:self];
+    }
+    NSError *error = nil;
+    if (![[self managedObjectContext] save:&error]) {
+        NSLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+        exit(-1);
+    }
+    return YES;
+}
+
+- (BOOL)syncCategoriesWithError:(NSError **)error {
+    NSMutableArray *categories = [[WPDataController sharedInstance] getCategoriesForBlog:self];
+    if ([categories isKindOfClass:[NSError class]]) {
+        *error = (NSError *)categories;
+        // TODO: show alert to user?
+        NSLog(@"Error syncing categories: %@", [*error localizedDescription]);
+        return NO;
+    }
+    [self performSelectorOnMainThread:@selector(syncCategoriesFromResults:) withObject:categories waitUntilDone:YES];
+
+    return YES;
 }
 
 #pragma mark -
