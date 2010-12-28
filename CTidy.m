@@ -69,6 +69,10 @@ NSAssert(theResultCode >= 0, @"tidyOptSetBool() should return 0");
 theResultCode = tidyOptSetBool(theTidyDocument, TidyForceOutput, YES);
 NSAssert(theResultCode >= 0, @"tidyOptSetBool() should return 0");
 
+// Don't wrap xmlrpc
+theResultCode = tidyOptSetInt(theTidyDocument, TidyWrapLen, 0);
+NSAssert(theResultCode >= 0, @"tidyOptSetInt() should return 0");
+
 theResultCode = tidySetOutCharEncoding(theTidyDocument, "utf8");
 NSAssert(theResultCode >= 0, @"tidySetOutCharEncoding() should return 0");
 
@@ -162,6 +166,10 @@ NSAssert(theResultCode >= 0, @"tidyOptSetBool() should return 0");
 // Force output even if errors found
 theResultCode = tidyOptSetBool(theTidyDocument, TidyForceOutput, YES);
 NSAssert(theResultCode >= 0, @"tidyOptSetBool() should return 0");
+
+// Don't wrap xmlrpc
+theResultCode = tidyOptSetInt(theTidyDocument, TidyWrapLen, 0);
+NSAssert(theResultCode >= 0, @"tidyOptSetInt() should return 0");
 
 theResultCode = tidySetCharEncoding(theTidyDocument, "utf8");
 NSAssert(theResultCode >= 0, @"tidySetOutCharEncoding() should return 0");
