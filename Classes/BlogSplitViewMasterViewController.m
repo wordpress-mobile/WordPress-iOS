@@ -102,7 +102,6 @@
 	switch ([sender selectedSegmentIndex]) {
 		case 0:
 			newDataSource = postsViewController;
-			[postsViewController loadPosts];
 			self.currentDataSource = newDataSource;
 			break;
 		case 1:
@@ -122,7 +121,6 @@
 {
 	self.navigationItem.title = [[BlogDataManager sharedDataManager].currentBlog valueForKey:@"blogName"];
 	
-	[postsViewController loadPosts];
 	[pagesViewController loadPages];
 	
 	[commentsViewController refreshCommentsList];
