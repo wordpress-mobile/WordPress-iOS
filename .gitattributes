@@ -169,6 +169,8 @@ Classes/PostMediaViewController.m -text
 Classes/PostMediaViewController.xib -text
 Classes/PostPreviewViewController.h -text
 Classes/PostPreviewViewController.m -text
+Classes/PostReaderViewController.h -text
+Classes/PostReaderViewController.m -text
 Classes/PostSettingsHelpViewController.h -text
 Classes/PostSettingsHelpViewController.m -text
 Classes/PostSettingsViewController.h -text
@@ -327,6 +329,7 @@ FlurryLib/libFlurry.a -text svneol=unset#unset
 /PageViewController.xib -text
 /PostMediaViewController-iPad.xib -text
 /PostPreviewViewController.xib -text
+/PostReaderViewController-iPad.xib -text
 /PostSettingsViewController.xib -text
 /PostViewController-iPad.xib -text
 /PostViewController.xib -text

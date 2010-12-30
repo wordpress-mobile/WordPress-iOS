@@ -21,11 +21,9 @@
     PostPreviewViewController *postPreviewController;
     PostSettingsViewController *postSettingsController;
     PostMediaViewController *mediaViewController;
-    PostsViewController *postsListController;
     CommentsViewController *commentsViewController;
     
     UIViewController *selectedViewController;
-    WPNavigationLeftButtonView *leftView;
 	WPProgressHUD *spinner;
 
     BOOL hasChanges, hasSaved, isVisible, isPublishing, isShowingKeyboard;
@@ -50,14 +48,12 @@
 	IBOutlet UIBarButtonItem *cancelEditButton;
 }
 
-@property (nonatomic, retain) WPNavigationLeftButtonView *leftView;
 @property (nonatomic, retain) EditPostViewController *postDetailViewController;
 @property (nonatomic, retain) IBOutlet EditPostViewController *postDetailEditController;
 @property (nonatomic, retain) IBOutlet PostPreviewViewController *postPreviewController;
 @property (nonatomic, retain) IBOutlet PostSettingsViewController *postSettingsController;
 @property (nonatomic, retain) IBOutlet PostMediaViewController *mediaViewController;
 @property (nonatomic, retain) IBOutlet CommentsViewController *commentsViewController;
-@property (nonatomic, assign) PostsViewController *postsListController;
 @property (nonatomic, assign) UIViewController *selectedViewController;
 @property (nonatomic, assign) BOOL hasChanges, hasSaved, isVisible, isPublishing;
 @property (nonatomic, assign) BOOL isShowingKeyboard;
@@ -70,7 +66,6 @@
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *settingsButton;
 @property (nonatomic, retain) IBOutlet UIToolbar *editToolbar;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *cancelEditButton;
-@property (nonatomic, assign) UIBarButtonItem *leftBarButtonItemForEditPost;
 @property (nonatomic, retain) Post *post;
 @property (nonatomic, retain) NSURLConnection *connection;
 @property (nonatomic, retain) NSURLRequest *urlRequest;

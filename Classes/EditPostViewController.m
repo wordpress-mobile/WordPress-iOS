@@ -618,7 +618,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			doneButton.style = UIBarButtonItemStyleBordered;
 			doneButton.title = @"Done";
 			doneButton.action = @selector(endTextEnteringButtonAction:);
-			[postDetailViewController setLeftBarButtonItemForEditPost:doneButton];
+            self.navigationItem.rightBarButtonItem = doneButton;
 			[doneButton release];
 		}
     }

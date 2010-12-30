@@ -2,6 +2,7 @@
 #import "BlogDataManager.h"
 #import "PostViewController.h"
 #import "EditPostViewController.h"
+#import "PostReaderViewController.h"
 #import "PostTableViewCell.h"
 #import "UIViewController+WPAnimation.h"
 #import "WordPressAppDelegate.h"
@@ -17,7 +18,6 @@
 
 @interface PostsViewController (Private)
 
-- (void)scrollToFirstCell;
 - (void)refreshHandler;
 - (void)syncPosts;
 //- (void) addSpinnerToCell:(NSIndexPath *)indexPath;
@@ -25,12 +25,11 @@
 - (BOOL)handleAutoSavedContext:(NSInteger)tag;
 - (void)addRefreshButton;
 - (void)deletePostAtIndexPath;
-
 @end
 
 @implementation PostsViewController
 
-@synthesize newButtonItem, postDetailViewController, postDetailEditController;
+@synthesize newButtonItem, postDetailViewController, postReaderViewController, postDetailEditController;
 @synthesize anyMorePosts, selectedIndexPath, drafts, draftManager, mediaManager;
 @synthesize resultsController;
 @synthesize blog;
@@ -58,6 +57,10 @@
     if (![self.resultsController performFetch:&error]) {
         NSLog(@"Error fetching request (Posts) %@", [error localizedDescription]);
     } else {
+        if (DeviceIsPad() && self.selectedIndexPath && self.postReaderViewController) {
+            self.postReaderViewController.post = [resultsController objectAtIndexPath:self.selectedIndexPath];
+            [self.postReaderViewController refreshUI];
+        }
         NSLog(@"fetched posts: %@", [resultsController fetchedObjects]);
         NSLog(@"sections: %@", [resultsController sections]);
     }
@@ -88,13 +91,17 @@
 			[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
 		}
 	} else if (DeviceIsPad() == YES) {
+        if (!self.selectedIndexPath) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+            if ([resultsController objectAtIndexPath:indexPath]) {
+                self.selectedIndexPath = indexPath;
+            }
+        }
 		// sometimes, iPad table views should
 		if (self.selectedIndexPath) {
 			[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 		}
 	}
-
-	[self handleAutoSavedContext:0];	
 }
 
 - (void)viewDidUnload {
@@ -156,13 +163,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
 	
-	self.postDetailViewController = nil;
-	if (DeviceIsPad() == YES) {
-		self.postDetailViewController = [[PostViewController alloc] initWithNibName:@"PostViewController-iPad" bundle:nil];
-	} else {
-		self.postDetailViewController = [[PostViewController alloc] initWithNibName:@"PostViewController" bundle:nil];
-	}
-
     if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section]) {
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
@@ -193,18 +193,17 @@
 
     }
 
-    postDetailViewController.post = [resultsController objectAtIndexPath:indexPath];
-    [postDetailViewController refreshUIForCurrentPost];
-    postDetailViewController.postsListController = self;
-    self.selectedIndexPath = indexPath;
-    self.postDetailViewController.hasChanges = NO;
-
-    self.postDetailViewController.editMode = kEditPost;
-	[self.postDetailViewController refreshUIForCurrentPost];
-	[appDelegate showContentDetailViewController:self.postDetailViewController];
-	
-	if (!DeviceIsPad())
-		[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (DeviceIsPad()) {
+        self.selectedIndexPath = indexPath;
+    } else {
+        self.postDetailViewController = [[PostViewController alloc] initWithNibName:@"PostViewController" bundle:nil];
+        self.postDetailViewController.post = [resultsController objectAtIndexPath:indexPath];
+        self.postDetailViewController.hasChanges = NO;
+        self.postDetailViewController.editMode = kEditPost;
+        [self.postDetailViewController refreshUIForCurrentPost];
+        [appDelegate showContentDetailViewController:self.postDetailViewController];
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -237,58 +236,10 @@
 #pragma mark -
 #pragma mark Custom methods
 
-- (void)scrollToFirstCell {
-    NSIndexPath *indexPath = NULL;
-	
-    if ([self tableView:self.tableView numberOfRowsInSection:LOCAL_DRAFTS_SECTION] > 0) {
-        NSUInteger indexes[] = {LOCAL_DRAFTS_SECTION, 0};
-        indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
-    }
-	else if ([self tableView:self.tableView numberOfRowsInSection:POSTS_SECTION] > 0) {
-        NSUInteger indexes[] = {POSTS_SECTION, 0};
-        indexPath = [NSIndexPath indexPathWithIndexes:indexes length:2];
-    }
-	
-    if (indexPath) {
-        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
-    }
-}
-
-
 - (void)refreshPostList {
 //    [self.tableView reloadData];
     [refreshButton stopAnimating];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-}
-
-- (void)goToHome:(id)sender {
-    [[BlogDataManager sharedDataManager] resetCurrentBlog];
-    [self popTransition:self.navigationController.view];
-}
-
-- (BOOL)handleAutoSavedContext:(NSInteger)tag {
-	//NSLog(@"Autosaving...");
-    if ([[BlogDataManager sharedDataManager] makeAutoSavedPostCurrentForCurrentBlog]) {
-        NSString *title = [[BlogDataManager sharedDataManager].currentPost valueForKey:@"title"];
-        title = (title == nil ? @"" : title);
-        NSString *titleStr = [NSString stringWithFormat:@"Your last session was interrupted. Unsaved edits to the post \"%@\" were recovered.", title];
-        UIAlertView *alert1 = [[UIAlertView alloc] initWithTitle:@"Recovered Post"
-														 message:titleStr
-														delegate:self
-											   cancelButtonTitle:nil
-											   otherButtonTitles:@"Review Post", nil];
-		
-        alert1.tag = tag;
-		
-        [alert1 show];
-        WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-        [delegate setAlertRunning:YES];
-		
-        [alert1 release];
-        return YES;
-    }
-	
-    return NO;
 }
 
 - (void)addRefreshButton {
@@ -332,21 +283,6 @@
     [dm loadPostTitlesForCurrentBlog];
 	[self refreshHandler];
 	[self.tableView reloadData];
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    [[BlogDataManager sharedDataManager] removeAutoSavedCurrentPostFile];
-    self.navigationItem.rightBarButtonItem = nil;
-    self.postDetailViewController.editMode = kAutorecoverPost;
-	
-	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	[delegate setAlertRunning:NO];
-	if (DeviceIsPad() == YES) {
-		[delegate showContentDetailViewController:self.postDetailViewController];
-	}
-	else {
-		[delegate showContentDetailViewController:self.postDetailViewController];
-	}
 }
 
 - (void)deletePostAtIndexPath:(id)object{
@@ -432,32 +368,33 @@
 	}
 }
 
-- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
-	NSLog(@"Shake detected. Refreshing...");
-	if(event.subtype == UIEventSubtypeMotionShake)
-		[self refreshPostList];
-}
-
 - (void)showAddPostView {
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-	
-	if(postDetailViewController == nil) {
-		if(DeviceIsPad() == YES)
-			self.postDetailViewController = [[PostViewController alloc] initWithNibName:@"PostViewController-iPad" bundle:nil];
-		else
-			self.postDetailViewController = [[PostViewController alloc] initWithNibName:@"PostViewController" bundle:nil];
-	}
-	self.postDetailViewController.editMode = kNewPost;
-	self.postDetailViewController.title = @"Write";
-    self.postDetailViewController.post = [Post newDraftForBlog:self.blog];
-	[self.postDetailViewController refreshUIForCompose];
-	
-	if (DeviceIsPad() == NO) {
-		[delegate.navigationController pushViewController:self.postDetailViewController animated:YES];
-	}
-	else if (DeviceIsPad() == YES) {
+		
+	if (DeviceIsPad()) {
+        self.postReaderViewController = [[PostReaderViewController alloc] initWithPost:[Post newDraftForBlog:self.blog]];
+		[delegate showContentDetailViewController:self.postReaderViewController];
+        [self.postReaderViewController showModalEditor];
+	} else {
+        self.postDetailViewController = [[PostViewController alloc] initWithNibName:@"PostViewController" bundle:nil];
+        self.postDetailViewController.post = [Post newDraftForBlog:self.blog];
+        self.postDetailViewController.hasChanges = NO;
+        self.postDetailViewController.editMode = kNewPost;
+        [self.postDetailViewController refreshUIForCompose];
 		[delegate showContentDetailViewController:self.postDetailViewController];
 	}
+}
+
+- (void)setSelectedIndexPath:(NSIndexPath *)indexPath {
+    if (selectedIndexPath != indexPath) {
+        WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+        
+        [selectedIndexPath release];
+        selectedIndexPath = [indexPath retain];
+
+        self.postReaderViewController = [[PostReaderViewController alloc] initWithPost:[resultsController objectAtIndexPath:indexPath]];    
+        [delegate showContentDetailViewController:self.postReaderViewController];
+    } 
 }
 
 #pragma mark -
@@ -471,6 +408,7 @@
     WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"blog == %@", self.blog]];
     NSSortDescriptor *sortDescriptorLocal = [[NSSortDescriptor alloc] initWithKey:@"localType" ascending:YES];
     NSSortDescriptor *sortDescriptorDate = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorLocal, sortDescriptorDate, nil];
@@ -480,7 +418,7 @@
                                                       initWithFetchRequest:fetchRequest
                                                       managedObjectContext:appDelegate.managedObjectContext
                                                       sectionNameKeyPath:@"localType"
-                                                      cacheName:@"Post"];
+                                                      cacheName:[NSString stringWithFormat:@"Post-%@", [self.blog objectID]]];
     self.resultsController = aResultsController;
     resultsController.delegate = self;
     
@@ -507,6 +445,9 @@
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath {
     [self.tableView reloadData];
+    if (self.selectedIndexPath && [resultsController objectAtIndexPath:self.selectedIndexPath]) {
+        [self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
 }
 
 #pragma mark -

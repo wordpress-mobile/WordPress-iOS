@@ -301,6 +301,8 @@
 		E125445612BF5B3900D87A0A /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E125445512BF5B3900D87A0A /* Category.m */; };
 		E125451812BF68F900D87A0A /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = E125451712BF68F900D87A0A /* Page.m */; };
 		E131D08912C8C9160056BAB9 /* AbstractPost.m in Sources */ = {isa = PBXBuildFile; fileRef = E131D08812C8C9160056BAB9 /* AbstractPost.m */; };
+		E1497BBC12CCA8270022BCD9 /* PostReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1497BBB12CCA8270022BCD9 /* PostReaderViewController.m */; };
+		E1497BC012CCA92F0022BCD9 /* PostReaderViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1497BBF12CCA92F0022BCD9 /* PostReaderViewController-iPad.xib */; };
 		E19F29AD12B8BC22008FF660 /* access.c in Sources */ = {isa = PBXBuildFile; fileRef = E19F297912B8BC22008FF660 /* access.c */; };
 		E19F29AE12B8BC22008FF660 /* alloc.c in Sources */ = {isa = PBXBuildFile; fileRef = E19F297B12B8BC22008FF660 /* alloc.c */; };
 		E19F29AF12B8BC22008FF660 /* attrask.c in Sources */ = {isa = PBXBuildFile; fileRef = E19F297C12B8BC22008FF660 /* attrask.c */; };
@@ -781,6 +783,9 @@
 		E125451712BF68F900D87A0A /* Page.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Page.m; sourceTree = "<group>"; };
 		E131D08712C8C9150056BAB9 /* AbstractPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractPost.h; sourceTree = "<group>"; };
 		E131D08812C8C9160056BAB9 /* AbstractPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractPost.m; sourceTree = "<group>"; };
+		E1497BBA12CCA8270022BCD9 /* PostReaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostReaderViewController.h; sourceTree = "<group>"; };
+		E1497BBB12CCA8270022BCD9 /* PostReaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostReaderViewController.m; sourceTree = "<group>"; };
+		E1497BBF12CCA92F0022BCD9 /* PostReaderViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "PostReaderViewController-iPad.xib"; sourceTree = "<group>"; };
 		E19F297912B8BC22008FF660 /* access.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = access.c; sourceTree = "<group>"; };
 		E19F297A12B8BC22008FF660 /* access.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = access.h; sourceTree = "<group>"; };
 		E19F297B12B8BC22008FF660 /* alloc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alloc.c; sourceTree = "<group>"; };
@@ -1326,6 +1331,7 @@
 		83F1FCA6123748E300069F99 /* Posts */ = {
 			isa = PBXGroup;
 			children = (
+				E1497BBF12CCA92F0022BCD9 /* PostReaderViewController-iPad.xib */,
 				03FF763211445F8E00DCFC6F /* EditPostViewController-iPad.xib */,
 				03B1E32A113DBDB300BBD1C6 /* PostViewController-iPad.xib */,
 			);
@@ -1366,6 +1372,8 @@
 				83A645D6112B8690000999A6 /* PostLocationViewController.m */,
 				83A64687112C5F75000999A6 /* PostSettingsHelpViewController.h */,
 				83A64688112C5F75000999A6 /* PostSettingsHelpViewController.m */,
+				E1497BBA12CCA8270022BCD9 /* PostReaderViewController.h */,
+				E1497BBB12CCA8270022BCD9 /* PostReaderViewController.m */,
 			);
 			name = Post;
 			sourceTree = "<group>";
@@ -1934,6 +1942,7 @@
 				837593AE1243ECD500D04C93 /* EditSiteViewController-iPad.xib in Resources */,
 				83ABDD78125D30F700A421B2 /* BlogSettingsViewController-iPad.xib in Resources */,
 				836FECEC12715E2A000309D8 /* CrashReportView.xib in Resources */,
+				E1497BC012CCA92F0022BCD9 /* PostReaderViewController-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2097,6 +2106,7 @@
 				E125445612BF5B3900D87A0A /* Category.m in Sources */,
 				E125451812BF68F900D87A0A /* Page.m in Sources */,
 				E131D08912C8C9160056BAB9 /* AbstractPost.m in Sources */,
+				E1497BBC12CCA8270022BCD9 /* PostReaderViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

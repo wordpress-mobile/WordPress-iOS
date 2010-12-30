@@ -78,14 +78,6 @@
 }
 
 #pragma mark -
-#pragma mark Navigation Methods
-
-- (void)goToHome:(id)sender {
-    [[WordPressAppDelegate sharedWordPressApp] resetCurrentBlogInUserDefaults];
-    [self popTransition:self.navigationController.view];
-}
-
-#pragma mark -
 #pragma mark UITabBarControllerDelegate Methods
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {

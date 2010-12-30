@@ -20,20 +20,17 @@
 @interface PostViewController (Private)
 
 - (void)discard;
-- (void)cancel;
 
 @end
 
 @implementation PostViewController
 
-@synthesize postDetailViewController, postDetailEditController, postPreviewController, postSettingsController, postsListController, hasChanges, tabController;
-@synthesize mediaViewController, leftView, isVisible, commentsViewController, spinner, isPublishing;
+@synthesize postDetailViewController, postDetailEditController, postPreviewController, postSettingsController, hasChanges, tabController;
+@synthesize mediaViewController, isVisible, commentsViewController, spinner, isPublishing;
 @synthesize selectedViewController, toolbar, contentView, commentsButton, photosButton, hasSaved;
 @synthesize settingsButton, editToolbar, cancelEditButton, post, isShowingKeyboard;
 @synthesize payload, connection, urlResponse, urlRequest, appDelegate;
 @synthesize editMode;
-
-@dynamic leftBarButtonItemForEditPost;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -58,13 +55,6 @@
 		[tabController setViewControllers:tabs];
 	}
 		
-	if (DeviceIsPad() == NO) {
-	    if (!leftView) {
-			leftView = [WPNavigationLeftButtonView createCopyOfView];
-			[leftView setTitle:@"Posts"];
-		}
-	}
-	
     if(self.editMode == kEditPost)
         [self refreshUIForCurrentPost];
 	else if(self.editMode == kNewPost)
@@ -73,6 +63,12 @@
         [self refreshUIForCurrentPost];
         self.hasChanges = YES;
 	}
+    
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                  target:self
+                                                                                  action:@selector(cancelView:)];
+    self.navigationItem.leftBarButtonItem = cancelButton;
+    [cancelButton release];    
 
 	[self refreshButtons];
 	self.view = tabController.view;
@@ -80,22 +76,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-	
-    [leftView setTarget:self withAction:@selector(cancelView:)];
-	
-    if (hasChanges == YES) {
-        if ([[leftView title] isEqualToString:@"Posts"])
-            [leftView setTitle:@"Cancel"];
-    }
-	else {
-        [leftView setTitle:@"Posts"];
-    }
-	
-	if (DeviceIsPad() == NO) {
-		UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
-		self.leftBarButtonItemForEditPost = cancelButton;
-		[cancelButton release];
-	}
 	
     if(self.editMode != kNewPost)
 		self.editMode = kRefreshPost;
@@ -277,9 +257,7 @@
 					alert.tag = TAG_OFFSET;
 					[alert show];
 					[appDelegate setAlertRunning:YES];
-					[alert release];
-					
-					[self cancel];
+					[alert release];					
 				}
 				else {					
 					//BOOL savePostStatus = [dm savePost:dm.currentPost];
@@ -375,6 +353,7 @@
 	// TODO: remove the mediaViewController notifications - this is pretty kludgy
 	[FlurryAPI logEvent:@"PostView#didSaveInBackground"];
 	[mediaViewController removeNotifications];
+    [self dismissEditView];
 }
 
 - (void)refreshUIForCompose {
@@ -477,14 +456,6 @@
 	[mediaViewController removeNotifications];
 }
 
-- (void)cancel {
-    [FlurryAPI logEvent:@"Post#actionSheet_cancel"];
-    hasChanges = YES;
-
-    if ([[leftView title] isEqualToString:@"Posts"])
-        [leftView setTitle:@"Cancel"];
-}
-
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if ([actionSheet tag] == 201) {
         if (buttonIndex == 0) {
@@ -493,7 +464,7 @@
         }
 
         if (buttonIndex == 1) {
-            [self cancel];
+            
         }
     }
 
@@ -509,12 +480,10 @@
 }
 
 - (void)setHasChanges:(BOOL)aFlag {
-    hasChanges = aFlag;
+    if (hasChanges == aFlag)
+        return;
 
-    if (hasChanges) {
-        if ([[leftView title] isEqualToString:@"Posts"])
-            [leftView setTitle:@"Cancel"];
-    }
+    hasChanges = aFlag;
 	
 	[self refreshButtons];
 
@@ -580,17 +549,6 @@
 		return postDetailEditController.navigationItem;
 	}
 	return nil;
-}
-
-- (UIBarButtonItem *)leftBarButtonItemForEditPost {
-	return [self navigationItemForEditPost].leftBarButtonItem;
-}
-
-- (void)setLeftBarButtonItemForEditPost:(UIBarButtonItem *)item {
-	if (DeviceIsPad() == NO)
-		self.navigationItem.leftBarButtonItem = item;
-	else if (DeviceIsPad() == YES)
-		postDetailEditController.navigationItem.leftBarButtonItem = item;
 }
 
 - (UIBarButtonItem *)rightBarButtonItemForEditPost {
@@ -818,7 +776,6 @@
     [connection release];
     [urlResponse release];
     [urlRequest release];
-    [leftView release];
     [postDetailEditController release];
     [postPreviewController release];
     [postSettingsController release];
