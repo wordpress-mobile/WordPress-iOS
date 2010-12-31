@@ -408,6 +408,9 @@
 }
 
 - (void)trySelectSomething {
+    if (!DeviceIsPad())
+        return;
+
     if (!self.selectedIndexPath) {
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
         @try {
