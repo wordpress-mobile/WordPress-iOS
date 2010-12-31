@@ -80,6 +80,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		textView.editable = NO;
 	}
 	
+    isTextViewEditing = NO;
 	self.statusTextField.text = @"Local Draft";
 }
 
@@ -367,7 +368,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if (selectionTableViewController == nil)
         selectionTableViewController = [[WPSelectionTableViewController alloc] initWithNibName:@"WPSelectionTableViewController" bundle:nil];
 	
-    NSArray *dataSource = [Post availableStatuses];
+    NSArray *dataSource = [self.postDetailViewController.post availableStatuses];
 	
     NSString *curStatus = postDetailViewController.post.statusTitle;
 	
@@ -607,19 +608,21 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 #pragma mark TextView & TextField Delegates
+
+- (void)showDoneButton {
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
+                                                                  target:self action:@selector(endTextEnteringButtonAction:)];
+    postDetailViewController.navigationItem.leftBarButtonItem = doneButton;
+    postDetailViewController.navigationItem.rightBarButtonItem = nil;
+    [doneButton release];
+}
+
 - (void)textViewDidChangeSelection:(UITextView *)aTextView {
     if (!isTextViewEditing) {
         isTextViewEditing = YES;
 		
 		if (DeviceIsPad() == NO) {
-			// Done button
-			UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] init];
-			doneButton.target = self;
-			doneButton.style = UIBarButtonItemStyleBordered;
-			doneButton.title = @"Done";
-			doneButton.action = @selector(endTextEnteringButtonAction:);
-            self.navigationItem.rightBarButtonItem = doneButton;
-			[doneButton release];
+            [self showDoneButton];
 		}
     }
 }
@@ -639,13 +642,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
         isTextViewEditing = YES;
 		
  		if (DeviceIsPad() == NO) {
-			UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
-																		  target:self action:@selector(endTextEnteringButtonAction:)];
-			[postDetailViewController setLeftBarButtonItemForEditPost:doneButton];
-			[doneButton release];
+            [self showDoneButton];
 		}
     }
-	[postDetailViewController refreshButtons];
 }
 
 //replace "&nbsp" with a space @"&#160;" before Apple's broken TextView handling can do so and break things
@@ -777,14 +776,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         postDetailViewController.post.content = text;
 		
 		if (DeviceIsPad() == NO) {
-			if (postDetailViewController.hasChanges == YES) {
-				[leftView setTitle:@"Cancel"];
-			} else {
-				[leftView setTitle:@"Posts"];
-			}
-			UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:leftView];
-			[postDetailViewController setLeftBarButtonItemForEditPost:barItem];
-			[barItem release];
+            [postDetailViewController refreshButtons];
 		}
     }
 }
@@ -1164,12 +1156,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)keyboardWillShow:(NSNotification *)notification {
 	postDetailViewController.isShowingKeyboard = YES;
-	[postDetailViewController refreshButtons];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
 	postDetailViewController.isShowingKeyboard = NO;
-	[postDetailViewController refreshButtons];
 }
 
 #pragma mark -

@@ -63,6 +63,10 @@
     [self didChangeValueForKey:@"local"];
 }
 
+- (BOOL)hasRemote {
+    return ((self.postID != nil) && ([self.postID intValue] > 0));
+}
+
 - (NSString *)statusTitle {
     return [AbstractPost titleForStatus:self.status];
 }

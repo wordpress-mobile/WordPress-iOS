@@ -64,13 +64,6 @@
         self.hasChanges = YES;
 	}
     
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                  target:self
-                                                                                  action:@selector(cancelView:)];
-    self.navigationItem.leftBarButtonItem = cancelButton;
-    [cancelButton release];    
-
-	[self refreshButtons];
 	self.view = tabController.view;
 }
 
@@ -88,49 +81,54 @@
 }
 
 - (void)refreshButtons {
-	if(self.hasChanges == YES) {
-		TransparentToolbar *buttonBar = [[TransparentToolbar alloc] initWithFrame:CGRectMake(0, 0, 124, 44)];
-		NSMutableArray *buttons = [[NSMutableArray alloc] initWithCapacity:3];
-		
-		UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] init];
-		saveButton.title = @"Save";
-		saveButton.target = self;
-		saveButton.style = UIBarButtonItemStyleBordered;
-		saveButton.action = @selector(saveAction:);
-		[buttons addObject:saveButton];
-		[saveButton release];
-		
-		if([postDetailEditController isPostPublished] == NO) {
-			UIBarButtonItem *spacer = [[UIBarButtonItem alloc]
-									   initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-									   target:nil
-									   action:nil];
-			[buttons addObject:spacer];
-			[spacer release];
-			
-			UIBarButtonItem *publishButton = [[UIBarButtonItem alloc] init];
-			publishButton.title = @"Publish";
-			publishButton.target = self;
-			publishButton.style = UIBarButtonItemStyleDone;
-			publishButton.action = @selector(publish:);
-			[buttons addObject:publishButton];
-			[publishButton release];
-		}
-		else {
-			buttonBar.frame = CGRectMake(0, 0, 52, 44);
-			saveButton.style = UIBarButtonItemStyleDone;
-		}
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                  target:self
+                                                                                  action:@selector(cancelView:)];
+    self.navigationItem.leftBarButtonItem = cancelButton;
+    [cancelButton release];
 
-		
-		[buttonBar setItems:buttons animated:NO];
-		[buttons release];
-		
-		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:buttonBar];
-		[buttonBar release];
-	}
-	else {
-		self.navigationItem.rightBarButtonItem = nil;
-	}
+    UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] init];
+    saveButton.title = @"Save";
+    saveButton.target = self;
+    saveButton.style = UIBarButtonItemStyleDone;
+    saveButton.action = @selector(saveAction:);
+
+    if(![self.post hasRemote]) {
+        if ([self.post.status isEqualToString:@"publish"]) {
+            saveButton.title = @"Publish";
+            self.navigationItem.rightBarButtonItem = saveButton;
+        } else {
+            TransparentToolbar *buttonBar = [[TransparentToolbar alloc] initWithFrame:CGRectMake(0, 0, 124, 44)];
+            NSMutableArray *buttons = [[NSMutableArray alloc] initWithCapacity:3];
+            saveButton.style = UIBarButtonItemStyleBordered;
+            [buttons addObject:saveButton];
+            UIBarButtonItem *spacer = [[UIBarButtonItem alloc]
+                                       initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                       target:nil
+                                       action:nil];
+            [buttons addObject:spacer];
+            [spacer release];
+
+            UIBarButtonItem *publishButton = [[UIBarButtonItem alloc] init];
+            publishButton.title = @"Publish";
+            publishButton.target = self;
+            publishButton.style = UIBarButtonItemStyleDone;
+            publishButton.action = @selector(publish:);
+            [buttons addObject:publishButton];
+            [publishButton release];
+            [buttonBar setItems:buttons animated:NO];
+            [buttons release];
+
+            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:buttonBar];
+            [buttonBar release];
+        }
+    }
+    else {
+        saveButton.title = @"Update";
+        self.navigationItem.rightBarButtonItem = saveButton;
+    }
+
+    [saveButton release];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -358,9 +356,7 @@
 
 - (void)refreshUIForCompose {
 	postDetailViewController.navigationItem.title = @"Write";
-	
-	[self refreshButtons];
-	
+
     [tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
 
 	[postDetailViewController refreshUIForCompose];
@@ -485,8 +481,6 @@
 
     hasChanges = aFlag;
 	
-	[self refreshButtons];
-
     NSNumber *postEdited = [NSNumber numberWithBool:hasChanges];
     [[[BlogDataManager sharedDataManager] currentPost] setObject:postEdited forKey:@"hasChanges"];
 }

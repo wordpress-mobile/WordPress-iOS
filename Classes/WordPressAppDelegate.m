@@ -294,7 +294,18 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		UINavigationController *navController = self.detailNavigationController;
 		// preserve left bar button item: issue #379
 		viewController.navigationItem.leftBarButtonItem = navController.topViewController.navigationItem.leftBarButtonItem;
-		[navController setViewControllers:[NSArray arrayWithObject:viewController] animated:NO];
+        if (viewController) {
+            [navController setViewControllers:[NSArray arrayWithObject:viewController] animated:NO];
+        } else {
+            UIImageView *fabric = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"fabric"]];
+            UIViewController *fabricController = [[UIViewController alloc] init];
+            fabricController.view = fabric;
+            fabricController.navigationItem.title = @"WordPress";
+            [navController setViewControllers:[NSArray arrayWithObject:fabricController] animated:NO];
+            [fabric release];
+            [fabricController release];
+        }
+
 	}
 	else if (self.navigationController) {
 		[self.navigationController pushViewController:viewController animated:YES];

@@ -66,14 +66,23 @@
     return post;
 }
 
-+ (NSArray *)availableStatuses {
-    return [NSArray arrayWithObjects:
-            @"Local Draft",
-            @"Draft",
-            @"Pending review",
-            @"Private",
-            @"Published",
-            nil];
+- (NSArray *)availableStatuses {
+    if ([self hasRemote]) {
+        return [NSArray arrayWithObjects:
+                @"Draft",
+                @"Pending review",
+                @"Private",
+                @"Published",
+                nil];
+    } else {
+        return [NSArray arrayWithObjects:
+                @"Local Draft",
+                @"Draft",
+                @"Pending review",
+                @"Private",
+                @"Published",
+                nil];
+    }
 }
 
 - (void)save {    

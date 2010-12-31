@@ -25,6 +25,7 @@
 - (BOOL)handleAutoSavedContext:(NSInteger)tag;
 - (void)addRefreshButton;
 - (void)deletePostAtIndexPath;
+- (void)trySelectSomething;
 @end
 
 @implementation PostsViewController
@@ -58,11 +59,16 @@
         NSLog(@"Error fetching request (Posts) %@", [error localizedDescription]);
     } else {
         if (DeviceIsPad() && self.selectedIndexPath && self.postReaderViewController) {
-            self.postReaderViewController.post = [resultsController objectAtIndexPath:self.selectedIndexPath];
-            [self.postReaderViewController refreshUI];
+            @try {
+                self.postReaderViewController.post = [resultsController objectAtIndexPath:self.selectedIndexPath];
+                [self.postReaderViewController refreshUI];
+            }
+            @catch (NSException * e) {
+                // In some cases, selectedIndexPath could be pointint to a missing row
+                // This is the case after a failed core data upgrade
+                self.selectedIndexPath = nil;
+            }
         }
-        NSLog(@"fetched posts: %@", [resultsController fetchedObjects]);
-        NSLog(@"sections: %@", [resultsController sections]);
     }
 }
 
@@ -92,10 +98,7 @@
 		}
 	} else if (DeviceIsPad() == YES) {
         if (!self.selectedIndexPath) {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-            if ([resultsController objectAtIndexPath:indexPath]) {
-                self.selectedIndexPath = indexPath;
-            }
+            [self trySelectSomething];
         }
 		// sometimes, iPad table views should
 		if (self.selectedIndexPath) {
@@ -238,6 +241,7 @@
 
 - (void)refreshPostList {
 //    [self.tableView reloadData];
+    [self trySelectSomething];
     [refreshButton stopAnimating];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
@@ -390,11 +394,33 @@
         WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
         
         [selectedIndexPath release];
-        selectedIndexPath = [indexPath retain];
 
-        self.postReaderViewController = [[PostReaderViewController alloc] initWithPost:[resultsController objectAtIndexPath:indexPath]];    
-        [delegate showContentDetailViewController:self.postReaderViewController];
+        if (indexPath != nil) {
+            selectedIndexPath = [indexPath retain];
+            self.postReaderViewController = [[PostReaderViewController alloc] initWithPost:[resultsController objectAtIndexPath:indexPath]];
+            [delegate showContentDetailViewController:self.postReaderViewController];
+        } else {
+            selectedIndexPath = nil;
+            [delegate showContentDetailViewController:nil];
+        }
+
     } 
+}
+
+- (void)trySelectSomething {
+    if (!self.selectedIndexPath) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        @try {
+            if ([resultsController fetchedObjects] &&
+                ([[resultsController fetchedObjects] count] > 0) &&
+                [resultsController objectAtIndexPath:indexPath]) {
+                self.selectedIndexPath = indexPath;
+            }
+        }
+        @catch (NSException * e) {
+            NSLog(@"Caught exception when looking for a post to select. Maybe there are no posts yet?");
+        }
+    }
 }
 
 #pragma mark -

@@ -35,6 +35,7 @@
 // Returns categories as a comma-separated list
 - (NSString *)categoriesText;
 - (void)setCategoriesFromNames:(NSArray *)categoryNames;
+- (NSArray *)availableStatuses;
 
 #pragma mark     Data Management
 // Save changes to disk
@@ -48,6 +49,5 @@
 + (Post *)findWithBlog:(Blog *)blog andPostID:(NSNumber *)postID;
 // Takes the NSDictionary from a XMLRPC call and creates or updates a post
 + (Post *)createOrReplaceFromDictionary:(NSDictionary *)postInfo forBlog:(Blog *)blog;
-+ (NSArray *)availableStatuses;
 
 @end

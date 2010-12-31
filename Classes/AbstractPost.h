@@ -30,4 +30,7 @@
 @property (nonatomic, retain) Blog * blog;
 @property (nonatomic, retain) NSMutableSet * media;
 
+// Does the post exist on the blog?
+- (BOOL)hasRemote;
+
 @end
