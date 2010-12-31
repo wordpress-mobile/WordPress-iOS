@@ -411,6 +411,9 @@
     if (!DeviceIsPad())
         return;
 
+    if (self.navigationController.visibleViewController != self)
+        return;
+
     if (!self.selectedIndexPath) {
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
         @try {
