@@ -29,8 +29,16 @@
 // Relationships
 @property (nonatomic, retain) Blog * blog;
 @property (nonatomic, retain) NSMutableSet * media;
+@property (readonly) AbstractPost *original;
+@property (readonly) AbstractPost *revision;
 
 // Does the post exist on the blog?
 - (BOOL)hasRemote;
 
+// Revision management
+- (AbstractPost *)newRevision;
+- (void)deleteRevision;
+- (void)applyRevision;
+- (BOOL)isRevision;
+- (BOOL)isOriginal;
 @end

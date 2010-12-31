@@ -164,8 +164,7 @@
 - (IBAction)cancelView:(id)sender {
     [FlurryAPI logEvent:@"Post#cancelView"];
     if (!hasChanges) {
-        [mediaViewController cancelPendingUpload:self];
-		[self dismissEditView];
+        [self discard];
         return;
     }
     [FlurryAPI logEvent:@"Post#cancelView(actionSheet)"];
@@ -184,18 +183,12 @@
 }
 
 - (IBAction)saveAction:(id)sender {
-	if(isPublishing == NO) {
-        [FlurryAPI logEvent:@"Post#saveAction(save)"];
-		spinner.progressMessage.text = @"Saving...";
-	} else {
-        [FlurryAPI logEvent:@"Post#saveAction(publish)"];
-		spinner.progressMessage.text = @"Publishing...";
-    }
-	
-	[self.postDetailEditController refreshCurrentPostForUI];
-	
-	[spinner show];
-	[self performSelectorInBackground:@selector(saveInBackground) withObject:nil];
+    [self.post applyRevision];
+    // TODO: notify post controller to push changes
+    [self dismissEditView];
+
+//	[spinner show];
+//	[self performSelectorInBackground:@selector(saveInBackground) withObject:nil];
 }
 
 - (void)resignTextView {
@@ -445,22 +438,23 @@
 - (void)discard {
     [FlurryAPI logEvent:@"Post#actionSheet_discard"];
     hasChanges = NO;
-	[self refreshButtons];
     [mediaViewController cancelPendingUpload:self];
 
 	// TODO: remove the mediaViewController notifications - this is pretty kludgy
 	[mediaViewController removeNotifications];
+    [self.post.original deleteRevision];
+    self.post = nil; // Just in case
+    [self dismissEditView];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if ([actionSheet tag] == 201) {
         if (buttonIndex == 0) {
             [self discard];
-			[self dismissEditView];
         }
 
         if (buttonIndex == 1) {
-            
+            [self saveAction:self];
         }
     }
 

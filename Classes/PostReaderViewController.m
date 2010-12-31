@@ -48,7 +48,10 @@
     } else {
         postViewController = [[PostViewController alloc] initWithNibName:@"PostViewController" bundle:nil];
     }
-    postViewController.post = self.post;
+
+    Post *postRevision = (Post *)[self.post newRevision];
+    postViewController.post = postRevision;
+    [postRevision release];
     postViewController.hasChanges = NO;
     postViewController.editMode = kEditPost;
     [postViewController refreshUIForCurrentPost];

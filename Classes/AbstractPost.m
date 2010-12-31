@@ -12,6 +12,7 @@
 + (NSString *)titleForStatus:(NSString *)status;
 + (NSString *)statusForTitle:(NSString *)title;
 - (void)updateLocalType;
+- (void)cloneFrom:(AbstractPost *)source;
 @end
 
 @implementation AbstractPost
@@ -73,6 +74,77 @@
 
 - (void)setStatusTitle:(NSString *)aTitle {
     self.status = [AbstractPost statusForTitle:aTitle];
+}
+
+#pragma mark -
+#pragma mark Revision management
+- (void)cloneFrom:(AbstractPost *)source {
+    for (NSString *key in [[[source entity] attributesByName] allKeys]) {
+        NSLog(@"Copying attribute %@", key);
+        [self setValue:[source valueForKey:key] forKey:key];
+    }
+    for (NSString *key in [[[source entity] relationshipsByName] allKeys]) {
+        if ([key isEqualToString:@"original"] || [key isEqualToString:@"revision"]) {
+            NSLog(@"Skipping relationship %@", key);
+        } else {
+            NSLog(@"Copying relationship %@", key);
+            [self setValue: [source valueForKey:key] forKey: key];
+        }
+    }
+}
+
+- (AbstractPost *)newRevision {
+    if ([self isRevision]) {
+        NSLog(@"!!! Attempted to create a revision of a revision");
+        return self;
+    }
+    if (self.revision) {
+        NSLog(@"!!! Already have revision");
+        return self.revision;
+    }
+
+    AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:[[self entity] name] inManagedObjectContext:[self managedObjectContext]];
+    [post cloneFrom:self];
+    [post setPrimitiveValue:self forKey:@"original"];
+
+    return post;
+}
+
+- (void)deleteRevision {
+    if (self.revision) {
+        [[self managedObjectContext] deleteObject:self.revision];
+    }
+}
+
+- (void)applyRevision {
+    if (self.revision) {
+        [self cloneFrom:self.revision];
+        [self deleteRevision];
+    }
+}
+
+- (BOOL)isRevision {
+    return (![self isOriginal]);
+}
+
+- (BOOL)isOriginal {
+    return ([self primitiveValueForKey:@"original"] == nil);
+}
+
+- (AbstractPost *)revision {
+    if ([self isOriginal]) {
+        return [self primitiveValueForKey:@"revision"];
+    } else {
+        return self;
+    }
+}
+
+- (AbstractPost *)original {
+    if ([self isOriginal]) {
+        return self;
+    } else {
+        return [self primitiveValueForKey:@"original"];
+    }
 }
 
 @end
