@@ -301,6 +301,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
             UIViewController *fabricController = [[UIViewController alloc] init];
             fabricController.view = fabric;
             fabricController.navigationItem.title = @"WordPress";
+            fabricController.navigationItem.leftBarButtonItem = navController.topViewController.navigationItem.leftBarButtonItem;
             [navController setViewControllers:[NSArray arrayWithObject:fabricController] animated:NO];
             [fabric release];
             [fabricController release];
