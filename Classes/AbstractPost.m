@@ -96,16 +96,17 @@
 - (AbstractPost *)newRevision {
     if ([self isRevision]) {
         NSLog(@"!!! Attempted to create a revision of a revision");
-        return self;
+        return [self retain];
     }
     if (self.revision) {
         NSLog(@"!!! Already have revision");
-        return self.revision;
+        return [self.revision retain];
     }
 
     AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:[[self entity] name] inManagedObjectContext:[self managedObjectContext]];
     [post cloneFrom:self];
-    [post setPrimitiveValue:self forKey:@"original"];
+    [post setValue:self forKey:@"original"];
+    [post setValue:nil forKey:@"revision"];
 
     return post;
 }
@@ -117,7 +118,7 @@
 }
 
 - (void)applyRevision {
-    if (self.revision) {
+    if ([self isOriginal]) {
         [self cloneFrom:self.revision];
         [self deleteRevision];
     }
@@ -132,19 +133,11 @@
 }
 
 - (AbstractPost *)revision {
-    if ([self isOriginal]) {
-        return [self primitiveValueForKey:@"revision"];
-    } else {
-        return self;
-    }
+    return [self primitiveValueForKey:@"revision"];
 }
 
 - (AbstractPost *)original {
-    if ([self isOriginal]) {
-        return self;
-    } else {
-        return [self primitiveValueForKey:@"original"];
-    }
+    return [self primitiveValueForKey:@"original"];
 }
 
 @end

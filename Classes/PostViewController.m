@@ -183,7 +183,11 @@
 }
 
 - (IBAction)saveAction:(id)sender {
-    [self.post applyRevision];
+    self.post.postTitle = postDetailEditController.titleTextField.text;
+    self.post.tags = postDetailEditController.tagsTextField.text;
+    self.post.content = postDetailEditController.textView.text;
+
+    [self.post.original applyRevision];
     // TODO: notify post controller to push changes
     [self dismissEditView];
 
@@ -621,6 +625,7 @@
 
 	// TODO: remove the mediaViewController notifications - this is pretty kludgy
 	[FlurryAPI logEvent:@"PostView#dismissEditView"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"PostEditorDismissed" object:self];
 	[mediaViewController removeNotifications];
 }
 

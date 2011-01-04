@@ -33,6 +33,7 @@
     post.local = YES;
     [post updateLocalType];
     post.dateCreated = [NSDate date];
+    [post save];
     
     return post;
 }

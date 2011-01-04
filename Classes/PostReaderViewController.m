@@ -55,12 +55,17 @@
     postViewController.hasChanges = NO;
     postViewController.editMode = kEditPost;
     [postViewController refreshUIForCurrentPost];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editorDismissed:) name:@"PostEditorDismissed" object:postViewController];
     
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:postViewController];
     nav.modalPresentationStyle = UIModalPresentationPageSheet;
     nav.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentModalViewController:nav animated:YES];
     [nav release];
+}
+
+- (void)editorDismissed:(NSNotification *)aNotification {
+    [self refreshUI];
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
@@ -71,6 +76,19 @@
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
     [self showModalEditor];
     return NO;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+    self.post = nil;
+    self.contentView = nil;
+    self.categoriesTextField = nil;
+    self.statusTextField = nil;
+    self.titleTextField = nil;
+    self.tagsTextField = nil;
+
+    [super dealloc];
 }
 
 @end
