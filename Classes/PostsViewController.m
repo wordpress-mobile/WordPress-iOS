@@ -477,8 +477,16 @@
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath {
     [self.tableView reloadData];
-    if (self.selectedIndexPath && [resultsController objectAtIndexPath:self.selectedIndexPath]) {
-        [self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    switch (type) {
+        case NSFetchedResultsChangeDelete:
+            [self trySelectSomething];
+            break;
+        case NSFetchedResultsChangeInsert:
+            self.selectedIndexPath = newIndexPath;
+            [self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        default:
+            [self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+            break;
     }
 }
 
