@@ -45,7 +45,7 @@ typedef enum {
 - (BOOL)hasRemote;
 
 // Revision management
-- (AbstractPost *)newRevision;
+- (AbstractPost *)createRevision;
 - (void)deleteRevision;
 - (void)applyRevision;
 - (BOOL)isRevision;

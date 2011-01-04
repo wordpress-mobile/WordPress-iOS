@@ -93,14 +93,14 @@
     }
 }
 
-- (AbstractPost *)newRevision {
+- (AbstractPost *)createRevision {
     if ([self isRevision]) {
         NSLog(@"!!! Attempted to create a revision of a revision");
-        return [self retain];
+        return self;
     }
     if (self.revision) {
         NSLog(@"!!! Already have revision");
-        return [self.revision retain];
+        return self.revision;
     }
 
     AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:[[self entity] name] inManagedObjectContext:[self managedObjectContext]];
