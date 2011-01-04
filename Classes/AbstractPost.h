@@ -9,6 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "Blog.h"
 
+typedef enum {
+    AbstractPostRemoteStatusNone,       // Only local version
+    AbstractPostRemoteStatusPushing,    // Uploading post
+    AbstractPostRemoteStatusSync,       // Post uploaded
+    AbstractPostRemoteStatusFailed      // Upload failed
+} AbstractPostRemoteStatus;
+
 @interface AbstractPost : NSManagedObject {
 
 }
@@ -22,6 +29,8 @@
 @property (nonatomic, retain) NSString * status;
 @property (nonatomic, assign) NSString * statusTitle;
 @property (nonatomic) BOOL local;
+@property (nonatomic, retain) NSNumber * remoteStatusNumber;
+@property (nonatomic) AbstractPostRemoteStatus remoteStatus;
 // Transient attribute for sorting/grouping.
 // Can be "Local Drafts" or "Posts/Pages"
 @property (nonatomic,retain) NSString * localType;

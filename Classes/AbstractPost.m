@@ -16,7 +16,7 @@
 @end
 
 @implementation AbstractPost
-@dynamic author, content, dateCreated, postID, postTitle, status, localType;
+@dynamic author, content, dateCreated, postID, postTitle, status, localType, remoteStatusNumber;
 @dynamic blog, media;
 
 + (NSString *)titleForStatus:(NSString *)status {
@@ -138,6 +138,14 @@
 
 - (AbstractPost *)original {
     return [self primitiveValueForKey:@"original"];
+}
+
+- (AbstractPostRemoteStatus)remoteStatus {
+    return (AbstractPostRemoteStatus)[[self remoteStatusNumber] intValue];
+}
+
+- (void)setRemoteStatus:(AbstractPostRemoteStatus)aStatus {
+    [self setRemoteStatusNumber:[NSNumber numberWithInt:aStatus]];
 }
 
 @end
