@@ -50,4 +50,7 @@ typedef enum {
 - (void)applyRevision;
 - (BOOL)isRevision;
 - (BOOL)isOriginal;
+
+// Subclass methods
+- (void)upload;
 @end

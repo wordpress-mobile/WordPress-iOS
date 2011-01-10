@@ -148,4 +148,7 @@
     [self setRemoteStatusNumber:[NSNumber numberWithInt:aStatus]];
 }
 
+- (void)upload {
+}
+
 @end

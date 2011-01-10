@@ -200,7 +200,8 @@
         self.selectedIndexPath = indexPath;
     } else {
         self.postDetailViewController = [[PostViewController alloc] initWithNibName:@"PostViewController" bundle:nil];
-        self.postDetailViewController.post = [resultsController objectAtIndexPath:indexPath];
+        Post *post = [resultsController objectAtIndexPath:indexPath];
+        self.postDetailViewController.post = (Post *)[post createRevision];
         self.postDetailViewController.hasChanges = NO;
         self.postDetailViewController.editMode = kEditPost;
         [self.postDetailViewController refreshUIForCurrentPost];
@@ -381,7 +382,8 @@
         [self.postReaderViewController showModalEditor];
 	} else {
         self.postDetailViewController = [[PostViewController alloc] initWithNibName:@"PostViewController" bundle:nil];
-        self.postDetailViewController.post = [Post newDraftForBlog:self.blog];
+        Post *post = [Post newDraftForBlog:self.blog];
+        self.postDetailViewController.post = (Post *)[post createRevision];
         self.postDetailViewController.hasChanges = NO;
         self.postDetailViewController.editMode = kNewPost;
         [self.postDetailViewController refreshUIForCompose];
@@ -477,6 +479,10 @@
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath {
     [self.tableView reloadData];
+
+    if (!DeviceIsPad()) {
+        return;
+    }
     switch (type) {
         case NSFetchedResultsChangeDelete:
             [self trySelectSomething];

@@ -42,6 +42,8 @@
 - (void)save;
 // Autosave for local drafts
 - (void)autosave;
+// Upload a new post to the server
+- (void)upload;
 
 #pragma mark Class Methods
 // Creates an empty local post associated with blog

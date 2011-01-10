@@ -147,6 +147,57 @@
 }
 
 #pragma mark -
+#pragma mark Post
+
+// Returns post ID, -1 if unsuccessful
+- (int)mwNewPost:(Post *)post {
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:post.blog.xmlrpc]];
+    NSMutableDictionary *postParams = [NSMutableDictionary dictionary];
+    if (post.postTitle != nil)
+        [postParams setObject:post.postTitle forKey:@"title"];
+    if (post.tags != nil)
+        [postParams setObject:post.tags forKey:@"mt_keyworkds"];
+    if (post.content != nil)
+        [postParams setObject:post.content forKey:@"description"];
+    if (post.categories != nil) {
+        NSMutableArray *categoryNames = [NSMutableArray arrayWithCapacity:[post.categories count]];
+        for (Category *cat in post.categories) {
+            [categoryNames addObject:cat.categoryName];
+        }
+        [postParams setObject:categoryNames forKey:@"categories"];
+    }
+    if (post.status == nil)
+        post.status = @"publish";
+    [postParams setObject:post.status forKey:@"post_status"];
+    if (post.dateCreated == nil) {
+        post.dateCreated = [NSDate date];
+    }
+    NSTimeZone* currentTimeZone = [NSTimeZone localTimeZone];
+    if ([currentTimeZone.abbreviation isEqualToString:@"GMT"]){
+        [postParams setObject:post.dateCreated forKey:@"dateCreated"];
+        [postParams setObject:post.dateCreated forKey:@"date_created_gmt"];
+    } else {
+        NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:post.dateCreated];
+        NSDate *gmtDate = [post.dateCreated addTimeInterval:(secs * -1)];
+        [postParams setObject:gmtDate forKey:@"dateCreated"];
+        [postParams setObject:gmtDate forKey:@"date_created_gmt"];
+    }
+    if (post.password != nil)
+        [postParams setObject:post.password forKey:@"wp_password"];
+
+    [xmlrpcRequest setMethod:@"metaWeblog.newPost" withObjects:[self getXMLRPCArgsForBlog:post.blog withExtraArgs:[NSArray arrayWithObject:postParams]]];
+
+    id result = [self executeXMLRPCRequest:xmlrpcRequest];
+    if ([result isKindOfClass:[NSError class]]) {
+        return -1;
+    }
+
+    // Result should be a string with the post ID
+    NSLog(@"newPost result: %@", result);
+    return [result intValue];
+}
+
+#pragma mark -
 #pragma mark XMLRPC
 
 - (NSArray *)getXMLRPCArgsForBlog:(Blog *)blog  withExtraArgs:(NSArray *)args {

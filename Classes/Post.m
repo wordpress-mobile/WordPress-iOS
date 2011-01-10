@@ -6,6 +6,7 @@
 //
 
 #import "Post.h"
+#import "WPDataController.h"
 
 @interface Post(PrivateMethods)
 + (Post *)newPostForBlog:(Blog *)blog;
@@ -86,7 +87,7 @@
     }
 }
 
-- (void)save {    
+- (void)save {
     NSError *error;
     if (![[self managedObjectContext] save:&error]) {
         NSLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
@@ -94,9 +95,26 @@
     }
 }
 
+- (void)upload {
+    [super upload];
+    [self save];
+
+    self.remoteStatus = AbstractPostRemoteStatusPushing;
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    int postID = [[WPDataController sharedInstance] mwNewPost:self];
+    if (postID == -1) {
+        NSLog(@"Post publish failed");
+        self.remoteStatus = AbstractPostRemoteStatusFailed;
+    } else {
+        self.postID = [NSNumber numberWithInt:postID];
+        self.remoteStatus = AbstractPostRemoteStatusSync;
+        [self save];
+    }
+}
+
 - (void)autosave {
     if (self.local) {
-        NSError *error;
+        NSError *error = nil;
         if (![[self managedObjectContext] save:&error]) {
             // We better not crash on autosave
             NSLog(@"[Autosave] Unresolved Core Data Save error %@, %@", error, [error userInfo]);

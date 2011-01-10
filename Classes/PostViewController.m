@@ -187,8 +187,9 @@
     self.post.tags = postDetailEditController.tagsTextField.text;
     self.post.content = postDetailEditController.textView.text;
 
+    [self.tabController.selectedViewController.view endEditing:YES];
     [self.post.original applyRevision];
-    // TODO: notify post controller to push changes
+    [self.post.original upload];
     [self dismissEditView];
 
 //	[spinner show];
@@ -556,7 +557,6 @@
     [FlurryAPI logEvent:@"Post#publish"];
 	isPublishing = YES;
 
-	[postDetailEditController updateValuesToCurrentPost];
     postDetailEditController.isLocalDraft = NO;
 	postDetailEditController.statusTextField.text = @"Published";
 	

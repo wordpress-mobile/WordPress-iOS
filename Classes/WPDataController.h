@@ -43,4 +43,7 @@ typedef enum {
 #pragma mark Blog
 - (NSMutableArray *)getRecentPostsForBlog:(Blog *)blog;
 
+#pragma mark -
+#pragma mark Post
+- (int)mwNewPost:(Post *)post;
 @end
