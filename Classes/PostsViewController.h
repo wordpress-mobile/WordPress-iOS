@@ -1,6 +1,5 @@
 #import <Foundation/Foundation.h>
 #import "RefreshButtonView.h"
-#import "DraftManager.h"
 #import "MediaManager.h"
 #import "Post.h";
 #import "PostReaderViewController.h"
@@ -17,7 +16,6 @@
 @property (nonatomic, retain) PostViewController *postDetailViewController;
 @property (nonatomic, retain) PostReaderViewController *postReaderViewController;
 @property (nonatomic, retain) EditPostViewController *postDetailEditController;
-@property (nonatomic, retain) DraftManager *draftManager;
 @property (nonatomic, retain) MediaManager *mediaManager;
 @property (nonatomic, assign) BOOL anyMorePosts;
 @property (nonatomic, retain) NSIndexPath *selectedIndexPath;

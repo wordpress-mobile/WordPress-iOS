@@ -206,7 +206,7 @@
 	NSMutableDictionary *dict = [[[NSMutableDictionary alloc] init] autorelease];
 	hasSaved = YES;
 		
-	if((self.post == nil) || (!self.post.local)) {
+	if((self.post == nil) || ([self.post hasRemote])) {
 		if ([[WPReachability sharedReachability] internetConnectionStatus] == NotReachable) {
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Communication Error."
 															message:@"no internet connection."
@@ -222,7 +222,7 @@
 				[self dismissEditView];
 			}
 			else {
-				if(post.local) {					
+				if(![post hasRemote]) {
 					[[BlogDataManager sharedDataManager] makeNewPostCurrent];
 					[postDetailEditController updateValuesToCurrentPost];
 					
@@ -416,7 +416,6 @@
     [FlurryAPI logEvent:@"Post#actionSheet_saveAsDraft"];
 	hasSaved = YES;
 	
-    post.local = YES;
 	[post setPostTitle:postDetailEditController.titleTextField.text];
 	[post setContent:postDetailEditController.textView.text];
 	[post setCategoriesDict:postDetailEditController.selectedCategories];

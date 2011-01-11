@@ -31,7 +31,7 @@
 @implementation PostsViewController
 
 @synthesize newButtonItem, postDetailViewController, postReaderViewController, postDetailEditController;
-@synthesize anyMorePosts, selectedIndexPath, drafts, draftManager, mediaManager;
+@synthesize anyMorePosts, selectedIndexPath, drafts, mediaManager;
 @synthesize resultsController;
 @synthesize blog;
 
@@ -42,7 +42,6 @@
     [super viewDidLoad];
     [FlurryAPI logEvent:@"Posts"];
 
-	draftManager = [[DraftManager alloc] init];
     self.tableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
     [self addRefreshButton];
 
@@ -139,8 +138,7 @@
     id <NSFetchedResultsSectionInfo> sectionInfo = [[resultsController sections] objectAtIndex:section];
     NSString *sectionName = [sectionInfo name];
     
-    // Ugly, but it works. We'll need something better when going for i18n
-    return [sectionName stringByAppendingString:@"s"];
+    return [AbstractPost titleForRemoteStatus:[sectionName numericValue]];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -299,7 +297,7 @@
 	NSIndexPath *indexPath = (NSIndexPath*)object;
     Post *post = [resultsController objectAtIndexPath:indexPath];
 	
-    if (post.local) {
+    if (![post hasRemote]) {
 		[mediaManager removeForPostID:post.postID andBlogURL:[[[BlogDataManager sharedDataManager] currentBlog] objectForKey:@"url"]];
 		
         // FIXME: use custom post method
@@ -312,33 +310,31 @@
         }		
     } 
 	else {
-		if (indexPath.section == POSTS_SECTION) {
-			//check for reachability
-			if ([[WPReachability sharedReachability] internetConnectionStatus] == NotReachable) {
-				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Communication Error."
-																message:@"no internet connection."
-															   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-				alert.tag = TAG_OFFSET;
-				[alert show];
-				
-				WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-				[delegate setAlertRunning:YES];
-				[alert release];
-				return;
-			}
-			else{
-				//if reachability is good, make post at index current, delete post, and refresh view (sync posts)
-				[dataManager makePostAtIndexCurrent:indexPath.row];
-				[mediaManager removeForPostID:[[[BlogDataManager sharedDataManager] currentPost] objectForKey:@"postid"] 
-								   andBlogURL:[[[BlogDataManager sharedDataManager] currentBlog] objectForKey:@"url"]];
-				//delete post
-				[dataManager deletePost];
-				
-				//resync posts
-				[dataManager loadPostTitlesForCurrentBlog];
-				[self syncPosts];
-			}
-		}
+        //check for reachability
+        if ([[WPReachability sharedReachability] internetConnectionStatus] == NotReachable) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Communication Error."
+                                                            message:@"no internet connection."
+                                                           delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            alert.tag = TAG_OFFSET;
+            [alert show];
+            
+            WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+            [delegate setAlertRunning:YES];
+            [alert release];
+            return;
+        }
+        else{
+            //if reachability is good, make post at index current, delete post, and refresh view (sync posts)
+            [dataManager makePostAtIndexCurrent:indexPath.row];
+            [mediaManager removeForPostID:[[[BlogDataManager sharedDataManager] currentPost] objectForKey:@"postid"] 
+                               andBlogURL:[[[BlogDataManager sharedDataManager] currentBlog] objectForKey:@"url"]];
+            //delete post
+            [dataManager deletePost];
+            
+            //resync posts
+            [dataManager loadPostTitlesForCurrentBlog];
+            [self syncPosts];
+        }
 	}
 	
 	[progressAlert dismissWithClickedButtonIndex:0 animated:YES];
@@ -376,19 +372,20 @@
 - (void)showAddPostView {
 	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 		
+    Post *post = [Post newDraftForBlog:self.blog];
 	if (DeviceIsPad()) {
-        self.postReaderViewController = [[PostReaderViewController alloc] initWithPost:[Post newDraftForBlog:self.blog]];
+        self.postReaderViewController = [[[PostReaderViewController alloc] initWithPost:post] autorelease];
 		[delegate showContentDetailViewController:self.postReaderViewController];
         [self.postReaderViewController showModalEditor];
 	} else {
-        self.postDetailViewController = [[PostViewController alloc] initWithNibName:@"PostViewController" bundle:nil];
-        Post *post = [Post newDraftForBlog:self.blog];
+        self.postDetailViewController = [[[PostViewController alloc] initWithNibName:@"PostViewController" bundle:nil] autorelease];
         self.postDetailViewController.post = (Post *)[post createRevision];
         self.postDetailViewController.hasChanges = NO;
         self.postDetailViewController.editMode = kNewPost;
         [self.postDetailViewController refreshUIForCompose];
 		[delegate showContentDetailViewController:self.postDetailViewController];
 	}
+    [post release];
 }
 
 - (void)setSelectedIndexPath:(NSIndexPath *)indexPath {
@@ -443,7 +440,7 @@
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext]];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(blog == %@) && (original == nil)", self.blog]];
-    NSSortDescriptor *sortDescriptorLocal = [[NSSortDescriptor alloc] initWithKey:@"localType" ascending:YES];
+    NSSortDescriptor *sortDescriptorLocal = [[NSSortDescriptor alloc] initWithKey:@"remoteStatusNumber" ascending:YES];
     NSSortDescriptor *sortDescriptorDate = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorLocal, sortDescriptorDate, nil];
     [fetchRequest setSortDescriptors:sortDescriptors];
@@ -451,7 +448,7 @@
     NSFetchedResultsController *aResultsController = [[NSFetchedResultsController alloc]
                                                       initWithFetchRequest:fetchRequest
                                                       managedObjectContext:appDelegate.managedObjectContext
-                                                      sectionNameKeyPath:@"localType"
+                                                      sectionNameKeyPath:@"remoteStatusNumber"
                                                       cacheName:[NSString stringWithFormat:@"Post-%@", [self.blog objectID]]];
     self.resultsController = aResultsController;
     resultsController.delegate = self;
@@ -504,7 +501,6 @@
     self.resultsController = nil;
 
 	[mediaManager release];
-	[draftManager release];
     [postDetailEditController release];
     [postDetailViewController release];
     [newButtonItem release];

@@ -11,7 +11,7 @@
 #define POST_ROW_HEIGHT         60
 
 #define LEFT_OFFSET             10
-#define RIGHT_OFFSET            280
+#define RIGHT_OFFSET            200
 
 #define MAIN_FONT_SIZE          15
 #define DATE_FONT_SIZE          13
@@ -27,6 +27,7 @@
 
     UILabel *nameLabel;
     UILabel *dateLabel;
+    UILabel *statusLabel;
     UIActivityIndicatorView *activityIndicator;
     BOOL saving;
 	BOOL gettingMore;

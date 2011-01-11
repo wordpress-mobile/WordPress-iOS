@@ -10,10 +10,10 @@
 #import "Blog.h"
 
 typedef enum {
-    AbstractPostRemoteStatusNone,       // Only local version
     AbstractPostRemoteStatusPushing,    // Uploading post
+    AbstractPostRemoteStatusFailed,      // Upload failed
+    AbstractPostRemoteStatusLocal,       // Only local version
     AbstractPostRemoteStatusSync,       // Post uploaded
-    AbstractPostRemoteStatusFailed      // Upload failed
 } AbstractPostRemoteStatus;
 
 @interface AbstractPost : NSManagedObject {
@@ -28,12 +28,8 @@ typedef enum {
 @property (nonatomic, retain) NSString * content;
 @property (nonatomic, retain) NSString * status;
 @property (nonatomic, assign) NSString * statusTitle;
-@property (nonatomic) BOOL local;
 @property (nonatomic, retain) NSNumber * remoteStatusNumber;
 @property (nonatomic) AbstractPostRemoteStatus remoteStatus;
-// Transient attribute for sorting/grouping.
-// Can be "Local Drafts" or "Posts/Pages"
-@property (nonatomic,retain) NSString * localType;
 
 // Relationships
 @property (nonatomic, retain) Blog * blog;
@@ -43,6 +39,7 @@ typedef enum {
 
 // Does the post exist on the blog?
 - (BOOL)hasRemote;
+- (void)remove;
 
 // Revision management
 - (AbstractPost *)createRevision;
@@ -53,4 +50,6 @@ typedef enum {
 
 // Subclass methods
 - (void)upload;
+- (NSString *)remoteStatusText;
++ (NSString *)titleForRemoteStatus:(NSNumber *)remoteStatus;
 @end

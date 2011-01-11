@@ -10,6 +10,7 @@
 @interface PostTableViewCell (Private)
 - (void)addNameLabel;
 - (void)addDateLabel;
+- (void)addStatusLabel;
 - (void)addActivityIndicator;
 
 @end
@@ -24,6 +25,7 @@
 
         [self addNameLabel];
         [self addDateLabel];
+        [self addStatusLabel];
         [self addActivityIndicator];
     }
 
@@ -83,6 +85,7 @@
 		
 		NSDate *date = [post valueForKey:@"dateCreated"];
 		dateLabel.text = [dateFormatter stringFromDate:date];
+        statusLabel.text = [post remoteStatusText];
 		
 		@try {
 			if([[post valueForKey:kAsyncPostFlag] isEqualToNumber:[NSNumber numberWithInt:0]])
@@ -103,6 +106,7 @@
 	self.contentView.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
 	nameLabel.textColor = [UIColor blackColor];
 	dateLabel.textColor = [UIColor lightGrayColor];
+	statusLabel.textColor = [UIColor lightGrayColor];
 	self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	self.selectionStyle = UITableViewCellSelectionStyleBlue;
 	
@@ -128,7 +132,7 @@
 }
 
 - (void)addDateLabel {
-    CGRect rect = CGRectMake(LEFT_OFFSET, nameLabel.frame.origin.y + LABEL_HEIGHT + VERTICAL_OFFSET, 320, DATE_LABEL_HEIGHT);
+    CGRect rect = CGRectMake(LEFT_OFFSET, nameLabel.frame.origin.y + LABEL_HEIGHT + VERTICAL_OFFSET, RIGHT_OFFSET - LEFT_OFFSET, DATE_LABEL_HEIGHT);
 
     dateLabel = [[UILabel alloc] initWithFrame:rect];
     dateLabel.font = [UIFont systemFontOfSize:DATE_FONT_SIZE];
@@ -137,6 +141,19 @@
     dateLabel.backgroundColor = [UIColor clearColor];
 
     [self.contentView addSubview:dateLabel];
+}
+
+- (void)addStatusLabel {
+    CGRect rect = CGRectMake(RIGHT_OFFSET, dateLabel.frame.origin.y, 310 - RIGHT_OFFSET, DATE_LABEL_HEIGHT);
+    statusLabel = [[UILabel alloc] initWithFrame:rect];
+    statusLabel.font = [UIFont systemFontOfSize:DATE_FONT_SIZE];
+    statusLabel.highlightedTextColor = [UIColor whiteColor];
+    statusLabel.textColor = [UIColor lightGrayColor];
+    statusLabel.backgroundColor = [UIColor clearColor];
+    statusLabel.textAlignment = UITextAlignmentRight;
+    NSLog(@"Creating post table cell status");
+
+    [self.contentView addSubview:statusLabel];
 }
 
 - (void)addActivityIndicator {

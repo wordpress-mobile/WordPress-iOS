@@ -247,9 +247,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)refreshUIForCurrentPost {
     Post *post = postDetailViewController.post;
-	if(post.local) {		
-        self.isLocalDraft = YES;
-    }
 
     if ([post.postTitle length] > 0) {
         postDetailViewController.navigationItem.title = post.postTitle;
@@ -257,7 +254,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back"
                                                 style:UIBarButtonItemStyleBordered target:nil action:nil];
 
-    self.isLocalDraft = post.local;
     titleTextField.text = post.postTitle;
     tagsTextField.text = post.tags;
     statusTextField.text = post.statusTitle;
@@ -408,16 +404,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
         NSString *curStatus = [selectedObjects lastObject];
         postDetailViewController.post.statusTitle = curStatus;
         statusTextField.text = curStatus;
-        if (isLocalDraft) {
-            if([curStatus isEqualToString:@"Local Draft"]) {
-                postDetailViewController.post.local = YES;
-                self.isLocalDraft = YES;
-            }
-            else {
-                postDetailViewController.post.local = NO;
-                self.isLocalDraft = NO;
-            }
-        }
     }
     
     if (selContext == kSelectionsCategoriesContext) {

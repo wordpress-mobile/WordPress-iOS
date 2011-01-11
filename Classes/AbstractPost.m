@@ -11,12 +11,11 @@
 @interface AbstractPost(ProtectedMethods)
 + (NSString *)titleForStatus:(NSString *)status;
 + (NSString *)statusForTitle:(NSString *)title;
-- (void)updateLocalType;
 - (void)cloneFrom:(AbstractPost *)source;
 @end
 
 @implementation AbstractPost
-@dynamic author, content, dateCreated, postID, postTitle, status, localType, remoteStatusNumber;
+@dynamic author, content, dateCreated, postID, postTitle, status, remoteStatusNumber;
 @dynamic blog, media;
 
 + (NSString *)titleForStatus:(NSString *)status {
@@ -47,25 +46,12 @@
     }
 }
 
-- (BOOL)local {
-    NSNumber *tmpValue;
-    [self willAccessValueForKey:@"local"];
-    tmpValue = [self primitiveValueForKey:@"local"];
-    [self didAccessValueForKey:@"local"];
-    return [tmpValue boolValue];
-}
-
-- (void)setLocal:(BOOL)value {
-    [self willChangeValueForKey:@"local"];
-    [self willChangeValueForKey:@"localType"];
-    [self setPrimitiveValue:[NSNumber numberWithBool:value] forKey:@"local"];
-    [self updateLocalType];
-    [self didChangeValueForKey:@"localType"];
-    [self didChangeValueForKey:@"local"];
-}
-
 - (BOOL)hasRemote {
     return ((self.postID != nil) && ([self.postID intValue] > 0));
+}
+
+- (void)remove {
+    [[self managedObjectContext] deleteObject:self];
 }
 
 - (NSString *)statusTitle {
@@ -149,6 +135,27 @@
 }
 
 - (void)upload {
+}
+
++ (NSString *)titleForRemoteStatus:(NSNumber *)remoteStatus {
+    switch ([remoteStatus intValue]) {
+        case AbstractPostRemoteStatusPushing:
+            return @"Uploading";
+            break;
+        case AbstractPostRemoteStatusFailed:
+            return @"Failed";
+            break;
+        case AbstractPostRemoteStatusSync:
+            return @"Uploaded";
+            break;
+        default:
+            return @"Local";
+            break;
+    }
+}
+
+- (NSString *)remoteStatusText {
+    return [AbstractPost titleForRemoteStatus:self.remoteStatusNumber];
 }
 
 @end

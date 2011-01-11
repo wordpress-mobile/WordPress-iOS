@@ -9,6 +9,7 @@
 
 @interface WPDataController(PrivateMethods)
 - (id) init;
+- (NSMutableDictionary *)getXMLRPCDictionaryForPost:(Post *)post;
 - (NSArray *)getXMLRPCArgsForBlog:(Blog *)blog  withExtraArgs:(NSArray *)args;
 - (id)executeXMLRPCRequest:(XMLRPCRequest *)req;
 - (NSError *)errorWithResponse:(XMLRPCResponse *)res;
@@ -149,14 +150,12 @@
 #pragma mark -
 #pragma mark Post
 
-// Returns post ID, -1 if unsuccessful
-- (int)mwNewPost:(Post *)post {
-    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:post.blog.xmlrpc]];
+- (NSMutableDictionary *)getXMLRPCDictionaryForPost:(Post *)post {
     NSMutableDictionary *postParams = [NSMutableDictionary dictionary];
     if (post.postTitle != nil)
         [postParams setObject:post.postTitle forKey:@"title"];
     if (post.tags != nil)
-        [postParams setObject:post.tags forKey:@"mt_keyworkds"];
+        [postParams setObject:post.tags forKey:@"mt_keywords"];
     if (post.content != nil)
         [postParams setObject:post.content forKey:@"description"];
     if (post.categories != nil) {
@@ -184,6 +183,13 @@
     }
     if (post.password != nil)
         [postParams setObject:post.password forKey:@"wp_password"];
+    return postParams;
+}
+
+// Returns post ID, -1 if unsuccessful
+- (int)mwNewPost:(Post *)post {
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:post.blog.xmlrpc]];
+    NSMutableDictionary *postParams = [self getXMLRPCDictionaryForPost:post];
 
     [xmlrpcRequest setMethod:@"metaWeblog.newPost" withObjects:[self getXMLRPCArgsForBlog:post.blog withExtraArgs:[NSArray arrayWithObject:postParams]]];
 
@@ -195,6 +201,25 @@
     // Result should be a string with the post ID
     NSLog(@"newPost result: %@", result);
     return [result intValue];
+}
+
+- (BOOL)mwEditPost:(Post *)post {
+    if (post.postID == nil) {
+        return NO;
+    }
+    
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:post.blog.xmlrpc]];
+    NSMutableDictionary *postParams = [self getXMLRPCDictionaryForPost:post];
+    NSArray *args = [NSArray arrayWithObjects:post.postID, post.blog.username, [self passwordForBlog:post.blog], postParams, nil];
+    
+    [xmlrpcRequest setMethod:@"metaWeblog.editPost" withObjects:args];
+    id result = [self executeXMLRPCRequest:xmlrpcRequest];
+    if ([result isKindOfClass:[NSError class]]) {
+        NSLog(@"mwEditPost failed: %@", result);
+        return NO;
+    } else {
+        return YES;
+    }
 }
 
 #pragma mark -

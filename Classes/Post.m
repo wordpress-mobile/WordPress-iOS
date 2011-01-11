@@ -10,7 +10,9 @@
 
 @interface Post(PrivateMethods)
 + (Post *)newPostForBlog:(Blog *)blog;
-- (void)updateLocalType;
+- (void)uploadInBackground;
+- (void)didUploadInBackground;
+- (void)failedUploadInBackground;
 @end
 
 @implementation Post 
@@ -24,16 +26,14 @@
                insertIntoManagedObjectContext:[blog managedObjectContext]];
 
     post.blog = blog;
-    post.local = NO;
     
     return post;
 }
 
 + (Post *)newDraftForBlog:(Blog *)blog {
     Post *post = [self newPostForBlog:blog];
-    post.local = YES;
-    [post updateLocalType];
     post.dateCreated = [NSDate date];
+    post.remoteStatus = AbstractPostRemoteStatusLocal;
     [post save];
     
     return post;
@@ -60,7 +60,9 @@
     post.content        = [postInfo objectForKey:@"description"];
     post.dateCreated    = [postInfo objectForKey:@"dateCreated"];
     post.status         = [postInfo objectForKey:@"post_status"];
-    NSLog(@"postInfo: %@", postInfo);
+    post.tags           = [postInfo objectForKey:@"mt_keywords"];
+    post.remoteStatus   = AbstractPostRemoteStatusSync;
+    WPLog(@"postInfo: %@", postInfo);
     if ([postInfo objectForKey:@"categories"]) {
         [post setCategoriesFromNames:[postInfo objectForKey:@"categories"]];
     }
@@ -69,22 +71,12 @@
 }
 
 - (NSArray *)availableStatuses {
-    if ([self hasRemote]) {
-        return [NSArray arrayWithObjects:
-                @"Draft",
-                @"Pending review",
-                @"Private",
-                @"Published",
-                nil];
-    } else {
-        return [NSArray arrayWithObjects:
-                @"Local Draft",
-                @"Draft",
-                @"Pending review",
-                @"Private",
-                @"Published",
-                nil];
-    }
+    return [NSArray arrayWithObjects:
+            @"Draft",
+            @"Pending review",
+            @"Private",
+            @"Published",
+            nil];
 }
 
 - (void)save {
@@ -95,31 +87,60 @@
     }
 }
 
+- (void)uploadInBackground {
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+    if (self.postID) {
+        if ([[WPDataController sharedInstance] mwEditPost:self]) {
+            self.remoteStatus = AbstractPostRemoteStatusSync;
+            [self performSelectorOnMainThread:@selector(didUploadInBackground) withObject:nil waitUntilDone:NO];
+        } else {
+            NSLog(@"Post update failed");
+            self.remoteStatus = AbstractPostRemoteStatusFailed;
+            [self performSelectorOnMainThread:@selector(failedUploadInBackground) withObject:nil waitUntilDone:NO];
+        }
+    } else {
+        int postID = [[WPDataController sharedInstance] mwNewPost:self];
+        if (postID == -1) {
+            NSLog(@"Post upload failed");
+            self.remoteStatus = AbstractPostRemoteStatusFailed;
+            [self performSelectorOnMainThread:@selector(failedUploadInBackground) withObject:nil waitUntilDone:NO];
+        } else {
+            self.postID = [NSNumber numberWithInt:postID];
+            self.remoteStatus = AbstractPostRemoteStatusSync;
+            [self performSelectorOnMainThread:@selector(didUploadInBackground) withObject:nil waitUntilDone:NO];
+        }
+    }
+    [self save];
+
+    [pool release];
+}
+
+- (void)didUploadInBackground {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploaded" object:self];
+}
+
+- (void)failedUploadInBackground {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadFailed" object:self];
+}
+
 - (void)upload {
     [super upload];
     [self save];
 
     self.remoteStatus = AbstractPostRemoteStatusPushing;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    int postID = [[WPDataController sharedInstance] mwNewPost:self];
-    if (postID == -1) {
-        NSLog(@"Post publish failed");
-        self.remoteStatus = AbstractPostRemoteStatusFailed;
-    } else {
-        self.postID = [NSNumber numberWithInt:postID];
-        self.remoteStatus = AbstractPostRemoteStatusSync;
-        [self save];
-    }
+    [self performSelectorInBackground:@selector(uploadInBackground) withObject:nil];
 }
 
 - (void)autosave {
-    if (self.local) {
-        NSError *error = nil;
-        if (![[self managedObjectContext] save:&error]) {
-            // We better not crash on autosave
-            NSLog(@"[Autosave] Unresolved Core Data Save error %@, %@", error, [error userInfo]);
-            [FlurryAPI logError:@"Autosave" message:[error localizedDescription] error:error];
-        }
+    NSError *error = nil;
+    if (![[self managedObjectContext] save:&error]) {
+        // We better not crash on autosave
+        NSLog(@"[Autosave] Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+        [FlurryAPI logError:@"Autosave" message:[error localizedDescription] error:error];
     }
 }
 
@@ -199,17 +220,6 @@
         [categories addObject:category];
         [self setValue:categories forKey:@"categories"];
     }
-}
-
-#pragma mark -
-#pragma mark Private Methods
-- (void)updateLocalType {
-    if (self.local) {
-        self.localType = @"Local Draft";
-    } else {
-        self.localType = @"Post";
-    }
-    
 }
 
 @end

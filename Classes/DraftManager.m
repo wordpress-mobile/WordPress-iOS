@@ -35,7 +35,6 @@
 	if((items == nil) || (items.count == 0)) {
 		Post *post = [NSEntityDescription insertNewObjectForEntityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext];
 		post.status = @"Local Draft";
-        post.local = YES;
 		return post;
 	}
 	
