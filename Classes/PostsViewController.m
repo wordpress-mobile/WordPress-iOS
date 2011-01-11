@@ -292,7 +292,6 @@
 	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 	
 	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-	BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 	//NewObj* pNew = (NewObj*)oldObj;
 	NSIndexPath *indexPath = (NSIndexPath*)object;
     Post *post = [resultsController objectAtIndexPath:indexPath];
@@ -324,15 +323,14 @@
             return;
         }
         else{
-            //if reachability is good, make post at index current, delete post, and refresh view (sync posts)
-            [dataManager makePostAtIndexCurrent:indexPath.row];
+            //if reachability is good, delete post, and refresh view (sync posts)
             [mediaManager removeForPostID:[[[BlogDataManager sharedDataManager] currentPost] objectForKey:@"postid"] 
                                andBlogURL:[[[BlogDataManager sharedDataManager] currentBlog] objectForKey:@"url"]];
             //delete post
-            [dataManager deletePost];
+            Post *post = [resultsController objectAtIndexPath:indexPath];
+            [post remove];
             
             //resync posts
-            [dataManager loadPostTitlesForCurrentBlog];
             [self syncPosts];
         }
 	}

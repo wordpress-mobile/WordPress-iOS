@@ -87,6 +87,12 @@
     }
 }
 
+- (void)remove {
+    if ([self hasRemote] && [[WPDataController sharedInstance] mwDeletePost:self]) {
+        [super remove];
+    }
+}
+
 - (void)uploadInBackground {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 

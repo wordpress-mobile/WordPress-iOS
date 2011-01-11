@@ -222,6 +222,27 @@
     }
 }
 
+- (BOOL)mwDeletePost:(Post *)post {
+    if (post.postID == nil) {
+        // No post ID means no need to delete anything in the server
+        // so we return YES to allow the Post to be deleted from the app
+        return YES;
+    }
+
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:post.blog.xmlrpc]];
+    NSMutableDictionary *postParams = [self getXMLRPCDictionaryForPost:post];
+    NSArray *args = [NSArray arrayWithObjects:@"unused", post.postID, post.blog.username, [self passwordForBlog:post.blog], postParams, nil];
+
+    [xmlrpcRequest setMethod:@"metaWeblog.deletePost" withObjects:args];
+    id result = [self executeXMLRPCRequest:xmlrpcRequest];
+    if ([result isKindOfClass:[NSError class]]) {
+        NSLog(@"mwEditPost failed: %@", result);
+        return NO;
+    } else {
+        return YES;
+    }
+}
+
 #pragma mark -
 #pragma mark XMLRPC
 
