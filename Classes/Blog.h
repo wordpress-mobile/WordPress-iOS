@@ -23,6 +23,7 @@
 
 #pragma mark -
 #pragma mark Synchronization
+- (NSArray *)syncedPosts;
 - (BOOL)syncPostsWithError:(NSError **)error;
 - (BOOL)syncCategoriesWithError:(NSError **)error;
 

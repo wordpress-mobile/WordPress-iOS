@@ -137,10 +137,37 @@
 #pragma mark -
 #pragma mark Synchronization
 
-- (BOOL)syncPostsFromResults:(NSMutableArray *)posts {
-    for (NSDictionary *postInfo in posts) {
-        [Post createOrReplaceFromDictionary:postInfo forBlog:self];
+- (NSArray *)syncedPosts {
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:[NSEntityDescription entityForName:@"Post" inManagedObjectContext:[self managedObjectContext]]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL)", [NSNumber numberWithInt:AbstractPostRemoteStatusSync]];
+    [request setPredicate:predicate];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postID" ascending:YES];
+    [request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    [sortDescriptor release];
+    
+    NSError *error = nil;
+    NSArray *array = [[self managedObjectContext] executeFetchRequest:request error:&error];
+    [request release];
+    if (array == nil) {
+        array = [NSArray array];
     }
+    return array;
+}
+
+- (BOOL)syncPostsFromResults:(NSMutableArray *)posts {
+    NSArray *syncedPosts = [self syncedPosts];
+    NSMutableArray *postsToKeep = [NSMutableArray array];
+    for (NSDictionary *postInfo in posts) {
+        [postsToKeep addObject:[Post createOrReplaceFromDictionary:postInfo forBlog:self]];
+    }
+    for (Post *post in syncedPosts) {
+        if (![postsToKeep containsObject:post]) {
+            WPLog(@"Deleting post: %@", post);
+            [[self managedObjectContext] deleteObject:post];
+        }
+    }
+
     NSError *error = nil;
     if (![[self managedObjectContext] save:&error]) {
         NSLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
