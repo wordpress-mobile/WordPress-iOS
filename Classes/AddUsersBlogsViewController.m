@@ -427,6 +427,7 @@
 }
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.username = nil;
     self.password = nil;
 	[url release];
