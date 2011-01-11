@@ -10,7 +10,7 @@
 
 - (id)initWithParent:(id)aParent {
     if (self = [super init]) {
-        parent = [aParent copy];
+        parent = [aParent retain];
         children = [[NSMutableArray alloc] init];
     }
 
@@ -23,7 +23,7 @@
     for (i = 0; i < count; i++) {
         NSDictionary *category = [collection objectAtIndex:i];
 
-        if ([[category valueForKey:@"parentId"] intValue] ==[[parent valueForKey:@"categoryId"] intValue]) {
+        if ([[category valueForKey:@"parentID"] intValue] ==[[parent valueForKey:@"categoryID"] intValue]) {
             WPCategoryTree *child = [[WPCategoryTree alloc] initWithParent:category];
             [child getChildrenFromObjects:collection];
             [children addObject:child];

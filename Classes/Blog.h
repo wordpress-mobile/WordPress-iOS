@@ -20,6 +20,7 @@
 - (UIImage *)favicon;
 - (void)downloadFavicon;
 - (BOOL)isWPcom;
+- (void)dataSave;
 
 #pragma mark -
 #pragma mark Synchronization

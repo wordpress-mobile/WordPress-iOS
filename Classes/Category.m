@@ -7,6 +7,7 @@
 //
 
 #import "Category.h"
+#import "WPDataController.h"
 
 @interface Category(PrivateMethods)
 + (Category *)newCategoryForBlog:(Blog *)blog;
@@ -26,31 +27,11 @@
     return category;
 }
 
-+ (BOOL)existsName:(NSString *)name forBlogId:(NSString *)blogId withParentId:(NSString *)parentId {
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSArray *items;
-    @try {
-        NSFetchRequest *request = [[NSFetchRequest alloc] init];
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Category" 
-                                                  inManagedObjectContext:appDelegate.managedObjectContext];
-        [request setEntity:entity];
-        
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(categoryName like %@) AND (blogId like %@) AND (parentId like %@)", 
-                                  name, 
-                                  blogId,
-                                  (parentId) ? parentId : @"0"];
-        [request setPredicate:predicate];
-        
-        NSError *error;
-        items = [appDelegate.managedObjectContext executeFetchRequest:request error:&error];
-        [request release];
-    }
-    @catch (NSException *e) {
-        NSLog(@"error checking existence of category: %@", e);
-        items = nil;
-    }
-    
-    
++ (BOOL)existsName:(NSString *)name forBlog:(Blog *)blog withParentId:(NSNumber *)parentId {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(categoryName like %@) AND (parentID = %@)", 
+                              name,
+                              (parentId ? parentId : [NSNumber numberWithInt:0])];
+    NSSet *items = [blog.categories filteredSetUsingPredicate:predicate];
     if ((items != nil) && (items.count > 0)) {
         // Already exists
         return YES;
@@ -90,4 +71,20 @@
     return category;
 }
 
++ (Category *)createCategory:(NSString *)name parent:(Category *)parent forBlog:(Blog *)blog {
+    Category *category = [Category newCategoryForBlog:blog];
+    category.categoryName = name;
+    category.parentID = parent.categoryID;
+    int newID = [[WPDataController sharedInstance] wpNewCategory:category];
+    if (newID > 0) {
+        category.categoryID = [NSNumber numberWithInt:newID];
+        [blog dataSave]; // Commit core data changes
+        return [category autorelease];
+    } else {
+        // Just in case another thread has saved while we were creating
+        [[blog managedObjectContext] deleteObject:category];
+        [category release];
+        return nil;
+    }
+}
 @end

@@ -148,6 +148,27 @@
 }
 
 #pragma mark -
+#pragma mark Category
+- (int)wpNewCategory:(Category *)category {
+    XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:category.blog.xmlrpc]];
+    NSDictionary *categoryDict = [NSDictionary dictionaryWithObjectsAndKeys:category.categoryName,
+                                  @"name",
+                                  category.parentID,
+                                  @"parent_id",
+                                  nil];
+    NSArray *args = [NSArray arrayWithObject:categoryDict];
+    [request setMethod:@"wp.newCategory" withObjects:[self getXMLRPCArgsForBlog:category.blog withExtraArgs:args]];
+    NSNumber *categoryID = [self executeXMLRPCRequest:request];
+    if ([category isKindOfClass:[NSError class]]) {
+        NSLog(@"Error creating category: %@", categoryID);
+        return -1;
+    } else {
+        return [categoryID intValue];
+    }
+
+}
+
+#pragma mark -
 #pragma mark Post
 
 - (NSMutableDictionary *)getXMLRPCDictionaryForPost:(Post *)post {

@@ -44,6 +44,10 @@ typedef enum {
 - (NSMutableArray *)getRecentPostsForBlog:(Blog *)blog;
 
 #pragma mark -
+#pragma mark Category
+- (int)wpNewCategory:(Category *)category;
+
+#pragma mark -
 #pragma mark Post
 - (int)mwNewPost:(Post *)post;
 - (BOOL)mwEditPost:(Post *)post;

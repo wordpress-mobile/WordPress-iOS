@@ -53,20 +53,15 @@
                      target:self
                      action:@selector(showAddPostView)];
 
-    NSError *error = nil;
-    if (![self.resultsController performFetch:&error]) {
-        NSLog(@"Error fetching request (Posts) %@", [error localizedDescription]);
-    } else {
-        if (DeviceIsPad() && self.selectedIndexPath && self.postReaderViewController) {
-            @try {
-                self.postReaderViewController.post = [resultsController objectAtIndexPath:self.selectedIndexPath];
-                [self.postReaderViewController refreshUI];
-            }
-            @catch (NSException * e) {
-                // In some cases, selectedIndexPath could be pointint to a missing row
-                // This is the case after a failed core data upgrade
-                self.selectedIndexPath = nil;
-            }
+    if (DeviceIsPad() && self.selectedIndexPath && self.postReaderViewController) {
+        @try {
+            self.postReaderViewController.post = [resultsController objectAtIndexPath:self.selectedIndexPath];
+            [self.postReaderViewController refreshUI];
+        }
+        @catch (NSException * e) {
+            // In some cases, selectedIndexPath could be pointint to a missing row
+            // This is the case after a failed core data upgrade
+            self.selectedIndexPath = nil;
         }
     }
 }
@@ -131,11 +126,11 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [[resultsController sections] count];
+    return [[self.resultsController sections] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[resultsController sections] objectAtIndex:section];
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
     NSString *sectionName = [sectionInfo name];
     
     return [AbstractPost titleForRemoteStatus:[sectionName numericValue]];
@@ -143,14 +138,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     id <NSFetchedResultsSectionInfo> sectionInfo = nil;
-    sectionInfo = [[resultsController sections] objectAtIndex:section];
+    sectionInfo = [[self.resultsController sections] objectAtIndex:section];
     return [sectionInfo numberOfObjects];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"PostCell";
     PostTableViewCell *cell = (PostTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    Post *post = [resultsController objectAtIndexPath:indexPath];
+    Post *post = [self.resultsController objectAtIndexPath:indexPath];
 
     if (cell == nil) {
         cell = [[[PostTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
@@ -198,7 +193,7 @@
         self.selectedIndexPath = indexPath;
     } else {
         self.postDetailViewController = [[PostViewController alloc] initWithNibName:@"PostViewController" bundle:nil];
-        Post *post = [resultsController objectAtIndexPath:indexPath];
+        Post *post = [self.resultsController objectAtIndexPath:indexPath];
         self.postDetailViewController.post = (Post *)[post createRevision];
         self.postDetailViewController.hasChanges = NO;
         self.postDetailViewController.editMode = kEditPost;
@@ -394,7 +389,18 @@
 
         if (indexPath != nil) {
             selectedIndexPath = [indexPath retain];
-            self.postReaderViewController = [[PostReaderViewController alloc] initWithPost:[resultsController objectAtIndexPath:indexPath]];
+            Post *post = nil;
+            @try {
+                post = [self.resultsController objectAtIndexPath:indexPath];
+                WPLog(@"Selected post at indexPath: (%i,%i)", indexPath.section, indexPath.row);
+            }
+            @catch (NSException *e) {
+                NSLog(@"Can't select post at indexPath (%i,%i)", indexPath.section, indexPath.row);
+                NSLog(@"sections: %@", self.resultsController.sections);
+                NSLog(@"results: %@", self.resultsController.fetchedObjects);
+                post = nil;
+            }
+            self.postReaderViewController = [[PostReaderViewController alloc] initWithPost:post];
             [delegate showContentDetailViewController:self.postReaderViewController];
         } else {
             selectedIndexPath = nil;
@@ -456,6 +462,12 @@
     [sortDescriptorLocal release]; sortDescriptorLocal = nil;
     [sortDescriptorDate release]; sortDescriptorDate = nil;
     [sortDescriptors release]; sortDescriptors = nil;
+
+    NSError *error = nil;
+    if (![resultsController performFetch:&error]) {
+        NSLog(@"Couldn't fetch posts");
+        resultsController = nil;
+    }
     
     return resultsController;
 }

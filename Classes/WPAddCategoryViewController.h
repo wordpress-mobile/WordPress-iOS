@@ -2,6 +2,7 @@
 #import "WPSegmentedSelectionTableViewController.h"
 #import "BlogDataManager.h"
 #import "Category.h"
+#import "Blog.h"
 
 #define kParentCategoriesContext ((void *)999)
 
@@ -17,8 +18,9 @@
     IBOutlet UIBarButtonItem *saveButtonItem;
     IBOutlet UIBarButtonItem *cancelButtonItem;
 
-    NSDictionary *parentCat;
+    Category *parentCat;
 }
+@property (nonatomic, retain) Blog *blog;
 
 - (IBAction)cancelAddCategory:(id)sender;
 - (IBAction)saveAddCategory:(id)sender;

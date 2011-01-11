@@ -7,6 +7,7 @@
 
 #import "WPSegmentedSelectionTableViewController.h"
 #import "WPCategoryTree.h"
+#import "Category.h"
 
 @interface NSObject (WPSelectionTableViewControllerDelegateCategory)
 
@@ -16,7 +17,7 @@
 
 @interface WPSegmentedSelectionTableViewController (private)
 
-- (int)indentationLevelForCategory:(NSString *)categoryParentID categoryCollection:(NSMutableDictionary *)categoryDict;
+- (int)indentationLevelForCategory:(NSNumber *)categoryParentID categoryCollection:(NSMutableDictionary *)categoryDict;
 
 @end
 
@@ -94,21 +95,19 @@
     NSMutableDictionary *categoryDict = [[NSMutableDictionary alloc] init];
 
     for (i = 0; i < count; i++) {
-        NSMutableDictionary *category = [objects objectAtIndex:i];
-        NSString *categoryId = [category objectForKey:@"categoryId"];
-        [categoryDict setObject:category forKey:categoryId];
+        Category *category = [objects objectAtIndex:i];
+        [categoryDict setObject:category forKey:category.categoryID];
     }
 
     [categoryIndentationLevelsDict removeAllObjects];
 
     for (i = 0; i < count; i++) {
-        NSMutableDictionary *category = [objects objectAtIndex:i];
-        NSString *parentID = [category objectForKey:@"parentId"];
+        Category *category = [objects objectAtIndex:i];
 
         BOOL isFound = NO;
 
         for (k = 0; k <[selObjects count]; k++) {
-            if ([[[selObjects objectAtIndex:k] objectForKey:@"categoryId"] isEqualToString:[category objectForKey:@"categoryId"]]) {
+            if ([[selObjects objectAtIndex:k] isEqual:category]) {
                 [selectionStatusOfObjects addObject:[NSNumber numberWithBool:YES]];
                 isFound = YES;
                 break;
@@ -118,9 +117,9 @@
         if (!isFound)
             [selectionStatusOfObjects addObject:[NSNumber numberWithBool:NO]];
 
-        int indentationLevel = [self indentationLevelForCategory:parentID categoryCollection:categoryDict];
+        int indentationLevel = [self indentationLevelForCategory:category.parentID categoryCollection:categoryDict];
         [categoryIndentationLevelsDict setValue:[NSNumber numberWithInt:indentationLevel]
-         forKey:[category objectForKey:@"categoryId"]];
+                                         forKey:[category.categoryID stringValue]];
     }
 
     self.originalSelObjects = [[selectionStatusOfObjects copy] autorelease];
@@ -130,11 +129,12 @@
     [tableView reloadData];
 }
 
-- (int)indentationLevelForCategory:(NSString *)parentID categoryCollection:(NSMutableDictionary *)categoryDict {
+- (int)indentationLevelForCategory:(NSNumber *)parentID categoryCollection:(NSMutableDictionary *)categoryDict {
     if ([parentID intValue] == 0) {
         return 0;
     } else {
-        return ([self indentationLevelForCategory:[[categoryDict objectForKey:parentID] objectForKey:@"parentId"] categoryCollection:categoryDict]) + 1;
+        Category *category = [categoryDict valueForKey:[parentID stringValue]];
+        return ([self indentationLevelForCategory:category.parentID categoryCollection:categoryDict]) + 1;
     }
 }
 
@@ -158,7 +158,8 @@
         [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
     }
 
-    int indentationLevel = [[categoryIndentationLevelsDict valueForKey:[[objects objectAtIndex:indexPath.row] objectForKey:@"categoryId"]] intValue];
+    Category *category = [objects objectAtIndex:indexPath.row];
+    int indentationLevel = [[categoryIndentationLevelsDict valueForKey:[category.categoryID stringValue]] intValue];
     cell.indentationLevel = indentationLevel;
 
     if (indentationLevel == 0) {
@@ -176,9 +177,9 @@
     }
 
 #if defined __IPHONE_3_0
-    cell.textLabel.text = [[objects objectAtIndex:indexPath.row] objectForKey:@"categoryName"];
+    cell.textLabel.text = [[objects objectAtIndex:indexPath.row] valueForKey:@"categoryName"];
 #else if defined __IPHONE_2_0
-    cell.text = [[objects objectAtIndex:indexPath.row] objectForKey:@"categoryName"];
+    cell.text = [[objects objectAtIndex:indexPath.row] valueForKey:@"categoryName"];
 #endif
 
     BOOL curStatus = [[selectionStatusOfObjects objectAtIndex:indexPath.row] boolValue];

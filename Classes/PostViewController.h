@@ -16,7 +16,6 @@
 @interface PostViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate> {
 	WordPressAppDelegate *appDelegate;
 
-	EditPostViewController *postDetailViewController;
     EditPostViewController *postDetailEditController;
     PostPreviewViewController *postPreviewController;
     PostSettingsViewController *postSettingsController;
@@ -48,7 +47,6 @@
 	IBOutlet UIBarButtonItem *cancelEditButton;
 }
 
-@property (nonatomic, retain) EditPostViewController *postDetailViewController;
 @property (nonatomic, retain) IBOutlet EditPostViewController *postDetailEditController;
 @property (nonatomic, retain) IBOutlet PostPreviewViewController *postPreviewController;
 @property (nonatomic, retain) IBOutlet PostSettingsViewController *postSettingsController;
@@ -81,8 +79,6 @@
 - (UINavigationItem *)navigationItemForEditPost;
 - (IBAction)editAction:(id)sender;
 - (void)publish:(id)sender;
-- (IBAction)saveAsDraft;
-- (void)saveAsDraft:(BOOL)andDiscard;
 - (IBAction)locationAction:(id)sender;
 - (void)dismissEditView;
 - (void)verifyPublishSuccessful;

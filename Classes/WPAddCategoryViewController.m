@@ -4,6 +4,7 @@
 #import "WPReachability.h"
 
 @implementation WPAddCategoryViewController
+@synthesize blog;
 
 - (void)clearUI {
     newCatNameField.text = @"";
@@ -11,7 +12,6 @@
 }
 
 - (void)addProgressIndicator {
-    NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
     UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aiv];
 	activityButtonItem.title = @"foobar!";
@@ -20,7 +20,6 @@
 
     self.navigationItem.rightBarButtonItem = activityButtonItem;
     [activityButtonItem release];
-	[apool release];
 }
 
 - (void)removeProgressIndicator {
@@ -56,9 +55,7 @@
         return;
     }
 
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
-
-    if ([Category existsName:catName forBlogId:[dm.currentBlog valueForKey:kBlogId] withParentId:[parentCat valueForKey:@"categoryId"]]) {
+    if ([Category existsName:catName forBlog:self.blog withParentId:parentCat.categoryID]) {
         UIAlertView *alert2 = [[UIAlertView alloc] initWithTitle:@"Category name already exists."
                                                          message:@"There is another category with that name."
                                                         delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -72,17 +69,27 @@
     }
 
     if ([[WPReachability sharedReachability] remoteHostStatus] != NotReachable)
-        [self performSelectorInBackground:@selector(addProgressIndicator) withObject:nil];
+        [self addProgressIndicator];
 
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [self performSelectorInBackground:@selector(saveOnBackground:) withObject:catName];
+}
 
-    NSString *parentCatName = parentCatNameField.text;
+- (void)saveOnBackground:(NSString *)categoryName {
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    // TODO: should check if it was created OK
+    [Category createCategory:categoryName parent:parentCat forBlog:self.blog];
+    [self performSelectorOnMainThread:@selector(didSaveOnBackground) withObject:nil waitUntilDone:NO];
+    
+    [pool release];
+}
 
-    if ([dm createCategory:catName parentCategory:parentCatName forBlog:dm.currentBlog]) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:self];
-        [self clearUI];
-        [self removeProgressIndicator];
-        [self dismiss];
-    }
+- (void)didSaveOnBackground {
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    [[NSNotificationCenter defaultCenter] postNotificationName:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:self];
+    [self clearUI];
+    [self removeProgressIndicator];
+    [self dismiss];
 }
 
 - (void)viewDidLoad {
@@ -147,18 +154,17 @@
     }
 
     if (selContext == kParentCategoriesContext) {
-        NSDictionary *curDict = [selectedObjects lastObject];
-        NSString *curName = [curDict objectForKey:@"categoryName"];
+        Category *curCat = [selectedObjects lastObject];
 
         if (parentCat) {
             [parentCat release];
             parentCat = nil;
         }
 
-        if (curDict) {
-            parentCat = curDict;
+        if (curCat) {
+            parentCat = curCat;
             [parentCat retain];
-            parentCatNameField.text = curName;
+            parentCatNameField.text = curCat.categoryName;
             [catTableView reloadData];
         }
 
@@ -167,31 +173,11 @@
     [selctionController clean];
 }
 
-- (NSArray *)uniqueArray:(NSArray *)array {
-    int i, count = [array count];
-    NSMutableArray *a = [NSMutableArray arrayWithCapacity:[array count]];
-    id curOBj = nil;
-
-    for (i = 0; i < count; i++) {
-        curOBj = [array objectAtIndex:i];
-
-        if (![a containsObject:curOBj])
-            [a addObject:curOBj];
-    }
-
-    return a;
-}
-
 - (void)populateSelectionsControllerWithCategories {
     WPSelectionTableViewController *selectionTableViewController = [[WPSegmentedSelectionTableViewController alloc] initWithNibName:@"WPSelectionTableViewController" bundle:nil];
 
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
-    NSArray *cats = [[dm currentBlog] valueForKey:@"categories"];
-    NSArray *dataSource = [cats valueForKey:@"categoryName"];
-    dataSource = [self uniqueArray:dataSource];
-
-    NSArray *selObjs = (parentCat.count < 1 ? [NSArray array] : [NSArray arrayWithObject:parentCat]);
-    [selectionTableViewController populateDataSource:cats
+    NSArray *selObjs = ((parentCat == nil) ? [NSArray array] : [NSArray arrayWithObject:parentCat]);
+    [selectionTableViewController populateDataSource:[self.blog.categories allObjects]
      havingContext:kParentCategoriesContext
      selectedObjects:selObjs
      selectionType:kRadio

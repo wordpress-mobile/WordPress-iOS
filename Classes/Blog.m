@@ -133,6 +133,13 @@
 	return (range.location != NSNotFound);
 }
 
+- (void)dataSave {
+    NSError *error = nil;
+    if (![[self managedObjectContext] save:&error]) {
+        NSLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+        exit(-1);
+    }
+}
 
 #pragma mark -
 #pragma mark Synchronization
@@ -168,11 +175,7 @@
         }
     }
 
-    NSError *error = nil;
-    if (![[self managedObjectContext] save:&error]) {
-        NSLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
-        exit(-1);
-    }
+    [self dataSave];
     return YES;
 }
 
@@ -193,11 +196,7 @@
     for (NSDictionary *categoryInfo in categories) {
         [Category createOrReplaceFromDictionary:categoryInfo forBlog:self];
     }
-    NSError *error = nil;
-    if (![[self managedObjectContext] save:&error]) {
-        NSLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
-        exit(-1);
-    }
+    [self dataSave];
     return YES;
 }
 

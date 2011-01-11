@@ -34,6 +34,7 @@
     Post *post = [self newPostForBlog:blog];
     post.dateCreated = [NSDate date];
     post.remoteStatus = AbstractPostRemoteStatusLocal;
+    post.status = @"publish";
     [post save];
     
     return post;
@@ -62,7 +63,6 @@
     post.status         = [postInfo objectForKey:@"post_status"];
     post.tags           = [postInfo objectForKey:@"mt_keywords"];
     post.remoteStatus   = AbstractPostRemoteStatusSync;
-    WPLog(@"postInfo: %@", postInfo);
     if ([postInfo objectForKey:@"categories"]) {
         [post setCategoriesFromNames:[postInfo objectForKey:@"categories"]];
     }
@@ -96,7 +96,7 @@
 - (void)uploadInBackground {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
-    if (self.postID) {
+    if ([self hasRemote]) {
         if ([[WPDataController sharedInstance] mwEditPost:self]) {
             self.remoteStatus = AbstractPostRemoteStatusSync;
             [self performSelectorOnMainThread:@selector(didUploadInBackground) withObject:nil waitUntilDone:NO];
@@ -151,11 +151,7 @@
 }
 
 - (NSString *)categoriesText {
-    NSMutableArray *categoryLabels = [NSMutableArray arrayWithCapacity:[self.categories count]];
-    for (Category *category in self.categories) {
-        [categoryLabels addObject:category.categoryName];
-    }
-    return [categoryLabels componentsJoinedByString:@", "];
+    return [[[self.categories valueForKey:@"categoryName"] allObjects] componentsJoinedByString:@", "];
 }
 
 - (NSArray *)categoriesDict {
@@ -178,53 +174,23 @@
 - (void)setCategoriesFromNames:(NSArray *)categoryNames {
     [self.categories removeAllObjects];
     for (NSString *categoryName in categoryNames) {
-        NSSet *results = [self.blog.categories filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"categoryName == %@", categoryName]];
+        NSSet *results = [self.blog.categories filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"categoryName like %@", categoryName]];
         if (results && (results.count > 0)) {
-            [self.categories addObject:[[results allObjects] objectAtIndex:0]];
+            [self.categories addObjectsFromArray:[results allObjects]];
         }
     }
 }
 
 - (void)setCategoriesDict:(NSArray *)categoriesDict {
-    [self setValue:[NSMutableSet new] forKey:@"categories"];
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+    [self.categories removeAllObjects];
+    
     for (NSDictionary *categoryDict in categoriesDict) {
-        Category *category;
-        NSArray *items;
-        @try {
-            NSFetchRequest *request = [[NSFetchRequest alloc] init];
-            NSEntityDescription *entity = [NSEntityDescription entityForName:@"Category"
-                                                      inManagedObjectContext:appDelegate.managedObjectContext];
-            [request setEntity:entity];
-
-            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(categoryId like %@) AND (blogId like %@)",
-                                      [categoryDict objectForKey:@"categoryId"],
-                                      self.blog.blogID];
-            [request setPredicate:predicate];
-
-            NSError *error;
-            items = [appDelegate.managedObjectContext executeFetchRequest:request error:&error];
-            [request release];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID = %@",
+                                  [[categoryDict objectForKey:@"categoryId"] numericValue]];
+        NSSet *categories = [self.blog.categories filteredSetUsingPredicate:predicate];
+        if ([categories count] > 0) {
+            [self.categories addObjectsFromArray:[categories allObjects]];
         }
-        @catch (NSException *e) {
-            NSLog(@"error checking existence of category: %@", e);
-            items = nil;
-        }
-
-        if ((items != nil) && (items.count > 0)) {
-            // Already exists
-            category = [items objectAtIndex:0];
-        } else {
-            category = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:appDelegate.managedObjectContext];;
-            [category setCategoryID:[categoryDict objectForKey:@"categoryId"]];
-            [category setCategoryName:[categoryDict objectForKey:@"categoryName"]];
-            [category setParentID:[categoryDict objectForKey:@"parentId"]];
-            [category setBlog:self.blog];
-        }
-
-        NSMutableSet *categories = [self mutableSetValueForKey:@"categories"];
-        [categories addObject:category];
-        [self setValue:categories forKey:@"categories"];
     }
 }
 

@@ -15,7 +15,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @synthesize textView, contentView, subView, textViewContentView, statusTextField, categoriesTextField, titleTextField;
 @synthesize tagsTextField, textViewPlaceHolderField, tagsLabel, statusLabel, categoriesLabel, titleLabel, customFieldsEditButton;
 @synthesize locationButton, locationSpinner, newCategoryBarButtonItem;
-@synthesize selectedCategories;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -26,7 +25,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 	self.navigationItem.title = @"Write";
 	statuses = [NSArray arrayWithObjects:@"Local Draft", @"Draft", @"Private", @"Pending Review", @"Published", nil];
-    self.selectedCategories = [NSMutableArray array];
     titleTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
     tagsTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
     categoriesTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
@@ -81,7 +79,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	}
 	
     isTextViewEditing = NO;
-	self.statusTextField.text = @"Local Draft";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -194,42 +191,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	return result;
 }
 
-// Maps an array of category dictionaries to an array of category names
-- (NSArray *)categoryNamesForCategories:(NSArray *)cats {
-    NSMutableArray *catNames = [NSMutableArray arrayWithCapacity:cats.count];
-    for (NSDictionary *cat in cats) {
-        [catNames addObject:[cat objectForKey:@"categoryName"]];
-    }
-    return [NSArray arrayWithArray:catNames];
-}
-
-// Converts the selected categories array into a comma separated string suitable for display
-- (NSString *)selectedCategoriesText {
-    return [[self categoryNamesForCategories:selectedCategories] componentsJoinedByString:@", "];
-}
-
-- (void)refreshCategory {
-    NSArray *cats;
-	if(isLocalDraft == YES) {
-		if(postDetailViewController.post.categories != nil)
-			categoriesTextField.text = [postDetailViewController.post categoriesText];
-		else
-			categoriesTextField.text = @"";
-	}
-	else {
-		cats = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"categories"];
-		NSString *status = [[BlogDataManager sharedDataManager] statusDescriptionForStatus:
-							[[BlogDataManager sharedDataManager].currentPost valueForKey:@"post_status"] 
-																				  fromBlog:[BlogDataManager sharedDataManager].currentBlog];
-		cats = [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"categories"];
-		if((status) && (cats.count > 0)) {
-            NSArray *catNames = [self categoryNamesForCategories:cats];
-			categoriesTextField.text = [catNames componentsJoinedByString:@", "];
-        } else {
-			categoriesTextField.text = @"";
-        }
-	}
-}
 
 - (void)refreshUIForCompose {
 	self.isLocalDraft = YES;
@@ -241,8 +202,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     textViewPlaceHolderField.hidden = NO;
     categoriesTextField.text = @"";
 	self.isLocalDraft = YES;
-	[postDetailViewController.post setStatus:@"Local Draft"];
-	statusTextField.text = @"Local Draft";
+	statusTextField.text = postDetailViewController.post.statusTitle;
 }
 
 - (void)refreshUIForCurrentPost {
@@ -258,7 +218,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     tagsTextField.text = post.tags;
     statusTextField.text = post.statusTitle;
     categoriesTextField.text = [post categoriesText];
-    [selectedCategories setArray:[post categoriesDict]];
     
     if(post.content == nil) {
         textViewPlaceHolderField.hidden = NO;
@@ -281,7 +240,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	if(self.isLocalDraft == YES) {
 		[postDetailViewController.post setPostTitle:titleTextField.text];
 		[postDetailViewController.post setTags:tagsTextField.text];
-		[postDetailViewController.post setCategoriesDict:selectedCategories];
 		[postDetailViewController.post setStatus:statusTextField.text];
 		[postDetailViewController.post setContent:textView.text];
 	}
@@ -289,8 +247,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[dm.currentPost setObject:titleTextField.text forKey:@"title"];
 	if(tagsTextField.text != nil)
 		[dm.currentPost setObject:tagsTextField.text forKey:@"mt_keywords"];
-	if((categoriesTextField.text != nil) && (selectedCategories != nil))
-		[dm.currentPost setObject:selectedCategories forKey:@"categories"];
 	if(statusTextField.text != nil)
 		[dm.currentPost setObject:statusTextField.text forKey:@"status"];
 	if((textView.text != nil) && (![textView.text isEqualToString:kTextViewPlaceholder]))
@@ -303,19 +259,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if (segmentedTableViewController == nil)
         segmentedTableViewController = [[WPSegmentedSelectionTableViewController alloc] initWithNibName:@"WPSelectionTableViewController" bundle:nil];
 	
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	NSArray *cats = [[dm currentBlog] valueForKey:@"categories"];
+	NSArray *cats = [postDetailViewController.post.blog.categories allObjects];
 	NSArray *selObject;
 	
-	if(isLocalDraft == YES) {
-		selObject = postDetailViewController.post.categoriesDict;
-	}
-	else {
-		selObject = [[dm currentPost] valueForKey:@"categories"];
-		
-		if (selObject == nil)
-			selObject = [NSArray array];
-	}
+    selObject = [postDetailViewController.post.categories allObjects];
 	
     [segmentedTableViewController populateDataSource:cats    //datasorce
 									   havingContext:kSelectionsCategoriesContext
@@ -325,7 +272,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
     segmentedTableViewController.title = @"Categories";
     segmentedTableViewController.navigationItem.rightBarButtonItem = newCategoryBarButtonItem;
-	
+
     if (isNewCategory != YES) {
 		if (DeviceIsPad() == YES) {
             UINavigationController *navController;
@@ -407,9 +354,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
     
     if (selContext == kSelectionsCategoriesContext) {
-        postDetailViewController.post.categoriesDict = selectedObjects;
-        [selectedCategories setArray:selectedObjects];
-        categoriesTextField.text = [selectedObjects componentsJoinedByString:@", "];
+        NSLog(@"selected categories: %@", selectedObjects);
+        NSLog(@"post: %@", postDetailViewController.post);
+        postDetailViewController.post.categories = [NSMutableSet setWithArray:selectedObjects];
+        categoriesTextField.text = [postDetailViewController.post categoriesText];
     }
 	
     [selctionController clean];
@@ -427,6 +375,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (IBAction)showAddNewCategoryView:(id)sender
 {
     WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithNibName:@"WPAddCategoryViewController" bundle:nil];
+    addCategoryViewController.blog = postDetailViewController.post.blog;
 	if (DeviceIsPad() == YES) {
 		[self refreshCurrentPostForUI];
         [segmentedTableViewController pushViewController:addCategoryViewController animated:YES];
@@ -1194,7 +1143,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)dealloc {
 	[statuses release];
-    [selectedCategories release];
 	[textView release];
 	[contentView release];
 	[subView release];

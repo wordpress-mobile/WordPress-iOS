@@ -88,7 +88,7 @@
         statusLabel.text = [post remoteStatusText];
 		
 		@try {
-			if([[post valueForKey:kAsyncPostFlag] isEqualToNumber:[NSNumber numberWithInt:0]])
+			if(post.remoteStatus != AbstractPostRemoteStatusPushing)
 				saving = NO;
 			else
 				saving = YES;
@@ -151,7 +151,6 @@
     statusLabel.textColor = [UIColor lightGrayColor];
     statusLabel.backgroundColor = [UIColor clearColor];
     statusLabel.textAlignment = UITextAlignmentRight;
-    NSLog(@"Creating post table cell status");
 
     [self.contentView addSubview:statusLabel];
 }

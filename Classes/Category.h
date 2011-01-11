@@ -19,9 +19,10 @@
 @property (nonatomic, retain) NSMutableSet *posts;
 @property (nonatomic, retain) Blog *blog;
 
-+ (BOOL)existsName:(NSString *)name forBlogId:(NSString *)blogId withParentId:(NSString *)parentId;
++ (BOOL)existsName:(NSString *)name forBlog:(Blog *)blog withParentId:(NSNumber *)parentId;
 + (Category *)findWithBlog:(Blog *)blog andCategoryID:(NSNumber *)categoryID;
 // Takes the NSDictionary from a XMLRPC call and creates or updates a post
 + (Category *)createOrReplaceFromDictionary:(NSDictionary *)categoryInfo forBlog:(Blog *)blog;
++ (Category *)createCategory:(NSString *)name parent:(Category *)parent forBlog:(Blog *)blog;
 
 @end

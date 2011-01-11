@@ -25,7 +25,7 @@
 
 @implementation PostViewController
 
-@synthesize postDetailViewController, postDetailEditController, postPreviewController, postSettingsController, hasChanges, tabController;
+@synthesize postDetailEditController, postPreviewController, postSettingsController, hasChanges, tabController;
 @synthesize mediaViewController, isVisible, commentsViewController, spinner, isPublishing;
 @synthesize selectedViewController, toolbar, contentView, commentsButton, photosButton, hasSaved;
 @synthesize settingsButton, editToolbar, cancelEditButton, post, isShowingKeyboard;
@@ -96,37 +96,13 @@
     if(![self.post hasRemote]) {
         if ([self.post.status isEqualToString:@"publish"]) {
             saveButton.title = @"Publish";
-            self.navigationItem.rightBarButtonItem = saveButton;
         } else {
-            TransparentToolbar *buttonBar = [[TransparentToolbar alloc] initWithFrame:CGRectMake(0, 0, 124, 44)];
-            NSMutableArray *buttons = [[NSMutableArray alloc] initWithCapacity:3];
-            saveButton.style = UIBarButtonItemStyleBordered;
-            [buttons addObject:saveButton];
-            UIBarButtonItem *spacer = [[UIBarButtonItem alloc]
-                                       initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-                                       target:nil
-                                       action:nil];
-            [buttons addObject:spacer];
-            [spacer release];
-
-            UIBarButtonItem *publishButton = [[UIBarButtonItem alloc] init];
-            publishButton.title = @"Publish";
-            publishButton.target = self;
-            publishButton.style = UIBarButtonItemStyleDone;
-            publishButton.action = @selector(publish:);
-            [buttons addObject:publishButton];
-            [publishButton release];
-            [buttonBar setItems:buttons animated:NO];
-            [buttons release];
-
-            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:buttonBar];
-            [buttonBar release];
+            saveButton.title = @"Save";
         }
-    }
-    else {
+    } else {
         saveButton.title = @"Update";
-        self.navigationItem.rightBarButtonItem = saveButton;
     }
+    self.navigationItem.rightBarButtonItem = saveButton;
 
     [saveButton release];
 }
@@ -191,105 +167,10 @@
     [self.post.original applyRevision];
     [self.post.original upload];
     [self dismissEditView];
-
-//	[spinner show];
-//	[self performSelectorInBackground:@selector(saveInBackground) withObject:nil];
 }
 
 - (void)resignTextView {
 	[postDetailEditController resignTextView];
-}
-
-- (void)saveInBackground {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	NSMutableDictionary *dict = [[[NSMutableDictionary alloc] init] autorelease];
-	hasSaved = YES;
-		
-	if((self.post == nil) || ([self.post hasRemote])) {
-		if ([[WPReachability sharedReachability] internetConnectionStatus] == NotReachable) {
-			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Communication Error."
-															message:@"no internet connection."
-														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-			alert.tag = TAG_OFFSET;
-			[alert show];
-			
-			[appDelegate setAlertRunning:YES];
-			[alert release];
-		}
-		else {
-			if (!hasChanges) {
-				[self dismissEditView];
-			}
-			else {
-				if(![post hasRemote]) {
-					[[BlogDataManager sharedDataManager] makeNewPostCurrent];
-					[postDetailEditController updateValuesToCurrentPost];
-					
-					postDetailEditController.isLocalDraft = NO;
-				}
-				[(NSMutableDictionary *)[BlogDataManager sharedDataManager].currentPost setValue:@"" forKey:@"mt_text_more"];
-				
-				if (post.dateCreated == nil){
-                    post.dateCreated = [NSDate date];
-				}
-				
-				if(postSettingsController.passwordTextField.text != nil)
-                    post.password = postSettingsController.passwordTextField.text;
-				
-				NSString *description = post.content;
-				NSString *title = post.postTitle;
-				NSArray *photos = [NSArray array]; // FIXME !
-				
-				if ((!description ||[description isEqualToString:@""]) &&
-					(!title ||[title isEqualToString:@""]) &&
-					(!photos || ([photos count] == 0))) {
-					NSString *msg = [NSString stringWithFormat:@"Please provide either a title or description or attach photos to the post before saving."];
-					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Post Error"
-																	message:msg
-																   delegate:self
-														  cancelButtonTitle:nil
-														  otherButtonTitles:@"OK", nil];
-					alert.tag = TAG_OFFSET;
-					[alert show];
-					[appDelegate setAlertRunning:YES];
-					[alert release];					
-				}
-				else {					
-					//BOOL savePostStatus = [dm savePost:dm.currentPost];
-//					NSString *postID = [[NSString stringWithFormat:@"%@", [dm.currentPost objectForKey:@"postid"]] retain];
-/*					
-					if(savePostStatus == YES) {
-						[dict setValue:postID forKey:@"savedPostId"];
-						[appDelegate setPostID:postID];
-						[dict setValue:postID forKey:@"originalPostId"];
-						[dict setValue:[NSNumber numberWithInt:0] forKey:@"isCurrentPostDraft"];
-						[dict setValue:[NSNumber numberWithInt:0] forKey:kAsyncPostFlag];
-					} else {
-						//this is just a generic error message that should appear when the publication went wrong
-						[self performSelectorOnMainThread:@selector(showError) withObject:nil waitUntilDone:NO];
-						[postID release];
-						[pool release];
-						return;
-					}
- 
-					if (DeviceIsPad() == YES) {
-						[[BlogDataManager sharedDataManager] makePostWithPostIDCurrent:postID];
-					}
-					
-					[postID release];
- */					
-				}
-			}
-		}
-	}
-	else {
-		[self saveAsDraft];
-	}
-	
-	[self performSelectorOnMainThread:@selector(didSaveInBackground:) withObject:dict waitUntilDone:NO];
-	
-	[pool release];
 }
 
 - (void)showError {
@@ -309,55 +190,11 @@
 	return;
 }
 
-- (void)didSaveInBackground:(NSDictionary *)dict {
-	isPublishing = NO;
-	hasChanges = NO;
-	
-	// Hide the keyboard
-	[postDetailEditController resignTextView];
-	
-	if(DeviceIsPad() == YES) {
-		// Refresh the UI for updated values
-		[self refreshUIForCurrentPost];
-		
-		// Make sure our Posts list refreshes
-//		if(post.wasLocalDraft)
-//			[[NSNotificationCenter defaultCenter] postNotificationName:@"DraftsUpdated" object:nil userInfo:dict];
-//		else
-//			[[NSNotificationCenter defaultCenter] postNotificationName:@"AsynchronousPostIsPosted" object:nil userInfo:dict];
-	}
-	else {
-		// Refresh the UI for a new post
-		[self refreshUIForCompose];
-		
-		// If this was a save and not a publish, post a message
-//		if(post.wasLocalDraft)
-//			[[NSNotificationCenter defaultCenter] postNotificationName:@"DraftsUpdated" object:nil userInfo:dict];
-//		else
-//			[[NSNotificationCenter defaultCenter] postNotificationName:@"AsynchronousPostIsPosted" object:nil userInfo:dict];
-		
-		// Back out to Posts list
-		[self.navigationController popViewControllerAnimated:YES];
-	}
-	
-	// Verify that our post truly was successful
-	[self verifyPublishSuccessful];
-	
-	// Dismiss spinner
-	[spinner dismissWithClickedButtonIndex:0 animated:YES];
-
-	// TODO: remove the mediaViewController notifications - this is pretty kludgy
-	[FlurryAPI logEvent:@"PostView#didSaveInBackground"];
-	[mediaViewController removeNotifications];
-    [self dismissEditView];
-}
-
 - (void)refreshUIForCompose {
-	postDetailViewController.navigationItem.title = @"Write";
+	self.navigationItem.title = @"Write";
 
     [tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
 
-	[postDetailViewController refreshUIForCompose];
     [postDetailEditController refreshUIForCompose];
     [postSettingsController reloadData];
     //[photosListController refreshData];
@@ -370,7 +207,6 @@
 		self.navigationItem.title = post.postTitle;
 		
 		[tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
-		[postDetailViewController refreshUIForCurrentPost];
 		[postDetailEditController refreshUIForCurrentPost];
 		[postSettingsController reloadData];
 		//[photosListController refreshData];
@@ -407,37 +243,6 @@
 
 #pragma mark -
 #pragma mark UIActionSheetDelegate methods
-
-- (IBAction)saveAsDraft {
-	[self saveAsDraft:YES];
-}
-
-- (void)saveAsDraft:(BOOL)andDiscard {
-    [FlurryAPI logEvent:@"Post#actionSheet_saveAsDraft"];
-	hasSaved = YES;
-	
-	[post setPostTitle:postDetailEditController.titleTextField.text];
-	[post setContent:postDetailEditController.textView.text];
-	[post setCategoriesDict:postDetailEditController.selectedCategories];
-	[post setTags:postDetailEditController.tagsTextField.text];
-	if (post.dateCreated == nil){
-		[post setDateCreated:[NSDate date]];
-	}
-	else {
-		[post setDateCreated:post.dateCreated];
-	}
-	if(postSettingsController.passwordTextField.text != nil)
-		[post setPassword:postSettingsController.passwordTextField.text];
-	[post save];
-	
-	if(andDiscard == YES){
-		[self discard];
-	}
-
-	// TODO: remove the mediaViewController notifications - this is pretty kludgy
-	[FlurryAPI logEvent:@"PostView#saveAsDraft:"];
-	[mediaViewController removeNotifications];
-}
 
 - (void)discard {
     [FlurryAPI logEvent:@"Post#actionSheet_discard"];
@@ -592,7 +397,7 @@
 - (IBAction)editAction:(id)sender {
 	self.editMode = kEditPost;
 	[postDetailEditController refreshUIForCurrentPost];
-	[appDelegate showContentDetailViewController:self.postDetailViewController];
+	[appDelegate showContentDetailViewController:self.postDetailEditController];
 }
 
 - (IBAction)locationAction:(id)sender {
