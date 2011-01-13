@@ -98,6 +98,7 @@
     
     [commentsTableView setDataSource:self];
     commentsTableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
+    commentsTableView.allowsSelectionDuringEditing = YES;
     
     [self addRefreshButton];
     
