@@ -38,7 +38,6 @@
 	}
 	else {
 		media = (Media *)[NSEntityDescription insertNewObjectForEntityForName:@"Media" inManagedObjectContext:appDelegate.managedObjectContext];
-		[media setUniqueID:[[NSProcessInfo processInfo] globallyUniqueString]];
 	}
 	
 	return media;
@@ -101,7 +100,7 @@
 	return results;
 }
 
-- (BOOL)exists:(NSString *)uniqueID {
+- (BOOL)exists:(NSManagedObjectID *)uniqueID {
 	NSArray *items = nil;
 	
 	@try {
@@ -130,13 +129,8 @@
 }
 
 - (void)save:(Media *)media {
-	if((media.uniqueID == nil) || ([self exists:media.uniqueID] == NO)) {
-		[media setUniqueID:[[NSProcessInfo processInfo] globallyUniqueString]];
-		[self insert:media];
-	}
-	else {
-		[self update:media];
-	}
+	[self dataSave];
+	[appDelegate.managedObjectContext processPendingChanges];
 }
 
 - (void)insert:(Media *)media {

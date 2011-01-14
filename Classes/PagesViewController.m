@@ -60,7 +60,7 @@
 	
 	if ([[WPReachability sharedReachability] internetConnectionStatus]) {
 		if ([defaults boolForKey:@"refreshPagesRequired"]) {
-			[self refreshHandler];
+//			[self refreshHandler];
 			[defaults setBool:false forKey:@"refreshPagesRequired"];
 		}
 	}

@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "RefreshButtonView.h"
 #import "MediaManager.h"
-#import "Post.h";
+#import "Post.h"
 #import "PostReaderViewController.h"
 
 @class BlogDataManager, PostViewController, EditPostViewController;

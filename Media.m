@@ -15,37 +15,29 @@
 @dynamic remoteURL;
 @dynamic localURL;
 @dynamic shortcode;
-@dynamic uniqueID;
 @dynamic width;
-@dynamic longitude;
-@dynamic latitude;
 @dynamic length;
 @dynamic title;
 @dynamic thumbnail;
-@dynamic postID;
-@dynamic blogID;
-@dynamic blogURL;
 @dynamic height;
 @dynamic filename;
 @dynamic filesize;
-@dynamic caption;
 @dynamic orientation;
 @dynamic creationDate;
+@dynamic blog;
+@dynamic post;
 
 - (NSString *)html {
 	NSString *result = @"";
 	
 	if(self.mediaType != nil) {
 		if([self.mediaType isEqualToString:@"image"]) {
-			if(self.caption == nil)
-				self.caption = @"";
-			
 			if(self.shortcode != nil)
 				result = self.shortcode;
 			else if(self.remoteURL != nil)
 				result = [NSString stringWithFormat:
 						  @"<a href=\"%@\"><img src=\"%@\" alt=\"%@\" class=\"alignnone size-full\" /></a>",
-						  self.remoteURL, self.remoteURL, self.caption, self.width, self.height];
+						  self.remoteURL, self.remoteURL, self.filename, self.width, self.height];
 		}
 		else if([self.mediaType isEqualToString:@"video"]) {
 			NSString *embedWidth = [NSString stringWithFormat:@"%@", self.width];

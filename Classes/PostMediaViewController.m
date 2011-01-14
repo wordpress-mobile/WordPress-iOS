@@ -7,13 +7,14 @@
 //
 
 #import "PostMediaViewController.h"
+#import "PostViewController.h"
 
 @implementation PostMediaViewController
 @synthesize table, addMediaButton, hasPhotos, hasVideos, isAddingMedia, photos, videos, appDelegate, dm, addPopover, picker;
 @synthesize isShowingMediaPickerActionSheet, currentOrientation, isShowingChangeOrientationActionSheet, spinner, pickerContainer;
-@synthesize currentImage, currentVideo, isLibraryMedia, didChangeOrientationDuringRecord, messageLabel, topToolbar;
-@synthesize postDetailViewController, mediaManager, postID, blogURL, mediaTypeControl, mediaUploader, bottomToolbar;
-@synthesize isShowingResizeActionSheet, videoEnabled, uploadID, videoPressCheckBlogURL, isCheckingVideoCapability, uniqueID;
+@synthesize currentImage, currentVideo, isLibraryMedia, didChangeOrientationDuringRecord, messageLabel;
+@synthesize postDetailViewController, mediaManager, postID, blogURL, mediaUploader, bottomToolbar;
+@synthesize isShowingResizeActionSheet, videoEnabled, currentUpload, videoPressCheckBlogURL, isCheckingVideoCapability, uniqueID;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -43,7 +44,6 @@
 	
 	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
 	
-	dm = [BlogDataManager sharedDataManager];
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	picker = [[WPImagePickerController alloc] init];
 	picker.delegate = self;
@@ -87,24 +87,13 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 1;
+    return [[self.resultsController sections] count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    int result = 0;
-	switch (mediaTypeControl.selectedSegmentIndex) {
-		case 0:
-			if(photos != nil)
-				result = photos.count;
-			break;
-		case 1:
-			if(videos != nil)
-				result = videos.count;
-			break;
-		default:
-			break;
-	}
-	return result;
+    id <NSFetchedResultsSectionInfo> sectionInfo = nil;
+    sectionInfo = [[self.resultsController sections] objectAtIndex:section];
+    return [sectionInfo numberOfObjects];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -115,60 +104,53 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
 	}
     
-	Media *media = nil;
+	Media *media = [self.resultsController objectAtIndexPath:indexPath];
+    cell.imageView.image = [UIImage imageWithData:media.thumbnail];
 	NSString *filesizeString = nil;
-	
-	switch (mediaTypeControl.selectedSegmentIndex) {
-		case 0:
-			media = [photos objectAtIndex:indexPath.row];
-			cell.imageView.image = [UIImage imageWithData:media.thumbnail];
-			if(media.title != nil)
-				cell.textLabel.text = media.title;
-			else
-				cell.textLabel.text = media.filename;
-			if([media.filesize floatValue] > 1024)
-				filesizeString = [NSString stringWithFormat:@"%.2f MB", ([media.filesize floatValue]/1024)];
-			else
-				filesizeString = [NSString stringWithFormat:@"%.2f KB", [media.filesize floatValue]];
-			
-			cell.detailTextLabel.text = [NSString stringWithFormat:@"%dx%d %@", 
-										 [media.width intValue], [media.height intValue], filesizeString];
-			break;
-		case 1:
-			media = [videos objectAtIndex:indexPath.row];
-			cell.imageView.image = [UIImage imageWithData:media.thumbnail];
-			if(media.title != nil)
-				cell.textLabel.text = media.title;
-			else
-				cell.textLabel.text = media.filename;
-			
-			NSNumber *valueForDisplay = [NSNumber numberWithDouble:[media.length doubleValue]];
-			NSNumber *days = [NSNumber numberWithDouble:
-								   ([valueForDisplay doubleValue] / 86400)];
-			NSNumber *hours = [NSNumber numberWithDouble:
-									(([valueForDisplay doubleValue] / 3600) -
-									 ([days intValue] * 24))];
-			NSNumber *minutes = [NSNumber numberWithDouble:
-									  (([valueForDisplay doubleValue] / 60) -
-									   ([days intValue] * 24 * 60) -
-									   ([hours intValue] * 60))];
-			NSNumber *seconds = [NSNumber numberWithInt:([valueForDisplay intValue] % 60)];
-			
-			if([media.filesize floatValue] > 1024)
-				filesizeString = [NSString stringWithFormat:@"%.2f MB", ([media.filesize floatValue]/1024)];
-			else
-				filesizeString = [NSString stringWithFormat:@"%.2f KB", [media.filesize floatValue]];
-			
-			cell.detailTextLabel.text = [NSString stringWithFormat:
-										 @"%02d:%02d:%02d %@",
-										 [hours intValue],
-										 [minutes intValue],
-										 [seconds intValue], 
-										 filesizeString];
-			break;
-		default:
-			break;
-	}
+    if([media.filesize floatValue] > 1024)
+        filesizeString = [NSString stringWithFormat:@"%.2f MB", ([media.filesize floatValue]/1024)];
+    else
+        filesizeString = [NSString stringWithFormat:@"%.2f KB", [media.filesize floatValue]];
+    
+    if ([media.mediaType isEqualToString:@"image"]) {
+        if(media.title != nil)
+            cell.textLabel.text = media.title;
+        else
+            cell.textLabel.text = media.filename;
+        
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%dx%d %@", 
+                                     [media.width intValue], [media.height intValue], filesizeString];        
+    } else if ([media.mediaType isEqualToString:@"video"]) {
+        if(media.title != nil)
+            cell.textLabel.text = media.title;
+        else
+            cell.textLabel.text = media.filename;
+        
+        NSNumber *valueForDisplay = [NSNumber numberWithDouble:[media.length doubleValue]];
+        NSNumber *days = [NSNumber numberWithDouble:
+                          ([valueForDisplay doubleValue] / 86400)];
+        NSNumber *hours = [NSNumber numberWithDouble:
+                           (([valueForDisplay doubleValue] / 3600) -
+                            ([days intValue] * 24))];
+        NSNumber *minutes = [NSNumber numberWithDouble:
+                             (([valueForDisplay doubleValue] / 60) -
+                              ([days intValue] * 24 * 60) -
+                              ([hours intValue] * 60))];
+        NSNumber *seconds = [NSNumber numberWithInt:([valueForDisplay intValue] % 60)];
+        
+        if([media.filesize floatValue] > 1024)
+            filesizeString = [NSString stringWithFormat:@"%.2f MB", ([media.filesize floatValue]/1024)];
+        else
+            filesizeString = [NSString stringWithFormat:@"%.2f KB", [media.filesize floatValue]];
+        
+        cell.detailTextLabel.text = [NSString stringWithFormat:
+                                     @"%02d:%02d:%02d %@",
+                                     [hours intValue],
+                                     [minutes intValue],
+                                     [seconds intValue], 
+                                     filesizeString];
+    }
+
 	[cell.imageView setBounds:CGRectMake(0, 0, 75, 75)];
 	[cell.imageView setClipsToBounds:NO];
 	[cell.imageView setFrame:CGRectMake(0, 0, 75, 75)];
@@ -186,24 +168,10 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	
 	MediaObjectViewController *mediaView = [[MediaObjectViewController alloc] initWithNibName:@"MediaObjectView" bundle:nil];
-	switch (mediaTypeControl.selectedSegmentIndex) {
-		case 0:
-        {
-			Media *photo = [photos objectAtIndex:indexPath.row];
-			[mediaView setMedia:photo];
-			break;
-        }
-		case 1:
-        {
-			Media *video = [videos objectAtIndex:indexPath.row];
-			[mediaView setMedia:video];
-			break;
-        }
-		default:
-			break;
-	}
+    Media *media = [self.resultsController objectAtIndexPath:indexPath];
+    [mediaView setMedia:media];
+
 	if(DeviceIsPad() == YES)
 		[appDelegate.splitViewController presentModalViewController:mediaView animated:YES];
 	else
@@ -219,14 +187,8 @@
 	// If row is deleted, remove it from the list.
 	if (editingStyle == UITableViewCellEditingStyleDelete)
 	{
-		if(mediaTypeControl.selectedSegmentIndex == 0) {
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldRemoveMedia" object:[photos objectAtIndex:indexPath.row]];
-			[self deleteMedia:[photos objectAtIndex:indexPath.row]];
-		}
-		else if(mediaTypeControl.selectedSegmentIndex == 1) {
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldRemoveMedia" object:[videos objectAtIndex:indexPath.row]];
-			[self deleteMedia:[videos objectAtIndex:indexPath.row]];
-		}
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldRemoveMedia" object:[self.resultsController objectAtIndexPath:indexPath]];
+        [self deleteMedia:[self.resultsController objectAtIndexPath:indexPath]];
 		
 		[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
 	}
@@ -257,30 +219,17 @@
 
 - (void)updateMediaCount {
 	int mediaCount = 0;
-	NSString *mediaTypeString;
-	switch (mediaTypeControl.selectedSegmentIndex) {
-		case 0:
-			mediaCount = photos.count;
-			mediaTypeString = @"photo";
-			break;
-		case 1:
-			mediaCount = videos.count;
-			mediaTypeString = @"video";
-			break;
-		default:
-            mediaTypeString = @"";
-			break;
-	}
+    mediaCount = [[self.resultsController fetchedObjects] count];
 	
 	switch (mediaCount) {
 		case 0:
-			self.messageLabel.text = [NSString stringWithFormat:@"No %@s.", mediaTypeString];
+			self.messageLabel.text = @"No media items.";
 			break;
 		case 1:
-			self.messageLabel.text = [NSString stringWithFormat:@"%d %@.", mediaCount, mediaTypeString];
+			self.messageLabel.text = [NSString stringWithFormat:@"%d media item.", mediaCount];
 			break;
 		default:
-			self.messageLabel.text = [NSString stringWithFormat:@"%d %@s.", mediaCount, mediaTypeString];
+			self.messageLabel.text = [NSString stringWithFormat:@"%d media items.", mediaCount];
 			break;
 	}
 }
@@ -813,7 +762,6 @@
 
 - (void)useImage:(UIImage *)theImage {
 	Media *imageMedia = [mediaManager get:nil];
-	NSDictionary *currentBlog = [dm currentBlog];
 	NSData *imageData = UIImageJPEGRepresentation(theImage, 0.90);
 	UIImage *imageThumbnail = [self generateThumbnailFromImage:theImage andSize:CGSizeMake(75, 75)];
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -826,9 +774,8 @@
 	NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
 	[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
 	
-	imageMedia.postID = self.postID;
-	imageMedia.blogID = [currentBlog valueForKey:@"blogid"];
-	imageMedia.blogURL = self.blogURL;
+	imageMedia.post = self.postDetailViewController.post;
+	imageMedia.blog = self.postDetailViewController.post.blog;
 	if(currentOrientation == kLandscape)
 		imageMedia.orientation = @"landscape";
 	else
@@ -844,12 +791,11 @@
 	[mediaManager save:imageMedia];
 	
 	// Save to remote server
-	self.uploadID = imageMedia.uniqueID;
+    self.currentUpload = imageMedia;
 	[self uploadMedia:imageData withFilename:filename andLocalURL:imageMedia.localURL andMediaType:kImage];
 	
 	//[self updatePhotosBadge];
 	
-	self.mediaTypeControl.selectedSegmentIndex = 0;
 	isAddingMedia = NO;
 	[formatter release];
 	[self refreshMedia];
@@ -859,7 +805,6 @@
 	BOOL copySuccess = FALSE;
 	Media *videoMedia;
 	NSDictionary *attributes;
-	NSDictionary *currentBlog = [dm currentBlog];
 	UIImage *videoThumbnail = [self generateThumbnailFromImage:thumbnail andSize:CGSizeMake(75, 75)];
 	
 	// Save to local file
@@ -883,13 +828,11 @@
 		[mediaManager doReport];
 		videoMedia = [(Media *)[NSEntityDescription insertNewObjectForEntityForName:@"Media" 
 															 inManagedObjectContext:appDelegate.managedObjectContext] retain];
-		[videoMedia setUniqueID:[[NSProcessInfo processInfo] globallyUniqueString]];
 		[mediaManager doReport];
 		
 		// Save to local database
-		videoMedia.postID = self.postID;
-		videoMedia.blogID = [currentBlog valueForKey:@"blogid"];
-		videoMedia.blogURL = self.blogURL;
+		videoMedia.post = self.postDetailViewController.post;
+		videoMedia.blog = self.postDetailViewController.post.blog;
 		if(currentOrientation == kLandscape)
 			videoMedia.orientation = @"landscape";
 		else
@@ -917,12 +860,10 @@
 		}
 		
 		// Save to remote server
-		self.uploadID = videoMedia.uniqueID;
 		[self uploadMedia:nil withFilename:filename andLocalURL:videoMedia.localURL andMediaType:kVideo];
 		
 		//[self updatePhotosBadge];
 		
-		self.mediaTypeControl.selectedSegmentIndex = 1;
 		isAddingMedia = NO;
 		[self refreshMedia];
 	}
@@ -1006,14 +947,14 @@
 }
 
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification {
-	if(self.uploadID != nil) {
+	if(self.currentUpload != nil) {
 		NSDictionary *mediaData = [notification userInfo];
-		Media *media = [mediaManager get:self.uploadID];
-        if (media == nil) {
+		Media *media = self.currentUpload;
+        if ((media == nil) || ([media isDeleted])) {
             // FIXME: media deleted during upload should cancel the upload. In the meantime, we'll try not to crash
-            NSLog(@"Media deleted while uploading (%@)", self.uploadID);
+            NSLog(@"Media deleted while uploading (%@)", currentUpload);
             [FlurryAPI logError:@"MediaDeleted"
-                        message:[NSString stringWithFormat:@"Media deleted while uploading (%@)", self.uploadID]
+                        message:[NSString stringWithFormat:@"Media deleted while uploading (%@)", currentUpload]
                           error:nil];
             return;
         }
@@ -1021,7 +962,7 @@
 		media.shortcode = [mediaData objectForKey:@"shortcode"];
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
 		[mediaManager update:media];
-		self.uploadID = nil;
+		self.currentUpload = nil;
 	}
 	
 	[UIView beginAnimations:@"Removing mediaUploader" context:nil];
@@ -1035,8 +976,8 @@
 }
 
 - (void)mediaUploadFailed:(NSNotification *)notification {
-	if (self.uploadID != nil) {
-		Media *media = [mediaManager get:self.uploadID];
+	if (self.currentUpload != nil) {
+		Media *media = self.currentUpload;
 		[self deleteMedia:media];
 	}
 	[UIView beginAnimations:@"Removing mediaUploader" context:nil];
@@ -1123,13 +1064,13 @@
 
 - (void)deleteMedia:(Media *)media {
 	// TO DO: Gross.
-	if([mediaManager exists:media.uniqueID] == YES) {
+	if([mediaManager exists:media.objectID] == YES) {
 		NSMutableArray *photoIndexesToRemove = [[NSMutableArray alloc] init];
 		NSMutableArray *videoIndexesToRemove = [[NSMutableArray alloc] init];
 		if([media.mediaType isEqualToString:@"image"]) {
 			int index = 0;
 			for(Media *photo in photos) {
-				if([photo.uniqueID isEqualToString:media.uniqueID] == YES) {
+				if([photo isEqual:media] == YES) {
 					[photoIndexesToRemove addObject:[NSNumber numberWithInt:index]];
 				}
 				index++;
@@ -1138,7 +1079,7 @@
 		else if([media.mediaType isEqualToString:@"video"]) {
 			int index = 0;
 			for(Media *video in videos) {
-				if([video.uniqueID isEqualToString:media.uniqueID] == YES) {
+				if([video isEqual:media] == YES) {
 					[videoIndexesToRemove addObject:[NSNumber numberWithInt:index]];
 				}
 				index++;
@@ -1191,12 +1132,57 @@
     if (mediaUploader) {
         [mediaUploader cancelAction:self];
         [self removemediaUploader:nil finished:YES context:nil];
-        if (self.uploadID != nil) {
-            Media *media = [mediaManager get:self.uploadID];
+        if (self.currentUpload != nil) {
+            Media *media = self.currentUpload;
             [self deleteMedia:media];
             [self refreshMedia];
         }
     }
+}
+
+#pragma mark -
+#pragma mark Results Controller
+
+- (NSFetchedResultsController *)resultsController {
+    if (resultsController != nil) {
+        return resultsController;
+    }
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Media" inManagedObjectContext:appDelegate.managedObjectContext]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"post == %@", self.postDetailViewController.post]];
+    NSSortDescriptor *sortDescriptorDate = [[NSSortDescriptor alloc] initWithKey:@"creationDate" ascending:NO];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorDate, nil];
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    
+    resultsController = [[NSFetchedResultsController alloc]
+                                                      initWithFetchRequest:fetchRequest
+                                                      managedObjectContext:appDelegate.managedObjectContext
+                                                      sectionNameKeyPath:nil
+                                                      cacheName:[NSString stringWithFormat:@"Media-%@-%@",
+                                                                 self.postDetailViewController.post.blog.hostURL,
+                                                                 self.postDetailViewController.post.postID]];
+    resultsController.delegate = self;
+    
+    [fetchRequest release];
+    [sortDescriptorDate release]; sortDescriptorDate = nil;
+    [sortDescriptors release]; sortDescriptors = nil;
+    
+    NSError *error = nil;
+    if (![resultsController performFetch:&error]) {
+        NSLog(@"Couldn't fetch media");
+        resultsController = nil;
+    }
+    
+    return resultsController;
+}
+
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath {
+    [table reloadData];
 }
 
 #pragma mark -
@@ -1213,12 +1199,10 @@
 	[picker release], picker = nil;
 	[uniqueID release];
 	[addPopover release];
-	[topToolbar release];
 	[bottomToolbar release];
 	[videoPressCheckBlogURL release];
-	[uploadID release];
+	[currentUpload release];
 	[mediaUploader release];
-	[mediaTypeControl release];
 	[blogURL release];
 	[postID release];
 	[mediaManager release];

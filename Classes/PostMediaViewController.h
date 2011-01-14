@@ -29,12 +29,11 @@ static inline double radians(double degrees) {
     return degrees * M_PI / 180;
 }
 
-@interface PostMediaViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate, UIPopoverControllerDelegate> {
+@interface PostMediaViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate, UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate> {
 	WordPressAppDelegate *appDelegate;
 	PostViewController *postDetailViewController;
 	MediaManager *mediaManager;
 	WPMediaUploader *mediaUploader;
-	BlogDataManager *dm;
 	UIImagePickerController *picker;
 	UIViewController *pickerContainer;
 	
@@ -42,30 +41,31 @@ static inline double radians(double degrees) {
 	IBOutlet UIBarButtonItem *addMediaButton;
 	IBOutlet UIActivityIndicatorView *spinner;
 	IBOutlet UILabel *messageLabel;
-	IBOutlet UISegmentedControl *mediaTypeControl;
-	IBOutlet UIToolbar *topToolbar, *bottomToolbar;
+	IBOutlet UIToolbar *bottomToolbar;
 	IBOutlet UIPopoverController *addPopover;
 	
 	BOOL hasPhotos, hasVideos, isAddingMedia, isShowingMediaPickerActionSheet, isShowingChangeOrientationActionSheet;
 	BOOL isLibraryMedia, didChangeOrientationDuringRecord, isShowingResizeActionSheet, videoEnabled, isCheckingVideoCapability;
-	NSString *postID, *blogURL, *uploadID, *videoPressCheckBlogURL, *uniqueID;
+	NSString *postID, *blogURL, *videoPressCheckBlogURL, *uniqueID;
+    Media *currentUpload;
 	
 	NSMutableArray *photos, *videos;
 	UIDeviceOrientation currentOrientation;
     UIImage *currentImage;
 	NSMutableDictionary *currentVideo;
+    NSFetchedResultsController *resultsController;
 }
 
 @property (nonatomic, retain) IBOutlet UITableView *table;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *addMediaButton;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
 @property (nonatomic, retain) IBOutlet UILabel *messageLabel;
-@property (nonatomic, retain) IBOutlet UISegmentedControl *mediaTypeControl;
-@property (nonatomic, retain) IBOutlet UIToolbar *topToolbar, *bottomToolbar;
+@property (nonatomic, retain) IBOutlet UIToolbar *bottomToolbar;
 @property (nonatomic, retain) IBOutlet IBOutlet UIPopoverController *addPopover;
 @property (nonatomic, assign) BOOL hasPhotos, hasVideos, isAddingMedia, isShowingMediaPickerActionSheet, isShowingChangeOrientationActionSheet;
 @property (nonatomic, assign) BOOL isLibraryMedia, didChangeOrientationDuringRecord, isShowingResizeActionSheet, videoEnabled, isCheckingVideoCapability;
-@property (nonatomic, retain) NSString *postID, *blogURL, *uploadID, *videoPressCheckBlogURL, *uniqueID;
+@property (nonatomic, retain) NSString *postID, *blogURL, *videoPressCheckBlogURL, *uniqueID;
+@property (nonatomic, retain) Media *currentUpload;
 @property (nonatomic, retain) NSMutableArray *photos, *videos;
 @property (nonatomic, assign) WordPressAppDelegate *appDelegate;
 @property (nonatomic, assign) PostViewController *postDetailViewController;
@@ -77,6 +77,7 @@ static inline double radians(double degrees) {
 @property (nonatomic, assign) BlogDataManager *dm;
 @property (nonatomic, retain) UIImagePickerController *picker;
 @property (nonatomic, retain) UIViewController *pickerContainer;
+@property (readonly) NSFetchedResultsController *resultsController;
 
 - (IBAction)refreshMedia;
 - (void)scaleAndRotateImage:(UIImage *)image;

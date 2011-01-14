@@ -17,7 +17,7 @@
 - (Media *)get:(NSString *)uniqueID;
 - (NSMutableArray *)getForPostID:(NSNumber *)postID andBlogURL:(NSString *)blogURL andMediaType:(MediaType)mediaType;
 - (NSMutableArray *)getForBlogURL:(NSString *)blogURL andMediaType:(MediaType)mediaType;
-- (BOOL)exists:(NSString *)uniqueID;
+- (BOOL)exists:(NSManagedObjectID *)uniqueID;
 - (void)save:(Media *)media;
 - (void)insert:(Media *)media;
 - (void)update:(Media *)media;
