@@ -12,6 +12,7 @@
 #import "NSString+XMLExtensions.h"
 #import "Blog.h"
 #import "Post.h"
+#import "Page.h"
 #import "Comment.h"
 #import "WordPressAppDelegate.h"
 #import "TouchXML.h"
@@ -52,4 +53,8 @@ typedef enum {
 - (int)mwNewPost:(Post *)post;
 - (BOOL)mwEditPost:(Post *)post;
 - (BOOL)mwDeletePost:(Post *)post;
+
+#pragma mark -
+#pragma mark Page
+- (NSMutableArray *)wpGetPages:(Blog *)blog;
 @end

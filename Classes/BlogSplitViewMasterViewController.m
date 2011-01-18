@@ -11,6 +11,7 @@
 #import "BlogDataManager.h"
 #import "PostsViewController.h"
 #import "PagesViewController.h"
+#import "PageViewController.h"
 #import "CommentsViewController.h"
 #import "PostViewController.h"
 #import "CPopoverManager.h"

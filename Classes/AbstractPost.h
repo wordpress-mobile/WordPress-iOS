@@ -40,6 +40,8 @@ typedef enum {
 // Does the post exist on the blog?
 - (BOOL)hasRemote;
 - (void)remove;
+// Save changes to disk
+- (void)save;
 
 // Revision management
 - (AbstractPost *)createRevision;

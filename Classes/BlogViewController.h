@@ -6,6 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WordPressAppDelegate.h"
 #import "PostsViewController.h"
 #import "PagesViewController.h"
 #import "CommentsViewController.h"
@@ -17,6 +18,7 @@
     IBOutlet PagesViewController *pagesViewController;
     IBOutlet CommentsViewController *commentsViewController;
 	IBOutlet StatsTableViewController *statsTableViewController;
+    IBOutlet UISplitViewController *splitViewController;
 	BOOL stateRestored;
     Blog *blog;
 }

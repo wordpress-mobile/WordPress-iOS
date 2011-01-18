@@ -79,14 +79,6 @@
             nil];
 }
 
-- (void)save {
-    NSError *error;
-    if (![[self managedObjectContext] save:&error]) {
-        NSLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
-        exit(-1);
-    }
-}
-
 - (void)remove {
     if ([self hasRemote] && [[WPDataController sharedInstance] mwDeletePost:self]) {
         [super remove];

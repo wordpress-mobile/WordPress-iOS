@@ -151,6 +151,8 @@ Classes/Page.h -text
 Classes/Page.m -text
 Classes/PageManager.h -text
 Classes/PageManager.m -text
+Classes/PageReaderViewController.h -text
+Classes/PageReaderViewController.m -text
 Classes/PageViewController.h -text
 Classes/PageViewController.m -text
 Classes/PagesViewController.h -text
@@ -323,6 +325,7 @@ FlurryLib/libFlurry.a -text svneol=unset#unset
 /Media.h -text
 /Media.m -text
 /MediaObjectView.xib -text
+/PageReaderViewController-iPad.xib -text
 /PageViewController-iPad.xib -text
 /PageViewController.xib -text
 /PostMediaViewController-iPad.xib -text

@@ -16,9 +16,10 @@
 
 @property (nonatomic, retain) IBOutlet UITextField *categoriesTextField, *statusTextField, *titleTextField, *tagsTextField;
 @property (nonatomic, retain) IBOutlet UITextView *contentView;
-@property (nonatomic, retain) IBOutlet Post *post;
+@property (nonatomic, retain) IBOutlet AbstractPost *apost;
+@property (nonatomic, assign) Post *post;
 
-- (id)initWithPost:(Post *)aPost;
+- (id)initWithPost:(AbstractPost *)aPost;
 - (void)showModalEditor;
 - (void)refreshUI;
 @end

@@ -38,8 +38,6 @@
 - (NSArray *)availableStatuses;
 
 #pragma mark     Data Management
-// Save changes to disk
-- (void)save;
 // Autosave for local drafts
 - (void)autosave;
 // Upload a new post to the server

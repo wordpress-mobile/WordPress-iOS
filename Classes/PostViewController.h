@@ -64,7 +64,8 @@
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *settingsButton;
 @property (nonatomic, retain) IBOutlet UIToolbar *editToolbar;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *cancelEditButton;
-@property (nonatomic, retain) Post *post;
+@property (nonatomic, retain) AbstractPost *apost;
+@property (nonatomic, assign) Post *post;
 @property (nonatomic, retain) NSURLConnection *connection;
 @property (nonatomic, retain) NSURLRequest *urlRequest;
 @property (nonatomic, retain) NSURLResponse *urlResponse;
@@ -72,6 +73,7 @@
 @property (nonatomic, retain) WordPressAppDelegate *appDelegate;
 @property (nonatomic, retain) WPProgressHUD *spinner;
 
+- (id)initWithPost:(AbstractPost *)aPost;
 - (IBAction)cancelView:(id)sender;
 - (void)refreshUIForCompose;
 - (void)refreshUIForCurrentPost;

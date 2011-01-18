@@ -28,9 +28,36 @@
 @synthesize postDetailEditController, postPreviewController, postSettingsController, hasChanges, tabController;
 @synthesize mediaViewController, isVisible, commentsViewController, spinner, isPublishing;
 @synthesize selectedViewController, toolbar, contentView, commentsButton, photosButton, hasSaved;
-@synthesize settingsButton, editToolbar, cancelEditButton, post, isShowingKeyboard;
+@synthesize settingsButton, editToolbar, cancelEditButton, apost, isShowingKeyboard;
 @synthesize payload, connection, urlResponse, urlRequest, appDelegate;
 @synthesize editMode;
+
+- (id)initWithPost:(AbstractPost *)aPost {
+    NSString *nib;
+    if (DeviceIsPad()) {
+        nib = @"PostViewController-iPad";
+    } else {
+        nib = @"PostViewController";
+    }
+    
+    if (self = [super initWithNibName:nib bundle:nil]) {
+        self.apost = aPost;
+    }
+    
+    return self;
+}
+
+- (Post *)post {
+    if ([self.apost isKindOfClass:[Post class]]) {
+        return (Post *)self.apost;
+    } else {
+        return nil;
+    }
+}
+
+- (void)setPost:(Post *)aPost {
+    self.apost = aPost;
+}
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -49,7 +76,7 @@
 	postSettingsController.postDetailViewController = self;
 	mediaViewController.postDetailViewController = self;
 
-	if (editMode == kNewPost) {
+	if ((editMode == kNewPost) && self.post) {
 		NSMutableArray *tabs = [NSMutableArray arrayWithArray:tabController.viewControllers];
 		[tabs removeObjectAtIndex:1];
 		[tabController setViewControllers:tabs];
@@ -159,13 +186,15 @@
 }
 
 - (IBAction)saveAction:(id)sender {
-    self.post.postTitle = postDetailEditController.titleTextField.text;
-    self.post.tags = postDetailEditController.tagsTextField.text;
-    self.post.content = postDetailEditController.textView.text;
+    self.apost.postTitle = postDetailEditController.titleTextField.text;
+    self.apost.content = postDetailEditController.textView.text;
+    if (self.post) {
+        self.post.tags = postDetailEditController.tagsTextField.text;
+    }
 
     [self.tabController.selectedViewController.view endEditing:YES];
-    [self.post.original applyRevision];
-    [self.post.original upload];
+    [self.apost.original applyRevision];
+    [self.apost.original upload];
     [self dismissEditView];
 }
 
@@ -203,8 +232,8 @@
 }
 
 - (void)refreshUIForCurrentPost {	
-	if(post != nil) {
-		self.navigationItem.title = post.postTitle;
+	if(self.apost != nil) {
+		self.navigationItem.title = self.apost.postTitle;
 		
 		[tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
 		[postDetailEditController refreshUIForCurrentPost];
@@ -251,8 +280,8 @@
 
 	// TODO: remove the mediaViewController notifications - this is pretty kludgy
 	[mediaViewController removeNotifications];
-    [self.post.original deleteRevision];
-    self.post = nil; // Just in case
+    [self.apost.original deleteRevision];
+    self.apost = nil; // Just in case
     [self dismissEditView];
 }
 
@@ -364,7 +393,7 @@
     postDetailEditController.isLocalDraft = NO;
 	postDetailEditController.statusTextField.text = @"Published";
 	
-    post.status = @"publish";
+    self.apost.status = @"publish";
 	
 	[self saveAction:sender];
 }
@@ -534,7 +563,7 @@
 						@try {
 							if([publishedPostID isEqualToNumber:newPostID]) {
 								[appDelegate setPostID:nil];
-								NSDictionary *info = [[NSDictionary alloc] initWithObjectsAndKeys:post.postID, @"postID", nil];
+								NSDictionary *info = [[NSDictionary alloc] initWithObjectsAndKeys:self.apost.postID, @"postID", nil];
 								[[NSNotificationCenter defaultCenter] postNotificationName:@"LocalDraftWasPublishedSuccessfully" object:nil userInfo:info];
 								[self setPost:nil];
 								[info release];

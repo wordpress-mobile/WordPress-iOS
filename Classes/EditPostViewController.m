@@ -206,26 +206,26 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)refreshUIForCurrentPost {
-    Post *post = postDetailViewController.post;
-
-    if ([post.postTitle length] > 0) {
-        postDetailViewController.navigationItem.title = post.postTitle;
+    if ([postDetailViewController.apost.postTitle length] > 0) {
+        postDetailViewController.navigationItem.title = postDetailViewController.apost.postTitle;
     }
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back"
                                                 style:UIBarButtonItemStyleBordered target:nil action:nil];
 
-    titleTextField.text = post.postTitle;
-    tagsTextField.text = post.tags;
-    statusTextField.text = post.statusTitle;
-    categoriesTextField.text = [post categoriesText];
+    titleTextField.text = postDetailViewController.apost.postTitle;
+    statusTextField.text = postDetailViewController.apost.statusTitle;
+    if (postDetailViewController.post) {
+        tagsTextField.text = postDetailViewController.post.tags;
+        categoriesTextField.text = [postDetailViewController.post categoriesText];
+    }
     
-    if(post.content == nil) {
+    if(postDetailViewController.apost.content == nil) {
         textViewPlaceHolderField.hidden = NO;
         textView.text = @"";
     }
     else {
         textViewPlaceHolderField.hidden = YES;
-        textView.text = post.content;
+        textView.text = postDetailViewController.apost.content;
     }
 
 	// workaround for odd text view behavior on iPad

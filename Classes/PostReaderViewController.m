@@ -12,22 +12,36 @@
 @implementation PostReaderViewController
 @synthesize categoriesTextField, statusTextField, titleTextField, tagsTextField;
 @synthesize contentView;
-@synthesize post;
+@synthesize apost;
 
-- (id)initWithPost:(Post *)aPost {
+- (id)initWithPost:(AbstractPost *)aPost {
     if (self = [super initWithNibName:@"PostReaderViewController-iPad" bundle:nil]) {
-        self.post = aPost;
+        self.apost = aPost;
     }
     
     return self;
 }
 
+- (Post *)post {
+    if ([self.apost isKindOfClass:[Post class]]) {
+        return (Post *)self.apost;
+    } else {
+        return nil;
+    }
+}
+
+- (void)setPost:(Post *)aPost {
+    self.apost = aPost;
+}
+
 - (void)refreshUI {
-    titleTextField.text = self.post.postTitle;
-    tagsTextField.text = self.post.tags;
-    categoriesTextField.text = [self.post categoriesText];
-    statusTextField.text = self.post.statusTitle;
-    contentView.text = self.post.content;
+    titleTextField.text = self.apost.postTitle;
+    if (self.post) {
+        tagsTextField.text = self.post.tags;
+        categoriesTextField.text = [self.post categoriesText];
+    }
+    statusTextField.text = self.apost.statusTitle;
+    contentView.text = self.apost.content;
 }
 
 - (void)viewDidLoad {
@@ -40,17 +54,12 @@
     [editButton release];
 }
 
+// Subclassed in PageReaderViewController
 - (void)showModalEditor {
     PostViewController *postViewController;
     
-    if (DeviceIsPad()) {
-        postViewController = [[PostViewController alloc] initWithNibName:@"PostViewController-iPad" bundle:nil];
-    } else {
-        postViewController = [[PostViewController alloc] initWithNibName:@"PostViewController" bundle:nil];
-    }
-
-    Post *postRevision = (Post *)[self.post createRevision];
-    postViewController.post = postRevision;
+    AbstractPost *postRevision = [self.apost createRevision];
+    postViewController = [[PostViewController alloc] initWithPost:postRevision];
     postViewController.hasChanges = NO;
     postViewController.editMode = kEditPost;
     [postViewController refreshUIForCurrentPost];
@@ -80,7 +89,7 @@
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
-    self.post = nil;
+    self.apost = nil;
     self.contentView = nil;
     self.categoriesTextField = nil;
     self.statusTextField = nil;

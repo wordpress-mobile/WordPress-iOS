@@ -11,9 +11,6 @@
 #import "WPProgressHUD.h"
 #import "IncrementPost.h"
 
-#define LOCAL_DRAFTS_SECTION    0
-#define POSTS_SECTION           1
-#define NUM_SECTIONS            2
 #define TAG_OFFSET 1010
 
 @interface PostsViewController (Private)
@@ -381,6 +378,26 @@
     [post release];
 }
 
+// Subclassed in PagesViewController
+- (void)showSelectedPost {
+    Post *post = nil;
+    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    NSIndexPath *indexPath = self.selectedIndexPath;
+
+    @try {
+        post = [self.resultsController objectAtIndexPath:indexPath];
+        WPLog(@"Selected post at indexPath: (%i,%i)", indexPath.section, indexPath.row);
+    }
+    @catch (NSException *e) {
+        NSLog(@"Can't select post at indexPath (%i,%i)", indexPath.section, indexPath.row);
+        NSLog(@"sections: %@", self.resultsController.sections);
+        NSLog(@"results: %@", self.resultsController.fetchedObjects);
+        post = nil;
+    }
+    self.postReaderViewController = [[PostReaderViewController alloc] initWithPost:post];
+    [delegate showContentDetailViewController:self.postReaderViewController];    
+}
+
 - (void)setSelectedIndexPath:(NSIndexPath *)indexPath {
     if (selectedIndexPath != indexPath) {
         WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
@@ -389,19 +406,7 @@
 
         if (indexPath != nil) {
             selectedIndexPath = [indexPath retain];
-            Post *post = nil;
-            @try {
-                post = [self.resultsController objectAtIndexPath:indexPath];
-                WPLog(@"Selected post at indexPath: (%i,%i)", indexPath.section, indexPath.row);
-            }
-            @catch (NSException *e) {
-                NSLog(@"Can't select post at indexPath (%i,%i)", indexPath.section, indexPath.row);
-                NSLog(@"sections: %@", self.resultsController.sections);
-                NSLog(@"results: %@", self.resultsController.fetchedObjects);
-                post = nil;
-            }
-            self.postReaderViewController = [[PostReaderViewController alloc] initWithPost:post];
-            [delegate showContentDetailViewController:self.postReaderViewController];
+            [self showSelectedPost];
         } else {
             selectedIndexPath = nil;
             [delegate showContentDetailViewController:nil];
@@ -435,6 +440,10 @@
 #pragma mark -
 #pragma mark Fetched results controller
 
+- (NSString *)entityName {
+    return @"Post";
+}
+
 - (NSFetchedResultsController *)resultsController {
     if (resultsController != nil) {
         return resultsController;
@@ -442,7 +451,7 @@
     
     WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Post" inManagedObjectContext:appDelegate.managedObjectContext]];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:[self entityName] inManagedObjectContext:appDelegate.managedObjectContext]];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(blog == %@) && (original == nil)", self.blog]];
     NSSortDescriptor *sortDescriptorLocal = [[NSSortDescriptor alloc] initWithKey:@"remoteStatusNumber" ascending:YES];
     NSSortDescriptor *sortDescriptorDate = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];
@@ -453,7 +462,7 @@
                                                       initWithFetchRequest:fetchRequest
                                                       managedObjectContext:appDelegate.managedObjectContext
                                                       sectionNameKeyPath:@"remoteStatusNumber"
-                                                      cacheName:[NSString stringWithFormat:@"Post-%@", [self.blog objectID]]];
+                                                      cacheName:[NSString stringWithFormat:@"%@-%@", [self entityName], [self.blog objectID]]];
     self.resultsController = aResultsController;
     resultsController.delegate = self;
     
@@ -468,6 +477,7 @@
         NSLog(@"Couldn't fetch posts");
         resultsController = nil;
     }
+    NSLog(@"fetched posts: %@", [resultsController fetchedObjects]);
     
     return resultsController;
 }

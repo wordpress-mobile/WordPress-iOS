@@ -328,6 +328,8 @@
 		E19F29C412B8BC22008FF660 /* tmbstr.c in Sources */ = {isa = PBXBuildFile; fileRef = E19F29A612B8BC22008FF660 /* tmbstr.c */; };
 		E19F29C512B8BC22008FF660 /* utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = E19F29A812B8BC22008FF660 /* utf8.c */; };
 		E19F29C612B8BC22008FF660 /* win32tc.c in Sources */ = {isa = PBXBuildFile; fileRef = E19F29AB12B8BC22008FF660 /* win32tc.c */; };
+		E1C43CA712E4D09E00330262 /* PageReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C43CA612E4D09E00330262 /* PageReaderViewController.m */; };
+		E1C43CF312E4D4EA00330262 /* PageReaderViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1C43CF212E4D4EA00330262 /* PageReaderViewController-iPad.xib */; };
 		EC0F59350EB0438E002FCB4D /* PageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC0F59340EB0438E002FCB4D /* PageViewController.xib */; };
 		EC270CB20E8B5E8200E9AA18 /* commentDelete.png in Resources */ = {isa = PBXBuildFile; fileRef = EC270CB10E8B5E8200E9AA18 /* commentDelete.png */; };
 		EC4696FF0EA75D460040EE8E /* PagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4696FE0EA75D460040EE8E /* PagesViewController.m */; };
@@ -835,6 +837,9 @@
 		E19F29AA12B8BC22008FF660 /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
 		E19F29AB12B8BC22008FF660 /* win32tc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = win32tc.c; sourceTree = "<group>"; };
 		E19F29AC12B8BC22008FF660 /* win32tc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = win32tc.h; sourceTree = "<group>"; };
+		E1C43CA512E4D09E00330262 /* PageReaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageReaderViewController.h; sourceTree = "<group>"; };
+		E1C43CA612E4D09E00330262 /* PageReaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageReaderViewController.m; sourceTree = "<group>"; };
+		E1C43CF212E4D4EA00330262 /* PageReaderViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "PageReaderViewController-iPad.xib"; sourceTree = "<group>"; };
 		EC0F59340EB0438E002FCB4D /* PageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PageViewController.xib; sourceTree = "<group>"; };
 		EC270CB10E8B5E8200E9AA18 /* commentDelete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = commentDelete.png; sourceTree = "<group>"; };
 		EC4696FD0EA75D460040EE8E /* PagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PagesViewController.h; sourceTree = "<group>"; };
@@ -1317,6 +1322,7 @@
 		83F1FCA5123748DF00069F99 /* Pages */ = {
 			isa = PBXGroup;
 			children = (
+				E1C43CF212E4D4EA00330262 /* PageReaderViewController-iPad.xib */,
 				03D5AF731146AF2D00FC6044 /* EditPageViewController-iPad.xib */,
 				83F1FCAB1237494D00069F99 /* PageViewController-iPad.xib */,
 			);
@@ -1714,6 +1720,8 @@
 				83D180F812329B1A002DCCB0 /* EditPageViewController.m */,
 				83D1819E1232A0DA002DCCB0 /* PageViewController.h */,
 				83D1819F1232A0DA002DCCB0 /* PageViewController.m */,
+				E1C43CA512E4D09E00330262 /* PageReaderViewController.h */,
+				E1C43CA612E4D09E00330262 /* PageReaderViewController.m */,
 			);
 			name = Pages;
 			sourceTree = "<group>";
@@ -1938,6 +1946,7 @@
 				83ABDD78125D30F700A421B2 /* BlogSettingsViewController-iPad.xib in Resources */,
 				836FECEC12715E2A000309D8 /* CrashReportView.xib in Resources */,
 				E1497BC012CCA92F0022BCD9 /* PostReaderViewController-iPad.xib in Resources */,
+				E1C43CF312E4D4EA00330262 /* PageReaderViewController-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2101,6 +2110,7 @@
 				E125451812BF68F900D87A0A /* Page.m in Sources */,
 				E131D08912C8C9160056BAB9 /* AbstractPost.m in Sources */,
 				E1497BBC12CCA8270022BCD9 /* PostReaderViewController.m in Sources */,
+				E1C43CA712E4D09E00330262 /* PageReaderViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

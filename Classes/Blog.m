@@ -6,7 +6,6 @@
 //
 
 #import "Blog.h"
-#import "BlogDataManager.h"
 #import "UIImage+INResizeImageAllocator.h"
 #import "WPDataController.h"
 
@@ -144,9 +143,9 @@
 #pragma mark -
 #pragma mark Synchronization
 
-- (NSArray *)syncedPosts {
+- (NSArray *)syncedPostsWithEntityName:(NSString *)entityName {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:@"Post" inManagedObjectContext:[self managedObjectContext]]];
+    [request setEntity:[NSEntityDescription entityForName:entityName inManagedObjectContext:[self managedObjectContext]]];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL)", [NSNumber numberWithInt:AbstractPostRemoteStatusSync]];
     [request setPredicate:predicate];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postID" ascending:YES];
@@ -160,6 +159,10 @@
         array = [NSArray array];
     }
     return array;
+}
+
+- (NSArray *)syncedPosts {
+    return [self syncedPostsWithEntityName:@"Post"];
 }
 
 - (BOOL)syncPostsFromResults:(NSMutableArray *)posts {
@@ -189,6 +192,40 @@
     }
     [self performSelectorOnMainThread:@selector(syncPostsFromResults:) withObject:posts waitUntilDone:YES];
 
+    return YES;
+}
+
+- (NSArray *)syncedPages {
+    return [self syncedPostsWithEntityName:@"Page"];
+}
+
+- (BOOL)syncPagesFromResults:(NSMutableArray *)pages {
+    NSArray *syncedPages = [self syncedPages];
+    NSMutableArray *pagesToKeep = [NSMutableArray array];
+    for (NSDictionary *pageInfo in pages) {
+        [pagesToKeep addObject:[Page createOrReplaceFromDictionary:pageInfo forBlog:self]];
+    }
+    for (Page *page in syncedPages) {
+        if (![pagesToKeep containsObject:page]) {
+            WPLog(@"Deleting page: %@", page);
+            [[self managedObjectContext] deleteObject:page];
+        }
+    }
+
+    [self dataSave];
+    return YES;
+}
+
+- (BOOL)syncPagesWithError:(NSError **)error {    
+    NSMutableArray *pages = [[WPDataController sharedInstance] wpGetPages:self];
+    if ([pages isKindOfClass:[NSError class]]) {
+        *error = (NSError *)pages;
+        // TODO: show alert to user?
+        NSLog(@"Error syncing blog pages: %@", [*error localizedDescription]);
+        return NO;
+    }
+    [self performSelectorOnMainThread:@selector(syncPagesFromResults:) withObject:pages waitUntilDone:YES];
+    
     return YES;
 }
 

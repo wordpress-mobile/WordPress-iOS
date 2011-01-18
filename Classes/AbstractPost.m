@@ -54,6 +54,14 @@
     [[self managedObjectContext] deleteObject:self];
 }
 
+- (void)save {
+    NSError *error;
+    if (![[self managedObjectContext] save:&error]) {
+        NSLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+        exit(-1);
+    }
+}
+
 - (NSString *)statusTitle {
     return [AbstractPost titleForStatus:self.status];
 }

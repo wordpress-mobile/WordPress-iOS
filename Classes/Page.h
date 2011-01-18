@@ -14,4 +14,11 @@
 }
 @property (nonatomic, retain) NSNumber * parentID;
 
+#pragma mark Class Methods
+// Creates an empty local post associated with blog
++ (Page *)newDraftForBlog:(Blog *)blog;
++ (Page *)findWithBlog:(Blog *)blog andPostID:(NSNumber *)postID;
+// Takes the NSDictionary from a XMLRPC call and creates or updates a post
++ (Page *)createOrReplaceFromDictionary:(NSDictionary *)postInfo forBlog:(Blog *)blog;
+
 @end
