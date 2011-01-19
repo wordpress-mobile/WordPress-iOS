@@ -202,6 +202,12 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 	[blogsViewController release];
 	[window makeKeyAndVisible];
+	
+	// Register for push notifications
+	[[UIApplication sharedApplication]
+	 registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+										 UIRemoteNotificationTypeSound |
+										 UIRemoteNotificationTypeAlert)];
 }
 
 - (void)handleCrashReport {
@@ -660,6 +666,10 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	if(conn){
 		// This is just to keep Analyzer from complaining.
 	}
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+	// Send the deviceToken to our server... 
 }
 
 #pragma mark -
