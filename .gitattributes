@@ -306,8 +306,12 @@ FlurryLib/libFlurry.a -text svneol=unset#unset
 /Icon-Small-50.png -text
 /Icon-Small.png -text
 /Icon-Small@2x.png -text
+/Icon-dev-72.png -text svneol=unset#unset
+/Icon-dev.png -text svneol=unset#unset
+/Icon-dev@2x.png -text svneol=unset#unset
 /Icon.png -text svneol=unset#unset
 /Icon@2x.png -text svneol=unset#unset
+/Info-dev.plist -text
 /Info.plist -text
 /MainBackground.png -text
 /MainWindow.xib -text

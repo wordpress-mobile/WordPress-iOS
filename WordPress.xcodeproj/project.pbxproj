@@ -337,6 +337,10 @@
 		E1D5536812E78CC40032C680 /* categoriesHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = E1D5536612E78CC40032C680 /* categoriesHighlighted.png */; };
 		E1D5536912E78CC40032C680 /* categoriesHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1D5536712E78CC40032C680 /* categoriesHighlighted@2x.png */; };
 		E1D5536B12E78CCB0032C680 /* categories@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1D5536A12E78CCB0032C680 /* categories@2x.png */; };
+		E1D5549312E8C61C0032C680 /* Icon-dev-72.png in Resources */ = {isa = PBXBuildFile; fileRef = E1D5548F12E8C61B0032C680 /* Icon-dev-72.png */; };
+		E1D5549412E8C61C0032C680 /* Icon-dev.png in Resources */ = {isa = PBXBuildFile; fileRef = E1D5549012E8C61B0032C680 /* Icon-dev.png */; };
+		E1D5549512E8C61C0032C680 /* Icon-dev@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1D5549112E8C61B0032C680 /* Icon-dev@2x.png */; };
+		E1D5549612E8C61C0032C680 /* Info-dev.plist in Resources */ = {isa = PBXBuildFile; fileRef = E1D5549212E8C61B0032C680 /* Info-dev.plist */; };
 		E1EE23E512E62864000B2BE6 /* movie.png in Resources */ = {isa = PBXBuildFile; fileRef = E1EE23E312E62864000B2BE6 /* movie.png */; };
 		E1EE23E612E62864000B2BE6 /* movie@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1EE23E412E62864000B2BE6 /* movie@2x.png */; };
 		E1EE23E912E628F6000B2BE6 /* attachment.png in Resources */ = {isa = PBXBuildFile; fileRef = E1EE23E712E628F6000B2BE6 /* attachment.png */; };
@@ -854,6 +858,10 @@
 		E1D5536612E78CC40032C680 /* categoriesHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = categoriesHighlighted.png; sourceTree = "<group>"; };
 		E1D5536712E78CC40032C680 /* categoriesHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "categoriesHighlighted@2x.png"; sourceTree = "<group>"; };
 		E1D5536A12E78CCB0032C680 /* categories@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "categories@2x.png"; sourceTree = "<group>"; };
+		E1D5548F12E8C61B0032C680 /* Icon-dev-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-dev-72.png"; sourceTree = "<group>"; };
+		E1D5549012E8C61B0032C680 /* Icon-dev.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-dev.png"; sourceTree = "<group>"; };
+		E1D5549112E8C61B0032C680 /* Icon-dev@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-dev@2x.png"; sourceTree = "<group>"; };
+		E1D5549212E8C61B0032C680 /* Info-dev.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-dev.plist"; sourceTree = "<group>"; };
 		E1EE23E312E62864000B2BE6 /* movie.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = movie.png; sourceTree = "<group>"; };
 		E1EE23E412E62864000B2BE6 /* movie@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "movie@2x.png"; sourceTree = "<group>"; };
 		E1EE23E712E628F6000B2BE6 /* attachment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = attachment.png; sourceTree = "<group>"; };
@@ -1044,6 +1052,7 @@
 				A0E293FD0E21037200C6919C /* WPAddCategoryViewController.xib */,
 				28AD735F0D9D9599002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
+				E1D5549B12E8C6410032C680 /* Dev builds */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1728,6 +1737,17 @@
 			path = c_tidy;
 			sourceTree = "<group>";
 		};
+		E1D5549B12E8C6410032C680 /* Dev builds */ = {
+			isa = PBXGroup;
+			children = (
+				E1D5548F12E8C61B0032C680 /* Icon-dev-72.png */,
+				E1D5549012E8C61B0032C680 /* Icon-dev.png */,
+				E1D5549112E8C61B0032C680 /* Icon-dev@2x.png */,
+				E1D5549212E8C61B0032C680 /* Info-dev.plist */,
+			);
+			name = "Dev builds";
+			sourceTree = "<group>";
+		};
 		EC4696A80EA74DAC0040EE8E /* Pages */ = {
 			isa = PBXGroup;
 			children = (
@@ -1979,6 +1999,10 @@
 				E1D5536812E78CC40032C680 /* categoriesHighlighted.png in Resources */,
 				E1D5536912E78CC40032C680 /* categoriesHighlighted@2x.png in Resources */,
 				E1D5536B12E78CCB0032C680 /* categories@2x.png in Resources */,
+				E1D5549312E8C61C0032C680 /* Icon-dev-72.png in Resources */,
+				E1D5549412E8C61C0032C680 /* Icon-dev.png in Resources */,
+				E1D5549512E8C61C0032C680 /* Icon-dev@2x.png in Resources */,
+				E1D5549612E8C61C0032C680 /* Info-dev.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2167,7 +2191,7 @@
 					DEBUGMODE,
 				);
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_FILE = "Info-dev.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
