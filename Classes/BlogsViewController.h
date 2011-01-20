@@ -12,7 +12,6 @@
 #import "WordPressAppDelegate.h"
 #import "UIViewController+WPAnimation.h"
 #import "Blog.h"
-#import "BlogSplitViewMasterViewController.h"
 #import "CPopoverManager.h"
 
 @interface BlogsViewController : UITableViewController <NSFetchedResultsControllerDelegate, UIAccelerometerDelegate, UIAlertViewDelegate> {
