@@ -18,8 +18,6 @@
 		03958062100D6CFC00850742 /* WPLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03958061100D6CFC00850742 /* WPLabel.m */; };
 		03958860100DA2DA00850742 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0395885F100DA2DA00850742 /* ImageCache.m */; };
 		039FFDA1100EDC1B00D8B279 /* GravatarImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 039FFDA0100EDC1B00D8B279 /* GravatarImageView.m */; };
-		03B1DF2A113D87C400BBD1C6 /* BlogSplitViewMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B1DF28113D87C400BBD1C6 /* BlogSplitViewMasterViewController.m */; };
-		03B1DF2B113D87C400BBD1C6 /* BlogSplitViewMasterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B1DF29113D87C400BBD1C6 /* BlogSplitViewMasterViewController.xib */; };
 		03B1DF2F113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B1DF2D113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.m */; };
 		03B1DF30113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B1DF2E113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.xib */; };
 		03B1E32B113DBDB300BBD1C6 /* PostViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B1E32A113DBDB300BBD1C6 /* PostViewController-iPad.xib */; };
@@ -124,7 +122,6 @@
 		8302C45A1228173E00B7A208 /* MediaManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8302C4591228173E00B7A208 /* MediaManager.m */; };
 		83043E55126FA31400EC9953 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83043E54126FA31400EC9953 /* MessageUI.framework */; };
 		8309BA9D1231559800442B12 /* TransparentToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8309BA9C1231559800442B12 /* TransparentToolbar.m */; };
-		831C9ED612162AF700B1EACE /* DraftManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 831C9ED512162AF700B1EACE /* DraftManager.m */; };
 		831E3DA411F645C5005C573E /* logo_stacked.png in Resources */ = {isa = PBXBuildFile; fileRef = 831E3DA311F645C5005C573E /* logo_stacked.png */; };
 		8320B5D611FCA41200607422 /* UITableViewSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8320B5D511FCA41200607422 /* UITableViewSwitchCell.m */; };
 		8320B5D911FCA50400607422 /* UITableViewSwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8320B5D811FCA50400607422 /* UITableViewSwitchCell.xib */; };
@@ -224,7 +221,6 @@
 		83A646AB112C63E5000999A6 /* help.png in Resources */ = {isa = PBXBuildFile; fileRef = 83A646AA112C63E5000999A6 /* help.png */; };
 		83ABDD78125D30F700A421B2 /* BlogSettingsViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83ABDD77125D30F700A421B2 /* BlogSettingsViewController-iPad.xib */; };
 		83BC943C11F94AA00041141A /* whitebg.png in Resources */ = {isa = PBXBuildFile; fileRef = 83BC943B11F94AA00041141A /* whitebg.png */; };
-		83CAC78A12354031003DFA20 /* PageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CAC78912354031003DFA20 /* PageManager.m */; };
 		83CACE951235A003003DFA20 /* UILoadMoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CACE941235A003003DFA20 /* UILoadMoreCell.m */; };
 		83CACE9F1235A102003DFA20 /* UILoadMoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83CACE9E1235A102003DFA20 /* UILoadMoreCell.xib */; };
 		83CAD2ED1235E21E003DFA20 /* UITextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 83CAD2EC1235E21E003DFA20 /* UITextFieldCell.m */; };
@@ -387,9 +383,6 @@
 		0395885F100DA2DA00850742 /* ImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCache.m; sourceTree = "<group>"; };
 		039FFD9F100EDC1B00D8B279 /* GravatarImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GravatarImageView.h; sourceTree = "<group>"; };
 		039FFDA0100EDC1B00D8B279 /* GravatarImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GravatarImageView.m; sourceTree = "<group>"; };
-		03B1DF27113D87C400BBD1C6 /* BlogSplitViewMasterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogSplitViewMasterViewController.h; sourceTree = "<group>"; };
-		03B1DF28113D87C400BBD1C6 /* BlogSplitViewMasterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogSplitViewMasterViewController.m; sourceTree = "<group>"; };
-		03B1DF29113D87C400BBD1C6 /* BlogSplitViewMasterViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = BlogSplitViewMasterViewController.xib; path = Classes/BlogSplitViewMasterViewController.xib; sourceTree = "<group>"; };
 		03B1DF2C113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogSplitViewDetailViewController.h; sourceTree = "<group>"; };
 		03B1DF2D113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogSplitViewDetailViewController.m; sourceTree = "<group>"; };
 		03B1DF2E113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = BlogSplitViewDetailViewController.xib; path = Classes/BlogSplitViewDetailViewController.xib; sourceTree = "<group>"; };
@@ -523,8 +516,6 @@
 		83043E54126FA31400EC9953 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		8309BA9B1231559800442B12 /* TransparentToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransparentToolbar.h; sourceTree = "<group>"; };
 		8309BA9C1231559800442B12 /* TransparentToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransparentToolbar.m; sourceTree = "<group>"; };
-		831C9ED412162AF700B1EACE /* DraftManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraftManager.h; sourceTree = "<group>"; };
-		831C9ED512162AF700B1EACE /* DraftManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraftManager.m; sourceTree = "<group>"; };
 		831E3DA311F645C5005C573E /* logo_stacked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_stacked.png; sourceTree = "<group>"; };
 		8320B5D411FCA41200607422 /* UITableViewSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableViewSwitchCell.h; sourceTree = "<group>"; };
 		8320B5D511FCA41200607422 /* UITableViewSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableViewSwitchCell.m; sourceTree = "<group>"; };
@@ -687,8 +678,6 @@
 		83A646AA112C63E5000999A6 /* help.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = help.png; sourceTree = "<group>"; };
 		83ABDD77125D30F700A421B2 /* BlogSettingsViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "BlogSettingsViewController-iPad.xib"; sourceTree = "<group>"; };
 		83BC943B11F94AA00041141A /* whitebg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whitebg.png; sourceTree = "<group>"; };
-		83CAC78812354031003DFA20 /* PageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageManager.h; sourceTree = "<group>"; };
-		83CAC78912354031003DFA20 /* PageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageManager.m; sourceTree = "<group>"; };
 		83CACE931235A003003DFA20 /* UILoadMoreCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UILoadMoreCell.h; sourceTree = "<group>"; };
 		83CACE941235A003003DFA20 /* UILoadMoreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UILoadMoreCell.m; sourceTree = "<group>"; };
 		83CACE9E1235A102003DFA20 /* UILoadMoreCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UILoadMoreCell.xib; sourceTree = "<group>"; };
@@ -932,8 +921,6 @@
 		03B1DF31113D87E900BBD1C6 /* iPad */ = {
 			isa = PBXGroup;
 			children = (
-				03B1DF27113D87C400BBD1C6 /* BlogSplitViewMasterViewController.h */,
-				03B1DF28113D87C400BBD1C6 /* BlogSplitViewMasterViewController.m */,
 				03B1DF2C113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.h */,
 				03B1DF2D113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.m */,
 				459FA674113DBCE000A9D096 /* CInvisibleToolbar.h */,
@@ -1178,12 +1165,8 @@
 				83418A5411C9F50800ACF00C /* WPDataController.h */,
 				83418A5511C9F50800ACF00C /* WPDataController.m */,
 				83418A6111C9F62200ACF00C /* WPDataControllerDelegate.h */,
-				831C9ED412162AF700B1EACE /* DraftManager.h */,
-				831C9ED512162AF700B1EACE /* DraftManager.m */,
 				8302C4581228173E00B7A208 /* MediaManager.h */,
 				8302C4591228173E00B7A208 /* MediaManager.m */,
-				83CAC78812354031003DFA20 /* PageManager.h */,
-				83CAC78912354031003DFA20 /* PageManager.m */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -1381,7 +1364,6 @@
 				837593AD1243ECD500D04C93 /* EditSiteViewController-iPad.xib */,
 				8362C54512027BC300599347 /* AddUsersBlogsViewController-iPad.xib */,
 				8362C1031201E7CE00599347 /* WebSignupViewController-iPad.xib */,
-				03B1DF29113D87C400BBD1C6 /* BlogSplitViewMasterViewController.xib */,
 				03B1DF2E113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.xib */,
 				030DB993113C4BE6002FF1A2 /* BlogViewController-iPad.xib */,
 			);
@@ -1891,7 +1873,6 @@
 				837576C611305C67002EAA27 /* getLocation.png in Resources */,
 				45C73C25113C36F70024D0D2 /* MainWindow-iPad.xib in Resources */,
 				030DB994113C4BE6002FF1A2 /* BlogViewController-iPad.xib in Resources */,
-				03B1DF2B113D87C400BBD1C6 /* BlogSplitViewMasterViewController.xib in Resources */,
 				03B1DF30113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.xib in Resources */,
 				03B1E32B113DBDB300BBD1C6 /* PostViewController-iPad.xib in Resources */,
 				45B71DE5113EDAA100D0A33C /* Entitlements.plist in Resources */,
@@ -2071,7 +2052,6 @@
 				83F3E2BE11276357004CD686 /* LocationController.m in Sources */,
 				83A645D8112B8690000999A6 /* PostLocationViewController.m in Sources */,
 				83A64689112C5F75000999A6 /* PostSettingsHelpViewController.m in Sources */,
-				03B1DF2A113D87C400BBD1C6 /* BlogSplitViewMasterViewController.m in Sources */,
 				03B1DF2F113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.m in Sources */,
 				459FA676113DBCE000A9D096 /* CInvisibleToolbar.m in Sources */,
 				036ABF921141DF1A00181F3B /* FlippingViewController.m in Sources */,
@@ -2106,7 +2086,6 @@
 				837614FD120A7FB2005CCB33 /* XMLRPCResponse.m in Sources */,
 				837614FE120A7FB2005CCB33 /* XMLValueDecoder.m in Sources */,
 				838C672E1210C3C300B09CA3 /* Post.m in Sources */,
-				831C9ED612162AF700B1EACE /* DraftManager.m in Sources */,
 				8383178812270E980047B476 /* PostMediaViewController.m in Sources */,
 				8302C45A1228173E00B7A208 /* MediaManager.m in Sources */,
 				834CAE7C122D528A003DDF49 /* UIImage+Resize.m in Sources */,
@@ -2117,7 +2096,6 @@
 				83D181A01232A0DA002DCCB0 /* PageViewController.m in Sources */,
 				83297B86123344FD00FB2C7D /* UITextViewCell.m in Sources */,
 				838025D01233F97C0051BBDB /* ManagedObjectCloner.m in Sources */,
-				83CAC78A12354031003DFA20 /* PageManager.m in Sources */,
 				83CACE951235A003003DFA20 /* UILoadMoreCell.m in Sources */,
 				83CAD2ED1235E21E003DFA20 /* UITextFieldCell.m in Sources */,
 				83CAD41D1235F854003DFA20 /* MediaObjectViewController.m in Sources */,

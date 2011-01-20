@@ -70,9 +70,6 @@ Classes/BlogSettingsViewController.xib -text
 Classes/BlogSplitViewDetailViewController.h -text
 Classes/BlogSplitViewDetailViewController.m -text
 Classes/BlogSplitViewDetailViewController.xib -text
-Classes/BlogSplitViewMasterViewController.h -text
-Classes/BlogSplitViewMasterViewController.m -text
-Classes/BlogSplitViewMasterViewController.xib -text
 Classes/BlogViewController.h -text
 Classes/BlogViewController.m -text
 Classes/BlogsViewController.h -text
@@ -118,8 +115,6 @@ Classes/CrashReporter.framework/Versions/A/Resources/Info.plist -text
 Classes/CrashReporter.framework/Versions/Current -text
 Classes/DashboardViewController.h -text
 Classes/DashboardViewController.m -text
-Classes/DraftManager.h -text
-Classes/DraftManager.m -text
 Classes/EditPageViewController.h -text
 Classes/EditPageViewController.m -text
 Classes/EditPageViewController.xib -text
@@ -149,8 +144,6 @@ Classes/NSString+XMLExtensions.h -text
 Classes/NSString+XMLExtensions.m -text
 Classes/Page.h -text
 Classes/Page.m -text
-Classes/PageManager.h -text
-Classes/PageManager.m -text
 Classes/PageReaderViewController.h -text
 Classes/PageReaderViewController.m -text
 Classes/PageViewController.h -text
