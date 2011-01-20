@@ -16,7 +16,7 @@
 @interface PostViewController : UIViewController <UITabBarDelegate, UIActionSheetDelegate, UITabBarControllerDelegate> {
 	WordPressAppDelegate *appDelegate;
 
-    EditPostViewController *postDetailEditController;
+    IBOutlet EditPostViewController *postDetailEditController;
     PostPreviewViewController *postPreviewController;
     PostSettingsViewController *postSettingsController;
     PostMediaViewController *mediaViewController;
@@ -33,37 +33,27 @@
 	NSMutableData *payload;
 	
 	// iPad additions
-	IBOutlet UIToolbar *toolbar;
-	IBOutlet UIView *contentView;
 	UIPopoverController *popoverController;
 	UIPopoverController *photoPickerPopover;
 	
-    IBOutlet UITabBarController *tabController;
-	IBOutlet UIBarButtonItem *commentsButton;
-	IBOutlet UIBarButtonItem *photosButton;
+    IBOutlet UIToolbar *toolbar;
+	IBOutlet UIView *contentView;
+	IBOutlet UIBarButtonItem *writeButton;
 	IBOutlet UIBarButtonItem *settingsButton;
-	IBOutlet UIToolbar *editToolbar;
-	IBOutlet UIToolbar *previewToolbar;
-	IBOutlet UIBarButtonItem *cancelEditButton;
+	IBOutlet UIBarButtonItem *previewButton;
+	IBOutlet UIBarButtonItem *attachmentButton;
+	IBOutlet UIBarButtonItem *photoButton;
+	IBOutlet UIBarButtonItem *movieButton;
+    IBOutlet UIImageView *tabPointer;
+    
+    UIView *currentView;
 }
 
-@property (nonatomic, retain) IBOutlet EditPostViewController *postDetailEditController;
-@property (nonatomic, retain) IBOutlet PostPreviewViewController *postPreviewController;
-@property (nonatomic, retain) IBOutlet PostSettingsViewController *postSettingsController;
-@property (nonatomic, retain) IBOutlet PostMediaViewController *mediaViewController;
-@property (nonatomic, retain) IBOutlet CommentsViewController *commentsViewController;
 @property (nonatomic, assign) UIViewController *selectedViewController;
 @property (nonatomic, assign) BOOL hasChanges, hasSaved, isVisible, isPublishing;
 @property (nonatomic, assign) BOOL isShowingKeyboard;
 @property (nonatomic, assign) EditPostMode editMode;
 @property (readonly) UITabBarController *tabController;
-@property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
-@property (nonatomic, retain) IBOutlet UIView *contentView;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *commentsButton;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *photosButton;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *settingsButton;
-@property (nonatomic, retain) IBOutlet UIToolbar *editToolbar;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *cancelEditButton;
 @property (nonatomic, retain) AbstractPost *apost;
 @property (nonatomic, assign) Post *post;
 @property (nonatomic, retain) NSURLConnection *connection;
@@ -88,4 +78,7 @@
 - (void)setMode:(EditPostMode)newMode;
 - (void)refreshButtons;
 - (void)showError;
+- (IBAction)switchToEdit;
+- (IBAction)switchToSettings;
+- (IBAction)switchToPreview;
 @end

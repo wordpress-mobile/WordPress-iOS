@@ -20,7 +20,6 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 	BOOL editingDisabled;
     BOOL isNewCategory;
     BOOL editCustomFields;
-    BOOL isCustomFieldsEnabledForThisPost;
 	BOOL isLocalDraft;
 	
 	CGRect normalTextFrame;
@@ -42,6 +41,8 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 	IBOutlet UIButton *locationButton;
 	IBOutlet UIActivityIndicatorView *locationSpinner;
     IBOutlet UIBarButtonItem *newCategoryBarButtonItem;
+    IBOutlet UIButton *tagsButton;
+    IBOutlet UIButton *categoriesButton;
 	
     WPSelectionTableViewController *selectionTableViewController;
     WPSegmentedSelectionTableViewController *segmentedTableViewController;
@@ -70,7 +71,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 @property (nonatomic, retain) NSMutableArray *bookMarksArray;
 @property (nonatomic) NSRange selectedLinkRange;
 @property (nonatomic, assign) UITextField *currentEditingTextField;
-@property (nonatomic, assign) BOOL isEditing, editingDisabled, editCustomFields, isCustomFieldsEnabledForThisPost;
+@property (nonatomic, assign) BOOL isEditing, editingDisabled, editCustomFields;
 @property (nonatomic, assign) BOOL isLocalDraft;
 @property (nonatomic, assign) CGRect normalTextFrame;
 @property (nonatomic, retain) UIButton *customFieldsEditButton;

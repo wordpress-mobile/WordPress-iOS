@@ -10,11 +10,11 @@
 
 @implementation PageViewController
 - (void)viewDidLoad {
-    NSMutableArray *tabs = [NSMutableArray arrayWithArray:tabController.viewControllers];
-    [tabs removeObjectAtIndex:1]; // Comments
-    [tabs removeObjectAtIndex:2]; // Preview
-    [tabs removeObjectAtIndex:2]; // Settings
-    [tabController setViewControllers:tabs];
+//    NSMutableArray *tabs = [NSMutableArray arrayWithArray:tabController.viewControllers];
+//    [tabs removeObjectAtIndex:1]; // Comments
+//    [tabs removeObjectAtIndex:2]; // Preview
+//    [tabs removeObjectAtIndex:2]; // Settings
+//    [tabController setViewControllers:tabs];
     
 //    if (DeviceIsPad()) {
 //        postDetailEditController = [[EditPageViewController alloc] initWithNibName:@"EditPageViewController-iPad" bundle:nil];

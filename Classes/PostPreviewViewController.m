@@ -189,6 +189,7 @@
 }
 
 - (void)addProgressIndicator {
+    return; // Disabled for now
 	if (DeviceIsPad() == NO) {
 		UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
 		UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aiv];

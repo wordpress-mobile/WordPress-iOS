@@ -37,6 +37,7 @@
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:postViewController];
     nav.modalPresentationStyle = UIModalPresentationPageSheet;
     nav.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    nav.navigationBar.tintColor = [UIColor colorWithRed:31/256.0 green:126/256.0 blue:163/256.0 alpha:1.0];
     [self presentModalViewController:nav animated:YES];
     [nav release];
 }

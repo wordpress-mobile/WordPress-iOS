@@ -25,10 +25,10 @@
 
 @implementation PostViewController
 
-@synthesize postDetailEditController, postPreviewController, postSettingsController, hasChanges, tabController;
-@synthesize mediaViewController, isVisible, commentsViewController, spinner, isPublishing;
-@synthesize selectedViewController, toolbar, contentView, commentsButton, photosButton, hasSaved;
-@synthesize settingsButton, editToolbar, cancelEditButton, apost, isShowingKeyboard;
+@synthesize hasChanges, tabController;
+@synthesize isVisible, spinner, isPublishing;
+@synthesize selectedViewController, hasSaved;
+@synthesize apost, isShowingKeyboard;
 @synthesize payload, connection, urlResponse, urlRequest, appDelegate;
 @synthesize editMode;
 
@@ -39,11 +39,11 @@
     } else {
         nib = @"PostViewController";
     }
-    
+
     if (self = [super initWithNibName:nib bundle:nil]) {
         self.apost = aPost;
     }
-    
+
     return self;
 }
 
@@ -59,6 +59,78 @@
     self.apost = aPost;
 }
 
+- (UIViewAnimationOptions)directionFromView:(UIView *)old toView:(UIView *)new {
+    if (old == postDetailEditController.view)
+        if (new == postSettingsController.view)
+            return UIViewAnimationOptionTransitionFlipFromRight;
+        else
+            return UIViewAnimationOptionTransitionFlipFromLeft;
+    else if (old == postSettingsController.view)
+        if (new == postPreviewController.view)
+            return UIViewAnimationOptionTransitionFlipFromRight;
+        else
+            return UIViewAnimationOptionTransitionFlipFromLeft;
+    else {
+        if (new == postDetailEditController.view)
+            return UIViewAnimationOptionTransitionFlipFromRight;
+        else
+            return UIViewAnimationOptionTransitionFlipFromLeft;        
+    }
+}
+
+- (CGFloat)pointerPositionForView:(UIView *)view {
+    if (view == postDetailEditController.view)
+        return 22;
+    else if (view == postSettingsController.view)
+        return 61;
+    else
+        return 103;
+}
+
+- (void)switchToView:(UIView *)newView {
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.2];
+    CGRect frame = tabPointer.frame;
+    frame.origin.x = [self pointerPositionForView:newView];
+    tabPointer.frame = frame;
+    [UIView transitionFromView:currentView
+                        toView:newView
+                      duration:0.3
+                       options:[self directionFromView:currentView toView:newView]
+                    completion:nil];
+    [currentView removeFromSuperview];
+    [contentView addSubview:newView];
+    [UIView commitAnimations];
+    currentView = newView;
+}
+
+- (IBAction)switchToEdit {
+    if (currentView != postDetailEditController.view) {
+        [self switchToView:postDetailEditController.view];
+        writeButton.enabled = NO;
+        settingsButton.enabled = YES;
+        previewButton.enabled = YES;
+    }
+}
+
+- (IBAction)switchToSettings {
+    if (currentView != postSettingsController.view) {
+        [self switchToView:postSettingsController.view];
+        writeButton.enabled = YES;
+        settingsButton.enabled = NO;
+        previewButton.enabled = YES;
+    }
+}
+
+- (IBAction)switchToPreview {
+    if (currentView != postPreviewController.view) {
+        [self switchToView:postPreviewController.view];
+        writeButton.enabled = YES;
+        settingsButton.enabled = YES;
+        previewButton.enabled = NO;
+    }
+}
+
 #pragma mark -
 #pragma mark View lifecycle
 
@@ -68,20 +140,29 @@
 
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	postPreviewController = [[PostPreviewViewController alloc] initWithNibName:@"PostPreviewViewController" bundle:nil];
-
-	spinner = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
-	hasSaved = NO;
+    postSettingsController = [[PostSettingsViewController alloc] initWithNibName:@"PostSettingsViewController" bundle:nil];
+    if (DeviceIsPad()) {
+        postDetailEditController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController-iPad" bundle:nil];
+    } else {
+        postDetailEditController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil];
+    }
 	postDetailEditController.postDetailViewController = self;
 	postPreviewController.postDetailViewController = self;
 	postSettingsController.postDetailViewController = self;
-	mediaViewController.postDetailViewController = self;
+    
+	spinner = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
+	hasSaved = NO;
 
-	if ((editMode == kNewPost) && self.post) {
-		NSMutableArray *tabs = [NSMutableArray arrayWithArray:tabController.viewControllers];
-		[tabs removeObjectAtIndex:1];
-		[tabController setViewControllers:tabs];
-	}
-		
+    currentView = postDetailEditController.view;
+    writeButton.enabled = NO;
+//    CGFloat verticalLocation = self.view.window.frame.size.height - toolbar.frame.size.height - tabPointer.image.size.height + 2;
+//    tabPointer.frame.origin.y = verticalLocation;
+	[contentView addSubview:currentView];
+    if (iOs4OrGreater()) {
+        self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+    }
+
+
     if(self.editMode == kEditPost)
         [self refreshUIForCurrentPost];
 	else if(self.editMode == kNewPost)
@@ -91,7 +172,6 @@
         self.hasChanges = YES;
 	}
     
-	self.view = tabController.view;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -235,14 +315,13 @@
 	if(self.apost != nil) {
 		self.navigationItem.title = self.apost.postTitle;
 		
-		[tabController setSelectedViewController:[[tabController viewControllers] objectAtIndex:0]];
 		[postDetailEditController refreshUIForCurrentPost];
 		[postSettingsController reloadData];
 		//[photosListController refreshData];
 		
 		[commentsViewController setIndexForCurrentPost:[[BlogDataManager sharedDataManager] currentPostIndex]];
 		[commentsViewController refreshCommentsList];
-		commentsButton.enabled = ([commentsViewController.commentsArray count] > 0);
+//		commentsButton.enabled = ([commentsViewController.commentsArray count] > 0);
 	}
 
     [self updatePhotosBadge];
@@ -261,12 +340,12 @@
 		else
 			mediaViewController.tabBarItem.badgeValue = nil;
 	} else if (toolbar) {
-		if (!photoCount)
-			photosButton.title = @"No media";
-		else if (photoCount == 1)
-			photosButton.title = @"1 media item.";
-		else
-			photosButton.title = [NSString stringWithFormat:@"%d media items.", photoCount];
+//		if (!photoCount)
+//			photoButton. = @"No media";
+//		else if (photoCount == 1)
+//			photosButton.title = @"1 media item.";
+//		else
+//			photosButton.title = [NSString stringWithFormat:@"%d media items.", photoCount];
 	}
 }
 
@@ -381,7 +460,7 @@
 	if (DeviceIsPad() == NO) {
 		return self.navigationItem.rightBarButtonItem;
 	} else if (DeviceIsPad() == YES) {
-		return [editToolbar.items lastObject];
+//		return [editToolbar.items lastObject];
 	}
 	return nil;
 }
@@ -403,30 +482,30 @@
 	if (DeviceIsPad() == NO) {
 		self.navigationItem.rightBarButtonItem = item;
 	} else if (DeviceIsPad() == YES) {
-		NSArray *currentItems = editToolbar.items;
-		if (currentItems.count < 1) return;
-		// TODO: uuuugly
-		NSMutableArray *newItems = [NSMutableArray arrayWithArray:currentItems];
-
-		// if we have an item, replace our last item with it;
-		// if it's nil, just gray out the current last item.
-		// It's this sort of thing that keeps me from sleeping at night.
-		if (item) {
-			[newItems replaceObjectAtIndex:(newItems.count - 1) withObject:item];
-			[item setEnabled:YES];
-		}
-		else {
-			[[newItems objectAtIndex:(newItems.count - 1)] setEnabled:NO];
-		}
-
-		[editToolbar setItems:newItems animated:YES];
+//		NSArray *currentItems = editToolbar.items;
+//		if (currentItems.count < 1) return;
+//		// TODO: uuuugly
+//		NSMutableArray *newItems = [NSMutableArray arrayWithArray:currentItems];
+//
+//		// if we have an item, replace our last item with it;
+//		// if it's nil, just gray out the current last item.
+//		// It's this sort of thing that keeps me from sleeping at night.
+//		if (item) {
+//			[newItems replaceObjectAtIndex:(newItems.count - 1) withObject:item];
+//			[item setEnabled:YES];
+//		}
+//		else {
+//			[[newItems objectAtIndex:(newItems.count - 1)] setEnabled:NO];
+//		}
+//
+//		[editToolbar setItems:newItems animated:YES];
 	}
 }
 
 - (IBAction)editAction:(id)sender {
 	self.editMode = kEditPost;
 	[postDetailEditController refreshUIForCurrentPost];
-	[appDelegate showContentDetailViewController:self.postDetailEditController];
+	[appDelegate showContentDetailViewController:postDetailEditController];
 }
 
 - (IBAction)locationAction:(id)sender {
@@ -480,8 +559,7 @@
 
 
 	// TODO: this is pretty kludgy
-	UIBarButtonItem *buttonItem = [editToolbar.items objectAtIndex:1];
-	[photoPickerPopover presentPopoverFromBarButtonItem:buttonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
+	[photoPickerPopover presentPopoverFromBarButtonItem:photoButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
 	[[CPopoverManager instance] setCurrentPopoverController:photoPickerPopover];
 }
 
@@ -490,8 +568,7 @@
 	[photoPickerPopover dismissPopoverAnimated:NO];
 
 	// TODO: this is pretty kludgy
-	UIBarButtonItem *buttonItem = [editToolbar.items objectAtIndex:1];
-	[popoverController presentPopoverFromBarButtonItem:buttonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
+	[popoverController presentPopoverFromBarButtonItem:photoButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
 	[[CPopoverManager instance] setCurrentPopoverController:photoPickerPopover];
 }
 
@@ -610,8 +687,6 @@
     [toolbar release];
     [contentView release];
     [photoPickerPopover release];
-    [commentsButton release];
-    [photosButton release];
     [settingsButton release];
 
     [super dealloc];

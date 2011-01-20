@@ -11,7 +11,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 @synthesize postDetailViewController, selectionTableViewController, segmentedTableViewController, leftView;
 @synthesize infoText, urlField, bookMarksArray, selectedLinkRange, currentEditingTextField, isEditing, initialLocation;
-@synthesize editingDisabled, editCustomFields, isCustomFieldsEnabledForThisPost, statuses, isLocalDraft, normalTextFrame;
+@synthesize editingDisabled, editCustomFields, statuses, isLocalDraft, normalTextFrame;
 @synthesize textView, contentView, subView, textViewContentView, statusTextField, categoriesTextField, titleTextField;
 @synthesize tagsTextField, textViewPlaceHolderField, tagsLabel, statusLabel, categoriesLabel, titleLabel, customFieldsEditButton;
 @synthesize locationButton, locationSpinner, newCategoryBarButtonItem;
@@ -25,17 +25,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 	self.navigationItem.title = @"Write";
 	statuses = [NSArray arrayWithObjects:@"Local Draft", @"Draft", @"Private", @"Pending Review", @"Published", nil];
-    titleTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
-    tagsTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
-    categoriesTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
-    statusTextField.font = [UIFont fontWithName:@"Helvetica" size:15.0f];
-    categoriesLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
-    statusLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
-    titleLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
-    tagsLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0f];
-    titleTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    tagsTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    [contentView bringSubviewToFront:textView];
 	normalTextFrame = textView.frame;
 	
     if (!leftView) {
@@ -48,7 +37,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideKeyboard:) name:@"EditPostViewShouldHideKeyboard" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceDidRotate:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(save) name:@"EditPostViewShouldSave" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(publish) name:@"EditPostViewShouldPublish" object:nil];
@@ -57,27 +45,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:@"ShouldInsertMediaBelow" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];
 	
-    //JOHNB TODO: Add a check here for the presence of custom fields in the data model
-    // if there are, set isCustomFieldsEnabledForThisPost BOOL to true
-    isCustomFieldsEnabledForThisPost = [self checkCustomFieldsMinusMetadata];
-    //call a helper to set originY for textViewContentView
-	
-	if (editingDisabled) {
-		titleTextField.enabled = NO;
-		titleTextField.textColor = [UIColor grayColor];
-		
-		tagsTextField.enabled = NO;
-		tagsTextField.textColor = [UIColor grayColor];
-		
-		categoriesTextField.enabled = NO;
-		categoriesTextField.textColor = [UIColor grayColor];
-		
-		statusTextField.enabled = NO;
-		statusTextField.textColor = [UIColor grayColor];
-		
-		textView.editable = NO;
-	}
-	
     isTextViewEditing = NO;
 }
 
@@ -85,8 +52,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	//WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     [super viewWillAppear:animated];
 	//[self dismissModalViewControllerAnimated:YES];
-    //isCustomFieldsEnabledForThisPost = [self checkCustomFieldsMinusMetadata];
-    isCustomFieldsEnabledForThisPost = NO;
 	
 	// Update older geolocation setting to new format
 	BOOL geolocationSetting = NO;
@@ -215,8 +180,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
     titleTextField.text = postDetailViewController.apost.postTitle;
     statusTextField.text = postDetailViewController.apost.statusTitle;
     if (postDetailViewController.post) {
-        tagsTextField.text = postDetailViewController.post.tags;
-        categoriesTextField.text = [postDetailViewController.post categoriesText];
+        // FIXME: tags should be an array/set of Tag objects
+        tagsButton.selected = ([postDetailViewController.post.tags length] > 0);
+        categoriesButton.selected = ([postDetailViewController.post.categories count] > 0);
     }
     
     if(postDetailViewController.apost.content == nil) {
@@ -1142,7 +1108,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 #pragma mark Dealloc
 
 - (void)dealloc {
-	[statuses release];
+//	[statuses release];
 	[textView release];
 	[contentView release];
 	[subView release];
