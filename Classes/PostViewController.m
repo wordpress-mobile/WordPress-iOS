@@ -1,21 +1,21 @@
 //
-//  PostReaderViewController.m
+//  PostViewController.m
 //  WordPress
 //
 //  Created by Jorge Bernal on 12/30/10.
 //  Copyright 2010 WordPress. All rights reserved.
 //
 
-#import "PostReaderViewController.h"
+#import "PostViewController.h"
 
 
-@implementation PostReaderViewController
+@implementation PostViewController
 @synthesize categoriesTextField, statusTextField, titleTextField, tagsTextField;
 @synthesize contentView;
 @synthesize apost;
 
 - (id)initWithPost:(AbstractPost *)aPost {
-    if (self = [super initWithNibName:@"PostReaderViewController-iPad" bundle:nil]) {
+    if (self = [super initWithNibName:@"PostViewController-iPad" bundle:nil]) {
         self.apost = aPost;
     }
     
@@ -54,7 +54,7 @@
     [editButton release];
 }
 
-// Subclassed in PageReaderViewController
+// Subclassed in PageViewController
 - (void)showModalEditor {
     EditPostViewController *postViewController;
     
@@ -69,6 +69,7 @@
     nav.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     nav.navigationBar.tintColor = [UIColor colorWithRed:31/256.0 green:126/256.0 blue:163/256.0 alpha:1.0];
     [self presentModalViewController:nav animated:YES];
+    [postViewController release];
     [nav release];
 }
 

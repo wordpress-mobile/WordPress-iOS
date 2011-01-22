@@ -1,5 +1,5 @@
 //
-//  PostReaderViewController.h
+//  PostViewController.h
 //  WordPress
 //
 //  Created by Jorge Bernal on 12/30/10.
@@ -10,7 +10,7 @@
 #import "EditPostViewController.h"
 #import "Post.h"
 
-@interface PostReaderViewController : UIViewController<UITextFieldDelegate, UITextViewDelegate> {
+@interface PostViewController : UIViewController<UITextFieldDelegate, UITextViewDelegate> {
 
 }
 

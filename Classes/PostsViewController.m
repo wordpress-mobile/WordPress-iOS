@@ -1,7 +1,7 @@
 #import "PostsViewController.h"
 #import "BlogDataManager.h"
 #import "EditPostViewController.h"
-#import "PostReaderViewController.h"
+#import "PostViewController.h"
 #import "PostTableViewCell.h"
 #import "UIViewController+WPAnimation.h"
 #import "WordPressAppDelegate.h"
@@ -363,7 +363,7 @@
 		
     Post *post = [Post newDraftForBlog:self.blog];
 	if (DeviceIsPad()) {
-        self.postReaderViewController = [[[PostReaderViewController alloc] initWithPost:post] autorelease];
+        self.postReaderViewController = [[[PostViewController alloc] initWithPost:post] autorelease];
 		[delegate showContentDetailViewController:self.postReaderViewController];
         [self.postReaderViewController showModalEditor];
 	} else {
@@ -393,7 +393,7 @@
         NSLog(@"results: %@", self.resultsController.fetchedObjects);
         post = nil;
     }
-    self.postReaderViewController = [[PostReaderViewController alloc] initWithPost:post];
+    self.postReaderViewController = [[PostViewController alloc] initWithPost:post];
     [delegate showContentDetailViewController:self.postReaderViewController];    
 }
 

@@ -1,17 +1,17 @@
     //
-//  PageReaderViewController.m
+//  PageViewController.m
 //  WordPress
 //
 //  Created by Jorge Bernal on 1/17/11.
 //  Copyright 2011 WordPress. All rights reserved.
 //
 
-#import "PageReaderViewController.h"
+#import "PageViewController.h"
 #import "EditPageViewController.h"
 
-@implementation PageReaderViewController
+@implementation PageViewController
 - (id)initWithPost:(AbstractPost *)aPost {
-    if (self = [super initWithNibName:@"PageReaderViewController-iPad" bundle:nil]) {
+    if (self = [super initWithNibName:@"PageViewController-iPad" bundle:nil]) {
         self.apost = aPost;
     }
     
@@ -39,6 +39,7 @@
     nav.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     nav.navigationBar.tintColor = [UIColor colorWithRed:31/256.0 green:126/256.0 blue:163/256.0 alpha:1.0];
     [self presentModalViewController:nav animated:YES];
+    [postViewController release];
     [nav release];
 }
 @end

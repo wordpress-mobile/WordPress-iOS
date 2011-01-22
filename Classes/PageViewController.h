@@ -1,5 +1,5 @@
 //
-//  PageReaderViewController.h
+//  PageViewController.h
 //  WordPress
 //
 //  Created by Jorge Bernal on 1/17/11.
@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PostReaderViewController.h"
+#import "PostViewController.h"
 
-@interface PageReaderViewController : PostReaderViewController {
+@interface PageViewController : PostViewController {
 
 }
 @end

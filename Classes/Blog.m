@@ -185,9 +185,11 @@
 - (BOOL)syncPostsWithError:(NSError **)error {    
     NSMutableArray *posts = [[WPDataController sharedInstance] getRecentPostsForBlog:self];
     if ([posts isKindOfClass:[NSError class]]) {
-        *error = (NSError *)posts;
-        // TODO: show alert to user?
-        NSLog(@"Error syncing blog posts: %@", [*error localizedDescription]);
+        if (error != nil) {
+            *error = (NSError *)posts;
+            // TODO: show alert to user?
+            NSLog(@"Error syncing blog posts: %@", [*error localizedDescription]);            
+        }
         return NO;
     }
     [self performSelectorOnMainThread:@selector(syncPostsFromResults:) withObject:posts waitUntilDone:YES];
@@ -219,9 +221,11 @@
 - (BOOL)syncPagesWithError:(NSError **)error {    
     NSMutableArray *pages = [[WPDataController sharedInstance] wpGetPages:self];
     if ([pages isKindOfClass:[NSError class]]) {
-        *error = (NSError *)pages;
-        // TODO: show alert to user?
-        NSLog(@"Error syncing blog pages: %@", [*error localizedDescription]);
+        if (error != nil) {
+            *error = (NSError *)pages;
+            // TODO: show alert to user?
+            NSLog(@"Error syncing blog pages: %@", [*error localizedDescription]);
+        }
         return NO;
     }
     [self performSelectorOnMainThread:@selector(syncPagesFromResults:) withObject:pages waitUntilDone:YES];
@@ -240,9 +244,11 @@
 - (BOOL)syncCategoriesWithError:(NSError **)error {
     NSMutableArray *categories = [[WPDataController sharedInstance] getCategoriesForBlog:self];
     if ([categories isKindOfClass:[NSError class]]) {
-        *error = (NSError *)categories;
-        // TODO: show alert to user?
-        NSLog(@"Error syncing categories: %@", [*error localizedDescription]);
+        if (error != nil) {
+            *error = (NSError *)categories;
+            // TODO: show alert to user?
+            NSLog(@"Error syncing categories: %@", [*error localizedDescription]);
+        }
         return NO;
     }
     [self performSelectorOnMainThread:@selector(syncCategoriesFromResults:) withObject:categories waitUntilDone:YES];

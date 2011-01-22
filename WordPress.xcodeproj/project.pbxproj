@@ -20,9 +20,8 @@
 		039FFDA1100EDC1B00D8B279 /* GravatarImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 039FFDA0100EDC1B00D8B279 /* GravatarImageView.m */; };
 		03B1DF2F113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B1DF2D113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.m */; };
 		03B1DF30113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B1DF2E113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.xib */; };
-		03B1E32B113DBDB300BBD1C6 /* PostViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B1E32A113DBDB300BBD1C6 /* PostViewController-iPad.xib */; };
+		03B1E32B113DBDB300BBD1C6 /* EditPostViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B1E32A113DBDB300BBD1C6 /* EditPostViewController-iPad.xib */; };
 		03CF21ED0FE9F0C3008AD538 /* NSString+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CF21EC0FE9F0C3008AD538 /* NSString+Util.m */; };
-		03E26FDD1157FC2500D6D38A /* EditPageViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03D5AF731146AF2D00FC6044 /* EditPageViewController-iPad.xib */; };
 		03EB54B5100FFB5C004E82CD /* gravatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 03EB54B4100FFB5C004E82CD /* gravatar.jpg */; };
 		03EB591010105076004E82CD /* RegExProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EB590E10105076004E82CD /* RegExProcessor.m */; };
 		03EB591310105088004E82CD /* LocateXMLRPCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03EB591210105088004E82CD /* LocateXMLRPCViewController.m */; };
@@ -33,7 +32,6 @@
 		03FF762911445B1400DCFC6F /* ToolbarIconEye.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FF762511445B1400DCFC6F /* ToolbarIconEye.png */; };
 		03FF762A11445B1400DCFC6F /* ToolbarIconGear.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FF762611445B1400DCFC6F /* ToolbarIconGear.png */; };
 		03FF762B11445B1400DCFC6F /* ToolbarIconLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FF762711445B1400DCFC6F /* ToolbarIconLocation.png */; };
-		03FF763311445F8E00DCFC6F /* EditPostViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FF763211445F8E00DCFC6F /* EditPostViewController-iPad.xib */; };
 		03FF79D11144C54600DCFC6F /* RecentCommentButtonSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FF79CF1144C54600DCFC6F /* RecentCommentButtonSelected.png */; };
 		03FF79D21144C54600DCFC6F /* RecentCommentButtonDeselected.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FF79D01144C54600DCFC6F /* RecentCommentButtonDeselected.png */; };
 		1D3623260D0F684500981E51 /* WordPressAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* WordPressAppDelegate.m */; };
@@ -232,7 +230,6 @@
 		83D3DDB81215DC7900600B4B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 83D3DDB71215DC7900600B4B /* Settings.bundle */; };
 		83F1F9A21236FBF600069F99 /* PostMediaViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83F1F9A11236FBF600069F99 /* PostMediaViewController-iPad.xib */; };
 		83F1FA581237073B00069F99 /* WPMediaUploader-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83F1FA571237073B00069F99 /* WPMediaUploader-iPad.xib */; };
-		83F1FCAC1237494D00069F99 /* PageViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83F1FCAB1237494D00069F99 /* PageViewController-iPad.xib */; };
 		83F3E26011275E07004CD686 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E25F11275E07004CD686 /* MapKit.framework */; };
 		83F3E2BE11276357004CD686 /* LocationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F3E2BD11276357004CD686 /* LocationController.m */; };
 		83F3E2D311276371004CD686 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E2D211276371004CD686 /* CoreLocation.framework */; };
@@ -291,8 +288,8 @@
 		E125445612BF5B3900D87A0A /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E125445512BF5B3900D87A0A /* Category.m */; };
 		E125451812BF68F900D87A0A /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = E125451712BF68F900D87A0A /* Page.m */; };
 		E131D08912C8C9160056BAB9 /* AbstractPost.m in Sources */ = {isa = PBXBuildFile; fileRef = E131D08812C8C9160056BAB9 /* AbstractPost.m */; };
-		E1497BBC12CCA8270022BCD9 /* PostReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1497BBB12CCA8270022BCD9 /* PostReaderViewController.m */; };
-		E1497BC012CCA92F0022BCD9 /* PostReaderViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1497BBF12CCA92F0022BCD9 /* PostReaderViewController-iPad.xib */; };
+		E1497BBC12CCA8270022BCD9 /* PostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1497BBB12CCA8270022BCD9 /* PostViewController.m */; };
+		E1497BC012CCA92F0022BCD9 /* PostViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1497BBF12CCA92F0022BCD9 /* PostViewController-iPad.xib */; };
 		E16A0C3212E769A10049EA80 /* table_sep.png in Resources */ = {isa = PBXBuildFile; fileRef = E16A0C3012E769A10049EA80 /* table_sep.png */; };
 		E16A0C3312E769A10049EA80 /* table_sep@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E16A0C3112E769A10049EA80 /* table_sep@2x.png */; };
 		E19F29AD12B8BC22008FF660 /* access.c in Sources */ = {isa = PBXBuildFile; fileRef = E19F297912B8BC22008FF660 /* access.c */; };
@@ -321,8 +318,7 @@
 		E19F29C412B8BC22008FF660 /* tmbstr.c in Sources */ = {isa = PBXBuildFile; fileRef = E19F29A612B8BC22008FF660 /* tmbstr.c */; };
 		E19F29C512B8BC22008FF660 /* utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = E19F29A812B8BC22008FF660 /* utf8.c */; };
 		E19F29C612B8BC22008FF660 /* win32tc.c in Sources */ = {isa = PBXBuildFile; fileRef = E19F29AB12B8BC22008FF660 /* win32tc.c */; };
-		E1C43CA712E4D09E00330262 /* PageReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C43CA612E4D09E00330262 /* PageReaderViewController.m */; };
-		E1C43CF312E4D4EA00330262 /* PageReaderViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1C43CF212E4D4EA00330262 /* PageReaderViewController-iPad.xib */; };
+		E1C43CA712E4D09E00330262 /* PageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C43CA612E4D09E00330262 /* PageViewController.m */; };
 		E1D552CE12E77BD80032C680 /* tabPointer.png in Resources */ = {isa = PBXBuildFile; fileRef = E1D552CC12E77BD80032C680 /* tabPointer.png */; };
 		E1D552CF12E77BD80032C680 /* tabPointer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1D552CD12E77BD80032C680 /* tabPointer@2x.png */; };
 		E1D5533D12E7877E0032C680 /* tags.png in Resources */ = {isa = PBXBuildFile; fileRef = E1D5533B12E7877E0032C680 /* tags.png */; };
@@ -383,10 +379,9 @@
 		03B1DF2C113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogSplitViewDetailViewController.h; sourceTree = "<group>"; };
 		03B1DF2D113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogSplitViewDetailViewController.m; sourceTree = "<group>"; };
 		03B1DF2E113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = BlogSplitViewDetailViewController.xib; path = Classes/BlogSplitViewDetailViewController.xib; sourceTree = "<group>"; };
-		03B1E32A113DBDB300BBD1C6 /* PostViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "PostViewController-iPad.xib"; sourceTree = "<group>"; };
+		03B1E32A113DBDB300BBD1C6 /* EditPostViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "EditPostViewController-iPad.xib"; sourceTree = "<group>"; };
 		03CF21EB0FE9F0C3008AD538 /* NSString+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Util.h"; sourceTree = "<group>"; };
 		03CF21EC0FE9F0C3008AD538 /* NSString+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Util.m"; sourceTree = "<group>"; };
-		03D5AF731146AF2D00FC6044 /* EditPageViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "EditPageViewController-iPad.xib"; sourceTree = "<group>"; };
 		03EB54B4100FFB5C004E82CD /* gravatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = gravatar.jpg; sourceTree = "<group>"; };
 		03EB590D10105076004E82CD /* RegExProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegExProcessor.h; sourceTree = "<group>"; };
 		03EB590E10105076004E82CD /* RegExProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegExProcessor.m; sourceTree = "<group>"; };
@@ -401,7 +396,6 @@
 		03FF762511445B1400DCFC6F /* ToolbarIconEye.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ToolbarIconEye.png; sourceTree = "<group>"; };
 		03FF762611445B1400DCFC6F /* ToolbarIconGear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ToolbarIconGear.png; sourceTree = "<group>"; };
 		03FF762711445B1400DCFC6F /* ToolbarIconLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ToolbarIconLocation.png; sourceTree = "<group>"; };
-		03FF763211445F8E00DCFC6F /* EditPostViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "EditPostViewController-iPad.xib"; sourceTree = "<group>"; };
 		03FF79CF1144C54600DCFC6F /* RecentCommentButtonSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RecentCommentButtonSelected.png; sourceTree = "<group>"; };
 		03FF79D01144C54600DCFC6F /* RecentCommentButtonDeselected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RecentCommentButtonDeselected.png; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -689,7 +683,6 @@
 		83D3DDB71215DC7900600B4B /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		83F1F9A11236FBF600069F99 /* PostMediaViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "PostMediaViewController-iPad.xib"; sourceTree = "<group>"; };
 		83F1FA571237073B00069F99 /* WPMediaUploader-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "WPMediaUploader-iPad.xib"; sourceTree = "<group>"; };
-		83F1FCAB1237494D00069F99 /* PageViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "PageViewController-iPad.xib"; sourceTree = "<group>"; };
 		83F3E25F11275E07004CD686 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		83F3E2BC11276357004CD686 /* LocationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationController.h; sourceTree = "<group>"; };
 		83F3E2BD11276357004CD686 /* LocationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationController.m; sourceTree = "<group>"; };
@@ -776,9 +769,9 @@
 		E125451712BF68F900D87A0A /* Page.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Page.m; sourceTree = "<group>"; };
 		E131D08712C8C9150056BAB9 /* AbstractPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractPost.h; sourceTree = "<group>"; };
 		E131D08812C8C9160056BAB9 /* AbstractPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractPost.m; sourceTree = "<group>"; };
-		E1497BBA12CCA8270022BCD9 /* PostReaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostReaderViewController.h; sourceTree = "<group>"; };
-		E1497BBB12CCA8270022BCD9 /* PostReaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostReaderViewController.m; sourceTree = "<group>"; };
-		E1497BBF12CCA92F0022BCD9 /* PostReaderViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "PostReaderViewController-iPad.xib"; sourceTree = "<group>"; };
+		E1497BBA12CCA8270022BCD9 /* PostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostViewController.h; sourceTree = "<group>"; };
+		E1497BBB12CCA8270022BCD9 /* PostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostViewController.m; sourceTree = "<group>"; };
+		E1497BBF12CCA92F0022BCD9 /* PostViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "PostViewController-iPad.xib"; sourceTree = "<group>"; };
 		E16A0C3012E769A10049EA80 /* table_sep.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = table_sep.png; sourceTree = "<group>"; };
 		E16A0C3112E769A10049EA80 /* table_sep@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "table_sep@2x.png"; sourceTree = "<group>"; };
 		E19F297912B8BC22008FF660 /* access.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = access.c; sourceTree = "<group>"; };
@@ -833,9 +826,8 @@
 		E19F29AA12B8BC22008FF660 /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
 		E19F29AB12B8BC22008FF660 /* win32tc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = win32tc.c; sourceTree = "<group>"; };
 		E19F29AC12B8BC22008FF660 /* win32tc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = win32tc.h; sourceTree = "<group>"; };
-		E1C43CA512E4D09E00330262 /* PageReaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageReaderViewController.h; sourceTree = "<group>"; };
-		E1C43CA612E4D09E00330262 /* PageReaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageReaderViewController.m; sourceTree = "<group>"; };
-		E1C43CF212E4D4EA00330262 /* PageReaderViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "PageReaderViewController-iPad.xib"; sourceTree = "<group>"; };
+		E1C43CA512E4D09E00330262 /* PageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageViewController.h; sourceTree = "<group>"; };
+		E1C43CA612E4D09E00330262 /* PageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageViewController.m; sourceTree = "<group>"; };
 		E1D552CC12E77BD80032C680 /* tabPointer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabPointer.png; sourceTree = "<group>"; };
 		E1D552CD12E77BD80032C680 /* tabPointer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabPointer@2x.png"; sourceTree = "<group>"; };
 		E1D5533B12E7877E0032C680 /* tags.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tags.png; sourceTree = "<group>"; };
@@ -1330,9 +1322,6 @@
 		83F1FCA5123748DF00069F99 /* Pages */ = {
 			isa = PBXGroup;
 			children = (
-				E1C43CF212E4D4EA00330262 /* PageReaderViewController-iPad.xib */,
-				03D5AF731146AF2D00FC6044 /* EditPageViewController-iPad.xib */,
-				83F1FCAB1237494D00069F99 /* PageViewController-iPad.xib */,
 			);
 			name = Pages;
 			sourceTree = "<group>";
@@ -1340,9 +1329,8 @@
 		83F1FCA6123748E300069F99 /* Posts */ = {
 			isa = PBXGroup;
 			children = (
-				E1497BBF12CCA92F0022BCD9 /* PostReaderViewController-iPad.xib */,
-				03FF763211445F8E00DCFC6F /* EditPostViewController-iPad.xib */,
-				03B1E32A113DBDB300BBD1C6 /* PostViewController-iPad.xib */,
+				E1497BBF12CCA92F0022BCD9 /* PostViewController-iPad.xib */,
+				03B1E32A113DBDB300BBD1C6 /* EditPostViewController-iPad.xib */,
 			);
 			name = Posts;
 			sourceTree = "<group>";
@@ -1378,8 +1366,8 @@
 				83A645D6112B8690000999A6 /* PostLocationViewController.m */,
 				83A64687112C5F75000999A6 /* PostSettingsHelpViewController.h */,
 				83A64688112C5F75000999A6 /* PostSettingsHelpViewController.m */,
-				E1497BBA12CCA8270022BCD9 /* PostReaderViewController.h */,
-				E1497BBB12CCA8270022BCD9 /* PostReaderViewController.m */,
+				E1497BBA12CCA8270022BCD9 /* PostViewController.h */,
+				E1497BBB12CCA8270022BCD9 /* PostViewController.m */,
 			);
 			name = Post;
 			sourceTree = "<group>";
@@ -1739,8 +1727,8 @@
 				EC4696FE0EA75D460040EE8E /* PagesViewController.m */,
 				83D180F712329B1A002DCCB0 /* EditPageViewController.h */,
 				83D180F812329B1A002DCCB0 /* EditPageViewController.m */,
-				E1C43CA512E4D09E00330262 /* PageReaderViewController.h */,
-				E1C43CA612E4D09E00330262 /* PageReaderViewController.m */,
+				E1C43CA512E4D09E00330262 /* PageViewController.h */,
+				E1C43CA612E4D09E00330262 /* PageViewController.m */,
 			);
 			name = Pages;
 			sourceTree = "<group>";
@@ -1859,14 +1847,13 @@
 				45C73C25113C36F70024D0D2 /* MainWindow-iPad.xib in Resources */,
 				030DB994113C4BE6002FF1A2 /* BlogViewController-iPad.xib in Resources */,
 				03B1DF30113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.xib in Resources */,
-				03B1E32B113DBDB300BBD1C6 /* PostViewController-iPad.xib in Resources */,
+				03B1E32B113DBDB300BBD1C6 /* EditPostViewController-iPad.xib in Resources */,
 				45B71DE5113EDAA100D0A33C /* Entitlements.plist in Resources */,
 				036ABF931141DF1A00181F3B /* EditPostParentModalViewController.xib in Resources */,
 				03FF762811445B1400DCFC6F /* ToolbarIconCamera.png in Resources */,
 				03FF762911445B1400DCFC6F /* ToolbarIconEye.png in Resources */,
 				03FF762A11445B1400DCFC6F /* ToolbarIconGear.png in Resources */,
 				03FF762B11445B1400DCFC6F /* ToolbarIconLocation.png in Resources */,
-				03FF763311445F8E00DCFC6F /* EditPostViewController-iPad.xib in Resources */,
 				03FF79D11144C54600DCFC6F /* RecentCommentButtonSelected.png in Resources */,
 				03FF79D21144C54600DCFC6F /* RecentCommentButtonDeselected.png in Resources */,
 				4590D1AC1146BE8E008F5D22 /* glossyButton-disabled.png in Resources */,
@@ -1878,7 +1865,6 @@
 				45F285DB1149BD020014D36C /* Icon-72.png in Resources */,
 				45F285DD1149BD020014D36C /* Icon.png in Resources */,
 				45CD32191157D83D009E78D3 /* fabric.png in Resources */,
-				03E26FDD1157FC2500D6D38A /* EditPageViewController-iPad.xib in Resources */,
 				45FA648C1159055E00DB50C4 /* firstrun-wholebutton-default.png in Resources */,
 				45FA648D1159055E00DB50C4 /* firstrun-wholebutton-selected.png in Resources */,
 				45FA648F1159056A00DB50C4 /* firstrun-background.png in Resources */,
@@ -1954,12 +1940,10 @@
 				83CAD4211235F9F4003DFA20 /* MediaObjectView.xib in Resources */,
 				83F1F9A21236FBF600069F99 /* PostMediaViewController-iPad.xib in Resources */,
 				83F1FA581237073B00069F99 /* WPMediaUploader-iPad.xib in Resources */,
-				83F1FCAC1237494D00069F99 /* PageViewController-iPad.xib in Resources */,
 				837593AE1243ECD500D04C93 /* EditSiteViewController-iPad.xib in Resources */,
 				83ABDD78125D30F700A421B2 /* BlogSettingsViewController-iPad.xib in Resources */,
 				836FECEC12715E2A000309D8 /* CrashReportView.xib in Resources */,
-				E1497BC012CCA92F0022BCD9 /* PostReaderViewController-iPad.xib in Resources */,
-				E1C43CF312E4D4EA00330262 /* PageReaderViewController-iPad.xib in Resources */,
+				E1497BC012CCA92F0022BCD9 /* PostViewController-iPad.xib in Resources */,
 				E1EE23E512E62864000B2BE6 /* movie.png in Resources */,
 				E1EE23E612E62864000B2BE6 /* movie@2x.png in Resources */,
 				E1EE23E912E628F6000B2BE6 /* attachment.png in Resources */,
@@ -2135,8 +2119,8 @@
 				E125445612BF5B3900D87A0A /* Category.m in Sources */,
 				E125451812BF68F900D87A0A /* Page.m in Sources */,
 				E131D08912C8C9160056BAB9 /* AbstractPost.m in Sources */,
-				E1497BBC12CCA8270022BCD9 /* PostReaderViewController.m in Sources */,
-				E1C43CA712E4D09E00330262 /* PageReaderViewController.m in Sources */,
+				E1497BBC12CCA8270022BCD9 /* PostViewController.m in Sources */,
+				E1C43CA712E4D09E00330262 /* PageViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

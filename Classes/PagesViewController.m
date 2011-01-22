@@ -6,7 +6,7 @@
 //
 
 #import "PagesViewController.h"
-#import "PageReaderViewController.h"
+#import "PageViewController.h"
 
 #define TAG_OFFSET 1010
 
@@ -36,7 +36,7 @@
         NSLog(@"results: %@", self.resultsController.fetchedObjects);
         page = nil;
     }
-    self.postReaderViewController = [[PageReaderViewController alloc] initWithPost:page];
+    self.postReaderViewController = [[PageViewController alloc] initWithPost:page];
     [delegate showContentDetailViewController:self.postReaderViewController];    
 }
 

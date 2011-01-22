@@ -2,7 +2,7 @@
 #import "RefreshButtonView.h"
 #import "MediaManager.h"
 #import "Post.h"
-#import "PostReaderViewController.h"
+#import "PostViewController.h"
 
 @class BlogDataManager, EditPostViewController, EditPostViewController;
 
@@ -14,7 +14,7 @@
 
 @property (readonly) UIBarButtonItem *newButtonItem;
 @property (nonatomic, retain) EditPostViewController *postDetailViewController;
-@property (nonatomic, retain) PostReaderViewController *postReaderViewController;
+@property (nonatomic, retain) PostViewController *postReaderViewController;
 @property (nonatomic, retain) MediaManager *mediaManager;
 @property (nonatomic, assign) BOOL anyMorePosts;
 @property (nonatomic, retain) NSIndexPath *selectedIndexPath;
