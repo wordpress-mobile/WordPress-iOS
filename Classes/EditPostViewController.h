@@ -1,6 +1,10 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
-#import "PostViewController.h"
+#import "PostMediaViewController.h"
+#import "PostSettingsViewController.h"
+#import "PostLocationViewController.h"
+#import "WordPressAppDelegate.h"
+#import "WPProgressHUD.h"
 #import "WPAddCategoryViewController.h"
 #import "Post.h"
 
@@ -9,7 +13,7 @@
 
 #define degreesToRadian(x) (M_PI * x / 180.0)
 
-@class WPSegmentedSelectionTableViewController;
+@class WPSegmentedSelectionTableViewController, PostSettingsViewController;
 
 @interface EditPostViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
 UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDelegate,UIPopoverControllerDelegate> {
@@ -21,34 +25,34 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
     BOOL isNewCategory;
     BOOL editCustomFields;
 	BOOL isLocalDraft;
+    BOOL hasChanges, hasSaved, isVisible, isPublishing, isShowingKeyboard;
 	
 	CGRect normalTextFrame;
 	
     IBOutlet UITextView *textView;
     IBOutlet UITextField *titleTextField;
     IBOutlet UITextField *tagsTextField;
-    IBOutlet UIView *contentView;
     IBOutlet UIView *subView;
-    IBOutlet UITextField *statusTextField;
-    IBOutlet UITextField *categoriesTextField;
-    IBOutlet UILabel *tagsLabel;
-    IBOutlet UILabel *statusLabel;
-    IBOutlet UILabel *categoriesLabel;
     IBOutlet UILabel *titleLabel;
-    IBOutlet UIView *textViewContentView;
     IBOutlet UITextField *textViewPlaceHolderField;
-    IBOutlet UIButton *customFieldsEditButton;
-	IBOutlet UIButton *locationButton;
-	IBOutlet UIActivityIndicatorView *locationSpinner;
-    IBOutlet UIBarButtonItem *newCategoryBarButtonItem;
     IBOutlet UIButton *tagsButton;
     IBOutlet UIButton *categoriesButton;
+    IBOutlet UIToolbar *toolbar;
+	IBOutlet UIView *contentView;
+	IBOutlet UIBarButtonItem *writeButton;
+	IBOutlet UIBarButtonItem *settingsButton;
+	IBOutlet UIBarButtonItem *previewButton;
+	IBOutlet UIBarButtonItem *attachmentButton;
+	IBOutlet UIBarButtonItem *photoButton;
+	IBOutlet UIBarButtonItem *movieButton;
+    IBOutlet UIImageView *tabPointer;
+    
 	
     WPSelectionTableViewController *selectionTableViewController;
     WPSegmentedSelectionTableViewController *segmentedTableViewController;
-    PostViewController *postDetailViewController;
-    WPNavigationLeftButtonView *leftView;
 	LocationController *locationController;
+    PostSettingsViewController *postSettingsController;
+    WPProgressHUD *spinner;
 	
     UIImage *currentChoosenImage;
     UITextField *infoText;
@@ -60,12 +64,12 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 	NSUInteger textViewHeightForRotation;
 	CLLocation *initialLocation;
 	NSArray *statuses;
+        
+    UIView *currentView;
 }
 
-@property (nonatomic, assign) PostViewController *postDetailViewController;
 @property (nonatomic, retain) WPSelectionTableViewController *selectionTableViewController;
 @property (nonatomic, retain) WPSegmentedSelectionTableViewController *segmentedTableViewController;
-@property (nonatomic, retain) WPNavigationLeftButtonView *leftView;
 @property (nonatomic, retain) UITextField *infoText;
 @property (nonatomic, retain) UITextField *urlField;
 @property (nonatomic, retain) NSMutableArray *bookMarksArray;
@@ -84,18 +88,22 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 @property (nonatomic, retain) IBOutlet UILabel *tagsLabel, *statusLabel, *categoriesLabel, *titleLabel;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *newCategoryBarButtonItem;
 @property (nonatomic, retain) NSArray *statuses;
+@property (nonatomic, retain) AbstractPost *apost;
+@property (nonatomic, assign) Post *post;
+@property (nonatomic, assign) EditPostMode editMode;
+@property (nonatomic, assign) BOOL hasChanges, hasSaved, isVisible, isPublishing;
+
+- (id)initWithPost:(AbstractPost *)aPost;
 
 // UI
 - (void)refreshUIForCompose;
 - (void)refreshUIForCurrentPost;
-- (void)refreshCurrentPostForUI;
 - (IBAction)endTextEnteringButtonAction:(id)sender;
 - (void)endEditingAction:(id)sender;
 - (void)refreshStatus;
 - (void)positionTextView:(NSDictionary *)keyboardInfo;
 - (void)deviceDidRotate:(NSNotification *)notification;
 - (void)resignTextView;
-- (void)updateValuesToCurrentPost;
 - (void)showLinkView;
 - (void)disableInteraction;
 
@@ -117,5 +125,9 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (BOOL)isPostGeotagged;
 - (CLLocation *)getPostLocation;
 
+- (IBAction)switchToEdit;
+- (IBAction)switchToSettings;
+- (void)refreshButtons;
+- (void)dismissEditView;
 
 @end

@@ -13,9 +13,8 @@
 }
 
 @property (readonly) UIBarButtonItem *newButtonItem;
-@property (nonatomic, retain) PostViewController *postDetailViewController;
+@property (nonatomic, retain) EditPostViewController *postDetailViewController;
 @property (nonatomic, retain) PostReaderViewController *postReaderViewController;
-@property (nonatomic, retain) EditPostViewController *postDetailEditController;
 @property (nonatomic, retain) MediaManager *mediaManager;
 @property (nonatomic, assign) BOOL anyMorePosts;
 @property (nonatomic, retain) NSIndexPath *selectedIndexPath;

@@ -27,7 +27,7 @@
 
 @implementation PostsViewController
 
-@synthesize newButtonItem, postDetailViewController, postReaderViewController, postDetailEditController;
+@synthesize newButtonItem, postDetailViewController, postReaderViewController;
 @synthesize anyMorePosts, selectedIndexPath, drafts, mediaManager;
 @synthesize resultsController;
 @synthesize blog;
@@ -189,7 +189,7 @@
     if (DeviceIsPad()) {
         self.selectedIndexPath = indexPath;
     } else {
-        self.postDetailViewController = [[PostViewController alloc] initWithNibName:@"PostViewController" bundle:nil];
+        self.postDetailViewController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil];
         Post *post = [self.resultsController objectAtIndexPath:indexPath];
         self.postDetailViewController.post = (Post *)[post createRevision];
         self.postDetailViewController.hasChanges = NO;
@@ -368,7 +368,7 @@
 		[delegate showContentDetailViewController:self.postReaderViewController];
         [self.postReaderViewController showModalEditor];
 	} else {
-        self.postDetailViewController = [[[PostViewController alloc] initWithNibName:@"PostViewController" bundle:nil] autorelease];
+        self.postDetailViewController = [[[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil] autorelease];
         self.postDetailViewController.post = (Post *)[post createRevision];
         self.postDetailViewController.hasChanges = NO;
         self.postDetailViewController.editMode = kNewPost;
@@ -521,7 +521,6 @@
     self.resultsController = nil;
 
 	[mediaManager release];
-    [postDetailEditController release];
     [postDetailViewController release];
     [newButtonItem release];
     [refreshButton release];

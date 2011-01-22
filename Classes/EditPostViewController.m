@@ -9,12 +9,88 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 @implementation EditPostViewController
 
-@synthesize postDetailViewController, selectionTableViewController, segmentedTableViewController, leftView;
+@synthesize selectionTableViewController, segmentedTableViewController;
 @synthesize infoText, urlField, bookMarksArray, selectedLinkRange, currentEditingTextField, isEditing, initialLocation;
 @synthesize editingDisabled, editCustomFields, statuses, isLocalDraft, normalTextFrame;
 @synthesize textView, contentView, subView, textViewContentView, statusTextField, categoriesTextField, titleTextField;
 @synthesize tagsTextField, textViewPlaceHolderField, tagsLabel, statusLabel, categoriesLabel, titleLabel, customFieldsEditButton;
 @synthesize locationButton, locationSpinner, newCategoryBarButtonItem;
+@synthesize editMode, apost;
+@synthesize hasChanges, hasSaved, isVisible, isPublishing;
+
+- (id)initWithPost:(AbstractPost *)aPost {
+    NSString *nib;
+    if (DeviceIsPad()) {
+        nib = @"PostViewController-iPad";
+    } else {
+        nib = @"PostViewController";
+    }
+    
+    if (self = [super initWithNibName:nib bundle:nil]) {
+        self.apost = aPost;
+    }
+    
+    return self;
+}
+
+- (Post *)post {
+    if ([self.apost isKindOfClass:[Post class]]) {
+        return (Post *)self.apost;
+    } else {
+        return nil;
+    }
+}
+
+- (void)setPost:(Post *)aPost {
+    self.apost = aPost;
+}
+
+- (UIViewAnimationOptions)directionFromView:(UIView *)old toView:(UIView *)new {
+    if (old == contentView)
+        return UIViewAnimationOptionTransitionFlipFromRight;
+    else
+        return UIViewAnimationOptionTransitionFlipFromLeft;
+}
+
+- (CGFloat)pointerPositionForView:(UIView *)view {
+    if (view == contentView)
+        return 22;
+    else
+        return 61;
+}
+
+- (void)switchToView:(UIView *)newView {
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.2];
+    CGRect frame = tabPointer.frame;
+    frame.origin.x = [self pointerPositionForView:newView];
+    tabPointer.frame = frame;
+    [UIView transitionFromView:currentView
+                        toView:newView
+                      duration:0.3
+                       options:[self directionFromView:currentView toView:newView]
+                    completion:nil];
+    [currentView removeFromSuperview];
+    [contentView addSubview:newView];
+    [UIView commitAnimations];
+    currentView = newView;
+}
+
+- (IBAction)switchToEdit {
+    if (currentView != contentView) {
+        [self switchToView:contentView];
+        writeButton.enabled = NO;
+        settingsButton.enabled = YES;
+    }
+}
+
+- (IBAction)switchToSettings {
+    if (currentView != postSettingsController.view) {
+        [self switchToView:postSettingsController.view];
+        writeButton.enabled = YES;
+        settingsButton.enabled = NO;
+    }
+}
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -23,18 +99,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [super viewDidLoad];
     [FlurryAPI logEvent:@"EditPost"];
 
+    postSettingsController = [[PostSettingsViewController alloc] initWithNibName:@"PostSettingsViewController" bundle:nil];
+    postSettingsController.postDetailViewController = self;
+
 	self.navigationItem.title = @"Write";
 	statuses = [NSArray arrayWithObjects:@"Local Draft", @"Draft", @"Private", @"Pending Review", @"Published", nil];
 	normalTextFrame = textView.frame;
-	
-    if (!leftView) {
-        leftView = [WPNavigationLeftButtonView createCopyOfView];
-        [leftView setTitle:@"Posts"];
-    }
-	
-    [leftView setTitle:@"Posts"];
-    [leftView setTarget:self withAction:@selector(cancelView:)];
-	
+		
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceDidRotate:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
@@ -46,83 +117,47 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];
 	
     isTextViewEditing = NO;
+    spinner = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
+	hasSaved = NO;
+    
+    currentView = contentView;
+    writeButton.enabled = NO;
+    if (iOs4OrGreater()) {
+        self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+    }
+    if(self.editMode == kEditPost)
+        [self refreshUIForCurrentPost];
+	else if(self.editMode == kNewPost)
+        [self refreshUIForCompose];
+	else if (self.editMode == kAutorecoverPost) {
+        [self refreshUIForCurrentPost];
+        self.hasChanges = YES;
+	}
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	//WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     [super viewWillAppear:animated];
-	//[self dismissModalViewControllerAnimated:YES];
+
+    if(self.editMode != kNewPost)
+		self.editMode = kRefreshPost;
 	
-	// Update older geolocation setting to new format
-	BOOL geolocationSetting = NO;
-	NSString *geotaggingSettingName = [NSString stringWithFormat:@"%@-Geotagging", [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:kBlogId]];
-	if([[[BlogDataManager sharedDataManager] currentBlog] objectForKey:kGeolocationSetting] == nil) {
-		if(![[NSUserDefaults standardUserDefaults] boolForKey:geotaggingSettingName])
-		{
-			[[[BlogDataManager sharedDataManager] currentBlog] setValue:@"NO" forKey:kGeolocationSetting];
-			[[NSUserDefaults standardUserDefaults] removeObjectForKey:geotaggingSettingName];
-			geolocationSetting = NO;
-		}
-		else {
-			[[[BlogDataManager sharedDataManager] currentBlog] setValue:@"YES" forKey:kGeolocationSetting];
-			[[NSUserDefaults standardUserDefaults] removeObjectForKey:geotaggingSettingName];
-			geolocationSetting = YES;
-		}
-	}
-	else
-		geolocationSetting = [[[[BlogDataManager sharedDataManager] currentBlog] objectForKey:kGeolocationSetting] boolValue];
+	isVisible = YES;
+    
+	[self refreshButtons];
 	
-	if(geolocationSetting == YES) {
-		// Geolocation enabled, let's get this party started.
-		locationButton.hidden = NO;
-		
-		// If the post has already been geotagged, reflect this in the icon, and store the
-		// location so we can determine any changes to location in the future
-		if([self isPostGeotagged])
-		{
-			[locationButton setImage:[UIImage imageNamed:@"hasLocation.png"] forState:UIControlStateNormal];
-			
-			CLLocation *postLocation = [self getPostLocation];
-			if((postLocation != nil) && (initialLocation != nil))
-			{
-				// If our location has changed from its initial value, show the Save button
-				if((initialLocation.coordinate.latitude != postLocation.coordinate.latitude) ||
-				   (initialLocation.coordinate.longitude != postLocation.coordinate.longitude))
-					postDetailViewController.hasChanges = YES;
-			}
-		}
-		else
-		{
-			// Post does not have a geotag at this point, so check for a removed geotag
-			if((initialLocation != nil) && ([self getPostLocation] == nil))
-				postDetailViewController.hasChanges = YES;
-			
-			// Set our geo button back to normal
-			[locationButton setImage:[UIImage imageNamed:@"getLocation.png"] forState:UIControlStateNormal];
-		}
-	}
-	else {
-		// Geolocation disabled, hide our geo button.
-		locationButton.hidden = YES;
-	}
-	
-	[locationButton setNeedsLayout];
-	[locationButton setNeedsDisplay];
-	
-	postDetailViewController.navigationItem.title = @"Write";
+	self.navigationItem.title = @"Write";
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated {	
+	if(self.editMode != kNewPost)
+		self.editMode = kRefreshPost;
+	isVisible = NO;
+	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	//[self dismissModalViewControllerAnimated:YES];
 	[titleTextField resignFirstResponder];
-	[tagsTextField resignFirstResponder];
-	[categoriesTextField resignFirstResponder];
-	[statusTextField resignFirstResponder];
 	[textView resignFirstResponder];
+    [super viewWillDisappear:animated];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -137,6 +172,52 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 #pragma mark -
+
+- (void)dismissEditView {
+	if (DeviceIsPad() == NO) {
+        WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+        [appDelegate.navigationController popViewControllerAnimated:YES];
+	} else {
+		[self dismissModalViewControllerAnimated:YES];
+		[[BlogDataManager sharedDataManager] loadDraftTitlesForCurrentBlog];
+		[[BlogDataManager sharedDataManager] loadPostTitlesForCurrentBlog];
+		
+		UIViewController *theTopVC = [[WordPressAppDelegate sharedWordPressApp].masterNavigationController topViewController];
+		if ([theTopVC respondsToSelector:@selector(reselect)])
+			[theTopVC performSelector:@selector(reselect)];
+	}
+    
+	[FlurryAPI logEvent:@"EditPost#dismissEditView"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"PostEditorDismissed" object:self];
+}
+
+
+- (void)refreshButtons {
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                  target:self
+                                                                                  action:@selector(cancelView:)];
+    self.navigationItem.leftBarButtonItem = cancelButton;
+    [cancelButton release];
+    
+    UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] init];
+    saveButton.title = @"Save";
+    saveButton.target = self;
+    saveButton.style = UIBarButtonItemStyleDone;
+    saveButton.action = @selector(saveAction:);
+    
+    if(![self.post hasRemote]) {
+        if ([self.post.status isEqualToString:@"publish"]) {
+            saveButton.title = @"Publish";
+        } else {
+            saveButton.title = @"Save";
+        }
+    } else {
+        saveButton.title = @"Update";
+    }
+    self.navigationItem.rightBarButtonItem = saveButton;
+    
+    [saveButton release];
+}
 
 - (BOOL)isPostPublished {
 	BOOL result = NO;
@@ -158,77 +239,48 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 
 - (void)refreshUIForCompose {
-	self.isLocalDraft = YES;
 	self.navigationItem.title = @"Write";
     titleTextField.text = @"";
-    tagsTextField.text = @"";
-	[textView setText:kTextViewPlaceholder];
-	[textView setTextColor:[UIColor lightGrayColor]];
+    textView.text = @"";
     textViewPlaceHolderField.hidden = NO;
-    categoriesTextField.text = @"";
 	self.isLocalDraft = YES;
-	statusTextField.text = postDetailViewController.post.statusTitle;
 }
 
 - (void)refreshUIForCurrentPost {
-    if ([postDetailViewController.apost.postTitle length] > 0) {
-        postDetailViewController.navigationItem.title = postDetailViewController.apost.postTitle;
+    if ([self.apost.postTitle length] > 0) {
+        self.navigationItem.title = self.apost.postTitle;
     }
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back"
                                                 style:UIBarButtonItemStyleBordered target:nil action:nil];
 
-    titleTextField.text = postDetailViewController.apost.postTitle;
-    statusTextField.text = postDetailViewController.apost.statusTitle;
-    if (postDetailViewController.post) {
+    titleTextField.text = self.apost.postTitle;
+    if (self.post) {
         // FIXME: tags should be an array/set of Tag objects
-        tagsButton.selected = ([postDetailViewController.post.tags length] > 0);
-        categoriesButton.selected = ([postDetailViewController.post.categories count] > 0);
+        tagsButton.selected = ([self.post.tags length] > 0);
+        categoriesButton.selected = ([self.post.categories count] > 0);
     }
     
-    if(postDetailViewController.apost.content == nil) {
+    if(self.apost.content == nil) {
         textViewPlaceHolderField.hidden = NO;
         textView.text = @"";
     }
     else {
         textViewPlaceHolderField.hidden = YES;
-        textView.text = postDetailViewController.apost.content;
+        textView.text = self.apost.content;
     }
 
 	// workaround for odd text view behavior on iPad
 	[textView setContentOffset:CGPointZero animated:NO];
-
-	// Set our initial location so we can determine if the geotag has been updated later
-	[self setInitialLocation:[self getPostLocation]];
-}
-
-- (void)refreshCurrentPostForUI {
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	if(self.isLocalDraft == YES) {
-		[postDetailViewController.post setPostTitle:titleTextField.text];
-		[postDetailViewController.post setTags:tagsTextField.text];
-		[postDetailViewController.post setStatus:statusTextField.text];
-		[postDetailViewController.post setContent:textView.text];
-	}
-	if(titleTextField.text != nil)
-		[dm.currentPost setObject:titleTextField.text forKey:@"title"];
-	if(tagsTextField.text != nil)
-		[dm.currentPost setObject:tagsTextField.text forKey:@"mt_keywords"];
-	if(statusTextField.text != nil)
-		[dm.currentPost setObject:statusTextField.text forKey:@"status"];
-	if((textView.text != nil) && (![textView.text isEqualToString:kTextViewPlaceholder]))
-		[dm.currentPost setObject:textView.text forKey:@"description"];
-	else
-		[dm.currentPost setObject:@"" forKey:@"description"];
 }
 
 - (void)populateSelectionsControllerWithCategories {
     if (segmentedTableViewController == nil)
         segmentedTableViewController = [[WPSegmentedSelectionTableViewController alloc] initWithNibName:@"WPSelectionTableViewController" bundle:nil];
 	
-	NSArray *cats = [postDetailViewController.post.blog.categories allObjects];
+	NSArray *cats = [self.post.blog.categories allObjects];
 	NSArray *selObject;
 	
-    selObject = [postDetailViewController.post.categories allObjects];
+    selObject = [self.post.categories allObjects];
 	
     [segmentedTableViewController populateDataSource:cats    //datasorce
 									   havingContext:kSelectionsCategoriesContext
@@ -255,8 +307,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		}
 		else {
 			WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-			[self refreshCurrentPostForUI];
-			postDetailViewController.editMode = kEditPost;
+			self.editMode = kEditPost;
 			[delegate.navigationController pushViewController:segmentedTableViewController animated:YES];
 		}
     }
@@ -269,7 +320,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		statusTextField.text = @"Local Draft";
 	}
 	else {
-		statusTextField.text = postDetailViewController.post.statusTitle;
+		statusTextField.text = self.post.statusTitle;
 	}
 }
 
@@ -277,9 +328,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if (selectionTableViewController == nil)
         selectionTableViewController = [[WPSelectionTableViewController alloc] initWithNibName:@"WPSelectionTableViewController" bundle:nil];
 	
-    NSArray *dataSource = [self.postDetailViewController.post availableStatuses];
+    NSArray *dataSource = [self.post availableStatuses];
 	
-    NSString *curStatus = postDetailViewController.post.statusTitle;
+    NSString *curStatus = self.post.statusTitle;
 	
     NSArray *selObject = (curStatus == nil ? [NSArray array] : [NSArray arrayWithObject:curStatus]);
 	
@@ -301,7 +352,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	}
 	else {
 		WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-		[self refreshCurrentPostForUI];
 		[delegate.navigationController pushViewController:selectionTableViewController animated:YES];
 	}
     [selectionTableViewController release], selectionTableViewController = nil;
@@ -315,20 +365,20 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
     if (selContext == kSelectionsStatusContext) {
         NSString *curStatus = [selectedObjects lastObject];
-        postDetailViewController.post.statusTitle = curStatus;
+        self.post.statusTitle = curStatus;
         statusTextField.text = curStatus;
     }
     
     if (selContext == kSelectionsCategoriesContext) {
         NSLog(@"selected categories: %@", selectedObjects);
-        NSLog(@"post: %@", postDetailViewController.post);
-        postDetailViewController.post.categories = [NSMutableSet setWithArray:selectedObjects];
-        categoriesTextField.text = [postDetailViewController.post categoriesText];
+        NSLog(@"post: %@", self.post);
+        self.post.categories = [NSMutableSet setWithArray:selectedObjects];
+        categoriesTextField.text = [self.post categoriesText];
     }
 	
     [selctionController clean];
-    postDetailViewController.hasChanges = YES;
-	[postDetailViewController refreshButtons];
+    self.hasChanges = YES;
+	[self refreshButtons];
 }
 
 - (void)newCategoryCreatedNotificationReceived:(NSNotification *)notification {
@@ -341,9 +391,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (IBAction)showAddNewCategoryView:(id)sender
 {
     WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithNibName:@"WPAddCategoryViewController" bundle:nil];
-    addCategoryViewController.blog = postDetailViewController.post.blog;
+    addCategoryViewController.blog = self.post.blog;
 	if (DeviceIsPad() == YES) {
-		[self refreshCurrentPostForUI];
         [segmentedTableViewController pushViewController:addCategoryViewController animated:YES];
  	} else {
 		UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:addCategoryViewController];
@@ -359,35 +408,67 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [textView resignFirstResponder];
 }
 
-//will be called when auto save method is called.
-- (void)updateValuesToCurrentPost {
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
-    NSString *str = textView.text;
-    str = (str != nil ? str : @"");
-    [dm.currentPost setValue:str forKey:@"description"];
-	
-    str = tagsTextField.text;
-    str = (str != nil ? str : @"");
-    [dm.currentPost setValue:str forKey:@"mt_keywords"];
-	
-    str = titleTextField.text;
-    str = (str != nil ? str : @"");
-    [dm.currentPost setValue:str forKey:@"title"];
-	
-	//[self saveLocationDataToCustomFields];
-	
-    //TODO:JOHNBCustomFields -- probably want an entry here for custom_fields too
+- (void)discard {
+    [FlurryAPI logEvent:@"Post#actionSheet_discard"];
+    hasChanges = NO;
+    
+	// TODO: remove the mediaViewController notifications - this is pretty kludgy
+    [self.apost.original deleteRevision];
+    self.apost = nil; // Just in case
+    [self dismissEditView];
 }
 
-//- (IBAction)cancelView:(id)sender {
-- (void)cancelView:(id)sender {
-    [postDetailViewController cancelView:sender];
+- (IBAction)saveAction:(id)sender {
+    self.apost.postTitle = titleTextField.text;
+    self.apost.content = textView.text;
+    
+    [self.view endEditing:YES];
+    [self.apost.original applyRevision];
+    [self.apost.original upload];
+    [self dismissEditView];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if ([actionSheet tag] == 201) {
+        if (buttonIndex == 0) {
+            [self discard];
+        }
+        
+        if (buttonIndex == 1) {
+            [self saveAction:self];
+        }
+    }
+    
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate setAlertRunning:NO];
+}
+
+- (IBAction)cancelView:(id)sender {
+    [FlurryAPI logEvent:@"EditPost#cancelView"];
+    if (!hasChanges) {
+        [self discard];
+        return;
+    }
+    [FlurryAPI logEvent:@"EditPost#cancelView(actionSheet)"];
+	[postSettingsController endEditingAction:nil];
+	[self endEditingAction:nil];
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
+                                                             delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Discard"
+                                                    otherButtonTitles:nil];
+    actionSheet.tag = 201;
+    actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
+    [actionSheet showInView:self.view];
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate setAlertRunning:YES];
+    
+    [actionSheet release];
 }
 
 - (IBAction)endTextEnteringButtonAction:(id)sender {
     [textView resignFirstResponder];
 	if (DeviceIsPad() == NO) {
-		//		if((postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (postDetailViewController.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
+		//		if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
 		//			[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
 	}
 }
@@ -455,8 +536,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [infoText becomeFirstResponder];
 	
 	//deal with rotation
-	if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
-		|| (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight))
+	if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
+		|| (self.interfaceOrientation == UIDeviceOrientationLandscapeRight))
 	{
 		CGAffineTransform upTransform = CGAffineTransformMakeTranslation(0.0, 80.0);
 		[addURLSourceAlert setTransform:upTransform];
@@ -513,8 +594,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)showDoneButton {
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
                                                                   target:self action:@selector(endTextEnteringButtonAction:)];
-    postDetailViewController.navigationItem.leftBarButtonItem = doneButton;
-    postDetailViewController.navigationItem.rightBarButtonItem = nil;
+    self.navigationItem.leftBarButtonItem = doneButton;
+    self.navigationItem.rightBarButtonItem = nil;
     [doneButton release];
 }
 
@@ -596,7 +677,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)textViewDidChange:(UITextView *)aTextView {
-	[postDetailViewController setHasChanges:YES];
+	[self setHasChanges:YES];
 	
     if (dismiss == YES) {
         dismiss = NO;
@@ -674,10 +755,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[self positionTextView:nil];
 		
         NSString *text = aTextView.text;
-        postDetailViewController.post.content = text;
+        self.post.content = text;
 		
 		if (DeviceIsPad() == NO) {
-            [postDetailViewController refreshButtons];
+            [self refreshButtons];
 		}
     }
 }
@@ -703,7 +784,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     self.currentEditingTextField = textField;
 	
-    if (postDetailViewController.navigationItem.leftBarButtonItem.style == UIBarButtonItemStyleDone) {
+    if (self.navigationItem.leftBarButtonItem.style == UIBarButtonItemStyleDone) {
         [self textViewDidEndEditing:textView];
     }
 }
@@ -712,20 +793,20 @@ NSTimeInterval kAnimationDuration = 0.3f;
     self.currentEditingTextField = nil;
 	
     if (textField == titleTextField) {
-        postDetailViewController.post.postTitle = textField.text;
+        self.post.postTitle = textField.text;
         
         // FIXME: this should be -[PostsViewController updateTitle]
-        if ([postDetailViewController.post.postTitle length] > 0) {
-            postDetailViewController.navigationItem.title = postDetailViewController.post.postTitle;
+        if ([self.post.postTitle length] > 0) {
+            self.navigationItem.title = self.post.postTitle;
         } else {
-            postDetailViewController.navigationItem.title = @"Write";
+            self.navigationItem.title = @"Write";
         }
 
     }
 	else if (textField == tagsTextField)
-        postDetailViewController.post.tags = tagsTextField.text;
+        self.post.tags = tagsTextField.text;
     
-    [postDetailViewController.post autosave];
+    [self.post autosave];
 }
 
 - (void)positionTextView:(NSDictionary *)keyboardInfo {
@@ -752,8 +833,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		
 		// iPad
 		if(DeviceIsPad() == YES) {
-			if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
-				|| (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
+			if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
+				|| (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
 				// Landscape
 				keyboardFrame = CGRectMake(0, 0, textView.frame.size.width, 350);
 				
@@ -770,8 +851,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		}
 		else {
 			// iPhone
-			if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
-				|| (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
+			if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
+				|| (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
 				// Landscape
 				keyboardFrame = CGRectMake (0, 0, 480, 130);
 			}
@@ -788,8 +869,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		
 		// iPad
 		if(DeviceIsPad() == YES) {
-			if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
-				|| (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
+			if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
+				|| (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
 				// Landscape
 				keyboardFrame = CGRectMake(0, 180, textView.frame.size.width, normalTextFrame.size.height);
 				
@@ -806,8 +887,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		}
 		else {
 			// iPhone
-			if ((postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
-				|| (postDetailViewController.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
+			if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
+				|| (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
 				// Landscape
 				keyboardFrame = CGRectMake(0, 165, 480, normalTextFrame.size.height);
 			}
@@ -831,12 +912,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    postDetailViewController.hasChanges = YES;
+    self.hasChanges = YES;
     return YES;
 }
 
 - (BOOL)textFieldShouldClear:(UITextField *)textField {
-    postDetailViewController.hasChanges = YES;
+    self.hasChanges = YES;
     return YES;
 }
 
@@ -864,7 +945,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	if (imgHTML.location == NSNotFound) {
 		[content appendString:[NSString stringWithFormat:@"%@%@", prefix, textView.text]];
 		textView.text = content;
-		postDetailViewController.hasChanges = YES;
+		self.hasChanges = YES;
 	}
 }
 
@@ -886,7 +967,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	if (imgHTML.location == NSNotFound) {
 		[content appendString:[NSString stringWithFormat:@"%@%@", prefix, media.html]];
 		textView.text = content;
-		postDetailViewController.hasChanges = YES;
+		self.hasChanges = YES;
 	}
 }
 
@@ -1008,7 +1089,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (BOOL)isPostGeotagged {
 	if([self getPostLocation] != nil) {
-		postDetailViewController.hasChanges = YES;
+		self.hasChanges = YES;
 		return YES;
 	}
 	else
@@ -1056,11 +1137,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
 #pragma mark Keyboard management 
 
 - (void)keyboardWillShow:(NSNotification *)notification {
-	postDetailViewController.isShowingKeyboard = YES;
+	isShowingKeyboard = YES;
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
-	postDetailViewController.isShowingKeyboard = NO;
+	isShowingKeyboard = NO;
 }
 
 #pragma mark -
@@ -1128,7 +1209,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[newCategoryBarButtonItem release];
     [infoText release];
     [urlField release];
-    [leftView release];
     [bookMarksArray release];
     [segmentedTableViewController release];
     [super dealloc];

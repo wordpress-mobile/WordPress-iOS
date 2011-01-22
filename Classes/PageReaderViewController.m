@@ -7,7 +7,7 @@
 //
 
 #import "PageReaderViewController.h"
-#import "PageViewController.h"
+#import "EditPageViewController.h"
 
 @implementation PageReaderViewController
 - (id)initWithPost:(AbstractPost *)aPost {
@@ -25,10 +25,10 @@
         WPLog(@"showModalEditor: already has modal");
         return;
     }
-    PageViewController *postViewController;
+    EditPageViewController *postViewController;
     
     AbstractPost *postRevision = [self.apost createRevision];
-    postViewController = [[PageViewController alloc] initWithPost:postRevision];
+    postViewController = [[EditPageViewController alloc] initWithPost:postRevision];
     postViewController.hasChanges = NO;
     postViewController.editMode = kEditPost;
     [postViewController refreshUIForCurrentPost];

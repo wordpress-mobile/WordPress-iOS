@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "PostViewController.h"
+#import "EditPostViewController.h"
 #import "Post.h"
 
 @interface PostReaderViewController : UIViewController<UITextFieldDelegate, UITextViewDelegate> {

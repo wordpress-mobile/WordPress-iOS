@@ -115,7 +115,6 @@ Classes/CrashReporter.framework/Versions/A/Resources/Info.plist -text
 Classes/CrashReporter.framework/Versions/Current -text
 Classes/EditPageViewController.h -text
 Classes/EditPageViewController.m -text
-Classes/EditPageViewController.xib -text
 Classes/EditPostParentModalViewController.xib -text
 Classes/EditPostViewController.h -text
 Classes/EditPostViewController.m -text
@@ -144,8 +143,6 @@ Classes/Page.h -text
 Classes/Page.m -text
 Classes/PageReaderViewController.h -text
 Classes/PageReaderViewController.m -text
-Classes/PageViewController.h -text
-Classes/PageViewController.m -text
 Classes/PagesViewController.h -text
 Classes/PagesViewController.m -text
 Classes/Post.h -text
@@ -168,8 +165,6 @@ Classes/PostSettingsViewController.h -text
 Classes/PostSettingsViewController.m -text
 Classes/PostTableViewCell.h -text
 Classes/PostTableViewCell.m -text
-Classes/PostViewController.h -text
-Classes/PostViewController.m -text
 Classes/PostsViewController.h -text
 Classes/PostsViewController.m -text
 Classes/RefreshButtonView.h -text
@@ -322,13 +317,11 @@ FlurryLib/libFlurry.a -text svneol=unset#unset
 /MediaObjectView.xib -text
 /PageReaderViewController-iPad.xib -text
 /PageViewController-iPad.xib -text
-/PageViewController.xib -text
 /PostMediaViewController-iPad.xib -text
 /PostPreviewViewController.xib -text
 /PostReaderViewController-iPad.xib -text
 /PostSettingsViewController.xib -text
 /PostViewController-iPad.xib -text
-/PostViewController.xib -text
 Reachability/Reachability.h -text
 Reachability/Reachability.m -text
 /RecentCommentButtonDeselected.png -text svneol=unset#unset
