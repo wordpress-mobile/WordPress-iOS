@@ -1,14 +1,14 @@
 #import <UIKit/UIKit.h>
-#import "PostViewController.h"
+#import "EditPostViewController.h"
 
 @interface PostPreviewViewController : UIViewController <UIWebViewDelegate> {
     IBOutlet UIWebView *webView;
     BOOL isWebRefreshRequested;
 
-    PostViewController *postDetailViewController;
+    EditPostViewController *postDetailViewController;
 }
 
-@property (nonatomic, assign) PostViewController *postDetailViewController;
+@property (nonatomic, assign) EditPostViewController *postDetailViewController;
 @property (readonly) UIWebView *webView;
 
 - (void)refreshWebView;

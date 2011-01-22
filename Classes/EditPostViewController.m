@@ -21,9 +21,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (id)initWithPost:(AbstractPost *)aPost {
     NSString *nib;
     if (DeviceIsPad()) {
-        nib = @"PostViewController-iPad";
+        nib = @"EditPostViewController-iPad";
     } else {
-        nib = @"PostViewController";
+        nib = @"EditPostViewController";
     }
     
     if (self = [super initWithNibName:nib bundle:nil]) {

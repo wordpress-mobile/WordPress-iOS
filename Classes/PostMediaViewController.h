@@ -23,7 +23,7 @@
 typedef void (^ALAssetsLibraryAssetForURLResultBlock)(ALAsset *asset);
 typedef void (^ALAssetsLibraryAccessFailureBlock)(NSError *error);
 
-@class PostViewController;
+@class EditPostViewController;
 
 static inline double radians(double degrees) {
     return degrees * M_PI / 180;
@@ -31,7 +31,7 @@ static inline double radians(double degrees) {
 
 @interface PostMediaViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate, UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate> {
 	WordPressAppDelegate *appDelegate;
-	PostViewController *postDetailViewController;
+	EditPostViewController *postDetailViewController;
 	MediaManager *mediaManager;
 	WPMediaUploader *mediaUploader;
 	UIImagePickerController *picker;
@@ -68,7 +68,7 @@ static inline double radians(double degrees) {
 @property (nonatomic, retain) Media *currentUpload;
 @property (nonatomic, retain) NSMutableArray *photos, *videos;
 @property (nonatomic, assign) WordPressAppDelegate *appDelegate;
-@property (nonatomic, assign) PostViewController *postDetailViewController;
+@property (nonatomic, assign) EditPostViewController *postDetailViewController;
 @property (nonatomic, retain) MediaManager *mediaManager;
 @property (nonatomic, retain) WPMediaUploader *mediaUploader;
 @property (nonatomic, assign) UIDeviceOrientation currentOrientation;

@@ -1,6 +1,5 @@
 #import "PostsViewController.h"
 #import "BlogDataManager.h"
-#import "PostViewController.h"
 #import "EditPostViewController.h"
 #import "PostReaderViewController.h"
 #import "PostTableViewCell.h"

@@ -7,7 +7,6 @@
 
 #import <UIKit/UIKit.h>
 #import "EditPostViewController.h"
-#import "PageViewController.h"
 
 @interface EditPageViewController : EditPostViewController {
 }

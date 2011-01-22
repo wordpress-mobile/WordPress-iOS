@@ -7,7 +7,7 @@
 //
 
 #import "PostMediaViewController.h"
-#import "PostViewController.h"
+#import "EditPostViewController.h"
 
 @implementation PostMediaViewController
 @synthesize table, addMediaButton, hasPhotos, hasVideos, isAddingMedia, photos, videos, appDelegate, dm, addPopover, picker;

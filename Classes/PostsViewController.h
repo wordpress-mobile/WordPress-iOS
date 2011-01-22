@@ -4,7 +4,7 @@
 #import "Post.h"
 #import "PostReaderViewController.h"
 
-@class BlogDataManager, PostViewController, EditPostViewController;
+@class BlogDataManager, EditPostViewController, EditPostViewController;
 
 @interface PostsViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, UIAccelerometerDelegate, NSFetchedResultsControllerDelegate> {
 @private
