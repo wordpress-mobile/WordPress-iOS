@@ -27,7 +27,6 @@
 
     UILabel *nameLabel;
     UILabel *dateLabel;
-    UILabel *statusLabel;
     UIActivityIndicatorView *activityIndicator;
     BOOL saving;
 	BOOL gettingMore;

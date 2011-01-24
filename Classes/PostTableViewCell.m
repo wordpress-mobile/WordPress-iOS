@@ -10,7 +10,6 @@
 @interface PostTableViewCell (Private)
 - (void)addNameLabel;
 - (void)addDateLabel;
-- (void)addStatusLabel;
 - (void)addActivityIndicator;
 
 @end
@@ -25,7 +24,6 @@
 
         [self addNameLabel];
         [self addDateLabel];
-        [self addStatusLabel];
         [self addActivityIndicator];
     }
 
@@ -85,7 +83,6 @@
 		
 		NSDate *date = [post valueForKey:@"dateCreated"];
 		dateLabel.text = [dateFormatter stringFromDate:date];
-        statusLabel.text = [post remoteStatusText];
 		
 		@try {
 			if(post.remoteStatus != AbstractPostRemoteStatusPushing)
@@ -106,7 +103,6 @@
 	self.contentView.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
 	nameLabel.textColor = [UIColor blackColor];
 	dateLabel.textColor = [UIColor lightGrayColor];
-	statusLabel.textColor = [UIColor lightGrayColor];
 	self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	self.selectionStyle = UITableViewCellSelectionStyleBlue;
 	
@@ -141,18 +137,6 @@
     dateLabel.backgroundColor = [UIColor clearColor];
 
     [self.contentView addSubview:dateLabel];
-}
-
-- (void)addStatusLabel {
-    CGRect rect = CGRectMake(RIGHT_OFFSET, dateLabel.frame.origin.y, 310 - RIGHT_OFFSET, DATE_LABEL_HEIGHT);
-    statusLabel = [[UILabel alloc] initWithFrame:rect];
-    statusLabel.font = [UIFont systemFontOfSize:DATE_FONT_SIZE];
-    statusLabel.highlightedTextColor = [UIColor whiteColor];
-    statusLabel.textColor = [UIColor lightGrayColor];
-    statusLabel.backgroundColor = [UIColor clearColor];
-    statusLabel.textAlignment = UITextAlignmentRight;
-
-    [self.contentView addSubview:statusLabel];
 }
 
 - (void)addActivityIndicator {
