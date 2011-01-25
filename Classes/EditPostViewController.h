@@ -35,10 +35,9 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
     IBOutlet UIView *subView;
     IBOutlet UILabel *titleLabel;
     IBOutlet UITextField *textViewPlaceHolderField;
-    IBOutlet UIButton *tagsButton;
-    IBOutlet UIButton *categoriesButton;
     IBOutlet UIToolbar *toolbar;
 	IBOutlet UIView *contentView;
+	IBOutlet UIView *editView;
 	IBOutlet UIBarButtonItem *writeButton;
 	IBOutlet UIBarButtonItem *settingsButton;
 	IBOutlet UIBarButtonItem *previewButton;

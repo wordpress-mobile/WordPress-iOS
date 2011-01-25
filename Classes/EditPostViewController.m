@@ -46,49 +46,43 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (UIViewAnimationOptions)directionFromView:(UIView *)old toView:(UIView *)new {
-    if (old == contentView)
+    if (old == editView)
         return UIViewAnimationOptionTransitionFlipFromRight;
     else
         return UIViewAnimationOptionTransitionFlipFromLeft;
 }
 
-- (CGFloat)pointerPositionForView:(UIView *)view {
-    if (view == contentView)
-        return 22;
-    else
-        return 61;
-}
-
 - (void)switchToView:(UIView *)newView {
+    newView.frame = currentView.frame;
     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.2];
-    CGRect frame = tabPointer.frame;
-    frame.origin.x = [self pointerPositionForView:newView];
-    tabPointer.frame = frame;
-    [UIView transitionFromView:currentView
-                        toView:newView
-                      duration:0.3
-                       options:[self directionFromView:currentView toView:newView]
-                    completion:nil];
+    [UIView setAnimationDuration:0.5];
+    NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:toolbar.items];
+    if ([newView isEqual:editView]) {
+        [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:contentView cache:YES];
+        [toolbarItems replaceObjectAtIndex:0 withObject:settingsButton];
+    } else {
+        [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:contentView cache:YES];
+        [toolbarItems replaceObjectAtIndex:0 withObject:writeButton];
+    }
+    [toolbar setItems:[NSArray arrayWithArray:toolbarItems]];
+
     [currentView removeFromSuperview];
     [contentView addSubview:newView];
+
     [UIView commitAnimations];
+    
     currentView = newView;
 }
 
 - (IBAction)switchToEdit {
-    if (currentView != contentView) {
-        [self switchToView:contentView];
-        writeButton.enabled = NO;
-        settingsButton.enabled = YES;
+    if (currentView != editView) {
+        [self switchToView:editView];
     }
 }
 
 - (IBAction)switchToSettings {
     if (currentView != postSettingsController.view) {
         [self switchToView:postSettingsController.view];
-        writeButton.enabled = YES;
-        settingsButton.enabled = NO;
     }
 }
 
@@ -101,6 +95,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
     postSettingsController = [[PostSettingsViewController alloc] initWithNibName:@"PostSettingsViewController" bundle:nil];
     postSettingsController.postDetailViewController = self;
+    postSettingsController.view.frame = editView.frame;
 
 	self.navigationItem.title = @"Write";
 	statuses = [NSArray arrayWithObjects:@"Local Draft", @"Draft", @"Private", @"Pending Review", @"Published", nil];
@@ -120,8 +115,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
     spinner = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
 	hasSaved = NO;
     
-    currentView = contentView;
-    writeButton.enabled = NO;
+    currentView = editView;
+    tabPointer.hidden = YES;
+
+    NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:toolbar.items];
+    [toolbarItems removeObject:writeButton];
+    [toolbar setItems:[NSArray arrayWithArray:toolbarItems]];
+
     if (iOs4OrGreater()) {
         self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
     }
@@ -256,8 +256,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     titleTextField.text = self.apost.postTitle;
     if (self.post) {
         // FIXME: tags should be an array/set of Tag objects
-        tagsButton.selected = ([self.post.tags length] > 0);
-        categoriesButton.selected = ([self.post.categories count] > 0);
+        tagsTextField.text = self.post.tags;
+        categoriesTextField.text = [self.post categoriesText];
     }
     
     if(self.apost.content == nil) {
@@ -1190,6 +1190,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)dealloc {
 //	[statuses release];
+    [writeButton release];
+    [settingsButton release];
 	[textView release];
 	[contentView release];
 	[subView release];
