@@ -611,12 +611,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)aTextView {
+    [textViewPlaceHolderField removeFromSuperview];
     isEditing = YES;
-	if([textView.text isEqualToString:kTextViewPlaceholder] == YES) {
-		textView.text = @"";
-	}
-	
-	[textView setTextColor:[UIColor blackColor]];
+
 	[self positionTextView:nil];
 	
     dismiss = NO;
@@ -624,7 +621,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if (!isTextViewEditing) {
         isTextViewEditing = YES;
 		
- 		if (DeviceIsPad() == NO) {
+ 		if (!DeviceIsPad()) {
             [self showDoneButton];
 		}
     }
@@ -740,13 +737,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	textView.frame = normalTextFrame;
 	
 	if([textView.text isEqualToString:@""] == YES) {
-		textView.text = kTextViewPlaceholder;
-		[textView setTextColor:[UIColor lightGrayColor]];
+        [editView addSubview:textViewPlaceHolderField];
 	}
-	else {
-		[textView setTextColor:[UIColor blackColor]];
-	}
-
 	
     isEditing = NO;
     dismiss = NO;
@@ -755,26 +747,23 @@ NSTimeInterval kAnimationDuration = 0.3f;
         isTextViewEditing = NO;
 		[self positionTextView:nil];
 		
-        NSString *text = aTextView.text;
-        self.post.content = text;
+        self.post.content = textView.text;
 		
-		if (DeviceIsPad() == NO) {
+		if (!DeviceIsPad()) {
             [self refreshButtons];
 		}
     }
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-	if (DeviceIsPad() == YES) {
-		if (textField == categoriesTextField) {
-			[self populateSelectionsControllerWithCategories];
-			return NO;
-		}
-		else if (textField == statusTextField) {
-			[self populateSelectionsControllerWithStatuses];
-			return NO;
-		}
-	}
+    if (textField == categoriesTextField) {
+        [self populateSelectionsControllerWithCategories];
+        return NO;
+    }
+    if (textField == textViewPlaceHolderField) {
+        [textView becomeFirstResponder];
+        return NO;
+    }
 	return YES;
 }
 
@@ -847,8 +836,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 				
 				[textView setFrame:keyboardFrame];
 			}
-			
-			[self.view bringSubviewToFront:textView];
 		}
 		else {
 			// iPhone
@@ -873,13 +860,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
 				|| (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
 				// Landscape
-				keyboardFrame = CGRectMake(0, 180, textView.frame.size.width, normalTextFrame.size.height);
+				keyboardFrame = CGRectMake(0, 143, textView.frame.size.width, normalTextFrame.size.height);
 				
 				[textView setFrame:keyboardFrame];
 			}
 			else {
 				// Portrait
-				keyboardFrame = CGRectMake(0, 180, textView.frame.size.width, normalTextFrame.size.height);
+				keyboardFrame = CGRectMake(0, 143, textView.frame.size.width, normalTextFrame.size.height);
 				
 				[textView setFrame:keyboardFrame];
 			}
@@ -891,11 +878,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
 				|| (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
 				// Landscape
-				keyboardFrame = CGRectMake(0, 165, 480, normalTextFrame.size.height);
+				keyboardFrame = CGRectMake(0, 136, 480, normalTextFrame.size.height);
 			}
 			else {
 				// Portrait
-				keyboardFrame = CGRectMake(0, 165, 320, normalTextFrame.size.height);
+				keyboardFrame = CGRectMake(0, 136, 320, normalTextFrame.size.height);
 			}
 			
 			[textView setFrame:keyboardFrame];
