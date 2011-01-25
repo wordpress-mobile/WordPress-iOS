@@ -32,7 +32,6 @@
 
 + (Post *)newDraftForBlog:(Blog *)blog {
     Post *post = [self newPostForBlog:blog];
-    post.dateCreated = [NSDate date];
     post.remoteStatus = AbstractPostRemoteStatusLocal;
     post.status = @"publish";
     [post save];
@@ -117,6 +116,9 @@
 }
 
 - (void)upload {
+    if ([self.password isEmpty])
+        self.password = nil;
+
     [super upload];
     [self save];
 

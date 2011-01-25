@@ -54,6 +54,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)switchToView:(UIView *)newView {
+    if ([newView isEqual:postSettingsController.view])
+        [postSettingsController viewWillAppear:YES];
+    else
+        [postSettingsController viewWillDisappear:YES];
+
     newView.frame = currentView.frame;
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.5];
@@ -73,6 +78,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [UIView commitAnimations];
     
     currentView = newView;
+
+    if ([newView isEqual:postSettingsController.view])
+        [postSettingsController viewDidAppear:YES];
+    else
+        [postSettingsController viewDidDisappear:YES];
 }
 
 - (IBAction)switchToEdit {
