@@ -146,7 +146,7 @@
 - (NSArray *)syncedPostsWithEntityName:(NSString *)entityName {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:entityName inManagedObjectContext:[self managedObjectContext]]];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL)", [NSNumber numberWithInt:AbstractPostRemoteStatusSync]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original == NULL)", [NSNumber numberWithInt:AbstractPostRemoteStatusSync]];
     [request setPredicate:predicate];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postID" ascending:YES];
     [request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
@@ -173,8 +173,14 @@
     }
     for (Post *post in syncedPosts) {
         if (![postsToKeep containsObject:post]) {
-            WPLog(@"Deleting post: %@", post);
-            [[self managedObjectContext] deleteObject:post];
+            if (post.revision) {
+                // If there is a revision, we are editing this post
+                post.remoteStatus = AbstractPostRemoteStatusLocal;
+                post.postID = nil;
+            } else {
+                WPLog(@"Deleting post: %@", post);                
+                [[self managedObjectContext] deleteObject:post];
+            }
         }
     }
 
@@ -209,8 +215,14 @@
     }
     for (Page *page in syncedPages) {
         if (![pagesToKeep containsObject:page]) {
-            WPLog(@"Deleting page: %@", page);
-            [[self managedObjectContext] deleteObject:page];
+            if (page.revision) {
+                // If there is a revision, we are editing this post
+                page.remoteStatus = AbstractPostRemoteStatusLocal;
+                page.postID = nil;
+            } else {
+                WPLog(@"Deleting page: %@", page);
+                [[self managedObjectContext] deleteObject:page];
+            }
         }
     }
 

@@ -41,7 +41,7 @@
 }
 
 + (Post *)findWithBlog:(Blog *)blog andPostID:(NSNumber *)postID {
-    NSSet *results = [blog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"postID == %@",postID]];
+    NSSet *results = [blog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"postID == %@ AND original == NULL",postID]];
     
     if (results && (results.count > 0)) {
         return [[results allObjects] objectAtIndex:0];
