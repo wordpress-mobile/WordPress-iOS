@@ -7,34 +7,34 @@
 
 #define kPasswordFooterSectionHeight         68.0f
 #define kResizePhotoSettingSectionHeight     60.0f
+#define TAG_PICKER_STATUS       0
+#define TAG_PICKER_VISIBILITY   1
+#define TAG_PICKER_DATE         2
 
 @interface PostSettingsViewController (Private)
 
 - (void)keyboardWillShow:(BOOL)notif;
 - (void)setViewMovedUp:(BOOL)movedUp;
+- (void)showPicker;
+- (void)hidePicker;
 
 @end
 
 @implementation PostSettingsViewController
-
-@synthesize postDetailViewController, tableView, passwordTextField, publishOnTextField, commentsSwitchControl;
-@synthesize pingsSwitchControl, datePopover;
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        // Initialization code
-    }
-	
-    return self;
-}
+@synthesize postDetailViewController;
 
 - (void)dealloc {
-	[publishOnTextField release];
+    [visibilityList release];
+    [statusList release];
+    [publishOnDateLabel release];
+    [publishOnLabel release];
 	[passwordTextField release];
-	[pingsSwitchControl release];
-	[commentsSwitchControl release];
+    [visibilityLabel release];
+    [statusLabel release];
+    [publishOnTableViewCell release];
+    [visibilityTableViewCell release];
+    [statusTableViewCell release];
 	[tableView release];
-	[datePopover release];
     [super dealloc];
 }
 
@@ -50,19 +50,14 @@
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-    postDetailViewController.hasChanges = YES;
-	
 	//	if (passwordTextField == textField)
 	//		[self keyboardWillShow:YES];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    postDetailViewController.hasChanges = YES;
-	
 	//	if (passwordTextField == textField)
 	//		[self keyboardWillShow:NO];
 	
-    //[[BlogDataManager sharedDataManager].currentPost setValue:textField.text forKey:@"wp_password"];
 	postDetailViewController.post.password = textField.text;
 }
 
@@ -106,35 +101,20 @@
 - (void)viewDidLoad {
     [FlurryAPI logEvent:@"PostSettings"];
 
-    passwordLabel.font = [UIFont boldSystemFontOfSize:17.0f];
-    publishOnLabel.font = [UIFont boldSystemFontOfSize:17.0f];
-    passwordTextField.font = [UIFont systemFontOfSize:16];
-    publishOnTextField.font = [UIFont systemFontOfSize:14];
-	
-    [publishOnTextField setMinimumFontSize:14];
-    [publishOnTextField setAdjustsFontSizeToFitWidth:YES];
-	
-    [commentsSwitchControl addTarget:self action:@selector(controlEventValueChanged:) forControlEvents:UIControlEventValueChanged];
-    [pingsSwitchControl addTarget:self action:@selector(controlEventValueChanged:) forControlEvents:UIControlEventValueChanged];
-    [customFieldsSwitchControl addTarget:self action:@selector(controlEventValueChanged:) forControlEvents:UIControlEventValueChanged];
+    NSMutableArray *allStatuses = [NSMutableArray arrayWithArray:[postDetailViewController.apost availableStatuses]];
+    [allStatuses removeObject:@"Private"];
+    statusList = [[NSArray arrayWithArray:allStatuses] retain];
+    visibilityList = [[NSArray arrayWithObjects:@"Public", @"Password protected", @"Private", nil] retain];
+    pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 200, 320, 200)];
+    pickerView.delegate = self;
+    pickerView.dataSource = self;
+    pickerView.showsSelectionIndicator = YES;
+    isShowingPicker = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self reloadData];
-	[self setupHelpButton];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -161,55 +141,70 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 1;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    if (section == 1)
-        return kPasswordFooterSectionHeight;
-	
-    if (section == 2)
-        return kResizePhotoSettingSectionHeight;
-	
-    return 0.0f;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 3;
 }
 
-- (IBAction)controlEventValueChanged:(id)sender {
-    postDetailViewController.hasChanges = YES;
-	
-    if (commentsSwitchControl == sender)
-        [[BlogDataManager sharedDataManager].currentPost setValue:[NSNumber numberWithInt:commentsSwitchControl.on] forKey:@"not_used_allow_comments"];else if (pingsSwitchControl == sender)
-			[[BlogDataManager sharedDataManager].currentPost setValue:[NSNumber numberWithInt:pingsSwitchControl.on] forKey:@"not_used_allow_pings"];else if (customFieldsSwitchControl == sender) {
-				[[BlogDataManager sharedDataManager].currentPost setValue:[NSNumber numberWithInt:customFieldsSwitchControl.on] forKey:@"custom_fields_enabled"];
-			}
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return @"Publish";
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    return nil;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    //BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
-    //NSMutableDictionary *post = [dataManager currentPost];
-	
-    switch (indexPath.section) {
+    switch (indexPath.row) {
         case 0:
-        {
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateStyle:NSDateFormatterFullStyle];
-            [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
-            publishOnTextField.text = [dateFormatter stringFromDate:postDetailViewController.post.dateCreated];
-            [dateFormatter release];
-            return publishOnTableViewCell;
-        }
+            statusLabel.text = postDetailViewController.post.statusTitle;
+            return statusTableViewCell;
+            break;
         case 1:
-			
-            if (indexPath.row == 0) {
+            if (postDetailViewController.post.password) {
                 passwordTextField.text = postDetailViewController.post.password;
                 passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-                return passwordTableViewCell;
+                visibilityLabel.text = @"Password protected";
+            } else if ([postDetailViewController.post.status isEqualToString:@"private"]) {
+                visibilityLabel.text = @"Private";
+            } else {
+                visibilityLabel.text = @"Public";
             }
+
+            return visibilityTableViewCell;
             break;
+        case 2:
+        {
+            if (postDetailViewController.apost.dateCreated) {
+                if ([postDetailViewController.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending) {
+                    publishOnLabel.text = @"Scheduled for";
+                } else {
+                    publishOnLabel.text = @"Published on";
+                }
+
+                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+                [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+                publishOnDateLabel.text = [dateFormatter stringFromDate:postDetailViewController.post.dateCreated];
+                [dateFormatter release];
+            } else {
+                publishOnLabel.text = @"Publish";
+                publishOnDateLabel.text = @"inmediately";
+            }
+            // Resize labels properly
+            CGRect frame = publishOnLabel.frame;
+            CGSize size = [publishOnLabel.text sizeWithFont:publishOnLabel.font];
+            frame.size.width = size.width;
+            publishOnLabel.frame = frame;
+            frame = publishOnDateLabel.frame;
+            frame.origin.x = publishOnLabel.frame.origin.x + publishOnLabel.frame.size.width + 8;
+            frame.size.width = publishOnTableViewCell.frame.size.width - frame.origin.x - 8;
+            publishOnDateLabel.frame = frame;
+
+            return publishOnTableViewCell;
+        }
         default:
             break;
     }
@@ -219,56 +214,126 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 44.0f;
-}
-
-//will be called when auto save method is called.
-- (void)updateValuesToCurrentPost {
-    //BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	
-    NSString *str = passwordTextField.text;
-    str = (str != nil ? str : @"");
-    //[dm.currentPost setValue:str forKey:@"wp_password"];
-	postDetailViewController.post.password = str;
-	
-    //[dm.currentPost setValue:[NSNumber numberWithInt:customFieldsSwitchControl.on] forKey:@"custom_fields_enabled"];
-    //[dm printDictToLog:dm.currentPost andArrayName:@"from update values: currentPost"];
+    if ((indexPath.row == 1) && (postDetailViewController.apost.password))
+        return 88.f;
+    else
+        return 44.0f;
 }
 
 - (void)reloadData {
-    //BlogDataManager *dm = [BlogDataManager sharedDataManager];
     passwordTextField.text = postDetailViewController.post.password;
 	
     [tableView reloadData];
 }
 
 - (void)tableView:(UITableView *)atableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
-        WPPublishOnEditController *publishOnEditController = [[WPPublishOnEditController alloc] initWithNibName:@"WPPublishOnEditController" bundle:nil];
-        publishOnEditController.settingController = self;
-		publishOnEditController.title = @"Publish Date";
-		if (DeviceIsPad() == YES) {
-			publishOnEditController.contentSizeForViewInPopover = CGSizeMake(320.0, 300.0);
-			datePopover = [[UIPopoverController alloc] initWithContentViewController:publishOnEditController];
-			[datePopover presentPopoverFromRect:CGRectMake(self.view.frame.size.width-200, 30, 50, 50) 
-										 inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-			[[CPopoverManager instance] setCurrentPopoverController:datePopover]; 
-		} else {
-			[postDetailViewController.navigationController pushViewController:publishOnEditController animated:YES];
-		}
-        [publishOnEditController release];
+    switch (indexPath.row) {
+        case 0:
+        {
+            if ([postDetailViewController.post.status isEqualToString:@"private"])
+                break;
+
+            pickerView.tag = TAG_PICKER_STATUS;
+            [pickerView reloadAllComponents];
+            [pickerView selectRow:[statusList indexOfObject:postDetailViewController.apost.statusTitle] inComponent:0 animated:NO];
+            [self showPicker];
+            break;
+        }
+        case 1:
+        {
+            pickerView.tag = TAG_PICKER_VISIBILITY;
+            [pickerView reloadAllComponents];
+            [pickerView selectRow:[visibilityList indexOfObject:visibilityLabel.text] inComponent:0 animated:NO];
+            [self showPicker];
+            break;
+        }
+        default:
+            break;
     }
-	
     [atableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
 }
 
-- (void)setupHelpButton {
+#pragma mark -
+#pragma mark UIPickerViewDataSource
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 1;
 }
 
-- (IBAction)helpButtonClicked:(id)sender {
-	PostSettingsHelpViewController *helpView = [[PostSettingsHelpViewController alloc] init];
-	[self.navigationController pushViewController:helpView animated:YES];
-	[helpView release];
+- (NSInteger)pickerView:(UIPickerView *)aPickerView numberOfRowsInComponent:(NSInteger)component {
+    if (aPickerView.tag == TAG_PICKER_STATUS) {
+        return [statusList count];
+    } else if (aPickerView.tag == TAG_PICKER_VISIBILITY) {
+        return [visibilityList count];
+    }
+    return 0;
 }
+
+#pragma mark -
+#pragma mark UIPickerViewDelegate
+
+- (NSString *)pickerView:(UIPickerView *)aPickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    if (aPickerView.tag == TAG_PICKER_STATUS) {
+        return [statusList objectAtIndex:row];
+    } else if (aPickerView.tag == TAG_PICKER_VISIBILITY) {
+        return [visibilityList objectAtIndex:row];
+    }
+
+    return @"";
+}
+
+- (void)pickerView:(UIPickerView *)aPickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    if (aPickerView.tag == TAG_PICKER_STATUS) {
+        postDetailViewController.post.statusTitle = [statusList objectAtIndex:row];
+    } else if (aPickerView.tag == TAG_PICKER_VISIBILITY) {
+        NSString *visibility = [visibilityList objectAtIndex:row];
+        if ([visibility isEqualToString:@"Private"]) {
+            postDetailViewController.post.status = @"private";
+            postDetailViewController.post.password = nil;
+        } else {
+            if ([postDetailViewController.post.status isEqualToString:@"private"]) {
+                postDetailViewController.post.status = @"publish";
+            }
+            if ([visibility isEqualToString:@"Password protected"]) {
+                postDetailViewController.post.password = @"";
+            } else {
+                postDetailViewController.post.password = nil;
+            }
+        }
+    }
+
+    [tableView reloadData];
+}
+
+- (void)showPicker {
+    if (isShowingPicker)
+        return;
+
+    [passwordTextField resignFirstResponder];
+
+    CGRect frame = pickerView.frame;
+    frame.origin.y += frame.size.height;
+    pickerView.frame = frame;
+    [UIView beginAnimations:nil context:nil];
+    [postDetailViewController.view insertSubview:pickerView aboveSubview:postDetailViewController.toolbar];
+    frame.origin.y -= frame.size.height;
+    pickerView.frame = frame;
+    [UIView commitAnimations];
+    isShowingPicker = YES;
+}
+
+- (void)hidePicker {
+    if (!isShowingPicker)
+        return;
+
+    [UIView beginAnimations:nil context:nil];
+    CGRect frame = pickerView.frame;
+    frame.origin.y += frame.size.height;
+    pickerView.frame = frame;
+    [pickerView removeFromSuperview];
+    [UIView commitAnimations];
+    isShowingPicker = NO;
+}
+
 
 @end

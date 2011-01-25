@@ -82,6 +82,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 @property (nonatomic, retain) IBOutlet UIButton *locationButton;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *locationSpinner;
 @property (nonatomic, retain) IBOutlet UITextView *textView;
+@property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, retain) IBOutlet UIView *contentView, *subView, *textViewContentView;;
 @property (nonatomic, retain) IBOutlet UITextField *statusTextField, *categoriesTextField, *titleTextField, *tagsTextField, *textViewPlaceHolderField;
 @property (nonatomic, retain) IBOutlet UILabel *tagsLabel, *statusLabel, *categoriesLabel, *titleLabel;

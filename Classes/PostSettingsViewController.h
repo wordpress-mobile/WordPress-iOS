@@ -7,34 +7,26 @@
 #define kOFFSET_FOR_KEYBOARD                    150.0
 
 @class EditPostViewController;
-@interface PostSettingsViewController : UIViewController {
+@interface PostSettingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource> {
     IBOutlet UITableView *tableView;
-    IBOutlet UITableViewCell *pingsTableViewCell;
+    IBOutlet UITableViewCell *statusTableViewCell;
+    IBOutlet UITableViewCell *visibilityTableViewCell;
     IBOutlet UITableViewCell *publishOnTableViewCell;
-    IBOutlet UITableViewCell *passwordTableViewCell;
-    IBOutlet UITableViewCell *passwordHintTableViewCell;
+    IBOutlet UILabel *statusLabel;
+    IBOutlet UILabel *visibilityLabel;
     IBOutlet UITextField *passwordTextField;
-    IBOutlet UILabel *publishOnTextField;
-    IBOutlet UILabel *passwordLabel;
     IBOutlet UILabel *publishOnLabel;
-    IBOutlet UISwitch *commentsSwitchControl;
-    IBOutlet UISwitch *pingsSwitchControl;
-    IBOutlet UISwitch *customFieldsSwitchControl;
-	IBOutlet UIPopoverController *datePopover;
+    IBOutlet UILabel *publishOnDateLabel;
     EditPostViewController *postDetailViewController;
+    NSArray *statusList;
+    NSArray *visibilityList;
+    UIPickerView *pickerView;
+    BOOL isShowingPicker;
 }
 
 @property (nonatomic, assign) EditPostViewController *postDetailViewController;
-@property (nonatomic, retain) UITableView *tableView;
-@property (nonatomic, retain) UITextField *passwordTextField;
-@property (nonatomic, retain) UILabel *publishOnTextField;
-@property (nonatomic, retain) UISwitch *commentsSwitchControl, *pingsSwitchControl;
-@property (nonatomic, retain) IBOutlet UIPopoverController *datePopover;
 
 - (void)reloadData;
 - (void)endEditingAction:(id)sender;
-- (void)updateValuesToCurrentPost;
-- (void)setupHelpButton;
-- (IBAction)helpButtonClicked:(id)sender;
 
 @end

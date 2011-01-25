@@ -17,6 +17,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @synthesize locationButton, locationSpinner, newCategoryBarButtonItem;
 @synthesize editMode, apost;
 @synthesize hasChanges, hasSaved, isVisible, isPublishing;
+@synthesize toolbar;
 
 - (id)initWithPost:(AbstractPost *)aPost {
     NSString *nib;
