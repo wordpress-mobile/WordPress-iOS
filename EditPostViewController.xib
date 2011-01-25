@@ -99,10 +99,6 @@
 										<double key="IBUIContentInset.left">0.0</double>
 										<double key="IBUIContentInset.right">0.0</double>
 										<string key="IBUIText"/>
-										<object class="NSColor" key="IBUITextColor" id="602221153">
-											<int key="NSColorSpace">3</int>
-											<bytes key="NSWhite">MC42NjY2NjY2NjY3AA</bytes>
-										</object>
 										<object class="IBUITextInputTraits" key="IBUITextInputTraits">
 											<int key="IBUIAutocapitalizationType">2</int>
 											<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -158,7 +154,10 @@
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 										<string key="IBUIText">Title:</string>
-										<reference key="IBUITextColor" ref="602221153"/>
+										<object class="NSColor" key="IBUITextColor" id="602221153">
+											<int key="NSColorSpace">3</int>
+											<bytes key="NSWhite">MC42NjY2NjY2NjY3AA</bytes>
+										</object>
 										<object class="NSColor" key="IBUIHighlightedColor" id="311671279">
 											<int key="NSColorSpace">3</int>
 											<bytes key="NSWhite">MQA</bytes>
