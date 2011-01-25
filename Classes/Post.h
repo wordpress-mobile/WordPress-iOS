@@ -18,7 +18,6 @@
 #pragma mark Properties
 #pragma mark     Attributes
 @property (nonatomic, retain) NSString * geolocation;
-@property (nonatomic, retain) NSString * password;
 @property (nonatomic, retain) NSString * tags;
 
 #pragma mark     Relationships
@@ -35,7 +34,6 @@
 // Returns categories as a comma-separated list
 - (NSString *)categoriesText;
 - (void)setCategoriesFromNames:(NSArray *)categoryNames;
-- (NSArray *)availableStatuses;
 
 #pragma mark     Data Management
 // Autosave for local drafts

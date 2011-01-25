@@ -15,7 +15,7 @@
 @end
 
 @implementation AbstractPost
-@dynamic author, content, dateCreated, postID, postTitle, status, remoteStatusNumber;
+@dynamic author, content, dateCreated, postID, postTitle, status, password, remoteStatusNumber;
 @dynamic blog, media;
 
 + (NSString *)titleForStatus:(NSString *)status {
@@ -24,7 +24,7 @@
     } else if ([status isEqualToString:@"pending"]) {
         return @"Pending review";
     } else if ([status isEqualToString:@"private"]) {
-        return @"Private";
+        return @"Privately published";
     } else if ([status isEqualToString:@"publish"]) {
         return @"Published";
     } else {
@@ -44,6 +44,15 @@
     } else {
         return title;
     }
+}
+
+- (NSArray *)availableStatuses {
+    return [NSArray arrayWithObjects:
+            @"Draft",
+            @"Pending review",
+            @"Private",
+            @"Published",
+            nil];
 }
 
 - (BOOL)hasRemote {

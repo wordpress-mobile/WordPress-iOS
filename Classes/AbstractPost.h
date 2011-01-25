@@ -28,6 +28,7 @@ typedef enum {
 @property (nonatomic, retain) NSString * content;
 @property (nonatomic, retain) NSString * status;
 @property (nonatomic, assign) NSString * statusTitle;
+@property (nonatomic, retain) NSString * password;
 @property (nonatomic, retain) NSNumber * remoteStatusNumber;
 @property (nonatomic) AbstractPostRemoteStatus remoteStatus;
 
@@ -37,6 +38,7 @@ typedef enum {
 @property (readonly) AbstractPost *original;
 @property (readonly) AbstractPost *revision;
 
+- (NSArray *)availableStatuses;
 // Does the post exist on the blog?
 - (BOOL)hasRemote;
 - (void)remove;

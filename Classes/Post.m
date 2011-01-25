@@ -17,7 +17,7 @@
 
 @implementation Post 
 
-@dynamic geolocation, password, tags;
+@dynamic geolocation, tags;
 @dynamic categories, comments;
 
 + (Post *)newPostForBlog:(Blog *)blog {
@@ -61,6 +61,7 @@
     post.content        = [postInfo objectForKey:@"description"];
     post.dateCreated    = [postInfo objectForKey:@"dateCreated"];
     post.status         = [postInfo objectForKey:@"post_status"];
+    post.password       = [postInfo objectForKey:@"wp_password"];
     post.tags           = [postInfo objectForKey:@"mt_keywords"];
     post.remoteStatus   = AbstractPostRemoteStatusSync;
     if ([postInfo objectForKey:@"categories"]) {
@@ -68,15 +69,6 @@
     }
     
     return post;
-}
-
-- (NSArray *)availableStatuses {
-    return [NSArray arrayWithObjects:
-            @"Draft",
-            @"Pending review",
-            @"Private",
-            @"Published",
-            nil];
 }
 
 - (void)remove {

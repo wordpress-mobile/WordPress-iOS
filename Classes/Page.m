@@ -53,6 +53,7 @@
     page.content        = [postInfo objectForKey:@"description"];
     page.dateCreated    = [postInfo objectForKey:@"dateCreated"];
     page.status         = [postInfo objectForKey:@"page_status"];
+    page.password       = [postInfo objectForKey:@"wp_password"];
     page.remoteStatus   = AbstractPostRemoteStatusSync;
     
     return page;
