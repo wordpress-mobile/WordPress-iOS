@@ -134,6 +134,10 @@
     NSArray *recentPosts = [self executeXMLRPCRequest:xmlrpcRequest];
 	[xmlrpcRequest release];
     
+    if ([recentPosts isKindOfClass:[NSError class]]) {
+        NSLog(@"Couldn't get recent posts: %@", [(NSError *)recentPosts localizedDescription]);
+        return [NSMutableArray array];
+    }
     return [NSMutableArray arrayWithArray:recentPosts];
 }
 
@@ -143,6 +147,11 @@
 	
     NSArray *categories = [self executeXMLRPCRequest:xmlrpcRequest];
     [xmlrpcRequest release];
+
+    if ([categories isKindOfClass:[NSError class]]) {
+        NSLog(@"Couldn't get categories: %@", [(NSError *)categories localizedDescription]);
+        return [NSMutableArray array];
+    }
 
     return [NSMutableArray arrayWithArray:categories];
 }

@@ -166,6 +166,9 @@
 }
 
 - (BOOL)syncPostsFromResults:(NSMutableArray *)posts {
+    if ([posts count] == 0)
+        return;
+
     NSArray *syncedPosts = [self syncedPosts];
     NSMutableArray *postsToKeep = [NSMutableArray array];
     for (NSDictionary *postInfo in posts) {
@@ -208,6 +211,9 @@
 }
 
 - (BOOL)syncPagesFromResults:(NSMutableArray *)pages {
+    if ([pages count] == 0)
+        return;
+
     NSArray *syncedPages = [self syncedPages];
     NSMutableArray *pagesToKeep = [NSMutableArray array];
     for (NSDictionary *pageInfo in pages) {
