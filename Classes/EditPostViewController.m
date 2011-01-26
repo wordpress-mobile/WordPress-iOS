@@ -16,7 +16,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @synthesize tagsTextField, textViewPlaceHolderField, tagsLabel, statusLabel, categoriesLabel, titleLabel, customFieldsEditButton;
 @synthesize locationButton, locationSpinner, newCategoryBarButtonItem;
 @synthesize editMode, apost;
-@synthesize hasChanges, hasSaved, isVisible, isPublishing;
+@synthesize hasSaved, isVisible, isPublishing;
 @synthesize toolbar;
 
 - (id)initWithPost:(AbstractPost *)aPost {
@@ -142,7 +142,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
         [self refreshUIForCompose];
 	else if (self.editMode == kAutorecoverPost) {
         [self refreshUIForCurrentPost];
-        self.hasChanges = YES;
 	}
     
 }
@@ -388,7 +387,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
 	
     [selctionController clean];
-    self.hasChanges = YES;
 	[self refreshButtons];
 }
 
@@ -421,7 +419,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)discard {
     [FlurryAPI logEvent:@"Post#actionSheet_discard"];
-    hasChanges = NO;
     
 	// TODO: remove the mediaViewController notifications - this is pretty kludgy
     [self.apost.original deleteRevision];
@@ -456,7 +453,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (IBAction)cancelView:(id)sender {
     [FlurryAPI logEvent:@"EditPost#cancelView"];
-    if (!hasChanges) {
+    if (!self.hasChanges) {
         [self discard];
         return;
     }
@@ -466,7 +463,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
                                                              delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Discard"
-                                                    otherButtonTitles:nil];
+                                                    otherButtonTitles:@"Save draft", nil];
     actionSheet.tag = 201;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
     [actionSheet showInView:self.view];
@@ -600,6 +597,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
     return;
 }
 
+- (BOOL)hasChanges {
+    return self.apost.hasChanges;
+}
+
 #pragma mark TextView & TextField Delegates
 
 - (void)showDoneButton {
@@ -685,8 +686,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)textViewDidChange:(UITextView *)aTextView {
-	[self setHasChanges:YES];
-	
     if (dismiss == YES) {
         dismiss = NO;
         return;
@@ -910,12 +909,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    self.hasChanges = YES;
     return YES;
 }
 
 - (BOOL)textFieldShouldClear:(UITextField *)textField {
-    self.hasChanges = YES;
     return YES;
 }
 
@@ -943,7 +940,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	if (imgHTML.location == NSNotFound) {
 		[content appendString:[NSString stringWithFormat:@"%@%@", prefix, textView.text]];
 		textView.text = content;
-		self.hasChanges = YES;
 	}
 }
 
@@ -965,7 +961,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	if (imgHTML.location == NSNotFound) {
 		[content appendString:[NSString stringWithFormat:@"%@%@", prefix, media.html]];
 		textView.text = content;
-		self.hasChanges = YES;
 	}
 }
 
@@ -1087,7 +1082,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (BOOL)isPostGeotagged {
 	if([self getPostLocation] != nil) {
-		self.hasChanges = YES;
 		return YES;
 	}
 	else

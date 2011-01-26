@@ -191,7 +191,6 @@
         self.postDetailViewController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil];
         Post *post = [self.resultsController objectAtIndexPath:indexPath];
         self.postDetailViewController.post = (Post *)[post createRevision];
-        self.postDetailViewController.hasChanges = NO;
         self.postDetailViewController.editMode = kEditPost;
         [self.postDetailViewController refreshUIForCurrentPost];
         [appDelegate showContentDetailViewController:self.postDetailViewController];
@@ -369,7 +368,6 @@
 	} else {
         self.postDetailViewController = [[[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil] autorelease];
         self.postDetailViewController.post = (Post *)[post createRevision];
-        self.postDetailViewController.hasChanges = NO;
         self.postDetailViewController.editMode = kNewPost;
         [self.postDetailViewController refreshUIForCompose];
 		[delegate showContentDetailViewController:self.postDetailViewController];

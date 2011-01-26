@@ -60,7 +60,6 @@
     
     AbstractPost *postRevision = [self.apost createRevision];
     postViewController = [[EditPostViewController alloc] initWithPost:postRevision];
-    postViewController.hasChanges = NO;
     postViewController.editMode = kEditPost;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editorDismissed:) name:@"PostEditorDismissed" object:postViewController];
     

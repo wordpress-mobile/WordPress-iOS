@@ -41,7 +41,6 @@
 	//[[[BlogDataManager sharedDataManager] currentPost] setValue:datePicker.date forKey:@"date_created_gmt"];
 	//[[[BlogDataManager sharedDataManager] currentPost] setValue:datePicker.date forKey:@"dateCreated"];
 	settingController.postDetailViewController.post.dateCreated = datePicker.date;
-    settingController.postDetailViewController.hasChanges = YES;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

@@ -38,6 +38,8 @@ typedef enum {
 @property (readonly) AbstractPost *original;
 @property (readonly) AbstractPost *revision;
 
+@property (readonly) BOOL hasChanges;
+
 - (NSArray *)availableStatuses;
 // Does the post exist on the blog?
 - (BOOL)hasRemote;

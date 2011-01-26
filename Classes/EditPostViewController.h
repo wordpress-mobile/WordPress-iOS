@@ -25,7 +25,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
     BOOL isNewCategory;
     BOOL editCustomFields;
 	BOOL isLocalDraft;
-    BOOL hasChanges, hasSaved, isVisible, isPublishing, isShowingKeyboard;
+    BOOL hasSaved, isVisible, isPublishing, isShowingKeyboard;
 	
 	CGRect normalTextFrame;
 	
@@ -91,7 +91,8 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 @property (nonatomic, retain) AbstractPost *apost;
 @property (nonatomic, assign) Post *post;
 @property (nonatomic, assign) EditPostMode editMode;
-@property (nonatomic, assign) BOOL hasChanges, hasSaved, isVisible, isPublishing;
+@property (nonatomic, assign) BOOL hasSaved, isVisible, isPublishing;
+@property (readonly) BOOL hasChanges;
 
 - (id)initWithPost:(AbstractPost *)aPost;
 

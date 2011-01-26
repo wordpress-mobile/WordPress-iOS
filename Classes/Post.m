@@ -180,4 +180,16 @@
     }
 }
 
+- (BOOL)hasChanges {
+    if ([super hasChanges]) return YES;
+
+    if ((self.tags != ((Post *)self.original).tags)
+        && (![self.tags isEqual:((Post *)self.original).tags]))
+        return YES;
+
+    if (![self.categories isEqual:((Post *)self.original).categories]) return YES;
+
+    return NO;
+}
+
 @end

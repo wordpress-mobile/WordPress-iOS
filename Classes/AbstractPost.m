@@ -143,6 +143,39 @@
     return [self primitiveValueForKey:@"original"];
 }
 
+- (BOOL)hasChanges {
+    if (![self isRevision])
+        return NO;
+
+    // We need the extra check since [nil isEqual:nil] returns NO
+    if ((self.postTitle != self.original.postTitle)
+        && (![self.postTitle isEqual:self.original.postTitle]))
+        return YES;
+
+    if ((self.content != self.original.content)
+        && (![self.content      isEqual:self.original.content]))
+        return YES;
+
+    if ((self.status != self.original.status)
+        && (![self.status       isEqual:self.original.status]))
+        return YES;
+
+    if ((self.password != self.original.password)
+        && (![self.password     isEqual:self.original.password]))
+        return YES;
+
+    if ((self.dateCreated != self.original.dateCreated)
+        && (![self.dateCreated  isEqual:self.original.dateCreated]))
+        return YES;
+
+    // Relationships are not going to be nil, just empty sets,
+    // so we can avoid the extra check
+    if (![self.media isEqual:self.original.media])
+        return YES;
+
+    return NO;
+}
+
 - (AbstractPostRemoteStatus)remoteStatus {
     return (AbstractPostRemoteStatus)[[self remoteStatusNumber] intValue];
 }
