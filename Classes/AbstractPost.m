@@ -117,6 +117,7 @@
 - (void)deleteRevision {
     if (self.revision) {
         [[self managedObjectContext] deleteObject:self.revision];
+        [self setPrimitiveValue:nil forKey:@"revision"];
     }
 }
 

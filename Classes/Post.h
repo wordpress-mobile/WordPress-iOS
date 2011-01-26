@@ -24,10 +24,6 @@
 @property (nonatomic, retain) NSMutableSet * categories;
 @property (nonatomic, retain) NSMutableSet * comments;
 
-#pragma mark     Helpers
-// Categories wrapper for category selection in posts
-@property (nonatomic, retain) NSArray * categoriesDict;
-
 #pragma mark -
 #pragma mark Methods
 #pragma mark     Helpers

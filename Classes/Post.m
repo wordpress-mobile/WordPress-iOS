@@ -140,42 +140,12 @@
     return [[[self.categories valueForKey:@"categoryName"] allObjects] componentsJoinedByString:@", "];
 }
 
-- (NSArray *)categoriesDict {
-    NSMutableArray *result = [NSMutableArray array];
-    for (Category *category in self.categories) {
-        NSDictionary *categoryDict = [NSDictionary dictionaryWithObjectsAndKeys:
-                                      category.categoryID,
-                                      @"categoryId",
-                                      category.categoryName,
-                                      @"categoryName",
-                                      category.parentID,
-                                      @"parentId",
-                                      nil];
-        [result addObject:categoryDict];
-    }
-
-    return result;
-}
-
 - (void)setCategoriesFromNames:(NSArray *)categoryNames {
     [self.categories removeAllObjects];
     for (NSString *categoryName in categoryNames) {
         NSSet *results = [self.blog.categories filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"categoryName like %@", categoryName]];
         if (results && (results.count > 0)) {
-            [self.categories addObjectsFromArray:[results allObjects]];
-        }
-    }
-}
-
-- (void)setCategoriesDict:(NSArray *)categoriesDict {
-    [self.categories removeAllObjects];
-    
-    for (NSDictionary *categoryDict in categoriesDict) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID = %@",
-                                  [[categoryDict objectForKey:@"categoryId"] numericValue]];
-        NSSet *categories = [self.blog.categories filteredSetUsingPredicate:predicate];
-        if ([categories count] > 0) {
-            [self.categories addObjectsFromArray:[categories allObjects]];
+            self.categories = [NSMutableSet setWithSet:results];
         }
     }
 }
