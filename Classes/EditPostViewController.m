@@ -743,7 +743,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)textViewDidEndEditing:(UITextView *)aTextView {
 	currentEditingTextField = nil;
-	textView.frame = normalTextFrame;
 	
 	if([textView.text isEqualToString:@""] == YES) {
         [editView addSubview:textViewPlaceHolderField];

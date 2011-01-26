@@ -21,9 +21,10 @@
     NSArray *statusList;
     NSArray *visibilityList;
     UIPickerView *pickerView;
-    UIToolbar *accesoryToolbar;
+    UIActionSheet *actionSheet;
     UIDatePicker *datePickerView;
-    BOOL isShowingPicker, isShowingDatePicker, isShowingKeyboard;
+    UIPopoverController *popover;
+    BOOL isShowingKeyboard;
 }
 
 @property (nonatomic, assign) EditPostViewController *postDetailViewController;

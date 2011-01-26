@@ -13,12 +13,7 @@
 
 @interface PostSettingsViewController (Private)
 
-- (void)setViewMovedUp:(BOOL)movedUp;
-- (void)showPicker;
-- (void)hidePicker;
-- (void)showDatePicker;
-- (void)hideDatePicker;
-- (void)hidePickerAndKeyboard;
+- (void)showPicker:(UIView *)picker;
 
 @end
 
@@ -26,7 +21,8 @@
 @synthesize postDetailViewController;
 
 - (void)dealloc {
-    [accesoryToolbar release];
+    [actionSheet release];
+    [popover release];
     [pickerView release];
     [datePickerView release];
     [visibilityList release];
@@ -43,26 +39,13 @@
     [super dealloc];
 }
 
-- (CGSize)contentSizeForViewInPopover;
-{
-	return CGSizeMake(320.0, 275.0);
-}
-
 - (void)endEditingAction:(id)sender {
 	if (passwordTextField != nil){
     [passwordTextField resignFirstResponder];
 	}
 }
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
-	//	if (passwordTextField == textField)
-	//		[self keyboardWillShow:YES];
-}
-
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-	//	if (passwordTextField == textField)
-	//		[self keyboardWillShow:NO];
-	
 	postDetailViewController.post.password = textField.text;
 }
 
@@ -75,30 +58,6 @@
     [passwordTextField endEditing:YES];
 }
 
-//- (void)keyboardWillShow:(BOOL)notif {
-//    [self setViewMovedUp:notif];
-//}
-
-// Animate the entire view up or down, to prevent the keyboard from covering the author field.
-- (void)setViewMovedUp:(BOOL)movedUp {
-    CGRect frame = tableView.frame;
-    if (movedUp) {
-        [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDuration:0.3];
-        frame.size.height = self.view.frame.size.height - pickerView.frame.size.height - accesoryToolbar.frame.size.height;
-        tableView.frame = frame;
-        [UIView commitAnimations];
-
-        [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-    } else {
-        frame.size.height = self.view.frame.size.height;
-        tableView.frame = frame;
-        // Only the up movement is animated since the combination with the scroll
-        // looks weird on down movement
-        [tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-    }
-}
-
 - (void)viewDidLoad {
     [FlurryAPI logEvent:@"PostSettings"];
 
@@ -106,35 +65,35 @@
     [allStatuses removeObject:@"Private"];
     statusList = [[NSArray arrayWithArray:allStatuses] retain];
     visibilityList = [[NSArray arrayWithObjects:@"Public", @"Password protected", @"Private", nil] retain];
-    pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 416, 320, 216)];
+
+    CGRect pickerFrame;
+	if (DeviceIsPad())
+		pickerFrame = CGRectMake(0, 0, 320, 216);  
+	else 
+		pickerFrame = CGRectMake(0, 40, 320, 216);    
+    pickerView = [[UIPickerView alloc] initWithFrame:pickerFrame];
     pickerView.delegate = self;
     pickerView.dataSource = self;
     pickerView.showsSelectionIndicator = YES;
-    isShowingPicker = NO;
     isShowingKeyboard = NO;
-    isShowingDatePicker = NO;
     datePickerView = [[UIDatePicker alloc] initWithFrame:pickerView.frame];
-    if (postDetailViewController.apost.dateCreated)
-        datePickerView.date = postDetailViewController.apost.dateCreated;
-    else
-        datePickerView.date = [NSDate date];
-
     datePickerView.minuteInterval = 15;
     [datePickerView addTarget:self action:@selector(datePickerChanged) forControlEvents:UIControlEventValueChanged];
 
-    // Animations look better that way
-    self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
-
-    accesoryToolbar = [[UIToolbar alloc] initWithFrame:postDetailViewController.toolbar.frame];
-    accesoryToolbar.tintColor = postDetailViewController.toolbar.tintColor;
-    NSMutableArray *barButtons = [NSMutableArray arrayWithCapacity:2];
-    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    [barButtons addObject:barButton];
-    [barButton release];
-    barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(hidePickerAndKeyboard)];
-    [barButtons addObject:barButton];
-    [barButton release];
-    accesoryToolbar.items = barButtons;
+    if (!DeviceIsPad()) {
+        UIToolbar *accesoryToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
+        accesoryToolbar.tintColor = postDetailViewController.toolbar.tintColor;
+        NSMutableArray *barButtons = [NSMutableArray arrayWithCapacity:2];
+        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        [barButtons addObject:barButton];
+        [barButton release];
+        barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(endEditingAction:)];
+        [barButtons addObject:barButton];
+        [barButton release];
+        accesoryToolbar.items = barButtons;
+        passwordTextField.inputAccessoryView = accesoryToolbar;
+        [accesoryToolbar release];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -277,7 +236,7 @@
             pickerView.tag = TAG_PICKER_STATUS;
             [pickerView reloadAllComponents];
             [pickerView selectRow:[statusList indexOfObject:postDetailViewController.apost.statusTitle] inComponent:0 animated:NO];
-            [self showPicker];
+            [self showPicker:pickerView];
             break;
         }
         case 1:
@@ -285,11 +244,16 @@
             pickerView.tag = TAG_PICKER_VISIBILITY;
             [pickerView reloadAllComponents];
             [pickerView selectRow:[visibilityList indexOfObject:visibilityLabel.text] inComponent:0 animated:NO];
-            [self showPicker];
+            [self showPicker:pickerView];
             break;
         }
         case 2:
-            [self showDatePicker];
+            datePickerView.tag = TAG_PICKER_DATE;
+            if (postDetailViewController.apost.dateCreated)
+                datePickerView.date = postDetailViewController.apost.dateCreated;
+            else
+                datePickerView.date = [NSDate date];            
+            [self showPicker:datePickerView];
             break;
 
         default:
@@ -350,190 +314,105 @@
     [tableView reloadData];
 }
 
+- (void)datePickerChanged {
+    postDetailViewController.apost.dateCreated = datePickerView.date;
+    [tableView reloadData];
+}
+
 #pragma mark -
 #pragma mark Pickers and keyboard animations
 
-- (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
-    if (!isShowingPicker) {
-        [pickerView removeFromSuperview];
-    }
-    if (!isShowingDatePicker) {
-        [datePickerView removeFromSuperview];
-    }
-    if (!isShowingPicker && !isShowingKeyboard && !isShowingDatePicker && accesoryToolbar.superview) {
-        [accesoryToolbar removeFromSuperview];
-    }
-}
-
-- (void)showAccessoryToolbar {
-    if (!accesoryToolbar.superview) {
-        [postDetailViewController.view insertSubview:accesoryToolbar aboveSubview:postDetailViewController.toolbar];
-    }
-    CGRect frame = pickerView.frame;
-    frame.origin.y = postDetailViewController.view.frame.size.height - frame.size.height - accesoryToolbar.frame.size.height;
-    frame.size.height = accesoryToolbar.frame.size.height;
-    accesoryToolbar.frame = frame;
-}
-
-- (void)hideAccessoryToolbar {
-    CGRect frame = pickerView.frame;
-    frame.origin.y = postDetailViewController.view.frame.size.height - accesoryToolbar.frame.size.height;
-    frame.size.height = accesoryToolbar.frame.size.height;
-    accesoryToolbar.frame = frame;
-}
-
-- (void)showPicker {
-    if (isShowingPicker)
-        return;
+- (void)showPicker:(UIView *)picker {
     if (isShowingKeyboard)
         [passwordTextField resignFirstResponder];
-    if (isShowingDatePicker)
-        [self hideDatePicker];
+    
+    if (DeviceIsPad()) {
+        if (popover)
+            [popover release];
+        UIViewController *fakeController = [[UIViewController alloc] init];
+        if (picker.tag == TAG_PICKER_DATE) {
+            fakeController.contentSizeForViewInPopover = CGSizeMake(320, 256);
 
-    [self setViewMovedUp:YES];
+            UISegmentedControl *publishNowButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@"Publish inmediately"]];
+            publishNowButton.momentary = YES; 
+            publishNowButton.frame = CGRectMake(0, 0, 320, 40);
+            publishNowButton.segmentedControlStyle = UISegmentedControlStyleBar;
+            publishNowButton.tintColor = postDetailViewController.toolbar.tintColor;
+            [publishNowButton addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventValueChanged];
+            [fakeController.view addSubview:publishNowButton];
+            [publishNowButton release];
+            CGRect frame = picker.frame;
+            frame.origin.y = 40;
+            picker.frame = frame;
+        } else {
+            fakeController.contentSizeForViewInPopover = CGSizeMake(320, 216);
+        }
 
-    CGRect frame = pickerView.frame;
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.3];
-    [postDetailViewController.view insertSubview:pickerView aboveSubview:postDetailViewController.toolbar];
-    frame.origin.y -= frame.size.height;
-    pickerView.frame = frame;
-    [self showAccessoryToolbar];
-    [UIView commitAnimations];
-    isShowingPicker = YES;
-}
+        
+        [fakeController.view addSubview:picker];
+        popover = [[UIPopoverController alloc] initWithContentViewController:fakeController];
+        [fakeController release];
+        
+        CGRect popoverRect;
+        if (picker.tag == TAG_PICKER_STATUS)
+            popoverRect = [self.view convertRect:statusLabel.frame fromView:[statusLabel superview]];
+        else if (picker.tag == TAG_PICKER_VISIBILITY)
+            popoverRect = [self.view convertRect:visibilityLabel.frame fromView:[visibilityLabel superview]];
+        else 
+            popoverRect = [self.view convertRect:publishOnDateLabel.frame fromView:[publishOnDateLabel superview]];
 
-- (void)hidePickerAndToolbar:(BOOL)hideToolbar {
-    if (!isShowingPicker)
-        return;
+        popoverRect.size.width = 100;
+        [popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    } else {        
+        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:nil cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+        [actionSheet setActionSheetStyle:UIActionSheetStyleAutomatic];
+        [actionSheet addSubview:picker];
+		UISegmentedControl *closeButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@"Done"]];
+		closeButton.momentary = YES; 
+		closeButton.frame = CGRectMake(260, 7, 50, 30);
+		closeButton.segmentedControlStyle = UISegmentedControlStyleBar;
+		closeButton.tintColor = [UIColor blackColor];
+		[closeButton addTarget:self action:@selector(hidePicker) forControlEvents:UIControlEventValueChanged];
+		[actionSheet addSubview:closeButton];
+		[closeButton release];
 
-    CGRect frame = pickerView.frame;
-    frame.origin.y += frame.size.height;
-    pickerView.frame = frame;
-    if (hideToolbar) {
-        [self hideAccessoryToolbar];
+        if (picker.tag == TAG_PICKER_DATE) {
+            UISegmentedControl *publishNowButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@"Publish inmediately"]];
+            publishNowButton.momentary = YES; 
+            publishNowButton.frame = CGRectMake(10, 7, 129, 30);
+            publishNowButton.segmentedControlStyle = UISegmentedControlStyleBar;
+            publishNowButton.tintColor = [UIColor blackColor];
+            [publishNowButton addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventValueChanged];
+            [actionSheet addSubview:publishNowButton];
+            [publishNowButton release];            
+        }
+		[actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+		[actionSheet setBounds:CGRectMake(0, 0, 320, 485)];
     }
-    isShowingPicker = NO;
 }
 
 - (void)hidePicker {
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.3];
-    [UIView setAnimationDelegate:self];
-    [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
-    [self hidePickerAndToolbar:YES];
-    [UIView commitAnimations];
+    [actionSheet dismissWithClickedButtonIndex:0 animated:YES];
+    [actionSheet release]; actionSheet = nil;
 }
 
 - (void)removeDate {
+    datePickerView.date = [NSDate date];
     postDetailViewController.apost.dateCreated = nil;
     [tableView reloadData];
-    [self hidePickerAndKeyboard];
-}
-
-- (void)showDatePicker {
-    if (isShowingDatePicker)
-        return;
-    if (isShowingKeyboard)
-        [passwordTextField resignFirstResponder];
-    if (isShowingPicker) {
-        [self hidePicker];
-    }
-    [self setViewMovedUp:YES];
-
-    UIBarButtonItem *removeDateButton = [[UIBarButtonItem alloc] initWithTitle:@"Publish inmediately" style:UIBarButtonItemStyleBordered target:self action:@selector(removeDate)];
-    NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:accesoryToolbar.items];
-    [toolbarItems insertObject:removeDateButton atIndex:0];
-    accesoryToolbar.items = toolbarItems;
-    [removeDateButton release];
-
-    CGRect frame = datePickerView.frame;
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.3];
-    [postDetailViewController.view insertSubview:datePickerView aboveSubview:postDetailViewController.toolbar];
-    frame.origin.y -= frame.size.height;
-    datePickerView.frame = frame;
-    [self showAccessoryToolbar];
-    [UIView commitAnimations];
-    isShowingDatePicker = YES;
-}
-
-- (void)hideDatePicker {
-    if (!isShowingDatePicker)
-        return;
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.3];
-    [UIView setAnimationDelegate:self];
-    [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
-    CGRect frame = datePickerView.frame;
-    frame.origin.y += frame.size.height;
-    datePickerView.frame = frame;
-    [self hideAccessoryToolbar];
-    [UIView commitAnimations];
-
-    // Remove "publish inmediately" button from toolbar
-    NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:accesoryToolbar.items];
-    if ([toolbarItems count] > 2) {
-        [toolbarItems removeObjectAtIndex:0];
-        accesoryToolbar.items = toolbarItems;
-    }
-
-    isShowingDatePicker = NO;
-}
-
-
-- (void)hidePickerAndKeyboard {
-    if (isShowingPicker)
+    if (DeviceIsPad())
+        [popover dismissPopoverAnimated:YES];
+    else
         [self hidePicker];
 
-    if (isShowingDatePicker)
-        [self hideDatePicker];
-
-    if (isShowingKeyboard)
-        [passwordTextField resignFirstResponder];
-
-    [self setViewMovedUp:NO];
 }
 
 - (void)keyboardWillShow:(NSNotification *)keyboardInfo {
     isShowingKeyboard = YES;
-    if (isShowingPicker)
-        [self hidePicker];
-
-    if (isShowingDatePicker)
-        [self hideDatePicker];
-
-    [self setViewMovedUp:YES];
-
-    [UIView beginAnimations:@"showKeyboard" context:nil];
-    [UIView setAnimationDuration:[[[keyboardInfo userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
-    [UIView setAnimationCurve:[[[keyboardInfo userInfo] objectForKey:UIKeyboardAnimationCurveUserInfoKey] doubleValue]];
-    if (!DeviceIsPad()) {
-        [self showAccessoryToolbar];
-    }
-
-    [UIView commitAnimations];
 }
 
 - (void)keyboardWillHide:(NSNotification *)keyboardInfo {
     isShowingKeyboard = NO;
-
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:[[[keyboardInfo userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
-    [UIView setAnimationCurve:[[[keyboardInfo userInfo] objectForKey:UIKeyboardAnimationCurveUserInfoKey] doubleValue]];
-    [UIView setAnimationDelegate:self];
-    [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
-
-    if (!DeviceIsPad()) {
-        [self hideAccessoryToolbar];
-    }
-
-    [UIView commitAnimations];
-}
-
-- (void)datePickerChanged {
-    postDetailViewController.apost.dateCreated = datePickerView.date;
-    [tableView reloadData];
 }
 
 @end
