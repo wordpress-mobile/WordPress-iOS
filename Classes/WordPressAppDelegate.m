@@ -677,7 +677,11 @@ static WordPressAppDelegate *wordPressApp = NULL;
 					 stringByReplacingOccurrencesOfString: @"<" withString: @""]
 					stringByReplacingOccurrencesOfString: @">" withString: @""]
 				   stringByReplacingOccurrencesOfString: @" " withString: @""];
-	NSLog(@"Registering for push notifications with device token: %@", myToken);
+	
+	// Store the token
+	[[NSUserDefaults standardUserDefaults] setObject:myToken forKey:@"apnsDeviceToken"];
+	NSLog(@"Registered for push notifications and stored device token: %@", 
+		  [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"]);
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
