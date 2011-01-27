@@ -186,6 +186,9 @@
 			else
 				cell.accessoryType = UITableViewCellAccessoryNone;
 			cell.textLabel.text = [blog valueForKey:@"blogName"];
+            if (!cell.textLabel.text || [cell.textLabel.text isEqualToString:@""]) {
+                cell.textLabel.text = [blog valueForKey:@"url"];
+            }
 			break;
 		case 1:
 			cell.textLabel.textAlignment = UITextAlignmentCenter;
