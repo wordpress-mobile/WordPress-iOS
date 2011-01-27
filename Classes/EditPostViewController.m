@@ -167,7 +167,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[self refreshButtons];
 	
     textView.frame = self.normalTextFrame;
-    textViewPlaceHolderField.frame = self.normalTextFrame;
+    CGRect frame = self.normalTextFrame;
+    frame.origin.x += 7;
+    frame.origin.y += 7;
+    textViewPlaceHolderField.frame = frame;
 	self.navigationItem.title = @"Write";
 }
 
