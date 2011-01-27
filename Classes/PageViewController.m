@@ -11,7 +11,7 @@
 
 @implementation PageViewController
 - (id)initWithPost:(AbstractPost *)aPost {
-    if (self = [super initWithNibName:@"PageViewController-iPad" bundle:nil]) {
+    if (self = [super initWithNibName:@"PostViewController-iPad" bundle:nil]) {
         self.apost = aPost;
     }
     

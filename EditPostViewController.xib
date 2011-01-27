@@ -226,7 +226,7 @@
 									<object class="IBUITextView" id="320870318">
 										<reference key="NSNextResponder" ref="805652007"/>
 										<int key="NSvFlags">292</int>
-										<string key="NSFrame">{{0, 136}, {320, 256}}</string>
+										<string key="NSFrame">{{0, 136}, {320, 236}}</string>
 										<reference key="NSSuperview" ref="805652007"/>
 										<reference key="IBUIBackgroundColor" ref="311671279"/>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -250,7 +250,6 @@
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-										<int key="IBUIContentVerticalAlignment">0</int>
 										<string key="IBUIText"/>
 										<string key="IBUIPlaceholder">Tap here to begin writing.</string>
 										<object class="NSColor" key="IBUITextColor">
@@ -288,7 +287,7 @@
 					<object class="IBUIToolbar" id="458393363">
 						<reference key="NSNextResponder" ref="546232296"/>
 						<int key="NSvFlags">266</int>
-						<string key="NSFrame">{{0, 392}, {320, 44}}</string>
+						<string key="NSFrame">{{0, 372}, {320, 44}}</string>
 						<reference key="NSSuperview" ref="546232296"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -358,7 +357,7 @@
 					<object class="IBUIImageView" id="340444675">
 						<reference key="NSNextResponder" ref="546232296"/>
 						<int key="NSvFlags">264</int>
-						<string key="NSFrame">{{22, 385}, {19, 9}}</string>
+						<string key="NSFrame">{{22, 365}, {19, 9}}</string>
 						<reference key="NSSuperview" ref="546232296"/>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -368,7 +367,7 @@
 						</object>
 					</object>
 				</object>
-				<string key="NSFrameSize">{320, 436}</string>
+				<string key="NSFrameSize">{320, 416}</string>
 				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -376,6 +375,7 @@
 					<reference key="NSCustomColorSpace" ref="16354658"/>
 				</object>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
+				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
 				<object class="IBUISimulatedNavigationBarMetrics" key="IBUISimulatedTopBarMetrics">
 					<bool key="IBUIPrompted">NO</bool>
 				</object>

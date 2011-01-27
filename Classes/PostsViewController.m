@@ -22,6 +22,7 @@
 - (void)addRefreshButton;
 - (void)deletePostAtIndexPath;
 - (void)trySelectSomething;
+- (void)editPost:(AbstractPost *)apost;
 @end
 
 @implementation PostsViewController
@@ -153,8 +154,6 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-	
     if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section]) {
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
@@ -188,12 +187,8 @@
     if (DeviceIsPad()) {
         self.selectedIndexPath = indexPath;
     } else {
-        self.postDetailViewController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil];
-        Post *post = [self.resultsController objectAtIndexPath:indexPath];
-        self.postDetailViewController.post = (Post *)[post createRevision];
-        self.postDetailViewController.editMode = kEditPost;
-        [self.postDetailViewController refreshUIForCurrentPost];
-        [appDelegate showContentDetailViewController:self.postDetailViewController];
+        AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
+        [self editPost:post];
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
@@ -375,6 +370,18 @@
     [post release];
 }
 
+// For iPhone
+- (void)editPost:(AbstractPost *)apost {
+    WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+
+    self.postDetailViewController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil];
+    self.postDetailViewController.apost = [apost createRevision];
+    self.postDetailViewController.editMode = kEditPost;
+    [self.postDetailViewController refreshUIForCurrentPost];
+    [appDelegate showContentDetailViewController:self.postDetailViewController];
+}
+
+// For iPad
 // Subclassed in PagesViewController
 - (void)showSelectedPost {
     Post *post = nil;

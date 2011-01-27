@@ -26,9 +26,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
     BOOL editCustomFields;
 	BOOL isLocalDraft;
     BOOL hasSaved, isVisible, isPublishing, isShowingKeyboard;
-	
-	CGRect normalTextFrame;
-	
+
     IBOutlet UITextView *textView;
     IBOutlet UITextField *titleTextField;
     IBOutlet UITextField *tagsTextField;
@@ -76,7 +74,6 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 @property (nonatomic, assign) UITextField *currentEditingTextField;
 @property (nonatomic, assign) BOOL isEditing, editingDisabled, editCustomFields;
 @property (nonatomic, assign) BOOL isLocalDraft;
-@property (nonatomic, assign) CGRect normalTextFrame;
 @property (nonatomic, retain) UIButton *customFieldsEditButton;
 @property (nonatomic, retain) CLLocation *initialLocation;
 @property (nonatomic, retain) IBOutlet UIButton *locationButton;
@@ -93,6 +90,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 @property (nonatomic, assign) EditPostMode editMode;
 @property (nonatomic, assign) BOOL hasSaved, isVisible, isPublishing;
 @property (readonly) BOOL hasChanges;
+@property (readonly) CGRect normalTextFrame;
 
 - (id)initWithPost:(AbstractPost *)aPost;
 

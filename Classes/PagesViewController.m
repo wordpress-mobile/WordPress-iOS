@@ -7,6 +7,7 @@
 
 #import "PagesViewController.h"
 #import "PageViewController.h"
+#import "EditPageViewController.h"
 
 #define TAG_OFFSET 1010
 
@@ -21,6 +22,18 @@
     [pool release];
 }
 
+// For iPhone
+- (void)editPost:(AbstractPost *)apost {
+    WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+
+    self.postDetailViewController = [[EditPageViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil];
+    self.postDetailViewController.apost = [apost createRevision];
+    self.postDetailViewController.editMode = kEditPost;
+    [self.postDetailViewController refreshUIForCurrentPost];
+    [appDelegate showContentDetailViewController:self.postDetailViewController];
+}
+
+// For iPad
 - (void)showSelectedPost {
     Page *page = nil;
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];

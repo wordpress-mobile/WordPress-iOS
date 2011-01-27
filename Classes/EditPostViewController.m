@@ -11,7 +11,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 @synthesize selectionTableViewController, segmentedTableViewController;
 @synthesize infoText, urlField, bookMarksArray, selectedLinkRange, currentEditingTextField, isEditing, initialLocation;
-@synthesize editingDisabled, editCustomFields, statuses, isLocalDraft, normalTextFrame;
+@synthesize editingDisabled, editCustomFields, statuses, isLocalDraft;
 @synthesize textView, contentView, subView, textViewContentView, statusTextField, categoriesTextField, titleTextField;
 @synthesize tagsTextField, textViewPlaceHolderField, tagsLabel, statusLabel, categoriesLabel, titleLabel, customFieldsEditButton;
 @synthesize locationButton, locationSpinner, newCategoryBarButtonItem;
@@ -100,6 +100,17 @@ NSTimeInterval kAnimationDuration = 0.3f;
 #pragma mark -
 #pragma mark View lifecycle
 
+- (CGRect)normalTextFrame {
+    if (DeviceIsPad())
+        if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
+            || (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
+            return CGRectMake(0, 143, 768, 537);
+        else // Portrait
+            return CGRectMake(0, 143, 768, 773);
+    else
+        return CGRectMake(0, 136, 320, 236);
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [FlurryAPI logEvent:@"EditPost"];
@@ -110,7 +121,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 	self.navigationItem.title = @"Write";
 	statuses = [NSArray arrayWithObjects:@"Local Draft", @"Draft", @"Private", @"Pending Review", @"Published", nil];
-	normalTextFrame = textView.frame;
 		
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -156,6 +166,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     
 	[self refreshButtons];
 	
+    textView.frame = self.normalTextFrame;
+    textViewPlaceHolderField.frame = self.normalTextFrame;
 	self.navigationItem.title = @"Write";
 }
 
@@ -807,6 +819,30 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [self.post autosave];
 }
 
+- (CGRect)frameForTextView {
+	CGRect keyboardFrame;
+
+	// Reposition TextView for editing mode or normal mode based on device and orientation
+
+	if(isEditing) // Editing mode
+		if(DeviceIsPad() == YES)
+			if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
+				|| (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
+				keyboardFrame = CGRectMake(0, 0, self.normalTextFrame.size.width, self.view.frame.size.height - 352);
+			else // Portrait
+				keyboardFrame = CGRectMake(0, 0, self.normalTextFrame.size.width, self.view.frame.size.height - 264);
+		else // iPhone
+			if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
+				|| (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
+				keyboardFrame = CGRectMake (0, 0, 480, 130);
+			else // Portrait
+				keyboardFrame = CGRectMake (0, 0, 320, 210);
+	else // Normal mode
+        keyboardFrame = self.normalTextFrame;
+
+    return keyboardFrame;
+}
+
 - (void)positionTextView:(NSDictionary *)keyboardInfo {
 	CGFloat animationDuration = 0.3;
 	UIViewAnimationCurve curve = 0.3;
@@ -819,83 +855,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[UIView beginAnimations:nil context:nil];
 	[UIView setAnimationCurve:curve];
 	[UIView setAnimationDuration:animationDuration];
-	CGRect keyboardFrame;
-	
-	// Reposition TextView for editing mode or normal mode based on device and orientation
-	
-	if(isEditing) {
-		// Editing mode
-		
-		// Save time: Uncomment this line when you're debugging UITextView positioning
-		//textView.backgroundColor = [UIColor blueColor];
-		
-		// iPad
-		if(DeviceIsPad() == YES) {
-			if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
-				|| (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
-				// Landscape
-				keyboardFrame = CGRectMake(0, 0, textView.frame.size.width, 350);
-				
-				[textView setFrame:keyboardFrame];
-			}
-			else {
-				// Portrait
-				keyboardFrame = CGRectMake(0, 0, textView.frame.size.width, 700);
-				
-				[textView setFrame:keyboardFrame];
-			}
-		}
-		else {
-			// iPhone
-			if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
-				|| (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
-				// Landscape
-				keyboardFrame = CGRectMake (0, 0, 480, 130);
-			}
-			else {
-				// Portrait
-				keyboardFrame = CGRectMake (0, 0, 320, 210);
-			}
-			
-			[textView setFrame:keyboardFrame];
-		}
-	}
-	else {
-		// Normal mode
-		
-		// iPad
-		if(DeviceIsPad() == YES) {
-			if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
-				|| (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
-				// Landscape
-				keyboardFrame = CGRectMake(0, 143, textView.frame.size.width, normalTextFrame.size.height);
-				
-				[textView setFrame:keyboardFrame];
-			}
-			else {
-				// Portrait
-				keyboardFrame = CGRectMake(0, 143, textView.frame.size.width, normalTextFrame.size.height);
-				
-				[textView setFrame:keyboardFrame];
-			}
-			
-			[self.view bringSubviewToFront:textView];
-		}
-		else {
-			// iPhone
-			if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
-				|| (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) {
-				// Landscape
-				keyboardFrame = CGRectMake(0, 136, 480, normalTextFrame.size.height);
-			}
-			else {
-				// Portrait
-				keyboardFrame = CGRectMake(0, 136, 320, normalTextFrame.size.height);
-			}
-			
-			[textView setFrame:keyboardFrame];
-		}
-	}
+
+    // Save time: Uncomment this line when you're debugging UITextView positioning
+    //textView.backgroundColor = [UIColor blueColor];
+
+    CGRect keyboardFrame = [self frameForTextView];
+    [textView setFrame:keyboardFrame];
 	
 	[UIView commitAnimations];
 }
