@@ -7,7 +7,7 @@
 //
 
 #import "Page.h"
-
+#import "WPDataController.h"
 
 @implementation Page
 @dynamic parentID;
@@ -57,6 +57,60 @@
     page.remoteStatus   = AbstractPostRemoteStatusSync;
     
     return page;
+}
+
+- (void)uploadInBackground {
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+    if ([self hasRemote]) {
+        if ([[WPDataController sharedInstance] wpEditPage:self]) {
+            self.remoteStatus = AbstractPostRemoteStatusSync;
+            [self performSelectorOnMainThread:@selector(didUploadInBackground) withObject:nil waitUntilDone:NO];
+        } else {
+            NSLog(@"Page update failed");
+            self.remoteStatus = AbstractPostRemoteStatusFailed;
+            [self performSelectorOnMainThread:@selector(failedUploadInBackground) withObject:nil waitUntilDone:NO];
+        }
+    } else {
+        int postID = [[WPDataController sharedInstance] wpNewPage:self];
+        if (postID == -1) {
+            NSLog(@"Page upload failed");
+            self.remoteStatus = AbstractPostRemoteStatusFailed;
+            [self performSelectorOnMainThread:@selector(failedUploadInBackground) withObject:nil waitUntilDone:NO];
+        } else {
+            self.postID = [NSNumber numberWithInt:postID];
+            self.remoteStatus = AbstractPostRemoteStatusSync;
+            [self performSelectorOnMainThread:@selector(didUploadInBackground) withObject:nil waitUntilDone:NO];
+        }
+    }
+    [self save];
+
+    [pool release];
+}
+
+- (void)didUploadInBackground {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploaded" object:self];
+}
+
+- (void)failedUploadInBackground {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadFailed" object:self];
+}
+
+- (void)upload {
+    [super upload];
+    [self save];
+
+    self.remoteStatus = AbstractPostRemoteStatusPushing;
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    [self performSelectorInBackground:@selector(uploadInBackground) withObject:nil];
+}
+
+- (void)remove {
+    if ([self hasRemote] && [[WPDataController sharedInstance] wpDeletePage:self]) {
+        [super remove];
+    }
 }
 
 @end

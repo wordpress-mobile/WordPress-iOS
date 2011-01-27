@@ -9,7 +9,7 @@
 
 @interface WPDataController(PrivateMethods)
 - (id) init;
-- (NSMutableDictionary *)getXMLRPCDictionaryForPost:(Post *)post;
+- (NSMutableDictionary *)getXMLRPCDictionaryForPost:(AbstractPost *)post;
 - (NSArray *)getXMLRPCArgsForBlog:(Blog *)blog  withExtraArgs:(NSArray *)args;
 - (id)executeXMLRPCRequest:(XMLRPCRequest *)req;
 - (NSError *)errorWithResponse:(XMLRPCResponse *)res;
@@ -180,20 +180,23 @@
 #pragma mark -
 #pragma mark Post
 
-- (NSMutableDictionary *)getXMLRPCDictionaryForPost:(Post *)post {
+- (NSMutableDictionary *)getXMLRPCDictionaryForPost:(AbstractPost *)post {
     NSMutableDictionary *postParams = [NSMutableDictionary dictionary];
     if (post.postTitle != nil)
         [postParams setObject:post.postTitle forKey:@"title"];
-    if (post.tags != nil)
-        [postParams setObject:post.tags forKey:@"mt_keywords"];
     if (post.content != nil)
         [postParams setObject:post.content forKey:@"description"];
-    if (post.categories != nil) {
-        NSMutableArray *categoryNames = [NSMutableArray arrayWithCapacity:[post.categories count]];
-        for (Category *cat in post.categories) {
-            [categoryNames addObject:cat.categoryName];
+    if ([post isKindOfClass:[Post class]]) {
+        if ([post valueForKey:@"tags"] != nil)
+            [postParams setObject:[post valueForKey:@"tags"] forKey:@"mt_keywords"];
+        if ([post valueForKey:@"categories"] != nil) {
+            NSMutableSet *categories = [post mutableSetValueForKey:@"categories"];
+            NSMutableArray *categoryNames = [NSMutableArray arrayWithCapacity:[categories count]];
+            for (Category *cat in categories) {
+                [categoryNames addObject:cat.categoryName];
+            }
+            [postParams setObject:categoryNames forKey:@"categories"];
         }
-        [postParams setObject:categoryNames forKey:@"categories"];
     }
     if (post.status == nil)
         post.status = @"publish";
@@ -260,8 +263,7 @@
     }
 
     XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:post.blog.xmlrpc]];
-    NSMutableDictionary *postParams = [self getXMLRPCDictionaryForPost:post];
-    NSArray *args = [NSArray arrayWithObjects:@"unused", post.postID, post.blog.username, [self passwordForBlog:post.blog], postParams, nil];
+    NSArray *args = [NSArray arrayWithObjects:@"unused", post.postID, post.blog.username, [self passwordForBlog:post.blog], nil];
 
     [xmlrpcRequest setMethod:@"metaWeblog.deletePost" withObjects:args];
     id result = [self executeXMLRPCRequest:xmlrpcRequest];
@@ -284,6 +286,62 @@
 	[xmlrpcRequest release];
     
     return [NSMutableArray arrayWithArray:recentPages];
+}
+
+// Returns post ID, -1 if unsuccessful
+- (int)wpNewPage:(Page *)post {
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:post.blog.xmlrpc]];
+    NSMutableDictionary *postParams = [self getXMLRPCDictionaryForPost:post];
+    
+    [xmlrpcRequest setMethod:@"wp.newPage" withObjects:[self getXMLRPCArgsForBlog:post.blog withExtraArgs:[NSArray arrayWithObject:postParams]]];
+    
+    id result = [self executeXMLRPCRequest:xmlrpcRequest];
+    if ([result isKindOfClass:[NSError class]]) {
+        return -1;
+    }
+    
+    // Result should be a string with the post ID
+    NSLog(@"wpNewPage result: %@", result);
+    return [result intValue];
+}
+
+- (BOOL)wpEditPage:(Page *)post {
+    if (post.postID == nil) {
+        return NO;
+    }
+    
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:post.blog.xmlrpc]];
+    NSMutableDictionary *postParams = [self getXMLRPCDictionaryForPost:post];
+    NSArray *args = [NSArray arrayWithObjects:post.blog.blogID, post.postID, post.blog.username, [self passwordForBlog:post.blog], postParams, nil];
+    
+    [xmlrpcRequest setMethod:@"wp.editPage" withObjects:args];
+    id result = [self executeXMLRPCRequest:xmlrpcRequest];
+    if ([result isKindOfClass:[NSError class]]) {
+        NSLog(@"wpEditPage failed: %@", result);
+        return NO;
+    } else {
+        return YES;
+    }
+}
+
+- (BOOL)wpDeletePage:(Page *)post {
+    if (post.postID == nil) {
+        // No post ID means no need to delete anything in the server
+        // so we return YES to allow the Post to be deleted from the app
+        return YES;
+    }
+    
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:post.blog.xmlrpc]];
+    NSArray *args = [NSArray arrayWithObjects:post.blog.blogID, post.blog.username, [self passwordForBlog:post.blog], post.postID, nil];
+    
+    [xmlrpcRequest setMethod:@"wp.deletePage" withObjects:args];
+    id result = [self executeXMLRPCRequest:xmlrpcRequest];
+    if ([result isKindOfClass:[NSError class]]) {
+        NSLog(@"wpDeletePage failed: %@", result);
+        return NO;
+    } else {
+        return YES;
+    }
 }
 
 #pragma mark -

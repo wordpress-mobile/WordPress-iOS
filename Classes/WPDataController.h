@@ -57,4 +57,7 @@ typedef enum {
 #pragma mark -
 #pragma mark Page
 - (NSMutableArray *)wpGetPages:(Blog *)blog;
+- (int)wpNewPage:(Page *)post;
+- (BOOL)wpEditPage:(Page *)post;
+- (BOOL)wpDeletePage:(Page *)post;
 @end
