@@ -41,4 +41,13 @@
     [postViewController release];
     [nav release];
 }
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    CGRect frame = self.contentView.frame;
+    // 93 is the height of Tags+Categories rows
+    frame.origin.y -= 93;
+    frame.size.height += 93;
+    self.contentView.frame = frame;
+}
 @end

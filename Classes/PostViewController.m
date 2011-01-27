@@ -10,7 +10,7 @@
 
 
 @implementation PostViewController
-@synthesize categoriesTextField, statusTextField, titleTextField, tagsTextField;
+@synthesize titleLabel, tagsLabel, categoriesLabel;
 @synthesize contentView;
 @synthesize apost;
 
@@ -35,12 +35,11 @@
 }
 
 - (void)refreshUI {
-    titleTextField.text = self.apost.postTitle;
+    titleLabel.text = self.apost.postTitle;
     if (self.post) {
-        tagsTextField.text = self.post.tags;
-        categoriesTextField.text = [self.post categoriesText];
+        tagsLabel.text = self.post.tags;
+        categoriesLabel.text = [self.post categoriesText];
     }
-    statusTextField.text = self.apost.statusTitle;
     contentView.text = self.apost.content;
 }
 
@@ -80,14 +79,12 @@
     [self refreshUI];
 }
 
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    [self showModalEditor];
-    return NO;
-}
-
-- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
-    [self showModalEditor];
-    return NO;
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    CGPoint point = [[touches anyObject] locationInView:self.view];
+    // Did the touch ended inside?
+    if (CGRectContainsPoint(self.view.frame, point)) {
+        [self showModalEditor];
+    }
 }
 
 - (void)dealloc {
@@ -95,10 +92,9 @@
 
     self.apost = nil;
     self.contentView = nil;
-    self.categoriesTextField = nil;
-    self.statusTextField = nil;
-    self.titleTextField = nil;
-    self.tagsTextField = nil;
+    self.titleLabel = nil;
+    self.tagsLabel = nil;
+    self.categoriesLabel = nil;
 
     [super dealloc];
 }
