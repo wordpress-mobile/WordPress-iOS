@@ -56,6 +56,10 @@
 
 // Subclassed in PageViewController
 - (void)showModalEditor {
+    if (self.modalViewController) {
+        NSLog(@"Trying to show editor a second time: bad");
+        return;
+    }
     EditPostViewController *postViewController;
     
     AbstractPost *postRevision = [self.apost createRevision];
