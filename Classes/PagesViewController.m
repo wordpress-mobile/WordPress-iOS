@@ -53,6 +53,24 @@
     [delegate showContentDetailViewController:self.postReaderViewController];    
 }
 
+- (void)showAddPostView {
+	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    
+    Page *post = [Page newDraftForBlog:self.blog];
+	if (DeviceIsPad()) {
+        self.postReaderViewController = [[[PageViewController alloc] initWithPost:post] autorelease];
+		[delegate showContentDetailViewController:self.postReaderViewController];
+        [self.postReaderViewController showModalEditor];
+	} else {
+        self.postDetailViewController = [[[EditPageViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil] autorelease];
+        self.postDetailViewController.apost = [post createRevision];
+        self.postDetailViewController.editMode = kNewPost;
+        [self.postDetailViewController refreshUIForCompose];
+		[delegate showContentDetailViewController:self.postDetailViewController];
+	}
+    [post release];
+}
+
 #pragma mark -
 #pragma mark Fetched results controller
 

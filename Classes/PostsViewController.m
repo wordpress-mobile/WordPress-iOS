@@ -211,6 +211,7 @@
 	progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Deleting Post..."];
 	[progressAlert show];
 	[self performSelectorInBackground:@selector(deletePostAtIndexPath:) withObject:indexPath];
+    [self showSelectedPost];
 	
 }
 
@@ -364,7 +365,7 @@
         [self.postReaderViewController showModalEditor];
 	} else {
         self.postDetailViewController = [[[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil] autorelease];
-        self.postDetailViewController.post = (Post *)[post createRevision];
+        self.postDetailViewController.apost = [post createRevision];
         self.postDetailViewController.editMode = kNewPost;
         [self.postDetailViewController refreshUIForCompose];
 		[delegate showContentDetailViewController:self.postDetailViewController];
