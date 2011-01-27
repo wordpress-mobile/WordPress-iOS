@@ -23,6 +23,7 @@
 - (void)deletePostAtIndexPath;
 - (void)trySelectSomething;
 - (void)editPost:(AbstractPost *)apost;
+- (void)showSelectedPost;
 @end
 
 @implementation PostsViewController
@@ -93,6 +94,7 @@
         }
 		// sometimes, iPad table views should
 		if (self.selectedIndexPath) {
+            [self showSelectedPost];
 			[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 		}
 	}
@@ -423,7 +425,7 @@
     if (!DeviceIsPad())
         return;
 
-    if (self.navigationController.visibleViewController != self)
+    if (self.tabBarController.selectedViewController != self)
         return;
 
     if (!self.selectedIndexPath) {

@@ -46,11 +46,6 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"DraftsUpdated" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"BlogsRefreshNotification" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"PagesUpdated" object:nil];
-	
-	[postsViewController addObserver:self forKeyPath:@"selectedIndexPath" options:NSKeyValueObservingOptionNew context:nil];
-	[pagesViewController addObserver:self forKeyPath:@"selectedIndexPath" options:NSKeyValueObservingOptionNew context:nil];
-	[commentsViewController addObserver:self forKeyPath:@"selectedIndexPath" options:NSKeyValueObservingOptionNew context:nil];
-	//[statsTableViewController addObserver:self forKeyPath:@"selectedIndexPath" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -67,10 +62,6 @@
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
-	[postsViewController removeObserver:self forKeyPath:@"selectedIndexPath"];
-	[pagesViewController removeObserver:self forKeyPath:@"selectedIndexPath"];
-	[commentsViewController removeObserver:self forKeyPath:@"selectedIndexPath"];	
-	//[statsTableViewController removeObserver:self forKeyPath:@"selectedIndexPath"];
 	[tabBarController release], tabBarController = nil;
     self.blog = nil;
 	
@@ -118,19 +109,6 @@
 	}
 	else if (viewController == pagesViewController) {
 		[pagesViewController.tableView reloadData];
-	}
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context;
-{
-	if ([keyPath isEqual:@"selectedIndexPath"]) {
-		id new = [change objectForKey:NSKeyValueChangeNewKey];
-		if (!new || new == [NSNull null])
-			return;
-		
-		if (object != postsViewController) postsViewController.selectedIndexPath = nil;
-		if (object != pagesViewController) pagesViewController.selectedIndexPath = nil;
-		if (object != commentsViewController) commentsViewController.selectedIndexPath = nil;
 	}
 }
 
