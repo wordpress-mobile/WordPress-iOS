@@ -443,8 +443,6 @@ c_tidy/win32tc.h -text
 /categoriesHighlighted@2x.png -text svneol=unset#unset
 /category_child.png -text
 /category_child@2x.png -text
-/chart.png -text
-/chart@2x.png -text
 /check.png -text
 /check@2x.png -text
 /commentDelete.png -text
@@ -492,6 +490,8 @@ c_tidy/win32tc.h -text
 /sample.mov -text
 /settings.png -text
 /settings@2x.png -text
+/stats.png -text
+/stats@2x.png -text
 /sync.png -text svneol=unset#unset
 /sync@2x.png -text
 /tabPointer.png -text svneol=unset#unset

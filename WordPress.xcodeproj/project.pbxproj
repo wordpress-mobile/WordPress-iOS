@@ -61,7 +61,24 @@
 		2FAE970A0E33B21600CA8540 /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97050E33B21600CA8540 /* license.txt */; };
 		2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */; };
 		2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */; };
+		376EED7312F6DF78005CE77A /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 376EED7212F6DF78005CE77A /* Reachability.m */; };
+		376EEDBA12F6E5F0005CE77A /* WPPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 376EEDB912F6E5F0005CE77A /* WPPageControl.m */; };
+		376EEF2712F7068A005CE77A /* page_control_blue_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 376EEF2312F7068A005CE77A /* page_control_blue_active.png */; };
+		376EEF2812F7068A005CE77A /* page_control_blue_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 376EEF2412F7068A005CE77A /* page_control_blue_active@2x.png */; };
+		376EEF2912F7068A005CE77A /* page_control_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 376EEF2512F7068A005CE77A /* page_control_blue.png */; };
+		376EEF2A12F7068A005CE77A /* page_control_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 376EEF2612F7068A005CE77A /* page_control_blue@2x.png */; };
+		376EEF5D12F70C9B005CE77A /* stats.png in Resources */ = {isa = PBXBuildFile; fileRef = 376EEF5B12F70C9B005CE77A /* stats.png */; };
+		376EEF5E12F70C9B005CE77A /* stats@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 376EEF5C12F70C9B005CE77A /* stats@2x.png */; };
 		3789C598129EA5E600ADA91C /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3789C597129EA5E600ADA91C /* CrashReporter.framework */; };
+		379225AC12F6DC1600F2176A /* StatsChartViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3792259F12F6DC1600F2176A /* StatsChartViewController-iPad.xib */; };
+		379225AD12F6DC1600F2176A /* StatsChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 379225A112F6DC1600F2176A /* StatsChartViewController.m */; };
+		379225AE12F6DC1600F2176A /* StatsChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 379225A212F6DC1600F2176A /* StatsChartViewController.xib */; };
+		379225AF12F6DC1600F2176A /* StatsPageControlViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 379225A312F6DC1600F2176A /* StatsPageControlViewController-iPad.xib */; };
+		379225B012F6DC1600F2176A /* StatsPageControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 379225A512F6DC1600F2176A /* StatsPageControlViewController.m */; };
+		379225B112F6DC1600F2176A /* StatsPageControlViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 379225A612F6DC1600F2176A /* StatsPageControlViewController.xib */; };
+		379225B212F6DC1600F2176A /* StatsTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 379225A812F6DC1600F2176A /* StatsTableCell.m */; };
+		379225B312F6DC1600F2176A /* StatsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 379225AA12F6DC1600F2176A /* StatsTableViewController.m */; };
+		379225B412F6DC1600F2176A /* StatsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 379225AB12F6DC1600F2176A /* StatsTableViewController.xib */; };
 		4526DC551148072F0090C99D /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 4526DC531148072F0090C99D /* Default-Portrait.png */; };
 		4526DC561148072F0090C99D /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 4526DC541148072F0090C99D /* Default-Landscape.png */; };
 		458776B111623ED300906CEE /* UIViewController_iPadExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 458776B011623ED300906CEE /* UIViewController_iPadExtensions.m */; };
@@ -282,7 +299,6 @@
 		CEFC8B5910057D0A0052604A /* WPProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = CEFC8B5810057D0A0052604A /* WPProgressHUD.m */; };
 		E10D665E12BB7C49002F0C78 /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = E10D665B12BB7C49002F0C78 /* ASIDataCompressor.m */; };
 		E10D665F12BB7C49002F0C78 /* ASIDataDecompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = E10D665D12BB7C49002F0C78 /* ASIDataDecompressor.m */; };
-		E10D666212BB7C67002F0C78 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = E10D666112BB7C67002F0C78 /* Reachability.m */; };
 		E1208C0D12A6D41C008F1FB7 /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1208C0C12A6D41C008F1FB7 /* libFlurry.a */; };
 		E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */; };
 		E125445612BF5B3900D87A0A /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E125445512BF5B3900D87A0A /* Category.m */; };
@@ -438,7 +454,30 @@
 		2FAE97050E33B21600CA8540 /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.txt; sourceTree = "<group>"; };
 		2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xhtml1-transitional.dtd"; sourceTree = "<group>"; };
 		2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = xhtmlValidatorTemplate.xhtml; sourceTree = "<group>"; };
+		376EED7112F6DF78005CE77A /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = ../Reachability/Reachability.h; sourceTree = "<group>"; };
+		376EED7212F6DF78005CE77A /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = ../Reachability/Reachability.m; sourceTree = "<group>"; };
+		376EEDB812F6E5F0005CE77A /* WPPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPPageControl.h; sourceTree = "<group>"; };
+		376EEDB912F6E5F0005CE77A /* WPPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPPageControl.m; sourceTree = "<group>"; };
+		376EEF2312F7068A005CE77A /* page_control_blue_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = page_control_blue_active.png; sourceTree = "<group>"; };
+		376EEF2412F7068A005CE77A /* page_control_blue_active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "page_control_blue_active@2x.png"; sourceTree = "<group>"; };
+		376EEF2512F7068A005CE77A /* page_control_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = page_control_blue.png; sourceTree = "<group>"; };
+		376EEF2612F7068A005CE77A /* page_control_blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "page_control_blue@2x.png"; sourceTree = "<group>"; };
+		376EEF5B12F70C9B005CE77A /* stats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stats.png; sourceTree = "<group>"; };
+		376EEF5C12F70C9B005CE77A /* stats@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stats@2x.png"; sourceTree = "<group>"; };
 		3789C597129EA5E600ADA91C /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CrashReporter.framework; path = Classes/CrashReporter.framework; sourceTree = "<group>"; };
+		3792259F12F6DC1600F2176A /* StatsChartViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "StatsChartViewController-iPad.xib"; path = "Classes/StatsChartViewController-iPad.xib"; sourceTree = "<group>"; };
+		379225A012F6DC1600F2176A /* StatsChartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsChartViewController.h; sourceTree = "<group>"; };
+		379225A112F6DC1600F2176A /* StatsChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsChartViewController.m; sourceTree = "<group>"; };
+		379225A212F6DC1600F2176A /* StatsChartViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = StatsChartViewController.xib; path = Classes/StatsChartViewController.xib; sourceTree = "<group>"; };
+		379225A312F6DC1600F2176A /* StatsPageControlViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "StatsPageControlViewController-iPad.xib"; path = "Classes/StatsPageControlViewController-iPad.xib"; sourceTree = "<group>"; };
+		379225A412F6DC1600F2176A /* StatsPageControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsPageControlViewController.h; sourceTree = "<group>"; };
+		379225A512F6DC1600F2176A /* StatsPageControlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsPageControlViewController.m; sourceTree = "<group>"; };
+		379225A612F6DC1600F2176A /* StatsPageControlViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = StatsPageControlViewController.xib; path = Classes/StatsPageControlViewController.xib; sourceTree = "<group>"; };
+		379225A712F6DC1600F2176A /* StatsTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsTableCell.h; sourceTree = "<group>"; };
+		379225A812F6DC1600F2176A /* StatsTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsTableCell.m; sourceTree = "<group>"; };
+		379225A912F6DC1600F2176A /* StatsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsTableViewController.h; sourceTree = "<group>"; };
+		379225AA12F6DC1600F2176A /* StatsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsTableViewController.m; sourceTree = "<group>"; };
+		379225AB12F6DC1600F2176A /* StatsTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = StatsTableViewController.xib; path = Classes/StatsTableViewController.xib; sourceTree = "<group>"; };
 		4526DC531148072F0090C99D /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait.png"; sourceTree = "<group>"; };
 		4526DC541148072F0090C99D /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
 		458776AF11623ED300906CEE /* UIViewController_iPadExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewController_iPadExtensions.h; sourceTree = "<group>"; };
@@ -758,8 +797,6 @@
 		E10D665B12BB7C49002F0C78 /* ASIDataCompressor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIDataCompressor.m; sourceTree = "<group>"; };
 		E10D665C12BB7C49002F0C78 /* ASIDataDecompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIDataDecompressor.h; sourceTree = "<group>"; };
 		E10D665D12BB7C49002F0C78 /* ASIDataDecompressor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIDataDecompressor.m; sourceTree = "<group>"; };
-		E10D666012BB7C67002F0C78 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = Reachability/Reachability.h; sourceTree = "<group>"; };
-		E10D666112BB7C67002F0C78 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = Reachability/Reachability.m; sourceTree = "<group>"; };
 		E1208C0B12A6D41C008F1FB7 /* FlurryAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryAPI.h; sourceTree = "<group>"; };
 		E1208C0C12A6D41C008F1FB7 /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry.a; sourceTree = "<group>"; };
 		E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 2.xcdatamodel"; sourceTree = "<group>"; };
@@ -1003,6 +1040,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				379225B512F6DC3100F2176A /* Stats */,
 				E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */,
 				6EDC0E8E105881A800F68A1D /* iTunesArtwork */,
 				45F285DA1149BD020014D36C /* Icon.png */,
@@ -1083,6 +1121,33 @@
 				833AF25A114575A50016DE8F /* PostAnnotation.m */,
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		3792259E12F6DBCC00F2176A /* Stats */ = {
+			isa = PBXGroup;
+			children = (
+				379225A012F6DC1600F2176A /* StatsChartViewController.h */,
+				379225A112F6DC1600F2176A /* StatsChartViewController.m */,
+				379225A412F6DC1600F2176A /* StatsPageControlViewController.h */,
+				379225A512F6DC1600F2176A /* StatsPageControlViewController.m */,
+				379225A712F6DC1600F2176A /* StatsTableCell.h */,
+				379225A812F6DC1600F2176A /* StatsTableCell.m */,
+				379225A912F6DC1600F2176A /* StatsTableViewController.h */,
+				379225AA12F6DC1600F2176A /* StatsTableViewController.m */,
+			);
+			name = Stats;
+			sourceTree = "<group>";
+		};
+		379225B512F6DC3100F2176A /* Stats */ = {
+			isa = PBXGroup;
+			children = (
+				3792259F12F6DC1600F2176A /* StatsChartViewController-iPad.xib */,
+				379225A212F6DC1600F2176A /* StatsChartViewController.xib */,
+				379225A312F6DC1600F2176A /* StatsPageControlViewController-iPad.xib */,
+				379225A612F6DC1600F2176A /* StatsPageControlViewController.xib */,
+				379225AB12F6DC1600F2176A /* StatsTableViewController.xib */,
+			);
+			name = Stats;
 			sourceTree = "<group>";
 		};
 		45C73C23113C36F50024D0D2 /* Resources-iPad */ = {
@@ -1172,8 +1237,6 @@
 		834CE85F1256E7EE0046A4A3 /* ASIHTTPRequest */ = {
 			isa = PBXGroup;
 			children = (
-				E10D666012BB7C67002F0C78 /* Reachability.h */,
-				E10D666112BB7C67002F0C78 /* Reachability.m */,
 				E10D665A12BB7C49002F0C78 /* ASIDataCompressor.h */,
 				E10D665B12BB7C49002F0C78 /* ASIDataCompressor.m */,
 				E10D665C12BB7C49002F0C78 /* ASIDataDecompressor.h */,
@@ -1380,9 +1443,10 @@
 				03B1DF31113D87E900BBD1C6 /* iPad */,
 				AC34397B0E11443300E5D79B /* Blog */,
 				C533CF320E6D3AB3000C3DE8 /* Comments */,
+				83CAD4191235F823003DFA20 /* Media */,
 				EC4696A80EA74DAC0040EE8E /* Pages */,
 				AC3439790E11434600E5D79B /* Post */,
-				83CAD4191235F823003DFA20 /* Media */,
+				3792259E12F6DBCC00F2176A /* Stats */,
 				AC512F800E20D28500B7DA32 /* Utils */,
 				8320B5CF11FCA3EA00607422 /* Cells */,
 			);
@@ -1419,6 +1483,12 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				376EEF5B12F70C9B005CE77A /* stats.png */,
+				376EEF5C12F70C9B005CE77A /* stats@2x.png */,
+				376EEF2312F7068A005CE77A /* page_control_blue_active.png */,
+				376EEF2412F7068A005CE77A /* page_control_blue_active@2x.png */,
+				376EEF2512F7068A005CE77A /* page_control_blue.png */,
+				376EEF2612F7068A005CE77A /* page_control_blue@2x.png */,
 				E1D5536612E78CC40032C680 /* categoriesHighlighted.png */,
 				E1D5536712E78CC40032C680 /* categoriesHighlighted@2x.png */,
 				E1D5536412E78BC90032C680 /* categories.png */,
@@ -1498,6 +1568,10 @@
 		AC512F800E20D28500B7DA32 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				376EEDB812F6E5F0005CE77A /* WPPageControl.h */,
+				376EEDB912F6E5F0005CE77A /* WPPageControl.m */,
+				376EED7112F6DF78005CE77A /* Reachability.h */,
+				376EED7212F6DF78005CE77A /* Reachability.m */,
 				834CE5FC1256B2360046A4A3 /* WPReachability.m */,
 				834CE5FD1256B2360046A4A3 /* WPReachability.h */,
 				292CECFE1027259000BD407D /* SFHFKeychainUtils.h */,
@@ -1963,6 +2037,17 @@
 				E1D5549312E8C61C0032C680 /* Icon-dev-72.png in Resources */,
 				E1D5549412E8C61C0032C680 /* Icon-dev.png in Resources */,
 				E1D5549512E8C61C0032C680 /* Icon-dev@2x.png in Resources */,
+				379225AC12F6DC1600F2176A /* StatsChartViewController-iPad.xib in Resources */,
+				379225AE12F6DC1600F2176A /* StatsChartViewController.xib in Resources */,
+				379225AF12F6DC1600F2176A /* StatsPageControlViewController-iPad.xib in Resources */,
+				379225B112F6DC1600F2176A /* StatsPageControlViewController.xib in Resources */,
+				379225B412F6DC1600F2176A /* StatsTableViewController.xib in Resources */,
+				376EEF2712F7068A005CE77A /* page_control_blue_active.png in Resources */,
+				376EEF2812F7068A005CE77A /* page_control_blue_active@2x.png in Resources */,
+				376EEF2912F7068A005CE77A /* page_control_blue.png in Resources */,
+				376EEF2A12F7068A005CE77A /* page_control_blue@2x.png in Resources */,
+				376EEF5D12F70C9B005CE77A /* stats.png in Resources */,
+				376EEF5E12F70C9B005CE77A /* stats@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2115,12 +2200,17 @@
 				E19F29C612B8BC22008FF660 /* win32tc.c in Sources */,
 				E10D665E12BB7C49002F0C78 /* ASIDataCompressor.m in Sources */,
 				E10D665F12BB7C49002F0C78 /* ASIDataDecompressor.m in Sources */,
-				E10D666212BB7C67002F0C78 /* Reachability.m in Sources */,
 				E125445612BF5B3900D87A0A /* Category.m in Sources */,
 				E125451812BF68F900D87A0A /* Page.m in Sources */,
 				E131D08912C8C9160056BAB9 /* AbstractPost.m in Sources */,
 				E1497BBC12CCA8270022BCD9 /* PostViewController.m in Sources */,
 				E1C43CA712E4D09E00330262 /* PageViewController.m in Sources */,
+				379225AD12F6DC1600F2176A /* StatsChartViewController.m in Sources */,
+				379225B012F6DC1600F2176A /* StatsPageControlViewController.m in Sources */,
+				379225B212F6DC1600F2176A /* StatsTableCell.m in Sources */,
+				379225B312F6DC1600F2176A /* StatsTableViewController.m in Sources */,
+				376EED7312F6DF78005CE77A /* Reachability.m in Sources */,
+				376EEDBA12F6E5F0005CE77A /* WPPageControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,7 +11,7 @@
 }
 
 @property (nonatomic, retain) NSNumber *blogID;
-@property (nonatomic, retain) NSString *blogName, *url, *username, *password, *xmlrpc;
+@property (nonatomic, retain) NSString *blogName, *url, *username, *password, *xmlrpc, *apiKey;
 @property (readonly) NSString *hostURL;
 @property (nonatomic, assign) NSNumber *isAdmin;
 @property (nonatomic, retain) NSSet *posts;

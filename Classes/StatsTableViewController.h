@@ -45,7 +45,7 @@
 	UIBarButtonItem *refreshButtonItem;
 	NSIndexPath *selectedIndexPath;
 	int loadMorePostViews, loadMoreReferrers, loadMoreSearchTerms, loadMoreClicks;
-
+	NSURLConnection *apiKeyConn, *viewsConn, *postViewsConn, *referrersConn, *searchTermsConn, *clicksConn, *daysConn, *weeksConn, *monthsConn;
 }
 
 @property (nonatomic, retain) NSMutableArray *viewsData;
@@ -70,6 +70,7 @@
 @property (nonatomic, retain) StatsPageControlViewController *statsPageControlViewController;
 @property (readonly) UIBarButtonItem *refreshButtonItem;
 @property (nonatomic, retain) NSIndexPath *selectedIndexPath;
+@property (nonatomic, retain) NSURLConnection *apiKeyConn, *viewsConn, *postViewsConn, *referrersConn, *searchTermsConn, *clicksConn, *daysConn, *weeksConn, *monthsConn;
 - (void) initStats;
 - (void) getUserAPIKey;
 - (void) startParsingStats: (NSString*) xmlString withReportType: (NSString*) reportType;

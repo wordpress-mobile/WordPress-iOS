@@ -8,10 +8,9 @@
 
 #import "StatsTableViewController.h"
 #import "StatsTableCell.h"
-#import "BlogDataManager.h"
 #import "UITableViewActivityCell.h"
 #import "WPcomLoginViewController.h"
-#import "Reachability.h"
+#import "WPReachability.h"
 #import "CPopoverManager.h"
 
 
@@ -20,7 +19,8 @@
 @synthesize viewsData, postViewsData, referrersData, searchTermsData, clicksData, reportTitle,
 currentBlog, statsData, currentProperty, rootTag, 
 statsTableData, leftColumn, rightColumn, spinner, xArray, yArray, xValues, yValues, wpcomLoginTable, 
-statsPageControlViewController, refreshButtonItem, selectedIndexPath;
+statsPageControlViewController, refreshButtonItem, selectedIndexPath, 
+apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 #define LABEL_TAG 1 
 #define VALUE_TAG 2 
 #define FIRST_CELL_IDENTIFIER @"TrailItemCell" 
@@ -48,6 +48,12 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 	[wpcomLoginTable release];
 	[statsPageControlViewController release];
 	[selectedIndexPath release];
+	[apiKeyConn release];
+	[viewsConn release];
+	[postViewsConn release];
+	[referrersConn release];
+	[searchTermsConn release];
+	[clicksConn release];
 	[super dealloc];
 }
 
@@ -83,6 +89,8 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 		[appDelegate showContentDetailViewController:self];
 	}
 	
+	[self.tableView setBackgroundColor:[[UIColor alloc] initWithRed:221.0f/255.0f green:221.0f/255.0f blue:221.0f/255.0f alpha:1.0]];
+	//self.tableView.backgroundColor = [UIColor clearColor];
 }
 
 
@@ -90,7 +98,7 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 - (void) viewWillAppear:(BOOL)animated {
 	
 	selectedIndexPath =  [NSIndexPath indexPathForRow:0 inSection:0];
-	if([[Reachability sharedReachability] internetConnectionStatus] == NotReachable) {
+	if([[WPReachability sharedReachability] internetConnectionStatus] == NotReachable) {
 		UIAlertView *errorView = [[UIAlertView alloc] 
 								  initWithTitle: @"Communication Error" 
 								  message: @"The internet connection appears to be offline." 
@@ -120,17 +128,14 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 
 -(void) initStats {
 	
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];	
-	
-	NSString *apiKey = [dm.currentBlog valueForKey:@"api_key"];
-	
+	NSString *apiKey = [appDelegate currentBlog].apiKey;
 	if (apiKey == nil){
 		//first run or api key was deleted
 		[self getUserAPIKey];
 	}
 	else {
 		[spinner show];
-		statsRequest = true;
+		statsRequest = TRUE;
 		[self refreshStats: 0 reportInterval: 0];
 	}
 	
@@ -142,9 +147,11 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 	{
 		[spinner show];
 		statsData = [[NSMutableData alloc] init];
+		apiKeyConn = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://public-api.wordpress.com/get-user-blogs/1.0"]] delegate:self];
+		
 		CFDictionaryAddValue(
 							 connectionToInfoMapping,
-							 [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://public-api.wordpress.com/getuserblogs.php"]] delegate:self],
+							 apiKeyConn,
 							 [NSMutableDictionary
 							  dictionaryWithObject:[NSMutableData data]
 							  forKey:@"apiKeyData"]);
@@ -238,9 +245,8 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 			report = @"clicks";
 			break;
 	}	
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	NSString *blogURL = [dm.currentBlog valueForKey:@"blog_host_name"];
-	NSString *apiKey = [dm.currentBlog valueForKey:@"api_key"];
+	NSString *blogURL = [appDelegate currentBlog].hostURL;
+	NSString *apiKey = [appDelegate currentBlog].apiKey;
 	
 	//request the 5 reports for display in the UITableView
 	
@@ -249,9 +255,10 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 	//views
 	requestURL = [NSString stringWithFormat: @"http://stats.wordpress.com/csv.php?api_key=%@&blog_uri=%@&format=xml&table=%@&days=%d%@", apiKey, blogURL, @"views", 7, @""];	
 	[request setURL:[NSURL URLWithString:requestURL]];
+	viewsConn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 	CFDictionaryAddValue(
 						 connectionToInfoMapping,
-						 [[NSURLConnection alloc] initWithRequest:request delegate:self],
+						 viewsConn,
 						 [NSMutableDictionary
 						  dictionaryWithObject:[NSMutableData data]
 						  forKey:@"viewsData"]);
@@ -259,9 +266,10 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 	//postviews
 	requestURL = [NSString stringWithFormat: @"http://stats.wordpress.com/csv.php?api_key=%@&blog_uri=%@&format=xml&table=%@&days=%d%@&summarize", apiKey, blogURL, @"postviews", 7, @""];	
 	[request setURL:[NSURL URLWithString:requestURL]];
+	postViewsConn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 	CFDictionaryAddValue(
 						 connectionToInfoMapping,
-						 [[NSURLConnection alloc] initWithRequest:request delegate:self],
+						 postViewsConn,
 						 [NSMutableDictionary
 						  dictionaryWithObject:[NSMutableData data]
 						  forKey:@"postViewsData"]);
@@ -269,9 +277,10 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 	//referrers
 	requestURL = [NSString stringWithFormat: @"http://stats.wordpress.com/csv.php?api_key=%@&blog_uri=%@&format=xml&table=%@&days=%d%@&summarize", apiKey, blogURL, @"referrers", 7, @""];	
 	[request setURL:[NSURL URLWithString:requestURL]];
+	referrersConn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 	CFDictionaryAddValue(
 						 connectionToInfoMapping,
-						 [[NSURLConnection alloc] initWithRequest:request delegate:self],
+						 referrersConn,
 						 [NSMutableDictionary
 						  dictionaryWithObject:[NSMutableData data]
 						  forKey:@"referrersData"]);
@@ -279,9 +288,10 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 	//search terms
 	requestURL = [NSString stringWithFormat: @"http://stats.wordpress.com/csv.php?api_key=%@&blog_uri=%@&format=xml&table=%@&days=%d%@&summarize", apiKey, blogURL, @"searchterms", 7, @""];	
 	[request setURL:[NSURL URLWithString:requestURL]];
+	searchTermsConn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 	CFDictionaryAddValue(
 						 connectionToInfoMapping,
-						 [[NSURLConnection alloc] initWithRequest:request delegate:self],
+						 searchTermsConn,
 						 [NSMutableDictionary
 						  dictionaryWithObject:[NSMutableData data]
 						  forKey:@"searchTermsData"]);
@@ -289,9 +299,10 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 	//clicks
 	requestURL = [NSString stringWithFormat: @"http://stats.wordpress.com/csv.php?api_key=%@&blog_uri=%@&format=xml&table=%@&days=%d%@&summarize", apiKey, blogURL, @"clicks", 7, @""];	
 	[request setURL:[NSURL URLWithString:requestURL]];
+	clicksConn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 	CFDictionaryAddValue(
 						 connectionToInfoMapping,
-						 [[NSURLConnection alloc] initWithRequest:request delegate:self],
+						 clicksConn,
 						 [NSMutableDictionary
 						  dictionaryWithObject:[NSMutableData data]
 						  forKey:@"clicksData"]);
@@ -304,18 +315,20 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 	// 7 days
 	requestURL = [NSString stringWithFormat: @"http://stats.wordpress.com/csv.php?api_key=%@&blog_uri=%@&format=xml&table=%@&days=%d%@", apiKey, blogURL, @"views", 7, @""];	
 	[request setURL:[NSURL URLWithString:requestURL]];
+	daysConn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 	CFDictionaryAddValue(
 						 connectionToInfoMapping,
-						 [[NSURLConnection alloc] initWithRequest:request delegate:self],
+						 daysConn,
 						 [NSMutableDictionary
 						  dictionaryWithObject:[NSMutableData data]
 						  forKey:@"chartDaysData"]);
 	// 10 weeks
 	requestURL = [NSString stringWithFormat: @"http://stats.wordpress.com/csv.php?api_key=%@&blog_uri=%@&format=xml&table=%@&days=%d%@", apiKey, blogURL, @"views", 10, @"&period=week"];	
 	[request setURL:[NSURL URLWithString:requestURL]];
+	weeksConn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 	CFDictionaryAddValue(
 						 connectionToInfoMapping,
-						 [[NSURLConnection alloc] initWithRequest:request delegate:self],
+						 weeksConn,
 						 [NSMutableDictionary
 						  dictionaryWithObject:[NSMutableData data]
 						  forKey:@"chartWeeksData"]);
@@ -323,9 +336,10 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 	requestURL = [NSString stringWithFormat: @"http://stats.wordpress.com/csv.php?api_key=%@&blog_uri=%@&format=xml&table=%@&days=%d%@", apiKey, blogURL, @"views", 11, @"&period=month"];	
 	[request setURL:[NSURL URLWithString:requestURL]];
 	[request setValue:@"wp-iphone" forHTTPHeaderField:@"User-Agent"];
+	monthsConn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 	CFDictionaryAddValue(
 						 connectionToInfoMapping,
-						 [[NSURLConnection alloc] initWithRequest:request delegate:self],
+						 monthsConn,
 						 [NSMutableDictionary
 						  dictionaryWithObject:[NSMutableData data]
 						  forKey:@"chartMonthsData"]);
@@ -478,7 +492,7 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 			}
 			dateValues = [dateCSV componentsJoinedByString:@"|"];
 			chartViewURL = [chartViewURL stringByAppendingFormat: @"http://chart.apis.google.com/chart?chts=464646,20&cht=bvs&chg=100,20,1,0&chbh=a&chd=t:%@&chs=560x320&chl=%@&chxt=y,x&chds=%d,%d&chxr=0,%d,%d,%d&chf=c,lg,90,FFFFFF,0,FFFFFF,0.5&chco=a3bcd3&chls=4&chxs=0,464646,20,0,t|1,464646,20,0,t", xValues, dateValues, minBuffer,maxBuffer, minBuffer,maxBuffer, yInterval];
-			NSLog(@"google chart url: %@", chartViewURL);
+			//NSLog(@"google chart url: %@", chartViewURL);
 			chartViewURL = [chartViewURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 			statsRequest = TRUE;
 			if ([reportType isEqualToString:@"chartDaysData"]) {
@@ -528,7 +542,7 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 		}
 	}
 	else {
-		NSLog(@"No data returned! oh noes!");
+		//NSLog(@"No data returned! oh noes!");
 		if (!foundStatsData && ![reportType isEqualToString:@"apiKeyData"]){
 			[self showNoDataFoundError];
 		}
@@ -548,19 +562,22 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 /*  NSURLConnection Methods  */
 
 - (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
-	if ([challenge previousFailureCount] == 0)
+	if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
+		[[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];
+	}
+	else if ([challenge previousFailureCount] <= 1)
 	{
 		NSURLCredential *newCredential;
 		NSString *s_username, *s_password;
+		NSError *error = nil;
 		s_username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-		s_password = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"];
+		s_password = [SFHFKeychainUtils getPasswordForUsername:s_username andServiceName:@"WordPress.com" error:&error];
 		
 		newCredential=[NSURLCredential credentialWithUser:s_username
 												 password:s_password
 											  persistence:NSURLCredentialPersistenceForSession];
 		[[challenge sender] useCredential:newCredential forAuthenticationChallenge:challenge];
 		dotorgLogin = TRUE;
-		
 	}
 }
 
@@ -598,7 +615,7 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 	xmlString = [[NSString alloc] initWithData:[connectionInfo objectForKey:aKey] encoding:NSUTF8StringEncoding];
 	xmlString = [xmlString stringByReplacingOccurrencesOfString:@"\n" withString:@""];
 	xmlString = [xmlString stringByReplacingOccurrencesOfString:@"\t" withString:@""];
-	NSLog(@"xml string = %@", xmlString);
+	//NSLog(@"xml string = %@", xmlString);
 	NSRange textRange;
 	
 	textRange =[xmlString rangeOfString:@"Error"];
@@ -620,9 +637,8 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 			[wpComLogin release];
 		}
 		if (!statsAPIAlertShowing){
-			BlogDataManager *dm = [BlogDataManager sharedDataManager];	
-			
-			[dm.currentBlog removeObjectForKey:@"api_key"];
+			[appDelegate currentBlog].apiKey = nil;
+			[[appDelegate currentBlog] dataSave];
 			UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"WordPress.com Stats" 
 															 message:@"API Key not found. Please enter an administrator login for this blog." 
 															delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil] autorelease];
@@ -634,7 +650,7 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 		
 	}
 	else {
-		NSLog(@"no data returned from api");
+		//NSLog(@"no data returned from api");
 	}
 }
 
@@ -666,9 +682,13 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 	//												 message:[error errorInfo] 
 	//												delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
 	//[alert show];
-	NSLog(@"ERROR: %@", [error localizedDescription]);
+	//NSLog(@"ERROR: %@", [error localizedDescription]);
 	
 	[connection autorelease];
+}
+
+- (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
+	return YES;
 }
 
 /*  XML Parsing  */
@@ -702,11 +722,12 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 		}
 	}
 	
-	for (id key in attributeDict) {
+	//Uncomment for debugging
+	/*for (id key in attributeDict) {
 		
 		NSLog(@"attribute: %@, value: %@", key, [attributeDict objectForKey:key]);
 		
-	}
+	}*/
 	
 }
 
@@ -720,7 +741,6 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 }
 
 - (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
 	if (statsRequest){
 		if ([elementName isEqualToString:@"post"] || [elementName isEqualToString:@"day"] || [elementName isEqualToString:@"referrer"] || 
 			[elementName isEqualToString:@"week"] || [elementName isEqualToString:@"month"] || [elementName isEqualToString:@"searchterm"]
@@ -732,8 +752,10 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 		}
 	}
 	else if ([elementName isEqualToString:@"apikey"]) {
-		[dm.currentBlog setObject:self.currentProperty forKey:@"api_key"];
-		[dm saveCurrentBlog];
+		//[dm.currentBlog setObject:self.currentProperty forKey:@"api_key"];
+		//[dm saveCurrentBlog];
+		[appDelegate.currentBlog setValue:self.currentProperty forKey:@"apiKey"];
+		[appDelegate.currentBlog dataSave];
 		apiKeyFound = TRUE;
 		[parser abortParsing];
 		[spinner show];
@@ -999,7 +1021,25 @@ statsPageControlViewController, refreshButtonItem, selectedIndexPath;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
 	selectedIndexPath = nil;
+	//cancel all possible connections
+	if (viewsConn != nil)
+		[viewsConn cancel];
+	if (postViewsConn != nil)
+		[postViewsConn cancel];
+	if (referrersConn != nil)
+		[referrersConn cancel];
+	if (searchTermsConn != nil)
+		[searchTermsConn cancel];
+	if (clicksConn != nil)
+		[clicksConn cancel];
+	if (daysConn != nil)
+		[daysConn cancel];
+	if (weeksConn != nil)
+		[weeksConn cancel];
+	if (monthsConn != nil)
+		[monthsConn cancel];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {

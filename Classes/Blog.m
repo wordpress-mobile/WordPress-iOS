@@ -10,7 +10,7 @@
 #import "WPDataController.h"
 
 @implementation Blog
-@dynamic blogID, blogName, url, username, password, xmlrpc;
+@dynamic blogID, blogName, url, username, password, xmlrpc, apiKey;
 @dynamic isAdmin;
 @dynamic posts, categories;
 
