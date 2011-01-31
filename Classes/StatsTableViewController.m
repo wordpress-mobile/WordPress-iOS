@@ -54,6 +54,9 @@ apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn
 	[referrersConn release];
 	[searchTermsConn release];
 	[clicksConn release];
+	[daysConn release];
+	[weeksConn release];
+	[monthsConn release];
 	[super dealloc];
 }
 
