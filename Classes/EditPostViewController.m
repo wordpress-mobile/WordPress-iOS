@@ -914,7 +914,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	NSString *prefix = @"<br/><br/>";
 	
 	if(self.apost.content == nil || [self.apost.content isEqualToString:@""]) {
-		textView.text = @"";
+		self.apost.content = @"";
 		prefix = @"";
 	}
 	
@@ -932,7 +932,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	NSString *prefix = @"<br/><br/>";
 	
 	if(self.apost.content == nil || [self.apost.content isEqualToString:@""]) {
-		textView.text = @"";
+		self.apost.content = @"";
 		prefix = @"";
 	}
 	
