@@ -261,7 +261,7 @@
 	BlogViewController *blogViewController = [[BlogViewController alloc] initWithNibName:@"BlogViewController" bundle:nil];
     blogViewController.blog = blog;
     [appDelegate setCurrentBlog:blog];
-	[self.navigationController pushViewController:blogViewController animated:YES];
+	[self.navigationController pushViewController:blogViewController animated:animated];
 	[blogViewController release];
 }
 
