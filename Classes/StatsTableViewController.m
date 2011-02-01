@@ -907,7 +907,7 @@ apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn
 		cell = [[[StatsTableCell alloc] initWithFrame:CGRectZero reuseIdentifier:MyIdentifier] autorelease];
 		if (viewsData != nil) {
 
-		UILabel *label = [[[UILabel	alloc] initWithFrame:CGRectMake(14.0, 0, 200.0, 
+		UILabel *label = [[[UILabel	alloc] initWithFrame:CGRectMake(14.0, 0, 210.0, 
 																		tableView.rowHeight)] autorelease]; 
 			
 		if (addLoadMoreFooter){
@@ -918,18 +918,15 @@ apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn
 			label.textAlignment = UITextAlignmentCenter; 
 		}
 		else {
-			[cell addColumn:200];
+			[cell addColumn:210];
 			if (indexPath.section == 0 && indexPath.row == 0) {
 				label.text = @"Today";
 			}
 			else if (indexPath.section == 0 && indexPath.row > 0){
 				//special date formatting for first section
-				// Convert string to date object
 				 NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
 				 [dateFormat setDateFormat:@"YYYY-MM-dd"];
 				 NSDate *date = [dateFormat dateFromString:leftColumn];  
-				 
-				 // Convert date object to desired output format
 				 [dateFormat setDateFormat:@"MMMM d"];
 				 label.text = [dateFormat stringFromDate:date];  
 				 [dateFormat release];
@@ -954,15 +951,22 @@ apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn
 		UIViewAutoresizingFlexibleHeight; 
 		[cell.contentView addSubview:label]; 
 		
-		label =  [[[UILabel	alloc] initWithFrame:CGRectMake(240.0, 0, 40.0, tableView.rowHeight)] autorelease]; 
+		label =  [[[UILabel	alloc] initWithFrame:CGRectMake(226.0, 0, 60.0, tableView.rowHeight)] autorelease]; 
 		
 		if (!addLoadMoreFooter){
-			[cell addColumn:80];
+			[cell addColumn:70];
 			label.tag = VALUE_TAG; 
 			label.font = [UIFont systemFontOfSize:16.0]; 
-			label.text = rightColumn;
+			//add commas
+			NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];	
+			NSNumber *statDigits = [numberFormatter numberFromString:rightColumn];
+			[numberFormatter setGroupingSeparator: @","];
+			[numberFormatter setGroupingSize: 3];
+			[numberFormatter setUsesGroupingSeparator: YES];
+			label.text = [numberFormatter stringFromNumber: statDigits];
 			label.textAlignment = UITextAlignmentRight; 
 			label.textColor = [[UIColor alloc] initWithRed:40.0 / 255 green:82.0 / 255 blue:137.0 / 255 alpha:1.0]; 
+			label.adjustsFontSizeToFitWidth = YES;
 			label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | 
 			UIViewAutoresizingFlexibleHeight; 
 			[cell.contentView addSubview:label];
