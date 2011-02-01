@@ -61,8 +61,10 @@
 
 - (void) viewWillDisappear:(BOOL)animated{
 	[super viewWillDisappear:animated];
+	[commentsViewController viewWillDisappear:animated];
+	[postsViewController viewWillDisappear:animated];
+	[pagesViewController viewWillDisappear:animated];
 	[statsTableViewController viewWillDisappear:animated];
-	
 }
 
 - (void)dealloc {
@@ -96,9 +98,9 @@
 		self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
 		self.navigationItem.titleView = commentsViewController.segmentedControl;
 	}
-//	else if (viewController == statsTableViewController) {
-//		self.navigationItem.rightBarButtonItem = statsTableViewController.refreshButtonItem;
-//	}
+	else if (viewController == statsTableViewController) {
+		self.navigationItem.rightBarButtonItem = statsTableViewController.refreshButtonItem;
+	}
 	
 	[viewController viewWillAppear:NO];
 }
@@ -149,12 +151,12 @@
 		hasVCName = YES;
 		hasIndexPath = YES;
 	}
-//	else if	(statsTableViewController.selectedIndexPath) {
-//		vcName = @"Statss";
-//		indexPath = statsTableViewController.selectedIndexPath;
-//		hasVCName = YES;
-//		hasIndexPath = YES;
-//	}
+	/*else if	(statsTableViewController.selectedIndexPath) {
+		vcName = @"Stats";
+		indexPath = statsTableViewController.selectedIndexPath;
+		hasVCName = YES;
+		hasIndexPath = YES;
+	}*/
 	
 	if((hasVCName == YES) && (hasIndexPath == YES)) {
 		[[NSUserDefaults standardUserDefaults] setObject:vcName forKey:@"WPSelectedContentType"];

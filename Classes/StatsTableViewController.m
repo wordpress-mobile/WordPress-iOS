@@ -93,7 +93,6 @@ apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn
 	}
 	
 	[self.tableView setBackgroundColor:[[UIColor alloc] initWithRed:221.0f/255.0f green:221.0f/255.0f blue:221.0f/255.0f alpha:1.0]];
-	//self.tableView.backgroundColor = [UIColor clearColor];
 }
 
 
@@ -137,12 +136,11 @@ apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn
 		[self getUserAPIKey];
 	}
 	else {
+		self.navigationItem.rightBarButtonItem = refreshButtonItem;
 		[spinner show];
 		statsRequest = TRUE;
 		[self refreshStats: 0 reportInterval: 0];
 	}
-	
-	
 }
 
 -(void)getUserAPIKey {
@@ -158,7 +156,6 @@ apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn
 							 [NSMutableDictionary
 							  dictionaryWithObject:[NSMutableData data]
 							  forKey:@"apiKeyData"]);
-		//[NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
 	}
 	else 
 	{
@@ -840,7 +837,8 @@ apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn
 	NSArray *row = [[NSArray alloc] init];
 	switch (indexPath.section) {
 		case 0:
-			row = [viewsData objectAtIndex:indexPath.row];
+			//reverse order so today is at top
+			row = [viewsData objectAtIndex:(viewsData.count - 1) - indexPath.row];
 			break;
 		case 1:
 			if (indexPath.row == loadMorePostViews){
@@ -909,7 +907,7 @@ apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn
 		cell = [[[StatsTableCell alloc] initWithFrame:CGRectZero reuseIdentifier:MyIdentifier] autorelease];
 		if (viewsData != nil) {
 
-		UILabel *label = [[[UILabel	alloc] initWithFrame:CGRectMake(14.0, 0, 140.0, 
+		UILabel *label = [[[UILabel	alloc] initWithFrame:CGRectMake(14.0, 0, 200.0, 
 																		tableView.rowHeight)] autorelease]; 
 			
 		if (addLoadMoreFooter){
@@ -920,10 +918,29 @@ apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn
 			label.textAlignment = UITextAlignmentCenter; 
 		}
 		else {
-			[cell addColumn:140];
-			cell.selectionStyle = UITableViewCellSelectionStyleNone;
+			[cell addColumn:200];
+			if (indexPath.section == 0 && indexPath.row == 0) {
+				label.text = @"Today";
+			}
+			else if (indexPath.section == 0 && indexPath.row > 0){
+				//special date formatting for first section
+				// Convert string to date object
+				 NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+				 [dateFormat setDateFormat:@"YYYY-MM-dd"];
+				 NSDate *date = [dateFormat dateFromString:leftColumn];  
+				 
+				 // Convert date object to desired output format
+				 [dateFormat setDateFormat:@"MMMM d"];
+				 label.text = [dateFormat stringFromDate:date];  
+				 [dateFormat release];
+			}
+			else {
+				label.text = leftColumn;
+			}
+			
+			if (indexPath.section <= 1 || indexPath.section == 3)
+				cell.selectionStyle = UITableViewCellSelectionStyleNone;
 			label.font = [UIFont boldSystemFontOfSize:14.0]; 
-			label.text = leftColumn;
 			label.textAlignment = UITextAlignmentLeft; 
 		}
 			
@@ -937,10 +954,10 @@ apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn
 		UIViewAutoresizingFlexibleHeight; 
 		[cell.contentView addSubview:label]; 
 		
-		label =  [[[UILabel	alloc] initWithFrame:CGRectMake(160.0, 0, 120.0, tableView.rowHeight)] autorelease]; 
+		label =  [[[UILabel	alloc] initWithFrame:CGRectMake(240.0, 0, 40.0, tableView.rowHeight)] autorelease]; 
 		
 		if (!addLoadMoreFooter){
-			[cell addColumn:130];
+			[cell addColumn:80];
 			label.tag = VALUE_TAG; 
 			label.font = [UIFont systemFontOfSize:16.0]; 
 			label.text = rightColumn;
@@ -971,6 +988,10 @@ apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn
 				loadMoreReferrers += 10;
 				[self.tableView reloadData];
 			}
+			else {
+				[[UIApplication sharedApplication] openURL:[NSURL URLWithString: [[referrersData objectAtIndex:indexPath.row] objectAtIndex:0]]];
+				[tableView deselectRowAtIndexPath:indexPath animated:YES];
+			}
 			break;
 		case 3:
 			if (indexPath.row == loadMoreSearchTerms){
@@ -982,6 +1003,10 @@ apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn
 			if (indexPath.row == loadMoreClicks){
 				loadMoreClicks += 10;
 				[self.tableView reloadData];
+			}
+			else {
+				[[UIApplication sharedApplication] openURL:[NSURL URLWithString: [[clicksData objectAtIndex:indexPath.row] objectAtIndex:0]]];
+				[tableView deselectRowAtIndexPath:indexPath animated:YES];
 			}
 			break;
 	}
