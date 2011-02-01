@@ -86,19 +86,22 @@
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
 	self.navigationItem.titleView = nil;
 	self.navigationItem.rightBarButtonItem = nil;
-	
 	if (viewController == postsViewController) {
+		[[NSUserDefaults standardUserDefaults] setValue:@"Posts" forKey:@"WPSelectedContentType"];
 		self.navigationItem.rightBarButtonItem = postsViewController.newButtonItem;
 	} 
 	else if (viewController == pagesViewController) {
+		[[NSUserDefaults standardUserDefaults] setValue:@"Pages" forKey:@"WPSelectedContentType"];
 		self.navigationItem.rightBarButtonItem = pagesViewController.newButtonItem;
 	} 
 	else if (viewController == commentsViewController) {
+		[[NSUserDefaults standardUserDefaults] setValue:@"Comments" forKey:@"WPSelectedContentType"];
 		[commentsViewController setIndexForCurrentPost:-2];
 		self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
 		self.navigationItem.titleView = commentsViewController.segmentedControl;
 	}
 	else if (viewController == statsTableViewController) {
+		[[NSUserDefaults standardUserDefaults] setValue:@"Stats" forKey:@"WPSelectedContentType"];
 		self.navigationItem.rightBarButtonItem = statsTableViewController.refreshButtonItem;
 	}
 	
@@ -129,37 +132,23 @@
 
 - (void)saveState;
 {
-	NSString *vcName = @"";
 	NSIndexPath *indexPath = [NSIndexPath indexPathWithIndex:0];
-	BOOL hasVCName = NO;
 	BOOL hasIndexPath = NO;
-	if (commentsViewController.selectedIndexPath) {
-		vcName = @"Comments";
+	NSString *vcName = [[NSUserDefaults standardUserDefaults] objectForKey:@"WPSelectedContentType"];
+	if ([vcName isEqual:@"Comments"]) {
 		indexPath = commentsViewController.selectedIndexPath;
-		hasVCName = YES;
 		hasIndexPath = YES;
 	}
-	else if	(postsViewController.selectedIndexPath) {
-		vcName = @"Posts";
+	else if	([vcName isEqual:@"Posts"]) {
 		indexPath = postsViewController.selectedIndexPath;
-		hasVCName = YES;
 		hasIndexPath = YES;
 	}
-	else if	(pagesViewController.selectedIndexPath) {
-		vcName = @"Pages";
+	else if	([vcName isEqual:@"Pages"]) {
 		indexPath = pagesViewController.selectedIndexPath;
-		hasVCName = YES;
 		hasIndexPath = YES;
 	}
-	/*else if	(statsTableViewController.selectedIndexPath) {
-		vcName = @"Stats";
-		indexPath = statsTableViewController.selectedIndexPath;
-		hasVCName = YES;
-		hasIndexPath = YES;
-	}*/
 	
-	if((hasVCName == YES) && (hasIndexPath == YES)) {
-		[[NSUserDefaults standardUserDefaults] setObject:vcName forKey:@"WPSelectedContentType"];
+	if (hasIndexPath == YES) {
 		[[NSUserDefaults standardUserDefaults] setInteger:indexPath.section forKey:@"WPSelectedIndexPathSection"];
 		[[NSUserDefaults standardUserDefaults] setInteger:indexPath.row forKey:@"WPSelectedIndexPathRow"];
 	}
@@ -187,10 +176,9 @@
 			selectedViewController = pagesViewController;
 			pagesViewController.selectedIndexPath = selectedIndexPath;
 		}
-//		else if	([vcName isEqual:@"Stats"]) {
-//			selectedViewController = statsTableViewController;
-//			statsTableViewController.selectedIndexPath = selectedIndexPath;
-//		}
+		else if	([vcName isEqual:@"Stats"]) {
+			selectedViewController = statsTableViewController;
+		}
 	}
 		
 	// show the view controller

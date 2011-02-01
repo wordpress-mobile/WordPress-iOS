@@ -19,8 +19,8 @@
 @synthesize viewsData, postViewsData, referrersData, searchTermsData, clicksData, reportTitle,
 currentBlog, statsData, currentProperty, rootTag, 
 statsTableData, leftColumn, rightColumn, spinner, xArray, yArray, xValues, yValues, wpcomLoginTable, 
-statsPageControlViewController, refreshButtonItem, selectedIndexPath, 
-apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
+statsPageControlViewController, refreshButtonItem,  apiKeyConn, viewsConn, postViewsConn, referrersConn, 
+searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 #define LABEL_TAG 1 
 #define VALUE_TAG 2 
 #define FIRST_CELL_IDENTIFIER @"TrailItemCell" 
@@ -47,7 +47,6 @@ apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn
 	[yValues release];
 	[wpcomLoginTable release];
 	[statsPageControlViewController release];
-	[selectedIndexPath release];
 	[apiKeyConn release];
 	[viewsConn release];
 	[postViewsConn release];
@@ -99,7 +98,6 @@ apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn
 
 - (void) viewWillAppear:(BOOL)animated {
 	
-	selectedIndexPath =  [NSIndexPath indexPathForRow:0 inSection:0];
 	if([[WPReachability sharedReachability] internetConnectionStatus] == NotReachable) {
 		UIAlertView *errorView = [[UIAlertView alloc] 
 								  initWithTitle: @"Communication Error" 
@@ -1053,8 +1051,7 @@ apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-	selectedIndexPath = nil;
+	[super viewWillDisappear:animated];	
 	//cancel all possible connections
 	if (viewsConn != nil)
 		[viewsConn cancel];

@@ -43,7 +43,6 @@
 	CFMutableDictionaryRef connectionToInfoMapping;
 	BOOL foundStatsData, statsAPIAlertShowing, canceledAPIKeyAlert;
 	UIBarButtonItem *refreshButtonItem;
-	NSIndexPath *selectedIndexPath;
 	int loadMorePostViews, loadMoreReferrers, loadMoreSearchTerms, loadMoreClicks;
 	NSURLConnection *apiKeyConn, *viewsConn, *postViewsConn, *referrersConn, *searchTermsConn, *clicksConn, *daysConn, *weeksConn, *monthsConn;
 }
@@ -69,7 +68,6 @@
 @property (nonatomic, retain) UITableView *wpcomLoginTable;
 @property (nonatomic, retain) StatsPageControlViewController *statsPageControlViewController;
 @property (readonly) UIBarButtonItem *refreshButtonItem;
-@property (nonatomic, retain) NSIndexPath *selectedIndexPath;
 @property (nonatomic, retain) NSURLConnection *apiKeyConn, *viewsConn, *postViewsConn, *referrersConn, *searchTermsConn, *clicksConn, *daysConn, *weeksConn, *monthsConn;
 - (void) initStats;
 - (void) getUserAPIKey;
