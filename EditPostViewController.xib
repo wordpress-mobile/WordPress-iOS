@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="297"/>
+			<integer value="289"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -319,7 +319,6 @@
 								<int key="IBUISystemItemIdentifier">5</int>
 							</object>
 							<object class="IBUIBarButtonItem" id="475885401">
-								<bool key="IBUIEnabled">NO</bool>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">attachment.png</string>
@@ -329,7 +328,6 @@
 								<reference key="IBUIToolbar" ref="458393363"/>
 							</object>
 							<object class="IBUIBarButtonItem" id="213074190">
-								<bool key="IBUIEnabled">NO</bool>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">movie.png</string>
@@ -339,7 +337,6 @@
 								<reference key="IBUIToolbar" ref="458393363"/>
 							</object>
 							<object class="IBUIBarButtonItem" id="394056374">
-								<bool key="IBUIEnabled">NO</bool>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">photos.png</string>
