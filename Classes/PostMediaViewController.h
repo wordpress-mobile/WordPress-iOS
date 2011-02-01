@@ -15,8 +15,6 @@
 #import "UIImage+Resize.h"
 #import "WordPressAppDelegate.h"
 #import "BlogDataManager.h"
-#import "MediaManager.h"
-#import "WPMediaUploader.h"
 #import "MediaObjectViewController.h"
 #import "WPImagePickerController.h"
 
@@ -30,10 +28,7 @@ static inline double radians(double degrees) {
 }
 
 @interface PostMediaViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate, UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate> {
-	WordPressAppDelegate *appDelegate;
 	EditPostViewController *postDetailViewController;
-	MediaManager *mediaManager;
-	WPMediaUploader *mediaUploader;
 	UIImagePickerController *picker;
 	UIViewController *pickerContainer;
 	
@@ -67,21 +62,17 @@ static inline double radians(double degrees) {
 @property (nonatomic, retain) NSString *postID, *blogURL, *videoPressCheckBlogURL, *uniqueID;
 @property (nonatomic, retain) Media *currentUpload;
 @property (nonatomic, retain) NSMutableArray *photos, *videos;
-@property (nonatomic, assign) WordPressAppDelegate *appDelegate;
 @property (nonatomic, assign) EditPostViewController *postDetailViewController;
-@property (nonatomic, retain) MediaManager *mediaManager;
-@property (nonatomic, retain) WPMediaUploader *mediaUploader;
 @property (nonatomic, assign) UIDeviceOrientation currentOrientation;
 @property (nonatomic, retain) UIImage *currentImage;
 @property (nonatomic, retain) NSMutableDictionary *currentVideo;
-@property (nonatomic, assign) BlogDataManager *dm;
 @property (nonatomic, retain) UIImagePickerController *picker;
 @property (nonatomic, retain) UIViewController *pickerContainer;
 @property (readonly) NSFetchedResultsController *resultsController;
 
-- (IBAction)refreshMedia;
 - (void)scaleAndRotateImage:(UIImage *)image;
-- (IBAction)showPhotoPickerActionSheet;
+- (IBAction)showVideoPickerActionSheet:(id)sender;
+- (IBAction)showPhotoPickerActionSheet:(id)sender;
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex;
 - (void)pickPhotoFromCamera:(id)sender;
 - (void)pickVideoFromCamera:(id)sender;
@@ -101,17 +92,9 @@ static inline double radians(double degrees) {
 - (void)useVideo:(NSString *)videoURL withThumbnail:(UIImage *)thumbnail andDuration:(float)duration;
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification;
 - (void)mediaUploadFailed:(NSNotification *)notification;
-- (void)removemediaUploader:(NSString *)animationID finished:(BOOL)finished context:(void *)context;
 - (BOOL)supportsVideo;
 - (UIImage *)generateThumbnailFromImage:(UIImage *)theImage andSize:(CGSize)targetSize;
-- (void)uploadMedia:(NSData *)bits withFilename:(NSString *)filename andLocalURL:(NSString *)localURL andMediaType:(MediaType)mediaType;
-- (void)updateMediaCount;
-- (NSString *)getUUID;
 - (void)checkVideoEnabled;
-- (void)deleteMedia:(Media *)media;
-- (void)shouldDeleteMedia:(NSNotification *)notification;
-- (void)refreshProperties;
-- (IBAction)cancelPendingUpload:(id)sender;
 - (void)initObjects;
 - (void)addNotifications;
 - (void)removeNotifications;

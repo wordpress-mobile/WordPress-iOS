@@ -94,7 +94,7 @@
     if(isDeleting == YES) {
 		switch (buttonIndex) {
 			case 0:
-				[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldDeleteMedia" object:media];
+                [media remove];
 				if(DeviceIsPad() == YES)
 					[self dismissModalViewControllerAnimated:YES];
 				else

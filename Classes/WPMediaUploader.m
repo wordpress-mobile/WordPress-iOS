@@ -8,8 +8,8 @@
 #import "WPMediaUploader.h"
 
 @implementation WPMediaUploader
-@synthesize messageLabel, mediaType, progressView, filename, bits, localEncodedURL, isAtomPub;
-@synthesize filesize, orientation, xmlrpcURL, xmlrpcHost, localURL, stopButton;
+@synthesize messageLabel, progressView, isAtomPub;
+@synthesize stopButton, media;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -23,31 +23,35 @@
     return self;
 }
 
+- (id)initWithMedia:(Media *)mediaItem {
+    if (self = [super init]) {
+        self.media = mediaItem;
+    }
+    
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendXMLRPC) name:@"FileEncodeSuccessful" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendXMLRPC) name:@"FileEncodeSuccessful" object:self.media];
 }
 
 #pragma mark -
 #pragma mark Core transfer code
 
 - (void)start {
+    WPLog(@"%@ %@ (%@)", self, NSStringFromSelector(_cmd), self.media.filename);
 	[self reset];
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-	
-	// Get blog properties from BDM
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	dm.shouldStopSyncingBlogs = YES;
-	self.xmlrpcURL = [dm.currentBlog valueForKey:@"xmlrpc"];
 	
 	[self checkAtomPub];
 }
 
 - (void)stop {
+    WPLog(@"%@ %@ (%@)", self, NSStringFromSelector(_cmd), self.media.filename);
     [request cancel];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = NO;
 }
 
 - (void)stopWithStatus:(NSString *)status {
@@ -56,11 +60,13 @@
 }
 
 - (void)stopWithNotificationName:(NSString *)notificationName {
+    WPLog(@"%@ %@ (%@)", self, NSStringFromSelector(_cmd), self.media.filename);
 	[self stop];
-	[[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self.media];
 }
 
 - (void)finishWithNotificationName:(NSString *)notificationName object:(NSObject *)object userInfo:(NSDictionary *)userInfo {
+    WPLog(@"%@ %@ (%@)", self, NSStringFromSelector(_cmd), self.media.filename);
 	[[NSNotificationCenter defaultCenter] postNotificationName:notificationName 
 														object:object 
 													  userInfo:userInfo];
@@ -68,9 +74,7 @@
 
 - (void)reset {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = NO;
-	self.progressView.progress = 0.0;
-	self.progressView.hidden = NO;
+	self.media.progress = 0.0;
 }
 
 - (IBAction)cancelAction:(id)sender {
@@ -80,6 +84,7 @@
 }
 
 - (void)updateStatus:(NSString *)status {
+    WPLog(@"Upload Status: %@", status);
 	self.messageLabel.text = status;
 	[self.view setNeedsDisplay];
 	[self.view setNeedsLayout];
@@ -101,13 +106,17 @@
 //	[atomPubAlert release];
 }
 
+- (NSString *)localEncodedURL {
+    return [NSString stringWithFormat:@"%@-base64.xml", self.media.filename];
+}
+
 - (void)checkAtomPub {
 	BOOL isWPcom = NO;
-	NSRange range = [self.xmlrpcURL rangeOfString:@"wordpress.com"];
+	NSRange range = [self.media.blog.xmlrpc rangeOfString:@"wordpress.com"];
 	if(range.location != NSNotFound)
 		isWPcom = YES;
 	
-	if((self.mediaType == kVideo) && (!isWPcom)) {
+	if(([self.media.mediaType isEqualToString:@"video"]) && (!isWPcom)) {
 		if([[NSUserDefaults standardUserDefaults] objectForKey:@"video_api_preference"] != nil) {
 			NSString *videoPreference = [[NSUserDefaults standardUserDefaults] objectForKey:@"video_api_preference"];
 			
@@ -137,23 +146,23 @@
 }
 
 - (void)buildXMLRPC {
-	self.progressView.hidden = YES;
 	[self performSelectorInBackground:@selector(base64EncodeFile) withObject:nil];
 }
 
 - (void)sendXMLRPC {
+    WPLog(@"%@ %@ (%@)", self, NSStringFromSelector(_cmd), self.media.filename);
 	self.progressView.hidden = NO;
 	
-	if(self.mediaType == kImage)
+	if([self.media.mediaType isEqualToString:@"image"])
 		[self updateStatus:@"Uploading image..."];
-	else if(self.mediaType == kVideo)
+	else if([self.media.mediaType isEqualToString:@"video"])
 		[self updateStatus:@"Uploading video..."];
 	
-	request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:self.xmlrpcURL]];
+	request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:self.media.blog.xmlrpc]];
 	[request setDelegate:self];
 	[request setShouldStreamPostDataFromDisk:YES];
 	[request appendPostDataFromFile:self.localEncodedURL];
-	[request setUploadProgressDelegate:self.progressView];
+	[request setUploadProgressDelegate:self.media];
 	[request setTimeOutSeconds:600];
 	[request startAsynchronous];
     [request retain];
@@ -163,22 +172,22 @@
 	self.progressView.hidden = NO;
 	isAtomPub = YES;
 	
-	if(self.mediaType == kImage)
+	if([self.media.mediaType isEqualToString:@"image"])
 		[self updateStatus:@"Uploading image..."];
-	else if(self.mediaType == kVideo)
+	else if([self.media.mediaType isEqualToString:@"video"])
 		[self updateStatus:@"Uploading video..."];
 	
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	NSString *blogURL = [dm.currentBlog objectForKey:@"url"];
+	NSString *blogURL = self.media.blog.url;
 	
 	NSURL *atomURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/wp-app.php/attachments", blogURL]];
 	
-	NSDictionary *attributes = [[NSFileManager defaultManager] fileAttributesAtPath:self.localURL traverseLink: NO];
+	NSDictionary *attributes = [[NSFileManager defaultManager] fileAttributesAtPath:self.media.localURL traverseLink: NO];
 	NSString *contentType = @"image/jpeg";
-	if(self.mediaType == kVideo)
+	if([self.media.mediaType isEqualToString:@"video"])
 		contentType = @"video/mp4";
-	NSString *username = [dm.currentBlog objectForKey:@"username"];
-	NSString *password = [dm getPasswordFromKeychainInContextOfCurrentBlog:dm.currentBlog];
+    NSError *error = nil;
+	NSString *username = self.media.blog.username;
+	NSString *password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:self.media.blog.hostURL error:&error];
 	
 	request = [ASIFormDataRequest requestWithURL:atomURL];
 	[request setUsername:username];
@@ -187,9 +196,9 @@
 	[request addRequestHeader:@"Content-Type" value:contentType];
 	[request addRequestHeader:@"Content-Length" value:[NSString stringWithFormat:@"@d",[[attributes objectForKey:NSFileSize] intValue]]];
 	[request setShouldStreamPostDataFromDisk:YES];
-	[request setPostBodyFilePath:self.localURL];
+	[request setPostBodyFilePath:self.media.localURL];
 	[request setDelegate:self];
-	[request setUploadProgressDelegate:self.progressView];
+	[request setUploadProgressDelegate:self.media];
 	[request startAsynchronous];
     [request retain];
 }
@@ -230,15 +239,15 @@
 #pragma mark XML-RPC data
 
 - (NSString *)xmlrpcPrefix {
-	BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	NSString *blogID =  [dm.currentBlog valueForKey:kBlogId];
-	NSString *username = [dm.currentBlog valueForKey:@"username"];
+	NSNumber *blogID = self.media.blog.blogID;
+    NSError *error = nil;
+	NSString *username = self.media.blog.username;
+	NSString *password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:self.media.blog.hostURL error:&error];
 	username = [NSString encodeXMLCharactersIn:username];
-	NSString *password = [dm getPasswordFromKeychainInContextOfCurrentBlog:dm.currentBlog];
 	password = [NSString encodeXMLCharactersIn:password];
 	
 	NSString *type = @"image/jpeg";
-	if(self.mediaType == kVideo)
+	if([self.media.mediaType isEqualToString:@"video"])
 		type = @"video/mp4";
 	
 	NSString *body = [NSString stringWithFormat:@"<?xml version=\"1.0\"?>"
@@ -254,7 +263,7 @@
 					  username,
 					  password,
 					  type,
-					  self.filename];
+					  self.media.filename];
 	return body;
 }
 
@@ -268,15 +277,22 @@
 	[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding media..." waitUntilDone:NO];
 	
 	NSFileHandle *originalFile, *encodedFile;
-	self.localEncodedURL = [[NSString stringWithFormat:@"%@-base64.xml", self.localURL] retain];
 	
 	// Open the original video file for reading
-	originalFile = [NSFileHandle fileHandleForReadingAtPath:self.localURL];
+	originalFile = [NSFileHandle fileHandleForReadingAtPath:self.media.localURL];
 	if (originalFile == nil) {
 		[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding failed." waitUntilDone:NO];
 		return;
 	}
 	
+    // If encoded file already exists, don't try encoding again
+    if ([[NSFileManager defaultManager] fileExistsAtPath:self.localEncodedURL]) {
+        if([self.media.mediaType isEqualToString:@"image"])
+            [self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Uploading image..." waitUntilDone:NO];
+        else if([self.media.mediaType isEqualToString:@"video"])
+            [self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Uploading video..." waitUntilDone:NO];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"FileEncodeSuccessful" object:self.media];
+    }
 	// Create our XML-RPC payload file
 	[[NSFileManager defaultManager] createFileAtPath:self.localEncodedURL
 											contents:nil
@@ -345,58 +361,11 @@
 	[encodedFile closeFile];
 	
 	// We're done
-	if(self.mediaType == kImage)
+	if([self.media.mediaType isEqualToString:@"image"])
 		[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Uploading image..." waitUntilDone:NO];
-	else if(self.mediaType == kVideo)
+	else if([self.media.mediaType isEqualToString:@"video"])
 		[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Uploading video..." waitUntilDone:NO];
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"FileEncodeSuccessful" object:nil];
-	
-	[pool release];
-}
-
-- (void)base64EncodeImage {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding media..." waitUntilDone:NO];
-	
-	NSFileHandle *encodedFile;
-	self.localEncodedURL = [NSString stringWithFormat:@"%@-base64.xml", self.filename];
-	
-	// Create our XML-RPC payload file
-	[[NSFileManager defaultManager] createFileAtPath:self.localEncodedURL
-											contents:nil
-										  attributes:nil];
-	
-	// Open XML-RPC file for writing
-	encodedFile = [NSFileHandle fileHandleForWritingAtPath:self.localEncodedURL];
-	if (encodedFile == nil) {
-		[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding failed." waitUntilDone:NO];
-		return;
-	}
-	else {
-		// Add our XML-RPC payload prefix
-		NSString *prefix = [self xmlrpcPrefix];
-		[encodedFile writeData:[prefix dataUsingEncoding:NSASCIIStringEncoding]];
-		
-		// Convert the image bytes to a base64 string, then back to bytes
-		NSString *base64EncodedImageString = [self.bits base64EncodedString];
-		NSData *base64EncodedImage = [base64EncodedImageString dataUsingEncoding:NSASCIIStringEncoding];
-		[encodedFile writeData:base64EncodedImage];
-		
-		// Add the suffix to close out the xml payload
-		NSString *suffix = [self xmlrpcSuffix];
-		[encodedFile writeData:[suffix dataUsingEncoding:NSASCIIStringEncoding]];
-		
-		// Close the two files
-		[encodedFile closeFile];
-		
-		// We're done
-		if(self.mediaType == kImage)
-			[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Uploading image..." waitUntilDone:NO];
-		else if(self.mediaType == kVideo)
-			[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Uploading video..." waitUntilDone:NO];
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"FileEncodeSuccessful" object:nil];
-	}
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"FileEncodeSuccessful" object:self.media];
 	
 	[pool release];
 }
@@ -425,24 +394,27 @@
 										   cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[uploadAlert show];
 			[uploadAlert release];
-			if(mediaType == kVideo)
-				[self finishWithNotificationName:VideoUploadFailed object:nil userInfo:nil];
-			else if(mediaType == kImage)
-				[self finishWithNotificationName:ImageUploadFailed object:nil userInfo:nil];
+            self.media.remoteStatus = MediaRemoteStatusFailed;
+			if([self.media.mediaType isEqualToString:@"video"])
+				[self finishWithNotificationName:VideoUploadFailed object:self.media userInfo:nil];
+			else if([self.media.mediaType isEqualToString:@"image"])
+				[self finishWithNotificationName:ImageUploadFailed object:self.media userInfo:nil];
 		}
 		else if(isAtomPub) {
 			NSString *regEx = @"src=\"([^\"]*)\"";
 			NSString *link = [[request responseString] stringByMatching:regEx capture:1];
 			link = [link stringByReplacingOccurrencesOfString:@"\"" withString:@""];
 			[videoMeta setObject:link forKey:@"url"];
-			[self finishWithNotificationName:VideoUploadSuccessful object:nil userInfo:videoMeta];
+            self.media.remoteURL = link;
+            self.media.remoteStatus = MediaRemoteStatusSync;
+            [self finishWithNotificationName:VideoUploadSuccessful object:self.media userInfo:videoMeta];
 		}
 		else {
-			[[NSFileManager defaultManager] removeItemAtPath:self.localURL error:NULL];
 			XMLRPCResponse *xmlrpcResponse = [[XMLRPCResponse alloc] initWithData:[request responseData]];
 			NSDictionary *responseMeta = [xmlrpcResponse object];
 			if ([xmlrpcResponse isKindOfClass:[NSError class]]) {
-				[self finishWithNotificationName:VideoUploadFailed object:nil userInfo:nil];
+                self.media.remoteStatus = MediaRemoteStatusFailed;
+				[self finishWithNotificationName:VideoUploadFailed object:self.media userInfo:nil];
 			}
 			else if([responseMeta valueForKey:@"faultString"] != nil) {
 				NSString *faultString = [responseMeta valueForKey:@"faultString"];
@@ -463,30 +435,33 @@
 				}
 				[uploadAlert show];
 				[uploadAlert release];
-				if(mediaType == kVideo)
-					[self finishWithNotificationName:VideoUploadFailed object:nil userInfo:nil];
-				else if(mediaType == kImage)
-					[self finishWithNotificationName:ImageUploadFailed object:nil userInfo:nil];
+                
+                self.media.remoteStatus = MediaRemoteStatusFailed;
+                if([self.media.mediaType isEqualToString:@"video"])
+                    [self finishWithNotificationName:VideoUploadFailed object:self.media userInfo:nil];
+                else if([self.media.mediaType isEqualToString:@"image"])
+                    [self finishWithNotificationName:ImageUploadFailed object:self.media userInfo:nil];
 				[faultString release];
 			}
-			else if(mediaType == kVideo) {
+			else if([self.media.mediaType isEqualToString:@"video"]) {
 				if([responseMeta objectForKey:@"videopress_shortcode"] != nil)
-					[videoMeta setObject:[responseMeta objectForKey:@"videopress_shortcode"] forKey:@"shortcode"];
+                    self.media.shortcode = [responseMeta objectForKey:@"videopress_shortcode"];
 				
 				if([responseMeta objectForKey:@"url"] != nil)
-					[videoMeta setObject:[responseMeta objectForKey:@"url"] forKey:@"url"];
+                    self.media.remoteURL = [responseMeta objectForKey:@"url"];
 				
-				if(videoMeta.count > 0) {
-					[videoMeta setValue:[NSNumber numberWithInt:orientation] forKey:@"orientation"];
-					[self finishWithNotificationName:VideoUploadSuccessful object:nil userInfo:videoMeta];
+                self.media.remoteStatus = MediaRemoteStatusSync;
+                if(videoMeta.count > 0) {
+					[self finishWithNotificationName:VideoUploadSuccessful object:self.media userInfo:responseMeta];
 				}
 			}
-			else if(mediaType == kImage) {
+			else if([self.media.mediaType isEqualToString:@"image"]) {
 				NSMutableDictionary *imageMeta = [[NSMutableDictionary alloc] init];
 				
 				if([responseMeta objectForKey:@"url"] != nil)
-					[imageMeta setObject:[responseMeta objectForKey:@"url"] forKey:@"url"];
-				[self finishWithNotificationName:ImageUploadSuccessful object:nil userInfo:imageMeta];
+                    self.media.remoteURL = [responseMeta objectForKey:@"url"];
+                self.media.remoteStatus = MediaRemoteStatusSync;
+                [self finishWithNotificationName:ImageUploadSuccessful object:self.media userInfo:responseMeta];
 				[imageMeta release];
 			}
 			
@@ -499,11 +474,12 @@
 		NSLog(@"connection failed: %@", [request responseData]);
 		
 		[NSThread sleepForTimeInterval:2.0];
-		
-		if(self.mediaType == kImage)
-			[self finishWithNotificationName:ImageUploadFailed object:nil userInfo:nil];
-		else if(self.mediaType == kVideo)
-			[self finishWithNotificationName:VideoUploadFailed object:nil userInfo:nil];
+        
+        self.media.remoteStatus = MediaRemoteStatusFailed;
+		if([self.media.mediaType isEqualToString:@"image"])
+			[self finishWithNotificationName:ImageUploadFailed object:self.media userInfo:nil];
+		else if([self.media.mediaType isEqualToString:@"video"])
+			[self finishWithNotificationName:VideoUploadFailed object:self.media userInfo:nil];
 	}
 
     [request release]; request = nil;
@@ -515,14 +491,12 @@
 	
 	[NSThread sleepForTimeInterval:2.0];
 	
-	if(self.mediaType == kImage)
+    self.media.remoteStatus = MediaRemoteStatusFailed;
+	if([self.media.mediaType isEqualToString:@"image"])
 		[self stopWithNotificationName:@"ImageUploadFailed"];
-	else if(self.mediaType == kVideo)
+	else if([self.media.mediaType isEqualToString:@"video"])
 		[self stopWithNotificationName:@"VideoUploadFailed"];
 	
-	if(!isAtomPub)
-		[[NSFileManager defaultManager]  removeItemAtPath:self.localURL error:NULL];
-
     [request release]; request = nil;
 }
 
@@ -530,9 +504,10 @@
 	[self updateStatus:@"Upload failed. Please try again."];
 	NSLog(@"connection failed: %@", [error localizedDescription]);
 	
-	if(self.mediaType == kImage)
+    self.media.remoteStatus = MediaRemoteStatusFailed;
+	if([self.media.mediaType isEqualToString:@"image"])
 		[self stopWithNotificationName:@"ImageUploadFailed"];
-	else if(self.mediaType == kVideo)
+	else if([self.media.mediaType isEqualToString:@"video"])
 		[self stopWithNotificationName:@"VideoUploadFailed"];
 
     [request release]; request = nil;
@@ -544,13 +519,9 @@
 - (void)dealloc {
     [self stopWithStatus:@"Stopped"];
 
+    request.delegate = nil;
     [request release];
 	[stopButton release];
-	[localURL release];
-	[xmlrpcURL release];
-	[xmlrpcHost release];
-	[filename release];
-	[bits release];
 	[messageLabel release];
 	[progressView release];
 	

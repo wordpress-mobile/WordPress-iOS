@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="119"/>
+			<integer value="108"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -358,6 +358,7 @@
 								<int key="IBUISystemItemIdentifier">6</int>
 							</object>
 							<object class="IBUIBarButtonItem" id="818773865">
+								<int key="IBUITag">2</int>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">movie.png</string>
@@ -367,6 +368,7 @@
 								<reference key="IBUIToolbar" ref="1050617744"/>
 							</object>
 							<object class="IBUIBarButtonItem" id="226724400">
+								<int key="IBUITag">1</int>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">photos.png</string>
@@ -602,6 +604,30 @@
 					</object>
 					<int key="connectionID">204</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">switchToMedia</string>
+						<reference key="source" ref="226158018"/>
+						<reference key="destination" ref="372490531"/>
+					</object>
+					<int key="connectionID">205</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">addVideo:</string>
+						<reference key="source" ref="818773865"/>
+						<reference key="destination" ref="372490531"/>
+					</object>
+					<int key="connectionID">208</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">addPhoto:</string>
+						<reference key="source" ref="226724400"/>
+						<reference key="destination" ref="372490531"/>
+					</object>
+					<int key="connectionID">209</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -628,56 +654,11 @@
 						<reference key="object" ref="333657908"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="1050617744"/>
 							<reference ref="366038211"/>
 							<reference ref="292285015"/>
+							<reference ref="1050617744"/>
 						</object>
 						<reference key="parent" ref="0"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">108</int>
-						<reference key="object" ref="1050617744"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="1034545300"/>
-							<reference ref="226724400"/>
-							<reference ref="891413274"/>
-							<reference ref="818773865"/>
-							<reference ref="226158018"/>
-							<reference ref="469597128"/>
-							<reference ref="158884752"/>
-						</object>
-						<reference key="parent" ref="333657908"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">110</int>
-						<reference key="object" ref="1034545300"/>
-						<reference key="parent" ref="1050617744"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">112</int>
-						<reference key="object" ref="226724400"/>
-						<reference key="parent" ref="1050617744"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">113</int>
-						<reference key="object" ref="891413274"/>
-						<reference key="parent" ref="1050617744"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">115</int>
-						<reference key="object" ref="818773865"/>
-						<reference key="parent" ref="1050617744"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">116</int>
-						<reference key="object" ref="226158018"/>
-						<reference key="parent" ref="1050617744"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">117</int>
-						<reference key="object" ref="469597128"/>
-						<reference key="parent" ref="1050617744"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">164</int>
@@ -772,8 +753,53 @@
 						<reference key="parent" ref="704882880"/>
 					</object>
 					<object class="IBObjectRecord">
+						<int key="objectID">108</int>
+						<reference key="object" ref="1050617744"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="158884752"/>
+							<reference ref="469597128"/>
+							<reference ref="226158018"/>
+							<reference ref="818773865"/>
+							<reference ref="891413274"/>
+							<reference ref="226724400"/>
+							<reference ref="1034545300"/>
+						</object>
+						<reference key="parent" ref="333657908"/>
+					</object>
+					<object class="IBObjectRecord">
 						<int key="objectID">195</int>
 						<reference key="object" ref="158884752"/>
+						<reference key="parent" ref="1050617744"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">117</int>
+						<reference key="object" ref="469597128"/>
+						<reference key="parent" ref="1050617744"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">116</int>
+						<reference key="object" ref="226158018"/>
+						<reference key="parent" ref="1050617744"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">115</int>
+						<reference key="object" ref="818773865"/>
+						<reference key="parent" ref="1050617744"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">113</int>
+						<reference key="object" ref="891413274"/>
+						<reference key="parent" ref="1050617744"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">112</int>
+						<reference key="object" ref="226724400"/>
+						<reference key="parent" ref="1050617744"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">110</int>
+						<reference key="object" ref="1034545300"/>
 						<reference key="parent" ref="1050617744"/>
 					</object>
 				</object>
@@ -785,6 +811,7 @@
 					<string>-1.CustomClassName</string>
 					<string>-2.CustomClassName</string>
 					<string>108.IBPluginDependency</string>
+					<string>108.IBViewBoundsToFrameTransform</string>
 					<string>110.IBPluginDependency</string>
 					<string>112.IBPluginDependency</string>
 					<string>113.IBPluginDependency</string>
@@ -826,6 +853,9 @@
 					<string>EditPostViewController</string>
 					<string>UIResponder</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">P4AAAL+AAAAAAAAAxHSAAA</bytes>
+					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -885,7 +915,7 @@
 						<bytes key="NSTransformStruct">AcGgAADBoAAAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{86, 0}, {783, 856}}</string>
+					<string>{{240, 0}, {783, 856}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
@@ -905,7 +935,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">204</int>
+			<int key="maxID">209</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -917,6 +947,8 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>addPhoto:</string>
+							<string>addVideo:</string>
 							<string>endEditingAction:</string>
 							<string>endTextEnteringButtonAction:</string>
 							<string>showAddNewCategoryView:</string>
@@ -924,10 +956,14 @@
 							<string>showLocationMapView:</string>
 							<string>showStatusViewAction:</string>
 							<string>switchToEdit</string>
+							<string>switchToMedia</string>
 							<string>switchToSettings</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -942,6 +978,8 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>addPhoto:</string>
+							<string>addVideo:</string>
 							<string>endEditingAction:</string>
 							<string>endTextEnteringButtonAction:</string>
 							<string>showAddNewCategoryView:</string>
@@ -949,10 +987,19 @@
 							<string>showLocationMapView:</string>
 							<string>showStatusViewAction:</string>
 							<string>switchToEdit</string>
+							<string>switchToMedia</string>
 							<string>switchToSettings</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBActionInfo">
+								<string key="name">addPhoto:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">addVideo:</string>
+								<string key="candidateClassName">id</string>
+							</object>
 							<object class="IBActionInfo">
 								<string key="name">endEditingAction:</string>
 								<string key="candidateClassName">id</string>
@@ -979,6 +1026,10 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">switchToEdit</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">switchToMedia</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">

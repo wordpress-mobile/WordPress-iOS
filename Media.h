@@ -9,6 +9,16 @@
 #import <CoreData/CoreData.h>
 #import "Blog.h"
 #import "Post.h"
+#import "WPMediaUploader.h"
+
+typedef enum {
+    MediaRemoteStatusPushing,    // Uploading post
+    MediaRemoteStatusFailed,      // Upload failed
+    MediaRemoteStatusLocal,       // Only local version
+    MediaRemoteStatusSync,       // Post uploaded
+} MediaRemoteStatus;
+
+@class WPMediaUploader;
 
 @interface Media :  NSManagedObject  
 {
@@ -28,9 +38,19 @@
 @property (nonatomic, retain) NSString * orientation;
 @property (nonatomic, retain) NSDate * creationDate;
 @property (nonatomic, readonly) NSString * html;
+@property (nonatomic, retain) NSNumber * remoteStatusNumber;
+@property (nonatomic) MediaRemoteStatus remoteStatus;
+@property (nonatomic, retain) WPMediaUploader * uploader;
+@property (nonatomic) float progress;
 
 @property (nonatomic, retain) Blog * blog;
 @property (nonatomic, retain) Post * post;
+
++ (Media *)newMediaForPost:(Post *)post;
+- (void)cancelUpload;
+- (void)upload;
+- (void)remove;
+- (void)save;
 
 @end
 

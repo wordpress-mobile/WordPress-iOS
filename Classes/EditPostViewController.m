@@ -97,6 +97,20 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
 }
 
+- (IBAction)switchToMedia {
+    if (currentView != postMediaViewController.view) {
+        [self switchToView:postMediaViewController.view];
+    }
+}
+
+- (IBAction)addVideo:(id)sender {
+    [postMediaViewController showVideoPickerActionSheet:sender];
+}
+
+- (IBAction)addPhoto:(id)sender {
+    [postMediaViewController showPhotoPickerActionSheet:sender];
+}
+
 #pragma mark -
 #pragma mark View lifecycle
 
@@ -118,7 +132,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
     postSettingsController = [[PostSettingsViewController alloc] initWithNibName:@"PostSettingsViewController" bundle:nil];
     postSettingsController.postDetailViewController = self;
     postSettingsController.view.frame = editView.frame;
-
+    
+    postMediaViewController = [[PostMediaViewController alloc] initWithNibName:@"PostMediaViewController" bundle:nil];
+    postMediaViewController.postDetailViewController = self;
+    postMediaViewController.view.frame = editView.frame;
+    
 	self.navigationItem.title = @"Write";
 	statuses = [NSArray arrayWithObjects:@"Local Draft", @"Draft", @"Private", @"Pending Review", @"Published", nil];
 		
@@ -684,6 +702,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if (replaceCount > 0) {
         // update the textView's text
         aTextView.text = updatedText;
+        self.apost.content = updatedText;
 		
         // leave cursor at end of inserted text
         endRange.location += text.length + replaceCount * 1; // length diff of "&nbsp" and "&#160;" is 1 character
@@ -742,6 +761,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			break;
 	}
 	
+    self.apost.content = textView.text;
     if (searchRes && dismiss != YES) {
         [textView resignFirstResponder];
         UIAlertView *linkAlert = [[UIAlertView alloc] initWithTitle:@"Make a Link" message:@"Would you like help making a link?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Make a Link", nil];
@@ -893,11 +913,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	Media *media = (Media *)[notification object];
 	NSString *prefix = @"<br/><br/>";
 	
-	if(textView.text == nil)
-		textView.text = @"";
-	else if([textView.text isEqualToString:kTextViewPlaceholder]) {
-		textViewPlaceHolderField.hidden = YES;
-        textView.textColor = [UIColor blackColor];
+	if(self.apost.content == nil || [self.apost.content isEqualToString:@""]) {
 		textView.text = @"";
 		prefix = @"";
 	}
@@ -905,30 +921,28 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	NSMutableString *content = [[[NSMutableString alloc] initWithString:media.html] autorelease];
 	NSRange imgHTML = [textView.text rangeOfString:content];
 	if (imgHTML.location == NSNotFound) {
-		[content appendString:[NSString stringWithFormat:@"%@%@", prefix, textView.text]];
-		textView.text = content;
+		[content appendString:[NSString stringWithFormat:@"%@%@", prefix, self.apost.content]];
+        self.post.content = content;
 	}
+    [self refreshUIForCurrentPost];
 }
 
 - (void)insertMediaBelow:(NSNotification *)notification {
 	Media *media = (Media *)[notification object];
 	NSString *prefix = @"<br/><br/>";
 	
-	if(textView.text == nil)
-		textView.text = @"";
-	else if([textView.text isEqualToString:kTextViewPlaceholder]) {
-		textViewPlaceHolderField.hidden = YES;
-        textView.textColor = [UIColor blackColor];
+	if(self.apost.content == nil || [self.apost.content isEqualToString:@""]) {
 		textView.text = @"";
 		prefix = @"";
 	}
 	
-	NSMutableString *content = [[[NSMutableString alloc] initWithString:textView.text] autorelease];
+	NSMutableString *content = [[[NSMutableString alloc] initWithString:self.apost.content] autorelease];
 	NSRange imgHTML = [content rangeOfString:media.html];
 	if (imgHTML.location == NSNotFound) {
 		[content appendString:[NSString stringWithFormat:@"%@%@", prefix, media.html]];
-		textView.text = content;
+        self.apost.content = content;
 	}
+    [self refreshUIForCurrentPost];
 }
 
 - (void)removeMedia:(NSNotification *)notification {
@@ -1149,6 +1163,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)dealloc {
 //	[statuses release];
+    [postMediaViewController release];
+    [postSettingsController release];
     [writeButton release];
     [settingsButton release];
 	[textView release];

@@ -328,6 +328,7 @@
 								<reference key="IBUIToolbar" ref="458393363"/>
 							</object>
 							<object class="IBUIBarButtonItem" id="213074190">
+								<int key="IBUITag">2</int>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">movie.png</string>
@@ -337,6 +338,7 @@
 								<reference key="IBUIToolbar" ref="458393363"/>
 							</object>
 							<object class="IBUIBarButtonItem" id="394056374">
+								<int key="IBUITag">1</int>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">photos.png</string>
@@ -581,6 +583,30 @@
 						<reference key="destination" ref="372490531"/>
 					</object>
 					<int key="connectionID">360</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">switchToMedia</string>
+						<reference key="source" ref="475885401"/>
+						<reference key="destination" ref="372490531"/>
+					</object>
+					<int key="connectionID">361</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">addVideo:</string>
+						<reference key="source" ref="213074190"/>
+						<reference key="destination" ref="372490531"/>
+					</object>
+					<int key="connectionID">364</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">addPhoto:</string>
+						<reference key="source" ref="394056374"/>
+						<reference key="destination" ref="372490531"/>
+					</object>
+					<int key="connectionID">365</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -886,7 +912,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">360</int>
+			<int key="maxID">365</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -898,6 +924,8 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>addPhoto:</string>
+							<string>addVideo:</string>
 							<string>endEditingAction:</string>
 							<string>endTextEnteringButtonAction:</string>
 							<string>showAddNewCategoryView:</string>
@@ -905,10 +933,14 @@
 							<string>showLocationMapView:</string>
 							<string>showStatusViewAction:</string>
 							<string>switchToEdit</string>
+							<string>switchToMedia</string>
 							<string>switchToSettings</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -923,6 +955,8 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>addPhoto:</string>
+							<string>addVideo:</string>
 							<string>endEditingAction:</string>
 							<string>endTextEnteringButtonAction:</string>
 							<string>showAddNewCategoryView:</string>
@@ -930,10 +964,19 @@
 							<string>showLocationMapView:</string>
 							<string>showStatusViewAction:</string>
 							<string>switchToEdit</string>
+							<string>switchToMedia</string>
 							<string>switchToSettings</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBActionInfo">
+								<string key="name">addPhoto:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">addVideo:</string>
+								<string key="candidateClassName">id</string>
+							</object>
 							<object class="IBActionInfo">
 								<string key="name">endEditingAction:</string>
 								<string key="candidateClassName">id</string>
@@ -960,6 +1003,10 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">switchToEdit</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">switchToMedia</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">

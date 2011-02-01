@@ -9,22 +9,20 @@
 #import "PostMediaViewController.h"
 #import "EditPostViewController.h"
 
+#define TAG_ACTIONSHEET_PHOTO 1
+#define TAG_ACTIONSHEET_VIDEO 2
+
 @implementation PostMediaViewController
-@synthesize table, addMediaButton, hasPhotos, hasVideos, isAddingMedia, photos, videos, appDelegate, dm, addPopover, picker;
+@synthesize table, addMediaButton, hasPhotos, hasVideos, isAddingMedia, photos, videos, addPopover, picker;
 @synthesize isShowingMediaPickerActionSheet, currentOrientation, isShowingChangeOrientationActionSheet, spinner, pickerContainer;
 @synthesize currentImage, currentVideo, isLibraryMedia, didChangeOrientationDuringRecord, messageLabel;
-@synthesize postDetailViewController, mediaManager, postID, blogURL, mediaUploader, bottomToolbar;
+@synthesize postDetailViewController, postID, blogURL, bottomToolbar;
 @synthesize isShowingResizeActionSheet, videoEnabled, currentUpload, videoPressCheckBlogURL, isCheckingVideoCapability, uniqueID;
 
 #pragma mark -
 #pragma mark View lifecycle
 
 - (void)initObjects {
-	if(DeviceIsPad() == YES)
-		mediaUploader = [[WPMediaUploader alloc] initWithNibName:@"WPMediaUploader-iPad" bundle:nil];
-	else
-		mediaUploader = [[WPMediaUploader alloc] initWithNibName:@"WPMediaUploader" bundle:nil];
-	mediaManager = [[MediaManager alloc] init];
 	photos = [[NSMutableArray alloc] init];
 	videos = [[NSMutableArray alloc] init];
 }
@@ -32,7 +30,6 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
 		[self initObjects];
-		[self refreshProperties];
     }
 	
     return self;
@@ -44,13 +41,11 @@
 	
 	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
 	
-	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	picker = [[WPImagePickerController alloc] init];
 	picker.delegate = self;
 	picker.allowsEditing = NO;
 	
 	[self initObjects];
-	[self refreshProperties];
 	[self performSelectorInBackground:@selector(checkVideoEnabled) withObject:nil];
 	
     [self addNotifications];
@@ -62,7 +57,6 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:ImageUploadSuccessful object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaUploadFailed:) name:VideoUploadFailed object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaUploadFailed:) name:ImageUploadFailed object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shouldDeleteMedia:) name:@"ShouldDeleteMedia"	object:nil];
 }
 
 - (void)removeNotifications{
@@ -74,12 +68,11 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-	[self removemediaUploader:nil finished:YES context:nil];
 	[super viewWillDisappear:animated];
 }
 
 - (void)viewDidUnload {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self removeNotifications];
 	[super viewDidUnload];
 }
 
@@ -112,43 +105,44 @@
     else
         filesizeString = [NSString stringWithFormat:@"%.2f KB", [media.filesize floatValue]];
     
-    if ([media.mediaType isEqualToString:@"image"]) {
-        if(media.title != nil)
-            cell.textLabel.text = media.title;
-        else
-            cell.textLabel.text = media.filename;
-        
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%dx%d %@", 
-                                     [media.width intValue], [media.height intValue], filesizeString];        
-    } else if ([media.mediaType isEqualToString:@"video"]) {
-        if(media.title != nil)
-            cell.textLabel.text = media.title;
-        else
-            cell.textLabel.text = media.filename;
-        
-        NSNumber *valueForDisplay = [NSNumber numberWithDouble:[media.length doubleValue]];
-        NSNumber *days = [NSNumber numberWithDouble:
-                          ([valueForDisplay doubleValue] / 86400)];
-        NSNumber *hours = [NSNumber numberWithDouble:
-                           (([valueForDisplay doubleValue] / 3600) -
-                            ([days intValue] * 24))];
-        NSNumber *minutes = [NSNumber numberWithDouble:
-                             (([valueForDisplay doubleValue] / 60) -
-                              ([days intValue] * 24 * 60) -
-                              ([hours intValue] * 60))];
-        NSNumber *seconds = [NSNumber numberWithInt:([valueForDisplay intValue] % 60)];
-        
-        if([media.filesize floatValue] > 1024)
-            filesizeString = [NSString stringWithFormat:@"%.2f MB", ([media.filesize floatValue]/1024)];
-        else
-            filesizeString = [NSString stringWithFormat:@"%.2f KB", [media.filesize floatValue]];
-        
-        cell.detailTextLabel.text = [NSString stringWithFormat:
-                                     @"%02d:%02d:%02d %@",
-                                     [hours intValue],
-                                     [minutes intValue],
-                                     [seconds intValue], 
-                                     filesizeString];
+    if(media.title != nil)
+        cell.textLabel.text = media.title;
+    else
+        cell.textLabel.text = media.filename;
+
+    if (media.remoteStatus == MediaRemoteStatusPushing) {
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"Uploading: %.1f%%. Tap to cancel", media.progress * 100.0];
+    } else if (media.remoteStatus == MediaRemoteStatusFailed) {
+        cell.detailTextLabel.text = @"Failed. Tap to retry";
+    } else {
+        if ([media.mediaType isEqualToString:@"image"]) {
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%dx%d %@", 
+                                         [media.width intValue], [media.height intValue], filesizeString];        
+        } else if ([media.mediaType isEqualToString:@"video"]) {
+            NSNumber *valueForDisplay = [NSNumber numberWithDouble:[media.length doubleValue]];
+            NSNumber *days = [NSNumber numberWithDouble:
+                              ([valueForDisplay doubleValue] / 86400)];
+            NSNumber *hours = [NSNumber numberWithDouble:
+                               (([valueForDisplay doubleValue] / 3600) -
+                                ([days intValue] * 24))];
+            NSNumber *minutes = [NSNumber numberWithDouble:
+                                 (([valueForDisplay doubleValue] / 60) -
+                                  ([days intValue] * 24 * 60) -
+                                  ([hours intValue] * 60))];
+            NSNumber *seconds = [NSNumber numberWithInt:([valueForDisplay intValue] % 60)];
+            
+            if([media.filesize floatValue] > 1024)
+                filesizeString = [NSString stringWithFormat:@"%.2f MB", ([media.filesize floatValue]/1024)];
+            else
+                filesizeString = [NSString stringWithFormat:@"%.2f KB", [media.filesize floatValue]];
+            
+            cell.detailTextLabel.text = [NSString stringWithFormat:
+                                         @"%02d:%02d:%02d %@",
+                                         [hours intValue],
+                                         [minutes intValue],
+                                         [seconds intValue], 
+                                         filesizeString];
+        }
     }
 
 	[cell.imageView setBounds:CGRectMake(0, 0, 75, 75)];
@@ -168,15 +162,24 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	MediaObjectViewController *mediaView = [[MediaObjectViewController alloc] initWithNibName:@"MediaObjectView" bundle:nil];
     Media *media = [self.resultsController objectAtIndexPath:indexPath];
-    [mediaView setMedia:media];
 
-	if(DeviceIsPad() == YES)
-		[appDelegate.splitViewController presentModalViewController:mediaView animated:YES];
-	else
-		[appDelegate.navigationController pushViewController:mediaView animated:YES];
-	[mediaView release];
+    if (media.remoteStatus == MediaRemoteStatusFailed) {
+        [media upload];
+    } else if (media.remoteStatus == MediaRemoteStatusPushing) {
+        [media cancelUpload];
+    } else {
+        MediaObjectViewController *mediaView = [[MediaObjectViewController alloc] initWithNibName:@"MediaObjectView" bundle:nil];
+        [mediaView setMedia:media];
+
+        WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        if(DeviceIsPad() == YES)
+            [appDelegate.splitViewController presentModalViewController:mediaView animated:YES];
+        else
+            [appDelegate.navigationController pushViewController:mediaView animated:YES];
+        [mediaView release];
+    }
+
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
@@ -188,57 +191,20 @@
 	if (editingStyle == UITableViewCellEditingStyleDelete)
 	{
         [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldRemoveMedia" object:[self.resultsController objectAtIndexPath:indexPath]];
-        [self deleteMedia:[self.resultsController objectAtIndexPath:indexPath]];
-		
-		[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
+        Media *media = [self.resultsController objectAtIndexPath:indexPath];
+        [media remove];
+        [media save];
 	}
-	[self refreshMedia];
 }
 
 #pragma mark -
 #pragma mark Custom methods
 
-- (IBAction)refreshMedia {
-	if(isAddingMedia == YES) {
-		self.messageLabel.text = @"Adding media...";
-		[self.spinner startAnimating];
-	}
-	else {
-//		photos = [[mediaManager getForPostID:self.postDetailViewController.post.postID andBlogURL:self.blogURL andMediaType:kImage] retain];
-//		videos = [[mediaManager getForPostID:self.postDetailViewController.post.postID andBlogURL:self.blogURL andMediaType:kVideo] retain];
-		
-//		if(photos.count == 0)
-//			photos = [[mediaManager getForBlogURL:self.blogURL andMediaType:kImage] retain];
-//		if(videos.count == 0)
-//			videos = [[mediaManager getForBlogURL:self.blogURL andMediaType:kVideo] retain];
-	}
-	[self updateMediaCount];
-    [self.table reloadData];
-	[self.spinner stopAnimating];
-}
-
-- (void)updateMediaCount {
-	int mediaCount = 0;
-    mediaCount = [[self.resultsController fetchedObjects] count];
-	
-	switch (mediaCount) {
-		case 0:
-			self.messageLabel.text = @"No media items.";
-			break;
-		case 1:
-			self.messageLabel.text = [NSString stringWithFormat:@"%d media item.", mediaCount];
-			break;
-		default:
-			self.messageLabel.text = [NSString stringWithFormat:@"%d media items.", mediaCount];
-			break;
-	}
-}
-
 - (void)scaleAndRotateImage:(UIImage *)image {
 	NSLog(@"scaling and rotating image...");
 }
 
-- (IBAction)showPhotoPickerActionSheet {
+- (IBAction)showVideoPickerActionSheet:(id)sender {
     isShowingMediaPickerActionSheet = YES;
 	isAddingMedia = YES;
 	
@@ -248,25 +214,45 @@
 												  delegate:self 
 										 cancelButtonTitle:@"Cancel" 
 									destructiveButtonTitle:nil 
-										 otherButtonTitles:@"Add Media from Library",@"Take Photo",@"Record Video",nil];
-	}
-	else if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-		actionSheet = [[UIActionSheet alloc] initWithTitle:@"" 
-												  delegate:self 
-										 cancelButtonTitle:@"Cancel" 
-									destructiveButtonTitle:nil 
-										 otherButtonTitles:@"Add Media from Library",@"Take Photo",nil];
+										 otherButtonTitles:@"Add Video from Library",@"Record Video",nil];
 	}
 	else {
+        isShowingMediaPickerActionSheet = NO;
+        [self pickPhotoFromPhotoLibrary:sender];
+        return;
+	}
+	
+    actionSheet.tag = TAG_ACTIONSHEET_VIDEO;
+    actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+	[actionSheet showInView:postDetailViewController.view];
+    WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    [appDelegate setAlertRunning:YES];
+	
+    [actionSheet release];
+}
+
+- (IBAction)showPhotoPickerActionSheet:(id)sender {
+    isShowingMediaPickerActionSheet = YES;
+	isAddingMedia = YES;
+	
+	UIActionSheet *actionSheet;
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
 		actionSheet = [[UIActionSheet alloc] initWithTitle:@"" 
 												  delegate:self 
 										 cancelButtonTitle:@"Cancel" 
 									destructiveButtonTitle:nil 
-										 otherButtonTitles:@"Add Media from Library",nil];
+										 otherButtonTitles:@"Add Photo from Library",@"Take Photo",nil];
+	}
+	else {
+        isShowingMediaPickerActionSheet = NO;
+        [self pickPhotoFromPhotoLibrary:sender];
+        return;
 	}
 	
+    actionSheet.tag = TAG_ACTIONSHEET_PHOTO;
     actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-	[actionSheet showInView:super.tabBarController.view];
+	[actionSheet showInView:postDetailViewController.view];
+    WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     [appDelegate setAlertRunning:YES];
 	
     [actionSheet release];
@@ -277,36 +263,24 @@
 		switch (actionSheet.numberOfButtons) {
 			case 2:
 				if(buttonIndex == 0)
-					[self pickPhotoFromPhotoLibrary:self];
+					[self pickPhotoFromPhotoLibrary:actionSheet];
 				else {
 					self.isAddingMedia = NO;
 				}
 				break;
 			case 3:
 				if(buttonIndex == 0) {
-					[self pickPhotoFromPhotoLibrary:self];
+					[self pickPhotoFromPhotoLibrary:actionSheet];
 				}
 				else if(buttonIndex == 1) {
-					[self pickPhotoFromCamera:self];
+                    if (actionSheet.tag == TAG_ACTIONSHEET_VIDEO) {
+                        [self pickVideoFromCamera:actionSheet];
+                    } else {
+                        [self pickPhotoFromCamera:actionSheet];
+                    }
 				}
 				else {
 					self.isAddingMedia = NO;
-				}
-				break;
-			case 4:
-				switch (buttonIndex) {
-					case 0:
-						[self pickPhotoFromPhotoLibrary:self];
-						break;
-					case 1:
-						[self pickPhotoFromCamera:self];
-						break;
-					case 2:
-						[self pickVideoFromCamera:self];
-						break;
-					default:
-						self.isAddingMedia = NO;
-						break;
 				}
 				break;
 			default:
@@ -344,6 +318,7 @@
 		self.isShowingResizeActionSheet = NO;
 	}
 	else {
+        WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         [appDelegate setAlertRunning:NO];
 		
         [currentImage release];
@@ -362,6 +337,7 @@
 			pickerContainer = [[UIViewController alloc] init];
 		
 		pickerContainer.view.frame = CGRectMake(0, 0, 320, 480);
+        WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
 		[appDelegate.navigationController.view addSubview:pickerContainer.view];
 		[appDelegate.navigationController.view bringSubviewToFront:pickerContainer.view];
 		[pickerContainer presentModalViewController:picker animated:YES];
@@ -399,6 +375,7 @@
 		pickerContainer = [[UIViewController alloc] init];
 	
 	pickerContainer.view.frame = CGRectMake(0, 0, 320, 480);
+    WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
 	[appDelegate.navigationController.view addSubview:pickerContainer.view];
 	[appDelegate.navigationController.view bringSubviewToFront:pickerContainer.view];
 	[pickerContainer presentModalViewController:picker animated:YES];
@@ -439,23 +416,34 @@
 
 - (void)pickPhotoFromPhotoLibrary:(id)sender {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-		NSArray *availableMediaTypes = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-		[picker setMediaTypes:availableMediaTypes];
+        if (DeviceIsPad() && addPopover != nil) {
+            [addPopover dismissPopoverAnimated:YES];
+            [addPopover release];
+            addPopover = nil;
+        }        
         picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        if ([(UIView *)sender tag] == TAG_ACTIONSHEET_VIDEO) {
+            picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeMovie];
+        } else {
+            picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
+        }
 		isLibraryMedia = YES;
 		
 		if(DeviceIsPad() == YES) {
             if (addPopover == nil) {
                 addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
                 addPopover.delegate = self;
-                [addPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
             }
+            
+            [addPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            [[CPopoverManager instance] setCurrentPopoverController:addPopover];
 		}
 		else {
 			if(pickerContainer == nil)
 				pickerContainer = [[UIViewController alloc] init];
 			
 			pickerContainer.view.frame = CGRectMake(0, 0, 320, 480);
+            WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
 			[appDelegate.navigationController.view addSubview:pickerContainer.view];
 			[appDelegate.navigationController.view bringSubviewToFront:pickerContainer.view];
 			[pickerContainer presentModalViewController:picker animated:YES];
@@ -475,7 +463,7 @@
 															   cancelButtonTitle:@"Portrait" 
 														  destructiveButtonTitle:nil 
 															   otherButtonTitles:@"Landscape", nil];
-	[orientationActionSheet showInView:super.tabBarController.view];
+	[orientationActionSheet showInView:postDetailViewController.view];
 	[orientationActionSheet release];
 }
 
@@ -487,7 +475,7 @@
 															  cancelButtonTitle:nil 
 														 destructiveButtonTitle:nil 
 															  otherButtonTitles:@"Small", @"Medium", @"Large", @"Original", nil];
-		[resizeActionSheet showInView:super.tabBarController.view];
+		[resizeActionSheet showInView:postDetailViewController.view];
 		[resizeActionSheet release];
 	}
 }
@@ -498,7 +486,6 @@
 
 - (void)imagePickerController:(UIImagePickerController *)thePicker didFinishPickingMediaWithInfo:(NSDictionary *)info {
 	if([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.movie"]) {
-		[self refreshMedia];
 		self.currentVideo = [info retain];
 		if(self.didChangeOrientationDuringRecord == YES)
 			[self showOrientationChangedActionSheet];
@@ -577,9 +564,7 @@
 	if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(tempVideoPath)) {
 		UISaveVideoAtPathToSavedPhotosAlbum(tempVideoPath, self, @selector(video:didFinishSavingWithError:contextInfo:), tempVideoPath);
 	}
-	[tempVideoPath release];
-	
-	[self refreshMedia];
+	[tempVideoPath release];	
 }
 
 - (void)processLibraryVideo {
@@ -620,7 +605,6 @@
 		[self useVideo:videoPath withThumbnail:thumbnail andDuration:duration];
 		self.currentVideo = nil;
 		self.isLibraryMedia = NO;
-		[self refreshMedia];
 		[videoPath release];
 	}
 	[videoURL release];
@@ -761,7 +745,7 @@
 }
 
 - (void)useImage:(UIImage *)theImage {
-	Media *imageMedia = [mediaManager get:nil];
+	Media *imageMedia = [Media newMediaForPost:postDetailViewController.post];
 	NSData *imageData = UIImageJPEGRepresentation(theImage, 0.90);
 	UIImage *imageThumbnail = [self generateThumbnailFromImage:theImage andSize:CGSizeMake(75, 75)];
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -774,8 +758,6 @@
 	NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
 	[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
 	
-	imageMedia.post = self.postDetailViewController.post;
-	imageMedia.blog = self.postDetailViewController.post.blog;
 	if(currentOrientation == kLandscape)
 		imageMedia.orientation = @"landscape";
 	else
@@ -788,17 +770,11 @@
 	imageMedia.thumbnail = UIImageJPEGRepresentation(imageThumbnail, 0.90);
 	imageMedia.width = [NSNumber numberWithInt:theImage.size.width];
 	imageMedia.height = [NSNumber numberWithInt:theImage.size.height];
-	[mediaManager save:imageMedia];
-	
-	// Save to remote server
-    self.currentUpload = imageMedia;
-	[self uploadMedia:imageData withFilename:filename andLocalURL:imageMedia.localURL andMediaType:kImage];
-	
-	//[self updatePhotosBadge];
+    [imageMedia upload];
 	
 	isAddingMedia = NO;
 	[formatter release];
-	[self refreshMedia];
+    [imageMedia release];
 }
 
 - (void)useVideo:(NSString *)videoURL withThumbnail:(UIImage *)thumbnail andDuration:(float)duration {
@@ -825,14 +801,8 @@
 	}
 	
 	if(copySuccess == YES) {
-		[mediaManager doReport];
-		videoMedia = [(Media *)[NSEntityDescription insertNewObjectForEntityForName:@"Media" 
-															 inManagedObjectContext:appDelegate.managedObjectContext] retain];
-		[mediaManager doReport];
+		videoMedia = [Media newMediaForPost:postDetailViewController.post];
 		
-		// Save to local database
-		videoMedia.post = self.postDetailViewController.post;
-		videoMedia.blog = self.postDetailViewController.post.blog;
 		if(currentOrientation == kLandscape)
 			videoMedia.orientation = @"landscape";
 		else
@@ -850,22 +820,9 @@
 		NSUInteger videoHeight = CGImageGetHeight(cgVideoThumbnail);
 		videoMedia.width = [NSNumber numberWithInt:videoWidth];
 		videoMedia.height = [NSNumber numberWithInt:videoHeight];
-		
-		// Save to db
-		[mediaManager doReport];
-		NSError *error;
-		if (![appDelegate.managedObjectContext save:&error]) {
-			NSLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
-			exit(-1);
-		}
-		
-		// Save to remote server
-		[self uploadMedia:nil withFilename:filename andLocalURL:videoMedia.localURL andMediaType:kVideo];
-		
-		//[self updatePhotosBadge];
-		
+
+		[videoMedia upload];
 		isAddingMedia = NO;
-		[self refreshMedia];
 	}
 	else {
 		UIAlertView *videoAlert = [[UIAlertView alloc] initWithTitle:@"Error Copying Video" 
@@ -879,62 +836,7 @@
     [formatter release];
     [filename release];
     [filepath release];
-}
-
-- (NSString *)getUUID
-{
-	CFUUIDRef theUUID = CFUUIDCreate(NULL);
-	CFStringRef string = CFUUIDCreateString(NULL, theUUID);
-	CFRelease(theUUID);
-	return [(NSString *)string autorelease];
-}
-
-- (void)uploadMedia:(NSData *)bits withFilename:(NSString *)filename andLocalURL:(NSString *)localURL andMediaType:(MediaType)mediaType {
-	@try {
-		CGRect iPhoneFrameStart = CGRectMake(0, 480, 320, 40);
-		CGRect iPhoneFrameEnd = CGRectMake(0, 324, 320, 40);
-		CGRect iPadFrameStart = CGRectMake(30, self.view.frame.size.height, bottomToolbar.frame.size.width-300, bottomToolbar.frame.size.height);
-		CGRect iPadFrameEnd = CGRectMake(30, self.view.frame.size.height - 44, bottomToolbar.frame.size.width-300, bottomToolbar.frame.size.height);
-		
-		NSFileManager *fileManager = [NSFileManager defaultManager];
-		
-		if(mediaType == kImage) {
-			[mediaUploader setBits:bits];
-			[mediaUploader setLocalURL:localURL];
-		}
-		else if(mediaType == kVideo) {
-			[mediaUploader setLocalURL:localURL];
-		}
-		
-		[mediaUploader setFilename:filename];
-		[mediaUploader setOrientation:currentOrientation];
-		[mediaUploader setMediaType:mediaType];
-		
-		NSDictionary *fileAttributes = [fileManager fileAttributesAtPath:filename traverseLink:YES];
-		if(fileAttributes != nil)
-			[mediaUploader setFilesize:[[fileAttributes objectForKey:@"NSFileSize"] floatValue]];
-		[mediaUploader start];
-		
-		if(DeviceIsPad() == YES)
-			[mediaUploader.view setFrame:iPadFrameStart];
-		else
-			[mediaUploader.view setFrame:iPhoneFrameStart];
-		[UIView beginAnimations:@"Adding mediaUploader" context:nil];
-		[UIView setAnimationDuration:0.4];
-		if(DeviceIsPad() == YES)
-			[mediaUploader.view setFrame:iPadFrameEnd];
-		else
-			[mediaUploader.view setFrame:iPhoneFrameEnd];
-		[self.view addSubview:mediaUploader.view];
-		[UIView commitAnimations];
-		[[NSNotificationCenter defaultCenter] postNotificationName:VideoSaved object:filename];
-	}
-	@catch (NSException *ex) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:VideoUploadFailed object:nil];
-	}
-	@finally {
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	}
+    [videoMedia release];
 }
 
 - (BOOL)supportsVideo {
@@ -947,52 +849,24 @@
 }
 
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification {
-	if(self.currentUpload != nil) {
-		NSDictionary *mediaData = [notification userInfo];
-		Media *media = self.currentUpload;
-        if ((media == nil) || ([media isDeleted])) {
-            // FIXME: media deleted during upload should cancel the upload. In the meantime, we'll try not to crash
-            NSLog(@"Media deleted while uploading (%@)", currentUpload);
-            [FlurryAPI logError:@"MediaDeleted"
-                        message:[NSString stringWithFormat:@"Media deleted while uploading (%@)", currentUpload]
-                          error:nil];
-            return;
-        }
-		media.remoteURL = [mediaData objectForKey:@"url"];
-		media.shortcode = [mediaData objectForKey:@"shortcode"];
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
-		[mediaManager update:media];
-		self.currentUpload = nil;
-	}
-	
-	[UIView beginAnimations:@"Removing mediaUploader" context:nil];
-	[UIView setAnimationDuration:0.4];
-	[UIView setAnimationDelegate:self];
-	[UIView setAnimationDidStopSelector:@selector(removemediaUploader:finished:context:)];
-	[mediaUploader.view setFrame:CGRectMake(0, self.view.frame.size.height + 800, 320, 40)];
-	[UIView commitAnimations];
+    Media *media = (Media *)[notification object];
+    if ((media == nil) || ([media isDeleted])) {
+        // FIXME: media deleted during upload should cancel the upload. In the meantime, we'll try not to crash
+        NSLog(@"Media deleted while uploading (%@)", media);
+        [FlurryAPI logError:@"MediaDeleted"
+                    message:[NSString stringWithFormat:@"Media deleted while uploading (%@)", currentUpload]
+                      error:nil];
+        return;
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
+    [media save];
 	self.isAddingMedia = NO;
-	[self refreshMedia];
 }
 
 - (void)mediaUploadFailed:(NSNotification *)notification {
-	if (self.currentUpload != nil) {
-		Media *media = self.currentUpload;
-		[self deleteMedia:media];
-	}
-	[UIView beginAnimations:@"Removing mediaUploader" context:nil];
-	[UIView setAnimationDuration:4.0];
-	[UIView setAnimationDelegate:self];
-	[UIView setAnimationDidStopSelector:@selector(removemediaUploader:finished:context:)];
-	[mediaUploader.view setFrame:CGRectMake(0, self.view.frame.size.height + 800, 320, 40)];
-	[UIView commitAnimations];
+    Media *media = (Media *)[notification object];
+    [media remove];
 	self.isAddingMedia = NO;
-	[self refreshMedia];
-}
-
-- (void)removemediaUploader:(NSString *)animationID finished:(BOOL)finished context:(void *)context {
-	[mediaUploader.view removeFromSuperview];
-	[mediaUploader reset];
 }
 
 - (void)deviceDidRotate:(NSNotification *)notification {
@@ -1062,84 +936,6 @@
 	[pool release];
 }
 
-- (void)deleteMedia:(Media *)media {
-	// TO DO: Gross.
-	if([mediaManager exists:media.objectID] == YES) {
-		NSMutableArray *photoIndexesToRemove = [[NSMutableArray alloc] init];
-		NSMutableArray *videoIndexesToRemove = [[NSMutableArray alloc] init];
-		if([media.mediaType isEqualToString:@"image"]) {
-			int index = 0;
-			for(Media *photo in photos) {
-				if([photo isEqual:media] == YES) {
-					[photoIndexesToRemove addObject:[NSNumber numberWithInt:index]];
-				}
-				index++;
-			}
-		}
-		else if([media.mediaType isEqualToString:@"video"]) {
-			int index = 0;
-			for(Media *video in videos) {
-				if([video isEqual:media] == YES) {
-					[videoIndexesToRemove addObject:[NSNumber numberWithInt:index]];
-				}
-				index++;
-			}
-		}
-		
-		for(NSNumber *index in photoIndexesToRemove) {
-			[mediaManager remove:[photos objectAtIndex:[index intValue]]];
-			[photos removeObjectAtIndex:[index intValue]];
-		}
-        [photoIndexesToRemove release];
-		
-		for(NSNumber *index in videoIndexesToRemove) {
-			[mediaManager remove:[videos objectAtIndex:[index intValue]]];
-			[videos removeObjectAtIndex:[index intValue]];
-		}
-        [videoIndexesToRemove release];
-	}
-}
-
-- (void)shouldDeleteMedia:(NSNotification *)notification {
-	[FlurryAPI logEvent:@"PostMedia#shouldDeleteMedia"];
-	[self deleteMedia:[notification object]];
-	[self refreshMedia];
-}
-
-- (void)refreshProperties {
-	self.blogURL = [dm.currentBlog objectForKey:@"url"];
-	NSString *postIDString = nil;
-	if([dm.currentPost objectForKey:@"postid"] != nil)
-		postIDString = [NSString stringWithFormat:@"%@", [dm.currentPost objectForKey:@"postid"]];
-	
-	NSString *pageIDString = nil;
-	if([dm.currentPost objectForKey:@"page_id"] != nil)
-		pageIDString = [NSString stringWithFormat:@"%@", [dm.currentPost objectForKey:@"page_id"]];
-	
-	if(((postIDString != nil)) && ([postIDString isEqualToString:@""] == NO))
-		self.postID = postIDString;
-	else if(((pageIDString != nil)) && ([pageIDString isEqualToString:@""] == NO))
-		self.postID = pageIDString;
-	else if(appDelegate.postID != nil)
-		self.postID = appDelegate.postID;
-	else
-		self.postID = @"unsavedpost";
-	
-	[self refreshMedia];
-}
-
-- (IBAction)cancelPendingUpload:(id)sender {
-    if (mediaUploader) {
-        [mediaUploader cancelAction:self];
-        [self removemediaUploader:nil finished:YES context:nil];
-        if (self.currentUpload != nil) {
-            Media *media = self.currentUpload;
-            [self deleteMedia:media];
-            [self refreshMedia];
-        }
-    }
-}
-
 #pragma mark -
 #pragma mark Results Controller
 
@@ -1148,6 +944,7 @@
         return resultsController;
     }
     
+    WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:@"Media" inManagedObjectContext:appDelegate.managedObjectContext]];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"post == %@", self.postDetailViewController.post]];
@@ -1202,10 +999,8 @@
 	[bottomToolbar release];
 	[videoPressCheckBlogURL release];
 	[currentUpload release];
-	[mediaUploader release];
 	[blogURL release];
 	[postID release];
-	[mediaManager release];
 	[messageLabel release];
 	[currentVideo release];
 	[currentImage release];

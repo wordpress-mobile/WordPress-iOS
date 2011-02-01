@@ -49,6 +49,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
     WPSegmentedSelectionTableViewController *segmentedTableViewController;
 	LocationController *locationController;
     PostSettingsViewController *postSettingsController;
+    PostMediaViewController *postMediaViewController;
     WPProgressHUD *spinner;
 	
     UIImage *currentChoosenImage;
@@ -126,6 +127,9 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 
 - (IBAction)switchToEdit;
 - (IBAction)switchToSettings;
+- (IBAction)switchToMedia;
+- (IBAction)addVideo:(id)sender;
+- (IBAction)addPhoto:(id)sender;
 - (void)refreshButtons;
 - (void)dismissEditView;
 

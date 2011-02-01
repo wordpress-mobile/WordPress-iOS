@@ -7,39 +7,34 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BlogDataManager.h"
 #import "NSData+Base64.h"
 #import "ASIFormDataRequest.h"
 #import "NSString+XMLExtensions.h"
+#import "SFHFKeychainUtils.h"
+#import "Media.h"
 
 enum {
 	kSendBufferSize = 32768
 };
 
+@class Media;
 @interface WPMediaUploader : UIViewController <ASIHTTPRequestDelegate, UIAlertViewDelegate> {
 	UILabel *messageLabel;
 	UIProgressView *progressView;
     UIButton *stopButton;
 	
-	MediaType mediaType;
-	MediaOrientation orientation;
     ASIFormDataRequest *request;
-	NSString *filename, *xmlrpcURL, *xmlrpcHost, *localURL, *localEncodedURL;
-	NSData *bits;
-	float filesize;
 	BOOL isAtomPub;
 }
 
 @property (nonatomic, retain) IBOutlet UILabel *messageLabel;
 @property (nonatomic, retain) IBOutlet UIProgressView *progressView;
 @property (nonatomic, retain) IBOutlet UIButton *stopButton;
-@property (nonatomic, assign) MediaType mediaType;
-@property (nonatomic, retain) NSString *filename, *xmlrpcURL, *xmlrpcHost, *localURL, *localEncodedURL;
-@property (nonatomic, assign) float filesize;
-@property (nonatomic, assign) MediaOrientation orientation;
-@property (nonatomic, retain) NSData *bits;
 @property (nonatomic, assign) BOOL isAtomPub;
+@property (nonatomic, retain) Media *media;
+@property (nonatomic, readonly) NSString *localEncodedURL;
 
+- (id)initWithMedia:(Media *)media;
 - (void)start;
 - (void)stop;
 - (void)stopWithStatus:(NSString *)status;
@@ -52,7 +47,6 @@ enum {
 - (NSString *)xmlrpcSuffix;
 - (void)updateProgress:(NSDictionary *)values;
 - (void)base64EncodeFile;
-- (void)base64EncodeImage;
 - (void)checkAtomPub;
 - (void)showAPIAlert;
 - (void)buildXMLRPC;

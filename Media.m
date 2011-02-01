@@ -7,7 +7,7 @@
 //
 
 #import "Media.h"
-
+#import "WPDataController.h"
 
 @implementation Media 
 
@@ -26,6 +26,119 @@
 @dynamic creationDate;
 @dynamic blog;
 @dynamic post;
+@dynamic remoteStatusNumber;
+@synthesize uploader;
+
++ (Media *)newMediaForPost:(Post *)post {
+    Media *media = [[Media alloc] initWithEntity:[NSEntityDescription entityForName:@"Media"
+                                                          inManagedObjectContext:[post managedObjectContext]]
+               insertIntoManagedObjectContext:[post managedObjectContext]];
+    
+    media.blog = post.blog;
+    media.post = post;
+    
+    return media;
+}
+
+- (void)awakeFromFetch {
+    if (self.remoteStatus == MediaRemoteStatusPushing && self.uploader == nil) {
+        self.remoteStatus = MediaRemoteStatusFailed;
+    }
+}
+
+- (float)progress {
+    [self willAccessValueForKey:@"progress"];
+    NSNumber *result = [self primitiveValueForKey:@"progress"];
+    [self didAccessValueForKey:@"progress"];
+    return [result floatValue];
+}
+
+- (void)setProgress:(float)progress {
+    [self willChangeValueForKey:@"progress"];
+    [self setPrimitiveValue:[NSNumber numberWithFloat:progress] forKey:@"progress"];
+    [self didChangeValueForKey:@"progress"];
+}
+
+- (MediaRemoteStatus)remoteStatus {
+    return (MediaRemoteStatus)[[self remoteStatusNumber] intValue];
+}
+
+- (void)setRemoteStatus:(MediaRemoteStatus)aStatus {
+    [self setRemoteStatusNumber:[NSNumber numberWithInt:aStatus]];
+}
+
++ (NSString *)titleForRemoteStatus:(NSNumber *)remoteStatus {
+    switch ([remoteStatus intValue]) {
+        case MediaRemoteStatusPushing:
+            return @"Uploading";
+            break;
+        case MediaRemoteStatusFailed:
+            return @"Failed";
+            break;
+        case MediaRemoteStatusSync:
+            return @"Uploaded";
+            break;
+        default:
+            return @"Pending";
+            break;
+    }
+}
+
+- (NSString *)remoteStatusText {
+    return [Media titleForRemoteStatus:self.remoteStatusNumber];
+}
+
+- (void)remove {
+    if (self.uploader) {
+        [self.uploader stop];
+    }
+    [[self managedObjectContext] deleteObject:self];
+}
+
+- (void)save {
+    NSError *error;
+    if (![[self managedObjectContext] save:&error]) {
+        NSLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+        exit(-1);
+    }
+}
+
+- (void)uploadInBackground {
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    
+    
+    self.uploader = [[[WPMediaUploader alloc] initWithMedia:self] autorelease];
+    [self.uploader start];
+    [pool release];
+}
+
+- (void)didUploadInBackground {
+    self.remoteStatus = MediaRemoteStatusSync;
+    [self save];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"MediaUploaded" object:self];
+}
+
+- (void)failedUploadInBackground {
+    self.remoteStatus = MediaRemoteStatusFailed;
+    self.uploader = nil;
+    [self save];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"MediaUploadFailed" object:self];
+}
+
+- (void)cancelUpload {
+    [self.uploader stop];
+    [self failedUploadInBackground];
+}
+
+- (void)upload {    
+    self.remoteStatus = MediaRemoteStatusPushing;
+    [self save];
+
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    [self performSelectorInBackground:@selector(uploadInBackground) withObject:nil];    
+}
 
 - (NSString *)html {
 	NSString *result = @"";
