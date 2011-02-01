@@ -84,13 +84,13 @@ apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn
 	
 	refreshButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(initStats)];
 	
-	if (DeviceIsPad() == YES) {
+	/*if (DeviceIsPad() == YES) {
 		self.navigationItem.rightBarButtonItem = refreshButtonItem;
 		[self.view removeFromSuperview];
 		[statsPageControlViewController initWithNibName:@"StatsPageControlViewController-iPad" bundle:nil];
 		[self initWithNibName:@"StatsTableViewConroller-iPad" bundle:nil];
 		[appDelegate showContentDetailViewController:self];
-	}
+	}*/
 	
 	[self.tableView setBackgroundColor:[[UIColor alloc] initWithRed:221.0f/255.0f green:221.0f/255.0f blue:221.0f/255.0f alpha:1.0]];
 }
@@ -112,8 +112,8 @@ apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn
 	else
 	{
 		if (DeviceIsPad() == YES) {
-			[[[CPopoverManager instance] currentPopoverController] dismissPopoverAnimated:YES];
-			[appDelegate showContentDetailViewController:self];
+			//[[[CPopoverManager instance] currentPopoverController] dismissPopoverAnimated:YES];
+			//[appDelegate showContentDetailViewController:self];
 		}
 		
 		//get this party started!
@@ -137,7 +137,7 @@ apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn
 	}
 	else {
 		self.navigationItem.rightBarButtonItem = refreshButtonItem;
-		[spinner show];
+		//[spinner show];
 		statsRequest = TRUE;
 		[self refreshStats: 0 reportInterval: 0];
 	}
@@ -146,7 +146,7 @@ apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn
 -(void)getUserAPIKey {
 	if (appDelegate.isWPcomAuthenticated)
 	{
-		[spinner show];
+		//[spinner show];
 		statsData = [[NSMutableData alloc] init];
 		apiKeyConn = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://public-api.wordpress.com/get-user-blogs/1.0"]] delegate:self];
 		
@@ -362,7 +362,7 @@ apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn
 		//set up the new data in the UI
 		foundStatsData = TRUE;
 		if ([reportType isEqualToString:@"chartDaysData"] || [reportType isEqualToString:@"chartWeeksData"] || [reportType isEqualToString:@"chartMonthsData"]){
-			[spinner dismiss];
+			//[spinner dismiss];
 			NSString *chartViewURL = [[NSString alloc] init];
 			xValues = [[NSString alloc] init];
 			xValues = [xArray componentsJoinedByString:@","];
@@ -549,7 +549,7 @@ apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn
 		
 	}
 	[self.view setHidden:FALSE];
-	[spinner dismissWithClickedButtonIndex:0 animated:YES];
+	//[spinner dismissWithClickedButtonIndex:0 animated:YES];
 }
 
 -(void) showNoDataFoundError{
@@ -624,7 +624,7 @@ apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn
 	}
 	else if (textRange.location != NSNotFound){
 		[connection cancel];
-		[spinner dismiss];
+		//[spinner dismiss];
 		//it's the wrong API key, prompt for WPCom login details again
 		if(DeviceIsPad() == YES) {
 			WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController-iPad" bundle:nil];	
@@ -677,7 +677,7 @@ apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn
 
 - (void)connection: (NSURLConnection *)connection didFailWithError: (NSError *)error
 {		
-	[spinner dismissWithClickedButtonIndex:0 animated:YES];
+	//[spinner dismissWithClickedButtonIndex:0 animated:YES];
 	//UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Connection Error" 
 	//												 message:[error errorInfo] 
 	//												delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
@@ -758,7 +758,7 @@ apiKeyConn, viewsConn, postViewsConn, referrersConn, searchTermsConn, clicksConn
 		[appDelegate.currentBlog dataSave];
 		apiKeyFound = TRUE;
 		[parser abortParsing];
-		[spinner show];
+		//[spinner show];
 		//this will run the 'views' report for the past 7 days
 		[self refreshStats: 0 reportInterval: 0];
 	}

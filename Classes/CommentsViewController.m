@@ -243,8 +243,8 @@
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
-    [[BlogDataManager sharedDataManager] syncCommentsForCurrentBlog];
-    [[BlogDataManager sharedDataManager] loadCommentTitlesForCurrentBlog];
+    //[[BlogDataManager sharedDataManager] syncCommentsForCurrentBlog];
+    //[[BlogDataManager sharedDataManager] loadCommentTitlesForCurrentBlog];
 
     [self refreshCommentsList];
 

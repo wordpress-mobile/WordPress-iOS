@@ -28,9 +28,9 @@ static NSArray *__pageControlColorList = nil;
 // Load the view nib and initialize the pageNumber ivar.
 - (id)initWithPageNumber:(int)page {
     if (self = [super initWithNibName:@"StatsChartViewController" bundle:nil]) {
-		if (DeviceIsPad()){
+		/*if (DeviceIsPad()){
 			[self initWithNibName:@"StatsChartViewController-iPad" bundle:nil];
-		}
+		}*/
         pageNumber = page;
 		if (chartURL != nil){
 		
