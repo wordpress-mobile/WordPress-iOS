@@ -45,6 +45,8 @@
 	UIBarButtonItem *refreshButtonItem;
 	int loadMorePostViews, loadMoreReferrers, loadMoreSearchTerms, loadMoreClicks;
 	NSURLConnection *apiKeyConn, *viewsConn, *postViewsConn, *referrersConn, *searchTermsConn, *clicksConn, *daysConn, *weeksConn, *monthsConn;
+	UIActivityIndicatorView *activityIndicator;
+	UILabel *loading;
 }
 
 @property (nonatomic, retain) NSMutableArray *viewsData;
@@ -69,9 +71,13 @@
 @property (nonatomic, retain) StatsPageControlViewController *statsPageControlViewController;
 @property (readonly) UIBarButtonItem *refreshButtonItem;
 @property (nonatomic, retain) NSURLConnection *apiKeyConn, *viewsConn, *postViewsConn, *referrersConn, *searchTermsConn, *clicksConn, *daysConn, *weeksConn, *monthsConn;
+@property (nonatomic, retain) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, retain) UILabel *loading;
 - (void) initStats;
 - (void) getUserAPIKey;
 - (void) startParsingStats: (NSString*) xmlString withReportType: (NSString*) reportType;
 - (void) refreshStats: (int) titleIndex reportInterval: (int) intervalIndex;
 - (void) showNoDataFoundError;
+- (void) showLoadingDialog;
+- (void) hideLoadingDialog;
 @end

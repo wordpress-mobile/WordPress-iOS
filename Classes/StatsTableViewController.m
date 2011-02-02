@@ -20,7 +20,7 @@
 currentBlog, statsData, currentProperty, rootTag, 
 statsTableData, leftColumn, rightColumn, spinner, xArray, yArray, xValues, yValues, wpcomLoginTable, 
 statsPageControlViewController, refreshButtonItem,  apiKeyConn, viewsConn, postViewsConn, referrersConn, 
-searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
+searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn, activityIndicator, loading;
 #define LABEL_TAG 1 
 #define VALUE_TAG 2 
 #define FIRST_CELL_IDENTIFIER @"TrailItemCell" 
@@ -56,6 +56,8 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	[daysConn release];
 	[weeksConn release];
 	[monthsConn release];
+	[activityIndicator release];
+	[loading release];
 	[super dealloc];
 }
 
@@ -68,6 +70,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	
 	self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
 	self.view.frame = CGRectMake(0, 0, 320, 460);
+	self.tableView.sectionHeaderHeight = 30;
 	//self.tableView.allowsSelection = NO;
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	
@@ -82,6 +85,25 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 														&kCFTypeDictionaryValueCallBacks);
 	
 	refreshButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(initStats)];
+	
+	loading = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, 70.0, 16)] autorelease]; 
+	loading.center = self.view.center;
+	loading.frame = CGRectMake(loading.frame.origin.x + 15, loading.frame.origin.y - 47, loading.frame.size.width, loading.frame.size.height);
+	loading.font = [UIFont systemFontOfSize:14.0]; 
+	loading.text = @"Loading...";
+	loading.shadowColor = [UIColor whiteColor];
+	loading.shadowOffset = CGSizeMake(1,1);
+	loading.textAlignment = UITextAlignmentCenter;
+	loading.backgroundColor = [UIColor clearColor];
+	[loading setHidden:YES];
+	
+	activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+	CGRect frame = CGRectMake(loading.frame.origin.x - 20, loading.frame.origin.y - 2, 20, 20);
+	[activityIndicator setFrame: frame];
+	[activityIndicator setHidden:YES];
+	
+	[self.view addSubview:loading];
+	[self.view addSubview:activityIndicator];
 	
 	/*if (DeviceIsPad() == YES) {
 		self.navigationItem.rightBarButtonItem = refreshButtonItem;
@@ -135,16 +157,27 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	}
 	else {
 		self.navigationItem.rightBarButtonItem = refreshButtonItem;
-		//[spinner show];
 		statsRequest = TRUE;
 		[self refreshStats: 0 reportInterval: 0];
 	}
 }
 
+-(void) showLoadingDialog{
+	[activityIndicator startAnimating];
+	[activityIndicator setHidden:NO];
+	[loading setHidden:NO];
+}
+
+-(void) hideLoadingDialog{
+	[activityIndicator stopAnimating];
+	[activityIndicator setHidden:YES];
+	[loading setHidden:YES];
+}
+
 -(void)getUserAPIKey {
 	if (appDelegate.isWPcomAuthenticated)
 	{
-		//[spinner show];
+		[self showLoadingDialog];
 		statsData = [[NSMutableData alloc] init];
 		apiKeyConn = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://public-api.wordpress.com/get-user-blogs/1.0"]] delegate:self];
 		
@@ -192,6 +225,14 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 
 - (void) refreshStats: (int) titleIndex reportInterval: (int) intervalIndex {
 	//load stats into NSMutableArray objects
+	[self.tableView.tableHeaderView setHidden:YES];
+	viewsData = nil;
+	postViewsData = nil;
+	referrersData = nil;
+	searchTermsData = nil;
+	clicksData = nil;
+	[self.tableView reloadData];
+	[self showLoadingDialog];
 	foundStatsData = FALSE;
 	int days;
 	NSString *report = [[NSString alloc] init];
@@ -348,7 +389,6 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 - (void) startParsingStats: (NSString*) xmlString withReportType: (NSString*) reportType {
 	statsTableData = nil;
 	statsTableData = [[NSMutableArray alloc] init];
-	self.tableView.tableHeaderView = statsPageControlViewController.view;
 	xArray = [[NSMutableArray alloc] init];
 	yArray = [[NSMutableArray alloc] init];
 	NSData *data = [xmlString dataUsingEncoding:NSUTF8StringEncoding];
@@ -360,7 +400,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 		//set up the new data in the UI
 		foundStatsData = TRUE;
 		if ([reportType isEqualToString:@"chartDaysData"] || [reportType isEqualToString:@"chartWeeksData"] || [reportType isEqualToString:@"chartMonthsData"]){
-			//[spinner dismiss];
+			[self hideLoadingDialog];
 			NSString *chartViewURL = [[NSString alloc] init];
 			xValues = [[NSString alloc] init];
 			xValues = [xArray componentsJoinedByString:@","];
@@ -547,7 +587,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 		
 	}
 	[self.view setHidden:FALSE];
-	//[spinner dismissWithClickedButtonIndex:0 animated:YES];
+	[self hideLoadingDialog];
 }
 
 -(void) showNoDataFoundError{
@@ -618,11 +658,13 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	
 	textRange =[xmlString rangeOfString:@"Error"];
 	if ( xmlString != nil && textRange.location == NSNotFound ) {
+		self.tableView.tableHeaderView = statsPageControlViewController.view;
+		[self.tableView.tableHeaderView setHidden:NO];
 		[self startParsingStats: xmlString withReportType: reportType];
 	}
 	else if (textRange.location != NSNotFound){
 		[connection cancel];
-		//[spinner dismiss];
+		[self hideLoadingDialog];
 		//it's the wrong API key, prompt for WPCom login details again
 		if(DeviceIsPad() == YES) {
 			WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController-iPad" bundle:nil];	
@@ -675,7 +717,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 
 - (void)connection: (NSURLConnection *)connection didFailWithError: (NSError *)error
 {		
-	//[spinner dismissWithClickedButtonIndex:0 animated:YES];
+	[self hideLoadingDialog];
 	//UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Connection Error" 
 	//												 message:[error errorInfo] 
 	//												delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
@@ -756,7 +798,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 		[appDelegate.currentBlog dataSave];
 		apiKeyFound = TRUE;
 		[parser abortParsing];
-		//[spinner show];
+		[self showLoadingDialog];
 		//this will run the 'views' report for the past 7 days
 		[self refreshStats: 0 reportInterval: 0];
 	}
@@ -1014,7 +1056,9 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	}
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section 
+{
+	
 	NSString *reportName = [[NSString alloc] init];
 	switch (section) {
 		case 0:
@@ -1043,7 +1087,17 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			}
 			break;
 	}
-	return reportName;
+	
+	UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 30)] autorelease];
+	UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(20, 3, tableView.bounds.size.width - 10, 18)] autorelease];
+	label.text = reportName;
+	label.textColor = [UIColor colorWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0];
+	label.backgroundColor = [UIColor clearColor];
+	label.shadowColor = [UIColor whiteColor];
+	label.shadowOffset = CGSizeMake(1,1);
+	label.font = [UIFont boldSystemFontOfSize:16.0];
+	[headerView addSubview:label];
+	return headerView;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
