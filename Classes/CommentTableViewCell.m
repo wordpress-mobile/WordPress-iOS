@@ -117,7 +117,9 @@
 		urlLabel.text = authorURL;
 	}
 
-    postLabel.text = [@"on " stringByAppendingString:comment.postTitle];
+    if (comment.postTitle)
+        postLabel.text = [@"on " stringByAppendingString:comment.postTitle];
+
     commentLabel.text = comment.content;
     gravatarImageView.email = comment.author_email;
 }

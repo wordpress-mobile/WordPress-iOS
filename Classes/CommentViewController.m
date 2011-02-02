@@ -338,13 +338,17 @@
 #pragma mark Action Methods
 
 - (void)segmentAction:(id)sender {
-    // FIXME: restore up/down buttons
-    return;
 	if ([self.comment.status isEqualToString:@"hold"]) {
 		wasLastCommentPending = YES;
 	}else {
 		wasLastCommentPending = NO;
 	}
+    if (segmentedControl.selectedSegmentIndex == 0) {
+        [commentsViewController showPreviousComment];
+    } else {
+        [commentsViewController showNextComment];
+    }
+
 }
 
 - (void)launchDeleteCommentActionSheet {
@@ -591,7 +595,8 @@
 	commentAuthorEmailLabel.text = [comment.author_email trim];
     commentAuthorLabel.text = [comment.author trim];
     commentAuthorUrlLabel.text = [comment.author_url trim];
-    commentPostTitleLabel.text = [@"on " stringByAppendingString:[comment.postTitle trim]];
+    if (comment.postTitle)
+        commentPostTitleLabel.text = [@"on " stringByAppendingString:[comment.postTitle trim]];
     commentDateLabel.text = [@"" stringByAppendingString:[dateFormatter stringFromDate:comment.dateCreated]];
     commentBodyLabel.text = [comment.content trim];
     
@@ -621,15 +626,8 @@
 
     }
 
-    [segmentedControl setEnabled:TRUE forSegmentAtIndex:0];
-    [segmentedControl setEnabled:TRUE forSegmentAtIndex:1];
-
-// FIXME: restore up/down buttons
-//    if (currentIndex == 0) {
-//        [segmentedControl setEnabled:FALSE forSegmentAtIndex:0];
-//    } else if (currentIndex == [commentDetails count] - 1) {
-//        [segmentedControl setEnabled:FALSE forSegmentAtIndex:1];
-//    }
+    [segmentedControl setEnabled:[commentsViewController hasPreviousComment] forSegmentAtIndex:0];
+    [segmentedControl setEnabled:[commentsViewController hasNextComment] forSegmentAtIndex:1];
 }
 
 @end

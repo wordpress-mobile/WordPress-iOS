@@ -375,7 +375,7 @@
 		[self.navigationController pushViewController:self.commentViewController animated:YES];
 	} else {
 		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-		[delegate showContentDetailViewController:self.commentViewController];
+        [delegate showContentDetailViewController:self.commentViewController];
 	}
 
     [self.commentViewController showComment:comment];
@@ -476,11 +476,7 @@
     if (editing) {
         [self tableView:tableView didCheckRowAtIndexPath:indexPath];
     } else {
-        if (DeviceIsPad()) {
-            self.selectedIndexPath = indexPath;
-        } else {
-            [self showCommentAtIndexPath:indexPath];
-        }
+        self.selectedIndexPath = indexPath;
     }
 }
 
@@ -534,6 +530,56 @@
 	if(event.subtype == UIEventSubtypeMotionShake)
 		[self refreshCommentsList];
 }
+
+#pragma mark -
+#pragma mark Comment navigation
+
+- (BOOL)hasPreviousComment {
+    if (selectedIndexPath == nil) return NO;
+    return (selectedIndexPath.section > 0 || selectedIndexPath.row > 0);
+}
+
+- (BOOL)hasNextComment {
+    if (selectedIndexPath == nil) return NO;
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:selectedIndexPath.section];
+    return (selectedIndexPath.section + 1 < [[self.resultsController sections] count]
+            || selectedIndexPath.row + 1 < sectionInfo.numberOfObjects);
+}
+- (void)showPreviousComment {
+    if (selectedIndexPath == nil) return;
+    NSIndexPath *indexPath = nil;
+    if (self.selectedIndexPath.row == 0 && self.selectedIndexPath.section > 0) {
+        id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:selectedIndexPath.section - 1];
+        indexPath = [NSIndexPath indexPathForRow:sectionInfo.numberOfObjects - 1 inSection:selectedIndexPath.section - 1];
+    } else if (self.selectedIndexPath.row > 0) {
+        indexPath = [NSIndexPath indexPathForRow:selectedIndexPath.row - 1 inSection:selectedIndexPath.section];        
+    }
+
+    if (indexPath) {
+        selectedIndexPath = indexPath;
+        [commentViewController showComment:[self.resultsController objectAtIndexPath:indexPath]];
+     }
+}
+
+- (void)showNextComment {
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:selectedIndexPath.section];
+    NSIndexPath *indexPath = nil;
+    if ((selectedIndexPath.row + 1) >= sectionInfo.numberOfObjects) {
+        // Was last row in section
+        if ((selectedIndexPath.section + 1) < [[self.resultsController sections] count]) {
+            // There are more sections
+            indexPath = [NSIndexPath indexPathForRow:0 inSection:selectedIndexPath.section + 1];
+        }
+    } else {
+        indexPath = [NSIndexPath indexPathForRow:selectedIndexPath.row + 1 inSection:selectedIndexPath.section];
+    }
+
+    if (indexPath) {
+        selectedIndexPath = indexPath;
+        [commentViewController showComment:[self.resultsController objectAtIndexPath:indexPath]];
+    }
+}
+
 
 #pragma mark -
 #pragma mark Fetched results controller

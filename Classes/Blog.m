@@ -275,6 +275,9 @@
 }
 
 - (BOOL)syncCommentsFromResults:(NSMutableArray *)comments {
+    if ([self isDeleted])
+        return NO;
+
     for (NSDictionary *commentInfo in comments) {
         [Comment createOrReplaceFromDictionary:commentInfo forBlog:self];
     }

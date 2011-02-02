@@ -62,5 +62,12 @@
 - (void)setIndexForCurrentPost:(int)index;
 - (void)showCommentAtIndexPath:(NSIndexPath *)indexPath;
 
+#pragma mark -
+#pragma mark Comment navigation
+
+- (BOOL)hasPreviousComment;
+- (BOOL)hasNextComment;
+- (void)showPreviousComment;
+- (void)showNextComment;
 
 @end
