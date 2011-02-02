@@ -13,7 +13,7 @@
 
 @class CommentViewController;
 
-@interface CommentsViewController : UIViewController <UITableViewDataSource, CommentsTableViewDelegate, UIAccelerometerDelegate> {
+@interface CommentsViewController : UIViewController <UITableViewDataSource, CommentsTableViewDelegate, UIAccelerometerDelegate, NSFetchedResultsControllerDelegate> {
 @private
     IBOutlet UITableView *commentsTableView;
 
@@ -51,6 +51,7 @@
 @property (nonatomic, retain) UISegmentedControl *segmentedControl;
 @property (nonatomic, retain) NSIndexPath *selectedIndexPath;
 @property (nonatomic, assign) BOOL isSecondaryViewController;
+@property (nonatomic, retain) NSFetchedResultsController *resultsController;
 @property (nonatomic, retain) Blog *blog;
 
 - (IBAction)deleteSelectedComments:(id)sender;
@@ -59,7 +60,7 @@
 - (IBAction)spamSelectedComments:(id)sender;
 - (void)refreshCommentsList;
 - (void)setIndexForCurrentPost:(int)index;
-- (void)showCommentAtIndex:(int)index;
+- (void)showCommentAtIndexPath:(NSIndexPath *)indexPath;
 
 
 @end

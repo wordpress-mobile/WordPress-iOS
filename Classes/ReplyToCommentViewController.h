@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "WPNavigationLeftButtonView.h"
-
+#import "Comment.h"
 
 @class CommentViewController;
 
@@ -18,9 +18,6 @@
 	CommentViewController *commentViewController;
 	UIAlertView *progressAlert;
 	
-	NSMutableArray *commentDetails;
-	NSMutableDictionary *comment;
-    int currentIndex;
 	IBOutlet UITextView *textView;
 	IBOutlet UILabel *label;
 	UIBarButtonItem *saveButton;
@@ -34,8 +31,7 @@
 }
 
 
-@property (nonatomic, copy) NSMutableArray *commentDetails;
-@property (nonatomic, retain) NSMutableDictionary *comment;
+@property (nonatomic, retain) Comment *comment;
 @property (nonatomic, retain) UIBarButtonItem *saveButton;
 @property (nonatomic, retain) UIBarButtonItem *doneButton;
 @property (nonatomic, retain) UIBarButtonItem *cancelButton;
@@ -44,8 +40,6 @@
 @property (nonatomic, retain) UILabel *label;
 @property (nonatomic) BOOL hasChanges;
 @property (nonatomic, copy) NSString *textViewText;
-
-@property int currentIndex;
 
 -(void)cancelView:(id)sender;
 -(void) test;

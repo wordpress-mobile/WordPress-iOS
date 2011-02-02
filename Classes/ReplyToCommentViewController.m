@@ -30,7 +30,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 
 @implementation ReplyToCommentViewController
 
-@synthesize commentViewController, commentDetails, currentIndex, saveButton, doneButton, comment;
+@synthesize commentViewController, saveButton, doneButton, comment;
 @synthesize leftView, cancelButton, label, hasChanges, textViewText;
 
 //TODO: Make sure to give this class a connection to commentDetails and currentIndex from CommentViewController
@@ -54,9 +54,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	//foo = [[NSString alloc] initWithString: textView.text];
-	
-	self.comment = [NSMutableDictionary dictionary];
-	
+		
 	if (!saveButton) {
 	saveButton = [[UIBarButtonItem alloc] 
 				  initWithTitle:@"Reply" 
@@ -94,8 +92,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
     [cancelButton release];
 	cancelButton = nil;
 	
-	self.comment = [commentDetails objectAtIndex:currentIndex];
-	if ([[comment valueForKey:@"status"] isEqualToString:@"hold"]) {
+	if ([self.comment.status isEqualToString:@"hold"]) {
 		label.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
 		label.hidden = NO;
 	} else {
@@ -141,10 +138,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	doneButton = nil;
 	[cancelButton release];
 	cancelButton = nil;
-	[comment release];
-	comment = nil;
-	[commentDetails release];
-	commentDetails = nil;
+	self.comment = nil;
 	[textViewText release];
 	textViewText = nil;
 	[leftView release];
@@ -314,33 +308,25 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 }
 
 - (void)initiateSaveCommentReply:(id)sender {
-
     progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Sending Reply..."];
     [progressAlert show];
-	self.comment = [commentDetails objectAtIndex:currentIndex];
-	[comment setValue:textView.text forKey:@"content"];	
+    self.comment.content = textView.text;
     [self performSelectorInBackground:@selector(saveReplyBackgroundMethod:) withObject:nil];
 }
 
 - (void)saveReplyBackgroundMethod:(id)sender {
-	[self callBDMSaveCommentReply:@selector(replyToComment:forBlog:)];
-}
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
-- (void)callBDMSaveCommentReply:(SEL)selector {
-NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    if ([self isConnectedToHost]) {
+        [self.comment upload];
+    }
 
-if ([self isConnectedToHost]) {
-	BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
-	[sharedDataManager performSelector:selector withObject:[self comment] withObject:[sharedDataManager currentBlog]];
-	[sharedDataManager loadCommentTitlesForCurrentBlog];
-}
-
-[progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-[progressAlert release];
-progressAlert = nil;
-hasChanges = NO;
-[commentViewController performSelectorOnMainThread:@selector(cancelView:) withObject:self waitUntilDone:YES];
-[pool release];
+    [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
+    [progressAlert release];
+    progressAlert = nil;
+    hasChanges = NO;
+    [commentViewController performSelectorOnMainThread:@selector(cancelView:) withObject:self waitUntilDone:YES];
+    [pool release];
 }
 
 

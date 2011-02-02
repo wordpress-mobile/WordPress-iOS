@@ -10,6 +10,7 @@
 #import "ReplyToCommentViewController.h"
 #import "EditCommentViewController.h"
 #import "CommentsViewController.h"
+#import "Comment.h"
 
 @interface CommentViewController : UIViewController <UIScrollViewDelegate, UIActionSheetDelegate> {
 
@@ -46,9 +47,6 @@
     UIAlertView *progressAlert;
     
     ReplyToCommentViewController *replyToCommentViewController;
-	NSMutableArray *commentDetails;
-	NSString *commentStatus;
-    int currentIndex;
     BOOL connectionStatus;
 	//to control whether
 	BOOL wasLastCommentPending;
@@ -60,7 +58,7 @@
 - (IBAction)launchDeleteCommentActionSheet;
 
 - (void)segmentAction:(id)sender;
-- (void)showComment:(NSArray *)comments atIndex:(int)row;
+- (void)showComment:(Comment *)comment;
 
 - (void)deleteComment:(id)sender;
 - (void)approveComment:(id)sender;
@@ -71,6 +69,7 @@
 @property (nonatomic, retain) ReplyToCommentViewController *replyToCommentViewController;
 @property (nonatomic, retain) EditCommentViewController *editCommentViewController;
 @property (nonatomic, retain) CommentsViewController *commentsViewController;
+@property (nonatomic, retain) Comment *comment;
 @property BOOL wasLastCommentPending;
 
 

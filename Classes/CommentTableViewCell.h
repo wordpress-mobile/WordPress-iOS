@@ -8,11 +8,12 @@
 #import <Foundation/Foundation.h>
 #import "GravatarImageView.h"
 #import "WPLabel.h"
+#import "Comment.h"
 
 #define COMMENT_ROW_HEIGHT 100
 
 @interface CommentTableViewCell : UITableViewCell {
-    NSDictionary *comment;
+    Comment *comment;
 
     UIButton *checkButton;
     UILabel *nameLabel;
@@ -24,7 +25,7 @@
     BOOL checked;
 }
 
-@property (readwrite, assign) NSDictionary *comment;
+@property (readwrite, assign) Comment *comment;
 @property BOOL checked;
 
 @end

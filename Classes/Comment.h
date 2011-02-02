@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Blog.h"
+#import "Post.h"
 
 typedef enum {
 	CommentStatusPending,
@@ -18,5 +20,35 @@ typedef enum {
 @interface Comment : NSManagedObject {
 
 }
+@property (nonatomic, retain) NSString * author;
+@property (nonatomic, retain) NSString * author_email;
+@property (nonatomic, retain) NSString * author_ip;
+@property (nonatomic, retain) NSString * author_url;
+@property (nonatomic, retain) NSNumber * commentID;
+@property (nonatomic, retain) NSString * content;
+@property (nonatomic, retain) NSDate * dateCreated;
+@property (nonatomic, retain) NSString * link;
+@property (nonatomic, retain) NSNumber * parentID;
+@property (nonatomic, retain) NSNumber * postID;
+@property (nonatomic, retain) NSString * postTitle;
+@property (nonatomic, retain) NSString * status;
+@property (nonatomic, retain) NSString * type;
+@property (nonatomic, retain) Blog * blog;
+@property (nonatomic, retain) Post * post;
+
++ (Comment *)findWithBlog:(Blog *)blog andCommentID:(NSNumber *)commentID;
+// Takes the NSDictionary from a XMLRPC call and creates or updates a post
++ (Comment *)createOrReplaceFromDictionary:(NSDictionary *)commentInfo forBlog:(Blog *)blog;
++ (NSString *)titleForStatus:(NSString *)status;
+- (void)findPost;
+- (Comment *)newReply;
+
+- (void)upload;
+
+// Moderation
+- (void)approve;
+- (void)unapprove;
+- (void)spam;
+- (void)remove;
 
 @end

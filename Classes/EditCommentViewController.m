@@ -32,7 +32,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 
 @implementation EditCommentViewController
 
-@synthesize commentViewController, commentDetails, currentIndex, saveButton, doneButton, comment;
+@synthesize commentViewController, saveButton, doneButton, comment;
 @synthesize leftView, cancelButton, label, hasChanges, textViewText;
 
 /*
@@ -49,10 +49,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
  - (void)viewDidLoad {
  [super viewDidLoad];
- //foo = [[NSString alloc] initWithString: textView.text];
- 
- comment = [[NSMutableDictionary alloc] init];
- 
+  
  if (!saveButton) {
  saveButton = [[UIBarButtonItem alloc] 
  initWithTitle:@"Save" 
@@ -88,8 +85,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	self.navigationItem.leftBarButtonItem = cancelButton;
     [cancelButton release];
 	
-	comment = [commentDetails objectAtIndex:currentIndex];
-	textView.text =[[comment valueForKey:@"content"] trim];
+	textView.text = [self.comment.content trim];
 	[textView becomeFirstResponder];
 }
 
@@ -112,6 +108,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 
 
 - (void)dealloc {
+    self.comment = nil;
 	[saveButton release];
 	[textViewText release];
 	//[doneButton release];
@@ -271,10 +268,9 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 }
 	
 - (void)continueSaveCommentReply:(id)sender {
-	comment = [commentDetails objectAtIndex:currentIndex];
-	[comment setValue:textView.text forKey:@"content"];	
+	self.comment.content = textView.text;
 	commentViewController.wasLastCommentPending = YES;
-	[commentViewController showComment:commentDetails atIndex:currentIndex];
+	[commentViewController showComment:comment];
 	[self.navigationController popViewControllerAnimated:YES];
 	
     progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Saving Edit..."];
@@ -284,20 +280,10 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 
 // saveEditBackgroundMethod...
 - (void)saveEditBackgroundMethod:(id)sender {
-	[self callBDMSaveCommentEdit:@selector(editComment:forBlog:)];
-}
-
-//callBDMSaveComment...  (Does this exist?)
-- (void)callBDMSaveCommentEdit:(SEL)selector {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	if ([self isConnectedToHost]) {
-		BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
-		
-		//NSArray *selectedCommentArray = [NSArray arrayWithObjects:comment, nil];
-		
-		[sharedDataManager performSelector:selector withObject:comment withObject:[sharedDataManager currentBlog]];
-		[sharedDataManager loadCommentTitlesForCurrentBlog];
+        [self.comment upload];
 	}
 	
 	[progressAlert dismissWithClickedButtonIndex:0 animated:YES];

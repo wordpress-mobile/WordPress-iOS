@@ -39,6 +39,7 @@
 - (void)limitToOnHold;
 - (void)doNotLimit;
 - (NSMutableArray *)commentsOnHold;
+- (void)trySelectSomething;
 @end
 
 @implementation CommentsViewController
@@ -48,6 +49,7 @@
 @synthesize commentViewController;
 @synthesize isSecondaryViewController;
 @synthesize blog;
+@synthesize resultsController;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -124,10 +126,7 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
     [self setEditing:NO];
-    
-    BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
-    [sharedDataManager loadCommentTitlesForCurrentBlog];
-    
+        
     [editToolbar setHidden:YES];
     self.navigationItem.rightBarButtonItem = editButtonItem;
     
@@ -169,9 +168,7 @@
 
 - (void) cancelView {
 	[self.navigationController popViewControllerAnimated:YES];
-
 }
-
 
 - (void)addRefreshButton {
     CGRect frame = CGRectMake(0, 0, commentsTableView.bounds.size.width, REFRESH_BUTTON_HEIGHT);
@@ -204,6 +201,7 @@
     editButtonItem.title = editing ? @"Cancel" : @"Edit";
     
     [commentsTableView setEditing:value animated:YES];
+    [self refreshCommentsList];
 }
 
 - (void)editComments {
@@ -236,50 +234,37 @@
 - (void)refreshHandler {
     [refreshButton startAnimating];
 	[self setEditing:false];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     [self performSelectorInBackground:@selector(syncComments) withObject:nil];
 }
 
 - (void)syncComments {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    
-    //[[BlogDataManager sharedDataManager] syncCommentsForCurrentBlog];
-    //[[BlogDataManager sharedDataManager] loadCommentTitlesForCurrentBlog];
+    NSError *error = nil;
 
-    [self refreshCommentsList];
+    [self.blog syncCommentsWithError:&error];
 
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-
-    if ([delegate isAlertRunning]) {
-        [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-        [progressAlert release];
-	}
-	[refreshButton stopAnimating];
-
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [self performSelectorOnMainThread:@selector(refreshCommentsList) withObject:nil waitUntilDone:NO];
     [pool release];
 }
 
 - (void)refreshCommentsList {
+	[refreshButton stopAnimating];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     if (!selectedComments) {
         selectedComments = [[NSMutableArray alloc] init];
     } else {
         [selectedComments removeAllObjects];
     }
 
-    for (NSDictionary *dict in commentsArray) {
-        NSString *str = [dict valueForKey:@"comment_id"];
-        [commentsDict setValue:dict forKey:str];
-    }
-    
-    [editButtonItem setEnabled:([commentsArray count] > 0)];
+    [editButtonItem setEnabled:([[self.resultsController fetchedObjects] count] > 0)];
     [self updateBadge];
 	[self reloadTableView];
 	
 	if (DeviceIsPad() == YES) {
 		if (self.selectedIndexPath && !self.isSecondaryViewController) {
 			[commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-			[self showCommentAtIndex:self.selectedIndexPath.row];
+			[self showCommentAtIndexPath:self.selectedIndexPath];
 		}
 	}
 }
@@ -312,37 +297,37 @@
     [self performSelectorInBackground:@selector(markCommentsAsSpam) withObject:nil];
 }
 
+- (void)didModerateComments {
+    [self setEditing:NO];
+    [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
+    [progressAlert release];    
+}
+
 - (void)moderateCommentsWithSelector:(SEL)selector {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
-    BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
-
-    [sharedDataManager performSelector:selector withObject:[self selectedComments] withObject:[sharedDataManager currentBlog]];
+    for (Comment *comment in selectedComments) {
+        [comment performSelector:selector];
+    }
 	
-	// calling UIKit from a background thread is bad
-	[commentsTableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
-    [self performSelectorOnMainThread:@selector(refreshCommentsList) withObject:nil waitUntilDone:NO];
-    [self setEditing:FALSE];
-
-    [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-    [progressAlert release];
+    [self performSelectorOnMainThread:@selector(didModerateComments) withObject:nil waitUntilDone:NO];
     [pool release];
 }
 
 - (void)deleteComments {
-    [self moderateCommentsWithSelector:@selector(deleteComment:forBlog:)];
+    [self moderateCommentsWithSelector:@selector(remove)];
 }
 
 - (void)approveComments {
-    [self moderateCommentsWithSelector:@selector(approveComment:forBlog:)];
+    [self moderateCommentsWithSelector:@selector(approve)];
 }
 
 - (void)markCommentsAsSpam {
-    [self moderateCommentsWithSelector:@selector(spamComment:forBlog:)];
+    [self moderateCommentsWithSelector:@selector(spam)];
 }
 
 - (void)unapproveComments {
-    [self moderateCommentsWithSelector:@selector(unApproveComment:forBlog:)];
+    [self moderateCommentsWithSelector:@selector(unapprove)];
 }
 
 - (void)updateSelectedComments {
@@ -351,13 +336,13 @@
     approvedCount = unapprovedCount = spamCount = 0;
 
     for (i = 0; i < count; i++) {
-        NSDictionary *dict = [selectedComments objectAtIndex:i];
+        Comment *comment = [selectedComments objectAtIndex:i];
 
-        if ([[dict valueForKey:@"status"] isEqualToString:@"hold"]) {
+        if ([comment.status isEqualToString:@"hold"]) {
             unapprovedCount++;
-        } else if ([[dict valueForKey:@"status"] isEqualToString:@"approve"]) {
+        } else if ([comment.status isEqualToString:@"approve"]) {
             approvedCount++;
-        } else if ([[dict valueForKey:@"status"] isEqualToString:@"spam"]) {
+        } else if ([comment.status isEqualToString:@"spam"]) {
             spamCount++;
         }
     }
@@ -372,9 +357,19 @@
     [spamButton setTitle:(((count - spamCount) > 0) ? [NSString stringWithFormat:@"Spam (%d)", count - spamCount]:@"Spam")];
 }
 
-- (void)showCommentAtIndex:(int)index {
-	if (index >= commentsArray.count)
-		return;
+- (void)showCommentAtIndexPath:(NSIndexPath *)indexPath {
+	Comment *comment;
+    @try {
+        comment = [self.resultsController objectAtIndexPath:indexPath];
+        WPLog(@"Selected comment at indexPath: (%i,%i)", indexPath.section, indexPath.row);
+    }
+    @catch (NSException * e) {
+        NSLog(@"Can't select comment at indexPath: (%i,%i)", indexPath.section, indexPath.row);
+        NSLog(@"sections: %@", self.resultsController.sections);
+        NSLog(@"results: %@", self.resultsController.fetchedObjects);
+        comment = nil;
+        return;
+    }
 	
 	if (self.isSecondaryViewController) {
 		[self.navigationController pushViewController:self.commentViewController animated:YES];
@@ -383,7 +378,18 @@
 		[delegate showContentDetailViewController:self.commentViewController];
 	}
 
-    [self.commentViewController showComment:commentsArray atIndex:index];
+    [self.commentViewController showComment:comment];
+}
+
+- (void)setSelectedIndexPath:(NSIndexPath *)indexPath {
+    if (selectedIndexPath != indexPath) {
+        [selectedIndexPath release];
+        selectedIndexPath = indexPath;
+        if (selectedIndexPath != nil) {
+            [selectedIndexPath retain];
+            [self showCommentAtIndexPath:selectedIndexPath];
+        }
+    }
 }
 
 #pragma mark -
@@ -405,39 +411,9 @@
 #pragma mark Comments Scoping
 
 - (void)limitToOnHold {
-    [self setCommentsArray: [self commentsOnHold]];
 }
 
 - (void)doNotLimit {
-	BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
-
-	if (indexForCurrentPost >= -1) {
-        self.commentsArray = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog] scopedToPostWithIndex:indexForCurrentPost];
-    } else {
-        self.commentsArray = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
-    }
-}
-
-- (NSMutableArray *)commentsOnHold {
-	BlogDataManager *sharedBlogDataManager = [BlogDataManager sharedDataManager];
-	NSMutableArray *allComments = nil;
-	
-	if (indexForCurrentPost >= -1) {
-        allComments = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog] scopedToPostWithIndex:indexForCurrentPost];
-    } else {
-        allComments = [sharedBlogDataManager commentTitlesForBlog:[sharedBlogDataManager currentBlog]];
-    }
-
-    NSMutableArray *commentsOnHold = [[NSMutableArray alloc] init];
-	
-    for (NSDictionary *comment in allComments) {
-        if ([[comment valueForKey:@"status"] isEqualToString:@"hold"]) {
-            [commentsOnHold addObject:comment];
-        }
-    }
-	NSMutableArray *copyOfCommentsOnHold = [NSMutableArray arrayWithArray:commentsOnHold];
-	[commentsOnHold release];
-	return copyOfCommentsOnHold;
 }
 
 #pragma mark -
@@ -445,8 +421,8 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     //NSDictionary *dict = [selectedComments objectAtIndex:indexPath.row];
-	id comment = [commentsArray objectAtIndex:indexPath.row];
-	if ([[comment valueForKey:@"status"] isEqualToString:@"hold"]) {
+	Comment *comment = [self.resultsController objectAtIndexPath:indexPath];
+	if ([comment.status isEqualToString:@"hold"]) {
 		cell.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
 	} else {
 		cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
@@ -458,24 +434,24 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return [[self.resultsController sections] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return @"Comments";
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
+    return [Comment titleForStatus:[sectionInfo name]];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	if(commentsArray != nil)
-		return commentsArray.count;
-	else
-		return 0;
+    id <NSFetchedResultsSectionInfo> sectionInfo = nil;
+    sectionInfo = [[self.resultsController sections] objectAtIndex:section];
+    return [sectionInfo numberOfObjects];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"CommentCell";
     CommentTableViewCell *cell = (CommentTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    id comment = [commentsArray objectAtIndex:indexPath.row];
+    Comment *comment = [self.resultsController objectAtIndexPath:indexPath];
 
     if (cell == nil) {
         cell = [[[CommentTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
@@ -500,14 +476,17 @@
     if (editing) {
         [self tableView:tableView didCheckRowAtIndexPath:indexPath];
     } else {
-        [self showCommentAtIndex:indexPath.row];
-		self.selectedIndexPath = indexPath;
+        if (DeviceIsPad()) {
+            self.selectedIndexPath = indexPath;
+        } else {
+            [self showCommentAtIndexPath:indexPath];
+        }
     }
 }
 
 - (void)tableView:(UITableView *)tableView didCheckRowAtIndexPath:(NSIndexPath *)indexPath {
     CommentTableViewCell *cell = (CommentTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-    NSDictionary *comment = cell.comment;
+    Comment *comment = cell.comment;
 	
 	//danroundhill - added nil check based on crash reports
 	if (comment != nil){
@@ -554,6 +533,82 @@
 	NSLog(@"Shake detected. Refreshing...");
 	if(event.subtype == UIEventSubtypeMotionShake)
 		[self refreshCommentsList];
+}
+
+#pragma mark -
+#pragma mark Fetched results controller
+
+- (NSString *)entityName {
+    return @"Comment";
+}
+
+- (NSFetchedResultsController *)resultsController {
+    if (resultsController != nil) {
+        return resultsController;
+    }
+    
+    WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:[self entityName] inManagedObjectContext:appDelegate.managedObjectContext]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(blog == %@)", self.blog]];
+    NSSortDescriptor *sortDescriptorStatus = [[NSSortDescriptor alloc] initWithKey:@"status" ascending:NO];
+    NSSortDescriptor *sortDescriptorDate = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorStatus, sortDescriptorDate, nil];
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    
+    NSFetchedResultsController *aResultsController = [[NSFetchedResultsController alloc]
+                                                      initWithFetchRequest:fetchRequest
+                                                      managedObjectContext:appDelegate.managedObjectContext
+                                                      sectionNameKeyPath:@"status"
+                                                      cacheName:[NSString stringWithFormat:@"%@-%@", [self entityName], [self.blog objectID]]];
+    self.resultsController = aResultsController;
+    resultsController.delegate = self;
+    
+    [aResultsController release];
+    [fetchRequest release];
+    [sortDescriptorStatus release]; sortDescriptorStatus = nil;
+    [sortDescriptorDate release]; sortDescriptorDate = nil;
+    [sortDescriptors release]; sortDescriptors = nil;
+    
+    NSError *error = nil;
+    if (![resultsController performFetch:&error]) {
+        NSLog(@"Couldn't fetch comments");
+        resultsController = nil;
+    }
+    NSLog(@"fetched comments: %@", [resultsController fetchedObjects]);
+    
+    return resultsController;
+}
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    //    [commentsTableView beginUpdates];
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    //    [commentsTableView endUpdates];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath {
+    [commentsTableView reloadData];
+    
+    if (!DeviceIsPad()) {
+        return;
+    }
+    switch (type) {
+        case NSFetchedResultsChangeDelete:
+            [self trySelectSomething];
+            break;
+        case NSFetchedResultsChangeInsert:
+            self.selectedIndexPath = newIndexPath;
+            [commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        default:
+            [commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+            break;
+    }
 }
 
 @end

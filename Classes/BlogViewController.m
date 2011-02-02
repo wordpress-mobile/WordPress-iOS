@@ -21,28 +21,21 @@
     [super viewDidLoad];
     [FlurryAPI logEvent:@"Blog"];
 
+    postsViewController.blog = self.blog;
+    pagesViewController.blog = self.blog;
+    commentsViewController.blog = self.blog;
+
     self.view = tabBarController.view;
 
     self.title =[NSString decodeXMLCharactersIn:[blog valueForKey:@"blogName"]];
 	
 	if (DeviceIsPad() == NO) {
-	#if defined __IPHONE_3_0
-		[commentsViewController viewWillAppear:NO];
-	#else if defined __IPHONE_2_0 
 		tabBarController.selectedIndex = 0;
-	#endif
-		
-		[commentsViewController setIndexForCurrentPost:-2];
-		[commentsViewController refreshCommentsList];
-		
+
 		self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
 		self.navigationItem.titleView = commentsViewController.segmentedControl;
 	}
-	
-    postsViewController.blog = self.blog;
-    pagesViewController.blog = self.blog;
-    commentsViewController.blog = self.blog;
-    
+	    
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"DraftsUpdated" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"BlogsRefreshNotification" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"PagesUpdated" object:nil];

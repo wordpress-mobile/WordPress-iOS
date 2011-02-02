@@ -101,32 +101,25 @@
     }
 }
 
-- (void)setComment:(NSDictionary *)value {
+- (void)setComment:(Comment *)value {
     comment = value;
 
     NSCharacterSet *whitespaceCS = [NSCharacterSet whitespaceCharacterSet];
-    NSString *author = [[comment valueForKey:@"author"] stringByTrimmingCharactersInSet:whitespaceCS];
+    NSString *author = [comment.author stringByTrimmingCharactersInSet:whitespaceCS];
     nameLabel.text = author;
 	
 //conditional load of author_email if url is empty per ticket #273
-    NSString *authorURL = [comment valueForKey:@"author_url"];
+    NSString *authorURL = comment.author_url;
 	if ( authorURL == nil || [authorURL isEqualToString:@"http://"] || [authorURL isEqualToString:@""]) {
 		//NSLog(@"authorURL was nill or empty");
-		NSString *emailInsteadOfURL = [comment valueForKey:@"author_email"];
-		urlLabel.text = emailInsteadOfURL;
+		urlLabel.text = comment.author_email;
 	}else {
 		urlLabel.text = authorURL;
 	}
 
-    
-    NSString *postTitle = [comment valueForKey:@"post_title"];
-    postLabel.text = [@"on " stringByAppendingString:postTitle];
-
-    NSString *content = [comment valueForKey:@"content"];
-    commentLabel.text = content;
-
-    NSString *email = [comment valueForKey:@"author_email"];
-    gravatarImageView.email = email;
+    postLabel.text = [@"on " stringByAppendingString:comment.postTitle];
+    commentLabel.text = comment.content;
+    gravatarImageView.email = comment.author_email;
 }
 
 // Calls the tableView:didCheckRowAtIndexPath method on the table view delegate.

@@ -12,7 +12,7 @@
 @implementation Blog
 @dynamic blogID, blogName, url, username, password, xmlrpc, apiKey;
 @dynamic isAdmin;
-@dynamic posts, categories;
+@dynamic posts, categories, comments;
 
 #pragma mark -
 #pragma mark Custom methods
@@ -271,6 +271,29 @@
     }
     [self performSelectorOnMainThread:@selector(syncCategoriesFromResults:) withObject:categories waitUntilDone:YES];
 
+    return YES;
+}
+
+- (BOOL)syncCommentsFromResults:(NSMutableArray *)comments {
+    for (NSDictionary *commentInfo in comments) {
+        [Comment createOrReplaceFromDictionary:commentInfo forBlog:self];
+    }
+    [self dataSave];
+    return YES;
+}
+
+- (BOOL)syncCommentsWithError:(NSError **)error {
+    NSMutableArray *comments = [[WPDataController sharedInstance] wpGetCommentsForBlog:self];
+    if ([comments isKindOfClass:[NSError class]]) {
+        if (error != nil) {
+            *error = (NSError *)comments;
+            // TODO: show alert to user?
+            NSLog(@"Error syncing comments: %@", [*error localizedDescription]);
+        }
+        return NO;
+    }
+    [self performSelectorOnMainThread:@selector(syncCommentsFromResults:) withObject:comments waitUntilDone:YES];
+    
     return YES;
 }
 

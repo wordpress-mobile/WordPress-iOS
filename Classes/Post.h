@@ -30,6 +30,7 @@
 // Returns categories as a comma-separated list
 - (NSString *)categoriesText;
 - (void)setCategoriesFromNames:(NSArray *)categoryNames;
+- (void)findComments;
 
 #pragma mark     Data Management
 // Autosave for local drafts

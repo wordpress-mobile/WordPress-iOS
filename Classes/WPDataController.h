@@ -60,4 +60,13 @@ typedef enum {
 - (int)wpNewPage:(Page *)post;
 - (BOOL)wpEditPage:(Page *)post;
 - (BOOL)wpDeletePage:(Page *)post;
+
+#pragma mark -
+#pragma mark Comment
+
+- (NSMutableArray *)wpGetCommentsForBlog:(Blog *)blog;
+- (NSNumber *)wpNewComment:(Comment *)comment;
+- (BOOL)wpEditComment:(Comment *)comment;
+- (BOOL)wpDeleteComment:(Comment *)comment;
+
 @end

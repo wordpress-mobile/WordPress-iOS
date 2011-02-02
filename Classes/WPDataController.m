@@ -345,6 +345,87 @@
 }
 
 #pragma mark -
+#pragma mark Comment
+
+- (NSMutableDictionary *)getXMLRPCDictionaryForComment:(Comment *)comment {
+    NSMutableDictionary *commentParams = [NSMutableDictionary dictionary];
+    
+    [commentParams setObject:comment.content forKey:@"content"];
+    [commentParams setObject:comment.parentID forKey:@"parent"];
+    [commentParams setObject:comment.postID forKey:@"post_id"];
+    [commentParams setObject:comment.status forKey:@"status"];
+    
+    return commentParams;
+}
+
+- (NSMutableArray *)wpGetCommentsForBlog:(Blog *)blog {
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:blog.xmlrpc]];
+    // TODO: use app-wide setting for number of posts
+    NSDictionary *commentsStructure = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:100] forKey:@"number"];
+    NSArray *args = [NSArray arrayWithObject:commentsStructure];
+	[xmlrpcRequest setMethod:@"wp.getComments" withObjects:[self getXMLRPCArgsForBlog:blog withExtraArgs:args]];
+    NSArray *recentComments = [self executeXMLRPCRequest:xmlrpcRequest];
+	[xmlrpcRequest release];
+    
+    if ([recentComments isKindOfClass:[NSError class]]) {
+        NSLog(@"Couldn't get recent comments: %@", [(NSError *)recentComments localizedDescription]);
+        return [NSMutableArray array];
+    }
+    return [NSMutableArray arrayWithArray:recentComments];
+}
+
+- (NSNumber *)wpNewComment:(Comment *)comment {
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:comment.blog.xmlrpc]];
+    NSMutableDictionary *commentParams = [self getXMLRPCDictionaryForComment:comment];
+    NSArray *args = [NSArray arrayWithObjects:comment.blog.blogID, comment.blog.username, [self passwordForBlog:comment.blog], comment.postID, commentParams, nil];
+    
+    [xmlrpcRequest setMethod:@"wp.newComment" withObjects:args];
+    NSNumber *result = [self executeXMLRPCRequest:xmlrpcRequest];
+    if ([result isKindOfClass:[NSError class]]) {
+        NSLog(@"wpNewComment failed: %@", result);
+        return nil;
+    } else {
+        return result;
+    } 
+}
+
+- (BOOL)wpEditComment:(Comment *)comment {
+    if (comment.commentID == nil) {
+        return NO;
+    }
+    
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:comment.blog.xmlrpc]];
+    NSMutableDictionary *commentParams = [self getXMLRPCDictionaryForComment:comment];
+    NSArray *args = [NSArray arrayWithObjects:comment.blog.blogID, comment.blog.username, [self passwordForBlog:comment.blog], comment.commentID, commentParams, nil];
+    
+    [xmlrpcRequest setMethod:@"wp.editComment" withObjects:args];
+    id result = [self executeXMLRPCRequest:xmlrpcRequest];
+    if ([result isKindOfClass:[NSError class]]) {
+        NSLog(@"wpEditComment failed: %@", result);
+        return NO;
+    } else {
+        return YES;
+    }    
+}
+
+- (BOOL)wpDeleteComment:(Comment *)comment {
+    if (comment.commentID == nil)
+        return YES;
+    
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:comment.blog.xmlrpc]];
+    NSArray *args = [NSArray arrayWithObjects:comment.blog.blogID, comment.blog.username, [self passwordForBlog:comment.blog], comment.commentID, nil];
+    
+    [xmlrpcRequest setMethod:@"wp.deleteComment" withObjects:args];
+    id result = [self executeXMLRPCRequest:xmlrpcRequest];
+    if ([result isKindOfClass:[NSError class]]) {
+        NSLog(@"wpDeleteComment failed: %@", result);
+        return NO;
+    } else {
+        return YES;
+    }    
+}
+
+#pragma mark -
 #pragma mark XMLRPC
 
 - (NSArray *)getXMLRPCArgsForBlog:(Blog *)blog  withExtraArgs:(NSArray *)args {

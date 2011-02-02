@@ -39,6 +39,10 @@ NSString *md5(NSString *str);
 }
 
 - (void)setEmail:(NSString *)value {
+    if (value == nil || [value isEqualToString:@""]) {
+        [self setImage:nil];
+        return;
+    }
     email = [NSString stringWithString:value];
     NSURL *url = [self gravatarURLForEmail:email];
     [self loadImageFromURL:url];

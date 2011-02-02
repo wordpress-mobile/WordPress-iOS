@@ -47,12 +47,13 @@
 
 
 @synthesize replyToCommentViewController, editCommentViewController, commentsViewController, wasLastCommentPending;
+@synthesize comment = _comment;
 
 #pragma mark -
 #pragma mark Memory Management
 
 - (void)dealloc {
-    [commentDetails release];
+    self.comment = nil;
     [segmentedControl release];
     [segmentBarItem release];
 	[replyToCommentViewController release];
@@ -228,9 +229,7 @@
 										 initWithNibName:@"ReplyToCommentViewController" 
 										 bundle:nil]autorelease];
 		replyToCommentViewController.commentViewController = self;
-	    //replyToCommentViewController.commentsViewController = self.commentsViewController;
-		replyToCommentViewController.commentDetails = commentDetails;
-	    replyToCommentViewController.currentIndex = currentIndex;
+		replyToCommentViewController.comment = [[self.comment newReply] autorelease];
 		replyToCommentViewController.title = @"Comment Reply";
 	
 	
@@ -301,8 +300,7 @@
 									 bundle:nil]autorelease];
 	editCommentViewController.commentViewController = self;
 	//replyToCommentViewController.commentsViewController = self.commentsViewController;
-	editCommentViewController.commentDetails = commentDetails;
-	editCommentViewController.currentIndex = currentIndex;
+	editCommentViewController.comment = self.comment;
 	editCommentViewController.title = @"Edit Comment";
 	
 	if (DeviceIsPad() == YES) {
@@ -340,19 +338,13 @@
 #pragma mark Action Methods
 
 - (void)segmentAction:(id)sender {
-	if ([commentStatus isEqualToString:@"hold"]) {
+    // FIXME: restore up/down buttons
+    return;
+	if ([self.comment.status isEqualToString:@"hold"]) {
 		wasLastCommentPending = YES;
 	}else {
 		wasLastCommentPending = NO;
 	}
-
-    if (currentIndex > -1) {
-        if ([sender selectedSegmentIndex] == 0 && currentIndex > 0) {
-            [self showComment:commentDetails atIndex:currentIndex - 1];
-        } else if ([sender selectedSegmentIndex] == 1 && currentIndex < [commentDetails count] - 1) {
-            [self showComment:commentDetails atIndex:currentIndex + 1];
-        }
-    }
 }
 
 - (void)launchDeleteCommentActionSheet {
@@ -413,13 +405,11 @@
     return YES;
 }
 - (BOOL)isApprove {
-	if ([commentStatus isEqualToString:@"hold"]) {
+	if ([self.comment.status isEqualToString:@"hold"]) {
 		return YES;
     } else  {
         return NO;
 	}
-	
-	
 }
 
 
@@ -427,13 +417,7 @@
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
     if ([self isConnectedToHost]) {
-        BlogDataManager *sharedDataManager = [BlogDataManager sharedDataManager];
-
-        NSArray *selectedComment = [NSArray arrayWithObjects:[commentDetails objectAtIndex:currentIndex], nil];
-
-        [sharedDataManager performSelector:selector withObject:selectedComment withObject:[sharedDataManager currentBlog]];
-
-        [sharedDataManager loadCommentTitlesForCurrentBlog];
+        [self.comment performSelector:selector];
         [self.navigationController popViewControllerAnimated:YES];
     }
 
@@ -443,25 +427,25 @@
 }
 
 - (void)deleteThisComment {
-    [self moderateCommentWithSelector:@selector(deleteComment:forBlog:)];
+    [self moderateCommentWithSelector:@selector(remove)];
 }
 
 - (void)approveThisComment {
-    [self moderateCommentWithSelector:@selector(approveComment:forBlog:)];
+    [self moderateCommentWithSelector:@selector(approve)];
 }
 
 - (void)markThisCommentAsSpam {
-    [self moderateCommentWithSelector:@selector(spamComment:forBlog:)];
+    [self moderateCommentWithSelector:@selector(spam)];
 }
 
 - (void)unapproveThisComment {
-    [self moderateCommentWithSelector:@selector(unApproveComment:forBlog:)];
+    [self moderateCommentWithSelector:@selector(unapprove)];
 }
 
 - (void)resizeCommentBodyLabel {  //:(BOOL)wasLastPending {
 	
 	//if pending label will be shown, scrollView.contentSize has to reflect the extra pixels taken by the pending label
-	if ([commentStatus isEqualToString:@"hold"]){ 
+	if ([self.comment.status isEqualToString:@"hold"]){ 
 		float pendingLabelHeight = pendingLabelHolder.frame.size.height;
 		CGSize size = [commentBodyLabel.text sizeWithFont:commentBodyLabel.font
 										constrainedToSize:CGSizeMake(self.view.frame.size.width - COMMENT_BODY_PADDING, COMMENT_BODY_MAX_HEIGHT)
@@ -593,22 +577,9 @@
 #pragma mark -
 #pragma mark Public Methods
 
-- (void)showComment:(NSArray *)comments atIndex:(int)index {
-    currentIndex = index;
-	commentDetails = [comments mutableCopy];
-    NSDictionary *comment = [commentDetails objectAtIndex:currentIndex];
-    
+- (void)showComment:(Comment *)comment {
+    self.comment = comment;
     static NSDateFormatter *dateFormatter = nil;
-    int count = [commentDetails count];
-
-    NSString *author = [[comment valueForKey:@"author"] trim];
-    NSString *postTitle = [[comment valueForKey:@"post_title"] trim];
-    NSString *commentBody = [[comment valueForKey:@"content"] trim];
-    NSDate *createdAt = [comment valueForKey:@"date_created_gmt"];
-    //NSString *commentStatus = [comment valueForKey:@"status"];
-	commentStatus = [[comment valueForKey:@"status"] copy];
-    NSString *authorEmail = [comment valueForKey:@"author_email"];
-    NSString *authorUrl = [comment valueForKey:@"author_url"];
 
     if (dateFormatter == nil) {
         dateFormatter = [[NSDateFormatter alloc] init];
@@ -616,19 +587,17 @@
         [dateFormatter setDateStyle:NSDateFormatterLongStyle];
     }
     
-	gravatarImageView.email = authorEmail;
-	commentAuthorEmailLabel.text = authorEmail;
-    commentAuthorLabel.text = author;
-    commentAuthorUrlLabel.text = authorUrl;
-    commentPostTitleLabel.text = [@"on " stringByAppendingString:postTitle];
-    commentDateLabel.text = [@"" stringByAppendingString:[dateFormatter stringFromDate:createdAt]];
-    commentBodyLabel.text = commentBody;
+	gravatarImageView.email = [comment.author_email trim];
+	commentAuthorEmailLabel.text = [comment.author_email trim];
+    commentAuthorLabel.text = [comment.author trim];
+    commentAuthorUrlLabel.text = [comment.author_url trim];
+    commentPostTitleLabel.text = [@"on " stringByAppendingString:[comment.postTitle trim]];
+    commentDateLabel.text = [@"" stringByAppendingString:[dateFormatter stringFromDate:comment.dateCreated]];
+    commentBodyLabel.text = [comment.content trim];
     
     [self resizeCommentBodyLabel];
 
-    self.navigationItem.title = [NSString stringWithFormat:@"%d of %d", currentIndex + 1, count];
-
-    if ([commentStatus isEqualToString:@"hold"] && ![pendingLabelHolder superview]) {
+    if ([comment.status isEqualToString:@"hold"] && ![pendingLabelHolder superview]) {
         //[approveAndUnapproveButtonBar setHidden:NO];
         //[deleteButtonBar setHidden:YES];
 		[self insertPendingLabel];
@@ -636,7 +605,7 @@
 		[approveAndUnapproveButtonBar setHidden:YES];
 		[deleteButtonBar setHidden:NO];
 		
-	}else if ([commentStatus isEqualToString:@"hold"] && [pendingLabelHolder superview]) {
+	} else if ([comment.status isEqualToString:@"hold"] && [pendingLabelHolder superview]) {
 		//[self resizeCommentBodyLabel];
 		CGRect rect;
 		rect = commentBodyLabel.frame;
@@ -652,28 +621,15 @@
 
     }
 
-//    [approveButton setEnabled:NO];
-//    [unapproveButton setEnabled:NO];
-//    [spamButton1 setEnabled:YES];
-//    [spamButton2 setEnabled:YES];
-//
-//    if ([commentStatus isEqualToString:@"hold"]) {
-//        [approveButton setEnabled:YES];
-//    } else if ([commentStatus isEqualToString:@"approve"]) {
-//        [unapproveButton setEnabled:YES];
-//    } else if ([commentStatus isEqualToString:@"spam"]) {
-//        [spamButton1 setEnabled:NO];
-//        [spamButton2 setEnabled:NO];
-//    }
-	
     [segmentedControl setEnabled:TRUE forSegmentAtIndex:0];
     [segmentedControl setEnabled:TRUE forSegmentAtIndex:1];
 
-    if (currentIndex == 0) {
-        [segmentedControl setEnabled:FALSE forSegmentAtIndex:0];
-    } else if (currentIndex == [commentDetails count] - 1) {
-        [segmentedControl setEnabled:FALSE forSegmentAtIndex:1];
-    }
+// FIXME: restore up/down buttons
+//    if (currentIndex == 0) {
+//        [segmentedControl setEnabled:FALSE forSegmentAtIndex:0];
+//    } else if (currentIndex == [commentDetails count] - 1) {
+//        [segmentedControl setEnabled:FALSE forSegmentAtIndex:1];
+//    }
 }
 
 @end

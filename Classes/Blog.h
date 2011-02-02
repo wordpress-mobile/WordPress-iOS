@@ -16,6 +16,7 @@
 @property (nonatomic, assign) NSNumber *isAdmin;
 @property (nonatomic, retain) NSSet *posts;
 @property (nonatomic, retain) NSSet *categories;
+@property (nonatomic, retain) NSSet *comments;
 
 - (UIImage *)favicon;
 - (void)downloadFavicon;
@@ -28,6 +29,7 @@
 - (BOOL)syncPostsWithError:(NSError **)error;
 - (BOOL)syncPagesWithError:(NSError **)error;
 - (BOOL)syncCategoriesWithError:(NSError **)error;
+- (BOOL)syncCommentsWithError:(NSError **)error;
 
 #pragma mark -
 #pragma mark Class methods
