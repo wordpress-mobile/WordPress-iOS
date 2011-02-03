@@ -58,7 +58,7 @@
     post.postTitle      = [postInfo objectForKey:@"title"];
     post.postID         = [[postInfo objectForKey:@"postid"] numericValue];
     post.content        = [postInfo objectForKey:@"description"];
-    post.dateCreated    = [postInfo objectForKey:@"dateCreated"];
+    post.date_created_gmt    = [postInfo objectForKey:@"date_created_gmt"];
     post.status         = [postInfo objectForKey:@"post_status"];
     post.password       = [postInfo objectForKey:@"wp_password"];
     post.tags           = [postInfo objectForKey:@"mt_keywords"];

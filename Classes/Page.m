@@ -51,7 +51,7 @@
     page.postTitle      = [postInfo objectForKey:@"title"];
     page.postID         = [postInfo objectForKey:@"page_id"];
     page.content        = [postInfo objectForKey:@"description"];
-    page.dateCreated    = [postInfo objectForKey:@"dateCreated"];
+    page.date_created_gmt    = [postInfo objectForKey:@"date_created_gmt"];
     page.status         = [postInfo objectForKey:@"page_status"];
     page.password       = [postInfo objectForKey:@"wp_password"];
     page.remoteStatus   = AbstractPostRemoteStatusSync;

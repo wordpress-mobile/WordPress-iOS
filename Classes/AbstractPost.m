@@ -15,7 +15,7 @@
 @end
 
 @implementation AbstractPost
-@dynamic author, content, dateCreated, postID, postTitle, status, password, remoteStatusNumber;
+@dynamic author, content, date_created_gmt, postID, postTitle, status, password, remoteStatusNumber;
 @dynamic blog, media;
 
 + (NSString *)titleForStatus:(NSString *)status {
@@ -209,4 +209,15 @@
     return [AbstractPost titleForRemoteStatus:self.remoteStatusNumber];
 }
 
+- (NSDate *)dateCreated {
+	if(self.date_created_gmt != nil)
+		return [DateUtils GMTDateTolocalDate:self.date_created_gmt];
+	else 
+		return [NSDate date];
+
+}
+
+- (void)setDateCreated:(NSDate *)localDate {
+		self.date_created_gmt = [DateUtils localDateToGMTDate:localDate];
+}
 @end

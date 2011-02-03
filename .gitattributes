@@ -113,6 +113,8 @@ Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReportThreadInfo.h -te
 Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReporter.h -text
 Classes/CrashReporter.framework/Versions/A/Resources/Info.plist -text
 Classes/CrashReporter.framework/Versions/Current -text
+Classes/DateUtils.h -text
+Classes/DateUtils.m -text
 Classes/EditPageViewController.h -text
 Classes/EditPageViewController.m -text
 Classes/EditPostParentModalViewController.xib -text

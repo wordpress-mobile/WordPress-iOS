@@ -5,6 +5,7 @@
 #import "WPReachability.h"
 #import "Blog.h"
 #import "NSData+Base64.h"
+#import "DateUtils.h"
 
 @interface BlogDataManager : NSObject {
     NSMutableArray *blogsList;

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Blog.h"
+#import "DateUtils.h"
 
 typedef enum {
     AbstractPostRemoteStatusPushing,    // Uploading post
@@ -23,7 +24,7 @@ typedef enum {
 // Attributes
 @property (nonatomic, retain) NSNumber * postID;
 @property (nonatomic, retain) NSString * author;
-@property (nonatomic, retain) NSDate * dateCreated;
+@property (nonatomic, retain) NSDate * date_created_gmt;
 @property (nonatomic, retain) NSString * postTitle;
 @property (nonatomic, retain) NSString * content;
 @property (nonatomic, retain) NSString * status;
@@ -46,6 +47,10 @@ typedef enum {
 - (void)remove;
 // Save changes to disk
 - (void)save;
+
+//date conversion
+- (NSDate *)dateCreated;
+- (void)setDateCreated:(NSDate *)localDate;
 
 // Revision management
 - (AbstractPost *)createRevision;

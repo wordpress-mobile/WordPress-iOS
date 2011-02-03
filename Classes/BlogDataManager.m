@@ -2058,7 +2058,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 
 - (NSArray *)postTitleFieldNames {
     if (!postTitleFieldNames) {
-        self->postTitleFieldNames = [NSArray arrayWithObjects:@"local_status", @"dateCreated", kBlogId, kBlogHostName,
+        self->postTitleFieldNames = [NSArray arrayWithObjects:@"local_status", @"date_created_gmt", kBlogId, kBlogHostName,
                                      @"blogName", @"postid", @"title", @"authorid", @"wp_author_display_name", @"status",
                                      @"mt_excerpt", @"mt_keywords", @"date_created_gmt",
                                      @"newcomments", @"totalcomments", kAsyncPostFlag, nil];
@@ -2424,7 +2424,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
         //  'original' for downlaoded posts that have not been edited locally
         // At the time a post is downloaded or created, we add blogid and blog_host_name fields to post dict
 		
-        self->postFieldNames = [NSArray arrayWithObjects:@"local_status", @"dateCreated", @"userid",
+        self->postFieldNames = [NSArray arrayWithObjects:@"local_status", @"date_created_gmt", @"userid",
                                 @"postid", @"description", @"title", @"permalink",
                                 @"slug", @"wp_password", @"authorid", @"status",
                                 @"mt_excerpt", @"mt_text_more", @"mt_keywords",
@@ -2659,7 +2659,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
     [dict setObject:@"" forKey:@"wp_author_id"];
     [dict setObject:xmlrpc forKey:@"xmlrpc"];
     [dict setObject:[NSDate date] forKey:@"dateCreated"];
-    [dict setObject:[NSDate date] forKey:@"date_created_gmt"];
+    [dict setObject:[DateUtils currentGMTDate] forKey:@"date_created_gmt"];
     [dict setObject:@"" forKey:@"title"];
     [dict setObject:@"Local Draft" forKey:@"page_status"];
     [dict setObject:@"" forKey:@"wp_password"];
@@ -2682,7 +2682,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
         //  'original' for downlaoded posts that have not been edited locally
         // At the time a post is downloaded or created, we add blogid and blog_host_name fields to post dict
 		
-        self->pageFieldNames = [NSArray arrayWithObjects:@"dateCreated", @"userid",
+        self->pageFieldNames = [NSArray arrayWithObjects:@"date_created_gmt", @"userid",
                                 @"pageid", @"description", @"title", @"permalink",
                                 @"wp_password", @"wp_author_id", @"page_status", @"wp_author"
                                 @"mt_allow_comments", @"mt_allow_pings", @"wp_page_order",

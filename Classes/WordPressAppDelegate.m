@@ -205,10 +205,10 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	[window makeKeyAndVisible];
 	
 	// Register for push notifications
-	[[UIApplication sharedApplication]
+	/*[[UIApplication sharedApplication]
 	 registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
 										 UIRemoteNotificationTypeSound |
-										 UIRemoteNotificationTypeAlert)];
+										 UIRemoteNotificationTypeAlert)];*/
 }
 
 - (void)handleCrashReport {

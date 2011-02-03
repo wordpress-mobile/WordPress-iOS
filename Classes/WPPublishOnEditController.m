@@ -38,8 +38,6 @@
 
 - (IBAction)datePickerValueChanged:(id)sender {
     [dateLabel setText:[dateFormatter stringFromDate:datePicker.date]];
-	//[[[BlogDataManager sharedDataManager] currentPost] setValue:datePicker.date forKey:@"date_created_gmt"];
-	//[[[BlogDataManager sharedDataManager] currentPost] setValue:datePicker.date forKey:@"dateCreated"];
 	settingController.postDetailViewController.post.dateCreated = datePicker.date;
 }
 

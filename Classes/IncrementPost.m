@@ -372,15 +372,11 @@
 		//pageIDInt = [pageID intValue];
 		
 		NSDate *pageGMTDate = [pageMetadataDict valueForKey:@"date_created_gmt"];
-		NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:pageGMTDate];
-		NSDate *newCreatedAt = [pageGMTDate addTimeInterval:(secs * +1)];
-		
-		//NSDate *newCreatedAt = [pageMetadataDict valueForKey:@"dateCreated"];
-		
+			
 		//if the recently loaded metadata contains a date that is greater than the last stored page date 
 		//then ignore it and move to the next object, because we're only updating older items here, not items more recent
 		//than the last refresh.
-		switch ([newCreatedAt compare:lastKnownCreatedAt]){
+		switch ([pageGMTDate compare:lastKnownCreatedAt]){
 			case NSOrderedAscending:
 				[onlyOlderPagesArray addObject:pageMetadataDict];
 				break;

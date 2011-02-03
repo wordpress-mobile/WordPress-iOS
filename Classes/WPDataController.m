@@ -201,19 +201,12 @@
     if (post.status == nil)
         post.status = @"publish";
     [postParams setObject:post.status forKey:@"post_status"];
-    if (post.dateCreated == nil) {
-        post.dateCreated = [NSDate date];
+    
+	if (post.date_created_gmt == nil) {
+        post.date_created_gmt = [DateUtils localDateToGMTDate:[NSDate date]];
     }
-    NSTimeZone* currentTimeZone = [NSTimeZone localTimeZone];
-    if ([currentTimeZone.abbreviation isEqualToString:@"GMT"]){
-        [postParams setObject:post.dateCreated forKey:@"dateCreated"];
-        [postParams setObject:post.dateCreated forKey:@"date_created_gmt"];
-    } else {
-        NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:post.dateCreated];
-        NSDate *gmtDate = [post.dateCreated addTimeInterval:(secs * -1)];
-        [postParams setObject:gmtDate forKey:@"dateCreated"];
-        [postParams setObject:gmtDate forKey:@"date_created_gmt"];
-    }
+	[postParams setObject:post.date_created_gmt forKey:@"date_created_gmt"];
+	
     if (post.password != nil)
         [postParams setObject:post.password forKey:@"wp_password"];
     return postParams;

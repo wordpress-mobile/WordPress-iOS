@@ -357,6 +357,7 @@
 		F52BF2E810B1DC8F00AF4582 /* BlogHTTPAuthenticationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F52BF2E610B1DC8F00AF4582 /* BlogHTTPAuthenticationViewController.xib */; };
 		F5A4EF3510B32F68002BF126 /* XMLRPCConnection+Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = F5A4EF3410B32F68002BF126 /* XMLRPCConnection+Authentication.m */; };
 		F5A4EF6810B34147002BF126 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = F5A4EF6710B34147002BF126 /* NSData+Base64.m */; };
+		FD9A948C12FAEA2300438F94 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FD9A948B12FAEA2300438F94 /* DateUtils.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -891,6 +892,8 @@
 		F5A4EF3410B32F68002BF126 /* XMLRPCConnection+Authentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "XMLRPCConnection+Authentication.m"; path = "XMLRPC/XMLRPCConnection+Authentication.m"; sourceTree = "<group>"; };
 		F5A4EF6610B34147002BF126 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		F5A4EF6710B34147002BF126 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		FD9A948A12FAEA2300438F94 /* DateUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateUtils.h; sourceTree = "<group>"; };
+		FD9A948B12FAEA2300438F94 /* DateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateUtils.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1608,6 +1611,8 @@
 				8309BA9C1231559800442B12 /* TransparentToolbar.m */,
 				836FECE812715E2A000309D8 /* CrashReportViewController.h */,
 				836FECE912715E2A000309D8 /* CrashReportViewController.m */,
+				FD9A948A12FAEA2300438F94 /* DateUtils.h */,
+				FD9A948B12FAEA2300438F94 /* DateUtils.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -2211,6 +2216,7 @@
 				379225B312F6DC1600F2176A /* StatsTableViewController.m in Sources */,
 				376EED7312F6DF78005CE77A /* Reachability.m in Sources */,
 				376EEDBA12F6E5F0005CE77A /* WPPageControl.m in Sources */,
+				FD9A948C12FAEA2300438F94 /* DateUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
