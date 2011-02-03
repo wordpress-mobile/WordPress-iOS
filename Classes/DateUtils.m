@@ -13,12 +13,7 @@
 
 + (NSDate *) currentGMTDate {
 	NSDate *currentLocalDate = [NSDate date];
-	NSTimeZone* destinationTimeZone= [NSTimeZone timeZoneWithAbbreviation:@"GMT"]; 
- 	NSTimeZone* sourceTimeZone = [NSTimeZone systemTimeZone]; 
-	NSInteger sourceGMTOffset = [sourceTimeZone secondsFromGMTForDate:currentLocalDate]; 
-	NSInteger destinationGMTOffset = [destinationTimeZone secondsFromGMTForDate:currentLocalDate]; 
-	NSTimeInterval interval = destinationGMTOffset - sourceGMTOffset; 
-	return [[[NSDate alloc] initWithTimeInterval:interval sinceDate:currentLocalDate] autorelease];
+	return [DateUtils localDateToGMTDate:currentLocalDate];
 }
 
 + (NSDate *) localDateToGMTDate:(NSDate *)localDate {
