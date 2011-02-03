@@ -218,6 +218,9 @@
 }
 
 - (void)setDateCreated:(NSDate *)localDate {
+	if(localDate == nil)
+		self.date_created_gmt = nil;
+	else
 		self.date_created_gmt = [DateUtils localDateToGMTDate:localDate];
 }
 @end

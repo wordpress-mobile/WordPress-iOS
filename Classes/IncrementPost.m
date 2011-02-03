@@ -125,10 +125,8 @@
 		//postIDInt = [postID intValue];
 		
 		NSDate *postGMTDate = [postMetadataDict valueForKey:@"date_created_gmt"];
-		NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:postGMTDate];
-		NSDate *newCreatedAt = [postGMTDate addTimeInterval:(secs * +1)];
-		
-		switch ([newCreatedAt compare:lastKnownCreatedAt]){
+				
+		switch ([postGMTDate compare:lastKnownCreatedAt]){
 			case NSOrderedAscending:
 				[onlyOlderPostsArray addObject:postMetadataDict];
 				//[postMetadataDict release];
@@ -210,12 +208,6 @@
 		
 		//strip the extra array returned by system.multicall so we really have a post NSDictionary
 		post = [singlePostArray objectAtIndex:0];
-		
-		//fix the date
-		NSDate *postGMTDate = [post valueForKey:@"date_created_gmt"];
-        NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:postGMTDate];
-		NSDate *currentDate = [postGMTDate addTimeInterval:(secs * +1)];
-        [post setValue:currentDate forKey:@"date_created_gmt"];
 		
 		// add blogid and blog_host_name to post
         [post setValue:[currentBlog valueForKey:kBlogId] forKey:kBlogId];
@@ -457,12 +449,7 @@
 		
 		//-----------------------continue with the old -syncPagesForBlog code
 		NSMutableDictionary *updatedPage = [NSMutableDictionary dictionaryWithDictionary:page];
-		
-        NSDate *pageGMTDate = [updatedPage valueForKey:@"date_created_gmt"];
-        NSInteger secs = [[NSTimeZone localTimeZone] secondsFromGMTForDate:pageGMTDate];
-        NSDate *currentDate = [pageGMTDate addTimeInterval:(secs * +1)];
-        [updatedPage setValue:currentDate forKey:@"date_created_gmt"];
-		
+				
         [updatedPage setValue:[currentBlog valueForKey:kBlogId] forKey:kBlogId];
         [updatedPage setValue:[currentBlog valueForKey:kBlogHostName] forKey:kBlogHostName];
 		
