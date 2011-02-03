@@ -924,6 +924,8 @@
 	[spinner show];
 
 	NSMutableDictionary *newBlog = [subsites objectAtIndex:0];
+    [newBlog setObject:username forKey:@"username"];
+    [newBlog setObject:password forKey:@"password"];
 
 	NSLog(@"saving newBlog: %@", newBlog);
     [Blog createFromDictionary:newBlog withContext:appDelegate.managedObjectContext];
