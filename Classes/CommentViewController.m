@@ -46,7 +46,7 @@
 @implementation CommentViewController
 
 
-@synthesize replyToCommentViewController, editCommentViewController, commentsViewController, wasLastCommentPending;
+@synthesize replyToCommentViewController, editCommentViewController, commentsViewController, wasLastCommentPending, commentAuthorUrlButton, commentAuthorEmailButton;
 @synthesize comment = _comment;
 
 #pragma mark -
@@ -59,6 +59,8 @@
 	[replyToCommentViewController release];
 	[editCommentViewController release];
 	[commentsViewController release];
+	[commentAuthorUrlButton release];
+	[commentAuthorEmailButton release];
     [super dealloc];
 }
 
@@ -97,7 +99,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [self performSelector:@selector(reachabilityChanged)];
 	wasLastCommentPending = NO;
-
     [super viewWillAppear:animated];
 }
 
@@ -514,13 +515,13 @@
     rect.origin.y += pendingLabelHeight;
     commentAuthorLabel.frame = rect;
     
-    rect = commentAuthorUrlLabel.frame;
+    rect = commentAuthorUrlButton.frame;
     rect.origin.y += pendingLabelHeight;
-	commentAuthorUrlLabel.frame = rect;
+	commentAuthorUrlButton.frame = rect;
 	
-    rect = commentAuthorEmailLabel.frame;
+    rect = commentAuthorEmailButton.frame;
     rect.origin.y += pendingLabelHeight;
-	commentAuthorEmailLabel.frame = rect;
+	commentAuthorEmailButton.frame = rect;
     
     rect = commentPostTitleLabel.frame;
     rect.origin.y += pendingLabelHeight;
@@ -555,15 +556,15 @@
 		//rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
 		commentAuthorLabel.frame = rect;
 		
-		rect = commentAuthorUrlLabel.frame;
+		rect = commentAuthorUrlButton.frame;
 		rect.origin.y -= pendingLabelHeight;
 		//rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
-		commentAuthorUrlLabel.frame = rect;
+		commentAuthorUrlButton.frame = rect;
 		
-		rect = commentAuthorEmailLabel.frame;
+		rect = commentAuthorEmailButton.frame;
 		rect.origin.y -= pendingLabelHeight;
 		//rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
-		commentAuthorEmailLabel.frame = rect;
+		commentAuthorEmailButton.frame = rect;
 		
 		rect = commentPostTitleLabel.frame;
 		rect.origin.y -= pendingLabelHeight;
@@ -590,11 +591,16 @@
         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
         [dateFormatter setDateStyle:NSDateFormatterLongStyle];
     }
-    
+    NSLog(@"Comment: %@", comment);
+	NSLog(@"Trimmed: %@", [comment.author_url trim]);
 	gravatarImageView.email = [comment.author_email trim];
-	commentAuthorEmailLabel.text = [comment.author_email trim];
     commentAuthorLabel.text = [comment.author trim];
-    commentAuthorUrlLabel.text = [comment.author_url trim];
+	[commentAuthorUrlButton setTitle:[comment.author_url trim] forState:UIControlStateNormal];
+	[commentAuthorUrlButton setTitle:[comment.author_url trim] forState:UIControlStateHighlighted];
+	[commentAuthorUrlButton setTitle:[comment.author_url trim] forState:UIControlStateSelected];
+	[commentAuthorEmailButton setTitle:[comment.author_email trim] forState:UIControlStateNormal];
+	[commentAuthorEmailButton setTitle:[comment.author_email trim] forState:UIControlStateHighlighted];
+	[commentAuthorEmailButton setTitle:[comment.author_email trim] forState:UIControlStateSelected];
     if (comment.postTitle)
         commentPostTitleLabel.text = [@"on " stringByAppendingString:[comment.postTitle trim]];
     commentDateLabel.text = [@"" stringByAppendingString:[dateFormatter stringFromDate:comment.dateCreated]];
@@ -628,6 +634,31 @@
 
     [segmentedControl setEnabled:[commentsViewController hasPreviousComment] forSegmentAtIndex:0];
     [segmentedControl setEnabled:[commentsViewController hasNextComment] forSegmentAtIndex:1];
+}
+
+- (void)viewURL{
+	NSURL *url = [NSURL URLWithString: [self.comment.author_url trim]];
+	if (url != nil) {
+		[[UIApplication sharedApplication] openURL:url];
+	}
+}
+
+- (void)sendEmail{
+	if (self.comment.author_email) {
+		MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
+		controller.mailComposeDelegate = self;
+		NSArray *recipient = [[NSArray alloc] initWithObjects:[self.comment.author_email trim], nil];
+		[controller setToRecipients: recipient];
+		[controller setSubject:[NSString stringWithFormat:@"Re: %@", self.comment.postTitle]]; 
+		[controller setMessageBody:[NSString stringWithFormat:@"Hi %@,", self.comment.author] isHTML:NO];
+		[self presentModalViewController:controller animated:YES];
+		[controller release];
+	}
+}
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller  didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
+{
+	[self dismissModalViewControllerAnimated:YES];
 }
 
 @end

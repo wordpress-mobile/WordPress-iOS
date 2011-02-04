@@ -528,7 +528,7 @@
 	hasCheckedForSubsites = YES;
 	if (results != nil) {
 		[self setSubsites:results];
-
+		NSLog(@"results: %@", results);
         if (results.count > 1) {
             hasSubsites = YES;
             [addUsersBlogsView setUrl:xmlrpc];

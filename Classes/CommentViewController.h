@@ -12,7 +12,7 @@
 #import "CommentsViewController.h"
 #import "Comment.h"
 
-@interface CommentViewController : UIViewController <UIScrollViewDelegate, UIActionSheetDelegate> {
+@interface CommentViewController : UIViewController <UIScrollViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
 
 	CommentsViewController *commentsViewController;
 	EditCommentViewController *editCommentViewController;
@@ -21,8 +21,8 @@
     
     IBOutlet GravatarImageView *gravatarImageView;
     IBOutlet UILabel *commentAuthorLabel;
-    IBOutlet UILabel *commentAuthorUrlLabel;
-	IBOutlet UILabel *commentAuthorEmailLabel;
+    IBOutlet UIButton *commentAuthorUrlButton;
+	IBOutlet UIButton *commentAuthorEmailButton;
     IBOutlet UILabel *commentPostTitleLabel;
     IBOutlet UILabel *commentDateLabel;
     IBOutlet UILabel *commentBodyLabel;
@@ -56,6 +56,8 @@
 - (IBAction)launchModerateMenu;
 - (IBAction)launchReplyToComments;
 - (IBAction)launchDeleteCommentActionSheet;
+- (IBAction)viewURL;
+- (IBAction)sendEmail;
 
 - (void)segmentAction:(id)sender;
 - (void)showComment:(Comment *)comment;
@@ -70,6 +72,8 @@
 @property (nonatomic, retain) EditCommentViewController *editCommentViewController;
 @property (nonatomic, retain) CommentsViewController *commentsViewController;
 @property (nonatomic, retain) Comment *comment;
+@property (nonatomic, retain) IBOutlet UIButton *commentAuthorUrlButton;
+@property (nonatomic, retain) IBOutlet UIButton *commentAuthorEmailButton;
 @property BOOL wasLastCommentPending;
 
 

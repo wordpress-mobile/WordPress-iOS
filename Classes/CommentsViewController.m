@@ -126,7 +126,7 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
     [self setEditing:NO];
-        
+    selectedIndexPath = nil;    
     [editToolbar setHidden:YES];
     self.navigationItem.rightBarButtonItem = editButtonItem;
     
