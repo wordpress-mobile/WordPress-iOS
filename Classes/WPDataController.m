@@ -277,6 +277,9 @@
 	[xmlrpcRequest setMethod:@"wp.getPages" withObjects:[self getXMLRPCArgsForBlog:blog withExtraArgs:args]];
     NSArray *recentPages = [self executeXMLRPCRequest:xmlrpcRequest];
 	[xmlrpcRequest release];
+    if ([recentPages isKindOfClass:[NSError class]]) {
+        return [NSMutableArray array];
+    }    
     
     return [NSMutableArray arrayWithArray:recentPages];
 }
@@ -437,12 +440,22 @@
 }
 
 - (id)executeXMLRPCRequest:(XMLRPCRequest *)req {
-	XMLRPCResponse *userInfoResponse = nil;
-	userInfoResponse = [XMLRPCConnection sendSynchronousXMLRPCRequest:req];
+	ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:[req host]];
+	[request setRequestMethod:@"POST"];
+	[request setShouldPresentCredentialsBeforeChallenge:YES];
+	[request setShouldPresentAuthenticationDialog:YES];
+	[request setUseKeychainPersistence:YES];
+    [request setValidatesSecureCertificate:NO];
+    [request appendPostData:[[req source] dataUsingEncoding:NSUTF8StringEncoding]];
+	[request startSynchronous];
+
+	XMLRPCResponse *userInfoResponse = [[[XMLRPCResponse alloc] initWithData:[request responseData]] autorelease];
 	
-    NSError *err = [self errorWithResponse:userInfoResponse];
-    if (err)
-        return err;
+	NSError *error = [request error];
+    if (error) {
+        NSLog(@"executeXMLRPCRequest error: %@", error);
+        return error;
+    }
 	
     return [userInfoResponse object];
 }
