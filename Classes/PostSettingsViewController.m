@@ -91,7 +91,15 @@
         [barButtons addObject:barButton];
         [barButton release];
         accesoryToolbar.items = barButtons;
-        passwordTextField.inputAccessoryView = accesoryToolbar;
+		
+		//check iOS version for support of inputAccessoryView
+		float version = [[[UIDevice currentDevice] systemVersion] floatValue];
+		if (version >= 3.2)
+			passwordTextField.inputAccessoryView = accesoryToolbar;
+		else {
+			passwordTextField.returnKeyType = UIReturnKeyDone;
+			passwordTextField.delegate = self;
+		}
         [accesoryToolbar release];
     }
 }

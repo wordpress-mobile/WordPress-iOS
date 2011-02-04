@@ -7,7 +7,7 @@
 #define kOFFSET_FOR_KEYBOARD                    150.0
 
 @class EditPostViewController;
-@interface PostSettingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource> {
+@interface PostSettingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate> {
     IBOutlet UITableView *tableView;
     IBOutlet UITableViewCell *statusTableViewCell;
     IBOutlet UITableViewCell *visibilityTableViewCell;
