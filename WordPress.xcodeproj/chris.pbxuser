@@ -1,0 +1,96 @@
+// !$*UTF8*$!
+{
+	03FF35C3100423A10066ED95 /* BlogViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1244, 3523}}";
+			sepNavSelRange = "{5213, 0}";
+			sepNavVisRange = "{4184, 1203}";
+		};
+	};
+	1D6058900D05DD3D006BFB54 /* WordPress */ = {
+		activeExec = 0;
+		executables = (
+			837CC03E12FCAECA0019AF00 /* WordPress */,
+		);
+	};
+	29B97313FDCFA39411CA2CEA /* Project object */ = {
+		activeBuildConfigurationName = Release;
+		activeExecutable = 837CC03E12FCAECA0019AF00 /* WordPress */;
+		activeSDKPreference = iphoneos4.2;
+		activeTarget = 1D6058900D05DD3D006BFB54 /* WordPress */;
+		codeSenseManager = 837CC07512FCAEF40019AF00 /* Code sense */;
+		executables = (
+			837CC03E12FCAECA0019AF00 /* WordPress */,
+		);
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					364,
+					20,
+					48.16259765625,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 318549706;
+			PBXWorkspaceStateSaveDate = 318549706;
+		};
+		sourceControlManager = 837CC07412FCAEF40019AF00 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	837CC03E12FCAECA0019AF00 /* WordPress */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = WordPress;
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+	};
+	837CC07412FCAEF40019AF00 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	837CC07512FCAEF40019AF00 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+}
