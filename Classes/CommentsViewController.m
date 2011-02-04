@@ -505,6 +505,7 @@
 #pragma mark Update Badge
 
 - (void)updateBadge {
+    return;
     NSString *badge = nil;
 	
 	if (indexForCurrentPost < -1) {
