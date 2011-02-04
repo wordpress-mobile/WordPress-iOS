@@ -13,10 +13,11 @@
 @property (nonatomic, retain) NSNumber *blogID;
 @property (nonatomic, retain) NSString *blogName, *url, *username, *password, *xmlrpc, *apiKey;
 @property (readonly) NSString *hostURL;
-@property (nonatomic, assign) NSNumber *isAdmin;
+@property (nonatomic, assign) NSNumber *isAdmin, *hasOlderPosts;
 @property (nonatomic, retain) NSSet *posts;
 @property (nonatomic, retain) NSSet *categories;
 @property (nonatomic, retain) NSSet *comments;
+@property (nonatomic, assign) BOOL isSyncingPosts;
 
 - (UIImage *)favicon;
 - (void)downloadFavicon;
@@ -26,7 +27,7 @@
 #pragma mark -
 #pragma mark Synchronization
 - (NSArray *)syncedPosts;
-- (BOOL)syncPostsWithError:(NSError **)error;
+- (BOOL)syncPostsWithError:(NSError **)error loadMore:(BOOL)more;
 - (BOOL)syncPagesWithError:(NSError **)error;
 - (BOOL)syncCategoriesWithError:(NSError **)error;
 - (BOOL)syncCommentsWithError:(NSError **)error;

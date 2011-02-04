@@ -9,7 +9,8 @@
 @interface PostsViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, UIAccelerometerDelegate, NSFetchedResultsControllerDelegate> {
 @private
 	UIAlertView *progressAlert;
-    RefreshButtonView *refreshButton;	
+    RefreshButtonView *refreshButton;
+    UIActivityIndicatorView *activityFooter;
 }
 
 @property (readonly) UIBarButtonItem *newButtonItem;

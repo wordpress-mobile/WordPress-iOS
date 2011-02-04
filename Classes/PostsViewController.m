@@ -122,6 +122,16 @@
 	if (DeviceIsPad() == YES) {
 		cell.accessoryType = UITableViewCellAccessoryNone;
 	}
+    
+    // Are we approaching the end of the table?
+    if ((indexPath.section + 1 == [self numberOfSectionsInTableView:tableView]) && (indexPath.row + 4 >= [self tableView:tableView numberOfRowsInSection:indexPath.section])) {
+        // Only 3 rows till the end of table
+        [activityFooter startAnimating];
+        if (!self.blog.isSyncingPosts) {
+            WPLog(@"Approaching end of table, let's load more posts");
+            [self performSelectorInBackground:@selector(loadMore) withObject:nil];
+        }
+    }
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -207,6 +217,23 @@
     return YES;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 50;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    if (activityFooter == nil) {
+        CGRect rect = CGRectMake(tableView.frame.size.width/2 - 20, 10, 30, 30);
+        activityFooter = [[UIActivityIndicatorView alloc] initWithFrame:rect];
+        activityFooter.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+        activityFooter.hidesWhenStopped = YES;
+        activityFooter.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+    }
+    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 50)];
+    [footerView addSubview:activityFooter];
+    return [footerView autorelease];
+}
+
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Deleting Post..."];
 	[progressAlert show];
@@ -230,6 +257,7 @@
 //    [self.tableView reloadData];
     [self trySelectSomething];
     [refreshButton stopAnimating];
+    [activityFooter stopAnimating];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
@@ -243,6 +271,8 @@
 }
 
 - (void)refreshHandler {
+    if (self.blog.isSyncingPosts)
+        return;
     [refreshButton startAnimating];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     [self performSelectorInBackground:@selector(syncPosts) withObject:nil];
@@ -254,8 +284,25 @@
     // TODO: handle errors
     [self.blog syncCategoriesWithError:&error];
     // TODO: handle errors
-    [self.blog syncPostsWithError:&error];
+    [self.blog syncPostsWithError:&error loadMore:NO];
     [self performSelectorOnMainThread:@selector(refreshPostList) withObject:nil waitUntilDone:NO];
+    [pool release];
+}
+
+- (void)didLoadMore {
+    [activityFooter stopAnimating];
+}
+
+- (void)loadMore {
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    NSError *error = nil;
+    // TODO: handle errors
+    if (!self.blog.isSyncingPosts && [self.blog.hasOlderPosts boolValue]) {
+        WPLog(@"We have older posts to load");
+        [self.blog syncPostsWithError:&error loadMore:YES];
+        [self performSelectorOnMainThread:@selector(refreshPostList) withObject:nil waitUntilDone:NO];
+    }
+    [self performSelectorOnMainThread:@selector(didLoadMore) withObject:nil waitUntilDone:NO];
     [pool release];
 }
 
@@ -484,7 +531,7 @@
         NSLog(@"Couldn't fetch posts");
         resultsController = nil;
     }
-    NSLog(@"fetched posts: %@", [resultsController fetchedObjects]);
+    NSLog(@"fetched posts: %@\ntotal: %i", [resultsController fetchedObjects], [[resultsController fetchedObjects] count]);
     
     return resultsController;
 }
@@ -527,6 +574,7 @@
     self.blog = nil;
     self.resultsController = nil;
 
+    [activityFooter release];
 	[mediaManager release];
     [postDetailViewController release];
     [newButtonItem release];

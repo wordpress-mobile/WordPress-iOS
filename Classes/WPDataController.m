@@ -126,10 +126,10 @@
                                                error:&error];
 }
 
-- (NSMutableArray *)getRecentPostsForBlog:(Blog *)blog {
+- (NSMutableArray *)getRecentPostsForBlog:(Blog *)blog number:(NSNumber *)number {
     XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:blog.xmlrpc]];
     // TODO: use app-wide setting for number of posts
-    NSArray *args = [NSArray arrayWithObject:[NSNumber numberWithInt:10]];
+    NSArray *args = [NSArray arrayWithObject:number];
 	[xmlrpcRequest setMethod:@"metaWeblog.getRecentPosts" withObjects:[self getXMLRPCArgsForBlog:blog withExtraArgs:args]];
     NSArray *recentPosts = [self executeXMLRPCRequest:xmlrpcRequest];
 	[xmlrpcRequest release];
@@ -270,10 +270,10 @@
 
 #pragma mark -
 #pragma mark Page
-- (NSMutableArray *)wpGetPages:(Blog *)blog {
+- (NSMutableArray *)wpGetPages:(Blog *)blog number:(NSNumber *)number {
     XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:blog.xmlrpc]];
     // TODO: use app-wide setting for number of posts
-    NSArray *args = [NSArray arrayWithObject:[NSNumber numberWithInt:10]];
+    NSArray *args = [NSArray arrayWithObject:number];
 	[xmlrpcRequest setMethod:@"wp.getPages" withObjects:[self getXMLRPCArgsForBlog:blog withExtraArgs:args]];
     NSArray *recentPages = [self executeXMLRPCRequest:xmlrpcRequest];
 	[xmlrpcRequest release];

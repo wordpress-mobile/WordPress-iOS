@@ -11,8 +11,9 @@
 
 @implementation Blog
 @dynamic blogID, blogName, url, username, password, xmlrpc, apiKey;
-@dynamic isAdmin;
+@dynamic isAdmin, hasOlderPosts;
 @dynamic posts, categories, comments;
+@synthesize isSyncingPosts;
 
 #pragma mark -
 #pragma mark Custom methods
@@ -191,8 +192,30 @@
     return YES;
 }
 
-- (BOOL)syncPostsWithError:(NSError **)error {    
-    NSMutableArray *posts = [[WPDataController sharedInstance] getRecentPostsForBlog:self];
+- (BOOL)syncPostsWithError:(NSError **)error loadMore:(BOOL)more {
+    if (self.isSyncingPosts) {
+        WPLog(@"Already syncing. Skip");
+        return NO;
+    }
+    self.isSyncingPosts = YES;
+    int num;
+
+    // Don't load more than 20 posts if we aren't at the end of the table,
+    // even if they were previously donwloaded
+    // 
+    // Blogs with long history can get really slow really fast, 
+    // with no chance to go back
+    if (more) {
+        num = MAX([self.posts count], 20);
+        if ([self.hasOlderPosts boolValue]) {
+            num += 20;
+        }
+    } else {
+        num = 20;
+    }
+
+    WPLog(@"Loading %i posts...", num);
+    NSMutableArray *posts = [[WPDataController sharedInstance] getRecentPostsForBlog:self number:[NSNumber numberWithInt:num]];
     if ([posts isKindOfClass:[NSError class]]) {
         if (error != nil) {
             *error = (NSError *)posts;
@@ -201,7 +224,13 @@
         }
         return NO;
     }
+    
+    // If we asked for more and we got what we had, there are no more posts to load
+    if (more && ([posts count] <= [self.posts count])) {
+        self.hasOlderPosts = [NSNumber numberWithBool:NO];
+    }
     [self performSelectorOnMainThread:@selector(syncPostsFromResults:) withObject:posts waitUntilDone:YES];
+    self.isSyncingPosts = NO;
 
     return YES;
 }
@@ -237,7 +266,7 @@
 }
 
 - (BOOL)syncPagesWithError:(NSError **)error {    
-    NSMutableArray *pages = [[WPDataController sharedInstance] wpGetPages:self];
+    NSMutableArray *pages = [[WPDataController sharedInstance] wpGetPages:self number:[NSNumber numberWithInt:10]];
     if ([pages isKindOfClass:[NSError class]]) {
         if (error != nil) {
             *error = (NSError *)pages;

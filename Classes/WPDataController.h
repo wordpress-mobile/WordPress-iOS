@@ -42,7 +42,7 @@ typedef enum {
 
 #pragma mark -
 #pragma mark Blog
-- (NSMutableArray *)getRecentPostsForBlog:(Blog *)blog;
+- (NSMutableArray *)getRecentPostsForBlog:(Blog *)blog number:(NSNumber *)number;
 
 #pragma mark -
 #pragma mark Category
@@ -56,7 +56,7 @@ typedef enum {
 
 #pragma mark -
 #pragma mark Page
-- (NSMutableArray *)wpGetPages:(Blog *)blog;
+- (NSMutableArray *)wpGetPages:(Blog *)blog number:(NSNumber *)number;
 - (int)wpNewPage:(Page *)post;
 - (BOOL)wpEditPage:(Page *)post;
 - (BOOL)wpDeletePage:(Page *)post;
