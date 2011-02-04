@@ -13,6 +13,7 @@
 @dynamic blogID, blogName, url, username, password, xmlrpc, apiKey;
 @dynamic isAdmin, hasOlderPosts;
 @dynamic posts, categories, comments;
+@dynamic lastSync;
 @synthesize isSyncingPosts;
 
 #pragma mark -
@@ -230,6 +231,7 @@
         self.hasOlderPosts = [NSNumber numberWithBool:NO];
     }
     [self performSelectorOnMainThread:@selector(syncPostsFromResults:) withObject:posts waitUntilDone:YES];
+    self.lastSync = [NSDate date];
     self.isSyncingPosts = NO;
 
     return YES;

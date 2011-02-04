@@ -3,13 +3,15 @@
 #import "MediaManager.h"
 #import "Post.h"
 #import "PostViewController.h"
+#import "EGORefreshTableHeaderView.h"
 
 @class BlogDataManager, EditPostViewController, EditPostViewController;
 
-@interface PostsViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, UIAccelerometerDelegate, NSFetchedResultsControllerDelegate> {
+@interface PostsViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, UIAccelerometerDelegate, NSFetchedResultsControllerDelegate, EGORefreshTableHeaderDelegate> {
 @private
 	UIAlertView *progressAlert;
     RefreshButtonView *refreshButton;
+    EGORefreshTableHeaderView *_refreshHeaderView;
     UIActivityIndicatorView *activityFooter;
 }
 

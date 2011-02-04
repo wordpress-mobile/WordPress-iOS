@@ -115,6 +115,8 @@ Classes/CrashReporter.framework/Versions/A/Resources/Info.plist -text
 Classes/CrashReporter.framework/Versions/Current -text
 Classes/DateUtils.h -text
 Classes/DateUtils.m -text
+Classes/EGOTableViewPullRefresh/EGORefreshTableHeaderView.h -text
+Classes/EGOTableViewPullRefresh/EGORefreshTableHeaderView.m -text
 Classes/EditPageViewController.h -text
 Classes/EditPageViewController.m -text
 Classes/EditPostParentModalViewController.xib -text
@@ -387,6 +389,8 @@ WordPress.xcodeproj/project.pbxproj -text
 /backNav@2x.png -text
 /backNavd.png -text
 /backNavd@2x.png -text
+/blueArrow.png -text svneol=unset#unset
+/blueArrow@2x.png -text svneol=unset#unset
 c_tidy/access.c -text
 c_tidy/access.h -text
 c_tidy/alloc.c -text

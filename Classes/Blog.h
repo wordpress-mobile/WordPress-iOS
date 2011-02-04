@@ -18,6 +18,7 @@
 @property (nonatomic, retain) NSSet *categories;
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, assign) BOOL isSyncingPosts;
+@property (nonatomic, retain) NSDate *lastSync;
 
 - (UIImage *)favicon;
 - (void)downloadFavicon;

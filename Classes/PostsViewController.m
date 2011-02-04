@@ -41,7 +41,6 @@
     [FlurryAPI logEvent:@"Posts"];
 
     self.tableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
-    [self addRefreshButton];
 
 	// ShouldRefreshPosts
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableViewAfterPostSaved:) name:@"AsynchronousPostIsPosted" object:nil];
@@ -50,6 +49,17 @@
     newButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
                      target:self
                      action:@selector(showAddPostView)];
+
+    if (_refreshHeaderView == nil) {
+		EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];
+		view.delegate = self;
+		[self.tableView addSubview:view];
+		_refreshHeaderView = view;
+		[view release];
+	}
+
+	//  update the last update date
+	[_refreshHeaderView refreshLastUpdatedDate];
 
     if (DeviceIsPad() && self.selectedIndexPath && self.postReaderViewController) {
         @try {
@@ -77,7 +87,12 @@
 	if ([[WPReachability sharedReachability] internetConnectionStatus])
 	{
 		if ([defaults boolForKey:@"refreshPostsRequired"]) {
-			[self refreshHandler];
+            // Simulate drag instead of calling refreshHandler directly
+            // It's the only way the refresh header notices we are syncing
+            CGPoint offset = self.tableView.contentOffset;
+            offset.y = - 65.0f;
+            self.tableView.contentOffset = offset;
+            [_refreshHeaderView egoRefreshScrollViewDidEndDragging:self.tableView];
 			[defaults setBool:false forKey:@"refreshPostsRequired"];
 		}
 	}
@@ -102,6 +117,7 @@
 
 - (void)viewDidUnload {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [_refreshHeaderView release]; _refreshHeaderView = nil;
 	[super viewDidUnload];
 }
 
@@ -259,6 +275,7 @@
     [refreshButton stopAnimating];
     [activityFooter stopAnimating];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
 }
 
 - (void)addRefreshButton {
@@ -568,12 +585,39 @@
 }
 
 #pragma mark -
+#pragma mark UIScrollViewDelegate Methods
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+	[_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+	[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+}
+
+#pragma mark -
+#pragma mark EGORefreshTableHeaderDelegate Methods
+
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
+	[self refreshHandler];
+}
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
+	return self.blog.isSyncingPosts; // should return if data source model is reloading
+}
+
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
+	return self.blog.lastSync; // should return date data source was last changed
+}
+
+#pragma mark -
 #pragma mark Dealloc
 
 - (void)dealloc {
     self.blog = nil;
     self.resultsController = nil;
 
+    [_refreshHeaderView release]; _refreshHeaderView = nil;
     [activityFooter release];
 	[mediaManager release];
     [postDetailViewController release];

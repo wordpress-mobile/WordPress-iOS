@@ -334,6 +334,9 @@
 		E19F29C412B8BC22008FF660 /* tmbstr.c in Sources */ = {isa = PBXBuildFile; fileRef = E19F29A612B8BC22008FF660 /* tmbstr.c */; };
 		E19F29C512B8BC22008FF660 /* utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = E19F29A812B8BC22008FF660 /* utf8.c */; };
 		E19F29C612B8BC22008FF660 /* win32tc.c in Sources */ = {isa = PBXBuildFile; fileRef = E19F29AB12B8BC22008FF660 /* win32tc.c */; };
+		E1B4A9E112FC8B1000EB3F67 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = E1B4A9E012FC8B1000EB3F67 /* EGORefreshTableHeaderView.m */; };
+		E1B4A9E412FC8B2500EB3F67 /* blueArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B4A9E212FC8B2500EB3F67 /* blueArrow.png */; };
+		E1B4A9E512FC8B2500EB3F67 /* blueArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B4A9E312FC8B2500EB3F67 /* blueArrow@2x.png */; };
 		E1C43CA712E4D09E00330262 /* PageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C43CA612E4D09E00330262 /* PageViewController.m */; };
 		E1D552CE12E77BD80032C680 /* tabPointer.png in Resources */ = {isa = PBXBuildFile; fileRef = E1D552CC12E77BD80032C680 /* tabPointer.png */; };
 		E1D552CF12E77BD80032C680 /* tabPointer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1D552CD12E77BD80032C680 /* tabPointer@2x.png */; };
@@ -864,6 +867,10 @@
 		E19F29AA12B8BC22008FF660 /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
 		E19F29AB12B8BC22008FF660 /* win32tc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = win32tc.c; sourceTree = "<group>"; };
 		E19F29AC12B8BC22008FF660 /* win32tc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = win32tc.h; sourceTree = "<group>"; };
+		E1B4A9DF12FC8B1000EB3F67 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
+		E1B4A9E012FC8B1000EB3F67 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
+		E1B4A9E212FC8B2500EB3F67 /* blueArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueArrow.png; sourceTree = "<group>"; };
+		E1B4A9E312FC8B2500EB3F67 /* blueArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blueArrow@2x.png"; sourceTree = "<group>"; };
 		E1C43CA512E4D09E00330262 /* PageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageViewController.h; sourceTree = "<group>"; };
 		E1C43CA612E4D09E00330262 /* PageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageViewController.m; sourceTree = "<group>"; };
 		E1D552CC12E77BD80032C680 /* tabPointer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabPointer.png; sourceTree = "<group>"; };
@@ -927,6 +934,7 @@
 		031662E60FFB14C60045D052 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E1B4A9DE12FC8B1000EB3F67 /* EGOTableViewPullRefresh */,
 				031666AC0FFC3E130045D052 /* CommentTableViewCell.h */,
 				031666AD0FFC3E130045D052 /* CommentTableViewCell.m */,
 				031669580FFC81A20045D052 /* CommentsTableViewDelegate.h */,
@@ -1486,6 +1494,8 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				E1B4A9E212FC8B2500EB3F67 /* blueArrow.png */,
+				E1B4A9E312FC8B2500EB3F67 /* blueArrow@2x.png */,
 				376EEF5B12F70C9B005CE77A /* stats.png */,
 				376EEF5C12F70C9B005CE77A /* stats@2x.png */,
 				376EEF2312F7068A005CE77A /* page_control_blue_active.png */,
@@ -1788,6 +1798,15 @@
 			path = c_tidy;
 			sourceTree = "<group>";
 		};
+		E1B4A9DE12FC8B1000EB3F67 /* EGOTableViewPullRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				E1B4A9DF12FC8B1000EB3F67 /* EGORefreshTableHeaderView.h */,
+				E1B4A9E012FC8B1000EB3F67 /* EGORefreshTableHeaderView.m */,
+			);
+			path = EGOTableViewPullRefresh;
+			sourceTree = "<group>";
+		};
 		E1D5549B12E8C6410032C680 /* Dev builds */ = {
 			isa = PBXGroup;
 			children = (
@@ -2053,6 +2072,8 @@
 				376EEF2A12F7068A005CE77A /* page_control_blue@2x.png in Resources */,
 				376EEF5D12F70C9B005CE77A /* stats.png in Resources */,
 				376EEF5E12F70C9B005CE77A /* stats@2x.png in Resources */,
+				E1B4A9E412FC8B2500EB3F67 /* blueArrow.png in Resources */,
+				E1B4A9E512FC8B2500EB3F67 /* blueArrow@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2217,6 +2238,7 @@
 				376EED7312F6DF78005CE77A /* Reachability.m in Sources */,
 				376EEDBA12F6E5F0005CE77A /* WPPageControl.m in Sources */,
 				FD9A948C12FAEA2300438F94 /* DateUtils.m in Sources */,
+				E1B4A9E112FC8B1000EB3F67 /* EGORefreshTableHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
