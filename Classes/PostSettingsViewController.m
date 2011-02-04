@@ -81,7 +81,7 @@
     [datePickerView addTarget:self action:@selector(datePickerChanged) forControlEvents:UIControlEventValueChanged];
 
     if (!DeviceIsPad()) {
-        UIToolbar *accesoryToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
+        /*UIToolbar *accesoryToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
         accesoryToolbar.tintColor = postDetailViewController.toolbar.tintColor;
         NSMutableArray *barButtons = [NSMutableArray arrayWithCapacity:2];
         UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -100,7 +100,9 @@
 			passwordTextField.returnKeyType = UIReturnKeyDone;
 			passwordTextField.delegate = self;
 		}
-        [accesoryToolbar release];
+        [accesoryToolbar release];*/
+		passwordTextField.returnKeyType = UIReturnKeyDone;
+		passwordTextField.delegate = self;
     }
 }
 
