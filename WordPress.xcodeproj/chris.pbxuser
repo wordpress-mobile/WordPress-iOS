@@ -1,0 +1,134 @@
+// !$*UTF8*$!
+{
+	03FF35C3100423A10066ED95 /* BlogViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1244, 3497}}";
+			sepNavSelRange = "{4434, 90}";
+			sepNavVisRange = "{4187, 1342}";
+		};
+	};
+	1D6058900D05DD3D006BFB54 /* WordPress */ = {
+		activeExec = 0;
+		executables = (
+			8387F35A12F32CFA00EF5D3A /* WordPress */,
+		);
+	};
+	29B97313FDCFA39411CA2CEA /* Project object */ = {
+		activeBuildConfigurationName = Release;
+		activeExecutable = 8387F35A12F32CFA00EF5D3A /* WordPress */;
+		activeSDKPreference = iphoneos4.2;
+		activeTarget = 1D6058900D05DD3D006BFB54 /* WordPress */;
+		codeSenseManager = 8387F38812F32D0400EF5D3A /* Code sense */;
+		executables = (
+			8387F35A12F32CFA00EF5D3A /* WordPress */,
+		);
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					564,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 317945359;
+			PBXWorkspaceStateSaveDate = 317945359;
+		};
+		perUserProjectItems = {
+			83F9574012F37A1500E33E93 /* PlistBookmark */ = 83F9574012F37A1500E33E93 /* PlistBookmark */;
+			83F9574112F37A1500E33E93 /* XCBuildMessageTextBookmark */ = 83F9574112F37A1500E33E93 /* XCBuildMessageTextBookmark */;
+			83F9574312F5E6CF00E33E93 /* PBXTextBookmark */ = 83F9574312F5E6CF00E33E93 /* PBXTextBookmark */;
+		};
+		sourceControlManager = 8387F38712F32D0400EF5D3A /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	8387F35A12F32CFA00EF5D3A /* WordPress */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = WordPress;
+		savedGlobals = {
+		};
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+	};
+	8387F38712F32D0400EF5D3A /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	8387F38812F32D0400EF5D3A /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	83F9574012F37A1500E33E93 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = 8D1107310486CEB800E47090 /* Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+		);
+		name = /Users/chris/Documents/Workspace/2.6.5/Info.plist;
+		rLen = 0;
+		rLoc = 9223372036854775807;
+	};
+	83F9574112F37A1500E33E93 /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "Local declaration of 'tabBarController' hides instance variable";
+		fRef = 03FF35C3100423A10066ED95 /* BlogViewController.m */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 121;
+		rType = 1;
+	};
+	83F9574312F5E6CF00E33E93 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 03FF35C3100423A10066ED95 /* BlogViewController.m */;
+		name = "BlogViewController.m: 122";
+		rLen = 90;
+		rLoc = 4434;
+		rType = 0;
+		vrLen = 1342;
+		vrLoc = 4187;
+	};
+}
