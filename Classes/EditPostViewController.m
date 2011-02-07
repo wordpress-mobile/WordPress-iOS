@@ -121,8 +121,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
             return CGRectMake(0, 143, 768, 537);
         else // Portrait
             return CGRectMake(0, 143, 768, 773);
-    else
-        return CGRectMake(0, 136, 320, 236);
+		else if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
+				 || (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
+			return CGRectMake(0, 136, 480, 236);
+		else // Portrait
+			return CGRectMake(0, 136, 320, 236);
 }
 
 - (void)viewDidLoad {
@@ -204,10 +207,22 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-	if(DeviceIsPad() == YES)
+	if(DeviceIsPad()) {
 		return YES;
-	else
-		return NO;
+	}
+	else if ((toInterfaceOrientation == UIInterfaceOrientationPortrait) || (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
+		return YES;
+	}
+	else if ((toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+		if (self.interfaceOrientation != toInterfaceOrientation) {
+			if (isEditing)
+				return YES;
+			else
+				return NO;
+		}
+	}
+	
+	return NO;	
 }
 
 - (void)disableInteraction {
@@ -509,8 +524,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (IBAction)endTextEnteringButtonAction:(id)sender {
     [textView resignFirstResponder];
 	if (DeviceIsPad() == NO) {
-		//		if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
-		//			[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+		if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
+			[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
 	}
 }
 
@@ -553,7 +568,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)showLinkView {
-    UIAlertView *addURLSourceAlert = [[UIAlertView alloc] initWithFrame:CGRectMake(0, 0, 0, 0.0)];
+    UIAlertView *addURLSourceAlert = [[UIAlertView alloc] init];
     infoText = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 48.0, 260.0, 29.0)];
     urlField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 82.0, 260.0, 29.0)];
     infoText.placeholder = @"Text to be linked";
@@ -575,17 +590,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [addURLSourceAlert addSubview:infoText];
     [addURLSourceAlert addSubview:urlField];
     [infoText becomeFirstResponder];
-	
-	//deal with rotation
-	if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
-		|| (self.interfaceOrientation == UIDeviceOrientationLandscapeRight))
-	{
-		CGAffineTransform upTransform = CGAffineTransformMakeTranslation(0.0, 80.0);
-		[addURLSourceAlert setTransform:upTransform];
-	}else{
-		CGAffineTransform upTransform = CGAffineTransformMakeTranslation(0.0, 140.0);
-		[addURLSourceAlert setTransform:upTransform];
-	}
 	
     //[addURLSourceAlert setTransform:upTransform];
     [addURLSourceAlert setTag:2];
