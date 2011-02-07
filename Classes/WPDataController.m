@@ -451,11 +451,19 @@
 
 	XMLRPCResponse *userInfoResponse = [[[XMLRPCResponse alloc] initWithData:[request responseData]] autorelease];
 	
+	//generic error
 	NSError *error = [request error];
     if (error) {
         NSLog(@"executeXMLRPCRequest error: %@", error);
         return error;
     }
+	
+		
+    NSError *err = [self errorWithResponse:userInfoResponse];
+	
+    if (err)
+        return err;
+	
 	
     return [userInfoResponse object];
 }

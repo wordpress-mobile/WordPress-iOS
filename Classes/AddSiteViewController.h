@@ -35,6 +35,6 @@
 @property (nonatomic, retain) NSString *footerText, *addButtonText, *url, *xmlrpc, *username, *password, *host, *blogName;
 @property (nonatomic, retain) NSNumber *blogID;
 @property (nonatomic, retain) NSArray *subsites;
-@property (nonatomic, assign) BOOL isAuthenticating, isAuthenticated, isGettingXMLRPCURL, isAdding, hasSubsites, hasValidXMLRPCurl, viewDidMove, keyboardIsVisible, hasCheckedForSubsites;
+@property (nonatomic, assign) BOOL isAuthenticating, isAuthenticated, isAdding, hasSubsites, hasValidXMLRPCurl, viewDidMove, keyboardIsVisible, hasCheckedForSubsites;
 
 @end
