@@ -19,7 +19,6 @@
 - (void)getXMLRPCurl;
 - (void) updateUIAfterXMLRPCFails:(NSString *)errorMsg;
 - (void)setXMLRPCUrl:(NSString *)xmlrpcUrl;
-//- (void)verifyRSDurl:(NSString *)rsdURL;
 - (void)verifyXMLRPCurl:(NSString *)xmlrpcURL;
 - (BOOL)blogExists;
 - (void)keyboardWillShow:(NSNotification *)notification;
@@ -375,9 +374,6 @@
 					if(isAuthenticated == NO) {
 						[self performSelectorInBackground:@selector(getXMLRPCUrl) withObject:nil];
 					}
-				/*	else if(hasCheckedForSubsites == NO) {
-						[self performSelectorInBackground:@selector(getSubsites) withObject:nil];
-					}*/
 					else {
 						[tv deselectRowAtIndexPath:indexPath animated:YES];
                         [self addSite];
@@ -503,7 +499,6 @@
 #pragma mark Custom methods
 
 - (void)getSubsites {
-	WPLog(@"getSubsites");
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
@@ -518,7 +513,6 @@
 }
 
 - (void)didGetSubsitesSuccessfully:(NSArray *)results {
-	WPLog(@"didGetSubsitesSuccessfully");
 	hasCheckedForSubsites = YES;
 	if (results != nil) {
 		[self setSubsites:results];
@@ -557,7 +551,6 @@
 }
 
 - (void)authenticate {
-	WPLog(@"authenticate");
 	isAuthenticating = YES;
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -607,7 +600,6 @@
 
 
 - (void)didAuthenticateSuccessfully {
-	WPLog(@"didAuthenticateSuccessfully");
     isAuthenticating = NO;
 	if((isAdding == NO) || ((username == nil) || (password == nil) || (xmlrpc == nil) || (hasCheckedForSubsites == NO)))
 		[self performSelectorInBackground:@selector(getSubsites) withObject:nil];
@@ -616,14 +608,12 @@
 }
 
 - (void)didFailAuthentication {
-	WPLog(@"didFailAuthentication");
     isAuthenticating = NO;
     [self refreshTable];
 }
 
 
 - (void)getXMLRPCUrl {
-	WPLog(@"getXMLRPCUrl");
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -632,18 +622,18 @@
 		if(![self.url hasPrefix:@"http"])
 			self.url = [NSString stringWithFormat:@"http://%@", self.url];
 	}
-		
+
+	
+	// wp-admin convenience check
+	if([self.url hasSuffix:@"/wp-admin"])
+		self.url = [self.url stringByReplacingOccurrencesOfString:@"/wp-admin" withString:@""];
+	
 	// Start by just trying URL + /xmlrpc.php
 	NSString *xmlrpcURL = [self.url stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 	if(![xmlrpcURL hasSuffix:@"/"])
 		xmlrpcURL = [NSString stringWithFormat:@"%@/xmlrpc.php", xmlrpcURL];
 	else
 		xmlrpcURL = [NSString stringWithFormat:@"%@xmlrpc.php", xmlrpcURL];
-	
-	// wp-admin convenience check
-	if([self.url hasSuffix:@"/wp-admin"])
-		self.url = [self.url stringByReplacingOccurrencesOfString:@"/wp-admin" withString:@""];
-	
 	
 	ASIHTTPRequest *xmlrpcRequest = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:xmlrpcURL]];
 	[xmlrpcRequest setValidatesSecureCertificate:NO]; 
@@ -662,13 +652,13 @@
 
 - (void)getXMLRPCUrlDone:(ASIHTTPRequest *)xmlrpcRequest
 {
-	WPLog(@"getXMLRPCUrlDone");
 	NSString *responseString = [xmlrpcRequest responseString];
 	
 	if([responseString rangeOfString:@"XML-RPC server accepts POST requests only."].location != NSNotFound){
 		[self verifyXMLRPCurl:[xmlrpcRequest.url absoluteString]];
 	}
 	else {
+		
 		// We're looking for: <link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://myblog.com/xmlrpc.php?rsd" />
 		NSString *rsdURL = [responseString stringByMatching:@"<link rel=\"EditURI\" type=\"application/rsd\\+xml\" title=\"RSD\" href=\"([^\"]*)\"[^/]*/>" capture:1];
 		
@@ -683,6 +673,7 @@
 						if([[[api attributeForName:@"name"] stringValue] isEqualToString:@"WordPress"]) {
 							// Bingo! We found the WordPress XML-RPC element
 							[self verifyXMLRPCurl:[[api attributeForName:@"apiLink"] stringValue]];
+							break;
 						}
 					}
 				}@catch (NSException *ex) {
