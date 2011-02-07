@@ -524,8 +524,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (IBAction)endTextEnteringButtonAction:(id)sender {
     [textView resignFirstResponder];
 	if (DeviceIsPad() == NO) {
-		if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
-			[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+		if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+			//#615 -- trick to rotate the interface back to portrait. 
+				UIViewController *garbageController = [[[UIViewController alloc] init] autorelease]; 
+				[self.navigationController pushViewController:garbageController animated:NO]; 
+				[self.navigationController popViewControllerAnimated:NO];
+		}
 	}
 }
 

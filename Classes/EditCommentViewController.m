@@ -33,7 +33,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 @implementation EditCommentViewController
 
 @synthesize commentViewController, saveButton, doneButton, comment;
-@synthesize leftView, cancelButton, label, hasChanges, textViewText;
+@synthesize leftView, cancelButton, label, hasChanges, textViewText, isTransitioning;
 
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -133,11 +133,15 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 - (void)endTextEnteringButtonAction:(id)sender {
     [textView resignFirstResponder];
 	if (DeviceIsPad() == NO) {
-		//UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
-		//if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
-//			// private API
-//			[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
-//		}
+		UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
+		if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
+			isTransitioning = YES;
+			UIViewController *garbageController = [[[UIViewController alloc] init] autorelease]; 
+			[self.navigationController pushViewController:garbageController animated:NO]; 
+			[self.navigationController popViewControllerAnimated:NO];
+			self.isTransitioning = NO;
+			[textView resignFirstResponder];
+		}
 	}
 }
 
@@ -152,7 +156,11 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	return YES;
+	if (self.isTransitioning){
+		return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	}
+    else
+        return YES;
 }
 
 -(void) receivedRotate: (NSNotification*) notification

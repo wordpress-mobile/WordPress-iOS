@@ -31,7 +31,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 @implementation ReplyToCommentViewController
 
 @synthesize commentViewController, saveButton, doneButton, comment;
-@synthesize leftView, cancelButton, label, hasChanges, textViewText;
+@synthesize leftView, cancelButton, label, hasChanges, textViewText, isTransitioning;
 
 //TODO: Make sure to give this class a connection to commentDetails and currentIndex from CommentViewController
 
@@ -164,12 +164,14 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	
     [textView resignFirstResponder];
 	UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
-	if(UIInterfaceOrientationIsLandscape(interfaceOrientation)){
-	// private API
-//		[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+	if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
+		isTransitioning = YES;
+		UIViewController *garbageController = [[[UIViewController alloc] init] autorelease]; 
+		[self.navigationController pushViewController:garbageController animated:NO]; 
+		[self.navigationController popViewControllerAnimated:NO];
+		self.isTransitioning = NO;
+		[textView resignFirstResponder];	
 	}
-	
-	
 }
 
 - (void)setTextViewHeight:(float)height {
@@ -183,7 +185,11 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	return YES;
+	if (self.isTransitioning){
+		return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	}
+    else
+        return YES;
 }
 
 -(void) receivedRotate: (NSNotification*) notification

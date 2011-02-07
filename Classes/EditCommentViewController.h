@@ -24,7 +24,7 @@
 		UIBarButtonItem *doneButton;
 		UIBarButtonItem *cancelButton;
 		WPNavigationLeftButtonView *leftView;
-		BOOL hasChanges;
+		BOOL hasChanges, isTransitioning;
 		NSString *textViewText; //to compare for hasChanges
 		
 		
@@ -39,6 +39,7 @@
 	@property (nonatomic, retain) CommentViewController *commentViewController;
 	@property (nonatomic, retain) UILabel *label;
 	@property (nonatomic) BOOL hasChanges;
+	@property (nonatomic) BOOL isTransitioning;
 	@property (nonatomic, retain) NSString *textViewText;
 		
 	-(void)cancelView:(id)sender;
