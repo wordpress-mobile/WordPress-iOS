@@ -71,11 +71,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 	[[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(receivedRotate:) name: UIDeviceOrientationDidChangeNotification object: nil];
 	
-	
-	self.hasChanges = NO;
-	//foo = textView.text;//so we can compare to set hasChanges correctly
-	textViewText = [[NSString alloc] initWithString: textView.text];
-	
+		
 	[leftView setTarget:self withAction:@selector(cancelView:)];
 	if (DeviceIsPad() == NO) {
 		cancelButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
@@ -85,7 +81,10 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	self.navigationItem.leftBarButtonItem = cancelButton;
     [cancelButton release];
 	
-	textView.text = [self.comment.content trim];
+	textView.text = self.comment.content;
+	self.hasChanges = NO;
+	//foo = textView.text;//so we can compare to set hasChanges correctly
+	textViewText = [[NSString alloc] initWithString: textView.text];
 	[textView becomeFirstResponder];
 }
 

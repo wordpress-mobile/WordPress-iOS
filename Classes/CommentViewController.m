@@ -170,13 +170,29 @@
 		}
 	}
 	
-	
-//handle action sheet from replyToCommentsViewController
+	//handle action sheet from replyToCommentsViewController
 	if ([actionSheet tag] == 401) {
 		if (buttonIndex == 0) {
+			if (replyToCommentViewController.hasChanges) { 
+				replyToCommentViewController.hasChanges = NO;
+				[replyToCommentViewController.comment remove];
+			} 
 			[self discard];
 		}
-			
+		
+		if (buttonIndex == 1) {
+			[self cancel];
+		}
+	}
+	
+	
+	//handle action sheet from editCommentsViewController
+	if ([actionSheet tag] == 601) {
+		if (buttonIndex == 0) {
+			editCommentViewController.hasChanges = NO;
+			[self discard];
+		}
+		
 		if (buttonIndex == 1) {
 			[self cancel];
 		}
@@ -256,30 +272,33 @@
 
 - (void)cancelView:(id)sender {
 	
-	if (!replyToCommentViewController.hasChanges || !editCommentViewController.hasChanges) {
-        [self dismissEditViewController];
-		//replyToCommentViewController.hasChanges = NO;
-        return;
-    }//else if (!editCommentViewController.hasChanges) {
-//        [self.navigationController popViewControllerAnimated:YES];
-//		//editCommentViewController.hasChanges = NO;
-//        return;
-//    }
+	//there are no changes
+	if (!replyToCommentViewController.hasChanges && !editCommentViewController.hasChanges) {
+		if(sender == replyToCommentViewController) //delete the empty comment 
+			[replyToCommentViewController.comment remove];
+		
+		[self dismissEditViewController];
+		return;
+	}
 	
-	
-	
+		
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
 											   delegate:self cancelButtonTitle:@"Cancel" 
 											   destructiveButtonTitle:@"Discard"
 											   otherButtonTitles:nil];
-    actionSheet.tag = 401;
-    actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
+    
+	if (replyToCommentViewController.hasChanges)
+		actionSheet.tag = 401;
+	else if (editCommentViewController.hasChanges)
+		actionSheet.tag = 601;
+    
+	actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
 	
 	if (replyToCommentViewController.hasChanges) { 
 		[actionSheet showInView:replyToCommentViewController.view];
 	}else if (editCommentViewController.hasChanges) {
 		[actionSheet showInView:editCommentViewController.view];
-		}
+	}
 	
     WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     [delegate setAlertRunning:YES];
@@ -290,7 +309,6 @@
 - (void)launchEditComment {
 	[self showEditCommentViewWithAnimation:YES];
 }
-
 
 
 - (void)showEditCommentViewWithAnimation:(BOOL)animate {
