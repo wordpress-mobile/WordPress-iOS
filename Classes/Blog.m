@@ -13,7 +13,7 @@
 @dynamic blogID, blogName, url, username, password, xmlrpc, apiKey;
 @dynamic isAdmin, hasOlderPosts;
 @dynamic posts, categories, comments;
-@dynamic lastSync;
+@dynamic lastSync, lastStatsSync;
 @synthesize isSyncingPosts;
 
 #pragma mark -

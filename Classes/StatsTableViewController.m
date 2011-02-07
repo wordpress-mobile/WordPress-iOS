@@ -18,9 +18,10 @@
 
 @synthesize viewsData, postViewsData, referrersData, searchTermsData, clicksData, reportTitle,
 currentBlog, statsData, currentProperty, rootTag, 
-statsTableData, leftColumn, rightColumn, spinner, xArray, yArray, xValues, yValues, wpcomLoginTable, 
-statsPageControlViewController, refreshButtonItem,  apiKeyConn, viewsConn, postViewsConn, referrersConn, 
-searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn, activityIndicator, loading;
+statsTableData, leftColumn, rightColumn, xArray, yArray, xValues, yValues, wpcomLoginTable, 
+statsPageControlViewController, apiKeyConn, viewsConn, postViewsConn, referrersConn, 
+searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
+@synthesize blog;
 #define LABEL_TAG 1 
 #define VALUE_TAG 2 
 #define FIRST_CELL_IDENTIFIER @"TrailItemCell" 
@@ -40,7 +41,6 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn, activityIndicator,
 	[statsTableData release];
 	[leftColumn release];
 	[rightColumn release];
-	[spinner release];
 	[xArray release];
 	[yArray release];
 	[xValues release];
@@ -56,8 +56,6 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn, activityIndicator,
 	[daysConn release];
 	[weeksConn release];
 	[monthsConn release];
-	[activityIndicator release];
-	[loading release];
 	[super dealloc];
 }
 
@@ -71,11 +69,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn, activityIndicator,
 	self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
 	self.view.frame = CGRectMake(0, 0, 320, 460);
 	self.tableView.sectionHeaderHeight = 30;
-	//self.tableView.allowsSelection = NO;
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-	
-	//init the spinner
-	spinner = [[WPProgressHUD alloc] initWithLabel:@"Retrieving stats..."];
 	
 	statsPageControlViewController = [[StatsPageControlViewController alloc] init];
 	connectionToInfoMapping = CFDictionaryCreateMutable(
@@ -84,29 +78,18 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn, activityIndicator,
 														&kCFTypeDictionaryKeyCallBacks,
 														&kCFTypeDictionaryValueCallBacks);
 	
-	refreshButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(initStats)];
+	if (_refreshHeaderView == nil) {
+		EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];
+		view.delegate = self;
+		[self.tableView addSubview:view];
+		_refreshHeaderView = view;
+		[view release];
+	}
 	
-	loading = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, 70.0, 16)] autorelease]; 
-	loading.center = self.view.center;
-	loading.frame = CGRectMake(loading.frame.origin.x + 15, loading.frame.origin.y - 47, loading.frame.size.width, loading.frame.size.height);
-	loading.font = [UIFont systemFontOfSize:14.0]; 
-	loading.text = @"Loading...";
-	loading.shadowColor = [UIColor whiteColor];
-	loading.shadowOffset = CGSizeMake(1,1);
-	loading.textAlignment = UITextAlignmentCenter;
-	loading.backgroundColor = [UIColor clearColor];
-	[loading setHidden:YES];
-	
-	activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-	CGRect frame = CGRectMake(loading.frame.origin.x - 20, loading.frame.origin.y - 2, 20, 20);
-	[activityIndicator setFrame: frame];
-	[activityIndicator setHidden:YES];
-	
-	[self.view addSubview:loading];
-	[self.view addSubview:activityIndicator];
-	
+	//  update the last update date
+	[_refreshHeaderView refreshLastUpdatedDate];
+		
 	/*if (DeviceIsPad() == YES) {
-		self.navigationItem.rightBarButtonItem = refreshButtonItem;
 		[self.view removeFromSuperview];
 		[statsPageControlViewController initWithNibName:@"StatsPageControlViewController-iPad" bundle:nil];
 		[self initWithNibName:@"StatsTableViewConroller-iPad" bundle:nil];
@@ -156,22 +139,21 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn, activityIndicator,
 		[self getUserAPIKey];
 	}
 	else {
-		self.navigationItem.rightBarButtonItem = refreshButtonItem;
 		statsRequest = TRUE;
+		[self showLoadingDialog];
 		[self refreshStats: 0 reportInterval: 0];
 	}
 }
 
 -(void) showLoadingDialog{
-	[activityIndicator startAnimating];
-	[activityIndicator setHidden:NO];
-	[loading setHidden:NO];
+	CGPoint offset = self.tableView.contentOffset;
+	offset.y = - 65.0f;
+	self.tableView.contentOffset = offset;
+	[_refreshHeaderView egoRefreshScrollViewDidEndDragging:self.tableView];
 }
 
 -(void) hideLoadingDialog{
-	[activityIndicator stopAnimating];
-	[activityIndicator setHidden:YES];
-	[loading setHidden:YES];
+	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
 }
 
 -(void)getUserAPIKey {
@@ -225,13 +207,14 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn, activityIndicator,
 
 - (void) refreshStats: (int) titleIndex reportInterval: (int) intervalIndex {
 	//load stats into NSMutableArray objects
-	[self.tableView.tableHeaderView setHidden:YES];
+	isRefreshingStats = YES;
+	/*[self.tableView.tableHeaderView setHidden:YES];
 	viewsData = nil;
 	postViewsData = nil;
 	referrersData = nil;
 	searchTermsData = nil;
 	clicksData = nil;
-	[self.tableView reloadData];
+	[self.tableView reloadData];*/
 	[self showLoadingDialog];
 	foundStatsData = FALSE;
 	int days;
@@ -401,6 +384,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn, activityIndicator,
 		foundStatsData = TRUE;
 		if ([reportType isEqualToString:@"chartDaysData"] || [reportType isEqualToString:@"chartWeeksData"] || [reportType isEqualToString:@"chartMonthsData"]){
 			[self hideLoadingDialog];
+			self.blog.lastStatsSync = [NSDate date];
 			NSString *chartViewURL = [[NSString alloc] init];
 			xValues = [[NSString alloc] init];
 			xValues = [xArray componentsJoinedByString:@","];
@@ -480,6 +464,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn, activityIndicator,
 				
 			}
 			else if ([reportType isEqualToString:@"chartMonthsData"]){
+				isRefreshingStats = NO;
 				for (NSString *dateVal in yArray) {
 					NSString *month = [[NSString alloc] initWithString: @""];
 					[df setDateFormat:@"yyyy-MM"];
@@ -655,7 +640,6 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn, activityIndicator,
 	xmlString = [xmlString stringByReplacingOccurrencesOfString:@"\t" withString:@""];
 	//NSLog(@"xml string = %@", xmlString);
 	NSRange textRange;
-	
 	textRange =[xmlString rangeOfString:@"Error"];
 	if ( xmlString != nil && textRange.location == NSNotFound ) {
 		self.tableView.tableHeaderView = statsPageControlViewController.view;
@@ -663,6 +647,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn, activityIndicator,
 		[self startParsingStats: xmlString withReportType: reportType];
 	}
 	else if (textRange.location != NSNotFound){
+		[self.tableView.tableHeaderView setHidden:YES];
 		[connection cancel];
 		[self hideLoadingDialog];
 		//it's the wrong API key, prompt for WPCom login details again
@@ -716,7 +701,9 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn, activityIndicator,
 }
 
 - (void)connection: (NSURLConnection *)connection didFailWithError: (NSError *)error
-{		
+{	
+	
+	isRefreshingStats = NO;
 	[self hideLoadingDialog];
 	//UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Connection Error" 
 	//												 message:[error errorInfo] 
@@ -792,8 +779,6 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn, activityIndicator,
 		}
 	}
 	else if ([elementName isEqualToString:@"apikey"]) {
-		//[dm.currentBlog setObject:self.currentProperty forKey:@"api_key"];
-		//[dm saveCurrentBlog];
 		[appDelegate.currentBlog setValue:self.currentProperty forKey:@"apiKey"];
 		[appDelegate.currentBlog dataSave];
 		apiKeyFound = TRUE;
@@ -1134,6 +1119,32 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn, activityIndicator,
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+#pragma mark -
+#pragma mark UIScrollViewDelegate Methods
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+	[_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+	[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+}
+
+#pragma mark -
+#pragma mark EGORefreshTableHeaderDelegate Methods
+
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
+	if (statsRequest)
+		[self refreshStats:0 reportInterval:0];
+}
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
+	return isRefreshingStats; // should return if data source model is reloading
+}
+
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
+	return self.blog.lastStatsSync; // should return date data source was last changed
+}
 
 - (void)didReceiveMemoryWarning {
 	[super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview

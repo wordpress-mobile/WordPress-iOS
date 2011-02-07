@@ -24,7 +24,8 @@
     postsViewController.blog = self.blog;
     pagesViewController.blog = self.blog;
     commentsViewController.blog = self.blog;
-
+	statsTableViewController.blog = self.blog;
+	
     self.view = tabBarController.view;
 
     self.title =[NSString decodeXMLCharactersIn:[blog valueForKey:@"blogName"]];
@@ -95,7 +96,6 @@
 	}
 	else if (viewController == statsTableViewController) {
 		[[NSUserDefaults standardUserDefaults] setValue:@"Stats" forKey:@"WPSelectedContentType"];
-		self.navigationItem.rightBarButtonItem = statsTableViewController.refreshButtonItem;
 	}
 	
 	[viewController viewWillAppear:NO];

@@ -11,12 +11,12 @@
 #import "WordPressAppDelegate.h"
 #import "StatsTableViewController.h"
 #import <Foundation/Foundation.h>
-#import "WPProgressHUD.h"
 #import "StatsPageControlViewController.h"
+#import "EGORefreshTableHeaderView.h"
 
-
-@interface StatsTableViewController : UITableViewController <UIAlertViewDelegate, NSXMLParserDelegate>{
+@interface StatsTableViewController : UITableViewController <UIAlertViewDelegate, NSXMLParserDelegate, EGORefreshTableHeaderDelegate>{
 	
+    EGORefreshTableHeaderView *_refreshHeaderView;
 	NSMutableArray *viewsData;
 	NSMutableArray *postViewsData;
 	NSMutableArray *referrersData;
@@ -28,13 +28,12 @@
 	NSMutableData *statsData;
 	NSMutableString *currentProperty;
 	NSString *rootTag, *leftColumn, *rightColumn;
-	BOOL apiKeyFound, loginActive, dotorgLogin, statsRequest;
+	BOOL apiKeyFound, loginActive, dotorgLogin, statsRequest, isRefreshingStats;
 	IBOutlet UIView *container, *statsView, *loginView, *wpcomLogin;
 	NSMutableArray *statsTableData;
 	NSMutableArray *reportTitles, *reportIntervals;
 	UIActionSheet *actionSheet;
 	UIPickerView *pickerView;
-	WPProgressHUD *spinner;
 	NSString *yValues;
 	NSMutableArray *xArray, *yArray;
 	IBOutlet UITableView *wpcomLoginTable;
@@ -42,11 +41,8 @@
 	int requestType;
 	CFMutableDictionaryRef connectionToInfoMapping;
 	BOOL foundStatsData, statsAPIAlertShowing, canceledAPIKeyAlert;
-	UIBarButtonItem *refreshButtonItem;
 	int loadMorePostViews, loadMoreReferrers, loadMoreSearchTerms, loadMoreClicks;
 	NSURLConnection *apiKeyConn, *viewsConn, *postViewsConn, *referrersConn, *searchTermsConn, *clicksConn, *daysConn, *weeksConn, *monthsConn;
-	UIActivityIndicatorView *activityIndicator;
-	UILabel *loading;
 }
 
 @property (nonatomic, retain) NSMutableArray *viewsData;
@@ -62,17 +58,15 @@
 @property (nonatomic, retain) NSMutableArray *statsTableData;
 @property (nonatomic, retain) NSString *rightColumn;
 @property (nonatomic, retain) NSString *leftColumn;
-@property (nonatomic, retain) WPProgressHUD *spinner;
 @property (nonatomic, retain) NSString *xValues;
 @property (nonatomic, retain) NSString *yValues;
 @property (nonatomic, retain) NSMutableArray *xArray;
 @property (nonatomic, retain) NSMutableArray *yArray;
 @property (nonatomic, retain) UITableView *wpcomLoginTable;
 @property (nonatomic, retain) StatsPageControlViewController *statsPageControlViewController;
-@property (readonly) UIBarButtonItem *refreshButtonItem;
 @property (nonatomic, retain) NSURLConnection *apiKeyConn, *viewsConn, *postViewsConn, *referrersConn, *searchTermsConn, *clicksConn, *daysConn, *weeksConn, *monthsConn;
-@property (nonatomic, retain) UIActivityIndicatorView *activityIndicator;
-@property (nonatomic, retain) UILabel *loading;
+@property (nonatomic, retain) Blog *blog;
+
 - (void) initStats;
 - (void) getUserAPIKey;
 - (void) startParsingStats: (NSString*) xmlString withReportType: (NSString*) reportType;
