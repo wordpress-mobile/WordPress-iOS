@@ -27,8 +27,11 @@
 	statsTableViewController.blog = self.blog;
 	
     self.view = tabBarController.view;
-
-    self.title =[NSString decodeXMLCharactersIn:[blog valueForKey:@"blogName"]];
+	
+	if ([blog valueForKey:@"blogName"] != nil)
+		self.title = [NSString decodeXMLCharactersIn:[blog valueForKey:@"blogName"]];
+	else
+		self.title = @"Blog";
 	
 	if (DeviceIsPad() == NO) {
 		tabBarController.selectedIndex = 0;
