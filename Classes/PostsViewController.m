@@ -259,8 +259,6 @@
 	progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Deleting Post..."];
 	[progressAlert show];
 	[self performSelectorInBackground:@selector(deletePostAtIndexPath:) withObject:indexPath];
-    [self showSelectedPost];
-	
 }
 
 #pragma mark -
