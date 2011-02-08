@@ -234,7 +234,12 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 50;
+	//only show footer in 'Posted' section
+	if (section == [[self.resultsController sections] count] - 1)
+		return 50;
+	
+	return 0;
+    
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
