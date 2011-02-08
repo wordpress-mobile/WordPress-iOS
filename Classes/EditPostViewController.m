@@ -167,6 +167,18 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if (iOs4OrGreater()) {
         self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
     }
+	
+	float version = [[[UIDevice currentDevice] systemVersion] floatValue];
+	
+	if (version < 3.2){
+		//no video icon for older devices
+		NSMutableArray *toolbarItems = [[NSMutableArray arrayWithArray:toolbar.items] retain];
+		NSLog(@"toolbar items: %@", toolbarItems);
+		
+		[toolbarItems removeObjectAtIndex:3];
+		[toolbar setItems:toolbarItems];
+	}
+	
     if(self.editMode == kEditPost)
         [self refreshUIForCurrentPost];
 	else if(self.editMode == kNewPost)
