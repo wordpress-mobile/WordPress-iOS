@@ -11,13 +11,14 @@
 
 #define TAG_ACTIONSHEET_PHOTO 1
 #define TAG_ACTIONSHEET_VIDEO 2
+#define NUMBERS	@"0123456789"
 
 @implementation PostMediaViewController
 @synthesize table, addMediaButton, hasPhotos, hasVideos, isAddingMedia, photos, videos, addPopover, picker;
 @synthesize isShowingMediaPickerActionSheet, currentOrientation, isShowingChangeOrientationActionSheet, spinner, pickerContainer;
 @synthesize currentImage, currentVideo, isLibraryMedia, didChangeOrientationDuringRecord, messageLabel;
 @synthesize postDetailViewController, postID, blogURL, bottomToolbar;
-@synthesize isShowingResizeActionSheet, videoEnabled, currentUpload, videoPressCheckBlogURL, isCheckingVideoCapability, uniqueID;
+@synthesize isShowingResizeActionSheet, isShowingCustomSizeAlert, videoEnabled, currentUpload, videoPressCheckBlogURL, isCheckingVideoCapability, uniqueID;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -314,6 +315,9 @@
 			case 3:
 				[self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
 				break;
+			case 4: 
+				[self showCustomSizeAlert]; 
+				break;
 		}
 		self.isShowingResizeActionSheet = NO;
 	}
@@ -470,14 +474,190 @@
 - (void)showResizeActionSheet {
 	if(self.isShowingResizeActionSheet == NO) {
 		isShowingResizeActionSheet = YES;
-		UIActionSheet *resizeActionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose Image Size" 
-																	   delegate:self 
-															  cancelButtonTitle:nil 
-														 destructiveButtonTitle:nil 
-															  otherButtonTitles:@"Small", @"Medium", @"Large", @"Original", nil];
+		
+		//the same code used on resize
+		CGSize smallSize, mediumSize, largeSize;
+		UIImageOrientation orientation = currentImage.imageOrientation; 
+		switch (orientation) { 
+			case UIImageOrientationUp: 
+			case UIImageOrientationUpMirrored:
+			case UIImageOrientationDown: 
+			case UIImageOrientationDownMirrored:
+				smallSize = CGSizeMake(240, 180);
+				mediumSize = CGSizeMake(480, 360);
+				largeSize = CGSizeMake(640, 480);
+				break;
+			case UIImageOrientationLeft:
+			case UIImageOrientationLeftMirrored:
+			case UIImageOrientationRight:
+			case UIImageOrientationRightMirrored:
+				smallSize = CGSizeMake(180, 240);
+				mediumSize = CGSizeMake(360, 480);
+				largeSize = CGSizeMake(480, 640);
+		}
+		
+		UIActionSheet *resizeActionSheet;
+		//NSLog(@"img dimension: %f x %f ",currentImage.size.width, currentImage.size.height );
+		
+		if(currentImage.size.width > largeSize.width  && currentImage.size.height > largeSize.height) {
+			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose Image Size" 
+															delegate:self 
+												   cancelButtonTitle:nil 
+											  destructiveButtonTitle:nil 
+												   otherButtonTitles:@"Small", @"Medium", @"Large", @"Original", @"Custom", nil];
+			
+		} else if(currentImage.size.width > mediumSize.width  && currentImage.size.height > mediumSize.height) {
+			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose Image Size" 
+															delegate:self 
+												   cancelButtonTitle:nil 
+											  destructiveButtonTitle:nil 
+												   otherButtonTitles:@"Small", @"Medium", @"Original", @"Custom", nil];
+			
+		} else if(currentImage.size.width > smallSize.width  && currentImage.size.height > smallSize.height) {
+			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose Image Size" 
+															delegate:self 
+												   cancelButtonTitle:nil 
+											  destructiveButtonTitle:nil 
+												   otherButtonTitles:@"Small", @"Original", @"Custom", nil];
+			
+		} else {
+			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose Image Size" 
+															delegate:self 
+												   cancelButtonTitle:nil 
+											  destructiveButtonTitle:nil 
+												   otherButtonTitles: @"Original", @"Custom", nil];
+		}
+		
 		[resizeActionSheet showInView:postDetailViewController.view];
 		[resizeActionSheet release];
 	}
+}
+
+#pragma mark -
+#pragma mark custom image size methods
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+	//check the inserted characters: the user can use cut-and-paste instead of using the keyboard, and can insert letters and spaces
+	NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:NUMBERS] invertedSet];
+    NSString *filtered = [[string componentsSeparatedByCharactersInSet:cs] componentsJoinedByString:@""];
+    if( [string isEqualToString:filtered] == NO ) return NO; 
+	
+    NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+	
+	if (textField.tag == 123) {
+		if ([newString intValue] > currentImage.size.width  ) {
+			return NO;
+		}
+	} else {
+		if ([newString intValue] > currentImage.size.height) {
+			return NO;
+		}
+	}
+    return YES;
+}
+
+- (void)showCustomSizeAlert {
+	if(self.isShowingCustomSizeAlert == NO) {
+		isShowingCustomSizeAlert = YES;
+		
+		UITextField *textWidth, *textHeight;
+		UILabel *labelWidth, *labelHeight;
+		
+		NSString *lineBreaks;
+		
+		if (DeviceIsPad())
+			lineBreaks = @"\n\n\n\n";
+		else 
+			lineBreaks = @"\n\n\n";
+		
+		
+		UIAlertView *customSizeAlert = [[UIAlertView alloc] initWithTitle:@"Custom Size" 
+																  message:lineBreaks // IMPORTANT
+																 delegate:self 
+														cancelButtonTitle:@"Cancel" 
+														otherButtonTitles:@"OK", nil];
+		
+		labelWidth = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 50.0, 125.0, 25.0)];
+		labelWidth.backgroundColor = [UIColor clearColor];
+		labelWidth.textColor = [UIColor whiteColor];
+		labelWidth.text = @"Width";
+		[customSizeAlert addSubview:labelWidth];
+		
+		textWidth = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 80.0, 125.0, 25.0)]; 
+		[textWidth setBackgroundColor:[UIColor whiteColor]];
+		[textWidth setPlaceholder:@"Width"];
+		[textWidth setKeyboardType:UIKeyboardTypeNumberPad];
+		[textWidth setDelegate:self];
+		[textWidth setTag:123];
+		
+		// Check for previous width setting
+		if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"] != nil)
+			[textWidth setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"]];
+		else
+			[textWidth setText:[NSString stringWithFormat:@"%d", (int)currentImage.size.width]];
+		
+		[customSizeAlert addSubview:textWidth];
+		
+		labelHeight = [[UILabel alloc] initWithFrame:CGRectMake(145.0, 50.0, 125.0, 25.0)];
+		labelHeight.backgroundColor = [UIColor clearColor];
+		labelHeight.textColor = [UIColor whiteColor];
+		labelHeight.text = @"Height";
+		[customSizeAlert addSubview:labelHeight];
+		
+		textHeight = [[UITextField alloc] initWithFrame:CGRectMake(145.0, 80.0, 125.0, 25.0)]; 
+		[textHeight setBackgroundColor:[UIColor whiteColor]];
+		[textHeight setPlaceholder:@"Height"];
+		[textHeight setDelegate:self];
+		[textHeight setKeyboardType:UIKeyboardTypeNumberPad];
+		[textHeight setTag:456];
+		
+		// Check for previous height setting
+		if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"] != nil)
+			[textHeight setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"]];
+		else
+			[textHeight setText:[NSString stringWithFormat:@"%d", (int)currentImage.size.height]];
+		
+		[customSizeAlert addSubview:textHeight];
+		
+		//fix the dialog position for older devices on iOS 3
+		float version = [[[UIDevice currentDevice] systemVersion] floatValue];
+		if (version <= 3.1)
+		{
+			customSizeAlert.transform = CGAffineTransformTranslate(customSizeAlert.transform, 0.0, 100.0);
+		}
+		
+		[customSizeAlert show];
+		[customSizeAlert release];
+		
+		[textWidth becomeFirstResponder];
+	}
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if(buttonIndex == 1) {
+		UITextField *textWidth = (UITextField *)[alertView viewWithTag:123];
+		UITextField *textHeight = (UITextField *)[alertView viewWithTag:456];
+		
+		NSNumber *width = [NSNumber numberWithInt:[textWidth.text intValue]];
+		NSNumber *height = [NSNumber numberWithInt:[textHeight.text intValue]];
+		
+		if([width intValue] < 10)
+			width = [NSNumber numberWithInt:10];
+		if([height intValue] < 10)
+			height = [NSNumber numberWithInt:10];
+		
+		textWidth.text = [NSString stringWithFormat:@"%@", width];
+		textHeight.text = [NSString stringWithFormat:@"%@", height];
+		
+		//NSLog(@"textWidth.text: %@ textHeight.text: %@", textWidth.text, textHeight.text);
+		
+		[[NSUserDefaults standardUserDefaults] setObject:textWidth.text forKey:@"prefCustomImageWidth"];
+		[[NSUserDefaults standardUserDefaults] setObject:textHeight.text forKey:@"prefCustomImageHeight"];
+		
+		[self useImage:[self resizeImage:currentImage width:[width floatValue] height:[height floatValue]]];
+	}
+	
+	isShowingCustomSizeAlert = NO;
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex{
@@ -737,6 +917,23 @@
 											interpolationQuality:kCGInterpolationHigh];
 			break;
 	}
+	return resizedImage;
+}
+
+- (UIImage *)resizeImage:(UIImage *)original width:(CGFloat)width height:(CGFloat)height {
+	UIImage *resizedImage = original;
+	if(currentImage.size.width > width && currentImage.size.height > height) {
+		// Resize the image using the selected dimensions
+		resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFill 
+													  bounds:CGSizeMake(width, height) 
+										interpolationQuality:kCGInterpolationHigh];
+	} else {
+		//use the original dimension
+		resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFill 
+													  bounds:CGSizeMake(currentImage.size.width, currentImage.size.height) 
+										interpolationQuality:kCGInterpolationHigh];
+	}
+	
 	return resizedImage;
 }
 

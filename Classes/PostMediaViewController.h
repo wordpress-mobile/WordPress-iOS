@@ -27,7 +27,7 @@ static inline double radians(double degrees) {
     return degrees * M_PI / 180;
 }
 
-@interface PostMediaViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate, UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate> {
+@interface PostMediaViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate, UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate, UITextFieldDelegate> {
 	EditPostViewController *postDetailViewController;
 	UIImagePickerController *picker;
 	UIViewController *pickerContainer;
@@ -39,7 +39,7 @@ static inline double radians(double degrees) {
 	IBOutlet UIToolbar *bottomToolbar;
 	IBOutlet UIPopoverController *addPopover;
 	
-	BOOL hasPhotos, hasVideos, isAddingMedia, isShowingMediaPickerActionSheet, isShowingChangeOrientationActionSheet;
+	BOOL hasPhotos, hasVideos, isAddingMedia, isShowingMediaPickerActionSheet, isShowingChangeOrientationActionSheet, isShowingCustomSizeAlert;
 	BOOL isLibraryMedia, didChangeOrientationDuringRecord, isShowingResizeActionSheet, videoEnabled, isCheckingVideoCapability;
 	NSString *postID, *blogURL, *videoPressCheckBlogURL, *uniqueID;
     Media *currentUpload;
@@ -57,7 +57,7 @@ static inline double radians(double degrees) {
 @property (nonatomic, retain) IBOutlet UILabel *messageLabel;
 @property (nonatomic, retain) IBOutlet UIToolbar *bottomToolbar;
 @property (nonatomic, retain) IBOutlet IBOutlet UIPopoverController *addPopover;
-@property (nonatomic, assign) BOOL hasPhotos, hasVideos, isAddingMedia, isShowingMediaPickerActionSheet, isShowingChangeOrientationActionSheet;
+@property (nonatomic, assign) BOOL hasPhotos, hasVideos, isAddingMedia, isShowingMediaPickerActionSheet, isShowingChangeOrientationActionSheet, isShowingCustomSizeAlert;
 @property (nonatomic, assign) BOOL isLibraryMedia, didChangeOrientationDuringRecord, isShowingResizeActionSheet, videoEnabled, isCheckingVideoCapability;
 @property (nonatomic, retain) NSString *postID, *blogURL, *videoPressCheckBlogURL, *uniqueID;
 @property (nonatomic, retain) Media *currentUpload;
@@ -79,7 +79,9 @@ static inline double radians(double degrees) {
 - (MediaOrientation)interpretOrientation:(UIDeviceOrientation)theOrientation;
 - (void)deviceDidRotate:(NSNotification *)notification;
 - (void)showResizeActionSheet;
+- (void)showCustomSizeAlert;
 - (UIImage *)resizeImage:(UIImage *)original toSize:(MediaResize)resize;
+- (UIImage *)resizeImage:(UIImage *)original width:(CGFloat)width height:(CGFloat)height;
 - (void)pickPhotoFromPhotoLibrary:(id)sender;
 - (void)showOrientationChangedActionSheet;
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info;
