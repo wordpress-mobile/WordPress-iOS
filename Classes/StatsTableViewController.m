@@ -208,13 +208,6 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 - (void) refreshStats: (int) titleIndex reportInterval: (int) intervalIndex {
 	//load stats into NSMutableArray objects
 	isRefreshingStats = YES;
-	/*[self.tableView.tableHeaderView setHidden:YES];
-	viewsData = nil;
-	postViewsData = nil;
-	referrersData = nil;
-	searchTermsData = nil;
-	clicksData = nil;
-	[self.tableView reloadData];*/
 	[self showLoadingDialog];
 	foundStatsData = FALSE;
 	int days;
@@ -638,7 +631,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	xmlString = [[NSString alloc] initWithData:[connectionInfo objectForKey:aKey] encoding:NSUTF8StringEncoding];
 	xmlString = [xmlString stringByReplacingOccurrencesOfString:@"\n" withString:@""];
 	xmlString = [xmlString stringByReplacingOccurrencesOfString:@"\t" withString:@""];
-	//NSLog(@"xml string = %@", xmlString);
+	NSLog(@"xml string = %@", xmlString);
 	NSRange textRange;
 	textRange =[xmlString rangeOfString:@"Error"];
 	if ( xmlString != nil && textRange.location == NSNotFound ) {
@@ -646,7 +639,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 		[self.tableView.tableHeaderView setHidden:NO];
 		[self startParsingStats: xmlString withReportType: reportType];
 	}
-	else if (textRange.location != NSNotFound){
+	else if (textRange.location != NSNotFound && ([connectionInfo objectForKey:@"viewsData"] != nil)){
 		[self.tableView.tableHeaderView setHidden:YES];
 		[connection cancel];
 		[self hideLoadingDialog];

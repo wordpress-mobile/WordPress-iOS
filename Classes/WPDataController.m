@@ -101,7 +101,7 @@
 				//errorMessage = nil;
 			
 			if(errorMessage != nil)
-				[appDelegate showAlertWithTitle:@"XML-RPC Error" message:errorMessage];
+				[appDelegate showAlertWithTitle:@"Connection Problem" message:errorMessage];
 		}
 		else {
 			usersBlogs = nil;

@@ -70,13 +70,13 @@ static NSArray *__pageControlColorList = nil;
 }
 
 - (void)refreshImage {
-	/*NSURL *url = [NSURL URLWithString:[NSString stringWithString: chartURL]];
-	NSData *data = [NSData dataWithContentsOfURL:url];
-	UIImage *image = [[UIImage alloc] initWithData:data cache:NO];
-	chart.image = image;*/
+	chart.image = nil;
+	if(spinner.hidden)
+		spinner.hidden=NO;
 }
 
 - (void)loadImageFromURL:(NSString*)url {
+	[self refreshImage];
     if (connection!=nil) { [connection release]; }
     if (imgData!=nil) { [imgData release]; }
 	imgData = [[NSMutableData alloc] init];
