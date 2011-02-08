@@ -16,11 +16,10 @@
 @end
 
 @implementation WPDataController
-@synthesize appDelegate;
+@synthesize error;
 
 - (id) init {
 	self = [super init];
-	appDelegate = [WordPressAppDelegate sharedWordPressApp];
 	if (self == nil)
 		return nil;
 	return self;
@@ -54,8 +53,8 @@
 	[request startSynchronous];
 	[xmlrpcRequest release];
 	
-	NSError *error = [request error];
-	if (!error) {
+	self.error = [request error];
+	if (!self.error) {
 		CXMLDocument *xml = [[[CXMLDocument alloc] initWithXMLString:[request responseString] options:CXMLDocumentTidyXML error:nil] autorelease];
 		CXMLElement *node = [[xml nodesForXPath:@"//methodResponse" error:nil] objectAtIndex:0];
 		if(node != nil)
@@ -66,6 +65,89 @@
     [request release];
 	
 	return result;
+}
+
+- (NSString *)guessXMLRPCForUrl:(NSString *)url {
+    if (url == nil || [url isEqualToString:@""])
+        return nil;
+    
+    if(![url hasPrefix:@"http"])
+        url = [NSString stringWithFormat:@"http://%@", url];
+    
+    NSString *xmlrpc;
+    if(![url hasSuffix:@"/"])
+        xmlrpc = [NSString stringWithFormat:@"%@/xmlrpc.php", url];
+    
+    XMLRPCRequest *req = [[[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]] autorelease];
+    NSArray *result;
+    [req setMethod:@"system.listMethods" withObjects:[NSArray array]];
+
+    result = [self executeXMLRPCRequest:req];
+    
+    if([result isKindOfClass:[NSError class]]) {
+        NSError *err = (NSError *)result;
+        if ([err code] == ASIConnectionFailureErrorType) {
+            // Couldn't get a connection to host, so no variant of the url will work
+            // Don't keep trying
+            return nil;
+        }
+    } else {
+        return xmlrpc;
+    }
+    
+    // Normal way failed, let's see if url was already a xmlrpc endpoint
+    [req setHost:[NSURL URLWithString:url]];
+    result = [self executeXMLRPCRequest:req];
+    if(![result isKindOfClass:[NSError class]])
+        return url;
+
+    // Nothing? Let's go for the RSD file
+    ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:url]];
+    [request setShouldPresentCredentialsBeforeChallenge:YES];
+    [request setShouldPresentAuthenticationDialog:YES];
+    [request setUseKeychainPersistence:YES];
+    [request setValidatesSecureCertificate:NO];
+    [request startSynchronous];
+
+
+    NSString *rsdURL = [[request responseString] stringByMatching:@"<link rel=\"EditURI\" type=\"application/rsd\\+xml\" title=\"RSD\" href=\"([^\"]*)\"[^/]*/>" capture:1];
+    if (rsdURL != nil) {
+        WPLog(@"rsdURL: %@", rsdURL);
+        xmlrpc = [rsdURL stringByReplacingOccurrencesOfRegex:@"?rsd$" withString:@""];
+        WPLog(@"xmlrpc from rsd url: %@", xmlrpc);
+        if (![xmlrpc isEqualToString:rsdURL]) {
+            [req setHost:[NSURL URLWithString:xmlrpc]];
+            result = [self executeXMLRPCRequest:req];
+            if(![result isKindOfClass:[NSError class]])
+                return xmlrpc;
+        }
+        
+        // No tricks, let's parse the rsd
+        NSError *rsdError;
+        CXMLDocument *rsdXML = [[[CXMLDocument alloc] initWithContentsOfURL:[NSURL URLWithString:rsdURL] options:CXMLDocumentTidyXML error:&rsdError] autorelease];
+        if(!rsdError) {
+            @try {
+                CXMLElement *serviceXML = [[[rsdXML rootElement] children] objectAtIndex:1];
+                for(CXMLElement *api in [[[serviceXML elementsForName:@"apis"] objectAtIndex:0] elementsForName:@"api"]) {
+                    if([[[api attributeForName:@"name"] stringValue] isEqualToString:@"WordPress"]) {
+                        // Bingo! We found the WordPress XML-RPC element
+                        xmlrpc = [[api attributeForName:@"apiLink"] stringValue];
+                        [req setHost:[NSURL URLWithString:xmlrpc]];
+                        result = [self executeXMLRPCRequest:req];
+                        if(![result isKindOfClass:[NSError class]])
+                            return xmlrpc;
+                        else
+                            return nil; // Sorry, I give up. Bad URL
+                    }
+                }
+            }
+            @catch (NSException *ex) {
+                WPLog(@"Error parsing RSD file: %@ %@", [ex name], [ex reason]);
+            }
+        }        
+    }
+    
+    return nil;    
 }
 
 - (BOOL)authenticateUser:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password {
@@ -90,18 +172,15 @@
             usersBlogs = [NSArray arrayWithArray:usersBlogsData];
 		}
 		else if([usersBlogsData isKindOfClass:[NSError class]]) {
-			NSError *error = (NSError *)usersBlogsData;
-			NSString *errorMessage = [error localizedDescription];
+			self.error = (NSError *)usersBlogsData;
+			NSString *errorMessage = [self.error localizedDescription];
 			
 			usersBlogs = nil;
 			
 			if([errorMessage isEqualToString:@"The operation couldn’t be completed. (NSXMLParserErrorDomain error 4.)"])
 				errorMessage = @"Your blog's XML-RPC endpoint was found but it isn't communicating properly. Try disabling plugins or contacting your host.";
 			//else if([errorMessage isEqualToString:@"Bad login/pass combination."])
-				//errorMessage = nil;
-			
-			if(errorMessage != nil)
-				[appDelegate showAlertWithTitle:@"Connection Problem" message:errorMessage];
+				//errorMessage = nil;			
 		}
 		else {
 			usersBlogs = nil;
@@ -120,10 +199,10 @@
 #pragma mark Blog
 
 - (NSString *)passwordForBlog:(Blog *)blog {
-    NSError *error;
+    NSError *err;
     return [SFHFKeychainUtils getPasswordForUsername:blog.username
                                       andServiceName:blog.url
-                                               error:&error];
+                                               error:&err];
 }
 
 - (NSMutableArray *)getRecentPostsForBlog:(Blog *)blog number:(NSNumber *)number {
@@ -448,18 +527,35 @@
     [request setValidatesSecureCertificate:NO];
     [request appendPostData:[[req source] dataUsingEncoding:NSUTF8StringEncoding]];
 	[request startSynchronous];
-
-	XMLRPCResponse *userInfoResponse = [[[XMLRPCResponse alloc] initWithData:[request responseData]] autorelease];
 	
 	//generic error
-	NSError *error = [request error];
-    if (error) {
-        NSLog(@"executeXMLRPCRequest error: %@", error);
-        return error;
+	NSError *err = [request error];
+    if (err) {
+        self.error = err;
+        NSLog(@"executeXMLRPCRequest error: %@", err);
+        return err;
+    }
+    
+    
+    int statusCode = [request responseStatusCode];
+    if (statusCode >= 404) {
+        NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:[request responseStatusMessage], NSLocalizedDescriptionKey, nil];
+        self.error = [NSError errorWithDomain:@"org.wordpress.iphone" code:statusCode userInfo:usrInfo];
+        return self.error;
+    }
+
+    NSRange prefixRange = [[request responseString] rangeOfString:@"<?xml"
+                                            options:(NSAnchoredSearch | NSCaseInsensitiveSearch)];
+    if (prefixRange.location == NSNotFound) {
+        // Not an xml document, don't parse
+        NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Response is not XML", NSLocalizedDescriptionKey, nil];
+        self.error = [NSError errorWithDomain:@"org.wordpress.iphone" code:kNoXMLPrefix userInfo:usrInfo];
+        return self.error;
     }
 	
+	XMLRPCResponse *userInfoResponse = [[[XMLRPCResponse alloc] initWithData:[request responseData]] autorelease];
 		
-    NSError *err = [self errorWithResponse:userInfoResponse];
+    err = [self errorWithResponse:userInfoResponse];
 	
     if (err)
         return err;
@@ -484,6 +580,7 @@
         }
     }
 	
+    self.error = err;
     return err;
 }
 

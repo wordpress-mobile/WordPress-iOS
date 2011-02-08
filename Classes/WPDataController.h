@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "WPDataControllerDelegate.h"
 #import "ASIHTTPRequest.h"
 #import "NSString+XMLExtensions.h"
 #import "Blog.h"
@@ -25,16 +24,15 @@ typedef enum {
 } SyncDirection;
 
 @interface WPDataController : NSObject {
-	id<WPDataControllerDelegate> delegate;
-	WordPressAppDelegate *appDelegate;
 }
 
-@property (nonatomic, retain) WordPressAppDelegate *appDelegate;
+@property (nonatomic, retain) NSError *error;
 
 + (WPDataController *)sharedInstance;
 
 #pragma mark -
 #pragma mark User
+- (NSString *)guessXMLRPCForUrl:(NSString *)url;
 - (BOOL)checkXMLRPC:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password;
 - (BOOL)authenticateUser:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password;
 - (NSMutableArray *)getBlogsForUrl:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password;

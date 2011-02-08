@@ -342,14 +342,15 @@
 						[activeTextField becomeFirstResponder];
 						[activeTextField resignFirstResponder];
 					}
-					
-					BlogSettingsViewController *settingsView;
-					if(DeviceIsPad())
-						settingsView = [[BlogSettingsViewController alloc] initWithNibName:@"BlogSettingsViewController-iPad" bundle:nil];
-					else
-						settingsView = [[BlogSettingsViewController alloc] initWithNibName:@"BlogSettingsViewController" bundle:nil];
-					[self.navigationController pushViewController:settingsView animated:YES];
-					[settingsView release];
+
+					// FIXME: change "Settings" button to Geolocation
+//					BlogSettingsViewController *settingsView;
+//					if(DeviceIsPad())
+//						settingsView = [[BlogSettingsViewController alloc] initWithNibName:@"BlogSettingsViewController-iPad" bundle:nil];
+//					else
+//						settingsView = [[BlogSettingsViewController alloc] initWithNibName:@"BlogSettingsViewController" bundle:nil];
+//					[self.navigationController pushViewController:settingsView animated:YES];
+//					[settingsView release];
 					
 					[tv deselectRowAtIndexPath:indexPath animated:YES];
 				}

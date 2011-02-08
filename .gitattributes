@@ -24,7 +24,6 @@
 /AddSiteViewController-iPad.xib -text
 /AddUsersBlogsViewController-iPad.xib -text
 /BlogSettingsView-iPad.xib -text
-/BlogSettingsViewController-iPad.xib -text
 /BlogViewController-iPad.xib -text
 /BlogViewController.xib -text
 /CTidy.h -text
@@ -64,9 +63,6 @@ Classes/Blog.m -text
 Classes/BlogDataManager.h -text
 Classes/BlogDataManager.m -text
 Classes/BlogHTTPAuthenticationViewController.xib -text
-Classes/BlogSettingsViewController.h -text
-Classes/BlogSettingsViewController.m -text
-Classes/BlogSettingsViewController.xib -text
 Classes/BlogSplitViewDetailViewController.h -text
 Classes/BlogSplitViewDetailViewController.m -text
 Classes/BlogSplitViewDetailViewController.xib -text
@@ -225,7 +221,6 @@ Classes/WPCategoryTree.h -text
 Classes/WPCategoryTree.m -text
 Classes/WPDataController.h -text
 Classes/WPDataController.m -text
-Classes/WPDataControllerDelegate.h -text
 Classes/WPImagePickerController.h -text
 Classes/WPImagePickerController.m -text
 Classes/WPImageView.h -text
@@ -292,7 +287,6 @@ Creation/CXMLNode_CreationExtensions.m -text
 /Disclosure[!!-~]Indicator.png -text
 /EditPostViewController-iPad.xib -text
 /EditPostViewController.xib -text
-/EditSiteViewController-iPad.xib -text
 /Entitlements.plist -text
 FlurryLib/FlurryAPI.h -text
 FlurryLib/FlurryAdDelegate.h -text

@@ -20,6 +20,7 @@
 @property (nonatomic, assign) BOOL isSyncingPosts;
 @property (nonatomic, retain) NSDate *lastSync;
 @property (nonatomic, retain) NSDate *lastStatsSync;
+@property (nonatomic, assign) BOOL geolocationEnabled;
 
 - (UIImage *)favicon;
 - (void)downloadFavicon;

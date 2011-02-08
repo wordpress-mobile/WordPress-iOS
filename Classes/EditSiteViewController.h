@@ -9,45 +9,22 @@
 #import "WordPressAppDelegate.h";
 #import "WPDataController.h";
 #import "WPProgressHUD.h"
-#import "BlogDataManager.h"
 #import "AddUsersBlogsViewController.h"
-#import "BlogSettingsViewController.h"
+#import "UITableViewSwitchCell.h"
 #import "Blog.h";
 
-@interface EditSiteViewController : UIViewController <UITableViewDelegate, UITextFieldDelegate> {
-	WordPressAppDelegate *appDelegate;
-	WPProgressHUD *spinner;
-	//AddUsersBlogsViewController *addUsersBlogsView;
+@interface EditSiteViewController : UIViewController <UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate> {
 	IBOutlet UITableView *tableView;
-	UITextField *activeTextField;
-	NSString *footerText, *addButtonText, *password;
-	NSArray *subsites;
-	BOOL isAuthenticating, isAuthenticated, isSaving, hasSubsites, hasValidXMLRPCurl, viewDidMove, keyboardIsVisible;
-	int blogIndex;
+	UITextField *urlTextField, *usernameTextField, *passwordTextField;
+    UITableViewSwitchCell *switchCell;
+    UIBarButtonItem *doneButton;
+	BOOL isValidating;
     Blog *blog;
 }
 
-@property (nonatomic, retain) WPProgressHUD *spinner;
-//@property (nonatomic, retain) AddUsersBlogsViewController *addUsersBlogsView;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
-@property (nonatomic, retain) UITextField *activeTextField;
-@property (nonatomic, retain) NSString *footerText, *addButtonText, *password;
-@property (nonatomic, retain) NSArray *subsites;
-@property (nonatomic, assign) BOOL isAuthenticating, isAuthenticated, isSaving, hasSubsites, hasValidXMLRPCurl, viewDidMove, keyboardIsVisible;
-@property (nonatomic, assign) int blogIndex;
+@property (nonatomic, retain) NSString *password, *username, *url;
+@property (nonatomic, retain) UITableViewCell *urlCell, *usernameCell, *passwordCell;
 @property (nonatomic, retain) Blog *blog;
-
-- (void)authenticate;
-- (void)saveSite;
-- (void)saveSiteInBackground;
-- (void)didSaveSiteSuccessfully;
-- (void)saveSiteFailed;
-- (void)refreshTable;
-- (void)getXMLRPCurl;
-- (void)setXMLRPCUrl:(NSString *)xmlrpcUrl;
-- (void)keyboardWillShow:(NSNotification *)notification;
-- (void)keyboardWillHide:(NSNotification *)notification;
-- (void)urlDidChange;
-- (IBAction)cancel:(id)sender;
 
 @end

@@ -6,7 +6,6 @@
 #import "NSString+XMLExtensions.h" 
 #import "NSString+Helpers.h"
 #import "XMLRPCConnection+Authentication.h"
-#import "LocateXMLRPCViewController.h"
 
 #define pictureData @"pictureData"
 #define pictureStatus @"pictureStatus"

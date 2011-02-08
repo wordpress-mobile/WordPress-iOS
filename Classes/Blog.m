@@ -15,6 +15,25 @@
 @dynamic posts, categories, comments;
 @dynamic lastSync, lastStatsSync;
 @synthesize isSyncingPosts;
+@dynamic geolocationEnabled;
+
+- (BOOL)geolocationEnabled 
+{
+    BOOL tmpValue;
+    
+    [self willAccessValueForKey:@"geolocationEnabled"];
+    tmpValue = [[self primitiveValueForKey:@"geolocationEnabled"] boolValue];
+    [self didAccessValueForKey:@"geolocationEnabled"];
+    
+    return tmpValue;
+}
+
+- (void)setGeolocationEnabled:(BOOL)value 
+{
+    [self willChangeValueForKey:@"geolocationEnabled"];
+    [self setPrimitiveValue:[NSNumber numberWithBool:value] forKey:@"geolocationEnabled"];
+    [self didChangeValueForKey:@"geolocationEnabled"];
+}
 
 #pragma mark -
 #pragma mark Custom methods
