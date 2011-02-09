@@ -276,9 +276,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
     saveButton.action = @selector(saveAction:);
     
     if(![self.post hasRemote]) {
-        if ([self.post.status isEqualToString:@"publish"]) {
-            saveButton.title = @"Publish";
-        } else {
+        if ([self.post.status isEqualToString:@"publish"] && ([self.post.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
+            saveButton.title = @"Schedule";
+        } else if ([self.post.statusTitle isEqualToString:@"Pending review"] || [self.post.statusTitle isEqualToString:@"Draft"]) {
+            saveButton.title = @"Save";
+		} else if ([self.post.status isEqualToString:@"publish"]){
+			saveButton.title = @"Publish";
+		} else {
             saveButton.title = @"Save";
         }
     } else {

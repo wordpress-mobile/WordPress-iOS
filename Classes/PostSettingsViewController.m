@@ -320,12 +320,13 @@
             }
         }
     }
-
+	[postDetailViewController refreshButtons];
     [tableView reloadData];
 }
 
 - (void)datePickerChanged {
     postDetailViewController.apost.dateCreated = datePickerView.date;
+	[postDetailViewController refreshButtons];
     [tableView reloadData];
 }
 

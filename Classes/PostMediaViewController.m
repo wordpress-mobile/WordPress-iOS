@@ -1097,7 +1097,7 @@
 								 username, password, nil];
 								
 				NSMutableDictionary *xmlrpcParams = [[NSMutableDictionary alloc] init];
-				[xmlrpcParams setObject:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"xmlrpc"] forKey:kURL];
+				[xmlrpcParams setObject:self.postDetailViewController.post.blog.xmlrpc forKey:kURL];
 				[xmlrpcParams setObject:@"wpcom.getFeatures" forKey:kMETHOD];
 				[xmlrpcParams setObject:args forKey:kMETHODARGS];
 				
