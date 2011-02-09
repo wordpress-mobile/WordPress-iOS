@@ -109,8 +109,9 @@
 
 - (void)remove {
     if ([self hasRemote] && [[WPDataController sharedInstance] wpDeletePage:self]) {
-        [super remove];
+
     }
+	[super remove]; //we should remove the page from the db even if it is a "LocalDraft"
 }
 
 @end

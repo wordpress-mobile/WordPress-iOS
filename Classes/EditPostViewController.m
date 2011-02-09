@@ -275,10 +275,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
     saveButton.style = UIBarButtonItemStyleDone;
     saveButton.action = @selector(saveAction:);
     
-    if(![self.post hasRemote]) {
-        if ([self.post.status isEqualToString:@"publish"] && ([self.post.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
+    if(![self.apost hasRemote]) {
+        if ([self.apost.status isEqualToString:@"publish"] && ([self.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
             saveButton.title = @"Schedule";
-		} else if ([self.post.status isEqualToString:@"publish"]){
+		} else if ([self.apost.status isEqualToString:@"publish"]){
 			saveButton.title = @"Publish";
 		} else {
             saveButton.title = @"Save";
@@ -819,7 +819,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         isTextViewEditing = NO;
 		[self positionTextView:nil];
 		
-        self.post.content = textView.text;
+        self.apost.content = textView.text;
 		
 		if (!DeviceIsPad()) {
             [self refreshButtons];
@@ -855,11 +855,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
     self.currentEditingTextField = nil;
 	
     if (textField == titleTextField) {
-        self.post.postTitle = textField.text;
+        self.apost.postTitle = textField.text;
         
         // FIXME: this should be -[PostsViewController updateTitle]
-        if ([self.post.postTitle length] > 0) {
-            self.navigationItem.title = self.post.postTitle;
+        if ([self.apost.postTitle length] > 0) {
+            self.navigationItem.title = self.apost.postTitle;
         } else {
             self.navigationItem.title = @"Write";
         }
