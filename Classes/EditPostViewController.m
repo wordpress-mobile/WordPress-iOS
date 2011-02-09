@@ -437,7 +437,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
     if (selContext == kSelectionsStatusContext) {
         NSString *curStatus = [selectedObjects lastObject];
-        self.post.statusTitle = curStatus;
+        self.apost.statusTitle = curStatus;
         statusTextField.text = curStatus;
     }
     
@@ -512,7 +512,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
         }
         
         if (buttonIndex == 1) {
-            [self saveAction:self];
+			if( [self.apost.original.postID isEqualToNumber:[NSNumber numberWithInteger:-1]] ) {
+				if( self.apost.original.postTitle == nil )
+					self.apost.statusTitle = @"Draft";
+            }
+			[self saveAction:self];
         }
     }
     
@@ -532,7 +536,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
                                                              delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Discard"
-                                                    otherButtonTitles:@"Save draft", nil];
+                                                    otherButtonTitles:@"Save", nil];
     actionSheet.tag = 201;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
     [actionSheet showInView:self.view];
