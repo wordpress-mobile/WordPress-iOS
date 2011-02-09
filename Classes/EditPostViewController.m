@@ -484,7 +484,14 @@ NSTimeInterval kAnimationDuration = 0.3f;
     
 	// TODO: remove the mediaViewController notifications - this is pretty kludgy
     [self.apost.original deleteRevision];
-    self.apost = nil; // Just in case
+
+	//remove the original post in case of local draft unsaved
+	if( [self.apost.original.postID isEqualToNumber:[NSNumber numberWithInteger:-1]] ) {
+	if( self.apost.original.postTitle == nil )
+		[self.apost.original remove];
+	}
+	
+	self.apost = nil; // Just in case
     [self dismissEditView];
 }
 

@@ -73,8 +73,10 @@
 
 - (void)remove {
     if ([self hasRemote] && [[WPDataController sharedInstance] mwDeletePost:self]) {
-        [super remove];
-    }
+		
+	}
+	
+	[super remove]; //we should remove the post from the db even if it is a "LocalDraft"
 }
 
 - (void)uploadInBackground {
