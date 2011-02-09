@@ -1106,6 +1106,12 @@
 				[xmlrpcParams release];
 				
 				XMLRPCResponse *response = [XMLRPCConnection sendSynchronousXMLRPCRequest:request];
+				if ([response isKindOfClass:[NSError class]]) {
+					self.videoEnabled = YES;
+					self.isCheckingVideoCapability = NO;
+					WPLog(@"checkVideoEnabled failed: %@", response);
+					return;
+				}
 				if(([response.object isKindOfClass:[NSDictionary class]] == YES) && ([response.object objectForKey:@"videopress_enabled"] != nil))
 					self.videoEnabled = [[response.object objectForKey:@"videopress_enabled"] boolValue];
 				else if(([response.object isKindOfClass:[NSDictionary class]] == YES) && ([response.object objectForKey:@"faultCode"] != nil)) {
