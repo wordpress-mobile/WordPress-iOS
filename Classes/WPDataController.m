@@ -113,7 +113,7 @@
     [request setUseKeychainPersistence:YES];
     [request setValidatesSecureCertificate:NO];
     [request startSynchronous];
-
+    [request setNumberOfTimesToRetryOnTimeout:2];
 
     NSString *rsdURL = [[request responseString] stringByMatching:@"<link rel=\"EditURI\" type=\"application/rsd\\+xml\" title=\"RSD\" href=\"([^\"]*)\"[^/]*/>" capture:1];
     if (rsdURL != nil) {
@@ -530,6 +530,7 @@
 	[request setShouldPresentAuthenticationDialog:YES];
 	[request setUseKeychainPersistence:YES];
     [request setValidatesSecureCertificate:NO];
+    [request setNumberOfTimesToRetryOnTimeout:2];
     [request appendPostData:[[req source] dataUsingEncoding:NSUTF8StringEncoding]];
 	[request startSynchronous];
 	
