@@ -9,9 +9,6 @@
 
 
 @interface UITableViewSwitchCell : UITableViewCell {
-	IBOutlet UILabel *textLabel;
-	IBOutlet UISwitch *cellSwitch;
-	IBOutlet UIView *viewForBackground;
 }
 
 @property (nonatomic, retain) IBOutlet UILabel *textLabel;

@@ -22,9 +22,9 @@
 }
 
 - (void)dealloc {
-	[viewForBackground release];
-	[textLabel release];
-	[cellSwitch release];
+	self.viewForBackground = nil;
+    self.textLabel = nil;
+    self.cellSwitch = nil;
     [super dealloc];
 }
 
