@@ -22,26 +22,18 @@
 	selectedBlogs = [[NSMutableArray alloc] init];
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	
-	// Setup WPcom table header
-	CGRect headerFrame = CGRectMake(0, 0, 320, 70);
-	CGRect logoFrame = CGRectMake(40, 20, 229, 43);
+	// Setup WP logo table header
 	NSString *logoFile = @"logo_wporg";
 	if(isWPcom == YES)
 		logoFile = @"logo_wpcom";
-	if(DeviceIsPad() == YES) {
-		logoFile = [NSString stringWithFormat:@"%@@2x.png", logoFile];
-		logoFrame = CGRectMake(150, 20, 229, 43);
-	}
-	else if([[UIDevice currentDevice] platformString] == IPHONE_1G_NAMESTRING) {
-		logoFile = [NSString stringWithFormat:@"%@.png", logoFile];
-	}
 	
-	UIView *headerView = [[[UIView alloc] initWithFrame:headerFrame] autorelease];
-	UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:logoFile]];
-	logo.frame = logoFrame;
-	[headerView addSubview:logo];
-	[logo release];
-	self.tableView.tableHeaderView = headerView;
+    UIImageView *logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:logoFile]];
+    logoView.frame = CGRectMake(0, 0, 320, 70);
+    logoView.contentMode = UIViewContentModeCenter;
+    logoView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    self.tableView.tableHeaderView = logoView;
+    [logoView release];
+    
 	self.tableView.backgroundColor = [UIColor clearColor];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView:) 
@@ -75,7 +67,9 @@
 		}
 	}
 	else {
-		[self refreshBlogs];
+        if (usersBlogs == nil) {
+            [self refreshBlogs];
+        }
 	}
 	
 	if(DeviceIsPad() == YES) {
@@ -103,7 +97,10 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    if (isWPcom) {
+        return 2;
+    }
+    return 1;
 }
 
 
@@ -217,7 +214,7 @@
 			int indexToRemove = -1;
 			int count = 0;
 			for (NSString *blogID in selectedBlogs) {
-				if([blogID isEqualToString:[selectedBlog valueForKey:@"blogid"]]) {
+				if([blogID isEqual:[selectedBlog valueForKey:@"blogid"]]) {
 					indexToRemove = count;
 					break;
 				}
@@ -265,14 +262,16 @@
 }
 
 - (void)signOut {
-	appDelegate.isWPcomAuthenticated = NO;
-    NSError *error = nil;
-    [SFHFKeychainUtils deleteItemForUsername:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"]
-                              andServiceName:@"WordPress.com"
-                                       error:&error];
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_authenticated_flag"];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+    if (isWPcom) {
+        appDelegate.isWPcomAuthenticated = NO;
+        NSError *error = nil;
+        [SFHFKeychainUtils deleteItemForUsername:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"]
+                                  andServiceName:@"WordPress.com"
+                                           error:&error];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_authenticated_flag"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 	[self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -315,10 +314,6 @@
 }
 
 - (IBAction)saveSelectedBlogs:(id)sender {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-//	spinner = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
-//	[spinner show];
-	
 	[[NSUserDefaults standardUserDefaults] setBool:true forKey:@"refreshCommentsRequired"];
 	
     NSError *error = nil;
@@ -346,12 +341,7 @@
     [self didSaveSelectedBlogsInBackground];
 }
 
-- (void)didSaveSelectedBlogsInBackground {
-//	[spinner dismissWithClickedButtonIndex:0 animated:YES];
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-//	[appDelegate syncBlogCategoriesAndStatuses];
-//	[appDelegate syncBlogs];
-	
+- (void)didSaveSelectedBlogsInBackground {	
 	if(DeviceIsPad() == YES) {
 		[appDelegate.navigationController popToRootViewControllerAnimated:YES];
 		[appDelegate.splitViewController dismissModalViewControllerAnimated:YES];

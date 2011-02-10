@@ -167,13 +167,7 @@
 			editSiteViewController = [[EditSiteViewController alloc] initWithNibName:@"EditSiteViewController" bundle:nil];
 		
         editSiteViewController.blog = blog;
-		
-        UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:editSiteViewController];
-        aNavigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-        aNavigationController.navigationBar.tintColor = self.navigationController.navigationBar.tintColor;
-        [self presentModalViewController:aNavigationController animated:YES];
-        [aNavigationController release];		
+		[self.navigationController pushViewController:editSiteViewController animated:YES];
 		[editSiteViewController release];
         [atableView setEditing:NO animated:YES];
     }
@@ -237,6 +231,7 @@
 		UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:welcomeViewController];
 		aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+        aNavigationController.navigationBar.tintColor = self.navigationController.navigationBar.tintColor;
 		appDelegate.navigationController = aNavigationController;
 		[appDelegate.splitViewController presentModalViewController:aNavigationController animated:YES];
 		[aNavigationController release];
@@ -319,11 +314,13 @@
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
     [fetchRequest setSortDescriptors:sortDescriptors];
 
+    // For some reasons, the cache sometimes gets corrupted
+    // Since we don't really use sections we skip the cache here
     NSFetchedResultsController *aResultsController = [[NSFetchedResultsController alloc]
                          initWithFetchRequest:fetchRequest
                          managedObjectContext:appDelegate.managedObjectContext
                          sectionNameKeyPath:nil
-                         cacheName:@"Blog"];
+                         cacheName:nil];
     self.resultsController = aResultsController;
     resultsController.delegate = self;
 

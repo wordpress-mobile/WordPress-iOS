@@ -17,13 +17,15 @@
 	IBOutlet UITableView *tableView;
 	UITextField *urlTextField, *usernameTextField, *passwordTextField;
     UITableViewSwitchCell *switchCell;
-    UIBarButtonItem *doneButton;
+    UIBarButtonItem *saveButton;
 	BOOL isValidating;
     Blog *blog;
+    NSArray *subsites;
 }
 
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) NSString *password, *username, *url;
+@property (nonatomic, assign) BOOL geolocationEnabled;
 @property (nonatomic, retain) UITableViewCell *urlCell, *usernameCell, *passwordCell;
 @property (nonatomic, retain) Blog *blog;
 

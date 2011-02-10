@@ -11,7 +11,7 @@
 @end
 
 @implementation EditSiteViewController
-@synthesize password, username, url;
+@synthesize password, username, url, geolocationEnabled;
 @synthesize blog, tableView;
 @synthesize urlCell, usernameCell, passwordCell;
 
@@ -20,23 +20,26 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [FlurryAPI logEvent:@"EditSite"];
+    if (blog) {
+        [FlurryAPI logEvent:@"EditSite"];
 
-	if([blog isWPcom] == YES) {
-		self.navigationItem.title = @"Edit Blog";
-	}
-	else {
-		self.navigationItem.title = @"Edit Site";
-	}
+        if([blog isWPcom] == YES) {
+            self.navigationItem.title = @"Edit Blog";
+        }
+        else {
+            self.navigationItem.title = @"Edit Site";
+        }
 
-    NSError *error = nil;
-    self.url = blog.url;
-    self.username = blog.username;
-    self.password = [SFHFKeychainUtils getPasswordForUsername:blog.username andServiceName:blog.url error:&error];
+        NSError *error = nil;
+        self.url = blog.url;
+        self.username = blog.username;
+        self.password = [SFHFKeychainUtils getPasswordForUsername:blog.username andServiceName:blog.url error:&error];
+        self.geolocationEnabled = blog.geolocationEnabled;
+    }
     
-    doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(done:)];
+    saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save:)];
     self.tableView.backgroundColor = [UIColor clearColor];
-    self.navigationItem.rightBarButtonItem = doneButton;	
+    self.navigationItem.rightBarButtonItem = saveButton;	
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -111,6 +114,7 @@
             urlTextField = [self newTextFieldForCell:self.urlCell];
             urlTextField.placeholder = @"http://example.com";
             urlTextField.keyboardType = UIKeyboardTypeURL;
+            urlTextField.returnKeyType = UIReturnKeyNext;
             if(blog.url != nil)
                 urlTextField.text = blog.url;
             [self.urlCell addSubview:urlTextField];
@@ -125,6 +129,7 @@
             usernameTextField = [self newTextFieldForCell:self.usernameCell];
             usernameTextField.placeholder = @"WordPress username.";
             usernameTextField.keyboardType = UIKeyboardTypeDefault;
+            usernameTextField.returnKeyType = UIReturnKeyNext;
             if(blog.username != nil)
                 usernameTextField.text = blog.username;
             [self.usernameCell addSubview:usernameTextField];
@@ -157,9 +162,10 @@
                 }
             }
         }
+        [switchCell retain];
         switchCell.textLabel.text = @"Geotagging";
         switchCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        switchCell.cellSwitch.on = self.blog.geolocationEnabled;
+        switchCell.cellSwitch.on = self.geolocationEnabled;
         [switchCell.cellSwitch addTarget:self action:@selector(toggleGeolocation:) forControlEvents:UIControlEventValueChanged];
         return switchCell;
 	}
@@ -203,8 +209,22 @@
 #pragma mark UITextField methods
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if (textField.returnKeyType == UIReturnKeyNext) {
+        UITableViewCell *cell = (UITableViewCell *)[textField superview];
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+        NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:(indexPath.row + 1) inSection:indexPath.section];
+        UITableViewCell *nextCell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
+        if (nextCell) {
+            for (UIView *subview in [nextCell subviews]) {
+                if ([subview isKindOfClass:[UITextField class]]) {
+                    [subview becomeFirstResponder];
+                    break;
+                }
+            }
+        }
+    }
 	[textField resignFirstResponder];
-	return YES;	
+	return NO;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -224,19 +244,11 @@
 #pragma mark -
 #pragma mark UIAlertViewDelegate
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
-        // Discard changes
-        [self dismissModalViewControllerAnimated:YES];
-    }
-}
-
 #pragma mark -
 #pragma mark Custom methods
 
 - (void)toggleGeolocation:(id)sender {
-    blog.geolocationEnabled = switchCell.cellSwitch.on;
-    [blog dataSave];
+    self.geolocationEnabled = switchCell.cellSwitch.on;
 }
 
 - (void)refreshTable {
@@ -250,8 +262,10 @@
     WPLog(@"before guess");
     NSString *xmlrpc = [dc guessXMLRPCForUrl:urlTextField.text];
     WPLog(@"after guess");
+    [subsites release]; subsites = nil;
     if (xmlrpc != nil) {
-        if ([dc authenticateUser:xmlrpc username:usernameTextField.text password:passwordTextField.text]) {
+        subsites = [[dc getBlogsForUrl:xmlrpc username:usernameTextField.text password:passwordTextField.text] retain];
+        if (subsites != nil) {
             [self performSelectorOnMainThread:@selector(validationSuccess:) withObject:xmlrpc waitUntilDone:YES];
         } else {
             [self performSelectorOnMainThread:@selector(validationDidFail:) withObject:dc.error waitUntilDone:YES];
@@ -267,6 +281,7 @@
     blog.url = self.url;
     blog.xmlrpc = xmlrpc;
     blog.username = self.username;
+    blog.geolocationEnabled = self.geolocationEnabled;
     NSError *error = nil;
     [SFHFKeychainUtils storeUsername:blog.username
                          andPassword:self.password
@@ -280,9 +295,9 @@
     [self dismissModalViewControllerAnimated:YES];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 
-    doneButton.enabled = YES;
+    saveButton.enabled = YES;
 }
-         
+
 - (void)validationDidFail:(id)wrong {
     if (wrong) {
         if ([wrong isKindOfClass:[UITableViewCell class]]) {
@@ -292,22 +307,22 @@
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Can't log in"
                                                                 message:[error localizedDescription]
                                                                delegate:self
-                                                      cancelButtonTitle:@"Discard changes"
-                                                      otherButtonTitles:self.navigationItem.title, nil];
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
             [alertView show];
             [alertView release];            
         }
     }    
 
-    doneButton.enabled = YES;
+    saveButton.enabled = YES;
 }
 
 - (void)validateFields {
-    urlTextField.text;
-    usernameTextField.text;
-    passwordTextField.text;
+    self.url = urlTextField.text;
+    self.username = usernameTextField.text;
+    self.password = passwordTextField.text;
     
-    doneButton.enabled = NO;
+    saveButton.enabled = NO;
     BOOL validFields = YES;
     if ([urlTextField.text isEqualToString:@""]) {
         validFields = NO;
@@ -329,12 +344,20 @@
     }
 }
 
-- (void)done:(id)sender {
+- (void)save:(id)sender {
+    [urlTextField resignFirstResponder];
+    [usernameTextField resignFirstResponder];
+    [passwordTextField resignFirstResponder];
+    
+    if (blog) {
+        blog.geolocationEnabled = self.geolocationEnabled;
+        [blog dataSave];
+    }
     if ([self.username isEqualToString:usernameTextField.text]
         && [self.password isEqualToString:passwordTextField.text]
         && [self.url isEqualToString:urlTextField.text]) {
         // No need to check if nothing changed
-        [self dismissModalViewControllerAnimated:YES];
+        [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
         [self validateFields];
     }
@@ -356,7 +379,8 @@
     self.passwordCell = nil;
     self.tableView = nil;
     self.blog = nil;
-    [doneButton release]; doneButton = nil;
+    [subsites release]; subsites = nil;
+    [saveButton release]; saveButton = nil;
     [switchCell release]; switchCell = nil;
     [urlTextField release]; urlTextField = nil;
     [usernameTextField release]; usernameTextField = nil;
