@@ -620,7 +620,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [addURLSourceAlert addSubview:urlField];
     [infoText becomeFirstResponder];
 	
-    //[addURLSourceAlert setTransform:upTransform];
+	//move the alert dialog up for older devices
+	float version = [[[UIDevice currentDevice] systemVersion] floatValue];
+	if (version < 3.2){
+		CGAffineTransform myTransform = CGAffineTransformMakeTranslation(0, 100);
+		[addURLSourceAlert setTransform:myTransform];
+	}
     [addURLSourceAlert setTag:2];
     [addURLSourceAlert show];
     [addURLSourceAlert release];
@@ -759,6 +764,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
 	
     NSRange range = [aTextView selectedRange];
+	if (range.location == NSNotFound)
+		return;
     NSArray *stringArray = [NSArray arrayWithObjects:@"http:", @"ftp:", @"https:", @"www.", nil];
 	//NSString *str = [[aTextView text]stringByReplacingOccurrencesOfString: @"&nbsp;" withString: @"&#160"];
     NSString *str = [aTextView text];
