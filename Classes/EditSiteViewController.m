@@ -6,9 +6,6 @@
 
 #import "EditSiteViewController.h"
 
-#define WRONG_FIELD_COLOR [UIColor colorWithRed:0.7 green:0.0 blue:0.0 alpha:1.0]
-#define GOOD_FIELD_COLOR [UIColor blackColor]
-
 @interface EditSiteViewController (PrivateMethods)
 - (void)validateFields;
 @end

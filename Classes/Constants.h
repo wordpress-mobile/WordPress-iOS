@@ -44,6 +44,9 @@
 #define PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR     [UIColor colorWithRed:1.0 green:1.0 blue:215.0 / 255.0 alpha:1.0]
 #define PENDING_COMMENT_TABLE_VIEW_CELL_BORDER_COLOR     [UIColor colorWithRed:226.0 / 255.0 green:215.0 / 255.0 blue:58.0 / 255.0 alpha:1.0]
 #define LOAD_MORE_DATA_TEXT_COLOR [UIColor colorWithRed:35.0 / 255.0 green:112.0 / 255.0 blue:216.0 / 255.0 alpha:1.0]
+#define WRONG_FIELD_COLOR [UIColor colorWithRed:0.7 green:0.0 blue:0.0 alpha:1.0]
+#define GOOD_FIELD_COLOR [UIColor blackColor]
+
 //R: 35, G: 112, B: 216 | #2370D8 | ΔX: 1378, ΔY: 29 | img
 
 #ifdef DEBUGMODE
