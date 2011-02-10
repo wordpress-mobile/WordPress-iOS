@@ -272,6 +272,7 @@
 	[xmlrpcRequest setShouldPresentCredentialsBeforeChallenge:NO];
 	[xmlrpcRequest setShouldPresentAuthenticationDialog:YES];
 	[xmlrpcRequest setUseKeychainPersistence:YES];
+	[xmlrpcRequest setNumberOfTimesToRetryOnTimeout:2];
 	[xmlrpcRequest setDidFinishSelector:@selector(remoteValidate:)];
 	[xmlrpcRequest setDidFailSelector:@selector(checkURLWentWrong:)];
 	[xmlrpcRequest setDelegate:self];
@@ -327,7 +328,7 @@
     if (error) {
         NSLog(@"Error saving password for %@", blog.url);
     }
-    [self dismissModalViewControllerAnimated:YES];
+	[self.navigationController popToRootViewControllerAnimated:YES];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 
     saveButton.enabled = YES;
@@ -388,14 +389,18 @@
         blog.geolocationEnabled = self.geolocationEnabled;
         [blog dataSave];
     }
-	if ([self.username isEqualToString:usernameTextField.text]
-		&& [self.password isEqualToString:passwordTextField.text]
-		&& [self.url isEqualToString:urlTextField.text]) {
-		// No need to check if nothing changed
-		[self.navigationController popToRootViewControllerAnimated:YES];
-    } else {
-        [self validateFields];
-    }
+	
+	if(blog == nil || blog.username == nil) {
+		[self validateFields];
+	} else 
+		if ([self.username isEqualToString:usernameTextField.text]
+			&& [self.password isEqualToString:passwordTextField.text]
+			&& [self.url isEqualToString:urlTextField.text]) {
+			// No need to check if nothing changed
+			[self.navigationController popToRootViewControllerAnimated:YES];
+		} else {
+			[self validateFields];
+		}
 }
 
 #pragma mark -
