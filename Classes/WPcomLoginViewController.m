@@ -362,6 +362,9 @@
 	if([[WPDataController sharedInstance] authenticateUser:WPcomXMLRPCUrl username:username password:password] == YES) {
 		isAuthenticated = YES;
 		[self saveLoginData];
+		
+		// Register this device for push notifications with WordPress.com if necessary
+		[[WPDataController sharedInstance] registerForPushNotifications];
 	}
 	else {
 		isAuthenticated = NO;

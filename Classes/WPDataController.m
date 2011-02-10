@@ -155,6 +155,37 @@
     return nil;    
 }
 
+- (void)registerForPushNotifications {
+	[self performSelectorInBackground:@selector(registerForPushNotificationsInBackground) withObject:nil];
+}
+
+- (void)registerForPushNotificationsInBackground {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	if([[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"] != nil) {
+		XMLRPCRequest *req = [[[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:@"http://frsh.wordpress.com/xmlrpc.php"]] autorelease];
+		NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
+		NSArray *result;
+		NSError *pwError;
+		NSArray *params = [NSArray arrayWithObjects:
+						   username, 
+						   [SFHFKeychainUtils getPasswordForUsername:username andServiceName:@"WordPress.com" error:&pwError], 
+						   [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"],
+						   nil];
+		[req setMethod:@"wpcom.addAaplDeviceToken" withObjects:params];
+		
+		result = [self executeXMLRPCRequest:req];
+		
+		// We want this to fail silently.
+		if(![result isKindOfClass:[NSError class]])
+			NSLog(@"successfully registered for push notifications with wordpress.com: %@", result);
+		else
+			NSLog(@"failed to register for push notifications with wordpress.com: %@", result);
+	}
+	
+	[pool release];
+}
+
 - (BOOL)authenticateUser:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password {
 	BOOL result = NO;
 	if((xmlrpc != nil) && (username != nil) && (password != nil)) {

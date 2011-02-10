@@ -67,4 +67,9 @@ typedef enum {
 - (BOOL)wpEditComment:(Comment *)comment;
 - (BOOL)wpDeleteComment:(Comment *)comment;
 
+#pragma mark -
+#pragma mark Push Notifications
+- (void)registerForPushNotifications;
+- (void)registerForPushNotificationsInBackground;
+
 @end
