@@ -73,9 +73,14 @@
     
     if(![url hasPrefix:@"http"])
         url = [NSString stringWithFormat:@"http://%@", url];
+
+    url = [url stringByReplacingOccurrencesOfRegex:@"/wp-admin/?$" withString:@""]; 
+    url = [url stringByReplacingOccurrencesOfRegex:@"/?$" withString:@""]; 
     
     NSString *xmlrpc;
-    if(![url hasSuffix:@"/"])
+    if ([url hasSuffix:@"xmlrpc.php"])
+        xmlrpc = url;
+    else
         xmlrpc = [NSString stringWithFormat:@"%@/xmlrpc.php", url];
     
     XMLRPCRequest *req = [[[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]] autorelease];
