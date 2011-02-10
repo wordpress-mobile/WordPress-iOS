@@ -31,6 +31,7 @@
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *buttonAddSelected, *buttonSelectAll, *topAddSelectedButton;
 @property (nonatomic, retain) WPProgressHUD *spinner;
+@property (nonatomic, assign) BOOL geolocationEnabled;
 
 - (IBAction)selectAllBlogs:(id)sender;
 - (IBAction)deselectAllBlogs:(id)sender;

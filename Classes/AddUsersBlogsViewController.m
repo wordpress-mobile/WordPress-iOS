@@ -9,7 +9,7 @@
 
 @implementation AddUsersBlogsViewController
 @synthesize usersBlogs, isWPcom, selectedBlogs, tableView, buttonAddSelected, buttonSelectAll, hasCompletedGetUsersBlogs;
-@synthesize spinner, username, password, url, topAddSelectedButton;
+@synthesize spinner, username, password, url, topAddSelectedButton, geolocationEnabled;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -356,7 +356,9 @@
     [newBlog setObject:self.username forKey:@"username"];
     [newBlog setObject:self.password forKey:@"password"];
     NSLog(@"creating blog: %@", newBlog);
-    [Blog createFromDictionary:newBlog withContext:appDelegate.managedObjectContext];
+    Blog *blog = [Blog createFromDictionary:newBlog withContext:appDelegate.managedObjectContext];
+	blog.geolocationEnabled = self.geolocationEnabled;
+	[blog dataSave];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 }
 

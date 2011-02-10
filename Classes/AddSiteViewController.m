@@ -38,6 +38,7 @@
             addUsersBlogsView.url = xmlrpc;
             addUsersBlogsView.username = self.username;
             addUsersBlogsView.password = self.password;
+			addUsersBlogsView.geolocationEnabled = self.geolocationEnabled;
             [self.navigationController pushViewController:addUsersBlogsView animated:YES];
             [addUsersBlogsView release];
         } else if ([subsites count] == 1) {
@@ -46,6 +47,9 @@
             [newBlog setObject:self.password forKey:@"password"];
             
             self.blog = [Blog createFromDictionary:newBlog withContext:appDelegate.managedObjectContext];
+			self.blog.geolocationEnabled = self.geolocationEnabled;
+			[self.blog dataSave];
+
             [self.navigationController popToRootViewControllerAnimated:YES];
             if (DeviceIsPad()) {
                 [self dismissModalViewControllerAnimated:YES];
