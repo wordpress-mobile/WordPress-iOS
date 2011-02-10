@@ -2388,8 +2388,8 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Chris Boyd (BRVBPT68S6)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Chris Boyd (BRVBPT68S6)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
@@ -2412,8 +2412,8 @@
 					"-licucore",
 				);
 				PREBINDING = NO;
-				PROVISIONING_PROFILE = "9A10BA78-D52B-4A6F-A232-B2AA78DBA2FC";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9A10BA78-D52B-4A6F-A232-B2AA78DBA2FC";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
