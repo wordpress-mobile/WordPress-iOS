@@ -388,14 +388,14 @@
         blog.geolocationEnabled = self.geolocationEnabled;
         [blog dataSave];
     }
-   /* if ([self.username isEqualToString:usernameTextField.text]
-        && [self.password isEqualToString:passwordTextField.text]
-        && [self.url isEqualToString:urlTextField.text]) {
-        // No need to check if nothing changed
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    } else {*/
+	if ([self.username isEqualToString:usernameTextField.text]
+		&& [self.password isEqualToString:passwordTextField.text]
+		&& [self.url isEqualToString:urlTextField.text]) {
+		// No need to check if nothing changed
+		[self.navigationController popToRootViewControllerAnimated:YES];
+    } else {
         [self validateFields];
-    //}
+    }
 }
 
 #pragma mark -
