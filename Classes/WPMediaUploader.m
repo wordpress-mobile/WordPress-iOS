@@ -33,8 +33,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendXMLRPC) name:@"FileEncodeSuccessful" object:self.media];
 }
 
 #pragma mark -
@@ -288,10 +286,10 @@
     // If encoded file already exists, don't try encoding again
     if ([[NSFileManager defaultManager] fileExistsAtPath:self.localEncodedURL]) {
         if([self.media.mediaType isEqualToString:@"image"])
-            [self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Uploading image..." waitUntilDone:NO];
+            [self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding finished." waitUntilDone:NO];
         else if([self.media.mediaType isEqualToString:@"video"])
-            [self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Uploading video..." waitUntilDone:NO];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"FileEncodeSuccessful" object:self.media];
+            [self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding finished." waitUntilDone:NO];
+		[self sendXMLRPC];
     }
 	// Create our XML-RPC payload file
 	[[NSFileManager defaultManager] createFileAtPath:self.localEncodedURL
@@ -362,11 +360,11 @@
 	
 	// We're done
 	if([self.media.mediaType isEqualToString:@"image"])
-		[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Uploading image..." waitUntilDone:NO];
+		[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding finished." waitUntilDone:NO];
 	else if([self.media.mediaType isEqualToString:@"video"])
-		[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Uploading video..." waitUntilDone:NO];
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"FileEncodeSuccessful" object:self.media];
+		[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding finished." waitUntilDone:NO];
 	
+	[self sendXMLRPC];
 	[pool release];
 }
 
@@ -384,6 +382,8 @@
 #pragma mark ASIHTTPRequest delegate
 
 - (void)requestFinished:(ASIHTTPRequest *)req {
+	WPLog(@"requestFinished: %@", self);
+
 	if(![[request responseString] isEmpty]) {
 		NSLog(@"response: %@", [request responseString]);
 		NSMutableDictionary *videoMeta = [[NSMutableDictionary alloc] init];
@@ -470,7 +470,7 @@
     }
 	else {
 		[self updateStatus:@"Upload failed. Please try again."];
-		NSLog(@"connection failed: %@", [request responseData]);
+		WPLog(@"connection failed: %@", [request responseData]);
 		
 		[NSThread sleepForTimeInterval:2.0];
         
@@ -485,9 +485,9 @@
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)req {
+	WPLog(@"connection failed: %@", [request responseData]);
 	[self updateStatus:@"Upload failed. Please try again."];
-	NSLog(@"connection failed: %@", [request responseData]);
-	
+		
 	[NSThread sleepForTimeInterval:2.0];
 	
     self.media.remoteStatus = MediaRemoteStatusFailed;
@@ -500,9 +500,9 @@
 }
 
 - (void)connection:(NSURLConnection *)conn didFailWithError:(NSError *)error {
+	WPLog(@"connection failed: %@", [error localizedDescription]);
 	[self updateStatus:@"Upload failed. Please try again."];
-	NSLog(@"connection failed: %@", [error localizedDescription]);
-	
+
     self.media.remoteStatus = MediaRemoteStatusFailed;
 	if([self.media.mediaType isEqualToString:@"image"])
 		[self stopWithNotificationName:@"ImageUploadFailed"];
