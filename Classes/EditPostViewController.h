@@ -125,6 +125,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (BOOL)isPostGeotagged;
 - (CLLocation *)getPostLocation;
 
+- (BOOL)isAFreshlyCreatedDraft;
 - (IBAction)switchToEdit;
 - (IBAction)switchToSettings;
 - (IBAction)switchToMedia;

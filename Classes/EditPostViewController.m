@@ -479,6 +479,15 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [textView resignFirstResponder];
 }
 
+
+- (BOOL)isAFreshlyCreatedDraft {
+	if( [self.apost.original.postID isEqualToNumber:[NSNumber numberWithInteger:-1]] ) 
+		if( self.apost.original.postTitle == nil )
+			return YES;
+	
+	return NO;
+}
+
 - (void)discard {
     [FlurryAPI logEvent:@"Post#actionSheet_discard"];
     
@@ -486,10 +495,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [self.apost.original deleteRevision];
 
 	//remove the original post in case of local draft unsaved
-	if( [self.apost.original.postID isEqualToNumber:[NSNumber numberWithInteger:-1]] ) {
-	if( self.apost.original.postTitle == nil )
+	if([self isAFreshlyCreatedDraft]) 
 		[self.apost.original remove];
-	}
+	
 	
 	self.apost = nil; // Just in case
     [self dismissEditView];
@@ -512,10 +520,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
         }
         
         if (buttonIndex == 1) {
-			if( [self.apost.original.postID isEqualToNumber:[NSNumber numberWithInteger:-1]] ) {
-				if( self.apost.original.postTitle == nil )
-					self.apost.statusTitle = @"Draft";
-            }
+			if([self isAFreshlyCreatedDraft]) 
+				self.apost.statusTitle = @"Draft";
+			
 			[self saveAction:self];
         }
     }
