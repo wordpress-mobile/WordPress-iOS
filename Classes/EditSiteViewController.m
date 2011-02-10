@@ -255,10 +255,36 @@
 	[self.tableView reloadData];
 }
 
-- (void)remoteValidate {
+- (void)checkURL {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-    WPDataController *dc = [[WPDataController alloc] init];
+	NSString *urlToValidate = urlTextField.text;    
+	
+    if(![urlToValidate hasPrefix:@"http"])
+        urlToValidate = [NSString stringWithFormat:@"http://%@", url];
+	
+    urlToValidate = [urlToValidate stringByReplacingOccurrencesOfRegex:@"/wp-admin/?$" withString:@""]; 
+    urlToValidate = [urlToValidate stringByReplacingOccurrencesOfRegex:@"/?$" withString:@""]; 
+	
+	
+	ASIHTTPRequest *xmlrpcRequest = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:urlToValidate]];
+	[xmlrpcRequest setValidatesSecureCertificate:NO]; 
+	[xmlrpcRequest setShouldPresentCredentialsBeforeChallenge:NO];
+	[xmlrpcRequest setShouldPresentAuthenticationDialog:YES];
+	[xmlrpcRequest setUseKeychainPersistence:YES];
+	[xmlrpcRequest setDidFinishSelector:@selector(remoteValidate:)];
+	[xmlrpcRequest setDidFailSelector:@selector(checkURLWentWrong:)];
+	[xmlrpcRequest setDelegate:self];
+	[xmlrpcRequest startAsynchronous];
+	
+  	[pool release];    
+}
+
+
+- (void)remoteValidate:(ASIHTTPRequest *)xmlrpcRequest
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	WPDataController *dc = [[WPDataController alloc] init];
     WPLog(@"before guess");
     NSString *xmlrpc = [dc guessXMLRPCForUrl:urlTextField.text];
     WPLog(@"after guess");
@@ -273,9 +299,18 @@
     } else {
         [self performSelectorOnMainThread:@selector(validationDidFail:) withObject:dc.error waitUntilDone:YES];
     }
-
-	[pool release];    
+	
+	[pool release];  
 }
+
+- (void)checkURLWentWrong:(ASIHTTPRequest *)request {
+	NSError *error = [request error];
+	NSString *errorMessage = [error localizedDescription];
+	WPLog(@"checkURLWentWrong %@", errorMessage);
+	[self performSelectorOnMainThread:@selector(validationDidFail:) withObject:error waitUntilDone:YES];
+}
+
+
 
 - (void)validationSuccess:(NSString *)xmlrpc {
     blog.url = self.url;
@@ -338,7 +373,7 @@
     }
     
     if (validFields) {
-        [self performSelectorInBackground:@selector(remoteValidate) withObject:nil];
+        [self performSelectorInBackground:@selector(checkURL) withObject:nil];
     } else {
         [self validationDidFail:nil];
     }
@@ -353,14 +388,14 @@
         blog.geolocationEnabled = self.geolocationEnabled;
         [blog dataSave];
     }
-    if ([self.username isEqualToString:usernameTextField.text]
+   /* if ([self.username isEqualToString:usernameTextField.text]
         && [self.password isEqualToString:passwordTextField.text]
         && [self.url isEqualToString:urlTextField.text]) {
         // No need to check if nothing changed
         [self.navigationController popToRootViewControllerAnimated:YES];
-    } else {
+    } else {*/
         [self validateFields];
-    }
+    //}
 }
 
 #pragma mark -
