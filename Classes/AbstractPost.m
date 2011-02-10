@@ -213,7 +213,7 @@
 	if(self.date_created_gmt != nil)
 		return [DateUtils GMTDateTolocalDate:self.date_created_gmt];
 	else 
-		return [NSDate date];
+		return nil;
 
 }
 
