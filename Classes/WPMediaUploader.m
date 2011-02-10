@@ -441,7 +441,6 @@
                     [self finishWithNotificationName:VideoUploadFailed object:self.media userInfo:nil];
                 else if([self.media.mediaType isEqualToString:@"image"])
                     [self finishWithNotificationName:ImageUploadFailed object:self.media userInfo:nil];
-				[faultString release];
 			}
 			else if([self.media.mediaType isEqualToString:@"video"]) {
 				if([responseMeta objectForKey:@"videopress_shortcode"] != nil)
