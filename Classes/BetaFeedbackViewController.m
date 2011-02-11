@@ -59,7 +59,8 @@
 		textView.text = nil;
 	textView.textColor = [UIColor blackColor];
 	isEditingFeedback = YES;
-	cancelButton.title = @"Done";
+	if (!DeviceIsPad())
+		cancelButton.title = @"Done";
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
@@ -84,7 +85,7 @@
 }
 
 -(void) cancel: (id)sender {
-	if (isEditingFeedback) {
+	if (isEditingFeedback && !DeviceIsPad()) {
 		[feedback resignFirstResponder];
 		isEditingFeedback = NO;
 		cancelButton.title = @"Cancel";
