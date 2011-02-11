@@ -453,9 +453,7 @@
                     self.media.remoteURL = [responseMeta objectForKey:@"url"];
 				
                 self.media.remoteStatus = MediaRemoteStatusSync;
-               // if(videoMeta.count > 0) {
-					[self finishWithNotificationName:VideoUploadSuccessful object:self.media userInfo:responseMeta];
-				//}
+				[self finishWithNotificationName:VideoUploadSuccessful object:self.media userInfo:responseMeta];
 			}
 			else if([self.media.mediaType isEqualToString:@"image"]) {
 				NSMutableDictionary *imageMeta = [[NSMutableDictionary alloc] init];
