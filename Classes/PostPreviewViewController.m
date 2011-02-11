@@ -20,11 +20,12 @@
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
         // Initialization code
 		webView.delegate = self;
-		[self refreshWebView];
+		//[self refreshWebView];
     }
 
     return self;
 }
+ 
 
 - (void)didReceiveMemoryWarning {
     WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));

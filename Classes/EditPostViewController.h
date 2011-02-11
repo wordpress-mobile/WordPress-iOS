@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import "PostMediaViewController.h"
+#import "PostPreviewViewController.h"
 #import "PostSettingsViewController.h"
 #import "PostLocationViewController.h"
 #import "WordPressAppDelegate.h"
@@ -13,7 +14,7 @@
 
 #define degreesToRadian(x) (M_PI * x / 180.0)
 
-@class WPSegmentedSelectionTableViewController, PostSettingsViewController;
+@class WPSegmentedSelectionTableViewController, PostSettingsViewController, PostPreviewViewController;
 
 @interface EditPostViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
 UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDelegate,UIPopoverControllerDelegate> {
@@ -50,6 +51,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 	LocationController *locationController;
     PostSettingsViewController *postSettingsController;
     PostMediaViewController *postMediaViewController;
+	PostPreviewViewController *postPreviewViewController;
     WPProgressHUD *spinner;
 	
     UIImage *currentChoosenImage;
@@ -129,6 +131,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (IBAction)switchToEdit;
 - (IBAction)switchToSettings;
 - (IBAction)switchToMedia;
+- (IBAction)switchToPreview;
 - (IBAction)addVideo:(id)sender;
 - (IBAction)addPhoto:(id)sender;
 - (void)refreshButtons;

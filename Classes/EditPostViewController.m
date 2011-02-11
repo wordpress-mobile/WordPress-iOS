@@ -103,6 +103,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
 }
 
+- (IBAction)switchToPreview {
+    if (currentView != postPreviewViewController.view) {
+        [self switchToView:postPreviewViewController.view];
+    }
+}
+
 - (IBAction)addVideo:(id)sender {
     [postMediaViewController showVideoPickerActionSheet:sender];
 }
@@ -139,6 +145,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
     postMediaViewController = [[PostMediaViewController alloc] initWithNibName:@"PostMediaViewController" bundle:nil];
     postMediaViewController.postDetailViewController = self;
     postMediaViewController.view.frame = editView.frame;
+	
+	postPreviewViewController = [[PostPreviewViewController alloc] initWithNibName:@"PostPreviewViewController" bundle:nil];
+    postPreviewViewController.postDetailViewController = self;
+    postPreviewViewController.view.frame = editView.frame;
     
 	self.navigationItem.title = @"Write";
 	statuses = [NSArray arrayWithObjects:@"Local Draft", @"Draft", @"Private", @"Pending Review", @"Published", nil];
@@ -1211,6 +1221,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)dealloc {
 //	[statuses release];
     [postMediaViewController release];
+	[postPreviewViewController release];
     [postSettingsController release];
     [writeButton release];
     [settingsButton release];

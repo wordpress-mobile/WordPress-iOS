@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="297"/>
+			<integer value="366"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -347,6 +347,14 @@
 								<float key="IBUIWidth">32</float>
 								<reference key="IBUIToolbar" ref="458393363"/>
 							</object>
+							<object class="IBUIBarButtonItem" id="492421833">
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">preview.png</string>
+								</object>
+								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<reference key="IBUIToolbar" ref="458393363"/>
+							</object>
 						</object>
 						<object class="NSColor" key="IBUITintColor">
 							<int key="NSColorSpace">2</int>
@@ -608,6 +616,22 @@
 					</object>
 					<int key="connectionID">365</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">switchToPreview</string>
+						<reference key="source" ref="492421833"/>
+						<reference key="destination" ref="372490531"/>
+					</object>
+					<int key="connectionID">367</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">previewButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="492421833"/>
+					</object>
+					<int key="connectionID">368</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -656,6 +680,7 @@
 							<reference ref="213074190"/>
 							<reference ref="394056374"/>
 							<reference ref="241552921"/>
+							<reference ref="492421833"/>
 						</object>
 						<reference key="parent" ref="546232296"/>
 					</object>
@@ -779,6 +804,11 @@
 						<reference key="object" ref="241552921"/>
 						<reference key="parent" ref="458393363"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">366</int>
+						<reference key="object" ref="492421833"/>
+						<reference key="parent" ref="458393363"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -824,6 +854,7 @@
 					<string>343.IBViewBoundsToFrameTransform</string>
 					<string>348.IBViewBoundsToFrameTransform</string>
 					<string>351.IBPluginDependency</string>
+					<string>366.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -894,6 +925,7 @@
 						<bytes key="NSTransformStruct">AcGgAADBoAAAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -912,7 +944,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">365</int>
+			<int key="maxID">368</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -934,10 +966,12 @@
 							<string>showStatusViewAction:</string>
 							<string>switchToEdit</string>
 							<string>switchToMedia</string>
+							<string>switchToPreview</string>
 							<string>switchToSettings</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -965,6 +999,7 @@
 							<string>showStatusViewAction:</string>
 							<string>switchToEdit</string>
 							<string>switchToMedia</string>
+							<string>switchToPreview</string>
 							<string>switchToSettings</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -1007,6 +1042,10 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">switchToMedia</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">switchToPreview</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -1340,6 +1379,7 @@
 				<string>attachment.png</string>
 				<string>movie.png</string>
 				<string>photos.png</string>
+				<string>preview.png</string>
 				<string>settings.png</string>
 				<string>tabPointer.png</string>
 				<string>table_sep.png</string>
@@ -1350,6 +1390,7 @@
 				<string>{14, 26}</string>
 				<string>{20, 25}</string>
 				<string>{24, 18}</string>
+				<string>{28, 20}</string>
 				<string>{26, 26}</string>
 				<string>{19, 9}</string>
 				<string>{320, 1}</string>
