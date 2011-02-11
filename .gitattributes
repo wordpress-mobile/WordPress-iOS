@@ -58,6 +58,11 @@ Classes/AddSiteViewController.xib -text
 Classes/AddUsersBlogsViewController.h -text
 Classes/AddUsersBlogsViewController.m -text
 Classes/AddUsersBlogsViewController.xib -text
+Classes/BetaFeedbackViewController.h -text
+Classes/BetaFeedbackViewController.m -text
+Classes/BetaFeedbackViewController.xib -text
+Classes/BetaUIWindow.h -text
+Classes/BetaUIWindow.m -text
 Classes/Blog.h -text
 Classes/Blog.m -text
 Classes/BlogDataManager.h -text

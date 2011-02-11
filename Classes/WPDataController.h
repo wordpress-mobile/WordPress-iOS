@@ -72,4 +72,8 @@ typedef enum {
 - (void)registerForPushNotifications;
 - (void)registerForPushNotificationsInBackground;
 
+#pragma mark -
+#pragma mark XMLRPC
+- (id)executeXMLRPCRequest:(XMLRPCRequest *)req;
+
 @end

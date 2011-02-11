@@ -8,6 +8,7 @@
 #import "CPopoverManager.h"
 #import "UIViewController_iPadExtensions.h"
 #import "WelcomeViewController.h"
+#import "BetaUIWindow.h"
 
 @interface WordPressAppDelegate (Private)
 
@@ -128,6 +129,11 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	BlogsViewController *blogsViewController = [[BlogsViewController alloc] initWithStyle:UITableViewStylePlain];
 	crashReportView = [[CrashReportViewController alloc] initWithNibName:@"CrashReportView" bundle:nil];
 	
+	//BETA FEEDBACK BAR, COMMENT THIS OUT BEFORE RELEASE
+	BetaUIWindow *betaWindow = [[BetaUIWindow alloc] initWithFrame:CGRectZero];
+	betaWindow.hidden = NO;
+	//BETA FEEDBACK BAR
+	
 	if(DeviceIsPad() == NO)
 	{
 		UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:blogsViewController];
@@ -148,6 +154,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		else {
 			blogsViewController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStyleBordered target:nil action:nil];
 		}
+		
 	}
 	else
 	{

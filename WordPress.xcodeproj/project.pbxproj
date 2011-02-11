@@ -59,6 +59,9 @@
 		2FAE970A0E33B21600CA8540 /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97050E33B21600CA8540 /* license.txt */; };
 		2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */; };
 		2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */; };
+		3768BE87130404FF00E7C9A9 /* BetaUIWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 3768BE86130404FF00E7C9A9 /* BetaUIWindow.m */; };
+		3768BEF113041E7900E7C9A9 /* BetaFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3768BEEF13041E7800E7C9A9 /* BetaFeedbackViewController.m */; };
+		3768BEF213041E7900E7C9A9 /* BetaFeedbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3768BEF013041E7900E7C9A9 /* BetaFeedbackViewController.xib */; };
 		376EED7312F6DF78005CE77A /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 376EED7212F6DF78005CE77A /* Reachability.m */; };
 		376EEDBA12F6E5F0005CE77A /* WPPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 376EEDB912F6E5F0005CE77A /* WPPageControl.m */; };
 		376EEF2712F7068A005CE77A /* page_control_blue_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 376EEF2312F7068A005CE77A /* page_control_blue_active.png */; };
@@ -449,6 +452,11 @@
 		2FAE97050E33B21600CA8540 /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.txt; sourceTree = "<group>"; };
 		2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xhtml1-transitional.dtd"; sourceTree = "<group>"; };
 		2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = xhtmlValidatorTemplate.xhtml; sourceTree = "<group>"; };
+		3768BE85130404FF00E7C9A9 /* BetaUIWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BetaUIWindow.h; sourceTree = "<group>"; };
+		3768BE86130404FF00E7C9A9 /* BetaUIWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BetaUIWindow.m; sourceTree = "<group>"; };
+		3768BEEE13041E7800E7C9A9 /* BetaFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BetaFeedbackViewController.h; sourceTree = "<group>"; };
+		3768BEEF13041E7800E7C9A9 /* BetaFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BetaFeedbackViewController.m; sourceTree = "<group>"; };
+		3768BEF013041E7900E7C9A9 /* BetaFeedbackViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BetaFeedbackViewController.xib; sourceTree = "<group>"; };
 		376EED7112F6DF78005CE77A /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = ../Reachability/Reachability.h; sourceTree = "<group>"; };
 		376EED7212F6DF78005CE77A /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = ../Reachability/Reachability.m; sourceTree = "<group>"; };
 		376EEDB812F6E5F0005CE77A /* WPPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPPageControl.h; sourceTree = "<group>"; };
@@ -1119,6 +1127,18 @@
 			name = Models;
 			sourceTree = "<group>";
 		};
+		3768BEED13041E3F00E7C9A9 /* Beta */ = {
+			isa = PBXGroup;
+			children = (
+				3768BE85130404FF00E7C9A9 /* BetaUIWindow.h */,
+				3768BE86130404FF00E7C9A9 /* BetaUIWindow.m */,
+				3768BEEE13041E7800E7C9A9 /* BetaFeedbackViewController.h */,
+				3768BEEF13041E7800E7C9A9 /* BetaFeedbackViewController.m */,
+				3768BEF013041E7900E7C9A9 /* BetaFeedbackViewController.xib */,
+			);
+			name = Beta;
+			sourceTree = "<group>";
+		};
 		3792259E12F6DBCC00F2176A /* Stats */ = {
 			isa = PBXGroup;
 			children = (
@@ -1559,6 +1579,7 @@
 		AC512F800E20D28500B7DA32 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				3768BEED13041E3F00E7C9A9 /* Beta */,
 				376EEDB812F6E5F0005CE77A /* WPPageControl.h */,
 				376EEDB912F6E5F0005CE77A /* WPPageControl.m */,
 				376EED7112F6DF78005CE77A /* Reachability.h */,
@@ -2046,6 +2067,7 @@
 				376EEF5E12F70C9B005CE77A /* stats@2x.png in Resources */,
 				E1B4A9E412FC8B2500EB3F67 /* blueArrow.png in Resources */,
 				E1B4A9E512FC8B2500EB3F67 /* blueArrow@2x.png in Resources */,
+				3768BEF213041E7900E7C9A9 /* BetaFeedbackViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2209,6 +2231,8 @@
 				376EEDBA12F6E5F0005CE77A /* WPPageControl.m in Sources */,
 				FD9A948C12FAEA2300438F94 /* DateUtils.m in Sources */,
 				E1B4A9E112FC8B1000EB3F67 /* EGORefreshTableHeaderView.m in Sources */,
+				3768BE87130404FF00E7C9A9 /* BetaUIWindow.m in Sources */,
+				3768BEF113041E7900E7C9A9 /* BetaFeedbackViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
