@@ -172,15 +172,15 @@
 						   [SFHFKeychainUtils getPasswordForUsername:username andServiceName:@"WordPress.com" error:&pwError], 
 						   [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"],
 						   nil];
-		[req setMethod:@"wpcom.addAaplDeviceToken" withObjects:params];
+		[req setMethod:@"wpcom.addiOSDeviceToken" withObjects:params];
 		
 		result = [self executeXMLRPCRequest:req];
 		
 		// We want this to fail silently.
 		if(![result isKindOfClass:[NSError class]])
-			NSLog(@"successfully registered for push notifications with wordpress.com: %@", result);
+			NSLog(@"successfully registered for push notifications with WordPress.com: %@", result);
 		else
-			NSLog(@"failed to register for push notifications with wordpress.com: %@", result);
+			NSLog(@"failed to register for push notifications with WordPress.com: %@", result);
 	}
 	
 	[pool release];
