@@ -324,6 +324,10 @@
 	
     if (post.password != nil)
         [postParams setObject:post.password forKey:@"wp_password"];
+	
+	if (post.permaLink != nil)
+        [postParams setObject:post.permaLink forKey:@"permaLink"];
+	
     return postParams;
 }
 

@@ -55,6 +55,7 @@
     page.status         = [postInfo objectForKey:@"page_status"];
     page.password       = [postInfo objectForKey:@"wp_password"];
     page.remoteStatus   = AbstractPostRemoteStatusSync;
+	page.permaLink      = [postInfo objectForKey:@"permaLink"];
     
     return page;
 }

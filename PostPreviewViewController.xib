@@ -45,7 +45,7 @@
 					<object class="IBUIWebView" id="716546164">
 						<reference key="NSNextResponder" ref="881753206"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrameSize">{320, 387}</string>
+						<string key="NSFrameSize">{320, 357}</string>
 						<reference key="NSSuperview" ref="881753206"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -147,6 +147,7 @@
 					<string>-2.CustomClassName</string>
 					<string>5.IBEditorWindowLastContentRect</string>
 					<string>5.IBPluginDependency</string>
+					<string>5.IBViewBoundsToFrameTransform</string>
 					<string>8.IBEditorWindowLastContentRect</string>
 					<string>8.IBPluginDependency</string>
 				</object>
@@ -156,7 +157,10 @@
 					<string>UIResponder</string>
 					<string>{{0, 274}, {320, 460}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{447, 293}, {320, 480}}</string>
+					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">P4AAAL+AAAAAAAAAw7aAAA</bytes>
+					</object>
+					<string>{{450, 296}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>

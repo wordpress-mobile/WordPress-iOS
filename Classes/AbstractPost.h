@@ -30,6 +30,7 @@ typedef enum {
 @property (nonatomic, retain) NSString * status;
 @property (nonatomic, assign) NSString * statusTitle;
 @property (nonatomic, retain) NSString * password;
+@property (nonatomic, retain) NSString * permaLink;
 @property (nonatomic, retain) NSNumber * remoteStatusNumber;
 @property (nonatomic) AbstractPostRemoteStatus remoteStatus;
 

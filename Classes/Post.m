@@ -62,6 +62,7 @@
     post.status         = [postInfo objectForKey:@"post_status"];
     post.password       = [postInfo objectForKey:@"wp_password"];
     post.tags           = [postInfo objectForKey:@"mt_keywords"];
+	post.permaLink      = [postInfo objectForKey:@"permaLink"];
     post.remoteStatus   = AbstractPostRemoteStatusSync;
     if ([postInfo objectForKey:@"categories"]) {
         [post setCategoriesFromNames:[postInfo objectForKey:@"categories"]];

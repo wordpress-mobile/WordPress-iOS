@@ -15,7 +15,7 @@
 @end
 
 @implementation AbstractPost
-@dynamic author, content, date_created_gmt, postID, postTitle, status, password, remoteStatusNumber;
+@dynamic author, content, date_created_gmt, postID, postTitle, status, password, remoteStatusNumber, permaLink;
 @dynamic blog, media;
 
 + (NSString *)titleForStatus:(NSString *)status {
@@ -169,6 +169,10 @@
         && (![self.dateCreated  isEqual:self.original.dateCreated]))
         return YES;
 
+	if ((self.permaLink != self.original.permaLink)
+        && (![self.permaLink  isEqual:self.original.permaLink]))
+        return YES;
+	
     // Relationships are not going to be nil, just empty sets,
     // so we can avoid the extra check
     if (![self.media isEqual:self.original.media])

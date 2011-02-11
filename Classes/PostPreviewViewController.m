@@ -20,7 +20,7 @@
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
         // Initialization code
 		webView.delegate = self;
-		//[self refreshWebView];
+		[self refreshWebView];
     }
 
     return self;
@@ -66,44 +66,75 @@
     return YES;
 }
 
+
+- (NSFetchedResultsController *)resultsController {
+    if (resultsController != nil) {
+        return resultsController;
+    }
+    
+    WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Media" inManagedObjectContext:appDelegate.managedObjectContext]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"post == %@", self.postDetailViewController.post]];
+    NSSortDescriptor *sortDescriptorDate = [[NSSortDescriptor alloc] initWithKey:@"creationDate" ascending:NO];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorDate, nil];
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    
+    resultsController = [[NSFetchedResultsController alloc]
+						 initWithFetchRequest:fetchRequest
+						 managedObjectContext:appDelegate.managedObjectContext
+						 sectionNameKeyPath:nil
+						 cacheName:[NSString stringWithFormat:@"Media-%@-%@",
+									self.postDetailViewController.post.blog.hostURL,
+									self.postDetailViewController.post.postID]];
+    resultsController.delegate = self;
+    
+    [fetchRequest release];
+    [sortDescriptorDate release]; sortDescriptorDate = nil;
+    [sortDescriptors release]; sortDescriptors = nil;
+    
+    NSError *error = nil;
+    if (![resultsController performFetch:&error]) {
+        NSLog(@"Couldn't fetch media");
+        resultsController = nil;
+    }
+    
+    return resultsController;
+}
+
 #pragma mark -
 #pragma mark Webkit View Delegate Methods
 
 - (void)refreshWebView {
-    BlogDataManager *dataManager = [BlogDataManager sharedDataManager];
 
-    // Use the template to preview if local draft, new post,
-    // post has been edited, post is a draft, or post is private
-    // TODO - try setting file URLs for photos not yet uploaded
-    BOOL edited = [(NSNumber *)[[dataManager currentPost] objectForKey:@"hasChanges"] boolValue];
+	BOOL edited = [self.postDetailViewController hasChanges];
+    BOOL isDraft = [self.postDetailViewController isAFreshlyCreatedDraft];
 
-    BOOL isDraft = NO;
-    NSString *status = [[dataManager currentPost] objectForKey:@"post_status"];
-
-    if (![status isEqualToString:@"publish"] && ![status isEqualToString:@"private"])
-        isDraft = YES;
-
+    NSString *status = postDetailViewController.apost.status;
     BOOL isPrivate = NO;
-
     if ([status isEqualToString:@"private"])
         isPrivate = YES;
 
-    int photoCount = [[[dataManager currentPost] valueForKey:@"Photos"] count];
+	
+	id <NSFetchedResultsSectionInfo> sectionInfo = nil;
+    sectionInfo = [[self.resultsController sections] objectAtIndex:0];
+	int photoCount = [sectionInfo numberOfObjects];
+	
     NSString *photosMessage = @"{%d Photo(s) will be attached to the bottom of the post when published.}";
     photosMessage = [NSString stringWithFormat:photosMessage, photoCount];
 
-    if (dataManager.isLocaDraftsCurrent || dataManager.currentPostIndex == -1
-        || edited || isDraft || isPrivate) {
+    if (edited || isDraft || isPrivate) {
         // TODO use a default template so that we alwyas have one
-        BOOL isDefaultTemplate;
-        NSString *str = [dataManager templateHTMLStringForBlog:dataManager.currentBlog isDefaultTemplate:&isDefaultTemplate];
-
+		NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
+		NSString *fpath = [NSString stringWithFormat:@"%@/defaultPostTemplate.html", resourcePath];
+		NSString *str = [NSString stringWithContentsOfFile:fpath];
+		
         if ([str length]) {
-            NSString *title = [dataManager.currentPost valueForKey:@"title"];
+            NSString *title = postDetailViewController.apost.postTitle;
             title = (title == nil || ([title length] == 0) ? @"(no title)" : title);
             str = [str stringByReplacingOccurrencesOfString:@"!$title$!" withString:title];
 
-            NSString *desc = [dataManager.currentPost valueForKey:@"description"];
+            NSString *desc = postDetailViewController.apost.content;
 
             if (!desc)
                 desc = @"<h1>No Description available for this Post</h1>";else {
@@ -119,24 +150,22 @@
 
             str = [str stringByReplacingOccurrencesOfString:@"!$text$!" withString:desc];
 
-            NSString *tags = [dataManager.currentPost valueForKey:@"mt_keywords"];
+            NSString *tags = postDetailViewController.post.tags;
             tags = (tags == nil ? @"" : tags);
-
-            if (isDefaultTemplate) {
-                tags = [NSString stringWithFormat:@"Tags: %@", tags]; //desc = [NSString stringWithFormat:@"%@ \n <p>Tags: %@</p><br>", desc, tags];
-            }
+			tags = [NSString stringWithFormat:@"Tags: %@", tags]; //desc = [NSString stringWithFormat:@"%@ \n <p>Tags: %@</p><br>", desc, tags];
+            
 
             str = [str stringByReplacingOccurrencesOfString:@"!$mt_keywords$!" withString:tags];
 
-            NSArray *categories = [dataManager.currentPost valueForKey:@"categories"];
+            NSArray *categories = nil;
             NSString *catStr = @"";
 
             if ([categories isKindOfClass:[NSArray class]])
                 catStr = [categories componentsJoinedByString:@", "];
 
-            if (isDefaultTemplate) {
-                catStr = [NSString stringWithFormat:@"Categories: %@", catStr]; //desc = [NSString stringWithFormat:@"%@ \n <p>Categories: %@</p><br>", desc, catStr];
-            }
+       
+			catStr = [NSString stringWithFormat:@"Categories: %@", catStr]; //desc = [NSString stringWithFormat:@"%@ \n <p>Categories: %@</p><br>", desc, catStr];
+            
 
             str = [str stringByReplacingOccurrencesOfString:@"!$categories$!" withString:catStr];
 
@@ -145,10 +174,10 @@
         }
     }
 
-    NSString *link = [dataManager.currentPost valueForKey:@"link"];
+    NSString *link = postDetailViewController.apost.permaLink;
 
     if (link == nil) {
-        NSString *desc = [dataManager.currentPost valueForKey:@"description"];
+        NSString *desc = postDetailViewController.apost.content;
 
         if (desc) {
             [webView loadHTMLString:[NSString stringWithFormat:@"%@<p>%@</p>", desc, photosMessage] baseURL:nil];
