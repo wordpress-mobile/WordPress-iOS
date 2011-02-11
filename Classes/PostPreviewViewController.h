@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "EditPostViewController.h"
 
-@interface PostPreviewViewController : UIViewController <UIWebViewDelegate,  NSFetchedResultsControllerDelegate> {
+@interface PostPreviewViewController : UIViewController <UIWebViewDelegate> {
     IBOutlet UIWebView *webView;
     BOOL isWebRefreshRequested;
 
@@ -10,7 +10,6 @@
 }
 
 @property (nonatomic, assign) EditPostViewController *postDetailViewController;
-@property (readonly) NSFetchedResultsController *resultsController;
 @property (readonly) UIWebView *webView;
 
 - (void)refreshWebView;
