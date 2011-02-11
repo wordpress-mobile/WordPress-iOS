@@ -1062,7 +1062,7 @@
 
 - (void)mediaUploadFailed:(NSNotification *)notification {
     Media *media = (Media *)[notification object];
-    [media remove];
+   // [media remove];
 	self.isAddingMedia = NO;
 }
 

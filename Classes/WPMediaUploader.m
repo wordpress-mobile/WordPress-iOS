@@ -158,6 +158,7 @@
 	
 	request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:self.media.blog.xmlrpc]];
 	[request setDelegate:self];
+	[request setValidatesSecureCertificate:NO]; 
 	[request setShouldStreamPostDataFromDisk:YES];
 	[request appendPostDataFromFile:self.localEncodedURL];
 	[request setUploadProgressDelegate:self.media];
@@ -188,6 +189,7 @@
 	NSString *password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:self.media.blog.hostURL error:&error];
 	
 	request = [ASIFormDataRequest requestWithURL:atomURL];
+	[request setValidatesSecureCertificate:NO]; 	
 	[request setUsername:username];
 	[request setPassword:password];
 	[request setRequestMethod:@"POST"];
@@ -196,6 +198,7 @@
 	[request setShouldStreamPostDataFromDisk:YES];
 	[request setPostBodyFilePath:self.media.localURL];
 	[request setDelegate:self];
+	[request setTimeOutSeconds:600];
 	[request setUploadProgressDelegate:self.media];
 	[request startAsynchronous];
     [request retain];
@@ -450,9 +453,9 @@
                     self.media.remoteURL = [responseMeta objectForKey:@"url"];
 				
                 self.media.remoteStatus = MediaRemoteStatusSync;
-                if(videoMeta.count > 0) {
+               // if(videoMeta.count > 0) {
 					[self finishWithNotificationName:VideoUploadSuccessful object:self.media userInfo:responseMeta];
-				}
+				//}
 			}
 			else if([self.media.mediaType isEqualToString:@"image"]) {
 				NSMutableDictionary *imageMeta = [[NSMutableDictionary alloc] init];
@@ -485,9 +488,11 @@
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)req {
-	WPLog(@"connection failed: %@", [request responseData]);
-	[self updateStatus:@"Upload failed. Please try again."];
-		
+	NSError *error = [req error];
+	NSString *errorMessage = [error localizedDescription];
+	WPLog(@"connection failed: %@", errorMessage);
+
+	[self updateStatus:@"Upload failed. Please try again."];		
 	[NSThread sleepForTimeInterval:2.0];
 	
     self.media.remoteStatus = MediaRemoteStatusFailed;
