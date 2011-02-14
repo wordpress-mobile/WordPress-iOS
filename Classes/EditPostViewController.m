@@ -14,7 +14,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @synthesize editingDisabled, editCustomFields, statuses, isLocalDraft;
 @synthesize textView, contentView, subView, textViewContentView, statusTextField, categoriesTextField, titleTextField;
 @synthesize tagsTextField, textViewPlaceHolderField, tagsLabel, statusLabel, categoriesLabel, titleLabel, customFieldsEditButton;
-@synthesize locationButton, locationSpinner, newCategoryBarButtonItem;
+@synthesize locationButton, locationSpinner, newCategoryBarButtonItem, hasLocation;
 @synthesize editMode, apost;
 @synthesize hasSaved, isVisible, isPublishing;
 @synthesize toolbar;
@@ -190,6 +190,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[toolbar setItems:toolbarItems];
 	}
 	
+	if (self.post && self.post.geolocation != nil) {
+		self.hasLocation.enabled = YES;
+	} else {
+		self.hasLocation.enabled = NO;
+	}
+
     if(self.editMode == kEditPost)
         [self refreshUIForCurrentPost];
 	else if(self.editMode == kNewPost)
@@ -259,14 +265,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
         WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
         [appDelegate.navigationController popViewControllerAnimated:YES];
 	} else {
-		[self dismissModalViewControllerAnimated:YES];
-		[[BlogDataManager sharedDataManager] loadDraftTitlesForCurrentBlog];
-		[[BlogDataManager sharedDataManager] loadPostTitlesForCurrentBlog];
-		
-		UIViewController *theTopVC = [[WordPressAppDelegate sharedWordPressApp].masterNavigationController topViewController];
-		if ([theTopVC respondsToSelector:@selector(reselect)])
-			[theTopVC performSelector:@selector(reselect)];
+		[self dismissModalViewControllerAnimated:YES];		
 	}
+	[postSettingsController release]; postSettingsController = nil;
     
 	[FlurryAPI logEvent:@"EditPost#dismissEditView"];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"PostEditorDismissed" object:self];
@@ -1220,6 +1221,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 #pragma mark Dealloc
 
 - (void)dealloc {
+	self.hasLocation = nil;
 //	[statuses release];
     [postMediaViewController release];
 	[postPreviewViewController release];

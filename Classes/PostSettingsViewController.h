@@ -1,13 +1,17 @@
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
+#import <MapKit/MapKit.h>
+#import "UITableViewActivityCell.h"
 #import "EditPostViewController.h"
 #import "PostSettingsHelpViewController.h"
 #import "CPopoverManager.h"
+#import "PostAnnotation.h"
 
 // the amount of vertical shift upwards keep the text field in view as the keyboard appears
 #define kOFFSET_FOR_KEYBOARD                    150.0
 
 @class EditPostViewController;
-@interface PostSettingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate> {
+@interface PostSettingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, CLLocationManagerDelegate, MKReverseGeocoderDelegate> {
     IBOutlet UITableView *tableView;
     IBOutlet UITableViewCell *statusTableViewCell;
     IBOutlet UITableViewCell *visibilityTableViewCell;
@@ -25,6 +29,19 @@
     UIDatePicker *datePickerView;
     UIPopoverController *popover;
     BOOL isShowingKeyboard;
+
+	/* Geotagging */
+	CLLocationManager *locationManager;
+	MKReverseGeocoder *reverseGeocoder;
+    UITableViewActivityCell *addGeotagTableViewCell;
+    IBOutlet UITableViewCell *mapGeotagTableViewCell;
+	UITableViewCell *removeGeotagTableViewCell;
+	IBOutlet MKMapView *mapView;
+	IBOutlet UILabel *addressLabel;
+	IBOutlet UILabel *coordinateLabel;
+	PostAnnotation *annotation;
+	NSString *address;
+	BOOL isUpdatingLocation;
 }
 
 @property (nonatomic, assign) EditPostViewController *postDetailViewController;

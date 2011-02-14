@@ -14,6 +14,7 @@
 @interface PostSettingsViewController (Private)
 
 - (void)showPicker:(UIView *)picker;
+- (void)geocodeCoordinate:(CLLocationCoordinate2D)c;
 
 @end
 
@@ -21,21 +22,31 @@
 @synthesize postDetailViewController;
 
 - (void)dealloc {
+	if (locationManager) {
+		locationManager.delegate = nil;
+		[locationManager stopUpdatingLocation];
+		[locationManager release];
+	}
+	if (reverseGeocoder) {
+		reverseGeocoder.delegate = nil;
+		[reverseGeocoder cancel];
+		[reverseGeocoder release];
+	}
+	[address release];
+	[addGeotagTableViewCell release];
+    [mapGeotagTableViewCell release];
+    [removeGeotagTableViewCell release];
+	[mapView release];
+	[addressLabel release];
+	[coordinateLabel release];
+	
     [actionSheet release];
     [popover release];
     [pickerView release];
     [datePickerView release];
     [visibilityList release];
     [statusList release];
-    [publishOnDateLabel release];
-    [publishOnLabel release];
-	[passwordTextField release];
-    [visibilityLabel release];
-    [statusLabel release];
-    [publishOnTableViewCell release];
-    [visibilityTableViewCell release];
-    [statusTableViewCell release];
-	[tableView release];
+
     [super dealloc];
 }
 
@@ -104,6 +115,22 @@
 		passwordTextField.returnKeyType = UIReturnKeyDone;
 		passwordTextField.delegate = self;
     }
+	
+	if (postDetailViewController.post) {
+		locationManager = [[CLLocationManager alloc] init];
+		locationManager.delegate = self;
+		locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
+		locationManager.distanceFilter = 10;
+		
+		// FIXME: only add tag if it's a new post. If user removes tag we shouldn't try to add it again
+		if (postDetailViewController.post.geolocation == nil // Only if there is no geotag
+			&& ![postDetailViewController.post hasRemote]    // and post is new
+			&& locationManager.locationServicesEnabled
+			&& postDetailViewController.post.blog.geolocationEnabled) {
+			isUpdatingLocation = YES;
+			[locationManager startUpdatingLocation];
+		}
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -141,15 +168,33 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+	if (postDetailViewController.post) {
+		return 2; // Geolocation
+	} else {
+		return 1; // Pages don't have geolocation
+	}
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
+	if (section == 0) {
+		return 3;
+	} else if (section == 1) {
+		if (postDetailViewController.post.geolocation)
+			return 3; // Add/Update | Map | Remove
+		else
+			return 1; // Add
+	}
+
+    return 0;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return @"Publish";
+	if (section == 0)
+		return @"Publish";
+	else if (section == 1)
+		return @"Geolocation";
+	else
+		return nil;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -157,76 +202,169 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    switch (indexPath.row) {
-        case 0:
-            if (([postDetailViewController.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending)
-                && ([postDetailViewController.apost.status isEqualToString:@"publish"])) {
-                statusLabel.text = @"Scheduled";
-            } else {
-                statusLabel.text = postDetailViewController.apost.statusTitle;
-            }
-            if ([postDetailViewController.apost.status isEqualToString:@"private"])
-                statusTableViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            else
-                statusTableViewCell.selectionStyle = UITableViewCellSelectionStyleBlue;
+	switch (indexPath.section) {
+	case 0:
+		switch (indexPath.row) {
+			case 0:
+				if (([postDetailViewController.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending)
+					&& ([postDetailViewController.apost.status isEqualToString:@"publish"])) {
+					statusLabel.text = @"Scheduled";
+				} else {
+					statusLabel.text = postDetailViewController.apost.statusTitle;
+				}
+				if ([postDetailViewController.apost.status isEqualToString:@"private"])
+					statusTableViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
+				else
+					statusTableViewCell.selectionStyle = UITableViewCellSelectionStyleBlue;
+				
+				return statusTableViewCell;
+				break;
+			case 1:
+				if (postDetailViewController.post.password) {
+					passwordTextField.text = postDetailViewController.post.password;
+					passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+					visibilityLabel.text = @"Password protected";
+				} else if ([postDetailViewController.post.status isEqualToString:@"private"]) {
+					visibilityLabel.text = @"Private";
+				} else {
+					visibilityLabel.text = @"Public";
+				}
+				
+				return visibilityTableViewCell;
+				break;
+			case 2:
+			{
+				if (postDetailViewController.apost.dateCreated) {
+					if ([postDetailViewController.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending) {
+						publishOnLabel.text = @"Scheduled for";
+					} else {
+						publishOnLabel.text = @"Published on";
+					}
+					
+					NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+					[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+					[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+					publishOnDateLabel.text = [dateFormatter stringFromDate:postDetailViewController.post.dateCreated];
+					[dateFormatter release];
+				} else {
+					publishOnLabel.text = @"Publish";
+					publishOnDateLabel.text = @"inmediately";
+				}
+				// Resize labels properly
+				CGRect frame = publishOnLabel.frame;
+				CGSize size = [publishOnLabel.text sizeWithFont:publishOnLabel.font];
+				frame.size.width = size.width;
+				publishOnLabel.frame = frame;
+				frame = publishOnDateLabel.frame;
+				frame.origin.x = publishOnLabel.frame.origin.x + publishOnLabel.frame.size.width + 8;
+				frame.size.width = publishOnTableViewCell.frame.size.width - frame.origin.x - 8;
+				publishOnDateLabel.frame = frame;
+				
+				return publishOnTableViewCell;
+			}
+			default:
+				break;
+		}
+		break;
+	case 1: // Geolocation
+		switch (indexPath.row) {
+			case 0: // Add/update location
+				if (addGeotagTableViewCell == nil) {
+					NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
+					for(id currentObject in topLevelObjects) {
+						if([currentObject isKindOfClass:[UITableViewActivityCell class]]) {
+							addGeotagTableViewCell = (UITableViewActivityCell *)[currentObject retain];
+							break;
+						}
+					}
+				}
+				if (isUpdatingLocation) {
+					addGeotagTableViewCell.textLabel.text = @"Finding your location...";
+					[addGeotagTableViewCell.spinner startAnimating];
+				} else {
+					[addGeotagTableViewCell.spinner stopAnimating];
+					if (postDetailViewController.post.geolocation) {
+						addGeotagTableViewCell.textLabel.text = @"Update Location";
+					} else {
+						addGeotagTableViewCell.textLabel.text = @"Add Location";
+					}
+				}
+				return addGeotagTableViewCell;
+				break;
+			case 1:
+				NSLog(@"Reloading map");
+				if (mapGeotagTableViewCell == nil)
+					mapGeotagTableViewCell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 188)];
+				if (mapView == nil)
+					mapView = [[MKMapView alloc] initWithFrame:CGRectMake(10, 0, 300, 130)];
+				[mapView removeAnnotation:annotation];
+				[annotation release];
+				annotation = [[PostAnnotation alloc] initWithCoordinate:postDetailViewController.post.geolocation.coordinate];
+				[mapView addAnnotation:annotation];
 
-            return statusTableViewCell;
-            break;
-        case 1:
-            if (postDetailViewController.post.password) {
-                passwordTextField.text = postDetailViewController.post.password;
-                passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-                visibilityLabel.text = @"Password protected";
-            } else if ([postDetailViewController.post.status isEqualToString:@"private"]) {
-                visibilityLabel.text = @"Private";
-            } else {
-                visibilityLabel.text = @"Public";
-            }
+				if (addressLabel == nil)
+					addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 130, 280, 30)];
+				if (coordinateLabel == nil)
+					coordinateLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 162, 280, 20)];
 
-            return visibilityTableViewCell;
-            break;
-        case 2:
-        {
-            if (postDetailViewController.apost.dateCreated) {
-                if ([postDetailViewController.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending) {
-                    publishOnLabel.text = @"Scheduled for";
-                } else {
-                    publishOnLabel.text = @"Published on";
-                }
+				// Set center of map and show a region of around 200x100 meters
+				MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(postDetailViewController.post.geolocation.coordinate, 200, 100);
+				[mapView setRegion:region animated:YES];
+				if (address) {
+					addressLabel.text = address;
+				} else {
+					addressLabel.text = @"Finding address...";
+					[self geocodeCoordinate:postDetailViewController.post.geolocation.coordinate];
+				}
+				addressLabel.font = [UIFont boldSystemFontOfSize:16];
+				addressLabel.textColor = [UIColor darkGrayColor];
+				CLLocationDegrees latitude = postDetailViewController.post.geolocation.latitude;
+				CLLocationDegrees longitude = postDetailViewController.post.geolocation.longitude;
+				int latD = trunc(fabs(latitude));
+				int latM = trunc((fabs(latitude) - latD) * 60);
+				int lonD = trunc(fabs(longitude));
+				int lonM = trunc((fabs(longitude) - lonD) * 60);
+				NSString *latDir = (latitude > 0) ? @"North" : @"South";
+				NSString *lonDir = (longitude > 0) ? @"East" : @"West";
+				if (latitude == 0.0) latDir = @"";
+				if (longitude == 0.0) lonDir = @"";
 
-                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-                [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
-                publishOnDateLabel.text = [dateFormatter stringFromDate:postDetailViewController.post.dateCreated];
-                [dateFormatter release];
-            } else {
-                publishOnLabel.text = @"Publish";
-                publishOnDateLabel.text = @"inmediately";
-            }
-            // Resize labels properly
-            CGRect frame = publishOnLabel.frame;
-            CGSize size = [publishOnLabel.text sizeWithFont:publishOnLabel.font];
-            frame.size.width = size.width;
-            publishOnLabel.frame = frame;
-            frame = publishOnDateLabel.frame;
-            frame.origin.x = publishOnLabel.frame.origin.x + publishOnLabel.frame.size.width + 8;
-            frame.size.width = publishOnTableViewCell.frame.size.width - frame.origin.x - 8;
-            publishOnDateLabel.frame = frame;
+				coordinateLabel.text = [NSString stringWithFormat:@"%i°%i' %@, %i°%i' %@",
+										latD, latM, latDir,
+										lonD, lonM, lonDir];
+//				coordinateLabel.text = [NSString stringWithFormat:@"%.6f, %.6f",
+//										postDetailViewController.post.geolocation.latitude,
+//										postDetailViewController.post.geolocation.longitude];
+				coordinateLabel.font = [UIFont italicSystemFontOfSize:13];
+				coordinateLabel.textColor = [UIColor darkGrayColor];
+				
+				[mapGeotagTableViewCell addSubview:mapView];
+				[mapGeotagTableViewCell addSubview:addressLabel];
+				[mapGeotagTableViewCell addSubview:coordinateLabel];
 
-            return publishOnTableViewCell;
-        }
-        default:
-            break;
-    }
+				return mapGeotagTableViewCell;
+				break;
+			case 2:
+				if (removeGeotagTableViewCell == nil)
+					removeGeotagTableViewCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RemoveGeotag"];
+				removeGeotagTableViewCell.textLabel.text = @"Remove Location";
+				removeGeotagTableViewCell.textLabel.textAlignment = UITextAlignmentCenter;
+				return removeGeotagTableViewCell;
+				break;
+
+		}
+	}
 	
     // Configure the cell
     return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ((indexPath.row == 1) && (postDetailViewController.apost.password))
+    if ((indexPath.section == 0) && (indexPath.row == 1) && (postDetailViewController.apost.password))
         return 88.f;
-    else
+    else if ((indexPath.section == 1) && (indexPath.row == 1))
+		return 188.0f;
+	else
         return 44.0f;
 }
 
@@ -237,38 +375,62 @@
 }
 
 - (void)tableView:(UITableView *)atableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    switch (indexPath.row) {
-        case 0:
-        {
-            if ([postDetailViewController.post.status isEqualToString:@"private"])
-                break;
+	switch (indexPath.section) {
+		case 0:
+			switch (indexPath.row) {
+				case 0:
+				{
+					if ([postDetailViewController.post.status isEqualToString:@"private"])
+						break;
 
-            pickerView.tag = TAG_PICKER_STATUS;
-            [pickerView reloadAllComponents];
-            [pickerView selectRow:[statusList indexOfObject:postDetailViewController.apost.statusTitle] inComponent:0 animated:NO];
-            [self showPicker:pickerView];
-            break;
-        }
-        case 1:
-        {
-            pickerView.tag = TAG_PICKER_VISIBILITY;
-            [pickerView reloadAllComponents];
-            [pickerView selectRow:[visibilityList indexOfObject:visibilityLabel.text] inComponent:0 animated:NO];
-            [self showPicker:pickerView];
-            break;
-        }
-        case 2:
-            datePickerView.tag = TAG_PICKER_DATE;
-            if (postDetailViewController.apost.dateCreated)
-                datePickerView.date = postDetailViewController.apost.dateCreated;
-            else
-                datePickerView.date = [NSDate date];            
-            [self showPicker:datePickerView];
-            break;
+					pickerView.tag = TAG_PICKER_STATUS;
+					[pickerView reloadAllComponents];
+					[pickerView selectRow:[statusList indexOfObject:postDetailViewController.apost.statusTitle] inComponent:0 animated:NO];
+					[self showPicker:pickerView];
+					break;
+				}
+				case 1:
+				{
+					pickerView.tag = TAG_PICKER_VISIBILITY;
+					[pickerView reloadAllComponents];
+					[pickerView selectRow:[visibilityList indexOfObject:visibilityLabel.text] inComponent:0 animated:NO];
+					[self showPicker:pickerView];
+					break;
+				}
+				case 2:
+					datePickerView.tag = TAG_PICKER_DATE;
+					if (postDetailViewController.apost.dateCreated)
+						datePickerView.date = postDetailViewController.apost.dateCreated;
+					else
+						datePickerView.date = [NSDate date];            
+					[self showPicker:datePickerView];
+					break;
 
-        default:
-            break;
-    }
+				default:
+					break;
+			}
+			break;
+		case 1:
+			switch (indexPath.row) {
+				case 0:
+					if (!isUpdatingLocation) {
+						// Add or replace geotag
+						isUpdatingLocation = YES;
+						[locationManager startUpdatingLocation];
+					}
+					break;
+				case 2:
+					if (isUpdatingLocation) {
+						// Cancel update
+						isUpdatingLocation = NO;
+						[locationManager stopUpdatingLocation];
+					}
+					postDetailViewController.post.geolocation = nil;
+					postDetailViewController.hasLocation.enabled = NO;
+					[tableView reloadData];
+					break;
+			}
+	}
     [atableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
 }
 
@@ -424,6 +586,84 @@
 
 - (void)keyboardWillHide:(NSNotification *)keyboardInfo {
     isShowingKeyboard = NO;
+}
+
+#pragma mark -
+#pragma mark CLLocationManagerDelegate
+
+// Delegate method from the CLLocationManagerDelegate protocol.
+- (void)locationManager:(CLLocationManager *)manager
+    didUpdateToLocation:(CLLocation *)newLocation
+		   fromLocation:(CLLocation *)oldLocation {
+	// If it's a relatively recent event, turn off updates to save power
+    NSDate* eventDate = newLocation.timestamp;
+    NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
+    if (abs(howRecent) < 15.0)
+    {
+		if (!isUpdatingLocation) {
+			return;
+		}
+		isUpdatingLocation = NO;
+		CLLocationCoordinate2D coordinate = newLocation.coordinate;
+#if FALSE // Switch this on/off for testing location updates
+		// Factor values (YMMV)
+		// 0.0001 ~> whithin your zip code (for testing small map changes)
+		// 0.01 ~> nearby cities (good for testing address label changes)
+		double factor = 0.001f; 
+		coordinate.latitude += factor * (rand() % 100);
+		coordinate.longitude += factor * (rand() % 100);
+#endif
+		Coordinate *c = [[Coordinate alloc] initWithCoordinate:coordinate];
+		postDetailViewController.post.geolocation = c;
+		postDetailViewController.hasLocation.enabled = YES;
+        WPLog(@"Added geotag (%+.6f, %+.6f)",
+			  c.latitude,
+			  c.longitude);
+		[locationManager stopUpdatingLocation];
+		[tableView reloadData];
+		
+		[self geocodeCoordinate:c.coordinate];
+
+		[c release];
+    }
+    // else skip the event and process the next one.
+}
+
+#pragma mark -
+#pragma mark MKReverseGeocoderDelegate
+
+- (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFindPlacemark:(MKPlacemark *)placemark {
+	if (address)
+		[address release];
+	if (placemark.subLocality) {
+		address = [NSString stringWithFormat:@"%@, %@, %@", placemark.subLocality, placemark.locality, placemark.country];
+	} else {
+		address = [NSString stringWithFormat:@"%@, %@, %@", placemark.locality, placemark.administrativeArea, placemark.country];
+	}
+	addressLabel.text = [address retain];
+}
+
+- (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFailWithError:(NSError *)error {
+	NSLog(@"Reverse geocoder failed for coordinate (%.6f, %.6f): %@",
+		  geocoder.coordinate.latitude,
+		  geocoder.coordinate.longitude,
+		  [error localizedDescription]);
+	if (address)
+		[address release];
+	
+	address = [NSString stringWithString:@"Location unknown"];
+	addressLabel.text = [address retain];
+}
+
+- (void)geocodeCoordinate:(CLLocationCoordinate2D)c {
+	if (reverseGeocoder) {
+		if (reverseGeocoder.querying)
+			[reverseGeocoder cancel];
+		[reverseGeocoder release];
+	}
+	reverseGeocoder = [[MKReverseGeocoder alloc] initWithCoordinate:c];
+	reverseGeocoder.delegate = self;
+	[reverseGeocoder start];	
 }
 
 @end

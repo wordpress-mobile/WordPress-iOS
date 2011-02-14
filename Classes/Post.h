@@ -8,6 +8,7 @@
 #import <CoreData/CoreData.h>
 #import "WordPressAppDelegate.h"
 #import "Category.h"
+#import "Coordinate.h"
 #import "AbstractPost.h"
 
 @interface Post :  AbstractPost  
@@ -17,8 +18,13 @@
 #pragma mark -
 #pragma mark Properties
 #pragma mark     Attributes
-@property (nonatomic, retain) NSString * geolocation;
+@property (nonatomic, retain) Coordinate * geolocation;
 @property (nonatomic, retain) NSString * tags;
+// We should need to store this, but if we don't send IDs on edits
+// custom fields get duplicated and stop working
+@property (nonatomic, retain) NSString *latitudeID;
+@property (nonatomic, retain) NSString *longitudeID;
+@property (nonatomic, retain) NSString *publicID;
 
 #pragma mark     Relationships
 @property (nonatomic, retain) NSMutableSet * categories;

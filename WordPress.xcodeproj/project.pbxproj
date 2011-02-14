@@ -335,6 +335,7 @@
 		E1B4A9E412FC8B2500EB3F67 /* blueArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B4A9E212FC8B2500EB3F67 /* blueArrow.png */; };
 		E1B4A9E512FC8B2500EB3F67 /* blueArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B4A9E312FC8B2500EB3F67 /* blueArrow@2x.png */; };
 		E1C43CA712E4D09E00330262 /* PageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C43CA612E4D09E00330262 /* PageViewController.m */; };
+		E1D458691309589C00BF0235 /* Coordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = E14932B5130427B300154804 /* Coordinate.m */; };
 		E1D552CE12E77BD80032C680 /* tabPointer.png in Resources */ = {isa = PBXBuildFile; fileRef = E1D552CC12E77BD80032C680 /* tabPointer.png */; };
 		E1D552CF12E77BD80032C680 /* tabPointer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1D552CD12E77BD80032C680 /* tabPointer@2x.png */; };
 		E1D5533D12E7877E0032C680 /* tags.png in Resources */ = {isa = PBXBuildFile; fileRef = E1D5533B12E7877E0032C680 /* tags.png */; };
@@ -803,6 +804,8 @@
 		E125451712BF68F900D87A0A /* Page.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Page.m; sourceTree = "<group>"; };
 		E131D08712C8C9150056BAB9 /* AbstractPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractPost.h; sourceTree = "<group>"; };
 		E131D08812C8C9160056BAB9 /* AbstractPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractPost.m; sourceTree = "<group>"; };
+		E14932B4130427B300154804 /* Coordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Coordinate.h; sourceTree = "<group>"; };
+		E14932B5130427B300154804 /* Coordinate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Coordinate.m; sourceTree = "<group>"; };
 		E1497BBA12CCA8270022BCD9 /* PostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostViewController.h; sourceTree = "<group>"; };
 		E1497BBB12CCA8270022BCD9 /* PostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostViewController.m; sourceTree = "<group>"; };
 		E1497BBF12CCA92F0022BCD9 /* PostViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "PostViewController-iPad.xib"; sourceTree = "<group>"; };
@@ -1105,6 +1108,8 @@
 		2F706A870DFB229B00B43086 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E14932B4130427B300154804 /* Coordinate.h */,
+				E14932B5130427B300154804 /* Coordinate.m */,
 				E125445412BF5B3900D87A0A /* Category.h */,
 				E125445512BF5B3900D87A0A /* Category.m */,
 				E131D08712C8C9150056BAB9 /* AbstractPost.h */,
@@ -2233,6 +2238,7 @@
 				E1B4A9E112FC8B1000EB3F67 /* EGORefreshTableHeaderView.m in Sources */,
 				3768BE87130404FF00E7C9A9 /* BetaUIWindow.m in Sources */,
 				3768BEF113041E7900E7C9A9 /* BetaFeedbackViewController.m in Sources */,
+				E1D458691309589C00BF0235 /* Coordinate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

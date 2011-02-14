@@ -18,6 +18,7 @@
 @implementation Post 
 
 @dynamic geolocation, tags;
+@dynamic latitudeID, longitudeID, publicID;
 @dynamic categories, comments;
 
 + (Post *)newPostForBlog:(Blog *)blog {
@@ -67,6 +68,40 @@
     if ([postInfo objectForKey:@"categories"]) {
         [post setCategoriesFromNames:[postInfo objectForKey:@"categories"]];
     }
+	if ([postInfo objectForKey:@"custom_fields"]) {
+		NSArray *customFields = [postInfo objectForKey:@"custom_fields"];
+		NSString *geo_longitude = nil;
+		NSString *geo_latitude = nil;
+		NSString *geo_longitude_id = nil;
+		NSString *geo_latitude_id = nil;
+		NSString *geo_public_id = nil;
+		for (NSDictionary *customField in customFields) {
+			NSString *ID = [customField objectForKey:@"id"];
+			NSString *key = [customField objectForKey:@"key"];
+			NSString *value = [customField objectForKey:@"value"];
+			
+			if (key) {
+				if ([key isEqualToString:@"geo_longitude"]) {
+					geo_longitude = value;
+					geo_longitude_id = ID;
+				} else if ([key isEqualToString:@"geo_latitude"]) {
+					geo_latitude = value;
+					geo_latitude_id = ID;
+				} else if ([key isEqualToString:@"geo_public"]) {
+					geo_public_id = ID;
+				}
+			}
+		}
+		
+		if (geo_latitude && geo_longitude) {
+			Coordinate *c = [[Coordinate alloc] initWithCoordinate:CLLocationCoordinate2DMake([geo_latitude doubleValue], [geo_longitude doubleValue])];
+			post.geolocation = c;
+			post.latitudeID = geo_latitude_id;
+			post.longitudeID = geo_longitude_id;
+			post.publicID = geo_public_id;
+			[c release];
+		}
+	}
     [post findComments];
     
     return post;

@@ -312,6 +312,44 @@
             }
             [postParams setObject:categoryNames forKey:@"categories"];
         }
+		Coordinate *c = [post valueForKey:@"geolocation"];
+		// Warning
+		// XMLRPCEncoder sends floats with an integer type (i4), so WordPress ignores the decimal part
+		// We send coordinates as strings to avoid that
+		NSMutableArray *customFields = [NSMutableArray array];
+		NSMutableDictionary *latitudeField = [NSMutableDictionary dictionaryWithCapacity:3];
+		NSMutableDictionary *longitudeField = [NSMutableDictionary dictionaryWithCapacity:3];
+		NSMutableDictionary *publicField = [NSMutableDictionary dictionaryWithCapacity:3];
+		if (c != nil) {
+			[latitudeField setValue:@"geo_latitude" forKey:@"key"];
+			[latitudeField setValue:[NSString stringWithFormat:@"%f", c.latitude] forKey:@"value"];
+			[longitudeField setValue:@"geo_longitude" forKey:@"key"];
+			[longitudeField setValue:[NSString stringWithFormat:@"%f", c.longitude] forKey:@"value"];
+			[publicField setValue:@"geo_public" forKey:@"key"];
+			[publicField setValue:@"1" forKey:@"value"];
+		}
+		if ([post valueForKey:@"latitudeID"]) {
+			[latitudeField setValue:[post valueForKey:@"latitudeID"] forKey:@"id"];
+		}
+		if ([post valueForKey:@"longitudeID"]) {
+			[longitudeField setValue:[post valueForKey:@"longitudeID"] forKey:@"id"];
+		}
+		if ([post valueForKey:@"publicID"]) {
+			[publicField setValue:[post valueForKey:@"publicID"] forKey:@"id"];
+		}
+		if ([latitudeField count] > 0) {
+			[customFields addObject:latitudeField];
+		}
+		if ([longitudeField count] > 0) {
+			[customFields addObject:longitudeField];
+		}
+		if ([publicField count] > 0) {
+			[customFields addObject:publicField];
+		}
+
+		if ([customFields count] > 0) {
+			[postParams setObject:customFields forKey:@"custom_fields"];
+		}
     }
     if (post.status == nil)
         post.status = @"publish";
