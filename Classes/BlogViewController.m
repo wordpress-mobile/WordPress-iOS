@@ -162,32 +162,32 @@
 	if (stateRestored) return;
 	
 	NSString *vcName = [[NSUserDefaults standardUserDefaults] objectForKey:@"WPSelectedContentType"];
-	UIViewController *selectedViewController = postsViewController;
+	self.selectedViewController = postsViewController;
 	if (vcName) {
 		int section = [[NSUserDefaults standardUserDefaults] integerForKey:@"WPSelectedIndexPathSection"];
 		int row = [[NSUserDefaults standardUserDefaults] integerForKey:@"WPSelectedIndexPathRow"];
 		NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:row inSection:section];
 		if ([vcName isEqual:@"Comments"]) {
-			selectedViewController = commentsViewController;
+			self.selectedViewController = commentsViewController;
 			commentsViewController.selectedIndexPath = selectedIndexPath;
 		}
 		else if	([vcName isEqual:@"Posts"]) {
-			selectedViewController = postsViewController;
+			self.selectedViewController = postsViewController;
 			postsViewController.selectedIndexPath = selectedIndexPath;
 		}
 		else if	([vcName isEqual:@"Pages"]) {
-			selectedViewController = pagesViewController;
+			self.selectedViewController = pagesViewController;
 			pagesViewController.selectedIndexPath = selectedIndexPath;
 		}
 		else if	([vcName isEqual:@"Stats"]) {
-			selectedViewController = statsTableViewController;
+			self.selectedViewController = statsTableViewController;
 		}
 	}
 		
 	// show the view controller
-	if (selectedViewController) {
-		self.tabBarController.selectedViewController = selectedViewController;
-		[self tabBarController:self.tabBarController didSelectViewController:selectedViewController];
+	if (self.selectedViewController) {
+		self.tabBarController.selectedViewController = self.selectedViewController;
+		[self tabBarController:self.tabBarController didSelectViewController:self.selectedViewController];
 	}
 	
 	stateRestored = YES;
