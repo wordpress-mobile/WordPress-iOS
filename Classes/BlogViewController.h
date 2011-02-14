@@ -25,6 +25,7 @@
 
 @property (nonatomic, retain) UITabBarController *tabBarController;
 @property (nonatomic, retain) Blog *blog;
+@property (nonatomic, retain) UIViewController *selectedViewController;
 
 - (void)reselect;
 - (void)saveState;

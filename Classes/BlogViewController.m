@@ -15,7 +15,7 @@
 
 @implementation BlogViewController
 
-@synthesize tabBarController, blog;
+@synthesize tabBarController, blog, selectedViewController;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -34,10 +34,11 @@
 		self.title = @"Blog";
 	
 	if (DeviceIsPad() == NO) {
-		tabBarController.selectedIndex = 0;
-
 		self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
 		self.navigationItem.titleView = commentsViewController.segmentedControl;
+	}
+	if (self.selectedViewController) {
+		tabBarController.selectedViewController = self.selectedViewController;
 	}
 	    
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"DraftsUpdated" object:nil];
@@ -54,6 +55,12 @@
 	else {
 		[tabBarController.selectedViewController viewWillAppear:animated];
 	}	
+}
+
+- (void)viewDidUnload {
+	self.selectedViewController = tabBarController.selectedViewController;
+	WPLog(@"BlogViewController viewDidUnload");
+	[super viewDidUnload];
 }
 
 - (void) viewWillDisappear:(BOOL)animated{
