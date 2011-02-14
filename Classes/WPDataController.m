@@ -369,7 +369,7 @@
 	if (post.mt_excerpt != nil)
         [postParams setObject:post.mt_excerpt forKey:@"mt_excerpt"];
 	
-	if (post.mt_text_more != nil)
+	if (post.mt_text_more != nil && [post.mt_text_more length] > 0)
         [postParams setObject:post.mt_text_more forKey:@"mt_text_more"];
 	
 	if (post.wp_slug != nil)
@@ -631,7 +631,7 @@
         self.error = [NSError errorWithDomain:@"org.wordpress.iphone" code:statusCode userInfo:usrInfo];
         return self.error;
     }
-
+	NSLog(@"executeXMLRPCRequest response: %@", [request responseString]);
     NSRange prefixRange = [[request responseString] rangeOfString:@"<?xml"
                                             options:(NSAnchoredSearch | NSCaseInsensitiveSearch)];
     if (prefixRange.location == NSNotFound) {

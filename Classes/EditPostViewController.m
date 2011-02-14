@@ -350,7 +350,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
     else {
         textViewPlaceHolderField.hidden = YES;
-        textView.text = self.apost.content;
+        if ((self.apost.mt_text_more != nil) && ([self.apost.mt_text_more length] > 0)){
+			textView.text = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", self.apost.content, self.apost.mt_text_more];
+		} else	
+			textView.text = self.apost.content;
+		
     }
 
 	// workaround for odd text view behavior on iPad
@@ -510,7 +514,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	if([self isAFreshlyCreatedDraft]) 
 		[self.apost.original remove];
 	
-	
 	self.apost = nil; // Just in case
     [self dismissEditView];
 }
@@ -518,6 +521,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (IBAction)saveAction:(id)sender {
     self.apost.postTitle = titleTextField.text;
     self.apost.content = textView.text;
+	if ([self.apost.content rangeOfString:@"<!--more-->"].location != NSNotFound)
+		self.apost.mt_text_more = @"";
     
     [self.view endEditing:YES];
     [self.apost.original applyRevision];
