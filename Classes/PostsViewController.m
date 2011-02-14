@@ -76,10 +76,16 @@
         }
     }
 	
+	//in same cases the lastSyncDate could be nil. Start a sync, so the user never get an ampty screen.
 	if([self lastSyncDate] == nil && ![self isSyncing]) {
+		CGPoint offset = self.tableView.contentOffset;
+		offset.y = - 65.0f;
+		self.tableView.contentOffset = offset;
+		[_refreshHeaderView egoRefreshScrollViewDidEndDragging:self.tableView];
 		[self refreshHandler];
 	}
 }
+
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
