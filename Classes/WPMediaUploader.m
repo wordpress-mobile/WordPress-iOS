@@ -222,7 +222,6 @@
 				[[NSUserDefaults standardUserDefaults] synchronize];
 				[self sendAtomPub];
 			}
-			[buttonTitle release];
 			break;
 		}
 		case 2:
