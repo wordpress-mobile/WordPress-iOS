@@ -64,6 +64,10 @@
     post.password       = [postInfo objectForKey:@"wp_password"];
     post.tags           = [postInfo objectForKey:@"mt_keywords"];
 	post.permaLink      = [postInfo objectForKey:@"permaLink"];
+	post.mt_excerpt		= [postInfo objectForKey:@"mt_excerpt"];
+	post.mt_text_more	= [postInfo objectForKey:@"mt_text_more"];
+	post.wp_slug		= [postInfo objectForKey:@"wp_slug"];
+	
     post.remoteStatus   = AbstractPostRemoteStatusSync;
     if ([postInfo objectForKey:@"categories"]) {
         [post setCategoriesFromNames:[postInfo objectForKey:@"categories"]];

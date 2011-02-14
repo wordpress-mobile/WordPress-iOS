@@ -366,6 +366,15 @@
 	if (post.permaLink != nil)
         [postParams setObject:post.permaLink forKey:@"permaLink"];
 	
+	if (post.mt_excerpt != nil)
+        [postParams setObject:post.mt_excerpt forKey:@"mt_excerpt"];
+	
+	if (post.mt_text_more != nil)
+        [postParams setObject:post.mt_text_more forKey:@"mt_text_more"];
+	
+	if (post.wp_slug != nil)
+        [postParams setObject:post.wp_slug forKey:@"wp_slug"];
+	
     return postParams;
 }
 

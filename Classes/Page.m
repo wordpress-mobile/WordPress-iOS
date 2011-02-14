@@ -56,6 +56,9 @@
     page.password       = [postInfo objectForKey:@"wp_password"];
     page.remoteStatus   = AbstractPostRemoteStatusSync;
 	page.permaLink      = [postInfo objectForKey:@"permaLink"];
+	page.mt_excerpt		= [postInfo objectForKey:@"mt_excerpt"];
+	page.mt_text_more	= [postInfo objectForKey:@"mt_text_more"];
+	page.wp_slug		= [postInfo objectForKey:@"wp_slug"];
     
     return page;
 }

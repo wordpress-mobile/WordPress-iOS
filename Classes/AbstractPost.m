@@ -15,7 +15,8 @@
 @end
 
 @implementation AbstractPost
-@dynamic author, content, date_created_gmt, postID, postTitle, status, password, remoteStatusNumber, permaLink;
+@dynamic author, content, date_created_gmt, postID, postTitle, status, password, remoteStatusNumber, permaLink, 
+		mt_excerpt, mt_text_more, wp_slug;
 @dynamic blog, media;
 
 + (NSString *)titleForStatus:(NSString *)status {

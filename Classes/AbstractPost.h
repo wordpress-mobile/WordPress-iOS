@@ -31,6 +31,9 @@ typedef enum {
 @property (nonatomic, assign) NSString * statusTitle;
 @property (nonatomic, retain) NSString * password;
 @property (nonatomic, retain) NSString * permaLink;
+@property (nonatomic, retain) NSString * mt_excerpt;
+@property (nonatomic, retain) NSString * mt_text_more;
+@property (nonatomic, retain) NSString * wp_slug;
 @property (nonatomic, retain) NSNumber * remoteStatusNumber;
 @property (nonatomic) AbstractPostRemoteStatus remoteStatus;
 
