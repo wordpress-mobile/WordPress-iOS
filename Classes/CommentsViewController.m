@@ -56,6 +56,8 @@
 
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	self.resultsController.delegate = nil;
+	self.resultsController = nil;
 	[segmentedControl release];
     [commentsArray release];
     [commentsDict release];
