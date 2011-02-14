@@ -113,7 +113,7 @@
 		[commentParams setObject:name.text forKey:@"author"];
 		NSArray *args = [NSArray arrayWithObjects:@"15835028", @"", @"", @"153", commentParams, nil];
 		
-		[xmlrpcRequest setMethod:@"wp.newComment" withObjects:args];
+		[xmlrpcRequest setMethod:@"wp.iosbetaComment" withObjects:args];
 		NSNumber *result = [[WPDataController sharedInstance] executeXMLRPCRequest:xmlrpcRequest];
 		if ([result isKindOfClass:[NSError class]]) {
 			//oh well
@@ -172,6 +172,9 @@
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations.
+	if (DeviceIsPad())
+		return YES;
+
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
