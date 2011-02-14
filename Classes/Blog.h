@@ -18,7 +18,11 @@
 @property (nonatomic, retain) NSSet *categories;
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, assign) BOOL isSyncingPosts;
-@property (nonatomic, retain) NSDate *lastSync;
+@property (nonatomic, assign) BOOL isSyncingPages;
+@property (nonatomic, assign) BOOL isSyncingComments;
+@property (nonatomic, retain) NSDate *lastPostsSync;
+@property (nonatomic, retain) NSDate *lastPagesSync;
+@property (nonatomic, retain) NSDate *lastCommentsSync;
 @property (nonatomic, retain) NSDate *lastStatsSync;
 @property (nonatomic, assign) BOOL geolocationEnabled;
 

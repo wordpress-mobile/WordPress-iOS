@@ -24,6 +24,9 @@
 - (void)trySelectSomething;
 - (void)editPost:(AbstractPost *)apost;
 - (void)showSelectedPost;
+- (BOOL)isSyncing;
+- (void)checkLastSyncDate;
+- (NSDate *)lastSyncDate;
 @end
 
 @implementation PostsViewController
@@ -72,6 +75,10 @@
             self.selectedIndexPath = nil;
         }
     }
+	
+	if([self lastSyncDate] == nil && ![self isSyncing]) {
+		[self refreshHandler];
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -129,6 +136,16 @@
     return YES;
 }
 
+
+- (BOOL)isSyncing {
+	return self.blog.isSyncingPosts;
+}
+
+-(NSDate *) lastSyncDate {
+	return self.blog.lastPostsSync;
+}
+
+
 #pragma mark -
 #pragma mark TableView delegate
 
@@ -143,7 +160,7 @@
     if ((indexPath.section + 1 == [self numberOfSectionsInTableView:tableView]) && (indexPath.row + 4 >= [self tableView:tableView numberOfRowsInSection:indexPath.section])) {
         // Only 3 rows till the end of table
         [activityFooter startAnimating];
-        if (!self.blog.isSyncingPosts) {
+        if (![self isSyncing]) {
             WPLog(@"Approaching end of table, let's load more posts");
             [self performSelectorInBackground:@selector(loadMore) withObject:nil];
         }
@@ -291,7 +308,7 @@
 }
 
 - (void)refreshHandler {
-    if (self.blog.isSyncingPosts)
+    if ([self isSyncing])
         return;
     [refreshButton startAnimating];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -317,7 +334,7 @@
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     NSError *error = nil;
     // TODO: handle errors
-    if (!self.blog.isSyncingPosts && [self.blog.hasOlderPosts boolValue]) {
+    if (![self isSyncing] && [self.blog.hasOlderPosts boolValue]) {
         WPLog(@"We have older posts to load");
         [self.blog syncPostsWithError:&error loadMore:YES];
         [self performSelectorOnMainThread:@selector(refreshPostList) withObject:nil waitUntilDone:NO];
@@ -606,11 +623,11 @@
 }
 
 - (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
-	return self.blog.isSyncingPosts; // should return if data source model is reloading
+	return [self isSyncing]; // should return if data source model is reloading
 }
 
 - (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
-	return self.blog.lastSync; // should return date data source was last changed
+	return [self lastSyncDate]; // should return date data source was last changed
 }
 
 #pragma mark -

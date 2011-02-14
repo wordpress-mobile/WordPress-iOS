@@ -13,8 +13,8 @@
 @dynamic blogID, blogName, url, username, password, xmlrpc, apiKey;
 @dynamic isAdmin, hasOlderPosts;
 @dynamic posts, categories, comments;
-@dynamic lastSync, lastStatsSync;
-@synthesize isSyncingPosts;
+@dynamic lastPostsSync, lastStatsSync, lastPagesSync, lastCommentsSync;
+@synthesize isSyncingPosts, isSyncingPages, isSyncingComments;
 @dynamic geolocationEnabled;
 
 - (BOOL)geolocationEnabled 
@@ -214,7 +214,7 @@
 
 - (BOOL)syncPostsWithError:(NSError **)error loadMore:(BOOL)more {
     if (self.isSyncingPosts) {
-        WPLog(@"Already syncing. Skip");
+        WPLog(@"Already syncing posts. Skip");
         return NO;
     }
     self.isSyncingPosts = YES;
@@ -250,7 +250,7 @@
         self.hasOlderPosts = [NSNumber numberWithBool:NO];
     }
     [self performSelectorOnMainThread:@selector(syncPostsFromResults:) withObject:posts waitUntilDone:YES];
-    self.lastSync = [NSDate date];
+    self.lastPostsSync = [NSDate date];
     self.isSyncingPosts = NO;
 
     return YES;
@@ -286,7 +286,13 @@
     return YES;
 }
 
-- (BOOL)syncPagesWithError:(NSError **)error {    
+- (BOOL)syncPagesWithError:(NSError **)error {  
+	if (self.isSyncingPages) {
+        WPLog(@"Already syncing pages. Skip");
+        return NO;
+    }
+    self.isSyncingPages = YES;
+	
     NSMutableArray *pages = [[WPDataController sharedInstance] wpGetPages:self number:[NSNumber numberWithInt:10]];
     if ([pages isKindOfClass:[NSError class]]) {
         if (error != nil) {
@@ -298,6 +304,9 @@
     }
     [self performSelectorOnMainThread:@selector(syncPagesFromResults:) withObject:pages waitUntilDone:YES];
     
+	
+	self.lastPagesSync = [NSDate date];
+    self.isSyncingPages = NO;
     return YES;
 }
 
@@ -336,6 +345,12 @@
 }
 
 - (BOOL)syncCommentsWithError:(NSError **)error {
+	if (self.isSyncingComments) {
+        WPLog(@"Already syncing comments. Skip");
+        return NO;
+    }
+    self.isSyncingComments = YES;
+	
     NSMutableArray *comments = [[WPDataController sharedInstance] wpGetCommentsForBlog:self];
     if ([comments isKindOfClass:[NSError class]]) {
         if (error != nil) {
@@ -347,6 +362,8 @@
     }
     [self performSelectorOnMainThread:@selector(syncCommentsFromResults:) withObject:comments waitUntilDone:YES];
     
+	self.lastCommentsSync = [NSDate date];
+    self.isSyncingComments = NO;
     return YES;
 }
 

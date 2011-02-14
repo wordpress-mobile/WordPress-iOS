@@ -71,6 +71,15 @@
     [post release];
 }
 
+
+- (BOOL)isSyncing {
+	return self.blog.isSyncingPages;
+}
+
+-(NSDate *) lastSyncDate {
+	return self.blog.lastPagesSync;
+}
+
 #pragma mark -
 #pragma mark Fetched results controller
 
