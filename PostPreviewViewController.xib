@@ -45,7 +45,7 @@
 					<object class="IBUIWebView" id="716546164">
 						<reference key="NSNextResponder" ref="881753206"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrameSize">{320, 357}</string>
+						<string key="NSFrameSize">{320, 392}</string>
 						<reference key="NSSuperview" ref="881753206"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -59,7 +59,7 @@
 						<bool key="IBUIDetectsPhoneNumbers">YES</bool>
 					</object>
 				</object>
-				<string key="NSFrameSize">{320, 387}</string>
+				<string key="NSFrameSize">{320, 392}</string>
 				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -71,7 +71,7 @@
 				<object class="IBUISimulatedNavigationBarMetrics" key="IBUISimulatedTopBarMetrics">
 					<bool key="IBUIPrompted">NO</bool>
 				</object>
-				<object class="IBUISimulatedTabBarMetrics" key="IBUISimulatedBottomBarMetrics"/>
+				<object class="IBUISimulatedToolbarMetrics" key="IBUISimulatedBottomBarMetrics"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 		</object>
