@@ -11,18 +11,7 @@
 
 @implementation HelpViewController
 
-@synthesize faqButton, forumButton, emailButton, cancel;
-
-// The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-/*
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization.
-    }
-    return self;
-}
-*/
+@synthesize faqButton, forumButton, emailButton, cancel, navBar;
 
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
@@ -31,6 +20,11 @@
 	
 	if (![MFMailComposeViewController canSendMail])
 		[emailButton setHidden:YES]; 
+	
+	if (DeviceIsPad()) {
+		[navBar setHidden:YES];
+		self.navigationItem.title = @"Help";
+	}
 }
 
 /*
@@ -47,12 +41,12 @@
 
 -(void) visitFAQ: (id)sender {
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://ios.wordpress.org/faq"]];
-	[self dismissModalViewControllerAnimated:YES];
+	//[self dismissModalViewControllerAnimated:YES];
 }
 
 -(void) visitForum: (id)sender {
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://ios.forums.wordpress.org"]];
-	[self dismissModalViewControllerAnimated:YES];
+	//[self dismissModalViewControllerAnimated:YES];
 }
 
 -(void) sendEmail: (id)sender {

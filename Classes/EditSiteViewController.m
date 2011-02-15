@@ -251,9 +251,10 @@
 			WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 			
 			if (DeviceIsPad()) {
-				helpViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-				helpViewController.modalPresentationStyle = UIModalPresentationFormSheet;
-				[appDelegate.splitViewController presentModalViewController:helpViewController animated:YES];
+				//helpViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+				//helpViewController.modalPresentationStyle = UIModalPresentationFormSheet;
+				//[appDelegate.splitViewController presentModalViewController:helpViewController animated:YES];
+				[self.navigationController pushViewController:helpViewController animated:YES];
 			}
 			else
 				[appDelegate.navigationController presentModalViewController:helpViewController animated:YES];
@@ -369,8 +370,7 @@
                                                                 message:[error localizedDescription]
                                                                delegate:self
                                                       cancelButtonTitle:@"Need Help?"
-                                                      otherButtonTitles:nil];
-			[alertView addButtonWithTitle:@"OK"];
+                                                      otherButtonTitles:@"OK", nil];
             [alertView show];
             [alertView release];            
         }
