@@ -34,6 +34,8 @@
     self.tableView.tableHeaderView = logoView;
     [logoView release];
     
+	if(DeviceIsPad())
+		self.tableView.backgroundView = nil;
 	self.tableView.backgroundColor = [UIColor clearColor];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView:) 

@@ -61,10 +61,12 @@
 	[headerView addSubview:logo];
 	[logo release];
 	self.tableView.tableHeaderView = headerView;
-	self.tableView.backgroundColor = [UIColor clearColor];
 	
 	if(DeviceIsPad())
 		self.tableView.backgroundView = nil;
+	
+	self.tableView.backgroundColor = [UIColor clearColor];
+	
 }
 
 - (void)viewWillAppear:(BOOL)animated {

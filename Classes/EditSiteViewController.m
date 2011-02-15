@@ -29,6 +29,11 @@
         else {
             self.navigationItem.title = @"Edit Site";
         }
+		self.tableView.backgroundColor = [UIColor clearColor];
+		if (DeviceIsPad()){
+			self.tableView.backgroundView = nil;
+			self.tableView.backgroundColor = [UIColor clearColor];
+		}
 
         NSError *error = nil;
         self.url = blog.url;
@@ -38,7 +43,7 @@
     }
     
     saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save:)];
-    self.tableView.backgroundColor = [UIColor clearColor];
+    
     self.navigationItem.rightBarButtonItem = saveButton;	
 }
 

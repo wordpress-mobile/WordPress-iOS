@@ -163,7 +163,11 @@
         }
 
 		if(appDelegate.isWPcomAuthenticated) {
-			AddUsersBlogsViewController *addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
+			AddUsersBlogsViewController *addUsersBlogsView;
+			if (DeviceIsPad() == YES)
+				addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController-iPad" bundle:nil];
+			else
+				addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
 			addUsersBlogsView.isWPcom = YES;
             [addUsersBlogsView setUsername:username];
             [addUsersBlogsView setPassword:password];

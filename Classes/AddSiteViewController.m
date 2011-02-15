@@ -18,6 +18,9 @@
     logoView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     tableView.tableHeaderView = logoView;
     [logoView release];
+	if (DeviceIsPad())
+		self.tableView.backgroundView = nil;
+	self.tableView.backgroundColor = [UIColor clearColor];
     
     self.navigationItem.title = @"Add Blog";
 }
