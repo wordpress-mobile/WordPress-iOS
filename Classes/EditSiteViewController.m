@@ -244,6 +244,31 @@
 #pragma mark -
 #pragma mark UIAlertViewDelegate
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex { 
+	switch(buttonIndex) {
+		case 0: {
+			HelpViewController *helpViewController = [[HelpViewController alloc] init];
+			WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+			
+			if (DeviceIsPad()) {
+				helpViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+				helpViewController.modalPresentationStyle = UIModalPresentationFormSheet;
+				[appDelegate.splitViewController presentModalViewController:helpViewController animated:YES];
+			}
+			else
+				[appDelegate.navigationController presentModalViewController:helpViewController animated:YES];
+			
+			[helpViewController release];
+			break;
+		}
+		case 1:
+			//ok
+			break;
+		default:
+			break;
+	}
+}
+
 #pragma mark -
 #pragma mark Custom methods
 
@@ -343,8 +368,9 @@
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Can't log in"
                                                                 message:[error localizedDescription]
                                                                delegate:self
-                                                      cancelButtonTitle:@"OK"
+                                                      cancelButtonTitle:@"Need Help?"
                                                       otherButtonTitles:nil];
+			[alertView addButtonWithTitle:@"OK"];
             [alertView show];
             [alertView release];            
         }

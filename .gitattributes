@@ -132,6 +132,9 @@ Classes/FlippingViewController.h -text
 Classes/FlippingViewController.m -text
 Classes/GravatarImageView.h -text
 Classes/GravatarImageView.m -text
+Classes/HelpViewController.h -text
+Classes/HelpViewController.m -text
+Classes/HelpViewController.xib -text
 Classes/ImageCache.h -text
 Classes/ImageCache.m -text
 Classes/LocationController.h -text

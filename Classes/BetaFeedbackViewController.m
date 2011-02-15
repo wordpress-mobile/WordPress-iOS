@@ -113,7 +113,7 @@
 		[commentParams setObject:name.text forKey:@"author"];
 		NSArray *args = [NSArray arrayWithObjects:@"15835028", @"", @"", @"153", commentParams, nil];
 		
-		[xmlrpcRequest setMethod:@"wp.iosbetaComment" withObjects:args];
+		[xmlrpcRequest setMethod:@"wp.newComment" withObjects:args];
 		NSNumber *result = [[WPDataController sharedInstance] executeXMLRPCRequest:xmlrpcRequest];
 		if ([result isKindOfClass:[NSError class]]) {
 			//oh well

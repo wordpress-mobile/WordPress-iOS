@@ -390,7 +390,7 @@
         //check for reachability
         if ([[WPReachability sharedReachability] internetConnectionStatus] == NotReachable) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Communication Error."
-                                                            message:@"no internet connection."
+                                                            message:@"No internet connection."
                                                            delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             alert.tag = TAG_OFFSET;
             [alert show];

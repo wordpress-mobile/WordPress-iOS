@@ -12,6 +12,7 @@
 #import "AddUsersBlogsViewController.h"
 #import "UITableViewSwitchCell.h"
 #import "Blog.h";
+#import "HelpViewController.h"
 
 @interface EditSiteViewController : UIViewController <UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate> {
 	IBOutlet UITableView *tableView;
