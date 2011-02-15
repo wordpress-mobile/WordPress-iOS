@@ -10,16 +10,16 @@
 #import "CommentsTableViewDelegate.h"
 #import "RefreshButtonView.h"
 #import "Blog.h"
+#import "EGORefreshTableHeaderView.h"
 
 @class CommentViewController;
 
-@interface CommentsViewController : UIViewController <UITableViewDataSource, CommentsTableViewDelegate, UIAccelerometerDelegate, NSFetchedResultsControllerDelegate> {
+@interface CommentsViewController : UIViewController <UITableViewDataSource, CommentsTableViewDelegate, UIAccelerometerDelegate, NSFetchedResultsControllerDelegate, EGORefreshTableHeaderDelegate> {
 @private
     IBOutlet UITableView *commentsTableView;
 
     IBOutlet UIToolbar *editToolbar;
     UIBarButtonItem *editButtonItem;
-    RefreshButtonView *refreshButton;
 	
 	CommentViewController *commentViewController;
 
@@ -41,6 +41,8 @@
 	// from the master VC's comments list.
 	// consider rethinking how this is done.
 	BOOL isSecondaryViewController;
+	
+    EGORefreshTableHeaderView *_refreshHeaderView;
 }
 
 @property (readonly) UIBarButtonItem *editButtonItem;

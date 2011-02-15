@@ -33,7 +33,6 @@
 - (void)markCommentsAsSpam;
 - (void)unapproveComments;
 - (void)syncComments;
-- (void)addRefreshButton;
 - (void)updateBadge;
 - (void)reloadTableView;
 - (void)limitToOnHold;
@@ -63,9 +62,9 @@
     [commentsDict release];
     [selectedComments release];
     [editButtonItem release];
-    [refreshButton release];
 	[selectedIndexPath release], selectedIndexPath = nil;
 	[commentViewController release], commentViewController = nil;
+	[_refreshHeaderView release]; _refreshHeaderView = nil;
     [super dealloc];
 }
 
@@ -104,8 +103,6 @@
     commentsTableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
     commentsTableView.allowsSelectionDuringEditing = YES;
     
-    [self addRefreshButton];
-    
     editButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered
                                                      target:self action:@selector(editComments)];
 	
@@ -123,6 +120,14 @@
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(commentsSynced:) name:@"CommentRefreshNotification" object:nil];
 	[self setEditing:NO];
+	
+	if (_refreshHeaderView == nil) {
+		EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - commentsTableView.bounds.size.height, self.view.frame.size.width, commentsTableView.bounds.size.height)];
+		view.delegate = self;
+		[commentsTableView addSubview:view];
+		_refreshHeaderView = view;
+		[view release];
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -142,6 +147,7 @@
 	if ([[WPReachability sharedReachability] internetConnectionStatus])
 	{
 		if([[NSUserDefaults standardUserDefaults] boolForKey:@"refreshCommentsRequired"]) {
+			[_refreshHeaderView egoRefreshScrollViewDidEndDragging:commentsTableView];
 			[self refreshHandler];
 			[[NSUserDefaults standardUserDefaults] setBool:false forKey:@"refreshCommentsRequired"];
 		}
@@ -170,15 +176,6 @@
 
 - (void) cancelView {
 	[self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)addRefreshButton {
-    CGRect frame = CGRectMake(0, 0, commentsTableView.bounds.size.width, REFRESH_BUTTON_HEIGHT);
-
-    refreshButton = [[RefreshButtonView alloc] initWithFrame:frame];
-    [refreshButton addTarget:self action:@selector(refreshHandler) forControlEvents:UIControlEventTouchUpInside];
-
-    commentsTableView.tableHeaderView = refreshButton;
 }
 
 - (void)setEditing:(BOOL)value {
@@ -234,7 +231,6 @@
 }
 
 - (void)refreshHandler {
-    [refreshButton startAnimating];
 	[self setEditing:false];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     [self performSelectorInBackground:@selector(syncComments) withObject:nil];
@@ -251,7 +247,6 @@
 }
 
 - (void)refreshCommentsList {
-	[refreshButton stopAnimating];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     if (!selectedComments) {
         selectedComments = [[NSMutableArray alloc] init];
@@ -269,6 +264,7 @@
 			[self showCommentAtIndexPath:self.selectedIndexPath];
 		}
 	}
+	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:commentsTableView];
 }
 
 - (IBAction)deleteSelectedComments:(id)sender {
@@ -658,6 +654,40 @@
             [commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
             break;
     }
+}
+
+- (BOOL)isSyncing {
+	return self.blog.isSyncingComments;
+}
+
+-(NSDate *) lastSyncDate {
+	return self.blog.lastCommentsSync;
+}
+
+#pragma mark -
+#pragma mark UIScrollViewDelegate Methods
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+	[_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+	[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+}
+
+#pragma mark -
+#pragma mark EGORefreshTableHeaderDelegate Methods
+
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
+	[self refreshHandler];
+}
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
+	return [self isSyncing]; // should return if data source model is reloading
+}
+
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
+	return [self lastSyncDate]; // should return date data source was last changed
 }
 
 @end
