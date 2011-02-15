@@ -117,9 +117,6 @@
 			if([currentObject isKindOfClass:[UITableViewActivityCell class]])
 			{
 				activityCell = (UITableViewActivityCell *)currentObject;
-				if(DeviceIsPad() == YES) {
-					activityCell.textLabel.frame = CGRectMake(90, 4, 300, 40);
-				}
 				break;
 			}
 		}
