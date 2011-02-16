@@ -448,6 +448,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	
 	// This is important for automatic version migration. Leave it here!
 	NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
+							 [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption,
 							 [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption, nil];
 	
 	NSError *error = nil;

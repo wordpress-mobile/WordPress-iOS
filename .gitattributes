@@ -143,6 +143,8 @@ Classes/MediaManager.h -text
 Classes/MediaManager.m -text
 Classes/MediaObjectViewController.h -text
 Classes/MediaObjectViewController.m -text
+Classes/MigrateBlogsFromFiles.h -text
+Classes/MigrateBlogsFromFiles.m -text
 Classes/NSData+Base64.h -text
 Classes/NSData+Base64.m -text
 Classes/NSString+Util.h -text
@@ -173,6 +175,8 @@ Classes/PostSettingsViewController.h -text
 Classes/PostSettingsViewController.m -text
 Classes/PostTableViewCell.h -text
 Classes/PostTableViewCell.m -text
+Classes/PostToAbstractPost.h -text
+Classes/PostToAbstractPost.m -text
 Classes/PostViewController.h -text
 Classes/PostViewController.m -text
 Classes/PostsViewController.h -text
@@ -264,6 +268,7 @@ Classes/WebSignupViewController.h -text
 Classes/WebSignupViewController.m -text
 Classes/WelcomeViewController.h -text
 Classes/WelcomeViewController.m -text
+Classes/WordPress-1-2.xcmappingmodel/xcmapping.xml -text
 Classes/WordPress.xcdatamodeld/.xccurrentversion -text
 Classes/WordPress.xcdatamodeld/WordPress[!!-~]2.xcdatamodel/elements -text svneol=unset#unset
 Classes/WordPress.xcdatamodeld/WordPress[!!-~]2.xcdatamodel/layout -text svneol=unset#unset
