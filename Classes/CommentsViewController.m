@@ -560,6 +560,7 @@
 
     if (indexPath) {
         selectedIndexPath = indexPath;
+		[selectedIndexPath retain];
         [commentViewController showComment:[self.resultsController objectAtIndexPath:indexPath]];
      }
 }
@@ -579,6 +580,7 @@
 
     if (indexPath) {
         selectedIndexPath = indexPath;
+		[selectedIndexPath retain];
         [commentViewController showComment:[self.resultsController objectAtIndexPath:indexPath]];
     }
 }
