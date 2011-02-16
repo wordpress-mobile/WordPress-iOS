@@ -50,6 +50,7 @@
     BOOL connectionStatus;
 	//to control whether
 	BOOL wasLastCommentPending;
+	BOOL isVisible;
 }
 
 
@@ -75,6 +76,6 @@
 @property (nonatomic, retain) IBOutlet UIButton *commentAuthorUrlButton;
 @property (nonatomic, retain) IBOutlet UIButton *commentAuthorEmailButton;
 @property BOOL wasLastCommentPending;
-
+@property BOOL isVisible;
 
 @end

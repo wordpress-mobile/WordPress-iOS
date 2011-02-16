@@ -34,7 +34,6 @@
     NSMutableArray *selectedComments;
     UIAlertView *progressAlert;
     int indexForCurrentPost;
-	UISegmentedControl *segmentedControl;
 	NSIndexPath *selectedIndexPath;
 	
 	// added to distinguish a single posts's comments VC
@@ -50,7 +49,6 @@
 @property (nonatomic, retain) NSMutableArray *commentsArray;
 @property int indexForCurrentPost;
 @property (nonatomic, retain) CommentViewController *commentViewController;
-@property (nonatomic, retain) UISegmentedControl *segmentedControl;
 @property (nonatomic, retain) NSIndexPath *selectedIndexPath;
 @property (nonatomic, assign) BOOL isSecondaryViewController;
 @property (nonatomic, retain) NSFetchedResultsController *resultsController;

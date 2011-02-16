@@ -35,7 +35,6 @@
 	
 	if (DeviceIsPad() == NO) {
 		self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
-		self.navigationItem.titleView = commentsViewController.segmentedControl;
 	}
 	if (self.selectedViewController) {
 		tabBarController.selectedViewController = self.selectedViewController;
@@ -116,7 +115,6 @@
 	[[NSUserDefaults standardUserDefaults] setValue:@"Comments" forKey:@"WPSelectedContentType"];
 	[commentsViewController setIndexForCurrentPost:-2];
 	self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
-	self.navigationItem.titleView = commentsViewController.segmentedControl;
 }
 
 #pragma mark KVO callbacks

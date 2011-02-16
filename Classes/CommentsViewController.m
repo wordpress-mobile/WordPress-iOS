@@ -45,7 +45,7 @@
 
 @implementation CommentsViewController
 
-@synthesize editButtonItem, selectedComments, commentsArray, indexForCurrentPost, segmentedControl;
+@synthesize editButtonItem, selectedComments, commentsArray, indexForCurrentPost;
 @synthesize selectedIndexPath;
 @synthesize commentViewController;
 @synthesize isSecondaryViewController;
@@ -59,7 +59,6 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.resultsController.delegate = nil;
 	self.resultsController = nil;
-	[segmentedControl release];
     [commentsArray release];
     [commentsDict release];
     [selectedComments release];
@@ -107,18 +106,6 @@
     
     editButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered
                                                      target:self action:@selector(editComments)];
-	
-	// segmented control as the custom title view
-	NSArray *segmentTextContent = [NSArray arrayWithObjects:
-								   NSLocalizedString(@"All", @""),
-								   NSLocalizedString(@"Pending", @""),
-								   nil];
-	segmentedControl = [[UISegmentedControl alloc] initWithItems:segmentTextContent];
-	segmentedControl.selectedSegmentIndex = ALL_COMMENTS;
-	segmentedControl.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
-	segmentedControl.frame = CGRectMake(0, 0, 170, 30);
-	[segmentedControl addTarget:self action:@selector(reloadTableView) forControlEvents:UIControlEventValueChanged];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(commentsSynced:) name:@"CommentRefreshNotification" object:nil];
 	
@@ -376,8 +363,10 @@
 	if (self.isSecondaryViewController) {
 		[self.navigationController pushViewController:self.commentViewController animated:YES];
 	} else {
-		WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-        [delegate showContentDetailViewController:self.commentViewController];
+		if (!self.commentViewController.isVisible) {
+			WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+			[delegate showContentDetailViewController:self.commentViewController];
+		}
 	}
 
     [self.commentViewController showComment:comment];
@@ -398,13 +387,6 @@
 #pragma mark Segmented View Controls
 
 - (void)reloadTableView {
-	if ([segmentedControl selectedSegmentIndex] == ALL_COMMENTS) {
-		[self doNotLimit];
-	}
-	else {
-		[self limitToOnHold];
-	}
-
 	[self updateBadge];
     [commentsTableView reloadData];
 }
@@ -559,8 +541,7 @@
     }
 
     if (indexPath) {
-        selectedIndexPath = indexPath;
-		[selectedIndexPath retain];
+        self.selectedIndexPath = indexPath;
         [commentViewController showComment:[self.resultsController objectAtIndexPath:indexPath]];
      }
 }
@@ -579,8 +560,7 @@
     }
 
     if (indexPath) {
-        selectedIndexPath = indexPath;
-		[selectedIndexPath retain];
+        self.selectedIndexPath = indexPath;
         [commentViewController showComment:[self.resultsController objectAtIndexPath:indexPath]];
     }
 }

@@ -47,7 +47,7 @@
 
 
 @synthesize replyToCommentViewController, editCommentViewController, commentsViewController, wasLastCommentPending, commentAuthorUrlButton, commentAuthorEmailButton;
-@synthesize comment = _comment;
+@synthesize comment = _comment, isVisible;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -92,6 +92,7 @@
     
     segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
     self.navigationItem.rightBarButtonItem = segmentBarItem;
+	self.navigationItem.title = @"Comment";
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
 }
@@ -99,7 +100,13 @@
 - (void)viewWillAppear:(BOOL)animated {
     [self performSelector:@selector(reachabilityChanged)];
 	wasLastCommentPending = NO;
+	isVisible = YES;
     [super viewWillAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	isVisible = NO;
+    [super viewWillDisappear:animated];
 }
 
 - (void)reachabilityChanged {
