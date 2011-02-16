@@ -236,9 +236,13 @@
 
 - (NSString *)passwordForBlog:(Blog *)blog {
     NSError *err;
-    return [SFHFKeychainUtils getPasswordForUsername:blog.username
-                                      andServiceName:blog.url
-                                               error:&err];
+    NSString *password = [SFHFKeychainUtils getPasswordForUsername:blog.username
+													andServiceName:blog.hostURL
+															 error:&err];
+	if (password == nil)
+		password = @""; // FIXME: not good either, but prevents from crashing
+	
+	return password;
 }
 
 - (NSMutableArray *)getRecentPostsForBlog:(Blog *)blog number:(NSNumber *)number {

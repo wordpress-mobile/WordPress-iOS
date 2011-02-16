@@ -38,7 +38,7 @@
         NSError *error = nil;
         self.url = blog.url;
         self.username = blog.username;
-        self.password = [SFHFKeychainUtils getPasswordForUsername:blog.username andServiceName:blog.url error:&error];
+        self.password = [SFHFKeychainUtils getPasswordForUsername:blog.username andServiceName:blog.hostURL error:&error];
         self.geolocationEnabled = blog.geolocationEnabled;
     }
     
@@ -352,7 +352,7 @@
     NSError *error = nil;
     [SFHFKeychainUtils storeUsername:blog.username
                          andPassword:self.password
-                      forServiceName:blog.url
+                      forServiceName:blog.hostURL
                       updateExisting:YES
                                error:&error];
     

@@ -524,17 +524,28 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	NSString *authURL = @"https://wordpress.com/xmlrpc.php";
 	
-	if(([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil)) {
-        NSError *error = nil;
-        NSString *password = [SFHFKeychainUtils getPasswordForUsername:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"]
+    NSError *error = nil;
+	if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil) {
+        NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"] != nil) {
+            // Migrate password to keychain
+            [SFHFKeychainUtils storeUsername:username
+                                 andPassword:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"]
+                              forServiceName:@"WordPress.com"
+                              updateExisting:YES error:&error];
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_password_preference"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+        NSString *password = [SFHFKeychainUtils getPasswordForUsername:username
                                                         andServiceName:@"WordPress.com"
                                                                  error:&error];
-        
         if (password != nil) {
             isWPcomAuthenticated = [[WPDataController sharedInstance] authenticateUser:authURL 
-                                                                              username:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"]
-                                                                              password:password];            
-        }        
+                                                                              username:username
+                                                                              password:password];
+        } else {
+            isWPcomAuthenticated = NO;
+        }
 	}
 	else {
 		isWPcomAuthenticated = NO;

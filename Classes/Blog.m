@@ -72,7 +72,7 @@
         NSError *error = nil;
         [SFHFKeychainUtils storeUsername:[blogInfo objectForKey:@"username"]
                              andPassword:[blogInfo objectForKey:@"password"]
-                          forServiceName:blog.url
+                          forServiceName:blog.hostURL
                           updateExisting:TRUE
                                    error:&error ];
         // TODO: save blog settings

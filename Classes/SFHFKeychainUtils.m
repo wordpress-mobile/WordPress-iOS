@@ -312,45 +312,94 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
 		
 		if ((existingPassword != password) && updateExisting) {
 			//Only update if we're allowed to update existing. If not, simply do nothing.
-			
-			NSArray *keys = [[[NSArray alloc] initWithObjects: (NSString *) kSecClass,
-							  kSecAttrService,
-							  kSecAttrLabel,
-							  kSecAttrAccount,
-							  nil] autorelease];
-			
-			NSArray *objects = [[[NSArray alloc] initWithObjects: (NSString *) kSecClassGenericPassword,
-								 serviceName,
-								 serviceName,
-								 username,
-								 nil] autorelease];
-			
-			NSDictionary *query = [[[NSDictionary alloc] initWithObjects: objects forKeys: keys] autorelease];      
-			
-			status = SecItemUpdate((CFDictionaryRef) query, (CFDictionaryRef) [NSDictionary dictionaryWithObject: [password dataUsingEncoding: NSUTF8StringEncoding] forKey: (NSString *) kSecValueData]);
+
+            NSArray *keys, *objects;
+            if (iOs4OrGreater()) {
+                [self deleteItemForUsername:username andServiceName:serviceName error:error];
+                keys = [[[NSArray alloc] initWithObjects: (NSString *) kSecClass,
+                                  kSecAttrService,
+                                  kSecAttrLabel,
+                                  kSecAttrAccount,
+                                  kSecAttrAccessible,
+                                  kSecValueData,
+                                  nil] autorelease];
+                
+                objects = [[[NSArray alloc] initWithObjects: (NSString *) kSecClassGenericPassword,
+                                     serviceName,
+                                     serviceName,
+                                     username,
+                                     kSecAttrAccessibleAfterFirstUnlock,
+                                     [password dataUsingEncoding: NSUTF8StringEncoding],
+                                     nil] autorelease];
+                
+                NSDictionary *query = [[[NSDictionary alloc] initWithObjects: objects forKeys: keys] autorelease];      
+                
+                status = SecItemAdd((CFDictionaryRef) query, NULL);
+            } else {
+                keys = [[[NSArray alloc] initWithObjects: (NSString *) kSecClass,
+                                  kSecAttrService,
+                                  kSecAttrLabel,
+                                  kSecAttrAccount,
+                                  nil] autorelease];
+                
+                objects = [[[NSArray alloc] initWithObjects: (NSString *) kSecClassGenericPassword,
+                                     serviceName,
+                                     serviceName,
+                                     username,
+                                     nil] autorelease];
+
+                NSDictionary *query = [[[NSDictionary alloc] initWithObjects: objects forKeys: keys] autorelease];      
+                
+                status = SecItemUpdate((CFDictionaryRef) query, (CFDictionaryRef) [NSDictionary dictionaryWithObject: [password dataUsingEncoding: NSUTF8StringEncoding] forKey: (NSString *) kSecValueData]);
+            }
 		}
 	}
 	else {
 		// No existing entry (or an existing, improperly entered, and therefore now
 		// deleted, entry). Create a new entry.
 		
-		NSArray *keys = [[[NSArray alloc] initWithObjects: (NSString *) kSecClass,
-						  kSecAttrService,
-						  kSecAttrLabel,
-						  kSecAttrAccount,
-						  kSecValueData,
-						  nil] autorelease];
+		if (iOs4OrGreater()) {
 		
-		NSArray *objects = [[[NSArray alloc] initWithObjects: (NSString *) kSecClassGenericPassword,
-							 serviceName,
-							 serviceName,
-							 username,
-							 [password dataUsingEncoding: NSUTF8StringEncoding],
-							 nil] autorelease];
-		
-		NSDictionary *query = [[[NSDictionary alloc] initWithObjects: objects forKeys: keys] autorelease];      
-		
-		status = SecItemAdd((CFDictionaryRef) query, NULL);
+			NSArray *keys = [[[NSArray alloc] initWithObjects: (NSString *) kSecClass,
+							  kSecAttrService,
+							  kSecAttrLabel,
+							  kSecAttrAccount,
+							  kSecAttrAccessible,
+							  kSecValueData,
+							  nil] autorelease];
+			
+			NSArray *objects = [[[NSArray alloc] initWithObjects: (NSString *) kSecClassGenericPassword,
+								 serviceName,
+								 serviceName,
+								 username,
+								 kSecAttrAccessibleAfterFirstUnlock,
+								 [password dataUsingEncoding: NSUTF8StringEncoding],
+								 nil] autorelease];
+			
+			NSDictionary *query = [[[NSDictionary alloc] initWithObjects: objects forKeys: keys] autorelease];      
+			
+			status = SecItemAdd((CFDictionaryRef) query, NULL);
+		}
+		else {
+			NSArray *keys = [[[NSArray alloc] initWithObjects: (NSString *) kSecClass,
+							  kSecAttrService,
+							  kSecAttrLabel,
+							  kSecAttrAccount,
+							  kSecValueData,
+							  nil] autorelease];
+			
+			NSArray *objects = [[[NSArray alloc] initWithObjects: (NSString *) kSecClassGenericPassword,
+								 serviceName,
+								 serviceName,
+								 username,
+								 [password dataUsingEncoding: NSUTF8StringEncoding],
+								 nil] autorelease];
+			
+			NSDictionary *query = [[[NSDictionary alloc] initWithObjects: objects forKeys: keys] autorelease];      
+			
+			status = SecItemAdd((CFDictionaryRef) query, NULL);
+		}
+
 	}
 	
 	if (status != noErr) {
