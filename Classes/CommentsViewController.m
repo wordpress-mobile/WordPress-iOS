@@ -140,13 +140,13 @@
     selectedIndexPath = nil;    
     [editToolbar setHidden:YES];
     self.navigationItem.rightBarButtonItem = editButtonItem;
+	
+	[self refreshCommentsList];
     
     if ([commentsTableView indexPathForSelectedRow]) {
         [commentsTableView scrollToRowAtIndexPath:[commentsTableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
         [commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:animated];
     }
-	
-	
 	
 	//in same cases the lastSyncDate could be nil. Start a sync, so the user never get an ampty screen.
 	if([self lastSyncDate] == nil && ![self isSyncing]) {
