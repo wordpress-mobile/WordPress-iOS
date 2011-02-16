@@ -23,4 +23,5 @@
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, assign) WordPressAppDelegate *appDelegate;
 
+- (IBAction)cancel:(id)sender;
 @end
