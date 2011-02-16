@@ -24,7 +24,8 @@
     postsViewController.blog = self.blog;
     pagesViewController.blog = self.blog;
     commentsViewController.blog = self.blog;
-	statsTableViewController.blog = self.blog;
+	//uncomment me to add stats back
+	//statsTableViewController.blog = self.blog;
 	
     self.view = tabBarController.view;
 	
@@ -71,7 +72,8 @@
 	[commentsViewController viewWillDisappear:animated];
 	[postsViewController viewWillDisappear:animated];
 	[pagesViewController viewWillDisappear:animated];
-	[statsTableViewController viewWillDisappear:animated];
+	//uncomment me to add stats back
+	//[statsTableViewController viewWillDisappear:animated];
 }
 
 - (void)dealloc {
@@ -104,9 +106,10 @@
 	else if (viewController == commentsViewController) {
 		[self configureCommentsTab];
 	}
-	else if (viewController == statsTableViewController) {
+	//uncomment me to add stats back
+	/*else if (viewController == statsTableViewController) {
 		[[NSUserDefaults standardUserDefaults] setValue:@"Stats" forKey:@"WPSelectedContentType"];
-	}
+	}*/
 	
 	[viewController viewWillAppear:NO];
 }
@@ -185,9 +188,10 @@
 			self.selectedViewController = pagesViewController;
 			pagesViewController.selectedIndexPath = selectedIndexPath;
 		}
-		else if	([vcName isEqual:@"Stats"]) {
+		//uncomment me to add stats back
+		/*else if	([vcName isEqual:@"Stats"]) {
 			self.selectedViewController = statsTableViewController;
-		}
+		}*/
 	}
 		
 	// show the view controller
