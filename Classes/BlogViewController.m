@@ -42,6 +42,7 @@
 	}
 	else {
 		tabBarController.selectedViewController = commentsViewController;
+		[self configureCommentsTab];
 	}
 	    
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"DraftsUpdated" object:nil];
@@ -102,16 +103,20 @@
 		self.navigationItem.rightBarButtonItem = pagesViewController.newButtonItem;
 	} 
 	else if (viewController == commentsViewController) {
-		[[NSUserDefaults standardUserDefaults] setValue:@"Comments" forKey:@"WPSelectedContentType"];
-		[commentsViewController setIndexForCurrentPost:-2];
-		self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
-		self.navigationItem.titleView = commentsViewController.segmentedControl;
+		[self configureCommentsTab];
 	}
 	else if (viewController == statsTableViewController) {
 		[[NSUserDefaults standardUserDefaults] setValue:@"Stats" forKey:@"WPSelectedContentType"];
 	}
 	
 	[viewController viewWillAppear:NO];
+}
+
+- (void)configureCommentsTab {
+	[[NSUserDefaults standardUserDefaults] setValue:@"Comments" forKey:@"WPSelectedContentType"];
+	[commentsViewController setIndexForCurrentPost:-2];
+	self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
+	self.navigationItem.titleView = commentsViewController.segmentedControl;
 }
 
 #pragma mark KVO callbacks

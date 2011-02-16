@@ -31,5 +31,6 @@
 - (void)saveState;
 - (void)restoreState;
 - (void)refreshBlogs:(NSNotification *)notification;
+- (void)configureCommentsTab;
 
 @end
