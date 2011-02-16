@@ -39,6 +39,8 @@
 - (void)doNotLimit;
 - (NSMutableArray *)commentsOnHold;
 - (void)trySelectSomething;
+- (NSDate *)lastSyncDate;
+- (BOOL)isSyncing;
 @end
 
 @implementation CommentsViewController
@@ -119,7 +121,6 @@
 	[segmentedControl addTarget:self action:@selector(reloadTableView) forControlEvents:UIControlEventValueChanged];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(commentsSynced:) name:@"CommentRefreshNotification" object:nil];
-	[self setEditing:NO];
 	
 	if (_refreshHeaderView == nil) {
 		EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - commentsTableView.bounds.size.height, self.view.frame.size.width, commentsTableView.bounds.size.height)];
@@ -128,6 +129,9 @@
 		_refreshHeaderView = view;
 		[view release];
 	}
+	
+	//  update the last update date
+	[_refreshHeaderView refreshLastUpdatedDate];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -141,16 +145,16 @@
         [commentsTableView scrollToRowAtIndexPath:[commentsTableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
         [commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:animated];
     }
-    
-	[self refreshCommentsList];
 	
-	if ([[WPReachability sharedReachability] internetConnectionStatus])
-	{
-		if([[NSUserDefaults standardUserDefaults] boolForKey:@"refreshCommentsRequired"]) {
-			[_refreshHeaderView egoRefreshScrollViewDidEndDragging:commentsTableView];
-			[self refreshHandler];
-			[[NSUserDefaults standardUserDefaults] setBool:false forKey:@"refreshCommentsRequired"];
-		}
+	
+	
+	//in same cases the lastSyncDate could be nil. Start a sync, so the user never get an ampty screen.
+	if([self lastSyncDate] == nil && ![self isSyncing]) {
+		CGPoint offset = commentsTableView.contentOffset;
+		offset.y = - 65.0f;
+		commentsTableView.contentOffset = offset;
+		[commentsTableView setContentOffset:offset];
+		[_refreshHeaderView egoRefreshScrollViewDidEndDragging:commentsTableView];
 	}
 }
 
@@ -248,6 +252,7 @@
 
 - (void)refreshCommentsList {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:commentsTableView];
     if (!selectedComments) {
         selectedComments = [[NSMutableArray alloc] init];
     } else {
@@ -264,7 +269,6 @@
 			[self showCommentAtIndexPath:self.selectedIndexPath];
 		}
 	}
-	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:commentsTableView];
 }
 
 - (IBAction)deleteSelectedComments:(id)sender {

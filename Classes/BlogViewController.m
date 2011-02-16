@@ -40,6 +40,9 @@
 	if (self.selectedViewController) {
 		tabBarController.selectedViewController = self.selectedViewController;
 	}
+	else {
+		tabBarController.selectedViewController = commentsViewController;
+	}
 	    
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"DraftsUpdated" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlogs:) name:@"BlogsRefreshNotification" object:nil];
