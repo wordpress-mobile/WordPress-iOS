@@ -63,20 +63,8 @@
 			str = [str substringFromIndex: charIndex];
 		}
 		
-		//NSLog (@"--begin tidy process");
-		NSError *theError = NULL;
-		NSString *cleanedString = [[CTidy tidy] tidyString:str inputFormat:TidyFormat_XML outputFormat:TidyFormat_XML diagnostics:NULL error:&theError];
-		
-		if( theError != NULL )
-		{
-			//TODO: we may need to create a XMLRPCResponse with the error. and return
-			return (id) theError;
-		}
-        //NSLog (@"cleaned response msg: %@", cleanedString);
-        //NSLog (@"--end tidy process");
-		
 		data = nil;
-		data = [NSData dataWithData:[cleanedString dataUsingEncoding: NSUTF8StringEncoding]];
+		data = [NSData dataWithData:[str dataUsingEncoding: NSUTF8StringEncoding]]; 
 		// data should be cleaned here!
 		
 		
@@ -99,7 +87,44 @@
 		}
 		else if( [_object isKindOfClass:[NSError class]] )
 		{
-			_isParseError = TRUE;
+			//If there's a parse error, clean the response with CTidy and try again
+			//NSLog (@"--begin tidy process");
+			NSError *theError = NULL;
+			NSString *cleanedString = [[CTidy tidy] tidyString:str inputFormat:TidyFormat_XML outputFormat:TidyFormat_XML diagnostics:NULL error:&theError];
+			if( theError != NULL )
+			{
+				//TODO: we may need to create a XMLRPCResponse with the error. and return
+				return (id) theError;
+			}
+			//NSLog (@"cleaned response msg: %@", cleanedString);
+			//NSLog (@"--end tidy process");			data = nil;
+			data = [NSData dataWithData:[cleanedString dataUsingEncoding: NSUTF8StringEncoding]];
+			
+			decoder = nil;
+			decoder = [[[XMLRPCDecoder alloc] initWithData: data] autorelease];
+			
+			if (decoder == nil)
+			{
+				return nil;
+			}
+			
+			_data = [[NSData alloc] initWithData: data];
+			_source = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+			_object = [[decoder decode] retain];
+			
+			if ( _object == nil )
+			{	_isParseError = TRUE;
+				NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Parse Error. Please check your XML-RPC endpoint.", NSLocalizedDescriptionKey, nil];
+				_object = [[NSError errorWithDomain:@"come.effigent.iphone.parseerror" code:-1 userInfo:usrInfo] retain];
+			}
+			else if( [_object isKindOfClass:[NSError class]] )
+			{
+				_isParseError = TRUE;
+			}
+			else
+			{
+				_isParseError = FALSE;
+			}
 		}
 		else
 		{
