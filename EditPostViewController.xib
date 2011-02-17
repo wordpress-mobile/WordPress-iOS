@@ -420,6 +420,11 @@
 				</object>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
+			<object class="IBUIBarButtonItem" id="525878284">
+				<string key="IBUITitle">+</string>
+				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+				<int key="IBUIStyle">1</int>
+			</object>
 		</object>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
 			<object class="NSMutableArray" key="connectionRecords">
@@ -681,6 +686,22 @@
 					</object>
 					<int key="connectionID">371</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">showAddNewCategoryView:</string>
+						<reference key="source" ref="525878284"/>
+						<reference key="destination" ref="372490531"/>
+					</object>
+					<int key="connectionID">373</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">newCategoryBarButtonItem</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="525878284"/>
+					</object>
+					<int key="connectionID">374</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -864,6 +885,12 @@
 						<reference key="object" ref="536149578"/>
 						<reference key="parent" ref="805652007"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">372</int>
+						<reference key="object" ref="525878284"/>
+						<reference key="parent" ref="0"/>
+						<string key="objectName">Add cat btn</string>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -912,6 +939,7 @@
 					<string>366.IBPluginDependency</string>
 					<string>369.IBPluginDependency</string>
 					<string>369.IBViewBoundsToFrameTransform</string>
+					<string>372.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -987,6 +1015,7 @@
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">AUOHgABAwAAAA</bytes>
 					</object>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -1005,7 +1034,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">371</int>
+			<int key="maxID">374</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

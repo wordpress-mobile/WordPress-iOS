@@ -507,7 +507,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)discard {
     [FlurryAPI logEvent:@"Post#actionSheet_discard"];
     
-	// TODO: remove the mediaViewController notifications - this is pretty kludgy
     [self.apost.original deleteRevision];
 
 	//remove the original post in case of local draft unsaved
