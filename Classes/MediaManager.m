@@ -58,6 +58,8 @@
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:
 								  @"(postID like %@) AND (blogURL like %@) AND (mediaType like %@)", postID, blogURL, mediaTypeString];
 		[request setPredicate:predicate];
+		NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"creationDate" ascending:NO]; 
+		[request setSortDescriptors:[NSArray arrayWithObject:sort]]; 
 		
 		NSError *error;
 		items = [appDelegate.managedObjectContext executeFetchRequest:request error:&error];
@@ -86,6 +88,8 @@
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:
 								  @"(blogURL like %@) AND (mediaType like %@)", blogURL, mediaTypeString];
 		[request setPredicate:predicate];
+		NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"creationDate" ascending:NO]; 
+		[request setSortDescriptors:[NSArray arrayWithObject:sort]];
 		
 		NSError *error;
 		items = [appDelegate.managedObjectContext executeFetchRequest:request error:&error];

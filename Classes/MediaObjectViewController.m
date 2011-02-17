@@ -11,7 +11,7 @@
 
 @implementation MediaObjectViewController
 
-@synthesize media, mediaManager, imageView, videoPlayer, deleteButton, insertButton, isDeleting, isInserting, appDelegate;
+@synthesize media, mediaManager, imageView, videoPlayer, deleteButton, insertButton, cancelButton, isDeleting, isInserting, appDelegate, toolbar;
 @synthesize scrollView;
 
 #pragma mark -
@@ -37,6 +37,12 @@
 			imageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:media.remoteURL]]];
 		}
 	}
+	
+	if (!DeviceIsPad()) { 
+		NSMutableArray *items = [[toolbar.items mutableCopy] autorelease]; 
+		[items removeObject: cancelButton]; 
+		toolbar.items = items; 
+	} 
 }
 
 - (void)viewDidUnload {
@@ -157,6 +163,11 @@
 	[insertActionSheet release];
 }
 
+- (IBAction)cancelSelection:(id)sender { 
+ 	if (DeviceIsPad()) 
+		[self dismissModalViewControllerAnimated:YES]; 
+ 	} 
+
 #pragma mark -
 #pragma mark Memory management
 
@@ -175,6 +186,8 @@
 	[mediaManager release], mediaManager = nil;
 	[imageView release], imageView = nil;
 	[videoPlayer release], videoPlayer = nil;
+	[cancelButton release], cancelButton = nil;
+	[toolbar release];
     [super dealloc];
 }
 

@@ -174,8 +174,11 @@
         [mediaView setMedia:media];
 
         WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-        if(DeviceIsPad() == YES)
-            [appDelegate.splitViewController presentModalViewController:mediaView animated:YES];
+        if(DeviceIsPad() == YES) {
+			mediaView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+			mediaView.modalPresentationStyle = UIModalPresentationFormSheet;
+            [self presentModalViewController:mediaView animated:YES];
+		}
         else
             [appDelegate.navigationController pushViewController:mediaView animated:YES];
         [mediaView release];
