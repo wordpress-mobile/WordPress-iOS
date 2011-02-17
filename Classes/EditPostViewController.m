@@ -153,7 +153,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     
 	self.navigationItem.title = @"Write";
 	statuses = [NSArray arrayWithObjects:@"Local Draft", @"Draft", @"Private", @"Pending Review", @"Published", nil];
-		
+	
+	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceDidRotate:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
@@ -163,6 +164,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaAbove:) name:@"ShouldInsertMediaAbove" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:@"ShouldInsertMediaBelow" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];
+	
 	
     isTextViewEditing = NO;
     spinner = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
@@ -213,7 +215,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		self.editMode = kRefreshPost;
 	
 	isVisible = YES;
-    
+		
 	[self refreshButtons];
 	
     textView.frame = self.normalTextFrame;
@@ -229,7 +231,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		self.editMode = kRefreshPost;
 	isVisible = NO;
 	
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[titleTextField resignFirstResponder];
 	[textView resignFirstResponder];
     [super viewWillDisappear:animated];
@@ -268,6 +269,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[self dismissModalViewControllerAnimated:YES];		
 	}
 	[postSettingsController release]; postSettingsController = nil;
+	
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
     
 	[FlurryAPI logEvent:@"EditPost#dismissEditView"];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"PostEditorDismissed" object:self];
@@ -378,7 +381,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
     segmentedTableViewController.title = @"Categories";
     segmentedTableViewController.navigationItem.rightBarButtonItem = newCategoryBarButtonItem;
-
+	
     if (isNewCategory != YES) {
 		if (DeviceIsPad() == YES) {
             UINavigationController *navController;
@@ -400,7 +403,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		}
     }
 	
-    isNewCategory = NO;
+	isNewCategory = NO;
 }
 
 - (void)refreshStatus {
@@ -468,12 +471,14 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[self refreshButtons];
 }
 
+
 - (void)newCategoryCreatedNotificationReceived:(NSNotification *)notification {
     if ([segmentedTableViewController curContext] == kSelectionsCategoriesContext) {
         isNewCategory = YES;
         [self populateSelectionsControllerWithCategories];
     }
 }
+
 
 - (IBAction)showAddNewCategoryView:(id)sender
 {

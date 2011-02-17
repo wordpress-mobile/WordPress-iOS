@@ -74,7 +74,8 @@
 + (Category *)createCategory:(NSString *)name parent:(Category *)parent forBlog:(Blog *)blog {
     Category *category = [Category newCategoryForBlog:blog];
     category.categoryName = name;
-    category.parentID = parent.categoryID;
+	if (parent.categoryID != nil)
+		category.parentID = parent.categoryID;
     int newID = [[WPDataController sharedInstance] wpNewCategory:category];
     if (newID > 0) {
         category.categoryID = [NSNumber numberWithInt:newID];

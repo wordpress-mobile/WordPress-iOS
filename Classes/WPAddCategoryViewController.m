@@ -59,7 +59,7 @@
         UIAlertView *alert2 = [[UIAlertView alloc] initWithTitle:@"Category name already exists."
                                                          message:@"There is another category with that name."
                                                         delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-
+		
         [alert2 show];
         WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
         [delegate setAlertRunning:YES];
@@ -68,8 +68,9 @@
         return;
     }
 
-    if ([[WPReachability sharedReachability] remoteHostStatus] != NotReachable)
-        [self addProgressIndicator];
+	//FIXME: At the first attempt the remoteHostStatus == NotReachable even if the connection is available. 
+	// if ([[WPReachability sharedReachability] remoteHostStatus] != NotReachable)
+    [self addProgressIndicator];
 
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     [self performSelectorInBackground:@selector(saveOnBackground:) withObject:catName];
@@ -77,9 +78,14 @@
 
 - (void)saveOnBackground:(NSString *)categoryName {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    // TODO: should check if it was created OK
-    [Category createCategory:categoryName parent:parentCat forBlog:self.blog];
-    [self performSelectorOnMainThread:@selector(didSaveOnBackground) withObject:nil waitUntilDone:NO];
+
+    Category *newCat = [Category createCategory:categoryName parent:parentCat forBlog:self.blog];
+    
+	if (newCat != nil) {
+		[self performSelectorOnMainThread:@selector(showErrorAlert) withObject:nil waitUntilDone:NO];
+	}
+	
+	[self performSelectorOnMainThread:@selector(didSaveOnBackground) withObject:nil waitUntilDone:NO];
     
     [pool release];
 }
@@ -91,6 +97,18 @@
     [self removeProgressIndicator];
     [self dismiss];
 }
+
+
+- (void)showErrorAlert {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	UIAlertView *alert2 = [[UIAlertView alloc] initWithTitle:@"Error."
+													 message:@"Something went wrong while adding the new category."
+													delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	
+	[alert2 show];
+	[pool release];
+}
+
 
 - (void)viewDidLoad {
     catTableView.sectionFooterHeight = 0.0;
