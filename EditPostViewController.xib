@@ -421,9 +421,9 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIBarButtonItem" id="525878284">
-				<string key="IBUITitle">+</string>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				<int key="IBUIStyle">1</int>
+				<int key="IBUISystemItemIdentifier">4</int>
 			</object>
 		</object>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
