@@ -35,7 +35,9 @@ static ImageCache *sharedImageCache;
 
 - (void)storeData:(NSData *)data forURL:(NSURL *)url {
     NSString *urlString = [url description];
-    [_data setObject:data forKey:urlString];
+	if (data != nil) {
+		[_data setObject:data forKey:urlString];
+	}
 }
 
 - (NSData *)dataForURL:(NSURL *)url {
