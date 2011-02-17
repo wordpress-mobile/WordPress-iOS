@@ -357,7 +357,7 @@
     NSMutableDictionary *newBlog = [NSMutableDictionary dictionaryWithDictionary:blogInfo];
     [newBlog setObject:self.username forKey:@"username"];
     [newBlog setObject:self.password forKey:@"password"];
-    NSLog(@"creating blog: %@", newBlog);
+    WPLog(@"creating blog: %@", newBlog);
     Blog *blog = [Blog createFromDictionary:newBlog withContext:appDelegate.managedObjectContext];
 	blog.geolocationEnabled = self.geolocationEnabled;
 	[blog dataSave];
