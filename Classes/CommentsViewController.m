@@ -109,12 +109,10 @@
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(commentsSynced:) name:@"CommentRefreshNotification" object:nil];
 	
-	if (_refreshHeaderView == nil) {
-		EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - commentsTableView.bounds.size.height, self.view.frame.size.width, commentsTableView.bounds.size.height)];
-		view.delegate = self;
-		[commentsTableView addSubview:view];
-		_refreshHeaderView = view;
-		[view release];
+    if (_refreshHeaderView == nil) {
+		_refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];
+		_refreshHeaderView.delegate = self;
+		[self.tableView addSubview:_refreshHeaderView];
 	}
 	
 	//  update the last update date
