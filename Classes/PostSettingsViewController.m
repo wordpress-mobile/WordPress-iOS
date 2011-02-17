@@ -247,8 +247,8 @@
 					publishOnDateLabel.text = [dateFormatter stringFromDate:postDetailViewController.post.dateCreated];
 					[dateFormatter release];
 				} else {
-					publishOnLabel.text = @"Publish";
-					publishOnDateLabel.text = @"inmediately";
+					publishOnLabel.text = @"Publish   "; //dorky spacing fix
+					publishOnDateLabel.text = @"Immediately";
 				}
 				// Resize labels properly
 				CGRect frame = publishOnLabel.frame;
@@ -506,7 +506,7 @@
         if (picker.tag == TAG_PICKER_DATE) {
             fakeController.contentSizeForViewInPopover = CGSizeMake(320, 256);
 
-            UISegmentedControl *publishNowButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@"Publish inmediately"]];
+            UISegmentedControl *publishNowButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@"Publish Immediately"]];
             publishNowButton.momentary = YES; 
             publishNowButton.frame = CGRectMake(0, 0, 320, 40);
             publishNowButton.segmentedControlStyle = UISegmentedControlStyleBar;
@@ -550,7 +550,7 @@
 		[closeButton release];
 
         if (picker.tag == TAG_PICKER_DATE) {
-            UISegmentedControl *publishNowButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@"Publish inmediately"]];
+            UISegmentedControl *publishNowButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@"Publish Immediately"]];
             publishNowButton.momentary = YES; 
             publishNowButton.frame = CGRectMake(10, 7, 129, 30);
             publishNowButton.segmentedControlStyle = UISegmentedControlStyleBar;
