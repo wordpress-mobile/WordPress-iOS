@@ -274,99 +274,94 @@
 - (void)base64EncodeFile {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding media..." waitUntilDone:NO];
-	
-	NSFileHandle *originalFile, *encodedFile;
-	
-	// Open the original video file for reading
-	originalFile = [NSFileHandle fileHandleForReadingAtPath:self.media.localURL];
-	if (originalFile == nil) {
-		[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding failed." waitUntilDone:NO];
-		return;
-	}
-	
     // If encoded file already exists, don't try encoding again
-    if ([[NSFileManager defaultManager] fileExistsAtPath:self.localEncodedURL]) {
-        if([self.media.mediaType isEqualToString:@"image"])
-            [self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding finished." waitUntilDone:NO];
-        else if([self.media.mediaType isEqualToString:@"video"])
-            [self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding finished." waitUntilDone:NO];
-		[self sendXMLRPC];
-    }
-	// Create our XML-RPC payload file
-	[[NSFileManager defaultManager] createFileAtPath:self.localEncodedURL
-											contents:nil
-										  attributes:nil];
-	
-	// Open XML-RPC file for writing
-	encodedFile = [NSFileHandle fileHandleForWritingAtPath:self.localEncodedURL];
-	if (encodedFile == nil) {
-		[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding failed." waitUntilDone:NO];
-		return;
-	}
-	
-	// Add our XML-RPC payload prefix
-	NSString *prefix = [self xmlrpcPrefix];
-	[encodedFile writeData:[prefix dataUsingEncoding:NSUTF8StringEncoding]];
-	
-	// Read data in chunks from the original file
-	[originalFile seekToEndOfFile];
-	NSUInteger fileLength = [originalFile offsetInFile];
-	[originalFile seekToFileOffset:0];
-	
-	// Many thanks to GregInYEG from StackOverflow and eskimo1 from Apple:
-	// For base64, each chunk *MUST* be a multiple of 3
-	NSUInteger chunkSize = 24000;
-	NSUInteger offset = 0;
-	NSAutoreleasePool *chunkPool = [[NSAutoreleasePool alloc] init];
-	while(offset < fileLength) {
-		// Read the next chunk from the input file
-		[originalFile seekToFileOffset:offset];
-		NSData *chunk = [originalFile readDataOfLength:chunkSize];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:self.localEncodedURL]) {
+		[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding media..." waitUntilDone:NO];
 		
-		// Update our offset
-		offset += chunkSize;
+		NSFileHandle *originalFile, *encodedFile;
 		
-		// Base64 encode the input chunk
-		NSData *serializedChunk = [NSPropertyListSerialization dataFromPropertyList:chunk format:NSPropertyListXMLFormat_v1_0 errorDescription:NULL];
-		NSString *serializedString =  [[NSString alloc] initWithData:serializedChunk encoding:NSUTF8StringEncoding];
-		NSRange r = [serializedString rangeOfString:@"<data>"];
-		serializedString = [serializedString substringFromIndex:r.location+7];
-		r = [serializedString rangeOfString:@"</data>"];
-		serializedString = [serializedString substringToIndex:r.location-1];
+		// Open the original video file for reading
+		originalFile = [NSFileHandle fileHandleForReadingAtPath:self.media.localURL];
+		if (originalFile == nil) {
+			[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding failed." waitUntilDone:NO];
+			return;
+		}
 		
-		// Write the base64 encoded chunk to our output file
-		NSData *base64EncodedChunk = [serializedString dataUsingEncoding:NSUTF8StringEncoding];
-		[encodedFile truncateFileAtOffset:[encodedFile seekToEndOfFile]];
-		[encodedFile writeData:base64EncodedChunk];
+		// Create our XML-RPC payload file
+		[[NSFileManager defaultManager] createFileAtPath:self.localEncodedURL
+												contents:nil
+											  attributes:nil];
 		
-		// Cleanup
-		base64EncodedChunk = nil;
-		serializedChunk = nil;
-		serializedString = nil;
-		chunk = nil;
+		// Open XML-RPC file for writing
+		encodedFile = [NSFileHandle fileHandleForWritingAtPath:self.localEncodedURL];
+		if (encodedFile == nil) {
+			[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding failed." waitUntilDone:NO];
+			return;
+		}
 		
-		// Drain and recreate the pool
+		// Add our XML-RPC payload prefix
+		NSString *prefix = [self xmlrpcPrefix];
+		[encodedFile writeData:[prefix dataUsingEncoding:NSUTF8StringEncoding]];
+		
+		// Read data in chunks from the original file
+		[originalFile seekToEndOfFile];
+		NSUInteger fileLength = [originalFile offsetInFile];
+		[originalFile seekToFileOffset:0];
+		
+		// Many thanks to GregInYEG from StackOverflow and eskimo1 from Apple:
+		// For base64, each chunk *MUST* be a multiple of 3
+		NSUInteger chunkSize = 24000;
+		NSUInteger offset = 0;
+		NSAutoreleasePool *chunkPool = [[NSAutoreleasePool alloc] init];
+		while(offset < fileLength) {
+			// Read the next chunk from the input file
+			[originalFile seekToFileOffset:offset];
+			NSData *chunk = [originalFile readDataOfLength:chunkSize];
+			
+			// Update our offset
+			offset += chunkSize;
+			
+			// Base64 encode the input chunk
+			NSData *serializedChunk = [NSPropertyListSerialization dataFromPropertyList:chunk format:NSPropertyListXMLFormat_v1_0 errorDescription:NULL];
+			NSString *serializedString =  [[NSString alloc] initWithData:serializedChunk encoding:NSUTF8StringEncoding];
+			NSRange r = [serializedString rangeOfString:@"<data>"];
+			serializedString = [serializedString substringFromIndex:r.location+7];
+			r = [serializedString rangeOfString:@"</data>"];
+			serializedString = [serializedString substringToIndex:r.location-1];
+			
+			// Write the base64 encoded chunk to our output file
+			NSData *base64EncodedChunk = [serializedString dataUsingEncoding:NSUTF8StringEncoding];
+			[encodedFile truncateFileAtOffset:[encodedFile seekToEndOfFile]];
+			[encodedFile writeData:base64EncodedChunk];
+			
+			// Cleanup
+			base64EncodedChunk = nil;
+			serializedChunk = nil;
+			serializedString = nil;
+			chunk = nil;
+			
+			// Drain and recreate the pool
+			[chunkPool release];
+			chunkPool = [[NSAutoreleasePool alloc] init];
+		}
 		[chunkPool release];
-		chunkPool = [[NSAutoreleasePool alloc] init];
+		
+		// Add the suffix to close out the xml payload
+		NSString *suffix = [self xmlrpcSuffix];
+		[encodedFile writeData:[suffix dataUsingEncoding:NSUTF8StringEncoding]];
+		
+		// Close the two files
+		[originalFile closeFile];
+		[encodedFile closeFile];
+		
+		// We're done
+		if([self.media.mediaType isEqualToString:@"image"])
+			[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding finished." waitUntilDone:NO];
+		else if([self.media.mediaType isEqualToString:@"video"])
+			[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding finished." waitUntilDone:NO];		
 	}
-	[chunkPool release];
-	
-	// Add the suffix to close out the xml payload
-	NSString *suffix = [self xmlrpcSuffix];
-	[encodedFile writeData:[suffix dataUsingEncoding:NSUTF8StringEncoding]];
-	
-	// Close the two files
-	[originalFile closeFile];
-	[encodedFile closeFile];
-	
-	// We're done
-	if([self.media.mediaType isEqualToString:@"image"])
-		[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding finished." waitUntilDone:NO];
-	else if([self.media.mediaType isEqualToString:@"video"])
-		[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding finished." waitUntilDone:NO];
-	
 	[self sendXMLRPC];
+
 	[pool release];
 }
 
