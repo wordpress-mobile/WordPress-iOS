@@ -987,10 +987,24 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	}
 	
 	NSMutableString *content = [[[NSMutableString alloc] initWithString:media.html] autorelease];
-	NSRange imgHTML = [textView.text rangeOfString:content];
-	if (imgHTML.location == NSNotFound) {
+	//NSRange imgHTML = [textView.text rangeOfString:content];
+	
+	NSRange imgHTMLPre = [textView.text rangeOfString:[NSString stringWithFormat:@"%@%@", @"<br/><br/>", content]]; 
+ 	NSRange imgHTMLPost = [textView.text rangeOfString:[NSString stringWithFormat:@"%@%@", content, @"<br/><br/>"]]; 
+	
+	if (imgHTMLPre.location == NSNotFound && imgHTMLPost.location == NSNotFound) {
 		[content appendString:[NSString stringWithFormat:@"%@%@", prefix, self.apost.content]];
         self.post.content = content;
+	}
+	else { 
+		NSMutableString *processedText = [[[NSMutableString alloc] initWithString:textView.text] autorelease]; 
+		if (imgHTMLPre.location != NSNotFound) 
+			[processedText replaceCharactersInRange:imgHTMLPre withString:@""]; 
+		else  
+			[processedText replaceCharactersInRange:imgHTMLPost withString:@""]; 
+		 
+		[content appendString:[NSString stringWithFormat:@"<br/><br/>%@", processedText]]; 
+		self.post.content = content;
 	}
     [self refreshUIForCurrentPost];
 }
@@ -1005,10 +1019,20 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	}
 	
 	NSMutableString *content = [[[NSMutableString alloc] initWithString:self.apost.content] autorelease];
-	NSRange imgHTML = [content rangeOfString:media.html];
-	if (imgHTML.location == NSNotFound) {
+	NSRange imgHTMLPre = [content rangeOfString:[NSString stringWithFormat:@"%@%@", @"<br/><br/>", media.html]]; 
+ 	NSRange imgHTMLPost = [content rangeOfString:[NSString stringWithFormat:@"%@%@", media.html, @"<br/><br/>"]];
+	
+	if (imgHTMLPre.location == NSNotFound && imgHTMLPost.location == NSNotFound) {
 		[content appendString:[NSString stringWithFormat:@"%@%@", prefix, media.html]];
         self.apost.content = content;
+	}
+	else {
+		if (imgHTMLPre.location != NSNotFound) 
+			[content replaceCharactersInRange:imgHTMLPre withString:@""]; 
+		else  
+			[content replaceCharactersInRange:imgHTMLPost withString:@""];
+		[content appendString:[NSString stringWithFormat:@"<br/><br/>%@", media.html]];
+		self.apost.content = content;
 	}
     [self refreshUIForCurrentPost];
 }
