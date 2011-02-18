@@ -79,7 +79,8 @@
 		category.parentID = parent.categoryID;
     int newID = [dc wpNewCategory:category];
 	if(dc.error) {
-		*error = dc.error;
+		if (error != nil) 
+			*error = dc.error;
 		WPLog(@"Error while creating category: %@", [*error localizedDescription]);
 	}
     if (newID > 0 && !dc.error) {

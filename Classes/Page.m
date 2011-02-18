@@ -111,21 +111,25 @@
     [self performSelectorInBackground:@selector(uploadInBackground) withObject:nil];
 }
 
-- (void)removeWithError:(NSError **)error {
+- (BOOL)removeWithError:(NSError **)error {
+	BOOL res = NO;
 	if ([self hasRemote]) {
 		WPDataController *dc = [[WPDataController alloc] init];
 		[dc  wpDeletePage:self];
 		if(dc.error) {
-			*error = dc.error;
+			if (error != nil) 
+				*error = dc.error;
 			WPLog(@"Error while deleting page: %@", [*error localizedDescription]);
 		} else {
+			res = YES; //the page doesn't exist anymore on the server. we can return YES even if there are errors deleting it from db
 			[super removeWithError:nil]; 
 		}
 		[dc release];
 	} else {
 		//we should remove the post from the db even if it is a "LocalDraft"
-		[super removeWithError:nil]; 
+		res = [super removeWithError:nil]; 
 	}
+	return res;
 }
 
 @end

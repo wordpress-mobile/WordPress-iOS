@@ -238,13 +238,14 @@
 	WPDataController *dc = [[WPDataController alloc] init];
 	NSMutableArray *posts = [dc getRecentPostsForBlog:self number:[NSNumber numberWithInt:num]];
 	if(dc.error) {
-		*error = dc.error;
+		if (error != nil) 
+			*error = dc.error;
 		WPLog(@"Error syncing blog posts: %@", [*error localizedDescription]);
 		[dc release];
 		self.isSyncingPosts = NO;
 		return NO;
 	}
-
+	
     // If we asked for more and we got what we had, there are no more posts to load
     if (more && ([posts count] <= [self.posts count])) {
         self.hasOlderPosts = [NSNumber numberWithBool:NO];
@@ -296,7 +297,8 @@
 	WPDataController *dc = [[WPDataController alloc] init];
     NSMutableArray *pages = [dc wpGetPages:self number:[NSNumber numberWithInt:10]];
 	if(dc.error) {
-		*error = dc.error;
+		if (error != nil) 
+			*error = dc.error;
 		WPLog(@"Error syncing blog pages: %@", [*error localizedDescription]);
 		[dc release];
 		self.isSyncingPages = NO;
@@ -323,7 +325,8 @@
 	WPDataController *dc = [[WPDataController alloc] init];
 	NSMutableArray *categories = [dc getCategoriesForBlog:self];
 	if(dc.error) {
-		*error = dc.error;
+		if (error != nil) 
+			*error = dc.error;
 		 WPLog(@"Error syncing categories: %@", [*error localizedDescription]);
 		[dc release];
 		return NO;
@@ -354,7 +357,8 @@
 	WPDataController *dc = [[WPDataController alloc] init];
     NSMutableArray *comments = [dc wpGetCommentsForBlog:self];
 	if(dc.error) {
-		*error = dc.error;
+		if (error != nil) 
+			*error = dc.error;
 		self.isSyncingComments = NO;
 		WPLog(@"Error syncing comments: %@", [*error localizedDescription]);
 		[dc release];
