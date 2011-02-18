@@ -287,13 +287,12 @@
     NSArray *args = [NSArray arrayWithObject:categoryDict];
     [request setMethod:@"wp.newCategory" withObjects:[self getXMLRPCArgsForBlog:category.blog withExtraArgs:args]];
     NSNumber *categoryID = [self executeXMLRPCRequest:request];
-    if ([category isKindOfClass:[NSError class]]) {
+    if (self.error) {
         NSLog(@"Error creating category: %@", categoryID);
         return -1;
     } else {
         return [categoryID intValue];
     }
-
 }
 
 #pragma mark -

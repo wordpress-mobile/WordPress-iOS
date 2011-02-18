@@ -78,15 +78,12 @@
 
 - (void)saveOnBackground:(NSString *)categoryName {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
-    Category *newCat = [Category createCategory:categoryName parent:parentCat forBlog:self.blog];
-    /*
-	if (newCat != nil) {
-		[self performSelectorOnMainThread:@selector(showErrorAlert) withObject:nil waitUntilDone:NO];
-	}
-	*/
+	NSError *error = nil;
+    [Category createCategoryWithError:categoryName parent:parentCat forBlog:self.blog  error:&error];
+	if(error) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error];
+	} 
 	[self performSelectorOnMainThread:@selector(didSaveOnBackground) withObject:nil waitUntilDone:NO];
-    
     [pool release];
 }
 

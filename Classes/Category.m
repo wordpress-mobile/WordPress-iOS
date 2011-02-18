@@ -71,20 +71,27 @@
     return category;
 }
 
-+ (Category *)createCategory:(NSString *)name parent:(Category *)parent forBlog:(Blog *)blog {
++ (Category *)createCategoryWithError:(NSString *)name parent:(Category *)parent forBlog:(Blog *)blog error:(NSError **)error{
     Category *category = [Category newCategoryForBlog:blog];
+	WPDataController *dc = [[WPDataController alloc] init];
     category.categoryName = name;
 	if (parent.categoryID != nil)
 		category.parentID = parent.categoryID;
-    int newID = [[WPDataController sharedInstance] wpNewCategory:category];
-    if (newID > 0) {
+    int newID = [dc wpNewCategory:category];
+	if(dc.error) {
+		*error = dc.error;
+		WPLog(@"Error while creating category: %@", [*error localizedDescription]);
+	}
+    if (newID > 0 && !dc.error) {
         category.categoryID = [NSNumber numberWithInt:newID];
         [blog dataSave]; // Commit core data changes
+		[dc release];
         return [category autorelease];
     } else {
         // Just in case another thread has saved while we were creating
         [[blog managedObjectContext] deleteObject:category];
         [category release];
+		[dc release];
         return nil;
     }
 }
