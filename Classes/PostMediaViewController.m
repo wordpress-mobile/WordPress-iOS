@@ -724,6 +724,7 @@
 			[pickerContainer dismissModalViewControllerAnimated:NO];
 			pickerContainer.view.frame = CGRectMake(0, 2000, 0, 0);
 		}
+		
 	}
 }
 
@@ -973,6 +974,10 @@
     [imageMedia upload];
 	
 	isAddingMedia = NO;
+	
+	//switch to the attachment view if we're not already there
+		[postDetailViewController switchToMedia];
+	
 	[formatter release];
     [imageMedia release];
 }
@@ -1023,6 +1028,9 @@
 
 		[videoMedia upload];
 		isAddingMedia = NO;
+		
+		//switch to the attachment view if we're not already there
+		[postDetailViewController switchToMedia];
 	}
 	else {
 		UIAlertView *videoAlert = [[UIAlertView alloc] initWithTitle:@"Error Copying Video" 
