@@ -996,7 +996,7 @@
 	isAddingMedia = NO;
 	
 	//switch to the attachment view if we're not already there
-		[postDetailViewController switchToMedia];
+	[postDetailViewController switchToMedia];
 	
 	[formatter release];
     [imageMedia release];
@@ -1048,6 +1048,9 @@
 
 		[videoMedia upload];
 		isAddingMedia = NO;
+		
+		//switch to the attachment view if we're not already there 
+		[postDetailViewController switchToMedia];
 	}
 	else {
 		UIAlertView *videoAlert = [[UIAlertView alloc] initWithTitle:@"Error Copying Video" 
