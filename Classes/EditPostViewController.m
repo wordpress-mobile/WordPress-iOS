@@ -546,11 +546,23 @@ NSTimeInterval kAnimationDuration = 0.3f;
             [self discard];
         }
         
-        if (buttonIndex == 1) {
-			if([self isAFreshlyCreatedDraft]) 
-				self.apost.statusTitle = @"Draft";
+        if (buttonIndex == 1) {  
+			if ([actionSheet numberOfButtons] == 2)
+				[actionSheet dismissWithClickedButtonIndex:0 animated:YES];
+			else {
+				if([self isAFreshlyCreatedDraft])
+					self.apost.statusTitle = @"Draft";
+				
+				if (![self.apost hasRemote])
+					[self savePost:NO];
+				else
+					[self savePost:YES];
+				
+			}
+
 			
-			[self savePost:NO];
+	
+			
         }
     }
     
@@ -568,9 +580,15 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[postSettingsController endEditingAction:nil];
 	[self endEditingAction:nil];
     
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
+	UIActionSheet *actionSheet;
+	if (![self.apost hasRemote])
+		actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
                                                              delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Discard"
                                                     otherButtonTitles:@"Save", nil];
+	else
+		actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
+												  delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Discard"
+										 otherButtonTitles:nil];
     actionSheet.tag = 201;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
     [actionSheet showInView:self.view];
