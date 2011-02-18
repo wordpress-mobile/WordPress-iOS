@@ -203,6 +203,8 @@ Classes/StatsTableCell.m -text
 Classes/StatsTableViewController.h -text
 Classes/StatsTableViewController.m -text
 Classes/StatsTableViewController.xib -text
+Classes/StringUtils.h -text
+Classes/StringUtils.m -text
 Classes/TransparentToolbar.h -text
 Classes/TransparentToolbar.m -text
 Classes/UIDevice-Hardware.h -text

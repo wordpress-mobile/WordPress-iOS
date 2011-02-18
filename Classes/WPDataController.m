@@ -118,7 +118,7 @@
     NSString *rsdURL = [[request responseString] stringByMatching:@"<link rel=\"EditURI\" type=\"application/rsd\\+xml\" title=\"RSD\" href=\"([^\"]*)\"[^/]*/>" capture:1];
     if (rsdURL != nil) {
         WPLog(@"rsdURL: %@", rsdURL);
-        xmlrpc = [rsdURL stringByReplacingOccurrencesOfRegex:@"?rsd$" withString:@""];
+        xmlrpc = [rsdURL stringByReplacingOccurrencesOfString:@"?rsd" withString:@""];
         WPLog(@"xmlrpc from rsd url: %@", xmlrpc);
         if (![xmlrpc isEqualToString:rsdURL]) {
             [req setHost:[NSURL URLWithString:xmlrpc]];

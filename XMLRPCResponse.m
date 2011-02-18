@@ -29,6 +29,7 @@
 #import "XMLRPCResponse.h"
 #import "XMLRPCDecoder.h"
 #import "CTidy.h"
+#import "StringUtils.h"
 
 @implementation XMLRPCResponse
 
@@ -41,9 +42,14 @@
 
 	if (self = [super init])
 	{
-		
 		//cleaning the XML-RPC response message
 		NSString  *str = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+		
+		//when there are characters outside the UTF-8 charset the str is nil at this point
+		if(data != nil && str == nil) {
+			str = [StringUtils makeValidUTF8:[[[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding] autorelease]];
+		}
+				
 		//get rid of weird characters before the xml preamble
 		int responseLenght = [str length];
 		//NSLog (@"String length is %i", responseLenght);
