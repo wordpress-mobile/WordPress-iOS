@@ -109,6 +109,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (void)resignTextView;
 - (void)showLinkView;
 - (void)disableInteraction;
+- (void)savePost: (BOOL)upload;
 
 // Media
 - (void)insertMediaAbove:(NSNotification *)notification;

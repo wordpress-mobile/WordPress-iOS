@@ -523,15 +523,21 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (IBAction)saveAction:(id)sender {
-    self.apost.postTitle = titleTextField.text;
+	[self savePost:YES];
+}
+
+- (void)savePost: (BOOL)upload{
+	self.apost.postTitle = titleTextField.text;
     self.apost.content = textView.text;
 	if ([self.apost.content rangeOfString:@"<!--more-->"].location != NSNotFound)
 		self.apost.mt_text_more = @"";
     
     [self.view endEditing:YES];
     [self.apost.original applyRevision];
-    [self.apost.original upload];
+	if (upload)
+		[self.apost.original upload];
     [self dismissEditView];
+
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -544,7 +550,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			if([self isAFreshlyCreatedDraft]) 
 				self.apost.statusTitle = @"Draft";
 			
-			[self saveAction:self];
+			[self savePost:NO];
         }
     }
     
