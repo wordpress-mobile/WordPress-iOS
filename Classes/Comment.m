@@ -97,14 +97,18 @@
 }
 
 - (void)findPost {
-    if (self.post && [self.post.postID isEqual:self.postID]) {
+    if (self.post && self.postID && [self.post.postID isEqual:self.postID]) {
         return;
     }
+	
+	if(self.postID) {
     NSSet *posts = [self.blog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"postID == %@", self.postID]];
     
     if (posts && [posts count] > 0) {
         self.post = [posts anyObject];
     }
+	
+	}
 }
 
 - (Comment *)newReply {

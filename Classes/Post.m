@@ -19,7 +19,7 @@
 
 @dynamic geolocation, tags;
 @dynamic latitudeID, longitudeID, publicID;
-@dynamic categories, comments;
+@dynamic categories;
 
 + (Post *)newPostForBlog:(Blog *)blog {
     Post *post = [[Post alloc] initWithEntity:[NSEntityDescription entityForName:@"Post"
@@ -216,14 +216,6 @@
     if (![self.categories isEqual:((Post *)self.original).categories]) return YES;
 
     return NO;
-}
-
-- (void)findComments {
-    NSSet *comments = [self.blog.comments filteredSetUsingPredicate:
-                       [NSPredicate predicateWithFormat:@"(postID == %@) AND (post == NULL)", self.postID]];
-    if (comments && [comments count] > 0) {
-        [self.comments unionSet:comments];
-    }
 }
 
 @end

@@ -28,7 +28,6 @@
 
 #pragma mark     Relationships
 @property (nonatomic, retain) NSMutableSet * categories;
-@property (nonatomic, retain) NSMutableSet * comments;
 
 #pragma mark -
 #pragma mark Methods
@@ -36,7 +35,6 @@
 // Returns categories as a comma-separated list
 - (NSString *)categoriesText;
 - (void)setCategoriesFromNames:(NSArray *)categoryNames;
-- (void)findComments;
 
 #pragma mark     Data Management
 // Autosave for local drafts

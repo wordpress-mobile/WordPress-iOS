@@ -18,6 +18,7 @@
 @dynamic author, content, date_created_gmt, postID, postTitle, status, password, remoteStatusNumber, permaLink, 
 		mt_excerpt, mt_text_more, wp_slug;
 @dynamic blog, media;
+@dynamic comments;
 
 + (NSString *)titleForStatus:(NSString *)status {
     if ([status isEqualToString:@"draft"]) {
@@ -229,4 +230,14 @@
 	else
 		self.date_created_gmt = [DateUtils localDateToGMTDate:localDate];
 }
+
+
+- (void)findComments {
+    NSSet *comments = [self.blog.comments filteredSetUsingPredicate:
+                       [NSPredicate predicateWithFormat:@"(postID == %@) AND (post == NULL)", self.postID]];
+    if (comments && [comments count] > 0) {
+        [self.comments unionSet:comments];
+    }
+}
+
 @end

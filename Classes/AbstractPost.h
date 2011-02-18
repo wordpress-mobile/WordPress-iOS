@@ -42,6 +42,7 @@ typedef enum {
 @property (nonatomic, retain) NSMutableSet * media;
 @property (readonly) AbstractPost *original;
 @property (readonly) AbstractPost *revision;
+@property (nonatomic, retain) NSMutableSet * comments;
 
 @property (readonly) BOOL hasChanges;
 
@@ -62,6 +63,9 @@ typedef enum {
 - (void)applyRevision;
 - (BOOL)isRevision;
 - (BOOL)isOriginal;
+
+//comments
+- (void)findComments;
 
 // Subclass methods
 - (void)upload;

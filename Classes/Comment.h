@@ -34,7 +34,7 @@ typedef enum {
 @property (nonatomic, retain) NSString * status;
 @property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) Blog * blog;
-@property (nonatomic, retain) Post * post;
+@property (nonatomic, retain) AbstractPost * post;
 
 + (Comment *)findWithBlog:(Blog *)blog andCommentID:(NSNumber *)commentID;
 // Takes the NSDictionary from a XMLRPC call and creates or updates a post
