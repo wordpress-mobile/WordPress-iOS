@@ -132,4 +132,10 @@ NSString *md5(NSString *str) {
             ];
 }
 
+//override this method to upgrade the image view when the data are available 
+- (void)connectionDidFinishLoading:(NSURLConnection *)theConnection { 
+ 	[super connectionDidFinishLoading:theConnection]; 
+ 	[self setNeedsDisplay]; 
+}
+
 @end

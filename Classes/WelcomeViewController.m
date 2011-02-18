@@ -24,7 +24,7 @@
 	if(DeviceIsPad()) {
 		self.tableView.backgroundView = nil;
 		UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] 
-										 initWithTitle:@"Cancel" 
+										 initWithTitle:@"Close" 
 										 style:UIBarButtonItemStylePlain 
 										 target:self action:@selector(cancel:)];
 		self.navigationItem.leftBarButtonItem = cancelButton;

@@ -386,6 +386,7 @@
 		[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
 	}
 	isSigningIn = NO;
+	[self refreshTable];
 	[pool release];
 }
 
