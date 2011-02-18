@@ -294,9 +294,6 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 }
 
 
-
-
-
 #pragma mark -
 #pragma mark Comment Handling Methods
 
@@ -322,16 +319,20 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 
 - (void)saveReplyBackgroundMethod:(id)sender {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
+	BOOL res = NO;
     if ([self isConnectedToHost]) {
-        [self.comment upload];
+        res = [self.comment upload];
     }
-
     [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
     [progressAlert release];
     progressAlert = nil;
-    hasChanges = NO;
-    [commentViewController performSelectorOnMainThread:@selector(cancelView:) withObject:self waitUntilDone:YES];
+	if(res) {
+		hasChanges = NO;
+		[commentViewController performSelectorOnMainThread:@selector(cancelView:) withObject:self waitUntilDone:YES];
+	} else {
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:@"Something went wrong during comments moderation."];	
+	}
+	
     [pool release];
 }
 

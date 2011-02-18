@@ -43,12 +43,12 @@ typedef enum {
 - (void)findPost;
 - (Comment *)newReply;
 
-- (void)upload;
+- (BOOL)upload;
 
 // Moderation
-- (void)approve;
-- (void)unapprove;
-- (void)spam;
-- (void)remove;
+- (BOOL)approve;
+- (BOOL)unapprove;
+- (BOOL)spam;
+- (BOOL)remove;
 
 @end

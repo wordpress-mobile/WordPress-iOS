@@ -288,17 +288,21 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 // saveEditBackgroundMethod...
 - (void)saveEditBackgroundMethod:(id)sender {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
+	BOOL res = NO;
 	if ([self isConnectedToHost]) {
-        [self.comment upload];
+        res = [self.comment upload];
 	}
 	
 	[progressAlert dismissWithClickedButtonIndex:0 animated:YES];
 	[progressAlert release];
-	
-	self.hasChanges = NO;
-	if (DeviceIsPad() == YES) {
-		[commentViewController performSelectorOnMainThread:@selector(cancelView:) withObject:self waitUntilDone:NO];
+	if(res) {
+		self.hasChanges = NO;
+		if (DeviceIsPad() == YES) {
+			[commentViewController performSelectorOnMainThread:@selector(cancelView:) withObject:self waitUntilDone:NO];
+		}
+	} else {
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:@"Something went wrong during comments moderation."];	
+		
 	}
 	
 	[pool release];

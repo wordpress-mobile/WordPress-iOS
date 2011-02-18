@@ -445,14 +445,16 @@
 
 - (void)moderateCommentWithSelector:(SEL)selector {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
+	BOOL fails = NO;
     if ([self isConnectedToHost]) {
         [self.comment performSelector:selector];
         [self.navigationController popViewControllerAnimated:YES];
     }
-
+	
     [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
     [progressAlert release];
+	if(fails)
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:@"Something went wrong during comments moderation."];	
     [pool release];
 }
 
@@ -628,8 +630,11 @@
 	[commentAuthorEmailButton setTitle:[comment.author_email trim] forState:UIControlStateSelected];
     if (comment.postTitle)
         commentPostTitleLabel.text = [@"on " stringByAppendingString:[comment.postTitle trim]];
-    commentDateLabel.text = [@"" stringByAppendingString:[dateFormatter stringFromDate:comment.dateCreated]];
-    commentBodyLabel.text = [comment.content trim];
+	if(comment.dateCreated != nil)
+		commentDateLabel.text = [@"" stringByAppendingString:[dateFormatter stringFromDate:comment.dateCreated]];
+	else
+		commentDateLabel.text = @"";
+	commentBodyLabel.text = [comment.content trim];
     
     [self resizeCommentBodyLabel];
 

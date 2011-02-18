@@ -196,8 +196,10 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	//listener for XML-RPC errors
 	//in the future we could put the errors message in a dedicated screen that users can bring to front when samething went wrong, and can take a look at the error msg.
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:kXML_RPC_ERROR_OCCURS object:nil];
-	//TODO: we should a screen? in which print the error msgs that are from async uploading errors --> PostUploadFailed
-		
+	//TODO: we should add a screen? in which print the error msgs that are from async uploading errors --> PostUploadFailed
+	
+	// another notification message came from comments --> CommentUploadFailed
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:@"CommentUploadFailed" object:nil];
 	
 	// Check for pending crash reports
 	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
@@ -300,8 +302,13 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)showNotificationErrorAlert:(NSNotification *)notification {
-	NSError *err  = (NSError *)[notification object];
-	[self showAlertWithTitle:@"Error" message:[err localizedDescription]];
+	if([[notification object] isKindOfClass:[NSError class]]) {
+		NSError *err  = (NSError *)[notification object];
+		[self showAlertWithTitle:@"Error" message:[err localizedDescription]];
+	} else {
+		NSString *errStr  = (NSString *)[notification object];
+		[self showAlertWithTitle:@"Error" message:errStr];
+	}
 }
 
 

@@ -298,13 +298,16 @@
 
 - (void)moderateCommentsWithSelector:(SEL)selector {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
+	BOOL fails = NO;
     for (Comment *comment in selectedComments) {
-        [comment performSelector:selector];
+        if(![comment performSelector:selector])
+			fails = YES;
     }
-	
     [self performSelectorOnMainThread:@selector(didModerateComments) withObject:nil waitUntilDone:NO];
-    [pool release];
+    
+	if(fails)
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:@"Something went wrong during comments moderation."];
+	[pool release];
 }
 
 - (void)deleteComments {

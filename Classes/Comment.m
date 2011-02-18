@@ -129,45 +129,73 @@
 
 }
 
-- (void)upload {
+- (BOOL)upload {
     if (self.commentID) {
-        [[WPDataController sharedInstance] wpEditComment:self];
+        if([[WPDataController sharedInstance] wpEditComment:self]) {
+			//OK
+		    [self save];
+			return YES;
+		} 
     } else {
         NSNumber *commentID = [[WPDataController sharedInstance] wpNewComment:self];
-        if (commentID)
-            self.commentID = commentID;
-    }
-    [self save];
+        if (commentID) {
+			self.commentID = commentID;
+			[self save];
+			return YES;
+		}
+	}
+	return NO;
 }
 
 #pragma mark -
 #pragma mark Moderation
-- (void)approve {
+- (BOOL)approve {
+	NSString *prevStatus = self.status;
     if (![self.status isEqualToString:@"approve"]) {
         self.status = @"approve";
     }
-    [self upload];
+    if(![self upload]) {
+		self.status = prevStatus;
+		return NO;
+	}
+	return YES;
 }
 
-- (void)unapprove {
+- (BOOL)unapprove {
+	NSString *prevStatus = self.status;
     if (![self.status isEqualToString:@"hold"]) {
         self.status = @"hold";
     }
-    [self upload];
+    if(![self upload]) {
+		self.status = prevStatus;
+		return NO;
+	}
+	
+	return YES;	
 }
 
-- (void)spam {
+- (BOOL)spam {
+	NSString *prevStatus = self.status;
     if (![self.status isEqualToString:@"spam"]) {
         self.status = @"spam";
     }
-    [self upload];
-    [[self managedObjectContext] deleteObject:self];
+	if(![self upload]) {
+		self.status = prevStatus;
+		return NO;
+	} else {
+		[[self managedObjectContext] deleteObject:self];
+	}
+	
+	return YES;	
 }
 
-- (void)remove {
+- (BOOL)remove {
     if ([[WPDataController sharedInstance] wpDeleteComment:self]) {
         [[self managedObjectContext] deleteObject:self];
-    }
+    } else 
+		return NO;
+	
+	return YES;
 }
 
 @end
