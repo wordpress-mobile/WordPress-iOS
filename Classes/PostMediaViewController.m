@@ -307,16 +307,32 @@
 	else if(isShowingResizeActionSheet == YES) {
 		switch (buttonIndex) {
 			case 0:
-				[self useImage:[self resizeImage:currentImage toSize:kResizeSmall]];
+				if (actionSheet.numberOfButtons == 2)
+					[self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
+				else 
+					[self useImage:[self resizeImage:currentImage toSize:kResizeSmall]];
 				break;
 			case 1:
-				[self useImage:[self resizeImage:currentImage toSize:kResizeMedium]];
+				if (actionSheet.numberOfButtons == 2)
+					[self showCustomSizeAlert];
+				else if (actionSheet.numberOfButtons == 3)
+					[self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
+				else
+					[self useImage:[self resizeImage:currentImage toSize:kResizeMedium]];
 				break;
 			case 2:
-				[self useImage:[self resizeImage:currentImage toSize:kResizeLarge]];
+				if (actionSheet.numberOfButtons == 3)
+					[self showCustomSizeAlert];
+				else if (actionSheet.numberOfButtons == 4)
+					[self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
+				else
+					[self useImage:[self resizeImage:currentImage toSize:kResizeLarge]];
 				break;
 			case 3:
-				[self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
+				if (actionSheet.numberOfButtons == 4)
+					[self showCustomSizeAlert];
+				else
+					[self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
 				break;
 			case 4: 
 				[self showCustomSizeAlert]; 
@@ -875,13 +891,6 @@
 			smallSize = CGSizeMake(240, 180);
 			mediumSize = CGSizeMake(480, 360);
 			largeSize = CGSizeMake(640, 480);
-			if([[UIDevice currentDevice] platformString] == IPHONE_4G_NAMESTRING)
-				originalSize = CGSizeMake(2592, 1936);
-			else if([[UIDevice currentDevice] platformString] == IPHONE_3GS_NAMESTRING)
-				originalSize = CGSizeMake(2048, 1536);
-			else
-				originalSize = CGSizeMake(1600, 1200);
-			break;
 		case UIImageOrientationLeft:
 		case UIImageOrientationLeftMirrored:
 		case UIImageOrientationRight:
@@ -889,31 +898,42 @@
 			smallSize = CGSizeMake(180, 240);
 			mediumSize = CGSizeMake(360, 480);
 			largeSize = CGSizeMake(480, 640);
-			if([[UIDevice currentDevice] platformString] == IPHONE_4G_NAMESTRING)
-				originalSize = CGSizeMake(1936, 2592);
-			else if([[UIDevice currentDevice] platformString] == IPHONE_3GS_NAMESTRING)
-				originalSize = CGSizeMake(1536, 2048);
-			else
-				originalSize = CGSizeMake(1200, 1600);
 	}
+	
+	originalSize = CGSizeMake(currentImage.size.width, currentImage.size.height); //The dimensions of the image, taking orientation into account.
 	
 	// Resize the image using the selected dimensions
 	UIImage *resizedImage = original;
 	switch (resize) {
 		case kResizeSmall:
-			resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFill 
-														  bounds:smallSize 
-											interpolationQuality:kCGInterpolationHigh];
+			if(currentImage.size.width > smallSize.width  && currentImage.size.height > smallSize.height)
+				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFill  
+															  bounds:smallSize  
+												interpolationQuality:kCGInterpolationHigh]; 
+			else  
+				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFill  
+															  bounds:originalSize  
+												interpolationQuality:kCGInterpolationHigh];
 			break;
 		case kResizeMedium:
-			resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFill 
-														  bounds:mediumSize 
-											interpolationQuality:kCGInterpolationHigh];
+			if(currentImage.size.width > mediumSize.width  && currentImage.size.height > mediumSize.height) 
+				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFill  
+															  bounds:mediumSize  
+												interpolationQuality:kCGInterpolationHigh]; 
+			else  
+				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFill  
+															  bounds:originalSize  
+												interpolationQuality:kCGInterpolationHigh];
 			break;
 		case kResizeLarge:
-			resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFill 
-														  bounds:largeSize 
-											interpolationQuality:kCGInterpolationHigh];
+			if(currentImage.size.width > largeSize.width && currentImage.size.height > largeSize.height) 
+				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFill  
+															  bounds:largeSize  
+												interpolationQuality:kCGInterpolationHigh]; 
+			else  
+				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFill  
+															  bounds:originalSize  
+												interpolationQuality:kCGInterpolationHigh];
 			break;
 		case kResizeOriginal:
 			resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFill 
@@ -1028,9 +1048,6 @@
 
 		[videoMedia upload];
 		isAddingMedia = NO;
-		
-		//switch to the attachment view if we're not already there
-		[postDetailViewController switchToMedia];
 	}
 	else {
 		UIAlertView *videoAlert = [[UIAlertView alloc] initWithTitle:@"Error Copying Video" 
