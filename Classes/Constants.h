@@ -81,6 +81,7 @@
 #define VideoUploadSuccessful @"VideoUploadSuccessful"
 #define VideoUploadFailed @"VideoUploadFailed"
 #define WPNewCategoryCreatedAndUpdatedInBlogNotificationName @"WPNewCategoryCreatedAndUpdatedInBlog"
+#define kXML_RPC_ERROR_OCCURS @"kXML_RPC_ERROR_OCCURS"
 #define kURL @"URL"
 #define kMETHOD @"METHOD"
 #define kMETHODARGS @"METHODARGS"

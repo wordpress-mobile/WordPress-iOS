@@ -532,7 +532,6 @@
 	[xmlrpcRequest setMethod:@"wp.getComments" withObjects:[self getXMLRPCArgsForBlog:blog withExtraArgs:args]];
     NSArray *recentComments = [self executeXMLRPCRequest:xmlrpcRequest];
 	[xmlrpcRequest release];
-    
     if ([recentComments isKindOfClass:[NSError class]]) {
         NSLog(@"Couldn't get recent comments: %@", [(NSError *)recentComments localizedDescription]);
         return [NSMutableArray array];
@@ -624,6 +623,7 @@
 	NSError *err = [request error];
     if (err) {
         self.error = err;
+		//[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:err];
         NSLog(@"executeXMLRPCRequest error: %@", err);
         return err;
     }
@@ -633,6 +633,7 @@
     if (statusCode >= 404) {
         NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:[request responseStatusMessage], NSLocalizedDescriptionKey, nil];
         self.error = [NSError errorWithDomain:@"org.wordpress.iphone" code:statusCode userInfo:usrInfo];
+		//[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:self.error];
         return self.error;
     }
 	NSLog(@"executeXMLRPCRequest response: %@", [request responseString]);
@@ -642,6 +643,7 @@
         // Not an xml document, don't parse
         NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Response is not XML", NSLocalizedDescriptionKey, nil];
         self.error = [NSError errorWithDomain:@"org.wordpress.iphone" code:kNoXMLPrefix userInfo:usrInfo];
+		//[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:self.error];
         return self.error;
     }
 	
@@ -649,10 +651,12 @@
 		
     err = [self errorWithResponse:userInfoResponse];
 	
-    if (err)
+    if (err) {
+		self.error = err;
         return err;
-	
-	
+	} else 	
+		self.error = nil;
+		
     return [userInfoResponse object];
 }
 
@@ -671,9 +675,8 @@
             err = [res object];
         }
     }
-	
-    self.error = err;
-    return err;
+    
+	return err;
 }
 
 @end

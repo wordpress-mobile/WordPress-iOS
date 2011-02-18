@@ -193,6 +193,12 @@ static WordPressAppDelegate *wordPressApp = NULL;
 												 name:@"CrashReporterIsFinished" object:nil];
 	
 	
+	//listener for XML-RPC errors: XML-RPC Errors are usually handled by the caller, but UI is pretty Async and we are not showing detailed msg in the app. 
+	//In other words we are not showing an alert.
+	//in the future we could put the errors message in a dedicated screen that users can bring to front when samething went wrong, and can take a look at the error msg.
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(xmlrpcErrorNotificationReceived:) name:kXML_RPC_ERROR_OCCURS object:nil];
+	
+	
 	// Check for pending crash reports
 	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
 	NSError *error;
@@ -396,6 +402,18 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		[request release];
 	}
 }
+
+
+- (void)xmlrpcErrorNotificationReceived:(NSNotification *)notification {
+	NSError *err  = (NSError *)[notification object];
+	UIAlertView *alert2 = [[UIAlertView alloc] initWithTitle:@"Error."
+													 message:[err localizedDescription]
+													delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	
+	[alert2 show];
+}
+
+
 
 #pragma mark -
 #pragma mark Core Data stack

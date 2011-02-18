@@ -235,16 +235,16 @@
     }
 
     WPLog(@"Loading %i posts...", num);
-    NSMutableArray *posts = [[WPDataController sharedInstance] getRecentPostsForBlog:self number:[NSNumber numberWithInt:num]];
-    if ([posts isKindOfClass:[NSError class]]) {
-        if (error != nil) {
-            *error = (NSError *)posts;
-            // TODO: show alert to user?
-            NSLog(@"Error syncing blog posts: %@", [*error localizedDescription]);            
-        }
-        return NO;
-    }
-    
+	WPDataController *dc = [[WPDataController alloc] init];
+	NSMutableArray *posts = [dc getRecentPostsForBlog:self number:[NSNumber numberWithInt:num]];
+	if(dc.error) {
+		*error = dc.error;
+		WPLog(@"Error syncing blog posts: %@", [*error localizedDescription]);
+		[dc release];
+		self.isSyncingPosts = NO;
+		return NO;
+	}
+
     // If we asked for more and we got what we had, there are no more posts to load
     if (more && ([posts count] <= [self.posts count])) {
         self.hasOlderPosts = [NSNumber numberWithBool:NO];
@@ -252,7 +252,7 @@
     [self performSelectorOnMainThread:@selector(syncPostsFromResults:) withObject:posts waitUntilDone:YES];
     self.lastPostsSync = [NSDate date];
     self.isSyncingPosts = NO;
-
+	[dc release];
     return YES;
 }
 
@@ -293,20 +293,21 @@
     }
     self.isSyncingPages = YES;
 	
-    NSMutableArray *pages = [[WPDataController sharedInstance] wpGetPages:self number:[NSNumber numberWithInt:10]];
-    if ([pages isKindOfClass:[NSError class]]) {
-        if (error != nil) {
-            *error = (NSError *)pages;
-            // TODO: show alert to user?
-            NSLog(@"Error syncing blog pages: %@", [*error localizedDescription]);
-        }
-        return NO;
-    }
-    [self performSelectorOnMainThread:@selector(syncPagesFromResults:) withObject:pages waitUntilDone:YES];
-    
+	WPDataController *dc = [[WPDataController alloc] init];
+    NSMutableArray *pages = [dc wpGetPages:self number:[NSNumber numberWithInt:10]];
+	if(dc.error) {
+		*error = dc.error;
+		WPLog(@"Error syncing blog pages: %@", [*error localizedDescription]);
+		[dc release];
+		self.isSyncingPages = NO;
+		return NO;
+	}
 	
+    [self performSelectorOnMainThread:@selector(syncPagesFromResults:) withObject:pages waitUntilDone:YES];
+    	
 	self.lastPagesSync = [NSDate date];
     self.isSyncingPages = NO;
+	[dc release];
     return YES;
 }
 
@@ -319,18 +320,17 @@
 }
 
 - (BOOL)syncCategoriesWithError:(NSError **)error {
-    NSMutableArray *categories = [[WPDataController sharedInstance] getCategoriesForBlog:self];
-    if ([categories isKindOfClass:[NSError class]]) {
-        if (error != nil) {
-            *error = (NSError *)categories;
-            // TODO: show alert to user?
-            NSLog(@"Error syncing categories: %@", [*error localizedDescription]);
-        }
-        return NO;
-    }
+	WPDataController *dc = [[WPDataController alloc] init];
+	NSMutableArray *categories = [dc getCategoriesForBlog:self];
+	if(dc.error) {
+		*error = dc.error;
+		 WPLog(@"Error syncing categories: %@", [*error localizedDescription]);
+		[dc release];
+		return NO;
+	}
     [self performSelectorOnMainThread:@selector(syncCategoriesFromResults:) withObject:categories waitUntilDone:YES];
-
-    return YES;
+    [dc release];
+	return YES;
 }
 
 - (BOOL)syncCommentsFromResults:(NSMutableArray *)comments {
@@ -351,19 +351,21 @@
     }
     self.isSyncingComments = YES;
 	
-    NSMutableArray *comments = [[WPDataController sharedInstance] wpGetCommentsForBlog:self];
-    if ([comments isKindOfClass:[NSError class]]) {
-        if (error != nil) {
-            *error = (NSError *)comments;
-            // TODO: show alert to user?
-            NSLog(@"Error syncing comments: %@", [*error localizedDescription]);
-        }
-        return NO;
-    }
+	WPDataController *dc = [[WPDataController alloc] init];
+    NSMutableArray *comments = [dc wpGetCommentsForBlog:self];
+	if(dc.error) {
+		*error = dc.error;
+		self.isSyncingComments = NO;
+		WPLog(@"Error syncing comments: %@", [*error localizedDescription]);
+		[dc release];
+		return NO;
+	}
+	
     [self performSelectorOnMainThread:@selector(syncCommentsFromResults:) withObject:comments waitUntilDone:YES];
     
 	self.lastCommentsSync = [NSDate date];
     self.isSyncingComments = NO;
+	[dc release];
     return YES;
 }
 

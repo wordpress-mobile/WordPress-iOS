@@ -80,11 +80,11 @@
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
     Category *newCat = [Category createCategory:categoryName parent:parentCat forBlog:self.blog];
-    
+    /*
 	if (newCat != nil) {
 		[self performSelectorOnMainThread:@selector(showErrorAlert) withObject:nil waitUntilDone:NO];
 	}
-	
+	*/
 	[self performSelectorOnMainThread:@selector(didSaveOnBackground) withObject:nil waitUntilDone:NO];
     
     [pool release];
@@ -96,17 +96,6 @@
     [self clearUI];
     [self removeProgressIndicator];
     [self dismiss];
-}
-
-
-- (void)showErrorAlert {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	UIAlertView *alert2 = [[UIAlertView alloc] initWithTitle:@"Error."
-													 message:@"Something went wrong while adding the new category."
-													delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	
-	[alert2 show];
-	[pool release];
 }
 
 

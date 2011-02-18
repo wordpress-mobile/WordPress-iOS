@@ -16,9 +16,12 @@
 - (void)syncPosts {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     NSError *error = nil;
-    // TODO: handle errors
     [self.blog syncPagesWithError:&error];
-    [self performSelectorOnMainThread:@selector(refreshPostList) withObject:nil waitUntilDone:NO];
+	if(error)
+		[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error];
+	
+	[self performSelectorOnMainThread:@selector(refreshPostList) withObject:nil waitUntilDone:NO];
+	
     [pool release];
 }
 
