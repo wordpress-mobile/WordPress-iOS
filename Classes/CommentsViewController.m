@@ -134,13 +134,16 @@
     }
 	
 	//in same cases the lastSyncDate could be nil. Start a sync, so the user never get an ampty screen.
-	if([self lastSyncDate] == nil && ![self isSyncing]) {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	if(([self lastSyncDate] == nil && ![self isSyncing]) || [defaults boolForKey:@"refreshCommentsRequired"]) {
 		CGPoint offset = commentsTableView.contentOffset;
 		offset.y = - 65.0f;
 		commentsTableView.contentOffset = offset;
 		[commentsTableView setContentOffset:offset];
 		[_refreshHeaderView egoRefreshScrollViewDidEndDragging:commentsTableView];
+		[defaults setBool:false forKey:@"refreshCommentsRequired"];
 	}
+	
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

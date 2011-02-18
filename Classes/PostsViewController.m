@@ -93,19 +93,12 @@
 		
 	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	appDelegate.postID = nil;
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
-	if ([[WPReachability sharedReachability] internetConnectionStatus])
-	{
-		if ([defaults boolForKey:@"refreshPostsRequired"]) {
-            // Simulate drag instead of calling refreshHandler directly
-            // It's the only way the refresh header notices we are syncing
-            CGPoint offset = self.tableView.contentOffset;
-            offset.y = - 65.0f;
-            self.tableView.contentOffset = offset;
-            [_refreshHeaderView egoRefreshScrollViewDidEndDragging:self.tableView];
-			[defaults setBool:false forKey:@"refreshPostsRequired"];
-		}
+	if ([self refreshRequired] && [[WPReachability sharedReachability] internetConnectionStatus]) {
+		CGPoint offset = self.tableView.contentOffset;
+		offset.y = - 65.0f;
+		self.tableView.contentOffset = offset;
+		[_refreshHeaderView egoRefreshScrollViewDidEndDragging:self.tableView];
 	}
 
 	if (DeviceIsPad() == NO) {
@@ -609,6 +602,16 @@
             [self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
             break;
     }
+}
+
+- (BOOL)refreshRequired {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	if ([defaults boolForKey:@"refreshPostsRequired"]) { 
+		[defaults setBool:false forKey:@"refreshPostsRequired"];
+		return YES;
+	}
+	
+	return NO;
 }
 
 #pragma mark -

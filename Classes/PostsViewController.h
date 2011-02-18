@@ -29,5 +29,6 @@
 - (void)removeSpinnerFromCell:(NSIndexPath *)indexPath;
 - (void)showAddPostView;
 - (void)reselect;
+- (BOOL)refreshRequired;
 
 @end

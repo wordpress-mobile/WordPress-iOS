@@ -83,6 +83,16 @@
 	return self.blog.lastPagesSync;
 }
 
+- (BOOL)refreshRequired {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	if ([defaults boolForKey:@"refreshPagesRequired"]) { 
+		[defaults setBool:false forKey:@"refreshPagesRequired"];
+		return YES;
+	}
+	
+	return NO;
+}
+
 #pragma mark -
 #pragma mark Fetched results controller
 
