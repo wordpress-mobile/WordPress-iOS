@@ -557,12 +557,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 					[self savePost:NO];
 				else
 					[self savePost:YES];
-				
 			}
-
-			
-	
-			
         }
     }
     
