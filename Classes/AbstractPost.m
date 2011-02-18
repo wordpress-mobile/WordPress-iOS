@@ -60,7 +60,7 @@
     return ((self.postID != nil) && ([self.postID intValue] > 0));
 }
 
-- (void)remove {
+- (void)removeWithError:(NSError **)error {
     [[self managedObjectContext] deleteObject:self];
 }
 

@@ -333,11 +333,16 @@
 - (void)loadMore {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     NSError *error = nil;
-    // TODO: handle errors
     if (![self isSyncing] && [self.blog.hasOlderPosts boolValue]) {
         WPLog(@"We have older posts to load");
         [self.blog syncPostsWithError:&error loadMore:YES];
-        [self performSelectorOnMainThread:@selector(refreshPostList) withObject:nil waitUntilDone:NO];
+	    // TODO: handle errors. 
+		//This method is called so many times. if you show an error msg the app will be very unusable
+		if(error) {
+			//[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error];
+		} else {
+			[self performSelectorOnMainThread:@selector(refreshPostList) withObject:nil waitUntilDone:NO];
+		}
     }
     [self performSelectorOnMainThread:@selector(didLoadMore) withObject:nil waitUntilDone:NO];
     [pool release];
@@ -398,12 +403,18 @@
             //if reachability is good, delete post, and refresh view (sync posts)
             [mediaManager removeForPostID:[[[BlogDataManager sharedDataManager] currentPost] objectForKey:@"postid"] 
                                andBlogURL:[[[BlogDataManager sharedDataManager] currentBlog] objectForKey:@"url"]];
-            //delete post
+			
+            //delete post on the server
             Post *post = [resultsController objectAtIndexPath:indexPath];
-            [post remove];
+			NSError *error = nil;
             
-            //resync posts
-            [self syncPosts];
+			[post removeWithError:&error];
+			if(error) {
+				[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error];
+			} else {
+				//resync posts
+				[self syncPosts];
+			}
         }
 	}
 	

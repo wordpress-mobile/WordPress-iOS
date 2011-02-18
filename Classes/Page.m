@@ -111,11 +111,21 @@
     [self performSelectorInBackground:@selector(uploadInBackground) withObject:nil];
 }
 
-- (void)remove {
-    if ([self hasRemote] && [[WPDataController sharedInstance] wpDeletePage:self]) {
-
-    }
-	[super remove]; //we should remove the page from the db even if it is a "LocalDraft"
+- (void)removeWithError:(NSError **)error {
+	if ([self hasRemote]) {
+		WPDataController *dc = [[WPDataController alloc] init];
+		[dc  wpDeletePage:self];
+		if(dc.error) {
+			*error = dc.error;
+			WPLog(@"Error while deleting page: %@", [*error localizedDescription]);
+		} else {
+			[super removeWithError:nil]; 
+		}
+		[dc release];
+	} else {
+		//we should remove the post from the db even if it is a "LocalDraft"
+		[super removeWithError:nil]; 
+	}
 }
 
 @end

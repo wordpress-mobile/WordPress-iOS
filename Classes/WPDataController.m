@@ -394,7 +394,7 @@
     }
 
     // Result should be a string with the post ID
-    NSLog(@"newPost result: %@", result);
+    WPLog(@"newPost result: %@", result);
     return [result intValue];
 }
 
@@ -430,7 +430,7 @@
     [xmlrpcRequest setMethod:@"metaWeblog.deletePost" withObjects:args];
     id result = [self executeXMLRPCRequest:xmlrpcRequest];
     if ([result isKindOfClass:[NSError class]]) {
-        NSLog(@"mwEditPost failed: %@", result);
+        WPLog(@"metaWeblog.deletePost failed: %@", result);
         return NO;
     } else {
         return YES;

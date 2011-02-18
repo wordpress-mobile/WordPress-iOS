@@ -53,6 +53,7 @@
 - (void)handleCrashReport;
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message;
 - (void)showErrorAlert:(NSString *)message;
+- (void)showNotificationErrorAlert:(NSNotification *)notification;
 - (void)storeCurrentBlog;
 - (void)resetCurrentBlogInUserDefaults;
 - (BOOL)shouldLoadBlogFromUserDefaults;

@@ -516,7 +516,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 	//remove the original post in case of local draft unsaved
 	if([self isAFreshlyCreatedDraft]) 
-		[self.apost.original remove];
+		[self.apost.original removeWithError:nil]; //we can pass nil because this is a local draft. no remote errors.
 	
 	self.apost = nil; // Just in case
     [self dismissEditView];

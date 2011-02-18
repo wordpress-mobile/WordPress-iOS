@@ -111,12 +111,21 @@
     return post;
 }
 
-- (void)remove {
-    if ([self hasRemote] && [[WPDataController sharedInstance] mwDeletePost:self]) {
-		
+- (void)removeWithError:(NSError **)error {
+    if ([self hasRemote]) {
+		WPDataController *dc = [[WPDataController alloc] init];
+		[dc  mwDeletePost:self];
+		if(dc.error) {
+			*error = dc.error;
+			WPLog(@"Error while deleting post: %@", [*error localizedDescription]);
+		} else {
+			[super removeWithError:nil]; 
+		}
+		[dc release];
+	} else {
+		//we should remove the post from the db even if it is a "LocalDraft"
+		[super removeWithError:nil]; 
 	}
-	
-	[super remove]; //we should remove the post from the db even if it is a "LocalDraft"
 }
 
 - (void)uploadInBackground {

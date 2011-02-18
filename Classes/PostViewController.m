@@ -77,7 +77,7 @@
 
 - (void)editorDismissed:(NSNotification *)aNotification {
     if (![self.apost hasRemote] && self.apost.remoteStatus == AbstractPostRemoteStatusLocal && !self.apost.postTitle && !self.apost.content) {
-        [self.apost remove];
+        [self.apost removeWithError:nil]; //this is a local draft no remote errors checking.
     }
     [self refreshUI];
 }

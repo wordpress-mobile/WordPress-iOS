@@ -193,11 +193,11 @@ static WordPressAppDelegate *wordPressApp = NULL;
 												 name:@"CrashReporterIsFinished" object:nil];
 	
 	
-	//listener for XML-RPC errors: XML-RPC Errors are usually handled by the caller, but UI is pretty Async and we are not showing detailed msg in the app. 
-	//In other words we are not showing an alert.
+	//listener for XML-RPC errors
 	//in the future we could put the errors message in a dedicated screen that users can bring to front when samething went wrong, and can take a look at the error msg.
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(xmlrpcErrorNotificationReceived:) name:kXML_RPC_ERROR_OCCURS object:nil];
-	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:kXML_RPC_ERROR_OCCURS object:nil];
+	//TODO: we should a screen? in which print the error msgs that are from async uploading errors --> PostUploadFailed
+		
 	
 	// Check for pending crash reports
 	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
@@ -285,7 +285,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 #pragma mark Public Methods
 
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message {
-	NSLog(@"Showing alert with title: %@", message);
+	WPLog(@"Showing alert with title: %@", message);
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
                           message:message
                           delegate:nil
@@ -298,6 +298,12 @@ static WordPressAppDelegate *wordPressApp = NULL;
 - (void)showErrorAlert:(NSString *)message {
     [self showAlertWithTitle:@"Error" message:message];
 }
+
+- (void)showNotificationErrorAlert:(NSNotification *)notification {
+	NSError *err  = (NSError *)[notification object];
+	[self showAlertWithTitle:@"Error" message:[err localizedDescription]];
+}
+
 
 - (void)setAutoRefreshMarkers {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -402,17 +408,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		[request release];
 	}
 }
-
-
-- (void)xmlrpcErrorNotificationReceived:(NSNotification *)notification {
-	NSError *err  = (NSError *)[notification object];
-	UIAlertView *alert2 = [[UIAlertView alloc] initWithTitle:@"Error."
-													 message:[err localizedDescription]
-													delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	
-	[alert2 show];
-}
-
 
 
 #pragma mark -

@@ -48,7 +48,7 @@ typedef enum {
 - (NSArray *)availableStatuses;
 // Does the post exist on the blog?
 - (BOOL)hasRemote;
-- (void)remove;
+- (void)removeWithError:(NSError **)error;
 // Save changes to disk
 - (void)save;
 
