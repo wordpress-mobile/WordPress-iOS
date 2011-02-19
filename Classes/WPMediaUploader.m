@@ -7,6 +7,11 @@
 
 #import "WPMediaUploader.h"
 
+@interface WPMediaUploader (Private)
+- (void) displayResponseErrors;
+@end
+
+
 @implementation WPMediaUploader
 @synthesize messageLabel, progressView, isAtomPub;
 @synthesize stopButton, media;
@@ -377,122 +382,127 @@
 }
 
 #pragma mark ASIHTTPRequest delegate
-
 - (void)requestFinished:(ASIHTTPRequest *)req {
 	WPLog(@"requestFinished: %@", self);
-
-	if(![[request responseString] isEmpty]) {
-		NSLog(@"response: %@", [request responseString]);
-		NSMutableDictionary *videoMeta = [[NSMutableDictionary alloc] init];
-		if ([[request responseString] rangeOfString:@"AtomPub services are disabled"].location != NSNotFound){
-			UIAlertView *uploadAlert = [[UIAlertView alloc] initWithTitle:@"Upload Failed" 
-													 message:[request responseString] 
-													delegate:self
-										   cancelButtonTitle:@"OK" otherButtonTitles:nil];
-			[uploadAlert show];
-			[uploadAlert release];
-            self.media.remoteStatus = MediaRemoteStatusFailed;
-			if([self.media.mediaType isEqualToString:@"video"])
-				[self finishWithNotificationName:VideoUploadFailed object:self.media userInfo:nil];
-			else if([self.media.mediaType isEqualToString:@"image"])
-				[self finishWithNotificationName:ImageUploadFailed object:self.media userInfo:nil];
-		}
-		else if(isAtomPub) {
-			NSString *regEx = @"src=\"([^\"]*)\"";
-			NSString *link = [[request responseString] stringByMatching:regEx capture:1];
-			link = [link stringByReplacingOccurrencesOfString:@"\"" withString:@""];
-			[videoMeta setObject:link forKey:@"url"];
-            self.media.remoteURL = link;
-            self.media.remoteStatus = MediaRemoteStatusSync;
-            [self finishWithNotificationName:VideoUploadSuccessful object:self.media userInfo:videoMeta];
-		}
-		else {
-			XMLRPCResponse *xmlrpcResponse = [[XMLRPCResponse alloc] initWithData:[request responseData]];
-			NSDictionary *responseMeta = [xmlrpcResponse object];
-			if ([xmlrpcResponse isKindOfClass:[NSError class]]) {
-                self.media.remoteStatus = MediaRemoteStatusFailed;
-				[self finishWithNotificationName:VideoUploadFailed object:self.media userInfo:nil];
-			}
-			else if([responseMeta valueForKey:@"faultString"] != nil) {
-				NSString *faultString = [responseMeta valueForKey:@"faultString"];
-				UIAlertView *uploadAlert;
-				if ([faultString rangeOfString:@"Invalid file type"].location == NSNotFound){
-					uploadAlert = [[UIAlertView alloc] initWithTitle:@"Upload Failed" 
-															 message:faultString 
-															delegate:self
-												   cancelButtonTitle:@"OK" otherButtonTitles:nil];
-				}
-				else {
-					faultString = @"You can upload videos to your blog with VideoPress. Would you like to learn more about VideoPress now?";
-					uploadAlert = [[UIAlertView alloc] initWithTitle:@"Upload Failed" 
-															 message:faultString 
-															delegate:self
-												   cancelButtonTitle:@"No" otherButtonTitles:nil];
-					[uploadAlert addButtonWithTitle:@"Yes"];
-				}
+	
+	NSMutableDictionary *videoMeta = [[NSMutableDictionary alloc] init];
+	NSMutableDictionary *imageMeta = [[NSMutableDictionary alloc] init];
+	
+	
+	if([request responseString] != nil && ![[request responseString] isEmpty]) {
+		@try{
+			NSLog(@"response: %@", [request responseString]);
+			if ([[request responseString] rangeOfString:@"AtomPub services are disabled"].location != NSNotFound){
+				UIAlertView *uploadAlert = [[UIAlertView alloc] initWithTitle:@"Upload Failed" 
+																	  message:[request responseString] 
+																	 delegate:self
+															cancelButtonTitle:@"OK" otherButtonTitles:nil];
 				[uploadAlert show];
 				[uploadAlert release];
-                
-                self.media.remoteStatus = MediaRemoteStatusFailed;
-                if([self.media.mediaType isEqualToString:@"video"])
-                    [self finishWithNotificationName:VideoUploadFailed object:self.media userInfo:nil];
-                else if([self.media.mediaType isEqualToString:@"image"])
-                    [self finishWithNotificationName:ImageUploadFailed object:self.media userInfo:nil];
+				self.media.remoteStatus = MediaRemoteStatusFailed;
+				if([self.media.mediaType isEqualToString:@"video"])
+					[self finishWithNotificationName:VideoUploadFailed object:self.media userInfo:nil];
+				else if([self.media.mediaType isEqualToString:@"image"])
+					[self finishWithNotificationName:ImageUploadFailed object:self.media userInfo:nil];
 			}
-			else if([self.media.mediaType isEqualToString:@"video"]) {
-				if([responseMeta objectForKey:@"videopress_shortcode"] != nil)
-                    self.media.shortcode = [responseMeta objectForKey:@"videopress_shortcode"];
-				
-				if([responseMeta objectForKey:@"url"] != nil)
-                    self.media.remoteURL = [responseMeta objectForKey:@"url"];
-				
-                self.media.remoteStatus = MediaRemoteStatusSync;
-				[self finishWithNotificationName:VideoUploadSuccessful object:self.media userInfo:responseMeta];
+			else if(isAtomPub) {
+				NSString *regEx = @"src=\"([^\"]*)\"";
+				NSString *link = [[request responseString] stringByMatching:regEx capture:1];
+				link = [link stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+				[videoMeta setObject:link forKey:@"url"];
+				self.media.remoteURL = link;
+				self.media.remoteStatus = MediaRemoteStatusSync;
+				[self finishWithNotificationName:VideoUploadSuccessful object:self.media userInfo:videoMeta];
 			}
-			else if([self.media.mediaType isEqualToString:@"image"]) {
-				NSMutableDictionary *imageMeta = [[NSMutableDictionary alloc] init];
-				
-				if([responseMeta objectForKey:@"url"] != nil)
-                    self.media.remoteURL = [responseMeta objectForKey:@"url"];
-                self.media.remoteStatus = MediaRemoteStatusSync;
-                [self finishWithNotificationName:ImageUploadSuccessful object:self.media userInfo:responseMeta];
-				[imageMeta release];
+			else {
+				XMLRPCResponse *xmlrpcResponse = [[XMLRPCResponse alloc] initWithData:[request responseData]];
+				NSDictionary *responseMeta = [xmlrpcResponse object];
+				if ([xmlrpcResponse isKindOfClass:[NSError class]]) {
+					[self displayResponseErrors];
+				} else 
+				if([xmlrpcResponse object] == nil ) {
+					[self displayResponseErrors];
+				}
+				else if (![[xmlrpcResponse object] isKindOfClass:[NSDictionary class]]) {
+					[self displayResponseErrors];
+				} 
+				else if([responseMeta valueForKey:@"faultString"] != nil) {
+					NSString *faultString = [responseMeta valueForKey:@"faultString"];
+					UIAlertView *uploadAlert;
+					if ([faultString rangeOfString:@"Invalid file type"].location == NSNotFound){
+						uploadAlert = [[UIAlertView alloc] initWithTitle:@"Upload Failed" 
+																 message:faultString 
+																delegate:self
+													   cancelButtonTitle:@"OK" otherButtonTitles:nil];
+					}
+					else {
+						faultString = @"You can upload videos to your blog with VideoPress. Would you like to learn more about VideoPress now?";
+						uploadAlert = [[UIAlertView alloc] initWithTitle:@"Upload Failed" 
+																 message:faultString 
+																delegate:self
+													   cancelButtonTitle:@"No" otherButtonTitles:nil];
+						[uploadAlert addButtonWithTitle:@"Yes"];
+					}
+					[uploadAlert show];
+					[uploadAlert release];
+					
+					self.media.remoteStatus = MediaRemoteStatusFailed;
+					if([self.media.mediaType isEqualToString:@"video"])
+						[self finishWithNotificationName:VideoUploadFailed object:self.media userInfo:nil];
+					else if([self.media.mediaType isEqualToString:@"image"])
+						[self finishWithNotificationName:ImageUploadFailed object:self.media userInfo:nil];
+				}
+				else if([self.media.mediaType isEqualToString:@"video"]) {
+					if([responseMeta objectForKey:@"videopress_shortcode"] != nil)
+						self.media.shortcode = [responseMeta objectForKey:@"videopress_shortcode"];
+					
+					if([responseMeta objectForKey:@"url"] != nil)
+						self.media.remoteURL = [responseMeta objectForKey:@"url"];
+					
+					self.media.remoteStatus = MediaRemoteStatusSync;
+					[self finishWithNotificationName:VideoUploadSuccessful object:self.media userInfo:responseMeta];
+				}
+				else if([self.media.mediaType isEqualToString:@"image"]) {
+					if([responseMeta objectForKey:@"url"] != nil)
+						self.media.remoteURL = [responseMeta objectForKey:@"url"];
+					self.media.remoteStatus = MediaRemoteStatusSync;
+					[self finishWithNotificationName:ImageUploadSuccessful object:self.media userInfo:responseMeta];
+				}
+				[xmlrpcResponse release];
 			}
-			
-			[xmlrpcResponse release];
+		}@catch (NSException *ex) {
+			[self displayResponseErrors];
 		}
-        [videoMeta release];
+		@finally {
+			[videoMeta release];
+			[imageMeta release];
+		}
     }
 	else {
-		[self updateStatus:@"Upload failed. Please try again."];
 		WPLog(@"connection failed: %@", [request responseData]);
-		
-		[NSThread sleepForTimeInterval:2.0];
-        
-        self.media.remoteStatus = MediaRemoteStatusFailed;
-		if([self.media.mediaType isEqualToString:@"image"])
-			[self finishWithNotificationName:ImageUploadFailed object:self.media userInfo:nil];
-		else if([self.media.mediaType isEqualToString:@"video"])
-			[self finishWithNotificationName:VideoUploadFailed object:self.media userInfo:nil];
+		[self displayResponseErrors];
 	}
-
+	
     [request release]; request = nil;
+}
+
+
+- (void) displayResponseErrors {
+	[self updateStatus:@"Upload failed. Please try again."];		
+	[NSThread sleepForTimeInterval:2.0];
+		
+	self.media.remoteStatus = MediaRemoteStatusFailed;
+	if([self.media.mediaType isEqualToString:@"image"])
+		[self finishWithNotificationName:ImageUploadFailed object:self.media userInfo:nil];
+	else if([self.media.mediaType isEqualToString:@"video"])
+		[self finishWithNotificationName:VideoUploadFailed object:self.media userInfo:nil];
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)req {
 	NSError *error = [req error];
 	NSString *errorMessage = [error localizedDescription];
 	WPLog(@"connection failed: %@", errorMessage);
-
-	[self updateStatus:@"Upload failed. Please try again."];		
-	[NSThread sleepForTimeInterval:2.0];
-	
-    self.media.remoteStatus = MediaRemoteStatusFailed;
-	if([self.media.mediaType isEqualToString:@"image"])
-		[self stopWithNotificationName:@"ImageUploadFailed"];
-	else if([self.media.mediaType isEqualToString:@"video"])
-		[self stopWithNotificationName:@"VideoUploadFailed"];
-	
+	[self displayResponseErrors];
     [request release]; request = nil;
 }
 
