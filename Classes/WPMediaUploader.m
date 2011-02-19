@@ -426,13 +426,15 @@
 					
 					if([faultString rangeOfString:@"NSXMLParserErrorDomain"].location != NSNotFound) {
 						//Error Domain=NSXMLParserErrorDomain Code=5 "The operation couldn\u2019t be completed. (NSXMLParserErrorDomain error 5.)	
+						//this happens when there are server issues, such as memory issues or permissions issues.
 						uploadAlert = [[UIAlertView alloc] initWithTitle:@"Upload Failed" 
 																 message:@"Something went wrong during uploading. Please, check the configuration of your blog."  
 																delegate:self
 													   cancelButtonTitle:@"OK" otherButtonTitles:nil];
 					}
-					else if ([faultString rangeOfString:@"Invalid file type"].location != NSNotFound){
-						//invalid file type: VideoPress suggest
+					else if ( ([faultString rangeOfString:@"Invalid file type"].location != NSNotFound) &&
+							 ([self.media.mediaType isEqualToString:@"video"]) ){
+						//invalid file type && video: VideoPress suggest
 						faultString = @"You can upload videos to your blog with VideoPress. Would you like to learn more about VideoPress now?";
 						uploadAlert = [[UIAlertView alloc] initWithTitle:@"Upload Failed" 
 																 message:faultString 
@@ -446,8 +448,6 @@
 																 message:faultString 
 																delegate:self
 													   cancelButtonTitle:@"OK" otherButtonTitles:nil];
-						
-						
 					}						
 					[uploadAlert show];
 					[uploadAlert release];
