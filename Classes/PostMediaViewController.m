@@ -966,7 +966,7 @@
 }
 
 - (void)useImage:(UIImage *)theImage {
-	Media *imageMedia = [Media newMediaForPost:postDetailViewController.post];
+	Media *imageMedia = [Media newMediaForPost:postDetailViewController.apost];
 	NSData *imageData = UIImageJPEGRepresentation(theImage, 0.90);
 	UIImage *imageThumbnail = [self generateThumbnailFromImage:theImage andSize:CGSizeMake(75, 75)];
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -1026,7 +1026,7 @@
 	}
 	
 	if(copySuccess == YES) {
-		videoMedia = [Media newMediaForPost:postDetailViewController.post];
+		videoMedia = [Media newMediaForPost:postDetailViewController.apost];
 		
 		if(currentOrientation == kLandscape)
 			videoMedia.orientation = @"landscape";
@@ -1128,7 +1128,7 @@
 								 username, password, nil];
 								
 				NSMutableDictionary *xmlrpcParams = [[NSMutableDictionary alloc] init];
-				[xmlrpcParams setObject:self.postDetailViewController.post.blog.xmlrpc forKey:kURL];
+				[xmlrpcParams setObject:self.postDetailViewController.apost.blog.xmlrpc forKey:kURL];
 				[xmlrpcParams setObject:@"wpcom.getFeatures" forKey:kMETHOD];
 				[xmlrpcParams setObject:args forKey:kMETHODARGS];
 				
@@ -1181,7 +1181,7 @@
     WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:@"Media" inManagedObjectContext:appDelegate.managedObjectContext]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"post == %@", self.postDetailViewController.post]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"post == %@", self.postDetailViewController.apost]];
     NSSortDescriptor *sortDescriptorDate = [[NSSortDescriptor alloc] initWithKey:@"creationDate" ascending:NO];
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorDate, nil];
     [fetchRequest setSortDescriptors:sortDescriptors];
@@ -1191,8 +1191,8 @@
                                                       managedObjectContext:appDelegate.managedObjectContext
                                                       sectionNameKeyPath:nil
                                                       cacheName:[NSString stringWithFormat:@"Media-%@-%@",
-                                                                 self.postDetailViewController.post.blog.hostURL,
-                                                                 self.postDetailViewController.post.postID]];
+                                                                 self.postDetailViewController.apost.blog.hostURL,
+                                                                 self.postDetailViewController.apost.postID]];
     resultsController.delegate = self;
     
     [fetchRequest release];

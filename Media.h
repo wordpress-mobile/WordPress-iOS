@@ -8,7 +8,7 @@
 
 #import <CoreData/CoreData.h>
 #import "Blog.h"
-#import "Post.h"
+#import "AbstractPost.h"
 #import "WPMediaUploader.h"
 
 typedef enum {
@@ -44,9 +44,9 @@ typedef enum {
 @property (nonatomic) float progress;
 
 @property (nonatomic, retain) Blog * blog;
-@property (nonatomic, retain) Post * post;
+@property (nonatomic, retain) AbstractPost * post;
 
-+ (Media *)newMediaForPost:(Post *)post;
++ (Media *)newMediaForPost:(AbstractPost *)post;
 - (void)cancelUpload;
 - (void)upload;
 - (void)remove;

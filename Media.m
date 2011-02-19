@@ -29,7 +29,7 @@
 @dynamic remoteStatusNumber;
 @synthesize uploader;
 
-+ (Media *)newMediaForPost:(Post *)post {
++ (Media *)newMediaForPost:(AbstractPost *)post {
     Media *media = [[Media alloc] initWithEntity:[NSEntityDescription entityForName:@"Media"
                                                           inManagedObjectContext:[post managedObjectContext]]
                insertIntoManagedObjectContext:[post managedObjectContext]];

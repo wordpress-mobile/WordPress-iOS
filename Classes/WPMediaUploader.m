@@ -9,6 +9,7 @@
 
 @interface WPMediaUploader (Private)
 - (void) displayResponseErrors;
+- (NSError *)errorWithResponse:(XMLRPCResponse *)res;
 @end
 
 
@@ -154,6 +155,7 @@
 
 - (void)sendXMLRPC {
     WPLog(@"%@ %@ (%@)", self, NSStringFromSelector(_cmd), self.media.filename);
+	isAtomPub = NO;
 	self.progressView.hidden = NO;
 	
 	if([self.media.mediaType isEqualToString:@"image"])
@@ -173,6 +175,7 @@
 }
 
 - (void)sendAtomPub {
+    WPLog(@"%@ %@ (%@)", self, NSStringFromSelector(_cmd), self.media.filename);
 	self.progressView.hidden = NO;
 	isAtomPub = YES;
 	
@@ -388,54 +391,48 @@
 	NSMutableDictionary *videoMeta = [[NSMutableDictionary alloc] init];
 	NSMutableDictionary *imageMeta = [[NSMutableDictionary alloc] init];
 	
-	
 	if([request responseString] != nil && ![[request responseString] isEmpty]) {
 		@try{
-			NSLog(@"response: %@", [request responseString]);
-			if ([[request responseString] rangeOfString:@"AtomPub services are disabled"].location != NSNotFound){
-				UIAlertView *uploadAlert = [[UIAlertView alloc] initWithTitle:@"Upload Failed" 
-																	  message:[request responseString] 
-																	 delegate:self
-															cancelButtonTitle:@"OK" otherButtonTitles:nil];
-				[uploadAlert show];
-				[uploadAlert release];
-				self.media.remoteStatus = MediaRemoteStatusFailed;
-				if([self.media.mediaType isEqualToString:@"video"])
-					[self finishWithNotificationName:VideoUploadFailed object:self.media userInfo:nil];
-				else if([self.media.mediaType isEqualToString:@"image"])
-					[self finishWithNotificationName:ImageUploadFailed object:self.media userInfo:nil];
-			}
-			else if(isAtomPub) {
-				NSString *regEx = @"src=\"([^\"]*)\"";
-				NSString *link = [[request responseString] stringByMatching:regEx capture:1];
-				link = [link stringByReplacingOccurrencesOfString:@"\"" withString:@""];
-				[videoMeta setObject:link forKey:@"url"];
-				self.media.remoteURL = link;
-				self.media.remoteStatus = MediaRemoteStatusSync;
-				[self finishWithNotificationName:VideoUploadSuccessful object:self.media userInfo:videoMeta];
-			}
-			else {
-				XMLRPCResponse *xmlrpcResponse = [[XMLRPCResponse alloc] initWithData:[request responseData]];
-				NSDictionary *responseMeta = [xmlrpcResponse object];
-				if ([xmlrpcResponse isKindOfClass:[NSError class]]) {
+			WPLog(@"response: %@", [request responseString]);
+			if(isAtomPub) {
+				if ([[request responseString] rangeOfString:@"AtomPub services are disabled"].location != NSNotFound){
+					UIAlertView *uploadAlert = [[UIAlertView alloc] initWithTitle:@"Upload Failed" 
+																		  message:[request responseString] 
+																		 delegate:self
+																cancelButtonTitle:@"OK" otherButtonTitles:nil];
+					[uploadAlert show];
+					[uploadAlert release];
 					[self displayResponseErrors];
-				} else 
-				if([xmlrpcResponse object] == nil ) {
-					[self displayResponseErrors];
+				} else {
+					//TODO: we should use regxep to capture other type of errors!!
+					//atom pub services could be enable but errors can occur.
+					NSString *regEx = @"src=\"([^\"]*)\"";
+					NSString *link = [[request responseString] stringByMatching:regEx capture:1];
+					link = [link stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+					[videoMeta setObject:link forKey:@"url"];
+					self.media.remoteURL = link;
+					self.media.remoteStatus = MediaRemoteStatusSync;
+					[self finishWithNotificationName:VideoUploadSuccessful object:self.media userInfo:videoMeta];
 				}
-				else if (![[xmlrpcResponse object] isKindOfClass:[NSDictionary class]]) {
-					[self displayResponseErrors];
-				} 
-				else if([responseMeta valueForKey:@"faultString"] != nil) {
-					NSString *faultString = [responseMeta valueForKey:@"faultString"];
+			}
+			else { //XML-RPC Response
+				XMLRPCResponse *xmlrpcResponse = [[XMLRPCResponse alloc] initWithData:[request responseData]];
+				NSError *err = nil;
+				err = [self errorWithResponse:xmlrpcResponse];
+				if (err) {
+
+					NSString *faultString = [err localizedDescription];
 					UIAlertView *uploadAlert;
-					if ([faultString rangeOfString:@"Invalid file type"].location == NSNotFound){
+					
+					if([faultString rangeOfString:@"NSXMLParserErrorDomain"].location != NSNotFound) {
+						//Error Domain=NSXMLParserErrorDomain Code=5 "The operation couldn\u2019t be completed. (NSXMLParserErrorDomain error 5.)	
 						uploadAlert = [[UIAlertView alloc] initWithTitle:@"Upload Failed" 
-																 message:faultString 
+																 message:@"Something went wrong during uploading. Please, check the configuration of your blog."  
 																delegate:self
 													   cancelButtonTitle:@"OK" otherButtonTitles:nil];
 					}
-					else {
+					else if ([faultString rangeOfString:@"Invalid file type"].location != NSNotFound){
+						//invalid file type: VideoPress suggest
 						faultString = @"You can upload videos to your blog with VideoPress. Would you like to learn more about VideoPress now?";
 						uploadAlert = [[UIAlertView alloc] initWithTitle:@"Upload Failed" 
 																 message:faultString 
@@ -443,30 +440,47 @@
 													   cancelButtonTitle:@"No" otherButtonTitles:nil];
 						[uploadAlert addButtonWithTitle:@"Yes"];
 					}
+					else {
+						//show a generic error
+						uploadAlert = [[UIAlertView alloc] initWithTitle:@"Upload Failed" 
+																 message:faultString 
+																delegate:self
+													   cancelButtonTitle:@"OK" otherButtonTitles:nil];
+						
+						
+					}						
 					[uploadAlert show];
 					[uploadAlert release];
+					[self displayResponseErrors];
+				} else {
+					//XML-RPC response OK
+					NSDictionary *responseMeta = [xmlrpcResponse object];
+					if ([xmlrpcResponse isKindOfClass:[NSError class]]) {
+						[self displayResponseErrors];
+					} else 
+						if([xmlrpcResponse object] == nil ) {
+							[self displayResponseErrors];
+						}
+						else if (![[xmlrpcResponse object] isKindOfClass:[NSDictionary class]]) {
+							[self displayResponseErrors];
+						} 
 					
-					self.media.remoteStatus = MediaRemoteStatusFailed;
-					if([self.media.mediaType isEqualToString:@"video"])
-						[self finishWithNotificationName:VideoUploadFailed object:self.media userInfo:nil];
-					else if([self.media.mediaType isEqualToString:@"image"])
-						[self finishWithNotificationName:ImageUploadFailed object:self.media userInfo:nil];
-				}
-				else if([self.media.mediaType isEqualToString:@"video"]) {
-					if([responseMeta objectForKey:@"videopress_shortcode"] != nil)
-						self.media.shortcode = [responseMeta objectForKey:@"videopress_shortcode"];
-					
-					if([responseMeta objectForKey:@"url"] != nil)
-						self.media.remoteURL = [responseMeta objectForKey:@"url"];
-					
-					self.media.remoteStatus = MediaRemoteStatusSync;
-					[self finishWithNotificationName:VideoUploadSuccessful object:self.media userInfo:responseMeta];
-				}
-				else if([self.media.mediaType isEqualToString:@"image"]) {
-					if([responseMeta objectForKey:@"url"] != nil)
-						self.media.remoteURL = [responseMeta objectForKey:@"url"];
-					self.media.remoteStatus = MediaRemoteStatusSync;
-					[self finishWithNotificationName:ImageUploadSuccessful object:self.media userInfo:responseMeta];
+						else if([self.media.mediaType isEqualToString:@"video"]) {
+							if([responseMeta objectForKey:@"videopress_shortcode"] != nil)
+								self.media.shortcode = [responseMeta objectForKey:@"videopress_shortcode"];
+							
+							if([responseMeta objectForKey:@"url"] != nil)
+								self.media.remoteURL = [responseMeta objectForKey:@"url"];
+							
+							self.media.remoteStatus = MediaRemoteStatusSync;
+							[self finishWithNotificationName:VideoUploadSuccessful object:self.media userInfo:responseMeta];
+						}
+						else if([self.media.mediaType isEqualToString:@"image"]) {
+							if([responseMeta objectForKey:@"url"] != nil)
+								self.media.remoteURL = [responseMeta objectForKey:@"url"];
+							self.media.remoteStatus = MediaRemoteStatusSync;
+							[self finishWithNotificationName:ImageUploadSuccessful object:self.media userInfo:responseMeta];
+						}
 				}
 				[xmlrpcResponse release];
 			}
@@ -497,6 +511,27 @@
 	else if([self.media.mediaType isEqualToString:@"video"])
 		[self finishWithNotificationName:VideoUploadFailed object:self.media userInfo:nil];
 }
+
+
+- (NSError *)errorWithResponse:(XMLRPCResponse *)res {
+    NSError *err = nil;
+	
+    if ([res isKindOfClass:[NSError class]]) {
+        err = (NSError *)res;
+    } else {
+        if ([res isFault]) {
+            NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:[res fault], NSLocalizedDescriptionKey, nil];
+            err = [NSError errorWithDomain:@"org.wordpress.iphone" code:[[res code] intValue] userInfo:usrInfo];
+        }
+		
+        if ([res isParseError]) {
+            err = [res object];
+        }
+    }
+    
+	return err;
+}
+
 
 - (void)requestFailed:(ASIHTTPRequest *)req {
 	NSError *error = [req error];
