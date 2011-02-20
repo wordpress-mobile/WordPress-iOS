@@ -57,7 +57,7 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-	postDetailViewController.post.password = textField.text;
+	postDetailViewController.apost.password = textField.text;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -220,11 +220,11 @@
 				return statusTableViewCell;
 				break;
 			case 1:
-				if (postDetailViewController.post.password) {
-					passwordTextField.text = postDetailViewController.post.password;
+				if (postDetailViewController.apost.password) {
+					passwordTextField.text = postDetailViewController.apost.password;
 					passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 					visibilityLabel.text = @"Password protected";
-				} else if ([postDetailViewController.post.status isEqualToString:@"private"]) {
+				} else if ([postDetailViewController.apost.status isEqualToString:@"private"]) {
 					visibilityLabel.text = @"Private";
 				} else {
 					visibilityLabel.text = @"Public";
@@ -244,7 +244,7 @@
 					NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 					[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
 					[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
-					publishOnDateLabel.text = [dateFormatter stringFromDate:postDetailViewController.post.dateCreated];
+					publishOnDateLabel.text = [dateFormatter stringFromDate:postDetailViewController.apost.dateCreated];
 					[dateFormatter release];
 				} else {
 					publishOnLabel.text = @"Publish   "; //dorky spacing fix
@@ -369,7 +369,7 @@
 }
 
 - (void)reloadData {
-    passwordTextField.text = postDetailViewController.post.password;
+    passwordTextField.text = postDetailViewController.apost.password;
 	
     [tableView reloadData];
 }
@@ -380,7 +380,7 @@
 			switch (indexPath.row) {
 				case 0:
 				{
-					if ([postDetailViewController.post.status isEqualToString:@"private"])
+					if ([postDetailViewController.apost.status isEqualToString:@"private"])
 						break;
 
 					pickerView.tag = TAG_PICKER_STATUS;
@@ -465,20 +465,20 @@
 
 - (void)pickerView:(UIPickerView *)aPickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     if (aPickerView.tag == TAG_PICKER_STATUS) {
-        postDetailViewController.post.statusTitle = [statusList objectAtIndex:row];
+        postDetailViewController.apost.statusTitle = [statusList objectAtIndex:row];
     } else if (aPickerView.tag == TAG_PICKER_VISIBILITY) {
         NSString *visibility = [visibilityList objectAtIndex:row];
         if ([visibility isEqualToString:@"Private"]) {
-            postDetailViewController.post.status = @"private";
-            postDetailViewController.post.password = nil;
+            postDetailViewController.apost.status = @"private";
+            postDetailViewController.apost.password = nil;
         } else {
-            if ([postDetailViewController.post.status isEqualToString:@"private"]) {
-                postDetailViewController.post.status = @"publish";
+            if ([postDetailViewController.apost.status isEqualToString:@"private"]) {
+                postDetailViewController.apost.status = @"publish";
             }
             if ([visibility isEqualToString:@"Password protected"]) {
-                postDetailViewController.post.password = @"";
+                postDetailViewController.apost.password = @"";
             } else {
-                postDetailViewController.post.password = nil;
+                postDetailViewController.apost.password = nil;
             }
         }
     }

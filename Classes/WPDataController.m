@@ -354,9 +354,15 @@
 			[postParams setObject:customFields forKey:@"custom_fields"];
 		}
     }
+	
     if (post.status == nil)
         post.status = @"publish";
-    [postParams setObject:post.status forKey:@"post_status"];
+
+	 if ([post isKindOfClass:[Post class]]) {
+	     [postParams setObject:post.status forKey:@"post_status"];
+	 } else {
+		 [postParams setObject:post.status forKey:@"page_status"];
+	 }
     
 	if (post.date_created_gmt == nil) {
         post.date_created_gmt = [DateUtils localDateToGMTDate:[NSDate date]];

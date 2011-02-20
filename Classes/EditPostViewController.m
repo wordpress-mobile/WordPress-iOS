@@ -419,7 +419,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		statusTextField.text = @"Local Draft";
 	}
 	else {
-		statusTextField.text = self.post.statusTitle;
+		statusTextField.text = self.apost.statusTitle;
 	}
 }
 
@@ -427,9 +427,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if (selectionTableViewController == nil)
         selectionTableViewController = [[WPSelectionTableViewController alloc] initWithNibName:@"WPSelectionTableViewController" bundle:nil];
 	
-    NSArray *dataSource = [self.post availableStatuses];
+    NSArray *dataSource = [self.apost availableStatuses];
 	
-    NSString *curStatus = self.post.statusTitle;
+    NSString *curStatus = self.apost.statusTitle;
 	
     NSArray *selObject = (curStatus == nil ? [NSArray array] : [NSArray arrayWithObject:curStatus]);
 	
@@ -545,7 +545,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	if (upload)
 		[self.apost.original upload];
     [self dismissEditView];
-
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
