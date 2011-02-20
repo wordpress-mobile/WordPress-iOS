@@ -198,12 +198,22 @@
 
 - (void)setCategoriesFromNames:(NSArray *)categoryNames {
     [self.categories removeAllObjects];
+	NSMutableSet *categories = nil;
+	
     for (NSString *categoryName in categoryNames) {
         NSSet *results = [self.blog.categories filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"categoryName like %@", categoryName]];
         if (results && (results.count > 0)) {
-            self.categories = [NSMutableSet setWithSet:results];
-        }
+			if(categories == nil) {
+				categories = [NSMutableSet setWithSet:results];
+			} else {
+				[categories unionSet:results];
+			}
+		}
     }
+	
+	if (categories && (categories.count > 0)) {
+		self.categories = categories;
+	}
 }
 
 - (BOOL)hasChanges {
