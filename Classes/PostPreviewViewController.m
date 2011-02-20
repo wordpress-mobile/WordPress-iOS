@@ -56,6 +56,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+	[webView stopLoading];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -178,11 +179,13 @@
     return [comps componentsJoinedByString:@"<br>"];
 }
 
-- (void)stopLoading {
-    [webView stopLoading];
-	if (DeviceIsPad() == NO) {
-		postDetailViewController.navigationItem.rightBarButtonItem = nil;
-	}
+
+#pragma mark -
+#pragma mark Dealloc
+
+- (void)dealloc {
+    [activityFooter release];
+    [super dealloc];
 }
 
 @end

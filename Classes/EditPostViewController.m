@@ -56,8 +56,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)switchToView:(UIView *)newView {
     if ([newView isEqual:postSettingsController.view])
         [postSettingsController viewWillAppear:YES];
-    else
+    else 
         [postSettingsController viewWillDisappear:YES];
+	
+	if(![newView isEqual:postPreviewViewController.view]) {
+		 [postPreviewViewController viewWillDisappear:YES];
+	}
 
     newView.frame = currentView.frame;
     [UIView beginAnimations:nil context:nil];
