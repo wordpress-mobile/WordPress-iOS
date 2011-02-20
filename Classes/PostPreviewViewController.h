@@ -3,7 +3,7 @@
 
 @interface PostPreviewViewController : UIViewController <UIWebViewDelegate> {
     IBOutlet UIWebView *webView;
-    BOOL isWebRefreshRequested;
+	UIActivityIndicatorView *activityFooter;
 
     EditPostViewController *postDetailViewController;
 	NSFetchedResultsController *resultsController;
@@ -13,6 +13,5 @@
 @property (readonly) UIWebView *webView;
 
 - (void)refreshWebView;
-- (void)stopLoading;
 
 @end

@@ -89,18 +89,21 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if (currentView != editView) {
         [self switchToView:editView];
     }
+	self.navigationItem.title = @"Write";
 }
 
 - (IBAction)switchToSettings {
     if (currentView != postSettingsController.view) {
         [self switchToView:postSettingsController.view];
     }
+	self.navigationItem.title = @"Settings";
 }
 
 - (IBAction)switchToMedia {
     if (currentView != postMediaViewController.view) {
         [self switchToView:postMediaViewController.view];
     }
+	self.navigationItem.title = @"Media";
 }
 
 - (IBAction)switchToPreview {
@@ -108,6 +111,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[postPreviewViewController refreshWebView];
         [self switchToView:postPreviewViewController.view];
     }
+	self.navigationItem.title = @"Preview";
 }
 
 - (IBAction)addVideo:(id)sender {

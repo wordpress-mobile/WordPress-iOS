@@ -6,6 +6,7 @@
 
 - (void)addProgressIndicator;
 - (NSString *)stringReplacingNewlinesWithBR:(NSString *)surString;
+- (NSString *)buildSimplePreview;
 
 @end
 
@@ -37,6 +38,15 @@
 - (void)viewDidLoad {
     [FlurryAPI logEvent:@"PostPreview"];
 	webView.delegate = self;
+	if (activityFooter == nil) {
+		CGRect rect = CGRectMake(webView.frame.size.width/2 - 20, 10, 30, 30);
+        activityFooter = [[UIActivityIndicatorView alloc] initWithFrame:rect];
+        activityFooter.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+        activityFooter.hidesWhenStopped = YES;
+        activityFooter.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+    }	
+	[activityFooter setCenter:CGPointMake(160, 220)];
+	[self.view addSubview:activityFooter];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -46,7 +56,6 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [self stopLoading];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -63,103 +72,103 @@
     return YES;
 }
 
+
+- (NSString *)buildSimplePreview {
+	NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
+	NSString *fpath = [NSString stringWithFormat:@"%@/defaultPostTemplate.html", resourcePath];
+	NSString *str = [NSString stringWithContentsOfFile:fpath];
+	
+	if ([str length]) {
+		
+		//Title
+		NSString *title = postDetailViewController.apost.postTitle;
+		title = (title == nil || ([title length] == 0) ? @"(no title)" : title);
+		str = [str stringByReplacingOccurrencesOfString:@"!$title$!" withString:title];
+		
+		//Content
+		NSString *desc = postDetailViewController.apost.content;
+		if (!desc)
+			desc = @"<h1>No Description available for this Post</h1>";else {
+				desc = [self stringReplacingNewlinesWithBR:desc];
+			}
+		desc = [NSString stringWithFormat:@"<p>%@</p><br />", desc];
+		str = [str stringByReplacingOccurrencesOfString:@"!$text$!" withString:desc];
+		
+		//Tags
+		NSString *tags = postDetailViewController.post.tags;
+		tags = (tags == nil ? @"" : tags);
+		tags = [NSString stringWithFormat:@"Tags: %@", tags]; //desc = [NSString stringWithFormat:@"%@ \n <p>Tags: %@</p><br>", desc, tags];
+		str = [str stringByReplacingOccurrencesOfString:@"!$mt_keywords$!" withString:tags];
+		
+		//Categories [selObjects count]
+		NSArray *categories = [postDetailViewController.post.categories allObjects];
+		NSString *catStr = @"";
+		int i = 0, count = [categories count];
+		for (i = 0; i < count; i++) {
+			Category *category = [categories objectAtIndex:i];
+			catStr = [catStr stringByAppendingString:category.categoryName];
+			if(i < count-1)
+				catStr = [catStr stringByAppendingString:@", "];
+		}
+		catStr = [NSString stringWithFormat:@"Categories: %@", catStr]; //desc = [NSString stringWithFormat:@"%@ \n <p>Categories: %@</p><br>", desc, catStr];
+		str = [str stringByReplacingOccurrencesOfString:@"!$categories$!" withString:catStr];
+
+	} else {
+		str = @"";
+	}
+		
+	return str;
+}
+
 #pragma mark -
 #pragma mark Webkit View Delegate Methods
 
-- (void)refreshWebView {
-	
-	BOOL edited = [self.postDetailViewController hasChanges];
-	NSString *status = postDetailViewController.apost.status;
-    
-	//draft post
-	BOOL isDraft = [self.postDetailViewController isAFreshlyCreatedDraft];
-	if ([status isEqualToString:@"draft"])
-        isDraft = YES;
-	
-    BOOL isPrivate = NO;
-    if ([status isEqualToString:@"private"])
-        isPrivate = YES;
-	
-    if (edited || isDraft || isPrivate) {
-		NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
-		NSString *fpath = [NSString stringWithFormat:@"%@/defaultPostTemplate.html", resourcePath];
-		NSString *str = [NSString stringWithContentsOfFile:fpath];
+	- (void)refreshWebView {
 		
-        if ([str length]) {
+		BOOL edited = [self.postDetailViewController hasChanges];
+		NSString *status = postDetailViewController.apost.status;
+		
+		//draft post
+		BOOL isDraft = [self.postDetailViewController isAFreshlyCreatedDraft];
+		if ([status isEqualToString:@"draft"])
+			isDraft = YES;
+		
+		BOOL isPrivate = NO;
+		if ([status isEqualToString:@"private"])
+			isPrivate = YES;
+		
+		if (edited || isDraft || isPrivate) {
+            [webView loadHTMLString:[self buildSimplePreview] baseURL:nil];
 			
-			//Title
-            NSString *title = postDetailViewController.apost.postTitle;
-            title = (title == nil || ([title length] == 0) ? @"(no title)" : title);
-            str = [str stringByReplacingOccurrencesOfString:@"!$title$!" withString:title];
+		} else {
 			
-			//Content
-            NSString *desc = postDetailViewController.apost.content;
-            if (!desc)
-                desc = @"<h1>No Description available for this Post</h1>";else {
-					desc = [self stringReplacingNewlinesWithBR:desc];
-				}
-            desc = [NSString stringWithFormat:@"<p>%@</p><br />", desc];
-            str = [str stringByReplacingOccurrencesOfString:@"!$text$!" withString:desc];
+			NSString *link = postDetailViewController.apost.permaLink;
 			
-			//Tags
-            NSString *tags = postDetailViewController.post.tags;
-            tags = (tags == nil ? @"" : tags);
-			tags = [NSString stringWithFormat:@"Tags: %@", tags]; //desc = [NSString stringWithFormat:@"%@ \n <p>Tags: %@</p><br>", desc, tags];
-            str = [str stringByReplacingOccurrencesOfString:@"!$mt_keywords$!" withString:tags];
-			
-			//Categories [selObjects count]
-			NSArray *categories = [postDetailViewController.post.categories allObjects];
-			NSString *catStr = @"";
-			int i = 0, count = [categories count];
-			for (i = 0; i < count; i++) {
-				Category *category = [categories objectAtIndex:i];
-				catStr = [catStr stringByAppendingString:category.categoryName];
-				if(i < count-1)
-					catStr = [catStr stringByAppendingString:@", "];
+			if (link == nil) {
+				[webView loadHTMLString:[self buildSimplePreview] baseURL:nil];
 			}
-			catStr = [NSString stringWithFormat:@"Categories: %@", catStr]; //desc = [NSString stringWithFormat:@"%@ \n <p>Categories: %@</p><br>", desc, catStr];
-            str = [str stringByReplacingOccurrencesOfString:@"!$categories$!" withString:catStr];
-			
-            [webView loadHTMLString:str baseURL:nil];
-            return;
-        }
-    }
-	
-    NSString *link = postDetailViewController.apost.permaLink;
-	
-    if (link == nil) {
-        NSString *desc = postDetailViewController.apost.content;
-		
-        if (desc) {
-            [webView loadHTMLString:desc baseURL:nil];
-        } else {
-            [webView loadHTMLString:@"" baseURL:nil];
-        }
-    }
-	else {
-        [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:link]]];
-    }
-	
-    isWebRefreshRequested = YES;
-}
+			else {
+				[webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:link]]];
+			}
+		}
+	}
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
-	if (DeviceIsPad() == NO) {
-		[self addProgressIndicator];
-	}
+	[activityFooter startAnimating];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)awebView {
-	if (DeviceIsPad() == NO) {
-		if ([awebView isLoading] == NO && postDetailViewController.navigationItem.rightBarButtonItem != nil) {
-			isWebRefreshRequested = NO;
-		}
-	}
+	[activityFooter stopAnimating];
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+	[activityFooter stopAnimating];
 }
 
 - (BOOL)webView:(UIWebView *)awebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     return YES;
-    return isWebRefreshRequested || postDetailViewController.navigationItem.rightBarButtonItem != nil;
+    //return isWebRefreshRequested || postDetailViewController.navigationItem.rightBarButtonItem != nil;
 }
 
 #pragma mark -
@@ -169,23 +178,11 @@
     return [comps componentsJoinedByString:@"<br>"];
 }
 
-- (void)addProgressIndicator {
-    return; // Disabled for now
-	if (DeviceIsPad() == NO) {
-		UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-		UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aiv];
-		[aiv startAnimating];
-		[aiv release];
-		postDetailViewController.navigationItem.rightBarButtonItem = activityButtonItem;
-	}
-}
-
 - (void)stopLoading {
     [webView stopLoading];
 	if (DeviceIsPad() == NO) {
 		postDetailViewController.navigationItem.rightBarButtonItem = nil;
 	}
-    isWebRefreshRequested = NO;
 }
 
 @end
