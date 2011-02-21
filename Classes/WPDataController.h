@@ -59,6 +59,7 @@ typedef enum {
 - (int)wpNewPage:(Page *)post;
 - (BOOL)wpEditPage:(Page *)post;
 - (BOOL)wpDeletePage:(Page *)post;
+- (BOOL)updateSinglePage:(Page *)post;
 
 #pragma mark -
 #pragma mark Comment

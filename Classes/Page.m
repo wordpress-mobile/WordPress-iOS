@@ -47,20 +47,23 @@
     if (page == nil) {
         page = [[Page newPageForBlog:blog] autorelease];
     }
-    
-    page.postTitle      = [postInfo objectForKey:@"title"];
-    page.postID         = [postInfo objectForKey:@"page_id"];
-    page.content        = [postInfo objectForKey:@"description"];
-    page.date_created_gmt    = [postInfo objectForKey:@"date_created_gmt"];
-    page.status         = [postInfo objectForKey:@"page_status"];
-    page.password       = [postInfo objectForKey:@"wp_password"];
-    page.remoteStatus   = AbstractPostRemoteStatusSync;
-	page.permaLink      = [postInfo objectForKey:@"permaLink"];
-	page.mt_excerpt		= [postInfo objectForKey:@"mt_excerpt"];
-	page.mt_text_more	= [postInfo objectForKey:@"mt_text_more"];
-	page.wp_slug		= [postInfo objectForKey:@"wp_slug"];
-    
+	
+	[page updateFromDictionary:postInfo];
     return page;
+}
+
+- (void )updateFromDictionary:(NSDictionary *)postInfo {
+	self.postTitle      = [postInfo objectForKey:@"title"];
+    self.postID         = [postInfo objectForKey:@"page_id"];
+    self.content        = [postInfo objectForKey:@"description"];
+    self.date_created_gmt    = [postInfo objectForKey:@"date_created_gmt"];
+    self.status         = [postInfo objectForKey:@"page_status"];
+    self.password       = [postInfo objectForKey:@"wp_password"];
+    self.remoteStatus   = AbstractPostRemoteStatusSync;
+	self.permaLink      = [postInfo objectForKey:@"permaLink"];
+	self.mt_excerpt		= [postInfo objectForKey:@"mt_excerpt"];
+	self.mt_text_more	= [postInfo objectForKey:@"mt_text_more"];
+	self.wp_slug		= [postInfo objectForKey:@"wp_slug"];
 }
 
 - (void)uploadInBackground {
@@ -68,6 +71,7 @@
 
     if ([self hasRemote]) {
         if ([[WPDataController sharedInstance] wpEditPage:self]) {
+			[[WPDataController sharedInstance] updateSinglePage:self];
             self.remoteStatus = AbstractPostRemoteStatusSync;
             [self performSelectorOnMainThread:@selector(didUploadInBackground) withObject:nil waitUntilDone:NO];
         } else {
@@ -83,6 +87,7 @@
             [self performSelectorOnMainThread:@selector(failedUploadInBackground) withObject:nil waitUntilDone:NO];
         } else {
             self.postID = [NSNumber numberWithInt:postID];
+			[[WPDataController sharedInstance] updateSinglePage:self];
             self.remoteStatus = AbstractPostRemoteStatusSync;
             [self performSelectorOnMainThread:@selector(didUploadInBackground) withObject:nil waitUntilDone:NO];
         }

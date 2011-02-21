@@ -490,6 +490,26 @@
     return [result intValue];
 }
 
+- (BOOL)updateSinglePage:(Page *)post {
+    if (post.postID == nil) {
+        return NO;
+    }
+    
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:post.blog.xmlrpc]];
+    NSMutableDictionary *postParams = [self getXMLRPCDictionaryForPost:post];
+    NSArray *args = [NSArray arrayWithObjects:post.blog.blogID, post.postID, post.blog.username, [self passwordForBlog:post.blog], postParams, nil];
+    
+    [xmlrpcRequest setMethod:@"wp.getPage" withObjects:args];
+    id result = [self executeXMLRPCRequest:xmlrpcRequest];
+    if ([result isKindOfClass:[NSError class]]) {
+        WPLog(@"wpGetPage failed: %@", result);
+        return NO;
+    } 
+	
+	[post updateFromDictionary:result];
+	return YES;
+}
+
 - (BOOL)wpEditPage:(Page *)post {
     if (post.postID == nil) {
         return NO;

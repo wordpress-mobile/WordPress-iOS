@@ -55,67 +55,14 @@
     if (post == nil) {
         post = [[Post newPostForBlog:blog] autorelease];
     }
-    
-    post.postTitle      = [postInfo objectForKey:@"title"];
-    post.postID         = [[postInfo objectForKey:@"postid"] numericValue];
-    post.content        = [postInfo objectForKey:@"description"];
-    post.date_created_gmt    = [postInfo objectForKey:@"date_created_gmt"];
-    post.status         = [postInfo objectForKey:@"post_status"];
-    post.password       = [postInfo objectForKey:@"wp_password"];
-    post.tags           = [postInfo objectForKey:@"mt_keywords"];
-	post.permaLink      = [postInfo objectForKey:@"permaLink"];
-	post.mt_excerpt		= [postInfo objectForKey:@"mt_excerpt"];
-	post.mt_text_more	= [postInfo objectForKey:@"mt_text_more"];
-	post.wp_slug		= [postInfo objectForKey:@"wp_slug"];
-	
-    post.remoteStatus   = AbstractPostRemoteStatusSync;
-    if ([postInfo objectForKey:@"categories"]) {
-        [post setCategoriesFromNames:[postInfo objectForKey:@"categories"]];
-    }
-	if ([postInfo objectForKey:@"custom_fields"]) {
-		NSArray *customFields = [postInfo objectForKey:@"custom_fields"];
-		NSString *geo_longitude = nil;
-		NSString *geo_latitude = nil;
-		NSString *geo_longitude_id = nil;
-		NSString *geo_latitude_id = nil;
-		NSString *geo_public_id = nil;
-		for (NSDictionary *customField in customFields) {
-			NSString *ID = [customField objectForKey:@"id"];
-			NSString *key = [customField objectForKey:@"key"];
-			NSString *value = [customField objectForKey:@"value"];
-			
-			if (key) {
-				if ([key isEqualToString:@"geo_longitude"]) {
-					geo_longitude = value;
-					geo_longitude_id = ID;
-				} else if ([key isEqualToString:@"geo_latitude"]) {
-					geo_latitude = value;
-					geo_latitude_id = ID;
-				} else if ([key isEqualToString:@"geo_public"]) {
-					geo_public_id = ID;
-				}
-			}
-		}
-		
-		if (geo_latitude && geo_longitude) {
-			Coordinate *c = [[Coordinate alloc] initWithCoordinate:CLLocationCoordinate2DMake([geo_latitude doubleValue], [geo_longitude doubleValue])];
-			post.geolocation = c;
-			post.latitudeID = geo_latitude_id;
-			post.longitudeID = geo_longitude_id;
-			post.publicID = geo_public_id;
-			[c release];
-		}
-	}
+ 	[post updateFromDictionary:postInfo];
     [post findComments];
-    
     return post;
 }
 
-//TODO: refactor this code with createOrReplaceFromDictionary
 - (void )updateFromDictionary:(NSDictionary *)postInfo {
-    
     self.postTitle      = [postInfo objectForKey:@"title"];
-//keep attention: getPosts and getPost returning IDs in different types
+	//keep attention: getPosts and getPost returning IDs in different types
 	if ([[postInfo objectForKey:@"postid"] isKindOfClass:[NSString class]]) {
 	  self.postID         = [[postInfo objectForKey:@"postid"] numericValue];
 	} else {
@@ -170,7 +117,6 @@
 			[c release];
 		}
 	}
-	
 	return;   
 }
 
@@ -200,7 +146,7 @@
 
     if ([self hasRemote]) {
         if ([[WPDataController sharedInstance] mwEditPost:self]) {
-			BOOL isUpdatedLocalCopy = [[WPDataController sharedInstance] updateSinglePost:self];
+			[[WPDataController sharedInstance] updateSinglePost:self];
             self.remoteStatus = AbstractPostRemoteStatusSync;
 			[self performSelectorOnMainThread:@selector(didUploadInBackground) withObject:nil waitUntilDone:NO];
         } else {
@@ -216,7 +162,7 @@
             [self performSelectorOnMainThread:@selector(failedUploadInBackground) withObject:nil waitUntilDone:NO];
         } else {
             self.postID = [NSNumber numberWithInt:postID];          
-            BOOL isUpdatedLocalCopy = [[WPDataController sharedInstance] updateSinglePost:self];
+            [[WPDataController sharedInstance] updateSinglePost:self];
 			self.remoteStatus = AbstractPostRemoteStatusSync;
 			[self performSelectorOnMainThread:@selector(didUploadInBackground) withObject:nil waitUntilDone:NO];
         }
