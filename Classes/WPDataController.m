@@ -357,7 +357,6 @@
 	
     if (post.status == nil)
         post.status = @"publish";
-
 	 if ([post isKindOfClass:[Post class]]) {
 	     [postParams setObject:post.status forKey:@"post_status"];
 	 } else {

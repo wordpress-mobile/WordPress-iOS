@@ -16,7 +16,7 @@
 - (void)syncPosts {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     NSError *error = nil;
-    [self.blog syncPagesWithError:&error];
+    [self.blog syncPagesWithError:&error loadMore:NO];
 	if(error)
 		[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error];
 	
@@ -74,6 +74,8 @@
     [post release];
 }
 
+#pragma mark -
+#pragma mark Syncs methods
 
 - (BOOL)isSyncing {
 	return self.blog.isSyncingPages;
@@ -81,6 +83,10 @@
 
 -(NSDate *) lastSyncDate {
 	return self.blog.lastPagesSync;
+}
+
+- (BOOL) hasOlderItems {
+	return [self.blog.hasOlderPages boolValue];
 }
 
 - (BOOL)refreshRequired {
@@ -91,6 +97,10 @@
 	}
 	
 	return NO;
+}
+
+- (BOOL)syncItemsWithError:(NSError **)error loadMore:(BOOL)more {
+	return [self.blog syncPagesWithError:error loadMore:YES];
 }
 
 #pragma mark -

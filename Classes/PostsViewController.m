@@ -27,6 +27,8 @@
 - (BOOL)isSyncing;
 - (void)checkLastSyncDate;
 - (NSDate *)lastSyncDate;
+- (BOOL) hasOlderItems;
+- (BOOL)syncItemsWithError:(NSError **)error loadMore:(BOOL)more;
 @end
 
 @implementation PostsViewController
@@ -124,6 +126,8 @@
     return YES;
 }
 
+#pragma mark -
+#pragma mark Syncs methods
 
 - (BOOL)isSyncing {
 	return self.blog.isSyncingPosts;
@@ -131,6 +135,14 @@
 
 -(NSDate *) lastSyncDate {
 	return self.blog.lastPostsSync;
+}
+
+- (BOOL) hasOlderItems {
+	return [self.blog.hasOlderPosts boolValue];
+}
+
+- (BOOL)syncItemsWithError:(NSError **)error loadMore:(BOOL)more {
+	return [self.blog syncPostsWithError:error loadMore:YES];
 }
 
 
@@ -324,9 +336,9 @@
 - (void)loadMore {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     NSError *error = nil;
-    if (![self isSyncing] && [self.blog.hasOlderPosts boolValue]) {
+    if ((![self isSyncing]) && [self hasOlderItems]) {
         WPLog(@"We have older posts to load");
-        [self.blog syncPostsWithError:&error loadMore:YES];
+        [self syncItemsWithError:&error loadMore:YES];
 	    // TODO: handle errors. 
 		//This method is called so many times. if you show an error msg the app will be very unusable
 		if(error) {

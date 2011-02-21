@@ -11,8 +11,8 @@
 
 @implementation Blog
 @dynamic blogID, blogName, url, username, password, xmlrpc, apiKey;
-@dynamic isAdmin, hasOlderPosts;
-@dynamic posts, categories, comments;
+@dynamic isAdmin, hasOlderPosts, hasOlderPages;
+@dynamic posts, categories, comments, pages;
 @dynamic lastPostsSync, lastStatsSync, lastPagesSync, lastCommentsSync;
 @synthesize isSyncingPosts, isSyncingPages, isSyncingComments;
 @dynamic geolocationEnabled;
@@ -286,7 +286,7 @@
     [self dataSave];
     return YES;
 }
-
+/*
 - (BOOL)syncPagesWithError:(NSError **)error {  
 	if (self.isSyncingPages) {
         WPLog(@"Already syncing pages. Skip");
@@ -312,6 +312,57 @@
 	[dc release];
     return YES;
 }
+*/
+
+
+- (BOOL)syncPagesWithError:(NSError **)error loadMore:(BOOL)more {
+	if (self.isSyncingPages) {
+        WPLog(@"Already syncing pages. Skip");
+        return NO;
+    }
+    self.isSyncingPages = YES;
+    int num;
+	
+    // Don't load more than 10 pages if we aren't at the end of the table,
+    // even if they were previously donwloaded
+    // 
+    // Blogs with long history can get really slow really fast, 
+    // with no chance to go back
+    if (more) {
+        num = MAX([[self syncedPages] count], 10);
+        if ([self.hasOlderPages boolValue]) {
+            num += 10;
+        }
+    } else {
+        num = 10;
+    }
+	
+    WPLog(@"Loading %i pages...", num);
+	WPDataController *dc = [[WPDataController alloc] init];
+	NSMutableArray *pages = [dc wpGetPages:self number:[NSNumber numberWithInt:num]];
+
+	if(dc.error) {
+		if (error != nil) 
+			*error = dc.error;
+		WPLog(@"Error syncing blog pages: %@", [*error localizedDescription]);
+		[dc release];
+		self.isSyncingPages = NO;
+		return NO;
+	}
+	
+	// If we asked for more and we got what we had, there are no more posts to load
+    if (more && ([pages count] <= [[self syncedPages] count])) {
+        self.hasOlderPages = [NSNumber numberWithBool:NO];
+    }
+	
+    [self performSelectorOnMainThread:@selector(syncPagesFromResults:) withObject:pages waitUntilDone:YES];	
+	self.lastPagesSync = [NSDate date];
+    self.isSyncingPages = NO;
+	[dc release];
+    return YES;
+}
+
+
 
 - (BOOL)syncCategoriesFromResults:(NSMutableArray *)categories {
     for (NSDictionary *categoryInfo in categories) {
