@@ -54,7 +54,7 @@
 	[xmlrpcRequest release];
 	
 	self.error = [request error];
-	if (!self.error) {
+	if (!self.error && [request responseString] != nil) {
 		CXMLDocument *xml = [[[CXMLDocument alloc] initWithXMLString:[request responseString] options:CXMLDocumentTidyXML error:nil] autorelease];
 		CXMLElement *node = [[xml nodesForXPath:@"//methodResponse" error:nil] objectAtIndex:0];
 		if(node != nil)
