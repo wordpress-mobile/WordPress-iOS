@@ -135,7 +135,7 @@
 	
 	//in same cases the lastSyncDate could be nil. Start a sync, so the user never get an ampty screen.
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	if(([self lastSyncDate] == nil && ![self isSyncing]) || [defaults boolForKey:@"refreshCommentsRequired"]) {
+	if (![self isSyncing] && ([self lastSyncDate] == nil || [defaults boolForKey:@"refreshCommentsRequired"])) {
 		CGPoint offset = commentsTableView.contentOffset;
 		offset.y = - 65.0f;
 		commentsTableView.contentOffset = offset;

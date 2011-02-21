@@ -86,7 +86,7 @@
 	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	appDelegate.postID = nil;
 
-	if ([[WPReachability sharedReachability] internetConnectionStatus] && ([self refreshRequired] || [self lastSyncDate] == nil)) {
+	if ([[WPReachability sharedReachability] internetConnectionStatus] && ![self isSyncing] && ([self refreshRequired] || [self lastSyncDate] == nil)) {
 		CGPoint offset = self.tableView.contentOffset;
 		offset.y = - 65.0f;
 		self.tableView.contentOffset = offset;
