@@ -31,7 +31,28 @@
 #import "CTidy.h"
 #import "StringUtils.h"
 
+
 @implementation XMLRPCResponse
+
+- (NSData *)cleanUTF8:(NSData *)data {
+	iconv_t cd = iconv_open("UTF-8", "UTF-8"); // convert to UTF-8 from UTF-8
+	int one = 1;
+	iconvctl(cd, ICONV_SET_DISCARD_ILSEQ, &one); // discard invalid characters
+	
+	size_t inbytesleft, outbytesleft;
+	inbytesleft = outbytesleft = data.length;
+	char *inbuf  = (char *)data.bytes;
+	char *outbuf = malloc(sizeof(char) * data.length);
+	char *outptr = outbuf;
+	if (iconv(cd, &inbuf, &inbytesleft, &outptr, &outbytesleft) == (size_t)-1) {
+		WPLog(@"this should not happen, seriously");
+		return nil;
+	}
+	NSData *result = [NSData dataWithBytes:outbuf length:data.length - outbytesleft];
+	iconv_close(cd);
+	free(outbuf);
+	return result;
+}
 
 - (id)initWithData: (NSData *)data
 {
@@ -44,10 +65,14 @@
 	{
 		//cleaning the XML-RPC response message
 		NSString  *str = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
-		
 		//when there are characters outside the UTF-8 charset the str is nil at this point
 		if(data != nil && str == nil) {
-			str = [StringUtils makeValidUTF8:[[[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding] autorelease]];
+			NSData *dataCleaned = [self cleanUTF8:data];
+			str = [[[NSString alloc] initWithData:dataCleaned encoding:NSUTF8StringEncoding] autorelease];
+		}
+		//this could never happen, but to make sure...
+		if(data != nil && str == nil) {
+			str = [[[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding] autorelease];
 		}
 				
 		//get rid of weird characters before the xml preamble

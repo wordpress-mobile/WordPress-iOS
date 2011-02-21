@@ -27,6 +27,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#include "iconv.h"
 
 @class XMLRPCDecoder;
 
