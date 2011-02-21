@@ -184,6 +184,9 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
+	[webView stopLoading];
+	webView.delegate = nil;
+	[webView release]; webView = nil;
     [activityFooter release];
     [super dealloc];
 }
