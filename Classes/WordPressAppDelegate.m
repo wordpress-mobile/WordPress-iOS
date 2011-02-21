@@ -472,6 +472,60 @@ static WordPressAppDelegate *wordPressApp = NULL;
 							 [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption, nil];
 	
 	NSError *error = nil;
+	
+// The following conditional code is meant to test the detection of mapping model for migrations
+// It should remain disabled unless you are debugging why migrations aren't run
+#if FALSE
+	WPLog(@"Debugging migration detection");
+	NSDictionary *sourceMetadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:NSSQLiteStoreType
+																							  URL:storeURL
+																							error:&error];
+	if (sourceMetadata == nil) {
+		WPLog(@"Can't find source persistent store");
+	} else {
+		WPLog(@"Source store: %@", sourceMetadata);
+	}
+	NSManagedObjectModel *destinationModel = [self managedObjectModel];
+	BOOL pscCompatibile = [destinationModel
+						   isConfiguration:nil
+						   compatibleWithStoreMetadata:sourceMetadata];
+	if (pscCompatibile) {
+		WPLog(@"No migration needed");
+	} else {
+		WPLog(@"Migration needed");
+	}
+	NSManagedObjectModel *sourceModel = [NSManagedObjectModel mergedModelFromBundles:nil forStoreMetadata:sourceMetadata];
+	if (sourceModel != nil) {
+		WPLog(@"source model found");
+	} else {
+		WPLog(@"source model not found");
+	}
+
+	NSMigrationManager *manager = [[NSMigrationManager alloc] initWithSourceModel:sourceModel
+																 destinationModel:destinationModel];
+	//WPLog(@"Bundle contents: %@", [[NSBundle mainBundle] pathsForResourcesOfType:@"cdm" inDirectory:nil]);
+	NSMappingModel *mappingModel = [NSMappingModel mappingModelFromBundles:[NSArray arrayWithObject:[NSBundle mainBundle]]
+															forSourceModel:sourceModel
+														  destinationModel:destinationModel];
+	if (mappingModel != nil) {
+		WPLog(@"mapping model found");
+	} else {
+		WPLog(@"mapping model not found");
+	}
+
+	if (NO) {
+	[manager migrateStoreFromURL:storeURL
+							type:NSSQLiteStoreType
+						 options:nil
+				withMappingModel:mappingModel
+				toDestinationURL:storeURL
+				 destinationType:NSSQLiteStoreType
+			  destinationOptions:nil
+						   error:&error];
+	}
+	
+	WPLog(@"End of debugging migration detection");
+#endif
     persistentStoreCoordinator_ = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
     if (![persistentStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
 		NSLog(@"Error opening the database. Deleting the file and trying again.");
