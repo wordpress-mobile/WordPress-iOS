@@ -196,7 +196,7 @@
         [postsToKeep addObject:[Post createOrReplaceFromDictionary:postInfo forBlog:self]];
     }
     for (Post *post in syncedPosts) {
-        if (![postsToKeep containsObject:post]) {
+        if (![postsToKeep containsObject:post] && post.blog.blogID == self.blogID) {
             if (post.revision) {
                 // If there is a revision, we are editing this post
                 post.remoteStatus = AbstractPostRemoteStatusLocal;
