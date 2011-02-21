@@ -195,7 +195,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
 	if (version < 3.2){
 		//no video icon for older devices
-		NSMutableArray *toolbarItems = [[NSMutableArray arrayWithArray:toolbar.items] retain];
+		NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:toolbar.items];
 		NSLog(@"toolbar items: %@", toolbarItems);
 		
 		[toolbarItems removeObjectAtIndex:4];

@@ -682,6 +682,7 @@
 		[controller setSubject:[NSString stringWithFormat:@"Re: %@", self.comment.postTitle]]; 
 		[controller setMessageBody:[NSString stringWithFormat:@"Hi %@,", self.comment.author] isHTML:NO];
 		[self presentModalViewController:controller animated:YES];
+		[recipient release];
 		[controller release];
 	}
 }

@@ -663,6 +663,7 @@
     if (err) {
         self.error = err;
         NSLog(@"executeXMLRPCRequest error: %@", err);
+		[request release];
         return err;
     }
     
@@ -671,6 +672,7 @@
     if (statusCode >= 404) {
         NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:[request responseStatusMessage], NSLocalizedDescriptionKey, nil];
         self.error = [NSError errorWithDomain:@"org.wordpress.iphone" code:statusCode userInfo:usrInfo];
+		[request release];
         return self.error;
     }
 	NSLog(@"executeXMLRPCRequest response: %@", [request responseString]);
@@ -680,10 +682,12 @@
         // Not an xml document, don't parse
         NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Blog returned invalid data.", NSLocalizedDescriptionKey, nil];
         self.error = [NSError errorWithDomain:@"org.wordpress.iphone" code:kNoXMLPrefix userInfo:usrInfo];
+		[request release];
         return self.error;
     }
 	
 	XMLRPCResponse *userInfoResponse = [[[XMLRPCResponse alloc] initWithData:[request responseData]] autorelease];
+	[request release];
 		
     err = [self errorWithResponse:userInfoResponse];
 	

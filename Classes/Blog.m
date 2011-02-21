@@ -240,7 +240,7 @@
 	if(dc.error) {
 		if (error != nil) 
 			*error = dc.error;
-		WPLog(@"Error syncing blog posts: %@", [*error localizedDescription]);
+		WPLog(@"Error syncing blog posts: %@", [dc.error localizedDescription]);
 		[dc release];
 		self.isSyncingPosts = NO;
 		return NO;
@@ -319,7 +319,7 @@
 	if(dc.error) {
 		if (error != nil) 
 			*error = dc.error;
-		WPLog(@"Error syncing blog pages: %@", [*error localizedDescription]);
+		WPLog(@"Error syncing blog pages: %@", [dc.error localizedDescription]);
 		[dc release];
 		self.isSyncingPages = NO;
 		return NO;
@@ -355,7 +355,7 @@
 	if(dc.error) {
 		if (error != nil) 
 			*error = dc.error;
-		 WPLog(@"Error syncing categories: %@", [*error localizedDescription]);
+		 WPLog(@"Error syncing categories: %@", [dc.error localizedDescription]);
 		[dc release];
 		return NO;
 	}
@@ -388,7 +388,7 @@
 		if (error != nil) 
 			*error = dc.error;
 		self.isSyncingComments = NO;
-		WPLog(@"Error syncing comments: %@", [*error localizedDescription]);
+		WPLog(@"Error syncing comments: %@", [dc.error localizedDescription]);
 		[dc release];
 		return NO;
 	}

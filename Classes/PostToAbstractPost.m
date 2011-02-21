@@ -43,6 +43,7 @@
                                         inManagedObjectContext:[source managedObjectContext]]];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"postID == %@", [source valueForKey:@"postID"]]];
 	NSArray *mediaItems = [[source managedObjectContext] executeFetchRequest:fetchRequest error:&err];
+	[fetchRequest release];
 	if (mediaItems && [mediaItems count] > 0) {
 		// We have attachments
 		NSManagedObject *media = [mediaItems objectAtIndex:0];
@@ -52,7 +53,6 @@
 			blogUrl = [blogUrl substringToIndex:blogUrl.length-1];
 		blogUrl = [blogUrl stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 
-		[fetchRequest release];
 		fetchRequest = [[NSFetchRequest alloc] init];
 		[fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog"
 											inManagedObjectContext:destMOC]];

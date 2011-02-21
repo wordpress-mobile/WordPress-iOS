@@ -124,7 +124,7 @@
 		if(dc.error) {
 			if (error != nil) 
 				*error = dc.error;
-			WPLog(@"Error while deleting page: %@", [*error localizedDescription]);
+			WPLog(@"Error while deleting page: %@", [dc.error localizedDescription]);
 		} else {
 			res = YES; //the page doesn't exist anymore on the server. we can return YES even if there are errors deleting it from db
 			[super removeWithError:nil]; 

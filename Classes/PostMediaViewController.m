@@ -601,6 +601,7 @@
 		labelWidth.textColor = [UIColor whiteColor];
 		labelWidth.text = @"Width";
 		[customSizeAlert addSubview:labelWidth];
+		[labelWidth release];
 		
 		textWidth = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 80.0, 125.0, 25.0)]; 
 		[textWidth setBackgroundColor:[UIColor whiteColor]];
@@ -622,6 +623,7 @@
 		labelHeight.textColor = [UIColor whiteColor];
 		labelHeight.text = @"Height";
 		[customSizeAlert addSubview:labelHeight];
+		[labelHeight release];
 		
 		textHeight = [[UITextField alloc] initWithFrame:CGRectMake(145.0, 80.0, 125.0, 25.0)]; 
 		[textHeight setBackgroundColor:[UIColor whiteColor]];
@@ -1051,6 +1053,7 @@
 		
 		//switch to the attachment view if we're not already there 
 		[postDetailViewController switchToMedia];
+		[videoMedia release];
 	}
 	else {
 		UIAlertView *videoAlert = [[UIAlertView alloc] initWithTitle:@"Error Copying Video" 
@@ -1064,7 +1067,6 @@
     [formatter release];
     [filename release];
     [filepath release];
-    [videoMedia release];
 }
 
 - (BOOL)supportsVideo {
