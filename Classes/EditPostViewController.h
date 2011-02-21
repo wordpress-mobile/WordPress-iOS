@@ -3,7 +3,6 @@
 #import "PostMediaViewController.h"
 #import "PostPreviewViewController.h"
 #import "PostSettingsViewController.h"
-#import "PostLocationViewController.h"
 #import "WordPressAppDelegate.h"
 #import "WPProgressHUD.h"
 #import "WPAddCategoryViewController.h"
@@ -48,7 +47,6 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 	
     WPSelectionTableViewController *selectionTableViewController;
     WPSegmentedSelectionTableViewController *segmentedTableViewController;
-	LocationController *locationController;
     PostSettingsViewController *postSettingsController;
     PostMediaViewController *postMediaViewController;
 	PostPreviewViewController *postPreviewViewController;

@@ -8,7 +8,6 @@
 #import "WPNavigationLeftButtonView.h"
 #import "WPReachability.h"
 #import "WPProgressHUD.h"
-#import "IncrementPost.h"
 
 #define TAG_OFFSET 1010
 
@@ -199,36 +198,6 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section]) {
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
-        //run the spinner in the background and change the text
-        [self performSelectorInBackground:@selector(addSpinnerToCell:) withObject:indexPath];
-
-        //init the Increment Post helper class class
-        IncrementPost *incrementPost = [[IncrementPost alloc] init];
-
-        //run the "get more" function in the IncrementPost class and get metadata, then parse metadata for next 10 and get 10 more
-        anyMorePosts = [incrementPost loadOlderPosts];
-        [defaults setBool:anyMorePosts forKey:@"anyMorePosts"];
-
-        //release the helper class
-        [incrementPost release];
-
-        //turn of spinner and change text
-        [self performSelectorInBackground:@selector(removeSpinnerFromCell:) withObject:indexPath];
-
-        //get a reference to the cell
-        UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
-
-        // solve the problem where the "load more" cell is reused and retains it's old formatting by forcing a redraw
-        [cell setNeedsDisplay];
-
-        //return
-        return;
-
-    }
-
     if (DeviceIsPad()) {
         self.selectedIndexPath = indexPath;
     } else {

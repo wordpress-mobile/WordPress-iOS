@@ -137,8 +137,6 @@ Classes/HelpViewController.m -text
 Classes/HelpViewController.xib -text
 Classes/ImageCache.h -text
 Classes/ImageCache.m -text
-Classes/LocationController.h -text
-Classes/LocationController.m -text
 Classes/MediaManager.h -text
 Classes/MediaManager.m -text
 Classes/MediaObjectViewController.h -text
@@ -161,8 +159,6 @@ Classes/Post.h -text
 Classes/Post.m -text
 Classes/PostAnnotation.h -text
 Classes/PostAnnotation.m -text
-Classes/PostLocationViewController.h -text
-Classes/PostLocationViewController.m -text
 Classes/PostLocationViewController.xib -text
 Classes/PostMediaViewController.h -text
 Classes/PostMediaViewController.m -text
@@ -251,8 +247,6 @@ Classes/WPPageControl.h -text
 Classes/WPPageControl.m -text
 Classes/WPProgressHUD.h -text
 Classes/WPProgressHUD.m -text
-Classes/WPPublishOnEditController.h -text
-Classes/WPPublishOnEditController.m -text
 Classes/WPReachability.h -text
 Classes/WPReachability.m -text
 Classes/WPSegmentedSelectionTableViewController.h -text
