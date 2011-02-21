@@ -294,6 +294,7 @@
 		CEFC8B5910057D0A0052604A /* WPProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = CEFC8B5810057D0A0052604A /* WPProgressHUD.m */; };
 		E10D665E12BB7C49002F0C78 /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = E10D665B12BB7C49002F0C78 /* ASIDataCompressor.m */; };
 		E10D665F12BB7C49002F0C78 /* ASIDataDecompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = E10D665D12BB7C49002F0C78 /* ASIDataDecompressor.m */; };
+		E11930C41312F8A800F34124 /* FakeMigration.m in Sources */ = {isa = PBXBuildFile; fileRef = E11930C31312F8A800F34124 /* FakeMigration.m */; };
 		E1208C0D12A6D41C008F1FB7 /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1208C0C12A6D41C008F1FB7 /* libFlurry.a */; };
 		E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */; };
 		E125445612BF5B3900D87A0A /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E125445512BF5B3900D87A0A /* Category.m */; };
@@ -792,6 +793,8 @@
 		E10D665B12BB7C49002F0C78 /* ASIDataCompressor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIDataCompressor.m; sourceTree = "<group>"; };
 		E10D665C12BB7C49002F0C78 /* ASIDataDecompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIDataDecompressor.h; sourceTree = "<group>"; };
 		E10D665D12BB7C49002F0C78 /* ASIDataDecompressor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIDataDecompressor.m; sourceTree = "<group>"; };
+		E11930C21312F8A800F34124 /* FakeMigration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeMigration.h; sourceTree = "<group>"; };
+		E11930C31312F8A800F34124 /* FakeMigration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FakeMigration.m; sourceTree = "<group>"; };
 		E1208C0B12A6D41C008F1FB7 /* FlurryAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryAPI.h; sourceTree = "<group>"; };
 		E1208C0C12A6D41C008F1FB7 /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry.a; sourceTree = "<group>"; };
 		E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 2.xcdatamodel"; sourceTree = "<group>"; };
@@ -1766,6 +1769,8 @@
 				E159D1041309AB0D00F498E2 /* MigrateBlogsFromFiles.m */,
 				E18D43DF130BD8E9006155DE /* PostToAbstractPost.h */,
 				E18D43E0130BD8E9006155DE /* PostToAbstractPost.m */,
+				E11930C21312F8A800F34124 /* FakeMigration.h */,
+				E11930C31312F8A800F34124 /* FakeMigration.m */,
 			);
 			name = "1-2";
 			sourceTree = "<group>";
@@ -2269,6 +2274,7 @@
 				E159D1051309AB0D00F498E2 /* MigrateBlogsFromFiles.m in Sources */,
 				E17078FD130A95B600F30433 /* WordPress-1-2.xcmappingmodel in Sources */,
 				E18D43E1130BD8E9006155DE /* PostToAbstractPost.m in Sources */,
+				E11930C41312F8A800F34124 /* FakeMigration.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
