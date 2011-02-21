@@ -117,7 +117,7 @@
 
 					// If we good a good blog match we use that
 					// If there are multiple blogs, and media's blogURL matches this one we add it too
-					if (([results count] == 1) || (blogUrl && [[blog valueForKey:@"blogURL"] rangeOfString:blogUrl].location != NSNotFound)) {
+					if (([results count] == 1) || (blogUrl && [[blog valueForKey:@"url"] rangeOfString:blogUrl].location != NSNotFound)) {
 						NSManagedObject *newMedia = [NSEntityDescription insertNewObjectForEntityForName:@"Media"
 																				  inManagedObjectContext:destMOC];
 						[newMedia setValue:apost forKey:@"post"];
