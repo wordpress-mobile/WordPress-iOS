@@ -8,6 +8,7 @@
 
 #import "PostToAbstractPost.h"
 #import "AbstractPost.h"
+#import "Media.h"
 
 @implementation PostToAbstractPost
 
@@ -107,6 +108,54 @@
 			[apost setValue:blog forKey:@"blog"];
 			
 			if (mediaItems && [mediaItems count] > 0) {
+				for (NSManagedObject *media in mediaItems) {
+					NSString *blogUrl = [media valueForKey:@"blogURL"];
+					blogUrl = [blogUrl stringByReplacingOccurrencesOfString:@"http://" withString:@""];
+					if([blogUrl hasSuffix:@"/"])
+						blogUrl = [blogUrl substringToIndex:blogUrl.length-1];
+					blogUrl = [blogUrl stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+
+					// If we good a good blog match we use that
+					// If there are multiple blogs, and media's blogURL matches this one we add it too
+					if (([results count] == 1) || (blogUrl && [[blog valueForKey:@"blogURL"] rangeOfString:blogUrl].location != NSNotFound)) {
+						NSManagedObject *newMedia = [NSEntityDescription insertNewObjectForEntityForName:@"Media"
+																				  inManagedObjectContext:destMOC];
+						[newMedia setValue:apost forKey:@"post"];
+						[newMedia setValue:blog forKey:@"blog"];
+						[newMedia setValue:[NSNumber numberWithInt:MediaRemoteStatusSync] forKey:@"remoteStatusNumber"];
+						
+						[newMedia setValue:[media valueForKey:@"mediaType"] forKey:@"mediaType"];
+						[newMedia setValue:[media valueForKey:@"remoteURL"] forKey:@"remoteURL"];
+						[newMedia setValue:[media valueForKey:@"localURL"] forKey:@"localURL"];
+						[newMedia setValue:[media valueForKey:@"shortcode"] forKey:@"shortcode"];
+						[newMedia setValue:[media valueForKey:@"width"] forKey:@"width"];
+						[newMedia setValue:[media valueForKey:@"length"] forKey:@"length"];
+						[newMedia setValue:[media valueForKey:@"title"] forKey:@"title"];
+						[newMedia setValue:[media valueForKey:@"thumbnail"] forKey:@"thumbnail"];
+						[newMedia setValue:[media valueForKey:@"height"] forKey:@"height"];
+						[newMedia setValue:[media valueForKey:@"filename"] forKey:@"filename"];
+						[newMedia setValue:[media valueForKey:@"filesize"] forKey:@"filesize"];
+						[newMedia setValue:[media valueForKey:@"orientation"] forKey:@"orientation"];
+						[newMedia setValue:[media valueForKey:@"creationDate"] forKey:@"creationDate"];
+						
+						if ([newMedia validateForInsert:&err]) {
+							WPLog(@"** Migrated media %@ for post %@ in blog %@",
+								  [newMedia valueForKey:@"filename"],
+								  [apost valueForKey:@"postTitle"],
+								  [blog valueForKey:@"blogName"]);
+						} else {
+							WPLog(@"!! Failed migrating media %@ for post %@ in blog %@",
+								  [newMedia valueForKey:@"filename"],
+								  [apost valueForKey:@"postTitle"],
+								  [blog valueForKey:@"blogName"]);
+							if (error) {
+								*error = err;
+							}
+							return NO;
+						}
+
+					}
+				}
 				// TODO: Import media items here
 				WPLog(@"* TODO: import media items");
 			}
