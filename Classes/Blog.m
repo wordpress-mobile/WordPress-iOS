@@ -249,7 +249,10 @@
     // If we asked for more and we got what we had, there are no more posts to load
     if (more && ([posts count] <= [self.posts count])) {
         self.hasOlderPosts = [NSNumber numberWithBool:NO];
-    }
+    } else if (!more) {
+		//we should reset the flag otherwise when you refresh this blog you can't get more than 20 posts
+		self.hasOlderPosts = [NSNumber numberWithBool:YES];
+	}
     [self performSelectorOnMainThread:@selector(syncPostsFromResults:) withObject:posts waitUntilDone:YES];
     self.lastPostsSync = [NSDate date];
     self.isSyncingPosts = NO;
@@ -312,7 +315,7 @@
     WPLog(@"Loading %i pages...", num);
 	WPDataController *dc = [[WPDataController alloc] init];
 	NSMutableArray *pages = [dc wpGetPages:self number:[NSNumber numberWithInt:num]];
-
+	
 	if(dc.error) {
 		if (error != nil) 
 			*error = dc.error;
@@ -325,7 +328,9 @@
 	// If we asked for more and we got what we had, there are no more posts to load
     if (more && ([pages count] <= [[self syncedPages] count])) {
         self.hasOlderPages = [NSNumber numberWithBool:NO];
-    }
+    } else if (!more) {
+		self.hasOlderPages = [NSNumber numberWithBool:YES];
+	}
 	
     [self performSelectorOnMainThread:@selector(syncPagesFromResults:) withObject:pages waitUntilDone:YES];	
 	self.lastPagesSync = [NSDate date];
