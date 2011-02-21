@@ -365,7 +365,6 @@
 		F5A4EF6810B34147002BF126 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = F5A4EF6710B34147002BF126 /* NSData+Base64.m */; };
 		FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD21397E13128C5300099582 /* libiconv.dylib */; };
 		FD9A948C12FAEA2300438F94 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FD9A948B12FAEA2300438F94 /* DateUtils.m */; };
-		FDBF79ED130DE04B009A1CFC /* StringUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FDBF79EC130DE04B009A1CFC /* StringUtils.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -913,8 +912,6 @@
 		FD21397E13128C5300099582 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		FD9A948A12FAEA2300438F94 /* DateUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateUtils.h; sourceTree = "<group>"; };
 		FD9A948B12FAEA2300438F94 /* DateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateUtils.m; sourceTree = "<group>"; };
-		FDBF79EB130DE04B009A1CFC /* StringUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringUtils.h; sourceTree = "<group>"; };
-		FDBF79EC130DE04B009A1CFC /* StringUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringUtils.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1659,8 +1656,6 @@
 				836FECE912715E2A000309D8 /* CrashReportViewController.m */,
 				FD9A948A12FAEA2300438F94 /* DateUtils.h */,
 				FD9A948B12FAEA2300438F94 /* DateUtils.m */,
-				FDBF79EB130DE04B009A1CFC /* StringUtils.h */,
-				FDBF79EC130DE04B009A1CFC /* StringUtils.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -2298,7 +2293,6 @@
 				E159D1051309AB0D00F498E2 /* MigrateBlogsFromFiles.m in Sources */,
 				E17078FD130A95B600F30433 /* WordPress-1-2.xcmappingmodel in Sources */,
 				E18D43E1130BD8E9006155DE /* PostToAbstractPost.m in Sources */,
-				FDBF79ED130DE04B009A1CFC /* StringUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

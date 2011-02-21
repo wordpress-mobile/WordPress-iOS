@@ -29,8 +29,6 @@
 #import "XMLRPCResponse.h"
 #import "XMLRPCDecoder.h"
 #import "CTidy.h"
-#import "StringUtils.h"
-
 
 @implementation XMLRPCResponse
 

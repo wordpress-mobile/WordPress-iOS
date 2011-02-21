@@ -612,16 +612,16 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	}
 }
 
+/*
 - (IBAction)showCategoriesViewAction:(id)sender {
 	//[self showEditPostModalViewWithAnimation:YES];
     [self populateSelectionsControllerWithCategories];
-	
 }
 
 - (IBAction)showStatusViewAction:(id)sender {
     [self populateSelectionsControllerWithStatuses];
 }
-
+*/
 - (void)resignTextView {
 	[textView resignFirstResponder];
 }
@@ -1148,7 +1148,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 #pragma mark -
 #pragma mark Custom Fields methods
-
+/*
 - (BOOL)checkCustomFieldsMinusMetadata {
     BlogDataManager *dm = [BlogDataManager sharedDataManager];
     NSMutableArray *tempCustomFieldsArray = [dm.currentPost valueForKey:@"custom_fields"];
@@ -1182,6 +1182,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
 }
 
+/*
 #pragma mark -
 #pragma mark Location methods
 
@@ -1229,6 +1230,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
 	return result;
 }
+*/
 
 #pragma mark -
 #pragma mark Keyboard management 

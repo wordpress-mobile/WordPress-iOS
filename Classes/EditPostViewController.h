@@ -116,19 +116,11 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (void)insertMediaBelow:(NSNotification *)notification;
 - (void)removeMedia:(NSNotification *)notification;
 
-// Categories
 - (IBAction)showAddNewCategoryView:(id)sender;
-- (IBAction)showCategoriesViewAction:(id)sender;
-- (IBAction)showStatusViewAction:(id)sender;
+
 - (NSString *)validateNewLinkInfo:(NSString *)urlText;
-- (BOOL)checkCustomFieldsMinusMetadata;
 
-// Location
-- (IBAction)showLocationMapView:(id)sender;
 - (BOOL)isPostPublished;
-- (BOOL)isPostGeotagged;
-- (CLLocation *)getPostLocation;
-
 - (BOOL)isAFreshlyCreatedDraft;
 - (IBAction)switchToEdit;
 - (IBAction)switchToSettings;
