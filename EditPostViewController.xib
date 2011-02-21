@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="297"/>
+			<integer value="191"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -345,6 +345,14 @@
 								<float key="IBUIWidth">32</float>
 								<reference key="IBUIToolbar" ref="458393363"/>
 							</object>
+							<object class="IBUIBarButtonItem" id="492421833">
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">preview.png</string>
+								</object>
+								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<reference key="IBUIToolbar" ref="458393363"/>
+							</object>
 							<object class="IBUIBarButtonItem" id="601960427">
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<reference key="IBUIToolbar" ref="458393363"/>
@@ -377,14 +385,6 @@
 								</object>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<float key="IBUIWidth">32</float>
-								<reference key="IBUIToolbar" ref="458393363"/>
-							</object>
-							<object class="IBUIBarButtonItem" id="492421833">
-								<object class="NSCustomResource" key="IBUIImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">preview.png</string>
-								</object>
-								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<reference key="IBUIToolbar" ref="458393363"/>
 							</object>
 						</object>

@@ -46,13 +46,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     self.apost = aPost;
 }
 
-- (UIViewAnimationOptions)directionFromView:(UIView *)old toView:(UIView *)new {
-    if (old == editView)
-        return UIViewAnimationOptionTransitionFlipFromRight;
-    else
-        return UIViewAnimationOptionTransitionFlipFromLeft;
-}
-
 - (void)switchToView:(UIView *)newView {
     if ([newView isEqual:postSettingsController.view])
         [postSettingsController viewWillAppear:YES];
@@ -62,20 +55,33 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	if(![newView isEqual:postPreviewViewController.view]) {
 		 [postPreviewViewController viewWillDisappear:YES];
 	}
-
+    if ([newView isEqual:editView]) {
+		writeButton.enabled = NO;
+		settingsButton.enabled = YES;
+		previewButton.enabled = YES;
+    } else if ([newView isEqual:postSettingsController.view]) {
+		writeButton.enabled = YES;
+		settingsButton.enabled = NO;
+		previewButton.enabled = YES;
+    } else if ([newView isEqual:postPreviewViewController.view]) {
+		writeButton.enabled = YES;
+		settingsButton.enabled = YES;
+		previewButton.enabled = NO;
+	}
+	
     newView.frame = currentView.frame;
     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.5];
-    NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:toolbar.items];
-    if ([newView isEqual:editView]) {
-        [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:contentView cache:YES];
-        [toolbarItems replaceObjectAtIndex:0 withObject:settingsButton];
-    } else {
-        [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:contentView cache:YES];
-        [toolbarItems replaceObjectAtIndex:0 withObject:writeButton];
-    }
-    [toolbar setItems:[NSArray arrayWithArray:toolbarItems]];
+    [UIView setAnimationDuration:0.3];
 
+	CGRect pointerFrame = tabPointer.frame;
+    if ([newView isEqual:editView]) {
+		pointerFrame.origin.x = 22;
+    } else if ([newView isEqual:postSettingsController.view]) {
+		pointerFrame.origin.x = 60;
+    } else if ([newView isEqual:postPreviewViewController.view]) {
+		pointerFrame.origin.x = 100;
+	}
+	tabPointer.frame = pointerFrame;
     [currentView removeFromSuperview];
     [contentView addSubview:newView];
 
@@ -179,11 +185,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	hasSaved = NO;
     
     currentView = editView;
-    tabPointer.hidden = YES;
-
-    NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:toolbar.items];
-    [toolbarItems removeObject:writeButton];
-    [toolbar setItems:[NSArray arrayWithArray:toolbarItems]];
+	writeButton.enabled = NO;
 
     if (iOs4OrGreater()) {
         self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
@@ -196,7 +198,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		NSMutableArray *toolbarItems = [[NSMutableArray arrayWithArray:toolbar.items] retain];
 		NSLog(@"toolbar items: %@", toolbarItems);
 		
-		[toolbarItems removeObjectAtIndex:3];
+		[toolbarItems removeObjectAtIndex:4];
 		[toolbar setItems:toolbarItems];
 	}
 	
