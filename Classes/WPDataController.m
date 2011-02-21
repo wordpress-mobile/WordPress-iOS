@@ -639,11 +639,11 @@
         return self.error;
     }
 	NSLog(@"executeXMLRPCRequest response: %@", [request responseString]);
-    NSRange prefixRange = [[request responseString] rangeOfString:@"<?xml"
+    NSRange prefixRange = [[[request responseString] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]] rangeOfString:@"<?xml"
                                             options:(NSAnchoredSearch | NSCaseInsensitiveSearch)];
     if (prefixRange.location == NSNotFound) {
         // Not an xml document, don't parse
-        NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Response is not XML", NSLocalizedDescriptionKey, nil];
+        NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Blog returned invalid data.", NSLocalizedDescriptionKey, nil];
         self.error = [NSError errorWithDomain:@"org.wordpress.iphone" code:kNoXMLPrefix userInfo:usrInfo];
         return self.error;
     }
