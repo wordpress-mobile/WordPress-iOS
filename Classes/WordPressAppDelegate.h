@@ -6,10 +6,11 @@
 #import "Blog.h"
 #import "CrashReportViewController.h"
 #import "FlurryAPI.h"
+#import "HelpViewController.h"
 
 @class BlogDataManager, AutosaveManager;
 
-@interface WordPressAppDelegate : NSObject <UIApplicationDelegate> {
+@interface WordPressAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate> {
 	Blog *currentBlog;
 @private
     BlogDataManager *dataManager;

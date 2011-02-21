@@ -27,7 +27,7 @@
 
 // For iPhone
 - (void)editPost:(AbstractPost *)apost {
-    WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 
     self.postDetailViewController = [[EditPageViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil];
     self.postDetailViewController.apost = [apost createRevision];
@@ -39,7 +39,7 @@
 // For iPad
 - (void)showSelectedPost {
     Page *page = nil;
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     NSIndexPath *indexPath = self.selectedIndexPath;
 
     @try {
@@ -57,7 +57,7 @@
 }
 
 - (void)showAddPostView {
-	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     Page *post = [Page newDraftForBlog:self.blog];
 	if (DeviceIsPad()) {

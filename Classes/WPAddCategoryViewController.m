@@ -48,7 +48,7 @@
                                delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 
         [alert2 show];
-        WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+        WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
         [delegate setAlertRunning:YES];
 
         [alert2 release];
@@ -61,7 +61,7 @@
                                                         delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		
         [alert2 show];
-        WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+        WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
         [delegate setAlertRunning:YES];
 
         [alert2 release];
@@ -134,7 +134,7 @@
 		return YES;
 	}
 
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 
     if ([delegate isAlertRunning] == YES) {
         return NO; // Return YES for supported orientations
@@ -241,7 +241,7 @@
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     [delegate setAlertRunning:NO];
 }
 

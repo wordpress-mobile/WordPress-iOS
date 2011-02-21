@@ -686,7 +686,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 	
     if ([alertView tag] == 1) {
         if (buttonIndex == 1)
@@ -862,7 +862,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         UIAlertView *linkAlert = [[UIAlertView alloc] initWithTitle:@"Make a Link" message:@"Would you like help making a link?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Make a Link", nil];
         [linkAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
         [linkAlert show];
-        WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+        WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
         [delegate setAlertRunning:YES];
         [linkAlert release];
     }

@@ -119,7 +119,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 
     if ([delegate isAlertRunning] == YES)
         return NO;
@@ -397,7 +397,7 @@
             alert.tag = TAG_OFFSET;
             [alert show];
             
-            WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+            WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
             [delegate setAlertRunning:YES];
             [alert release];
             return;
@@ -454,7 +454,7 @@
 }
 
 - (void)showAddPostView {
-	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 		
     Post *post = [Post newDraftForBlog:self.blog];
 	if (DeviceIsPad()) {
@@ -473,7 +473,7 @@
 
 // For iPhone
 - (void)editPost:(AbstractPost *)apost {
-    WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 
     self.postDetailViewController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil];
     self.postDetailViewController.apost = [apost createRevision];
@@ -486,7 +486,7 @@
 // Subclassed in PagesViewController
 - (void)showSelectedPost {
     Post *post = nil;
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     NSIndexPath *indexPath = self.selectedIndexPath;
 
     @try {
@@ -505,7 +505,7 @@
 
 - (void)setSelectedIndexPath:(NSIndexPath *)indexPath {
     if (selectedIndexPath != indexPath) {
-        WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+        WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
         
         [selectedIndexPath release];
 
@@ -554,7 +554,7 @@
         return resultsController;
     }
     
-    WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:[self entityName] inManagedObjectContext:appDelegate.managedObjectContext]];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(blog == %@) && (original == nil)", self.blog]];

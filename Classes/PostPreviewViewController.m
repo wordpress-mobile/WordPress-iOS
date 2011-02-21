@@ -64,7 +64,7 @@
 		return YES;
 	}
 
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     if ([delegate isAlertRunning] == YES)
         return NO;

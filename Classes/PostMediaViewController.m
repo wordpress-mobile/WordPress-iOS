@@ -173,7 +173,7 @@
         MediaObjectViewController *mediaView = [[MediaObjectViewController alloc] initWithNibName:@"MediaObjectView" bundle:nil];
         [mediaView setMedia:media];
 
-        WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
         if(DeviceIsPad() == YES) {
 			mediaView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 			mediaView.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -229,7 +229,7 @@
     actionSheet.tag = TAG_ACTIONSHEET_VIDEO;
     actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
 	[actionSheet showInView:postDetailViewController.view];
-    WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate setAlertRunning:YES];
 	
     [actionSheet release];
@@ -256,7 +256,7 @@
     actionSheet.tag = TAG_ACTIONSHEET_PHOTO;
     actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
 	[actionSheet showInView:postDetailViewController.view];
-    WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate setAlertRunning:YES];
 	
     [actionSheet release];
@@ -341,7 +341,7 @@
 		self.isShowingResizeActionSheet = NO;
 	}
 	else {
-        WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
         [appDelegate setAlertRunning:NO];
 		
         [currentImage release];
@@ -360,7 +360,7 @@
 			pickerContainer = [[UIViewController alloc] init];
 		
 		pickerContainer.view.frame = CGRectMake(0, 0, 320, 480);
-        WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 		[appDelegate.navigationController.view addSubview:pickerContainer.view];
 		[appDelegate.navigationController.view bringSubviewToFront:pickerContainer.view];
 		[pickerContainer presentModalViewController:picker animated:YES];
@@ -398,7 +398,7 @@
 		pickerContainer = [[UIViewController alloc] init];
 	
 	pickerContainer.view.frame = CGRectMake(0, 0, 320, 480);
-    WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 	[appDelegate.navigationController.view addSubview:pickerContainer.view];
 	[appDelegate.navigationController.view bringSubviewToFront:pickerContainer.view];
 	[pickerContainer presentModalViewController:picker animated:YES];
@@ -466,7 +466,7 @@
 				pickerContainer = [[UIViewController alloc] init];
 			
 			pickerContainer.view.frame = CGRectMake(0, 0, 320, 480);
-            WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+            WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 			[appDelegate.navigationController.view addSubview:pickerContainer.view];
 			[appDelegate.navigationController.view bringSubviewToFront:pickerContainer.view];
 			[pickerContainer presentModalViewController:picker animated:YES];
@@ -1178,7 +1178,7 @@
         return resultsController;
     }
     
-    WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:@"Media" inManagedObjectContext:appDelegate.managedObjectContext]];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"post == %@", self.postDetailViewController.apost]];

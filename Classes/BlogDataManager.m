@@ -329,7 +329,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 													   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		
         [alert show];
-        WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+        WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
         [delegate setAlertRunning:YES];
 		
         [alert release];
@@ -1138,7 +1138,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 		
         rsdError.tag = kRSDErrorTag;
         [rsdError show];
-        WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+        WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
         [delegate setAlertRunning:YES];
 		
         [rsdError release];
@@ -1157,7 +1157,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 													 otherButtonTitles:@"OK", nil];
 			rsdError.tag = kRSDErrorTag;
 			[rsdError show];
-			WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+			WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 			[delegate setAlertRunning:YES];
 			
 			[rsdError release];
@@ -1179,7 +1179,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 															 otherButtonTitles:@"OK", nil];
         unsupportedWordpress.tag = kUnsupportedWordpressVersionTag;
         [unsupportedWordpress show];
-        WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+        WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
         [delegate setAlertRunning:YES];
 		
         [unsupportedWordpress release];
@@ -4101,7 +4101,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 													delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
 	
     [alert show];
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     [delegate setAlertRunning:YES];
 }
 
@@ -4831,7 +4831,7 @@ currentLocation, currentBlogIndex, shouldStopSyncingBlogs, shouldDisplayErrors, 
 
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     [delegate setAlertRunning:NO];
 }
 

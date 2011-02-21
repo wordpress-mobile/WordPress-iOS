@@ -371,7 +371,7 @@
 		[self.navigationController pushViewController:self.commentViewController animated:YES];
 	} else {
 		if (!self.commentViewController.isVisible) {
-			WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+			WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 			[delegate showContentDetailViewController:self.commentViewController];
 		}
 	}
@@ -585,7 +585,7 @@
         return resultsController;
     }
     
-    WordPressAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:[self entityName] inManagedObjectContext:appDelegate.managedObjectContext]];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(blog == %@)", self.blog]];

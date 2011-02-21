@@ -157,7 +157,7 @@
 	} else {
 		[actionSheet showInView:self.view];
 	}
-	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 	[delegate setAlertRunning:YES];
 	
 	[actionSheet release];	
@@ -233,7 +233,7 @@
         }
     }
 	
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     [delegate setAlertRunning:NO];
 }
 
@@ -247,7 +247,7 @@
 	[self showReplyToCommentViewWithAnimation:YES];
 }
 - (void)showReplyToCommentViewWithAnimation:(BOOL)animate {
-	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 	
 		self.replyToCommentViewController = [[[ReplyToCommentViewController alloc] 
 										 initWithNibName:@"ReplyToCommentViewController" 
@@ -307,7 +307,7 @@
 		[actionSheet showInView:editCommentViewController.view];
 	}
 	
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     [delegate setAlertRunning:YES];
 	
     [actionSheet release];
@@ -319,7 +319,7 @@
 
 
 - (void)showEditCommentViewWithAnimation:(BOOL)animate {
-	WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 	
 	self.editCommentViewController = [[[EditCommentViewController alloc] 
 									 initWithNibName:@"EditCommentViewController" 
@@ -386,7 +386,7 @@
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
     [actionSheet showInView:self.view];
 	
-    WordPressAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     [delegate setAlertRunning:YES];
 	
     [actionSheet release];

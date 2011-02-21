@@ -130,8 +130,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	crashReportView = [[CrashReportViewController alloc] initWithNibName:@"CrashReportView" bundle:nil];
 	
 	//BETA FEEDBACK BAR, COMMENT THIS OUT BEFORE RELEASE
-	BetaUIWindow *betaWindow = [[BetaUIWindow alloc] initWithFrame:CGRectZero];
-	betaWindow.hidden = NO;
+	//BetaUIWindow *betaWindow = [[BetaUIWindow alloc] initWithFrame:CGRectZero];
+	//betaWindow.hidden = NO;
 	//BETA FEEDBACK BAR
 	
 	if(DeviceIsPad() == NO)
@@ -290,9 +290,9 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	WPLog(@"Showing alert with title: %@", message);
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
                           message:message
-                          delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil];
+                          delegate:self
+						cancelButtonTitle:@"Need Help?"
+						otherButtonTitles:@"OK", nil];
     [alert show];
     [alert release];
 }
@@ -570,16 +570,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)reachabilityChanged {
     connectionStatus = ([[WPReachability sharedReachability] remoteHostStatus] != NotReachable);
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (alertView.tag == kUnsupportedWordpressVersionTag || alertView.tag == kRSDErrorTag) {
-        if (buttonIndex == 0) { // Visit Site button.
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://iphone.wordpress.org"]];
-        }
-    }
-
-    self.alertRunning = NO;
 }
 
 - (void)setAppBadge {
@@ -874,5 +864,30 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	}
 }
 
+#pragma mark -
+#pragma mark UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex { 
+	switch(buttonIndex) {
+		case 0: {
+			HelpViewController *helpViewController = [[HelpViewController alloc] init];
+			WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+			
+			if (DeviceIsPad()) {
+				[self.navigationController pushViewController:helpViewController animated:YES];
+			}
+			else
+				[appDelegate.navigationController presentModalViewController:helpViewController animated:YES];
+			
+			[helpViewController release];
+			break;
+		}
+		case 1:
+			//ok
+			break;
+		default:
+			break;
+	}
+}
 
 @end
