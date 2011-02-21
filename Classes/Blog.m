@@ -12,7 +12,7 @@
 @implementation Blog
 @dynamic blogID, blogName, url, username, password, xmlrpc, apiKey;
 @dynamic isAdmin, hasOlderPosts, hasOlderPages;
-@dynamic posts, categories, comments, pages;
+@dynamic posts, categories, comments; 
 @dynamic lastPostsSync, lastStatsSync, lastPagesSync, lastCommentsSync;
 @synthesize isSyncingPosts, isSyncingPages, isSyncingComments;
 @dynamic geolocationEnabled;
@@ -286,34 +286,6 @@
     [self dataSave];
     return YES;
 }
-/*
-- (BOOL)syncPagesWithError:(NSError **)error {  
-	if (self.isSyncingPages) {
-        WPLog(@"Already syncing pages. Skip");
-        return NO;
-    }
-    self.isSyncingPages = YES;
-	
-	WPDataController *dc = [[WPDataController alloc] init];
-    NSMutableArray *pages = [dc wpGetPages:self number:[NSNumber numberWithInt:10]];
-	if(dc.error) {
-		if (error != nil) 
-			*error = dc.error;
-		WPLog(@"Error syncing blog pages: %@", [*error localizedDescription]);
-		[dc release];
-		self.isSyncingPages = NO;
-		return NO;
-	}
-	
-    [self performSelectorOnMainThread:@selector(syncPagesFromResults:) withObject:pages waitUntilDone:YES];
-    	
-	self.lastPagesSync = [NSDate date];
-    self.isSyncingPages = NO;
-	[dc release];
-    return YES;
-}
-*/
-
 
 - (BOOL)syncPagesWithError:(NSError **)error loadMore:(BOOL)more {
 	if (self.isSyncingPages) {

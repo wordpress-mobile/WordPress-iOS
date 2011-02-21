@@ -15,7 +15,6 @@
 @property (readonly) NSString *hostURL;
 @property (nonatomic, assign) NSNumber *isAdmin, *hasOlderPosts, *hasOlderPages;
 @property (nonatomic, retain) NSSet *posts;
-@property (nonatomic, retain) NSSet *pages;
 @property (nonatomic, retain) NSSet *categories;
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, assign) BOOL isSyncingPosts;
@@ -37,7 +36,6 @@
 - (NSArray *)syncedPosts;
 - (BOOL)syncPostsWithError:(NSError **)error loadMore:(BOOL)more;
 - (BOOL)syncPagesWithError:(NSError **)error loadMore:(BOOL)more;
-//- (BOOL)syncPagesWithError:(NSError **)error;
 - (BOOL)syncCategoriesWithError:(NSError **)error;
 - (BOOL)syncCommentsWithError:(NSError **)error;
 
