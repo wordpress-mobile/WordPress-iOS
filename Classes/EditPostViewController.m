@@ -712,6 +712,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
             NSString *urlString = [self validateNewLinkInfo:urlField.text];
             NSString *aTagText = [NSString stringWithFormat:@"<a href=\"%@\">%@</a>", urlString, infoText.text];;
             textView.text = [commentsStr stringByReplacingOccurrencesOfString:[commentsStr substringWithRange:rangeToReplace] withString:aTagText options:NSCaseInsensitiveSearch range:rangeToReplace];
+			self.apost.content = textView.text;
         }
 		
         dismiss = YES;
