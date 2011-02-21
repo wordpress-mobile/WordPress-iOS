@@ -271,7 +271,7 @@
         [pagesToKeep addObject:[Page createOrReplaceFromDictionary:pageInfo forBlog:self]];
     }
     for (Page *page in syncedPages) {
-        if (![pagesToKeep containsObject:page]) {
+        if (![pagesToKeep containsObject:page] && page.blog.blogID == self.blogID) {
             if (page.revision) {
                 // If there is a revision, we are editing this post
                 page.remoteStatus = AbstractPostRemoteStatusLocal;
