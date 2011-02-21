@@ -51,6 +51,7 @@ typedef enum {
 - (int)mwNewPost:(Post *)post;
 - (BOOL)mwEditPost:(Post *)post;
 - (BOOL)mwDeletePost:(Post *)post;
+- (BOOL)updateSinglePost:(Post *)post;
 
 #pragma mark -
 #pragma mark Page

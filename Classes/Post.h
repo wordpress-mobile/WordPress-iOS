@@ -41,6 +41,8 @@
 - (void)autosave;
 // Upload a new post to the server
 - (void)upload;
+//update the post using values retrieved the server
+- (void )updateFromDictionary:(NSDictionary *)postInfo;
 
 #pragma mark Class Methods
 // Creates an empty local post associated with blog

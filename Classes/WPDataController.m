@@ -403,7 +403,22 @@
     return [result intValue];
 }
 
-- (BOOL)mwEditPost:(Post *)post {
+- (BOOL)updateSinglePost:(Post *)post{
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:post.blog.xmlrpc]];
+	 NSMutableDictionary *postParams = [self getXMLRPCDictionaryForPost:post];
+	 NSArray *args = [NSArray arrayWithObjects:post.postID, post.blog.username, [self passwordForBlog:post.blog], postParams, nil];
+    [xmlrpcRequest setMethod:@"metaWeblog.getPost" withObjects:args];
+    id result = [self executeXMLRPCRequest:xmlrpcRequest];
+    if ([result isKindOfClass:[NSError class]]) {
+        return NO;
+    }
+	[post updateFromDictionary:result];
+    return YES;
+}
+
+
+
+- (BOOL)mwEditPost:(Post *)post{
     if (post.postID == nil) {
         return NO;
     }
@@ -419,7 +434,7 @@
         return NO;
     } else {
         return YES;
-    }
+    }	
 }
 
 - (BOOL)mwDeletePost:(Post *)post {
