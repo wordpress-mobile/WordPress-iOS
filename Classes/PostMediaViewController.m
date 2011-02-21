@@ -1111,7 +1111,7 @@
 	
 	if(self.isCheckingVideoCapability == NO) {
 		self.isCheckingVideoCapability = YES;
-		self.videoPressCheckBlogURL = self.blogURL;
+		self.videoPressCheckBlogURL = postDetailViewController.post.blog.url;
 		
 		@try {
 			NSRange textRange = [[self.videoPressCheckBlogURL lowercaseString] rangeOfString:@"wordpress.com"];
@@ -1119,16 +1119,15 @@
 			if(textRange.location != NSNotFound)
 			{
                 NSError *error = nil;
-				NSString *username = [[[BlogDataManager sharedDataManager] currentBlog] valueForKey:@"username"];
+				NSString *username = self.postDetailViewController.post.blog.username;
 				NSString *password = [SFHFKeychainUtils getPasswordForUsername:username
-                                                                            andServiceName:@"WordPress.com"
+                                                                            andServiceName:self.postDetailViewController.post.blog.hostURL
                                                                                      error:&error];
 
-				NSArray *args = [NSArray arrayWithObjects:[[[BlogDataManager sharedDataManager] currentBlog] valueForKey:kBlogId],
-								 username, password, nil];
+				NSArray *args = [NSArray arrayWithObjects:self.postDetailViewController.post.blog.blogID,username, password, nil];
 								
 				NSMutableDictionary *xmlrpcParams = [[NSMutableDictionary alloc] init];
-				[xmlrpcParams setObject:self.postDetailViewController.apost.blog.xmlrpc forKey:kURL];
+				[xmlrpcParams setObject:self.postDetailViewController.post.blog.xmlrpc forKey:kURL];
 				[xmlrpcParams setObject:@"wpcom.getFeatures" forKey:kMETHOD];
 				[xmlrpcParams setObject:args forKey:kMETHODARGS];
 				
