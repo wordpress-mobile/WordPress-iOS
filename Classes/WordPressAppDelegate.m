@@ -529,6 +529,11 @@ static WordPressAppDelegate *wordPressApp = NULL;
     persistentStoreCoordinator_ = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
     if (![persistentStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
 		NSLog(@"Error opening the database. Deleting the file and trying again.");
+#ifdef DEBUGMODE 
+		// Don't delete the database on debug builds
+		// Makes migration debugging less of a pain
+		abort();
+#endif
 		
 		//delete the sqlite file and try again
 		[[NSFileManager defaultManager] removeItemAtPath:storeURL.path error:nil];
