@@ -364,13 +364,26 @@
 	return YES;
 }
 
+
 - (BOOL)syncCommentsFromResults:(NSMutableArray *)comments {
     if ([self isDeleted])
         return NO;
-
+	
+	NSMutableArray *commentsToKeep = [NSMutableArray array];
     for (NSDictionary *commentInfo in comments) {
-        [Comment createOrReplaceFromDictionary:commentInfo forBlog:self];
+        [commentsToKeep addObject:[Comment createOrReplaceFromDictionary:commentInfo forBlog:self]];
     }
+	
+	NSSet *syncedComments = self.comments;
+    if (syncedComments && (syncedComments.count > 0)) {
+		for (Comment *comment in syncedComments) {
+			if(![commentsToKeep containsObject:comment]) {
+				WPLog(@"Deleting Comment: %@", comment);
+				[[self managedObjectContext] deleteObject:comment];
+			}
+		}
+    }
+	
     [self dataSave];
     return YES;
 }

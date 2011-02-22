@@ -157,9 +157,9 @@
 #pragma mark Moderation
 - (BOOL)approve {
 	NSString *prevStatus = self.status;
-    if (![self.status isEqualToString:@"approve"]) {
-        self.status = @"approve";
-    }
+	if([prevStatus isEqualToString:@"approve"])
+		return YES;
+	self.status = @"approve";
     if(![self upload]) {
 		self.status = prevStatus;
 		return NO;
@@ -169,22 +169,21 @@
 
 - (BOOL)unapprove {
 	NSString *prevStatus = self.status;
-    if (![self.status isEqualToString:@"hold"]) {
-        self.status = @"hold";
-    }
+	if([prevStatus isEqualToString:@"hold"])
+    	return YES;
+	self.status = @"hold";
     if(![self upload]) {
 		self.status = prevStatus;
 		return NO;
 	}
-	
 	return YES;	
 }
 
 - (BOOL)spam {
 	NSString *prevStatus = self.status;
-    if (![self.status isEqualToString:@"spam"]) {
-        self.status = @"spam";
-    }
+	if([prevStatus isEqualToString:@"spam"])
+    	return YES;
+    self.status = @"spam";
 	if(![self upload]) {
 		self.status = prevStatus;
 		return NO;
@@ -198,8 +197,10 @@
 - (BOOL)remove {
     if ([[WPDataController sharedInstance] wpDeleteComment:self]) {
         [[self managedObjectContext] deleteObject:self];
-    } else 
+		return YES;
+    } else {
 		return NO;
+	}
 	
 	return YES;
 }

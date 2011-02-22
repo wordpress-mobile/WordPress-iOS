@@ -555,7 +555,11 @@
 - (NSMutableDictionary *)getXMLRPCDictionaryForComment:(Comment *)comment {
     NSMutableDictionary *commentParams = [NSMutableDictionary dictionary];
     
-    [commentParams setObject:comment.content forKey:@"content"];
+	if(comment.content != nil)
+		[commentParams setObject:comment.content forKey:@"content"];
+	else 
+		[commentParams setObject:@"" forKey:@"content"];
+	
     [commentParams setObject:comment.parentID forKey:@"comment_parent"]; //keep attention. getComment, getComments are returning a different key "parent" that is a string.
     [commentParams setObject:comment.postID forKey:@"post_id"];
     [commentParams setObject:comment.status forKey:@"status"];
