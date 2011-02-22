@@ -46,6 +46,10 @@
 				BOOL geo = [[blogInfo valueForKey:@"GeolocationSetting"] isEqualToString:@"YES"];
 				[blog setValue:[NSNumber numberWithBool:geo] forKey:@"geolocationEnabled"];
 			} else {
+				NSNumber *geo = [blogInfo valueForKey:@"GeolocationSetting"];
+				if (geo == nil || ![geo isKindOfClass:[NSNumber class]]) {
+					geo = [NSNumber numberWithBool:NO];
+				}
 				[blog setValue:[blogInfo valueForKey:@"GeolocationSetting"] forKey:@"geolocationEnabled"];
 			}
 			if ([blog validateForInsert:&error]) {
