@@ -92,7 +92,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
     } else if ([newView isEqual:postPreviewViewController.view]) {
 		pointerFrame.origin.x = 100;
 	} else if ([newView isEqual:postMediaViewController.view]) {
-		pointerFrame.origin.x = 200;
+		if (DeviceIsPad())
+			pointerFrame.origin.x = 646;
+		else
+			pointerFrame.origin.x = 200;
 	}
 	tabPointer.frame = pointerFrame;
     [currentView removeFromSuperview];
@@ -1087,8 +1090,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)removeMedia:(NSNotification *)notification {
+	//remove the html string for the media object
 	Media *media = (Media *)[notification object];
-	textView.text = [textView.text stringByReplacingOccurrencesOfString:media.html withString:@""];
+	textView.text = [textView.text stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"<br/><br/>%@", media.html] withString:@""];
+	textView.text = [textView.text stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@<br/><br/>", media.html] withString:@""];
 }
 
 - (void)readBookmarksFile {

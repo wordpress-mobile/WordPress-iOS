@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="84"/>
+			<integer value="119"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -390,12 +390,6 @@
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<float key="IBUIWidth">32</float>
 								<reference key="IBUIToolbar" ref="1050617744"/>
-							</object>
-							<object class="IBUIBarButtonItem" id="469597128">
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<float key="IBUIWidth">32</float>
-								<reference key="IBUIToolbar" ref="1050617744"/>
-								<int key="IBUISystemItemIdentifier">6</int>
 							</object>
 							<object class="IBUIBarButtonItem" id="818773865">
 								<int key="IBUITag">2</int>
@@ -840,24 +834,18 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="158884752"/>
-							<reference ref="469597128"/>
-							<reference ref="226158018"/>
 							<reference ref="818773865"/>
 							<reference ref="891413274"/>
 							<reference ref="226724400"/>
 							<reference ref="1034545300"/>
 							<reference ref="988721263"/>
+							<reference ref="226158018"/>
 						</object>
 						<reference key="parent" ref="333657908"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">195</int>
 						<reference key="object" ref="158884752"/>
-						<reference key="parent" ref="1050617744"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">117</int>
-						<reference key="object" ref="469597128"/>
 						<reference key="parent" ref="1050617744"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -910,7 +898,6 @@
 					<string>113.IBPluginDependency</string>
 					<string>115.IBPluginDependency</string>
 					<string>116.IBPluginDependency</string>
-					<string>117.IBPluginDependency</string>
 					<string>119.IBPluginDependency</string>
 					<string>158.IBPluginDependency</string>
 					<string>158.IBViewBoundsToFrameTransform</string>
@@ -952,7 +939,6 @@
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">P4AAAL+AAAAAAAAAxHSAAA</bytes>
 					</object>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1016,7 +1002,7 @@
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">P4AAAL+AAABCdAAAwjAAAA</bytes>
 					</object>
-					<string>{{320, 86}, {783, 770}}</string>
+					<string>{{320, 12}, {768, 1024}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
@@ -1053,9 +1039,6 @@
 							<string>endEditingAction:</string>
 							<string>endTextEnteringButtonAction:</string>
 							<string>showAddNewCategoryView:</string>
-							<string>showCategoriesViewAction:</string>
-							<string>showLocationMapView:</string>
-							<string>showStatusViewAction:</string>
 							<string>switchToEdit</string>
 							<string>switchToMedia</string>
 							<string>switchToPreview</string>
@@ -1063,9 +1046,6 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -1086,9 +1066,6 @@
 							<string>endEditingAction:</string>
 							<string>endTextEnteringButtonAction:</string>
 							<string>showAddNewCategoryView:</string>
-							<string>showCategoriesViewAction:</string>
-							<string>showLocationMapView:</string>
-							<string>showStatusViewAction:</string>
 							<string>switchToEdit</string>
 							<string>switchToMedia</string>
 							<string>switchToPreview</string>
@@ -1114,18 +1091,6 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">showAddNewCategoryView:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">showCategoriesViewAction:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">showLocationMapView:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">showStatusViewAction:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
