@@ -80,12 +80,19 @@
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	NSError *error = nil;
     [Category createCategoryWithError:categoryName parent:parentCat forBlog:self.blog  error:&error];
+	if(!error) {
+		//re-syncs categories this is necessary because the server can change the name of the category!!!
+		[self.blog syncCategoriesWithError:&error];	
+	}
+	
 	if(error) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error];
 		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 		[self removeProgressIndicator];
-	} else 
+	} else {
 		[self performSelectorOnMainThread:@selector(didSaveOnBackground) withObject:nil waitUntilDone:NO];
+		
+	}
     [pool release];
 }
 
