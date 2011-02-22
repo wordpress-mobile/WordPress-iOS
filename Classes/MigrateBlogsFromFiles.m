@@ -50,7 +50,7 @@
 				if (geo == nil || ![geo isKindOfClass:[NSNumber class]]) {
 					geo = [NSNumber numberWithBool:NO];
 				}
-				[blog setValue:[blogInfo valueForKey:@"GeolocationSetting"] forKey:@"geolocationEnabled"];
+				[blog setValue:geo forKey:@"geolocationEnabled"];
 			}
 			if ([blog validateForInsert:&error]) {
 				WPLog(@"* Migrated blog %@", [blog valueForKey:@"blogName"]);
