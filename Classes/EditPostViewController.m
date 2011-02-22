@@ -59,14 +59,22 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		writeButton.enabled = NO;
 		settingsButton.enabled = YES;
 		previewButton.enabled = YES;
+		attachmentButton.enabled = YES;
     } else if ([newView isEqual:postSettingsController.view]) {
 		writeButton.enabled = YES;
 		settingsButton.enabled = NO;
 		previewButton.enabled = YES;
+		attachmentButton.enabled = YES;
     } else if ([newView isEqual:postPreviewViewController.view]) {
 		writeButton.enabled = YES;
 		settingsButton.enabled = YES;
 		previewButton.enabled = NO;
+		attachmentButton.enabled = YES;
+	} else if ([newView isEqual:postMediaViewController.view]) {
+		writeButton.enabled = YES;
+		settingsButton.enabled = YES;
+		previewButton.enabled = YES;
+		attachmentButton.enabled = NO;
 	}
 	
     newView.frame = currentView.frame;
@@ -80,6 +88,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		pointerFrame.origin.x = 60;
     } else if ([newView isEqual:postPreviewViewController.view]) {
 		pointerFrame.origin.x = 100;
+	} else if ([newView isEqual:postMediaViewController.view]) {
+		pointerFrame.origin.x = 198;
 	}
 	tabPointer.frame = pointerFrame;
     [currentView removeFromSuperview];
