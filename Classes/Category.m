@@ -91,6 +91,7 @@
     } else {
         // Just in case another thread has saved while we were creating
         [[blog managedObjectContext] deleteObject:category];
+		[blog dataSave]; // Commit core data changes
         [category release];
 		[dc release];
         return nil;

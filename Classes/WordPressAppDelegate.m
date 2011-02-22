@@ -302,13 +302,27 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)showNotificationErrorAlert:(NSNotification *)notification {
+	NSString *cleanedErrorMsg = nil;
+	
 	if([[notification object] isKindOfClass:[NSError class]]) {
+		
 		NSError *err  = (NSError *)[notification object];
-		[self showAlertWithTitle:@"Error" message:[err localizedDescription]];
+		cleanedErrorMsg = [err localizedDescription];
+		
+		//org.wordpress.iphone --> XML-RPC errors
+		if ([[err domain] isEqualToString:@"org.wordpress.iphone"]){
+			if([err code] == 401)
+				cleanedErrorMsg = @"Sorry, you cannot access this feature. Please check your User Role on this blog.";
+		}
+		
 	} else {
-		NSString *errStr  = (NSString *)[notification object];
-		[self showAlertWithTitle:@"Error" message:errStr];
+		cleanedErrorMsg  = (NSString *)[notification object];
 	}
+	
+	if([cleanedErrorMsg rangeOfString:@"NSXMLParserErrorDomain"].location != NSNotFound )
+		cleanedErrorMsg = @"The app can't recognize the server response. Please, check the configuration of your blog.";
+	
+	[self showAlertWithTitle:@"Error" message:cleanedErrorMsg];
 }
 
 

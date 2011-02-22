@@ -82,8 +82,10 @@
     [Category createCategoryWithError:categoryName parent:parentCat forBlog:self.blog  error:&error];
 	if(error) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error];
-	} 
-	[self performSelectorOnMainThread:@selector(didSaveOnBackground) withObject:nil waitUntilDone:NO];
+		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+		[self removeProgressIndicator];
+	} else 
+		[self performSelectorOnMainThread:@selector(didSaveOnBackground) withObject:nil waitUntilDone:NO];
     [pool release];
 }
 
