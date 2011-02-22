@@ -696,7 +696,8 @@
 		[request release];
         return self.error;
     }
-	//NSLog(@"executeXMLRPCRequest response: %@", [request responseString]);
+	if(getenv("WPDebugXMLRPC"))
+		NSLog(@"executeXMLRPCRequest response: %@", [request responseString]);
     NSRange prefixRange = [[[request responseString] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]] rangeOfString:@"<?xml"
                                             options:(NSAnchoredSearch | NSCaseInsensitiveSearch)];
     if (prefixRange.location == NSNotFound) {
