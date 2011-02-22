@@ -528,21 +528,27 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	}
 
 	if (NO) {
-	[manager migrateStoreFromURL:storeURL
-							type:NSSQLiteStoreType
-						 options:nil
-				withMappingModel:mappingModel
-				toDestinationURL:storeURL
-				 destinationType:NSSQLiteStoreType
-			  destinationOptions:nil
-						   error:&error];
+		BOOL migrates = [manager migrateStoreFromURL:storeURL
+												type:NSSQLiteStoreType
+											 options:nil
+									withMappingModel:mappingModel
+									toDestinationURL:storeURL
+									 destinationType:NSSQLiteStoreType
+								  destinationOptions:nil
+											   error:&error];
+
+		if (migrates) {
+			WPLog(@"migration went OK");
+		} else {
+			WPLog(@"migration failed: %@", [error localizedDescription]);
+		}
 	}
 	
 	WPLog(@"End of debugging migration detection");
 #endif
     persistentStoreCoordinator_ = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
     if (![persistentStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
-		NSLog(@"Error opening the database. Deleting the file and trying again.");
+		NSLog(@"Error opening the database. %@\nDeleting the file and trying again", error);
 #ifdef DEBUGMODE 
 		// Don't delete the database on debug builds
 		// Makes migration debugging less of a pain
