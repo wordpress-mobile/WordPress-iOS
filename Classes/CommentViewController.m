@@ -446,15 +446,20 @@
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	BOOL fails = NO;
     if ([self isConnectedToHost]) {
-        [self.comment performSelector:selector];
-        [self.navigationController popViewControllerAnimated:YES];
+		if(![self.comment performSelector:selector])
+			fails = YES;
     }
 	
     [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
     [progressAlert release];
+		
 	if(fails)
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:@"Something went wrong during comments moderation."];	
-    [pool release];
+    else {
+		 [self.navigationController popViewControllerAnimated:YES];
+	}
+
+	[pool release];
 }
 
 - (void)deleteThisComment {
