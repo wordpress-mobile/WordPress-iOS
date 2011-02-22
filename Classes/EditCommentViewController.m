@@ -271,6 +271,15 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 
 - (void)initiateSaveCommentReply:(id)sender {
 	[self endTextEnteringButtonAction: sender];
+	if(hasChanges == NO) {
+		/*UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:@"Error."
+																	  message:@"please modify the comment."
+																	 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [connectionFailAlert show];
+        [connectionFailAlert release];*/
+		[self.navigationController popViewControllerAnimated:YES];
+		return;
+	}
 	[self continueSaveCommentReply: sender];
 }
 	

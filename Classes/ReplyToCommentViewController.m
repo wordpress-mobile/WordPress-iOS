@@ -161,7 +161,6 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 }
 
 - (void)endTextEnteringButtonAction:(id)sender {
-	
     [textView resignFirstResponder];
 	UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
 	if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
@@ -311,6 +310,18 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 }
 
 - (void)initiateSaveCommentReply:(id)sender {
+	//we should call endTextEnteringButtonAction here, bc if you click on reply without clicking on the 'done' btn
+	//within the keyboard, the textViewDidEndEditing is never called
+	[self endTextEnteringButtonAction: sender];
+	if(hasChanges == NO) {
+		UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:@"Error."
+																	  message:@"please type a comment."
+																	 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [connectionFailAlert show];
+        [connectionFailAlert release];
+		return;
+	}
+	
     progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Sending Reply..."];
     [progressAlert show];
     self.comment.content = textView.text;
