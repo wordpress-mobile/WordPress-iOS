@@ -606,7 +606,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	if (![self.apost hasRemote])
 		actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
                                                              delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Discard"
-                                                    otherButtonTitles:@"Save", nil];
+                                                    otherButtonTitles:@"Save Draft", nil];
 	else
 		actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
 												  delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Discard"
