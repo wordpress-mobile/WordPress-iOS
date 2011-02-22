@@ -12,6 +12,7 @@
 @implementation MigrateBlogsFromFiles
 
 - (BOOL)beginEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
+	WPLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
 	WPLog(@"beginEntityMapping");
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -75,11 +76,22 @@
 	return YES;
 }
 
+- (BOOL)endEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
+	WPLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+	return YES;
+}
+
+- (BOOL)performCustomValidationForEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
+	WPLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+	return YES;
+}
+
 - (BOOL)createDestinationInstancesForSourceInstance:(NSManagedObject *)source 
                                       entityMapping:(NSEntityMapping *)mapping 
                                             manager:(NSMigrationManager *)manager 
                                               error:(NSError **)error
 {		
+	WPLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
     return YES;
 }
 
@@ -88,6 +100,7 @@
                                           manager:(NSMigrationManager*)manager 
                                             error:(NSError**)error
 {
+	WPLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
     return YES;
 }
 
