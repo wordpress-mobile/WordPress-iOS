@@ -342,9 +342,22 @@
 
 
 - (BOOL)syncCategoriesFromResults:(NSMutableArray *)categories {
+	
+	NSMutableArray *categoriesToKeep = [NSMutableArray array];
     for (NSDictionary *categoryInfo in categories) {
-        [Category createOrReplaceFromDictionary:categoryInfo forBlog:self];
+		[categoriesToKeep addObject:[Category createOrReplaceFromDictionary:categoryInfo forBlog:self]];
     }
+	
+	NSSet *syncedCategories = self.categories;
+	if (syncedCategories && (syncedCategories.count > 0)) {
+		for (Category *cat in syncedCategories) {
+			if(![categoriesToKeep containsObject:cat]) {
+				WPLog(@"Deleting Category: %@", cat);
+				[[self managedObjectContext] deleteObject:cat];
+			}
+		}
+    }
+	
     [self dataSave];
     return YES;
 }
