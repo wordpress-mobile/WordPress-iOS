@@ -131,14 +131,17 @@
 		
 		//draft post
 		BOOL isDraft = [self.postDetailViewController isAFreshlyCreatedDraft];
+		BOOL isPrivate = NO;
+		BOOL isPending = NO;
+		
 		if ([status isEqualToString:@"draft"])
 			isDraft = YES;
-		
-		BOOL isPrivate = NO;
-		if ([status isEqualToString:@"private"])
+		else if ([status isEqualToString:@"private"])
 			isPrivate = YES;
+		else if ([status isEqualToString:@"pending"])
+			isPending = YES;
 		
-		if (edited || isDraft || isPrivate) {
+		if (edited || isDraft || isPending || isPrivate) {
             [webView loadHTMLString:[self buildSimplePreview] baseURL:nil];
 			
 		} else {
