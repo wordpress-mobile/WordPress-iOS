@@ -59,17 +59,20 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		writeButton.enabled = NO;
 		settingsButton.enabled = YES;
 		previewButton.enabled = YES;
-		attachmentButton.enabled = YES;
+		if ([self.apost.media count]) attachmentButton.enabled = YES;
+		else attachmentButton.enabled = NO;
     } else if ([newView isEqual:postSettingsController.view]) {
 		writeButton.enabled = YES;
 		settingsButton.enabled = NO;
 		previewButton.enabled = YES;
-		attachmentButton.enabled = YES;
+		if ([self.apost.media count]) attachmentButton.enabled = YES;
+		else attachmentButton.enabled = NO;
     } else if ([newView isEqual:postPreviewViewController.view]) {
 		writeButton.enabled = YES;
 		settingsButton.enabled = YES;
 		previewButton.enabled = NO;
-		attachmentButton.enabled = YES;
+		if ([self.apost.media count]) attachmentButton.enabled = YES;
+		else attachmentButton.enabled = NO;
 	} else if ([newView isEqual:postMediaViewController.view]) {
 		writeButton.enabled = YES;
 		settingsButton.enabled = YES;
@@ -89,7 +92,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     } else if ([newView isEqual:postPreviewViewController.view]) {
 		pointerFrame.origin.x = 100;
 	} else if ([newView isEqual:postMediaViewController.view]) {
-		pointerFrame.origin.x = 198;
+		pointerFrame.origin.x = 200;
 	}
 	tabPointer.frame = pointerFrame;
     [currentView removeFromSuperview];
@@ -196,6 +199,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     
     currentView = editView;
 	writeButton.enabled = NO;
+	if ([self.apost.media count]) attachmentButton.enabled = YES;
+	else attachmentButton.enabled = NO;
 
     if (iOs4OrGreater()) {
         self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
