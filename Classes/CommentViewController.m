@@ -39,7 +39,6 @@
 
 - (void)launchReplyToComments;
 - (void)launchEditComment;
-- (void)dismissEditViewController;
 
 @end
 

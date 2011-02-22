@@ -612,6 +612,27 @@
     }    
 }
 
+- (BOOL)updateSingleComment:(Comment *)comment {
+    if (comment.commentID == nil) {
+        return NO;
+    }
+    
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:comment.blog.xmlrpc]];
+    NSMutableDictionary *commentParams = [self getXMLRPCDictionaryForComment:comment];
+    NSArray *args = [NSArray arrayWithObjects:comment.blog.blogID, comment.blog.username, [self passwordForBlog:comment.blog], comment.commentID, commentParams, nil];
+    
+    [xmlrpcRequest setMethod:@"wp.getComment" withObjects:args];
+    id result = [self executeXMLRPCRequest:xmlrpcRequest];
+    if ([result isKindOfClass:[NSError class]]) {
+        NSLog(@"updateComment failed: %@", result);
+        return NO;
+    } else {
+		[comment updateFromDictionary:result];
+		return YES;
+    }    
+}
+
+
 - (BOOL)wpDeleteComment:(Comment *)comment {
     if (comment.commentID == nil)
         return YES;

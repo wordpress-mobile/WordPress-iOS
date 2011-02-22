@@ -137,13 +137,15 @@
     if (self.commentID) {
         if([[WPDataController sharedInstance] wpEditComment:self]) {
 			//OK
-		    [self save];
+		    [[WPDataController sharedInstance] updateSingleComment:self];
+			[self save];
 			return YES;
 		} 
     } else {
         NSNumber *commentID = [[WPDataController sharedInstance] wpNewComment:self];
         if (commentID) {
 			self.commentID = commentID;
+			[[WPDataController sharedInstance] updateSingleComment:self];
 			[self save];
 			return YES;
 		}

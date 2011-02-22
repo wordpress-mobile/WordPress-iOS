@@ -42,6 +42,7 @@ typedef enum {
 + (NSString *)titleForStatus:(NSString *)status;
 - (void)findPost;
 - (Comment *)newReply;
+- (void)updateFromDictionary:(NSDictionary *)commentInfo;
 
 - (BOOL)upload;
 

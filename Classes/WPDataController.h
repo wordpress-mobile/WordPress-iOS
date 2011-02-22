@@ -68,6 +68,7 @@ typedef enum {
 - (NSNumber *)wpNewComment:(Comment *)comment;
 - (BOOL)wpEditComment:(Comment *)comment;
 - (BOOL)wpDeleteComment:(Comment *)comment;
+- (BOOL)updateSingleComment:(Comment *)comment;
 
 #pragma mark -
 #pragma mark Push Notifications

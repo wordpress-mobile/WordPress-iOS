@@ -62,6 +62,7 @@
 
 - (void)segmentAction:(id)sender;
 - (void)showComment:(Comment *)comment;
+- (void)dismissEditViewController;
 
 - (void)deleteComment:(id)sender;
 - (void)approveComment:(id)sender;

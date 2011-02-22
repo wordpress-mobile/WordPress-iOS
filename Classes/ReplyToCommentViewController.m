@@ -328,7 +328,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
     progressAlert = nil;
 	if(res) {
 		hasChanges = NO;
-		[commentViewController performSelectorOnMainThread:@selector(cancelView:) withObject:self waitUntilDone:YES];
+		[commentViewController performSelectorOnMainThread:@selector(dismissEditViewController) withObject:nil waitUntilDone:YES];
 	} else {
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:@"Something went wrong during comments moderation."];	
 	}
