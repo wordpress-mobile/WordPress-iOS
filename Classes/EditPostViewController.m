@@ -595,6 +595,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (IBAction)cancelView:(id)sender {
     [FlurryAPI logEvent:@"EditPost#cancelView"];
     if (!self.hasChanges) {
+		[postSettingsController endEditingAction:nil];
         [self discard];
         return;
     }
