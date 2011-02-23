@@ -130,6 +130,8 @@ Classes/EditSiteViewController.m -text
 Classes/EditSiteViewController.xib -text
 Classes/FakeMigration.h -text
 Classes/FakeMigration.m -text
+Classes/FileLogger.h -text
+Classes/FileLogger.m -text
 Classes/FlippingViewController.h -text
 Classes/FlippingViewController.m -text
 Classes/GravatarImageView.h -text

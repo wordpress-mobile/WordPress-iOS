@@ -13,17 +13,17 @@
 @implementation PostToAbstractPost
 
 - (BOOL)beginEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
-	WPLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+	WPFLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
 	return YES;
 }
 
 - (BOOL)endEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
-	WPLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+	WPFLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
 	return YES;
 }
 
 - (BOOL)performCustomValidationForEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
-	WPLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+	WPFLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
 	return YES;
 }
 
@@ -32,17 +32,17 @@
                                             manager:(NSMigrationManager *)manager 
                                               error:(NSError **)error
 {
-	WPLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+	WPFLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
 	if ([[source valueForKey:@"blogID"] isEqualToString:@"0"]) {
-		WPLog(@"! Ignoring post with blog id 0");
+		WPFLog(@"! Ignoring post with blog id 0");
 		return YES;
 	}
 	if ([[source valueForKey:@"isLocalDraft"] isEqual:[NSNumber numberWithBool:NO]]) {
-		WPLog(@"! Ignoring not local draft post");
+		WPFLog(@"! Ignoring not local draft post");
 		return YES;
 	}
 	if ([[source valueForKey:@"isAutosave"] isEqual:[NSNumber numberWithBool:YES]]) {
-		WPLog(@"! Ignoring autosave");
+		WPFLog(@"! Ignoring autosave");
 		return YES;
 	}
 	NSManagedObjectContext *destMOC = [manager destinationContext];
@@ -87,7 +87,7 @@
 		[fetchRequest release];		
 	}
 	
-	WPLog(@"* Initiating migration for %@", [source valueForKey:@"postTitle"]);	
+	WPFLog(@"* Initiating migration for %@", [source valueForKey:@"postTitle"]);	
 	if (results && [results count] > 0) {
 		for (NSManagedObject *blog in results) {
 			if ([postType isEqualToString:@"page"]) {
@@ -107,9 +107,9 @@
 						
 						if (results && [results count] > 0) {
 							[postCategories addObjectsFromArray:[results allObjects]];
-							WPLog(@"** Adding category %@ to post %@", categoryName, [source valueForKey:@"postTitle"]);
+							WPFLog(@"** Adding category %@ to post %@", categoryName, [source valueForKey:@"postTitle"]);
 						} else {
-							WPLog(@"!! Category %@ not found for post %@ in blog %@", categoryName, [source valueForKey:@"postTitle"], [blog valueForKey:@"blogName"]);
+							WPFLog(@"!! Category %@ not found for post %@ in blog %@", categoryName, [source valueForKey:@"postTitle"], [blog valueForKey:@"blogName"]);
 						}
 
 					}
@@ -155,12 +155,12 @@
 						[newMedia setValue:[media valueForKey:@"creationDate"] forKey:@"creationDate"];
 						
 						if ([newMedia validateForInsert:&err]) {
-							WPLog(@"** Migrated media %@ for post %@ in blog %@",
+							WPFLog(@"** Migrated media %@ for post %@ in blog %@",
 								  [newMedia valueForKey:@"filename"],
 								  [apost valueForKey:@"postTitle"],
 								  [blog valueForKey:@"blogName"]);
 						} else {
-							WPLog(@"!! Failed migrating media %@ for post %@ in blog %@",
+							WPFLog(@"!! Failed migrating media %@ for post %@ in blog %@",
 								  [newMedia valueForKey:@"filename"],
 								  [apost valueForKey:@"postTitle"],
 								  [blog valueForKey:@"blogName"]);
@@ -173,15 +173,15 @@
 					}
 				}
 				// TODO: Import media items here
-				WPLog(@"* TODO: import media items");
+				WPFLog(@"* TODO: import media items");
 			}
 			if ([apost validateForInsert:&err]) {
-				WPLog(@"* Migrated post %@ for blog %@", [apost valueForKey:@"postTitle"], [blog valueForKey:@"blogName"]);
+				WPFLog(@"* Migrated post %@ for blog %@", [apost valueForKey:@"postTitle"], [blog valueForKey:@"blogName"]);
 				[manager associateSourceInstance:source
 						 withDestinationInstance:apost
 								forEntityMapping:mapping];
 			} else {
-				WPLog(@"! Failed migrating post %@ for blog %@: %@", [apost valueForKey:@"postTitle"], [blog valueForKey:@"blogName"], [err localizedDescription]);
+				WPFLog(@"! Failed migrating post %@ for blog %@: %@", [apost valueForKey:@"postTitle"], [blog valueForKey:@"blogName"], [err localizedDescription]);
 				if (error) {
 					*error = err;
 				}
@@ -189,8 +189,8 @@
 			}			
 		}
 	} else {
-		WPLog(@"! Failed migrating post %@: %@", [source valueForKey:@"postTitle"], [err localizedDescription]);
-		WPLog(@"No blog found with id %@", [source valueForKey:@"blogID"]);
+		WPFLog(@"! Failed migrating post %@: %@", [source valueForKey:@"postTitle"], [err localizedDescription]);
+		WPFLog(@"No blog found with id %@", [source valueForKey:@"blogID"]);
 		if (error) {
 			*error = err;
 		}
@@ -205,7 +205,7 @@
                                           manager:(NSMigrationManager*)manager 
                                             error:(NSError**)error
 {
-	WPLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+	WPFLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
     return YES;
 }
 

@@ -19,4 +19,5 @@
     #import "Constants.h"
     #import "NSString+Util.h"
 	#import "CDeviceSupport.h"
+	#import "FileLogger.h"
 #endif

@@ -12,8 +12,8 @@
 @implementation MigrateBlogsFromFiles
 
 - (BOOL)beginEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
-	WPLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
-	WPLog(@"beginEntityMapping");
+	WPFLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+	WPFLog(@"beginEntityMapping");
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *currentDirectoryPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"wordpress"];
@@ -22,7 +22,7 @@
     if ([fileManager fileExistsAtPath:blogsArchiveFilePath]) {
         // set method will release, make mutable copy and retain
         NSArray *blogs = [NSKeyedUnarchiver unarchiveObjectWithFile:blogsArchiveFilePath];
-		WPLog(@"Got blogs list from 2.6: %i blogs", [blogs count]);
+		WPFLog(@"Got blogs list from 2.6: %i blogs", [blogs count]);
 		
 		NSManagedObjectContext *destMOC = [manager destinationContext];
 		NSError *error = nil;
@@ -53,9 +53,9 @@
 				[blog setValue:geo forKey:@"geolocationEnabled"];
 			}
 			if ([blog validateForInsert:&error]) {
-				WPLog(@"* Migrated blog %@", [blog valueForKey:@"blogName"]);
+				WPFLog(@"* Migrated blog %@", [blog valueForKey:@"blogName"]);
 			} else {
-				WPLog(@"! Failed migration for blog %@: %@", [blog valueForKey:@"blogName"], [error localizedDescription]);
+				WPFLog(@"! Failed migration for blog %@: %@", [blog valueForKey:@"blogName"], [error localizedDescription]);
 			}
 
 			
@@ -70,9 +70,9 @@
 				[category setValue:[[categoryInfo valueForKey:@"parentId"] numericValue] forKey:@"parentID"];
 
 				if ([category validateForInsert:&error]) {
-					WPLog(@"** Migrated category %@ in blog %@", [category valueForKey:@"categoryName"], [blog valueForKey:@"blogName"]);
+					WPFLog(@"** Migrated category %@ in blog %@", [category valueForKey:@"categoryName"], [blog valueForKey:@"blogName"]);
 				} else {
-					WPLog(@"!! Failed migration for category %@ in blog %@: %@", [category valueForKey:@"categoryName"], [blog valueForKey:@"blogName"], [error localizedDescription]);
+					WPFLog(@"!! Failed migration for category %@ in blog %@: %@", [category valueForKey:@"categoryName"], [blog valueForKey:@"blogName"], [error localizedDescription]);
 				}
 			}
 		}
@@ -81,12 +81,12 @@
 }
 
 - (BOOL)endEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
-	WPLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+	WPFLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
 	return YES;
 }
 
 - (BOOL)performCustomValidationForEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
-	WPLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+	WPFLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
 	return YES;
 }
 
@@ -95,7 +95,7 @@
                                             manager:(NSMigrationManager *)manager 
                                               error:(NSError **)error
 {		
-	WPLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+	WPFLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
     return YES;
 }
 
@@ -104,7 +104,7 @@
                                           manager:(NSMigrationManager*)manager 
                                             error:(NSError**)error
 {
-	WPLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+	WPFLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
     return YES;
 }
 
