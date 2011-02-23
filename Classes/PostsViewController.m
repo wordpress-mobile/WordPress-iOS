@@ -5,7 +5,6 @@
 #import "PostTableViewCell.h"
 #import "UIViewController+WPAnimation.h"
 #import "WordPressAppDelegate.h"
-#import "WPNavigationLeftButtonView.h"
 #import "WPReachability.h"
 #import "WPProgressHUD.h"
 

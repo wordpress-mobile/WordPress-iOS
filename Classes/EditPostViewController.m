@@ -2,7 +2,6 @@
 #import "WordPressAppDelegate.h"
 #import "BlogDataManager.h"
 #import "WPSegmentedSelectionTableViewController.h"
-#import "WPNavigationLeftButtonView.h"
 #import "CPopoverManager.h"
 
 NSTimeInterval kAnimationDuration = 0.3f;

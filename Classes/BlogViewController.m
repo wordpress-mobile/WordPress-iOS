@@ -9,7 +9,6 @@
 
 #import "BlogDataManager.h"
 #import "UIViewController+WPAnimation.h"
-#import "WPNavigationLeftButtonView.h"
 #import "WordPressAppDelegate.h"
 #import "NSString+XMLExtensions.h" 
 

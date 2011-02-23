@@ -353,8 +353,8 @@
 }
 
 - (void)cancel {	
-    if ([[replyToCommentViewController.leftView title] isEqualToString:@"Comment"])
-        [replyToCommentViewController.leftView setTitle:@"Cancel"];
+    //if ([[replyToCommentViewController.leftView title] isEqualToString:@"Comment"])
+    //    [replyToCommentViewController.leftView setTitle:@"Cancel"];
 }
 
 

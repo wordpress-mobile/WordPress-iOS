@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "WPNavigationLeftButtonView.h"
 #import "Comment.h"
 
 @class CommentViewController;
@@ -23,7 +22,6 @@
 	UIBarButtonItem *saveButton;
 	UIBarButtonItem *doneButton;
 	UIBarButtonItem *cancelButton;
-	WPNavigationLeftButtonView *leftView;
 	BOOL hasChanges, isTransitioning;
 	NSString *textViewText; //to compare for hasChanges
 
@@ -35,7 +33,6 @@
 @property (nonatomic, retain) UIBarButtonItem *saveButton;
 @property (nonatomic, retain) UIBarButtonItem *doneButton;
 @property (nonatomic, retain) UIBarButtonItem *cancelButton;
-@property (nonatomic, retain)   WPNavigationLeftButtonView *leftView;
 @property (nonatomic, retain) CommentViewController *commentViewController;
 @property (nonatomic, retain) UILabel *label;
 @property (nonatomic) BOOL hasChanges;

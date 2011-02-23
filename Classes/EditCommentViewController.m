@@ -33,7 +33,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 @implementation EditCommentViewController
 
 @synthesize commentViewController, saveButton, doneButton, comment;
-@synthesize leftView, cancelButton, label, hasChanges, textViewText, isTransitioning;
+@synthesize cancelButton, label, hasChanges, textViewText, isTransitioning;
 
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -58,12 +58,6 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
  action:@selector(initiateSaveCommentReply:)];
  }
  
- 
- if (!leftView) {
- leftView = [WPNavigationLeftButtonView createCopyOfView];
- [leftView setTitle:@"Comment"];
- }
- 
  }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -71,13 +65,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 	[[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(receivedRotate:) name: UIDeviceOrientationDidChangeNotification object: nil];
 	
-		
-	[leftView setTarget:self withAction:@selector(cancelView:)];
-	if (DeviceIsPad() == NO) {
-		cancelButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
-	} else {
-		cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelView:)];
-	}
+	cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelView:)];
 	self.navigationItem.leftBarButtonItem = cancelButton;
     [cancelButton release];
 	
@@ -185,10 +173,11 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	[self setTextViewHeight:440];
 	
 	if (DeviceIsPad() == NO) {
-		[leftView setTitle:@"Cancel"];
-		UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:leftView];
-		self.navigationItem.leftBarButtonItem = barItem;	
-		[barItem release];
+		self.navigationItem.leftBarButtonItem =
+		[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+										 style: UIBarButtonItemStyleBordered
+										target:self
+										action:@selector(cancelView:)];
 	}
 }
 

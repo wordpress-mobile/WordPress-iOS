@@ -31,7 +31,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 @implementation ReplyToCommentViewController
 
 @synthesize commentViewController, saveButton, doneButton, comment;
-@synthesize leftView, cancelButton, label, hasChanges, textViewText, isTransitioning;
+@synthesize cancelButton, label, hasChanges, textViewText, isTransitioning;
 
 //TODO: Make sure to give this class a connection to commentDetails and currentIndex from CommentViewController
 
@@ -63,12 +63,6 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 				  action:@selector(initiateSaveCommentReply:)];
 	}
 	
-	
-	if (!leftView) {
-        leftView = [WPNavigationLeftButtonView createCopyOfView];
-        [leftView setTitle:@"Comment"];
-	}
-	
 }
 
 
@@ -81,13 +75,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	self.hasChanges = NO;
 	//foo = textView.text;//so we can compare to set hasChanges correctly
 	textViewText = [[NSString alloc] initWithString: textView.text];
-
-	[leftView setTarget:self withAction:@selector(cancelView:)];
-	if (DeviceIsPad() == NO) {
-		cancelButton = [[UIBarButtonItem alloc] initWithCustomView:leftView];
-	} else {
-		cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelView:)];
-	}
+	cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelView:)];
 	self.navigationItem.leftBarButtonItem = cancelButton;
     [cancelButton release];
 	cancelButton = nil;
@@ -141,8 +129,6 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	self.comment = nil;
 	[textViewText release];
 	textViewText = nil;
-	[leftView release];
-	leftView = nil;
     [super dealloc];
 }
 
@@ -217,10 +203,11 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	[self setTextViewHeight:460];
 	
 	if (DeviceIsPad() == NO) {
-		[leftView setTitle:@"Cancel"];
-		UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:leftView];
-		self.navigationItem.leftBarButtonItem = barItem;
-		[barItem release];	
+		self.navigationItem.leftBarButtonItem =
+		[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+										 style: UIBarButtonItemStyleBordered
+										target:self
+										action:@selector(cancelView:)];
 	}
 }
 
@@ -298,8 +285,8 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 
 - (BOOL)isConnectedToHost {
     if (![[WPReachability sharedReachability] remoteHostStatus] != NotReachable) {
-        UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:@"No connection to host."
-																	  message:@"Operation is not supported now."
+        UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:@"Connection Problem"
+																	  message:@"The internet connection appears to be offline."
 																	 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [connectionFailAlert show];
         [connectionFailAlert release];
@@ -315,7 +302,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	[self endTextEnteringButtonAction: sender];
 	if(hasChanges == NO) {
 		UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:@"Error."
-																	  message:@"please type a comment."
+																	  message:@"Please type a comment."
 																	 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [connectionFailAlert show];
         [connectionFailAlert release];
@@ -341,7 +328,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 		hasChanges = NO;
 		[commentViewController performSelectorOnMainThread:@selector(dismissEditViewController) withObject:nil waitUntilDone:YES];
 	} else {
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:@"Something went wrong during comments moderation."];	
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:@"Sorry, something went wrong during comments moderation. Please try again."];	
 	}
 	
     [pool release];

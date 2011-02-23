@@ -278,7 +278,6 @@
 		C584D0840EF942DC00B78012 /* UIViewController+WPAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = C584D0830EF942DC00B78012 /* UIViewController+WPAnimation.m */; };
 		C584D0B40EF943A600B78012 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C584D0B30EF943A600B78012 /* QuartzCore.framework */; };
 		C59D3D4B0E6410D300AA591D /* NSString+XMLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */; };
-		C5B001BF0E82971400D13185 /* WPNavigationLeftButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5B001BE0E82971400D13185 /* WPNavigationLeftButtonView.m */; };
 		C5B001D00E82991300D13185 /* backNav.png in Resources */ = {isa = PBXBuildFile; fileRef = C5B001CF0E82991300D13185 /* backNav.png */; };
 		C5C272DF0E7EC00A0034AA46 /* uncheck.png in Resources */ = {isa = PBXBuildFile; fileRef = C5C272DE0E7EC00A0034AA46 /* uncheck.png */; };
 		C5C272E10E7EC00F0034AA46 /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = C5C272E00E7EC00F0034AA46 /* check.png */; };
@@ -769,8 +768,6 @@
 		C584D0B30EF943A600B78012 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS2.0.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = "<absolute>"; };
 		C59D3D490E6410D300AA591D /* NSString+XMLExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+XMLExtensions.h"; sourceTree = "<group>"; };
 		C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+XMLExtensions.m"; sourceTree = "<group>"; };
-		C5B001BE0E82971400D13185 /* WPNavigationLeftButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPNavigationLeftButtonView.m; sourceTree = "<group>"; };
-		C5B001C00E82971C00D13185 /* WPNavigationLeftButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPNavigationLeftButtonView.h; sourceTree = "<group>"; };
 		C5B001CF0E82991300D13185 /* backNav.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backNav.png; sourceTree = "<group>"; };
 		C5C272DE0E7EC00A0034AA46 /* uncheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = uncheck.png; sourceTree = "<group>"; };
 		C5C272E00E7EC00F0034AA46 /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
@@ -1623,8 +1620,6 @@
 				A00593C10E224A1B0087E1FB /* WPImageView.m */,
 				702CA0660F36FF0D00018B88 /* WPLabelFooterView.h */,
 				702CA0670F36FF0D00018B88 /* WPLabelFooterView.m */,
-				C5B001C00E82971C00D13185 /* WPNavigationLeftButtonView.h */,
-				C5B001BE0E82971400D13185 /* WPNavigationLeftButtonView.m */,
 				ACAC79C40E1F50EB00AC7074 /* WPSelectionTableViewController.h */,
 				ACAC79C50E1F50EB00AC7074 /* WPSelectionTableViewController.m */,
 				C55A90D70E8026C500E1C9B5 /* WPSegmentedSelectionTableViewController.h */,
@@ -2133,7 +2128,6 @@
 				C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */,
 				2A7F72010E70F8C900E48A1F /* CommentViewController.m in Sources */,
 				C55A90D90E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m in Sources */,
-				C5B001BF0E82971400D13185 /* WPNavigationLeftButtonView.m in Sources */,
 				C5E3AE350E93F3C5008755FF /* WPImagePickerController.m in Sources */,
 				EC4696FF0EA75D460040EE8E /* PagesViewController.m in Sources */,
 				C584D0840EF942DC00B78012 /* UIViewController+WPAnimation.m in Sources */,

@@ -243,8 +243,6 @@ Classes/WPLabelFooterView.h -text
 Classes/WPLabelFooterView.m -text
 Classes/WPMediaUploader.h -text
 Classes/WPMediaUploader.m -text
-Classes/WPNavigationLeftButtonView.h -text
-Classes/WPNavigationLeftButtonView.m -text
 Classes/WPPageControl.h -text
 Classes/WPPageControl.m -text
 Classes/WPProgressHUD.h -text
@@ -390,10 +388,6 @@ WordPress.xcodeproj/project.pbxproj -text
 /attachment@2x.png -text svneol=unset#unset
 /autosave.png -text
 /autosave@2x.png -text
-/backNav.png -text
-/backNav@2x.png -text
-/backNavd.png -text
-/backNavd@2x.png -text
 /blueArrow.png -text svneol=unset#unset
 /blueArrow@2x.png -text svneol=unset#unset
 c_tidy/access.c -text
