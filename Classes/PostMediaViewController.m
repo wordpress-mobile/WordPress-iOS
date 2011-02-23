@@ -177,6 +177,7 @@
         if(DeviceIsPad() == YES) {
 			mediaView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 			mediaView.modalPresentationStyle = UIModalPresentationFormSheet;
+			
             [self presentModalViewController:mediaView animated:YES];
 		}
         else
@@ -1215,6 +1216,13 @@
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath {
     [table reloadData];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	if (DeviceIsPad())
+		return YES;
+	
+	return NO;
 }
 
 #pragma mark -
