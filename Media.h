@@ -44,7 +44,7 @@ typedef enum {
 @property (nonatomic) float progress;
 
 @property (nonatomic, retain) Blog * blog;
-@property (nonatomic, retain) AbstractPost * post;
+@property (nonatomic, retain) NSMutableSet * posts;
 
 + (Media *)newMediaForPost:(AbstractPost *)post;
 - (void)cancelUpload;

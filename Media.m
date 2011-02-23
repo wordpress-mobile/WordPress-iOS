@@ -25,7 +25,7 @@
 @dynamic orientation;
 @dynamic creationDate;
 @dynamic blog;
-@dynamic post;
+@dynamic posts;
 @dynamic remoteStatusNumber;
 @synthesize uploader;
 
@@ -35,7 +35,7 @@
                insertIntoManagedObjectContext:[post managedObjectContext]];
     
     media.blog = post.blog;
-    media.post = post;
+    media.posts = [NSMutableSet setWithObject:post];
     
     return media;
 }

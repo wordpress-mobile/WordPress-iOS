@@ -136,7 +136,7 @@
 					if (([results count] == 1) || (blogUrl && [[blog valueForKey:@"url"] rangeOfString:blogUrl].location != NSNotFound)) {
 						NSManagedObject *newMedia = [NSEntityDescription insertNewObjectForEntityForName:@"Media"
 																				  inManagedObjectContext:destMOC];
-						[newMedia setValue:apost forKey:@"post"];
+						[newMedia setValue:[NSMutableSet setWithObject:apost] forKey:@"posts"];
 						[newMedia setValue:blog forKey:@"blog"];
 						[newMedia setValue:[NSNumber numberWithInt:MediaRemoteStatusSync] forKey:@"remoteStatusNumber"];
 						
