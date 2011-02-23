@@ -427,9 +427,11 @@
 					}
 					postDetailViewController.post.geolocation = nil;
 					postDetailViewController.hasLocation.enabled = NO;
-					[tableView reloadData];
+					
 					break;
+					
 			}
+			[tableView reloadData];
 	}
     [atableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
 }
