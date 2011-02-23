@@ -21,7 +21,13 @@
 		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 		NSString *documentsDirectory = [paths objectAtIndex:0];
 		NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"migration.log"];		
+		NSFileManager *fileManager = [NSFileManager defaultManager];
+		if (![fileManager fileExistsAtPath:filePath])
+			[fileManager createFileAtPath:filePath
+								 contents:nil
+							   attributes:nil];
 		logFile = [[NSFileHandle fileHandleForWritingAtPath:filePath] retain];
+		[logFile seekToEndOfFile];
 	}
 	return self;
 }
@@ -33,9 +39,10 @@
 - (void)log:(NSString *)format, ... {
 	va_list ap;
 	va_start(ap, format);
-	NSString *message = [NSString stringWithFormat:format, ap];
+	NSString *message = [[NSString alloc] initWithFormat:format arguments:ap];
 	NSLog(message);
-	[logFile writeData:[message dataUsingEncoding:NSUTF8StringEncoding]];
+	[logFile writeData:[[message stringByAppendingString:@"\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+	[message release];
 }
 
 + (FileLogger *)sharedInstance {
