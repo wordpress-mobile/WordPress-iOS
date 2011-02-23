@@ -13,12 +13,13 @@
 @synthesize titleLabel, tagsLabel, categoriesLabel;
 @synthesize contentView;
 @synthesize apost;
+@synthesize blog;
 
 - (id)initWithPost:(AbstractPost *)aPost {
     if (self = [super initWithNibName:@"PostViewController-iPad" bundle:nil]) {
         self.apost = aPost;
+		self.blog = self.apost.blog; //keep a reference to the blog
     }
-    
     return self;
 }
 
@@ -60,7 +61,8 @@
         return;
     }
     EditPostViewController *postViewController;
-    
+    if(!self.post) //when it was deleted
+		self.apost = [Post newDraftForBlog:self.blog];
     AbstractPost *postRevision = [self.apost createRevision];
     postViewController = [[EditPostViewController alloc] initWithPost:postRevision];
     postViewController.editMode = kEditPost;
@@ -77,7 +79,9 @@
 
 - (void)editorDismissed:(NSNotification *)aNotification {
     if (![self.apost hasRemote] && self.apost.remoteStatus == AbstractPostRemoteStatusLocal && !self.apost.postTitle && !self.apost.content) {
-        [self.apost removeWithError:nil]; //this is a local draft no remote errors checking.
+		//do not remove the post here. it is removed in EditPostViewController
+		[self.apost removeWithError:nil]; //this is a local draft no remote errors checking.
+		self.apost = nil;
     }
     [self refreshUI];
 }
@@ -94,11 +98,12 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
     self.apost = nil;
+	self.blog = nil;
     self.contentView = nil;
     self.titleLabel = nil;
     self.tagsLabel = nil;
     self.categoriesLabel = nil;
-
+	
     [super dealloc];
 }
 

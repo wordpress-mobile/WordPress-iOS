@@ -18,6 +18,7 @@
 @property (nonatomic, retain) IBOutlet UITextView *contentView;
 @property (nonatomic, retain) IBOutlet AbstractPost *apost;
 @property (nonatomic, assign) Post *post;
+@property (nonatomic, assign) Blog * blog;
 
 - (id)initWithPost:(AbstractPost *)aPost;
 - (void)showModalEditor;

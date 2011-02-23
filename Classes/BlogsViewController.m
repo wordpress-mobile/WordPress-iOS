@@ -181,7 +181,6 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete && [self canChangeCurrentBlog]) {
 		[tableView beginUpdates];
-//		[self performSelectorInBackground:@selector(deleteBlog:) withObject:indexPath];
         Blog *blog = [resultsController objectAtIndexPath:indexPath];
         [appDelegate.managedObjectContext deleteObject:blog];
         blog = nil;

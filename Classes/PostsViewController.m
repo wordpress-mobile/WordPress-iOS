@@ -20,6 +20,7 @@
 - (void)addRefreshButton;
 - (void)deletePostAtIndexPath;
 - (void)trySelectSomething;
+- (void)trySelectSomethingAndShowIt;
 - (void)editPost:(AbstractPost *)apost;
 - (void)showSelectedPost;
 - (BOOL)isSyncing;
@@ -391,6 +392,7 @@
 	
 	[progressAlert dismissWithClickedButtonIndex:0 animated:YES];
     [progressAlert release];
+	[self performSelectorOnMainThread:@selector(trySelectSomethingAndShowIt) withObject:nil waitUntilDone:NO];
     [pool release];
 }
 
@@ -428,7 +430,7 @@
 	if (DeviceIsPad()) {
         self.postReaderViewController = [[[PostViewController alloc] initWithPost:post] autorelease];
 		[delegate showContentDetailViewController:self.postReaderViewController];
-        [self.postReaderViewController showModalEditor];
+		[self.postReaderViewController showModalEditor];
 	} else {
         self.postDetailViewController = [[[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil] autorelease];
         self.postDetailViewController.apost = [post createRevision];
@@ -509,6 +511,33 @@
         }
     }
 }
+
+- (void)trySelectSomethingAndShowIt {
+	if(DeviceIsPad()) {
+		if (!self.selectedIndexPath) {
+			[self trySelectSomething];
+		}
+		// sometimes, iPad table views should
+		if (self.selectedIndexPath) {
+			[self showSelectedPost];
+			[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+		}
+	}
+}
+
+- (void)trySelectSomethingAndShowIt2 {
+	if(DeviceIsPad()) {
+		if (!self.selectedIndexPath) {
+			[self trySelectSomething];
+		}
+		// sometimes, iPad table views should
+		if (self.selectedIndexPath) {
+			[self showSelectedPost];
+			[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+		}
+	}
+}
+
 
 #pragma mark -
 #pragma mark Fetched results controller
