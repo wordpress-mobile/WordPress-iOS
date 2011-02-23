@@ -254,6 +254,9 @@
     [self updateBadge];
 	[self reloadTableView];
 	
+	//[self trySelectSomething];
+
+
 	if (DeviceIsPad() == YES) {
 		if (self.selectedIndexPath && !self.isSecondaryViewController) {
 			[commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
@@ -570,6 +573,33 @@
         self.selectedIndexPath = indexPath;
         [commentViewController showComment:[self.resultsController objectAtIndexPath:indexPath]];
     }
+}
+
+
+- (void)trySelectSomething {
+    if (!DeviceIsPad())
+        return;
+	
+    if (!self.selectedIndexPath) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        @try {
+            if ([resultsController fetchedObjects] &&
+                ([[resultsController fetchedObjects] count] > 0) &&
+                [resultsController objectAtIndexPath:indexPath]) {
+                self.selectedIndexPath = indexPath;
+            }
+        }
+        @catch (NSException * e) {
+            NSLog(@"Caught exception when looking for a post to select. Maybe there are no posts yet?");
+        }
+    }
+	
+	if (DeviceIsPad() == YES) {
+		if (self.selectedIndexPath && !self.isSecondaryViewController) {
+			[commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+			[self showCommentAtIndexPath:self.selectedIndexPath];
+		}
+	}
 }
 
 
