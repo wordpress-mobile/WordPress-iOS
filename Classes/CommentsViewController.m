@@ -643,6 +643,9 @@
         case NSFetchedResultsChangeInsert:
             self.selectedIndexPath = newIndexPath;
             [commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+		case NSFetchedResultsChangeMove:
+            self.selectedIndexPath = newIndexPath;
+            [commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         default:
             [commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
             break;

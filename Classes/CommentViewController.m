@@ -538,6 +538,10 @@
         //self.accessoryType = UITableViewCellAccessoryNone;
     
     
+	rect = pendingLabelHolder.frame;
+	rect.size.width = [pendingLabelHolder superview].frame.size.width;
+	pendingLabelHolder.frame = rect;
+	
     rect = gravatarImageView.frame;
     rect.origin.y += pendingLabelHeight;
     gravatarImageView.frame = rect;
