@@ -11,9 +11,7 @@
 
 @implementation MigrateBlogsFromFiles
 
-- (BOOL)beginEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
-	WPFLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
-	WPFLog(@"beginEntityMapping");
+- (BOOL)forceBlogsMigrationInContext:(NSManagedObjectContext *)destMOC error:(NSError **)error {
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *currentDirectoryPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"wordpress"];
@@ -24,20 +22,33 @@
         NSArray *blogs = [NSKeyedUnarchiver unarchiveObjectWithFile:blogsArchiveFilePath];
 		WPFLog(@"Got blogs list from 2.6: %i blogs", [blogs count]);
 		
-		NSManagedObjectContext *destMOC = [manager destinationContext];
 		NSError *error = nil;
-
+		
 		for (NSDictionary *blogInfo in blogs) {
-			NSManagedObject *blog = [NSEntityDescription insertNewObjectForEntityForName:@"Blog"
-																  inManagedObjectContext:destMOC];
-			[blog setValue:[[blogInfo valueForKey:@"blogid"] numericValue] forKey:@"blogID"];
-			[blog setValue:[blogInfo valueForKey:@"blogName"] forKey:@"blogName"];
 			NSString *blogUrl = [blogInfo valueForKey:@"url"];
 			blogUrl = [blogUrl stringByReplacingOccurrencesOfString:@"http://" withString:@""];
 			if([blogUrl hasSuffix:@"/"])
 				blogUrl = [blogUrl substringToIndex:blogUrl.length-1];
 			blogUrl = [blogUrl stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 			
+			NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+			[fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog"
+												inManagedObjectContext:destMOC]];
+			[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"url == %@ AND blogName == %@",
+										blogUrl,
+										[blogInfo valueForKey:@"blogName"]]];
+			NSArray *results = [destMOC executeFetchRequest:fetchRequest error:&error];
+			[fetchRequest release];
+			if (results && [results count] > 0) {
+				// Don't duplicate blogs
+				WPFLog(@"! Skipping already imported blog %@", [blogInfo valueForKey:@"blogName"]);
+				continue;
+			}
+			
+			NSManagedObject *blog = [NSEntityDescription insertNewObjectForEntityForName:@"Blog"
+																  inManagedObjectContext:destMOC];
+			[blog setValue:[[blogInfo valueForKey:@"blogid"] numericValue] forKey:@"blogID"];
+			[blog setValue:[blogInfo valueForKey:@"blogName"] forKey:@"blogName"];			
 			[blog setValue:blogUrl forKey:@"url"];
 			[blog setValue:[blogInfo valueForKey:@"username"] forKey:@"username"];
 			[blog setValue:[blogInfo valueForKey:@"xmlrpc"] forKey:@"xmlrpc"];
@@ -57,7 +68,7 @@
 			} else {
 				WPFLog(@"! Failed migration for blog %@: %@", [blog valueForKey:@"blogName"], [error localizedDescription]);
 			}
-
+			
 			
 			// Import categories
 			NSArray *categories = [blogInfo valueForKey:@"categories"];
@@ -68,7 +79,7 @@
 				[category setValue:[[categoryInfo valueForKey:@"categoryId"] numericValue] forKey:@"categoryID"];
 				[category setValue:[categoryInfo valueForKey:@"categoryName"] forKey:@"categoryName"];
 				[category setValue:[[categoryInfo valueForKey:@"parentId"] numericValue] forKey:@"parentID"];
-
+				
 				if ([category validateForInsert:&error]) {
 					WPFLog(@"** Migrated category %@ in blog %@", [category valueForKey:@"categoryName"], [blog valueForKey:@"blogName"]);
 				} else {
@@ -77,7 +88,16 @@
 			}
 		}
 	}
+	
 	return YES;
+}
+
+- (BOOL)beginEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
+	WPFLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+	WPFLog(@"beginEntityMapping");
+	NSManagedObjectContext *destMOC = [manager destinationContext];
+
+	return [self forceBlogsMigrationInContext:destMOC error:error];
 }
 
 - (BOOL)endEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {

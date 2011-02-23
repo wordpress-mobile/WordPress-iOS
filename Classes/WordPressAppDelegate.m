@@ -9,6 +9,7 @@
 #import "UIViewController_iPadExtensions.h"
 #import "WelcomeViewController.h"
 #import "BetaUIWindow.h"
+#import "MigrateBlogsFromFiles.h"
 
 @interface WordPressAppDelegate (Private)
 
@@ -569,7 +570,26 @@ static WordPressAppDelegate *wordPressApp = NULL;
 											   cancelButtonTitle:@"OK" 
 											   otherButtonTitles:nil] autorelease];
 		[alert show];
-    }    
+    } else {
+		// If there are no blogs and blogs.archive still exists, force import of blogs
+		NSFileManager *fileManager = [NSFileManager defaultManager];
+		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+		NSString *currentDirectoryPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"wordpress"];
+		NSString *blogsArchiveFilePath = [currentDirectoryPath stringByAppendingPathComponent:@"blogs.archive"];
+		if ([fileManager fileExistsAtPath:blogsArchiveFilePath]) {
+			NSManagedObjectContext *destMOC = [[NSManagedObjectContext alloc] init];
+			[destMOC setPersistentStoreCoordinator:persistentStoreCoordinator_];
+
+			MigrateBlogsFromFiles *blogMigrator = [[MigrateBlogsFromFiles alloc] init];
+			[blogMigrator forceBlogsMigrationInContext:destMOC error:&error];
+			[blogMigrator release];
+			if (![destMOC save:&error]) {
+				WPFLog(@"Error saving blogs-only migration: %@", error);
+			}
+			[destMOC release];
+		}
+	}
+	[[FileLogger sharedInstance] flush];
     
     return persistentStoreCoordinator_;
 }

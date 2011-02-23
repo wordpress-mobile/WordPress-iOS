@@ -11,5 +11,5 @@
 @interface MigrateBlogsFromFiles : NSEntityMigrationPolicy {
 
 }
-
+- (BOOL)forceBlogsMigrationInContext:(NSManagedObjectContext *)destMOC error:(NSError **)error;
 @end
