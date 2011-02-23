@@ -83,6 +83,11 @@
     if ([postInfo objectForKey:@"categories"]) {
         [self setCategoriesFromNames:[postInfo objectForKey:@"categories"]];
     }
+
+	self.latitudeID = nil;
+	self.longitudeID = nil;
+	self.publicID = nil;
+	
 	if ([postInfo objectForKey:@"custom_fields"]) {
 		NSArray *customFields = [postInfo objectForKey:@"custom_fields"];
 		NSString *geo_longitude = nil;
@@ -94,7 +99,7 @@
 			NSString *ID = [customField objectForKey:@"id"];
 			NSString *key = [customField objectForKey:@"key"];
 			NSString *value = [customField objectForKey:@"value"];
-			
+
 			if (key) {
 				if ([key isEqualToString:@"geo_longitude"]) {
 					geo_longitude = value;

@@ -220,7 +220,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[toolbar setItems:toolbarItems];
 	}
 	
-	if (self.post && self.post.geolocation != nil) {
+	if (self.post && self.post.geolocation != nil && self.post.blog.geolocationEnabled) {
 		self.hasLocation.enabled = YES;
 	} else {
 		self.hasLocation.enabled = NO;

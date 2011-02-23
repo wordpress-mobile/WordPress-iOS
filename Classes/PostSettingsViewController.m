@@ -168,7 +168,7 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	if (postDetailViewController.post) {
+	if (postDetailViewController.post &&  postDetailViewController.post.blog.geolocationEnabled ) {
 		return 2; // Geolocation
 	} else {
 		return 1; // Pages don't have geolocation
