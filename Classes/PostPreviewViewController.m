@@ -39,19 +39,20 @@
     [FlurryAPI logEvent:@"PostPreview"];
 	webView.delegate = self;
 	if (activityFooter == nil) {
-		CGRect rect = CGRectMake(webView.frame.size.width/2 - 20, 10, 30, 30);
+		CGRect rect = CGRectMake(0, 0, 30, 30);
         activityFooter = [[UIActivityIndicatorView alloc] initWithFrame:rect];
         activityFooter.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
         activityFooter.hidesWhenStopped = YES;
         activityFooter.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     }	
-	[activityFooter setCenter:CGPointMake(160, 220)];
+	
 	[self.view addSubview:activityFooter];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 	[self refreshWebView];
+	[activityFooter setCenter:CGPointMake(self.view.frame.size.width/2-15, self.view.frame.size.height/2-15)];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

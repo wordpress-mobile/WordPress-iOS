@@ -46,14 +46,20 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)switchToView:(UIView *)newView {
+	if([currentView isEqual:postPreviewViewController.view])
+		[postPreviewViewController viewWillDisappear:YES];
+	else if ([currentView isEqual:postSettingsController.view])
+		[postSettingsController viewWillDisappear:YES];
+	else if ([currentView isEqual:postMediaViewController.view])
+		[postMediaViewController viewWillDisappear:YES];
+
     if ([newView isEqual:postSettingsController.view])
         [postSettingsController viewWillAppear:YES];
-    else 
-        [postSettingsController viewWillDisappear:YES];
+    else if ([newView isEqual:postPreviewViewController.view])
+		[postPreviewViewController viewWillAppear:YES];
+    else if ([newView isEqual:postMediaViewController.view])
+		[postMediaViewController viewWillAppear:YES];
 	
-	if(![newView isEqual:postPreviewViewController.view]) {
-		 [postPreviewViewController viewWillDisappear:YES];
-	}
     if ([newView isEqual:editView]) {
 		writeButton.enabled = NO;
 		settingsButton.enabled = YES;
@@ -102,12 +108,22 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
     [UIView commitAnimations];
     
+	UIView *oldView = currentView;
     currentView = newView;
 
+	if([oldView isEqual:postPreviewViewController.view])
+		[postPreviewViewController viewDidDisappear:YES];
+	else if ([oldView isEqual:postSettingsController.view])
+		[postSettingsController viewDidDisappear:YES];
+	else if ([oldView isEqual:postMediaViewController.view])
+		[postMediaViewController viewDidDisappear:YES];
+	
     if ([newView isEqual:postSettingsController.view])
         [postSettingsController viewDidAppear:YES];
-    else
-        [postSettingsController viewDidDisappear:YES];
+    else if ([newView isEqual:postPreviewViewController.view])
+		[postPreviewViewController viewDidAppear:YES];
+    else if ([newView isEqual:postMediaViewController.view])
+		[postMediaViewController viewDidAppear:YES];
 }
 
 - (IBAction)switchToEdit {
@@ -237,6 +253,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+	postSettingsController.view.frame = editView.frame;
+    postMediaViewController.view.frame = editView.frame;
+    postPreviewViewController.view.frame = editView.frame;
 
     if(self.editMode != kNewPost)
 		self.editMode = kRefreshPost;
