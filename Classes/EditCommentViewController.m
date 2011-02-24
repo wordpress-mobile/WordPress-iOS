@@ -271,7 +271,10 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 																	 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [connectionFailAlert show];
         [connectionFailAlert release];*/
-		[self.navigationController popViewControllerAnimated:YES];
+		if (DeviceIsPad() == YES) {
+			[commentViewController performSelectorOnMainThread:@selector(cancelView:) withObject:self waitUntilDone:NO];
+		} else
+			[self.navigationController popViewControllerAnimated:YES];
 		return;
 	}
 	[self continueSaveCommentReply: sender];
