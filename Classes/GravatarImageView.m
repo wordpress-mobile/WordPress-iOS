@@ -31,10 +31,6 @@ NSString *md5(NSString *str);
 #pragma mark Memory Management
 
 - (void)dealloc {
-    if (email) {
-        [email release];
-    }
-
     [super dealloc];
 }
 

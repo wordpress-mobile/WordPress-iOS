@@ -449,7 +449,7 @@
     Comment *comment = [self.resultsController objectAtIndexPath:indexPath];
 
     if (cell == nil) {
-        cell = [[[CommentTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] retain];
+        cell = [[[CommentTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
     }
     
     cell.comment = comment;
