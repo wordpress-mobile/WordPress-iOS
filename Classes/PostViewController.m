@@ -54,7 +54,6 @@
     [editButton release];
 }
 
-// Subclassed in PageViewController
 - (void)showModalEditor {
     if (self.modalViewController) {
         NSLog(@"Trying to show editor a second time: bad");
@@ -76,6 +75,7 @@
     [nav release];
 }
 
+// Subclassed in PageViewController
 - (void)checkForNewItem {
 	if(!self.apost)  //when it was a new post and user clicked on cancel
 		self.apost = [Post newDraftForBlog:self.blog];
