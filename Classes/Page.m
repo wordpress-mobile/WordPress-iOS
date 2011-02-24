@@ -125,10 +125,15 @@
 			if (error != nil) 
 				*error = dc.error;
 			WPLog(@"Error while deleting page: %@", [dc.error localizedDescription]);
-		} else {
-			res = YES; //the page doesn't exist anymore on the server. we can return YES even if there are errors deleting it from db
-			[super removeWithError:nil]; 
 		}
+		//even if there was an error on the XML-RPC call we should always delete post from coredata
+		//and inform the user about that error.
+		//Wheter the post is still on the server it will be downloaded again when list is refreshed. 
+		//Otherwise if someone has deleted a post on the server, you can't get rid of it		
+		//there are other approach to solve this internally in the app, but i think this is the easiest one.
+		res = YES; //the page doesn't exist anymore on the server. we can return YES even if there are errors deleting it from db
+		[super removeWithError:nil]; 
+		
 		[dc release];
 	} else {
 		//we should remove the post from the db even if it is a "LocalDraft"
