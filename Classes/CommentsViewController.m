@@ -147,7 +147,8 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    editButtonItem.title = @"Edit";
+	if (!DeviceIsPad())
+		editButtonItem.title = @"Edit";
     [super viewWillDisappear:animated];
 }
 
@@ -448,7 +449,7 @@
     Comment *comment = [self.resultsController objectAtIndexPath:indexPath];
 
     if (cell == nil) {
-        cell = [[[CommentTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[CommentTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] retain];
     }
     
     cell.comment = comment;
