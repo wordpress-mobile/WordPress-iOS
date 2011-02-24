@@ -24,15 +24,26 @@
 	
 	// Setup WP logo table header
 	NSString *logoFile = @"logo_wporg";
-	if(isWPcom == YES)
-		logoFile = @"logo_wpcom";
+	if(isWPcom == YES) {
+		if (DeviceIsPad())
+			logoFile = @"logo_wpcom@2x";
+		else
+			logoFile = @"logo_wpcom";
+	}
 	
-    UIImageView *logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:logoFile]];
-    logoView.frame = CGRectMake(0, 0, 320, 70);
-    logoView.contentMode = UIViewContentModeCenter;
-    logoView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    self.tableView.tableHeaderView = logoView;
-    [logoView release];
+	
+    // Setup WPcom table header
+	CGRect headerFrame = CGRectMake(0, 0, 320, 70);
+	CGRect logoFrame = CGRectMake(40, 20, 229, 43);
+	if(DeviceIsPad() == YES) {
+		logoFrame = CGRectMake(150, 20, 229, 43);
+	}
+	UIView *headerView = [[[UIView alloc] initWithFrame:headerFrame] autorelease];
+	UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:logoFile]];
+	logo.frame = logoFrame;
+	[headerView addSubview:logo];
+	[logo release];
+	self.tableView.tableHeaderView = headerView;
     
 	if(DeviceIsPad())
 		self.tableView.backgroundView = nil;
