@@ -114,45 +114,47 @@
             self.urlCell = [tableView dequeueReusableCellWithIdentifier:@"UrlCell"];
             if (self.urlCell == nil) {
                 self.urlCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UrlCell"] autorelease];
+				self.urlCell.textLabel.text = @"URL";
+				urlTextField = [self newTextFieldForCell:self.urlCell];
+				urlTextField.placeholder = @"http://example.com";
+				urlTextField.keyboardType = UIKeyboardTypeURL;
+				urlTextField.returnKeyType = UIReturnKeyNext;
+				if(blog.url != nil)
+					urlTextField.text = blog.url;
+				[self.urlCell addSubview:urlTextField];
             }
-            self.urlCell.textLabel.text = @"URL";
-            urlTextField = [self newTextFieldForCell:self.urlCell];
-            urlTextField.placeholder = @"http://example.com";
-            urlTextField.keyboardType = UIKeyboardTypeURL;
-            urlTextField.returnKeyType = UIReturnKeyNext;
-            if(blog.url != nil)
-                urlTextField.text = blog.url;
-            [self.urlCell addSubview:urlTextField];
+            
             return self.urlCell;
         }
         else if(indexPath.row == 1) {
             self.usernameCell = [tableView dequeueReusableCellWithIdentifier:@"UsernameCell"];
             if (self.usernameCell == nil) {
                 self.usernameCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UsernameCell"] autorelease];
-            }
-            self.usernameCell.textLabel.text = @"Username";
-            usernameTextField = [self newTextFieldForCell:self.usernameCell];
-            usernameTextField.placeholder = @"WordPress username.";
-            usernameTextField.keyboardType = UIKeyboardTypeDefault;
-            usernameTextField.returnKeyType = UIReturnKeyNext;
-            if(blog.username != nil)
-                usernameTextField.text = blog.username;
-            [self.usernameCell addSubview:usernameTextField];
+				self.usernameCell.textLabel.text = @"Username";
+				usernameTextField = [self newTextFieldForCell:self.usernameCell];
+				usernameTextField.placeholder = @"WordPress username";
+				usernameTextField.keyboardType = UIKeyboardTypeDefault;
+				usernameTextField.returnKeyType = UIReturnKeyNext;
+				if(blog.username != nil)
+					usernameTextField.text = blog.username;
+				[self.usernameCell addSubview:usernameTextField];
+			}
+            
             return self.usernameCell;
         }
         else if(indexPath.row == 2) {
             self.passwordCell = [tableView dequeueReusableCellWithIdentifier:@"PasswordCell"];
             if (self.passwordCell == nil) {
                 self.passwordCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"PasswordCell"] autorelease];
-            }            
-            self.passwordCell.textLabel.text = @"Password";
-            passwordTextField = [self newTextFieldForCell:self.passwordCell];
-            passwordTextField.placeholder = @"WordPress password.";
-            passwordTextField.keyboardType = UIKeyboardTypeDefault;
-            passwordTextField.secureTextEntry = YES;
-            if(password != nil)
-                passwordTextField.text = password;
-            [self.passwordCell addSubview:passwordTextField];
+				self.passwordCell.textLabel.text = @"Password";
+				passwordTextField = [self newTextFieldForCell:self.passwordCell];
+				passwordTextField.placeholder = @"WordPress password";
+				passwordTextField.keyboardType = UIKeyboardTypeDefault;
+				passwordTextField.secureTextEntry = YES;
+				if(password != nil)
+					passwordTextField.text = password;
+				[self.passwordCell addSubview:passwordTextField];
+			}            
             return self.passwordCell;
         }				        
     } else if(indexPath.section == 1) {
