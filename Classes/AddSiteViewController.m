@@ -60,7 +60,7 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
         }
     }
-
+	[self.navigationItem setHidesBackButton:NO animated:NO];
     saveButton.enabled = YES;            
 }
 

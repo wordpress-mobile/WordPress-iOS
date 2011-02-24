@@ -372,6 +372,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 
     saveButton.enabled = YES;
+	[self.navigationItem setHidesBackButton:NO animated:NO];
 }
 
 - (void)validationDidFail:(id)wrong {
@@ -391,6 +392,7 @@
     }    
 
     saveButton.enabled = YES;
+	[self.navigationItem setHidesBackButton:NO animated:NO];
 }
 
 - (void)validateFields {
@@ -399,6 +401,7 @@
     self.password = passwordTextField.text;
     
     saveButton.enabled = NO;
+	[self.navigationItem setHidesBackButton:YES animated:NO];
     BOOL validFields = YES;
     if ([urlTextField.text isEqualToString:@""]) {
         validFields = NO;

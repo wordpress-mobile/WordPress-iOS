@@ -71,7 +71,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	
+	[self.navigationItem setHidesBackButton:NO animated:NO];
 	isSigningIn = NO;
 }
 
@@ -245,6 +245,7 @@
 				[NSThread sleepForTimeInterval:0.15];
 				[tv reloadData];
 				if (!isSigningIn){
+					[self.navigationItem setHidesBackButton:YES animated:NO];
 					isSigningIn = YES;
 					[self performSelectorInBackground:@selector(signIn:) withObject:self];
 				}
@@ -277,6 +278,7 @@
             if((username != nil) && (password != nil)) {
                 if (!isSigningIn){
                     isSigningIn = YES;
+					[self.navigationItem setHidesBackButton:YES animated:NO];
                     [self refreshTable];
                     [self performSelectorInBackground:@selector(signIn:) withObject:self];
                 }
@@ -386,6 +388,7 @@
 		[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
 	}
 	isSigningIn = NO;
+	[self.navigationItem setHidesBackButton:NO animated:NO];
 	[self refreshTable];
 	[pool release];
 }
