@@ -180,7 +180,7 @@
 		[editSiteViewController release];
         [atableView setEditing:NO animated:YES];
     }
-	else if ([self canChangeCurrentBlog]) {
+	else {	// if ([self canChangeCurrentBlog]) {
         Blog *blog = [resultsController objectAtIndexPath:indexPath];
 		[self showBlog:blog animated:YES];
     }
@@ -188,22 +188,35 @@
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete && [self canChangeCurrentBlog]) {
-		[tableView beginUpdates];
-        Blog *blog = [resultsController objectAtIndexPath:indexPath];
-        [appDelegate.managedObjectContext deleteObject:blog];
-        blog = nil;
-		[tableView endUpdates];
-        NSError *error = nil;
-        if (![appDelegate.managedObjectContext save:&error]) {
-            NSLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
-            exit(-1);
-        }
-    }
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+		
+		Blog *blog = [resultsController objectAtIndexPath:indexPath];
+		if([self canChangeBlog:blog]){
+			[tableView beginUpdates];
+			
+			[appDelegate.managedObjectContext deleteObject:blog];
+			
+			[tableView endUpdates];
+			NSError *error = nil;
+			if (![appDelegate.managedObjectContext save:&error]) {
+				NSLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+				exit(-1);
+			}
+		} else {
+			//the blog is using the network connection and cannot be stoped, show a message to the user
+			UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:@"Info"
+																		  message:@"The blog is synching with the server. Please try later."
+																		 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[blogIsCurrentlyBusy show];
+			[blogIsCurrentlyBusy release];
+		}
+		blog = nil;
+	}
 }
 
+
 - (void)edit:(id)sender {
-	if ([self canChangeCurrentBlog]) {
+	//if ([self canChangeCurrentBlog]) {
 		[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = YES;
 		UIBarButtonItem *cancelButton = [[[UIBarButtonItem alloc] initWithTitle:@"Done"
 																		  style:UIBarButtonItemStyleDone
@@ -211,7 +224,7 @@
 																		 action:@selector(cancel:)] autorelease];
 		[self.navigationItem setLeftBarButtonItem:cancelButton animated:YES];
 		[self.tableView setEditing:YES animated:YES];
-	}
+	//}
 }
 
 - (void)cancel:(id)sender {
@@ -227,7 +240,25 @@
 #pragma mark -
 #pragma mark Custom methods
 
-- (BOOL)canChangeCurrentBlog {
+- (BOOL)canChangeBlog:(Blog *) blog {
+	//we should check  isSyncingPosts, isSyncingPages, isSyncingComments first bc is a fast check
+	//we should first check if there are networks activities within the blog
+	//we should re-check  isSyncingPosts, isSyncingPages, isSyncingComments;
+	if(blog.isSyncingPosts || blog.isSyncingPages || blog.isSyncingComments)
+		return NO;
+		
+	NSSet *posts = blog.posts;
+	if (posts && (posts.count > 0)) 
+		for (AbstractPost *post in posts) {
+			if(post.remoteStatus = AbstractPostRemoteStatusPushing)
+				return NO;
+		}
+	posts = nil;
+
+	
+	if(blog.isSyncingPosts || blog.isSyncingPages || blog.isSyncingComments)
+		return NO;
+	
 	return YES;
 }
 

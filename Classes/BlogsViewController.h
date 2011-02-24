@@ -29,7 +29,7 @@
 - (void)showBlogWithoutAnimation;
 - (void)edit:(id)sender;
 - (void)cancel:(id)sender;
-- (BOOL)canChangeCurrentBlog;
+- (BOOL)canChangeBlog:(Blog *)blog;
 - (void)blogsRefreshNotificationReceived:(NSNotification *)notification;
 - (void)checkEditButton;
 
