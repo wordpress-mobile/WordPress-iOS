@@ -156,7 +156,7 @@
 	}
     
     // Are we approaching the end of the table?
-    if ((indexPath.section + 1 == [self numberOfSectionsInTableView:tableView]) && (indexPath.row + 4 >= [self tableView:tableView numberOfRowsInSection:indexPath.section])) {
+    if ((indexPath.section + 1 == [self numberOfSectionsInTableView:tableView]) && (indexPath.row + 4 >= [self tableView:tableView numberOfRowsInSection:indexPath.section]) && [self tableView:tableView numberOfRowsInSection:indexPath.section] > 10) {
         // Only 3 rows till the end of table
         [activityFooter startAnimating];
         if (![self isSyncing]) {
