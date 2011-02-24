@@ -90,8 +90,11 @@
     segmentedControl.momentary = YES;
     
     segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
-    self.navigationItem.rightBarButtonItem = segmentBarItem;
+	
+	[self addOrRemoveSegmentedControl];
+	
 	self.navigationItem.title = @"Comment";
+	
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
 }
@@ -121,6 +124,7 @@
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     //[self resizeCommentBodyLabel];
     //[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+	[self addOrRemoveSegmentedControl];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -698,6 +702,14 @@
 - (void)mailComposeController:(MFMailComposeViewController*)controller  didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
 {
 	[self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)addOrRemoveSegmentedControl {
+	if (DeviceIsPad() && self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft || self.interfaceOrientation == UIInterfaceOrientationLandscapeRight){
+		self.navigationItem.rightBarButtonItem = nil;
+	}	
+	else
+		self.navigationItem.rightBarButtonItem = segmentBarItem;
 }
 
 @end

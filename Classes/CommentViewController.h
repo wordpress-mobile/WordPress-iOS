@@ -69,6 +69,7 @@
 - (void)unApproveComment:(id)sender;
 - (void)spamComment:(id)sender;
 - (void)cancelView:(id)sender;
+- (void)addOrRemoveSegmentedControl;
 
 @property (nonatomic, retain) ReplyToCommentViewController *replyToCommentViewController;
 @property (nonatomic, retain) EditCommentViewController *editCommentViewController;
