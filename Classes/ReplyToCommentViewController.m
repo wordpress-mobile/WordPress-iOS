@@ -180,12 +180,18 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 -(void) receivedRotate: (NSNotification*) notification
 {
 	UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
-		if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
+	if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
+		if (DeviceIsPad())
+			[self setTextViewHeight:360];
+		else
 			[self setTextViewHeight:130];
-		}
-		else {
-			[self setTextViewHeight:225];
-		}
+	}
+	else {
+		if (DeviceIsPad())
+			[self setTextViewHeight:510];
+		else
+			[self setTextViewHeight:440];
+	}
 }
 #pragma mark -
 #pragma mark Text View Delegate Methods
