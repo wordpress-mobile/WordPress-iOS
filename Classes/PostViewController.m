@@ -61,8 +61,7 @@
         return;
     }
     EditPostViewController *postViewController;
-    if(!self.post) //when it was deleted
-		self.apost = [Post newDraftForBlog:self.blog];
+	[self checkForNewItem];
     AbstractPost *postRevision = [self.apost createRevision];
     postViewController = [[EditPostViewController alloc] initWithPost:postRevision];
     postViewController.editMode = kEditPost;
@@ -75,6 +74,11 @@
     [self presentModalViewController:nav animated:YES];
     [postViewController release];
     [nav release];
+}
+
+- (void)checkForNewItem {
+	if(!self.apost)  //when it was a new post and user clicked on cancel
+		self.apost = [Post newDraftForBlog:self.blog];
 }
 
 - (void)editorDismissed:(NSNotification *)aNotification {

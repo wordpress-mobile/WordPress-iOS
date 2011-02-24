@@ -23,4 +23,5 @@
 - (id)initWithPost:(AbstractPost *)aPost;
 - (void)showModalEditor;
 - (void)refreshUI;
+- (void)checkForNewItem;
 @end
