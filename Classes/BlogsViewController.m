@@ -161,13 +161,22 @@
         Blog *blog = [resultsController objectAtIndexPath:indexPath];
 		
 		EditSiteViewController *editSiteViewController;
-//		if (DeviceIsPad() == YES)
-//			editSiteViewController = [[EditSiteViewController alloc] initWithNibName:@"EditSiteViewController-iPad" bundle:nil];
-//		else
-			editSiteViewController = [[EditSiteViewController alloc] initWithNibName:@"EditSiteViewController" bundle:nil];
+		editSiteViewController = [[EditSiteViewController alloc] initWithNibName:@"EditSiteViewController" bundle:nil];
 		
         editSiteViewController.blog = blog;
-		[self.navigationController pushViewController:editSiteViewController animated:YES];
+		if (DeviceIsPad()) {
+			UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:editSiteViewController];
+			aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+			aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+			aNavigationController.navigationBar.tintColor = self.navigationController.navigationBar.tintColor;
+			appDelegate.navigationController = aNavigationController;
+			[appDelegate.splitViewController presentModalViewController:aNavigationController animated:YES];
+			[self cancel:self];
+			[aNavigationController release];
+		}
+		else {
+			[self.navigationController pushViewController:editSiteViewController animated:YES];
+		}
 		[editSiteViewController release];
         [atableView setEditing:NO animated:YES];
     }

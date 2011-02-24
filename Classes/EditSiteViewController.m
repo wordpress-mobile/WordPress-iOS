@@ -34,6 +34,12 @@
 			self.tableView.backgroundView = nil;
 			self.tableView.backgroundColor = [UIColor clearColor];
 		}
+		
+		if (DeviceIsPad() && self.navigationItem.leftBarButtonItem == nil)
+		{
+			//add cancel button if editing an existing blog
+			self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
+		}
 
         NSError *error = nil;
         self.url = blog.url;
@@ -258,9 +264,6 @@
 			WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 			
 			if (DeviceIsPad()) {
-				//helpViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-				//helpViewController.modalPresentationStyle = UIModalPresentationFormSheet;
-				//[appDelegate.splitViewController presentModalViewController:helpViewController animated:YES];
 				[self.navigationController pushViewController:helpViewController animated:YES];
 			}
 			else
@@ -362,7 +365,10 @@
     if (error) {
         NSLog(@"Error saving password for %@", blog.url);
     }
-	[self.navigationController popToRootViewControllerAnimated:YES];
+	if (DeviceIsPad())
+		[self dismissModalViewControllerAnimated:YES];
+	else
+		[self.navigationController popToRootViewControllerAnimated:YES];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 
     saveButton.enabled = YES;
@@ -431,10 +437,18 @@
 			&& [self.password isEqualToString:passwordTextField.text]
 			&& [self.url isEqualToString:urlTextField.text]) {
 			// No need to check if nothing changed
-			[self.navigationController popToRootViewControllerAnimated:YES];
+			if (DeviceIsPad())
+				[self dismissModalViewControllerAnimated:YES];
+			else
+				[self.navigationController popToRootViewControllerAnimated:YES];
 		} else {
 			[self validateFields];
 		}
+}
+
+- (void)cancel:(id)sender {
+	if (DeviceIsPad())
+		[self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark -
