@@ -164,10 +164,6 @@
 								<int key="IBUISystemItemIdentifier">8</int>
 							</object>
 						</object>
-						<object class="NSColor" key="IBUITintColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC4xMjk0MTE3NjQ3IDAuNDU4ODIzNTI5NCAwLjYwNzg0MzEzNzMAA</bytes>
-						</object>
 					</object>
 					<object class="IBUIScrollView" id="24131200">
 						<reference key="NSNextResponder" ref="191373211"/>
