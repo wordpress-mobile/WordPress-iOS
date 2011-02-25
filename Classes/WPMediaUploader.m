@@ -9,6 +9,7 @@
 
 @interface WPMediaUploader (Private)
 - (void) displayResponseErrors;
+- (void) displayErrors:(NSString *)status;
 - (NSError *)errorWithResponse:(XMLRPCResponse *)res;
 @end
 
@@ -282,7 +283,7 @@
 - (void)base64EncodeFile {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-    // If encoded file already exists, don't try encoding again
+	// If encoded file already exists, don't try encoding again
     if (![[NSFileManager defaultManager] fileExistsAtPath:self.localEncodedURL]) {
 		[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding media..." waitUntilDone:NO];
 		
@@ -291,7 +292,7 @@
 		// Open the original video file for reading
 		originalFile = [NSFileHandle fileHandleForReadingAtPath:self.media.localURL];
 		if (originalFile == nil) {
-			[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding failed." waitUntilDone:NO];
+			[self displayErrors:@"Encoding failed."];
 			return;
 		}
 		
@@ -303,7 +304,8 @@
 		// Open XML-RPC file for writing
 		encodedFile = [NSFileHandle fileHandleForWritingAtPath:self.localEncodedURL];
 		if (encodedFile == nil) {
-			[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding failed." waitUntilDone:NO];
+			[self displayErrors:@"Encoding failed."];
+			//[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding failed." waitUntilDone:NO];
 			return;
 		}
 		
@@ -500,11 +502,10 @@
     [request release]; request = nil;
 }
 
-
-- (void) displayResponseErrors {
-	[self updateStatus:@"Upload failed. Please try again."];		
+- (void) displayErrors:(NSString *)status {
+	[self updateStatus:status];		
 	[NSThread sleepForTimeInterval:2.0];
-		
+	
 	self.media.remoteStatus = MediaRemoteStatusFailed;
 	if([self.media.mediaType isEqualToString:@"image"])
 		[self finishWithNotificationName:ImageUploadFailed object:self.media userInfo:nil];
@@ -512,6 +513,9 @@
 		[self finishWithNotificationName:VideoUploadFailed object:self.media userInfo:nil];
 }
 
+- (void) displayResponseErrors {
+	[self displayErrors:@"Upload failed. Please try again."];		
+}
 
 - (NSError *)errorWithResponse:(XMLRPCResponse *)res {
     NSError *err = nil;
