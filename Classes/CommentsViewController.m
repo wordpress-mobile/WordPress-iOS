@@ -39,7 +39,6 @@
 - (void)doNotLimit;
 - (NSMutableArray *)commentsOnHold;
 - (void)trySelectSomething;
-- (void)trySelectSomethingAndShowIt;
 - (NSDate *)lastSyncDate;
 - (BOOL)isSyncing;
 @end

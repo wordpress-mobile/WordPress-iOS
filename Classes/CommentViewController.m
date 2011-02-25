@@ -399,7 +399,6 @@
 - (void)deleteComment:(id)sender {
     progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Deleting..."];
     [progressAlert show];
-
     [self performSelectorInBackground:@selector(deleteThisComment) withObject:nil];
 }
 
@@ -468,6 +467,8 @@
 
 - (void)deleteThisComment {
     [self moderateCommentWithSelector:@selector(remove)];
+	if (DeviceIsPad() == YES)
+		[self.commentsViewController performSelectorOnMainThread:@selector(trySelectSomethingAndShowIt) withObject:nil waitUntilDone:NO];
 }
 
 - (void)approveThisComment {

@@ -69,5 +69,6 @@
 - (BOOL)hasNextComment;
 - (void)showPreviousComment;
 - (void)showNextComment;
+- (void)trySelectSomethingAndShowIt;
 
 @end
