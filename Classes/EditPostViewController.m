@@ -595,9 +595,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			if ([actionSheet numberOfButtons] == 2)
 				[actionSheet dismissWithClickedButtonIndex:0 animated:YES];
 			else {
-				if([self isAFreshlyCreatedDraft])
-					self.apost.statusTitle = @"Draft";
-				
 				if (![self.apost hasRemote])
 					[self savePost:NO];
 				else
