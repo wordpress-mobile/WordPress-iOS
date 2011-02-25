@@ -167,7 +167,10 @@
 
 - (void)restoreState;
 {
-	if (stateRestored) return;
+	if (stateRestored) {
+		[tabBarController.selectedViewController viewWillAppear:YES];
+		return;
+	}
 	
 	NSString *vcName = [[NSUserDefaults standardUserDefaults] objectForKey:@"WPSelectedContentType"];
 	self.selectedViewController = postsViewController;
@@ -198,7 +201,8 @@
 		self.tabBarController.selectedViewController = self.selectedViewController;
 		[self tabBarController:self.tabBarController didSelectViewController:self.selectedViewController];
 	}
-	
+	if (self.selectedViewController == commentsViewController)
+		[self.selectedViewController viewWillAppear:YES];
 	stateRestored = YES;
 }
 
