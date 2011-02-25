@@ -39,6 +39,7 @@
 - (void)doNotLimit;
 - (NSMutableArray *)commentsOnHold;
 - (void)trySelectSomething;
+- (void)trySelectSomethingAndShowIt;
 - (NSDate *)lastSyncDate;
 - (BOOL)isSyncing;
 @end
@@ -122,17 +123,31 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
     [self setEditing:NO];
-    selectedIndexPath = nil;    
+    //selectedIndexPath = nil;    
     [editToolbar setHidden:YES];
     self.navigationItem.rightBarButtonItem = editButtonItem;
 	
 	[self refreshCommentsList];
-    
-    if ([commentsTableView indexPathForSelectedRow]) {
-        [commentsTableView scrollToRowAtIndexPath:[commentsTableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
-        [commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:animated];
-    }
+    	
+	@try {
+		if(self.blog.lastCommentsSync != nil)  //first startup, comments are not there
+			if ([commentsTableView indexPathForSelectedRow]) {
+				[commentsTableView scrollToRowAtIndexPath:[commentsTableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+
+				if (DeviceIsPad() == NO) // iPhone table views should not appear selected
+					[commentsTableView deselectRowAtIndexPath:[commentsTableView indexPathForSelectedRow] animated:animated];
+			}
+		
+	}
+	@catch (NSException * e) {
+		self.selectedIndexPath = nil;
+		NSLog(@"Can't select comment during viewWillAppear");
+		NSLog(@"sections: %@", self.resultsController.sections);
+		NSLog(@"results: %@", self.resultsController.fetchedObjects);
+		return;
+	}
 	
+
 	//in same cases the lastSyncDate could be nil. Start a sync, so the user never get an ampty screen.
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	if (![self isSyncing] && ([self lastSyncDate] == nil || [defaults boolForKey:@"refreshCommentsRequired"])) {
@@ -252,11 +267,8 @@
     }
 
     [editButtonItem setEnabled:([[self.resultsController fetchedObjects] count] > 0)];
-    [self updateBadge];
 	[self reloadTableView];
 	
-	//[self trySelectSomething];
-
 
 	if (DeviceIsPad() == YES) {
 		if (self.selectedIndexPath && !self.isSecondaryViewController) {
@@ -316,6 +328,7 @@
 
 - (void)deleteComments {
     [self moderateCommentsWithSelector:@selector(remove)];
+	[self performSelectorOnMainThread:@selector(trySelectSomethingAndShowIt) withObject:nil waitUntilDone:NO];
 }
 
 - (void)approveComments {
@@ -360,8 +373,12 @@
 - (void)showCommentAtIndexPath:(NSIndexPath *)indexPath {
 	Comment *comment;
     @try {
-        comment = [self.resultsController objectAtIndexPath:indexPath];
-        WPLog(@"Selected comment at indexPath: (%i,%i)", indexPath.section, indexPath.row);
+		if(self.blog.lastCommentsSync == nil) { //first startup, comments are not there
+			comment = nil;
+		} else {
+			comment = [self.resultsController objectAtIndexPath:indexPath];
+			WPLog(@"Selected comment at indexPath: (%i,%i)", indexPath.section, indexPath.row);
+		}
     }
     @catch (NSException * e) {
         NSLog(@"Can't select comment at indexPath: (%i,%i)", indexPath.section, indexPath.row);
@@ -379,8 +396,9 @@
 			[delegate showContentDetailViewController:self.commentViewController];
 		}
 	}
-
-    [self.commentViewController showComment:comment];
+	
+	if(comment != nil)
+		[self.commentViewController showComment:comment];
 }
 
 - (void)setSelectedIndexPath:(NSIndexPath *)indexPath {
@@ -594,14 +612,22 @@
             NSLog(@"Caught exception when looking for a post to select. Maybe there are no posts yet?");
         }
     }
-	
-	if (DeviceIsPad() == YES) {
-		if (self.selectedIndexPath && !self.isSecondaryViewController) {
-			[commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-			[self showCommentAtIndexPath:self.selectedIndexPath];
-		}
+}
+
+
+- (void)trySelectSomethingAndShowIt{
+	if (!DeviceIsPad())
+        return;
+	if (!self.selectedIndexPath) {
+		[self trySelectSomething];
+	}
+	// sometimes, iPad table views should
+	if (self.selectedIndexPath && !self.isSecondaryViewController) {
+		[commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+		[self showCommentAtIndexPath:self.selectedIndexPath];
 	}
 }
+
 
 
 #pragma mark -

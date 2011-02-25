@@ -525,19 +525,6 @@
 	}
 }
 
-- (void)trySelectSomethingAndShowIt2 {
-	if(DeviceIsPad()) {
-		if (!self.selectedIndexPath) {
-			[self trySelectSomething];
-		}
-		// sometimes, iPad table views should
-		if (self.selectedIndexPath) {
-			[self showSelectedPost];
-			[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-		}
-	}
-}
-
 
 #pragma mark -
 #pragma mark Fetched results controller
