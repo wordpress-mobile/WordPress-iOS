@@ -54,7 +54,7 @@
 
 - (void )updateFromDictionary:(NSDictionary *)postInfo {
 	self.postTitle      = [postInfo objectForKey:@"title"];
-    self.postID         = [postInfo objectForKey:@"page_id"];
+    self.postID         = [[postInfo objectForKey:@"page_id"] numericValue];
     self.content        = [postInfo objectForKey:@"description"];
     self.date_created_gmt    = [postInfo objectForKey:@"date_created_gmt"];
     self.status         = [postInfo objectForKey:@"page_status"];

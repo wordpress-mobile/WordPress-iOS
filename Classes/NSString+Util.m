@@ -24,3 +24,9 @@
 }
 
 @end
+
+@implementation NSNumber (NumericValueHack)
+- (NSNumber *)numericValue {
+	return self;
+}
+@end
