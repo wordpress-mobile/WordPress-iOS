@@ -1,5 +1,4 @@
 #import "WPSelectionTableViewController.h"
-#import "BlogDataManager.h"
 #import "WordPressAppDelegate.h"
 
 @interface NSObject (WPSelectionTableViewControllerDelegateCategory)

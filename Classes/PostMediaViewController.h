@@ -14,7 +14,6 @@
 #import "UIDevice-Hardware.h"
 #import "UIImage+Resize.h"
 #import "WordPressAppDelegate.h"
-#import "BlogDataManager.h"
 #import "MediaObjectViewController.h"
 #import "WPImagePickerController.h"
 

@@ -7,7 +7,6 @@
 //
 
 #import "EditCommentViewController.h"
-#import "BlogDataManager.h"
 #import "WPProgressHUD.h"
 #import "WPReachability.h"
 #import "CommentViewController.h"

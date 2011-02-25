@@ -1,6 +1,5 @@
 #import "EditPostViewController.h"
 #import "WordPressAppDelegate.h"
-#import "BlogDataManager.h"
 #import "WPSegmentedSelectionTableViewController.h"
 #import "CPopoverManager.h"
 
@@ -351,25 +350,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     
     [saveButton release];
 }
-
-- (BOOL)isPostPublished {
-	BOOL result = NO;
-	if(isLocalDraft == YES) {
-		result = NO;
-	}
-	else {
-		BlogDataManager *dm = [BlogDataManager sharedDataManager];
-		NSString *status = [dm statusDescriptionForStatus:[dm.currentPost valueForKey:@"post_status"] fromBlog:dm.currentBlog];
-		
-		if([[status lowercaseString] isEqualToString:@"published"])
-			result = YES;
-		else
-			result = NO;
-	}
-	
-	return result;
-}
-
 
 - (void)refreshUIForCompose {
 	self.navigationItem.title = @"Write";

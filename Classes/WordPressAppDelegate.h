@@ -8,12 +8,11 @@
 #import "FlurryAPI.h"
 #import "HelpViewController.h"
 
-@class BlogDataManager, AutosaveManager;
+@class AutosaveManager;
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate> {
 	Blog *currentBlog;
 @private
-    BlogDataManager *dataManager;
 
     IBOutlet UIWindow *window;
     IBOutlet UINavigationController *navigationController;
@@ -55,18 +54,10 @@
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message;
 - (void)showErrorAlert:(NSString *)message;
 - (void)showNotificationErrorAlert:(NSNotification *)notification;
-- (void)storeCurrentBlog;
-- (void)resetCurrentBlogInUserDefaults;
-- (BOOL)shouldLoadBlogFromUserDefaults;
 - (BOOL)isWPcomAuthenticated;
 - (void)checkWPcomAuthentication;
 - (void)setAutoRefreshMarkers;
 - (void)showContentDetailViewController:(UIViewController *)viewController;
-- (void)syncBlogs;
-- (void)syncBlogCategoriesAndStatuses;
-- (void)syncTick:(NSTimer *)timer;
-- (void)startSyncTimer;
-- (void)startSyncTimerThread;
 - (void)deleteLocalDraft:(NSNotification *)notification;
 - (void)dismissCrashReporter:(NSNotification *)notification;
 

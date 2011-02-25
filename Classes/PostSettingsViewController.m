@@ -1,6 +1,5 @@
 #import "PostSettingsViewController.h"
 #import "WPSelectionTableViewController.h"
-#import "BlogDataManager.h"
 #import "WordPressAppDelegate.h"
 #import "WPLabelFooterView.h"
 

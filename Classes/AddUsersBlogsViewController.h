@@ -11,7 +11,6 @@
 #import "Blog.h"
 #import "WPProgressHUD.h"
 #import "WPcomLoginViewController.h"
-#import "BlogDataManager.h"
 
 @interface AddUsersBlogsViewController : UIViewController <UITableViewDelegate, HTTPHelperDelegate> {
 	WordPressAppDelegate *appDelegate;

@@ -6,8 +6,6 @@
 //
 
 #import "CommentsViewController.h"
-
-#import "BlogDataManager.h"
 #import "CommentTableViewCell.h"
 #import "CommentViewController.h"
 #import "WordPressAppDelegate.h"

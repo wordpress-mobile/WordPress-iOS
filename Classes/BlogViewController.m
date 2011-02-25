@@ -6,8 +6,6 @@
 //
 
 #import "BlogViewController.h"
-
-#import "BlogDataManager.h"
 #import "UIViewController+WPAnimation.h"
 #import "WordPressAppDelegate.h"
 #import "NSString+XMLExtensions.h" 
@@ -122,9 +120,6 @@
 #pragma mark KVO callbacks
 
 - (void)refreshBlogs:(NSNotification *)notification {
-	// should probably let each VC take care of these on their own,
-	// but that would probably also entail cleaning up the BlogDataManager
-	// notifications et al.
 	UIViewController *viewController = tabBarController.selectedViewController;
 	if (viewController == postsViewController) {
 		[postsViewController.tableView reloadData];

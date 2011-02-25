@@ -6,7 +6,6 @@
 //
 
 #import "CommentViewController.h"
-#import "BlogDataManager.h"
 #import "WPReachability.h"
 #import "WordPressAppDelegate.h"
 #import "WPProgressHUD.h"
@@ -351,8 +350,6 @@
 - (void)discard {
 //    hasChanges = NO;
     replyToCommentViewController.navigationItem.rightBarButtonItem = nil;
-//    [self stopTimer];
-//    [[BlogDataManager sharedDataManager] clearAutoSavedContext];
 	[self dismissEditViewController];
 }
 

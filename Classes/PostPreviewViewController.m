@@ -1,5 +1,4 @@
 #import "PostPreviewViewController.h"
-#import "BlogDataManager.h"
 #import "WordPressAppDelegate.h"
 
 @interface PostPreviewViewController (Private)

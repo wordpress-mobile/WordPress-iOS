@@ -1,6 +1,5 @@
 #import <UIKit/UIKit.h>
 #import "WPSegmentedSelectionTableViewController.h"
-#import "BlogDataManager.h"
 #import "Category.h"
 #import "Blog.h"
 

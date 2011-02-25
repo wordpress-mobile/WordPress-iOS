@@ -118,7 +118,6 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 
 - (NSString *)validateNewLinkInfo:(NSString *)urlText;
 
-- (BOOL)isPostPublished;
 - (BOOL)isAFreshlyCreatedDraft;
 - (IBAction)switchToEdit;
 - (IBAction)switchToSettings;

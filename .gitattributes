@@ -65,8 +65,6 @@ Classes/BetaUIWindow.h -text
 Classes/BetaUIWindow.m -text
 Classes/Blog.h -text
 Classes/Blog.m -text
-Classes/BlogDataManager.h -text
-Classes/BlogDataManager.m -text
 Classes/BlogHTTPAuthenticationViewController.xib -text
 Classes/BlogSplitViewDetailViewController.h -text
 Classes/BlogSplitViewDetailViewController.m -text

@@ -13,7 +13,6 @@
 #import "AddSiteViewController.h"
 #import "WPcomLoginViewController.h"
 #import "EditSiteViewController.h"
-#import "BlogDataManager.h"
 #import "WordPressAppDelegate.h"
 
 @interface WelcomeViewController : UIViewController<UITableViewDelegate> {

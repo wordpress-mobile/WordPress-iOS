@@ -5,7 +5,7 @@
 #import "PostViewController.h"
 #import "EGORefreshTableHeaderView.h"
 
-@class BlogDataManager, EditPostViewController, EditPostViewController;
+@class EditPostViewController, EditPostViewController;
 
 @interface PostsViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, UIAccelerometerDelegate, NSFetchedResultsControllerDelegate, EGORefreshTableHeaderDelegate> {
 @private
@@ -25,8 +25,6 @@
 @property (nonatomic, retain) NSFetchedResultsController *resultsController;
 @property (nonatomic, retain) Blog *blog;
 
-- (void)addSpinnerToCell:(NSIndexPath *)indexPath;
-- (void)removeSpinnerFromCell:(NSIndexPath *)indexPath;
 - (void)showAddPostView;
 - (void)reselect;
 - (BOOL)refreshRequired;

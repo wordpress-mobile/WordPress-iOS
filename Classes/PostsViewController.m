@@ -1,5 +1,4 @@
 #import "PostsViewController.h"
-#import "BlogDataManager.h"
 #import "EditPostViewController.h"
 #import "PostViewController.h"
 #import "PostTableViewCell.h"
@@ -321,23 +320,6 @@
     [pool release];
 }
 
-- (void)updatePostsTableViewAfterPostSaved:(NSNotification *)notification {
-    NSDictionary *postIdsDict = [notification userInfo];
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
-	
-    [dm updatePostsTitlesFileAfterPostSaved:(NSMutableDictionary *)postIdsDict];
-    [dm loadPostTitlesForCurrentBlog];
-	[self refreshHandler];
-	[self.tableView reloadData];
-}
-
-- (void)updatePostsTableAfterDraftSaved:(NSNotification *)notification {
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
-    [dm loadPostTitlesForCurrentBlog];
-	[self refreshHandler];
-	[self.tableView reloadData];
-}
-
 - (void)deletePostAtIndexPath:(id)object{
 	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 	
@@ -347,8 +329,6 @@
     Post *post = [resultsController objectAtIndexPath:indexPath];
 	
     if (![post hasRemote]) {
-		[mediaManager removeForPostID:post.postID andBlogURL:[[[BlogDataManager sharedDataManager] currentBlog] objectForKey:@"url"]];
-		
         // FIXME: use custom post method
 		[appDelegate.managedObjectContext deleteObject:post];
 		
@@ -373,10 +353,7 @@
             return;
         }
         else{
-            //if reachability is good, delete post, and refresh view (sync posts)
-            [mediaManager removeForPostID:[[[BlogDataManager sharedDataManager] currentPost] objectForKey:@"postid"] 
-                               andBlogURL:[[[BlogDataManager sharedDataManager] currentBlog] objectForKey:@"url"]];
-			
+         	
             //delete post on the server
             Post *post = [resultsController objectAtIndexPath:indexPath];
 			NSError *error = nil;
@@ -397,27 +374,7 @@
     [pool release];
 }
 
-- (void)addSpinnerToCell:(NSIndexPath *)indexPath {
-	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
-	UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
-	[((PostTableViewCell *)cell) runSpinner:YES];
-	int totalPosts = [[BlogDataManager sharedDataManager] countOfPostTitles];
-	NSString * totalString = [NSString stringWithFormat:@"%d posts loaded", totalPosts];
-	[((PostTableViewCell *)cell) changeCellLabelsForUpdate:totalString:@"Loading more posts...":YES];
-	[apool release];
-}
-
-- (void)removeSpinnerFromCell:(NSIndexPath *)indexPath {
-	NSAutoreleasePool *apool = [[NSAutoreleasePool alloc] init];
-	UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:indexPath];
-	[((PostTableViewCell *)cell) runSpinner:NO];
-	[apool release];
-}
-
 - (void)reselect {
-	if ([[BlogDataManager sharedDataManager] hasAutosavedPost])
-		return;
-	
 	if (self.selectedIndexPath != NULL) {
 		[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 		[self tableView:self.tableView didSelectRowAtIndexPath:self.selectedIndexPath];

@@ -1,6 +1,5 @@
 #import "WordPressAppDelegate.h"
 #import "BlogsViewController.h"
-#import "BlogDataManager.h"
 #import "WPReachability.h"
 #import "NSString+Helpers.h"
 #import "BlogViewController.h"
@@ -16,10 +15,7 @@
 - (void)reachabilityChanged;
 - (void)setAppBadge;
 - (void)startupAnimationDone:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context;
-- (void)storeCurrentBlog;
-- (void)restoreCurrentBlog;
 - (void)showSplashView;
-- (int)indexForCurrentBlog;
 - (void)checkIfStatsShouldRun;
 - (void)runStats;
 @end
@@ -62,9 +58,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		
 		if (DeviceIsPad())
 			[UIViewController youWillAutorotateOrYouWillDieMrBond];
-		
-        dataManager = [BlogDataManager sharedDataManager];
-		
+				
 		if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] != nil) {
 			NSString *tempIsAuthenticated = (NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"];
 			if([tempIsAuthenticated isEqualToString:@"1"])
@@ -93,7 +87,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	[postID release];
     [navigationController release];
     [window release];
-    [dataManager release];
 	[currentBlog release];
     [super dealloc];
 }
@@ -120,7 +113,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
 
 	[self setAutoRefreshMarkers];
-	[self restoreCurrentBlog];
 	
 	NSManagedObjectContext *context = [self managedObjectContext];
     if (!context) {
@@ -142,10 +134,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		self.navigationController = aNavigationController;
 
 		[window addSubview:[navigationController view]];
-
-		if ([self shouldLoadBlogFromUserDefaults]) {
-//			[blogsViewController showBlog:NO];
-		}
 
 		if ([Blog countWithContext:context] == 0) {
 			WelcomeViewController *wViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
@@ -172,10 +160,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 			[splitViewController presentModalViewController:aNavigationController animated:YES];
 			[aNavigationController release];
 			[welcomeViewController release];
-		}
-		else if ([Blog countWithContext:context] == 1)
-		{
-			[dataManager makeBlogAtIndexCurrent:0];
 		}
 
 		//NSLog(@"? %d", [self.splitViewController shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationLandscapeLeft]);
@@ -269,7 +253,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-    [dataManager saveBlogData];
     [self setAppBadge];
 	
 	if (DeviceIsPad()) {
@@ -361,40 +344,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	}
 }
 
-- (void)syncBlogs {
-	[dataManager performSelectorInBackground:@selector(syncBlogsInBackground) withObject:nil];
-}
-
-- (void)syncBlogCategoriesAndStatuses {
-	if([Blog countWithContext:[self managedObjectContext]] > 0) {
-		[dataManager performSelectorInBackground:@selector(syncBlogCategoriesAndStatuses) withObject:nil];
-	}
-}
-
-- (void)startSyncTimer {
-	NSThread *syncThread = [[NSThread alloc] initWithTarget:self selector:@selector(startSyncTimerThread) object:nil];
-	[syncThread start];
-	[syncThread release];
-}
-
-- (void)startSyncTimerThread {
-	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-	
-	NSTimer *syncTimer = [NSTimer timerWithTimeInterval:600.0
-											 target:self
-										   selector:@selector(syncTick:)
-										   userInfo:nil
-											repeats:YES];
-	NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-	[runLoop addTimer:syncTimer forMode:NSRunLoopCommonModes];
-	[runLoop run];
-	
-	[pool release];
-}
-
-- (void)syncTick:(NSTimer *)timer {
-	[dataManager syncBlogs];
-}
 
 - (void)deleteLocalDraft:(NSNotification *)notification {
 	NSString *uniqueID = [notification object];
@@ -613,21 +562,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)setAppBadge {
-    [UIApplication sharedApplication].applicationIconBadgeNumber = [dataManager countOfAwaitingComments];
-}
-
-- (void)resetCurrentBlogInUserDefaults {
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  [defaults removeObjectForKey:kCurrentBlogIndex];
-}
-
-- (BOOL)shouldLoadBlogFromUserDefaults {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
-    if ([self indexForCurrentBlog] == [defaults integerForKey:kCurrentBlogIndex]) {
-        return YES;
-    }
-    return NO;
+    //[UIApplication sharedApplication].applicationIconBadgeNumber = [dataManager countOfAwaitingComments];
 }
 
 - (void)checkWPcomAuthentication {
@@ -667,34 +602,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		[[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"wpcom_authenticated_flag"];
 	
 	[pool release];
-}
-
-- (int)indexForCurrentBlog {
-    return [dataManager indexForBlogid:[[dataManager currentBlog] objectForKey:kBlogId] 
-								   url:[[dataManager currentBlog] objectForKey:@"url"]];
-}
-
-- (void)storeCurrentBlog {
-    if([dataManager currentBlog])
-        [[NSUserDefaults standardUserDefaults] setInteger:[self indexForCurrentBlog] forKey:kCurrentBlogIndex];
-    else
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kCurrentBlogIndex];
-}
-
-- (void)restoreCurrentBlog {
-	@try {
-		if ([[NSUserDefaults standardUserDefaults] objectForKey:kCurrentBlogIndex]) {
-			int currentBlogIndex = [[NSUserDefaults standardUserDefaults] integerForKey:kCurrentBlogIndex];
-			if (currentBlogIndex >= 0) 
-				[dataManager makeBlogAtIndexCurrent:currentBlogIndex];
-		}
-		else
-			[dataManager resetCurrentBlog];
-	}
-	@catch (NSException * e) {
-		NSLog(@"error calling restoreCurrentBlog: %@", e);
-		[dataManager resetCurrentBlog];
-	}
 }
 
 - (void)showSplashView {

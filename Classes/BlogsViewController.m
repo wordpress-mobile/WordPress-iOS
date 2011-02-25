@@ -23,13 +23,6 @@
     } else {
         NSLog(@"fetched blogs: %@", [resultsController fetchedObjects]);
     }
-
-	// restore blog for iPad
-	if (DeviceIsPad() == YES) {
-		if (appDelegate.shouldLoadBlogFromUserDefaults) {
-			//[self showBlog:NO];
-		}
-	}
 	
 	// Check to see if we should prompt about rating in the App Store
 	NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
