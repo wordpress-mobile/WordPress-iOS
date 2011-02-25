@@ -7,7 +7,6 @@
 //
 
 #import "ReplyToCommentViewController.h"
-#import "BlogDataManager.h"
 #import "WPProgressHUD.h"
 #import "WPReachability.h"
 
@@ -71,7 +70,6 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 	[[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(receivedRotate:) name: UIDeviceOrientationDidChangeNotification object: nil];
 
-	
 	self.hasChanges = NO;
 	//foo = textView.text;//so we can compare to set hasChanges correctly
 	textViewText = [[NSString alloc] initWithString: textView.text];
@@ -218,9 +216,6 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)aTextView {
-	
-	
-	
 	self.navigationItem.rightBarButtonItem = saveButton;
 	
 	if (DeviceIsPad() == NO) {
@@ -307,6 +302,9 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	//within the keyboard, the textViewDidEndEditing is never called
 	[self endTextEnteringButtonAction: sender];
 	if(hasChanges == NO) {
+		if (DeviceIsPad() == YES) {
+			[textView becomeFirstResponder];
+		}		
 		UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:@"Error."
 																	  message:@"Please type a comment."
 																	 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
