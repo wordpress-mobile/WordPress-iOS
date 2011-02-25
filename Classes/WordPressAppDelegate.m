@@ -138,7 +138,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	if(DeviceIsPad() == NO)
 	{
 		UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:blogsViewController];
-        aNavigationController.navigationBar.tintColor = [UIColor colorWithRed:31/256.0 green:126/256.0 blue:163/256.0 alpha:1.0];
+        //aNavigationController.navigationBar.tintColor = [UIColor colorWithRed:31/256.0 green:126/256.0 blue:163/256.0 alpha:1.0];
 		self.navigationController = aNavigationController;
 
 		[window addSubview:[navigationController view]];

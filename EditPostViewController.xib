@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="191"/>
+			<integer value="297"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -105,6 +105,11 @@
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 										<string key="IBUIText">Title:</string>
+										<object class="NSFont" key="IBUIFont">
+											<string key="NSName">Helvetica</string>
+											<double key="NSSize">17</double>
+											<int key="NSfFlags">16</int>
+										</object>
 										<object class="NSColor" key="IBUITextColor" id="602221153">
 											<int key="NSColorSpace">3</int>
 											<bytes key="NSWhite">MC42NjY2NjY2NjY3AA</bytes>
@@ -321,10 +326,13 @@
 						<int key="NSvFlags">266</int>
 						<string key="NSFrame">{{0, 372}, {320, 44}}</string>
 						<reference key="NSSuperview" ref="546232296"/>
-						<bool key="IBUIOpaque">NO</bool>
+						<object class="NSColor" key="IBUIBackgroundColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MCAwIDAAA</bytes>
+						</object>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<int key="IBUIBarStyle">2</int>
+						<int key="IBUIBarStyle">1</int>
 						<object class="NSMutableArray" key="IBUIItems">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUIBarButtonItem" id="943074413">
@@ -387,10 +395,6 @@
 								<float key="IBUIWidth">32</float>
 								<reference key="IBUIToolbar" ref="458393363"/>
 							</object>
-						</object>
-						<object class="NSColor" key="IBUITintColor">
-							<int key="NSColorSpace">2</int>
-							<bytes key="NSRGB">MC4xMjE1Njg2MzUxIDAuNDk0MTE3Njc3MiAwLjYzOTIxNTcwNzgAA</bytes>
 						</object>
 					</object>
 					<object class="IBUIImageView" id="340444675">
@@ -945,11 +949,11 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>EditPostViewController</string>
 					<string>UIResponder</string>
-					<string>{{441, 234}, {320, 480}}</string>
+					<string>{{472, 279}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
-						<bytes key="NSTransformStruct">AQAAAABDxAAAA</bytes>
+						<bytes key="NSTransformStruct">P4AAAL+AAAAAAAAAw88AAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -968,7 +972,7 @@
 					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
-						<bytes key="NSTransformStruct">AQAAAABDCAAAA</bytes>
+						<bytes key="NSTransformStruct">P4AAAL+AAAAAAAAAw7kAAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
@@ -1051,9 +1055,6 @@
 							<string>endEditingAction:</string>
 							<string>endTextEnteringButtonAction:</string>
 							<string>showAddNewCategoryView:</string>
-							<string>showCategoriesViewAction:</string>
-							<string>showLocationMapView:</string>
-							<string>showStatusViewAction:</string>
 							<string>switchToEdit</string>
 							<string>switchToMedia</string>
 							<string>switchToPreview</string>
@@ -1061,9 +1062,6 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -1084,9 +1082,6 @@
 							<string>endEditingAction:</string>
 							<string>endTextEnteringButtonAction:</string>
 							<string>showAddNewCategoryView:</string>
-							<string>showCategoriesViewAction:</string>
-							<string>showLocationMapView:</string>
-							<string>showStatusViewAction:</string>
 							<string>switchToEdit</string>
 							<string>switchToMedia</string>
 							<string>switchToPreview</string>
@@ -1112,18 +1107,6 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">showAddNewCategoryView:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">showCategoriesViewAction:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">showLocationMapView:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">showStatusViewAction:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">

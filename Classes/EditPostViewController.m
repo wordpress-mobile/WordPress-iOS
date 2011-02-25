@@ -93,14 +93,14 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if ([newView isEqual:editView]) {
 		pointerFrame.origin.x = 22;
     } else if ([newView isEqual:postSettingsController.view]) {
-		pointerFrame.origin.x = 60;
+		pointerFrame.origin.x = 61;
     } else if ([newView isEqual:postPreviewViewController.view]) {
-		pointerFrame.origin.x = 100;
+		pointerFrame.origin.x = 101;
 	} else if ([newView isEqual:postMediaViewController.view]) {
 		if (DeviceIsPad())
 			pointerFrame.origin.x = 646;
 		else
-			pointerFrame.origin.x = 200;
+			pointerFrame.origin.x = 198;
 	}
 	tabPointer.frame = pointerFrame;
     [currentView removeFromSuperview];
