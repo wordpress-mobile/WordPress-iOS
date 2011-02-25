@@ -19,7 +19,6 @@
 - (void)addRefreshButton;
 - (void)deletePostAtIndexPath;
 - (void)trySelectSomething;
-- (void)trySelectSomethingAndShowIt;
 - (void)editPost:(AbstractPost *)apost;
 - (void)showSelectedPost;
 - (BOOL)isSyncing;
@@ -353,7 +352,6 @@
             return;
         }
         else{
-         	
             //delete post on the server
             Post *post = [resultsController objectAtIndexPath:indexPath];
 			NSError *error = nil;
@@ -361,6 +359,13 @@
 			[post removeWithError:&error];
 			if(error) {
 				[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error];
+				if(DeviceIsPad() && self.postReaderViewController) {
+					if(self.postReaderViewController.apost == post) {
+						//push an the W logo on the right. 
+						WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+						[delegate showContentDetailViewController:nil];
+					}
+				}
 			} else {
 				//resync posts
 				[self syncPosts];
@@ -370,7 +375,7 @@
 	
 	[progressAlert dismissWithClickedButtonIndex:0 animated:YES];
     [progressAlert release];
-	[self performSelectorOnMainThread:@selector(trySelectSomethingAndShowIt) withObject:nil waitUntilDone:NO];
+	//[self performSelectorOnMainThread:@selector(trySelectSomethingAndShowIt) withObject:nil waitUntilDone:NO];
     [pool release];
 }
 
@@ -451,10 +456,10 @@
 - (void)trySelectSomething {
     if (!DeviceIsPad())
         return;
-
+	
     if (self.tabBarController.selectedViewController != self)
         return;
-
+	
     if (!self.selectedIndexPath) {
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
         @try {
@@ -469,20 +474,6 @@
         }
     }
 }
-
-- (void)trySelectSomethingAndShowIt {
-	if(DeviceIsPad()) {
-		if (!self.selectedIndexPath) {
-			[self trySelectSomething];
-		}
-		// sometimes, iPad table views should
-		if (self.selectedIndexPath) {
-			[self showSelectedPost];
-			[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-		}
-	}
-}
-
 
 #pragma mark -
 #pragma mark Fetched results controller
@@ -543,13 +534,21 @@
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath {
     [self.tableView reloadData];
-
+	
     if (!DeviceIsPad()) {
         return;
     }
     switch (type) {
         case NSFetchedResultsChangeDelete:
-            [self trySelectSomething];
+			// A post was deleted, we should try to figure out if the deleted post is the currently opened on the right side
+			if(self.postReaderViewController) {
+				if(self.postReaderViewController.apost == anObject) {
+					//push an the W logo on the right. 
+					//FIXME: I've tried to select something but even with try/catch the app could crash
+					WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+					[delegate showContentDetailViewController:nil];
+				}
+			}
             break;
         case NSFetchedResultsChangeInsert:
             self.selectedIndexPath = newIndexPath;
