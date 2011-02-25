@@ -107,6 +107,7 @@
 		if (self.selectedIndexPath) {
             [self showSelectedPost];
 			[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+			[self.tableView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
 		}
 	}
 }
