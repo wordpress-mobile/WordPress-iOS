@@ -24,6 +24,7 @@ typedef enum {
 } SyncDirection;
 
 @interface WPDataController : NSObject {
+    BOOL retryOnTimeout;
 }
 
 @property (nonatomic, retain) NSError *error;

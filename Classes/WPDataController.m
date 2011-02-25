@@ -87,6 +87,7 @@
     NSArray *result;
     [req setMethod:@"system.listMethods" withObjects:[NSArray array]];
 
+    retryOnTimeout = YES;
     result = [self executeXMLRPCRequest:req];
     
     if([result isKindOfClass:[NSError class]]) {
@@ -174,6 +175,7 @@
 						   nil];
 		[req setMethod:@"wpcom.addiOSDeviceToken" withObjects:params];
 		
+        retryOnTimeout = YES;
 		result = [self executeXMLRPCRequest:req];
 		
 		// We want this to fail silently.
@@ -201,6 +203,7 @@
 	@try {
 		XMLRPCRequest *xmlrpcUsersBlogs = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
 		[xmlrpcUsersBlogs setMethod:@"wp.getUsersBlogs" withObjects:[NSArray arrayWithObjects:username, password, nil]];
+        retryOnTimeout = YES;
 		NSArray *usersBlogsData = [self executeXMLRPCRequest:xmlrpcUsersBlogs];
 		
 		if([usersBlogsData isKindOfClass:[NSArray class]]) {
@@ -250,6 +253,7 @@
     // TODO: use app-wide setting for number of posts
     NSArray *args = [NSArray arrayWithObject:number];
 	[xmlrpcRequest setMethod:@"metaWeblog.getRecentPosts" withObjects:[self getXMLRPCArgsForBlog:blog withExtraArgs:args]];
+    retryOnTimeout = YES;
     NSArray *recentPosts = [self executeXMLRPCRequest:xmlrpcRequest];
 	[xmlrpcRequest release];
     
@@ -264,6 +268,7 @@
     XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:blog.xmlrpc]];
 	[xmlrpcRequest setMethod:@"wp.getCategories" withObjects:[self getXMLRPCArgsForBlog:blog withExtraArgs:nil]];
 	
+    retryOnTimeout = YES;
     NSArray *categories = [self executeXMLRPCRequest:xmlrpcRequest];
     [xmlrpcRequest release];
 
@@ -286,6 +291,7 @@
                                   nil];
     NSArray *args = [NSArray arrayWithObject:categoryDict];
     [request setMethod:@"wp.newCategory" withObjects:[self getXMLRPCArgsForBlog:category.blog withExtraArgs:args]];
+    retryOnTimeout = NO;
     NSNumber *categoryID = [self executeXMLRPCRequest:request];
     if (self.error) {
         NSLog(@"Error creating category: %@", categoryID);
@@ -393,6 +399,7 @@
 
     [xmlrpcRequest setMethod:@"metaWeblog.newPost" withObjects:[self getXMLRPCArgsForBlog:post.blog withExtraArgs:[NSArray arrayWithObject:postParams]]];
 
+    retryOnTimeout = NO;
     id result = [self executeXMLRPCRequest:xmlrpcRequest];
     if ([result isKindOfClass:[NSError class]]) {
         return -1;
@@ -408,6 +415,7 @@
 	 NSMutableDictionary *postParams = [self getXMLRPCDictionaryForPost:post];
 	 NSArray *args = [NSArray arrayWithObjects:post.postID, post.blog.username, [self passwordForBlog:post.blog], postParams, nil];
     [xmlrpcRequest setMethod:@"metaWeblog.getPost" withObjects:args];
+    retryOnTimeout = NO;
     id result = [self executeXMLRPCRequest:xmlrpcRequest];
     if ([result isKindOfClass:[NSError class]]) {
         return NO;
@@ -428,6 +436,7 @@
     NSArray *args = [NSArray arrayWithObjects:post.postID, post.blog.username, [self passwordForBlog:post.blog], postParams, nil];
     
     [xmlrpcRequest setMethod:@"metaWeblog.editPost" withObjects:args];
+    retryOnTimeout = NO;
     id result = [self executeXMLRPCRequest:xmlrpcRequest];
     if ([result isKindOfClass:[NSError class]]) {
         NSLog(@"mwEditPost failed: %@", result);
@@ -448,6 +457,7 @@
     NSArray *args = [NSArray arrayWithObjects:@"unused", post.postID, post.blog.username, [self passwordForBlog:post.blog], nil];
 
     [xmlrpcRequest setMethod:@"metaWeblog.deletePost" withObjects:args];
+    retryOnTimeout = NO;
     id result = [self executeXMLRPCRequest:xmlrpcRequest];
     if ([result isKindOfClass:[NSError class]]) {
         WPLog(@"metaWeblog.deletePost failed: %@", result);
@@ -464,6 +474,7 @@
     // TODO: use app-wide setting for number of posts
     NSArray *args = [NSArray arrayWithObject:number];
 	[xmlrpcRequest setMethod:@"wp.getPages" withObjects:[self getXMLRPCArgsForBlog:blog withExtraArgs:args]];
+    retryOnTimeout = YES;
     NSArray *recentPages = [self executeXMLRPCRequest:xmlrpcRequest];
 	[xmlrpcRequest release];
     if ([recentPages isKindOfClass:[NSError class]]) {
@@ -480,6 +491,7 @@
     
     [xmlrpcRequest setMethod:@"wp.newPage" withObjects:[self getXMLRPCArgsForBlog:post.blog withExtraArgs:[NSArray arrayWithObject:postParams]]];
     
+    retryOnTimeout = NO;
     id result = [self executeXMLRPCRequest:xmlrpcRequest];
     if ([result isKindOfClass:[NSError class]]) {
         return -1;
@@ -500,6 +512,7 @@
     NSArray *args = [NSArray arrayWithObjects:post.blog.blogID, post.postID, post.blog.username, [self passwordForBlog:post.blog], postParams, nil];
     
     [xmlrpcRequest setMethod:@"wp.getPage" withObjects:args];
+    retryOnTimeout = YES;
     id result = [self executeXMLRPCRequest:xmlrpcRequest];
     if ([result isKindOfClass:[NSError class]]) {
         WPLog(@"wpGetPage failed: %@", result);
@@ -520,6 +533,7 @@
     NSArray *args = [NSArray arrayWithObjects:post.blog.blogID, post.postID, post.blog.username, [self passwordForBlog:post.blog], postParams, nil];
     
     [xmlrpcRequest setMethod:@"wp.editPage" withObjects:args];
+    retryOnTimeout = NO;
     id result = [self executeXMLRPCRequest:xmlrpcRequest];
     if ([result isKindOfClass:[NSError class]]) {
         NSLog(@"wpEditPage failed: %@", result);
@@ -540,6 +554,7 @@
     NSArray *args = [NSArray arrayWithObjects:post.blog.blogID, post.blog.username, [self passwordForBlog:post.blog], post.postID, nil];
     
     [xmlrpcRequest setMethod:@"wp.deletePage" withObjects:args];
+    retryOnTimeout = NO;
     id result = [self executeXMLRPCRequest:xmlrpcRequest];
     if ([result isKindOfClass:[NSError class]]) {
         NSLog(@"wpDeletePage failed: %@", result);
@@ -573,6 +588,7 @@
     NSDictionary *commentsStructure = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:100] forKey:@"number"];
     NSArray *args = [NSArray arrayWithObject:commentsStructure];
 	[xmlrpcRequest setMethod:@"wp.getComments" withObjects:[self getXMLRPCArgsForBlog:blog withExtraArgs:args]];
+    retryOnTimeout = YES;
     NSArray *recentComments = [self executeXMLRPCRequest:xmlrpcRequest];
 	[xmlrpcRequest release];
     if ([recentComments isKindOfClass:[NSError class]]) {
@@ -588,6 +604,7 @@
     NSArray *args = [NSArray arrayWithObjects:comment.blog.blogID, comment.blog.username, [self passwordForBlog:comment.blog], comment.postID, commentParams, nil];
     
     [xmlrpcRequest setMethod:@"wp.newComment" withObjects:args];
+    retryOnTimeout = NO;
     NSNumber *result = [self executeXMLRPCRequest:xmlrpcRequest];
     if ([result isKindOfClass:[NSError class]]) {
         NSLog(@"wpNewComment failed: %@", result);
@@ -607,6 +624,7 @@
     NSArray *args = [NSArray arrayWithObjects:comment.blog.blogID, comment.blog.username, [self passwordForBlog:comment.blog], comment.commentID, commentParams, nil];
     
     [xmlrpcRequest setMethod:@"wp.editComment" withObjects:args];
+    retryOnTimeout = NO;
     id result = [self executeXMLRPCRequest:xmlrpcRequest];
     if ([result isKindOfClass:[NSError class]]) {
         NSLog(@"wpEditComment failed: %@", result);
@@ -626,6 +644,7 @@
     NSArray *args = [NSArray arrayWithObjects:comment.blog.blogID, comment.blog.username, [self passwordForBlog:comment.blog], comment.commentID, commentParams, nil];
     
     [xmlrpcRequest setMethod:@"wp.getComment" withObjects:args];
+    retryOnTimeout = YES;
     id result = [self executeXMLRPCRequest:xmlrpcRequest];
     if ([result isKindOfClass:[NSError class]]) {
         NSLog(@"updateComment failed: %@", result);
@@ -645,6 +664,7 @@
     NSArray *args = [NSArray arrayWithObjects:comment.blog.blogID, comment.blog.username, [self passwordForBlog:comment.blog], comment.commentID, nil];
     
     [xmlrpcRequest setMethod:@"wp.deleteComment" withObjects:args];
+    retryOnTimeout = NO;
     id result = [self executeXMLRPCRequest:xmlrpcRequest];
     if ([result isKindOfClass:[NSError class]]) {
         NSLog(@"wpDeleteComment failed: %@", result);
@@ -679,7 +699,11 @@
 	[request setShouldPresentAuthenticationDialog:YES];
 	[request setUseKeychainPersistence:YES];
     [request setValidatesSecureCertificate:NO];
-    [request setNumberOfTimesToRetryOnTimeout:2];
+    if (retryOnTimeout) {
+        [request setNumberOfTimesToRetryOnTimeout:2];
+    } else {
+        [request setNumberOfTimesToRetryOnTimeout:0];
+    }
     [request appendPostData:[[req source] dataUsingEncoding:NSUTF8StringEncoding]];
 	[request startSynchronous];
 	
