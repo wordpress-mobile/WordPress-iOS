@@ -290,7 +290,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 #pragma mark Comment Handling Methods
 
 - (BOOL)isConnectedToHost {
-    if (![[WPReachability sharedReachability] remoteHostStatus] != NotReachable) {
+    if ([[WPReachability sharedReachability] internetConnectionStatus] == NotReachable) {
         UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:@"Connection Problem"
 																	  message:@"The internet connection appears to be offline."
 																	 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
