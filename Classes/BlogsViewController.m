@@ -1,8 +1,7 @@
 #import "BlogsViewController.h"
 
 @implementation BlogsViewController
-@synthesize blogsList;
-@synthesize resultsController;
+@synthesize resultsController, currentBlog;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -72,28 +71,20 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = NO;
-//	[appDelegate syncBlogs];
-//	[appDelegate syncBlogCategoriesAndStatuses];
-	
+		
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blogsRefreshNotificationReceived:) name:@"BlogsRefreshNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBlogWithoutAnimation) name:@"NewBlogAdded" object:nil];
 	
 	[self checkEditButton];
-	
-	self.blogsList = nil;
-	self.blogsList = [[[BlogDataManager sharedDataManager] blogsList] mutableCopy];
-	
+		
 	[self.tableView reloadData];
 	[self.tableView endEditing:YES];
-	[BlogDataManager sharedDataManager].selectedBlogID = nil;
 	
 	self.tableView.editing = NO;
 	[self cancel:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-	[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = YES;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[super viewWillDisappear:animated];
 }
@@ -106,9 +97,7 @@
 }
 
 - (void)blogsRefreshNotificationReceived:(NSNotification *)notification {
-	self.blogsList = nil;
-	self.blogsList = [[[BlogDataManager sharedDataManager] blogsList] mutableCopy];
-    [resultsController performFetch:nil];
+	[resultsController performFetch:nil];
     [self.tableView reloadData];
 	[self checkEditButton];
 }
@@ -183,6 +172,11 @@
 	else {	// if ([self canChangeCurrentBlog]) {
         Blog *blog = [resultsController objectAtIndexPath:indexPath];
 		[self showBlog:blog animated:YES];
+
+		//we should keep a reference to the last selected blog
+		if (DeviceIsPad() == YES) {
+			self.currentBlog = blog;
+		}
     }
 	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 }
@@ -216,19 +210,15 @@
 
 
 - (void)edit:(id)sender {
-	//if ([self canChangeCurrentBlog]) {
-		[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = YES;
-		UIBarButtonItem *cancelButton = [[[UIBarButtonItem alloc] initWithTitle:@"Done"
-																		  style:UIBarButtonItemStyleDone
-																		 target:self
-																		 action:@selector(cancel:)] autorelease];
-		[self.navigationItem setLeftBarButtonItem:cancelButton animated:YES];
-		[self.tableView setEditing:YES animated:YES];
-	//}
+	UIBarButtonItem *cancelButton = [[[UIBarButtonItem alloc] initWithTitle:@"Done"
+																	  style:UIBarButtonItemStyleDone
+																	 target:self
+																	 action:@selector(cancel:)] autorelease];
+	[self.navigationItem setLeftBarButtonItem:cancelButton animated:YES];
+	[self.tableView setEditing:YES animated:YES];
 }
 
 - (void)cancel:(id)sender {
-	[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = NO;
     UIBarButtonItem *editButton = [[[UIBarButtonItem alloc] initWithTitle:@"Edit"
 																	style:UIBarButtonItemStylePlain
 																   target:self
@@ -297,29 +287,21 @@
 }
 
 - (void)deleteBlog:(NSIndexPath *)indexPath {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = YES;
-	[[BlogDataManager sharedDataManager] makeBlogAtIndexCurrent:indexPath.row];
-	
-	MediaManager *mediaManager = [[MediaManager alloc] init];
-	[mediaManager removeForBlogURL:[[[BlogDataManager sharedDataManager] currentBlog] objectForKey:@"url"]];
-	[mediaManager release];
-	
-	[[BlogDataManager sharedDataManager] removeCurrentBlog];
-	
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];	
 	[self performSelectorOnMainThread:@selector(didDeleteBlogSuccessfully:) withObject:indexPath waitUntilDone:NO];
-	
 	[pool release];
 }
 
 - (void)didDeleteBlogSuccessfully:(NSIndexPath *)indexPath {
-	[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = YES;
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsEditedNotification" object:nil];
 	if ([Blog countWithContext:appDelegate.managedObjectContext] == 0) {
 		self.navigationItem.leftBarButtonItem = nil;
 		[self.tableView setEditing:NO animated:YES];
 	}
+	
+	//try to select something on iPad
+	
+	
 }
 
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
@@ -328,6 +310,7 @@
 		
 	}
 }
+
 
 #pragma mark -
 #pragma mark UIAlertView delegate
@@ -385,6 +368,22 @@
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath {
     [self.tableView reloadData];
+	
+	if (!DeviceIsPad()) {
+        return;
+    }
+	switch (type) {
+        case NSFetchedResultsChangeDelete:
+			//deleted the last selected blog
+			if(currentBlog && (currentBlog == anObject)) {
+				WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+				[delegate showContentDetailViewController:nil];
+				currentBlog = nil;
+			}
+			break;
+		default:
+			break;
+    }
 }
 
 #pragma mark -
@@ -392,13 +391,12 @@
 
 - (void)didReceiveMemoryWarning {
     WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
-	[BlogDataManager sharedDataManager].shouldStopSyncingBlogs = YES;
     [super didReceiveMemoryWarning];
 }
 
 - (void)dealloc {
     self.resultsController = nil;
-	[blogsList release]; blogsList = nil;
+	self.currentBlog = nil;
     [super dealloc];
 }
 

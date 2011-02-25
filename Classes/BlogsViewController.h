@@ -15,13 +15,13 @@
 #import "CPopoverManager.h"
 
 @interface BlogsViewController : UITableViewController <NSFetchedResultsControllerDelegate, UIAccelerometerDelegate, UIAlertViewDelegate> {
-	NSMutableArray *blogsList;
 	WordPressAppDelegate *appDelegate;
     NSFetchedResultsController *resultsController;
+	 Blog *currentBlog;
 }
 
-@property (nonatomic, retain) NSMutableArray *blogsList;
 @property (nonatomic, retain) NSFetchedResultsController *resultsController;
+@property (nonatomic, retain) Blog *currentBlog;
 
 - (void)showBlog:(Blog *)blog animated:(BOOL)animated;
 - (void)deleteBlog:(NSIndexPath *)indexPath;
