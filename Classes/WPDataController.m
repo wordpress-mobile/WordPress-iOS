@@ -704,6 +704,8 @@
     } else {
         [request setNumberOfTimesToRetryOnTimeout:0];
     }
+	if(getenv("WPDebugXMLRPC"))
+		NSLog(@"executeXMLRPCRequest request: %@",[req source]);
     [request appendPostData:[[req source] dataUsingEncoding:NSUTF8StringEncoding]];
 	[request startSynchronous];
 	
