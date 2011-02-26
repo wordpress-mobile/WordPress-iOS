@@ -114,6 +114,8 @@
 - (void)configureCommentsTab {
 	[[NSUserDefaults standardUserDefaults] setValue:@"Comments" forKey:@"WPSelectedContentType"];
 	[commentsViewController setIndexForCurrentPost:-2];
+	//force commentViewController to nil, fixes trac #754
+	commentsViewController.commentViewController = nil;
 	self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
 }
 
