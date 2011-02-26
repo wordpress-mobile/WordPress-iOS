@@ -109,6 +109,30 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	else if(getenv("NSAutoreleaseFreedObjectCheckEnabled"))
 		NSLog(@"NSAutoreleaseFreedObjectCheckEnabled enabled!");
 
+	
+	// Set current directory for WordPress app
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *currentDirectoryPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"wordpress"];
+	
+	BOOL isDir;
+	
+	if (![fileManager fileExistsAtPath:currentDirectoryPath isDirectory:&isDir] || !isDir) {
+		[fileManager createDirectoryAtPath:currentDirectoryPath attributes:nil];
+	}
+	//FIXME: we should handle errors here:
+	/*
+	 NSError *error;
+	 BOOL success = [[NSFileManager defaultManager] createDirectoryAtPath:currentDirectoryPath withIntermediateDirectories:YES attributes:nil error:&error];
+	 if (!success) {
+	 NSLog(@"Error creating data path: %@", [error localizedDescription]);
+	 }
+	 */
+	
+	// set the current dir
+	[fileManager changeCurrentDirectoryPath:currentDirectoryPath];
+
+	
     [[WPReachability sharedReachability] setNetworkStatusNotificationsEnabled:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
 
