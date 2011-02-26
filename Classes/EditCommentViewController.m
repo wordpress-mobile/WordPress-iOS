@@ -265,11 +265,6 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 - (void)initiateSaveCommentReply:(id)sender {
 	[self endTextEnteringButtonAction: sender];
 	if(hasChanges == NO) {
-		/*UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:@"Error."
-																	  message:@"please modify the comment."
-																	 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [connectionFailAlert show];
-        [connectionFailAlert release];*/
 		if (DeviceIsPad() == YES) {
 			[commentViewController performSelectorOnMainThread:@selector(cancelView:) withObject:self waitUntilDone:NO];
 		} else

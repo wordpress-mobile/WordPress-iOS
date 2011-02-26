@@ -608,7 +608,11 @@
         @catch (NSException * e) {
             NSLog(@"Caught exception when looking for a post to select. Maybe there are no posts yet?");
         }
-    }
+    } else {
+		//push an the WP logo on the right. 
+		WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+		[delegate showContentDetailViewController:nil];
+	}
 }
 
 
@@ -693,14 +697,14 @@
     switch (type) {
         case NSFetchedResultsChangeDelete:
             [self trySelectSomething];
-            break;
+			break;
         case NSFetchedResultsChangeInsert:
             self.selectedIndexPath = newIndexPath;
             [commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 		case NSFetchedResultsChangeMove:
             self.selectedIndexPath = newIndexPath;
             [commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-        default:
+		default:
             [commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
             break;
     }

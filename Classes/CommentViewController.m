@@ -276,6 +276,7 @@
 	}
 	else if (DeviceIsPad() == YES) {
 		[self dismissModalViewControllerAnimated:YES];
+		
 	}
 }
 
@@ -287,6 +288,8 @@
 			[replyToCommentViewController.comment remove];
 		
 		[self dismissEditViewController];
+		
+		[commentsViewController trySelectSomethingAndShowIt]; //this is a trick for #760
 		return;
 	}
 	
