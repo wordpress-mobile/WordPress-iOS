@@ -229,20 +229,34 @@
 	//we should re-check  isSyncingPosts, isSyncingPages, isSyncingComments;
 	if(blog.isSyncingPosts || blog.isSyncingPages || blog.isSyncingComments)
 		return NO;
-		
+	
+	BOOL canDelete = YES;
+	
 	NSSet *posts = blog.posts;
-	if (posts && (posts.count > 0)) 
+	if (posts && (posts.count > 0)) { 
 		for (AbstractPost *post in posts) {
+			if(!canDelete) break;
+			
+			//check the post status
 			if(post.remoteStatus = AbstractPostRemoteStatusPushing)
-				return NO;
+				canDelete = NO;
+			
+			//check for media file
+			NSSet *mediaFiles = post.media;
+			for (Media *media in mediaFiles) {
+				if(!canDelete) break;
+				if(media.remoteStatus == MediaRemoteStatusPushing) 
+					canDelete = NO;
+			}
+			mediaFiles = nil;
 		}
+	}
 	posts = nil;
-
 	
 	if(blog.isSyncingPosts || blog.isSyncingPages || blog.isSyncingComments)
-		return NO;
+		canDelete = NO;
 	
-	return YES;
+	return canDelete;
 }
 
 

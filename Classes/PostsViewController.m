@@ -106,6 +106,10 @@
             [self showSelectedPost];
 			[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 			[self.tableView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+		} else {
+			//There are no content yet, push an the WP logo on the right.  
+			WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate]; 
+			[delegate showContentDetailViewController:nil];
 		}
 	}
 }

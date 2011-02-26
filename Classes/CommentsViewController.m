@@ -12,6 +12,7 @@
 #import "WPProgressHUD.h"
 #import "WPReachability.h"
 #import "CommentViewController.h"
+#import "BlogViewController.h"
 
 #define COMMENTS_SECTION        0
 #define NUM_SECTIONS            1
@@ -262,16 +263,42 @@
     } else {
         [selectedComments removeAllObjects];
     }
-
+	
     [editButtonItem setEnabled:([[self.resultsController fetchedObjects] count] > 0)];
 	[self reloadTableView];
 	
-
 	if (DeviceIsPad() == YES) {
-		if (self.selectedIndexPath && !self.isSecondaryViewController) {
-			[commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-			[self showCommentAtIndexPath:self.selectedIndexPath];
+		
+		//we must check if the user has changed blog meanwhile
+		BOOL presence = NO;
+		WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+		
+		UINavigationController *master = [delegate masterNavigationController];
+		UIViewController *topVC = master.topViewController;
+		if (topVC && [topVC isKindOfClass:[BlogViewController class]]) {
+			BlogViewController *tmp = (BlogViewController *)topVC;
+			if( tmp.tabBarController.selectedViewController == self)
+				presence = YES;
 		}
+		
+		/*	Another way to do that
+		 UINavigationController *master = [delegate masterNavigationController];
+		 // O : BlogsViewController
+		 //1 : BlogViewController
+		 if(master && ([master.viewControllers count] > 1) ) {
+		 UIViewController *ctrlRight = [master.viewControllers objectAtIndex:1];
+		 if([ctrlRight isKindOfClass:[BlogViewController class]]) {
+		 BlogViewController *tmp = (BlogViewController*)ctrlRight;
+		 if(tmp.tabBarController.selectedViewController == self)
+		 presence = YES;
+		 }
+		 }
+		 */
+		if(presence)
+			if (self.selectedIndexPath && !self.isSecondaryViewController) {
+				[commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+				[self showCommentAtIndexPath:self.selectedIndexPath];
+			}
 	}
 }
 
