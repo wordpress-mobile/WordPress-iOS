@@ -406,7 +406,10 @@
             [selectedIndexPath retain];
             [self showCommentAtIndexPath:selectedIndexPath];
         }
-    }
+    } else {
+		if (selectedIndexPath != nil) 
+			[self showCommentAtIndexPath:selectedIndexPath];
+	}
 }
 
 #pragma mark -
@@ -568,7 +571,6 @@
 
     if (indexPath) {
         self.selectedIndexPath = indexPath;
-        [commentViewController showComment:[self.resultsController objectAtIndexPath:indexPath]];
      }
 }
 
@@ -587,7 +589,6 @@
 
     if (indexPath) {
         self.selectedIndexPath = indexPath;
-        [commentViewController showComment:[self.resultsController objectAtIndexPath:indexPath]];
     }
 }
 
