@@ -333,7 +333,7 @@
 - (void)didModerateComments {
     [self setEditing:NO];
     [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-    [progressAlert release];    
+    [progressAlert release];
 }
 
 - (void)moderateCommentsWithSelector:(SEL)selector {
@@ -674,7 +674,7 @@
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:[self entityName] inManagedObjectContext:appDelegate.managedObjectContext]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(blog == %@)", self.blog]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(blog == %@ AND status != %@)", self.blog, @"spam"]];
     NSSortDescriptor *sortDescriptorStatus = [[NSSortDescriptor alloc] initWithKey:@"status" ascending:NO];
     NSSortDescriptor *sortDescriptorDate = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorStatus, sortDescriptorDate, nil];
