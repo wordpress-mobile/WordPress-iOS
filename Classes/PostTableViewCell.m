@@ -61,7 +61,7 @@
     }
 }
 
-- (void)setPost:(Post *)value {
+- (void)setPost:(AbstractPost *)value {
 	if(value != nil) {
 		post = value;
 		

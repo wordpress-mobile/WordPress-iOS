@@ -189,13 +189,13 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"PostCell";
     PostTableViewCell *cell = (PostTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    Post *post = [self.resultsController objectAtIndexPath:indexPath];
+    AbstractPost *apost = (AbstractPost*) [self.resultsController objectAtIndexPath:indexPath];
 
     if (cell == nil) {
         cell = [[[PostTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
     }
 
-    cell.post = post;
+    cell.post = apost;
 
     return cell;
 }

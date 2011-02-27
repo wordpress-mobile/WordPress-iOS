@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Post.h"
+#import "AbstractPost.h"
 
 #define POST_ROW_HEIGHT         60
 
@@ -23,7 +23,7 @@
 #define POST_LOCK_IMAGE         @"lock.png"
 
 @interface PostTableViewCell : UITableViewCell {
-    Post *post;
+    AbstractPost *post;
 
     UILabel *nameLabel;
     UILabel *dateLabel;
@@ -32,7 +32,7 @@
 	BOOL gettingMore;
 }
 
-@property (readwrite, assign) Post *post;
+@property (readwrite, assign) AbstractPost *post;
 
 - (void)changeCellLabelsForUpdate:(NSString *)postTotalString:(NSString *) loadingString:(BOOL)isLoading;
 - (void)runSpinner:(BOOL)value;
