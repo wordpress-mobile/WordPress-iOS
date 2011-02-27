@@ -9,6 +9,11 @@
 #import "Comment.h"
 #import "WPDataController.h"
 
+@interface Comment(PrivateMethods)
+- (BOOL)moderate;
+@end
+
+
 @implementation Comment
 @dynamic author;
 @dynamic author_email;
@@ -133,6 +138,7 @@
 
 }
 
+//this is used on reply and edit only
 - (BOOL)upload {
     if (self.commentID) {
         if([[WPDataController sharedInstance] wpEditComment:self]) {
@@ -153,6 +159,19 @@
 	return NO;
 }
 
+//this method is similar to upload, but doesn't start a 2nd xml-rpc to update the comment
+//this could be used when moderating comment only
+- (BOOL)moderate {
+    if (self.commentID) {
+        if([[WPDataController sharedInstance] wpEditComment:self]) {
+			[self save];
+			return YES;
+		} 
+    } 
+	return NO;
+}
+
+
 #pragma mark -
 #pragma mark Moderation
 - (BOOL)approve {
@@ -160,7 +179,7 @@
 	if([prevStatus isEqualToString:@"approve"])
 		return YES;
 	self.status = @"approve";
-    if(![self upload]) {
+    if(![self moderate]) {
 		self.status = prevStatus;
 		return NO;
 	}
@@ -172,7 +191,7 @@
 	if([prevStatus isEqualToString:@"hold"])
     	return YES;
 	self.status = @"hold";
-    if(![self upload]) {
+    if(![self moderate]) {
 		self.status = prevStatus;
 		return NO;
 	}
@@ -184,7 +203,7 @@
 	if([prevStatus isEqualToString:@"spam"])
     	return YES;
     self.status = @"spam";
-	if(![self upload]) {
+	if(![self moderate]) {
 		self.status = prevStatus;
 		return NO;
 	} else {
