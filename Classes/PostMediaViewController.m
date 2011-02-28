@@ -214,7 +214,7 @@
 	isAddingMedia = YES;
 	
 	UIActionSheet *actionSheet;
-	if([self supportsVideo] == YES) {
+	if([self supportsVideo:YES] == YES) {
 		actionSheet = [[UIActionSheet alloc] initWithTitle:@"" 
 												  delegate:self 
 										 cancelButtonTitle:@"Cancel" 
@@ -442,8 +442,6 @@
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
         if (DeviceIsPad() && addPopover != nil) {
             [addPopover dismissPopoverAnimated:YES];
-            [addPopover release];
-            addPopover = nil;
         }        
         picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         if ([(UIView *)sender tag] == TAG_ACTIONSHEET_VIDEO) {
@@ -1070,13 +1068,22 @@
     [filepath release];
 }
 
-- (BOOL)supportsVideo {
-	if(([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] == YES) && 
-	   ([[UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera] containsObject:(NSString *)kUTTypeMovie]) && 
-	   (self.videoEnabled == YES))
-		return YES;
-	else
-		return NO;
+- (BOOL)supportsVideo: (BOOL)apiCheck {
+	if (apiCheck) {
+		if(([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] == YES) && 
+		   ([[UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera] containsObject:(NSString *)kUTTypeMovie]) && 
+		   (self.videoEnabled == YES))
+			return YES;
+		else
+			return NO;
+	}
+	else {
+		if(([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] == YES) && 
+		   ([[UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera] containsObject:(NSString *)kUTTypeMovie]))
+			return YES;
+		else
+			return NO;
+	}
 }
 
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification {

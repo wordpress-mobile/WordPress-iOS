@@ -96,10 +96,18 @@ NSTimeInterval kAnimationDuration = 0.3f;
     } else if ([newView isEqual:postPreviewViewController.view]) {
 		pointerFrame.origin.x = 101;
 	} else if ([newView isEqual:postMediaViewController.view]) {
-		if (DeviceIsPad())
-			pointerFrame.origin.x = 646;
-		else
-			pointerFrame.origin.x = 198;
+		if (DeviceIsPad()) {
+			if ([postMediaViewController supportsVideo:NO])
+				pointerFrame.origin.x = 646;
+			else
+				pointerFrame.origin.x = 688;
+		}
+		else {
+			if ([postMediaViewController supportsVideo:NO])
+				pointerFrame.origin.x = 198;
+			else
+				pointerFrame.origin.x = 240;
+		}
 	}
 	tabPointer.frame = pointerFrame;
     [currentView removeFromSuperview];
@@ -223,13 +231,20 @@ NSTimeInterval kAnimationDuration = 0.3f;
         self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
     }
 	
-	if (![postMediaViewController supportsVideo]){
+	if (![postMediaViewController supportsVideo:NO]){
 		//no video icon for older devices
 		NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:toolbar.items];
 		NSLog(@"toolbar items: %@", toolbarItems);
 		
 		[toolbarItems removeObjectAtIndex:5];
 		[toolbar setItems:toolbarItems];
+	}
+	
+	float version = [[[UIDevice currentDevice] systemVersion] floatValue];
+	if (version < 3.2){
+		//match iOS 4 toolbar glossy black bg
+		[self.toolbar insertSubview:[[[UIImageView alloc]
+									  initWithImage:[UIImage imageNamed:@"toolbar-2g-bg.png"]] autorelease] atIndex:0];
 	}
 	
 	if (self.post && self.post.geolocation != nil && self.post.blog.geolocationEnabled) {

@@ -93,7 +93,7 @@ static inline double radians(double degrees) {
 - (void)useVideo:(NSString *)videoURL withThumbnail:(UIImage *)thumbnail andDuration:(float)duration;
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification;
 - (void)mediaUploadFailed:(NSNotification *)notification;
-- (BOOL)supportsVideo;
+- (BOOL)supportsVideo:(BOOL)apiCheck;
 - (UIImage *)generateThumbnailFromImage:(UIImage *)theImage andSize:(CGSize)targetSize;
 - (void)checkVideoEnabled;
 - (void)initObjects;
