@@ -59,6 +59,16 @@
         NSLog(@"Trying to show editor a second time: bad");
         return;
     }
+	if (self.apost.remoteStatus == AbstractPostRemoteStatusPushing) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Can't edit just yet"
+														message:@"Sorry, you can't edit a post while it's being uploaded. Try again in a moment"
+													   delegate:nil
+											  cancelButtonTitle:@"OK"
+											  otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+		return;
+	}
     EditPostViewController *postViewController;
 	[self checkForNewItem];
     AbstractPost *postRevision = [self.apost createRevision];

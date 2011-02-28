@@ -196,15 +196,25 @@
     }
 
     cell.post = apost;
+	if (cell.post.remoteStatus == AbstractPostRemoteStatusPushing) {
+		cell.selectionStyle = UITableViewCellSelectionStyleNone;
+	} else {
+		cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+	}
+
 
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
+	if (post.remoteStatus == AbstractPostRemoteStatusPushing) {
+		// Don't allow editing while pushing changes
+		return;
+	}
     if (DeviceIsPad()) {
         self.selectedIndexPath = indexPath;
     } else {
-        AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
         [self editPost:post];
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
