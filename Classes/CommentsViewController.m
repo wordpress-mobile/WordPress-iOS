@@ -646,10 +646,11 @@
 	}
 }
 
-
+//this is used after a comment delete
 - (void)trySelectSomethingAndShowIt{
 	if (!DeviceIsPad())
         return;
+	
 	if (!self.selectedIndexPath) {
 		[self trySelectSomething];
 	}
