@@ -114,7 +114,10 @@
 		}
 		
 		if (geo_latitude && geo_longitude) {
-			Coordinate *c = [[Coordinate alloc] initWithCoordinate:CLLocationCoordinate2DMake([geo_latitude doubleValue], [geo_longitude doubleValue])];
+			CLLocationCoordinate2D coord;
+			coord.latitude = [geo_latitude doubleValue];
+			coord.longitude = [geo_longitude doubleValue];
+			Coordinate *c = [[Coordinate alloc] initWithCoordinate:coord];
 			self.geolocation = c;
 			self.latitudeID = geo_latitude_id;
 			self.longitudeID = geo_longitude_id;
