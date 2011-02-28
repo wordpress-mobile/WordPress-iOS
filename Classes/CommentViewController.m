@@ -284,12 +284,12 @@
 	
 	//there are no changes
 	if (!replyToCommentViewController.hasChanges && !editCommentViewController.hasChanges) {
+		[self dismissEditViewController];
+		
 		if(sender == replyToCommentViewController) //delete the empty comment 
 			[replyToCommentViewController.comment remove];
 		
-		[self dismissEditViewController];
-		
-		[commentsViewController trySelectSomethingAndShowIt]; //this is a trick for #760
+		//[commentsViewController trySelectSomethingAndShowIt]; //this is a trick for #760
 		return;
 	}
 	

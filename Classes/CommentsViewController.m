@@ -409,6 +409,9 @@
         NSLog(@"sections: %@", self.resultsController.sections);
         NSLog(@"results: %@", self.resultsController.fetchedObjects);
         comment = nil;
+		//push an the WP logo on the right. 
+		WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+		[delegate showContentDetailViewController:nil];		
         return;
     }
 	
