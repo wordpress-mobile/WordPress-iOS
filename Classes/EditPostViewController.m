@@ -223,14 +223,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
         self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
     }
 	
-	float version = [[[UIDevice currentDevice] systemVersion] floatValue];
-	
-	if (version < 3.2){
+	if (![postMediaViewController supportsVideo]){
 		//no video icon for older devices
 		NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:toolbar.items];
 		NSLog(@"toolbar items: %@", toolbarItems);
 		
-		[toolbarItems removeObjectAtIndex:4];
+		[toolbarItems removeObjectAtIndex:5];
 		[toolbar setItems:toolbarItems];
 	}
 	
