@@ -119,7 +119,7 @@
 	if(![faviconURL hasPrefix:@"http"])
 		faviconURL = [NSString stringWithFormat:@"http://%@", faviconURL];
 	
-    NSString *fileName = [NSString stringWithFormat:@"favicon-%@-%@.png", self.blogName, self.blogID];
+    NSString *fileName = [NSString stringWithFormat:@"favicon-%@-%@.png", self.hostURL, self.blogID];
 	fileName = [fileName stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""];
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *faviconFilePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:fileName];
