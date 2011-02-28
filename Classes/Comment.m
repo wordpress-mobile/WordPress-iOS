@@ -208,6 +208,7 @@
 		return NO;
 	} else {
 		[[self managedObjectContext] deleteObject:self];
+		[self save];
 	}
 	
 	return YES;	
@@ -216,6 +217,7 @@
 - (BOOL)remove {
     if ([[WPDataController sharedInstance] wpDeleteComment:self]) {
         [[self managedObjectContext] deleteObject:self];
+		[self save];
 		return YES;
     } else {
 		return NO;
