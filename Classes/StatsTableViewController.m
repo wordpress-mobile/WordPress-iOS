@@ -60,7 +60,9 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 }
 
 - (void)viewDidLoad {
-	
+	[FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+	[super viewDidLoad];
+
 	loadMorePostViews = 10;
 	loadMoreReferrers = 10;
 	loadMoreSearchTerms = 10;

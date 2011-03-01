@@ -106,6 +106,8 @@
 
 
 - (void)viewDidLoad {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+	[super viewDidLoad];
     catTableView.sectionFooterHeight = 0.0;
     [saveButtonItem retain];
 

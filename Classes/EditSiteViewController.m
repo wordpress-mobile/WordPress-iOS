@@ -19,6 +19,7 @@
 #pragma mark View lifecycle
 
 - (void)viewDidLoad {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
     if (blog) {
         [FlurryAPI logEvent:@"EditSite"];

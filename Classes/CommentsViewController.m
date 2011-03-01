@@ -94,6 +94,7 @@
 #pragma mark View Lifecycle Methods
 
 - (void)viewDidLoad {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
     
     commentsDict = [[NSMutableDictionary alloc] init];

@@ -35,6 +35,7 @@
 #pragma mark View Lifecycle Methods
 
 - (void)viewDidLoad {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [FlurryAPI logEvent:@"PostPreview"];
 	webView.delegate = self;
 	if (activityFooter == nil) {

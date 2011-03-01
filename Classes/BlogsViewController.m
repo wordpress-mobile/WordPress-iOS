@@ -7,6 +7,7 @@
 #pragma mark View lifecycle
 
 - (void)viewDidLoad {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     [FlurryAPI logEvent:@"Blogs"];
 	

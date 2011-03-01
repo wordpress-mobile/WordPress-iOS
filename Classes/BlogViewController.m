@@ -15,6 +15,7 @@
 @synthesize tabBarController, blog, selectedViewController;
 
 - (void)viewDidLoad {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
     [FlurryAPI logEvent:@"Blog"];
 

@@ -16,6 +16,7 @@
 #pragma mark View Lifecycle
 
 - (void)viewDidLoad {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
     [FlurryAPI logEvent:@"PostSettingsHelp"];
 

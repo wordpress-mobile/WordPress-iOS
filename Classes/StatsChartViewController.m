@@ -49,7 +49,9 @@ static NSArray *__pageControlColorList = nil;
 
 // Set the label and background color when the view has finished loading.
 - (void)viewDidLoad {
-	
+	[FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+	[super viewDidLoad];
+
 	//chart = [[UIImageView alloc] initWithImage:chartImage];
 	NSString *chartTitle = [[NSString alloc] initWithString:@""];
 	switch (pageNumber) {

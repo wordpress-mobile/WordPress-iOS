@@ -47,6 +47,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
  - (void)viewDidLoad {
+	 [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
  [super viewDidLoad];
   
  if (!saveButton) {

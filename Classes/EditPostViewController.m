@@ -188,6 +188,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)viewDidLoad {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
     [FlurryAPI logEvent:@"EditPost"];
 

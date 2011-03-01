@@ -693,6 +693,7 @@
 }
 
 - (id)executeXMLRPCRequest:(XMLRPCRequest *)req {
+	[FileLogger log:@"%@ %@: %@", self, NSStringFromSelector(_cmd), [req host]];
 	ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:[req host]];
 	[request setRequestMethod:@"POST"];
 	[request setShouldPresentCredentialsBeforeChallenge:YES];
