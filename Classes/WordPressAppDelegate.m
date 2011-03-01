@@ -95,8 +95,23 @@ static WordPressAppDelegate *wordPressApp = NULL;
 #pragma mark UIApplicationDelegate Methods
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {	
+	// Check for pending crash reports
+	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
+	NSError *error;
+	
+	// Check if we previously crashed
+	if ([crashReporter hasPendingCrashReport])
+		[self handleCrashReport];
+    
+	// Enable the Crash Reporter
+	if (![crashReporter enableCrashReporterAndReturnError: &error])
+		NSLog(@"Warning: Could not enable crash reporter: %@", error);
+	
+    defaultExceptionHandler = NSGetUncaughtExceptionHandler();
+	NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
+	
 #ifndef DEBUG
-    #warning Need Flurry api key for distribution
+#warning Need Flurry api key for distribution
 #endif
     [FlurryAPI startSession:@"NPFZWR9J1MI9QU1ICU9H"]; // FIXME: set up real api key for distribution
 	[FlurryAPI setSessionReportsOnPauseEnabled:YES];
@@ -210,21 +225,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	// another notification message came from comments --> CommentUploadFailed
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:@"CommentUploadFailed" object:nil];
 	
-	// Check for pending crash reports
-	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
-	NSError *error;
-	
-	// Check if we previously crashed
-	if ([crashReporter hasPendingCrashReport])
-		[self handleCrashReport];
-    
-	// Enable the Crash Reporter
-	if (![crashReporter enableCrashReporterAndReturnError: &error])
-		NSLog(@"Warning: Could not enable crash reporter: %@", error);
-
-    defaultExceptionHandler = NSGetUncaughtExceptionHandler();
-	NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
-
 	[blogsViewController release];
 	[window makeKeyAndVisible];
 	
