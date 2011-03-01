@@ -71,6 +71,11 @@ NSString *CrashFilePath();
                 NSString *ourCrash = [NSString stringWithContentsOfFile:CrashFilePath()];
                 [controller addAttachmentData:[ourCrash dataUsingEncoding:NSUTF8StringEncoding] mimeType:@"text/plain" fileName:@"crash_data.txt"];
             }
+
+			if ([[NSFileManager defaultManager] fileExistsAtPath:FileLoggerPath()]) {
+                NSString *ourCrash = [NSString stringWithContentsOfFile:FileLoggerPath()];
+                [controller addAttachmentData:[ourCrash dataUsingEncoding:NSUTF8StringEncoding] mimeType:@"text/plain" fileName:@"wordpress.log"];
+            }
 			
 			// Present and release
 			[self presentModalViewController:controller animated:NO];
