@@ -249,6 +249,10 @@
         return YES;
 
     if (![self.categories isEqual:((Post *)self.original).categories]) return YES;
+	
+	if ((self.geolocation != ((Post *)self.original).geolocation)
+		 && (![self.geolocation isEqual:((Post *)self.original).geolocation]) )
+        return YES;
 
     return NO;
 }
