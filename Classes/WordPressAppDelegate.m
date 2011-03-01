@@ -845,11 +845,18 @@ static WordPressAppDelegate *wordPressApp = NULL;
 			HelpViewController *helpViewController = [[HelpViewController alloc] init];
 			WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 			
-			if (DeviceIsPad()) {
+			if (DeviceIsPad() && self.splitViewController.modalViewController) {
 				[self.navigationController pushViewController:helpViewController animated:YES];
 			}
-			else
-				[appDelegate.navigationController presentModalViewController:helpViewController animated:YES];
+			else {
+				if (DeviceIsPad()) {
+					helpViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+					helpViewController.modalPresentationStyle = UIModalPresentationFormSheet;
+					[splitViewController presentModalViewController:helpViewController animated:YES];
+				}
+				else
+					[appDelegate.navigationController presentModalViewController:helpViewController animated:YES];
+			}
 			
 			[helpViewController release];
 			break;

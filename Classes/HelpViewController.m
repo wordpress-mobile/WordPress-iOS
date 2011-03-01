@@ -11,7 +11,7 @@
 
 @implementation HelpViewController
 
-@synthesize faqButton, forumButton, emailButton, cancel, navBar;
+@synthesize faqButton, forumButton, emailButton, cancel, navBar, isBlogSetup;
 
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
@@ -22,19 +22,25 @@
 	if (![MFMailComposeViewController canSendMail])
 		[emailButton setHidden:YES]; 
 	
-	if (DeviceIsPad()) {
-		[navBar setHidden:YES];
+	if (DeviceIsPad())
 		self.navigationItem.title = @"Help";
-	}
 }
 
-/*
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+	
+	if (DeviceIsPad() && isBlogSetup)
+			[navBar setHidden:YES];
+}
+
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations.
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    if (DeviceIsPad())
+		return YES;
+	
+	return NO;
 }
-*/
+
 
 -(void) cancel: (id)sender {
 	[self dismissModalViewControllerAnimated:YES];

@@ -265,6 +265,7 @@
 			WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 			
 			if (DeviceIsPad()) {
+				helpViewController.isBlogSetup = YES;
 				[self.navigationController pushViewController:helpViewController animated:YES];
 			}
 			else

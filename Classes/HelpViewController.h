@@ -16,6 +16,8 @@
 	IBOutlet UIButton *emailButton;
 	IBOutlet UIBarButtonItem *cancel;
 	IBOutlet UINavigationBar *navBar;
+	
+	BOOL isBlogSetup;
 }
 
 @property (nonatomic, retain) IBOutlet UIButton *faqButton;
@@ -23,6 +25,7 @@
 @property (nonatomic, retain) IBOutlet UIButton *emailButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *cancel;
 @property (nonatomic, retain) IBOutlet UINavigationBar *navBar;
+@property (nonatomic, assign) BOOL isBlogSetup;
 
 -(IBAction) cancel: (id)sender;
 -(IBAction) visitFAQ: (id)sender;
