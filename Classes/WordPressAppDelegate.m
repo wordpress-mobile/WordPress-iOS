@@ -94,9 +94,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 #pragma mark -
 #pragma mark UIApplicationDelegate Methods
 
-- (void)applicationDidFinishLaunching:(UIApplication *)application {
-	[self checkIfStatsShouldRun];
-	
+- (void)applicationDidFinishLaunching:(UIApplication *)application {	
 #ifndef DEBUG
     #warning Need Flurry api key for distribution
 #endif
@@ -142,6 +140,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
     if (!context) {
         NSLog(@"\nCould not create *context for self");
     }
+	// Stats use core data, so run them after initialization
+	[self checkIfStatsShouldRun];
 	
 	BlogsViewController *blogsViewController = [[BlogsViewController alloc] initWithStyle:UITableViewStylePlain];
 	crashReportView = [[CrashReportViewController alloc] initWithNibName:@"CrashReportView" bundle:nil];
@@ -560,6 +560,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 				WPFLog(@"Error saving blogs-only migration: %@", error);
 			}
 			[destMOC release];
+			[fileManager removeItemAtPath:blogsArchiveFilePath error:&error];
 		}
 	}
 	[[FileLogger sharedInstance] flush];
@@ -655,7 +656,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	if (![defaults objectForKey:@"statsDate"]){
 		NSDate *theDate = [NSDate date];
 		[defaults setObject:theDate forKey:@"statsDate"];
-		[self runStats];
+		[self performSelectorInBackground:@selector(runStats) withObject:nil];
 	}else{
 		//if statsDate existed, check if it's 7 days since last stats run, if it is > 7 days, run stats
 		NSDate *statsDate = [defaults objectForKey:@"statsDate"];
@@ -664,7 +665,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		NSTimeInterval statsInterval = 7 * 24 * 60 * 60; //number of seconds in 30 days
 		if (difference > statsInterval) //if it's been more than 7 days since last stats run
 		{
-			[self runStats];
+			[self performSelectorInBackground:@selector(runStats) withObject:nil];
 		}
 	}
 }
