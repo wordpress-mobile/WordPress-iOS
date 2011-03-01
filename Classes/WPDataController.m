@@ -769,6 +769,7 @@
         }
     }
     
+	[FileLogger log:@"%@ %@: %@", self, NSStringFromSelector(_cmd), err];
 	return err;
 }
 
