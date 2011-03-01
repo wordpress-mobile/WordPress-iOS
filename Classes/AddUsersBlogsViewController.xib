@@ -105,10 +105,6 @@
 								<reference key="IBUIToolbar" ref="865505633"/>
 							</object>
 						</object>
-						<object class="NSColor" key="IBUITintColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC4xMjk0MTE3NjQ3IDAuNDU4ODIzNTI5NCAwLjYwNzg0MzEzNzMAA</bytes>
-						</object>
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 436}</string>
