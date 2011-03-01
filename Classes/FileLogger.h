@@ -8,13 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+#define FILELOGGER_ONLY_NSLOG_ON_DEBUG 1
 
 @interface FileLogger : NSObject {
 	NSFileHandle *logFile;
 }
 + (FileLogger *)sharedInstance;
-- (void)log:(NSString *)format, ...;
+- (void)log:(NSString *)message;
++ (void)log:(NSString *)format, ...;
 - (void)flush;
 @end
 
-#define WPFLog(fmt, ...) [[FileLogger sharedInstance] log:fmt, ##__VA_ARGS__]
+#define WPFLog(fmt, ...) [FileLogger log:fmt, ##__VA_ARGS__]
