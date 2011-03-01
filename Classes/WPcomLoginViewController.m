@@ -387,10 +387,10 @@
 		footerText = @"Sign in failed. Please try again.";
 		buttonText = @"Sign In";
 		[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
+		isSigningIn = NO;
+		[self.navigationItem setHidesBackButton:NO animated:NO];
+		[self refreshTable];
 	}
-	isSigningIn = NO;
-	[self.navigationItem setHidesBackButton:NO animated:NO];
-	[self refreshTable];
 	[pool release];
 }
 
