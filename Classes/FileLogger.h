@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #define FILELOGGER_ONLY_NSLOG_ON_DEBUG 1
+NSString *FileLoggerPath();
 
 @interface FileLogger : NSObject {
 	NSFileHandle *logFile;
