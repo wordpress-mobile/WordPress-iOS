@@ -54,6 +54,7 @@
 	controller.mailComposeDelegate = self;
 	NSArray *recipient = [[NSArray alloc] initWithObjects:@"support@wordpress.com", nil];
 	[controller setToRecipients: recipient];
+	[recipient release];
 	[controller setSubject:@"WordPress for iOS Help Request"];
 	[controller setMessageBody:@"Hello,\n" isHTML:NO]; 
 	if (controller) [self presentModalViewController:controller animated:YES];

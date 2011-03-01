@@ -333,7 +333,7 @@
 			
 			// Base64 encode the input chunk
 			NSData *serializedChunk = [NSPropertyListSerialization dataFromPropertyList:chunk format:NSPropertyListXMLFormat_v1_0 errorDescription:NULL];
-			NSString *serializedString =  [[NSString alloc] initWithData:serializedChunk encoding:NSUTF8StringEncoding];
+			NSString *serializedString =  [[[NSString alloc] initWithData:serializedChunk encoding:NSUTF8StringEncoding] autorelease];
 			NSRange r = [serializedString rangeOfString:@"<data>"];
 			serializedString = [serializedString substringFromIndex:r.location+7];
 			r = [serializedString rangeOfString:@"</data>"];
