@@ -139,8 +139,6 @@ Classes/HelpViewController.m -text
 Classes/HelpViewController.xib -text
 Classes/ImageCache.h -text
 Classes/ImageCache.m -text
-Classes/MediaManager.h -text
-Classes/MediaManager.m -text
 Classes/MediaObjectViewController.h -text
 Classes/MediaObjectViewController.m -text
 Classes/MigrateBlogsFromFiles.h -text

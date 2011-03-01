@@ -31,7 +31,7 @@
 @implementation PostsViewController
 
 @synthesize newButtonItem, postDetailViewController, postReaderViewController;
-@synthesize anyMorePosts, selectedIndexPath, drafts, mediaManager;
+@synthesize anyMorePosts, selectedIndexPath, drafts;
 @synthesize resultsController;
 @synthesize blog;
 
@@ -618,7 +618,6 @@
 
     [_refreshHeaderView release]; _refreshHeaderView = nil;
     [activityFooter release];
-	[mediaManager release];
     [postDetailViewController release];
     [newButtonItem release];
     [refreshButton release];

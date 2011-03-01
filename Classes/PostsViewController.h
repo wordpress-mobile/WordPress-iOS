@@ -1,6 +1,5 @@
 #import <Foundation/Foundation.h>
 #import "RefreshButtonView.h"
-#import "MediaManager.h"
 #import "Post.h"
 #import "PostViewController.h"
 #import "EGORefreshTableHeaderView.h"
@@ -18,7 +17,6 @@
 @property (readonly) UIBarButtonItem *newButtonItem;
 @property (nonatomic, retain) EditPostViewController *postDetailViewController;
 @property (nonatomic, retain) PostViewController *postReaderViewController;
-@property (nonatomic, retain) MediaManager *mediaManager;
 @property (nonatomic, assign) BOOL anyMorePosts;
 @property (nonatomic, retain) NSIndexPath *selectedIndexPath;
 @property (nonatomic, retain) NSMutableArray *drafts;

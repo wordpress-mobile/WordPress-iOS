@@ -11,7 +11,7 @@
 
 @implementation MediaObjectViewController
 
-@synthesize media, mediaManager, imageView, videoPlayer, deleteButton, insertButton, cancelButton, isDeleting, isInserting, appDelegate, toolbar;
+@synthesize media, imageView, videoPlayer, deleteButton, insertButton, cancelButton, isDeleting, isInserting, appDelegate, toolbar;
 @synthesize scrollView;
 
 #pragma mark -
@@ -183,7 +183,6 @@
 	[insertButton release], insertButton = nil;
 	[deleteButton release], deleteButton = nil;
 	[media release], media = nil;
-	[mediaManager release], mediaManager = nil;
 	[imageView release], imageView = nil;
 	[videoPlayer release], videoPlayer = nil;
 	[cancelButton release], cancelButton = nil;
