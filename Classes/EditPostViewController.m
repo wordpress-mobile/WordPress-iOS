@@ -949,6 +949,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     self.currentEditingTextField = nil;
+#ifdef DEBUGMODE
+	if ([textField.text isEqualToString:@"#%#"]) {
+		[NSException raise:@"FakeCrash" format:@"Nothing to worry about, textField == #%#"];
+	}
+#endif
 	
     if (textField == titleTextField) {
         self.apost.postTitle = textField.text;
