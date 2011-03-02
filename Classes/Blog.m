@@ -199,8 +199,8 @@
         if (![postsToKeep containsObject:post] && post.blog.blogID == self.blogID) {
             if (post.revision) {
                 // If there is a revision, we are editing this post
-                post.remoteStatus = AbstractPostRemoteStatusLocal;
-                post.postID = nil;
+                //post.remoteStatus = AbstractPostRemoteStatusLocal;
+                //post.postID = nil;
             } else {
                 WPLog(@"Deleting post: %@", post);                
                 [[self managedObjectContext] deleteObject:post];
@@ -273,12 +273,13 @@
     for (NSDictionary *pageInfo in pages) {
         [pagesToKeep addObject:[Page createOrReplaceFromDictionary:pageInfo forBlog:self]];
     }
+	
     for (Page *page in syncedPages) {
-        if (![pagesToKeep containsObject:page] && page.blog.blogID == self.blogID) {
+		if (![pagesToKeep containsObject:page] && page.blog.blogID == self.blogID) {
             if (page.revision) {
-                // If there is a revision, we are editing this post
-                page.remoteStatus = AbstractPostRemoteStatusLocal;
-                page.postID = nil;
+                // If there is a revision, we are editing this post. 
+               // page.remoteStatus = AbstractPostRemoteStatusLocal;
+                //page.postID = nil;
             } else {
                 WPLog(@"Deleting page: %@", page);
                 [[self managedObjectContext] deleteObject:page];
