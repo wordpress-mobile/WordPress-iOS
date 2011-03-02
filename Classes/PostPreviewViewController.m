@@ -52,7 +52,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 	[self refreshWebView];
-	[activityFooter setCenter:CGPointMake(self.view.frame.size.width/2-15, self.view.frame.size.height/2-15)];
+	[activityFooter setCenter:CGPointMake(self.view.center.x, self.view.center.y)];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
