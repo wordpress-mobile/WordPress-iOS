@@ -34,6 +34,7 @@
 	[addGeotagTableViewCell release];
     [mapGeotagTableViewCell release];
     [removeGeotagTableViewCell release];
+	mapView.delegate = nil;
 	[mapView release];
 	[addressLabel release];
 	[coordinateLabel release];
