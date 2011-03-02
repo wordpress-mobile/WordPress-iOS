@@ -673,6 +673,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)runStats {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
 	//generate and post the stats data
 	/*
 	 - device_uuid – A unique identifier to the iPhone/iPod that the app is installed on.
@@ -729,6 +731,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	if(conn){
 		// This is just to keep Analyzer from complaining.
 	}
+	
+	[pool release];
 }
 
 #pragma mark Push Notification delegate
