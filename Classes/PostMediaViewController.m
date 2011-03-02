@@ -203,6 +203,10 @@
 	}
 }
 
+-(NSString *)tableView:(UITableView*)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return @"Remove";
+}
+
 #pragma mark -
 #pragma mark Custom methods
 
