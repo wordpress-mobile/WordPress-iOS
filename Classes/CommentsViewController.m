@@ -679,8 +679,8 @@
 			
 			for (currentCommentIndex = 0; currentCommentIndex < [commentsForSection count]; currentCommentIndex++) {
 				Comment *cmt = [commentsForSection objectAtIndex:currentCommentIndex];
-				NSLog(@"comment ID == %@", cmt.commentID);
-				NSLog(@"self.comment ID == %@", self.lastUserSelectedCommentID);
+				//NSLog(@"comment ID == %@", cmt.commentID);
+				//NSLog(@"self.comment ID == %@", self.lastUserSelectedCommentID);
 				if([cmt.commentID  compare:self.lastUserSelectedCommentID] == NSOrderedSame) { 
 					self.selectedIndexPath = [NSIndexPath indexPathForRow:currentCommentIndex inSection:currentSectionIndex];
 					[commentsTableView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
