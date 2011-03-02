@@ -22,6 +22,7 @@
 	BOOL isValidating;
     Blog *blog;
     NSArray *subsites;
+	UIActivityIndicatorView *savingIndicator;
 }
 
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
@@ -29,5 +30,6 @@
 @property (nonatomic, assign) BOOL geolocationEnabled;
 @property (nonatomic, retain) UITableViewCell *urlCell, *usernameCell, *passwordCell;
 @property (nonatomic, retain) Blog *blog;
+@property (nonatomic, retain) UIActivityIndicatorView *savingIndicator;
 
 @end

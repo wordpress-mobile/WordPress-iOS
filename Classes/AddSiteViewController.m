@@ -53,10 +53,12 @@
 			self.blog.geolocationEnabled = self.geolocationEnabled;
 			[self.blog dataSave];
 
-            [self.navigationController popToRootViewControllerAnimated:YES];
+            
             if (DeviceIsPad()) {
                 [self dismissModalViewControllerAnimated:YES];
             }
+			else
+				[self.navigationController popToRootViewControllerAnimated:YES];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
         }
     }

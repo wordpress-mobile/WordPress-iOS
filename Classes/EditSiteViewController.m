@@ -12,7 +12,7 @@
 
 @implementation EditSiteViewController
 @synthesize password, username, url, geolocationEnabled;
-@synthesize blog, tableView;
+@synthesize blog, tableView, savingIndicator;
 @synthesize urlCell, usernameCell, passwordCell;
 
 #pragma mark -
@@ -353,6 +353,8 @@
 
 
 - (void)validationSuccess:(NSString *)xmlrpc {
+	[savingIndicator stopAnimating];
+	[savingIndicator setHidden:YES];
     blog.url = self.url;
     blog.xmlrpc = xmlrpc;
     blog.username = self.username;
@@ -378,6 +380,8 @@
 }
 
 - (void)validationDidFail:(id)wrong {
+	[savingIndicator stopAnimating];
+	[savingIndicator setHidden:YES];
     if (wrong) {
         if ([wrong isKindOfClass:[UITableViewCell class]]) {
             ((UITableViewCell *)wrong).textLabel.textColor = WRONG_FIELD_COLOR;
@@ -429,7 +433,19 @@
     [urlTextField resignFirstResponder];
     [usernameTextField resignFirstResponder];
     [passwordTextField resignFirstResponder];
-    
+	
+	if (savingIndicator == nil) {
+		savingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+		[savingIndicator setFrame:CGRectMake(0,0,20,20)];
+		[savingIndicator setCenter:CGPointMake(tableView.center.x, savingIndicator.center.y)];
+		UIView *aView = [[UIView alloc] init];
+		[aView addSubview:savingIndicator];
+		
+		[self.tableView setTableFooterView:aView];
+	}
+	[savingIndicator setHidden:NO];
+	[savingIndicator startAnimating];
+
     if (blog) {
         blog.geolocationEnabled = self.geolocationEnabled;
         [blog dataSave];
@@ -478,6 +494,7 @@
     [urlTextField release]; urlTextField = nil;
     [usernameTextField release]; usernameTextField = nil;
     [passwordTextField release]; passwordTextField = nil;
+	[savingIndicator release];
     [super dealloc];
 }
 
