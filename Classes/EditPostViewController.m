@@ -1041,7 +1041,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)insertMediaAbove:(NSNotification *)notification {
 	Media *media = (Media *)[notification object];
-	NSString *prefix = @"<br/><br/>";
+	NSString *prefix = @"<br /><br />";
 	
 	if(self.apost.content == nil || [self.apost.content isEqualToString:@""]) {
 		self.apost.content = @"";
@@ -1051,8 +1051,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	NSMutableString *content = [[[NSMutableString alloc] initWithString:media.html] autorelease];
 	NSRange imgHTML = [textView.text rangeOfString: content];
 	
-	NSRange imgHTMLPre = [textView.text rangeOfString:[NSString stringWithFormat:@"%@%@", @"<br/><br/>", content]]; 
- 	NSRange imgHTMLPost = [textView.text rangeOfString:[NSString stringWithFormat:@"%@%@", content, @"<br/><br/>"]]; 
+	NSRange imgHTMLPre = [textView.text rangeOfString:[NSString stringWithFormat:@"%@%@", @"<br /><br />", content]]; 
+ 	NSRange imgHTMLPost = [textView.text rangeOfString:[NSString stringWithFormat:@"%@%@", content, @"<br /><br />"]]; 
 	
 	if (imgHTMLPre.location == NSNotFound && imgHTMLPost.location == NSNotFound && imgHTML.location == NSNotFound) {
 		[content appendString:[NSString stringWithFormat:@"%@%@", prefix, self.apost.content]];
@@ -1067,7 +1067,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		else  
 			[processedText replaceCharactersInRange:imgHTML withString:@""];  
 		 
-		[content appendString:[NSString stringWithFormat:@"<br/><br/>%@", processedText]]; 
+		[content appendString:[NSString stringWithFormat:@"<br /><br />%@", processedText]]; 
 		self.post.content = content;
 	}
     [self refreshUIForCurrentPost];
@@ -1075,7 +1075,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)insertMediaBelow:(NSNotification *)notification {
 	Media *media = (Media *)[notification object];
-	NSString *prefix = @"<br/><br/>";
+	NSString *prefix = @"<br /><br />";
 	
 	if(self.apost.content == nil || [self.apost.content isEqualToString:@""]) {
 		self.apost.content = @"";
@@ -1084,8 +1084,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
 	NSMutableString *content = [[[NSMutableString alloc] initWithString:self.apost.content] autorelease];
 	NSRange imgHTML = [content rangeOfString: media.html];
-	NSRange imgHTMLPre = [content rangeOfString:[NSString stringWithFormat:@"%@%@", @"<br/><br/>", media.html]]; 
- 	NSRange imgHTMLPost = [content rangeOfString:[NSString stringWithFormat:@"%@%@", media.html, @"<br/><br/>"]];
+	NSRange imgHTMLPre = [content rangeOfString:[NSString stringWithFormat:@"%@%@", @"<br /><br />", media.html]]; 
+ 	NSRange imgHTMLPost = [content rangeOfString:[NSString stringWithFormat:@"%@%@", media.html, @"<br /><br />"]];
 	
 	if (imgHTMLPre.location == NSNotFound && imgHTMLPost.location == NSNotFound && imgHTML.location == NSNotFound) {
 		[content appendString:[NSString stringWithFormat:@"%@%@", prefix, media.html]];
@@ -1098,7 +1098,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			[content replaceCharactersInRange:imgHTMLPost withString:@""];
 		else  
 			[content replaceCharactersInRange:imgHTML withString:@""];
-		[content appendString:[NSString stringWithFormat:@"<br/><br/>%@", media.html]];
+		[content appendString:[NSString stringWithFormat:@"<br /><br />%@", media.html]];
 		self.apost.content = content;
 	}
     [self refreshUIForCurrentPost];
@@ -1107,8 +1107,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)removeMedia:(NSNotification *)notification {
 	//remove the html string for the media object
 	Media *media = (Media *)[notification object];
-	textView.text = [textView.text stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"<br/><br/>%@", media.html] withString:@""];
-	textView.text = [textView.text stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@<br/><br/>", media.html] withString:@""];
+	textView.text = [textView.text stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"<br /><br />%@", media.html] withString:@""];
+	textView.text = [textView.text stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@<br /><br />", media.html] withString:@""];
+	textView.text = [textView.text stringByReplacingOccurrencesOfString:media.html withString:@""];
+	self.apost.content = textView.text;
 }
 
 - (void)readBookmarksFile {
