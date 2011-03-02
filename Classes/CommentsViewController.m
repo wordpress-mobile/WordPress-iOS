@@ -187,7 +187,7 @@
 
 - (void)setEditing:(BOOL)value {
     editing = value;
-
+	
     // Adjust comments table view height to fit toolbar (if it's visible).
     CGFloat toolbarHeight = editing ? editToolbar.bounds.size.height : 0;
     CGRect mainViewBounds = self.view.bounds;
@@ -195,18 +195,40 @@
                              mainViewBounds.origin.y,
                              mainViewBounds.size.width,
                              mainViewBounds.size.height - toolbarHeight);
-
+	
     commentsTableView.frame = rect;
-
+	
     [editToolbar setHidden:!editing];
     [deleteButton setEnabled:!editing];
     [approveButton setEnabled:!editing];
     [unapproveButton setEnabled:!editing];
     [spamButton setEnabled:!editing];
-
+	
     editButtonItem.title = editing ? @"Cancel" : @"Edit";
     
     [commentsTableView setEditing:value animated:YES];
+	
+	if(editing && selectedComments) { //if we are switching to editing mode and there were selected comments
+		if(selectedComments.count > 0) { 
+			if ([[self.resultsController fetchedObjects] count] > 0) {
+				
+				NSMutableArray *commentsToKeep = [NSMutableArray array] ;
+				for (Comment  *commentInfo in [self.resultsController fetchedObjects]) {
+					if ([selectedComments containsObject:commentInfo]) {
+						[commentsToKeep addObject:commentInfo];
+					} 					
+				}
+
+				self.selectedComments = nil;
+				self.selectedComments = commentsToKeep;
+				
+			} else {
+				[selectedComments removeAllObjects];
+			}
+		}
+		[self updateSelectedComments];
+	}
+	
     [self refreshCommentsList];
 }
 
@@ -261,11 +283,11 @@
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:commentsTableView];
     if (!selectedComments) {
         selectedComments = [[NSMutableArray alloc] init];
-    } else {
+    } /* else {
         [selectedComments removeAllObjects];
-    }
+    }*/
 	
-    [editButtonItem setEnabled:([[self.resultsController fetchedObjects] count] > 0)];
+    [editButtonItem setEnabled:([[self.resultsController fetchedObjects] count] > 0)];	
 	[self reloadTableView];
 	
 	if (DeviceIsPad() == YES) {
@@ -760,9 +782,9 @@
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
 	if (editing) {
-		UIAlertView *currentlyUpdatingAlert = [[UIAlertView alloc] initWithTitle:@"Currently Editing" message:@"The sync feature is disabled while editing." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		/*UIAlertView *currentlyUpdatingAlert = [[UIAlertView alloc] initWithTitle:@"Currently Editing" message:@"The sync feature is disabled while editing." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[currentlyUpdatingAlert show];
-		[currentlyUpdatingAlert release];
+		[currentlyUpdatingAlert release];*/
 	}
 	else 	
 		[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];

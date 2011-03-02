@@ -333,8 +333,6 @@
 			
 		} //sender == replyToCommentViewController
 		
-			
-		//[commentsViewController trySelectSomethingAndShowIt]; //this is a trick for #760
 		return;
 	}
 	
