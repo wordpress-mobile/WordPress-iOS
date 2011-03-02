@@ -839,7 +839,8 @@
 #pragma mark EGORefreshTableHeaderDelegate Methods
 
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
-		[self refreshHandler];
+	[self refreshHandler];
+	_refreshHeaderView.hidden = NO; // Just in case
 }
 
 - (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
