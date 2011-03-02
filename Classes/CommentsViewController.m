@@ -239,8 +239,8 @@
 
 - (void)refreshHandler {
 	[self setEditing:false];
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    [self performSelectorInBackground:@selector(syncComments) withObject:nil];
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	[self performSelectorInBackground:@selector(syncComments) withObject:nil];
 }
 
 - (void)syncComments {
@@ -759,14 +759,20 @@
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-	[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+	if (editing) {
+		UIAlertView *currentlyUpdatingAlert = [[UIAlertView alloc] initWithTitle:@"Currently Editing" message:@"The sync feature is disabled while editing." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[currentlyUpdatingAlert show];
+		[currentlyUpdatingAlert release];
+	}
+	else 	
+		[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
 }
 
 #pragma mark -
 #pragma mark EGORefreshTableHeaderDelegate Methods
 
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
-	[self refreshHandler];
+		[self refreshHandler];
 }
 
 - (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
