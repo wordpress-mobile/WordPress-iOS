@@ -281,6 +281,12 @@
 	}
 }
 
+
+- (void) closeReplyViewAndSelectTheNewComment {
+	[self dismissEditViewController];
+	[self.commentsViewController trySelectSomething];
+}
+
 - (void)cancelView:(id)sender {
 	
 	//there are no changes
@@ -288,59 +294,17 @@
 		[self dismissEditViewController];
 		
 		if(sender == replyToCommentViewController) { 
-			
-			//NSNumber *parentCommentID = [replyToCommentViewController.comment.parentID copy]; 
-			
+			commentsViewController.selectedIndexPath = nil; //the selectedIndex path is on the reply comment
 			[replyToCommentViewController.comment remove]; //delete the empty comment 
-			
-			//on iPad we should reselect and show the current comment on the right side
-			//http://ios.trac.wordpress.org/ticket/750
-			/*
-			if (DeviceIsPad() == YES) { 
-				NSIndexPath *currentCommentIndexPath = nil;
-				NSArray *sections = [commentsViewController.resultsController sections];
-				
-				int currentSectionIndex = 0;
-				for (currentSectionIndex = 0; currentSectionIndex < [sections count]; currentSectionIndex++) {
-					id <NSFetchedResultsSectionInfo> sectionInfo = nil;
-					sectionInfo = [sections objectAtIndex:currentSectionIndex];
-					
-					int currentCommentIndex = 0;
-					NSArray *commentsForSection = [sectionInfo objects];
-					
-					for (currentCommentIndex = 0; currentCommentIndex < [commentsForSection count]; currentCommentIndex++) {
-						Comment *cmt = [commentsForSection objectAtIndex:currentCommentIndex];
-						NSLog(@"comment ID == %@", cmt.commentID);
-						NSLog(@"self.comment ID == %@", parentCommentID);
-						if([cmt.commentID  compare:parentCommentID] == NSOrderedSame) { 
-							currentCommentIndexPath = [NSIndexPath indexPathForRow:currentCommentIndex inSection:currentSectionIndex];
-							[commentsViewController showCommentAtIndexPath:currentCommentIndexPath];
-							return;
-						}
-					}
-				}
-			}
-			*/
-			/* 
-			 I tried to use this code but doesn't work. the currentIndexPath is always nil bc self.comment is nil
-			 NSFetchedResultsController *resCtrl = [commentsViewController resultsController];
-			 
-			 NSIndexPath *currentIndexPath = [resCtrl indexPathForObject:self.comment];
-			 if(currentIndexPath != nil) {
-			 [commentsViewController showCommentAtIndexPath:currentIndexPath];
-			 }
-			 */
-			
-		} //sender == replyToCommentViewController
-		
+		} 
 		return;
 	}
 	
-		
+	
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
-											   delegate:self cancelButtonTitle:@"Cancel" 
+															 delegate:self cancelButtonTitle:@"Cancel" 
 											   destructiveButtonTitle:@"Discard"
-											   otherButtonTitles:nil];
+													otherButtonTitles:nil];
     
 	if (replyToCommentViewController.hasChanges)
 		actionSheet.tag = 401;

@@ -37,14 +37,13 @@
 - (void)limitToOnHold;
 - (void)doNotLimit;
 - (NSMutableArray *)commentsOnHold;
-- (void)trySelectSomething;
 - (NSDate *)lastSyncDate;
 - (BOOL)isSyncing;
 @end
 
 @implementation CommentsViewController
 
-@synthesize editButtonItem, selectedComments, commentsArray, indexForCurrentPost;
+@synthesize editButtonItem, selectedComments, commentsArray, indexForCurrentPost, lastUserSelectedCommentID;
 @synthesize selectedIndexPath;
 @synthesize commentViewController;
 @synthesize isSecondaryViewController;
@@ -63,6 +62,7 @@
     [selectedComments release];
     [editButtonItem release];
 	[selectedIndexPath release], selectedIndexPath = nil;
+	[lastUserSelectedCommentID release], lastUserSelectedCommentID = nil;
 	[commentViewController release], commentViewController = nil;
 	[_refreshHeaderView release]; _refreshHeaderView = nil;
     [super dealloc];
@@ -544,6 +544,23 @@
         [self tableView:tableView didCheckRowAtIndexPath:indexPath];
     } else {
         self.selectedIndexPath = indexPath;
+		
+		// we should keep the reference to the last comment selected by the user
+		Comment *comment;
+		@try {
+			if(self.blog.lastCommentsSync == nil) { //first startup, comments are not there
+				comment = nil;
+			} else {
+				comment = [self.resultsController objectAtIndexPath:indexPath];
+			}
+		}
+		@catch (NSException * e) {
+			comment = nil;
+		}
+		self.lastUserSelectedCommentID = nil;
+		if(comment != nil) {
+			self.lastUserSelectedCommentID = comment.commentID; //store the latest user selection
+		}
     }
 }
 
@@ -648,8 +665,34 @@
 
 
 - (void)trySelectSomething {
-    if (!DeviceIsPad())
+	
+	//try to move the comments list on the last user selected comment
+	if(self.lastUserSelectedCommentID != nil) {
+		NSArray *sections = [self.resultsController sections];
+		int currentSectionIndex = 0;
+		for (currentSectionIndex = 0; currentSectionIndex < [sections count]; currentSectionIndex++) {
+			id <NSFetchedResultsSectionInfo> sectionInfo = nil;
+			sectionInfo = [sections objectAtIndex:currentSectionIndex];
+			
+			int currentCommentIndex = 0;
+			NSArray *commentsForSection = [sectionInfo objects];
+			
+			for (currentCommentIndex = 0; currentCommentIndex < [commentsForSection count]; currentCommentIndex++) {
+				Comment *cmt = [commentsForSection objectAtIndex:currentCommentIndex];
+				NSLog(@"comment ID == %@", cmt.commentID);
+				NSLog(@"self.comment ID == %@", self.lastUserSelectedCommentID);
+				if([cmt.commentID  compare:self.lastUserSelectedCommentID] == NSOrderedSame) { 
+					self.selectedIndexPath = [NSIndexPath indexPathForRow:currentCommentIndex inSection:currentSectionIndex];
+					[commentsTableView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+				}
+			}
+		}
+	}	
+	
+	if (!DeviceIsPad())
         return;
+
+	//On ipad we should show the comments on the right side and we should highlight the comments within the comments list	
 	
     if (!self.selectedIndexPath) {
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
@@ -662,14 +705,20 @@
         }
         @catch (NSException * e) {
             NSLog(@"Caught exception when looking for a post to select. Maybe there are no posts yet?");
+			self.selectedComments = nil;
         }
-    } else {
-		//push an the WP logo on the right. 
+	}
+
+	if (!self.selectedIndexPath) {
+		//nothing is selected, push an the WP logo on the right.
 		WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 		[delegate showContentDetailViewController:nil];
+	} else {
+		[commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 	}
+	
 }
-
+	
 //this is used after a comment delete
 - (void)trySelectSomethingAndShowIt{
 	if (!DeviceIsPad())

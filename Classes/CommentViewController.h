@@ -63,12 +63,13 @@
 - (void)segmentAction:(id)sender;
 - (void)showComment:(Comment *)comment;
 - (void)dismissEditViewController;
+- (void) closeReplyViewAndSelectTheNewComment;
+- (void)cancelView:(id)sender;
 
 - (void)deleteComment:(id)sender;
 - (void)approveComment:(id)sender;
 - (void)unApproveComment:(id)sender;
 - (void)spamComment:(id)sender;
-- (void)cancelView:(id)sender;
 - (void)addOrRemoveSegmentedControl;
 
 @property (nonatomic, retain) ReplyToCommentViewController *replyToCommentViewController;

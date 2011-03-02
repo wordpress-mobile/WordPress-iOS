@@ -34,7 +34,9 @@
     NSMutableArray *selectedComments;
     UIAlertView *progressAlert;
     int indexForCurrentPost;
+	NSNumber *lastUserSelectedCommentID;
 	NSIndexPath *selectedIndexPath;
+	NSIndexPath *lastUserSelectedIndexPath;
 	
 	// added to distinguish a single posts's comments VC
 	// from the master VC's comments list.
@@ -47,7 +49,8 @@
 @property (readonly) UIBarButtonItem *editButtonItem;
 @property (nonatomic, retain) NSMutableArray *selectedComments;
 @property (nonatomic, retain) NSMutableArray *commentsArray;
-@property int indexForCurrentPost;
+@property int indexForCurrentPost; 
+@property (nonatomic, retain) NSNumber *lastUserSelectedCommentID;
 @property (nonatomic, retain) CommentViewController *commentViewController;
 @property (nonatomic, retain) NSIndexPath *selectedIndexPath;
 @property (nonatomic, assign) BOOL isSecondaryViewController;
@@ -69,6 +72,7 @@
 - (BOOL)hasNextComment;
 - (void)showPreviousComment;
 - (void)showNextComment;
+- (void)trySelectSomething;
 - (void)trySelectSomethingAndShowIt;
 
 @end
