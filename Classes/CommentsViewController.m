@@ -229,6 +229,7 @@
 		[self updateSelectedComments];
 	}
 	
+	_refreshHeaderView.hidden = value;
     [self refreshCommentsList];
 }
 
@@ -781,12 +782,7 @@
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-	if (editing) {
-		/*UIAlertView *currentlyUpdatingAlert = [[UIAlertView alloc] initWithTitle:@"Currently Editing" message:@"The sync feature is disabled while editing." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[currentlyUpdatingAlert show];
-		[currentlyUpdatingAlert release];*/
-	}
-	else 	
+	if (!editing)
 		[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
 }
 
