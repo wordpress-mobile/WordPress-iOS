@@ -64,6 +64,11 @@
 	[recipient release];
 	[controller setSubject:@"WordPress for iOS Help Request"];
 	[controller setMessageBody:@"Hello,\n" isHTML:NO]; 
+	if ([[NSFileManager defaultManager] fileExistsAtPath:FileLoggerPath()]) {
+		NSString *logData = [NSString stringWithContentsOfFile:FileLoggerPath()];
+		[controller addAttachmentData:[logData dataUsingEncoding:NSUTF8StringEncoding] mimeType:@"text/plain" fileName:@"wordpress.log"];
+	}
+	
 	if (controller) [self presentModalViewController:controller animated:YES];
 	[controller release];
 }
