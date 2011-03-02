@@ -390,7 +390,8 @@
 	NSSet *syncedComments = self.comments;
     if (syncedComments && (syncedComments.count > 0)) {
 		for (Comment *comment in syncedComments) {
-			if(![commentsToKeep containsObject:comment]) {
+			// Don't delete unpublished comments
+			if(![commentsToKeep containsObject:comment] && comment.commentID != nil) {
 				WPLog(@"Deleting Comment: %@", comment);
 				[[self managedObjectContext] deleteObject:comment];
 			}
