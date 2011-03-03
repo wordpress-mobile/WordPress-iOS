@@ -378,8 +378,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
         self.navigationItem.title = self.apost.postTitle;
     }
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back"
-                                                style:UIBarButtonItemStyleBordered target:nil action:nil];
-
+																			 style:UIBarButtonItemStyleBordered target:nil action:nil];
+	
     titleTextField.text = self.apost.postTitle;
     if (self.post) {
         // FIXME: tags should be an array/set of Tag objects
@@ -393,13 +393,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
     else {
         textViewPlaceHolderField.hidden = YES;
-        if ((self.apost.mt_text_more != nil) && ([self.apost.mt_text_more length] > 0)){
+        if ((self.apost.mt_text_more != nil) && ([self.apost.mt_text_more length] > 0))
 			textView.text = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", self.apost.content, self.apost.mt_text_more];
-		} else	
+		else	
 			textView.text = self.apost.content;
 		
     }
-
+	
 	// workaround for odd text view behavior on iPad
 	[textView setContentOffset:CGPointZero animated:NO];
 }

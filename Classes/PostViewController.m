@@ -41,7 +41,10 @@
         tagsLabel.text = self.post.tags;
         categoriesLabel.text = [self.post categoriesText];
     }
-    contentView.text = self.apost.content;
+	if ((self.apost.mt_text_more != nil) && ([self.apost.mt_text_more length] > 0))
+		contentView.text = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", self.apost.content, self.apost.mt_text_more];
+	else
+		contentView.text = self.apost.content;
 }
 
 - (void)viewDidLoad {
