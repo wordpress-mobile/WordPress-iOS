@@ -212,7 +212,7 @@
     NSError *error = nil;
     if (![[self managedObjectContext] save:&error]) {
         // We better not crash on autosave
-        NSLog(@"[Autosave] Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+        WPFLog(@"[Autosave] Unresolved Core Data Save error %@, %@", error, [error userInfo]);
         [FlurryAPI logError:@"Autosave" message:[error localizedDescription] error:error];
     }
 }
