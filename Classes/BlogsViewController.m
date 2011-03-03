@@ -139,6 +139,10 @@
     return cell;
 }
 
+-(NSString *)tableView:(UITableView*)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return @"Remove";
+}
+
 - (void)tableView:(UITableView *)atableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([self.tableView cellForRowAtIndexPath:indexPath].editing) {
         Blog *blog = [resultsController objectAtIndexPath:indexPath];
