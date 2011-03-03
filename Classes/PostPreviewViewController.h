@@ -7,6 +7,8 @@
 
     EditPostViewController *postDetailViewController;
 	NSFetchedResultsController *resultsController;
+	
+	NSMutableData *receivedData;
 }
 
 @property (nonatomic, assign) EditPostViewController *postDetailViewController;

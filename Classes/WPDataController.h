@@ -42,6 +42,7 @@ typedef enum {
 #pragma mark -
 #pragma mark Blog
 - (NSMutableArray *)getRecentPostsForBlog:(Blog *)blog number:(NSNumber *)number;
+- (NSString *)passwordForBlog:(Blog *)blog;
 
 #pragma mark -
 #pragma mark Category
