@@ -2288,7 +2288,7 @@
 				);
 				PRODUCT_NAME = WordPress;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos4.2;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = i386;
 			};
@@ -2316,6 +2316,7 @@
 					"\"$(SRCROOT)/FlurryLib\"",
 				);
 				PRODUCT_NAME = WordPress;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -2370,6 +2371,7 @@
 					"-licucore",
 				);
 				PRODUCT_NAME = WordPress;
+				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2420,6 +2422,7 @@
 					"\"$(SRCROOT)/FlurryLib\"",
 				);
 				PRODUCT_NAME = WordPress;
+				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
