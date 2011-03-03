@@ -304,7 +304,7 @@
     urlToValidate = [urlToValidate stringByReplacingOccurrencesOfRegex:@"/wp-admin/?$" withString:@""]; 
     urlToValidate = [urlToValidate stringByReplacingOccurrencesOfRegex:@"/?$" withString:@""]; 
 	
-	
+    [FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), urlToValidate];
 	ASIHTTPRequest *xmlrpcRequest = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:urlToValidate]];
 	[xmlrpcRequest setValidatesSecureCertificate:NO]; 
 	[xmlrpcRequest setShouldPresentCredentialsBeforeChallenge:NO];
@@ -345,8 +345,7 @@
 
 - (void)checkURLWentWrong:(ASIHTTPRequest *)request {
 	NSError *error = [request error];
-	NSString *errorMessage = [error localizedDescription];
-	WPLog(@"checkURLWentWrong %@", errorMessage);
+	[FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), error];
 	[self performSelectorOnMainThread:@selector(validationDidFail:) withObject:error waitUntilDone:YES];
 }
 
@@ -367,8 +366,10 @@
                                error:&error];
     
     if (error) {
-        NSLog(@"Error saving password for %@", blog.url);
-    }
+		[FileLogger log:@"%@ %@ Error saving password for %@: %@", self, NSStringFromSelector(_cmd), blog.url, error];
+    } else {
+		[FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), blog.url];
+	}
 	if (DeviceIsPad())
 		[self dismissModalViewControllerAnimated:YES];
 	else
