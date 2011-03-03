@@ -279,6 +279,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self setAppBadge];
 	
 	if (DeviceIsPad()) {
@@ -290,6 +291,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self applicationWillTerminate:application];
 }
 
