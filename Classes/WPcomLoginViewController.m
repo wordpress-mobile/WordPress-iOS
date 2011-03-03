@@ -128,7 +128,7 @@
 		cell.accessoryType = UITableViewCellAccessoryNone;
 		
 		if ([indexPath section] == 0) {
-			CGRect textFrame = CGRectMake(110, 10, 185, 30);
+			CGRect textFrame = CGRectMake(110, 12, 185, 30);
 			if(DeviceIsPad()){
 				textFrame = CGRectMake(150, 12, 350, 42);
 			}
