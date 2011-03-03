@@ -218,6 +218,7 @@
 					//post is deleted on the server, make it local, otherwise you can't upload it anymore
 					post.remoteStatus = AbstractPostRemoteStatusLocal;
 					post.postID = nil;
+					post.permaLink = nil;
 					
 				}
 			} else {
@@ -314,6 +315,7 @@
 					//page is deleted on the server, make it local, otherwise you can't upload it anymore
 					page.remoteStatus = AbstractPostRemoteStatusLocal;
 					page.postID = nil;
+					page.permaLink = nil;
 					
 				}
 			} else {
