@@ -12,12 +12,10 @@
 #import "CommentsViewController.h"
 #import "Comment.h"
 
-@interface CommentViewController : UIViewController <UIScrollViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
+@interface CommentViewController : UIViewController <UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UIWebViewDelegate> {
 
 	CommentsViewController *commentsViewController;
 	EditCommentViewController *editCommentViewController;
-	
-	IBOutlet UIScrollView *scrollView;
     
     IBOutlet GravatarImageView *gravatarImageView;
     IBOutlet UILabel *commentAuthorLabel;
@@ -25,7 +23,7 @@
 	IBOutlet UIButton *commentAuthorEmailButton;
     IBOutlet UILabel *commentPostTitleLabel;
     IBOutlet UILabel *commentDateLabel;
-    IBOutlet UILabel *commentBodyLabel;
+    IBOutlet UIWebView *commentBodyWebView;
 	
 	IBOutlet UIView *labelHolder;
 	IBOutlet UILabel *pendingLabel;
