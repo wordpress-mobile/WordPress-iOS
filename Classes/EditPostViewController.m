@@ -298,6 +298,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
 	if(DeviceIsPad()) {
 		return YES;
+	}else if ((toInterfaceOrientation == UIInterfaceOrientationPortrait)) { 
+		return YES; 
 	}
 	else if ((toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
 		if (self.interfaceOrientation != toInterfaceOrientation) {
