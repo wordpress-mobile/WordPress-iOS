@@ -297,9 +297,13 @@
 	if (!replyToCommentViewController.hasChanges && !editCommentViewController.hasChanges) {
 		[self dismissEditViewController];
 		
-		if(sender == replyToCommentViewController) { 
+		if(sender == replyToCommentViewController) {
 			commentsViewController.selectedIndexPath = nil; //the selectedIndex path is on the reply comment
-			[replyToCommentViewController.comment remove]; //delete the empty comment 
+			
+			[replyToCommentViewController.comment remove]; //delete the empty comment
+			
+			if (DeviceIsPad() == YES)  //an half-patch for #790: sometimes the modal view is not disposed when click on cancel. 
+				[self dismissModalViewControllerAnimated:YES]; 		
 		} 
 		return;
 	}
@@ -341,7 +345,6 @@
 									 initWithNibName:@"EditCommentViewController" 
 									 bundle:nil]autorelease];
 	editCommentViewController.commentViewController = self;
-	//replyToCommentViewController.commentsViewController = self.commentsViewController;
 	editCommentViewController.comment = self.comment;
 	editCommentViewController.title = @"Edit Comment";
 	
