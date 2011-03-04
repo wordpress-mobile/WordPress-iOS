@@ -310,6 +310,7 @@ FlurryLib/libFlurry.a -text svneol=unset#unset
 /Icon-dev@2x.png -text svneol=unset#unset
 /Icon.png -text svneol=unset#unset
 /Icon@2x.png -text svneol=unset#unset
+/Info-beta.plist -text
 /Info-dev.plist -text
 /Info.plist -text
 /MainBackground.png -text
