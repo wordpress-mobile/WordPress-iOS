@@ -57,6 +57,7 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
 	postDetailViewController.apost.password = textField.text;
+	NSString *test = postDetailViewController.apost.password;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -112,9 +113,10 @@
 			passwordTextField.delegate = self;
 		}
         [accesoryToolbar release];*/
-		passwordTextField.returnKeyType = UIReturnKeyDone;
-		passwordTextField.delegate = self;
     }
+	
+	passwordTextField.returnKeyType = UIReturnKeyDone;
+	passwordTextField.delegate = self;
 	
 	if (postDetailViewController.post) {
 		locationManager = [[CLLocationManager alloc] init];

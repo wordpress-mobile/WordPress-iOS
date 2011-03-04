@@ -299,9 +299,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	if(DeviceIsPad()) {
 		return YES;
 	}
-	else if ((toInterfaceOrientation == UIInterfaceOrientationPortrait) || (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
-		return YES;
-	}
 	else if ((toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
 		if (self.interfaceOrientation != toInterfaceOrientation) {
 			if (isEditing)
