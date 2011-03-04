@@ -630,7 +630,7 @@
 		[approveAndUnapproveButtonBar setHidden:YES];
 		[deleteButtonBar setHidden:NO];
 		
-	} else {
+	} else if (![comment.status isEqualToString:@"hold"]){
 		[self removePendingLabel];
 		[approveAndUnapproveButtonBar setHidden:YES];
 		[deleteButtonBar setHidden:NO];
