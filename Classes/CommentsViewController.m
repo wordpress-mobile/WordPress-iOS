@@ -370,7 +370,7 @@
     [self performSelectorOnMainThread:@selector(didModerateComments) withObject:nil waitUntilDone:NO];
     
 	if(fails)
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:@"Something went wrong during comments moderation."];
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:@"Sorry, something went wrong during comment moderation. Please try again."];
 	[pool release];
 }
 

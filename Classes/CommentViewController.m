@@ -119,7 +119,7 @@
 }
 
 - (void)reachabilityChanged {
-    connectionStatus = ([[WPReachability sharedReachability] remoteHostStatus] != NotReachable);
+    connectionStatus = ([[WPReachability sharedReachability] internetConnectionStatus] != NotReachable);
     UIColor *textColor = connectionStatus == YES ? [UIColor blackColor] : [UIColor grayColor];
 
     commentAuthorLabel.textColor = textColor;
@@ -439,7 +439,7 @@
 }
 
 - (BOOL)isConnectedToHost {
-    if (![[WPReachability sharedReachability] remoteHostStatus] != NotReachable) {
+    if (![[WPReachability sharedReachability] internetConnectionStatus] != NotReachable) {
         UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:@"No connection to host."
                                             message:@"Operation is not supported now."
                                             delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -471,7 +471,7 @@
     [progressAlert release];
 		
 	if(fails)
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:@"Something went wrong during comments moderation."];	
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:@"Sorry, something went wrong during comment moderation. Please try again."];	
     else {
 		 [self.navigationController popViewControllerAnimated:YES];
 	}
