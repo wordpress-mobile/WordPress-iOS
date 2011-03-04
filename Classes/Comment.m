@@ -152,7 +152,7 @@
         if (commentID) {
 			self.commentID = commentID;
 			[[WPDataController sharedInstance] updateSingleComment:self];
-			[self save];
+			[self performSelectorOnMainThread:@selector(save) withObject:nil waitUntilDone:YES];
 			return YES;
 		}
 	}
