@@ -57,7 +57,6 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
 	postDetailViewController.apost.password = textField.text;
-	NSString *test = postDetailViewController.apost.password;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
