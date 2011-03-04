@@ -491,6 +491,8 @@
 
 - (void)markThisCommentAsSpam {
     [self moderateCommentWithSelector:@selector(spam)];
+	if (DeviceIsPad() == YES)
+		[self.commentsViewController performSelectorOnMainThread:@selector(trySelectSomethingAndShowIt) withObject:nil waitUntilDone:NO];
 }
 
 - (void)unapproveThisComment {

@@ -385,6 +385,7 @@
 
 - (void)markCommentsAsSpam {
     [self moderateCommentsWithSelector:@selector(spam)];
+	[self performSelectorOnMainThread:@selector(trySelectSomethingAndShowIt) withObject:nil waitUntilDone:NO];
 }
 
 - (void)unapproveComments {
