@@ -379,6 +379,7 @@
 						//push an the W logo on the right. 
 						WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 						[delegate showContentDetailViewController:nil];
+						self.selectedIndexPath = nil;
 					}
 				}
 			} else {
@@ -562,6 +563,7 @@
 					//FIXME: I've tried to select something but even with try/catch the app could crash
 					WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 					[delegate showContentDetailViewController:nil];
+					self.selectedIndexPath = nil;
 				}
 			}
             break;
