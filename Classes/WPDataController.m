@@ -709,6 +709,7 @@
 	[request setShouldPresentAuthenticationDialog:YES];
 	[request setUseKeychainPersistence:YES];
     [request setValidatesSecureCertificate:NO];
+	[request setTimeOutSeconds:30];
     if (retryOnTimeout) {
         [request setNumberOfTimesToRetryOnTimeout:2];
     } else {
