@@ -48,7 +48,8 @@
 	picker.allowsEditing = NO;
 	
 	[self initObjects];
-	[self performSelectorInBackground:@selector(checkVideoEnabled) withObject:nil];
+	self.videoEnabled = YES;
+	[self performSelectorInBackground:@selector(checkVideoPressEnabled) withObject:nil];
 	
     [self addNotifications];
 }
@@ -219,17 +220,28 @@
 	isAddingMedia = YES;
 	
 	UIActionSheet *actionSheet;
-	if([self supportsVideo:YES] == YES) {
+	if([self isDeviceSupportVideoAndVideoPressEnabled]) {
 		actionSheet = [[UIActionSheet alloc] initWithTitle:@"" 
 												  delegate:self 
 										 cancelButtonTitle:@"Cancel" 
 									destructiveButtonTitle:nil 
 										 otherButtonTitles:@"Add Video from Library",@"Record Video",nil];
-	}
-	else {
-        isShowingMediaPickerActionSheet = NO;
+	} 
+	else { //device has video recording capability but VideoPress could be not enabled on
+       /* isShowingMediaPickerActionSheet = NO;
         [self pickPhotoFromPhotoLibrary:sender];
-        return;
+        return;*/
+		isShowingMediaPickerActionSheet = NO;
+		NSString *faultString = @"You can upload videos to your blog with VideoPress. Would you like to learn more about VideoPress now?";
+		UIAlertView *uploadAlert = [[UIAlertView alloc] initWithTitle:@"Info." 
+												 message:faultString 
+												delegate:self
+									   cancelButtonTitle:@"No" otherButtonTitles:nil];
+		[uploadAlert addButtonWithTitle:@"Yes"];
+		uploadAlert.tag = 101;
+		[uploadAlert show];
+		[uploadAlert release];		
+		return;
 	}
 	
     actionSheet.tag = TAG_ACTIONSHEET_VIDEO;
@@ -680,7 +692,33 @@
 	}
 }
 
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+	if (alertView.tag == 101) { //VideoPress Promo Alert
+		switch (buttonIndex) {
+			case 0:
+				break;
+			case 1:
+			{
+				NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
+				if ([buttonTitle isEqualToString:@"Yes"]){
+					[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://videopress.com"]];
+				}
+			}		
+			default:
+				break;
+		}
+	}
+}
+
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+
+	if (alertView.tag == 101) { //VideoPress Promo Alert
+	
+		return;
+	}
+	
 	if(buttonIndex == 1) {
 		UITextField *textWidth = (UITextField *)[alertView viewWithTag:123];
 		UITextField *textHeight = (UITextField *)[alertView viewWithTag:456];
@@ -1095,22 +1133,19 @@
     [filepath release];
 }
 
-- (BOOL)supportsVideo: (BOOL)apiCheck {
-	if (apiCheck) {
-		if(([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] == YES) && 
-		   ([[UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera] containsObject:(NSString *)kUTTypeMovie]) && 
-		   (self.videoEnabled == YES))
-			return YES;
-		else
-			return NO;
-	}
-	else {
-		if(([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] == YES) && 
-		   ([[UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera] containsObject:(NSString *)kUTTypeMovie]))
-			return YES;
-		else
-			return NO;
-	}
+- (BOOL)isDeviceSupportVideo {
+	if(([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] == YES) && 
+	   ([[UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera] containsObject:(NSString *)kUTTypeMovie]))
+		return YES;
+	else
+		return NO;
+}
+
+- (BOOL)isDeviceSupportVideoAndVideoPressEnabled{
+	if([self isDeviceSupportVideo] && (self.videoEnabled == YES))
+		return YES;
+	else
+		return NO;
 }
 
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification {
@@ -1143,7 +1178,7 @@
 	}
 }
 
-- (void)checkVideoEnabled {
+- (void)checkVideoPressEnabled {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	if(self.isCheckingVideoCapability == NO) {
@@ -1151,49 +1186,49 @@
 		self.videoPressCheckBlogURL = postDetailViewController.apost.blog.url;
 		
 		@try {
-			NSRange textRange = [[self.videoPressCheckBlogURL lowercaseString] rangeOfString:@"wordpress.com"];
+			//removed the check on the blog URL. we should be able to use VideoPress on self hosted blog
+			//NSRange textRange = [[self.videoPressCheckBlogURL lowercaseString] rangeOfString:@"wordpress.com"];
+			//if(textRange.location != NSNotFound)
+			//{
+			NSError *error = nil;
+			NSString *username = self.postDetailViewController.apost.blog.username;
+			NSString *password = [SFHFKeychainUtils getPasswordForUsername:username
+															andServiceName:self.postDetailViewController.apost.blog.hostURL
+																	 error:&error];
 			
-			if(textRange.location != NSNotFound)
-			{
-                NSError *error = nil;
-				NSString *username = self.postDetailViewController.apost.blog.username;
-				NSString *password = [SFHFKeychainUtils getPasswordForUsername:username
-                                                                            andServiceName:self.postDetailViewController.apost.blog.hostURL
-                                                                                     error:&error];
-
-				NSArray *args = [NSArray arrayWithObjects:self.postDetailViewController.apost.blog.blogID,username, password, nil];
-								
-				NSMutableDictionary *xmlrpcParams = [[NSMutableDictionary alloc] init];
-				[xmlrpcParams setObject:self.postDetailViewController.apost.blog.xmlrpc forKey:kURL];
-				[xmlrpcParams setObject:@"wpcom.getFeatures" forKey:kMETHOD];
-				[xmlrpcParams setObject:args forKey:kMETHODARGS];
-				
-				XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[xmlrpcParams valueForKey:kURL]]];
-				[request setMethod:[xmlrpcParams valueForKey:kMETHOD] withObjects:[xmlrpcParams valueForKey:kMETHODARGS]];
-				[xmlrpcParams release];
-				
-				XMLRPCResponse *response = [XMLRPCConnection sendSynchronousXMLRPCRequest:request];
-				if ([response isKindOfClass:[NSError class]]) {
+			NSArray *args = [NSArray arrayWithObjects:self.postDetailViewController.apost.blog.blogID,username, password, nil];
+			
+			NSMutableDictionary *xmlrpcParams = [[NSMutableDictionary alloc] init];
+			[xmlrpcParams setObject:self.postDetailViewController.apost.blog.xmlrpc forKey:kURL];
+			[xmlrpcParams setObject:@"wpcom.getFeatures" forKey:kMETHOD];
+			[xmlrpcParams setObject:args forKey:kMETHODARGS];
+			
+			XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[xmlrpcParams valueForKey:kURL]]];
+			[request setMethod:[xmlrpcParams valueForKey:kMETHOD] withObjects:[xmlrpcParams valueForKey:kMETHODARGS]];
+			[xmlrpcParams release];
+			
+			XMLRPCResponse *response = [XMLRPCConnection sendSynchronousXMLRPCRequest:request];
+			if ([response isKindOfClass:[NSError class]]) {
+				self.videoEnabled = YES;
+				self.isCheckingVideoCapability = NO;
+				WPLog(@"checkVideoEnabled failed: %@", response);
+				return;
+			}
+			if(([response.object isKindOfClass:[NSDictionary class]] == YES) && ([response.object objectForKey:@"videopress_enabled"] != nil))
+				self.videoEnabled = [[response.object objectForKey:@"videopress_enabled"] boolValue];
+			else if(([response.object isKindOfClass:[NSDictionary class]] == YES) && ([response.object objectForKey:@"faultCode"] != nil)) {
+				if([[response.object objectForKey:@"faultCode"] intValue] == -32601) //server error. requested method wpcom.getFeatures does not exist.
 					self.videoEnabled = YES;
-					self.isCheckingVideoCapability = NO;
-					WPLog(@"checkVideoEnabled failed: %@", response);
-					return;
-				}
-				if(([response.object isKindOfClass:[NSDictionary class]] == YES) && ([response.object objectForKey:@"videopress_enabled"] != nil))
-					self.videoEnabled = [[response.object objectForKey:@"videopress_enabled"] boolValue];
-				else if(([response.object isKindOfClass:[NSDictionary class]] == YES) && ([response.object objectForKey:@"faultCode"] != nil)) {
-					if([[response.object objectForKey:@"faultCode"] intValue] == -32601)
-						self.videoEnabled = YES;
-					else
-						self.videoEnabled = NO;
-				}
 				else
-					self.videoEnabled = YES;
-				
-				[request release];
+					self.videoEnabled = NO;
 			}
 			else
 				self.videoEnabled = YES;
+			
+			[request release];
+			//}
+			//	else
+			//		self.videoEnabled = YES;
 		}
 		@catch (NSException * e) {
 			self.videoEnabled = YES;

@@ -97,13 +97,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		pointerFrame.origin.x = 101;
 	} else if ([newView isEqual:postMediaViewController.view]) {
 		if (DeviceIsPad()) {
-			if ([postMediaViewController supportsVideo:NO])
+			if ([postMediaViewController isDeviceSupportVideo])
 				pointerFrame.origin.x = 646;
 			else
 				pointerFrame.origin.x = 688;
 		}
 		else {
-			if ([postMediaViewController supportsVideo:NO])
+			if ([postMediaViewController isDeviceSupportVideo])
 				pointerFrame.origin.x = 198;
 			else
 				pointerFrame.origin.x = 240;
@@ -232,7 +232,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
     }
 	
-	if (![postMediaViewController supportsVideo:NO]){
+	if (![postMediaViewController isDeviceSupportVideo]){
 		//no video icon for older devices
 		NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:toolbar.items];
 		NSLog(@"toolbar items: %@", toolbarItems);
