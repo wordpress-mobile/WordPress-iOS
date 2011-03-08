@@ -387,9 +387,10 @@
         if ([wrong isKindOfClass:[UITableViewCell class]]) {
             ((UITableViewCell *)wrong).textLabel.textColor = WRONG_FIELD_COLOR;
         } else if ([wrong isKindOfClass:[NSError class]]) {
-            NSError *error = (NSError *)wrong;
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Can't log in"
-                                                                message:[error localizedDescription]
+            //NSError *error = (NSError *)wrong;
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Sorry, can't log in"
+                                                                //message:[error localizedDescription]
+																message:@"Please update your credentials and try again."
                                                                delegate:self
                                                       cancelButtonTitle:@"Need Help?"
                                                       otherButtonTitles:@"OK", nil];

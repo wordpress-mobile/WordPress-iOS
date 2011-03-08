@@ -114,9 +114,9 @@
         cell.textLabel.text = media.filename;
 
     if (media.remoteStatus == MediaRemoteStatusPushing) {
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"Uploading: %.1f%%. Tap to cancel", media.progress * 100.0];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"Uploading: %.1f%%. Tap to cancel.", media.progress * 100.0];
     } else if (media.remoteStatus == MediaRemoteStatusFailed) {
-        cell.detailTextLabel.text = @"Failed. Tap to retry";
+        cell.detailTextLabel.text = @"Upload failed - tap to retry.";
     } else {
         if ([media.mediaType isEqualToString:@"image"]) {
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%dx%d %@", 

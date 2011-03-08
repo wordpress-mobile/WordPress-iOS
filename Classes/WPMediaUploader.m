@@ -398,7 +398,7 @@
 			WPLog(@"response: %@", [request responseString]);
 			if(isAtomPub) {
 				if ([[request responseString] rangeOfString:@"AtomPub services are disabled"].location != NSNotFound){
-					UIAlertView *uploadAlert = [[UIAlertView alloc] initWithTitle:@"Upload Failed" 
+					UIAlertView *uploadAlert = [[UIAlertView alloc] initWithTitle:@"Sorry, upload failed" 
 																		  message:[request responseString] 
 																		 delegate:self
 																cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -429,16 +429,16 @@
 					if([faultString rangeOfString:@"NSXMLParserErrorDomain"].location != NSNotFound) {
 						//Error Domain=NSXMLParserErrorDomain Code=5 "The operation couldn\u2019t be completed. (NSXMLParserErrorDomain error 5.)	
 						//this happens when there are server issues, such as memory issues or permissions issues.
-						uploadAlert = [[UIAlertView alloc] initWithTitle:@"Upload Failed" 
-																 message:@"Something went wrong during uploading. Please, check the configuration of your blog."  
+						uploadAlert = [[UIAlertView alloc] initWithTitle:@"Sorry, upload failed" 
+																 message:@"There was an error processing your file. Please check the configuration of your blog."  
 																delegate:self
 													   cancelButtonTitle:@"OK" otherButtonTitles:nil];
 					}
 					else if ( ([faultString rangeOfString:@"Invalid file type"].location != NSNotFound) &&
 							 ([self.media.mediaType isEqualToString:@"video"]) ){
 						//invalid file type && video: VideoPress suggest
-						faultString = @"You can upload videos to your blog with VideoPress. Would you like to learn more about VideoPress now?";
-						uploadAlert = [[UIAlertView alloc] initWithTitle:@"Upload Failed" 
+						faultString = @"To upload videos you need to have VideoPress installed. Would you like to learn more about VideoPress now?";
+						uploadAlert = [[UIAlertView alloc] initWithTitle:@"Sorry, upload failed" 
 																 message:faultString 
 																delegate:self
 													   cancelButtonTitle:@"No" otherButtonTitles:nil];
@@ -446,7 +446,7 @@
 					}
 					else {
 						//show a generic error
-						uploadAlert = [[UIAlertView alloc] initWithTitle:@"Upload Failed" 
+						uploadAlert = [[UIAlertView alloc] initWithTitle:@"Sorry, upload failed" 
 																 message:faultString 
 																delegate:self
 													   cancelButtonTitle:@"OK" otherButtonTitles:nil];
