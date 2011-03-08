@@ -451,6 +451,28 @@
         picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         if ([(UIView *)sender tag] == TAG_ACTIONSHEET_VIDEO) {
             picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeMovie];
+			picker.videoQuality = UIImagePickerControllerQualityTypeMedium;
+			
+			if([[NSUserDefaults standardUserDefaults] objectForKey:@"video_quality_preference"] != nil) {
+				NSString *quality = [[NSUserDefaults standardUserDefaults] objectForKey:@"video_quality_preference"];
+				switch ([quality intValue]) {
+					case 0:
+						picker.videoQuality = UIImagePickerControllerQualityTypeHigh;
+						break;
+					case 1:
+						picker.videoQuality = UIImagePickerControllerQualityTypeMedium;
+						break;
+					case 2:
+						picker.videoQuality = UIImagePickerControllerQualityTypeLow;
+						break;
+					case 3:
+						picker.videoQuality = UIImagePickerControllerQualityType640x480;
+						break;
+					default:
+						picker.videoQuality = UIImagePickerControllerQualityTypeMedium;
+						break;
+				}
+			}	
         } else {
             picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
         }
