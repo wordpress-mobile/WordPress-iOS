@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="297"/>
+			<integer value="191"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -44,7 +44,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIView" id="122958364">
 						<reference key="NSNextResponder" ref="546232296"/>
-						<int key="NSvFlags">292</int>
+						<int key="NSvFlags">274</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUIView" id="805652007">
@@ -306,13 +306,13 @@
 										</object>
 									</object>
 								</object>
-								<string key="NSFrameSize">{320, 372}</string>
+								<string key="NSFrame">{{20, 20}, {320, 372}}</string>
 								<reference key="NSSuperview" ref="122958364"/>
 								<reference key="IBUIBackgroundColor" ref="311671279"/>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							</object>
 						</object>
-						<string key="NSFrameSize">{320, 372}</string>
+						<string key="NSFrame">{{-20, -20}, {340, 392}}</string>
 						<reference key="NSSuperview" ref="546232296"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>

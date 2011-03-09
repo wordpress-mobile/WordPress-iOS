@@ -53,7 +53,10 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 	[self refreshWebView];
-	[activityFooter setCenter:CGPointMake(self.view.center.x, self.view.center.y)];
+	if (DeviceIsPad())
+		[activityFooter setCenter:CGPointMake(self.view.center.x, self.view.center.y)];
+	else
+		[activityFooter setCenter:CGPointMake(self.view.center.x - 20, self.view.center.y - 20)];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
