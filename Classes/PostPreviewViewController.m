@@ -1,12 +1,13 @@
 #import "PostPreviewViewController.h"
 #import "WordPressAppDelegate.h"
 #import "WPDataController.h"
+#import "WPReachability.h"
 
 @interface PostPreviewViewController (Private)
 
 - (void)addProgressIndicator;
 - (NSString *)stringReplacingNewlinesWithBR:(NSString *)surString;
-- (NSString *)buildSimplePreview;
+- (NSString *)buildSimplePreview:(NSString *)alertString;
 
 @end
 
@@ -79,12 +80,15 @@
 }
 
 
-- (NSString *)buildSimplePreview {
+- (NSString *)buildSimplePreview:(NSString *)alertString {
 	NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
 	NSString *fpath = [NSString stringWithFormat:@"%@/defaultPostTemplate.html", resourcePath];
 	NSString *str = [NSString stringWithContentsOfFile:fpath];
 	
 	if ([str length]) {
+		
+		//alert msg
+		str = [str stringByReplacingOccurrencesOfString:@"!$alert_msg$!" withString:alertString];
 		
 		//Title
 		NSString *title = postDetailViewController.apost.postTitle;
@@ -146,17 +150,24 @@
 	else if ([status isEqualToString:@"pending"])
 		isPending = YES;
 	
-	if (edited || isDraft || isPending) {
-		[webView loadHTMLString:[self buildSimplePreview] baseURL:nil];
+	if (edited) {
+		[webView loadHTMLString:[self buildSimplePreview:@"Sorry, the post has changed, or it is not published. A simple preview is shown below."] baseURL:nil];
 	} else {
 		
 		NSString *link = postDetailViewController.apost.permaLink;
 		
-		if (link == nil) {
-			[webView loadHTMLString:[self buildSimplePreview] baseURL:nil];
+		if([[WPReachability sharedReachability] internetConnectionStatus] == NotReachable) {
+			[webView loadHTMLString:[self buildSimplePreview:@"Sorry, no connection to host. A simple preview is shown below."] baseURL:nil];
+		} else if (link == nil ) {
+			[webView loadHTMLString:[self buildSimplePreview:@"Sorry, the post has changed, or it is not published. A simple preview is shown below."] baseURL:nil];
 		} else {
 			
-			if(isPrivate) {
+			/*checks if this a scheduled post*/
+			NSDate *currentGMTDate = [DateUtils currentGMTDate];
+			NSDate *postGMTDate = postDetailViewController.apost.date_created_gmt;
+			NSDate *laterDate = [currentGMTDate laterDate:postGMTDate];
+			
+			if(isDraft || isPending || isPrivate || (laterDate == postGMTDate)) {
 				
 				NSString *wpLoginURL = postDetailViewController.apost.blog.xmlrpc; 
 				wpLoginURL = [wpLoginURL stringByReplacingOccurrencesOfRegex:@"/xmlrpc.php$" withString:@"/wp-login.php"];
