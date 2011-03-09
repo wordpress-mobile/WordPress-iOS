@@ -171,7 +171,9 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if (self.isTransitioning){
+	if (DeviceIsPad())
+		return YES;
+	else if (self.isTransitioning){
 		return (interfaceOrientation == UIInterfaceOrientationPortrait);
 	}
     else if (isEditing)
@@ -186,13 +188,13 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 		UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
 		if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
 			if (DeviceIsPad())
-				[self setTextViewHeight:360];
+				[self setTextViewHeight:353];
 			else
-				[self setTextViewHeight:130];
+				[self setTextViewHeight:106];
 		}
 		else {
 			if (DeviceIsPad())
-				[self setTextViewHeight:510];
+				[self setTextViewHeight:504];
 			else
 				[self setTextViewHeight:200];
 		}
@@ -210,8 +212,13 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 		self.hasChanges=YES;
 	}
 	
+	self.isEditing = NO;
+	
 	//make the text view longer !!!! 
-	[self setTextViewHeight:416];
+	if (DeviceIsPad())
+		[self setTextViewHeight:576];
+	else
+		[self setTextViewHeight:416];
 	
 	if (DeviceIsPad() == NO) {
 		self.navigationItem.leftBarButtonItem =
