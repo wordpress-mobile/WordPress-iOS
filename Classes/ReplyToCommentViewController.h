@@ -22,7 +22,7 @@
 	UIBarButtonItem *saveButton;
 	UIBarButtonItem *doneButton;
 	UIBarButtonItem *cancelButton;
-	BOOL hasChanges, isTransitioning;
+	BOOL hasChanges, isTransitioning, isEditing;
 	NSString *textViewText; //to compare for hasChanges
 
 
@@ -37,6 +37,7 @@
 @property (nonatomic, retain) UILabel *label;
 @property (nonatomic) BOOL hasChanges;
 @property (nonatomic) BOOL isTransitioning;
+@property (nonatomic) BOOL isEditing;
 @property (nonatomic, copy) NSString *textViewText;
 
 -(void)cancelView:(id)sender;

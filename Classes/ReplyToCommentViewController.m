@@ -30,7 +30,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 @implementation ReplyToCommentViewController
 
 @synthesize commentViewController, saveButton, doneButton, comment;
-@synthesize cancelButton, label, hasChanges, textViewText, isTransitioning;
+@synthesize cancelButton, label, hasChanges, textViewText, isTransitioning, isEditing;
 
 //TODO: Make sure to give this class a connection to commentDetails and currentIndex from CommentViewController
 
@@ -62,6 +62,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 				  target:self 
 				  action:@selector(initiateSaveCommentReply:)];
 	}
+	isEditing = YES;
 	
 }
 
@@ -154,8 +155,9 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 		[self.navigationController pushViewController:garbageController animated:NO]; 
 		[self.navigationController popViewControllerAnimated:NO];
 		self.isTransitioning = NO;
-		[textView resignFirstResponder];	
+		[textView resignFirstResponder];
 	}
+	isEditing = NO;
 }
 
 - (void)setTextViewHeight:(float)height {
@@ -172,24 +174,28 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	if (self.isTransitioning){
 		return (interfaceOrientation == UIInterfaceOrientationPortrait);
 	}
-    else
+    else if (isEditing)
         return YES;
+	
+	return NO;
 }
 
 -(void) receivedRotate: (NSNotification*) notification
 {
-	UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
-	if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
-		if (DeviceIsPad())
-			[self setTextViewHeight:360];
-		else
-			[self setTextViewHeight:130];
-	}
-	else {
-		if (DeviceIsPad())
-			[self setTextViewHeight:510];
-		else
-			[self setTextViewHeight:440];
+	if (isEditing) {
+		UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
+		if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
+			if (DeviceIsPad())
+				[self setTextViewHeight:360];
+			else
+				[self setTextViewHeight:130];
+		}
+		else {
+			if (DeviceIsPad())
+				[self setTextViewHeight:510];
+			else
+				[self setTextViewHeight:200];
+		}
 	}
 }
 #pragma mark -
@@ -205,7 +211,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	}
 	
 	//make the text view longer !!!! 
-	[self setTextViewHeight:460];
+	[self setTextViewHeight:416];
 	
 	if (DeviceIsPad() == NO) {
 		self.navigationItem.leftBarButtonItem =
@@ -228,6 +234,8 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 		
 		[self.navigationItem setLeftBarButtonItem:doneButton];
 	}
+	isEditing = YES;
+	[self receivedRotate:nil];
 }
 
 
