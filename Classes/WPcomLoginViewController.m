@@ -48,7 +48,7 @@
 	// Setup WPcom table header
 	CGRect headerFrame = CGRectMake(0, 0, 320, 70);
 	CGRect logoFrame = CGRectMake(40, 20, 229, 43);
-	NSString *logoFile = @"logo_wpcom";
+	NSString *logoFile = @"logo_wpcom.png";
 	if(DeviceIsPad() == YES) {
 		logoFile = @"logo_wpcom@2x.png";
 		logoFrame = CGRectMake(150, 20, 229, 43);

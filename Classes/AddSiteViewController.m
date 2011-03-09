@@ -12,7 +12,7 @@
     [super viewDidLoad];
     [FlurryAPI logEvent:@"AddSite"];
     
-    UIImageView *logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wporg"]];
+    UIImageView *logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wporg.png"]];
     logoView.frame = CGRectMake(0, 0, 320, 60);
     logoView.contentMode = UIViewContentModeCenter;
     logoView.autoresizingMask = UIViewAutoresizingFlexibleWidth;

@@ -865,7 +865,7 @@
 		}
 		else {
 			// If not, we'll just use the default thumbnail for now.
-			thumbnail = [UIImage imageNamed:@"video_thumbnail"];
+			thumbnail = [UIImage imageNamed:@"video_thumbnail.png"];
 		}
 		
 		[self useVideo:videoPath withThumbnail:thumbnail andDuration:duration];
@@ -892,7 +892,7 @@
 	}
 	else {
 		// If not, we'll just use the default thumbnail for now.
-		thumbnail = [UIImage imageNamed:@"video_thumbnail"];
+		thumbnail = [UIImage imageNamed:@"video_thumbnail.png"];
 	}
 	
 	[self useVideo:videoPath withThumbnail:thumbnail andDuration:duration];

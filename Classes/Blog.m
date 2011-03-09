@@ -105,7 +105,7 @@
         faviconImage = [UIImage imageWithContentsOfFile:faviconFilePath];
     }
 	else {
-		faviconImage = [UIImage imageNamed:@"favicon"];
+		faviconImage = [UIImage imageNamed:@"favicon.png"];
 		[self downloadFavicon];
 	}
 
