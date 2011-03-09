@@ -161,13 +161,13 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 {
 	if (isEditing) {
 		UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
-		if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
+		if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
 			if (DeviceIsPad())
 				[self setTextViewHeight:353];
 			else
 				[self setTextViewHeight:106];
 		}
-		else {
+		else if (UIInterfaceOrientationIsPortrait(interfaceOrientation)){
 			if (DeviceIsPad())
 				[self setTextViewHeight:504];
 			else

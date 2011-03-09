@@ -192,7 +192,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 			else
 				[self setTextViewHeight:106];
 		}
-		else {
+		else if (UIInterfaceOrientationIsPortrait(interfaceOrientation)){
 			if (DeviceIsPad())
 				[self setTextViewHeight:504];
 			else
