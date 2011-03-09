@@ -894,10 +894,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
         [delegate setAlertRunning:YES];
         [linkAlert release];
-    }
-	else {
-		[textView scrollRangeToVisible:textView.selectedRange];
-	}	
+    }	
 }
 
 - (void)textViewDidEndEditing:(UITextView *)aTextView {
