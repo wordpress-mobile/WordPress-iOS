@@ -149,8 +149,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	crashReportView = [[CrashReportViewController alloc] initWithNibName:@"CrashReportView" bundle:nil];
 	
 	//BETA FEEDBACK BAR, COMMENT THIS OUT BEFORE RELEASE
-	BetaUIWindow *betaWindow = [[BetaUIWindow alloc] initWithFrame:CGRectZero];
-	betaWindow.hidden = NO;
+	//BetaUIWindow *betaWindow = [[BetaUIWindow alloc] initWithFrame:CGRectZero];
+	//betaWindow.hidden = NO;
 	//BETA FEEDBACK BAR
 	
 	if(DeviceIsPad() == NO)
