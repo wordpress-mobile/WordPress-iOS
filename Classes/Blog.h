@@ -28,6 +28,7 @@
 
 - (UIImage *)favicon;
 - (void)downloadFavicon;
+- (void)removeFavicon;
 - (BOOL)isWPcom;
 - (void)dataSave;
 

@@ -112,6 +112,28 @@
     return faviconImage;
 }
 
+- (void)removeFavicon {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	NSString *faviconURL = [NSString stringWithFormat:@"%@/favicon.ico", self.url];
+	if(![faviconURL hasPrefix:@"http"])
+		faviconURL = [NSString stringWithFormat:@"http://%@", faviconURL];
+	
+    NSString *fileName = [NSString stringWithFormat:@"favicon-%@-%@.png", self.hostURL, self.blogID];
+	fileName = [fileName stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""];
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *faviconFilePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:fileName];
+	
+	if ([[NSFileManager defaultManager] fileExistsAtPath:faviconFilePath]) {
+		NSError *error;
+		BOOL success =  [[NSFileManager defaultManager] removeItemAtPath:faviconFilePath error:&error];
+		if (!success) 
+			WPLog(@"Error deleting blog favicon: %@", [error localizedDescription]);
+	}
+	
+	[pool release];
+}
+
 - (void)downloadFaviconInBackground {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	

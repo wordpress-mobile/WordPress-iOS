@@ -185,6 +185,8 @@
 		Blog *blog = [resultsController objectAtIndexPath:indexPath];
 		if([self canChangeBlog:blog]){
 			[tableView beginUpdates];
+
+			[blog removeFavicon];
 			
 			[appDelegate.managedObjectContext deleteObject:blog];
 			
@@ -296,24 +298,6 @@
     [appDelegate setCurrentBlog:blog];
 	[self.navigationController pushViewController:blogViewController animated:animated];
 	[blogViewController release];
-}
-
-- (void)deleteBlog:(NSIndexPath *)indexPath {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];	
-	[self performSelectorOnMainThread:@selector(didDeleteBlogSuccessfully:) withObject:indexPath waitUntilDone:NO];
-	[pool release];
-}
-
-- (void)didDeleteBlogSuccessfully:(NSIndexPath *)indexPath {
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsEditedNotification" object:nil];
-	if ([Blog countWithContext:appDelegate.managedObjectContext] == 0) {
-		self.navigationItem.leftBarButtonItem = nil;
-		[self.tableView setEditing:NO animated:YES];
-	}
-	
-	//try to select something on iPad
-	
-	
 }
 
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {

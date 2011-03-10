@@ -22,8 +22,6 @@
 @property (nonatomic, retain) Blog *currentBlog;
 
 - (void)showBlog:(Blog *)blog animated:(BOOL)animated;
-- (void)deleteBlog:(NSIndexPath *)indexPath;
-- (void)didDeleteBlogSuccessfully:(NSIndexPath *)indexPath;
 - (void)showBlogWithoutAnimation;
 - (void)edit:(id)sender;
 - (void)cancel:(id)sender;
