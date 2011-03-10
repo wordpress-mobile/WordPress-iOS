@@ -25,4 +25,9 @@
     frame.size.height += 93;
     self.contentView.frame = frame;
 }
+
+-(EditPostViewController *) getPostOrPageController: (AbstractPost *) revision {
+	EditPostViewController *postViewController = [[EditPageViewController alloc] initWithPost:revision];
+	return postViewController;
+}
 @end

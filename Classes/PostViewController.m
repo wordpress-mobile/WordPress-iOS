@@ -77,7 +77,7 @@
     EditPostViewController *postViewController;
 	[self checkForNewItem];
     AbstractPost *postRevision = [self.apost createRevision];
-    postViewController = [[EditPostViewController alloc] initWithPost:postRevision];
+    postViewController = [self getPostOrPageController: postRevision];
     postViewController.editMode = kEditPost;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editorDismissed:) name:@"PostEditorDismissed" object:postViewController];
     
@@ -88,6 +88,11 @@
     [self presentModalViewController:nav animated:YES];
     [postViewController release];
     [nav release];
+}
+
+-(EditPostViewController *) getPostOrPageController: (AbstractPost *) revision {
+	EditPostViewController *postViewController = [[EditPostViewController alloc] initWithPost:revision];
+	return postViewController;
 }
 
 // Subclassed in PageViewController

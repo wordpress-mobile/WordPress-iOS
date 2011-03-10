@@ -24,4 +24,5 @@
 - (void)showModalEditor;
 - (void)refreshUI;
 - (void)checkForNewItem;
+- (EditPostViewController *) getPostOrPageController: (AbstractPost *)revision;
 @end
