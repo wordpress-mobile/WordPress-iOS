@@ -281,7 +281,6 @@
 		CE1E3BC71005B3D500A7BD08 /* WPpregressHUDBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = CE1E3BC61005B3D500A7BD08 /* WPpregressHUDBackground.png */; };
 		CE31B4301022644F00BC060C /* pages.png in Resources */ = {isa = PBXBuildFile; fileRef = CE31B42E1022644F00BC060C /* pages.png */; };
 		CE31B4311022644F00BC060C /* posts.png in Resources */ = {isa = PBXBuildFile; fileRef = CE31B42F1022644F00BC060C /* posts.png */; };
-		CE4E33D20FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4E33D10FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m */; };
 		CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBD3EAA0FF1BA3B00C1396E /* Blog.m */; };
 		CEC7EFA60FC66081007B90D6 /* AddBlogValidationBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = CEC7EFA50FC66081007B90D6 /* AddBlogValidationBackground.png */; };
 		CEE7088B1006FC1200D6302A /* WPAsynchronousImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE7088A1006FC1200D6302A /* WPAsynchronousImageView.m */; };
@@ -766,8 +765,6 @@
 		CE1E3BC61005B3D500A7BD08 /* WPpregressHUDBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WPpregressHUDBackground.png; sourceTree = "<group>"; };
 		CE31B42E1022644F00BC060C /* pages.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pages.png; sourceTree = "<group>"; };
 		CE31B42F1022644F00BC060C /* posts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = posts.png; sourceTree = "<group>"; };
-		CE4E33D00FEB0F3A00415662 /* UIImage+INResizeImageAllocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+INResizeImageAllocator.h"; sourceTree = "<group>"; };
-		CE4E33D10FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+INResizeImageAllocator.m"; sourceTree = "<group>"; };
 		CEBD3EA90FF1BA3B00C1396E /* Blog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Blog.h; sourceTree = "<group>"; };
 		CEBD3EAA0FF1BA3B00C1396E /* Blog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Blog.m; sourceTree = "<group>"; };
 		CEC7EFA50FC66081007B90D6 /* AddBlogValidationBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AddBlogValidationBackground.png; sourceTree = "<group>"; };
@@ -1704,8 +1701,6 @@
 				03CF21EC0FE9F0C3008AD538 /* NSString+Util.m */,
 				C59D3D490E6410D300AA591D /* NSString+XMLExtensions.h */,
 				C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */,
-				CE4E33D00FEB0F3A00415662 /* UIImage+INResizeImageAllocator.h */,
-				CE4E33D10FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m */,
 				C584D0820EF942DC00B78012 /* UIViewController+WPAnimation.h */,
 				C584D0830EF942DC00B78012 /* UIViewController+WPAnimation.m */,
 				F5A4EF3310B32F68002BF126 /* XMLRPCConnection+Authentication.h */,
@@ -2127,7 +2122,6 @@
 				7059CD210F332B6500A0660B /* WPCategoryTree.m in Sources */,
 				702CA0680F36FF0D00018B88 /* WPLabelFooterView.m in Sources */,
 				03CF21ED0FE9F0C3008AD538 /* NSString+Util.m in Sources */,
-				CE4E33D20FEB0F3A00415662 /* UIImage+INResizeImageAllocator.m in Sources */,
 				CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */,
 				031663070FFB151A0045D052 /* PostTableViewCell.m in Sources */,
 				031666AE0FFC3E130045D052 /* CommentTableViewCell.m in Sources */,

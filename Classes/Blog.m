@@ -6,7 +6,7 @@
 //
 
 #import "Blog.h"
-#import "UIImage+INResizeImageAllocator.h"
+#import "UIImage+Resize.h"
 #import "WPDataController.h"
 
 @implementation Blog
@@ -123,7 +123,12 @@
 	fileName = [fileName stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""];
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *faviconFilePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:fileName];
-	UIImage *faviconImage = [[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:faviconURL]]] scaleImageToSize:CGSizeMake(16.0f, 16.0f)];
+	UIImage *faviconImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:faviconURL]]];
+	faviconImage = [UIImage imageWithData:UIImagePNGRepresentation(faviconImage)];
+	faviconImage = [faviconImage thumbnailImage:16
+							  transparentBorder:0
+								   cornerRadius:0
+						   interpolationQuality:kCGInterpolationHigh];
 	
 	if (faviconImage != NULL) {
 		//[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
