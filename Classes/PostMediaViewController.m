@@ -456,12 +456,15 @@
 }
 
 - (void)pickPhotoFromPhotoLibrary:(id)sender {
+	UIBarButtonItem *barButton = nil;
+
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
         if (DeviceIsPad() && addPopover != nil) {
             [addPopover dismissPopoverAnimated:YES];
         }        
         picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         if ([(UIView *)sender tag] == TAG_ACTIONSHEET_VIDEO) {
+			barButton = postDetailViewController.movieButton;
             picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeMovie];
 			picker.videoQuality = UIImagePickerControllerQualityTypeMedium;
 			
@@ -486,6 +489,7 @@
 				}
 			}	
         } else {
+			barButton = postDetailViewController.photoButton;
             picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
         }
 		isLibraryMedia = YES;
@@ -496,7 +500,7 @@
                 addPopover.delegate = self;
             }
             
-            [addPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            [addPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
             [[CPopoverManager instance] setCurrentPopoverController:addPopover];
 		}
 		else {

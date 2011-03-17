@@ -87,6 +87,8 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 @property (nonatomic, retain) IBOutlet UILabel *tagsLabel, *statusLabel, *categoriesLabel, *titleLabel;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *newCategoryBarButtonItem;
 @property (nonatomic, retain) IBOutlet UIButton *hasLocation;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *photoButton;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *movieButton;
 @property (nonatomic, retain) NSArray *statuses;
 @property (nonatomic, retain) AbstractPost *apost;
 @property (nonatomic, assign) Post *post;
