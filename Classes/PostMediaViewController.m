@@ -377,11 +377,23 @@
 		if(pickerContainer == nil)
 			pickerContainer = [[UIViewController alloc] init];
 		
-		pickerContainer.view.frame = CGRectMake(0, 0, 320, 480);
-        WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-		[appDelegate.navigationController.view addSubview:pickerContainer.view];
-		[appDelegate.navigationController.view bringSubviewToFront:pickerContainer.view];
-		[pickerContainer presentModalViewController:picker animated:YES];
+		if(DeviceIsPad() == YES) {
+			UIBarButtonItem *barButton = postDetailViewController.photoButton;
+			if (addPopover == nil) {
+				addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
+				addPopover.delegate = self;
+			}
+			
+			[addPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+			[[CPopoverManager instance] setCurrentPopoverController:addPopover];
+		}
+		else {			
+			pickerContainer.view.frame = CGRectMake(0, 0, 320, 480);
+			WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+			[appDelegate.navigationController.view addSubview:pickerContainer.view];
+			[appDelegate.navigationController.view bringSubviewToFront:pickerContainer.view];
+			[pickerContainer presentModalViewController:picker animated:YES];
+		}
     }
 }
 
@@ -412,14 +424,25 @@
 		}
 	}
 	
-	if(pickerContainer == nil)
-		pickerContainer = [[UIViewController alloc] init];
-	
-	pickerContainer.view.frame = CGRectMake(0, 0, 320, 480);
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-	[appDelegate.navigationController.view addSubview:pickerContainer.view];
-	[appDelegate.navigationController.view bringSubviewToFront:pickerContainer.view];
-	[pickerContainer presentModalViewController:picker animated:YES];
+	if(DeviceIsPad() == YES) {
+		UIBarButtonItem *barButton = postDetailViewController.movieButton;	
+		if (addPopover == nil) {
+			addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
+			addPopover.delegate = self;
+		}
+		[addPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		[[CPopoverManager instance] setCurrentPopoverController:addPopover];
+	}
+	else {
+		if(pickerContainer == nil)
+			pickerContainer = [[UIViewController alloc] init];
+		
+		pickerContainer.view.frame = CGRectMake(0, 0, 320, 480);
+		WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+		[appDelegate.navigationController.view addSubview:pickerContainer.view];
+		[appDelegate.navigationController.view bringSubviewToFront:pickerContainer.view];
+		[pickerContainer presentModalViewController:picker animated:YES];
+	}
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(deviceDidRotate:)
@@ -762,11 +785,6 @@
 			[self processRecordedVideo];
 		else
 			[self performSelectorOnMainThread:@selector(processLibraryVideo) withObject:nil waitUntilDone:NO];
-		
-		if(DeviceIsPad() == YES){
-			[addPopover dismissPopoverAnimated:YES];
-			addPopover = nil;
-		}
 	}
 	else if([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.image"]) {
 		UIImage *image = [info valueForKey:@"UIImagePickerControllerOriginalImage"];
@@ -802,15 +820,16 @@
 				break;
 		}
 		
-		if(DeviceIsPad() == YES){
-			[addPopover dismissPopoverAnimated:YES];
-			addPopover = nil;
-		}
-		else {
+		if(DeviceIsPad() == NO) {
 			[pickerContainer dismissModalViewControllerAnimated:NO];
 			pickerContainer.view.frame = CGRectMake(0, 2000, 0, 0);
 		}
-		
+	}
+	
+	if(DeviceIsPad() == YES){
+		[addPopover dismissPopoverAnimated:YES];
+		[[CPopoverManager instance] setCurrentPopoverController:NULL];
+		addPopover = nil;
 	}
 }
 
