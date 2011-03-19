@@ -11,6 +11,7 @@
 - (void) displayResponseErrors;
 - (void) displayErrors:(NSString *)status;
 - (NSError *)errorWithResponse:(XMLRPCResponse *)res;
+- (void) deleteEncodedTmpFile; 
 @end
 
 
@@ -386,10 +387,23 @@
     [super viewDidUnload];
 }
 
+
+-(void) deleteEncodedTmpFile {
+	if ([[NSFileManager defaultManager] fileExistsAtPath:self.localEncodedURL]) {
+		NSError *error;
+		BOOL success =  [[NSFileManager defaultManager] removeItemAtPath:self.localEncodedURL error:&error];
+		if (!success) 
+			NSLog(@"Error deleting data path: %@", [error localizedDescription]);
+	}
+}
+
+
 #pragma mark ASIHTTPRequest delegate
 - (void)requestFinished:(ASIHTTPRequest *)req {
 	WPLog(@"requestFinished: %@", self);
 	
+	[self deleteEncodedTmpFile];
+		  
 	NSMutableDictionary *videoMeta = [[NSMutableDictionary alloc] init];
 	NSMutableDictionary *imageMeta = [[NSMutableDictionary alloc] init];
 	
@@ -538,6 +552,9 @@
 
 
 - (void)requestFailed:(ASIHTTPRequest *)req {
+
+	[self deleteEncodedTmpFile];
+	
 	NSError *error = [req error];
 	NSString *errorMessage = [error localizedDescription];
 	WPLog(@"connection failed: %@", errorMessage);
@@ -546,6 +563,9 @@
 }
 
 - (void)connection:(NSURLConnection *)conn didFailWithError:(NSError *)error {
+
+	[self deleteEncodedTmpFile];
+	
 	WPLog(@"connection failed: %@", [error localizedDescription]);
 	[self updateStatus:@"Upload failed. Please try again."];
 
