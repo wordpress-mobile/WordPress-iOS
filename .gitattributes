@@ -504,7 +504,6 @@ c_tidy/win32tc.h -text
 /tags@2x.png -text svneol=unset#unset
 /tagsHighlighted.png -text svneol=unset#unset
 /tagsHighlighted@2x.png -text svneol=unset#unset
-/toolbar-2g-bg.png -text
 /uncheck.png -text
 /uncheck@2x.png -text
 /uncrustify.cfg -text

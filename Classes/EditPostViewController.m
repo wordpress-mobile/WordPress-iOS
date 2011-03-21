@@ -242,13 +242,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[toolbar setItems:toolbarItems];
 	}
 	
-	float version = [[[UIDevice currentDevice] systemVersion] floatValue];
-	if (version < 3.2){
-		//match iOS 4 toolbar glossy black bg
-		[self.toolbar insertSubview:[[[UIImageView alloc]
-									  initWithImage:[UIImage imageNamed:@"toolbar-2g-bg.png"]] autorelease] atIndex:0];
-	}
-	
 	if (self.post && self.post.geolocation != nil && self.post.blog.geolocationEnabled) {
 		self.hasLocation.enabled = YES;
 	} else {
