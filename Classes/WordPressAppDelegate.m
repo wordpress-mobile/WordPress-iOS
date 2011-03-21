@@ -311,12 +311,16 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)showErrorAlert:(NSString *)message {
+	if([self isAlertRunning] == YES) return; //another alert is already shown 
+	[self setAlertRunning:YES];
     [self showAlertWithTitle:@"Error" message:message];
 }
 
 - (void)showNotificationErrorAlert:(NSNotification *)notification {
 	NSString *cleanedErrorMsg = nil;
-	//NSDictionary *usrInfo = [notification userInfo];
+	
+	if([self isAlertRunning] == YES) return; //another alert is already shown 
+	[self setAlertRunning:YES];
 	
 	if([[notification object] isKindOfClass:[NSError class]]) {
 		
@@ -328,16 +332,19 @@ static WordPressAppDelegate *wordPressApp = NULL;
 			if([err code] == 401)
 				cleanedErrorMsg = @"Sorry, you cannot access this feature. Please check your User Role on this blog.";
 			else if([err code] == 403) { //403 = bad username/password
-				//check if the user has NOT changed the blog during the loading
 				NSDictionary *errInfo = [notification userInfo];
-				if( (errInfo != nil) && ([errInfo objectForKey:@"currentBlog"] != nil )) {
-					if(currentBlog == [errInfo objectForKey:@"currentBlog"])
-						[self performSelectorOnMainThread:@selector(showPasswordAlert) withObject:nil waitUntilDone:NO];
+				//check if the user has NOT changed the blog during the loading
+				if( (errInfo != nil) && ([errInfo objectForKey:@"currentBlog"] != nil ) 
+				   && currentBlog == [errInfo objectForKey:@"currentBlog"] ) {
+					[self performSelectorOnMainThread:@selector(showPasswordAlert) withObject:nil waitUntilDone:NO];
+				} else {
+					//do not show the alert
+					[self setAlertRunning:NO];
 				}
 				return;
 			}
 		}
-	} else {
+	} else { //the notification obj is a String
 		cleanedErrorMsg  = (NSString *)[notification object];
 	}
 	
@@ -349,7 +356,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 
 - (void)showPasswordAlert {
-	
+
 	UITextField *passwordTextField;
 	UILabel *labelPasswd;
 	
@@ -908,9 +915,9 @@ static WordPressAppDelegate *wordPressApp = NULL;
 #pragma mark UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex { 
+	[self setAlertRunning:NO];
 	
 	if (alertView.tag == 101) { //Password Alert
-		
 		UITextField *passwordTextField = (UITextField *)[alertView viewWithTag:123];
 		if(currentBlog != nil) {
 			NSError *error = nil;
