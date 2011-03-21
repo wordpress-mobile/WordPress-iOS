@@ -18,6 +18,7 @@
 - (void)showSplashView;
 - (void)checkIfStatsShouldRun;
 - (void)runStats;
+- (void) showPasswordAlert;
 @end
 
 NSString *CrashFilePath() {
@@ -315,6 +316,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)showNotificationErrorAlert:(NSNotification *)notification {
 	NSString *cleanedErrorMsg = nil;
+	//NSDictionary *usrInfo = [notification userInfo];
 	
 	if([[notification object] isKindOfClass:[NSError class]]) {
 		
@@ -325,8 +327,11 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		if ([[err domain] isEqualToString:@"org.wordpress.iphone"]){
 			if([err code] == 401)
 				cleanedErrorMsg = @"Sorry, you cannot access this feature. Please check your User Role on this blog.";
+			else if([err code] == 403) {
+				[self performSelectorOnMainThread:@selector(showPasswordAlert) withObject:nil waitUntilDone:NO];
+				return;
+			}
 		}
-		
 	} else {
 		cleanedErrorMsg  = (NSString *)[notification object];
 	}
@@ -337,6 +342,56 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	[self showAlertWithTitle:@"Error" message:cleanedErrorMsg];
 }
 
+
+- (void)showPasswordAlert {
+	
+	UITextField *passwordTextField;
+	UILabel *labelPasswd;
+	
+	NSString *lineBreaks;
+	
+	if (DeviceIsPad())
+		lineBreaks = @"\n\n\n\n";
+	else 
+		lineBreaks = @"\n\n\n";
+	
+	UIAlertView *customSizeAlert = [[UIAlertView alloc] initWithTitle:@"Error: Incorrect password. Please re-insert your password" 
+															  message:lineBreaks // IMPORTANT
+															 delegate:self 
+													cancelButtonTitle:@"Cancel" 
+													otherButtonTitles:@"OK", nil];
+	
+	customSizeAlert.tag = 101;
+	
+	labelPasswd = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 48.0, 260.0, 29.0)];
+	labelPasswd.backgroundColor = [UIColor clearColor];
+	labelPasswd.textColor = [UIColor whiteColor];
+	labelPasswd.text = @"Password";
+	[customSizeAlert addSubview:labelPasswd];
+	[labelPasswd release];
+	
+	passwordTextField = [[UITextField alloc]  initWithFrame:CGRectMake(12.0, 82.0, 260.0, 29.0)]; 
+	[passwordTextField setBackgroundColor:[UIColor whiteColor]];
+	[passwordTextField setPlaceholder:@"WordPress password"];
+	passwordTextField.keyboardType = UIKeyboardTypeDefault;
+	passwordTextField.secureTextEntry = YES;
+	
+	[passwordTextField setTag:123];
+	
+	[customSizeAlert addSubview:passwordTextField];
+	
+	//fix the dialog position for older devices on iOS 3
+	float version = [[[UIDevice currentDevice] systemVersion] floatValue];
+	if (version <= 3.1)
+	{
+		customSizeAlert.transform = CGAffineTransformTranslate(customSizeAlert.transform, 0.0, 100.0);
+	}
+	
+	[customSizeAlert show];
+	[customSizeAlert release];
+	
+	[passwordTextField becomeFirstResponder]; //this line should always be called on MainThread
+}
 
 - (void)setAutoRefreshMarkers {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -848,32 +903,58 @@ static WordPressAppDelegate *wordPressApp = NULL;
 #pragma mark UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex { 
-	switch(buttonIndex) {
-		case 0: {
-			HelpViewController *helpViewController = [[HelpViewController alloc] init];
-			WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+	
+	if (alertView.tag == 101) { //Password Alert
+		
+		UITextField *passwordTextField = (UITextField *)[alertView viewWithTag:123];
+		if(currentBlog != nil) {
+			NSError *error = nil;
 			
-			if (DeviceIsPad() && self.splitViewController.modalViewController) {
-				[self.navigationController pushViewController:helpViewController animated:YES];
-			}
-			else {
-				if (DeviceIsPad()) {
-					helpViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-					helpViewController.modalPresentationStyle = UIModalPresentationFormSheet;
-					[splitViewController presentModalViewController:helpViewController animated:YES];
-				}
-				else
-					[appDelegate.navigationController presentModalViewController:helpViewController animated:YES];
-			}
+			if ([passwordTextField.text isEqualToString:@""]) 
+				return;
 			
-			[helpViewController release];
-			break;
+			[SFHFKeychainUtils storeUsername:currentBlog.username
+								 andPassword:passwordTextField.text
+							  forServiceName:currentBlog.hostURL
+							  updateExisting:YES
+									   error:&error];
+			
+			if (error) {
+				[FileLogger log:@"%@ %@ Error saving password for %@: %@", self, NSStringFromSelector(_cmd), currentBlog.url, error];
+			} else {
+				[FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), currentBlog.url];
+			}
 		}
-		case 1:
-			//ok
-			break;
-		default:
-			break;
+	} else { 
+		//Need Help Alert
+		switch(buttonIndex) {
+			case 0: {
+				HelpViewController *helpViewController = [[HelpViewController alloc] init];
+				WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+				
+				if (DeviceIsPad() && self.splitViewController.modalViewController) {
+					[self.navigationController pushViewController:helpViewController animated:YES];
+				}
+				else {
+					if (DeviceIsPad()) {
+						helpViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+						helpViewController.modalPresentationStyle = UIModalPresentationFormSheet;
+						[splitViewController presentModalViewController:helpViewController animated:YES];
+					}
+					else
+						[appDelegate.navigationController presentModalViewController:helpViewController animated:YES];
+				}
+				
+				[helpViewController release];
+				break;
+			}
+			case 1:
+				//ok
+				break;
+			default:
+				break;
+		}
+		
 	}
 }
 
