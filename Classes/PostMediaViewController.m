@@ -447,9 +447,9 @@
 		[pickerContainer presentModalViewController:picker animated:YES];
 	}
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self
+	/*[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(deviceDidRotate:)
-												 name:@"UIDeviceOrientationDidChangeNotification" object:nil];
+												 name:@"UIDeviceOrientationDidChangeNotification" object:nil];*/
 }
 
 - (MediaOrientation)interpretOrientation:(UIDeviceOrientation)theOrientation {
