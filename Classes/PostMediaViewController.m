@@ -233,7 +233,7 @@
         return;*/
 		isShowingMediaPickerActionSheet = NO;
 		NSString *faultString = @"You can upload videos to your blog with VideoPress. Would you like to learn more about VideoPress now?";
-		UIAlertView *uploadAlert = [[UIAlertView alloc] initWithTitle:@"Info." 
+		UIAlertView *uploadAlert = [[UIAlertView alloc] initWithTitle:@"VideoPress" 
 												 message:faultString 
 												delegate:self
 									   cancelButtonTitle:@"No" otherButtonTitles:nil];

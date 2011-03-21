@@ -355,24 +355,24 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	else 
 		lineBreaks = @"\n\n\n";
 	
-	UIAlertView *customSizeAlert = [[UIAlertView alloc] initWithTitle:@"Error: Incorrect password. Please re-insert your password" 
+	UIAlertView *customSizeAlert = [[UIAlertView alloc] initWithTitle:@"Incorrect Password" 
 															  message:lineBreaks // IMPORTANT
 															 delegate:self 
 													cancelButtonTitle:@"Cancel" 
-													otherButtonTitles:@"OK", nil];
+													otherButtonTitles:@"Save", nil];
 	
 	customSizeAlert.tag = 101;
 	
 	labelPasswd = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 48.0, 260.0, 29.0)];
 	labelPasswd.backgroundColor = [UIColor clearColor];
 	labelPasswd.textColor = [UIColor whiteColor];
-	labelPasswd.text = @"Password";
+	labelPasswd.text = @"Please update your password:";
 	[customSizeAlert addSubview:labelPasswd];
 	[labelPasswd release];
 	
 	passwordTextField = [[UITextField alloc]  initWithFrame:CGRectMake(12.0, 82.0, 260.0, 29.0)]; 
 	[passwordTextField setBackgroundColor:[UIColor whiteColor]];
-	[passwordTextField setPlaceholder:@"WordPress password"];
+	[passwordTextField setContentVerticalAlignment: UIControlContentVerticalAlignmentCenter];
 	passwordTextField.keyboardType = UIKeyboardTypeDefault;
 	passwordTextField.secureTextEntry = YES;
 	
