@@ -313,6 +313,9 @@
 	else if(isShowingChangeOrientationActionSheet == YES) {
 		switch (buttonIndex) {
 			case 0:
+				self.currentOrientation = kPortrait;
+				break;
+			case 1:
 				self.currentOrientation = kLandscape;
 				break;
 			default:
@@ -548,9 +551,9 @@
 	isShowingChangeOrientationActionSheet = YES;
 	UIActionSheet *orientationActionSheet = [[UIActionSheet alloc] initWithTitle:@"Orientation changed during recording. Please choose which orientation to use for this video." 
 																		delegate:self 
-															   cancelButtonTitle:@"Portrait" 
+															   cancelButtonTitle:nil 
 														  destructiveButtonTitle:nil 
-															   otherButtonTitles:@"Landscape", nil];
+															   otherButtonTitles:@"Portrait", @"Landscape", nil];
 	[orientationActionSheet showInView:postDetailViewController.view];
 	[orientationActionSheet release];
 }
@@ -1194,7 +1197,7 @@
 
 - (void)deviceDidRotate:(NSNotification *)notification {
 	if(isAddingMedia == YES) {
-		if(self.currentOrientation != [self interpretOrientation:[[UIDevice currentDevice] orientation]]) {
+		if(self.currentOrientation != [self interpretOrientation:[[UIDevice currentDevice] orientation]]) {		
 			self.currentOrientation = [self interpretOrientation:[[UIDevice currentDevice] orientation]];
 			didChangeOrientationDuringRecord = YES;
 		}
