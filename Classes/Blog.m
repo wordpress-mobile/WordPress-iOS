@@ -365,18 +365,18 @@
     self.isSyncingPages = YES;
     int num;
 	
-    // Don't load more than 10 pages if we aren't at the end of the table,
+    // Don't load more than 20 pages if we aren't at the end of the table,
     // even if they were previously donwloaded
     // 
     // Blogs with long history can get really slow really fast, 
     // with no chance to go back
     if (more) {
-        num = MAX([[self syncedPages] count], 10);
+        num = MAX([[self syncedPages] count], 20);
         if ([self.hasOlderPages boolValue]) {
-            num += 10;
+            num += 20;
         }
     } else {
-        num = 10;
+        num = 20;
     }
 	
     WPLog(@"Loading %i pages...", num);
