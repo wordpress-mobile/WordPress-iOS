@@ -327,8 +327,13 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		if ([[err domain] isEqualToString:@"org.wordpress.iphone"]){
 			if([err code] == 401)
 				cleanedErrorMsg = @"Sorry, you cannot access this feature. Please check your User Role on this blog.";
-			else if([err code] == 403) {
-				[self performSelectorOnMainThread:@selector(showPasswordAlert) withObject:nil waitUntilDone:NO];
+			else if([err code] == 403) { //403 = bad username/password
+				//check if the user has NOT changed the blog during the loading
+				NSDictionary *errInfo = [notification userInfo];
+				if( (errInfo != nil) && ([errInfo objectForKey:@"currentBlog"] != nil )) {
+					if(currentBlog == [errInfo objectForKey:@"currentBlog"])
+						[self performSelectorOnMainThread:@selector(showPasswordAlert) withObject:nil waitUntilDone:NO];
+				}
 				return;
 			}
 		}

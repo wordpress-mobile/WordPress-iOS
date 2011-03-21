@@ -305,7 +305,8 @@
 	if(!error)
 		[self.blog syncPostsWithError:&error loadMore:NO];
 	if(error) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error];
+		NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
 	} 
 	
 	[self performSelectorOnMainThread:@selector(refreshPostList) withObject:nil waitUntilDone:NO];
@@ -373,7 +374,8 @@
             
 			[post removeWithError:&error];
 			if(error) {
-				[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error];
+				NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
+				[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
 				if(DeviceIsPad() && self.postReaderViewController) {
 					if(self.postReaderViewController.apost == post) {
 						//push an the W logo on the right. 
