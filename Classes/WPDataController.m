@@ -710,6 +710,8 @@
 	[request setUseKeychainPersistence:YES];
     [request setValidatesSecureCertificate:NO];
 	[request setTimeOutSeconds:30];
+	NSString *version  = [[[NSBundle mainBundle] infoDictionary] valueForKey:[NSString stringWithFormat:@"CFBundleVersion"]];
+	[request addRequestHeader:@"User-Agent" value:[NSString stringWithFormat:@"wp-iphone/%@",version]];
     if (retryOnTimeout) {
         [request setNumberOfTimesToRetryOnTimeout:2];
     } else {
