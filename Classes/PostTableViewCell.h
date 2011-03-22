@@ -18,6 +18,7 @@
 
 #define LABEL_HEIGHT            19
 #define DATE_LABEL_HEIGHT       15
+#define STATUS_LABEL_WIDTH		50
 #define VERTICAL_OFFSET         2
 
 #define POST_LOCK_IMAGE         @"lock.png"
@@ -27,6 +28,7 @@
 
     UILabel *nameLabel;
     UILabel *dateLabel;
+	UILabel *statusLabel;
     UIActivityIndicatorView *activityIndicator;
     BOOL saving;
 	BOOL gettingMore;

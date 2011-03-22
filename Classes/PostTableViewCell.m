@@ -10,6 +10,7 @@
 @interface PostTableViewCell (Private)
 - (void)addNameLabel;
 - (void)addDateLabel;
+- (void)addStatusLabel;
 - (void)addActivityIndicator;
 
 @end
@@ -24,6 +25,7 @@
 
         [self addNameLabel];
         [self addDateLabel];
+		[self addStatusLabel];
         [self addActivityIndicator];
     }
 
@@ -33,6 +35,7 @@
 - (void)dealloc {
     [nameLabel release];
     [dateLabel release];
+	[statusLabel release];
     [activityIndicator release];
     [super dealloc];
 }
@@ -80,6 +83,22 @@
 		}
 		
 		nameLabel.text = title;
+		if ([post.status isEqualToString:@"pending"]) {
+			statusLabel.textColor = [UIColor lightGrayColor];
+			statusLabel.text = @"Pending";
+		} else if ([post.status isEqualToString:@"draft"]) {
+			statusLabel.textColor = [UIColor colorWithRed:0.796875f green:0.0f blue:0.0f alpha:1.0f];
+			statusLabel.text = post.statusTitle;
+		} else {
+			statusLabel.textColor = [UIColor blackColor];
+			statusLabel.text = @"";
+		}
+
+		CGRect rect = statusLabel.frame;
+		CGSize statusSize = [statusLabel.text sizeWithFont:statusLabel.font];
+		rect.size.width = statusSize.width;
+		rect.origin.x = 288 - statusSize.width;
+		statusLabel.frame = rect;
 		
 		NSDate *date = [post valueForKey:@"dateCreated"];
 		dateLabel.text = [dateFormatter stringFromDate:date];
@@ -137,6 +156,18 @@
     dateLabel.backgroundColor = [UIColor clearColor];
 
     [self.contentView addSubview:dateLabel];
+}
+
+- (void)addStatusLabel {
+    CGRect rect = CGRectMake(288 - STATUS_LABEL_WIDTH, nameLabel.frame.origin.y + LABEL_HEIGHT + VERTICAL_OFFSET, STATUS_LABEL_WIDTH, DATE_LABEL_HEIGHT);
+	
+	statusLabel = [[UILabel alloc] initWithFrame:rect];
+    statusLabel.font = [UIFont systemFontOfSize:DATE_FONT_SIZE];
+    statusLabel.textColor = [UIColor blackColor];
+    statusLabel.backgroundColor = [UIColor whiteColor];
+//	statusLabel.layer.cornerRadius = DATE_LABEL_HEIGHT / 2;
+	
+    [self.contentView addSubview:statusLabel];
 }
 
 - (void)addActivityIndicator {
