@@ -52,6 +52,14 @@
     return page;
 }
 
++ (NSString *)titleForRemoteStatus:(NSNumber *)remoteStatus {
+    if ([remoteStatus intValue] == AbstractPostRemoteStatusSync) {
+		return @"Pages";
+    } else {
+		return [super titleForRemoteStatus:remoteStatus];
+	}
+}
+
 - (void )updateFromDictionary:(NSDictionary *)postInfo {
 	self.postTitle      = [postInfo objectForKey:@"title"];
     self.postID         = [[postInfo objectForKey:@"page_id"] numericValue];

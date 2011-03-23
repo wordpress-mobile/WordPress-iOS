@@ -178,7 +178,7 @@
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
     NSString *sectionName = [sectionInfo name];
     
-    return [AbstractPost titleForRemoteStatus:[sectionName numericValue]];
+    return [Post titleForRemoteStatus:[sectionName numericValue]];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

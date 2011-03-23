@@ -75,6 +75,13 @@
     [post release];
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
+    NSString *sectionName = [sectionInfo name];
+    
+    return [Page titleForRemoteStatus:[sectionName numericValue]];
+}
+
 #pragma mark -
 #pragma mark Syncs methods
 

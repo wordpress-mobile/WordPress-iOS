@@ -204,7 +204,7 @@
             return @"Failed";
             break;
         case AbstractPostRemoteStatusSync:
-            return @"Posted";
+            return @"Posts";
             break;
         default:
             return @"Local";
