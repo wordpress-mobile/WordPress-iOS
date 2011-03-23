@@ -270,7 +270,6 @@
 			BOOL keep = NO;
 			//if the file is not referenced in any post we can delete it
 			for (Media *currentMediaToKeepPath in mediaToKeep) {
-				NSLog(@"[currentMediaToKeepPath localURL]: %@", [currentMediaToKeepPath localURL]);
 				if([[currentMediaToKeepPath localURL] isEqualToString:filepath]) {
 					keep = YES;
 					break;
@@ -279,10 +278,9 @@
 			
 			if(keep == NO) {
 				[fileManager removeItemAtPath:filepath error:NULL];
-				NSLog(@"removed the file: %@", filepath);
 			}
 		}
-
+	
 	[pool release];
 }
 
