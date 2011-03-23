@@ -304,7 +304,6 @@
 				username = textField.text;
 				username = [[[username stringByReplacingOccurrencesOfString:@" " withString:@""] lowercaseString] retain];
 				textField.text = username;
-				footerText = @" ";
 			}
 			break;
 		case 1:
@@ -313,7 +312,6 @@
 			}
 			else {
 				password = textField.text;
-				footerText = @" ";
 			}
 			break;
 		default:
@@ -386,10 +384,9 @@
 	else {
 		footerText = @"Sign in failed. Please try again.";
 		buttonText = @"Sign In";
-		[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
 		isSigningIn = NO;
 		[self.navigationItem setHidesBackButton:NO animated:NO];
-		[self refreshTable];
+		[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
 	}
 	[pool release];
 }
