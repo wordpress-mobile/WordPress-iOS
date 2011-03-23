@@ -76,12 +76,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBlogWithoutAnimation) name:@"NewBlogAdded" object:nil];
 	
 	[self checkEditButton];
-		
-	[self.tableView reloadData];
-	[self.tableView endEditing:YES];
-	
-	self.tableView.editing = NO;
-	[self cancel:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -89,16 +83,22 @@
 	[super viewWillDisappear:animated];
 }
 
+
 - (void) checkEditButton{
-	if([Blog countWithContext:appDelegate.managedObjectContext] > 0)
+	[self.tableView reloadData];
+	[self.tableView endEditing:YES];
+	self.tableView.editing = NO;
+	
+	if([Blog countWithContext:appDelegate.managedObjectContext] > 0) {
 		self.navigationItem.leftBarButtonItem = self.editButtonItem;
+		[self cancel:self];
+	}
 	else
 		self.navigationItem.leftBarButtonItem = nil;
 }
 
 - (void)blogsRefreshNotificationReceived:(NSNotification *)notification {
 	[resultsController performFetch:nil];
-    [self.tableView reloadData];
 	[self checkEditButton];
 }
 
