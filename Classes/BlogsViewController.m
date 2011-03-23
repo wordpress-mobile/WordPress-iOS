@@ -1,5 +1,9 @@
 #import "BlogsViewController.h"
 
+@interface BlogsViewController (Private)
+- (void) cleanUnusedMediaFileFromTmpDir;
+@end
+
 @implementation BlogsViewController
 @synthesize resultsController, currentBlog;
 
@@ -23,6 +27,8 @@
         NSLog(@"Error fetching request (Blogs) %@", [error localizedDescription]);
     } else {
         NSLog(@"fetched blogs: %@", [resultsController fetchedObjects]);
+		//Start a check on the media files that should be deleted from disk
+		[self performSelectorInBackground:@selector(cleanUnusedMediaFileFromTmpDir) withObject:nil];
     }
 	
 	// Check to see if we should prompt about rating in the App Store
@@ -229,6 +235,56 @@
 
 #pragma mark -
 #pragma mark Custom methods
+
+
+- (void) cleanUnusedMediaFileFromTmpDir {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	NSMutableArray *mediaToKeep = [NSMutableArray array];	
+	//get a references to media files linked in a post
+	for (Blog *blog in [resultsController fetchedObjects]) {
+		NSSet *posts = blog.posts;
+		if (posts && (posts.count > 0)) { 
+			for (AbstractPost *post in posts) {
+				//check for media file
+				NSSet *mediaFiles = post.media;
+				for (Media *media in mediaFiles) {
+					[mediaToKeep addObject:media];
+				}
+				mediaFiles = nil;
+			}
+		}
+		posts = nil;
+	}
+	
+	//searches for jpg files within the app temp file
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDirectory = [paths objectAtIndex:0];
+	NSArray *contentsOfDir = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:NULL];
+	
+	for (NSString *currentPath in contentsOfDir)
+		if([currentPath isMatchedByRegex:@".jpg$"]) {
+			NSString *filepath = [documentsDirectory stringByAppendingPathComponent:currentPath];
+			
+			BOOL keep = NO;
+			//if the file is not referenced in any post we can delete it
+			for (Media *currentMediaToKeepPath in mediaToKeep) {
+				NSLog(@"[currentMediaToKeepPath localURL]: %@", [currentMediaToKeepPath localURL]);
+				if([[currentMediaToKeepPath localURL] isEqualToString:filepath]) {
+					keep = YES;
+					break;
+				}
+			}
+			
+			if(keep == NO) {
+				[fileManager removeItemAtPath:filepath error:NULL];
+				NSLog(@"removed the file: %@", filepath);
+			}
+		}
+
+	[pool release];
+}
 
 - (BOOL)canChangeBlog:(Blog *) blog {
 	//we should check  isSyncingPosts, isSyncingPages, isSyncingComments first bc is a fast check
