@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CommonCrypto/CommonDigest.h>
 
 @interface Blog : NSManagedObject {
 }
@@ -39,6 +40,7 @@
 - (BOOL)syncPagesWithError:(NSError **)error loadMore:(BOOL)more;
 - (BOOL)syncCategoriesWithError:(NSError **)error;
 - (BOOL)syncCommentsWithError:(NSError **)error;
+- (NSString *) returnMD5Hash:(NSString*)concat;
 
 #pragma mark -
 #pragma mark Class methods

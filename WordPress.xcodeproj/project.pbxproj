@@ -60,6 +60,7 @@
 		3704ACFD13128C9800120911 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3704ACFB13128C9800120911 /* Default@2x.png */; };
 		3744A0DE130ABB0800CE7BE1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3744A0DC130ABB0800CE7BE1 /* HelpViewController.m */; };
 		3744A0DF130ABB0800CE7BE1 /* HelpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3744A0DD130ABB0800CE7BE1 /* HelpViewController.xib */; };
+		375D090D133B94C3000CC9CD /* BlogsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 375D090C133B94C3000CC9CD /* BlogsTableViewCell.m */; };
 		3768BE87130404FF00E7C9A9 /* BetaUIWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 3768BE86130404FF00E7C9A9 /* BetaUIWindow.m */; };
 		3768BEF113041E7900E7C9A9 /* BetaFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3768BEEF13041E7800E7C9A9 /* BetaFeedbackViewController.m */; };
 		3768BEF213041E7900E7C9A9 /* BetaFeedbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3768BEF013041E7900E7C9A9 /* BetaFeedbackViewController.xib */; };
@@ -449,6 +450,8 @@
 		3744A0DB130ABB0800CE7BE1 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
 		3744A0DC130ABB0800CE7BE1 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
 		3744A0DD130ABB0800CE7BE1 /* HelpViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HelpViewController.xib; sourceTree = "<group>"; };
+		375D090B133B94C3000CC9CD /* BlogsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogsTableViewCell.h; sourceTree = "<group>"; };
+		375D090C133B94C3000CC9CD /* BlogsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogsTableViewCell.m; sourceTree = "<group>"; };
 		3768BE85130404FF00E7C9A9 /* BetaUIWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BetaUIWindow.h; sourceTree = "<group>"; };
 		3768BE86130404FF00E7C9A9 /* BetaUIWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BetaUIWindow.m; sourceTree = "<group>"; };
 		3768BEEE13041E7800E7C9A9 /* BetaFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BetaFeedbackViewController.h; sourceTree = "<group>"; };
@@ -1202,6 +1205,8 @@
 				83CACE941235A003003DFA20 /* UILoadMoreCell.m */,
 				83CAD2EB1235E21E003DFA20 /* UITextFieldCell.h */,
 				83CAD2EC1235E21E003DFA20 /* UITextFieldCell.m */,
+				375D090B133B94C3000CC9CD /* BlogsTableViewCell.h */,
+				375D090C133B94C3000CC9CD /* BlogsTableViewCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -2251,6 +2256,7 @@
 				E18D43E1130BD8E9006155DE /* PostToAbstractPost.m in Sources */,
 				E11930C41312F8A800F34124 /* FakeMigration.m in Sources */,
 				E1B7B983131553FF005318BD /* FileLogger.m in Sources */,
+				375D090D133B94C3000CC9CD /* BlogsTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2278,6 +2284,7 @@
 					DEBUGMODE,
 				);
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = "Info-dev.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
 				LIBRARY_SEARCH_PATHS = (

@@ -96,7 +96,7 @@
 
 - (UIImage *)favicon {
     UIImage *faviconImage = nil;
-    NSString *fileName = [NSString stringWithFormat:@"favicon-%@-%@.png", self.hostURL, self.blogID];
+    NSString *fileName = [NSString stringWithFormat:@"blavatar-%@-%@.png", self.hostURL, self.blogID];
 	fileName = [fileName stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""];
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *faviconFilePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:fileName];
@@ -115,11 +115,7 @@
 - (void)removeFavicon {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	NSString *faviconURL = [NSString stringWithFormat:@"%@/favicon.ico", self.url];
-	if(![faviconURL hasPrefix:@"http"])
-		faviconURL = [NSString stringWithFormat:@"http://%@", faviconURL];
-	
-    NSString *fileName = [NSString stringWithFormat:@"favicon-%@-%@.png", self.hostURL, self.blogID];
+    NSString *fileName = [NSString stringWithFormat:@"blavatar-%@-%@.png", self.hostURL, self.blogID];
 	fileName = [fileName stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""];
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *faviconFilePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:fileName];
@@ -137,20 +133,17 @@
 - (void)downloadFaviconInBackground {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	NSString *faviconURL = [NSString stringWithFormat:@"%@/favicon.ico", self.url];
-	if(![faviconURL hasPrefix:@"http"])
-		faviconURL = [NSString stringWithFormat:@"http://%@", faviconURL];
+	NSURL *blogDomain = [NSURL URLWithString:self.xmlrpc];
+	NSString *digest = [self returnMD5Hash:[blogDomain host]];
 	
-    NSString *fileName = [NSString stringWithFormat:@"favicon-%@-%@.png", self.hostURL, self.blogID];
+	NSString *faviconURL = [NSString stringWithFormat:@"http://gravatar.com/blavatar/%@?s=64&d=404", digest];
+	
+    NSString *fileName = [NSString stringWithFormat:@"blavatar-%@-%@.png", self.hostURL, self.blogID];
 	fileName = [fileName stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""];
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *faviconFilePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:fileName];
 	UIImage *faviconImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:faviconURL]]];
 	faviconImage = [UIImage imageWithData:UIImagePNGRepresentation(faviconImage)];
-	faviconImage = [faviconImage thumbnailImage:16
-							  transparentBorder:0
-								   cornerRadius:0
-						   interpolationQuality:kCGInterpolationHigh];
 	
 	if (faviconImage != NULL) {
 		//[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
@@ -493,6 +486,18 @@
     self.isSyncingComments = NO;
 	[dc release];
     return YES;
+}
+
+//generate md5 hash from string
+- (NSString *) returnMD5Hash:(NSString*)concat {
+    const char *concat_str = [concat UTF8String];
+    unsigned char result[CC_MD5_DIGEST_LENGTH];
+    CC_MD5(concat_str, strlen(concat_str), result);
+    NSMutableString *hash = [NSMutableString string];
+    for (int i = 0; i < 16; i++)
+        [hash appendFormat:@"%02X", result[i]];
+    return [hash lowercaseString];
+	
 }
 
 #pragma mark -

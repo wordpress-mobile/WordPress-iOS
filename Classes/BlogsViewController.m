@@ -1,4 +1,5 @@
 #import "BlogsViewController.h"
+#import "BlogsTableViewCell.h"
 
 @interface BlogsViewController (Private)
 - (void) cleanUnusedMediaFileFromTmpDir;
@@ -74,7 +75,7 @@
 		
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blogsRefreshNotificationReceived:) name:@"BlogsRefreshNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBlogWithoutAnimation) name:@"NewBlogAdded" object:nil];
-	
+
 	[self checkEditButton];
 }
 
@@ -102,6 +103,7 @@
 	[self checkEditButton];
 }
 
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     if (DeviceIsPad())
 		return YES;
@@ -124,11 +126,11 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"BlogCell";
-    UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    BlogsTableViewCell *cell = (BlogsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     Blog *blog = [resultsController objectAtIndexPath:indexPath];
 
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[BlogsTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
     }
 	
 #if defined __IPHONE_3_0

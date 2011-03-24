@@ -71,6 +71,8 @@ Classes/BlogSplitViewDetailViewController.m -text
 Classes/BlogSplitViewDetailViewController.xib -text
 Classes/BlogViewController.h -text
 Classes/BlogViewController.m -text
+Classes/BlogsTableViewCell.h -text
+Classes/BlogsTableViewCell.m -text
 Classes/BlogsViewController.h -text
 Classes/BlogsViewController.m -text
 Classes/CDeviceSupport.h -text
