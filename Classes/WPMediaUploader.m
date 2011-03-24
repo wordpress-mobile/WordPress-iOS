@@ -92,8 +92,6 @@
 - (void)updateStatus:(NSString *)status {
     WPLog(@"Upload Status: %@", status);
 	self.messageLabel.text = status;
-	[self.view setNeedsDisplay];
-	[self.view setNeedsLayout];
 }
 
 - (void)updateProgress:(NSDictionary *)values {
