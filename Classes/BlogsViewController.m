@@ -299,7 +299,7 @@
 			if(!canDelete) break;
 			
 			//check the post status
-			if(post.remoteStatus = AbstractPostRemoteStatusPushing)
+			if (post.remoteStatus == AbstractPostRemoteStatusPushing)
 				canDelete = NO;
 			
 			//check for media file
