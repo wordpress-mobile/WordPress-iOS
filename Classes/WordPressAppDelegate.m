@@ -658,7 +658,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)setAppBadge {
-    //[UIApplication sharedApplication].applicationIconBadgeNumber = [dataManager countOfAwaitingComments];
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 }
 
 - (void)checkWPcomAuthentication {
