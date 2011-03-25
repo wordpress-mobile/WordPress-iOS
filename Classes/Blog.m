@@ -38,11 +38,11 @@
 #pragma mark -
 #pragma mark Custom methods
 
-+ (BOOL)blogExistsForURL:(NSString *)theURL withContext:(NSManagedObjectContext *)moc {
++ (BOOL)blogExistsForURL:(NSString *)theURL withContext:(NSManagedObjectContext *)moc andUsername:(NSString *)username{
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog"
                                         inManagedObjectContext:moc]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"url like %@", theURL]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"url like %@ AND username = %@", theURL, username]];
     NSError *error = nil;
     NSArray *results = [moc executeFetchRequest:fetchRequest error:&error];
     [fetchRequest release]; fetchRequest = nil;
@@ -57,7 +57,7 @@
 		blogUrl = [blogUrl substringToIndex:blogUrl.length-1];
 	blogUrl= [blogUrl stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 
-    if (![self blogExistsForURL:blogUrl withContext:moc]) {
+    if (![self blogExistsForURL:blogUrl withContext:moc andUsername: [blogInfo objectForKey:@"username"]]) {
         blog = [[[Blog alloc] initWithEntity:[NSEntityDescription entityForName:@"Blog"
                                                               inManagedObjectContext:moc]
              insertIntoManagedObjectContext:moc] autorelease];

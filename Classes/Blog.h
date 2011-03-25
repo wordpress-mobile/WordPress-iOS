@@ -44,7 +44,7 @@
 
 #pragma mark -
 #pragma mark Class methods
-+ (BOOL)blogExistsForURL:(NSString *)theURL withContext:(NSManagedObjectContext *)moc;
++ (BOOL)blogExistsForURL:(NSString *)theURL withContext:(NSManagedObjectContext *)moc andUsername:(NSString *)username;
 + (Blog *)createFromDictionary:(NSDictionary *)blogInfo withContext:(NSManagedObjectContext *)moc;
 + (NSInteger)countWithContext:(NSManagedObjectContext *)moc;
 
