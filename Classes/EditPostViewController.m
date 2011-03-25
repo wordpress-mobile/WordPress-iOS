@@ -5,6 +5,12 @@
 
 NSTimeInterval kAnimationDuration = 0.3f;
 
+
+@interface EditPostViewController (Private)
+- (BOOL) isMediaInUploading;
+- (void) showMediaInUploadingalert;
+@end
+
 @implementation EditPostViewController
 
 @synthesize selectionTableViewController, segmentedTableViewController;
@@ -556,6 +562,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (IBAction)saveAction:(id)sender {
+	if( [self isMediaInUploading] ) {
+		[self showMediaInUploadingalert];
+		return;
+	}
 	[self savePost:YES];
 }
 
@@ -594,6 +604,32 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [appDelegate setAlertRunning:NO];
 }
 
+//check if there are media in uploading status
+-(BOOL) isMediaInUploading {
+	
+	BOOL isMediaInUploading = NO;
+	
+	NSSet *mediaFiles = self.apost.media;
+	for (Media *media in mediaFiles) {
+		if(media.remoteStatus == MediaRemoteStatusPushing) {
+			isMediaInUploading = YES;
+			break;
+		}
+	}
+	mediaFiles = nil;
+
+	return isMediaInUploading;
+}
+
+-(void) showMediaInUploadingalert {
+	//the post is using the network connection and cannot be stoped, show a message to the user
+	UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:@"Info"
+																  message:@"A Media file is currently in uploading. Please try later."
+																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[blogIsCurrentlyBusy show];
+	[blogIsCurrentlyBusy release];
+}
+
 - (IBAction)cancelView:(id)sender {
     [FlurryAPI logEvent:@"EditPost#cancelView"];
     if (!self.hasChanges) {
@@ -605,6 +641,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[postSettingsController endEditingAction:nil];
 	[self endEditingAction:nil];
     
+	if( [self isMediaInUploading] ) {
+		[self showMediaInUploadingalert];
+		return;
+	}
+		
 	UIActionSheet *actionSheet;
 	if (![self.apost hasRemote])
 		actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
