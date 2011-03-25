@@ -172,7 +172,7 @@
 }
 
 - (BOOL)isWPcom {
-    NSRange range = [self.url rangeOfString:@"wordpress.com"];
+    NSRange range = [self.xmlrpc rangeOfString:@"wordpress.com"];
 	return (range.location != NSNotFound);
 }
 
