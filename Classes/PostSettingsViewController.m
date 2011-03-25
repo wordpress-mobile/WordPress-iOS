@@ -88,7 +88,7 @@
     pickerView.showsSelectionIndicator = YES;
     isShowingKeyboard = NO;
     datePickerView = [[UIDatePicker alloc] initWithFrame:pickerView.frame];
-    datePickerView.minuteInterval = 15;
+    datePickerView.minuteInterval = 5;
     [datePickerView addTarget:self action:@selector(datePickerChanged) forControlEvents:UIControlEventValueChanged];
 
     if (!DeviceIsPad()) {
