@@ -457,6 +457,8 @@ c_tidy/win32tc.h -text
 /delete.png -text
 /down.png -text
 /down@2x.png -text
+/favicon-dotorg.png -text
+/favicon-dotorg@2x.png -text
 /favicon.png -text
 /favicon@2x.png -text
 /getLocation.png -text

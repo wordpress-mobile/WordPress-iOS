@@ -105,7 +105,10 @@
         faviconImage = [UIImage imageWithContentsOfFile:faviconFilePath];
     }
 	else {
-		faviconImage = [UIImage imageNamed:@"favicon.png"];
+        if ([self isWPcom])
+            faviconImage = [UIImage imageNamed:@"favicon.png"];
+        else
+            faviconImage = [UIImage imageNamed:@"favicon-dotorg.png"];
 		[self downloadFavicon];
 	}
 
