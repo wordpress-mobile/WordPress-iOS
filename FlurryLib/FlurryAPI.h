@@ -1,13 +1,12 @@
 //
 //  FlurryAPI.h
-//  Flurry iPhone Analytics Agent
+//  Flurry iOS Analytics Agent 2.8.3 ver 45
 //
 //  Copyright 2009 Flurry, Inc. All rights reserved.
-//
-#import <UIKit/UIKit.h>
+//	
+//	Methods in this header file are for use with Flurry Analytics
 
-@class CLLocationManager;
-@class CLLocation;
+#import <UIKit/UIKit.h>
 
 @interface FlurryAPI : NSObject {
 }
@@ -17,10 +16,9 @@
  */
 + (void)setAppVersion:(NSString *)version;		// override the app version
 + (NSString *)getFlurryAgentVersion;			// get the Flurry Agent version number
-+ (void)setAppCircleEnabled:(BOOL)value;		// default is NO
 + (void)setShowErrorInLogEnabled:(BOOL)value;	// default is NO
-+ (void)unlockDebugMode:(NSString*)debugModeKey apiKey:(NSString *)apiKey;	// generate debug logs for Flurry support
-+ (void)setPauseSecondsBeforeStartingNewSession:(int)seconds; // default is 10 seconds
++ (void)setDebugLogEnabled:(BOOL)value;			// generate debug logs for Flurry support, default is NO
++ (void)setSessionContinueSeconds:(int)seconds; // default is 10 seconds
 
 /*
  start session, attempt to send saved sessions to server 
@@ -45,8 +43,8 @@
 /*
  count page views
  */
-+ (void)countPageViews:(id)target;		// automatically track page view on UINavigationController or UITabBarController
-+ (void)countPageView;					// manually increment page view by 1
++ (void)logAllPageViews:(id)target;		// automatically track page view on UINavigationController or UITabBarController
++ (void)logPageView;					// manually increment page view by 1
 
 /*
  set user info
@@ -56,37 +54,15 @@
 + (void)setGender:(NSString *)gender;	// user's gender m or f
 
 /*
+ set location information
+ */
++ (void)setLatitude:(double)latitude longitude:(double)longitude horizontalAccuracy:(float)horizontalAccuracy verticalAccuracy:(float)verticalAccuracy;
+
+/*
  optional session settings that can be changed after start session
  */
 + (void)setSessionReportsOnCloseEnabled:(BOOL)sendSessionReportsOnClose;	// default is YES
 + (void)setSessionReportsOnPauseEnabled:(BOOL)setSessionReportsOnPauseEnabled;	// default is YES
 + (void)setEventLoggingEnabled:(BOOL)value;		// default is YES
-
-/* 
- create an AppCircle banner on a hook and a view parent 
- subsequent calls will return the same banner for the same hook and parent until removed with the API
- */
-+ (UIView *)getHook:(NSString *)hook xLoc:(int)x yLoc:(int)y view:(UIView *)view;
-/* 
- create an AppCircle banner on a hook and view parent using optional parameters 
- */
-+ (UIView *)getHook:(NSString *)hook xLoc:(int)x yLoc:(int)y view:(UIView *)view attachToView:(BOOL)attachToView orientation:(NSString *)orientation canvasOrientation:(NSString *)canvasOrientation autoRefresh:(BOOL)refresh canvasAnimated:(BOOL)canvasAnimated;
-/* 
- update an existing AppCircle banner with a new ad
- */
-+ (void)updateHook:(UIView *)banner;
-/* 
- remove an existing AppCircle banner from its hook and parent
- a new banner can be created on the same hook and parent after the existing banner is removed
- */
-+ (void)removeHook:(UIView *)banner;
-/*
- open the canvas without using a banner
- */
-+ (void)openCatalog:(NSString *)hook canvasOrientation:(NSString *)canvasOrientation canvasAnimated:(BOOL)canvasAnimated;
-/*
- refer to FlurryAdDelegate.h for delegate details
- */
-+ (void)setAppCircleDelegate:(id)delegate;
 
 @end
