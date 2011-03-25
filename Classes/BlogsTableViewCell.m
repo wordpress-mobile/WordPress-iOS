@@ -10,7 +10,31 @@
 #import "QuartzCore/QuartzCore.h"
 
 #define MARGIN 10;
+
+@interface BlogsTableViewCell (Private)
+- (void)blavatarLoaded:(NSNotification *)notification;
+@end
+
 @implementation BlogsTableViewCell
+
+- (void) addBlavatarNotificationSender:(id)sender {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blavatarLoaded:) name:BlavatarLoaded object:sender];
+}
+ 
+- (void)blavatarLoaded:(NSNotification *)notification {
+		NSDictionary *info  = (NSDictionary *)[notification userInfo];
+		if( (info != nil) && ([info objectForKey:@"hostURL"] != nil)
+		   && [self.detailTextLabel.text isEqualToString:[info objectForKey:@"hostURL"]]) {
+			self.image = [info objectForKey:@"faviconImage"];
+			[self setNeedsDisplay];
+		}
+}
+
+- (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+    [super dealloc];
+}
 
 
 - (void) layoutSubviews {
