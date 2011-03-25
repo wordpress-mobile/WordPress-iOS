@@ -143,6 +143,7 @@
 #endif
 
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	[cell addBlavatarNotificationSender:blog];
 
     return cell;
 }

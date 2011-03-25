@@ -87,6 +87,7 @@
 #define kURL @"URL"
 #define kMETHOD @"METHOD"
 #define kMETHODARGS @"METHODARGS"
+#define BlavatarLoaded @"BlavatarLoaded"
 
 #define kPostsDownloadCount @"postsDownloadCount"
 //#define kPagesDownloadCount @"pagesDownloadCount"

@@ -149,10 +149,10 @@
 	faviconImage = [UIImage imageWithData:UIImagePNGRepresentation(faviconImage)];
 	
 	if (faviconImage != NULL) {
-		//[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
+		NSDictionary *blavatarInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.hostURL, @"hostURL", faviconImage, @"faviconImage", nil];
+		[[NSNotificationCenter defaultCenter] postNotificationName:BlavatarLoaded object:self userInfo:blavatarInfo];
 		[[NSFileManager defaultManager] createFileAtPath:faviconFilePath contents:UIImagePNGRepresentation(faviconImage) attributes:nil];
 	}
-
 	
 	[pool release];
 }
