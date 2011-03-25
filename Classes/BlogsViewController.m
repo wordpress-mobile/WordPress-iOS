@@ -291,7 +291,7 @@
 	//we should check  isSyncingPosts, isSyncingPages, isSyncingComments first bc is a fast check
 	//we should first check if there are networks activities within the blog
 	//we should re-check  isSyncingPosts, isSyncingPages, isSyncingComments;
-	if(blog.isSyncingPosts || blog.isSyncingPages || blog.isSyncingComments)
+	if(blog.isSyncingPosts || blog.isSyncingPages || blog.isSyncingComments || blog.isSyncingBlavatar)
 		return NO;
 	
 	BOOL canDelete = YES;

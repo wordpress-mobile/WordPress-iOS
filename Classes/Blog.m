@@ -14,7 +14,7 @@
 @dynamic isAdmin, hasOlderPosts, hasOlderPages;
 @dynamic posts, categories, comments; 
 @dynamic lastPostsSync, lastStatsSync, lastPagesSync, lastCommentsSync;
-@synthesize isSyncingPosts, isSyncingPages, isSyncingComments;
+@synthesize isSyncingPosts, isSyncingPages, isSyncingComments, isSyncingBlavatar;
 @dynamic geolocationEnabled;
 
 - (BOOL)geolocationEnabled 
@@ -134,6 +134,7 @@
 }
 
 - (void)downloadFaviconInBackground {
+	self.isSyncingBlavatar = YES;
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	NSURL *blogDomain = [NSURL URLWithString:self.xmlrpc];
@@ -153,7 +154,7 @@
 		[[NSNotificationCenter defaultCenter] postNotificationName:BlavatarLoaded object:self userInfo:blavatarInfo];
 		[[NSFileManager defaultManager] createFileAtPath:faviconFilePath contents:UIImagePNGRepresentation(faviconImage) attributes:nil];
 	}
-	
+	self.isSyncingBlavatar = NO;
 	[pool release];
 }
 
