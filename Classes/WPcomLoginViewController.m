@@ -300,9 +300,7 @@
 				self.footerText = @"Username is required.";
 			}
 			else {
-				//self.username = [[NSString alloc] init];
-				self.username = textField.text;
-				self.username = [[[self.username stringByReplacingOccurrencesOfString:@" " withString:@""] lowercaseString] retain];
+				self.username = [[textField.text stringByReplacingOccurrencesOfString:@" " withString:@""] lowercaseString];
 				textField.text = self.username;
 			}
 			break;
