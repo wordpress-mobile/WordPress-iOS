@@ -378,10 +378,10 @@
 		 [postParams setObject:post.status forKey:@"page_status"];
 	 }
     
-	if (post.date_created_gmt == nil) {
-        post.date_created_gmt = [DateUtils localDateToGMTDate:[NSDate date]];
-    }
-	[postParams setObject:post.date_created_gmt forKey:@"date_created_gmt"];
+	if (post.date_created_gmt != nil) {
+        //post.date_created_gmt = [DateUtils localDateToGMTDate:[NSDate date]];
+		[postParams setObject:post.date_created_gmt forKey:@"date_created_gmt"];
+	}
 	
     if (post.password != nil)
         [postParams setObject:post.password forKey:@"wp_password"];
