@@ -1054,7 +1054,7 @@
 }
 
 - (UIImage *)generateThumbnailFromImage:(UIImage *)theImage andSize:(CGSize)targetSize {
-	return [theImage resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:targetSize interpolationQuality:kCGInterpolationHigh];
+    return [theImage thumbnailImage:75 transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh]; 
 }
 
 - (void)useImage:(UIImage *)theImage {
