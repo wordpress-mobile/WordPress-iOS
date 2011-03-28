@@ -64,6 +64,10 @@
 		3768BE87130404FF00E7C9A9 /* BetaUIWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 3768BE86130404FF00E7C9A9 /* BetaUIWindow.m */; };
 		3768BEF113041E7900E7C9A9 /* BetaFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3768BEEF13041E7800E7C9A9 /* BetaFeedbackViewController.m */; };
 		3768BEF213041E7900E7C9A9 /* BetaFeedbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3768BEF013041E7900E7C9A9 /* BetaFeedbackViewController.xib */; };
+		3768F4901340BBD60075B633 /* blavatar-wporg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3768F48C1340BBD60075B633 /* blavatar-wporg@2x.png */; };
+		3768F4911340BBD60075B633 /* blavatar-wpcom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3768F48D1340BBD60075B633 /* blavatar-wpcom@2x.png */; };
+		3768F4921340BBD60075B633 /* blavatar-wporg.png in Resources */ = {isa = PBXBuildFile; fileRef = 3768F48E1340BBD60075B633 /* blavatar-wporg.png */; };
+		3768F4931340BBD60075B633 /* blavatar-wpcom.png in Resources */ = {isa = PBXBuildFile; fileRef = 3768F48F1340BBD60075B633 /* blavatar-wpcom.png */; };
 		376EED7312F6DF78005CE77A /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 376EED7212F6DF78005CE77A /* Reachability.m */; };
 		376EEDBA12F6E5F0005CE77A /* WPPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 376EEDB912F6E5F0005CE77A /* WPPageControl.m */; };
 		376EEF2712F7068A005CE77A /* page_control_blue_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 376EEF2312F7068A005CE77A /* page_control_blue_active.png */; };
@@ -82,8 +86,6 @@
 		379225B212F6DC1600F2176A /* StatsTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 379225A812F6DC1600F2176A /* StatsTableCell.m */; };
 		379225B312F6DC1600F2176A /* StatsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 379225AA12F6DC1600F2176A /* StatsTableViewController.m */; };
 		379225B412F6DC1600F2176A /* StatsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 379225AB12F6DC1600F2176A /* StatsTableViewController.xib */; };
-		3799F11E133CBE320079385C /* favicon-dotorg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3799F11C133CBE320079385C /* favicon-dotorg@2x.png */; };
-		3799F11F133CBE320079385C /* favicon-dotorg.png in Resources */ = {isa = PBXBuildFile; fileRef = 3799F11D133CBE320079385C /* favicon-dotorg.png */; };
 		37F74137131866A600AED18A /* CommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37F74136131866A600AED18A /* CommentViewController.xib */; };
 		4526DC551148072F0090C99D /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 4526DC531148072F0090C99D /* Default-Portrait.png */; };
 		4526DC561148072F0090C99D /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 4526DC541148072F0090C99D /* Default-Landscape.png */; };
@@ -122,7 +124,6 @@
 		6E8BE5C511BF5C5A002A13DD /* comments@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E8BE5C211BF5C5A002A13DD /* comments@2x.png */; };
 		6E8BE5DD11BF5F77002A13DD /* welcome_btn_over@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E8BE5DC11BF5F77002A13DD /* welcome_btn_over@2x.png */; };
 		6E8BE5E011BF5F7B002A13DD /* welcome_btn_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E8BE5DF11BF5F7B002A13DD /* welcome_btn_normal@2x.png */; };
-		6EC0DC0411C338AE00676C39 /* favicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EC0DC0311C338AE00676C39 /* favicon.png */; };
 		6ECC836C11C2AB1400A99A3D /* comments.png in Resources */ = {isa = PBXBuildFile; fileRef = 6ECC836B11C2AB1400A99A3D /* comments.png */; };
 		6EDC0E8F105881A800F68A1D /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 6EDC0E8E105881A800F68A1D /* iTunesArtwork */; };
 		6EF66FED11BE27BB0069703D /* photos@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EF66FEA11BE27BB0069703D /* photos@2x.png */; };
@@ -219,7 +220,6 @@
 		8388FADC126958E700304909 /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388FAD2126958E700304909 /* CXMLNode.m */; };
 		838A477911AF9BE9004FA306 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 838A477811AF9BE9004FA306 /* UIDevice-Hardware.m */; };
 		838C672E1210C3C300B09CA3 /* Post.m in Sources */ = {isa = PBXBuildFile; fileRef = 838C672D1210C3C300B09CA3 /* Post.m */; };
-		8395B19411FB6F1900CCA337 /* favicon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8395B19311FB6F1900CCA337 /* favicon@2x.png */; };
 		8398EE3411ACE206000FE6E0 /* WebSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8398EE3111ACE206000FE6E0 /* WebSignupViewController.m */; };
 		8398EE3511ACE206000FE6E0 /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8398EE3311ACE206000FE6E0 /* WelcomeViewController.m */; };
 		8398EE9A11ACE63C000FE6E0 /* WebSignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8398EE9811ACE63C000FE6E0 /* WebSignupViewController.xib */; };
@@ -459,6 +459,10 @@
 		3768BEEE13041E7800E7C9A9 /* BetaFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BetaFeedbackViewController.h; sourceTree = "<group>"; };
 		3768BEEF13041E7800E7C9A9 /* BetaFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BetaFeedbackViewController.m; sourceTree = "<group>"; };
 		3768BEF013041E7900E7C9A9 /* BetaFeedbackViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BetaFeedbackViewController.xib; sourceTree = "<group>"; };
+		3768F48C1340BBD60075B633 /* blavatar-wporg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blavatar-wporg@2x.png"; sourceTree = "<group>"; };
+		3768F48D1340BBD60075B633 /* blavatar-wpcom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blavatar-wpcom@2x.png"; sourceTree = "<group>"; };
+		3768F48E1340BBD60075B633 /* blavatar-wporg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blavatar-wporg.png"; sourceTree = "<group>"; };
+		3768F48F1340BBD60075B633 /* blavatar-wpcom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blavatar-wpcom.png"; sourceTree = "<group>"; };
 		376EED7112F6DF78005CE77A /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = ../Reachability/Reachability.h; sourceTree = "<group>"; };
 		376EED7212F6DF78005CE77A /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = ../Reachability/Reachability.m; sourceTree = "<group>"; };
 		376EEDB812F6E5F0005CE77A /* WPPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPPageControl.h; sourceTree = "<group>"; };
@@ -483,8 +487,6 @@
 		379225A912F6DC1600F2176A /* StatsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsTableViewController.h; sourceTree = "<group>"; };
 		379225AA12F6DC1600F2176A /* StatsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsTableViewController.m; sourceTree = "<group>"; };
 		379225AB12F6DC1600F2176A /* StatsTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = StatsTableViewController.xib; path = Classes/StatsTableViewController.xib; sourceTree = "<group>"; };
-		3799F11C133CBE320079385C /* favicon-dotorg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "favicon-dotorg@2x.png"; sourceTree = "<group>"; };
-		3799F11D133CBE320079385C /* favicon-dotorg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "favicon-dotorg.png"; sourceTree = "<group>"; };
 		37F74136131866A600AED18A /* CommentViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentViewController.xib; sourceTree = "<group>"; };
 		4526DC531148072F0090C99D /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait.png"; sourceTree = "<group>"; };
 		4526DC541148072F0090C99D /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
@@ -528,7 +530,6 @@
 		6E8BE5C211BF5C5A002A13DD /* comments@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "comments@2x.png"; sourceTree = "<group>"; };
 		6E8BE5DC11BF5F77002A13DD /* welcome_btn_over@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "welcome_btn_over@2x.png"; sourceTree = "<group>"; };
 		6E8BE5DF11BF5F7B002A13DD /* welcome_btn_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "welcome_btn_normal@2x.png"; sourceTree = "<group>"; };
-		6EC0DC0311C338AE00676C39 /* favicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = favicon.png; sourceTree = "<group>"; };
 		6ECC836B11C2AB1400A99A3D /* comments.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = comments.png; sourceTree = "<group>"; };
 		6EDC0E8E105881A800F68A1D /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		6EF66FEA11BE27BB0069703D /* photos@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photos@2x.png"; sourceTree = "<group>"; };
@@ -685,7 +686,6 @@
 		838A477811AF9BE9004FA306 /* UIDevice-Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice-Hardware.m"; sourceTree = "<group>"; };
 		838C672C1210C3C300B09CA3 /* Post.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Post.h; sourceTree = "<group>"; };
 		838C672D1210C3C300B09CA3 /* Post.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Post.m; sourceTree = "<group>"; };
-		8395B19311FB6F1900CCA337 /* favicon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "favicon@2x.png"; sourceTree = "<group>"; };
 		8398EE3011ACE206000FE6E0 /* WebSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSignupViewController.h; sourceTree = "<group>"; };
 		8398EE3111ACE206000FE6E0 /* WebSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebSignupViewController.m; sourceTree = "<group>"; };
 		8398EE3211ACE206000FE6E0 /* WelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeViewController.h; sourceTree = "<group>"; };
@@ -929,8 +929,6 @@
 			isa = PBXGroup;
 			children = (
 				E1B4A9DE12FC8B1000EB3F67 /* EGOTableViewPullRefresh */,
-				031666AC0FFC3E130045D052 /* CommentTableViewCell.h */,
-				031666AD0FFC3E130045D052 /* CommentTableViewCell.m */,
 				031669580FFC81A20045D052 /* CommentsTableViewDelegate.h */,
 				039FFD9F100EDC1B00D8B279 /* GravatarImageView.h */,
 				039FFDA0100EDC1B00D8B279 /* GravatarImageView.m */,
@@ -1195,6 +1193,8 @@
 		8320B5CF11FCA3EA00607422 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				031666AC0FFC3E130045D052 /* CommentTableViewCell.h */,
+				031666AD0FFC3E130045D052 /* CommentTableViewCell.m */,
 				031663050FFB151A0045D052 /* PostTableViewCell.h */,
 				031663060FFB151A0045D052 /* PostTableViewCell.m */,
 				8370D10811FA499A009D650F /* UITableViewActivityCell.h */,
@@ -1502,8 +1502,10 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				3799F11C133CBE320079385C /* favicon-dotorg@2x.png */,
-				3799F11D133CBE320079385C /* favicon-dotorg.png */,
+				3768F48C1340BBD60075B633 /* blavatar-wporg@2x.png */,
+				3768F48D1340BBD60075B633 /* blavatar-wpcom@2x.png */,
+				3768F48E1340BBD60075B633 /* blavatar-wporg.png */,
+				3768F48F1340BBD60075B633 /* blavatar-wpcom.png */,
 				3704ACFA13128C9800120911 /* Default.png */,
 				3704ACFB13128C9800120911 /* Default@2x.png */,
 				E1B4A9E212FC8B2500EB3F67 /* blueArrow.png */,
@@ -1533,7 +1535,6 @@
 				834CAEA6122D56DC003DDF49 /* video_thumbnail.png */,
 				83D3DCFA1215CF8400600B4B /* autosave.png */,
 				83D3DCFB1215CF8400600B4B /* autosave@2x.png */,
-				8395B19311FB6F1900CCA337 /* favicon@2x.png */,
 				8370D11611FA4CCF009D650F /* welcome_bg.png */,
 				8370D11711FA4CCF009D650F /* welcome_bg@2x.png */,
 				83610B1311F4B42D00421116 /* logos */,
@@ -1561,7 +1562,6 @@
 				03EB54B4100FFB5C004E82CD /* gravatar.jpg */,
 				CE1E3BC61005B3D500A7BD08 /* WPpregressHUDBackground.png */,
 				6E81AC2411BF34810072965C /* WPpregressHUDBackground@2x.png */,
-				6EC0DC0311C338AE00676C39 /* favicon.png */,
 				CEC7EFA50FC66081007B90D6 /* AddBlogValidationBackground.png */,
 				6E81AC0311BF2D500072965C /* AddBlogValidationBackground@2x.png */,
 				706D25F40F347F1200491666 /* category_child.png */,
@@ -2018,7 +2018,6 @@
 				6E61862111C0C465001E755E /* down@2x.png in Resources */,
 				6E61862211C0C465001E755E /* up@2x.png in Resources */,
 				6ECC836C11C2AB1400A99A3D /* comments.png in Resources */,
-				6EC0DC0411C338AE00676C39 /* favicon.png in Resources */,
 				83A4A7C711CD7E470075A7C3 /* StatsCategoryViewController.xib in Resources */,
 				6E05AEE411EE8C1B00237983 /* Icon-Small-50.png in Resources */,
 				6E05AEE711EE8DDD00237983 /* Icon-Small.png in Resources */,
@@ -2037,7 +2036,6 @@
 				8370D1BE11FA6295009D650F /* AddSiteViewController.xib in Resources */,
 				8370D1E811FA648F009D650F /* logo_welcome.png in Resources */,
 				8370D1E911FA648F009D650F /* logo_welcome@2x.png in Resources */,
-				8395B19411FB6F1900CCA337 /* favicon@2x.png in Resources */,
 				8320B5D911FCA50400607422 /* UITableViewSwitchCell.xib in Resources */,
 				8320B5E111FCA6EF00607422 /* UITableViewSegmentedControlCell.xib in Resources */,
 				8333FE0E11FF6EF200A495C1 /* EditSiteViewController.xib in Resources */,
@@ -2098,8 +2096,10 @@
 				3704ACFC13128C9800120911 /* Default.png in Resources */,
 				3704ACFD13128C9800120911 /* Default@2x.png in Resources */,
 				37F74137131866A600AED18A /* CommentViewController.xib in Resources */,
-				3799F11E133CBE320079385C /* favicon-dotorg@2x.png in Resources */,
-				3799F11F133CBE320079385C /* favicon-dotorg.png in Resources */,
+				3768F4901340BBD60075B633 /* blavatar-wporg@2x.png in Resources */,
+				3768F4911340BBD60075B633 /* blavatar-wpcom@2x.png in Resources */,
+				3768F4921340BBD60075B633 /* blavatar-wporg.png in Resources */,
+				3768F4931340BBD60075B633 /* blavatar-wpcom.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

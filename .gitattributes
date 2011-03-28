@@ -387,6 +387,10 @@ WordPress.xcodeproj/project.pbxproj -text
 /attachment@2x.png -text svneol=unset#unset
 /autosave.png -text
 /autosave@2x.png -text
+/blavatar-wpcom.png -text
+/blavatar-wpcom@2x.png -text
+/blavatar-wporg.png -text
+/blavatar-wporg@2x.png -text
 /blueArrow.png -text svneol=unset#unset
 /blueArrow@2x.png -text svneol=unset#unset
 c_tidy/access.c -text
@@ -457,10 +461,6 @@ c_tidy/win32tc.h -text
 /delete.png -text
 /down.png -text
 /down@2x.png -text
-/favicon-dotorg.png -text
-/favicon-dotorg@2x.png -text
-/favicon.png -text
-/favicon@2x.png -text
 /getLocation.png -text
 /getLocation@2x.png -text
 /gettingLocation.png -text

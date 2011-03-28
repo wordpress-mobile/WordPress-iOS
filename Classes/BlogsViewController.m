@@ -124,26 +124,46 @@
     return [sectionInfo numberOfObjects];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 52.0;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"BlogCell";
     BlogsTableViewCell *cell = (BlogsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     Blog *blog = [resultsController objectAtIndexPath:indexPath];
-
+    
+    CGRect frame = CGRectMake(8,8,35,35);
+    WPAsynchronousImageView* asyncImage = [[[WPAsynchronousImageView alloc]
+                                            initWithFrame:frame] autorelease];
+    
     if (cell == nil) {
         cell = [[[BlogsTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
+        [cell.imageView removeFromSuperview];
     }
+    else {
+        WPAsynchronousImageView* oldImage = (WPAsynchronousImageView*)[cell.contentView viewWithTag:999];
+        [oldImage removeFromSuperview];
+    }
+    
+    asyncImage.isBlavatar = YES;
+    if ([blog isWPcom])
+        asyncImage.isWPCOM = YES;
+	asyncImage.layer.cornerRadius = 4.0;
+	asyncImage.layer.masksToBounds = YES;
+	asyncImage.tag = 999;
+	NSURL* url = [blog blavatarURL];
+	[asyncImage loadImageFromURL:url];
+	[cell.contentView addSubview:asyncImage];
 	
 #if defined __IPHONE_3_0
     cell.textLabel.text = [NSString decodeXMLCharactersIn:[blog blogName]];
     cell.detailTextLabel.text = [blog hostURL];
-    cell.imageView.image = [blog favicon];
 #else if defined __IPHONE_2_0
     cell.text = [NSString decodeXMLCharactersIn:[blog blogName]];
-    cell.image = [blog favicon];
 #endif
 
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-	[cell addBlavatarNotificationSender:blog];
 
     return cell;
 }
@@ -194,8 +214,6 @@
 		Blog *blog = [resultsController objectAtIndexPath:indexPath];
 		if([self canChangeBlog:blog]){
 			[tableView beginUpdates];
-
-			[blog removeFavicon];
 			
 			[appDelegate.managedObjectContext deleteObject:blog];
 			
@@ -291,7 +309,7 @@
 	//we should check  isSyncingPosts, isSyncingPages, isSyncingComments first bc is a fast check
 	//we should first check if there are networks activities within the blog
 	//we should re-check  isSyncingPosts, isSyncingPages, isSyncingComments;
-	if(blog.isSyncingPosts || blog.isSyncingPages || blog.isSyncingComments || blog.isSyncingBlavatar)
+	if(blog.isSyncingPosts || blog.isSyncingPages || blog.isSyncingComments)
 		return NO;
 	
 	BOOL canDelete = YES;

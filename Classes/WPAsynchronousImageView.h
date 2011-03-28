@@ -15,7 +15,13 @@
     NSURLConnection *connection;
     NSMutableData *data;
     NSURL *url;
+    BOOL isBlavatar;
+    BOOL isWPCOM;
 }
+
+@property (nonatomic, assign) BOOL isBlavatar;
+@property (nonatomic, assign) BOOL isWPCOM;
+
 
 - (void)loadImageFromURL:(NSURL *)theUrl;
 

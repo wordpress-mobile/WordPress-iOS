@@ -14,7 +14,7 @@
 @dynamic isAdmin, hasOlderPosts, hasOlderPages;
 @dynamic posts, categories, comments; 
 @dynamic lastPostsSync, lastStatsSync, lastPagesSync, lastCommentsSync;
-@synthesize isSyncingPosts, isSyncingPages, isSyncingComments, isSyncingBlavatar;
+@synthesize isSyncingPosts, isSyncingPages, isSyncingComments;
 @dynamic geolocationEnabled;
 
 - (BOOL)geolocationEnabled 
@@ -46,7 +46,7 @@
     NSError *error = nil;
     NSArray *results = [moc executeFetchRequest:fetchRequest error:&error];
     [fetchRequest release]; fetchRequest = nil;
-
+    
     return (results.count > 0);
 }
 
@@ -56,19 +56,19 @@
 	if([blogUrl hasSuffix:@"/"])
 		blogUrl = [blogUrl substringToIndex:blogUrl.length-1];
 	blogUrl= [blogUrl stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-
+    
     if (![self blogExistsForURL:blogUrl withContext:moc andUsername: [blogInfo objectForKey:@"username"]]) {
         blog = [[[Blog alloc] initWithEntity:[NSEntityDescription entityForName:@"Blog"
-                                                              inManagedObjectContext:moc]
-             insertIntoManagedObjectContext:moc] autorelease];
-
+                                                         inManagedObjectContext:moc]
+              insertIntoManagedObjectContext:moc] autorelease];
+        
         blog.url = blogUrl;
         blog.blogID = [NSNumber numberWithInt:[[blogInfo objectForKey:@"blogid"] intValue]];
         blog.blogName = [blogInfo objectForKey:@"blogName"];
 		blog.xmlrpc = [blogInfo objectForKey:@"xmlrpc"];
         blog.username = [blogInfo objectForKey:@"username"];
         blog.isAdmin = [NSNumber numberWithInt:[[blogInfo objectForKey:@"isAdmin"] intValue]];
-
+        
         NSError *error = nil;
         [SFHFKeychainUtils storeUsername:[blogInfo objectForKey:@"username"]
                              andPassword:[blogInfo objectForKey:@"password"]
@@ -84,7 +84,7 @@
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
     [request setIncludesSubentities:NO];
-
+    
     NSError *err;
     NSUInteger count = [moc countForFetchRequest:request error:&err];
     [request release];
@@ -94,81 +94,25 @@
     return count;
 }
 
-- (UIImage *)favicon {
-    UIImage *faviconImage = nil;
-    NSString *fileName = [NSString stringWithFormat:@"blavatar-%@-%@.png", self.hostURL, self.blogID];
-	fileName = [fileName stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""];
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *faviconFilePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:fileName];
+- (NSURL *)blavatarURL {
+    
+    NSURL *blavatar = [NSURL URLWithString:self.xmlrpc];
+	NSString *digest = [self returnMD5Hash:[blavatar host]];
 	
-    if ([[NSFileManager defaultManager] fileExistsAtPath:faviconFilePath] == YES) {
-        faviconImage = [UIImage imageWithContentsOfFile:faviconFilePath];
-    }
-	else {
-        if ([self isWPcom])
-            faviconImage = [UIImage imageNamed:@"favicon.png"];
-        else
-            faviconImage = [UIImage imageNamed:@"favicon-dotorg.png"];
-		[self downloadFavicon];
-	}
-
-    return faviconImage;
-}
-
-- (void)removeFavicon {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-    NSString *fileName = [NSString stringWithFormat:@"blavatar-%@-%@.png", self.hostURL, self.blogID];
-	fileName = [fileName stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""];
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *faviconFilePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:fileName];
-	
-	if ([[NSFileManager defaultManager] fileExistsAtPath:faviconFilePath]) {
-		NSError *error;
-		BOOL success =  [[NSFileManager defaultManager] removeItemAtPath:faviconFilePath error:&error];
-		if (!success) 
-			WPLog(@"Error deleting blog favicon: %@", [error localizedDescription]);
-	}
-	
-	[pool release];
-}
-
-- (void)downloadFaviconInBackground {
-	self.isSyncingBlavatar = YES;
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	NSURL *blogDomain = [NSURL URLWithString:self.xmlrpc];
-	NSString *digest = [self returnMD5Hash:[blogDomain host]];
-	
-	NSString *faviconURL = [NSString stringWithFormat:@"http://gravatar.com/blavatar/%@?s=64&d=404", digest];
-	
-    NSString *fileName = [NSString stringWithFormat:@"blavatar-%@-%@.png", self.hostURL, self.blogID];
-	fileName = [fileName stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""];
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *faviconFilePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:fileName];
-	UIImage *faviconImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:faviconURL]]];
-	faviconImage = [UIImage imageWithData:UIImagePNGRepresentation(faviconImage)];
-	
-	if (faviconImage != NULL) {
-		NSDictionary *blavatarInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.hostURL, @"hostURL", faviconImage, @"faviconImage", nil];
-		[[NSNotificationCenter defaultCenter] postNotificationName:BlavatarLoaded object:self userInfo:blavatarInfo];
-		[[NSFileManager defaultManager] createFileAtPath:faviconFilePath contents:UIImagePNGRepresentation(faviconImage) attributes:nil];
-	}
-	self.isSyncingBlavatar = NO;
-	[pool release];
-}
-
-- (void)downloadFavicon {
-	[self performSelectorInBackground:@selector(downloadFaviconInBackground) withObject:nil];
+	NSString *faviconURL = [NSString stringWithFormat:@"http://gravatar.com/blavatar/%@?s=70&d=404", digest];
+    
+    blavatar = [NSURL URLWithString:faviconURL];
+    
+    return blavatar;
 }
 
 - (NSString *)hostURL {
     NSString *result = [NSString stringWithFormat:@"%@",
-                         [self.url stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""]];
-
+                        [self.url stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""]];
+    
     if([result hasSuffix:@"/"])
         result = [result substringToIndex:[result length] - 1];
-
+    
     return result;
 }
 
@@ -224,7 +168,7 @@
 		
         if (![postsToKeep containsObject:post]) {  /*&& post.blog.blogID == self.blogID*/
 			//the current stored post is not contained "as-is" on the server response
-
+            
             if (post.revision) { //edited post before the refresh is finished
 				//We should check if this post is already available on the blog
 				BOOL presence = NO; 
@@ -264,7 +208,7 @@
     }
     self.isSyncingPosts = YES;
     int num;
-
+    
     // Don't load more than 20 posts if we aren't at the end of the table,
     // even if they were previously donwloaded
     // 
@@ -278,7 +222,7 @@
     } else {
         num = 20;
     }
-
+    
     WPLog(@"Loading %i posts...", num);
 	WPDataController *dc = [[WPDataController alloc] init];
 	NSMutableArray *posts = [dc getRecentPostsForBlog:self number:[NSNumber numberWithInt:num]];
@@ -312,7 +256,7 @@
 - (BOOL)syncPagesFromResults:(NSMutableArray *)pages {
     if ([pages count] == 0)
         return NO;
-
+    
     NSArray *syncedPages = [self syncedPages];
     NSMutableArray *pagesToKeep = [NSMutableArray array];
     for (NSDictionary *pageInfo in pages) {
@@ -321,7 +265,7 @@
 	
     for (Page *page in syncedPages) {
 		if (![pagesToKeep containsObject:page]) { /*&& page.blog.blogID == self.blogID*/
-
+            
 			if (page.revision) { //edited page before the refresh is finished
 				//We should check if this page is already available on the blog
 				BOOL presence = NO; 
@@ -349,7 +293,7 @@
             }
         }
     }
-
+    
     [self dataSave];
     return YES;
 }
@@ -432,7 +376,7 @@
 	if(dc.error) {
 		if (error != nil) 
 			*error = dc.error;
-		 WPLog(@"Error syncing categories: %@", [dc.error localizedDescription]);
+        WPLog(@"Error syncing categories: %@", [dc.error localizedDescription]);
 		[dc release];
 		return NO;
 	}

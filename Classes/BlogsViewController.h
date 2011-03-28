@@ -11,6 +11,7 @@
 #import "UIViewController+WPAnimation.h"
 #import "Blog.h"
 #import "CPopoverManager.h"
+#import "WPAsynchronousImageView.h"
 
 @interface BlogsViewController : UITableViewController <NSFetchedResultsControllerDelegate, UIAccelerometerDelegate, UIAlertViewDelegate> {
 	WordPressAppDelegate *appDelegate;

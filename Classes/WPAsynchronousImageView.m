@@ -21,13 +21,14 @@
 
 @implementation WPAsynchronousImageView
 
+@synthesize isWPCOM, isBlavatar;
+
 #pragma mark -
 #pragma mark Memory Management
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         self.contentMode = UIViewContentModeScaleAspectFit;
-        
     }
     
     return self;
@@ -49,9 +50,21 @@
     [data appendData:incrementalData];
 }
 
+- (void)connection:(NSURLConnection *)theConnection didReceiveResponse:(NSURLResponse *)response {
+    if ([response respondsToSelector:@selector(statusCode)])
+    {
+        int statusCode = [((NSHTTPURLResponse *)response) statusCode];
+        if (statusCode == 404)
+        {
+            [theConnection cancel];  // stop connecting; no more delegate messages
+        }
+    }
+}
+
 - (void)connectionDidFinishLoading:(NSURLConnection *)theConnection {
     ImageCache *cache =  [ImageCache sharedImageCache];
-	if (data != nil) {
+	
+    if (data != nil) {
 		[cache storeData:data forURL:url];
 	}
 
@@ -64,7 +77,14 @@
 
 - (void)loadImageFromURL:(NSURL *)theUrl {
     ImageCache *cache =  [ImageCache sharedImageCache];
-
+    
+    if (isBlavatar) {
+        if (isWPCOM)
+            self.image = [UIImage imageNamed:@"blavatar-wpcom.png"];
+        else
+            self.image = [UIImage imageNamed:@"blavatar-wporg.png"];
+    }
+    
     [self releaseConnectionAndData];
 
     url = [theUrl retain];
@@ -73,9 +93,18 @@
     if (cachedData) {
         self.image = [UIImage imageWithData:cachedData];
     } else {
-        self.image = nil;
+        if (!isBlavatar)
+            self.image = nil;
         NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:60.0];
-        connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+        
+        //lazy load the image while scrolling, from stackoverflow.com/questions/1826913/delayed-uiimageview-rendering-in-uitableview
+        connection = [[NSURLConnection alloc]
+                                       initWithRequest:request
+                                       delegate:self
+                                       startImmediately:NO];
+        [connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+        [connection start];
+        
     }
 }
 
