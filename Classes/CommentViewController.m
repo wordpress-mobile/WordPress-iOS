@@ -458,6 +458,17 @@
 	}
 }
 
+- (void)didFailModerateComment {
+    [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
+    [progressAlert release];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:@"Sorry, something went wrong during comment moderation. Please try again."];	
+}
+
+- (void)didModerateComment {
+    [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
+    [progressAlert release];
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 - (void)moderateCommentWithSelector:(SEL)selector {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -466,15 +477,12 @@
 		if(![self.comment performSelector:selector])
 			fails = YES;
     }
-	
-    [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-    [progressAlert release];
-		
-	if(fails)
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:@"Sorry, something went wrong during comment moderation. Please try again."];	
-    else {
-		 [self.navigationController popViewControllerAnimated:YES];
-	}
+    
+    if (fails) {
+        [self performSelectorOnMainThread:@selector(didFailModerateComment) withObject:NO waitUntilDone:YES];
+    } else {
+        [self performSelectorOnMainThread:@selector(didModerateComment) withObject:NO waitUntilDone:YES];        
+    }
 
 	[pool release];
 }
