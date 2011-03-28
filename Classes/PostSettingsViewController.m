@@ -135,6 +135,21 @@
 	}
 }
 
+- (void)viewDidUnload {
+    [locationManager stopUpdatingLocation];
+    locationManager.delegate = nil;
+    [locationManager release];
+    locationManager = nil;
+    
+    [mapView release];
+    mapView = nil;
+    
+    [reverseGeocoder cancel];
+    reverseGeocoder.delegate = nil;
+    [reverseGeocoder release];
+    reverseGeocoder = nil;
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
