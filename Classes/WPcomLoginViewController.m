@@ -297,21 +297,21 @@
 	switch (indexPath.row) {
 		case 0:
 			if((textField.text != nil) && ([textField.text isEqualToString:@""])) {
-				footerText = @"Username is required.";
+				self.footerText = @"Username is required.";
 			}
 			else {
-				username = [[NSString alloc] init];
-				username = textField.text;
-				username = [[[username stringByReplacingOccurrencesOfString:@" " withString:@""] lowercaseString] retain];
-				textField.text = username;
+				//self.username = [[NSString alloc] init];
+				self.username = textField.text;
+				self.username = [[[self.username stringByReplacingOccurrencesOfString:@" " withString:@""] lowercaseString] retain];
+				textField.text = self.username;
 			}
 			break;
 		case 1:
 			if((textField.text != nil) && ([textField.text isEqualToString:@""])) {
-				footerText = @"Password is required.";
+				self.footerText = @"Password is required.";
 			}
 			else {
-				password = textField.text;
+				self.password = textField.text;
 			}
 			break;
 		default:
