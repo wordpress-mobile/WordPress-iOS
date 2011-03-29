@@ -450,6 +450,7 @@
 		[aView addSubview:savingIndicator];
 		
 		[self.tableView setTableFooterView:aView];
+        [aView release];
 	}
 	[savingIndicator setHidden:NO];
 	[savingIndicator startAnimating];

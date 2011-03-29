@@ -16,7 +16,7 @@
 @synthesize blog;
 
 - (id)initWithPost:(AbstractPost *)aPost {
-    if (self = [super initWithNibName:@"PostViewController-iPad" bundle:nil]) {
+    if ((self = [super initWithNibName:@"PostViewController-iPad" bundle:nil])) {
         self.apost = aPost;
 		self.blog = self.apost.blog; //keep a reference to the blog
     }
@@ -86,12 +86,11 @@
     nav.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     //nav.navigationBar.tintColor = [UIColor colorWithRed:31/256.0 green:126/256.0 blue:163/256.0 alpha:1.0];
     [self presentModalViewController:nav animated:YES];
-    [postViewController release];
     [nav release];
 }
 
 -(EditPostViewController *) getPostOrPageController: (AbstractPost *) revision {
-	EditPostViewController *postViewController = [[EditPostViewController alloc] initWithPost:revision];
+	EditPostViewController *postViewController = [[[EditPostViewController alloc] initWithPost:revision] autorelease];
 	return postViewController;
 }
 

@@ -420,6 +420,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	[customSizeAlert release];
 	
 	[passwordTextField becomeFirstResponder]; //this line should always be called on MainThread
+    [passwordTextField release];
 }
 
 - (void)setAutoRefreshMarkers {

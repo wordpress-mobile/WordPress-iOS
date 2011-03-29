@@ -27,7 +27,7 @@ static NSArray *__pageControlColorList = nil;
 
 // Load the view nib and initialize the pageNumber ivar.
 - (id)initWithPageNumber:(int)page {
-    if (self = [super initWithNibName:@"StatsChartViewController" bundle:nil]) {
+    if ((self = [super initWithNibName:@"StatsChartViewController" bundle:nil])) {
 		/*if (DeviceIsPad()){
 			[self initWithNibName:@"StatsChartViewController-iPad" bundle:nil];
 		}*/
@@ -53,7 +53,7 @@ static NSArray *__pageControlColorList = nil;
 	[super viewDidLoad];
 
 	//chart = [[UIImageView alloc] initWithImage:chartImage];
-	NSString *chartTitle = [[NSString alloc] initWithString:@""];
+	NSString *chartTitle = @"";
 	switch (pageNumber) {
 		case 0:
 			chartTitle = @"Days";
@@ -66,7 +66,6 @@ static NSArray *__pageControlColorList = nil;
 			break;
 	}
     chartTitleLabel.text = chartTitle;
-	[chartTitle release];
     //self.view.backgroundColor = [StatsChartViewController pageControlColorWithIndex:pageNumber];
 	
 }
@@ -86,6 +85,7 @@ static NSArray *__pageControlColorList = nil;
     NSURLRequest* request = [NSURLRequest requestWithURL:url_l
 											 cachePolicy:NSURLRequestUseProtocolCachePolicy
 										 timeoutInterval:40.0];
+    [url_l release];
     connection = [[NSURLConnection alloc]
 				  initWithRequest:request delegate:self];
     //TODO error handling, what if connection is nil?

@@ -27,7 +27,7 @@
 }
 
 -(EditPostViewController *) getPostOrPageController: (AbstractPost *) revision {
-	EditPostViewController *postViewController = [[EditPageViewController alloc] initWithPost:revision];
+	EditPostViewController *postViewController = [[[EditPageViewController alloc] initWithPost:revision] autorelease];
 	return postViewController;
 }
 @end
