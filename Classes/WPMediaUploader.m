@@ -164,6 +164,8 @@
 		[self updateStatus:@"Uploading video..."];
 	
 	request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:self.media.blog.xmlrpc]];
+    NSString *version  = [[[NSBundle mainBundle] infoDictionary] valueForKey:[NSString stringWithFormat:@"CFBundleVersion"]];
+	[request addRequestHeader:@"User-Agent" value:[NSString stringWithFormat:@"wp-iphone/%@",version]];
 	[request setDelegate:self];
 	[request setValidatesSecureCertificate:NO]; 
 	[request setShouldStreamPostDataFromDisk:YES];
@@ -197,6 +199,8 @@
 	NSString *password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:self.media.blog.hostURL error:&error];
 	
 	request = [ASIFormDataRequest requestWithURL:atomURL];
+    NSString *version  = [[[NSBundle mainBundle] infoDictionary] valueForKey:[NSString stringWithFormat:@"CFBundleVersion"]];
+	[request addRequestHeader:@"User-Agent" value:[NSString stringWithFormat:@"wp-iphone/%@",version]];
 	[request setValidatesSecureCertificate:NO]; 	
 	[request setUsername:username];
 	[request setPassword:password];
