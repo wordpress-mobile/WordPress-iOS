@@ -92,6 +92,9 @@
     for (NSString *key in [[[source entity] relationshipsByName] allKeys]) {
         if ([key isEqualToString:@"original"] || [key isEqualToString:@"revision"]) {
             NSLog(@"Skipping relationship %@", key);
+        } else if ([key isEqualToString:@"comments"]) {
+            NSLog(@"Copying relationship %@", key);
+            [self setComments:[source comments]];
         } else {
             NSLog(@"Copying relationship %@", key);
             [self setValue: [source valueForKey:key] forKey: key];
