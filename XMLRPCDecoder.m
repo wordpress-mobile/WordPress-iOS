@@ -37,11 +37,9 @@
 		return nil;
 	}
 
-	if (self = [super init])
+	if ((self = [super init]))
 	{
-		NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-		
-		if(dataString.length > 0) {
+		if(data.length > 0) {
 			_parser = [[NSXMLParser alloc] initWithData:data];
 			//		_parent = CFXMLTreeCreateFromData(kCFAllocatorDefault, (CFDataRef)data,
 			//			NULL, kCFXMLParserSkipWhitespace, kCFXMLNodeCurrentVersion);
