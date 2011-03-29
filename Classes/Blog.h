@@ -9,6 +9,7 @@
 #import <CommonCrypto/CommonDigest.h>
 
 @interface Blog : NSManagedObject {
+    NSURL *_blavatarURL;
 }
 
 @property (nonatomic, retain) NSNumber *blogID;

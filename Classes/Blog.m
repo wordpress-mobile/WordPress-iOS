@@ -95,15 +95,16 @@
 }
 
 - (NSURL *)blavatarURL {
-    
-    NSURL *blavatar = [NSURL URLWithString:self.xmlrpc];
-	NSString *digest = [self returnMD5Hash:[blavatar host]];
-	
-	NSString *faviconURL = [NSString stringWithFormat:@"http://gravatar.com/blavatar/%@?s=70&d=404", digest];
-    
-    blavatar = [NSURL URLWithString:faviconURL];
-    
-    return blavatar;
+    if (_blavatarURL == nil) {    
+        _blavatarURL = [NSURL URLWithString:self.xmlrpc];
+        NSString *digest = [self returnMD5Hash:[_blavatarURL host]];
+        
+        NSString *faviconURL = [NSString stringWithFormat:@"http://gravatar.com/blavatar/%@?s=70&d=404", digest];
+        
+        _blavatarURL = [[NSURL URLWithString:faviconURL] retain];
+    }
+
+    return _blavatarURL;
 }
 
 - (NSString *)hostURL {
@@ -127,6 +128,13 @@
         WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
         exit(-1);
     }
+}
+
+- (void)setXmlrpc:(NSString *)xmlrpc {
+    [self willChangeValueForKey:@"xmlrpc"];
+    [self setPrimitiveValue:xmlrpc forKey:@"xmlrpc"];
+    [self didChangeValueForKey:@"xmlrpc"];
+    [_blavatarURL release]; _blavatarURL = nil;
 }
 
 #pragma mark -
@@ -452,6 +460,7 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
+    [_blavatarURL release]; _blavatarURL = nil;
     [super dealloc];
 }
 
