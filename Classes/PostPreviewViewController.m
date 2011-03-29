@@ -2,6 +2,7 @@
 #import "WordPressAppDelegate.h"
 #import "WPDataController.h"
 #import "WPReachability.h"
+#import "NSString+Helpers.h"
 
 @interface PostPreviewViewController (Private)
 
@@ -188,7 +189,7 @@
 				[req addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
 				NSString *paramDataString = [NSString stringWithFormat:@"%@=%@&%@=%@&%@=%@", 
 											 @"log", postDetailViewController.apost.blog.username,
-											 @"pwd", [[WPDataController sharedInstance] passwordForBlog:postDetailViewController.apost.blog],
+											 @"pwd", [[[WPDataController sharedInstance] passwordForBlog:postDetailViewController.apost.blog] stringByUrlEncoding],
 											 @"redirect_to", link];
 			
 				NSData *paramData = [paramDataString dataUsingEncoding:NSUTF8StringEncoding]; 
