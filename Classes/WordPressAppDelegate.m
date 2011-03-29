@@ -36,7 +36,7 @@ void uncaughtExceptionHandler(NSException *exception) {
                          platform,
                          version,
                          backtrace];
-    NSLog(@"Logging error (%@|%@): %@\n%@", platform, version, [exception reason], backtrace);
+    WPFLog(@"Logging error (%@|%@): %@\n%@", platform, version, [exception reason], backtrace);
 
     NSString *ourCrash = [NSString stringWithFormat:@"Logging error (%@|%@): %@\n%@", platform, version, [exception reason], backtrace];
     [ourCrash writeToFile:CrashFilePath() atomically:NO];
@@ -131,6 +131,12 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	// set the current dir
 	[fileManager changeCurrentDirectoryPath:currentDirectoryPath];
 
+	// Check for pending crash reports
+	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
+	if (![crashReporter hasPendingCrashReport]) {
+        // Empty log file if we didn't crash last time
+        [[FileLogger sharedInstance] reset];
+    }
 	[FileLogger log:@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
     [FileLogger log:@"device: %@, iOS %@", [[UIDevice currentDevice] platform], [[UIDevice currentDevice] systemVersion]];
 	
@@ -213,8 +219,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	// another notification message came from comments --> CommentUploadFailed
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:@"CommentUploadFailed" object:nil];
 	
-	// Check for pending crash reports
-	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
 	NSError *error;
 	
 	// Check if we previously crashed
@@ -295,6 +299,19 @@ static WordPressAppDelegate *wordPressApp = NULL;
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self applicationWillTerminate:application];
 }
+
+- (void)applicationWillEnterForeground:(UIApplication *)application {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];    
+}
+
+- (void)applicationWillResignActive:(UIApplication *)application {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];    
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+}
+
 
 #pragma mark -
 #pragma mark Public Methods

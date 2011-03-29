@@ -18,6 +18,7 @@ NSString *FileLoggerPath();
 - (void)log:(NSString *)message;
 + (void)log:(NSString *)format, ...;
 - (void)flush;
+- (void)reset;
 @end
 
 #define WPFLog(fmt, ...) [FileLogger log:fmt, ##__VA_ARGS__]

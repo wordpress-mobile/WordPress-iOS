@@ -20,6 +20,7 @@
 @synthesize postDetailViewController;
 
 - (void)dealloc {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	if (locationManager) {
 		locationManager.delegate = nil;
 		[locationManager stopUpdatingLocation];
@@ -136,6 +137,7 @@
 }
 
 - (void)viewDidUnload {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [locationManager stopUpdatingLocation];
     locationManager.delegate = nil;
     [locationManager release];

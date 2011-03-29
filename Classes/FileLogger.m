@@ -35,7 +35,7 @@ NSString *FileLoggerPath() {
 								 contents:nil
 							   attributes:nil];
 		logFile = [[NSFileHandle fileHandleForWritingAtPath:FileLoggerPath()] retain];
-//		[logFile seekToEndOfFile];
+		[logFile seekToEndOfFile];
 	}
 	return self;
 }
@@ -48,12 +48,16 @@ NSString *FileLoggerPath() {
 	[logFile writeData:[[NSString stringWithFormat:@"%@ %@\n", [NSDate date], message] dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
+- (void)reset {
+    [logFile truncateFileAtOffset:0];
+}
+
 + (void)log:(NSString *)format, ... {
 	va_list ap;
 	va_start(ap, format);
 	NSString *message = [[NSString alloc] initWithFormat:format arguments:ap];
 #if !FILELOGGER_ONLY_NSLOG_ON_DEBUG || defined(DEBUG)
-	NSLog(message);
+	NSLog(@"%@", message);
 #endif
 	[[FileLogger sharedInstance] log:message];
 	[message release];
