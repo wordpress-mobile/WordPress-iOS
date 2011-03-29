@@ -214,6 +214,7 @@
 		[xmlrpcUsersBlogs setMethod:@"wp.getUsersBlogs" withObjects:[NSArray arrayWithObjects:username, password, nil]];
         retryOnTimeout = YES;
 		NSArray *usersBlogsData = [self executeXMLRPCRequest:xmlrpcUsersBlogs];
+        [xmlrpcUsersBlogs release];
 		
 		if([usersBlogsData isKindOfClass:[NSArray class]]) {
             [usersBlogs release];

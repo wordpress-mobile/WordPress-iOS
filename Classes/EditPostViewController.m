@@ -194,6 +194,39 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			return CGRectMake(0, 136, 320, 236);
 }
 
+- (void)viewDidUnload {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    [super viewDidUnload];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [postSettingsController release]; postSettingsController = nil;
+    [postMediaViewController release]; postMediaViewController = nil;
+    [postPreviewViewController release]; postPreviewViewController = nil;
+    [statuses release]; statuses = nil;
+    [spinner release]; spinner = nil;
+    
+    // Release IBOutlets
+    self.locationButton = nil;
+    self.locationSpinner = nil;
+    self.textView = nil;
+    self.toolbar = nil;
+    self.contentView = nil;
+    self.subView = nil;
+    self.textViewContentView = nil;
+    self.statusTextField = nil;
+    self.categoriesTextField = nil;
+    self.titleTextField = nil;
+    self.tagsTextField = nil;
+    self.textViewPlaceHolderField = nil;
+    self.tagsLabel = nil;
+    self.statusLabel = nil;
+    self.categoriesLabel = nil;
+    self.titleLabel = nil;
+    self.newCategoryBarButtonItem = nil;
+    self.hasLocation = nil;
+    self.photoButton = nil;
+    self.movieButton = nil;
+}
+
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
@@ -212,7 +245,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     postPreviewViewController.view.frame = editView.frame;
     
 	self.navigationItem.title = @"Write";
-	statuses = [NSArray arrayWithObjects:@"Local Draft", @"Draft", @"Private", @"Pending Review", @"Published", nil];
+	statuses = [[NSArray arrayWithObjects:@"Local Draft", @"Draft", @"Private", @"Pending Review", @"Published", nil] retain];
 	
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -265,6 +298,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewWillAppear:animated];
 	postSettingsController.view.frame = editView.frame;
     postMediaViewController.view.frame = editView.frame;
@@ -286,6 +320,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {	
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	if(self.editMode != kNewPost)
 		self.editMode = kRefreshPost;
 	isVisible = NO;
@@ -376,8 +411,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if ([self.apost.postTitle length] > 0) {
         self.navigationItem.title = self.apost.postTitle;
     }
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back"
-																			 style:UIBarButtonItemStyleBordered target:nil action:nil];
+    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Back"
+																			 style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
 	
     titleTextField.text = self.apost.postTitle;
     if (self.post) {
@@ -1358,6 +1393,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 #pragma mark Dealloc
 
 - (void)dealloc {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	self.hasLocation = nil;
 //	[statuses release];
     [postMediaViewController release];
