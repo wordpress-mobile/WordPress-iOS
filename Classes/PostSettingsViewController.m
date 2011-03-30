@@ -150,6 +150,8 @@
     reverseGeocoder.delegate = nil;
     [reverseGeocoder release];
     reverseGeocoder = nil;
+    
+    [super viewDidUnload];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

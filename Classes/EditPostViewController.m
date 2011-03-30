@@ -196,7 +196,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)viewDidUnload {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [super viewDidUnload];
+
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [postSettingsController release]; postSettingsController = nil;
     [postMediaViewController release]; postMediaViewController = nil;
@@ -225,6 +225,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     self.hasLocation = nil;
     self.photoButton = nil;
     self.movieButton = nil;
+
+    [super viewDidUnload];
 }
 
 - (void)viewDidLoad {
