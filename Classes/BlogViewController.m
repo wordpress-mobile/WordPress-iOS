@@ -49,6 +49,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewWillAppear:animated];
 	
 	if (DeviceIsPad() == YES) {
@@ -60,12 +61,13 @@
 }
 
 - (void)viewDidUnload {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	self.selectedViewController = tabBarController.selectedViewController;
-	WPLog(@"BlogViewController viewDidUnload");
 	[super viewDidUnload];
 }
 
 - (void) viewWillDisappear:(BOOL)animated{
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	[super viewWillDisappear:animated];
 	[commentsViewController viewWillDisappear:animated];
 	[postsViewController viewWillDisappear:animated];
@@ -75,9 +77,15 @@
 }
 
 - (void)dealloc {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
 	[tabBarController release], tabBarController = nil;
+    [postsViewController release]; postsViewController = nil;
+    [pagesViewController release]; pagesViewController = nil;
+    [commentsViewController release]; commentsViewController = nil;
+    [splitViewController release]; splitViewController = nil;
+    self.selectedViewController = nil;
     self.blog = nil;
 	
     [super dealloc];

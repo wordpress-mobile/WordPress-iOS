@@ -25,7 +25,7 @@
     Blog *blog;
 }
 
-@property (nonatomic, retain) UITabBarController *tabBarController;
+@property (nonatomic, retain) IBOutlet UITabBarController *tabBarController;
 @property (nonatomic, retain) Blog *blog;
 @property (nonatomic, retain) UIViewController *selectedViewController;
 

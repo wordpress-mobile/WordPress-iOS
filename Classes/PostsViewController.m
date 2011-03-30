@@ -116,6 +116,7 @@
 }
 
 - (void)viewDidUnload {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_refreshHeaderView release]; _refreshHeaderView = nil;
 	[super viewDidUnload];
@@ -618,6 +619,7 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     self.blog = nil;
     self.resultsController = nil;
 
