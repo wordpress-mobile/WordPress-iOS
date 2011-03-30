@@ -68,10 +68,12 @@
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self cancel:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 		
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blogsRefreshNotificationReceived:) name:@"BlogsRefreshNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBlogWithoutAnimation) name:@"NewBlogAdded" object:nil];
@@ -80,6 +82,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[super viewWillDisappear:animated];
 }
@@ -215,6 +218,7 @@
 		if([self canChangeBlog:blog]){
 			[tableView beginUpdates];
 			
+            [FileLogger log:@"Deleted blog %@", blog];
 			[appDelegate.managedObjectContext deleteObject:blog];
 			
 			[tableView endUpdates];

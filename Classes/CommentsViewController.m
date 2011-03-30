@@ -54,6 +54,7 @@
 #pragma mark Memory Management
 
 - (void)dealloc {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.resultsController.delegate = nil;
 	self.resultsController = nil;
@@ -69,7 +70,7 @@
 }
 
 - (void)didReceiveMemoryWarning {
-    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super didReceiveMemoryWarning];
 }
 
@@ -120,6 +121,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	[super viewWillAppear:animated];
     [self setEditing:NO];
     //selectedIndexPath = nil;    
@@ -161,6 +163,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	if (!DeviceIsPad())
 		editButtonItem.title = @"Edit";
     [super viewWillDisappear:animated];
@@ -376,20 +379,24 @@
 }
 
 - (void)deleteComments {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self moderateCommentsWithSelector:@selector(remove)];
 	[self performSelectorOnMainThread:@selector(trySelectSomethingAndShowIt) withObject:nil waitUntilDone:NO];
 }
 
 - (void)approveComments {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self moderateCommentsWithSelector:@selector(approve)];
 }
 
 - (void)markCommentsAsSpam {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self moderateCommentsWithSelector:@selector(spam)];
 	[self performSelectorOnMainThread:@selector(trySelectSomethingAndShowIt) withObject:nil waitUntilDone:NO];
 }
 
 - (void)unapproveComments {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self moderateCommentsWithSelector:@selector(unapprove)];
 }
 

@@ -68,6 +68,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 
 
 - (void)viewWillAppear:(BOOL)animated {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	
 	[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 	[[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(receivedRotate:) name: UIDeviceOrientationDidChangeNotification object: nil];
@@ -94,6 +95,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 }
 
 -(void) viewWillDisappear: (BOOL) animated{
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	[[NSNotificationCenter defaultCenter] removeObserver: self];
 	[[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
 }
@@ -107,6 +109,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 */
 
 - (void)didReceiveMemoryWarning {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
 	
@@ -114,12 +117,14 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 }
 
 - (void)viewDidUnload {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 }
 
 
 - (void)dealloc {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	[saveButton release];
 	saveButton = nil;
 	[doneButton release];

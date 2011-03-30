@@ -50,6 +50,7 @@
 #pragma mark Memory Management
 
 - (void)dealloc {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     self.comment = nil;
     [segmentedControl release];
     [segmentBarItem release];
@@ -65,7 +66,7 @@
 }
 
 - (void)didReceiveMemoryWarning {
-    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super didReceiveMemoryWarning];
 }
 
@@ -107,6 +108,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self performSelector:@selector(reachabilityChanged)];
 	wasLastCommentPending = NO;
 	isVisible = YES;
@@ -114,6 +116,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	isVisible = NO;
     [super viewWillDisappear:animated];
 }
@@ -488,22 +491,26 @@
 }
 
 - (void)deleteThisComment {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self moderateCommentWithSelector:@selector(remove)];
 	if (DeviceIsPad() == YES)
 		[self.commentsViewController performSelectorOnMainThread:@selector(trySelectSomethingAndShowIt) withObject:nil waitUntilDone:NO];
 }
 
 - (void)approveThisComment {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self moderateCommentWithSelector:@selector(approve)];
 }
 
 - (void)markThisCommentAsSpam {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self moderateCommentWithSelector:@selector(spam)];
 	if (DeviceIsPad() == YES)
 		[self.commentsViewController performSelectorOnMainThread:@selector(trySelectSomethingAndShowIt) withObject:nil waitUntilDone:NO];
 }
 
 - (void)unapproveThisComment {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self moderateCommentWithSelector:@selector(unapprove)];
 }
 

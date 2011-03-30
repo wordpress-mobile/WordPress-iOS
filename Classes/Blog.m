@@ -460,6 +460,7 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [_blavatarURL release]; _blavatarURL = nil;
     [super dealloc];
 }
