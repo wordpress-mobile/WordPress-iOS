@@ -162,22 +162,14 @@
 		} else if (link == nil ) {
 			[webView loadHTMLString:[self buildSimplePreview:@"Sorry, the post has changed, or it is not published. A simple preview is shown below."] baseURL:nil];
 		} else {
-            
+			
 			/*checks if this a scheduled post*/
 			NSDate *currentGMTDate = [DateUtils currentGMTDate];
 			NSDate *postGMTDate = postDetailViewController.apost.date_created_gmt;
 			NSDate *laterDate = [currentGMTDate laterDate:postGMTDate];
 			
-            //no onswipe!
-            if ([postDetailViewController.apost.blog isWPcom]) {
-                if ([link rangeOfString:@"?"].location == NSNotFound)
-                    link = [link stringByAppendingString:@"?onswipe_opt=nay"];
-                else
-                    link = [link stringByAppendingString:@"%26onswipe_opt=nay"];
-            }
-            
 			if(isDraft || isPending || isPrivate || (laterDate == postGMTDate)) {
-                
+				
 				NSString *wpLoginURL = postDetailViewController.apost.blog.xmlrpc; 
 				wpLoginURL = [wpLoginURL stringByReplacingOccurrencesOfRegex:@"/xmlrpc.php$" withString:@"/wp-login.php"];
 				
@@ -190,7 +182,7 @@
 					wpLoginURL = [NSString stringWithFormat:@"%@/%@", postDetailViewController.apost.blog.url, @"wp-login.php"];
 				
 				*/
-                
+				
 				NSURL *url = [NSURL URLWithString:wpLoginURL]; 
 				NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
 				[req setHTTPMethod:@"POST"];
