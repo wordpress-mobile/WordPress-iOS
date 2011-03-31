@@ -1124,7 +1124,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
 	if (imgHTMLPre.location == NSNotFound && imgHTMLPost.location == NSNotFound && imgHTML.location == NSNotFound) {
 		[content appendString:[NSString stringWithFormat:@"%@%@", prefix, self.apost.content]];
-        self.post.content = content;
+        self.apost.content = content;
 	}
 	else { 
 		NSMutableString *processedText = [[[NSMutableString alloc] initWithString:textView.text] autorelease]; 
@@ -1136,7 +1136,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			[processedText replaceCharactersInRange:imgHTML withString:@""];  
 		 
 		[content appendString:[NSString stringWithFormat:@"<br /><br />%@", processedText]]; 
-		self.post.content = content;
+		self.apost.content = content;
 	}
     [self refreshUIForCurrentPost];
 }
