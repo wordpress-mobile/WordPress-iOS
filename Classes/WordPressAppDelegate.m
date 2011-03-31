@@ -68,7 +68,10 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		
 		NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
 		[[NSUserDefaults standardUserDefaults] setObject:appVersion forKey:@"version_preference"];
-		
+        NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:[NSString stringWithFormat:@"wp-ios/%@", appVersion], @"UserAgent", nil];
+        [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
+        [dictionary release];
+
 		[self performSelectorInBackground:@selector(checkWPcomAuthentication) withObject:nil];
     }
 
