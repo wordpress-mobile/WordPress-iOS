@@ -366,6 +366,7 @@
 
 - (void)moderateCommentsWithSelector:(SEL)selector {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    [FileLogger log:@"%@ %@%@", self, NSStringFromSelector(_cmd), NSStringFromSelector(selector)];
 	BOOL fails = NO;
     for (Comment *comment in selectedComments) {
         if(![comment performSelector:selector])
@@ -379,24 +380,20 @@
 }
 
 - (void)deleteComments {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self moderateCommentsWithSelector:@selector(remove)];
 	[self performSelectorOnMainThread:@selector(trySelectSomethingAndShowIt) withObject:nil waitUntilDone:NO];
 }
 
 - (void)approveComments {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self moderateCommentsWithSelector:@selector(approve)];
 }
 
 - (void)markCommentsAsSpam {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self moderateCommentsWithSelector:@selector(spam)];
 	[self performSelectorOnMainThread:@selector(trySelectSomethingAndShowIt) withObject:nil waitUntilDone:NO];
 }
 
 - (void)unapproveComments {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self moderateCommentsWithSelector:@selector(unapprove)];
 }
 
