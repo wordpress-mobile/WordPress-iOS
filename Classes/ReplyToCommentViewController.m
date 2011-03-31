@@ -63,6 +63,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 				  action:@selector(initiateSaveCommentReply:)];
 	}
 	isEditing = YES;
+    self.hasChanges = NO;
 	
 }
 
@@ -73,7 +74,6 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 	[[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(receivedRotate:) name: UIDeviceOrientationDidChangeNotification object: nil];
 
-	self.hasChanges = NO;
 	//foo = textView.text;//so we can compare to set hasChanges correctly
 	textViewText = [[NSString alloc] initWithString: textView.text];
 	cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelView:)];

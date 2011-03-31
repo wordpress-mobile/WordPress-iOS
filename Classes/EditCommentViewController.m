@@ -48,15 +48,17 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
  - (void)viewDidLoad {
 	 [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
- [super viewDidLoad];
-  
- if (!saveButton) {
- saveButton = [[UIBarButtonItem alloc] 
- initWithTitle:@"Save" 
- style:UIBarButtonItemStyleDone
- target:self 
- action:@selector(initiateSaveCommentReply:)];
- }
+     [super viewDidLoad];
+      
+     if (!saveButton) {
+         saveButton = [[UIBarButtonItem alloc] 
+         initWithTitle:@"Save" 
+         style:UIBarButtonItemStyleDone
+         target:self 
+         action:@selector(initiateSaveCommentReply:)];
+     }
+     
+     self.hasChanges = NO;
  
  }
 
@@ -71,7 +73,6 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
     [cancelButton release];
 	
 	textView.text = self.comment.content;
-	self.hasChanges = NO;
 	//foo = textView.text;//so we can compare to set hasChanges correctly
 	textViewText = [[NSString alloc] initWithString: textView.text];
 	[textView becomeFirstResponder];
@@ -154,10 +155,12 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	if (DeviceIsPad())
 		return YES;
 	else if (self.isTransitioning){
+        self.comment.content = textView.text;
 		return (interfaceOrientation == UIInterfaceOrientationPortrait);
 	}
-    else if (isEditing)
+    else if (isEditing) {
         return YES;
+    }
 	
 	return NO;
 }
