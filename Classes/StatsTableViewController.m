@@ -488,8 +488,8 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 				
 			}
 			NSString *dateValues = [[NSString alloc] initWithString:[dateCSV componentsJoinedByString:@"|"]];
-			NSString *chartViewURL = [[[NSString alloc] initWithFormat: @"http://chart.apis.google.com/chart?chts=464646,20&cht=bvs&chg=100,20,1,0&chbh=a&chd=t:%@&chs=560x320&chl=%@&chxt=y,x&chds=%d,%d&chxr=0,%d,%d,%d&chf=c,lg,90,FFFFFF,0,FFFFFF,0.5&chco=a3bcd3&chls=4&chxs=0,464646,20,0,t|1,464646,20,0,t", xValues, dateValues, minBuffer,maxBuffer, minBuffer,maxBuffer, yInterval] autorelease];
-			//NSLog(@"google chart url: %@", chartViewURL);
+			NSString *chartViewURL = [[[NSString alloc] initWithFormat: @"http://chart.apis.google.com/chart?chts=464646,20&cht=bvs&chg=100,20,1,0&chbh=a&chd=t:%@&chs=560x320&chl=%@&chxt=y,x&chds=%d,%d&chxr=0,%d,%d,%d&chf=c,lg,90,FFFFFF,0,FFFFFF,0.5&chco=a3bcd3&chls=4&chxs=0,464646,20,0,t|1,464646,20,0,t,ffffff&chxtc=0,0", xValues, dateValues, minBuffer,maxBuffer, minBuffer,maxBuffer, yInterval] autorelease];
+			NSLog(@"google chart url: %@", chartViewURL);
 			chartViewURL = [chartViewURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 			statsRequest = TRUE;
 			if ([reportType isEqualToString:@"chartDaysData"]) {
