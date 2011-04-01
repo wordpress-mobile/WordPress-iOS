@@ -7,6 +7,7 @@
 
 #import "CommentTableViewCell.h"
 #import "CommentsTableViewDelegate.h"
+#import "NSString+XMLExtensions.h" 
 
 #define PADDING                     5
 #define CELL_PADDING                8
@@ -118,8 +119,7 @@
 	}
 
     if (comment.postTitle)
-        postLabel.text = [@"on " stringByAppendingString:comment.postTitle];
-
+		postLabel.text = [@"on " stringByAppendingString:[NSString decodeXMLCharactersIn:comment.postTitle]];
     commentLabel.text = comment.content;
     gravatarImageView.email = comment.author_email;
 }

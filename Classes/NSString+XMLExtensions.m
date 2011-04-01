@@ -57,12 +57,18 @@
     if ([result rangeOfString:@"&nbsp;"].location != NSNotFound)
         result = [[result componentsSeparatedByString:@"&nbsp;"] componentsJoinedByString:@" "];
 
+	if ([result rangeOfString:@"&#8217;"].location != NSNotFound)
+		result = [[result componentsSeparatedByString:@"&#8217;"] componentsJoinedByString:@"'"];
+	
     if ([result rangeOfString:@"&#8220;"].location != NSNotFound)
         result = [[result componentsSeparatedByString:@"&#8220;"] componentsJoinedByString:@"\""];
 
     if ([result rangeOfString:@"&#8221;"].location != NSNotFound)
         result = [[result componentsSeparatedByString:@"&#8221;"] componentsJoinedByString:@"\""];
 
+	if ([result rangeOfString:@"&#8230;"].location != NSNotFound)
+        result = [[result componentsSeparatedByString:@"&#8230;"] componentsJoinedByString:@"..."];
+	
 	if ([result rangeOfString:@"&#039;"].location != NSNotFound)
         result = [[result componentsSeparatedByString:@"&#039;"] componentsJoinedByString:@"'"];
 

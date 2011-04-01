@@ -9,6 +9,7 @@
 #import "WPReachability.h"
 #import "WordPressAppDelegate.h"
 #import "WPProgressHUD.h"
+#import "NSString+XMLExtensions.h"
 
 
 #define COMMENT_BODY_TOP        100
@@ -630,7 +631,7 @@
 	[commentAuthorEmailButton setTitle:[comment.author_email trim] forState:UIControlStateHighlighted];
 	[commentAuthorEmailButton setTitle:[comment.author_email trim] forState:UIControlStateSelected];
     if (comment.postTitle)
-        commentPostTitleLabel.text = [@"on " stringByAppendingString:[comment.postTitle trim]];
+        commentPostTitleLabel.text = [@"on " stringByAppendingString:[NSString decodeXMLCharactersIn:[comment.postTitle trim]]];
 	if(comment.dateCreated != nil)
 		commentDateLabel.text = [@"" stringByAppendingString:[dateFormatter stringFromDate:comment.dateCreated]];
 	else
