@@ -84,16 +84,17 @@
 
 - (void)refreshImage:(int)chartID{
 	StatsChartViewController *controller = [viewControllers objectAtIndex:chartID-1];
-	if ((NSNull *)controller == [NSNull null]) {
-		controller = [[StatsChartViewController alloc] initWithPageNumber:chartID-1];
-        [viewControllers replaceObjectAtIndex:chartID-1 withObject:controller];
-	}
+	/*if ((NSNull *)controller == [NSNull null]) {
+		StatsChartViewController *newController = [[StatsChartViewController alloc] initWithPageNumber:chartID-1];
+        [viewControllers replaceObjectAtIndex:chartID-1 withObject:newController];
+        [newController release];
+	}*/
 	
 	switch (chartID){
 		case 1:
 			if (chart1Error)
 			{
-				controller.showError;
+				[controller showError];
 			}
 			else {
 				[controller loadImageFromURL: chart1URL];
@@ -102,7 +103,7 @@
 		case 2:
 			if (chart2Error)
 			{
-				controller.showError;
+				[controller showError];
 			}
 			else {
 				[controller loadImageFromURL: chart2URL];
@@ -111,12 +112,12 @@
 		case 3:
 			if (chart3Error)
 			{
-				controller.showError;
+				[controller showError];
 			}
 			else {
 				[controller loadImageFromURL: chart3URL];
 			}
-			NSLog(@"Chart 3: %@", chart3URL);
+			//WPLog(@"Chart 3: %@", chart3URL);
 			break;
 	}
 }

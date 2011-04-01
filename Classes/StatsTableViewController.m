@@ -97,8 +97,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 		[self initWithNibName:@"StatsTableViewConroller-iPad" bundle:nil];
 		[appDelegate showContentDetailViewController:self];
 	}*/
-	
-	[self.tableView setBackgroundColor:[[UIColor alloc] initWithRed:221.0f/255.0f green:221.0f/255.0f blue:221.0f/255.0f alpha:1.0]];
+	[self.tableView setBackgroundColor:[[[UIColor alloc] initWithRed:221.0f/255.0f green:221.0f/255.0f blue:221.0f/255.0f alpha:1.0] autorelease]];
 }
 
 
@@ -212,9 +211,12 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	isRefreshingStats = YES;
 	[self showLoadingDialog];
 	foundStatsData = FALSE;
-	int days;
-	NSString *report = [[NSString alloc] init];
-	NSString *period = [[NSString alloc] init];
+	
+    //This block can be used for adding custom controls if desired by users down the road to load their own reports
+    /*
+    int days = -1;
+	NSString *report;
+	NSString *period;
 	switch (intervalIndex) {
 		case 0:
 			days = 7;
@@ -262,12 +264,13 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			report = @"clicks";
 			break;
 	}	
+    */
 	NSString *blogURL = [appDelegate currentBlog].hostURL;
 	NSString *apiKey = [appDelegate currentBlog].apiKey;
 	
 	//request the 5 reports for display in the UITableView
 	
-	NSString *requestURL = [[NSString alloc] init];
+	NSString *requestURL;
 	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
 	//views
 	requestURL = [NSString stringWithFormat: @"http://stats.wordpress.com/csv.php?api_key=%@&blog_uri=%@&format=xml&table=%@&days=%d%@", apiKey, blogURL, @"views", 7, @""];	
@@ -380,7 +383,6 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 		if ([reportType isEqualToString:@"chartDaysData"] || [reportType isEqualToString:@"chartWeeksData"] || [reportType isEqualToString:@"chartMonthsData"]){
 			[self hideLoadingDialog];
 			self.blog.lastStatsSync = [NSDate date];
-			NSString *chartViewURL = [[NSString alloc] init];
 			xValues = [[NSString alloc] init];
 			xValues = [xArray componentsJoinedByString:@","];
 			NSArray *sorted = [xArray sortedArrayUsingSelector:@selector(compare:)];
@@ -421,34 +423,32 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			}
 			
 			NSMutableArray *dateCSV = [[NSMutableArray alloc] init];
-			NSDateFormatter *df = [[NSDateFormatter alloc] init];
-			NSString *dateValues = [[NSString alloc] initWithString: @""];
-			NSString *tempString = [[NSString alloc] initWithString: @""];
 			if ([reportType isEqualToString:@"chartDaysData"]){
 				for (NSString *dateVal in yArray) {
+                    NSDateFormatter *df = [[NSDateFormatter alloc] init];
 					[df setDateFormat:@"yyyy-MM-dd"];
 					NSDate *tempDate = [df dateFromString: dateVal];
+                    [df release];
 					NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 					NSDateComponents *dateComponents = [gregorian components:(NSWeekdayCalendarUnit) fromDate:tempDate];
 					NSInteger day = [dateComponents weekday];
 					[gregorian release];
 					if (day == 1 || day == 7){
-						tempString = @"S";
+						[dateCSV addObject: @"S"];
 					}
 					else if (day == 2){
-						tempString = @"M";
+						[dateCSV addObject: @"M"];
 					}
 					else if (day == 3 || day == 5){
-						tempString = @"T";
+						[dateCSV addObject: @"T"];
 					}
 					else if (day == 4){
-						tempString = @"W";
+						[dateCSV addObject: @"W"];
 					}
 					else if (day == 6){
-						tempString = @"F";
+						[dateCSV addObject: @"F"];
 					}
 					
-					[dateCSV addObject: tempString];
 				}
 			}
 			else if ([reportType isEqualToString:@"chartWeeksData"])
@@ -461,55 +461,34 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			else if ([reportType isEqualToString:@"chartMonthsData"]){
 				isRefreshingStats = NO;
 				for (NSString *dateVal in yArray) {
-					NSString *month = [[NSString alloc] initWithString: @""];
+                    NSDateFormatter *df = [[NSDateFormatter alloc] init];
 					[df setDateFormat:@"yyyy-MM"];
 					NSDate *tempDate = [df dateFromString: dateVal];
+                    [df release];
 					NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 					NSDateComponents *dateComponents = [gregorian components:(NSMonthCalendarUnit) fromDate:tempDate];
 					NSInteger i_month = [dateComponents month];
+                    
+                    NSString * dateString = [NSString stringWithFormat: @"%d", i_month];
+                    
+                    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+                    [dateFormatter setDateFormat:@"MM"];
+                    NSDate* myDate = [dateFormatter dateFromString:dateString];
+                    [dateFormatter release];
+                    
+                    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+                    [formatter setDateFormat:@"MMM"];
+                    NSString *stringFromDate = [formatter stringFromDate:myDate];
+                    
+                    
+                    [dateCSV addObject: stringFromDate];
+                    [formatter release];
 					[gregorian release];
-					if (i_month == 1){
-						month = @"Jan";
-					}
-					else if (i_month == 2){
-						month = @"Feb";
-					}
-					else if (i_month == 3){
-						month = @"Mar";
-					}
-					else if (i_month == 4){
-						month = @"Apr";
-					}
-					else if (i_month == 5){
-						month = @"May";
-					}
-					else if (i_month == 6){
-						month = @"Jun";
-					}
-					else if (i_month == 7){
-						month = @"Jul";
-					}
-					else if (i_month == 8){
-						month = @"Aug";
-					}
-					else if (i_month == 9){
-						month = @"Sep";
-					}
-					else if (i_month == 10){
-						month = @"Oct";
-					}
-					else if (i_month == 11){
-						month = @"Nov";
-					}
-					else if (i_month == 12){
-						month = @"Dec";
-					}
-					[dateCSV addObject: month];
 				}
 				
 			}
-			dateValues = [dateCSV componentsJoinedByString:@"|"];
-			chartViewURL = [chartViewURL stringByAppendingFormat: @"http://chart.apis.google.com/chart?chts=464646,20&cht=bvs&chg=100,20,1,0&chbh=a&chd=t:%@&chs=560x320&chl=%@&chxt=y,x&chds=%d,%d&chxr=0,%d,%d,%d&chf=c,lg,90,FFFFFF,0,FFFFFF,0.5&chco=a3bcd3&chls=4&chxs=0,464646,20,0,t|1,464646,20,0,t", xValues, dateValues, minBuffer,maxBuffer, minBuffer,maxBuffer, yInterval];
+			NSString *dateValues = [[NSString alloc] initWithString:[dateCSV componentsJoinedByString:@"|"]];
+			NSString *chartViewURL = [[[NSString alloc] initWithFormat: @"http://chart.apis.google.com/chart?chts=464646,20&cht=bvs&chg=100,20,1,0&chbh=a&chd=t:%@&chs=560x320&chl=%@&chxt=y,x&chds=%d,%d&chxr=0,%d,%d,%d&chf=c,lg,90,FFFFFF,0,FFFFFF,0.5&chco=a3bcd3&chls=4&chxs=0,464646,20,0,t|1,464646,20,0,t", xValues, dateValues, minBuffer,maxBuffer, minBuffer,maxBuffer, yInterval] autorelease];
 			//NSLog(@"google chart url: %@", chartViewURL);
 			chartViewURL = [chartViewURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 			statsRequest = TRUE;
@@ -534,6 +513,8 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 					[statsPageControlViewController refreshImage: 1];
 				}
 			}
+            [dateCSV release];
+            [dateValues release];
 		} //end chartData if statement
 		else{
 			if ([reportType isEqualToString:@"viewsData"]){
@@ -624,16 +605,15 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 
 - (void) connectionDidFinishLoading: (NSURLConnection*) connection {
 	const NSMutableDictionary *connectionInfo = CFDictionaryGetValue(connectionToInfoMapping, connection);
-	NSString *xmlString = [[NSString alloc] initWithString: @""]; 
 	//get the key name
 	NSArray *keys = [connectionInfo allKeys];
 	id aKey = [keys objectAtIndex:0];
 	NSString *reportType = aKey;
 	//format the xml response
-	xmlString = [[NSString alloc] initWithData:[connectionInfo objectForKey:aKey] encoding:NSUTF8StringEncoding];
-	xmlString = [xmlString stringByReplacingOccurrencesOfString:@"\n" withString:@""];
-	xmlString = [xmlString stringByReplacingOccurrencesOfString:@"\t" withString:@""];
-	NSLog(@"xml string = %@", xmlString);
+	NSString *xmlString = [[[NSString alloc] initWithData:[connectionInfo objectForKey:aKey] encoding:NSUTF8StringEncoding] autorelease];
+	[xmlString stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+	[xmlString stringByReplacingOccurrencesOfString:@"\t" withString:@""];
+	//WPLog(@"xml string = %@", xmlString);
 	NSRange textRange;
 	textRange =[xmlString rangeOfString:@"Error"];
 	if ( xmlString != nil && textRange.location == NSNotFound ) {
@@ -667,7 +647,6 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			[alert show];
 			statsAPIAlertShowing = TRUE;
 		}
-		
 	}
 	else {
 		//NSLog(@"no data returned from api");
@@ -771,6 +750,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			[xArray addObject: [NSNumber numberWithInt:[currentProperty intValue]]];
 			NSArray *row = [[NSArray alloc] initWithObjects:leftColumn, rightColumn, nil];
 			[statsTableData	addObject:row];
+            [row release];
 		}
 	}
 	else if ([elementName isEqualToString:@"apikey"]) {
@@ -854,7 +834,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	BOOL addLoadMoreFooter = FALSE;
-	NSArray *row = [[NSArray alloc] init];
+	NSArray *row = [[[NSArray alloc] init] autorelease];
 	switch (indexPath.section) {
 		case 0:
 			//reverse order so today is at top
@@ -915,16 +895,14 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	}
 	
 	if (!addLoadMoreFooter){
-	leftColumn = [[NSString alloc] initWithString: [row objectAtIndex:0]];
-	rightColumn = [[NSString alloc] initWithString: [row objectAtIndex:1]];
+        leftColumn = [[NSString alloc] initWithString: [row objectAtIndex:0]];
+        rightColumn = [[NSString alloc] initWithString: [row objectAtIndex:1]];
 	}
 
 	NSString *MyIdentifier = [NSString stringWithFormat:@"MyIdentifier %i", indexPath.row];
 	
-	StatsTableCell *cell = (StatsTableCell *)[tableView dequeueReusableCellWithIdentifier:MyIdentifier];
-	
 	//if (cell == nil) {
-		cell = [[[StatsTableCell alloc] initWithFrame:CGRectZero reuseIdentifier:MyIdentifier] autorelease];
+		StatsTableCell *cell = [[[StatsTableCell alloc] initWithFrame:CGRectZero reuseIdentifier:MyIdentifier] autorelease];
 		if (viewsData != nil) {
 
 		UILabel *label = [[[UILabel	alloc] initWithFrame:CGRectMake(14.0, 0, 210.0, 
@@ -984,6 +962,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			[numberFormatter setGroupingSize: 3];
 			[numberFormatter setUsesGroupingSeparator: YES];
 			label.text = [numberFormatter stringFromNumber: statDigits];
+            [numberFormatter release];
 			label.textAlignment = UITextAlignmentRight; 
 			label.textColor = [[UIColor alloc] initWithRed:40.0 / 255 green:82.0 / 255 blue:137.0 / 255 alpha:1.0]; 
 			label.adjustsFontSizeToFitWidth = YES;
@@ -1038,39 +1017,36 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 
 - (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section 
 {
-	
-	NSString *reportName = [[NSString alloc] init];
+    UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(20, 3, tableView.bounds.size.width - 10, 18)] autorelease];
 	switch (section) {
 		case 0:
 			if (viewsData != nil){
-				reportName = @"Daily Views";
+				label.text = @"Daily Views";
 			}
 			break;
 		case 1:
 			if (postViewsData != nil){
-				reportName = @"Post Views";
+				label.text = @"Post Views";
 			}
 			break;
 		case 2:
 			if (referrersData != nil){
-				reportName = @"Referrers";
+				label.text = @"Referrers";
 			}
 			break;
 		case 3:
 			if (referrersData != nil){
-				reportName = @"Search Terms";
+				label.text = @"Search Terms";
 			}
 			break;
 		case 4:
 			if (clicksData != nil){
-				reportName = @"Clicks";
+				label.text = @"Clicks";
 			}
 			break;
 	}
 	
 	UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 30)] autorelease];
-	UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(20, 3, tableView.bounds.size.width - 10, 18)] autorelease];
-	label.text = reportName;
 	label.textColor = [UIColor colorWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0];
 	label.backgroundColor = [UIColor clearColor];
 	label.shadowColor = [UIColor whiteColor];

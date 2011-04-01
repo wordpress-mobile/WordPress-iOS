@@ -11,7 +11,7 @@
 #import "PagesViewController.h"
 #import "CommentsViewController.h"
 //uncomment me to add stats back
-//#import "StatsTableViewController.h"
+#import "StatsTableViewController.h"
 
 @interface BlogViewController : UIViewController <UITabBarControllerDelegate, UIAccelerometerDelegate> {
     IBOutlet UITabBarController *tabBarController;
@@ -19,7 +19,7 @@
     IBOutlet PagesViewController *pagesViewController;
     IBOutlet CommentsViewController *commentsViewController;
 	//uncomment me to add stats back
-	//IBOutlet StatsTableViewController *statsTableViewController;
+	IBOutlet StatsTableViewController *statsTableViewController;
     IBOutlet UISplitViewController *splitViewController;
 	BOOL stateRestored;
     Blog *blog;
