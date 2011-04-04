@@ -8,15 +8,23 @@
 
 #import "PostMediaViewController.h"
 #import "EditPostViewController.h"
+#import "ImageIO/CGImageSource.h";
+#import "ImageIO/CGImageDestination.h";
+
 
 #define TAG_ACTIONSHEET_PHOTO 1
 #define TAG_ACTIONSHEET_VIDEO 2
 #define NUMBERS	@"0123456789"
 
+
+@interface PostMediaViewController (Private)
+-(void)getMetadataFromAssetForURL:(NSURL *)url;
+@end
+
 @implementation PostMediaViewController
 @synthesize table, addMediaButton, hasPhotos, hasVideos, isAddingMedia, photos, videos, addPopover, picker;
 @synthesize isShowingMediaPickerActionSheet, currentOrientation, isShowingChangeOrientationActionSheet, spinner, pickerContainer;
-@synthesize currentImage, currentVideo, isLibraryMedia, didChangeOrientationDuringRecord, messageLabel;
+@synthesize currentImage, currentImageMetadata, currentVideo, isLibraryMedia, didChangeOrientationDuringRecord, messageLabel;
 @synthesize postDetailViewController, postID, blogURL, bottomToolbar;
 @synthesize isShowingResizeActionSheet, isShowingCustomSizeAlert, videoEnabled, currentUpload, videoPressCheckBlogURL, isCheckingVideoCapability, uniqueID;
 
@@ -364,7 +372,8 @@
 	else {
         WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
         [appDelegate setAlertRunning:NO];
-		
+		[currentImageMetadata release];
+        currentImageMetadata = nil;
         [currentImage release];
         currentImage = nil;
 	}
@@ -795,6 +804,10 @@
 			UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
 		currentImage = [image retain];
 		
+		//UIImagePickerControllerReferenceURL = "assets-library://asset/asset.JPG?id=1000000050&ext=JPG").
+		if (iOs4OrGreater())
+			[self getMetadataFromAssetForURL:[info objectForKey:UIImagePickerControllerReferenceURL]];
+				
 		NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
 		[nf setNumberStyle:NSNumberFormatterDecimalStyle];
 		NSNumber *resizePreference = [NSNumber numberWithInt:-1];
@@ -834,6 +847,50 @@
 		[[CPopoverManager instance] setCurrentPopoverController:NULL];
 		addPopover = nil;
 	}
+}
+
+
+/* 
+ * Take Asset URL and set imageJPEG property to NSData containing the
+ * associated JPEG, including the metadata we're after.
+ */
+-(void)getMetadataFromAssetForURL:(NSURL *)url {
+    ALAssetsLibrary* assetslibrary = [[ALAssetsLibrary alloc] init];
+    [assetslibrary assetForURL:url
+				   resultBlock: ^(ALAsset *myasset) {
+					   ALAssetRepresentation *rep = [myasset defaultRepresentation];
+					   
+					   WPLog(@"getJPEGFromAssetForURL: default asset representation for %@: uti: %@ size: %lld url: %@ orientation: %d scale: %f metadata: %@", 
+							 url, [rep UTI], [rep size], [rep url], [rep orientation], 
+							 [rep scale], [rep metadata]);
+					   
+					   Byte *buf = malloc([rep size]);  // will be freed automatically when associated NSData is deallocated
+					   NSError *err = nil;
+					   NSUInteger bytes = [rep getBytes:buf fromOffset:0LL 
+												 length:[rep size] error:&err];
+					   if (err || bytes == 0) {
+						   // Are err and bytes == 0 redundant? Doc says 0 return means 
+						   // error occurred which presumably means NSError is returned.
+						   
+						   WPLog(@"error from getBytes: %@", err);
+						   
+						   return;
+					   } 
+					   NSData *imageJPEG = [NSData dataWithBytesNoCopy:buf length:[rep size] 
+														  freeWhenDone:YES];  // YES means free malloc'ed buf that backs this when deallocated
+					   
+					   CGImageSourceRef  source ;
+					   source = CGImageSourceCreateWithData((CFDataRef)imageJPEG, NULL);
+					   
+					   //get all the metadata in the image
+					   self.currentImageMetadata = (NSDictionary *) CGImageSourceCopyPropertiesAtIndex(source,0,NULL);
+					   CFRelease(source);
+				   }
+				  failureBlock: ^(NSError *err) {
+					  WPLog(@"can't get asset %@: %@", url, err);
+					  self.currentImageMetadata = nil;
+				  }];
+    [assetslibrary release];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
@@ -1033,6 +1090,8 @@
 											interpolationQuality:kCGInterpolationHigh];
 			break;
 	}
+
+	
 	return resizedImage;
 }
 
@@ -1063,13 +1122,51 @@
 	UIImage *imageThumbnail = [self generateThumbnailFromImage:theImage andSize:CGSizeMake(75, 75)];
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 	[formatter setDateFormat:@"yyyyMMdd-hhmmss"];
-	
-	NSFileManager *fileManager = [NSFileManager defaultManager];
+		
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectory = [paths objectAtIndex:0];
 	NSString *filename = [NSString stringWithFormat:@"%@.jpg", [formatter stringFromDate:[NSDate date]]];
 	NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
-	[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
+	
+	if (iOs4OrGreater() && self.currentImageMetadata != nil) {
+		// Write the EXIF data with the image data to disk
+		CGImageSourceRef  source ;
+		source = CGImageSourceCreateWithData((CFDataRef)imageData, NULL);
+		CFStringRef UTI = CGImageSourceGetType(source); //this is the type of image (e.g., public.jpeg)
+		
+		//this will be the data CGImageDestinationRef will write into
+		NSMutableData *dest_data = [NSMutableData data];
+		
+		CGImageDestinationRef destination = CGImageDestinationCreateWithData((CFMutableDataRef)dest_data,UTI,1,NULL);
+		
+		if(!destination) {
+			WPLog(@"***Could not create image destination ***");
+		}
+		
+		//add the image contained in the image source to the destination, copying the old metadata
+		CGImageDestinationAddImageFromSource(destination,source,0, (CFDictionaryRef) self.currentImageMetadata);
+		
+		//tell the destination to write the image data and metadata into our data object.
+		//It will return false if something goes wrong
+		BOOL success = NO;
+		success = CGImageDestinationFinalize(destination);
+		
+		if(!success) {
+			WPLog(@"***Could not create data from image destination ***");
+			//write the data without EXIF to disk
+			NSFileManager *fileManager = [NSFileManager defaultManager];
+			[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
+		} else {
+			//write it to disk
+			[dest_data writeToFile:filepath atomically:YES];
+		}
+		//cleanup
+		CFRelease(destination);
+		CFRelease(source);
+    } else {
+		NSFileManager *fileManager = [NSFileManager defaultManager];
+		[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
+	}
 	
 	if(currentOrientation == kLandscape)
 		imageMedia.orientation = @"landscape";
@@ -1342,6 +1439,7 @@
 	[messageLabel release];
 	[currentVideo release];
 	[currentImage release];
+	[currentImageMetadata release];
 	[spinner release];
 	[table release];
 	[addMediaButton release];

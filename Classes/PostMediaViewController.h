@@ -46,6 +46,7 @@ static inline double radians(double degrees) {
 	NSMutableArray *photos, *videos;
 	UIDeviceOrientation currentOrientation;
     UIImage *currentImage;
+	NSDictionary *currentImageMetadata;
 	NSMutableDictionary *currentVideo;
     NSFetchedResultsController *resultsController;
 }
@@ -64,6 +65,7 @@ static inline double radians(double degrees) {
 @property (nonatomic, assign) EditPostViewController *postDetailViewController;
 @property (nonatomic, assign) UIDeviceOrientation currentOrientation;
 @property (nonatomic, retain) UIImage *currentImage;
+@property (nonatomic, retain) NSDictionary *currentImageMetadata;
 @property (nonatomic, retain) NSMutableDictionary *currentVideo;
 @property (nonatomic, retain) UIImagePickerController *picker;
 @property (nonatomic, retain) UIViewController *pickerContainer;
@@ -100,5 +102,4 @@ static inline double radians(double degrees) {
 - (void)initObjects;
 - (void)addNotifications;
 - (void)removeNotifications;
-
 @end
