@@ -36,8 +36,8 @@
 	
 	if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil) {
         NSError *error = nil;
-		username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-        password = [SFHFKeychainUtils getPasswordForUsername:username
+		self.username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
+        self.password = [SFHFKeychainUtils getPasswordForUsername:username
                                               andServiceName:@"WordPress.com"
                                                        error:&error];
     }
