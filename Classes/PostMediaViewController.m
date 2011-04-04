@@ -372,10 +372,10 @@
 	else {
         WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
         [appDelegate setAlertRunning:NO];
-		[currentImageMetadata release];
+		/*[currentImageMetadata release];
         currentImageMetadata = nil;
         [currentImage release];
-        currentImage = nil;
+        currentImage = nil;*/
 	}
 	[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
 }
@@ -1128,7 +1128,7 @@
 	NSString *filename = [NSString stringWithFormat:@"%@.jpg", [formatter stringFromDate:[NSDate date]]];
 	NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
 	
-	if (iOs4OrGreater() && self.currentImageMetadata != nil) {
+	if (self.postDetailViewController.apost.blog.geolocationEnabled && iOs4OrGreater() && self.currentImageMetadata != nil) {
 		// Write the EXIF data with the image data to disk
 		CGImageSourceRef  source ;
 		source = CGImageSourceCreateWithData((CFDataRef)imageData, NULL);
@@ -1439,6 +1439,7 @@
 	[messageLabel release];
 	[currentVideo release];
 	[currentImage release];
+	self.currentImageMetadata = nil;
 	[currentImageMetadata release];
 	[spinner release];
 	[table release];
