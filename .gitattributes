@@ -471,6 +471,7 @@ es.lproj/Localizable.strings -text svneol=unset#unset
 /hasLocation@2x.png -text
 /help.png -text
 /iTunesArtwork -text
+it.lproj/Localizable.strings -text
 /license.txt -text
 /localize.py -text
 /lock.png -text
