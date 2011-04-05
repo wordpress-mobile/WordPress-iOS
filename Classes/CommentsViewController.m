@@ -97,6 +97,10 @@
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
+
+    spamButton.title = NSLocalizedString(@"Spam", @"");
+    unapproveButton.title = NSLocalizedString(@"Unapprove", @"");
+    approveButton.title = NSLocalizedString(@"Approve", @"");
     
     commentsDict = [[NSMutableDictionary alloc] init];
     selectedComments = [[NSMutableArray alloc] init];

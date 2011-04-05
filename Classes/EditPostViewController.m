@@ -234,6 +234,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [super viewDidLoad];
     [FlurryAPI logEvent:@"EditPost"];
 
+    titleLabel.text = NSLocalizedString(@"Title:", @"");
+    tagsLabel.text = NSLocalizedString(@"Tags:", @"");
+    tagsTextField.placeholder = NSLocalizedString(@"Separate tags with commas", @"");
+    categoriesLabel.text = NSLocalizedString(@"Categories:", @"");
+    textViewPlaceHolderField.placeholder = NSLocalizedString(@"Tap here to begin writing", @"");
+
     postSettingsController = [[PostSettingsViewController alloc] initWithNibName:@"PostSettingsViewController" bundle:nil];
     postSettingsController.postDetailViewController = self;
     postSettingsController.view.frame = editView.frame;

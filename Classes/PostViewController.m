@@ -10,6 +10,7 @@
 
 
 @implementation PostViewController
+@synthesize titleTitleLabel, tagsTitleLabel, categoriesTitleLabel;
 @synthesize titleLabel, tagsLabel, categoriesLabel;
 @synthesize contentView;
 @synthesize apost;
@@ -51,6 +52,10 @@
 	[FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	[super viewDidLoad];
     [self refreshUI];
+
+    self.titleTitleLabel.text = NSLocalizedString(@"Title:", @"");
+    self.tagsTitleLabel.text = NSLocalizedString(@"Tags:", @"");
+    self.categoriesTitleLabel.text = NSLocalizedString(@"Categories:", @"");
     
     UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
                                                                                 target:self
@@ -126,6 +131,9 @@
     self.titleLabel = nil;
     self.tagsLabel = nil;
     self.categoriesLabel = nil;
+    self.titleTitleLabel = nil;
+    self.tagsTitleLabel = nil;
+    self.categoriesTitleLabel = nil;
 	
     [super dealloc];
 }

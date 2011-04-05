@@ -12,6 +12,8 @@
 
 @interface CrashReportViewController : UIViewController <MFMailComposeViewControllerDelegate>  {
 	NSData *crashData;
+    IBOutlet UILabel *messageLabel;
+    IBOutlet UIButton *sendButton, *dontSendButton;
 }
 
 @property (nonatomic, retain) NSData *crashData;

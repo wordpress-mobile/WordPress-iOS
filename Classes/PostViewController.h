@@ -14,6 +14,7 @@
 
 }
 
+@property (nonatomic, retain) IBOutlet UILabel *titleTitleLabel, *tagsTitleLabel, *categoriesTitleLabel;
 @property (nonatomic, retain) IBOutlet UILabel *titleLabel, *tagsLabel, *categoriesLabel;
 @property (nonatomic, retain) IBOutlet UITextView *contentView;
 @property (nonatomic, retain) IBOutlet AbstractPost *apost;

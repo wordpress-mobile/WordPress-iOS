@@ -15,6 +15,9 @@ NSString *CrashFilePath();
     [super viewDidLoad];
 	
 	self.navigationItem.title = NSLocalizedString(@"Crash Detected", @"");
+    messageLabel.text = NSLocalizedString(@"It looks like WordPress for iOS crashed the last time you used it. You can help us resolve the issue by sending a crash report.", @"");
+    sendButton.titleLabel.text = NSLocalizedString(@"Send Crash Report", @"");
+    dontSendButton.titleLabel.text = NSLocalizedString(@"Don't Send Crash Report", @"");
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -110,6 +113,9 @@ NSString *CrashFilePath();
 }
 
 - (void)viewDidUnload {
+    messageLabel = nil;
+    sendButton = nil;
+    dontSendButton = nil;
     [super viewDidUnload];
 }
 

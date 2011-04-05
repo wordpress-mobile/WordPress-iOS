@@ -19,6 +19,11 @@
     [super viewDidLoad];
     [FlurryAPI logEvent:@"Blog"];
 
+    commentsItem.title = NSLocalizedString(@"Comments", @"");
+    postsItem.title = NSLocalizedString(@"Posts", @"");
+    pagesItem.title = NSLocalizedString(@"Pages", @"");
+    statsItem.title = NSLocalizedString(@"Stats", @"");
+
     postsViewController.blog = self.blog;
     pagesViewController.blog = self.blog;
     commentsViewController.blog = self.blog;
@@ -63,6 +68,10 @@
 - (void)viewDidUnload {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	self.selectedViewController = tabBarController.selectedViewController;
+    commentsItem = nil;
+    postsItem = nil;
+    pagesItem = nil;
+    statsItem = nil;
 	[super viewDidUnload];
 }
 

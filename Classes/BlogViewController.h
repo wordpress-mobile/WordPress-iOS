@@ -21,6 +21,7 @@
 	//uncomment me to add stats back
 	IBOutlet StatsTableViewController *statsTableViewController;
     IBOutlet UISplitViewController *splitViewController;
+    IBOutlet UITabBarItem *commentsItem, *postsItem, *pagesItem, *statsItem;
 	BOOL stateRestored;
     Blog *blog;
 }

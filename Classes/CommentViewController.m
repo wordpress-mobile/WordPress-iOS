@@ -528,6 +528,7 @@
 
 	float pendingLabelHeight = pendingLabelHolder.frame.size.height;
     pendingLabelHolder.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
+    pendingLabel.text = NSLocalizedString(@"Pending Comment", @"");
 
 	[labelHolder addSubview:pendingLabelHolder];
     
