@@ -19,13 +19,13 @@
     [super viewDidLoad];
 	
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [FlurryAPI logEvent:@"Welcome"];
+    [FlurryAPI logEvent:NSLocalizedString(@"Welcome", @"")];
 	
 	self.tableView.backgroundColor = [UIColor clearColor];
 	if(DeviceIsPad()) {
 		self.tableView.backgroundView = nil;
 		UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] 
-										 initWithTitle:@"Close" 
+										 initWithTitle:NSLocalizedString(@"Close", @"") 
 										 style:UIBarButtonItemStylePlain 
 										 target:self action:@selector(cancel:)];
 		self.navigationItem.leftBarButtonItem = cancelButton;
@@ -34,11 +34,11 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	if([Blog countWithContext:appDelegate.managedObjectContext] == 0) {
-		self.navigationItem.title = @"Welcome";
+		self.navigationItem.title = NSLocalizedString(@"Welcome", @"");
 		[self.navigationItem setHidesBackButton:YES animated:YES];
 	}
 	else {
-		self.navigationItem.title = @"Add Blog";
+		self.navigationItem.title = NSLocalizedString(@"Add Blog", @"");
 		[self.navigationItem setHidesBackButton:NO animated:YES];
 	}
 }
@@ -91,7 +91,7 @@
 	headerText.font = [UIFont fontWithName:@"Georgia" size:22];
 	headerText.numberOfLines = 0;
 	headerText.textAlignment = UITextAlignmentCenter;
-	headerText.text = [NSString stringWithFormat:@"Start blogging from your %@ in seconds.", 
+	headerText.text = [NSString stringWithFormat:NSLocalizedString(@"Start blogging from your %@ in seconds.", @""), 
 					   [[UIDevice currentDevice] model]];
 	[headerView addSubview:headerText];
 	[headerText release];
@@ -118,13 +118,13 @@
 	
 	switch (indexPath.row) {
 		case 0:
-			cell.textLabel.text = @"Start a new blog at WordPress.com";
+			cell.textLabel.text = NSLocalizedString(@"Start a new blog at WordPress.com", @"");
 			break;
 		case 1:
-			cell.textLabel.text = @"Add blog hosted at WordPress.com";
+			cell.textLabel.text = NSLocalizedString(@"Add blog hosted at WordPress.com", @"");
 			break;
 		case 2:
-			cell.textLabel.text = @"Add self-hosted WordPress blog";
+			cell.textLabel.text = NSLocalizedString(@"Add self-hosted WordPress blog", @"");
 			break;
 		default:
 			break;

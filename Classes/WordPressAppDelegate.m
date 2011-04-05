@@ -177,7 +177,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 			[wViewController release];
 		}
 		else {
-			blogsViewController.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
+			blogsViewController.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Blogs", @"") style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
 		}
 		
 	}

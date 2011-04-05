@@ -84,9 +84,9 @@
 
 + (NSString *)titleForStatus:(NSString *)status {
     if ([status isEqualToString:@"hold"]) {
-        return @"Pending moderation";
+        return NSLocalizedString(@"Pending moderation", @"");
     } else if ([status isEqualToString:@"approve"]) {
-        return @"Comments";
+        return NSLocalizedString(@"Comments", @"");
     } else {
         return status;
     }

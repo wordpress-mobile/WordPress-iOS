@@ -30,9 +30,9 @@
 	
     [FlurryAPI logEvent:@"WPcomLogin"];
 	footerText = @" ";
-	buttonText = @"Sign In";
+	buttonText = NSLocalizedString(@"Sign In", @"");
 	WPcomXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
-	self.navigationItem.title = @"Sign In";
+	self.navigationItem.title = NSLocalizedString(@"Sign In", @"");
 	
 	if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil) {
         NSError *error = nil;
@@ -137,7 +137,7 @@
 			loginTextField.textColor = [UIColor blackColor];
 			if ([indexPath section] == 0) {
 				if ([indexPath row] == 0) {
-					loginTextField.placeholder = @"WordPress.com username";
+					loginTextField.placeholder = NSLocalizedString(@"WordPress.com username", @"");
 					loginTextField.keyboardType = UIKeyboardTypeEmailAddress;
 					loginTextField.returnKeyType = UIReturnKeyNext;
 					loginTextField.tag = 0;
@@ -146,7 +146,7 @@
 						loginTextField.text = username;
 				}
 				else {
-					loginTextField.placeholder = @"WordPress.com password";
+					loginTextField.placeholder = NSLocalizedString(@"WordPress.com password", @"");
 					loginTextField.keyboardType = UIKeyboardTypeDefault;
 					loginTextField.returnKeyType = UIReturnKeyDone;
 					loginTextField.secureTextEntry = YES;
@@ -178,20 +178,20 @@
 	
 	if (indexPath.section == 0) {
 		if ([indexPath row] == 0) {
-			cell.textLabel.text = @"Username";
+			cell.textLabel.text = NSLocalizedString(@"Username", @"");
 		}
 		else {
-			cell.textLabel.text = @"Password";
+			cell.textLabel.text = NSLocalizedString(@"Password", @"");
 		}
 	}
 	else if(indexPath.section == 1) {
 		if(isSigningIn) {
 			[activityCell.spinner startAnimating];
-			buttonText = @"Signing In...";
+			buttonText = NSLocalizedString(@"Signing In...", @"");
 		}
 		else {
 			[activityCell.spinner stopAnimating];
-			buttonText = @"Sign In";
+			buttonText = NSLocalizedString(@"Sign In", @"");
 		}
 		
 		activityCell.textLabel.text = buttonText;
@@ -230,18 +230,18 @@
 				}
 			}
 			if(username == nil) {
-				footerText = @"Username is required.";
-				buttonText = @"Sign In";
+				footerText = NSLocalizedString(@"Username is required.", @"");
+				buttonText = NSLocalizedString(@"Sign In", @"");
 				[tv reloadData];
 			}
 			else if(password == nil) {
-				footerText = @"Password is required.";
-				buttonText = @"Sign In";
+				footerText = NSLocalizedString(@"Password is required.", @"");
+				buttonText = NSLocalizedString(@"Sign In", @"");
 				[tv reloadData];
 			}
 			else {
 				footerText = @" ";
-				buttonText = @"Signing in...";
+				buttonText = NSLocalizedString(@"Signing in...", @"");
 				
 				[NSThread sleepForTimeInterval:0.15];
 				[tv reloadData];
@@ -297,7 +297,7 @@
 	switch (indexPath.row) {
 		case 0:
 			if((textField.text != nil) && ([textField.text isEqualToString:@""])) {
-				self.footerText = @"Username is required.";
+				self.footerText = NSLocalizedString(@"Username is required.", @"");
 			}
 			else {
 				self.username = [[textField.text stringByReplacingOccurrencesOfString:@" " withString:@""] lowercaseString];
@@ -306,7 +306,7 @@
 			break;
 		case 1:
 			if((textField.text != nil) && ([textField.text isEqualToString:@""])) {
-				self.footerText = @"Password is required.";
+				self.footerText = NSLocalizedString(@"Password is required.", @"");
 			}
 			else {
 				self.password = textField.text;
@@ -380,8 +380,8 @@
 		[self performSelectorOnMainThread:@selector(didSignInSuccessfully) withObject:nil waitUntilDone:NO];
 	}
 	else {
-		footerText = @"Sign in failed. Please try again.";
-		buttonText = @"Sign In";
+		footerText = NSLocalizedString(@"Sign in failed. Please try again.", @"");
+		buttonText = NSLocalizedString(@"Sign In", @"");
 		isSigningIn = NO;
 		[self.navigationItem setHidesBackButton:NO animated:NO];
 		[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];

@@ -18,7 +18,7 @@
 		self.view.frame = CGRectMake(0, 0, 500, 400);
 	}
 	
-	self.navigationItem.title = @"Sign Up";
+	self.navigationItem.title = NSLocalizedString(@"Sign Up", @"");
 	spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
 	spinner.hidesWhenStopped = YES;
 	UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] init];
@@ -26,7 +26,7 @@
 	self.navigationItem.rightBarButtonItem = buttonItem;
 	
 	NSURLRequest *request = [NSURLRequest requestWithURL:
-								[NSURL URLWithString:@"http://wordpress.com/signup?ref=wp-iphone"]];
+								[NSURL URLWithString:NSLocalizedString(@"http://wordpress.com/signup?ref=wp-iphone", @"")]];
     self.webView.scalesPageToFit = YES;
 	[self.webView loadRequest:request];
 }
@@ -46,7 +46,7 @@
 								   initWithTitle: [error localizedDescription]
 								   message: [error localizedFailureReason]
 								   delegate:nil
-								   cancelButtonTitle:@"OK" 
+								   cancelButtonTitle:NSLocalizedString(@"OK", @"") 
 								   otherButtonTitles:nil];
         [errorAlert show];
         [errorAlert release];

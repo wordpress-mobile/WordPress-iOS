@@ -65,10 +65,10 @@
         return;
     }
 	if (self.apost.remoteStatus == AbstractPostRemoteStatusPushing) {
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Can't edit just yet"
-														message:@"Sorry, you can't edit a post while it's being uploaded. Try again in a moment"
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Can't edit just yet", @"")
+														message:NSLocalizedString(@"Sorry, you can't edit a post while it's being uploaded. Try again in a moment", @"")
 													   delegate:nil
-											  cancelButtonTitle:@"OK"
+											  cancelButtonTitle:NSLocalizedString(@"OK", @"")
 											  otherButtonTitles:nil];
 		[alert show];
 		[alert release];

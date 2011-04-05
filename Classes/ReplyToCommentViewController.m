@@ -57,7 +57,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 		
 	if (!saveButton) {
 	saveButton = [[UIBarButtonItem alloc] 
-				  initWithTitle:@"Reply" 
+				  initWithTitle:NSLocalizedString(@"Reply", @"") 
 				  style:UIBarButtonItemStyleDone
 				  target:self 
 				  action:@selector(initiateSaveCommentReply:)];
@@ -227,7 +227,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	
 	if (DeviceIsPad() == NO) {
 		self.navigationItem.leftBarButtonItem =
-		[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+		[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"")
 										 style: UIBarButtonItemStyleBordered
 										target:self
 										action:@selector(cancelView:)];
@@ -239,7 +239,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	
 	if (DeviceIsPad() == NO) {
 		doneButton = [[UIBarButtonItem alloc] 
-									   initWithTitle:@"Done" 
+									   initWithTitle:NSLocalizedString(@"Done", @"") 
 									   style:UIBarButtonItemStyleDone 
 									   target:self 
 									   action:@selector(endTextEnteringButtonAction:)];
@@ -307,9 +307,9 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 
 - (BOOL)isConnectedToHost {
     if ([[WPReachability sharedReachability] internetConnectionStatus] == NotReachable) {
-        UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:@"Connection Problem"
-																	  message:@"The internet connection appears to be offline."
-																	 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Problem", @"")
+																	  message:NSLocalizedString(@"The internet connection appears to be offline.", @"")
+																	 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
         [connectionFailAlert show];
         [connectionFailAlert release];
         return NO;
@@ -326,15 +326,15 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 		if (DeviceIsPad() == YES) {
 			[textView becomeFirstResponder];
 		}		
-		UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:@"Error."
-																	  message:@"Please type a comment."
-																	 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error.", @"")
+																	  message:NSLocalizedString(@"Please type a comment.", @"")
+																	 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
         [connectionFailAlert show];
         [connectionFailAlert release];
 		return;
 	}
 	
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Sending Reply..."];
+    progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Sending Reply...", @"")];
     [progressAlert show];
     self.comment.content = textView.text;
     [self performSelectorInBackground:@selector(saveReplyBackgroundMethod:) withObject:nil];
@@ -353,7 +353,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 		hasChanges = NO;
 		[commentViewController performSelectorOnMainThread:@selector(closeReplyViewAndSelectTheNewComment) withObject:nil waitUntilDone:YES];
 	} else {
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:@"Sorry, something went wrong during comments moderation. Please try again."];	
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:NSLocalizedString(@"Sorry, something went wrong during comments moderation. Please try again.", @"")];	
 	}
 	
     [pool release];

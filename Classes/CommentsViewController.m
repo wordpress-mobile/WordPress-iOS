@@ -105,7 +105,7 @@
     commentsTableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
     commentsTableView.allowsSelectionDuringEditing = YES;
     
-    editButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered
+    editButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Edit", @"") style:UIBarButtonItemStyleBordered
                                                      target:self action:@selector(editComments)];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(commentsSynced:) name:@"CommentRefreshNotification" object:nil];
@@ -165,7 +165,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	if (!DeviceIsPad())
-		editButtonItem.title = @"Edit";
+		editButtonItem.title = NSLocalizedString(@"Edit", @"");
     [super viewWillDisappear:animated];
 }
 
@@ -207,7 +207,7 @@
     [unapproveButton setEnabled:!editing];
     [spamButton setEnabled:!editing];
 	
-    editButtonItem.title = editing ? @"Cancel" : @"Edit";
+    editButtonItem.title = editing ? NSLocalizedString(@"Cancel", @"") : NSLocalizedString(@"Edit", @"");
     
     [commentsTableView setEditing:value animated:YES];
 	
@@ -238,7 +238,7 @@
 
 - (void)editComments {
 	if ([UIApplication sharedApplication].networkActivityIndicatorVisible) {
-		UIAlertView *currentlyUpdatingAlert = [[UIAlertView alloc] initWithTitle:@"Currently Syncing" message:@"The edit feature is disabled while syncing. Please try again in a few seconds." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		UIAlertView *currentlyUpdatingAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Currently Syncing", @"") message:NSLocalizedString(@"The edit feature is disabled while syncing. Please try again in a few seconds.", @"") delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
 		[currentlyUpdatingAlert show];
 		[currentlyUpdatingAlert release];
 	}
@@ -331,28 +331,28 @@
 }
 
 - (IBAction)deleteSelectedComments:(id)sender {
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Deleting..."];
+    progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Deleting...", @"")];
     [progressAlert show];
 
     [self performSelectorInBackground:@selector(deleteComments) withObject:nil];
 }
 
 - (IBAction)approveSelectedComments:(id)sender {
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Moderating..."];
+    progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Moderating...", @"")];
     [progressAlert show];
 
     [self performSelectorInBackground:@selector(approveComments) withObject:nil];
 }
 
 - (IBAction)unapproveSelectedComments:(id)sender {
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Moderating..."];
+    progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Moderating...", @"")];
     [progressAlert show];
 
     [self performSelectorInBackground:@selector(unapproveComments) withObject:nil];
 }
 
 - (IBAction)spamSelectedComments:(id)sender {
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Moderating..."];
+    progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Moderating...", @"")];
     [progressAlert show];
 
     [self performSelectorInBackground:@selector(markCommentsAsSpam) withObject:nil];
@@ -375,7 +375,7 @@
     [self performSelectorOnMainThread:@selector(didModerateComments) withObject:nil waitUntilDone:NO];
     
 	if(fails)
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:@"Sorry, something went wrong during comment moderation. Please try again."];
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:NSLocalizedString(@"Sorry, something went wrong during comment moderation. Please try again.", @"")];
 	[pool release];
 }
 
@@ -419,9 +419,9 @@
     [unapproveButton setEnabled:((count - unapprovedCount) > 0)];
     [spamButton setEnabled:((count - spamCount) > 0)];
 
-    [approveButton setTitle:(((count - approvedCount) > 0) ? [NSString stringWithFormat:@"Approve (%d)", count - approvedCount]:@"Approve")];
-    [unapproveButton setTitle:(((count - unapprovedCount) > 0) ? [NSString stringWithFormat:@"Unapprove (%d)", count - unapprovedCount]:@"Unapprove")];
-    [spamButton setTitle:(((count - spamCount) > 0) ? [NSString stringWithFormat:@"Spam (%d)", count - spamCount]:@"Spam")];
+    [approveButton setTitle:(((count - approvedCount) > 0) ? [NSString stringWithFormat:NSLocalizedString(@"Approve (%d)", @""), count - approvedCount]:NSLocalizedString(@"Approve", @""))];
+    [unapproveButton setTitle:(((count - unapprovedCount) > 0) ? [NSString stringWithFormat:NSLocalizedString(@"Unapprove (%d)", @""), count - unapprovedCount]:NSLocalizedString(@"Unapprove", @""))];
+    [spamButton setTitle:(((count - spamCount) > 0) ? [NSString stringWithFormat:NSLocalizedString(@"Spam (%d)", @""), count - spamCount]:NSLocalizedString(@"Spam", @""))];
 }
 
 - (void)showCommentAtIndexPath:(NSIndexPath *)indexPath {

@@ -20,7 +20,7 @@
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
 																							target:self
 																							action:@selector(showAddBlogView:)] autorelease];
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Blogs" style:UIBarButtonItemStyleBordered target:nil action:nil]; 
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Blogs", @"") style:UIBarButtonItemStyleBordered target:nil action:nil]; 
 	self.tableView.allowsSelectionDuringEditing = YES;
     
     NSError *error = nil;
@@ -46,11 +46,11 @@
 		   ([prefs objectForKey:@"has_displayed_rating_prompt"] == nil)) {
 			
 			// If this is the 30th launch, display the alert
-			UIAlertView *ratingAlert = [[UIAlertView alloc] initWithTitle:@"App Store Rating" 
-																  message:@"If you like WordPress for iOS, we'd appreciate it if you could leave us a rating in the App Store. Would you like to do that now?" 
+			UIAlertView *ratingAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"App Store Rating", @"") 
+																  message:NSLocalizedString(@"If you like WordPress for iOS, we'd appreciate it if you could leave us a rating in the App Store. Would you like to do that now?", @"") 
 																 delegate:self 
-														cancelButtonTitle:@"No" 
-														otherButtonTitles:@"Yes", nil];
+														cancelButtonTitle:NSLocalizedString(@"No", @"") 
+														otherButtonTitles:NSLocalizedString(@"Yes", @""), nil];
 			[ratingAlert show];
 			[ratingAlert release];
 			
@@ -172,7 +172,7 @@
 }
 
 -(NSString *)tableView:(UITableView*)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return @"Remove";
+	return NSLocalizedString(@"Remove", @"");
 }
 
 - (void)tableView:(UITableView *)atableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -229,9 +229,9 @@
 			}
 		} else {
 			//the blog is using the network connection and cannot be stoped, show a message to the user
-			UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:@"Info"
-																		  message:@"The blog is synching with the server. Please try later."
-																		 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"")
+																		  message:NSLocalizedString(@"The blog is synching with the server. Please try later.", @"")
+																		 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
 			[blogIsCurrentlyBusy show];
 			[blogIsCurrentlyBusy release];
 		}
@@ -241,7 +241,7 @@
 
 
 - (void)edit:(id)sender {
-	UIBarButtonItem *cancelButton = [[[UIBarButtonItem alloc] initWithTitle:@"Done"
+	UIBarButtonItem *cancelButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"")
 																	  style:UIBarButtonItemStyleDone
 																	 target:self
 																	 action:@selector(cancel:)] autorelease];
@@ -250,7 +250,7 @@
 }
 
 - (void)cancel:(id)sender {
-    UIBarButtonItem *editButton = [[[UIBarButtonItem alloc] initWithTitle:@"Edit"
+    UIBarButtonItem *editButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Edit", @"")
 																	style:UIBarButtonItemStylePlain
 																   target:self
 																   action:@selector(edit:)] autorelease];

@@ -79,13 +79,13 @@
 		NSString *title = [[post valueForKey:@"postTitle"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 		
 		if (title == nil || ([title length] == 0)) {
-			title = @"(no title)";
+			title = NSLocalizedString(@"(no title)", @"");
 		}
 		
 		nameLabel.text = title;
 		if ([post.status isEqualToString:@"pending"]) {
 			statusLabel.textColor = [UIColor lightGrayColor];
-			statusLabel.text = @"Pending";
+			statusLabel.text = NSLocalizedString(@"Pending", @"");
 		} else if ([post.status isEqualToString:@"draft"]) {
 			statusLabel.textColor = [UIColor colorWithRed:0.796875f green:0.0f blue:0.0f alpha:1.0f];
 			statusLabel.text = post.statusTitle;

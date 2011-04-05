@@ -52,7 +52,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
       
      if (!saveButton) {
          saveButton = [[UIBarButtonItem alloc] 
-         initWithTitle:@"Save" 
+         initWithTitle:NSLocalizedString(@"Save", @"") 
          style:UIBarButtonItemStyleDone
          target:self 
          action:@selector(initiateSaveCommentReply:)];
@@ -202,7 +202,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	
 	if (DeviceIsPad() == NO) {
 		self.navigationItem.leftBarButtonItem =
-		[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+		[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"")
 										 style: UIBarButtonItemStyleBordered
 										target:self
 										action:@selector(cancelView:)];
@@ -213,7 +213,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	self.navigationItem.rightBarButtonItem = saveButton;
 	if (DeviceIsPad() == NO) {
 		doneButton = [[UIBarButtonItem alloc] 
-					  initWithTitle:@"Done" 
+					  initWithTitle:NSLocalizedString(@"Done", @"") 
 					  style:UIBarButtonItemStyleDone 
 					  target:self 
 					  action:@selector(endTextEnteringButtonAction:)];
@@ -277,9 +277,9 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 
 - (BOOL)isConnectedToHost {
     if ([[WPReachability sharedReachability] internetConnectionStatus] == NotReachable) {
-        UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:@"No connection to host."
-																	  message:@"Operation is not supported now."
-																	 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No connection to host.", @"")
+																	  message:NSLocalizedString(@"Operation is not supported now.", @"")
+																	 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
         [connectionFailAlert show];
         [connectionFailAlert release];
         return NO;
@@ -306,7 +306,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	[commentViewController showComment:comment];
 	[self.navigationController popViewControllerAnimated:YES];
 	
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Saving Edit..."];
+    progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Saving Edit...", @"")];
     [progressAlert show];
 	[self performSelectorInBackground:@selector(saveEditBackgroundMethod:) withObject:nil];
 }
@@ -327,7 +327,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 			[commentViewController performSelectorOnMainThread:@selector(cancelView:) withObject:self waitUntilDone:NO];
 		}
 	} else {
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:@"Something went wrong during comments moderation."];	
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:NSLocalizedString(@"Something went wrong during comments moderation.", @"")];	
 		
 	}
 	

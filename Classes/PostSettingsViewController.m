@@ -74,9 +74,9 @@
     [FlurryAPI logEvent:@"PostSettings"];
 
     NSMutableArray *allStatuses = [NSMutableArray arrayWithArray:[postDetailViewController.apost availableStatuses]];
-    [allStatuses removeObject:@"Private"];
+    [allStatuses removeObject:NSLocalizedString(@"Private", @"")];
     statusList = [[NSArray arrayWithArray:allStatuses] retain];
-    visibilityList = [[NSArray arrayWithObjects:@"Public", @"Password protected", @"Private", nil] retain];
+    visibilityList = [[NSArray arrayWithObjects:NSLocalizedString(@"Public", @""), NSLocalizedString(@"Password protected", @""), NSLocalizedString(@"Private", @""), nil] retain];
 
     CGRect pickerFrame;
 	if (DeviceIsPad())
@@ -212,9 +212,9 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (section == 0)
-		return @"Publish";
+		return NSLocalizedString(@"Publish", @"");
 	else if (section == 1)
-		return @"Geolocation";
+		return NSLocalizedString(@"Geolocation", @"");
 	else
 		return nil;
 }
@@ -230,7 +230,7 @@
 			case 0:
 				if (([postDetailViewController.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending)
 					&& ([postDetailViewController.apost.status isEqualToString:@"publish"])) {
-					statusLabel.text = @"Scheduled";
+					statusLabel.text = NSLocalizedString(@"Scheduled", @"");
 				} else {
 					statusLabel.text = postDetailViewController.apost.statusTitle;
 				}
@@ -245,11 +245,11 @@
 				if (postDetailViewController.apost.password) {
 					passwordTextField.text = postDetailViewController.apost.password;
 					passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-					visibilityLabel.text = @"Password protected";
+					visibilityLabel.text = NSLocalizedString(@"Password protected", @"");
 				} else if ([postDetailViewController.apost.status isEqualToString:@"private"]) {
-					visibilityLabel.text = @"Private";
+					visibilityLabel.text = NSLocalizedString(@"Private", @"");
 				} else {
-					visibilityLabel.text = @"Public";
+					visibilityLabel.text = NSLocalizedString(@"Public", @"");
 				}
 				
 				return visibilityTableViewCell;
@@ -258,9 +258,9 @@
 			{
 				if (postDetailViewController.apost.dateCreated) {
 					if ([postDetailViewController.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending) {
-						publishOnLabel.text = @"Scheduled for";
+						publishOnLabel.text = NSLocalizedString(@"Scheduled for", @"");
 					} else {
-						publishOnLabel.text = @"Published on";
+						publishOnLabel.text = NSLocalizedString(@"Published on", @"");
 					}
 					
 					NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -269,8 +269,8 @@
 					publishOnDateLabel.text = [dateFormatter stringFromDate:postDetailViewController.apost.dateCreated];
 					[dateFormatter release];
 				} else {
-					publishOnLabel.text = @"Publish   "; //dorky spacing fix
-					publishOnDateLabel.text = @"Immediately";
+					publishOnLabel.text = NSLocalizedString(@"Publish   ", @""); //dorky spacing fix
+					publishOnDateLabel.text = NSLocalizedString(@"Immediately", @"");
 				}
 				// Resize labels properly
 				CGRect frame = publishOnLabel.frame;
@@ -301,14 +301,14 @@
 					}
 				}
 				if (isUpdatingLocation) {
-					addGeotagTableViewCell.textLabel.text = @"Finding your location...";
+					addGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Finding your location...", @"");
 					[addGeotagTableViewCell.spinner startAnimating];
 				} else {
 					[addGeotagTableViewCell.spinner stopAnimating];
 					if (postDetailViewController.post.geolocation) {
-						addGeotagTableViewCell.textLabel.text = @"Update Location";
+						addGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Update Location", @"");
 					} else {
-						addGeotagTableViewCell.textLabel.text = @"Add Location";
+						addGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Add Location", @"");
 					}
 				}
 				return addGeotagTableViewCell;
@@ -335,7 +335,7 @@
 				if (address) {
 					addressLabel.text = address;
 				} else {
-					addressLabel.text = @"Finding address...";
+					addressLabel.text = NSLocalizedString(@"Finding address...", @"");
 					[self geocodeCoordinate:postDetailViewController.post.geolocation.coordinate];
 				}
 				addressLabel.font = [UIFont boldSystemFontOfSize:16];
@@ -346,8 +346,8 @@
 				int latM = trunc((fabs(latitude) - latD) * 60);
 				int lonD = trunc(fabs(longitude));
 				int lonM = trunc((fabs(longitude) - lonD) * 60);
-				NSString *latDir = (latitude > 0) ? @"North" : @"South";
-				NSString *lonDir = (longitude > 0) ? @"East" : @"West";
+				NSString *latDir = (latitude > 0) ? NSLocalizedString(@"North", @"") : NSLocalizedString(@"South", @"");
+				NSString *lonDir = (longitude > 0) ? NSLocalizedString(@"East", @"") : NSLocalizedString(@"West", @"");
 				if (latitude == 0.0) latDir = @"";
 				if (longitude == 0.0) lonDir = @"";
 
@@ -369,7 +369,7 @@
 			case 2:
 				if (removeGeotagTableViewCell == nil)
 					removeGeotagTableViewCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RemoveGeotag"];
-				removeGeotagTableViewCell.textLabel.text = @"Remove Location";
+				removeGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Remove Location", @"");
 				removeGeotagTableViewCell.textLabel.textAlignment = UITextAlignmentCenter;
 				return removeGeotagTableViewCell;
 				break;
@@ -492,14 +492,14 @@
         postDetailViewController.apost.statusTitle = [statusList objectAtIndex:row];
     } else if (aPickerView.tag == TAG_PICKER_VISIBILITY) {
         NSString *visibility = [visibilityList objectAtIndex:row];
-        if ([visibility isEqualToString:@"Private"]) {
+        if ([visibility isEqualToString:NSLocalizedString(@"Private", @"")]) {
             postDetailViewController.apost.status = @"private";
             postDetailViewController.apost.password = nil;
         } else {
             if ([postDetailViewController.apost.status isEqualToString:@"private"]) {
                 postDetailViewController.apost.status = @"publish";
             }
-            if ([visibility isEqualToString:@"Password protected"]) {
+            if ([visibility isEqualToString:NSLocalizedString(@"Password protected", @"")]) {
                 postDetailViewController.apost.password = @"";
             } else {
                 postDetailViewController.apost.password = nil;
@@ -530,7 +530,7 @@
         if (picker.tag == TAG_PICKER_DATE) {
             fakeController.contentSizeForViewInPopover = CGSizeMake(320, 256);
 
-            UISegmentedControl *publishNowButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@"Publish Immediately"]];
+            UISegmentedControl *publishNowButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Publish Immediately", @"")]];
             publishNowButton.momentary = YES; 
             publishNowButton.frame = CGRectMake(0, 0, 320, 40);
             publishNowButton.segmentedControlStyle = UISegmentedControlStyleBar;
@@ -564,7 +564,7 @@
         actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:nil cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
         [actionSheet setActionSheetStyle:UIActionSheetStyleAutomatic];
         [actionSheet addSubview:picker];
-		UISegmentedControl *closeButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@"Done"]];
+		UISegmentedControl *closeButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Done", @"")]];
 		closeButton.momentary = YES; 
 		closeButton.frame = CGRectMake(260, 7, 50, 30);
 		closeButton.segmentedControlStyle = UISegmentedControlStyleBar;
@@ -574,7 +574,7 @@
 		[closeButton release];
 
         if (picker.tag == TAG_PICKER_DATE) {
-            UISegmentedControl *publishNowButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:@"Publish Immediately"]];
+            UISegmentedControl *publishNowButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Publish Immediately", @"")]];
             publishNowButton.momentary = YES; 
             publishNowButton.frame = CGRectMake(10, 7, 129, 30);
             publishNowButton.segmentedControlStyle = UISegmentedControlStyleBar;
@@ -675,7 +675,7 @@
 	if (address)
 		[address release];
 	
-	address = [NSString stringWithString:@"Location unknown"];
+	address = [NSString stringWithString:NSLocalizedString(@"Location unknown", @"")];
 	addressLabel.text = [address retain];
 }
 

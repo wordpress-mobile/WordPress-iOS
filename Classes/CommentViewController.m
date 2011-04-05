@@ -97,7 +97,7 @@
 	
 	[self addOrRemoveSegmentedControl];
 	
-	self.navigationItem.title = @"Comment";
+	self.navigationItem.title = NSLocalizedString(@"Comment", @"");
 	
 	commentBodyWebView.backgroundColor = [UIColor whiteColor];
 	//hide the shadow for the UIWebView, nicked from stackoverflow.com/questions/1074320/remove-uiwebview-shadow/
@@ -150,15 +150,15 @@
 	NSString *conditionalButtonTitle = nil;
 	
 	if ([self isApprove]) {
-		conditionalButtonTitle = @"Approve Comment";
+		conditionalButtonTitle = NSLocalizedString(@"Approve Comment", @"");
 	} else {
-		conditionalButtonTitle = @"Unapprove Comment";
+		conditionalButtonTitle = NSLocalizedString(@"Unapprove Comment", @"");
 	}
 	
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@""
-															 delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil
-													otherButtonTitles: conditionalButtonTitle, @"Mark Comment as Spam", @"Edit Comment",nil];
-													//otherButtonTitles: conditionalButtonTitle, @"Mark Comment as Spam",nil];
+															 delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil
+													otherButtonTitles: conditionalButtonTitle, NSLocalizedString(@"Mark Comment as Spam", @""), NSLocalizedString(@"Edit Comment", @""),nil];
+													//otherButtonTitles: conditionalButtonTitle, NSLocalizedString(@"Mark Comment as Spam", @""),nil];
 	
 	actionSheet.tag = 301;
 	actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
@@ -265,7 +265,7 @@
 										 bundle:nil]autorelease];
 		replyToCommentViewController.commentViewController = self;
 		replyToCommentViewController.comment = [[self.comment newReply] autorelease];
-		replyToCommentViewController.title = @"Comment Reply";
+		replyToCommentViewController.title = NSLocalizedString(@"Comment Reply", @"");
 	
 	
 	if (DeviceIsPad() == NO) {
@@ -313,9 +313,9 @@
 	}
 	
 	
-	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
-															 delegate:self cancelButtonTitle:@"Cancel" 
-											   destructiveButtonTitle:@"Discard"
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"")
+															 delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
+											   destructiveButtonTitle:NSLocalizedString(@"Discard", @"")
 													otherButtonTitles:nil];
     
 	if (replyToCommentViewController.hasChanges)
@@ -350,7 +350,7 @@
 									 bundle:nil]autorelease];
 	editCommentViewController.commentViewController = self;
 	editCommentViewController.comment = self.comment;
-	editCommentViewController.title = @"Edit Comment";
+	editCommentViewController.title = NSLocalizedString(@"Edit Comment", @"");
 	
 	if (DeviceIsPad() == YES) {
 		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:editCommentViewController] autorelease];
@@ -399,9 +399,9 @@
 }
 
 - (void)launchDeleteCommentActionSheet {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Are you sure?"
-															 delegate:self cancelButtonTitle:@"Cancel" 
-											   destructiveButtonTitle:@"Delete"
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you sure?", @"")
+															 delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
+											   destructiveButtonTitle:NSLocalizedString(@"Delete", @"")
 													otherButtonTitles:nil];
     actionSheet.tag = 501;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
@@ -415,27 +415,27 @@
 }
 
 - (void)deleteComment:(id)sender {
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Deleting..."];
+    progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Deleting...", @"")];
     [progressAlert show];
     [self performSelectorInBackground:@selector(deleteThisComment) withObject:nil];
 }
 
 - (void)approveComment:(id)sender {
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Moderating..."];
+    progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Moderating...", @"")];
     [progressAlert show];
 
     [self performSelectorInBackground:@selector(approveThisComment) withObject:nil];
 }
 
 - (void)unApproveComment:(id)sender {
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Moderating..."];
+    progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Moderating...", @"")];
     [progressAlert show];
 
     [self performSelectorInBackground:@selector(unapproveThisComment) withObject:nil];
 }
 
 - (void)spamComment:(id)sender {
-   progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Moderating..."];
+   progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Moderating...", @"")];
     [progressAlert show];
 
     [self performSelectorInBackground:@selector(markThisCommentAsSpam) withObject:nil];
@@ -444,9 +444,9 @@
 
 - (BOOL)isConnectedToHost {
     if (![[WPReachability sharedReachability] internetConnectionStatus] != NotReachable) {
-        UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:@"No connection to host."
-                                            message:@"Operation is not supported now."
-                                            delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No connection to host.", @"")
+                                            message:NSLocalizedString(@"Operation is not supported now.", @"")
+                                            delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
         [connectionFailAlert show];
         [connectionFailAlert release];
         return NO;
@@ -465,7 +465,7 @@
 - (void)didFailModerateComment {
     [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
     [progressAlert release];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:@"Sorry, something went wrong during comment moderation. Please try again."];	
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:NSLocalizedString(@"Sorry, something went wrong during comment moderation. Please try again.", @"")];	
 }
 
 - (void)didModerateComment {
@@ -631,7 +631,7 @@
 	[commentAuthorEmailButton setTitle:[comment.author_email trim] forState:UIControlStateHighlighted];
 	[commentAuthorEmailButton setTitle:[comment.author_email trim] forState:UIControlStateSelected];
     if (comment.postTitle)
-        commentPostTitleLabel.text = [@"on " stringByAppendingString:[NSString decodeXMLCharactersIn:[comment.postTitle trim]]];
+        commentPostTitleLabel.text = [NSLocalizedString(@"on ", @"(Comment) on (Post Title)") stringByAppendingString:[comment.postTitle trim]];
 	if(comment.dateCreated != nil)
 		commentDateLabel.text = [@"" stringByAppendingString:[dateFormatter stringFromDate:comment.dateCreated]];
 	else
@@ -674,8 +674,8 @@
 		controller.mailComposeDelegate = self;
 		NSArray *recipient = [[NSArray alloc] initWithObjects:[self.comment.author_email trim], nil];
 		[controller setToRecipients: recipient];
-		[controller setSubject:[NSString stringWithFormat:@"Re: %@", self.comment.postTitle]]; 
-		[controller setMessageBody:[NSString stringWithFormat:@"Hi %@,", self.comment.author] isHTML:NO];
+		[controller setSubject:[NSString stringWithFormat:NSLocalizedString(@"Re: %@", @""), self.comment.postTitle]]; 
+		[controller setMessageBody:[NSString stringWithFormat:NSLocalizedString(@"Hi %@,", @""), self.comment.author] isHTML:NO];
 		[self presentModalViewController:controller animated:YES];
 		[recipient release];
 		[controller release];

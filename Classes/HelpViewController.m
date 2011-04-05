@@ -23,7 +23,7 @@
 		[emailButton setHidden:YES]; 
 	
 	if (DeviceIsPad())
-		self.navigationItem.title = @"Help";
+		self.navigationItem.title = NSLocalizedString(@"Help", @"");
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -62,8 +62,8 @@
 	NSArray *recipient = [[NSArray alloc] initWithObjects:@"support@wordpress.com", nil];
 	[controller setToRecipients: recipient];
 	[recipient release];
-	[controller setSubject:@"WordPress for iOS Help Request"];
-	[controller setMessageBody:@"Hello,\n" isHTML:NO]; 
+	[controller setSubject:NSLocalizedString(@"WordPress for iOS Help Request", @"")];
+	[controller setMessageBody:NSLocalizedString(@"Hello,\n", @"") isHTML:NO]; 
 	if ([[NSFileManager defaultManager] fileExistsAtPath:FileLoggerPath()]) {
 		NSString *logData = [NSString stringWithContentsOfFile:FileLoggerPath()];
 		[controller addAttachmentData:[logData dataUsingEncoding:NSUTF8StringEncoding] mimeType:@"text/plain" fileName:@"wordpress.log"];

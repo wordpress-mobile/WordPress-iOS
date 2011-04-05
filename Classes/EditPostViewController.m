@@ -144,21 +144,21 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if (currentView != editView) {
         [self switchToView:editView];
     }
-	self.navigationItem.title = @"Write";
+	self.navigationItem.title = NSLocalizedString(@"Write", @"");
 }
 
 - (IBAction)switchToSettings {
     if (currentView != postSettingsController.view) {
         [self switchToView:postSettingsController.view];
     }
-	self.navigationItem.title = @"Settings";
+	self.navigationItem.title = NSLocalizedString(@"Settings", @"");
 }
 
 - (IBAction)switchToMedia {
     if (currentView != postMediaViewController.view) {
         [self switchToView:postMediaViewController.view];
     }
-	self.navigationItem.title = @"Media";
+	self.navigationItem.title = NSLocalizedString(@"Media", @"");
 }
 
 - (IBAction)switchToPreview {
@@ -166,7 +166,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[postPreviewViewController refreshWebView];
         [self switchToView:postPreviewViewController.view];
     }
-	self.navigationItem.title = @"Preview";
+	self.navigationItem.title = NSLocalizedString(@"Preview", @"");
 }
 
 - (IBAction)addVideo:(id)sender {
@@ -246,8 +246,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     postPreviewViewController.postDetailViewController = self;
     postPreviewViewController.view.frame = editView.frame;
     
-	self.navigationItem.title = @"Write";
-	statuses = [[NSArray arrayWithObjects:@"Local Draft", @"Draft", @"Private", @"Pending Review", @"Published", nil] retain];
+	self.navigationItem.title = NSLocalizedString(@"Write", @"");
+	statuses = [[NSArray arrayWithObjects:NSLocalizedString(@"Local Draft", @""), NSLocalizedString(@"Draft", @""), NSLocalizedString(@"Private", @""), NSLocalizedString(@"Pending Review", @""), NSLocalizedString(@"Published", @""), nil] retain];
 	
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -262,7 +262,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
 	
     isTextViewEditing = NO;
-    spinner = [[WPProgressHUD alloc] initWithLabel:@"Saving..."];
+    spinner = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Saving...", @"")];
 	hasSaved = NO;
     
     currentView = editView;
@@ -318,7 +318,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     frame.origin.x += 7;
     frame.origin.y += 7;
     textViewPlaceHolderField.frame = frame;
-	self.navigationItem.title = @"Write";
+	self.navigationItem.title = NSLocalizedString(@"Write", @"");
 }
 
 - (void)viewWillDisappear:(BOOL)animated {	
@@ -380,21 +380,21 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [cancelButton release];
     
     UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] init];
-    saveButton.title = @"Save";
+    saveButton.title = NSLocalizedString(@"Save", @"");
     saveButton.target = self;
     saveButton.style = UIBarButtonItemStyleDone;
     saveButton.action = @selector(saveAction:);
     
     if(![self.apost hasRemote]) {
         if ([self.apost.status isEqualToString:@"publish"] && ([self.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
-            saveButton.title = @"Schedule";
+            saveButton.title = NSLocalizedString(@"Schedule", @"");
 		} else if ([self.apost.status isEqualToString:@"publish"]){
-			saveButton.title = @"Publish";
+			saveButton.title = NSLocalizedString(@"Publish", @"");
 		} else {
-            saveButton.title = @"Save";
+            saveButton.title = NSLocalizedString(@"Save", @"");
         }
     } else {
-        saveButton.title = @"Update";
+        saveButton.title = NSLocalizedString(@"Update", @"");
     }
     self.navigationItem.rightBarButtonItem = saveButton;
     
@@ -402,7 +402,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)refreshUIForCompose {
-	self.navigationItem.title = @"Write";
+	self.navigationItem.title = NSLocalizedString(@"Write", @"");
     titleTextField.text = @"";
     textView.text = @"";
     textViewPlaceHolderField.hidden = NO;
@@ -413,7 +413,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if ([self.apost.postTitle length] > 0) {
         self.navigationItem.title = self.apost.postTitle;
     }
-    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Back"
+    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"")
 																			 style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
 	
     titleTextField.text = self.apost.postTitle;
@@ -455,7 +455,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 									   selectionType:kCheckbox
 										 andDelegate:self];
 	
-    segmentedTableViewController.title = @"Categories";
+    segmentedTableViewController.title = NSLocalizedString(@"Categories", @"");
     segmentedTableViewController.navigationItem.rightBarButtonItem = newCategoryBarButtonItem;
 	
     if (isNewCategory != YES) {
@@ -484,7 +484,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)refreshStatus {
 	if(isLocalDraft == YES) {
-		statusTextField.text = @"Local Draft";
+		statusTextField.text = NSLocalizedString(@"Local Draft", @"");
 	}
 	else {
 		statusTextField.text = self.apost.statusTitle;
@@ -507,7 +507,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 									   selectionType:kRadio
 										 andDelegate:self];
 	
-    selectionTableViewController.title = @"Status";
+    selectionTableViewController.title = NSLocalizedString(@"Status", @"");
     selectionTableViewController.navigationItem.rightBarButtonItem = nil;
 	if (DeviceIsPad() == YES) {
 		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:selectionTableViewController] autorelease];
@@ -660,9 +660,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 -(void) showMediaInUploadingalert {
 	//the post is using the network connection and cannot be stoped, show a message to the user
-	UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:@"Info"
-																  message:@"A Media file is currently in uploading. Please try later."
-																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"")
+																  message:NSLocalizedString(@"A Media file is currently in uploading. Please try later.", @"")
+																 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
 	[blogIsCurrentlyBusy show];
 	[blogIsCurrentlyBusy release];
 }
@@ -685,12 +685,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		
 	UIActionSheet *actionSheet;
 	if (![self.apost hasRemote])
-		actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
-                                                             delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Discard"
-                                                    otherButtonTitles:@"Save Draft", nil];
+		actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"")
+                                                             delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:NSLocalizedString(@"Discard", @"")
+                                                    otherButtonTitles:NSLocalizedString(@"Save Draft", @""), nil];
 	else
-		actionSheet = [[UIActionSheet alloc] initWithTitle:@"You have unsaved changes."
-												  delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Discard"
+		actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"")
+												  delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:NSLocalizedString(@"Discard", @"")
 										 otherButtonTitles:nil];
     actionSheet.tag = 201;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
@@ -755,8 +755,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     UIAlertView *addURLSourceAlert = [[UIAlertView alloc] init];
     infoText = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 48.0, 260.0, 29.0)];
     urlField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 82.0, 260.0, 29.0)];
-    infoText.placeholder = @"Text to be linked";
-    urlField.placeholder = @"Link URL";
+    infoText.placeholder = NSLocalizedString(@"Text to be linked", @"");
+    urlField.placeholder = NSLocalizedString(@"Link URL", @"");
     //infoText.enabled = YES;
 	
     infoText.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -767,9 +767,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
     urlField.keyboardAppearance = UIKeyboardAppearanceAlert;
 	infoText.keyboardType = UIKeyboardTypeDefault;
 	urlField.keyboardType = UIKeyboardTypeURL;
-    [addURLSourceAlert addButtonWithTitle:@"Cancel"];
-    [addURLSourceAlert addButtonWithTitle:@"Save"];
-    addURLSourceAlert.title = @"Make a Link\n\n\n\n";
+    [addURLSourceAlert addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
+    [addURLSourceAlert addButtonWithTitle:NSLocalizedString(@"Save", @"")];
+    addURLSourceAlert.title = NSLocalizedString(@"Make a Link\n\n\n\n", @"");
     addURLSourceAlert.delegate = self;
     [addURLSourceAlert addSubview:infoText];
     [addURLSourceAlert addSubview:urlField];
@@ -831,7 +831,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 #pragma mark TextView & TextField Delegates
 
 - (void)showDoneButton {
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"") style:UIBarButtonItemStyleDone
                                                                   target:self action:@selector(endTextEnteringButtonAction:)];
     self.navigationItem.leftBarButtonItem = doneButton;
     self.navigationItem.rightBarButtonItem = nil;
@@ -960,7 +960,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     self.apost.content = textView.text;
     if (searchRes && dismiss != YES) {
         [textView resignFirstResponder];
-        UIAlertView *linkAlert = [[UIAlertView alloc] initWithTitle:@"Make a Link" message:@"Would you like help making a link?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Make a Link", nil];
+        UIAlertView *linkAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Make a Link", @"") message:NSLocalizedString(@"Would you like help making a link?", @"") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") otherButtonTitles:NSLocalizedString(@"Make a Link", @""), nil];
         [linkAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
         [linkAlert show];
         WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
@@ -1030,7 +1030,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         if ([self.apost.postTitle length] > 0) {
             self.navigationItem.title = self.apost.postTitle;
         } else {
-            self.navigationItem.title = @"Write";
+            self.navigationItem.title = NSLocalizedString(@"Write", @"");
         }
 
     }

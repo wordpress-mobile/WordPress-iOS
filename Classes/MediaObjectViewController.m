@@ -25,7 +25,7 @@
 	NSLog(@"media: %@", media);
 	
 	if((media != nil) && ([media.mediaType isEqualToString:@"video"])) {
-		self.navigationItem.title = @"Video";
+		self.navigationItem.title = NSLocalizedString(@"Video", @"");
 		videoPlayer = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL fileURLWithPath:media.localURL]];
 		[videoPlayer prepareToPlay];
 		videoPlayer.view.frame = scrollView.frame;
@@ -34,7 +34,7 @@
 		[scrollView removeFromSuperview];
 	}
 	else if((media != nil) && ([media.mediaType isEqualToString:@"image"])) {
-		self.navigationItem.title = @"Image";
+		self.navigationItem.title = NSLocalizedString(@"Image", @"");
 		imageView.image = [UIImage imageWithContentsOfFile:media.localURL];
 		if((imageView.image == nil) && (media.remoteURL != nil)) {
 			imageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:media.remoteURL]]];
@@ -143,11 +143,11 @@
 	isDeleting = YES;
 	isInserting = NO;
 	
-	NSString *titleString = [NSString stringWithFormat:@"Delete %@?", media.mediaType];
+	NSString *titleString = [NSString stringWithFormat:NSLocalizedString(@"Delete %@?", @""), media.mediaType];
 	UIActionSheet *deleteActionSheet = [[UIActionSheet alloc] initWithTitle:titleString 
 																   delegate:self 
-														  cancelButtonTitle:@"Cancel" 
-													 destructiveButtonTitle:@"Delete" 
+														  cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
+													 destructiveButtonTitle:NSLocalizedString(@"Delete", @"") 
 														  otherButtonTitles:nil];
 	[deleteActionSheet showInView:self.view];
 	[deleteActionSheet release];
@@ -157,12 +157,12 @@
 	isDeleting = NO;
 	isInserting = YES;
 	
-	NSString *titleString = [NSString stringWithFormat:@"Insert %@:", media.mediaType];
+	NSString *titleString = [NSString stringWithFormat:NSLocalizedString(@"Insert %@:", @""), media.mediaType];
 	UIActionSheet *insertActionSheet = [[UIActionSheet alloc] initWithTitle:titleString 
 																   delegate:self 
-														  cancelButtonTitle:@"Cancel" 
+														  cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
 													 destructiveButtonTitle:nil
-														  otherButtonTitles:@"Above Content", @"Below Content", nil];
+														  otherButtonTitles:NSLocalizedString(@"Above Content", @""), NSLocalizedString(@"Below Content", @""), nil];
 	[insertActionSheet showInView:self.view];
 	[insertActionSheet release];
 }

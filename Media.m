@@ -70,16 +70,16 @@
 + (NSString *)titleForRemoteStatus:(NSNumber *)remoteStatus {
     switch ([remoteStatus intValue]) {
         case MediaRemoteStatusPushing:
-            return @"Uploading";
+            return NSLocalizedString(@"Uploading", @"");
             break;
         case MediaRemoteStatusFailed:
-            return @"Failed";
+            return NSLocalizedString(@"Failed", @"");
             break;
         case MediaRemoteStatusSync:
-            return @"Uploaded";
+            return NSLocalizedString(@"Uploaded", @"");
             break;
         default:
-            return @"Pending";
+            return NSLocalizedString(@"Pending", @"");
             break;
     }
 }

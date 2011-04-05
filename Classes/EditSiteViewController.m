@@ -25,10 +25,10 @@
         [FlurryAPI logEvent:@"EditSite"];
 
         if([blog isWPcom] == YES) {
-            self.navigationItem.title = @"Edit Blog";
+            self.navigationItem.title = NSLocalizedString(@"Edit Blog", @"");
         }
         else {
-            self.navigationItem.title = @"Edit Site";
+            self.navigationItem.title = NSLocalizedString(@"Edit Site", @"");
         }
 		self.tableView.backgroundColor = [UIColor clearColor];
 		if (DeviceIsPad()){
@@ -121,9 +121,9 @@
             self.urlCell = [tableView dequeueReusableCellWithIdentifier:@"UrlCell"];
             if (self.urlCell == nil) {
                 self.urlCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UrlCell"] autorelease];
-				self.urlCell.textLabel.text = @"URL";
+				self.urlCell.textLabel.text = NSLocalizedString(@"URL", @"");
 				urlTextField = [self newTextFieldForCell:self.urlCell];
-				urlTextField.placeholder = @"http://example.com";
+				urlTextField.placeholder = NSLocalizedString(@"http://example.com", @"");
 				urlTextField.keyboardType = UIKeyboardTypeURL;
 				urlTextField.returnKeyType = UIReturnKeyNext;
 				if(blog.url != nil)
@@ -137,9 +137,9 @@
             self.usernameCell = [tableView dequeueReusableCellWithIdentifier:@"UsernameCell"];
             if (self.usernameCell == nil) {
                 self.usernameCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UsernameCell"] autorelease];
-				self.usernameCell.textLabel.text = @"Username";
+				self.usernameCell.textLabel.text = NSLocalizedString(@"Username", @"");
 				usernameTextField = [self newTextFieldForCell:self.usernameCell];
-				usernameTextField.placeholder = @"WordPress username";
+				usernameTextField.placeholder = NSLocalizedString(@"WordPress username", @"");
 				usernameTextField.keyboardType = UIKeyboardTypeDefault;
 				usernameTextField.returnKeyType = UIReturnKeyNext;
 				if(blog.username != nil)
@@ -153,9 +153,9 @@
             self.passwordCell = [tableView dequeueReusableCellWithIdentifier:@"PasswordCell"];
             if (self.passwordCell == nil) {
                 self.passwordCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"PasswordCell"] autorelease];
-				self.passwordCell.textLabel.text = @"Password";
+				self.passwordCell.textLabel.text = NSLocalizedString(@"Password", @"");
 				passwordTextField = [self newTextFieldForCell:self.passwordCell];
-				passwordTextField.placeholder = @"WordPress password";
+				passwordTextField.placeholder = NSLocalizedString(@"WordPress password", @"");
 				passwordTextField.keyboardType = UIKeyboardTypeDefault;
 				passwordTextField.secureTextEntry = YES;
 				if(password != nil)
@@ -177,7 +177,7 @@
             }
         }
         [switchCell retain];
-        switchCell.textLabel.text = @"Geotagging";
+        switchCell.textLabel.text = NSLocalizedString(@"Geotagging", @"");
         switchCell.selectionStyle = UITableViewCellSelectionStyleNone;
         switchCell.cellSwitch.on = self.geolocationEnabled;
         [switchCell.cellSwitch addTarget:self action:@selector(toggleGeolocation:) forControlEvents:UIControlEventValueChanged];
@@ -195,7 +195,7 @@
 			result = blog.blogName;
 			break;
         case 1:
-            result = @"Settings";
+            result = NSLocalizedString(@"Settings", @"");
             break;
 		default:
 			break;
@@ -390,16 +390,16 @@
             NSError *error = (NSError *)wrong;
 			NSString *message;
 			if ([error code] == 403) {
-				message = @"Please update your credentials and try again.";
+				message = NSLocalizedString(@"Please update your credentials and try again.", @"");
 			} else {
 				message = [error localizedDescription];
 			}
 
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Sorry, can't log in"
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, can't log in", @"")
 																message:message
                                                                delegate:self
-                                                      cancelButtonTitle:@"Need Help?"
-                                                      otherButtonTitles:@"OK", nil];
+                                                      cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
+                                                      otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
             [alertView show];
             [alertView release];            
         }

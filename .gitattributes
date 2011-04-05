@@ -461,6 +461,8 @@ c_tidy/win32tc.h -text
 /delete.png -text
 /down.png -text
 /down@2x.png -text
+en.lproj/Localizable.strings -text svneol=unset#unset
+es.lproj/Localizable.strings -text svneol=unset#unset
 /getLocation.png -text
 /getLocation@2x.png -text
 /gettingLocation.png -text

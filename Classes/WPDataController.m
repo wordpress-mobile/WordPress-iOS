@@ -772,7 +772,7 @@
 	}
     if (prefixRange.location == NSNotFound) {
         // Not an xml document, don't parse
-        NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Blog returned invalid data.", NSLocalizedDescriptionKey, nil];
+        NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Blog returned invalid data.", @""), NSLocalizedDescriptionKey, nil];
         self.error = [NSError errorWithDomain:@"org.wordpress.iphone" code:kNoXMLPrefix userInfo:usrInfo];
 		[request release];
         return self.error;

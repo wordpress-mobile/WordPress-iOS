@@ -43,9 +43,9 @@
     NSString *catName = newCatNameField.text;
 
     if (!catName ||[catName length] == 0) {
-        UIAlertView *alert2 = [[UIAlertView alloc] initWithTitle:@"Category title missing."
-                               message:@"Title for a category is mandatory."
-                               delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *alert2 = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Category title missing.", @"")
+                               message:NSLocalizedString(@"Title for a category is mandatory.", @"")
+                               delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
 
         [alert2 show];
         WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
@@ -56,9 +56,9 @@
     }
 
     if ([Category existsName:catName forBlog:self.blog withParentId:parentCat.categoryID]) {
-        UIAlertView *alert2 = [[UIAlertView alloc] initWithTitle:@"Category name already exists."
-                                                         message:@"There is another category with that name."
-                                                        delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *alert2 = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Category name already exists.", @"")
+                                                         message:NSLocalizedString(@"There is another category with that name.", @"")
+                                                        delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
 		
         [alert2 show];
         WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
@@ -119,7 +119,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    self.title = @"Add Category";
+    self.title = NSLocalizedString(@"Add Category", @"");
 	// only show "cancel" button if we're presented in a modal view controller
 	// that is, if we are the root item of a UINavigationController
 	if ([self.parentViewController isKindOfClass:[UINavigationController class]]) {
@@ -199,7 +199,7 @@
      selectionType:kRadio
      andDelegate:self];
 
-    selectionTableViewController.title = @"Parent Category";
+    selectionTableViewController.title = NSLocalizedString(@"Parent Category", @"");
 
     [self.navigationController pushViewController:selectionTableViewController animated:YES];
     [selectionTableViewController release];

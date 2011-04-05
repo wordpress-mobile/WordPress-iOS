@@ -30,7 +30,7 @@
 	if ([blog valueForKey:@"blogName"] != nil)
 		self.title = [NSString decodeXMLCharactersIn:[blog valueForKey:@"blogName"]];
 	else
-		self.title = @"Blog";
+		self.title = NSLocalizedString(@"Blog", @"");
 	
 	if (DeviceIsPad() == NO) {
 		self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;

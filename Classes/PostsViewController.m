@@ -257,7 +257,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-	progressAlert = [[WPProgressHUD alloc] initWithLabel:@"Deleting Post..."];
+	progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Deleting Post...", @"")];
 	[progressAlert show];
 	[self performSelectorInBackground:@selector(deletePostAtIndexPath:) withObject:indexPath];
 }
@@ -357,9 +357,9 @@
 	else {
         //check for reachability
         if ([[WPReachability sharedReachability] internetConnectionStatus] == NotReachable) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Communication Error."
-                                                            message:@"No internet connection."
-                                                           delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Communication Error.", @"")
+                                                            message:NSLocalizedString(@"No internet connection.", @"")
+                                                           delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
             alert.tag = TAG_OFFSET;
             [alert show];
             

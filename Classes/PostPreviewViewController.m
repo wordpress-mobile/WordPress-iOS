@@ -99,7 +99,7 @@
 		//Content
 		NSString *desc = postDetailViewController.apost.content;
 		if (!desc)
-			desc = @"<h1>No Description available for this Post</h1>";else {
+			desc = NSLocalizedString(@"<h1>No Description available for this Post</h1>", @"");else {
 				desc = [self stringReplacingNewlinesWithBR:desc];
 			}
 		desc = [NSString stringWithFormat:@"<p>%@</p><br />", desc];
@@ -108,7 +108,7 @@
 		//Tags
 		NSString *tags = postDetailViewController.post.tags;
 		tags = (tags == nil ? @"" : tags);
-		tags = [NSString stringWithFormat:@"Tags: %@", tags]; //desc = [NSString stringWithFormat:@"%@ \n <p>Tags: %@</p><br>", desc, tags];
+		tags = [NSString stringWithFormat:NSLocalizedString(@"Tags: %@", @""), tags]; //desc = [NSString stringWithFormat:@"%@ \n <p>Tags: %@</p><br>", desc, tags];
 		str = [str stringByReplacingOccurrencesOfString:@"!$mt_keywords$!" withString:tags];
 		
 		//Categories [selObjects count]
@@ -121,7 +121,7 @@
 			if(i < count-1)
 				catStr = [catStr stringByAppendingString:@", "];
 		}
-		catStr = [NSString stringWithFormat:@"Categories: %@", catStr]; //desc = [NSString stringWithFormat:@"%@ \n <p>Categories: %@</p><br>", desc, catStr];
+		catStr = [NSString stringWithFormat:NSLocalizedString(@"Categories: %@", @""), catStr]; //desc = [NSString stringWithFormat:@"%@ \n <p>Categories: %@</p><br>", desc, catStr];
 		str = [str stringByReplacingOccurrencesOfString:@"!$categories$!" withString:catStr];
 
 	} else {
@@ -152,15 +152,15 @@
 		isPending = YES;
 	
 	if (edited) {
-		[webView loadHTMLString:[self buildSimplePreview:@"Sorry, the post has changed, or it is not published. A simple preview is shown below."] baseURL:nil];
+		[webView loadHTMLString:[self buildSimplePreview:NSLocalizedString(@"Sorry, the post has changed, or it is not published. A simple preview is shown below.", @"")] baseURL:nil];
 	} else {
 		
 		NSString *link = postDetailViewController.apost.permaLink;
 		
 		if([[WPReachability sharedReachability] internetConnectionStatus] == NotReachable) {
-			[webView loadHTMLString:[self buildSimplePreview:@"Sorry, no connection to host. A simple preview is shown below."] baseURL:nil];
+			[webView loadHTMLString:[self buildSimplePreview:NSLocalizedString(@"Sorry, no connection to host. A simple preview is shown below.", @"")] baseURL:nil];
 		} else if (link == nil ) {
-			[webView loadHTMLString:[self buildSimplePreview:@"Sorry, the post has changed, or it is not published. A simple preview is shown below."] baseURL:nil];
+			[webView loadHTMLString:[self buildSimplePreview:NSLocalizedString(@"Sorry, the post has changed, or it is not published. A simple preview is shown below.", @"")] baseURL:nil];
 		} else {
 			
 			/*checks if this a scheduled post*/

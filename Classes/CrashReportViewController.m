@@ -14,7 +14,7 @@ NSString *CrashFilePath();
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
-	self.navigationItem.title = @"Crash Detected";
+	self.navigationItem.title = NSLocalizedString(@"Crash Detected", @"");
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -50,7 +50,7 @@ NSString *CrashFilePath();
 		}
 		else if([MFMailComposeViewController canSendMail]) {
 			// Create a mail message with the crash report
-			NSMutableString *body = [NSMutableString stringWithString:@"Please describe what you were doing when the app crashed: "];
+			NSMutableString *body = [NSMutableString stringWithString:NSLocalizedString(@"Please describe what you were doing when the app crashed: ", @"")];
 			MFMailComposeViewController *controller = [[MFMailComposeViewController alloc] init];
 			NSString *subject = [NSString stringWithFormat:@"WordPress %@ Crash Report", 
 								 [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];

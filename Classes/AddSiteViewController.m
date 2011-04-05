@@ -22,7 +22,7 @@
 		self.tableView.backgroundView = nil;
 	self.tableView.backgroundColor = [UIColor clearColor];
     
-    self.navigationItem.title = @"Add Blog";
+    self.navigationItem.title = NSLocalizedString(@"Add Blog", @"");
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {

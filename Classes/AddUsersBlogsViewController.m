@@ -19,7 +19,7 @@
     [super viewDidLoad];
 
     [FlurryAPI logEvent:@"AddUsersBlogs"];
-	self.navigationItem.title = @"Select Blogs";
+	self.navigationItem.title = NSLocalizedString(@"Select Blogs", @"");
 	selectedBlogs = [[NSMutableArray alloc] init];
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	
@@ -87,7 +87,7 @@
 	}
 	
 	if(DeviceIsPad() == YES) {
-		topAddSelectedButton = [[UIBarButtonItem alloc] initWithTitle:@"Add Selected" 
+		topAddSelectedButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Add Selected", @"") 
 																				 style:UIBarButtonItemStyleDone 
 																				target:self 
 																				action:@selector(saveSelectedBlogs:)];
@@ -95,6 +95,8 @@
 		topAddSelectedButton.enabled = FALSE;
 	}
 	
+    buttonAddSelected.title = NSLocalizedString(@"Add Selected", @"");
+    buttonSelectAll.title = NSLocalizedString(@"Select All", @"");
 	buttonAddSelected.enabled = FALSE;
 	
 	[self checkAddSelectedButtonStatus];
@@ -153,7 +155,7 @@
 			UILabel *footerText = [[UILabel alloc] initWithFrame:footerTextFrame];
 			footerText.backgroundColor = [UIColor clearColor];
 			footerText.textColor = [UIColor darkGrayColor];
-			footerText.text = @"Loading blogs...";
+			footerText.text = NSLocalizedString(@"Loading blogs...", @"");
 			[footerView addSubview:footerText];
 			[footerText release];
 		}
@@ -161,7 +163,7 @@
 			UILabel *footerText = [[UILabel alloc] initWithFrame:CGRectMake(110, 0, 200, 20)];
 			footerText.backgroundColor = [UIColor clearColor];
 			footerText.textColor = [UIColor darkGrayColor];
-			footerText.text = @"No blogs found.";
+			footerText.text = NSLocalizedString(@"No blogs found.", @"");
 			[footerView addSubview:footerText];
 			[footerText release];
 		}
@@ -204,7 +206,7 @@
 		case 1:
 			cell.textLabel.textAlignment = UITextAlignmentCenter;
 			cell.accessoryType = UITableViewCellAccessoryNone;
-			cell.text = @"Sign Out";
+			cell.text = NSLocalizedString(@"Sign Out", @"");
 			break;
 		default:
 			break;
@@ -262,7 +264,7 @@
 		[selectedBlogs addObject:[blog valueForKey:@"blogid"]];
 	}
 	[self.tableView reloadData];
-	buttonSelectAll.title = @"Deselect All";
+	buttonSelectAll.title = NSLocalizedString(@"Deselect All", @"");
 	buttonSelectAll.action = @selector(deselectAllBlogs:);
 	[self checkAddSelectedButtonStatus];
 }
@@ -270,7 +272,7 @@
 - (void)deselectAllBlogs:(id)sender {
 	[selectedBlogs removeAllObjects];
 	[self.tableView reloadData];
-	buttonSelectAll.title = @"Select All";
+	buttonSelectAll.title = NSLocalizedString(@"Select All", @"");
 	buttonSelectAll.action = @selector(selectAllBlogs:);
 	[self checkAddSelectedButtonStatus];
 }

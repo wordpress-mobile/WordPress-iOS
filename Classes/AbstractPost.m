@@ -22,26 +22,26 @@
 
 + (NSString *)titleForStatus:(NSString *)status {
     if ([status isEqualToString:@"draft"]) {
-        return @"Draft";
+        return NSLocalizedString(@"Draft", @"");
     } else if ([status isEqualToString:@"pending"]) {
-        return @"Pending review";
+        return NSLocalizedString(@"Pending review", @"");
     } else if ([status isEqualToString:@"private"]) {
-        return @"Privately published";
+        return NSLocalizedString(@"Privately published", @"");
     } else if ([status isEqualToString:@"publish"]) {
-        return @"Published";
+        return NSLocalizedString(@"Published", @"");
     } else {
         return status;
     }
 }
 
 + (NSString *)statusForTitle:(NSString *)title {
-    if ([title isEqualToString:@"Draft"]) {
+    if ([title isEqualToString:NSLocalizedString(@"Draft", @"")]) {
         return @"draft";
-    } else if ([title isEqualToString:@"Pending review"]) {
+    } else if ([title isEqualToString:NSLocalizedString(@"Pending review", @"")]) {
         return @"pending";
-    } else if ([title isEqualToString:@"Private"]) {
+    } else if ([title isEqualToString:NSLocalizedString(@"Private", @"")]) {
         return @"private";
-    } else if ([title isEqualToString:@"Published"]) {
+    } else if ([title isEqualToString:NSLocalizedString(@"Published", @"")]) {
         return @"publish";
     } else {
         return title;
@@ -50,10 +50,10 @@
 
 - (NSArray *)availableStatuses {
     return [NSArray arrayWithObjects:
-            @"Draft",
-            @"Pending review",
-            @"Private",
-            @"Published",
+            NSLocalizedString(@"Draft", @""),
+            NSLocalizedString(@"Pending review", @""),
+            NSLocalizedString(@"Private", @""),
+            NSLocalizedString(@"Published", @""),
             nil];
 }
 
@@ -201,16 +201,16 @@
 + (NSString *)titleForRemoteStatus:(NSNumber *)remoteStatus {
     switch ([remoteStatus intValue]) {
         case AbstractPostRemoteStatusPushing:
-            return @"Uploading";
+            return NSLocalizedString(@"Uploading", @"");
             break;
         case AbstractPostRemoteStatusFailed:
-            return @"Failed";
+            return NSLocalizedString(@"Failed", @"");
             break;
         case AbstractPostRemoteStatusSync:
-            return @"Posts";
+            return NSLocalizedString(@"Posts", @"");
             break;
         default:
-            return @"Local";
+            return NSLocalizedString(@"Local", @"");
             break;
     }
 }

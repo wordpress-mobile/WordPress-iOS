@@ -122,9 +122,9 @@
         cell.textLabel.text = media.filename;
 
     if (media.remoteStatus == MediaRemoteStatusPushing) {
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"Uploading: %.1f%%. Tap to cancel.", media.progress * 100.0];
+        cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Uploading: %.1f%%. Tap to cancel.", @""), media.progress * 100.0];
     } else if (media.remoteStatus == MediaRemoteStatusFailed) {
-        cell.detailTextLabel.text = @"Upload failed - tap to retry.";
+        cell.detailTextLabel.text = NSLocalizedString(@"Upload failed - tap to retry.", @"");
     } else {
         if ([media.mediaType isEqualToString:@"image"]) {
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%dx%d %@", 
@@ -213,7 +213,7 @@
 }
 
 -(NSString *)tableView:(UITableView*)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return @"Remove";
+	return NSLocalizedString(@"Remove", @"");
 }
 
 #pragma mark -
@@ -231,21 +231,21 @@
 	if([self isDeviceSupportVideoAndVideoPressEnabled]) {
 		actionSheet = [[UIActionSheet alloc] initWithTitle:@"" 
 												  delegate:self 
-										 cancelButtonTitle:@"Cancel" 
+										 cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
 									destructiveButtonTitle:nil 
-										 otherButtonTitles:@"Add Video from Library",@"Record Video",nil];
+										 otherButtonTitles:NSLocalizedString(@"Add Video from Library", @""),NSLocalizedString(@"Record Video", @""),nil];
 	} 
 	else { //device has video recording capability but VideoPress could be not enabled on
        /* isShowingMediaPickerActionSheet = NO;
         [self pickPhotoFromPhotoLibrary:sender];
         return;*/
 		isShowingMediaPickerActionSheet = NO;
-		NSString *faultString = @"You can upload videos to your blog with VideoPress. Would you like to learn more about VideoPress now?";
-		UIAlertView *uploadAlert = [[UIAlertView alloc] initWithTitle:@"VideoPress" 
+		NSString *faultString = NSLocalizedString(@"You can upload videos to your blog with VideoPress. Would you like to learn more about VideoPress now?", @"");
+		UIAlertView *uploadAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"VideoPress", @"") 
 												 message:faultString 
 												delegate:self
-									   cancelButtonTitle:@"No" otherButtonTitles:nil];
-		[uploadAlert addButtonWithTitle:@"Yes"];
+									   cancelButtonTitle:NSLocalizedString(@"No", @"") otherButtonTitles:nil];
+		[uploadAlert addButtonWithTitle:NSLocalizedString(@"Yes", @"")];
 		uploadAlert.tag = 101;
 		[uploadAlert show];
 		[uploadAlert release];		
@@ -269,9 +269,9 @@
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
 		actionSheet = [[UIActionSheet alloc] initWithTitle:@"" 
 												  delegate:self 
-										 cancelButtonTitle:@"Cancel" 
+										 cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
 									destructiveButtonTitle:nil 
-										 otherButtonTitles:@"Add Photo from Library",@"Take Photo",nil];
+										 otherButtonTitles:NSLocalizedString(@"Add Photo from Library", @""),NSLocalizedString(@"Take Photo", @""),nil];
 	}
 	else {
         isShowingMediaPickerActionSheet = NO;
@@ -558,11 +558,11 @@
 
 - (void)showOrientationChangedActionSheet {
 	isShowingChangeOrientationActionSheet = YES;
-	UIActionSheet *orientationActionSheet = [[UIActionSheet alloc] initWithTitle:@"Orientation changed during recording. Please choose which orientation to use for this video." 
+	UIActionSheet *orientationActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Orientation changed during recording. Please choose which orientation to use for this video.", @"") 
 																		delegate:self 
 															   cancelButtonTitle:nil 
 														  destructiveButtonTitle:nil 
-															   otherButtonTitles:@"Portrait", @"Landscape", nil];
+															   otherButtonTitles:NSLocalizedString(@"Portrait", @""), NSLocalizedString(@"Landscape", @""), nil];
 	[orientationActionSheet showInView:postDetailViewController.view];
 	[orientationActionSheet release];
 }
@@ -596,32 +596,32 @@
 		//NSLog(@"img dimension: %f x %f ",currentImage.size.width, currentImage.size.height );
 		
 		if(currentImage.size.width > largeSize.width  && currentImage.size.height > largeSize.height) {
-			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose Image Size" 
+			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"") 
 															delegate:self 
 												   cancelButtonTitle:nil 
 											  destructiveButtonTitle:nil 
-												   otherButtonTitles:@"Small", @"Medium", @"Large", @"Original", @"Custom", nil];
+												   otherButtonTitles:NSLocalizedString(@"Small", @""), NSLocalizedString(@"Medium", @""), NSLocalizedString(@"Large", @""), NSLocalizedString(@"Original", @""), NSLocalizedString(@"Custom", @""), nil];
 			
 		} else if(currentImage.size.width > mediumSize.width  && currentImage.size.height > mediumSize.height) {
-			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose Image Size" 
+			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"") 
 															delegate:self 
 												   cancelButtonTitle:nil 
 											  destructiveButtonTitle:nil 
-												   otherButtonTitles:@"Small", @"Medium", @"Original", @"Custom", nil];
+												   otherButtonTitles:NSLocalizedString(@"Small", @""), NSLocalizedString(@"Medium", @""), NSLocalizedString(@"Original", @""), NSLocalizedString(@"Custom", @""), nil];
 			
 		} else if(currentImage.size.width > smallSize.width  && currentImage.size.height > smallSize.height) {
-			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose Image Size" 
+			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"") 
 															delegate:self 
 												   cancelButtonTitle:nil 
 											  destructiveButtonTitle:nil 
-												   otherButtonTitles:@"Small", @"Original", @"Custom", nil];
+												   otherButtonTitles:NSLocalizedString(@"Small", @""), NSLocalizedString(@"Original", @""), NSLocalizedString(@"Custom", @""), nil];
 			
 		} else {
-			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose Image Size" 
+			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"") 
 															delegate:self 
 												   cancelButtonTitle:nil 
 											  destructiveButtonTitle:nil 
-												   otherButtonTitles: @"Original", @"Custom", nil];
+												   otherButtonTitles: NSLocalizedString(@"Original", @""), NSLocalizedString(@"Custom", @""), nil];
 		}
 		
 		[resizeActionSheet showInView:postDetailViewController.view];
@@ -667,22 +667,22 @@
 			lineBreaks = @"\n\n\n";
 		
 		
-		UIAlertView *customSizeAlert = [[UIAlertView alloc] initWithTitle:@"Custom Size" 
+		UIAlertView *customSizeAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Custom Size", @"") 
 																  message:lineBreaks // IMPORTANT
 																 delegate:self 
-														cancelButtonTitle:@"Cancel" 
-														otherButtonTitles:@"OK", nil];
+														cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
+														otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
 		
 		labelWidth = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 50.0, 125.0, 25.0)];
 		labelWidth.backgroundColor = [UIColor clearColor];
 		labelWidth.textColor = [UIColor whiteColor];
-		labelWidth.text = @"Width";
+		labelWidth.text = NSLocalizedString(@"Width", @"");
 		[customSizeAlert addSubview:labelWidth];
 		[labelWidth release];
 		
 		textWidth = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 80.0, 125.0, 25.0)]; 
 		[textWidth setBackgroundColor:[UIColor whiteColor]];
-		[textWidth setPlaceholder:@"Width"];
+		[textWidth setPlaceholder:NSLocalizedString(@"Width", @"")];
 		[textWidth setKeyboardType:UIKeyboardTypeNumberPad];
 		[textWidth setDelegate:self];
 		[textWidth setTag:123];
@@ -698,13 +698,13 @@
 		labelHeight = [[UILabel alloc] initWithFrame:CGRectMake(145.0, 50.0, 125.0, 25.0)];
 		labelHeight.backgroundColor = [UIColor clearColor];
 		labelHeight.textColor = [UIColor whiteColor];
-		labelHeight.text = @"Height";
+		labelHeight.text = NSLocalizedString(@"Height", @"");
 		[customSizeAlert addSubview:labelHeight];
 		[labelHeight release];
 		
 		textHeight = [[UITextField alloc] initWithFrame:CGRectMake(145.0, 80.0, 125.0, 25.0)]; 
 		[textHeight setBackgroundColor:[UIColor whiteColor]];
-		[textHeight setPlaceholder:@"Height"];
+		[textHeight setPlaceholder:NSLocalizedString(@"Height", @"")];
 		[textHeight setDelegate:self];
 		[textHeight setKeyboardType:UIKeyboardTypeNumberPad];
 		[textHeight setTag:456];
@@ -740,7 +740,7 @@
 			case 1:
 			{
 				NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
-				if ([buttonTitle isEqualToString:@"Yes"]){
+				if ([buttonTitle isEqualToString:NSLocalizedString(@"Yes", @"")]){
 					[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://videopress.com"]];
 				}
 			}		
@@ -1243,10 +1243,10 @@
 		[videoMedia release];
 	}
 	else {
-		UIAlertView *videoAlert = [[UIAlertView alloc] initWithTitle:@"Error Copying Video" 
-															 message:@"There was an error copying the video for upload. Please try again."
+		UIAlertView *videoAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Copying Video", @"") 
+															 message:NSLocalizedString(@"There was an error copying the video for upload. Please try again.", @"")
 															delegate:self
-												   cancelButtonTitle:@"OK" 
+												   cancelButtonTitle:NSLocalizedString(@"OK", @"") 
 												   otherButtonTitles:nil];
 		[videoAlert show];
 		[videoAlert release];

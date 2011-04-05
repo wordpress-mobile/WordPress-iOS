@@ -86,7 +86,7 @@
 - (IBAction)cancelAction:(id)sender {
 	[self stop];
 	[self reset];
-	[self updateStatus:@"Cancelled."];
+	[self updateStatus:NSLocalizedString(@"Cancelled.", @"")];
 }
 
 - (void)updateStatus:(NSString *)status {
@@ -159,9 +159,9 @@
 	self.progressView.hidden = NO;
 	
 	if([self.media.mediaType isEqualToString:@"image"])
-		[self updateStatus:@"Uploading image..."];
+		[self updateStatus:NSLocalizedString(@"Uploading image...", @"")];
 	else if([self.media.mediaType isEqualToString:@"video"])
-		[self updateStatus:@"Uploading video..."];
+		[self updateStatus:NSLocalizedString(@"Uploading video...", @"")];
 	
 	request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:self.media.blog.xmlrpc]];
     NSString *version  = [[[NSBundle mainBundle] infoDictionary] valueForKey:[NSString stringWithFormat:@"CFBundleVersion"]];
@@ -182,9 +182,9 @@
 	isAtomPub = YES;
 	
 	if([self.media.mediaType isEqualToString:@"image"])
-		[self updateStatus:@"Uploading image..."];
+		[self updateStatus:NSLocalizedString(@"Uploading image...", @"")];
 	else if([self.media.mediaType isEqualToString:@"video"])
-		[self updateStatus:@"Uploading video..."];
+		[self updateStatus:NSLocalizedString(@"Uploading video...", @"")];
 	
 	NSString *blogURL = self.media.blog.url;
 	
@@ -226,7 +226,7 @@
 		case 1:
 		{
 			NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
-			if ([buttonTitle isEqualToString:@"Yes"]){
+			if ([buttonTitle isEqualToString:NSLocalizedString(@"Yes", @"")]){
 				[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://videopress.com"]];
 			}
 			else{
@@ -288,14 +288,14 @@
 	
 	// If encoded file already exists, don't try encoding again
     if (![[NSFileManager defaultManager] fileExistsAtPath:self.localEncodedURL]) {
-		[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding media..." waitUntilDone:NO];
+		[self performSelectorOnMainThread:@selector(updateStatus:) withObject:NSLocalizedString(@"Encoding media...", @"") waitUntilDone:NO];
 		
 		NSFileHandle *originalFile, *encodedFile;
 		
 		// Open the original video file for reading
 		originalFile = [NSFileHandle fileHandleForReadingAtPath:self.media.localURL];
 		if (originalFile == nil) {
-			[self displayErrors:@"Encoding failed."];
+			[self displayErrors:NSLocalizedString(@"Encoding failed.", @"")];
 			return;
 		}
 		
@@ -307,7 +307,7 @@
 		// Open XML-RPC file for writing
 		encodedFile = [NSFileHandle fileHandleForWritingAtPath:self.localEncodedURL];
 		if (encodedFile == nil) {
-			[self displayErrors:@"Encoding failed."];
+			[self displayErrors:NSLocalizedString(@"Encoding failed.", @"")];
 			//[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding failed." waitUntilDone:NO];
 			return;
 		}
@@ -369,9 +369,9 @@
 		
 		// We're done
 		if([self.media.mediaType isEqualToString:@"image"])
-			[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding finished." waitUntilDone:NO];
+			[self performSelectorOnMainThread:@selector(updateStatus:) withObject:NSLocalizedString(@"Encoding finished.", @"") waitUntilDone:NO];
 		else if([self.media.mediaType isEqualToString:@"video"])
-			[self performSelectorOnMainThread:@selector(updateStatus:) withObject:@"Encoding finished." waitUntilDone:NO];		
+			[self performSelectorOnMainThread:@selector(updateStatus:) withObject:NSLocalizedString(@"Encoding finished.", @"") waitUntilDone:NO];		
 	}
 	[self sendXMLRPC];
 
@@ -414,10 +414,10 @@
 			WPLog(@"response: %@", [request responseString]);
 			if(isAtomPub) {
 				if ([[request responseString] rangeOfString:@"AtomPub services are disabled"].location != NSNotFound){
-					UIAlertView *uploadAlert = [[UIAlertView alloc] initWithTitle:@"Sorry, upload failed" 
+					UIAlertView *uploadAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, upload failed", @"") 
 																		  message:[request responseString] 
 																		 delegate:self
-																cancelButtonTitle:@"OK" otherButtonTitles:nil];
+																cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
 					[uploadAlert show];
 					[uploadAlert release];
 					[self displayResponseErrors];
@@ -445,27 +445,27 @@
 					if([faultString rangeOfString:@"NSXMLParserErrorDomain"].location != NSNotFound) {
 						//Error Domain=NSXMLParserErrorDomain Code=5 "The operation couldn\u2019t be completed. (NSXMLParserErrorDomain error 5.)	
 						//this happens when there are server issues, such as memory issues or permissions issues.
-						uploadAlert = [[UIAlertView alloc] initWithTitle:@"Sorry, upload failed" 
-																 message:@"There was an error processing your file. Please check the configuration of your blog."  
+						uploadAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, upload failed", @"") 
+																 message:NSLocalizedString(@"There was an error processing your file. Please check the configuration of your blog.", @"")  
 																delegate:self
-													   cancelButtonTitle:@"OK" otherButtonTitles:nil];
+													   cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
 					}
-					else if ( ([faultString rangeOfString:@"Invalid file type"].location != NSNotFound) &&
+					else if ( ([faultString rangeOfString:NSLocalizedString(@"Invalid file type", @"")].location != NSNotFound) &&
 							 ([self.media.mediaType isEqualToString:@"video"]) ){
 						//invalid file type && video: VideoPress suggest
-						faultString = @"To upload videos you need to have VideoPress installed. Would you like to learn more about VideoPress now?";
-						uploadAlert = [[UIAlertView alloc] initWithTitle:@"Sorry, upload failed" 
+						faultString = NSLocalizedString(@"To upload videos you need to have VideoPress installed. Would you like to learn more about VideoPress now?", @"");
+						uploadAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, upload failed", @"") 
 																 message:faultString 
 																delegate:self
-													   cancelButtonTitle:@"No" otherButtonTitles:nil];
-						[uploadAlert addButtonWithTitle:@"Yes"];
+													   cancelButtonTitle:NSLocalizedString(@"No", @"") otherButtonTitles:nil];
+						[uploadAlert addButtonWithTitle:NSLocalizedString(@"Yes", @"")];
 					}
 					else {
 						//show a generic error
-						uploadAlert = [[UIAlertView alloc] initWithTitle:@"Sorry, upload failed" 
+						uploadAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, upload failed", @"") 
 																 message:faultString 
 																delegate:self
-													   cancelButtonTitle:@"OK" otherButtonTitles:nil];
+													   cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
 					}						
 					[uploadAlert show];
 					[uploadAlert release];
@@ -530,7 +530,7 @@
 }
 
 - (void) displayResponseErrors {
-	[self displayErrors:@"Upload failed. Please try again."];		
+	[self displayErrors:NSLocalizedString(@"Upload failed. Please try again.", @"")];		
 }
 
 - (NSError *)errorWithResponse:(XMLRPCResponse *)res {
@@ -569,7 +569,7 @@
 	[self deleteEncodedTmpFile];
 	
 	WPLog(@"connection failed: %@", [error localizedDescription]);
-	[self updateStatus:@"Upload failed. Please try again."];
+	[self updateStatus:NSLocalizedString(@"Upload failed. Please try again.", @"")];
 
     self.media.remoteStatus = MediaRemoteStatusFailed;
 	if([self.media.mediaType isEqualToString:@"image"])
@@ -584,7 +584,7 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
-    [self stopWithStatus:@"Stopped"];
+    [self stopWithStatus:NSLocalizedString(@"Stopped", @"")];
 
     request.delegate = nil;
     [request release];
