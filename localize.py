@@ -130,7 +130,27 @@ def localize(path):
             os.rename(original, new)
             merge(merged, old, new)
         else:
-            os.system('genstrings -q -o "%s" `find . -name "*.m"`' % language)
+            os.system('genstrings -q -o "%s" `find . -name "*.m"`' % language)        
+        
+        # for xib in os.listdir('en.lproj'):
+        #     if not xib.endswith('.xib'):
+        #         continue
+        # 
+        #     (xib, ext) = os.path.splitext(xib)
+        #     original = merged = language + os.path.sep + xib + '.strings'
+        #     old = original + '.old'
+        #     new = original + '.new'
+        # 
+        #     if os.path.isfile(original):
+        #         os.rename(original, old)
+        #         os.system('ibtool --generate-strings-file %s/%s.strings en.lproj/%s.xib' % (language, xib, xib))
+        #         os.rename(original, new)
+        #         merge(merged, old, new)
+        #     else:
+        #         os.system('ibtool --generate-strings-file %s/%s.strings en.lproj/%s.xib' % (language, xib, xib))
+        #     
+        #     if language != 'en.lproj':
+        #         os.system('ibtool --strings-file %s/%s.strings --write %s/%s.xib en.lproj/%s.xib' % (language, xib, language, xib, xib))
 
 if __name__ == '__main__':
     localize(os.getcwd())
