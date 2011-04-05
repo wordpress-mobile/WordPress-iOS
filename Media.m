@@ -208,4 +208,14 @@
 	return result;
 }
 
+- (NSString *)mediaTypeName {
+    if ([self.mediaType isEqualToString:@"image"]) {
+        return NSLocalizedString(@"Image", @"");
+    } else if ([self.mediaType isEqualToString:@"video"]) {
+        return NSLocalizedString(@"Video", @"");
+    } else {
+        return self.mediaType;
+    }
+}
+
 @end

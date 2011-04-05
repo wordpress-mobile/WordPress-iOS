@@ -25,6 +25,7 @@ typedef enum {
 }
 
 @property (nonatomic, retain) NSString * mediaType;
+@property (nonatomic, readonly) NSString * mediaTypeName;
 @property (nonatomic, retain) NSString * remoteURL;
 @property (nonatomic, retain) NSString * localURL;
 @property (nonatomic, retain) NSString * shortcode;

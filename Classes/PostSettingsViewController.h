@@ -42,6 +42,7 @@
 	PostAnnotation *annotation;
 	NSString *address;
 	BOOL isUpdatingLocation;
+    IBOutlet UILabel *visibilityTitleLabel, *statusTitleLabel;
 }
 
 @property (nonatomic, assign) EditPostViewController *postDetailViewController;

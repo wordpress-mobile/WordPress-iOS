@@ -73,6 +73,9 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [FlurryAPI logEvent:@"PostSettings"];
 
+    statusTitleLabel.text = NSLocalizedString(@"Status", @"");
+    visibilityTitleLabel.text = NSLocalizedString(@"Visibility", @"");
+    passwordTextField.placeholder = NSLocalizedString(@"Enter a password", @"");
     NSMutableArray *allStatuses = [NSMutableArray arrayWithArray:[postDetailViewController.apost availableStatuses]];
     [allStatuses removeObject:NSLocalizedString(@"Private", @"")];
     statusList = [[NSArray arrayWithArray:allStatuses] retain];
@@ -151,6 +154,10 @@
     [reverseGeocoder release];
     reverseGeocoder = nil;
     
+    statusTitleLabel = nil;
+    visibilityTitleLabel = nil;
+    passwordTextField = nil;
+
     [super viewDidUnload];
 }
 

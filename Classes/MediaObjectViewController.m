@@ -143,7 +143,7 @@
 	isDeleting = YES;
 	isInserting = NO;
 	
-	NSString *titleString = [NSString stringWithFormat:NSLocalizedString(@"Delete %@?", @""), media.mediaType];
+	NSString *titleString = [NSString stringWithFormat:NSLocalizedString(@"Delete %@?", @""), media.mediaTypeName];
 	UIActionSheet *deleteActionSheet = [[UIActionSheet alloc] initWithTitle:titleString 
 																   delegate:self 
 														  cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
@@ -157,7 +157,7 @@
 	isDeleting = NO;
 	isInserting = YES;
 	
-	NSString *titleString = [NSString stringWithFormat:NSLocalizedString(@"Insert %@:", @""), media.mediaType];
+	NSString *titleString = [NSString stringWithFormat:NSLocalizedString(@"Insert %@:", @""), media.mediaTypeName];
 	UIActionSheet *insertActionSheet = [[UIActionSheet alloc] initWithTitle:titleString 
 																   delegate:self 
 														  cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 

@@ -114,9 +114,9 @@
 		[formatter setPMSymbol:@"PM"];
 		[formatter setDateFormat:@"MM/dd/yyyy hh:mm a"];
 		if (date != nil)
-			_lastUpdatedLabel.text = [NSString stringWithFormat:@"Last Updated: %@", [formatter stringFromDate:date]];
+			_lastUpdatedLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Last Updated: %@", @""), [formatter stringFromDate:date]];
 		else
-			_lastUpdatedLabel.text = [NSString stringWithFormat:@"Last Updated: Never"];
+			_lastUpdatedLabel.text = [NSString stringWithString:NSLocalizedString(@"Last Updated: Never", @"")];
 		[[NSUserDefaults standardUserDefaults] setObject:_lastUpdatedLabel.text forKey:@"EGORefreshTableView_LastRefresh"];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 		[formatter release];
