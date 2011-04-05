@@ -393,7 +393,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if(buttonIndex == 1) {
 		// Take them to the App Store
-		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:kAppStoreURL]];
+		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:NSLocalizedString(@"http://itunes.apple.com/us/app/wordpress/id335703880?mt=8", @"App URL, change 'us' for your local store code (test the link first)")]];
 	}
 }
 
