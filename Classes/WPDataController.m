@@ -119,9 +119,20 @@
     [request setValidatesSecureCertificate:NO];
     [request startSynchronous];
     [request setNumberOfTimesToRetryOnTimeout:2];
-
+	
     NSString *rsdURL = [[request responseString] stringByMatching:@"<link rel=\"EditURI\" type=\"application/rsd\\+xml\" title=\"RSD\" href=\"([^\"]*)\"[^/]*/>" capture:1];
-    if (rsdURL != nil) {
+    
+	if (rsdURL == nil) {
+		//the RSD link not found using RegExp, try to find it again on a "cleaned" HTML document
+		NSError *htmlError;
+		CXMLDocument *rsdHTML = [[[CXMLDocument alloc] initWithXMLString:[request responseString] options:CXMLDocumentTidyXML error:&htmlError] autorelease];
+		if(!htmlError) {
+			NSString *cleanedHTML = [rsdHTML XMLStringWithOptions:CXMLDocumentTidyXML];
+			rsdURL = [cleanedHTML stringByMatching:@"<link rel=\"EditURI\" type=\"application/rsd\\+xml\" title=\"RSD\" href=\"([^\"]*)\"[^/]*/>" capture:1];
+		}
+	}
+	
+	if (rsdURL != nil) {
         WPLog(@"rsdURL: %@", rsdURL);
         xmlrpc = [rsdURL stringByReplacingOccurrencesOfString:@"?rsd" withString:@""];
         WPLog(@"xmlrpc from rsd url: %@", xmlrpc);
