@@ -445,7 +445,7 @@
 - (BOOL)isConnectedToHost {
     if (![[WPReachability sharedReachability] internetConnectionStatus] != NotReachable) {
         UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No connection to host.", @"")
-                                            message:NSLocalizedString(@"Operation is not supported now.", @"")
+                                            message:NSLocalizedString(@"Operation is not supported now.", @"Can't do operation (comment moderate/edit) since there's no connection")
                                             delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
         [connectionFailAlert show];
         [connectionFailAlert release];

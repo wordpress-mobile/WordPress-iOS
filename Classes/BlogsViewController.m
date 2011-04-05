@@ -229,7 +229,7 @@
 			}
 		} else {
 			//the blog is using the network connection and cannot be stoped, show a message to the user
-			UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"")
+			UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info alert title")
 																		  message:NSLocalizedString(@"The blog is synching with the server. Please try later.", @"")
 																		 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
 			[blogIsCurrentlyBusy show];

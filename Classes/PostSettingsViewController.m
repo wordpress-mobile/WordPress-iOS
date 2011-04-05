@@ -260,7 +260,7 @@
 					if ([postDetailViewController.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending) {
 						publishOnLabel.text = NSLocalizedString(@"Scheduled for", @"");
 					} else {
-						publishOnLabel.text = NSLocalizedString(@"Published on", @"");
+						publishOnLabel.text = NSLocalizedString(@"Published on", @"Published on <date>");
 					}
 					
 					NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];

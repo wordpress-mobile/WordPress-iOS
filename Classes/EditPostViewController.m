@@ -253,7 +253,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     postPreviewViewController.view.frame = editView.frame;
     
 	self.navigationItem.title = NSLocalizedString(@"Write", @"");
-	statuses = [[NSArray arrayWithObjects:NSLocalizedString(@"Local Draft", @""), NSLocalizedString(@"Draft", @""), NSLocalizedString(@"Private", @""), NSLocalizedString(@"Pending Review", @""), NSLocalizedString(@"Published", @""), nil] retain];
+	statuses = [[NSArray arrayWithObjects:NSLocalizedString(@"Local Draft", @""), NSLocalizedString(@"Draft", @""), NSLocalizedString(@"Private", @""), NSLocalizedString(@"Pending review", @""), NSLocalizedString(@"Published", @""), nil] retain];
 	
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -666,7 +666,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 -(void) showMediaInUploadingalert {
 	//the post is using the network connection and cannot be stoped, show a message to the user
-	UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"")
+	UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info alert title")
 																  message:NSLocalizedString(@"A Media file is currently in uploading. Please try later.", @"")
 																 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
 	[blogIsCurrentlyBusy show];
