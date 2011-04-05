@@ -56,6 +56,7 @@
 #endif
 #define CGRectToString(rect) [NSString stringWithFormat:@"%f,%f:%fx%f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height]
 #define CGPointToString(point) [NSString stringWithFormat:@"%f,%f", point.x, point.y]
+#define _(str) NSLocalizedString(str, @"")
 
 #define kBlogId                                 @"blogid"
 #define kBlogHostName                           @"blog_host_name"
