@@ -18,7 +18,7 @@ from copy import copy
 import os
 
 re_translation = compile(r'^"(.+)" = "(.+)";$')
-re_comment_single = compile(r'^/\*.*\*/$')
+re_comment_single = compile(r'^/(/.*|\*.*\*/)$')
 re_comment_start = compile(r'^/\*.*$')
 re_comment_end = compile(r'^.*\*/$')
 
@@ -108,7 +108,7 @@ def merge(merged_fname, old_fname, new_fname):
         old = LocalizedFile(old_fname, auto_read=True)
         new = LocalizedFile(new_fname, auto_read=True)
     except:
-        print 'Error: input files have invalid format.'
+        print 'Error: input files have invalid format. old: %s, new: %s' % (old_fname, new_fname)
 
     merged = old.merge_with(new)
 
