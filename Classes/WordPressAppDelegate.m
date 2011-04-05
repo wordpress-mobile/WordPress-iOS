@@ -324,8 +324,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
                           message:message
                           delegate:self
-						cancelButtonTitle:_(@"Need Help?")
-						otherButtonTitles:_(@"OK"), nil];
+						cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
+						otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
     [alert show];
     [alert release];
 }
@@ -333,7 +333,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 - (void)showErrorAlert:(NSString *)message {
 	if([self isAlertRunning] == YES) return; //another alert is already shown 
 	[self setAlertRunning:YES];
-    [self showAlertWithTitle:_(@"Error") message:message];
+    [self showAlertWithTitle:NSLocalizedString(@"Error", @"") message:message];
 }
 
 - (void)showNotificationErrorAlert:(NSNotification *)notification {
@@ -350,7 +350,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		//org.wordpress.iphone --> XML-RPC errors
 		if ([[err domain] isEqualToString:@"org.wordpress.iphone"]){
 			if([err code] == 401)
-				cleanedErrorMsg = _(@"Sorry, you cannot access this feature. Please check your User Role on this blog.");
+				cleanedErrorMsg = NSLocalizedString(@"Sorry, you cannot access this feature. Please check your User Role on this blog.", @"");
 			else if([err code] == 403) { //403 = bad username/password
 				NSDictionary *errInfo = [notification userInfo];
 				//check if the user has NOT changed the blog during the loading
@@ -369,7 +369,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	}
 	
 	if([cleanedErrorMsg rangeOfString:@"NSXMLParserErrorDomain"].location != NSNotFound )
-		cleanedErrorMsg = _(@"The app can't recognize the server response. Please, check the configuration of your blog.");
+		cleanedErrorMsg = NSLocalizedString(@"The app can't recognize the server response. Please, check the configuration of your blog.", @"");
 	
 	[self showErrorAlert:cleanedErrorMsg];
 }
@@ -387,18 +387,18 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	else 
 		lineBreaks = @"\n\n\n";
 	
-	UIAlertView *customSizeAlert = [[UIAlertView alloc] initWithTitle:_(@"Incorrect Password") 
+	UIAlertView *customSizeAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Incorrect Password", @"") 
 															  message:lineBreaks // IMPORTANT
 															 delegate:self 
-													cancelButtonTitle:_(@"Cancel") 
-													otherButtonTitles:_(@"Save"), nil];
+													cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
+													otherButtonTitles:NSLocalizedString(@"Save", @""), nil];
 	
 	customSizeAlert.tag = 101;
 	
 	labelPasswd = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 48.0, 260.0, 29.0)];
 	labelPasswd.backgroundColor = [UIColor clearColor];
 	labelPasswd.textColor = [UIColor whiteColor];
-	labelPasswd.text = _(@"Please update your password:");
+	labelPasswd.text = NSLocalizedString(@"Please update your password:", @"");
 	[customSizeAlert addSubview:labelPasswd];
 	[labelPasswd release];
 	
@@ -629,10 +629,10 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		}
 		
 		//if the app did not quit, show the alert to inform the users that the data have been deleted
-		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:_(@"Error establishing database connection.") 
-														 message:_(@"Please delete the app and reinstall.") 
+		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error establishing database connection.", @"") 
+														 message:NSLocalizedString(@"Please delete the app and reinstall.", @"") 
 														delegate:nil 
-											   cancelButtonTitle:_(@"OK") 
+											   cancelButtonTitle:NSLocalizedString(@"OK", @"") 
 											   otherButtonTitles:nil] autorelease];
 		[alert show];
     } else {
@@ -856,7 +856,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 							   initWithTitle: [error localizedDescription]
 							   message: [error localizedFailureReason]
 							   delegate:nil
-							   cancelButtonTitle:_(@"OK")
+							   cancelButtonTitle:NSLocalizedString(@"OK", @"")
 							   otherButtonTitles:nil];
 	[errorAlert show];
 	[errorAlert release];
@@ -900,7 +900,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)splitViewController: (UISplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc {
 	UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
-	[barButtonItem setTitle:_(@"My Blog")];
+	[barButtonItem setTitle:NSLocalizedString(@"My Blog", @"")];
 	[theNavigationItem setLeftBarButtonItem:barButtonItem animated:YES];
 	if ([[self.detailNavigationController.viewControllers objectAtIndex:0] isKindOfClass:[BlogSplitViewDetailViewController class]])
 	{
