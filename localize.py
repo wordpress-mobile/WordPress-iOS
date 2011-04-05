@@ -52,6 +52,9 @@ class LocalizedFile():
             exit(-1)
         
         line = f.readline()
+        while line and line == u'\n':
+            line = f.readline()
+
         while line:
             comments = [line]
 
