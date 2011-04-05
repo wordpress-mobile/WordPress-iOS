@@ -265,7 +265,7 @@
 										 bundle:nil]autorelease];
 		replyToCommentViewController.commentViewController = self;
 		replyToCommentViewController.comment = [[self.comment newReply] autorelease];
-		replyToCommentViewController.title = NSLocalizedString(@"Comment Reply", @"");
+		replyToCommentViewController.title = NSLocalizedString(@"Comment Reply", @"Comment Reply view title");
 	
 	
 	if (DeviceIsPad() == NO) {

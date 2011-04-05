@@ -177,7 +177,7 @@
             }
         }
         [switchCell retain];
-        switchCell.textLabel.text = NSLocalizedString(@"Geotagging", @"");
+        switchCell.textLabel.text = NSLocalizedString(@"Geotagging", @"Enables geotagging in blog settings (short label)");
         switchCell.selectionStyle = UITableViewCellSelectionStyleNone;
         switchCell.cellSwitch.on = self.geolocationEnabled;
         [switchCell.cellSwitch addTarget:self action:@selector(toggleGeolocation:) forControlEvents:UIControlEventValueChanged];
