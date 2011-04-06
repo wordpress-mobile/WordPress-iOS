@@ -52,6 +52,7 @@ typedef enum {
 - (void)upload;
 - (void)remove;
 - (void)save;
+- (void)setImage:(UIImage *)image withSize:(MediaResize)size;
 
 @end
 

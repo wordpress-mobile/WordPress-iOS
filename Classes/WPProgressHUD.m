@@ -12,7 +12,8 @@
 @synthesize backgroundImageView, activityIndicator, progressMessage, appDelegate;
 
 - (id)initWithLabel:(NSString *)text {
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
         self.appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 		
 		backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WPpregressHUDBackground.png"]];

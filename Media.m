@@ -7,6 +7,7 @@
 //
 
 #import "Media.h"
+#import "UIImage+Resize.h"
 #import "WPDataController.h"
 
 @implementation Media 
@@ -216,6 +217,77 @@
     } else {
         return self.mediaType;
     }
+}
+
+- (void)setImage:(UIImage *)image withSize:(MediaResize)size {
+    CGSize newSize;
+    switch (size) {
+        case kResizeSmall:
+			newSize = CGSizeMake(240, 180);
+            break;
+        case kResizeMedium:
+            newSize = CGSizeMake(480, 360);
+            break;
+        case kResizeLarge:
+            newSize = CGSizeMake(640, 480);
+            break;
+            
+        default:
+            image.size;
+            break;
+    }
+    switch (image.imageOrientation) { 
+        case UIImageOrientationUp: 
+        case UIImageOrientationUpMirrored:
+        case UIImageOrientationDown: 
+        case UIImageOrientationDownMirrored:
+            self.orientation = @"landscape";
+            break;
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            self.orientation = @"portrait";
+            newSize = CGSizeMake(newSize.height, newSize.width);
+            break;
+        default:
+            self.orientation = @"portrait";
+    }
+
+    //The dimensions of the image, taking orientation into account.
+    CGSize originalSize = CGSizeMake(image.size.width, image.size.height);
+
+    UIImage *resizedImage = image;
+    if(image.size.width > newSize.width  && image.size.height > newSize.height)
+        resizedImage = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill
+                                                   bounds:newSize
+                                     interpolationQuality:kCGInterpolationHigh];
+    else  
+        resizedImage = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill
+                                                   bounds:originalSize
+                                     interpolationQuality:kCGInterpolationHigh];
+
+    NSData *imageData = UIImageJPEGRepresentation(resizedImage, 0.90);
+	UIImage *imageThumbnail = [resizedImage thumbnailImage:75 transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	[formatter setDateFormat:@"yyyyMMdd-hhmmss"];
+    
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDirectory = [paths objectAtIndex:0];
+	NSString *filename = [NSString stringWithFormat:@"%@.jpg", [formatter stringFromDate:[NSDate date]]];
+	NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    [fileManager createFileAtPath:filepath contents:imageData attributes:nil];
+    
+
+	self.creationDate = [NSDate date];
+	self.filename = filename;
+	self.localURL = filepath;
+	self.filesize = [NSNumber numberWithInt:(imageData.length/1024)];
+	self.mediaType = @"image";
+	self.thumbnail = UIImageJPEGRepresentation(imageThumbnail, 0.90);
+	self.width = [NSNumber numberWithInt:resizedImage.size.width];
+	self.height = [NSNumber numberWithInt:resizedImage.size.height];
 }
 
 @end

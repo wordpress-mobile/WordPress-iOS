@@ -34,6 +34,7 @@ typedef enum {
     UIImageView *selectorImageView;
     BOOL active;
     BlogSelectorViewController *selectorViewController;
+    BlogSelectorButtonType type;
 }
 @property (nonatomic, retain) Blog *activeBlog;
 @property (nonatomic, assign) id<BlogSelectorButtonDelegate> delegate;

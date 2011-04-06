@@ -73,17 +73,23 @@
 #pragma mark -
 #pragma mark Custom methods
 
-- (void)loadBlogsForType:(BlogSelectorButtonType)type {
-    NSString *defaultsKey = nil;
+- (NSString *)defaultsKey {
     switch (type) {
         case BlogSelectorButtonTypeQuickPhoto:
-            defaultsKey = kBlogSelectorQuickPhoto;
+            return kBlogSelectorQuickPhoto;
             break;
             
         default:
             break;
     }
+    
+    return nil;
+}
 
+- (void)loadBlogsForType:(BlogSelectorButtonType)aType {
+    NSString *defaultsKey = [self defaultsKey];
+
+    type = aType;
     NSManagedObjectContext *moc = [[WordPressAppDelegate sharedWordPressApp] managedObjectContext];
     NSPersistentStoreCoordinator *psc = [[WordPressAppDelegate sharedWordPressApp] persistentStoreCoordinator];
     NSError *error = nil;
@@ -195,6 +201,11 @@
         [self.delegate blogSelectorButton:self didSelectBlog:blog];
     }
     self.activeBlog = blog;
+    NSString *defaultsKey = [self defaultsKey];
+    if (defaultsKey != nil) {
+        NSString *objectID = [[[self.activeBlog objectID] URIRepresentation] absoluteString];
+        [[NSUserDefaults standardUserDefaults] setObject:objectID forKey:defaultsKey];
+    }
     [self tap];
 }
 
