@@ -67,6 +67,10 @@ Classes/BetaUIWindow.h -text
 Classes/BetaUIWindow.m -text
 Classes/Blog.h -text
 Classes/Blog.m -text
+Classes/BlogSelectorButton.h -text
+Classes/BlogSelectorButton.m -text
+Classes/BlogSelectorViewController.h -text
+Classes/BlogSelectorViewController.m -text
 Classes/BlogSplitViewDetailViewController.h -text
 Classes/BlogSplitViewDetailViewController.m -text
 Classes/BlogViewController.h -text
@@ -466,6 +470,8 @@ c_tidy/win32tc.h -text
 /delete.png -text
 /down.png -text
 /down@2x.png -text
+/downArrow.png -text svneol=unset#unset
+/downArrow@2x.png -text svneol=unset#unset
 en.lproj/Localizable.strings -text svneol=unset#unset
 es.lproj/Localizable.strings -text svneol=unset#unset
 /getLocation.png -text

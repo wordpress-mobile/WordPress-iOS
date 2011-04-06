@@ -303,6 +303,10 @@
 		E13FA0D7134BE78D007DCDD0 /* QuickPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E13FA0D6134BE78D007DCDD0 /* QuickPhotoViewController.m */; };
 		E13FA0DA134BF347007DCDD0 /* quickPhotoTextView.png in Resources */ = {isa = PBXBuildFile; fileRef = E13FA0D8134BF347007DCDD0 /* quickPhotoTextView.png */; };
 		E13FA0DB134BF347007DCDD0 /* quickPhotoTextView@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E13FA0D9134BF347007DCDD0 /* quickPhotoTextView@2x.png */; };
+		E13FA0DE134C6D34007DCDD0 /* BlogSelectorButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E13FA0DD134C6D33007DCDD0 /* BlogSelectorButton.m */; };
+		E13FA0F7134C849D007DCDD0 /* downArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = E13FA0F5134C849D007DCDD0 /* downArrow.png */; };
+		E13FA0F8134C849D007DCDD0 /* downArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E13FA0F6134C849D007DCDD0 /* downArrow@2x.png */; };
+		E13FA0FB134C8DDC007DCDD0 /* BlogSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E13FA0FA134C8DDC007DCDD0 /* BlogSelectorViewController.m */; };
 		E1497BBC12CCA8270022BCD9 /* PostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1497BBB12CCA8270022BCD9 /* PostViewController.m */; };
 		E1497BC012CCA92F0022BCD9 /* PostViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1497BBF12CCA92F0022BCD9 /* PostViewController-iPad.xib */; };
 		E159D1051309AB0D00F498E2 /* MigrateBlogsFromFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = E159D1041309AB0D00F498E2 /* MigrateBlogsFromFiles.m */; };
@@ -812,6 +816,12 @@
 		E13FA0D6134BE78D007DCDD0 /* QuickPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuickPhotoViewController.m; sourceTree = "<group>"; };
 		E13FA0D8134BF347007DCDD0 /* quickPhotoTextView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quickPhotoTextView.png; sourceTree = "<group>"; };
 		E13FA0D9134BF347007DCDD0 /* quickPhotoTextView@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "quickPhotoTextView@2x.png"; sourceTree = "<group>"; };
+		E13FA0DC134C6D33007DCDD0 /* BlogSelectorButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogSelectorButton.h; sourceTree = "<group>"; };
+		E13FA0DD134C6D33007DCDD0 /* BlogSelectorButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogSelectorButton.m; sourceTree = "<group>"; };
+		E13FA0F5134C849D007DCDD0 /* downArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = downArrow.png; sourceTree = "<group>"; };
+		E13FA0F6134C849D007DCDD0 /* downArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "downArrow@2x.png"; sourceTree = "<group>"; };
+		E13FA0F9134C8DDC007DCDD0 /* BlogSelectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogSelectorViewController.h; sourceTree = "<group>"; };
+		E13FA0FA134C8DDC007DCDD0 /* BlogSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogSelectorViewController.m; sourceTree = "<group>"; };
 		E14932B4130427B300154804 /* Coordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Coordinate.h; sourceTree = "<group>"; };
 		E14932B5130427B300154804 /* Coordinate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Coordinate.m; sourceTree = "<group>"; };
 		E1497BBA12CCA8270022BCD9 /* PostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostViewController.h; sourceTree = "<group>"; };
@@ -963,6 +973,8 @@
 				CEE7088A1006FC1200D6302A /* WPAsynchronousImageView.m */,
 				03958060100D6CFC00850742 /* WPLabel.h */,
 				03958061100D6CFC00850742 /* WPLabel.m */,
+				E13FA0DC134C6D33007DCDD0 /* BlogSelectorButton.h */,
+				E13FA0DD134C6D33007DCDD0 /* BlogSelectorButton.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -970,6 +982,8 @@
 		03B1DF31113D87E900BBD1C6 /* iPad */ = {
 			isa = PBXGroup;
 			children = (
+				E13FA0F9134C8DDC007DCDD0 /* BlogSelectorViewController.h */,
+				E13FA0FA134C8DDC007DCDD0 /* BlogSelectorViewController.m */,
 				03B1DF2C113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.h */,
 				03B1DF2D113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.m */,
 				459FA674113DBCE000A9D096 /* CInvisibleToolbar.h */,
@@ -1531,6 +1545,8 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				E13FA0F5134C849D007DCDD0 /* downArrow.png */,
+				E13FA0F6134C849D007DCDD0 /* downArrow@2x.png */,
 				E13FA0D8134BF347007DCDD0 /* quickPhotoTextView.png */,
 				E13FA0D9134BF347007DCDD0 /* quickPhotoTextView@2x.png */,
 				E13FA0D1134BE582007DCDD0 /* camera.png */,
@@ -2147,6 +2163,8 @@
 				E13FA0D4134BE582007DCDD0 /* camera@2x.png in Resources */,
 				E13FA0DA134BF347007DCDD0 /* quickPhotoTextView.png in Resources */,
 				E13FA0DB134BF347007DCDD0 /* quickPhotoTextView@2x.png in Resources */,
+				E13FA0F7134C849D007DCDD0 /* downArrow.png in Resources */,
+				E13FA0F8134C849D007DCDD0 /* downArrow@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2313,6 +2331,8 @@
 				E1B7B983131553FF005318BD /* FileLogger.m in Sources */,
 				375D090D133B94C3000CC9CD /* BlogsTableViewCell.m in Sources */,
 				E13FA0D7134BE78D007DCDD0 /* QuickPhotoViewController.m in Sources */,
+				E13FA0DE134C6D34007DCDD0 /* BlogSelectorButton.m in Sources */,
+				E13FA0FB134C8DDC007DCDD0 /* BlogSelectorViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

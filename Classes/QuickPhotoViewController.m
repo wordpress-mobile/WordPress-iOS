@@ -6,23 +6,22 @@
 //  Copyright 2011 WordPress. All rights reserved.
 //
 
+#import <MobileCoreServices/UTCoreTypes.h>
 #import "QuickPhotoViewController.h"
 #import "WordPressAppDelegate.h"
 #import "Blog.h"
 
 @implementation QuickPhotoViewController
-@synthesize blavatarImageView, photoImageView;
-@synthesize blogTitleLabel;
+@synthesize photoImageView;
 @synthesize contentTextView;
+@synthesize blogSelector;
 @synthesize postButtonItem;
 @synthesize photo;
 
 - (void)dealloc
 {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    self.blavatarImageView = nil;
     self.photoImageView = nil;
-    self.blogTitleLabel = nil;
     self.contentTextView = nil;
     self.postButtonItem = nil;
 
@@ -57,37 +56,13 @@
     [super viewDidLoad];
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    picker.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
+    picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
     picker.allowsEditing = NO;
     picker.delegate = self;
     [self presentModalViewController:picker animated:YES];
     
-    NSString *blogId = [[NSUserDefaults standardUserDefaults] objectForKey:QPVCBlogForQuickPhoto];
-    Blog *selectedBlog = nil;
-    NSManagedObjectContext *moc = [[WordPressAppDelegate sharedWordPressApp] managedObjectContext];
-    NSPersistentStoreCoordinator *psc = [[WordPressAppDelegate sharedWordPressApp] persistentStoreCoordinator];
-    NSError *error = nil;
-    if (blogId != nil) {
-        selectedBlog = (Blog *)[moc existingObjectWithID:[psc managedObjectIDForURIRepresentation:[NSURL URLWithString:blogId]] error:nil];
-        if (selectedBlog == nil) {
-            // The default blog was invalid, remove the stored default
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:QPVCBlogForQuickPhoto];
-        }
-    }
-    if (selectedBlog == nil) {
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
-        [fetchRequest setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]]];
-        [fetchRequest setFetchLimit:1];
-        NSArray *results = [moc executeFetchRequest:fetchRequest error:&error];
-        if (results && ([results count] > 0)) {
-            selectedBlog = [results objectAtIndex:0];
-        }
-    }
-    blogTitleLabel.text = selectedBlog.blogName;
-    blavatarImageView.isBlavatar = YES;
-    blavatarImageView.isWPCOM = [selectedBlog isWPcom];
-    [blavatarImageView loadImageFromURL:[selectedBlog blavatarURL]];
+    [self.blogSelector loadBlogsForType:BlogSelectorButtonTypeQuickPhoto];
+    self.blogSelector.delegate = self;
     if (self.photo) {
         self.photoImageView.image = self.photo;
     }
@@ -103,11 +78,11 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
-    self.blavatarImageView = nil;
     self.photoImageView = nil;
-    self.blogTitleLabel = nil;
     self.contentTextView = nil;
     self.postButtonItem = nil;
+    self.blogSelector.delegate = nil;
+    self.blogSelector = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -118,10 +93,6 @@
 
 #pragma mark -
 #pragma mark Custom methods
-
-- (IBAction)selectBlog {
-    
-}
 
 - (void)post {
     
@@ -145,6 +116,15 @@
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [picker dismissModalViewControllerAnimated:YES];
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark - Blog selector delegate
+- (void)blogSelectorButtonWillBecomeActive:(BlogSelectorButton *)button {
+    [contentTextView resignFirstResponder];
+}
+
+- (void)blogSelectorButtonDidBecomeInactive:(BlogSelectorButton *)button {
+    [contentTextView becomeFirstResponder];
 }
 
 @end

@@ -7,22 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "WPAsynchronousImageView.h"
+#import "BlogSelectorButton.h"
 
 #define QPVCBlogForQuickPhoto @"blogForQuickPhoto"
 
-@interface QuickPhotoViewController : UIViewController<UIImagePickerControllerDelegate,UINavigationControllerDelegate> {
+@interface QuickPhotoViewController : UIViewController<UIImagePickerControllerDelegate,UINavigationControllerDelegate,BlogSelectorButtonDelegate> {
     
 }
 
 @property (nonatomic, retain) IBOutlet UIImageView *photoImageView;
-@property (nonatomic, retain) IBOutlet WPAsynchronousImageView *blavatarImageView;
-@property (nonatomic, retain) IBOutlet UILabel *blogTitleLabel;
 @property (nonatomic, retain) IBOutlet UITextView *contentTextView;
+@property (nonatomic, retain) IBOutlet BlogSelectorButton *blogSelector;
 @property (nonatomic, retain) UIBarButtonItem *postButtonItem;
 @property (nonatomic, retain) UIImage *photo;
 
-- (IBAction)selectBlog;
 - (void)post;
 - (void)cancel;
 @end
