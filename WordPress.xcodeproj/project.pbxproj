@@ -295,6 +295,14 @@
 		E125445612BF5B3900D87A0A /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E125445512BF5B3900D87A0A /* Category.m */; };
 		E125451812BF68F900D87A0A /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = E125451712BF68F900D87A0A /* Page.m */; };
 		E131D08912C8C9160056BAB9 /* AbstractPost.m in Sources */ = {isa = PBXBuildFile; fileRef = E131D08812C8C9160056BAB9 /* AbstractPost.m */; };
+		E13FA0CC134BDCBB007DCDD0 /* QuickPhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E13FA0CB134BDCBB007DCDD0 /* QuickPhotoViewController.xib */; };
+		E13FA0CF134BE530007DCDD0 /* quickPhotoButton.png in Resources */ = {isa = PBXBuildFile; fileRef = E13FA0CD134BE530007DCDD0 /* quickPhotoButton.png */; };
+		E13FA0D0134BE530007DCDD0 /* quickPhotoButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E13FA0CE134BE530007DCDD0 /* quickPhotoButton@2x.png */; };
+		E13FA0D3134BE582007DCDD0 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = E13FA0D1134BE582007DCDD0 /* camera.png */; };
+		E13FA0D4134BE582007DCDD0 /* camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E13FA0D2134BE582007DCDD0 /* camera@2x.png */; };
+		E13FA0D7134BE78D007DCDD0 /* QuickPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E13FA0D6134BE78D007DCDD0 /* QuickPhotoViewController.m */; };
+		E13FA0DA134BF347007DCDD0 /* quickPhotoTextView.png in Resources */ = {isa = PBXBuildFile; fileRef = E13FA0D8134BF347007DCDD0 /* quickPhotoTextView.png */; };
+		E13FA0DB134BF347007DCDD0 /* quickPhotoTextView@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E13FA0D9134BF347007DCDD0 /* quickPhotoTextView@2x.png */; };
 		E1497BBC12CCA8270022BCD9 /* PostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1497BBB12CCA8270022BCD9 /* PostViewController.m */; };
 		E1497BC012CCA92F0022BCD9 /* PostViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1497BBF12CCA92F0022BCD9 /* PostViewController-iPad.xib */; };
 		E159D1051309AB0D00F498E2 /* MigrateBlogsFromFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = E159D1041309AB0D00F498E2 /* MigrateBlogsFromFiles.m */; };
@@ -795,6 +803,15 @@
 		E125451712BF68F900D87A0A /* Page.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Page.m; sourceTree = "<group>"; };
 		E131D08712C8C9150056BAB9 /* AbstractPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractPost.h; sourceTree = "<group>"; };
 		E131D08812C8C9160056BAB9 /* AbstractPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractPost.m; sourceTree = "<group>"; };
+		E13FA0CB134BDCBB007DCDD0 /* QuickPhotoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QuickPhotoViewController.xib; sourceTree = "<group>"; };
+		E13FA0CD134BE530007DCDD0 /* quickPhotoButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quickPhotoButton.png; sourceTree = "<group>"; };
+		E13FA0CE134BE530007DCDD0 /* quickPhotoButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "quickPhotoButton@2x.png"; sourceTree = "<group>"; };
+		E13FA0D1134BE582007DCDD0 /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
+		E13FA0D2134BE582007DCDD0 /* camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera@2x.png"; sourceTree = "<group>"; };
+		E13FA0D5134BE78D007DCDD0 /* QuickPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuickPhotoViewController.h; sourceTree = "<group>"; };
+		E13FA0D6134BE78D007DCDD0 /* QuickPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuickPhotoViewController.m; sourceTree = "<group>"; };
+		E13FA0D8134BF347007DCDD0 /* quickPhotoTextView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quickPhotoTextView.png; sourceTree = "<group>"; };
+		E13FA0D9134BF347007DCDD0 /* quickPhotoTextView@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "quickPhotoTextView@2x.png"; sourceTree = "<group>"; };
 		E14932B4130427B300154804 /* Coordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Coordinate.h; sourceTree = "<group>"; };
 		E14932B5130427B300154804 /* Coordinate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Coordinate.m; sourceTree = "<group>"; };
 		E1497BBA12CCA8270022BCD9 /* PostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostViewController.h; sourceTree = "<group>"; };
@@ -1452,6 +1469,8 @@
 		AC3439790E11434600E5D79B /* Post */ = {
 			isa = PBXGroup;
 			children = (
+				E13FA0D5134BE78D007DCDD0 /* QuickPhotoViewController.h */,
+				E13FA0D6134BE78D007DCDD0 /* QuickPhotoViewController.m */,
 				ACC156CA0E10E67600D6E1A0 /* EditPostViewController.h */,
 				ACC156CB0E10E67600D6E1A0 /* EditPostViewController.m */,
 				ACBAB6840E1247F700F38795 /* PostPreviewViewController.h */,
@@ -1512,6 +1531,12 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				E13FA0D8134BF347007DCDD0 /* quickPhotoTextView.png */,
+				E13FA0D9134BF347007DCDD0 /* quickPhotoTextView@2x.png */,
+				E13FA0D1134BE582007DCDD0 /* camera.png */,
+				E13FA0D2134BE582007DCDD0 /* camera@2x.png */,
+				E13FA0CD134BE530007DCDD0 /* quickPhotoButton.png */,
+				E13FA0CE134BE530007DCDD0 /* quickPhotoButton@2x.png */,
 				3768F48C1340BBD60075B633 /* blavatar-wporg@2x.png */,
 				3768F48D1340BBD60075B633 /* blavatar-wpcom@2x.png */,
 				3768F48E1340BBD60075B633 /* blavatar-wporg.png */,
@@ -1678,6 +1703,7 @@
 				ACBAB67C0E1247CC00F38795 /* PostPreviewViewController.xib */,
 				ACBAB6080E121CF700F38795 /* PostSettingsViewController.xib */,
 				ACC156BA0E10D73100D6E1A0 /* EditPostViewController.xib */,
+				E13FA0CB134BDCBB007DCDD0 /* QuickPhotoViewController.xib */,
 			);
 			name = Post;
 			sourceTree = "<group>";
@@ -2114,6 +2140,13 @@
 				3768F4931340BBD60075B633 /* blavatar-wpcom.png in Resources */,
 				E1D91456134A853D0089019C /* Localizable.strings in Resources */,
 				E1D91458134A854A0089019C /* Localizable.strings in Resources */,
+				E13FA0CC134BDCBB007DCDD0 /* QuickPhotoViewController.xib in Resources */,
+				E13FA0CF134BE530007DCDD0 /* quickPhotoButton.png in Resources */,
+				E13FA0D0134BE530007DCDD0 /* quickPhotoButton@2x.png in Resources */,
+				E13FA0D3134BE582007DCDD0 /* camera.png in Resources */,
+				E13FA0D4134BE582007DCDD0 /* camera@2x.png in Resources */,
+				E13FA0DA134BF347007DCDD0 /* quickPhotoTextView.png in Resources */,
+				E13FA0DB134BF347007DCDD0 /* quickPhotoTextView@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2279,6 +2312,7 @@
 				E11930C41312F8A800F34124 /* FakeMigration.m in Sources */,
 				E1B7B983131553FF005318BD /* FileLogger.m in Sources */,
 				375D090D133B94C3000CC9CD /* BlogsTableViewCell.m in Sources */,
+				E13FA0D7134BE78D007DCDD0 /* QuickPhotoViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

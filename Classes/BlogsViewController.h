@@ -16,7 +16,8 @@
 @interface BlogsViewController : UITableViewController <NSFetchedResultsControllerDelegate, UIAccelerometerDelegate, UIAlertViewDelegate> {
 	WordPressAppDelegate *appDelegate;
     NSFetchedResultsController *resultsController;
-	 Blog *currentBlog;
+    Blog *currentBlog;
+    UIButton *quickPhotoButton;
 }
 
 @property (nonatomic, retain) NSFetchedResultsController *resultsController;
@@ -29,5 +30,6 @@
 - (BOOL)canChangeBlog:(Blog *)blog;
 - (void)blogsRefreshNotificationReceived:(NSNotification *)notification;
 - (void)checkEditButton;
+- (void)quickPhotoPost;
 
 @end

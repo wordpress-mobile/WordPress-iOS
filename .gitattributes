@@ -173,6 +173,8 @@ Classes/PostViewController.h -text
 Classes/PostViewController.m -text
 Classes/PostsViewController.h -text
 Classes/PostsViewController.m -text
+Classes/QuickPhotoViewController.h -text
+Classes/QuickPhotoViewController.m -text
 Classes/RefreshButtonView.h -text
 Classes/RefreshButtonView.m -text
 Classes/RegExProcessor.h -text
@@ -317,6 +319,7 @@ FlurryLib/libFlurry.a -text svneol=unset#unset
 /PostPreviewViewController.xib -text
 /PostSettingsViewController.xib -text
 /PostViewController-iPad.xib -text
+/QuickPhotoViewController.xib -text
 Reachability/Reachability.h -text
 Reachability/Reachability.m -text
 /RecentCommentButtonDeselected.png -text svneol=unset#unset
@@ -445,6 +448,8 @@ c_tidy/utf8.h -text
 c_tidy/version.h -text
 c_tidy/win32tc.c -text
 c_tidy/win32tc.h -text
+/camera.png -text svneol=unset#unset
+/camera@2x.png -text svneol=unset#unset
 /categories.png -text svneol=unset#unset
 /categories@2x.png -text svneol=unset#unset
 /categoriesHighlighted.png -text svneol=unset#unset
@@ -497,6 +502,10 @@ it.lproj/Localizable.strings -text
 /posts@2x.png -text
 /preview.png -text
 /preview@2x.png -text
+/quickPhotoButton.png -text svneol=unset#unset
+/quickPhotoButton@2x.png -text svneol=unset#unset
+/quickPhotoTextView.png -text svneol=unset#unset
+/quickPhotoTextView@2x.png -text svneol=unset#unset
 /sample.mov -text
 /settings.png -text
 /settings@2x.png -text

@@ -1,5 +1,6 @@
 #import "BlogsViewController.h"
 #import "BlogsTableViewCell.h"
+#import "QuickPhotoViewController.h"
 
 @interface BlogsViewController (Private)
 - (void) cleanUnusedMediaFileFromTmpDir;
@@ -10,6 +11,10 @@
 
 #pragma mark -
 #pragma mark View lifecycle
+
+- (void)viewDidUnload {
+    [quickPhotoButton release]; quickPhotoButton = nil;
+}
 
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
@@ -25,11 +30,25 @@
     
     NSError *error = nil;
     if (![self.resultsController performFetch:&error]) {
-        NSLog(@"Error fetching request (Blogs) %@", [error localizedDescription]);
+//        NSLog(@"Error fetching request (Blogs) %@", [error localizedDescription]);
     } else {
-        NSLog(@"fetched blogs: %@", [resultsController fetchedObjects]);
+//        NSLog(@"fetched blogs: %@", [resultsController fetchedObjects]);
 		//Start a check on the media files that should be deleted from disk
 		[self performSelectorInBackground:@selector(cleanUnusedMediaFileFromTmpDir) withObject:nil];
+    }
+
+    if (!DeviceIsPad() && [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        quickPhotoButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [quickPhotoButton setBackgroundImage:[UIImage imageNamed:@"quickPhotoButton"] forState:UIControlStateNormal];
+        [quickPhotoButton setImage:[UIImage imageNamed:@"camera"] forState:UIControlStateNormal];
+        quickPhotoButton.frame = CGRectMake(0, self.view.frame.size.height - 100, 320, 60);
+        [quickPhotoButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [quickPhotoButton setTitle:NSLocalizedString(@"Post picture", @"") forState:UIControlStateNormal];
+        [quickPhotoButton.titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
+        [quickPhotoButton setTitleShadowColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        [quickPhotoButton addTarget:self action:@selector(quickPhotoPost) forControlEvents:UIControlEventTouchUpInside];
+        [quickPhotoButton retain];
+        [self.view addSubview:quickPhotoButton];
     }
 	
 	// Check to see if we should prompt about rating in the App Store
@@ -261,6 +280,14 @@
 #pragma mark -
 #pragma mark Custom methods
 
+- (void)quickPhotoPost {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    [FlurryAPI logEvent:@"QuickPhoto"];
+
+    QuickPhotoViewController *quickPhotoViewController = [[QuickPhotoViewController alloc] init];
+    [self.navigationController pushViewController:quickPhotoViewController animated:YES];
+    [quickPhotoViewController release];
+}
 
 - (void) cleanUnusedMediaFileFromTmpDir {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -472,6 +499,7 @@
 - (void)dealloc {
     self.resultsController = nil;
 	self.currentBlog = nil;
+    [quickPhotoButton release]; quickPhotoButton = nil;
     [super dealloc];
 }
 
