@@ -1051,7 +1051,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 	// Reposition TextView for editing mode or normal mode based on device and orientation
 
-	if(isEditing) // Editing mode
+	if(isEditing && isShowingKeyboard) // Editing mode
 		if(DeviceIsPad() == YES)
 			if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
 				|| (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
@@ -1350,10 +1350,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)keyboardWillShow:(NSNotification *)notification {
 	isShowingKeyboard = YES;
+    [self positionTextView:[notification userInfo]];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
 	isShowingKeyboard = NO;
+    [self positionTextView:[notification userInfo]];
 }
 
 #pragma mark -
