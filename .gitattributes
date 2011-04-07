@@ -483,6 +483,7 @@ es.lproj/Localizable.strings -text svneol=unset#unset
 /help.png -text
 /iTunesArtwork -text
 it.lproj/Localizable.strings -text
+ja.lproj/Localizable.strings -text svneol=unset#unset
 /license.txt -text
 /localize.py -text
 /lock.png -text
