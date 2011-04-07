@@ -560,14 +560,12 @@
     switch (type) {
         case NSFetchedResultsChangeDelete:
 			// A post was deleted, we should try to figure out if the deleted post is the currently opened on the right side
-			if(self.postReaderViewController) {
-				if(self.postReaderViewController.apost == anObject) {
-					//push an the W logo on the right. 
-					//FIXME: I've tried to select something but even with try/catch the app could crash
-					WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-					[delegate showContentDetailViewController:nil];
-					self.selectedIndexPath = nil;
-				}
+			if(self.selectedIndexPath && (self.selectedIndexPath == indexPath)) {
+				//push an the W logo on the right. 
+				//FIXME: I've tried to select something but even with try/catch the app could crash
+				WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+				[delegate showContentDetailViewController:nil];
+				self.selectedIndexPath = nil;
 			}
             break;
         case NSFetchedResultsChangeInsert:
