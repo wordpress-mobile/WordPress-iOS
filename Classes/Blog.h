@@ -31,6 +31,7 @@
 - (BOOL)isWPcom;
 - (void)dataSave;
 - (NSURL *)blavatarURL;
+-(NSArray *)sortedCategories;
 
 #pragma mark -
 #pragma mark Synchronization

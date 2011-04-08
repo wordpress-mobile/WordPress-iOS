@@ -117,6 +117,15 @@
     return result;
 }
 
+-(NSArray *)sortedCategories {
+	NSSortDescriptor *sortNameDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"categoryName" 
+																		ascending:YES 
+																		 selector:@selector(caseInsensitiveCompare:)] autorelease];
+	NSArray *sortDescriptors = [[[NSArray alloc] initWithObjects:sortNameDescriptor, nil] autorelease];
+	
+	return [[self.categories allObjects] sortedArrayUsingDescriptors:sortDescriptors];
+}
+
 - (BOOL)isWPcom {
     NSRange range = [self.xmlrpc rangeOfString:@"wordpress.com"];
 	return (range.location != NSNotFound);

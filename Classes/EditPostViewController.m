@@ -446,25 +446,17 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[textView setContentOffset:CGPointZero animated:NO];
 }
 
-//used to order the categories
-NSComparisonResult compareCat(Category *firstPerson, Category *secondPerson, void *context) {
-	return [firstPerson.categoryName compare:secondPerson.categoryName options:NSCaseInsensitiveSearch];
-}
-
 - (void)populateSelectionsControllerWithCategories {
     if (segmentedTableViewController == nil)
         segmentedTableViewController = [[WPSegmentedSelectionTableViewController alloc] initWithNibName:@"WPSelectionTableViewController" bundle:nil];
 	
-	NSArray *cats = [self.post.blog.categories allObjects];
+	NSArray *cats = [self.post.blog sortedCategories];
 
-	NSArray *sortedArray; 
-	sortedArray = [cats sortedArrayUsingFunction:compareCat context:NULL];
-	
 	NSArray *selObject;
 	
     selObject = [self.post.categories allObjects];
 	
-    [segmentedTableViewController populateDataSource:sortedArray    //datasorce
+    [segmentedTableViewController populateDataSource:cats    //datasorce
 									   havingContext:kSelectionsCategoriesContext
 									 selectedObjects:selObject
 									   selectionType:kCheckbox
