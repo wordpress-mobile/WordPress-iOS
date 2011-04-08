@@ -855,6 +855,9 @@
  * associated JPEG, including the metadata we're after.
  */
 -(void)getMetadataFromAssetForURL:(NSURL *)url {
+	
+	if (iOs4OrGreater() == NO) return;
+	
     ALAssetsLibrary* assetslibrary = [[ALAssetsLibrary alloc] init];
     [assetslibrary assetForURL:url
 				   resultBlock: ^(ALAsset *myasset) {
@@ -882,8 +885,24 @@
 					   CGImageSourceRef  source ;
 					   source = CGImageSourceCreateWithData((CFDataRef)imageJPEG, NULL);
 					   
-					   //get all the metadata in the image
-					   self.currentImageMetadata = (NSDictionary *) CGImageSourceCopyPropertiesAtIndex(source,0,NULL);
+					   if(!self.postDetailViewController.apost.blog.geolocationEnabled) {
+						   //we should remove the GPS info if the blog has the geolocation set to off
+						   
+						   //get all the metadata in the image
+						   NSDictionary *metadata = (NSDictionary *) CGImageSourceCopyPropertiesAtIndex(source,0,NULL);
+
+						   //make the metadata dictionary mutable so we can remove properties to it
+						   NSMutableDictionary *metadataAsMutable = [[metadata mutableCopy]autorelease];
+						   [metadata release];
+						   [metadataAsMutable removeObjectForKey:@"{GPS}"];
+						   
+						   self.currentImageMetadata = [NSDictionary dictionaryWithDictionary:metadataAsMutable];
+						   
+					   } else {
+						   //read the metadata from the image src
+						   self.currentImageMetadata = (NSDictionary *) CGImageSourceCopyPropertiesAtIndex(source,0,NULL);
+					   }			 
+					   
 					   CFRelease(source);
 				   }
 				  failureBlock: ^(NSError *err) {
@@ -1128,7 +1147,7 @@
 	NSString *filename = [NSString stringWithFormat:@"%@.jpg", [formatter stringFromDate:[NSDate date]]];
 	NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
 	
-	if (self.postDetailViewController.apost.blog.geolocationEnabled && iOs4OrGreater() && self.currentImageMetadata != nil) {
+	if (iOs4OrGreater() && self.currentImageMetadata != nil) {
 		// Write the EXIF data with the image data to disk
 		CGImageSourceRef  source ;
 		source = CGImageSourceCreateWithData((CFDataRef)imageData, NULL);
