@@ -1,5 +1,4 @@
 #import <Foundation/Foundation.h>
-#import "RefreshButtonView.h"
 #import "Post.h"
 #import "PostViewController.h"
 #import "EGORefreshTableHeaderView.h"
@@ -9,7 +8,6 @@
 @interface PostsViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, UIAccelerometerDelegate, NSFetchedResultsControllerDelegate, EGORefreshTableHeaderDelegate> {
 @private
 	UIAlertView *progressAlert;
-    RefreshButtonView *refreshButton;
     EGORefreshTableHeaderView *_refreshHeaderView;
     UIActivityIndicatorView *activityFooter;
 }

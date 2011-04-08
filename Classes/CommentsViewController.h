@@ -8,7 +8,6 @@
 #import <Foundation/Foundation.h>
 
 #import "CommentsTableViewDelegate.h"
-#import "RefreshButtonView.h"
 #import "Blog.h"
 #import "EGORefreshTableHeaderView.h"
 

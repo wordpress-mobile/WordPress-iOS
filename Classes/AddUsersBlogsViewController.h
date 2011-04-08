@@ -6,13 +6,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "HttpHelper.h"
 #import "WordPressAppDelegate.h"
 #import "Blog.h"
 #import "WPProgressHUD.h"
 #import "WPcomLoginViewController.h"
 
-@interface AddUsersBlogsViewController : UIViewController <UITableViewDelegate, HTTPHelperDelegate> {
+@interface AddUsersBlogsViewController : UIViewController <UITableViewDelegate> {
 	WordPressAppDelegate *appDelegate;
 	BOOL hasCompletedGetUsersBlogs, isWPcom;
 	NSArray *usersBlogs;

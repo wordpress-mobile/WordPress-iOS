@@ -401,17 +401,6 @@
 	[self.navigationController popToViewController:controller animated:NO];
 }
 
-#pragma mark -
-#pragma mark HTTPHelper methods
-
-- (void)httpSuccessWithDataString:(NSString *)data {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-}
-
-- (void)httpFailWithError:(NSError *)error {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-}
-
 -(void)checkAddSelectedButtonStatus {
 	//disable the 'Add Selected' button if they have selected 0 blogs, trac #521
 	if (selectedBlogs.count == 0) {

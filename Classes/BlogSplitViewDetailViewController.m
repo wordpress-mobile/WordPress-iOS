@@ -8,8 +8,6 @@
 
 #import "BlogSplitViewDetailViewController.h"
 
-#import "CInvisibleToolbar.h"
-
 @implementation BlogSplitViewDetailViewController
 
 /*
@@ -22,25 +20,8 @@
 }
 */
 
-- (void)viewDidLoad
-{
-[super viewDidLoad];
-//
-//self.title = @"HELLO WORLD";
-//
-//UIToolbar *theTabBar = [[[CInvisibleToolbar alloc] initWithFrame:CGRectMake(0, 0, 240, 44)] autorelease];
-//theTabBar.items = [NSArray arrayWithObjects:
-//	[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:NULL action:NULL] autorelease],
-//	[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:NULL action:NULL] autorelease],
-//	[[[UIBarButtonItem alloc] initWithTitle:@"TEST" style:UIBarButtonItemStylePlain target:NULL action:NULL] autorelease],
-//	[[[UIBarButtonItem alloc] initWithTitle:@"TEST" style:UIBarButtonItemStyleBordered target:NULL action:NULL] autorelease],
-//	[[[UIBarButtonItem alloc] initWithTitle:@"TEST 2" style:UIBarButtonItemStyleDone target:NULL action:NULL] autorelease],
-//	NULL];
-//
-//
-//
-//
-//self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:theTabBar] autorelease];
+- (void)viewDidLoad {
+    [super viewDidLoad];
 }
 
 

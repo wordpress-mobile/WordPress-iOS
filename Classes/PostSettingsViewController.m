@@ -1,7 +1,6 @@
 #import "PostSettingsViewController.h"
 #import "WPSelectionTableViewController.h"
 #import "WordPressAppDelegate.h"
-#import "WPLabelFooterView.h"
 
 #define kPasswordFooterSectionHeight         68.0f
 #define kResizePhotoSettingSectionHeight     60.0f

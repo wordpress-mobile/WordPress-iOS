@@ -8,7 +8,6 @@
 #import "PostsViewController.h"
 #import "WelcomeViewController.h"
 #import "WordPressAppDelegate.h"
-#import "UIViewController+WPAnimation.h"
 #import "Blog.h"
 #import "CPopoverManager.h"
 #import "WPAsynchronousImageView.h"

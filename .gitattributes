@@ -19,14 +19,11 @@
 /ASINetworkQueue.h -text
 /ASINetworkQueue.m -text
 /ASIProgressDelegate.h -text
-/AddBlogValidationBackground.png -text svneol=unset#unset
-/AddBlogValidationBackground@2x.png -text
 /AddSiteViewController-iPad.xib -text
 /AddSiteViewController.xib -text
 /AddUsersBlogsViewController-iPad.xib -text
 /AddUsersBlogsViewController.xib -text
 /BetaFeedbackViewController.xib -text
-/BlogHTTPAuthenticationViewController.xib -text
 /BlogSettingsView-iPad.xib -text
 /BlogSplitViewDetailViewController.xib -text
 /BlogViewController-iPad.xib -text
@@ -81,8 +78,6 @@ Classes/BlogsViewController.h -text
 Classes/BlogsViewController.m -text
 Classes/CDeviceSupport.h -text
 Classes/CDeviceSupport.m -text
-Classes/CInvisibleToolbar.h -text
-Classes/CInvisibleToolbar.m -text
 Classes/CPopoverManager.h -text
 Classes/CPopoverManager.m -text
 Classes/Category.h -text
@@ -133,8 +128,6 @@ Classes/FakeMigration.h -text
 Classes/FakeMigration.m -text
 Classes/FileLogger.h -text
 Classes/FileLogger.m -text
-Classes/FlippingViewController.h -text
-Classes/FlippingViewController.m -text
 Classes/GravatarImageView.h -text
 Classes/GravatarImageView.m -text
 Classes/HelpViewController.h -text
@@ -179,14 +172,6 @@ Classes/PostsViewController.h -text
 Classes/PostsViewController.m -text
 Classes/QuickPhotoViewController.h -text
 Classes/QuickPhotoViewController.m -text
-Classes/RefreshButtonView.h -text
-Classes/RefreshButtonView.m -text
-Classes/RegExProcessor.h -text
-Classes/RegExProcessor.m -text
-Classes/ResourcesTableViewSection.h -text
-Classes/ResourcesTableViewSection.m -text
-Classes/RotatingNavigationController.h -text
-Classes/RotatingNavigationController.m -text
 Classes/StatsChartViewController.h -text
 Classes/StatsChartViewController.m -text
 Classes/StatsPageControlViewController.h -text
@@ -195,24 +180,12 @@ Classes/StatsTableCell.h -text
 Classes/StatsTableCell.m -text
 Classes/StatsTableViewController.h -text
 Classes/StatsTableViewController.m -text
-Classes/TransparentToolbar.h -text
-Classes/TransparentToolbar.m -text
 Classes/UIDevice-Hardware.h -text
 Classes/UIDevice-Hardware.m -text
-Classes/UILoadMoreCell.h -text
-Classes/UILoadMoreCell.m -text
 Classes/UITableViewActivityCell.h -text
 Classes/UITableViewActivityCell.m -text
-Classes/UITableViewSegmentedControlCell.h -text
-Classes/UITableViewSegmentedControlCell.m -text
 Classes/UITableViewSwitchCell.h -text
 Classes/UITableViewSwitchCell.m -text
-Classes/UITextFieldCell.h -text
-Classes/UITextFieldCell.m -text
-Classes/UITextViewCell.h -text
-Classes/UITextViewCell.m -text
-Classes/UIViewController+WPAnimation.h -text
-Classes/UIViewController+WPAnimation.m -text
 Classes/UIViewController_iPadExtensions.h -text
 Classes/UIViewController_iPadExtensions.m -text
 Classes/WPAddCategoryViewController.h -text
@@ -227,12 +200,8 @@ Classes/WPDataController.h -text
 Classes/WPDataController.m -text
 Classes/WPImagePickerController.h -text
 Classes/WPImagePickerController.m -text
-Classes/WPImageView.h -text
-Classes/WPImageView.m -text
 Classes/WPLabel.h -text
 Classes/WPLabel.m -text
-Classes/WPLabelFooterView.h -text
-Classes/WPLabelFooterView.m -text
 Classes/WPMediaUploader.h -text
 Classes/WPMediaUploader.m -text
 Classes/WPPageControl.h -text
@@ -245,8 +214,6 @@ Classes/WPSegmentedSelectionTableViewController.h -text
 Classes/WPSegmentedSelectionTableViewController.m -text
 Classes/WPSelectionTableViewController.h -text
 Classes/WPSelectionTableViewController.m -text
-Classes/WPXMLReader.h -text
-Classes/WPXMLReader.m -text
 Classes/WPcomLoginViewController.h -text
 Classes/WPcomLoginViewController.m -text
 Classes/WebSignupViewController.h -text
@@ -261,17 +228,7 @@ Classes/WordPress.xcdatamodeld/WordPress.xcdatamodel/elements -text
 Classes/WordPress.xcdatamodeld/WordPress.xcdatamodel/layout -text
 Classes/WordPressAppDelegate.h -text
 Classes/WordPressAppDelegate.m -text
-Classes/XMLRPC/XMLRPCConnection+Authentication.h -text
-Classes/XMLRPC/XMLRPCConnection+Authentication.m -text
-Classes/blue-m.png -text svneol=unset#unset
 Classes/fabric.png -text svneol=unset#unset
-Classes/firstrun-background.png -text svneol=unset#unset
-Classes/firstrun-logo.png -text svneol=unset#unset
-Classes/firstrun-wholebutton-default.png -text svneol=unset#unset
-Classes/firstrun-wholebutton-selected.png -text svneol=unset#unset
-Classes/glossyButton-disabled.png -text svneol=unset#unset
-Classes/glossyButton-highlighted.png -text svneol=unset#unset
-Classes/glossyButton-normal.png -text svneol=unset#unset
 Classes/stats.png -text
 Classes/stats@2x.png -text
 /CommentViewController.xib -text
@@ -285,8 +242,6 @@ Creation/CXMLNode_CreationExtensions.m -text
 /Default-Portrait.png -text svneol=unset#unset
 /Default.png -text
 /Default@2x.png -text
-/Disclosure[!!-~]Indicator.png -text
-/EditPostParentModalViewController.xib -text
 /EditPostViewController-iPad.xib -text
 /EditPostViewController.xib -text
 /EditSiteViewController.xib -text
@@ -295,9 +250,6 @@ FlurryLib/FlurryAPI.h -text
 FlurryLib/FlurryAdDelegate.h -text
 FlurryLib/libFlurry.a -text svneol=unset#unset
 /HelpViewController.xib -text
-/HttpHelper.h -text
-/HttpHelper.m -text
-/HttpHelperDelegate.h -text
 /Icon-72.png -text
 /Icon-Small-50.png -text
 /Icon-Small.png -text
@@ -312,12 +264,9 @@ FlurryLib/libFlurry.a -text svneol=unset#unset
 /Info.plist -text
 /MainBackground.png -text
 /MainWindow.xib -text
-/ManagedObjectCloner.h -text
-/ManagedObjectCloner.m -text
 /Media.h -text
 /Media.m -text
 /MediaObjectView.xib -text
-/PostLocationViewController.xib -text
 /PostMediaViewController-iPad.xib -text
 /PostMediaViewController.xib -text
 /PostPreviewViewController.xib -text
@@ -326,8 +275,6 @@ FlurryLib/libFlurry.a -text svneol=unset#unset
 /QuickPhotoViewController.xib -text
 Reachability/Reachability.h -text
 Reachability/Reachability.m -text
-/RecentCommentButtonDeselected.png -text svneol=unset#unset
-/RecentCommentButtonSelected.png -text svneol=unset#unset
 /RegexKitLite.h -text
 /RegexKitLite.m -text
 Resources-iPad/MainWindow-iPad.xib -text
@@ -352,19 +299,10 @@ Settings.bundle/en.lproj/Root.strings -text
 /UIImage+Resize.m -text
 /UIImage+RoundedCorner.h -text
 /UIImage+RoundedCorner.m -text
-/UILoadMoreCell.xib -text
 /UITableViewActivityCell.xib -text
-/UITableViewSegmentedControlCell.xib -text
 /UITableViewSwitchCell.xib -text
-/UITextFieldCell.xib -text
-/UITextViewCell.xib -text
 /WPAddCategoryViewController.xib -text
 /WPCategoriesController.xib -text
-/WPMediaUploader-iPad.xib -text
-/WPMediaUploader.xib -text
-/WPPhotoViewController.xib -text
-/WPPhotosListViewController.xib -text
-/WPPublishOnEditController.xib -text
 /WPSelectionTableViewController.xib -text
 /WPcomLoginViewController-iPad.xib -text
 /WPcomLoginViewController.xib -text
@@ -454,8 +392,6 @@ c_tidy/win32tc.c -text
 c_tidy/win32tc.h -text
 /camera.png -text svneol=unset#unset
 /camera@2x.png -text svneol=unset#unset
-/categories.png -text svneol=unset#unset
-/categories@2x.png -text svneol=unset#unset
 /categoriesHighlighted.png -text svneol=unset#unset
 /categoriesHighlighted@2x.png -text svneol=unset#unset
 /category_child.png -text
@@ -467,7 +403,6 @@ c_tidy/win32tc.h -text
 /comments@2x.png -text
 /defaultPostTemplate.html -text
 /defaultPostTemplate_old.html -text
-/delete.png -text
 /down.png -text
 /down@2x.png -text
 /downArrow.png -text svneol=unset#unset
@@ -487,7 +422,6 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /license.txt -text
 /localize.py -text
 /lock.png -text
-/logo_stacked.png -text
 /logo_welcome.png -text
 /logo_welcome@2x.png -text
 /logo_wpcom.png -text
@@ -513,7 +447,6 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /quickPhotoButton@2x.png -text svneol=unset#unset
 /quickPhotoTextView.png -text svneol=unset#unset
 /quickPhotoTextView@2x.png -text svneol=unset#unset
-/sample.mov -text
 /settings.png -text
 /settings@2x.png -text
 /stats.png -text
@@ -524,10 +457,6 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /tabPointer@2x.png -text svneol=unset#unset
 /table_sep.png -text svneol=unset#unset
 /table_sep@2x.png -text svneol=unset#unset
-/tags.png -text svneol=unset#unset
-/tags@2x.png -text svneol=unset#unset
-/tagsHighlighted.png -text svneol=unset#unset
-/tagsHighlighted@2x.png -text svneol=unset#unset
 /uncheck.png -text
 /uncheck@2x.png -text
 /uncrustify.cfg -text

@@ -2,7 +2,6 @@
 #import "EditPostViewController.h"
 #import "PostViewController.h"
 #import "PostTableViewCell.h"
-#import "UIViewController+WPAnimation.h"
 #import "WordPressAppDelegate.h"
 #import "WPReachability.h"
 #import "WPProgressHUD.h"
@@ -16,7 +15,6 @@
 //- (void) addSpinnerToCell:(NSIndexPath *)indexPath;
 //- (void) removeSpinnerFromCell:(NSIndexPath *)indexPath;
 - (BOOL)handleAutoSavedContext:(NSInteger)tag;
-- (void)addRefreshButton;
 - (void)deletePostAtIndexPath;
 - (void)trySelectSomething;
 - (void)editPost:(AbstractPost *)apost;
@@ -276,25 +274,14 @@
 - (void)refreshPostList {
 //    [self.tableView reloadData];
     [self trySelectSomething];
-    [refreshButton stopAnimating];
     [activityFooter stopAnimating];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
 }
 
-- (void)addRefreshButton {
-    CGRect frame = CGRectMake(0, 0, self.tableView.bounds.size.width, REFRESH_BUTTON_HEIGHT);
-	
-    refreshButton = [[RefreshButtonView alloc] initWithFrame:frame];
-    [refreshButton addTarget:self action:@selector(refreshHandler) forControlEvents:UIControlEventTouchUpInside];
-	
-    self.tableView.tableHeaderView = refreshButton;
-}
-
 - (void)refreshHandler {
     if ([self isSyncing])
         return;
-    [refreshButton startAnimating];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     [self performSelectorInBackground:@selector(syncPosts) withObject:nil];
 }
@@ -625,7 +612,6 @@
     [activityFooter release];
     [postDetailViewController release];
     [newButtonItem release];
-    [refreshButton release];
 	[selectedIndexPath release], selectedIndexPath = nil;
 	[drafts release];
 	
