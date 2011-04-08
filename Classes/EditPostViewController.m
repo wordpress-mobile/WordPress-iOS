@@ -622,6 +622,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [self.apost.original applyRevision];
 	if (upload)
 		[self.apost.original upload];
+	else {
+		[self.apost.original save];
+	}
+
     [self dismissEditView];
 }
 

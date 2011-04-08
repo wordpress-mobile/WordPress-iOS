@@ -131,7 +131,6 @@
     if ([self isOriginal]) {
         [self cloneFrom:self.revision];
         [self deleteRevision];
-		[self save];
     }
 }
 
