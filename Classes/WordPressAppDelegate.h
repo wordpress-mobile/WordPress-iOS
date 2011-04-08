@@ -52,7 +52,6 @@
 
 - (void)handleCrashReport;
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message;
-- (void)showErrorAlert:(NSString *)message;
 - (void)showNotificationErrorAlert:(NSNotification *)notification;
 - (BOOL)isWPcomAuthenticated;
 - (void)checkWPcomAuthentication;

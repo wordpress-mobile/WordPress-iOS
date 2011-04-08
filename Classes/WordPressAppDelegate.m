@@ -330,12 +330,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
     [alert release];
 }
 
-- (void)showErrorAlert:(NSString *)message {
-	if([self isAlertRunning] == YES) return; //another alert is already shown 
-	[self setAlertRunning:YES];
-    [self showAlertWithTitle:NSLocalizedString(@"Error", @"") message:message];
-}
-
 - (void)showNotificationErrorAlert:(NSNotification *)notification {
 	NSString *cleanedErrorMsg = nil;
 	
@@ -371,7 +365,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	if([cleanedErrorMsg rangeOfString:@"NSXMLParserErrorDomain"].location != NSNotFound )
 		cleanedErrorMsg = NSLocalizedString(@"The app can't recognize the server response. Please, check the configuration of your blog.", @"");
 	
-	[self showErrorAlert:cleanedErrorMsg];
+	[self showAlertWithTitle:NSLocalizedString(@"Error", @"") message:cleanedErrorMsg];
 }
 
 
