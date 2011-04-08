@@ -32,20 +32,20 @@
     if (self) {
         active = NO;
 
-        CGRect blavatarFrame = self.frame;
+        CGRect blavatarFrame = self.bounds;
         blavatarFrame.size.width = blavatarFrame.size.height;
         blavatarImageView = [[WPAsynchronousImageView alloc] initWithFrame:blavatarFrame];
         blavatarImageView.isBlavatar = YES;
         [self addSubview:blavatarImageView];
         
-        CGRect blogTitleFrame = self.frame;
+        CGRect blogTitleFrame = self.bounds;
         blogTitleFrame.origin.x = blavatarFrame.size.width + 10;
         blogTitleFrame.size.width -= blavatarFrame.size.width + 10 + 50;
         blogTitleLabel = [[UILabel alloc] initWithFrame:blogTitleFrame];
         blogTitleLabel.font = [UIFont boldSystemFontOfSize:20];
         [self addSubview:blogTitleLabel];
         
-        CGRect selectorImageFrame = self.frame;
+        CGRect selectorImageFrame = self.bounds;
         selectorImageFrame.origin.x = selectorImageFrame.size.width - 40;
         selectorImageFrame.size.width = 30;
         selectorImageView = [[UIImageView alloc] initWithFrame:selectorImageFrame];
@@ -151,11 +151,11 @@
     
     UIView *selectionView = selectorViewController.tableView;
     if (active) {
+        normalFrame = self.frame;
         // Setup selection view
-        CGRect selectionViewFrame = self.superview.frame;
+        CGRect selectionViewFrame = self.superview.bounds;
         selectionViewFrame.origin.y += self.frame.size.height;
         selectionViewFrame.size.height -= self.frame.size.height;
-        selectionViewFrame.origin.y -= selectionViewFrame.size.height;
         if (selectorViewController == nil) {
             selectorViewController = [[BlogSelectorViewController alloc] initWithStyle:UITableViewStylePlain];
             selectorViewController.selectedBlog = self.activeBlog;
@@ -163,22 +163,18 @@
         }
         selectionView = selectorViewController.tableView;
         selectionView.frame = selectionViewFrame;
-        [self.superview insertSubview:selectionView belowSubview:self];
+        [self addSubview:selectionView];
     }
     
     [UIView beginAnimations:@"activation" context:nil];
     [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
     [UIView setAnimationDuration:0.15];
     if (active) {
+        self.frame = self.superview.bounds;
         selectorImageView.transform = CGAffineTransformMakeRotation(M_PI);
-        CGRect frame = selectionView.frame;
-        frame.origin.y += frame.size.height;
-        selectionView.frame = frame;
     } else {
+        self.frame = normalFrame;
         selectorImageView.transform = CGAffineTransformMakeRotation(0);
-        CGRect frame = selectionView.frame;
-        frame.origin.y -= frame.size.height;
-        selectionView.frame = frame;
     }
     [UIView commitAnimations];
     

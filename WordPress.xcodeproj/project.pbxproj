@@ -270,6 +270,7 @@
 		E16A0C3312E769A10049EA80 /* table_sep@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E16A0C3112E769A10049EA80 /* table_sep@2x.png */; };
 		E17078FD130A95B600F30433 /* WordPress-1-2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = E17078FC130A95B600F30433 /* WordPress-1-2.xcmappingmodel */; };
 		E17BE248134F39FE00165C3D /* NSURL+IDN.m in Sources */ = {isa = PBXBuildFile; fileRef = E17BE247134F39FE00165C3D /* NSURL+IDN.m */; };
+		E17BE261134F5E4D00165C3D /* QuickPicturePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = E17BE260134F5E4D00165C3D /* QuickPicturePreviewView.m */; };
 		E18D43E1130BD8E9006155DE /* PostToAbstractPost.m in Sources */ = {isa = PBXBuildFile; fileRef = E18D43E0130BD8E9006155DE /* PostToAbstractPost.m */; };
 		E19F29AD12B8BC22008FF660 /* access.c in Sources */ = {isa = PBXBuildFile; fileRef = E19F297912B8BC22008FF660 /* access.c */; };
 		E19F29AE12B8BC22008FF660 /* alloc.c in Sources */ = {isa = PBXBuildFile; fileRef = E19F297B12B8BC22008FF660 /* alloc.c */; };
@@ -720,6 +721,8 @@
 		E17078FC130A95B600F30433 /* WordPress-1-2.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = "WordPress-1-2.xcmappingmodel"; sourceTree = "<group>"; };
 		E17BE246134F39FE00165C3D /* NSURL+IDN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+IDN.h"; sourceTree = "<group>"; };
 		E17BE247134F39FE00165C3D /* NSURL+IDN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+IDN.m"; sourceTree = "<group>"; };
+		E17BE25F134F5E4D00165C3D /* QuickPicturePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuickPicturePreviewView.h; sourceTree = "<group>"; };
+		E17BE260134F5E4D00165C3D /* QuickPicturePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuickPicturePreviewView.m; sourceTree = "<group>"; };
 		E17BE7A9134DEC12007285FD /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E18D43DF130BD8E9006155DE /* PostToAbstractPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostToAbstractPost.h; sourceTree = "<group>"; };
 		E18D43E0130BD8E9006155DE /* PostToAbstractPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostToAbstractPost.m; sourceTree = "<group>"; };
@@ -852,6 +855,8 @@
 				03958061100D6CFC00850742 /* WPLabel.m */,
 				E13FA0DC134C6D33007DCDD0 /* BlogSelectorButton.h */,
 				E13FA0DD134C6D33007DCDD0 /* BlogSelectorButton.m */,
+				E17BE25F134F5E4D00165C3D /* QuickPicturePreviewView.h */,
+				E17BE260134F5E4D00165C3D /* QuickPicturePreviewView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -2067,6 +2072,7 @@
 				E13FA0FB134C8DDC007DCDD0 /* BlogSelectorViewController.m in Sources */,
 				E10A2E9B134E8AD3007643F9 /* PostAnnotation.m in Sources */,
 				E17BE248134F39FE00165C3D /* NSURL+IDN.m in Sources */,
+				E17BE261134F5E4D00165C3D /* QuickPicturePreviewView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

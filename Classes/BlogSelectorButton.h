@@ -35,6 +35,7 @@ typedef enum {
     BOOL active;
     BlogSelectorViewController *selectorViewController;
     BlogSelectorButtonType type;
+    CGRect normalFrame;
 }
 @property (nonatomic, retain) Blog *activeBlog;
 @property (nonatomic, assign) id<BlogSelectorButtonDelegate> delegate;

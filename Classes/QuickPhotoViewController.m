@@ -14,6 +14,7 @@
 
 @implementation QuickPhotoViewController
 @synthesize photoImageView;
+@synthesize titleTextField;
 @synthesize contentTextView;
 @synthesize blogSelector;
 @synthesize postButtonItem;
@@ -22,7 +23,9 @@
 - (void)dealloc
 {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    self.photoImageView.delegate = nil;
     self.photoImageView = nil;
+    self.titleTextField = nil;
     self.contentTextView = nil;
     self.postButtonItem = nil;
     [spinner release]; spinner = nil;
@@ -68,6 +71,7 @@
     if (self.photo) {
         self.photoImageView.image = self.photo;
     }
+    self.photoImageView.delegate = self;
     spinner = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Publishing...", @"")];
     self.navigationItem.title = NSLocalizedString(@"Quick Picture", @"");
     self.postButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Publish", @"") style:UIBarButtonItemStyleDone target:self action:@selector(post)] autorelease];
@@ -87,7 +91,9 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    self.photoImageView.delegate = nil;
     self.photoImageView = nil;
+    self.titleTextField = nil;
     self.contentTextView = nil;
     self.postButtonItem = nil;
     self.blogSelector.delegate = nil;
@@ -113,7 +119,8 @@
     if (post == nil) {
         post = [Post newDraftForBlog:blog];
     }
-    post.postTitle = contentTextView.text;
+    post.postTitle = titleTextField.text;
+    post.content = contentTextView.text;
     
     if (post.media && [post.media count] > 0) {
         media = [post.media anyObject];
@@ -143,7 +150,7 @@
     Media *media = (Media *)[notification object];
     [media save];
     [spinner setTitle:NSLocalizedString(@"Publishing picture...", @"")];
-    post.content = [media html];
+    post.content = [NSString stringWithFormat:@"%@\n\n%@", [media html], post.content];
     [post upload];    
 }
 
@@ -196,10 +203,24 @@
 
 #pragma mark - Blog selector delegate
 - (void)blogSelectorButtonWillBecomeActive:(BlogSelectorButton *)button {
+    [titleTextField resignFirstResponder];
     [contentTextView resignFirstResponder];
+    [self.view bringSubviewToFront:button];
 }
 
 - (void)blogSelectorButtonDidBecomeInactive:(BlogSelectorButton *)button {
+    [contentTextView becomeFirstResponder];
+}
+
+#pragma mark - Quick picture preview view delegate
+
+- (void)pictureWillZoom {
+    [titleTextField resignFirstResponder];
+    [contentTextView resignFirstResponder];
+    [self.view bringSubviewToFront:photoImageView];
+}
+
+- (void)pictureDidRestore {
     [contentTextView becomeFirstResponder];
 }
 
