@@ -189,11 +189,20 @@
     [selctionController clean];
 }
 
+//used to order the categories
+NSComparisonResult compareCatByName(Category *firstPerson, Category *secondPerson, void *context) {
+	return [firstPerson.categoryName compare:secondPerson.categoryName options:NSCaseInsensitiveSearch];
+}
+
 - (void)populateSelectionsControllerWithCategories {
     WPSelectionTableViewController *selectionTableViewController = [[WPSegmentedSelectionTableViewController alloc] initWithNibName:@"WPSelectionTableViewController" bundle:nil];
 
     NSArray *selObjs = ((parentCat == nil) ? [NSArray array] : [NSArray arrayWithObject:parentCat]);
-    [selectionTableViewController populateDataSource:[self.blog.categories allObjects]
+    
+	NSArray *sortedArray; 
+	sortedArray = [[self.blog.categories allObjects] sortedArrayUsingFunction:compareCatByName context:NULL];
+	
+	[selectionTableViewController populateDataSource:sortedArray
      havingContext:kParentCategoriesContext
      selectedObjects:selObjs
      selectionType:kRadio
