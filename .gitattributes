@@ -144,6 +144,8 @@ Classes/NSString+Util.h -text
 Classes/NSString+Util.m -text
 Classes/NSString+XMLExtensions.h -text
 Classes/NSString+XMLExtensions.m -text
+Classes/NSURL+IDN.h -text
+Classes/NSURL+IDN.m -text
 Classes/Page.h -text
 Classes/Page.m -text
 Classes/PageViewController.h -text

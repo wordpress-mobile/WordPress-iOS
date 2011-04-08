@@ -8,6 +8,7 @@
 #import "Blog.h"
 #import "UIImage+Resize.h"
 #import "WPDataController.h"
+#import "NSURL+IDN.h"
 
 @implementation Blog
 @dynamic blogID, blogName, url, username, password, xmlrpc, apiKey;
@@ -109,7 +110,7 @@
 
 - (NSString *)hostURL {
     NSString *result = [NSString stringWithFormat:@"%@",
-                        [self.url stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""]];
+                        [[NSURL IDNDecodedHostname:self.url] stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""]];
     
     if([result hasSuffix:@"/"])
         result = [result substringToIndex:[result length] - 1];

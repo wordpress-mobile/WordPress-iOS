@@ -5,6 +5,7 @@
 //  Created by Chris Boyd on 7/23/10.
 
 #import "EditSiteViewController.h"
+#import "NSURL+IDN.h"
 
 @interface EditSiteViewController (PrivateMethods)
 - (void)validateFields;
@@ -325,7 +326,7 @@
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	WPDataController *dc = [[WPDataController alloc] init];
     WPLog(@"before guess");
-    NSString *xmlrpc = [dc guessXMLRPCForUrl:urlTextField.text];
+    NSString *xmlrpc = [dc guessXMLRPCForUrl:self.url];
     WPLog(@"after guess");
     [subsites release]; subsites = nil;
     if (xmlrpc != nil) {
@@ -410,7 +411,8 @@
 }
 
 - (void)validateFields {
-    self.url = urlTextField.text;
+    self.url = [NSURL IDNEncodedHostname:urlTextField.text];
+    NSLog(@"blog url: %@", self.url);
     self.username = usernameTextField.text;
     self.password = passwordTextField.text;
     
