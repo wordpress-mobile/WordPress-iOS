@@ -185,7 +185,12 @@
     NSArray *syncedPosts = [self syncedPosts];
     NSMutableArray *postsToKeep = [NSMutableArray array];
     for (NSDictionary *postInfo in posts) {
-        [postsToKeep addObject:[Post createOrReplaceFromDictionary:postInfo forBlog:self]];
+        Post *newPost = [Post createOrReplaceFromDictionary:postInfo forBlog:self];
+        if (newPost != nil) {
+            [postsToKeep addObject:newPost];
+        } else {
+            WPFLog(@"-[Post createOrReplaceFromDictionary:forBlog:] returned a nil post: %@", postInfo);            
+        }
     }
     for (Post *post in syncedPosts) {
 		
@@ -283,7 +288,12 @@
     NSArray *syncedPages = [self syncedPages];
     NSMutableArray *pagesToKeep = [NSMutableArray array];
     for (NSDictionary *pageInfo in pages) {
-        [pagesToKeep addObject:[Page createOrReplaceFromDictionary:pageInfo forBlog:self]];
+        Page *newPage = [Page createOrReplaceFromDictionary:pageInfo forBlog:self];
+        if (newPage != nil) {
+            [pagesToKeep addObject:newPage];
+        } else {
+            WPFLog(@"-[Page createOrReplaceFromDictionary:forBlog:] returned a nil page: %@", pageInfo);
+        }
     }
 	
     for (Page *page in syncedPages) {
@@ -376,7 +386,12 @@
 	
 	NSMutableArray *categoriesToKeep = [NSMutableArray array];
     for (NSDictionary *categoryInfo in categories) {
-		[categoriesToKeep addObject:[Category createOrReplaceFromDictionary:categoryInfo forBlog:self]];
+        Category *newCat = [Category createOrReplaceFromDictionary:categoryInfo forBlog:self];
+        if (newCat != nil) {
+            [categoriesToKeep addObject:newCat];
+        } else {
+            WPFLog(@"-[Category createOrReplaceFromDictionary:forBlog:] returned a nil category: %@", categoryInfo);
+        }
     }
 	
 	NSSet *syncedCategories = self.categories;
@@ -415,7 +430,12 @@
 	
 	NSMutableArray *commentsToKeep = [NSMutableArray array];
     for (NSDictionary *commentInfo in comments) {
-        [commentsToKeep addObject:[Comment createOrReplaceFromDictionary:commentInfo forBlog:self]];
+        Comment *newComment = [Comment createOrReplaceFromDictionary:commentInfo forBlog:self];
+        if (newComment != nil) {
+            [commentsToKeep addObject:newComment];
+        } else {
+            WPFLog(@"-[Comment createOrReplaceFromDictionary:forBlog:] returned a nil comment: %@", commentInfo);
+        }
     }
 	
 	NSSet *syncedComments = self.comments;
