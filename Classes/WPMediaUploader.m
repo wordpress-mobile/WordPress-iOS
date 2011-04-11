@@ -57,6 +57,7 @@
 - (void)stop {
     WPLog(@"%@ %@ (%@)", self, NSStringFromSelector(_cmd), self.media.filename);
     [request cancel];
+	 request.delegate = nil;
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
