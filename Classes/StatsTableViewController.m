@@ -104,6 +104,13 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 
 - (void) viewWillAppear:(BOOL)animated {
 	
+    //reset booleans
+    apiKeyFound = NO;
+    dotorgLogin = NO;
+    isRefreshingStats = NO;
+    foundStatsData = NO;
+    canceledAPIKeyAlert =  NO;
+    
 	if([[WPReachability sharedReachability] internetConnectionStatus] == NotReachable) {
 		UIAlertView *errorView = [[UIAlertView alloc] 
 								  initWithTitle: @"Communication Error" 
@@ -121,7 +128,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 		}
 		
 		//get this party started!
-		if (!canceledAPIKeyAlert && !foundStatsData)
+		if (!canceledAPIKeyAlert && !foundStatsData && !displayedLoginView)
 			[self initStats]; 
 	}
 }
@@ -423,7 +430,9 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			}
 			
 			NSMutableArray *dateCSV = [[NSMutableArray alloc] init];
+            NSString *bgData = [[NSString alloc] init];
 			if ([reportType isEqualToString:@"chartDaysData"]){
+                bgData = @"|";
 				for (NSString *dateVal in yArray) {
                     NSDateFormatter *df = [[NSDateFormatter alloc] init];
 					[df setDateFormat:@"yyyy-MM-dd"];
@@ -435,21 +444,27 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 					[gregorian release];
 					if (day == 1 || day == 7){
 						[dateCSV addObject: @"S"];
+                        bgData = [NSString stringWithFormat:@"%@%d,", bgData, maxBuffer];
 					}
 					else if (day == 2){
 						[dateCSV addObject: @"M"];
+                        bgData = [NSString stringWithFormat:@"%@%@", bgData, @"0,"];
 					}
 					else if (day == 3 || day == 5){
 						[dateCSV addObject: @"T"];
+                        bgData = [NSString stringWithFormat:@"%@%@", bgData, @"0,"];
 					}
 					else if (day == 4){
 						[dateCSV addObject: @"W"];
+                        bgData = [NSString stringWithFormat:@"%@%@", bgData, @"0,"];
 					}
 					else if (day == 6){
 						[dateCSV addObject: @"F"];
+                        bgData = [NSString stringWithFormat:@"%@%@", bgData, @"0,"];
 					}
 					
 				}
+                bgData = [bgData substringToIndex:[bgData length] - 1];
 			}
 			else if ([reportType isEqualToString:@"chartWeeksData"])
 			{
@@ -488,7 +503,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 				
 			}
 			NSString *dateValues = [[NSString alloc] initWithString:[dateCSV componentsJoinedByString:@"|"]];
-			NSString *chartViewURL = [[[NSString alloc] initWithFormat: @"http://chart.apis.google.com/chart?chts=464646,20&cht=bvs&chg=100,20,1,0&chbh=a&chd=t:%@&chs=560x320&chl=%@&chxt=y,x&chds=%d,%d&chxr=0,%d,%d,%d&chf=c,lg,90,FFFFFF,0,FFFFFF,0.5&chco=a3bcd3&chls=4&chxs=0,464646,20,0,t|1,464646,20,0,t,ffffff&chxtc=0,0", xValues, dateValues, minBuffer,maxBuffer, minBuffer,maxBuffer, yInterval] autorelease];
+			NSString *chartViewURL = [[[NSString alloc] initWithFormat: @"http://chart.apis.google.com/chart?chts=464646,20&cht=bvs&chg=100,20,1,0&chbh=a&chd=t:%@%@&chs=560x320&chl=%@&chxt=y,x&chds=%d,%d&chxr=0,%d,%d,%d&chf=c,lg,90,FFFFFF,0,FFFFFF,0.5&chco=a3bcd3,cccccc77&chls=4&chxs=0,464646,20,0,t|1,464646,20,0,t,ffffff&chxtc=0,0", xValues, bgData, dateValues, minBuffer,maxBuffer, minBuffer,maxBuffer, yInterval] autorelease];
 			NSLog(@"google chart url: %@", chartViewURL);
 			chartViewURL = [chartViewURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 			statsRequest = TRUE;
@@ -537,7 +552,6 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 				self.clicksData = [[NSArray alloc] initWithArray:statsTableData copyItems:YES];
 				[self.tableView reloadData];		
 			}
-			
 		}
 	}
 	else {
@@ -613,7 +627,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	NSString *xmlString = [[[NSString alloc] initWithData:[connectionInfo objectForKey:aKey] encoding:NSUTF8StringEncoding] autorelease];
 	[xmlString stringByReplacingOccurrencesOfString:@"\n" withString:@""];
 	[xmlString stringByReplacingOccurrencesOfString:@"\t" withString:@""];
-	//WPLog(@"xml string = %@", xmlString);
+	WPLog(@"xml string = %@", xmlString);
 	NSRange textRange;
 	textRange =[xmlString rangeOfString:@"Error"];
 	if ( xmlString != nil && textRange.location == NSNotFound ) {
@@ -636,11 +650,12 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			[appDelegate.navigationController presentModalViewController:wpComLogin animated:YES];
 			[wpComLogin release];
 		}
+        displayedLoginView = YES;
 		if (!statsAPIAlertShowing){
 			[appDelegate currentBlog].apiKey = nil;
 			[[appDelegate currentBlog] dataSave];
-			UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"WordPress.com Stats" 
-															 message:@"API Key not found. Please enter an administrator login for this blog." 
+			UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Login Error" 
+															 message:@"Please enter an administrator login for this blog." 
 															delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil] autorelease];
 			[alert addButtonWithTitle:@"OK"];
 			[alert setTag:2];

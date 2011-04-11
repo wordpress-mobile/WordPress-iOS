@@ -27,7 +27,7 @@
 	NSMutableData *statsData;
 	NSMutableString *currentProperty;
 	NSString *rootTag, *leftColumn, *rightColumn;
-	BOOL apiKeyFound, loginActive, dotorgLogin, statsRequest, isRefreshingStats;
+	BOOL apiKeyFound, dotorgLogin, statsRequest, isRefreshingStats, displayedLoginView;
 	IBOutlet UIView *container, *statsView, *loginView, *wpcomLogin;
 	NSMutableArray *statsTableData;
 	NSMutableArray *reportTitles, *reportIntervals;
