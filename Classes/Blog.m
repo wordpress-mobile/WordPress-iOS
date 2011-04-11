@@ -96,9 +96,14 @@
 }
 
 - (NSURL *)blavatarURL {
-    if (_blavatarURL == nil) {    
+	if (_blavatarURL == nil) {    
         _blavatarURL = [NSURL URLWithString:self.xmlrpc];
-        NSString *digest = [self returnMD5Hash:[_blavatarURL host]];
+		
+		NSString *hostURL = [_blavatarURL host];
+		if(hostURL == nil) {
+			hostURL = self.xmlrpc;
+		}
+        NSString *digest = [self returnMD5Hash:hostURL];
         
         NSString *faviconURL = [NSString stringWithFormat:@"http://gravatar.com/blavatar/%@?s=70&d=404", digest];
         
