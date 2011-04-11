@@ -7,13 +7,14 @@
 @end
 
 @implementation BlogsViewController
-@synthesize resultsController, currentBlog;
+@synthesize resultsController, currentBlog, tableView;
 
 #pragma mark -
 #pragma mark View lifecycle
 
 - (void)viewDidUnload {
     [quickPhotoButton release]; quickPhotoButton = nil;
+    self.tableView = nil;
 }
 
 - (void)viewDidLoad {
@@ -26,7 +27,11 @@
 																							target:self
 																							action:@selector(showAddBlogView:)] autorelease];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Blogs", @"") style:UIBarButtonItemStyleBordered target:nil action:nil]; 
+    self.tableView = [[[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain] autorelease];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
 	self.tableView.allowsSelectionDuringEditing = YES;
+    [self.view addSubview:self.tableView];
     
     NSError *error = nil;
     if (![self.resultsController performFetch:&error]) {
@@ -181,7 +186,7 @@
 #if defined __IPHONE_3_0
     cell.textLabel.text = [NSString decodeXMLCharactersIn:[blog blogName]];
     cell.detailTextLabel.text = [blog hostURL];
-#else if defined __IPHONE_2_0
+#elif defined __IPHONE_2_0
     cell.text = [NSString decodeXMLCharactersIn:[blog blogName]];
 #endif
 
@@ -500,6 +505,7 @@
     self.resultsController = nil;
 	self.currentBlog = nil;
     [quickPhotoButton release]; quickPhotoButton = nil;
+    self.tableView = nil;
     [super dealloc];
 }
 

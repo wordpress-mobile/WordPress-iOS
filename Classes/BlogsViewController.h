@@ -12,7 +12,7 @@
 #import "CPopoverManager.h"
 #import "WPAsynchronousImageView.h"
 
-@interface BlogsViewController : UITableViewController <NSFetchedResultsControllerDelegate, UIAccelerometerDelegate, UIAlertViewDelegate> {
+@interface BlogsViewController : UIViewController <NSFetchedResultsControllerDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate> {
 	WordPressAppDelegate *appDelegate;
     NSFetchedResultsController *resultsController;
     Blog *currentBlog;
@@ -21,6 +21,7 @@
 
 @property (nonatomic, retain) NSFetchedResultsController *resultsController;
 @property (nonatomic, retain) Blog *currentBlog;
+@property (nonatomic, retain) UITableView *tableView;
 
 - (void)showBlog:(Blog *)blog animated:(BOOL)animated;
 - (void)showBlogWithoutAnimation;

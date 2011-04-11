@@ -155,7 +155,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	// Stats use core data, so run them after initialization
 	[self checkIfStatsShouldRun];
 	
-	BlogsViewController *blogsViewController = [[BlogsViewController alloc] initWithStyle:UITableViewStylePlain];
+	BlogsViewController *blogsViewController = [[BlogsViewController alloc] init];
 	crashReportView = [[CrashReportViewController alloc] initWithNibName:@"CrashReportView" bundle:nil];
 	
 	//BETA FEEDBACK BAR, COMMENT THIS OUT BEFORE RELEASE
