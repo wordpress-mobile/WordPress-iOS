@@ -184,10 +184,10 @@
 	[cell.contentView addSubview:asyncImage];
 	
 #if defined __IPHONE_3_0
-    cell.textLabel.text = [NSString decodeXMLCharactersIn:[blog blogName]];
+    cell.textLabel.text = [blog blogName];
     cell.detailTextLabel.text = [blog hostURL];
 #elif defined __IPHONE_2_0
-    cell.text = [NSString decodeXMLCharactersIn:[blog blogName]];
+    cell.text = [blog blogName];
 #endif
 
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

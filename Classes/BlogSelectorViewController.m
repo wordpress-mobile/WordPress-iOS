@@ -130,7 +130,7 @@
 	[asyncImage loadImageFromURL:url];
 	[cell.contentView addSubview:asyncImage];
 	
-    cell.textLabel.text = [NSString decodeXMLCharactersIn:[blog blogName]];
+    cell.textLabel.text = [blog blogName];
     cell.detailTextLabel.text = [blog hostURL];
     
     if ([blog isEqual:self.selectedBlog]) {

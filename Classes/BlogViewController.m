@@ -32,7 +32,7 @@
     self.view = tabBarController.view;
 	
 	if ([blog valueForKey:@"blogName"] != nil)
-		self.title = [NSString decodeXMLCharactersIn:[blog valueForKey:@"blogName"]];
+		self.title = [blog valueForKey:@"blogName"];
 	else
 		self.title = NSLocalizedString(@"Blog", @"");
 	

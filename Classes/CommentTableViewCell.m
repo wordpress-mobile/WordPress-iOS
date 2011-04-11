@@ -119,7 +119,7 @@
 	}
 
     if (comment.postTitle)
-		postLabel.text = [NSLocalizedString(@"on ", @"") stringByAppendingString:[NSString decodeXMLCharactersIn:comment.postTitle]];
+		postLabel.text = [NSLocalizedString(@"on ", @"") stringByAppendingString:comment.postTitle];
     commentLabel.text = comment.content;
     gravatarImageView.email = comment.author_email;
 }
