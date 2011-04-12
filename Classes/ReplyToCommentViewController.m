@@ -273,11 +273,28 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
     } else {
         // handle normal typing
         replaceRange.length = 6;  // length of "&#160;" is 6 characters
-        replaceRange.location -= 5; // look back one characters (length of "&#160;" minus one)
-    }
+        if( replaceRange.location >= 5) //we should check the location. the new location must be > 0
+			replaceRange.location -= 5; // look back one characters (length of "&#160;" minus one)
+		else {
+			//the beginning of the field
+			replaceRange.location = 0; 
+			replaceRange.length = 5;
+		}
+	}
 	
-    // replace "&nbsp" with "&#160;" for the inserted range
-    int replaceCount = [updatedText replaceOccurrencesOfString:@"&nbsp" withString:@"&#160;" options:NSCaseInsensitiveSearch range:replaceRange];
+	int replaceCount = 0;
+	
+	@try{
+		// replace "&nbsp" with "&#160;" for the inserted range
+		if([updatedText length] > 4)
+			replaceCount = [updatedText replaceOccurrencesOfString:@"&nbsp" withString:@"&#160;" options:NSCaseInsensitiveSearch range:replaceRange];
+	}
+	@catch (NSException *e){
+		NSLog(@"NSRangeException: Can't replace text in range.");
+	}
+	@catch (id ue) { // least specific type. NSRangeException is a const defined in a string constant
+		NSLog(@"NSRangeException: Can't replace text in range.");
+	}
 	
     if (replaceCount > 0) {
         // update the textView's text
