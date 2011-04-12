@@ -77,6 +77,8 @@
 		379225B212F6DC1600F2176A /* StatsTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 379225A812F6DC1600F2176A /* StatsTableCell.m */; };
 		379225B312F6DC1600F2176A /* StatsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 379225AA12F6DC1600F2176A /* StatsTableViewController.m */; };
 		379225B412F6DC1600F2176A /* StatsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 379225AB12F6DC1600F2176A /* StatsTableViewController.xib */; };
+		37A443B91354D03000029509 /* WPcomLoginViewController-iPad-stats.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37A443B81354D03000029509 /* WPcomLoginViewController-iPad-stats.xib */; };
+		37A443BB1354D05B00029509 /* BlogsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37A443BA1354D05B00029509 /* BlogsViewController.xib */; };
 		37F74137131866A600AED18A /* CommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37F74136131866A600AED18A /* CommentViewController.xib */; };
 		4526DC551148072F0090C99D /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 4526DC531148072F0090C99D /* Default-Portrait.png */; };
 		4526DC561148072F0090C99D /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 4526DC541148072F0090C99D /* Default-Landscape.png */; };
@@ -438,6 +440,8 @@
 		379225A912F6DC1600F2176A /* StatsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsTableViewController.h; sourceTree = "<group>"; };
 		379225AA12F6DC1600F2176A /* StatsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsTableViewController.m; sourceTree = "<group>"; };
 		379225AB12F6DC1600F2176A /* StatsTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatsTableViewController.xib; sourceTree = "<group>"; };
+		37A443B81354D03000029509 /* WPcomLoginViewController-iPad-stats.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WPcomLoginViewController-iPad-stats.xib"; sourceTree = "<group>"; };
+		37A443BA1354D05B00029509 /* BlogsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BlogsViewController.xib; path = Classes/BlogsViewController.xib; sourceTree = "<group>"; };
 		37F74136131866A600AED18A /* CommentViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentViewController.xib; sourceTree = "<group>"; };
 		4526DC531148072F0090C99D /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait.png"; sourceTree = "<group>"; };
 		4526DC541148072F0090C99D /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
@@ -1274,6 +1278,7 @@
 		83F1FCA7123748EF00069F99 /* Blogs */ = {
 			isa = PBXGroup;
 			children = (
+				37A443B81354D03000029509 /* WPcomLoginViewController-iPad-stats.xib */,
 				835871C8120096AC007682CB /* WelcomeViewController-iPad.xib */,
 				8362C1291201EA9700599347 /* WPcomLoginViewController-iPad.xib */,
 				8362C1C5120229BC00599347 /* AddSiteViewController-iPad.xib */,
@@ -1483,6 +1488,7 @@
 		ACFF1DC00E231EF600EC6BF5 /* Blog */ = {
 			isa = PBXGroup;
 			children = (
+				37A443BA1354D05B00029509 /* BlogsViewController.xib */,
 				8333FE0D11FF6EF200A495C1 /* EditSiteViewController.xib */,
 				8370D1BC11FA6295009D650F /* AddSiteViewController.xib */,
 				8369FF9011F4F3BF003106C7 /* AddUsersBlogsViewController.xib */,
@@ -1921,6 +1927,8 @@
 				E13FA0DB134BF347007DCDD0 /* quickPhotoTextView@2x.png in Resources */,
 				E13FA0F7134C849D007DCDD0 /* downArrow.png in Resources */,
 				E13FA0F8134C849D007DCDD0 /* downArrow@2x.png in Resources */,
+				37A443B91354D03000029509 /* WPcomLoginViewController-iPad-stats.xib in Resources */,
+				37A443BB1354D05B00029509 /* BlogsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
