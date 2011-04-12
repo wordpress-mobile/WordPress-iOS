@@ -26,6 +26,7 @@
 @property (nonatomic, retain) UIBarButtonItem *postButtonItem;
 @property (nonatomic, retain) UIImage *photo;
 
+
 - (void)post;
 - (void)cancel;
 @end

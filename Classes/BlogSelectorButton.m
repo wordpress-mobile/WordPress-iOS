@@ -8,6 +8,7 @@
 
 #import "BlogSelectorButton.h"
 #import "WordPressAppDelegate.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface BlogSelectorButton (PrivateMethods)
 - (void)tap;
@@ -34,12 +35,14 @@
 
         CGRect blavatarFrame = self.bounds;
         blavatarFrame.size.width = blavatarFrame.size.height;
+        blavatarFrame.origin.x += 5;
         blavatarImageView = [[WPAsynchronousImageView alloc] initWithFrame:blavatarFrame];
         blavatarImageView.isBlavatar = YES;
+        blavatarImageView.layer.cornerRadius = 20.0f;
         [self addSubview:blavatarImageView];
         
         CGRect blogTitleFrame = self.bounds;
-        blogTitleFrame.origin.x = blavatarFrame.size.width + 10;
+        blogTitleFrame.origin.x = blavatarFrame.size.width + 15;
         blogTitleFrame.size.width -= blavatarFrame.size.width + 10 + 50;
         blogTitleLabel = [[UILabel alloc] initWithFrame:blogTitleFrame];
         blogTitleLabel.font = [UIFont boldSystemFontOfSize:20];
@@ -124,6 +127,9 @@
         blavatarImageView.isWPCOM = [activeBlog isWPcom];
         [blavatarImageView loadImageFromURL:[activeBlog blavatarURL]];
         blogTitleLabel.text = activeBlog.blogName;
+        if ([blogTitleLabel.text isEqualToString:@""]) {
+            blogTitleLabel.text = activeBlog.hostURL;
+        }
     }
 }
 

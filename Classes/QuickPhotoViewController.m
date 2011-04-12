@@ -66,6 +66,7 @@
     picker.delegate = self;
     [self presentModalViewController:picker animated:YES];
     
+    self.titleTextField.placeholder = NSLocalizedString(@"Title (optional)", @"Quick Picture title");
     [self.blogSelector loadBlogsForType:BlogSelectorButtonTypeQuickPhoto];
     self.blogSelector.delegate = self;
     if (self.photo) {
