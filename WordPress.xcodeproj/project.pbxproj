@@ -2172,7 +2172,14 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_LDFLAGS = "-licucore";
+				OTHER_LDFLAGS = (
+					"-weak_library",
+					/usr/lib/libSystem.B.dylib,
+					"-weak_framework",
+					UIKit,
+					"-lxml2",
+					"-licucore",
+				);
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -2205,10 +2212,6 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/FlurryLib\"",
 				);
-				OTHER_LDFLAGS = (
-					"-lxml2",
-					"-licucore",
-				);
 				PRODUCT_NAME = WordPress;
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
@@ -2229,7 +2232,14 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_LDFLAGS = "-licucore";
+				OTHER_LDFLAGS = (
+					"-weak_library",
+					/usr/lib/libSystem.B.dylib,
+					"-weak_framework",
+					UIKit,
+					"-lxml2",
+					"-licucore",
+				);
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -2265,10 +2275,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/FlurryLib\"",
-				);
-				OTHER_LDFLAGS = (
-					"-lxml2",
-					"-licucore",
 				);
 				PRODUCT_NAME = WordPress;
 				SDKROOT = iphoneos;
@@ -2327,6 +2333,10 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "-Wno-format-security";
 				OTHER_LDFLAGS = (
+					"-weak_library",
+					/usr/lib/libSystem.B.dylib,
+					"-weak_framework",
+					UIKit,
 					"-lxml2",
 					"-licucore",
 				);
