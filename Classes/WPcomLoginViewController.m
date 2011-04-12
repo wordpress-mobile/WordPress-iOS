@@ -19,7 +19,7 @@
 
 
 @implementation WPcomLoginViewController
-@synthesize footerText, buttonText, username, password, isAuthenticated, isSigningIn, WPcomXMLRPCUrl, tableView, appDelegate;
+@synthesize footerText, buttonText, username, password, isAuthenticated, isSigningIn, WPcomXMLRPCUrl, tableView, appDelegate, isStatsInitiated;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -390,7 +390,7 @@
 }
 
 - (void)didSignInSuccessfully {
-	if(DeviceIsPad() == YES) {
+	if(DeviceIsPad() == YES && !isStatsInitiated) {
 		AddUsersBlogsViewController *addBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController-iPad" bundle:nil];
 		addBlogsView.isWPcom = YES;
 		[addBlogsView setUsername:self.username];

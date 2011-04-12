@@ -26,12 +26,10 @@
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
 																							target:self
 																							action:@selector(showAddBlogView:)] autorelease];
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Blogs", @"") style:UIBarButtonItemStyleBordered target:nil action:nil]; 
-    self.tableView = [[[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain] autorelease];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Blogs", @"") style:UIBarButtonItemStyleBordered target:nil action:nil];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
 	self.tableView.allowsSelectionDuringEditing = YES;
-    [self.view addSubview:self.tableView];
     
     NSError *error = nil;
     if (![self.resultsController performFetch:&error]) {
@@ -46,7 +44,7 @@
         quickPhotoButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [quickPhotoButton setBackgroundImage:[UIImage imageNamed:@"quickPhotoButton"] forState:UIControlStateNormal];
         [quickPhotoButton setImage:[UIImage imageNamed:@"camera"] forState:UIControlStateNormal];
-        quickPhotoButton.frame = CGRectMake(0, self.view.bounds.size.height - 100, self.view.bounds.size.width, 60);
+        quickPhotoButton.frame = CGRectMake(0, self.view.bounds.size.height - 60, self.view.bounds.size.width, 60);
         [quickPhotoButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [quickPhotoButton setTitle:NSLocalizedString(@"Post picture", @"") forState:UIControlStateNormal];
         [quickPhotoButton.titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
@@ -54,7 +52,7 @@
         [quickPhotoButton addTarget:self action:@selector(quickPhotoPost) forControlEvents:UIControlEventTouchUpInside];
         [quickPhotoButton retain];
         [self.view addSubview:quickPhotoButton];
-        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 100, 0);
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 60, 0);
     }
 	
 	// Check to see if we should prompt about rating in the App Store

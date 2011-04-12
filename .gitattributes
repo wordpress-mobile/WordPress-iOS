@@ -76,6 +76,7 @@ Classes/BlogsTableViewCell.h -text
 Classes/BlogsTableViewCell.m -text
 Classes/BlogsViewController.h -text
 Classes/BlogsViewController.m -text
+Classes/BlogsViewController.xib -text
 Classes/CDeviceSupport.h -text
 Classes/CDeviceSupport.m -text
 Classes/CPopoverManager.h -text
@@ -308,6 +309,7 @@ Settings.bundle/en.lproj/Root.strings -text
 /WPAddCategoryViewController.xib -text
 /WPCategoriesController.xib -text
 /WPSelectionTableViewController.xib -text
+/WPcomLoginViewController-iPad-stats.xib -text
 /WPcomLoginViewController-iPad.xib -text
 /WPcomLoginViewController.xib -text
 /WPpregressHUDBackground.png -text

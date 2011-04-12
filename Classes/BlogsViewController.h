@@ -17,11 +17,12 @@
     NSFetchedResultsController *resultsController;
     Blog *currentBlog;
     UIButton *quickPhotoButton;
+    IBOutlet UITableView *tableView;
 }
 
 @property (nonatomic, retain) NSFetchedResultsController *resultsController;
 @property (nonatomic, retain) Blog *currentBlog;
-@property (nonatomic, retain) UITableView *tableView;
+@property (nonatomic, retain) IBOutlet UITableView *tableView;
 
 - (void)showBlog:(Blog *)blog animated:(BOOL)animated;
 - (void)showBlogWithoutAnimation;

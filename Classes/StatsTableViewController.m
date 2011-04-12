@@ -147,7 +147,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 		[self getUserAPIKey];
 	}
 	else {
-		statsRequest = TRUE;
+		statsRequest = YES;
 		[self showLoadingDialog];
 		[self refreshStats: 0 reportInterval: 0];
 	}
@@ -180,23 +180,26 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	}
 	else 
 	{
-		BOOL presentDialog = TRUE;
-		if (dotorgLogin == TRUE && appDelegate.isWPcomAuthenticated == FALSE)
+		BOOL presentDialog = YES;
+		if (dotorgLogin == YES && appDelegate.isWPcomAuthenticated == NO)
 		{
-			presentDialog = FALSE;
-			dotorgLogin = FALSE;
+			presentDialog = NO;
+			dotorgLogin = NO;
 		}
 		
 		if (presentDialog) {
-			dotorgLogin = TRUE;
+			dotorgLogin = YES;
 		
 		if(DeviceIsPad() == YES) {
-			WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController-iPad" bundle:nil];	
-			[self.navigationController pushViewController:wpComLogin animated:YES];
-			[wpComLogin release];
+			WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController-iPad-stats" bundle:nil];	
+            wpComLogin.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+			wpComLogin.modalPresentationStyle = UIModalPresentationFormSheet;
+            wpComLogin.isStatsInitiated = YES;
+			[appDelegate.splitViewController presentModalViewController:wpComLogin animated:YES];			
+            [wpComLogin release];
 		}
 		else {
-			dotorgLogin = TRUE;
+			dotorgLogin = YES;
 			WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController" bundle:nil];	
 			[appDelegate.navigationController presentModalViewController:wpComLogin animated:YES];
 			[wpComLogin release];
@@ -217,7 +220,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	//load stats into NSMutableArray objects
 	isRefreshingStats = YES;
 	[self showLoadingDialog];
-	foundStatsData = FALSE;
+	foundStatsData = NO;
 	
     //This block can be used for adding custom controls if desired by users down the road to load their own reports
     /*
@@ -337,7 +340,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	
 	//get the three header chart images
 	statsData = [[NSMutableData alloc] init];
-	statsRequest = TRUE;
+	statsRequest = YES;
 	
 	// 7 days
 	requestURL = [NSString stringWithFormat: @"http://stats.wordpress.com/csv.php?api_key=%@&blog_uri=%@&format=xml&table=%@&days=%d%@", apiKey, blogURL, @"views", 7, @""];	
@@ -371,7 +374,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 						  dictionaryWithObject:[NSMutableData data]
 						  forKey:@"chartMonthsData"]);
 	[request release];
-	statsRequest = TRUE;
+	statsRequest = YES;
 }
 
 - (void) startParsingStats: (NSString*) xmlString withReportType: (NSString*) reportType {
@@ -386,7 +389,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	[statsParser release];
 	if ([xArray count] > 0){
 		//set up the new data in the UI
-		foundStatsData = TRUE;
+		foundStatsData = YES;
 		if ([reportType isEqualToString:@"chartDaysData"] || [reportType isEqualToString:@"chartWeeksData"] || [reportType isEqualToString:@"chartMonthsData"]){
 			[self hideLoadingDialog];
 			self.blog.lastStatsSync = [NSDate date];
@@ -506,7 +509,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			NSString *chartViewURL = [[[NSString alloc] initWithFormat: @"http://chart.apis.google.com/chart?chts=464646,20&cht=bvs&chg=100,20,1,0&chbh=a&chd=t:%@%@&chs=560x320&chl=%@&chxt=y,x&chds=%d,%d&chxr=0,%d,%d,%d&chf=c,lg,90,FFFFFF,0,FFFFFF,0.5&chco=a3bcd3,cccccc77&chls=4&chxs=0,464646,20,0,t|1,464646,20,0,t,ffffff&chxtc=0,0", xValues, bgData, dateValues, minBuffer,maxBuffer, minBuffer,maxBuffer, yInterval] autorelease];
 			NSLog(@"google chart url: %@", chartViewURL);
 			chartViewURL = [chartViewURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-			statsRequest = TRUE;
+			statsRequest = YES;
 			if ([reportType isEqualToString:@"chartDaysData"]) {
 				statsPageControlViewController.chart1URL = chartViewURL;
 				[statsPageControlViewController refreshImage: 1];
@@ -520,11 +523,11 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 				[statsPageControlViewController refreshImage: 3];
 				//check the other charts
 				if (statsPageControlViewController.chart2URL == nil) {
-					statsPageControlViewController.chart2Error = TRUE;
+					statsPageControlViewController.chart2Error = YES;
 					[statsPageControlViewController refreshImage: 2];
 				}
 				else if (statsPageControlViewController.chart1URL == nil) {
-					statsPageControlViewController.chart1Error = TRUE;
+					statsPageControlViewController.chart1Error = YES;
 					[statsPageControlViewController refreshImage: 1];
 				}
 			}
@@ -561,7 +564,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 		}
 		
 	}
-	[self.view setHidden:FALSE];
+	[self.view setHidden:NO];
 	[self hideLoadingDialog];
 }
 
@@ -590,7 +593,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 												 password:s_password
 											  persistence:NSURLCredentialPersistenceForSession];
 		[[challenge sender] useCredential:newCredential forAuthenticationChallenge:challenge];
-		dotorgLogin = TRUE;
+		dotorgLogin = YES;
 	}
 }
 
@@ -641,8 +644,15 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 		[self hideLoadingDialog];
 		//it's the wrong API key, prompt for WPCom login details again
 		if(DeviceIsPad() == YES) {
-			WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController-iPad" bundle:nil];	
-			[self.navigationController pushViewController:wpComLogin animated:YES];
+            dotorgLogin = NO;
+            isRefreshingStats = NO;
+            foundStatsData = NO;
+            canceledAPIKeyAlert =  NO;
+			WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController-iPad-stats" bundle:nil];	
+            wpComLogin.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+			wpComLogin.modalPresentationStyle = UIModalPresentationFormSheet;
+            wpComLogin.isStatsInitiated = YES;
+			[appDelegate.splitViewController presentModalViewController:wpComLogin animated:YES];			
 			[wpComLogin release];
 		}
 		else {
@@ -655,12 +665,12 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			[appDelegate currentBlog].apiKey = nil;
 			[[appDelegate currentBlog] dataSave];
 			UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Login Error" 
-															 message:@"Please enter an administrator login for this blog." 
+															 message:@"Please enter an administrator login for this blog and refresh." 
 															delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil] autorelease];
 			[alert addButtonWithTitle:@"OK"];
 			[alert setTag:2];
 			[alert show];
-			statsAPIAlertShowing = TRUE;
+			statsAPIAlertShowing = YES;
 		}
 	}
 	else {
@@ -771,7 +781,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	else if ([elementName isEqualToString:@"apikey"]) {
 		[appDelegate.currentBlog setValue:self.currentProperty forKey:@"apiKey"];
 		[appDelegate.currentBlog dataSave];
-		apiKeyFound = TRUE;
+		apiKeyFound = YES;
 		[parser abortParsing];
 		[self showLoadingDialog];
 		//this will run the 'views' report for the past 7 days
@@ -786,12 +796,12 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://wordpress.org/extend/plugins/stats/"]];
     }
 	else if (buttonIndex == 0 && alertView.tag == 2) {
-        statsAPIAlertShowing = FALSE;
-		canceledAPIKeyAlert = TRUE;
-		[appDelegate.navigationController dismissModalViewControllerAnimated: TRUE];
+        statsAPIAlertShowing = NO;
+		canceledAPIKeyAlert = YES;
+		[appDelegate.navigationController dismissModalViewControllerAnimated: YES];
     }
 	else if (buttonIndex == 1 && alertView.tag == 2) {
-        statsAPIAlertShowing = FALSE;
+        statsAPIAlertShowing = NO;
     }
 }
 
@@ -848,7 +858,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	BOOL addLoadMoreFooter = FALSE;
+	BOOL addLoadMoreFooter = NO;
 	NSArray *row = [[[NSArray alloc] init] autorelease];
 	switch (indexPath.section) {
 		case 0:
@@ -857,7 +867,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			break;
 		case 1:
 			if (indexPath.row == loadMorePostViews){
-				addLoadMoreFooter = TRUE;
+				addLoadMoreFooter = YES;
 			}
 			else {
 				if ((indexPath.row + 1) > [postViewsData count]){
@@ -870,7 +880,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			break;
 		case 2:
 			if (indexPath.row == loadMoreReferrers){
-				addLoadMoreFooter = TRUE;
+				addLoadMoreFooter = YES;
 			}
 			else {
 				if ((indexPath.row + 1) > [referrersData count]){
@@ -883,7 +893,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			break;
 		case 3:
 			if (indexPath.row == loadMoreSearchTerms){
-				addLoadMoreFooter = TRUE;
+				addLoadMoreFooter = YES;
 			}
 			else {
 				if ((indexPath.row + 1) > [searchTermsData count]){
@@ -896,7 +906,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			break;
 		case 4:
 			if (indexPath.row == loadMoreClicks){
-				addLoadMoreFooter = TRUE;
+				addLoadMoreFooter = YES;
 			}
 			else {
 				if ((indexPath.row + 1) > [clicksData count]){

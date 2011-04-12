@@ -18,6 +18,7 @@
 		// Initialization code
 		columns = [NSMutableArray arrayWithCapacity:5];
 		[columns retain];
+        self.backgroundColor = [UIColor whiteColor];
 	}
 	return self;
 }

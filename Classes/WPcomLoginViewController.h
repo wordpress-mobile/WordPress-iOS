@@ -13,13 +13,13 @@
 
 @interface WPcomLoginViewController : UIViewController <UITableViewDelegate, UITextFieldDelegate> {
 	NSString *footerText, *buttonText, *username, *password, *WPcomXMLRPCUrl;
-	BOOL isAuthenticated, isSigningIn;
+	BOOL isAuthenticated, isSigningIn, isStatsInitiated;
 	IBOutlet UITableView *tableView;
 	WordPressAppDelegate *appDelegate;
 }
 
 @property (nonatomic, retain) NSString *footerText, *buttonText, *username, *password, *WPcomXMLRPCUrl;
-@property (nonatomic, assign) BOOL isAuthenticated, isSigningIn;
+@property (nonatomic, assign) BOOL isAuthenticated, isSigningIn, isStatsInitiated;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, assign) WordPressAppDelegate *appDelegate;
 
