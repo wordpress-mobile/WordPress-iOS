@@ -20,7 +20,7 @@
 #define kCustomButtonHeight     30.0
 
 @interface CommentViewController (Private)
-
+- (void)showSynchInProgressAlert;
 - (BOOL)isConnectedToHost;
 - (BOOL)isApprove;
 - (void)moderateCommentWithSelector:(SEL)selector;
@@ -147,6 +147,11 @@
 
 //not truly an ActionSheetDelegate method, but it's where we call the ActionSheet...
 - (void) launchModerateMenu {
+	if(self.commentsViewController.blog.isSyncingComments) {
+		[self showSynchInProgressAlert];
+		return;
+	} 
+	
 	NSString *conditionalButtonTitle = nil;
 	
 	if ([self isApprove]) {
@@ -158,7 +163,7 @@
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@""
 															 delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil
 													otherButtonTitles: conditionalButtonTitle, NSLocalizedString(@"Mark Comment as Spam", @""), NSLocalizedString(@"Edit Comment", @""),nil];
-													//otherButtonTitles: conditionalButtonTitle, NSLocalizedString(@"Mark Comment as Spam", @""),nil];
+	//otherButtonTitles: conditionalButtonTitle, NSLocalizedString(@"Mark Comment as Spam", @""),nil];
 	
 	actionSheet.tag = 301;
 	actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
@@ -254,8 +259,21 @@
 //These methods call the ReplyToCommentViewController as well as handling the "back-referenced" cancel button click
 //that has to be run here given the view heirarchy...
 
+-(void) showSynchInProgressAlert {
+	//the blog is using the network connection and cannot be stoped, show a message to the user
+	UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info alert title")
+																  message:NSLocalizedString(@"The blog is synching with the server. Please try later.", @"")
+																 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
+	[blogIsCurrentlyBusy show];
+	[blogIsCurrentlyBusy release];
+}
+
 - (void)launchReplyToComments {
-	[self showReplyToCommentViewWithAnimation:YES];
+	if(self.commentsViewController.blog.isSyncingComments) {
+		[self showSynchInProgressAlert];
+	} else {
+		[self showReplyToCommentViewWithAnimation:YES];
+	}
 }
 - (void)showReplyToCommentViewWithAnimation:(BOOL)animate {
 	WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
@@ -285,7 +303,6 @@
 	}
 	else if (DeviceIsPad() == YES) {
 		[self dismissModalViewControllerAnimated:YES];
-		
 	}
 }
 
@@ -399,7 +416,7 @@
 }
 
 - (void)launchDeleteCommentActionSheet {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you sure?", @"")
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you sure?", @"")
 															 delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
 											   destructiveButtonTitle:NSLocalizedString(@"Delete", @"")
 													otherButtonTitles:nil];
@@ -415,6 +432,10 @@
 }
 
 - (void)deleteComment:(id)sender {
+	if(self.commentsViewController.blog.isSyncingComments) {
+		[self showSynchInProgressAlert];
+		return;
+	}
     progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Deleting...", @"")];
     [progressAlert show];
     [self performSelectorInBackground:@selector(deleteThisComment) withObject:nil];
