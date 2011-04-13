@@ -187,6 +187,8 @@ Classes/StatsTableViewController.h -text
 Classes/StatsTableViewController.m -text
 Classes/UIDevice-Hardware.h -text
 Classes/UIDevice-Hardware.m -text
+Classes/UINavigationController+FormSheet.h -text
+Classes/UINavigationController+FormSheet.m -text
 Classes/UITableViewActivityCell.h -text
 Classes/UITableViewActivityCell.m -text
 Classes/UITableViewSwitchCell.h -text

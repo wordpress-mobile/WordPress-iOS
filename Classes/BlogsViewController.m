@@ -1,6 +1,7 @@
 #import "BlogsViewController.h"
 #import "BlogsTableViewCell.h"
 #import "QuickPhotoViewController.h"
+#import "UINavigationController+FormSheet.h"
 
 @interface BlogsViewController (Private)
 - (void) cleanUnusedMediaFileFromTmpDir;
