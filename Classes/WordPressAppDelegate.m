@@ -232,8 +232,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	if (![crashReporter enableCrashReporterAndReturnError: &error])
 		NSLog(@"Warning: Could not enable crash reporter: %@", error);
 	
-    defaultExceptionHandler = NSGetUncaughtExceptionHandler();
-	NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
+//    defaultExceptionHandler = NSGetUncaughtExceptionHandler();
+//	NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
 	
 	[blogsViewController release];
 	[window makeKeyAndVisible];
