@@ -275,6 +275,7 @@
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectory = [paths objectAtIndex:0];
 	NSString *filename = [NSString stringWithFormat:@"%@.jpg", [formatter stringFromDate:[NSDate date]]];
+    [formatter release]; formatter = nil;
 	NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     [fileManager createFileAtPath:filepath contents:imageData attributes:nil];
