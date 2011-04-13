@@ -728,6 +728,7 @@
 		E17BE25F134F5E4D00165C3D /* QuickPicturePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuickPicturePreviewView.h; sourceTree = "<group>"; };
 		E17BE260134F5E4D00165C3D /* QuickPicturePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuickPicturePreviewView.m; sourceTree = "<group>"; };
 		E17BE7A9134DEC12007285FD /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1863F9A1355E0AB0031BBC8 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E18D43DF130BD8E9006155DE /* PostToAbstractPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostToAbstractPost.h; sourceTree = "<group>"; };
 		E18D43E0130BD8E9006155DE /* PostToAbstractPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostToAbstractPost.m; sourceTree = "<group>"; };
 		E19F297912B8BC22008FF660 /* access.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = access.c; sourceTree = "<group>"; };
@@ -1757,6 +1758,7 @@
 				es,
 				it,
 				ja,
+				pt,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
@@ -2094,6 +2096,7 @@
 				E1D91457134A854A0089019C /* es */,
 				FDCB9A89134B75B900E5C776 /* it */,
 				E17BE7A9134DEC12007285FD /* ja */,
+				E1863F9A1355E0AB0031BBC8 /* pt */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

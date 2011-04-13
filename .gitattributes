@@ -449,6 +449,7 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /posts@2x.png -text
 /preview.png -text
 /preview@2x.png -text
+pt.lproj/Localizable.strings -text svneol=unset#unset
 /quickPhotoButton.png -text svneol=unset#unset
 /quickPhotoButton@2x.png -text svneol=unset#unset
 /quickPhotoTextView.png -text svneol=unset#unset
