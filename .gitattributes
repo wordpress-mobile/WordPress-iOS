@@ -446,6 +446,7 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /pages.png -text
 /pages@2x.png -text
 /paperclip.png -text
+/paperclip@2x.png -text
 /photos.png -text
 /photos@2x.png -text
 /posts.png -text
