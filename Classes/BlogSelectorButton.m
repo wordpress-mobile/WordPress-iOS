@@ -95,7 +95,7 @@
 #pragma mark Custom methods
 
 - (NSString *)defaultsKey {
-    switch (type) {
+    switch (blogType) {
         case BlogSelectorButtonTypeQuickPhoto:
             return kBlogSelectorQuickPhoto;
             break;
@@ -108,9 +108,8 @@
 }
 
 - (void)loadBlogsForType:(BlogSelectorButtonType)aType {
+    blogType = aType;
     NSString *defaultsKey = [self defaultsKey];
-
-    type = aType;
     NSManagedObjectContext *moc = [[WordPressAppDelegate sharedWordPressApp] managedObjectContext];
     NSPersistentStoreCoordinator *psc = [[WordPressAppDelegate sharedWordPressApp] persistentStoreCoordinator];
     NSError *error = nil;

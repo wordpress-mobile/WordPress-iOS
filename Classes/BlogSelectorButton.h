@@ -35,12 +35,12 @@ typedef enum {
     UIImageView *selectorImageView;
     BOOL active;
     BlogSelectorViewController *selectorViewController;
-    BlogSelectorButtonType type;
+    BlogSelectorButtonType blogType;
     CGRect normalFrame;
 }
 @property (nonatomic, retain) Blog *activeBlog;
 @property (nonatomic, assign) id<BlogSelectorButtonDelegate> delegate;
 
-- (void)loadBlogsForType:(BlogSelectorButtonType)type;
+- (void)loadBlogsForType:(BlogSelectorButtonType)aType;
 
 @end
