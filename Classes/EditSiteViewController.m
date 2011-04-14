@@ -143,6 +143,8 @@
 				usernameTextField.placeholder = NSLocalizedString(@"WordPress username", @"");
 				usernameTextField.keyboardType = UIKeyboardTypeDefault;
 				usernameTextField.returnKeyType = UIReturnKeyNext;
+                usernameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+                usernameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 				if(blog.username != nil)
 					usernameTextField.text = blog.username;
 				[self.usernameCell addSubview:usernameTextField];
@@ -159,6 +161,8 @@
 				passwordTextField.placeholder = NSLocalizedString(@"WordPress password", @"");
 				passwordTextField.keyboardType = UIKeyboardTypeDefault;
 				passwordTextField.secureTextEntry = YES;
+                passwordTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+                passwordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 				if(password != nil)
 					passwordTextField.text = password;
 				[self.passwordCell addSubview:passwordTextField];
