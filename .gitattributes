@@ -344,8 +344,12 @@ WordPress.xcodeproj/project.pbxproj -text
 /blavatar-wpcom@2x.png -text
 /blavatar-wporg.png -text
 /blavatar-wporg@2x.png -text
+/blockquote.png -text svneol=unset#unset
+/blockquote@2x.png -text svneol=unset#unset
 /blueArrow.png -text svneol=unset#unset
 /blueArrow@2x.png -text svneol=unset#unset
+/bold.png -text svneol=unset#unset
+/bold@2x.png -text svneol=unset#unset
 c_tidy/access.c -text
 c_tidy/access.h -text
 c_tidy/alloc.c -text
@@ -426,6 +430,8 @@ es.lproj/Localizable.strings -text svneol=unset#unset
 /help.png -text
 /iTunesArtwork -text
 it.lproj/Localizable.strings -text
+/italic.png -text svneol=unset#unset
+/italic@2x.png -text svneol=unset#unset
 ja.lproj/Localizable.strings -text svneol=unset#unset
 /license.txt -text
 /localize.py -text

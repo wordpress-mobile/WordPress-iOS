@@ -9,6 +9,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @interface EditPostViewController (Private)
 - (BOOL) isMediaInUploading;
 - (void) showMediaInUploadingalert;
+- (UIView *)keyboardToolbar;
 @end
 
 @implementation EditPostViewController
@@ -239,6 +240,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
     tagsTextField.placeholder = NSLocalizedString(@"Separate tags with commas", @"");
     categoriesLabel.text = NSLocalizedString(@"Categories:", @"");
     textViewPlaceHolderField.placeholder = NSLocalizedString(@"Tap here to begin writing", @"");
+#ifdef DEBUGMODE
+    textView.inputAccessoryView = [self keyboardToolbar];
+#endif
 
     postSettingsController = [[PostSettingsViewController alloc] initWithNibName:@"PostSettingsViewController" bundle:nil];
     postSettingsController.postDetailViewController = self;
@@ -1231,6 +1235,54 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
 }
 
+#pragma mark - Keyboard toolbar
+
+- (UIView *)keyboardToolbar {
+    if (keyboardToolbar == nil) {
+        keyboardToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 60)];
+        NSMutableArray *buttons = [NSMutableArray array];
+        UIBarButtonItem *button;
+        button = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"bold"] style:UIBarButtonItemStyleBordered target:self action:@selector(setBold)];
+        [buttons addObject:button];
+        [button release];
+
+        button = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"italic"] style:UIBarButtonItemStyleBordered target:self action:@selector(setItalic)];
+        [buttons addObject:button];
+        [button release];
+
+        button = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"blockquote"] style:UIBarButtonItemStyleBordered target:self action:@selector(setBlockquote)];
+        [buttons addObject:button];
+        [button release];
+
+        [keyboardToolbar setItems:buttons];
+    }
+    
+    return keyboardToolbar;
+}
+
+- (void)wrapSelectionWithTag:(NSString *)tag {
+    NSRange range = textView.selectedRange;
+    NSString *selection = [textView.text substringWithRange:range];
+    textView.text = [textView.text stringByReplacingCharactersInRange:range
+                                                           withString:[NSString stringWithFormat:@"<%@>%@</%@>",tag,selection,tag]];
+    if (range.length == 0) {                // If nothing was selected
+        range.location += 2 + [tag length]; // Place selection between tags
+        textView.selectedRange = range;
+    }
+}
+
+- (void)setBold {
+    [self wrapSelectionWithTag:@"strong"];
+}
+
+- (void)setItalic {
+    [self wrapSelectionWithTag:@"em"];    
+}
+
+- (void)setBlockquote {
+    [self wrapSelectionWithTag:@"blockquote"];
+}
+
 #pragma mark  -
 #pragma mark Table Data Source Methods (for Custom Fields TableView only)
 
@@ -1454,6 +1506,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [urlField release];
     [bookMarksArray release];
     [segmentedTableViewController release];
+    [keyboardToolbar release];
     [super dealloc];
 }
 

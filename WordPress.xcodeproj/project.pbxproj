@@ -249,6 +249,13 @@
 		E10D665E12BB7C49002F0C78 /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = E10D665B12BB7C49002F0C78 /* ASIDataCompressor.m */; };
 		E10D665F12BB7C49002F0C78 /* ASIDataDecompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = E10D665D12BB7C49002F0C78 /* ASIDataDecompressor.m */; };
 		E11930C41312F8A800F34124 /* FakeMigration.m in Sources */ = {isa = PBXBuildFile; fileRef = E11930C31312F8A800F34124 /* FakeMigration.m */; };
+		E11C91D1135771010072A811 /* blockquote.png in Resources */ = {isa = PBXBuildFile; fileRef = E11C91CB135771010072A811 /* blockquote.png */; };
+		E11C91D2135771010072A811 /* blockquote@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E11C91CC135771010072A811 /* blockquote@2x.png */; };
+		E11C91D3135771010072A811 /* bold.png in Resources */ = {isa = PBXBuildFile; fileRef = E11C91CD135771010072A811 /* bold.png */; };
+		E11C91D4135771010072A811 /* bold@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E11C91CE135771010072A811 /* bold@2x.png */; };
+		E11C91D5135771010072A811 /* italic.png in Resources */ = {isa = PBXBuildFile; fileRef = E11C91CF135771010072A811 /* italic.png */; };
+		E11C91D6135771010072A811 /* italic@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E11C91D0135771010072A811 /* italic@2x.png */; };
+		E11C91D8135771520072A811 /* paperclip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E11C91D7135771520072A811 /* paperclip@2x.png */; };
 		E1208C0D12A6D41C008F1FB7 /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1208C0C12A6D41C008F1FB7 /* libFlurry.a */; };
 		E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */; };
 		E125445612BF5B3900D87A0A /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E125445512BF5B3900D87A0A /* Category.m */; };
@@ -691,6 +698,13 @@
 		E10D665D12BB7C49002F0C78 /* ASIDataDecompressor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIDataDecompressor.m; sourceTree = "<group>"; };
 		E11930C21312F8A800F34124 /* FakeMigration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeMigration.h; sourceTree = "<group>"; };
 		E11930C31312F8A800F34124 /* FakeMigration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FakeMigration.m; sourceTree = "<group>"; };
+		E11C91CB135771010072A811 /* blockquote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blockquote.png; sourceTree = "<group>"; };
+		E11C91CC135771010072A811 /* blockquote@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blockquote@2x.png"; sourceTree = "<group>"; };
+		E11C91CD135771010072A811 /* bold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bold.png; sourceTree = "<group>"; };
+		E11C91CE135771010072A811 /* bold@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bold@2x.png"; sourceTree = "<group>"; };
+		E11C91CF135771010072A811 /* italic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = italic.png; sourceTree = "<group>"; };
+		E11C91D0135771010072A811 /* italic@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "italic@2x.png"; sourceTree = "<group>"; };
+		E11C91D7135771520072A811 /* paperclip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paperclip@2x.png"; sourceTree = "<group>"; };
 		E1208C0B12A6D41C008F1FB7 /* FlurryAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryAPI.h; sourceTree = "<group>"; };
 		E1208C0C12A6D41C008F1FB7 /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry.a; sourceTree = "<group>"; };
 		E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 2.xcdatamodel"; sourceTree = "<group>"; };
@@ -1362,7 +1376,9 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				E11C91CA135770DA0072A811 /* Rich Text Editor */,
 				375D7EE11355E9B6001C7371 /* paperclip.png */,
+				E11C91D7135771520072A811 /* paperclip@2x.png */,
 				45CD32181157D83D009E78D3 /* fabric.png */,
 				E13FA0F5134C849D007DCDD0 /* downArrow.png */,
 				E13FA0F6134C849D007DCDD0 /* downArrow@2x.png */,
@@ -1574,6 +1590,19 @@
 				6E8BE5C211BF5C5A002A13DD /* comments@2x.png */,
 			);
 			name = "Tab Icons";
+			sourceTree = "<group>";
+		};
+		E11C91CA135770DA0072A811 /* Rich Text Editor */ = {
+			isa = PBXGroup;
+			children = (
+				E11C91CB135771010072A811 /* blockquote.png */,
+				E11C91CC135771010072A811 /* blockquote@2x.png */,
+				E11C91CD135771010072A811 /* bold.png */,
+				E11C91CE135771010072A811 /* bold@2x.png */,
+				E11C91CF135771010072A811 /* italic.png */,
+				E11C91D0135771010072A811 /* italic@2x.png */,
+			);
+			name = "Rich Text Editor";
 			sourceTree = "<group>";
 		};
 		E1208C0A12A6D41C008F1FB7 /* FlurryLib */ = {
@@ -1940,6 +1969,13 @@
 				37A443B91354D03000029509 /* WPcomLoginViewController-iPad-stats.xib in Resources */,
 				37A443BB1354D05B00029509 /* BlogsViewController.xib in Resources */,
 				375D7EE21355E9B6001C7371 /* paperclip.png in Resources */,
+				E11C91D1135771010072A811 /* blockquote.png in Resources */,
+				E11C91D2135771010072A811 /* blockquote@2x.png in Resources */,
+				E11C91D3135771010072A811 /* bold.png in Resources */,
+				E11C91D4135771010072A811 /* bold@2x.png in Resources */,
+				E11C91D5135771010072A811 /* italic.png in Resources */,
+				E11C91D6135771010072A811 /* italic@2x.png in Resources */,
+				E11C91D8135771520072A811 /* paperclip@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

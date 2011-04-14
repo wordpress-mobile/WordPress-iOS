@@ -65,6 +65,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 	NSArray *statuses;
         
     UIView *currentView;
+    UIToolbar *keyboardToolbar;
 }
 
 @property (nonatomic, retain) WPSelectionTableViewController *selectionTableViewController;
