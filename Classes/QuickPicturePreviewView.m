@@ -24,6 +24,7 @@
     zoomed = NO;
     zooming = NO;
     imageView = [[UIImageView alloc] init];
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
     [self addSubview:imageView];
 }
 
@@ -99,7 +100,9 @@
 
 - (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
     zooming = NO;
-//    [self setNeedsLayout];
+    if (!zoomed) {
+        frameLayer.opacity = 1.0f;
+    }
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -113,22 +116,26 @@
             if (self.delegate && [self.delegate respondsToSelector:@selector(pictureWillZoom)]) {
                 [self.delegate pictureWillZoom];
             }
+            frameLayer.opacity = 0.0f;
         } else {
             if (self.delegate && [self.delegate respondsToSelector:@selector(pictureWillRestore)]) {
                 [self.delegate pictureWillRestore];
             }
         }
         [UIView beginAnimations:@"zoom" context:nil];
-        [UIView setAnimationDuration:0.3];
+        [UIView setAnimationDuration:0.3f];
+        [UIView setAnimationDelegate:self];
         [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
         if (zoomed) {
             normalFrame = self.frame;
             normalImageFrame = imageView.frame;
             self.frame = [self.superview bounds];
+            self.backgroundColor = [UIColor blackColor];
             imageView.frame = self.frame;
             [paperClipImageView setHidden:YES];
         } else {
             self.frame = normalFrame;
+            self.backgroundColor = [UIColor clearColor];
             imageView.frame = normalImageFrame;
             [paperClipImageView setHidden:NO];
         }
