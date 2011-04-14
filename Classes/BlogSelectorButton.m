@@ -22,6 +22,7 @@
 {
     self.activeBlog = nil;
     [blavatarImageView release]; blavatarImageView = nil;
+    [postToLabel release]; postToLabel = nil;
     [blogTitleLabel release]; blogTitleLabel = nil;
     [selectorImageView release]; selectorImageView = nil;
     [super dealloc];
@@ -34,18 +35,35 @@
         active = NO;
 
         CGRect blavatarFrame = self.bounds;
-        blavatarFrame.size.width = blavatarFrame.size.height;
-        blavatarFrame.origin.x += 5;
+        blavatarFrame.size.width = 36.0f;
+        blavatarFrame.size.height = 36.0f;
+        blavatarFrame.origin.x += 8;
+        blavatarFrame.origin.y += 6;
         blavatarImageView = [[WPAsynchronousImageView alloc] initWithFrame:blavatarFrame];
         blavatarImageView.isBlavatar = YES;
-        blavatarImageView.layer.cornerRadius = 20.0f;
+        blavatarImageView.layer.masksToBounds = YES;
+        blavatarImageView.layer.cornerRadius = 4.0f;
         [self addSubview:blavatarImageView];
+        
+        CGRect postToFrame = self.bounds;
+        postToFrame.origin.x = blavatarFrame.size.width + 15;
+        postToFrame.origin.y = postToFrame.origin.y + 6;
+        postToFrame.size.width -= blavatarFrame.size.width + 10 + 50;
+        postToFrame.size.height = 16.0f;
+        postToLabel = [[UILabel alloc] initWithFrame:postToFrame];
+        postToLabel.font = [UIFont systemFontOfSize:16];
+        postToLabel.textColor = [UIColor grayColor];
+        [postToLabel setText:@"Post to:"];
+        [self addSubview:postToLabel];
         
         CGRect blogTitleFrame = self.bounds;
         blogTitleFrame.origin.x = blavatarFrame.size.width + 15;
+        blogTitleFrame.origin.y = blogTitleFrame.origin.y + 23;
         blogTitleFrame.size.width -= blavatarFrame.size.width + 10 + 50;
+        blogTitleFrame.size.height = 20.0f;
         blogTitleLabel = [[UILabel alloc] initWithFrame:blogTitleFrame];
         blogTitleLabel.font = [UIFont boldSystemFontOfSize:20];
+        blogTitleLabel.numberOfLines = 1;
         [self addSubview:blogTitleLabel];
         
         CGRect selectorImageFrame = self.bounds;
@@ -160,7 +178,7 @@
         normalFrame = self.frame;
         // Setup selection view
         CGRect selectionViewFrame = self.superview.bounds;
-        selectionViewFrame.origin.y += self.frame.size.height;
+        selectionViewFrame.origin.y += self.frame.size.height + 6;
         selectionViewFrame.size.height -= self.frame.size.height;
         if (selectorViewController == nil) {
             selectorViewController = [[BlogSelectorViewController alloc] initWithStyle:UITableViewStylePlain];

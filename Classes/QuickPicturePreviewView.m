@@ -15,6 +15,7 @@
 @synthesize delegate;
 
 - (void)dealloc {
+    [paperClipImageView release]; paperClipImageView = nil;
     [imageView release]; imageView = nil;
     [super dealloc];
 }
@@ -44,20 +45,23 @@
 
 - (void)layoutSubviews {
     UIImage *image = imageView.image;
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [imageView setBackgroundColor:[UIColor blackColor]];
     if (image != nil) {
         if (!zooming && !zoomed) {
-            CGSize imageSize = image.size;
-            CGFloat imageRatio = imageSize.width / imageSize.height;
-            CGSize frameSize = self.bounds.size;
+            //CGSize imageSize = image.size;
+            //CGFloat imageRatio = imageSize.width / imageSize.height;
+            //CGSize frameSize = self.bounds.size;
             CGRect imageFrame;
-            CGFloat width = (imageRatio > 1) ? frameSize.width - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH) : (frameSize.height - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH)) * imageRatio;
-            CGFloat height = (imageRatio < 1) ? frameSize.height - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH) : (frameSize.width - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH)) / imageRatio;
+            
+            /*CGFloat width = (imageRatio > 1) ? frameSize.width - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH) : (frameSize.height - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH)) * imageRatio;
+            CGFloat height = (imageRatio < 1) ? frameSize.height - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH) : (frameSize.width - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH)) / imageRatio;*/
             
             imageFrame = CGRectMake(
-                                    frameSize.width - width - (QPP_MARGIN + QPP_FRAME_WIDTH),
-                                    QPP_MARGIN + QPP_FRAME_WIDTH,
-                                    width,
-                                    height
+                                    8.0f,
+                                    13.0f,
+                                    109.0f,
+                                    109.0f
                                     );
             
             imageView.frame = imageFrame;
@@ -76,6 +80,11 @@
             imageFrame.origin.x -= QPP_FRAME_WIDTH;
             imageFrame.origin.y -= QPP_FRAME_WIDTH;
             frameLayer.frame = imageFrame;
+            
+            paperClipImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"paperclip"]];
+            paperClipImageView.frame = CGRectMake(3.0f, -10.0f, 15.0f, 41.0f);
+            [paperClipImageView setHidden:NO];
+            [imageView addSubview:paperClipImageView];
         }
     }
     [super layoutSubviews];
@@ -103,11 +112,13 @@
         zooming = YES;
         zoomed = ! zoomed;
         if (zoomed) {
-            if (self.delegate && [self.delegate respondsToSelector:@selector(pictureWillZoom)])
+            if (self.delegate && [self.delegate respondsToSelector:@selector(pictureWillZoom)]) {
                 [self.delegate pictureWillZoom];
+            }
         } else {
-            if (self.delegate && [self.delegate respondsToSelector:@selector(pictureWillRestore)])
+            if (self.delegate && [self.delegate respondsToSelector:@selector(pictureWillRestore)]) {
                 [self.delegate pictureWillRestore];
+            }
         }
         [UIView beginAnimations:@"zoom" context:nil];
         [UIView setAnimationDuration:0.3];
@@ -117,9 +128,11 @@
             normalImageFrame = imageView.frame;
             self.frame = [self.superview bounds];
             imageView.frame = self.frame;
+            [paperClipImageView setHidden:YES];
         } else {
             self.frame = normalFrame;
             imageView.frame = normalImageFrame;
+            [paperClipImageView setHidden:NO];
         }
         [UIView commitAnimations];
 

@@ -52,6 +52,7 @@
 		3744A0DE130ABB0800CE7BE1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3744A0DC130ABB0800CE7BE1 /* HelpViewController.m */; };
 		3744A0DF130ABB0800CE7BE1 /* HelpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3744A0DD130ABB0800CE7BE1 /* HelpViewController.xib */; };
 		375D090D133B94C3000CC9CD /* BlogsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 375D090C133B94C3000CC9CD /* BlogsTableViewCell.m */; };
+		375D7EE21355E9B6001C7371 /* paperclip.png in Resources */ = {isa = PBXBuildFile; fileRef = 375D7EE11355E9B6001C7371 /* paperclip.png */; };
 		3768BE87130404FF00E7C9A9 /* BetaUIWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 3768BE86130404FF00E7C9A9 /* BetaUIWindow.m */; };
 		3768BEF113041E7900E7C9A9 /* BetaFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3768BEEF13041E7800E7C9A9 /* BetaFeedbackViewController.m */; };
 		3768BEF213041E7900E7C9A9 /* BetaFeedbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3768BEF013041E7900E7C9A9 /* BetaFeedbackViewController.xib */; };
@@ -408,6 +409,7 @@
 		3744A0DD130ABB0800CE7BE1 /* HelpViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = HelpViewController.xib; path = ../HelpViewController.xib; sourceTree = "<group>"; };
 		375D090B133B94C3000CC9CD /* BlogsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogsTableViewCell.h; sourceTree = "<group>"; };
 		375D090C133B94C3000CC9CD /* BlogsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogsTableViewCell.m; sourceTree = "<group>"; };
+		375D7EE11355E9B6001C7371 /* paperclip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = paperclip.png; sourceTree = "<group>"; };
 		3768BE85130404FF00E7C9A9 /* BetaUIWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BetaUIWindow.h; sourceTree = "<group>"; };
 		3768BE86130404FF00E7C9A9 /* BetaUIWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BetaUIWindow.m; sourceTree = "<group>"; };
 		3768BEEE13041E7800E7C9A9 /* BetaFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BetaFeedbackViewController.h; sourceTree = "<group>"; };
@@ -1360,6 +1362,7 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				375D7EE11355E9B6001C7371 /* paperclip.png */,
 				45CD32181157D83D009E78D3 /* fabric.png */,
 				E13FA0F5134C849D007DCDD0 /* downArrow.png */,
 				E13FA0F6134C849D007DCDD0 /* downArrow@2x.png */,
@@ -1936,6 +1939,7 @@
 				E13FA0F8134C849D007DCDD0 /* downArrow@2x.png in Resources */,
 				37A443B91354D03000029509 /* WPcomLoginViewController-iPad-stats.xib in Resources */,
 				37A443BB1354D05B00029509 /* BlogsViewController.xib in Resources */,
+				375D7EE21355E9B6001C7371 /* paperclip.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

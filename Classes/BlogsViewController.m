@@ -47,7 +47,7 @@
         [quickPhotoButton setImage:[UIImage imageNamed:@"camera"] forState:UIControlStateNormal];
         quickPhotoButton.frame = CGRectMake(0, self.view.bounds.size.height - 60, self.view.bounds.size.width, 60);
         [quickPhotoButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [quickPhotoButton setTitle:NSLocalizedString(@"Post picture", @"") forState:UIControlStateNormal];
+        [quickPhotoButton setTitle:NSLocalizedString(@"Quick Photo", @"") forState:UIControlStateNormal];
         [quickPhotoButton.titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
         [quickPhotoButton setTitleShadowColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         [quickPhotoButton addTarget:self action:@selector(quickPhotoPost) forControlEvents:UIControlEventTouchUpInside];
