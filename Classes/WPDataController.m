@@ -301,6 +301,20 @@
     return [NSMutableArray arrayWithArray:categories];
 }
 
+- (NSArray *)wpGetPostFormats:(Blog *)blog {
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:blog.xmlrpc]];
+	[xmlrpcRequest setMethod:@"wp.getPostFormats" withObjects:[self getXMLRPCArgsForBlog:blog withExtraArgs:nil]];
+    retryOnTimeout = YES;
+    NSArray *postFormats = [self executeXMLRPCRequest:xmlrpcRequest];
+	[xmlrpcRequest release];
+    
+    if ([postFormats isKindOfClass:[NSError class]]) {
+        NSLog(@"Couldn't get post formats: %@", [(NSError *)postFormats localizedDescription]);
+        return [NSArray array];
+    }
+    return postFormats;    
+}
+
 #pragma mark -
 #pragma mark Category
 - (int)wpNewCategory:(Category *)category {
@@ -708,7 +722,9 @@
     [result addObject:blog.blogID];
     [result addObject:blog.username];
     [result addObject:[self passwordForBlog:blog]];
-    [result addObjectsFromArray:args];
+    if (args != nil) {
+        [result addObjectsFromArray:args];
+    }
     
     return [NSArray arrayWithArray:result];
 }
