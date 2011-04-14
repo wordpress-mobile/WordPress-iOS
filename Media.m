@@ -233,7 +233,7 @@
             break;
             
         default:
-            image.size;
+            newSize = image.size;
             break;
     }
     switch (image.imageOrientation) { 

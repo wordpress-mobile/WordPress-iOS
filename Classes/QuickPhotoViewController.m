@@ -127,7 +127,24 @@
         media = [post.media anyObject];
     } else {
         media = [Media newMediaForPost:post];
-        [media setImage:self.photo withSize:kResizeLarge];        
+        int resizePreference = 0;
+		if([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil)
+			resizePreference = [[[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] intValue];
+        
+        MediaResize newSize = kResizeLarge;
+        switch (resizePreference) {
+            case 1:
+                newSize = kResizeSmall;
+                break;
+            case 2:
+                newSize = kResizeMedium;
+                break;
+            case 4:
+                newSize = kResizeOriginal;
+                break;
+        }
+
+        [media setImage:self.photo withSize:newSize];
     }
     
     [spinner performSelectorOnMainThread:@selector(setTitle:) withObject:NSLocalizedString(@"Uploading picture...", @"") waitUntilDone:YES];
