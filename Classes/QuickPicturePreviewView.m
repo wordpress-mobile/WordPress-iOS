@@ -45,23 +45,21 @@
 
 - (void)layoutSubviews {
     UIImage *image = imageView.image;
-    imageView.contentMode = UIViewContentModeScaleAspectFit;
-    [imageView setBackgroundColor:[UIColor blackColor]];
     if (image != nil) {
         if (!zooming && !zoomed) {
-            //CGSize imageSize = image.size;
-            //CGFloat imageRatio = imageSize.width / imageSize.height;
-            //CGSize frameSize = self.bounds.size;
+            CGSize imageSize = image.size;
+            CGFloat imageRatio = imageSize.width / imageSize.height;
+            CGSize frameSize = self.bounds.size;
             CGRect imageFrame;
             
-            /*CGFloat width = (imageRatio > 1) ? frameSize.width - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH) : (frameSize.height - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH)) * imageRatio;
-            CGFloat height = (imageRatio < 1) ? frameSize.height - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH) : (frameSize.width - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH)) / imageRatio;*/
+            CGFloat width = (imageRatio > 1) ? frameSize.width - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH) : (frameSize.height - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH)) * imageRatio;
+            CGFloat height = (imageRatio < 1) ? frameSize.height - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH) : (frameSize.width - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH)) / imageRatio;
             
             imageFrame = CGRectMake(
-                                    8.0f,
-                                    13.0f,
-                                    109.0f,
-                                    109.0f
+                                    frameSize.width - width - (QPP_MARGIN + QPP_FRAME_WIDTH),
+                                    QPP_MARGIN + QPP_FRAME_WIDTH,
+                                    width,
+                                    height
                                     );
             
             imageView.frame = imageFrame;
