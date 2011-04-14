@@ -1239,7 +1239,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (UIView *)keyboardToolbar {
     if (keyboardToolbar == nil) {
-        keyboardToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 60)];
+        keyboardToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 40)];
         NSMutableArray *buttons = [NSMutableArray array];
         UIBarButtonItem *button;
         button = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"bold"] style:UIBarButtonItemStyleBordered target:self action:@selector(setBold)];
