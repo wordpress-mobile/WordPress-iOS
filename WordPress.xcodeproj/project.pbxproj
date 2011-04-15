@@ -309,6 +309,10 @@
 		E19F29C412B8BC22008FF660 /* tmbstr.c in Sources */ = {isa = PBXBuildFile; fileRef = E19F29A612B8BC22008FF660 /* tmbstr.c */; };
 		E19F29C512B8BC22008FF660 /* utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = E19F29A812B8BC22008FF660 /* utf8.c */; };
 		E19F29C612B8BC22008FF660 /* win32tc.c in Sources */ = {isa = PBXBuildFile; fileRef = E19F29AB12B8BC22008FF660 /* win32tc.c */; };
+		E1ABD13D135862EC00DB0707 /* quickPhotoButtonBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = E1ABD139135862EC00DB0707 /* quickPhotoButtonBackground.png */; };
+		E1ABD13E135862EC00DB0707 /* quickPhotoButtonBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1ABD13A135862EC00DB0707 /* quickPhotoButtonBackground@2x.png */; };
+		E1ABD13F135862EC00DB0707 /* quickPhotoButtonHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = E1ABD13B135862EC00DB0707 /* quickPhotoButtonHighlighted.png */; };
+		E1ABD140135862EC00DB0707 /* quickPhotoButtonHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1ABD13C135862EC00DB0707 /* quickPhotoButtonHighlighted@2x.png */; };
 		E1B4A9E112FC8B1000EB3F67 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = E1B4A9E012FC8B1000EB3F67 /* EGORefreshTableHeaderView.m */; };
 		E1B4A9E412FC8B2500EB3F67 /* blueArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B4A9E212FC8B2500EB3F67 /* blueArrow.png */; };
 		E1B4A9E512FC8B2500EB3F67 /* blueArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B4A9E312FC8B2500EB3F67 /* blueArrow@2x.png */; };
@@ -802,6 +806,10 @@
 		E19F29AA12B8BC22008FF660 /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
 		E19F29AB12B8BC22008FF660 /* win32tc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = win32tc.c; sourceTree = "<group>"; };
 		E19F29AC12B8BC22008FF660 /* win32tc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = win32tc.h; sourceTree = "<group>"; };
+		E1ABD139135862EC00DB0707 /* quickPhotoButtonBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quickPhotoButtonBackground.png; sourceTree = "<group>"; };
+		E1ABD13A135862EC00DB0707 /* quickPhotoButtonBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "quickPhotoButtonBackground@2x.png"; sourceTree = "<group>"; };
+		E1ABD13B135862EC00DB0707 /* quickPhotoButtonHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quickPhotoButtonHighlighted.png; sourceTree = "<group>"; };
+		E1ABD13C135862EC00DB0707 /* quickPhotoButtonHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "quickPhotoButtonHighlighted@2x.png"; sourceTree = "<group>"; };
 		E1B4A9DF12FC8B1000EB3F67 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
 		E1B4A9E012FC8B1000EB3F67 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
 		E1B4A9E212FC8B2500EB3F67 /* blueArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueArrow.png; sourceTree = "<group>"; };
@@ -1376,6 +1384,7 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				E1ABD141135862EF00DB0707 /* Quick Photo */,
 				E11C91CA135770DA0072A811 /* Rich Text Editor */,
 				375D7EE11355E9B6001C7371 /* paperclip.png */,
 				E11C91D7135771520072A811 /* paperclip@2x.png */,
@@ -1384,10 +1393,6 @@
 				E13FA0F6134C849D007DCDD0 /* downArrow@2x.png */,
 				E13FA0D8134BF347007DCDD0 /* quickPhotoTextView.png */,
 				E13FA0D9134BF347007DCDD0 /* quickPhotoTextView@2x.png */,
-				E13FA0D1134BE582007DCDD0 /* camera.png */,
-				E13FA0D2134BE582007DCDD0 /* camera@2x.png */,
-				E13FA0CD134BE530007DCDD0 /* quickPhotoButton.png */,
-				E13FA0CE134BE530007DCDD0 /* quickPhotoButton@2x.png */,
 				3768F48C1340BBD60075B633 /* blavatar-wporg@2x.png */,
 				3768F48D1340BBD60075B633 /* blavatar-wpcom@2x.png */,
 				3768F48E1340BBD60075B633 /* blavatar-wporg.png */,
@@ -1720,6 +1725,21 @@
 			path = c_tidy;
 			sourceTree = "<group>";
 		};
+		E1ABD141135862EF00DB0707 /* Quick Photo */ = {
+			isa = PBXGroup;
+			children = (
+				E13FA0D1134BE582007DCDD0 /* camera.png */,
+				E13FA0D2134BE582007DCDD0 /* camera@2x.png */,
+				E13FA0CD134BE530007DCDD0 /* quickPhotoButton.png */,
+				E13FA0CE134BE530007DCDD0 /* quickPhotoButton@2x.png */,
+				E1ABD139135862EC00DB0707 /* quickPhotoButtonBackground.png */,
+				E1ABD13A135862EC00DB0707 /* quickPhotoButtonBackground@2x.png */,
+				E1ABD13B135862EC00DB0707 /* quickPhotoButtonHighlighted.png */,
+				E1ABD13C135862EC00DB0707 /* quickPhotoButtonHighlighted@2x.png */,
+			);
+			name = "Quick Photo";
+			sourceTree = "<group>";
+		};
 		E1B4A9DE12FC8B1000EB3F67 /* EGOTableViewPullRefresh */ = {
 			isa = PBXGroup;
 			children = (
@@ -1976,6 +1996,10 @@
 				E11C91D5135771010072A811 /* italic.png in Resources */,
 				E11C91D6135771010072A811 /* italic@2x.png in Resources */,
 				E11C91D8135771520072A811 /* paperclip@2x.png in Resources */,
+				E1ABD13D135862EC00DB0707 /* quickPhotoButtonBackground.png in Resources */,
+				E1ABD13E135862EC00DB0707 /* quickPhotoButtonBackground@2x.png in Resources */,
+				E1ABD13F135862EC00DB0707 /* quickPhotoButtonHighlighted.png in Resources */,
+				E1ABD140135862EC00DB0707 /* quickPhotoButtonHighlighted@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
