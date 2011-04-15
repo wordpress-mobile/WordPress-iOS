@@ -433,7 +433,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			}
 			
 			NSMutableArray *dateCSV = [[NSMutableArray alloc] init];
-            NSString *bgData = [[NSString alloc] init];
+            NSString *bgData = @"";
 			if ([reportType isEqualToString:@"chartDaysData"]){
                 bgData = @"|";
 				for (NSString *dateVal in yArray) {
