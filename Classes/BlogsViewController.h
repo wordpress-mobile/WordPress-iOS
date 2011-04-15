@@ -11,12 +11,13 @@
 #import "Blog.h"
 #import "CPopoverManager.h"
 #import "WPAsynchronousImageView.h"
+#import "QuickPhotoButton.h"
 
 @interface BlogsViewController : UIViewController <NSFetchedResultsControllerDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate> {
 	WordPressAppDelegate *appDelegate;
     NSFetchedResultsController *resultsController;
     Blog *currentBlog;
-    UIButton *quickPhotoButton;
+    QuickPhotoButton *quickPhotoButton;
     IBOutlet UITableView *tableView;
 }
 

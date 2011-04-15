@@ -309,10 +309,9 @@
 		E19F29C412B8BC22008FF660 /* tmbstr.c in Sources */ = {isa = PBXBuildFile; fileRef = E19F29A612B8BC22008FF660 /* tmbstr.c */; };
 		E19F29C512B8BC22008FF660 /* utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = E19F29A812B8BC22008FF660 /* utf8.c */; };
 		E19F29C612B8BC22008FF660 /* win32tc.c in Sources */ = {isa = PBXBuildFile; fileRef = E19F29AB12B8BC22008FF660 /* win32tc.c */; };
-		E1ABD13D135862EC00DB0707 /* quickPhotoButtonBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = E1ABD139135862EC00DB0707 /* quickPhotoButtonBackground.png */; };
-		E1ABD13E135862EC00DB0707 /* quickPhotoButtonBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1ABD13A135862EC00DB0707 /* quickPhotoButtonBackground@2x.png */; };
 		E1ABD13F135862EC00DB0707 /* quickPhotoButtonHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = E1ABD13B135862EC00DB0707 /* quickPhotoButtonHighlighted.png */; };
 		E1ABD140135862EC00DB0707 /* quickPhotoButtonHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1ABD13C135862EC00DB0707 /* quickPhotoButtonHighlighted@2x.png */; };
+		E1ABD144135866E400DB0707 /* QuickPhotoButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E1ABD143135866E400DB0707 /* QuickPhotoButton.m */; };
 		E1B4A9E112FC8B1000EB3F67 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = E1B4A9E012FC8B1000EB3F67 /* EGORefreshTableHeaderView.m */; };
 		E1B4A9E412FC8B2500EB3F67 /* blueArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B4A9E212FC8B2500EB3F67 /* blueArrow.png */; };
 		E1B4A9E512FC8B2500EB3F67 /* blueArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B4A9E312FC8B2500EB3F67 /* blueArrow@2x.png */; };
@@ -806,10 +805,10 @@
 		E19F29AA12B8BC22008FF660 /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
 		E19F29AB12B8BC22008FF660 /* win32tc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = win32tc.c; sourceTree = "<group>"; };
 		E19F29AC12B8BC22008FF660 /* win32tc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = win32tc.h; sourceTree = "<group>"; };
-		E1ABD139135862EC00DB0707 /* quickPhotoButtonBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quickPhotoButtonBackground.png; sourceTree = "<group>"; };
-		E1ABD13A135862EC00DB0707 /* quickPhotoButtonBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "quickPhotoButtonBackground@2x.png"; sourceTree = "<group>"; };
 		E1ABD13B135862EC00DB0707 /* quickPhotoButtonHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quickPhotoButtonHighlighted.png; sourceTree = "<group>"; };
 		E1ABD13C135862EC00DB0707 /* quickPhotoButtonHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "quickPhotoButtonHighlighted@2x.png"; sourceTree = "<group>"; };
+		E1ABD142135866E400DB0707 /* QuickPhotoButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuickPhotoButton.h; sourceTree = "<group>"; };
+		E1ABD143135866E400DB0707 /* QuickPhotoButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuickPhotoButton.m; sourceTree = "<group>"; };
 		E1B4A9DF12FC8B1000EB3F67 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
 		E1B4A9E012FC8B1000EB3F67 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
 		E1B4A9E212FC8B2500EB3F67 /* blueArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueArrow.png; sourceTree = "<group>"; };
@@ -889,6 +888,8 @@
 				E13FA0DD134C6D33007DCDD0 /* BlogSelectorButton.m */,
 				E17BE25F134F5E4D00165C3D /* QuickPicturePreviewView.h */,
 				E17BE260134F5E4D00165C3D /* QuickPicturePreviewView.m */,
+				E1ABD142135866E400DB0707 /* QuickPhotoButton.h */,
+				E1ABD143135866E400DB0707 /* QuickPhotoButton.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1732,8 +1733,6 @@
 				E13FA0D2134BE582007DCDD0 /* camera@2x.png */,
 				E13FA0CD134BE530007DCDD0 /* quickPhotoButton.png */,
 				E13FA0CE134BE530007DCDD0 /* quickPhotoButton@2x.png */,
-				E1ABD139135862EC00DB0707 /* quickPhotoButtonBackground.png */,
-				E1ABD13A135862EC00DB0707 /* quickPhotoButtonBackground@2x.png */,
 				E1ABD13B135862EC00DB0707 /* quickPhotoButtonHighlighted.png */,
 				E1ABD13C135862EC00DB0707 /* quickPhotoButtonHighlighted@2x.png */,
 			);
@@ -1996,8 +1995,6 @@
 				E11C91D5135771010072A811 /* italic.png in Resources */,
 				E11C91D6135771010072A811 /* italic@2x.png in Resources */,
 				E11C91D8135771520072A811 /* paperclip@2x.png in Resources */,
-				E1ABD13D135862EC00DB0707 /* quickPhotoButtonBackground.png in Resources */,
-				E1ABD13E135862EC00DB0707 /* quickPhotoButtonBackground@2x.png in Resources */,
 				E1ABD13F135862EC00DB0707 /* quickPhotoButtonHighlighted.png in Resources */,
 				E1ABD140135862EC00DB0707 /* quickPhotoButtonHighlighted@2x.png in Resources */,
 			);
@@ -2153,6 +2150,7 @@
 				E17BE248134F39FE00165C3D /* NSURL+IDN.m in Sources */,
 				E17BE261134F5E4D00165C3D /* QuickPicturePreviewView.m in Sources */,
 				E138623C1355FF8800AAB235 /* UINavigationController+FormSheet.m in Sources */,
+				E1ABD144135866E400DB0707 /* QuickPhotoButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -173,6 +173,8 @@ Classes/PostViewController.h -text
 Classes/PostViewController.m -text
 Classes/PostsViewController.h -text
 Classes/PostsViewController.m -text
+Classes/QuickPhotoButton.h -text
+Classes/QuickPhotoButton.m -text
 Classes/QuickPhotoViewController.h -text
 Classes/QuickPhotoViewController.m -text
 Classes/QuickPicturePreviewView.h -text
@@ -462,7 +464,7 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 pt.lproj/Localizable.strings -text svneol=unset#unset
 /quickPhotoButton.png -text svneol=unset#unset
 /quickPhotoButton@2x.png -text svneol=unset#unset
-/quickPhotoButtonBackground@2x.png -text
+/quickPhotoButtonHighlighted.png -text svneol=unset#unset
 /quickPhotoButtonHighlighted@2x.png -text
 /quickPhotoTextView.png -text svneol=unset#unset
 /quickPhotoTextView@2x.png -text svneol=unset#unset

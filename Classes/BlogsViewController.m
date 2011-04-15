@@ -42,8 +42,7 @@
     }
 
     if (!DeviceIsPad() && [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        quickPhotoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [quickPhotoButton setBackgroundImage:[UIImage imageNamed:@"quickPhotoButton"] forState:UIControlStateNormal];
+        quickPhotoButton = [QuickPhotoButton button];
         [quickPhotoButton setImage:[UIImage imageNamed:@"camera"] forState:UIControlStateNormal];
         quickPhotoButton.frame = CGRectMake(0, self.view.bounds.size.height - 60, self.view.bounds.size.width, 60);
         [quickPhotoButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
