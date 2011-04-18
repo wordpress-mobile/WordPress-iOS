@@ -154,9 +154,9 @@
     return 52.0;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"BlogCell";
-    BlogsTableViewCell *cell = (BlogsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    BlogsTableViewCell *cell = (BlogsTableViewCell *)[aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     Blog *blog = [resultsController objectAtIndexPath:indexPath];
     
     CGRect frame = CGRectMake(8,8,35,35);
@@ -194,12 +194,12 @@
     return cell;
 }
 
--(NSString *)tableView:(UITableView*)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
+-(NSString *)tableView:(UITableView*)aTableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return NSLocalizedString(@"Remove", @"");
 }
 
-- (void)tableView:(UITableView *)atableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.tableView cellForRowAtIndexPath:indexPath].editing) {
+- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([aTableView cellForRowAtIndexPath:indexPath].editing) {
         Blog *blog = [resultsController objectAtIndexPath:indexPath];
 		
 		EditSiteViewController *editSiteViewController;
@@ -220,7 +220,7 @@
 			[self.navigationController pushViewController:editSiteViewController animated:YES];
 		}
 		[editSiteViewController release];
-        [atableView setEditing:NO animated:YES];
+        [aTableView setEditing:NO animated:YES];
     }
 	else {	// if ([self canChangeCurrentBlog]) {
         Blog *blog = [resultsController objectAtIndexPath:indexPath];
@@ -231,20 +231,20 @@
 			self.currentBlog = blog;
 		}
     }
-	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
+	[aTableView deselectRowAtIndexPath:[aTableView indexPathForSelectedRow] animated:YES];
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)aTableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
 		
 		Blog *blog = [resultsController objectAtIndexPath:indexPath];
 		if([self canChangeBlog:blog]){
-			[tableView beginUpdates];
+			[aTableView beginUpdates];
 			
             [FileLogger log:@"Deleted blog %@", blog];
 			[appDelegate.managedObjectContext deleteObject:blog];
 			
-			[tableView endUpdates];
+			[aTableView endUpdates];
 			NSError *error = nil;
 			if (![appDelegate.managedObjectContext save:&error]) {
 				WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
