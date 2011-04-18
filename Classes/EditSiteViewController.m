@@ -363,13 +363,22 @@
     blog.xmlrpc = xmlrpc;
     blog.username = self.username;
     blog.geolocationEnabled = self.geolocationEnabled;
-    NSError *error = nil;
-    [SFHFKeychainUtils storeUsername:blog.username
-                         andPassword:self.password
-                      forServiceName:blog.hostURL
-                      updateExisting:YES
-                               error:&error];
-    
+	NSError *error = nil;
+	//check if the blog is a WP.COM blog
+	if(blog.isWPcom) {
+		[SFHFKeychainUtils storeUsername:blog.username
+                             andPassword:self.password
+                          forServiceName:@"WordPress.com"
+                          updateExisting:YES
+                                   error:&error];
+	} else {
+		[SFHFKeychainUtils storeUsername:blog.username
+							 andPassword:self.password
+						  forServiceName:blog.hostURL
+						  updateExisting:YES
+								   error:&error];
+	}
+	
     if (error) {
 		[FileLogger log:@"%@ %@ Error saving password for %@: %@", self, NSStringFromSelector(_cmd), blog.url, error];
     } else {

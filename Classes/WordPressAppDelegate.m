@@ -940,11 +940,20 @@ static WordPressAppDelegate *wordPressApp = NULL;
 			if ([passwordTextField.text isEqualToString:@""]) 
 				return;
 			
-			[SFHFKeychainUtils storeUsername:currentBlog.username
-								 andPassword:passwordTextField.text
-							  forServiceName:currentBlog.hostURL
-							  updateExisting:YES
-									   error:&error];
+			//check if the current blog is a WP.COM blog
+			if(currentBlog.isWPcom) {
+				[SFHFKeychainUtils storeUsername:currentBlog.username
+									 andPassword:passwordTextField.text
+								  forServiceName:@"WordPress.com"
+								  updateExisting:YES
+										   error:&error];
+			} else {
+				[SFHFKeychainUtils storeUsername:currentBlog.username
+									 andPassword:passwordTextField.text
+								  forServiceName:currentBlog.hostURL
+								  updateExisting:YES
+										   error:&error];
+			}
 			
 			if (error) {
 				[FileLogger log:@"%@ %@ Error saving password for %@: %@", self, NSStringFromSelector(_cmd), currentBlog.url, error];

@@ -260,9 +260,19 @@
 
 - (NSString *)passwordForBlog:(Blog *)blog {
     NSError *err;
-    NSString *password = [SFHFKeychainUtils getPasswordForUsername:blog.username
+	NSString *password;
+	
+	if (blog.isWPcom) {
+        password = [SFHFKeychainUtils getPasswordForUsername:blog.username
+												   andServiceName:@"WordPress.com"
+															error:&error];
+        
+    } else {
+	
+		password = [SFHFKeychainUtils getPasswordForUsername:blog.username
 													andServiceName:blog.hostURL
 															 error:&err];
+	}
 	if (password == nil)
 		password = @""; // FIXME: not good either, but prevents from crashing
 	
