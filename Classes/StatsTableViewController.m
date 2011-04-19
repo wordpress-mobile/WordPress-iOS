@@ -56,6 +56,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	[daysConn release];
 	[weeksConn release];
 	[monthsConn release];
+    self.blog = nil;
 	[super dealloc];
 }
 
@@ -141,7 +142,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 
 -(void) initStats {
 	
-	NSString *apiKey = [appDelegate currentBlog].apiKey;
+	NSString *apiKey = blog.apiKey;
 	if (apiKey == nil){
 		//first run or api key was deleted
 		[self getUserAPIKey];
@@ -165,7 +166,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 }
 
 -(void)getUserAPIKey {
-	if (appDelegate.isWPcomAuthenticated)
+	if ([blog isWPcom])
 	{
 		[self showLoadingDialog];
 		statsData = [[NSMutableData alloc] init];
@@ -181,7 +182,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	else 
 	{
 		BOOL presentDialog = YES;
-		if (dotorgLogin == YES && appDelegate.isWPcomAuthenticated == NO)
+		if (dotorgLogin == YES && ![blog isWPcom])
 		{
 			presentDialog = NO;
 			dotorgLogin = NO;
@@ -1051,22 +1052,22 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			break;
 		case 1:
 			if (postViewsData != nil){
-				label.text = @"Post Views";
+				label.text = @"Post Views (Past 7 Days)";
 			}
 			break;
 		case 2:
 			if (referrersData != nil){
-				label.text = @"Referrers";
+				label.text = @"Referrers (Past 7 Days)";
 			}
 			break;
 		case 3:
 			if (referrersData != nil){
-				label.text = @"Search Terms";
+				label.text = @"Search Terms (Past 7 Days)";
 			}
 			break;
 		case 4:
 			if (clicksData != nil){
-				label.text = @"Clicks";
+				label.text = @"Clicks (Past 7 Days)";
 			}
 			break;
 	}
