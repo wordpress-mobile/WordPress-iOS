@@ -115,13 +115,7 @@
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
     UIImageWriteToSavedPhotosAlbum(self.photo, nil, nil, nil);
-    Blog *blog = self.blogSelector.activeBlog;
     Media *media;
-    if (post == nil) {
-        post = [Post newDraftForBlog:blog];
-    }
-    post.postTitle = titleTextField.text;
-    post.content = contentTextView.text;
     
     if (post.media && [post.media count] > 0) {
         media = [post.media anyObject];
@@ -156,6 +150,13 @@
 - (void)post {
     [spinner show];
     [spinner setTitle:NSLocalizedString(@"Saving picture...", @"")];
+    Blog *blog = self.blogSelector.activeBlog;
+    if (post == nil) {
+        post = [Post newDraftForBlog:blog];
+    }
+    post.postTitle = titleTextField.text;
+    post.content = contentTextView.text;
+
     [self performSelectorInBackground:@selector(postInBackground) withObject:nil];
 }
 
