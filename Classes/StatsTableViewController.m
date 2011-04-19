@@ -112,6 +112,9 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
     foundStatsData = NO;
     canceledAPIKeyAlert =  NO;
     
+    if (DeviceIsPad())
+        [appDelegate showContentDetailViewController:nil];
+    
 	if([[WPReachability sharedReachability] internetConnectionStatus] == NotReachable) {
 		UIAlertView *errorView = [[UIAlertView alloc] 
 								  initWithTitle: @"Communication Error" 
