@@ -935,7 +935,8 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 		if (viewsData != nil) {
 
 		UILabel *label = [[[UILabel	alloc] initWithFrame:CGRectMake(14.0, 0, 210.0, 
-																		tableView.rowHeight)] autorelease]; 
+																		tableView.rowHeight)] autorelease];
+        label.textColor = [UIColor blackColor]; 
 			
 		if (addLoadMoreFooter){
 			[cell addColumn:280];
@@ -943,6 +944,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			label.font = [UIFont systemFontOfSize:14.0]; 
 			label.text = @"Show more...";
 			label.textAlignment = UITextAlignmentCenter; 
+            label.textColor = [[UIColor alloc] initWithRed:40.0 / 255 green:82.0 / 255 blue:137.0 / 255 alpha:1.0];
 		}
 		else {
 			[cell addColumn:210];
@@ -962,8 +964,19 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 				label.text = leftColumn;
 			}
 			
-			if (indexPath.section <= 1 || indexPath.section == 3)
+			if (indexPath.section <= 1 || indexPath.section == 3) {
 				cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            }
+            else {
+                //if the value isn't a url, don't highlight it when tapped
+                NSURL *url = [NSURL URLWithString: leftColumn];
+                if (url == nil){
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                }
+                else{
+                    label.textColor = [[UIColor alloc] initWithRed:40.0 / 255 green:82.0 / 255 blue:137.0 / 255 alpha:1.0];
+                }
+            }
 			label.font = [UIFont boldSystemFontOfSize:14.0]; 
 			label.textAlignment = UITextAlignmentLeft; 
 		}
@@ -973,7 +986,6 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			label.numberOfLines = 2;
 		}
 		
-		label.textColor = [UIColor blackColor]; 
 		label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | 
 		UIViewAutoresizingFlexibleHeight; 
 		[cell.contentView addSubview:label]; 
@@ -1021,8 +1033,8 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 				[self.tableView reloadData];
 			}
 			else {
-				[[UIApplication sharedApplication] openURL:[NSURL URLWithString: [[referrersData objectAtIndex:indexPath.row] objectAtIndex:0]]];
-				[tableView deselectRowAtIndexPath:indexPath animated:YES];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[referrersData objectAtIndex:indexPath.row] objectAtIndex:0]]];
+                [tableView deselectRowAtIndexPath:indexPath animated:YES];
 			}
 			break;
 		case 3:
