@@ -107,7 +107,6 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	
     //reset booleans
     apiKeyFound = NO;
-    dotorgLogin = NO;
     isRefreshingStats = NO;
     foundStatsData = NO;
     canceledAPIKeyAlert =  NO;
@@ -169,7 +168,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 }
 
 -(void)getUserAPIKey {
-	if ([blog isWPcom])
+	if ([blog isWPcom] || dotorgLogin == YES)
 	{
 		[self showLoadingDialog];
 		statsData = [[NSMutableData alloc] init];
