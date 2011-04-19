@@ -220,6 +220,13 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 }
 
 - (void) refreshStats: (int) titleIndex reportInterval: (int) intervalIndex {
+    //make sure we have the apiKey
+    if (blog.apiKey == nil){
+		[self getUserAPIKey];
+        return;
+	}
+    
+    
 	//load stats into NSMutableArray objects
 	isRefreshingStats = YES;
 	[self showLoadingDialog];
