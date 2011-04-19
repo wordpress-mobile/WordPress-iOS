@@ -20,8 +20,8 @@
 
 + (QuickPhotoButton *)button {
     QuickPhotoButton *button = [QuickPhotoButton buttonWithType:UIButtonTypeCustom];
-    [button setBackgroundImage:[[UIImage imageNamed:@"quickPhotoButton"] stretchableImageWithLeftCapWidth:10 topCapHeight:0] forState:UIControlStateNormal];
-    [button setBackgroundImage:[[UIImage imageNamed:@"quickPhotoButtonHighlighted"] stretchableImageWithLeftCapWidth:10 topCapHeight:0] forState:UIControlStateHighlighted];
+    [button setBackgroundImage:[[UIImage imageNamed:@"quickPhotoButton.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:0] forState:UIControlStateNormal];
+    [button setBackgroundImage:[[UIImage imageNamed:@"quickPhotoButtonHighlighted.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:0] forState:UIControlStateHighlighted];
     return button;
 }
 

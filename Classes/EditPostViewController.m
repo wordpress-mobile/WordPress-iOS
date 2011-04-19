@@ -1242,15 +1242,15 @@ NSTimeInterval kAnimationDuration = 0.3f;
         keyboardToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 40)];
         NSMutableArray *buttons = [NSMutableArray array];
         UIBarButtonItem *button;
-        button = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"bold"] style:UIBarButtonItemStyleBordered target:self action:@selector(setBold)];
+        button = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"bold.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(setBold)];
         [buttons addObject:button];
         [button release];
 
-        button = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"italic"] style:UIBarButtonItemStyleBordered target:self action:@selector(setItalic)];
+        button = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"italic.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(setItalic)];
         [buttons addObject:button];
         [button release];
 
-        button = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"blockquote"] style:UIBarButtonItemStyleBordered target:self action:@selector(setBlockquote)];
+        button = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"blockquote.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(setBlockquote)];
         [buttons addObject:button];
         [button release];
 

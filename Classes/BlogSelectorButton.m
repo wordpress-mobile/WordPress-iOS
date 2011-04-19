@@ -128,7 +128,9 @@
     if (self.activeBlog == nil) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
-        [fetchRequest setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]]];
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"blogName" ascending:YES];
+        [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+        [sortDescriptor release]; sortDescriptor = nil;
         [fetchRequest setFetchLimit:1];
         NSArray *results = [moc executeFetchRequest:fetchRequest error:&error];
         if (results && ([results count] > 0)) {

@@ -68,10 +68,13 @@
                 frameLayer = [CALayer layer];
                 frameLayer.backgroundColor = [UIColor whiteColor].CGColor;
                 frameLayer.zPosition = -5;
-                frameLayer.shadowColor = [UIColor blackColor].CGColor;
-                frameLayer.shadowOffset = CGSizeMake(0.0f, 0.75f);
-                frameLayer.shadowOpacity = 0.5f;
-                frameLayer.shadowRadius = 1.0f;
+                // Check for shadow compatibility (iOS 3.2+)
+                if ([frameLayer respondsToSelector:@selector(setShadowColor:)]) {
+                    frameLayer.shadowColor = [UIColor blackColor].CGColor;
+                    frameLayer.shadowOffset = CGSizeMake(0.0f, 0.75f);
+                    frameLayer.shadowOpacity = 0.5f;
+                    frameLayer.shadowRadius = 1.0f;
+                }
                 [self.layer addSublayer:frameLayer];
             }
             imageFrame.size.width += 2 * QPP_FRAME_WIDTH;
@@ -80,7 +83,7 @@
             imageFrame.origin.y -= QPP_FRAME_WIDTH;
             frameLayer.frame = imageFrame;
             
-            paperClipImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"paperclip"]];
+            paperClipImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"paperclip.png"]];
             paperClipImageView.frame = CGRectMake(3.0f, -10.0f, 15.0f, 41.0f);
             [paperClipImageView setHidden:NO];
             [imageView addSubview:paperClipImageView];
