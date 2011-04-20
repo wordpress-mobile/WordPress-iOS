@@ -27,7 +27,7 @@
 #pragma mark Memory Management
 
 - (id)initWithFrame:(CGRect)frame {
-    if (self = [super initWithFrame:frame]) {
+    if ((self = [super initWithFrame:frame])) {
         self.contentMode = UIViewContentModeScaleAspectFit;
     }
     
@@ -92,20 +92,20 @@
 
     if (cachedData) {
         self.image = [UIImage imageWithData:cachedData];
-    } else {
-        if (!isBlavatar)
-            self.image = nil;
-        NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:60.0];
-        
-        //lazy load the image while scrolling, from stackoverflow.com/questions/1826913/delayed-uiimageview-rendering-in-uitableview
-        connection = [[NSURLConnection alloc]
-                                       initWithRequest:request
-                                       delegate:self
-                                       startImmediately:NO];
-        [connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
-        [connection start];
-        
     }
+
+    if (!isBlavatar)
+        self.image = nil;
+
+    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:60.0];
+    
+    //lazy load the image while scrolling, from stackoverflow.com/questions/1826913/delayed-uiimageview-rendering-in-uitableview
+    connection = [[NSURLConnection alloc]
+                                   initWithRequest:request
+                                   delegate:self
+                                   startImmediately:NO];
+    [connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+    [connection start];
 }
 
 #pragma mark -

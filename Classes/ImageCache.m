@@ -13,7 +13,7 @@
 static ImageCache *sharedImageCache;
 
 - (id)init {
-    if (self = [super init]) {
+    if ((self = [super init])) {
         _data = [[NSMutableDictionary alloc] init];
     }
     
@@ -33,16 +33,42 @@ static ImageCache *sharedImageCache;
     return sharedImageCache;
 }
 
+- (NSString *)cacheDir {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    if ([paths count] > 0) {
+        return [paths objectAtIndex:0];
+    }
+    return nil;
+}
+
+- (NSString *)pathForURL:(NSURL *)url {
+    NSString *filePath = [url absoluteString];
+    // FIXME: use regexp when deprecating iOS 3.x
+    // See NSRegularExpressionSearch
+    filePath = [filePath stringByReplacingOccurrencesOfString:@"/" withString:@""];
+    return [NSString stringWithFormat:@"%@/%@",
+             [self cacheDir],
+             filePath];
+}
+
 - (void)storeData:(NSData *)data forURL:(NSURL *)url {
     NSString *urlString = [url description];
 	if (data != nil) {
 		[_data setObject:data forKey:urlString];
+        NSString *path = [self pathForURL:url];
+        [_data writeToFile:path atomically:YES];
 	}
 }
 
 - (NSData *)dataForURL:(NSURL *)url {
     NSString *urlString = [url description];
-    return [_data valueForKey:urlString];
+    NSData *cached = nil;
+    cached = [_data valueForKey:urlString];
+    if (cached) {
+        return cached;
+    } else {
+        return [NSData dataWithContentsOfFile:[self pathForURL:url]];
+    }
 }
 
 @end
