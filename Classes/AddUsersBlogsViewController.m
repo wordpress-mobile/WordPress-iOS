@@ -280,10 +280,10 @@
 - (void)signOut {
     if (isWPcom) {
         appDelegate.isWPcomAuthenticated = NO;
-        NSError *error = nil;
+       /* NSError *error = nil;
         [SFHFKeychainUtils deleteItemForUsername:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"]
                                   andServiceName:@"WordPress.com"
-                                           error:&error];
+                                           error:&error];*/
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_authenticated_flag"];
         [[NSUserDefaults standardUserDefaults] synchronize];
