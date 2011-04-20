@@ -222,6 +222,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 - (void) refreshStats: (int) titleIndex reportInterval: (int) intervalIndex {
     //make sure we have the apiKey
     if (blog.apiKey == nil){
+        statsRequest = NO;
 		[self getUserAPIKey];
         return;
 	}
@@ -285,7 +286,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			break;
 	}	
     */
-	NSString *apiKey = [appDelegate currentBlog].apiKey;
+	NSString *apiKey = blog.apiKey;
     
     NSString *idType;
 	
@@ -687,8 +688,8 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 		}
         displayedLoginView = YES;
 		if (!statsAPIAlertShowing){
-			[appDelegate currentBlog].apiKey = nil;
-			[[appDelegate currentBlog] dataSave];
+			blog.apiKey = nil;
+			[blog dataSave];
 			UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Login Error" 
 															 message:@"Please enter an administrator login for this blog and refresh." 
 															delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil] autorelease];
@@ -804,8 +805,8 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 		}
 	}
 	else if ([elementName isEqualToString:@"apikey"]) {
-		[appDelegate.currentBlog setValue:self.currentProperty forKey:@"apiKey"];
-		[appDelegate.currentBlog dataSave];
+		[blog setValue:self.currentProperty forKey:@"apiKey"];
+		[blog dataSave];
 		apiKeyFound = YES;
 		[parser abortParsing];
 		[self showLoadingDialog];
