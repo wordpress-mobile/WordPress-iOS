@@ -472,6 +472,7 @@ pt.lproj/Localizable.strings -text svneol=unset#unset
 /settings@2x.png -text
 /stats.png -text
 /stats@2x.png -text
+sv.lproj/Localizable.strings -text svneol=unset#unset
 /sync.png -text svneol=unset#unset
 /sync@2x.png -text
 /tabPointer.png -text svneol=unset#unset
