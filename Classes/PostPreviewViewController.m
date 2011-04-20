@@ -162,11 +162,18 @@
 		} else if (link == nil ) {
 			[webView loadHTMLString:[self buildSimplePreview:NSLocalizedString(@"Sorry, the post has changed, or it is not published. A simple preview is shown below.", @"")] baseURL:nil];
 		} else {
+				
+
+			// checks if this a scheduled post
 			
-			/*checks if this a scheduled post*/
-			NSDate *currentGMTDate = [DateUtils currentGMTDate];
+			/*
+			 Forced the preview to use the login form. Otherwise the preview of pvt blog doesn't work.
+			 We can switch back to the normal call when we can access the blogOptions within the app.
+			 */
+			
+//			NSDate *currentGMTDate = [DateUtils currentGMTDate];
 			NSDate *postGMTDate = postDetailViewController.apost.date_created_gmt;
-			NSDate *laterDate = [currentGMTDate laterDate:postGMTDate];
+			NSDate *laterDate = postDetailViewController.apost.date_created_gmt;//[currentGMTDate laterDate:postGMTDate];
 			
 			if(isDraft || isPending || isPrivate || (laterDate == postGMTDate)) {
 				
