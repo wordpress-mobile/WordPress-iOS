@@ -56,7 +56,7 @@ static ImageCache *sharedImageCache;
 	if (data != nil) {
 		[_data setObject:data forKey:urlString];
         NSString *path = [self pathForURL:url];
-        [_data writeToFile:path atomically:YES];
+        [data writeToFile:path atomically:YES];
 	}
 }
 
