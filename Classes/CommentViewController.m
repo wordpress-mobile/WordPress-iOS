@@ -39,6 +39,8 @@
 - (void)launchReplyToComments;
 - (void)launchEditComment;
 
+- (void)reachabilityChanged;
+
 @end
 
 @implementation CommentViewController
@@ -105,12 +107,12 @@
 		if([wview isKindOfClass:[UIImageView class]]) { wview.hidden = YES; } 
 	}
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChangedNotification) name:@"kNetworkReachabilityChangedNotification" object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [self performSelector:@selector(reachabilityChanged)];
+	[self reachabilityChanged];
 	wasLastCommentPending = NO;
 	isVisible = YES;
     [super viewWillAppear:animated];
@@ -120,6 +122,11 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	isVisible = NO;
     [super viewWillDisappear:animated];
+}
+
+
+- (void)reachabilityChangedNotification {
+	[self performSelectorOnMainThread:@selector(reachabilityChanged) withObject:nil waitUntilDone:YES];
 }
 
 - (void)reachabilityChanged {
