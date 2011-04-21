@@ -1076,27 +1076,35 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (CGRect)frameForTextView {
 	CGRect keyboardFrame;
-
+	
 	// Reposition TextView for editing mode or normal mode based on device and orientation
-
-	if(isEditing && isShowingKeyboard) // Editing mode
+	
+	if(isEditing && isShowingKeyboard) { // Editing mode
+		int toolbarHeight = 0;
+		if ([textView respondsToSelector:@selector(setInputAccessoryView:)] &&  textView.inputAccessoryView != nil) { 
+			//toolbarHeight = toolbar.frame.size.height; 44px, too big.
+			toolbarHeight = 30;
+		}
 		if(DeviceIsPad() == YES)
 			if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
 				|| (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
-				keyboardFrame = CGRectMake(0, 0, self.normalTextFrame.size.width, self.view.frame.size.height - 352);
+				keyboardFrame = CGRectMake(0, 0, self.normalTextFrame.size.width, self.view.frame.size.height - 352  - toolbarHeight);
 			else // Portrait
-				keyboardFrame = CGRectMake(0, 0, self.normalTextFrame.size.width, self.view.frame.size.height - 264);
-		else // iPhone
-			if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
-				|| (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
-				keyboardFrame = CGRectMake (0, 0, 480, 130);
-			else // Portrait
-				keyboardFrame = CGRectMake (0, 0, 320, 210);
-	else // Normal mode
-        keyboardFrame = self.normalTextFrame;
+				keyboardFrame = CGRectMake(0, 0, self.normalTextFrame.size.width, self.view.frame.size.height - 264  - toolbarHeight);
+			else { // iPhone
+				if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
+					|| (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
+					keyboardFrame = CGRectMake (0, 0, 480, 130 - toolbarHeight);
+				else // Portrait
+					keyboardFrame = CGRectMake (0, 0, 320, 210 - toolbarHeight);
+			}
 
+	} else { // Normal mode
+		keyboardFrame = self.normalTextFrame;
+	}
     return keyboardFrame;
 }
+
 
 - (void)positionTextView:(NSDictionary *)keyboardInfo {
 	CGFloat animationDuration = 0.3;
