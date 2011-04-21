@@ -150,8 +150,8 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	}
 	else {
 		statsRequest = YES;
+        //refresh stats
 		[self showLoadingDialog];
-		[self refreshStats: 0 reportInterval: 0];
 	}
 }
 
@@ -229,7 +229,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
     
 	//load stats into NSMutableArray objects
 	isRefreshingStats = YES;
-	[self showLoadingDialog];
+	//[self showLoadingDialog];
 	foundStatsData = NO;
 	
     //This block can be used for adding custom controls if desired by users down the road to load their own reports
