@@ -108,7 +108,6 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
     //reset booleans
     apiKeyFound = NO;
     isRefreshingStats = NO;
-    foundStatsData = NO;
     canceledAPIKeyAlert =  NO;
     
     if (DeviceIsPad())
@@ -672,7 +671,6 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 		if(DeviceIsPad() == YES) {
             dotorgLogin = NO;
             isRefreshingStats = NO;
-            foundStatsData = NO;
             canceledAPIKeyAlert =  NO;
 			WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController-iPad-stats" bundle:nil];	
             wpComLogin.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
