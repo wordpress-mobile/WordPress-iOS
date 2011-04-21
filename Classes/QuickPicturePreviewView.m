@@ -7,8 +7,8 @@
 //
 
 #import "QuickPicturePreviewView.h"
-#define QPP_MARGIN 10.0f
-#define QPP_FRAME_WIDTH 7.0f
+#define QPP_MARGIN 5.0f
+#define QPP_FRAME_WIDTH 5.0f
 #define QPP_SHADOW_SIZE 5.0f
 
 @implementation QuickPicturePreviewView
@@ -56,6 +56,9 @@
             CGFloat width = (imageRatio > 1) ? frameSize.width - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH) : (frameSize.height - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH)) * imageRatio;
             CGFloat height = (imageRatio < 1) ? frameSize.height - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH) : (frameSize.width - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH)) / imageRatio;
             
+            width += 5.0f;
+            height += 5.0f;
+            
             imageFrame = CGRectMake(
                                     frameSize.width - width - (QPP_MARGIN + QPP_FRAME_WIDTH),
                                     QPP_MARGIN + QPP_FRAME_WIDTH,
@@ -84,7 +87,7 @@
             frameLayer.frame = imageFrame;
             
             paperClipImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"paperclip.png"]];
-            paperClipImageView.frame = CGRectMake(3.0f, -10.0f, 15.0f, 41.0f);
+            paperClipImageView.frame = CGRectMake(3.0f, -8.0f, 15.0f, 41.0f);
             [paperClipImageView setHidden:NO];
             [imageView addSubview:paperClipImageView];
         }
