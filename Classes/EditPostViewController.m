@@ -271,6 +271,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaAbove:) name:@"ShouldInsertMediaAbove" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:@"ShouldInsertMediaBelow" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissAlertViewKeyboard:) name:@"DismissAlertViewKeyboard" object:nil];
 	
 	
     isTextViewEditing = NO;
@@ -798,6 +799,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		CGAffineTransform myTransform = CGAffineTransformMakeTranslation(0, 100);
 		[addURLSourceAlert setTransform:myTransform];
 	}
+    isShowingLinkAlert = YES;
     [addURLSourceAlert setTag:2];
     [addURLSourceAlert show];
     [addURLSourceAlert release];
@@ -816,6 +818,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
 	
     if ([alertView tag] == 2) {
+        isShowingLinkAlert = NO;
         if (buttonIndex == 1) {
             if ((urlField.text == nil) || ([urlField.text isEqualToString:@""])) {
                 [delegate setAlertRunning:NO];
@@ -1481,6 +1484,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)didReceiveMemoryWarning {
     WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning];
+}
+
+- (void)dismissAlertViewKeyboard: (NSNotification*)notification {
+    if (isShowingLinkAlert) {
+        [infoText resignFirstResponder];
+        [urlField resignFirstResponder];
+    }
 }
 
 #pragma mark -

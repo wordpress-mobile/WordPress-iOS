@@ -19,12 +19,13 @@
 	IBOutlet UISplitViewController *splitViewController;
 	CrashReportViewController *crashReportView;
     BOOL connectionStatus;
-    BOOL alertRunning;
+    BOOL alertRunning, passwordAlertRunning;
 	BOOL isWPcomAuthenticated;
 
     UIImageView *splashView;
 	NSMutableData *statsData;
 	NSString *postID;
+    UITextField *passwordTextField;
 	
 	// Core Data
     NSManagedObjectContext *managedObjectContext_;

@@ -18,7 +18,7 @@
 - (void)showSplashView;
 - (void)checkIfStatsShouldRun;
 - (void)runStats;
-- (void) showPasswordAlert;
+- (void)showPasswordAlert;
 @end
 
 NSString *CrashFilePath() {
@@ -92,6 +92,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
     [navigationController release];
     [window release];
 	[currentBlog release];
+    [passwordTextField release];
     [super dealloc];
 }
 
@@ -309,6 +310,13 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];    
+    
+    if (passwordAlertRunning && passwordTextField != nil)
+        [passwordTextField resignFirstResponder];
+    else
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"DismissAlertViewKeyboard" object:nil];
+
+    
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -350,6 +358,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 				//check if the user has NOT changed the blog during the loading
 				if( (errInfo != nil) && ([errInfo objectForKey:@"currentBlog"] != nil ) 
 				   && currentBlog == [errInfo objectForKey:@"currentBlog"] ) {
+                    passwordAlertRunning = YES;
 					[self performSelectorOnMainThread:@selector(showPasswordAlert) withObject:nil waitUntilDone:NO];
 				} else {
 					//do not show the alert
@@ -371,7 +380,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)showPasswordAlert {
 
-	UITextField *passwordTextField;
 	UILabel *labelPasswd;
 	
 	NSString *lineBreaks;
@@ -938,7 +946,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	[self setAlertRunning:NO];
 	
 	if (alertView.tag == 101) { //Password Alert
-		UITextField *passwordTextField = (UITextField *)[alertView viewWithTag:123];
+        passwordAlertRunning = NO;
 		if(currentBlog != nil) {
 			NSError *error = nil;
 			

@@ -26,7 +26,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
     BOOL isNewCategory;
     BOOL editCustomFields;
 	BOOL isLocalDraft;
-    BOOL hasSaved, isVisible, isPublishing, isShowingKeyboard;
+    BOOL hasSaved, isVisible, isPublishing, isShowingKeyboard, isShowingLinkAlert;
 
     IBOutlet UITextView *textView;
     IBOutlet UITextField *titleTextField;
@@ -112,6 +112,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (void)showLinkView;
 - (void)disableInteraction;
 - (void)savePost: (BOOL)upload;
+- (void)dismissAlertViewKeyboard:(NSNotification *)notification;
 
 // Media
 - (void)insertMediaAbove:(NSNotification *)notification;
