@@ -751,6 +751,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		NSTimeInterval statsInterval = 7 * 24 * 60 * 60; //number of seconds in 30 days
 		if (difference > statsInterval) //if it's been more than 7 days since last stats run
 		{
+			NSDate *theDate = [NSDate date];
+			[defaults setObject:theDate forKey:@"statsDate"];
 			[self performSelectorInBackground:@selector(runStats) withObject:nil];
 		}
 	}
