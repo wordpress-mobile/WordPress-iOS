@@ -56,13 +56,13 @@ static NSArray *__pageControlColorList = nil;
 	NSString *chartTitle = @"";
 	switch (pageNumber) {
 		case 0:
-			chartTitle = @"Days";
+			chartTitle = NSLocalizedString(@"Days", @"");
 			break;
 		case 1:
-			chartTitle = @"Weeks";
+			chartTitle = NSLocalizedString(@"Weeks", @"");
 			break;
 		case 2:
-			chartTitle = @"Months";
+			chartTitle = NSLocalizedString(@"Months", @"");
 			break;
 	}
     chartTitleLabel.text = chartTitle;
@@ -94,7 +94,7 @@ static NSArray *__pageControlColorList = nil;
 -(void) showError{
 	if(!spinner.hidden)
 		spinner.hidden=YES;
-	chartTitleLabel.text = @"No chart data found.";
+	chartTitleLabel.text = NSLocalizedString(@"No chart data found.", @"");
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection*)theConnection {

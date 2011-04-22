@@ -206,11 +206,11 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			[appDelegate.navigationController presentModalViewController:wpComLogin animated:YES];
 			[wpComLogin release];
 		}
-		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"WordPress.com Stats" 
-														 message:@"To load stats for your blog you will need to have the WordPress.com stats plugin installed and correctly configured as well as your WordPress.com login." 
-														delegate:self cancelButtonTitle:@"Learn More" otherButtonTitles:nil] autorelease];
+		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WordPress.com Stats", @"")
+														 message:NSLocalizedString(@"To load stats for your blog you will need to have the WordPress.com stats plugin installed and correctly configured as well as your WordPress.com login.", @"") 
+														delegate:self cancelButtonTitle:NSLocalizedString(@"Learn More", @"") otherButtonTitles:nil] autorelease];
 		alert.tag = 1;
-		[alert addButtonWithTitle:@"I'm Ready!"];
+		[alert addButtonWithTitle:NSLocalizedString(@"I'm Ready!", @"")];
 		[alert show];
 		}
 		
@@ -587,7 +587,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 -(void) showNoDataFoundError{
 	[self.tableView.tableHeaderView removeFromSuperview];
 	UILabel *errorMsg = [[UILabel alloc] init];
-	errorMsg.text = @"No stats data found.  Please try again later.";
+	errorMsg.text = NSLocalizedString(@"No stats data found.  Please try again later.", @"");
 	self.tableView.tableHeaderView = errorMsg;
 }
 
@@ -962,14 +962,14 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			[cell addColumn:280];
 			label.frame = CGRectMake(14.0, 0, 266.0, tableView.rowHeight);
 			label.font = [UIFont systemFontOfSize:14.0]; 
-			label.text = @"Show more...";
+			label.text = NSLocalizedString(@"Show more...", @"");
 			label.textAlignment = UITextAlignmentCenter; 
             label.textColor = [[UIColor alloc] initWithRed:40.0 / 255 green:82.0 / 255 blue:137.0 / 255 alpha:1.0];
 		}
 		else {
 			[cell addColumn:210];
 			if (indexPath.section == 0 && indexPath.row == 0) {
-				label.text = @"Today";
+				label.text = NSLocalizedString(@"Today", @"");
 			}
 			else if (indexPath.section == 0 && indexPath.row > 0){
 				//special date formatting for first section
@@ -1082,27 +1082,27 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	switch (section) {
 		case 0:
 			if (viewsData != nil){
-				label.text = @"Daily Views";
+				label.text = NSLocalizedString(@"Daily Views", @"");
 			}
 			break;
 		case 1:
 			if (postViewsData != nil){
-				label.text = @"Post Views (Past 7 Days)";
+				label.text = NSLocalizedString(@"Post Views (Past 7 Days)", @"");
 			}
 			break;
 		case 2:
 			if (referrersData != nil){
-				label.text = @"Referrers (Past 7 Days)";
+				label.text = NSLocalizedString(@"Referrers (Past 7 Days)", @"");
 			}
 			break;
 		case 3:
 			if (referrersData != nil){
-				label.text = @"Search Terms (Past 7 Days)";
+				label.text = NSLocalizedString(@"Search Terms (Past 7 Days)", @"");
 			}
 			break;
 		case 4:
 			if (clicksData != nil){
-				label.text = @"Clicks (Past 7 Days)";
+				label.text = NSLocalizedString(@"Clicks (Past 7 Days)", @"");
 			}
 			break;
 	}
