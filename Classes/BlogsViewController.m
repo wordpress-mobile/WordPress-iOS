@@ -554,8 +554,8 @@
 
 - (void)mediaUploadFailed:(NSNotification *)notification {
     [self showQuickPhotoButton];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick Picture failed", @"")
-                                                    message:NSLocalizedString(@"Sorry, the picture upload failed.", @"")
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick Photo failed", @"")
+                                                    message:NSLocalizedString(@"Sorry, the photo upload failed. The post has been saved as a Local Draft.", @"")
                                                    delegate:self
                                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                           otherButtonTitles:nil];
@@ -569,8 +569,8 @@
 
 - (void)postUploadFailed:(NSNotification *)notification {
     [self showQuickPhotoButton];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick Picture failed", @"")
-                                                    message:NSLocalizedString(@"Sorry, the picture publish failed", @"")
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick photo failed", @"")
+                                                    message:NSLocalizedString(@"Sorry, the photo publish failed. The post has been saved as a Local Draft.", @"")
                                                    delegate:self
                                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                           otherButtonTitles:nil];

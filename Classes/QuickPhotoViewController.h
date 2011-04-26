@@ -16,7 +16,6 @@
 #define QPVCBlogForQuickPhoto @"blogForQuickPhoto"
 
 @interface QuickPhotoViewController : UIViewController<UIImagePickerControllerDelegate,UINavigationControllerDelegate,BlogSelectorButtonDelegate,QuickPicturePreviewViewDelegate> {
-    WPProgressHUD *spinner;
     Post *post;
     BlogsViewController *blogsViewController;
 }

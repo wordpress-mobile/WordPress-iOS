@@ -31,7 +31,6 @@
     self.titleTextField = nil;
     self.contentTextView = nil;
     self.postButtonItem = nil;
-    [spinner release]; spinner = nil;
     [super dealloc];
 }
 
@@ -75,16 +74,10 @@
         self.photoImageView.image = self.photo;
     }
     self.photoImageView.delegate = self;
-    spinner = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Publishing...", @"")];
-    self.navigationItem.title = NSLocalizedString(@"Quick Picture", @"");
+    self.navigationItem.title = NSLocalizedString(@"Quick Photo", @"");
     self.postButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Publish", @"") style:UIBarButtonItemStyleDone target:self action:@selector(post)] autorelease];
     self.navigationItem.rightBarButtonItem = self.postButtonItem;
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)] autorelease];
-
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:ImageUploadSuccessful object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaUploadFailed:) name:ImageUploadFailed object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postDidUploadSuccessfully:) name:@"PostUploaded" object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postUploadFailed:) name:@"PostUploadFailed" object:nil];
 }
 
 - (void)viewDidUnload
@@ -101,7 +94,6 @@
     self.postButtonItem = nil;
     self.blogSelector.delegate = nil;
     self.blogSelector = nil;
-    [spinner release]; spinner = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -170,43 +162,7 @@
 }
 
 - (void)dismiss {
-    //[spinner dismiss];
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)mediaDidUploadSuccessfully:(NSNotification *)notification {
-    Media *media = (Media *)[notification object];
-    [media save];
-    [spinner setTitle:NSLocalizedString(@"Publishing picture...", @"")];
-    post.content = [NSString stringWithFormat:@"%@\n\n%@", [media html], post.content];
-    [post upload];    
-}
-
-- (void)mediaUploadFailed:(NSNotification *)notification {
-    [spinner dismiss];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick Picture failed", @"")
-                                                    message:NSLocalizedString(@"Sorry, the picture upload failed", @"")
-                                                   delegate:self
-                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                          otherButtonTitles:nil];
-    [alert show];
-    [alert release];
-}
-
-- (void)postDidUploadSuccessfully:(NSNotification *)notification {
-    [spinner setTitle:@"Success"];
-    [self performSelector:@selector(dismiss) withObject:nil afterDelay:1];
-}
-
-- (void)postUploadFailed:(NSNotification *)notification {
-    [spinner dismiss];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick Picture failed", @"")
-                                                    message:NSLocalizedString(@"Sorry, the picture publish failed", @"")
-                                                   delegate:self
-                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                          otherButtonTitles:nil];
-    [alert show];
-    [alert release];
 }
 
 - (void)cancel {
