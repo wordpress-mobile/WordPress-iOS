@@ -24,8 +24,8 @@
 
 - (void)dealloc
 {
-    [spinner release];
-    [label release];
+    self.label = nil;
+    self.spinner = nil;
     [super dealloc];
 }
 
@@ -43,13 +43,14 @@
 {
     [super viewDidLoad];
     [spinner startAnimating];
+    self.label.text = NSLocalizedString(@"Uploading...", @"");
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+    self.label = nil;
+    self.spinner = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
