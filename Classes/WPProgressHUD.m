@@ -25,6 +25,9 @@
         progressMessage.backgroundColor = [UIColor clearColor];
 		progressMessage.font = [UIFont fontWithName:@"Helvetica" size:(14.0)];
         progressMessage.text = text;
+		progressMessage.textAlignment = UITextAlignmentCenter;
+		progressMessage.adjustsFontSizeToFitWidth = YES;
+		progressMessage.numberOfLines = 2;
         [self addSubview:progressMessage];
 
         activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -46,7 +49,11 @@
 
     CGRect textRect = progressMessage.frame;
     textRect.origin.y += 30.0;
+	textRect.origin.x = backgroundImageView.frame.origin.x + 5;
+	textRect.size.width = backgroundImageView.frame.size.width - 10;
+	textRect.size.height += textRect.size.height;
     progressMessage.frame = textRect;
+	
 
     CGRect activityRect = activityIndicator.frame;
     activityRect.origin.y -= 10.0;
