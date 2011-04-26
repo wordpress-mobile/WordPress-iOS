@@ -20,7 +20,6 @@
     Blog *currentBlog;
     QuickPhotoButton *quickPhotoButton;
     QuickPhotoUploadProgressController *uploadController;
-    UIView *quickPhotoLoadingView;
     Post *quickPicturePost;
     UILabel *uploadLabel;
     IBOutlet UITableView *tableView;

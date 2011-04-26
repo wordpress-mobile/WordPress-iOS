@@ -592,7 +592,7 @@
     [quickPhotoButton release]; quickPhotoButton = nil;
     self.tableView = nil;
     [quickPicturePost release];
-    [quickPhotoLoadingView release];
+    [uploadController release];
     [super dealloc];
 }
 
