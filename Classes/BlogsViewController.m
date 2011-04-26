@@ -506,12 +506,6 @@
         //remove the quick photo button w/ sexy animation
         CGRect frame = quickPhotoButton.frame;
         
-        /*uploadLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, 60)];
-        uploadLabel.text = @"Uploading...";
-        uploadLabel.font = [UIFont fontWithName:@"Zapfino" size: 14.0];
-        uploadLabel.textColor = [UIColor blackColor];
-        [self.view addSubview:uploadLabel];*/
-        
         uploadController = [[QuickPhotoUploadProgressController alloc] initWithNibName:@"QuickPhotoUploadProgressController" bundle:nil];
         [self.view addSubview:uploadController.view];
         

@@ -60,12 +60,6 @@
 {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
-    picker.allowsEditing = NO;
-    picker.delegate = self;
-    [self presentModalViewController:picker animated:YES];
     
     self.titleTextField.placeholder = NSLocalizedString(@"Title (optional)", @"Quick Picture title");
     [self.blogSelector loadBlogsForType:BlogSelectorButtonTypeQuickPhoto];
@@ -78,6 +72,17 @@
     self.postButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Publish", @"") style:UIBarButtonItemStyleDone target:self action:@selector(post)] autorelease];
     self.navigationItem.rightBarButtonItem = self.postButtonItem;
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)] autorelease];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
+    picker.allowsEditing = NO;
+    picker.delegate = self;
+    [self presentModalViewController:picker animated:YES];
 }
 
 - (void)viewDidUnload
@@ -153,7 +158,6 @@
     }
     post.postTitle = titleTextField.text;
     post.content = contentTextView.text;
-    post.remoteStatus = AbstractPostRemoteStatusPushing;
 
     [self performSelectorOnMainThread:@selector(postInBackground) withObject:nil waitUntilDone:YES];
     [self.navigationController popViewControllerAnimated:YES];
