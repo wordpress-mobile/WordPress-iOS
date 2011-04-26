@@ -507,16 +507,16 @@
         CGRect frame = quickPhotoButton.frame;
         
         uploadController = [[QuickPhotoUploadProgressController alloc] initWithNibName:@"QuickPhotoUploadProgressController" bundle:nil];
+        uploadController.view.frame = CGRectMake(frame.origin.x, self.view.bounds.size.height + 83, frame.size.width, frame.size.height);
         [self.view addSubview:uploadController.view];
         
         //show the upload dialog animation
         [UIView beginAnimations:nil context:nil];
-        
+        [UIView setAnimationDuration:0.6f];
         quickPhotoButton.frame = CGRectMake(frame.origin.x, self.view.bounds.size.height + 83, frame.size.width, frame.size.height);
-        
         frame = uploadController.view.frame;
         uploadController.view.frame = CGRectMake(frame.origin.x, self.view.bounds.size.height - 83, frame.size.width, frame.size.height);
-        [UIView setAnimationDuration:0.6f];
+        
         [UIView commitAnimations];
  
         //upload the image
@@ -548,7 +548,7 @@
 
 - (void)mediaUploadFailed:(NSNotification *)notification {
     [self showQuickPhotoButton];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick Photo failed", @"")
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick Photo Failed", @"")
                                                     message:NSLocalizedString(@"Sorry, the photo upload failed. The post has been saved as a Local Draft.", @"")
                                                    delegate:self
                                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
@@ -563,7 +563,7 @@
 
 - (void)postUploadFailed:(NSNotification *)notification {
     [self showQuickPhotoButton];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick photo failed", @"")
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick Photo Failed", @"")
                                                     message:NSLocalizedString(@"Sorry, the photo publish failed. The post has been saved as a Local Draft.", @"")
                                                    delegate:self
                                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
