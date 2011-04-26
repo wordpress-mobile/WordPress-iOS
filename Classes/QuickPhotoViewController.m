@@ -11,6 +11,7 @@
 #import "WordPressAppDelegate.h"
 #import "Blog.h"
 #import "Media.h"
+#import "BlogsViewController.h"
 
 @implementation QuickPhotoViewController
 @synthesize photoImageView;
@@ -19,6 +20,8 @@
 @synthesize blogSelector;
 @synthesize postButtonItem;
 @synthesize photo;
+@synthesize blogsViewController;
+
 
 - (void)dealloc
 {
@@ -29,7 +32,6 @@
     self.contentTextView = nil;
     self.postButtonItem = nil;
     [spinner release]; spinner = nil;
-
     [super dealloc];
 }
 
@@ -141,27 +143,34 @@
         [media setImage:self.photo withSize:newSize];
     }
     
-    [spinner performSelectorOnMainThread:@selector(setTitle:) withObject:NSLocalizedString(@"Uploading picture...", @"") waitUntilDone:YES];
-    [media performSelectorOnMainThread:@selector(upload) withObject:nil waitUntilDone:YES];
+    [media save];
+    [post save];
+    
+    //[spinner performSelectorOnMainThread:@selector(setTitle:) withObject:NSLocalizedString(@"Uploading picture...", @"") waitUntilDone:YES];
+    //[media performSelectorOnMainThread:@selector(upload) withObject:nil waitUntilDone:YES];
 
     [pool release];
 }
 
 - (void)post {
-    [spinner show];
-    [spinner setTitle:NSLocalizedString(@"Saving picture...", @"")];
+    //[spinner show];
+    //[spinner setTitle:NSLocalizedString(@"Saving picture...", @"")];
     Blog *blog = self.blogSelector.activeBlog;
     if (post == nil) {
         post = [Post newDraftForBlog:blog];
     }
     post.postTitle = titleTextField.text;
     post.content = contentTextView.text;
+    post.remoteStatus = AbstractPostRemoteStatusPushing;
 
-    [self performSelectorInBackground:@selector(postInBackground) withObject:nil];
+    [self performSelectorOnMainThread:@selector(postInBackground) withObject:nil waitUntilDone:YES];
+    [self.navigationController popViewControllerAnimated:YES];
+    [blogsViewController uploadQuickPhoto: post];
+    
 }
 
 - (void)dismiss {
-    [spinner dismiss];
+    //[spinner dismiss];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

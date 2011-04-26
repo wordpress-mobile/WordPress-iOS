@@ -175,6 +175,9 @@ Classes/PostsViewController.h -text
 Classes/PostsViewController.m -text
 Classes/QuickPhotoButton.h -text
 Classes/QuickPhotoButton.m -text
+Classes/QuickPhotoUploadProgressController.h -text
+Classes/QuickPhotoUploadProgressController.m -text
+Classes/QuickPhotoUploadProgressController.xib -text
 Classes/QuickPhotoViewController.h -text
 Classes/QuickPhotoViewController.m -text
 Classes/QuickPicturePreviewView.h -text

@@ -51,6 +51,8 @@
 		3704ACFD13128C9800120911 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3704ACFB13128C9800120911 /* Default@2x.png */; };
 		3744A0DE130ABB0800CE7BE1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3744A0DC130ABB0800CE7BE1 /* HelpViewController.m */; };
 		3744A0DF130ABB0800CE7BE1 /* HelpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3744A0DD130ABB0800CE7BE1 /* HelpViewController.xib */; };
+		3751D68A136721AE0010B274 /* QuickPhotoUploadProgressController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3751D688136721AE0010B274 /* QuickPhotoUploadProgressController.m */; };
+		3751D68B136721AE0010B274 /* QuickPhotoUploadProgressController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3751D689136721AE0010B274 /* QuickPhotoUploadProgressController.xib */; };
 		375D090D133B94C3000CC9CD /* BlogsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 375D090C133B94C3000CC9CD /* BlogsTableViewCell.m */; };
 		375D7EE21355E9B6001C7371 /* paperclip.png in Resources */ = {isa = PBXBuildFile; fileRef = 375D7EE11355E9B6001C7371 /* paperclip.png */; };
 		3768BE87130404FF00E7C9A9 /* BetaUIWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 3768BE86130404FF00E7C9A9 /* BetaUIWindow.m */; };
@@ -417,6 +419,9 @@
 		3744A0DB130ABB0800CE7BE1 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
 		3744A0DC130ABB0800CE7BE1 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
 		3744A0DD130ABB0800CE7BE1 /* HelpViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = HelpViewController.xib; path = ../HelpViewController.xib; sourceTree = "<group>"; };
+		3751D687136721AE0010B274 /* QuickPhotoUploadProgressController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuickPhotoUploadProgressController.h; sourceTree = "<group>"; };
+		3751D688136721AE0010B274 /* QuickPhotoUploadProgressController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuickPhotoUploadProgressController.m; sourceTree = "<group>"; };
+		3751D689136721AE0010B274 /* QuickPhotoUploadProgressController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QuickPhotoUploadProgressController.xib; sourceTree = "<group>"; };
 		375D090B133B94C3000CC9CD /* BlogsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogsTableViewCell.h; sourceTree = "<group>"; };
 		375D090C133B94C3000CC9CD /* BlogsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogsTableViewCell.m; sourceTree = "<group>"; };
 		375D7EE11355E9B6001C7371 /* paperclip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = paperclip.png; sourceTree = "<group>"; };
@@ -1337,6 +1342,9 @@
 				83A64688112C5F75000999A6 /* PostSettingsHelpViewController.m */,
 				E1497BBA12CCA8270022BCD9 /* PostViewController.h */,
 				E1497BBB12CCA8270022BCD9 /* PostViewController.m */,
+				3751D687136721AE0010B274 /* QuickPhotoUploadProgressController.h */,
+				3751D688136721AE0010B274 /* QuickPhotoUploadProgressController.m */,
+				3751D689136721AE0010B274 /* QuickPhotoUploadProgressController.xib */,
 			);
 			name = Post;
 			sourceTree = "<group>";
@@ -1999,6 +2007,7 @@
 				E11C91D8135771520072A811 /* paperclip@2x.png in Resources */,
 				E1ABD13F135862EC00DB0707 /* quickPhotoButtonHighlighted.png in Resources */,
 				E1ABD140135862EC00DB0707 /* quickPhotoButtonHighlighted@2x.png in Resources */,
+				3751D68B136721AE0010B274 /* QuickPhotoUploadProgressController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2153,6 +2162,7 @@
 				E17BE261134F5E4D00165C3D /* QuickPicturePreviewView.m in Sources */,
 				E138623C1355FF8800AAB235 /* UINavigationController+FormSheet.m in Sources */,
 				E1ABD144135866E400DB0707 /* QuickPhotoButton.m in Sources */,
+				3751D68A136721AE0010B274 /* QuickPhotoUploadProgressController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

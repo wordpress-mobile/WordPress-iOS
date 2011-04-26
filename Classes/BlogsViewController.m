@@ -2,6 +2,7 @@
 #import "BlogsTableViewCell.h"
 #import "QuickPhotoViewController.h"
 #import "UINavigationController+FormSheet.h"
+#import "QuickPhotoUploadProgressController.h"
 
 @interface BlogsViewController (Private)
 - (void) cleanUnusedMediaFileFromTmpDir;
@@ -44,7 +45,7 @@
     if (!DeviceIsPad() && [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         quickPhotoButton = [QuickPhotoButton button];
         [quickPhotoButton setImage:[UIImage imageNamed:@"camera.png"] forState:UIControlStateNormal];
-        quickPhotoButton.frame = CGRectMake(0, self.view.bounds.size.height - 60, self.view.bounds.size.width, 60);
+        quickPhotoButton.frame = CGRectMake(0, self.view.bounds.size.height - 83, self.view.bounds.size.width, 83);
         [quickPhotoButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [quickPhotoButton setTitle:NSLocalizedString(@"Quick Photo", @"") forState:UIControlStateNormal];
         [quickPhotoButton.titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
@@ -52,7 +53,7 @@
         [quickPhotoButton addTarget:self action:@selector(quickPhotoPost) forControlEvents:UIControlEventTouchUpInside];
         [quickPhotoButton retain];
         [self.view addSubview:quickPhotoButton];
-        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 60, 0);
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 83, 0);
     }
 	
 	// Check to see if we should prompt about rating in the App Store
@@ -101,6 +102,12 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blogsRefreshNotificationReceived:) name:@"BlogsRefreshNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBlogWithoutAnimation) name:@"NewBlogAdded" object:nil];
 
+    //quick photo upload notifications
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:ImageUploadSuccessful object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaUploadFailed:) name:ImageUploadFailed object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postDidUploadSuccessfully:) name:@"PostUploaded" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postUploadFailed:) name:@"PostUploadFailed" object:nil];
+    
 	[self checkEditButton];
 }
 
@@ -289,6 +296,7 @@
     [FlurryAPI logEvent:@"QuickPhoto"];
 
     QuickPhotoViewController *quickPhotoViewController = [[QuickPhotoViewController alloc] init];
+    quickPhotoViewController.blogsViewController = self;
     [self.navigationController pushViewController:quickPhotoViewController animated:YES];
     [quickPhotoViewController release];
 }
@@ -492,6 +500,84 @@
     }
 }
 
+- (void)uploadQuickPhoto:(Post *)post{
+    quickPicturePost = post;
+    if (post != nil) {
+        //remove the quick photo button w/ sexy animation
+        CGRect frame = quickPhotoButton.frame;
+        
+        /*uploadLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, 60)];
+        uploadLabel.text = @"Uploading...";
+        uploadLabel.font = [UIFont fontWithName:@"Zapfino" size: 14.0];
+        uploadLabel.textColor = [UIColor blackColor];
+        [self.view addSubview:uploadLabel];*/
+        
+        uploadController = [[QuickPhotoUploadProgressController alloc] initWithNibName:@"QuickPhotoUploadProgressController" bundle:nil];
+        [self.view addSubview:uploadController.view];
+        
+        //show the upload dialog animation
+        [UIView beginAnimations:nil context:nil];
+        
+        quickPhotoButton.frame = CGRectMake(frame.origin.x, self.view.bounds.size.height + 83, frame.size.width, frame.size.height);
+        
+        frame = uploadController.view.frame;
+        uploadController.view.frame = CGRectMake(frame.origin.x, self.view.bounds.size.height - 83, frame.size.width, frame.size.height);
+        [UIView setAnimationDuration:0.6f];
+        [UIView commitAnimations];
+ 
+        //upload the image
+        [[post.media anyObject] performSelectorInBackground:@selector(upload) withObject:nil];
+    }
+}
+
+- (void)showQuickPhotoButton{
+    CGRect frame = quickPhotoButton.frame;
+    [UIView beginAnimations:nil context:nil]; 
+    [UIView setAnimationDuration:0.6f];
+    
+    quickPhotoButton.frame = CGRectMake(frame.origin.x, self.view.bounds.size.height - 83, frame.size.width, frame.size.height);
+    
+    frame = uploadController.view.frame;
+    
+    uploadController.view.frame = CGRectMake(frame.origin.x, self.view.bounds.size.height + 83, frame.size.width, frame.size.height);
+    
+    [UIView commitAnimations];
+}
+
+- (void)mediaDidUploadSuccessfully:(NSNotification *)notification {
+    
+    Media *media = (Media *)[notification object];
+    [media save];
+    quickPicturePost.content = [NSString stringWithFormat:@"%@\n\n%@", [media html], quickPicturePost.content];
+    [quickPicturePost upload];    
+}
+
+- (void)mediaUploadFailed:(NSNotification *)notification {
+    [self showQuickPhotoButton];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick Picture failed", @"")
+                                                    message:NSLocalizedString(@"Sorry, the picture upload failed.", @"")
+                                                   delegate:self
+                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                          otherButtonTitles:nil];
+    [alert show];
+    [alert release];
+}
+
+- (void)postDidUploadSuccessfully:(NSNotification *)notification {
+    [self showQuickPhotoButton];
+}
+
+- (void)postUploadFailed:(NSNotification *)notification {
+    [self showQuickPhotoButton];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick Picture failed", @"")
+                                                    message:NSLocalizedString(@"Sorry, the picture publish failed", @"")
+                                                   delegate:self
+                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                          otherButtonTitles:nil];
+    [alert show];
+    [alert release];
+}
+
 #pragma mark -
 #pragma mark Memory Management
 
@@ -505,6 +591,8 @@
 	self.currentBlog = nil;
     [quickPhotoButton release]; quickPhotoButton = nil;
     self.tableView = nil;
+    [quickPicturePost release];
+    [quickPhotoLoadingView release];
     [super dealloc];
 }
 

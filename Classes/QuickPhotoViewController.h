@@ -11,12 +11,14 @@
 #import "WPProgressHUD.h"
 #import "Post.h"
 #import "QuickPicturePreviewView.h"
+#import "BlogsViewController.h"
 
 #define QPVCBlogForQuickPhoto @"blogForQuickPhoto"
 
 @interface QuickPhotoViewController : UIViewController<UIImagePickerControllerDelegate,UINavigationControllerDelegate,BlogSelectorButtonDelegate,QuickPicturePreviewViewDelegate> {
     WPProgressHUD *spinner;
     Post *post;
+    BlogsViewController *blogsViewController;
 }
 
 @property (nonatomic, retain) IBOutlet QuickPicturePreviewView *photoImageView;
@@ -25,6 +27,9 @@
 @property (nonatomic, retain) IBOutlet BlogSelectorButton *blogSelector;
 @property (nonatomic, retain) UIBarButtonItem *postButtonItem;
 @property (nonatomic, retain) UIImage *photo;
+@property (nonatomic, retain) BlogsViewController *blogsViewController;
+
+
 
 
 - (void)post;

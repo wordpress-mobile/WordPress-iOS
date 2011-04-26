@@ -12,12 +12,17 @@
 #import "CPopoverManager.h"
 #import "WPAsynchronousImageView.h"
 #import "QuickPhotoButton.h"
+#import "QuickPhotoUploadProgressController.h"
 
 @interface BlogsViewController : UIViewController <NSFetchedResultsControllerDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate> {
 	WordPressAppDelegate *appDelegate;
     NSFetchedResultsController *resultsController;
     Blog *currentBlog;
     QuickPhotoButton *quickPhotoButton;
+    QuickPhotoUploadProgressController *uploadController;
+    UIView *quickPhotoLoadingView;
+    Post *quickPicturePost;
+    UILabel *uploadLabel;
     IBOutlet UITableView *tableView;
 }
 
@@ -33,5 +38,7 @@
 - (void)blogsRefreshNotificationReceived:(NSNotification *)notification;
 - (void)checkEditButton;
 - (void)quickPhotoPost;
+- (void)uploadQuickPhoto:(Post *)post;
+- (void)showQuickPhotoButton;
 
 @end
