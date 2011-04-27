@@ -6,6 +6,7 @@
 
 @interface BlogsViewController (Private)
 - (void) cleanUnusedMediaFileFromTmpDir;
+- (void)setupPhotoButton;
 @end
 
 @implementation BlogsViewController
@@ -42,19 +43,7 @@
 		[self performSelectorInBackground:@selector(cleanUnusedMediaFileFromTmpDir) withObject:nil];
     }
 
-    if (!DeviceIsPad() && [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        quickPhotoButton = [QuickPhotoButton button];
-        [quickPhotoButton setImage:[UIImage imageNamed:@"camera.png"] forState:UIControlStateNormal];
-        quickPhotoButton.frame = CGRectMake(0, self.view.bounds.size.height - 83, self.view.bounds.size.width, 83);
-        [quickPhotoButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [quickPhotoButton setTitle:NSLocalizedString(@"Quick Photo", @"") forState:UIControlStateNormal];
-        [quickPhotoButton.titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
-        [quickPhotoButton setTitleShadowColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-        [quickPhotoButton addTarget:self action:@selector(quickPhotoPost) forControlEvents:UIControlEventTouchUpInside];
-        [quickPhotoButton retain];
-        [self.view addSubview:quickPhotoButton];
-        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 83, 0);
-    }
+    [self setupPhotoButton];
 	
 	// Check to see if we should prompt about rating in the App Store
 	NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -291,6 +280,34 @@
 #pragma mark -
 #pragma mark Custom methods
 
+- (void)setupPhotoButton {
+    if (!DeviceIsPad()
+        && [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]
+        && [[resultsController fetchedObjects] count] > 0) {
+        // Add photo button
+        if (quickPhotoButton == nil) {
+            quickPhotoButton = [QuickPhotoButton button];
+            [quickPhotoButton setImage:[UIImage imageNamed:@"camera.png"] forState:UIControlStateNormal];
+            quickPhotoButton.frame = CGRectMake(0, self.view.bounds.size.height - 83, self.view.bounds.size.width, 83);
+            [quickPhotoButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            [quickPhotoButton setTitle:NSLocalizedString(@"Quick Photo", @"") forState:UIControlStateNormal];
+            [quickPhotoButton.titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
+            [quickPhotoButton setTitleShadowColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+            [quickPhotoButton addTarget:self action:@selector(quickPhotoPost) forControlEvents:UIControlEventTouchUpInside];
+            [quickPhotoButton retain];
+        }
+        [self.view addSubview:quickPhotoButton];
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 83, 0);
+    } else {
+        // Remove photo button
+        if (quickPhotoButton.superview != nil) {
+            // TODO: animate this?
+            [quickPhotoButton removeFromSuperview];
+            self.tableView.contentInset = UIEdgeInsetsZero;
+        }
+    }
+}
+
 - (void)quickPhotoPost {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [FlurryAPI logEvent:@"QuickPhoto"];
@@ -481,6 +498,7 @@
        atIndexPath:(NSIndexPath *)indexPath
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath {
+    [self setupPhotoButton];
     [self.tableView reloadData];
 	
 	if (!DeviceIsPad()) {
