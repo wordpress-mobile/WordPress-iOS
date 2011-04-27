@@ -554,7 +554,7 @@
         }
         [uploadController.spinner startAnimating];
         uploadController.label.textColor = [[UIColor alloc] initWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f];
-        uploadController.label.text = NSLocalizedString(@"Uploading...", @"");
+        uploadController.label.text = NSLocalizedString(@"Uploading Quick Photo...", @"");
         
         //show the upload dialog animation
         [UIView beginAnimations:nil context:nil];
