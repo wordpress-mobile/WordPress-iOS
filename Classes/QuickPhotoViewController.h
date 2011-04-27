@@ -28,9 +28,7 @@
 @property (nonatomic, retain) UIImage *photo;
 @property (nonatomic, retain) BlogsViewController *blogsViewController;
 
-
-
-
 - (void)post;
 - (void)cancel;
+- (void)saveImage;
 @end

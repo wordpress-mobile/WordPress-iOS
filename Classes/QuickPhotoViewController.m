@@ -34,6 +34,16 @@
     [super dealloc];
 }
 
+//stackoverflow.com/questions/945082/uiwebview-in-multithread-viewcontroller
+- (oneway void)release
+{
+    if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread:@selector(release) withObject:nil waitUntilDone:NO];
+    } else {
+        [super release];
+    }
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -74,6 +84,44 @@
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)] autorelease];
 }
 
+- (void) saveImage{
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    UIImageWriteToSavedPhotosAlbum(self.photo, nil, nil, nil);
+    Media *media;
+    
+    Blog *blog = self.blogSelector.activeBlog;
+    if (post == nil) {
+        post = [Post newDraftForBlog:blog];
+    }
+    
+    if (post.media && [post.media count] > 0) {
+        media = [post.media anyObject];
+    } else {
+        media = [Media newMediaForPost:post];
+        int resizePreference = 0;
+		if([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil)
+			resizePreference = [[[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] intValue];
+        
+        MediaResize newSize = kResizeLarge;
+        switch (resizePreference) {
+            case 1:
+                newSize = kResizeSmall;
+                break;
+            case 2:
+                newSize = kResizeMedium;
+                break;
+            case 4:
+                newSize = kResizeOriginal;
+                break;
+        }
+        
+        [media setImage:self.photo withSize:newSize];
+    }
+    
+    [media save];
+    [pool release];
+}
+
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
@@ -111,47 +159,12 @@
 #pragma mark Custom methods
 
 - (void)postInBackground {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
-    UIImageWriteToSavedPhotosAlbum(self.photo, nil, nil, nil);
-    Media *media;
-    
-    if (post.media && [post.media count] > 0) {
-        media = [post.media anyObject];
-    } else {
-        media = [Media newMediaForPost:post];
-        int resizePreference = 0;
-		if([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil)
-			resizePreference = [[[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] intValue];
-        
-        MediaResize newSize = kResizeLarge;
-        switch (resizePreference) {
-            case 1:
-                newSize = kResizeSmall;
-                break;
-            case 2:
-                newSize = kResizeMedium;
-                break;
-            case 4:
-                newSize = kResizeOriginal;
-                break;
-        }
-
-        [media setImage:self.photo withSize:newSize];
-    }
-    
-    [media save];
     [post save];
-    
-    //[spinner performSelectorOnMainThread:@selector(setTitle:) withObject:NSLocalizedString(@"Uploading Photo...", @"") waitUntilDone:YES];
-    //[media performSelectorOnMainThread:@selector(upload) withObject:nil waitUntilDone:YES];
 
-    [pool release];
 }
 
 - (void)post {
-    //[spinner show];
-    //[spinner setTitle:NSLocalizedString(@"Saving Photo...", @"")];
     Blog *blog = self.blogSelector.activeBlog;
     if (post == nil) {
         post = [Post newDraftForBlog:blog];
@@ -171,6 +184,9 @@
 
 - (void)cancel {
     self.photo = nil;
+    if (post != nil) {
+        [post removeWithError:nil];
+    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -180,7 +196,10 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     self.photo = (UIImage *)[info objectForKey:UIImagePickerControllerOriginalImage];
     self.photoImageView.image = self.photo;
-    [picker dismissModalViewControllerAnimated:YES];
+    
+    [picker dismissModalViewControllerAnimated:NO];
+    [self performSelectorInBackground:@selector(saveImage) withObject:nil];
+    
     [self.contentTextView becomeFirstResponder];
 }
 
