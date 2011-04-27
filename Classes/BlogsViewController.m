@@ -286,7 +286,7 @@
 
 - (void)setupPhotoButton {
     if (!DeviceIsPad()
-      //  && [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]
+        && [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]
         && [[resultsController fetchedObjects] count] > 0) {
         // Add photo button
         if (quickPhotoButton == nil) {
