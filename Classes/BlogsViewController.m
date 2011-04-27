@@ -7,6 +7,7 @@
 @interface BlogsViewController (Private)
 - (void) cleanUnusedMediaFileFromTmpDir;
 - (void)setupPhotoButton;
+- (void) adjustQuickPictureButtonFrame;
 @end
 
 @implementation BlogsViewController
@@ -97,7 +98,11 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postDidUploadSuccessfully:) name:@"PostUploaded" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postUploadFailed:) name:@"PostUploadFailed" object:nil];
     
+	//status bar notification
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeStatusBarFrame:) name:DidChangeStatusBarFrame object:nil];
+	
 	[self checkEditButton];
+	[self adjustQuickPictureButtonFrame];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -105,7 +110,6 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[super viewWillDisappear:animated];
 }
-
 
 - (void) checkEditButton{
 	[self.tableView reloadData];
@@ -282,7 +286,7 @@
 
 - (void)setupPhotoButton {
     if (!DeviceIsPad()
-        && [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]
+      //  && [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]
         && [[resultsController fetchedObjects] count] > 0) {
         // Add photo button
         if (quickPhotoButton == nil) {
@@ -306,6 +310,16 @@
             self.tableView.contentInset = UIEdgeInsetsZero;
         }
     }
+}
+
+- (void)didChangeStatusBarFrame:(NSNotification *)notification {
+	[self performSelectorOnMainThread:@selector(adjustQuickPictureButtonFrame) withObject:nil waitUntilDone:NO];
+}
+
+- (void) adjustQuickPictureButtonFrame {
+	if (quickPhotoButton.superview != nil) {
+		quickPhotoButton.frame = CGRectMake(0, self.view.bounds.size.height - 83, self.view.bounds.size.width, 83);
+	}
 }
 
 - (void)quickPhotoPost {

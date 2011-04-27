@@ -324,6 +324,14 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 
+- (void)application:(UIApplication *)application didChangeStatusBarFrame:(CGRect)oldStatusBarFrame {
+	//The guide says: After calling this method, the application also posts a UIApplicationDidChangeStatusBarFrameNotification notification to give interested objects a chance to respond to the change.
+	//but seems that the notification is never sent.
+	//we are using a custom notification
+	[[NSNotificationCenter defaultCenter] postNotificationName:DidChangeStatusBarFrame object:nil];
+}
+
+
 #pragma mark -
 #pragma mark Public Methods
 
