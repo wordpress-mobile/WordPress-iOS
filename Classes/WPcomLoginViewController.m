@@ -6,6 +6,7 @@
 //
 
 #import "WPcomLoginViewController.h"
+#import "UITableViewTextFieldCell.h"
 
 @interface WPcomLoginViewController(PrivateMethods)
 - (void)saveLoginData;
@@ -108,11 +109,11 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"MyCell"];
-	UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[self.tableView dequeueReusableCellWithIdentifier:@"CustomCell"];
+	UITableViewCell *cell = nil;
 	
-	if((indexPath.section == 1) && (activityCell == nil)) {
-		NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
+	if(indexPath.section == 1) {
+        UITableViewActivityCell *activityCell;
+        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
 		for(id currentObject in topLevelObjects)
 		{
 			if([currentObject isKindOfClass:[UITableViewActivityCell class]])
@@ -121,71 +122,7 @@
 				break;
 			}
 		}
-	}
-	if (cell == nil) {
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault 
-									   reuseIdentifier:@"MyCell"] autorelease];
-		cell.accessoryType = UITableViewCellAccessoryNone;
-		
-		if ([indexPath section] == 0) {
-			CGRect textFrame = CGRectMake(110, 12, 185, 30);
-			if(DeviceIsPad()){
-				textFrame = CGRectMake(150, 12, 350, 42);
-			}
-			UITextField *loginTextField = [[UITextField alloc] initWithFrame:textFrame];
-			loginTextField.adjustsFontSizeToFitWidth = YES;
-			loginTextField.textColor = [UIColor blackColor];
-			if ([indexPath section] == 0) {
-				if ([indexPath row] == 0) {
-					loginTextField.placeholder = NSLocalizedString(@"WordPress.com username", @"");
-					loginTextField.keyboardType = UIKeyboardTypeEmailAddress;
-					loginTextField.returnKeyType = UIReturnKeyNext;
-					loginTextField.tag = 0;
-					loginTextField.delegate = self;
-					if(username != nil)
-						loginTextField.text = username;
-				}
-				else {
-					loginTextField.placeholder = NSLocalizedString(@"WordPress.com password", @"");
-					loginTextField.keyboardType = UIKeyboardTypeDefault;
-					loginTextField.returnKeyType = UIReturnKeyDone;
-					loginTextField.secureTextEntry = YES;
-					loginTextField.tag = 1;
-					loginTextField.delegate = self;
-					if(password != nil)
-						loginTextField.text = password;
-				}
-			}
-			if(DeviceIsPad() == YES)
-				loginTextField.backgroundColor = [UIColor clearColor];
-			else
-				loginTextField.backgroundColor = [UIColor whiteColor];
-			loginTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-			loginTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-			loginTextField.textAlignment = UITextAlignmentLeft;
-			loginTextField.delegate = self;
-			
-			loginTextField.clearButtonMode = UITextFieldViewModeNever;
-			[loginTextField setEnabled:YES];
-			
-			if(isSigningIn)
-				[loginTextField resignFirstResponder];
-			
-			[cell addSubview:loginTextField];
-			[loginTextField release];
-		}
-	}
-	
-	if (indexPath.section == 0) {
-		if ([indexPath row] == 0) {
-			cell.textLabel.text = NSLocalizedString(@"Username", @"");
-		}
-		else {
-			cell.textLabel.text = NSLocalizedString(@"Password", @"");
-		}
-	}
-	else if(indexPath.section == 1) {
-		if(isSigningIn) {
+        if(isSigningIn) {
 			[activityCell.spinner startAnimating];
 			buttonText = NSLocalizedString(@"Signing In...", @"");
 		}
@@ -196,7 +133,38 @@
 		
 		activityCell.textLabel.text = buttonText;
 		cell = activityCell;
-	}
+	} else {
+		UITableViewTextFieldCell *loginCell = [[[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault 
+                                           reuseIdentifier:@"TextCell"] autorelease];
+		
+				if ([indexPath row] == 0) {
+                    loginCell.textLabel.text = NSLocalizedString(@"Username", @"");
+					loginCell.textField.placeholder = NSLocalizedString(@"WordPress.com username", @"");
+					loginCell.textField.keyboardType = UIKeyboardTypeEmailAddress;
+					loginCell.textField.returnKeyType = UIReturnKeyNext;
+					loginCell.textField.tag = 0;
+					loginCell.textField.delegate = self;
+					if(username != nil)
+						loginCell.textField.text = username;
+				}
+				else {
+                    loginCell.textLabel.text = NSLocalizedString(@"Password", @"");
+					loginCell.textField.placeholder = NSLocalizedString(@"WordPress.com password", @"");
+					loginCell.textField.keyboardType = UIKeyboardTypeDefault;
+					loginCell.textField.secureTextEntry = YES;
+					loginCell.textField.tag = 1;
+					loginCell.textField.delegate = self;
+					if(password != nil)
+						loginCell.textField.text = password;
+				}
+			loginCell.textField.delegate = self;
+			
+			if(isSigningIn)
+				[loginCell.textField resignFirstResponder];
+
+        cell = loginCell;
+    }
+
 	return cell;    
 }
 
@@ -426,7 +394,6 @@
 - (void)dealloc {
 	[tableView release];
 	[footerText release];
-	[buttonText release];
 	[username release];
 	[password release];
 	[WPcomXMLRPCUrl release];

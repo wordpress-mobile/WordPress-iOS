@@ -11,6 +11,7 @@
 #import "WPProgressHUD.h"
 #import "AddUsersBlogsViewController.h"
 #import "UITableViewSwitchCell.h"
+#import "UITableViewTextFieldCell.h"
 #import "Blog.h";
 #import "HelpViewController.h"
 
@@ -28,7 +29,7 @@
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) NSString *password, *username, *url;
 @property (nonatomic, assign) BOOL geolocationEnabled;
-@property (nonatomic, retain) UITableViewCell *urlCell, *usernameCell, *passwordCell;
+@property (nonatomic, retain) UITableViewTextFieldCell *urlCell, *usernameCell, *passwordCell;
 @property (nonatomic, retain) Blog *blog;
 @property (nonatomic, retain) UIActivityIndicatorView *savingIndicator;
 

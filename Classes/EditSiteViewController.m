@@ -65,40 +65,6 @@
 #pragma mark -
 #pragma mark Table view data source
 
-- (UITextField *)newTextFieldForCell:(UITableViewCell *)cell {
-    CGSize labelSize = [cell.textLabel.text sizeWithFont:[UIFont boldSystemFontOfSize:17]];
-    labelSize.width = ceil(labelSize.width/5) * 5; // Round to upper 5
-    CGRect frame;
-    // Frame values have to be hard coded since the cell has not been added yet to the table
-    if (DeviceIsPad()) {
-        frame = CGRectMake(labelSize.width + 50,
-                           11,
-                           440 - labelSize.width,
-                           28);
-    } else {
-        frame = CGRectMake(labelSize.width + 30,
-                           11,
-                           cell.frame.size.width - labelSize.width - 50,
-                           28);
-    }
-
-    UITextField *addTextField = [[UITextField alloc] initWithFrame:frame];
-    addTextField.adjustsFontSizeToFitWidth = YES;
-    addTextField.textColor = [UIColor blackColor];
-    addTextField.backgroundColor = [UIColor clearColor];
-    addTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-    addTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    addTextField.textAlignment = UITextAlignmentLeft;
-    addTextField.delegate = self;
-    addTextField.clearButtonMode = UITextFieldViewModeNever;
-    addTextField.enabled = YES;
-    addTextField.returnKeyType = UIReturnKeyDone;
-
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-    return addTextField;
-}
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tv {
     return 2;
 }
@@ -119,53 +85,53 @@
 - (UITableViewCell *)tableView:(UITableView *)tv cellForRowAtIndexPath:(NSIndexPath *)indexPath {    
     if ([indexPath section] == 0) {
         if (indexPath.row == 0) {
-            self.urlCell = [tableView dequeueReusableCellWithIdentifier:@"UrlCell"];
+            self.urlCell = (UITableViewTextFieldCell *)[tableView dequeueReusableCellWithIdentifier:@"UrlCell"];
             if (self.urlCell == nil) {
-                self.urlCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UrlCell"] autorelease];
+                self.urlCell = [[[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UrlCell"] autorelease];
 				self.urlCell.textLabel.text = NSLocalizedString(@"URL", @"");
-				urlTextField = [self newTextFieldForCell:self.urlCell];
+				urlTextField = [self.urlCell.textField retain];
 				urlTextField.placeholder = NSLocalizedString(@"http://example.com", @"");
 				urlTextField.keyboardType = UIKeyboardTypeURL;
 				urlTextField.returnKeyType = UIReturnKeyNext;
+                urlTextField.delegate = self;
 				if(blog.url != nil)
 					urlTextField.text = blog.url;
-				[self.urlCell addSubview:urlTextField];
             }
             
             return self.urlCell;
         }
         else if(indexPath.row == 1) {
-            self.usernameCell = [tableView dequeueReusableCellWithIdentifier:@"UsernameCell"];
+            self.usernameCell = (UITableViewTextFieldCell *)[tableView dequeueReusableCellWithIdentifier:@"UsernameCell"];
             if (self.usernameCell == nil) {
-                self.usernameCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UsernameCell"] autorelease];
+                self.usernameCell = [[[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UsernameCell"] autorelease];
 				self.usernameCell.textLabel.text = NSLocalizedString(@"Username", @"");
-				usernameTextField = [self newTextFieldForCell:self.usernameCell];
+				usernameTextField = [self.usernameCell.textField retain];
 				usernameTextField.placeholder = NSLocalizedString(@"WordPress username", @"");
 				usernameTextField.keyboardType = UIKeyboardTypeDefault;
 				usernameTextField.returnKeyType = UIReturnKeyNext;
                 usernameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
                 usernameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+                usernameTextField.delegate = self;
 				if(blog.username != nil)
 					usernameTextField.text = blog.username;
-				[self.usernameCell addSubview:usernameTextField];
 			}
             
             return self.usernameCell;
         }
         else if(indexPath.row == 2) {
-            self.passwordCell = [tableView dequeueReusableCellWithIdentifier:@"PasswordCell"];
+            self.passwordCell = (UITableViewTextFieldCell *)[tableView dequeueReusableCellWithIdentifier:@"PasswordCell"];
             if (self.passwordCell == nil) {
-                self.passwordCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"PasswordCell"] autorelease];
+                self.passwordCell = [[[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"PasswordCell"] autorelease];
 				self.passwordCell.textLabel.text = NSLocalizedString(@"Password", @"");
-				passwordTextField = [self newTextFieldForCell:self.passwordCell];
+				passwordTextField = [self.passwordCell.textField retain];
 				passwordTextField.placeholder = NSLocalizedString(@"WordPress password", @"");
 				passwordTextField.keyboardType = UIKeyboardTypeDefault;
 				passwordTextField.secureTextEntry = YES;
                 passwordTextField.autocorrectionType = UITextAutocorrectionTypeNo;
                 passwordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+                passwordTextField.delegate = self;
 				if(password != nil)
 					passwordTextField.text = password;
-				[self.passwordCell addSubview:passwordTextField];
 			}            
             return self.passwordCell;
         }				        
