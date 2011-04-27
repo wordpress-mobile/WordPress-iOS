@@ -67,7 +67,7 @@ class LocalizedFile():
             if line and re_translation.match(line):
                 translation = line
             else:
-                raise Exception('invalid file')
+                raise Exception('invalid file: %s' % line)
             
             line = f.readline()
             while line and line == u'\n':
@@ -110,8 +110,9 @@ def merge(merged_fname, old_fname, new_fname):
     try:
         old = LocalizedFile(old_fname, auto_read=True)
         new = LocalizedFile(new_fname, auto_read=True)
-    except:
+    except Exception as e:
         print 'Error: input files have invalid format. old: %s, new: %s' % (old_fname, new_fname)
+        print e
 
     merged = old.merge_with(new)
 
