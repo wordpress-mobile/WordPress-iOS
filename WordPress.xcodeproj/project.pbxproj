@@ -47,6 +47,9 @@
 		2FAE970A0E33B21600CA8540 /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97050E33B21600CA8540 /* license.txt */; };
 		2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */; };
 		2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */; };
+		30FE87991367328B00808634 /* quickPhotoButtonBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FE87981367328B00808634 /* quickPhotoButtonBackground.png */; };
+		30FE87C21367417E00808634 /* quickPhotoButtonBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FE87C01367417E00808634 /* quickPhotoButtonBackground.png */; };
+		30FE87C31367417E00808634 /* quickPhotoButtonBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FE87C11367417E00808634 /* quickPhotoButtonBackground@2x.png */; };
 		3704ACFC13128C9800120911 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 3704ACFA13128C9800120911 /* Default.png */; };
 		3704ACFD13128C9800120911 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3704ACFB13128C9800120911 /* Default@2x.png */; };
 		3744A0DE130ABB0800CE7BE1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3744A0DC130ABB0800CE7BE1 /* HelpViewController.m */; };
@@ -414,6 +417,9 @@
 		2FAE97050E33B21600CA8540 /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.txt; sourceTree = "<group>"; };
 		2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xhtml1-transitional.dtd"; sourceTree = "<group>"; };
 		2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = xhtmlValidatorTemplate.xhtml; sourceTree = "<group>"; };
+		30FE87981367328B00808634 /* quickPhotoButtonBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quickPhotoButtonBackground.png; sourceTree = "<group>"; };
+		30FE87C01367417E00808634 /* quickPhotoButtonBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quickPhotoButtonBackground.png; sourceTree = "<group>"; };
+		30FE87C11367417E00808634 /* quickPhotoButtonBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "quickPhotoButtonBackground@2x.png"; sourceTree = "<group>"; };
 		3704ACFA13128C9800120911 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		3704ACFB13128C9800120911 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		3744A0DB130ABB0800CE7BE1 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
@@ -1394,6 +1400,9 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				30FE87C01367417E00808634 /* quickPhotoButtonBackground.png */,
+				30FE87C11367417E00808634 /* quickPhotoButtonBackground@2x.png */,
+				30FE87981367328B00808634 /* quickPhotoButtonBackground.png */,
 				E1ABD141135862EF00DB0707 /* Quick Photo */,
 				E11C91CA135770DA0072A811 /* Rich Text Editor */,
 				375D7EE11355E9B6001C7371 /* paperclip.png */,
@@ -2008,6 +2017,9 @@
 				E1ABD13F135862EC00DB0707 /* quickPhotoButtonHighlighted.png in Resources */,
 				E1ABD140135862EC00DB0707 /* quickPhotoButtonHighlighted@2x.png in Resources */,
 				3751D68B136721AE0010B274 /* QuickPhotoUploadProgressController.xib in Resources */,
+				30FE87991367328B00808634 /* quickPhotoButtonBackground.png in Resources */,
+				30FE87C21367417E00808634 /* quickPhotoButtonBackground.png in Resources */,
+				30FE87C31367417E00808634 /* quickPhotoButtonBackground@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

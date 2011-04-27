@@ -61,7 +61,7 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
     
-    self.titleTextField.placeholder = NSLocalizedString(@"Title (optional)", @"Quick Picture title");
+    self.titleTextField.placeholder = NSLocalizedString(@"Title (optional)", @"Quick Photo title");
     [self.blogSelector loadBlogsForType:BlogSelectorButtonTypeQuickPhoto];
     self.blogSelector.delegate = self;
     if (self.photo) {
@@ -143,7 +143,7 @@
     [media save];
     [post save];
     
-    //[spinner performSelectorOnMainThread:@selector(setTitle:) withObject:NSLocalizedString(@"Uploading picture...", @"") waitUntilDone:YES];
+    //[spinner performSelectorOnMainThread:@selector(setTitle:) withObject:NSLocalizedString(@"Uploading Photo...", @"") waitUntilDone:YES];
     //[media performSelectorOnMainThread:@selector(upload) withObject:nil waitUntilDone:YES];
 
     [pool release];
@@ -151,7 +151,7 @@
 
 - (void)post {
     //[spinner show];
-    //[spinner setTitle:NSLocalizedString(@"Saving picture...", @"")];
+    //[spinner setTitle:NSLocalizedString(@"Saving Photo...", @"")];
     Blog *blog = self.blogSelector.activeBlog;
     if (post == nil) {
         post = [Post newDraftForBlog:blog];
@@ -200,7 +200,7 @@
     [contentTextView becomeFirstResponder];
 }
 
-#pragma mark - Quick picture preview view delegate
+#pragma mark - Quick Photo preview view delegate
 
 - (void)pictureWillZoom {
     [titleTextField resignFirstResponder];
