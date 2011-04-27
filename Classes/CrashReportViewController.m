@@ -16,8 +16,8 @@ NSString *CrashFilePath();
 	
 	self.navigationItem.title = NSLocalizedString(@"Crash Detected", @"");
     messageLabel.text = NSLocalizedString(@"It looks like WordPress for iOS crashed the last time you used it. You can help us resolve the issue by sending a crash report.", @"");
-    sendButton.titleLabel.text = NSLocalizedString(@"Send Crash Report", @"");
-    dontSendButton.titleLabel.text = NSLocalizedString(@"Don't Send Crash Report", @"");
+    [sendButton setTitle:NSLocalizedString(@"Send Crash Report", @"") forState:UIControlStateNormal];
+    [dontSendButton setTitle:NSLocalizedString(@"Don't Send Crash Report", @"") forState:UIControlStateNormal];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

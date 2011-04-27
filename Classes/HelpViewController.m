@@ -11,7 +11,7 @@
 
 @implementation HelpViewController
 
-@synthesize faqButton, forumButton, emailButton, cancel, navBar, isBlogSetup;
+@synthesize helpText, faqButton, forumButton, emailButton, cancel, navBar, isBlogSetup;
 
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
@@ -24,6 +24,11 @@
 	
 	if (DeviceIsPad())
 		self.navigationItem.title = NSLocalizedString(@"Help", @"");
+    
+    self.helpText.text = NSLocalizedString(@"Please visit the FAQ to get answers to common questions. If you're still having trouble, post in the forums or email us.", @"");
+    [self.faqButton setTitle:NSLocalizedString(@"Read the FAQ", @"") forState:UIControlStateNormal];
+    [self.forumButton setTitle:NSLocalizedString(@"Visit the Forums", @"") forState:UIControlStateNormal];
+    [self.emailButton setTitle:NSLocalizedString(@"Send Support E-mail", @"") forState:UIControlStateNormal];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -87,9 +92,10 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-	[faqButton release];
-	[forumButton release];
-    [emailButton release];
+    self.faqButton = nil;
+    self.forumButton = nil;
+    self.emailButton = nil;
+    self.helpText = nil;
 }
 
 

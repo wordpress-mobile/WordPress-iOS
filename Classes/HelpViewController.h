@@ -25,6 +25,7 @@
 @property (nonatomic, retain) IBOutlet UIButton *emailButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *cancel;
 @property (nonatomic, retain) IBOutlet UINavigationBar *navBar;
+@property (nonatomic, retain) IBOutlet UILabel *helpText;
 @property (nonatomic, assign) BOOL isBlogSetup;
 
 -(IBAction) cancel: (id)sender;
