@@ -8,8 +8,8 @@
 
 #import "PostMediaViewController.h"
 #import "EditPostViewController.h"
-#import "ImageIO/CGImageSource.h";
-#import "ImageIO/CGImageDestination.h";
+#import "ImageIO/CGImageSource.h"
+#import "ImageIO/CGImageDestination.h"
 
 
 #define TAG_ACTIONSHEET_PHOTO 1
@@ -37,7 +37,7 @@
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+    if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
 		[self initObjects];
     }
 	

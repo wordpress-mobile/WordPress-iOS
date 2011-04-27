@@ -112,7 +112,7 @@
 	UITableViewCell *cell = nil;
 	
 	if(indexPath.section == 1) {
-        UITableViewActivityCell *activityCell;
+        UITableViewActivityCell *activityCell = nil;
         NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
 		for(id currentObject in topLevelObjects)
 		{
