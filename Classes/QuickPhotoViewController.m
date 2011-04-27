@@ -80,6 +80,7 @@
     self.photoImageView.delegate = self;
     self.navigationItem.title = NSLocalizedString(@"Quick Photo", @"");
     self.postButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Publish", @"") style:UIBarButtonItemStyleDone target:self action:@selector(post)] autorelease];
+    [postButtonItem setEnabled:NO];
     self.navigationItem.rightBarButtonItem = self.postButtonItem;
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)] autorelease];
 }
@@ -119,6 +120,7 @@
     }
     
     [media save];
+    [postButtonItem setEnabled:YES];
     [pool release];
 }
 
