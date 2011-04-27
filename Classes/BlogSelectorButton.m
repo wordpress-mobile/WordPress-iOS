@@ -51,7 +51,7 @@
         postToFrame.size.width -= blavatarFrame.size.width + 10 + 50;
         postToFrame.size.height = 16.0f;
         postToLabel = [[UILabel alloc] initWithFrame:postToFrame];
-        postToLabel.font = [UIFont systemFontOfSize:16];
+        postToLabel.font = [UIFont systemFontOfSize:15];
         postToLabel.textColor = [UIColor grayColor];
         [postToLabel setText:@"Post to:"];
         [self addSubview:postToLabel];
