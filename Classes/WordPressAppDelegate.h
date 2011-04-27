@@ -20,6 +20,7 @@
 	CrashReportViewController *crashReportView;
     BOOL connectionStatus;
     BOOL alertRunning, passwordAlertRunning;
+    BOOL isUploadingPost;
 	BOOL isWPcomAuthenticated;
 
     UIImageView *splashView;
@@ -31,6 +32,9 @@
     NSManagedObjectContext *managedObjectContext_;
     NSManagedObjectModel *managedObjectModel_;
     NSPersistentStoreCoordinator *persistentStoreCoordinator_;
+    
+    //Background tasks
+    UIBackgroundTaskIdentifier bgTask;
 }
 
 @property (nonatomic, retain) UIWindow *window;
@@ -41,6 +45,7 @@
 @property (readonly, nonatomic, retain) UINavigationController *detailNavigationController;
 @property (nonatomic, getter = isAlertRunning) BOOL alertRunning;
 @property (nonatomic, assign) BOOL isWPcomAuthenticated;
+@property (nonatomic, assign) BOOL isUploadingPost;
 @property (nonatomic, retain) Blog *currentBlog;
 @property (nonatomic, retain) NSString *postID;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;

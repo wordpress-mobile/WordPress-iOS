@@ -42,8 +42,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [spinner startAnimating];
-    self.label.text = NSLocalizedString(@"Uploading...", @"");
 }
 
 - (void)viewDidUnload

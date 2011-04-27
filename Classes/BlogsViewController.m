@@ -533,14 +533,28 @@
 }
 
 - (void)uploadQuickPhoto:(Post *)post{
+    
+    appDelegate.isUploadingPost = YES;
+    
     quickPicturePost = post;
     if (post != nil) {
         //remove the quick photo button w/ sexy animation
         CGRect frame = quickPhotoButton.frame;
         
-        uploadController = [[QuickPhotoUploadProgressController alloc] initWithNibName:@"QuickPhotoUploadProgressController" bundle:nil];
-        uploadController.view.frame = CGRectMake(frame.origin.x, self.view.bounds.size.height + 83, frame.size.width, frame.size.height);
-        [self.view addSubview:uploadController.view];
+        if (uploadController == nil) {
+            uploadController = [[QuickPhotoUploadProgressController alloc] initWithNibName:@"QuickPhotoUploadProgressController" bundle:nil];
+            uploadController.view.frame = CGRectMake(frame.origin.x, self.view.bounds.size.height + 83, frame.size.width, frame.size.height);
+            [self.view addSubview:uploadController.view];
+        }
+        
+        if (uploadController.spinner.alpha == 0.0) {
+            //reset the uploading view
+            [uploadController.spinner setAlpha: 1.0f];
+            uploadController.label.frame = CGRectMake(uploadController.label.frame.origin.x, uploadController.label.frame.origin.y + 12, uploadController.label.frame.size.width, uploadController.label.frame.size.height);
+        }
+        [uploadController.spinner startAnimating];
+        uploadController.label.textColor = [[UIColor alloc] initWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f];
+        uploadController.label.text = NSLocalizedString(@"Uploading...", @"");
         
         //show the upload dialog animation
         [UIView beginAnimations:nil context:nil];
@@ -556,10 +570,12 @@
     }
 }
 
-- (void)showQuickPhotoButton{
+- (void)showQuickPhotoButton: (BOOL)delay{
     CGRect frame = quickPhotoButton.frame;
     [UIView beginAnimations:nil context:nil]; 
     [UIView setAnimationDuration:0.6f];
+    if (delay)
+        [UIView setAnimationDelay:1.2f];
     
     quickPhotoButton.frame = CGRectMake(frame.origin.x, self.view.bounds.size.height - 83, frame.size.width, frame.size.height);
     
@@ -579,7 +595,8 @@
 }
 
 - (void)mediaUploadFailed:(NSNotification *)notification {
-    [self showQuickPhotoButton];
+    appDelegate.isUploadingPost = NO;
+    [self showQuickPhotoButton: NO];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick Photo Failed", @"")
                                                     message:NSLocalizedString(@"Sorry, the photo upload failed. The post has been saved as a Local Draft.", @"")
                                                    delegate:self
@@ -590,11 +607,20 @@
 }
 
 - (void)postDidUploadSuccessfully:(NSNotification *)notification {
-    [self showQuickPhotoButton];
+    appDelegate.isUploadingPost = NO;
+    [UIView beginAnimations:nil context:nil]; 
+    [UIView setAnimationDuration:0.6f];
+    [uploadController.spinner setAlpha:0.0f];
+    uploadController.label.text = NSLocalizedString(@"Published!", @"");
+    uploadController.label.textColor = [[UIColor alloc] initWithRed:0.0f green:128.0f/255.0f blue:0.0f alpha:1.0f];
+    uploadController.label.frame = CGRectMake(uploadController.label.frame.origin.x, uploadController.label.frame.origin.y - 12, uploadController.label.frame.size.width, uploadController.label.frame.size.height);
+    [UIView commitAnimations];
+    [self showQuickPhotoButton: YES];
 }
 
 - (void)postUploadFailed:(NSNotification *)notification {
-    [self showQuickPhotoButton];
+    appDelegate.isUploadingPost = NO;
+    [self showQuickPhotoButton: NO];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick Photo Failed", @"")
                                                     message:NSLocalizedString(@"Sorry, the photo publish failed. The post has been saved as a Local Draft.", @"")
                                                    delegate:self

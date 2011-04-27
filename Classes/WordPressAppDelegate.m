@@ -51,7 +51,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 @synthesize window, currentBlog, postID;
 @synthesize navigationController, alertRunning, isWPcomAuthenticated;
-@synthesize splitViewController, crashReportView;
+@synthesize splitViewController, crashReportView, isUploadingPost;
 
 - (id)init {
     if (!wordPressApp) {
@@ -301,7 +301,32 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [self applicationWillTerminate:application];
+    //[self applicationWillTerminate:application];
+    
+    //Keep the app alive in the background if we are uploading a post, currently only used for quick photo posts
+    UIApplication *app = [UIApplication sharedApplication];
+    if (!isUploadingPost && [app respondsToSelector:@selector(endBackgroundTask:)]) {
+        if (bgTask != UIBackgroundTaskInvalid) {
+            [app endBackgroundTask:bgTask];
+            bgTask = UIBackgroundTaskInvalid;
+        }
+    }
+    
+    
+    if ([app respondsToSelector:@selector(beginBackgroundTaskWithExpirationHandler:)]) {
+        bgTask = [app beginBackgroundTaskWithExpirationHandler:^{
+            // Synchronize the cleanup call on the main thread in case
+            // the task actually finishes at around the same time.
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (bgTask != UIBackgroundTaskInvalid)
+                {
+                    [app endBackgroundTask:bgTask];
+                    bgTask = UIBackgroundTaskInvalid;
+                }
+            });
+        }];
+    }
+    
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {

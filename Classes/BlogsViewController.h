@@ -38,6 +38,6 @@
 - (void)checkEditButton;
 - (void)quickPhotoPost;
 - (void)uploadQuickPhoto:(Post *)post;
-- (void)showQuickPhotoButton;
+- (void)showQuickPhotoButton:(BOOL)delay;
 
 @end
