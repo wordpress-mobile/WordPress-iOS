@@ -22,7 +22,7 @@
 @end
 
 @implementation PostMediaViewController
-@synthesize table, addMediaButton, hasPhotos, hasVideos, isAddingMedia, photos, videos, addPopover, picker;
+@synthesize table, addMediaButton, hasPhotos, hasVideos, isAddingMedia, photos, videos, addPopover, picker, customSizeAlert;
 @synthesize isShowingMediaPickerActionSheet, currentOrientation, isShowingChangeOrientationActionSheet, spinner, pickerContainer;
 @synthesize currentImage, currentImageMetadata, currentVideo, isLibraryMedia, didChangeOrientationDuringRecord, messageLabel;
 @synthesize postDetailViewController, postID, blogURL, bottomToolbar;
@@ -68,6 +68,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:ImageUploadSuccessful object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaUploadFailed:) name:VideoUploadFailed object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaUploadFailed:) name:ImageUploadFailed object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissAlertViewKeyboard:) name:@"DismissAlertViewKeyboard" object:nil];
 }
 
 - (void)removeNotifications{
@@ -667,7 +668,7 @@
 			lineBreaks = @"\n\n\n";
 		
 		
-		UIAlertView *customSizeAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Custom Size", @"") 
+		customSizeAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Custom Size", @"") 
 																  message:lineBreaks // IMPORTANT
 																 delegate:self 
 														cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
@@ -725,7 +726,6 @@
 		}
 		
 		[customSizeAlert show];
-		[customSizeAlert release];
 		
 		[textWidth becomeFirstResponder];
 	}
@@ -747,6 +747,15 @@
 			default:
 				break;
 		}
+	}
+}
+
+- (void)dismissAlertViewKeyboard: (NSNotification*)notification {
+	if(isShowingCustomSizeAlert) {
+		UITextField *textWidth = (UITextField *)[self.customSizeAlert viewWithTag:123];
+		UITextField *textHeight = (UITextField *)[self.customSizeAlert viewWithTag:456];
+		[textWidth resignFirstResponder];
+		[textHeight resignFirstResponder];
 	}
 }
 
@@ -1448,6 +1457,7 @@
 
 - (void)dealloc {
 	[picker release], picker = nil;
+	[customSizeAlert release]; customSizeAlert = nil;
 	[uniqueID release];
 	[addPopover release];
 	[bottomToolbar release];
