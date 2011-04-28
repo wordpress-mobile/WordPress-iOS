@@ -144,7 +144,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 -(void) initStats {
 	
 	NSString *apiKey = blog.apiKey;
-	if (apiKey == nil || [apiKey isEqualToString:@""]){
+	if (apiKey == nil){
 		//first run or api key was deleted
 		[self getUserAPIKey];
 	}
