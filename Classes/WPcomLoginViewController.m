@@ -367,12 +367,15 @@
 		[addBlogsView release];
 	}
 	else {
+        if (DeviceIsPad())
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"didDismissWPcomLogin" object:nil];
 		[super dismissModalViewControllerAnimated:YES];
 	}
 }
 
 - (IBAction)cancel:(id)sender {
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"didCancelWPcomLogin" object:nil];
+    if (DeviceIsPad())
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"didDismissWPcomLogin" object:nil];
 	[self dismissModalViewControllerAnimated:YES];
 }
 

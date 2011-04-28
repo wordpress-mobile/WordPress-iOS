@@ -105,6 +105,8 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 
 - (void) viewWillAppear:(BOOL)animated {
 	
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewWillAppear:) name:@"didDismissWPcomLogin" object:nil];
+    
     //reset booleans
     apiKeyFound = NO;
     isRefreshingStats = NO;
@@ -1133,6 +1135,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];	
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 	//cancel all possible connections
 	if (viewsConn != nil)
 		[viewsConn cancel];
