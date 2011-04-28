@@ -144,7 +144,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 -(void) initStats {
 	
 	NSString *apiKey = blog.apiKey;
-	if (apiKey == nil){
+	if (apiKey == nil || [apiKey isEqualToString:@""]){
 		//first run or api key was deleted
 		[self getUserAPIKey];
 	}
@@ -612,13 +612,23 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
             //use wpcom preference for self-hosted
             s_username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
             s_password = [SFHFKeychainUtils getPasswordForUsername:s_username andServiceName:@"WordPress.com" error:&error];
+            dotorgLogin = YES;
         }
-		
-		newCredential=[NSURLCredential credentialWithUser:s_username
+        
+        if (s_username != nil || s_password != nil) {
+            newCredential=[NSURLCredential credentialWithUser:s_username
 												 password:s_password
 											  persistence:NSURLCredentialPersistenceForSession];
-		[[challenge sender] useCredential:newCredential forAuthenticationChallenge:challenge];
-		dotorgLogin = YES;
+            [[challenge sender] useCredential:newCredential forAuthenticationChallenge:challenge];
+        }
+        else {
+            //stop this train.
+            [connection cancel];
+            isRefreshingStats = NO;
+            dotorgLogin = NO;
+            statsRequest = YES;
+            [self hideLoadingDialog];
+        }
 	}
 }
 
