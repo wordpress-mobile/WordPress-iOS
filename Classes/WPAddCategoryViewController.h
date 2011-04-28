@@ -10,6 +10,7 @@
 
     IBOutlet UITextField *newCatNameField;
     IBOutlet UITextField *parentCatNameField;
+    IBOutlet UILabel *parentCatNameLabel;
 
     IBOutlet UITableViewCell *newCatNameCell;
     IBOutlet UITableViewCell *parentCatNameCell;

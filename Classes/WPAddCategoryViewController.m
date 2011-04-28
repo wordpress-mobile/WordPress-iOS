@@ -114,6 +114,11 @@
 
     newCatNameField.font = [UIFont fontWithName:@"Helvetica" size:17];
     parentCatNameField.font = [UIFont fontWithName:@"Helvetica" size:17];
+    parentCatNameLabel.text = NSLocalizedString(@"Parent Category", @"");
+    parentCatNameField.placeholder = NSLocalizedString(@"Optional", @"");
+    newCatNameField.placeholder = NSLocalizedString(@"Title", @"");
+    saveButtonItem.title = NSLocalizedString(@"Save", @"");
+    cancelButtonItem.title = NSLocalizedString(@"Cancel", @"");
 
     parentCat = nil;
 }
