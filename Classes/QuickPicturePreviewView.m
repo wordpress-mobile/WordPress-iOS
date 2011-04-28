@@ -47,7 +47,6 @@
 - (void)layoutSubviews {
     UIImage *image = imageView.image;
     if (image != nil) {
-        isFirstRun = YES;
         if (!zooming && !zoomed) {
             CGSize imageSize = image.size;
             CGFloat imageRatio = imageSize.width / imageSize.height;
@@ -88,22 +87,9 @@
             frameLayer.frame = imageFrame;
             
             paperClipImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"paperclip.png"]];
-            paperClipImageView.frame = CGRectMake(3.0f, -100.0f, 15.0f, 41.0f);
-            [paperClipImageView setHidden:NO];
-            [imageView addSubview:paperClipImageView];
-        }
-        
-        if (isFirstRun) {
-            //show the paperclip zooming in
-            [UIView beginAnimations:@"zoom" context:nil];
-            [UIView setAnimationDuration:0.3f];
-            [UIView setAnimationDelay:2.4f];
-            [UIView setAnimationDelegate:self];
-            
             paperClipImageView.frame = CGRectMake(3.0f, -8.0f, 15.0f, 41.0f);
             [paperClipImageView setHidden:NO];
-            [UIView commitAnimations];
-            isFirstRun = NO;
+            [imageView addSubview:paperClipImageView];
         }
     }
     

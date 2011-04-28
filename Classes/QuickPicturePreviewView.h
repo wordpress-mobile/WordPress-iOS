@@ -24,7 +24,6 @@
     BOOL zoomed;
     BOOL zooming;
     CGRect normalFrame, normalImageFrame;
-    BOOL isFirstRun;
 }
 
 @property (nonatomic, retain) UIImage *image;

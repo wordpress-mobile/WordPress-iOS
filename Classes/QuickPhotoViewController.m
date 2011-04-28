@@ -127,12 +127,14 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
-    picker.allowsEditing = NO;
-    picker.delegate = self;
-    [self presentModalViewController:picker animated:YES];
+    if (self.photo == nil) {
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
+        picker.allowsEditing = NO;
+        picker.delegate = self;
+        [self presentModalViewController:picker animated:YES];
+    }
 }
 
 - (void)viewDidUnload
