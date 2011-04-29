@@ -66,10 +66,17 @@
 	
     if (data != nil) {
 		[cache storeData:data forURL:url];
-	}
+        self.image = [UIImage imageWithData:data];
+	} else {
+        self.image = nil;
+    }
 
-    self.image = [UIImage imageWithData:data];
     [self releaseConnectionAndData];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    self.image = nil;
+    [self releaseConnectionAndData];    
 }
 
 #pragma mark -
@@ -92,10 +99,9 @@
 
     if (cachedData) {
         self.image = [UIImage imageWithData:cachedData];
+    } else if (!isBlavatar) {
+        self.image = nil;        
     }
-
-    if (!isBlavatar)
-        self.image = nil;
 
     NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:60.0];
     

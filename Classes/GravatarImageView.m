@@ -10,14 +10,12 @@
 #import <CommonCrypto/CommonDigest.h>
 
 #define GRAVATAR_DEFAULT_IMAGE  @"gravatar.jpg"
-#define GRAVATAR_IMAGE_RADIUS   10
-#define GRAVATAR_URL            @"http://www.gravatar.com/avatar/%@s=80?d=404"
+#define GRAVATAR_IMAGE_RADIUS   10.0f
+#define GRAVATAR_URL            @"http://www.gravatar.com/avatar/%@?s=80&d=404"
 
 
 @interface GravatarImageView (Private)
 
-static void addRoundedRectToPath(CGContextRef context, CGRect rect, float radius);
-- (UIImage *)newRoundCornerImage:(UIImage *)image radius:(int)radius;
 - (NSURL *)gravatarURLForEmail:(NSString *)emailString;
 NSString *md5(NSString *str);
 
@@ -52,62 +50,11 @@ NSString *md5(NSString *str);
         image = [UIImage imageNamed:GRAVATAR_DEFAULT_IMAGE];
     }
 
-    image = [self newRoundCornerImage:image radius:GRAVATAR_IMAGE_RADIUS];
     [super setImage:image];
-    [image release];
 }
 
 #pragma mark -
 #pragma mark Private Methods
-
-static void addRoundedRectToPath(CGContextRef context, CGRect rect, float radius) {
-    if (radius == 0) {
-        CGContextAddRect(context, rect);
-    } else {
-        float width = CGRectGetWidth(rect) / radius;
-        float height = CGRectGetHeight(rect) / radius;
-        
-        CGContextSaveGState(context);
-        CGContextTranslateCTM(context, CGRectGetMinX(rect), CGRectGetMinY(rect));
-        CGContextScaleCTM(context, radius, radius);
-        CGContextMoveToPoint(context, width, height / 2);
-        CGContextAddArcToPoint(context, width, height, width / 2, height, 1);
-        CGContextAddArcToPoint(context, 0, height, 0, height / 2, 1);
-        CGContextAddArcToPoint(context, 0, 0, width / 2, 0, 1);
-        CGContextAddArcToPoint(context, width, 0, width, height / 2, 1);
-        CGContextClosePath(context);
-        CGContextRestoreGState(context);
-    }
-}
-
-- (UIImage *)newRoundCornerImage:(UIImage *)image radius:(int)radius {
-    UIImage *newImage = nil;
-    
-    if (image) {
-        int width = image.size.width;
-        int height = image.size.height;
-        
-        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-        CGContextRef context = CGBitmapContextCreate(NULL, width, height, 8, 4 * width, colorSpace, kCGImageAlphaPremultipliedFirst);
-        
-        CGContextBeginPath(context);
-        CGRect rect = CGRectMake(0, 0, image.size.width, image.size.height);
-        addRoundedRectToPath(context, rect, radius);
-        CGContextClosePath(context);
-        CGContextClip(context);
-        
-        CGContextDrawImage(context, CGRectMake(0, 0, width, height), image.CGImage);
-        
-        CGImageRef imageMasked = CGBitmapContextCreateImage(context);
-        CGContextRelease(context);
-        CGColorSpaceRelease(colorSpace);
-        
-        newImage = [[UIImage imageWithCGImage:imageMasked] retain];
-        CGImageRelease(imageMasked);
-    }
-    
-    return newImage;
-}
 
 - (NSURL *)gravatarURLForEmail:(NSString *)emailString {
      NSString *emailHash = md5([emailString lowercaseString]);

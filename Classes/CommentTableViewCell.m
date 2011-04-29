@@ -5,6 +5,7 @@
 //  Created by Josh Bassett on 2/07/09.
 //
 
+#import <QuartzCore/QuartzCore.h>
 #import "CommentTableViewCell.h"
 #import "CommentsTableViewDelegate.h"
 #import "NSString+XMLExtensions.h" 
@@ -188,6 +189,8 @@
     CGRect rect = CGRectMake(LEFT_OFFSET, TOP_OFFSET, GRAVATAR_WIDTH, GRAVATAR_HEIGHT);
     
     gravatarImageView = [[GravatarImageView alloc] initWithFrame:rect];
+    gravatarImageView.layer.cornerRadius = 10.0f;
+    gravatarImageView.layer.masksToBounds = YES;
     
     [self.contentView addSubview:gravatarImageView];
 }
