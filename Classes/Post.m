@@ -20,6 +20,12 @@
 @dynamic geolocation, tags;
 @dynamic latitudeID, longitudeID, publicID;
 @dynamic categories;
+@synthesize specialType;
+
+- (void)dealloc {
+    self.specialType = nil;
+    [super dealloc];
+}
 
 + (Post *)newPostForBlog:(Blog *)blog {
     Post *post = [[Post alloc] initWithEntity:[NSEntityDescription entityForName:@"Post"

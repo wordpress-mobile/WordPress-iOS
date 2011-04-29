@@ -58,6 +58,10 @@
 
 #pragma mark -
 
+- (void)setValue:(NSString *)value forHTTPHeaderField:(NSString *)header;
+
+#pragma mark -
+
 - (NSString *)method;
 - (NSArray *)objects;
 

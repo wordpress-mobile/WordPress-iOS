@@ -26,6 +26,9 @@
 @property (nonatomic, retain) NSString *longitudeID;
 @property (nonatomic, retain) NSString *publicID;
 
+// QuickPhoto,...
+@property (nonatomic, retain) NSString *specialType;
+
 #pragma mark     Relationships
 @property (nonatomic, retain) NSMutableSet * categories;
 

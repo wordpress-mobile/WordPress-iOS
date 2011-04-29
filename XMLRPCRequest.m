@@ -101,6 +101,13 @@
 
 #pragma mark -
 
+- (void)setValue:(NSString *)value forHTTPHeaderField:(NSString *)header {
+    [_request setValue:value forHTTPHeaderField:header];
+}
+
+
+#pragma mark -
+
 - (NSString *)method
 {
 	return [_encoder method];

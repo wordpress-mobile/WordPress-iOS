@@ -441,6 +441,9 @@
 - (int)mwNewPost:(Post *)post {
     XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:post.blog.xmlrpc]];
     NSMutableDictionary *postParams = [self getXMLRPCDictionaryForPost:post];
+    if (post.specialType != nil) {
+        [xmlrpcRequest setValue:post.specialType forHTTPHeaderField:@"WP-Quick-Post"];
+    }
 
     [xmlrpcRequest setMethod:@"metaWeblog.newPost" withObjects:[self getXMLRPCArgsForBlog:post.blog withExtraArgs:[NSArray arrayWithObject:postParams]]];
 
@@ -750,6 +753,12 @@
 	[request setTimeOutSeconds:30];
 	NSString *version  = [[[NSBundle mainBundle] infoDictionary] valueForKey:[NSString stringWithFormat:@"CFBundleVersion"]];
 	[request addRequestHeader:@"User-Agent" value:[NSString stringWithFormat:@"wp-iphone/%@",version]];
+
+    NSString *quickPostType = [[req request] valueForHTTPHeaderField:@"WP-Quick-Post"];
+    if (quickPostType != nil) {
+        [request addRequestHeader:@"WP-Quick-Post" value:quickPostType];
+    }
+
     if (retryOnTimeout) {
         [request setNumberOfTimesToRetryOnTimeout:2];
     } else {
