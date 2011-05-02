@@ -75,7 +75,6 @@
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    self.image = nil;
     [self releaseConnectionAndData];    
 }
 
