@@ -789,41 +789,6 @@
 	if(getenv("WPDebugXMLRPC"))
 		NSLog(@"executeXMLRPCRequest response: %@", [request responseString]);
 	
-
-	
-	//get rid of weird characters before the xml preamble
-	int responseLenght = [[request responseString] length];
-	//NSLog (@"String length is %i", responseLenght);
-	int charIndex = 0;
-	
-	for( ; charIndex < responseLenght; charIndex++) {
-		unichar testChar = [[request responseString] characterAtIndex:charIndex];
-		if(testChar == 60) {
-			//NSLog (@"found the correct start char at index %i", charIndex);
-			break;
-		} else {
-			//NSLog (@"invalid response char at index %i", charIndex );
-		}
-	} //end for
-	
-	
-	NSRange prefixRange;
-	if(charIndex != 0) {
-		NSString *cleanedStr = [[request responseString] substringFromIndex: charIndex];
-		prefixRange = [[cleanedStr stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]] rangeOfString:@"<?xml"
-																															 options:(NSAnchoredSearch | NSCaseInsensitiveSearch)];		
-	} else {		
-		prefixRange = [[[request responseString] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]] rangeOfString:@"<?xml"
-																															 options:(NSAnchoredSearch | NSCaseInsensitiveSearch)];		
-	}
-    if (prefixRange.location == NSNotFound) {
-        // Not an xml document, don't parse
-        NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Blog returned invalid data.", @""), NSLocalizedDescriptionKey, nil];
-        self.error = [NSError errorWithDomain:@"org.wordpress.iphone" code:kNoXMLPrefix userInfo:usrInfo];
-		[request release];
-        return self.error;
-    }
-	
 	XMLRPCResponse *userInfoResponse = [[[XMLRPCResponse alloc] initWithData:[request responseData]] autorelease];
 	[request release];
 		

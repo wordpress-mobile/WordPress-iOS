@@ -61,7 +61,9 @@
 
 	if (self = [super init])
 	{
-		//cleaning the XML-RPC response message
+		//start cleaning the XML-RPC response message
+		
+		//1. removes characters outside the UTF-8 charset
 		NSString  *str = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
 		//when there are characters outside the UTF-8 charset the str is nil at this point
 		if(data != nil && str == nil) {
@@ -73,7 +75,8 @@
 			str = [[[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding] autorelease];
 		}
 				
-		//get rid of weird characters before the xml preamble
+				
+		//2. get rid of weird characters before the xml preamble
 		int responseLenght = [str length];
 		//NSLog (@"String length is %i", responseLenght);
 		int charIndex = 0;
@@ -92,11 +95,55 @@
 			str = [str substringFromIndex: charIndex];
 		}
 		
+		
+		//3. remove invalid XML characters
+		//props to benjchristensen http://benjchristensen.com/2008/02/07/how-to-strip-invalid-xml-characters/
+		responseLenght = [str length];
+		BOOL isInvalidChar = NO;
+		for( ; charIndex < responseLenght; charIndex++) {
+			unichar testChar = [str characterAtIndex:charIndex];
+			if((testChar == 0x9) ||
+			   (testChar == 0xA) ||
+			   (testChar == 0xD) ||
+			   ((testChar >= 0x20) && (testChar <= 0xD7FF)) ||
+			   ((testChar >= 0xE000) && (testChar <= 0xFFFD))
+			   ) {
+				isInvalidChar = YES;
+				break;
+			}
+		} //end for
+		
+		if(isInvalidChar) {
+			NSMutableString *superCleanedString = [NSMutableString stringWithCapacity:1];
+			for( ; charIndex < responseLenght; charIndex++) {
+				unichar testChar = [str characterAtIndex:charIndex];
+				if((testChar == 0x9) ||
+				   (testChar == 0xA) ||
+				   (testChar == 0xD) ||
+				   ((testChar >= 0x20) && (testChar <= 0xD7FF)) ||
+				   ((testChar >= 0xE000) && (testChar <= 0xFFFD))
+				   ) {
+					NSString *theString = [NSString stringWithFormat:@"%C", testChar];
+					[superCleanedString appendString:theString];
+				}
+			} //end for
+			
+			str = superCleanedString;			
+		}
+		NSRange prefixRange = [[str stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]] rangeOfString:@"<?xml"																													   options:(NSAnchoredSearch | NSCaseInsensitiveSearch)];
+		if (prefixRange.location == NSNotFound) {
+			// Not an xml document, don't parse
+			NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Blog returned invalid data.", @""), NSLocalizedDescriptionKey, nil];
+			NSError *theError = [NSError errorWithDomain:@"org.wordpress.iphone" code:kNoXMLPrefix userInfo:usrInfo];
+			return (id) theError;
+		}
+
+		//the xml response should be cleaned at this point
+		
 		data = nil;
 		data = [NSData dataWithData:[str dataUsingEncoding: NSUTF8StringEncoding]]; 
 		// data should be cleaned here!
-		
-		
+				
 		XMLRPCDecoder *decoder = [[[XMLRPCDecoder alloc] initWithData: data] autorelease];
 		
 		if (decoder == nil)
