@@ -95,12 +95,11 @@
 			str = [str substringFromIndex: charIndex];
 		}
 		
-		
 		//3. remove invalid XML characters
 		//props to benjchristensen http://benjchristensen.com/2008/02/07/how-to-strip-invalid-xml-characters/
 		responseLenght = [str length];
-		BOOL isInvalidChar = NO;
-		for( ; charIndex < responseLenght; charIndex++) {
+		BOOL presenceOfInvalidCharacters = NO;
+		for( int charIndex = 0; charIndex < responseLenght; charIndex++) {
 			unichar testChar = [str characterAtIndex:charIndex];
 			if((testChar == 0x9) ||
 			   (testChar == 0xA) ||
@@ -108,14 +107,17 @@
 			   ((testChar >= 0x20) && (testChar <= 0xD7FF)) ||
 			   ((testChar >= 0xE000) && (testChar <= 0xFFFD))
 			   ) {
-				isInvalidChar = YES;
+				//NSLog(@"valid char%C", testChar);
+			} else {
+				//NSLog(@"invalid chararactes found %C", testChar);
+				presenceOfInvalidCharacters = YES;
 				break;
 			}
 		} //end for
 		
-		if(isInvalidChar) {
+		if(presenceOfInvalidCharacters) {
 			NSMutableString *superCleanedString = [NSMutableString stringWithCapacity:1];
-			for( ; charIndex < responseLenght; charIndex++) {
+			for( int charIndex = 0; charIndex < responseLenght; charIndex++) {
 				unichar testChar = [str characterAtIndex:charIndex];
 				if((testChar == 0x9) ||
 				   (testChar == 0xA) ||
