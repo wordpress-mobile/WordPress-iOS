@@ -294,10 +294,10 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
     if ([blog isWPcom])
         idType = [NSString stringWithFormat:@"blog_id=%@", blog.blogID];
     else
-        idType = [NSString stringWithFormat:@"blog_uri=%@", blog.hostURL];
+        idType = [NSString stringWithFormat:@"blog_uri=%@", blog.url];
 
 	//request the 5 reports for display in the UITableView
-	
+    
 	NSString *requestURL;
 	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
 	//views
