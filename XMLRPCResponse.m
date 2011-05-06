@@ -136,7 +136,7 @@
 		if (prefixRange.location == NSNotFound) {
 			// Not an xml document, don't parse
 			NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Blog returned invalid data.", @""), NSLocalizedDescriptionKey, nil];
-			NSError *theError = [NSError errorWithDomain:@"org.wordpress.iphone" code:kNoXMLPrefix userInfo:usrInfo];
+			NSError *theError = [[NSError errorWithDomain:@"org.wordpress.iphone" code:kNoXMLPrefix userInfo:usrInfo] retain];
 			return (id) theError;
 		}
 
@@ -172,7 +172,7 @@
 			if( theError != NULL )
 			{
 				//TODO: we may need to create a XMLRPCResponse with the error. and return
-				return (id) theError;
+				return (id) [theError retain];
 			}
 			//NSLog (@"cleaned response msg: %@", cleanedString);
 			//NSLog (@"--end tidy process");			data = nil;
