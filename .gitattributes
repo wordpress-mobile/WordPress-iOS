@@ -436,6 +436,7 @@ fr.lproj/Localizable.strings -text svneol=unset#unset
 /gravatar.jpg -text
 /hasLocation.png -text
 /hasLocation@2x.png -text
+he.lproj/Localizable.strings -text svneol=unset#unset
 /help.png -text
 hr.lproj/Localizable.strings -text svneol=unset#unset
 /iTunesArtwork -text
