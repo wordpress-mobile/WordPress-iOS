@@ -173,7 +173,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	{
 		[self showLoadingDialog];
 		statsData = [[NSMutableData alloc] init];
-		apiKeyConn = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://public-api.wordpress.com/get-user-blogs/1.0"]] delegate:self];
+		apiKeyConn = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://public-api.wordpress.com/get-user-blogs/1.0"]] delegate:self];
 		
 		CFDictionaryAddValue(
 							 connectionToInfoMapping,
