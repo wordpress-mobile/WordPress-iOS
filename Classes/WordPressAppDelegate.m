@@ -792,14 +792,15 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		NSTimeInterval statsInterval = 7 * 24 * 60 * 60; //number of seconds in 30 days
 		if (difference > statsInterval) //if it's been more than 7 days since last stats run
 		{
-			[self performSelectorInBackground:@selector(runStats) withObject:nil];
+            // WARNING: for some reason, if runStats is called in a background thread
+            // NSURLConnection doesn't launch and stats are not sent
+            // Don't change this or be really sure it's working
+			[self runStats];
 		}
 	}
 }
 
 - (void)runStats {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
 	//generate and post the stats data
 	/*
 	 - device_uuid – A unique identifier to the iPhone/iPod that the app is installed on.
@@ -861,8 +862,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	NSDate *theDate = [NSDate date];
 	[defaults setObject:theDate forKey:@"statsDate"];
 	[defaults synchronize];
-	
-	[pool release];
 }
 
 #pragma mark Push Notification delegate
