@@ -775,6 +775,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
     urlField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 82.0, 260.0, 29.0)];
     infoText.placeholder = NSLocalizedString(@"Text to be linked", @"");
     urlField.placeholder = NSLocalizedString(@"Link URL", @"");
+    
+    NSRange range = textView.selectedRange;
+    
+    if (range.length > 0)
+        infoText.text = [textView.text substringWithRange:range];
+    
     //infoText.enabled = YES;
 	
     infoText.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -828,11 +834,21 @@ NSTimeInterval kAnimationDuration = 0.3f;
             if ((infoText.text == nil) || ([infoText.text isEqualToString:@""]))
                 infoText.text = urlField.text;
 			
-            NSString *commentsStr = textView.text;
-            NSRange rangeToReplace = [self selectedLinkRange];
+            //NSString *commentsStr = textView.text;
+            //NSRange rangeToReplace = [self selectedLinkRange];
             NSString *urlString = [self validateNewLinkInfo:urlField.text];
-            NSString *aTagText = [NSString stringWithFormat:@"<a href=\"%@\">%@</a>", urlString, infoText.text];;
-            textView.text = [commentsStr stringByReplacingOccurrencesOfString:[commentsStr substringWithRange:rangeToReplace] withString:aTagText options:NSCaseInsensitiveSearch range:rangeToReplace];
+            NSString *aTagText = [NSString stringWithFormat:@"<a href=\"%@\">%@</a>", urlString, infoText.text];
+            
+            NSRange range = textView.selectedRange;
+            //NSString *selection = [textView.text substringWithRange:range];
+            textView.text = [textView.text stringByReplacingCharactersInRange:range withString:aTagText];
+            if (range.length == 0) {                // If nothing was selected
+                range.location += 2 + [aTagText length]; // Place selection between tags
+                textView.selectedRange = range;
+            }
+            
+            
+            //textView.text = [commentsStr stringByReplacingOccurrencesOfString:[commentsStr substringWithRange:rangeToReplace] withString:aTagText options:NSCaseInsensitiveSearch range:rangeToReplace];
 			self.apost.content = textView.text;
         }
 		
@@ -885,125 +901,15 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
 }
 
-//replace "&nbsp" with a space @"&#160;" before Apple's broken TextView handling can do so and break things
-//this enables the "http helper" to work as expected
-//important is capturing &nbsp BEFORE the semicolon is added.  Not doing so causes a crash in the textViewDidChange method due to array overrun
-- (BOOL)textView:(UITextView *)aTextView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
-	
-	//if nothing has been entered yet, return YES to prevent crash when hitting delete
-    if (text.length == 0) {
-		return YES;
-    }
-	
-    // create final version of textView after the current text has been inserted
-    NSMutableString *updatedText = [[NSMutableString alloc] initWithString:aTextView.text];
-    [updatedText insertString:text atIndex:range.location];
-	
-    NSRange replaceRange = range, endRange = range;
-	
-    if (text.length > 1) {
-        // handle paste
-        replaceRange.length = text.length;
-    } else {
-        // handle normal typing
-        replaceRange.length = 6;  // length of "&#160;" is 6 characters
-		if( replaceRange.location >= 5) //we should check the location. the new location must be > 0
-			replaceRange.location -= 5; // look back one characters (length of "&#160;" minus one)
-		else {
-			//the beginning of the field
-			replaceRange.location = 0; 
-			replaceRange.length = 5;
-		}
-    }
-	
-	int replaceCount = 0;
-
-	@try{
-		// replace "&nbsp" with "&#160;" for the inserted range
-		if([updatedText length] > 4)
-			replaceCount = [updatedText replaceOccurrencesOfString:@"&nbsp" withString:@"&#160;" options:NSCaseInsensitiveSearch range:replaceRange];
-	}
-	@catch (NSException *e){
-		NSLog(@"NSRangeException: Can't replace text in range.");
-	}
-	@catch (id ue) { // least specific type. NSRangeException is a const defined in a string constant
-		NSLog(@"NSRangeException: Can't replace text in range.");
-	}
-	
-    if (replaceCount > 0) {
-        // update the textView's text
-        aTextView.text = updatedText;
-        self.apost.content = updatedText;
-		
-        // leave cursor at end of inserted text
-        endRange.location += text.length + replaceCount * 1; // length diff of "&nbsp" and "&#160;" is 1 character
-		
-        [updatedText release];
-		
-        // let the textView know that it should ingore the inserted text
-        return NO;
-    }
-	
-    [updatedText release];
-	
-    // let the textView know that it should handle the inserted text
-    return YES;
-}
-
 - (void)textViewDidChange:(UITextView *)aTextView {
-    if (dismiss == YES) {
-        dismiss = NO;
-        return;
-    }
-	
-    NSRange range = [aTextView selectedRange];
-	if (range.location == NSNotFound)
-		return;
-    NSArray *stringArray = [NSArray arrayWithObjects:@"http:", @"ftp:", @"https:", @"www.", nil];
-	//NSString *str = [[aTextView text]stringByReplacingOccurrencesOfString: @"&nbsp;" withString: @"&#160"];
-    NSString *str = [aTextView text];
-    int i, j, count = [stringArray count];
-    BOOL searchRes = NO;
-	
-    for (j = 4; j <= 6; j++) {
-        if (range.location < j)
-            return;
-		
-        NSRange subStrRange;
-		// subStrRange.location = range.location - j;
-		//I took this out because adding &nbsp; to the post caused a mismatch between the length of the string from the text field and range.location
-		//both should be equal, but the OS/Cocoa interprets &nbsp; as ONE space, not 6.
-		//This caused NSString *subStr = [str substringWithRange:subStrRange]; to fail if the user entered &nbsp; in the post
-		//subStrRange.location = str.length -j;
-		subStrRange.location = range.location - j;
-        subStrRange.length = j;
-        [self setSelectedLinkRange:subStrRange];
-		
-		NSString *subStr = [str substringWithRange:subStrRange];
-		
-		for (i = 0; i < count; i++) {
-			NSString *searchString = [stringArray objectAtIndex:i];
-			
-			if (searchRes = [subStr isEqualToString:[searchString capitalizedString]])
-				break;else if (searchRes = [subStr isEqualToString:[searchString lowercaseString]])
-					break;else if (searchRes = [subStr isEqualToString:[searchString uppercaseString]])
-						break;
-		}
-		
-		if (searchRes)
-			break;
-	}
-	
-    self.apost.content = textView.text;
-    if (searchRes && dismiss != YES) {
-        [textView resignFirstResponder];
-        UIAlertView *linkAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Make a Link", @"") message:NSLocalizedString(@"Would you like help making a link?", @"") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") otherButtonTitles:NSLocalizedString(@"Make a Link", @""), nil];
-        [linkAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
-        [linkAlert show];
-        WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-        [delegate setAlertRunning:YES];
-        [linkAlert release];
-    }	
+    
+    //replace character entities with character numbers for trac #871
+    NSString *str = [[aTextView text] stringByReplacingOccurrencesOfString: @"&nbsp;" withString: @"&#160;"];
+    str = [str stringByReplacingOccurrencesOfString: @"&lt;" withString: @"&#60;"];
+    str = [str stringByReplacingOccurrencesOfString: @"&gt;" withString: @"&#62;"];
+    
+    aTextView.text = str;
+    
 }
 
 - (void)textViewDidEndEditing:(UITextView *)aTextView {
@@ -1264,6 +1170,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
         [button release];
 
         button = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"blockquote.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(setBlockquote)];
+        [buttons addObject:button];
+        [button release];
+        
+        button = [[UIBarButtonItem alloc] initWithTitle:@"link" style:UIBarButtonItemStyleBordered target:self action:@selector(showLinkView)];
         [buttons addObject:button];
         [button release];
 
