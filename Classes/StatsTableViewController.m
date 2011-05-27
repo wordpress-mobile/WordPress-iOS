@@ -416,40 +416,42 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			NSArray *sorted = [xArray sortedArrayUsingSelector:@selector(compare:)];
 			
 			//calculate some variables for the google chart
-			int minValue = [[sorted objectAtIndex:0] intValue];
 			int maxValue = [[sorted objectAtIndex:[sorted count] - 1] intValue];
-			int minBuffer = round(minValue - (maxValue * .10));
-			if (minBuffer < 0){
-				minBuffer = 0;
-			}
-			int maxBuffer = round(maxValue + (maxValue * .10));
-			//round to the lowest 10 for prettier charts
-			for(int i = 0; i < 9; i++) {
-				if(minBuffer % 10 == 0)
-					break;
-				else{
-					minBuffer--;
-				}
-			}
 			
-			for(int i = 0; i < 9; i++) {
-				if(maxBuffer % 10 == 0)
-					break;
-				else{
-					maxBuffer++;
-				}
-			}
-			
-			int yInterval = maxBuffer / 10;
-			//round the gap in y axis of the chart
-			for(int i = 0; i < 9; i++) {
-				if(yInterval % 10 == 0)
-					break;
-				else{
-					yInterval++;
-				}
-			}
-			
+            //calculate some variables for the google chart
+            int power = log(maxValue) / log(10);
+            int factor = pow(10, power);
+            if (factor == 0)
+                factor = 1;
+            int maxBuffer = 0;
+            int minBuffer = 0;
+            int yInterval = 0;
+            maxBuffer = (maxValue / factor) * factor;
+            yInterval = maxBuffer / 4;
+            maxBuffer += yInterval;
+            
+            while (maxBuffer < maxValue){
+                maxBuffer += yInterval;
+            }
+            
+            if (maxValue < 10)
+                maxBuffer = 10;
+            
+            NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];  
+            [formatter setLocale:[NSLocale currentLocale]];
+
+            [formatter setGroupingSeparator:[[formatter groupingSeparator] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+
+            [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+            NSString *yAxisValues = @"";
+            int stepCtr = 0;
+            for (int i = 0; i <= maxBuffer; i += yInterval) {
+                stepCtr++;
+                yAxisValues = [yAxisValues stringByAppendingFormat:@"%@|", [formatter stringFromNumber:[NSNumber numberWithInt:i]]];
+            
+            }
+            yAxisValues = [yAxisValues substringToIndex:[yAxisValues length] - 1];
+            
 			NSMutableArray *dateCSV = [[NSMutableArray alloc] init];
             NSString *bgData = @"";
 			if ([reportType isEqualToString:@"chartDaysData"]){
@@ -523,10 +525,20 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 				}
 				
 			}
+            float stepSize;
+            if (stepCtr > 0) {
+                stepCtr--;
+                stepSize = 100.0f/stepCtr;
+            }
+            else
+                stepSize = 1;
+            
+            NSString* formattedStepSize = [NSString stringWithFormat:@"%.06f", stepSize];
+            
 			NSString *dateValues = [[NSString alloc] initWithString:[dateCSV componentsJoinedByString:@"|"]];
-			NSString *chartViewURL = [[[NSString alloc] initWithFormat: @"http://chart.apis.google.com/chart?chts=464646,20&cht=bvs&chg=100,20,1,0&chbh=a&chd=t:%@%@&chs=560x320&chl=%@&chxt=y,x&chds=%d,%d&chxr=0,%d,%d,%d&chf=c,lg,90,FFFFFF,0,FFFFFF,0.5&chco=a3bcd3,cccccc77&chls=4&chxs=0,464646,20,0,t|1,464646,20,0,t,ffffff&chxtc=0,0", xValues, bgData, dateValues, minBuffer,maxBuffer, minBuffer,maxBuffer, yInterval] autorelease];
+			NSString *chartViewURL = [[[NSString alloc] initWithFormat: @"http://chart.apis.google.com/chart?chts=464646,20&cht=bvs&chg=100,%@,1,0&chbh=a&chd=t:%@%@&chs=560x320&chxl=0:|%@|1:|%@&chxt=y,x&chds=%d,%d&chxr=0,%d,%d,%d&chf=c,lg,90,FFFFFF,0,FFFFFF,0.5&chco=a3bcd3,cccccc77&chls=4&chxs=0,464646,20,0,t|1,464646,20,0,t,ffffff&chxtc=0,0", formattedStepSize, xValues, bgData, yAxisValues, dateValues, minBuffer,maxBuffer, minBuffer,maxBuffer, yInterval] autorelease];
+            chartViewURL = [chartViewURL stringByReplacingOccurrencesOfString:@"|" withString:@"%7c"];
 			NSLog(@"google chart url: %@", chartViewURL);
-			chartViewURL = [chartViewURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 			statsRequest = YES;
 			if ([reportType isEqualToString:@"chartDaysData"]) {
 				statsPageControlViewController.chart1URL = chartViewURL;
@@ -1031,7 +1043,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			//add commas
 			NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];	
 			NSNumber *statDigits = [numberFormatter numberFromString:rightColumn];
-			[numberFormatter setGroupingSeparator: @","];
+            [numberFormatter setLocale:[NSLocale currentLocale]];
 			[numberFormatter setGroupingSize: 3];
 			[numberFormatter setUsesGroupingSeparator: YES];
 			label.text = [numberFormatter stringFromNumber: statDigits];
