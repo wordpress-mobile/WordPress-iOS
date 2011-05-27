@@ -852,7 +852,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0 && alertView.tag == 1) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://wordpress.org/extend/plugins/stats/"]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://jetpack.me"]];
     }
 	else if (buttonIndex == 0 && alertView.tag == 2) {
         statsAPIAlertShowing = NO;
