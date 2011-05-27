@@ -426,16 +426,27 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
             int yInterval = 0;
             if (factor == 0)
                 factor = 1;
-            maxBuffer = (maxValue / factor) * factor;
-            yInterval = maxBuffer / 4;
-            maxBuffer += yInterval;
-            
-            while (maxBuffer < maxValue){
+            if (maxValue == 1) {
+                yInterval = 1;
+                maxBuffer = 2;
+            }
+            else {
+                maxBuffer = (maxValue / factor) * factor;
+                yInterval = maxBuffer / 4;
                 maxBuffer += yInterval;
+            
+                while (maxBuffer < maxValue){
+                    maxBuffer += yInterval;
+                }
+            
+                if (maxValue < 10)
+                    maxBuffer = 10;
             }
             
-            if (maxValue < 10)
-                maxBuffer = 10;
+            if (yInterval > 15 && yInterval < 20) {
+                yInterval = 20;
+                maxBuffer = 100;
+            }
             
             NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];  
             [formatter setLocale:[NSLocale currentLocale]];
