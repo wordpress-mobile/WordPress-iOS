@@ -421,11 +421,11 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
             //calculate some variables for the google chart
             int power = log(maxValue) / log(10);
             int factor = pow(10, power);
-            if (factor == 0)
-                factor = 1;
             int maxBuffer = 0;
             int minBuffer = 0;
             int yInterval = 0;
+            if (factor == 0)
+                factor = 1;
             maxBuffer = (maxValue / factor) * factor;
             yInterval = maxBuffer / 4;
             maxBuffer += yInterval;
