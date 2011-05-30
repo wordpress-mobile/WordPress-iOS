@@ -420,6 +420,7 @@ c_tidy/win32tc.h -text
 /commentDelete.png -text
 /comments.png -text
 /comments@2x.png -text
+de.lproj/Localizable.strings -text svneol=unset#unset
 /defaultPostTemplate.html -text
 /defaultPostTemplate_old.html -text
 /down.png -text
@@ -428,13 +429,16 @@ c_tidy/win32tc.h -text
 /downArrow@2x.png -text svneol=unset#unset
 en.lproj/Localizable.strings -text svneol=unset#unset
 es.lproj/Localizable.strings -text svneol=unset#unset
+fr.lproj/Localizable.strings -text svneol=unset#unset
 /getLocation.png -text
 /getLocation@2x.png -text
 /gettingLocation.png -text
 /gravatar.jpg -text
 /hasLocation.png -text
 /hasLocation@2x.png -text
+he.lproj/Localizable.strings -text svneol=unset#unset
 /help.png -text
+hr.lproj/Localizable.strings -text svneol=unset#unset
 /iTunesArtwork -text
 it.lproj/Localizable.strings -text
 /italic.png -text svneol=unset#unset
@@ -452,6 +456,7 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /main.m -text
 /movie.png -text svneol=unset#unset
 /movie@2x.png -text svneol=unset#unset
+nl.lproj/Localizable.strings -text svneol=unset#unset
 /page_control_blue.png -text
 /page_control_blue@2x.png -text
 /page_control_blue_active.png -text

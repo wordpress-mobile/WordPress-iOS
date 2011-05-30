@@ -814,9 +814,11 @@
 		currentImage = [image retain];
 		
 		//UIImagePickerControllerReferenceURL = "assets-library://asset/asset.JPG?id=1000000050&ext=JPG").
-		if (iOs4OrGreater())
-			[self getMetadataFromAssetForURL:[info objectForKey:UIImagePickerControllerReferenceURL]];
-				
+     /*   NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
+        if (assetURL) {
+            [self getMetadataFromAssetForURL:assetURL];
+        }
+		*/		
 		NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
 		[nf setNumberStyle:NSNumberFormatterDecimalStyle];
 		NSNumber *resizePreference = [NSNumber numberWithInt:-1];
@@ -838,7 +840,8 @@
 				[self useImage:[self resizeImage:currentImage toSize:kResizeLarge]];
 				break;
 			case 4:
-				[self useImage:currentImage];
+				//[self useImage:currentImage];
+                [self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
 				break;
 			default:
 				[self showResizeActionSheet];
@@ -1068,6 +1071,7 @@
 			smallSize = CGSizeMake(240, 180);
 			mediumSize = CGSizeMake(480, 360);
 			largeSize = CGSizeMake(640, 480);
+            break;
 		case UIImageOrientationLeft:
 		case UIImageOrientationLeftMirrored:
 		case UIImageOrientationRight:
@@ -1155,7 +1159,7 @@
 	NSString *documentsDirectory = [paths objectAtIndex:0];
 	NSString *filename = [NSString stringWithFormat:@"%@.jpg", [formatter stringFromDate:[NSDate date]]];
 	NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
-	
+	/*
 	if (iOs4OrGreater() && self.currentImageMetadata != nil) {
 		// Write the EXIF data with the image data to disk
 		CGImageSourceRef  source ;
@@ -1195,7 +1199,11 @@
 		NSFileManager *fileManager = [NSFileManager defaultManager];
 		[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
 	}
-	
+	*/
+
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    [fileManager createFileAtPath:filepath contents:imageData attributes:nil];
+
 	if(currentOrientation == kLandscape)
 		imageMedia.orientation = @"landscape";
 	else

@@ -463,6 +463,8 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
             }
             yAxisValues = [yAxisValues substringToIndex:[yAxisValues length] - 1];
             
+            [formatter release];
+            
 			NSMutableArray *dateCSV = [[NSMutableArray alloc] init];
             NSString *bgData = @"";
 			if ([reportType isEqualToString:@"chartDaysData"]){
@@ -471,31 +473,24 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
                     NSDateFormatter *df = [[NSDateFormatter alloc] init];
 					[df setDateFormat:@"yyyy-MM-dd"];
 					NSDate *tempDate = [df dateFromString: dateVal];
-                    [df release];
 					NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 					NSDateComponents *dateComponents = [gregorian components:(NSWeekdayCalendarUnit) fromDate:tempDate];
+                    
 					NSInteger day = [dateComponents weekday];
-					[gregorian release];
-					if (day == 1 || day == 7){
-						[dateCSV addObject: @"S"];
+                    
+                    [df setDateFormat:@"E"];
+                    [df setLocale:[NSLocale currentLocale]];
+                    NSString *weekdayName = [[[df stringFromDate:tempDate] substringToIndex:1] capitalizedString];
+                    [df release];
+                    
+                    [dateCSV addObject: weekdayName];
+                    if (day == 1 || day == 7) //show the grey bg in the chart if it's a weekend day
                         bgData = [NSString stringWithFormat:@"%@%d,", bgData, maxBuffer];
-					}
-					else if (day == 2){
-						[dateCSV addObject: @"M"];
+                    else
                         bgData = [NSString stringWithFormat:@"%@%@", bgData, @"0,"];
-					}
-					else if (day == 3 || day == 5){
-						[dateCSV addObject: @"T"];
-                        bgData = [NSString stringWithFormat:@"%@%@", bgData, @"0,"];
-					}
-					else if (day == 4){
-						[dateCSV addObject: @"W"];
-                        bgData = [NSString stringWithFormat:@"%@%@", bgData, @"0,"];
-					}
-					else if (day == 6){
-						[dateCSV addObject: @"F"];
-                        bgData = [NSString stringWithFormat:@"%@%@", bgData, @"0,"];
-					}
+
+
+					[gregorian release];
 					
 				}
                 bgData = [bgData substringToIndex:[bgData length] - 1];
@@ -503,7 +498,10 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			else if ([reportType isEqualToString:@"chartWeeksData"])
 			{
 				for (NSString *dateVal in yArray) {
-					[dateCSV addObject: [dateVal substringWithRange: NSMakeRange (5, 2)]];
+                    if ([dateVal length] >= 7)
+                        [dateCSV addObject: [dateVal substringWithRange: NSMakeRange (5, 2)]];
+                    else
+                        [dateCSV addObject: @""];
 				}
 				
 			}
@@ -527,7 +525,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
                     
                     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
                     [formatter setDateFormat:@"MMM"];
-                    NSString *stringFromDate = [formatter stringFromDate:myDate];
+                    NSString *stringFromDate = [[formatter stringFromDate:myDate] capitalizedString];
                     
                     
                     [dateCSV addObject: stringFromDate];
@@ -1004,7 +1002,24 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 		else {
 			[cell addColumn:210];
 			if (indexPath.section == 0 && indexPath.row == 0) {
-				label.text = NSLocalizedString(@"Today", @"");
+                NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+                [dateFormat setDateFormat:@"YYYY-MM-dd"];
+                NSDate *latestDate = [dateFormat dateFromString:leftColumn]; 
+                
+                NSCalendar *cal = [NSCalendar currentCalendar];
+                NSDateComponents *components = [cal components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:[NSDate date]];
+                NSDate *today = [cal dateFromComponents:components];
+                components = [cal components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:latestDate];
+                NSDate *otherDate = [cal dateFromComponents:components];
+                
+                if([today isEqualToDate:otherDate]) {
+                    label.text = NSLocalizedString(@"Today", @"");
+                }
+                else{
+                    [dateFormat setDateFormat:@"MMMM d"];
+                    label.text = [dateFormat stringFromDate:latestDate]; 
+                }
+                [dateFormat release];
 			}
 			else if (indexPath.section == 0 && indexPath.row > 0){
 				//special date formatting for first section

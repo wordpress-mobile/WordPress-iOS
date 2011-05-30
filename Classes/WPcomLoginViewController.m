@@ -30,8 +30,8 @@
     [super viewDidLoad];
 	
     [FlurryAPI logEvent:@"WPcomLogin"];
-	footerText = @" ";
-	buttonText = NSLocalizedString(@"Sign In", @"");
+	self.footerText = @" ";
+	self.buttonText = NSLocalizedString(@"Sign In", @"");
 	WPcomXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
 	self.navigationItem.title = NSLocalizedString(@"Sign In", @"");
 	
@@ -124,11 +124,11 @@
 		}
         if(isSigningIn) {
 			[activityCell.spinner startAnimating];
-			buttonText = NSLocalizedString(@"Signing In...", @"");
+			self.buttonText = NSLocalizedString(@"Signing In...", @"");
 		}
 		else {
 			[activityCell.spinner stopAnimating];
-			buttonText = NSLocalizedString(@"Sign In", @"");
+			self.buttonText = NSLocalizedString(@"Sign In", @"");
 		}
 		
 		activityCell.textLabel.text = buttonText;
@@ -198,18 +198,18 @@
 				}
 			}
 			if(username == nil) {
-				footerText = NSLocalizedString(@"Username is required.", @"");
-				buttonText = NSLocalizedString(@"Sign In", @"");
+				self.footerText = NSLocalizedString(@"Username is required.", @"");
+				self.buttonText = NSLocalizedString(@"Sign In", @"");
 				[tv reloadData];
 			}
 			else if(password == nil) {
-				footerText = NSLocalizedString(@"Password is required.", @"");
-				buttonText = NSLocalizedString(@"Sign In", @"");
+				self.footerText = NSLocalizedString(@"Password is required.", @"");
+				self.buttonText = NSLocalizedString(@"Sign In", @"");
 				[tv reloadData];
 			}
 			else {
-				footerText = @" ";
-				buttonText = NSLocalizedString(@"Signing in...", @"");
+				self.footerText = @" ";
+				self.buttonText = NSLocalizedString(@"Signing in...", @"");
 				
 				[NSThread sleepForTimeInterval:0.15];
 				[tv reloadData];
@@ -348,8 +348,8 @@
 		[self performSelectorOnMainThread:@selector(didSignInSuccessfully) withObject:nil waitUntilDone:NO];
 	}
 	else {
-		footerText = NSLocalizedString(@"Sign in failed. Please try again.", @"");
-		buttonText = NSLocalizedString(@"Sign In", @"");
+		self.footerText = NSLocalizedString(@"Sign in failed. Please try again.", @"");
+		self.buttonText = NSLocalizedString(@"Sign In", @"");
 		isSigningIn = NO;
 		[self.navigationItem setHidesBackButton:NO animated:NO];
 		[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
@@ -396,7 +396,8 @@
 
 - (void)dealloc {
 	[tableView release];
-	[footerText release];
+    self.footerText = nil;
+    self.buttonText = nil;
 	[username release];
 	[password release];
 	[WPcomXMLRPCUrl release];

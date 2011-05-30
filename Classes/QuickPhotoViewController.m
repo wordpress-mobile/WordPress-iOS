@@ -134,6 +134,7 @@
         picker.allowsEditing = NO;
         picker.delegate = self;
         [self presentModalViewController:picker animated:YES];
+        [picker release];
     }
 }
 
@@ -209,6 +210,7 @@
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    picker.delegate = nil;
     [picker dismissModalViewControllerAnimated:YES];
     [self.navigationController popViewControllerAnimated:YES];
 }
