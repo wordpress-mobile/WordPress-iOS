@@ -757,10 +757,10 @@
 		E14B2B751368127900CC3C4F /* UITableViewTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableViewTextFieldCell.m; sourceTree = "<group>"; };
 		E159D1031309AB0D00F498E2 /* MigrateBlogsFromFiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MigrateBlogsFromFiles.h; sourceTree = "<group>"; };
 		E159D1041309AB0D00F498E2 /* MigrateBlogsFromFiles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MigrateBlogsFromFiles.m; sourceTree = "<group>"; };
-		E167745A1377F24300EE44DD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = /Users/koke/automattic/svn/iphone.svn.wordpress.org/branches/2.8/fr.lproj/Localizable.strings; sourceTree = "<absolute>"; };
-		E167745B1377F25500EE44DD /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = /Users/koke/automattic/svn/iphone.svn.wordpress.org/branches/2.8/nl.lproj/Localizable.strings; sourceTree = "<absolute>"; };
-		E167745C1377F26400EE44DD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = /Users/koke/automattic/svn/iphone.svn.wordpress.org/branches/2.8/de.lproj/Localizable.strings; sourceTree = "<absolute>"; };
-		E167745D1377F26D00EE44DD /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = /Users/koke/automattic/svn/iphone.svn.wordpress.org/branches/2.8/hr.lproj/Localizable.strings; sourceTree = "<absolute>"; };
+		E167745A1377F24300EE44DD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E167745B1377F25500EE44DD /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E167745C1377F26400EE44DD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E167745D1377F26D00EE44DD /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E16A0C3012E769A10049EA80 /* table_sep.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = table_sep.png; sourceTree = "<group>"; };
 		E16A0C3112E769A10049EA80 /* table_sep@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "table_sep@2x.png"; sourceTree = "<group>"; };
 		E16A7B76132150E700E6BD1E /* Info-beta.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-beta.plist"; sourceTree = "<group>"; };
