@@ -206,7 +206,7 @@
     [picker dismissModalViewControllerAnimated:NO];
     [self performSelectorInBackground:@selector(saveImage) withObject:nil];
     
-    [self.contentTextView becomeFirstResponder];
+    [self.titleTextField becomeFirstResponder];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
@@ -217,25 +217,25 @@
 
 #pragma mark - Blog selector delegate
 - (void)blogSelectorButtonWillBecomeActive:(BlogSelectorButton *)button {
-    [titleTextField resignFirstResponder];
-    [contentTextView resignFirstResponder];
+    [self.titleTextField resignFirstResponder];
+    [self.contentTextView resignFirstResponder];
     [self.view bringSubviewToFront:button];
 }
 
 - (void)blogSelectorButtonDidBecomeInactive:(BlogSelectorButton *)button {
-    [contentTextView becomeFirstResponder];
+    [self.titleTextField becomeFirstResponder];
 }
 
 #pragma mark - Quick Photo preview view delegate
 
 - (void)pictureWillZoom {
-    [titleTextField resignFirstResponder];
-    [contentTextView resignFirstResponder];
+    [self.titleTextField resignFirstResponder];
+    [self.contentTextView resignFirstResponder];
     [self.view bringSubviewToFront:photoImageView];
 }
 
 - (void)pictureDidRestore {
-    [contentTextView becomeFirstResponder];
+    [self.titleTextField becomeFirstResponder];
 }
 
 @end
