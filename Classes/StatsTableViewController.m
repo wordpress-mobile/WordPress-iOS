@@ -443,6 +443,10 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
                     maxBuffer = 10;
             }
             
+            if (yInterval > 5 && yInterval < 10) {
+                yInterval = 10;
+                maxBuffer = 50;
+            }
             if (yInterval > 15 && yInterval < 20) {
                 yInterval = 20;
                 maxBuffer = 100;
