@@ -439,6 +439,7 @@ fr.lproj/Localizable.strings -text svneol=unset#unset
 he.lproj/Localizable.strings -text svneol=unset#unset
 /help.png -text
 hr.lproj/Localizable.strings -text svneol=unset#unset
+/i18n_download -text
 /iTunesArtwork -text
 it.lproj/Localizable.strings -text
 /italic.png -text svneol=unset#unset
