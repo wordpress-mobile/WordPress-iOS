@@ -447,7 +447,11 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
                 yInterval = 10;
                 maxBuffer = 50;
             }
-            if (yInterval > 15 && yInterval < 20) {
+            else if (yInterval > 10 && yInterval < 15) {
+                yInterval = 15;
+                maxBuffer = 75;
+            }
+            else if (yInterval > 15 && yInterval < 20) {
                 yInterval = 20;
                 maxBuffer = 100;
             }
