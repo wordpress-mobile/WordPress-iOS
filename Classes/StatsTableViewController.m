@@ -434,6 +434,9 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
                 maxBuffer = (maxValue / factor) * factor;
                 yInterval = maxBuffer / 4;
                 maxBuffer += yInterval;
+                
+                if (yInterval == 0)
+                    yInterval = 1;
             
                 while (maxBuffer <= maxValue){
                     maxBuffer += yInterval;
