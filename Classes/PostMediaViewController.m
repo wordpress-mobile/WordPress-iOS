@@ -370,14 +370,9 @@
 		}
 		self.isShowingResizeActionSheet = NO;
 	}
-	else {
-        WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-        [appDelegate setAlertRunning:NO];
-		/*[currentImageMetadata release];
-        currentImageMetadata = nil;
-        [currentImage release];
-        currentImage = nil;*/
-	}
+    
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+    [appDelegate setAlertRunning:NO];
 	[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
 }
 
