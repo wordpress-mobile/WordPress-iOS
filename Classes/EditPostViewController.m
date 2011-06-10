@@ -815,12 +815,14 @@ NSTimeInterval kAnimationDuration = 0.3f;
     WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 	
     if ([alertView tag] == 1) {
-        if (buttonIndex == 1)
-            [self showLinkView];else {
-				dismiss = YES;
-				[textView touchesBegan:nil withEvent:nil];
-				[delegate setAlertRunning:NO];
-			}
+        if (buttonIndex == 1) {
+            [self showLinkView];
+        }
+        else {
+            dismiss = YES;
+            [textView touchesBegan:nil withEvent:nil];
+            [delegate setAlertRunning:NO];
+        }
     }
 	
     if ([alertView tag] == 2) {
@@ -840,6 +842,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
             NSString *aTagText = [NSString stringWithFormat:@"<a href=\"%@\">%@</a>", urlString, infoText.text];
             
             NSRange range = textView.selectedRange;
+            
+            if (range.location > 3) {
+                range.location -= 4;
+                range.length = 4;
+            }
+            
             //NSString *selection = [textView.text substringWithRange:range];
             textView.text = [textView.text stringByReplacingCharactersInRange:range withString:aTagText];
             if (range.length == 0) {                // If nothing was selected
@@ -852,7 +860,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			self.apost.content = textView.text;
         }
 		
-        dismiss = YES;
+        dismiss = NO;
         [delegate setAlertRunning:NO];
         [textView touchesBegan:nil withEvent:nil];
     }
@@ -905,11 +913,34 @@ NSTimeInterval kAnimationDuration = 0.3f;
     
     //replace character entities with character numbers for trac #871
     //caused the cursor to jump around, commenting out for now until we add the editor buttons
-    /*NSString *str = [[aTextView text] stringByReplacingOccurrencesOfString: @"&nbsp;" withString: @"&#160;"];
-    str = [str stringByReplacingOccurrencesOfString: @"&lt;" withString: @"&#60;"];
-    str = [str stringByReplacingOccurrencesOfString: @"&gt;" withString: @"&#62;"];
     
-    aTextView.text = str;*/
+    NSString *str = aTextView.text;
+    
+    if ([str rangeOfString:@"&nbsp"].location != NSNotFound || [str rangeOfString:@"&gt"].location != NSNotFound || [str rangeOfString:@"&lt"].location != NSNotFound) {
+    
+        str = [[aTextView text] stringByReplacingOccurrencesOfString: @"&nbsp" withString: @" "];
+        str = [str stringByReplacingOccurrencesOfString: @"&lt" withString: @"<"];
+        str = [str stringByReplacingOccurrencesOfString: @"&gt" withString: @">"];
+    
+        aTextView.text = str;
+    }
+    
+    int cursorLocation = [aTextView selectedRange].location;
+    if (cursorLocation > 3){
+        NSString *searchStr = [[str substringWithRange:NSMakeRange(cursorLocation - 4, 4)] lowercaseString];
+        if (([searchStr rangeOfString:@"http"].location != NSNotFound || [searchStr rangeOfString:@"ftp:"].location != NSNotFound || [searchStr rangeOfString:@"www."].location != NSNotFound) && dismiss != YES) {
+
+                //[textView resignFirstResponder];
+                UIAlertView *linkAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Make a Link", @"") message:NSLocalizedString(@"Would you like help making a link?", @"") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") otherButtonTitles:NSLocalizedString(@"Make a Link", @""), nil];
+                [linkAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
+                [linkAlert show];
+                WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+                [delegate setAlertRunning:YES];
+                [linkAlert release];
+        
+        }
+        
+    }
     
 }
 
