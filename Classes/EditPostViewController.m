@@ -850,8 +850,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
             
             //NSString *selection = [textView.text substringWithRange:range];
             textView.text = [textView.text stringByReplacingCharactersInRange:range withString:aTagText];
+            
+            //reset selection back to nothing
+            range.length = 0;
+            
             if (range.length == 0) {                // If nothing was selected
-                range.location += 2 + [aTagText length]; // Place selection between tags
+                range.location += [aTagText length]; // Place selection between tags
                 textView.selectedRange = range;
             }
             
