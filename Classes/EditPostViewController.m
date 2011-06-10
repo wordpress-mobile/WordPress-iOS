@@ -904,11 +904,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)textViewDidChange:(UITextView *)aTextView {
     
     //replace character entities with character numbers for trac #871
-    NSString *str = [[aTextView text] stringByReplacingOccurrencesOfString: @"&nbsp;" withString: @"&#160;"];
+    //caused the cursor to jump around, commenting out for now until we add the editor buttons
+    /*NSString *str = [[aTextView text] stringByReplacingOccurrencesOfString: @"&nbsp;" withString: @"&#160;"];
     str = [str stringByReplacingOccurrencesOfString: @"&lt;" withString: @"&#60;"];
     str = [str stringByReplacingOccurrencesOfString: @"&gt;" withString: @"&#62;"];
     
-    aTextView.text = str;
+    aTextView.text = str;*/
     
 }
 
