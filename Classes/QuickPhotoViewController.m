@@ -173,6 +173,9 @@
     Blog *blog = self.blogSelector.activeBlog;
     if (post == nil) {
         post = [Post newDraftForBlog:blog];
+    } else {
+        post.blog = blog;
+        [[post.media anyObject] setBlog:blog];
     }
     post.postTitle = titleTextField.text;
     post.content = contentTextView.text;
