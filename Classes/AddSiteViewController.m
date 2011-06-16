@@ -25,6 +25,11 @@
     self.navigationItem.title = NSLocalizedString(@"Add Blog", @"");
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tv {
+    // Don't show dashboard link when adding blogs
+    return 2;
+}
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     return nil;
 }

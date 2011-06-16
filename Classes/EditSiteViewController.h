@@ -6,14 +6,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "WordPressAppDelegate.h";
-#import "WPDataController.h";
+#import "WordPressAppDelegate.h"
+#import "WPDataController.h"
 #import "WPProgressHUD.h"
 #import "AddUsersBlogsViewController.h"
 #import "UITableViewSwitchCell.h"
 #import "UITableViewTextFieldCell.h"
-#import "Blog.h";
+#import "Blog.h"
 #import "HelpViewController.h"
+#import "WPWebViewController.h"
 
 @interface EditSiteViewController : UIViewController <UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate> {
 	IBOutlet UITableView *tableView;

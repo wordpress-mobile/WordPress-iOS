@@ -228,6 +228,8 @@ Classes/WPSegmentedSelectionTableViewController.h -text
 Classes/WPSegmentedSelectionTableViewController.m -text
 Classes/WPSelectionTableViewController.h -text
 Classes/WPSelectionTableViewController.m -text
+Classes/WPWebViewController.h -text
+Classes/WPWebViewController.m -text
 Classes/WPcomLoginViewController.h -text
 Classes/WPcomLoginViewController.m -text
 Classes/WebSignupViewController.h -text

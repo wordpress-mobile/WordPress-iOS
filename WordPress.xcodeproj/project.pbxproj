@@ -322,6 +322,7 @@
 		E1B4A9E112FC8B1000EB3F67 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = E1B4A9E012FC8B1000EB3F67 /* EGORefreshTableHeaderView.m */; };
 		E1B4A9E412FC8B2500EB3F67 /* blueArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B4A9E212FC8B2500EB3F67 /* blueArrow.png */; };
 		E1B4A9E512FC8B2500EB3F67 /* blueArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B4A9E312FC8B2500EB3F67 /* blueArrow@2x.png */; };
+		E1B62A7B13AA61A100A6FCA4 /* WPWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1B62A7A13AA61A100A6FCA4 /* WPWebViewController.m */; };
 		E1B7B983131553FF005318BD /* FileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = E1B7B982131553FF005318BD /* FileLogger.m */; };
 		E1C43CA712E4D09E00330262 /* PageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C43CA612E4D09E00330262 /* PageViewController.m */; };
 		E1D458691309589C00BF0235 /* Coordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = E14932B5130427B300154804 /* Coordinate.m */; };
@@ -836,6 +837,8 @@
 		E1B4A9E012FC8B1000EB3F67 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
 		E1B4A9E212FC8B2500EB3F67 /* blueArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueArrow.png; sourceTree = "<group>"; };
 		E1B4A9E312FC8B2500EB3F67 /* blueArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blueArrow@2x.png"; sourceTree = "<group>"; };
+		E1B62A7913AA61A100A6FCA4 /* WPWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWebViewController.h; sourceTree = "<group>"; };
+		E1B62A7A13AA61A100A6FCA4 /* WPWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWebViewController.m; sourceTree = "<group>"; };
 		E1B7B981131553FF005318BD /* FileLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileLogger.h; sourceTree = "<group>"; };
 		E1B7B982131553FF005318BD /* FileLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileLogger.m; sourceTree = "<group>"; };
 		E1C43CA512E4D09E00330262 /* PageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageViewController.h; sourceTree = "<group>"; };
@@ -1526,6 +1529,8 @@
 				FD9A948B12FAEA2300438F94 /* DateUtils.m */,
 				E1B7B981131553FF005318BD /* FileLogger.h */,
 				E1B7B982131553FF005318BD /* FileLogger.m */,
+				E1B62A7913AA61A100A6FCA4 /* WPWebViewController.h */,
+				E1B62A7A13AA61A100A6FCA4 /* WPWebViewController.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -2192,6 +2197,7 @@
 				3751D68A136721AE0010B274 /* QuickPhotoUploadProgressController.m in Sources */,
 				E14B2B761368127900CC3C4F /* UITableViewTextFieldCell.m in Sources */,
 				E18D8AE31397C51A00000861 /* WordPress.xcdatamodeld in Sources */,
+				E1B62A7B13AA61A100A6FCA4 /* WPWebViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
