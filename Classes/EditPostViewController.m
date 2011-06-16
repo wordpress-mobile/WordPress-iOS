@@ -849,6 +849,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
             }
             
             //NSString *selection = [textView.text substringWithRange:range];
+            [textView.undoManager registerUndoWithTarget:self selector:@selector(restoreText:) object:textView.text];
+            [textView.undoManager setActionName:@"link"];
             textView.text = [textView.text stringByReplacingCharactersInRange:range withString:aTagText];
             
             //reset selection back to nothing
@@ -1219,6 +1221,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
     return keyboardToolbar;
 }
 
+- (void)restoreText:(NSString *)text {
+    if ([textView.undoManager isUndoing]) {
+        [textView.undoManager registerUndoWithTarget:self selector:@selector(restoreText:) object:textView.text];
+    }
+    textView.text = text;
+}
+
 - (void)wrapSelectionWithTag:(NSString *)tag {
     NSRange range = textView.selectedRange;
     NSString *selection = [textView.text substringWithRange:range];
@@ -1231,14 +1240,20 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)setBold {
+    [textView.undoManager registerUndoWithTarget:self selector:@selector(restoreText:) object:textView.text];
+    [textView.undoManager setActionName:@"bold"];
     [self wrapSelectionWithTag:@"strong"];
 }
 
 - (void)setItalic {
+    [textView.undoManager registerUndoWithTarget:self selector:@selector(restoreText:) object:textView.text];
+    [textView.undoManager setActionName:@"italic"];
     [self wrapSelectionWithTag:@"em"];    
 }
 
 - (void)setBlockquote {
+    [textView.undoManager registerUndoWithTarget:self selector:@selector(restoreText:) object:textView.text];
+    [textView.undoManager setActionName:@"blockquote"];
     [self wrapSelectionWithTag:@"blockquote"];
 }
 
