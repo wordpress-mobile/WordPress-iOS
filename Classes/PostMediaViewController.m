@@ -809,11 +809,20 @@
 		currentImage = [image retain];
 		
 		//UIImagePickerControllerReferenceURL = "assets-library://asset/asset.JPG?id=1000000050&ext=JPG").
-     /*   NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
+        NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
         if (assetURL) {
             [self getMetadataFromAssetForURL:assetURL];
+        } else {
+            NSDictionary *metadata = [info objectForKey:UIImagePickerControllerMediaMetadata];
+            if (metadata) {
+                NSMutableDictionary *mutableMetadata = [metadata mutableCopy];
+                [mutableMetadata removeObjectForKey:@"Orientation"];
+                [mutableMetadata removeObjectForKey:@"{TIFF}"];
+                self.currentImageMetadata = mutableMetadata;
+                [mutableMetadata release];
+            }
         }
-		*/		
+		
 		NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
 		[nf setNumberStyle:NSNumberFormatterDecimalStyle];
 		NSNumber *resizePreference = [NSNumber numberWithInt:-1];
@@ -892,23 +901,22 @@
 					   CGImageSourceRef  source ;
 					   source = CGImageSourceCreateWithData((CFDataRef)imageJPEG, NULL);
 					   
+                       NSDictionary *metadata = (NSDictionary *) CGImageSourceCopyPropertiesAtIndex(source,0,NULL);
+                       
+                       //make the metadata dictionary mutable so we can remove properties to it
+                       NSMutableDictionary *metadataAsMutable = [metadata mutableCopy];
+                       [metadata release];
+
 					   if(!self.postDetailViewController.apost.blog.geolocationEnabled) {
 						   //we should remove the GPS info if the blog has the geolocation set to off
 						   
 						   //get all the metadata in the image
-						   NSDictionary *metadata = (NSDictionary *) CGImageSourceCopyPropertiesAtIndex(source,0,NULL);
-
-						   //make the metadata dictionary mutable so we can remove properties to it
-						   NSMutableDictionary *metadataAsMutable = [[metadata mutableCopy]autorelease];
-						   [metadata release];
 						   [metadataAsMutable removeObjectForKey:@"{GPS}"];
-						   
-						   self.currentImageMetadata = [NSDictionary dictionaryWithDictionary:metadataAsMutable];
-						   
-					   } else {
-						   //read the metadata from the image src
-						   self.currentImageMetadata = (NSDictionary *) CGImageSourceCopyPropertiesAtIndex(source,0,NULL);
-					   }			 
+					   }
+                       [metadataAsMutable removeObjectForKey:@"Orientation"];
+                       [metadataAsMutable removeObjectForKey:@"{TIFF}"];
+                       self.currentImageMetadata = [NSDictionary dictionaryWithDictionary:metadataAsMutable];
+                       [metadataAsMutable release];
 					   
 					   CFRelease(source);
 				   }
@@ -1154,7 +1162,7 @@
 	NSString *documentsDirectory = [paths objectAtIndex:0];
 	NSString *filename = [NSString stringWithFormat:@"%@.jpg", [formatter stringFromDate:[NSDate date]]];
 	NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
-	/*
+
 	if (iOs4OrGreater() && self.currentImageMetadata != nil) {
 		// Write the EXIF data with the image data to disk
 		CGImageSourceRef  source ;
@@ -1194,7 +1202,6 @@
 		NSFileManager *fileManager = [NSFileManager defaultManager];
 		[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
 	}
-	*/
 
     NSFileManager *fileManager = [NSFileManager defaultManager];
     [fileManager createFileAtPath:filepath contents:imageData attributes:nil];
