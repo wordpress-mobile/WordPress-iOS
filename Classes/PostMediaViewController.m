@@ -1203,9 +1203,6 @@
 		[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
 	}
 
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    [fileManager createFileAtPath:filepath contents:imageData attributes:nil];
-
 	if(currentOrientation == kLandscape)
 		imageMedia.orientation = @"landscape";
 	else
