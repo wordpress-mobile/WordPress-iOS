@@ -286,6 +286,11 @@
 		E16A0C3212E769A10049EA80 /* table_sep.png in Resources */ = {isa = PBXBuildFile; fileRef = E16A0C3012E769A10049EA80 /* table_sep.png */; };
 		E16A0C3312E769A10049EA80 /* table_sep@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E16A0C3112E769A10049EA80 /* table_sep@2x.png */; };
 		E17078FD130A95B600F30433 /* WordPress-1-2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = E17078FC130A95B600F30433 /* WordPress-1-2.xcmappingmodel */; };
+		E177087913AAAD5800EA6C72 /* keyboardButton~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E177087813AAAD5800EA6C72 /* keyboardButton~ipad.png */; };
+		E177087E13AAC19700EA6C72 /* redo~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E177087A13AAC19700EA6C72 /* redo~ipad.png */; };
+		E177087F13AAC19700EA6C72 /* redoDisabled~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E177087B13AAC19700EA6C72 /* redoDisabled~ipad.png */; };
+		E177088013AAC19700EA6C72 /* undo~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E177087C13AAC19700EA6C72 /* undo~ipad.png */; };
+		E177088113AAC19700EA6C72 /* undoDisabled~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E177087D13AAC19700EA6C72 /* undoDisabled~ipad.png */; };
 		E17BE248134F39FE00165C3D /* NSURL+IDN.m in Sources */ = {isa = PBXBuildFile; fileRef = E17BE247134F39FE00165C3D /* NSURL+IDN.m */; };
 		E17BE261134F5E4D00165C3D /* QuickPicturePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = E17BE260134F5E4D00165C3D /* QuickPicturePreviewView.m */; };
 		E18D43E1130BD8E9006155DE /* PostToAbstractPost.m in Sources */ = {isa = PBXBuildFile; fileRef = E18D43E0130BD8E9006155DE /* PostToAbstractPost.m */; };
@@ -323,6 +328,14 @@
 		E1B4A9E412FC8B2500EB3F67 /* blueArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B4A9E212FC8B2500EB3F67 /* blueArrow.png */; };
 		E1B4A9E512FC8B2500EB3F67 /* blueArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B4A9E312FC8B2500EB3F67 /* blueArrow@2x.png */; };
 		E1B62A7B13AA61A100A6FCA4 /* WPWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1B62A7A13AA61A100A6FCA4 /* WPWebViewController.m */; };
+		E1B62A8213AA8D7700A6FCA4 /* blockquote~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B62A7C13AA8D7700A6FCA4 /* blockquote~ipad.png */; };
+		E1B62A8313AA8D7700A6FCA4 /* bold~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B62A7D13AA8D7700A6FCA4 /* bold~ipad.png */; };
+		E1B62A8413AA8D7700A6FCA4 /* italic~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B62A7E13AA8D7700A6FCA4 /* italic~ipad.png */; };
+		E1B62A8513AA8D7700A6FCA4 /* link.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B62A7F13AA8D7700A6FCA4 /* link.png */; };
+		E1B62A8613AA8D7700A6FCA4 /* link@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B62A8013AA8D7700A6FCA4 /* link@2x.png */; };
+		E1B62A8713AA8D7700A6FCA4 /* link~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B62A8113AA8D7700A6FCA4 /* link~ipad.png */; };
+		E1B62A8913AAA5FE00A6FCA4 /* keyboardButton.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B62A8813AAA5FE00A6FCA4 /* keyboardButton.png */; };
+		E1B62A8B13AAA96F00A6FCA4 /* keyboardButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B62A8A13AAA96F00A6FCA4 /* keyboardButton@2x.png */; };
 		E1B7B983131553FF005318BD /* FileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = E1B7B982131553FF005318BD /* FileLogger.m */; };
 		E1C43CA712E4D09E00330262 /* PageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C43CA612E4D09E00330262 /* PageViewController.m */; };
 		E1D458691309589C00BF0235 /* Coordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = E14932B5130427B300154804 /* Coordinate.m */; };
@@ -767,6 +780,11 @@
 		E16A0C3112E769A10049EA80 /* table_sep@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "table_sep@2x.png"; sourceTree = "<group>"; };
 		E16A7B76132150E700E6BD1E /* Info-beta.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-beta.plist"; sourceTree = "<group>"; };
 		E17078FC130A95B600F30433 /* WordPress-1-2.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = "WordPress-1-2.xcmappingmodel"; sourceTree = "<group>"; };
+		E177087813AAAD5800EA6C72 /* keyboardButton~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboardButton~ipad.png"; sourceTree = "<group>"; };
+		E177087A13AAC19700EA6C72 /* redo~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "redo~ipad.png"; sourceTree = "<group>"; };
+		E177087B13AAC19700EA6C72 /* redoDisabled~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "redoDisabled~ipad.png"; sourceTree = "<group>"; };
+		E177087C13AAC19700EA6C72 /* undo~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "undo~ipad.png"; sourceTree = "<group>"; };
+		E177087D13AAC19700EA6C72 /* undoDisabled~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "undoDisabled~ipad.png"; sourceTree = "<group>"; };
 		E17BE246134F39FE00165C3D /* NSURL+IDN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+IDN.h"; sourceTree = "<group>"; };
 		E17BE247134F39FE00165C3D /* NSURL+IDN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+IDN.m"; sourceTree = "<group>"; };
 		E17BE25F134F5E4D00165C3D /* QuickPicturePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuickPicturePreviewView.h; sourceTree = "<group>"; };
@@ -839,6 +857,14 @@
 		E1B4A9E312FC8B2500EB3F67 /* blueArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blueArrow@2x.png"; sourceTree = "<group>"; };
 		E1B62A7913AA61A100A6FCA4 /* WPWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWebViewController.h; sourceTree = "<group>"; };
 		E1B62A7A13AA61A100A6FCA4 /* WPWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWebViewController.m; sourceTree = "<group>"; };
+		E1B62A7C13AA8D7700A6FCA4 /* blockquote~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blockquote~ipad.png"; sourceTree = "<group>"; };
+		E1B62A7D13AA8D7700A6FCA4 /* bold~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bold~ipad.png"; sourceTree = "<group>"; };
+		E1B62A7E13AA8D7700A6FCA4 /* italic~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "italic~ipad.png"; sourceTree = "<group>"; };
+		E1B62A7F13AA8D7700A6FCA4 /* link.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = link.png; sourceTree = "<group>"; };
+		E1B62A8013AA8D7700A6FCA4 /* link@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "link@2x.png"; sourceTree = "<group>"; };
+		E1B62A8113AA8D7700A6FCA4 /* link~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "link~ipad.png"; sourceTree = "<group>"; };
+		E1B62A8813AAA5FE00A6FCA4 /* keyboardButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = keyboardButton.png; sourceTree = "<group>"; };
+		E1B62A8A13AAA96F00A6FCA4 /* keyboardButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboardButton@2x.png"; sourceTree = "<group>"; };
 		E1B7B981131553FF005318BD /* FileLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileLogger.h; sourceTree = "<group>"; };
 		E1B7B982131553FF005318BD /* FileLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileLogger.m; sourceTree = "<group>"; };
 		E1C43CA512E4D09E00330262 /* PageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageViewController.h; sourceTree = "<group>"; };
@@ -1637,12 +1663,25 @@
 		E11C91CA135770DA0072A811 /* Rich Text Editor */ = {
 			isa = PBXGroup;
 			children = (
+				E177087A13AAC19700EA6C72 /* redo~ipad.png */,
+				E177087B13AAC19700EA6C72 /* redoDisabled~ipad.png */,
+				E177087C13AAC19700EA6C72 /* undo~ipad.png */,
+				E177087D13AAC19700EA6C72 /* undoDisabled~ipad.png */,
+				E177087813AAAD5800EA6C72 /* keyboardButton~ipad.png */,
+				E1B62A8A13AAA96F00A6FCA4 /* keyboardButton@2x.png */,
+				E1B62A8813AAA5FE00A6FCA4 /* keyboardButton.png */,
+				E1B62A7F13AA8D7700A6FCA4 /* link.png */,
+				E1B62A8013AA8D7700A6FCA4 /* link@2x.png */,
+				E1B62A8113AA8D7700A6FCA4 /* link~ipad.png */,
 				E11C91CB135771010072A811 /* blockquote.png */,
 				E11C91CC135771010072A811 /* blockquote@2x.png */,
+				E1B62A7C13AA8D7700A6FCA4 /* blockquote~ipad.png */,
 				E11C91CD135771010072A811 /* bold.png */,
 				E11C91CE135771010072A811 /* bold@2x.png */,
+				E1B62A7D13AA8D7700A6FCA4 /* bold~ipad.png */,
 				E11C91CF135771010072A811 /* italic.png */,
 				E11C91D0135771010072A811 /* italic@2x.png */,
+				E1B62A7E13AA8D7700A6FCA4 /* italic~ipad.png */,
 			);
 			name = "Rich Text Editor";
 			sourceTree = "<group>";
@@ -2040,6 +2079,19 @@
 				30FE87991367328B00808634 /* quickPhotoButtonBackground.png in Resources */,
 				30FE87C21367417E00808634 /* quickPhotoButtonBackground.png in Resources */,
 				30FE87C31367417E00808634 /* quickPhotoButtonBackground@2x.png in Resources */,
+				E1B62A8213AA8D7700A6FCA4 /* blockquote~ipad.png in Resources */,
+				E1B62A8313AA8D7700A6FCA4 /* bold~ipad.png in Resources */,
+				E1B62A8413AA8D7700A6FCA4 /* italic~ipad.png in Resources */,
+				E1B62A8513AA8D7700A6FCA4 /* link.png in Resources */,
+				E1B62A8613AA8D7700A6FCA4 /* link@2x.png in Resources */,
+				E1B62A8713AA8D7700A6FCA4 /* link~ipad.png in Resources */,
+				E1B62A8913AAA5FE00A6FCA4 /* keyboardButton.png in Resources */,
+				E1B62A8B13AAA96F00A6FCA4 /* keyboardButton@2x.png in Resources */,
+				E177087913AAAD5800EA6C72 /* keyboardButton~ipad.png in Resources */,
+				E177087E13AAC19700EA6C72 /* redo~ipad.png in Resources */,
+				E177087F13AAC19700EA6C72 /* redoDisabled~ipad.png in Resources */,
+				E177088013AAC19700EA6C72 /* undo~ipad.png in Resources */,
+				E177088113AAC19700EA6C72 /* undoDisabled~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

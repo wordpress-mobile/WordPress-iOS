@@ -355,10 +355,12 @@ WordPress.xcodeproj/project.pbxproj -text
 /blavatar-wporg@2x.png -text
 /blockquote.png -text svneol=unset#unset
 /blockquote@2x.png -text svneol=unset#unset
+/blockquote~ipad.png -text svneol=unset#unset
 /blueArrow.png -text svneol=unset#unset
 /blueArrow@2x.png -text svneol=unset#unset
 /bold.png -text svneol=unset#unset
 /bold@2x.png -text svneol=unset#unset
+/bold~ipad.png -text svneol=unset#unset
 c_tidy/access.c -text
 c_tidy/access.h -text
 c_tidy/alloc.c -text
@@ -446,8 +448,15 @@ hr.lproj/Localizable.strings -text svneol=unset#unset
 it.lproj/Localizable.strings -text
 /italic.png -text svneol=unset#unset
 /italic@2x.png -text svneol=unset#unset
+/italic~ipad.png -text svneol=unset#unset
 ja.lproj/Localizable.strings -text svneol=unset#unset
+/keyboardButton.png -text svneol=unset#unset
+/keyboardButton@2x.png -text svneol=unset#unset
+/keyboardButton~ipad.png -text svneol=unset#unset
 /license.txt -text
+/link.png -text svneol=unset#unset
+/link@2x.png -text svneol=unset#unset
+/link~ipad.png -text svneol=unset#unset
 /localize.py -text
 /lock.png -text
 /logo_welcome.png -text
@@ -484,6 +493,8 @@ pt.lproj/Localizable.strings -text svneol=unset#unset
 /quickPhotoButtonHighlighted@2x.png -text
 /quickPhotoTextView.png -text svneol=unset#unset
 /quickPhotoTextView@2x.png -text svneol=unset#unset
+/redoDisabled~ipad.png -text svneol=unset#unset
+/redo~ipad.png -text svneol=unset#unset
 /settings.png -text
 /settings@2x.png -text
 /stats.png -text
@@ -498,6 +509,8 @@ sv.lproj/Localizable.strings -text svneol=unset#unset
 /uncheck.png -text
 /uncheck@2x.png -text
 /uncrustify.cfg -text
+/undoDisabled~ipad.png -text svneol=unset#unset
+/undo~ipad.png -text svneol=unset#unset
 /up.png -text
 /up@2x.png -text
 /video_thumbnail.png -text

@@ -24,6 +24,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @synthesize hasSaved, isVisible, isPublishing;
 @synthesize toolbar;
 @synthesize photoButton, movieButton;
+@synthesize undoButton, redoButton;
 
 - (id)initWithPost:(AbstractPost *)aPost {
     NSString *nib;
@@ -204,6 +205,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [postPreviewViewController release]; postPreviewViewController = nil;
     [statuses release]; statuses = nil;
     [spinner release]; spinner = nil;
+    [keyboardToolbar release]; keyboardToolbar = nil;
     
     // Release IBOutlets
     self.locationButton = nil;
@@ -226,6 +228,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     self.hasLocation = nil;
     self.photoButton = nil;
     self.movieButton = nil;
+    self.undoButton = nil;
+    self.redoButton = nil;
 
     [super viewDidUnload];
 }
@@ -948,6 +952,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
         
     }
     
+    self.undoButton.enabled = [self.textView.undoManager canUndo];
+    self.redoButton.enabled = [self.textView.undoManager canRedo];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)aTextView {
@@ -1194,26 +1200,98 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 #pragma mark - Keyboard toolbar
 
+- (void)undo {
+    [self.textView.undoManager undo];
+}
+
+- (void)redo {
+    [self.textView.undoManager redo];
+}
+
 - (UIView *)keyboardToolbar {
     if (keyboardToolbar == nil) {
-        keyboardToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 40)];
+        CGRect frame;
+        if (DeviceIsPad()) {
+            frame = CGRectMake(0, 0, self.view.frame.size.width, 72);
+        } else {
+            frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
+        }
+        keyboardToolbar = [[UIToolbar alloc] initWithFrame:frame];
+        keyboardToolbar.translucent = YES;
         NSMutableArray *buttons = [NSMutableArray array];
-        UIBarButtonItem *button;
-        button = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"bold.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(setBold)];
-        [buttons addObject:button];
-        [button release];
+        UIBarButtonItem *buttonItem;
+        if (DeviceIsPad()) {
+            frame = CGRectMake(0, 0, 60, 60);
+        } else {
+            frame = CGRectMake(0, 0, 40, 40);
+        }
+        UIButton *button;
 
-        button = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"italic.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(setItalic)];
-        [buttons addObject:button];
+        button = [[UIButton alloc] initWithFrame:frame];
+        [button setImage:[UIImage imageNamed:@"bold"] forState:UIControlStateNormal];
+        [button setBackgroundImage:[UIImage imageNamed:@"keyboardButton"] forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(setBold) forControlEvents:UIControlEventTouchUpInside];
+        buttonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+        [buttons addObject:buttonItem];
         [button release];
+        [buttonItem release];
 
-        button = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"blockquote.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(setBlockquote)];
-        [buttons addObject:button];
+        button = [[UIButton alloc] initWithFrame:frame];
+        [button setImage:[UIImage imageNamed:@"italic"] forState:UIControlStateNormal];
+        [button setBackgroundImage:[UIImage imageNamed:@"keyboardButton"] forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(setItalic) forControlEvents:UIControlEventTouchUpInside];
+        buttonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+        [buttons addObject:buttonItem];
         [button release];
+        [buttonItem release];
+
+        button = [[UIButton alloc] initWithFrame:frame];
+        [button setImage:[UIImage imageNamed:@"blockquote"] forState:UIControlStateNormal];
+        [button setBackgroundImage:[UIImage imageNamed:@"keyboardButton"] forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(setBlockquote) forControlEvents:UIControlEventTouchUpInside];
+        buttonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+        [buttons addObject:buttonItem];
+        [button release];
+        [buttonItem release];
+
+        button = [[UIButton alloc] initWithFrame:frame];
+        [button setImage:[UIImage imageNamed:@"link"] forState:UIControlStateNormal];
+        [button setBackgroundImage:[UIImage imageNamed:@"keyboardButton"] forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(showLinkView) forControlEvents:UIControlEventTouchUpInside];
+        buttonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+        [buttons addObject:buttonItem];
+        [button release];
+        [buttonItem release];
         
-        button = [[UIBarButtonItem alloc] initWithTitle:@"link" style:UIBarButtonItemStyleBordered target:self action:@selector(showLinkView)];
-        [buttons addObject:button];
-        [button release];
+        if (DeviceIsPad()) {
+            buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+            [buttons addObject:buttonItem];
+            [buttonItem release];
+            
+            button = [[UIButton alloc] initWithFrame:frame];
+            [button setImage:[UIImage imageNamed:@"undo"] forState:UIControlStateNormal];
+            [button setImage:[UIImage imageNamed:@"undoDisabled"] forState:UIControlStateDisabled];
+            [button setBackgroundImage:[UIImage imageNamed:@"keyboardButton"] forState:UIControlStateNormal];
+            [button addTarget:self action:@selector(undo) forControlEvents:UIControlEventTouchUpInside];
+            button.enabled = NO;
+            self.undoButton = button;
+            buttonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+            [buttons addObject:buttonItem];
+            [button release];
+            [buttonItem release];
+
+            button = [[UIButton alloc] initWithFrame:frame];
+            [button setImage:[UIImage imageNamed:@"redo"] forState:UIControlStateNormal];
+            [button setImage:[UIImage imageNamed:@"redoDisabled"] forState:UIControlStateDisabled];
+            [button setBackgroundImage:[UIImage imageNamed:@"keyboardButton"] forState:UIControlStateNormal];
+            [button addTarget:self action:@selector(redo) forControlEvents:UIControlEventTouchUpInside];
+            button.enabled = NO;
+            self.redoButton = button;
+            buttonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+            [buttons addObject:buttonItem];
+            [button release];
+            [buttonItem release];            
+        }
 
         [keyboardToolbar setItems:buttons];
     }
@@ -1222,10 +1300,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)restoreText:(NSString *)text {
-    if ([textView.undoManager isUndoing]) {
-        [textView.undoManager registerUndoWithTarget:self selector:@selector(restoreText:) object:textView.text];
-    }
+    NSLog(@"restoreText:%@",text);
+    NSString *oldText = textView.text;
     textView.text = text;
+    [textView.undoManager registerUndoWithTarget:self selector:@selector(restoreText:) object:oldText];
 }
 
 - (void)wrapSelectionWithTag:(NSString *)tag {
@@ -1240,21 +1318,24 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)setBold {
-    [textView.undoManager registerUndoWithTarget:self selector:@selector(restoreText:) object:textView.text];
-    [textView.undoManager setActionName:@"bold"];
+    NSString *oldText = textView.text;
     [self wrapSelectionWithTag:@"strong"];
+    [textView.undoManager registerUndoWithTarget:self selector:@selector(restoreText:) object:oldText];
+    [textView.undoManager setActionName:@"bold"];
 }
 
 - (void)setItalic {
-    [textView.undoManager registerUndoWithTarget:self selector:@selector(restoreText:) object:textView.text];
-    [textView.undoManager setActionName:@"italic"];
+    NSString *oldText = textView.text;
     [self wrapSelectionWithTag:@"em"];    
+    [textView.undoManager registerUndoWithTarget:self selector:@selector(restoreText:) object:oldText];
+    [textView.undoManager setActionName:@"italic"];
 }
 
 - (void)setBlockquote {
-    [textView.undoManager registerUndoWithTarget:self selector:@selector(restoreText:) object:textView.text];
-    [textView.undoManager setActionName:@"blockquote"];
+    NSString *oldText = textView.text;
     [self wrapSelectionWithTag:@"blockquote"];
+    [textView.undoManager registerUndoWithTarget:self selector:@selector(restoreText:) object:oldText];
+    [textView.undoManager setActionName:@"blockquote"];
 }
 
 #pragma mark  -
