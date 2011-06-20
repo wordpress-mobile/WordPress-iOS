@@ -26,7 +26,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
     BOOL isNewCategory;
     BOOL editCustomFields;
 	BOOL isLocalDraft;
-    BOOL hasSaved, isVisible, isPublishing, isShowingKeyboard, isShowingLinkAlert;
+    BOOL hasSaved, isVisible, isPublishing, isShowingKeyboard, isShowingLinkAlert, isExternalKeyboard;
 
     IBOutlet UITextView *textView;
     IBOutlet UITextField *titleTextField;
@@ -97,7 +97,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 @property (nonatomic, assign) BOOL hasSaved, isVisible, isPublishing;
 @property (readonly) BOOL hasChanges;
 @property (readonly) CGRect normalTextFrame;
-@property (nonatomic, retain) UIButton *undoButton, *redoButton;
+@property (nonatomic, retain) UIButton *undoButton, *redoButton, *dismissButton;
 
 - (id)initWithPost:(AbstractPost *)aPost;
 
@@ -107,7 +107,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (IBAction)endTextEnteringButtonAction:(id)sender;
 - (void)endEditingAction:(id)sender;
 - (void)refreshStatus;
-- (void)positionTextView:(NSDictionary *)keyboardInfo;
+- (void)positionTextView:(NSNotification *)keyboardInfo;
 - (void)deviceDidRotate:(NSNotification *)notification;
 - (void)resignTextView;
 - (void)showLinkView;

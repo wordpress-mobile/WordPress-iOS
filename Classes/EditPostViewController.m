@@ -24,7 +24,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @synthesize hasSaved, isVisible, isPublishing;
 @synthesize toolbar;
 @synthesize photoButton, movieButton;
-@synthesize undoButton, redoButton;
+@synthesize undoButton, redoButton, dismissButton;
 
 - (id)initWithPost:(AbstractPost *)aPost {
     NSString *nib;
@@ -230,6 +230,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     self.movieButton = nil;
     self.undoButton = nil;
     self.redoButton = nil;
+    self.dismissButton = nil;
 
     [super viewDidUnload];
 }
@@ -244,11 +245,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
     tagsTextField.placeholder = NSLocalizedString(@"Separate tags with commas", @"");
     categoriesLabel.text = NSLocalizedString(@"Categories:", @"");
     textViewPlaceHolderField.placeholder = NSLocalizedString(@"Tap here to begin writing", @"");
-#ifdef DEBUGMODE
+
     if ([textView respondsToSelector:@selector(setInputAccessoryView:)]) {
         textView.inputAccessoryView = [self keyboardToolbar];
     }
-#endif
 
     postSettingsController = [[PostSettingsViewController alloc] initWithNibName:@"PostSettingsViewController" bundle:nil];
     postSettingsController.postDetailViewController = self;
@@ -909,7 +909,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [textViewPlaceHolderField removeFromSuperview];
     isEditing = YES;
 
-	[self positionTextView:nil];
+//	[self positionTextView:nil];
 	
     dismiss = NO;
 	
@@ -971,7 +971,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
     if (isTextViewEditing) {
         isTextViewEditing = NO;
-		[self positionTextView:nil];
+//		[self positionTextView:nil];
 		
         self.apost.content = textView.text;
 		
@@ -1030,56 +1030,37 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [self.post autosave];
 }
 
-- (CGRect)frameForTextView {
-	CGRect keyboardFrame;
-	
-	// Reposition TextView for editing mode or normal mode based on device and orientation
-	
-	if(isEditing && isShowingKeyboard) { // Editing mode
-		int toolbarHeight = 0;
-		if ([textView respondsToSelector:@selector(setInputAccessoryView:)] &&  textView.inputAccessoryView != nil) { 
-			//toolbarHeight = toolbar.frame.size.height; 44px, too big.
-			toolbarHeight = 30;
-		}
-		if(DeviceIsPad() == YES)
-			if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
-				|| (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
-				keyboardFrame = CGRectMake(0, 0, self.normalTextFrame.size.width, self.view.frame.size.height - 352  - toolbarHeight);
-			else // Portrait
-				keyboardFrame = CGRectMake(0, 0, self.normalTextFrame.size.width, self.view.frame.size.height - 264  - toolbarHeight);
-			else { // iPhone
-				if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
-					|| (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
-					keyboardFrame = CGRectMake (0, 0, 480, 130 - toolbarHeight);
-				else // Portrait
-					keyboardFrame = CGRectMake (0, 0, 320, 210 - toolbarHeight);
-			}
+- (void)positionTextView:(NSNotification *)notification {
+    // Save time: Uncomment this line when you're debugging UITextView positioning
+    // textView.backgroundColor = [UIColor blueColor];
 
-	} else { // Normal mode
-		keyboardFrame = self.normalTextFrame;
-	}
-    return keyboardFrame;
-}
+    NSDictionary *keyboardInfo = [notification userInfo];
 
-
-- (void)positionTextView:(NSDictionary *)keyboardInfo {
 	CGFloat animationDuration = 0.3;
 	UIViewAnimationCurve curve = 0.3;
-	if(keyboardInfo != nil) {
-		animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
-		
-		curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue];
-	}
-		
 	[UIView beginAnimations:nil context:nil];
 	[UIView setAnimationCurve:curve];
 	[UIView setAnimationDuration:animationDuration];
+    CGRect newFrame = self.normalTextFrame;
+	if(keyboardInfo != nil) {
+		animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+		curve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] floatValue];
+        [UIView setAnimationCurve:curve];
+        [UIView setAnimationDuration:animationDuration];
 
-    // Save time: Uncomment this line when you're debugging UITextView positioning
-    //textView.backgroundColor = [UIColor blueColor];
+        CGRect keyboardFrame = [[keyboardInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+        keyboardFrame = [self.view convertRect:[self.view.window convertRect:keyboardFrame fromWindow:nil]
+                                      fromView:nil];
 
-    CGRect keyboardFrame = [self frameForTextView];
-    [textView setFrame:keyboardFrame];
+        isExternalKeyboard = keyboardFrame.origin.y + keyboardFrame.size.height > self.view.bounds.size.height;
+
+        if ([notification name] == UIKeyboardWillShowNotification) {
+            newFrame.origin.x = 0;
+            newFrame.origin.y = 0;
+            newFrame.size.height = keyboardFrame.origin.y;
+        }
+	}
+    [textView setFrame:newFrame];
 	
 	[UIView commitAnimations];
 }
@@ -1087,7 +1068,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)deviceDidRotate:(NSNotification *)notification {
 	// If we're editing, adjust the textview
 	if(self.isEditing) {
-		[self positionTextView:nil];
+        // No need to adjust since we get keyboard notifications
+//		[self positionTextView:nil];
 	}
 }
 
@@ -1271,6 +1253,19 @@ NSTimeInterval kAnimationDuration = 0.3f;
             [buttons addObject:buttonItem];
             [buttonItem release];
             
+            button = [[UIButton alloc] initWithFrame:frame];
+            [button setImage:[UIImage imageNamed:@"keyboardClose"] forState:UIControlStateNormal];
+            [button setBackgroundImage:[UIImage imageNamed:@"keyboardButton"] forState:UIControlStateNormal];
+            [button addTarget:self action:@selector(resignTextView) forControlEvents:UIControlEventTouchUpInside];
+            self.dismissButton = button;
+            buttonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+            [buttons addObject:buttonItem];
+            [button release];
+            [buttonItem release];
+            buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+            [buttons addObject:buttonItem];
+            [buttonItem release];
+
             button = [[UIButton alloc] initWithFrame:frame];
             [button setImage:[UIImage imageNamed:@"undo"] forState:UIControlStateNormal];
             [button setImage:[UIImage imageNamed:@"undoDisabled"] forState:UIControlStateDisabled];
@@ -1482,12 +1477,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)keyboardWillShow:(NSNotification *)notification {
 	isShowingKeyboard = YES;
-    [self positionTextView:[notification userInfo]];
+    [self positionTextView:notification];
+    self.dismissButton.hidden = ! isExternalKeyboard;
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
 	isShowingKeyboard = NO;
-    [self positionTextView:[notification userInfo]];
+    [self positionTextView:notification];
 }
 
 #pragma mark -

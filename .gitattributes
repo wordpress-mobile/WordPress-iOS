@@ -453,6 +453,7 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /keyboardButton.png -text svneol=unset#unset
 /keyboardButton@2x.png -text svneol=unset#unset
 /keyboardButton~ipad.png -text svneol=unset#unset
+/keyboardClose~ipad.png -text svneol=unset#unset
 /license.txt -text
 /link.png -text svneol=unset#unset
 /link@2x.png -text svneol=unset#unset
