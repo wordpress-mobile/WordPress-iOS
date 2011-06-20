@@ -10,6 +10,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (BOOL) isMediaInUploading;
 - (void) showMediaInUploadingalert;
 - (UIView *)keyboardToolbar;
+- (void)restoreText:(NSString *)text withRange:(NSRange)range;
 @end
 
 @implementation EditPostViewController
@@ -856,8 +857,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
             }
             
             //NSString *selection = [textView.text substringWithRange:range];
-            [textView.undoManager registerUndoWithTarget:self selector:@selector(restoreText:) object:textView.text];
-            [textView.undoManager setActionName:@"link"];
+            NSString *oldText = textView.text;
+            NSRange oldRange = textView.selectedRange;
             textView.text = [textView.text stringByReplacingCharactersInRange:range withString:aTagText];
             
             //reset selection back to nothing
@@ -867,7 +868,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
                 range.location += [aTagText length]; // Place selection between tags
                 textView.selectedRange = range;
             }
-            
+            [[textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
+            [textView.undoManager setActionName:@"link"];            
             
             //textView.text = [commentsStr stringByReplacingOccurrencesOfString:[commentsStr substringWithRange:rangeToReplace] withString:aTagText options:NSCaseInsensitiveSearch range:rangeToReplace];
 			self.apost.content = textView.text;
@@ -1297,42 +1299,54 @@ NSTimeInterval kAnimationDuration = 0.3f;
     return keyboardToolbar;
 }
 
-- (void)restoreText:(NSString *)text {
+- (void)restoreText:(NSString *)text withRange:(NSRange)range {
     NSLog(@"restoreText:%@",text);
     NSString *oldText = textView.text;
+    NSRange oldRange = textView.selectedRange;
+    textView.scrollEnabled = NO;
     textView.text = text;
-    [textView.undoManager registerUndoWithTarget:self selector:@selector(restoreText:) object:oldText];
+    textView.scrollEnabled = YES;
+    textView.selectedRange = range;
+    [[textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
 }
 
 - (void)wrapSelectionWithTag:(NSString *)tag {
     NSRange range = textView.selectedRange;
     NSString *selection = [textView.text substringWithRange:range];
+    textView.scrollEnabled = NO;
     textView.text = [textView.text stringByReplacingCharactersInRange:range
                                                            withString:[NSString stringWithFormat:@"<%@>%@</%@>",tag,selection,tag]];
+    textView.scrollEnabled = YES;
     if (range.length == 0) {                // If nothing was selected
         range.location += 2 + [tag length]; // Place selection between tags
-        textView.selectedRange = range;
+    } else {
+        range.location += range.length + 2 * [tag length] + 5; // Place selection after tag
+        range.length = 0;
     }
+    textView.selectedRange = range;
 }
 
 - (void)setBold {
     NSString *oldText = textView.text;
+    NSRange oldRange = textView.selectedRange;
     [self wrapSelectionWithTag:@"strong"];
-    [textView.undoManager registerUndoWithTarget:self selector:@selector(restoreText:) object:oldText];
+    [[textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
     [textView.undoManager setActionName:@"bold"];
 }
 
 - (void)setItalic {
     NSString *oldText = textView.text;
+    NSRange oldRange = textView.selectedRange;
     [self wrapSelectionWithTag:@"em"];    
-    [textView.undoManager registerUndoWithTarget:self selector:@selector(restoreText:) object:oldText];
+    [[textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
     [textView.undoManager setActionName:@"italic"];
 }
 
 - (void)setBlockquote {
     NSString *oldText = textView.text;
+    NSRange oldRange = textView.selectedRange;
     [self wrapSelectionWithTag:@"blockquote"];
-    [textView.undoManager registerUndoWithTarget:self selector:@selector(restoreText:) object:oldText];
+    [[textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
     [textView.undoManager setActionName:@"blockquote"];
 }
 
