@@ -907,9 +907,15 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
 }
 
-- (void)textViewDidBeginEditing:(UITextView *)aTextView {
-    [textViewPlaceHolderField removeFromSuperview];
+- (BOOL)textViewShouldBeginEditing:(UITextView *)aTextView {
+    WPFLogMethod();
     isEditing = YES;
+    return YES;
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)aTextView {
+    WPFLogMethod();
+    [textViewPlaceHolderField removeFromSuperview];
 
 //	[self positionTextView:nil];
 	
@@ -962,6 +968,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)aTextView {
+    WPFLogMethod();
 	currentEditingTextField = nil;
 	
 	if([textView.text isEqualToString:@""] == YES) {
@@ -1050,9 +1057,19 @@ NSTimeInterval kAnimationDuration = 0.3f;
         [UIView setAnimationCurve:curve];
         [UIView setAnimationDuration:animationDuration];
 
-        CGRect keyboardFrame = [[keyboardInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-        keyboardFrame = [self.view convertRect:[self.view.window convertRect:keyboardFrame fromWindow:nil]
-                                      fromView:nil];
+        CGRect keyboardFrame;
+        if (&UIKeyboardFrameEndUserInfoKey != NULL) {
+            keyboardFrame = [[keyboardInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+            keyboardFrame = [self.view convertRect:[self.view.window convertRect:keyboardFrame fromWindow:nil]
+                                          fromView:nil];
+        } else {
+            // iOS 3.x
+            keyboardFrame = [[keyboardInfo objectForKey:UIKeyboardBoundsUserInfoKey] CGRectValue];
+            CGPoint center = [[keyboardInfo objectForKey:UIKeyboardCenterEndUserInfoKey] CGPointValue];
+            keyboardFrame.origin.x = center.x - keyboardFrame.size.width / 2.0f;
+            keyboardFrame.origin.y = center.y - keyboardFrame.size.height / 2.0f;
+            keyboardFrame = [self.view convertRect:keyboardFrame fromView:self.view.superview];
+        }
 
         isExternalKeyboard = keyboardFrame.origin.y + keyboardFrame.size.height > self.view.bounds.size.height;
 
@@ -1068,6 +1085,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)deviceDidRotate:(NSNotification *)notification {
+    WPFLogMethod();
 	// If we're editing, adjust the textview
 	if(self.isEditing) {
         // No need to adjust since we get keyboard notifications
@@ -1490,14 +1508,20 @@ NSTimeInterval kAnimationDuration = 0.3f;
 #pragma mark Keyboard management 
 
 - (void)keyboardWillShow:(NSNotification *)notification {
+    WPFLogMethod();
 	isShowingKeyboard = YES;
-    [self positionTextView:notification];
-    self.dismissButton.hidden = ! isExternalKeyboard;
+    if (isEditing) {
+        [self positionTextView:notification];
+        self.dismissButton.hidden = ! isExternalKeyboard;
+    }
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
+    WPFLogMethod();
 	isShowingKeyboard = NO;
-    [self positionTextView:notification];
+    if (isEditing) {
+        [self positionTextView:notification];
+    }
 }
 
 #pragma mark -
