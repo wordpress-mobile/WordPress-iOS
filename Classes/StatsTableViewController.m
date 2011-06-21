@@ -17,7 +17,7 @@
 @implementation StatsTableViewController
 
 @synthesize viewsData, postViewsData, referrersData, searchTermsData, clicksData, reportTitle,
-currentBlog, statsData, currentProperty, rootTag, 
+currentBlog, currentProperty, rootTag, 
 statsTableData, leftColumn, rightColumn, xArray, yArray, xValues, yValues, wpcomLoginTable, 
 statsPageControlViewController, apiKeyConn, viewsConn, postViewsConn, referrersConn, 
 searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
@@ -35,16 +35,8 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	[clicksData release];
 	[reportTitle release];
 	[currentBlog release];
-	[statsData release];
-	[currentProperty release];
-	[rootTag release];
-	[statsTableData release];
-	[leftColumn release];
-	[rightColumn release];
 	[xArray release];
 	[yArray release];
-	[xValues release];
-	[yValues release];
 	[wpcomLoginTable release];
 	[statsPageControlViewController release];
 	[apiKeyConn release];
@@ -56,6 +48,13 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	[daysConn release];
 	[weeksConn release];
 	[monthsConn release];
+    self.rootTag = nil;
+    self.currentProperty = nil;
+    self.leftColumn = nil;
+    self.rightColumn = nil;
+    self.statsTableData = nil;
+    self.xValues = nil;
+    self.yValues = nil;
     self.blog = nil;
 	[super dealloc];
 }
@@ -172,7 +171,6 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	if ([blog isWPcom] || dotorgLogin == YES)
 	{
 		[self showLoadingDialog];
-		statsData = [[NSMutableData alloc] init];
 		apiKeyConn = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://public-api.wordpress.com/get-user-blogs/1.0"]] delegate:self];
 		
 		CFDictionaryAddValue(
@@ -357,7 +355,6 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	
 	
 	//get the three header chart images
-	statsData = [[NSMutableData alloc] init];
 	statsRequest = YES;
 	
 	// 7 days
@@ -396,8 +393,8 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 }
 
 - (void) startParsingStats: (NSString*) xmlString withReportType: (NSString*) reportType {
-	statsTableData = nil;
-	statsTableData = [[NSMutableArray alloc] init];
+	self.statsTableData = nil;
+	self.statsTableData = [NSMutableArray array];
 	xArray = [[NSMutableArray alloc] init];
 	yArray = [[NSMutableArray alloc] init];
 	NSData *data = [xmlString dataUsingEncoding:NSUTF8StringEncoding];
@@ -411,8 +408,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 		if ([reportType isEqualToString:@"chartDaysData"] || [reportType isEqualToString:@"chartWeeksData"] || [reportType isEqualToString:@"chartMonthsData"]){
 			[self hideLoadingDialog];
 			self.blog.lastStatsSync = [NSDate date];
-			xValues = [[NSString alloc] init];
-			xValues = [xArray componentsJoinedByString:@","];
+			self.xValues = [xArray componentsJoinedByString:@","];
 			NSArray *sorted = [xArray sortedArrayUsingSelector:@selector(compare:)];
 			
 			//calculate some variables for the google chart
@@ -556,7 +552,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
             NSString* formattedStepSize = [NSString stringWithFormat:@"%.06f", stepSize];
             
 			NSString *dateValues = [[NSString alloc] initWithString:[dateCSV componentsJoinedByString:@"|"]];
-			NSString *chartViewURL = [[[NSString alloc] initWithFormat: @"http://chart.apis.google.com/chart?chts=464646,20&cht=bvs&chg=100,%@,1,0&chbh=a&chd=t:%@%@&chs=560x320&chxl=0:|%@|1:|%@&chxt=y,x&chds=%d,%d&chxr=0,%d,%d,%d&chf=c,lg,90,FFFFFF,0,FFFFFF,0.5&chco=a3bcd3,cccccc77&chls=4&chxs=0,464646,20,0,t|1,464646,20,0,t,ffffff&chxtc=0,0", formattedStepSize, xValues, bgData, yAxisValues, dateValues, minBuffer,maxBuffer, minBuffer,maxBuffer, yInterval] autorelease];
+			NSString *chartViewURL = [[[NSString alloc] initWithFormat: @"http://chart.apis.google.com/chart?chts=464646,20&cht=bvs&chg=100,%@,1,0&chbh=a&chd=t:%@%@&chs=560x320&chxl=0:|%@|1:|%@&chxt=y,x&chds=%d,%d&chxr=0,%d,%d,%d&chf=c,lg,90,FFFFFF,0,FFFFFF,0.5&chco=a3bcd3,cccccc77&chls=4&chxs=0,464646,20,0,t|1,464646,20,0,t,ffffff&chxtc=0,0", formattedStepSize, self.xValues, bgData, yAxisValues, dateValues, minBuffer,maxBuffer, minBuffer,maxBuffer, yInterval] autorelease];
             chartViewURL = [chartViewURL stringByReplacingOccurrencesOfString:@"|" withString:@"%7c"];
 			NSLog(@"google chart url: %@", chartViewURL);
 			statsRequest = YES;
@@ -586,23 +582,23 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 		} //end chartData if statement
 		else{
 			if ([reportType isEqualToString:@"viewsData"]){
-				self.viewsData = [[NSArray alloc] initWithArray:statsTableData copyItems:YES];
+				self.viewsData = [[NSArray alloc] initWithArray:self.statsTableData copyItems:YES];
 				[self.tableView reloadData];		
 			}
 			if ([reportType isEqualToString:@"postViewsData"]){
-				self.postViewsData = [[NSArray alloc] initWithArray:statsTableData copyItems:YES];
+				self.postViewsData = [[NSArray alloc] initWithArray:self.statsTableData copyItems:YES];
 				[self.tableView reloadData];		
 			}
 			if ([reportType isEqualToString:@"referrersData"]){
-				self.referrersData = [[NSArray alloc] initWithArray:statsTableData copyItems:YES];
+				self.referrersData = [[NSArray alloc] initWithArray:self.statsTableData copyItems:YES];
 				[self.tableView reloadData];		
 			}
 			if ([reportType isEqualToString:@"searchTermsData"]){
-				self.searchTermsData = [[NSArray alloc] initWithArray:statsTableData copyItems:YES];
+				self.searchTermsData = [[NSArray alloc] initWithArray:self.statsTableData copyItems:YES];
 				[self.tableView reloadData];		
 			}
 			if ([reportType isEqualToString:@"clicksData"]){
-				self.clicksData = [[NSArray alloc] initWithArray:statsTableData copyItems:YES];
+				self.clicksData = [[NSArray alloc] initWithArray:self.statsTableData copyItems:YES];
 				[self.tableView reloadData];		
 			}
 		}
@@ -793,7 +789,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 		if ([elementName isEqualToString:@"views"] || [elementName isEqualToString:@"postviews"] || [elementName isEqualToString:@"referrers"] 
 			|| [elementName isEqualToString:@"clicks"] || [elementName isEqualToString:@"searchterms"] || [elementName isEqualToString:@"videoplays"] 
 			|| [elementName isEqualToString:@"title"]) {
-			rootTag = elementName;
+			self.rootTag = elementName;
 		}
 		else if ([elementName isEqualToString:@"total"]){
 			//that'll do pig, that'll do.
@@ -801,17 +797,17 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 		}
 		else {
 			if ([elementName isEqualToString:@"post"]){
-				leftColumn = [attributeDict objectForKey:@"title"];
+				self.leftColumn = [attributeDict objectForKey:@"title"];
 			}
 			else if ([elementName isEqualToString:@"day"] || [elementName isEqualToString:@"week"] || [elementName isEqualToString:@"month"]){
-				leftColumn = [attributeDict objectForKey:@"date"];
+				self.leftColumn = [attributeDict objectForKey:@"date"];
 			}
 			else if ([elementName isEqualToString:@"referrer"] || [elementName isEqualToString:@"searchterm"]  || [elementName isEqualToString:@"click"]){
-				leftColumn = [attributeDict objectForKey:@"value"];
+				self.leftColumn = [attributeDict objectForKey:@"value"];
 			}
-			yValues = [yValues stringByAppendingString: [leftColumn stringByAppendingString: @","]];
-			if (leftColumn != nil){
-				[yArray addObject: leftColumn];
+			self.yValues = [self.yValues stringByAppendingString: [self.leftColumn stringByAppendingString: @","]];
+			if (self.leftColumn != nil){
+				[yArray addObject:self.leftColumn];
 			}
 		}
 	}
@@ -828,7 +824,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
 	
 	if (self.currentProperty) {
-        [currentProperty appendString:string];
+        [self.currentProperty appendString:string];
     }
     
 	
@@ -839,10 +835,10 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 		if ([elementName isEqualToString:@"post"] || [elementName isEqualToString:@"day"] || [elementName isEqualToString:@"referrer"] || 
 			[elementName isEqualToString:@"week"] || [elementName isEqualToString:@"month"] || [elementName isEqualToString:@"searchterm"]
 			|| [elementName isEqualToString:@"click"]){
-			rightColumn = self.currentProperty;
-			[xArray addObject: [NSNumber numberWithInt:[currentProperty intValue]]];
-			NSArray *row = [[NSArray alloc] initWithObjects:leftColumn, rightColumn, nil];
-			[statsTableData	addObject:row];
+			self.rightColumn = self.currentProperty;
+			[xArray addObject: [NSNumber numberWithInt:[self.currentProperty intValue]]];
+			NSArray *row = [[NSArray alloc] initWithObjects:self.leftColumn, self.rightColumn, nil];
+			[self.statsTableData	addObject:row];
             [row release];
 		}
 	}
@@ -988,8 +984,8 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	}
 	
 	if (!addLoadMoreFooter){
-        leftColumn = [[NSString alloc] initWithString: [row objectAtIndex:0]];
-        rightColumn = [[NSString alloc] initWithString: [row objectAtIndex:1]];
+        self.leftColumn = [[[NSString alloc] initWithString: [row objectAtIndex:0]] autorelease];
+        self.rightColumn = [[[NSString alloc] initWithString: [row objectAtIndex:1]] autorelease];
 	}
 
 	NSString *MyIdentifier = [NSString stringWithFormat:@"MyIdentifier %i", indexPath.row];
@@ -1015,7 +1011,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			if (indexPath.section == 0 && indexPath.row == 0) {
                 NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
                 [dateFormat setDateFormat:@"YYYY-MM-dd"];
-                NSDate *latestDate = [dateFormat dateFromString:leftColumn]; 
+                NSDate *latestDate = [dateFormat dateFromString:self.leftColumn]; 
                 
                 NSCalendar *cal = [NSCalendar currentCalendar];
                 NSDateComponents *components = [cal components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:[NSDate date]];
@@ -1036,13 +1032,13 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 				//special date formatting for first section
 				 NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
 				 [dateFormat setDateFormat:@"YYYY-MM-dd"];
-				 NSDate *date = [dateFormat dateFromString:leftColumn];  
+				 NSDate *date = [dateFormat dateFromString:self.leftColumn];  
 				 [dateFormat setDateFormat:@"MMMM d"];
 				 label.text = [dateFormat stringFromDate:date];  
 				 [dateFormat release];
 			}
 			else {
-				label.text = leftColumn;
+				label.text = self.leftColumn;
 			}
 			
 			if (indexPath.section <= 1 || indexPath.section == 3) {
@@ -1050,7 +1046,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
             }
             else {
                 //if the value isn't a url, don't highlight it when tapped
-                NSURL *url = [NSURL URLWithString: leftColumn];
+                NSURL *url = [NSURL URLWithString:self.leftColumn];
                 if (url == nil){
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 }
@@ -1079,7 +1075,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			label.font = [UIFont systemFontOfSize:16.0]; 
 			//add commas
 			NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];	
-			NSNumber *statDigits = [numberFormatter numberFromString:rightColumn];
+			NSNumber *statDigits = [numberFormatter numberFromString:self.rightColumn];
             [numberFormatter setLocale:[NSLocale currentLocale]];
 			[numberFormatter setGroupingSize: 3];
 			[numberFormatter setUsesGroupingSeparator: YES];

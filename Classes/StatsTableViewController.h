@@ -24,7 +24,6 @@
 	NSString *reportTitle;
 	NSMutableDictionary *currentBlog;
 	WordPressAppDelegate *appDelegate;
-	NSMutableData *statsData;
 	NSMutableString *currentProperty;
 	NSString *rootTag, *leftColumn, *rightColumn;
 	BOOL apiKeyFound, dotorgLogin, statsRequest, isRefreshingStats, displayedLoginView;
@@ -51,7 +50,6 @@
 @property (nonatomic, retain) NSMutableArray *clicksData;
 @property (nonatomic, retain) NSString *reportTitle;
 @property (nonatomic, copy, readonly) NSMutableDictionary *currentBlog;
-@property (nonatomic, retain) NSMutableData *statsData;
 @property (nonatomic, retain) NSMutableString *currentProperty;
 @property (nonatomic, retain) NSString *rootTag;
 @property (nonatomic, retain) NSMutableArray *statsTableData;
