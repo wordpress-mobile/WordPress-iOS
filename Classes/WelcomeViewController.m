@@ -19,7 +19,7 @@
     [super viewDidLoad];
 	
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [FlurryAPI logEvent:NSLocalizedString(@"Welcome", @"")];
+    [FlurryAPI logEvent:@"Welcome"];
 	
 	self.tableView.backgroundColor = [UIColor clearColor];
 	if(DeviceIsPad()) {
