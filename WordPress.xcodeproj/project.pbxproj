@@ -47,6 +47,8 @@
 		2FAE970A0E33B21600CA8540 /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97050E33B21600CA8540 /* license.txt */; };
 		2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */; };
 		2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */; };
+		30AF6CF513C2289600A29C00 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30AF6CF413C2289600A29C00 /* AboutViewController.xib */; };
+		30AF6CFD13C230C600A29C00 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30AF6CFC13C230C600A29C00 /* AboutViewController.m */; };
 		30FE87991367328B00808634 /* quickPhotoButtonBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FE87981367328B00808634 /* quickPhotoButtonBackground.png */; };
 		30FE87C21367417E00808634 /* quickPhotoButtonBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FE87C01367417E00808634 /* quickPhotoButtonBackground.png */; };
 		30FE87C31367417E00808634 /* quickPhotoButtonBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FE87C11367417E00808634 /* quickPhotoButtonBackground@2x.png */; };
@@ -434,6 +436,9 @@
 		2FAE97050E33B21600CA8540 /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.txt; sourceTree = "<group>"; };
 		2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xhtml1-transitional.dtd"; sourceTree = "<group>"; };
 		2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = xhtmlValidatorTemplate.xhtml; sourceTree = "<group>"; };
+		30AF6CF413C2289600A29C00 /* AboutViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AboutViewController.xib; path = ../AboutViewController.xib; sourceTree = "<group>"; };
+		30AF6CFB13C230C600A29C00 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
+		30AF6CFC13C230C600A29C00 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		30FE87981367328B00808634 /* quickPhotoButtonBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quickPhotoButtonBackground.png; sourceTree = "<group>"; };
 		30FE87C01367417E00808634 /* quickPhotoButtonBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quickPhotoButtonBackground.png; sourceTree = "<group>"; };
 		30FE87C11367417E00808634 /* quickPhotoButtonBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "quickPhotoButtonBackground@2x.png"; sourceTree = "<group>"; };
@@ -1098,12 +1103,22 @@
 			name = Models;
 			sourceTree = "<group>";
 		};
+		30AF6CFE13C230CC00A29C00 /* About */ = {
+			isa = PBXGroup;
+			children = (
+				30AF6CF413C2289600A29C00 /* AboutViewController.xib */,
+				30AF6CFB13C230C600A29C00 /* AboutViewController.h */,
+				30AF6CFC13C230C600A29C00 /* AboutViewController.m */,
+			);
+			name = About;
+			sourceTree = "<group>";
+		};
 		3744A0DA130ABAFA00CE7BE1 /* Help */ = {
 			isa = PBXGroup;
 			children = (
+				3744A0DD130ABB0800CE7BE1 /* HelpViewController.xib */,
 				3744A0DB130ABB0800CE7BE1 /* HelpViewController.h */,
 				3744A0DC130ABB0800CE7BE1 /* HelpViewController.m */,
-				3744A0DD130ABB0800CE7BE1 /* HelpViewController.xib */,
 			);
 			name = Help;
 			sourceTree = "<group>";
@@ -1529,6 +1544,7 @@
 		AC512F800E20D28500B7DA32 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				30AF6CFE13C230CC00A29C00 /* About */,
 				3744A0DA130ABAFA00CE7BE1 /* Help */,
 				3768BEED13041E3F00E7C9A9 /* Beta */,
 				376EEDB812F6E5F0005CE77A /* WPPageControl.h */,
@@ -2096,6 +2112,7 @@
 				E177088013AAC19700EA6C72 /* undo~ipad.png in Resources */,
 				E177088113AAC19700EA6C72 /* undoDisabled~ipad.png in Resources */,
 				E1F0258913AF588C00E3A76A /* keyboardClose~ipad.png in Resources */,
+				30AF6CF513C2289600A29C00 /* AboutViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2254,6 +2271,7 @@
 				E14B2B761368127900CC3C4F /* UITableViewTextFieldCell.m in Sources */,
 				E18D8AE31397C51A00000861 /* WordPress.xcdatamodeld in Sources */,
 				E1B62A7B13AA61A100A6FCA4 /* WPWebViewController.m in Sources */,
+				30AF6CFD13C230C600A29C00 /* AboutViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

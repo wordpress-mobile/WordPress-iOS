@@ -19,6 +19,7 @@
 /ASINetworkQueue.h -text
 /ASINetworkQueue.m -text
 /ASIProgressDelegate.h -text
+/AboutViewController.xib -text
 /AddSiteViewController-iPad.xib -text
 /AddSiteViewController.xib -text
 /AddUsersBlogsViewController-iPad.xib -text
@@ -52,6 +53,8 @@
 /CXMLNode_PrivateExtensions.m -text
 /CXMLNode_XPathExtensions.h -text
 /CXMLNode_XPathExtensions.m -text
+Classes/AboutViewController.h -text
+Classes/AboutViewController.m -text
 Classes/AbstractPost.h -text
 Classes/AbstractPost.m -text
 Classes/AddSiteViewController.h -text
