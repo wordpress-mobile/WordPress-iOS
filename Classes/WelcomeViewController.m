@@ -6,6 +6,7 @@
 //
 
 #import "WelcomeViewController.h"
+#import "AboutViewController.h"
 
 @implementation WelcomeViewController
 
@@ -22,6 +23,10 @@
     [FlurryAPI logEvent:@"Welcome"];
 	
 	self.tableView.backgroundColor = [UIColor clearColor];
+    UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeInfoDark];
+    [infoButton addTarget:self action:@selector(showAboutView) forControlEvents:UIControlEventTouchUpInside];
+    infoButton.center = CGPointMake(self.view.bounds.size.width - infoButton.frame.size.width, infoButton.frame.size.height);
+    [self.view addSubview:infoButton];
 	if(DeviceIsPad()) {
 		self.tableView.backgroundView = nil;
 		UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] 
@@ -207,6 +212,12 @@
 
 - (IBAction)cancel:(id)sender {
 	[super dismissModalViewControllerAnimated:YES];
+}
+
+- (void)showAboutView {
+    AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
+    [self.navigationController pushViewController:aboutViewController animated:YES];
+    [aboutViewController release];
 }
 
 #pragma mark -
