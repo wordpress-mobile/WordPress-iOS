@@ -25,7 +25,8 @@
 	self.tableView.backgroundColor = [UIColor clearColor];
     UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeInfoDark];
     [infoButton addTarget:self action:@selector(showAboutView) forControlEvents:UIControlEventTouchUpInside];
-    infoButton.center = CGPointMake(self.view.bounds.size.width - infoButton.frame.size.width, infoButton.frame.size.height);
+	infoButton.frame = CGRectMake(self.view.bounds.size.width - infoButton.frame.size.width - 9,9,infoButton.frame.size.width,infoButton.frame.size.height);
+    //infoButton.center = CGPointMake(self.view.bounds.size.width - infoButton.frame.size.width, infoButton.frame.size.height);
     [self.view addSubview:infoButton];
 	if(DeviceIsPad()) {
 		self.tableView.backgroundView = nil;
@@ -216,7 +217,8 @@
 
 - (void)showAboutView {
     AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
-    [self.navigationController pushViewController:aboutViewController animated:YES];
+	aboutViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+	[self.navigationController pushViewController:aboutViewController animated:YES];
     [aboutViewController release];
 }
 
