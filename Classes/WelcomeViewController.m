@@ -217,7 +217,7 @@
 
 - (void)showAboutView {
     AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
-	aboutViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+	//aboutViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 	[self.navigationController pushViewController:aboutViewController animated:YES];
     [aboutViewController release];
 }
