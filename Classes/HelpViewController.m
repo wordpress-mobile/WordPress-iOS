@@ -67,8 +67,8 @@
 	NSArray *recipient = [[NSArray alloc] initWithObjects:@"support@wordpress.com", nil];
 	[controller setToRecipients: recipient];
 	[recipient release];
-	[controller setSubject:NSLocalizedString(@"WordPress for iOS Help Request", @"")];
-	[controller setMessageBody:NSLocalizedString(@"Hello,\n", @"") isHTML:NO]; 
+	[controller setSubject:@"WordPress for iOS Help Request"];
+	[controller setMessageBody:@"Hello,\n" isHTML:NO];
 	if ([[NSFileManager defaultManager] fileExistsAtPath:FileLoggerPath()]) {
 		NSString *logData = [NSString stringWithContentsOfFile:FileLoggerPath()];
 		[controller addAttachmentData:[logData dataUsingEncoding:NSUTF8StringEncoding] mimeType:@"text/plain" fileName:@"wordpress.log"];
