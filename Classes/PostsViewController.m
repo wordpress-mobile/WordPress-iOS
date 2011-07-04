@@ -97,7 +97,7 @@
 			[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
 		}
 	} else if (DeviceIsPad() == YES) {
-        if (!self.selectedIndexPath) {
+        if (!self.selectedIndexPath && ([self.resultsController.fetchedObjects count] > 0)) {
             [self trySelectSomething];
         }
 		// sometimes, iPad table views should
@@ -449,8 +449,15 @@
         [selectedIndexPath release];
 
         if (indexPath != nil) {
-            selectedIndexPath = [indexPath retain];
-            [self showSelectedPost];
+            @try {
+                [self.resultsController objectAtIndexPath:indexPath];
+                selectedIndexPath = [indexPath retain];
+                [self showSelectedPost];
+            }
+            @catch (NSException *exception) {
+                selectedIndexPath = nil;
+                [delegate showContentDetailViewController:nil];
+            }
         } else {
             selectedIndexPath = nil;
             [delegate showContentDetailViewController:nil];
