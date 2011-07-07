@@ -1269,7 +1269,34 @@ NSTimeInterval kAnimationDuration = 0.3f;
         [buttons addObject:buttonItem];
         [button release];
         [buttonItem release];
-        
+
+        button = [[UIButton alloc] initWithFrame:frame];
+        [button setTitle:@"ul" forState:UIControlEventTouchUpInside];
+        [button setBackgroundImage:[UIImage imageNamed:@"keyboardButton"] forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(setUnorderedList) forControlEvents:UIControlEventTouchUpInside];
+        buttonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+        [buttons addObject:buttonItem];
+        [button release];
+        [buttonItem release];
+
+        button = [[UIButton alloc] initWithFrame:frame];
+        [button setTitle:@"ol" forState:UIControlEventTouchUpInside];
+        [button setBackgroundImage:[UIImage imageNamed:@"keyboardButton"] forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(setOrderedList) forControlEvents:UIControlEventTouchUpInside];
+        buttonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+        [buttons addObject:buttonItem];
+        [button release];
+        [buttonItem release];
+
+        button = [[UIButton alloc] initWithFrame:frame];
+        [button setTitle:@"li" forState:UIControlEventTouchUpInside];
+        [button setBackgroundImage:[UIImage imageNamed:@"keyboardButton"] forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(setListItem) forControlEvents:UIControlEventTouchUpInside];
+        buttonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+        [buttons addObject:buttonItem];
+        [button release];
+        [buttonItem release];
+
         if (DeviceIsPad()) {
             buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
             [buttons addObject:buttonItem];
@@ -1333,14 +1360,22 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)wrapSelectionWithTag:(NSString *)tag {
     NSRange range = textView.selectedRange;
     NSString *selection = [textView.text substringWithRange:range];
+    NSString *prefix, *suffix;
+    if ([tag isEqualToString:@"ul"] || [tag isEqualToString:@"ol"]) {
+        prefix = [NSString stringWithFormat:@"<%@>\n", tag];
+        suffix = [NSString stringWithFormat:@"\n</%@>", tag];
+    } else {
+        prefix = [NSString stringWithFormat:@"<%@>", tag];
+        suffix = [NSString stringWithFormat:@"</%@>", tag];        
+    }
     textView.scrollEnabled = NO;
     textView.text = [textView.text stringByReplacingCharactersInRange:range
-                                                           withString:[NSString stringWithFormat:@"<%@>%@</%@>",tag,selection,tag]];
+                                                           withString:[NSString stringWithFormat:@"%@%@%@",prefix,selection,suffix]];
     textView.scrollEnabled = YES;
     if (range.length == 0) {                // If nothing was selected
-        range.location += 2 + [tag length]; // Place selection between tags
+        range.location += [prefix length]; // Place selection between tags
     } else {
-        range.location += range.length + 2 * [tag length] + 5; // Place selection after tag
+        range.location += range.length + [prefix length] + [suffix length]; // Place selection after tag
         range.length = 0;
     }
     textView.selectedRange = range;
@@ -1368,6 +1403,30 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [self wrapSelectionWithTag:@"blockquote"];
     [[textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
     [textView.undoManager setActionName:@"blockquote"];
+}
+
+- (void)setOrderedList {
+    NSString *oldText = textView.text;
+    NSRange oldRange = textView.selectedRange;
+    [self wrapSelectionWithTag:@"ol"];
+    [[textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
+    [textView.undoManager setActionName:@"ordered list"];    
+}
+
+- (void)setUnorderedList {
+    NSString *oldText = textView.text;
+    NSRange oldRange = textView.selectedRange;
+    [self wrapSelectionWithTag:@"ul"];
+    [[textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
+    [textView.undoManager setActionName:@"unordered list"];        
+}
+
+- (void)setListItem {
+    NSString *oldText = textView.text;
+    NSRange oldRange = textView.selectedRange;
+    [self wrapSelectionWithTag:@"li"];
+    [[textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
+    [textView.undoManager setActionName:@"list item"];    
 }
 
 #pragma mark  -
