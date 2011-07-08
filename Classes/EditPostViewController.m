@@ -247,7 +247,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     categoriesLabel.text = NSLocalizedString(@"Categories:", @"");
     textViewPlaceHolderField.placeholder = NSLocalizedString(@"Tap here to begin writing", @"");
 
-#ifdef DEBUGMODE
     if ([textView respondsToSelector:@selector(setInputAccessoryView:)]) {
         CGRect frame;
         if (DeviceIsPad()) {
@@ -267,7 +266,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
         textView.inputAccessoryView = toolbarScrollView;
         [toolbarScrollView release];
     }
-#endif
 
     postSettingsController = [[PostSettingsViewController alloc] initWithNibName:@"PostSettingsViewController" bundle:nil];
     postSettingsController.postDetailViewController = self;
