@@ -10,7 +10,7 @@
 #import "WordPressAppDelegate.h"
 #import "WPProgressHUD.h"
 #import "NSString+XMLExtensions.h"
-
+#import "WPWebViewController.h"
 
 #define COMMENT_BODY_TOP        100
 #define COMMENT_BODY_MAX_HEIGHT 4000
@@ -111,6 +111,19 @@
 	}
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChangedNotification) name:@"kNetworkReachabilityChangedNotification" object:nil];
+    
+    if (self.comment) {
+        [self showComment:self.comment];
+    }
+}
+
+- (void)viewDidUnload {
+    [super viewDidUnload];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [segmentedControl release]; segmentedControl = nil;
+    [gravatarImageView release]; gravatarImageView = nil;
+    self.commentAuthorEmailButton = nil;
+    self.commentAuthorUrlButton = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -696,7 +709,9 @@
 - (void)viewURL{
 	NSURL *url = [NSURL URLWithString: [self.comment.author_url trim]];
 	if (url != nil) {
-		[[UIApplication sharedApplication] openURL:url];
+        WPWebViewController *webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
+        [webViewController setUrl:url];
+        [self presentModalViewController:webViewController animated:YES];
 	}
 }
 
@@ -729,7 +744,9 @@
 
 -(BOOL) webView:(UIWebView *)inWeb shouldStartLoadWithRequest:(NSURLRequest *)inRequest navigationType:(UIWebViewNavigationType)inType {
 	if (inType == UIWebViewNavigationTypeLinkClicked) {
-		[[UIApplication sharedApplication] openURL:[inRequest URL]];
+        WPWebViewController *webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
+        [webViewController setUrl:[inRequest URL]];
+        [self presentModalViewController:webViewController animated:YES];
 		return NO;
 	}
 	return YES;

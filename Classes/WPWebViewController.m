@@ -11,7 +11,8 @@
 
 @implementation WPWebViewController
 @synthesize url,username,password;
-@synthesize webView;
+@synthesize webView, toolbar;
+@synthesize loadingView, loadingLabel, activityIndicator;
 
 - (void)dealloc
 {
@@ -35,11 +36,14 @@
 - (void)refreshWebView {
     NSURL *loginURL = [NSURL URLWithString:[[self.url absoluteString] stringByReplacingOccurrencesOfString:@"wp-admin/" withString:@"wp-login.php"]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:loginURL];
-    NSString *request_body = [NSString stringWithFormat:@"log=%@&pwd=%@",
-                              [self.username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-                              [self.password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    [request setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
-    [request setHTTPMethod:@"POST"];
+    if (![loginURL isEqual:self.url]) {
+        // It's a /wp-admin url, we need to login first
+        NSString *request_body = [NSString stringWithFormat:@"log=%@&pwd=%@",
+                                  [self.username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
+                                  [self.password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        [request setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
+        [request setHTTPMethod:@"POST"];
+    }
 
     [self.webView loadRequest:request];
 }
@@ -50,6 +54,22 @@
         url = [theURL retain];
         [self refreshWebView];
     }
+}
+
+- (void)setLoading:(BOOL)loading {
+    if (isLoading == loading)
+        return;
+    
+    CGRect frame = self.loadingView.frame;
+    if (loading) {
+        frame.origin.y -= frame.size.height;
+    } else {
+        frame.origin.y += frame.size.height;
+    }
+    [UIView animateWithDuration:0.2
+                     animations:^{self.loadingView.frame = frame;}];
+    
+    isLoading = loading;
 }
 
 - (void)dismiss {
@@ -64,25 +84,39 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
-    self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    isLoading = YES;
+    [self setLoading:NO];
     [self refreshWebView];
-    [self.view addSubview:self.webView];
-    
-    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismiss)] autorelease];
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(loadInSafari)] autorelease];
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
     self.webView = nil;
+    self.toolbar = nil;
+    self.loadingView = nil;
+    self.loadingLabel = nil;
+    self.activityIndicator = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    // Anything except upside down for iPhone
-    return (DeviceIsPad() || interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+    return YES;
+}
+
+#pragma mark - UIWebViewDelegate
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    [self setLoading:YES];
+    return YES;
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    [self setLoading:NO];
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    [self setLoading:NO];
 }
 
 @end

@@ -9,12 +9,19 @@
 #import <UIKit/UIKit.h>
 
 
-@interface WPWebViewController : UIViewController {
-    
+@interface WPWebViewController : UIViewController<UIWebViewDelegate> {
+    BOOL isLoading;
 }
 @property (nonatomic,retain) NSURL *url;
 @property (nonatomic,retain) NSString *username;
 @property (nonatomic,retain) NSString *password;
-@property (nonatomic,retain) UIWebView *webView;
+@property (nonatomic,retain) IBOutlet UIWebView *webView;
+@property (nonatomic,retain) IBOutlet UIToolbar *toolbar;
+@property (nonatomic,retain) IBOutlet UIView *loadingView;
+@property (nonatomic,retain) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (nonatomic,retain) IBOutlet UILabel *loadingLabel;
+
+- (IBAction)loadInSafari;
+- (IBAction)dismiss;
 
 @end

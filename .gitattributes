@@ -323,6 +323,7 @@ Settings.bundle/en.lproj/Root.strings -text
 /WPAddCategoryViewController.xib -text
 /WPCategoriesController.xib -text
 /WPSelectionTableViewController.xib -text
+/WPWebViewController.xib -text
 /WPcomLoginViewController-iPad-stats.xib -text
 /WPcomLoginViewController-iPad.xib -text
 /WPcomLoginViewController.xib -text

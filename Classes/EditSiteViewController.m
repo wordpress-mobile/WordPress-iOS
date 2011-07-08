@@ -201,13 +201,12 @@
             }
         }
 	} else if (indexPath.section == 2) {
-        WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+        WPWebViewController *webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
         NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
         [webViewController setUrl:[NSURL URLWithString:dashboardUrl]];
         [webViewController setUsername:self.username];
         [webViewController setPassword:self.password];
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
-        [self presentModalViewController:navController animated:YES];
+        [self presentModalViewController:webViewController animated:YES];
     }
     [tv deselectRowAtIndexPath:indexPath animated:YES];
 }
