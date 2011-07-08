@@ -249,7 +249,23 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 #ifdef DEBUGMODE
     if ([textView respondsToSelector:@selector(setInputAccessoryView:)]) {
-        textView.inputAccessoryView = [self keyboardToolbar];
+        CGRect frame;
+        if (DeviceIsPad()) {
+            frame = CGRectMake(0, 0, self.view.frame.size.width, 72);
+        } else {
+            frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
+        }
+        UIScrollView *toolbarScrollView = [[UIScrollView alloc] initWithFrame:frame];
+        [toolbarScrollView addSubview:[self keyboardToolbar]];
+        UIBarButtonItem *lastButton = [keyboardToolbar.items lastObject];
+        frame = lastButton.customView.frame;
+        toolbarScrollView.contentSize = CGSizeMake(frame.origin.x + frame.size.width + 10, frame.size.height);
+        frame = keyboardToolbar.frame;
+        frame.size.width = toolbarScrollView.contentSize.width;
+        keyboardToolbar.frame = frame;
+        toolbarScrollView.showsHorizontalScrollIndicator = NO;
+        textView.inputAccessoryView = toolbarScrollView;
+        [toolbarScrollView release];
     }
 #endif
 
