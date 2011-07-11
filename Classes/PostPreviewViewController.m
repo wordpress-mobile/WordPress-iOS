@@ -99,7 +99,8 @@
 		//Content
 		NSString *desc = postDetailViewController.apost.content;
 		if (!desc)
-			desc = NSLocalizedString(@"<h1>No Description available for this Post</h1>", @"");else {
+			desc = [NSString stringWithFormat:@"<h1>%@</h1>", NSLocalizedString(@"No Description available for this Post", @"")];
+        else {
 				desc = [self stringReplacingNewlinesWithBR:desc];
 			}
 		desc = [NSString stringWithFormat:@"<p>%@</p><br />", desc];
