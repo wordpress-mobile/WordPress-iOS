@@ -222,7 +222,11 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	
 	// another notification message came from comments --> CommentUploadFailed
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:@"CommentUploadFailed" object:nil];
-	
+
+    // another notification message came from WPWebViewController
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:@"OpenWebPageFailed" object:nil];
+
+    
 	NSError *error;
 	
 	// Check if we previously crashed
