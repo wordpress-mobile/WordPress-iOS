@@ -180,6 +180,7 @@
     post.postTitle = titleTextField.text;
     post.content = contentTextView.text;
     post.specialType = @"QuickPhoto";
+    post.postFormat = @"image";
 
     [self performSelectorOnMainThread:@selector(postInBackground) withObject:nil waitUntilDone:YES];
     [self.navigationController popViewControllerAnimated:YES];

@@ -17,7 +17,7 @@
 
 @implementation Post 
 
-@dynamic geolocation, tags;
+@dynamic geolocation, tags, postFormat;
 @dynamic latitudeID, longitudeID, publicID;
 @dynamic categories;
 @synthesize specialType;
@@ -84,6 +84,7 @@
 	self.mt_excerpt		= [postInfo objectForKey:@"mt_excerpt"];
 	self.mt_text_more	= [postInfo objectForKey:@"mt_text_more"];
 	self.wp_slug		= [postInfo objectForKey:@"wp_slug"];
+	self.postFormat		= [postInfo objectForKey:@"wp_post_format"];
 	
     self.remoteStatus   = AbstractPostRemoteStatusSync;
     if ([postInfo objectForKey:@"categories"]) {

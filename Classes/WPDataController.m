@@ -356,6 +356,8 @@
     if (post.content != nil)
         [postParams setObject:post.content forKey:@"description"];
     if ([post isKindOfClass:[Post class]]) {
+        if ([post valueForKey:@"postFormat"] != nil)
+            [postParams setObject:[post valueForKey:@"postFormat"] forKey:@"wp_post_format"];
         if ([post valueForKey:@"tags"] != nil)
             [postParams setObject:[post valueForKey:@"tags"] forKey:@"mt_keywords"];
         if ([post valueForKey:@"categories"] != nil) {

@@ -20,6 +20,7 @@
 #pragma mark     Attributes
 @property (nonatomic, retain) Coordinate * geolocation;
 @property (nonatomic, retain) NSString * tags;
+@property (nonatomic, retain) NSString * postFormat;
 // We should need to store this, but if we don't send IDs on edits
 // custom fields get duplicated and stop working
 @property (nonatomic, retain) NSString *latitudeID;
