@@ -566,7 +566,7 @@
         [UIView commitAnimations];
  
         //upload the image
-        [[post.media anyObject] performSelectorInBackground:@selector(upload) withObject:nil];
+        [[post.media anyObject] performSelector:@selector(upload) withObject:nil];
     }
 }
 
