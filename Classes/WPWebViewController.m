@@ -42,6 +42,7 @@
                                   [self.username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                                   [self.password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         [request setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
+        [request setValue:[NSString stringWithFormat:@"%d", [request_body length]] forHTTPHeaderField:@"Content-Length"];
         [request setHTTPMethod:@"POST"];
     }
 
