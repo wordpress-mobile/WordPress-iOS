@@ -15,7 +15,7 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
 	
-    self.navigationItem.title = NSLocalizedString(@"About", @"");    
+    self.navigationItem.title = NSLocalizedString(@"About", @"About this app (information page title)");    
 }
 
 // Override to allow orientations other than the default portrait orientation.
