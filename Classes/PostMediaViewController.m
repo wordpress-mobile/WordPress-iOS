@@ -1153,7 +1153,7 @@
 	NSData *imageData = UIImageJPEGRepresentation(theImage, 0.90);
 	UIImage *imageThumbnail = [self generateThumbnailFromImage:theImage andSize:CGSizeMake(75, 75)];
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	[formatter setDateFormat:@"yyyyMMdd-hhmmss"];
+	[formatter setDateFormat:@"yyyyMMdd-HHmmss"];
 		
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectory = [paths objectAtIndex:0];
@@ -1231,7 +1231,7 @@
 	
 	// Save to local file
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	[formatter setDateFormat:@"yyyyMMdd-hhmmss"];	NSFileManager *fileManager = [NSFileManager defaultManager];
+	[formatter setDateFormat:@"yyyyMMdd-HHmmss"];	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectory = [paths objectAtIndex:0];
 	NSString *filename = [[NSString stringWithFormat:@"%@.mov", [formatter stringFromDate:[NSDate date]]] retain];

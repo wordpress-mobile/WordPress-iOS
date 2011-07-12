@@ -270,7 +270,7 @@
     NSData *imageData = UIImageJPEGRepresentation(resizedImage, 0.90);
 	UIImage *imageThumbnail = [resizedImage thumbnailImage:75 transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	[formatter setDateFormat:@"yyyyMMdd-hhmmss"];
+	[formatter setDateFormat:@"yyyyMMdd-HHmmss"];
     
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectory = [paths objectAtIndex:0];
