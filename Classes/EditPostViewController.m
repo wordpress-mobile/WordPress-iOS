@@ -304,9 +304,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	if ([self.apost.media count]) attachmentButton.enabled = YES;
 	else attachmentButton.enabled = NO;
 
-    if (iOs4OrGreater()) {
-        self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
-    }
+    self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 	
 	if (![postMediaViewController isDeviceSupportVideo]){
 		//no video icon for older devices

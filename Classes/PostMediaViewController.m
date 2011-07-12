@@ -870,10 +870,7 @@
  * Take Asset URL and set imageJPEG property to NSData containing the
  * associated JPEG, including the metadata we're after.
  */
--(void)getMetadataFromAssetForURL:(NSURL *)url {
-	
-	if (iOs4OrGreater() == NO) return;
-	
+-(void)getMetadataFromAssetForURL:(NSURL *)url {	
     ALAssetsLibrary* assetslibrary = [[ALAssetsLibrary alloc] init];
     [assetslibrary assetForURL:url
 				   resultBlock: ^(ALAsset *myasset) {
@@ -1163,7 +1160,7 @@
 	NSString *filename = [NSString stringWithFormat:@"%@.jpg", [formatter stringFromDate:[NSDate date]]];
 	NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
 
-	if (iOs4OrGreater() && self.currentImageMetadata != nil) {
+	if (self.currentImageMetadata != nil) {
 		// Write the EXIF data with the image data to disk
 		CGImageSourceRef  source ;
 		source = CGImageSourceCreateWithData((CFDataRef)imageData, NULL);

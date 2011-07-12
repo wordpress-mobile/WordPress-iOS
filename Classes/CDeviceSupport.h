@@ -9,4 +9,3 @@
 #import <Foundation/Foundation.h>
 
 extern BOOL DeviceIsPad(void);
-extern BOOL iOs4OrGreater(void);
