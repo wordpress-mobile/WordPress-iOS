@@ -33,6 +33,7 @@
     
     if (self) {
         active = NO;
+        self.autoresizesSubviews = NO;
 
         CGRect blavatarFrame = self.bounds;
         blavatarFrame.size.width = 36.0f;
@@ -174,21 +175,19 @@
         }
     }
     
-    UIView *selectionView = selectorViewController.tableView;
     if (active) {
         normalFrame = self.frame;
         // Setup selection view
         CGRect selectionViewFrame = self.superview.bounds;
-        selectionViewFrame.origin.y += self.frame.size.height + 6;
+        selectionViewFrame.origin.y += self.frame.size.height;
         selectionViewFrame.size.height -= self.frame.size.height;
         if (selectorViewController == nil) {
             selectorViewController = [[BlogSelectorViewController alloc] initWithStyle:UITableViewStylePlain];
             selectorViewController.selectedBlog = self.activeBlog;
             selectorViewController.delegate = self;
         }
-        selectionView = selectorViewController.tableView;
-        selectionView.frame = selectionViewFrame;
-        [self addSubview:selectionView];
+        [selectorViewController.view setFrame:selectionViewFrame];
+        [self addSubview:selectorViewController.view];
     }
     
     [UIView beginAnimations:@"activation" context:nil];
