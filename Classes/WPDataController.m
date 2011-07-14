@@ -131,6 +131,9 @@
 			rsdURL = [cleanedHTML stringByMatching:@"<link rel=\"EditURI\" type=\"application/rsd\\+xml\" title=\"RSD\" href=\"([^\"]*)\"[^/]*/>" capture:1];
 		}
 	}
+    
+	// Release the ASIHTTPRequest    
+	[request release];
 	
 	if (rsdURL != nil) {
         WPLog(@"rsdURL: %@", rsdURL);

@@ -309,6 +309,7 @@
 	[xmlrpcRequest setDelegate:self];
 	[xmlrpcRequest startAsynchronous];
 	
+	[xmlrpcRequest release];
   	[pool release];    
 }
 
