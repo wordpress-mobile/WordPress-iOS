@@ -159,7 +159,7 @@
 	} else if(indexPath.section == 2) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DashboardCell"];
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DashboardCell"];
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DashboardCell"] autorelease];
         }
         cell.textLabel.text = NSLocalizedString(@"View dashboard", @"Button to load the dashboard in a web view");
         cell.textLabel.textAlignment = UITextAlignmentCenter;

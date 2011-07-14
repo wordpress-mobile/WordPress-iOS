@@ -120,6 +120,7 @@
     }
     
     [media save];
+    [media release];
     [postButtonItem setEnabled:YES];
     [pool release];
 }

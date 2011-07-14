@@ -134,6 +134,7 @@
         [sortDescriptor release]; sortDescriptor = nil;
         [fetchRequest setFetchLimit:1];
         NSArray *results = [moc executeFetchRequest:fetchRequest error:&error];
+        [fetchRequest release];
         if (results && ([results count] > 0)) {
             self.activeBlog = [results objectAtIndex:0];
         }
