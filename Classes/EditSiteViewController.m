@@ -293,7 +293,7 @@
     if(![urlToValidate hasPrefix:@"http"])
         urlToValidate = [NSString stringWithFormat:@"http://%@", url];
 	
-    urlToValidate = [urlToValidate stringByReplacingOccurrencesOfRegex:@"/wp-login.php$$" withString:@""]; 
+    urlToValidate = [urlToValidate stringByReplacingOccurrencesOfRegex:@"/wp-login.php$" withString:@""];
     urlToValidate = [urlToValidate stringByReplacingOccurrencesOfRegex:@"/wp-admin/?$" withString:@""]; 
     urlToValidate = [urlToValidate stringByReplacingOccurrencesOfRegex:@"/?$" withString:@""]; 
 	
