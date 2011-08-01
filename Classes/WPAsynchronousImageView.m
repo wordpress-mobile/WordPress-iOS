@@ -102,7 +102,8 @@
         self.image = nil;        
     }
 
-    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:60.0];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:60.0];
+    [request setValue:[NSString stringWithFormat:@"wp-iphone/%@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]] forHTTPHeaderField:@"User-Agent"];
     
     //lazy load the image while scrolling, from stackoverflow.com/questions/1826913/delayed-uiimageview-rendering-in-uitableview
     connection = [[NSURLConnection alloc]
