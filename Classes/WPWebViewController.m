@@ -13,6 +13,7 @@
 @synthesize url,username,password;
 @synthesize webView, toolbar;
 @synthesize loadingView, loadingLabel, activityIndicator;
+@synthesize needsLogin;
 
 - (void)dealloc
 {
@@ -34,17 +35,19 @@
 #pragma mark - View lifecycle
 
 - (void)refreshWebView {
-    NSURL *loginURL = [NSURL URLWithString:[[self.url absoluteString] stringByReplacingOccurrencesOfString:@"wp-admin/" withString:@"wp-login.php"]];
+    NSURL *loginURL = [[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:loginURL];
-    if (![loginURL isEqual:self.url]) {
+    if (self.needsLogin || ([[self.url absoluteString] rangeOfString:@"wp-admin/"].location != NSNotFound)) {
         // It's a /wp-admin url, we need to login first
-        NSString *request_body = [NSString stringWithFormat:@"log=%@&pwd=%@",
+        NSString *request_body = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=%@",
                                   [self.username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-                                  [self.password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                                  [self.password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
+                                  [[self.url absoluteString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         [request setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
         [request setValue:[NSString stringWithFormat:@"%d", [request_body length]] forHTTPHeaderField:@"Content-Length"];
         [request setHTTPMethod:@"POST"];
     }
+    [loginURL release];
 
     [self.webView loadRequest:request];
 }
@@ -87,6 +90,7 @@
     [super viewDidLoad];
     isLoading = YES;
     [self setLoading:NO];
+    self.webView.scalesPageToFit = YES;
     [self refreshWebView];
 }
 
