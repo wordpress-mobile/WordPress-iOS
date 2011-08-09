@@ -18,7 +18,7 @@
 	WordPressAppDelegate *appDelegate;
     NSFetchedResultsController *resultsController;
     Blog *currentBlog;
-    QuickPhotoButton *quickPhotoButton;
+    QuickPhotoButton *quickPhotoButton, *readerButton;
     QuickPhotoUploadProgressController *uploadController;
     Post *quickPicturePost;
     UILabel *uploadLabel;

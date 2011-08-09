@@ -32,6 +32,18 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil ];
+    if (self) {
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self.webView action:@selector(reload)] autorelease];
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"left"] style:UIBarButtonItemStyleBordered target:self action:@selector(goBack)];
+        backButton.enabled = NO;
+        self.navigationItem.leftBarButtonItem = backButton;
+        [backButton release];
+    }
+    return self;
+}
+
 #pragma mark - View lifecycle
 
 - (void)refreshWebView {
@@ -56,7 +68,9 @@
     if (url != theURL) {
         [url release];
         url = [theURL retain];
-        [self refreshWebView];
+        if (self.webView) {
+            [self refreshWebView];
+        }
     }
 }
 
@@ -72,7 +86,11 @@
     }
     [UIView animateWithDuration:0.2
                      animations:^{self.loadingView.frame = frame;}];
-    
+    self.navigationItem.rightBarButtonItem.enabled = !loading;
+    self.navigationItem.leftBarButtonItem.enabled = YES;
+    if (!loading) {
+        self.navigationItem.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+    }
     isLoading = loading;
 }
 
@@ -85,13 +103,24 @@
     [self dismiss];
 }
 
+- (void)goBack {
+//    if ([webView canGoBack]) {
+        if ([webView isLoading]) {
+            [webView stopLoading];
+        }
+        [webView goBack];
+//    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     isLoading = YES;
     [self setLoading:NO];
     self.webView.scalesPageToFit = YES;
-    [self refreshWebView];
+    if (self.url) {
+        [self refreshWebView];
+    }
 }
 
 - (void)viewDidUnload
@@ -117,7 +146,8 @@
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    if(isLoading)
+    // -999: Canceled AJAX request
+    if (isLoading && ([error code] != -999))
         [[NSNotificationCenter defaultCenter] postNotificationName:@"OpenWebPageFailed" object:error userInfo:nil];
     [self setLoading:NO];
 }

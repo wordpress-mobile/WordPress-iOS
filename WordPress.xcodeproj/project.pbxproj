@@ -281,6 +281,10 @@
 		E13FA0F7134C849D007DCDD0 /* downArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = E13FA0F5134C849D007DCDD0 /* downArrow.png */; };
 		E13FA0F8134C849D007DCDD0 /* downArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E13FA0F6134C849D007DCDD0 /* downArrow@2x.png */; };
 		E13FA0FB134C8DDC007DCDD0 /* BlogSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E13FA0FA134C8DDC007DCDD0 /* BlogSelectorViewController.m */; };
+		E1472B9713EFF9FF00987A40 /* left.png in Resources */ = {isa = PBXBuildFile; fileRef = E1472B9313EFF9FF00987A40 /* left.png */; };
+		E1472B9813EFF9FF00987A40 /* left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1472B9413EFF9FF00987A40 /* left@2x.png */; };
+		E1472B9913EFF9FF00987A40 /* right.png in Resources */ = {isa = PBXBuildFile; fileRef = E1472B9513EFF9FF00987A40 /* right.png */; };
+		E1472B9A13EFF9FF00987A40 /* right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1472B9613EFF9FF00987A40 /* right@2x.png */; };
 		E1497BBC12CCA8270022BCD9 /* PostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1497BBB12CCA8270022BCD9 /* PostViewController.m */; };
 		E1497BC012CCA92F0022BCD9 /* PostViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1497BBF12CCA92F0022BCD9 /* PostViewController-iPad.xib */; };
 		E14B2B761368127900CC3C4F /* UITableViewTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E14B2B751368127900CC3C4F /* UITableViewTextFieldCell.m */; };
@@ -770,6 +774,10 @@
 		E13FA0F9134C8DDC007DCDD0 /* BlogSelectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogSelectorViewController.h; sourceTree = "<group>"; };
 		E13FA0FA134C8DDC007DCDD0 /* BlogSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogSelectorViewController.m; sourceTree = "<group>"; };
 		E1457202135EC85700C7BAD2 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1472B9313EFF9FF00987A40 /* left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = left.png; sourceTree = "<group>"; };
+		E1472B9413EFF9FF00987A40 /* left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "left@2x.png"; sourceTree = "<group>"; };
+		E1472B9513EFF9FF00987A40 /* right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = right.png; sourceTree = "<group>"; };
+		E1472B9613EFF9FF00987A40 /* right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "right@2x.png"; sourceTree = "<group>"; };
 		E14932B4130427B300154804 /* Coordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Coordinate.h; sourceTree = "<group>"; };
 		E14932B5130427B300154804 /* Coordinate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Coordinate.m; sourceTree = "<group>"; };
 		E1497BBA12CCA8270022BCD9 /* PostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostViewController.h; sourceTree = "<group>"; };
@@ -1462,6 +1470,10 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				E1472B9313EFF9FF00987A40 /* left.png */,
+				E1472B9413EFF9FF00987A40 /* left@2x.png */,
+				E1472B9513EFF9FF00987A40 /* right.png */,
+				E1472B9613EFF9FF00987A40 /* right@2x.png */,
 				30FE87C01367417E00808634 /* quickPhotoButtonBackground.png */,
 				30FE87C11367417E00808634 /* quickPhotoButtonBackground@2x.png */,
 				30FE87981367328B00808634 /* quickPhotoButtonBackground.png */,
@@ -2118,6 +2130,10 @@
 				E1F0258913AF588C00E3A76A /* keyboardClose~ipad.png in Resources */,
 				30AF6CF513C2289600A29C00 /* AboutViewController.xib in Resources */,
 				E1FC3DB413C7788700F6B60F /* WPWebViewController.xib in Resources */,
+				E1472B9713EFF9FF00987A40 /* left.png in Resources */,
+				E1472B9813EFF9FF00987A40 /* left@2x.png in Resources */,
+				E1472B9913EFF9FF00987A40 /* right.png in Resources */,
+				E1472B9A13EFF9FF00987A40 /* right@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

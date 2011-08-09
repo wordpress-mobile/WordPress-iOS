@@ -460,6 +460,8 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /keyboardButton@2x.png -text svneol=unset#unset
 /keyboardButton~ipad.png -text svneol=unset#unset
 /keyboardClose~ipad.png -text svneol=unset#unset
+/left.png -text svneol=unset#unset
+/left@2x.png -text svneol=unset#unset
 /license.txt -text
 /link.png -text svneol=unset#unset
 /link@2x.png -text svneol=unset#unset
@@ -502,6 +504,8 @@ pt.lproj/Localizable.strings -text svneol=unset#unset
 /quickPhotoTextView@2x.png -text svneol=unset#unset
 /redoDisabled~ipad.png -text svneol=unset#unset
 /redo~ipad.png -text svneol=unset#unset
+/right.png -text svneol=unset#unset
+/right@2x.png -text svneol=unset#unset
 /settings.png -text
 /settings@2x.png -text
 /stats.png -text

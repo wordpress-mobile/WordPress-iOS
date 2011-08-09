@@ -18,6 +18,7 @@
 
 - (void)viewDidUnload {
     [quickPhotoButton release]; quickPhotoButton = nil;
+    [readerButton release]; readerButton = nil;
     self.tableView = nil;
 }
 
@@ -292,15 +293,26 @@
         if (quickPhotoButton == nil) {
             quickPhotoButton = [QuickPhotoButton button];
             [quickPhotoButton setImage:[UIImage imageNamed:@"camera.png"] forState:UIControlStateNormal];
-            quickPhotoButton.frame = CGRectMake(0, self.view.bounds.size.height - 83, self.view.bounds.size.width, 83);
+            quickPhotoButton.frame = CGRectMake(self.view.bounds.size.width / 2, self.view.bounds.size.height - 83, self.view.bounds.size.width / 2, 83);
             [quickPhotoButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            [quickPhotoButton setTitle:NSLocalizedString(@"Quick Photo", @"") forState:UIControlStateNormal];
+//            [quickPhotoButton setTitle:NSLocalizedString(@"Quick Photo", @"") forState:UIControlStateNormal];
             [quickPhotoButton.titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
             [quickPhotoButton setTitleShadowColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
             [quickPhotoButton addTarget:self action:@selector(quickPhotoPost) forControlEvents:UIControlEventTouchUpInside];
             [quickPhotoButton retain];
         }
         [self.view addSubview:quickPhotoButton];
+        if (readerButton == nil) {
+            readerButton = [QuickPhotoButton button];
+            readerButton.frame = CGRectMake(0, self.view.bounds.size.height - 83, self.view.bounds.size.width / 2, 83);
+            [readerButton setTitle:@"Reader" forState:UIControlStateNormal];
+            [readerButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            [readerButton.titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
+            [readerButton setTitleShadowColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+            [readerButton addTarget:self action:@selector(showReader) forControlEvents:UIControlEventTouchUpInside];
+            [readerButton retain];
+        }
+        [self.view addSubview:readerButton];
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 83, 0);
     } else {
         // Remove photo button
@@ -318,8 +330,31 @@
 
 - (void) adjustQuickPictureButtonFrame {
 	if (quickPhotoButton.superview != nil) {
-		quickPhotoButton.frame = CGRectMake(0, self.view.bounds.size.height - 83, self.view.bounds.size.width, 83);
+		quickPhotoButton.frame = CGRectMake(self.view.bounds.size.width / 2, self.view.bounds.size.height - 83, self.view.bounds.size.width / 2, 83);
 	}
+    if (readerButton.superview != nil) {
+        readerButton.frame = CGRectMake(0, self.view.bounds.size.height - 83, self.view.bounds.size.width / 2, 83);
+    }
+}
+
+- (void)showReader {
+    NSError *error = nil;
+    NSString *wpcom_username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
+    NSString *wpcom_password = [SFHFKeychainUtils getPasswordForUsername:wpcom_username
+                                         andServiceName:@"WordPress.com"
+                                         error:&error];
+    if (wpcom_username && wpcom_password) {
+        WPWebViewController *webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
+        webViewController = [[WPWebViewController alloc] init];
+        webViewController.needsLogin = YES;
+        webViewController.username = wpcom_username;
+        webViewController.password = wpcom_password;
+        webViewController.url = [NSURL URLWithString:@"https://en.wordpress.com/reader/mobile/"];
+        UINavigationController *aNav = [[UINavigationController alloc] initWithRootViewController:webViewController];
+        [self presentModalViewController:aNav animated:YES];
+        [aNav release];
+        [webViewController release];
+    }
 }
 
 - (void)quickPhotoPost {

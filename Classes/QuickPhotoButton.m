@@ -13,9 +13,11 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    CGRect imageFrame = self.imageView.frame;
-    imageFrame.origin.x = self.titleLabel.frame.origin.x - 12.0f - imageFrame.size.width;
-    self.imageView.frame = imageFrame;
+    if (self.titleLabel.text != nil) {
+        CGRect imageFrame = self.imageView.frame;
+        imageFrame.origin.x = self.titleLabel.frame.origin.x - 12.0f - imageFrame.size.width;
+        self.imageView.frame = imageFrame;
+    }
 }
 
 + (QuickPhotoButton *)button {
