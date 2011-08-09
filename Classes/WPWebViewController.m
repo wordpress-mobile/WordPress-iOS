@@ -33,6 +33,7 @@
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil ];
     if (self) {
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self.webView action:@selector(reload)] autorelease];
@@ -47,8 +48,10 @@
 #pragma mark - View lifecycle
 
 - (void)refreshWebView {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     NSURL *loginURL = [[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:loginURL];
+    [request setCachePolicy:NSURLRequestReturnCacheDataElseLoad];
     if (self.needsLogin || ([[self.url absoluteString] rangeOfString:@"wp-admin/"].location != NSNotFound)) {
         // It's a /wp-admin url, we need to login first
         NSString *request_body = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=%@",
@@ -65,6 +68,7 @@
 }
 
 - (void)setUrl:(NSURL *)theURL {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     if (url != theURL) {
         [url release];
         url = [theURL retain];
@@ -114,6 +118,7 @@
 
 - (void)viewDidLoad
 {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
     isLoading = YES;
     [self setLoading:NO];
@@ -125,6 +130,7 @@
 
 - (void)viewDidUnload
 {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidUnload];
     self.webView = nil;
     self.toolbar = nil;
@@ -141,11 +147,13 @@
 #pragma mark - UIWebViewDelegate
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    [FileLogger log:@"%@ %@: %@", self, NSStringFromSelector(_cmd), [[request URL] absoluteString]];
     [self setLoading:YES];
     return YES;
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    [FileLogger log:@"%@ %@: %@", self, NSStringFromSelector(_cmd), error];
     // -999: Canceled AJAX request
     if (isLoading && ([error code] != -999))
         [[NSNotificationCenter defaultCenter] postNotificationName:@"OpenWebPageFailed" object:error userInfo:nil];
@@ -153,6 +161,7 @@
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self setLoading:NO];
 }
 

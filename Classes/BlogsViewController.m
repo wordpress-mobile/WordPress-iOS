@@ -8,6 +8,7 @@
 - (void) cleanUnusedMediaFileFromTmpDir;
 - (void)setupPhotoButton;
 - (void) adjustQuickPictureButtonFrame;
+- (void)setupReader;
 @end
 
 @implementation BlogsViewController
@@ -35,6 +36,8 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
 	self.tableView.allowsSelectionDuringEditing = YES;
+
+    [self setupReader];
     
     NSError *error = nil;
     if (![self.resultsController performFetch:&error]) {
@@ -337,24 +340,31 @@
     }
 }
 
-- (void)showReader {
-    NSError *error = nil;
-    NSString *wpcom_username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-    NSString *wpcom_password = [SFHFKeychainUtils getPasswordForUsername:wpcom_username
-                                         andServiceName:@"WordPress.com"
-                                         error:&error];
-    if (wpcom_username && wpcom_password) {
-        WPWebViewController *webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
-        webViewController = [[WPWebViewController alloc] init];
-        webViewController.needsLogin = YES;
-        webViewController.username = wpcom_username;
-        webViewController.password = wpcom_password;
-        webViewController.url = [NSURL URLWithString:@"https://en.wordpress.com/reader/mobile/"];
-        UINavigationController *aNav = [[UINavigationController alloc] initWithRootViewController:webViewController];
-        [self presentModalViewController:aNav animated:YES];
-        [aNav release];
-        [webViewController release];
+- (void)setupReader {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    if (readerViewController == nil) {
+        NSError *error = nil;
+        NSString *wpcom_username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
+        NSString *wpcom_password = [SFHFKeychainUtils getPasswordForUsername:wpcom_username
+                                                              andServiceName:@"WordPress.com"
+                                                                       error:&error];
+        if (wpcom_username && wpcom_password) {
+            readerViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
+            readerViewController.needsLogin = YES;
+            readerViewController.username = wpcom_username;
+            readerViewController.password = wpcom_password;
+            readerViewController.url = [NSURL URLWithString:@"https://en.wordpress.com/reader/mobile/"];
+            [readerViewController view]; // Force web view preload
+            readerNavigationController = [[UINavigationController alloc] initWithRootViewController:readerViewController];
+        }
     }
+}
+
+- (void)showReader {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    [self setupReader];
+    
+    [self presentModalViewController:readerNavigationController animated:YES];
 }
 
 - (void)quickPhotoPost {
@@ -680,6 +690,8 @@
     self.tableView = nil;
     [quickPicturePost release];
     [uploadController release];
+    [readerViewController release];
+    [readerNavigationController release];
     [super dealloc];
 }
 
