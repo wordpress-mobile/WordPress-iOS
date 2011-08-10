@@ -36,7 +36,7 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil ];
     if (self) {
-        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self.webView action:@selector(reload)] autorelease];
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload)] autorelease];
         UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"left"] style:UIBarButtonItemStyleBordered target:self action:@selector(goBack)];
         backButton.enabled = NO;
         self.navigationItem.leftBarButtonItem = backButton;
@@ -114,6 +114,10 @@
         }
         [webView goBack];
 //    }
+}
+
+- (void)reload {
+    [webView reload];
 }
 
 - (void)viewDidLoad
