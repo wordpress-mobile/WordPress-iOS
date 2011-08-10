@@ -7,7 +7,6 @@
 @interface BlogsViewController (Private)
 - (void) cleanUnusedMediaFileFromTmpDir;
 - (void)setupPhotoButton;
-- (void) adjustQuickPictureButtonFrame;
 - (void)setupReader;
 @end
 
@@ -106,7 +105,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeStatusBarFrame:) name:DidChangeStatusBarFrame object:nil];
 	
 	[self checkEditButton];
-	[self adjustQuickPictureButtonFrame];
+	[self setupPhotoButton];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -289,55 +288,71 @@
 #pragma mark Custom methods
 
 - (void)setupPhotoButton {
+    BOOL wantsPhotoButton = NO;
+    BOOL wantsReaderButton = NO;
+    
     if (!DeviceIsPad()
-        && [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]
         && [[resultsController fetchedObjects] count] > 0) {
-        // Add photo button
-        if (quickPhotoButton == nil) {
-            quickPhotoButton = [QuickPhotoButton button];
-            [quickPhotoButton setImage:[UIImage imageNamed:@"camera.png"] forState:UIControlStateNormal];
-            quickPhotoButton.frame = CGRectMake(self.view.bounds.size.width / 2, self.view.bounds.size.height - 83, self.view.bounds.size.width / 2, 83);
-            [quickPhotoButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//            [quickPhotoButton setTitle:NSLocalizedString(@"Quick Photo", @"") forState:UIControlStateNormal];
-            [quickPhotoButton.titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
-            [quickPhotoButton setTitleShadowColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-            [quickPhotoButton addTarget:self action:@selector(quickPhotoPost) forControlEvents:UIControlEventTouchUpInside];
-            [quickPhotoButton retain];
+        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+            wantsPhotoButton = YES;
         }
-        [self.view addSubview:quickPhotoButton];
-        if (readerButton == nil) {
-            readerButton = [QuickPhotoButton button];
-            readerButton.frame = CGRectMake(0, self.view.bounds.size.height - 83, self.view.bounds.size.width / 2, 83);
-            [readerButton setTitle:@"Reader" forState:UIControlStateNormal];
-            [readerButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            [readerButton.titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
-            [readerButton setTitleShadowColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-            [readerButton addTarget:self action:@selector(showReader) forControlEvents:UIControlEventTouchUpInside];
-            [readerButton retain];
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"]) {
+            wantsReaderButton = YES;
         }
-        [self.view addSubview:readerButton];
-        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 83, 0);
+    }
+    if (quickPhotoButton.superview != nil) {
+        [quickPhotoButton removeFromSuperview];
+        [quickPhotoButton release]; quickPhotoButton = nil;
+    }
+    if (readerButton.superview != nil) {
+        [readerButton removeFromSuperview];
+        [readerButton release]; readerButton = nil;
+    }
+    if (!wantsReaderButton && !wantsPhotoButton) {
+        self.tableView.contentInset = UIEdgeInsetsZero;
     } else {
-        // Remove photo button
-        if (quickPhotoButton.superview != nil) {
-            // TODO: animate this?
-            [quickPhotoButton removeFromSuperview];
-            self.tableView.contentInset = UIEdgeInsetsZero;
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 83, 0);
+    }
+    if (wantsPhotoButton && quickPhotoButton == nil) {
+        quickPhotoButton = [QuickPhotoButton button];
+        [quickPhotoButton setImage:[UIImage imageNamed:@"camera.png"] forState:UIControlStateNormal];
+        CGFloat x = wantsReaderButton ? (self.view.bounds.size.width / 2) : 0;
+        CGFloat width = wantsReaderButton ? (self.view.bounds.size.width / 2) : self.view.bounds.size.width;
+        quickPhotoButton.frame = CGRectMake(x, self.view.bounds.size.height - 83, width, 83);
+        [quickPhotoButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        if (wantsReaderButton) {
+            [quickPhotoButton setTitle:nil forState:UIControlStateNormal];
+        } else {
+            [quickPhotoButton setTitle:NSLocalizedString(@"Quick Photo", @"") forState:UIControlStateNormal];            
         }
+        [quickPhotoButton.titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
+        [quickPhotoButton setTitleShadowColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        [quickPhotoButton addTarget:self action:@selector(quickPhotoPost) forControlEvents:UIControlEventTouchUpInside];
+        [quickPhotoButton retain];
+        [self.view addSubview:quickPhotoButton];
+    }
+    if (wantsReaderButton && readerButton == nil) {
+        readerButton = [QuickPhotoButton button];
+        CGFloat width = wantsPhotoButton ? self.view.bounds.size.width / 2 : self.view.bounds.size.width;
+        readerButton.frame = CGRectMake(0, self.view.bounds.size.height - 83, width, 83);
+        [readerButton setTitle:@"Reader" forState:UIControlStateNormal];
+        [readerButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [readerButton.titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
+        [readerButton setTitleShadowColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        [readerButton addTarget:self action:@selector(showReader) forControlEvents:UIControlEventTouchUpInside];
+        [readerButton retain];
+        [self.view addSubview:readerButton];
+    }
+    if (wantsReaderButton) {
+        [self setupReader];
+    } else if (readerViewController != nil) {
+        [readerViewController release]; readerViewController = nil;
+        [readerNavigationController release]; readerNavigationController = nil;
     }
 }
 
 - (void)didChangeStatusBarFrame:(NSNotification *)notification {
-	[self performSelectorOnMainThread:@selector(adjustQuickPictureButtonFrame) withObject:nil waitUntilDone:NO];
-}
-
-- (void) adjustQuickPictureButtonFrame {
-	if (quickPhotoButton.superview != nil) {
-		quickPhotoButton.frame = CGRectMake(self.view.bounds.size.width / 2, self.view.bounds.size.height - 83, self.view.bounds.size.width / 2, 83);
-	}
-    if (readerButton.superview != nil) {
-        readerButton.frame = CGRectMake(0, self.view.bounds.size.height - 83, self.view.bounds.size.width / 2, 83);
-    }
+	[self performSelectorOnMainThread:@selector(setupPhotoButton) withObject:nil waitUntilDone:NO];
 }
 
 - (void)setupReader {
