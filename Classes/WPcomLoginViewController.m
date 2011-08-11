@@ -284,7 +284,7 @@
 			break;
 	}
 	
-	[self.tableView reloadData];
+//	[self.tableView reloadData];
 	[textField resignFirstResponder];
 }
 
