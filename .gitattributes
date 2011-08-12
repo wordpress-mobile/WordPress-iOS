@@ -217,6 +217,10 @@ Classes/WPDataController.h -text
 Classes/WPDataController.m -text
 Classes/WPImagePickerController.h -text
 Classes/WPImagePickerController.m -text
+Classes/WPKeyboardToolbar.h -text
+Classes/WPKeyboardToolbar.m -text
+Classes/WPKeyboardToolbarButtonItem.h -text
+Classes/WPKeyboardToolbarButtonItem.m -text
 Classes/WPLabel.h -text
 Classes/WPLabel.m -text
 Classes/WPMediaUploader.h -text

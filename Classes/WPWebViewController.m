@@ -51,6 +51,7 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     NSURL *loginURL = [[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:loginURL];
+    [request setValue:[NSString stringWithFormat:@"wp-iphone/%@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]] forHTTPHeaderField:@"User-Agent"];
     [request setCachePolicy:NSURLRequestReturnCacheDataElseLoad];
     if (self.needsLogin || ([[self.url absoluteString] rangeOfString:@"wp-admin/"].location != NSNotFound)) {
         // It's a /wp-admin url, we need to login first
