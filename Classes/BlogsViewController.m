@@ -35,8 +35,6 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
 	self.tableView.allowsSelectionDuringEditing = YES;
-
-    [self setupReader];
     
     NSError *error = nil;
     if (![self.resultsController performFetch:&error]) {
@@ -379,7 +377,7 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self setupReader];
     
-    [self presentModalViewController:readerNavigationController animated:YES];
+    [self.navigationController pushViewController:readerViewController animated:YES];
 }
 
 - (void)quickPhotoPost {

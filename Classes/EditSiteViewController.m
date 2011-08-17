@@ -201,12 +201,22 @@
             }
         }
 	} else if (indexPath.section == 2) {
-        WPWebViewController *webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
+        WPWebViewController *webViewController;
+        if (DeviceIsPad()) {
+            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
+        }
+        else {
+            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
+        }
         NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
         [webViewController setUrl:[NSURL URLWithString:dashboardUrl]];
         [webViewController setUsername:self.username];
         [webViewController setPassword:self.password];
-        [self presentModalViewController:webViewController animated:YES];
+        if (DeviceIsPad())
+            [self presentModalViewController:webViewController animated:YES];
+        else
+            [self.navigationController pushViewController:webViewController animated:YES];
+        
     }
     [tv deselectRowAtIndexPath:indexPath animated:YES];
 }

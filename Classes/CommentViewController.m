@@ -709,9 +709,18 @@
 - (void)viewURL{
 	NSURL *url = [NSURL URLWithString: [self.comment.author_url trim]];
 	if (url != nil) {
-        WPWebViewController *webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
+        WPWebViewController *webViewController;
+        if (DeviceIsPad()) {
+            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
+        }
+        else {
+            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
+        }
         [webViewController setUrl:url];
-        [self presentModalViewController:webViewController animated:YES];
+        if (DeviceIsPad())
+            [self presentModalViewController:webViewController animated:YES];
+        else
+            [self.navigationController pushViewController:webViewController animated:YES];
 	}
 }
 
@@ -744,9 +753,18 @@
 
 -(BOOL) webView:(UIWebView *)inWeb shouldStartLoadWithRequest:(NSURLRequest *)inRequest navigationType:(UIWebViewNavigationType)inType {
 	if (inType == UIWebViewNavigationTypeLinkClicked) {
-        WPWebViewController *webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
+        WPWebViewController *webViewController;
+        if (DeviceIsPad()) {
+            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
+        }
+        else {
+            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
+        }
         [webViewController setUrl:[inRequest URL]];
-        [self presentModalViewController:webViewController animated:YES];
+        if (DeviceIsPad())
+            [self presentModalViewController:webViewController animated:YES];
+        else
+            [self.navigationController pushViewController:webViewController animated:YES];
 		return NO;
 	}
 	return YES;

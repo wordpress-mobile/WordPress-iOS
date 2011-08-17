@@ -329,6 +329,7 @@ Settings.bundle/en.lproj/Root.strings -text
 /WPAddCategoryViewController.xib -text
 /WPCategoriesController.xib -text
 /WPSelectionTableViewController.xib -text
+/WPWebViewController-iPad.xib -text
 /WPWebViewController.xib -text
 /WPcomLoginViewController-iPad-stats.xib -text
 /WPcomLoginViewController-iPad.xib -text
@@ -339,6 +340,7 @@ Settings.bundle/en.lproj/Root.strings -text
 /WebSignupViewController.xib -text
 /WelcomeViewController-iPad.xib -text
 /WelcomeViewController.xib -text
+/WordPress[!!-~]copy-Info.plist -text
 WordPress.xcodeproj/project.pbxproj -text
 /WordPress_Prefix.pch -text
 /XMLRPCConnection.h -text

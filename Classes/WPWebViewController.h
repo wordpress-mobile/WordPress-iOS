@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface WPWebViewController : UIViewController<UIWebViewDelegate> {
+@interface WPWebViewController : UIViewController<UIWebViewDelegate, UIActionSheetDelegate> {
     BOOL isLoading;
 }
 @property (nonatomic,retain) NSURL *url;
@@ -21,8 +21,9 @@
 @property (nonatomic,retain) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (nonatomic,retain) IBOutlet UILabel *loadingLabel;
 @property (nonatomic,assign) BOOL needsLogin;
+@property (nonatomic, retain) IBOutlet UINavigationBar *iPadNavBar;
 
-- (IBAction)loadInSafari;
+- (IBAction)showLinkOptions;
 - (IBAction)dismiss;
 
 @end

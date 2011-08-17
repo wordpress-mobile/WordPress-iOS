@@ -14,6 +14,7 @@
 @synthesize webView, toolbar;
 @synthesize loadingView, loadingLabel, activityIndicator;
 @synthesize needsLogin;
+@synthesize iPadNavBar;
 
 - (void)dealloc
 {
@@ -37,10 +38,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil ];
     if (self) {
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload)] autorelease];
-        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"left"] style:UIBarButtonItemStyleBordered target:self action:@selector(goBack)];
-        backButton.enabled = NO;
-        self.navigationItem.leftBarButtonItem = backButton;
-        [backButton release];
     }
     return self;
 }
@@ -94,7 +91,11 @@
     self.navigationItem.rightBarButtonItem.enabled = !loading;
     self.navigationItem.leftBarButtonItem.enabled = YES;
     if (!loading) {
-        self.navigationItem.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+        if (DeviceIsPad()) {
+            [iPadNavBar.topItem setTitle:[webView stringByEvaluatingJavaScriptFromString:@"document.title"]];
+        }
+        else
+            self.navigationItem.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
     }
     isLoading = loading;
 }
@@ -103,18 +104,13 @@
     [self dismissModalViewControllerAnimated:YES];
 }
 
-- (void)loadInSafari {
-    [[UIApplication sharedApplication] openURL:self.url];
-    [self dismiss];
-}
-
-- (void)goBack {
-//    if ([webView canGoBack]) {
-        if ([webView isLoading]) {
-            [webView stopLoading];
-        }
-        [webView goBack];
-//    }
+- (void)showLinkOptions{
+    
+    UIActionSheet *linkOptionsActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Link Options", @"Link Options") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"View in Safari", @"View in Safari"), NSLocalizedString(@"Copy URL", @"Copy URL"), nil];
+    
+    linkOptionsActionSheet .actionSheetStyle = UIActionSheetStyleBlackOpaque;
+    [linkOptionsActionSheet showInView:self.view];
+    [linkOptionsActionSheet  release];
 }
 
 - (void)reload {
@@ -142,6 +138,7 @@
     self.loadingView = nil;
     self.loadingLabel = nil;
     self.activityIndicator = nil;
+    self.iPadNavBar = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -168,6 +165,26 @@
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self setLoading:NO];
+}
+
+#pragma mark - UIActionSheetDelegate
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+	
+	if (buttonIndex == 0) {
+		
+        [[UIApplication sharedApplication] openURL:self.url];
+        [self dismiss];
+		
+    } else if (buttonIndex == 1) {
+		
+        if (webView.request.URL.absoluteString != nil) {
+            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+            pasteboard.string = webView.request.URL.absoluteString; 
+        }
+		
+    }
+	
 }
 
 @end
