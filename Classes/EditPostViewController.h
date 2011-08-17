@@ -8,6 +8,7 @@
 #import "WPAddCategoryViewController.h"
 #import "Post.h"
 #import "UIDevice-hardware.h"
+#import "WPKeyboardToolbar.h"
 
 #define kSelectionsStatusContext ((void *)1000)
 #define kSelectionsCategoriesContext ((void *)2000)
@@ -17,7 +18,7 @@
 @class WPSegmentedSelectionTableViewController, PostSettingsViewController, PostPreviewViewController;
 
 @interface EditPostViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
-UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDelegate,UIPopoverControllerDelegate> {
+UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDelegate,UIPopoverControllerDelegate,WPKeyboardToolbarDelegate> {
     BOOL isShowPhotoPickerActionSheet;
     BOOL isTextViewEditing;
     BOOL dismiss;
@@ -66,6 +67,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
         
     UIView *currentView;
     UIToolbar *keyboardToolbar;
+    WPKeyboardToolbar *editorToolbar;
 }
 
 @property (nonatomic, retain) WPSelectionTableViewController *selectionTableViewController;

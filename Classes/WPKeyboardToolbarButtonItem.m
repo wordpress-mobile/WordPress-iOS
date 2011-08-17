@@ -10,28 +10,47 @@
 
 
 @implementation WPKeyboardToolbarButtonItem
+@synthesize actionTag, actionName;
 
-- (id)initWithFrame:(CGRect)frame
+- (void)dealloc
 {
-    self = [super initWithFrame:frame];
+    self.actionTag = nil;
+    self.actionName = nil;
+    [super dealloc];
+}
+
++ (id)button {
+    return [WPKeyboardToolbarButtonItem buttonWithType:UIButtonTypeCustom];
+}
+
+- (id)init {
+    self = [super init];
     if (self) {
-        // Initialization code
+        WPFLogMethod();
     }
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
+- (id)initWithCoder:(NSCoder *)coder {
+    self = [super initWithCoder:coder];
+    if (self) {
+        WPFLogMethod();
+    }
+    return self;
 }
-*/
 
-- (void)dealloc
-{
-    [super dealloc];
+- (id)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        WPFLogMethod();
+
+        [self setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [self setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        self.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+
+        [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButton"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+    }
+    return self;
 }
 
 @end

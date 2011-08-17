@@ -8,9 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-
-@interface WPKeyboardToolbarButtonItem : UIView {
-    
+@interface WPKeyboardToolbarButtonItem : UIButton {
 }
-
++ (id)button;
+@property (nonatomic, retain) NSString *actionTag, *actionName;
 @end

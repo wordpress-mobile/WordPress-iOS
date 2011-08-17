@@ -207,6 +207,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [statuses release]; statuses = nil;
     [spinner release]; spinner = nil;
     [keyboardToolbar release]; keyboardToolbar = nil;
+    [editorToolbar release]; editorToolbar = nil;
     
     // Release IBOutlets
     self.locationButton = nil;
@@ -252,19 +253,14 @@ NSTimeInterval kAnimationDuration = 0.3f;
         if (DeviceIsPad()) {
             frame = CGRectMake(0, 0, self.view.frame.size.width, 72);
         } else {
-            frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
+            frame = CGRectMake(0, 0, self.view.frame.size.width, 42);
         }
-        UIScrollView *toolbarScrollView = [[UIScrollView alloc] initWithFrame:frame];
-        [toolbarScrollView addSubview:[self keyboardToolbar]];
-        UIBarButtonItem *lastButton = [keyboardToolbar.items lastObject];
-        frame = lastButton.customView.frame;
-        toolbarScrollView.contentSize = CGSizeMake(frame.origin.x + frame.size.width + 10, frame.size.height);
-        frame = keyboardToolbar.frame;
-        frame.size.width = toolbarScrollView.contentSize.width;
         keyboardToolbar.frame = frame;
-        toolbarScrollView.showsHorizontalScrollIndicator = NO;
-        textView.inputAccessoryView = toolbarScrollView;
-        [toolbarScrollView release];
+        if (editorToolbar == nil) {
+            editorToolbar = [[WPKeyboardToolbar alloc] initWithFrame:frame];
+            editorToolbar.delegate = self;
+        }
+        textView.inputAccessoryView = editorToolbar;
     }
 
     postSettingsController = [[PostSettingsViewController alloc] initWithNibName:@"PostSettingsViewController" bundle:nil];
@@ -1376,6 +1372,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if ([tag isEqualToString:@"ul"] || [tag isEqualToString:@"ol"]) {
         prefix = [NSString stringWithFormat:@"<%@>\n", tag];
         suffix = [NSString stringWithFormat:@"\n</%@>", tag];
+    } else if ([tag isEqualToString:@"more"]) {
+        prefix = @"<!-- more -->";
+        suffix = @"";
     } else {
         prefix = [NSString stringWithFormat:@"<%@>", tag];
         suffix = [NSString stringWithFormat:@"</%@>", tag];        
@@ -1393,52 +1392,17 @@ NSTimeInterval kAnimationDuration = 0.3f;
     textView.selectedRange = range;
 }
 
-- (void)setBold {
-    NSString *oldText = textView.text;
-    NSRange oldRange = textView.selectedRange;
-    [self wrapSelectionWithTag:@"strong"];
-    [[textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
-    [textView.undoManager setActionName:@"bold"];
-}
-
-- (void)setItalic {
-    NSString *oldText = textView.text;
-    NSRange oldRange = textView.selectedRange;
-    [self wrapSelectionWithTag:@"em"];    
-    [[textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
-    [textView.undoManager setActionName:@"italic"];
-}
-
-- (void)setBlockquote {
-    NSString *oldText = textView.text;
-    NSRange oldRange = textView.selectedRange;
-    [self wrapSelectionWithTag:@"blockquote"];
-    [[textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
-    [textView.undoManager setActionName:@"blockquote"];
-}
-
-- (void)setOrderedList {
-    NSString *oldText = textView.text;
-    NSRange oldRange = textView.selectedRange;
-    [self wrapSelectionWithTag:@"ol"];
-    [[textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
-    [textView.undoManager setActionName:@"ordered list"];    
-}
-
-- (void)setUnorderedList {
-    NSString *oldText = textView.text;
-    NSRange oldRange = textView.selectedRange;
-    [self wrapSelectionWithTag:@"ul"];
-    [[textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
-    [textView.undoManager setActionName:@"unordered list"];        
-}
-
-- (void)setListItem {
-    NSString *oldText = textView.text;
-    NSRange oldRange = textView.selectedRange;
-    [self wrapSelectionWithTag:@"li"];
-    [[textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
-    [textView.undoManager setActionName:@"list item"];    
+- (void)keyboardToolbarButtonItemPressed:(WPKeyboardToolbarButtonItem *)buttonItem {
+    WPFLogMethod();
+    if ([buttonItem.actionTag isEqualToString:@"link"]) {
+        [self showLinkView];
+    } else {
+        NSString *oldText = textView.text;
+        NSRange oldRange = textView.selectedRange;
+        [self wrapSelectionWithTag:buttonItem.actionTag];
+        [[textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
+        [textView.undoManager setActionName:buttonItem.actionName];    
+    }
 }
 
 #pragma mark  -
@@ -1679,6 +1643,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [bookMarksArray release];
     [segmentedTableViewController release];
     [keyboardToolbar release];
+    [editorToolbar release];
     [super dealloc];
 }
 
