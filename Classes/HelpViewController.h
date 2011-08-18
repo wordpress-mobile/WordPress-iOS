@@ -22,7 +22,6 @@
 
 @property (nonatomic, retain) IBOutlet UIButton *faqButton;
 @property (nonatomic, retain) IBOutlet UIButton *forumButton;
-@property (nonatomic, retain) IBOutlet UIButton *emailButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *cancel;
 @property (nonatomic, retain) IBOutlet UINavigationBar *navBar;
 @property (nonatomic, retain) IBOutlet UILabel *helpText;
