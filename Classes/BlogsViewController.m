@@ -366,7 +366,8 @@
             readerViewController.needsLogin = YES;
             readerViewController.username = wpcom_username;
             readerViewController.password = wpcom_password;
-            readerViewController.url = [NSURL URLWithString:@"https://en.wordpress.com/reader/mobile/"];
+            readerViewController.isReader = YES;
+            readerViewController.url = [NSURL URLWithString:@"https://en.wordpress.com/reader/mobile/?preload=false"];
             [readerViewController view]; // Force web view preload
             readerNavigationController = [[UINavigationController alloc] initWithRootViewController:readerViewController];
         }

@@ -21,6 +21,7 @@
 @property (nonatomic,retain) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (nonatomic,retain) IBOutlet UILabel *loadingLabel;
 @property (nonatomic,assign) BOOL needsLogin;
+@property (nonatomic,assign) BOOL isReader;
 @property (nonatomic, retain) IBOutlet UINavigationBar *iPadNavBar;
 
 - (IBAction)showLinkOptions;

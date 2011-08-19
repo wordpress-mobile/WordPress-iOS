@@ -13,7 +13,7 @@
 @synthesize url,username,password;
 @synthesize webView, toolbar;
 @synthesize loadingView, loadingLabel, activityIndicator;
-@synthesize needsLogin;
+@synthesize needsLogin, isReader;
 @synthesize iPadNavBar;
 
 - (void)dealloc
@@ -63,6 +63,13 @@
     [loginURL release];
 
     [self.webView loadRequest:request];
+    
+    if (self.isReader) {
+        // ping stats on refresh of reader
+        NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://wordpress.com/reader/mobile/?template=stats&stats_name=home_page_refresh"]] autorelease];
+        [request setValue:@"wp-iphone" forHTTPHeaderField:@"User-Agent"];
+        [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    }
 }
 
 - (void)setUrl:(NSURL *)theURL {
@@ -126,6 +133,12 @@
     self.webView.scalesPageToFit = YES;
     if (self.url) {
         [self refreshWebView];
+    }
+    if (self.isReader) {
+        // ping stats on load of reader
+        NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://wordpress.com/reader/mobile/?template=stats&stats_name=home_page"]] autorelease];
+        [request setValue:@"wp-iphone" forHTTPHeaderField:@"User-Agent"];
+        [[NSURLConnection alloc] initWithRequest:request delegate:self];
     }
 }
 
