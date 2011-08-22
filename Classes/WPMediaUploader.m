@@ -173,6 +173,7 @@
 	[request appendPostDataFromFile:self.localEncodedURL];
 	[request setUploadProgressDelegate:self.media];
 	[request setTimeOutSeconds:600];
+    [request setNumberOfTimesToRetryOnTimeout:3];
 	[request startAsynchronous];
     [request retain];
 }
