@@ -228,7 +228,7 @@
         
         // Show main view
         CGRect frame = mainView.frame;
-        frame.origin.x = 46.0f;
+        frame.origin.x = 3;
         mainView.frame = frame;
         if (mainView.superview == nil) {
             [self addSubview:mainView];            
