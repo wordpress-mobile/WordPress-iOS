@@ -19,7 +19,7 @@
     UIView *mainView, *extendedView;
     WPKeyboardToolbarButtonItem *boldButton, *italicsButton, *linkButton, *quoteButton, *delButton;
     WPKeyboardToolbarButtonItem *ulButton, *olButton, *liButton, *codeButton, *moreButton;
-    UIButton *doneButton, *toggleButton;
+    WPKeyboardToolbarButtonItem *doneButton, *toggleButton;
 }
 @property (nonatomic, assign) id<WPKeyboardToolbarDelegate> delegate;
 

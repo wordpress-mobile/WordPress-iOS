@@ -1396,6 +1396,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     WPFLogMethod();
     if ([buttonItem.actionTag isEqualToString:@"link"]) {
         [self showLinkView];
+    } else if ([buttonItem.actionTag isEqualToString:@"done"]) {
+        [self endTextEnteringButtonAction:buttonItem];
     } else {
         NSString *oldText = textView.text;
         NSRange oldRange = textView.selectedRange;

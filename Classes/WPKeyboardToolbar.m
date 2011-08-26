@@ -201,6 +201,32 @@
     }
 }
 
+- (void)toggleExtendedView {
+    toggleButton.selected = !toggleButton.selected;
+    [self setNeedsLayout];
+}
+
+- (void)buildToggleButton {
+    if (toggleButton == nil) {
+        toggleButton = [WPKeyboardToolbarButtonItem button];
+        toggleButton.frame = CGRectMake(3, 3, 32, 37);
+        [toggleButton setTitle:@"<•!" forState:UIControlStateNormal];
+        [toggleButton addTarget:self action:@selector(toggleExtendedView) forControlEvents:UIControlEventTouchUpInside];
+        [toggleButton retain];
+    }    
+}
+
+- (void)setupDoneButton {
+    if (doneButton == nil) {
+        doneButton = [WPKeyboardToolbarButtonItem button];
+        doneButton.frame = CGRectMake(0, 3, 52, 37);
+        [doneButton setTitle:@"Done" forState:UIControlStateNormal];
+        doneButton.actionTag = @"done";
+        [doneButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:doneButton];
+    }
+}
+
 - (void)setupView {
     self.backgroundColor = UIColorFromRGB(0xb0b7c1);
     _gradient = [CAGradientLayer layer];
@@ -211,27 +237,49 @@
     
     [self buildMainView];
     [self buildExtendedView];
-    [self addSubview:mainView];
+    [self buildToggleButton];
+    [self setupDoneButton];
 }
 
 - (void)layoutSubviews {
     _gradient.frame = [self gradientFrame];
+    
+    CGRect doneFrame = doneButton.frame;
+    doneFrame.origin.x = self.frame.size.width - doneFrame.size.width - 3;
+    doneButton.frame = doneFrame;
+    
     if (self.frame.size.width <= 320.0f) {
-        // Remove extended view
-        if (extendedView.superview != nil) {
-            [extendedView removeFromSuperview];
-        }
-
         // Add toggle button
         if (toggleButton.superview == nil) {
+            [self addSubview:toggleButton];
         }
-        
-        // Show main view
-        CGRect frame = mainView.frame;
-        frame.origin.x = 3;
-        mainView.frame = frame;
-        if (mainView.superview == nil) {
-            [self addSubview:mainView];            
+
+        if (toggleButton.selected) {
+            // Remove main view
+            if (mainView.superview != nil) {
+                [mainView removeFromSuperview];
+            }
+            
+            // Show extended view
+            CGRect frame = extendedView.frame;
+            frame.origin.x = toggleButton.frame.origin.x + toggleButton.frame.size.width;
+            extendedView.frame = frame;
+            if (extendedView.superview == nil) {
+                [self addSubview:extendedView];
+            }
+        } else {
+            // Remove extended view
+            if (extendedView.superview != nil) {
+                [extendedView removeFromSuperview];
+            }
+            
+            // Show main view
+            CGRect frame = mainView.frame;
+            frame.origin.x = toggleButton.frame.origin.x + toggleButton.frame.size.width;
+            mainView.frame = frame;
+            if (mainView.superview == nil) {
+                [self addSubview:mainView];            
+            }            
         }
     } else {
         // Remove toggle button
