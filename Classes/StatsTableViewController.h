@@ -12,6 +12,7 @@
 #import <Foundation/Foundation.h>
 #import "StatsPageControlViewController.h"
 #import "EGORefreshTableHeaderView.h"
+#import "WPWebViewController.h"
 
 @interface StatsTableViewController : UITableViewController <UIAlertViewDelegate, NSXMLParserDelegate, EGORefreshTableHeaderDelegate>{
 	
@@ -71,4 +72,5 @@
 - (void) showNoDataFoundError;
 - (void) showLoadingDialog;
 - (void) hideLoadingDialog;
+- (void) viewUrl: (NSString*) urlString;
 @end

@@ -46,8 +46,12 @@
 
 - (void)refreshWebView {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    NSURL *loginURL = [[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:loginURL];
+    NSURL *webURL;
+    if (needsLogin)
+        webURL = [[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"];
+    else
+        webURL = self.url;
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:webURL];
     [request setValue:[NSString stringWithFormat:@"wp-iphone/%@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]] forHTTPHeaderField:@"User-Agent"];
     [request setCachePolicy:NSURLRequestReturnCacheDataElseLoad];
     if (self.needsLogin || ([[self.url absoluteString] rangeOfString:@"wp-admin/"].location != NSNotFound)) {
@@ -60,7 +64,7 @@
         [request setValue:[NSString stringWithFormat:@"%d", [request_body length]] forHTTPHeaderField:@"Content-Length"];
         [request setHTTPMethod:@"POST"];
     }
-    [loginURL release];
+    [webURL release];
 
     [self.webView loadRequest:request];
     

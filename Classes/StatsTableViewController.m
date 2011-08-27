@@ -377,7 +377,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 						 [NSMutableDictionary
 						  dictionaryWithObject:[NSMutableData data]
 						  forKey:@"chartWeeksData"]);
-	// 12 months
+	// 11 months
 	requestURL = [NSString stringWithFormat: @"http://stats.wordpress.com/csv.php?api_key=%@&%@&format=xml&table=%@&days=%d%@", apiKey, idType, @"views", 11, @"&period=month"];	
 	[request setURL:[NSURL URLWithString:requestURL]];
 	[request setValue:@"wp-iphone" forHTTPHeaderField:@"User-Agent"];
@@ -1110,7 +1110,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 				[self.tableView reloadData];
 			}
 			else {
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[referrersData objectAtIndex:indexPath.row] objectAtIndex:0]]];
+                [self viewUrl: [[referrersData objectAtIndex:indexPath.row] objectAtIndex:0]];
                 [tableView deselectRowAtIndexPath:indexPath animated:YES];
 			}
 			break;
@@ -1126,8 +1126,8 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 				[self.tableView reloadData];
 			}
 			else {
-				[[UIApplication sharedApplication] openURL:[NSURL URLWithString: [[clicksData objectAtIndex:indexPath.row] objectAtIndex:0]]];
-				[tableView deselectRowAtIndexPath:indexPath animated:YES];
+                [self viewUrl: [[clicksData objectAtIndex:indexPath.row] objectAtIndex:0]];
+                [tableView deselectRowAtIndexPath:indexPath animated:YES];
 			}
 			break;
 	}
@@ -1207,6 +1207,26 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	// Return YES for supported orientations
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+- (void)viewUrl:(NSString*) urlString{
+	NSURL *url = [NSURL URLWithString: urlString];
+	if (url != nil) {
+        WPWebViewController *webViewController;
+        if (DeviceIsPad()) {
+            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
+        }
+        else {
+            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
+        }
+        [webViewController setUrl:url];
+        if (DeviceIsPad()) {
+            [[[CPopoverManager instance] currentPopoverController] dismissPopoverAnimated:NO];
+            [appDelegate.detailNavigationController presentModalViewController:webViewController animated:YES];
+        }
+        else
+            [appDelegate.navigationController pushViewController:webViewController animated:YES];
+	}
 }
 
 #pragma mark -
