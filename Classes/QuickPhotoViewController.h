@@ -27,6 +27,7 @@
 @property (nonatomic, retain) UIBarButtonItem *postButtonItem;
 @property (nonatomic, retain) UIImage *photo;
 @property (nonatomic, retain) BlogsViewController *blogsViewController;
+@property (nonatomic, assign) UIImagePickerControllerSourceType sourceType;
 
 - (void)post;
 - (void)cancel;

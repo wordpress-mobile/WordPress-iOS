@@ -291,7 +291,8 @@
     
     if (!DeviceIsPad()
         && [[resultsController fetchedObjects] count] > 0) {
-        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]
+            || [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum]) {
             wantsPhotoButton = YES;
         }
         if ([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"]) {
@@ -381,14 +382,36 @@
     [self.navigationController pushViewController:readerViewController animated:YES];
 }
 
+- (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType {
+    QuickPhotoViewController *quickPhotoViewController = [[QuickPhotoViewController alloc] init];
+    quickPhotoViewController.blogsViewController = self;
+    quickPhotoViewController.sourceType = sourceType;
+    [self.navigationController pushViewController:quickPhotoViewController animated:YES];
+    [quickPhotoViewController release];
+}
+
 - (void)quickPhotoPost {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [FlurryAPI logEvent:@"QuickPhoto"];
 
-    QuickPhotoViewController *quickPhotoViewController = [[QuickPhotoViewController alloc] init];
-    quickPhotoViewController.blogsViewController = self;
-    [self.navigationController pushViewController:quickPhotoViewController animated:YES];
-    [quickPhotoViewController release];
+	UIActionSheet *actionSheet;
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+		actionSheet = [[UIActionSheet alloc] initWithTitle:@"" 
+												  delegate:self 
+										 cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
+									destructiveButtonTitle:nil 
+										 otherButtonTitles:NSLocalizedString(@"Add Photo from Library", @""),NSLocalizedString(@"Take Photo", @""),nil];
+	}
+	else {
+        [self showQuickPhoto:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
+        return;
+	}
+	
+    actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+	[actionSheet showInView:self.view];
+    [appDelegate setAlertRunning:YES];
+	
+    [actionSheet release];
 }
 
 - (void) cleanUnusedMediaFileFromTmpDir {
@@ -515,6 +538,15 @@
 	}
 }
 
+#pragma mark - UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if(buttonIndex == 0) {
+        [self showQuickPhoto:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
+    } else if(buttonIndex == 1) {
+        [self showQuickPhoto:UIImagePickerControllerSourceTypeCamera];
+    }
+}
 
 #pragma mark -
 #pragma mark UIAlertView delegate

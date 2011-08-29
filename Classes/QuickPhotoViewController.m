@@ -21,7 +21,7 @@
 @synthesize postButtonItem;
 @synthesize photo;
 @synthesize blogsViewController;
-
+@synthesize sourceType;
 
 - (void)dealloc
 {
@@ -130,7 +130,7 @@
     
     if (self.photo == nil) {
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        picker.sourceType = self.sourceType;
         picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
         picker.allowsEditing = NO;
         picker.delegate = self;

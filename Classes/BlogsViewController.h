@@ -14,7 +14,7 @@
 #import "QuickPhotoButton.h"
 #import "QuickPhotoUploadProgressController.h"
 
-@interface BlogsViewController : UIViewController <NSFetchedResultsControllerDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate> {
+@interface BlogsViewController : UIViewController <NSFetchedResultsControllerDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate> {
 	WordPressAppDelegate *appDelegate;
     NSFetchedResultsController *resultsController;
     Blog *currentBlog;
