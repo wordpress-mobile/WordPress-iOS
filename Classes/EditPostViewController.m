@@ -378,6 +378,19 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	return NO;	
 }
 
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration {
+    if (!DeviceIsPad()) {
+        if (interfaceOrientation == UIInterfaceOrientationLandscapeLeft
+            || interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+            [self.navigationController setNavigationBarHidden:YES animated:YES];
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+        } else {
+            [self.navigationController setNavigationBarHidden:NO animated:YES];            
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+        }
+    }
+}
+
 - (void)disableInteraction {
 	editingDisabled = YES;
 }
