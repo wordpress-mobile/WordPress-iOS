@@ -211,7 +211,8 @@
         toggleButton = [WPKeyboardToolbarButtonItem button];
         toggleButton.frame = CGRectMake(3, 3, 32, 37);
         [toggleButton setTitle:@"<•!" forState:UIControlStateNormal];
-        [toggleButton addTarget:self action:@selector(toggleExtendedView) forControlEvents:UIControlEventTouchUpInside];
+        toggleButton.adjustsImageWhenHighlighted = NO;
+        [toggleButton addTarget:self action:@selector(toggleExtendedView) forControlEvents:UIControlEventTouchDown];
         [toggleButton retain];
     }    
 }
