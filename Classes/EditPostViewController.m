@@ -941,7 +941,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [textViewPlaceHolderField removeFromSuperview];
 
 //	[self positionTextView:nil];
-	
+	if (!DeviceIsPad()) {
+		[self.navigationController setNavigationBarHidden:YES animated:YES];
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+	}
     dismiss = NO;
 	
     if (!isTextViewEditing) {
@@ -996,6 +999,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
 	if([textView.text isEqualToString:@""] == YES) {
         [editView addSubview:textViewPlaceHolderField];
+	}
+	
+	if (!DeviceIsPad()) {
+		[self.navigationController setNavigationBarHidden:NO animated:YES];            
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
 	}
 	
     isEditing = NO;
