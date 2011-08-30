@@ -223,13 +223,13 @@
     CGSize newSize;
     switch (size) {
         case kResizeSmall:
-			newSize = CGSizeMake(240, 180);
+			newSize = CGSizeMake(150, 150);
             break;
         case kResizeMedium:
-            newSize = CGSizeMake(480, 360);
+            newSize = CGSizeMake(300, 300);
             break;
         case kResizeLarge:
-            newSize = CGSizeMake(640, 480);
+            newSize = CGSizeMake(1024, 1024);
             break;
             
         default:
@@ -248,7 +248,6 @@
         case UIImageOrientationRight:
         case UIImageOrientationRightMirrored:
             self.orientation = @"portrait";
-            newSize = CGSizeMake(newSize.height, newSize.width);
             break;
         default:
             self.orientation = @"portrait";
@@ -259,11 +258,11 @@
 
     UIImage *resizedImage = image;
     if(image.size.width > newSize.width  && image.size.height > newSize.height)
-        resizedImage = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill
+        resizedImage = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFit
                                                    bounds:newSize
                                      interpolationQuality:kCGInterpolationHigh];
     else  
-        resizedImage = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill
+        resizedImage = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFit
                                                    bounds:originalSize
                                      interpolationQuality:kCGInterpolationHigh];
 
