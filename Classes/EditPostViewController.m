@@ -349,17 +349,14 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	frame.size.width -= 14;
 	frame.size.height = 200;
     textViewPlaceHolderField.frame = frame;
-	//textViewPlaceHolderField.backgroundColor = [UIColor redColor];
 	textViewPlaceHolderField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-	//textViewPlaceHolderField.actionTag = @"textViewPlaceHolderFieldTag";
 	CABasicAnimation *animateWiggleIt;	
 	animateWiggleIt=[CABasicAnimation animationWithKeyPath:@"transform.rotation"];
 	animateWiggleIt.duration=0.15;
 	animateWiggleIt.repeatCount=3;
 	animateWiggleIt.autoreverses=YES;
-	animateWiggleIt.fromValue=[NSNumber numberWithFloat:-0.03];
+	animateWiggleIt.fromValue=[NSNumber numberWithFloat:-0.06];
 	animateWiggleIt.toValue=[NSNumber numberWithFloat:0.06];
-	//theAnimation.toValue=[NSNumber numberWithFloat:0];
 	[textViewPlaceHolderField.layer addAnimation:animateWiggleIt forKey:@"textViewPlaceHolderField"];
 	
 	self.navigationItem.title = NSLocalizedString(@"Write", @"");
@@ -805,10 +802,19 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)showLinkView {
     UIAlertView *addURLSourceAlert = [[UIAlertView alloc] init];
-    infoText = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 48.0, 260.0, 29.0)];
-    urlField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 82.0, 260.0, 29.0)];
+	if ([[UIDevice currentDevice] orientation] == UIInterfaceOrientationPortrait) {
+		infoText = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 46.0, 260.0, 31.0)];
+		urlField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 82.0, 260.0, 31.0)];
+	}
+	else {
+		infoText = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 33.0, 260.0, 28.0)];
+		urlField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 65.0, 260.0, 28.0)];
+	}
+
     infoText.placeholder = NSLocalizedString(@"Text to be linked", @"");
     urlField.placeholder = NSLocalizedString(@"Link URL", @"");
+	infoText.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+	urlField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     
     NSRange range = textView.selectedRange;
     
@@ -826,7 +832,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	infoText.keyboardType = UIKeyboardTypeDefault;
 	urlField.keyboardType = UIKeyboardTypeURL;
     [addURLSourceAlert addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
-    [addURLSourceAlert addButtonWithTitle:NSLocalizedString(@"Save", @"")];
+    [addURLSourceAlert addButtonWithTitle:NSLocalizedString(@"Insert", @"")];
     addURLSourceAlert.title = NSLocalizedString(@"Make a Link\n\n\n\n", @"");
     addURLSourceAlert.delegate = self;
     [addURLSourceAlert addSubview:infoText];
@@ -1124,6 +1130,20 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	if(self.isEditing) {
         // No need to adjust since we get keyboard notifications
 //		[self positionTextView:nil];
+	}
+	//CGRect infoText = self.addURLSourceAlert;
+	//infoText.text = "test";
+	
+	// This reinforces text field constraints set above, for when the Link Helper is already showing when the device is rotated.
+	if (isShowingLinkAlert == TRUE) {
+		if ([[UIDevice currentDevice] orientation] == UIInterfaceOrientationPortrait) {
+			infoText.frame = CGRectMake(12.0, 46.0, 260.0, 31.0);
+			urlField.frame = CGRectMake(12.0, 82.0, 260.0, 31.0);
+		}
+		else {
+			infoText.frame = CGRectMake(12.0, 33.0, 260.0, 28.0);
+			urlField.frame = CGRectMake(12.0, 65.0, 260.0, 28.0);
+		}
 	}
 }
 
