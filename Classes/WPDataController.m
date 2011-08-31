@@ -758,6 +758,7 @@
 	[request setTimeOutSeconds:30];
 	NSString *version  = [[[NSBundle mainBundle] infoDictionary] valueForKey:[NSString stringWithFormat:@"CFBundleVersion"]];
 	[request addRequestHeader:@"User-Agent" value:[NSString stringWithFormat:@"wp-iphone/%@",version]];
+    [request addRequestHeader:@"Content-Type" value:@"text/xml"];
 
     NSString *quickPostType = [[req request] valueForHTTPHeaderField:@"WP-Quick-Post"];
     if (quickPostType != nil) {

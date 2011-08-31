@@ -139,7 +139,7 @@
 	
 	[_request setHTTPMethod: @"POST"];
 	
-	if ([_request valueForHTTPHeaderField: @"Content-Length"] == nil)
+	if ([_request valueForHTTPHeaderField: @"Content-Type"] == nil)
 	{
 		[_request addValue: @"text/xml" forHTTPHeaderField: @"Content-Type"];
 	}
