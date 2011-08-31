@@ -247,6 +247,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     tagsTextField.placeholder = NSLocalizedString(@"Separate tags with commas", @"");
     categoriesLabel.text = NSLocalizedString(@"Categories:", @"");
     textViewPlaceHolderField.placeholder = NSLocalizedString(@"Tap here to begin writing", @"");
+	textViewPlaceHolderField.textAlignment = UITextAlignmentCenter; 
 
     if ([textView respondsToSelector:@selector(setInputAccessoryView:)]) {
         CGRect frame;
@@ -345,7 +346,22 @@ NSTimeInterval kAnimationDuration = 0.3f;
     CGRect frame = self.normalTextFrame;
     frame.origin.x += 7;
     frame.origin.y += 7;
+	frame.size.width -= 14;
+	frame.size.height = 200;
     textViewPlaceHolderField.frame = frame;
+	//textViewPlaceHolderField.backgroundColor = [UIColor redColor];
+	textViewPlaceHolderField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+	//textViewPlaceHolderField.actionTag = @"textViewPlaceHolderFieldTag";
+	CABasicAnimation *animateWiggleIt;	
+	animateWiggleIt=[CABasicAnimation animationWithKeyPath:@"transform.rotation"];
+	animateWiggleIt.duration=0.15;
+	animateWiggleIt.repeatCount=3;
+	animateWiggleIt.autoreverses=YES;
+	animateWiggleIt.fromValue=[NSNumber numberWithFloat:-0.03];
+	animateWiggleIt.toValue=[NSNumber numberWithFloat:0.06];
+	//theAnimation.toValue=[NSNumber numberWithFloat:0];
+	[textViewPlaceHolderField.layer addAnimation:animateWiggleIt forKey:@"textViewPlaceHolderField"];
+	
 	self.navigationItem.title = NSLocalizedString(@"Write", @"");
 }
 
