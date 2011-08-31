@@ -1415,10 +1415,16 @@ NSTimeInterval kAnimationDuration = 0.3f;
     NSString *prefix, *suffix;
     if ([tag isEqualToString:@"ul"] || [tag isEqualToString:@"ol"]) {
         prefix = [NSString stringWithFormat:@"<%@>\n", tag];
-        suffix = [NSString stringWithFormat:@"\n</%@>", tag];
+        suffix = [NSString stringWithFormat:@"\n</%@>\n", tag];
+    } else if ([tag isEqualToString:@"li"]) {
+        prefix = [NSString stringWithFormat:@"\t<%@>", tag];
+        suffix = [NSString stringWithFormat:@"</%@>\n", tag];
     } else if ([tag isEqualToString:@"more"]) {
-        prefix = @"<!-- more -->";
-        suffix = @"";
+        prefix = @"<!--more-->";
+        suffix = @"\n";
+    } else if ([tag isEqualToString:@"blockquote"]) {
+        prefix = [NSString stringWithFormat:@"\n<%@>", tag];
+        suffix = [NSString stringWithFormat:@"</%@>\n", tag];
     } else {
         prefix = [NSString stringWithFormat:@"<%@>", tag];
         suffix = [NSString stringWithFormat:@"</%@>", tag];        
