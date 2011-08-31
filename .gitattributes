@@ -439,6 +439,10 @@ c_tidy/win32tc.h -text
 de.lproj/Localizable.strings -text svneol=unset#unset
 /defaultPostTemplate.html -text
 /defaultPostTemplate_old.html -text
+/doneButton.png -text
+/doneButton@2x.png -text
+/doneButtonHighlighted.png -text
+/doneButtonHighlighted@2x.png -text
 /down.png -text
 /down@2x.png -text
 /downArrow.png -text svneol=unset#unset
@@ -464,6 +468,8 @@ it.lproj/Localizable.strings -text
 ja.lproj/Localizable.strings -text svneol=unset#unset
 /keyboardButton.png -text svneol=unset#unset
 /keyboardButton@2x.png -text svneol=unset#unset
+/keyboardButtonHighlighted.png -text
+/keyboardButtonHighlighted@2x.png -text
 /keyboardButton~ipad.png -text svneol=unset#unset
 /keyboardClose~ipad.png -text svneol=unset#unset
 /left.png -text svneol=unset#unset
@@ -523,6 +529,52 @@ sv.lproj/Localizable.strings -text svneol=unset#unset
 /tabPointer@2x.png -text svneol=unset#unset
 /table_sep.png -text svneol=unset#unset
 /table_sep@2x.png -text svneol=unset#unset
+/toggleButton.png -text
+/toggleButton@2x.png -text
+/toggleButtonExtended.png -text
+/toggleButtonExtended@2x.png -text
+/toggleButtonMain.png -text
+/toggleButtonMain@2x.png -text
+/toolbarBlockquote.png -text
+/toolbarBlockquote@2x.png -text
+/toolbarBlockquoteHighlighted.png -text
+/toolbarBlockquoteHighlighted@2x.png -text
+/toolbarBold.png -text
+/toolbarBold@2x.png -text
+/toolbarBoldHighlighted.png -text
+/toolbarBoldHighlighted@2x.png -text
+/toolbarCode.png -text
+/toolbarCode@2x.png -text
+/toolbarCodeHighlighted.png -text
+/toolbarCodeHighlighted@2x.png -text
+/toolbarDel.png -text
+/toolbarDel@2x.png -text
+/toolbarDelHighlighted.png -text
+/toolbarDelHighlighted@2x.png -text
+/toolbarItalic.png -text
+/toolbarItalic@2x.png -text
+/toolbarItalicHighlighted.png -text
+/toolbarItalicHighlighted@2x.png -text
+/toolbarLi.png -text
+/toolbarLi@2x.png -text
+/toolbarLiHighlighted.png -text
+/toolbarLiHighlighted@2x.png -text
+/toolbarLink.png -text
+/toolbarLink@2x.png -text
+/toolbarLinkHighlighted.png -text
+/toolbarLinkHighlighted@2x.png -text
+/toolbarMore.png -text
+/toolbarMore@2x.png -text
+/toolbarMoreHighlighted.png -text
+/toolbarMoreHighlighted@2x.png -text
+/toolbarOl.png -text
+/toolbarOl@2x.png -text
+/toolbarOlHighlighted.png -text
+/toolbarOlHighlighted@2x.png -text
+/toolbarUl.png -text
+/toolbarUl@2x.png -text
+/toolbarUlHighlighted.png -text
+/toolbarUlHighlighted@2x.png -text
 /uncheck.png -text
 /uncheck@2x.png -text
 /uncrustify.cfg -text

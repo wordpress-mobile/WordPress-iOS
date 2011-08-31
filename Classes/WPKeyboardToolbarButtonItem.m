@@ -44,11 +44,13 @@
     if (self) {
         WPFLogMethod();
 
-        [self setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [self setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        self.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+//        [self setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//        [self setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//        self.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
 
         [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButton"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+		[self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
+
     }
     return self;
 }
