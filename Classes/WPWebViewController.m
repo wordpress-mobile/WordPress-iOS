@@ -48,7 +48,7 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     NSURL *webURL;
     if (needsLogin)
-        webURL = [[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"];
+        webURL = [[[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"] autorelease];
     else
         webURL = self.url;
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:webURL];
@@ -64,7 +64,6 @@
         [request setValue:[NSString stringWithFormat:@"%d", [request_body length]] forHTTPHeaderField:@"Content-Length"];
         [request setHTTPMethod:@"POST"];
     }
-    [webURL release];
 
     [self.webView loadRequest:request];
     
@@ -81,7 +80,7 @@
     if (url != theURL) {
         [url release];
         url = [theURL retain];
-        if (self.webView) {
+        if (url && self.webView) {
             [self refreshWebView];
         }
     }
