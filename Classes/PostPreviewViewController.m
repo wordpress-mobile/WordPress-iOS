@@ -203,6 +203,7 @@
 				NSData *paramData = [paramDataString dataUsingEncoding:NSUTF8StringEncoding]; 
 				[req setHTTPBody: paramData];
                 [req setValue:[NSString stringWithFormat:@"%d", [paramData length]] forHTTPHeaderField:@"Content-Length"];
+                [req addValue:@"*/*" forHTTPHeaderField:@"Accept"];
 				[webView loadRequest:req];
 
 			} else {

@@ -156,6 +156,14 @@
 	{
 		[_request setValue: [length stringValue] forHTTPHeaderField: @"Content-Length"];
 	}
+    if ([_request valueForHTTPHeaderField: @"Accept"] == nil)
+	{
+		[_request addValue: @"*/*" forHTTPHeaderField: @"Accept"];
+	}
+	else
+	{
+		[_request setValue: @"*/*" forHTTPHeaderField: @"Accept"];
+	}
 	
 	[_request setHTTPBody: request];
 	

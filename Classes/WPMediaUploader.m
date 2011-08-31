@@ -171,6 +171,7 @@
 	request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:self.media.blog.xmlrpc]];
     NSString *version  = [[[NSBundle mainBundle] infoDictionary] valueForKey:[NSString stringWithFormat:@"CFBundleVersion"]];
 	[request addRequestHeader:@"User-Agent" value:[NSString stringWithFormat:@"wp-iphone/%@",version]];
+    [request addRequestHeader:@"Accept" value:@"*/*"];
     [request addRequestHeader:@"Content-Type" value:contentType];
 	[request setDelegate:self];
 	[request setValidatesSecureCertificate:NO]; 
@@ -213,6 +214,7 @@
 	[request setPassword:password];
 	[request setRequestMethod:@"POST"];
 	[request addRequestHeader:@"Content-Type" value:contentType];
+    [request addRequestHeader:@"Accept" value:@"*/*"];
 	[request addRequestHeader:@"Content-Length" value:[NSString stringWithFormat:@"@d",[[attributes objectForKey:NSFileSize] intValue]]];
 	[request setShouldStreamPostDataFromDisk:YES];
 	[request setPostBodyFilePath:self.media.localURL];
