@@ -317,7 +317,10 @@
 	[xmlrpcRequest setDidFinishSelector:@selector(remoteValidate:)];
 	[xmlrpcRequest setDidFailSelector:@selector(checkURLWentWrong:)];
 	[xmlrpcRequest setDelegate:self];
-	[xmlrpcRequest startAsynchronous];
+    NSString *version  = [[[NSBundle mainBundle] infoDictionary] valueForKey:[NSString stringWithFormat:@"CFBundleVersion"]];
+	[xmlrpcRequest addRequestHeader:@"User-Agent" value:[NSString stringWithFormat:@"wp-iphone/%@",version]];
+    [xmlrpcRequest addRequestHeader:@"Accept" value:@"*/*"];
+    [xmlrpcRequest startAsynchronous];
 	
 	[xmlrpcRequest release];
   	[pool release];    
