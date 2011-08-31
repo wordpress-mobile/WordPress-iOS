@@ -883,11 +883,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
             
             NSRange range = textView.selectedRange;
             
-            if (range.location > 3) {
-                range.location -= 4;
-                range.length = 4;
-            }
-            
             //NSString *selection = [textView.text substringWithRange:range];
             NSString *oldText = textView.text;
             NSRange oldRange = textView.selectedRange;
