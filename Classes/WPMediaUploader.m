@@ -163,10 +163,15 @@
 		[self updateStatus:NSLocalizedString(@"Uploading image...", @"")];
 	else if([self.media.mediaType isEqualToString:@"video"])
 		[self updateStatus:NSLocalizedString(@"Uploading video...", @"")];
+    
+    NSString *contentType = @"image/jpeg";
+	if([self.media.mediaType isEqualToString:@"video"])
+		contentType = @"video/mp4";
 	
 	request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:self.media.blog.xmlrpc]];
     NSString *version  = [[[NSBundle mainBundle] infoDictionary] valueForKey:[NSString stringWithFormat:@"CFBundleVersion"]];
 	[request addRequestHeader:@"User-Agent" value:[NSString stringWithFormat:@"wp-iphone/%@",version]];
+    [request addRequestHeader:@"Content-Type" value:contentType];
 	[request setDelegate:self];
 	[request setValidatesSecureCertificate:NO]; 
 	[request setShouldStreamPostDataFromDisk:YES];
