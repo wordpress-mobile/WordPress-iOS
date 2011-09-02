@@ -945,10 +945,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [textViewPlaceHolderField removeFromSuperview];
 
 //	[self positionTextView:nil];
-	if (!DeviceIsPad()) {
-		[self.navigationController setNavigationBarHidden:YES animated:YES];
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
-	}
     dismiss = NO;
 	
     if (!isTextViewEditing) {
@@ -1003,11 +999,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
 	if([textView.text isEqualToString:@""] == YES) {
         [editView addSubview:textViewPlaceHolderField];
-	}
-	
-	if (!DeviceIsPad()) {
-		[self.navigationController setNavigationBarHidden:NO animated:YES];            
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
 	}
 	
     isEditing = NO;
@@ -1595,6 +1586,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
     WPFLogMethod();
 	isShowingKeyboard = YES;
     if (isEditing) {
+        if (!DeviceIsPad()) {
+            [self.navigationController setNavigationBarHidden:YES animated:YES];
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+        }
         [self positionTextView:notification];
         self.dismissButton.hidden = ! isExternalKeyboard;
     }
@@ -1604,6 +1599,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
     WPFLogMethod();
 	isShowingKeyboard = NO;
     if (isEditing) {
+        if (!DeviceIsPad()) {
+            [self.navigationController setNavigationBarHidden:NO animated:YES];            
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+        }
+        
         [self positionTextView:notification];
     }
 }
