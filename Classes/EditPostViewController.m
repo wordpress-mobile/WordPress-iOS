@@ -250,11 +250,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if ([textView respondsToSelector:@selector(setInputAccessoryView:)]) {
         CGRect frame;
         if (DeviceIsPad()) {
-            frame = CGRectMake(0, 0, self.view.frame.size.width, 72);
+            frame = CGRectMake(0, 0, self.view.frame.size.width, WPKT_HEIGHT_IPAD_PORTRAIT);
         } else {
-            frame = CGRectMake(0, 0, self.view.frame.size.width, 42);
+            frame = CGRectMake(0, 0, self.view.frame.size.width, WPKT_HEIGHT_IPHONE_PORTRAIT);
         }
-        keyboardToolbar.frame = frame;
         if (editorToolbar == nil) {
             editorToolbar = [[WPKeyboardToolbar alloc] initWithFrame:frame];
             editorToolbar.delegate = self;
@@ -1112,6 +1111,22 @@ NSTimeInterval kAnimationDuration = 0.3f;
     WPFLogMethod();
 	// If we're editing, adjust the textview
 	if(self.isEditing) {
+        UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+        CGRect frame = editorToolbar.frame;
+        if (UIDeviceOrientationIsLandscape(orientation)) {
+            if (DeviceIsPad()) {
+                frame.size.height = WPKT_HEIGHT_IPAD_LANDSCAPE;
+            } else {
+                frame.size.height = WPKT_HEIGHT_IPHONE_LANDSCAPE;
+            }
+        } else {
+            if (DeviceIsPad()) {
+                frame.size.height = WPKT_HEIGHT_IPAD_PORTRAIT;
+            } else {
+                frame.size.height = WPKT_HEIGHT_IPHONE_PORTRAIT;
+            }            
+        }
+        editorToolbar.frame = frame;
         // No need to adjust since we get keyboard notifications
 //		[self positionTextView:nil];
 	}

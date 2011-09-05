@@ -10,6 +10,11 @@
 #import <QuartzCore/QuartzCore.h>
 #import "WPKeyboardToolbarButtonItem.h"
 
+#define WPKT_HEIGHT_IPHONE_PORTRAIT 42.0f
+#define WPKT_HEIGHT_IPHONE_LANDSCAPE 37.0f
+#define WPKT_HEIGHT_IPAD_PORTRAIT 72.0f
+#define WPKT_HEIGHT_IPAD_LANDSCAPE 72.0f
+
 @protocol WPKeyboardToolbarDelegate <NSObject>
 - (void)keyboardToolbarButtonItemPressed:(WPKeyboardToolbarButtonItem *)buttonItem;
 @end
