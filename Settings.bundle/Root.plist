@@ -106,7 +106,7 @@
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
-			<string></string>
+			<string>Version</string>
 		</dict>
 		<dict>
 			<key>Key</key>
@@ -119,6 +119,22 @@
 			<string>2.7</string>
 			<key>DefaultValue</key>
 			<string>2.7</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Debug</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Extra Debug</string>
+			<key>Key</key>
+			<string>extra_debug</string>
+			<key>DefaultValue</key>
+			<false/>
 		</dict>
 	</array>
 </dict>

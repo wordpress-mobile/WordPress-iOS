@@ -804,9 +804,14 @@
 		NSLog(@"executeXMLRPCRequest response: %@", [request responseString]);
 	
 	XMLRPCResponse *userInfoResponse = [[[XMLRPCResponse alloc] initWithData:[request responseData]] autorelease];
-	[request release];
 		
     err = [self errorWithResponse:userInfoResponse];
+    NSNumber *extra_debug = [[NSUserDefaults standardUserDefaults] objectForKey:@"extra_debug"];
+    if (err && err.code == kNoXMLPrefix && [extra_debug boolValue]) {
+        // Log the whole response for "invalid data"
+        WPFLog(@"%@", [request responseString]);
+    }
+	[request release];
 	
     if (err) {
 		self.error = err;
