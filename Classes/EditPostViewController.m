@@ -9,7 +9,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @interface EditPostViewController (Private)
 - (BOOL) isMediaInUploading;
 - (void) showMediaInUploadingalert;
-- (UIView *)keyboardToolbar;
 - (void)restoreText:(NSString *)text withRange:(NSRange)range;
 @end
 
@@ -206,7 +205,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [postPreviewViewController release]; postPreviewViewController = nil;
     [statuses release]; statuses = nil;
     [spinner release]; spinner = nil;
-    [keyboardToolbar release]; keyboardToolbar = nil;
     [editorToolbar release]; editorToolbar = nil;
     
     // Release IBOutlets
@@ -1253,137 +1251,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [self.textView.undoManager redo];
 }
 
-- (UIView *)keyboardToolbar {
-    if (keyboardToolbar == nil) {
-        CGRect frame;
-        if (DeviceIsPad()) {
-            frame = CGRectMake(0, 0, self.view.frame.size.width, 72);
-        } else {
-            frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
-        }
-        keyboardToolbar = [[UIToolbar alloc] initWithFrame:frame];
-        keyboardToolbar.translucent = YES;
-        NSMutableArray *buttons = [NSMutableArray array];
-        UIBarButtonItem *buttonItem;
-        if (DeviceIsPad()) {
-            frame = CGRectMake(0, 0, 60, 60);
-        } else {
-            frame = CGRectMake(0, 0, 40, 40);
-        }
-        UIButton *button;
-
-        button = [[UIButton alloc] initWithFrame:frame];
-        [button setImage:[UIImage imageNamed:@"bold"] forState:UIControlStateNormal];
-        [button setBackgroundImage:[UIImage imageNamed:@"keyboardButton"] forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(setBold) forControlEvents:UIControlEventTouchUpInside];
-        buttonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-        [buttons addObject:buttonItem];
-        [button release];
-        [buttonItem release];
-
-        button = [[UIButton alloc] initWithFrame:frame];
-        [button setImage:[UIImage imageNamed:@"italic"] forState:UIControlStateNormal];
-        [button setBackgroundImage:[UIImage imageNamed:@"keyboardButton"] forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(setItalic) forControlEvents:UIControlEventTouchUpInside];
-        buttonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-        [buttons addObject:buttonItem];
-        [button release];
-        [buttonItem release];
-
-        button = [[UIButton alloc] initWithFrame:frame];
-        [button setImage:[UIImage imageNamed:@"blockquote"] forState:UIControlStateNormal];
-        [button setBackgroundImage:[UIImage imageNamed:@"keyboardButton"] forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(setBlockquote) forControlEvents:UIControlEventTouchUpInside];
-        buttonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-        [buttons addObject:buttonItem];
-        [button release];
-        [buttonItem release];
-
-        button = [[UIButton alloc] initWithFrame:frame];
-        [button setImage:[UIImage imageNamed:@"link"] forState:UIControlStateNormal];
-        [button setBackgroundImage:[UIImage imageNamed:@"keyboardButton"] forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(showLinkView) forControlEvents:UIControlEventTouchUpInside];
-        buttonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-        [buttons addObject:buttonItem];
-        [button release];
-        [buttonItem release];
-
-        button = [[UIButton alloc] initWithFrame:frame];
-        [button setTitle:@"ul" forState:UIControlEventTouchUpInside];
-        [button setBackgroundImage:[UIImage imageNamed:@"keyboardButton"] forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(setUnorderedList) forControlEvents:UIControlEventTouchUpInside];
-        buttonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-        [buttons addObject:buttonItem];
-        [button release];
-        [buttonItem release];
-
-        button = [[UIButton alloc] initWithFrame:frame];
-        [button setTitle:@"ol" forState:UIControlEventTouchUpInside];
-        [button setBackgroundImage:[UIImage imageNamed:@"keyboardButton"] forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(setOrderedList) forControlEvents:UIControlEventTouchUpInside];
-        buttonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-        [buttons addObject:buttonItem];
-        [button release];
-        [buttonItem release];
-
-        button = [[UIButton alloc] initWithFrame:frame];
-        [button setTitle:@"li" forState:UIControlEventTouchUpInside];
-        [button setBackgroundImage:[UIImage imageNamed:@"keyboardButton"] forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(setListItem) forControlEvents:UIControlEventTouchUpInside];
-        buttonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-        [buttons addObject:buttonItem];
-        [button release];
-        [buttonItem release];
-
-        if (DeviceIsPad()) {
-            buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-            [buttons addObject:buttonItem];
-            [buttonItem release];
-            
-            button = [[UIButton alloc] initWithFrame:frame];
-            [button setImage:[UIImage imageNamed:@"keyboardClose"] forState:UIControlStateNormal];
-            [button setBackgroundImage:[UIImage imageNamed:@"keyboardButton"] forState:UIControlStateNormal];
-            [button addTarget:self action:@selector(resignTextView) forControlEvents:UIControlEventTouchUpInside];
-            self.dismissButton = button;
-            buttonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-            [buttons addObject:buttonItem];
-            [button release];
-            [buttonItem release];
-            buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-            [buttons addObject:buttonItem];
-            [buttonItem release];
-
-            button = [[UIButton alloc] initWithFrame:frame];
-            [button setImage:[UIImage imageNamed:@"undo"] forState:UIControlStateNormal];
-            [button setImage:[UIImage imageNamed:@"undoDisabled"] forState:UIControlStateDisabled];
-            [button setBackgroundImage:[UIImage imageNamed:@"keyboardButton"] forState:UIControlStateNormal];
-            [button addTarget:self action:@selector(undo) forControlEvents:UIControlEventTouchUpInside];
-            button.enabled = NO;
-            self.undoButton = button;
-            buttonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-            [buttons addObject:buttonItem];
-            [button release];
-            [buttonItem release];
-
-            button = [[UIButton alloc] initWithFrame:frame];
-            [button setImage:[UIImage imageNamed:@"redo"] forState:UIControlStateNormal];
-            [button setImage:[UIImage imageNamed:@"redoDisabled"] forState:UIControlStateDisabled];
-            [button setBackgroundImage:[UIImage imageNamed:@"keyboardButton"] forState:UIControlStateNormal];
-            [button addTarget:self action:@selector(redo) forControlEvents:UIControlEventTouchUpInside];
-            button.enabled = NO;
-            self.redoButton = button;
-            buttonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-            [buttons addObject:buttonItem];
-            [button release];
-            [buttonItem release];            
-        }
-
-        [keyboardToolbar setItems:buttons];
-    }
-    
-    return keyboardToolbar;
-}
-
 - (void)restoreText:(NSString *)text withRange:(NSRange)range {
     NSLog(@"restoreText:%@",text);
     NSString *oldText = textView.text;
@@ -1689,7 +1556,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [urlField release];
     [bookMarksArray release];
     [segmentedTableViewController release];
-    [keyboardToolbar release];
     [editorToolbar release];
     [super dealloc];
 }

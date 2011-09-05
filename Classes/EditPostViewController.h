@@ -66,7 +66,6 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 	NSArray *statuses;
         
     UIView *currentView;
-    UIToolbar *keyboardToolbar;
     WPKeyboardToolbar *editorToolbar;
 }
 
