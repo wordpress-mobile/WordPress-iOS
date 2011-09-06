@@ -1109,24 +1109,21 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration {
     WPFLogMethod();
-	if(self.isEditing) {
-        UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-        CGRect frame = editorToolbar.frame;
-        if (UIDeviceOrientationIsLandscape(orientation)) {
-            if (DeviceIsPad()) {
-                frame.size.height = WPKT_HEIGHT_IPAD_LANDSCAPE;
-            } else {
-                frame.size.height = WPKT_HEIGHT_IPHONE_LANDSCAPE;
-            }
+    CGRect frame = editorToolbar.frame;
+    if (UIDeviceOrientationIsLandscape(interfaceOrientation)) {
+        if (DeviceIsPad()) {
+            frame.size.height = WPKT_HEIGHT_IPAD_LANDSCAPE;
         } else {
-            if (DeviceIsPad()) {
-                frame.size.height = WPKT_HEIGHT_IPAD_PORTRAIT;
-            } else {
-                frame.size.height = WPKT_HEIGHT_IPHONE_PORTRAIT;
-            }            
+            frame.size.height = WPKT_HEIGHT_IPHONE_LANDSCAPE;
         }
-        editorToolbar.frame = frame;
-	}
+    } else {
+        if (DeviceIsPad()) {
+            frame.size.height = WPKT_HEIGHT_IPAD_PORTRAIT;
+        } else {
+            frame.size.height = WPKT_HEIGHT_IPHONE_PORTRAIT;
+        }            
+    }
+    editorToolbar.frame = frame;
 }
 
 - (void)deviceDidRotate:(NSNotification *)notification {
