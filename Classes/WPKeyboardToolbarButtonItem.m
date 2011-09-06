@@ -47,10 +47,16 @@
 //        [self setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 //        [self setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
 //        self.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-
-        [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButton"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-		[self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
-
+		
+		if (self.frame.size.width <= 320.0f) {
+			// iPhone portrait
+			[self setBackgroundImage:[[UIImage imageNamed:@"keyboardButton"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+			[self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
+		} else {
+			[self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonLandscape"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+			[self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonLandscapeHighlighted"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
+		}
+		
     }
     return self;
 }

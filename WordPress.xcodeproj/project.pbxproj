@@ -69,6 +69,14 @@
 		30E5DD7D140E7B7F003FA092 /* toolbarMoreHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E5DD75140E7B7F003FA092 /* toolbarMoreHighlighted.png */; };
 		30E5DD7E140E7B7F003FA092 /* toolbarCodeHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E5DD76140E7B7F003FA092 /* toolbarCodeHighlighted@2x.png */; };
 		30E5DD7F140E7B7F003FA092 /* toolbarCode@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E5DD77140E7B7F003FA092 /* toolbarCode@2x.png */; };
+		30E99E4C14163AC0002E2ACE /* keyboardButtonLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E99E4A14163AC0002E2ACE /* keyboardButtonLandscape@2x.png */; };
+		30E99E4D14163AC0002E2ACE /* keyboardButtonLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E99E4B14163AC0002E2ACE /* keyboardButtonLandscape.png */; };
+		30E99F1614167759002E2ACE /* doneButtonLandscapeHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E99F1214167759002E2ACE /* doneButtonLandscapeHighlighted@2x.png */; };
+		30E99F1714167759002E2ACE /* doneButtonLandscapeHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E99F1314167759002E2ACE /* doneButtonLandscapeHighlighted.png */; };
+		30E99F1814167759002E2ACE /* doneButtonLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E99F1414167759002E2ACE /* doneButtonLandscape@2x.png */; };
+		30E99F1914167759002E2ACE /* doneButtonLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E99F1514167759002E2ACE /* doneButtonLandscape.png */; };
+		30E99F831416984E002E2ACE /* keyboardButtonLandscapeHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E99F811416984E002E2ACE /* keyboardButtonLandscapeHighlighted.png */; };
+		30E99F841416984E002E2ACE /* keyboardButtonLandscapeHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E99F821416984E002E2ACE /* keyboardButtonLandscapeHighlighted@2x.png */; };
 		30FB89BE1407B3ED003BBEC5 /* toolbarBlockquote@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FB89BC1407B3ED003BBEC5 /* toolbarBlockquote@2x.png */; };
 		30FB89BF1407B3ED003BBEC5 /* toolbarBlockquoteHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FB89BD1407B3ED003BBEC5 /* toolbarBlockquoteHighlighted@2x.png */; };
 		30FB89C91407DB46003BBEC5 /* toolbarBlockquoteHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FB89C71407DB46003BBEC5 /* toolbarBlockquoteHighlighted.png */; };
@@ -518,6 +526,14 @@
 		30E5DD75140E7B7F003FA092 /* toolbarMoreHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbarMoreHighlighted.png; sourceTree = "<group>"; };
 		30E5DD76140E7B7F003FA092 /* toolbarCodeHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbarCodeHighlighted@2x.png"; sourceTree = "<group>"; };
 		30E5DD77140E7B7F003FA092 /* toolbarCode@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbarCode@2x.png"; sourceTree = "<group>"; };
+		30E99E4A14163AC0002E2ACE /* keyboardButtonLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboardButtonLandscape@2x.png"; sourceTree = "<group>"; };
+		30E99E4B14163AC0002E2ACE /* keyboardButtonLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = keyboardButtonLandscape.png; sourceTree = "<group>"; };
+		30E99F1214167759002E2ACE /* doneButtonLandscapeHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "doneButtonLandscapeHighlighted@2x.png"; sourceTree = "<group>"; };
+		30E99F1314167759002E2ACE /* doneButtonLandscapeHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = doneButtonLandscapeHighlighted.png; sourceTree = "<group>"; };
+		30E99F1414167759002E2ACE /* doneButtonLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "doneButtonLandscape@2x.png"; sourceTree = "<group>"; };
+		30E99F1514167759002E2ACE /* doneButtonLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = doneButtonLandscape.png; sourceTree = "<group>"; };
+		30E99F811416984E002E2ACE /* keyboardButtonLandscapeHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = keyboardButtonLandscapeHighlighted.png; sourceTree = "<group>"; };
+		30E99F821416984E002E2ACE /* keyboardButtonLandscapeHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboardButtonLandscapeHighlighted@2x.png"; sourceTree = "<group>"; };
 		30FB89BC1407B3ED003BBEC5 /* toolbarBlockquote@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbarBlockquote@2x.png"; sourceTree = "<group>"; };
 		30FB89BD1407B3ED003BBEC5 /* toolbarBlockquoteHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbarBlockquoteHighlighted@2x.png"; sourceTree = "<group>"; };
 		30FB89C71407DB46003BBEC5 /* toolbarBlockquoteHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbarBlockquoteHighlighted.png; sourceTree = "<group>"; };
@@ -1591,6 +1607,14 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				30E99F811416984E002E2ACE /* keyboardButtonLandscapeHighlighted.png */,
+				30E99F821416984E002E2ACE /* keyboardButtonLandscapeHighlighted@2x.png */,
+				30E99F1214167759002E2ACE /* doneButtonLandscapeHighlighted@2x.png */,
+				30E99F1314167759002E2ACE /* doneButtonLandscapeHighlighted.png */,
+				30E99F1414167759002E2ACE /* doneButtonLandscape@2x.png */,
+				30E99F1514167759002E2ACE /* doneButtonLandscape.png */,
+				30E99E4A14163AC0002E2ACE /* keyboardButtonLandscape@2x.png */,
+				30E99E4B14163AC0002E2ACE /* keyboardButtonLandscape.png */,
 				30E5DD70140E7B7F003FA092 /* toolbarMore@2x.png */,
 				30E5DD71140E7B7F003FA092 /* toolbarCode.png */,
 				30E5DD72140E7B7F003FA092 /* toolbarMore.png */,
@@ -2362,6 +2386,14 @@
 				30E5DD7D140E7B7F003FA092 /* toolbarMoreHighlighted.png in Resources */,
 				30E5DD7E140E7B7F003FA092 /* toolbarCodeHighlighted@2x.png in Resources */,
 				30E5DD7F140E7B7F003FA092 /* toolbarCode@2x.png in Resources */,
+				30E99E4C14163AC0002E2ACE /* keyboardButtonLandscape@2x.png in Resources */,
+				30E99E4D14163AC0002E2ACE /* keyboardButtonLandscape.png in Resources */,
+				30E99F1614167759002E2ACE /* doneButtonLandscapeHighlighted@2x.png in Resources */,
+				30E99F1714167759002E2ACE /* doneButtonLandscapeHighlighted.png in Resources */,
+				30E99F1814167759002E2ACE /* doneButtonLandscape@2x.png in Resources */,
+				30E99F1914167759002E2ACE /* doneButtonLandscape.png in Resources */,
+				30E99F831416984E002E2ACE /* keyboardButtonLandscapeHighlighted.png in Resources */,
+				30E99F841416984E002E2ACE /* keyboardButtonLandscapeHighlighted@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

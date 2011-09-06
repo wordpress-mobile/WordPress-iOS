@@ -443,6 +443,10 @@ de.lproj/Localizable.strings -text svneol=unset#unset
 /doneButton@2x.png -text
 /doneButtonHighlighted.png -text
 /doneButtonHighlighted@2x.png -text
+/doneButtonLandscape.png -text
+/doneButtonLandscape@2x.png -text
+/doneButtonLandscapeHighlighted.png -text
+/doneButtonLandscapeHighlighted@2x.png -text
 /down.png -text
 /down@2x.png -text
 /downArrow.png -text svneol=unset#unset
@@ -470,6 +474,10 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /keyboardButton@2x.png -text svneol=unset#unset
 /keyboardButtonHighlighted.png -text
 /keyboardButtonHighlighted@2x.png -text
+/keyboardButtonLandscape.png -text
+/keyboardButtonLandscape@2x.png -text
+/keyboardButtonLandscapeHighlighted.png -text
+/keyboardButtonLandscapeHighlighted@2x.png -text
 /keyboardButton~ipad.png -text svneol=unset#unset
 /keyboardClose~ipad.png -text svneol=unset#unset
 /left.png -text svneol=unset#unset

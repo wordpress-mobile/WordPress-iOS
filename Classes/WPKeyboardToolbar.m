@@ -184,7 +184,7 @@
         mainView = [[UIView alloc] init];
         [self buildMainButtons];
         CGFloat mainWidth = delButton.frame.origin.x + delButton.frame.size.width;
-        mainView.frame = CGRectMake(0, 2, mainWidth, 39);
+        mainView.frame = CGRectMake(0, 0, mainWidth, 39);
 
         [mainView addSubview:boldButton];
         [mainView addSubview:italicsButton];
@@ -199,7 +199,7 @@
         extendedView = [[UIView alloc] init];
         [self buildExtendedButtons];
         CGFloat extendedWidth = moreButton.frame.origin.x + moreButton.frame.size.width;
-        extendedView.frame = CGRectMake(0, 2, extendedWidth, 39);
+        extendedView.frame = CGRectMake(0, 0, extendedWidth, 39);
         [extendedView addSubview:ulButton];
         [extendedView addSubview:olButton];
         [extendedView addSubview:liButton];
@@ -275,8 +275,14 @@
     doneFrame.origin.x = self.frame.size.width - doneFrame.size.width - 5;
     if (self.frame.size.height < WPKT_HEIGHT_IPHONE_PORTRAIT) {
         doneFrame.origin.y = -2;
+		doneFrame.origin.x = self.frame.size.width - doneFrame.size.width - 3;
+		[doneButton setBackgroundImage:[[UIImage imageNamed:@"doneButtonLandscape"] stretchableImageWithLeftCapWidth:6.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+		[doneButton setBackgroundImage:[[UIImage imageNamed:@"doneButtonLandscapeHighlighted"] stretchableImageWithLeftCapWidth:6.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
     } else {
         doneFrame.origin.y = 2;
+		doneFrame.origin.x = self.frame.size.width - doneFrame.size.width - 5;
+		[doneButton setBackgroundImage:[[UIImage imageNamed:@"doneButton"] stretchableImageWithLeftCapWidth:6.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+		[doneButton setBackgroundImage:[[UIImage imageNamed:@"doneButtonHighlighted"] stretchableImageWithLeftCapWidth:6.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
     }
     doneButton.frame = doneFrame;
     
@@ -324,12 +330,12 @@
         if (toggleButton.superview != nil) {
             [toggleButton removeFromSuperview];
         }
-        
+		
         // Show main view
         CGRect frame = mainView.frame;
-        frame.origin.x = 1;
+        frame.origin.x = -1;
         if (self.frame.size.height < WPKT_HEIGHT_IPHONE_PORTRAIT) {
-            frame.origin.y = -2;
+            frame.origin.y = -1;
         }
         mainView.frame = frame;
         if (mainView.superview == nil) {
@@ -339,7 +345,7 @@
         frame = extendedView.frame;
         frame.origin.x = mainView.frame.origin.x + mainView.frame.size.width;
         if (self.frame.size.height < WPKT_HEIGHT_IPHONE_PORTRAIT) {
-            frame.origin.y = -2;
+            frame.origin.y = -1;
         }
         extendedView.frame = frame;
         if (extendedView.superview == nil) {

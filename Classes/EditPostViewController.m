@@ -1064,7 +1064,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)positionTextView:(NSNotification *)notification {
     // Save time: Uncomment this line when you're debugging UITextView positioning
-    // textView.backgroundColor = [UIColor blueColor];
+     textView.backgroundColor = [UIColor blueColor];
 
     NSDictionary *keyboardInfo = [notification userInfo];
 
@@ -1468,7 +1468,16 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if (isEditing) {
         if (!DeviceIsPad()) {
             [self.navigationController setNavigationBarHidden:YES animated:YES];
-            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+			UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+			
+			// Hide status bar in Landscape mode only (extra space here is nice)
+			if (UIDeviceOrientationIsLandscape(orientation)) {
+				[[UIApplication sharedApplication] setStatusBarHidden:YES animated:YES]; 
+			}
+			else {
+				[[UIApplication sharedApplication] setStatusBarHidden:NO animated:YES]; 
+			}
         }
         [self positionTextView:notification];
         self.dismissButton.hidden = ! isExternalKeyboard;
