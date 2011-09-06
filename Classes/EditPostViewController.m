@@ -1107,9 +1107,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[UIView commitAnimations];
 }
 
-- (void)deviceDidRotate:(NSNotification *)notification {
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration {
     WPFLogMethod();
-	// If we're editing, adjust the textview
 	if(self.isEditing) {
         UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
         CGRect frame = editorToolbar.frame;
@@ -1127,9 +1126,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
             }            
         }
         editorToolbar.frame = frame;
-        // No need to adjust since we get keyboard notifications
-//		[self positionTextView:nil];
 	}
+}
+
+- (void)deviceDidRotate:(NSNotification *)notification {
+    WPFLogMethod();
 	//CGRect infoText = self.addURLSourceAlert;
 	//infoText.text = "test";
 	

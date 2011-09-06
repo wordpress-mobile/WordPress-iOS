@@ -273,9 +273,16 @@
     
     CGRect doneFrame = doneButton.frame;
     doneFrame.origin.x = self.frame.size.width - doneFrame.size.width - 5;
+    if (self.frame.size.height < WPKT_HEIGHT_IPHONE_PORTRAIT) {
+        doneFrame.origin.y = -2;
+    } else {
+        doneFrame.origin.y = 2;
+    }
     doneButton.frame = doneFrame;
     
     if (self.frame.size.width <= 320.0f) {
+        // iPhone portrait
+        
         // Add toggle button
         if (toggleButton.superview == nil) {
             [self addSubview:toggleButton];
@@ -290,6 +297,7 @@
             // Show extended view
             CGRect frame = extendedView.frame;
             frame.origin.x = toggleButton.frame.origin.x + toggleButton.frame.size.width + 3;
+            frame.origin.y = 2;
             extendedView.frame = frame;
             if (extendedView.superview == nil) {
                 [self addSubview:extendedView];
@@ -303,12 +311,15 @@
             // Show main view
             CGRect frame = mainView.frame;
             frame.origin.x = toggleButton.frame.origin.x + toggleButton.frame.size.width + 3;
+            frame.origin.y = 2;
             mainView.frame = frame;
             if (mainView.superview == nil) {
                 [self addSubview:mainView];            
             }            
         }
     } else {
+        // iPhone Landscape or iPad
+
         // Remove toggle button
         if (toggleButton.superview != nil) {
             [toggleButton removeFromSuperview];
@@ -317,6 +328,9 @@
         // Show main view
         CGRect frame = mainView.frame;
         frame.origin.x = 1;
+        if (self.frame.size.height < WPKT_HEIGHT_IPHONE_PORTRAIT) {
+            frame.origin.y = -2;
+        }
         mainView.frame = frame;
         if (mainView.superview == nil) {
             [self addSubview:mainView];
@@ -324,6 +338,9 @@
         
         frame = extendedView.frame;
         frame.origin.x = mainView.frame.origin.x + mainView.frame.size.width;
+        if (self.frame.size.height < WPKT_HEIGHT_IPHONE_PORTRAIT) {
+            frame.origin.y = -2;
+        }
         extendedView.frame = frame;
         if (extendedView.superview == nil) {
             [self addSubview:extendedView];
