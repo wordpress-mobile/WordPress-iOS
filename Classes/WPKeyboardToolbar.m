@@ -14,6 +14,8 @@
 
 // Spacing between button groups
 #define WPKT_BUTTON_SEPARATOR 6.0f
+#define WPKT_BUTTON_HEIGHT_PORTRAIT 39.0f
+#define WPKT_BUTTON_HEIGHT_LANDSCAPE 34.0f
 
 @implementation WPKeyboardToolbar
 @synthesize delegate;
@@ -75,7 +77,7 @@
     CGFloat x = 4.0f;
     if (boldButton == nil) {
         boldButton = [WPKeyboardToolbarButtonItem button];
-        boldButton.frame = CGRectMake(x, 0, 28, 39);
+        boldButton.frame = CGRectMake(x, 0, 28, WPKT_BUTTON_HEIGHT_PORTRAIT);
         x += boldButton.frame.size.width + 4;
         boldButton.actionTag = @"strong";
         boldButton.actionName = NSLocalizedString(@"bold", @"");
@@ -85,7 +87,7 @@
     }
     if (italicsButton == nil) {
         italicsButton = [WPKeyboardToolbarButtonItem button];
-        italicsButton.frame = CGRectMake(x, 0, 28, 39);
+        italicsButton.frame = CGRectMake(x, 0, 28, WPKT_BUTTON_HEIGHT_PORTRAIT);
         x += italicsButton.frame.size.width + 4;
         italicsButton.actionTag = @"em";
         italicsButton.actionName = NSLocalizedString(@"italic", @"");
@@ -95,7 +97,7 @@
     }
     if (linkButton == nil) {
         linkButton = [WPKeyboardToolbarButtonItem button];
-        linkButton.frame = CGRectMake(x, 0, 36, 39);
+        linkButton.frame = CGRectMake(x, 0, 36, WPKT_BUTTON_HEIGHT_PORTRAIT);
         x += linkButton.frame.size.width + 4;
         linkButton.actionTag = @"link";
         linkButton.actionName = NSLocalizedString(@"link", @"");
@@ -105,7 +107,7 @@
     }
     if (quoteButton == nil) {
         quoteButton = [WPKeyboardToolbarButtonItem button];
-        quoteButton.frame = CGRectMake(x, 0, 52, 39);
+        quoteButton.frame = CGRectMake(x, 0, 52, WPKT_BUTTON_HEIGHT_PORTRAIT);
 		x += quoteButton.frame.size.width + 4;
         quoteButton.actionTag = @"blockquote";
         quoteButton.actionName = NSLocalizedString(@"quote", @"");
@@ -115,7 +117,7 @@
     }
     if (delButton == nil) {
         delButton = [WPKeyboardToolbarButtonItem button];
-        delButton.frame = CGRectMake(x, 0, 35, 39);
+        delButton.frame = CGRectMake(x, 0, 35, WPKT_BUTTON_HEIGHT_PORTRAIT);
         x += delButton.frame.size.width + 4;
         delButton.actionTag = @"del";
         delButton.actionName = NSLocalizedString(@"del", @"");
@@ -129,7 +131,7 @@
     CGFloat x = 4.0f;
     if (ulButton == nil) {
         ulButton = [WPKeyboardToolbarButtonItem button];
-        ulButton.frame = CGRectMake(x, 0, 28, 39);
+        ulButton.frame = CGRectMake(x, 0, 28, WPKT_BUTTON_HEIGHT_PORTRAIT);
         x += ulButton.frame.size.width + 4;
         ulButton.actionTag = @"ul";
         ulButton.actionName = NSLocalizedString(@"unordered list", @"");
@@ -139,7 +141,7 @@
     }
     if (olButton == nil) {
         olButton = [WPKeyboardToolbarButtonItem button];
-        olButton.frame = CGRectMake(x, 0, 28, 39);
+        olButton.frame = CGRectMake(x, 0, 28, WPKT_BUTTON_HEIGHT_PORTRAIT);
         x += olButton.frame.size.width + 4;
         olButton.actionTag = @"ol";
         olButton.actionName = NSLocalizedString(@"ordered list", @"");
@@ -149,7 +151,7 @@
     }
     if (liButton == nil) {
         liButton = [WPKeyboardToolbarButtonItem button];
-        liButton.frame = CGRectMake(x, 0, 28, 39);
+        liButton.frame = CGRectMake(x, 0, 28, WPKT_BUTTON_HEIGHT_PORTRAIT);
         x += liButton.frame.size.width + 4;
         liButton.actionTag = @"li";
         liButton.actionName = NSLocalizedString(@"list item", @"");
@@ -159,7 +161,7 @@
     }
     if (codeButton == nil) {
         codeButton = [WPKeyboardToolbarButtonItem button];
-        codeButton.frame = CGRectMake(x, 0, 47, 39);
+        codeButton.frame = CGRectMake(x, 0, 47, WPKT_BUTTON_HEIGHT_PORTRAIT);
         x += codeButton.frame.size.width + 4;
         codeButton.actionTag = @"code";
         codeButton.actionName = NSLocalizedString(@"code", @"");
@@ -169,7 +171,7 @@
     }
     if (moreButton == nil) {
         moreButton = [WPKeyboardToolbarButtonItem button];
-        moreButton.frame = CGRectMake(x, 0, 48, 39);
+        moreButton.frame = CGRectMake(x, 0, 48, WPKT_BUTTON_HEIGHT_PORTRAIT);
         x += moreButton.frame.size.width + 4;
         moreButton.actionTag = @"more";
         moreButton.actionName = NSLocalizedString(@"more", @"");
@@ -184,7 +186,8 @@
         mainView = [[UIView alloc] init];
         [self buildMainButtons];
         CGFloat mainWidth = delButton.frame.origin.x + delButton.frame.size.width;
-        mainView.frame = CGRectMake(0, 0, mainWidth, 39);
+        mainView.frame = CGRectMake(0, 0, mainWidth, WPKT_BUTTON_HEIGHT_PORTRAIT);
+        mainView.autoresizesSubviews = YES;
 
         [mainView addSubview:boldButton];
         [mainView addSubview:italicsButton];
@@ -199,7 +202,7 @@
         extendedView = [[UIView alloc] init];
         [self buildExtendedButtons];
         CGFloat extendedWidth = moreButton.frame.origin.x + moreButton.frame.size.width;
-        extendedView.frame = CGRectMake(0, 0, extendedWidth, 39);
+        extendedView.frame = CGRectMake(0, 0, extendedWidth, WPKT_BUTTON_HEIGHT_PORTRAIT);
         [extendedView addSubview:ulButton];
         [extendedView addSubview:olButton];
         [extendedView addSubview:liButton];
@@ -274,17 +277,19 @@
     CGRect doneFrame = doneButton.frame;
     doneFrame.origin.x = self.frame.size.width - doneFrame.size.width - 5;
     if (self.frame.size.height < WPKT_HEIGHT_IPHONE_PORTRAIT) {
-        doneFrame.origin.y = -2;
+        doneFrame.origin.y = -1;
 		doneFrame.origin.x = self.frame.size.width - doneFrame.size.width - 3;
-		[doneButton setBackgroundImage:[[UIImage imageNamed:@"doneButtonLandscape"] stretchableImageWithLeftCapWidth:6.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-		[doneButton setBackgroundImage:[[UIImage imageNamed:@"doneButtonLandscapeHighlighted"] stretchableImageWithLeftCapWidth:6.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
+        doneFrame.size.height = WPKT_BUTTON_HEIGHT_LANDSCAPE + 2;
     } else {
         doneFrame.origin.y = 2;
 		doneFrame.origin.x = self.frame.size.width - doneFrame.size.width - 5;
-		[doneButton setBackgroundImage:[[UIImage imageNamed:@"doneButton"] stretchableImageWithLeftCapWidth:6.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-		[doneButton setBackgroundImage:[[UIImage imageNamed:@"doneButtonHighlighted"] stretchableImageWithLeftCapWidth:6.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
+        doneFrame.size.height = WPKT_BUTTON_HEIGHT_PORTRAIT;
     }
     doneButton.frame = doneFrame;
+    
+    CGRect toggleFrame = toggleButton.frame;
+    toggleFrame.size.height = WPKT_BUTTON_HEIGHT_PORTRAIT;
+    toggleButton.frame = toggleFrame;
     
     if (self.frame.size.width <= 320.0f) {
         // iPhone portrait
@@ -304,6 +309,7 @@
             CGRect frame = extendedView.frame;
             frame.origin.x = toggleButton.frame.origin.x + toggleButton.frame.size.width + 3;
             frame.origin.y = 2;
+            frame.size.height = WPKT_BUTTON_HEIGHT_PORTRAIT;
             extendedView.frame = frame;
             if (extendedView.superview == nil) {
                 [self addSubview:extendedView];
@@ -318,6 +324,7 @@
             CGRect frame = mainView.frame;
             frame.origin.x = toggleButton.frame.origin.x + toggleButton.frame.size.width + 3;
             frame.origin.y = 2;
+            frame.size.height = WPKT_BUTTON_HEIGHT_PORTRAIT;
             mainView.frame = frame;
             if (mainView.superview == nil) {
                 [self addSubview:mainView];            
@@ -336,6 +343,7 @@
         frame.origin.x = -1;
         if (self.frame.size.height < WPKT_HEIGHT_IPHONE_PORTRAIT) {
             frame.origin.y = -1;
+            frame.size.height = WPKT_BUTTON_HEIGHT_LANDSCAPE;
         }
         mainView.frame = frame;
         if (mainView.superview == nil) {
@@ -346,6 +354,7 @@
         frame.origin.x = mainView.frame.origin.x + mainView.frame.size.width;
         if (self.frame.size.height < WPKT_HEIGHT_IPHONE_PORTRAIT) {
             frame.origin.y = -1;
+            frame.size.height = WPKT_BUTTON_HEIGHT_LANDSCAPE;
         }
         extendedView.frame = frame;
         if (extendedView.superview == nil) {

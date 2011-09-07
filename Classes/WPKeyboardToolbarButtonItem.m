@@ -8,7 +8,6 @@
 
 #import "WPKeyboardToolbarButtonItem.h"
 
-
 @implementation WPKeyboardToolbarButtonItem
 @synthesize actionTag, actionName;
 
@@ -48,15 +47,9 @@
 //        [self setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
 //        self.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
 		
-		if (self.frame.size.width <= 320.0f) {
-			// iPhone portrait
-			[self setBackgroundImage:[[UIImage imageNamed:@"keyboardButton"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-			[self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
-		} else {
-			[self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonLandscape"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-			[self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonLandscapeHighlighted"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
-		}
-		
+        [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButton"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+        [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
+        self.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     }
     return self;
 }
