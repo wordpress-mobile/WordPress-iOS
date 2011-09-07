@@ -11,6 +11,8 @@
 #define CGColorFromRGB(rgbValue) UIColorFromRGB(rgbValue).CGColor
 #define kStartColor UIColorFromRGB(0xb0b7c1)
 #define kEndColor UIColorFromRGB(0x9199a4)
+#define kStartColorIpad UIColorFromRGB(0xb7b6bf)
+#define kEndColorIpad UIColorFromRGB(0x9d9ca7)
 
 // Spacing between button groups
 #define WPKT_BUTTON_SEPARATOR 6.0f
@@ -51,11 +53,19 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetLineWidth(context, 1.0f);
     CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
-    CGContextSetStrokeColorWithColor(context, CGColorFromRGB(0x52555b));
+    if (DeviceIsPad()) {
+        CGContextSetStrokeColorWithColor(context, CGColorFromRGB(0x404040));
+    } else {
+        CGContextSetStrokeColorWithColor(context, CGColorFromRGB(0x52555b));        
+    }
     CGContextMoveToPoint(context, self.bounds.origin.x, self.bounds.origin.y + 0.5f);
     CGContextAddLineToPoint(context, self.bounds.size.width, self.bounds.origin.y + 0.5f);
     CGContextStrokePath(context);
-    CGContextSetStrokeColorWithColor(context, CGColorFromRGB(0xdbdfe4));
+    if (DeviceIsPad()) {
+        CGContextSetStrokeColorWithColor(context, CGColorFromRGB(0xd9d9d9));
+    } else {
+        CGContextSetStrokeColorWithColor(context, CGColorFromRGB(0xdbdfe4));
+    }
     CGContextMoveToPoint(context, self.bounds.origin.x, self.bounds.origin.y + 1.5f);
     CGContextAddLineToPoint(context, self.bounds.size.width, self.bounds.origin.y + 1.5f);
     CGContextStrokePath(context);
@@ -261,7 +271,11 @@
     self.backgroundColor = UIColorFromRGB(0xb0b7c1);
     _gradient = [CAGradientLayer layer];
     _gradient.frame = [self gradientFrame];
-    _gradient.colors = [NSArray arrayWithObjects:(id)kStartColor.CGColor, (id)kEndColor.CGColor, nil];
+    if (DeviceIsPad()) {
+        _gradient.colors = [NSArray arrayWithObjects:(id)kStartColorIpad.CGColor, (id)kEndColorIpad.CGColor, nil];
+    } else {
+        _gradient.colors = [NSArray arrayWithObjects:(id)kStartColor.CGColor, (id)kEndColor.CGColor, nil];
+    }
     [self.layer insertSublayer:_gradient atIndex:0];
     [_gradient retain];
     
