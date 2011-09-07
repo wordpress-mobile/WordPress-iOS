@@ -478,6 +478,8 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /keyboardButtonLandscape@2x.png -text
 /keyboardButtonLandscapeHighlighted.png -text
 /keyboardButtonLandscapeHighlighted@2x.png -text
+/keyboardButtoniPad.png -text
+/keyboardButtoniPadHighlighted.png -text
 /keyboardButton~ipad.png -text svneol=unset#unset
 /keyboardClose~ipad.png -text svneol=unset#unset
 /left.png -text svneol=unset#unset
@@ -551,38 +553,48 @@ sv.lproj/Localizable.strings -text svneol=unset#unset
 /toolbarBold@2x.png -text
 /toolbarBoldHighlighted.png -text
 /toolbarBoldHighlighted@2x.png -text
+/toolbarBoldiPad.png -text
 /toolbarCode.png -text
 /toolbarCode@2x.png -text
 /toolbarCodeHighlighted.png -text
 /toolbarCodeHighlighted@2x.png -text
+/toolbarCodeiPad.png -text
 /toolbarDel.png -text
 /toolbarDel@2x.png -text
 /toolbarDelHighlighted.png -text
 /toolbarDelHighlighted@2x.png -text
+/toolbarDeliPad.png -text
 /toolbarItalic.png -text
 /toolbarItalic@2x.png -text
 /toolbarItalicHighlighted.png -text
 /toolbarItalicHighlighted@2x.png -text
+/toolbarItaliciPad.png -text
 /toolbarLi.png -text
 /toolbarLi@2x.png -text
 /toolbarLiHighlighted.png -text
 /toolbarLiHighlighted@2x.png -text
+/toolbarLiiPad.png -text
 /toolbarLink.png -text
 /toolbarLink@2x.png -text
 /toolbarLinkHighlighted.png -text
 /toolbarLinkHighlighted@2x.png -text
+/toolbarLinkiPad.png -text
 /toolbarMore.png -text
 /toolbarMore@2x.png -text
 /toolbarMoreHighlighted.png -text
 /toolbarMoreHighlighted@2x.png -text
+/toolbarMoreiPad.png -text
 /toolbarOl.png -text
 /toolbarOl@2x.png -text
 /toolbarOlHighlighted.png -text
 /toolbarOlHighlighted@2x.png -text
+/toolbarOliPad.png -text
+/toolbarQuoteiPad.png -text
 /toolbarUl.png -text
 /toolbarUl@2x.png -text
 /toolbarUlHighlighted.png -text
 /toolbarUlHighlighted@2x.png -text
+/toolbarUliPad.png -text
 /uncheck.png -text
 /uncheck@2x.png -text
 /uncrustify.cfg -text
