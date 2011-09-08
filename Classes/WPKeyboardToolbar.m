@@ -92,7 +92,9 @@
 
 - (void)buttonAction:(WPKeyboardToolbarButtonItem *)sender {
     WPFLogMethod();
-    [[UIDevice currentDevice] playInputClick];
+    if (![sender.actionTag isEqualToString:@"done"]) {
+        [[UIDevice currentDevice] playInputClick];        
+    }
     if (self.delegate) {
         [self.delegate keyboardToolbarButtonItemPressed:sender];
     }
@@ -232,6 +234,7 @@
 
 - (void)toggleExtendedView {
 	WPFLogMethod();
+    [[UIDevice currentDevice] playInputClick];        
 	if (!toggleButton.selected == true) {
 		[toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonExtended"] forState:UIControlStateNormal];
 	}
