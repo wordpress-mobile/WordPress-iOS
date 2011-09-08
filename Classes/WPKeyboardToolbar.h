@@ -27,5 +27,6 @@
     WPKeyboardToolbarButtonItem *doneButton, *toggleButton;
 }
 @property (nonatomic, assign) id<WPKeyboardToolbarDelegate> delegate;
+@property (nonatomic, retain) WPKeyboardToolbarButtonItem *doneButton;
 
 @end

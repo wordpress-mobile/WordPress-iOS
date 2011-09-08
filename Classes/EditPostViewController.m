@@ -1081,22 +1081,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
         [UIView setAnimationDuration:animationDuration];
 
         CGRect keyboardFrame;
-        if (&UIKeyboardFrameEndUserInfoKey != NULL) {
-            keyboardFrame = [[keyboardInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-            keyboardFrame = [self.view convertRect:[self.view.window convertRect:keyboardFrame fromWindow:nil]
-                                          fromView:nil];
-        } else {
-            // iOS 3.x
-            keyboardFrame = [[keyboardInfo objectForKey:UIKeyboardBoundsUserInfoKey] CGRectValue];
-            CGPoint center = [[keyboardInfo objectForKey:UIKeyboardCenterEndUserInfoKey] CGPointValue];
-            keyboardFrame.origin.x = center.x - keyboardFrame.size.width / 2.0f;
-            keyboardFrame.origin.y = center.y - keyboardFrame.size.height / 2.0f;
-            keyboardFrame = [self.view convertRect:keyboardFrame fromView:self.view.superview];
-        }
+        keyboardFrame = [[keyboardInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+        keyboardFrame = [self.view convertRect:[self.view.window convertRect:keyboardFrame fromWindow:nil]
+                                      fromView:nil];
 
         isExternalKeyboard = keyboardFrame.origin.y + keyboardFrame.size.height > self.view.bounds.size.height;
 
-        if ([notification name] == UIKeyboardWillShowNotification) {
+        if ([notification name] == UIKeyboardWillShowNotification && !isExternalKeyboard) {
             newFrame.origin.x = 0;
             newFrame.origin.y = 0;
             newFrame.size.height = keyboardFrame.origin.y;
@@ -1471,7 +1462,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
         }
         [self positionTextView:notification];
-        self.dismissButton.hidden = ! isExternalKeyboard;
+        editorToolbar.doneButton.hidden = DeviceIsPad() && ! isExternalKeyboard;
     }
 }
 

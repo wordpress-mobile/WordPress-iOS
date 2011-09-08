@@ -34,7 +34,7 @@
 #pragma mark -
 
 @implementation WPKeyboardToolbar
-@synthesize delegate;
+@synthesize delegate, doneButton;
 
 - (void)dealloc
 {
