@@ -204,10 +204,11 @@
 
 - (void)buildMainView {
     if (mainView == nil) {
+        CGFloat height = DeviceIsPad() ? WPKT_BUTTON_HEIGHT_IPAD : WPKT_BUTTON_HEIGHT_PORTRAIT;
         mainView = [[UIView alloc] init];
         [self buildMainButtons];
         CGFloat mainWidth = delButton.frame.origin.x + delButton.frame.size.width;
-        mainView.frame = CGRectMake(0, 0, mainWidth, WPKT_BUTTON_HEIGHT_PORTRAIT);
+        mainView.frame = CGRectMake(0, 0, mainWidth, height);
         mainView.autoresizesSubviews = YES;
 
         [mainView addSubview:boldButton];
@@ -220,10 +221,11 @@
 
 - (void)buildExtendedView {
     if (extendedView == nil) {
+        CGFloat height = DeviceIsPad() ? WPKT_BUTTON_HEIGHT_IPAD : WPKT_BUTTON_HEIGHT_PORTRAIT;
         extendedView = [[UIView alloc] init];
         [self buildExtendedButtons];
         CGFloat extendedWidth = moreButton.frame.origin.x + moreButton.frame.size.width;
-        extendedView.frame = CGRectMake(0, 0, extendedWidth, WPKT_BUTTON_HEIGHT_PORTRAIT);
+        extendedView.frame = CGRectMake(0, 0, extendedWidth, height);
         [extendedView addSubview:ulButton];
         [extendedView addSubview:olButton];
         [extendedView addSubview:liButton];
