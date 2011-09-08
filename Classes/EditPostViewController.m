@@ -24,7 +24,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @synthesize hasSaved, isVisible, isPublishing;
 @synthesize toolbar;
 @synthesize photoButton, movieButton;
-@synthesize undoButton, redoButton, dismissButton;
+@synthesize undoButton, redoButton;
 
 - (id)initWithPost:(AbstractPost *)aPost {
     NSString *nib;
@@ -230,7 +230,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     self.movieButton = nil;
     self.undoButton = nil;
     self.redoButton = nil;
-    self.dismissButton = nil;
 
     [super viewDidUnload];
 }

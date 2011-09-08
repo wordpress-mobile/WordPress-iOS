@@ -98,7 +98,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 @property (nonatomic, assign) BOOL hasSaved, isVisible, isPublishing;
 @property (readonly) BOOL hasChanges;
 @property (readonly) CGRect normalTextFrame;
-@property (nonatomic, retain) UIButton *undoButton, *redoButton, *dismissButton;
+@property (nonatomic, retain) UIButton *undoButton, *redoButton;
 
 - (id)initWithPost:(AbstractPost *)aPost;
 
