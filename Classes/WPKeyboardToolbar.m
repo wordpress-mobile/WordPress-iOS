@@ -78,6 +78,7 @@
 
 - (void)buttonAction:(WPKeyboardToolbarButtonItem *)sender {
     WPFLogMethod();
+    [[UIDevice currentDevice] playInputClick];
     if (self.delegate) {
         [self.delegate keyboardToolbarButtonItemPressed:sender];
     }
@@ -400,6 +401,12 @@
         [self setupView];
     }
     return self;
+}
+
+#pragma mark - UIInputViewAudioFeedback
+
+- (BOOL) enableInputClicksWhenVisible {
+    return YES;
 }
 
 @end

@@ -19,7 +19,7 @@
 - (void)keyboardToolbarButtonItemPressed:(WPKeyboardToolbarButtonItem *)buttonItem;
 @end
 
-@interface WPKeyboardToolbar : UIView {
+@interface WPKeyboardToolbar : UIView<UIInputViewAudioFeedback> {
     CAGradientLayer *_gradient;
     UIView *mainView, *extendedView;
     WPKeyboardToolbarButtonItem *boldButton, *italicsButton, *linkButton, *quoteButton, *delButton;
