@@ -549,6 +549,7 @@ sv.lproj/Localizable.strings -text svneol=unset#unset
 /toolbarBlockquote@2x.png -text
 /toolbarBlockquoteHighlighted.png -text
 /toolbarBlockquoteHighlighted@2x.png -text
+/toolbarBlockquoteiPad.png -text
 /toolbarBold.png -text
 /toolbarBold@2x.png -text
 /toolbarBoldHighlighted.png -text
@@ -589,7 +590,6 @@ sv.lproj/Localizable.strings -text svneol=unset#unset
 /toolbarOlHighlighted.png -text
 /toolbarOlHighlighted@2x.png -text
 /toolbarOliPad.png -text
-/toolbarQuoteiPad.png -text
 /toolbarUl.png -text
 /toolbarUl@2x.png -text
 /toolbarUlHighlighted.png -text

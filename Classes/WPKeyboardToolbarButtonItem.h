@@ -11,5 +11,6 @@
 @interface WPKeyboardToolbarButtonItem : UIButton {
 }
 + (id)button;
+- (void)setImageName:(NSString *)imageName;
 @property (nonatomic, retain) NSString *actionTag, *actionName;
 @end

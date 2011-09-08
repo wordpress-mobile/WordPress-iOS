@@ -7,17 +7,31 @@
 //
 
 #import "WPKeyboardToolbar.h"
+
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 #define CGColorFromRGB(rgbValue) UIColorFromRGB(rgbValue).CGColor
+
+#pragma mark - Constants
+
 #define kStartColor UIColorFromRGB(0xb0b7c1)
 #define kEndColor UIColorFromRGB(0x9199a4)
 #define kStartColorIpad UIColorFromRGB(0xb7b6bf)
 #define kEndColorIpad UIColorFromRGB(0x9d9ca7)
 
+#pragma mark Sizes
+
 // Spacing between button groups
 #define WPKT_BUTTON_SEPARATOR 6.0f
+
 #define WPKT_BUTTON_HEIGHT_PORTRAIT 39.0f
 #define WPKT_BUTTON_HEIGHT_LANDSCAPE 34.0f
+#define WPKT_BUTTON_HEIGHT_IPAD 65.0f
+
+// Button Width is icon width + padding
+#define WPKT_BUTTON_PADDING_IPAD 13.0f
+#define WPKT_BUTTON_PADDING_IPHONE 10.0f
+
+#pragma mark -
 
 @implementation WPKeyboardToolbar
 @synthesize delegate;
@@ -86,108 +100,102 @@
 
 - (void)buildMainButtons {
     CGFloat x = 4.0f;
+    CGFloat padding = DeviceIsPad() ? WPKT_BUTTON_PADDING_IPAD : WPKT_BUTTON_PADDING_IPHONE;
+    CGFloat height = DeviceIsPad() ? WPKT_BUTTON_HEIGHT_IPAD : WPKT_BUTTON_HEIGHT_PORTRAIT;
     if (boldButton == nil) {
         boldButton = [WPKeyboardToolbarButtonItem button];
-        boldButton.frame = CGRectMake(x, 0, 28, WPKT_BUTTON_HEIGHT_PORTRAIT);
+        [boldButton setImageName:@"toolbarBold"];
+        boldButton.frame = CGRectMake(x, 0, boldButton.imageView.image.size.width + padding, height);
         x += boldButton.frame.size.width + 4;
         boldButton.actionTag = @"strong";
         boldButton.actionName = NSLocalizedString(@"bold", @"");
-		[boldButton setImage:[UIImage imageNamed:@"toolbarBold"] forState:UIControlStateNormal];
-		[boldButton setImage:[UIImage imageNamed:@"toolbarBoldHighlighted"] forState:UIControlStateHighlighted];
         [boldButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     if (italicsButton == nil) {
         italicsButton = [WPKeyboardToolbarButtonItem button];
-        italicsButton.frame = CGRectMake(x, 0, 28, WPKT_BUTTON_HEIGHT_PORTRAIT);
+        [italicsButton setImageName:@"toolbarItalic"];
+        italicsButton.frame = CGRectMake(x, 0, italicsButton.imageView.image.size.width + padding, height);
         x += italicsButton.frame.size.width + 4;
         italicsButton.actionTag = @"em";
         italicsButton.actionName = NSLocalizedString(@"italic", @"");
-		[italicsButton setImage:[UIImage imageNamed:@"toolbarItalic"] forState:UIControlStateNormal];
-		[italicsButton setImage:[UIImage imageNamed:@"toolbarItalicHighlighted"] forState:UIControlStateHighlighted];
         [italicsButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     if (linkButton == nil) {
         linkButton = [WPKeyboardToolbarButtonItem button];
-        linkButton.frame = CGRectMake(x, 0, 36, WPKT_BUTTON_HEIGHT_PORTRAIT);
+        [linkButton setImageName:@"toolbarLink"];
+        linkButton.frame = CGRectMake(x, 0, linkButton.imageView.image.size.width + padding, height);
         x += linkButton.frame.size.width + 4;
         linkButton.actionTag = @"link";
         linkButton.actionName = NSLocalizedString(@"link", @"");
-		[linkButton setImage:[UIImage imageNamed:@"toolbarLink"] forState:UIControlStateNormal];
-		[linkButton setImage:[UIImage imageNamed:@"toolbarLinkHighlighted"] forState:UIControlStateHighlighted];
         [linkButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     if (quoteButton == nil) {
         quoteButton = [WPKeyboardToolbarButtonItem button];
-        quoteButton.frame = CGRectMake(x, 0, 52, WPKT_BUTTON_HEIGHT_PORTRAIT);
+        [quoteButton setImageName:@"toolbarBlockquote"];
+        quoteButton.frame = CGRectMake(x, 0, quoteButton.imageView.image.size.width + padding, height);
 		x += quoteButton.frame.size.width + 4;
         quoteButton.actionTag = @"blockquote";
         quoteButton.actionName = NSLocalizedString(@"quote", @"");
-		[quoteButton setImage:[UIImage imageNamed:@"toolbarBlockquote"] forState:UIControlStateNormal];
-		[quoteButton setImage:[UIImage imageNamed:@"toolbarBlockquoteHighlighted"] forState:UIControlStateHighlighted];
         [quoteButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     if (delButton == nil) {
         delButton = [WPKeyboardToolbarButtonItem button];
-        delButton.frame = CGRectMake(x, 0, 35, WPKT_BUTTON_HEIGHT_PORTRAIT);
+        [delButton setImageName:@"toolbarDel"];
+        delButton.frame = CGRectMake(x, 0, delButton.imageView.image.size.width + padding, height);
         x += delButton.frame.size.width + 4;
         delButton.actionTag = @"del";
         delButton.actionName = NSLocalizedString(@"del", @"");
-		[delButton setImage:[UIImage imageNamed:@"toolbarDel"] forState:UIControlStateNormal];
-		[delButton setImage:[UIImage imageNamed:@"toolbarDelHighlighted"] forState:UIControlStateHighlighted];
         [delButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
 }
 
 - (void)buildExtendedButtons {
+    CGFloat padding = DeviceIsPad() ? WPKT_BUTTON_PADDING_IPAD : WPKT_BUTTON_PADDING_IPHONE;
+    CGFloat height = DeviceIsPad() ? WPKT_BUTTON_HEIGHT_IPAD : WPKT_BUTTON_HEIGHT_PORTRAIT;
     CGFloat x = 4.0f;
     if (ulButton == nil) {
         ulButton = [WPKeyboardToolbarButtonItem button];
-        ulButton.frame = CGRectMake(x, 0, 28, WPKT_BUTTON_HEIGHT_PORTRAIT);
+        [ulButton setImageName:@"toolbarUl"];
+        ulButton.frame = CGRectMake(x, 0, ulButton.imageView.image.size.width + padding, height);
         x += ulButton.frame.size.width + 4;
         ulButton.actionTag = @"ul";
         ulButton.actionName = NSLocalizedString(@"unordered list", @"");
-		[ulButton setImage:[UIImage imageNamed:@"toolbarUl"] forState:UIControlStateNormal];
-		[ulButton setImage:[UIImage imageNamed:@"toolbarUlHighlighted"] forState:UIControlStateHighlighted];
         [ulButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     if (olButton == nil) {
         olButton = [WPKeyboardToolbarButtonItem button];
-        olButton.frame = CGRectMake(x, 0, 28, WPKT_BUTTON_HEIGHT_PORTRAIT);
+        [olButton setImageName:@"toolbarOl"];
+        olButton.frame = CGRectMake(x, 0, olButton.imageView.image.size.width + padding, height);
         x += olButton.frame.size.width + 4;
         olButton.actionTag = @"ol";
         olButton.actionName = NSLocalizedString(@"ordered list", @"");
-		[olButton setImage:[UIImage imageNamed:@"toolbarOl"] forState:UIControlStateNormal];
-		[olButton setImage:[UIImage imageNamed:@"toolbarOlHighlighted"] forState:UIControlStateHighlighted];
         [olButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     if (liButton == nil) {
         liButton = [WPKeyboardToolbarButtonItem button];
-        liButton.frame = CGRectMake(x, 0, 28, WPKT_BUTTON_HEIGHT_PORTRAIT);
+        [liButton setImageName:@"toolbarLi"];
+        liButton.frame = CGRectMake(x, 0, liButton.imageView.image.size.width + padding, height);
         x += liButton.frame.size.width + 4;
         liButton.actionTag = @"li";
         liButton.actionName = NSLocalizedString(@"list item", @"");
-		[liButton setImage:[UIImage imageNamed:@"toolbarLi"] forState:UIControlStateNormal];
-		[liButton setImage:[UIImage imageNamed:@"toolbarLiHighlighted"] forState:UIControlStateHighlighted];
         [liButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     if (codeButton == nil) {
         codeButton = [WPKeyboardToolbarButtonItem button];
-        codeButton.frame = CGRectMake(x, 0, 47, WPKT_BUTTON_HEIGHT_PORTRAIT);
+        [codeButton setImageName:@"toolbarCode"];
+        codeButton.frame = CGRectMake(x, 0, codeButton.imageView.image.size.width + padding, height);
         x += codeButton.frame.size.width + 4;
         codeButton.actionTag = @"code";
         codeButton.actionName = NSLocalizedString(@"code", @"");
-		[codeButton setImage:[UIImage imageNamed:@"toolbarCode"] forState:UIControlStateNormal];
-		[codeButton setImage:[UIImage imageNamed:@"toolbarCodeHighlighted"] forState:UIControlStateHighlighted];
         [codeButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     if (moreButton == nil) {
         moreButton = [WPKeyboardToolbarButtonItem button];
-        moreButton.frame = CGRectMake(x, 0, 48, WPKT_BUTTON_HEIGHT_PORTRAIT);
+        [moreButton setImageName:@"toolbarMore"];
+        moreButton.frame = CGRectMake(x, 0, moreButton.imageView.image.size.width + padding, height);
         x += moreButton.frame.size.width + 4;
         moreButton.actionTag = @"more";
         moreButton.actionName = NSLocalizedString(@"more", @"");
-		[moreButton setImage:[UIImage imageNamed:@"toolbarMore"] forState:UIControlStateNormal];
-		[moreButton setImage:[UIImage imageNamed:@"toolbarMoreHighlighted"] forState:UIControlStateHighlighted];
         [moreButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
 }
@@ -240,7 +248,7 @@
         toggleButton = [WPKeyboardToolbarButtonItem button];
         toggleButton.frame = CGRectMake(2, 2, 39, 39);
         toggleButton.adjustsImageWhenHighlighted = NO;
-        [toggleButton addTarget:self action:@selector(toggleExtendedView) forControlEvents:UIControlEventTouchUpInside || UIControlEventTouchUpOutside];
+        [toggleButton addTarget:self action:@selector(toggleExtendedView) forControlEvents:UIControlEventTouchDown];
 		[toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonMain"] forState:UIControlStateNormal];
 		//[toggleButton setBackgroundImage:[UIImage imageNamed:@"doneButton"] forState:UIControlStateHighlighted];
 		[toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonExtended"] forState:UIControlStateSelected];
@@ -254,16 +262,24 @@
         doneButton = [WPKeyboardToolbarButtonItem button];
         doneButton.frame = CGRectMake(4, 2, 50, 39);
         [doneButton setTitle:@"Done" forState:UIControlStateNormal];
-		doneButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.0f];
-		doneButton.titleLabel.shadowColor = [UIColor darkGrayColor];
-		doneButton.titleLabel.shadowOffset = CGSizeMake(0, -1.0);
 		doneButton.titleLabel.textAlignment = UITextAlignmentCenter;
 		//doneButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-		doneButton.contentEdgeInsets = UIEdgeInsetsMake(1, 1, 0, 0); // Needed to make the label align
         doneButton.actionTag = @"done";
         [doneButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
-		[doneButton setBackgroundImage:[[UIImage imageNamed:@"doneButton"] stretchableImageWithLeftCapWidth:6.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-		[doneButton setBackgroundImage:[[UIImage imageNamed:@"doneButtonHighlighted"] stretchableImageWithLeftCapWidth:6.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
+        if (DeviceIsPad()) {
+            doneButton.titleLabel.font = [UIFont systemFontOfSize:22.0f];
+            [doneButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            [doneButton setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            doneButton.titleLabel.shadowOffset = CGSizeMake(0, 1.0f);
+            doneButton.titleEdgeInsets = UIEdgeInsetsMake(2, 2, 0, 0); // Needed to make the label align
+        } else {
+            doneButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.0f];
+            doneButton.titleLabel.shadowColor = [UIColor darkGrayColor];
+            doneButton.titleLabel.shadowOffset = CGSizeMake(0, -1.0);
+            doneButton.contentEdgeInsets = UIEdgeInsetsMake(1, 1, 0, 0); // Needed to make the label align
+            [doneButton setBackgroundImage:[[UIImage imageNamed:@"doneButton"] stretchableImageWithLeftCapWidth:6.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+            [doneButton setBackgroundImage:[[UIImage imageNamed:@"doneButtonHighlighted"] stretchableImageWithLeftCapWidth:6.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
+        }
         [self addSubview:doneButton];
     }
 }
@@ -291,14 +307,21 @@
     
     CGRect doneFrame = doneButton.frame;
     doneFrame.origin.x = self.frame.size.width - doneFrame.size.width - 5;
-    if (self.frame.size.height < WPKT_HEIGHT_IPHONE_PORTRAIT) {
-        doneFrame.origin.y = -1;
-		doneFrame.origin.x = self.frame.size.width - doneFrame.size.width - 3;
-        doneFrame.size.height = WPKT_BUTTON_HEIGHT_LANDSCAPE + 2;
+    if (DeviceIsPad()) {
+        doneFrame.size.height = WPKT_BUTTON_HEIGHT_IPAD;
+        doneFrame.size.width = WPKT_BUTTON_HEIGHT_IPAD + 14.0f;
+        doneFrame.origin.x = self.frame.size.width - doneFrame.size.width - 5;
+        doneFrame.origin.y = 0;
     } else {
-        doneFrame.origin.y = 2;
-		doneFrame.origin.x = self.frame.size.width - doneFrame.size.width - 5;
-        doneFrame.size.height = WPKT_BUTTON_HEIGHT_PORTRAIT;
+        if (self.frame.size.height < WPKT_HEIGHT_IPHONE_PORTRAIT) {
+            doneFrame.origin.y = -1;
+            doneFrame.origin.x = self.frame.size.width - doneFrame.size.width - 3;
+            doneFrame.size.height = WPKT_BUTTON_HEIGHT_LANDSCAPE + 2;
+        } else {
+            doneFrame.origin.y = 2;
+            doneFrame.origin.x = self.frame.size.width - doneFrame.size.width - 5;
+            doneFrame.size.height = WPKT_BUTTON_HEIGHT_PORTRAIT;
+        }        
     }
     doneButton.frame = doneFrame;
     

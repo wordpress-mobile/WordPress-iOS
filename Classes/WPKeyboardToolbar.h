@@ -12,8 +12,8 @@
 
 #define WPKT_HEIGHT_IPHONE_PORTRAIT 42.0f
 #define WPKT_HEIGHT_IPHONE_LANDSCAPE 33.0f
-#define WPKT_HEIGHT_IPAD_PORTRAIT 72.0f
-#define WPKT_HEIGHT_IPAD_LANDSCAPE 72.0f
+#define WPKT_HEIGHT_IPAD_PORTRAIT 65.0f
+#define WPKT_HEIGHT_IPAD_LANDSCAPE 65.0f
 
 @protocol WPKeyboardToolbarDelegate <NSObject>
 - (void)keyboardToolbarButtonItemPressed:(WPKeyboardToolbarButtonItem *)buttonItem;
