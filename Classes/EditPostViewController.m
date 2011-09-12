@@ -850,17 +850,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 	
-    if ([alertView tag] == 1) {
-        if (buttonIndex == 1) {
-            [self showLinkView];
-        }
-        else {
-            dismiss = YES;
-            [textView touchesBegan:nil withEvent:nil];
-            [delegate setAlertRunning:NO];
-        }
-    }
-	
     if ([alertView tag] == 2) {
         isShowingLinkAlert = NO;
         if (buttonIndex == 1) {
@@ -955,7 +944,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)textViewDidChange:(UITextView *)aTextView {
     
     //replace character entities with character numbers for trac #871
-    //caused the cursor to jump around, commenting out for now until we add the editor buttons
     
     NSString *str = aTextView.text;
     
@@ -967,24 +955,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     
         aTextView.text = str;
     }
-    
-    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-    int cursorLocation = [aTextView selectedRange].location;
-    if (cursorLocation > 3){
-        NSString *searchStr = [[str substringWithRange:NSMakeRange(cursorLocation - 4, 4)] lowercaseString];
-        if (([searchStr rangeOfString:@"http"].location != NSNotFound || [searchStr rangeOfString:@"ftp:"].location != NSNotFound || [searchStr rangeOfString:@"www."].location != NSNotFound) && dismiss != YES && !delegate.alertRunning) {
-
-                //[textView resignFirstResponder];
-                UIAlertView *linkAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Make a Link", @"") message:NSLocalizedString(@"Would you like help making a link?", @"") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") otherButtonTitles:NSLocalizedString(@"Make a Link", @""), nil];
-                [linkAlert setTag:1];  // for UIAlertView Delegate to handle which view is popped.
-                [linkAlert show];
-                [delegate setAlertRunning:YES];
-                [linkAlert release];
         
-        }
-        
-    }
-    
     self.undoButton.enabled = [self.textView.undoManager canUndo];
     self.redoButton.enabled = [self.textView.undoManager canRedo];
 }
