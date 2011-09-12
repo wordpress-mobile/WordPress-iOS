@@ -603,7 +603,9 @@
        atIndexPath:(NSIndexPath *)indexPath
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath {
-    [self setupPhotoButton];
+    if (self.navigationController.visibleViewController == self) {
+        [self setupPhotoButton];
+    }
     [self.tableView reloadData];
 	
 	if (!DeviceIsPad()) {
