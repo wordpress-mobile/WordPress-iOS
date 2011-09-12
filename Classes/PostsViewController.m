@@ -243,13 +243,14 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     if (activityFooter == nil) {
-        CGRect rect = CGRectMake(tableView.frame.size.width/2 - 20, 10, 30, 30);
+        CGRect rect = CGRectMake(145, 10, 30, 30);
         activityFooter = [[UIActivityIndicatorView alloc] initWithFrame:rect];
         activityFooter.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
         activityFooter.hidesWhenStopped = YES;
-        activityFooter.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+        activityFooter.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     }
-    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 50)];
+    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
+    footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [footerView addSubview:activityFooter];
     return [footerView autorelease];
 }
