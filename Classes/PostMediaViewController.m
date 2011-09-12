@@ -85,6 +85,7 @@
 
 - (void)viewDidUnload {
     [self removeNotifications];
+    picker.delegate = nil;
 	[super viewDidUnload];
 }
 
