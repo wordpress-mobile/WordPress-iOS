@@ -76,7 +76,7 @@
         NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://wordpress.com/reader/mobile/?template=stats&stats_name=home_page_refresh"]] autorelease];
         WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
         [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
-        [[NSURLConnection alloc] initWithRequest:request delegate:self];
+        [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
     }
 }
 
@@ -147,7 +147,7 @@
         NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://wordpress.com/reader/mobile/?template=stats&stats_name=home_page"]] autorelease];
         WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
         [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
-        [[NSURLConnection alloc] initWithRequest:request delegate:self];
+        [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
     }
 }
 
