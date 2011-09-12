@@ -710,6 +710,12 @@ static WordPressAppDelegate *wordPressApp = NULL;
     return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
 }
 
+
+- (NSString *)applicationUserAgent {
+    NSString *version  = [[[NSBundle mainBundle] infoDictionary] valueForKey:[NSString stringWithFormat:@"CFBundleVersion"]];
+	return [NSString stringWithFormat:@"wp-iphone/%@",version];
+}
+
 #pragma mark -
 #pragma mark Private Methods
 

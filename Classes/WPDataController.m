@@ -48,8 +48,9 @@
 	[request setUseKeychainPersistence:YES];
     [request addRequestHeader:@"Content-Type" value:@"text/xml"];
     [request addRequestHeader:@"Accept" value:@"*/*"];
-    NSString *version  = [[[NSBundle mainBundle] infoDictionary] valueForKey:[NSString stringWithFormat:@"CFBundleVersion"]];
-	[request addRequestHeader:@"User-Agent" value:[NSString stringWithFormat:@"wp-iphone/%@",version]];
+    
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];    
+	[request addRequestHeader:@"User-Agent" value:[appDelegate applicationUserAgent]];
 	
 	XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
 	[xmlrpcRequest setMethod:@"wp.getUsersBlogs" withObjects:[NSArray arrayWithObjects:username, password, nil]];
@@ -123,8 +124,10 @@
     [request setValidatesSecureCertificate:NO];
     [request setNumberOfTimesToRetryOnTimeout:2];
     [request addRequestHeader:@"Accept" value:@"*/*"];
-    NSString *version  = [[[NSBundle mainBundle] infoDictionary] valueForKey:[NSString stringWithFormat:@"CFBundleVersion"]];
-	[request addRequestHeader:@"User-Agent" value:[NSString stringWithFormat:@"wp-iphone/%@",version]];
+    
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];        
+	[request addRequestHeader:@"User-Agent" value:[appDelegate applicationUserAgent]];
+    
     [request startSynchronous];
     
     NSString *rsdURL = [[request responseString] stringByMatching:@"<link rel=\"EditURI\" type=\"application/rsd\\+xml\" title=\"RSD\" href=\"([^\"]*)\"[^/]*/>" capture:1];
@@ -763,8 +766,10 @@
 	[request setUseKeychainPersistence:YES];
     [request setValidatesSecureCertificate:NO];
 	[request setTimeOutSeconds:30];
-	NSString *version  = [[[NSBundle mainBundle] infoDictionary] valueForKey:[NSString stringWithFormat:@"CFBundleVersion"]];
-	[request addRequestHeader:@"User-Agent" value:[NSString stringWithFormat:@"wp-iphone/%@",version]];
+    
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];        
+	[request addRequestHeader:@"User-Agent" value:[appDelegate applicationUserAgent]];
+   
     [request addRequestHeader:@"Content-Type" value:@"text/xml"];
     [request addRequestHeader:@"Accept" value:@"*/*"];
 

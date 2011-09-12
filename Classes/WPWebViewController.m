@@ -51,8 +51,11 @@
         webURL = [[[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"] autorelease];
     else
         webURL = self.url;
+    
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:webURL];
-    [request setValue:[NSString stringWithFormat:@"wp-iphone/%@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]] forHTTPHeaderField:@"User-Agent"];
+    [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
+    
     [request setCachePolicy:NSURLRequestReturnCacheDataElseLoad];
     if (self.needsLogin || ([[self.url absoluteString] rangeOfString:@"wp-admin/"].location != NSNotFound)) {
         // It's a /wp-admin url, we need to login first
@@ -71,7 +74,8 @@
     if (self.isReader) {
         // ping stats on refresh of reader
         NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://wordpress.com/reader/mobile/?template=stats&stats_name=home_page_refresh"]] autorelease];
-        [request setValue:@"wp-iphone" forHTTPHeaderField:@"User-Agent"];
+        WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
+        [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
         [[NSURLConnection alloc] initWithRequest:request delegate:self];
     }
 }
@@ -141,7 +145,8 @@
     if (self.isReader) {
         // ping stats on load of reader
         NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://wordpress.com/reader/mobile/?template=stats&stats_name=home_page"]] autorelease];
-        [request setValue:@"wp-iphone" forHTTPHeaderField:@"User-Agent"];
+        WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
+        [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
         [[NSURLConnection alloc] initWithRequest:request delegate:self];
     }
 }

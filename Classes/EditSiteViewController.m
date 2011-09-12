@@ -317,8 +317,8 @@
 	[xmlrpcRequest setDidFinishSelector:@selector(remoteValidate:)];
 	[xmlrpcRequest setDidFailSelector:@selector(checkURLWentWrong:)];
 	[xmlrpcRequest setDelegate:self];
-    NSString *version  = [[[NSBundle mainBundle] infoDictionary] valueForKey:[NSString stringWithFormat:@"CFBundleVersion"]];
-	[xmlrpcRequest addRequestHeader:@"User-Agent" value:[NSString stringWithFormat:@"wp-iphone/%@",version]];
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+	[xmlrpcRequest addRequestHeader:@"User-Agent" value:[appDelegate applicationUserAgent]];
     [xmlrpcRequest addRequestHeader:@"Accept" value:@"*/*"];
     [xmlrpcRequest startAsynchronous];
 	

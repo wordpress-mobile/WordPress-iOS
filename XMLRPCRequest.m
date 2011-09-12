@@ -49,8 +49,8 @@
 		[_request setTimeoutInterval:120.0f];
 		
 		// TODO: this should not be kept in the generic classes.
-		NSString *version  = [[[NSBundle mainBundle] infoDictionary] valueForKey:[NSString stringWithFormat:@"CFBundleVersion"]];
-		[self setUserAgent:[NSString stringWithFormat:@"wp-iphone/%@",version]];
+		 WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
+		[self setUserAgent:[appDelegate applicationUserAgent]];        
 	}
 	
 	return self;

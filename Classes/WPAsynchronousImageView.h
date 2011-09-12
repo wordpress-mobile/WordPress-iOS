@@ -8,7 +8,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "WordPressAppDelegate.h"
 
 @interface WPAsynchronousImageView : UIImageView {
 @private

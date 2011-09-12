@@ -53,6 +53,7 @@
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 - (NSString *)applicationDocumentsDirectory;
+- (NSString *)applicationUserAgent;
 
 + (WordPressAppDelegate *)sharedWordPressApp;
 

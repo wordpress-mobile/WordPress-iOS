@@ -169,8 +169,8 @@
 		contentType = @"video/mp4";
 	
 	request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:self.media.blog.xmlrpc]];
-    NSString *version  = [[[NSBundle mainBundle] infoDictionary] valueForKey:[NSString stringWithFormat:@"CFBundleVersion"]];
-	[request addRequestHeader:@"User-Agent" value:[NSString stringWithFormat:@"wp-iphone/%@",version]];
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];        
+	[request addRequestHeader:@"User-Agent" value:[appDelegate applicationUserAgent]];
     [request addRequestHeader:@"Accept" value:@"*/*"];
     [request addRequestHeader:@"Content-Type" value:contentType];
 	[request setDelegate:self];
@@ -207,8 +207,8 @@
 	NSString *password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:self.media.blog.hostURL error:&error];
 	
 	request = [ASIFormDataRequest requestWithURL:atomURL];
-    NSString *version  = [[[NSBundle mainBundle] infoDictionary] valueForKey:[NSString stringWithFormat:@"CFBundleVersion"]];
-	[request addRequestHeader:@"User-Agent" value:[NSString stringWithFormat:@"wp-iphone/%@",version]];
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];        
+	[request addRequestHeader:@"User-Agent" value:[appDelegate applicationUserAgent]];
 	[request setValidatesSecureCertificate:NO]; 	
 	[request setUsername:username];
 	[request setPassword:password];

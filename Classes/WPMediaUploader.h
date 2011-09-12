@@ -12,6 +12,7 @@
 #import "NSString+XMLExtensions.h"
 #import "SFHFKeychainUtils.h"
 #import "Media.h"
+#import "WordPressAppDelegate.h"
 
 enum {
 	kSendBufferSize = 32768
