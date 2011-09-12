@@ -712,8 +712,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 
 - (NSString *)applicationUserAgent {
-    NSString *version  = [[[NSBundle mainBundle] infoDictionary] valueForKey:[NSString stringWithFormat:@"CFBundleVersion"]];
-	return [NSString stringWithFormat:@"wp-iphone/%@",version];
+  return [[NSUserDefaults standardUserDefaults] objectForKey:@"UserAgent"];
 }
 
 #pragma mark -
