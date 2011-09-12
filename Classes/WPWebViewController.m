@@ -63,6 +63,7 @@
                                   [self.username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                                   [self.password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                                   [[self.url absoluteString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        [request setURL:[[[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"] autorelease]];
         [request setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
         [request setValue:[NSString stringWithFormat:@"%d", [request_body length]] forHTTPHeaderField:@"Content-Length"];
         [request addValue:@"*/*" forHTTPHeaderField:@"Accept"];
