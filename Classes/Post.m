@@ -83,6 +83,10 @@
 	self.permaLink      = [postInfo objectForKey:@"permaLink"];
 	self.mt_excerpt		= [postInfo objectForKey:@"mt_excerpt"];
 	self.mt_text_more	= [postInfo objectForKey:@"mt_text_more"];
+    if (self.mt_text_more) {
+        self.content = [NSString stringWithFormat:@"%@\n\n<!--more-->\n\n%@", self.content, self.mt_text_more];
+        self.mt_text_more = nil;
+    }
 	self.wp_slug		= [postInfo objectForKey:@"wp_slug"];
 	self.postFormat		= [postInfo objectForKey:@"wp_post_format"];
 	
