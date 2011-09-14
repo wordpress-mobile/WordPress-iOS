@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "TapDetectingWebView.h"
 
-@interface WPWebViewController : UIViewController<UIWebViewDelegate, UIActionSheetDelegate, TapDetectingWebViewDelegate> {
+@interface WPWebViewController : UIViewController<UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, TapDetectingWebViewDelegate> {
     BOOL isLoading;
     IBOutlet TapDetectingWebView *webView;
 }

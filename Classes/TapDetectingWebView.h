@@ -17,5 +17,4 @@
     id <TapDetectingWebViewDelegate> controllerThatObserves;
 }
 @property (nonatomic, assign) id <TapDetectingWebViewDelegate> controllerThatObserves;
-//@property (retain, nonatomic) NSTimer *timer;
 @end

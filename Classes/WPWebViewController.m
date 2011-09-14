@@ -133,7 +133,25 @@
 
 - (void)showLinkOptions{
     
-    UIActionSheet *linkOptionsActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"", @"Link Options") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"View in Safari", @"View in Safari"), NSLocalizedString(@"Copy URL", @"Copy URL"), nil];
+    NSString* permaLink = nil;
+    NSString* isPermaLinkVisible = [webView stringByEvaluatingJavaScriptFromString:@"jq('#article-main').is(':visible');"];
+     
+    if ( isPermaLinkVisible != nil && [[isPermaLinkVisible trim] isEqualToString:@"true"]) {
+        //the details view is on the screen
+        NSLog(@"is Permalink visible? %@", isPermaLinkVisible);
+        permaLink = [webView stringByEvaluatingJavaScriptFromString:@"jq( '#article-main' ).find('a.comments_link' ).attr( 'href' );"];
+        if ( permaLink == nil || [[permaLink trim] isEqualToString:@""]) {
+            permaLink = nil;
+        }
+    }
+
+    
+    UIActionSheet *linkOptionsActionSheet;
+    if ( permaLink != nil )
+     linkOptionsActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"", @"Link Options") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"View in Safari", @"View in Safari"), NSLocalizedString(@"Copy URL", @"Copy URL"), NSLocalizedString(@"Mail URL", @"Mail URL"), nil];
+    
+    else
+        linkOptionsActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"", @"Link Options") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"View in Safari", @"View in Safari"), NSLocalizedString(@"Copy URL", @"Copy URL"), nil];
     
     linkOptionsActionSheet .actionSheetStyle = UIActionSheetStyleBlackOpaque;
     [linkOptionsActionSheet showInView:self.view];
@@ -211,7 +229,6 @@
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	
 	if (buttonIndex == 0) {
-		
         [[UIApplication sharedApplication] openURL:self.url];
         [self dismiss];
 		
@@ -221,9 +238,28 @@
             UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
             pasteboard.string = webView.request.URL.absoluteString; 
         }
-		
+    } else if ( buttonIndex == 2 && actionSheet.cancelButtonIndex != 2 ) {
+        NSString *permaLink = [webView stringByEvaluatingJavaScriptFromString:@"jq( '#article-main' ).find('a.comments_link' ).attr( 'href' );"];
+        [self dismiss];
+
+        if( permaLink == nil ) return; //this should never happen
+        
+        MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
+        controller.mailComposeDelegate = self;
+
+        NSString *title = [webView stringByEvaluatingJavaScriptFromString:@"jq( '#article-main' ).find('h1.title' ).text();"];
+        if( title != nil ) 
+            title = [title trim];
+        else
+            title = permaLink;
+                        
+        [controller setSubject:[NSString stringWithFormat:@"Check out this article: %@", title ]];                
+        NSString *body = [NSString stringWithFormat:@"Hello,<br /> Check out this article: <a href=\"%@\">%@</a>" , [permaLink trim], title];
+        [controller setMessageBody:body isHTML:YES];
+        
+        if (controller) [self presentModalViewController:controller animated:YES];
+        [controller release];
     }
-	
 }
 
 #pragma mark - TapDetectingWebViewDelegate
@@ -233,4 +269,9 @@
     self.forwardButton.enabled = webView.canGoForward;
 }
 
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
+{
+	[self dismissModalViewControllerAnimated:YES];
+}
 @end

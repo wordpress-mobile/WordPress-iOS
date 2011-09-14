@@ -16,17 +16,16 @@
     [controllerThatObserves userDidTapWebView:touch];
 }
 
-
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
     if (event.type == UIEventTypeTouches) {
 
-        NSLog(@"UIEventTypeTouches");
+        //NSLog(@"UIEventTypeTouches");
 
         NSSet *touches = [event allTouches];
         
         UITouch *touch = touches.anyObject;
         CGPoint tapPoint = [touch locationInView:self];
-        NSLog(@"TapPoint = %f, %f", tapPoint.x, tapPoint.y);
+      //  NSLog(@"TapPoint = %f, %f", tapPoint.x, tapPoint.y);
         NSArray *pointArray = [NSArray arrayWithObjects:[NSString stringWithFormat:@"%f", tapPoint.x],
                                [NSString stringWithFormat:@"%f", tapPoint.y], nil];
         
