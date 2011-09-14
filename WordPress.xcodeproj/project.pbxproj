@@ -438,6 +438,7 @@
 		EC4696FF0EA75D460040EE8E /* PagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4696FE0EA75D460040EE8E /* PagesViewController.m */; };
 		F5A4EF6810B34147002BF126 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = F5A4EF6710B34147002BF126 /* NSData+Base64.m */; };
 		FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD21397E13128C5300099582 /* libiconv.dylib */; };
+		FD367660141FAF8C0021DC4F /* TapDetectingWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = FD36765F141FAF890021DC4F /* TapDetectingWebView.m */; };
 		FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3D6D2B1349F5D30061136A /* ImageIO.framework */; };
 		FD9A948C12FAEA2300438F94 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FD9A948B12FAEA2300438F94 /* DateUtils.m */; };
 /* End PBXBuildFile section */
@@ -1062,6 +1063,8 @@
 		F5A4EF6610B34147002BF126 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		F5A4EF6710B34147002BF126 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 		FD21397E13128C5300099582 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
+		FD36765E141FAF850021DC4F /* TapDetectingWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; path = TapDetectingWebView.h; sourceTree = "<group>"; };
+		FD36765F141FAF890021DC4F /* TapDetectingWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TapDetectingWebView.m; sourceTree = "<group>"; };
 		FD3D6D2B1349F5D30061136A /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		FD9A948A12FAEA2300438F94 /* DateUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateUtils.h; sourceTree = "<group>"; };
 		FD9A948B12FAEA2300438F94 /* DateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateUtils.m; sourceTree = "<group>"; };
@@ -1827,6 +1830,8 @@
 				E1B7B982131553FF005318BD /* FileLogger.m */,
 				E1B62A7913AA61A100A6FCA4 /* WPWebViewController.h */,
 				E1B62A7A13AA61A100A6FCA4 /* WPWebViewController.m */,
+				FD36765E141FAF850021DC4F /* TapDetectingWebView.h */,
+				FD36765F141FAF890021DC4F /* TapDetectingWebView.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -2604,6 +2609,7 @@
 				30AF6CFD13C230C600A29C00 /* AboutViewController.m in Sources */,
 				E1CAAE3713F413F00000C58D /* WPKeyboardToolbar.m in Sources */,
 				E1CAAE3A13F4142E0000C58D /* WPKeyboardToolbarButtonItem.m in Sources */,
+				FD367660141FAF8C0021DC4F /* TapDetectingWebView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2708,7 +2714,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Danilo Ercoli (667Y92XYP9)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_VERSION = "";
@@ -2725,7 +2731,7 @@
 					"-lxml2",
 					"-licucore",
 				);
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "A3820BB4-0207-41FA-99A0-0B4C892C16DD";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -2767,7 +2773,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Danilo Ercoli (667Y92XYP9)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_VERSION = "";
@@ -2784,7 +2790,7 @@
 					"-lxml2",
 					"-licucore",
 				);
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "A3820BB4-0207-41FA-99A0-0B4C892C16DD";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -2831,7 +2837,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Danilo Ercoli (667Y92XYP9)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_VERSION = "";
@@ -2854,7 +2860,7 @@
 					"-lxml2",
 					"-licucore",
 				);
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "A3820BB4-0207-41FA-99A0-0B4C892C16DD";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -2864,7 +2870,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Danilo Ercoli (667Y92XYP9)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = "";
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
@@ -2882,7 +2888,7 @@
 					"-lxml2",
 					"-licucore",
 				);
-				PROVISIONING_PROFILE = "0D86A283-4B39-4013-AFA5-6370DD13062E";
+				PROVISIONING_PROFILE = "A3820BB4-0207-41FA-99A0-0B4C892C16DD";
 				SDKROOT = iphoneos;
 			};
 			name = Release;

@@ -14,7 +14,7 @@
 @synthesize webView, toolbar;
 @synthesize loadingView, loadingLabel, activityIndicator;
 @synthesize needsLogin, isReader;
-@synthesize iPadNavBar;
+@synthesize iPadNavBar, backButton, forwardButton;
 
 - (void)dealloc
 {
@@ -40,7 +40,7 @@
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload)] autorelease];
     }
     return self;
-}
+}   
 
 #pragma mark - View lifecycle
 
@@ -120,6 +120,17 @@
     [self dismissModalViewControllerAnimated:YES];
 }
 
+- (void)goBack {
+    [webView goBack];
+    [self performSelector:@selector(userDidTapWebView:) withObject:nil afterDelay:0.5];    
+}
+
+- (void)goForward {
+    [webView goForward];
+    [self performSelector:@selector(userDidTapWebView:) withObject:nil afterDelay:0.5];    
+}
+
+
 - (void)showLinkOptions{
     
     UIActionSheet *linkOptionsActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Link Options", @"Link Options") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"View in Safari", @"View in Safari"), NSLocalizedString(@"Copy URL", @"Copy URL"), nil];
@@ -139,7 +150,10 @@
     [super viewDidLoad];
     isLoading = YES;
     [self setLoading:NO];
+    self.backButton.enabled = NO;
+    self.forwardButton.enabled = NO;
     self.webView.scalesPageToFit = YES;
+    self.webView.controllerThatObserves = self;
     if (self.url) {
         [self refreshWebView];
     }
@@ -188,6 +202,8 @@
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self setLoading:NO];
+    self.backButton.enabled = webView.canGoBack;
+    self.forwardButton.enabled = webView.canGoForward;
 }
 
 #pragma mark - UIActionSheetDelegate
@@ -208,6 +224,13 @@
 		
     }
 	
+}
+
+#pragma mark - TapDetectingWebViewDelegate
+- (void)userDidTapWebView:(id)tapPoint {
+     NSLog(@"userDidTapWebView");
+    self.backButton.enabled = webView.canGoBack;
+    self.forwardButton.enabled = webView.canGoForward;
 }
 
 @end

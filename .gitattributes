@@ -193,6 +193,8 @@ Classes/StatsTableCell.h -text
 Classes/StatsTableCell.m -text
 Classes/StatsTableViewController.h -text
 Classes/StatsTableViewController.m -text
+Classes/TapDetectingWebView.h -text
+Classes/TapDetectingWebView.m -text
 Classes/UIDevice-Hardware.h -text
 Classes/UIDevice-Hardware.m -text
 Classes/UINavigationController+FormSheet.h -text
