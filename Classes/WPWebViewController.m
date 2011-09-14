@@ -133,23 +133,11 @@
 
 - (void)showLinkOptions{
     
-    NSString* permaLink = nil;
-    NSString* isPermaLinkVisible = [webView stringByEvaluatingJavaScriptFromString:@"jq('#article-main').is(':visible');"];
-     
-    if ( isPermaLinkVisible != nil && [[isPermaLinkVisible trim] isEqualToString:@"true"]) {
-        //the details view is on the screen
-        NSLog(@"is Permalink visible? %@", isPermaLinkVisible);
-        permaLink = [webView stringByEvaluatingJavaScriptFromString:@"jq( '#article-main' ).find('a.comments_link' ).attr( 'href' );"];
-        if ( permaLink == nil || [[permaLink trim] isEqualToString:@""]) {
-            permaLink = nil;
-        }
-    }
+    NSString* permaLink = [self getDocumentPermalink];
 
-    
     UIActionSheet *linkOptionsActionSheet;
     if ( permaLink != nil )
      linkOptionsActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"", @"Link Options") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"View in Safari", @"View in Safari"), NSLocalizedString(@"Copy URL", @"Copy URL"), NSLocalizedString(@"Mail URL", @"Mail URL"), nil];
-    
     else
         linkOptionsActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"", @"Link Options") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"View in Safari", @"View in Safari"), NSLocalizedString(@"Copy URL", @"Copy URL"), nil];
     
@@ -239,21 +227,17 @@
             pasteboard.string = webView.request.URL.absoluteString; 
         }
     } else if ( buttonIndex == 2 && actionSheet.cancelButtonIndex != 2 ) {
-        NSString *permaLink = [webView stringByEvaluatingJavaScriptFromString:@"jq( '#article-main' ).find('a.comments_link' ).attr( 'href' );"];
+        NSString *permaLink = [self getDocumentPermalink];
         [self dismiss];
 
-        if( permaLink == nil ) return; //this should never happen
+        if( permaLink == nil || [[permaLink trim] isEqualToString:@""] ) return; //this should never happen
         
         MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
         controller.mailComposeDelegate = self;
 
-        NSString *title = [webView stringByEvaluatingJavaScriptFromString:@"jq( '#article-main' ).find('h1.title' ).text();"];
-        if( title != nil ) 
-            title = [title trim];
-        else
-            title = permaLink;
-                        
+        NSString *title = [self getDocumentTitle];
         [controller setSubject:[NSString stringWithFormat:@"Check out this article: %@", title ]];                
+
         NSString *body = [NSString stringWithFormat:@"Hello,<br /> Check out this article: <a href=\"%@\">%@</a>" , [permaLink trim], title];
         [controller setMessageBody:body isHTML:YES];
         
@@ -274,4 +258,46 @@
 {
 	[self dismissModalViewControllerAnimated:YES];
 }
+
+#pragma mark - custom methods
+- (NSString*) getDocumentPermalink {
+   
+    NSString *permaLink = [webView stringByEvaluatingJavaScriptFromString:@"Reader.get_article_permalink();"];
+    if ( permaLink == nil || [[permaLink trim] isEqualToString:@""]) {
+        // try to get the loaded URL within the webView
+        NSURLRequest *currentRequest = [webView request];
+        if ( currentRequest != nil) {
+            NSURL *currentURL = [currentRequest URL];
+            NSLog(@"Current URL is %@", currentURL.absoluteString);
+            permaLink = currentURL.absoluteString;
+            if ([permaLink rangeOfString:@"wordpress.com/reader/mobile/"].location != NSNotFound) {
+                permaLink = nil;                
+            }
+        }
+    }
+    
+    return permaLink;
+}   
+
+- (NSString*) getDocumentTitle {
+    
+    NSString* permaLink = [self getDocumentPermalink];
+    
+    NSString *title = [webView stringByEvaluatingJavaScriptFromString:@"Reader.get_article_title();"];
+
+    if( title != nil && [[title trim] isEqualToString:@""] == false ) {
+        return [title trim];
+    } else {
+        //load the title from the document
+        title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"]; 
+        
+        if ( title != nil && [[title trim] isEqualToString:@""] == false)
+            return title;
+        else
+            return ( permaLink != nil) ? permaLink : @"";
+    }
+    
+    return @"";
+}
+
 @end

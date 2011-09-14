@@ -31,5 +31,7 @@
 - (IBAction)dismiss;
 - (IBAction)goForward;
 - (IBAction)goBack;
+- (NSString*) getDocumentPermalink;
+- (NSString*) getDocumentTitle;
 
 @end
