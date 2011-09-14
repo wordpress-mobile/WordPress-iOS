@@ -53,6 +53,7 @@
             NSMutableDictionary *newBlog = [NSMutableDictionary dictionaryWithDictionary:[subsites objectAtIndex:0]];
             [newBlog setObject:self.username forKey:@"username"];
             [newBlog setObject:self.password forKey:@"password"];
+            [newBlog setObject:xmlrpc forKey:@"xmlrpc"];
             
             self.blog = [Blog createFromDictionary:newBlog withContext:appDelegate.managedObjectContext];
 			self.blog.geolocationEnabled = self.geolocationEnabled;
