@@ -319,11 +319,7 @@
         CGFloat width = wantsReaderButton ? (self.view.bounds.size.width / 2) : self.view.bounds.size.width;
         quickPhotoButton.frame = CGRectMake(x, self.view.bounds.size.height - 83, width, 83);
         [quickPhotoButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        if (wantsReaderButton) {
-            [quickPhotoButton setTitle:nil forState:UIControlStateNormal];
-        } else {
-            [quickPhotoButton setTitle:NSLocalizedString(@"Quick Photo", @"") forState:UIControlStateNormal];            
-        }
+        [quickPhotoButton setTitle:NSLocalizedString(@"Photo", @"") forState:UIControlStateNormal];     
         [quickPhotoButton.titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
         [quickPhotoButton setTitleShadowColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         [quickPhotoButton addTarget:self action:@selector(quickPhotoPost) forControlEvents:UIControlEventTouchUpInside];
@@ -334,7 +330,7 @@
         readerButton = [QuickPhotoButton button];
         CGFloat width = wantsPhotoButton ? self.view.bounds.size.width / 2 : self.view.bounds.size.width;
         readerButton.frame = CGRectMake(0, self.view.bounds.size.height - 83, width, 83);
-        [readerButton setTitle:@"Reader" forState:UIControlStateNormal];
+        [readerButton setTitle:@"WP.com" forState:UIControlStateNormal];
         [readerButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [readerButton.titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
         [readerButton setTitleShadowColor:[UIColor lightGrayColor] forState:UIControlStateNormal];

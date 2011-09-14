@@ -133,7 +133,7 @@
 
 - (void)showLinkOptions{
     
-    UIActionSheet *linkOptionsActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Link Options", @"Link Options") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"View in Safari", @"View in Safari"), NSLocalizedString(@"Copy URL", @"Copy URL"), nil];
+    UIActionSheet *linkOptionsActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"", @"Link Options") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"View in Safari", @"View in Safari"), NSLocalizedString(@"Copy URL", @"Copy URL"), nil];
     
     linkOptionsActionSheet .actionSheetStyle = UIActionSheetStyleBlackOpaque;
     [linkOptionsActionSheet showInView:self.view];
