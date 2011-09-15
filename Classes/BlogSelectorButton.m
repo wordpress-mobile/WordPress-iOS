@@ -118,7 +118,12 @@
     if (defaultsKey != nil) {
         NSString *blogId = [[NSUserDefaults standardUserDefaults] objectForKey:defaultsKey];
         if (blogId != nil) {
-            self.activeBlog = (Blog *)[moc existingObjectWithID:[psc managedObjectIDForURIRepresentation:[NSURL URLWithString:blogId]] error:nil];
+            @try {
+                self.activeBlog = (Blog *)[moc existingObjectWithID:[psc managedObjectIDForURIRepresentation:[NSURL URLWithString:blogId]] error:nil];
+            }
+            @catch (NSException *exception) {
+                self.activeBlog = nil;
+            }
             if (self.activeBlog == nil) {
                 // The default blog was invalid, remove the stored default
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:defaultsKey];
