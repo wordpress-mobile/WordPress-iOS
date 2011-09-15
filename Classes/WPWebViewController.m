@@ -74,7 +74,8 @@
     
     if (self.isReader) {
         // ping stats on refresh of reader
-        NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://wordpress.com/reader/mobile/?template=stats&stats_name=home_page_refresh"]] autorelease];
+        NSString *statsURL = [NSString stringWithFormat:@"%@%@" , kMobileReaderURL, @"?template=stats&stats_name=home_page_refresh"];
+        NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL  ]] autorelease];
         WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
         [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
         [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
@@ -162,7 +163,8 @@
     }
     if (self.isReader) {
         // ping stats on load of reader
-        NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://wordpress.com/reader/mobile/?template=stats&stats_name=home_page"]] autorelease];
+        NSString *statsURL = [NSString stringWithFormat:@"%@%@" , kMobileReaderURL, @"?template=stats&stats_name=home_page"];
+        NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL]] autorelease];
         WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
         [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
         [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
@@ -227,10 +229,10 @@
         controller.mailComposeDelegate = self;
         
         NSString *title = [self getDocumentTitle];
-        [controller setSubject:[NSString stringWithFormat:@"Check out this article: %@", title ]];                
+        [controller setSubject: [title trim]];                
         
-        NSString *body = [NSString stringWithFormat:@"Hello,<br /> Check out this article: <a href=\"%@\">%@</a>" , [permaLink trim], title];
-        [controller setMessageBody:body isHTML:YES];
+        NSString *body = [permaLink trim];
+        [controller setMessageBody:body isHTML:NO];
         
         if (controller) [self presentModalViewController:controller animated:YES];
         [controller release];
@@ -267,6 +269,11 @@
             NSLog(@"Current URL is %@", currentURL.absoluteString);
             permaLink = currentURL.absoluteString;
         }
+        
+        //make sure we are not sharing URL like this: http://en.wordpress.com/reader/mobile/?v=post-16841252-1828
+        if ([permaLink rangeOfString:@"wordpress.com/reader/mobile/"].location != NSNotFound) { 
+             permaLink = kMobileReaderURL;                 
+        } 
     }
     
     return permaLink;
