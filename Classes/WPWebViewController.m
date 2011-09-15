@@ -11,7 +11,7 @@
 
 @implementation WPWebViewController
 @synthesize url,username,password;
-@synthesize webView, toolbar;
+@synthesize webView, toolbar, statusTimer;
 @synthesize loadingView, loadingLabel, activityIndicator;
 @synthesize needsLogin, isReader;
 @synthesize iPadNavBar, backButton, forwardButton;
@@ -22,6 +22,7 @@
     self.username = nil;
     self.password = nil;
     self.webView = nil;
+    self.statusTimer = nil;
     [super dealloc];
 }
 
@@ -123,14 +124,11 @@
 
 - (void)goBack {
     [webView goBack];
-    [self performSelector:@selector(userDidTapWebView:) withObject:nil afterDelay:0.5];    
 }
 
 - (void)goForward {
     [webView goForward];
-    [self performSelector:@selector(userDidTapWebView:) withObject:nil afterDelay:0.5];    
 }
-
 
 - (void)showLinkOptions{
     NSString* permaLink = [self getDocumentPermalink];
@@ -157,7 +155,6 @@
     self.backButton.enabled = NO;
     self.forwardButton.enabled = NO;
     self.webView.scalesPageToFit = YES;
-    self.webView.controllerThatObserves = self;
     if (self.url) {
         [self refreshWebView];
     }
@@ -171,6 +168,20 @@
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    [super viewWillAppear:animated];
+    
+    [self setStatusTimer:[NSTimer timerWithTimeInterval:0.5 target:self selector:@selector(setNavButtonsStatus:) userInfo:nil repeats:YES]];
+	[[NSRunLoop currentRunLoop] addTimer:[self statusTimer] forMode:NSDefaultRunLoopMode];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+	[super viewWillDisappear:animated];
+    [self setStatusTimer:nil];
+}
+
 - (void)viewDidUnload
 {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
@@ -181,6 +192,7 @@
     self.loadingLabel = nil;
     self.activityIndicator = nil;
     self.iPadNavBar = nil;
+    self.statusTimer = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -244,13 +256,6 @@
     }
 }
 
-#pragma mark - TapDetectingWebViewDelegate
-- (void)userDidTapWebView:(id)tapPoint {
-     NSLog(@"userDidTapWebView");
-    self.backButton.enabled = webView.canGoBack;
-    self.forwardButton.enabled = webView.canGoForward;
-}
-
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
 {
@@ -258,6 +263,22 @@
 }
 
 #pragma mark - custom methods
+- (void)setStatusTimer:(NSTimer *)timer
+{
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+	if (statusTimer && timer != statusTimer) {
+		[statusTimer invalidate];
+		[statusTimer release];
+	}
+	statusTimer = [timer retain];
+}
+
+
+- (void)setNavButtonsStatus:(NSTimer*)timer {
+    self.backButton.enabled = webView.canGoBack;
+    self.forwardButton.enabled = webView.canGoForward;
+}
+
 - (NSString*) getDocumentPermalink {
    
     NSString *permaLink = [webView stringByEvaluatingJavaScriptFromString:@"Reader.get_article_permalink();"];

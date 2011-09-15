@@ -7,16 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TapDetectingWebView.h"
 
-@interface WPWebViewController : UIViewController<UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, TapDetectingWebViewDelegate> {
+@interface WPWebViewController : UIViewController<UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
     BOOL isLoading;
-    IBOutlet TapDetectingWebView *webView;
+    IBOutlet UIWebView *webView;
+    // This timer checks the nav buttons every 0.5 seconds, and updates them
+	NSTimer *statusTimer;
 }
 @property (nonatomic,retain) NSURL *url;
 @property (nonatomic,retain) NSString *username;
 @property (nonatomic,retain) NSString *password;
-@property (nonatomic,retain) IBOutlet TapDetectingWebView *webView;
+@property (nonatomic,retain) IBOutlet UIWebView *webView;
 @property (nonatomic,retain) IBOutlet UIToolbar *toolbar;
 @property (nonatomic,retain) IBOutlet UIView *loadingView;
 @property (nonatomic,retain) IBOutlet UIActivityIndicatorView *activityIndicator;
@@ -26,6 +27,7 @@
 @property (nonatomic, retain) IBOutlet UINavigationBar *iPadNavBar;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *backButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *forwardButton;
+@property (retain, nonatomic) NSTimer *statusTimer;
 
 - (IBAction)showLinkOptions;
 - (IBAction)dismiss;
@@ -33,5 +35,6 @@
 - (IBAction)goBack;
 - (NSString*) getDocumentPermalink;
 - (NSString*) getDocumentTitle;
+- (void)setNavButtonsStatus:(NSTimer*)timer;
 
 @end
