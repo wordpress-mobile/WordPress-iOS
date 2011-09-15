@@ -93,7 +93,7 @@
 		
 		//Title
 		NSString *title = postDetailViewController.apost.postTitle;
-		title = (title == nil || ([title length] == 0) ? @"(no title)" : title);
+		title = (title == nil || ([title length] == 0) ? NSLocalizedString(@"(no title)", @"") : title);
 		str = [str stringByReplacingOccurrencesOfString:@"!$title$!" withString:title];
 		
 		//Content
