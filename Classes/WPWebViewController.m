@@ -132,15 +132,12 @@
 
 
 - (void)showLinkOptions{
-    
     NSString* permaLink = [self getDocumentPermalink];
-
-    UIActionSheet *linkOptionsActionSheet;
-    if ( permaLink != nil )
-     linkOptionsActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"", @"Link Options") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"View in Safari", @"View in Safari"), NSLocalizedString(@"Copy URL", @"Copy URL"), NSLocalizedString(@"Mail URL", @"Mail URL"), nil];
-    else
-        linkOptionsActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"", @"Link Options") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"View in Safari", @"View in Safari"), NSLocalizedString(@"Copy URL", @"Copy URL"), nil];
-    
+        
+    if( permaLink == nil || [[permaLink trim] isEqualToString:@""] ) return; //this should never happen
+        
+    UIActionSheet *linkOptionsActionSheet = [[UIActionSheet alloc] initWithTitle:permaLink delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Open in Safari", @"Open in Safari"), NSLocalizedString(@"Mail Link", @"Mail Link"),  NSLocalizedString(@"Copy Link", @"Copy Link"), nil];
+        
     linkOptionsActionSheet .actionSheetStyle = UIActionSheetStyleBlackOpaque;
     [linkOptionsActionSheet showInView:self.view];
     [linkOptionsActionSheet  release];
@@ -221,28 +218,27 @@
         [self dismiss];
 		
     } else if (buttonIndex == 1) {
-		
-        if (webView.request.URL.absoluteString != nil) {
-            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-            pasteboard.string = webView.request.URL.absoluteString; 
-        }
-    } else if ( buttonIndex == 2 && actionSheet.cancelButtonIndex != 2 ) {
         NSString *permaLink = [self getDocumentPermalink];
         [self dismiss];
-
+        
         if( permaLink == nil || [[permaLink trim] isEqualToString:@""] ) return; //this should never happen
         
         MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
         controller.mailComposeDelegate = self;
-
+        
         NSString *title = [self getDocumentTitle];
         [controller setSubject:[NSString stringWithFormat:@"Check out this article: %@", title ]];                
-
+        
         NSString *body = [NSString stringWithFormat:@"Hello,<br /> Check out this article: <a href=\"%@\">%@</a>" , [permaLink trim], title];
         [controller setMessageBody:body isHTML:YES];
         
         if (controller) [self presentModalViewController:controller animated:YES];
         [controller release];
+    } else if ( buttonIndex == 2 ) {
+        if (webView.request.URL.absoluteString != nil) {
+            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+            pasteboard.string = webView.request.URL.absoluteString; 
+        }
     }
 }
 
@@ -270,9 +266,6 @@
             NSURL *currentURL = [currentRequest URL];
             NSLog(@"Current URL is %@", currentURL.absoluteString);
             permaLink = currentURL.absoluteString;
-            if ([permaLink rangeOfString:@"wordpress.com/reader/mobile/"].location != NSNotFound) {
-                permaLink = nil;                
-            }
         }
     }
     
