@@ -2882,7 +2882,7 @@
 					"-lxml2",
 					"-licucore",
 				);
-				PROVISIONING_PROFILE = "0D86A283-4B39-4013-AFA5-6370DD13062E";
+				PROVISIONING_PROFILE = "3F76F6BA-B759-4BBF-8485-464C7082ABB3";
 				SDKROOT = iphoneos;
 			};
 			name = Release;
