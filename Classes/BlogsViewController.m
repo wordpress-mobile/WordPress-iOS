@@ -330,7 +330,7 @@
         readerButton = [QuickPhotoButton button];
         CGFloat width = wantsPhotoButton ? self.view.bounds.size.width / 2 : self.view.bounds.size.width;
         readerButton.frame = CGRectMake(0, self.view.bounds.size.height - 83, width, 83);
-        [readerButton setTitle:@"Read" forState:UIControlStateNormal];
+        [readerButton setTitle:NSLocalizedString(@"Read", @"") forState:UIControlStateNormal];
         [readerButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [readerButton.titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
         [readerButton setTitleShadowColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
