@@ -227,7 +227,7 @@
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	NSString *permaLink = [self getDocumentPermalink];
-
+ 
     if( permaLink == nil || [[permaLink trim] isEqualToString:@""] ) return; //this should never happen
 
 	if (buttonIndex == 0) {
@@ -245,6 +245,7 @@
         [controller setMessageBody:body isHTML:NO];
         
         if (controller) [self presentModalViewController:controller animated:YES];
+        [self setMFMailFieldAsFirstResponder:controller.view mfMailField:@"MFRecipientTextField"];
         [controller release];
     } else if ( buttonIndex == 2 ) {
         UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
@@ -314,6 +315,33 @@
     }
     
     return @"";
+}
+
+
+//Returns true if the ToAddress field was found any of the sub views and made first responder
+//passing in @"MFComposeSubjectView"     as the value for field makes the subject become first responder 
+//passing in @"MFComposeTextContentView" as the value for field makes the body become first responder 
+//passing in @"RecipientTextField"       as the value for field makes the to address field become first responder 
+- (BOOL) setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field{
+    for (UIView *subview in view.subviews) {
+        
+        NSString *className = [NSString stringWithFormat:@"%@", [subview class]];
+        if ([className isEqualToString:field]) {
+            //Found the sub view we need to set as first responder
+            [subview becomeFirstResponder];
+            return YES;
+        }
+        
+        if ([subview.subviews count] > 0) {
+            if ([self setMFMailFieldAsFirstResponder:subview mfMailField:field]){
+                //Field was found and made first responder in a subview
+                return YES;
+            }
+        }
+    }
+    
+    //field not found in this view.
+    return NO;
 }
 
 @end

@@ -36,5 +36,6 @@
 - (NSString*) getDocumentPermalink;
 - (NSString*) getDocumentTitle;
 - (void)setNavButtonsStatus:(NSTimer*)timer;
+- (BOOL) setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field;
 
 @end
