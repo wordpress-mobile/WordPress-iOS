@@ -226,20 +226,15 @@
 #pragma mark - UIActionSheetDelegate
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-	
+	NSString *permaLink = [self getDocumentPermalink];
+
+    if( permaLink == nil || [[permaLink trim] isEqualToString:@""] ) return; //this should never happen
+
 	if (buttonIndex == 0) {
-		NSString *permaLink = [self getDocumentPermalink];
 		NSURL *permaLinkURL;
 		permaLinkURL = [[[NSURL alloc] initWithString:(NSString *)permaLink] autorelease];
-        [[UIApplication sharedApplication] openURL:(NSURL *)permaLinkURL];
-        [self dismiss];
-		
+        [[UIApplication sharedApplication] openURL:(NSURL *)permaLinkURL];		
     } else if (buttonIndex == 1) {
-        NSString *permaLink = [self getDocumentPermalink];
-        [self dismiss];
-        
-        if( permaLink == nil || [[permaLink trim] isEqualToString:@""] ) return; //this should never happen
-        
         MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
         controller.mailComposeDelegate = self;
         
@@ -252,12 +247,8 @@
         if (controller) [self presentModalViewController:controller animated:YES];
         [controller release];
     } else if ( buttonIndex == 2 ) {
-        if (webView.request.URL.absoluteString != nil) {
-			NSString *permaLink = [self getDocumentPermalink];
-            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-            pasteboard.string = permaLink;
-			[self dismiss];
-        }
+        UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+        pasteboard.string = permaLink;
     }
 }
 
