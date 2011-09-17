@@ -524,6 +524,8 @@ pt.lproj/Localizable.strings -text svneol=unset#unset
 /quickPhotoButtonHighlighted@2x.png -text
 /quickPhotoTextView.png -text svneol=unset#unset
 /quickPhotoTextView@2x.png -text svneol=unset#unset
+/read.png -text
+/read@2x.png -text
 /redoDisabled~ipad.png -text svneol=unset#unset
 /redo~ipad.png -text svneol=unset#unset
 /right.png -text svneol=unset#unset

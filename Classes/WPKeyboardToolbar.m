@@ -28,8 +28,12 @@
 #define WPKT_BUTTON_HEIGHT_IPAD 65.0f
 
 // Button Width is icon width + padding
-#define WPKT_BUTTON_PADDING_IPAD 13.0f
+#define WPKT_BUTTON_PADDING_IPAD 18.0f
 #define WPKT_BUTTON_PADDING_IPHONE 10.0f
+
+// Button margin
+#define WPKT_BUTTON_MARGIN_IPHONE 4.0f
+#define WPKT_BUTTON_MARGIN_IPAD 0.0f
 
 #pragma mark -
 
@@ -104,11 +108,12 @@
     CGFloat x = 4.0f;
     CGFloat padding = DeviceIsPad() ? WPKT_BUTTON_PADDING_IPAD : WPKT_BUTTON_PADDING_IPHONE;
     CGFloat height = DeviceIsPad() ? WPKT_BUTTON_HEIGHT_IPAD : WPKT_BUTTON_HEIGHT_PORTRAIT;
+	CGFloat margin = DeviceIsPad() ? WPKT_BUTTON_MARGIN_IPAD : WPKT_BUTTON_MARGIN_IPHONE;
     if (boldButton == nil) {
         boldButton = [WPKeyboardToolbarButtonItem button];
         [boldButton setImageName:@"toolbarBold"];
         boldButton.frame = CGRectMake(x, 0, boldButton.imageView.image.size.width + padding, height);
-        x += boldButton.frame.size.width + 4;
+        x += boldButton.frame.size.width + margin;
         boldButton.actionTag = @"strong";
         boldButton.actionName = NSLocalizedString(@"bold", @"");
         [boldButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -117,7 +122,7 @@
         italicsButton = [WPKeyboardToolbarButtonItem button];
         [italicsButton setImageName:@"toolbarItalic"];
         italicsButton.frame = CGRectMake(x, 0, italicsButton.imageView.image.size.width + padding, height);
-        x += italicsButton.frame.size.width + 4;
+        x += italicsButton.frame.size.width + margin;
         italicsButton.actionTag = @"em";
         italicsButton.actionName = NSLocalizedString(@"italic", @"");
         [italicsButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -126,7 +131,7 @@
         linkButton = [WPKeyboardToolbarButtonItem button];
         [linkButton setImageName:@"toolbarLink"];
         linkButton.frame = CGRectMake(x, 0, linkButton.imageView.image.size.width + padding, height);
-        x += linkButton.frame.size.width + 4;
+        x += linkButton.frame.size.width + margin;
         linkButton.actionTag = @"link";
         linkButton.actionName = NSLocalizedString(@"link", @"");
         [linkButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -135,7 +140,7 @@
         quoteButton = [WPKeyboardToolbarButtonItem button];
         [quoteButton setImageName:@"toolbarBlockquote"];
         quoteButton.frame = CGRectMake(x, 0, quoteButton.imageView.image.size.width + padding, height);
-		x += quoteButton.frame.size.width + 4;
+		x += quoteButton.frame.size.width + margin;
         quoteButton.actionTag = @"blockquote";
         quoteButton.actionName = NSLocalizedString(@"quote", @"");
         [quoteButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -144,7 +149,7 @@
         delButton = [WPKeyboardToolbarButtonItem button];
         [delButton setImageName:@"toolbarDel"];
         delButton.frame = CGRectMake(x, 0, delButton.imageView.image.size.width + padding, height);
-        x += delButton.frame.size.width + 4;
+        x += delButton.frame.size.width + margin;
         delButton.actionTag = @"del";
         delButton.actionName = NSLocalizedString(@"del", @"");
         [delButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -154,12 +159,13 @@
 - (void)buildExtendedButtons {
     CGFloat padding = DeviceIsPad() ? WPKT_BUTTON_PADDING_IPAD : WPKT_BUTTON_PADDING_IPHONE;
     CGFloat height = DeviceIsPad() ? WPKT_BUTTON_HEIGHT_IPAD : WPKT_BUTTON_HEIGHT_PORTRAIT;
+	CGFloat margin = DeviceIsPad() ? WPKT_BUTTON_MARGIN_IPAD : WPKT_BUTTON_MARGIN_IPHONE;
     CGFloat x = 4.0f;
     if (ulButton == nil) {
         ulButton = [WPKeyboardToolbarButtonItem button];
         [ulButton setImageName:@"toolbarUl"];
         ulButton.frame = CGRectMake(x, 0, ulButton.imageView.image.size.width + padding, height);
-        x += ulButton.frame.size.width + 4;
+        x += ulButton.frame.size.width + margin;
         ulButton.actionTag = @"ul";
         ulButton.actionName = NSLocalizedString(@"unordered list", @"");
         [ulButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -168,7 +174,7 @@
         olButton = [WPKeyboardToolbarButtonItem button];
         [olButton setImageName:@"toolbarOl"];
         olButton.frame = CGRectMake(x, 0, olButton.imageView.image.size.width + padding, height);
-        x += olButton.frame.size.width + 4;
+        x += olButton.frame.size.width + margin;
         olButton.actionTag = @"ol";
         olButton.actionName = NSLocalizedString(@"ordered list", @"");
         [olButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -177,7 +183,7 @@
         liButton = [WPKeyboardToolbarButtonItem button];
         [liButton setImageName:@"toolbarLi"];
         liButton.frame = CGRectMake(x, 0, liButton.imageView.image.size.width + padding, height);
-        x += liButton.frame.size.width + 4;
+        x += liButton.frame.size.width + margin;
         liButton.actionTag = @"li";
         liButton.actionName = NSLocalizedString(@"list item", @"");
         [liButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -186,7 +192,7 @@
         codeButton = [WPKeyboardToolbarButtonItem button];
         [codeButton setImageName:@"toolbarCode"];
         codeButton.frame = CGRectMake(x, 0, codeButton.imageView.image.size.width + padding, height);
-        x += codeButton.frame.size.width + 4;
+        x += codeButton.frame.size.width + margin;
         codeButton.actionTag = @"code";
         codeButton.actionName = NSLocalizedString(@"code", @"");
         [codeButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -195,7 +201,7 @@
         moreButton = [WPKeyboardToolbarButtonItem button];
         [moreButton setImageName:@"toolbarMore"];
         moreButton.frame = CGRectMake(x, 0, moreButton.imageView.image.size.width + padding, height);
-        x += moreButton.frame.size.width + 4;
+        x += moreButton.frame.size.width + margin;
         moreButton.actionTag = @"more";
         moreButton.actionName = NSLocalizedString(@"more", @"");
         [moreButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -395,6 +401,7 @@
         
         frame = extendedView.frame;
         frame.origin.x = mainView.frame.origin.x + mainView.frame.size.width;
+		if (DeviceIsPad()) frame.origin.x -= 4; // Dirty fix, but works for now
         if (self.frame.size.height < WPKT_HEIGHT_IPHONE_PORTRAIT) {
             frame.origin.y = -1;
             frame.size.height = WPKT_BUTTON_HEIGHT_LANDSCAPE;

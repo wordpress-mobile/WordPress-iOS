@@ -69,7 +69,7 @@
         
         CGRect selectorImageFrame = self.bounds;
         selectorImageFrame.origin.x = selectorImageFrame.size.width - 40;
-        selectorImageFrame.size.width = 30;
+        selectorImageFrame.size.width = 15;
         selectorImageView = [[UIImageView alloc] initWithFrame:selectorImageFrame];
         selectorImageView.contentMode = UIViewContentModeCenter;
         selectorImageView.image = [UIImage imageNamed:@"downArrow"];

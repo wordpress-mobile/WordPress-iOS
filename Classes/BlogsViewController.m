@@ -328,6 +328,7 @@
     }
     if (wantsReaderButton && readerButton == nil) {
         readerButton = [QuickPhotoButton button];
+		[readerButton setImage:[UIImage imageNamed:@"read.png"] forState:UIControlStateNormal];
         CGFloat width = wantsPhotoButton ? self.view.bounds.size.width / 2 : self.view.bounds.size.width;
         readerButton.frame = CGRectMake(0, self.view.bounds.size.height - 83, width, 83);
         [readerButton setTitle:NSLocalizedString(@"Read", @"") forState:UIControlStateNormal];
