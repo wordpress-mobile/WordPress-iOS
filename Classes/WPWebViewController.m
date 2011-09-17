@@ -228,7 +228,10 @@
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	
 	if (buttonIndex == 0) {
-        [[UIApplication sharedApplication] openURL:self.url];
+		NSString *permaLink = [self getDocumentPermalink];
+		NSURL *permaLinkURL;
+		permaLinkURL = [[[NSURL alloc] initWithString:(NSString *)permaLink] autorelease];
+        [[UIApplication sharedApplication] openURL:(NSURL *)permaLinkURL];
         [self dismiss];
 		
     } else if (buttonIndex == 1) {
@@ -250,8 +253,10 @@
         [controller release];
     } else if ( buttonIndex == 2 ) {
         if (webView.request.URL.absoluteString != nil) {
+			NSString *permaLink = [self getDocumentPermalink];
             UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-            pasteboard.string = webView.request.URL.absoluteString; 
+            pasteboard.string = permaLink;
+			[self dismiss];
         }
     }
 }
@@ -280,7 +285,6 @@
 }
 
 - (NSString*) getDocumentPermalink {
-   
     NSString *permaLink = [webView stringByEvaluatingJavaScriptFromString:@"Reader.get_article_permalink();"];
     if ( permaLink == nil || [[permaLink trim] isEqualToString:@""]) {
         // try to get the loaded URL within the webView
