@@ -216,11 +216,11 @@
     [self setLoading:NO];
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
+- (void)webViewDidFinishLoad:(UIWebView *)aWebView {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self setLoading:NO];
-    self.backButton.enabled = webView.canGoBack;
-    self.forwardButton.enabled = webView.canGoForward;
+    self.backButton.enabled = aWebView.canGoBack;
+    self.forwardButton.enabled = aWebView.canGoForward;
 }
 
 #pragma mark - UIActionSheetDelegate
