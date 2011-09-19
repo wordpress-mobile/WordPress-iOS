@@ -604,6 +604,7 @@ sv.lproj/Localizable.strings -text svneol=unset#unset
 /undo~ipad.png -text svneol=unset#unset
 /up.png -text
 /up@2x.png -text
+/update-translations.rb -text
 /video_thumbnail.png -text
 /welcome_bg.png -text
 /welcome_bg@2x.png -text
