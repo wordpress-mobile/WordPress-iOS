@@ -87,7 +87,8 @@
 
 - (void) saveImage{
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    UIImageWriteToSavedPhotosAlbum(self.photo, nil, nil, nil);
+    if (self.sourceType == UIImagePickerControllerSourceTypeCamera)
+        UIImageWriteToSavedPhotosAlbum(self.photo, nil, nil, nil);
     Media *media;
     
     Blog *blog = self.blogSelector.activeBlog;
