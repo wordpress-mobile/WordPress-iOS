@@ -71,16 +71,7 @@
         [request setHTTPMethod:@"POST"];
     }
 
-    [self.webView loadRequest:request];
-    
-    if (self.isReader) {
-        // ping stats on refresh of reader
-        NSString *statsURL = [NSString stringWithFormat:@"%@%@" , kMobileReaderURL, @"?template=stats&stats_name=home_page_refresh"];
-        NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL  ]] autorelease];
-        WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
-        [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
-        [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
-    }
+    [self.webView loadRequest:request]; 
 }
 
 - (void)setUrl:(NSURL *)theURL {
@@ -143,6 +134,14 @@
 }
 
 - (void)reload {
+    if (self.isReader) {
+        // ping stats on refresh of reader
+        NSString *statsURL = [NSString stringWithFormat:@"%@%@" , kMobileReaderURL, @"?template=stats&stats_name=home_page_refresh"];
+        NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL  ]] autorelease];
+        WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
+        [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
+        [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+    }
     [webView reload];
 }
 
@@ -158,14 +157,6 @@
     if (self.url) {
         [self refreshWebView];
     }
-    if (self.isReader) {
-        // ping stats on load of reader
-        NSString *statsURL = [NSString stringWithFormat:@"%@%@" , kMobileReaderURL, @"?template=stats&stats_name=home_page"];
-        NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL]] autorelease];
-        WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
-        [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
-        [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -174,6 +165,15 @@
     
     [self setStatusTimer:[NSTimer timerWithTimeInterval:0.5 target:self selector:@selector(setNavButtonsStatus:) userInfo:nil repeats:YES]];
 	[[NSRunLoop currentRunLoop] addTimer:[self statusTimer] forMode:NSDefaultRunLoopMode];
+    
+    if (self.isReader) {
+        // ping stats on load of reader
+        NSString *statsURL = [NSString stringWithFormat:@"%@%@" , kMobileReaderURL, @"?template=stats&stats_name=home_page"];
+        NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL]] autorelease];
+        WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
+        [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
+        [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
