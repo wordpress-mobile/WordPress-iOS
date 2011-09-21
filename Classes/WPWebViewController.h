@@ -27,15 +27,12 @@
 @property (nonatomic, retain) IBOutlet UINavigationBar *iPadNavBar;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *backButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *forwardButton;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *optionsButton;
 @property (retain, nonatomic) NSTimer *statusTimer;
 
-- (IBAction)showLinkOptions;
-- (IBAction)dismiss;
-- (IBAction)goForward;
-- (IBAction)goBack;
-- (NSString*) getDocumentPermalink;
-- (NSString*) getDocumentTitle;
-- (void)setNavButtonsStatus:(NSTimer*)timer;
-- (BOOL) setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field;
+- (IBAction) showLinkOptions;
+- (IBAction) dismiss;
+- (IBAction) goForward;
+- (IBAction) goBack;
 
 @end

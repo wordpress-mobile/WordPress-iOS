@@ -8,16 +8,25 @@
 
 #import "WPWebViewController.h"
 
+@interface WPWebViewController (Private)
+- (NSString*) getDocumentPermalink;
+- (NSString*) getDocumentTitle;
+- (void)upgradeButtonsAndLabels:(NSTimer*)timer;
+- (BOOL)setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field;
+- (void)refreshWebView;
+- (void)setLoading:(BOOL)loading;
+@end
 
 @implementation WPWebViewController
 @synthesize url,username,password;
 @synthesize webView, toolbar, statusTimer;
 @synthesize loadingView, loadingLabel, activityIndicator;
 @synthesize needsLogin, isReader;
-@synthesize iPadNavBar, backButton, forwardButton;
+@synthesize iPadNavBar, backButton, forwardButton, optionsButton;
 
 - (void)dealloc
 {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     self.url = nil;
     self.username = nil;
     self.password = nil;
@@ -45,6 +54,142 @@
 
 #pragma mark - View lifecycle
 
+- (void)viewDidLoad
+{
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    [super viewDidLoad];
+    isLoading = YES;
+    [self setLoading:NO];
+    self.backButton.enabled = NO;
+    self.forwardButton.enabled = NO;
+    self.optionsButton.enabled = NO;
+    self.webView.scalesPageToFit = YES;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    [super viewWillAppear:animated];
+         
+    if (self.url) {
+        [self refreshWebView];
+    }
+    
+    if (self.isReader) {
+        // ping stats on load of reader
+        NSString *statsURL = [NSString stringWithFormat:@"%@%@" , kMobileReaderURL, @"?template=stats&stats_name=home_page"];
+        NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL]] autorelease];
+        WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
+        [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
+        [[[NSURLConnection alloc] initWithRequest:request delegate:nil] autorelease];
+    
+        //the document is not loaded yet, so we forced the title
+        if (DeviceIsPad()) {
+            [iPadNavBar.topItem setTitle:NSLocalizedString(@"Read", @"")];
+        }
+        else
+            self.navigationItem.title = NSLocalizedString(@"Read", @"");
+    
+    }
+    
+    [self setStatusTimer:[NSTimer timerWithTimeInterval:0.75 target:self selector:@selector(upgradeButtonsAndLabels:) userInfo:nil repeats:YES]];
+	[[NSRunLoop currentRunLoop] addTimer:[self statusTimer] forMode:NSDefaultRunLoopMode];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+	[self setStatusTimer:nil];
+    [super viewWillDisappear:animated];
+}
+
+- (void)viewDidUnload
+{
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];  
+    self.webView.delegate = nil;
+    self.webView = nil;
+    self.toolbar = nil;
+    self.loadingView = nil;
+    self.loadingLabel = nil;
+    self.activityIndicator = nil;
+    self.iPadNavBar = nil;
+    self.statusTimer = nil;
+    self.optionsButton = nil;
+    self.backButton = nil;
+    self.forwardButton = nil;
+    [super viewDidUnload];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return YES;
+}
+
+
+#pragma mark - webView related methods
+
+- (void)setStatusTimer:(NSTimer *)timer
+{
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+	if (statusTimer && timer != statusTimer) {
+		[statusTimer invalidate];
+		[statusTimer release];
+	}
+	statusTimer = [timer retain];
+}
+
+- (void)upgradeButtonsAndLabels:(NSTimer*)timer {
+ //   [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    self.backButton.enabled = webView.canGoBack;
+    self.forwardButton.enabled = webView.canGoForward;
+    if (!isLoading) {
+        if (DeviceIsPad()) {
+            [iPadNavBar.topItem setTitle:[self getDocumentTitle]];
+        }
+        else
+            self.navigationItem.title = [self getDocumentTitle];
+    }
+}
+
+- (NSString*) getDocumentPermalink {
+    NSString *permaLink = [webView stringByEvaluatingJavaScriptFromString:@"Reader.get_article_permalink();"];
+    if ( permaLink == nil || [[permaLink trim] isEqualToString:@""]) {
+        // try to get the loaded URL within the webView
+        NSURLRequest *currentRequest = [webView request];
+        if ( currentRequest != nil) {
+            NSURL *currentURL = [currentRequest URL];
+           // NSLog(@"Current URL is %@", currentURL.absoluteString);
+            permaLink = currentURL.absoluteString;
+        }
+        
+        //make sure we are not sharing URL like this: http://en.wordpress.com/reader/mobile/?v=post-16841252-1828
+        if ([permaLink rangeOfString:@"wordpress.com/reader/mobile/"].location != NSNotFound) { 
+            permaLink = kMobileReaderURL;                 
+        } 
+    }
+    
+    return permaLink;
+}   
+
+- (NSString*) getDocumentTitle {
+     
+    NSString *title = [webView stringByEvaluatingJavaScriptFromString:@"Reader.get_article_title();"];
+    
+    if( title != nil && [[title trim] isEqualToString:@""] == false ) {
+        return [title trim];
+    } else {
+        //load the title from the document
+        title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"]; 
+        
+        if ( title != nil && [[title trim] isEqualToString:@""] == false)
+            return title;
+        else {
+             NSString* permaLink = [self getDocumentPermalink];
+             return ( permaLink != nil) ? permaLink : @"";
+        }
+    }
+    
+    return @"";
+}
+
 - (void)refreshWebView {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     NSURL *webURL;
@@ -70,7 +215,7 @@
         [request addValue:@"*/*" forHTTPHeaderField:@"Accept"];
         [request setHTTPMethod:@"POST"];
     }
-
+    
     [self.webView loadRequest:request]; 
 }
 
@@ -88,7 +233,6 @@
 - (void)setLoading:(BOOL)loading {
     if (isLoading == loading)
         return;
-    
     CGRect frame = self.loadingView.frame;
     if (loading) {
         frame.origin.y -= frame.size.height;
@@ -123,11 +267,11 @@
 
 - (void)showLinkOptions{
     NSString* permaLink = [self getDocumentPermalink];
-        
+    
     if( permaLink == nil || [[permaLink trim] isEqualToString:@""] ) return; //this should never happen
-        
+    
     UIActionSheet *linkOptionsActionSheet = [[UIActionSheet alloc] initWithTitle:permaLink delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Open in Safari", @"Open in Safari"), NSLocalizedString(@"Mail Link", @"Mail Link"),  NSLocalizedString(@"Copy Link", @"Copy Link"), nil];
-        
+    
     linkOptionsActionSheet .actionSheetStyle = UIActionSheetStyleBlackOpaque;
     [linkOptionsActionSheet showInView:self.view];
     [linkOptionsActionSheet  release];
@@ -140,65 +284,11 @@
         NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL  ]] autorelease];
         WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
         [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
-        [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+        [[[NSURLConnection alloc] initWithRequest:request delegate:nil] autorelease];
     }
     [webView reload];
 }
 
-- (void)viewDidLoad
-{
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [super viewDidLoad];
-    isLoading = YES;
-    [self setLoading:NO];
-    self.backButton.enabled = NO;
-    self.forwardButton.enabled = NO;
-    self.webView.scalesPageToFit = YES;
-    if (self.url) {
-        [self refreshWebView];
-    }
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [super viewWillAppear:animated];
-    
-    [self setStatusTimer:[NSTimer timerWithTimeInterval:0.5 target:self selector:@selector(setNavButtonsStatus:) userInfo:nil repeats:YES]];
-	[[NSRunLoop currentRunLoop] addTimer:[self statusTimer] forMode:NSDefaultRunLoopMode];
-    
-    if (self.isReader) {
-        // ping stats on load of reader
-        NSString *statsURL = [NSString stringWithFormat:@"%@%@" , kMobileReaderURL, @"?template=stats&stats_name=home_page"];
-        NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL]] autorelease];
-        WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
-        [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
-        [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
-    }
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-	[super viewWillDisappear:animated];
-    [self setStatusTimer:nil];
-}
-
-- (void)viewDidUnload
-{
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [super viewDidUnload];
-    self.webView = nil;
-    self.toolbar = nil;
-    self.loadingView = nil;
-    self.loadingLabel = nil;
-    self.activityIndicator = nil;
-    self.iPadNavBar = nil;
-    self.statusTimer = nil;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return YES;
-}
 
 #pragma mark - UIWebViewDelegate
 
@@ -214,13 +304,13 @@
     if (isLoading && ([error code] != -999))
         [[NSNotificationCenter defaultCenter] postNotificationName:@"OpenWebPageFailed" object:error userInfo:nil];
     [self setLoading:NO];
+    self.optionsButton.enabled = YES;
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self setLoading:NO];
-    self.backButton.enabled = aWebView.canGoBack;
-    self.forwardButton.enabled = aWebView.canGoForward;
+    self.optionsButton.enabled = YES;
 }
 
 #pragma mark - UIActionSheetDelegate
@@ -254,70 +344,14 @@
 }
 
 
+#pragma mark - MFMailComposeViewControllerDelegate
+
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
 {
 	[self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark - custom methods
-- (void)setStatusTimer:(NSTimer *)timer
-{
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-	if (statusTimer && timer != statusTimer) {
-		[statusTimer invalidate];
-		[statusTimer release];
-	}
-	statusTimer = [timer retain];
-}
-
-
-- (void)setNavButtonsStatus:(NSTimer*)timer {
-    self.backButton.enabled = webView.canGoBack;
-    self.forwardButton.enabled = webView.canGoForward;
-}
-
-- (NSString*) getDocumentPermalink {
-    NSString *permaLink = [webView stringByEvaluatingJavaScriptFromString:@"Reader.get_article_permalink();"];
-    if ( permaLink == nil || [[permaLink trim] isEqualToString:@""]) {
-        // try to get the loaded URL within the webView
-        NSURLRequest *currentRequest = [webView request];
-        if ( currentRequest != nil) {
-            NSURL *currentURL = [currentRequest URL];
-            NSLog(@"Current URL is %@", currentURL.absoluteString);
-            permaLink = currentURL.absoluteString;
-        }
-        
-        //make sure we are not sharing URL like this: http://en.wordpress.com/reader/mobile/?v=post-16841252-1828
-        if ([permaLink rangeOfString:@"wordpress.com/reader/mobile/"].location != NSNotFound) { 
-             permaLink = kMobileReaderURL;                 
-        } 
-    }
-    
-    return permaLink;
-}   
-
-- (NSString*) getDocumentTitle {
-    
-    NSString* permaLink = [self getDocumentPermalink];
-    
-    NSString *title = [webView stringByEvaluatingJavaScriptFromString:@"Reader.get_article_title();"];
-
-    if( title != nil && [[title trim] isEqualToString:@""] == false ) {
-        return [title trim];
-    } else {
-        //load the title from the document
-        title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"]; 
-        
-        if ( title != nil && [[title trim] isEqualToString:@""] == false)
-            return title;
-        else
-            return ( permaLink != nil) ? permaLink : @"";
-    }
-    
-    return @"";
-}
-
-
 //Returns true if the ToAddress field was found any of the sub views and made first responder
 //passing in @"MFComposeSubjectView"     as the value for field makes the subject become first responder 
 //passing in @"MFComposeTextContentView" as the value for field makes the body become first responder 

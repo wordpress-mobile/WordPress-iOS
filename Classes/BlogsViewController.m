@@ -7,7 +7,6 @@
 @interface BlogsViewController (Private)
 - (void) cleanUnusedMediaFileFromTmpDir;
 - (void)setupPhotoButton;
-- (void)setupReader;
 @end
 
 @implementation BlogsViewController
@@ -339,44 +338,33 @@
         [readerButton retain];
         [self.view addSubview:readerButton];
     }
-    if (wantsReaderButton) {
-        [self setupReader];
-    } else if (readerViewController != nil) {
-        [readerViewController release]; readerViewController = nil;
-        [readerNavigationController release]; readerNavigationController = nil;
-    }
 }
 
 - (void)didChangeStatusBarFrame:(NSNotification *)notification {
 	[self performSelectorOnMainThread:@selector(setupPhotoButton) withObject:nil waitUntilDone:NO];
 }
 
-- (void)setupReader {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    if (readerViewController == nil) {
-        NSError *error = nil;
-        NSString *wpcom_username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-        NSString *wpcom_password = [SFHFKeychainUtils getPasswordForUsername:wpcom_username
-                                                              andServiceName:@"WordPress.com"
-                                                                       error:&error];
-        if (wpcom_username && wpcom_password) {
-            readerViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
-            readerViewController.needsLogin = YES;
-            readerViewController.username = wpcom_username;
-            readerViewController.password = wpcom_password;
-            readerViewController.isReader = YES;
-            readerViewController.url = [NSURL URLWithString: [NSString stringWithFormat:@"%@%@" , kMobileReaderURL, @"?preload=false"] ];
-            [readerViewController view]; // Force web view preload
-            readerNavigationController = [[UINavigationController alloc] initWithRootViewController:readerViewController];
-        }
-    }
-}
-
 - (void)showReader {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [self setupReader];
-    
-    [self.navigationController pushViewController:readerViewController animated:YES];
+     
+    NSError *error = nil;
+    NSString *wpcom_username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
+    NSString *wpcom_password = [SFHFKeychainUtils getPasswordForUsername:wpcom_username
+                                                          andServiceName:@"WordPress.com"
+                                                                   error:&error];
+    if (wpcom_username && wpcom_password) {
+        WPWebViewController   *areaderViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
+        areaderViewController.needsLogin = YES;
+        areaderViewController.username = wpcom_username;
+        areaderViewController.password = wpcom_password;
+        areaderViewController.isReader = YES;
+        areaderViewController.url = [NSURL URLWithString: [NSString stringWithFormat:@"%@%@" , kMobileReaderURL, @"?preload=false"] ];
+        //            [readerViewController view]; // Force web view preload
+        UINavigationController *areaderNavigationController = [[UINavigationController alloc] initWithRootViewController:areaderViewController];
+        [self.navigationController pushViewController:areaderViewController animated:YES];
+        [areaderNavigationController release];
+        [areaderViewController release];
+    }
 }
 
 - (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType {
@@ -735,8 +723,6 @@
     self.tableView = nil;
     [quickPicturePost release];
     [uploadController release];
-    [readerViewController release];
-    [readerNavigationController release];
     [super dealloc];
 }
 
