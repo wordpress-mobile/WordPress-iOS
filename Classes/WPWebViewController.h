@@ -9,10 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface WPWebViewController : UIViewController<UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
-    BOOL isLoading;
+    BOOL isLoading, isTransitioning;
     IBOutlet UIWebView *webView;
     // This timer checks the nav buttons every 0.5 seconds, and updates them
 	NSTimer *statusTimer;
+    
 }
 @property (nonatomic,retain) NSURL *url;
 @property (nonatomic,retain) NSString *username;

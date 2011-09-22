@@ -15,6 +15,7 @@
 - (BOOL)setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field;
 - (void)refreshWebView;
 - (void)setLoading:(BOOL)loading;
+- (void)goBackToBlogsLists;
 @end
 
 @implementation WPWebViewController
@@ -48,6 +49,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil ];
     if (self) {
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload)] autorelease];
+        
+        self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(goBackToBlogsList)] autorelease];
     }
     return self;
 }   
@@ -69,7 +72,14 @@
 - (void)viewWillAppear:(BOOL)animated {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewWillAppear:animated];
-         
+   
+    //set the title of the back button
+    NSArray *tt = self.navigationController.viewControllers;
+    NSInteger pos =  [tt count] - 2 ;
+    if ( pos > -1 ) {
+        self.navigationItem.leftBarButtonItem.title = [[tt objectAtIndex:pos] title] ;
+    }
+           
     if (self.url) {
         [self refreshWebView];
     }
@@ -89,8 +99,7 @@
         else
             self.navigationItem.title = NSLocalizedString(@"Read", @"");
     
-    }
-    
+    }   
     [self setStatusTimer:[NSTimer timerWithTimeInterval:0.75 target:self selector:@selector(upgradeButtonsAndLabels:) userInfo:nil repeats:YES]];
 	[[NSRunLoop currentRunLoop] addTimer:[self statusTimer] forMode:NSDefaultRunLoopMode];
 }
@@ -120,9 +129,13 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+    if (DeviceIsPad())
+        return YES;
+    else if ( isTransitioning ) {
+        return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    }
     return YES;
 }
-
 
 #pragma mark - webView related methods
 
@@ -251,6 +264,23 @@
             self.navigationItem.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
     }
     isLoading = loading;
+}
+
+- (void) goBackToBlogsList {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    
+    if (DeviceIsPad() == NO) {
+		UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
+		if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
+			isTransitioning = YES;
+			UIViewController *garbageController = [[[UIViewController alloc] init] autorelease]; 
+			[self.navigationController pushViewController:garbageController animated:NO]; 
+			[self.navigationController popViewControllerAnimated:NO];
+			isTransitioning = NO;
+		}
+	}
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)dismiss {

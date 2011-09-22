@@ -359,10 +359,7 @@
         areaderViewController.password = wpcom_password;
         areaderViewController.isReader = YES;
         areaderViewController.url = [NSURL URLWithString: [NSString stringWithFormat:@"%@%@" , kMobileReaderURL, @"?preload=false"] ];
-        //            [readerViewController view]; // Force web view preload
-        UINavigationController *areaderNavigationController = [[UINavigationController alloc] initWithRootViewController:areaderViewController];
         [self.navigationController pushViewController:areaderViewController animated:YES];
-        [areaderNavigationController release];
         [areaderViewController release];
     }
 }
