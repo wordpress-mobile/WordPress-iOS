@@ -17,7 +17,7 @@
 #define kTextFieldFont          @"Arial"
 #define kTextViewPlaceholder	@"Tap here to begin writing."
 #define kAppStoreURL			@"http://itunes.apple.com/us/app/wordpress/id335703880?mt=8"
-
+#define kNotificationAuthURL	@"https://ercolid.wordpress.com/xmlrpc.php"
 #define kMobileReaderURL		@"https://en.wordpress.com/reader/mobile/"
 
 #define kDisabledTextColor      [UIColor grayColor]

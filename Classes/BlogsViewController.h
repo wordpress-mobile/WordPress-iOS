@@ -39,5 +39,4 @@
 - (void)quickPhotoPost;
 - (void)uploadQuickPhoto:(Post *)post;
 - (void)showQuickPhotoButton:(BOOL)delay;
-
 @end

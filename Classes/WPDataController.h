@@ -75,8 +75,8 @@ typedef enum {
 
 #pragma mark -
 #pragma mark Push Notifications
-- (void)registerForPushNotifications;
-- (void)registerForPushNotificationsInBackground;
+- (void)registerForPushNotifications:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password token:(NSString *)token deviceUDID:(NSString *)deviceUDID;
+- (void)setBlogsForPushNotifications:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password token:(NSString *)token blogsID:(NSArray *) blogsID;
 
 #pragma mark -
 #pragma mark XMLRPC

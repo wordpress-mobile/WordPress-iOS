@@ -365,6 +365,7 @@
 	else {
 		[appDelegate.navigationController popToRootViewControllerAnimated:YES];
 	}
+    [appDelegate sendPushNotificationBlogsListInBackground]; 
 }
 
 - (void)createBlog:(NSDictionary *)blogInfo {

@@ -189,36 +189,30 @@
     return nil;    
 }
 
-- (void)registerForPushNotifications {
-	[self performSelectorInBackground:@selector(registerForPushNotificationsInBackground) withObject:nil];
+- (void)registerForPushNotifications:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password token:(NSString *)token deviceUDID:(NSString *)deviceUDID {   
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
+    [xmlrpcRequest setMethod:@"wpcom.mobile_push_register_token" withObjects:[NSArray arrayWithObjects:username, password, token, deviceUDID, @"apple", nil]];
+    retryOnTimeout = YES;
+    id result = [self executeXMLRPCRequest:xmlrpcRequest];
+    
+    // We want this to fail silently.
+    if(![result isKindOfClass:[NSError class]])
+        NSLog(@"successfully registered for push notifications with WordPress.com: %@", result);
+    else
+        NSLog(@"failed to register for push notifications with WordPress.com: %@", result);
 }
 
-- (void)registerForPushNotificationsInBackground {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	if([[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"] != nil) {
-		XMLRPCRequest *req = [[[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:@"http://frsh.wordpress.com/xmlrpc.php"]] autorelease];
-		NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-		NSArray *result;
-		NSError *pwError;
-		NSArray *params = [NSArray arrayWithObjects:
-						   username, 
-						   [SFHFKeychainUtils getPasswordForUsername:username andServiceName:@"WordPress.com" error:&pwError], 
-						   [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"],
-						   nil];
-		[req setMethod:@"wpcom.addiOSDeviceToken" withObjects:params];
-		
-        retryOnTimeout = YES;
-		result = [self executeXMLRPCRequest:req];
-		
-		// We want this to fail silently.
-		if(![result isKindOfClass:[NSError class]])
-			NSLog(@"successfully registered for push notifications with WordPress.com: %@", result);
-		else
-			NSLog(@"failed to register for push notifications with WordPress.com: %@", result);
-	}
-	
-	[pool release];
+- (void)setBlogsForPushNotifications:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password token:(NSString *)token blogsID:(NSArray *) blogsID {   
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
+    [xmlrpcRequest setMethod:@"wpcom.mobile_push_set_blogs_list" withObjects:[NSArray arrayWithObjects:username, password, token, blogsID, @"apple", nil]];
+    retryOnTimeout = YES;
+    id result = [self executeXMLRPCRequest:xmlrpcRequest];
+    
+    // We want this to fail silently.
+    if(![result isKindOfClass:[NSError class]])
+        NSLog(@"successfully sent the blogIDs for push notifications with WordPress.com: %@", result);
+    else
+        NSLog(@"failed to sent blogIDs for notifications with WordPress.com: %@", result);
 }
 
 - (BOOL)authenticateUser:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password {

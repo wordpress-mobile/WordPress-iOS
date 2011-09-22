@@ -126,6 +126,7 @@
 
 - (void)blogsRefreshNotificationReceived:(NSNotification *)notification {
 	[resultsController performFetch:nil];
+    [appDelegate sendPushNotificationBlogsListInBackground]; 
 	[self checkEditButton];
 }
 
@@ -250,6 +251,7 @@
 				WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
 				exit(-1);
 			}
+            [appDelegate sendPushNotificationBlogsListInBackground];
 		} else {
 			//the blog is using the network connection and cannot be stoped, show a message to the user
 			UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info alert title")

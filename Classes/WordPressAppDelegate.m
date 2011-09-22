@@ -98,8 +98,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 #pragma mark -
 #pragma mark UIApplicationDelegate Methods
-
-- (void)applicationDidFinishLaunching:(UIApplication *)application {	
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
 #ifndef DEBUG
 //#warning Need Flurry api key for distribution
 #endif
@@ -244,10 +243,20 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	[window makeKeyAndVisible];
 	
 	// Register for push notifications
-	/*[[UIApplication sharedApplication]
+	[[UIApplication sharedApplication]
 	 registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
 										 UIRemoteNotificationTypeSound |
-										 UIRemoteNotificationTypeAlert)];*/
+										 UIRemoteNotificationTypeAlert)];
+    
+    //Information related to the reason for its launching, which can include things other than notifications.
+    NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    if (remoteNotif) {
+        NSLog(@"Launched with a remote notification as parameter:  %@", remoteNotif);
+        [self openNotificationScreenWithOptions:remoteNotif];  
+    }
+    //the guide say: NO if the application cannot handle the URL resource, otherwise return YES. 
+    //The return value is ignored if the application is launched as a result of a remote notification.
+    return YES;
 }
 
 - (void)handleCrashReport {
@@ -873,8 +882,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	[defaults synchronize];
 }
 
-#pragma mark Push Notification delegate
-
+#pragma mark Push Notification 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 	// Send the deviceToken to our server...
 	NSString *myToken = [[[[deviceToken description]
@@ -886,10 +894,166 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	[[NSUserDefaults standardUserDefaults] setObject:myToken forKey:@"apnsDeviceToken"];
 	NSLog(@"Registered for push notifications and stored device token: %@", 
 		  [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"]);
+
+    [self sendApnsTokenInBackground];
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
 	NSLog(@"Failed to register for push notifications: %@", error);
+}
+
+// The notification is delivered when the application is running
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    NSLog(@"didReceiveRemoteNotification: %@", userInfo);
+    application.applicationIconBadgeNumber = 0;
+    /*
+     {
+     aps =     {
+     alert = "New comment on test from maria";
+     badge = 1;
+     sound = default;
+     };
+     "blog_id" = 16841252;
+     "comment_id" = 571;
+     }*/
+    
+    //You can determine whether an application is launched as a result of the user tapping the action button or 
+    //whether the notification was delivered to the already-running application by examining the application state.
+    switch (application.applicationState) {
+        case UIApplicationStateActive:
+            NSLog(@"app state UIApplicationStateActive"); //application is in foreground
+            //we should show an alert since the OS doesn't show anything in this case. Unfortunately no sound!!
+            if([self isAlertRunning] != YES) {
+                [self setAlertRunning:YES];
+                NSString *msg = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
+                [self showAlertWithTitle:NSLocalizedString(@"Ciao!", @"") message:msg];
+            }
+            break;
+        case UIApplicationStateInactive:
+            NSLog(@"app state UIApplicationStateInactive"); //application is in bg and the user tapped the view button
+             [self openNotificationScreenWithOptions:userInfo];
+            break;
+        case UIApplicationStateBackground:
+            NSLog(@" app state UIApplicationStateBackground"); //?? doh!
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)sendApnsToken {
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"];
+    if( nil == token ) return; //no apns token available
+    
+    NSString *authURL = kNotificationAuthURL;   	
+    NSError *error = nil;
+	if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil) {
+        NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"] != nil) {
+            // Migrate password to keychain
+            [SFHFKeychainUtils storeUsername:username
+                                 andPassword:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"]
+                              forServiceName:@"WordPress.com"
+                              updateExisting:YES error:&error];
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_password_preference"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+        NSString *password = [SFHFKeychainUtils getPasswordForUsername:username
+                                                        andServiceName:@"WordPress.com"
+                                                                 error:&error];
+        if (password != nil) {
+            [[WPDataController sharedInstance] registerForPushNotifications: authURL
+                                                                   username:username
+                                                                   password:password
+                                                                      token:token
+                                                                 deviceUDID:[[UIDevice currentDevice] uniqueIdentifier]
+             ];
+        } 
+	}
+    [self sendPushNotificationBlogsList];
+	[pool release];
+    }
+
+//send the apns token to out backend. WP.COM credentials are used to avoid spammers
+- (void)sendApnsTokenInBackground {
+    [self performSelectorInBackground:@selector(sendApnsToken) withObject:nil];
+}
+
+
+- (void)sendPushNotificationBlogsListInBackground {
+    [self performSelectorInBackground:@selector(sendPushNotificationBlogsList) withObject:nil];
+}
+
+- (void)sendPushNotificationBlogsList {
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    
+    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"];
+    if( nil == token ) return; //no apns token available
+    
+    NSString *authURL = kNotificationAuthURL;   	
+    NSError *error = nil;
+	if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] == nil) return;
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"] != nil) {
+        // Migrate password to keychain
+        [SFHFKeychainUtils storeUsername:username
+                             andPassword:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"]
+                          forServiceName:@"WordPress.com"
+                          updateExisting:YES error:&error];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_password_preference"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    NSString *password = [SFHFKeychainUtils getPasswordForUsername:username
+                                                    andServiceName:@"WordPress.com"
+                                                             error:&error];
+    if (password == nil) return;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:self.managedObjectContext]];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"blogName" ascending:YES];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    
+    // For some reasons, the cache sometimes gets corrupted
+    // Since we don't really use sections we skip the cache here
+    NSFetchedResultsController *aResultsController = [[NSFetchedResultsController alloc]
+                                                      initWithFetchRequest:fetchRequest
+                                                      managedObjectContext:self.managedObjectContext
+                                                      sectionNameKeyPath:nil
+                                                      cacheName:nil];
+    
+    [aResultsController performFetch:nil];
+    
+    NSMutableArray *blogsID = [NSMutableArray array];
+    
+    //get a references to media files linked in a post
+    for (Blog *blog in [aResultsController fetchedObjects]) {
+        if( [blog isWPcom] ) {
+            [blogsID addObject:[blog blogID] ];
+        }
+    }
+    
+    [[WPDataController sharedInstance] setBlogsForPushNotifications: authURL
+                                                           username:username
+                                                           password:password
+                                                              token:token
+                                                            blogsID:blogsID
+     ];        
+    
+    
+    [aResultsController release];
+    [fetchRequest release];
+    [sortDescriptor release]; sortDescriptor = nil;
+    [sortDescriptors release]; sortDescriptors = nil;
+    
+    [pool release];
+
+  }
+
+- (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif {
+    NSLog(@"Opening the notification screen");
 }
 
 #pragma mark -
