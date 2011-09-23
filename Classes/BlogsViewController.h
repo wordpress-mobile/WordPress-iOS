@@ -24,6 +24,7 @@
     UILabel *uploadLabel;
     IBOutlet UITableView *tableView;
     WPWebViewController *readerViewController;
+    BOOL isTransitioning;
 }
 
 @property (nonatomic, retain) NSFetchedResultsController *resultsController;

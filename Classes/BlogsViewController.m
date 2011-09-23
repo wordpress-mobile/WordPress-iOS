@@ -7,7 +7,7 @@
 @interface BlogsViewController (Private)
 - (void) cleanUnusedMediaFileFromTmpDir;
 - (void)setupPhotoButton;
-- (void)setupReader; 
+- (void)setupReader;
 @end
 
 @implementation BlogsViewController
@@ -130,12 +130,12 @@
 	[self checkEditButton];
 }
 
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     if (DeviceIsPad())
 		return YES;
-	
-	return NO;
+    else {
+        return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    }
 }
 
 #pragma mark -
