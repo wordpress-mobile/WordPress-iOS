@@ -23,6 +23,7 @@
     Post *quickPicturePost;
     UILabel *uploadLabel;
     IBOutlet UITableView *tableView;
+    WPWebViewController *readerViewController;
 }
 
 @property (nonatomic, retain) NSFetchedResultsController *resultsController;
