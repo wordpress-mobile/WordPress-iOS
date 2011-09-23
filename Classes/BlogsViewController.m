@@ -7,6 +7,7 @@
 @interface BlogsViewController (Private)
 - (void) cleanUnusedMediaFileFromTmpDir;
 - (void)setupPhotoButton;
+- (void)setupReader; 
 @end
 
 @implementation BlogsViewController
@@ -293,7 +294,7 @@
     if (!DeviceIsPad()
         && [[resultsController fetchedObjects] count] > 0) {
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]
-            || [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum]) {
+            || [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
             wantsPhotoButton = YES;
         }
         if ([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"]) {
@@ -340,12 +341,46 @@
         [readerButton retain];
         [self.view addSubview:readerButton];
     }
+    if (wantsReaderButton) { 
+        [self setupReader]; 
+    } else if (readerViewController != nil) { 
+        [readerViewController release]; 
+        readerViewController = nil; 
+    }
 }
 
 - (void)didChangeStatusBarFrame:(NSNotification *)notification {
 	[self performSelectorOnMainThread:@selector(setupPhotoButton) withObject:nil waitUntilDone:NO];
 }
 
+- (void)setupReader { 
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)]; 
+    if (readerViewController == nil) { 
+        NSError *error = nil; 
+        NSString *wpcom_username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"]; 
+        NSString *wpcom_password = [SFHFKeychainUtils getPasswordForUsername:wpcom_username 
+                                                              andServiceName:@"WordPress.com" 
+                                                                       error:&error]; 
+        if (wpcom_username && wpcom_password) { 
+            readerViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil]; 
+            readerViewController.needsLogin = YES; 
+            readerViewController.username = wpcom_username; 
+            readerViewController.password = wpcom_password; 
+            readerViewController.isReader = YES; 
+            readerViewController.url = [NSURL URLWithString: [NSString stringWithFormat:@"%@%@" , kMobileReaderURL, @"?preload=false"] ]; 
+            [readerViewController view]; // Force web view preload 
+        } 
+    } 
+} 
+
+
+- (void)showReader { 
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)]; 
+    [self setupReader]; 
+    [self.navigationController pushViewController:readerViewController animated:YES]; 
+} 
+
+/*
 - (void)showReader {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
      
@@ -365,7 +400,7 @@
         [areaderViewController release];
     }
 }
-
+*/
 - (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType {
     QuickPhotoViewController *quickPhotoViewController = [[QuickPhotoViewController alloc] init];
     quickPhotoViewController.blogsViewController = self;
@@ -387,7 +422,7 @@
 										 otherButtonTitles:NSLocalizedString(@"Add Photo from Library", @""),NSLocalizedString(@"Take Photo", @""),nil];
 	}
 	else {
-        [self showQuickPhoto:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
+        [self showQuickPhoto:UIImagePickerControllerSourceTypePhotoLibrary];
         return;
 	}
 	
@@ -526,7 +561,7 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if(buttonIndex == 0) {
-        [self showQuickPhoto:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
+        [self showQuickPhoto:UIImagePickerControllerSourceTypePhotoLibrary];
     } else if(buttonIndex == 1) {
         [self showQuickPhoto:UIImagePickerControllerSourceTypeCamera];
     }
@@ -722,6 +757,7 @@
     self.tableView = nil;
     [quickPicturePost release];
     [uploadController release];
+    [readerViewController release]; 
     [super dealloc];
 }
 

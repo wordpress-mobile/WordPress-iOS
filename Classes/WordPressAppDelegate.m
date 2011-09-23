@@ -348,17 +348,19 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];    
-    
+  
     if (passwordAlertRunning && passwordTextField != nil)
         [passwordTextField resignFirstResponder];
     else
         [[NSNotificationCenter defaultCenter] postNotificationName:@"DismissAlertViewKeyboard" object:nil];
-
     
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"ApplicationDidBecomeActive" object:nil];
+    
 }
 
 

@@ -15,12 +15,17 @@
 - (BOOL)setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field;
 - (void)refreshWebView;
 - (void)setLoading:(BOOL)loading;
-- (void)goBackToBlogsLists;
+- (void)goBackToBlogsList;
+- (void)removeNotifications;
+- (void)addNotifications;
+- (void)refreshWebViewNotification:(NSNotification*)notification;
+- (void)refreshWebViewTimer:(NSTimer*)timer;
+- (void)refreshWebViewIfNeeded;
 @end
 
 @implementation WPWebViewController
 @synthesize url,username,password;
-@synthesize webView, toolbar, statusTimer;
+@synthesize webView, toolbar, statusTimer, refreshTimer, lastWebViewRefreshDate;
 @synthesize loadingView, loadingLabel, activityIndicator;
 @synthesize needsLogin, isReader;
 @synthesize iPadNavBar, backButton, forwardButton, optionsButton;
@@ -33,6 +38,8 @@
     self.password = nil;
     self.webView = nil;
     self.statusTimer = nil;
+    self.refreshTimer = nil;
+    self.lastWebViewRefreshDate = nil;
     [super dealloc];
 }
 
@@ -67,23 +74,24 @@
     self.forwardButton.enabled = NO;
     self.optionsButton.enabled = NO;
     self.webView.scalesPageToFit = YES;
+    if (self.url) {
+        [self refreshWebView];
+    }
+    [self addNotifications];
+    [self setRefreshTimer:[NSTimer timerWithTimeInterval:(60*10) target:self selector:@selector(refreshWebViewTimer:) userInfo:nil repeats:YES]];
+	[[NSRunLoop currentRunLoop] addTimer:[self refreshTimer] forMode:NSDefaultRunLoopMode];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewWillAppear:animated];
-   
+    
     //set the title of the back button
     NSArray *tt = self.navigationController.viewControllers;
     NSInteger pos =  [tt count] - 2 ;
     if ( pos > -1 ) {
         self.navigationItem.leftBarButtonItem.title = [[tt objectAtIndex:pos] title] ;
     }
-           
-    if (self.url) {
-        [self refreshWebView];
-    }
-    
     if (self.isReader) {
         // ping stats on load of reader
         NSString *statsURL = [NSString stringWithFormat:@"%@%@" , kMobileReaderURL, @"?template=stats&stats_name=home_page"];
@@ -91,14 +99,6 @@
         WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
         [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
         [[[NSURLConnection alloc] initWithRequest:request delegate:nil] autorelease];
-    
-        //the document is not loaded yet, so we forced the title
-        if (DeviceIsPad()) {
-            [iPadNavBar.topItem setTitle:NSLocalizedString(@"Read", @"")];
-        }
-        else
-            self.navigationItem.title = NSLocalizedString(@"Read", @"");
-    
     }   
     [self setStatusTimer:[NSTimer timerWithTimeInterval:0.75 target:self selector:@selector(upgradeButtonsAndLabels:) userInfo:nil repeats:YES]];
 	[[NSRunLoop currentRunLoop] addTimer:[self statusTimer] forMode:NSDefaultRunLoopMode];
@@ -113,6 +113,7 @@
 - (void)viewDidUnload
 {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];  
+   	[self setRefreshTimer:nil];
     self.webView.delegate = nil;
     self.webView = nil;
     self.toolbar = nil;
@@ -124,6 +125,7 @@
     self.optionsButton = nil;
     self.backButton = nil;
     self.forwardButton = nil;
+    [self removeNotifications];
     [super viewDidUnload];
 }
 
@@ -137,16 +139,54 @@
     return YES;
 }
 
+#pragma mark - notifications related methods
+- (void)addNotifications {
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshWebViewNotification:) name:@"ApplicationDidBecomeActive" object:nil];
+}
+
+- (void)removeNotifications{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)refreshWebViewNotification:(NSNotification*)notification {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    [self refreshWebViewIfNeeded];
+}
+
+- (void)refreshWebViewTimer:(NSTimer*)timer {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    [self refreshWebViewIfNeeded];
+}
+
+- (void)refreshWebViewIfNeeded {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    //check the expire time and refresh the webview
+    if ( ! webView.loading ) {
+        if( fabs( [self.lastWebViewRefreshDate timeIntervalSinceNow] ) > (60*30) ) //30minutes 
+            [self refreshWebView];
+    }
+}
+
 #pragma mark - webView related methods
 
 - (void)setStatusTimer:(NSTimer *)timer
 {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+ //   [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	if (statusTimer && timer != statusTimer) {
 		[statusTimer invalidate];
 		[statusTimer release];
 	}
 	statusTimer = [timer retain];
+}
+
+- (void)setRefreshTimer:(NSTimer *)timer
+{
+    //   [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+	if (refreshTimer && timer != refreshTimer) {
+		[refreshTimer invalidate];
+		[refreshTimer release];
+	}
+	refreshTimer = [timer retain];
 }
 
 - (void)upgradeButtonsAndLabels:(NSTimer*)timer {
@@ -230,6 +270,7 @@
     }
     
     [self.webView loadRequest:request]; 
+    self.lastWebViewRefreshDate = [NSDate date];    
 }
 
 - (void)setUrl:(NSURL *)theURL {
@@ -246,6 +287,9 @@
 - (void)setLoading:(BOOL)loading {
     if (isLoading == loading)
         return;
+    
+    self.lastWebViewRefreshDate = [NSDate date];  
+    
     CGRect frame = self.loadingView.frame;
     if (loading) {
         frame.origin.y -= frame.size.height;
