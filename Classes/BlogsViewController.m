@@ -292,7 +292,7 @@
     if (!DeviceIsPad()
         && [[resultsController fetchedObjects] count] > 0) {
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]
-            || [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum]) {
+            || [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
             wantsPhotoButton = YES;
         }
         if ([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"]) {
@@ -420,7 +420,7 @@
 										 otherButtonTitles:NSLocalizedString(@"Add Photo from Library", @""),NSLocalizedString(@"Take Photo", @""),nil];
 	}
 	else {
-        [self showQuickPhoto:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
+        [self showQuickPhoto:UIImagePickerControllerSourceTypePhotoLibrary];
         return;
 	}
 	
@@ -559,7 +559,7 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if(buttonIndex == 0) {
-        [self showQuickPhoto:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
+        [self showQuickPhoto:UIImagePickerControllerSourceTypePhotoLibrary];
     } else if(buttonIndex == 1) {
         [self showQuickPhoto:UIImagePickerControllerSourceTypeCamera];
     }
