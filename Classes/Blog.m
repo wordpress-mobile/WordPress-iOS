@@ -479,6 +479,34 @@
     return YES;
 }
 
+
+- (BOOL)syncPostFormatsFromResults:(NSMutableDictionary *)postFormats {
+	/*
+     self.postFormats = postFormats;
+     [self dataSave];
+     */ 
+    return YES;
+}
+
+- (BOOL)syncPostFormatsWithError:(NSError **)error {
+	WPDataController *dc = [[WPDataController alloc] init];
+	NSMutableDictionary *postFormats = [dc wpGetPostFormats:self showSupported:YES];
+	if(dc.error) {
+		if (error != nil) {
+			*error = dc.error;
+            //remove this piece of code when the app minimum requirement will be WP 3.1 or higher
+            if (dc.error.code == -32601 )  //Code=-32601 "server error. requested method wp.getPostFormats does not exist."
+                [self performSelectorOnMainThread:@selector(syncPostFormatsFromResults:) withObject:nil waitUntilDone:YES];
+        }
+        WPLog(@"Error syncing postFormats: %@", [dc.error localizedDescription]);
+		[dc release];
+		return NO;
+	}
+    [self performSelectorOnMainThread:@selector(syncPostFormatsFromResults:) withObject:postFormats waitUntilDone:YES];
+    [dc release];
+	return YES;
+}
+
 //generate md5 hash from string
 - (NSString *) returnMD5Hash:(NSString*)concat {
     const char *concat_str = [concat UTF8String];

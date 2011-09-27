@@ -291,8 +291,20 @@
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     NSError *error = nil;
 	[self.blog syncCategoriesWithError:&error];
-	if(!error)
-		[self.blog syncPostsWithError:&error loadMore:NO];
+	
+    
+     if( !error ) { 
+     [self.blog syncPostFormatsWithError:&error];
+     
+     //Code=-32601 "server error. requested method wp.getPostFormats does not exist."
+     //remove this piece of code when the app minimum requirement will be WP 3.1 or higher
+     if ( error && error.code == -32601 )
+         error = nil;
+     }
+     
+    if( !error )
+        [self.blog syncPostsWithError:&error loadMore:NO];
+    
 	if(error) {
 		NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
 		[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];

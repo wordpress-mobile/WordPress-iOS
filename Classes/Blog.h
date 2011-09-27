@@ -40,6 +40,7 @@
 - (BOOL)syncPagesWithError:(NSError **)error loadMore:(BOOL)more;
 - (BOOL)syncCategoriesWithError:(NSError **)error;
 - (BOOL)syncCommentsWithError:(NSError **)error;
+- (BOOL)syncPostFormatsWithError:(NSError **)error; 
 - (NSString *) returnMD5Hash:(NSString*)concat;
 
 #pragma mark -

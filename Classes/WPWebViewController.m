@@ -78,7 +78,7 @@
         [self refreshWebView];
     }
     [self addNotifications];
-    [self setRefreshTimer:[NSTimer timerWithTimeInterval:(60*10) target:self selector:@selector(refreshWebViewTimer:) userInfo:nil repeats:YES]];
+    [self setRefreshTimer:[NSTimer timerWithTimeInterval:(60*30) target:self selector:@selector(refreshWebViewTimer:) userInfo:nil repeats:YES]];
 	[[NSRunLoop currentRunLoop] addTimer:[self refreshTimer] forMode:NSDefaultRunLoopMode];
 }
 

@@ -318,19 +318,43 @@
     return [NSMutableArray arrayWithArray:categories];
 }
 
-- (NSArray *)wpGetPostFormats:(Blog *)blog {
+- (NSMutableDictionary *)wpGetPostFormats:(Blog *)blog showSupported:(BOOL)showSupported {
     XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:blog.xmlrpc]];
-	[xmlrpcRequest setMethod:@"wp.getPostFormats" withObjects:[self getXMLRPCArgsForBlog:blog withExtraArgs:nil]];
+    NSArray *extraArgs = nil;
+    if( showSupported == YES ) {
+        //adding extra args
+        NSDictionary *requestedPostFormats = [NSDictionary dictionaryWithObjectsAndKeys:(id) kCFBooleanTrue, @"show-supported", nil];
+        extraArgs = [NSArray arrayWithObject:requestedPostFormats];
+    }
+    
+	[xmlrpcRequest setMethod:@"wp.getPostFormats" withObjects:[self getXMLRPCArgsForBlog:blog withExtraArgs:extraArgs]];
     retryOnTimeout = YES;
-    NSArray *postFormats = [self executeXMLRPCRequest:xmlrpcRequest];
+    NSMutableDictionary *postFormats = [self executeXMLRPCRequest:xmlrpcRequest];
 	[xmlrpcRequest release];
     
     if ([postFormats isKindOfClass:[NSError class]]) {
         NSLog(@"Couldn't get post formats: %@", [(NSError *)postFormats localizedDescription]);
-        return [NSArray array];
+        return [NSMutableDictionary dictionary];
     }
+    
+    if( [postFormats objectForKey:@"all"] != nil ) {
+        NSLog(@"WordPress installation that supports the new call for postFormats");
+        
+        NSArray *supportedPostFormats = [postFormats objectForKey:@"supported"];
+        NSDictionary *allPostFormats = [postFormats objectForKey:@"all"];
+        
+       	NSMutableDictionary *mergedPostFormats = [NSMutableDictionary dictionary];
+        
+        for (NSString *supportedKey in supportedPostFormats) {
+            [mergedPostFormats setValue:[allPostFormats valueForKey:supportedKey] forKey:supportedKey]; 
+        }
+        [mergedPostFormats setValue:[allPostFormats valueForKey:@"standard"] forKey:@"standard"]; 
+        
+        postFormats = [NSDictionary dictionaryWithDictionary:mergedPostFormats];
+    } 
     return postFormats;    
 }
+
 
 #pragma mark -
 #pragma mark Category
