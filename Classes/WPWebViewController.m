@@ -301,10 +301,16 @@
 }
 
 - (void)goBack {
+    if ([webView isLoading]) {
+        [webView stopLoading];
+    }
     [webView goBack];
 }
 
 - (void)goForward {
+    if ([webView isLoading]) {
+        [webView stopLoading];
+    }
     [webView goForward];
 }
 
