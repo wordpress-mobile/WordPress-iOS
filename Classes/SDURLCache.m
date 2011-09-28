@@ -57,7 +57,7 @@ static NSDateFormatter* CreateDateFormatter(NSString *format)
 
 @implementation SDURLCache
 
-@synthesize diskCachePath, minCacheInterval, ioQueue, periodicMaintenanceOperation, ignoreMemoryOnlyStoragePolicy;
+@synthesize diskCachePath, minCacheInterval, ioQueue, periodicMaintenanceOperation, ignoreMemoryOnlyStoragePolicy, excludedURLs;
 @dynamic diskCacheInfo;
 
 #pragma mark SDURLCache (tools)
@@ -492,6 +492,13 @@ static NSDateFormatter* CreateDateFormatter(NSString *format)
         return memoryResponse;
     }
     
+    //Check for URLs that should not be cached at all  
+    for (NSString *currentPathToExclude in self.excludedURLs) { 
+        if ([currentURL.absoluteString rangeOfString:currentPathToExclude].location != NSNotFound ) { 
+            //NSLog(@"Do Not Cache - %@", currentURL.absoluteString); 
+            return nil;   
+        } 
+    }
     NSString *cacheKey = [SDURLCache cacheKeyForURL:request.URL];
     
     // NOTE: We don't handle expiration here as even staled cache data is necessary for NSURLConnection to handle cache revalidation.
@@ -586,6 +593,7 @@ static NSDateFormatter* CreateDateFormatter(NSString *format)
     [periodicMaintenanceOperation release], periodicMaintenanceOperation = nil;
     [diskCachePath release], diskCachePath = nil;
     [diskCacheInfo release], diskCacheInfo = nil;
+    [excludedURLs release], excludedURLs = nil; 
     [ioQueue release], ioQueue = nil;
     [super dealloc];
 }

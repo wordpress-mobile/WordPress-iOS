@@ -19,6 +19,7 @@
     NSOperationQueue *ioQueue;
     NSTimer *periodicMaintenanceTimer;
     NSOperation *periodicMaintenanceOperation;
+    NSArray *excludedURLs;
 }
 
 /*
@@ -49,5 +50,7 @@
  * Checks if the provided URL exists in cache.
  */
 - (BOOL)isCached:(NSURL *)url;
+
+@property (nonatomic, retain) NSArray *excludedURLs;
 
 @end
