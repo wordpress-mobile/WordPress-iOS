@@ -84,8 +84,9 @@
     [super viewWillAppear:animated];    
 
     if (self.isReader) {
+        int x = arc4random();
         // ping stats on load of reader
-        NSString *statsURL = [NSString stringWithFormat:@"%@%@" , kMobileReaderURL, @"?template=stats&stats_name=home_page"];
+        NSString *statsURL = [NSString stringWithFormat:@"%@%@%d" , kMobileReaderURL, @"?template=stats&stats_name=home_page&rnd=",x];
         NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL]] autorelease];
         WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
         [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
@@ -186,6 +187,16 @@
         else
             self.navigationItem.title = [self getDocumentTitle];
     }
+    /*
+    if( self.isReader ) {
+        // try to get the loaded URL within the webView
+        NSURLRequest *currentRequest = [webView request];
+        if ( currentRequest != nil) {
+            NSURL *currentURL = [currentRequest URL];
+            NSLog(@"Current URL is %@", currentURL.absoluteString);
+        }
+    }
+     */
 }
 
 - (NSString*) getDocumentPermalink {
@@ -328,8 +339,9 @@
 
 - (void)reload {
     if (self.isReader) {
+        int x = arc4random();
         // ping stats on refresh of reader
-        NSString *statsURL = [NSString stringWithFormat:@"%@%@" , kMobileReaderURL, @"?template=stats&stats_name=home_page_refresh"];
+        NSString *statsURL = [NSString stringWithFormat:@"%@%@%d" , kMobileReaderURL, @"?template=stats&stats_name=home_page_refresh&rnd=", x];
         NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL  ]] autorelease];
         WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
         [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
