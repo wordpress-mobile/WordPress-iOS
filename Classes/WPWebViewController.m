@@ -94,7 +94,8 @@
     }
     if (self.isReader) {
         // ping stats on load of reader
-        NSString *statsURL = [NSString stringWithFormat:@"%@%@" , kMobileReaderURL, @"?template=stats&stats_name=home_page"];
+        int x = arc4random(); 
+        NSString *statsURL = [NSString stringWithFormat:@"%@%@%d" , kMobileReaderURL, @"?template=stats&stats_name=home_page&rnd=",x];
         NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL]] autorelease];
         WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
         [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
@@ -332,10 +333,16 @@
 }
 
 - (void)goBack {
+    if ([webView isLoading]) { 
+        [webView stopLoading]; 
+    } 
     [webView goBack];
 }
 
 - (void)goForward {
+    if ([webView isLoading]) { 
+        [webView stopLoading]; 
+    } 
     [webView goForward];
 }
 
@@ -354,7 +361,8 @@
 - (void)reload {
     if (self.isReader) {
         // ping stats on refresh of reader
-        NSString *statsURL = [NSString stringWithFormat:@"%@%@" , kMobileReaderURL, @"?template=stats&stats_name=home_page_refresh"];
+        int x = arc4random(); 
+        NSString *statsURL = [NSString stringWithFormat:@"%@%@%d" , kMobileReaderURL, @"?template=stats&stats_name=home_page_refresh&rnd=", x]; 
         NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL  ]] autorelease];
         WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
         [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];

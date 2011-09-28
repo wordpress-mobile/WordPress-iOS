@@ -9,6 +9,7 @@
 #import "WelcomeViewController.h"
 #import "BetaUIWindow.h"
 #import "MigrateBlogsFromFiles.h"
+#import "SDURLCache.h"
 
 @interface WordPressAppDelegate (Private)
 
@@ -133,6 +134,14 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	
 	// set the current dir
 	[fileManager changeCurrentDirectoryPath:currentDirectoryPath];
+    
+    
+    //Enable the caching system    
+    SDURLCache *urlCache = [[SDURLCache alloc] initWithMemoryCapacity:1024*1024   // 1MB mem cache 
+                                                         diskCapacity:1024*1024*5 // 5MB disk cache 
+                                                             diskPath:[SDURLCache defaultCachePath]]; 
+    [NSURLCache setSharedURLCache:urlCache]; 
+    [urlCache release]; 
 
 	// Check for pending crash reports
 	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];

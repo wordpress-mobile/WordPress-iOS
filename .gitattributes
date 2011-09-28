@@ -185,6 +185,8 @@ Classes/QuickPhotoViewController.h -text
 Classes/QuickPhotoViewController.m -text
 Classes/QuickPicturePreviewView.h -text
 Classes/QuickPicturePreviewView.m -text
+Classes/SDURLCache.h -text
+Classes/SDURLCache.m -text
 Classes/StatsChartViewController.h -text
 Classes/StatsChartViewController.m -text
 Classes/StatsPageControlViewController.h -text
