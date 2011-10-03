@@ -810,11 +810,17 @@
 		currentImage = [image retain];
 		
 		//UIImagePickerControllerReferenceURL = "assets-library://asset/asset.JPG?id=1000000050&ext=JPG").
-        NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
+        NSURL *assetURL = nil;
+        if (&UIImagePickerControllerReferenceURL != NULL) {
+            assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
+        }
         if (assetURL) {
             [self getMetadataFromAssetForURL:assetURL];
         } else {
-            NSDictionary *metadata = [info objectForKey:UIImagePickerControllerMediaMetadata];
+            NSDictionary *metadata = nil;
+            if (&UIImagePickerControllerMediaMetadata != NULL) {
+                metadata = [info objectForKey:UIImagePickerControllerMediaMetadata];
+            }
             if (metadata) {
                 NSMutableDictionary *mutableMetadata = [metadata mutableCopy];
                 [mutableMetadata removeObjectForKey:@"Orientation"];
