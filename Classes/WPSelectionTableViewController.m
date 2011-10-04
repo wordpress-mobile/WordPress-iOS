@@ -226,6 +226,7 @@
 }
 
 - (void)dealloc {
+    WPFLogMethod();
     [originalSelObjects release];
     [selectionStatusOfObjects release];
     [objects release];

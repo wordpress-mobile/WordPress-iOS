@@ -37,6 +37,7 @@
 }
 
 - (void)dealloc {
+    WPFLogMethod();
     [categoryIndentationLevelsDict release];
     [rowTextColor release];
 //	[originalSelObjects release];

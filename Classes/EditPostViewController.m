@@ -205,7 +205,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [postPreviewViewController release]; postPreviewViewController = nil;
     [statuses release]; statuses = nil;
     [spinner release]; spinner = nil;
-    [editorToolbar release]; editorToolbar = nil;
+    self.textView.inputAccessoryView = nil;
+    [editorToolbar release];
+    editorToolbar = nil;
     
     // Release IBOutlets
     self.locationButton = nil;
@@ -478,6 +480,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)populateSelectionsControllerWithCategories {
+    WPFLogMethod();
     if (segmentedTableViewController == nil)
         segmentedTableViewController = [[WPSegmentedSelectionTableViewController alloc] initWithNibName:@"WPSelectionTableViewController" bundle:nil];
 	
@@ -563,6 +566,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)selectionTableViewController:(WPSelectionTableViewController *)selctionController completedSelectionsWithContext:(void *)selContext selectedObjects:(NSArray *)selectedObjects haveChanges:(BOOL)isChanged {
+    WPFLogMethod();
     if (!isChanged) {
         [selctionController clean];
         return;
@@ -587,6 +591,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 
 - (void)newCategoryCreatedNotificationReceived:(NSNotification *)notification {
+    WPFLogMethod();
     if ([segmentedTableViewController curContext] == kSelectionsCategoriesContext) {
         isNewCategory = YES;
         [self populateSelectionsControllerWithCategories];
@@ -596,6 +601,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (IBAction)showAddNewCategoryView:(id)sender
 {
+    WPFLogMethod();
     WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithNibName:@"WPAddCategoryViewController" bundle:nil];
     addCategoryViewController.blog = self.post.blog;
 	if (DeviceIsPad() == YES) {
