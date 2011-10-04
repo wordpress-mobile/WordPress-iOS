@@ -34,6 +34,9 @@
 - (void)initObjects {
 	photos = [[NSMutableArray alloc] init];
 	videos = [[NSMutableArray alloc] init];
+	picker = [[WPImagePickerController alloc] init];
+	picker.delegate = self;
+	picker.allowsEditing = NO;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -50,11 +53,7 @@
     [FlurryAPI logEvent:@"PostMedia"];
 	
 	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
-	
-	picker = [[WPImagePickerController alloc] init];
-	picker.delegate = self;
-	picker.allowsEditing = NO;
-	
+		
 	[self initObjects];
 	self.videoEnabled = YES;
 	[self performSelectorInBackground:@selector(checkVideoPressEnabled) withObject:nil];
@@ -85,7 +84,6 @@
 
 - (void)viewDidUnload {
     [self removeNotifications];
-    picker.delegate = nil;
 	[super viewDidUnload];
 }
 
@@ -1467,6 +1465,7 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
+    picker.delegate = nil;
 	[picker release], picker = nil;
 	[customSizeAlert release]; customSizeAlert = nil;
 	[uniqueID release];
