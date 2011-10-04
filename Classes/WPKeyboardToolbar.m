@@ -43,8 +43,6 @@
 - (void)dealloc
 {
     [_gradient release];
-    [mainView release];
-    [extendedView release];
     [boldButton release];
     [italicsButton release];
     [linkButton release];
@@ -57,6 +55,8 @@
     [moreButton release];
     [doneButton release];
     [toggleButton release];
+    [mainView release];
+    [extendedView release];
     [super dealloc];
 }
 

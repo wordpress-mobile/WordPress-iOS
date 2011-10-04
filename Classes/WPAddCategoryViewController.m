@@ -27,6 +27,7 @@
 	
 }
 - (void)dismiss {
+    WPFLogMethod();
     if (DeviceIsPad() == YES) {
         [(WPSelectionTableViewController *)self.parentViewController popViewControllerAnimated:YES];
     } else {
@@ -255,6 +256,7 @@
 #pragma mark -dealloc
 
 - (void)dealloc {
+    WPFLogMethod();
     [super dealloc];
     if (parentCat != nil) {
         [parentCat release];
