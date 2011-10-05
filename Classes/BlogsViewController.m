@@ -117,12 +117,7 @@
 	[self.tableView endEditing:YES];
 	self.tableView.editing = NO;
 	
-	if([Blog countWithContext:appDelegate.managedObjectContext] > 0) {
-		self.navigationItem.leftBarButtonItem = self.editButtonItem;
-		[self cancel:self];
-	}
-	else
-		self.navigationItem.leftBarButtonItem = nil;
+    [self cancel:self]; // Shows edit button
 }
 
 - (void)blogsRefreshNotificationReceived:(NSNotification *)notification {
@@ -339,9 +334,7 @@
         [readerButton retain];
         [self.view addSubview:readerButton];
     }
-    if (wantsReaderButton) { 
-        [self setupReader]; 
-    } else if (readerViewController != nil) { 
+    if (!wantsReaderButton && readerViewController != nil) { 
         [readerViewController release]; 
         readerViewController = nil; 
     }
@@ -361,11 +354,10 @@
                                                                        error:&error]; 
         if (wpcom_username && wpcom_password) { 
             readerViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil]; 
-            readerViewController.needsLogin = YES; 
             readerViewController.username = wpcom_username; 
             readerViewController.password = wpcom_password; 
             readerViewController.isReader = YES; 
-            readerViewController.url = [NSURL URLWithString: [NSString stringWithFormat:@"%@%@" , kMobileReaderURL, @"?preload=false"] ]; 
+            readerViewController.url = [NSURL URLWithString:kMobileReaderURL]; 
             [readerViewController view]; // Force web view preload 
         } 
     } 
@@ -378,27 +370,6 @@
     [self.navigationController pushViewController:readerViewController animated:YES]; 
 } 
 
-/*
-- (void)showReader {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-     
-    NSError *error = nil;
-    NSString *wpcom_username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-    NSString *wpcom_password = [SFHFKeychainUtils getPasswordForUsername:wpcom_username
-                                                          andServiceName:@"WordPress.com"
-                                                                   error:&error];
-    if (wpcom_username && wpcom_password) {
-        WPWebViewController   *areaderViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
-        areaderViewController.needsLogin = YES;
-        areaderViewController.username = wpcom_username;
-        areaderViewController.password = wpcom_password;
-        areaderViewController.isReader = YES;
-        areaderViewController.url = [NSURL URLWithString: [NSString stringWithFormat:@"%@%@" , kMobileReaderURL, @"?preload=false"] ];
-        [self.navigationController pushViewController:areaderViewController animated:YES];
-        [areaderViewController release];
-    }
-}
-*/
 - (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType {
     QuickPhotoViewController *quickPhotoViewController = [[QuickPhotoViewController alloc] init];
     quickPhotoViewController.blogsViewController = self;

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface WPWebViewController : UIViewController<UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
-    BOOL isLoading;
+    BOOL isLoading, needsLogin;
     IBOutlet UIWebView *webView;
 	NSTimer *statusTimer;   // This timer checks the nav buttons every 0.75 seconds, and updates them
    	NSTimer *refreshTimer; 
@@ -23,7 +23,6 @@
 @property (nonatomic,retain) IBOutlet UIView *loadingView;
 @property (nonatomic,retain) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (nonatomic,retain) IBOutlet UILabel *loadingLabel;
-@property (nonatomic,assign) BOOL needsLogin;
 @property (nonatomic,assign) BOOL isReader;
 @property (nonatomic, retain) IBOutlet UINavigationBar *iPadNavBar;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *backButton;

@@ -57,7 +57,7 @@ NSString *FileLoggerPath() {
 	va_start(ap, format);
 	NSString *message = [[NSString alloc] initWithFormat:format arguments:ap];
 #if !FILELOGGER_ONLY_NSLOG_ON_DEBUG || defined(DEBUG)
-	NSLog(@"%@", message);
+	NSLog(@"# %@", message); // The # symbol indicates that the message will be logged to file, useful when looking at the console
 #endif
 	[[FileLogger sharedInstance] log:message];
 	[message release];

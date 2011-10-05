@@ -8,6 +8,12 @@
 
 #import "WPWebViewController.h"
 
+#ifdef DEBUG
+#define kReaderRefreshThreshold 30 // 30s
+#else
+#define kReaderRefreshThreshold (30*60) // 30m
+#endif
+
 @interface WPWebViewController (Private)
 - (NSString*) getDocumentPermalink;
 - (NSString*) getDocumentTitle;
@@ -20,13 +26,14 @@
 - (void)refreshWebViewNotification:(NSNotification*)notification;
 - (void)refreshWebViewTimer:(NSTimer*)timer;
 - (void)refreshWebViewIfNeeded;
+- (void)retryWithLogin;
 @end
 
 @implementation WPWebViewController
 @synthesize url,username,password;
 @synthesize webView, toolbar, statusTimer, refreshTimer, lastWebViewRefreshDate;
 @synthesize loadingView, loadingLabel, activityIndicator;
-@synthesize needsLogin, isReader;
+@synthesize isReader;
 @synthesize iPadNavBar, backButton, forwardButton, optionsButton;
 
 - (void)dealloc
@@ -75,7 +82,7 @@
         [self refreshWebView];
     }
     [self addNotifications];
-    [self setRefreshTimer:[NSTimer timerWithTimeInterval:(60*30) target:self selector:@selector(refreshWebViewTimer:) userInfo:nil repeats:YES]];
+    [self setRefreshTimer:[NSTimer timerWithTimeInterval:kReaderRefreshThreshold target:self selector:@selector(refreshWebViewTimer:) userInfo:nil repeats:YES]];
 	[[NSRunLoop currentRunLoop] addTimer:[self refreshTimer] forMode:NSDefaultRunLoopMode];
 }
 
@@ -149,7 +156,7 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     //check the expire time and refresh the webview
     if ( ! webView.loading ) {
-        if( fabs( [self.lastWebViewRefreshDate timeIntervalSinceNow] ) > (60*30) ) //30minutes 
+        if( fabs( [self.lastWebViewRefreshDate timeIntervalSinceNow] ) > kReaderRefreshThreshold ) //30minutes 
             [self refreshWebView];
     }
 }
@@ -200,7 +207,7 @@
 }
 
 - (NSString*) getDocumentPermalink {
-    NSString *permaLink = [webView stringByEvaluatingJavaScriptFromString:@"Reader.get_article_permalink();"];
+    NSString *permaLink = [webView stringByEvaluatingJavaScriptFromString:@"Reader2.get_article_permalink();"];
     if ( permaLink == nil || [[permaLink trim] isEqualToString:@""]) {
         // try to get the loaded URL within the webView
         NSURLRequest *currentRequest = [webView request];
@@ -221,7 +228,7 @@
 
 - (NSString*) getDocumentTitle {
      
-    NSString *title = [webView stringByEvaluatingJavaScriptFromString:@"Reader.get_article_title();"];
+    NSString *title = [webView stringByEvaluatingJavaScriptFromString:@"Reader2.get_article_title();"];
     
     if( title != nil && [[title trim] isEqualToString:@""] == false ) {
         return [title trim];
@@ -240,8 +247,28 @@
     return @"";
 }
 
+- (void)loadURL:(NSURL *)webURL {
+    
+}
+
+- (bool)canIHazCookie {
+    NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:kMobileReaderURL]];
+    for (NSHTTPCookie *cookie in cookies) {
+        if ([cookie.name isEqualToString:@"wordpress_logged_in"]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 - (void)refreshWebView {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    
+    if (!needsLogin && self.username && self.password && ![self canIHazCookie]) {
+        WPFLog(@"We have login credentials but no cookie, let's try login first");
+        [self retryWithLogin];
+    }
+    
     NSURL *webURL;
     if (needsLogin)
         webURL = [[[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"] autorelease];
@@ -250,11 +277,11 @@
     
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:webURL];
+    request.cachePolicy = NSURLRequestReturnCacheDataElseLoad;
     [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
     
     [request setCachePolicy:NSURLRequestReturnCacheDataElseLoad];
-    if (self.needsLogin || ([[self.url absoluteString] rangeOfString:@"wp-admin/"].location != NSNotFound)) {
-        // It's a /wp-admin url, we need to login first
+    if (needsLogin) {
         NSString *request_body = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=%@",
                                   [self.username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                                   [self.password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
@@ -268,6 +295,11 @@
     
     [self.webView loadRequest:request]; 
     self.lastWebViewRefreshDate = [NSDate date];    
+}
+
+- (void)retryWithLogin {
+    needsLogin = YES;
+    [self refreshWebView];    
 }
 
 - (void)setUrl:(NSURL *)theURL {
@@ -297,6 +329,7 @@
                      animations:^{self.loadingView.frame = frame;}];
     self.navigationItem.rightBarButtonItem.enabled = !loading;
     self.navigationItem.leftBarButtonItem.enabled = YES;
+    self.optionsButton.enabled = !loading;
     if (!loading) {
         if (DeviceIsPad()) {
             [iPadNavBar.topItem setTitle:[webView stringByEvaluatingJavaScriptFromString:@"document.title"]];
@@ -355,17 +388,42 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     [FileLogger log:@"%@ %@: %@", self, NSStringFromSelector(_cmd), [[request URL] absoluteString]];
-    [self setLoading:YES];
+    if (!needsLogin && [[[request URL] absoluteString] rangeOfString:@"wp-login.php"].location != NSNotFound) {
+        if (self.username && self.password) {
+            WPFLog(@"WP is asking for credentials, let's login first");
+            [self retryWithLogin];
+            return NO;
+        }
+    }
+    if (self.isReader
+        && ![[request URL] isEqual:self.url]
+        && [[[request URL] absoluteString] rangeOfString:@"wp-login.php"].location == NSNotFound) {
+        WPWebViewController *detailViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil]; 
+        detailViewController.url = [request URL]; 
+        if ([[[request URL] absoluteString] rangeOfString:kMobileReaderURL].location == 0 || [[[request URL] absoluteString] isEqualToString:kMobileReaderDetailURL]) {
+            detailViewController.isReader = YES;
+        }
+        [self.navigationController pushViewController:detailViewController animated:YES];
+        [detailViewController release];
+        return NO;
+    }
+
+    [self setLoading:YES];        
     return YES;
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     [FileLogger log:@"%@ %@: %@", self, NSStringFromSelector(_cmd), error];
     // -999: Canceled AJAX request
-    if (isLoading && ([error code] != -999))
+    // 102:  Frame load interrupted: canceled wp-login redirect to make the POST
+    if (isLoading && ([error code] != -999) && [error code] != 102)
         [[NSNotificationCenter defaultCenter] postNotificationName:@"OpenWebPageFailed" object:error userInfo:nil];
     [self setLoading:NO];
     self.optionsButton.enabled = YES;
+}
+
+- (void)webViewDidStartLoad:(UIWebView *)aWebView {
+    [FileLogger log:@"%@ %@%@", self, NSStringFromSelector(_cmd), aWebView.request.URL];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView {
