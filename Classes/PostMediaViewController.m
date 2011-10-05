@@ -1167,26 +1167,30 @@
 
 	if (self.currentImageMetadata != nil) {
 		// Write the EXIF data with the image data to disk
-		CGImageSourceRef  source ;
-		source = CGImageSourceCreateWithData((CFDataRef)imageData, NULL);
-		CFStringRef UTI = CGImageSourceGetType(source); //this is the type of image (e.g., public.jpeg)
-		
-		//this will be the data CGImageDestinationRef will write into
-		NSMutableData *dest_data = [NSMutableData data];
-		
-		CGImageDestinationRef destination = CGImageDestinationCreateWithData((CFMutableDataRef)dest_data,UTI,1,NULL);
-		
-		if(!destination) {
-			WPLog(@"***Could not create image destination ***");
-		}
-		
-		//add the image contained in the image source to the destination, copying the old metadata
-		CGImageDestinationAddImageFromSource(destination,source,0, (CFDictionaryRef) self.currentImageMetadata);
-		
-		//tell the destination to write the image data and metadata into our data object.
-		//It will return false if something goes wrong
+		CGImageSourceRef  source = NULL;
+        CGImageDestinationRef destination = NULL;
 		BOOL success = NO;
-		success = CGImageDestinationFinalize(destination);
+        //this will be the data CGImageDestinationRef will write into
+        NSMutableData *dest_data = [NSMutableData data];
+
+		source = CGImageSourceCreateWithData((CFDataRef)imageData, NULL);
+        if (source) {
+            CFStringRef UTI = CGImageSourceGetType(source); //this is the type of image (e.g., public.jpeg)
+            destination = CGImageDestinationCreateWithData((CFMutableDataRef)dest_data,UTI,1,NULL);
+            
+            if(destination) {                
+                //add the image contained in the image source to the destination, copying the old metadata
+                CGImageDestinationAddImageFromSource(destination,source,0, (CFDictionaryRef) self.currentImageMetadata);
+                
+                //tell the destination to write the image data and metadata into our data object.
+                //It will return false if something goes wrong
+                success = CGImageDestinationFinalize(destination);
+            } else {
+                WPFLog(@"***Could not create image destination ***");
+            }
+        } else {
+            WPFLog(@"***Could not create image source ***");
+        }
 		
 		if(!success) {
 			WPLog(@"***Could not create data from image destination ***");
@@ -1198,8 +1202,10 @@
 			[dest_data writeToFile:filepath atomically:YES];
 		}
 		//cleanup
-		CFRelease(destination);
-		CFRelease(source);
+        if (destination)
+            CFRelease(destination);
+        if (source)
+            CFRelease(source);
     } else {
 		NSFileManager *fileManager = [NSFileManager defaultManager];
 		[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
