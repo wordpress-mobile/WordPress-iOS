@@ -389,19 +389,26 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     [FileLogger log:@"%@ %@: %@", self, NSStringFromSelector(_cmd), [[request URL] absoluteString]];
-    if (!needsLogin && [[[request URL] absoluteString] rangeOfString:@"wp-login.php"].location != NSNotFound) {
+    
+    NSURL *requestedURL = [request URL];
+    NSString *requestedURLAbsoluteString = [requestedURL absoluteString];
+    
+    if (!needsLogin && [requestedURLAbsoluteString rangeOfString:@"wp-login.php"].location != NSNotFound) {
         if (self.username && self.password) {
             WPFLog(@"WP is asking for credentials, let's login first");
             [self retryWithLogin];
             return NO;
         }
     }
-    if (self.isReader
-        && ![[request URL] isEqual:self.url]
-        && [[[request URL] absoluteString] rangeOfString:@"wp-login.php"].location == NSNotFound) {
+    
+    if (self.isReader 
+        && ![requestedURL isEqual:self.url]
+        && [requestedURLAbsoluteString rangeOfString:kMobileReaderFPURL].location == NSNotFound
+        && [requestedURLAbsoluteString rangeOfString:kMobileReaderURL].location == NSNotFound
+        && [requestedURLAbsoluteString rangeOfString:@"wp-login.php"].location == NSNotFound) {
         WPWebViewController *detailViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil]; 
         detailViewController.url = [request URL]; 
-        if ([[[request URL] absoluteString] rangeOfString:kMobileReaderURL].location == 0 || [[[request URL] absoluteString] isEqualToString:kMobileReaderDetailURL]) {
+        if ([requestedURLAbsoluteString rangeOfString:kMobileReaderURL].location == 0 || [requestedURLAbsoluteString isEqualToString:kMobileReaderDetailURL]) {
             detailViewController.isReader = YES;
         }
         detailViewController.detailContent = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.last_selected_item;"];
