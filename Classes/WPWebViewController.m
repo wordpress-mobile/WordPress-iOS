@@ -30,7 +30,7 @@
 @end
 
 @implementation WPWebViewController
-@synthesize url,username,password;
+@synthesize url,username,password,detailContent;
 @synthesize webView, toolbar, statusTimer, refreshTimer, lastWebViewRefreshDate;
 @synthesize loadingView, loadingLabel, activityIndicator;
 @synthesize isReader;
@@ -42,6 +42,7 @@
     self.url = nil;
     self.username = nil;
     self.password = nil;
+    self.detailContent = nil;
     self.webView = nil;
     self.statusTimer = nil;
     self.refreshTimer = nil;
@@ -403,6 +404,7 @@
         if ([[[request URL] absoluteString] rangeOfString:kMobileReaderURL].location == 0 || [[[request URL] absoluteString] isEqualToString:kMobileReaderDetailURL]) {
             detailViewController.isReader = YES;
         }
+        detailViewController.detailContent = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.last_selected_item;"];
         [self.navigationController pushViewController:detailViewController animated:YES];
         [detailViewController release];
         return NO;
@@ -430,6 +432,10 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self setLoading:NO];
     self.optionsButton.enabled = YES;
+    if ([aWebView.request.URL.absoluteString rangeOfString:kMobileReaderDetailURL].location != NSNotFound) {
+        NSString *readerDetailScript = [NSString stringWithFormat:@"Reader2.show_article_details(%@);", self.detailContent];
+        [aWebView stringByEvaluatingJavaScriptFromString:readerDetailScript];
+    }
 }
 
 #pragma mark - UIActionSheetDelegate
