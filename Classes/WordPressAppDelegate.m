@@ -148,7 +148,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
                                                              diskPath:[SDURLCache defaultCachePath]];
     NSArray *excludeTheseURLs = [NSArray arrayWithObjects:@"wordpress.com/wp-admin/", @"wordpress.com/reader/mobile/", @"/wp-login.php", @"public-api.wordpress.com", @"stats.wordpress.com", @"chart.apis.google.com", nil];
        
-    
     urlCache.excludedURLs = excludeTheseURLs;
     [NSURLCache setSharedURLCache:urlCache];
     [urlCache release];

@@ -28,6 +28,7 @@
 - (void)refreshWebViewTimer:(NSTimer*)timer;
 - (void)refreshWebViewIfNeeded;
 - (void)retryWithLogin;
+- (void)pingStatsEndpoint:(NSString*)statName;
 @end
 
 @implementation WPReaderViewController
@@ -91,14 +92,7 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewWillAppear:animated];    
     
-
-    int x = arc4random();
-    // ping stats on load of reader
-    NSString *statsURL = [NSString stringWithFormat:@"%@%@%d" , kMobileReaderURL, @"?template=stats&stats_name=home_page&rnd=",x];
-    NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL]] autorelease];
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
-    [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
-    [[[NSURLConnection alloc] initWithRequest:request delegate:nil] autorelease];
+    [self pingStatsEndpoint:@"home_page"];
     
     [self setStatusTimer:[NSTimer timerWithTimeInterval:0.75 target:self selector:@selector(upgradeButtonsAndLabels:) userInfo:nil repeats:YES]];
 	[[NSRunLoop currentRunLoop] addTimer:[self statusTimer] forMode:NSDefaultRunLoopMode];
@@ -371,28 +365,21 @@
     [linkOptionsActionSheet  release];
 }
 
-- (void)reload {
-
-        
+- (void)reload {        
     NSString *requestedURLAbsoluteString = [[self.webView.request  URL] absoluteString];
-    NSString *statsName = nil;
-    
     if( [requestedURLAbsoluteString rangeOfString:kMobileReaderURL].location != NSNotFound ) {
-        statsName = @"home_page_refresh";
+        [self pingStatsEndpoint:@"home_page_refresh"];
     }
-    
-    if( statsName != nil ) {
-        int x = arc4random();
-        // ping stats on refresh of reader
-        NSString *statsURL = [NSString stringWithFormat:@"%@%@%@%@%d" , kMobileReaderURL, @"?template=stats&stats_name=", statsName, @"&rnd=", x];
-        
-        NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL  ]] autorelease];
-        WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
-        [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
-        [[[NSURLConnection alloc] initWithRequest:request delegate:nil] autorelease];
-    }
-
     [webView reload];
+}
+
+- (void)pingStatsEndpoint:(NSString*)statName {
+    int x = arc4random();
+    NSString *statsURL = [NSString stringWithFormat:@"%@%@%@%@%d" , kMobileReaderURL, @"?template=stats&stats_name=", statName, @"&rnd=", x];
+    NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL  ]] autorelease];
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
+    [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
+    [[[NSURLConnection alloc] initWithRequest:request delegate:nil] autorelease];
 }
 
 #pragma mark - UIWebViewDelegate

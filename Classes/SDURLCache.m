@@ -439,6 +439,18 @@ static NSDateFormatter* CreateDateFormatter(NSString *format)
 
 - (void)storeCachedResponse:(NSCachedURLResponse *)cachedResponse forRequest:(NSURLRequest *)request
 {
+ 
+    
+    NSURL *currentURL = [request URL];
+    request = [SDURLCache canonicalRequestForRequest:request];
+    
+    //The cache for these URLs was ignored on read, so the response should not be cached at all 
+    for (NSString *currentPathToExclude in self.excludedURLs) {
+        if ([currentURL.absoluteString rangeOfString:currentPathToExclude].location != NSNotFound ) {
+            return;  
+        }
+    }
+    
     request = [SDURLCache canonicalRequestForRequest:request];
     
     if (request.cachePolicy == NSURLRequestReloadIgnoringLocalCacheData
