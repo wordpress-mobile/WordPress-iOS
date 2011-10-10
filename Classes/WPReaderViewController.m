@@ -82,12 +82,8 @@
         [self refreshWebView];
     }
     [self addNotifications];
-    /*[self setRefreshTimer:[NSTimer timerWithTimeInterval:kReaderRefreshThreshold target:self selector:@selector(refreshWebViewTimer:) userInfo:nil repeats:YES]];
-	[[NSRunLoop currentRunLoop] addTimer:[self refreshTimer] forMode:NSDefaultRunLoopMode];*/
-    NSURLCache* cache = [NSURLCache sharedURLCache];
-    [cache setMemoryCapacity:4 * 1024 * 1024];
-    [cache setDiskCapacity:512*1024];
-    
+    [self setRefreshTimer:[NSTimer timerWithTimeInterval:kReaderRefreshThreshold target:self selector:@selector(refreshWebViewTimer:) userInfo:nil repeats:YES]];
+	[[NSRunLoop currentRunLoop] addTimer:[self refreshTimer] forMode:NSDefaultRunLoopMode];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
