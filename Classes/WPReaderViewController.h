@@ -21,9 +21,6 @@
 @property (nonatomic,retain) NSString *detailContentHTML;
 @property (nonatomic,retain) IBOutlet UIWebView *webView;
 @property (nonatomic,retain) IBOutlet UIToolbar *toolbar;
-@property (nonatomic,retain) IBOutlet UIView *loadingView;
-@property (nonatomic,retain) IBOutlet UIActivityIndicatorView *activityIndicator;
-@property (nonatomic,retain) IBOutlet UILabel *loadingLabel;
 @property (nonatomic, retain) IBOutlet UINavigationBar *iPadNavBar;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *backButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *forwardButton;

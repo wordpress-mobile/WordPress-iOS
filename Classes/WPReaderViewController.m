@@ -34,7 +34,6 @@
 @implementation WPReaderViewController
 @synthesize url, username, password, detailContentHTML;
 @synthesize webView, toolbar, statusTimer, refreshTimer, lastWebViewRefreshDate;
-@synthesize loadingView, loadingLabel, activityIndicator;
 @synthesize iPadNavBar, backButton, forwardButton, optionsButton;
 
 - (void)dealloc
@@ -83,8 +82,12 @@
         [self refreshWebView];
     }
     [self addNotifications];
-    [self setRefreshTimer:[NSTimer timerWithTimeInterval:kReaderRefreshThreshold target:self selector:@selector(refreshWebViewTimer:) userInfo:nil repeats:YES]];
-	[[NSRunLoop currentRunLoop] addTimer:[self refreshTimer] forMode:NSDefaultRunLoopMode];
+    /*[self setRefreshTimer:[NSTimer timerWithTimeInterval:kReaderRefreshThreshold target:self selector:@selector(refreshWebViewTimer:) userInfo:nil repeats:YES]];
+	[[NSRunLoop currentRunLoop] addTimer:[self refreshTimer] forMode:NSDefaultRunLoopMode];*/
+    NSURLCache* cache = [NSURLCache sharedURLCache];
+    [cache setMemoryCapacity:4 * 1024 * 1024];
+    [cache setDiskCapacity:512*1024];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -110,9 +113,6 @@
     self.webView.delegate = nil;
     self.webView = nil;
     self.toolbar = nil;
-    self.loadingView = nil;
-    self.loadingLabel = nil;
-    self.activityIndicator = nil;
     self.iPadNavBar = nil;
     self.statusTimer = nil;
     self.optionsButton = nil;
@@ -310,20 +310,24 @@
 - (void)setLoading:(BOOL)loading {
     if (isLoading == loading)
         return;
-    
-    self.lastWebViewRefreshDate = [NSDate date];  
-    
-    CGRect frame = self.loadingView.frame;
+
     if (loading) {
-        frame.origin.y -= frame.size.height;
+        UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+        
+        UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        [spinner setCenter:customView.center];
+        [customView addSubview:spinner];
+        
+        [spinner startAnimating];
+        
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:customView];
+        
+        [spinner release];
+        [customView release];
     } else {
-        frame.origin.y += frame.size.height;
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload)] autorelease];
     }
-    [UIView animateWithDuration:0.2
-                     animations:^{self.loadingView.frame = frame;}];
-    self.navigationItem.rightBarButtonItem.enabled = !loading;
-    self.navigationItem.leftBarButtonItem.enabled = YES;
-    self.optionsButton.enabled = !loading;
+    
     if (!loading) {
         if (DeviceIsPad()) {
             [iPadNavBar.topItem setTitle:[webView stringByEvaluatingJavaScriptFromString:@"document.title"]];
@@ -331,6 +335,7 @@
         else
             self.navigationItem.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
     }
+    
     isLoading = loading;
 }
 

@@ -256,17 +256,37 @@
     if (isLoading == loading)
         return;
     
-    CGRect frame = self.loadingView.frame;
-    if (loading) {
-        frame.origin.y -= frame.size.height;
-    } else {
-        frame.origin.y += frame.size.height;
+    if (DeviceIsPad()) {
+        CGRect frame = self.loadingView.frame;
+        if (loading) {
+            frame.origin.y -= frame.size.height;
+        } else {
+            frame.origin.y += frame.size.height;
+        }
+        [UIView animateWithDuration:0.2
+                         animations:^{self.loadingView.frame = frame;}];
+        self.navigationItem.rightBarButtonItem.enabled = !loading;
+        self.navigationItem.leftBarButtonItem.enabled = YES;
+        self.optionsButton.enabled = !loading;
     }
-    [UIView animateWithDuration:0.2
-                     animations:^{self.loadingView.frame = frame;}];
-    self.navigationItem.rightBarButtonItem.enabled = !loading;
-    self.navigationItem.leftBarButtonItem.enabled = YES;
-    self.optionsButton.enabled = !loading;
+    else {
+        if (loading) {
+            UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+            
+            UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+            [spinner setCenter:customView.center];
+            [customView addSubview:spinner];
+            
+            [spinner startAnimating];
+            
+            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:customView];
+            
+            [spinner release];
+            [customView release];
+        } else {
+            self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload)] autorelease];
+        }
+    }
     if (!loading) {
         if (DeviceIsPad()) {
             [iPadNavBar.topItem setTitle:[webView stringByEvaluatingJavaScriptFromString:@"document.title"]];
