@@ -32,7 +32,7 @@
 @end
 
 @implementation WPReaderViewController
-@synthesize url,username,password,detailContent;
+@synthesize url, username, password, detailContentHTML;
 @synthesize webView, toolbar, statusTimer, refreshTimer, lastWebViewRefreshDate;
 @synthesize loadingView, loadingLabel, activityIndicator;
 @synthesize iPadNavBar, backButton, forwardButton, optionsButton;
@@ -43,7 +43,7 @@
     self.url = nil;
     self.username = nil;
     self.password = nil;
-    self.detailContent = nil;
+    self.detailContentHTML = nil;
     self.webView = nil;
     self.statusTimer = nil;
     self.refreshTimer = nil;
@@ -55,7 +55,6 @@
 {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
     // Release any cached data, images, etc that aren't in use.
 }
 
@@ -408,14 +407,7 @@
         [self.navigationController pushViewController:detailViewController animated:YES];
         [detailViewController release];
         
-        // ping stats        
-        NSString *statsName = @"details_page";
-        int x = arc4random();
-        NSString *statsURL = [NSString stringWithFormat:@"%@%@%@%@%d" , kMobileReaderURL, @"?template=stats&stats_name=", statsName, @"&rnd=", x];
-        NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL  ]] autorelease];
-        WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
-        [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
-        [[[NSURLConnection alloc] initWithRequest:request delegate:nil] autorelease];
+        [self pingStatsEndpoint:@"details_page"];
         
         return NO;
     }
@@ -442,10 +434,6 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self setLoading:NO];
     self.optionsButton.enabled = YES;
-    if ([aWebView.request.URL.absoluteString rangeOfString:kMobileReaderDetailURL].location != NSNotFound) {
-        NSString *readerDetailScript = [NSString stringWithFormat:@"Reader2.show_article_details(%@);", self.detailContent];
-        [aWebView stringByEvaluatingJavaScriptFromString:readerDetailScript];
-    }
 }
 
 #pragma mark - UIActionSheetDelegate
