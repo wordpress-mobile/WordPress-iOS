@@ -482,8 +482,16 @@ static NSDateFormatter* CreateDateFormatter(NSString *format)
 
 - (NSCachedURLResponse *)cachedResponseForRequest:(NSURLRequest *)request
 {
-     NSURL *currentURL = [request URL];
+    NSURL *currentURL = [request URL];
     request = [SDURLCache canonicalRequestForRequest:request];
+    
+    //Check for URLs that should not be cached at all 
+    for (NSString *currentPathToExclude in self.excludedURLs) {
+        if ([currentURL.absoluteString rangeOfString:currentPathToExclude].location != NSNotFound ) {
+            NSLog(@"The requested URL is marked as not cacheble - %@", currentURL.absoluteString);
+            return nil;  
+        }
+    }
     
     NSCachedURLResponse *memoryResponse = [super cachedResponseForRequest:request];
     if (memoryResponse)
@@ -491,15 +499,7 @@ static NSDateFormatter* CreateDateFormatter(NSString *format)
         NSLog(@"MEMORY - %@", currentURL.absoluteString);
         return memoryResponse;
     }
-    
-    //Check for URLs that should not be cached at all 
-    for (NSString *currentPathToExclude in self.excludedURLs) {
-        if ([currentURL.absoluteString rangeOfString:currentPathToExclude].location != NSNotFound ) {
-            //NSLog(@"Do Not Cache - %@", currentURL.absoluteString);
-            return nil;  
-        }
-    }
-    
+        
     NSString *cacheKey = [SDURLCache cacheKeyForURL:request.URL];
     
     // NOTE: We don't handle expiration here as even staled cache data is necessary for NSURLConnection to handle cache revalidation.

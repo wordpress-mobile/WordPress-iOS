@@ -138,11 +138,17 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	// set the current dir
 	[fileManager changeCurrentDirectoryPath:currentDirectoryPath];
     
+    
+    //cleans the cache folder at startup
+    [fileManager removeItemAtPath:[SDURLCache defaultCachePath] error:NULL];
+    
     //Enable the caching system   
     SDURLCache *urlCache = [[SDURLCache alloc] initWithMemoryCapacity:1024*1024   // 1MB mem cache
                                                          diskCapacity:1024*1024*5 // 5MB disk cache
                                                              diskPath:[SDURLCache defaultCachePath]];
     NSArray *excludeTheseURLs = [NSArray arrayWithObjects:@"wordpress.com/wp-admin/", @"wordpress.com/reader/mobile/", @"/wp-login.php", @"public-api.wordpress.com", @"stats.wordpress.com", @"chart.apis.google.com", nil];
+       
+    
     urlCache.excludedURLs = excludeTheseURLs;
     [NSURLCache setSharedURLCache:urlCache];
     [urlCache release];
