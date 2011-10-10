@@ -13,6 +13,7 @@
 #import "WPAsynchronousImageView.h"
 #import "QuickPhotoButton.h"
 #import "QuickPhotoUploadProgressController.h"
+#import "WPReaderViewController.h"
 
 @interface BlogsViewController : UIViewController <NSFetchedResultsControllerDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate> {
 	WordPressAppDelegate *appDelegate;
@@ -23,7 +24,7 @@
     Post *quickPicturePost;
     UILabel *uploadLabel;
     IBOutlet UITableView *tableView;
-    WPWebViewController *readerViewController;
+    WPReaderViewController *readerViewController;
     BOOL isTransitioning;
 }
 

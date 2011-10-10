@@ -440,6 +440,7 @@
 		EC4696FF0EA75D460040EE8E /* PagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4696FE0EA75D460040EE8E /* PagesViewController.m */; };
 		F5A4EF6810B34147002BF126 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = F5A4EF6710B34147002BF126 /* NSData+Base64.m */; };
 		FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD21397E13128C5300099582 /* libiconv.dylib */; };
+		FD3890F01442F91000135C6D /* WPReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD3890EF1442F91000135C6D /* WPReaderViewController.m */; };
 		FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3D6D2B1349F5D30061136A /* ImageIO.framework */; };
 		FD9A948C12FAEA2300438F94 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FD9A948B12FAEA2300438F94 /* DateUtils.m */; };
 		FD9E7EF2143306C000E74450 /* FilteredWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = FD9E7EF1143306C000E74450 /* FilteredWebCache.m */; };
@@ -1068,6 +1069,8 @@
 		F5A4EF6610B34147002BF126 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		F5A4EF6710B34147002BF126 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 		FD21397E13128C5300099582 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
+		FD3890EE1442F91000135C6D /* WPReaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPReaderViewController.h; sourceTree = "<group>"; };
+		FD3890EF1442F91000135C6D /* WPReaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPReaderViewController.m; sourceTree = "<group>"; };
 		FD3D6D2B1349F5D30061136A /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		FD9A948A12FAEA2300438F94 /* DateUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateUtils.h; sourceTree = "<group>"; };
 		FD9A948B12FAEA2300438F94 /* DateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateUtils.m; sourceTree = "<group>"; };
@@ -1843,6 +1846,8 @@
 				FD9E7EF1143306C000E74450 /* FilteredWebCache.m */,
 				FD9E7EF4143309E900E74450 /* SDURLCache.h */,
 				FD9E7EF5143309E900E74450 /* SDURLCache.m */,
+				FD3890EE1442F91000135C6D /* WPReaderViewController.h */,
+				FD3890EF1442F91000135C6D /* WPReaderViewController.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -2624,6 +2629,7 @@
 				E1CAAE3A13F4142E0000C58D /* WPKeyboardToolbarButtonItem.m in Sources */,
 				FD9E7EF2143306C000E74450 /* FilteredWebCache.m in Sources */,
 				FD9E7EF6143309E900E74450 /* SDURLCache.m in Sources */,
+				FD3890F01442F91000135C6D /* WPReaderViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

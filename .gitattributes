@@ -235,6 +235,8 @@ Classes/WPProgressHUD.h -text
 Classes/WPProgressHUD.m -text
 Classes/WPReachability.h -text
 Classes/WPReachability.m -text
+Classes/WPReaderViewController.h -text
+Classes/WPReaderViewController.m -text
 Classes/WPSegmentedSelectionTableViewController.h -text
 Classes/WPSegmentedSelectionTableViewController.m -text
 Classes/WPSelectionTableViewController.h -text

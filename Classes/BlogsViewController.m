@@ -353,10 +353,9 @@
                                                               andServiceName:@"WordPress.com" 
                                                                        error:&error]; 
         if (wpcom_username && wpcom_password) { 
-            readerViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil]; 
+            readerViewController = [[WPReaderViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil]; 
             readerViewController.username = wpcom_username; 
             readerViewController.password = wpcom_password; 
-            readerViewController.isReader = YES; 
             readerViewController.url = [NSURL URLWithString:kMobileReaderURL]; 
             [readerViewController view]; // Force web view preload 
         } 

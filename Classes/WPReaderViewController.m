@@ -1,11 +1,12 @@
 //
-//  WPWebViewController.m
+//  WPReaderViewController.m
 //  WordPress
 //
-//  Created by Jorge Bernal on 6/16/11.
+//  Created by Danilo Ercoli on 10/10/11.
 //  Copyright 2011 WordPress. All rights reserved.
 //
 
+#import "WPReaderViewController.h"
 #import "WPWebViewController.h"
 
 #ifdef DEBUG
@@ -14,7 +15,7 @@
 #define kReaderRefreshThreshold (30*60) // 30m
 #endif
 
-@interface WPWebViewController (Private)
+@interface WPReaderViewController (Private)
 - (NSString*) getDocumentPermalink;
 - (NSString*) getDocumentTitle;
 - (void)upgradeButtonsAndLabels:(NSTimer*)timer;
@@ -29,7 +30,7 @@
 - (void)retryWithLogin;
 @end
 
-@implementation WPWebViewController
+@implementation WPReaderViewController
 @synthesize url,username,password,detailContent;
 @synthesize webView, toolbar, statusTimer, refreshTimer, lastWebViewRefreshDate;
 @synthesize loadingView, loadingLabel, activityIndicator;
@@ -88,7 +89,17 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [super viewWillAppear:animated];      
+    [super viewWillAppear:animated];    
+    
+
+    int x = arc4random();
+    // ping stats on load of reader
+    NSString *statsURL = [NSString stringWithFormat:@"%@%@%d" , kMobileReaderURL, @"?template=stats&stats_name=home_page&rnd=",x];
+    NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL]] autorelease];
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
+    [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
+    [[[NSURLConnection alloc] initWithRequest:request delegate:nil] autorelease];
+    
     [self setStatusTimer:[NSTimer timerWithTimeInterval:0.75 target:self selector:@selector(upgradeButtonsAndLabels:) userInfo:nil repeats:YES]];
 	[[NSRunLoop currentRunLoop] addTimer:[self statusTimer] forMode:NSDefaultRunLoopMode];
 }
@@ -155,7 +166,7 @@
 
 - (void)setStatusTimer:(NSTimer *)timer
 {
- //   [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    //   [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	if (statusTimer && timer != statusTimer) {
 		[statusTimer invalidate];
 		[statusTimer release];
@@ -174,7 +185,7 @@
 }
 
 - (void)upgradeButtonsAndLabels:(NSTimer*)timer {
- //   [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    //   [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     self.backButton.enabled = webView.canGoBack;
     self.forwardButton.enabled = webView.canGoForward;
     if (!isLoading) {
@@ -185,14 +196,14 @@
             self.navigationItem.title = [self getDocumentTitle];
     }
     /*
-    if( self.isReader ) {
-        // try to get the loaded URL within the webView
-        NSURLRequest *currentRequest = [webView request];
-        if ( currentRequest != nil) {
-            NSURL *currentURL = [currentRequest URL];
-            NSLog(@"Current URL is %@", currentURL.absoluteString);
-        }
-    }
+     if( self.isReader ) {
+     // try to get the loaded URL within the webView
+     NSURLRequest *currentRequest = [webView request];
+     if ( currentRequest != nil) {
+     NSURL *currentURL = [currentRequest URL];
+     NSLog(@"Current URL is %@", currentURL.absoluteString);
+     }
+     }
      */
 }
 
@@ -203,7 +214,7 @@
         NSURLRequest *currentRequest = [webView request];
         if ( currentRequest != nil) {
             NSURL *currentURL = [currentRequest URL];
-           // NSLog(@"Current URL is %@", currentURL.absoluteString);
+            // NSLog(@"Current URL is %@", currentURL.absoluteString);
             permaLink = currentURL.absoluteString;
         }
         
@@ -217,7 +228,7 @@
 }   
 
 - (NSString*) getDocumentTitle {
-     
+    
     NSString *title = [webView stringByEvaluatingJavaScriptFromString:@"Reader2.get_article_title();"];
     
     if( title != nil && [[title trim] isEqualToString:@""] == false ) {
@@ -229,8 +240,8 @@
         if ( title != nil && [[title trim] isEqualToString:@""] == false)
             return title;
         else {
-             NSString* permaLink = [self getDocumentPermalink];
-             return ( permaLink != nil) ? permaLink : @"";
+            NSString* permaLink = [self getDocumentPermalink];
+            return ( permaLink != nil) ? permaLink : @"";
         }
     }
     
@@ -361,6 +372,26 @@
 }
 
 - (void)reload {
+
+        
+    NSString *requestedURLAbsoluteString = [[self.webView.request  URL] absoluteString];
+    NSString *statsName = nil;
+    
+    if( [requestedURLAbsoluteString rangeOfString:kMobileReaderURL].location != NSNotFound ) {
+        statsName = @"home_page_refresh";
+    }
+    
+    if( statsName != nil ) {
+        int x = arc4random();
+        // ping stats on refresh of reader
+        NSString *statsURL = [NSString stringWithFormat:@"%@%@%@%@%d" , kMobileReaderURL, @"?template=stats&stats_name=", statsName, @"&rnd=", x];
+        
+        NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL  ]] autorelease];
+        WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
+        [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
+        [[[NSURLConnection alloc] initWithRequest:request delegate:nil] autorelease];
+    }
+
     [webView reload];
 }
 
@@ -379,7 +410,29 @@
             return NO;
         }
     }
+    
+    if ( ![requestedURL isEqual:self.url]
+        && [requestedURLAbsoluteString rangeOfString:kMobileReaderFPURL].location == NSNotFound
+        && [requestedURLAbsoluteString rangeOfString:kMobileReaderURL].location == NSNotFound
+        && [requestedURLAbsoluteString rangeOfString:@"wp-login.php"].location == NSNotFound) {
+        WPWebViewController *detailViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil]; 
+        detailViewController.url = [request URL]; 
+        detailViewController.detailContent = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.last_selected_item;"];
+        [self.navigationController pushViewController:detailViewController animated:YES];
+        [detailViewController release];
         
+        // ping stats        
+        NSString *statsName = @"details_page";
+        int x = arc4random();
+        NSString *statsURL = [NSString stringWithFormat:@"%@%@%@%@%d" , kMobileReaderURL, @"?template=stats&stats_name=", statsName, @"&rnd=", x];
+        NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL  ]] autorelease];
+        WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
+        [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
+        [[[NSURLConnection alloc] initWithRequest:request delegate:nil] autorelease];
+        
+        return NO;
+    }
+    
     [self setLoading:YES];        
     return YES;
 }
@@ -412,9 +465,9 @@
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	NSString *permaLink = [self getDocumentPermalink];
- 
+    
     if( permaLink == nil || [[permaLink trim] isEqualToString:@""] ) return; //this should never happen
-
+    
 	if (buttonIndex == 0) {
 		NSURL *permaLinkURL;
 		permaLinkURL = [[[NSURL alloc] initWithString:(NSString *)permaLink] autorelease];

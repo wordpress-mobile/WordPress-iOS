@@ -1,18 +1,18 @@
 //
-//  WPWebViewController.h
+//  WPReaderViewController.h
 //  WordPress
 //
-//  Created by Jorge Bernal on 6/16/11.
+//  Created by Danilo Ercoli on 10/10/11.
 //  Copyright 2011 WordPress. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
-@interface WPWebViewController : UIViewController<UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
+@interface WPReaderViewController : UIViewController<UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
     BOOL isLoading, needsLogin;
     IBOutlet UIWebView *webView;
-	NSTimer *statusTimer;   // This timer checks the nav buttons every 0.75 seconds, and updates them
-   	NSTimer *refreshTimer; 
+    NSTimer *statusTimer;   // This timer checks the nav buttons every 0.75 seconds, and updates them
+    NSTimer *refreshTimer; 
     NSDate  *lastWebViewRefreshDate; //used to keep track of the latest refresh datetime. 
 }
 @property (nonatomic,retain) NSURL *url;
@@ -35,5 +35,5 @@
 - (IBAction) showLinkOptions;
 - (IBAction) dismiss;
 - (IBAction) goForward;
-- (IBAction) goBack;
+- (IBAction) goBack;    
 @end
