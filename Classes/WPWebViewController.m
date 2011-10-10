@@ -8,12 +8,6 @@
 
 #import "WPWebViewController.h"
 
-#ifdef DEBUG
-#define kReaderRefreshThreshold 30 // 30s
-#else
-#define kReaderRefreshThreshold (30*60) // 30m
-#endif
-
 @interface WPWebViewController (Private)
 - (NSString*) getDocumentPermalink;
 - (NSString*) getDocumentTitle;
@@ -31,7 +25,7 @@
 
 @implementation WPWebViewController
 @synthesize url,username,password,detailContent;
-@synthesize webView, toolbar, statusTimer, refreshTimer, lastWebViewRefreshDate;
+@synthesize webView, toolbar, statusTimer;
 @synthesize loadingView, loadingLabel, activityIndicator;
 @synthesize iPadNavBar, backButton, forwardButton, optionsButton;
 
@@ -44,8 +38,6 @@
     self.detailContent = nil;
     self.webView = nil;
     self.statusTimer = nil;
-    self.refreshTimer = nil;
-    self.lastWebViewRefreshDate = nil;
     [super dealloc];
 }
 
@@ -53,7 +45,6 @@
 {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
     // Release any cached data, images, etc that aren't in use.
 }
 
@@ -81,9 +72,6 @@
     if (self.url) {
         [self refreshWebView];
     }
-    [self addNotifications];
-    [self setRefreshTimer:[NSTimer timerWithTimeInterval:kReaderRefreshThreshold target:self selector:@selector(refreshWebViewTimer:) userInfo:nil repeats:YES]];
-	[[NSRunLoop currentRunLoop] addTimer:[self refreshTimer] forMode:NSDefaultRunLoopMode];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -102,7 +90,6 @@
 - (void)viewDidUnload
 {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];  
-   	[self setRefreshTimer:nil];
     self.webView.delegate = nil;
     self.webView = nil;
     self.toolbar = nil;
@@ -123,34 +110,6 @@
     return YES;
 }
 
-#pragma mark - notifications related methods
-- (void)addNotifications {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshWebViewNotification:) name:@"ApplicationDidBecomeActive" object:nil];
-}
-
-- (void)removeNotifications{
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)refreshWebViewNotification:(NSNotification*)notification {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [self refreshWebViewIfNeeded];
-}
-
-- (void)refreshWebViewTimer:(NSTimer*)timer {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [self refreshWebViewIfNeeded];
-}
-
-- (void)refreshWebViewIfNeeded {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    //check the expire time and refresh the webview
-    if ( ! webView.loading ) {
-        if( fabs( [self.lastWebViewRefreshDate timeIntervalSinceNow] ) > kReaderRefreshThreshold ) //30minutes 
-            [self refreshWebView];
-    }
-}
-
 #pragma mark - webView related methods
 
 - (void)setStatusTimer:(NSTimer *)timer
@@ -163,15 +122,6 @@
 	statusTimer = [timer retain];
 }
 
-- (void)setRefreshTimer:(NSTimer *)timer
-{
-    //   [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-	if (refreshTimer && timer != refreshTimer) {
-		[refreshTimer invalidate];
-		[refreshTimer release];
-	}
-	refreshTimer = [timer retain];
-}
 
 - (void)upgradeButtonsAndLabels:(NSTimer*)timer {
  //   [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
@@ -283,8 +233,7 @@
         [request addValue:@"*/*" forHTTPHeaderField:@"Accept"];
         [request setHTTPMethod:@"POST"];
     }
-    [self.webView loadRequest:request]; 
-    self.lastWebViewRefreshDate = [NSDate date];    
+    [self.webView loadRequest:request];
 }
 
 - (void)retryWithLogin {
@@ -306,8 +255,6 @@
 - (void)setLoading:(BOOL)loading {
     if (isLoading == loading)
         return;
-    
-    self.lastWebViewRefreshDate = [NSDate date];  
     
     CGRect frame = self.loadingView.frame;
     if (loading) {

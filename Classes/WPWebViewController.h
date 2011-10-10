@@ -12,8 +12,6 @@
     BOOL isLoading, needsLogin;
     IBOutlet UIWebView *webView;
 	NSTimer *statusTimer;   // This timer checks the nav buttons every 0.75 seconds, and updates them
-   	NSTimer *refreshTimer; 
-    NSDate  *lastWebViewRefreshDate; //used to keep track of the latest refresh datetime. 
 }
 @property (nonatomic,retain) NSURL *url;
 @property (nonatomic,retain) NSString *username;
@@ -29,8 +27,6 @@
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *forwardButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *optionsButton;
 @property (retain, nonatomic) NSTimer *statusTimer;
-@property (retain, nonatomic) NSTimer *refreshTimer;
-@property (retain, nonatomic) NSDate *lastWebViewRefreshDate;
 
 - (IBAction) showLinkOptions;
 - (IBAction) dismiss;
