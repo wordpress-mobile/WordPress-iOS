@@ -415,21 +415,30 @@
         }
     }
     
-    if ( ![requestedURL isEqual:self.url]
-        && [requestedURLAbsoluteString rangeOfString:kMobileReaderFPURL].location == NSNotFound
-        && [requestedURLAbsoluteString rangeOfString:kMobileReaderURL].location == NSNotFound
-        && [requestedURLAbsoluteString rangeOfString:@"wp-login.php"].location == NSNotFound) {
-        WPWebViewController *detailViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil]; 
-        if( self.detailContentHTML ) 
-            detailViewController.detailHTML = self.detailContentHTML;
-        else
+    if ( ![requestedURL isEqual:self.url] && [requestedURLAbsoluteString rangeOfString:@"wp-login.php"].location == NSNotFound ) {
+                
+        if ( [requestedURLAbsoluteString rangeOfString:kMobileReaderDetailURL].location != NSNotFound ) {
+            //The user tapped an item in the posts list
+            WPWebViewController *detailViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil]; 
+            if( self.detailContentHTML ) 
+                detailViewController.detailHTML = self.detailContentHTML;
+            else
+                detailViewController.url = [request URL]; 
+            detailViewController.detailContent = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.last_selected_item;"];
+            [self.navigationController pushViewController:detailViewController animated:YES];
+            [detailViewController release];
+            
+            [self pingStatsEndpoint:@"details_page"];
+            return NO;
+        } else if ( [requestedURLAbsoluteString rangeOfString:kMobileReaderFPURL].location == NSNotFound
+                   && [requestedURLAbsoluteString rangeOfString:kMobileReaderURL].location == NSNotFound ) {
+            //When in FP and the user click on an item we should push a new VC into the stack
+            WPWebViewController *detailViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil]; 
             detailViewController.url = [request URL]; 
-        detailViewController.detailContent = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.last_selected_item;"];
-        [self.navigationController pushViewController:detailViewController animated:YES];
-        [detailViewController release];
-        
-        [self pingStatsEndpoint:@"details_page"];
-        return NO;
+            [self.navigationController pushViewController:detailViewController animated:YES];
+            [detailViewController release];
+            return NO;
+        }
     }
     
     [self setLoading:YES];        
@@ -455,26 +464,27 @@
     [self setLoading:NO];
     self.optionsButton.enabled = YES;
     
-    
     //finished to load the Reader Home page, start a new call to get the detailView HTML
-    ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:kMobileReaderDetailURL]];
-    [request setRequestMethod:@"GET"];
-    [request setShouldPresentCredentialsBeforeChallenge:NO];
-    [request setShouldPresentAuthenticationDialog:NO];
-    [request setUseKeychainPersistence:NO];
-    [request setValidatesSecureCertificate:NO];
-    [request setTimeOutSeconds:30];
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];        
-    [request addRequestHeader:@"User-Agent" value:[appDelegate applicationUserAgent]];
-    [request addRequestHeader:@"Content-Type" value:@"text/xml"];
-    [request addRequestHeader:@"Accept" value:@"*/*"];
-    
-    [request setDidFinishSelector:@selector(detailedViewFinishSelector:)];
-    [request setDidFailSelector:@selector(detailedViewFailSelector:)];
-    [request setDelegate:self];
-    
-    [request startAsynchronous];
-    [request release];
+    if ( ! self.detailContentHTML ) {
+        ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:kMobileReaderDetailURL]];
+        [request setRequestMethod:@"GET"];
+        [request setShouldPresentCredentialsBeforeChallenge:NO];
+        [request setShouldPresentAuthenticationDialog:NO];
+        [request setUseKeychainPersistence:NO];
+        [request setValidatesSecureCertificate:NO];
+        [request setTimeOutSeconds:30];
+        WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];        
+        [request addRequestHeader:@"User-Agent" value:[appDelegate applicationUserAgent]];
+        [request addRequestHeader:@"Content-Type" value:@"text/xml"];
+        [request addRequestHeader:@"Accept" value:@"*/*"];
+        
+        [request setDidFinishSelector:@selector(detailedViewFinishSelector:)];
+        [request setDidFailSelector:@selector(detailedViewFailSelector:)];
+        [request setDelegate:self];
+        
+        [request startAsynchronous];
+        [request release];
+    }
 }
 
 
