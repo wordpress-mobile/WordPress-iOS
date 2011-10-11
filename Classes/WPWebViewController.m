@@ -19,7 +19,7 @@
 @end
 
 @implementation WPWebViewController
-@synthesize url,username,password,detailContent;
+@synthesize url,username,password,detailContent, detailHTML;
 @synthesize webView, toolbar, statusTimer;
 @synthesize loadingView, loadingLabel, activityIndicator;
 @synthesize iPadNavBar, backButton, forwardButton, optionsButton;
@@ -31,6 +31,7 @@
     self.username = nil;
     self.password = nil;
     self.detailContent = nil;
+    self.detailHTML = nil;
     self.webView = nil;
     self.statusTimer = nil;
     [super dealloc];
@@ -77,6 +78,8 @@
     
     if (self.url) {
         [self refreshWebView];
+    } else {
+        [self.webView  loadHTMLString:self.detailHTML baseURL:[NSURL URLWithString:@"http://en.wordpress.com"]];
     }
 }
 
@@ -374,7 +377,7 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self setLoading:NO];
     self.optionsButton.enabled = YES;
-    if ([aWebView.request.URL.absoluteString rangeOfString:kMobileReaderDetailURL].location != NSNotFound) {
+    if ([aWebView.request.URL.absoluteString rangeOfString:kMobileReaderDetailURL].location != NSNotFound || self.detailHTML) {
         NSString *readerDetailScript = [NSString stringWithFormat:@"Reader2.show_article_details(%@);", self.detailContent];
         [aWebView stringByEvaluatingJavaScriptFromString:readerDetailScript];
     }

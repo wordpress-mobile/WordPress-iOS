@@ -17,6 +17,7 @@
 @property (nonatomic,retain) NSString *username;
 @property (nonatomic,retain) NSString *password;
 @property (nonatomic,retain) NSString *detailContent;
+@property (nonatomic,retain) NSString *detailHTML;
 @property (nonatomic,retain) IBOutlet UIWebView *webView;
 @property (nonatomic,retain) IBOutlet UIToolbar *toolbar;
 @property (nonatomic,retain) IBOutlet UIView *loadingView;

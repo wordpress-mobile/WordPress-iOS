@@ -8,9 +8,10 @@
 
 #import "WPReaderViewController.h"
 #import "WPWebViewController.h"
+#import "ASIHTTPRequest.h"
 
 #ifdef DEBUG
-#define kReaderRefreshThreshold 30 // 30s
+#define kReaderRefreshThreshold 10*30 // 10min
 #else
 #define kReaderRefreshThreshold (30*60) // 30m
 #endif
@@ -29,6 +30,8 @@
 - (void)refreshWebViewIfNeeded;
 - (void)retryWithLogin;
 - (void)pingStatsEndpoint:(NSString*)statName;
+- (void)detailedViewFinishSelector:(ASIHTTPRequest *)xmlrpcRequest;
+- (void)detailedViewFailSelector:(ASIHTTPRequest *)request;
 @end
 
 @implementation WPReaderViewController
@@ -417,13 +420,15 @@
         && [requestedURLAbsoluteString rangeOfString:kMobileReaderURL].location == NSNotFound
         && [requestedURLAbsoluteString rangeOfString:@"wp-login.php"].location == NSNotFound) {
         WPWebViewController *detailViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil]; 
-        detailViewController.url = [request URL]; 
+        if( self.detailContentHTML ) 
+            detailViewController.detailHTML = self.detailContentHTML;
+        else
+            detailViewController.url = [request URL]; 
         detailViewController.detailContent = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.last_selected_item;"];
         [self.navigationController pushViewController:detailViewController animated:YES];
         [detailViewController release];
         
         [self pingStatsEndpoint:@"details_page"];
-        
         return NO;
     }
     
@@ -449,7 +454,43 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self setLoading:NO];
     self.optionsButton.enabled = YES;
+    
+    
+    //finished to load the Reader Home page, start a new call to get the detailView HTML
+    ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:kMobileReaderDetailURL]];
+    [request setRequestMethod:@"GET"];
+    [request setShouldPresentCredentialsBeforeChallenge:NO];
+    [request setShouldPresentAuthenticationDialog:NO];
+    [request setUseKeychainPersistence:NO];
+    [request setValidatesSecureCertificate:NO];
+    [request setTimeOutSeconds:30];
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];        
+    [request addRequestHeader:@"User-Agent" value:[appDelegate applicationUserAgent]];
+    [request addRequestHeader:@"Content-Type" value:@"text/xml"];
+    [request addRequestHeader:@"Accept" value:@"*/*"];
+    
+    [request setDidFinishSelector:@selector(detailedViewFinishSelector:)];
+    [request setDidFailSelector:@selector(detailedViewFailSelector:)];
+    [request setDelegate:self];
+    
+    [request startAsynchronous];
+    [request release];
 }
+
+
+- (void)detailedViewFinishSelector:(ASIHTTPRequest *)request
+{
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    self.detailContentHTML = [request responseString];
+    //NSLog(@"%@", self.detailContentHTML);
+}
+
+- (void)detailedViewFailSelector:(ASIHTTPRequest *)request {
+	NSError *error = [request error];
+	[FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), error];
+    self.detailContentHTML = nil;
+}
+
 
 #pragma mark - UIActionSheetDelegate
 

@@ -9,7 +9,7 @@
 #import "WelcomeViewController.h"
 #import "BetaUIWindow.h"
 #import "MigrateBlogsFromFiles.h"
-//#import "FilteredWebCache.h"
+#import "FilteredWebCache.h"
 #import "SDURLCache.h"
 
 
@@ -138,7 +138,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	// set the current dir
 	[fileManager changeCurrentDirectoryPath:currentDirectoryPath];
     
-    
+   /* 
     //cleans the cache folder at startup
     [fileManager removeItemAtPath:[SDURLCache defaultCachePath] error:NULL];
     
@@ -151,10 +151,10 @@ static WordPressAppDelegate *wordPressApp = NULL;
     urlCache.excludedURLs = excludeTheseURLs;
     [NSURLCache setSharedURLCache:urlCache];
     [urlCache release];
-        
-    /*
-     //Enable this NSURLCache impl just to check if data is loaded from Memory or the Net.
-     
+   */     
+
+/*  
+    //Enable this NSURLCache impl just to check if data is loaded from Memory or the Net.
     NSArray *paths2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSUInteger discCapacity = 10*1024*1024;
     NSUInteger memoryCapacity = 512*1024;
