@@ -115,7 +115,6 @@
 
 - (void)viewDidUnload
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];  
    	[self setRefreshTimer:nil];
     self.webView.delegate = nil;
