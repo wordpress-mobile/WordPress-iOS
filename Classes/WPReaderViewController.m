@@ -387,7 +387,10 @@
     if( [requestedURLAbsoluteString rangeOfString:kMobileReaderURL].location != NSNotFound ) {
         [self pingStatsEndpoint:@"home_page_refresh"];
     }
-    [webView reload];
+    if ([requestedURLAbsoluteString length] == 0)
+        [self refreshWebView];
+    else
+        [webView reload];
 }
 
 - (void)pingStatsEndpoint:(NSString*)statName {
