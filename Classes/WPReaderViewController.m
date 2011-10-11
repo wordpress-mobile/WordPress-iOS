@@ -496,6 +496,16 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     self.detailContentHTML = [request responseString];
     //NSLog(@"%@", self.detailContentHTML);
+    
+    //replace the css link
+    self.detailContentHTML = [self.detailContentHTML stringByReplacingOccurrencesOfString:@"http://wordpress.com/wp-content/themes/h4/mobile/v2/reader.css" withString:@"reader.css"];
+    self.detailContentHTML = [self.detailContentHTML stringByReplacingOccurrencesOfString:@"https://wordpress.com/wp-content/themes/h4/mobile/v2/reader.css" withString:@"reader.css"];
+    
+    self.detailContentHTML = [self.detailContentHTML stringByReplacingOccurrencesOfString:@"http://wordpress.com/wp-content/themes/h4/mobile/v2/reader.js" withString:@"reader.js"];
+    self.detailContentHTML = [self.detailContentHTML stringByReplacingOccurrencesOfString:@"https://wordpress.com/wp-content/themes/h4/mobile/v2/reader.js" withString:@"reader.js"];
+
+    self.detailContentHTML = [self.detailContentHTML stringByReplacingOccurrencesOfString:@"http://wordpress.com/wp-content/themes/h4/mobile/v2/mustache.js" withString:@"mustache.js"];
+    self.detailContentHTML = [self.detailContentHTML stringByReplacingOccurrencesOfString:@"https://wordpress.com/wp-content/themes/h4/mobile/v2/mustache.js" withString:@"mustache.js"];    
 }
 
 - (void)detailedViewFailSelector:(ASIHTTPRequest *)request {

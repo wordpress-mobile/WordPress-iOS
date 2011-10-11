@@ -33,7 +33,6 @@
     
     NSURL *currentURL = [request URL];
     
-    
     NSCachedURLResponse *resp = [super cachedResponseForRequest:request];
     
     if( resp == nil ) {

@@ -79,7 +79,10 @@
     if (self.url) {
         [self refreshWebView];
     } else {
-        [self.webView  loadHTMLString:self.detailHTML baseURL:[NSURL URLWithString:@"http://en.wordpress.com"]];
+        NSString *path = [[NSBundle mainBundle] bundlePath];
+        NSURL *baseURL = [NSURL fileURLWithPath:path];
+        
+        [self.webView loadHTMLString:self.detailHTML baseURL:baseURL]; //[NSURL URLWithString:@"http://en.wordpress.com"]
     }
 }
 
