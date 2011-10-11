@@ -82,6 +82,17 @@
         [self refreshWebView];
     }
     [self addNotifications];
+    
+    //allows the toolbar to become smaller in landscape mode.
+    if (!DeviceIsPad()) {
+        toolbar.autoresizingMask = toolbar.autoresizingMask | UIViewAutoresizingFlexibleHeight;
+        //retina displays have a 2px gap at the bottom, this corrects it
+        if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2){
+            toolbar.frame = CGRectMake(toolbar.frame.origin.x, toolbar.frame.origin.y + 2, toolbar.frame.size.width, toolbar.frame.size.height);
+            webView.frame = CGRectMake(webView.frame.origin.x, webView.frame.origin.y, webView.frame.size.width, webView.frame.size.height + 2);
+        }
+    }
+    
     [self setRefreshTimer:[NSTimer timerWithTimeInterval:kReaderRefreshThreshold target:self selector:@selector(refreshWebViewTimer:) userInfo:nil repeats:YES]];
 	[[NSRunLoop currentRunLoop] addTimer:[self refreshTimer] forMode:NSDefaultRunLoopMode];
 }
@@ -104,6 +115,7 @@
 
 - (void)viewDidUnload
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];  
    	[self setRefreshTimer:nil];
     self.webView.delegate = nil;
@@ -120,7 +132,10 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return YES;
+    if (UIInterfaceOrientationIsLandscape(interfaceOrientation) || UIInterfaceOrientationIsPortrait(interfaceOrientation))
+        return YES;
+    
+    return false;
 }
 
 #pragma mark - notifications related methods

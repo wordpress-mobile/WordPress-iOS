@@ -69,6 +69,17 @@
     self.forwardButton.enabled = NO;
     self.optionsButton.enabled = NO;
     self.webView.scalesPageToFit = YES;
+    
+    //allows the toolbar to become smaller in landscape mode.
+    if (!DeviceIsPad()) {
+        toolbar.autoresizingMask = toolbar.autoresizingMask | UIViewAutoresizingFlexibleHeight;
+        //retina displays have a 2px gap at the bottom, this corrects it
+        if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2){
+            toolbar.frame = CGRectMake(toolbar.frame.origin.x, toolbar.frame.origin.y + 2, toolbar.frame.size.width, toolbar.frame.size.height);
+            webView.frame = CGRectMake(webView.frame.origin.x, webView.frame.origin.y, webView.frame.size.width, webView.frame.size.height + 2);
+        }
+    }
+    
     if (self.url) {
         [self refreshWebView];
     }
