@@ -15,11 +15,6 @@
 - (BOOL)setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field;
 - (void)refreshWebView;
 - (void)setLoading:(BOOL)loading;
-- (void)removeNotifications;
-- (void)addNotifications;
-- (void)refreshWebViewNotification:(NSNotification*)notification;
-- (void)refreshWebViewTimer:(NSTimer*)timer;
-- (void)refreshWebViewIfNeeded;
 - (void)retryWithLogin;
 @end
 
@@ -112,7 +107,6 @@
     self.optionsButton = nil;
     self.backButton = nil;
     self.forwardButton = nil;
-    [self removeNotifications];
     [super viewDidUnload];
 }
 
