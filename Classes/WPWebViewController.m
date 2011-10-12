@@ -22,7 +22,7 @@
 @synthesize url,username,password,detailContent, detailHTML;
 @synthesize webView, toolbar, statusTimer;
 @synthesize loadingView, loadingLabel, activityIndicator;
-@synthesize iPadNavBar, backButton, forwardButton, optionsButton;
+@synthesize iPadNavBar, backButton, forwardButton, optionsButton, isRefreshButtonEnabled;
 
 - (void)dealloc
 {
@@ -49,6 +49,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil ];
     if (self) {
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload)] autorelease];
+        self.isRefreshButtonEnabled = YES;
     }
     return self;
 }   
@@ -65,7 +66,6 @@
     self.forwardButton.enabled = NO;
     self.optionsButton.enabled = NO;
     self.webView.scalesPageToFit = YES;
-    
     //allows the toolbar to become smaller in landscape mode.
     if (!DeviceIsPad()) {
         toolbar.autoresizingMask = toolbar.autoresizingMask | UIViewAutoresizingFlexibleHeight;
@@ -91,6 +91,7 @@
     [super viewWillAppear:animated];      
     [self setStatusTimer:[NSTimer timerWithTimeInterval:0.75 target:self selector:@selector(upgradeButtonsAndLabels:) userInfo:nil repeats:YES]];
 	[[NSRunLoop currentRunLoop] addTimer:[self statusTimer] forMode:NSDefaultRunLoopMode];
+    if( self.isRefreshButtonEnabled == NO ) self.navigationItem.rightBarButtonItem.enabled = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -266,6 +267,8 @@
 - (void)setLoading:(BOOL)loading {
     if (isLoading == loading)
         return;
+
+    self.optionsButton.enabled = !loading;
     
     if (DeviceIsPad()) {
         CGRect frame = self.loadingView.frame;
@@ -276,26 +279,28 @@
         }
         [UIView animateWithDuration:0.2
                          animations:^{self.loadingView.frame = frame;}];
-        self.navigationItem.rightBarButtonItem.enabled = !loading;
+        if( self.isRefreshButtonEnabled )
+            self.navigationItem.rightBarButtonItem.enabled = !loading;
         self.navigationItem.leftBarButtonItem.enabled = YES;
-        self.optionsButton.enabled = !loading;
     }
     else {
-        if (loading) {
-            UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
-            
-            UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-            [spinner setCenter:customView.center];
-            [customView addSubview:spinner];
-            
-            [spinner startAnimating];
-            
-            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:customView];
-            
-            [spinner release];
-            [customView release];
-        } else {
-            self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload)] autorelease];
+        if( self.isRefreshButtonEnabled ) { //the refresh
+            if (loading) {
+                UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+                
+                UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+                [spinner setCenter:customView.center];
+                [customView addSubview:spinner];
+                
+                [spinner startAnimating];
+                
+                self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:customView];
+                
+                [spinner release];
+                [customView release];
+            } else {
+                self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload)] autorelease];
+            }
         }
     }
     if (!loading) {
@@ -357,6 +362,16 @@
             return NO;
         }
     }
+    
+    if (![requestedURL isEqual:self.url] && [requestedURLAbsoluteString rangeOfString:@"file://"].location == NSNotFound && 
+        self.detailHTML != nil && self.detailContent != nil  ) {
+            WPWebViewController *detailViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil]; 
+            detailViewController.url = [request URL]; 
+            [self.navigationController pushViewController:detailViewController animated:YES];
+            [detailViewController release];
+            return NO;
+    }
+    
         
     [self setLoading:YES];        
     return YES;

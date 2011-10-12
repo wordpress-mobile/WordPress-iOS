@@ -20,16 +20,8 @@
 @property (nonatomic,retain) NSString *password;
 @property (nonatomic,retain) NSString *detailContentHTML;
 @property (nonatomic,retain) IBOutlet UIWebView *webView;
-@property (nonatomic,retain) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, retain) IBOutlet UINavigationBar *iPadNavBar;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *backButton;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *forwardButton;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *optionsButton;
 @property (retain, nonatomic) NSTimer *refreshTimer;
 @property (retain, nonatomic) NSDate *lastWebViewRefreshDate;
 
-- (IBAction) showLinkOptions;
-- (IBAction) dismiss;
-- (IBAction) goForward;
-- (IBAction) goBack;    
 @end

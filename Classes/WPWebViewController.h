@@ -28,6 +28,7 @@
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *forwardButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *optionsButton;
 @property (retain, nonatomic) NSTimer *statusTimer;
+@property (nonatomic,assign) BOOL isRefreshButtonEnabled;
 
 - (IBAction) showLinkOptions;
 - (IBAction) dismiss;

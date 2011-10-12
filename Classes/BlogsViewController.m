@@ -353,7 +353,7 @@
                                                               andServiceName:@"WordPress.com" 
                                                                        error:&error]; 
         if (wpcom_username && wpcom_password) { 
-            readerViewController = [[WPReaderViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil]; 
+            readerViewController = [[WPReaderViewController alloc] initWithNibName:@"WPReaderViewController" bundle:nil]; 
             readerViewController.username = wpcom_username; 
             readerViewController.password = wpcom_password; 
             readerViewController.url = [NSURL URLWithString:kMobileReaderURL]; 

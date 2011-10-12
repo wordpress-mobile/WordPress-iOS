@@ -334,6 +334,7 @@ Settings.bundle/en.lproj/Root.strings -text
 /UITableViewSwitchCell.xib -text
 /WPAddCategoryViewController.xib -text
 /WPCategoriesController.xib -text
+/WPReaderViewController.xib -text
 /WPSelectionTableViewController.xib -text
 /WPWebViewController-iPad.xib -text
 /WPWebViewController.xib -text
