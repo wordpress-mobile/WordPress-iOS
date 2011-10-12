@@ -25,7 +25,6 @@
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *backButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *forwardButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *optionsButton;
-@property (retain, nonatomic) NSTimer *statusTimer;
 @property (retain, nonatomic) NSTimer *refreshTimer;
 @property (retain, nonatomic) NSDate *lastWebViewRefreshDate;
 

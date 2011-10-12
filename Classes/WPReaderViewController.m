@@ -19,8 +19,6 @@
 @interface WPReaderViewController (Private)
 - (NSString*) getDocumentPermalink;
 - (NSString*) getDocumentTitle;
-- (void)upgradeButtonsAndLabels:(NSTimer*)timer;
-- (BOOL)setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field;
 - (void)refreshWebView;
 - (void)setLoading:(BOOL)loading;
 - (void)removeNotifications;
@@ -36,7 +34,7 @@
 
 @implementation WPReaderViewController
 @synthesize url, username, password, detailContentHTML;
-@synthesize webView, toolbar, statusTimer, refreshTimer, lastWebViewRefreshDate;
+@synthesize webView, toolbar, refreshTimer, lastWebViewRefreshDate;
 @synthesize iPadNavBar, backButton, forwardButton, optionsButton;
 
 - (void)dealloc
@@ -47,7 +45,6 @@
     self.password = nil;
     self.detailContentHTML = nil;
     self.webView = nil;
-    self.statusTimer = nil;
     self.refreshTimer = nil;
     self.lastWebViewRefreshDate = nil;
     [super dealloc];
@@ -105,14 +102,10 @@
     [super viewWillAppear:animated];    
     
     [self pingStatsEndpoint:@"home_page"];
-    
-    [self setStatusTimer:[NSTimer timerWithTimeInterval:0.75 target:self selector:@selector(upgradeButtonsAndLabels:) userInfo:nil repeats:YES]];
-	[[NSRunLoop currentRunLoop] addTimer:[self statusTimer] forMode:NSDefaultRunLoopMode];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-	[self setStatusTimer:nil];
     [super viewWillDisappear:animated];
 }
 
@@ -124,7 +117,6 @@
     self.webView = nil;
     self.toolbar = nil;
     self.iPadNavBar = nil;
-    self.statusTimer = nil;
     self.optionsButton = nil;
     self.backButton = nil;
     self.forwardButton = nil;
@@ -188,29 +180,6 @@
 		[refreshTimer release];
 	}
 	refreshTimer = [timer retain];
-}
-
-- (void)upgradeButtonsAndLabels:(NSTimer*)timer {
-    //   [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    self.backButton.enabled = webView.canGoBack;
-    self.forwardButton.enabled = webView.canGoForward;
-    if (!isLoading) {
-        if (DeviceIsPad()) {
-            [iPadNavBar.topItem setTitle:[self getDocumentTitle]];
-        }
-        else
-            self.navigationItem.title = [self getDocumentTitle];
-    }
-    /*
-     if( self.isReader ) {
-     // try to get the loaded URL within the webView
-     NSURLRequest *currentRequest = [webView request];
-     if ( currentRequest != nil) {
-     NSURL *currentURL = [currentRequest URL];
-     NSLog(@"Current URL is %@", currentURL.absoluteString);
-     }
-     }
-     */
 }
 
 - (NSString*) getDocumentPermalink {
@@ -455,7 +424,6 @@
     if (isLoading && ([error code] != -999) && [error code] != 102)
         [[NSNotificationCenter defaultCenter] postNotificationName:@"OpenWebPageFailed" object:error userInfo:nil];
     [self setLoading:NO];
-    self.optionsButton.enabled = YES;
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)aWebView {
@@ -465,7 +433,6 @@
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self setLoading:NO];
-    self.optionsButton.enabled = YES;
     
     //finished to load the Reader Home page, start a new call to get the detailView HTML
     if ( ! self.detailContentHTML ) {
@@ -537,47 +504,11 @@
         [controller setMessageBody:body isHTML:NO];
         
         if (controller) [self presentModalViewController:controller animated:YES];
-        [self setMFMailFieldAsFirstResponder:controller.view mfMailField:@"MFRecipientTextField"];
         [controller release];
     } else if ( buttonIndex == 2 ) {
         UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
         pasteboard.string = permaLink;
     }
-}
-
-
-#pragma mark - MFMailComposeViewControllerDelegate
-
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
-{
-	[self dismissModalViewControllerAnimated:YES];
-}
-
-#pragma mark - custom methods
-//Returns true if the ToAddress field was found any of the sub views and made first responder
-//passing in @"MFComposeSubjectView"     as the value for field makes the subject become first responder 
-//passing in @"MFComposeTextContentView" as the value for field makes the body become first responder 
-//passing in @"RecipientTextField"       as the value for field makes the to address field become first responder 
-- (BOOL) setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field{
-    for (UIView *subview in view.subviews) {
-        
-        NSString *className = [NSString stringWithFormat:@"%@", [subview class]];
-        if ([className isEqualToString:field]) {
-            //Found the sub view we need to set as first responder
-            [subview becomeFirstResponder];
-            return YES;
-        }
-        
-        if ([subview.subviews count] > 0) {
-            if ([self setMFMailFieldAsFirstResponder:subview mfMailField:field]){
-                //Field was found and made first responder in a subview
-                return YES;
-            }
-        }
-    }
-    
-    //field not found in this view.
-    return NO;
 }
 
 @end
