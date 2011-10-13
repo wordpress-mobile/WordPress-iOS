@@ -1,50 +1,70 @@
 var jq = jQuery;
 
 var Reader2 = {
-  per_page: 10,
-  page_num: 1,
-  page_data: false,
-  filter: 'no_p2',
-  request: false,
-  in_subs_list:true,
-  pageYOffset: 0,
-  last_selected_item: {},
-  active_tab: null,
-  list_item_template : "<div id='post-{{blog_id}}-{{post_id}}' class='subs-item' ontouchstart='return true' onclick=''>" +
+per_page: 10,
+page_num: 1,
+page_data: false,
+filter: 'no_p2',
+request: false,
+in_subs_list:true,
+pageYOffset: 0,
+loaded_items: [], //used by the iOS app only
+last_selected_item: {}, //used by the iOS app only
+active_tab: null,
+    list_item_template : "<div id='post-{{blog_id}}-{{post_id}}' class='subs-item' ontouchstart='return true' onclick=''>" +
 	"<article class='subs-item-main'>" +
 	"<header>" +
 	"<hgroup>" +
-		"<div class='meta'>" +
-			"<span class='info'>" +
-				"<span class='comments'>{{comment_count}}</span>" +
-				"<span class='ago'>{{ago}}</span>" +
-			"</span>" +
-			"<h2 class='blog public'>" +
-				"<img class='avatar' src='{{author_avatar}}' alt='' height='16' width='16' />" +
-				"<span class='blog-title'>{{{blog}}}</span>" +
-			"</h2>" +
-		"</div>" +
-		"<h1 class='title'>{{{title}}}</h1>" +
+    "<div class='meta'>" +
+    "<span class='info'>" +
+    "<span class='comments'>{{comment_count}}</span>" +
+    "<span class='ago'>{{ago}}</span>" +
+    "</span>" +
+    "<h2 class='blog public'>" +
+    "<img class='avatar' src='{{author_avatar}}' alt='' height='16' width='16' />" +
+    "<span class='blog-title'>{{{blog}}}</span>" +
+    "</h2>" +
+    "</div>" +
+    "<h1 class='title'>{{{title}}}</h1>" +
 	"</hgroup>" +
 	"</header>" +
 	"<div class='excerpt'>{{{excerpt}}}</div>" +
 	"</article>" +
 	"</div>",
-  
-  pingStatsEndpoint: function (stat_name) {
-	  jq.get("/wp-admin/admin-ajax.php", {
-		  'action': 'wpcom_load_mobile', 
-		  'template': 'stats',
-		  'stats_name' : stat_name,
-		  'screen_width' : window.screen.availWidth
-	  });
-  },
-
-  init: function( ) {
+	details_item_template : 
+    "<header>"+
+    "<hgroup>" +
+    "<div class='meta'>" +
+    "<span class='info'>" +
+    "<span class='comments'>{{comment_count}}</span>" +
+    "<span class='ago'>{{ago}}</span>" +
+    "</span>" +
+    "<h2 class='post-author'>" +
+    "<img id='author-avatar' class='author-avatar' alt='' height='16' width='16' />" +
+    "<span class='author-name'>{{{author_name}}}</span>" +
+    "</h2>" +
+    "</div>" +
+    "<h1 class='title'>{{{title}}}</h1>" +
+    "</hgroup>" +
+    "</header>" +
+    "<div class='content'>{{{content}}}" +
+    "<div><a target='_blank' id='comments_link' class='comments_link' href=''>Leave a comment</a></div>" +
+    "</div>",
+    
+pingStatsEndpoint: function (stat_name) {
+    jq.get("/wp-admin/admin-ajax.php", {
+           'action': 'wpcom_load_mobile', 
+           'template': 'stats',
+           'stats_name' : stat_name,
+           'screen_width' : window.screen.availWidth
+           });
+},
+    
+init: function( ) {
     this.per_page = ( jq.query.get('per_page') ) ? jq.query.get('per_page') : this.per_page;
     this.page_num = ( jq.query.get('page_num') ) ? jq.query.get('page_num') : this.page_num;
     this.filter = ( jq.query.get('filter') ) ? jq.query.get('filter') : this.filter;
-
+    
     //pings the Stats endpoint. note: this ping is not bumped when called inside one of our apps.
     if(  Reader2.active_tab == 'subs' ) {
     	this.pingStatsEndpoint('startup_stats');
@@ -52,7 +72,7 @@ var Reader2 = {
     	// The user started the Reader2 on the FP page.
     	this.pingStatsEndpoint('freshly');
     }
-        
+    
 	//set the value of the filter if the cookie exists
 	if ( jq.cookie( 'wpcom-mobile-reader-filter' ) != null ) {
 		jq( '#filter-name' ).text( jq( '#filter_select option:selected' ).text() );
@@ -60,22 +80,24 @@ var Reader2 = {
 	
 	// Posts filter logic
 	jq('#filter_select').live('change', function() {
-		Reader2.page_num = 1;
-		Reader2.filter = jq( '#filter_select' ).val();
-		jq( '#filter-name' ).text( jq( '#filter_select option:selected' ).text() );
-		jq('#subscriptions').html('');
-		jq( '#loader' ).fadeToggle();
-		jq.cookie('wpcom-mobile-reader-filter', Reader2.filter, { expires: 365 });
-	    Reader2.load(false, function() {
-	    	jq( '#loader' ).fadeToggle();
-	        Reader2.render();
-	        //preload the 2nd page of content
-	        Reader2.load(true, function() {
-	            Reader2.render();
-	          } );
-	    } );		
-	}); 
-
+                              Reader2.page_num = 1;
+                              Reader2.filter = jq( '#filter_select' ).val();
+                              jq( '#filter-name' ).text( jq( '#filter_select option:selected' ).text() );
+                              jq('#subscriptions').html('');
+                              Reader2.last_selected_item = {};
+                              Reader2.loaded_items = [];
+                              jq( '#loader' ).fadeToggle();
+                              jq.cookie('wpcom-mobile-reader-filter', Reader2.filter, { expires: 365 });
+                              Reader2.load(false, function() {
+                                           jq( '#loader' ).fadeToggle();
+                                           Reader2.render();
+                                           //preload the 2nd page of content
+                                           Reader2.load(true, function() {
+                                                        Reader2.render();
+                                                        } );
+                                           } );		
+                              }); 
+    
     // Check for scrolling and fire this.load() when hitting then end of the page.
     jq( window ).scroll( this.onScroll );
 	jq( 'body' ).attr( 'class', 'list' );    
@@ -83,21 +105,21 @@ var Reader2 = {
     	//load the page using ajax
 	    jq( '#loader' ).fadeToggle();
 	    Reader2.load(false, function() {
-	    	jq( '#loader' ).fadeToggle();
-	        Reader2.render();
-	        //preload the 2nd page of content
-	        Reader2.load(true, function() {
-	            Reader2.render();
-	          } );
-	    } );
+                     jq( '#loader' ).fadeToggle();
+                     Reader2.render();
+                     //preload the 2nd page of content
+                     Reader2.load(true, function() {
+                                  Reader2.render();
+                                  } );
+                     } );
 	}
-  },
-  
-  load: function(show_loading_indicator, callback ) {
+},
+    
+load: function(show_loading_indicator, callback ) {
     if ( ( typeof this.request == 'object' ) && ( this.request !== null ) ) {
-      return;
+        return;
     }
-
+    
     if(show_loading_indicator === true) {
     	jq( '#subscriptions' ).append( '<div id="loading-more">Wait, there\'s more...</div>' );
     }
@@ -105,230 +127,255 @@ var Reader2 = {
 	if ( jq.cookie( 'wpcom-mobile-reader-filter' ) != null ) {
 		this.filter = jq.cookie( 'wpcom-mobile-reader-filter' );
 	}
-
+    
     this.request = jq.getJSON( '/wp-admin/admin-ajax.php', { 
-      'action': 'wpcom_load_mobile', 
-      'template': 'subscriptions',
-      'v': 2,
-      'per_page': this.per_page,
-      'page_num': this.page_num,
-	  'filter': this.filter,
-      'screen_width' : window.screen.availWidth
-    },
-    function( result ) {
-      jq( '#loading-more' ).remove();
-      Reader2.request = null;
-      Reader2.page_data = result;
-	  if ( result.length < 1 ) {
-	    jq( '#subscriptions' ).append( '<p class="noblogs">Nothing to read! Why not <a href="/#!/following/edit/">follow some blogs</a> or have a look at <a class="load-tab" rel="fresh" href="http://wordpress.com/reader/mobile/freshly-pressed">Freshly Pressed</a>?</p>' );
-	  }
-      if ( typeof callback == 'function' ) callback.call( this );
-    })
-  //  .success(function() { console.log("second success"); })
+                              'action': 'wpcom_load_mobile', 
+                              'template': 'subscriptions',
+                              'v': 2,
+                              'per_page': this.per_page,
+                              'page_num': this.page_num,
+                              'filter': this.filter,
+                              'screen_width' : window.screen.availWidth
+                              },
+                              function( result ) {
+                              jq( '#loading-more' ).remove();
+                              Reader2.request = null;
+                              Reader2.page_data = result;
+                              if ( result.length < 1 ) {
+                              jq( '#subscriptions' ).append( '<p class="noblogs">Nothing to read! Why not <a href="/#!/following/edit/">follow some blogs</a> or have a look at <a class="load-tab" rel="fresh" href="http://wordpress.com/reader/mobile/freshly-pressed">Freshly Pressed</a>?</p>' );
+                              } else {
+                              jq.each(result, function(i, val) {
+                                      Reader2.loaded_items.push(val); //add the loaded items to the end of the items array
+                                      });
+                              }
+                              if ( typeof callback == 'function' ) callback.call( this );
+                              })
+    //  .success(function() { console.log("second success"); })
     .error(function() { jq( '#loading-more' ).remove();  Reader2.request = null; /*console.log("error");*/ });
-  
-  this.page_num++;
-  },
-  
-  onScroll: function() {
+    
+    this.page_num++;
+},
+    
+onScroll: function() {
     if ( Reader2.active_tab === 'subs' && Reader2.in_subs_list && Reader2.page_num && jq( window ).scrollTop() + jq( window ).height() >= jq( document ).height() - ( jq( window ).height() ) ) {
-	  if ( Reader2.page_data.length )
-        Reader2.render();
-      else {
-        Reader2.load(true, function() {
-          Reader2.render();
-        } );
-      }
+        if ( Reader2.page_data.length )
+            Reader2.render();
+        else {
+            Reader2.load(true, function() {
+                         Reader2.render();
+                         } );
+        }
     }
-  },
-
-  /*
-  showSubscriptions: function() {
-    jq( '#article' ).hide();
-    jq( '#subscriptions' ).show();
-    jq( '#reader-tabs').show();
-	jq('html, body').animate({ scrollTop: this.pageYOffset }, 1 );
-	jq( 'body' ).attr( 'class', 'list' );
-    this.in_subs_list = true;
-  },
-*/
-  /* get the permalink of the current article loaded in the detail view. Used by the mobile apps */
-  get_article_permalink : function () {
-	  if( jq( '#article-main' ).is(':visible') ) {
-		  return jq( '#article-main' ).find('a.comments_link' ).attr( 'href' ); 
-	  } else 
-		  return '';
-  },
-
-  /* get the title of the current article loaded in the detail view. Used by the mobile apps */
-  get_article_title : function () {
-	  if( jq( '#article-main' ).is(':visible') ) {
-		  return jq.trim( jq( '#article-main' ).find('h1.title' ).text() ); 
-	  } else 
-		  return '';
-  },
-  
-  render: function() {
+},
+    
+    /*
+     showSubscriptions: function() {
+     jq( '#article' ).hide();
+     jq( '#subscriptions' ).show();
+     jq( '#reader-tabs').show();
+     jq('html, body').animate({ scrollTop: this.pageYOffset }, 1 );
+     jq( 'body' ).attr( 'class', 'list' );
+     this.in_subs_list = true;
+     },
+     */
+    
+    //used by the iOS app
+    show_next_item : function() {
+        var next_index = 0;
+        var current_guid = jq( '#comments_link' ).attr( 'href');
+        jq.each(this.loaded_items, function(i, val) {
+                if (val.guid == current_guid) 
+                next_index = i+1;
+                });
+        if ( next_index < 0 ) return;
+        this.show_article_details( this.loaded_items[next_index] );  
+    },
+    
+    show_prev_item : function() {
+        var next_index = 0;
+        var current_guid = jq( '#comments_link' ).attr( 'href');
+        jq.each(this.loaded_items, function(i, val) {
+                if (val.guid == current_guid) 
+                next_index = i-1;
+                });
+        if ( next_index >=  this.loaded_items.length ) return;
+        this.show_article_details( this.loaded_items[next_index] );    
+    },
+    
+    set_loaded_items : function( items ) {
+        Reader2.loaded_items = items;
+    },
+    
+    get_loaded_items : function() {
+        return JSON.stringify(this.loaded_items);
+    },
+    
+    /* get the permalink of the current article loaded in the detail view. Used by the mobile apps */
+    get_article_permalink : function () {
+        if( jq( '#article-main' ).is(':visible') ) {
+            return jq( '#article-main' ).find('a.comments_link' ).attr( 'href' ); 
+        } else 
+            return '';
+    },
+    
+    /* get the title of the current article loaded in the detail view. Used by the mobile apps */
+    get_article_title : function () {
+        if( jq( '#article-main' ).is(':visible') ) {
+            return jq.trim( jq( '#article-main' ).find('h1.title' ).text() ); 
+        } else 
+            return '';
+    },
+    //end functions used by the iOS app
+    
+render: function() {
     // If we return an empty result then stop trying load more pages.
     if ( !( this.page_data.length > 0 ) ) {
-	  this.page_num = false;
-      return false;
+        this.page_num = false;
+        return false;
     }
-       
+    
     jq.each(this.page_data, function(i, val) {
-    	var html_code = (Mustache.to_html(Reader2.list_item_template, val));
-    	var current_node = jq(html_code); //create the node
-    	current_node.click(function(e) { //set the onclick action on the item 		
-        	Reader2.pageYOffset = window.pageYOffset; 
-        	//console.log(val);
-        	var ua = navigator.userAgent;
-        	if( /wp-iphone/i.test(ua) ) {
-        		Reader2.last_selected_item = JSON.stringify(val);
-        	} else {      	
-	        	jQuery.Storage.set( {'current_item' : JSON.stringify(val)} );
-	        	
-        	}
-        	location.href = "/wp-admin/admin-ajax.php?action=wpcom_load_mobile&template=details&v=2";
-        	return false;
-        });
-      	current_node.appendTo('#subscriptions');
-    });
-
-    /* 
-    var items = [];
-    jq.each(this.page_data, function(i, val) {
-    	items.push(Mustache.to_html(template, val));
-    });
-    jq('<div/>', {
-        'class': 'new-page',
-        html: items.join('')
-      }).appendTo('#subscriptions');
-    */
+            var html_code = (Mustache.to_html(Reader2.list_item_template, val));
+            var current_node = jq(html_code); //create the node
+            current_node.click(function(e) { //set the onclick action on the item 		
+                               Reader2.pageYOffset = window.pageYOffset; 
+                               //console.log(val);
+                               var ua = navigator.userAgent;
+                               if( /wp-iphone/i.test(ua) ) {
+                               Reader2.last_selected_item = JSON.stringify(val);
+                               } else {      	
+                               jQuery.Storage.set( {'current_item' : JSON.stringify(val)} );
+                               
+                               }
+                               location.href = "/wp-admin/admin-ajax.php?action=wpcom_load_mobile&template=details&v=2";
+                               return false;
+                               });
+            current_node.appendTo('#subscriptions');
+            });
     this.page_data = false;
-  },  
-
-  show_article_details : function ( current_item ) {
-	  if (typeof current_item == 'undefined')
-		current_item = JSON.parse(jQuery.Storage.get( 'current_item' ));
-	  var node = jq ('#main-content-from-list');
-	  var template = node.html(); //load the html template
-	  //console.log( template ); return;
-	  var html_code = (Mustache.to_html(template, current_item)); //generate the content
-	  node.html(html_code);
-	
-	  //fix some attributes - Mustace won't work on them
-	  jq( '#comments_link' ).attr( 'href', current_item.guid );
-	  jq( '#author-avatar' ).attr( 'src', current_item.author_avatar );
-	  //set the document.title to the post title
-	  document.title = current_item.title;
-
-	  //let's start with the reblog/like settings
-	  var actions = jq( '#actions-box' );
-	  jq( '#blog_link_url' ).attr( 'href', current_item.blogurl);
-	  jq( '#blog_avatar' ).attr( 'original', current_item.avatar);
-	  
-	  if (typeof  current_item.blog == 'undefined')
-		  current_item.blog = current_item.blogurl;
-	  
-	  jq( '#blog_title' ).text( current_item.blog );
-	  jq( '#reblog-title' ).text( 'Reblog: ' + current_item.title);
-	  jq( '#post-content').attr("value", current_item.content );
-	
-	  var action_like_node = jq( '#action-like' );
-	  var current_node_a = action_like_node.find( 'a' );
-	  
-	  if ( current_item.liked == 1 ) {
-		  action_like_node.addClass( 'active' );
-		  current_node_a.attr( 'href', "");
-		  current_node_a.click(function(e) {
-			  e.preventDefault();
-		  });
-		  current_node_a.text( 'You like this' );
-	  } else {
-		  action_like_node.removeClass( 'active' );
-		  current_node_a.text( 'Like' );
-		  current_node_a.attr( 'href', current_item.likeurl )
-		  .click(function(e){
-			  if ( jq(this).hasClass( 'active' ) )
-				  return;
-
-			  jq( '#action-like' ).addClass( 'active' );
-			  jq( '#action-like a' ).text( 'You like this' );
-			  var nonce = jq( this ).attr( 'href' ).split( '_wpnonce=' );
-			  nonce = nonce[1];
-
-			  jQuery.post( '/wp-admin/admin-ajax.php', { 
-				  'action': 'like_it', 
-				  'cookie': encodeURIComponent( document.cookie ), 
-				  '_wpnonce': nonce, 
-				  'blog_id': current_item.blog_id, 
-				  'post_id': current_item.post_id
-			  },
-			  function( response, status ) {
-				  if ( status != 'success' ) {
-					  jq( '#action-like' ).removeClass( 'active' );
-					  jq( '#action-like a' ).text( 'Like' );
-				  }
-			  });
-			  e.preventDefault();
-		  });
-	  }
-
-	  //hides the like and re-blog on external feed for now
-	  if ( current_item.external == 1 ) {
-		  actions.find( '#actions' ).hide( );
-		  actions.find('aside').addClass( 'external-feed' );
-		  node.find( '.author-name' ).hide();
-		  node.find( '.author-avatar' ).hide();
-	  }
-
-	  jq( '#main-content-from-list' ).show();
-	  
-	  setTimeout(function (){
-		  jq( 'html,body' ).animate({
-			  scrollTop: jq( '.article-item-main' ).offset().top - 5
-		  }, 250);
-		  var imgNode = jq( '#blog_avatar' );
-		  imgNode.attr( 'src', imgNode.attr( 'original' ) );
-		  imgNode.removeAttr('original');
-	  }, 500);
-
-	  jq('#action-reblog').click(function(e){
-		  e.preventDefault();
-		  jq('#reblog').fadeToggle();
-	  });
-	  jq('#reblog-cancel').click(function(e){
-		  e.preventDefault();
-		  jq('#reblog').fadeToggle();
-	  });
-
-	  //reblog via ajax
-	  jq( '#reblog-submit' ).click(function() {
-		  jq( '#reblog-submit' ).text('Reblogging...');
-		  jq.get( '/wp-admin/admin-ajax.php', { 
-			  'action': 'json_quickpress_post', 
-			  'cookie': encodeURIComponent(document.cookie),
-			  'post_title': jq.trim( jq("#reblog-title").text().replace('Reblog: ', '') ),
-			  'content': jq("#comment-textarea").val(),
-			  'post_tags': jq('#tags-input').val(),
-			  'blogid': jq("#blogs-selector").val(),
-			  'ids': current_item.blog_id + ',' + current_item.post_id ,
-			  '_wpnonce': jq('#_wpnonce').val()
-		  },
-		  function(result) {
-			  if ( 'success' == result.type ) {
-				  jq( '#action-reblog' ).addClass( 'active' );
-				  jq( '#action-reblog a' ).text( 'Reblogged' );
-				  jq( '#reblog' ).fadeToggle();
-			  }
-			  else {
-				  alert('Sorry, your Reblog didn\'t make it through. Please try again.');
-			  }
-		  }, 'json' );
-
-		  return false;
-	  });
-  }
+},  
+    
+    show_article_details : function ( current_item ) {
+        if (typeof current_item == 'undefined')
+            current_item = JSON.parse(jQuery.Storage.get( 'current_item' ));
+        var node = jq ('#main-content-from-list');
+        //console.log( template ); return;
+        var html_code = (Mustache.to_html(Reader2.details_item_template, current_item)); //generate the content
+        node.html(html_code);
+        
+        //fix some attributes - Mustace won't work on them
+        jq( '#comments_link' ).attr( 'href', current_item.guid );
+        jq( '#author-avatar' ).attr( 'src', current_item.author_avatar );
+        //set the document.title to the post title
+        document.title = current_item.title;
+        
+        //let's start with the reblog/like settings
+        var actions = jq( '#actions-box' );
+        jq( '#blog_link_url' ).attr( 'href', current_item.blogurl);
+        jq( '#blog_avatar' ).attr( 'original', current_item.avatar);
+        
+        if (typeof  current_item.blog == 'undefined')
+            current_item.blog = current_item.blogurl;
+        
+        jq( '#blog_title' ).text( current_item.blog );
+        jq( '#reblog-title' ).text( 'Reblog: ' + current_item.title);
+        jq( '#post-content').attr("value", current_item.content );
+        
+        var action_like_node = jq( '#action-like' );
+        var current_node_a = action_like_node.find( 'a' );
+        
+        if ( current_item.liked == 1 ) {
+            action_like_node.addClass( 'active' );
+            current_node_a.attr( 'href', "");
+            current_node_a.click(function(e) {
+                                 e.preventDefault();
+                                 });
+            current_node_a.text( 'You like this' );
+        } else {
+            action_like_node.removeClass( 'active' );
+            current_node_a.text( 'Like' );
+            current_node_a.attr( 'href', current_item.likeurl )
+            .click(function(e){
+                   if ( jq(this).hasClass( 'active' ) )
+                   return;
+                   
+                   jq( '#action-like' ).addClass( 'active' );
+                   jq( '#action-like a' ).text( 'You like this' );
+                   var nonce = jq( this ).attr( 'href' ).split( '_wpnonce=' );
+                   nonce = nonce[1];
+                   
+                   jQuery.post( '/wp-admin/admin-ajax.php', { 
+                               'action': 'like_it', 
+                               'cookie': encodeURIComponent( document.cookie ), 
+                               '_wpnonce': nonce, 
+                               'blog_id': current_item.blog_id, 
+                               'post_id': current_item.post_id
+                               },
+                               function( response, status ) {
+                               if ( status != 'success' ) {
+                               jq( '#action-like' ).removeClass( 'active' );
+                               jq( '#action-like a' ).text( 'Like' );
+                               }
+                               });
+                   e.preventDefault();
+                   });
+        }
+        
+        //hides the like and re-blog on external feed for now
+        if ( current_item.external == 1 ) {
+            actions.find( '#actions' ).hide( );
+            actions.find('aside').addClass( 'external-feed' );
+            node.find( '.author-name' ).hide();
+            node.find( '.author-avatar' ).hide();
+        }
+        
+        jq( '#main-content-from-list' ).show();
+        
+        setTimeout(function (){
+                   jq( 'html,body' ).animate({
+                                             scrollTop: jq( '.article-item-main' ).offset().top - 5
+                                             }, 250);
+                   var imgNode = jq( '#blog_avatar' );
+                   imgNode.attr( 'src', imgNode.attr( 'original' ) );
+                   imgNode.removeAttr('original');
+                   }, 500);
+        
+        jq('#action-reblog').click(function(e){
+                                   e.preventDefault();
+                                   jq('#reblog').fadeToggle();
+                                   });
+        jq('#reblog-cancel').click(function(e){
+                                   e.preventDefault();
+                                   jq('#reblog').fadeToggle();
+                                   });
+        
+        //reblog via ajax
+        jq( '#reblog-submit' ).click(function() {
+                                     jq( '#reblog-submit' ).text('Reblogging...');
+                                     jq.get( '/wp-admin/admin-ajax.php', { 
+                                            'action': 'json_quickpress_post', 
+                                            'cookie': encodeURIComponent(document.cookie),
+                                            'post_title': jq.trim( jq("#reblog-title").text().replace('Reblog: ', '') ),
+                                            'content': jq("#comment-textarea").val(),
+                                            'post_tags': jq('#tags-input').val(),
+                                            'blogid': jq("#blogs-selector").val(),
+                                            'ids': current_item.blog_id + ',' + current_item.post_id ,
+                                            '_wpnonce': jq('#_wpnonce').val()
+                                            },
+                                            function(result) {
+                                            if ( 'success' == result.type ) {
+                                            jq( '#action-reblog' ).addClass( 'active' );
+                                            jq( '#action-reblog a' ).text( 'Reblogged' );
+                                            jq( '#reblog' ).fadeToggle();
+                                            }
+                                            else {
+                                            alert('Sorry, your Reblog didn\'t make it through. Please try again.');
+                                            }
+                                            }, 'json' );
+                                     
+                                     return false;
+                                     });
+    }
 };
 
 /** Plugins ******************************************************/
@@ -337,28 +384,28 @@ eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a
 /* Cookie: https://raw.github.com/carhartl/jquery-cookie/master/jquery.cookie.js */
 jQuery.cookie=function(key,value,options){if(arguments.length>1&&String(value)!=="[object Object]"){options=jQuery.extend({},options);if(value===null||value===undefined){options.expires=-1}if(typeof options.expires==='number'){var days=options.expires,t=options.expires=new Date();t.setDate(t.getDate()+days)}value=String(value);return(document.cookie=[encodeURIComponent(key),'=',options.raw?value:encodeURIComponent(value),options.expires?'; expires='+options.expires.toUTCString():'',options.path?'; path='+options.path:'',options.domain?'; domain='+options.domain:'',options.secure?'; secure':''].join(''))}options=value||{};var result,decode=options.raw?function(s){return s}:decodeURIComponent;return(result=new RegExp('(?:^|; )'+encodeURIComponent(key)+'=([^;]*)').exec(document.cookie))?decode(result[1]):null};
 (function($) {
-	// Private data
-	var isLS=typeof window.localStorage!=='undefined';
-	// Private functions
-	function wls(n,v){var c;if(typeof n==="string"&&typeof v==="string"){localStorage[n]=v;return true;}else if(typeof n==="object"&&typeof v==="undefined"){for(c in n){if(n.hasOwnProperty(c)){localStorage[c]=n[c];}}return true;}return false;}
-	function wc(n,v){var dt,e,c;dt=new Date();dt.setTime(dt.getTime()+31536000000);e="; expires="+dt.toGMTString();if(typeof n==="string"&&typeof v==="string"){document.cookie=n+"="+v+e+"; path=/";return true;}else if(typeof n==="object"&&typeof v==="undefined"){for(c in n) {if(n.hasOwnProperty(c)){document.cookie=c+"="+n[c]+e+"; path=/";}}return true;}return false;}
-	function rls(n){return localStorage[n];}
-	function rc(n){var nn, ca, i, c;nn=n+"=";ca=document.cookie.split(';');for(i=0;i<ca.length;i++){c=ca[i];while(c.charAt(0)===' '){c=c.substring(1,c.length);}if(c.indexOf(nn)===0){return c.substring(nn.length,c.length);}}return null;}
-	function dls(n){return delete localStorage[n];}
-	function dc(n){return wc(n,"",-1);}
-	/**
-	* Public API
-	* $.Storage - Represents the user's data store, whether it's cookies or local storage.
-	* $.Storage.set("name", "value") - Stores a named value in the data store.
-	* $.Storage.set({"name1":"value1", "name2":"value2", etc}) - Stores multiple name/value pairs in the data store.
-	* $.Storage.get("name") - Retrieves the value of the given name from the data store.
-	* $.Storage.remove("name") - Permanently deletes the name/value pair from the data store.
-	*/
-	$.extend({
-		Storage: {
-			set: isLS ? wls : wc,
-			get: isLS ? rls : rc,
-			remove: isLS ? dls :dc
-		}
-	});
-})(jQuery);
+ // Private data
+ var isLS=typeof window.localStorage!=='undefined';
+ // Private functions
+ function wls(n,v){var c;if(typeof n==="string"&&typeof v==="string"){localStorage[n]=v;return true;}else if(typeof n==="object"&&typeof v==="undefined"){for(c in n){if(n.hasOwnProperty(c)){localStorage[c]=n[c];}}return true;}return false;}
+ function wc(n,v){var dt,e,c;dt=new Date();dt.setTime(dt.getTime()+31536000000);e="; expires="+dt.toGMTString();if(typeof n==="string"&&typeof v==="string"){document.cookie=n+"="+v+e+"; path=/";return true;}else if(typeof n==="object"&&typeof v==="undefined"){for(c in n) {if(n.hasOwnProperty(c)){document.cookie=c+"="+n[c]+e+"; path=/";}}return true;}return false;}
+ function rls(n){return localStorage[n];}
+ function rc(n){var nn, ca, i, c;nn=n+"=";ca=document.cookie.split(';');for(i=0;i<ca.length;i++){c=ca[i];while(c.charAt(0)===' '){c=c.substring(1,c.length);}if(c.indexOf(nn)===0){return c.substring(nn.length,c.length);}}return null;}
+ function dls(n){return delete localStorage[n];}
+ function dc(n){return wc(n,"",-1);}
+ /**
+  * Public API
+  * $.Storage - Represents the user's data store, whether it's cookies or local storage.
+  * $.Storage.set("name", "value") - Stores a named value in the data store.
+  * $.Storage.set({"name1":"value1", "name2":"value2", etc}) - Stores multiple name/value pairs in the data store.
+  * $.Storage.get("name") - Retrieves the value of the given name from the data store.
+  * $.Storage.remove("name") - Permanently deletes the name/value pair from the data store.
+  */
+ $.extend({
+          Storage: {
+          set: isLS ? wls : wc,
+          get: isLS ? rls : rc,
+          remove: isLS ? dls :dc
+          }
+          });
+ })(jQuery);

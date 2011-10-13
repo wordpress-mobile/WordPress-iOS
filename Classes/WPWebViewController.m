@@ -19,7 +19,7 @@
 @end
 
 @implementation WPWebViewController
-@synthesize url,username,password,detailContent, detailHTML;
+@synthesize url, username, password, detailContent, detailHTML, readerAllItems;
 @synthesize webView, toolbar, statusTimer;
 @synthesize loadingView, loadingLabel, activityIndicator;
 @synthesize iPadNavBar, backButton, forwardButton, optionsButton, isRefreshButtonEnabled;
@@ -89,8 +89,14 @@
 - (void)viewWillAppear:(BOOL)animated {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewWillAppear:animated];      
-    [self setStatusTimer:[NSTimer timerWithTimeInterval:0.75 target:self selector:@selector(upgradeButtonsAndLabels:) userInfo:nil repeats:YES]];
-	[[NSRunLoop currentRunLoop] addTimer:[self statusTimer] forMode:NSDefaultRunLoopMode];
+    if( self.detailContent == nil ) {
+        [self setStatusTimer:[NSTimer timerWithTimeInterval:0.75 target:self selector:@selector(upgradeButtonsAndLabels:) userInfo:nil repeats:YES]];
+        [[NSRunLoop currentRunLoop] addTimer:[self statusTimer] forMode:NSDefaultRunLoopMode];
+    } else {
+        //do not set the timer on the detailsView
+        self.backButton.enabled = YES;
+        self.forwardButton.enabled = YES;
+    }
     if( self.isRefreshButtonEnabled == NO ) self.navigationItem.rightBarButtonItem.enabled = NO;
 }
 
@@ -136,7 +142,7 @@
 
 
 - (void)upgradeButtonsAndLabels:(NSTimer*)timer {
- //   [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     self.backButton.enabled = webView.canGoBack;
     self.forwardButton.enabled = webView.canGoForward;
     if (!isLoading) {
@@ -146,16 +152,6 @@
         else
             self.navigationItem.title = [self getDocumentTitle];
     }
-    /*
-    if( self.isReader ) {
-        // try to get the loaded URL within the webView
-        NSURLRequest *currentRequest = [webView request];
-        if ( currentRequest != nil) {
-            NSURL *currentURL = [currentRequest URL];
-            NSLog(@"Current URL is %@", currentURL.absoluteString);
-        }
-    }
-     */
 }
 
 - (NSString*) getDocumentPermalink {
@@ -318,17 +314,25 @@
 }
 
 - (void)goBack {
-    if ([webView isLoading]) {
-        [webView stopLoading];
+    if( self.detailContent != nil ) {
+        [webView stringByEvaluatingJavaScriptFromString:@"Reader2.show_prev_item();"];
+    } else {
+        if ([webView isLoading]) {
+            [webView stopLoading];
+        }
+        [webView goBack];
     }
-    [webView goBack];
 }
 
 - (void)goForward {
-    if ([webView isLoading]) {
-        [webView stopLoading];
+    if( self.detailContent != nil ) {
+     [webView stringByEvaluatingJavaScriptFromString:@"Reader2.show_next_item();"];
+    } else {
+        if ([webView isLoading]) {
+            [webView stopLoading];
+        }
+        [webView goForward];
     }
-    [webView goForward];
 }
 
 - (void)showLinkOptions{
@@ -362,17 +366,17 @@
             return NO;
         }
     }
-    
+
+     //the user clicked a link available in the detailsView, a new webView will be pushed into the stack
     if (![requestedURL isEqual:self.url] && [requestedURLAbsoluteString rangeOfString:@"file://"].location == NSNotFound && 
-        self.detailHTML != nil && self.detailContent != nil  ) {
+        self.detailContent != nil ) {
             WPWebViewController *detailViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil]; 
             detailViewController.url = [request URL]; 
             [self.navigationController pushViewController:detailViewController animated:YES];
             [detailViewController release];
             return NO;
     }
-    
-        
+            
     [self setLoading:YES];        
     return YES;
 }
@@ -384,7 +388,7 @@
     if (isLoading && ([error code] != -999) && [error code] != 102)
         [[NSNotificationCenter defaultCenter] postNotificationName:@"OpenWebPageFailed" object:error userInfo:nil];
     [self setLoading:NO];
-    self.optionsButton.enabled = YES;
+    self.optionsButton.enabled = NO;
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)aWebView {
@@ -395,9 +399,9 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self setLoading:NO];
     self.optionsButton.enabled = YES;
-    if ([aWebView.request.URL.absoluteString rangeOfString:kMobileReaderDetailURL].location != NSNotFound || self.detailHTML) {
-        NSString *readerDetailScript = [NSString stringWithFormat:@"Reader2.show_article_details(%@);", self.detailContent];
-        [aWebView stringByEvaluatingJavaScriptFromString:readerDetailScript];
+    if ([aWebView.request.URL.absoluteString rangeOfString:kMobileReaderDetailURL].location != NSNotFound || self.detailContent) {
+        [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.set_loaded_items(%@);", self.readerAllItems]];
+        [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.show_article_details(%@);", self.detailContent]];
     }
 }
 

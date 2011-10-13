@@ -308,6 +308,7 @@
             else
                 detailViewController.url = [request URL]; 
             detailViewController.detailContent = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.last_selected_item;"];
+            detailViewController.readerAllItems = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.get_loaded_items();"];
             detailViewController.isRefreshButtonEnabled = NO;
             [self.navigationController pushViewController:detailViewController animated:YES];
             [detailViewController release];

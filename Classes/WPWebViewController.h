@@ -16,8 +16,6 @@
 @property (nonatomic,retain) NSURL *url;
 @property (nonatomic,retain) NSString *username;
 @property (nonatomic,retain) NSString *password;
-@property (nonatomic,retain) NSString *detailContent;
-@property (nonatomic,retain) NSString *detailHTML;
 @property (nonatomic,retain) IBOutlet UIWebView *webView;
 @property (nonatomic,retain) IBOutlet UIToolbar *toolbar;
 @property (nonatomic,retain) IBOutlet UIView *loadingView;
@@ -29,6 +27,11 @@
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *optionsButton;
 @property (retain, nonatomic) NSTimer *statusTimer;
 @property (nonatomic,assign) BOOL isRefreshButtonEnabled;
+
+//reader variables
+@property (nonatomic,retain) NSString *detailContent;
+@property (nonatomic,retain) NSString *detailHTML;
+@property (nonatomic,retain) NSString *readerAllItems;
 
 - (IBAction) showLinkOptions;
 - (IBAction) dismiss;
