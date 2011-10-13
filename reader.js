@@ -245,7 +245,6 @@ render: function() {
                                Reader2.last_selected_item = JSON.stringify(val);
                                } else {      	
                                jQuery.Storage.set( {'current_item' : JSON.stringify(val)} );
-                               
                                }
                                location.href = "/wp-admin/admin-ajax.php?action=wpcom_load_mobile&template=details&v=2";
                                return false;
@@ -296,6 +295,9 @@ render: function() {
             current_node_a.text( 'Like' );
             current_node_a.attr( 'href', current_item.likeurl )
             .click(function(e){
+                   
+                   e.preventDefault();
+                   
                    if ( jq(this).hasClass( 'active' ) )
                    return;
                    
@@ -304,9 +306,17 @@ render: function() {
                    var nonce = jq( this ).attr( 'href' ).split( '_wpnonce=' );
                    nonce = nonce[1];
                    
-                   jQuery.post( '/wp-admin/admin-ajax.php', { 
+                   var ua = navigator.userAgent;
+                   var biscotto = "";
+                   if( /wp-iphone/i.test(ua) ) {
+                   biscotto = jq( '#like_cookie_for_ios' ).text();
+                   } else {      	
+                   biscotto = encodeURIComponent( document.cookie );
+                   }
+                   //Use the full URL here, do not change it. If you really need to change it, ping to the Italian guy first...	
+                   jQuery.post( 'https://en.wordpress.com/wp-admin/admin-ajax.php', { 
                                'action': 'like_it', 
-                               'cookie': encodeURIComponent( document.cookie ), 
+                               'cookie': biscotto, 
                                '_wpnonce': nonce, 
                                'blog_id': current_item.blog_id, 
                                'post_id': current_item.post_id
@@ -317,7 +327,7 @@ render: function() {
                                jq( '#action-like a' ).text( 'Like' );
                                }
                                });
-                   e.preventDefault();
+                   
                    });
         }
         
@@ -327,11 +337,6 @@ render: function() {
             actions.find('aside').addClass( 'external-feed' );
             node.find( '.author-name' ).hide();
             node.find( '.author-avatar' ).hide();
-        } else {
-            actions.find( '#actions' ).show( );
-            actions.find('aside').removeClass( 'external-feed' );
-            node.find( '.author-name' ).show();
-            node.find( '.author-avatar' ).show();
         }
         
         jq( '#main-content-from-list' ).show();
@@ -355,11 +360,20 @@ render: function() {
                                    });
         
         //reblog via ajax
-        jq( '#reblog-submit' ).click(function() {
+        jq( '#reblog-submit' ).click(function(e) {
+                                     e.preventDefault();
+                                     var ua = navigator.userAgent;
+                                     var biscotto = "";
+                                     if( /wp-iphone/i.test(ua) ) {
+                                     biscotto = jq( '#like_cookie_for_ios' ).text();
+                                     } else {      	
+                                     biscotto = encodeURIComponent( document.cookie );
+                                     }
+                                     
                                      jq( '#reblog-submit' ).text('Reblogging...');
-                                     jq.get( '/wp-admin/admin-ajax.php', { 
+                                     jq.get( 'https://en.wordpress.com/wp-admin/admin-ajax.php', { 
                                             'action': 'json_quickpress_post', 
-                                            'cookie': encodeURIComponent(document.cookie),
+                                            'cookie': biscotto,
                                             'post_title': jq.trim( jq("#reblog-title").text().replace('Reblog: ', '') ),
                                             'content': jq("#comment-textarea").val(),
                                             'post_tags': jq('#tags-input').val(),
