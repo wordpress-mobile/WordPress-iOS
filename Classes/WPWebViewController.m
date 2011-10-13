@@ -366,17 +366,20 @@
             return NO;
         }
     }
-
-     //the user clicked a link available in the detailsView, a new webView will be pushed into the stack
-    if (![requestedURL isEqual:self.url] && [requestedURLAbsoluteString rangeOfString:@"file://"].location == NSNotFound && 
-        self.detailContent != nil ) {
+        
+    //the user clicked a link available in the detailsView, a new webView will be pushed into the stack
+    if (![requestedURL isEqual:self.url] && 
+        [requestedURLAbsoluteString rangeOfString:@"file://"].location == NSNotFound && 
+        self.detailContent != nil &&
+        navigationType == UIWebViewNavigationTypeLinkClicked
+        ) { 
             WPWebViewController *detailViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil]; 
             detailViewController.url = [request URL]; 
             [self.navigationController pushViewController:detailViewController animated:YES];
             [detailViewController release];
             return NO;
     }
-            
+    
     [self setLoading:YES];        
     return YES;
 }
