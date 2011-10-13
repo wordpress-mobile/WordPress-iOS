@@ -327,6 +327,11 @@ render: function() {
             actions.find('aside').addClass( 'external-feed' );
             node.find( '.author-name' ).hide();
             node.find( '.author-avatar' ).hide();
+        } else {
+            actions.find( '#actions' ).show( );
+            actions.find('aside').removeClass( 'external-feed' );
+            node.find( '.author-name' ).show();
+            node.find( '.author-avatar' ).show();
         }
         
         jq( '#main-content-from-list' ).show();

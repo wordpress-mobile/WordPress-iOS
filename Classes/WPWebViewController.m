@@ -316,6 +316,11 @@
 - (void)goBack {
     if( self.detailContent != nil ) {
         [webView stringByEvaluatingJavaScriptFromString:@"Reader2.show_prev_item();"];
+        if (DeviceIsPad()) {
+            [iPadNavBar.topItem setTitle:[self getDocumentTitle]];
+        }
+        else
+            self.navigationItem.title = [self getDocumentTitle];
     } else {
         if ([webView isLoading]) {
             [webView stopLoading];
@@ -326,7 +331,12 @@
 
 - (void)goForward {
     if( self.detailContent != nil ) {
-     [webView stringByEvaluatingJavaScriptFromString:@"Reader2.show_next_item();"];
+        [webView stringByEvaluatingJavaScriptFromString:@"Reader2.show_next_item();"];
+        if (DeviceIsPad()) {
+            [iPadNavBar.topItem setTitle:[self getDocumentTitle]];
+        }
+        else
+            self.navigationItem.title = [self getDocumentTitle];
     } else {
         if ([webView isLoading]) {
             [webView stopLoading];
@@ -405,6 +415,11 @@
     if ([aWebView.request.URL.absoluteString rangeOfString:kMobileReaderDetailURL].location != NSNotFound || self.detailContent) {
         [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.set_loaded_items(%@);", self.readerAllItems]];
         [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.show_article_details(%@);", self.detailContent]];
+        if (DeviceIsPad()) {
+            [iPadNavBar.topItem setTitle:[self getDocumentTitle]];
+        }
+        else
+            self.navigationItem.title = [self getDocumentTitle];
     }
 }
 
