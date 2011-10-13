@@ -79,6 +79,7 @@
     if (self.url) {
         [self refreshWebView];
     } else {
+        
         NSString *path = [[NSBundle mainBundle] bundlePath];
         NSURL *baseURL = [NSURL fileURLWithPath:path];
         
@@ -96,6 +97,13 @@
         //do not set the timer on the detailsView
         self.backButton.enabled = YES;
         self.forwardButton.enabled = YES;
+        
+        //change the arrows to up/down icons
+        [backButton setImage:[UIImage imageNamed:@"up.png"]];
+        [forwardButton setImage:[UIImage imageNamed:@"down.png"]];
+        
+        //you got pink'd!
+        //[toolbar setTintColor:[UIColor colorWithRed:254.0f/255 green:14.0f/255 blue:204.0f/255 alpha:1.0f]];
     }
     if( self.isRefreshButtonEnabled == NO ) self.navigationItem.rightBarButtonItem.enabled = NO;
 }
