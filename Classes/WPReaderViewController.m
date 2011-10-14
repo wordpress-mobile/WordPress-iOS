@@ -206,7 +206,12 @@
         [request addValue:@"*/*" forHTTPHeaderField:@"Accept"];
         [request setHTTPMethod:@"POST"];
     }
-    [self.webView loadRequest:request]; 
+    NSString *readerPath = [appDelegate readerCachePath];
+    if (!needsLogin && [self.url.absoluteString isEqualToString:kMobileReaderURL] && [[NSFileManager defaultManager] fileExistsAtPath:readerPath]) {
+        [self.webView loadHTMLString:[NSString stringWithContentsOfFile:readerPath encoding:NSUTF8StringEncoding error:nil] baseURL:self.url];
+    } else {
+        [self.webView loadRequest:request];         
+    }
     self.lastWebViewRefreshDate = [NSDate date];    
 }
 

@@ -743,6 +743,10 @@ static WordPressAppDelegate *wordPressApp = NULL;
     return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
 }
 
+- (NSString *)readerCachePath {
+    NSString *cachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
+    return [cachePath stringByAppendingPathComponent:@"reader.html"];
+}
 
 - (NSString *)applicationUserAgent {
   return [[NSUserDefaults standardUserDefaults] objectForKey:@"UserAgent"];
@@ -761,7 +765,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)checkWPcomAuthentication {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	NSString *authURL = @"https://wordpress.com/xmlrpc.php";
+	NSString *authURL = @"https://wordpress.com/wp-login.php";
 	
     NSError *error = nil;
 	if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil) {
@@ -779,9 +783,20 @@ static WordPressAppDelegate *wordPressApp = NULL;
                                                         andServiceName:@"WordPress.com"
                                                                  error:&error];
         if (password != nil) {
-            isWPcomAuthenticated = [[WPDataController sharedInstance] authenticateUser:authURL 
-                                                                              username:username
-                                                                              password:password];
+            ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:authURL]];
+            [request setPostValue:username forKey:@"log"];
+            [request setPostValue:password forKey:@"pwd"];
+            [request setPostValue:kMobileReaderURL forKey:@"redirect_to"];
+            [request startSynchronous];
+            if ([request error]) {
+                WPFLog(@"Error logging into wp.com: %@", [error localizedDescription]);
+                isWPcomAuthenticated = NO;
+            } else {
+                WPFLog(@"Authenticated in WP.com, cached reader");
+                NSData *readerData = [request responseData];
+                [readerData writeToFile:[self readerCachePath] atomically:YES];
+                isWPcomAuthenticated = YES;
+            }
         } else {
             isWPcomAuthenticated = NO;
         }
