@@ -364,18 +364,10 @@ WordPress.xcodeproj/project.pbxproj -text
 /XMLRPCResponse.m -text
 /XMLValueDecoder.h -text
 /XMLValueDecoder.m -text
-/arrow-wide.png -text
-/arrow-wide@2x.png -text
-/arrow.png -text
-/arrow@2x.png -text
 /attachment.png -text svneol=unset#unset
 /attachment@2x.png -text svneol=unset#unset
 /autosave.png -text
 /autosave@2x.png -text
-/bg-head-arrow.png -text
-/bg-head-arrow@2x.png -text
-/bg-head.png -text
-/bg-head@2x.png -text
 /blavatar-wpcom.png -text
 /blavatar-wpcom@2x.png -text
 /blavatar-wporg.png -text
@@ -449,8 +441,6 @@ c_tidy/win32tc.h -text
 /check.png -text
 /check@2x.png -text
 /commentDelete.png -text
-/comments-arrow.png -text
-/comments-arrow@2x.png -text
 /comments.png -text
 /comments@2x.png -text
 de.lproj/Localizable.strings -text svneol=unset#unset
@@ -470,11 +460,6 @@ de.lproj/Localizable.strings -text svneol=unset#unset
 /downArrow@2x.png -text svneol=unset#unset
 en.lproj/Localizable.strings -text svneol=unset#unset
 es.lproj/Localizable.strings -text svneol=unset#unset
-/fade.png -text
-/fade_black.png -text
-/fadeout.png -text
-/filter-arrow.png -text
-/filter-arrow@2x.png -text
 fr.lproj/Localizable.strings -text svneol=unset#unset
 /getLocation.png -text
 /getLocation@2x.png -text
@@ -487,8 +472,6 @@ he.lproj/Localizable.strings -text svneol=unset#unset
 hr.lproj/Localizable.strings -text svneol=unset#unset
 /i18n_download -text
 /iTunesArtwork -text
-/icons.png -text
-/icons@2x.png -text
 it.lproj/Localizable.strings -text
 /italic.png -text svneol=unset#unset
 /italic@2x.png -text svneol=unset#unset
@@ -523,7 +506,6 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /main.m -text
 /movie.png -text svneol=unset#unset
 /movie@2x.png -text svneol=unset#unset
-/mustache.js -text
 nb.lproj/Localizable.strings -text svneol=unset#unset
 nl.lproj/Localizable.strings -text svneol=unset#unset
 /page_control_blue.png -text
@@ -551,8 +533,6 @@ pt.lproj/Localizable.strings -text svneol=unset#unset
 /quickPhotoTextView@2x.png -text svneol=unset#unset
 /read.png -text
 /read@2x.png -text
-/reader.css -text
-/reader.js -text
 /redoDisabled~ipad.png -text svneol=unset#unset
 /redo~ipad.png -text svneol=unset#unset
 /right.png -text svneol=unset#unset
@@ -561,7 +541,6 @@ pt.lproj/Localizable.strings -text svneol=unset#unset
 /settings@2x.png -text
 /stats.png -text
 /stats@2x.png -text
-/subs-rss-mobile.png -text
 sv.lproj/Localizable.strings -text svneol=unset#unset
 /sync.png -text svneol=unset#unset
 /sync@2x.png -text

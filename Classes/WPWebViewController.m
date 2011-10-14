@@ -80,9 +80,12 @@
         [self refreshWebView];
     } else {
         
-        NSString *path = [[NSBundle mainBundle] bundlePath];
+/*        NSString *path = [[NSBundle mainBundle] bundlePath];
         NSURL *baseURL = [NSURL fileURLWithPath:path];
-        [self.webView loadHTMLString:self.detailHTML baseURL:baseURL]; //[NSURL URLWithString:@"http://en.wordpress.com"]
+        baseURL:baseURL 
+        //[NSURL URLWithString:@"http://en.wordpress.com"]
+*/
+        [self.webView loadHTMLString:self.detailHTML baseURL:[NSURL URLWithString:@"http://en.wordpress.com"]];     
     }
 }
 
