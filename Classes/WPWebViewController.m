@@ -85,7 +85,7 @@
         baseURL:baseURL 
         //[NSURL URLWithString:@"http://en.wordpress.com"]
 */
-        [self.webView loadHTMLString:self.detailHTML baseURL:[NSURL URLWithString:@"http://en.wordpress.com"]];     
+        [self.webView loadHTMLString:self.detailHTML baseURL:[NSURL URLWithString:@"https://en.wordpress.com"]];     
     }
 }
 
