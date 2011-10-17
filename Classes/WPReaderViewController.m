@@ -25,9 +25,9 @@
 - (void)refreshWebViewTimer:(NSTimer*)timer;
 - (void)refreshWebViewIfNeeded;
 - (void)retryWithLogin;
-- (void)pingStatsEndpoint:(NSString*)statName;
 - (void)detailedViewFinishSelector:(ASIHTTPRequest *)xmlrpcRequest;
 - (void)detailedViewFailSelector:(ASIHTTPRequest *)request;
+- (void)pingStatsEndpoint:(NSString*)statName;
 @end
 
 @implementation WPReaderViewController
@@ -83,8 +83,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewWillAppear:animated];    
-    
-    [self pingStatsEndpoint:@"home_page"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -324,7 +322,6 @@
             [self.navigationController pushViewController:detailViewController animated:YES];
             [detailViewController release];
             
-            [self pingStatsEndpoint:@"details_page"];
             return NO;
         } else if ( [requestedURLAbsoluteString rangeOfString:kMobileReaderFPURL].location == NSNotFound
                    && [requestedURLAbsoluteString rangeOfString:kMobileReaderURL].location == NSNotFound ) {
@@ -336,6 +333,9 @@
             return NO;
         }
     }
+    
+    if( [requestedURLAbsoluteString rangeOfString:kMobileReaderFPURL].location == NSNotFound && [requestedURLAbsoluteString rangeOfString:kMobileReaderURL].location != NSNotFound )
+        [self pingStatsEndpoint:@"home_page"];
     
     [self setLoading:YES];        
     return YES;
