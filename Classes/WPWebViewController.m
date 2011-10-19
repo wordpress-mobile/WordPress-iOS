@@ -99,9 +99,7 @@
         [[NSRunLoop currentRunLoop] addTimer:[self statusTimer] forMode:NSDefaultRunLoopMode];
     } else {
         //do not set the timer on the detailsView
-        self.backButton.enabled = YES;
-        self.forwardButton.enabled = YES;
-        
+
         //change the arrows to up/down icons
         [backButton setImage:[UIImage imageNamed:@"previous.png"]];
         [forwardButton setImage:[UIImage imageNamed:@"next.png"]];
@@ -328,7 +326,12 @@
 
 - (void)goBack {
     if( self.detailContent != nil ) {
-        [webView stringByEvaluatingJavaScriptFromString:@"Reader2.show_prev_item();"];
+        NSString *prevItemAvailable = [webView stringByEvaluatingJavaScriptFromString:@"Reader2.show_prev_item();"];
+        if ( [prevItemAvailable rangeOfString:@"true"].location == NSNotFound )
+            self.backButton.enabled = NO;
+        else 
+            self.backButton.enabled = YES;
+        self.forwardButton.enabled = YES;
         if (DeviceIsPad()) {
             [iPadNavBar.topItem setTitle:[self getDocumentTitle]];
         }
@@ -344,7 +347,12 @@
 
 - (void)goForward {
     if( self.detailContent != nil ) {
-        [webView stringByEvaluatingJavaScriptFromString:@"Reader2.show_next_item();"];
+        NSString *nextItemAvailable = [webView stringByEvaluatingJavaScriptFromString:@"Reader2.show_next_item();"];
+        if ( [nextItemAvailable rangeOfString:@"true"].location == NSNotFound )
+            self.forwardButton.enabled = NO;
+        else 
+            self.forwardButton.enabled = YES;
+        self.backButton.enabled = YES;
         if (DeviceIsPad()) {
             [iPadNavBar.topItem setTitle:[self getDocumentTitle]];
         }
@@ -434,6 +442,20 @@
         }
         else
             self.navigationItem.title = [self getDocumentTitle];
+        
+        
+        NSString *prevItemAvailable = [aWebView stringByEvaluatingJavaScriptFromString:@"Reader2.is_prev_item();"];
+        if ( [prevItemAvailable rangeOfString:@"true"].location == NSNotFound )
+            self.backButton.enabled = NO;
+        else 
+            self.backButton.enabled = YES;
+        
+        NSString *nextItemAvailable = [aWebView stringByEvaluatingJavaScriptFromString:@"Reader2.is_next_item();"];
+        if ( [nextItemAvailable rangeOfString:@"true"].location == NSNotFound )
+            self.forwardButton.enabled = NO;
+        else 
+            self.forwardButton.enabled = YES;
+        
         
         hasLoadedContent = YES;
     }
