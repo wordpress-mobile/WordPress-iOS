@@ -72,6 +72,7 @@
     isLoading = YES;
     [self setLoading:NO];
     self.webView.scalesPageToFit = YES;
+    [self.webView stringByEvaluatingJavaScriptFromString:@"document.body.style.background = '#F2F2F2';"];
     if (self.url) {
         [self refreshWebView];
     }
@@ -102,10 +103,10 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    if (UIInterfaceOrientationIsLandscape(interfaceOrientation) || UIInterfaceOrientationIsPortrait(interfaceOrientation))
+    if ((UIInterfaceOrientationIsLandscape(interfaceOrientation) || UIInterfaceOrientationIsPortrait(interfaceOrientation)) && interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown)
         return YES;
     
-    return false;
+    return NO;
 }
 
 #pragma mark - notifications related methods
