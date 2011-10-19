@@ -70,10 +70,12 @@
     if (!DeviceIsPad()) {
         toolbar.autoresizingMask = toolbar.autoresizingMask | UIViewAutoresizingFlexibleHeight;
         //retina displays have a 2px gap at the bottom, this corrects it
-        if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2){
+        /* ^ I didn't see a gap on a device or in any simulator version, so commenting this out for now
+		if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2){
             toolbar.frame = CGRectMake(toolbar.frame.origin.x, toolbar.frame.origin.y + 2, toolbar.frame.size.width, toolbar.frame.size.height);
             webView.frame = CGRectMake(webView.frame.origin.x, webView.frame.origin.y, webView.frame.size.width, webView.frame.size.height + 2);
         }
+		*/
     }
     
     if (self.url) {
@@ -101,11 +103,12 @@
         self.forwardButton.enabled = YES;
         
         //change the arrows to up/down icons
-        [backButton setImage:[UIImage imageNamed:@"up.png"]];
-        [forwardButton setImage:[UIImage imageNamed:@"down.png"]];
+        [backButton setImage:[UIImage imageNamed:@"previous.png"]];
+        [forwardButton setImage:[UIImage imageNamed:@"next.png"]];
         
         //you got pink'd!
         //[toolbar setTintColor:[UIColor colorWithRed:254.0f/255 green:14.0f/255 blue:204.0f/255 alpha:1.0f]];
+		[toolbar setTintColor:[UIColor colorWithRed:96.0f/255 green:101.0f/255 blue:111.0f/255 alpha:1.0f]];
     }
     if( self.isRefreshButtonEnabled == NO ) self.navigationItem.rightBarButtonItem.enabled = NO;
 }
@@ -362,7 +365,7 @@
     
     UIActionSheet *linkOptionsActionSheet = [[UIActionSheet alloc] initWithTitle:permaLink delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Open in Safari", @"Open in Safari"), NSLocalizedString(@"Mail Link", @"Mail Link"),  NSLocalizedString(@"Copy Link", @"Copy Link"), nil];
     
-    linkOptionsActionSheet .actionSheetStyle = UIActionSheetStyleBlackOpaque;
+    linkOptionsActionSheet .actionSheetStyle = UIActionSheetStyleDefault;
     [linkOptionsActionSheet showInView:self.view];
     [linkOptionsActionSheet  release];
 }

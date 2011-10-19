@@ -47,6 +47,10 @@
 		2FAE970A0E33B21600CA8540 /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97050E33B21600CA8540 /* license.txt */; };
 		2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */; };
 		2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */; };
+		30410685144E17AE00E98F07 /* next.png in Resources */ = {isa = PBXBuildFile; fileRef = 30410681144E17AE00E98F07 /* next.png */; };
+		30410686144E17AE00E98F07 /* next@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30410682144E17AE00E98F07 /* next@2x.png */; };
+		30410687144E17AE00E98F07 /* previous.png in Resources */ = {isa = PBXBuildFile; fileRef = 30410683144E17AE00E98F07 /* previous.png */; };
+		30410688144E17AE00E98F07 /* previous@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30410684144E17AE00E98F07 /* previous@2x.png */; };
 		30AF6CF513C2289600A29C00 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30AF6CF413C2289600A29C00 /* AboutViewController.xib */; };
 		30AF6CFD13C230C600A29C00 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30AF6CFC13C230C600A29C00 /* AboutViewController.m */; };
 		30E5DD52140E7747003FA092 /* toolbarUlHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E5DD46140E7747003FA092 /* toolbarUlHighlighted@2x.png */; };
@@ -521,6 +525,10 @@
 		2FAE97050E33B21600CA8540 /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.txt; sourceTree = "<group>"; };
 		2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xhtml1-transitional.dtd"; sourceTree = "<group>"; };
 		2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = xhtmlValidatorTemplate.xhtml; sourceTree = "<group>"; };
+		30410681144E17AE00E98F07 /* next.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = next.png; sourceTree = "<group>"; };
+		30410682144E17AE00E98F07 /* next@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "next@2x.png"; sourceTree = "<group>"; };
+		30410683144E17AE00E98F07 /* previous.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = previous.png; sourceTree = "<group>"; };
+		30410684144E17AE00E98F07 /* previous@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "previous@2x.png"; sourceTree = "<group>"; };
 		30AF6CF413C2289600A29C00 /* AboutViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AboutViewController.xib; path = ../AboutViewController.xib; sourceTree = "<group>"; };
 		30AF6CFB13C230C600A29C00 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		30AF6CFC13C230C600A29C00 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
@@ -1649,6 +1657,10 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				30410681144E17AE00E98F07 /* next.png */,
+				30410682144E17AE00E98F07 /* next@2x.png */,
+				30410683144E17AE00E98F07 /* previous.png */,
+				30410684144E17AE00E98F07 /* previous@2x.png */,
 				30EB4CB01423F9D700A27B25 /* read.png */,
 				30EB4CB11423F9D700A27B25 /* read@2x.png */,
 				30E9A151141813D0002E2ACE /* toolbarBoldiPad.png */,
@@ -2471,6 +2483,10 @@
 				30EB4CB21423F9D700A27B25 /* read.png in Resources */,
 				30EB4CB31423F9D700A27B25 /* read@2x.png in Resources */,
 				FD0882ED1445F38C00F51302 /* WPReaderViewController.xib in Resources */,
+				30410685144E17AE00E98F07 /* next.png in Resources */,
+				30410686144E17AE00E98F07 /* next@2x.png in Resources */,
+				30410687144E17AE00E98F07 /* previous.png in Resources */,
+				30410688144E17AE00E98F07 /* previous@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
