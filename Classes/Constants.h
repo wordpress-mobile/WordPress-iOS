@@ -18,7 +18,9 @@
 #define kTextViewPlaceholder	@"Tap here to begin writing."
 #define kAppStoreURL			@"http://itunes.apple.com/us/app/wordpress/id335703880?mt=8"
 #define kNotificationAuthURL	@"https://ercolid.wordpress.com/xmlrpc.php"
-#define kMobileReaderURL		@"https://en.wordpress.com/reader/mobile/"
+#define kMobileReaderURL		@"https://en.wordpress.com/reader/mobile/v2/"
+#define kMobileReaderFPURL		@"https://en.wordpress.com/reader/mobile/v2/freshly-pressed"
+#define kMobileReaderDetailURL  @"https://en.wordpress.com/wp-admin/admin-ajax.php?action=wpcom_load_mobile&template=details&v=2"
 
 #define kDisabledTextColor      [UIColor grayColor]
 

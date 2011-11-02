@@ -323,8 +323,8 @@
     NSArray *extraArgs = nil;
     if( showSupported == YES ) {
         //adding extra args
-        NSDictionary *requestedPostFormats = [NSDictionary dictionaryWithObjectsAndKeys:(id) kCFBooleanTrue, @"show-supported", nil];
-        extraArgs = [NSArray arrayWithObject:requestedPostFormats];
+      NSDictionary *requestedPostFormats = [NSDictionary dictionaryWithObjectsAndKeys:(id) kCFBooleanTrue, @"show-supported", nil];
+      extraArgs = [NSArray arrayWithObject:requestedPostFormats];
     }
     
 	[xmlrpcRequest setMethod:@"wp.getPostFormats" withObjects:[self getXMLRPCArgsForBlog:blog withExtraArgs:extraArgs]];
@@ -354,7 +354,6 @@
     } 
     return postFormats;    
 }
-
 
 #pragma mark -
 #pragma mark Category

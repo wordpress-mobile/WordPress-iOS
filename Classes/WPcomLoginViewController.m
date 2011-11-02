@@ -330,7 +330,7 @@
 		[self saveLoginData];
 		
 		// Register this device for push notifications with WordPress.com if necessary
-        [[WordPressAppDelegate sharedWordPressApp] sendApnsTokenInBackground];
+		[[WordPressAppDelegate sharedWordPressApp] sendApnsTokenInBackground];
 	}
 	else {
 		isAuthenticated = NO;

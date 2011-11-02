@@ -9,7 +9,7 @@
 #import "SDURLCache.h"
 #import <CommonCrypto/CommonDigest.h>
 
-static NSTimeInterval const kSDURLCacheInfoDefaultMinCacheInterval = 5 * 60; // 5 minute
+static NSTimeInterval const kSDURLCacheInfoDefaultMinCacheInterval = 2 * 60; // 2 minute
 static NSString *const kSDURLCacheInfoFileName = @"cacheInfo.plist";
 static NSString *const kSDURLCacheInfoDiskUsageKey = @"diskUsage";
 static NSString *const kSDURLCacheInfoAccessesKey = @"accesses";
@@ -439,6 +439,19 @@ static NSDateFormatter* CreateDateFormatter(NSString *format)
 
 - (void)storeCachedResponse:(NSCachedURLResponse *)cachedResponse forRequest:(NSURLRequest *)request
 {
+     
+    NSURL *currentURL = [request URL];
+   
+    request = [SDURLCache canonicalRequestForRequest:request];
+    
+    //The cache for these URLs was ignored on read, so the response should not be cached at all 
+    for (NSString *currentPathToExclude in self.excludedURLs) {
+        if ([currentURL.absoluteString rangeOfString:currentPathToExclude].location != NSNotFound ) {
+            NSLog(@"Do not store a resource marked as excluded from cache - %@", currentURL.absoluteString);
+            return;  
+        }
+    }
+    
     request = [SDURLCache canonicalRequestForRequest:request];
     
     if (request.cachePolicy == NSURLRequestReloadIgnoringLocalCacheData
@@ -448,9 +461,10 @@ static NSDateFormatter* CreateDateFormatter(NSString *format)
         // When cache is ignored for read, it's a good idea not to store the result as well as this option
         // have big chance to be used every times in the future for the same request.
         // NOTE: This is a change regarding default URLCache behavior
+        NSLog(@"not stored in cache - %@", currentURL.absoluteString);
         return;
     }
-    
+       
     [super storeCachedResponse:cachedResponse forRequest:request];
     
     NSURLCacheStoragePolicy storagePolicy = cachedResponse.storagePolicy;
@@ -467,6 +481,7 @@ static NSDateFormatter* CreateDateFormatter(NSString *format)
             if (!expirationDate || [expirationDate timeIntervalSinceNow] - minCacheInterval <= 0)
             {
                 // This response is not cacheable, headers said
+                 NSLog(@"This response is not cacheable, headers said - %@", currentURL.absoluteString);
                 return;
             }
         }
@@ -477,6 +492,8 @@ static NSDateFormatter* CreateDateFormatter(NSString *format)
                                                                               cachedResponse, @"cachedResponse",
                                                                               request, @"request",
                                                                               nil]] autorelease]];
+        NSLog(@"Stored in cache - %@", currentURL.absoluteString);
+
     }
 }
 
@@ -485,6 +502,14 @@ static NSDateFormatter* CreateDateFormatter(NSString *format)
     NSURL *currentURL = [request URL];
     request = [SDURLCache canonicalRequestForRequest:request];
     
+    //Check for URLs that should not be cached at all 
+    for (NSString *currentPathToExclude in self.excludedURLs) {
+        if ([currentURL.absoluteString rangeOfString:currentPathToExclude].location != NSNotFound ) {
+            NSLog(@"The requested URL is marked as not cacheble - %@", currentURL.absoluteString);
+            return nil;  
+        }
+    }
+    
     NSCachedURLResponse *memoryResponse = [super cachedResponseForRequest:request];
     if (memoryResponse)
     {
@@ -492,13 +517,6 @@ static NSDateFormatter* CreateDateFormatter(NSString *format)
         return memoryResponse;
     }
     
-    //Check for URLs that should not be cached at all  
-    for (NSString *currentPathToExclude in self.excludedURLs) { 
-        if ([currentURL.absoluteString rangeOfString:currentPathToExclude].location != NSNotFound ) { 
-            //NSLog(@"Do Not Cache - %@", currentURL.absoluteString); 
-            return nil;   
-        } 
-    }
     NSString *cacheKey = [SDURLCache cacheKeyForURL:request.URL];
     
     // NOTE: We don't handle expiration here as even staled cache data is necessary for NSURLConnection to handle cache revalidation.
@@ -593,7 +611,7 @@ static NSDateFormatter* CreateDateFormatter(NSString *format)
     [periodicMaintenanceOperation release], periodicMaintenanceOperation = nil;
     [diskCachePath release], diskCachePath = nil;
     [diskCacheInfo release], diskCacheInfo = nil;
-    [excludedURLs release], excludedURLs = nil; 
+    [excludedURLs release], excludedURLs = nil;
     [ioQueue release], ioQueue = nil;
     [super dealloc];
 }

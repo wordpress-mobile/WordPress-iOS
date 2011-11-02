@@ -9,11 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface WPWebViewController : UIViewController<UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
-    BOOL isLoading, isTransitioning;
+    BOOL isLoading, needsLogin, hasLoadedContent;
     IBOutlet UIWebView *webView;
 	NSTimer *statusTimer;   // This timer checks the nav buttons every 0.75 seconds, and updates them
-   	NSTimer *refreshTimer; 
-    NSDate  *lastWebViewRefreshDate; //used to keep track of the latest refresh datetime. 
 }
 @property (nonatomic,retain) NSURL *url;
 @property (nonatomic,retain) NSString *username;
@@ -23,15 +21,17 @@
 @property (nonatomic,retain) IBOutlet UIView *loadingView;
 @property (nonatomic,retain) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (nonatomic,retain) IBOutlet UILabel *loadingLabel;
-@property (nonatomic,assign) BOOL needsLogin;
-@property (nonatomic,assign) BOOL isReader;
 @property (nonatomic, retain) IBOutlet UINavigationBar *iPadNavBar;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *backButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *forwardButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *optionsButton;
 @property (retain, nonatomic) NSTimer *statusTimer;
-@property (retain, nonatomic) NSTimer *refreshTimer;
-@property (retain, nonatomic) NSDate *lastWebViewRefreshDate;
+@property (nonatomic,assign) BOOL isRefreshButtonEnabled;
+
+//reader variables
+@property (nonatomic,retain) NSString *detailContent;
+@property (nonatomic,retain) NSString *detailHTML;
+@property (nonatomic,retain) NSString *readerAllItems;
 
 - (IBAction) showLinkOptions;
 - (IBAction) dismiss;

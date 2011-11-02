@@ -9,7 +9,9 @@
 #import "WelcomeViewController.h"
 #import "BetaUIWindow.h"
 #import "MigrateBlogsFromFiles.h"
+#import "FilteredWebCache.h"
 #import "SDURLCache.h"
+
 
 @interface WordPressAppDelegate (Private)
 
@@ -135,17 +137,34 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	// set the current dir
 	[fileManager changeCurrentDirectoryPath:currentDirectoryPath];
     
+   /* 
+    //cleans the cache folder at startup
+    [fileManager removeItemAtPath:[SDURLCache defaultCachePath] error:NULL];
     
-    //Enable the caching system    
-    SDURLCache *urlCache = [[SDURLCache alloc] initWithMemoryCapacity:1024*1024   // 1MB mem cache 
-                                                         diskCapacity:1024*1024*5 // 5MB disk cache 
-                                                             diskPath:[SDURLCache defaultCachePath]]; 
-    NSArray *excludeTheseURLs = [NSArray arrayWithObjects:@"wordpress.com/wp-admin/", @"wordpress.com/reader/mobile/", @"/wp-login.php", @"public-api.wordpress.com", @"stats.wordpress.com", @"chart.apis.google.com", nil]; 
-    urlCache.excludedURLs = excludeTheseURLs; 
-    
-    [NSURLCache setSharedURLCache:urlCache]; 
-    [urlCache release]; 
+    //Enable the caching system   
+    SDURLCache *urlCache = [[SDURLCache alloc] initWithMemoryCapacity:1024*1024   // 1MB mem cache
+                                                         diskCapacity:1024*1024*5 // 5MB disk cache
+                                                             diskPath:[SDURLCache defaultCachePath]];
+    NSArray *excludeTheseURLs = [NSArray arrayWithObjects:@"/wp-login.php", @"public-api.wordpress.com", @"stats.wordpress.com", @"chart.apis.google.com", nil];
+       
+    urlCache.excludedURLs = excludeTheseURLs;
+    [NSURLCache setSharedURLCache:urlCache];
+    [urlCache release];
+   */     
 
+/*  
+    //Enable this NSURLCache impl just to check if data is loaded from Memory or the Net.
+    NSArray *paths2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSUInteger discCapacity = 10*1024*1024;
+    NSUInteger memoryCapacity = 512*1024;
+    
+    FilteredWebCache *cache =
+    [[FilteredWebCache alloc] initWithMemoryCapacity: memoryCapacity
+                                        diskCapacity: discCapacity diskPath:[[paths2 objectAtIndex:0] stringByAppendingPathComponent:@"CheckURLCache"]];
+    [NSURLCache setSharedURLCache:cache];
+    [cache release];
+    */
+    
 	// Check for pending crash reports
 	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
 	if (![crashReporter hasPendingCrashReport]) {
@@ -733,6 +752,10 @@ static WordPressAppDelegate *wordPressApp = NULL;
     return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
 }
 
+- (NSString *)readerCachePath {
+    NSString *cachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
+    return [cachePath stringByAppendingPathComponent:@"reader.html"];
+}
 
 - (NSString *)applicationUserAgent {
   return [[NSUserDefaults standardUserDefaults] objectForKey:@"UserAgent"];
@@ -751,7 +774,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)checkWPcomAuthentication {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	NSString *authURL = @"https://wordpress.com/xmlrpc.php";
+	NSString *authURL = @"https://wordpress.com/wp-login.php";
 	
     NSError *error = nil;
 	if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil) {
@@ -769,9 +792,20 @@ static WordPressAppDelegate *wordPressApp = NULL;
                                                         andServiceName:@"WordPress.com"
                                                                  error:&error];
         if (password != nil) {
-            isWPcomAuthenticated = [[WPDataController sharedInstance] authenticateUser:authURL 
-                                                                              username:username
-                                                                              password:password];
+            ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:authURL]];
+            [request setPostValue:username forKey:@"log"];
+            [request setPostValue:password forKey:@"pwd"];
+            [request setPostValue:kMobileReaderURL forKey:@"redirect_to"];
+            [request startSynchronous];
+            if ([request error]) {
+                WPFLog(@"Error logging into wp.com: %@", [error localizedDescription]);
+                isWPcomAuthenticated = NO;
+            } else {
+                WPFLog(@"Authenticated in WP.com, cached reader");
+                NSData *readerData = [request responseData];
+                [readerData writeToFile:[self readerCachePath] atomically:YES];
+                isWPcomAuthenticated = YES;
+            }
         } else {
             isWPcomAuthenticated = NO;
         }

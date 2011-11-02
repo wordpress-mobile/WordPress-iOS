@@ -54,6 +54,7 @@
 
 - (NSString *)applicationDocumentsDirectory;
 - (NSString *)applicationUserAgent;
+- (NSString *)readerCachePath;
 
 + (WordPressAppDelegate *)sharedWordPressApp;
 

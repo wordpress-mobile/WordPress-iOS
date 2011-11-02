@@ -132,6 +132,8 @@ Classes/FakeMigration.h -text
 Classes/FakeMigration.m -text
 Classes/FileLogger.h -text
 Classes/FileLogger.m -text
+Classes/FilteredWebCache.h -text
+Classes/FilteredWebCache.m -text
 Classes/GravatarImageView.h -text
 Classes/GravatarImageView.m -text
 Classes/HelpViewController.h -text
@@ -233,6 +235,8 @@ Classes/WPProgressHUD.h -text
 Classes/WPProgressHUD.m -text
 Classes/WPReachability.h -text
 Classes/WPReachability.m -text
+Classes/WPReaderViewController.h -text
+Classes/WPReaderViewController.m -text
 Classes/WPSegmentedSelectionTableViewController.h -text
 Classes/WPSegmentedSelectionTableViewController.m -text
 Classes/WPSelectionTableViewController.h -text
@@ -330,6 +334,7 @@ Settings.bundle/en.lproj/Root.strings -text
 /UITableViewSwitchCell.xib -text
 /WPAddCategoryViewController.xib -text
 /WPCategoriesController.xib -text
+/WPReaderViewController.xib -text
 /WPSelectionTableViewController.xib -text
 /WPWebViewController-iPad.xib -text
 /WPWebViewController.xib -text
@@ -502,6 +507,8 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /movie.png -text svneol=unset#unset
 /movie@2x.png -text svneol=unset#unset
 nb.lproj/Localizable.strings -text svneol=unset#unset
+/next.png -text svneol=unset#unset
+/next@2x.png -text svneol=unset#unset
 nl.lproj/Localizable.strings -text svneol=unset#unset
 /page_control_blue.png -text
 /page_control_blue@2x.png -text
@@ -517,6 +524,8 @@ nl.lproj/Localizable.strings -text svneol=unset#unset
 /posts@2x.png -text
 /preview.png -text
 /preview@2x.png -text
+/previous.png -text svneol=unset#unset
+/previous@2x.png -text svneol=unset#unset
 pt.lproj/Localizable.strings -text svneol=unset#unset
 /quickPhotoButton.png -text svneol=unset#unset
 /quickPhotoButton@2x.png -text svneol=unset#unset

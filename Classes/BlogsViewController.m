@@ -7,7 +7,7 @@
 @interface BlogsViewController (Private)
 - (void) cleanUnusedMediaFileFromTmpDir;
 - (void)setupPhotoButton;
-- (void)setupReader; 
+- (void)setupReader;
 @end
 
 @implementation BlogsViewController
@@ -117,26 +117,21 @@
 	[self.tableView endEditing:YES];
 	self.tableView.editing = NO;
 	
-	if([Blog countWithContext:appDelegate.managedObjectContext] > 0) {
-		self.navigationItem.leftBarButtonItem = self.editButtonItem;
-		[self cancel:self];
-	}
-	else
-		self.navigationItem.leftBarButtonItem = nil;
+    [self cancel:self]; // Shows edit button
 }
 
 - (void)blogsRefreshNotificationReceived:(NSNotification *)notification {
 	[resultsController performFetch:nil];
-    [appDelegate sendPushNotificationBlogsListInBackground]; 
+	[appDelegate sendPushNotificationBlogsListInBackground]; 
 	[self checkEditButton];
 }
-
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     if (DeviceIsPad())
 		return YES;
-	
-	return NO;
+    else {
+        return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    }
 }
 
 #pragma mark -
@@ -252,7 +247,7 @@
 				WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
 				exit(-1);
 			}
-            [appDelegate sendPushNotificationBlogsListInBackground];
+			[appDelegate sendPushNotificationBlogsListInBackground];
 		} else {
 			//the blog is using the network connection and cannot be stoped, show a message to the user
 			UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info alert title")
@@ -341,9 +336,7 @@
         [readerButton retain];
         [self.view addSubview:readerButton];
     }
-    if (wantsReaderButton) { 
-        [self setupReader]; 
-    } else if (readerViewController != nil) { 
+    if (!wantsReaderButton && readerViewController != nil) { 
         [readerViewController release]; 
         readerViewController = nil; 
     }
@@ -362,12 +355,10 @@
                                                               andServiceName:@"WordPress.com" 
                                                                        error:&error]; 
         if (wpcom_username && wpcom_password) { 
-            readerViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil]; 
-            readerViewController.needsLogin = YES; 
+            readerViewController = [[WPReaderViewController alloc] initWithNibName:@"WPReaderViewController" bundle:nil]; 
             readerViewController.username = wpcom_username; 
             readerViewController.password = wpcom_password; 
-            readerViewController.isReader = YES; 
-            readerViewController.url = [NSURL URLWithString: [NSString stringWithFormat:@"%@%@" , kMobileReaderURL, @"?preload=false"] ]; 
+            readerViewController.url = [NSURL URLWithString:kMobileReaderURL]; 
             [readerViewController view]; // Force web view preload 
         } 
     } 
@@ -380,27 +371,6 @@
     [self.navigationController pushViewController:readerViewController animated:YES]; 
 } 
 
-/*
-- (void)showReader {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-     
-    NSError *error = nil;
-    NSString *wpcom_username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-    NSString *wpcom_password = [SFHFKeychainUtils getPasswordForUsername:wpcom_username
-                                                          andServiceName:@"WordPress.com"
-                                                                   error:&error];
-    if (wpcom_username && wpcom_password) {
-        WPWebViewController   *areaderViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
-        areaderViewController.needsLogin = YES;
-        areaderViewController.username = wpcom_username;
-        areaderViewController.password = wpcom_password;
-        areaderViewController.isReader = YES;
-        areaderViewController.url = [NSURL URLWithString: [NSString stringWithFormat:@"%@%@" , kMobileReaderURL, @"?preload=false"] ];
-        [self.navigationController pushViewController:areaderViewController animated:YES];
-        [areaderViewController release];
-    }
-}
-*/
 - (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType {
     QuickPhotoViewController *quickPhotoViewController = [[QuickPhotoViewController alloc] init];
     quickPhotoViewController.blogsViewController = self;
