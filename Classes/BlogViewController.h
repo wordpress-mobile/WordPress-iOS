@@ -6,34 +6,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "WordPressAppDelegate.h"
-#import "PostsViewController.h"
-#import "PagesViewController.h"
-#import "CommentsViewController.h"
-//uncomment me to add stats back
-#import "StatsTableViewController.h"
+#import <QuartzCore/QuartzCore.h>
+#import "WPAsynchronousImageView.h"
 
-@interface BlogViewController : UIViewController <UITabBarControllerDelegate, UIAccelerometerDelegate> {
-    IBOutlet UITabBarController *tabBarController;
-    IBOutlet PostsViewController *postsViewController;
-    IBOutlet PagesViewController *pagesViewController;
-    IBOutlet CommentsViewController *commentsViewController;
-	//uncomment me to add stats back
-	IBOutlet StatsTableViewController *statsTableViewController;
-    IBOutlet UISplitViewController *splitViewController;
-    IBOutlet UITabBarItem *commentsItem, *postsItem, *pagesItem, *statsItem;
-	BOOL stateRestored;
-    Blog *blog;
+@interface BlogViewController : UITableViewController {
 }
 
-@property (nonatomic, retain) IBOutlet UITabBarController *tabBarController;
 @property (nonatomic, retain) Blog *blog;
-@property (nonatomic, retain) UIViewController *selectedViewController;
-
-- (void)reselect;
-- (void)saveState;
-- (void)restoreState;
-- (void)refreshBlogs:(NSNotification *)notification;
-- (void)configureCommentsTab;
+@property (nonatomic, retain) IBOutlet WPAsynchronousImageView *blavatarImageView;
+@property (nonatomic, retain) IBOutlet UILabel *blogTitleLabel;
+@property (nonatomic, retain) IBOutlet UILabel *blogUrlLabel;
+@property (nonatomic, retain) IBOutlet UITableView *tableView;
 
 @end

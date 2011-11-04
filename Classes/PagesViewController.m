@@ -13,6 +13,11 @@
 
 @implementation PagesViewController
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = NSLocalizedString(@"Pages", @"");
+}
+
 - (void)syncPosts {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     NSError *error = nil;

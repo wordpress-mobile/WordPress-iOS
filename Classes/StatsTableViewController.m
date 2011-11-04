@@ -71,6 +71,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
 	self.view.frame = CGRectMake(0, 0, 320, 460);
 	self.tableView.sectionHeaderHeight = 30;
+    self.title = NSLocalizedString(@"Stats", @"");
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	
 	statsPageControlViewController = [[StatsPageControlViewController alloc] init];
