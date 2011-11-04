@@ -6,7 +6,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "GravatarImageView.h"
 #import "WPLabel.h"
 #import "Comment.h"
 
@@ -20,7 +19,7 @@
     UILabel *urlLabel;
     UILabel *postLabel;
     WPLabel *commentLabel;
-    GravatarImageView *gravatarImageView;
+    UIImageView *gravatarImageView;
 
     BOOL checked;
 }

@@ -9,7 +9,7 @@
 #import <CommonCrypto/CommonDigest.h>
 
 @interface Blog : NSManagedObject {
-    NSURL *_blavatarURL;
+    NSString *_blavatarUrl;
 }
 
 @property (nonatomic, retain) NSNumber *blogID;
@@ -30,7 +30,7 @@
 
 - (BOOL)isWPcom;
 - (void)dataSave;
-- (NSURL *)blavatarURL;
+- (NSString *)blavatarUrl;
 -(NSArray *)sortedCategories;
 
 #pragma mark -

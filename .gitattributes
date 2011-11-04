@@ -1,4 +1,71 @@
 * text=auto !eol
+AFNetworking/AFNetworking.podspec -text
+AFNetworking/AFNetworking/AFHTTPClient.h -text
+AFNetworking/AFNetworking/AFHTTPClient.m -text
+AFNetworking/AFNetworking/AFHTTPRequestOperation.h -text
+AFNetworking/AFNetworking/AFHTTPRequestOperation.m -text
+AFNetworking/AFNetworking/AFImageCache.h -text
+AFNetworking/AFNetworking/AFImageCache.m -text
+AFNetworking/AFNetworking/AFImageRequestOperation.h -text
+AFNetworking/AFNetworking/AFImageRequestOperation.m -text
+AFNetworking/AFNetworking/AFJSONRequestOperation.h -text
+AFNetworking/AFNetworking/AFJSONRequestOperation.m -text
+AFNetworking/AFNetworking/AFNetworkActivityIndicatorManager.h -text
+AFNetworking/AFNetworking/AFNetworkActivityIndicatorManager.m -text
+AFNetworking/AFNetworking/AFNetworking.h -text
+AFNetworking/AFNetworking/AFPropertyListRequestOperation.h -text
+AFNetworking/AFNetworking/AFPropertyListRequestOperation.m -text
+AFNetworking/AFNetworking/AFURLConnectionOperation.h -text
+AFNetworking/AFNetworking/AFURLConnectionOperation.m -text
+AFNetworking/AFNetworking/AFXMLRequestOperation.h -text
+AFNetworking/AFNetworking/AFXMLRequestOperation.m -text
+AFNetworking/AFNetworking/UIImageView+AFNetworking.h -text
+AFNetworking/AFNetworking/UIImageView+AFNetworking.m -text
+AFNetworking/LICENSE -text
+AFNetworking/Mac[!!-~]Example/AFNetworking[!!-~]Mac[!!-~]Example.xcodeproj/project.pbxproj -text
+AFNetworking/Mac[!!-~]Example/AppDelegate.h -text
+AFNetworking/Mac[!!-~]Example/AppDelegate.m -text
+AFNetworking/Mac[!!-~]Example/Classes/AFGowallaAPIClient.h -text
+AFNetworking/Mac[!!-~]Example/Classes/AFGowallaAPIClient.m -text
+AFNetworking/Mac[!!-~]Example/Classes/Controllers/NearbySpotsController.h -text
+AFNetworking/Mac[!!-~]Example/Classes/Controllers/NearbySpotsController.m -text
+AFNetworking/Mac[!!-~]Example/Classes/Models/Spot.h -text
+AFNetworking/Mac[!!-~]Example/Classes/Models/Spot.m -text
+AFNetworking/Mac[!!-~]Example/Images/placeholder-stamp.png -text svneol=unset#unset
+AFNetworking/Mac[!!-~]Example/Info.plist -text
+AFNetworking/Mac[!!-~]Example/Prefix.pch -text
+AFNetworking/Mac[!!-~]Example/Vendor/JSONKit/JSONKit.h -text
+AFNetworking/Mac[!!-~]Example/Vendor/JSONKit/JSONKit.m -text
+AFNetworking/Mac[!!-~]Example/Vendor/TTT/TTTLocationFormatter.h -text
+AFNetworking/Mac[!!-~]Example/Vendor/TTT/TTTLocationFormatter.m -text
+AFNetworking/Mac[!!-~]Example/en.lproj/Credits.rtf -text
+AFNetworking/Mac[!!-~]Example/en.lproj/MainMenu.xib -text
+AFNetworking/Mac[!!-~]Example/main.m -text
+AFNetworking/README.md -text
+AFNetworking/iOS[!!-~]Example/AFNetworking[!!-~]iOS[!!-~]Example.xcodeproj/project.pbxproj -text
+AFNetworking/iOS[!!-~]Example/AppDelegate.h -text
+AFNetworking/iOS[!!-~]Example/AppDelegate.m -text
+AFNetworking/iOS[!!-~]Example/Classes/AFGowallaAPIClient.h -text
+AFNetworking/iOS[!!-~]Example/Classes/AFGowallaAPIClient.m -text
+AFNetworking/iOS[!!-~]Example/Classes/Controllers/NearbySpotsViewController.h -text
+AFNetworking/iOS[!!-~]Example/Classes/Controllers/NearbySpotsViewController.m -text
+AFNetworking/iOS[!!-~]Example/Classes/Models/Spot.h -text
+AFNetworking/iOS[!!-~]Example/Classes/Models/Spot.m -text
+AFNetworking/iOS[!!-~]Example/Classes/Views/SpotTableViewCell.h -text
+AFNetworking/iOS[!!-~]Example/Classes/Views/SpotTableViewCell.m -text
+AFNetworking/iOS[!!-~]Example/Default.png -text svneol=unset#unset
+AFNetworking/iOS[!!-~]Example/Default@2x.png -text svneol=unset#unset
+AFNetworking/iOS[!!-~]Example/Icon.png -text svneol=unset#unset
+AFNetworking/iOS[!!-~]Example/Icon@2x.png -text svneol=unset#unset
+AFNetworking/iOS[!!-~]Example/Images/placeholder-stamp.png -text svneol=unset#unset
+AFNetworking/iOS[!!-~]Example/Images/placeholder-stamp@2x.png -text svneol=unset#unset
+AFNetworking/iOS[!!-~]Example/Info.plist -text
+AFNetworking/iOS[!!-~]Example/Prefix.pch -text
+AFNetworking/iOS[!!-~]Example/Vendor/JSONKit/JSONKit.h -text
+AFNetworking/iOS[!!-~]Example/Vendor/JSONKit/JSONKit.m -text
+AFNetworking/iOS[!!-~]Example/Vendor/TTT/TTTLocationFormatter.h -text
+AFNetworking/iOS[!!-~]Example/Vendor/TTT/TTTLocationFormatter.m -text
+AFNetworking/iOS[!!-~]Example/main.m -text
 /ASIAuthenticationDialog.h -text
 /ASIAuthenticationDialog.m -text
 /ASICacheDelegate.h -text
@@ -133,8 +200,6 @@ Classes/FileLogger.h -text
 Classes/FileLogger.m -text
 Classes/FilteredWebCache.h -text
 Classes/FilteredWebCache.m -text
-Classes/GravatarImageView.h -text
-Classes/GravatarImageView.m -text
 Classes/HelpViewController.h -text
 Classes/HelpViewController.m -text
 Classes/ImageCache.h -text
@@ -198,6 +263,8 @@ Classes/StatsTableViewController.h -text
 Classes/StatsTableViewController.m -text
 Classes/UIDevice-Hardware.h -text
 Classes/UIDevice-Hardware.m -text
+Classes/UIImageView+Gravatar.h -text
+Classes/UIImageView+Gravatar.m -text
 Classes/UINavigationController+FormSheet.h -text
 Classes/UINavigationController+FormSheet.m -text
 Classes/UITableViewActivityCell.h -text
@@ -210,8 +277,6 @@ Classes/UIViewController_iPadExtensions.h -text
 Classes/UIViewController_iPadExtensions.m -text
 Classes/WPAddCategoryViewController.h -text
 Classes/WPAddCategoryViewController.m -text
-Classes/WPAsynchronousImageView.h -text
-Classes/WPAsynchronousImageView.m -text
 Classes/WPCategoriesController.h -text
 Classes/WPCategoriesController.m -text
 Classes/WPCategoryTree.h -text
@@ -331,6 +396,7 @@ Settings.bundle/en.lproj/Root.strings -text
 /UIImage+RoundedCorner.m -text
 /UITableViewActivityCell.xib -text
 /UITableViewSwitchCell.xib -text
+/WPAFNetworking.h -text
 /WPAddCategoryViewController.xib -text
 /WPCategoriesController.xib -text
 /WPReaderViewController.xib -text

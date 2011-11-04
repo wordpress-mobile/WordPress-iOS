@@ -9,6 +9,7 @@
 #import "CommentTableViewCell.h"
 #import "CommentsTableViewDelegate.h"
 #import "NSString+XMLExtensions.h" 
+#import "UIImageView+Gravatar.h"
 
 #define PADDING                     5
 #define CELL_PADDING                8
@@ -122,7 +123,7 @@
     if (comment.postTitle)
 		postLabel.text = [NSLocalizedString(@"on ", @"") stringByAppendingString:comment.postTitle];
     commentLabel.text = comment.content;
-    gravatarImageView.email = comment.author_email;
+    [gravatarImageView setImageWithGravatarEmail:comment.author_email];
 }
 
 // Calls the tableView:didCheckRowAtIndexPath method on the table view delegate.
@@ -188,7 +189,7 @@
 - (void)addGravatarImageView {
     CGRect rect = CGRectMake(LEFT_OFFSET, TOP_OFFSET, GRAVATAR_WIDTH, GRAVATAR_HEIGHT);
     
-    gravatarImageView = [[GravatarImageView alloc] initWithFrame:rect];
+    gravatarImageView = [[UIImageView alloc] initWithFrame:rect];
     gravatarImageView.layer.cornerRadius = 10.0f;
     gravatarImageView.layer.masksToBounds = YES;
     

@@ -10,7 +10,7 @@
 #import "BlogSelectorViewController.h"
 #import "WordPressAppDelegate.h"
 #import "BlogsTableViewCell.h"
-#import "WPAsynchronousImageView.h"
+#import "UIImageView+Gravatar.h"
 #import "NSString+XMLExtensions.h" 
 
 @interface BlogSelectorViewController (PrivateMethods)
@@ -108,7 +108,7 @@
     Blog *blog = [resultsController objectAtIndexPath:indexPath];
     
     CGRect frame = CGRectMake(8,8,35,35);
-    WPAsynchronousImageView* asyncImage = [[[WPAsynchronousImageView alloc]
+    UIImageView* asyncImage = [[[UIImageView alloc]
                                             initWithFrame:frame] autorelease];
     
     if (cell == nil) {
@@ -116,18 +116,14 @@
         [cell.imageView removeFromSuperview];
     }
     else {
-        WPAsynchronousImageView* oldImage = (WPAsynchronousImageView*)[cell.contentView viewWithTag:999];
+        UIImageView* oldImage = (UIImageView*)[cell.contentView viewWithTag:999];
         [oldImage removeFromSuperview];
     }
     
-    asyncImage.isBlavatar = YES;
-    if ([blog isWPcom])
-        asyncImage.isWPCOM = YES;
 	asyncImage.layer.cornerRadius = 4.0;
 	asyncImage.layer.masksToBounds = YES;
 	asyncImage.tag = 999;
-	NSURL* url = [blog blavatarURL];
-	[asyncImage loadImageFromURL:url];
+	[asyncImage setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
 	[cell.contentView addSubview:asyncImage];
 	
     cell.textLabel.text = [blog blogName];

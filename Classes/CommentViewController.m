@@ -11,6 +11,7 @@
 #import "WPProgressHUD.h"
 #import "NSString+XMLExtensions.h"
 #import "WPWebViewController.h"
+#import "UIImageView+Gravatar.h"
 
 #define COMMENT_BODY_TOP        100
 #define COMMENT_BODY_MAX_HEIGHT 4000
@@ -667,7 +668,7 @@
     }
     NSLog(@"Comment: %@", comment);
 	NSLog(@"Trimmed: %@", [comment.author_url trim]);
-	gravatarImageView.email = [comment.author_email trim];
+	[gravatarImageView setImageWithGravatarEmail:[comment.author_email trim]];
     commentAuthorLabel.text = [comment.author trim];
 	[commentAuthorUrlButton setTitle:[comment.author_url trim] forState:UIControlStateNormal];
 	[commentAuthorUrlButton setTitle:[comment.author_url trim] forState:UIControlStateHighlighted];

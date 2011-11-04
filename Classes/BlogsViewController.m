@@ -3,6 +3,7 @@
 #import "QuickPhotoViewController.h"
 #import "UINavigationController+FormSheet.h"
 #import "QuickPhotoUploadProgressController.h"
+#import "UIImageView+Gravatar.h"
 
 @interface BlogsViewController (Private)
 - (void) cleanUnusedMediaFileFromTmpDir;
@@ -157,26 +158,21 @@
     Blog *blog = [resultsController objectAtIndexPath:indexPath];
     
     CGRect frame = CGRectMake(8,8,35,35);
-    WPAsynchronousImageView* asyncImage = [[[WPAsynchronousImageView alloc]
-                                            initWithFrame:frame] autorelease];
+    UIImageView* asyncImage = [[[UIImageView alloc] initWithFrame:frame] autorelease];
     
     if (cell == nil) {
         cell = [[[BlogsTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
         [cell.imageView removeFromSuperview];
     }
     else {
-        WPAsynchronousImageView* oldImage = (WPAsynchronousImageView*)[cell.contentView viewWithTag:999];
+        UIImageView* oldImage = (UIImageView*)[cell.contentView viewWithTag:999];
         [oldImage removeFromSuperview];
     }
     
-    asyncImage.isBlavatar = YES;
-    if ([blog isWPcom])
-        asyncImage.isWPCOM = YES;
 	asyncImage.layer.cornerRadius = 4.0;
 	asyncImage.layer.masksToBounds = YES;
 	asyncImage.tag = 999;
-	NSURL* url = [blog blavatarURL];
-	[asyncImage loadImageFromURL:url];
+	[asyncImage setImageWithBlavatarUrl:blog.hostURL isWPcom:blog.isWPcom];
 	[cell.contentView addSubview:asyncImage];
 	
 #if defined __IPHONE_3_0

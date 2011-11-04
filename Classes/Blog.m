@@ -95,22 +95,17 @@
     return count;
 }
 
-- (NSURL *)blavatarURL {
-	if (_blavatarURL == nil) {    
-        _blavatarURL = [NSURL URLWithString:self.xmlrpc];
+- (NSString *)blavatarUrl {
+	if (_blavatarUrl == nil) {
+        NSString *hostUrl = [[NSURL URLWithString:self.xmlrpc] host];
+        if (hostUrl == nil) {
+            hostUrl = self.xmlrpc;
+        }
 		
-		NSString *hostURL = [_blavatarURL host];
-		if(hostURL == nil) {
-			hostURL = self.xmlrpc;
-		}
-        NSString *digest = [self returnMD5Hash:hostURL];
-        
-        NSString *faviconURL = [NSString stringWithFormat:@"http://gravatar.com/blavatar/%@?s=70&d=404", digest];
-        
-        _blavatarURL = [[NSURL URLWithString:faviconURL] retain];
+        _blavatarUrl = [hostUrl retain];
     }
 
-    return _blavatarURL;
+    return _blavatarUrl;
 }
 
 - (NSString *)hostURL {
@@ -149,7 +144,7 @@
     [self willChangeValueForKey:@"xmlrpc"];
     [self setPrimitiveValue:xmlrpc forKey:@"xmlrpc"];
     [self didChangeValueForKey:@"xmlrpc"];
-    [_blavatarURL release]; _blavatarURL = nil;
+    [_blavatarUrl release]; _blavatarUrl = nil;
 }
 
 #pragma mark -
@@ -524,7 +519,7 @@
 
 - (void)dealloc {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [_blavatarURL release]; _blavatarURL = nil;
+    [_blavatarUrl release]; _blavatarUrl = nil;
     [super dealloc];
 }
 

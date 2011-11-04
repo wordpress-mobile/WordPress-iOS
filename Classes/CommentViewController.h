@@ -6,7 +6,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GravatarImageView.h"
 #import "ReplyToCommentViewController.h"
 #import "EditCommentViewController.h"
 #import "CommentsViewController.h"
@@ -17,7 +16,7 @@
 	CommentsViewController *commentsViewController;
 	EditCommentViewController *editCommentViewController;
     
-    IBOutlet GravatarImageView *gravatarImageView;
+    IBOutlet UIImageView *gravatarImageView;
     IBOutlet UILabel *commentAuthorLabel;
     IBOutlet UIButton *commentAuthorUrlButton;
 	IBOutlet UIButton *commentAuthorEmailButton;

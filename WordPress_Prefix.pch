@@ -10,6 +10,7 @@
 	#import <CoreData/CoreData.h>
 
 	// 3rd Party
+    #import "WPAFNetworking.h"
 	#import "RegexkitLite.h"
 	#import "XMLRPCRequest.h"
 	#import "XMLRPCResponse.h"

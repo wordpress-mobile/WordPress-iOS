@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "WPAsynchronousImageView.h"
 #import "Blog.h"
 #import "BlogSelectorViewController.h"
 
@@ -29,7 +28,7 @@ typedef enum {
 @end
 
 @interface BlogSelectorButton : UIButton<BlogSelectorViewControllerDelegate> {
-    WPAsynchronousImageView *blavatarImageView;
+    UIImageView *blavatarImageView;
     UILabel *blogTitleLabel;
     UILabel *postToLabel;
     UIImageView *selectorImageView;

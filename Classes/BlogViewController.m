@@ -11,6 +11,7 @@
 #import "PagesViewController.h"
 #import "CommentsViewController.h"
 #import "StatsTableViewController.h"
+#import "UIImageView+Gravatar.h"
 
 @implementation BlogViewController
 
@@ -33,12 +34,10 @@
         
         self.blogTitleLabel.text = self.title;
         
-        self.blavatarImageView.isBlavatar = YES;
-        self.blavatarImageView.isWPCOM = blog.isWPcom;
-        self.blavatarImageView.layer.cornerRadius = 4.0f;
-        
+        self.blavatarImageView.layer.cornerRadius = 4.0f;        
         self.blavatarImageView.layer.masksToBounds = YES;
-        [self.blavatarImageView loadImageFromURL:blog.blavatarURL];
+        
+        [self.blavatarImageView setImageWithBlavatarUrl:blog.blavatarUrl];
 
         self.blogUrlLabel.text = self.blog.hostURL;
     }

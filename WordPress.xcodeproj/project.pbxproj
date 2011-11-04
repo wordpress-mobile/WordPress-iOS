@@ -11,7 +11,6 @@
 		031666AE0FFC3E130045D052 /* CommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 031666AD0FFC3E130045D052 /* CommentTableViewCell.m */; };
 		03958062100D6CFC00850742 /* WPLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03958061100D6CFC00850742 /* WPLabel.m */; };
 		03958860100DA2DA00850742 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0395885F100DA2DA00850742 /* ImageCache.m */; };
-		039FFDA1100EDC1B00D8B279 /* GravatarImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 039FFDA0100EDC1B00D8B279 /* GravatarImageView.m */; };
 		03B1DF2F113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B1DF2D113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.m */; };
 		03B1DF30113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B1DF2E113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.xib */; };
 		03B1E32B113DBDB300BBD1C6 /* EditPostViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B1E32A113DBDB300BBD1C6 /* EditPostViewController-iPad.xib */; };
@@ -327,7 +326,6 @@
 		CE31B4301022644F00BC060C /* pages.png in Resources */ = {isa = PBXBuildFile; fileRef = CE31B42E1022644F00BC060C /* pages.png */; };
 		CE31B4311022644F00BC060C /* posts.png in Resources */ = {isa = PBXBuildFile; fileRef = CE31B42F1022644F00BC060C /* posts.png */; };
 		CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBD3EAA0FF1BA3B00C1396E /* Blog.m */; };
-		CEE7088B1006FC1200D6302A /* WPAsynchronousImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE7088A1006FC1200D6302A /* WPAsynchronousImageView.m */; };
 		CEFC8B5910057D0A0052604A /* WPProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = CEFC8B5810057D0A0052604A /* WPProgressHUD.m */; };
 		E100D62F134B163E001AC67F /* BlogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E100D630134B163E001AC67F /* BlogViewController.xib */; };
 		E10A2E9B134E8AD3007643F9 /* PostAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 833AF25A114575A50016DE8F /* PostAnnotation.m */; };
@@ -438,6 +436,15 @@
 		E1EE23E912E628F6000B2BE6 /* attachment.png in Resources */ = {isa = PBXBuildFile; fileRef = E1EE23E712E628F6000B2BE6 /* attachment.png */; };
 		E1EE23EA12E628F6000B2BE6 /* attachment@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1EE23E812E628F6000B2BE6 /* attachment@2x.png */; };
 		E1F0258913AF588C00E3A76A /* keyboardClose~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E1F0258813AF588C00E3A76A /* keyboardClose~ipad.png */; };
+		E1F8080E14641AC700726BC7 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F807FB14641AC700726BC7 /* AFHTTPRequestOperation.m */; };
+		E1F8080F14641AC700726BC7 /* AFImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F807FD14641AC700726BC7 /* AFImageCache.m */; };
+		E1F8081014641AC700726BC7 /* AFImageRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F807FF14641AC700726BC7 /* AFImageRequestOperation.m */; };
+		E1F8081214641AC700726BC7 /* AFNetworkActivityIndicatorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F8080314641AC700726BC7 /* AFNetworkActivityIndicatorManager.m */; };
+		E1F8081314641AC700726BC7 /* AFPropertyListRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F8080614641AC700726BC7 /* AFPropertyListRequestOperation.m */; };
+		E1F8081414641AC700726BC7 /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F8080814641AC700726BC7 /* AFURLConnectionOperation.m */; };
+		E1F8081514641AC700726BC7 /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F8080A14641AC700726BC7 /* AFXMLRequestOperation.m */; };
+		E1F8081614641AC700726BC7 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F8080C14641AC700726BC7 /* UIImageView+AFNetworking.m */; };
+		E1F80825146420B000726BC7 /* UIImageView+Gravatar.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F80824146420B000726BC7 /* UIImageView+Gravatar.m */; };
 		E1FC3DB413C7788700F6B60F /* WPWebViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1FC3DB313C7788700F6B60F /* WPWebViewController-iPad.xib */; };
 		EC270CB20E8B5E8200E9AA18 /* commentDelete.png in Resources */ = {isa = PBXBuildFile; fileRef = EC270CB10E8B5E8200E9AA18 /* commentDelete.png */; };
 		EC4696FF0EA75D460040EE8E /* PagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4696FE0EA75D460040EE8E /* PagesViewController.m */; };
@@ -473,8 +480,6 @@
 		03958061100D6CFC00850742 /* WPLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLabel.m; sourceTree = "<group>"; };
 		0395885E100DA2DA00850742 /* ImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCache.h; sourceTree = "<group>"; };
 		0395885F100DA2DA00850742 /* ImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCache.m; sourceTree = "<group>"; };
-		039FFD9F100EDC1B00D8B279 /* GravatarImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GravatarImageView.h; sourceTree = "<group>"; };
-		039FFDA0100EDC1B00D8B279 /* GravatarImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GravatarImageView.m; sourceTree = "<group>"; };
 		03B1DF2C113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogSplitViewDetailViewController.h; sourceTree = "<group>"; };
 		03B1DF2D113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogSplitViewDetailViewController.m; sourceTree = "<group>"; };
 		03B1DF2E113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BlogSplitViewDetailViewController.xib; sourceTree = "<group>"; };
@@ -892,8 +897,6 @@
 		CE31B42F1022644F00BC060C /* posts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = posts.png; sourceTree = "<group>"; };
 		CEBD3EA90FF1BA3B00C1396E /* Blog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Blog.h; sourceTree = "<group>"; };
 		CEBD3EAA0FF1BA3B00C1396E /* Blog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Blog.m; sourceTree = "<group>"; };
-		CEE708891006FC1200D6302A /* WPAsynchronousImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAsynchronousImageView.h; sourceTree = "<group>"; };
-		CEE7088A1006FC1200D6302A /* WPAsynchronousImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAsynchronousImageView.m; sourceTree = "<group>"; };
 		CEFC8B5710057D0A0052604A /* WPProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPProgressHUD.h; sourceTree = "<group>"; };
 		CEFC8B5810057D0A0052604A /* WPProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPProgressHUD.m; sourceTree = "<group>"; };
 		E100D630134B163E001AC67F /* BlogViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BlogViewController.xib; sourceTree = "<group>"; };
@@ -1069,6 +1072,26 @@
 		E1EE23E712E628F6000B2BE6 /* attachment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = attachment.png; sourceTree = "<group>"; };
 		E1EE23E812E628F6000B2BE6 /* attachment@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "attachment@2x.png"; sourceTree = "<group>"; };
 		E1F0258813AF588C00E3A76A /* keyboardClose~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboardClose~ipad.png"; sourceTree = "<group>"; };
+		E1F807FA14641AC700726BC7 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
+		E1F807FB14641AC700726BC7 /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperation.m; sourceTree = "<group>"; };
+		E1F807FC14641AC700726BC7 /* AFImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFImageCache.h; sourceTree = "<group>"; };
+		E1F807FD14641AC700726BC7 /* AFImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFImageCache.m; sourceTree = "<group>"; };
+		E1F807FE14641AC700726BC7 /* AFImageRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFImageRequestOperation.h; sourceTree = "<group>"; };
+		E1F807FF14641AC700726BC7 /* AFImageRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFImageRequestOperation.m; sourceTree = "<group>"; };
+		E1F8080214641AC700726BC7 /* AFNetworkActivityIndicatorManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkActivityIndicatorManager.h; sourceTree = "<group>"; };
+		E1F8080314641AC700726BC7 /* AFNetworkActivityIndicatorManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFNetworkActivityIndicatorManager.m; sourceTree = "<group>"; };
+		E1F8080414641AC700726BC7 /* AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworking.h; sourceTree = "<group>"; };
+		E1F8080514641AC700726BC7 /* AFPropertyListRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFPropertyListRequestOperation.h; sourceTree = "<group>"; };
+		E1F8080614641AC700726BC7 /* AFPropertyListRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFPropertyListRequestOperation.m; sourceTree = "<group>"; };
+		E1F8080714641AC700726BC7 /* AFURLConnectionOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLConnectionOperation.h; sourceTree = "<group>"; };
+		E1F8080814641AC700726BC7 /* AFURLConnectionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLConnectionOperation.m; sourceTree = "<group>"; };
+		E1F8080914641AC700726BC7 /* AFXMLRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFXMLRequestOperation.h; sourceTree = "<group>"; };
+		E1F8080A14641AC700726BC7 /* AFXMLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFXMLRequestOperation.m; sourceTree = "<group>"; };
+		E1F8080B14641AC700726BC7 /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
+		E1F8080C14641AC700726BC7 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
+		E1F808221464205100726BC7 /* WPAFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAFNetworking.h; sourceTree = "<group>"; };
+		E1F80823146420B000726BC7 /* UIImageView+Gravatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Gravatar.h"; sourceTree = "<group>"; };
+		E1F80824146420B000726BC7 /* UIImageView+Gravatar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Gravatar.m"; sourceTree = "<group>"; };
 		E1FC3DB313C7788700F6B60F /* WPWebViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WPWebViewController-iPad.xib"; sourceTree = "<group>"; };
 		EC270CB10E8B5E8200E9AA18 /* commentDelete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = commentDelete.png; sourceTree = "<group>"; };
 		EC4696FD0EA75D460040EE8E /* PagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PagesViewController.h; sourceTree = "<group>"; };
@@ -1124,10 +1147,6 @@
 			children = (
 				E1B4A9DE12FC8B1000EB3F67 /* EGOTableViewPullRefresh */,
 				031669580FFC81A20045D052 /* CommentsTableViewDelegate.h */,
-				039FFD9F100EDC1B00D8B279 /* GravatarImageView.h */,
-				039FFDA0100EDC1B00D8B279 /* GravatarImageView.m */,
-				CEE708891006FC1200D6302A /* WPAsynchronousImageView.h */,
-				CEE7088A1006FC1200D6302A /* WPAsynchronousImageView.m */,
 				03958060100D6CFC00850742 /* WPLabel.h */,
 				03958061100D6CFC00850742 /* WPLabel.m */,
 				E13FA0DC134C6D33007DCDD0 /* BlogSelectorButton.h */,
@@ -1207,6 +1226,8 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				E1F808221464205100726BC7 /* WPAFNetworking.h */,
+				E1F807F714641AC700726BC7 /* AFNetworking */,
 				E1208C0A12A6D41C008F1FB7 /* FlurryLib */,
 				8388FA801269580400304909 /* TouchXML */,
 				834CE85F1256E7EE0046A4A3 /* ASIHTTPRequest */,
@@ -1946,6 +1967,8 @@
 				C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */,
 				E138623A1355FF8800AAB235 /* UINavigationController+FormSheet.h */,
 				E138623B1355FF8800AAB235 /* UINavigationController+FormSheet.m */,
+				E1F80823146420B000726BC7 /* UIImageView+Gravatar.h */,
+				E1F80824146420B000726BC7 /* UIImageView+Gravatar.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -2136,6 +2159,31 @@
 				E1D5549212E8C61B0032C680 /* Info-dev.plist */,
 			);
 			name = "Dev builds";
+			sourceTree = "<group>";
+		};
+		E1F807F714641AC700726BC7 /* AFNetworking */ = {
+			isa = PBXGroup;
+			children = (
+				E1F807FA14641AC700726BC7 /* AFHTTPRequestOperation.h */,
+				E1F807FB14641AC700726BC7 /* AFHTTPRequestOperation.m */,
+				E1F807FC14641AC700726BC7 /* AFImageCache.h */,
+				E1F807FD14641AC700726BC7 /* AFImageCache.m */,
+				E1F807FE14641AC700726BC7 /* AFImageRequestOperation.h */,
+				E1F807FF14641AC700726BC7 /* AFImageRequestOperation.m */,
+				E1F8080214641AC700726BC7 /* AFNetworkActivityIndicatorManager.h */,
+				E1F8080314641AC700726BC7 /* AFNetworkActivityIndicatorManager.m */,
+				E1F8080414641AC700726BC7 /* AFNetworking.h */,
+				E1F8080514641AC700726BC7 /* AFPropertyListRequestOperation.h */,
+				E1F8080614641AC700726BC7 /* AFPropertyListRequestOperation.m */,
+				E1F8080714641AC700726BC7 /* AFURLConnectionOperation.h */,
+				E1F8080814641AC700726BC7 /* AFURLConnectionOperation.m */,
+				E1F8080914641AC700726BC7 /* AFXMLRequestOperation.h */,
+				E1F8080A14641AC700726BC7 /* AFXMLRequestOperation.m */,
+				E1F8080B14641AC700726BC7 /* UIImageView+AFNetworking.h */,
+				E1F8080C14641AC700726BC7 /* UIImageView+AFNetworking.m */,
+			);
+			name = AFNetworking;
+			path = AFNetworking/AFNetworking;
 			sourceTree = "<group>";
 		};
 		EC4696A80EA74DAC0040EE8E /* Pages */ = {
@@ -2515,10 +2563,8 @@
 				031666AE0FFC3E130045D052 /* CommentTableViewCell.m in Sources */,
 				03FF35C5100423A10066ED95 /* BlogViewController.m in Sources */,
 				CEFC8B5910057D0A0052604A /* WPProgressHUD.m in Sources */,
-				CEE7088B1006FC1200D6302A /* WPAsynchronousImageView.m in Sources */,
 				03958062100D6CFC00850742 /* WPLabel.m in Sources */,
 				03958860100DA2DA00850742 /* ImageCache.m in Sources */,
-				039FFDA1100EDC1B00D8B279 /* GravatarImageView.m in Sources */,
 				292CED001027259000BD407D /* SFHFKeychainUtils.m in Sources */,
 				296526FE105810E100597FA3 /* NSString+Helpers.m in Sources */,
 				F5A4EF6810B34147002BF126 /* NSData+Base64.m in Sources */,
@@ -2646,6 +2692,15 @@
 				FD9E7EF2143306C000E74450 /* FilteredWebCache.m in Sources */,
 				FD9E7EF6143309E900E74450 /* SDURLCache.m in Sources */,
 				FD3890F01442F91000135C6D /* WPReaderViewController.m in Sources */,
+				E1F8080E14641AC700726BC7 /* AFHTTPRequestOperation.m in Sources */,
+				E1F8080F14641AC700726BC7 /* AFImageCache.m in Sources */,
+				E1F8081014641AC700726BC7 /* AFImageRequestOperation.m in Sources */,
+				E1F8081214641AC700726BC7 /* AFNetworkActivityIndicatorManager.m in Sources */,
+				E1F8081314641AC700726BC7 /* AFPropertyListRequestOperation.m in Sources */,
+				E1F8081414641AC700726BC7 /* AFURLConnectionOperation.m in Sources */,
+				E1F8081514641AC700726BC7 /* AFXMLRequestOperation.m in Sources */,
+				E1F8081614641AC700726BC7 /* UIImageView+AFNetworking.m in Sources */,
+				E1F80825146420B000726BC7 /* UIImageView+Gravatar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

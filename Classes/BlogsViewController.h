@@ -10,7 +10,6 @@
 #import "WordPressAppDelegate.h"
 #import "Blog.h"
 #import "CPopoverManager.h"
-#import "WPAsynchronousImageView.h"
 #import "QuickPhotoButton.h"
 #import "QuickPhotoUploadProgressController.h"
 #import "WPReaderViewController.h"
