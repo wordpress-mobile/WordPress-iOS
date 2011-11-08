@@ -462,7 +462,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         categoriesTextField.text = [self.post categoriesText];
     }
     
-    if(self.apost.content == nil) {
+    if(self.apost.content == nil || [self.apost.content isEmpty]) {
         textViewPlaceHolderField.hidden = NO;
         textView.text = @"";
     }
