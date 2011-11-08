@@ -735,14 +735,22 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	}
 		
 	UIActionSheet *actionSheet;
-	if (![self.apost hasRemote])
+	if (![self.apost hasRemote]) {
+        if ([self isAFreshlyCreatedDraft]) {
+            actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"")
+                                                      delegate:self cancelButtonTitle:NSLocalizedString(@"Keep editing", @"") destructiveButtonTitle:NSLocalizedString(@"Discard", @"")
+                                             otherButtonTitles:NSLocalizedString(@"Save Draft", @""), nil];
+        } else {
+            actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"")
+                                                      delegate:self cancelButtonTitle:NSLocalizedString(@"Keep editing", @"") destructiveButtonTitle:NSLocalizedString(@"Discard", @"")
+                                             otherButtonTitles:NSLocalizedString(@"Update Draft", @""), nil];
+        }
+	} else {
 		actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"")
-                                                             delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:NSLocalizedString(@"Discard", @"")
-                                                    otherButtonTitles:NSLocalizedString(@"Save Draft", @""), nil];
-	else
-		actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"")
-												  delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:NSLocalizedString(@"Discard", @"")
+												  delegate:self cancelButtonTitle:NSLocalizedString(@"Keep editing", @"") destructiveButtonTitle:NSLocalizedString(@"Discard", @"")
 										 otherButtonTitles:nil];
+    }
+
     actionSheet.tag = 201;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
     [actionSheet showInView:self.view];
