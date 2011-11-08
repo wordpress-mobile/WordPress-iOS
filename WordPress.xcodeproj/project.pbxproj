@@ -1206,7 +1206,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				E19DF740141F7BDD000002F3 /* libz.dylib */,
 				2FAE97050E33B21600CA8540 /* license.txt */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
@@ -1269,6 +1268,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E19DF740141F7BDD000002F3 /* libz.dylib */,
 				3789C597129EA5E600ADA91C /* CrashReporter.framework */,
 				834CE7331256D0DE0046A4A3 /* CFNetwork.framework */,
 				834CE7371256D0F60046A4A3 /* CoreGraphics.framework */,
