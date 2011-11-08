@@ -29,7 +29,7 @@
 
 @implementation PostsViewController
 
-@synthesize newButtonItem, postDetailViewController, postReaderViewController;
+@synthesize composeButtonItem, postDetailViewController, postReaderViewController;
 @synthesize anyMorePosts, selectedIndexPath, drafts;
 @synthesize resultsController;
 @synthesize blog;
@@ -48,10 +48,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableViewAfterPostSaved:) name:@"AsynchronousPostIsPosted" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableAfterDraftSaved:) name:@"DraftsUpdated" object:nil];
 
-    newButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
+    composeButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
                      target:self
                      action:@selector(showAddPostView)];
-    self.navigationItem.rightBarButtonItem = newButtonItem;
+    self.navigationItem.rightBarButtonItem = composeButtonItem;
     self.title = NSLocalizedString(@"Posts", @"");
 
     if (_refreshHeaderView == nil) {
@@ -634,7 +634,7 @@
     [_refreshHeaderView release]; _refreshHeaderView = nil;
     [activityFooter release];
     [postDetailViewController release];
-    [newButtonItem release];
+    [composeButtonItem release];
 	[selectedIndexPath release], selectedIndexPath = nil;
 	[drafts release];
 	
