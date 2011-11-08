@@ -172,6 +172,7 @@
 	asyncImage.layer.cornerRadius = 4.0;
 	asyncImage.layer.masksToBounds = YES;
 	asyncImage.tag = 999;
+    asyncImage.opaque = YES;
 	[asyncImage setImageWithBlavatarUrl:blog.hostURL isWPcom:blog.isWPcom];
 	[cell.contentView addSubview:asyncImage];
 	
