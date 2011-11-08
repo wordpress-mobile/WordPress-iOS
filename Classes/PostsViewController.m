@@ -259,7 +259,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-	progressAlert = [[WPProgressHUD alloc] initWithLabel:[NSString stringWithFormat:NSLocalizedString(@"Deleting %@...", @""), [self entityName]];
+	progressAlert = [[WPProgressHUD alloc] initWithLabel:[NSString stringWithFormat:NSLocalizedString(@"Deleting %@...", @""), [self entityName]]];
 	[progressAlert show];
 	[self performSelectorInBackground:@selector(deletePostAtIndexPath:) withObject:indexPath];
 }
