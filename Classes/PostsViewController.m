@@ -276,7 +276,7 @@
 #pragma mark Custom methods
 
 - (void)refreshPostList {
-//    [self.tableView reloadData];
+    [self.tableView reloadData]; // It's automatically reloaded from the results controller but with a delay, so we do it now too: #929
     [self trySelectSomething];
     [activityFooter stopAnimating];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
