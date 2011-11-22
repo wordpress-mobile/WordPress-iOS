@@ -336,7 +336,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    //[self applicationWillTerminate:application];
     
     //Keep the app alive in the background if we are uploading a post, currently only used for quick photo posts
     UIApplication *app = [UIApplication sharedApplication];
@@ -365,7 +364,14 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];    
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    NSDate *lastReaderCache = [[NSUserDefaults standardUserDefaults] objectForKey:@"lastReaderCache"];
+    if (lastReaderCache == nil || [lastReaderCache timeIntervalSinceNow] < -3600) { // Update reader cache every hour
+        [FileLogger log:@"Last reader cached at %@, refreshing cache", lastReaderCache];
+        [self performSelectorInBackground:@selector(checkWPcomAuthentication) withObject:nil];
+    } else {
+        [FileLogger log:@"Last reader cached at %@, not refreshing cache", lastReaderCache];
+    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -795,6 +801,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
                 WPFLog(@"Authenticated in WP.com, cached reader");
                 NSData *readerData = [request responseData];
                 [readerData writeToFile:[self readerCachePath] atomically:YES];
+                [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"lastReaderCache"];
                 isWPcomAuthenticated = YES;
             }
         } else {
