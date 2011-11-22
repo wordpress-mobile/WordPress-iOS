@@ -977,11 +977,11 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	NSString *appversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     if ([statsDataString compare:appversion] > 0) {
         NSLog(@"There's a new version: %@", statsDataString);
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"New version available", @"")
-                                                        message:NSLocalizedString(@"Please update to the latest version", @"")
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Update Available", @"")
+                                                        message:NSLocalizedString(@"A new version of WordPress for iOS is now available", @"")
                                                        delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"Not now", @"")
-                                              otherButtonTitles:NSLocalizedString(@"Go to App Store", @""), nil];
+                                              cancelButtonTitle:NSLocalizedString(@"Dismiss", @"")
+                                              otherButtonTitles:NSLocalizedString(@"Update Now", @""), nil];
         alert.tag = 102;
         [alert show];
     }
