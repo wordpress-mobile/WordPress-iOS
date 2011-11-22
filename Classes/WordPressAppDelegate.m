@@ -836,13 +836,17 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void) checkIfStatsShouldRun {
+    if (NO) { // Switch this to YES to debug stats/update check
+        [self runStats];
+        return;
+    }
 	//check if statsDate exists in user defaults, if not, add it and run stats since this is obviously the first time
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	//[defaults setObject:nil forKey:@"statsDate"];  // Uncomment this line to force stats.
 	if (![defaults objectForKey:@"statsDate"]){
 		NSDate *theDate = [NSDate date];
 		[defaults setObject:theDate forKey:@"statsDate"];
-		[self performSelectorInBackground:@selector(runStats) withObject:nil];
+		[self runStats];
 	}else{
 		//if statsDate existed, check if it's 7 days since last stats run, if it is > 7 days, run stats
 		NSDate *statsDate = [defaults objectForKey:@"statsDate"];
@@ -1116,9 +1120,19 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void) connectionDidFinishLoading: (NSURLConnection*) connection {
-	NSString *statsDataString = [[NSString alloc] initWithData:statsData encoding:NSUTF8StringEncoding];
-	[statsDataString release];
-
+	NSString *statsDataString = [[[NSString alloc] initWithData:statsData encoding:NSUTF8StringEncoding] autorelease];
+    statsDataString = [[statsDataString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]] objectAtIndex:0];
+	NSString *appversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    if ([statsDataString compare:appversion] > 0) {
+        NSLog(@"There's a new version: %@", statsDataString);
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"New version available", @"")
+                                                        message:NSLocalizedString(@"Please update to the latest version", @"")
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"Not now", @"")
+                                              otherButtonTitles:NSLocalizedString(@"Go to App Store", @""), nil];
+        alert.tag = 102;
+        [alert show];
+    }
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
@@ -1220,6 +1234,10 @@ static WordPressAppDelegate *wordPressApp = NULL;
 				[FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), currentBlog.url];
 			}
 		}
+    } else if (alertView.tag == 102) { // Update alert
+        if (buttonIndex == 1) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/us/app/wordpress/id335703880?mt=8&ls=1"]];
+        }
 	} else { 
 		//Need Help Alert
 		switch(buttonIndex) {
