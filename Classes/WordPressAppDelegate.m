@@ -793,6 +793,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
             [request setPostValue:username forKey:@"log"];
             [request setPostValue:password forKey:@"pwd"];
             [request setPostValue:kMobileReaderURL forKey:@"redirect_to"];
+            [request addRequestHeader:@"User-Agent" value:[self applicationUserAgent]];
             [request startSynchronous];
             if ([request error]) {
                 WPFLog(@"Error logging into wp.com: %@", [error localizedDescription]);
