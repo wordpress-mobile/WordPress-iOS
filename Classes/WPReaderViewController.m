@@ -11,7 +11,7 @@
 #import "ASIHTTPRequest.h"
 
 #ifdef DEBUG
-#define kReaderRefreshThreshold 10*30 // 10min
+#define kReaderRefreshThreshold 10*60 // 10min
 #else
 #define kReaderRefreshThreshold (30*60) // 30m
 #endif
