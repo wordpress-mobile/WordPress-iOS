@@ -163,16 +163,12 @@
 		[self updateStatus:NSLocalizedString(@"Uploading image...", @"")];
 	else if([self.media.mediaType isEqualToString:@"video"])
 		[self updateStatus:NSLocalizedString(@"Uploading video...", @"")];
-    
-    NSString *contentType = @"image/jpeg";
-	if([self.media.mediaType isEqualToString:@"video"])
-		contentType = @"video/mp4";
 	
 	request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:self.media.blog.xmlrpc]];
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];        
 	[request addRequestHeader:@"User-Agent" value:[appDelegate applicationUserAgent]];
     [request addRequestHeader:@"Accept" value:@"*/*"];
-    [request addRequestHeader:@"Content-Type" value:contentType];
+    [request addRequestHeader:@"Content-Type" value:@"text/xml"];
 	[request setDelegate:self];
 	[request setValidatesSecureCertificate:NO]; 
 	[request setShouldStreamPostDataFromDisk:YES];
