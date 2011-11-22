@@ -802,6 +802,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
                 NSData *readerData = [request responseData];
                 [readerData writeToFile:[self readerCachePath] atomically:YES];
                 [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"lastReaderCache"];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"ReaderCached" object:nil];
                 isWPcomAuthenticated = YES;
             }
         } else {
