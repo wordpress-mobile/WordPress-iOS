@@ -2808,10 +2808,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_LDFLAGS = (
-					"-weak_library",
-					/usr/lib/libSystem.B.dylib,
-					"-weak_framework",
-					UIKit,
 					"-lxml2",
 					"-licucore",
 				);
@@ -2865,10 +2861,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_LDFLAGS = (
-					"-weak_library",
-					/usr/lib/libSystem.B.dylib,
-					"-weak_framework",
-					UIKit,
 					"-lxml2",
 					"-licucore",
 				);
@@ -2933,10 +2925,6 @@
 					"-DDEBUG",
 				);
 				OTHER_LDFLAGS = (
-					"-weak_library",
-					/usr/lib/libSystem.B.dylib,
-					"-weak_framework",
-					UIKit,
 					"-lxml2",
 					"-licucore",
 				);
@@ -2960,10 +2948,6 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "-Wno-format-security";
 				OTHER_LDFLAGS = (
-					"-weak_library",
-					/usr/lib/libSystem.B.dylib,
-					"-weak_framework",
-					UIKit,
 					"-lxml2",
 					"-licucore",
 				);
