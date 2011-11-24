@@ -16,7 +16,7 @@
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
-    [FlurryAPI logEvent:@"Blog"];
+    [FlurryAnalytics logEvent:@"Blog"];
 
     commentsItem.title = NSLocalizedString(@"Comments", @"");
     postsItem.title = NSLocalizedString(@"Posts", @"");

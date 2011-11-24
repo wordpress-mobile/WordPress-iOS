@@ -70,7 +70,7 @@
 
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [FlurryAPI logEvent:@"PostSettings"];
+    [FlurryAnalytics logEvent:@"PostSettings"];
 
     statusTitleLabel.text = NSLocalizedString(@"Status", @"");
     visibilityTitleLabel.text = NSLocalizedString(@"Visibility", @"");

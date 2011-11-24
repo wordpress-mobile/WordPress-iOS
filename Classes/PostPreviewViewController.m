@@ -39,7 +39,7 @@
 
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [FlurryAPI logEvent:@"PostPreview"];
+    [FlurryAnalytics logEvent:@"PostPreview"];
 	webView.delegate = self;
 	if (activityFooter == nil) {
 		CGRect rect = CGRectMake(0, 0, 30, 30);

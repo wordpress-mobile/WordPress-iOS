@@ -20,7 +20,7 @@
     [super viewDidLoad];
 	
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [FlurryAPI logEvent:@"Welcome"];
+    [FlurryAnalytics logEvent:@"Welcome"];
 	
 	self.tableView.backgroundColor = [UIColor clearColor];
     UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeInfoDark];

@@ -39,7 +39,7 @@
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
-    [FlurryAPI logEvent:@"Posts"];
+    [FlurryAnalytics logEvent:@"Posts"];
 
     self.tableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
 

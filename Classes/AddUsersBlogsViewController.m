@@ -18,7 +18,7 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
 
-    [FlurryAPI logEvent:@"AddUsersBlogs"];
+    [FlurryAnalytics logEvent:@"AddUsersBlogs"];
 	self.navigationItem.title = NSLocalizedString(@"Select Blogs", @"");
 	selectedBlogs = [[NSMutableArray alloc] init];
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];

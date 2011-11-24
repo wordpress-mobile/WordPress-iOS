@@ -1,14 +1,35 @@
 //
-//  FlurryAPI.h
-//  Flurry iOS Analytics Agent 2.8.3 ver 45
+//  FlurryAnalytics.h
+//  Flurry iOS Analytics Agent
 //
-//  Copyright 2009 Flurry, Inc. All rights reserved.
+//  Copyright 2009-2011 Flurry, Inc. All rights reserved.
 //	
 //	Methods in this header file are for use with Flurry Analytics
 
 #import <UIKit/UIKit.h>
 
-@interface FlurryAPI : NSObject {
+/*!
+ * \brief Provides all available methods for defining and reporting Analytics from use
+ * of your app.
+ *
+ * Set of methods that allow developers to capture detailed, aggregate information
+ * regarding the use of their app by end users.
+ * \author 2009 - 2011 Flurry, Inc. All Rights Reserved.
+ */
+
+/*!
+ * @class FlurryAnalytics
+ * @abstract Provides all available methods for defining and reporting Analytics from use
+ * of your app.
+ * @discussion Set of methods that allow developers to capture detailed, aggregate information
+ * regarding the use of their app by end users.
+ * @helps This class provides methods necessary for correct function of FlurryAppCircle.h.
+ * For information on how to use Flurry's AppCircle SDK to
+ * attract high-quality users and monetize your user base see http://wiki.flurry.com/index.php?title=AppCircle.
+ * 
+ */
+
+@interface FlurryAnalytics : NSObject {
 }
 
 /*
@@ -19,6 +40,7 @@
 + (void)setShowErrorInLogEnabled:(BOOL)value;	// default is NO
 + (void)setDebugLogEnabled:(BOOL)value;			// generate debug logs for Flurry support, default is NO
 + (void)setSessionContinueSeconds:(int)seconds; // default is 10 seconds
++ (void)setSecureTransportEnabled:(BOOL)value; // set data to be sent over SSL, default is NO
 
 /*
  start session, attempt to send saved sessions to server 
@@ -62,7 +84,7 @@
  optional session settings that can be changed after start session
  */
 + (void)setSessionReportsOnCloseEnabled:(BOOL)sendSessionReportsOnClose;	// default is YES
-+ (void)setSessionReportsOnPauseEnabled:(BOOL)setSessionReportsOnPauseEnabled;	// default is YES
++ (void)setSessionReportsOnPauseEnabled:(BOOL)setSessionReportsOnPauseEnabled;	// default is NO
 + (void)setEventLoggingEnabled:(BOOL)value;		// default is YES
 
 @end

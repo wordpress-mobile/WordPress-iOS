@@ -13,7 +13,7 @@
 
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [FlurryAPI logEvent:@"WebSignup"];
+    [FlurryAnalytics logEvent:@"WebSignup"];
 	if(DeviceIsPad() == YES) {
 		self.view.frame = CGRectMake(0, 0, 500, 400);
 	}

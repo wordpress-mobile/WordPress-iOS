@@ -5,7 +5,7 @@
 #import "UIDevice-Hardware.h"
 #import "Blog.h"
 #import "CrashReportViewController.h"
-#import "FlurryAPI.h"
+#import "FlurryAnalytics.h"
 #import "HelpViewController.h"
 
 @class AutosaveManager;

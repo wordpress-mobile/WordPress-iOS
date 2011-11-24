@@ -20,7 +20,7 @@
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
-    [FlurryAPI logEvent:@"MediaObject"];
+    [FlurryAnalytics logEvent:@"MediaObject"];
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	NSLog(@"media: %@", media);
 	
