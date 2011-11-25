@@ -171,7 +171,6 @@
 		4526DC551148072F0090C99D /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 4526DC531148072F0090C99D /* Default-Portrait.png */; };
 		4526DC561148072F0090C99D /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 4526DC541148072F0090C99D /* Default-Landscape.png */; };
 		458776B111623ED300906CEE /* UIViewController_iPadExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 458776B011623ED300906CEE /* UIViewController_iPadExtensions.m */; };
-		45B71DE5113EDAA100D0A33C /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 45B71DE4113EDAA100D0A33C /* Entitlements.plist */; };
 		45C73C25113C36F70024D0D2 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45C73C24113C36F70024D0D2 /* MainWindow-iPad.xib */; };
 		45CD32191157D83D009E78D3 /* fabric.png in Resources */ = {isa = PBXBuildFile; fileRef = 45CD32181157D83D009E78D3 /* fabric.png */; };
 		45F285DB1149BD020014D36C /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 45F285D81149BD020014D36C /* Icon-72.png */; };
@@ -2259,7 +2258,6 @@
 				030DB994113C4BE6002FF1A2 /* BlogViewController-iPad.xib in Resources */,
 				03B1DF30113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.xib in Resources */,
 				03B1E32B113DBDB300BBD1C6 /* EditPostViewController-iPad.xib in Resources */,
-				45B71DE5113EDAA100D0A33C /* Entitlements.plist in Resources */,
 				03FF762811445B1400DCFC6F /* ToolbarIconCamera.png in Resources */,
 				03FF762911445B1400DCFC6F /* ToolbarIconEye.png in Resources */,
 				03FF762A11445B1400DCFC6F /* ToolbarIconGear.png in Resources */,
