@@ -2763,6 +2763,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-Wno-format-security";
 				OTHER_LDFLAGS = (
 					"-lxml2",
 					"-licucore",
@@ -2784,11 +2785,10 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes\"",
 				);
-				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = TOUCHXMLUSETIDY;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = Info.plist;
@@ -2797,9 +2797,13 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/FlurryAnalytics\"",
 				);
+				OTHER_CFLAGS = (
+					"-Wno-format",
+					"-Wno-format-security",
+				);
 				PRODUCT_NAME = WordPress;
 				SDKROOT = iphoneos;
-				STRIP_INSTALLED_PRODUCT = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Distribution;
@@ -2913,6 +2917,7 @@
 				);
 				PROVISIONING_PROFILE = "3F76F6BA-B759-4BBF-8485-464C7082ABB3";
 				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
