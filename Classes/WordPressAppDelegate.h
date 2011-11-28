@@ -5,9 +5,9 @@
 #import "UIDevice-Hardware.h"
 #import "Blog.h"
 #import "CrashReportViewController.h"
+#import "FlurryAnalytics.h"
 #import "HelpViewController.h"
 
-NSObject *FlurryAnalytics;
 @class AutosaveManager;
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate> {

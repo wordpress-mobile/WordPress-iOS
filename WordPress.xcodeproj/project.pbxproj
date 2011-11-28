@@ -341,6 +341,7 @@
 		E11C91D5135771010072A811 /* italic.png in Resources */ = {isa = PBXBuildFile; fileRef = E11C91CF135771010072A811 /* italic.png */; };
 		E11C91D6135771010072A811 /* italic@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E11C91D0135771010072A811 /* italic@2x.png */; };
 		E11C91D8135771520072A811 /* paperclip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E11C91D7135771520072A811 /* paperclip@2x.png */; };
+		E1225A56147E7FFA00B4F3A0 /* libFlurryAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1225A55147E7FFA00B4F3A0 /* libFlurryAnalytics.a */; };
 		E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */; };
 		E125445612BF5B3900D87A0A /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E125445512BF5B3900D87A0A /* Category.m */; };
 		E125451812BF68F900D87A0A /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = E125451712BF68F900D87A0A /* Page.m */; };
@@ -1112,6 +1113,7 @@
 				3789C598129EA5E600ADA91C /* CrashReporter.framework in Frameworks */,
 				FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */,
 				FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */,
+				E1225A56147E7FFA00B4F3A0 /* libFlurryAnalytics.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
