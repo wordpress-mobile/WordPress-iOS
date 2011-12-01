@@ -11,7 +11,7 @@
 #import "ASIHTTPRequest.h"
 
 #ifdef DEBUG
-#define kReaderRefreshThreshold 10*30 // 10min
+#define kReaderRefreshThreshold 10*60 // 10min
 #else
 #define kReaderRefreshThreshold (30*60) // 30m
 #endif
@@ -21,6 +21,7 @@
 - (void)setLoading:(BOOL)loading;
 - (void)removeNotifications;
 - (void)addNotifications;
+- (void)readerCached:(NSNotification*)notification;
 - (void)refreshWebViewNotification:(NSNotification*)notification;
 - (void)refreshWebViewTimer:(NSTimer*)timer;
 - (void)refreshWebViewIfNeeded;
@@ -112,10 +113,16 @@
 #pragma mark - notifications related methods
 - (void)addNotifications {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshWebViewNotification:) name:@"ApplicationDidBecomeActive" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readerCached:) name:@"ReaderCached" object:nil];
 }
 
 - (void)removeNotifications{
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)readerCached:(NSNotification*)notification {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    self.detailContentHTML = nil;
 }
 
 - (void)refreshWebViewNotification:(NSNotification*)notification {

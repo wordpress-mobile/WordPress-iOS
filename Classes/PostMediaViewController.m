@@ -50,7 +50,7 @@
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
-    [FlurryAPI logEvent:@"PostMedia"];
+    [FlurryAnalytics logEvent:@"PostMedia"];
 	
 	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
 		
@@ -1319,7 +1319,7 @@
     if ((media == nil) || ([media isDeleted])) {
         // FIXME: media deleted during upload should cancel the upload. In the meantime, we'll try not to crash
         NSLog(@"Media deleted while uploading (%@)", media);
-        [FlurryAPI logError:@"MediaDeleted"
+        [FlurryAnalytics logError:@"MediaDeleted"
                     message:[NSString stringWithFormat:@"Media deleted while uploading (%@)", currentUpload]
                       error:nil];
         return;

@@ -10,7 +10,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [FlurryAPI logEvent:@"AddSite"];
+    [FlurryAnalytics logEvent:@"AddSite"];
     
     UIImageView *logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wporg.png"]];
     logoView.frame = CGRectMake(0, 0, 320, 60);

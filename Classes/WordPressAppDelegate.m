@@ -44,7 +44,7 @@ void uncaughtExceptionHandler(NSException *exception) {
     NSString *ourCrash = [NSString stringWithFormat:@"Logging error (%@|%@): %@\n%@", platform, version, [exception reason], backtrace];
     [ourCrash writeToFile:CrashFilePath() atomically:NO];
 
-    [FlurryAPI logError:@"Uncaught" message:message exception:exception];
+    [FlurryAnalytics logError:@"Uncaught" message:message exception:exception];
 	defaultExceptionHandler(exception);
 }
 
@@ -105,8 +105,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
 #ifndef DEBUG
 //#warning Need Flurry api key for distribution
 #endif
-    [FlurryAPI startSession:@"NPFZWR9J1MI9QU1ICU9H"]; // FIXME: set up real api key for distribution
-	[FlurryAPI setSessionReportsOnPauseEnabled:YES];
+    [FlurryAnalytics startSession:@"NPFZWR9J1MI9QU1ICU9H"]; // FIXME: set up real api key for distribution
+	[FlurryAnalytics setSessionReportsOnPauseEnabled:YES];
 
 	
 	if(getenv("NSZombieEnabled"))
@@ -338,7 +338,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    //[self applicationWillTerminate:application];
     
     //Keep the app alive in the background if we are uploading a post, currently only used for quick photo posts
     UIApplication *app = [UIApplication sharedApplication];
@@ -367,7 +366,14 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];    
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    NSDate *lastReaderCache = [[NSUserDefaults standardUserDefaults] objectForKey:@"lastReaderCache"];
+    if (lastReaderCache == nil || [lastReaderCache timeIntervalSinceNow] < -3600) { // Update reader cache every hour
+        [FileLogger log:@"Last reader cached at %@, refreshing cache", lastReaderCache];
+        [self performSelectorInBackground:@selector(checkWPcomAuthentication) withObject:nil];
+    } else {
+        [FileLogger log:@"Last reader cached at %@, not refreshing cache", lastReaderCache];
+    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -789,6 +795,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
             [request setPostValue:username forKey:@"log"];
             [request setPostValue:password forKey:@"pwd"];
             [request setPostValue:kMobileReaderURL forKey:@"redirect_to"];
+            [request addRequestHeader:@"User-Agent" value:[self applicationUserAgent]];
             [request startSynchronous];
             if ([request error]) {
                 WPFLog(@"Error logging into wp.com: %@", [error localizedDescription]);
@@ -797,6 +804,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
                 WPFLog(@"Authenticated in WP.com, cached reader");
                 NSData *readerData = [request responseData];
                 [readerData writeToFile:[self readerCachePath] atomically:YES];
+                [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"lastReaderCache"];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"ReaderCached" object:nil];
                 isWPcomAuthenticated = YES;
             }
         } else {
@@ -1125,11 +1134,11 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	NSString *appversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     if ([statsDataString compare:appversion] > 0) {
         NSLog(@"There's a new version: %@", statsDataString);
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"New version available", @"")
-                                                        message:NSLocalizedString(@"Please update to the latest version", @"")
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Update Available", @"")
+                                                        message:NSLocalizedString(@"A new version of WordPress for iOS is now available", @"")
                                                        delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"Not now", @"")
-                                              otherButtonTitles:NSLocalizedString(@"Go to App Store", @""), nil];
+                                              cancelButtonTitle:NSLocalizedString(@"Dismiss", @"")
+                                              otherButtonTitles:NSLocalizedString(@"Update Now", @""), nil];
         alert.tag = 102;
         [alert show];
     }

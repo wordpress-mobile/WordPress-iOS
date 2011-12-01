@@ -29,7 +29,7 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
 	
-    [FlurryAPI logEvent:@"WPcomLogin"];
+    [FlurryAnalytics logEvent:@"WPcomLogin"];
 	self.footerText = @" ";
 	self.buttonText = NSLocalizedString(@"Sign In", @"");
 	WPcomXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";

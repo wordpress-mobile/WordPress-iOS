@@ -341,9 +341,8 @@ Creation/CXMLNode_CreationExtensions.m -text
 /EditPostViewController.xib -text
 /EditSiteViewController.xib -text
 /Entitlements.plist -text
-FlurryLib/FlurryAPI.h -text
-FlurryLib/FlurryAdDelegate.h -text
-FlurryLib/libFlurry.a -text svneol=unset#unset
+FlurryAnalytics/FlurryAnalytics.h -text
+FlurryAnalytics/libFlurryAnalytics.a -text
 /HelpViewController.xib -text
 /Icon-72.png -text
 /Icon-Small-50.png -text
@@ -537,6 +536,7 @@ he.lproj/Localizable.strings -text svneol=unset#unset
 hr.lproj/Localizable.strings -text svneol=unset#unset
 /i18n_download -text
 /iTunesArtwork -text
+id.lproj/Localizable.strings -text
 it.lproj/Localizable.strings -text
 /italic.png -text svneol=unset#unset
 /italic@2x.png -text svneol=unset#unset
@@ -673,6 +673,7 @@ sv.lproj/Localizable.strings -text svneol=unset#unset
 /toolbarUlHighlighted.png -text
 /toolbarUlHighlighted@2x.png -text
 /toolbarUliPad.png -text
+tr.lproj/Localizable.strings -text
 /uncheck.png -text
 /uncheck@2x.png -text
 /uncrustify.cfg -text

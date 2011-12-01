@@ -26,7 +26,7 @@
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [FlurryAPI logEvent:@"Blogs"];
+    [FlurryAnalytics logEvent:@"Blogs"];
 	
     self.title = NSLocalizedString(@"Blogs", @"RootViewController_Title");
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
@@ -378,7 +378,7 @@
 
 - (void)quickPhotoPost {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [FlurryAPI logEvent:@"QuickPhoto"];
+    [FlurryAnalytics logEvent:@"QuickPhoto"];
 
 	UIActionSheet *actionSheet;
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {

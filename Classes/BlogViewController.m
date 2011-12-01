@@ -22,7 +22,7 @@
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
-    [FlurryAPI logEvent:@"Blog"];
+    [FlurryAnalytics logEvent:@"Blog"];
 	
     if (blog != nil) {
         if ([blog valueForKey:@"blogName"] != nil)

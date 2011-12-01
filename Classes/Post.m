@@ -224,7 +224,7 @@
     if (![[self managedObjectContext] save:&error]) {
         // We better not crash on autosave
         WPFLog(@"[Autosave] Unresolved Core Data Save error %@, %@", error, [error userInfo]);
-        [FlurryAPI logError:@"Autosave" message:[error localizedDescription] error:error];
+        [FlurryAnalytics logError:@"Autosave" message:[error localizedDescription] error:error];
     }
 }
 

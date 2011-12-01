@@ -3,4 +3,6 @@ WordPress.xcodeproj/*.mode1v3
 WordPress.xcodeproj/*.mode2v3
 WordPress.xcodeproj/*.pbxuser
 WordPress.xcodeproj/*.perspectivev3
+WordPress.xcodeproj/project.xcworkspace
+WordPress.xcodeproj/xcuserdata
 /build
