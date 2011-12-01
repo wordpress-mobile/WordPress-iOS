@@ -19,7 +19,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @synthesize editingDisabled, editCustomFields, statuses, isLocalDraft;
 @synthesize textView, contentView, subView, textViewContentView, statusTextField, categoriesTextField, titleTextField;
 @synthesize tagsTextField, textViewPlaceHolderField, tagsLabel, statusLabel, categoriesLabel, titleLabel, customFieldsEditButton;
-@synthesize locationButton, locationSpinner, newCategoryBarButtonItem, hasLocation;
+@synthesize locationButton, locationSpinner, createCategoryBarButtonItem, hasLocation;
 @synthesize editMode, apost;
 @synthesize hasSaved, isVisible, isPublishing;
 @synthesize toolbar;
@@ -226,7 +226,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     self.statusLabel = nil;
     self.categoriesLabel = nil;
     self.titleLabel = nil;
-    self.newCategoryBarButtonItem = nil;
+    self.createCategoryBarButtonItem = nil;
     self.hasLocation = nil;
     self.photoButton = nil;
     self.movieButton = nil;
@@ -374,7 +374,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
 	if(DeviceIsPad()) {
 		return YES;
-	}else if ((toInterfaceOrientation == UIInterfaceOrientationPortrait)) { 
+	}else if (toInterfaceOrientation == UIInterfaceOrientationPortrait) { 
 		return YES; 
 	}
 	else if ((toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
@@ -497,7 +497,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 										 andDelegate:self];
 	
     segmentedTableViewController.title = NSLocalizedString(@"Categories", @"");
-    segmentedTableViewController.navigationItem.rightBarButtonItem = newCategoryBarButtonItem;
+    segmentedTableViewController.navigationItem.rightBarButtonItem = createCategoryBarButtonItem;
 	
     if (isNewCategory != YES) {
 		if (DeviceIsPad() == YES) {
@@ -795,9 +795,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
     for (i = 0; i < count; i++) {
         NSString *searchString = [stringArray objectAtIndex:i];
 		
-        if (searchRes = [urlText hasPrefix:[searchString capitalizedString]])
-            break;else if (searchRes = [urlText hasPrefix:[searchString lowercaseString]])
-				break;else if (searchRes = [urlText hasPrefix:[searchString uppercaseString]])
+        if ((searchRes = [urlText hasPrefix:[searchString capitalizedString]]))
+            break;else if ((searchRes = [urlText hasPrefix:[searchString lowercaseString]]))
+				break;else if ((searchRes = [urlText hasPrefix:[searchString uppercaseString]]))
 					break;
     }
 	
@@ -1384,7 +1384,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
 }
 
-/*
 #pragma mark -
 #pragma mark Location methods
 
@@ -1539,7 +1538,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[customFieldsEditButton release];
 	[locationButton release];
 	[locationSpinner release];
-	[newCategoryBarButtonItem release];
+	[createCategoryBarButtonItem release];
     [infoText release];
     [urlField release];
     [bookMarksArray release];

@@ -150,18 +150,10 @@
         [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
     }
 
-#if defined __IPHONE_3_0
     cell.textLabel.text = [objects objectAtIndex:indexPath.row];
-#else if defined __IPHONE_2_0
-    cell.text = [objects objectAtIndex:indexPath.row];
-#endif
 
     BOOL curStatus = [[selectionStatusOfObjects objectAtIndex:indexPath.row] boolValue];
-#if defined __IPHONE_3_0
     cell.textLabel.textColor = (curStatus == YES ? [UIColor blueColor] : [UIColor blackColor]);
-#else if defined __IPHONE_2_0
-    cell.textColor = (curStatus == YES ? [UIColor blueColor] : [UIColor blackColor]);
-#endif
     cell.accessoryType = (UITableViewCellAccessoryType)([[selectionStatusOfObjects objectAtIndex:indexPath.row] boolValue] == YES ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
 
     return cell;

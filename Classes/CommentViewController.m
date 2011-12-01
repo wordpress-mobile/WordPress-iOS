@@ -745,7 +745,7 @@
 }
 
 - (void)addOrRemoveSegmentedControl {
-	if (DeviceIsPad() && self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft || self.interfaceOrientation == UIInterfaceOrientationLandscapeRight){
+	if (DeviceIsPad() && (self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft || self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)){
 		self.navigationItem.rightBarButtonItem = nil;
 	}	
 	else
