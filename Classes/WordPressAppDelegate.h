@@ -23,7 +23,6 @@
     BOOL isUploadingPost;
 	BOOL isWPcomAuthenticated;
 
-    UIImageView *splashView;
 	NSMutableData *statsData;
 	NSString *postID;
     UITextField *passwordTextField;

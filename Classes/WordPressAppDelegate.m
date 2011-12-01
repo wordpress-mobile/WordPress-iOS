@@ -17,8 +17,6 @@
 
 - (void)reachabilityChanged;
 - (void)setAppBadge;
-- (void)startupAnimationDone:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context;
-- (void)showSplashView;
 - (void)checkIfStatsShouldRun;
 - (void)runStats;
 - (void)showPasswordAlert;
@@ -824,25 +822,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	[pool release];
 }
 
-- (void)showSplashView {
-    splashView = [[UIImageView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    splashView.image = [UIImage imageNamed:@"Default.png"];
-    [window addSubview:splashView];
-    [window bringSubviewToFront:splashView];
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.5];
-    [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:window cache:YES];
-    [UIView setAnimationDelegate:self];
-    [UIView setAnimationDidStopSelector:@selector(startupAnimationDone:finished:context:)];
-    splashView.alpha = 0.0;
-//    splashView.frame = CGRectInset(splashView.bounds, -60, -60);
-    [UIView commitAnimations];
-}
 
-- (void)startupAnimationDone:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
-    [splashView removeFromSuperview];
-    [splashView release];
-}
 
 - (void) checkIfStatsShouldRun {
     if (NO) { // Switch this to YES to debug stats/update check
