@@ -173,7 +173,7 @@
 	asyncImage.layer.masksToBounds = YES;
 	asyncImage.tag = 999;
     asyncImage.opaque = YES;
-	[asyncImage setImageWithBlavatarUrl:blog.hostURL isWPcom:blog.isWPcom];
+	[asyncImage setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
 	[cell.contentView addSubview:asyncImage];
 	
 #if defined __IPHONE_3_0
