@@ -164,39 +164,19 @@
     cell.indentationLevel = indentationLevel;
 
     if (indentationLevel == 0) {
-#if defined __IPHONE_3_0
         cell.imageView.image = nil;
-#else if defined __IPHONE_2_0
-        cell.image = nil;
-#endif
     } else {
-#if defined __IPHONE_3_0
         cell.imageView.image = [UIImage imageNamed:@"category_child.png"];
-#else if defined __IPHONE_2_0
-        cell.image = [UIImage imageNamed:@"category_child.png"];
-#endif
     }
 
-#if defined __IPHONE_3_0
     cell.textLabel.text = [[objects objectAtIndex:indexPath.row] valueForKey:@"categoryName"];
-#else if defined __IPHONE_2_0
-    cell.text = [[objects objectAtIndex:indexPath.row] valueForKey:@"categoryName"];
-#endif
 
     BOOL curStatus = [[selectionStatusOfObjects objectAtIndex:indexPath.row] boolValue];
 
     if (curStatus) {
-#if defined __IPHONE_3_0
         cell.textLabel.textColor = rowTextColor;
-#else if defined __IPHONE_2_0
-        cell.textColor = rowTextColor;
-#endif
     } else {
-#if defined __IPHONE_3_0
         cell.textLabel.textColor = [UIColor blackColor];
-#else if defined __IPHONE_2_0
-        cell.textColor = [UIColor blackColor];
-#endif
     }
 
     cell.accessoryType = [self accessoryTypeForRowWithIndexPath:indexPath ofTableView:tableView];
