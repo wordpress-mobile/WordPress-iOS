@@ -154,6 +154,8 @@ Classes/Category.h -text
 Classes/Category.m -text
 Classes/Comment.h -text
 Classes/Comment.m -text
+Classes/CommentModerationUtils.h -text
+Classes/CommentModerationUtils.m -text
 Classes/CommentTableViewCell.h -text
 Classes/CommentTableViewCell.m -text
 Classes/CommentViewController.h -text
@@ -387,12 +389,18 @@ Settings.bundle/en.lproj/Root.strings -text
 /ToolbarIconGear.png -text svneol=unset#unset
 /ToolbarIconLocation.png -text svneol=unset#unset
 /TouchXML.h -text
+/UIButtonBarTrash.png -text svneol=unset#unset
+/UIButtonBarTrash@2x.png -text svneol=unset#unset
 /UIImage+Alpha.h -text
 /UIImage+Alpha.m -text
 /UIImage+Resize.h -text
 /UIImage+Resize.m -text
 /UIImage+RoundedCorner.h -text
 /UIImage+RoundedCorner.m -text
+/UISegmentBarBlackButton.png -text svneol=unset#unset
+/UISegmentBarBlackButton@2x.png -text svneol=unset#unset
+/UISegmentBarBlackButtonHighlighted.png -text svneol=unset#unset
+/UISegmentBarBlackButtonHighlighted@2x.png -text svneol=unset#unset
 /UITableViewActivityCell.xib -text
 /UITableViewSwitchCell.xib -text
 /WPAFNetworking.h -text
@@ -518,6 +526,8 @@ de.lproj/Localizable.strings -text svneol=unset#unset
 /doneButtonLandscape@2x.png -text
 /doneButtonLandscapeHighlighted.png -text
 /doneButtonLandscapeHighlighted@2x.png -text
+/dotted-pattern.png -text svneol=unset#unset
+/dotted-pattern@2x.png -text svneol=unset#unset
 /down.png -text
 /down@2x.png -text
 /downArrow.png -text svneol=unset#unset
@@ -537,6 +547,7 @@ hr.lproj/Localizable.strings -text svneol=unset#unset
 /i18n_download -text
 /iTunesArtwork -text
 id.lproj/Localizable.strings -text
+/inner-shadow.png -text svneol=unset#unset
 it.lproj/Localizable.strings -text
 /italic.png -text svneol=unset#unset
 /italic@2x.png -text svneol=unset#unset

@@ -39,6 +39,9 @@
 - (NSMutableArray *)commentsOnHold;
 - (NSDate *)lastSyncDate;
 - (BOOL)isSyncing;
+- (void) setupGestureRecognizers;
+- (void) setupModerationSwipeView;
+- (void) removeModerationSwipeView:(BOOL)animated;
 @end
 
 @implementation CommentsViewController
@@ -49,9 +52,17 @@
 @synthesize isSecondaryViewController;
 @synthesize blog;
 @synthesize resultsController;
+@synthesize moderationSwipeView, moderationSwipeCell, moderationSwipeDirection;
 
 #pragma mark -
 #pragma mark Memory Management
+
+- (void)viewDidUnload
+{
+  [super viewDidUnload];
+  
+  self.moderationSwipeView = nil;
+}
 
 - (void)dealloc {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
@@ -66,6 +77,8 @@
 	[lastUserSelectedCommentID release], lastUserSelectedCommentID = nil;
 	[commentViewController release], commentViewController = nil;
 	[_refreshHeaderView release]; _refreshHeaderView = nil;
+  [moderationSwipeView release];
+  [moderationSwipeCell release];
     [super dealloc];
 }
 
@@ -124,6 +137,9 @@
 	
 	//  update the last update date
 	[_refreshHeaderView refreshLastUpdatedDate];
+	
+  [self setupModerationSwipeView];
+  [self setupGestureRecognizers];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -243,6 +259,8 @@
 }
 
 - (void)editComments {
+  [self removeModerationSwipeView:NO];
+  
 	if ([UIApplication sharedApplication].networkActivityIndicatorVisible) {
 		UIAlertView *currentlyUpdatingAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Currently Syncing", @"") message:NSLocalizedString(@"The edit feature is disabled while syncing. Please try again in a few seconds.", @"") delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
 		[currentlyUpdatingAlert show];
@@ -337,6 +355,8 @@
 }
 
 - (IBAction)deleteSelectedComments:(id)sender {
+    [self removeModerationSwipeView:NO];
+
     progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Deleting...", @"")];
     [progressAlert show];
 
@@ -344,6 +364,8 @@
 }
 
 - (IBAction)approveSelectedComments:(id)sender {
+    [self removeModerationSwipeView:NO];
+
     progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Moderating...", @"")];
     [progressAlert show];
 
@@ -351,6 +373,8 @@
 }
 
 - (IBAction)unapproveSelectedComments:(id)sender {
+    [self removeModerationSwipeView:NO];
+
     progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Moderating...", @"")];
     [progressAlert show];
 
@@ -358,6 +382,8 @@
 }
 
 - (IBAction)spamSelectedComments:(id)sender {
+    [self removeModerationSwipeView:NO];
+
     progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Moderating...", @"")];
     [progressAlert show];
 
@@ -549,6 +575,189 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return kSectionHeaderHight;
+}
+
+- (void) setupModerationSwipeView
+{
+  for (UIView* subview in moderationSwipeView.subviews)
+  {
+    if ([subview isKindOfClass:[UIButton class]])
+    {
+      UIImage* buttonImage = [[UIImage imageNamed:@"UISegmentBarBlackButton.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0];
+      UIImage* buttonPressedImage = [[UIImage imageNamed:@"UISegmentBarBlackButtonHighlighted.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0];
+
+      UIButton* button = (UIButton*)subview;
+      [button setBackgroundImage:buttonImage forState:UIControlStateNormal];
+      [button setBackgroundImage:buttonPressedImage forState:UIControlStateHighlighted];
+    }
+  }
+
+  self.moderationSwipeView.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed:@"dotted-pattern.png"]];
+
+  UIImage* shadow = [[UIImage imageNamed:@"inner-shadow.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
+  UIImageView* shadowImageView = [[[UIImageView alloc] initWithFrame:moderationSwipeView.frame] autorelease];
+  shadowImageView.alpha = 0.6;
+  shadowImageView.image = shadow;
+
+  [self.moderationSwipeView insertSubview:shadowImageView atIndex:0];
+  
+}
+
+#pragma mark Gesture recognizers
+
+- (void) setupGestureRecognizers
+{
+  UISwipeGestureRecognizer* rightSwipeGestureRecognizer = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeRight:)] autorelease];
+  rightSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+  
+  // Apple's docs: Although this class was publicly available starting with iOS 3.2, it was in development a short period prior to that
+  // check if it responds to the selector locationInView:. This method was not added to the class until iOS 3.2.
+  if (![rightSwipeGestureRecognizer respondsToSelector:@selector(locationInView:)]) 
+    return;
+  
+  [commentsTableView addGestureRecognizer:rightSwipeGestureRecognizer];
+
+  UISwipeGestureRecognizer* leftSwipeGestureRecognizer = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeft:)] autorelease];
+  leftSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+  [commentsTableView addGestureRecognizer:leftSwipeGestureRecognizer];
+}
+
+- (void)swipe:(UISwipeGestureRecognizer *)recognizer direction:(UISwipeGestureRecognizerDirection)direction
+{
+  if (recognizer && recognizer.state == UIGestureRecognizerStateEnded)
+  {
+    if (animatingRemovalOfModerationSwipeView) return;
+    
+    CGPoint location = [recognizer locationInView:commentsTableView];
+    NSIndexPath* indexPath = [commentsTableView indexPathForRowAtPoint:location];
+    CommentTableViewCell* cell = (CommentTableViewCell *)[commentsTableView cellForRowAtIndexPath:indexPath];
+  
+    if (cell.frame.origin.x != 0)
+    {
+      [self removeModerationSwipeView:YES];
+      return;
+    }
+    [self removeModerationSwipeView:NO];
+  
+    if (cell!= moderationSwipeCell)
+    {
+      [commentsTableView addSubview:moderationSwipeView];
+      self.moderationSwipeCell = cell;
+      
+      [selectedComments removeAllObjects];
+      [selectedComments addObject:cell.comment];
+      
+      CGRect cellFrame = cell.frame;
+      moderationSwipeDirection = direction;
+      moderationSwipeView.frame = CGRectMake(direction == UISwipeGestureRecognizerDirectionRight ? -cellFrame.size.width : cellFrame.size.width, cellFrame.origin.y, cellFrame.size.width, cellFrame.size.height);
+
+      [UIView beginAnimations:nil context:nil];
+      [UIView setAnimationDuration:0.4];
+      moderationSwipeView.frame = CGRectMake(0, cellFrame.origin.y, cellFrame.size.width, cellFrame.size.height);
+      cell.frame = CGRectMake(direction == UISwipeGestureRecognizerDirectionRight ? cellFrame.size.width : -cellFrame.size.width, cellFrame.origin.y, cellFrame.size.width, cellFrame.size.height);
+      [UIView commitAnimations];
+    }
+  }
+}
+
+- (void)swipeLeft:(UISwipeGestureRecognizer *)recognizer
+{
+  [self swipe:recognizer direction:UISwipeGestureRecognizerDirectionLeft];
+}
+
+- (void)swipeRight:(UISwipeGestureRecognizer *)recognizer
+{
+  [self swipe:recognizer direction:UISwipeGestureRecognizerDirectionRight];
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+  [self removeModerationSwipeView:YES];
+}
+
+- (void) removeModerationSwipeView:(BOOL)animated
+{
+  if (!moderationSwipeCell || (moderationSwipeCell.frame.origin.x == 0 && moderationSwipeView.superview == nil)) return;
+  
+  if (animated)
+  {
+    animatingRemovalOfModerationSwipeView = YES;
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.4];
+    if (moderationSwipeDirection == UISwipeGestureRecognizerDirectionRight)
+    {
+      moderationSwipeView.frame = CGRectMake(-moderationSwipeView.frame.size.width + 5.0,moderationSwipeView.frame.origin.y,moderationSwipeView.frame.size.width, moderationSwipeView.frame.size.height);
+      moderationSwipeCell.frame = CGRectMake(5.0, moderationSwipeCell.frame.origin.y, moderationSwipeCell.frame.size.width, moderationSwipeCell.frame.size.height);
+    }
+    else
+    {
+      moderationSwipeView.frame = CGRectMake(moderationSwipeView.frame.size.width - 5.0,moderationSwipeView.frame.origin.y,moderationSwipeView.frame.size.width, moderationSwipeView.frame.size.height);
+      moderationSwipeCell.frame = CGRectMake(-5.0, moderationSwipeCell.frame.origin.y, moderationSwipeCell.frame.size.width, moderationSwipeCell.frame.size.height);
+    }
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationDidStopSelector:@selector(animationDidStopOne:finished:context:)];
+    [UIView commitAnimations];
+  }
+  else
+  {
+    [moderationSwipeView removeFromSuperview];
+    moderationSwipeCell.frame = CGRectMake(0,moderationSwipeCell.frame.origin.y,moderationSwipeCell.frame.size.width, moderationSwipeCell.frame.size.height);
+    self.moderationSwipeCell = nil;
+  }
+}
+
+- (NSIndexPath *)tableView:(UITableView *)theTableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  [self removeModerationSwipeView:YES];
+  return indexPath;
+}
+
+- (void)animationDidStopOne:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
+{
+  [UIView beginAnimations:nil context:nil];
+  [UIView setAnimationDuration:0.2];
+  if (moderationSwipeDirection == UISwipeGestureRecognizerDirectionRight)
+  {
+    moderationSwipeView.frame = CGRectMake(-moderationSwipeView.frame.size.width + 10.0,moderationSwipeView.frame.origin.y,moderationSwipeView.frame.size.width, moderationSwipeView.frame.size.height);
+    moderationSwipeCell.frame = CGRectMake(10.0, moderationSwipeCell.frame.origin.y, moderationSwipeCell.frame.size.width, moderationSwipeCell.frame.size.height);
+  }
+  else
+  {
+    moderationSwipeView.frame = CGRectMake(moderationSwipeView.frame.size.width - 10.0,moderationSwipeView.frame.origin.y,moderationSwipeView.frame.size.width, moderationSwipeView.frame.size.height);
+    moderationSwipeCell.frame = CGRectMake(-10.0, moderationSwipeCell.frame.origin.y, moderationSwipeCell.frame.size.width, moderationSwipeCell.frame.size.height);
+  }
+  [UIView setAnimationDelegate:self];
+  [UIView setAnimationDidStopSelector:@selector(animationDidStopTwo:finished:context:)];
+  [UIView setAnimationCurve:UIViewAnimationCurveLinear];
+  [UIView commitAnimations];
+}
+
+- (void)animationDidStopTwo:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
+{
+  [UIView commitAnimations];
+  [UIView beginAnimations:nil context:nil];
+  [UIView setAnimationDuration:0.2];
+  if (moderationSwipeDirection == UISwipeGestureRecognizerDirectionRight)
+  {
+    moderationSwipeView.frame = CGRectMake(-moderationSwipeView.frame.size.width ,moderationSwipeView.frame.origin.y,moderationSwipeView.frame.size.width, moderationSwipeView.frame.size.height);
+    moderationSwipeCell.frame = CGRectMake(0, moderationSwipeCell.frame.origin.y, moderationSwipeCell.frame.size.width, moderationSwipeCell.frame.size.height);
+  }
+  else
+  {
+    moderationSwipeView.frame = CGRectMake(moderationSwipeView.frame.size.width ,moderationSwipeView.frame.origin.y,moderationSwipeView.frame.size.width, moderationSwipeView.frame.size.height);
+    moderationSwipeCell.frame = CGRectMake(0, moderationSwipeCell.frame.origin.y, moderationSwipeCell.frame.size.width, moderationSwipeCell.frame.size.height);
+  }
+  [UIView setAnimationDelegate:self];
+  [UIView setAnimationDidStopSelector:@selector(animationDidStopThree:finished:context:)];
+  [UIView setAnimationCurve:UIViewAnimationCurveLinear];
+  [UIView commitAnimations];
+}
+
+- (void)animationDidStopThree:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
+{
+  animatingRemovalOfModerationSwipeView = NO;
+  self.moderationSwipeCell = nil;
+  [moderationSwipeView removeFromSuperview];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

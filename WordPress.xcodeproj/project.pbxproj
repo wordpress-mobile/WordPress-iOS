@@ -200,6 +200,15 @@
 		6EF6707811BE426D0069703D /* write@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EF6707711BE426D0069703D /* write@2x.png */; };
 		7059CD210F332B6500A0660B /* WPCategoryTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 7059CD200F332B6500A0660B /* WPCategoryTree.m */; };
 		706D25F50F347F1200491666 /* category_child.png in Resources */ = {isa = PBXBuildFile; fileRef = 706D25F40F347F1200491666 /* category_child.png */; };
+		7F3E102513497EB2008CF73D /* dotted-pattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F3E102213497EB2008CF73D /* dotted-pattern.png */; };
+		7F3E102613497EB2008CF73D /* dotted-pattern@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F3E102313497EB2008CF73D /* dotted-pattern@2x.png */; };
+		7F3E102713497EB2008CF73D /* inner-shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F3E102413497EB2008CF73D /* inner-shadow.png */; };
+		7F3E104B13497FE8008CF73D /* UIButtonBarTrash.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F3E104913497FE8008CF73D /* UIButtonBarTrash.png */; };
+		7F3E104C13497FE8008CF73D /* UIButtonBarTrash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F3E104A13497FE8008CF73D /* UIButtonBarTrash@2x.png */; };
+		7F3E105313498200008CF73D /* UISegmentBarBlackButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F3E104F13498200008CF73D /* UISegmentBarBlackButton.png */; };
+		7F3E105413498200008CF73D /* UISegmentBarBlackButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F3E105013498200008CF73D /* UISegmentBarBlackButton@2x.png */; };
+		7F3E105513498200008CF73D /* UISegmentBarBlackButtonHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F3E105113498200008CF73D /* UISegmentBarBlackButtonHighlighted.png */; };
+		7F3E105613498200008CF73D /* UISegmentBarBlackButtonHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F3E105213498200008CF73D /* UISegmentBarBlackButtonHighlighted@2x.png */; };
 		83043E55126FA31400EC9953 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83043E54126FA31400EC9953 /* MessageUI.framework */; };
 		8320B5D611FCA41200607422 /* UITableViewSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8320B5D511FCA41200607422 /* UITableViewSwitchCell.m */; };
 		8320B5D911FCA50400607422 /* UITableViewSwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8320B5D811FCA50400607422 /* UITableViewSwitchCell.xib */; };
@@ -699,6 +708,15 @@
 		7059CD1F0F332B6500A0660B /* WPCategoryTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPCategoryTree.h; sourceTree = "<group>"; };
 		7059CD200F332B6500A0660B /* WPCategoryTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPCategoryTree.m; sourceTree = "<group>"; };
 		706D25F40F347F1200491666 /* category_child.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = category_child.png; sourceTree = "<group>"; };
+		7F3E102213497EB2008CF73D /* dotted-pattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dotted-pattern.png"; sourceTree = "<group>"; };
+		7F3E102313497EB2008CF73D /* dotted-pattern@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dotted-pattern@2x.png"; sourceTree = "<group>"; };
+		7F3E102413497EB2008CF73D /* inner-shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "inner-shadow.png"; sourceTree = "<group>"; };
+		7F3E104913497FE8008CF73D /* UIButtonBarTrash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIButtonBarTrash.png; sourceTree = "<group>"; };
+		7F3E104A13497FE8008CF73D /* UIButtonBarTrash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIButtonBarTrash@2x.png"; sourceTree = "<group>"; };
+		7F3E104F13498200008CF73D /* UISegmentBarBlackButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UISegmentBarBlackButton.png; sourceTree = "<group>"; };
+		7F3E105013498200008CF73D /* UISegmentBarBlackButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UISegmentBarBlackButton@2x.png"; sourceTree = "<group>"; };
+		7F3E105113498200008CF73D /* UISegmentBarBlackButtonHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UISegmentBarBlackButtonHighlighted.png; sourceTree = "<group>"; };
+		7F3E105213498200008CF73D /* UISegmentBarBlackButtonHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UISegmentBarBlackButtonHighlighted@2x.png"; sourceTree = "<group>"; };
 		83043E54126FA31400EC9953 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		8320B5D411FCA41200607422 /* UITableViewSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableViewSwitchCell.h; sourceTree = "<group>"; };
 		8320B5D511FCA41200607422 /* UITableViewSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableViewSwitchCell.m; sourceTree = "<group>"; };
@@ -1834,6 +1852,15 @@
 				CE1E3BC61005B3D500A7BD08 /* WPpregressHUDBackground.png */,
 				6E81AC2411BF34810072965C /* WPpregressHUDBackground@2x.png */,
 				30FE87981367328B00808634 /* quickPhotoButtonBackground.png */,
+				7F3E102213497EB2008CF73D /* dotted-pattern.png */,
+				7F3E102313497EB2008CF73D /* dotted-pattern@2x.png */,
+				7F3E102413497EB2008CF73D /* inner-shadow.png */,
+				7F3E104913497FE8008CF73D /* UIButtonBarTrash.png */,
+				7F3E104A13497FE8008CF73D /* UIButtonBarTrash@2x.png */,
+				7F3E104F13498200008CF73D /* UISegmentBarBlackButton.png */,
+				7F3E105013498200008CF73D /* UISegmentBarBlackButton@2x.png */,
+				7F3E105113498200008CF73D /* UISegmentBarBlackButtonHighlighted.png */,
+				7F3E105213498200008CF73D /* UISegmentBarBlackButtonHighlighted@2x.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -2525,6 +2552,15 @@
 				30410686144E17AE00E98F07 /* next@2x.png in Resources */,
 				30410687144E17AE00E98F07 /* previous.png in Resources */,
 				30410688144E17AE00E98F07 /* previous@2x.png in Resources */,
+				7F3E102513497EB2008CF73D /* dotted-pattern.png in Resources */,
+				7F3E102613497EB2008CF73D /* dotted-pattern@2x.png in Resources */,
+				7F3E102713497EB2008CF73D /* inner-shadow.png in Resources */,
+				7F3E104B13497FE8008CF73D /* UIButtonBarTrash.png in Resources */,
+				7F3E104C13497FE8008CF73D /* UIButtonBarTrash@2x.png in Resources */,
+				7F3E105313498200008CF73D /* UISegmentBarBlackButton.png in Resources */,
+				7F3E105413498200008CF73D /* UISegmentBarBlackButton@2x.png in Resources */,
+				7F3E105513498200008CF73D /* UISegmentBarBlackButtonHighlighted.png in Resources */,
+				7F3E105613498200008CF73D /* UISegmentBarBlackButtonHighlighted@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
