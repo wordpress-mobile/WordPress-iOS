@@ -6,6 +6,7 @@
 //  Code is poetry.
 
 #import "WPMediaUploader.h"
+#import "WPDataController.h"
 
 @interface WPMediaUploader (Private)
 - (void) displayResponseErrors;
@@ -198,9 +199,8 @@
 	NSString *contentType = @"image/jpeg";
 	if([self.media.mediaType isEqualToString:@"video"])
 		contentType = @"video/mp4";
-    NSError *error = nil;
 	NSString *username = self.media.blog.username;
-	NSString *password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:self.media.blog.hostURL error:&error];
+	NSString *password = [[WPDataController sharedInstance] passwordForBlog:self.media.blog];
 	
 	request = [ASIFormDataRequest requestWithURL:atomURL];
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];        
@@ -257,9 +257,8 @@
 
 - (NSString *)xmlrpcPrefix {
 	NSNumber *blogID = self.media.blog.blogID;
-    NSError *error = nil;
 	NSString *username = self.media.blog.username;
-	NSString *password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:self.media.blog.hostURL error:&error];
+	NSString *password = [[WPDataController sharedInstance] passwordForBlog:self.media.blog];
 	username = [NSString encodeXMLCharactersIn:username];
 	password = [NSString encodeXMLCharactersIn:password];
 	

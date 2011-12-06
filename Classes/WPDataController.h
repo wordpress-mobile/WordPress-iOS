@@ -30,6 +30,7 @@ typedef enum {
 @property (nonatomic, retain) NSError *error;
 
 + (WPDataController *)sharedInstance;
+- (NSString *)passwordForBlog:(Blog *)blog;
 
 #pragma mark -
 #pragma mark User
