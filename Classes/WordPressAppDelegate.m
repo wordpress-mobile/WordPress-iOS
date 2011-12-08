@@ -106,9 +106,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
 #ifndef DEBUG
 //#warning Need Flurry api key for distribution
 #endif
-    [FlurryAnalytics startSession:@"NPFZWR9J1MI9QU1ICU9H"]; // FIXME: set up real api key for distribution
+//    [FlurryAnalytics startSession:@"NPFZWR9J1MI9QU1ICU9H"]; // FIXME: set up real api key for distribution
 	[FlurryAnalytics setSessionReportsOnPauseEnabled:YES];
-
 	
 	if(getenv("NSZombieEnabled"))
 		NSLog(@"NSZombieEnabled!");
