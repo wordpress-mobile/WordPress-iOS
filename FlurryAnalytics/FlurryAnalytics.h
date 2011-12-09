@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+#ifndef __FAKE_FLURRY
+#define __FAKE_FLURRY
+NSObject *FlurryAnalytics;
+#endif
+
+#if FALSE
+
 /*!
  * \brief Provides all available methods for defining and reporting Analytics from use
  * of your app.
@@ -88,3 +95,4 @@
 + (void)setEventLoggingEnabled:(BOOL)value;		// default is YES
 
 @end
+#endif
