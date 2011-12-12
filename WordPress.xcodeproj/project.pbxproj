@@ -910,8 +910,6 @@
 		E11C91D7135771520072A811 /* paperclip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paperclip@2x.png"; sourceTree = "<group>"; };
 		E1225A4C147E6D2400B4F3A0 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E1225A4D147E6D2C00B4F3A0 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1225A54147E7FFA00B4F3A0 /* FlurryAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryAnalytics.h; sourceTree = "<group>"; };
-		E1225A55147E7FFA00B4F3A0 /* libFlurryAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurryAnalytics.a; sourceTree = "<group>"; };
 		E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 2.xcdatamodel"; sourceTree = "<group>"; };
 		E125445412BF5B3900D87A0A /* Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Category.h; sourceTree = "<group>"; };
 		E125445512BF5B3900D87A0A /* Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Category.m; sourceTree = "<group>"; };
@@ -1205,7 +1203,6 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				E1225A53147E7FFA00B4F3A0 /* FlurryAnalytics */,
 				8388FA801269580400304909 /* TouchXML */,
 				834CE85F1256E7EE0046A4A3 /* ASIHTTPRequest */,
 				834CAEA2122D56B7003DDF49 /* UIImage */,
@@ -1990,15 +1987,6 @@
 			name = "Rich Text Editor";
 			sourceTree = "<group>";
 		};
-		E1225A53147E7FFA00B4F3A0 /* FlurryAnalytics */ = {
-			isa = PBXGroup;
-			children = (
-				E1225A54147E7FFA00B4F3A0 /* FlurryAnalytics.h */,
-				E1225A55147E7FFA00B4F3A0 /* libFlurryAnalytics.a */,
-			);
-			path = FlurryAnalytics;
-			sourceTree = "<group>";
-		};
 		E159D1011309AAF200F498E2 /* Migrations */ = {
 			isa = PBXGroup;
 			children = (
@@ -2701,10 +2689,7 @@
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = "Info-dev.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/FlurryAnalytics\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_CFLAGS = (
 					"-Wno-format-security",
 					"-DDEBUG",
@@ -2734,10 +2719,7 @@
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/FlurryAnalytics\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_CFLAGS = (
 					"-Wno-format-security",
 					"-Wno-format",
@@ -2791,10 +2773,7 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/FlurryAnalytics\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_CFLAGS = (
 					"-Wno-format",
 					"-Wno-format-security",
@@ -2854,10 +2833,7 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "Info-beta.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/FlurryAnalytics\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = WordPress;
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;

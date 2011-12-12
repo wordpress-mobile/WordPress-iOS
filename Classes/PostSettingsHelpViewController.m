@@ -18,7 +18,6 @@
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
-    [FlurryAnalytics logEvent:@"PostSettingsHelp"];
 
 	helpContent = [[NSMutableDictionary alloc] init];
 	

@@ -239,7 +239,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
-    [FlurryAnalytics logEvent:@"EditPost"];
 
     titleLabel.text = NSLocalizedString(@"Title:", @"");
     tagsLabel.text = NSLocalizedString(@"Tags:", @"");
@@ -406,7 +405,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
     
-	[FlurryAnalytics logEvent:@"EditPost#dismissEditView"];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"PostEditorDismissed" object:self];
 }
 
@@ -630,8 +628,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)discard {
-    [FlurryAnalytics logEvent:@"Post#actionSheet_discard"];
-    
     [self.apost.original deleteRevision];
 
 	//remove the original post in case of local draft unsaved
@@ -716,7 +712,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (IBAction)cancelView:(id)sender {
-    [FlurryAnalytics logEvent:@"EditPost#cancelView"];
     [textView resignFirstResponder];
     [titleTextField resignFirstResponder];
     [tagsTextField resignFirstResponder];
@@ -725,7 +720,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
         [self discard];
         return;
     }
-    [FlurryAnalytics logEvent:@"EditPost#cancelView(actionSheet)"];
 	[postSettingsController endEditingAction:nil];
 	[self endEditingAction:nil];
     

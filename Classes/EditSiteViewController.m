@@ -23,8 +23,6 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
     if (blog) {
-        [FlurryAnalytics logEvent:@"EditSite"];
-
         if([blog isWPcom] == YES) {
             self.navigationItem.title = NSLocalizedString(@"Edit Blog", @"");
         }
