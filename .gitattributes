@@ -343,8 +343,6 @@ Creation/CXMLNode_CreationExtensions.m -text
 /EditPostViewController.xib -text
 /EditSiteViewController.xib -text
 /Entitlements.plist -text
-FlurryAnalytics/FlurryAnalytics.h -text
-FlurryAnalytics/libFlurryAnalytics.a -text
 /HelpViewController.xib -text
 /Icon-72.png -text
 /Icon-Small-50.png -text
