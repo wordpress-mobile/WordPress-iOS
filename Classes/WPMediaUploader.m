@@ -343,7 +343,7 @@
 			NSString *serializedString =  [[[NSString alloc] initWithData:serializedChunk encoding:NSUTF8StringEncoding] autorelease];
 			NSRange r = [serializedString rangeOfString:@"<data>"];
 			serializedString = [serializedString substringFromIndex:r.location+7];
-			r = [serializedString rangeOfString:@"</data>"];
+			r = [serializedString rangeOfString:@"</data>" options:NSBackwardsSearch];
 			serializedString = [serializedString substringToIndex:r.location-1];
 			
 			// Write the base64 encoded chunk to our output file
