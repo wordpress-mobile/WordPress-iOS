@@ -27,11 +27,13 @@
 @property (nonatomic, retain) NSDate *lastCommentsSync;
 @property (nonatomic, retain) NSDate *lastStatsSync;
 @property (nonatomic, assign) BOOL geolocationEnabled;
+@property (nonatomic, retain) NSDictionary *options; //we can store an NSArray or an NSDictionary as a transformable attribute... 
 
 - (BOOL)isWPcom;
 - (void)dataSave;
 - (NSString *)blavatarUrl;
--(NSArray *)sortedCategories;
+- (NSArray *)sortedCategories;
+- (NSString *)getOption:(NSString *) name;
 
 #pragma mark -
 #pragma mark Synchronization
@@ -39,6 +41,7 @@
 - (BOOL)syncPostsWithError:(NSError **)error loadMore:(BOOL)more;
 - (BOOL)syncPagesWithError:(NSError **)error loadMore:(BOOL)more;
 - (BOOL)syncCategoriesWithError:(NSError **)error;
+- (BOOL)syncOptionsWithError:(NSError **)error;
 - (BOOL)syncCommentsWithError:(NSError **)error;
 - (BOOL)syncPostFormatsWithError:(NSError **)error; 
 - (NSString *) returnMD5Hash:(NSString*)concat;

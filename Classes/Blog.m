@@ -15,7 +15,7 @@
 @dynamic isAdmin, hasOlderPosts, hasOlderPages;
 @dynamic posts, categories, comments; 
 @dynamic lastPostsSync, lastStatsSync, lastPagesSync, lastCommentsSync;
-@synthesize isSyncingPosts, isSyncingPages, isSyncingComments;
+@synthesize isSyncingPosts, isSyncingPages, isSyncingComments, options;
 @dynamic geolocationEnabled;
 
 - (BOOL)geolocationEnabled 
@@ -107,6 +107,7 @@
 
     return _blavatarUrl;
 }
+
 
 - (NSString *)hostURL {
     NSString *result = [NSString stringWithFormat:@"%@",
@@ -418,6 +419,30 @@
 	return YES;
 }
 
+- (BOOL)syncOptionsWithError:(NSError **)error {
+    WPLog(@"Yeahhh! syncOptionsWithError called!");
+    WPDataController *dc = [[WPDataController alloc] init];
+	NSMutableDictionary *retrievedOptions = [dc getOptionsForBlog:self];
+	if(dc.error) {
+		if (error != nil) 
+			*error = dc.error;
+        WPLog(@"Error syncing options: %@", [dc.error localizedDescription]);
+		[dc release];
+		return NO;
+	}
+    //[self performSelectorOnMainThread:@selector(syncCategoriesFromResults:) withObject:categories waitUntilDone:YES];
+    self.options = retrievedOptions;
+    [dc release];
+    
+    return YES;
+}
+
+- (NSString *)getOption:(NSString *) name {
+/*	if ( self.options == nil || (self.options.count == 0) ) {
+        return nil;
+    }*/
+    return [self.options objectForKey:name];
+}
 
 - (BOOL)syncCommentsFromResults:(NSMutableArray *)comments {
     if ([self isDeleted])

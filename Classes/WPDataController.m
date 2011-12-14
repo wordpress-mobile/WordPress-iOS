@@ -318,6 +318,23 @@
     return [NSMutableArray arrayWithArray:categories];
 }
 
+- (NSMutableDictionary *)getOptionsForBlog:(Blog *)blog {
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:blog.xmlrpc]];
+	[xmlrpcRequest setMethod:@"wp.getOptions" withObjects:[self getXMLRPCArgsForBlog:blog withExtraArgs:nil]];
+	
+    retryOnTimeout = YES;
+    NSDictionary *options = [self executeXMLRPCRequest:xmlrpcRequest];
+    [xmlrpcRequest release];
+    
+    if ([options isKindOfClass:[NSError class]]) {
+        NSLog(@"Couldn't get options: %@", [(NSError *)options localizedDescription]);
+        return [NSMutableDictionary dictionary];
+    }
+    
+    return [NSMutableDictionary dictionaryWithDictionary:options];
+}
+
+
 - (NSMutableDictionary *)wpGetPostFormats:(Blog *)blog showSupported:(BOOL)showSupported {
     XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:blog.xmlrpc]];
     NSArray *extraArgs = nil;

@@ -313,6 +313,8 @@
 	} 
 	
 	[self performSelectorOnMainThread:@selector(refreshPostList) withObject:nil waitUntilDone:NO];
+          
+    [self.blog syncOptionsWithError:&error];
     [pool release];
 }
 

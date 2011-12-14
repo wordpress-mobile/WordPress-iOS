@@ -561,31 +561,59 @@
 	[orientationActionSheet release];
 }
 
+
+- (NSDictionary *) getImageResizeDimensions {
+    
+    CGSize smallSize, mediumSize, largeSize;
+    UIImageOrientation orientation = currentImage.imageOrientation; 
+    
+    Blog *currentBlog = self.currentUpload.blog;
+    int thumbnail_size_w =  [currentBlog getOption:@"thumbnail_size_w"] != nil ? [[currentBlog getOption:@"thumbnail_size_w"] intValue] : image_small_size_w;
+    int thumbnail_size_h =  [currentBlog getOption:@"thumbnail_size_h"] != nil ? [[currentBlog getOption:@"thumbnail_size_h"] intValue] : image_small_size_h;
+    int medium_size_w =     [currentBlog getOption:@"medium_size_w"] != nil ? [[currentBlog getOption:@"medium_size_w"] intValue] : image_medium_size_w;
+    int medium_size_h =     [currentBlog getOption:@"medium_size_h"] != nil ? [[currentBlog getOption:@"medium_size_h"] intValue] : image_medium_size_h;
+    int large_size_w =      [currentBlog getOption:@"large_size_w"] != nil ? [[currentBlog getOption:@"large_size_w"] intValue] : image_large_size_w;
+    int large_size_h =      [currentBlog getOption:@"large_size_h"] != nil ? [[currentBlog getOption:@"large_size_h"] intValue] : image_large_size_h;
+    
+    switch (orientation) { 
+        case UIImageOrientationUp: 
+        case UIImageOrientationUpMirrored:
+        case UIImageOrientationDown: 
+        case UIImageOrientationDownMirrored:
+            smallSize = CGSizeMake(thumbnail_size_w, thumbnail_size_h);
+            mediumSize = CGSizeMake(medium_size_w, medium_size_h);
+            largeSize = CGSizeMake(large_size_w, large_size_h);
+            break;
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            smallSize = CGSizeMake(thumbnail_size_h, thumbnail_size_w);
+            mediumSize = CGSizeMake(medium_size_h, medium_size_w);
+            largeSize = CGSizeMake(large_size_h, large_size_w);
+    }
+    return [NSDictionary dictionaryWithObjectsAndKeys: [NSValue valueWithCGSize:smallSize], @"smallSize", 
+                                                       [NSValue valueWithCGSize:mediumSize], @"mediumSize", 
+                                                       [NSValue valueWithCGSize:largeSize], @"largeSize", 
+            nil];
+
+}
+
 - (void)showResizeActionSheet {
 	if(self.isShowingResizeActionSheet == NO) {
 		isShowingResizeActionSheet = YES;
 		
-		//the same code used on resize
-		CGSize smallSize, mediumSize, largeSize;
-		UIImageOrientation orientation = currentImage.imageOrientation; 
-		switch (orientation) { 
-			case UIImageOrientationUp: 
-			case UIImageOrientationUpMirrored:
-			case UIImageOrientationDown: 
-			case UIImageOrientationDownMirrored:
-				smallSize = CGSizeMake(240, 180);
-				mediumSize = CGSizeMake(480, 360);
-				largeSize = CGSizeMake(640, 480);
-				break;
-			case UIImageOrientationLeft:
-			case UIImageOrientationLeftMirrored:
-			case UIImageOrientationRight:
-			case UIImageOrientationRightMirrored:
-				smallSize = CGSizeMake(180, 240);
-				mediumSize = CGSizeMake(360, 480);
-				largeSize = CGSizeMake(480, 640);
-		}
-		
+		NSDictionary* predefDim = [self getImageResizeDimensions];
+        CGSize smallSize =  [[predefDim objectForKey: @"smallSize"] CGSizeValue];
+        CGSize mediumSize = [[predefDim objectForKey: @"mediumSize"] CGSizeValue];
+        CGSize largeSize =  [[predefDim objectForKey: @"largeSize"] CGSizeValue];
+        CGSize originalSize = CGSizeMake(currentImage.size.width, currentImage.size.height); //The dimensions of the image, taking orientation into account.
+        
+		NSString *resizeSmallStr = [NSString stringWithFormat:NSLocalizedString(@"Small %ix%i", @""), (int)smallSize.width, (int)smallSize.height];
+   		NSString *resizeMediumStr = [NSString stringWithFormat:NSLocalizedString(@"Medium %ix%i", @""), (int)mediumSize.width, (int)mediumSize.height];
+        NSString *resizeLargeStr = [NSString stringWithFormat:NSLocalizedString(@"Large %ix%i", @""), (int)largeSize.width, (int)largeSize.height];
+        NSString *originalSizeStr = [NSString stringWithFormat:NSLocalizedString(@"Original %ix%i", @""), (int)originalSize.width, (int)originalSize.height];
+        
 		UIActionSheet *resizeActionSheet;
 		//NSLog(@"img dimension: %f x %f ",currentImage.size.width, currentImage.size.height );
 		
@@ -594,28 +622,28 @@
 															delegate:self 
 												   cancelButtonTitle:nil 
 											  destructiveButtonTitle:nil 
-												   otherButtonTitles:NSLocalizedString(@"Small", @""), NSLocalizedString(@"Medium", @""), NSLocalizedString(@"Large", @""), NSLocalizedString(@"Original", @""), NSLocalizedString(@"Custom", @""), nil];
+												   otherButtonTitles:resizeSmallStr, resizeMediumStr, resizeLargeStr, originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
 			
 		} else if(currentImage.size.width > mediumSize.width  && currentImage.size.height > mediumSize.height) {
 			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"") 
 															delegate:self 
 												   cancelButtonTitle:nil 
 											  destructiveButtonTitle:nil 
-												   otherButtonTitles:NSLocalizedString(@"Small", @""), NSLocalizedString(@"Medium", @""), NSLocalizedString(@"Original", @""), NSLocalizedString(@"Custom", @""), nil];
+												   otherButtonTitles:resizeSmallStr, resizeMediumStr, originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
 			
 		} else if(currentImage.size.width > smallSize.width  && currentImage.size.height > smallSize.height) {
 			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"") 
 															delegate:self 
 												   cancelButtonTitle:nil 
 											  destructiveButtonTitle:nil 
-												   otherButtonTitles:NSLocalizedString(@"Small", @""), NSLocalizedString(@"Original", @""), NSLocalizedString(@"Custom", @""), nil];
+												   otherButtonTitles:resizeSmallStr, originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
 			
 		} else {
 			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"") 
 															delegate:self 
 												   cancelButtonTitle:nil 
 											  destructiveButtonTitle:nil 
-												   otherButtonTitles: NSLocalizedString(@"Original", @""), NSLocalizedString(@"Custom", @""), nil];
+												   otherButtonTitles: originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
 		}
 		
 		[resizeActionSheet showInView:postDetailViewController.view];
@@ -1065,27 +1093,13 @@
 }
 
 - (UIImage *)resizeImage:(UIImage *)original toSize:(MediaResize)resize {
-	CGSize smallSize, mediumSize, largeSize, originalSize;
-	UIImageOrientation orientation = original.imageOrientation; 
- 	switch (orientation) { 
-		case UIImageOrientationUp: 
-		case UIImageOrientationUpMirrored:
-		case UIImageOrientationDown: 
-		case UIImageOrientationDownMirrored:
-			smallSize = CGSizeMake(240, 180);
-			mediumSize = CGSizeMake(480, 360);
-			largeSize = CGSizeMake(640, 480);
-            break;
-		case UIImageOrientationLeft:
-		case UIImageOrientationLeftMirrored:
-		case UIImageOrientationRight:
-		case UIImageOrientationRightMirrored:
-			smallSize = CGSizeMake(180, 240);
-			mediumSize = CGSizeMake(360, 480);
-			largeSize = CGSizeMake(480, 640);
-	}
-	
-	originalSize = CGSizeMake(currentImage.size.width, currentImage.size.height); //The dimensions of the image, taking orientation into account.
+	    
+    NSDictionary* predefDim = [self getImageResizeDimensions];
+    CGSize smallSize =  [[predefDim objectForKey: @"smallSize"] CGSizeValue];
+    CGSize mediumSize = [[predefDim objectForKey: @"mediumSize"] CGSizeValue];
+    CGSize largeSize =  [[predefDim objectForKey: @"largeSize"] CGSizeValue];
+    
+    CGSize originalSize = CGSizeMake(currentImage.size.width, currentImage.size.height); //The dimensions of the image, taking orientation into account.
 	
 	// Resize the image using the selected dimensions
 	UIImage *resizedImage = original;
