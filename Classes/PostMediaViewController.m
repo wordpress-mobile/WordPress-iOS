@@ -18,7 +18,8 @@
 
 
 @interface PostMediaViewController (Private)
--(void)getMetadataFromAssetForURL:(NSURL *)url;
+- (void)getMetadataFromAssetForURL:(NSURL *)url;
+- (NSDictionary *) getImageResizeDimensions;
 @end
 
 @implementation PostMediaViewController
@@ -567,13 +568,13 @@
     CGSize smallSize, mediumSize, largeSize;
     UIImageOrientation orientation = currentImage.imageOrientation; 
     
-    Blog *currentBlog = self.currentUpload.blog;
-    int thumbnail_size_w =  [currentBlog getOption:@"thumbnail_size_w"] != nil ? [[currentBlog getOption:@"thumbnail_size_w"] intValue] : image_small_size_w;
-    int thumbnail_size_h =  [currentBlog getOption:@"thumbnail_size_h"] != nil ? [[currentBlog getOption:@"thumbnail_size_h"] intValue] : image_small_size_h;
-    int medium_size_w =     [currentBlog getOption:@"medium_size_w"] != nil ? [[currentBlog getOption:@"medium_size_w"] intValue] : image_medium_size_w;
-    int medium_size_h =     [currentBlog getOption:@"medium_size_h"] != nil ? [[currentBlog getOption:@"medium_size_h"] intValue] : image_medium_size_h;
-    int large_size_w =      [currentBlog getOption:@"large_size_w"] != nil ? [[currentBlog getOption:@"large_size_w"] intValue] : image_large_size_w;
-    int large_size_h =      [currentBlog getOption:@"large_size_h"] != nil ? [[currentBlog getOption:@"large_size_h"] intValue] : image_large_size_h;
+    Blog *currentBlog = self.postDetailViewController.post.blog;
+    int thumbnail_size_w =  ([currentBlog getOptionValue:@"thumbnail_size_w"] != nil ? [[currentBlog getOptionValue:@"thumbnail_size_w"] intValue] : image_small_size_w);
+    int thumbnail_size_h =  [currentBlog getOptionValue:@"thumbnail_size_h"] != nil ? [[currentBlog getOptionValue:@"thumbnail_size_h"] intValue] : image_small_size_h;
+    int medium_size_w =     [currentBlog getOptionValue:@"medium_size_w"] != nil ? [[currentBlog getOptionValue:@"medium_size_w"] intValue] : image_medium_size_w;
+    int medium_size_h =     [currentBlog getOptionValue:@"medium_size_h"] != nil ? [[currentBlog getOptionValue:@"medium_size_h"] intValue] : image_medium_size_h;
+    int large_size_w =      [currentBlog getOptionValue:@"large_size_w"] != nil ? [[currentBlog getOptionValue:@"large_size_w"] intValue] : image_large_size_w;
+    int large_size_h =      [currentBlog getOptionValue:@"large_size_h"] != nil ? [[currentBlog getOptionValue:@"large_size_h"] intValue] : image_large_size_h;
     
     switch (orientation) { 
         case UIImageOrientationUp: 

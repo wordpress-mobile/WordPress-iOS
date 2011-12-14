@@ -33,7 +33,7 @@
 - (void)dataSave;
 - (NSString *)blavatarUrl;
 - (NSArray *)sortedCategories;
-- (NSString *)getOption:(NSString *) name;
+- (NSString *)getOptionValue:(NSString *) name;
 
 #pragma mark -
 #pragma mark Synchronization
