@@ -28,6 +28,7 @@
 @property (nonatomic, retain) NSDate *lastStatsSync;
 @property (nonatomic, assign) BOOL geolocationEnabled;
 @property (nonatomic, retain) NSDictionary *options; //we can store an NSArray or an NSDictionary as a transformable attribute... 
+@property (nonatomic, retain) NSDictionary *postFormats;
 
 - (BOOL)isWPcom;
 - (void)dataSave;
