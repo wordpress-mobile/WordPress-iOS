@@ -437,11 +437,13 @@
     return YES;
 }
 
-- (NSString *)getOption:(NSString *) name {
-/*	if ( self.options == nil || (self.options.count == 0) ) {
+- (NSString *)getOptionValue:(NSString *) name {
+	if ( self.options == nil || (self.options.count == 0) ) {
         return nil;
-    }*/
-    return [self.options objectForKey:name];
+    }
+    NSDictionary *currentOption = [self.options objectForKey:name];
+    
+    return [currentOption objectForKey:@"value"];
 }
 
 - (BOOL)syncCommentsFromResults:(NSMutableArray *)comments {
