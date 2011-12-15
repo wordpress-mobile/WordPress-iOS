@@ -4,11 +4,14 @@
 #import "UINavigationController+FormSheet.h"
 #import "QuickPhotoUploadProgressController.h"
 #import "UIImageView+Gravatar.h"
+#import "InAppSettings.h"
 
 @interface BlogsViewController (Private)
 - (void) cleanUnusedMediaFileFromTmpDir;
 - (void)setupPhotoButton;
 - (void)setupReader;
+- (void) setUpRightNavigationButtons;
+- (void)showSettingsView:(id)sender;
 @end
 
 @implementation BlogsViewController
@@ -28,9 +31,13 @@
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	
     self.title = NSLocalizedString(@"Blogs", @"RootViewController_Title");
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+    /*self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
 																							target:self
 																							action:@selector(showAddBlogView:)] autorelease];
+    */
+    
+    [self setUpRightNavigationButtons];
+    
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Blogs", @"") style:UIBarButtonItemStyleBordered target:nil action:nil];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -111,6 +118,42 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[super viewWillDisappear:animated];
 }
+
+
+- (void) setUpRightNavigationButtons {
+    UIToolbar *tools = [[UIToolbar alloc]
+                        initWithFrame:CGRectMake(0.0f, 0.0f, 128.0f, 44.01f)]; // 44.01 shifts it up 1px for some reason
+     
+    NSMutableArray *buttons = [[NSMutableArray alloc] initWithCapacity:3];
+    
+    // Settings button.
+    UIBarButtonItem *bi = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStylePlain  target:self action:@selector(showSettingsView:)];
+    bi.style = UIBarButtonItemStyleBordered;
+    [buttons addObject:bi];
+    [bi release];
+    
+  
+    // Create a spacer.
+    bi = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    bi.width = 10.0f;
+    [buttons addObject:bi];
+    [bi release];
+    
+    // Add blogs button.
+    bi = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(showAddBlogView:)];
+    bi.style = UIBarButtonItemStyleBordered;
+    [buttons addObject:bi];
+    [bi release];
+    
+    // Add buttons to toolbar and toolbar to nav bar.
+    [tools setItems:buttons animated:NO];
+    [buttons release];
+    UIBarButtonItem *twoButtons = [[UIBarButtonItem alloc] initWithCustomView:tools];
+    [tools release];
+    self.navigationItem.rightBarButtonItem = twoButtons;
+    [twoButtons release];
+}
+
 
 - (void) checkEditButton{
 	[self.tableView reloadData];
@@ -481,6 +524,11 @@
 	return canDelete;
 }
 
+- (void)showSettingsView:(id)sender {
+    InAppSettingsViewController *settings = [[InAppSettingsViewController alloc] init];
+    [self.navigationController pushViewController:settings animated:YES];
+    [settings release];
+}
 
 - (void)showAddBlogView:(id)sender {
 	WelcomeViewController *welcomeView = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:nil];

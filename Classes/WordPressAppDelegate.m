@@ -11,7 +11,7 @@
 #import "MigrateBlogsFromFiles.h"
 #import "FilteredWebCache.h"
 #import "SDURLCache.h"
-
+#import "InAppSettings.h"
 
 @interface WordPressAppDelegate (Private)
 
@@ -56,6 +56,17 @@ static WordPressAppDelegate *wordPressApp = NULL;
         [dictionary release];
 
 		[self performSelectorInBackground:@selector(checkWPcomAuthentication) withObject:nil];
+        
+        /* 
+         ( The following "init" code loads the Settings.bundle at startup and it is required from InAppSettings. 
+         We are not using it since at this point the app already loaded the bundle. Keep the code for future reference. )
+         
+         //The user defaults from the Settings.bundle are not initialized on startup, and are only initialized when viewed in the Settings App. 
+         //InAppSettings has a registerDefaults class method that can be called to initialize all of the user defaults from the Settings.bundle. 
+        if([self class] == [WordPressAppDelegate class]){
+            [InAppSettings registerDefaults];
+        }
+         */
     }
 
     return wordPressApp;

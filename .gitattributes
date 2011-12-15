@@ -355,6 +355,31 @@ Creation/CXMLNode_CreationExtensions.m -text
 /Icon-dev@2x.png -text svneol=unset#unset
 /Icon.png -text svneol=unset#unset
 /Icon@2x.png -text svneol=unset#unset
+InAppSettings/Cells/InAppSettingsPSChildPaneSpecifierCell.h -text
+InAppSettings/Cells/InAppSettingsPSChildPaneSpecifierCell.m -text
+InAppSettings/Cells/InAppSettingsPSMultiValueSpecifierCell.h -text
+InAppSettings/Cells/InAppSettingsPSMultiValueSpecifierCell.m -text
+InAppSettings/Cells/InAppSettingsPSSliderSpecifierCell.h -text
+InAppSettings/Cells/InAppSettingsPSSliderSpecifierCell.m -text
+InAppSettings/Cells/InAppSettingsPSTextFieldSpecifierCell.h -text
+InAppSettings/Cells/InAppSettingsPSTextFieldSpecifierCell.m -text
+InAppSettings/Cells/InAppSettingsPSTitleValueSpecifierCell.h -text
+InAppSettings/Cells/InAppSettingsPSTitleValueSpecifierCell.m -text
+InAppSettings/Cells/InAppSettingsPSToggleSwitchSpecifierCell.h -text
+InAppSettings/Cells/InAppSettingsPSToggleSwitchSpecifierCell.m -text
+InAppSettings/Cells/InAppSettingsTableCell.h -text
+InAppSettings/Cells/InAppSettingsTableCell.m -text
+InAppSettings/InAppSettings.h -text
+InAppSettings/InAppSettings.m -text
+InAppSettings/InAppSettings.png -text
+InAppSettings/InAppSettings@2x.png -text
+InAppSettings/InAppSettingsConstants.h -text
+InAppSettings/InAppSettingsPSMultiValueSpecifierTable.h -text
+InAppSettings/InAppSettingsPSMultiValueSpecifierTable.m -text
+InAppSettings/InAppSettingsReader.h -text
+InAppSettings/InAppSettingsReader.m -text
+InAppSettings/InAppSettingsSpecifier.h -text
+InAppSettings/InAppSettingsSpecifier.m -text
 /Info-beta.plist -text
 /Info-dev.plist -text
 /Info.plist -text

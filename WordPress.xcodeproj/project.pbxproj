@@ -453,6 +453,19 @@
 		EC4696FF0EA75D460040EE8E /* PagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4696FE0EA75D460040EE8E /* PagesViewController.m */; };
 		F5A4EF6810B34147002BF126 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = F5A4EF6710B34147002BF126 /* NSData+Base64.m */; };
 		FD0882ED1445F38C00F51302 /* WPReaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD0882EC1445F38C00F51302 /* WPReaderViewController.xib */; };
+		FD0D42DD149A0B5500F5E115 /* InAppSettingsPSChildPaneSpecifierCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FD0D42C5149A0B5500F5E115 /* InAppSettingsPSChildPaneSpecifierCell.m */; };
+		FD0D42DE149A0B5500F5E115 /* InAppSettingsPSMultiValueSpecifierCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FD0D42C7149A0B5500F5E115 /* InAppSettingsPSMultiValueSpecifierCell.m */; };
+		FD0D42DF149A0B5500F5E115 /* InAppSettingsPSSliderSpecifierCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FD0D42C9149A0B5500F5E115 /* InAppSettingsPSSliderSpecifierCell.m */; };
+		FD0D42E0149A0B5500F5E115 /* InAppSettingsPSTextFieldSpecifierCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FD0D42CB149A0B5500F5E115 /* InAppSettingsPSTextFieldSpecifierCell.m */; };
+		FD0D42E1149A0B5500F5E115 /* InAppSettingsPSTitleValueSpecifierCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FD0D42CD149A0B5500F5E115 /* InAppSettingsPSTitleValueSpecifierCell.m */; };
+		FD0D42E2149A0B5500F5E115 /* InAppSettingsPSToggleSwitchSpecifierCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FD0D42CF149A0B5500F5E115 /* InAppSettingsPSToggleSwitchSpecifierCell.m */; };
+		FD0D42E3149A0B5500F5E115 /* InAppSettingsTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FD0D42D1149A0B5500F5E115 /* InAppSettingsTableCell.m */; };
+		FD0D42E4149A0B5500F5E115 /* InAppSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = FD0D42D3149A0B5500F5E115 /* InAppSettings.m */; };
+		FD0D42E5149A0B5500F5E115 /* InAppSettings.png in Resources */ = {isa = PBXBuildFile; fileRef = FD0D42D4149A0B5500F5E115 /* InAppSettings.png */; };
+		FD0D42E6149A0B5500F5E115 /* InAppSettings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FD0D42D5149A0B5500F5E115 /* InAppSettings@2x.png */; };
+		FD0D42E7149A0B5500F5E115 /* InAppSettingsPSMultiValueSpecifierTable.m in Sources */ = {isa = PBXBuildFile; fileRef = FD0D42D8149A0B5500F5E115 /* InAppSettingsPSMultiValueSpecifierTable.m */; };
+		FD0D42E8149A0B5500F5E115 /* InAppSettingsReader.m in Sources */ = {isa = PBXBuildFile; fileRef = FD0D42DA149A0B5500F5E115 /* InAppSettingsReader.m */; };
+		FD0D42E9149A0B5500F5E115 /* InAppSettingsSpecifier.m in Sources */ = {isa = PBXBuildFile; fileRef = FD0D42DC149A0B5500F5E115 /* InAppSettingsSpecifier.m */; };
 		FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD21397E13128C5300099582 /* libiconv.dylib */; };
 		FD3890F01442F91000135C6D /* WPReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD3890EF1442F91000135C6D /* WPReaderViewController.m */; };
 		FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3D6D2B1349F5D30061136A /* ImageIO.framework */; };
@@ -1112,6 +1125,31 @@
 		F5A4EF6710B34147002BF126 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 		FD0882EC1445F38C00F51302 /* WPReaderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WPReaderViewController.xib; sourceTree = "<group>"; };
 		FD0D42C11499F31700F5E115 /* WordPress 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 4.xcdatamodel"; sourceTree = "<group>"; };
+		FD0D42C4149A0B5500F5E115 /* InAppSettingsPSChildPaneSpecifierCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppSettingsPSChildPaneSpecifierCell.h; sourceTree = "<group>"; };
+		FD0D42C5149A0B5500F5E115 /* InAppSettingsPSChildPaneSpecifierCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppSettingsPSChildPaneSpecifierCell.m; sourceTree = "<group>"; };
+		FD0D42C6149A0B5500F5E115 /* InAppSettingsPSMultiValueSpecifierCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppSettingsPSMultiValueSpecifierCell.h; sourceTree = "<group>"; };
+		FD0D42C7149A0B5500F5E115 /* InAppSettingsPSMultiValueSpecifierCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppSettingsPSMultiValueSpecifierCell.m; sourceTree = "<group>"; };
+		FD0D42C8149A0B5500F5E115 /* InAppSettingsPSSliderSpecifierCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppSettingsPSSliderSpecifierCell.h; sourceTree = "<group>"; };
+		FD0D42C9149A0B5500F5E115 /* InAppSettingsPSSliderSpecifierCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppSettingsPSSliderSpecifierCell.m; sourceTree = "<group>"; };
+		FD0D42CA149A0B5500F5E115 /* InAppSettingsPSTextFieldSpecifierCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppSettingsPSTextFieldSpecifierCell.h; sourceTree = "<group>"; };
+		FD0D42CB149A0B5500F5E115 /* InAppSettingsPSTextFieldSpecifierCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppSettingsPSTextFieldSpecifierCell.m; sourceTree = "<group>"; };
+		FD0D42CC149A0B5500F5E115 /* InAppSettingsPSTitleValueSpecifierCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppSettingsPSTitleValueSpecifierCell.h; sourceTree = "<group>"; };
+		FD0D42CD149A0B5500F5E115 /* InAppSettingsPSTitleValueSpecifierCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppSettingsPSTitleValueSpecifierCell.m; sourceTree = "<group>"; };
+		FD0D42CE149A0B5500F5E115 /* InAppSettingsPSToggleSwitchSpecifierCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppSettingsPSToggleSwitchSpecifierCell.h; sourceTree = "<group>"; };
+		FD0D42CF149A0B5500F5E115 /* InAppSettingsPSToggleSwitchSpecifierCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppSettingsPSToggleSwitchSpecifierCell.m; sourceTree = "<group>"; };
+		FD0D42D0149A0B5500F5E115 /* InAppSettingsTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppSettingsTableCell.h; sourceTree = "<group>"; };
+		FD0D42D1149A0B5500F5E115 /* InAppSettingsTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppSettingsTableCell.m; sourceTree = "<group>"; };
+		FD0D42D2149A0B5500F5E115 /* InAppSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppSettings.h; sourceTree = "<group>"; };
+		FD0D42D3149A0B5500F5E115 /* InAppSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppSettings.m; sourceTree = "<group>"; };
+		FD0D42D4149A0B5500F5E115 /* InAppSettings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = InAppSettings.png; sourceTree = "<group>"; };
+		FD0D42D5149A0B5500F5E115 /* InAppSettings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "InAppSettings@2x.png"; sourceTree = "<group>"; };
+		FD0D42D6149A0B5500F5E115 /* InAppSettingsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppSettingsConstants.h; sourceTree = "<group>"; };
+		FD0D42D7149A0B5500F5E115 /* InAppSettingsPSMultiValueSpecifierTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppSettingsPSMultiValueSpecifierTable.h; sourceTree = "<group>"; };
+		FD0D42D8149A0B5500F5E115 /* InAppSettingsPSMultiValueSpecifierTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppSettingsPSMultiValueSpecifierTable.m; sourceTree = "<group>"; };
+		FD0D42D9149A0B5500F5E115 /* InAppSettingsReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppSettingsReader.h; sourceTree = "<group>"; };
+		FD0D42DA149A0B5500F5E115 /* InAppSettingsReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppSettingsReader.m; sourceTree = "<group>"; };
+		FD0D42DB149A0B5500F5E115 /* InAppSettingsSpecifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppSettingsSpecifier.h; sourceTree = "<group>"; };
+		FD0D42DC149A0B5500F5E115 /* InAppSettingsSpecifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppSettingsSpecifier.m; sourceTree = "<group>"; };
 		FD21397E13128C5300099582 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		FD3890EE1442F91000135C6D /* WPReaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPReaderViewController.h; sourceTree = "<group>"; };
 		FD3890EF1442F91000135C6D /* WPReaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPReaderViewController.m; sourceTree = "<group>"; };
@@ -1237,6 +1275,7 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				FD0D42C2149A0B5500F5E115 /* InAppSettings */,
 				E1F808221464205100726BC7 /* WPAFNetworking.h */,
 				E1F807F714641AC700726BC7 /* AFNetworking */,
 				8388FA801269580400304909 /* TouchXML */,
@@ -2210,6 +2249,46 @@
 			name = Pages;
 			sourceTree = "<group>";
 		};
+		FD0D42C2149A0B5500F5E115 /* InAppSettings */ = {
+			isa = PBXGroup;
+			children = (
+				FD0D42C3149A0B5500F5E115 /* Cells */,
+				FD0D42D2149A0B5500F5E115 /* InAppSettings.h */,
+				FD0D42D3149A0B5500F5E115 /* InAppSettings.m */,
+				FD0D42D4149A0B5500F5E115 /* InAppSettings.png */,
+				FD0D42D5149A0B5500F5E115 /* InAppSettings@2x.png */,
+				FD0D42D6149A0B5500F5E115 /* InAppSettingsConstants.h */,
+				FD0D42D7149A0B5500F5E115 /* InAppSettingsPSMultiValueSpecifierTable.h */,
+				FD0D42D8149A0B5500F5E115 /* InAppSettingsPSMultiValueSpecifierTable.m */,
+				FD0D42D9149A0B5500F5E115 /* InAppSettingsReader.h */,
+				FD0D42DA149A0B5500F5E115 /* InAppSettingsReader.m */,
+				FD0D42DB149A0B5500F5E115 /* InAppSettingsSpecifier.h */,
+				FD0D42DC149A0B5500F5E115 /* InAppSettingsSpecifier.m */,
+			);
+			path = InAppSettings;
+			sourceTree = "<group>";
+		};
+		FD0D42C3149A0B5500F5E115 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				FD0D42C4149A0B5500F5E115 /* InAppSettingsPSChildPaneSpecifierCell.h */,
+				FD0D42C5149A0B5500F5E115 /* InAppSettingsPSChildPaneSpecifierCell.m */,
+				FD0D42C6149A0B5500F5E115 /* InAppSettingsPSMultiValueSpecifierCell.h */,
+				FD0D42C7149A0B5500F5E115 /* InAppSettingsPSMultiValueSpecifierCell.m */,
+				FD0D42C8149A0B5500F5E115 /* InAppSettingsPSSliderSpecifierCell.h */,
+				FD0D42C9149A0B5500F5E115 /* InAppSettingsPSSliderSpecifierCell.m */,
+				FD0D42CA149A0B5500F5E115 /* InAppSettingsPSTextFieldSpecifierCell.h */,
+				FD0D42CB149A0B5500F5E115 /* InAppSettingsPSTextFieldSpecifierCell.m */,
+				FD0D42CC149A0B5500F5E115 /* InAppSettingsPSTitleValueSpecifierCell.h */,
+				FD0D42CD149A0B5500F5E115 /* InAppSettingsPSTitleValueSpecifierCell.m */,
+				FD0D42CE149A0B5500F5E115 /* InAppSettingsPSToggleSwitchSpecifierCell.h */,
+				FD0D42CF149A0B5500F5E115 /* InAppSettingsPSToggleSwitchSpecifierCell.m */,
+				FD0D42D0149A0B5500F5E115 /* InAppSettingsTableCell.h */,
+				FD0D42D1149A0B5500F5E115 /* InAppSettingsTableCell.m */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2548,6 +2627,8 @@
 				7F3E105413498200008CF73D /* UISegmentBarBlackButton@2x.png in Resources */,
 				7F3E105513498200008CF73D /* UISegmentBarBlackButtonHighlighted.png in Resources */,
 				7F3E105613498200008CF73D /* UISegmentBarBlackButtonHighlighted@2x.png in Resources */,
+				FD0D42E5149A0B5500F5E115 /* InAppSettings.png in Resources */,
+				FD0D42E6149A0B5500F5E115 /* InAppSettings@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2718,6 +2799,17 @@
 				E1F8081514641AC700726BC7 /* AFXMLRequestOperation.m in Sources */,
 				E1F8081614641AC700726BC7 /* UIImageView+AFNetworking.m in Sources */,
 				E1F80825146420B000726BC7 /* UIImageView+Gravatar.m in Sources */,
+				FD0D42DD149A0B5500F5E115 /* InAppSettingsPSChildPaneSpecifierCell.m in Sources */,
+				FD0D42DE149A0B5500F5E115 /* InAppSettingsPSMultiValueSpecifierCell.m in Sources */,
+				FD0D42DF149A0B5500F5E115 /* InAppSettingsPSSliderSpecifierCell.m in Sources */,
+				FD0D42E0149A0B5500F5E115 /* InAppSettingsPSTextFieldSpecifierCell.m in Sources */,
+				FD0D42E1149A0B5500F5E115 /* InAppSettingsPSTitleValueSpecifierCell.m in Sources */,
+				FD0D42E2149A0B5500F5E115 /* InAppSettingsPSToggleSwitchSpecifierCell.m in Sources */,
+				FD0D42E3149A0B5500F5E115 /* InAppSettingsTableCell.m in Sources */,
+				FD0D42E4149A0B5500F5E115 /* InAppSettings.m in Sources */,
+				FD0D42E7149A0B5500F5E115 /* InAppSettingsPSMultiValueSpecifierTable.m in Sources */,
+				FD0D42E8149A0B5500F5E115 /* InAppSettingsReader.m in Sources */,
+				FD0D42E9149A0B5500F5E115 /* InAppSettingsSpecifier.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

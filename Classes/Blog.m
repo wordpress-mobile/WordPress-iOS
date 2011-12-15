@@ -506,7 +506,6 @@
     return YES;
 }
 
-
 - (BOOL)syncPostFormatsFromResults:(NSMutableDictionary *)postFormats {
     self.postFormats = [NSDictionary dictionaryWithDictionary: postFormats]; 
     [self dataSave]; 
