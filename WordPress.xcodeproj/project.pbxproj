@@ -1111,6 +1111,7 @@
 		F5A4EF6610B34147002BF126 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		F5A4EF6710B34147002BF126 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 		FD0882EC1445F38C00F51302 /* WPReaderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WPReaderViewController.xib; sourceTree = "<group>"; };
+		FD0D42C11499F31700F5E115 /* WordPress 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 4.xcdatamodel"; sourceTree = "<group>"; };
 		FD21397E13128C5300099582 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		FD3890EE1442F91000135C6D /* WPReaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPReaderViewController.h; sourceTree = "<group>"; };
 		FD3890EF1442F91000135C6D /* WPReaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPReaderViewController.m; sourceTree = "<group>"; };
@@ -3001,11 +3002,12 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				FD0D42C11499F31700F5E115 /* WordPress 4.xcdatamodel */,
 				E19BF8F913CC69E7004753FE /* WordPress 3.xcdatamodel */,
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = E19BF8F913CC69E7004753FE /* WordPress 3.xcdatamodel */;
+			currentVersion = FD0D42C11499F31700F5E115 /* WordPress 4.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";
