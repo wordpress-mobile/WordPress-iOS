@@ -294,7 +294,7 @@
     NSError *error = nil;
 	[self.blog syncCategoriesWithError:&error];
 	
-    
+    /*
     if( !error ) { 
         [self.blog syncPostFormatsWithError:&error];
         
@@ -303,7 +303,7 @@
         if ( error && error.code == -32601 )
             error = nil;
     }
-    
+    */
     if( !error )
         [self.blog syncPostsWithError:&error loadMore:NO];
         
@@ -314,7 +314,7 @@
 	
 	[self performSelectorOnMainThread:@selector(refreshPostList) withObject:nil waitUntilDone:NO];
           
-    [self.blog syncOptionsWithError:&error]; //error is not used atm, but keep it there for future usage.
+    [self.blog syncOptionsWithError:&error];
     [pool release];
 }
 

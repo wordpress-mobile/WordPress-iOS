@@ -15,8 +15,8 @@
 @dynamic isAdmin, hasOlderPosts, hasOlderPages;
 @dynamic posts, categories, comments; 
 @dynamic lastPostsSync, lastStatsSync, lastPagesSync, lastCommentsSync;
-@synthesize isSyncingPosts, isSyncingPages, isSyncingComments;
-@dynamic geolocationEnabled, options, postFormats;
+@synthesize isSyncingPosts, isSyncingPages, isSyncingComments, options;
+@dynamic geolocationEnabled;
 
 - (BOOL)geolocationEnabled 
 {
@@ -419,14 +419,6 @@
 	return YES;
 }
 
-
-- (BOOL)syncOptionsFromResults:(NSMutableDictionary *)retrievedOptions {
-	self.options = [NSDictionary dictionaryWithDictionary: retrievedOptions];
-    [self dataSave];
-    return YES;
-}
-
-
 - (BOOL)syncOptionsWithError:(NSError **)error {
     WPLog(@"Yeahhh! syncOptionsWithError called!");
     WPDataController *dc = [[WPDataController alloc] init];
@@ -438,8 +430,10 @@
 		[dc release];
 		return NO;
 	}
-    [self performSelectorOnMainThread:@selector(syncOptionsFromResults:) withObject:retrievedOptions waitUntilDone:YES];
+    //[self performSelectorOnMainThread:@selector(syncCategoriesFromResults:) withObject:categories waitUntilDone:YES];
+    self.options = retrievedOptions;
     [dc release];
+    
     return YES;
 }
 
@@ -509,8 +503,10 @@
 
 
 - (BOOL)syncPostFormatsFromResults:(NSMutableDictionary *)postFormats {
-    self.postFormats = [NSDictionary dictionaryWithDictionary: postFormats];
-    [self dataSave];
+	/*
+     self.postFormats = postFormats;
+     [self dataSave];
+     */ 
     return YES;
 }
 
