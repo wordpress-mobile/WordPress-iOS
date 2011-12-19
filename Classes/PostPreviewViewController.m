@@ -177,19 +177,7 @@
 			
 			if(isDraft || isPending || isPrivate || (laterDate == postGMTDate)) {
 				
-				NSString *wpLoginURL = postDetailViewController.apost.blog.xmlrpc; 
-				wpLoginURL = [wpLoginURL stringByReplacingOccurrencesOfRegex:@"/xmlrpc.php$" withString:@"/wp-login.php"];
-				
-				/*
-				 i have used the blogURL and worked fine. but i preferred the xmlrpc url (that in most cases is on https).
-				 
-				if(![wpLoginURL hasPrefix:@"http"])
-					wpLoginURL = [NSString stringWithFormat:@"http://%@/%@", postDetailViewController.apost.blog.url, @"wp-login.php"];
-				else 
-					wpLoginURL = [NSString stringWithFormat:@"%@/%@", postDetailViewController.apost.blog.url, @"wp-login.php"];
-				
-				*/
-				
+				NSString *wpLoginURL = [postDetailViewController.apost.blog blogLoginURL];
 				NSURL *url = [NSURL URLWithString:wpLoginURL]; 
 				NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
 				[req setHTTPMethod:@"POST"];

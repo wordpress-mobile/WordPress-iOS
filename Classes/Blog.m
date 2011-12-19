@@ -119,6 +119,20 @@
     return result;
 }
 
+
+- (NSString *)blogLoginURL {
+    return [self.xmlrpc stringByReplacingOccurrencesOfRegex:@"/xmlrpc.php$" withString:@"/wp-login.php"];
+    /*
+     i have used the blogURL and worked fine, but the xmlrpc url should be a better choice since it is usually on https.
+     
+     if(![wpLoginURL hasPrefix:@"http"])
+     wpLoginURL = [NSString stringWithFormat:@"http://%@/%@", postDetailViewController.apost.blog.url, @"wp-login.php"];
+     else 
+     wpLoginURL = [NSString stringWithFormat:@"%@/%@", postDetailViewController.apost.blog.url, @"wp-login.php"];
+     
+     */
+}
+
 -(NSArray *)sortedCategories {
 	NSSortDescriptor *sortNameDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"categoryName" 
 																		ascending:YES 

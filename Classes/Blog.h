@@ -35,6 +35,7 @@
 - (NSString *)blavatarUrl;
 - (NSArray *)sortedCategories;
 - (NSString *)getOptionValue:(NSString *) name;
+- (NSString *)blogLoginURL;
 
 #pragma mark -
 #pragma mark Synchronization

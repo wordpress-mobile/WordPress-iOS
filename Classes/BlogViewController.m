@@ -170,6 +170,8 @@
             [webViewController setUrl:[NSURL URLWithString:dashboardUrl]];
             [webViewController setUsername:blog.username];
             [webViewController setPassword:[SFHFKeychainUtils getPasswordForUsername:blog.username andServiceName:blog.hostURL error:&error]];
+            NSString *wpLoginURL = [self.blog blogLoginURL];
+            [webViewController setWpLoginURL:[NSURL URLWithString:wpLoginURL]];
             nextViewController = webViewController;
             break;
         }

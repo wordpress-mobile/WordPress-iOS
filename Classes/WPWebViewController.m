@@ -19,7 +19,7 @@
 @end
 
 @implementation WPWebViewController
-@synthesize url, username, password, detailContent, detailHTML, readerAllItems;
+@synthesize url, wpLoginURL, username, password, detailContent, detailHTML, readerAllItems;
 @synthesize webView, toolbar, statusTimer;
 @synthesize loadingView, loadingLabel, activityIndicator;
 @synthesize iPadNavBar, backButton, forwardButton, optionsButton, isRefreshButtonEnabled;
@@ -28,6 +28,7 @@
 {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     self.url = nil;
+    self.wpLoginURL = nil;
     self.username = nil;
     self.password = nil;
     self.detailContent = nil;
@@ -233,8 +234,12 @@
     }
     
     NSURL *webURL;
-    if (needsLogin)
-        webURL = [[[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"] autorelease];
+    if (needsLogin) {
+        if ( self.wpLoginURL != nil )
+            webURL = self.wpLoginURL;
+        else //try to guess the login URL
+            webURL = [[[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"] autorelease];
+    }
     else
         webURL = self.url;
     
@@ -249,7 +254,12 @@
                                   [self.username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                                   [self.password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                                   [[self.url absoluteString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-        [request setURL:[[[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"] autorelease]];
+        
+        if ( self.wpLoginURL != nil )
+            [request setURL: self.wpLoginURL];
+        else
+             [request setURL:[[[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"] autorelease]];
+        
         [request setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
         [request setValue:[NSString stringWithFormat:@"%d", [request_body length]] forHTTPHeaderField:@"Content-Length"];
         [request addValue:@"*/*" forHTTPHeaderField:@"Accept"];

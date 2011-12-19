@@ -14,6 +14,7 @@
 	NSTimer *statusTimer;   // This timer checks the nav buttons every 0.75 seconds, and updates them
 }
 @property (nonatomic,retain) NSURL *url;
+@property (nonatomic,retain) NSURL *wpLoginURL;
 @property (nonatomic,retain) NSString *username;
 @property (nonatomic,retain) NSString *password;
 @property (nonatomic,retain) IBOutlet UIWebView *webView;
