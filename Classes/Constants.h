@@ -21,6 +21,9 @@
 #define kMobileReaderURL		@"https://en.wordpress.com/reader/mobile/v2/"
 #define kMobileReaderFPURL		@"https://en.wordpress.com/reader/mobile/v2/freshly-pressed"
 #define kMobileReaderDetailURL  @"https://en.wordpress.com/wp-admin/admin-ajax.php?action=wpcom_load_mobile&template=details&v=2"
+#define kStatsEndpointURL		@"https://stats.wordpress.com/api/1.0/"
+#define kJetPackURL             @"http://jetpack.me"
+
 
 #define kDisabledTextColor      [UIColor grayColor]
 
