@@ -260,12 +260,9 @@
 		837576C511305C67002EAA27 /* hasLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = 837576C211305C67002EAA27 /* hasLocation.png */; };
 		837576C611305C67002EAA27 /* getLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = 837576C311305C67002EAA27 /* getLocation.png */; };
 		837614F8120A7FB2005CCB33 /* XMLRPCConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 837614EB120A7FB2005CCB33 /* XMLRPCConnection.m */; };
-		837614F9120A7FB2005CCB33 /* XMLRPCDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 837614ED120A7FB2005CCB33 /* XMLRPCDecoder.m */; };
 		837614FA120A7FB2005CCB33 /* XMLRPCEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 837614EF120A7FB2005CCB33 /* XMLRPCEncoder.m */; };
-		837614FB120A7FB2005CCB33 /* XMLRPCExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 837614F1120A7FB2005CCB33 /* XMLRPCExtensions.m */; };
 		837614FC120A7FB2005CCB33 /* XMLRPCRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 837614F3120A7FB2005CCB33 /* XMLRPCRequest.m */; };
 		837614FD120A7FB2005CCB33 /* XMLRPCResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 837614F5120A7FB2005CCB33 /* XMLRPCResponse.m */; };
-		837614FE120A7FB2005CCB33 /* XMLValueDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 837614F7120A7FB2005CCB33 /* XMLValueDecoder.m */; };
 		8383178812270E980047B476 /* PostMediaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8383178612270E980047B476 /* PostMediaViewController.m */; };
 		8383178912270E980047B476 /* PostMediaViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8383178712270E980047B476 /* PostMediaViewController.xib */; };
 		8388FABA1269585C00304909 /* CTidy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8388FAB91269585C00304909 /* CTidy.m */; };
@@ -348,6 +345,11 @@
 		E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */; };
 		E125445612BF5B3900D87A0A /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E125445512BF5B3900D87A0A /* Category.m */; };
 		E125451812BF68F900D87A0A /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = E125451712BF68F900D87A0A /* Page.m */; };
+		E12F55F114A1F22D0060A510 /* NSDataAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55E714A1F22D0060A510 /* NSDataAdditions.m */; };
+		E12F55F214A1F22D0060A510 /* NSStringAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55E914A1F22D0060A510 /* NSStringAdditions.m */; };
+		E12F55F314A1F22D0060A510 /* XMLRPCConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55EC14A1F22D0060A510 /* XMLRPCConnectionManager.m */; };
+		E12F55F414A1F22D0060A510 /* XMLRPCEventBasedParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55EE14A1F22D0060A510 /* XMLRPCEventBasedParser.m */; };
+		E12F55F514A1F22D0060A510 /* XMLRPCEventBasedParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55F014A1F22D0060A510 /* XMLRPCEventBasedParserDelegate.m */; };
 		E131D08912C8C9160056BAB9 /* AbstractPost.m in Sources */ = {isa = PBXBuildFile; fileRef = E131D08812C8C9160056BAB9 /* AbstractPost.m */; };
 		E138623C1355FF8800AAB235 /* UINavigationController+FormSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = E138623B1355FF8800AAB235 /* UINavigationController+FormSheet.m */; };
 		E13FA0CC134BDCBB007DCDD0 /* QuickPhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E13FA0CB134BDCBB007DCDD0 /* QuickPhotoViewController.xib */; };
@@ -633,7 +635,6 @@
 		30FE87C11367417E00808634 /* quickPhotoButtonBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "quickPhotoButtonBackground@2x.png"; sourceTree = "<group>"; };
 		3704ACFA13128C9800120911 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		3704ACFB13128C9800120911 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		37245ADA13FC2286006CDBE3 /* WordPress copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "WordPress copy-Info.plist"; path = "/Users/dan/workspace/wp-iphone-trunk/WordPress copy-Info.plist"; sourceTree = "<absolute>"; };
 		37245ADB13FC23FF006CDBE3 /* WPWebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WPWebViewController.xib; sourceTree = "<group>"; };
 		3744A0DB130ABB0800CE7BE1 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
 		3744A0DC130ABB0800CE7BE1 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
@@ -812,18 +813,12 @@
 		837576C311305C67002EAA27 /* getLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = getLocation.png; sourceTree = "<group>"; };
 		837614EA120A7FB2005CCB33 /* XMLRPCConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCConnection.h; sourceTree = "<group>"; };
 		837614EB120A7FB2005CCB33 /* XMLRPCConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLRPCConnection.m; sourceTree = "<group>"; };
-		837614EC120A7FB2005CCB33 /* XMLRPCDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCDecoder.h; sourceTree = "<group>"; };
-		837614ED120A7FB2005CCB33 /* XMLRPCDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLRPCDecoder.m; sourceTree = "<group>"; };
 		837614EE120A7FB2005CCB33 /* XMLRPCEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCEncoder.h; sourceTree = "<group>"; };
 		837614EF120A7FB2005CCB33 /* XMLRPCEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLRPCEncoder.m; sourceTree = "<group>"; };
-		837614F0120A7FB2005CCB33 /* XMLRPCExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCExtensions.h; sourceTree = "<group>"; };
-		837614F1120A7FB2005CCB33 /* XMLRPCExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLRPCExtensions.m; sourceTree = "<group>"; };
 		837614F2120A7FB2005CCB33 /* XMLRPCRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCRequest.h; sourceTree = "<group>"; };
 		837614F3120A7FB2005CCB33 /* XMLRPCRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLRPCRequest.m; sourceTree = "<group>"; };
 		837614F4120A7FB2005CCB33 /* XMLRPCResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCResponse.h; sourceTree = "<group>"; };
 		837614F5120A7FB2005CCB33 /* XMLRPCResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLRPCResponse.m; sourceTree = "<group>"; };
-		837614F6120A7FB2005CCB33 /* XMLValueDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLValueDecoder.h; sourceTree = "<group>"; };
-		837614F7120A7FB2005CCB33 /* XMLValueDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLValueDecoder.m; sourceTree = "<group>"; };
 		8383178512270E980047B476 /* PostMediaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostMediaViewController.h; sourceTree = "<group>"; };
 		8383178612270E980047B476 /* PostMediaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostMediaViewController.m; sourceTree = "<group>"; };
 		8383178712270E980047B476 /* PostMediaViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostMediaViewController.xib; sourceTree = "<group>"; };
@@ -946,6 +941,17 @@
 		E125445512BF5B3900D87A0A /* Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Category.m; sourceTree = "<group>"; };
 		E125451612BF68F900D87A0A /* Page.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Page.h; sourceTree = "<group>"; };
 		E125451712BF68F900D87A0A /* Page.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Page.m; sourceTree = "<group>"; };
+		E12F55E614A1F22D0060A510 /* NSDataAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDataAdditions.h; sourceTree = "<group>"; };
+		E12F55E714A1F22D0060A510 /* NSDataAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDataAdditions.m; sourceTree = "<group>"; };
+		E12F55E814A1F22D0060A510 /* NSStringAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStringAdditions.h; sourceTree = "<group>"; };
+		E12F55E914A1F22D0060A510 /* NSStringAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringAdditions.m; sourceTree = "<group>"; };
+		E12F55EA14A1F22D0060A510 /* XMLRPCConnectionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCConnectionDelegate.h; sourceTree = "<group>"; };
+		E12F55EB14A1F22D0060A510 /* XMLRPCConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCConnectionManager.h; sourceTree = "<group>"; };
+		E12F55EC14A1F22D0060A510 /* XMLRPCConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLRPCConnectionManager.m; sourceTree = "<group>"; };
+		E12F55ED14A1F22D0060A510 /* XMLRPCEventBasedParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCEventBasedParser.h; sourceTree = "<group>"; };
+		E12F55EE14A1F22D0060A510 /* XMLRPCEventBasedParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLRPCEventBasedParser.m; sourceTree = "<group>"; };
+		E12F55EF14A1F22D0060A510 /* XMLRPCEventBasedParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCEventBasedParserDelegate.h; sourceTree = "<group>"; };
+		E12F55F014A1F22D0060A510 /* XMLRPCEventBasedParserDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLRPCEventBasedParserDelegate.m; sourceTree = "<group>"; };
 		E131D08712C8C9150056BAB9 /* AbstractPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractPost.h; sourceTree = "<group>"; };
 		E131D08812C8C9160056BAB9 /* AbstractPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractPost.m; sourceTree = "<group>"; };
 		E133DB40137AE180003C0AF9 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -1263,6 +1269,7 @@
 			children = (
 				2FAE97050E33B21600CA8540 /* license.txt */,
 				080E96DDFE201D6D7F000001 /* Classes */,
+				E12F55F714A1F2640060A510 /* Vendor */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				45C73C23113C36F50024D0D2 /* Resources-iPad */,
@@ -1270,7 +1277,6 @@
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				45B71DE4113EDAA100D0A33C /* Entitlements.plist */,
 				83D3DDB71215DC7900600B4B /* Settings.bundle */,
-				37245ADA13FC2286006CDBE3 /* WordPress copy-Info.plist */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -1280,11 +1286,9 @@
 			children = (
 				FD0D42C2149A0B5500F5E115 /* InAppSettings */,
 				E1F808221464205100726BC7 /* WPAFNetworking.h */,
-				E1F807F714641AC700726BC7 /* AFNetworking */,
 				8388FA801269580400304909 /* TouchXML */,
 				834CE85F1256E7EE0046A4A3 /* ASIHTTPRequest */,
 				834CAEA2122D56B7003DDF49 /* UIImage */,
-				837614E8120A7FA3005CCB33 /* XMLRPC */,
 				832D4F51120A71EE001708D4 /* RegexKitLite.h */,
 				832D4F52120A71EE001708D4 /* RegexKitLite.m */,
 				28A0AAE50D9B0CCF005BE974 /* WordPress_Prefix.pch */,
@@ -1548,24 +1552,27 @@
 		837614E8120A7FA3005CCB33 /* XMLRPC */ = {
 			isa = PBXGroup;
 			children = (
+				E12F55F614A1F2350060A510 /* Additions */,
 				837614EA120A7FB2005CCB33 /* XMLRPCConnection.h */,
 				837614EB120A7FB2005CCB33 /* XMLRPCConnection.m */,
-				837614EC120A7FB2005CCB33 /* XMLRPCDecoder.h */,
-				837614ED120A7FB2005CCB33 /* XMLRPCDecoder.m */,
+				E12F55EA14A1F22D0060A510 /* XMLRPCConnectionDelegate.h */,
+				E12F55EB14A1F22D0060A510 /* XMLRPCConnectionManager.h */,
+				E12F55EC14A1F22D0060A510 /* XMLRPCConnectionManager.m */,
+				E1764A34149A12BA0012F7E4 /* XMLRPCDataCleaner.h */,
+				E1764A35149A12BA0012F7E4 /* XMLRPCDataCleaner.m */,
 				837614EE120A7FB2005CCB33 /* XMLRPCEncoder.h */,
 				837614EF120A7FB2005CCB33 /* XMLRPCEncoder.m */,
-				837614F0120A7FB2005CCB33 /* XMLRPCExtensions.h */,
-				837614F1120A7FB2005CCB33 /* XMLRPCExtensions.m */,
+				E12F55ED14A1F22D0060A510 /* XMLRPCEventBasedParser.h */,
+				E12F55EE14A1F22D0060A510 /* XMLRPCEventBasedParser.m */,
+				E12F55EF14A1F22D0060A510 /* XMLRPCEventBasedParserDelegate.h */,
+				E12F55F014A1F22D0060A510 /* XMLRPCEventBasedParserDelegate.m */,
 				837614F2120A7FB2005CCB33 /* XMLRPCRequest.h */,
 				837614F3120A7FB2005CCB33 /* XMLRPCRequest.m */,
 				837614F4120A7FB2005CCB33 /* XMLRPCResponse.h */,
 				837614F5120A7FB2005CCB33 /* XMLRPCResponse.m */,
-				837614F6120A7FB2005CCB33 /* XMLValueDecoder.h */,
-				837614F7120A7FB2005CCB33 /* XMLValueDecoder.m */,
-				E1764A34149A12BA0012F7E4 /* XMLRPCDataCleaner.h */,
-				E1764A35149A12BA0012F7E4 /* XMLRPCDataCleaner.m */,
 			);
 			name = XMLRPC;
+			path = Vendor/xmlrpc;
 			sourceTree = "<group>";
 		};
 		8388FA801269580400304909 /* TouchXML */ = {
@@ -2075,6 +2082,26 @@
 				E1B62A7E13AA8D7700A6FCA4 /* italic~ipad.png */,
 			);
 			name = "Rich Text Editor";
+			sourceTree = "<group>";
+		};
+		E12F55F614A1F2350060A510 /* Additions */ = {
+			isa = PBXGroup;
+			children = (
+				E12F55E614A1F22D0060A510 /* NSDataAdditions.h */,
+				E12F55E714A1F22D0060A510 /* NSDataAdditions.m */,
+				E12F55E814A1F22D0060A510 /* NSStringAdditions.h */,
+				E12F55E914A1F22D0060A510 /* NSStringAdditions.m */,
+			);
+			name = Additions;
+			sourceTree = "<group>";
+		};
+		E12F55F714A1F2640060A510 /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				E1F807F714641AC700726BC7 /* AFNetworking */,
+				837614E8120A7FA3005CCB33 /* XMLRPC */,
+			);
+			name = Vendor;
 			sourceTree = "<group>";
 		};
 		E159D1011309AAF200F498E2 /* Migrations */ = {
@@ -2694,12 +2721,9 @@
 				83241CF61208B26D00F0DA59 /* WPMediaUploader.m in Sources */,
 				832D4F53120A71EE001708D4 /* RegexKitLite.m in Sources */,
 				837614F8120A7FB2005CCB33 /* XMLRPCConnection.m in Sources */,
-				837614F9120A7FB2005CCB33 /* XMLRPCDecoder.m in Sources */,
 				837614FA120A7FB2005CCB33 /* XMLRPCEncoder.m in Sources */,
-				837614FB120A7FB2005CCB33 /* XMLRPCExtensions.m in Sources */,
 				837614FC120A7FB2005CCB33 /* XMLRPCRequest.m in Sources */,
 				837614FD120A7FB2005CCB33 /* XMLRPCResponse.m in Sources */,
-				837614FE120A7FB2005CCB33 /* XMLValueDecoder.m in Sources */,
 				838C672E1210C3C300B09CA3 /* Post.m in Sources */,
 				8383178812270E980047B476 /* PostMediaViewController.m in Sources */,
 				834CAE7C122D528A003DDF49 /* UIImage+Resize.m in Sources */,
@@ -2816,6 +2840,11 @@
 				FD0D42E8149A0B5500F5E115 /* InAppSettingsReader.m in Sources */,
 				FD0D42E9149A0B5500F5E115 /* InAppSettingsSpecifier.m in Sources */,
 				E1764A36149A12BA0012F7E4 /* XMLRPCDataCleaner.m in Sources */,
+				E12F55F114A1F22D0060A510 /* NSDataAdditions.m in Sources */,
+				E12F55F214A1F22D0060A510 /* NSStringAdditions.m in Sources */,
+				E12F55F314A1F22D0060A510 /* XMLRPCConnectionManager.m in Sources */,
+				E12F55F414A1F22D0060A510 /* XMLRPCEventBasedParser.m in Sources */,
+				E12F55F514A1F22D0060A510 /* XMLRPCEventBasedParserDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
