@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AlternativeDateFormatsTestCase</key>
+	<array>
+		<date>2009-12-02T01:49:00Z</date>
+		<date>2009-12-02T01:50:00Z</date>
+	</array>
+	<key>DefaultTypeTestCase</key>
+	<string>Hello World!</string>
+	<key>EmptyBooleanTestCase</key>
+	<integer>0</integer>
+	<key>EmptyDataTestCase</key>
+	<data></data>
+	<key>EmptyDoubleTestCase</key>
+	<integer>0</integer>
+	<key>EmptyIntegerTestCase</key>
+	<integer>0</integer>
+	<key>EmptyStringTestCase</key>
+	<string></string>
+	<key>SimpleArrayTestCase</key>
+	<array>
+		<string>Hello World!</string>
+		<integer>42</integer>
+		<real>3.14</real>
+		<integer>1</integer>
+		<date>2009-07-18T21:34:00Z</date>
+		<data>eW91IGNhbid0IHJlYWQgdGhpcyE=</data>
+	</array>
+	<key>SimpleStructTestCase</key>
+	<dict>
+		<key>Name</key>
+		<string>Eric Czarny</string>
+		<key>Birthday</key>
+		<date>1984-04-15T05:00:00Z</date>
+		<key>Age</key>
+		<integer>25</integer>
+	</dict>
+</dict>
+</plist>

@@ -1,0 +1,19 @@
+<?xml version='1.0'?>
+<methodResponse>
+  <params>
+    <param>
+      <value>
+        <array>
+          <data>
+            <value><string>Hello World!</string></value>
+            <value><int>42</int></value>
+            <value><double>3.14</double></value>
+            <value><boolean>1</boolean></value>
+            <value><dateTime.iso8601>20090718T17:34:00</dateTime.iso8601></value>
+            <value><base64>eW91IGNhbid0IHJlYWQgdGhpcyE=</base64></value>
+          </data>
+        </array>
+      </value>
+    </param>
+  </params>
+</methodResponse>

@@ -1,0 +1,6 @@
+#include "Common.xcconfig"
+
+DEBUG_INFORMATION_FORMAT = dwarf
+
+GCC_DYNAMIC_NO_PIC = NO
+GCC_OPTIMIZATION_LEVEL = 0

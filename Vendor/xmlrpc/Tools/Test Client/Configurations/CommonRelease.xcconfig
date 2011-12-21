@@ -1,0 +1,5 @@
+#include "Common.xcconfig"
+
+DEBUG_INFORMATION_FORMAT = dwarf-with-dsym
+
+GCC_OPTIMIZATION_LEVEL = s

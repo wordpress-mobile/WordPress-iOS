@@ -1,0 +1,401 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		070043021144653D000D05B6 /* TestClient.xib in Resources */ = {isa = PBXBuildFile; fileRef = 070043001144653D000D05B6 /* TestClient.xib */; };
+		070043051144656D000D05B6 /* TestClientXMLParserWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 070043031144656D000D05B6 /* TestClientXMLParserWindow.xib */; };
+		0700430C11446593000D05B6 /* TestClientMainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0700430A11446593000D05B6 /* TestClientMainWindow.xib */; };
+		070043131144667B000D05B6 /* TestClientApplicationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0700430E1144667B000D05B6 /* TestClientApplicationController.m */; };
+		070043141144667B000D05B6 /* TestClientMainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 070043101144667B000D05B6 /* TestClientMainWindowController.m */; };
+		070043151144667B000D05B6 /* TestClientXMLParserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 070043121144667B000D05B6 /* TestClientXMLParserWindowController.m */; };
+		07E6DAB013679C6E00454D31 /* XMLRPC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E6DAA513679B7600454D31 /* XMLRPC.framework */; };
+		07E6DAB213679F3000454D31 /* XMLRPC.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 07E6DAA513679B7600454D31 /* XMLRPC.framework */; };
+		2DC70E311004D90100BBEEA6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2DC70E2F1004D90100BBEEA6 /* InfoPlist.strings */; };
+		2DC70E381004D90F00BBEEA6 /* Common.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2DC70E321004D90F00BBEEA6 /* Common.xcconfig */; };
+		2DC70E391004D90F00BBEEA6 /* CommonDevelopment.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2DC70E331004D90F00BBEEA6 /* CommonDevelopment.xcconfig */; };
+		2DC70E3A1004D90F00BBEEA6 /* CommonRelease.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2DC70E341004D90F00BBEEA6 /* CommonRelease.xcconfig */; };
+		2DC70E3B1004D90F00BBEEA6 /* TestClientDevelopment.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2DC70E351004D90F00BBEEA6 /* TestClientDevelopment.xcconfig */; };
+		2DC70E3C1004D90F00BBEEA6 /* TestClientRelease.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2DC70E361004D90F00BBEEA6 /* TestClientRelease.xcconfig */; };
+		2DC70E3D1004D90F00BBEEA6 /* TestClient.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2DC70E371004D90F00BBEEA6 /* TestClient.xcconfig */; };
+		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		07E6DAB113679F1400454D31 /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				07E6DAB213679F3000454D31 /* XMLRPC.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		070043011144653D000D05B6 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Languages/English.lproj/TestClient.xib; sourceTree = "<group>"; };
+		070043041144656D000D05B6 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Languages/English.lproj/TestClientXMLParserWindow.xib; sourceTree = "<group>"; };
+		0700430B11446593000D05B6 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Languages/English.lproj/TestClientMainWindow.xib; sourceTree = "<group>"; };
+		0700430D1144667B000D05B6 /* TestClientApplicationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestClientApplicationController.h; sourceTree = "<group>"; };
+		0700430E1144667B000D05B6 /* TestClientApplicationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestClientApplicationController.m; sourceTree = "<group>"; };
+		0700430F1144667B000D05B6 /* TestClientMainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestClientMainWindowController.h; sourceTree = "<group>"; };
+		070043101144667B000D05B6 /* TestClientMainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestClientMainWindowController.m; sourceTree = "<group>"; };
+		070043111144667B000D05B6 /* TestClientXMLParserWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestClientXMLParserWindowController.h; sourceTree = "<group>"; };
+		070043121144667B000D05B6 /* TestClientXMLParserWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestClientXMLParserWindowController.m; sourceTree = "<group>"; };
+		0759A73511434C0D000DFE98 /* XMLRPCEventBasedParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XMLRPCEventBasedParser.h; path = ../../XMLRPCEventBasedParser.h; sourceTree = SOURCE_ROOT; };
+		0759A73C11434C3C000DFE98 /* XMLRPCEventBasedParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XMLRPCEventBasedParserDelegate.h; path = ../../XMLRPCEventBasedParserDelegate.h; sourceTree = SOURCE_ROOT; };
+		07E6DAA513679B7600454D31 /* XMLRPC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XMLRPC.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/XMLRPC-gcawxlhfrkyvgjeolligeasrfeux/Build/Products/Development/XMLRPC.framework"; sourceTree = "<group>"; };
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		2DC70E301004D90100BBEEA6 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = Languages/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2DC70E321004D90F00BBEEA6 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = Configurations/Common.xcconfig; sourceTree = "<group>"; };
+		2DC70E331004D90F00BBEEA6 /* CommonDevelopment.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = CommonDevelopment.xcconfig; path = Configurations/CommonDevelopment.xcconfig; sourceTree = "<group>"; };
+		2DC70E341004D90F00BBEEA6 /* CommonRelease.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = CommonRelease.xcconfig; path = Configurations/CommonRelease.xcconfig; sourceTree = "<group>"; };
+		2DC70E351004D90F00BBEEA6 /* TestClientDevelopment.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = TestClientDevelopment.xcconfig; path = Configurations/TestClientDevelopment.xcconfig; sourceTree = "<group>"; };
+		2DC70E361004D90F00BBEEA6 /* TestClientRelease.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = TestClientRelease.xcconfig; path = Configurations/TestClientRelease.xcconfig; sourceTree = "<group>"; };
+		2DC70E371004D90F00BBEEA6 /* TestClient.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = TestClient.xcconfig; path = Configurations/TestClient.xcconfig; sourceTree = "<group>"; };
+		32CA4F630368D1EE00C91783 /* TestClient.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestClient.pch; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* TestClient-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "TestClient-Info.plist"; sourceTree = "<group>"; };
+		8D1107320486CEB800E47090 /* Test Client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Test Client.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				07E6DAB013679C6E00454D31 /* XMLRPC.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0759A75B11434CC8000DFE98 /* Private Headers */ = {
+			isa = PBXGroup;
+			children = (
+				0759A73511434C0D000DFE98 /* XMLRPCEventBasedParser.h */,
+				0759A73C11434C3C000DFE98 /* XMLRPCEventBasedParserDelegate.h */,
+			);
+			name = "Private Headers";
+			sourceTree = "<group>";
+		};
+		080E96DDFE201D6D7F000001 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				0700430D1144667B000D05B6 /* TestClientApplicationController.h */,
+				0700430E1144667B000D05B6 /* TestClientApplicationController.m */,
+				0700430F1144667B000D05B6 /* TestClientMainWindowController.h */,
+				070043101144667B000D05B6 /* TestClientMainWindowController.m */,
+				070043111144667B000D05B6 /* TestClientXMLParserWindowController.h */,
+				070043121144667B000D05B6 /* TestClientXMLParserWindowController.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				07E6DAA513679B7600454D31 /* XMLRPC.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+				13E42FB307B3F0F600E4EEF1 /* CoreData.framework */,
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* Test Client.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* Test Client */ = {
+			isa = PBXGroup;
+			children = (
+				080E96DDFE201D6D7F000001 /* Classes */,
+				0759A75B11434CC8000DFE98 /* Private Headers */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = "Test Client";
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				29B97316FDCFA39411CA2CEA /* main.m */,
+				32CA4F630368D1EE00C91783 /* TestClient.pch */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				2DC70E201004D85400BBEEA6 /* Configurations */,
+				2DC70E211004D85C00BBEEA6 /* Interface Builder */,
+				2DC70E221004D86F00BBEEA6 /* Localized Strings */,
+				2DC70E231004D87A00BBEEA6 /* Property Lists */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2DC70E201004D85400BBEEA6 /* Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				2DC70E321004D90F00BBEEA6 /* Common.xcconfig */,
+				2DC70E331004D90F00BBEEA6 /* CommonDevelopment.xcconfig */,
+				2DC70E341004D90F00BBEEA6 /* CommonRelease.xcconfig */,
+				2DC70E351004D90F00BBEEA6 /* TestClientDevelopment.xcconfig */,
+				2DC70E361004D90F00BBEEA6 /* TestClientRelease.xcconfig */,
+				2DC70E371004D90F00BBEEA6 /* TestClient.xcconfig */,
+			);
+			name = Configurations;
+			sourceTree = "<group>";
+		};
+		2DC70E211004D85C00BBEEA6 /* Interface Builder */ = {
+			isa = PBXGroup;
+			children = (
+				070043001144653D000D05B6 /* TestClient.xib */,
+				0700430A11446593000D05B6 /* TestClientMainWindow.xib */,
+				070043031144656D000D05B6 /* TestClientXMLParserWindow.xib */,
+			);
+			name = "Interface Builder";
+			sourceTree = "<group>";
+		};
+		2DC70E221004D86F00BBEEA6 /* Localized Strings */ = {
+			isa = PBXGroup;
+			children = (
+				2DC70E2F1004D90100BBEEA6 /* InfoPlist.strings */,
+			);
+			name = "Localized Strings";
+			sourceTree = "<group>";
+		};
+		2DC70E231004D87A00BBEEA6 /* Property Lists */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107310486CEB800E47090 /* TestClient-Info.plist */,
+			);
+			name = "Property Lists";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* Test Client */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Test Client" */;
+			buildPhases = (
+				8D1107290486CEB800E47090 /* Resources */,
+				07E6DAB113679F1400454D31 /* Copy Frameworks */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+				0759A72C11434B8D000DFE98 /* Run Script: Include Git commit hash */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Test Client";
+			productInstallPath = "$(HOME)/Applications";
+			productName = "XMLRPC Client";
+			productReference = 8D1107320486CEB800E47090 /* Test Client.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Test Client" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 29B97314FDCFA39411CA2CEA /* Test Client */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D1107260486CEB800E47090 /* Test Client */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2DC70E381004D90F00BBEEA6 /* Common.xcconfig in Resources */,
+				2DC70E391004D90F00BBEEA6 /* CommonDevelopment.xcconfig in Resources */,
+				2DC70E3A1004D90F00BBEEA6 /* CommonRelease.xcconfig in Resources */,
+				2DC70E311004D90100BBEEA6 /* InfoPlist.strings in Resources */,
+				2DC70E3D1004D90F00BBEEA6 /* TestClient.xcconfig in Resources */,
+				070043021144653D000D05B6 /* TestClient.xib in Resources */,
+				2DC70E3B1004D90F00BBEEA6 /* TestClientDevelopment.xcconfig in Resources */,
+				0700430C11446593000D05B6 /* TestClientMainWindow.xib in Resources */,
+				2DC70E3C1004D90F00BBEEA6 /* TestClientRelease.xcconfig in Resources */,
+				070043051144656D000D05B6 /* TestClientXMLParserWindow.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0759A72C11434B8D000DFE98 /* Run Script: Include Git commit hash */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script: Include Git commit hash";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /usr/bin/ruby;
+			shellScript = "raise \"Must be executed from within Xcode.\" unless ENV['XCODE_VERSION_ACTUAL']\n\ninfo_plist = \"#{ENV['BUILT_PRODUCTS_DIR']}/#{ENV['WRAPPER_NAME']}/Contents/Info.plist\"\n\nif !File.exist?('/usr/local/bin/git')\n    exit\nend\n\ncommit = `/usr/local/bin/git rev-parse --short HEAD`.chomp!\n\nif commit.nil? or commit.empty?\n    exit\nend\n\nlines = IO.readlines(info_plist).join\n\nlines.gsub! /(<key>CFBundleShortVersionString<\\/key>\\n\\t)<string>(\\d+\\.\\d+(?:\\.\\d)*[a-z])<\\/string>/, \"\\\\1<string>\\\\2 rev. #{commit}</string>\"\n\nFile.open(info_plist, 'w') { |f| f.puts lines }";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072D0486CEB800E47090 /* main.m in Sources */,
+				070043131144667B000D05B6 /* TestClientApplicationController.m in Sources */,
+				070043141144667B000D05B6 /* TestClientMainWindowController.m in Sources */,
+				070043151144667B000D05B6 /* TestClientXMLParserWindowController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		070043001144653D000D05B6 /* TestClient.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				070043011144653D000D05B6 /* English */,
+			);
+			name = TestClient.xib;
+			sourceTree = "<group>";
+		};
+		070043031144656D000D05B6 /* TestClientXMLParserWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				070043041144656D000D05B6 /* English */,
+			);
+			name = TestClientXMLParserWindow.xib;
+			sourceTree = "<group>";
+		};
+		0700430A11446593000D05B6 /* TestClientMainWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0700430B11446593000D05B6 /* English */,
+			);
+			name = TestClientMainWindow.xib;
+			sourceTree = "<group>";
+		};
+		2DC70E2F1004D90100BBEEA6 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2DC70E301004D90100BBEEA6 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C01FCF4B08A954540054247B /* Development */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2DC70E351004D90F00BBEEA6 /* TestClientDevelopment.xcconfig */;
+			buildSettings = {
+				INFOPLIST_FILE = "TestClient-Info.plist";
+			};
+			name = Development;
+		};
+		C01FCF4C08A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2DC70E361004D90F00BBEEA6 /* TestClientRelease.xcconfig */;
+			buildSettings = {
+				INFOPLIST_FILE = "TestClient-Info.plist";
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Development */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2DC70E331004D90F00BBEEA6 /* CommonDevelopment.xcconfig */;
+			buildSettings = {
+			};
+			name = Development;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2DC70E341004D90F00BBEEA6 /* CommonRelease.xcconfig */;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Test Client" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4B08A954540054247B /* Development */,
+				C01FCF4C08A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Test Client" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Development */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

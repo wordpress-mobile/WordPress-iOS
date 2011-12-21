@@ -1,0 +1,7 @@
+PRODUCT_NAME = Test Client
+INFOPLIST_FILE = TestClient-Info.plist
+
+GCC_PRECOMPILE_PREFIX_HEADER = YES
+GCC_PREFIX_HEADER = TestClient.pch
+
+INSTALL_PATH = /Applications

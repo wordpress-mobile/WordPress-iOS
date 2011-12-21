@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="test-server" default="run">
+    <property file="build.properties" />
+    
+    <target name="init">
+        <mkdir dir="${build.classes.directory}" />
+    </target>
+    
+    <target name="compile" depends="init">
+        <javac srcdir="${project.source.directory}" destdir="${build.classes.directory}" debug="${compiler.debug}">
+            <classpath>
+                <fileset dir="lib">
+                    <include name="**/*.jar" />
+                </fileset>
+            </classpath>
+        </javac>
+    </target>
+    
+    <target name="-pre-jar">
+        <mkdir dir="${distribution.directory}" />
+    </target>
+    
+    <target name="jar" depends="compile, -pre-jar">
+        <jar jarfile="${distribution.jar}" basedir="${build.classes.directory}" compress="${jar.compress}">
+            <fileset dir="${resources.directory}">
+                <include name="handlers.properties" />
+                <include name="log4j.xml" />
+            </fileset>
+            <manifest>
+                <attribute name="Main-Class" value="${project.main}" />
+                <attribute name="Class-Path" value=". ${project.libraries}" />
+            </manifest>
+        </jar>
+    </target>
+    
+    <target name="run" depends="jar">
+        <java jar="${distribution.jar}" fork="yes" />
+    </target>
+    
+    <target name="install" depends="jar">
+        <echo>Stub for project installation.</echo>
+    </target>
+    
+    <target name="clean">
+        <delete dir="${build.classes.directory}" />
+        <delete file="${distribution.jar}" />
+    </target>
+</project>
