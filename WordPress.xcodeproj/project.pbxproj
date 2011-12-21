@@ -1284,7 +1284,6 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				FD0D42C2149A0B5500F5E115 /* InAppSettings */,
 				E1F808221464205100726BC7 /* WPAFNetworking.h */,
 				8388FA801269580400304909 /* TouchXML */,
 				834CE85F1256E7EE0046A4A3 /* ASIHTTPRequest */,
@@ -2099,6 +2098,7 @@
 			isa = PBXGroup;
 			children = (
 				E1F807F714641AC700726BC7 /* AFNetworking */,
+				FD0D42C2149A0B5500F5E115 /* InAppSettings */,
 				837614E8120A7FA3005CCB33 /* XMLRPC */,
 			);
 			name = Vendor;
