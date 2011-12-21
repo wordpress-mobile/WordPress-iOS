@@ -7,6 +7,7 @@
 //
 
 #import "WPWebViewController.h"
+#import "WordPressAppDelegate.h"
 
 @interface WPWebViewController (Private)
 - (NSString*) getDocumentPermalink;

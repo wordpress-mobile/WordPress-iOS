@@ -52,9 +52,9 @@
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];    
 	[request addRequestHeader:@"User-Agent" value:[appDelegate applicationUserAgent]];
 	
-	XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
-	[xmlrpcRequest setMethod:@"wp.getUsersBlogs" withObjects:[NSArray arrayWithObjects:username, password, nil]];
-	[request appendPostData:[[xmlrpcRequest source] dataUsingEncoding:NSUTF8StringEncoding]];
+	XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:xmlrpc]];
+	[xmlrpcRequest setMethod:@"wp.getUsersBlogs" withParameters:[NSArray arrayWithObjects:username, password, nil]];
+	[request appendPostData:[[xmlrpcRequest body] dataUsingEncoding:NSUTF8StringEncoding]];
 	[request startSynchronous];
 	[xmlrpcRequest release];
 	
@@ -89,9 +89,9 @@
     else
         xmlrpc = [NSString stringWithFormat:@"%@/xmlrpc.php", url];
     
-    XMLRPCRequest *req = [[[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]] autorelease];
+    XMLRPCRequest *req = [[[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:xmlrpc]] autorelease];
     NSArray *result;
-    [req setMethod:@"system.listMethods" withObjects:[NSArray array]];
+    [req setMethod:@"system.listMethods" withParameters:[NSArray array]];
 
     retryOnTimeout = YES;
     result = [self executeXMLRPCRequest:req];
@@ -109,7 +109,7 @@
     }
     
     // Normal way failed, let's see if url was already a xmlrpc endpoint
-    [req setHost:[NSURL URLWithString:url]];
+    [req setURL:[NSURL URLWithString:url]];
     result = [self executeXMLRPCRequest:req];
     if(![result isKindOfClass:[NSError class]]) {
 		[FileLogger log:@"%@ %@ -> %@", self, NSStringFromSelector(_cmd), url];
@@ -150,7 +150,7 @@
         xmlrpc = [rsdURL stringByReplacingOccurrencesOfString:@"?rsd" withString:@""];
         WPLog(@"xmlrpc from rsd url: %@", xmlrpc);
         if (![xmlrpc isEqualToString:rsdURL]) {
-            [req setHost:[NSURL URLWithString:xmlrpc]];
+            [req setURL:[NSURL URLWithString:xmlrpc]];
             result = [self executeXMLRPCRequest:req];
             if(![result isKindOfClass:[NSError class]]) {
 				[FileLogger log:@"%@ %@ -> %@", self, NSStringFromSelector(_cmd), xmlrpc];
@@ -168,7 +168,7 @@
                     if([[[api attributeForName:@"name"] stringValue] isEqualToString:@"WordPress"]) {
                         // Bingo! We found the WordPress XML-RPC element
                         xmlrpc = [[api attributeForName:@"apiLink"] stringValue];
-                        [req setHost:[NSURL URLWithString:xmlrpc]];
+                        [req setURL:[NSURL URLWithString:xmlrpc]];
                         result = [self executeXMLRPCRequest:req];
                         if(![result isKindOfClass:[NSError class]]) {
 							[FileLogger log:@"%@ %@ -> %@", self, NSStringFromSelector(_cmd), xmlrpc];
@@ -190,8 +190,8 @@
 }
 
 - (void)registerForPushNotifications:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password token:(NSString *)token deviceUDID:(NSString *)deviceUDID {   
-    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
-    [xmlrpcRequest setMethod:@"wpcom.mobile_push_register_token" withObjects:[NSArray arrayWithObjects:username, password, token, deviceUDID, @"apple", nil]];
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:xmlrpc]];
+    [xmlrpcRequest setMethod:@"wpcom.mobile_push_register_token" withParameters:[NSArray arrayWithObjects:username, password, token, deviceUDID, @"apple", nil]];
     retryOnTimeout = YES;
     id result = [self executeXMLRPCRequest:xmlrpcRequest];
     
@@ -203,8 +203,8 @@
 }
 
 - (void)setBlogsForPushNotifications:(NSString *)xmlrpc username:(NSString *)username password:(NSString *)password token:(NSString *)token blogsID:(NSArray *) blogsID {   
-    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
-    [xmlrpcRequest setMethod:@"wpcom.mobile_push_set_blogs_list" withObjects:[NSArray arrayWithObjects:username, password, token, blogsID, @"apple", nil]];
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:xmlrpc]];
+    [xmlrpcRequest setMethod:@"wpcom.mobile_push_set_blogs_list" withParameters:[NSArray arrayWithObjects:username, password, token, blogsID, @"apple", nil]];
     retryOnTimeout = YES;
     id result = [self executeXMLRPCRequest:xmlrpcRequest];
     
@@ -228,8 +228,8 @@
 	NSMutableArray *usersBlogs = [[NSMutableArray alloc] init];
 		
 	@try {
-		XMLRPCRequest *xmlrpcUsersBlogs = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:xmlrpc]];
-		[xmlrpcUsersBlogs setMethod:@"wp.getUsersBlogs" withObjects:[NSArray arrayWithObjects:username, password, nil]];
+		XMLRPCRequest *xmlrpcUsersBlogs = [[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:xmlrpc]];
+		[xmlrpcUsersBlogs setMethod:@"wp.getUsersBlogs" withParameters:[NSArray arrayWithObjects:username, password, nil]];
         retryOnTimeout = YES;
 		NSArray *usersBlogsData = [self executeXMLRPCRequest:xmlrpcUsersBlogs];
         [xmlrpcUsersBlogs release];
@@ -287,10 +287,10 @@
 }
 
 - (NSMutableArray *)getRecentPostsForBlog:(Blog *)blog number:(NSNumber *)number {
-    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:blog.xmlrpc]];
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:blog.xmlrpc]];
     // TODO: use app-wide setting for number of posts
     NSArray *args = [NSArray arrayWithObject:number];
-	[xmlrpcRequest setMethod:@"metaWeblog.getRecentPosts" withObjects:[self getXMLRPCArgsForBlog:blog withExtraArgs:args]];
+	[xmlrpcRequest setMethod:@"metaWeblog.getRecentPosts" withParameters:[self getXMLRPCArgsForBlog:blog withExtraArgs:args]];
     retryOnTimeout = YES;
     NSArray *recentPosts = [self executeXMLRPCRequest:xmlrpcRequest];
 	[xmlrpcRequest release];
@@ -303,8 +303,8 @@
 }
 
 - (NSMutableArray *)getCategoriesForBlog:(Blog *)blog {
-    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:blog.xmlrpc]];
-	[xmlrpcRequest setMethod:@"wp.getCategories" withObjects:[self getXMLRPCArgsForBlog:blog withExtraArgs:nil]];
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:blog.xmlrpc]];
+	[xmlrpcRequest setMethod:@"wp.getCategories" withParameters:[self getXMLRPCArgsForBlog:blog withExtraArgs:nil]];
 	
     retryOnTimeout = YES;
     NSArray *categories = [self executeXMLRPCRequest:xmlrpcRequest];
@@ -319,8 +319,8 @@
 }
 
 - (NSMutableDictionary *)getOptionsForBlog:(Blog *)blog {
-    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:blog.xmlrpc]];
-	[xmlrpcRequest setMethod:@"wp.getOptions" withObjects:[self getXMLRPCArgsForBlog:blog withExtraArgs:nil]];
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:blog.xmlrpc]];
+	[xmlrpcRequest setMethod:@"wp.getOptions" withParameters:[self getXMLRPCArgsForBlog:blog withExtraArgs:nil]];
 	
     retryOnTimeout = YES;
     NSDictionary *options = [self executeXMLRPCRequest:xmlrpcRequest];
@@ -336,7 +336,7 @@
 
 
 - (NSMutableDictionary *)wpGetPostFormats:(Blog *)blog showSupported:(BOOL)showSupported {
-    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:blog.xmlrpc]];
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:blog.xmlrpc]];
     NSArray *extraArgs = nil;
     if( showSupported == YES ) {
         //adding extra args
@@ -344,7 +344,7 @@
       extraArgs = [NSArray arrayWithObject:requestedPostFormats];
     }
     
-	[xmlrpcRequest setMethod:@"wp.getPostFormats" withObjects:[self getXMLRPCArgsForBlog:blog withExtraArgs:extraArgs]];
+	[xmlrpcRequest setMethod:@"wp.getPostFormats" withParameters:[self getXMLRPCArgsForBlog:blog withExtraArgs:extraArgs]];
     retryOnTimeout = YES;
     NSMutableDictionary *postFormats = [self executeXMLRPCRequest:xmlrpcRequest];
 	[xmlrpcRequest release];
@@ -375,14 +375,14 @@
 #pragma mark -
 #pragma mark Category
 - (int)wpNewCategory:(Category *)category {
-    XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:category.blog.xmlrpc]];
+    XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:category.blog.xmlrpc]];
     NSDictionary *categoryDict = [NSDictionary dictionaryWithObjectsAndKeys:category.categoryName,
                                   @"name",
                                   category.parentID,
                                   @"parent_id",
                                   nil];
     NSArray *args = [NSArray arrayWithObject:categoryDict];
-    [request setMethod:@"wp.newCategory" withObjects:[self getXMLRPCArgsForBlog:category.blog withExtraArgs:args]];
+    [request setMethod:@"wp.newCategory" withParameters:[self getXMLRPCArgsForBlog:category.blog withExtraArgs:args]];
     retryOnTimeout = NO;
     NSNumber *categoryID = [self executeXMLRPCRequest:request];
     if (self.error) {
@@ -488,13 +488,13 @@
 
 // Returns post ID, -1 if unsuccessful
 - (int)mwNewPost:(Post *)post {
-    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:post.blog.xmlrpc]];
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:post.blog.xmlrpc]];
     NSMutableDictionary *postParams = [self getXMLRPCDictionaryForPost:post];
     if (post.specialType != nil) {
         [xmlrpcRequest setValue:post.specialType forHTTPHeaderField:@"WP-Quick-Post"];
     }
 
-    [xmlrpcRequest setMethod:@"metaWeblog.newPost" withObjects:[self getXMLRPCArgsForBlog:post.blog withExtraArgs:[NSArray arrayWithObject:postParams]]];
+    [xmlrpcRequest setMethod:@"metaWeblog.newPost" withParameters:[self getXMLRPCArgsForBlog:post.blog withExtraArgs:[NSArray arrayWithObject:postParams]]];
 
     retryOnTimeout = NO;
     id result = [self executeXMLRPCRequest:xmlrpcRequest];
@@ -508,10 +508,10 @@
 }
 
 - (BOOL)updateSinglePost:(Post *)post{
-    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:post.blog.xmlrpc]];
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:post.blog.xmlrpc]];
 	 NSMutableDictionary *postParams = [self getXMLRPCDictionaryForPost:post];
 	 NSArray *args = [NSArray arrayWithObjects:post.postID, post.blog.username, [self passwordForBlog:post.blog], postParams, nil];
-    [xmlrpcRequest setMethod:@"metaWeblog.getPost" withObjects:args];
+    [xmlrpcRequest setMethod:@"metaWeblog.getPost" withParameters:args];
     retryOnTimeout = NO;
     id result = [self executeXMLRPCRequest:xmlrpcRequest];
     if ([result isKindOfClass:[NSError class]]) {
@@ -528,11 +528,11 @@
         return NO;
     }
     
-    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:post.blog.xmlrpc]];
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:post.blog.xmlrpc]];
     NSMutableDictionary *postParams = [self getXMLRPCDictionaryForPost:post];
     NSArray *args = [NSArray arrayWithObjects:post.postID, post.blog.username, [self passwordForBlog:post.blog], postParams, nil];
     
-    [xmlrpcRequest setMethod:@"metaWeblog.editPost" withObjects:args];
+    [xmlrpcRequest setMethod:@"metaWeblog.editPost" withParameters:args];
     retryOnTimeout = NO;
     id result = [self executeXMLRPCRequest:xmlrpcRequest];
     if ([result isKindOfClass:[NSError class]]) {
@@ -550,10 +550,10 @@
         return YES;
     }
 
-    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:post.blog.xmlrpc]];
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:post.blog.xmlrpc]];
     NSArray *args = [NSArray arrayWithObjects:@"unused", post.postID, post.blog.username, [self passwordForBlog:post.blog], nil];
 
-    [xmlrpcRequest setMethod:@"metaWeblog.deletePost" withObjects:args];
+    [xmlrpcRequest setMethod:@"metaWeblog.deletePost" withParameters:args];
     retryOnTimeout = NO;
     id result = [self executeXMLRPCRequest:xmlrpcRequest];
     if ([result isKindOfClass:[NSError class]]) {
@@ -567,10 +567,10 @@
 #pragma mark -
 #pragma mark Page
 - (NSMutableArray *)wpGetPages:(Blog *)blog number:(NSNumber *)number {
-    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:blog.xmlrpc]];
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:blog.xmlrpc]];
     // TODO: use app-wide setting for number of posts
     NSArray *args = [NSArray arrayWithObject:number];
-	[xmlrpcRequest setMethod:@"wp.getPages" withObjects:[self getXMLRPCArgsForBlog:blog withExtraArgs:args]];
+	[xmlrpcRequest setMethod:@"wp.getPages" withParameters:[self getXMLRPCArgsForBlog:blog withExtraArgs:args]];
     retryOnTimeout = YES;
     NSArray *recentPages = [self executeXMLRPCRequest:xmlrpcRequest];
 	[xmlrpcRequest release];
@@ -583,10 +583,10 @@
 
 // Returns post ID, -1 if unsuccessful
 - (int)wpNewPage:(Page *)post {
-    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:post.blog.xmlrpc]];
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:post.blog.xmlrpc]];
     NSMutableDictionary *postParams = [self getXMLRPCDictionaryForPost:post];
     
-    [xmlrpcRequest setMethod:@"wp.newPage" withObjects:[self getXMLRPCArgsForBlog:post.blog withExtraArgs:[NSArray arrayWithObject:postParams]]];
+    [xmlrpcRequest setMethod:@"wp.newPage" withParameters:[self getXMLRPCArgsForBlog:post.blog withExtraArgs:[NSArray arrayWithObject:postParams]]];
     
     retryOnTimeout = NO;
     id result = [self executeXMLRPCRequest:xmlrpcRequest];
@@ -604,11 +604,11 @@
         return NO;
     }
     
-    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:post.blog.xmlrpc]];
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:post.blog.xmlrpc]];
     NSMutableDictionary *postParams = [self getXMLRPCDictionaryForPost:post];
     NSArray *args = [NSArray arrayWithObjects:post.blog.blogID, post.postID, post.blog.username, [self passwordForBlog:post.blog], postParams, nil];
     
-    [xmlrpcRequest setMethod:@"wp.getPage" withObjects:args];
+    [xmlrpcRequest setMethod:@"wp.getPage" withParameters:args];
     retryOnTimeout = YES;
     id result = [self executeXMLRPCRequest:xmlrpcRequest];
     if ([result isKindOfClass:[NSError class]]) {
@@ -625,11 +625,11 @@
         return NO;
     }
     
-    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:post.blog.xmlrpc]];
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:post.blog.xmlrpc]];
     NSMutableDictionary *postParams = [self getXMLRPCDictionaryForPost:post];
     NSArray *args = [NSArray arrayWithObjects:post.blog.blogID, post.postID, post.blog.username, [self passwordForBlog:post.blog], postParams, nil];
     
-    [xmlrpcRequest setMethod:@"wp.editPage" withObjects:args];
+    [xmlrpcRequest setMethod:@"wp.editPage" withParameters:args];
     retryOnTimeout = NO;
     id result = [self executeXMLRPCRequest:xmlrpcRequest];
     if ([result isKindOfClass:[NSError class]]) {
@@ -647,10 +647,10 @@
         return YES;
     }
     
-    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:post.blog.xmlrpc]];
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:post.blog.xmlrpc]];
     NSArray *args = [NSArray arrayWithObjects:post.blog.blogID, post.blog.username, [self passwordForBlog:post.blog], post.postID, nil];
     
-    [xmlrpcRequest setMethod:@"wp.deletePage" withObjects:args];
+    [xmlrpcRequest setMethod:@"wp.deletePage" withParameters:args];
     retryOnTimeout = NO;
     id result = [self executeXMLRPCRequest:xmlrpcRequest];
     if ([result isKindOfClass:[NSError class]]) {
@@ -680,11 +680,11 @@
 }
 
 - (NSMutableArray *)wpGetCommentsForBlog:(Blog *)blog {
-    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:blog.xmlrpc]];
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:blog.xmlrpc]];
     // TODO: use app-wide setting for number of posts
     NSDictionary *commentsStructure = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:100] forKey:@"number"];
     NSArray *args = [NSArray arrayWithObject:commentsStructure];
-	[xmlrpcRequest setMethod:@"wp.getComments" withObjects:[self getXMLRPCArgsForBlog:blog withExtraArgs:args]];
+	[xmlrpcRequest setMethod:@"wp.getComments" withParameters:[self getXMLRPCArgsForBlog:blog withExtraArgs:args]];
     retryOnTimeout = YES;
     NSArray *recentComments = [self executeXMLRPCRequest:xmlrpcRequest];
 	[xmlrpcRequest release];
@@ -696,11 +696,11 @@
 }
 
 - (NSNumber *)wpNewComment:(Comment *)comment {
-    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:comment.blog.xmlrpc]];
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:comment.blog.xmlrpc]];
     NSMutableDictionary *commentParams = [self getXMLRPCDictionaryForComment:comment];
     NSArray *args = [NSArray arrayWithObjects:comment.blog.blogID, comment.blog.username, [self passwordForBlog:comment.blog], comment.postID, commentParams, nil];
     
-    [xmlrpcRequest setMethod:@"wp.newComment" withObjects:args];
+    [xmlrpcRequest setMethod:@"wp.newComment" withParameters:args];
     retryOnTimeout = NO;
     NSNumber *result = [self executeXMLRPCRequest:xmlrpcRequest];
     if ([result isKindOfClass:[NSError class]]) {
@@ -716,11 +716,11 @@
         return NO;
     }
     
-    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:comment.blog.xmlrpc]];
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:comment.blog.xmlrpc]];
     NSMutableDictionary *commentParams = [self getXMLRPCDictionaryForComment:comment];
     NSArray *args = [NSArray arrayWithObjects:comment.blog.blogID, comment.blog.username, [self passwordForBlog:comment.blog], comment.commentID, commentParams, nil];
     
-    [xmlrpcRequest setMethod:@"wp.editComment" withObjects:args];
+    [xmlrpcRequest setMethod:@"wp.editComment" withParameters:args];
     retryOnTimeout = NO;
     id result = [self executeXMLRPCRequest:xmlrpcRequest];
     if ([result isKindOfClass:[NSError class]]) {
@@ -736,11 +736,11 @@
         return NO;
     }
     
-    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:comment.blog.xmlrpc]];
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:comment.blog.xmlrpc]];
     NSMutableDictionary *commentParams = [self getXMLRPCDictionaryForComment:comment];
     NSArray *args = [NSArray arrayWithObjects:comment.blog.blogID, comment.blog.username, [self passwordForBlog:comment.blog], comment.commentID, commentParams, nil];
     
-    [xmlrpcRequest setMethod:@"wp.getComment" withObjects:args];
+    [xmlrpcRequest setMethod:@"wp.getComment" withParameters:args];
     retryOnTimeout = YES;
     id result = [self executeXMLRPCRequest:xmlrpcRequest];
     if ([result isKindOfClass:[NSError class]]) {
@@ -757,10 +757,10 @@
     if (comment.commentID == nil)
         return YES;
     
-    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:comment.blog.xmlrpc]];
+    XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:comment.blog.xmlrpc]];
     NSArray *args = [NSArray arrayWithObjects:comment.blog.blogID, comment.blog.username, [self passwordForBlog:comment.blog], comment.commentID, nil];
     
-    [xmlrpcRequest setMethod:@"wp.deleteComment" withObjects:args];
+    [xmlrpcRequest setMethod:@"wp.deleteComment" withParameters:args];
     retryOnTimeout = NO;
     id result = [self executeXMLRPCRequest:xmlrpcRequest];
     if ([result isKindOfClass:[NSError class]]) {
@@ -792,8 +792,8 @@
 }
 
 - (id)executeXMLRPCRequest:(XMLRPCRequest *)req {
-	[FileLogger log:@"%@ %@ %@ %@", self, NSStringFromSelector(_cmd), [req method], [req host]];
-	ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:[req host]];
+	[FileLogger log:@"%@ %@ %@ %@", self, NSStringFromSelector(_cmd), [req method], [req URL]];
+	ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:[req URL]];
 	[request setRequestMethod:@"POST"];
 	[request setShouldPresentCredentialsBeforeChallenge:YES];
 	[request setShouldPresentAuthenticationDialog:YES];
@@ -818,8 +818,8 @@
         [request setNumberOfTimesToRetryOnTimeout:0];
     }
 	if(getenv("WPDebugXMLRPC"))
-		NSLog(@"executeXMLRPCRequest request: %@",[req source]);
-    [request appendPostData:[[req source] dataUsingEncoding:NSUTF8StringEncoding]];
+		NSLog(@"executeXMLRPCRequest request: %@",[req body]);
+    [request appendPostData:[[req body] dataUsingEncoding:NSUTF8StringEncoding]];
 	[request startSynchronous];
 	
 	//generic error
@@ -868,12 +868,8 @@
         err = (NSError *)res;
     } else {
         if ([res isFault]) {
-            NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:[res fault], NSLocalizedDescriptionKey, nil];
-            err = [NSError errorWithDomain:@"org.wordpress.iphone" code:[[res code] intValue] userInfo:usrInfo];
-        }
-		
-        if ([res isParseError]) {
-            err = [res object];
+            NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:[res faultString], NSLocalizedDescriptionKey, nil];
+            err = [NSError errorWithDomain:@"org.wordpress.iphone" code:[[res faultCode] intValue] userInfo:usrInfo];
         }
     }
     

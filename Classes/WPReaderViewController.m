@@ -9,6 +9,7 @@
 #import "WPReaderViewController.h"
 #import "WPWebViewController.h"
 #import "ASIHTTPRequest.h"
+#import "WordPressAppDelegate.h"
 
 #ifdef DEBUG
 #define kReaderRefreshThreshold 10*60 // 10min

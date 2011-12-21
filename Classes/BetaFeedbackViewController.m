@@ -104,7 +104,7 @@
 -(void) sendFeedbackInBackground{
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	if (![name.text isEqualToString:@""] && ![email.text isEqualToString:@""] && ![feedback.text isEqualToString:@""] && ![feedback.text isEqualToString:@"Feedback (required)"]) {
-		XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:@"http://iosbeta.wordpress.com/xmlrpc.php"]];
+		XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:@"http://iosbeta.wordpress.com/xmlrpc.php"]];
 		NSMutableDictionary *commentParams = [NSMutableDictionary dictionary];
 		
 		[commentParams setObject:feedback.text forKey:@"content"];
@@ -114,7 +114,7 @@
 		[commentParams setObject:name.text forKey:@"author"];
 		NSArray *args = [NSArray arrayWithObjects:@"15835028", @"", @"", @"153", commentParams, nil];
 		
-		[xmlrpcRequest setMethod:@"wp.newComment" withObjects:args];
+		[xmlrpcRequest setMethod:@"wp.newComment" withParameters:args];
 		NSNumber *result = [[WPDataController sharedInstance] executeXMLRPCRequest:xmlrpcRequest];
 		[xmlrpcRequest release];
 		if ([result isKindOfClass:[NSError class]]) {

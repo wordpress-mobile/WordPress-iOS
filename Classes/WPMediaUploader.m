@@ -544,13 +544,9 @@
         err = (NSError *)res;
     } else {
         if ([res isFault]) {
-            NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:[res fault], NSLocalizedDescriptionKey, nil];
-            err = [NSError errorWithDomain:@"org.wordpress.iphone" code:[[res code] intValue] userInfo:usrInfo];
-        }
-		
-        if ([res isParseError]) {
-            err = [res object];
-        }
+            NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:[res faultString], NSLocalizedDescriptionKey, nil];
+            err = [NSError errorWithDomain:@"org.wordpress.iphone" code:[[res faultCode] intValue] userInfo:usrInfo];
+        }		
     }
     
 	return err;

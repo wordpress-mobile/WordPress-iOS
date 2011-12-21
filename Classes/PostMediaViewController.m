@@ -1380,11 +1380,11 @@
 			[xmlrpcParams setObject:@"wpcom.getFeatures" forKey:kMETHOD];
 			[xmlrpcParams setObject:args forKey:kMETHODARGS];
 			
-			XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithHost:[NSURL URLWithString:[xmlrpcParams valueForKey:kURL]]];
-			[request setMethod:[xmlrpcParams valueForKey:kMETHOD] withObjects:[xmlrpcParams valueForKey:kMETHODARGS]];
+			XMLRPCRequest *request = [[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:[xmlrpcParams valueForKey:kURL]]];
+			[request setMethod:[xmlrpcParams valueForKey:kMETHOD] withParameters:[xmlrpcParams valueForKey:kMETHODARGS]];
 			[xmlrpcParams release];
 			
-			XMLRPCResponse *response = [XMLRPCConnection sendSynchronousXMLRPCRequest:request];
+			XMLRPCResponse *response = [XMLRPCConnection sendSynchronousXMLRPCRequest:request error:nil];
 			if ([response isKindOfClass:[NSError class]]) {
 				self.videoEnabled = YES;
 				self.isCheckingVideoCapability = NO;
