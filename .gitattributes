@@ -451,6 +451,8 @@ WordPress.xcodeproj/project.pbxproj -text
 /WordPress_Prefix.pch -text
 /XMLRPCConnection.h -text
 /XMLRPCConnection.m -text
+/XMLRPCDataCleaner.h -text
+/XMLRPCDataCleaner.m -text
 /XMLRPCDecoder.h -text
 /XMLRPCDecoder.m -text
 /XMLRPCEncoder.h -text

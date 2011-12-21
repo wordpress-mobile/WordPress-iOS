@@ -373,6 +373,7 @@
 		E16A0C3212E769A10049EA80 /* table_sep.png in Resources */ = {isa = PBXBuildFile; fileRef = E16A0C3012E769A10049EA80 /* table_sep.png */; };
 		E16A0C3312E769A10049EA80 /* table_sep@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E16A0C3112E769A10049EA80 /* table_sep@2x.png */; };
 		E17078FD130A95B600F30433 /* WordPress-1-2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = E17078FC130A95B600F30433 /* WordPress-1-2.xcmappingmodel */; };
+		E1764A36149A12BA0012F7E4 /* XMLRPCDataCleaner.m in Sources */ = {isa = PBXBuildFile; fileRef = E1764A35149A12BA0012F7E4 /* XMLRPCDataCleaner.m */; };
 		E177087913AAAD5800EA6C72 /* keyboardButton~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E177087813AAAD5800EA6C72 /* keyboardButton~ipad.png */; };
 		E177087E13AAC19700EA6C72 /* redo~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E177087A13AAC19700EA6C72 /* redo~ipad.png */; };
 		E177087F13AAC19700EA6C72 /* redoDisabled~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E177087B13AAC19700EA6C72 /* redoDisabled~ipad.png */; };
@@ -987,6 +988,8 @@
 		E16A0C3112E769A10049EA80 /* table_sep@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "table_sep@2x.png"; sourceTree = "<group>"; };
 		E16A7B76132150E700E6BD1E /* Info-beta.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-beta.plist"; sourceTree = "<group>"; };
 		E17078FC130A95B600F30433 /* WordPress-1-2.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = "WordPress-1-2.xcmappingmodel"; sourceTree = "<group>"; };
+		E1764A34149A12BA0012F7E4 /* XMLRPCDataCleaner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCDataCleaner.h; sourceTree = "<group>"; };
+		E1764A35149A12BA0012F7E4 /* XMLRPCDataCleaner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLRPCDataCleaner.m; sourceTree = "<group>"; };
 		E177087813AAAD5800EA6C72 /* keyboardButton~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboardButton~ipad.png"; sourceTree = "<group>"; };
 		E177087A13AAC19700EA6C72 /* redo~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "redo~ipad.png"; sourceTree = "<group>"; };
 		E177087B13AAC19700EA6C72 /* redoDisabled~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "redoDisabled~ipad.png"; sourceTree = "<group>"; };
@@ -1559,6 +1562,8 @@
 				837614F5120A7FB2005CCB33 /* XMLRPCResponse.m */,
 				837614F6120A7FB2005CCB33 /* XMLValueDecoder.h */,
 				837614F7120A7FB2005CCB33 /* XMLValueDecoder.m */,
+				E1764A34149A12BA0012F7E4 /* XMLRPCDataCleaner.h */,
+				E1764A35149A12BA0012F7E4 /* XMLRPCDataCleaner.m */,
 			);
 			name = XMLRPC;
 			sourceTree = "<group>";
@@ -2810,6 +2815,7 @@
 				FD0D42E7149A0B5500F5E115 /* InAppSettingsPSMultiValueSpecifierTable.m in Sources */,
 				FD0D42E8149A0B5500F5E115 /* InAppSettingsReader.m in Sources */,
 				FD0D42E9149A0B5500F5E115 /* InAppSettingsSpecifier.m in Sources */,
+				E1764A36149A12BA0012F7E4 /* XMLRPCDataCleaner.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
