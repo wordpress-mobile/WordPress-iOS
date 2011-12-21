@@ -429,6 +429,7 @@ Vendor/AFNetworking/iOS[!!-~]Example/Vendor/JSONKit/JSONKit.m -text
 Vendor/AFNetworking/iOS[!!-~]Example/Vendor/TTT/TTTLocationFormatter.h -text
 Vendor/AFNetworking/iOS[!!-~]Example/Vendor/TTT/TTTLocationFormatter.m -text
 Vendor/AFNetworking/iOS[!!-~]Example/main.m -text
+Vendor/libraries.txt -text
 /WPAFNetworking.h -text
 /WPAddCategoryViewController.xib -text
 /WPCategoriesController.xib -text
