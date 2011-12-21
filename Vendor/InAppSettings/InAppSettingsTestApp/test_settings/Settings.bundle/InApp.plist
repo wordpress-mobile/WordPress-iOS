@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>StringsTable</key>
+	<string>InApp</string>
+	<key>PreferenceSpecifiers</key>
+	<array>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>NORMALTITLE</string>
+			<key>InAppTitle</key>
+			<string>INAPPTITLE</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
+			<key>Title</key>
+			<string>Don&apos;t Open</string>
+			<key>InAppTitle</key>
+			<string>OPEN</string>
+			<key>Key</key>
+			<string>testUrl</string>
+			<key>DefaultValue</key>
+			<string>InScopeApps {+}</string>
+			<key>InAppURL</key>
+			<string>http://www.inscopeapps.com</string>
+		</dict>
+	</array>
+</dict>
+</plist>

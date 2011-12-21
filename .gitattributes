@@ -288,31 +288,6 @@ Creation/CXMLNode_CreationExtensions.m -text
 /Icon-dev@2x.png -text svneol=unset#unset
 /Icon.png -text svneol=unset#unset
 /Icon@2x.png -text svneol=unset#unset
-InAppSettings/Cells/InAppSettingsPSChildPaneSpecifierCell.h -text
-InAppSettings/Cells/InAppSettingsPSChildPaneSpecifierCell.m -text
-InAppSettings/Cells/InAppSettingsPSMultiValueSpecifierCell.h -text
-InAppSettings/Cells/InAppSettingsPSMultiValueSpecifierCell.m -text
-InAppSettings/Cells/InAppSettingsPSSliderSpecifierCell.h -text
-InAppSettings/Cells/InAppSettingsPSSliderSpecifierCell.m -text
-InAppSettings/Cells/InAppSettingsPSTextFieldSpecifierCell.h -text
-InAppSettings/Cells/InAppSettingsPSTextFieldSpecifierCell.m -text
-InAppSettings/Cells/InAppSettingsPSTitleValueSpecifierCell.h -text
-InAppSettings/Cells/InAppSettingsPSTitleValueSpecifierCell.m -text
-InAppSettings/Cells/InAppSettingsPSToggleSwitchSpecifierCell.h -text
-InAppSettings/Cells/InAppSettingsPSToggleSwitchSpecifierCell.m -text
-InAppSettings/Cells/InAppSettingsTableCell.h -text
-InAppSettings/Cells/InAppSettingsTableCell.m -text
-InAppSettings/InAppSettings.h -text
-InAppSettings/InAppSettings.m -text
-InAppSettings/InAppSettings.png -text
-InAppSettings/InAppSettings@2x.png -text
-InAppSettings/InAppSettingsConstants.h -text
-InAppSettings/InAppSettingsPSMultiValueSpecifierTable.h -text
-InAppSettings/InAppSettingsPSMultiValueSpecifierTable.m -text
-InAppSettings/InAppSettingsReader.h -text
-InAppSettings/InAppSettingsReader.m -text
-InAppSettings/InAppSettingsSpecifier.h -text
-InAppSettings/InAppSettingsSpecifier.m -text
 /Info-beta.plist -text
 /Info-dev.plist -text
 /Info.plist -text
@@ -429,6 +404,68 @@ Vendor/AFNetworking/iOS[!!-~]Example/Vendor/JSONKit/JSONKit.m -text
 Vendor/AFNetworking/iOS[!!-~]Example/Vendor/TTT/TTTLocationFormatter.h -text
 Vendor/AFNetworking/iOS[!!-~]Example/Vendor/TTT/TTTLocationFormatter.m -text
 Vendor/AFNetworking/iOS[!!-~]Example/main.m -text
+Vendor/InAppSettings/.hgignore -text
+Vendor/InAppSettings/Gear.chopList -text
+Vendor/InAppSettings/Gear.psd -text svneol=unset#unset
+Vendor/InAppSettings/Images/InAppSettings.png -text svneol=unset#unset
+Vendor/InAppSettings/Images/ibadd.png -text svneol=unset#unset
+Vendor/InAppSettings/Images/sourcetreeadd.png -text svneol=unset#unset
+Vendor/InAppSettings/Images/xcodeadd.png -text svneol=unset#unset
+Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsPSChildPaneSpecifierCell.h -text
+Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsPSChildPaneSpecifierCell.m -text
+Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsPSMultiValueSpecifierCell.h -text
+Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsPSMultiValueSpecifierCell.m -text
+Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsPSSliderSpecifierCell.h -text
+Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsPSSliderSpecifierCell.m -text
+Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsPSTextFieldSpecifierCell.h -text
+Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsPSTextFieldSpecifierCell.m -text
+Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsPSTitleValueSpecifierCell.h -text
+Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsPSTitleValueSpecifierCell.m -text
+Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsPSToggleSwitchSpecifierCell.h -text
+Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsPSToggleSwitchSpecifierCell.m -text
+Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsTableCell.h -text
+Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsTableCell.m -text
+Vendor/InAppSettings/InAppSettings/InAppSettings.h -text
+Vendor/InAppSettings/InAppSettings/InAppSettings.m -text
+Vendor/InAppSettings/InAppSettings/InAppSettings.png -text
+Vendor/InAppSettings/InAppSettings/InAppSettings@2x.png -text
+Vendor/InAppSettings/InAppSettings/InAppSettingsConstants.h -text
+Vendor/InAppSettings/InAppSettings/InAppSettingsPSMultiValueSpecifierTable.h -text
+Vendor/InAppSettings/InAppSettings/InAppSettingsPSMultiValueSpecifierTable.m -text
+Vendor/InAppSettings/InAppSettings/InAppSettingsReader.h -text
+Vendor/InAppSettings/InAppSettings/InAppSettingsReader.m -text
+Vendor/InAppSettings/InAppSettings/InAppSettingsSpecifier.h -text
+Vendor/InAppSettings/InAppSettings/InAppSettingsSpecifier.m -text
+Vendor/InAppSettings/InAppSettingsTestApp/Classes/AppDelegate.h -text
+Vendor/InAppSettings/InAppSettingsTestApp/Classes/AppDelegate.m -text
+Vendor/InAppSettings/InAppSettingsTestApp/Classes/RootViewController.h -text
+Vendor/InAppSettings/InAppSettingsTestApp/Classes/RootViewController.m -text
+Vendor/InAppSettings/InAppSettingsTestApp/InAppSettingsTestApp-Info.plist -text
+Vendor/InAppSettings/InAppSettingsTestApp/InAppSettingsTestApp.xcodeproj/project.pbxproj -text
+Vendor/InAppSettings/InAppSettingsTestApp/InAppSettingsTestApp_Prefix.pch -text
+Vendor/InAppSettings/InAppSettingsTestApp/MainWindow.xib -text
+Vendor/InAppSettings/InAppSettingsTestApp/main.m -text
+Vendor/InAppSettings/InAppSettingsTestApp/peter_settings/Settings.bundle/Root.plist -text
+Vendor/InAppSettings/InAppSettingsTestApp/peter_settings/Settings.bundle/en.lproj/Root.strings -text svneol=unset#unset
+Vendor/InAppSettings/InAppSettingsTestApp/peter_settings/Settings.bundle/vehicles.plist -text
+Vendor/InAppSettings/InAppSettingsTestApp/pretty_settings/Settings.bundle/Root.plist -text
+Vendor/InAppSettings/InAppSettingsTestApp/pretty_settings/Settings.bundle/en.lproj/Root.strings -text
+Vendor/InAppSettings/InAppSettingsTestApp/pretty_settings/Settings.bundle/largefont.png -text svneol=unset#unset
+Vendor/InAppSettings/InAppSettingsTestApp/pretty_settings/Settings.bundle/largefont@2x.png -text svneol=unset#unset
+Vendor/InAppSettings/InAppSettingsTestApp/pretty_settings/Settings.bundle/smallfont.png -text svneol=unset#unset
+Vendor/InAppSettings/InAppSettingsTestApp/pretty_settings/Settings.bundle/smallfont@2x.png -text svneol=unset#unset
+Vendor/InAppSettings/InAppSettingsTestApp/test_settings/Settings.bundle/ChildPane.plist -text
+Vendor/InAppSettings/InAppSettingsTestApp/test_settings/Settings.bundle/InApp.plist -text
+Vendor/InAppSettings/InAppSettingsTestApp/test_settings/Settings.bundle/Root.plist -text
+Vendor/InAppSettings/InAppSettingsTestApp/test_settings/Settings.bundle/bigdot.png -text svneol=unset#unset
+Vendor/InAppSettings/InAppSettingsTestApp/test_settings/Settings.bundle/bigdot@2x.png -text svneol=unset#unset
+Vendor/InAppSettings/InAppSettingsTestApp/test_settings/Settings.bundle/en.lproj/ChildPane.strings -text
+Vendor/InAppSettings/InAppSettingsTestApp/test_settings/Settings.bundle/en.lproj/InApp.strings -text
+Vendor/InAppSettings/InAppSettingsTestApp/test_settings/Settings.bundle/en.lproj/Root.strings -text
+Vendor/InAppSettings/InAppSettingsTestApp/test_settings/Settings.bundle/littledot.png -text svneol=unset#unset
+Vendor/InAppSettings/InAppSettingsTestApp/test_settings/Settings.bundle/littledot@2x.png -text svneol=unset#unset
+Vendor/InAppSettings/LICENSE -text
+Vendor/InAppSettings/README.md -text
 Vendor/libraries.txt -text
 Vendor/xmlrpc/Configurations/Common.xcconfig -text
 Vendor/xmlrpc/Configurations/CommonDevelopment.xcconfig -text

@@ -1,0 +1,11 @@
+/* A single strings file, whose title is specified in your preferences schema. The strings files provide the localized content to display to the user for each of your preferences. */
+
+"Real Numbers" = "R34l Numb3rs";
+"No File" = "No F1le";
+"Cap Sentences, AC=YES" = "C4p S3nt3nc3s, AC=YES";
+"Colors" = "Co1or5";
+"NOLABEL" = "";
+
+"VALUE_ONE" = "Red1";
+"VALUE_TWO" = "Green2";
+"VALUE_THREE" = "Blue3";

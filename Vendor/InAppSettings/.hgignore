@@ -1,0 +1,20 @@
+syntax: glob
+*.orig
+*.rej
+*~
+*.o
+tests/*.err
+.DS_Store
+build
+.svn
+(*)
+*.perspectivev3
+*.mode1v3
+*.mode2v3
+*.mpkg
+*.framework
+*.pbxuser
+xcuserdata
+
+syntax: regexp
+.*\#.*\#$

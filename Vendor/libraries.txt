@@ -5,3 +5,7 @@ Version: 049fef588818e29e92128a08ae835aad3a33103b
 XMLRPC
 Source: https://github.com/koke/xmlrpc/tree/wordpress-ios
 Version: dec13ce4044a5a36717d77a661a542903d420176
+
+InAppSettings
+Source: https://github.com/InScopeApps/InAppSettings
+Version: 27706b96b8a7a21132ce8a89d287eff0298db682

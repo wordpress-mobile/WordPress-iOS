@@ -74,4 +74,4 @@
 #define InAppSettingsUseNewMultiValueLocation [[[UIDevice currentDevice] systemVersion] doubleValue] >= 4.0
 
 // if you dont want to display the footer set this to NO
-#define InAppSettingsDisplayPowered NO
+#define InAppSettingsDisplayPowered YES

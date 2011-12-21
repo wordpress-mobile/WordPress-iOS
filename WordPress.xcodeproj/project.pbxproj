@@ -2297,7 +2297,8 @@
 				FD0D42DB149A0B5500F5E115 /* InAppSettingsSpecifier.h */,
 				FD0D42DC149A0B5500F5E115 /* InAppSettingsSpecifier.m */,
 			);
-			path = InAppSettings;
+			name = InAppSettings;
+			path = Vendor/InAppSettings/InAppSettings;
 			sourceTree = "<group>";
 		};
 		FD0D42C3149A0B5500F5E115 /* Cells */ = {
