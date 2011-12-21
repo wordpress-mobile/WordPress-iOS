@@ -2233,7 +2233,7 @@
 				E1F8080C14641AC700726BC7 /* UIImageView+AFNetworking.m */,
 			);
 			name = AFNetworking;
-			path = AFNetworking/AFNetworking;
+			path = Vendor/AFNetworking/AFNetworking;
 			sourceTree = "<group>";
 		};
 		EC4696A80EA74DAC0040EE8E /* Pages */ = {
