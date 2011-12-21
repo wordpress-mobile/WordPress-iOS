@@ -10,6 +10,7 @@ AFNetworking/AFNetworking/AFImageRequestOperation.h -text
 AFNetworking/AFNetworking/AFImageRequestOperation.m -text
 AFNetworking/AFNetworking/AFJSONRequestOperation.h -text
 AFNetworking/AFNetworking/AFJSONRequestOperation.m -text
+AFNetworking/AFNetworking/AFJSONUtilities.h -text
 AFNetworking/AFNetworking/AFNetworkActivityIndicatorManager.h -text
 AFNetworking/AFNetworking/AFNetworkActivityIndicatorManager.m -text
 AFNetworking/AFNetworking/AFNetworking.h -text
