@@ -10,13 +10,21 @@
 #import "WPDataController.h"
 #import "NSURL+IDN.h"
 
+@interface Blog (PrivateMethods)
+- (NSArray *)getXMLRPCArgsWithExtra:(id)extra;
+- (NSString *)fetchPassword;
+- (NSArray *)mergeComments:(NSArray *)newComments;
+@end
+
+
 @implementation Blog
 @dynamic blogID, blogName, url, username, password, xmlrpc, apiKey;
 @dynamic isAdmin, hasOlderPosts, hasOlderPages;
 @dynamic posts, categories, comments; 
 @dynamic lastPostsSync, lastStatsSync, lastPagesSync, lastCommentsSync;
 @synthesize isSyncingPosts, isSyncingPages, isSyncingComments;
-@dynamic geolocationEnabled, options, postFormats; 
+@dynamic geolocationEnabled, options, postFormats;
+@synthesize api = _api;
 
 - (BOOL)geolocationEnabled 
 {
@@ -160,6 +168,9 @@
     [self setPrimitiveValue:xmlrpc forKey:@"xmlrpc"];
     [self didChangeValueForKey:@"xmlrpc"];
     [_blavatarUrl release]; _blavatarUrl = nil;
+
+    // Reset the api client so next time we use the new XML-RPC URL
+    [_api release]; _api = nil;
 }
 
 #pragma mark -
@@ -465,59 +476,36 @@
     return [currentOption objectForKey:@"value"];
 }
 
-- (BOOL)syncCommentsFromResults:(NSMutableArray *)comments {
-    if ([self isDeleted])
-        return NO;
-	
-	NSMutableArray *commentsToKeep = [NSMutableArray array];
-    for (NSDictionary *commentInfo in comments) {
-        Comment *newComment = [Comment createOrReplaceFromDictionary:commentInfo forBlog:self];
-        if (newComment != nil) {
-            [commentsToKeep addObject:newComment];
-        } else {
-            WPFLog(@"-[Comment createOrReplaceFromDictionary:forBlog:] returned a nil comment: %@", commentInfo);
-        }
-    }
-	
-	NSSet *syncedComments = self.comments;
-    if (syncedComments && (syncedComments.count > 0)) {
-		for (Comment *comment in syncedComments) {
-			// Don't delete unpublished comments
-			if(![commentsToKeep containsObject:comment] && comment.commentID != nil) {
-				WPLog(@"Deleting Comment: %@", comment);
-				[[self managedObjectContext] deleteObject:comment];
-			}
-		}
-    }
-	
-    [self dataSave];
-    return YES;
-}
-
-- (BOOL)syncCommentsWithError:(NSError **)error {
+- (void)syncCommentsWithSuccess:(void (^)(NSArray *commentsAdded))success failure:(void (^)(NSError *error))failure {
 	if (self.isSyncingComments) {
         WPLog(@"Already syncing comments. Skip");
-        return NO;
+        return;
     }
     self.isSyncingComments = YES;
-	
-	WPDataController *dc = [[WPDataController alloc] init];
-    NSMutableArray *comments = [dc wpGetCommentsForBlog:self];
-	if(dc.error) {
-		if (error != nil) 
-			*error = dc.error;
-		self.isSyncingComments = NO;
-		WPLog(@"Error syncing comments: %@", [dc.error localizedDescription]);
-		[dc release];
-		return NO;
-	}
-	
-    [self performSelectorOnMainThread:@selector(syncCommentsFromResults:) withObject:comments waitUntilDone:YES];
     
-	self.lastCommentsSync = [NSDate date];
-    self.isSyncingComments = NO;
-	[dc release];
-    return YES;
+    NSDictionary *requestOptions = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:100] forKey:@"number"];
+    NSArray *parameters = [NSArray arrayWithObject:requestOptions];
+    parameters = [self getXMLRPCArgsWithExtra:parameters];
+
+    [self.api callMethod:@"wp.getComments"
+              parameters:parameters
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     // Don't even bother if blog has been deleted while fetching comments
+                     if ([self isDeleted])
+                         return;
+
+                     NSArray *commentsAdded = [self mergeComments:responseObject];
+                     if (success) {
+                         success(commentsAdded);
+                     }
+
+                     self.isSyncingComments = NO;
+                     self.lastCommentsSync = [NSDate date];
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     WPFLog(@"Error syncing comments: %@", [error localizedDescription]);
+
+                     self.isSyncingComments = NO;
+                 }];
 }
 
 - (BOOL)syncPostFormatsFromResults:(NSMutableDictionary *)postFormats {
@@ -557,12 +545,94 @@
 	
 }
 
+#pragma mark - api accessor
+
+- (AFXMLRPCClient *)api {
+    if (_api == nil) {
+        _api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:self.xmlrpc]];
+    }
+    return _api;
+}
+
+#pragma mark - Private Methods
+
+- (NSArray *)getXMLRPCArgsWithExtra:(id)extra {
+    NSMutableArray *result = [NSMutableArray array];
+    [result addObject:self.blogID];
+    [result addObject:self.username];
+    [result addObject:[self fetchPassword]];
+
+    if ([extra isKindOfClass:[NSArray class]]) {
+        [result addObjectsFromArray:extra];
+    } else if ([extra isKindOfClass:[NSDictionary class]]) {
+        [result addObject:extra];
+    }
+
+    return [NSArray arrayWithArray:result];
+}
+
+- (NSString *)fetchPassword {
+    NSError *err;
+	NSString *password;
+
+	if (self.isWPcom) {
+        password = [SFHFKeychainUtils getPasswordForUsername:self.username
+                                              andServiceName:@"WordPress.com"
+                                                       error:&err];
+
+    } else {
+
+		password = [SFHFKeychainUtils getPasswordForUsername:self.username
+                                              andServiceName:self.hostURL
+                                                       error:&err];
+	}
+	if (password == nil)
+		password = @""; // FIXME: not good either, but prevents from crashing
+
+	return password;
+}
+
+- (NSArray *)mergeComments:(NSArray *)newComments {
+    // Don't even bother if blog has been deleted while fetching comments
+    if ([self isDeleted])
+        return nil;
+
+    NSMutableArray *result = [NSMutableArray array];
+	NSMutableArray *commentsToKeep = [NSMutableArray array];
+    for (NSDictionary *commentInfo in newComments) {
+        Comment *newComment = [Comment createOrReplaceFromDictionary:commentInfo forBlog:self];
+        if (newComment != nil) {
+            [commentsToKeep addObject:newComment];
+            if ([newComment isInserted]) {
+                [result addObject:newComment];
+            }
+        } else {
+            WPFLog(@"-[Comment createOrReplaceFromDictionary:forBlog:] returned a nil comment: %@", commentInfo);
+        }
+    }
+
+	NSSet *syncedComments = self.comments;
+    if (syncedComments && (syncedComments.count > 0)) {
+		for (Comment *comment in syncedComments) {
+			// Don't delete unpublished comments
+			if(![commentsToKeep containsObject:comment] && comment.commentID != nil) {
+				WPLog(@"Deleting Comment: %@", comment);
+				[[self managedObjectContext] deleteObject:comment];
+			}
+		}
+    }
+
+    [self dataSave];
+    return result;
+}
+
 #pragma mark -
 #pragma mark Dealloc
 
 - (void)dealloc {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [_blavatarUrl release]; _blavatarUrl = nil;
+    [_api release];
     [super dealloc];
 }
 

@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CommonCrypto/CommonDigest.h>
+#import "AFXMLRPCClient.h"
 
 @interface Blog : NSManagedObject {
     NSString *_blavatarUrl;
@@ -29,6 +30,7 @@
 @property (nonatomic, assign) BOOL geolocationEnabled;
 @property (nonatomic, retain) NSDictionary *options; //we can store an NSArray or an NSDictionary as a transformable attribute... 
 @property (nonatomic, retain) NSDictionary *postFormats;
+@property (readonly, nonatomic, retain) AFXMLRPCClient *api;
 
 - (BOOL)isWPcom;
 - (void)dataSave;
@@ -44,7 +46,7 @@
 - (BOOL)syncPagesWithError:(NSError **)error loadMore:(BOOL)more;
 - (BOOL)syncCategoriesWithError:(NSError **)error;
 - (BOOL)syncOptionsWithError:(NSError **)error;
-- (BOOL)syncCommentsWithError:(NSError **)error;
+- (void)syncCommentsWithSuccess:(void (^)(NSArray *commentsAdded))success failure:(void (^)(NSError *error))failure;
 - (BOOL)syncPostFormatsWithError:(NSError **)error; 
 - (NSString *) returnMD5Hash:(NSString*)concat;
 

@@ -290,25 +290,20 @@
 - (void)refreshHandler {
 	[self setEditing:false];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	[self performSelectorInBackground:@selector(syncComments) withObject:nil];
+	[self syncComments];
 }
 
 - (void)syncComments {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    NSError *error = nil;
-
-    [self.blog syncCommentsWithError:&error];
-	if(error) {
-		NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
+    [self.blog syncCommentsWithSuccess:^(NSArray *commentsAdded) {
+        WPLog(@"Comments added: %@", commentsAdded);
+        [self refreshCommentsList];
+    } failure:^(NSError *error) {
+        NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
 		[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
-	}
-
-    [self performSelectorOnMainThread:@selector(refreshCommentsList) withObject:nil waitUntilDone:NO];
-    [pool release];
+    }];
 }
 
 - (void)refreshCommentsList {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:commentsTableView];
     if (!selectedComments) {
         selectedComments = [[NSMutableArray alloc] init];
