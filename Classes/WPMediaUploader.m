@@ -557,9 +557,6 @@
 
 	[self deleteEncodedTmpFile];
 	
-	NSError *error = [req error];
-	NSString *errorMessage = [error localizedDescription];
-	WPLog(@"connection failed: %@", errorMessage);
 	[self displayResponseErrors];
     [request release]; request = nil;
 }

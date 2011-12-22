@@ -54,7 +54,7 @@ static InAppSettings *sharedInstance = nil;
 
 - (id)init{
     InAppSettingsViewController *settings = [[InAppSettingsViewController alloc] init];
-    self = [[UINavigationController alloc] initWithRootViewController:settings];
+    self = (InAppSettingsModalViewController *)[[UINavigationController alloc] initWithRootViewController:settings];
     [settings addDoneButton];
     [settings release];
     return self;

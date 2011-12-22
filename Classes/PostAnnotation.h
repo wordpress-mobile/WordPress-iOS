@@ -9,12 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <MapKit/MKAnnotation.h>
 
-@interface PostAnnotation : NSObject<MKAnnotation> {
-	NSString *title;
-	CLLocationCoordinate2D coordinate;
-}
+@interface PostAnnotation : NSObject<MKAnnotation>
 
-@property (nonatomic, retain) NSString *title;
-@property (nonatomic, assign) CLLocationCoordinate2D coordinate;
+- (id)initWithCoordinate:(CLLocationCoordinate2D)c;
 
 @end

@@ -44,7 +44,7 @@ static inline double radians(double degrees) {
     Media *currentUpload;
 	
 	NSMutableArray *photos, *videos;
-	UIDeviceOrientation currentOrientation;
+	MediaOrientation currentOrientation;
     UIImage *currentImage;
 	NSDictionary *currentImageMetadata;
 	NSMutableDictionary *currentVideo;
@@ -66,7 +66,7 @@ static inline double radians(double degrees) {
 @property (nonatomic, retain) Media *currentUpload;
 @property (nonatomic, retain) NSMutableArray *photos, *videos;
 @property (nonatomic, assign) EditPostViewController *postDetailViewController;
-@property (nonatomic, assign) UIDeviceOrientation currentOrientation;
+@property (nonatomic, assign) MediaOrientation currentOrientation;
 @property (nonatomic, retain) UIImage *currentImage;
 @property (nonatomic, retain) NSDictionary *currentImageMetadata;
 @property (nonatomic, retain) NSMutableDictionary *currentVideo;

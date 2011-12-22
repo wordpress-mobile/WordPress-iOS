@@ -14,14 +14,14 @@
 #import "EGORefreshTableHeaderView.h"
 #import "WPWebViewController.h"
 
-@interface StatsTableViewController : UITableViewController <UIAlertViewDelegate, NSXMLParserDelegate, EGORefreshTableHeaderDelegate>{
+@interface StatsTableViewController : UITableViewController <UIAlertViewDelegate, NSXMLParserDelegate, EGORefreshTableHeaderDelegate, NSURLConnectionDelegate>{
 	
     EGORefreshTableHeaderView *_refreshHeaderView;
-	NSMutableArray *viewsData;
-	NSMutableArray *postViewsData;
-	NSMutableArray *referrersData;
-	NSMutableArray *searchTermsData;
-	NSMutableArray *clicksData;
+	NSArray *viewsData;
+	NSArray *postViewsData;
+	NSArray *referrersData;
+	NSArray *searchTermsData;
+	NSArray *clicksData;
 	NSString *reportTitle;
 	NSMutableDictionary *currentBlog;
 	WordPressAppDelegate *appDelegate;
@@ -44,11 +44,11 @@
 	NSURLConnection *apiKeyConn, *viewsConn, *postViewsConn, *referrersConn, *searchTermsConn, *clicksConn, *daysConn, *weeksConn, *monthsConn;
 }
 
-@property (nonatomic, retain) NSMutableArray *viewsData;
-@property (nonatomic, retain) NSMutableArray *postViewsData;
-@property (nonatomic, retain) NSMutableArray *referrersData;
-@property (nonatomic, retain) NSMutableArray *searchTermsData;
-@property (nonatomic, retain) NSMutableArray *clicksData;
+@property (nonatomic, retain) NSArray *viewsData;
+@property (nonatomic, retain) NSArray *postViewsData;
+@property (nonatomic, retain) NSArray *referrersData;
+@property (nonatomic, retain) NSArray *searchTermsData;
+@property (nonatomic, retain) NSArray *clicksData;
 @property (nonatomic, retain) NSString *reportTitle;
 @property (nonatomic, copy, readonly) NSMutableDictionary *currentBlog;
 @property (nonatomic, retain) NSMutableString *currentProperty;

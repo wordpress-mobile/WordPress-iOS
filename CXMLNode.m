@@ -76,7 +76,7 @@ return(theNode);
 - (CXMLNodeKind)kind
 {
 NSAssert(_node != NULL, @"CXMLNode does not have attached libxml2 _node.");
-return(_node->type); // TODO this isn't 100% accurate!
+return((CXMLNodeKind)_node->type); // TODO this isn't 100% accurate!
 }
 
 - (NSString *)name

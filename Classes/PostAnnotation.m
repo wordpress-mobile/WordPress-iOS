@@ -9,24 +9,16 @@
 #import "PostAnnotation.h"
 
 @implementation PostAnnotation
-@synthesize title, coordinate;
-
--(id)init {
-	self = [super init];
-    if (self != nil)
-    {
-		// etc
-    }
-    return self;
-}
 
 -(id)initWithCoordinate:(CLLocationCoordinate2D) c{
-	coordinate = c;
+    self = [super init];
+    if (self != nil) {
+        [self setCoordinate:c];
+    }
 	return self;
 }
 
 -(void)dealloc {
-	[title release];
 	[super dealloc];
 }
 

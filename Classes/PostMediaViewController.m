@@ -821,7 +821,7 @@
 
 - (void)imagePickerController:(UIImagePickerController *)thePicker didFinishPickingMediaWithInfo:(NSDictionary *)info {
 	if([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.movie"]) {
-		self.currentVideo = [info retain];
+		self.currentVideo = [[info mutableCopy] autorelease];
 		if(self.didChangeOrientationDuringRecord == YES)
 			[self showOrientationChangedActionSheet];
 		else if(self.isLibraryMedia == NO)

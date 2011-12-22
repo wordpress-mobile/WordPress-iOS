@@ -53,8 +53,6 @@
 
 @implementation CommentTableViewCell
 
-@synthesize comment, checked;
-
 - (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithFrame:frame reuseIdentifier:reuseIdentifier]) {
         self.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
@@ -94,6 +92,10 @@
     }
 }
 
+- (BOOL)checked {
+    return checked;
+}
+
 - (void)setChecked:(BOOL)value {
     checked = value;
 
@@ -102,6 +104,10 @@
     } else {
         [checkButton setImage:[UIImage imageNamed:CHECK_BUTTON_UNCHECKED_ICON] forState:UIControlStateNormal];
     }
+}
+
+- (Comment *)comment {
+    return comment;
 }
 
 - (void)setComment:(Comment *)value {

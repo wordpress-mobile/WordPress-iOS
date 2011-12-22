@@ -9,13 +9,11 @@
 #import <CommonCrypto/CommonDigest.h>
 #import "AFXMLRPCClient.h"
 
-@interface Blog : NSManagedObject {
-    NSString *_blavatarUrl;
-}
+@interface Blog : NSManagedObject
 
 @property (nonatomic, retain) NSNumber *blogID;
 @property (nonatomic, retain) NSString *blogName, *url, *username, *password, *xmlrpc, *apiKey;
-@property (readonly) NSString *hostURL;
+@property (readonly) NSString *hostURL, *blavatarUrl;
 @property (nonatomic, assign) NSNumber *isAdmin, *hasOlderPosts, *hasOlderPages;
 @property (nonatomic, retain) NSSet *posts;
 @property (nonatomic, retain) NSSet *categories;
@@ -32,12 +30,15 @@
 @property (nonatomic, retain) NSDictionary *postFormats;
 @property (readonly, nonatomic, retain) AFXMLRPCClient *api;
 
+#pragma mark - Blog information
 - (BOOL)isWPcom;
-- (void)dataSave;
-- (NSString *)blavatarUrl;
 - (NSArray *)sortedCategories;
 - (NSString *)getOptionValue:(NSString *) name;
 - (NSString *)blogLoginURL;
+
+#pragma mark - 
+
+- (void)dataSave;
 
 #pragma mark -
 #pragma mark Synchronization

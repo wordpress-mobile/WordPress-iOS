@@ -64,8 +64,12 @@
     }
 }
 
+- (AbstractPost *)post {
+    return post;
+}
+
 - (void)setPost:(AbstractPost *)value {
-	if(value != nil) {
+	if(value != post) {
 		post = value;
 		
 		static NSDateFormatter *dateFormatter = nil;

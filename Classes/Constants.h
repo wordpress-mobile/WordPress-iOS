@@ -57,9 +57,9 @@
 //R: 35, G: 112, B: 216 | #2370D8 | ΔX: 1378, ΔY: 29 | img
 
 #ifdef DEBUGMODE
-#define WPLog NSLog
+#define WPLog(...) NSLog(__VA_ARGS__)
 #else
-#define WPLog //NSLog
+#define WPLog(__unused ...) //NSLog
 #endif
 #define CGRectToString(rect) [NSString stringWithFormat:@"%f,%f:%fx%f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height]
 #define CGPointToString(point) [NSString stringWithFormat:@"%f,%f", point.x, point.y]
