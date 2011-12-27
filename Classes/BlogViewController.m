@@ -78,7 +78,15 @@
 
 #pragma mark - TODO - refresh blog all at once
 - (void)refreshBlog {
-    NSLog(@"*** TODO ***");
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    WPFLog(@"Start blog sync");
+    [self.blog syncBlogWithSuccess:^{
+        WPFLog(@"End blog sync");
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+    } failure:^(NSError *error) {
+        WPFLog(@"Blog sync failed: %@", [error localizedDescription]);
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+    }];
 }
 
 #pragma mark - UITableViewDataSource

@@ -441,6 +441,20 @@
                  }];
 }
 
+- (void)syncBlogWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    [self syncOptionsWithWithSuccess:^{
+        [self syncCategoriesWithSuccess:^{
+            [self syncPostFormatsWithSuccess:^{
+                [self syncPostsWithSuccess:^{
+                    [self syncCommentsWithSuccess:^{
+                        [self syncPagesWithSuccess:success failure:failure loadMore:NO];
+                    } failure:failure];
+                } failure:failure loadMore:NO];
+            } failure:failure];
+        } failure:failure];
+    } failure:failure];
+}
+
 //generate md5 hash from string
 - (NSString *) returnMD5Hash:(NSString*)concat {
     const char *concat_str = [concat UTF8String];
