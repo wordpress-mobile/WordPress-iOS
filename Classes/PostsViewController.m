@@ -147,8 +147,7 @@
 }
 
 - (void)loadMoreItems {
-	[self.blog syncPostsWithSuccess:^(NSArray *postsAdded) {
-        WPLog(@"Posts added: %d", [postsAdded count]);
+	[self.blog syncPostsWithSuccess:^ {
         [self refreshPostList];
     } failure:nil loadMore:YES];
 }
@@ -288,34 +287,19 @@
 - (void)refreshHandler {
     if ([self isSyncing])
         return;
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    [self performSelectorInBackground:@selector(syncPosts) withObject:nil];
+    [self syncPosts];
 }
 
 - (void)syncPosts {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    NSError *error = nil;
-	[self.blog syncCategoriesWithError:&error];
-	
-    if( !error ) { 
-        [self.blog syncPostFormatsWithError:&error];
-        
-        //Code=-32601 "server error. requested method wp.getPostFormats does not exist."
-        //remove this piece of code when the app minimum requirement will be WP 3.1 or higher
-        if ( error && error.code == -32601 )
-            error = nil;
-    }
-    
-    if( !error )
-        [self.blog syncPostsWithSuccess:^(NSArray *postsAdded) {
-            [self refreshPostList];
-        } failure:^(NSError *error) {
-            NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
-        } loadMore:NO];
-
-    [self.blog syncOptionsWithError:&error]; //error is not used atm, but keep it there for future usage. 
-    [pool release];
+	[self.blog syncCategoriesWithSuccess:nil failure:nil];
+    [self.blog syncPostFormatsWithSuccess:nil failure:nil];
+    [self.blog syncOptionsWithWithSuccess:nil failure:nil];
+    [self.blog syncPostsWithSuccess:^{
+        [self refreshPostList];
+    } failure:^(NSError *error) {
+        NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
+    } loadMore:NO];
 }
 
 - (void)didLoadMore {

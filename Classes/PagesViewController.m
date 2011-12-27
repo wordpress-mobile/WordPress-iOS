@@ -11,6 +11,10 @@
 
 #define TAG_OFFSET 1010
 
+@interface PagesViewController (PrivateMethods)
+- (void)refreshPostList;
+@end
+
 @implementation PagesViewController
 
 - (void)viewDidLoad {
@@ -19,16 +23,14 @@
 }
 
 - (void)syncPosts {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    NSError *error = nil;
-    [self.blog syncPagesWithError:&error loadMore:NO];
-	if(error) {
-		NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
-		[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
-	}
-	[self performSelectorOnMainThread:@selector(refreshPostList) withObject:nil waitUntilDone:NO];
-	
-    [pool release];
+    [self.blog syncPagesWithSuccess:^{
+        [self refreshPostList];
+    } failure:^(NSError *error) {
+        if(error) {
+            NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
+        }
+    } loadMore:NO];
 }
 
 // For iPhone
@@ -112,8 +114,10 @@
 	return NO;
 }
 
-- (BOOL)syncItemsWithError:(NSError **)error loadMore:(BOOL)more {
-	return [self.blog syncPagesWithError:error loadMore:YES];
+- (void)loadMoreItems {
+	[self.blog syncPagesWithSuccess:^ {
+        [self refreshPostList];
+    } failure:nil loadMore:YES];
 }
 
 #pragma mark -

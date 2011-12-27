@@ -83,7 +83,7 @@
     [Category createCategoryWithError:categoryName parent:parentCat forBlog:self.blog  error:&error];
 	if(!error) {
 		//re-syncs categories this is necessary because the server can change the name of the category!!!
-		[self.blog syncCategoriesWithError:&error];	
+		[self.blog syncCategoriesWithSuccess:nil failure:nil];
 	}
 	
 	if(error) {

@@ -43,13 +43,13 @@
 #pragma mark -
 #pragma mark Synchronization
 - (NSArray *)syncedPosts;
-- (void)syncPostsWithSuccess:(void (^)(NSArray *postsAdded))success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
-- (BOOL)syncPagesWithError:(NSError **)error loadMore:(BOOL)more;
-- (BOOL)syncCategoriesWithError:(NSError **)error;
-- (BOOL)syncOptionsWithError:(NSError **)error;
-- (void)syncCommentsWithSuccess:(void (^)(NSArray *commentsAdded))success failure:(void (^)(NSError *error))failure;
-- (BOOL)syncPostFormatsWithError:(NSError **)error; 
-- (void)syncBlogWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)syncPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
+- (void)syncPagesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
+- (void)syncCategoriesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)syncOptionsWithWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)syncCommentsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)syncPostFormatsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+//- (void)syncBlogWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (NSString *) returnMD5Hash:(NSString*)concat;
 
 #pragma mark -

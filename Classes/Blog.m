@@ -13,8 +13,10 @@
 @interface Blog (PrivateMethods)
 - (NSArray *)getXMLRPCArgsWithExtra:(id)extra;
 - (NSString *)fetchPassword;
-- (NSArray *)mergeComments:(NSArray *)newComments;
-- (NSArray *)mergePosts:(NSArray *)newPosts;
+- (void)mergeCategories:(NSArray *)newCategories;
+- (void)mergeComments:(NSArray *)newComments;
+- (void)mergePages:(NSArray *)newPages;
+- (void)mergePosts:(NSArray *)newPosts;
 @end
 
 
@@ -202,7 +204,7 @@
     return [self syncedPostsWithEntityName:@"Post"];
 }
 
-- (void)syncPostsWithSuccess:(void (^)(NSArray *postsAdded))success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more {
+- (void)syncPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more {
     if (self.isSyncingPosts) {
         WPLog(@"Already syncing posts. Skip");
         return;
@@ -241,9 +243,9 @@
                          self.hasOlderPosts = [NSNumber numberWithBool:YES];
                      }
 
-                     NSArray *postsAdded = [self mergePosts:posts];
+                     [self mergePosts:posts];
                      if (success) {
-                         success(postsAdded);
+                         success();
                      }
 
                      self.lastPostsSync = [NSDate date];
@@ -262,169 +264,107 @@
     return [self syncedPostsWithEntityName:@"Page"];
 }
 
-- (BOOL)syncPagesFromResults:(NSMutableArray *)pages {
-    if ([pages count] == 0)
-        return NO;
-    
-    NSArray *syncedPages = [self syncedPages];
-    NSMutableArray *pagesToKeep = [NSMutableArray array];
-    for (NSDictionary *pageInfo in pages) {
-        Page *newPage = [Page createOrReplaceFromDictionary:pageInfo forBlog:self];
-        if (newPage != nil) {
-            [pagesToKeep addObject:newPage];
-        } else {
-            WPFLog(@"-[Page createOrReplaceFromDictionary:forBlog:] returned a nil page: %@", pageInfo);
-        }
-    }
-	
-    for (Page *page in syncedPages) {
-		if (![pagesToKeep containsObject:page]) { /*&& page.blog.blogID == self.blogID*/
-            
-			if (page.revision) { //edited page before the refresh is finished
-				//We should check if this page is already available on the blog
-				BOOL presence = NO; 
-				
-				for (Page *currentPageToKeep in pagesToKeep) {
-					if([currentPageToKeep.postID isEqualToNumber:page.postID]) {
-						presence = YES;
-						break;
-					}
-				}
-				if( presence == YES ) {
-					//page is on the server (most cases), kept it unchanged
-					
-				} else {
-					//page is deleted on the server, make it local, otherwise you can't upload it anymore
-					page.remoteStatus = AbstractPostRemoteStatusLocal;
-					page.postID = nil;
-					page.permaLink = nil;
-					
-				}
-			} else {
-				//page is not on the server anymore. delete it.
-                WPLog(@"Deleting page: %@", page);
-                [[self managedObjectContext] deleteObject:page];
-            }
-        }
-    }
-    
-    [self dataSave];
-    return YES;
-}
-
-- (BOOL)syncPagesWithError:(NSError **)error loadMore:(BOOL)more {
+- (void)syncPagesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more {
 	if (self.isSyncingPages) {
         WPLog(@"Already syncing pages. Skip");
-        return NO;
+        return;
     }
     self.isSyncingPages = YES;
     int num;
 	
+    int syncCount = [[self syncedPages] count];
     // Don't load more than 20 pages if we aren't at the end of the table,
     // even if they were previously donwloaded
     // 
     // Blogs with long history can get really slow really fast, 
     // with no chance to go back
     if (more) {
-        num = MAX([[self syncedPages] count], 20);
+        num = MAX(syncCount, 20);
         if ([self.hasOlderPages boolValue]) {
             num += 20;
         }
     } else {
         num = 20;
     }
-	
-    WPLog(@"Loading %i pages...", num);
-	WPDataController *dc = [[WPDataController alloc] init];
-	NSMutableArray *pages = [dc wpGetPages:self number:[NSNumber numberWithInt:num]];
-	
-	if(dc.error) {
-		if (error != nil) 
-			*error = dc.error;
-		WPLog(@"Error syncing blog pages: %@", [dc.error localizedDescription]);
-		[dc release];
-		self.isSyncingPages = NO;
-		return NO;
-	}
-	
-	// If we asked for more and we got what we had, there are no more posts to load
-    if (more && ([pages count] <= [[self syncedPages] count])) {
-        self.hasOlderPages = [NSNumber numberWithBool:NO];
-    } else if (!more) {
-		self.hasOlderPages = [NSNumber numberWithBool:YES];
-	}
-	
-    [self performSelectorOnMainThread:@selector(syncPagesFromResults:) withObject:pages waitUntilDone:YES];	
-	self.lastPagesSync = [NSDate date];
-    self.isSyncingPages = NO;
-	[dc release];
-    return YES;
+
+    NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithInt:num]];
+    [self.api callMethod:@"wp.getPages"
+              parameters:parameters
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     if ([self isDeleted])
+                         return;
+
+                     NSArray *pages = (NSArray *)responseObject;
+
+                     // If we asked for more and we got what we had, there are no more pages to load
+                     if (more && ([pages count] <= syncCount)) {
+                         self.hasOlderPages = [NSNumber numberWithBool:NO];
+                     } else if (!more) {
+                         //we should reset the flag otherwise when you refresh this blog you can't get more than 20 pages
+                         self.hasOlderPages = [NSNumber numberWithBool:YES];
+                     }
+
+                     [self mergePages:pages];
+                     if (success) {
+                         success();
+                     }
+
+                     self.lastPagesSync = [NSDate date];
+                     self.isSyncingPages = NO;
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     WPFLog(@"Error syncing pages: %@", [error localizedDescription]);
+
+                     if (failure) {
+                         failure(error);
+                     }
+                     self.isSyncingPages = NO;
+                 }];
 }
 
+- (void)syncCategoriesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    NSArray *parameters = [self getXMLRPCArgsWithExtra:nil];
+    [self.api callMethod:@"wp.getCategories"
+              parameters:parameters
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     if ([self isDeleted])
+                         return;
 
+                     NSArray *categories = (NSArray *)responseObject;
 
-- (BOOL)syncCategoriesFromResults:(NSMutableArray *)categories {
-	
-	NSMutableArray *categoriesToKeep = [NSMutableArray array];
-    for (NSDictionary *categoryInfo in categories) {
-        Category *newCat = [Category createOrReplaceFromDictionary:categoryInfo forBlog:self];
-        if (newCat != nil) {
-            [categoriesToKeep addObject:newCat];
-        } else {
-            WPFLog(@"-[Category createOrReplaceFromDictionary:forBlog:] returned a nil category: %@", categoryInfo);
-        }
-    }
-	
-	NSSet *syncedCategories = self.categories;
-	if (syncedCategories && (syncedCategories.count > 0)) {
-		for (Category *cat in syncedCategories) {
-			if(![categoriesToKeep containsObject:cat]) {
-				WPLog(@"Deleting Category: %@", cat);
-				[[self managedObjectContext] deleteObject:cat];
-			}
-		}
-    }
-	
-    [self dataSave];
-    return YES;
+                     [self mergeCategories:categories];
+                     if (success) {
+                         success();
+                     }
+
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     WPFLog(@"Error syncing categories: %@", [error localizedDescription]);
+
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
 }
 
-- (BOOL)syncCategoriesWithError:(NSError **)error {
-	WPDataController *dc = [[WPDataController alloc] init];
-	NSMutableArray *categories = [dc getCategoriesForBlog:self];
-	if(dc.error) {
-		if (error != nil) 
-			*error = dc.error;
-        WPLog(@"Error syncing categories: %@", [dc.error localizedDescription]);
-		[dc release];
-		return NO;
-	}
-    [self performSelectorOnMainThread:@selector(syncCategoriesFromResults:) withObject:categories waitUntilDone:YES];
-    [dc release];
-	return YES;
-}
+- (void)syncOptionsWithWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    NSArray *parameters = [self getXMLRPCArgsWithExtra:nil];
+    [self.api callMethod:@"wp.getOptions"
+              parameters:parameters
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     if ([self isDeleted])
+                         return;
 
+                     self.options = [NSDictionary dictionaryWithDictionary:(NSDictionary *)responseObject];
+                     if (success) {
+                         success();
+                     }
 
-- (BOOL)syncOptionsFromResults:(NSMutableDictionary *)retrievedOptions { 
-    self.options = [NSDictionary dictionaryWithDictionary: retrievedOptions]; 
-    [self dataSave]; 
-    return YES; 
-} 
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     WPFLog(@"Error syncing options: %@", [error localizedDescription]);
 
-- (BOOL)syncOptionsWithError:(NSError **)error {
-    WPLog(@"Yeahhh! syncOptionsWithError called!");
-    WPDataController *dc = [[WPDataController alloc] init];
-	NSMutableDictionary *retrievedOptions = [dc getOptionsForBlog:self];
-	if(dc.error) {
-		if (error != nil) 
-			*error = dc.error;
-        WPLog(@"Error syncing options: %@", [dc.error localizedDescription]);
-		[dc release];
-		return NO;
-	}
-    [self performSelectorOnMainThread:@selector(syncOptionsFromResults:) withObject:retrievedOptions waitUntilDone:YES];
-    [dc release];
-    return YES;
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
 }
 
 - (NSString *)getOptionValue:(NSString *) name {
@@ -436,7 +376,7 @@
     return [currentOption objectForKey:@"value"];
 }
 
-- (void)syncCommentsWithSuccess:(void (^)(NSArray *commentsAdded))success failure:(void (^)(NSError *error))failure {
+- (void)syncCommentsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
 	if (self.isSyncingComments) {
         WPLog(@"Already syncing comments. Skip");
         return;
@@ -454,9 +394,9 @@
                      if ([self isDeleted])
                          return;
 
-                     NSArray *commentsAdded = [self mergeComments:responseObject];
+                     [self mergeComments:responseObject];
                      if (success) {
-                         success(commentsAdded);
+                         success();
                      }
 
                      self.isSyncingComments = NO;
@@ -472,29 +412,33 @@
                  }];
 }
 
-- (BOOL)syncPostFormatsFromResults:(NSMutableDictionary *)postFormats {
-    self.postFormats = [NSDictionary dictionaryWithDictionary: postFormats]; 
-    [self dataSave]; 
-    return YES;
-}
+- (void)syncPostFormatsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    NSArray *parameters = [self getXMLRPCArgsWithExtra:nil];
+    [self.api callMethod:@"wp.getPostFormats"
+              parameters:parameters
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     if ([self isDeleted])
+                         return;
 
-- (BOOL)syncPostFormatsWithError:(NSError **)error {
-	WPDataController *dc = [[WPDataController alloc] init];
-	NSMutableDictionary *postFormats = [dc wpGetPostFormats:self showSupported:YES];
-	if(dc.error) {
-		if (error != nil) {
-			*error = dc.error;
-            //remove this piece of code when the app minimum requirement will be WP 3.1 or higher
-            if (dc.error.code == -32601 )  //Code=-32601 "server error. requested method wp.getPostFormats does not exist."
-                [self performSelectorOnMainThread:@selector(syncPostFormatsFromResults:) withObject:nil waitUntilDone:YES];
-        }
-        WPLog(@"Error syncing postFormats: %@", [dc.error localizedDescription]);
-		[dc release];
-		return NO;
-	}
-    [self performSelectorOnMainThread:@selector(syncPostFormatsFromResults:) withObject:postFormats waitUntilDone:YES];
-    [dc release];
-	return YES;
+                     self.postFormats = [NSDictionary dictionaryWithDictionary:(NSDictionary *)responseObject];
+                     if (success) {
+                         success();
+                     }
+
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     //Code=-32601 "server error. requested method wp.getPostFormats does not exist."
+                     if (error.code == -32601) {
+                         if (success) {
+                             success();
+                         }
+                     } else {
+                         WPFLog(@"Error syncing post formats: %@", [error localizedDescription]);
+
+                         if (failure) {
+                             failure(error);
+                         }
+                     }
+                 }];
 }
 
 //generate md5 hash from string
@@ -528,7 +472,7 @@
 
     if ([extra isKindOfClass:[NSArray class]]) {
         [result addObjectsFromArray:extra];
-    } else {
+    } else if (extra != nil) {
         [result addObject:extra];
     }
 
@@ -556,23 +500,44 @@
 	return password;
 }
 
-- (NSArray *)mergePosts:(NSArray *)newPosts {
-    // Don't even bother if blog has been deleted while fetching comments
+- (void)mergeCategories:(NSArray *)newCategories {
+    // Don't even bother if blog has been deleted while fetching categories
     if ([self isDeleted])
-        return nil;
+        return;
 
-    if ([newPosts count] == 0)
-        return NO;
+	NSMutableArray *categoriesToKeep = [NSMutableArray array];
+    for (NSDictionary *categoryInfo in newCategories) {
+        Category *newCat = [Category createOrReplaceFromDictionary:categoryInfo forBlog:self];
+        if (newCat != nil) {
+            [categoriesToKeep addObject:newCat];
+        } else {
+            WPFLog(@"-[Category createOrReplaceFromDictionary:forBlog:] returned a nil category: %@", categoryInfo);
+        }
+    }
 
-    NSMutableArray *result = [NSMutableArray array];
+	NSSet *syncedCategories = self.categories;
+	if (syncedCategories && (syncedCategories.count > 0)) {
+		for (Category *cat in syncedCategories) {
+			if(![categoriesToKeep containsObject:cat]) {
+				WPLog(@"Deleting Category: %@", cat);
+				[[self managedObjectContext] deleteObject:cat];
+			}
+		}
+    }
+
+    [self dataSave];
+}
+
+- (void)mergePosts:(NSArray *)newPosts {
+    // Don't even bother if blog has been deleted while fetching posts
+    if ([self isDeleted])
+        return;
+
     NSMutableArray *postsToKeep = [NSMutableArray array];
     for (NSDictionary *postInfo in newPosts) {
         Post *newPost = [Post createOrReplaceFromDictionary:postInfo forBlog:self];
         if (newPost != nil) {
             [postsToKeep addObject:newPost];
-            if ([newPost isInserted]) {
-                [result addObject:newPost];
-            }
         } else {
             WPFLog(@"-[Post createOrReplaceFromDictionary:forBlog:] returned a nil post: %@", postInfo);
         }
@@ -612,23 +577,65 @@
     }
 
     [self dataSave];
-    return result;
 }
 
-- (NSArray *)mergeComments:(NSArray *)newComments {
+- (void)mergePages:(NSArray *)newPages {
+    if ([self isDeleted])
+        return;
+
+    NSMutableArray *pagesToKeep = [NSMutableArray array];
+    for (NSDictionary *pageInfo in newPages) {
+        Page *newPage = [Page createOrReplaceFromDictionary:pageInfo forBlog:self];
+        if (newPage != nil) {
+            [pagesToKeep addObject:newPage];
+        } else {
+            WPFLog(@"-[Page createOrReplaceFromDictionary:forBlog:] returned a nil page: %@", pageInfo);
+        }
+    }
+
+    NSArray *syncedPages = [self syncedPages];
+    for (Page *page in syncedPages) {
+		if (![pagesToKeep containsObject:page]) { /*&& page.blog.blogID == self.blogID*/
+
+			if (page.revision) { //edited page before the refresh is finished
+				//We should check if this page is already available on the blog
+				BOOL presence = NO;
+
+				for (Page *currentPageToKeep in pagesToKeep) {
+					if([currentPageToKeep.postID isEqualToNumber:page.postID]) {
+						presence = YES;
+						break;
+					}
+				}
+				if( presence == YES ) {
+					//page is on the server (most cases), kept it unchanged
+				} else {
+					//page is deleted on the server, make it local, otherwise you can't upload it anymore
+					page.remoteStatus = AbstractPostRemoteStatusLocal;
+					page.postID = nil;
+					page.permaLink = nil;
+				}
+			} else {
+				//page is not on the server anymore. delete it.
+                WPLog(@"Deleting page: %@", page);
+                [[self managedObjectContext] deleteObject:page];
+            }
+        }
+    }
+
+    [self dataSave];
+}
+
+- (void)mergeComments:(NSArray *)newComments {
     // Don't even bother if blog has been deleted while fetching comments
     if ([self isDeleted])
-        return nil;
+        return;
 
-    NSMutableArray *result = [NSMutableArray array];
 	NSMutableArray *commentsToKeep = [NSMutableArray array];
     for (NSDictionary *commentInfo in newComments) {
         Comment *newComment = [Comment createOrReplaceFromDictionary:commentInfo forBlog:self];
         if (newComment != nil) {
             [commentsToKeep addObject:newComment];
-            if ([newComment isInserted]) {
-                [result addObject:newComment];
-            }
         } else {
             WPFLog(@"-[Comment createOrReplaceFromDictionary:forBlog:] returned a nil comment: %@", commentInfo);
         }
@@ -646,7 +653,6 @@
     }
 
     [self dataSave];
-    return result;
 }
 
 #pragma mark -

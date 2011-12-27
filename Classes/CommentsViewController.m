@@ -294,8 +294,7 @@
 }
 
 - (void)syncComments {
-    [self.blog syncCommentsWithSuccess:^(NSArray *commentsAdded) {
-        WPLog(@"Comments added: %@", commentsAdded);
+    [self.blog syncCommentsWithSuccess:^() {
         [self refreshCommentsList];
     } failure:^(NSError *error) {
         NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
