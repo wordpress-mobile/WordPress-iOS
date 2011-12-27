@@ -143,7 +143,7 @@ typedef void (^AFXMLRPCRequestOperationFailureBlock)(AFHTTPRequestOperation *ope
                                                         success:(AFXMLRPCRequestOperationSuccessBlock)success
                                                         failure:(AFXMLRPCRequestOperationFailureBlock)failure;
 
-- (AFHTTPRequestOperation *)combinedHTTPRequestOperationWithOperations:(NSArray *)operations;
+- (AFHTTPRequestOperation *)combinedHTTPRequestOperationWithOperations:(NSArray *)operations success:(AFXMLRPCRequestOperationSuccessBlock)success failure:(AFXMLRPCRequestOperationFailureBlock)failure;
 
 ///----------------------------------------
 /// @name Managing Enqueued HTTP Operations

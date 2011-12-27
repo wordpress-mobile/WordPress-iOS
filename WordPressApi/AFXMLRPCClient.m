@@ -179,7 +179,7 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
     return operation;
 }
 
-- (AFHTTPRequestOperation *)combinedHTTPRequestOperationWithOperations:(NSArray *)operations {
+- (AFHTTPRequestOperation *)combinedHTTPRequestOperationWithOperations:(NSArray *)operations success:(AFXMLRPCRequestOperationSuccessBlock)success failure:(AFXMLRPCRequestOperationFailureBlock)failure {
     NSMutableArray *parameters = [NSMutableArray array];
     
     for (AFXMLRPCRequestOperation *operation in operations) {
@@ -191,7 +191,7 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
     }
     
     NSURLRequest *request = [self requestWithMethod:@"system.multicall" parameters:parameters];
-    AFXMLRPCRequestOperationSuccessBlock success = ^(AFHTTPRequestOperation *multicallOperation, id responseObject) {
+    AFXMLRPCRequestOperationSuccessBlock _success = ^(AFHTTPRequestOperation *multicallOperation, id responseObject) {
         NSArray *responses = (NSArray *)responseObject;
         for (int i = 0; i < [responses count]; i++) {
             AFXMLRPCRequestOperation *operation = [operations objectAtIndex:i];
@@ -201,7 +201,10 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
             if ([object isKindOfClass:[NSDictionary class]] && [object objectForKey:@"faultCode"] && [object objectForKey:@"faultString"]) {
                 NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:[object objectForKey:@"faultString"], NSLocalizedDescriptionKey, nil];
                 error = [NSError errorWithDomain:@"XMLRPC" code:[[object objectForKey:@"faultCode"] intValue] userInfo:usrInfo];
+            } else if ([object isKindOfClass:[NSArray class]] && [object count] == 1) {
+                object = [object objectAtIndex:0];
             }
+
             
             if (error) {
                 if (operation.failure) {
@@ -212,18 +215,24 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
                     operation.success(operation, object);
                 }
             }
-        }        
+        }
+        if (success) {
+            success(multicallOperation, responseObject);
+        }
     };
-    AFXMLRPCRequestOperationFailureBlock failure = ^(AFHTTPRequestOperation *multicallOperation, NSError *error) {
+    AFXMLRPCRequestOperationFailureBlock _failure = ^(AFHTTPRequestOperation *multicallOperation, NSError *error) {
         for (AFXMLRPCRequestOperation *operation in operations) {
             if (operation.failure) {
                 operation.failure(operation, error);
             }
         }
+        if (failure) {
+            failure(multicallOperation, error);
+        }
     };
     AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request
-                                                                      success:success
-                                                                      failure:failure];
+                                                                      success:_success
+                                                                      failure:_failure];
     return operation;
 }
 

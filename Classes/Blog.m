@@ -13,6 +13,14 @@
 @interface Blog (PrivateMethods)
 - (NSArray *)getXMLRPCArgsWithExtra:(id)extra;
 - (NSString *)fetchPassword;
+
+- (AFXMLRPCRequestOperation *)operationForOptionsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (AFXMLRPCRequestOperation *)operationForPostFormatsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (AFXMLRPCRequestOperation *)operationForCommentsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (AFXMLRPCRequestOperation *)operationForCategoriesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (AFXMLRPCRequestOperation *)operationForPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
+- (AFXMLRPCRequestOperation *)operationForPagesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
+
 - (void)mergeCategories:(NSArray *)newCategories;
 - (void)mergeComments:(NSArray *)newComments;
 - (void)mergePages:(NSArray *)newPages;
@@ -210,54 +218,9 @@
         return;
     }
     self.isSyncingPosts = YES;
-    int num;
-    
-    // Don't load more than 20 posts if we aren't at the end of the table,
-    // even if they were previously donwloaded
-    // 
-    // Blogs with long history can get really slow really fast, 
-    // with no chance to go back
-    if (more) {
-        num = MAX([self.posts count], 20);
-        if ([self.hasOlderPosts boolValue]) {
-            num += 20;
-        }
-    } else {
-        num = 20;
-    }
-    
-    NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithInt:num]];
-    [self.api callMethod:@"metaWeblog.getRecentPosts"
-              parameters:parameters
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                     if ([self isDeleted])
-                         return;
 
-                     NSArray *posts = (NSArray *)responseObject;
-
-                     // If we asked for more and we got what we had, there are no more posts to load
-                     if (more && ([posts count] <= [self.posts count])) {
-                         self.hasOlderPosts = [NSNumber numberWithBool:NO];
-                     } else if (!more) {
-                         //we should reset the flag otherwise when you refresh this blog you can't get more than 20 posts
-                         self.hasOlderPosts = [NSNumber numberWithBool:YES];
-                     }
-
-                     [self mergePosts:posts];
-                     if (success) {
-                         success();
-                     }
-
-                     self.lastPostsSync = [NSDate date];
-                     self.isSyncingPosts = NO;
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                     WPFLog(@"Error syncing posts: %@", [error localizedDescription]);
-
-                     if (failure) {
-                         failure(error);
-                     }
-                     self.isSyncingPosts = NO;
-                 }];
+    AFXMLRPCRequestOperation *operation = [self operationForPostsWithSuccess:success failure:failure loadMore:more];
+    [self.api enqueueHTTPRequestOperation:operation];
 }
 
 - (NSArray *)syncedPages {
@@ -270,101 +233,18 @@
         return;
     }
     self.isSyncingPages = YES;
-    int num;
-	
-    int syncCount = [[self syncedPages] count];
-    // Don't load more than 20 pages if we aren't at the end of the table,
-    // even if they were previously donwloaded
-    // 
-    // Blogs with long history can get really slow really fast, 
-    // with no chance to go back
-    if (more) {
-        num = MAX(syncCount, 20);
-        if ([self.hasOlderPages boolValue]) {
-            num += 20;
-        }
-    } else {
-        num = 20;
-    }
-
-    NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithInt:num]];
-    [self.api callMethod:@"wp.getPages"
-              parameters:parameters
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                     if ([self isDeleted])
-                         return;
-
-                     NSArray *pages = (NSArray *)responseObject;
-
-                     // If we asked for more and we got what we had, there are no more pages to load
-                     if (more && ([pages count] <= syncCount)) {
-                         self.hasOlderPages = [NSNumber numberWithBool:NO];
-                     } else if (!more) {
-                         //we should reset the flag otherwise when you refresh this blog you can't get more than 20 pages
-                         self.hasOlderPages = [NSNumber numberWithBool:YES];
-                     }
-
-                     [self mergePages:pages];
-                     if (success) {
-                         success();
-                     }
-
-                     self.lastPagesSync = [NSDate date];
-                     self.isSyncingPages = NO;
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                     WPFLog(@"Error syncing pages: %@", [error localizedDescription]);
-
-                     if (failure) {
-                         failure(error);
-                     }
-                     self.isSyncingPages = NO;
-                 }];
+    AFXMLRPCRequestOperation *operation = [self operationForPagesWithSuccess:success failure:failure loadMore:more];
+    [self.api enqueueHTTPRequestOperation:operation];
 }
 
 - (void)syncCategoriesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    NSArray *parameters = [self getXMLRPCArgsWithExtra:nil];
-    [self.api callMethod:@"wp.getCategories"
-              parameters:parameters
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                     if ([self isDeleted])
-                         return;
-
-                     NSArray *categories = (NSArray *)responseObject;
-
-                     [self mergeCategories:categories];
-                     if (success) {
-                         success();
-                     }
-
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                     WPFLog(@"Error syncing categories: %@", [error localizedDescription]);
-
-                     if (failure) {
-                         failure(error);
-                     }
-                 }];
+    AFXMLRPCRequestOperation *operation = [self operationForCategoriesWithSuccess:success failure:failure];
+    [self.api enqueueHTTPRequestOperation:operation];
 }
 
 - (void)syncOptionsWithWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    NSArray *parameters = [self getXMLRPCArgsWithExtra:nil];
-    [self.api callMethod:@"wp.getOptions"
-              parameters:parameters
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                     if ([self isDeleted])
-                         return;
-
-                     self.options = [NSDictionary dictionaryWithDictionary:(NSDictionary *)responseObject];
-                     if (success) {
-                         success();
-                     }
-
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                     WPFLog(@"Error syncing options: %@", [error localizedDescription]);
-
-                     if (failure) {
-                         failure(error);
-                     }
-                 }];
+    AFXMLRPCRequestOperation *operation = [self operationForOptionsWithSuccess:success failure:failure];
+    [self.api enqueueHTTPRequestOperation:operation];
 }
 
 - (NSString *)getOptionValue:(NSString *) name {
@@ -382,77 +262,41 @@
         return;
     }
     self.isSyncingComments = YES;
-    
-    NSDictionary *requestOptions = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:100] forKey:@"number"];
-    NSArray *parameters = [NSArray arrayWithObject:requestOptions];
-    parameters = [self getXMLRPCArgsWithExtra:parameters];
-
-    [self.api callMethod:@"wp.getComments"
-              parameters:parameters
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                     // Don't even bother if blog has been deleted while fetching comments
-                     if ([self isDeleted])
-                         return;
-
-                     [self mergeComments:responseObject];
-                     if (success) {
-                         success();
-                     }
-
-                     self.isSyncingComments = NO;
-                     self.lastCommentsSync = [NSDate date];
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                     WPFLog(@"Error syncing comments: %@", [error localizedDescription]);
-
-                     if (failure) {
-                         failure(error);
-                     }
-
-                     self.isSyncingComments = NO;
-                 }];
+    AFXMLRPCRequestOperation *operation = [self operationForCommentsWithSuccess:success failure:failure];
+    [self.api enqueueHTTPRequestOperation:operation];
 }
 
 - (void)syncPostFormatsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    NSArray *parameters = [self getXMLRPCArgsWithExtra:nil];
-    [self.api callMethod:@"wp.getPostFormats"
-              parameters:parameters
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                     if ([self isDeleted])
-                         return;
-
-                     self.postFormats = [NSDictionary dictionaryWithDictionary:(NSDictionary *)responseObject];
-                     if (success) {
-                         success();
-                     }
-
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                     //Code=-32601 "server error. requested method wp.getPostFormats does not exist."
-                     if (error.code == -32601) {
-                         if (success) {
-                             success();
-                         }
-                     } else {
-                         WPFLog(@"Error syncing post formats: %@", [error localizedDescription]);
-
-                         if (failure) {
-                             failure(error);
-                         }
-                     }
-                 }];
+    AFXMLRPCRequestOperation *operation = [self operationForPostFormatsWithSuccess:success failure:failure];
+    [self.api enqueueHTTPRequestOperation:operation];
 }
 
 - (void)syncBlogWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    [self syncOptionsWithWithSuccess:^{
-        [self syncCategoriesWithSuccess:^{
-            [self syncPostFormatsWithSuccess:^{
-                [self syncPostsWithSuccess:^{
-                    [self syncCommentsWithSuccess:^{
-                        [self syncPagesWithSuccess:success failure:failure loadMore:NO];
-                    } failure:failure];
-                } failure:failure loadMore:NO];
-            } failure:failure];
-        } failure:failure];
-    } failure:failure];
+    AFXMLRPCRequestOperation *operation;
+    NSMutableArray *operations = [NSMutableArray arrayWithCapacity:6];
+    operation = [self operationForOptionsWithSuccess:nil failure:nil];
+    [operations addObject:operation];
+    operation = [self operationForPostFormatsWithSuccess:nil failure:nil];
+    [operations addObject:operation];
+    operation = [self operationForCategoriesWithSuccess:nil failure:nil];
+    [operations addObject:operation];
+    operation = [self operationForCommentsWithSuccess:nil failure:nil];
+    [operations addObject:operation];
+    operation = [self operationForPostsWithSuccess:nil failure:nil loadMore:NO];
+    [operations addObject:operation];
+    operation = [self operationForPagesWithSuccess:nil failure:nil loadMore:NO];
+    [operations addObject:operation];
+
+    AFHTTPRequestOperation *combinedOperation = [self.api combinedHTTPRequestOperationWithOperations:operations success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (success) {
+            success();
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+    [self.api enqueueHTTPRequestOperation:combinedOperation];
 }
 
 //generate md5 hash from string
@@ -513,6 +357,211 @@
 
 	return password;
 }
+
+#pragma mark -
+
+- (AFXMLRPCRequestOperation *)operationForOptionsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    NSArray *parameters = [self getXMLRPCArgsWithExtra:nil];
+    AFXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getOptions" parameters:parameters];
+    AFXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if ([self isDeleted])
+            return;
+
+        self.options = [NSDictionary dictionaryWithDictionary:(NSDictionary *)responseObject];
+        if (success) {
+            success();
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        WPFLog(@"Error syncing options: %@", [error localizedDescription]);
+
+        if (failure) {
+            failure(error);
+        }
+    }];
+
+    return operation;
+}
+
+- (AFXMLRPCRequestOperation *)operationForPostFormatsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    NSArray *parameters = [self getXMLRPCArgsWithExtra:nil];
+    AFXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPostFormats" parameters:parameters];
+    AFXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if ([self isDeleted])
+            return;
+
+        self.postFormats = [NSDictionary dictionaryWithDictionary:(NSDictionary *)responseObject];
+        if (success) {
+            success();
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        WPFLog(@"Error syncing post formats: %@", [error localizedDescription]);
+
+        if (failure) {
+            failure(error);
+        }
+    }];
+    
+    return operation;
+}
+
+- (AFXMLRPCRequestOperation *)operationForCommentsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    NSDictionary *requestOptions = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:100] forKey:@"number"];
+    NSArray *parameters = [self getXMLRPCArgsWithExtra:requestOptions];
+    AFXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getComments" parameters:parameters];
+    AFXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if ([self isDeleted])
+            return;
+
+        [self mergeComments:responseObject];
+        if (success) {
+            success();
+        }
+        self.isSyncingComments = NO;
+        self.lastCommentsSync = [NSDate date];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        WPFLog(@"Error syncing comments: %@", [error localizedDescription]);
+
+        if (failure) {
+            failure(error);
+        }
+
+        self.isSyncingComments = NO;
+    }];
+    
+    return operation;
+}
+
+- (AFXMLRPCRequestOperation *)operationForCategoriesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    NSArray *parameters = [self getXMLRPCArgsWithExtra:nil];
+    AFXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getCategories" parameters:parameters];
+    AFXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if ([self isDeleted])
+            return;
+
+        [self mergeCategories:responseObject];
+        if (success) {
+            success();
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        WPFLog(@"Error syncing categories: %@", [error localizedDescription]);
+
+        if (failure) {
+            failure(error);
+        }
+    }];
+    
+    return operation;    
+}
+
+- (AFXMLRPCRequestOperation *)operationForPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more {
+    int num;
+
+    // Don't load more than 20 posts if we aren't at the end of the table,
+    // even if they were previously donwloaded
+    // 
+    // Blogs with long history can get really slow really fast, 
+    // with no chance to go back
+    if (more) {
+        num = MAX([self.posts count], 20);
+        if ([self.hasOlderPosts boolValue]) {
+            num += 20;
+        }
+    } else {
+        num = 20;
+    }
+
+    NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithInt:num]];
+    AFXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"metaWeblog.getRecentPosts" parameters:parameters];
+    AFXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if ([self isDeleted])
+            return;
+        
+        NSArray *posts = (NSArray *)responseObject;
+
+        // If we asked for more and we got what we had, there are no more posts to load
+        if (more && ([posts count] <= [self.posts count])) {
+            self.hasOlderPosts = [NSNumber numberWithBool:NO];
+        } else if (!more) {
+            //we should reset the flag otherwise when you refresh this blog you can't get more than 20 posts
+            self.hasOlderPosts = [NSNumber numberWithBool:YES];
+        }
+
+        [self mergePosts:posts];
+        if (success) {
+            success();
+        }
+
+        self.lastPostsSync = [NSDate date];
+        self.isSyncingPosts = NO;
+        if (success) {
+            success();
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        WPFLog(@"Error syncing posts: %@", [error localizedDescription]);
+        
+        if (failure) {
+            failure(error);
+        }
+        self.isSyncingPosts = NO;
+    }];
+    
+    return operation;        
+}
+
+- (AFXMLRPCRequestOperation *)operationForPagesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more {
+    int num;
+	
+    int syncCount = [[self syncedPages] count];
+    // Don't load more than 20 pages if we aren't at the end of the table,
+    // even if they were previously donwloaded
+    // 
+    // Blogs with long history can get really slow really fast, 
+    // with no chance to go back
+    if (more) {
+        num = MAX(syncCount, 20);
+        if ([self.hasOlderPages boolValue]) {
+            num += 20;
+        }
+    } else {
+        num = 20;
+    }
+
+    NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithInt:num]];
+    AFXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPages" parameters:parameters];
+    AFXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if ([self isDeleted])
+            return;
+
+        NSArray *pages = (NSArray *)responseObject;
+
+        // If we asked for more and we got what we had, there are no more pages to load
+        if (more && ([pages count] <= syncCount)) {
+            self.hasOlderPages = [NSNumber numberWithBool:NO];
+        } else if (!more) {
+            //we should reset the flag otherwise when you refresh this blog you can't get more than 20 pages
+            self.hasOlderPages = [NSNumber numberWithBool:YES];
+        }
+
+        [self mergePages:pages];
+        if (success) {
+            success();
+        }
+
+        self.lastPagesSync = [NSDate date];
+        self.isSyncingPages = NO;
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        WPFLog(@"Error syncing pages: %@", [error localizedDescription]);
+
+        if (failure) {
+            failure(error);
+        }
+        self.isSyncingPages = NO;
+    }];
+
+    return operation;
+}
+
+#pragma mark -
 
 - (void)mergeCategories:(NSArray *)newCategories {
     // Don't even bother if blog has been deleted while fetching categories
