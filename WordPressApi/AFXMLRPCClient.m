@@ -14,6 +14,25 @@
 
 static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
 
+@implementation AFXMLRPCRequest
+@synthesize method, parameters;
+- (void)dealloc {
+    [method release];
+    [parameters release];
+    [super dealloc];
+}
+@end
+
+@implementation AFXMLRPCRequestOperation
+@synthesize XMLRPCRequest, success, failure;
+- (void)dealloc {
+    [XMLRPCRequest release];
+    [success release];
+    [failure release];
+    [super dealloc];
+}
+@end
+
 @interface AFXMLRPCClient ()
 @property (readwrite, nonatomic, retain) NSURL *xmlrpcEndpoint;
 @property (readwrite, nonatomic, retain) NSMutableDictionary *defaultHeaders;
@@ -108,6 +127,15 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
     return request;
 }
 
+- (AFXMLRPCRequest *)XMLRPCRequestWithMethod:(NSString *)method
+                                  parameters:(NSArray *)parameters {
+    AFXMLRPCRequest *request = [[[AFXMLRPCRequest alloc] init] autorelease];
+    request.method = method;
+    request.parameters = parameters;
+
+    return request;
+}
+
 #pragma mark - Creating HTTP Operations
 
 - (AFHTTPRequestOperation *)HTTPRequestOperationWithRequest:(NSURLRequest *)request 
@@ -140,6 +168,64 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
     return operation;
 }
 
+- (AFXMLRPCRequestOperation *)XMLRPCRequestOperationWithRequest:(AFXMLRPCRequest *)request
+                                                        success:(AFXMLRPCRequestOperationSuccessBlock)success
+                                                        failure:(AFXMLRPCRequestOperationFailureBlock)failure {
+    AFXMLRPCRequestOperation *operation = [[[AFXMLRPCRequestOperation alloc] init] autorelease];
+    operation.XMLRPCRequest = request;
+    operation.success = success;
+    operation.failure = failure;
+    
+    return operation;
+}
+
+- (AFHTTPRequestOperation *)combinedHTTPRequestOperationWithOperations:(NSArray *)operations {
+    NSMutableArray *parameters = [NSMutableArray array];
+    
+    for (AFXMLRPCRequestOperation *operation in operations) {
+        NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:
+                               operation.XMLRPCRequest.method, @"methodName",
+                               operation.XMLRPCRequest.parameters, @"params",
+                               nil];
+        [parameters addObject:param];
+    }
+    
+    NSURLRequest *request = [self requestWithMethod:@"system.multicall" parameters:parameters];
+    AFXMLRPCRequestOperationSuccessBlock success = ^(AFHTTPRequestOperation *multicallOperation, id responseObject) {
+        NSArray *responses = (NSArray *)responseObject;
+        for (int i = 0; i < [responses count]; i++) {
+            AFXMLRPCRequestOperation *operation = [operations objectAtIndex:i];
+            id object = [responses objectAtIndex:i];
+            
+            NSError *error = nil;
+            if ([object isKindOfClass:[NSDictionary class]] && [object objectForKey:@"faultCode"] && [object objectForKey:@"faultString"]) {
+                NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:[object objectForKey:@"faultString"], NSLocalizedDescriptionKey, nil];
+                error = [NSError errorWithDomain:@"XMLRPC" code:[[object objectForKey:@"faultCode"] intValue] userInfo:usrInfo];
+            }
+            
+            if (error) {
+                if (operation.failure) {
+                    operation.failure(operation, error);
+                }
+            } else {
+                if (operation.success) {
+                    operation.success(operation, object);
+                }
+            }
+        }        
+    };
+    AFXMLRPCRequestOperationFailureBlock failure = ^(AFHTTPRequestOperation *multicallOperation, NSError *error) {
+        for (AFXMLRPCRequestOperation *operation in operations) {
+            if (operation.failure) {
+                operation.failure(operation, error);
+            }
+        }
+    };
+    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request
+                                                                      success:success
+                                                                      failure:failure];
+    return operation;
+}
 
 #pragma mark - Managing Enqueued HTTP Operations
 

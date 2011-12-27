@@ -10,6 +10,20 @@
 
 @class AFHTTPRequestOperation;
 
+typedef void (^AFXMLRPCRequestOperationSuccessBlock)(AFHTTPRequestOperation *operation, id responseObject);
+typedef void (^AFXMLRPCRequestOperationFailureBlock)(AFHTTPRequestOperation *operation, NSError *error);
+
+@interface AFXMLRPCRequest : NSObject
+@property (nonatomic, retain) NSString *method;
+@property (nonatomic, retain) NSArray *parameters;
+@end
+
+@interface AFXMLRPCRequestOperation : AFHTTPRequestOperation
+@property (nonatomic, retain) AFXMLRPCRequest *XMLRPCRequest;
+@property (nonatomic, copy) AFXMLRPCRequestOperationSuccessBlock success;
+@property (nonatomic, copy) AFXMLRPCRequestOperationFailureBlock failure;
+@end
+
 /**
  `AFXMLRPCClient` binds together AFNetworking and eczarny's XML-RPC library to interact with XML-RPC based APIs
  */
@@ -107,6 +121,9 @@
 - (NSMutableURLRequest *)requestWithMethod:(NSString *)method
                                 parameters:(NSArray *)parameters;
 
+- (AFXMLRPCRequest *)XMLRPCRequestWithMethod:(NSString *)method
+                                  parameters:(NSArray *)parameters;
+
 ///-------------------------------
 /// @name Creating HTTP Operations
 ///-------------------------------
@@ -119,9 +136,14 @@
  @param failure A block object to be executed when the request operation finishes unsuccessfully, or that finishes successfully, but encountered an error while parsing the resonse data. This block has no return value and takes two arguments:, the created request operation and the `NSError` object describing the network or parsing error that occurred.
  */
 - (AFHTTPRequestOperation *)HTTPRequestOperationWithRequest:(NSURLRequest *)request 
-                                                    success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-                                                    failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
+                                                    success:(AFXMLRPCRequestOperationSuccessBlock)success
+                                                    failure:(AFXMLRPCRequestOperationFailureBlock)failure;
 
+- (AFXMLRPCRequestOperation *)XMLRPCRequestOperationWithRequest:(AFXMLRPCRequest *)request
+                                                        success:(AFXMLRPCRequestOperationSuccessBlock)success
+                                                        failure:(AFXMLRPCRequestOperationFailureBlock)failure;
+
+- (AFHTTPRequestOperation *)combinedHTTPRequestOperationWithOperations:(NSArray *)operations;
 
 ///----------------------------------------
 /// @name Managing Enqueued HTTP Operations
