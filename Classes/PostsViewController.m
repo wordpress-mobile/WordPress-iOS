@@ -23,8 +23,9 @@
 - (void)checkLastSyncDate;
 - (NSDate *)lastSyncDate;
 - (BOOL) hasOlderItems;
-- (BOOL)syncItemsWithError:(NSError **)error loadMore:(BOOL)more;
+- (void)loadMoreItems;
 - (NSString *)entityName;
+- (void)refreshPostList;
 @end
 
 @implementation PostsViewController
@@ -145,8 +146,11 @@
 	return [self.blog.hasOlderPosts boolValue];
 }
 
-- (BOOL)syncItemsWithError:(NSError **)error loadMore:(BOOL)more {
-	return [self.blog syncPostsWithError:error loadMore:YES];
+- (void)loadMoreItems {
+	[self.blog syncPostsWithSuccess:^(NSArray *postsAdded) {
+        WPLog(@"Posts added: %d", [postsAdded count]);
+        [self refreshPostList];
+    } failure:nil loadMore:YES];
 }
 
 
@@ -278,7 +282,6 @@
     [self.tableView reloadData]; // It's automatically reloaded from the results controller but with a delay, so we do it now too: #929
     [self trySelectSomething];
     [activityFooter stopAnimating];
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
 }
 
@@ -304,15 +307,13 @@
     }
     
     if( !error )
-        [self.blog syncPostsWithError:&error loadMore:NO];
-        
-	if(error) {
-		NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
-		[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
-	} 
-	
-	[self performSelectorOnMainThread:@selector(refreshPostList) withObject:nil waitUntilDone:NO];
-          
+        [self.blog syncPostsWithSuccess:^(NSArray *postsAdded) {
+            [self refreshPostList];
+        } failure:^(NSError *error) {
+            NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
+        } loadMore:NO];
+
     [self.blog syncOptionsWithError:&error]; //error is not used atm, but keep it there for future usage. 
     [pool release];
 }
@@ -326,7 +327,7 @@
     NSError *error = nil;
     if ((![self isSyncing]) && [self hasOlderItems]) {
         WPLog(@"We have older posts to load");
-        [self syncItemsWithError:&error loadMore:YES];
+        [self loadMoreItems];
 	    // TODO: handle errors. 
 		//This method is called so many times. if you show an error msg the app will be very unusable
 		if(error) {

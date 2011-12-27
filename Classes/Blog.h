@@ -43,12 +43,13 @@
 #pragma mark -
 #pragma mark Synchronization
 - (NSArray *)syncedPosts;
-- (BOOL)syncPostsWithError:(NSError **)error loadMore:(BOOL)more;
+- (void)syncPostsWithSuccess:(void (^)(NSArray *postsAdded))success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
 - (BOOL)syncPagesWithError:(NSError **)error loadMore:(BOOL)more;
 - (BOOL)syncCategoriesWithError:(NSError **)error;
 - (BOOL)syncOptionsWithError:(NSError **)error;
 - (void)syncCommentsWithSuccess:(void (^)(NSArray *commentsAdded))success failure:(void (^)(NSError *error))failure;
 - (BOOL)syncPostFormatsWithError:(NSError **)error; 
+- (void)syncBlogWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (NSString *) returnMD5Hash:(NSString*)concat;
 
 #pragma mark -

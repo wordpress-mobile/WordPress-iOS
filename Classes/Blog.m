@@ -14,6 +14,7 @@
 - (NSArray *)getXMLRPCArgsWithExtra:(id)extra;
 - (NSString *)fetchPassword;
 - (NSArray *)mergeComments:(NSArray *)newComments;
+- (NSArray *)mergePosts:(NSArray *)newPosts;
 @end
 
 
@@ -201,61 +202,10 @@
     return [self syncedPostsWithEntityName:@"Post"];
 }
 
-- (BOOL)syncPostsFromResults:(NSMutableArray *)posts {
-    if ([posts count] == 0)
-        return NO;
-	
-    NSArray *syncedPosts = [self syncedPosts];
-    NSMutableArray *postsToKeep = [NSMutableArray array];
-    for (NSDictionary *postInfo in posts) {
-        Post *newPost = [Post createOrReplaceFromDictionary:postInfo forBlog:self];
-        if (newPost != nil) {
-            [postsToKeep addObject:newPost];
-        } else {
-            WPFLog(@"-[Post createOrReplaceFromDictionary:forBlog:] returned a nil post: %@", postInfo);            
-        }
-    }
-    for (Post *post in syncedPosts) {
-		
-        if (![postsToKeep containsObject:post]) {  /*&& post.blog.blogID == self.blogID*/
-			//the current stored post is not contained "as-is" on the server response
-            
-            if (post.revision) { //edited post before the refresh is finished
-				//We should check if this post is already available on the blog
-				BOOL presence = NO; 
-				
-				for (Post *currentPostToKeep in postsToKeep) {
-					if([currentPostToKeep.postID isEqualToNumber:post.postID]) {
-						presence = YES;
-						break;
-					}
-				}
-				if( presence == YES ) {
-					//post is on the server (most cases), kept it unchanged
-					
-				} else {
-					//post is deleted on the server, make it local, otherwise you can't upload it anymore
-					post.remoteStatus = AbstractPostRemoteStatusLocal;
-					post.postID = nil;
-					post.permaLink = nil;
-					
-				}
-			} else {
-				//post is not on the server anymore. delete it.
-                WPLog(@"Deleting post: %@", post);                
-                [[self managedObjectContext] deleteObject:post];
-            }
-        }
-    }
-	
-    [self dataSave];
-    return YES;
-}
-
-- (BOOL)syncPostsWithError:(NSError **)error loadMore:(BOOL)more {
+- (void)syncPostsWithSuccess:(void (^)(NSArray *postsAdded))success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more {
     if (self.isSyncingPosts) {
         WPLog(@"Already syncing posts. Skip");
-        return NO;
+        return;
     }
     self.isSyncingPosts = YES;
     int num;
@@ -274,30 +224,38 @@
         num = 20;
     }
     
-    WPLog(@"Loading %i posts...", num);
-	WPDataController *dc = [[WPDataController alloc] init];
-	NSMutableArray *posts = [dc getRecentPostsForBlog:self number:[NSNumber numberWithInt:num]];
-	if(dc.error) {
-		if (error != nil) 
-			*error = dc.error;
-		WPLog(@"Error syncing blog posts: %@", [dc.error localizedDescription]);
-		[dc release];
-		self.isSyncingPosts = NO;
-		return NO;
-	}
-	
-    // If we asked for more and we got what we had, there are no more posts to load
-    if (more && ([posts count] <= [self.posts count])) {
-        self.hasOlderPosts = [NSNumber numberWithBool:NO];
-    } else if (!more) {
-		//we should reset the flag otherwise when you refresh this blog you can't get more than 20 posts
-		self.hasOlderPosts = [NSNumber numberWithBool:YES];
-	}
-    [self performSelectorOnMainThread:@selector(syncPostsFromResults:) withObject:posts waitUntilDone:YES];
-    self.lastPostsSync = [NSDate date];
-    self.isSyncingPosts = NO;
-	[dc release];
-    return YES;
+    NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithInt:num]];
+    [self.api callMethod:@"metaWeblog.getRecentPosts"
+              parameters:parameters
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     if ([self isDeleted])
+                         return;
+
+                     NSArray *posts = (NSArray *)responseObject;
+
+                     // If we asked for more and we got what we had, there are no more posts to load
+                     if (more && ([posts count] <= [self.posts count])) {
+                         self.hasOlderPosts = [NSNumber numberWithBool:NO];
+                     } else if (!more) {
+                         //we should reset the flag otherwise when you refresh this blog you can't get more than 20 posts
+                         self.hasOlderPosts = [NSNumber numberWithBool:YES];
+                     }
+
+                     NSArray *postsAdded = [self mergePosts:posts];
+                     if (success) {
+                         success(postsAdded);
+                     }
+
+                     self.lastPostsSync = [NSDate date];
+                     self.isSyncingPosts = NO;
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     WPFLog(@"Error syncing posts: %@", [error localizedDescription]);
+
+                     if (failure) {
+                         failure(error);
+                     }
+                     self.isSyncingPosts = NO;
+                 }];
 }
 
 - (NSArray *)syncedPages {
@@ -506,6 +464,10 @@
                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                      WPFLog(@"Error syncing comments: %@", [error localizedDescription]);
 
+                     if (failure) {
+                         failure(error);
+                     }
+
                      self.isSyncingComments = NO;
                  }];
 }
@@ -566,7 +528,7 @@
 
     if ([extra isKindOfClass:[NSArray class]]) {
         [result addObjectsFromArray:extra];
-    } else if ([extra isKindOfClass:[NSDictionary class]]) {
+    } else {
         [result addObject:extra];
     }
 
@@ -592,6 +554,65 @@
 		password = @""; // FIXME: not good either, but prevents from crashing
 
 	return password;
+}
+
+- (NSArray *)mergePosts:(NSArray *)newPosts {
+    // Don't even bother if blog has been deleted while fetching comments
+    if ([self isDeleted])
+        return nil;
+
+    if ([newPosts count] == 0)
+        return NO;
+
+    NSMutableArray *result = [NSMutableArray array];
+    NSMutableArray *postsToKeep = [NSMutableArray array];
+    for (NSDictionary *postInfo in newPosts) {
+        Post *newPost = [Post createOrReplaceFromDictionary:postInfo forBlog:self];
+        if (newPost != nil) {
+            [postsToKeep addObject:newPost];
+            if ([newPost isInserted]) {
+                [result addObject:newPost];
+            }
+        } else {
+            WPFLog(@"-[Post createOrReplaceFromDictionary:forBlog:] returned a nil post: %@", postInfo);
+        }
+    }
+
+    NSArray *syncedPosts = [self syncedPosts];
+    for (Post *post in syncedPosts) {
+
+        if (![postsToKeep containsObject:post]) {  /*&& post.blog.blogID == self.blogID*/
+			//the current stored post is not contained "as-is" on the server response
+
+            if (post.revision) { //edited post before the refresh is finished
+				//We should check if this post is already available on the blog
+				BOOL presence = NO;
+
+				for (Post *currentPostToKeep in postsToKeep) {
+					if([currentPostToKeep.postID isEqualToNumber:post.postID]) {
+						presence = YES;
+						break;
+					}
+				}
+				if( presence == YES ) {
+					//post is on the server (most cases), kept it unchanged
+				} else {
+					//post is deleted on the server, make it local, otherwise you can't upload it anymore
+					post.remoteStatus = AbstractPostRemoteStatusLocal;
+					post.postID = nil;
+					post.permaLink = nil;
+				}
+			} else {
+				//post is not on the server anymore. delete it.
+                WPLog(@"Deleting post: %@", post.postTitle);
+                WPLog(@"%d posts left", [self.posts count]);
+                [[self managedObjectContext] deleteObject:post];
+            }
+        }
+    }
+
+    [self dataSave];
+    return result;
 }
 
 - (NSArray *)mergeComments:(NSArray *)newComments {
