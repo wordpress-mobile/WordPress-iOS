@@ -242,6 +242,12 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
     [self.operationQueue addOperation:operation];
 }
 
+- (void)enqueueXMLRPCRequestOperation:(AFXMLRPCRequestOperation *)operation {
+    NSURLRequest *request = [self requestWithMethod:operation.XMLRPCRequest.method parameters:operation.XMLRPCRequest.parameters];
+    AFHTTPRequestOperation *op = [self HTTPRequestOperationWithRequest:request success:operation.success failure:operation.failure];
+    [self enqueueHTTPRequestOperation:op];
+}
+
 - (void)cancelAllHTTPOperations {
     for (AFHTTPRequestOperation *operation in [self.operationQueue operations]) {
         [operation cancel];

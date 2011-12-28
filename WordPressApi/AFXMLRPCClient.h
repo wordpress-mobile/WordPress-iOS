@@ -111,16 +111,24 @@ typedef void (^AFXMLRPCRequestOperationFailureBlock)(AFHTTPRequestOperation *ope
 ///-------------------------------
 
 /**
- Creates an `NSMutableURLRequest` object with the specified XML-RPC method and parameters.
+ Creates a `NSMutableURLRequest` object with the specified XML-RPC method and parameters.
  
  @param method The XML-RPC method for the request.
  @param parameters The XML-RPC parameters to be set as the request body.
  
- @return An `NSMutableURLRequest` object 
+ @return A `NSMutableURLRequest` object 
  */
 - (NSMutableURLRequest *)requestWithMethod:(NSString *)method
                                 parameters:(NSArray *)parameters;
 
+/**
+ Creates an `AFXMLRPCRequest` object with the specified XML-RPC method and parameters.
+ 
+ @param method The XML-RPC method for the request.
+ @param parameters The XML-RPC parameters to be set as the request body.
+ 
+ @return An `AFXMLRPCRequest` object 
+ */
 - (AFXMLRPCRequest *)XMLRPCRequestWithMethod:(NSString *)method
                                   parameters:(NSArray *)parameters;
 
@@ -139,10 +147,24 @@ typedef void (^AFXMLRPCRequestOperationFailureBlock)(AFHTTPRequestOperation *ope
                                                     success:(AFXMLRPCRequestOperationSuccessBlock)success
                                                     failure:(AFXMLRPCRequestOperationFailureBlock)failure;
 
+/**
+ Creates an `AFXMLRPCRequestOperation`
+ 
+ @param request The request object to be loaded asynchronously during execution of the operation.
+ @param success A block object to be executed when the request operation finishes successfully. This block has no return value and takes two arguments: the created request operation and the object created from the response data of request.
+ @param failure A block object to be executed when the request operation finishes unsuccessfully, or that finishes successfully, but encountered an error while parsing the resonse data. This block has no return value and takes two arguments:, the created request operation and the `NSError` object describing the network or parsing error that occurred.
+ */
 - (AFXMLRPCRequestOperation *)XMLRPCRequestOperationWithRequest:(AFXMLRPCRequest *)request
                                                         success:(AFXMLRPCRequestOperationSuccessBlock)success
                                                         failure:(AFXMLRPCRequestOperationFailureBlock)failure;
 
+/**
+ Creates an `AFHTTPRequestOperation` combining multiple XML-RPC calls in a single request using `system.multicall`
+ 
+ @param operations An array of `AFXMLRPCRequestOperation` objects
+ @param success A block object to be executed when the request operation finishes successfully. This block has no return value and takes two arguments: the created request operation and the object created from the response data of request.
+ @param failure A block object to be executed when the request operation finishes unsuccessfully, or that finishes successfully, but encountered an error while parsing the resonse data. This block has no return value and takes two arguments:, the created request operation and the `NSError` object describing the network or parsing error that occurred.
+ */
 - (AFHTTPRequestOperation *)combinedHTTPRequestOperationWithOperations:(NSArray *)operations success:(AFXMLRPCRequestOperationSuccessBlock)success failure:(AFXMLRPCRequestOperationFailureBlock)failure;
 
 ///----------------------------------------
@@ -155,6 +177,13 @@ typedef void (^AFXMLRPCRequestOperationFailureBlock)(AFHTTPRequestOperation *ope
  @param operation The XML-RPC request operation to be enqueued.
  */
 - (void)enqueueHTTPRequestOperation:(AFHTTPRequestOperation *)operation;
+
+/**
+ Enqueues an `AFXMLRPCRequestOperation` to the XML-RPC client's operation queue.
+ 
+ @param operation The XML-RPC request operation to be enqueued.
+ */
+- (void)enqueueXMLRPCRequestOperation:(AFXMLRPCRequestOperation *)operation;
 
 /**
  Cancels all operations in the HTTP client's operation queue. 
