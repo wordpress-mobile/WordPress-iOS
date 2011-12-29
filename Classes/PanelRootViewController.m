@@ -8,6 +8,7 @@
 
 #import "PanelRootViewController.h"
 #import "StackScrollViewController.h"
+#import "Constants.h"
 
 @interface UIViewExt : UIView {} 
 @end
@@ -75,7 +76,7 @@
     rootView.autoresizingMask = UIViewAutoresizingFlexibleWidth + UIViewAutoresizingFlexibleHeight;
     [rootView setBackgroundColor:[UIColor clearColor]];
 
-    leftMenuView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, self.view.frame.size.height)];
+    leftMenuView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, panel_menu_width, self.view.frame.size.height)];
     leftMenuView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     blogsViewController = [[BlogsViewController alloc] init];
     [blogsViewController.view setFrame:CGRectMake(0, 0, leftMenuView.frame.size.width, leftMenuView.frame.size.height)];

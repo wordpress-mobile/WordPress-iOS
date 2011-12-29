@@ -260,8 +260,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
         [window addSubview:panelRootViewController.view];
         [window makeKeyAndVisible];
-        
-        [panelRootViewController release];
 	}
 	
 	// Add listeners

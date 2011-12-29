@@ -574,7 +574,7 @@
     } else {        
         WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 
-        [blogViewController.view setFrame:CGRectMake(0, 0, 477, self.view.frame.size.height)];
+        [blogViewController.view setFrame:CGRectMake(0, 0, panel_slide_width, self.view.frame.size.height)];
         [delegate.stackScrollViewController addViewInSlider:blogViewController invokeByController:self isStackStartView:TRUE];
     }
     

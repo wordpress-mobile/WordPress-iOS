@@ -442,7 +442,7 @@
     }
     self.postReaderViewController = [[PostViewController alloc] initWithPost:post];
     
-    [self.postReaderViewController.view setFrame:CGRectMake(0, 0, 477, self.view.frame.size.height)];
+    [self.postReaderViewController.view setFrame:CGRectMake(0, 0, panel_slide_width, self.view.frame.size.height)];
     [delegate.stackScrollViewController addViewInSlider:self.postReaderViewController invokeByController:self isStackStartView:FALSE];
 }
 

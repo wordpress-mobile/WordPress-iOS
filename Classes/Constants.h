@@ -146,3 +146,7 @@ typedef enum {
 #define image_medium_size_h 360
 #define image_large_size_w 640
 #define image_large_size_h 480
+
+//Panel Predefined Options
+#define panel_menu_width 300
+#define panel_slide_width 477

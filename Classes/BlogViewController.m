@@ -190,7 +190,7 @@
         if (DeviceIsPad() == NO) {
             [self.navigationController pushViewController:nextViewController animated:YES];
         } else {
-            [nextViewController.view setFrame:CGRectMake(0, 0, 477, self.view.frame.size.height)];
+            [nextViewController.view setFrame:CGRectMake(0, 0, panel_slide_width, self.view.frame.size.height)];
             
             WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
             [delegate.stackScrollViewController addViewInSlider:nextViewController invokeByController:self isStackStartView:FALSE];
