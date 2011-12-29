@@ -375,6 +375,7 @@
     Blog *blog = [Blog createFromDictionary:newBlog withContext:appDelegate.managedObjectContext];
 	blog.geolocationEnabled = self.geolocationEnabled;
 	[blog dataSave];
+    [blog syncBlogWithSuccess:nil failure:nil];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 }
 

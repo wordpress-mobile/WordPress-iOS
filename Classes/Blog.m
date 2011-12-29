@@ -280,12 +280,21 @@
     [operations addObject:operation];
     operation = [self operationForCategoriesWithSuccess:nil failure:nil];
     [operations addObject:operation];
-    operation = [self operationForCommentsWithSuccess:nil failure:nil];
-    [operations addObject:operation];
-    operation = [self operationForPostsWithSuccess:nil failure:nil loadMore:NO];
-    [operations addObject:operation];
-    operation = [self operationForPagesWithSuccess:nil failure:nil loadMore:NO];
-    [operations addObject:operation];
+    if (!self.isSyncingComments) {
+        operation = [self operationForCommentsWithSuccess:nil failure:nil];
+        [operations addObject:operation];
+        self.isSyncingComments = YES;
+    }
+    if (!self.isSyncingPosts) {
+        operation = [self operationForPostsWithSuccess:nil failure:nil loadMore:NO];
+        [operations addObject:operation];
+        self.isSyncingPosts = YES;
+    }
+    if (!self.isSyncingPages) {
+        operation = [self operationForPagesWithSuccess:nil failure:nil loadMore:NO];
+        [operations addObject:operation];
+        self.isSyncingPages = YES;
+    }
 
     AFHTTPRequestOperation *combinedOperation = [self.api combinedHTTPRequestOperationWithOperations:operations success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
