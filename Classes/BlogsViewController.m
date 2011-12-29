@@ -15,10 +15,35 @@
 @end
 
 @implementation BlogsViewController
-@synthesize resultsController, currentBlog, tableView;
+@synthesize resultsController, currentBlog, tableView, stackScrollViewController;
 
 #pragma mark -
 #pragma mark View lifecycle
+
+- (id)initWithFrame:(CGRect)frame {
+    if (self = [super init]) {
+        [self.view setFrame:frame]; 
+		
+        tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) style:UITableViewStylePlain];
+        [tableView setDelegate:self];
+        [tableView setDataSource:self];
+        [tableView setBackgroundColor:[UIColor clearColor]];
+        
+        UIView* footerView =  [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 1)];
+        tableView.tableFooterView = footerView;
+        [footerView release];
+        
+        [self.view addSubview:tableView];
+		
+        UIView* verticalLineView = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width, -5, 1, self.view.frame.size.height)];
+        [verticalLineView setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
+        [verticalLineView setBackgroundColor:[UIColor whiteColor]];
+        [self.view addSubview:verticalLineView];
+        [self.view bringSubviewToFront:verticalLineView];
+        [verticalLineView release];
+    }
+    return self;
+}
 
 - (void)viewDidUnload {
     [quickPhotoButton release]; quickPhotoButton = nil;
@@ -559,7 +584,15 @@
 	BlogViewController *blogViewController = [[BlogViewController alloc] initWithNibName:@"BlogViewController" bundle:nil];
     blogViewController.blog = blog;
     [appDelegate setCurrentBlog:blog];
-	[self.navigationController pushViewController:blogViewController animated:animated];
+    
+    if (DeviceIsPad() == NO) {
+        [self.navigationController pushViewController:blogViewController animated:animated];
+    } else {        
+        WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+
+        [delegate.stackScrollViewController addViewInSlider:blogViewController invokeByController:self isStackStartView:TRUE];
+    }
+    
 	[blogViewController release];
 }
 

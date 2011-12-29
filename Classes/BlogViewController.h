@@ -6,6 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WordPressAppDelegate.h"
 #import <QuartzCore/QuartzCore.h>
 #import "Blog.h"
 

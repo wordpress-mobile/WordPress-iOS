@@ -157,6 +157,8 @@ Classes/PageViewController.h -text
 Classes/PageViewController.m -text
 Classes/PagesViewController.h -text
 Classes/PagesViewController.m -text
+Classes/PanelRootViewController.h -text
+Classes/PanelRootViewController.m -text
 Classes/Post.h -text
 Classes/Post.m -text
 Classes/PostAnnotation.h -text
@@ -188,6 +190,8 @@ Classes/QuickPicturePreviewView.h -text
 Classes/QuickPicturePreviewView.m -text
 Classes/SDURLCache.h -text
 Classes/SDURLCache.m -text
+Classes/StackScrollViewController.h -text
+Classes/StackScrollViewController.m -text
 Classes/StatsChartViewController.h -text
 Classes/StatsChartViewController.m -text
 Classes/StatsPageControlViewController.h -text
@@ -210,6 +214,8 @@ Classes/UITableViewTextFieldCell.h -text
 Classes/UITableViewTextFieldCell.m -text
 Classes/UIViewController_iPadExtensions.h -text
 Classes/UIViewController_iPadExtensions.m -text
+Classes/UIViewWithShadow.h -text
+Classes/UIViewWithShadow.m -text
 Classes/WPAddCategoryViewController.h -text
 Classes/WPAddCategoryViewController.m -text
 Classes/WPCategoriesController.h -text

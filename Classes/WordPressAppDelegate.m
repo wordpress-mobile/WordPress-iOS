@@ -12,6 +12,7 @@
 #import "FilteredWebCache.h"
 #import "SDURLCache.h"
 #import "InAppSettings.h"
+#import "PanelRootViewController.h"
 
 @interface WordPressAppDelegate (Private)
 
@@ -34,6 +35,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 @synthesize window, currentBlog, postID;
 @synthesize navigationController, alertRunning, isWPcomAuthenticated;
+@synthesize stackScrollViewController;
 @synthesize splitViewController, crashReportView, isUploadingPost;
 
 - (id)init {
@@ -201,26 +203,33 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		
 	}
 	else
-	{
-		[window addSubview:splitViewController.view];
-		[window makeKeyAndVisible];
+    {
+//        [window addSubview:splitViewController.view];
+//        [window makeKeyAndVisible];
+//
+//        if ([Blog countWithContext:context] == 0)
+//        {
+//            WelcomeViewController *welcomeViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController-iPad" bundle:nil];
+//            UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:welcomeViewController];
+//            aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+//            aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+//            self.navigationController = aNavigationController;
+//            [splitViewController presentModalViewController:aNavigationController animated:YES];
+//            [aNavigationController release];
+//            [welcomeViewController release];
+//        }
+//
+//        //NSLog(@"? %d", [self.splitViewController shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationLandscapeLeft]);
+//
+//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newBlogNotification:) name:@"NewBlogAdded" object:nil];
+//        [self performSelector:@selector(showPopoverIfNecessary) withObject:nil afterDelay:0.1];
+        
+        PanelRootViewController *panelRootViewController = [[PanelRootViewController alloc] init];
 
-		if ([Blog countWithContext:context] == 0)
-		{
-			WelcomeViewController *welcomeViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController-iPad" bundle:nil];
-			UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:welcomeViewController];
-			aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-			aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-			self.navigationController = aNavigationController;
-			[splitViewController presentModalViewController:aNavigationController animated:YES];
-			[aNavigationController release];
-			[welcomeViewController release];
-		}
-
-		//NSLog(@"? %d", [self.splitViewController shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationLandscapeLeft]);
-
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newBlogNotification:) name:@"NewBlogAdded" object:nil];
-		[self performSelector:@selector(showPopoverIfNecessary) withObject:nil afterDelay:0.1];
+        [window addSubview:panelRootViewController.view];
+        [window makeKeyAndVisible];
+        
+        [panelRootViewController release];
 	}
 	
 	// Add listeners

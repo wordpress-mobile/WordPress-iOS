@@ -6,6 +6,7 @@
 #import "Blog.h"
 #import "CrashReportViewController.h"
 #import "HelpViewController.h"
+#import "StackScrollViewController.h"
 
 @class AutosaveManager;
 
@@ -21,6 +22,8 @@
     BOOL alertRunning, passwordAlertRunning;
     BOOL isUploadingPost;
 	BOOL isWPcomAuthenticated;
+    
+    StackScrollViewController *stackScrollViewController;
 
 	NSMutableData *statsData;
 	NSString *postID;
@@ -43,6 +46,7 @@
 @property (readonly, nonatomic, retain) UINavigationController *detailNavigationController;
 @property (nonatomic, getter = isAlertRunning) BOOL alertRunning;
 @property (nonatomic, assign) BOOL isWPcomAuthenticated;
+@property (nonatomic, retain) StackScrollViewController *stackScrollViewController;
 @property (nonatomic, assign) BOOL isUploadingPost;
 @property (nonatomic, retain) Blog *currentBlog;
 @property (nonatomic, retain) NSString *postID;

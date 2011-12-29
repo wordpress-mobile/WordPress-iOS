@@ -13,6 +13,7 @@
 #import "QuickPhotoButton.h"
 #import "QuickPhotoUploadProgressController.h"
 #import "WPReaderViewController.h"
+#import "StackScrollViewController.h"
 
 @interface BlogsViewController : UIViewController <NSFetchedResultsControllerDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate> {
 	WordPressAppDelegate *appDelegate;
@@ -25,11 +26,13 @@
     IBOutlet UITableView *tableView;
     WPReaderViewController *readerViewController;
     BOOL isTransitioning;
+    StackScrollViewController *stackScrollViewController;
 }
 
 @property (nonatomic, retain) NSFetchedResultsController *resultsController;
 @property (nonatomic, retain) Blog *currentBlog;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
+@property (nonatomic, retain) StackScrollViewController *stackScrollViewController;
 
 - (void)showBlog:(Blog *)blog animated:(BOOL)animated;
 - (void)showBlogWithoutAnimation;

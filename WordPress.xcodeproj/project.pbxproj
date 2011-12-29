@@ -304,6 +304,9 @@
 		A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */; };
 		A0E293F10E21027E00C6919C /* WPAddCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */; };
 		A0E293FE0E21037200C6919C /* WPAddCategoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0E293FD0E21037200C6919C /* WPAddCategoryViewController.xib */; };
+		A2DF329814AB88F600B812F7 /* StackScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2DF329514AB88F600B812F7 /* StackScrollViewController.m */; };
+		A2DF329914AB88F600B812F7 /* UIViewWithShadow.m in Sources */ = {isa = PBXBuildFile; fileRef = A2DF329714AB88F600B812F7 /* UIViewWithShadow.m */; };
+		A2DF329C14AB8CBB00B812F7 /* PanelRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2DF329B14AB8CBB00B812F7 /* PanelRootViewController.m */; };
 		AC3D2C110E2222430064A705 /* RoundedRectBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = AC3D2C100E2222430064A705 /* RoundedRectBlack.png */; };
 		AC600C0C0E20B80400D663AA /* write.png in Resources */ = {isa = PBXBuildFile; fileRef = AC600C080E20B80400D663AA /* write.png */; };
 		AC600C0E0E20B80400D663AA /* photos.png in Resources */ = {isa = PBXBuildFile; fileRef = AC600C0A0E20B80400D663AA /* photos.png */; };
@@ -885,6 +888,12 @@
 		A0E293EF0E21027E00C6919C /* WPAddCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAddCategoryViewController.h; sourceTree = "<group>"; };
 		A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAddCategoryViewController.m; sourceTree = "<group>"; };
 		A0E293FD0E21037200C6919C /* WPAddCategoryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WPAddCategoryViewController.xib; sourceTree = "<group>"; };
+		A2DF329414AB88F600B812F7 /* StackScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StackScrollViewController.h; path = Classes/StackScrollViewController.h; sourceTree = "<group>"; };
+		A2DF329514AB88F600B812F7 /* StackScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StackScrollViewController.m; path = Classes/StackScrollViewController.m; sourceTree = "<group>"; };
+		A2DF329614AB88F600B812F7 /* UIViewWithShadow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIViewWithShadow.h; path = Classes/UIViewWithShadow.h; sourceTree = "<group>"; };
+		A2DF329714AB88F600B812F7 /* UIViewWithShadow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIViewWithShadow.m; path = Classes/UIViewWithShadow.m; sourceTree = "<group>"; };
+		A2DF329A14AB8CBB00B812F7 /* PanelRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanelRootViewController.h; sourceTree = "<group>"; };
+		A2DF329B14AB8CBB00B812F7 /* PanelRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PanelRootViewController.m; sourceTree = "<group>"; };
 		AC3D2C100E2222430064A705 /* RoundedRectBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RoundedRectBlack.png; sourceTree = "<group>"; };
 		AC600C080E20B80400D663AA /* write.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = write.png; sourceTree = "<group>"; };
 		AC600C0A0E20B80400D663AA /* photos.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = photos.png; sourceTree = "<group>"; };
@@ -1228,6 +1237,8 @@
 		03B1DF31113D87E900BBD1C6 /* iPad */ = {
 			isa = PBXGroup;
 			children = (
+				A2DF329A14AB8CBB00B812F7 /* PanelRootViewController.h */,
+				A2DF329B14AB8CBB00B812F7 /* PanelRootViewController.m */,
 				03B1DF2C113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.h */,
 				03B1DF2D113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.m */,
 			);
@@ -1292,6 +1303,7 @@
 				8388FA801269580400304909 /* TouchXML */,
 				834CE85F1256E7EE0046A4A3 /* ASIHTTPRequest */,
 				834CAEA2122D56B7003DDF49 /* UIImage */,
+				A2DF329214AB88D400B812F7 /* StackScrollView */,
 				832D4F51120A71EE001708D4 /* RegexKitLite.h */,
 				832D4F52120A71EE001708D4 /* RegexKitLite.m */,
 				28A0AAE50D9B0CCF005BE974 /* WordPress_Prefix.pch */,
@@ -1669,6 +1681,17 @@
 				03B1DF2E113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.xib */,
 			);
 			name = Blogs;
+			sourceTree = "<group>";
+		};
+		A2DF329214AB88D400B812F7 /* StackScrollView */ = {
+			isa = PBXGroup;
+			children = (
+				A2DF329414AB88F600B812F7 /* StackScrollViewController.h */,
+				A2DF329514AB88F600B812F7 /* StackScrollViewController.m */,
+				A2DF329614AB88F600B812F7 /* UIViewWithShadow.h */,
+				A2DF329714AB88F600B812F7 /* UIViewWithShadow.m */,
+			);
+			name = StackScrollView;
 			sourceTree = "<group>";
 		};
 		AC3439790E11434600E5D79B /* Post */ = {
@@ -2860,6 +2883,9 @@
 				E12F55F414A1F22D0060A510 /* XMLRPCEventBasedParser.m in Sources */,
 				E12F55F514A1F22D0060A510 /* XMLRPCEventBasedParserDelegate.m in Sources */,
 				E11F949D14A3344300277D31 /* AFXMLRPCClient.m in Sources */,
+				A2DF329814AB88F600B812F7 /* StackScrollViewController.m in Sources */,
+				A2DF329914AB88F600B812F7 /* UIViewWithShadow.m in Sources */,
+				A2DF329C14AB8CBB00B812F7 /* PanelRootViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
