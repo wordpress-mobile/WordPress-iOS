@@ -8,7 +8,6 @@
 
 #import "EditCommentViewController.h"
 #import "WPProgressHUD.h"
-#import "WPReachability.h"
 #import "CommentViewController.h"
 
 NSTimeInterval kAnimationDuration3 = 0.3f;
@@ -293,7 +292,9 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 #pragma mark Comment Handling Methods
 
 - (BOOL)isConnectedToHost {
-    if ([[WPReachability sharedReachability] internetConnectionStatus] == NotReachable) {
+  WordPressAppDelegate  *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    if ( appDelegate.currentBlogAvailable == NO ) {
         UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No connection to host.", @"")
 																	  message:NSLocalizedString(@"Operation is not supported now.", @"")
 																	 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];

@@ -1,6 +1,6 @@
 #import "WordPressAppDelegate.h"
 #import "BlogsViewController.h"
-#import "WPReachability.h"
+#import "Reachability.h"
 #import "NSString+Helpers.h"
 #import "BlogViewController.h"
 #import "BlogSplitViewDetailViewController.h"
@@ -15,8 +15,6 @@
 #import "PanelRootViewController.h"
 
 @interface WordPressAppDelegate (Private)
-
-- (void)reachabilityChanged;
 - (void)setAppBadge;
 - (void)checkIfStatsShouldRun;
 - (void)runStats;
@@ -37,6 +35,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 @synthesize navigationController, alertRunning, isWPcomAuthenticated;
 @synthesize stackScrollViewController;
 @synthesize splitViewController, crashReportView, isUploadingPost;
+@synthesize connectionAvailable, wpcomAvailable, currentBlogAvailable, wpcomReachability, internetReachability, currentBlogReachability;
 
 - (id)init {
     if (!wordPressApp) {
@@ -89,6 +88,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
     [window release];
 	[currentBlog release];
     [passwordTextField release];
+    [wpcomReachability release];
+    [internetReachability release];
     [super dealloc];
 }
 
@@ -163,11 +164,42 @@ static WordPressAppDelegate *wordPressApp = NULL;
     }
 	[FileLogger log:@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
     [FileLogger log:@"device: %@, iOS %@", [[UIDevice currentDevice] platform], [[UIDevice currentDevice] systemVersion]];
-	
-    [[WPReachability sharedReachability] setNetworkStatusNotificationsEnabled:YES];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:@"kNetworkReachabilityChangedNotification" object:nil];
-
-	[self setAutoRefreshMarkers];
+   
+    // allocate the internet reachability object
+    internetReachability = [Reachability reachabilityForInternetConnection];
+    
+    self.connectionAvailable = [internetReachability isReachable];
+    // set the blocks 
+    internetReachability.reachableBlock = ^(Reachability*reach)
+    {  
+        WPLog(@"REACHABLE!");
+        self.connectionAvailable = YES;
+    };
+    internetReachability.unreachableBlock = ^(Reachability*reach)
+    {
+        WPLog(@"UNREACHABLE!");
+        self.connectionAvailable = NO;
+    };
+    // start the notifier which will cause the reachability object to retain itself!
+    [internetReachability startNotifier];
+        
+    // allocate the WP.com reachability object
+    wpcomReachability = [Reachability reachabilityWithHostname:@"wordpress.com"];
+    // set the blocks 
+    wpcomReachability.reachableBlock = ^(Reachability*reach)
+    {  
+        WPLog(@"WPCOM REACHABLE!");
+        self.wpcomAvailable = YES;
+    };
+    wpcomReachability.unreachableBlock = ^(Reachability*reach)
+    {
+        WPLog(@"WPCOM UNREACHABLE!");
+        self.wpcomAvailable = NO;
+    };
+    // start the notifier which will cause the reachability object to retain itself!
+    [wpcomReachability startNotifier];
+        
+    [self setAutoRefreshMarkers];
 	
 	NSManagedObjectContext *context = [self managedObjectContext];
     if (!context) {
@@ -282,6 +314,28 @@ static WordPressAppDelegate *wordPressApp = NULL;
     //the guide say: NO if the application cannot handle the URL resource, otherwise return YES. 
     //The return value is ignored if the application is launched as a result of a remote notification.
     return YES;
+}
+
+
+-(void) setCurrentBlogReachability:(Reachability *)newBlogReachability {
+    WPLog(@"setCurrentBlogReachability");
+    [currentBlogReachability stopNotifier];
+    [currentBlogReachability release];
+    currentBlogReachability = [newBlogReachability retain];
+    
+    // set the blocks 
+    currentBlogReachability.reachableBlock = ^(Reachability*reach)
+    {  
+        WPLog(@"Current Blog REACHABLE!");
+        self.currentBlogAvailable = YES;
+    };
+    currentBlogReachability.unreachableBlock = ^(Reachability*reach)
+    {
+        WPLog(@"Current Blog UNREACHABLE!");
+        self.currentBlogAvailable = NO;
+    };
+    // start the notifier which will cause the reachability object to retain itself!
+    [currentBlogReachability startNotifier];
 }
 
 - (void)handleCrashReport {
@@ -756,10 +810,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 #pragma mark -
 #pragma mark Private Methods
-
-- (void)reachabilityChanged {
-    connectionStatus = ([[WPReachability sharedReachability] remoteHostStatus] != NotReachable);
-}
 
 - (void)setAppBadge {
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;

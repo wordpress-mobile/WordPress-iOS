@@ -10,7 +10,7 @@
 #import "StatsTableCell.h"
 #import "UITableViewActivityCell.h"
 #import "WPcomLoginViewController.h"
-#import "WPReachability.h"
+#import "Reachability.h"
 #import "CPopoverManager.h"
 
 
@@ -115,7 +115,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
     if (DeviceIsPad())
         [appDelegate showContentDetailViewController:nil];
     
-	if([[WPReachability sharedReachability] internetConnectionStatus] == NotReachable) {
+ 	if( [appDelegate wpcomAvailable] == NO ) {
 		UIAlertView *errorView = [[UIAlertView alloc] 
 								  initWithTitle: @"Communication Error" 
 								  message: @"The internet connection appears to be offline." 

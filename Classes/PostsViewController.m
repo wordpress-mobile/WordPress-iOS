@@ -3,7 +3,7 @@
 #import "PostViewController.h"
 #import "PostTableViewCell.h"
 #import "WordPressAppDelegate.h"
-#import "WPReachability.h"
+#import "Reachability.h"
 #import "WPProgressHUD.h"
 
 #define TAG_OFFSET 1010
@@ -86,7 +86,7 @@
 	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	appDelegate.postID = nil;
 
-	if ([[WPReachability sharedReachability] internetConnectionStatus] && ![self isSyncing] && ([self refreshRequired] || [self lastSyncDate] == nil)) {
+	if ( appDelegate.connectionAvailable && ![self isSyncing] && ([self refreshRequired] || [self lastSyncDate] == nil)) {
 		CGPoint offset = self.tableView.contentOffset;
 		offset.y = - 65.0f;
 		self.tableView.contentOffset = offset;
@@ -344,7 +344,7 @@
     } 
 	else {
         //check for reachability
-        if ([[WPReachability sharedReachability] internetConnectionStatus] == NotReachable) {
+        if ( appDelegate.connectionAvailable == NO ) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Communication Error.", @"")
                                                             message:NSLocalizedString(@"No internet connection.", @"")
                                                            delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];

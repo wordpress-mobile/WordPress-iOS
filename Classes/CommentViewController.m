@@ -6,7 +6,7 @@
 //
 
 #import "CommentViewController.h"
-#import "WPReachability.h"
+#import "Reachability.h"
 #import "WordPressAppDelegate.h"
 #import "WPProgressHUD.h"
 #import "NSString+XMLExtensions.h"
@@ -40,7 +40,7 @@
 - (void)launchReplyToComments;
 - (void)launchEditComment;
 
-- (void)reachabilityChanged;
+-(void)reachabilityChanged:(NSNotification*)note;
 
 @end
 
@@ -111,7 +111,10 @@
 		if([wview isKindOfClass:[UIImageView class]]) { wview.hidden = YES; } 
 	}
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChangedNotification) name:@"kNetworkReachabilityChangedNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(reachabilityChanged:) 
+                                                 name:kReachabilityChangedNotification 
+                                               object:nil];
     
     if (self.comment) {
         [self showComment:self.comment];
@@ -129,7 +132,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-	[self reachabilityChanged];
 	wasLastCommentPending = NO;
 	isVisible = YES;
     [super viewWillAppear:animated];
@@ -141,13 +143,10 @@
     [super viewWillDisappear:animated];
 }
 
-
-- (void)reachabilityChangedNotification {
-	[self performSelectorOnMainThread:@selector(reachabilityChanged) withObject:nil waitUntilDone:YES];
-}
-
-- (void)reachabilityChanged {
-    connectionStatus = ([[WPReachability sharedReachability] internetConnectionStatus] != NotReachable);
+-(void)reachabilityChanged:(NSNotification*)note
+{
+    Reachability * reach = [note object];
+    connectionStatus = ( [reach isReachable] );
     UIColor *textColor = connectionStatus == YES ? [UIColor blackColor] : [UIColor grayColor];
 
     commentAuthorLabel.textColor = textColor;
@@ -488,7 +487,8 @@
 }
 
 - (BOOL)isConnectedToHost {
-    if (![[WPReachability sharedReachability] internetConnectionStatus] != NotReachable) {
+    WordPressAppDelegate  *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+    if (appDelegate.currentBlogAvailable == NO ) {
         UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No connection to host.", @"")
                                             message:NSLocalizedString(@"Operation is not supported now.", @"Can't do operation (comment moderate/edit) since there's no connection")
                                             delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];

@@ -238,8 +238,6 @@ Classes/WPPageControl.h -text
 Classes/WPPageControl.m -text
 Classes/WPProgressHUD.h -text
 Classes/WPProgressHUD.m -text
-Classes/WPReachability.h -text
-Classes/WPReachability.m -text
 Classes/WPReaderViewController.h -text
 Classes/WPReaderViewController.m -text
 Classes/WPSegmentedSelectionTableViewController.h -text
@@ -308,8 +306,6 @@ Creation/CXMLNode_CreationExtensions.m -text
 /PostSettingsViewController.xib -text
 /PostViewController-iPad.xib -text
 /QuickPhotoViewController.xib -text
-Reachability/Reachability.h -text
-Reachability/Reachability.m -text
 /RegexKitLite.h -text
 /RegexKitLite.m -text
 Resources-iPad/MainWindow-iPad.xib -text
@@ -472,6 +468,8 @@ Vendor/InAppSettings/InAppSettingsTestApp/test_settings/Settings.bundle/littledo
 Vendor/InAppSettings/InAppSettingsTestApp/test_settings/Settings.bundle/littledot@2x.png -text svneol=unset#unset
 Vendor/InAppSettings/LICENSE -text
 Vendor/InAppSettings/README.md -text
+Vendor/Reachability/Reachability.h -text
+Vendor/Reachability/Reachability.m -text
 Vendor/libraries.txt -text
 Vendor/xmlrpc/Configurations/Common.xcconfig -text
 Vendor/xmlrpc/Configurations/CommonDevelopment.xcconfig -text

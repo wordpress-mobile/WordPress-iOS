@@ -7,18 +7,22 @@
 #import "CrashReportViewController.h"
 #import "HelpViewController.h"
 #import "StackScrollViewController.h"
+#import "Reachability.h"
 
 @class AutosaveManager;
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate> {
 	Blog *currentBlog;
+    //Connection Reachability variables
+    Reachability *internetReachability;
+    Reachability *wpcomReachability;
+    Reachability *currentBlogReachability;
+    BOOL connectionAvailable, wpcomAvailable, currentBlogAvailable;
 @private
-
     IBOutlet UIWindow *window;
     IBOutlet UINavigationController *navigationController;
 	IBOutlet UISplitViewController *splitViewController;
 	CrashReportViewController *crashReportView;
-    BOOL connectionStatus;
     BOOL alertRunning, passwordAlertRunning;
     BOOL isUploadingPost;
 	BOOL isWPcomAuthenticated;
@@ -28,7 +32,7 @@
 	NSMutableData *statsData;
 	NSString *postID;
     UITextField *passwordTextField;
-	
+	    
 	// Core Data
     NSManagedObjectContext *managedObjectContext_;
     NSManagedObjectModel *managedObjectModel_;
@@ -53,6 +57,10 @@
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
+//Connection Reachability variables
+@property (nonatomic, retain) Reachability *internetReachability, *wpcomReachability, *currentBlogReachability;
+@property (nonatomic, assign) BOOL connectionAvailable, wpcomAvailable, currentBlogAvailable;
 
 - (NSString *)applicationDocumentsDirectory;
 - (NSString *)applicationUserAgent;

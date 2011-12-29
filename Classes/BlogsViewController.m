@@ -24,6 +24,7 @@
     [quickPhotoButton release]; quickPhotoButton = nil;
     [readerButton release]; readerButton = nil;
     self.tableView = nil;
+    [appDelegate setCurrentBlogReachability: nil];
 }
 
 - (void)viewDidLoad {
@@ -406,6 +407,14 @@
 
 - (void)showReader { 
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)]; 
+    if ( appDelegate.wpcomAvailable == NO ) {
+        UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, no connection to WordPress.com.", @"")
+																	  message:NSLocalizedString(@"The Reader is not available at this moment.", @"")
+																	 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
+        [connectionFailAlert show];
+        [connectionFailAlert release];
+        return;
+    }
     [self setupReader]; 
     [self.navigationController pushViewController:readerViewController animated:YES]; 
 } 
@@ -554,11 +563,11 @@
 }
 
 - (void)showBlog:(Blog *)blog animated:(BOOL)animated {
-    [WPReachability sharedReachability].hostName = blog.hostURL;
-	
 	BlogViewController *blogViewController = [[BlogViewController alloc] initWithNibName:@"BlogViewController" bundle:nil];
     blogViewController.blog = blog;
     [appDelegate setCurrentBlog:blog];
+    
+   [appDelegate setCurrentBlogReachability: [Reachability reachabilityWithHostname:blog.hostURL] ];
     
     if (DeviceIsPad() == NO) {
         [self.navigationController pushViewController:blogViewController animated:animated];
@@ -775,6 +784,7 @@
 - (void)dealloc {
     self.resultsController = nil;
 	self.currentBlog = nil;
+    [appDelegate setCurrentBlogReachability: nil];
     [quickPhotoButton release]; quickPhotoButton = nil;
     self.tableView = nil;
     [quickPicturePost release];

@@ -8,7 +8,7 @@
 
 #import "ReplyToCommentViewController.h"
 #import "WPProgressHUD.h"
-#import "WPReachability.h"
+#import "CommentViewController.h"
 
 NSTimeInterval kAnimationDuration2 = 0.3f;
 
@@ -323,7 +323,8 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 #pragma mark Comment Handling Methods
 
 - (BOOL)isConnectedToHost {
-    if ([[WPReachability sharedReachability] internetConnectionStatus] == NotReachable) {
+    WordPressAppDelegate  *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+    if (appDelegate.currentBlogAvailable == NO ) {
         UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Problem", @"")
 																	  message:NSLocalizedString(@"The internet connection appears to be offline.", @"")
 																	 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];

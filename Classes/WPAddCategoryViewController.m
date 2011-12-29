@@ -1,7 +1,7 @@
 #import "WPAddCategoryViewController.h"
 #import "PostSettingsViewController.h"
 #import "WordPressAppDelegate.h"
-#import "WPReachability.h"
+#import "Reachability.h"
 
 @implementation WPAddCategoryViewController
 @synthesize blog;
@@ -70,7 +70,7 @@
     }
 
 	//FIXME: At the first attempt the remoteHostStatus == NotReachable even if the connection is available. 
-	// if ([[WPReachability sharedReachability] remoteHostStatus] != NotReachable)
+	// if ([[ sharedReachability] remoteHostStatus] != NotReachable)
     [self addProgressIndicator];
 
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];

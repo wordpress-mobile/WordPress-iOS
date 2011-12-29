@@ -10,7 +10,7 @@
 #import "CommentViewController.h"
 #import "WordPressAppDelegate.h"
 #import "WPProgressHUD.h"
-#import "WPReachability.h"
+#import "Reachability.h"
 #import "CommentViewController.h"
 #import "BlogViewController.h"
 
