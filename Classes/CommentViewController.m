@@ -145,13 +145,15 @@
 
 -(void)reachabilityChanged:(NSNotification*)note
 {
-    Reachability * reach = [note object];
-    connectionStatus = ( [reach isReachable] );
-    UIColor *textColor = connectionStatus == YES ? [UIColor blackColor] : [UIColor grayColor];
-
-    commentAuthorLabel.textColor = textColor;
-    commentPostTitleLabel.textColor = textColor;
-    commentDateLabel.textColor = textColor;
+    Reachability *reach = [note object];
+    WordPressAppDelegate  *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+    if ( reach == appDelegate.currentBlogReachability ) { //The reachability of the current blog changed
+        connectionStatus = ( [reach isReachable] );
+        UIColor *textColor = connectionStatus == YES ? [UIColor blackColor] : [UIColor grayColor];
+        commentAuthorLabel.textColor = textColor;
+        commentPostTitleLabel.textColor = textColor;
+        commentDateLabel.textColor = textColor;
+    }
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {

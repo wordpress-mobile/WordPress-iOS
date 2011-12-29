@@ -321,6 +321,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
     WPLog(@"setCurrentBlogReachability");
     [currentBlogReachability stopNotifier];
     [currentBlogReachability release];
+    self.currentBlogAvailable = NO;
     currentBlogReachability = [newBlogReachability retain];
     
     // set the blocks 
