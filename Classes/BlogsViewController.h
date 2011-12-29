@@ -28,7 +28,6 @@
     BOOL isTransitioning;
     StackScrollViewController *stackScrollViewController;
 }
-- (id)initWithFrame:(CGRect)frame;
 
 @property (nonatomic, retain) NSFetchedResultsController *resultsController;
 @property (nonatomic, retain) Blog *currentBlog;

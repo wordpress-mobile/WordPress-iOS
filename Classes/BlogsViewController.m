@@ -20,31 +20,6 @@
 #pragma mark -
 #pragma mark View lifecycle
 
-- (id)initWithFrame:(CGRect)frame {
-    if (self = [super init]) {
-        [self.view setFrame:frame]; 
-		
-        tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) style:UITableViewStylePlain];
-        [tableView setDelegate:self];
-        [tableView setDataSource:self];
-        [tableView setBackgroundColor:[UIColor clearColor]];
-        
-        UIView* footerView =  [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 1)];
-        tableView.tableFooterView = footerView;
-        [footerView release];
-        
-        [self.view addSubview:tableView];
-		
-        UIView* verticalLineView = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width, -5, 1, self.view.frame.size.height)];
-        [verticalLineView setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
-        [verticalLineView setBackgroundColor:[UIColor whiteColor]];
-        [self.view addSubview:verticalLineView];
-        [self.view bringSubviewToFront:verticalLineView];
-        [verticalLineView release];
-    }
-    return self;
-}
-
 - (void)viewDidUnload {
     [quickPhotoButton release]; quickPhotoButton = nil;
     [readerButton release]; readerButton = nil;
@@ -590,6 +565,7 @@
     } else {        
         WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 
+        [blogViewController.view setFrame:CGRectMake(0, 0, 477, self.view.frame.size.height)];
         [delegate.stackScrollViewController addViewInSlider:blogViewController invokeByController:self isStackStartView:TRUE];
     }
     

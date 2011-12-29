@@ -77,7 +77,8 @@
 
     leftMenuView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, self.view.frame.size.height)];
     leftMenuView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-    blogsViewController = [[BlogsViewController alloc] initWithFrame:CGRectMake(0, 0, leftMenuView.frame.size.width, leftMenuView.frame.size.height)];
+    blogsViewController = [[BlogsViewController alloc] init];
+    [blogsViewController.view setFrame:CGRectMake(0, 0, leftMenuView.frame.size.width, leftMenuView.frame.size.height)];
     [blogsViewController.view setBackgroundColor:[UIColor clearColor]];
     [blogsViewController viewWillAppear:FALSE];
     [blogsViewController viewDidAppear:FALSE];
