@@ -476,7 +476,13 @@
 	} else {
 		if (!self.commentViewController.isVisible) {
 			WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-			[delegate showContentDetailViewController:self.commentViewController];
+
+            if (DeviceIsPad() == NO) {
+                [delegate showContentDetailViewController:self.commentViewController];
+            } else {
+                [self.commentViewController.view setFrame:CGRectMake(0, 0, panel_slide_width, self.view.frame.size.height)];
+                [delegate.stackScrollViewController addViewInSlider:self.commentViewController invokeByController:self isStackStartView:FALSE];
+            }
 		}
 	}
 	
