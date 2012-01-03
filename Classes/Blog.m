@@ -220,7 +220,7 @@
     self.isSyncingPosts = YES;
 
     AFXMLRPCRequestOperation *operation = [self operationForPostsWithSuccess:success failure:failure loadMore:more];
-    [self.api enqueueHTTPRequestOperation:operation];
+    [self.api enqueueXMLRPCRequestOperation:operation];
 }
 
 - (NSArray *)syncedPages {
@@ -234,17 +234,17 @@
     }
     self.isSyncingPages = YES;
     AFXMLRPCRequestOperation *operation = [self operationForPagesWithSuccess:success failure:failure loadMore:more];
-    [self.api enqueueHTTPRequestOperation:operation];
+    [self.api enqueueXMLRPCRequestOperation:operation];
 }
 
 - (void)syncCategoriesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     AFXMLRPCRequestOperation *operation = [self operationForCategoriesWithSuccess:success failure:failure];
-    [self.api enqueueHTTPRequestOperation:operation];
+    [self.api enqueueXMLRPCRequestOperation:operation];
 }
 
 - (void)syncOptionsWithWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     AFXMLRPCRequestOperation *operation = [self operationForOptionsWithSuccess:success failure:failure];
-    [self.api enqueueHTTPRequestOperation:operation];
+    [self.api enqueueXMLRPCRequestOperation:operation];
 }
 
 - (NSString *)getOptionValue:(NSString *) name {
@@ -263,12 +263,12 @@
     }
     self.isSyncingComments = YES;
     AFXMLRPCRequestOperation *operation = [self operationForCommentsWithSuccess:success failure:failure];
-    [self.api enqueueHTTPRequestOperation:operation];
+    [self.api enqueueXMLRPCRequestOperation:operation];
 }
 
 - (void)syncPostFormatsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     AFXMLRPCRequestOperation *operation = [self operationForPostFormatsWithSuccess:success failure:failure];
-    [self.api enqueueHTTPRequestOperation:operation];
+    [self.api enqueueXMLRPCRequestOperation:operation];
 }
 
 - (void)syncBlogWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
