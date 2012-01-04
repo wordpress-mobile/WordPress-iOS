@@ -76,7 +76,11 @@
 	}
       
 	self.content        = [postInfo objectForKey:@"description"];
-    self.date_created_gmt    = [postInfo objectForKey:@"date_created_gmt"];
+    if ([[postInfo objectForKey:@"date_created_gmt"] isKindOfClass:[NSDate class]]) {
+        self.date_created_gmt    = [postInfo objectForKey:@"date_created_gmt"];
+    } else {
+        self.dateCreated = [postInfo objectForKey:@"dateCreated"];
+    }
     self.status         = [postInfo objectForKey:@"post_status"];
     self.password       = [postInfo objectForKey:@"wp_password"];
     self.tags           = [postInfo objectForKey:@"mt_keywords"];
