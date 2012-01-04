@@ -218,7 +218,7 @@
                 break;
         }
         
-        if (myParent) {
+        if (myParent && myElementValue) {
             [self addElementValueToParent];
         }
         
