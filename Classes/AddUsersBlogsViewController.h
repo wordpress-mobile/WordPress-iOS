@@ -16,7 +16,6 @@
 	BOOL hasCompletedGetUsersBlogs, isWPcom;
 	NSArray *usersBlogs;
 	NSMutableArray *selectedBlogs;
-	NSString *username, *url, *password;
 	IBOutlet UITableView *tableView;
 	IBOutlet UIBarButtonItem *buttonAddSelected, *buttonSelectAll, *topAddSelectedButton;
 	WPProgressHUD *spinner;
@@ -35,9 +34,6 @@
 - (IBAction)deselectAllBlogs:(id)sender;
 - (void)refreshBlogs;
 - (IBAction)saveSelectedBlogs:(id)sender;
-- (void)updateFavicons;
-- (void)reloadData;
-- (void)refreshTableView:(NSNotification *)notifcation;
 - (void)createBlog:(NSDictionary *)blogInfo;
 - (void)cancelAddWPcomBlogs;
 - (void)didSaveSelectedBlogsInBackground;

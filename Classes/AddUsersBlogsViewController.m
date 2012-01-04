@@ -9,7 +9,8 @@
 
 @implementation AddUsersBlogsViewController
 @synthesize usersBlogs, isWPcom, selectedBlogs, tableView, buttonAddSelected, buttonSelectAll, hasCompletedGetUsersBlogs;
-@synthesize spinner, username, password, url, topAddSelectedButton, geolocationEnabled;
+@synthesize spinner, topAddSelectedButton, geolocationEnabled;
+@synthesize username = _username, password = _password, url = _url;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -48,9 +49,6 @@
 	if(DeviceIsPad())
 		self.tableView.backgroundView = nil;
 	self.tableView.backgroundColor = [UIColor clearColor];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableView:) 
-												 name:@"didUpdateTableData" object:nil];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancelAddWPcomBlogs) 
 												 name:@"didCancelWPcomLogin" object:nil];
@@ -291,41 +289,37 @@
 }
 
 - (void)refreshBlogs {
-	[self performSelectorInBackground:@selector(refreshBlogsInBackground) withObject:nil];
-}
-
-- (void)refreshBlogsInBackground {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	
-	if(isWPcom) {
+    NSURL *xmlrpc;
+    NSString *username, *password;
+    if (isWPcom) {
         NSError *error = nil;
-        NSString *wpcom_password = [SFHFKeychainUtils getPasswordForUsername:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"]
-                                                        andServiceName:@"WordPress.com"
-                                                                 error:&error];
-
-		usersBlogs = [[[WPDataController sharedInstance] getBlogsForUrl:@"https://wordpress.com/xmlrpc.php"
-							  username:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"]
-							  password:wpcom_password] retain];
-	}
-	else {
-		usersBlogs = [[[WPDataController sharedInstance] getBlogsForUrl:url username:self.username password:self.password] retain];
-	}
-
-    NSLog(@"usersBlogs: %@", usersBlogs);
-	hasCompletedGetUsersBlogs = YES;
-	if(usersBlogs.count > 0) {
-		// TODO: Store blog list in Core Data
-		//[[NSUserDefaults standardUserDefaults] setObject:usersBlogs forKey:@"WPcomUsersBlogs"];
-		
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"didUpdateTableData" object:nil];
-	}
-	[self performSelectorInBackground:@selector(updateFavicons) withObject:nil];
-	
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	
-	[pool release];
+        xmlrpc = [NSURL URLWithString:@"https://wordpress.com/xmlrpc.php"];
+        username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
+        password = [SFHFKeychainUtils getPasswordForUsername:username
+                                              andServiceName:@"WordPress.com"
+                                                       error:&error];
+    } else {
+        xmlrpc = [NSURL URLWithString:_url];
+        username = self.username;
+        password = self.password;
+    }
+    AFXMLRPCClient *api = [AFXMLRPCClient clientWithXMLRPCEndpoint:xmlrpc];
+    [api callMethod:@"wp.getUsersBlogs"
+         parameters:[NSArray arrayWithObjects:username, password, nil]
+            success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                usersBlogs = responseObject;
+                NSLog(@"usersBlogs: %@", usersBlogs);
+                hasCompletedGetUsersBlogs = YES;
+                if(usersBlogs.count > 0) {
+                    // TODO: Store blog list in Core Data
+                    //[[NSUserDefaults standardUserDefaults] setObject:usersBlogs forKey:@"WPcomUsersBlogs"];
+                    
+                    [self.tableView reloadData];
+                }
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                WPFLog(@"Failed getting user blogs: %@", [error localizedDescription]);
+                hasCompletedGetUsersBlogs = YES;
+            }];
 }
 
 - (IBAction)saveSelectedBlogs:(id)sender {
@@ -333,14 +327,14 @@
 	
     NSError *error = nil;
     if (isWPcom) {
-        NSLog(@"saveSelectedBlogs. username: %@, usersBlogs: %@", username, usersBlogs);
+        NSLog(@"saveSelectedBlogs. username: %@, usersBlogs: %@", _username, usersBlogs);
         self.username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-        self.password = [SFHFKeychainUtils getPasswordForUsername:username
+        self.password = [SFHFKeychainUtils getPasswordForUsername:_username
                                               andServiceName:@"WordPress.com"
                                                        error:&error];
-        NSLog(@"saveSelectedBlogs. username: %@, usersBlogs: %@", username, usersBlogs);
+        NSLog(@"saveSelectedBlogs. username: %@, usersBlogs: %@", _username, usersBlogs);
     } else {
-        NSLog(@"saveSelectedBlogs. username: %@, usersBlogs: %@", username, usersBlogs);
+        NSLog(@"saveSelectedBlogs. username: %@, usersBlogs: %@", _username, usersBlogs);
     }
 
     for (NSDictionary *blog in usersBlogs) {
@@ -379,24 +373,6 @@
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 }
 
-- (void)updateFavicons {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	for(Blog *blog in usersBlogs) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"didUpdateFavicons" object:@"Completed."];
-	}
-	
-	[pool release];
-}
-
-- (void)refreshTableView:(NSNotification *)notifcation {
-	[self reloadData];
-}
-												
-- (void)reloadData {
-	[self.tableView reloadData];
-}
-
 - (void)cancelAddWPcomBlogs {
 	UIViewController *controller = [self.navigationController.viewControllers objectAtIndex:1];
 	[self.navigationController popToViewController:controller animated:NO];
@@ -431,7 +407,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.username = nil;
     self.password = nil;
-	[url release];
+	[_url release];
 	[usersBlogs release];
 	[selectedBlogs release];
 	[tableView release];
