@@ -6,12 +6,15 @@
 //
 
 #import "Blog.h"
+#import "Post.h"
+#import "Page.h"
+#import "Category.h"
+#import "Comment.h"
+#import "SFHFKeychainUtils.h"
 #import "UIImage+Resize.h"
-#import "WPDataController.h"
 #import "NSURL+IDN.h"
 
 @interface Blog (PrivateMethods)
-- (NSArray *)getXMLRPCArgsWithExtra:(id)extra;
 - (NSString *)fetchPassword;
 
 - (AFXMLRPCRequestOperation *)operationForOptionsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
@@ -186,6 +189,21 @@
     [_api release]; _api = nil;
 }
 
+- (NSArray *)getXMLRPCArgsWithExtra:(id)extra {
+    NSMutableArray *result = [NSMutableArray array];
+    [result addObject:self.blogID];
+    [result addObject:self.username];
+    [result addObject:[self fetchPassword]];
+    
+    if ([extra isKindOfClass:[NSArray class]]) {
+        [result addObjectsFromArray:extra];
+    } else if (extra != nil) {
+        [result addObject:extra];
+    }
+    
+    return [NSArray arrayWithArray:result];
+}
+
 #pragma mark -
 #pragma mark Synchronization
 
@@ -330,21 +348,6 @@
 }
 
 #pragma mark - Private Methods
-
-- (NSArray *)getXMLRPCArgsWithExtra:(id)extra {
-    NSMutableArray *result = [NSMutableArray array];
-    [result addObject:self.blogID];
-    [result addObject:self.username];
-    [result addObject:[self fetchPassword]];
-
-    if ([extra isKindOfClass:[NSArray class]]) {
-        [result addObjectsFromArray:extra];
-    } else if (extra != nil) {
-        [result addObject:extra];
-    }
-
-    return [NSArray arrayWithArray:result];
-}
 
 - (NSString *)fetchPassword {
     NSError *err;

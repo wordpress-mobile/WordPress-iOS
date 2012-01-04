@@ -7,7 +7,6 @@
 //
 
 #import "Category.h"
-#import "WPDataController.h"
 
 @interface Category(PrivateMethods)
 + (Category *)newCategoryForBlog:(Blog *)blog;
@@ -71,30 +70,36 @@
     return category;
 }
 
-+ (Category *)createCategoryWithError:(NSString *)name parent:(Category *)parent forBlog:(Blog *)blog error:(NSError **)error{
++ (void)createCategory:(NSString *)name parent:(Category *)parent forBlog:(Blog *)blog success:(void (^)(Category *category))success failure:(void (^)(NSError *error))failure {
     Category *category = [Category newCategoryForBlog:blog];
-	WPDataController *dc = [[WPDataController alloc] init];
     category.categoryName = name;
 	if (parent.categoryID != nil)
 		category.parentID = parent.categoryID;
-    int newID = [dc wpNewCategory:category];
-	if(dc.error) {
-		if (error != nil) 
-			*error = dc.error;
-		WPLog(@"Error while creating category: %@", [dc.error localizedDescription]);
-	}
-    if (newID > 0 && !dc.error) {
-        category.categoryID = [NSNumber numberWithInt:newID];
-        [blog dataSave]; // Commit core data changes
-		[dc release];
-        return [category autorelease];
-    } else {
-        // Just in case another thread has saved while we were creating
-        [[blog managedObjectContext] deleteObject:category];
-		[blog dataSave]; // Commit core data changes
-        [category release];
-		[dc release];
-        return nil;
-    }
+    
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+                                category.categoryName, @"name",
+                                category.parentID, @"parent_id",
+                                nil];
+    [blog.api callMethod:@"wp.newCategory"
+              parameters:[blog getXMLRPCArgsWithExtra:parameters]
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     NSNumber *categoryID = responseObject;
+                     int newID = [categoryID intValue];
+                     if (newID > 0) {
+                         category.categoryID = categoryID;
+                         [blog dataSave];
+                         if (success) {
+                             success(category);
+                         }
+                     }
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     WPLog(@"Error while creating category: %@", [error localizedDescription]);
+                     // Just in case another thread has saved while we were creating
+                     [[blog managedObjectContext] deleteObject:category];
+                     [blog dataSave]; // Commit core data changes
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
 }
 @end

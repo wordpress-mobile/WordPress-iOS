@@ -73,39 +73,20 @@
 	// if ([[ sharedReachability] remoteHostStatus] != NotReachable)
     [self addProgressIndicator];
 
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    [self performSelectorInBackground:@selector(saveOnBackground:) withObject:catName];
-}
-
-- (void)saveOnBackground:(NSString *)categoryName {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	NSError *error = nil;
-    [Category createCategoryWithError:categoryName parent:parentCat forBlog:self.blog  error:&error];
-	if(!error) {
-		//re-syncs categories this is necessary because the server can change the name of the category!!!
+    [Category createCategory:catName parent:parentCat forBlog:self.blog success:^(Category *category) {
+        //re-syncs categories this is necessary because the server can change the name of the category!!!
 		[self.blog syncCategoriesWithSuccess:nil failure:nil];
-	}
-	
-	if(error) {
-		NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:self];
+        [self clearUI];
+        [self removeProgressIndicator];
+        [self dismiss];
+    } failure:^(NSError *error) {
+        NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
 		[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
 		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 		[self removeProgressIndicator];
-	} else {
-		[self performSelectorOnMainThread:@selector(didSaveOnBackground) withObject:nil waitUntilDone:NO];
-		
-	}
-    [pool release];
+    }];
 }
-
-- (void)didSaveOnBackground {
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-    [[NSNotificationCenter defaultCenter] postNotificationName:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:self];
-    [self clearUI];
-    [self removeProgressIndicator];
-    [self dismiss];
-}
-
 
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];

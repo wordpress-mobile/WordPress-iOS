@@ -35,6 +35,7 @@
 - (NSArray *)sortedCategories;
 - (NSString *)getOptionValue:(NSString *) name;
 - (NSString *)blogLoginURL;
+- (NSArray *)getXMLRPCArgsWithExtra:(id)extra;
 
 #pragma mark - 
 
