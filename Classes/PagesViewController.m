@@ -26,6 +26,7 @@
     [self.blog syncPagesWithSuccess:^{
         [self refreshPostList];
     } failure:^(NSError *error) {
+        [self refreshPostList];
         if(error) {
             NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];

@@ -297,6 +297,7 @@
     [self.blog syncPostsWithSuccess:^{
         [self refreshPostList];
     } failure:^(NSError *error) {
+        [self refreshPostList];
         NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
     } loadMore:NO];
