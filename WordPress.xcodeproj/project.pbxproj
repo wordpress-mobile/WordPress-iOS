@@ -376,6 +376,7 @@
 		E1497BBC12CCA8270022BCD9 /* PostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1497BBB12CCA8270022BCD9 /* PostViewController.m */; };
 		E1497BC012CCA92F0022BCD9 /* PostViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1497BBF12CCA92F0022BCD9 /* PostViewController-iPad.xib */; };
 		E14B2B761368127900CC3C4F /* UITableViewTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E14B2B751368127900CC3C4F /* UITableViewTextFieldCell.m */; };
+		E154376314B5B2120038E574 /* WordPressApi.m in Sources */ = {isa = PBXBuildFile; fileRef = E154376214B5B2120038E574 /* WordPressApi.m */; };
 		E159D1051309AB0D00F498E2 /* MigrateBlogsFromFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = E159D1041309AB0D00F498E2 /* MigrateBlogsFromFiles.m */; };
 		E16A0C3212E769A10049EA80 /* table_sep.png in Resources */ = {isa = PBXBuildFile; fileRef = E16A0C3012E769A10049EA80 /* table_sep.png */; };
 		E16A0C3312E769A10049EA80 /* table_sep@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E16A0C3112E769A10049EA80 /* table_sep@2x.png */; };
@@ -1002,6 +1003,8 @@
 		E1497BBF12CCA92F0022BCD9 /* PostViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "PostViewController-iPad.xib"; sourceTree = "<group>"; };
 		E14B2B741368127900CC3C4F /* UITableViewTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableViewTextFieldCell.h; sourceTree = "<group>"; };
 		E14B2B751368127900CC3C4F /* UITableViewTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableViewTextFieldCell.m; sourceTree = "<group>"; };
+		E154376114B5B2120038E574 /* WordPressApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressApi.h; sourceTree = "<group>"; };
+		E154376214B5B2120038E574 /* WordPressApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressApi.m; sourceTree = "<group>"; };
 		E159D1031309AB0D00F498E2 /* MigrateBlogsFromFiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MigrateBlogsFromFiles.h; sourceTree = "<group>"; };
 		E159D1041309AB0D00F498E2 /* MigrateBlogsFromFiles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MigrateBlogsFromFiles.m; sourceTree = "<group>"; };
 		E167745A1377F24300EE44DD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -2127,6 +2130,8 @@
 			children = (
 				E11F949914A3344300277D31 /* AFXMLRPCClient.h */,
 				E11F949A14A3344300277D31 /* AFXMLRPCClient.m */,
+				E154376114B5B2120038E574 /* WordPressApi.h */,
+				E154376214B5B2120038E574 /* WordPressApi.m */,
 			);
 			path = WordPressApi;
 			sourceTree = "<group>";
@@ -2911,6 +2916,7 @@
 				A274202B14B4F7CB000F04E4 /* UIView+PSSizes.m in Sources */,
 				A274202C14B4F7CB000F04E4 /* UIViewController+PSStackedView.m in Sources */,
 				A274203814B51623000F04E4 /* PSStackedViewRootViewController.m in Sources */,
+				E154376314B5B2120038E574 /* WordPressApi.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
