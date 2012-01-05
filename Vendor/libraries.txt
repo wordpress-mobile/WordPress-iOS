@@ -1,6 +1,6 @@
 AFNetworking
-Source: https://github.com/koke/AFNetworking
-Version: 049fef588818e29e92128a08ae835aad3a33103b
+Source: https://github.com/wordpress-mobile/AFNetworking
+Version: beb7477fc50550e2fab219017fdd3008108261bf
 
 XMLRPC
 Source: https://github.com/koke/xmlrpc/tree/wordpress-ios
