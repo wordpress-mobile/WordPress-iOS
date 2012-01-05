@@ -15,8 +15,6 @@
 #import "NSURL+IDN.h"
 
 @interface Blog (PrivateMethods)
-- (NSString *)fetchPassword;
-
 - (AFXMLRPCRequestOperation *)operationForOptionsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (AFXMLRPCRequestOperation *)operationForPostFormatsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (AFXMLRPCRequestOperation *)operationForCommentsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
@@ -204,6 +202,25 @@
     return [NSArray arrayWithArray:result];
 }
 
+- (NSString *)fetchPassword {
+    NSError *err;
+	NSString *password;
+
+	if (self.isWPcom) {
+        password = [SFHFKeychainUtils getPasswordForUsername:self.username
+                                              andServiceName:@"WordPress.com"
+                                                       error:&err];
+    } else {
+		password = [SFHFKeychainUtils getPasswordForUsername:self.username
+                                              andServiceName:self.hostURL
+                                                       error:&err];
+	}
+	if (password == nil)
+		password = @""; // FIXME: not good either, but prevents from crashing
+
+	return password;
+}
+
 #pragma mark -
 #pragma mark Synchronization
 
@@ -345,29 +362,6 @@
         _api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:self.xmlrpc]];
     }
     return _api;
-}
-
-#pragma mark - Private Methods
-
-- (NSString *)fetchPassword {
-    NSError *err;
-	NSString *password;
-
-	if (self.isWPcom) {
-        password = [SFHFKeychainUtils getPasswordForUsername:self.username
-                                              andServiceName:@"WordPress.com"
-                                                       error:&err];
-
-    } else {
-
-		password = [SFHFKeychainUtils getPasswordForUsername:self.username
-                                              andServiceName:self.hostURL
-                                                       error:&err];
-	}
-	if (password == nil)
-		password = @""; // FIXME: not good either, but prevents from crashing
-
-	return password;
 }
 
 #pragma mark -

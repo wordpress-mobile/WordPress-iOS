@@ -36,6 +36,7 @@
 - (NSString *)getOptionValue:(NSString *) name;
 - (NSString *)blogLoginURL;
 - (NSArray *)getXMLRPCArgsWithExtra:(id)extra;
+- (NSString *)fetchPassword;
 
 #pragma mark - 
 
