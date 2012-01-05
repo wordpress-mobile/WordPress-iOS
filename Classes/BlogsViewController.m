@@ -15,7 +15,7 @@
 @end
 
 @implementation BlogsViewController
-@synthesize resultsController, currentBlog, tableView, stackScrollViewController;
+@synthesize resultsController, currentBlog, tableView;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -575,7 +575,7 @@
         WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 
         [blogViewController.view setFrame:CGRectMake(0, 0, panel_slide_width, self.view.frame.size.height)];
-        [delegate.stackScrollViewController addViewInSlider:blogViewController invokeByController:self isStackStartView:TRUE];
+        [delegate.stackController pushViewController:blogViewController fromViewController:self animated:YES];
     }
     
 	[blogViewController release];

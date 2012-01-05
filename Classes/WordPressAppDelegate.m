@@ -12,7 +12,7 @@
 #import "FilteredWebCache.h"
 #import "SDURLCache.h"
 #import "InAppSettings.h"
-#import "PanelRootViewController.h"
+#import "PSStackedViewRootViewController.h"
 
 @interface WordPressAppDelegate (Private)
 - (void)setAppBadge;
@@ -33,9 +33,9 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 @synthesize window, currentBlog, postID;
 @synthesize navigationController, alertRunning, isWPcomAuthenticated;
-@synthesize stackScrollViewController;
 @synthesize splitViewController, crashReportView, isUploadingPost;
 @synthesize connectionAvailable, wpcomAvailable, currentBlogAvailable, wpcomReachability, internetReachability, currentBlogReachability;
+@synthesize stackController = stackController_;
 
 - (id)init {
     if (!wordPressApp) {
@@ -256,9 +256,9 @@ static WordPressAppDelegate *wordPressApp = NULL;
 //        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newBlogNotification:) name:@"NewBlogAdded" object:nil];
 //        [self performSelector:@selector(showPopoverIfNecessary) withObject:nil afterDelay:0.1];
         
-        PanelRootViewController *panelRootViewController = [[PanelRootViewController alloc] init];
-
-        [window addSubview:panelRootViewController.view];
+        PSStackedViewRootViewController *psStackedViewRootController = [[[PSStackedViewRootViewController alloc] init] autorelease];
+        self.stackController = [[[PSStackedViewController alloc] initWithRootViewController:psStackedViewRootController] autorelease];
+        window.rootViewController = self.stackController;
         [window makeKeyAndVisible];
 	}
 	

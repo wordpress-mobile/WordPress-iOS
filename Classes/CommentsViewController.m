@@ -481,7 +481,7 @@
                 [delegate showContentDetailViewController:self.commentViewController];
             } else {
                 [self.commentViewController.view setFrame:CGRectMake(0, 0, panel_slide_width, self.view.frame.size.height)];
-                [delegate.stackScrollViewController addViewInSlider:self.commentViewController invokeByController:self isStackStartView:FALSE];
+                [delegate.stackController pushViewController:self.commentViewController fromViewController:self animated:YES];
             }
 		}
 	}

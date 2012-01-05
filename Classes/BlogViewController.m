@@ -193,7 +193,7 @@
             [nextViewController.view setFrame:CGRectMake(0, 0, panel_slide_width, self.view.frame.size.height)];
             
             WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-            [delegate.stackScrollViewController addViewInSlider:nextViewController invokeByController:self isStackStartView:FALSE];
+            [delegate.stackController pushViewController:nextViewController fromViewController:self animated:YES];
         }
             
         [nextViewController release];
