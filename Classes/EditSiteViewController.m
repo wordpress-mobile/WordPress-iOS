@@ -6,9 +6,12 @@
 
 #import "EditSiteViewController.h"
 #import "NSURL+IDN.h"
+#import "WordPressApi.h"
 
 @interface EditSiteViewController (PrivateMethods)
 - (void)validateFields;
+- (void)validationSuccess:(NSString *)xmlrpc;
+- (void)validationDidFail:(id)wrong;
 @end
 
 @implementation EditSiteViewController
@@ -293,9 +296,7 @@
 	[self.tableView reloadData];
 }
 
-- (void)checkURL {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
+- (void)checkURL {	
 	NSString *urlToValidate = urlTextField.text;    
 	
     if(![urlToValidate hasPrefix:@"http"])
@@ -306,55 +307,25 @@
     urlToValidate = [urlToValidate stringByReplacingOccurrencesOfRegex:@"/?$" withString:@""]; 
 	
     [FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), urlToValidate];
-	ASIHTTPRequest *xmlrpcRequest = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:urlToValidate]];
-	[xmlrpcRequest setValidatesSecureCertificate:NO]; 
-	[xmlrpcRequest setShouldPresentCredentialsBeforeChallenge:NO];
-	[xmlrpcRequest setShouldPresentAuthenticationDialog:YES];
-	[xmlrpcRequest setUseKeychainPersistence:YES];
-	[xmlrpcRequest setNumberOfTimesToRetryOnTimeout:2];
-	[xmlrpcRequest setDidFinishSelector:@selector(remoteValidate:)];
-	[xmlrpcRequest setDidFailSelector:@selector(checkURLWentWrong:)];
-	[xmlrpcRequest setDelegate:self];
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-	[xmlrpcRequest addRequestHeader:@"User-Agent" value:[appDelegate applicationUserAgent]];
-    [xmlrpcRequest addRequestHeader:@"Accept" value:@"*/*"];
-    [xmlrpcRequest startAsynchronous];
-	
-	[xmlrpcRequest release];
-  	[pool release];    
+    // FIXME: add HTTP Auth support back
+    // Currently on https://github.com/AFNetworking/AFNetworking/tree/experimental-authentication-challenge
+    [WordPressApi guessXMLRPCURLForSite:urlToValidate success:^(NSURL *xmlrpcURL) {
+        WordPressApi *api = [WordPressApi apiWithXMLRPCEndpoint:xmlrpcURL username:usernameTextField.text password:passwordTextField.text];
+        [api getBlogsWithSuccess:^(NSArray *blogs) {
+            subsites = blogs;
+            [self validationSuccess:[xmlrpcURL absoluteString]];
+        } failure:^(NSError *error) {
+            [self validationDidFail:error];
+        }];
+    } failure:^{
+        // FIXME: find a better error
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  NSLocalizedString(@"Couldn't find a WordPress site on that URL", @""),NSLocalizedDescriptionKey,
+                                  nil];
+        NSError *error = [NSError errorWithDomain:@"org.wordpress.iphone" code:NSURLErrorBadURL userInfo:userInfo];
+        [self validationDidFail:error];
+    }];
 }
-
-
-- (void)remoteValidate:(ASIHTTPRequest *)xmlrpcRequest
-{
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	WPDataController *dc = [[WPDataController alloc] init];
-    WPLog(@"before guess");
-    NSString *xmlrpc = [dc guessXMLRPCForUrl:self.url];
-    WPLog(@"after guess");
-    [subsites release]; subsites = nil;
-    if (xmlrpc != nil) {
-        subsites = [[dc getBlogsForUrl:xmlrpc username:usernameTextField.text password:passwordTextField.text] retain];
-        if (subsites != nil) {
-            [self performSelectorOnMainThread:@selector(validationSuccess:) withObject:xmlrpc waitUntilDone:YES];
-        } else {
-            [self performSelectorOnMainThread:@selector(validationDidFail:) withObject:dc.error waitUntilDone:YES];
-        }
-    } else {
-        [self performSelectorOnMainThread:@selector(validationDidFail:) withObject:dc.error waitUntilDone:YES];
-    }
-	
-	[dc release];
-	[pool release];  
-}
-
-- (void)checkURLWentWrong:(ASIHTTPRequest *)request {
-	NSError *error = [request error];
-	[FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), error];
-	[self performSelectorOnMainThread:@selector(validationDidFail:) withObject:error waitUntilDone:YES];
-}
-
-
 
 - (void)validationSuccess:(NSString *)xmlrpc {
 	[savingIndicator stopAnimating];
@@ -446,7 +417,7 @@
     }
     
     if (validFields) {
-        [self performSelectorInBackground:@selector(checkURL) withObject:nil];
+        [self checkURL];
     } else {
         [self validationDidFail:nil];
     }
