@@ -262,6 +262,17 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
            failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure {
     NSURLRequest *request = [self requestWithMethod:method parameters:parameters];
     AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
+    [operation setAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
+        // TODO: Implement dialog to ask user for credentials
+        /* Once we get credentials for the user, here's how to use them
+        NSURLCredential *credential = [NSURLCredential credentialWithUser:@"q" password:@"q" persistence:NSURLCredentialPersistencePermanent];
+        [[NSURLCredentialStorage sharedCredentialStorage] setDefaultCredential:credential forProtectionSpace:[challenge protectionSpace]];
+        [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
+         */
+
+        // Remove the next line once this method is properly implemented
+        [[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];
+    }];
     [self enqueueHTTPRequestOperation:operation];
 }
 
