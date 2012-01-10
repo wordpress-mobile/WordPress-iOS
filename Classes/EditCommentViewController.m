@@ -16,7 +16,6 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 
 - (BOOL)isConnectedToHost;
 - (void)initiateSaveCommentReply:(id)sender;
-- (void)continueSaveCommentReply:(id)sender;
 - (void)saveReplyBackgroundMethod:(id)sender;
 - (void)callBDMSaveCommentEdit:(SEL)selector;
 - (void)endTextEnteringButtonAction:(id)sender;
@@ -315,10 +314,6 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 			[self.navigationController popViewControllerAnimated:YES];
 		return;
 	}
-	[self continueSaveCommentReply: sender];
-}
-	
-- (void)continueSaveCommentReply:(id)sender {
 	self.comment.content = textView.text;
 	commentViewController.wasLastCommentPending = YES;
 	[commentViewController showComment:comment];
@@ -326,30 +321,18 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	
     progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Saving Edit...", @"")];
     [progressAlert show];
-	[self performSelectorInBackground:@selector(saveEditBackgroundMethod:) withObject:nil];
-}
-
-// saveEditBackgroundMethod...
-- (void)saveEditBackgroundMethod:(id)sender {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	BOOL res = NO;
-	if ([self isConnectedToHost]) {
-        res = [self.comment upload];
-	}
-	
-	[progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-	[progressAlert release];
-	if(res) {
-		self.hasChanges = NO;
+    [self.comment uploadWithSuccess:^{
+        [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
+        [progressAlert release];
+        self.hasChanges = NO;
 		if (DeviceIsPad() == YES) {
 			[commentViewController performSelectorOnMainThread:@selector(cancelView:) withObject:self waitUntilDone:NO];
 		}
-	} else {
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:NSLocalizedString(@"Something went wrong during comments moderation.", @"")];	
-		
-	}
-	
-	[pool release];
+    } failure:^(NSError *error) {
+        [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
+        [progressAlert release];
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:NSLocalizedString(@"Something went wrong posting the comment reply.", @"")];
+    }];
 }
 
 @end

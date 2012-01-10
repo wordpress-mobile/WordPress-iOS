@@ -36,20 +36,34 @@ typedef enum {
 @property (nonatomic, retain) Blog * blog;
 @property (nonatomic, retain) AbstractPost * post;
 
+///-------------------------------------------
+/// @name Creating and finding comment objects
+///-------------------------------------------
 + (Comment *)findWithBlog:(Blog *)blog andCommentID:(NSNumber *)commentID;
 // Takes the NSDictionary from a XMLRPC call and creates or updates a post
 + (Comment *)createOrReplaceFromDictionary:(NSDictionary *)commentInfo forBlog:(Blog *)blog;
-+ (NSString *)titleForStatus:(NSString *)status;
-- (void)findPost;
 - (Comment *)newReply;
-- (void)updateFromDictionary:(NSDictionary *)commentInfo;
 
-- (BOOL)upload;
+///---------------------
+/// @name Helper methods
+///---------------------
++ (NSString *)titleForStatus:(NSString *)status;
 
-// Moderation
-- (BOOL)approve;
-- (BOOL)unapprove;
-- (BOOL)spam;
-- (BOOL)remove;
+///------------------------
+/// @name Remote management
+///------------------------
+///
+/// The following methods will change the comment on the WordPress site
+
+/**
+ Uploads a new reply or changes to an edited comment
+ */
+- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+
+/// Moderation
+- (void)approve;
+- (void)unapprove;
+- (void)spam;
+- (void)remove;
 
 @end

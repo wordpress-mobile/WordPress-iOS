@@ -355,27 +355,18 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
     progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Sending Reply...", @"")];
     [progressAlert show];
     self.comment.content = textView.text;
-    [self performSelectorInBackground:@selector(saveReplyBackgroundMethod:) withObject:nil];
-}
-
-- (void)saveReplyBackgroundMethod:(id)sender {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	BOOL res = NO;
-    if ([self isConnectedToHost]) {
-        res = [self.comment upload];
-    }
-    [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-    [progressAlert release];
-    progressAlert = nil;
-	if(res) {
+    [self.comment uploadWithSuccess:^{
+        [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
+        [progressAlert release];
+        progressAlert = nil;
 		hasChanges = NO;
-		[commentViewController performSelectorOnMainThread:@selector(closeReplyViewAndSelectTheNewComment) withObject:nil waitUntilDone:YES];
-	} else {
+        [commentViewController closeReplyViewAndSelectTheNewComment];
+    } failure:^(NSError *error) {
+        [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
+        [progressAlert release];
+        progressAlert = nil;
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:NSLocalizedString(@"Sorry, something went wrong during comments moderation. Please try again.", @"")];	
-	}
-	
-    [pool release];
+    }];
 }
-
 
 @end
