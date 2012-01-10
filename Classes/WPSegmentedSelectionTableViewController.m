@@ -155,7 +155,7 @@
     UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:selectionTableRowCell];
 
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:selectionTableRowCell] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:selectionTableRowCell] autorelease];
         [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
     }
 

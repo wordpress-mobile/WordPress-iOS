@@ -71,12 +71,12 @@ NSString *CrashFilePath();
 			[controller addAttachmentData:crashData mimeType:@"application/octet-stream" fileName:@"crash.log"];
 
             if ([[NSFileManager defaultManager] fileExistsAtPath:CrashFilePath()]) {
-                NSString *ourCrash = [NSString stringWithContentsOfFile:CrashFilePath()];
+                NSString *ourCrash = [NSString stringWithContentsOfFile:CrashFilePath() encoding:NSUTF8StringEncoding error:nil];
                 [controller addAttachmentData:[ourCrash dataUsingEncoding:NSUTF8StringEncoding] mimeType:@"text/plain" fileName:@"crash_data.txt"];
             }
 
 			if ([[NSFileManager defaultManager] fileExistsAtPath:FileLoggerPath()]) {
-                NSString *ourCrash = [NSString stringWithContentsOfFile:FileLoggerPath()];
+                NSString *ourCrash = [NSString stringWithContentsOfFile:FileLoggerPath() encoding:NSUTF8StringEncoding error:nil];
                 [controller addAttachmentData:[ourCrash dataUsingEncoding:NSUTF8StringEncoding] mimeType:@"text/plain" fileName:@"wordpress.log"];
             }
 			

@@ -13,8 +13,8 @@
 
 @implementation StatsTableCell
 
-- (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier {
-	if (self = [super initWithFrame:frame reuseIdentifier:reuseIdentifier]) {
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+	if (self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier]) {
 		// Initialization code
 		columns = [NSMutableArray arrayWithCapacity:5];
 		[columns retain];

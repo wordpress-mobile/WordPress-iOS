@@ -1265,7 +1265,7 @@
 	if(videoURL != nil) {
 		// Copy the video from temp to blog directory
 		NSError *error = nil;
-		if ((attributes = [fileManager fileAttributesAtPath:videoURL traverseLink:YES]) != nil) {
+		if ((attributes = [fileManager attributesOfItemAtPath:videoURL error:nil]) != nil) {
 			if([fileManager isReadableFileAtPath:videoURL] == YES)
 				copySuccess = [fileManager copyItemAtPath:videoURL toPath:filepath error:&error];
 		}

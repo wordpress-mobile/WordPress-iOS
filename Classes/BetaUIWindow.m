@@ -26,8 +26,8 @@
 		[betaButton setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
 		betaButton.backgroundColor = [UIColor orangeColor];
 		betaButton.titleLabel.font = [UIFont systemFontOfSize:12];
-		[betaButton setTitleShadowColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.35] forState:UIControlStateNormal];
-		[betaButton setTitleShadowOffset:CGSizeMake(0, -1.0)];
+		betaButton.titleLabel.shadowColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.35];
+		betaButton.titleLabel.shadowOffset = CGSizeMake(0, -1.0);
 		[betaButton setTitle:@"Version 2.7 beta - tap here to leave feedback!" forState:UIControlStateNormal];
 		[betaButton addTarget:self action:@selector(showBetaFeedbackForm:) forControlEvents:UIControlEventTouchUpInside];
 		[self addSubview:betaButton];

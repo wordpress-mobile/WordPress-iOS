@@ -197,7 +197,7 @@
     AbstractPost *apost = (AbstractPost*) [self.resultsController objectAtIndexPath:indexPath];
 
     if (cell == nil) {
-        cell = [[[PostTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[PostTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
 
     cell.post = apost;

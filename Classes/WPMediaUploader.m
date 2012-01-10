@@ -195,7 +195,7 @@
 	
 	NSURL *atomURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/wp-app.php/attachments", blogURL]];
 	
-	NSDictionary *attributes = [[NSFileManager defaultManager] fileAttributesAtPath:self.media.localURL traverseLink: NO];
+	NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:self.media.localURL error:nil];
 	NSString *contentType = @"image/jpeg";
 	if([self.media.mediaType isEqualToString:@"video"])
 		contentType = @"video/mp4";

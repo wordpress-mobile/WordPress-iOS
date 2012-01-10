@@ -53,8 +53,8 @@
 
 @implementation CommentTableViewCell
 
-- (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier {
-    if (self = [super initWithFrame:frame reuseIdentifier:reuseIdentifier]) {
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    if (self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier]) {
         self.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 
         [self addCheckButton];

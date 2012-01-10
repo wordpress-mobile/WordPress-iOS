@@ -560,7 +560,7 @@
     Comment *comment = [self.resultsController objectAtIndexPath:indexPath];
 
     if (cell == nil) {
-        cell = [[[CommentTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[CommentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
     cell.comment = comment;

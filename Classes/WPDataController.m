@@ -747,7 +747,7 @@
         NSLog(@"updateComment failed: %@", result);
         return NO;
     } else {
-		[comment updateFromDictionary:result];
+		//[comment updateFromDictionary:result];
 		return YES;
     }    
 }

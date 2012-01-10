@@ -992,7 +992,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	NSString *MyIdentifier = [NSString stringWithFormat:@"MyIdentifier %i", indexPath.row];
 	
 	//if (cell == nil) {
-		StatsTableCell *cell = [[[StatsTableCell alloc] initWithFrame:CGRectZero reuseIdentifier:MyIdentifier] autorelease];
+		StatsTableCell *cell = [[[StatsTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MyIdentifier] autorelease];
 		if (viewsData != nil) {
 
 		UILabel *label = [[[UILabel	alloc] initWithFrame:CGRectMake(14.0, 0, 210.0, 

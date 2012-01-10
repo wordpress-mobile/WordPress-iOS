@@ -204,7 +204,7 @@
 		case 1:
 			cell.textLabel.textAlignment = UITextAlignmentCenter;
 			cell.accessoryType = UITableViewCellAccessoryNone;
-			cell.text = NSLocalizedString(@"Sign Out", @"");
+			cell.textLabel.text = NSLocalizedString(@"Sign Out", @"");
 			break;
 		default:
 			break;

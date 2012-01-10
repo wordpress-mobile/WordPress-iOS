@@ -129,7 +129,7 @@
 		if (postDetailViewController.post.geolocation == nil // Only if there is no geotag
 //			&& ![postDetailViewController.post hasRemote]    // and post is new (don't follow this way, instead tale look the line below)
 			&& [postDetailViewController isAFreshlyCreatedDraft] //just a fresh draft. the line above doesn't take in consideration the case of a local draft without location
-			&& locationManager.locationServicesEnabled
+			&& [CLLocationManager locationServicesEnabled]
 			&& postDetailViewController.post.blog.geolocationEnabled) {
 			isUpdatingLocation = YES;
 			[locationManager startUpdatingLocation];

@@ -81,7 +81,7 @@
 - (NSString *)buildSimplePreview:(NSString *)alertString {
 	NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
 	NSString *fpath = [NSString stringWithFormat:@"%@/defaultPostTemplate.html", resourcePath];
-	NSString *str = [NSString stringWithContentsOfFile:fpath];
+	NSString *str = [NSString stringWithContentsOfFile:fpath encoding:NSUTF8StringEncoding error:nil];
 	
 	if ([str length]) {
 		

@@ -115,7 +115,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	BOOL isDir;
 	
 	if (![fileManager fileExistsAtPath:currentDirectoryPath isDirectory:&isDir] || !isDir) {
-		[fileManager createDirectoryAtPath:currentDirectoryPath attributes:nil];
+		[fileManager createDirectoryAtPath:currentDirectoryPath withIntermediateDirectories:YES attributes:nil error:nil];
 	}
 	//FIXME: we should handle errors here:
 	/*

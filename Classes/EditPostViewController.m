@@ -1305,7 +1305,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
 		
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 200, 25)];
         label.textAlignment = UITextAlignmentLeft;
