@@ -6,6 +6,7 @@
 //
 
 #import "AddUsersBlogsViewController.h"
+#import "SFHFKeychainUtils.h"
 
 @implementation AddUsersBlogsViewController
 @synthesize usersBlogs, isWPcom, selectedBlogs, tableView, buttonAddSelected, buttonSelectAll, hasCompletedGetUsersBlogs;

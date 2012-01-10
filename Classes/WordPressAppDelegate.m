@@ -13,6 +13,7 @@
 #import "SDURLCache.h"
 #import "InAppSettings.h"
 #import "PSStackedViewRootViewController.h"
+#import "WPDataController.h"
 
 @interface WordPressAppDelegate (Private)
 - (void)setAppBadge;

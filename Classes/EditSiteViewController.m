@@ -7,6 +7,7 @@
 #import "EditSiteViewController.h"
 #import "NSURL+IDN.h"
 #import "WordPressApi.h"
+#import "SFHFKeychainUtils.h"
 
 @interface EditSiteViewController (PrivateMethods)
 - (void)validateFields;

@@ -12,7 +12,7 @@
 #import "WPcomLoginViewController.h"
 #import "Reachability.h"
 #import "CPopoverManager.h"
-
+#import "SFHFKeychainUtils.h"
 
 @implementation StatsTableViewController
 

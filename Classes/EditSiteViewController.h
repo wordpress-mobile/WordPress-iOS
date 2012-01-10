@@ -7,7 +7,6 @@
 
 #import <UIKit/UIKit.h>
 #import "WordPressAppDelegate.h"
-#import "WPDataController.h"
 #import "WPProgressHUD.h"
 #import "AddUsersBlogsViewController.h"
 #import "UITableViewSwitchCell.h"

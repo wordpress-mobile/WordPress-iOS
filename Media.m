@@ -8,7 +8,6 @@
 
 #import "Media.h"
 #import "UIImage+Resize.h"
-#import "WPDataController.h"
 
 @implementation Media 
 

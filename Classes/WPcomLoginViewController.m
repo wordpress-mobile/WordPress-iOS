@@ -7,15 +7,16 @@
 
 #import "WPcomLoginViewController.h"
 #import "UITableViewTextFieldCell.h"
+#import "SFHFKeychainUtils.h"
+#import "WordPressApi.h"
 
 @interface WPcomLoginViewController(PrivateMethods)
 - (void)saveLoginData;
-- (BOOL)authenticate;
+- (void)authenticateWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)clearLoginData;
 - (void)signIn:(id)sender;
 - (IBAction)cancel:(id)sender;
 - (void)refreshTable;
-- (void)didSignInSuccessfully;
 @end
 
 
@@ -43,7 +44,7 @@
     }
 	
 	if((![username isEqualToString:@""]) && (![password isEqualToString:@""]))
-		[self authenticate];
+		[self authenticateWithSuccess:nil failure:nil];
 	
 	// Setup WPcom table header
 	CGRect headerFrame = CGRectMake(0, 0, 320, 70);
@@ -215,7 +216,7 @@
 				if (!isSigningIn){
 					[self.navigationItem setHidesBackButton:YES animated:NO];
 					isSigningIn = YES;
-					[self performSelectorInBackground:@selector(signIn:) withObject:self];
+                    [self signIn:self];
 				}
 			}
 			break;
@@ -248,7 +249,7 @@
                     isSigningIn = YES;
 					[self.navigationItem setHidesBackButton:YES animated:NO];
                     [self refreshTable];
-                    [self performSelectorInBackground:@selector(signIn:) withObject:self];
+                    [self signIn:self];
                 }
             }
             break;
@@ -323,53 +324,49 @@
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (BOOL)authenticate {
-	if([[WPDataController sharedInstance] authenticateUser:WPcomXMLRPCUrl username:username password:password] == YES) {
-		isAuthenticated = YES;
-		[self saveLoginData];
-		
+- (void)authenticateWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    WordPressApi *api = [WordPressApi apiWithXMLRPCEndpoint:[NSURL URLWithString:WPcomXMLRPCUrl] username:username password:password];
+    [api authenticateWithSuccess:^{
+        isAuthenticated = YES;
+        [self saveLoginData];
 		// Register this device for push notifications with WordPress.com if necessary
-		[[WordPressAppDelegate sharedWordPressApp] sendApnsTokenInBackground];
-	}
-	else {
-		isAuthenticated = NO;
-		[self clearLoginData];
-	}
-	return isAuthenticated;
+		// [[WordPressAppDelegate sharedWordPressApp] sendApnsTokenInBackground];
+
+        if (success) {
+            success();
+        }
+    } failure:^(NSError *error) {
+        isAuthenticated = NO;
+        [self clearLoginData];
+        if (failure) {
+            failure(error);
+        }
+    }];
 }
 
 - (void)signIn:(id)sender {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	[self authenticate];
-	if(isAuthenticated) {
-		[WordPressAppDelegate sharedWordPressApp].isWPcomAuthenticated = YES;
-		[self performSelectorOnMainThread:@selector(didSignInSuccessfully) withObject:nil waitUntilDone:NO];
-	}
-	else {
-		self.footerText = NSLocalizedString(@"Sign in failed. Please try again.", @"");
+	[self authenticateWithSuccess:^{
+        [WordPressAppDelegate sharedWordPressApp].isWPcomAuthenticated = YES;
+        if(DeviceIsPad() == YES && !isStatsInitiated) {
+            AddUsersBlogsViewController *addBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController-iPad" bundle:nil];
+            addBlogsView.isWPcom = YES;
+            [addBlogsView setUsername:self.username];
+            [addBlogsView setPassword:self.password];
+            [self.navigationController pushViewController:addBlogsView animated:YES];
+            [addBlogsView release];
+        }
+        else {
+            if (DeviceIsPad())
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"didDismissWPcomLogin" object:nil];
+            [super dismissModalViewControllerAnimated:YES];
+        }
+    } failure:^(NSError *error) {
+        self.footerText = NSLocalizedString(@"Sign in failed. Please try again.", @"");
 		self.buttonText = NSLocalizedString(@"Sign In", @"");
 		isSigningIn = NO;
 		[self.navigationItem setHidesBackButton:NO animated:NO];
-		[self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
-	}
-	[pool release];
-}
-
-- (void)didSignInSuccessfully {
-	if(DeviceIsPad() == YES && !isStatsInitiated) {
-		AddUsersBlogsViewController *addBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController-iPad" bundle:nil];
-		addBlogsView.isWPcom = YES;
-		[addBlogsView setUsername:self.username];
-		[addBlogsView setPassword:self.password];
-		[self.navigationController pushViewController:addBlogsView animated:YES];
-		[addBlogsView release];
-	}
-	else {
-        if (DeviceIsPad())
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"didDismissWPcomLogin" object:nil];
-		[super dismissModalViewControllerAnimated:YES];
-	}
+		[self.tableView reloadData];
+    }];
 }
 
 - (IBAction)cancel:(id)sender {
