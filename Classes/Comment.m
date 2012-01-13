@@ -163,13 +163,10 @@
 }
 
 - (void)remove {
+    [[self managedObjectContext] deleteObject:self];
+    [self save];
     if (self.commentID) {
-        [self deleteCommentWithSuccess:^(){
-            [[self managedObjectContext] deleteObject:self];
-            [self save];
-        } failure:nil];
-    } else {
-        [[self managedObjectContext] deleteObject:self];
+        [self deleteCommentWithSuccess:nil failure:nil];
     }
 }
 
