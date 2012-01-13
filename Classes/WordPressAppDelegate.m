@@ -165,7 +165,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
     }
 	[FileLogger log:@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
     [FileLogger log:@"device: %@, iOS %@", [[UIDevice currentDevice] platform], [[UIDevice currentDevice] systemVersion]];
-   
+
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     // allocate the internet reachability object
     internetReachability = [Reachability reachabilityForInternetConnection];
     

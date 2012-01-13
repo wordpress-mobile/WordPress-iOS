@@ -289,7 +289,6 @@
 
 - (void)refreshHandler {
 	[self setEditing:false];
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	[self syncComments];
 }
 
