@@ -17,11 +17,6 @@
 
 @implementation PagesViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    self.title = NSLocalizedString(@"Pages", @"");
-}
-
 - (void)syncPosts {
     [self.blog syncPagesWithSuccess:^{
         [self refreshPostList];

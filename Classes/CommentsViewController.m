@@ -124,8 +124,6 @@
     
     editButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Edit", @"") style:UIBarButtonItemStyleBordered
                                                      target:self action:@selector(editComments)];
-    self.navigationItem.rightBarButtonItem = editButtonItem;
-    self.title = NSLocalizedString(@"Comments", @"");
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(commentsSynced:) name:@"CommentRefreshNotification" object:nil];
 	

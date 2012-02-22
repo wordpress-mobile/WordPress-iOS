@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		030DB994113C4BE6002FF1A2 /* BlogViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 030DB993113C4BE6002FF1A2 /* BlogViewController-iPad.xib */; };
 		031663070FFB151A0045D052 /* PostTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 031663060FFB151A0045D052 /* PostTableViewCell.m */; };
 		031666AE0FFC3E130045D052 /* CommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 031666AD0FFC3E130045D052 /* CommentTableViewCell.m */; };
 		03958062100D6CFC00850742 /* WPLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03958061100D6CFC00850742 /* WPLabel.m */; };
@@ -491,6 +492,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		030DB993113C4BE6002FF1A2 /* BlogViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "BlogViewController-iPad.xib"; sourceTree = "<group>"; };
 		031663050FFB151A0045D052 /* PostTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostTableViewCell.h; sourceTree = "<group>"; };
 		031663060FFB151A0045D052 /* PostTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostTableViewCell.m; sourceTree = "<group>"; };
 		031666AC0FFC3E130045D052 /* CommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentTableViewCell.h; sourceTree = "<group>"; };
@@ -1667,6 +1669,7 @@
 				8362C54512027BC300599347 /* AddUsersBlogsViewController-iPad.xib */,
 				8362C1031201E7CE00599347 /* WebSignupViewController-iPad.xib */,
 				03B1DF2E113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.xib */,
+				030DB993113C4BE6002FF1A2 /* BlogViewController-iPad.xib */,
 			);
 			name = Blogs;
 			sourceTree = "<group>";
@@ -2446,6 +2449,7 @@
 				837576C511305C67002EAA27 /* hasLocation.png in Resources */,
 				837576C611305C67002EAA27 /* getLocation.png in Resources */,
 				45C73C25113C36F70024D0D2 /* MainWindow-iPad.xib in Resources */,
+				030DB994113C4BE6002FF1A2 /* BlogViewController-iPad.xib in Resources */,
 				03B1DF30113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.xib in Resources */,
 				03B1E32B113DBDB300BBD1C6 /* EditPostViewController-iPad.xib in Resources */,
 				03FF762811445B1400DCFC6F /* ToolbarIconCamera.png in Resources */,

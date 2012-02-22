@@ -375,7 +375,14 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [self setAppBadge];	
+    [self setAppBadge];
+	
+	if (DeviceIsPad()) {
+		UIViewController *topVC = self.masterNavigationController.topViewController;
+		if (topVC && [topVC isKindOfClass:[BlogViewController class]]) {
+			[(BlogViewController *)topVC saveState];
+		}
+	}
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
