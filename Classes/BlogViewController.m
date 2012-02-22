@@ -187,15 +187,7 @@
             break;
     }
     if (nextViewController != nil) {
-        if (DeviceIsPad() == NO) {
-            [self.navigationController pushViewController:nextViewController animated:YES];
-        } else {
-            [nextViewController.view setFrame:CGRectMake(0, 0, panel_slide_width, self.view.frame.size.height)];
-            
-            WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-            [delegate.stackController pushViewController:nextViewController fromViewController:self animated:YES];
-        }
-            
+        [self.navigationController pushViewController:nextViewController animated:YES];
         [nextViewController release];
     } else {
         [FileLogger log:@"%@ %@ | nextViewController is nil!", self, NSStringFromSelector(_cmd)];

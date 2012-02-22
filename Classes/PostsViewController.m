@@ -420,7 +420,6 @@
     self.postDetailViewController.apost = [apost createRevision];
     self.postDetailViewController.editMode = kEditPost;
     [self.postDetailViewController refreshUIForCurrentPost];
-
     [appDelegate showContentDetailViewController:self.postDetailViewController];
 }
 
@@ -442,9 +441,7 @@
         post = nil;
     }
     self.postReaderViewController = [[PostViewController alloc] initWithPost:post];
-    
-    [self.postReaderViewController.view setFrame:CGRectMake(0, 0, panel_slide_width, self.view.frame.size.height)];
-    [delegate.stackController pushViewController:self.postReaderViewController fromViewController:self animated:YES];
+    [delegate showContentDetailViewController:self.postReaderViewController];    
 }
 
 - (void)setSelectedIndexPath:(NSIndexPath *)indexPath {

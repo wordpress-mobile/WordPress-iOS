@@ -62,9 +62,7 @@
         page = nil;
     }
     self.postReaderViewController = [[PageViewController alloc] initWithPost:page];
-    
-    [self.postReaderViewController.view setFrame:CGRectMake(0, 0, panel_slide_width, self.view.frame.size.height)];
-    [delegate.stackController pushViewController:self.postReaderViewController fromViewController:self animated:YES];
+    [delegate showContentDetailViewController:self.postReaderViewController];    
 }
 
 - (void)showAddPostView {

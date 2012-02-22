@@ -476,13 +476,7 @@
 	} else {
 		if (!self.commentViewController.isVisible) {
 			WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-
-            if (DeviceIsPad() == NO) {
-                [delegate showContentDetailViewController:self.commentViewController];
-            } else {
-                [self.commentViewController.view setFrame:CGRectMake(0, 0, panel_slide_width, self.view.frame.size.height)];
-                [delegate.stackController pushViewController:self.commentViewController fromViewController:self animated:YES];
-            }
+			[delegate showContentDetailViewController:self.commentViewController];
 		}
 	}
 	

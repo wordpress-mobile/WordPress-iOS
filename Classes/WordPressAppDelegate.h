@@ -7,10 +7,8 @@
 #import "CrashReportViewController.h"
 #import "HelpViewController.h"
 #import "Reachability.h"
-#import "PSStackedView.h"
 
 @class AutosaveManager;
-@class PSStackedViewController;
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate> {
 	Blog *currentBlog;
@@ -27,7 +25,7 @@
     BOOL alertRunning, passwordAlertRunning;
     BOOL isUploadingPost;
 	BOOL isWPcomAuthenticated;
-    
+
 	NSMutableData *statsData;
 	NSString *postID;
     UITextField *passwordTextField;
@@ -39,8 +37,6 @@
     
     //Background tasks
     UIBackgroundTaskIdentifier bgTask;
-    
-    PSStackedViewController *stackController_;
 }
 
 @property (nonatomic, retain) UIWindow *window;
@@ -57,7 +53,6 @@
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (nonatomic, retain) PSStackedViewController *stackController;
 
 //Connection Reachability variables
 @property (nonatomic, retain) Reachability *internetReachability, *wpcomReachability, *currentBlogReachability;

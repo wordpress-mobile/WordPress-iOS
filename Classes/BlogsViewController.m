@@ -569,15 +569,7 @@
     
    [appDelegate setCurrentBlogReachability: [Reachability reachabilityWithHostname:blog.hostURL] ];
     
-    if (DeviceIsPad() == NO) {
-        [self.navigationController pushViewController:blogViewController animated:animated];
-    } else {        
-        WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-
-        [blogViewController.view setFrame:CGRectMake(0, 0, panel_slide_width, self.view.frame.size.height)];
-        [delegate.stackController pushViewController:blogViewController fromViewController:self animated:YES];
-    }
-    
+	[self.navigationController pushViewController:blogViewController animated:animated];
 	[blogViewController release];
 }
 

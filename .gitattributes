@@ -151,8 +151,6 @@ Classes/NSString+XMLExtensions.h -text
 Classes/NSString+XMLExtensions.m -text
 Classes/NSURL+IDN.h -text
 Classes/NSURL+IDN.m -text
-Classes/PSStackedViewRootViewController.h -text
-Classes/PSStackedViewRootViewController.m -text
 Classes/Page.h -text
 Classes/Page.m -text
 Classes/PageViewController.h -text
@@ -296,18 +294,6 @@ Creation/CXMLNode_CreationExtensions.m -text
 /Media.h -text
 /Media.m -text
 /MediaObjectView.xib -text
-PSStackedView/PSSVContainerView.h -text
-PSStackedView/PSSVContainerView.m -text
-PSStackedView/PSStackedView.h -text
-PSStackedView/PSStackedViewController.h -text
-PSStackedView/PSStackedViewController.m -text
-PSStackedView/PSStackedViewDelegate.h -text
-PSStackedView/PSStackedViewGlobal.h -text
-PSStackedView/PSStackedViewGlobal.m -text
-PSStackedView/UIView+PSSizes.h -text
-PSStackedView/UIView+PSSizes.m -text
-PSStackedView/UIViewController+PSStackedView.h -text
-PSStackedView/UIViewController+PSStackedView.m -text
 /PostMediaViewController-iPad.xib -text
 /PostMediaViewController.xib -text
 /PostPreviewViewController.xib -text
