@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 WordPress. All rights reserved.
 //
 
+#import <CommonCrypto/CommonDigest.h>
 #import "WPWebAppViewController.h"
 #import "JSONKit.h"
 

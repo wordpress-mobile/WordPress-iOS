@@ -7,6 +7,7 @@
 //
 
 #import "WPReaderTopicsViewController.h"
+#import "WordPressAppDelegate.h"
 
 @implementation WPReaderTopicsViewController
 
