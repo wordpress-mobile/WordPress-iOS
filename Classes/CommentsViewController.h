@@ -68,6 +68,7 @@
 - (IBAction)approveSelectedComments:(id)sender;
 - (IBAction)unapproveSelectedComments:(id)sender;
 - (IBAction)spamSelectedComments:(id)sender;
+- (IBAction)replyToSelectedComment:(id)sender;
 - (void)refreshCommentsList;
 - (void)setIndexForCurrentPost:(int)index;
 - (void)showCommentAtIndexPath:(NSIndexPath *)indexPath;

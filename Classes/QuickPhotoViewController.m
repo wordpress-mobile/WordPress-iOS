@@ -71,6 +71,8 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
     
+    appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
     self.titleTextField.placeholder = NSLocalizedString(@"Title (optional)", @"Quick Photo title");
     [self.blogSelector loadBlogsForType:BlogSelectorButtonTypeQuickPhoto];
     self.blogSelector.delegate = self;
@@ -184,7 +186,16 @@
     post.specialType = @"QuickPhoto";
     post.postFormat = @"image";
 
-    [self performSelectorOnMainThread:@selector(postInBackground) withObject:nil waitUntilDone:YES];
+    [[NSNotificationCenter defaultCenter] addObserver:post selector:@selector(mediaDidUploadSuccessfully:) name:ImageUploadSuccessful object:nil];        
+    [[NSNotificationCenter defaultCenter] addObserver:post selector:@selector(mediaUploadFailed:) name:ImageUploadFailed object:nil];
+    
+    appDelegate.isUploadingPost = YES;
+    
+    dispatch_async(dispatch_get_main_queue(), ^(void) {
+        [[post.media anyObject] performSelector:@selector(upload) withObject:nil];    
+        
+        [post save];
+    });
     [self.navigationController popViewControllerAnimated:YES];
     [blogsViewController uploadQuickPhoto: post];
     

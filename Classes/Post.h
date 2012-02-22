@@ -10,9 +10,10 @@
 #import "Category.h"
 #import "Coordinate.h"
 #import "AbstractPost.h"
+#import "Media.h"
 
-@interface Post :  AbstractPost  
-{
+@interface Post :  AbstractPost {
+    WordPressAppDelegate *appDelegate;
 }
 
 #pragma mark -

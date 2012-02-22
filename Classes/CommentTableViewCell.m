@@ -127,9 +127,9 @@
 	}
 
     if (comment.postTitle)
-		postLabel.text = [NSLocalizedString(@"on ", @"") stringByAppendingString:comment.postTitle];
-    commentLabel.text = comment.content;
-    [gravatarImageView setImageWithGravatarEmail:comment.author_email];
+		postLabel.text = [NSLocalizedString(@"on ", @"") stringByAppendingString:[comment.postTitle stringByDecodingXMLCharacters]];
+    commentLabel.text = [comment.content stringByDecodingXMLCharacters];
+    gravatarImageView.email = comment.author_email;
 }
 
 // Calls the tableView:didCheckRowAtIndexPath method on the table view delegate.

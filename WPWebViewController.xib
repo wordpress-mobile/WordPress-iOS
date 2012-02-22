@@ -62,6 +62,7 @@
 						<string key="NSFrame">{{0, 372}, {320, 44}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 						<int key="IBUIContentMode">6</int>
@@ -109,7 +110,7 @@
 								<double key="IBUIImageInsets.right">-2</double>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<reference key="IBUIToolbar" ref="102111937"/>
-								<int key="IBUISystemItemIdentifier">9</int>
+								<int key="IBUISystemItemIdentifier">13</int>
 							</object>
 							<object class="IBUIBarButtonItem" id="980642625">
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -183,11 +184,11 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">optionsButton</string>
+						<string key="label">refreshButton</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="632068120"/>
 					</object>
-					<int key="connectionID">41</int>
+					<int key="connectionID">49</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -199,11 +200,11 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">showLinkOptions</string>
+						<string key="label">reload</string>
 						<reference key="source" ref="632068120"/>
 						<reference key="destination" ref="372490531"/>
 					</object>
-					<int key="connectionID">27</int>
+					<int key="connectionID">50</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -360,7 +361,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">48</int>
+			<int key="maxID">50</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -375,10 +376,12 @@
 							<string>dismiss</string>
 							<string>goBack</string>
 							<string>goForward</string>
+							<string>reload</string>
 							<string>showLinkOptions</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -392,6 +395,7 @@
 							<string>dismiss</string>
 							<string>goBack</string>
 							<string>goForward</string>
+							<string>reload</string>
 							<string>showLinkOptions</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -406,6 +410,10 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">goForward</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">reload</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -425,6 +433,7 @@
 							<string>loadingLabel</string>
 							<string>loadingView</string>
 							<string>optionsButton</string>
+							<string>refreshButton</string>
 							<string>toolbar</string>
 							<string>webView</string>
 						</object>
@@ -436,6 +445,7 @@
 							<string>UINavigationBar</string>
 							<string>UILabel</string>
 							<string>UIView</string>
+							<string>UIBarButtonItem</string>
 							<string>UIBarButtonItem</string>
 							<string>UIToolbar</string>
 							<string>UIWebView</string>
@@ -452,6 +462,7 @@
 							<string>loadingLabel</string>
 							<string>loadingView</string>
 							<string>optionsButton</string>
+							<string>refreshButton</string>
 							<string>toolbar</string>
 							<string>webView</string>
 						</object>
@@ -483,6 +494,10 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">optionsButton</string>
+								<string key="candidateClassName">UIBarButtonItem</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">refreshButton</string>
 								<string key="candidateClassName">UIBarButtonItem</string>
 							</object>
 							<object class="IBToOneOutletInfo">

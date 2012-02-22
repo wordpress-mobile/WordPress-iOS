@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreGraphics/CoreGraphics.h>
-#import <MediaPlayer/MediaPlayer.h>
+#import <CoreMedia/CoreMedia.h>
+#import <AVFoundation/AVFoundation.h>
 #import <MobileCoreServices/UTCoreTypes.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "UIDevice-Hardware.h"
@@ -96,7 +97,7 @@ static inline double radians(double degrees) {
 - (UIImage *)fixImageOrientation:(UIImage *)img;
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker;
 - (void)useImage:(UIImage *)theImage;
-- (void)useVideo:(NSString *)videoURL withThumbnail:(UIImage *)thumbnail andDuration:(float)duration;
+- (void)useVideo:(NSString *)videoURL;
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification;
 - (void)mediaUploadFailed:(NSNotification *)notification;
 - (BOOL)isDeviceSupportVideoAndVideoPressEnabled;

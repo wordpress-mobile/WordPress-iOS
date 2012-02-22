@@ -85,10 +85,10 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 @property (nonatomic, retain) IBOutlet UITextView *textView;
 @property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, retain) IBOutlet UIView *contentView, *subView, *textViewContentView;;
-@property (nonatomic, retain) IBOutlet UITextField *statusTextField, *categoriesTextField, *titleTextField, *tagsTextField, *textViewPlaceHolderField;
+@property (nonatomic, retain) IBOutlet UITextField *statusTextField, *titleTextField, *tagsTextField, *textViewPlaceHolderField;
 @property (nonatomic, retain) IBOutlet UILabel *tagsLabel, *statusLabel, *categoriesLabel, *titleLabel;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *createCategoryBarButtonItem;
-@property (nonatomic, retain) IBOutlet UIButton *hasLocation;
+@property (nonatomic, retain) IBOutlet UIButton *hasLocation, *categoriesButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *photoButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *movieButton;
 @property (nonatomic, retain) NSArray *statuses;
@@ -132,6 +132,8 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (IBAction)switchToPreview;
 - (IBAction)addVideo:(id)sender;
 - (IBAction)addPhoto:(id)sender;
+- (IBAction)showCategories:(id)sender;
+- (IBAction)touchTextView:(id)sender;
 - (void)refreshButtons;
 - (void)dismissEditView;
 

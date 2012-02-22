@@ -8,21 +8,23 @@
 
 #import <Foundation/Foundation.h>
 #import <MessageUI/MFMailComposeViewController.h>
+#import "EGORefreshTableHeaderView.h"
+#import "WPReaderTopicsViewController.h"
 
-@interface WPReaderViewController : UIViewController<UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
-    BOOL isLoading, needsLogin;
-    IBOutlet UIWebView *webView;
+@interface WPReaderViewController : WPWebAppViewController <UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, WPReaderTopicsViewControllerDelegate> {
+    BOOL needsLogin;
     NSTimer *statusTimer;   // This timer checks the nav buttons every 0.75 seconds, and updates them
     NSTimer *refreshTimer; 
-    NSDate  *lastWebViewRefreshDate; //used to keep track of the latest refresh datetime. 
 }
 @property (nonatomic,retain) NSURL *url;
 @property (nonatomic,retain) NSString *username;
 @property (nonatomic,retain) NSString *password;
 @property (nonatomic,retain) NSString *detailContentHTML;
-@property (nonatomic,retain) IBOutlet UIWebView *webView;
 @property (nonatomic, retain) IBOutlet UINavigationBar *iPadNavBar;
 @property (retain, nonatomic) NSTimer *refreshTimer;
-@property (retain, nonatomic) NSDate *lastWebViewRefreshDate;
+@property (nonatomic, retain) WPReaderTopicsViewController *topicsViewController;
+
+- (void)setSelectedTopic:(NSString *)topicId;
+- (void)setupTopics;
 
 @end

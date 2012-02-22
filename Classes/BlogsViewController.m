@@ -6,7 +6,6 @@
 #import "UIImageView+Gravatar.h"
 
 @interface BlogsViewController (Private)
-- (void) cleanUnusedMediaFileFromTmpDir;
 - (void)setupPhotoButton;
 - (void)setupReader;
 @end
@@ -37,15 +36,6 @@
     self.tableView.dataSource = self;
 	self.tableView.allowsSelectionDuringEditing = YES;
     
-    NSError *error = nil;
-    if (![self.resultsController performFetch:&error]) {
-//        NSLog(@"Error fetching request (Blogs) %@", [error localizedDescription]);
-    } else {
-//        NSLog(@"fetched blogs: %@", [resultsController fetchedObjects]);
-		//Start a check on the media files that should be deleted from disk
-		[self performSelectorInBackground:@selector(cleanUnusedMediaFileFromTmpDir) withObject:nil];
-    }
-
     [self setupPhotoButton];
 	
 	// Check to see if we should prompt about rating in the App Store
@@ -95,8 +85,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBlogWithoutAnimation) name:@"NewBlogAdded" object:nil];
 
     //quick photo upload notifications
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:ImageUploadSuccessful object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaUploadFailed:) name:ImageUploadFailed object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postDidUploadSuccessfully:) name:@"PostUploaded" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postUploadFailed:) name:@"PostUploadFailed" object:nil];
     
@@ -139,12 +127,12 @@
 #pragma mark UITableView Delegate Methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [[resultsController sections] count];
+    return [[self.resultsController sections] count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     id <NSFetchedResultsSectionInfo> sectionInfo = nil;
-    sectionInfo = [[resultsController sections] objectAtIndex:section];
+    sectionInfo = [[self.resultsController sections] objectAtIndex:section];
     return [sectionInfo numberOfObjects];
 }
 
@@ -155,7 +143,7 @@
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"BlogCell";
     BlogsTableViewCell *cell = (BlogsTableViewCell *)[aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    Blog *blog = [resultsController objectAtIndexPath:indexPath];
+    Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
     
     CGRect frame = CGRectMake(8,8,35,35);
     UIImageView* asyncImage = [[[UIImageView alloc] initWithFrame:frame] autorelease];
@@ -176,11 +164,19 @@
 	[asyncImage setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
 	[cell.contentView addSubview:asyncImage];
 	
+    NSString *firstLine = [blog blogName];
+    NSString *secondLine = [blog hostURL];
+    
+    if (nil == firstLine || [firstLine isEqual:@""]) {
+        firstLine = [blog hostURL];
+        secondLine = @"";
+    }
+           
 #if defined __IPHONE_3_0
-    cell.textLabel.text = [blog blogName];
-    cell.detailTextLabel.text = [blog hostURL];
+    cell.textLabel.text = firstLine;
+    cell.detailTextLabel.text = secondLine;
 #elif defined __IPHONE_2_0
-    cell.text = [blog blogName];
+    cell.text = firstLine;
 #endif
 
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -194,7 +190,7 @@
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([aTableView cellForRowAtIndexPath:indexPath].editing) {
-        Blog *blog = [resultsController objectAtIndexPath:indexPath];
+        Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
 		
 		EditSiteViewController *editSiteViewController;
 		editSiteViewController = [[EditSiteViewController alloc] initWithNibName:@"EditSiteViewController" bundle:nil];
@@ -217,7 +213,7 @@
         [aTableView setEditing:NO animated:YES];
     }
 	else {	// if ([self canChangeCurrentBlog]) {
-        Blog *blog = [resultsController objectAtIndexPath:indexPath];
+        Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
 		[self showBlog:blog animated:YES];
 
 		//we should keep a reference to the last selected blog
@@ -231,7 +227,7 @@
 - (void)tableView:(UITableView *)aTableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
 		
-		Blog *blog = [resultsController objectAtIndexPath:indexPath];
+		Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
 		if([self canChangeBlog:blog]){
 			[aTableView beginUpdates];
 			
@@ -284,7 +280,7 @@
     BOOL wantsReaderButton = NO;
     
     if (!DeviceIsPad()
-        && [[resultsController fetchedObjects] count] > 0) {
+        && [[self.resultsController fetchedObjects] count] > 0) {
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]
             || [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
             wantsPhotoButton = YES;
@@ -355,7 +351,7 @@
             readerViewController = [[WPReaderViewController alloc] initWithNibName:@"WPReaderViewController" bundle:nil]; 
             readerViewController.username = wpcom_username; 
             readerViewController.password = wpcom_password; 
-            readerViewController.url = [NSURL URLWithString:kMobileReaderURL]; 
+            readerViewController.url = [NSURL URLWithString:kMobileReaderURL];
             [readerViewController view]; // Force web view preload 
         } 
     } 
@@ -405,53 +401,6 @@
     [appDelegate setAlertRunning:YES];
 	
     [actionSheet release];
-}
-
-- (void) cleanUnusedMediaFileFromTmpDir {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	NSMutableArray *mediaToKeep = [NSMutableArray array];	
-	//get a references to media files linked in a post
-	for (Blog *blog in [resultsController fetchedObjects]) {
-		NSSet *posts = blog.posts;
-		if (posts && (posts.count > 0)) { 
-			for (AbstractPost *post in posts) {
-				//check for media file
-				NSSet *mediaFiles = post.media;
-				for (Media *media in mediaFiles) {
-					[mediaToKeep addObject:media];
-				}
-				mediaFiles = nil;
-			}
-		}
-		posts = nil;
-	}
-	
-	//searches for jpg files within the app temp file
-	NSFileManager *fileManager = [NSFileManager defaultManager];
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-	NSString *documentsDirectory = [paths objectAtIndex:0];
-	NSArray *contentsOfDir = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:NULL];
-	
-	for (NSString *currentPath in contentsOfDir)
-		if([currentPath isMatchedByRegex:@".jpg$"]) {
-			NSString *filepath = [documentsDirectory stringByAppendingPathComponent:currentPath];
-			
-			BOOL keep = NO;
-			//if the file is not referenced in any post we can delete it
-			for (Media *currentMediaToKeepPath in mediaToKeep) {
-				if([[currentMediaToKeepPath localURL] isEqualToString:filepath]) {
-					keep = YES;
-					break;
-				}
-			}
-			
-			if(keep == NO) {
-				[fileManager removeItemAtPath:filepath error:NULL];
-			}
-		}
-	
-	[pool release];
 }
 
 - (BOOL)canChangeBlog:(Blog *) blog {
@@ -580,6 +529,12 @@
     [sortDescriptor release]; sortDescriptor = nil;
     [sortDescriptors release]; sortDescriptors = nil;
 
+    NSError *error = nil;
+    if (![resultsController performFetch:&error]) {
+        WPFLog(@"Couldn't fetch blogs: %@", [error localizedDescription]);
+        resultsController = nil;
+    }
+
     return resultsController;
 }
 
@@ -618,11 +573,7 @@
     }
 }
 
-- (void)uploadQuickPhoto:(Post *)post{
-    
-    appDelegate.isUploadingPost = YES;
-    
-    quickPicturePost = post;
+- (void)uploadQuickPhoto:(Post *)post {
     if (post != nil) {
         //remove the quick photo button w/ sexy animation
         CGRect frame = quickPhotoButton.frame;
@@ -639,7 +590,8 @@
             uploadController.label.frame = CGRectMake(uploadController.label.frame.origin.x, uploadController.label.frame.origin.y + 12, uploadController.label.frame.size.width, uploadController.label.frame.size.height);
         }
         [uploadController.spinner startAnimating];
-        uploadController.label.textColor = [[UIColor alloc] initWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f];
+        
+        uploadController.label.textColor = [[[UIColor alloc] initWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f] autorelease];
         uploadController.label.text = NSLocalizedString(@"Uploading Quick Photo...", @"");
         
         //show the upload dialog animation
@@ -650,9 +602,6 @@
         uploadController.view.frame = CGRectMake(frame.origin.x, self.view.bounds.size.height - 83, frame.size.width, frame.size.height);
         
         [UIView commitAnimations];
- 
-        //upload the image
-        [[post.media anyObject] performSelector:@selector(upload) withObject:nil];
     }
 }
 
@@ -670,26 +619,6 @@
     uploadController.view.frame = CGRectMake(frame.origin.x, self.view.bounds.size.height + 83, frame.size.width, frame.size.height);
     
     [UIView commitAnimations];
-}
-
-- (void)mediaDidUploadSuccessfully:(NSNotification *)notification {
-    
-    Media *media = (Media *)[notification object];
-    [media save];
-    quickPicturePost.content = [NSString stringWithFormat:@"%@\n\n%@", [media html], quickPicturePost.content];
-    [quickPicturePost upload];    
-}
-
-- (void)mediaUploadFailed:(NSNotification *)notification {
-    appDelegate.isUploadingPost = NO;
-    [self showQuickPhotoButton: NO];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick Photo Failed", @"")
-                                                    message:NSLocalizedString(@"Sorry, the photo upload failed. The post has been saved as a Local Draft.", @"")
-                                                   delegate:self
-                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                          otherButtonTitles:nil];
-    [alert show];
-    [alert release];
 }
 
 - (void)postDidUploadSuccessfully:(NSNotification *)notification {
@@ -730,7 +659,6 @@
     [appDelegate setCurrentBlogReachability: nil];
     [quickPhotoButton release]; quickPhotoButton = nil;
     self.tableView = nil;
-    [quickPicturePost release];
     [uploadController release];
     [readerViewController release]; 
     [super dealloc];

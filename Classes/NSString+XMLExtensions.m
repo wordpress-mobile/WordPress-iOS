@@ -321,20 +321,16 @@ static HTMLEscapeMap gAsciiHTMLEscapeMap[] = {
 
     NSString *result = [NSString stringWithString:source];
 
+    // NOTE: we use unicode entities instead of &amp; &gt; &lt; since some weird hosts (powweb, fatcow, and cousins)
+    // have a weird PHP/libxml2 combination that ignores regular entities
     if ([result rangeOfString:@"&"].location != NSNotFound)
-        result = [[result componentsSeparatedByString:@"&"] componentsJoinedByString:@"&amp;"];
+        result = [[result componentsSeparatedByString:@"&"] componentsJoinedByString:@"&#38;"];
 
     if ([result rangeOfString:@"<"].location != NSNotFound)
-        result = [[result componentsSeparatedByString:@"<"] componentsJoinedByString:@"&lt;"];
+        result = [[result componentsSeparatedByString:@"<"] componentsJoinedByString:@"&#60;"];
 
     if ([result rangeOfString:@">"].location != NSNotFound)
-        result = [[result componentsSeparatedByString:@">"] componentsJoinedByString:@"&gt;"];
-
-    if ([result rangeOfString:@"\""].location != NSNotFound)
-        result = [[result componentsSeparatedByString:@"\""] componentsJoinedByString:@"&quot;"];
-
-    if ([result rangeOfString:@"'"].location != NSNotFound)
-        result = [[result componentsSeparatedByString:@"'"] componentsJoinedByString:@"&apos;"];
+        result = [[result componentsSeparatedByString:@">"] componentsJoinedByString:@"&#62;"];
 
     return result;
 }
@@ -410,5 +406,13 @@ static HTMLEscapeMap gAsciiHTMLEscapeMap[] = {
 
 	return finalString;
 } 
+
+- (NSString *)stringByDecodingXMLCharacters {
+    return [NSString decodeXMLCharactersIn:self];
+}
+- (NSString *)stringByEncodingXMLCharacters {
+    return [NSString encodeXMLCharactersIn:self];
+}
+
 
 @end

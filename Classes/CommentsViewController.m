@@ -13,6 +13,7 @@
 #import "Reachability.h"
 #import "CommentViewController.h"
 #import "BlogViewController.h"
+#import "ReplyToCommentViewController.h"
 
 #define COMMENTS_SECTION        0
 #define NUM_SECTIONS            1
@@ -77,8 +78,8 @@
 	[lastUserSelectedCommentID release], lastUserSelectedCommentID = nil;
 	[commentViewController release], commentViewController = nil;
 	[_refreshHeaderView release]; _refreshHeaderView = nil;
-  [moderationSwipeView release];
-  [moderationSwipeCell release];
+    [moderationSwipeView release];
+    [moderationSwipeCell release];
     [super dealloc];
 }
 
@@ -496,6 +497,31 @@
 	}
 }
 
+- (IBAction)replyToSelectedComment:(id)sender {
+	WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+	
+  Comment *selectedComment = [selectedComments objectAtIndex:0];
+  
+  ReplyToCommentViewController *replyToCommentViewController = [[[ReplyToCommentViewController alloc] 
+                                        initWithNibName:@"ReplyToCommentViewController" 
+                                        bundle:nil] autorelease];
+  
+  replyToCommentViewController.commentViewController = nil;
+  replyToCommentViewController.comment = [[selectedComment newReply] autorelease];
+  replyToCommentViewController.title = NSLocalizedString(@"Comment Reply", @"Comment Reply view title");
+	
+	if (DeviceIsPad() == NO) {
+		[delegate.navigationController pushViewController:replyToCommentViewController animated:YES];
+	} else {
+		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:replyToCommentViewController] autorelease];
+		navController.modalPresentationStyle = UIModalPresentationFormSheet;
+		navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+		[self presentModalViewController:navController animated:YES];
+	}
+  
+  [self removeModerationSwipeView:YES];
+}
+
 #pragma mark -
 #pragma mark Segmented View Controls
 
@@ -575,12 +601,12 @@
   {
     if ([subview isKindOfClass:[UIButton class]])
     {
-      UIImage* buttonImage = [[UIImage imageNamed:@"UISegmentBarBlackButton.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0];
-      UIImage* buttonPressedImage = [[UIImage imageNamed:@"UISegmentBarBlackButtonHighlighted.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0];
+        UIImage* buttonImage = [[UIImage imageNamed:@"UISegmentBarBlackButton.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0];
+        UIImage* buttonPressedImage = [[UIImage imageNamed:@"UISegmentBarBlackButtonHighlighted.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0];
 
-      UIButton* button = (UIButton*)subview;
-      [button setBackgroundImage:buttonImage forState:UIControlStateNormal];
-      [button setBackgroundImage:buttonPressedImage forState:UIControlStateHighlighted];
+        UIButton* button = (UIButton*)subview;
+        [button setBackgroundImage:buttonImage forState:UIControlStateNormal];
+        [button setBackgroundImage:buttonPressedImage forState:UIControlStateHighlighted];
     }
   }
 
@@ -591,8 +617,7 @@
   shadowImageView.alpha = 0.6;
   shadowImageView.image = shadow;
 
-  [self.moderationSwipeView insertSubview:shadowImageView atIndex:0];
-  
+  [self.moderationSwipeView insertSubview:shadowImageView atIndex:0];  
 }
 
 #pragma mark Gesture recognizers
@@ -633,6 +658,19 @@
   
     if (cell!= moderationSwipeCell)
     {
+      UIButton *moderationApproveButton = (UIButton*)[moderationSwipeView viewWithTag:3];
+      [moderationApproveButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+      
+      if ([cell.comment.status isEqualToString:@"hold"]) {
+        // not approved
+        [moderationApproveButton setTitle:NSLocalizedString(@"Approve", @"") forState:UIControlStateNormal];
+        [moderationApproveButton addTarget:self action:@selector(approveSelectedComments:) forControlEvents:UIControlEventTouchUpInside];
+      } else  {
+        // approved
+        [moderationApproveButton setTitle:NSLocalizedString(@"Unapprove", @"") forState:UIControlStateNormal];
+        [moderationApproveButton addTarget:self action:@selector(unapproveSelectedComments:) forControlEvents:UIControlEventTouchUpInside];
+      }
+      
       [commentsTableView addSubview:moderationSwipeView];
       self.moderationSwipeCell = cell;
       

@@ -19,7 +19,6 @@
     Blog *currentBlog;
     QuickPhotoButton *quickPhotoButton, *readerButton;
     QuickPhotoUploadProgressController *uploadController;
-    Post *quickPicturePost;
     UILabel *uploadLabel;
     IBOutlet UITableView *tableView;
     WPReaderViewController *readerViewController;

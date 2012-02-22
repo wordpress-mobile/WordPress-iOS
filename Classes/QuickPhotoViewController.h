@@ -12,10 +12,12 @@
 #import "Post.h"
 #import "QuickPicturePreviewView.h"
 #import "BlogsViewController.h"
+#import "WordPressAppDelegate.h"
 
 #define QPVCBlogForQuickPhoto @"blogForQuickPhoto"
 
 @interface QuickPhotoViewController : UIViewController<UIImagePickerControllerDelegate,UINavigationControllerDelegate,BlogSelectorButtonDelegate,QuickPicturePreviewViewDelegate> {
+	WordPressAppDelegate *appDelegate;
     Post *post;
     BlogsViewController *blogsViewController;
 }

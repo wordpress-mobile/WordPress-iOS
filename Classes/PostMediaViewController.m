@@ -849,6 +849,32 @@
             }
             if (metadata) {
                 NSMutableDictionary *mutableMetadata = [metadata mutableCopy];
+                NSDictionary *gpsData = [mutableMetadata objectForKey:@"{GPS}"];
+                if (!gpsData && self.postDetailViewController.post.geolocation) {
+                    /*
+                     Sample GPS data dictionary
+                     "{GPS}" =     {
+                     Altitude = 188;
+                     AltitudeRef = 0;
+                     ImgDirection = "84.19556";
+                     ImgDirectionRef = T;
+                     Latitude = "41.01333333333333";
+                     LatitudeRef = N;
+                     Longitude = "0.01666666666666";
+                     LongitudeRef = W;
+                     TimeStamp = "10:34:04.00";
+                     };
+                     */
+                    CLLocationDegrees latitude = self.postDetailViewController.post.geolocation.latitude;
+                    CLLocationDegrees longitude = self.postDetailViewController.post.geolocation.longitude;
+                    NSDictionary *gps = [NSDictionary dictionaryWithObjectsAndKeys:
+                                         [NSNumber numberWithDouble:fabs(latitude)], @"Latitude",
+                                         (latitude < 0.0) ? @"S" : @"N", @"LatitudeRef",
+                                         [NSNumber numberWithDouble:fabs(longitude)], @"Longitude",
+                                         (longitude < 0.0) ? @"W" : @"E", @"LongitudeRef",
+                                         nil];
+                    [mutableMetadata setObject:gps forKey:@"{GPS}"];
+                }
                 [mutableMetadata removeObjectForKey:@"Orientation"];
                 [mutableMetadata removeObjectForKey:@"{TIFF}"];
                 self.currentImageMetadata = mutableMetadata;
@@ -993,29 +1019,11 @@
 			pickerContainer.view.frame = CGRectMake(0, 2000, 0, 0);
 		}
 		
-		float osVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
 		[self.currentVideo setValue:[NSNumber numberWithInt:currentOrientation] forKey:@"orientation"];
 		
 		// Determine the video's library path
 		NSString *videoPath = [[[videoURL absoluteString] substringFromIndex:16] retain];
-		NSURL *contentURL = [NSURL fileURLWithPath:videoPath];
-		
-		// If we're using iOS 3.2 or greater, we can grab a thumbnail using this method
-		UIImage *thumbnail;
-		float duration = 0.0;
-		if(osVersion >= 3.2) {
-			MPMoviePlayerController *mp = [[MPMoviePlayerController alloc] initWithContentURL:contentURL];
-			thumbnail = [mp thumbnailImageAtTime:(NSTimeInterval)2.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
-			duration = [mp duration];
-            [mp stop];
-            [mp release];
-		}
-		else {
-			// If not, we'll just use the default thumbnail for now.
-			thumbnail = [UIImage imageNamed:@"video_thumbnail.png"];
-		}
-		
-		[self useVideo:videoPath withThumbnail:thumbnail andDuration:duration];
+		[self useVideo:videoPath];
 		self.currentVideo = nil;
 		self.isLibraryMedia = NO;
 		[videoPath release];
@@ -1024,25 +1032,7 @@
 }
 
 - (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(NSString *)contextInfo {
-	float osVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
-	NSURL *contentURL = [NSURL fileURLWithPath:videoPath];
-	
-	// If we're using iOS 3.2 or greater, we can grab a thumbnail using this method
-	UIImage *thumbnail = nil;
-	float duration = 0.0;
-	if(osVersion >= 3.2) {
-		MPMoviePlayerController *mp = [[MPMoviePlayerController alloc] initWithContentURL:contentURL];
-		thumbnail = [mp thumbnailImageAtTime:(NSTimeInterval)2.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
-		duration = [mp duration];
-        [mp stop];
-        [mp release];
-	}
-	else {
-		// If not, we'll just use the default thumbnail for now.
-		thumbnail = [UIImage imageNamed:@"video_thumbnail.png"];
-	}
-	
-	[self useVideo:videoPath withThumbnail:thumbnail andDuration:duration];
+	[self useVideo:videoPath];
 	currentVideo = nil;
 }
 
@@ -1248,10 +1238,36 @@
     [imageMedia release];
 }
 
-- (void)useVideo:(NSString *)videoURL withThumbnail:(UIImage *)thumbnail andDuration:(float)duration {
+- (void)useVideo:(NSString *)videoURL {
 	BOOL copySuccess = FALSE;
 	Media *videoMedia;
 	NSDictionary *attributes;
+    UIImage *thumbnail = nil;
+	NSTimeInterval duration = 0.0;
+    NSURL *contentURL = [NSURL fileURLWithPath:videoURL];
+
+    AVURLAsset *asset = [[[AVURLAsset alloc] initWithURL:contentURL
+                                                 options:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                          [NSNumber numberWithBool:YES], AVURLAssetPreferPreciseDurationAndTimingKey,
+                                                          nil]] autorelease];
+    if (asset) {
+        duration = CMTimeGetSeconds(asset.duration);
+        AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+        imageGenerator.appliesPreferredTrackTransform = YES;
+
+        CMTime midpoint = CMTimeMakeWithSeconds(duration/2.0, 600);
+        NSError *error = nil;
+        CMTime actualTime;
+        CGImageRef halfWayImage = [imageGenerator copyCGImageAtTime:midpoint actualTime:&actualTime error:&error];
+
+        if (halfWayImage != NULL) {
+            thumbnail = [UIImage imageWithCGImage:halfWayImage];
+            // Do something interesting with the image.
+            CGImageRelease(halfWayImage);
+        }
+        [imageGenerator release];
+    }
+
 	UIImage *videoThumbnail = [self generateThumbnailFromImage:thumbnail andSize:CGSizeMake(75, 75)];
 	
 	// Save to local file

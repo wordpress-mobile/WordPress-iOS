@@ -18,9 +18,15 @@
 #define kTextViewPlaceholder	@"Tap here to begin writing."
 #define kAppStoreURL			@"http://itunes.apple.com/us/app/wordpress/id335703880?mt=8"
 #define kNotificationAuthURL	@"https://ercolid.wordpress.com/xmlrpc.php"
-#define kMobileReaderURL		@"https://en.wordpress.com/reader/mobile/v2/"
+
+#define kMobileReaderFakeLoaderURL		@"https://en.wordpress.com/reader/mobile/v2/loader"
+#define kMobileReaderURL		@"https://en.wordpress.com/reader/mobile/v2/?chrome=no"
 #define kMobileReaderFPURL		@"https://en.wordpress.com/reader/mobile/v2/freshly-pressed"
 #define kMobileReaderDetailURL  @"https://en.wordpress.com/wp-admin/admin-ajax.php?action=wpcom_load_mobile&template=details&v=2"
+#define kMobileReaderTopicsURL  @"http://en.wordpress.com/reader/mobile/v2/?template=topics"
+#define kHybridTokenSetting     @"WPWebAppHybridAuthToken"
+#define kAuthorizedHybridHost   @"en.wordpress.com"
+
 #define kStatsEndpointURL		@"https://stats.wordpress.com/api/1.0/"
 #define kJetPackURL             @"http://jetpack.me"
 

@@ -10,6 +10,7 @@
 #import "WordPressAppDelegate.h"
 
 @interface WPWebViewController (Private)
+@property (readonly) UIScrollView *scrollView;
 - (NSString*) getDocumentPermalink;
 - (NSString*) getDocumentTitle;
 - (void)upgradeButtonsAndLabels:(NSTimer*)timer;
@@ -23,7 +24,7 @@
 @synthesize url, wpLoginURL, username, password, detailContent, detailHTML, readerAllItems;
 @synthesize webView, toolbar, statusTimer;
 @synthesize loadingView, loadingLabel, activityIndicator;
-@synthesize iPadNavBar, backButton, forwardButton, optionsButton, isRefreshButtonEnabled;
+@synthesize iPadNavBar, backButton, forwardButton, refreshButton, optionsButton;
 
 - (void)dealloc
 {
@@ -39,23 +40,6 @@
     [super dealloc];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    // Release any cached data, images, etc that aren't in use.
-}
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil ];
-    if (self) {
-        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload)] autorelease];
-        self.isRefreshButtonEnabled = YES;
-    }
-    return self;
-}   
-
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -66,8 +50,11 @@
     [self setLoading:NO];
     self.backButton.enabled = NO;
     self.forwardButton.enabled = NO;
+    self.optionsButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showLinkOptions)] autorelease];
+    self.navigationItem.rightBarButtonItem = optionsButton;
     self.optionsButton.enabled = NO;
     self.webView.scalesPageToFit = YES;
+    self.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
     //allows the toolbar to become smaller in landscape mode.
     if (!DeviceIsPad()) {
         toolbar.autoresizingMask = toolbar.autoresizingMask | UIViewAutoresizingFlexibleHeight;
@@ -106,11 +93,19 @@
         [backButton setImage:[UIImage imageNamed:@"previous.png"]];
         [forwardButton setImage:[UIImage imageNamed:@"next.png"]];
         
+        // Replace refresh button with options button
+        backButton.width = (toolbar.frame.size.width / 2) - 10;
+        forwardButton.width = (toolbar.frame.size.width / 2) - 10;
+        NSArray *items = [NSArray arrayWithObjects:backButton,
+                          [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
+                          forwardButton, nil];
+        toolbar.items = items;
+        self.refreshButton = nil;
+
         //you got pink'd!
         //[toolbar setTintColor:[UIColor colorWithRed:254.0f/255 green:14.0f/255 blue:204.0f/255 alpha:1.0f]];
 		[toolbar setTintColor:[UIColor colorWithRed:96.0f/255 green:101.0f/255 blue:111.0f/255 alpha:1.0f]];
     }
-    if( self.isRefreshButtonEnabled == NO ) self.navigationItem.rightBarButtonItem.enabled = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -131,6 +126,7 @@
     self.iPadNavBar = nil;
     self.statusTimer = nil;
     self.optionsButton = nil;
+    self.refreshButton = nil;
     self.backButton = nil;
     self.forwardButton = nil;
     [super viewDidUnload];
@@ -158,7 +154,6 @@
 
 
 - (void)upgradeButtonsAndLabels:(NSTimer*)timer {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     self.backButton.enabled = webView.canGoBack;
     self.forwardButton.enabled = webView.canGoForward;
     if (!isLoading) {
@@ -300,12 +295,12 @@
         }
         [UIView animateWithDuration:0.2
                          animations:^{self.loadingView.frame = frame;}];
-        if( self.isRefreshButtonEnabled )
-            self.navigationItem.rightBarButtonItem.enabled = !loading;
+        if( self.refreshButton )
+            self.refreshButton.enabled = !loading;
         self.navigationItem.leftBarButtonItem.enabled = YES;
     }
     else {
-        if( self.isRefreshButtonEnabled ) { //the refresh
+        if( self.refreshButton ) { //the refresh
             if (loading) {
                 UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
                 
@@ -320,7 +315,12 @@
                 [spinner release];
                 [customView release];
             } else {
-                self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload)] autorelease];
+                NSArray *items = [NSArray arrayWithObjects:backButton,
+                                  [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
+                                  forwardButton,
+                                  [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
+                                  self.refreshButton, nil];
+                toolbar.items = items;
             }
         }
     }
@@ -393,7 +393,23 @@
 }
 
 - (void)reload {
+    [self setLoading:YES];
     [webView reload];
+}
+
+// Find the Webview's UIScrollView backwards compatible
+- (UIScrollView *)scrollView {
+    UIScrollView *scrollView;
+    if ([self.webView respondsToSelector:@selector(scrollView)]) {
+        scrollView = self.webView.scrollView;
+    } else {
+        for (UIView* subView in self.webView.subviews) {
+            if ([subView isKindOfClass:[UIScrollView class]]) {
+                scrollView = (UIScrollView*)subView;
+            }
+        }
+    }
+    return scrollView;
 }
 
 #pragma mark - UIWebViewDelegate

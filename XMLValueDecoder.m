@@ -82,12 +82,6 @@
 				break;
 			case stringtype:
 			case defaultType:
-				if( curVal )
-					//Comments --- Resolved the issue in character encoding with & in the Titles and others  ######
-	                //Comments --- Properly Dencoding the special characters with XML 12April2011######
-					curVal = [NSString decodeXMLCharactersIn:curVal];
-					//############
-				[oldCurVal release];
 				break;
 			case booltype:
 				curVal = [NSNumber numberWithBool:(BOOL)([curVal isEqualToString: @"1"]?YES:NO)];

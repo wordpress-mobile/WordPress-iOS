@@ -10,6 +10,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (BOOL) isMediaInUploading;
 - (void) showMediaInUploadingalert;
 - (void)restoreText:(NSString *)text withRange:(NSRange)range;
+- (void)populateSelectionsControllerWithCategories;
 @end
 
 @implementation EditPostViewController
@@ -17,7 +18,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @synthesize selectionTableViewController, segmentedTableViewController;
 @synthesize infoText, urlField, bookMarksArray, selectedLinkRange, currentEditingTextField, isEditing, initialLocation;
 @synthesize editingDisabled, editCustomFields, statuses, isLocalDraft;
-@synthesize textView, contentView, subView, textViewContentView, statusTextField, categoriesTextField, titleTextField;
+@synthesize textView, contentView, subView, textViewContentView, statusTextField, categoriesButton, titleTextField;
 @synthesize tagsTextField, textViewPlaceHolderField, tagsLabel, statusLabel, categoriesLabel, titleLabel, customFieldsEditButton;
 @synthesize locationButton, locationSpinner, createCategoryBarButtonItem, hasLocation;
 @synthesize editMode, apost;
@@ -179,6 +180,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [postMediaViewController showPhotoPickerActionSheet:sender];
 }
 
+- (IBAction)showCategories:(id)sender {
+    [self populateSelectionsControllerWithCategories];
+}
+- (IBAction)touchTextView:(id)sender {
+    [textView becomeFirstResponder];
+}
+
 #pragma mark -
 #pragma mark View lifecycle
 
@@ -218,7 +226,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     self.subView = nil;
     self.textViewContentView = nil;
     self.statusTextField = nil;
-    self.categoriesTextField = nil;
+    self.categoriesButton = nil;
     self.titleTextField = nil;
     self.tagsTextField = nil;
     self.textViewPlaceHolderField = nil;
@@ -457,7 +465,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if (self.post) {
         // FIXME: tags should be an array/set of Tag objects
         tagsTextField.text = self.post.tags;
-        categoriesTextField.text = [self.post categoriesText];
+        [categoriesButton setTitle:[self.post categoriesText] forState:UIControlStateNormal];
     }
     
     if(self.apost.content == nil || [self.apost.content isEmpty]) {
@@ -506,7 +514,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
                 navController = [[[UINavigationController alloc] initWithRootViewController:segmentedTableViewController] autorelease];
             }
  			UIPopoverController *popover = [[[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:navController] autorelease];
-            popover.delegate = self;			CGRect popoverRect = [self.view convertRect:[categoriesTextField frame] fromView:[categoriesTextField superview]];
+            popover.delegate = self;			CGRect popoverRect = [self.view convertRect:[categoriesButton frame] fromView:[categoriesButton superview]];
 			popoverRect.size.width = MIN(popoverRect.size.width, 100); // the text field is actually really big
 			[popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 			[[CPopoverManager instance] setCurrentPopoverController:popover];
@@ -580,7 +588,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         NSLog(@"selected categories: %@", selectedObjects);
         NSLog(@"post: %@", self.post);
         self.post.categories = [NSMutableSet setWithArray:selectedObjects];
-        categoriesTextField.text = [self.post categoriesText];
+        [categoriesButton setTitle:[self.post categoriesText] forState:UIControlStateNormal];
     }
 	
     [selctionController clean];
@@ -909,21 +917,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 #pragma mark TextView & TextField Delegates
 
-- (void)showDoneButton {
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"") style:UIBarButtonItemStyleDone
-                                                                  target:self action:@selector(endTextEnteringButtonAction:)];
-    self.navigationItem.leftBarButtonItem = doneButton;
-    self.navigationItem.rightBarButtonItem = nil;
-    [doneButton release];
-}
-
 - (void)textViewDidChangeSelection:(UITextView *)aTextView {
     if (!isTextViewEditing) {
         isTextViewEditing = YES;
-		
-		if (DeviceIsPad() == NO) {
-            [self showDoneButton];
-		}
     }
 }
 
@@ -942,10 +938,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
     if (!isTextViewEditing) {
         isTextViewEditing = YES;
-		
- 		if (!DeviceIsPad()) {
-            [self showDoneButton];
-		}
     }
 }
 
@@ -992,12 +984,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    if (textField == categoriesTextField) {
-        [self populateSelectionsControllerWithCategories];
-        return NO;
-    }
     if (textField == textViewPlaceHolderField) {
-        [textView becomeFirstResponder];
         return NO;
     }
 	return YES;
@@ -1051,6 +1038,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[UIView beginAnimations:nil context:nil];
 	[UIView setAnimationCurve:curve];
 	[UIView setAnimationDuration:animationDuration];
+
     CGRect newFrame = self.normalTextFrame;
 	if(keyboardInfo != nil) {
 		animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
@@ -1058,19 +1046,55 @@ NSTimeInterval kAnimationDuration = 0.3f;
         [UIView setAnimationCurve:curve];
         [UIView setAnimationDuration:animationDuration];
 
-        CGRect keyboardFrame;
-        keyboardFrame = [[keyboardInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-        keyboardFrame = [self.view convertRect:[self.view.window convertRect:keyboardFrame fromWindow:nil]
-                                      fromView:nil];
+        BOOL isLandscape = UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
+        BOOL isShowing = ([notification name] == UIKeyboardWillShowNotification);
+        CGRect originalKeyboardFrame = [[keyboardInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+        CGRect keyboardFrame = [self.view convertRect:[self.view.window convertRect:originalKeyboardFrame fromWindow:nil] fromView:nil];
 
         isExternalKeyboard = keyboardFrame.origin.y + keyboardFrame.size.height > self.view.bounds.size.height;
+        /*
+         "Full screen" mode for:
+         * iPhone Portrait without external keyboard
+         * iPhone Landscape
+         * iPad Landscape without external keyboard
 
-        if ([notification name] == UIKeyboardWillShowNotification && !isExternalKeyboard) {
-            newFrame.origin.x = 0;
-            newFrame.origin.y = 0;
-            newFrame.size.height = keyboardFrame.origin.y;
+         Show other fields:
+         * iPhone Portrait with external keyboard
+         * iPad Portrait
+         * iPad Landscape with external keyboard
+         */
+        BOOL wantsFullScreen = (
+                                (!DeviceIsPad() && !isExternalKeyboard)                  // iPhone without external keyboard
+                                || (!DeviceIsPad() && isLandscape && isExternalKeyboard) // iPhone Landscape with external keyboard
+                                || (DeviceIsPad() && isLandscape && !isExternalKeyboard) // iPad Landscape without external keyboard
+                                );
+        if (wantsFullScreen && isShowing) {
+            [self.navigationController setNavigationBarHidden:YES animated:YES];
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+        } else {
+            [self.navigationController setNavigationBarHidden:NO animated:YES];
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+        }
+        // If we show/hide the navigation bar, the view frame changes so the converted keyboardFrame is not valid anymore
+        keyboardFrame = [self.view convertRect:[self.view.window convertRect:originalKeyboardFrame fromWindow:nil] fromView:nil];
+
+        if (isShowing) {
+            if (wantsFullScreen) {
+                // Make the text view expand covering other fields
+                newFrame.origin.x = 0;
+                newFrame.origin.y = 0;
+            }
+            // Adjust height for keyboard (or format bar on external keyboard)
+            newFrame.size.height = keyboardFrame.origin.y - newFrame.origin.y;
+
+            [self.toolbar setHidden:YES];
+            [tabPointer setHidden:YES];
+        } else {
+            [self.toolbar setHidden:NO];
+            [tabPointer setHidden:NO];
         }
 	}
+
     [textView setFrame:newFrame];
 	
 	[UIView commitAnimations];
@@ -1434,10 +1458,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     WPFLogMethod();
 	isShowingKeyboard = YES;
     if (isEditing) {
-        if (!DeviceIsPad()) {
-            [self.navigationController setNavigationBarHidden:YES animated:YES];
-			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
-        }
         [self positionTextView:notification];
         editorToolbar.doneButton.hidden = DeviceIsPad() && ! isExternalKeyboard;
     }
@@ -1446,14 +1466,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)keyboardWillHide:(NSNotification *)notification {
     WPFLogMethod();
 	isShowingKeyboard = NO;
-    if (isEditing) {
-        if (!DeviceIsPad()) {
-            [self.navigationController setNavigationBarHidden:NO animated:YES];            
-            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-        }
-        
-        [self positionTextView:notification];
-    }
+    [self positionTextView:notification];
 }
 
 #pragma mark -
@@ -1521,7 +1534,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[subView release];
 	[textViewContentView release];
 	[statusTextField release];
-	[categoriesTextField release];
+	[categoriesButton release];
 	[titleTextField release];
 	[tagsTextField release];
 	[textViewPlaceHolderField release];

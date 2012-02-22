@@ -66,6 +66,7 @@
 	commentBodyWebView.delegate = nil;
     [commentBodyWebView stopLoading];
     [commentBodyWebView release];
+    [pendingApproveButton release];
     [super dealloc];
 }
 
@@ -122,6 +123,8 @@
 }
 
 - (void)viewDidUnload {
+    [pendingApproveButton release];
+    pendingApproveButton = nil;
     [super viewDidUnload];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [segmentedControl release]; segmentedControl = nil;
@@ -178,7 +181,7 @@
 	} 
 	
 	NSString *conditionalButtonTitle = nil;
-	
+
 	if ([self isApprove]) {
 		conditionalButtonTitle = NSLocalizedString(@"Approve Comment", @"");
 	} else {
@@ -187,7 +190,7 @@
 	
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@""
 															 delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil
-													otherButtonTitles: conditionalButtonTitle, NSLocalizedString(@"Mark Comment as Spam", @""), NSLocalizedString(@"Edit Comment", @""),nil];
+													otherButtonTitles: NSLocalizedString(@"Delete Comment", @""), NSLocalizedString(@"Mark Comment as Spam", @""), NSLocalizedString(@"Edit Comment", @""),nil];
 	//otherButtonTitles: conditionalButtonTitle, NSLocalizedString(@"Mark Comment as Spam", @""),nil];
 	
 	actionSheet.tag = 301;
@@ -250,12 +253,8 @@
 	//handle action sheet for approve/spam/edit
     if ([actionSheet tag] == 301) {
         spamButton1.enabled = YES;
-        if (buttonIndex == 0) {  //Approve/Unapprove conditional button was selected
-			if ([self isApprove]) {
-				[self approveComment:nil];
-			} else {
-				[self unApproveComment:nil];
-			}
+        if (buttonIndex == 0) {  //Delete comment was selected
+			[self deleteComment:nil];
         }
 		
         if (buttonIndex == 1) {  //Mark as Spam was selected
@@ -273,7 +272,7 @@
 			//   and load data conditionally
         }
     }
-	
+    
     WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     [delegate setAlertRunning:NO];
 }
@@ -576,40 +575,40 @@
 	float pendingLabelHeight = pendingLabelHolder.frame.size.height;
     pendingLabelHolder.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
     pendingLabel.text = NSLocalizedString(@"Pending Comment", @"");
-
+    
 	[labelHolder addSubview:pendingLabelHolder];
     
-	rect = pendingLabelHolder.frame;
-	rect.size.width = [pendingLabelHolder superview].frame.size.width;
-	pendingLabelHolder.frame = rect;
-	
+    rect = pendingLabelHolder.frame;
+    rect.size.width = [pendingLabelHolder superview].frame.size.width;
+    pendingLabelHolder.frame = rect;
+
     rect = gravatarImageView.frame;
     rect.origin.y += pendingLabelHeight;
     gravatarImageView.frame = rect;
-    
+
     rect = commentAuthorLabel.frame;
     rect.origin.y += pendingLabelHeight;
     commentAuthorLabel.frame = rect;
-    
+
     rect = commentAuthorUrlButton.frame;
     rect.origin.y += pendingLabelHeight;
-	commentAuthorUrlButton.frame = rect;
-	
+    commentAuthorUrlButton.frame = rect;
+
     rect = commentAuthorEmailButton.frame;
     rect.origin.y += pendingLabelHeight;
-	commentAuthorEmailButton.frame = rect;
-    
+    commentAuthorEmailButton.frame = rect;
+
     rect = commentPostTitleLabel.frame;
     rect.origin.y += pendingLabelHeight;
     commentPostTitleLabel.frame = rect;
-	
-	rect = commentDateLabel.frame;
+
+    rect = commentDateLabel.frame;
     rect.origin.y += pendingLabelHeight;
     commentDateLabel.frame = rect;
-	
-	rect = commentBodyWebView.frame;
+
+    rect = commentBodyWebView.frame;
     rect.origin.y += pendingLabelHeight;
-	rect.size.height -= pendingLabelHeight;
+    rect.size.height -= pendingLabelHeight;
     commentBodyWebView.frame = rect;
 	
 	[labelHolder sizeToFit];
@@ -679,7 +678,7 @@
 	[commentAuthorEmailButton setTitle:[comment.author_email trim] forState:UIControlStateHighlighted];
 	[commentAuthorEmailButton setTitle:[comment.author_email trim] forState:UIControlStateSelected];
     if (comment.postTitle)
-        commentPostTitleLabel.text = [NSLocalizedString(@"on ", @"(Comment) on (Post Title)") stringByAppendingString:[comment.postTitle trim]];
+        commentPostTitleLabel.text = [NSLocalizedString(@"on ", @"(Comment) on (Post Title)") stringByAppendingString:[[comment.postTitle stringByDecodingXMLCharacters] trim]];
 	if(comment.dateCreated != nil)
 		commentDateLabel.text = [@"" stringByAppendingString:[dateFormatter stringFromDate:comment.dateCreated]];
 	else
@@ -705,6 +704,15 @@
 
     }
 
+    [pendingApproveButton setTarget:self];
+    if ([self isApprove]) {
+        [pendingApproveButton setImage:[UIImage imageNamed:@"approve.png"]];
+        [pendingApproveButton setAction:@selector(approveComment:)];
+	} else {
+        [pendingApproveButton setImage:[UIImage imageNamed:@"unapprove.png"]];
+        [pendingApproveButton setAction:@selector(unApproveComment:)];
+	}
+    
     [segmentedControl setEnabled:[commentsViewController hasPreviousComment] forSegmentAtIndex:0];
     [segmentedControl setEnabled:[commentsViewController hasNextComment] forSegmentAtIndex:1];
 }

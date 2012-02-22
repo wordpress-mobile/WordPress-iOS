@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <MessageUI/MFMailComposeViewController.h>
+#import "WPWebAppViewController.h"
 
-@interface WPWebViewController : UIViewController<UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
+@interface WPWebViewController : UIViewController <UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
     BOOL isLoading, needsLogin, hasLoadedContent;
-    IBOutlet UIWebView *webView;
+    UIWebView *webView;
 	NSTimer *statusTimer;   // This timer checks the nav buttons every 0.75 seconds, and updates them
 }
 @property (nonatomic,retain) NSURL *url;
@@ -26,9 +27,9 @@
 @property (nonatomic, retain) IBOutlet UINavigationBar *iPadNavBar;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *backButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *forwardButton;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *refreshButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *optionsButton;
 @property (retain, nonatomic) NSTimer *statusTimer;
-@property (nonatomic,assign) BOOL isRefreshButtonEnabled;
 
 //reader variables
 @property (nonatomic,retain) NSString *detailContent;
@@ -39,4 +40,5 @@
 - (IBAction) dismiss;
 - (IBAction) goForward;
 - (IBAction) goBack;
+- (IBAction) reload;
 @end

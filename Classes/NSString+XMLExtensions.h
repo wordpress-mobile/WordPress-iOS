@@ -11,5 +11,7 @@
 
 + (NSString *)encodeXMLCharactersIn : (NSString *)source;
 + (NSString *)decodeXMLCharactersIn : (NSString *)source;
+- (NSString *)stringByDecodingXMLCharacters;
+- (NSString *)stringByEncodingXMLCharacters;
 
 @end

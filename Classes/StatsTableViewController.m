@@ -805,6 +805,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			else if ([elementName isEqualToString:@"referrer"] || [elementName isEqualToString:@"searchterm"]  || [elementName isEqualToString:@"click"]){
 				self.leftColumn = [attributeDict objectForKey:@"value"];
 			}
+                    
 			self.yValues = [self.yValues stringByAppendingString: [self.leftColumn stringByAppendingString: @","]];
 			if (self.leftColumn != nil){
 				[yArray addObject:self.leftColumn];
@@ -1052,6 +1053,10 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
                 }
                 else{
                     label.textColor = [[UIColor alloc] initWithRed:40.0 / 255 green:82.0 / 255 blue:137.0 / 255 alpha:1.0];
+                    if (![self.leftColumn hasPrefix:@"http"]) {
+                        self.leftColumn = [NSString stringWithFormat:@"http://%@", self.leftColumn];
+                        label.text = self.leftColumn;
+                    }
                 }
             }
 			label.font = [UIFont boldSystemFontOfSize:14.0]; 

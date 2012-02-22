@@ -19,6 +19,7 @@
 - (void)checkIfStatsShouldRun;
 - (void)runStats;
 - (void)showPasswordAlert;
+- (void)cleanUnusedMediaFileFromTmpDir;
 @end
 
 NSString *CrashFilePath() {
@@ -207,7 +208,14 @@ static WordPressAppDelegate *wordPressApp = NULL;
     }
 	// Stats use core data, so run them after initialization
 	[self checkIfStatsShouldRun];
-	
+
+	// Clean media files asynchronously
+    // dispatch_async feels a bit faster than performSelectorOnBackground:
+    // and we're trying to launch the app as fast as possible
+    dispatch_async(dispatch_get_global_queue(0, 0), ^(void) {
+        [self cleanUnusedMediaFileFromTmpDir];
+    });
+
 	BlogsViewController *blogsViewController = [[BlogsViewController alloc] init];
 	crashReportView = [[CrashReportViewController alloc] initWithNibName:@"CrashReportView" bundle:nil];
 	
@@ -330,6 +338,17 @@ static WordPressAppDelegate *wordPressApp = NULL;
     };
     // start the notifier which will cause the reachability object to retain itself!
     [currentBlogReachability startNotifier];
+}
+
+-(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    if (url && [url isKindOfClass:[NSURL class]]) {
+        NSString *URLString = [url absoluteString];
+        NSLog(@"Application launched with URL: %@", URLString);
+        
+        return YES;
+    } else {
+        return NO;
+    }
 }
 
 - (void)handleCrashReport {
@@ -839,11 +858,12 @@ static WordPressAppDelegate *wordPressApp = NULL;
             ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:authURL]];
             [request setPostValue:username forKey:@"log"];
             [request setPostValue:password forKey:@"pwd"];
-            [request setPostValue:kMobileReaderURL forKey:@"redirect_to"];
+            NSString *redirect_to = [WPWebAppViewController authorizeHybridURL:[NSURL URLWithString:kMobileReaderURL]].absoluteString;
+            [request setPostValue:redirect_to forKey:@"redirect_to"];
             [request addRequestHeader:@"User-Agent" value:[self applicationUserAgent]];
             [request startSynchronous];
             if ([request error]) {
-                WPFLog(@"Error logging into wp.com: %@", [error localizedDescription]);
+                WPFLog(@"Error logging into wp.com: %@", [[request error] localizedDescription]);
                 isWPcomAuthenticated = NO;
             } else {
                 WPFLog(@"Authenticated in WP.com, cached reader");
@@ -963,7 +983,59 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	[defaults synchronize];
 }
 
-#pragma mark Push Notification 
+- (void)cleanUnusedMediaFileFromTmpDir {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+	NSMutableArray *mediaToKeep = [NSMutableArray array];
+
+    NSError *error = nil;
+    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
+    [context setUndoManager:nil];
+    [context setPersistentStoreCoordinator:self.persistentStoreCoordinator];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Media" inManagedObjectContext:context]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ANY posts.blog != NULL"];
+    [fetchRequest setPredicate:predicate];
+    NSArray *mediaObjectsToKeep = [context executeFetchRequest:fetchRequest error:&error];
+    if (error != nil) {
+        WPFLog(@"Error cleaning up tmp files: %@", [error localizedDescription]);
+    }
+	//get a references to media files linked in a post
+    NSLog(@"%i media items to check for cleanup", [mediaObjectsToKeep count]);
+	for (Media *media in mediaObjectsToKeep) {
+        [mediaToKeep addObject:media.localURL];
+	}
+
+	//searches for jpg files within the app temp file
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDirectory = [paths objectAtIndex:0];
+	NSArray *contentsOfDir = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:NULL];
+
+	for (NSString *currentPath in contentsOfDir)
+		if([currentPath isMatchedByRegex:@".jpg$"]) {
+			NSString *filepath = [documentsDirectory stringByAppendingPathComponent:currentPath];
+
+			BOOL keep = NO;
+			//if the file is not referenced in any post we can delete it
+			for (NSString *currentMediaToKeepPath in mediaToKeep) {
+				if([currentMediaToKeepPath isEqualToString:filepath]) {
+					keep = YES;
+					break;
+				}
+			}
+
+			if(keep == NO) {
+				[fileManager removeItemAtPath:filepath error:NULL];
+			}
+		}
+
+	[pool release];
+}
+
+#pragma mark Push Notification delegate
+
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 	// Send the deviceToken to our server...
 	NSString *myToken = [[[[deviceToken description]

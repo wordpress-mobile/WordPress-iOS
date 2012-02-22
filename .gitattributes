@@ -233,12 +233,16 @@ Classes/WPPageControl.h -text
 Classes/WPPageControl.m -text
 Classes/WPProgressHUD.h -text
 Classes/WPProgressHUD.m -text
+Classes/WPReaderTopicsViewController.h -text
+Classes/WPReaderTopicsViewController.m -text
 Classes/WPReaderViewController.h -text
 Classes/WPReaderViewController.m -text
 Classes/WPSegmentedSelectionTableViewController.h -text
 Classes/WPSegmentedSelectionTableViewController.m -text
 Classes/WPSelectionTableViewController.h -text
 Classes/WPSelectionTableViewController.m -text
+Classes/WPWebAppViewController.h -text
+Classes/WPWebAppViewController.m -text
 Classes/WPWebViewController.h -text
 Classes/WPWebViewController.m -text
 Classes/WPcomLoginViewController.h -text
@@ -290,6 +294,8 @@ Creation/CXMLNode_CreationExtensions.m -text
 /Info-beta.plist -text
 /Info-dev.plist -text
 /Info.plist -text
+/JSONKit.h -text
+/JSONKit.m -text
 /MainBackground.png -text
 /MainWindow.xib -text
 /Media.h -text
@@ -569,9 +575,18 @@ WordPressApi/AFXMLRPCClient.h -text
 WordPressApi/AFXMLRPCClient.m -text
 WordPressApi/WordPressApi.h -text
 WordPressApi/WordPressApi.m -text
+WordPressTest/WordPressTest-Info.plist -text
+WordPressTest/WordPressTest-Prefix.pch -text
+WordPressTest/WordPressTest.h -text
+WordPressTest/WordPressTest.m -text
+WordPressTest/en.lproj/InfoPlist.strings -text
+WordPressTest/entities.xml -text
+WordPressTest/entitiesDecoded.xml -text
 /WordPress_Prefix.pch -text
 /XMLValueDecoder.h -text
 /XMLValueDecoder.m -text
+/approve.png -text svneol=unset#unset
+/approve@2x.png -text svneol=unset#unset
 /attachment.png -text svneol=unset#unset
 /attachment@2x.png -text svneol=unset#unset
 /autosave.png -text
@@ -707,6 +722,9 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /link.png -text svneol=unset#unset
 /link@2x.png -text svneol=unset#unset
 /link~ipad.png -text svneol=unset#unset
+/list.png -text svneol=unset#unset
+/list@2x.png -text svneol=unset#unset
+/loader.html -text
 /localize.py -text
 /lock.png -text
 /logo_welcome.png -text
@@ -821,6 +839,8 @@ sv.lproj/Localizable.strings -text svneol=unset#unset
 /toolbarUlHighlighted@2x.png -text
 /toolbarUliPad.png -text
 tr.lproj/Localizable.strings -text
+/unapprove.png -text svneol=unset#unset
+/unapprove@2x.png -text svneol=unset#unset
 /uncheck.png -text
 /uncheck@2x.png -text
 /uncrustify.cfg -text

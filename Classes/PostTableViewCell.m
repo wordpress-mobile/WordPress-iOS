@@ -6,6 +6,7 @@
 //
 
 #import "PostTableViewCell.h"
+#import "NSString+XMLExtensions.h"
 
 @interface PostTableViewCell (Private)
 - (void)addNameLabel;
@@ -86,7 +87,7 @@
 			title = NSLocalizedString(@"(no title)", @"");
 		}
 		
-		nameLabel.text = title;
+		nameLabel.text = [title stringByDecodingXMLCharacters];
 		if ([post.status isEqualToString:@"pending"]) {
 			statusLabel.textColor = [UIColor lightGrayColor];
 			statusLabel.text = NSLocalizedString(@"Pending", @"");

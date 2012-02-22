@@ -34,7 +34,8 @@
 
 @implementation WPReaderViewController
 @synthesize url, username, password, detailContentHTML;
-@synthesize webView, refreshTimer, lastWebViewRefreshDate, iPadNavBar;
+@synthesize refreshTimer, iPadNavBar;
+@synthesize topicsViewController;
 
 - (void)dealloc
 {
@@ -43,27 +44,18 @@
     self.username = nil;
     self.password = nil;
     self.detailContentHTML = nil;
-    self.webView = nil;
     self.refreshTimer = nil;
-    self.lastWebViewRefreshDate = nil;
+    self.topicsViewController = nil;
     [super dealloc];
 }
 
 - (void)didReceiveMemoryWarning
 {
+    WPFLogMethod();
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
     // Release any cached data, images, etc that aren't in use.
 }
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil ];
-    if (self) {
-        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload)] autorelease];
-    }
-    return self;
-}   
 
 #pragma mark - View lifecycle
 
@@ -71,13 +63,22 @@
 {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
-    isLoading = YES;
+        
+    self.webView.backgroundColor = [UIColor colorWithHue:0.0 saturation:0.0 brightness:0.95 alpha:1.0];
+
     [self setLoading:NO];
     self.webView.scalesPageToFit = YES;
     [self.webView stringByEvaluatingJavaScriptFromString:@"document.body.style.background = '#F2F2F2';"];
+
+    self.topicsViewController = [[[WPReaderTopicsViewController alloc] initWithNibName:@"WPReaderViewController" bundle:nil] autorelease];
+    self.topicsViewController.delegate = self;
+    
     if (self.url) {
-        [self refreshWebView];
+        NSString *loaderPath = [[NSBundle mainBundle] pathForResource:@"loader" ofType:@"html"];
+        [self.webView loadHTMLString:[NSString stringWithContentsOfFile:loaderPath encoding:NSUTF8StringEncoding error:nil] baseURL:[NSURL URLWithString:kMobileReaderFakeLoaderURL]];
     }
+    
+    
     [self addNotifications];
     [self setRefreshTimer:[NSTimer timerWithTimeInterval:kReaderRefreshThreshold target:self selector:@selector(refreshWebViewTimer:) userInfo:nil repeats:YES]];
 	[[NSRunLoop currentRunLoop] addTimer:[self refreshTimer] forMode:NSDefaultRunLoopMode];
@@ -97,8 +98,7 @@
 {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];  
    	[self setRefreshTimer:nil];
-    self.webView.delegate = nil;
-    self.webView = nil;
+    self.topicsViewController = nil;
     [self removeNotifications];
     [super viewDidUnload];
 }
@@ -110,6 +110,45 @@
     
     return NO;
 }
+
+#pragma mark - Topic View Controller Methods
+- (void)showTopicSelector:(id)sender
+{
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.topicsViewController];
+    NSLog(@"What's going on? %@ %@", self.topicsViewController.webView, self.topicsViewController.webView.superview);
+    [self presentModalViewController:nav animated:YES];
+    [nav release];
+}
+
+- (void)topicsController:(WPReaderTopicsViewController *)topicsController didDismissSelectingTopic:(NSString *)topic withTitle:(NSString *)title
+{
+    if (topic != nil) {
+        NSString *javaScriptString = [NSString stringWithFormat:@"Reader2.load_topic('%@');", topic];
+        [self.webView stringByEvaluatingJavaScriptFromString:javaScriptString];
+    }
+    if (title != nil){
+        [self setTitle:title];
+    }
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)setSelectedTopic:(NSString *)topicId;
+{
+    [FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), topicId];
+    [self.topicsViewController setSelectedTopic:topicId];
+    [self setTitle:[self.topicsViewController selectedTopicTitle]];
+}
+
+- (void)setupTopics
+{
+    [self.topicsViewController view];
+    [self.topicsViewController loadTopicsPage];
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"list"] style:UIBarButtonItemStyleBordered target:self action:@selector(showTopicSelector:)];
+    [self.navigationItem setRightBarButtonItem:button animated:YES];
+    [button release];
+    
+}
+
 
 #pragma mark - notifications related methods
 - (void)addNotifications {
@@ -139,7 +178,7 @@
 - (void)refreshWebViewIfNeeded {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     //check the expire time and refresh the webview
-    if ( ! webView.loading ) {
+    if ( ! self.webView.loading ) {
         if( fabs( [self.lastWebViewRefreshDate timeIntervalSinceNow] ) > kReaderRefreshThreshold ) //30minutes 
             [self refreshWebView];
     }
@@ -196,6 +235,7 @@
     else
         webURL = self.url;
     
+    
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:webURL];
     request.cachePolicy = NSURLRequestReturnCacheDataElseLoad;
@@ -206,20 +246,24 @@
         NSString *request_body = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=%@",
                                   [self.username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                                   [self.password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-                                  [[self.url absoluteString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                                  [self.url.absoluteString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         [request setURL:[[[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"] autorelease]];
         [request setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
         [request setValue:[NSString stringWithFormat:@"%d", [request_body length]] forHTTPHeaderField:@"Content-Length"];
         [request addValue:@"*/*" forHTTPHeaderField:@"Accept"];
         [request setHTTPMethod:@"POST"];
+    } else {
+        [self.topicsViewController loadTopicsPage];
     }
+    request = [self authorizeHybridRequest:request];
     NSString *readerPath = [appDelegate readerCachePath];
-    if (!needsLogin && [self.url.absoluteString isEqualToString:kMobileReaderURL] && [[NSFileManager defaultManager] fileExistsAtPath:readerPath]) {
+    if (!needsLogin && [self.url.absoluteString isEqualToString:[WPWebAppViewController authorizeHybridURL:[NSURL URLWithString:kMobileReaderURL]].absoluteString] && [[NSFileManager defaultManager] fileExistsAtPath:readerPath]) {
         [self.webView loadHTMLString:[NSString stringWithContentsOfFile:readerPath encoding:NSUTF8StringEncoding error:nil] baseURL:self.url];
     } else {
-        [self.webView loadRequest:request];         
+        [self.webView loadRequest:request];
     }
-    self.lastWebViewRefreshDate = [NSDate date];    
+    [self setupTopics];
+
 }
 
 - (void)retryWithLogin {
@@ -238,43 +282,6 @@
     }
 }
 
-- (void)setLoading:(BOOL)loading {
-    if (isLoading == loading)
-        return;
-
-    if (loading) {
-        UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
-        
-        UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-        [spinner setCenter:customView.center];
-        [customView addSubview:spinner];
-        
-        [spinner startAnimating];
-        
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:customView];
-        
-        [spinner release];
-        [customView release];
-    } else {
-        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload)] autorelease];
-    }
-    
-    if (!loading) {
-        if (DeviceIsPad()) {
-            [iPadNavBar.topItem setTitle:[webView stringByEvaluatingJavaScriptFromString:@"document.title"]];
-        }
-        else {
-            if (![[webView stringByEvaluatingJavaScriptFromString:@"document.title"] isEqualToString: @""]) 
-                self.navigationItem.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
-            else
-                self.navigationItem.title = @"Read";
-        }
-            
-    }
-    
-    isLoading = loading;
-}
-
 - (void)dismiss {
     [self dismissModalViewControllerAnimated:YES];
 }
@@ -287,12 +294,12 @@
     if ([requestedURLAbsoluteString length] == 0)
         [self refreshWebView];
     else
-        [webView reload];
+        [self.webView reload];
 }
 
 - (void)pingStatsEndpoint:(NSString*)statName {
     int x = arc4random();
-    NSString *statsURL = [NSString stringWithFormat:@"%@%@%@%@%d" , kMobileReaderURL, @"?template=stats&stats_name=", statName, @"&rnd=", x];
+    NSString *statsURL = [NSString stringWithFormat:@"%@%@%@%@%d" , kMobileReaderURL, @"&template=stats&stats_name=", statName, @"&rnd=", x];
     NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL  ]] autorelease];
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
     [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
@@ -301,11 +308,20 @@
 
 #pragma mark - UIWebViewDelegate
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+- (BOOL)webView:(UIWebView *)theWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     [FileLogger log:@"%@ %@: %@", self, NSStringFromSelector(_cmd), [[request URL] absoluteString]];
     
     NSURL *requestedURL = [request URL];
     NSString *requestedURLAbsoluteString = [requestedURL absoluteString];
+    if ([requestedURLAbsoluteString isEqualToString:kMobileReaderFakeLoaderURL]) {
+        // Local loader
+        return YES;
+    }
+    
+    //  check if it's being handled by the hybrid bridge  
+    if([super webView:theWebView shouldStartLoadWithRequest:request navigationType:navigationType] == NO){
+        return NO;
+    }
     
     if (!needsLogin && [requestedURLAbsoluteString rangeOfString:@"wp-login.php"].location != NSNotFound) {
         if (self.username && self.password) {
@@ -327,7 +343,6 @@
 
             detailViewController.detailContent = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.last_selected_item;"];
             detailViewController.readerAllItems = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.get_loaded_items();"];
-            detailViewController.isRefreshButtonEnabled = NO;
             [self.navigationController pushViewController:detailViewController animated:YES];
             [detailViewController release];
             
@@ -343,20 +358,23 @@
         }
     }
     
-    if( [requestedURLAbsoluteString rangeOfString:kMobileReaderFPURL].location == NSNotFound && [requestedURLAbsoluteString rangeOfString:kMobileReaderURL].location != NSNotFound )
+    if( [requestedURLAbsoluteString rangeOfString:kMobileReaderFPURL].location == NSNotFound && [requestedURLAbsoluteString rangeOfString:kMobileReaderURL].location != NSNotFound ){
         [self pingStatsEndpoint:@"home_page"];
+
+    }
     
     [self setLoading:YES];        
     return YES;
 }
 
+
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     [FileLogger log:@"%@ %@: %@", self, NSStringFromSelector(_cmd), error];
     // -999: Canceled AJAX request
     // 102:  Frame load interrupted: canceled wp-login redirect to make the POST
-    if (isLoading && ([error code] != -999) && [error code] != 102)
+    if (self.loading && ([error code] != -999) && [error code] != 102)
         [[NSNotificationCenter defaultCenter] postNotificationName:@"OpenWebPageFailed" object:error userInfo:nil];
-    [self setLoading:NO];
+    self.loading = NO;
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)aWebView {
@@ -367,9 +385,15 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self setLoading:NO];
     
+    NSString *wasLocal = [aWebView stringByEvaluatingJavaScriptFromString:@"document.isLocalLoader"];
+    if ([wasLocal isEqualToString:@"true"]) {
+        [self refreshWebView];
+        return;
+    }
+    
     //finished to load the Reader Home page, start a new call to get the detailView HTML
     if ( ! self.detailContentHTML ) {
-        ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:kMobileReaderDetailURL]];
+        ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:[kMobileReaderDetailURL stringByAppendingFormat:@"&wp_hybrid_auth_token=%@", self.hybridAuthToken]]];
         [request setRequestMethod:@"GET"];
         [request setShouldPresentCredentialsBeforeChallenge:NO];
         [request setShouldPresentAuthenticationDialog:NO];
