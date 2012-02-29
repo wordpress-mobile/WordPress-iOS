@@ -398,6 +398,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	
 	if (DeviceIsPad()) {
 		UIViewController *topVC = self.masterNavigationController.topViewController;
+        
 		if (topVC && [topVC isKindOfClass:[BlogViewController class]]) {
 			[(BlogViewController *)topVC saveState];
 		}
@@ -416,7 +417,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
         }
     }
     
-    
     if ([app respondsToSelector:@selector(beginBackgroundTaskWithExpirationHandler:)]) {
         bgTask = [app beginBackgroundTaskWithExpirationHandler:^{
             // Synchronize the cleanup call on the main thread in case
@@ -431,6 +431,20 @@ static WordPressAppDelegate *wordPressApp = NULL;
         }];
     }
     
+    if (DeviceIsPad()) {
+        UIViewController *topVC = self.detailNavigationController.topViewController;
+        
+        if (topVC && [topVC isKindOfClass:[PostViewController class]]) {
+            UINavigationController *navController = (UINavigationController*)[topVC modalViewController];            
+            [(EditPostViewController *)[navController visibleViewController] savePost:NO];
+        }        
+    } else {
+        UIViewController *topVC = self.navigationController.topViewController;
+        
+        if (topVC && [topVC isKindOfClass:[EditPostViewController class]]) {
+            [(EditPostViewController *)topVC savePost:NO];
+        }
+    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
