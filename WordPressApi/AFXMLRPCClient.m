@@ -147,6 +147,9 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
     void (^xmlrpcSuccess)(AFHTTPRequestOperation *, id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
         XMLRPCResponse *response = [[XMLRPCResponse alloc] initWithData:responseObject];
         NSError *err = nil;
+        if (getenv("WPDebugXMLRPC")) {
+            NSLog(@"[XML-RPC] < %@", [response body]);
+        }
         
         if ([response isFault]) {
             NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:[response faultString], NSLocalizedDescriptionKey, nil];
@@ -164,6 +167,10 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
         }
     };
     [operation setCompletionBlockWithSuccess:xmlrpcSuccess failure:failure];
+
+    if (getenv("WPDebugXMLRPC")) {
+        NSLog(@"[XML-RPC] > %@", [[NSString alloc] initWithData:[request HTTPBody] encoding:NSUTF8StringEncoding]);
+    }
     
     return operation;
 }
