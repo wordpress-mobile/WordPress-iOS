@@ -208,7 +208,7 @@
 - (void)cancel {
     self.photo = nil;
     if (post != nil) {
-        [post removeWithError:nil];
+        [post deletePostWithSuccess:nil failure:nil];
     }
     [self.navigationController popViewControllerAnimated:YES];
 }

@@ -70,54 +70,52 @@
 }
 
 - (void)setPost:(AbstractPost *)value {
-	if(value != post) {
-		post = value;
-		
-		static NSDateFormatter *dateFormatter = nil;
-		
-		if (dateFormatter == nil) {
-			dateFormatter = [[NSDateFormatter alloc] init];
-			[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-			[dateFormatter setDateStyle:NSDateFormatterLongStyle];
-		}
-		
-		NSString *title = [[post valueForKey:@"postTitle"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-		
-		if (title == nil || ([title length] == 0)) {
-			title = NSLocalizedString(@"(no title)", @"");
-		}
-		
-		nameLabel.text = [title stringByDecodingXMLCharacters];
-		if ([post.status isEqualToString:@"pending"]) {
-			statusLabel.textColor = [UIColor lightGrayColor];
-			statusLabel.text = NSLocalizedString(@"Pending", @"");
-		} else if ([post.status isEqualToString:@"draft"]) {
-			statusLabel.textColor = [UIColor colorWithRed:0.796875f green:0.0f blue:0.0f alpha:1.0f];
-			statusLabel.text = post.statusTitle;
-		} else {
-			statusLabel.textColor = [UIColor blackColor];
-			statusLabel.text = @"";
-		}
+    post = value;
+    
+    static NSDateFormatter *dateFormatter = nil;
+    
+    if (dateFormatter == nil) {
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        [dateFormatter setDateStyle:NSDateFormatterLongStyle];
+    }
+    
+    NSString *title = [[post valueForKey:@"postTitle"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    if (title == nil || ([title length] == 0)) {
+        title = NSLocalizedString(@"(no title)", @"");
+    }
+    
+    nameLabel.text = [title stringByDecodingXMLCharacters];
+    if ([post.status isEqualToString:@"pending"]) {
+        statusLabel.textColor = [UIColor lightGrayColor];
+        statusLabel.text = NSLocalizedString(@"Pending", @"");
+    } else if ([post.status isEqualToString:@"draft"]) {
+        statusLabel.textColor = [UIColor colorWithRed:0.796875f green:0.0f blue:0.0f alpha:1.0f];
+        statusLabel.text = post.statusTitle;
+    } else {
+        statusLabel.textColor = [UIColor blackColor];
+        statusLabel.text = @"";
+    }
 
-		CGRect rect = statusLabel.frame;
-		CGSize statusSize = [statusLabel.text sizeWithFont:statusLabel.font];
-		rect.size.width = statusSize.width;
-		rect.origin.x = 288 - statusSize.width;
-		statusLabel.frame = rect;
-		
-		NSDate *date = [post valueForKey:@"dateCreated"];
-		dateLabel.text = [dateFormatter stringFromDate:date];
-		
-		@try {
-			if(post.remoteStatus != AbstractPostRemoteStatusPushing)
-				saving = NO;
-			else
-				saving = YES;
-		}
-		@catch (NSException * e) {
-			saving = NO;
-		}
-	}
+    CGRect rect = statusLabel.frame;
+    CGSize statusSize = [statusLabel.text sizeWithFont:statusLabel.font];
+    rect.size.width = statusSize.width;
+    rect.origin.x = 288 - statusSize.width;
+    statusLabel.frame = rect;
+    
+    NSDate *date = [post valueForKey:@"dateCreated"];
+    dateLabel.text = [dateFormatter stringFromDate:date];
+    
+    @try {
+        if(post.remoteStatus != AbstractPostRemoteStatusPushing)
+            saving = NO;
+        else
+            saving = YES;
+    }
+    @catch (NSException * e) {
+        saving = NO;
+    }
 }
 
 - (void)prepareForReuse{

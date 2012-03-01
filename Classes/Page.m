@@ -7,7 +7,24 @@
 //
 
 #import "Page.h"
-#import "WPDataController.h"
+#import "NSMutableDictionary+Helpers.h"
+
+@interface AbstractPost (WordPressApi)
+- (NSDictionary *)XMLRPCDictionary;
+@end
+
+@interface Page (WordPressApi)
+- (NSDictionary *)XMLRPCDictionary;
+- (void)postPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)getPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)editPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+@end
+
+@interface Page (PrivateMethods)
+- (void )updateFromDictionary:(NSDictionary *)postInfo;
+@end
+
 
 @implementation Page
 @dynamic parentID;
@@ -74,80 +91,113 @@
 	self.wp_slug		= [postInfo objectForKey:@"wp_slug"];
 }
 
-- (void)uploadInBackground {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+@end
 
-    if ([self hasRemote]) {
-        if ([[WPDataController sharedInstance] wpEditPage:self]) {
-			[[WPDataController sharedInstance] updateSinglePage:self];
-            self.remoteStatus = AbstractPostRemoteStatusSync;
-            [self performSelectorOnMainThread:@selector(didUploadInBackground) withObject:nil waitUntilDone:NO];
-        } else {
-            NSLog(@"Page update failed");
-            self.remoteStatus = AbstractPostRemoteStatusFailed;
-            [self performSelectorOnMainThread:@selector(failedUploadInBackground) withObject:nil waitUntilDone:NO];
-        }
-    } else {
-        int postID = [[WPDataController sharedInstance] wpNewPage:self];
-        if (postID == -1) {
-            NSLog(@"Page upload failed");
-            self.remoteStatus = AbstractPostRemoteStatusFailed;
-            [self performSelectorOnMainThread:@selector(failedUploadInBackground) withObject:nil waitUntilDone:NO];
-        } else {
-            self.postID = [NSNumber numberWithInt:postID];
-			[[WPDataController sharedInstance] updateSinglePage:self];
-            self.remoteStatus = AbstractPostRemoteStatusSync;
-            [self performSelectorOnMainThread:@selector(didUploadInBackground) withObject:nil waitUntilDone:NO];
-        }
-    }
-    [self save];
+@implementation Page (WordPressApi)
 
-    [pool release];
+- (NSDictionary *)XMLRPCDictionary {
+    NSMutableDictionary *postParams = [NSMutableDictionary dictionaryWithDictionary:[super XMLRPCDictionary]];
+
+    if (self.status == nil)
+        self.status = @"publish";
+
+    [postParams setObject:self.status forKey:@"page_status"];
+    
+    return postParams;
 }
 
-- (void)didUploadInBackground {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploaded" object:self];
-}
-
-- (void)failedUploadInBackground {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadFailed" object:self];
-}
-
-- (void)upload {
-    [super upload];
-    [self save];
-
+- (void)postPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    NSArray *parameters = [self.blog getXMLRPCArgsWithExtra:[self XMLRPCDictionary]];
     self.remoteStatus = AbstractPostRemoteStatusPushing;
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    [self performSelectorInBackground:@selector(uploadInBackground) withObject:nil];
+    
+    [self.blog.api callMethod:@"metaWeblog.newPost"
+                   parameters:parameters
+                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                          if ([responseObject respondsToSelector:@selector(numericValue)]) {
+                              self.postID = [responseObject numericValue];
+                              self.remoteStatus = AbstractPostRemoteStatusSync;
+                              [self save];
+                              [self getPostWithSuccess:nil failure:nil];
+                              if (success) success();
+                              [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploaded" object:self];
+                          } else if (failure) {
+                              self.remoteStatus = AbstractPostRemoteStatusFailed;
+                              NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"Invalid value returned for new post: %@", responseObject] forKey:NSLocalizedDescriptionKey];
+                              NSError *error = [NSError errorWithDomain:@"org.wordpress.iphone" code:0 userInfo:userInfo];
+                              failure(error);
+                              [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadFailed" object:self];
+                          }
+                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                          self.remoteStatus = AbstractPostRemoteStatusFailed;
+                          if (failure) failure(error);
+                          [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadFailed" object:self];
+                      }];    
 }
 
-- (BOOL)removeWithError:(NSError **)error {
-	BOOL res = NO;
-	if ([self hasRemote]) {
-		WPDataController *dc = [[WPDataController alloc] init];
-		[dc  wpDeletePage:self];
-		if(dc.error) {
-			if (error != nil) 
-				*error = dc.error;
-			WPLog(@"Error while deleting page: %@", [dc.error localizedDescription]);
-		}
-		//even if there was an error on the XML-RPC call we should always delete post from coredata
-		//and inform the user about that error.
-		//Wheter the post is still on the server it will be downloaded again when list is refreshed. 
-		//Otherwise if someone has deleted a post on the server, you can't get rid of it		
-		//there are other approach to solve this internally in the app, but i think this is the easiest one.
-		res = YES; //the page doesn't exist anymore on the server. we can return YES even if there are errors deleting it from db
-		[super removeWithError:nil]; 
-		
-		[dc release];
-	} else {
-		//we should remove the post from the db even if it is a "LocalDraft"
-		res = [super removeWithError:nil]; 
-	}
-	return res;
+- (void)getPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    NSArray *parameters = [NSArray arrayWithObjects:self.postID, self.blog.username, self.blog.password, nil];
+    [self.blog.api callMethod:@"metaWeblog.getPost"
+                   parameters:parameters
+                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                          [self updateFromDictionary:responseObject];
+                          if (success) success();
+                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                          if (failure) {
+                              failure(error);
+                          }
+                      }];
+}
+
+- (void)editPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    if (self.postID == nil) {
+        if (failure) {
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Can't edit a post if it's not in the server" forKey:NSLocalizedDescriptionKey];
+            NSError *error = [NSError errorWithDomain:@"org.wordpress.iphone" code:0 userInfo:userInfo];
+            failure(error);
+        }
+        return;
+    }
+    
+    NSArray *parameters = [NSArray arrayWithObjects:self.postID, self.blog.username, self.blog.password, [self XMLRPCDictionary], nil];
+    self.remoteStatus = AbstractPostRemoteStatusPushing;
+    [self.blog.api callMethod:@"metaWeblog.editPost"
+                   parameters:parameters
+                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                          self.remoteStatus = AbstractPostRemoteStatusSync;
+                          if (success) success();
+                          [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploaded" object:self];
+                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                          self.remoteStatus = AbstractPostRemoteStatusFailed;
+                          if (failure) failure(error);
+                          [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadFailed" object:self];
+                      }];
+}
+
+- (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    if (![self hasRemote]) {
+        [[self managedObjectContext] deleteObject:self];
+        if (success) success();
+        return;
+    }
+    
+    if (self.postID == nil) {
+        if (failure) {
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Can't delete a post if it's not in the server" forKey:NSLocalizedDescriptionKey];
+            NSError *error = [NSError errorWithDomain:@"org.wordpress.iphone" code:0 userInfo:userInfo];
+            failure(error);
+        }
+        return;
+    }
+    
+    NSArray *parameters = [NSArray arrayWithObjects:@"unused", self.postID, self.blog.username, self.blog.password, nil];
+    [self.blog.api callMethod:@"metaWeblog.deletePost"
+                   parameters:parameters
+                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                          [[self managedObjectContext] deleteObject:self];
+                          if (success) success();
+                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                          if (failure) failure(error);
+                      }];
 }
 
 @end

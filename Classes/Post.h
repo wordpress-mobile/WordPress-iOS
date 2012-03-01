@@ -16,44 +16,71 @@
     WordPressAppDelegate *appDelegate;
 }
 
-#pragma mark -
-#pragma mark Properties
-#pragma mark     Attributes
+///-------------------------------
+/// @name Specific Post properties
+///-------------------------------
+
 @property (nonatomic, retain) Coordinate * geolocation;
 @property (nonatomic, retain) NSString * tags;
 @property (nonatomic, retain) NSString * postFormat;
-// We should need to store this, but if we don't send IDs on edits
-// custom fields get duplicated and stop working
-@property (nonatomic, retain) NSString *latitudeID;
-@property (nonatomic, retain) NSString *longitudeID;
-@property (nonatomic, retain) NSString *publicID;
-
-// QuickPhoto,...
-@property (nonatomic, retain) NSString *specialType;
-
-#pragma mark     Relationships
 @property (nonatomic, retain) NSMutableSet * categories;
 
-#pragma mark -
-#pragma mark Methods
-#pragma mark     Helpers
-// Returns categories as a comma-separated list
+/**
+ A tag for specific post workflows. Only QuickPhoto for now.
+ Used for usage stats only.
+ */
+@property (nonatomic, retain) NSString *specialType;
+
+///---------------------
+/// @name Helper methods
+///---------------------
+
+/**
+ Returns categories as a comma-separated list
+ */
 - (NSString *)categoriesText;
+
+/**
+ Set the categories for a post
+ 
+ @param categoryNames a `NSArray` with the names of the categories for this post. If a given category name doesn't exist it's ignored.
+ */
 - (void)setCategoriesFromNames:(NSArray *)categoryNames;
 
 #pragma mark     Data Management
 // Autosave for local drafts
-- (void)autosave;
-// Upload a new post to the server
-- (void)upload;
-//update the post using values retrieved the server
-- (void )updateFromDictionary:(NSDictionary *)postInfo;
+- (void)autosave; // TODO: Move to AbstractPost
 
-#pragma mark Class Methods
-// Creates an empty local post associated with blog
+///---------------------------------
+/// @name Creating and finding posts
+///---------------------------------
+
+/**
+ Creates an empty local post associated with blog
+ */
 + (Post *)newDraftForBlog:(Blog *)blog;
+
+/**
+ Retrieves the post with the specified `postID` for a given blog
+ 
+ @returns the specified post. Returns nil if there is no post with that id on the blog
+ */
 + (Post *)findWithBlog:(Blog *)blog andPostID:(NSNumber *)postID;
-// Takes the NSDictionary from a XMLRPC call and creates or updates a post
+
+/**
+ Takes the NSDictionary from a XMLRPC call and creates or updates a post
+ */
 + (Post *)createOrReplaceFromDictionary:(NSDictionary *)postInfo forBlog:(Blog *)blog;
+
+///------------------------
+/// @name Remote management
+///------------------------
+///
+/// The following methods will change the post on the WordPress site
+
+/**
+ Uploads a new post or changes to an edited post
+ */
+- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 @end

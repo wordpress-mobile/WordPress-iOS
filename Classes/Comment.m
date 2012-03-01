@@ -7,7 +7,6 @@
 //
 
 #import "Comment.h"
-#import "WPDataController.h"
 
 @interface Comment (PrivateMethods)
 + (Comment *)newCommentForBlog:(Blog *)blog;

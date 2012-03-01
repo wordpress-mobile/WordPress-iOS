@@ -49,7 +49,6 @@ typedef enum {
 - (NSArray *)availableStatuses;
 // Does the post exist on the blog?
 - (BOOL)hasRemote;
-- (BOOL)removeWithError:(NSError **)error;
 // Save changes to disk
 - (void)save;
 
@@ -68,7 +67,10 @@ typedef enum {
 - (void)findComments;
 
 // Subclass methods
-- (void)upload;
 - (NSString *)remoteStatusText;
 + (NSString *)titleForRemoteStatus:(NSNumber *)remoteStatus;
+
+- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+
 @end

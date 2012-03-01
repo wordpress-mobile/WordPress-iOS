@@ -360,12 +360,12 @@
         else{
             //delete post on the server
             Post *post = [resultsController objectAtIndexPath:indexPath];
-			NSError *error = nil;
             
-			[post removeWithError:&error];
-			if(error) {
+			[post deletePostWithSuccess:^{
+                [self syncPosts];
+            } failure:^(NSError *error) {
 				NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
-				[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
 				if(DeviceIsPad() && self.postReaderViewController) {
 					if(self.postReaderViewController.apost == post) {
 						//push an the W logo on the right. 
@@ -374,10 +374,7 @@
 						self.selectedIndexPath = nil;
 					}
 				}
-			} else {
-				//resync posts
-				[self syncPosts];
-			}
+            }];
         }
 	}
 	

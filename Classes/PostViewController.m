@@ -108,7 +108,7 @@
 - (void)editorDismissed:(NSNotification *)aNotification {
     if (![self.apost hasRemote] && self.apost.remoteStatus == AbstractPostRemoteStatusLocal && !self.apost.postTitle && !self.apost.content) {
 		//do not remove the post here. it is removed in EditPostViewController
-		[self.apost removeWithError:nil]; //this is a local draft no remote errors checking.
+		[self.apost deletePostWithSuccess:nil failure:nil]; //this is a local draft no remote errors checking.
 		self.apost = nil;
     }
     [self refreshUI];

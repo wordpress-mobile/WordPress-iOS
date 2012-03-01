@@ -640,7 +640,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 	//remove the original post in case of local draft unsaved
 	if([self isAFreshlyCreatedDraft]) 
-		[self.apost.original removeWithError:nil]; //we can pass nil because this is a local draft. no remote errors.
+		[self.apost.original deletePostWithSuccess:nil failure:nil]; //we can pass nil because this is a local draft. no remote errors.
 	
 	self.apost = nil; // Just in case
     [self dismissEditView];
@@ -663,7 +663,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [self.view endEditing:YES];
     [self.apost.original applyRevision];
 	if (upload)
-		[self.apost.original upload];
+        [self.apost.original uploadWithSuccess:^{
+            NSLog(@"post uploaded: %@", self.apost.postTitle);
+        } failure:^(NSError *error) {
+            NSLog(@"post failed: %@", [error localizedDescription]);
+        }];
 	else {
 		[self.apost.original save];
 	}

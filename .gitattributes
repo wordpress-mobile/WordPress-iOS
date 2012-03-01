@@ -146,6 +146,8 @@ Classes/MigrateBlogsFromFiles.h -text
 Classes/MigrateBlogsFromFiles.m -text
 Classes/NSData+Base64.h -text
 Classes/NSData+Base64.m -text
+Classes/NSMutableDictionary+Helpers.h -text
+Classes/NSMutableDictionary+Helpers.m -text
 Classes/NSString+Util.h -text
 Classes/NSString+Util.m -text
 Classes/NSString+XMLExtensions.h -text
