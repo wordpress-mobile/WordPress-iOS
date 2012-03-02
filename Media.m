@@ -53,7 +53,7 @@
 }
 
 - (void)awakeFromFetch {
-    if (self.remoteStatus == MediaRemoteStatusPushing && self.uploader == nil) {
+    if ((self.remoteStatus == MediaRemoteStatusPushing && self.uploader == nil) || (self.remoteStatus == MediaRemoteStatusProcessing)) {
         self.remoteStatus = MediaRemoteStatusFailed;
     }
 }
@@ -146,7 +146,6 @@
 }
 
 - (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    self.remoteStatus = MediaRemoteStatusPushing;
     [self save];
     self.progress = 0.0f;
     
@@ -165,21 +164,49 @@
                             [NSInputStream inputStreamWithFileAtPath:self.localURL], @"bits",
                             nil];
     NSArray *parameters = [self.blog getXMLRPCArgsWithExtra:object];
-    NSMutableURLRequest *request = [self.blog.api requestWithMethod:@"metaWeblog.newMediaObject" parameters:parameters];
-    AFHTTPRequestOperation *operation = [self.blog.api HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        self.remoteStatus = MediaRemoteStatusSync;
-        [_uploadOperation release]; _uploadOperation = nil;
-        if (success) success();
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        self.remoteStatus = MediaRemoteStatusFailed;
-        [_uploadOperation release]; _uploadOperation = nil;
-        if (failure) failure(error);
-    }];
-    [operation setUploadProgressBlock:^(NSInteger bytesWritten, NSInteger totalBytesWritten, NSInteger totalBytesExpectedToWrite) {
-        self.progress = (float)totalBytesWritten / (float)totalBytesExpectedToWrite;
-    }];
-    _uploadOperation = [operation retain];
-    [self.blog.api enqueueHTTPRequestOperation:operation];
+
+    self.remoteStatus = MediaRemoteStatusProcessing;
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        // Create the request asynchronously
+        // TODO: use streaming to avoid processing on memory
+        NSMutableURLRequest *request = [self.blog.api requestWithMethod:@"metaWeblog.newMediaObject" parameters:parameters];
+
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+            AFHTTPRequestOperation *operation = [self.blog.api HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSDictionary *response = (NSDictionary *)responseObject;
+                if([response objectForKey:@"videopress_shortcode"] != nil)
+                    self.shortcode = [response objectForKey:@"videopress_shortcode"];
+
+                if([response objectForKey:@"url"] != nil)
+                    self.remoteURL = [response objectForKey:@"url"];
+
+                self.remoteStatus = MediaRemoteStatusSync;
+                [_uploadOperation release]; _uploadOperation = nil;
+                if (success) success();
+
+                if([self.mediaType isEqualToString:@"video"]) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:VideoUploadSuccessful
+                                                                        object:self
+                                                                      userInfo:response];
+                } else {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:ImageUploadSuccessful
+                                                                        object:self
+                                                                      userInfo:response];
+                }
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                self.remoteStatus = MediaRemoteStatusFailed;
+                [_uploadOperation release]; _uploadOperation = nil;
+                if (failure) failure(error);
+            }];
+            [operation setUploadProgressBlock:^(NSInteger bytesWritten, NSInteger totalBytesWritten, NSInteger totalBytesExpectedToWrite) {
+                self.progress = (float)totalBytesWritten / (float)totalBytesExpectedToWrite;
+            }];
+            _uploadOperation = [operation retain];
+            self.remoteStatus = MediaRemoteStatusPushing;
+            [self.blog.api enqueueHTTPRequestOperation:operation];
+        });
+    });
 }
 
 - (void)atomPubUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {

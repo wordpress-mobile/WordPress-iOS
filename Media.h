@@ -16,6 +16,7 @@ typedef enum {
     MediaRemoteStatusFailed,      // Upload failed
     MediaRemoteStatusLocal,       // Only local version
     MediaRemoteStatusSync,       // Post uploaded
+    MediaRemoteStatusProcessing, // Intermediate status before uploading
 } MediaRemoteStatus;
 
 @class WPMediaUploader;

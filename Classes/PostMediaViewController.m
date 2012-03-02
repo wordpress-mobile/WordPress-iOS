@@ -121,8 +121,12 @@
     else
         cell.textLabel.text = media.filename;
 
+    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
     if (media.remoteStatus == MediaRemoteStatusPushing) {
         cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Uploading: %.1f%%. Tap to cancel.", @""), media.progress * 100.0];
+    } else if (media.remoteStatus == MediaRemoteStatusProcessing) {
+        cell.detailTextLabel.text = NSLocalizedString(@"Preparing for upload...", @"");
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     } else if (media.remoteStatus == MediaRemoteStatusFailed) {
         cell.detailTextLabel.text = NSLocalizedString(@"Upload failed - tap to retry.", @"");
     } else {
@@ -187,6 +191,9 @@
         } failure:nil];
     } else if (media.remoteStatus == MediaRemoteStatusPushing) {
         [media cancelUpload];
+    } else if (media.remoteStatus == MediaRemoteStatusProcessing) {
+        // TODO: can't cancel while processing
+        // do nothing
     } else {
         MediaObjectViewController *mediaView = [[MediaObjectViewController alloc] initWithNibName:@"MediaObjectView" bundle:nil];
         [mediaView setMedia:media];
