@@ -9,7 +9,14 @@
 #import "Media.h"
 #import "UIImage+Resize.h"
 
-@implementation Media 
+@interface Media (PrivateMethods)
+- (void)xmlrpcUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure ;
+- (void)atomPubUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+@end
+
+@implementation Media {
+    AFHTTPRequestOperation *_uploadOperation;
+}
 
 @dynamic mediaType;
 @dynamic remoteURL;
@@ -28,6 +35,11 @@
 @dynamic posts;
 @dynamic remoteStatusNumber;
 @synthesize uploader;
+
+- (void)dealloc {
+    [_uploadOperation release]; _uploadOperation = nil;
+    [super dealloc];
+}
 
 + (Media *)newMediaForPost:(AbstractPost *)post {
     Media *media = [[Media alloc] initWithEntity:[NSEntityDescription entityForName:@"Media"
@@ -128,16 +140,50 @@
 }
 
 - (void)cancelUpload {
-    [self.uploader stop];
-    [self failedUploadInBackground];
+    [_uploadOperation cancel];
+    [_uploadOperation release]; _uploadOperation = nil;
+    self.remoteStatus = MediaRemoteStatusFailed;
 }
 
-- (void)upload {    
+- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     self.remoteStatus = MediaRemoteStatusPushing;
     [self save];
+    self.progress = 0.0f;
+    
+    if (!self.blog.isWPcom && [self.mediaType isEqualToString:@"video"] && [[[NSUserDefaults standardUserDefaults] objectForKey:@"video_api_preference"] intValue] == 1) {
+        [self atomPubUploadWithSuccess:success failure:failure];
+    } else {
+        [self xmlrpcUploadWithSuccess:success failure:failure];
+    }
+}
 
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    [self performSelectorInBackground:@selector(uploadInBackground) withObject:nil];    
+- (void)xmlrpcUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    NSString *mimeType = ([self.mediaType isEqualToString:@"video"]) ? @"video/mp4" : @"image/jpeg";
+    NSDictionary *object = [NSDictionary dictionaryWithObjectsAndKeys:
+                            mimeType, @"type",
+                            self.filename, @"name",
+                            [NSInputStream inputStreamWithFileAtPath:self.localURL], @"bits",
+                            nil];
+    NSArray *parameters = [self.blog getXMLRPCArgsWithExtra:object];
+    NSMutableURLRequest *request = [self.blog.api requestWithMethod:@"metaWeblog.newMediaObject" parameters:parameters];
+    AFHTTPRequestOperation *operation = [self.blog.api HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        self.remoteStatus = MediaRemoteStatusSync;
+        [_uploadOperation release]; _uploadOperation = nil;
+        if (success) success();
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        self.remoteStatus = MediaRemoteStatusFailed;
+        [_uploadOperation release]; _uploadOperation = nil;
+        if (failure) failure(error);
+    }];
+    [operation setUploadProgressBlock:^(NSInteger bytesWritten, NSInteger totalBytesWritten, NSInteger totalBytesExpectedToWrite) {
+        self.progress = (float)totalBytesWritten / (float)totalBytesExpectedToWrite;
+    }];
+    _uploadOperation = [operation retain];
+    [self.blog.api enqueueHTTPRequestOperation:operation];
+}
+
+- (void)atomPubUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    
 }
 
 - (NSString *)html {

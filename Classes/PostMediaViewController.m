@@ -176,7 +176,15 @@
     Media *media = [self.resultsController objectAtIndexPath:indexPath];
 
     if (media.remoteStatus == MediaRemoteStatusFailed) {
-        [media upload];
+        [media uploadWithSuccess:^{
+            if (([media isDeleted])) {
+                // FIXME: media deleted during upload should cancel the upload. In the meantime, we'll try not to crash
+                NSLog(@"Media deleted while uploading (%@)", media);
+                return;
+            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
+            [media save];
+        } failure:nil];
     } else if (media.remoteStatus == MediaRemoteStatusPushing) {
         [media cancelUpload];
     } else {
@@ -1227,7 +1235,15 @@
 	imageMedia.thumbnail = UIImageJPEGRepresentation(imageThumbnail, 0.90);
 	imageMedia.width = [NSNumber numberWithInt:theImage.size.width];
 	imageMedia.height = [NSNumber numberWithInt:theImage.size.height];
-    [imageMedia upload];
+    [imageMedia uploadWithSuccess:^{
+        if ([imageMedia isDeleted]) {
+            // FIXME: media deleted during upload should cancel the upload. In the meantime, we'll try not to crash
+            NSLog(@"Media deleted while uploading (%@)", imageMedia);
+            return;
+        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:imageMedia];
+        [imageMedia save];
+    } failure:nil];
 	
 	isAddingMedia = NO;
 	
@@ -1308,7 +1324,15 @@
 		videoMedia.width = [NSNumber numberWithInt:videoWidth];
 		videoMedia.height = [NSNumber numberWithInt:videoHeight];
 
-		[videoMedia upload];
+		[videoMedia uploadWithSuccess:^{
+            if ([videoMedia isDeleted]) {
+                // FIXME: media deleted during upload should cancel the upload. In the meantime, we'll try not to crash
+                NSLog(@"Media deleted while uploading (%@)", videoMedia);
+                return;
+            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:videoMedia];
+            [videoMedia save];
+        } failure:nil];
 		isAddingMedia = NO;
 		
 		//switch to the attachment view if we're not already there 

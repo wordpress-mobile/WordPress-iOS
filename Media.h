@@ -49,7 +49,7 @@ typedef enum {
 
 + (Media *)newMediaForPost:(AbstractPost *)post;
 - (void)cancelUpload;
-- (void)upload;
+- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)remove;
 - (void)save;
 - (void)setImage:(UIImage *)image withSize:(MediaResize)size;
