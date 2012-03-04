@@ -380,7 +380,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	// 11 months
 	requestURL = [NSString stringWithFormat: @"%@?api_key=%@&%@&format=xml&table=%@&days=%d%@", kStatsEndpointURL, apiKey, idType, @"views", 11, @"&period=month"];	
 	[request setURL:[NSURL URLWithString:requestURL]];
-	[request setValue:@"wp-iphone" forHTTPHeaderField:[appDelegate applicationUserAgent]];
+	[request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
 	monthsConn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 	CFDictionaryAddValue(
 						 connectionToInfoMapping,
