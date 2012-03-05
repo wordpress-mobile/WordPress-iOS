@@ -121,8 +121,8 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
     
     XMLRPCEncoder *encoder = [[XMLRPCEncoder alloc] init];
     [encoder setMethod:method withParameters:parameters];
-    NSData *content = [[encoder encode] dataUsingEncoding: NSUTF8StringEncoding];
-    [request setHTTPBody:content];
+    [request setHTTPBodyStream:[encoder encodedStream]];
+    [request setValue:[[encoder encodedLength] stringValue] forHTTPHeaderField:@"Content-Length"];
     
     return request;
 }
