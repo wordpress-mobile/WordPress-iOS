@@ -430,20 +430,11 @@ static WordPressAppDelegate *wordPressApp = NULL;
             });
         }];
     }
-    
-    if (DeviceIsPad()) {
-        UIViewController *topVC = self.detailNavigationController.topViewController;
-        
-        if (topVC && [topVC isKindOfClass:[PostViewController class]]) {
-            UINavigationController *navController = (UINavigationController*)[topVC modalViewController];            
-            [(EditPostViewController *)[navController visibleViewController] savePost:NO];
-        }        
-    } else {
-        UIViewController *topVC = self.navigationController.topViewController;
-        
-        if (topVC && [topVC isKindOfClass:[EditPostViewController class]]) {
-            [(EditPostViewController *)topVC savePost:NO];
-        }
+
+    NSError *error = nil;
+    if (![self.managedObjectContext save:&error]) {
+        WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+        exit(-1);
     }
 }
 
