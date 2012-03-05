@@ -607,6 +607,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
             [navController setViewControllers:[NSArray arrayWithObject:viewController] animated:NO];
         } else {
             UIImageView *fabric = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"fabric"]];
+            fabric.contentMode = UIViewContentModeCenter;
             UIViewController *fabricController = [[UIViewController alloc] init];
             fabricController.view = fabric;
             fabricController.navigationItem.title = @"WordPress";
