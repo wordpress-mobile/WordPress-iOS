@@ -321,9 +321,11 @@
 
         len = [stream read:buf maxLength:CHUNK_SIZE];
         if (len) {
+            NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
             NSData *chunk = [NSData dataWithBytes:buf length:len];
             NSString *encodedChunk = [NSString base64StringFromData:chunk length:0];
             [self appendString:encodedChunk];
+            [pool release];
         }
     }
 
