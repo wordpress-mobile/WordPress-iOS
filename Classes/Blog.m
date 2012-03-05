@@ -13,6 +13,7 @@
 #import "SFHFKeychainUtils.h"
 #import "UIImage+Resize.h"
 #import "NSURL+IDN.h"
+#import "NSString+XMLExtensions.h"
 
 @interface Blog (PrivateMethods)
 - (AFXMLRPCRequestOperation *)operationForOptionsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
@@ -87,7 +88,7 @@
         
         blog.url = blogUrl;
         blog.blogID = [NSNumber numberWithInt:[[blogInfo objectForKey:@"blogid"] intValue]];
-        blog.blogName = [blogInfo objectForKey:@"blogName"];
+        blog.blogName = [[blogInfo objectForKey:@"blogName"] stringByDecodingXMLCharacters];
 		blog.xmlrpc = [blogInfo objectForKey:@"xmlrpc"];
         blog.username = [blogInfo objectForKey:@"username"];
         blog.isAdmin = [NSNumber numberWithInt:[[blogInfo objectForKey:@"isAdmin"] intValue]];

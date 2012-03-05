@@ -7,6 +7,7 @@
 
 #import "AddUsersBlogsViewController.h"
 #import "SFHFKeychainUtils.h"
+#import "NSString+XMLExtensions.h"
 
 @implementation AddUsersBlogsViewController
 @synthesize usersBlogs, isWPcom, selectedBlogs, tableView, buttonAddSelected, buttonSelectAll, hasCompletedGetUsersBlogs;
@@ -314,6 +315,11 @@
                 if(usersBlogs.count > 0) {
                     // TODO: Store blog list in Core Data
                     //[[NSUserDefaults standardUserDefaults] setObject:usersBlogs forKey:@"WPcomUsersBlogs"];
+                    [usersBlogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                        NSString *title = [obj valueForKey:@"blogName"];
+                        title = [title stringByDecodingXMLCharacters];
+                        [obj setValue:title forKey:@"blogName"];
+                    }];
                     
                     [self.tableView reloadData];
                 }
