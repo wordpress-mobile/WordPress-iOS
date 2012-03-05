@@ -201,7 +201,9 @@
                 if (failure) failure(error);
             }];
             [operation setUploadProgressBlock:^(NSInteger bytesWritten, NSInteger totalBytesWritten, NSInteger totalBytesExpectedToWrite) {
-                self.progress = (float)totalBytesWritten / (float)totalBytesExpectedToWrite;
+                dispatch_async(dispatch_get_main_queue(), ^(void) {
+                    self.progress = (float)totalBytesWritten / (float)totalBytesExpectedToWrite;
+                });
             }];
             _uploadOperation = [operation retain];
             self.remoteStatus = MediaRemoteStatusPushing;
@@ -264,7 +266,9 @@
         if (failure) failure(error);
     }];
     [operation setUploadProgressBlock:^(NSInteger bytesWritten, NSInteger totalBytesWritten, NSInteger totalBytesExpectedToWrite) {
-        self.progress = (float)totalBytesWritten / (float)totalBytesExpectedToWrite;
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+            self.progress = (float)totalBytesWritten / (float)totalBytesExpectedToWrite;
+        });
     }];
     _uploadOperation = [operation retain];
     self.remoteStatus = MediaRemoteStatusPushing;
