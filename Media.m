@@ -8,6 +8,7 @@
 
 #import "Media.h"
 #import "UIImage+Resize.h"
+#import "NSString+Helpers.h"
 
 @interface Media (PrivateMethods)
 - (void)xmlrpcUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure ;
@@ -210,7 +211,64 @@
 }
 
 - (void)atomPubUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+   	NSString *blogURL = [self.blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-app.php/attachments"];
+	NSURL *atomURL = [NSURL URLWithString:blogURL];
+
+	NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:self.localURL error:nil];
+	NSString *contentType = @"image/jpeg";
+	if([self.mediaType isEqualToString:@"video"])
+		contentType = @"video/mp4";
+	NSString *username = self.blog.username;
+	NSString *password = [self.blog fetchPassword];
+
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:atomURL];
+    NSString *authentication = [NSString stringWithFormat:@"Basic %@", [[NSString stringWithFormat:@"%@:%@",username,password] base64Encoding]];
+    [request setValue:authentication forHTTPHeaderField:@"Authorization"];
+    [request setValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"UserAgent"] forHTTPHeaderField:@"User-Agent"];
+    [request setValue:@"*/*" forHTTPHeaderField:@"Accept"];
+    [request setValue:[NSString stringWithFormat:@"%d", [[attributes objectForKey:NSFileSize] intValue]] forHTTPHeaderField:@"Content-Length"];
+    [request setValue:contentType forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBodyStream:[NSInputStream inputStreamWithFileAtPath:self.localURL]];
     
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (operation.responseString != nil && ![operation.responseString isEmpty]) {
+            if ([operation.responseString rangeOfString:@"AtomPub services are disabled"].location != NSNotFound) {
+                if (failure) {
+                    NSError *error = [NSError errorWithDomain:@"org.wordpress" code:0 userInfo:[NSDictionary dictionaryWithObject:operation.responseString forKey:NSLocalizedDescriptionKey]];
+                    self.remoteStatus = MediaRemoteStatusFailed;
+                    [_uploadOperation release]; _uploadOperation = nil;
+                    failure(error);
+                }
+            } else {
+                // TODO: we should use regxep to capture other type of errors!!
+                // atom pub services could be enabled but errors can occur.
+                NSMutableDictionary *videoMeta = [[NSMutableDictionary alloc] init];
+                NSString *regEx = @"src=\"([^\"]*)\"";
+                NSString *link = [operation.responseString stringByMatching:regEx capture:1];
+                link = [link stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+                [videoMeta setObject:link forKey:@"url"];
+                self.remoteURL = link;
+                self.remoteStatus = MediaRemoteStatusSync;
+                [_uploadOperation release]; _uploadOperation = nil;
+                if (success) success();
+                [[NSNotificationCenter defaultCenter] postNotificationName:VideoUploadSuccessful
+                                                                    object:self
+                                                                  userInfo:videoMeta];
+            }
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        self.remoteStatus = MediaRemoteStatusFailed;
+        [_uploadOperation release]; _uploadOperation = nil;
+        if (failure) failure(error);
+    }];
+    [operation setUploadProgressBlock:^(NSInteger bytesWritten, NSInteger totalBytesWritten, NSInteger totalBytesExpectedToWrite) {
+        self.progress = (float)totalBytesWritten / (float)totalBytesExpectedToWrite;
+    }];
+    _uploadOperation = [operation retain];
+    self.remoteStatus = MediaRemoteStatusPushing;
+    [self.blog.api enqueueHTTPRequestOperation:operation];
 }
 
 - (NSString *)html {
