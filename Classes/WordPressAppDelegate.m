@@ -13,6 +13,7 @@
 #import "SDURLCache.h"
 #import "InAppSettings.h"
 #import "WPDataController.h"
+#import "Blog.h"
 
 @interface WordPressAppDelegate (Private)
 - (void)setAppBadge;
@@ -231,6 +232,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		self.navigationController = aNavigationController;
 
 		[window addSubview:[navigationController view]];
+        window.rootViewController = navigationController;
 
 		if ([Blog countWithContext:context] == 0) {
 			WelcomeViewController *wViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
@@ -245,6 +247,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	else
 	{
 		[window addSubview:splitViewController.view];
+        window.rootViewController = splitViewController;
 		[window makeKeyAndVisible];
 
 		if ([Blog countWithContext:context] == 0)
@@ -1085,7 +1088,16 @@ static WordPressAppDelegate *wordPressApp = NULL;
             if([self isAlertRunning] != YES) {
                 [self setAlertRunning:YES];
                 NSString *msg = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
-                [self showAlertWithTitle:NSLocalizedString(@"Ciao!", @"") message:msg];
+                [lastNotificationInfo release];
+                lastNotificationInfo = [userInfo retain];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"New comment", @"")
+                                                                message:msg
+                                                               delegate:self
+                                                      cancelButtonTitle:NSLocalizedString(@"Dismiss", @"")
+                                                      otherButtonTitles:NSLocalizedString(@"View", @"View comment from push notification"), nil];
+                alert.tag = kNotificationNewComment;
+                [alert show];
+                [alert release];
             }
             break;
         case UIApplicationStateInactive:
@@ -1213,6 +1225,21 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif {
     NSLog(@"Opening the notification screen");
+    Blog *blog = [Blog findWithId:[[remoteNotif objectForKey:@"blog_id"] intValue] withContext:self.managedObjectContext];
+    if (blog) {
+        [blog syncCommentsWithSuccess:nil failure:nil];
+
+        UIViewController *rootViewController = self.window.rootViewController;
+        if ([rootViewController isKindOfClass:[UISplitViewController class]]) {
+            rootViewController = [((UISplitViewController *)rootViewController).viewControllers objectAtIndex:0];
+        }
+        UINavigationController *nav = (UINavigationController *)rootViewController;
+        [nav popToRootViewControllerAnimated:NO];
+        BlogsViewController *blogsViewController = (BlogsViewController *)nav.topViewController;
+        [blogsViewController showBlog:blog animated:NO];
+        BlogViewController *blogViewController = (BlogViewController *)nav.visibleViewController;
+        blogViewController.selectedIndex = 2;
+    }
 }
 
 #pragma mark -
@@ -1355,6 +1382,11 @@ static WordPressAppDelegate *wordPressApp = NULL;
     } else if (alertView.tag == 102) { // Update alert
         if (buttonIndex == 1) {
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/us/app/wordpress/id335703880?mt=8&ls=1"]];
+        }
+    } else if (alertView.tag == kNotificationNewComment) {
+        if (buttonIndex == 1) {
+            [self openNotificationScreenWithOptions:lastNotificationInfo];
+            [lastNotificationInfo release]; lastNotificationInfo = nil;
         }
 	} else { 
 		//Need Help Alert

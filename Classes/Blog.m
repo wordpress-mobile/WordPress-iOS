@@ -104,6 +104,21 @@
     return blog;
 }
 
++ (Blog *)findWithId:(int)blogId withContext:(NSManagedObjectContext *)moc {
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
+    [request setPredicate:[NSPredicate predicateWithFormat:@"blogID = %d", blogId]];
+
+    NSError *err = nil;
+    NSArray *result = [moc executeFetchRequest:request error:&err];
+    [request release];
+    Blog *blog = nil;
+    if (err == nil && [result count] > 0 ) {
+        blog = [result objectAtIndex:0];
+    }
+    return blog;
+}
+
 + (NSInteger)countWithContext:(NSManagedObjectContext *)moc {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];

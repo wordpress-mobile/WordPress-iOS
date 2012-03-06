@@ -37,6 +37,9 @@
     
     //Background tasks
     UIBackgroundTaskIdentifier bgTask;
+    
+    // Push notifications
+    NSDictionary *lastNotificationInfo;
 }
 
 @property (nonatomic, retain) UIWindow *window;
