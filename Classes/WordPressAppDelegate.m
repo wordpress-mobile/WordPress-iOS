@@ -9,8 +9,6 @@
 #import "WelcomeViewController.h"
 #import "BetaUIWindow.h"
 #import "MigrateBlogsFromFiles.h"
-#import "FilteredWebCache.h"
-#import "SDURLCache.h"
 #import "InAppSettings.h"
 #import "Blog.h"
 #import "SFHFKeychainUtils.h"
@@ -128,34 +126,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	
 	// set the current dir
 	[fileManager changeCurrentDirectoryPath:currentDirectoryPath];
-    
-   /* 
-    //cleans the cache folder at startup
-    [fileManager removeItemAtPath:[SDURLCache defaultCachePath] error:NULL];
-    
-    //Enable the caching system   
-    SDURLCache *urlCache = [[SDURLCache alloc] initWithMemoryCapacity:1024*1024   // 1MB mem cache
-                                                         diskCapacity:1024*1024*5 // 5MB disk cache
-                                                             diskPath:[SDURLCache defaultCachePath]];
-    NSArray *excludeTheseURLs = [NSArray arrayWithObjects:@"/wp-login.php", @"public-api.wordpress.com", @"stats.wordpress.com", @"chart.apis.google.com", nil];
-       
-    urlCache.excludedURLs = excludeTheseURLs;
-    [NSURLCache setSharedURLCache:urlCache];
-    [urlCache release];
-   */     
-
-/*  
-    //Enable this NSURLCache impl just to check if data is loaded from Memory or the Net.
-    NSArray *paths2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSUInteger discCapacity = 10*1024*1024;
-    NSUInteger memoryCapacity = 512*1024;
-    
-    FilteredWebCache *cache =
-    [[FilteredWebCache alloc] initWithMemoryCapacity: memoryCapacity
-                                        diskCapacity: discCapacity diskPath:[[paths2 objectAtIndex:0] stringByAppendingPathComponent:@"CheckURLCache"]];
-    [NSURLCache setSharedURLCache:cache];
-    [cache release];
-    */
     
 	// Check for pending crash reports
 	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
