@@ -8,8 +8,7 @@
 
 #import "BetaFeedbackViewController.h"
 #import <QuartzCore/QuartzCore.h>
-#import "WPDataController.h"
-
+#import "AFXMLRPCClient.h"
 
 @implementation BetaFeedbackViewController
 
@@ -98,13 +97,8 @@
 -(void) sendFeedback: (id)sender {
 	[sendFeedbackButton setEnabled:NO];
 	sendFeedbackButton.title = @"Sending...";
-	[self performSelectorInBackground:@selector(sendFeedbackInBackground) withObject: nil];
-}
-
--(void) sendFeedbackInBackground{
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	if (![name.text isEqualToString:@""] && ![email.text isEqualToString:@""] && ![feedback.text isEqualToString:@""] && ![feedback.text isEqualToString:@"Feedback (required)"]) {
-		XMLRPCRequest *xmlrpcRequest = [[XMLRPCRequest alloc] initWithURL:[NSURL URLWithString:@"http://iosbeta.wordpress.com/xmlrpc.php"]];
+        AFXMLRPCClient *api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:@"http://iosbeta.wordpress.com/xmlrpc.php"]];
 		NSMutableDictionary *commentParams = [NSMutableDictionary dictionary];
 		
 		[commentParams setObject:feedback.text forKey:@"content"];
@@ -114,21 +108,16 @@
 		[commentParams setObject:name.text forKey:@"author"];
 		NSArray *args = [NSArray arrayWithObjects:@"15835028", @"", @"", @"153", commentParams, nil];
 		
-		[xmlrpcRequest setMethod:@"wp.newComment" withParameters:args];
-		NSNumber *result = [[WPDataController sharedInstance] executeXMLRPCRequest:xmlrpcRequest];
-		[xmlrpcRequest release];
-		if ([result isKindOfClass:[NSError class]]) {
-			//oh well
-			//NSLog(@"wpNewComment failed: %@", result);
-			
-		}
-		[self dismissModalViewControllerAnimated:YES];
+        [api callMethod:@"wp.newComment"
+             parameters:args
+                success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    [self dismissModalViewControllerAnimated:YES];
+                } failure:nil];
 	}
 	else {
 		[sendFeedbackButton setEnabled:YES];
 		sendFeedbackButton.title = @"Send";
 	}
-	[pool release];
 }
 
 // Call this method somewhere in your view controller setup code.

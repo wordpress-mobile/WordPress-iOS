@@ -9,7 +9,6 @@
 #import <CoreData/CoreData.h>
 #import "Blog.h"
 #import "AbstractPost.h"
-#import "WPMediaUploader.h"
 
 typedef enum {
     MediaRemoteStatusPushing,    // Uploading post

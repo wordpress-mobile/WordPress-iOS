@@ -33,7 +33,6 @@
 -(IBAction) cancel: (id)sender;
 -(IBAction) sendFeedback: (id)sender;
 -(void) sendFeedback: (id)sender;
--(void) sendFeedbackInBackground;
 -(void) registerForKeyboardNotifications;
 -(void) checkSendButtonEnable;
 @end

@@ -13,6 +13,7 @@
 #import "SDURLCache.h"
 #import "InAppSettings.h"
 #import "Blog.h"
+#import "SFHFKeychainUtils.h"
 
 @interface WordPressAppDelegate (Private)
 - (void)setAppBadge;
@@ -863,24 +864,32 @@ static WordPressAppDelegate *wordPressApp = NULL;
                                                         andServiceName:@"WordPress.com"
                                                                  error:&error];
         if (password != nil) {
-            ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:authURL]];
-            [request setPostValue:username forKey:@"log"];
-            [request setPostValue:password forKey:@"pwd"];
+            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:authURL]];
+            [request setHTTPMethod:@"POST"];
+            [request setValue:username forHTTPHeaderField:@"log"];
+            [request setValue:password forHTTPHeaderField:@"pwd"];
             NSString *redirect_to = [WPWebAppViewController authorizeHybridURL:[NSURL URLWithString:kMobileReaderURL]].absoluteString;
-            [request setPostValue:redirect_to forKey:@"redirect_to"];
-            [request addRequestHeader:@"User-Agent" value:[self applicationUserAgent]];
-            [request startSynchronous];
-            if ([request error]) {
-                WPFLog(@"Error logging into wp.com: %@", [[request error] localizedDescription]);
-                isWPcomAuthenticated = NO;
-            } else {
+            [request setValue:redirect_to forHTTPHeaderField:@"redirect_to"];
+            [request addValue:[self applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
+            AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+            [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
                 WPFLog(@"Authenticated in WP.com, cached reader");
-                NSData *readerData = [request responseData];
+                NSData *readerData = responseObject;
                 [readerData writeToFile:[self readerCachePath] atomically:YES];
                 [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"lastReaderCache"];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"ReaderCached" object:nil];
                 isWPcomAuthenticated = YES;
-            }
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                WPFLog(@"Error logging into wp.com: %@", [error localizedDescription]);
+                isWPcomAuthenticated = NO;
+            }];
+            
+            NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+            [queue addOperation:operation];
+            
+            [request release];
+            [operation release];
+            [queue release];
         } else {
             isWPcomAuthenticated = NO;
         }

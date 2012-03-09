@@ -6,7 +6,6 @@
 //
 
 #import "Post.h"
-#import "WPDataController.h"
 #import "NSMutableDictionary+Helpers.h"
 
 @interface Post(InternalProperties)

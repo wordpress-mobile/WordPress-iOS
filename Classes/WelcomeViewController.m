@@ -7,6 +7,7 @@
 
 #import "WelcomeViewController.h"
 #import "AboutViewController.h"
+#import "SFHFKeychainUtils.h"
 
 @implementation WelcomeViewController
 

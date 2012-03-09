@@ -4,6 +4,7 @@
 #import "UINavigationController+FormSheet.h"
 #import "QuickPhotoUploadProgressController.h"
 #import "UIImageView+Gravatar.h"
+#import "SFHFKeychainUtils.h"
 
 @interface BlogsViewController (Private)
 - (void)setupPhotoButton;

@@ -8,7 +8,6 @@
 
 #import "WPReaderViewController.h"
 #import "WPWebViewController.h"
-#import "ASIHTTPRequest.h"
 #import "WordPressAppDelegate.h"
 
 #ifdef DEBUG
@@ -27,8 +26,6 @@
 - (void)refreshWebViewTimer:(NSTimer*)timer;
 - (void)refreshWebViewIfNeeded;
 - (void)retryWithLogin;
-- (void)detailedViewFinishSelector:(ASIHTTPRequest *)xmlrpcRequest;
-- (void)detailedViewFailSelector:(ASIHTTPRequest *)request;
 - (void)pingStatsEndpoint:(NSString*)statName;
 @end
 
@@ -393,39 +390,25 @@
     
     //finished to load the Reader Home page, start a new call to get the detailView HTML
     if ( ! self.detailContentHTML ) {
-        ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:[NSURL URLWithString:[kMobileReaderDetailURL stringByAppendingFormat:@"&wp_hybrid_auth_token=%@", self.hybridAuthToken]]];
-        [request setRequestMethod:@"GET"];
-        [request setShouldPresentCredentialsBeforeChallenge:NO];
-        [request setShouldPresentAuthenticationDialog:NO];
-        [request setUseKeychainPersistence:NO];
-        [request setValidatesSecureCertificate:NO];
-        [request setTimeOutSeconds:30];
-        WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];        
-        [request addRequestHeader:@"User-Agent" value:[appDelegate applicationUserAgent]];
-        [request addRequestHeader:@"Content-Type" value:@"text/xml"];
-        [request addRequestHeader:@"Accept" value:@"*/*"];
-        
-        [request setDidFinishSelector:@selector(detailedViewFinishSelector:)];
-        [request setDidFailSelector:@selector(detailedViewFailSelector:)];
-        [request setDelegate:self];
-        
-        [request startAsynchronous];
-        [request release];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[kMobileReaderDetailURL stringByAppendingFormat:@"&wp_hybrid_auth_token=%@", self.hybridAuthToken]]];
+        [request setHTTPMethod:@"GET"];
+        WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+        [request addValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
+        [request addValue:@"*/*" forHTTPHeaderField:@"Accept"];
+        AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+        [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+            self.detailContentHTML = responseObject;
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), error];
+            self.detailContentHTML = nil;
+        }];
+
+        NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+        [queue addOperation:operation];
+
+        [operation release];
+        [queue release];
     }
-}
-
-
-- (void)detailedViewFinishSelector:(ASIHTTPRequest *)request
-{
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    self.detailContentHTML = [request responseString];
-    //NSLog(@"%@", self.detailContentHTML);
-}
-
-- (void)detailedViewFailSelector:(ASIHTTPRequest *)request {
-	NSError *error = [request error];
-	[FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), error];
-    self.detailContentHTML = nil;
 }
 
 @end

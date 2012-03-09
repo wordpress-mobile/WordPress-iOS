@@ -10,6 +10,7 @@
 #import "EditPostViewController.h"
 #import "ImageIO/CGImageSource.h"
 #import "ImageIO/CGImageDestination.h"
+#import "SFHFKeychainUtils.h"
 
 
 #define TAG_ACTIONSHEET_PHOTO 1

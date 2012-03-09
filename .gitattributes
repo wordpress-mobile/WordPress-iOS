@@ -1,24 +1,4 @@
 * text=auto !eol
-/ASIAuthenticationDialog.h -text
-/ASIAuthenticationDialog.m -text
-/ASICacheDelegate.h -text
-/ASIDataCompressor.h -text
-/ASIDataCompressor.m -text
-/ASIDataDecompressor.h -text
-/ASIDataDecompressor.m -text
-/ASIDownloadCache.h -text
-/ASIDownloadCache.m -text
-/ASIFormDataRequest.h -text
-/ASIFormDataRequest.m -text
-/ASIHTTPRequest.h -text
-/ASIHTTPRequest.m -text
-/ASIHTTPRequestConfig.h -text
-/ASIHTTPRequestDelegate.h -text
-/ASIInputStream.h -text
-/ASIInputStream.m -text
-/ASINetworkQueue.h -text
-/ASINetworkQueue.m -text
-/ASIProgressDelegate.h -text
 /AboutViewController.xib -text
 /AddSiteViewController-iPad.xib -text
 /AddSiteViewController.xib -text
@@ -219,8 +199,6 @@ Classes/WPCategoriesController.h -text
 Classes/WPCategoriesController.m -text
 Classes/WPCategoryTree.h -text
 Classes/WPCategoryTree.m -text
-Classes/WPDataController.h -text
-Classes/WPDataController.m -text
 Classes/WPImagePickerController.h -text
 Classes/WPImagePickerController.m -text
 Classes/WPKeyboardToolbar.h -text
@@ -229,8 +207,6 @@ Classes/WPKeyboardToolbarButtonItem.h -text
 Classes/WPKeyboardToolbarButtonItem.m -text
 Classes/WPLabel.h -text
 Classes/WPLabel.m -text
-Classes/WPMediaUploader.h -text
-Classes/WPMediaUploader.m -text
 Classes/WPPageControl.h -text
 Classes/WPPageControl.m -text
 Classes/WPProgressHUD.h -text

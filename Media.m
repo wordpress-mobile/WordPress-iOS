@@ -116,30 +116,6 @@
     }
 }
 
-- (void)uploadInBackground {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    
-    
-    self.uploader = [[[WPMediaUploader alloc] initWithMedia:self] autorelease];
-    [self.uploader start];
-    [pool release];
-}
-
-- (void)didUploadInBackground {
-    self.remoteStatus = MediaRemoteStatusSync;
-    [self save];
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"MediaUploaded" object:self];
-}
-
-- (void)failedUploadInBackground {
-    self.remoteStatus = MediaRemoteStatusFailed;
-    self.uploader = nil;
-    [self save];
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"MediaUploadFailed" object:self];
-}
-
 - (void)cancelUpload {
     [_uploadOperation cancel];
     [_uploadOperation release]; _uploadOperation = nil;
