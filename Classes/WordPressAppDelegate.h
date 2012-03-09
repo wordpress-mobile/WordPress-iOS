@@ -77,8 +77,6 @@
 - (void)deleteLocalDraft:(NSNotification *)notification;
 - (void)dismissCrashReporter:(NSNotification *)notification;
 - (void)sendApnsToken;
-- (void)sendApnsTokenInBackground;
 - (void)sendPushNotificationBlogsList;
-- (void)sendPushNotificationBlogsListInBackground;
 - (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif;
 @end

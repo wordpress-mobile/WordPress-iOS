@@ -12,7 +12,6 @@
 #import "FilteredWebCache.h"
 #import "SDURLCache.h"
 #import "InAppSettings.h"
-#import "WPDataController.h"
 #import "Blog.h"
 
 @interface WordPressAppDelegate (Private)
@@ -1057,7 +1056,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	NSLog(@"Registered for push notifications and stored device token: %@", 
 		  [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"]);
 
-    [self sendApnsTokenInBackground];
+    [self sendApnsToken];
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
@@ -1112,9 +1111,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
     }
 }
 
-- (void)sendApnsToken {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
+- (void)sendApnsToken {	
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"];
     if( nil == token ) return; //no apns token available
     
@@ -1135,31 +1132,19 @@ static WordPressAppDelegate *wordPressApp = NULL;
                                                         andServiceName:@"WordPress.com"
                                                                  error:&error];
         if (password != nil) {
-            [[WPDataController sharedInstance] registerForPushNotifications: authURL
-                                                                   username:username
-                                                                   password:password
-                                                                      token:token
-                                                                 deviceUDID:[[UIDevice currentDevice] uniqueIdentifier]
-             ];
+            AFXMLRPCClient *api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
+            [api callMethod:@"wpcom.mobile_push_register_token"
+                 parameters:[NSArray arrayWithObjects:username, password, token, [[UIDevice currentDevice] uniqueIdentifier], nil]
+                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                        [self sendPushNotificationBlogsList];
+                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                        WPFLog(@"Couldn't register token: %@", [error localizedDescription]);
+                    }];
         } 
 	}
-    [self sendPushNotificationBlogsList];
-	[pool release];
-    }
-
-//send the apns token to out backend. WP.COM credentials are used to avoid spammers
-- (void)sendApnsTokenInBackground {
-    [self performSelectorInBackground:@selector(sendApnsToken) withObject:nil];
 }
 
-
-- (void)sendPushNotificationBlogsListInBackground {
-    [self performSelectorInBackground:@selector(sendPushNotificationBlogsList) withObject:nil];
-}
-
-- (void)sendPushNotificationBlogsList {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    
+- (void)sendPushNotificationBlogsList {    
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"];
     if( nil == token ) return; //no apns token available
     
@@ -1186,42 +1171,28 @@ static WordPressAppDelegate *wordPressApp = NULL;
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"blogName" ascending:YES];
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
     [fetchRequest setSortDescriptors:sortDescriptors];
-    
-    // For some reasons, the cache sometimes gets corrupted
-    // Since we don't really use sections we skip the cache here
-    NSFetchedResultsController *aResultsController = [[NSFetchedResultsController alloc]
-                                                      initWithFetchRequest:fetchRequest
-                                                      managedObjectContext:self.managedObjectContext
-                                                      sectionNameKeyPath:nil
-                                                      cacheName:nil];
-    
-    [aResultsController performFetch:nil];
-    
+    NSArray *blogs = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        
     NSMutableArray *blogsID = [NSMutableArray array];
     
     //get a references to media files linked in a post
-    for (Blog *blog in [aResultsController fetchedObjects]) {
+    for (Blog *blog in blogs) {
         if( [blog isWPcom] ) {
             [blogsID addObject:[blog blogID] ];
         }
     }
     
-    [[WPDataController sharedInstance] setBlogsForPushNotifications: authURL
-                                                           username:username
-                                                           password:password
-                                                              token:token
-                                                            blogsID:blogsID
-     ];        
+    AFXMLRPCClient *api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
+    [api callMethod:@"wpcom.mobile_push_set_blogs_list"
+         parameters:[NSArray arrayWithObjects:username, password, token, blogsID, nil]
+            success:nil failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                WPFLog(@"Failed registering blogs list: %@", [error localizedDescription]);
+            }];
     
-    
-    [aResultsController release];
     [fetchRequest release];
     [sortDescriptor release]; sortDescriptor = nil;
     [sortDescriptors release]; sortDescriptors = nil;
-    
-    [pool release];
-
-  }
+}
 
 - (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif {
     NSLog(@"Opening the notification screen");
