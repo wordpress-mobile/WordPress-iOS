@@ -347,7 +347,7 @@
             newSize = CGSizeMake(300, 300);
             break;
         case kResizeLarge:
-            newSize = CGSizeMake(1024, 1024);
+            newSize = CGSizeMake(1200, 1200);
             break;
             
         default:
