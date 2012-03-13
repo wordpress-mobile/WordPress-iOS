@@ -258,10 +258,18 @@
 		if([self.mediaType isEqualToString:@"image"]) {
 			if(self.shortcode != nil)
 				result = self.shortcode;
-			else if(self.remoteURL != nil)
-				result = [NSString stringWithFormat:
-						  @"<a href=\"%@\"><img src=\"%@\" alt=\"%@\" class=\"alignnone size-full\" /></a>",
-						  self.remoteURL, self.remoteURL, self.filename, self.width, self.height];
+			else if(self.remoteURL != nil) {
+                NSString *linkType = [self.blog getOptionValue:@"image_default_link_type"];
+                if ([linkType isEqualToString:@"none"]) {
+                    result = [NSString stringWithFormat:
+                              @"<img src=\"%@\" alt=\"%@\" class=\"alignnone size-full\" />",
+                              self.remoteURL, self.filename];
+                } else {
+                    result = [NSString stringWithFormat:
+                              @"<a href=\"%@\"><img src=\"%@\" alt=\"%@\" class=\"alignnone size-full\" /></a>",
+                              self.remoteURL, self.remoteURL, self.filename];
+                }
+            }
 		}
 		else if([self.mediaType isEqualToString:@"video"]) {
 			NSString *embedWidth = [NSString stringWithFormat:@"%@", self.width];
