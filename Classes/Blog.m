@@ -237,6 +237,10 @@
 	return password;
 }
 
+- (NSString *)version {
+    return [self getOptionValue:@"software_version"];
+}
+
 #pragma mark -
 #pragma mark Synchronization
 

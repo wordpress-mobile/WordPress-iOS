@@ -29,6 +29,7 @@
 @property (nonatomic, retain) NSDictionary *options; //we can store an NSArray or an NSDictionary as a transformable attribute... 
 @property (nonatomic, retain) NSDictionary *postFormats;
 @property (readonly, nonatomic, retain) AFXMLRPCClient *api;
+@property (readonly) NSString *version;
 
 #pragma mark - Blog information
 - (BOOL)isWPcom;
