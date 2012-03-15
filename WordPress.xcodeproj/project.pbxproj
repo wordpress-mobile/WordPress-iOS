@@ -346,6 +346,18 @@
 		E12F55F314A1F22D0060A510 /* XMLRPCConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55EC14A1F22D0060A510 /* XMLRPCConnectionManager.m */; };
 		E12F55F414A1F22D0060A510 /* XMLRPCEventBasedParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55EE14A1F22D0060A510 /* XMLRPCEventBasedParser.m */; };
 		E12F55F514A1F22D0060A510 /* XMLRPCEventBasedParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55F014A1F22D0060A510 /* XMLRPCEventBasedParserDelegate.m */; };
+		E128566415103A3600406BC9 /* keyboardButtoniPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566215103A3600406BC9 /* keyboardButtoniPad@2x.png */; };
+		E128566515103A3600406BC9 /* keyboardButtoniPadHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566315103A3600406BC9 /* keyboardButtoniPadHighlighted@2x.png */; };
+		E128567015103A4500406BC9 /* toolbarBlockquoteiPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566615103A4500406BC9 /* toolbarBlockquoteiPad@2x.png */; };
+		E128567115103A4500406BC9 /* toolbarBoldiPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566715103A4500406BC9 /* toolbarBoldiPad@2x.png */; };
+		E128567215103A4500406BC9 /* toolbarCodeiPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566815103A4500406BC9 /* toolbarCodeiPad@2x.png */; };
+		E128567315103A4500406BC9 /* toolbarDeliPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566915103A4500406BC9 /* toolbarDeliPad@2x.png */; };
+		E128567415103A4500406BC9 /* toolbarItaliciPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566A15103A4500406BC9 /* toolbarItaliciPad@2x.png */; };
+		E128567515103A4500406BC9 /* toolbarLiiPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566B15103A4500406BC9 /* toolbarLiiPad@2x.png */; };
+		E128567615103A4500406BC9 /* toolbarLinkiPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566C15103A4500406BC9 /* toolbarLinkiPad@2x.png */; };
+		E128567715103A4500406BC9 /* toolbarMoreiPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566D15103A4500406BC9 /* toolbarMoreiPad@2x.png */; };
+		E128567815103A4500406BC9 /* toolbarOliPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566E15103A4500406BC9 /* toolbarOliPad@2x.png */; };
+		E128567915103A4500406BC9 /* toolbarUliPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566F15103A4500406BC9 /* toolbarUliPad@2x.png */; };
 		E131D08912C8C9160056BAB9 /* AbstractPost.m in Sources */ = {isa = PBXBuildFile; fileRef = E131D08812C8C9160056BAB9 /* AbstractPost.m */; };
 		E138623C1355FF8800AAB235 /* UINavigationController+FormSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = E138623B1355FF8800AAB235 /* UINavigationController+FormSheet.m */; };
 		E13F23C314FE84600081D9CC /* NSMutableDictionary+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = E13F23C214FE84600081D9CC /* NSMutableDictionary+Helpers.m */; };
@@ -957,6 +969,18 @@
 		E12F55EE14A1F22D0060A510 /* XMLRPCEventBasedParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLRPCEventBasedParser.m; sourceTree = "<group>"; };
 		E12F55EF14A1F22D0060A510 /* XMLRPCEventBasedParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCEventBasedParserDelegate.h; sourceTree = "<group>"; };
 		E12F55F014A1F22D0060A510 /* XMLRPCEventBasedParserDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLRPCEventBasedParserDelegate.m; sourceTree = "<group>"; };
+		E128566215103A3600406BC9 /* keyboardButtoniPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboardButtoniPad@2x.png"; sourceTree = "<group>"; };
+		E128566315103A3600406BC9 /* keyboardButtoniPadHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboardButtoniPadHighlighted@2x.png"; sourceTree = "<group>"; };
+		E128566615103A4500406BC9 /* toolbarBlockquoteiPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbarBlockquoteiPad@2x.png"; sourceTree = "<group>"; };
+		E128566715103A4500406BC9 /* toolbarBoldiPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbarBoldiPad@2x.png"; sourceTree = "<group>"; };
+		E128566815103A4500406BC9 /* toolbarCodeiPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbarCodeiPad@2x.png"; sourceTree = "<group>"; };
+		E128566915103A4500406BC9 /* toolbarDeliPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbarDeliPad@2x.png"; sourceTree = "<group>"; };
+		E128566A15103A4500406BC9 /* toolbarItaliciPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbarItaliciPad@2x.png"; sourceTree = "<group>"; };
+		E128566B15103A4500406BC9 /* toolbarLiiPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbarLiiPad@2x.png"; sourceTree = "<group>"; };
+		E128566C15103A4500406BC9 /* toolbarLinkiPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbarLinkiPad@2x.png"; sourceTree = "<group>"; };
+		E128566D15103A4500406BC9 /* toolbarMoreiPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbarMoreiPad@2x.png"; sourceTree = "<group>"; };
+		E128566E15103A4500406BC9 /* toolbarOliPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbarOliPad@2x.png"; sourceTree = "<group>"; };
+		E128566F15103A4500406BC9 /* toolbarUliPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbarUliPad@2x.png"; sourceTree = "<group>"; };
 		E131D08712C8C9150056BAB9 /* AbstractPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractPost.h; sourceTree = "<group>"; };
 		E131D08812C8C9160056BAB9 /* AbstractPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractPost.m; sourceTree = "<group>"; };
 		E133DB40137AE180003C0AF9 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -1739,6 +1763,18 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				E128566615103A4500406BC9 /* toolbarBlockquoteiPad@2x.png */,
+				E128566715103A4500406BC9 /* toolbarBoldiPad@2x.png */,
+				E128566815103A4500406BC9 /* toolbarCodeiPad@2x.png */,
+				E128566915103A4500406BC9 /* toolbarDeliPad@2x.png */,
+				E128566A15103A4500406BC9 /* toolbarItaliciPad@2x.png */,
+				E128566B15103A4500406BC9 /* toolbarLiiPad@2x.png */,
+				E128566C15103A4500406BC9 /* toolbarLinkiPad@2x.png */,
+				E128566D15103A4500406BC9 /* toolbarMoreiPad@2x.png */,
+				E128566E15103A4500406BC9 /* toolbarOliPad@2x.png */,
+				E128566F15103A4500406BC9 /* toolbarUliPad@2x.png */,
+				E128566215103A3600406BC9 /* keyboardButtoniPad@2x.png */,
+				E128566315103A3600406BC9 /* keyboardButtoniPadHighlighted@2x.png */,
 				A2CDC80D14C7681600091CEB /* approve.png */,
 				A2CDC80E14C7681600091CEB /* approve@2x.png */,
 				A2CDC80F14C7681600091CEB /* unapprove.png */,
@@ -2767,6 +2803,18 @@
 				E151045E14E27F9300CE282B /* list.png in Resources */,
 				E151045F14E27F9300CE282B /* list@2x.png in Resources */,
 				E18165FD14E4428B006CE885 /* loader.html in Resources */,
+				E128566415103A3600406BC9 /* keyboardButtoniPad@2x.png in Resources */,
+				E128566515103A3600406BC9 /* keyboardButtoniPadHighlighted@2x.png in Resources */,
+				E128567015103A4500406BC9 /* toolbarBlockquoteiPad@2x.png in Resources */,
+				E128567115103A4500406BC9 /* toolbarBoldiPad@2x.png in Resources */,
+				E128567215103A4500406BC9 /* toolbarCodeiPad@2x.png in Resources */,
+				E128567315103A4500406BC9 /* toolbarDeliPad@2x.png in Resources */,
+				E128567415103A4500406BC9 /* toolbarItaliciPad@2x.png in Resources */,
+				E128567515103A4500406BC9 /* toolbarLiiPad@2x.png in Resources */,
+				E128567615103A4500406BC9 /* toolbarLinkiPad@2x.png in Resources */,
+				E128567715103A4500406BC9 /* toolbarMoreiPad@2x.png in Resources */,
+				E128567815103A4500406BC9 /* toolbarOliPad@2x.png in Resources */,
+				E128567915103A4500406BC9 /* toolbarUliPad@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
