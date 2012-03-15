@@ -238,6 +238,7 @@ Classes/WordPress.xcdatamodeld/WordPress.xcdatamodel/layout -text
 Classes/WordPressAppDelegate.h -text
 Classes/WordPressAppDelegate.m -text
 Classes/fabric.png -text svneol=unset#unset
+Classes/fabric@2x.png -text svneol=unset#unset
 Classes/stats.png -text
 Classes/stats@2x.png -text
 /CommentViewController.xib -text
@@ -248,7 +249,9 @@ Creation/CXMLDocument_CreationExtensions.m -text
 Creation/CXMLNode_CreationExtensions.h -text
 Creation/CXMLNode_CreationExtensions.m -text
 /Default-Landscape.png -text svneol=unset#unset
+/Default-Landscape@2x.png -text svneol=unset#unset
 /Default-Portrait.png -text svneol=unset#unset
+/Default-Portrait@2x.png -text svneol=unset#unset
 /Default.png -text
 /Default@2x.png -text
 /EditPostViewController-iPad.xib -text
@@ -257,6 +260,7 @@ Creation/CXMLNode_CreationExtensions.m -text
 /Entitlements.plist -text
 /HelpViewController.xib -text
 /Icon-72.png -text
+/Icon-72@2x.png -text svneol=unset#unset
 /Icon-Small-50.png -text
 /Icon-Small.png -text
 /Icon-Small@2x.png -text

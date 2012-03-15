@@ -50,6 +50,10 @@
 		30410686144E17AE00E98F07 /* next@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30410682144E17AE00E98F07 /* next@2x.png */; };
 		30410687144E17AE00E98F07 /* previous.png in Resources */ = {isa = PBXBuildFile; fileRef = 30410683144E17AE00E98F07 /* previous.png */; };
 		30410688144E17AE00E98F07 /* previous@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30410684144E17AE00E98F07 /* previous@2x.png */; };
+		30811743151057880028A15E /* Default-Portrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30811741151057880028A15E /* Default-Portrait@2x.png */; };
+		30811744151057880028A15E /* Default-Landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30811742151057880028A15E /* Default-Landscape@2x.png */; };
+		30811747151057940028A15E /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30811746151057940028A15E /* Icon-72@2x.png */; };
+		30811749151057B50028A15E /* fabric@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30811748151057B50028A15E /* fabric@2x.png */; };
 		30AF6CF513C2289600A29C00 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30AF6CF413C2289600A29C00 /* AboutViewController.xib */; };
 		30AF6CFD13C230C600A29C00 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30AF6CFC13C230C600A29C00 /* AboutViewController.m */; };
 		30E5DD52140E7747003FA092 /* toolbarUlHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E5DD46140E7747003FA092 /* toolbarUlHighlighted@2x.png */; };
@@ -584,6 +588,10 @@
 		30410682144E17AE00E98F07 /* next@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "next@2x.png"; sourceTree = "<group>"; };
 		30410683144E17AE00E98F07 /* previous.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = previous.png; sourceTree = "<group>"; };
 		30410684144E17AE00E98F07 /* previous@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "previous@2x.png"; sourceTree = "<group>"; };
+		30811741151057880028A15E /* Default-Portrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait@2x.png"; sourceTree = "<group>"; };
+		30811742151057880028A15E /* Default-Landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x.png"; sourceTree = "<group>"; };
+		30811746151057940028A15E /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72@2x.png"; sourceTree = "<group>"; };
+		30811748151057B50028A15E /* fabric@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "fabric@2x.png"; path = "Classes/fabric@2x.png"; sourceTree = "<group>"; };
 		30AF6CF413C2289600A29C00 /* AboutViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AboutViewController.xib; path = ../AboutViewController.xib; sourceTree = "<group>"; };
 		30AF6CFB13C230C600A29C00 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		30AF6CFC13C230C600A29C00 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
@@ -1359,6 +1367,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				30811746151057940028A15E /* Icon-72@2x.png */,
 				E18165FC14E4428B006CE885 /* loader.html */,
 				37245ADB13FC23FF006CDBE3 /* WPWebViewController.xib */,
 				FD0882EC1445F38C00F51302 /* WPReaderViewController.xib */,
@@ -1502,6 +1511,8 @@
 		45C73C23113C36F50024D0D2 /* Resources-iPad */ = {
 			isa = PBXGroup;
 			children = (
+				30811741151057880028A15E /* Default-Portrait@2x.png */,
+				30811742151057880028A15E /* Default-Landscape@2x.png */,
 				E1FC3DB313C7788700F6B60F /* WPWebViewController-iPad.xib */,
 				83F1FCA7123748EF00069F99 /* Blogs */,
 				83F1FCA6123748E300069F99 /* Posts */,
@@ -1810,6 +1821,7 @@
 				6E61861E11C0C465001E755E /* down@2x.png */,
 				E13FA0F5134C849D007DCDD0 /* downArrow.png */,
 				E13FA0F6134C849D007DCDD0 /* downArrow@2x.png */,
+				30811748151057B50028A15E /* fabric@2x.png */,
 				45CD32181157D83D009E78D3 /* fabric.png */,
 				837576C311305C67002EAA27 /* getLocation.png */,
 				6EF6701611BE30020069703D /* getLocation@2x.png */,
@@ -2815,6 +2827,10 @@
 				E128567715103A4500406BC9 /* toolbarMoreiPad@2x.png in Resources */,
 				E128567815103A4500406BC9 /* toolbarOliPad@2x.png in Resources */,
 				E128567915103A4500406BC9 /* toolbarUliPad@2x.png in Resources */,
+				30811743151057880028A15E /* Default-Portrait@2x.png in Resources */,
+				30811744151057880028A15E /* Default-Landscape@2x.png in Resources */,
+				30811747151057940028A15E /* Icon-72@2x.png in Resources */,
+				30811749151057B50028A15E /* fabric@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
