@@ -19,7 +19,6 @@
 #import "AFPropertyListRequestOperation.h"
 
 #import "AFImageRequestOperation.h"
-#import "AFImagecache.h"
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED
 #import "AFNetworkActivityIndicatorManager.h"

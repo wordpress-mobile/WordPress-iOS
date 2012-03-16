@@ -345,11 +345,6 @@
 		E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */; };
 		E125445612BF5B3900D87A0A /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E125445512BF5B3900D87A0A /* Category.m */; };
 		E125451812BF68F900D87A0A /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = E125451712BF68F900D87A0A /* Page.m */; };
-		E12F55F114A1F22D0060A510 /* NSDataAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55E714A1F22D0060A510 /* NSDataAdditions.m */; };
-		E12F55F214A1F22D0060A510 /* NSStringAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55E914A1F22D0060A510 /* NSStringAdditions.m */; };
-		E12F55F314A1F22D0060A510 /* XMLRPCConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55EC14A1F22D0060A510 /* XMLRPCConnectionManager.m */; };
-		E12F55F414A1F22D0060A510 /* XMLRPCEventBasedParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55EE14A1F22D0060A510 /* XMLRPCEventBasedParser.m */; };
-		E12F55F514A1F22D0060A510 /* XMLRPCEventBasedParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55F014A1F22D0060A510 /* XMLRPCEventBasedParserDelegate.m */; };
 		E128566415103A3600406BC9 /* keyboardButtoniPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566215103A3600406BC9 /* keyboardButtoniPad@2x.png */; };
 		E128566515103A3600406BC9 /* keyboardButtoniPadHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566315103A3600406BC9 /* keyboardButtoniPadHighlighted@2x.png */; };
 		E128567015103A4500406BC9 /* toolbarBlockquoteiPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566615103A4500406BC9 /* toolbarBlockquoteiPad@2x.png */; };
@@ -362,7 +357,13 @@
 		E128567715103A4500406BC9 /* toolbarMoreiPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566D15103A4500406BC9 /* toolbarMoreiPad@2x.png */; };
 		E128567815103A4500406BC9 /* toolbarOliPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566E15103A4500406BC9 /* toolbarOliPad@2x.png */; };
 		E128567915103A4500406BC9 /* toolbarUliPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566F15103A4500406BC9 /* toolbarUliPad@2x.png */; };
+		E12F55F114A1F22D0060A510 /* NSDataAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55E714A1F22D0060A510 /* NSDataAdditions.m */; };
+		E12F55F214A1F22D0060A510 /* NSStringAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55E914A1F22D0060A510 /* NSStringAdditions.m */; };
+		E12F55F314A1F22D0060A510 /* XMLRPCConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55EC14A1F22D0060A510 /* XMLRPCConnectionManager.m */; };
+		E12F55F414A1F22D0060A510 /* XMLRPCEventBasedParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55EE14A1F22D0060A510 /* XMLRPCEventBasedParser.m */; };
+		E12F55F514A1F22D0060A510 /* XMLRPCEventBasedParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55F014A1F22D0060A510 /* XMLRPCEventBasedParserDelegate.m */; };
 		E131D08912C8C9160056BAB9 /* AbstractPost.m in Sources */ = {isa = PBXBuildFile; fileRef = E131D08812C8C9160056BAB9 /* AbstractPost.m */; };
+		E1330B0F151275300010018D /* AFAuthenticationAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = E1330B0E151275300010018D /* AFAuthenticationAlertView.m */; };
 		E138623C1355FF8800AAB235 /* UINavigationController+FormSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = E138623B1355FF8800AAB235 /* UINavigationController+FormSheet.m */; };
 		E13F23C314FE84600081D9CC /* NSMutableDictionary+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = E13F23C214FE84600081D9CC /* NSMutableDictionary+Helpers.m */; };
 		E13FA0CC134BDCBB007DCDD0 /* QuickPhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E13FA0CB134BDCBB007DCDD0 /* QuickPhotoViewController.xib */; };
@@ -377,6 +378,9 @@
 		E13FA0F7134C849D007DCDD0 /* downArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = E13FA0F5134C849D007DCDD0 /* downArrow.png */; };
 		E13FA0F8134C849D007DCDD0 /* downArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E13FA0F6134C849D007DCDD0 /* downArrow@2x.png */; };
 		E13FA0FB134C8DDC007DCDD0 /* BlogSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E13FA0FA134C8DDC007DCDD0 /* BlogSelectorViewController.m */; };
+		E140E623151229DD00900F0C /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E140E61E151229DD00900F0C /* AFHTTPClient.m */; };
+		E140E624151229DD00900F0C /* AFJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = E140E620151229DD00900F0C /* AFJSONRequestOperation.m */; };
+		E140E625151229DD00900F0C /* AFJSONUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = E140E622151229DD00900F0C /* AFJSONUtilities.m */; };
 		E1472B9713EFF9FF00987A40 /* left.png in Resources */ = {isa = PBXBuildFile; fileRef = E1472B9313EFF9FF00987A40 /* left.png */; };
 		E1472B9813EFF9FF00987A40 /* left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1472B9413EFF9FF00987A40 /* left@2x.png */; };
 		E1472B9913EFF9FF00987A40 /* right.png in Resources */ = {isa = PBXBuildFile; fileRef = E1472B9513EFF9FF00987A40 /* right.png */; };
@@ -470,7 +474,6 @@
 		E1EE23EA12E628F6000B2BE6 /* attachment@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1EE23E812E628F6000B2BE6 /* attachment@2x.png */; };
 		E1F0258913AF588C00E3A76A /* keyboardClose~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E1F0258813AF588C00E3A76A /* keyboardClose~ipad.png */; };
 		E1F8080E14641AC700726BC7 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F807FB14641AC700726BC7 /* AFHTTPRequestOperation.m */; };
-		E1F8080F14641AC700726BC7 /* AFImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F807FD14641AC700726BC7 /* AFImageCache.m */; };
 		E1F8081014641AC700726BC7 /* AFImageRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F807FF14641AC700726BC7 /* AFImageRequestOperation.m */; };
 		E1F8081214641AC700726BC7 /* AFNetworkActivityIndicatorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F8080314641AC700726BC7 /* AFNetworkActivityIndicatorManager.m */; };
 		E1F8081314641AC700726BC7 /* AFPropertyListRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F8080614641AC700726BC7 /* AFPropertyListRequestOperation.m */; };
@@ -966,17 +969,6 @@
 		E125445512BF5B3900D87A0A /* Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Category.m; sourceTree = "<group>"; };
 		E125451612BF68F900D87A0A /* Page.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Page.h; sourceTree = "<group>"; };
 		E125451712BF68F900D87A0A /* Page.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Page.m; sourceTree = "<group>"; };
-		E12F55E614A1F22D0060A510 /* NSDataAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDataAdditions.h; sourceTree = "<group>"; };
-		E12F55E714A1F22D0060A510 /* NSDataAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDataAdditions.m; sourceTree = "<group>"; };
-		E12F55E814A1F22D0060A510 /* NSStringAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStringAdditions.h; sourceTree = "<group>"; };
-		E12F55E914A1F22D0060A510 /* NSStringAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringAdditions.m; sourceTree = "<group>"; };
-		E12F55EA14A1F22D0060A510 /* XMLRPCConnectionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCConnectionDelegate.h; sourceTree = "<group>"; };
-		E12F55EB14A1F22D0060A510 /* XMLRPCConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCConnectionManager.h; sourceTree = "<group>"; };
-		E12F55EC14A1F22D0060A510 /* XMLRPCConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLRPCConnectionManager.m; sourceTree = "<group>"; };
-		E12F55ED14A1F22D0060A510 /* XMLRPCEventBasedParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCEventBasedParser.h; sourceTree = "<group>"; };
-		E12F55EE14A1F22D0060A510 /* XMLRPCEventBasedParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLRPCEventBasedParser.m; sourceTree = "<group>"; };
-		E12F55EF14A1F22D0060A510 /* XMLRPCEventBasedParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCEventBasedParserDelegate.h; sourceTree = "<group>"; };
-		E12F55F014A1F22D0060A510 /* XMLRPCEventBasedParserDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLRPCEventBasedParserDelegate.m; sourceTree = "<group>"; };
 		E128566215103A3600406BC9 /* keyboardButtoniPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboardButtoniPad@2x.png"; sourceTree = "<group>"; };
 		E128566315103A3600406BC9 /* keyboardButtoniPadHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboardButtoniPadHighlighted@2x.png"; sourceTree = "<group>"; };
 		E128566615103A4500406BC9 /* toolbarBlockquoteiPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbarBlockquoteiPad@2x.png"; sourceTree = "<group>"; };
@@ -989,8 +981,21 @@
 		E128566D15103A4500406BC9 /* toolbarMoreiPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbarMoreiPad@2x.png"; sourceTree = "<group>"; };
 		E128566E15103A4500406BC9 /* toolbarOliPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbarOliPad@2x.png"; sourceTree = "<group>"; };
 		E128566F15103A4500406BC9 /* toolbarUliPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbarUliPad@2x.png"; sourceTree = "<group>"; };
+		E12F55E614A1F22D0060A510 /* NSDataAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDataAdditions.h; sourceTree = "<group>"; };
+		E12F55E714A1F22D0060A510 /* NSDataAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDataAdditions.m; sourceTree = "<group>"; };
+		E12F55E814A1F22D0060A510 /* NSStringAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStringAdditions.h; sourceTree = "<group>"; };
+		E12F55E914A1F22D0060A510 /* NSStringAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringAdditions.m; sourceTree = "<group>"; };
+		E12F55EA14A1F22D0060A510 /* XMLRPCConnectionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCConnectionDelegate.h; sourceTree = "<group>"; };
+		E12F55EB14A1F22D0060A510 /* XMLRPCConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCConnectionManager.h; sourceTree = "<group>"; };
+		E12F55EC14A1F22D0060A510 /* XMLRPCConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLRPCConnectionManager.m; sourceTree = "<group>"; };
+		E12F55ED14A1F22D0060A510 /* XMLRPCEventBasedParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCEventBasedParser.h; sourceTree = "<group>"; };
+		E12F55EE14A1F22D0060A510 /* XMLRPCEventBasedParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLRPCEventBasedParser.m; sourceTree = "<group>"; };
+		E12F55EF14A1F22D0060A510 /* XMLRPCEventBasedParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCEventBasedParserDelegate.h; sourceTree = "<group>"; };
+		E12F55F014A1F22D0060A510 /* XMLRPCEventBasedParserDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLRPCEventBasedParserDelegate.m; sourceTree = "<group>"; };
 		E131D08712C8C9150056BAB9 /* AbstractPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractPost.h; sourceTree = "<group>"; };
 		E131D08812C8C9160056BAB9 /* AbstractPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractPost.m; sourceTree = "<group>"; };
+		E1330B0D151275300010018D /* AFAuthenticationAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFAuthenticationAlertView.h; sourceTree = "<group>"; };
+		E1330B0E151275300010018D /* AFAuthenticationAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFAuthenticationAlertView.m; sourceTree = "<group>"; };
 		E133DB40137AE180003C0AF9 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E138623A1355FF8800AAB235 /* UINavigationController+FormSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+FormSheet.h"; sourceTree = "<group>"; };
 		E138623B1355FF8800AAB235 /* UINavigationController+FormSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+FormSheet.m"; sourceTree = "<group>"; };
@@ -1011,6 +1016,12 @@
 		E13FA0F6134C849D007DCDD0 /* downArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "downArrow@2x.png"; sourceTree = "<group>"; };
 		E13FA0F9134C8DDC007DCDD0 /* BlogSelectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogSelectorViewController.h; sourceTree = "<group>"; };
 		E13FA0FA134C8DDC007DCDD0 /* BlogSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogSelectorViewController.m; sourceTree = "<group>"; };
+		E140E61D151229DD00900F0C /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClient.h; sourceTree = "<group>"; };
+		E140E61E151229DD00900F0C /* AFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClient.m; sourceTree = "<group>"; };
+		E140E61F151229DD00900F0C /* AFJSONRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFJSONRequestOperation.h; sourceTree = "<group>"; };
+		E140E620151229DD00900F0C /* AFJSONRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFJSONRequestOperation.m; sourceTree = "<group>"; };
+		E140E621151229DD00900F0C /* AFJSONUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFJSONUtilities.h; sourceTree = "<group>"; };
+		E140E622151229DD00900F0C /* AFJSONUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFJSONUtilities.m; sourceTree = "<group>"; };
 		E1457202135EC85700C7BAD2 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E1472B9313EFF9FF00987A40 /* left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = left.png; sourceTree = "<group>"; };
 		E1472B9413EFF9FF00987A40 /* left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "left@2x.png"; sourceTree = "<group>"; };
@@ -1163,8 +1174,6 @@
 		E1F0258813AF588C00E3A76A /* keyboardClose~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboardClose~ipad.png"; sourceTree = "<group>"; };
 		E1F807FA14641AC700726BC7 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
 		E1F807FB14641AC700726BC7 /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperation.m; sourceTree = "<group>"; };
-		E1F807FC14641AC700726BC7 /* AFImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFImageCache.h; sourceTree = "<group>"; };
-		E1F807FD14641AC700726BC7 /* AFImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFImageCache.m; sourceTree = "<group>"; };
 		E1F807FE14641AC700726BC7 /* AFImageRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFImageRequestOperation.h; sourceTree = "<group>"; };
 		E1F807FF14641AC700726BC7 /* AFImageRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFImageRequestOperation.m; sourceTree = "<group>"; };
 		E1F8080214641AC700726BC7 /* AFNetworkActivityIndicatorManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkActivityIndicatorManager.h; sourceTree = "<group>"; };
@@ -2161,6 +2170,8 @@
 				E11F949A14A3344300277D31 /* AFXMLRPCClient.m */,
 				E154376114B5B2120038E574 /* WordPressApi.h */,
 				E154376214B5B2120038E574 /* WordPressApi.m */,
+				E1330B0D151275300010018D /* AFAuthenticationAlertView.h */,
+				E1330B0E151275300010018D /* AFAuthenticationAlertView.m */,
 			);
 			path = WordPressApi;
 			sourceTree = "<group>";
@@ -2359,10 +2370,14 @@
 		E1F807F714641AC700726BC7 /* AFNetworking */ = {
 			isa = PBXGroup;
 			children = (
+				E140E61D151229DD00900F0C /* AFHTTPClient.h */,
+				E140E61E151229DD00900F0C /* AFHTTPClient.m */,
+				E140E61F151229DD00900F0C /* AFJSONRequestOperation.h */,
+				E140E620151229DD00900F0C /* AFJSONRequestOperation.m */,
+				E140E621151229DD00900F0C /* AFJSONUtilities.h */,
+				E140E622151229DD00900F0C /* AFJSONUtilities.m */,
 				E1F807FA14641AC700726BC7 /* AFHTTPRequestOperation.h */,
 				E1F807FB14641AC700726BC7 /* AFHTTPRequestOperation.m */,
-				E1F807FC14641AC700726BC7 /* AFImageCache.h */,
-				E1F807FD14641AC700726BC7 /* AFImageCache.m */,
 				E1F807FE14641AC700726BC7 /* AFImageRequestOperation.h */,
 				E1F807FF14641AC700726BC7 /* AFImageRequestOperation.m */,
 				E1F8080214641AC700726BC7 /* AFNetworkActivityIndicatorManager.h */,
@@ -3000,7 +3015,6 @@
 				E1CAAE3A13F4142E0000C58D /* WPKeyboardToolbarButtonItem.m in Sources */,
 				FD3890F01442F91000135C6D /* WPReaderViewController.m in Sources */,
 				E1F8080E14641AC700726BC7 /* AFHTTPRequestOperation.m in Sources */,
-				E1F8080F14641AC700726BC7 /* AFImageCache.m in Sources */,
 				E1F8081014641AC700726BC7 /* AFImageRequestOperation.m in Sources */,
 				E1F8081214641AC700726BC7 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				E1F8081314641AC700726BC7 /* AFPropertyListRequestOperation.m in Sources */,
@@ -3032,6 +3046,10 @@
 				CCEF153114C9EA050001176D /* WPWebAppViewController.m in Sources */,
 				CC9AF2AE14D2F58400256729 /* JSONKit.m in Sources */,
 				E13F23C314FE84600081D9CC /* NSMutableDictionary+Helpers.m in Sources */,
+				E140E623151229DD00900F0C /* AFHTTPClient.m in Sources */,
+				E140E624151229DD00900F0C /* AFJSONRequestOperation.m in Sources */,
+				E140E625151229DD00900F0C /* AFJSONUtilities.m in Sources */,
+				E1330B0F151275300010018D /* AFAuthenticationAlertView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

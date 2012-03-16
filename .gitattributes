@@ -322,13 +322,12 @@ Vendor/AFNetworking/AFNetworking/AFHTTPClient.h -text
 Vendor/AFNetworking/AFNetworking/AFHTTPClient.m -text
 Vendor/AFNetworking/AFNetworking/AFHTTPRequestOperation.h -text
 Vendor/AFNetworking/AFNetworking/AFHTTPRequestOperation.m -text
-Vendor/AFNetworking/AFNetworking/AFImageCache.h -text
-Vendor/AFNetworking/AFNetworking/AFImageCache.m -text
 Vendor/AFNetworking/AFNetworking/AFImageRequestOperation.h -text
 Vendor/AFNetworking/AFNetworking/AFImageRequestOperation.m -text
 Vendor/AFNetworking/AFNetworking/AFJSONRequestOperation.h -text
 Vendor/AFNetworking/AFNetworking/AFJSONRequestOperation.m -text
 Vendor/AFNetworking/AFNetworking/AFJSONUtilities.h -text
+Vendor/AFNetworking/AFNetworking/AFJSONUtilities.m -text
 Vendor/AFNetworking/AFNetworking/AFNetworkActivityIndicatorManager.h -text
 Vendor/AFNetworking/AFNetworking/AFNetworkActivityIndicatorManager.m -text
 Vendor/AFNetworking/AFNetworking/AFNetworking.h -text
@@ -340,6 +339,7 @@ Vendor/AFNetworking/AFNetworking/AFXMLRequestOperation.h -text
 Vendor/AFNetworking/AFNetworking/AFXMLRequestOperation.m -text
 Vendor/AFNetworking/AFNetworking/UIImageView+AFNetworking.h -text
 Vendor/AFNetworking/AFNetworking/UIImageView+AFNetworking.m -text
+Vendor/AFNetworking/CHANGES -text
 Vendor/AFNetworking/LICENSE -text
 Vendor/AFNetworking/Mac[!!-~]Example/AFNetworking[!!-~]Mac[!!-~]Example.xcodeproj/project.pbxproj -text
 Vendor/AFNetworking/Mac[!!-~]Example/AppDelegate.h -text
@@ -364,26 +364,24 @@ Vendor/AFNetworking/README.md -text
 Vendor/AFNetworking/iOS[!!-~]Example/AFNetworking[!!-~]iOS[!!-~]Example.xcodeproj/project.pbxproj -text
 Vendor/AFNetworking/iOS[!!-~]Example/AppDelegate.h -text
 Vendor/AFNetworking/iOS[!!-~]Example/AppDelegate.m -text
-Vendor/AFNetworking/iOS[!!-~]Example/Classes/AFGowallaAPIClient.h -text
-Vendor/AFNetworking/iOS[!!-~]Example/Classes/AFGowallaAPIClient.m -text
-Vendor/AFNetworking/iOS[!!-~]Example/Classes/Controllers/NearbySpotsViewController.h -text
-Vendor/AFNetworking/iOS[!!-~]Example/Classes/Controllers/NearbySpotsViewController.m -text
-Vendor/AFNetworking/iOS[!!-~]Example/Classes/Models/Spot.h -text
-Vendor/AFNetworking/iOS[!!-~]Example/Classes/Models/Spot.m -text
-Vendor/AFNetworking/iOS[!!-~]Example/Classes/Views/SpotTableViewCell.h -text
-Vendor/AFNetworking/iOS[!!-~]Example/Classes/Views/SpotTableViewCell.m -text
+Vendor/AFNetworking/iOS[!!-~]Example/Classes/AFTwitterAPIClient.h -text
+Vendor/AFNetworking/iOS[!!-~]Example/Classes/AFTwitterAPIClient.m -text
+Vendor/AFNetworking/iOS[!!-~]Example/Classes/Controllers/PublicTimelineViewController.h -text
+Vendor/AFNetworking/iOS[!!-~]Example/Classes/Controllers/PublicTimelineViewController.m -text
+Vendor/AFNetworking/iOS[!!-~]Example/Classes/Models/Tweet.h -text
+Vendor/AFNetworking/iOS[!!-~]Example/Classes/Models/Tweet.m -text
+Vendor/AFNetworking/iOS[!!-~]Example/Classes/Models/User.h -text
+Vendor/AFNetworking/iOS[!!-~]Example/Classes/Models/User.m -text
+Vendor/AFNetworking/iOS[!!-~]Example/Classes/Views/TweetTableViewCell.h -text
+Vendor/AFNetworking/iOS[!!-~]Example/Classes/Views/TweetTableViewCell.m -text
 Vendor/AFNetworking/iOS[!!-~]Example/Default.png -text svneol=unset#unset
 Vendor/AFNetworking/iOS[!!-~]Example/Default@2x.png -text svneol=unset#unset
 Vendor/AFNetworking/iOS[!!-~]Example/Icon.png -text svneol=unset#unset
 Vendor/AFNetworking/iOS[!!-~]Example/Icon@2x.png -text svneol=unset#unset
-Vendor/AFNetworking/iOS[!!-~]Example/Images/placeholder-stamp.png -text svneol=unset#unset
-Vendor/AFNetworking/iOS[!!-~]Example/Images/placeholder-stamp@2x.png -text svneol=unset#unset
+Vendor/AFNetworking/iOS[!!-~]Example/Images/profile-image-placeholder.png -text svneol=unset#unset
+Vendor/AFNetworking/iOS[!!-~]Example/Images/profile-image-placeholder@2x.png -text svneol=unset#unset
 Vendor/AFNetworking/iOS[!!-~]Example/Info.plist -text
 Vendor/AFNetworking/iOS[!!-~]Example/Prefix.pch -text
-Vendor/AFNetworking/iOS[!!-~]Example/Vendor/JSONKit/JSONKit.h -text
-Vendor/AFNetworking/iOS[!!-~]Example/Vendor/JSONKit/JSONKit.m -text
-Vendor/AFNetworking/iOS[!!-~]Example/Vendor/TTT/TTTLocationFormatter.h -text
-Vendor/AFNetworking/iOS[!!-~]Example/Vendor/TTT/TTTLocationFormatter.m -text
 Vendor/AFNetworking/iOS[!!-~]Example/main.m -text
 Vendor/InAppSettings/.hgignore -text
 Vendor/InAppSettings/Gear.chopList -text

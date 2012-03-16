@@ -21,7 +21,6 @@
 // THE SOFTWARE.
 
 #import "AFImageRequestOperation.h"
-#import "AFImageCache.h"
 
 static dispatch_queue_t af_image_request_operation_processing_queue;
 static dispatch_queue_t image_request_operation_processing_queue() {
@@ -110,11 +109,11 @@ static dispatch_queue_t image_request_operation_processing_queue() {
     [requestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             NSImage *image = responseObject;
-            
+
             if (imageProcessingBlock) {
                 image = imageProcessingBlock(image);
             }
-                        
+            
             success(operation.request, operation.response, image);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -128,7 +127,7 @@ static dispatch_queue_t image_request_operation_processing_queue() {
 #endif
 
 + (NSSet *)defaultAcceptableContentTypes {
-    return [NSSet setWithObjects:@"image/tiff", @"image/jpeg", @"image/gif", @"image/png", @"image/ico", @"image/x-icon" @"image/bmp", @"image/x-bmp", @"image/x-xbitmap", @"image/x-win-bitmap", nil];
+    return [NSSet setWithObjects:@"image/tiff", @"image/jpeg", @"image/gif", @"image/png", @"image/ico", @"image/x-icon", @"image/bmp", @"image/x-bmp", @"image/x-xbitmap", @"image/x-win-bitmap", nil];
 }
 
 + (NSSet *)defaultAcceptablePathExtensions {
@@ -157,7 +156,7 @@ static dispatch_queue_t image_request_operation_processing_queue() {
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED
 - (UIImage *)responseImage {
-    if (!_responseImage && [self isFinished]) {
+    if (!_responseImage && [self.responseData length] > 0 && [self isFinished]) {
         UIImage *image = [UIImage imageWithData:self.responseData];
         
         self.responseImage = [UIImage imageWithCGImage:[image CGImage] scale:self.imageScale orientation:image.imageOrientation];
@@ -179,7 +178,7 @@ static dispatch_queue_t image_request_operation_processing_queue() {
 }
 #elif __MAC_OS_X_VERSION_MIN_REQUIRED 
 - (NSImage *)responseImage {
-    if (!_responseImage && [self isFinished]) {
+    if (!_responseImage && [self.responseData length] > 0 && [self isFinished]) {
         // Ensure that the image is set to it's correct pixel width and height
         NSBitmapImageRep *bitimage = [[NSBitmapImageRep alloc] initWithData:self.responseData];
         self.responseImage = [[[NSImage alloc] initWithSize:NSMakeSize([bitimage pixelsWide], [bitimage pixelsHigh])] autorelease];
@@ -232,14 +231,22 @@ static dispatch_queue_t image_request_operation_processing_queue() {
         dispatch_async(image_request_operation_processing_queue(), ^(void) {
             if (self.error) {
                 if (failure) {
-                    dispatch_async(dispatch_get_main_queue(), ^(void) {
+                    dispatch_async(self.failureCallbackQueue ? self.failureCallbackQueue : dispatch_get_main_queue(), ^{
                         failure(self, self.error);
                     });
                 }
-            } else {                
+            } else {            
                 if (success) {
-                    dispatch_async(dispatch_get_main_queue(), ^(void) {
-                        success(self, self.responseImage);
+#if __IPHONE_OS_VERSION_MIN_REQUIRED
+                    UIImage *image = nil;
+#elif __MAC_OS_X_VERSION_MIN_REQUIRED
+                    NSImage *image = nil;
+#endif
+
+                    image = self.responseImage;
+
+                    dispatch_async(self.successCallbackQueue ? self.successCallbackQueue : dispatch_get_main_queue(), ^{
+                        success(self, image);
                     });
                 }
             }
