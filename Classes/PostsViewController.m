@@ -291,16 +291,20 @@
 }
 
 - (void)syncPosts {
-	[self.blog syncCategoriesWithSuccess:nil failure:nil];
-    [self.blog syncPostFormatsWithSuccess:nil failure:nil];
-    [self.blog syncOptionsWithWithSuccess:nil failure:nil];
-    [self.blog syncPostsWithSuccess:^{
-        [self refreshPostList];
+    [self.blog syncCategoriesWithSuccess:^{
+        [self.blog syncCategoriesWithSuccess:nil failure:nil];
+        [self.blog syncPostFormatsWithSuccess:nil failure:nil];
+        [self.blog syncOptionsWithWithSuccess:nil failure:nil];
+        [self.blog syncPostsWithSuccess:^{
+            [self refreshPostList];
+        } failure:^(NSError *error) {
+            [self refreshPostList];
+            NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
+        } loadMore:NO];
     } failure:^(NSError *error) {
         [self refreshPostList];
-        NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
-    } loadMore:NO];
+    }];
 }
 
 - (void)didLoadMore {
