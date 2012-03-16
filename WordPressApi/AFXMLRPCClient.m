@@ -121,10 +121,24 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
     
     XMLRPCEncoder *encoder = [[XMLRPCEncoder alloc] init];
     [encoder setMethod:method withParameters:parameters];
+    NSData *body = [[encoder encode] dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPBody:body];
+    
+    return request;
+}
+
+- (NSMutableURLRequest *)streamingRequestWithMethod:(NSString *)method
+                                         parameters:(NSArray *)parameters {
+    NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] initWithURL:self.xmlrpcEndpoint] autorelease];
+    [request setHTTPMethod:@"POST"];
+    [request setAllHTTPHeaderFields:self.defaultHeaders];
+    
+    XMLRPCEncoder *encoder = [[XMLRPCEncoder alloc] init];
+    [encoder setMethod:method withParameters:parameters];
     [request setHTTPBodyStream:[encoder encodedStream]];
     [request setValue:[[encoder encodedLength] stringValue] forHTTPHeaderField:@"Content-Length"];
     
-    return request;
+    return request;    
 }
 
 - (AFXMLRPCRequest *)XMLRPCRequestWithMethod:(NSString *)method

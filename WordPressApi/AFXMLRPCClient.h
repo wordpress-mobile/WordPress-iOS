@@ -122,6 +122,17 @@ typedef void (^AFXMLRPCRequestOperationFailureBlock)(AFHTTPRequestOperation *ope
                                 parameters:(NSArray *)parameters;
 
 /**
+ Creates a `NSMutableURLRequest` object with the specified XML-RPC method and parameters, but uses streaming to encode and send the XML-RPC request.
+ 
+ @param method The XML-RPC method for the request.
+ @param parameters The XML-RPC parameters to be set as the request body.
+ 
+ @return A `NSMutableURLRequest` object 
+ */
+- (NSMutableURLRequest *)streamingRequestWithMethod:(NSString *)method
+                                         parameters:(NSArray *)parameters;
+
+/**
  Creates an `AFXMLRPCRequest` object with the specified XML-RPC method and parameters.
  
  @param method The XML-RPC method for the request.
