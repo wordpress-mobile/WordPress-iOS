@@ -505,6 +505,12 @@ static WordPressAppDelegate *wordPressApp = NULL;
 				return;
 			}
 		}
+        
+        // ignore HTTP auth canceled errors
+        if ([err.domain isEqual:NSURLErrorDomain] && err.code == NSURLErrorUserCancelledAuthentication) {
+            [self setAlertRunning:NO];
+            return;
+        }
 	} else { //the notification obj is a String
 		cleanedErrorMsg  = (NSString *)[notification object];
 	}
