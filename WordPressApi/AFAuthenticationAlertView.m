@@ -9,25 +9,19 @@
 #import "AFAuthenticationAlertView.h"
 
 @implementation AFAuthenticationAlertView {
-    AFHTTPRequestOperation *_operation;
-    NSOperationQueue *_queue;
-    NSURLProtectionSpace *_protectionSpace;
+    NSURLAuthenticationChallenge *_challenge;
 }
 
 - (void)dealloc {
-    [_operation release];
-    [_queue release];
-    [_protectionSpace release];
+    [_challenge release];
 
     [super dealloc];
 }
 
-- (id)initWithProtectionSpace:(NSURLProtectionSpace *)protectionSpace operation:(AFHTTPRequestOperation *)operation andQueue:(NSOperationQueue *)queue {
+- (id)initWithChallenge:(NSURLAuthenticationChallenge *)challenge {
     self = [super init];
     if (self) {
-        _operation = [operation retain];
-        _queue = [queue retain];
-        _protectionSpace = [protectionSpace retain];
+        _challenge = [challenge retain];
     }
     return self;
 }
@@ -52,9 +46,10 @@
         NSString *password = [[alertView textFieldAtIndex:1] text];
         
         NSURLCredential *credential = [NSURLCredential credentialWithUser:username password:password persistence:NSURLCredentialPersistencePermanent];
-        [[NSURLCredentialStorage sharedCredentialStorage] setDefaultCredential:credential forProtectionSpace:_protectionSpace];
-
-        [_queue addOperation:_operation];
+        [[NSURLCredentialStorage sharedCredentialStorage] setDefaultCredential:credential forProtectionSpace:[_challenge protectionSpace]];
+        [[_challenge sender] useCredential:credential forAuthenticationChallenge:_challenge];
+    } else {
+        [[_challenge sender] continueWithoutCredentialForAuthenticationChallenge:_challenge];
     }
 }
 

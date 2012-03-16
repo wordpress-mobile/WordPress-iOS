@@ -294,38 +294,15 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
     NSURLRequest *request = [self requestWithMethod:method parameters:parameters];
     AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
     [operation setAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
-        if ([challenge previousFailureCount] == 0) {
-            // No previous failures, copy the operation and show auth dialog
-            NSURLRequest *_request = [self requestWithMethod:method parameters:parameters];
-            AFHTTPRequestOperation *_operation = [self HTTPRequestOperationWithRequest:_request success:success failure:failure];
-            [_operation setAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
-                if ([challenge previousFailureCount] == 0) {
-                    NSURLCredential *credential = [[NSURLCredentialStorage sharedCredentialStorage] defaultCredentialForProtectionSpace:[challenge protectionSpace]];
-                    if (credential) {
-                        [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
-                    } else {
-                        [[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];                
-                    }            
-                } else {
-                    [[challenge sender] cancelAuthenticationChallenge:challenge];
-                }
-            }];
-            [operation cancel];
-            
-            dispatch_async(dispatch_get_main_queue(), ^(void) {
-                AFAuthenticationAlertView *alert = [[AFAuthenticationAlertView alloc] initWithProtectionSpace:[challenge protectionSpace]
-                                                                                                    operation:_operation
-                                                                                                     andQueue:self.operationQueue];
-                [alert show];
-                [_operation release];
-            });
+        NSURLCredential *credential = [[NSURLCredentialStorage sharedCredentialStorage] defaultCredentialForProtectionSpace:[challenge protectionSpace]];
+
+        if ([challenge previousFailureCount] == 0 && credential) {
+            [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
         } else {
-            NSURLCredential *credential = [[NSURLCredentialStorage sharedCredentialStorage] defaultCredentialForProtectionSpace:[challenge protectionSpace]];
-            if (credential) {
-                [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
-            } else {
-                [[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];                
-            }            
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                AFAuthenticationAlertView *alert = [[AFAuthenticationAlertView alloc] initWithChallenge:challenge];
+                [alert show];
+            });
         }        
     }];
 

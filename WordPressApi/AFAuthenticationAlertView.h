@@ -10,6 +10,6 @@
 #import "AFHTTPRequestOperation.h"
 
 @interface AFAuthenticationAlertView : NSObject<UIAlertViewDelegate>
-- (id)initWithProtectionSpace:(NSURLProtectionSpace *)protectionSpace operation:(AFHTTPRequestOperation *)operation andQueue:(NSOperationQueue *)queue;
+- (id)initWithChallenge:(NSURLAuthenticationChallenge *)challenge;
 - (void)show;
 @end
