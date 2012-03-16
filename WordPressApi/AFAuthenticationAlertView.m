@@ -49,6 +49,9 @@
         usernameField.backgroundColor = [UIColor whiteColor];
         usernameField.textColor = [UIColor blackColor];
         usernameField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+        usernameField.keyboardType = UIKeyboardTypeDefault;
+        usernameField.autocorrectionType = UITextAutocorrectionTypeNo;
+        usernameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         [alert addSubview:usernameField];
         
         passwordField = [[UITextField alloc]  initWithFrame:CGRectMake(12.0, 82.0, 260.0, 29.0)]; 
@@ -57,6 +60,8 @@
         passwordField.backgroundColor = [UIColor whiteColor];
         passwordField.textColor = [UIColor blackColor];
         passwordField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+        passwordField.keyboardType = UIKeyboardTypeDefault;
+        passwordField.autocorrectionType = UITextAutocorrectionTypeNo;
         [alert addSubview:passwordField];
     }
     alert.delegate = self;
