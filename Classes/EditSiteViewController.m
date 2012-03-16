@@ -318,13 +318,17 @@
         } failure:^(NSError *error) {
             [self validationDidFail:error];
         }];
-    } failure:^{
-        // FIXME: find a better error
-        NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  NSLocalizedString(@"Couldn't find a WordPress site on that URL", @""),NSLocalizedDescriptionKey,
-                                  nil];
-        NSError *error = [NSError errorWithDomain:@"org.wordpress.iphone" code:NSURLErrorBadURL userInfo:userInfo];
-        [self validationDidFail:error];
+    } failure:^(NSError *error){
+        if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
+            [self validationDidFail:nil];
+        } else {
+            // FIXME: find a better error
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                      NSLocalizedString(@"Couldn't find a WordPress site on that URL", @""),NSLocalizedDescriptionKey,
+                                      nil];
+            NSError *err = [NSError errorWithDomain:@"org.wordpress.iphone" code:NSURLErrorBadURL userInfo:userInfo];
+            [self validationDidFail:err];
+        }
     }];
 }
 

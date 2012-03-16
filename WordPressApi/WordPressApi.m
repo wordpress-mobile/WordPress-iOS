@@ -18,7 +18,7 @@
 @property (readwrite, nonatomic, retain) NSString *password;
 @property (readwrite, nonatomic, retain) AFXMLRPCClient *client;
 
-+ (void)validateXMLRPCUrl:(NSURL *)url success:(void (^)())success failure:(void (^)())failure;
++ (void)validateXMLRPCUrl:(NSURL *)url success:(void (^)())success failure:(void (^)(NSError *error))failure;
 @end
 
 
@@ -91,14 +91,15 @@
 
 + (void)guessXMLRPCURLForSite:(NSString *)url
                       success:(void (^)(NSURL *xmlrpcURL))success
-                      failure:(void (^)())failure {
+                      failure:(void (^)(NSError *error))failure {
     __block NSURL *xmlrpcURL;
     __block NSString *xmlrpc;
     // ------------------------------------------------
     // 0. Is an empty url? Sorry, no psychic powers yet
     // ------------------------------------------------
     if (url == nil || [url isEqualToString:@""]) {
-        return failure ? failure() : nil;
+        NSError *error = [NSError errorWithDomain:@"org.wordpress.api" code:0 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Empty URL", @"") forKey:NSLocalizedDescriptionKey]];
+        return failure ? failure(error) : nil;
     }
     
     // ------------------------------------------------------------------------
@@ -116,13 +117,20 @@
     if (xmlrpcURL == nil) {
         // Not a valid URL. Could be a bad protocol (htpp://), syntax error (http//), ...
         // See https://github.com/koke/NSURL-Guess for extra help cleaning user typed URLs
-        return failure ? failure() : nil;
+        NSError *error = [NSError errorWithDomain:@"org.wordpress.api" code:1 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Invalid URL", @"") forKey:NSLocalizedDescriptionKey]];
+        return failure ? failure(error) : nil;
     }
     [self validateXMLRPCUrl:xmlrpcURL success:^{
         if (success) {
             success(xmlrpcURL);
         }
-    } failure:^{
+    } failure:^(NSError *error){
+        if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
+            if (failure) {
+                failure(error);
+            }
+            return;
+        }
         // -------------------------------------------
         // 2. Try the given url as an XML-RPC endpoint
         // -------------------------------------------
@@ -131,7 +139,7 @@
             if (success) {
                 success(xmlrpcURL);
             }
-        } failure:^{
+        } failure:^(NSError *error){
             // ---------------------------------------------------
             // 3. Fetch the original url and look for the RSD link
             // ---------------------------------------------------
@@ -170,18 +178,18 @@
                                             xmlrpcURL = [NSURL URLWithString:xmlrpc];
                                             [self validateXMLRPCUrl:xmlrpcURL success:^{
                                                 if (success) success(xmlrpcURL);
-                                            } failure:^{
-                                                if (failure) failure();
+                                            } failure:^(NSError *error){
+                                                if (failure) failure(error);
                                             }];
                                         }
                                     }
                                 }
                                 @catch (NSException *exception) {
-                                    if (failure) failure();
+                                    if (failure) failure(error);
                                 }
                             }
                         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                            if (failure) failure();
+                            if (failure) failure(error);
                         }];
                     };
                     // ----------------------------------------------------------------------------
@@ -194,7 +202,7 @@
                             if (success) {
                                 success(xmlrpcURL);
                             }
-                        } failure:^{
+                        } failure:^(NSError *error){
                             parseBlock();
                         }];
                     } else {
@@ -202,10 +210,10 @@
                     }
                 } else {
                     if (failure)
-                        failure();
+                        failure(error);
                 }
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                if (failure) failure();
+                if (failure) failure(error);
             }];
             NSOperationQueue *queue = [[[NSOperationQueue alloc] init] autorelease];
             [queue addOperation:operation];
@@ -215,7 +223,7 @@
 
 #pragma mark - Private Methods
 
-+ (void)validateXMLRPCUrl:(NSURL *)url success:(void (^)())success failure:(void (^)())failure {
++ (void)validateXMLRPCUrl:(NSURL *)url success:(void (^)())success failure:(void (^)(NSError *error))failure {
     AFXMLRPCClient *client = [AFXMLRPCClient clientWithXMLRPCEndpoint:url];
     [client callMethod:@"system.listMethods"
             parameters:[NSArray array]
@@ -225,7 +233,7 @@
                    }
                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                    if (failure) {
-                       failure();
+                       failure(error);
                    }
                }];
 }

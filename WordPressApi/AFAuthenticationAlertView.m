@@ -49,7 +49,7 @@
         [[NSURLCredentialStorage sharedCredentialStorage] setDefaultCredential:credential forProtectionSpace:[_challenge protectionSpace]];
         [[_challenge sender] useCredential:credential forAuthenticationChallenge:_challenge];
     } else {
-        [[_challenge sender] continueWithoutCredentialForAuthenticationChallenge:_challenge];
+        [[_challenge sender] cancelAuthenticationChallenge:_challenge];
     }
 }
 
