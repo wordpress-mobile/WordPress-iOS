@@ -10,10 +10,13 @@
 
 @implementation AFAuthenticationAlertView {
     NSURLAuthenticationChallenge *_challenge;
+    UITextField *usernameField, *passwordField;
 }
 
 - (void)dealloc {
     [_challenge release];
+    [usernameField release];
+    [passwordField release];
 
     [super dealloc];
 }
@@ -33,17 +36,46 @@
                                           cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
                                           otherButtonTitles:NSLocalizedString(@"Login", @""), nil];
     // FIXME: what about iOS 4?
-    alert.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
+    if ([alert respondsToSelector:@selector(setAlertViewStyle:)]) {
+        alert.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
+    } else {
+        if (DeviceIsPad()) {
+            alert.message = [alert.message stringByAppendingString:@"\n\n\n\n"];
+        } else {
+            alert.message = [alert.message stringByAppendingString:@"\n\n\n"];
+        }
+        usernameField = [[UITextField alloc] initWithFrame:CGRectMake(12.0f, 48.0f, 260.0f, 29.0f)];
+        usernameField.placeholder = NSLocalizedString(@"Username", @"");
+        usernameField.backgroundColor = [UIColor whiteColor];
+        usernameField.textColor = [UIColor blackColor];
+        usernameField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+        [alert addSubview:usernameField];
+        
+        passwordField = [[UITextField alloc]  initWithFrame:CGRectMake(12.0, 82.0, 260.0, 29.0)]; 
+        passwordField.placeholder = NSLocalizedString(@"Password", @"");
+        passwordField.secureTextEntry = YES;
+        passwordField.backgroundColor = [UIColor whiteColor];
+        passwordField.textColor = [UIColor blackColor];
+        passwordField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+        [alert addSubview:passwordField];
+    }
     alert.delegate = self;
     [alert show];
+    [alert release];
 }
 
 #pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
-        NSString *username = [[alertView textFieldAtIndex:0] text];
-        NSString *password = [[alertView textFieldAtIndex:1] text];
+        NSString *username, *password;
+        if ([alertView respondsToSelector:@selector(setAlertViewStyle:)]) {
+            username = [[alertView textFieldAtIndex:0] text];
+            password = [[alertView textFieldAtIndex:1] text];
+        } else {
+            username = usernameField.text;
+            password = passwordField.text;
+        }
         
         NSURLCredential *credential = [NSURLCredential credentialWithUser:username password:password persistence:NSURLCredentialPersistencePermanent];
         [[NSURLCredentialStorage sharedCredentialStorage] setDefaultCredential:credential forProtectionSpace:[_challenge protectionSpace]];
