@@ -191,6 +191,18 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
         }
     };
     [operation setCompletionBlockWithSuccess:xmlrpcSuccess failure:xmlrpcFailure];
+    [operation setAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
+        NSURLCredential *credential = [[NSURLCredentialStorage sharedCredentialStorage] defaultCredentialForProtectionSpace:[challenge protectionSpace]];
+        
+        if ([challenge previousFailureCount] == 0 && credential) {
+            [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                AFAuthenticationAlertView *alert = [[AFAuthenticationAlertView alloc] initWithChallenge:challenge];
+                [alert show];
+            });
+        }        
+    }];
 
     if (getenv("WPDebugXMLRPC")) {
         NSLog(@"[XML-RPC] > %@", [[NSString alloc] initWithData:[request HTTPBody] encoding:NSUTF8StringEncoding]);
@@ -293,18 +305,6 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
            failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure {
     NSURLRequest *request = [self requestWithMethod:method parameters:parameters];
     AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
-    [operation setAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
-        NSURLCredential *credential = [[NSURLCredentialStorage sharedCredentialStorage] defaultCredentialForProtectionSpace:[challenge protectionSpace]];
-
-        if ([challenge previousFailureCount] == 0 && credential) {
-            [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^(void) {
-                AFAuthenticationAlertView *alert = [[AFAuthenticationAlertView alloc] initWithChallenge:challenge];
-                [alert show];
-            });
-        }        
-    }];
 
     [self enqueueHTTPRequestOperation:operation];
 }
