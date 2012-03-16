@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "AFXMLRPCClient.h"
 #import "AFHTTPRequestOperation.h"
+#import "AFAuthenticationAlertView.h"
 #import "XMLRPCEncoder.h"
 #import "XMLRPCResponse.h"
 
@@ -180,7 +181,16 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
             }
         }
     };
-    [operation setCompletionBlockWithSuccess:xmlrpcSuccess failure:failure];
+    void (^xmlrpcFailure)(AFHTTPRequestOperation *, NSError *) = ^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (getenv("WPDebugXMLRPC")) {
+            NSLog(@"[XML-RPC] ! %@", [error localizedDescription]);
+        }
+
+        if (failure) {
+            failure(operation, error);
+        }
+    };
+    [operation setCompletionBlockWithSuccess:xmlrpcSuccess failure:xmlrpcFailure];
 
     if (getenv("WPDebugXMLRPC")) {
         NSLog(@"[XML-RPC] > %@", [[NSString alloc] initWithData:[request HTTPBody] encoding:NSUTF8StringEncoding]);
@@ -284,16 +294,41 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
     NSURLRequest *request = [self requestWithMethod:method parameters:parameters];
     AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
     [operation setAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
-        // TODO: Implement dialog to ask user for credentials
-        /* Once we get credentials for the user, here's how to use them
-        NSURLCredential *credential = [NSURLCredential credentialWithUser:@"q" password:@"q" persistence:NSURLCredentialPersistencePermanent];
-        [[NSURLCredentialStorage sharedCredentialStorage] setDefaultCredential:credential forProtectionSpace:[challenge protectionSpace]];
-        [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
-         */
-
-        // Remove the next line once this method is properly implemented
-        [[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];
+        if ([challenge previousFailureCount] == 0) {
+            // No previous failures, copy the operation and show auth dialog
+            NSURLRequest *_request = [self requestWithMethod:method parameters:parameters];
+            AFHTTPRequestOperation *_operation = [self HTTPRequestOperationWithRequest:_request success:success failure:failure];
+            [_operation setAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
+                if ([challenge previousFailureCount] == 0) {
+                    NSURLCredential *credential = [[NSURLCredentialStorage sharedCredentialStorage] defaultCredentialForProtectionSpace:[challenge protectionSpace]];
+                    if (credential) {
+                        [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
+                    } else {
+                        [[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];                
+                    }            
+                } else {
+                    [[challenge sender] cancelAuthenticationChallenge:challenge];
+                }
+            }];
+            [operation cancel];
+            
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                AFAuthenticationAlertView *alert = [[AFAuthenticationAlertView alloc] initWithProtectionSpace:[challenge protectionSpace]
+                                                                                                    operation:_operation
+                                                                                                     andQueue:self.operationQueue];
+                [alert show];
+                [_operation release];
+            });
+        } else {
+            NSURLCredential *credential = [[NSURLCredentialStorage sharedCredentialStorage] defaultCredentialForProtectionSpace:[challenge protectionSpace]];
+            if (credential) {
+                [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
+            } else {
+                [[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];                
+            }            
+        }        
     }];
+
     [self enqueueHTTPRequestOperation:operation];
 }
 

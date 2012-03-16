@@ -547,6 +547,8 @@ Vendor/xmlrpc/XMLRPCResponse.m -text
 /WelcomeViewController.xib -text
 /WordPress[!!-~]copy-Info.plist -text
 WordPress.xcodeproj/project.pbxproj -text
+WordPressApi/AFAuthenticationAlertView.h -text
+WordPressApi/AFAuthenticationAlertView.m -text
 WordPressApi/AFXMLRPCClient.h -text
 WordPressApi/AFXMLRPCClient.m -text
 WordPressApi/WordPressApi.h -text
