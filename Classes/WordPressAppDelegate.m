@@ -287,6 +287,20 @@ static WordPressAppDelegate *wordPressApp = NULL;
     }
     //the guide say: NO if the application cannot handle the URL resource, otherwise return YES. 
     //The return value is ignored if the application is launched as a result of a remote notification.
+
+#if DEBUG
+    /*
+     A dictionary containing the credentials for all available protection spaces.
+     The dictionary has keys corresponding to the NSURLProtectionSpace objects.
+     The values for the NSURLProtectionSpace keys consist of dictionaries where the keys are user name strings, and the value is the corresponding NSURLCredential object.
+     */
+    [[[NSURLCredentialStorage sharedCredentialStorage] allCredentials] enumerateKeysAndObjectsUsingBlock:^(NSURLProtectionSpace *ps, NSDictionary *dict, BOOL *stop) {
+        [dict enumerateKeysAndObjectsUsingBlock:^(id key, NSURLCredential *credential, BOOL *stop) {
+            NSLog(@"Removing credential %@ for %@", [credential user], [ps host]);
+            [[NSURLCredentialStorage sharedCredentialStorage] removeCredential:credential forProtectionSpace:ps];
+        }];
+    }];
+#endif
     return YES;
 }
 
