@@ -357,6 +357,8 @@
 		E128567715103A4500406BC9 /* toolbarMoreiPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566D15103A4500406BC9 /* toolbarMoreiPad@2x.png */; };
 		E128567815103A4500406BC9 /* toolbarOliPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566E15103A4500406BC9 /* toolbarOliPad@2x.png */; };
 		E128567915103A4500406BC9 /* toolbarUliPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566F15103A4500406BC9 /* toolbarUliPad@2x.png */; };
+		E12AAB621513C4B6009D025B /* WPComOAuthController.m in Sources */ = {isa = PBXBuildFile; fileRef = E12AAB611513C4B6009D025B /* WPComOAuthController.m */; };
+		E12AAB641513C4CA009D025B /* WPComOAuthController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E12AAB631513C4CA009D025B /* WPComOAuthController.xib */; };
 		E12F55F114A1F22D0060A510 /* NSDataAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55E714A1F22D0060A510 /* NSDataAdditions.m */; };
 		E12F55F214A1F22D0060A510 /* NSStringAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55E914A1F22D0060A510 /* NSStringAdditions.m */; };
 		E12F55F314A1F22D0060A510 /* XMLRPCConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55EC14A1F22D0060A510 /* XMLRPCConnectionManager.m */; };
@@ -981,6 +983,9 @@
 		E128566D15103A4500406BC9 /* toolbarMoreiPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbarMoreiPad@2x.png"; sourceTree = "<group>"; };
 		E128566E15103A4500406BC9 /* toolbarOliPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbarOliPad@2x.png"; sourceTree = "<group>"; };
 		E128566F15103A4500406BC9 /* toolbarUliPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbarUliPad@2x.png"; sourceTree = "<group>"; };
+		E12AAB601513C4B6009D025B /* WPComOAuthController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPComOAuthController.h; sourceTree = "<group>"; };
+		E12AAB611513C4B6009D025B /* WPComOAuthController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPComOAuthController.m; sourceTree = "<group>"; };
+		E12AAB631513C4CA009D025B /* WPComOAuthController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WPComOAuthController.xib; sourceTree = "<group>"; };
 		E12F55E614A1F22D0060A510 /* NSDataAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDataAdditions.h; sourceTree = "<group>"; };
 		E12F55E714A1F22D0060A510 /* NSDataAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDataAdditions.m; sourceTree = "<group>"; };
 		E12F55E814A1F22D0060A510 /* NSStringAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStringAdditions.h; sourceTree = "<group>"; };
@@ -1741,6 +1746,8 @@
 		AC34397A0E11435A00E5D79B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				E12AAB601513C4B6009D025B /* WPComOAuthController.h */,
+				E12AAB611513C4B6009D025B /* WPComOAuthController.m */,
 				03B1DF31113D87E900BBD1C6 /* iPad */,
 				AC34397B0E11443300E5D79B /* Blog */,
 				C533CF320E6D3AB3000C3DE8 /* Comments */,
@@ -2261,6 +2268,7 @@
 		E19472D8134E3E4A00879F63 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				E12AAB631513C4CA009D025B /* WPComOAuthController.xib */,
 				28AD735F0D9D9599002E5188 /* MainWindow.xib */,
 				836FECEA12715E2A000309D8 /* CrashReportView.xib */,
 				A0E293FD0E21037200C6919C /* WPAddCategoryViewController.xib */,
@@ -2846,6 +2854,7 @@
 				30811744151057880028A15E /* Default-Landscape@2x.png in Resources */,
 				30811747151057940028A15E /* Icon-72@2x.png in Resources */,
 				30811749151057B50028A15E /* fabric@2x.png in Resources */,
+				E12AAB641513C4CA009D025B /* WPComOAuthController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3050,6 +3059,7 @@
 				E140E624151229DD00900F0C /* AFJSONRequestOperation.m in Sources */,
 				E140E625151229DD00900F0C /* AFJSONUtilities.m in Sources */,
 				E1330B0F151275300010018D /* AFAuthenticationAlertView.m in Sources */,
+				E12AAB621513C4B6009D025B /* WPComOAuthController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

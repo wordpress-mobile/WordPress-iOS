@@ -41,4 +41,29 @@
 }
 
 
+- (NSMutableDictionary *)dictionaryFromQueryString {
+    if (!self)
+        return nil;
+
+    NSMutableDictionary *result = [NSMutableDictionary dictionary];
+
+    NSArray *pairs = [self componentsSeparatedByString:@"&"];
+    for (NSString *pair in pairs) {
+        NSRange separator = [pair rangeOfString:@"="];
+        NSString *key, *value;
+        if (separator.location != NSNotFound) {
+            key = [pair substringToIndex:separator.location];
+            value = [[pair substringFromIndex:separator.location + 1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        } else {
+            key = pair;
+            value = @"";
+        }
+
+        key = [key stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        [result setObject:value forKey:key];
+    }
+
+    return result;
+}
+
 @end

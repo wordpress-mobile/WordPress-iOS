@@ -195,6 +195,8 @@ Classes/WPCategoriesController.h -text
 Classes/WPCategoriesController.m -text
 Classes/WPCategoryTree.h -text
 Classes/WPCategoryTree.m -text
+Classes/WPComOAuthController.h -text
+Classes/WPComOAuthController.m -text
 Classes/WPImagePickerController.h -text
 Classes/WPImagePickerController.m -text
 Classes/WPKeyboardToolbar.h -text
@@ -532,6 +534,7 @@ Vendor/xmlrpc/XMLRPCResponse.m -text
 /WPAFNetworking.h -text
 /WPAddCategoryViewController.xib -text
 /WPCategoriesController.xib -text
+/WPComOAuthController.xib -text
 /WPReaderViewController.xib -text
 /WPSelectionTableViewController.xib -text
 /WPWebViewController-iPad.xib -text

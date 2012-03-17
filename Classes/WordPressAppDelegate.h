@@ -7,10 +7,11 @@
 #import "CrashReportViewController.h"
 #import "HelpViewController.h"
 #import "Reachability.h"
+#import "WPComOAuthController.h"
 
 @class AutosaveManager;
 
-@interface WordPressAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate> {
+@interface WordPressAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate, WPComOAuthDelegate> {
 	Blog *currentBlog;
     //Connection Reachability variables
     Reachability *internetReachability;
@@ -29,6 +30,7 @@
 	NSMutableData *statsData;
 	NSString *postID;
     UITextField *passwordTextField;
+    NSString *oauthCallback;
 	    
 	// Core Data
     NSManagedObjectContext *managedObjectContext_;

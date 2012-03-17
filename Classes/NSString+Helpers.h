@@ -13,5 +13,6 @@
 - (NSString *) stringByUrlEncoding;
 - (NSString *) base64Encoding;
 - (NSString *) md5;
+- (NSMutableDictionary *)dictionaryFromQueryString;
 
 @end

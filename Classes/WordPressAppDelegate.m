@@ -331,6 +331,16 @@ static WordPressAppDelegate *wordPressApp = NULL;
     if (url && [url isKindOfClass:[NSURL class]]) {
         NSString *URLString = [url absoluteString];
         NSLog(@"Application launched with URL: %@", URLString);
+        if ([[url host] isEqualToString:@"oauth"]) {
+            NSDictionary *params = [[url query] dictionaryFromQueryString];
+            oauthCallback = [[params objectForKey:@"callback"] retain];
+            NSString *clientId = [params objectForKey:@"client_id"];
+            NSString *redirectUrl = [params objectForKey:@"redirect_uri"];
+            NSString *secret = [params objectForKey:@"secret"];
+            if (clientId && redirectUrl && secret && oauthCallback) {
+                [WPComOAuthController presentWithClientId:clientId redirectUrl:redirectUrl clientSecret:secret delegate:self];
+            }
+        }
         
         return YES;
     } else {
@@ -1389,6 +1399,29 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		}
 		
 	}
+}
+
+#pragma mark - WPComOAuthDelegate
+
+- (void)controllerDidCancel:(WPComOAuthController *)controller {
+    NSLog(@"OAuth canceled");
+    NSURL *callback = [NSURL URLWithString:[NSString stringWithFormat:@"%@://wordpress-sso", oauthCallback]];
+    [[UIApplication sharedApplication] openURL:callback];
+}
+- (void)controller:(WPComOAuthController *)controller didAuthenticateWithToken:(NSString *)token blog:(NSString *)blogUrl {
+    NSLog(@"OAuth successful. Token %@ Blog %@", token, blogUrl);
+    NSString *encodedToken = (NSString *)CFURLCreateStringByAddingPercentEscapes(
+                                                                                 NULL,
+                                                                                 (CFStringRef)token,
+                                                                                 NULL,
+                                                                                 (CFStringRef)@"!*'();:@&=+$,/?%#[]",
+                                                                                 kCFStringEncodingUTF8 );
+    NSURL *callback = [NSURL URLWithString:[NSString stringWithFormat:@"%@://wordpress-sso?token=%@&blog=%@",
+                                            oauthCallback,
+                                            encodedToken,
+                                            [blogUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+    NSLog(@"Launching %@", callback);
+    [[UIApplication sharedApplication] openURL:callback];
 }
 
 @end
