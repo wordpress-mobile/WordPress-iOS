@@ -129,6 +129,7 @@
         self.mt_text_more = nil;
     }
 	self.wp_slug		= [postInfo objectForKey:@"wp_slug"];
+	self.post_thumbnail = [postInfo objectForKey:@"featured_image"];
 	self.postFormat		= [postInfo objectForKey:@"wp_post_format"];
 	
     self.remoteStatus   = AbstractPostRemoteStatusSync;
@@ -234,6 +235,9 @@
     [media save];
 
     self.content = [NSString stringWithFormat:@"%@\n\n%@", [media html], self.content];
+    if (media.mediaID) {
+        self.post_thumbnail = media.mediaID;
+    }
     [self uploadWithSuccess:nil failure:nil];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];

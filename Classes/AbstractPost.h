@@ -36,6 +36,7 @@ typedef enum {
 @property (nonatomic, retain) NSString * wp_slug;
 @property (nonatomic, retain) NSNumber * remoteStatusNumber;
 @property (nonatomic) AbstractPostRemoteStatus remoteStatus;
+@property (nonatomic, retain) NSNumber * post_thumbnail;
 
 // Relationships
 @property (nonatomic, retain) Blog * blog;

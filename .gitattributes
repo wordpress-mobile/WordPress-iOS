@@ -235,6 +235,8 @@ Classes/WordPress.xcdatamodeld/WordPress[!!-~]3.xcdatamodel/elements -text svneo
 Classes/WordPress.xcdatamodeld/WordPress[!!-~]3.xcdatamodel/layout -text svneol=unset#unset
 Classes/WordPress.xcdatamodeld/WordPress[!!-~]4.xcdatamodel/elements -text svneol=unset#unset
 Classes/WordPress.xcdatamodeld/WordPress[!!-~]4.xcdatamodel/layout -text svneol=unset#unset
+Classes/WordPress.xcdatamodeld/WordPress[!!-~]5.xcdatamodel/elements -text svneol=unset#unset
+Classes/WordPress.xcdatamodeld/WordPress[!!-~]5.xcdatamodel/layout -text svneol=unset#unset
 Classes/WordPress.xcdatamodeld/WordPress.xcdatamodel/elements -text
 Classes/WordPress.xcdatamodeld/WordPress.xcdatamodel/layout -text
 Classes/WordPressAppDelegate.h -text

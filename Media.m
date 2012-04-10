@@ -19,6 +19,7 @@
     AFHTTPRequestOperation *_uploadOperation;
 }
 
+@dynamic mediaID;
 @dynamic mediaType;
 @dynamic remoteURL;
 @dynamic localURL;
@@ -157,6 +158,10 @@
 
                 if([response objectForKey:@"url"] != nil)
                     self.remoteURL = [response objectForKey:@"url"];
+                
+                if ([response objectForKey:@"id"] != nil) {
+                    self.mediaID = [[response objectForKey:@"id"] numericValue];
+                }
 
                 self.remoteStatus = MediaRemoteStatusSync;
                 [_uploadOperation release]; _uploadOperation = nil;

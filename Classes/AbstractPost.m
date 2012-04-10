@@ -17,7 +17,7 @@
 
 @implementation AbstractPost
 @dynamic author, content, date_created_gmt, postID, postTitle, status, password, remoteStatusNumber, permaLink, 
-		mt_excerpt, mt_text_more, wp_slug;
+		mt_excerpt, mt_text_more, wp_slug, post_thumbnail;
 @dynamic blog, media;
 @dynamic comments;
 
@@ -261,6 +261,7 @@
     [postParams setValueIfNotNil:self.permaLink forKey:@"permalink"];
     [postParams setValueIfNotNil:self.mt_excerpt forKey:@"mt_excerpt"];
     [postParams setValueIfNotNil:self.wp_slug forKey:@"wp_slug"];
+    [postParams setValueIfNotNil:self.post_thumbnail forKey:@"wp_featured_image"];
 	
 	if (self.mt_text_more != nil && [self.mt_text_more length] > 0)
         [postParams setObject:self.mt_text_more forKey:@"mt_text_more"];
