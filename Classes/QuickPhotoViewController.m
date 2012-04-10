@@ -192,7 +192,7 @@
     appDelegate.isUploadingPost = YES;
     
     dispatch_async(dispatch_get_main_queue(), ^(void) {
-        [[post.media anyObject] performSelector:@selector(upload) withObject:nil];    
+        [[post.media anyObject] uploadWithSuccess:nil failure:nil];
         
         [post save];
     });
