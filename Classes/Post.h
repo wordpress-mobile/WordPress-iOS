@@ -47,11 +47,6 @@
  */
 - (void)setCategoriesFromNames:(NSArray *)categoryNames;
 
-#pragma mark     Data Management
-// Autosave for local drafts
-- (void)autosave; // TODO: Move to AbstractPost
-- (void)updateFromDictionary:(NSDictionary *)postInfo; // TODO: Remove after WPDataController is gone
-
 ///---------------------------------
 /// @name Creating and finding posts
 ///---------------------------------

@@ -1028,7 +1028,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	else if (textField == tagsTextField)
         self.post.tags = tagsTextField.text;
     
-    [self.post autosave];
+    [self.apost autosave];
 }
 
 - (void)positionTextView:(NSNotification *)notification {
