@@ -15,7 +15,7 @@
 #define BLAVATAR_URL @"http://gravatar.com/blavatar/%@?s=70&d=404"
 
 #define GRAVATAR_DEFAULT_IMAGE  @"gravatar.jpg"
-#define GRAVATAR_URL            @"http://www.gravatar.com/avatar/%@?s=80&d=404"
+#define GRAVATAR_URL            @"http://www.gravatar.com/avatar/%@?s=160&d=404"
 
 @implementation UIImageView (Gravatar)
 
