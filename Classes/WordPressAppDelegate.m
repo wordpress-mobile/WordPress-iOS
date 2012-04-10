@@ -1244,7 +1244,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	NSString *statsDataString = [[[NSString alloc] initWithData:statsData encoding:NSUTF8StringEncoding] autorelease];
     statsDataString = [[statsDataString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]] objectAtIndex:0];
 	NSString *appversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-    if ([statsDataString compare:appversion] > 0) {
+    if ([statsDataString compare:appversion options:NSNumericSearch] > 0) {
         NSLog(@"There's a new version: %@", statsDataString);
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Update Available", @"")
                                                         message:NSLocalizedString(@"A new version of WordPress for iOS is now available", @"")
