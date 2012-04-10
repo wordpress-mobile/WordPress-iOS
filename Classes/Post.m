@@ -235,10 +235,7 @@
     [media save];
 
     self.content = [NSString stringWithFormat:@"%@\n\n%@", [media html], self.content];
-    if (media.mediaID) {
-        self.post_thumbnail = media.mediaID;
-    }
-    [self uploadWithSuccess:nil failure:nil];
+        [self uploadWithSuccess:nil failure:nil];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
