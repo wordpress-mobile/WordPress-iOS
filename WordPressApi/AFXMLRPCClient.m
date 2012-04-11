@@ -160,26 +160,30 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
     
 
     void (^xmlrpcSuccess)(AFHTTPRequestOperation *, id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
-        XMLRPCResponse *response = [[XMLRPCResponse alloc] initWithData:responseObject];
-        NSError *err = nil;
-        if (getenv("WPDebugXMLRPC")) {
-            NSLog(@"[XML-RPC] < %@", [response body]);
-        }
-        
-        if ([response isFault]) {
-            NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:[response faultString], NSLocalizedDescriptionKey, nil];
-            err = [NSError errorWithDomain:@"XMLRPC" code:[[response faultCode] intValue] userInfo:usrInfo];
-        }
-        
-        if (err) {
-            if (failure) {
-                failure(operation, err);
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+            XMLRPCResponse *response = [[XMLRPCResponse alloc] initWithData:responseObject];
+            NSError *err = nil;
+            if (getenv("WPDebugXMLRPC")) {
+                NSLog(@"[XML-RPC] < %@", [response body]);
             }
-        } else {
-            if (success) {
-                success(operation, [response object]);
+            
+            if ([response isFault]) {
+                NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:[response faultString], NSLocalizedDescriptionKey, nil];
+                err = [NSError errorWithDomain:@"XMLRPC" code:[[response faultCode] intValue] userInfo:usrInfo];
             }
-        }
+            
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                if (err) {
+                    if (failure) {
+                        failure(operation, err);
+                    }
+                } else {
+                    if (success) {
+                        success(operation, [response object]);
+                    }
+                }
+            });
+        });        
     };
     void (^xmlrpcFailure)(AFHTTPRequestOperation *, NSError *) = ^(AFHTTPRequestOperation *operation, NSError *error) {
         if (getenv("WPDebugXMLRPC")) {
