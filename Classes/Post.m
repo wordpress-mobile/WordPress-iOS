@@ -333,28 +333,34 @@
     NSArray *parameters = [self.blog getXMLRPCArgsWithExtra:[self XMLRPCDictionary]];
     self.remoteStatus = AbstractPostRemoteStatusPushing;
 
-    [self.blog.api callMethod:@"metaWeblog.newPost"
-                   parameters:parameters
-                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                          if ([responseObject respondsToSelector:@selector(numericValue)]) {
-                              self.postID = [responseObject numericValue];
-                              self.remoteStatus = AbstractPostRemoteStatusSync;
-                              [self save];
-                              [self getPostWithSuccess:nil failure:nil];
-                              if (success) success();
-                              [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploaded" object:self];
-                          } else if (failure) {
-                              self.remoteStatus = AbstractPostRemoteStatusFailed;
-                              NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"Invalid value returned for new post: %@", responseObject] forKey:NSLocalizedDescriptionKey];
-                              NSError *error = [NSError errorWithDomain:@"org.wordpress.iphone" code:0 userInfo:userInfo];
-                              failure(error);
-                              [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadFailed" object:self];
-                          }
-                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                          self.remoteStatus = AbstractPostRemoteStatusFailed;
-                          if (failure) failure(error);
-                          [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadFailed" object:self];
-                      }];    
+    NSMutableURLRequest *request = [self.blog.api requestWithMethod:@"metaWeblog.newPost"
+                                                  parameters:parameters];
+    if (self.specialType != nil) {
+        [request addValue:self.specialType forHTTPHeaderField:@"WP-Quick-Post"];
+    }
+    AFHTTPRequestOperation *operation = [self.blog.api HTTPRequestOperationWithRequest:request
+                                                                               success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                                                   if ([responseObject respondsToSelector:@selector(numericValue)]) {
+                                                                                       self.postID = [responseObject numericValue];
+                                                                                       self.remoteStatus = AbstractPostRemoteStatusSync;
+                                                                                       [self save];
+                                                                                       [self getPostWithSuccess:nil failure:nil];
+                                                                                       if (success) success();
+                                                                                       [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploaded" object:self];
+                                                                                   } else if (failure) {
+                                                                                       self.remoteStatus = AbstractPostRemoteStatusFailed;
+                                                                                       NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"Invalid value returned for new post: %@", responseObject] forKey:NSLocalizedDescriptionKey];
+                                                                                       NSError *error = [NSError errorWithDomain:@"org.wordpress.iphone" code:0 userInfo:userInfo];
+                                                                                       failure(error);
+                                                                                       [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadFailed" object:self];
+                                                                                   }
+
+                                                                               } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                                                   self.remoteStatus = AbstractPostRemoteStatusFailed;
+                                                                                   if (failure) failure(error);
+                                                                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadFailed" object:self];
+                                                                               }];
+    [self.blog.api enqueueHTTPRequestOperation:operation];
 }
 
 - (void)getPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
