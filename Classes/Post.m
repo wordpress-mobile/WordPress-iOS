@@ -124,7 +124,7 @@
 	self.permaLink      = [postInfo objectForKey:@"permaLink"];
 	self.mt_excerpt		= [postInfo objectForKey:@"mt_excerpt"];
 	self.mt_text_more	= [postInfo objectForKey:@"mt_text_more"];
-    if (self.mt_text_more) {
+    if (self.mt_text_more && self.mt_text_more.length > 0) {
         self.content = [NSString stringWithFormat:@"%@\n\n<!--more-->\n\n%@", self.content, self.mt_text_more];
         self.mt_text_more = nil;
     }
