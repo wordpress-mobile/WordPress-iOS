@@ -1145,6 +1145,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
             [api callMethod:@"wpcom.mobile_push_register_token"
                  parameters:[NSArray arrayWithObjects:username, password, token, [[UIDevice currentDevice] uniqueIdentifier], nil]
                     success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                        WPFLog(@"Registered token %@, sending blogs list", token);
                         [self sendPushNotificationBlogsList];
                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                         WPFLog(@"Couldn't register token: %@", [error localizedDescription]);
@@ -1194,7 +1195,9 @@ static WordPressAppDelegate *wordPressApp = NULL;
     AFXMLRPCClient *api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
     [api callMethod:@"wpcom.mobile_push_set_blogs_list"
          parameters:[NSArray arrayWithObjects:username, password, token, blogsID, nil]
-            success:nil failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                WPFLog(@"Sent blogs list (%d blogs)", [blogsID count]);
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 WPFLog(@"Failed registering blogs list: %@", [error localizedDescription]);
             }];
     
