@@ -3325,7 +3325,7 @@
 					"-lxml2",
 					"-licucore",
 				);
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "403D6473-CE31-4068-A273-FAA758833506";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
