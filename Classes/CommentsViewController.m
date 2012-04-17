@@ -295,9 +295,8 @@
     [self.blog syncCommentsWithSuccess:^() {
         [self refreshCommentsList];
     } failure:^(NSError *error) {
+        [WPError showAlertWithError:error title:NSLocalizedString(@"Couldn't sync comments", @"")];
         [self refreshCommentsList];
-        NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
-		[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
     }];
 }
 

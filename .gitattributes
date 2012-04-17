@@ -197,6 +197,8 @@ Classes/WPCategoryTree.h -text
 Classes/WPCategoryTree.m -text
 Classes/WPComOAuthController.h -text
 Classes/WPComOAuthController.m -text
+Classes/WPError.h -text
+Classes/WPError.m -text
 Classes/WPImagePickerController.h -text
 Classes/WPImagePickerController.m -text
 Classes/WPKeyboardToolbar.h -text

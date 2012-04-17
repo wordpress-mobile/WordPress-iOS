@@ -201,7 +201,7 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
         }
 
         if (failure) {
-            failure(operation, error);
+            failure(operation, [WPError errorWithResponse:operation.response error:error]);
         }
     };
     [operation setCompletionBlockWithSuccess:xmlrpcSuccess failure:xmlrpcFailure];

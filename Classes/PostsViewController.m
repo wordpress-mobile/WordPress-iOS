@@ -303,6 +303,7 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
         } loadMore:NO];
     } failure:^(NSError *error) {
+        [WPError showAlertWithError:error title:NSLocalizedString(@"Couldn't sync posts", @"")];
         [self refreshPostList];
     }];
 }
