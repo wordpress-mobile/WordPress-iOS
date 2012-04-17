@@ -461,6 +461,10 @@ static WordPressAppDelegate *wordPressApp = NULL;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"ApplicationDidBecomeActive" object:nil];
     
+    // Clear notifications badge and update server
+    // TODO: read/unread management when there's an API for it
+    [self setAppBadge];
+    [self sendPushNotificationBlogsList];
 }
 
 
