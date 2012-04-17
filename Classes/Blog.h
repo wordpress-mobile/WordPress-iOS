@@ -53,7 +53,6 @@
 - (void)syncCommentsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)syncPostFormatsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)syncBlogWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (NSString *) returnMD5Hash:(NSString*)concat;
 
 #pragma mark -
 #pragma mark Class methods
