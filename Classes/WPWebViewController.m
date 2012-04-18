@@ -328,13 +328,6 @@
             }
         }
     }
-    if (!loading) {
-        if (DeviceIsPad()) {
-            [iPadNavBar.topItem setTitle:[webView stringByEvaluatingJavaScriptFromString:@"document.title"]];
-        }
-        else
-            self.navigationItem.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
-    }
     isLoading = loading;
 }
 
