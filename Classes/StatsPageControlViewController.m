@@ -51,8 +51,8 @@
     scrollView.delegate = self;
     
     scrollView.isAccessibilityElement = YES;
-    scrollView.accessibilityLabel = @"Stats";
-    scrollView.accessibilityIdentifier = @"Stats";
+    scrollView.accessibilityLabel = @"Stats";       // required for UIAutomation for iOS4
+    scrollView.accessibilityIdentifier = @"Stats";  // required for UIAutomation for iOS5
 	
     pageControl.numberOfPages = 3;
     pageControl.currentPage = 0;

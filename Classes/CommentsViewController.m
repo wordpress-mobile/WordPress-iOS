@@ -124,8 +124,8 @@
     commentsTableView.allowsSelectionDuringEditing = YES;
     
     commentsTableView.isAccessibilityElement = YES;
-    commentsTableView.accessibilityLabel = @"Comments";
-    commentsTableView.accessibilityIdentifier = @"Comments";
+    commentsTableView.accessibilityLabel = @"Comments";       // required for UIAutomation for iOS 4
+    commentsTableView.accessibilityIdentifier = @"Comments";  // required for UIAutomation for iOS 5
     
     editButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Edit", @"") style:UIBarButtonItemStyleBordered
                                                      target:self action:@selector(editComments)];
