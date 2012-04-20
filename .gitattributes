@@ -309,6 +309,10 @@ Settings.bundle/en.lproj/Root.strings -text
 /ToolbarIconGear.png -text svneol=unset#unset
 /ToolbarIconLocation.png -text svneol=unset#unset
 /TouchXML.h -text
+UIAutomationTests/Blog.js -text
+UIAutomationTests/Config.js -text
+UIAutomationTests/Post.js -text
+UIAutomationTests/WPiOSTests.js -text
 /UIButtonBarTrash.png -text svneol=unset#unset
 /UIButtonBarTrash@2x.png -text svneol=unset#unset
 /UIImage+Alpha.h -text

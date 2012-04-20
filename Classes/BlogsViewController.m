@@ -36,6 +36,9 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
 	self.tableView.allowsSelectionDuringEditing = YES;
+    self.tableView.isAccessibilityElement = YES;
+    self.tableView.accessibilityLabel = @"Blog List";
+    self.tableView.accessibilityIdentifier = @"Blog List";
     
     [self setupPhotoButton];
 	

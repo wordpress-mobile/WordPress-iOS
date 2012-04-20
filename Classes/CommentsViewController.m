@@ -123,6 +123,10 @@
     commentsTableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
     commentsTableView.allowsSelectionDuringEditing = YES;
     
+    commentsTableView.isAccessibilityElement = YES;
+    commentsTableView.accessibilityLabel = @"Comments";
+    commentsTableView.accessibilityIdentifier = @"Comments";
+    
     editButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Edit", @"") style:UIBarButtonItemStyleBordered
                                                      target:self action:@selector(editComments)];
 	

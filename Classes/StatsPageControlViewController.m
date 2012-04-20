@@ -49,6 +49,10 @@
     scrollView.showsVerticalScrollIndicator = NO;
     scrollView.scrollsToTop = NO;
     scrollView.delegate = self;
+    
+    scrollView.isAccessibilityElement = YES;
+    scrollView.accessibilityLabel = @"Stats";
+    scrollView.accessibilityIdentifier = @"Stats";
 	
     pageControl.numberOfPages = 3;
     pageControl.currentPage = 0;
