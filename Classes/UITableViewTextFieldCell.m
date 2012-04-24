@@ -51,7 +51,7 @@
     if (DeviceIsPad()) {
         frame = CGRectMake(labelSize.width + 50,
                            self.textLabel.frame.origin.y,
-                           self.frame.size.width - labelSize.width,
+                           self.frame.size.width - labelSize.width - 100,
                            self.textLabel.frame.size.height);
     } else {
         frame = CGRectMake(labelSize.width + 30,
