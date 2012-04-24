@@ -397,7 +397,7 @@
         [request addValue:@"*/*" forHTTPHeaderField:@"Accept"];
         AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
         [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-            self.detailContentHTML = responseObject;
+            self.detailContentHTML = operation.responseString;
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), error];
             self.detailContentHTML = nil;
