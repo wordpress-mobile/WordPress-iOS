@@ -207,15 +207,18 @@ Adds a token to the querystring of the request and to a request header
         NSString *methodName = [method stringByPaddingToLength:([method length] + [args count]) withString:@":" startingAtIndex:0];
         SEL aSelector = NSSelectorFromString(methodName);
         NSMethodSignature *signature = [[self class] instanceMethodSignatureForSelector:aSelector];
-        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-        [invocation retainArguments];
-        invocation.selector = aSelector;
-        invocation.target = self;
-        [args enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            [invocation setArgument:&obj atIndex:idx + 2];
-        }];
+        NSInvocation *invocation = nil;
+        if (signature) {
+            invocation = [NSInvocation invocationWithMethodSignature:signature];
+            [invocation retainArguments];
+            invocation.selector = aSelector;
+            invocation.target = self;
+            [args enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                [invocation setArgument:&obj atIndex:idx + 2];
+            }];
+        }
         
-        if ([self respondsToSelector:aSelector]) {
+        if (invocation && [self respondsToSelector:aSelector]) {
             @try {
                 [invocation invoke];
                 WPFLog(@"Hybrid: %@ %@", self, methodName);
