@@ -37,6 +37,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 @synthesize connectionAvailable, wpcomAvailable, currentBlogAvailable, wpcomReachability, internetReachability, currentBlogReachability;
 
 - (id)init {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     if (!wordPressApp) {
         wordPressApp = [super init];
 		
@@ -55,8 +56,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
         [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
         [dictionary release];
 
-		[self performSelectorInBackground:@selector(checkWPcomAuthentication) withObject:nil];
-        
         /* 
          ( The following "init" code loads the Settings.bundle at startup and it is required from InAppSettings. 
          We are not using it since at this point the app already loaded the bundle. Keep the code for future reference. )
@@ -189,6 +188,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
         [self cleanUnusedMediaFileFromTmpDir];
     });
 
+    [self checkWPcomAuthentication];
 	BlogsViewController *blogsViewController = [[BlogsViewController alloc] init];
 	crashReportView = [[CrashReportViewController alloc] initWithNibName:@"CrashReportView" bundle:nil];
 	
@@ -434,17 +434,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
     if (![self.managedObjectContext save:&error]) {
         WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
         exit(-1);
-    }
-}
-
-- (void)applicationWillEnterForeground:(UIApplication *)application {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    NSDate *lastReaderCache = [[NSUserDefaults standardUserDefaults] objectForKey:@"lastReaderCache"];
-    if (lastReaderCache == nil || [lastReaderCache timeIntervalSinceNow] < -3600) { // Update reader cache every hour
-        [FileLogger log:@"Last reader cached at %@, refreshing cache", lastReaderCache];
-        [self performSelectorInBackground:@selector(checkWPcomAuthentication) withObject:nil];
-    } else {
-        [FileLogger log:@"Last reader cached at %@, not refreshing cache", lastReaderCache];
     }
 }
 
@@ -834,11 +823,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
     return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
 }
 
-- (NSString *)readerCachePath {
-    NSString *cachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
-    return [cachePath stringByAppendingPathComponent:@"reader.html"];
-}
-
 - (NSString *)applicationUserAgent {
   return [[NSUserDefaults standardUserDefaults] objectForKey:@"UserAgent"];
 }
@@ -851,8 +835,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)checkWPcomAuthentication {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	NSString *authURL = @"https://wordpress.com/wp-login.php";
+	NSString *authURL = @"https://wordpress.com/xmlrpc.php";
 	
     NSError *error = nil;
 	if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil) {
@@ -870,32 +853,18 @@ static WordPressAppDelegate *wordPressApp = NULL;
                                                         andServiceName:@"WordPress.com"
                                                                  error:&error];
         if (password != nil) {
-            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:authURL]];
-            [request setHTTPMethod:@"POST"];
-            [request setValue:username forHTTPHeaderField:@"log"];
-            [request setValue:password forHTTPHeaderField:@"pwd"];
-            NSString *redirect_to = [WPWebAppViewController authorizeHybridURL:[NSURL URLWithString:kMobileReaderURL]].absoluteString;
-            [request setValue:redirect_to forHTTPHeaderField:@"redirect_to"];
-            [request addValue:[self applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
-            AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-            [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-                WPFLog(@"Authenticated in WP.com, cached reader");
-                NSData *readerData = responseObject;
-                [readerData writeToFile:[self readerCachePath] atomically:YES];
-                [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"lastReaderCache"];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"ReaderCached" object:nil];
-                isWPcomAuthenticated = YES;
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                WPFLog(@"Error logging into wp.com: %@", [error localizedDescription]);
-                isWPcomAuthenticated = NO;
-            }];
-            
-            NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-            [queue addOperation:operation];
-            
-            [request release];
-            [operation release];
-            [queue release];
+            AFXMLRPCClient *client = [AFXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
+            [client callMethod:@"wp.getUsersBlogs"
+                    parameters:[NSArray arrayWithObjects:username, password, nil]
+                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                           isWPcomAuthenticated = YES;
+                           WPFLog(@"Logged in to WordPress.com as %@", username);
+                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                           if ([error.domain isEqualToString:@"XMLRPC"] && error.code == 403) {
+                               isWPcomAuthenticated = NO;
+                           }
+                           WPFLog(@"Error authenticating %@ with WordPress.com: %@", username, [error description]);
+                       }];            
         } else {
             isWPcomAuthenticated = NO;
         }
@@ -908,8 +877,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		[[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"wpcom_authenticated_flag"];
 	else
 		[[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"wpcom_authenticated_flag"];
-	
-	[pool release];
 }
 
 

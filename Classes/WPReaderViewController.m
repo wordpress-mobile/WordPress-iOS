@@ -21,7 +21,6 @@
 - (void)setLoading:(BOOL)loading;
 - (void)removeNotifications;
 - (void)addNotifications;
-- (void)readerCached:(NSNotification*)notification;
 - (void)refreshWebViewNotification:(NSNotification*)notification;
 - (void)refreshWebViewTimer:(NSTimer*)timer;
 - (void)refreshWebViewIfNeeded;
@@ -150,16 +149,10 @@
 #pragma mark - notifications related methods
 - (void)addNotifications {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshWebViewNotification:) name:@"ApplicationDidBecomeActive" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readerCached:) name:@"ReaderCached" object:nil];
 }
 
 - (void)removeNotifications{
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)readerCached:(NSNotification*)notification {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    self.detailContentHTML = nil;
 }
 
 - (void)refreshWebViewNotification:(NSNotification*)notification {
@@ -253,12 +246,7 @@
         [self.topicsViewController loadTopicsPage];
     }
     request = [self authorizeHybridRequest:request];
-    NSString *readerPath = [appDelegate readerCachePath];
-    if (!needsLogin && [self.url.absoluteString isEqualToString:[WPWebAppViewController authorizeHybridURL:[NSURL URLWithString:kMobileReaderURL]].absoluteString] && [[NSFileManager defaultManager] fileExistsAtPath:readerPath]) {
-        [self.webView loadHTMLString:[NSString stringWithContentsOfFile:readerPath encoding:NSUTF8StringEncoding error:nil] baseURL:self.url];
-    } else {
-        [self.webView loadRequest:request];
-    }
+    [self.webView loadRequest:request];
     [self setupTopics];
 
 }
