@@ -274,12 +274,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	
 	[blogsViewController release];
 	[window makeKeyAndVisible];
-	
-	// Register for push notifications
-	[[UIApplication sharedApplication]
-	 registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-										 UIRemoteNotificationTypeSound |
-										 UIRemoteNotificationTypeAlert)];
+
+	[self registerForPushNotifications];
     
     //Information related to the reason for its launching, which can include things other than notifications.
     NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
@@ -1090,6 +1086,15 @@ static WordPressAppDelegate *wordPressApp = NULL;
             break;
         default:
             break;
+    }
+}
+
+- (void)registerForPushNotifications {
+    if (isWPcomAuthenticated) {
+        [[UIApplication sharedApplication]
+         registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+                                             UIRemoteNotificationTypeSound |
+                                             UIRemoteNotificationTypeAlert)];
     }
 }
 

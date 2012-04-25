@@ -77,6 +77,7 @@
 - (void)showContentDetailViewController:(UIViewController *)viewController;
 - (void)deleteLocalDraft:(NSNotification *)notification;
 - (void)dismissCrashReporter:(NSNotification *)notification;
+- (void)registerForPushNotifications;
 - (void)sendApnsToken;
 - (void)unregisterApnsToken;
 - (void)sendPushNotificationBlogsList;
