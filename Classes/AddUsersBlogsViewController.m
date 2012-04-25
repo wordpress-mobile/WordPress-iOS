@@ -279,6 +279,7 @@
 - (void)signOut {
     if (isWPcom) {
         appDelegate.isWPcomAuthenticated = NO;
+        [appDelegate unregisterApnsToken];
        /* NSError *error = nil;
         [SFHFKeychainUtils deleteItemForUsername:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"]
                                   andServiceName:@"WordPress.com"
