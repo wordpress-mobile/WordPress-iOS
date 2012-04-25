@@ -311,7 +311,6 @@
          parameters:[NSArray arrayWithObjects:username, password, nil]
             success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 usersBlogs = responseObject;
-                NSLog(@"usersBlogs: %@", usersBlogs);
                 hasCompletedGetUsersBlogs = YES;
                 if(usersBlogs.count > 0) {
                     // TODO: Store blog list in Core Data
@@ -335,7 +334,6 @@
 	
     NSError *error = nil;
     if (isWPcom) {
-        NSLog(@"saveSelectedBlogs. username: %@, usersBlogs: %@", _username, usersBlogs);
         self.username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
         self.password = [SFHFKeychainUtils getPasswordForUsername:_username
                                               andServiceName:@"WordPress.com"

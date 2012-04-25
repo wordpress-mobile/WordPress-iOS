@@ -43,7 +43,7 @@
                                                        error:&error];
     }
 	
-	if((![username isEqualToString:@""]) && (![password isEqualToString:@""]))
+	if(username != nil && password != nil && (![username isEqualToString:@""]) && (![password isEqualToString:@""]))
 		[self authenticateWithSuccess:nil failure:nil];
 	
 	// Setup WPcom table header
@@ -312,6 +312,9 @@
 	else
 		[[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"wpcom_authenticated_flag"];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [WordPressAppDelegate sharedWordPressApp].isWPcomAuthenticated = isAuthenticated;
+    [[WordPressAppDelegate sharedWordPressApp] registerForPushNotifications];
 }
 
 - (void)clearLoginData {
@@ -329,8 +332,6 @@
     [api authenticateWithSuccess:^{
         isAuthenticated = YES;
         [self saveLoginData];
-		// Register this device for push notifications with WordPress.com if necessary
-		// [[WordPressAppDelegate sharedWordPressApp] sendApnsTokenInBackground];
 
         if (success) {
             success();
