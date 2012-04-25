@@ -95,8 +95,10 @@ static WordPressAppDelegate *wordPressApp = NULL;
 #pragma mark -
 #pragma mark UIApplicationDelegate Methods
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
-#ifndef DEBUG
-//#warning Need Flurry api key for distribution
+#ifdef DEBUG
+    WPFLog(@"Notifications: sandbox");
+#else
+    WPFLog(@"Notifications: production");
 #endif
 	
 	if(getenv("NSZombieEnabled"))
@@ -1145,9 +1147,14 @@ static WordPressAppDelegate *wordPressApp = NULL;
                                                         andServiceName:@"WordPress.com"
                                                                  error:&error];
         if (password != nil) {
+#ifdef DEBUG
+            NSNumber *sandbox = [NSNumber numberWithBool:YES];
+#else
+            NSNumber *sandbox = [NSNumber numberWithBool:NO];
+#endif
             AFXMLRPCClient *api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
             [api callMethod:@"wpcom.mobile_push_register_token"
-                 parameters:[NSArray arrayWithObjects:username, password, token, [[UIDevice currentDevice] uniqueIdentifier], nil]
+                 parameters:[NSArray arrayWithObjects:username, password, token, [[UIDevice currentDevice] uniqueIdentifier], @"apple", sandbox, nil]
                     success:^(AFHTTPRequestOperation *operation, id responseObject) {
                         WPFLog(@"Registered token %@, sending blogs list", token);
                         [self sendPushNotificationBlogsList];
