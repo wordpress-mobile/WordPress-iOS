@@ -83,7 +83,11 @@
     self.content        = [postInfo objectForKey:@"description"];
     self.date_created_gmt    = [postInfo objectForKey:@"date_created_gmt"];
     self.status         = [postInfo objectForKey:@"page_status"];
-    self.password       = [postInfo objectForKey:@"wp_password"];
+    NSString *password = [postInfo objectForKey:@"wp_password"];
+    if ([password isEqualToString:@""]) {
+        password = nil;
+    }
+    self.password = password;
     self.remoteStatus   = AbstractPostRemoteStatusSync;
 	self.permaLink      = [postInfo objectForKey:@"permaLink"];
 	self.mt_excerpt		= [postInfo objectForKey:@"mt_excerpt"];

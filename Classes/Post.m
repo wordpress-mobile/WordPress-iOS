@@ -119,7 +119,11 @@
         self.dateCreated = [postInfo objectForKey:@"dateCreated"];
     }
     self.status         = [postInfo objectForKey:@"post_status"];
-    self.password       = [postInfo objectForKey:@"wp_password"];
+    NSString *password = [postInfo objectForKey:@"wp_password"];
+    if ([password isEqualToString:@""]) {
+        password = nil;
+    }
+    self.password = password;
     self.tags           = [postInfo objectForKey:@"mt_keywords"];
 	self.permaLink      = [postInfo objectForKey:@"permaLink"];
 	self.mt_excerpt		= [postInfo objectForKey:@"mt_excerpt"];
