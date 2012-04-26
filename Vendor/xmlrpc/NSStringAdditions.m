@@ -128,10 +128,4 @@ static char base64EncodingTable[64] = {
     return [NSString stringWithString: string];
 }
 
-#pragma mark - 
-
-- (NSString *)stringByUrlEncoding {
-	return (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL,  (CFStringRef)self,  NULL,  (CFStringRef)@"!*'();:@&amp;=+$,/?%#[]",  kCFStringEncodingUTF8);
-}
-
 @end

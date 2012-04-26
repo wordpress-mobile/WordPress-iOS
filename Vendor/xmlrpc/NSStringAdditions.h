@@ -12,8 +12,4 @@
 
 - (NSString *)escapedString;
 
-#pragma mark -
-
-- (NSString *)stringByUrlEncoding;
-
 @end

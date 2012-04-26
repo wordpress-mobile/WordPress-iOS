@@ -267,7 +267,11 @@
             
             break;
         case XMLRPCElementTypeDictionary:
-            [parentElementValue setObject: myElementValue forKey: myElementKey];
+            if ([myElementValue isEqual:[NSNull null]]) {
+                [parentElementValue removeObjectForKey:myElementKey];
+            } else {
+                [parentElementValue setObject: myElementValue forKey: myElementKey];
+            }
             
             break;
         case XMLRPCElementTypeMember:
@@ -329,6 +333,10 @@
         result = [self parseDateString: value withFormat: @"yyyy'-'MM'-'dd'T'HH:mm:ss"];
     }
     
+    if (!result) {
+        result = (NSDate *)[NSNull null];
+    }
+
     return result;
 }
 
