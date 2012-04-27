@@ -50,6 +50,7 @@
                                   [wpcom_username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                                   [wpcom_password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                                   queryUrl];
+        [queryUrl release];
         NSLog(@"request_body: %@", request_body);
         [request setURL:[NSURL URLWithString:WPCOM_LOGIN_URL]];
         [request setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
@@ -126,6 +127,7 @@
     UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
     UIWindow *window = [[WordPressAppDelegate sharedWordPressApp] window];
     [window.rootViewController presentModalViewController:navigation animated:YES];
+    [navigation release];
 }
 
 #pragma mark - UIWebViewDelegate
@@ -140,7 +142,7 @@
         NSLog(@"found redirect URL");
         NSString *query = [url query];
         NSArray *parameters = [query componentsSeparatedByString:@"&"];
-        NSString *code;
+        NSString *code = nil;
         for (NSString *parameter in parameters) {
             if ([parameter hasPrefix:@"code="]) {
                 code = [[parameter componentsSeparatedByString:@"="] lastObject];

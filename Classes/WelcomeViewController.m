@@ -30,10 +30,10 @@
     [self.view addSubview:infoButton];
 	if(DeviceIsPad()) {
 		self.tableView.backgroundView = nil;
-		UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] 
+		UIBarButtonItem *cancelButton = [[[UIBarButtonItem alloc] 
 										 initWithTitle:NSLocalizedString(@"Close", @"") 
 										 style:UIBarButtonItemStylePlain 
-										 target:self action:@selector(cancel:)];
+										 target:self action:@selector(cancel:)] autorelease];
 		self.navigationItem.leftBarButtonItem = cancelButton;
 	}
 }

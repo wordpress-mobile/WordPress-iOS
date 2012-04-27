@@ -182,12 +182,6 @@
 	
 	NSString *conditionalButtonTitle = nil;
 
-	if ([self isApprove]) {
-		conditionalButtonTitle = NSLocalizedString(@"Approve Comment", @"");
-	} else {
-		conditionalButtonTitle = NSLocalizedString(@"Unapprove Comment", @"");
-	}
-	
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@""
 															 delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil
 													otherButtonTitles: NSLocalizedString(@"Delete Comment", @""), NSLocalizedString(@"Mark Comment as Spam", @""), NSLocalizedString(@"Edit Comment", @""),nil];
@@ -722,10 +716,10 @@
 	if (url != nil) {
         WPWebViewController *webViewController;
         if (DeviceIsPad()) {
-            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
+            webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
         }
         else {
-            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
+            webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
         }
         [webViewController setUrl:url];
         if (DeviceIsPad())
@@ -766,10 +760,10 @@
 	if (inType == UIWebViewNavigationTypeLinkClicked) {
         WPWebViewController *webViewController;
         if (DeviceIsPad()) {
-            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
+            webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
         }
         else {
-            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
+            webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
         }
         [webViewController setUrl:[inRequest URL]];
         if (DeviceIsPad())

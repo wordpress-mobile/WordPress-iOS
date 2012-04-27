@@ -68,7 +68,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	loadMoreSearchTerms = 10;
 	loadMoreClicks = 10;
 	
-	self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+	self.tableView = [[[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped] autorelease];
 	self.view.frame = CGRectMake(0, 0, 320, 460);
 	self.tableView.sectionHeaderHeight = 30;
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -582,23 +582,23 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 		} //end chartData if statement
 		else{
 			if ([reportType isEqualToString:@"viewsData"]){
-				self.viewsData = [[NSArray alloc] initWithArray:self.statsTableData copyItems:YES];
+				self.viewsData = [[[NSArray alloc] initWithArray:self.statsTableData copyItems:YES] autorelease];
 				[self.tableView reloadData];		
 			}
 			if ([reportType isEqualToString:@"postViewsData"]){
-				self.postViewsData = [[NSArray alloc] initWithArray:self.statsTableData copyItems:YES];
+				self.postViewsData = [[[NSArray alloc] initWithArray:self.statsTableData copyItems:YES] autorelease];
 				[self.tableView reloadData];		
 			}
 			if ([reportType isEqualToString:@"referrersData"]){
-				self.referrersData = [[NSArray alloc] initWithArray:self.statsTableData copyItems:YES];
+				self.referrersData = [[[NSArray alloc] initWithArray:self.statsTableData copyItems:YES] autorelease];
 				[self.tableView reloadData];		
 			}
 			if ([reportType isEqualToString:@"searchTermsData"]){
-				self.searchTermsData = [[NSArray alloc] initWithArray:self.statsTableData copyItems:YES];
+				self.searchTermsData = [[[NSArray alloc] initWithArray:self.statsTableData copyItems:YES] autorelease];
 				[self.tableView reloadData];		
 			}
 			if ([reportType isEqualToString:@"clicksData"]){
-				self.clicksData = [[NSArray alloc] initWithArray:self.statsTableData copyItems:YES];
+				self.clicksData = [[[NSArray alloc] initWithArray:self.statsTableData copyItems:YES] autorelease];
 				[self.tableView reloadData];		
 			}
 		}
@@ -619,6 +619,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	UILabel *errorMsg = [[UILabel alloc] init];
 	errorMsg.text = NSLocalizedString(@"No stats data found.  Please try again later.", @"");
 	self.tableView.tableHeaderView = errorMsg;
+    [errorMsg release];
 }
 
 /*  NSURLConnection Methods  */
@@ -1005,7 +1006,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			label.font = [UIFont systemFontOfSize:14.0]; 
 			label.text = NSLocalizedString(@"Show more...", @"");
 			label.textAlignment = UITextAlignmentCenter; 
-            label.textColor = [[UIColor alloc] initWithRed:40.0 / 255 green:82.0 / 255 blue:137.0 / 255 alpha:1.0];
+            label.textColor = [[[UIColor alloc] initWithRed:40.0 / 255 green:82.0 / 255 blue:137.0 / 255 alpha:1.0] autorelease];
 		}
 		else {
 			[cell addColumn:210];
@@ -1052,7 +1053,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 }
                 else{
-                    label.textColor = [[UIColor alloc] initWithRed:40.0 / 255 green:82.0 / 255 blue:137.0 / 255 alpha:1.0];
+                    label.textColor = [[[UIColor alloc] initWithRed:40.0 / 255 green:82.0 / 255 blue:137.0 / 255 alpha:1.0] autorelease];
                     if (![self.leftColumn hasPrefix:@"http"]) {
                         self.leftColumn = [NSString stringWithFormat:@"http://%@", self.leftColumn];
                         label.text = self.leftColumn;
@@ -1087,7 +1088,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			label.text = [numberFormatter stringFromNumber: statDigits];
             [numberFormatter release];
 			label.textAlignment = UITextAlignmentRight; 
-			label.textColor = [[UIColor alloc] initWithRed:40.0 / 255 green:82.0 / 255 blue:137.0 / 255 alpha:1.0]; 
+			label.textColor = [[[UIColor alloc] initWithRed:40.0 / 255 green:82.0 / 255 blue:137.0 / 255 alpha:1.0] autorelease]; 
 			label.adjustsFontSizeToFitWidth = YES;
 			label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | 
 			UIViewAutoresizingFlexibleHeight; 
@@ -1219,10 +1220,10 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	if (url != nil) {
         WPWebViewController *webViewController;
         if (DeviceIsPad()) {
-            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
+            webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
         }
         else {
-            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
+            webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
         }
         [webViewController setUrl:url];
         if (DeviceIsPad()) {

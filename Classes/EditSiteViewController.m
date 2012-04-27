@@ -42,7 +42,7 @@
 		if (DeviceIsPad() && self.navigationItem.leftBarButtonItem == nil)
 		{
 			//add cancel button if editing an existing blog
-			self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
+			self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)] autorelease];
 		}
 
         NSError *error = nil;
@@ -205,10 +205,10 @@
 	} else if (indexPath.section == 2) {
         WPWebViewController *webViewController;
         if (DeviceIsPad()) {
-            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
+            webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
         }
         else {
-            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
+            webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
         }
         NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
         [webViewController setUrl:[NSURL URLWithString:dashboardUrl]];

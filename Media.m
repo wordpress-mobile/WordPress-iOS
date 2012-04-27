@@ -239,6 +239,7 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:VideoUploadSuccessful
                                                                     object:self
                                                                   userInfo:videoMeta];
+                [videoMeta release];
             }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

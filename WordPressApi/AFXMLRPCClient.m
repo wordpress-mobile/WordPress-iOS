@@ -18,8 +18,9 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
 @implementation AFXMLRPCRequest
 @synthesize method, parameters;
 - (void)dealloc {
-    [method release];
-    [parameters release];
+    self.method = nil;
+    self.parameters = nil;
+
     [super dealloc];
 }
 @end
@@ -27,9 +28,10 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
 @implementation AFXMLRPCRequestOperation
 @synthesize XMLRPCRequest, success, failure;
 - (void)dealloc {
-    [XMLRPCRequest release];
-    [success release];
-    [failure release];
+    self.XMLRPCRequest = nil;
+    self.success = nil;
+    self.failure = nil;
+
     [super dealloc];
 }
 @end
@@ -123,6 +125,7 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
     XMLRPCEncoder *encoder = [[XMLRPCEncoder alloc] init];
     [encoder setMethod:method withParameters:parameters];
     NSData *body = [[encoder encode] dataUsingEncoding:NSUTF8StringEncoding];
+    [encoder release];
     [request setHTTPBody:body];
     
     return request;
@@ -138,6 +141,7 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
     [encoder setMethod:method withParameters:parameters];
     [request setHTTPBodyStream:[encoder encodedStream]];
     [request setValue:[[encoder encodedLength] stringValue] forHTTPHeaderField:@"Content-Length"];
+    [encoder release];
     
     return request;    
 }
@@ -181,6 +185,9 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
                     WPFLog(@"Blog returned invalid data (URL: %@)\n%@", request.URL.absoluteString, operation.responseString);
                 }
             }
+            
+            id object = [[response object] copy];
+            [response release];
 
             dispatch_async(dispatch_get_main_queue(), ^(void) {
                 if (err) {
@@ -189,9 +196,10 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
                     }
                 } else {
                     if (success) {
-                        success(operation, [response object]);
+                        success(operation, object);
                     }
                 }
+                [object release];
             });
         });        
     };
@@ -214,12 +222,13 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
             dispatch_async(dispatch_get_main_queue(), ^(void) {
                 AFAuthenticationAlertView *alert = [[AFAuthenticationAlertView alloc] initWithChallenge:challenge];
                 [alert show];
+                [alert release];
             });
         }        
     }];
 
     if (getenv("WPDebugXMLRPC")) {
-        NSLog(@"[XML-RPC] > %@", [[NSString alloc] initWithData:[request HTTPBody] encoding:NSUTF8StringEncoding]);
+        NSLog(@"[XML-RPC] > %@", [[[NSString alloc] initWithData:[request HTTPBody] encoding:NSUTF8StringEncoding] autorelease]);
     }
     
     return operation;

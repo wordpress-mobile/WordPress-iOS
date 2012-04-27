@@ -23,6 +23,7 @@
 	UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] init];
 	buttonItem.customView = spinner;
 	self.navigationItem.rightBarButtonItem = buttonItem;
+    [buttonItem release];
 	
 	NSURLRequest *request = [NSURLRequest requestWithURL:
 								[NSURL URLWithString:NSLocalizedString(@"http://wordpress.com/signup?ref=wp-iphone", @"")]];

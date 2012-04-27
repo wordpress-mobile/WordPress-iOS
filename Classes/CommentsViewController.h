@@ -40,7 +40,6 @@
     int indexForCurrentPost;
 	NSNumber *lastUserSelectedCommentID;
 	NSIndexPath *selectedIndexPath;
-	NSIndexPath *lastUserSelectedIndexPath;
 	
 	// added to distinguish a single posts's comments VC
 	// from the master VC's comments list.

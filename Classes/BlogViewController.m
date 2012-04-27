@@ -58,10 +58,10 @@
 - (void)viewDidUnload {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	self.selectedIndex = tabBarController.selectedIndex;
-    commentsItem = nil;
-    postsItem = nil;
-    pagesItem = nil;
-    statsItem = nil;
+    [commentsItem release]; commentsItem = nil;
+    [postsItem release]; postsItem = nil;
+    [pagesItem release]; pagesItem = nil;
+    [statsItem release]; statsItem = nil;
 	[super viewDidUnload];
 }
 
@@ -83,6 +83,7 @@
     [postsViewController release]; postsViewController = nil;
     [pagesViewController release]; pagesViewController = nil;
     [commentsViewController release]; commentsViewController = nil;
+    [statsTableViewController release]; statsTableViewController = nil;
     [splitViewController release]; splitViewController = nil;
     self.blog = nil;
 	

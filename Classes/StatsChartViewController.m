@@ -104,13 +104,12 @@ static NSArray *__pageControlColorList = nil;
 	UIImage *image = [[UIImage alloc] initWithData:imgData];
 	//add header image to uitable
 	chart.image = image;
+    [image release];
 	if(!spinner.hidden)
 		spinner.hidden=YES;
 
-
-	
-    //[imgData release];
-    //imgData=nil;
+    [imgData release];
+    imgData=nil;
 }
 
 - (void) connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {

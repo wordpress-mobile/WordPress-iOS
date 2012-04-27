@@ -418,7 +418,7 @@
 - (void)editPost:(AbstractPost *)apost {
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 
-    self.postDetailViewController = [[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil];
+    self.postDetailViewController = [[[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil] autorelease];
     self.postDetailViewController.apost = [apost createRevision];
     self.postDetailViewController.editMode = kEditPost;
     [self.postDetailViewController refreshUIForCurrentPost];

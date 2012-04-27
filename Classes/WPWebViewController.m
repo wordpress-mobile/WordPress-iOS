@@ -314,7 +314,7 @@
                 
                 [spinner startAnimating];
                 
-                self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:customView];
+                self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:customView] autorelease];
                 
                 [spinner release];
                 [customView release];
@@ -396,7 +396,7 @@
 
 // Find the Webview's UIScrollView backwards compatible
 - (UIScrollView *)scrollView {
-    UIScrollView *scrollView;
+    UIScrollView *scrollView = nil;
     if ([self.webView respondsToSelector:@selector(scrollView)]) {
         scrollView = self.webView.scrollView;
     } else {

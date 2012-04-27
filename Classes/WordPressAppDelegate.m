@@ -199,7 +199,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	
 	if(DeviceIsPad() == NO)
 	{
-		UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:blogsViewController];
+		UINavigationController *aNavigationController = [[[UINavigationController alloc] initWithRootViewController:blogsViewController] autorelease];
         //aNavigationController.navigationBar.tintColor = [UIColor colorWithRed:31/256.0 green:126/256.0 blue:163/256.0 alpha:1.0];
 		self.navigationController = aNavigationController;
 
@@ -984,6 +984,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ANY posts.blog != NULL"];
     [fetchRequest setPredicate:predicate];
     NSArray *mediaObjectsToKeep = [context executeFetchRequest:fetchRequest error:&error];
+    [context release];
+    [fetchRequest release];
     if (error != nil) {
         WPFLog(@"Error cleaning up tmp files: %@", [error localizedDescription]);
     }
@@ -1134,6 +1136,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                         WPFLog(@"Couldn't register token: %@", [error localizedDescription]);
                     }];
+            [api release];
         } 
 	}
 }
@@ -1172,6 +1175,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                         WPFLog(@"Couldn't unregister token: %@", [error localizedDescription]);
                     }];
+            [api release];
         } 
 	}
 }
@@ -1222,6 +1226,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 WPFLog(@"Failed registering blogs list: %@", [error localizedDescription]);
             }];
+    [api release];
     
     [fetchRequest release];
     [sortDescriptor release]; sortDescriptor = nil;
@@ -1278,6 +1283,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
                                               otherButtonTitles:NSLocalizedString(@"Update Now", @""), nil];
         alert.tag = 102;
         [alert show];
+        [alert release];
     }
 }
 
@@ -1445,6 +1451,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
                                             oauthCallback,
                                             encodedToken,
                                             [blogUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+    [encodedToken release];
     NSLog(@"Launching %@", callback);
     [[UIApplication sharedApplication] openURL:callback];
 }

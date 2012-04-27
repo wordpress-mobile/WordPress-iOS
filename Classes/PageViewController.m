@@ -14,7 +14,7 @@
 
 - (void)checkForNewItem {
 	if(!self.apost) //when it was a new page and user clicked on cancel
-		self.apost = [Page newDraftForBlog:self.blog];
+		self.apost = [[Page newDraftForBlog:self.blog] autorelease];
 }
 
 - (void)viewDidLoad {

@@ -102,7 +102,7 @@
 // Subclassed in PageViewController
 - (void)checkForNewItem {
 	if(!self.apost)  //when it was a new post and user clicked on cancel
-		self.apost = [Post newDraftForBlog:self.blog];
+		self.apost = [[Post newDraftForBlog:self.blog] autorelease];
 }
 
 - (void)editorDismissed:(NSNotification *)aNotification {

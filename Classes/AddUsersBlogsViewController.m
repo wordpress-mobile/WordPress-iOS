@@ -310,7 +310,7 @@
     [api callMethod:@"wp.getUsersBlogs"
          parameters:[NSArray arrayWithObjects:username, password, nil]
             success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                usersBlogs = responseObject;
+                usersBlogs = [responseObject retain];
                 hasCompletedGetUsersBlogs = YES;
                 if(usersBlogs.count > 0) {
                     // TODO: Store blog list in Core Data

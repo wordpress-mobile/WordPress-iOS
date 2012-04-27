@@ -149,7 +149,6 @@
         delButton = [WPKeyboardToolbarButtonItem button];
         [delButton setImageName:@"toolbarDel"];
         delButton.frame = CGRectMake(x, 0, delButton.imageView.image.size.width + padding, height);
-        x += delButton.frame.size.width + margin;
         delButton.actionTag = @"del";
         delButton.actionName = NSLocalizedString(@"del", @"");
         [delButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -201,7 +200,6 @@
         moreButton = [WPKeyboardToolbarButtonItem button];
         [moreButton setImageName:@"toolbarMore"];
         moreButton.frame = CGRectMake(x, 0, moreButton.imageView.image.size.width + padding, height);
-        x += moreButton.frame.size.width + margin;
         moreButton.actionTag = @"more";
         moreButton.actionName = NSLocalizedString(@"more", @"");
         [moreButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
