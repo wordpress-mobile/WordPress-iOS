@@ -1116,7 +1116,11 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 				[self.tableView reloadData];
 			}
 			else {
-                [self viewUrl: [[referrersData objectAtIndex:indexPath.row] objectAtIndex:0]];
+                NSString *urlString = [[referrersData objectAtIndex:indexPath.row] objectAtIndex:0];
+                if (![urlString hasPrefix:@"http"]) {
+                    urlString = [NSString stringWithFormat:@"http://%@", urlString];
+                }
+                [self viewUrl: urlString];
                 [tableView deselectRowAtIndexPath:indexPath animated:YES];
 			}
 			break;
