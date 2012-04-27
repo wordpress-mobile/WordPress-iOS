@@ -180,8 +180,6 @@
 		return;
 	} 
 	
-	NSString *conditionalButtonTitle = nil;
-
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@""
 															 delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil
 													otherButtonTitles: NSLocalizedString(@"Delete Comment", @""), NSLocalizedString(@"Mark Comment as Spam", @""), NSLocalizedString(@"Edit Comment", @""),nil];
