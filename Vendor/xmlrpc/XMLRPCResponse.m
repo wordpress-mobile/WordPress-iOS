@@ -19,14 +19,21 @@
             return nil;
         }
 
-        XMLRPCDataCleaner *cleaner = [[XMLRPCDataCleaner alloc] initWithData:data];
-        myBody = [[NSString alloc] initWithData: [cleaner cleanData] encoding: NSUTF8StringEncoding];
+        myBody = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
         myObject = [[parser parse] retain];
+        if (myObject == nil) {
+            XMLRPCDataCleaner *cleaner = [[XMLRPCDataCleaner alloc] initWithData: data];
+            NSData *cleanData = [cleaner cleanData];
+            [cleaner release];
+            [parser release];
+            parser = [[XMLRPCEventBasedParser alloc] initWithData: cleanData];
+            myBody = [[NSString alloc] initWithData: cleanData encoding: NSUTF8StringEncoding];
+            myObject = [[parser parse] retain];
+        }
         
         isFault = [parser isFault];
         
         [parser release];
-        [cleaner release];
     }
     
     return self;
