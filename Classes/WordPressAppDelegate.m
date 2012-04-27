@@ -1075,6 +1075,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
                 alert.tag = kNotificationNewComment;
                 [alert show];
                 [alert release];
+                [self sendPushNotificationBlogsList];
             }
             break;
         case UIApplicationStateInactive:
