@@ -1065,19 +1065,27 @@ static WordPressAppDelegate *wordPressApp = NULL;
             NSLog(@"app state UIApplicationStateActive"); //application is in foreground
             //we should show an alert since the OS doesn't show anything in this case. Unfortunately no sound!!
             if([self isAlertRunning] != YES) {
-                [self setAlertRunning:YES];
-                NSString *msg = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
-                [lastNotificationInfo release];
-                lastNotificationInfo = [userInfo retain];
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"New comment", @"")
-                                                                message:msg
-                                                               delegate:self
-                                                      cancelButtonTitle:NSLocalizedString(@"Dismiss", @"")
-                                                      otherButtonTitles:NSLocalizedString(@"View", @"View comment from push notification"), nil];
-                alert.tag = kNotificationNewComment;
-                [alert show];
-                [alert release];
-                [self sendPushNotificationBlogsList];
+                NSDictionary *comment = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
+                if ([comment count] > 0) {
+                    [self setAlertRunning:YES];
+                    NSArray *args = [comment objectForKey:@"loc-args"];
+                    NSString *msg;
+                    if ([[comment objectForKey:@"loc-key"] isEqualToString:@"C1"])
+                        msg = [NSString stringWithFormat: NSLocalizedString(@"%@ commented on %@: \n%@", @""), [args objectAtIndex: 0], [args objectAtIndex: 1], [args objectAtIndex: 2]];
+                    else 
+                        msg = [NSString stringWithFormat: NSLocalizedString(@"Comment from %@: \n%@", @""), [args objectAtIndex: 0], [args objectAtIndex: 2]];
+                    [lastNotificationInfo release];
+                    lastNotificationInfo = [userInfo retain];
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"New comment", @"")
+                                                                    message:msg
+                                                                   delegate:self
+                                                          cancelButtonTitle:NSLocalizedString(@"Dismiss", @"")
+                                                          otherButtonTitles:NSLocalizedString(@"View", @"View comment from push notification"), nil];
+                    alert.tag = kNotificationNewComment;
+                    [alert show];
+                    [alert release];
+                    [self sendPushNotificationBlogsList];
+                }
             }
             break;
         case UIApplicationStateInactive:
