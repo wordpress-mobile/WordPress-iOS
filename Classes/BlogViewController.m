@@ -46,13 +46,15 @@
 - (void)viewWillAppear:(BOOL)animated {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewWillAppear:animated];
-	
+    
 	if (DeviceIsPad() == YES) {
 		[self restoreState];
 	}
-	else {
+	else if (![[NSUserDefaults standardUserDefaults] boolForKey:@"commentsLaunchedViaPushNotification"]) {
 		[tabBarController.selectedViewController viewWillAppear:animated];
-	}	
+	} else {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"commentsLaunchedViaPushNotification"];
+    }
 }
 
 - (void)viewDidUnload {
@@ -111,12 +113,12 @@
 	else if (viewController == commentsViewController) {
 		[self configureCommentsTab];
 	}
-	//uncomment me to add stats back
 	else if (viewController == statsTableViewController) {
 		[[NSUserDefaults standardUserDefaults] setValue:@"Stats" forKey:@"WPSelectedContentType"];
 	}
 	
-	[viewController viewWillAppear:NO];
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"commentsLaunchedViaPushNotification"])
+        [viewController viewWillAppear:NO];
 }
 
 - (void)configureCommentsTab {

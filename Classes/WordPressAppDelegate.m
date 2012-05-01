@@ -1245,8 +1245,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
     NSLog(@"Opening the notification screen");
     Blog *blog = [Blog findWithId:[[remoteNotif objectForKey:@"blog_id"] intValue] withContext:self.managedObjectContext];
     if (blog) {
-        [blog syncCommentsWithSuccess:nil failure:nil];
-
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		[defaults setBool:YES forKey:@"commentsLaunchedViaPushNotification"];
 		
