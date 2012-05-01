@@ -54,6 +54,7 @@
 @synthesize blog;
 @synthesize resultsController;
 @synthesize moderationSwipeView, moderationSwipeCell, moderationSwipeDirection;
+@synthesize dateOfPreviouslyOldestComment;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -70,6 +71,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.resultsController.delegate = nil;
 	self.resultsController = nil;
+	self.dateOfPreviouslyOldestComment = nil;
     [commentsArray release];
     [commentsDict release];
     [selectedComments release];
@@ -80,6 +82,7 @@
 	[_refreshHeaderView release]; _refreshHeaderView = nil;
     [moderationSwipeView release];
     [moderationSwipeCell release];
+	[newCommentIndexPaths release];
     [super dealloc];
 }
 
@@ -107,6 +110,10 @@
 
 #pragma mark -
 #pragma mark View Lifecycle Methods
+
+- (void)awakeFromNib {
+	newCommentIndexPaths = [[NSMutableArray array] retain];
+}
 
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
@@ -143,6 +150,8 @@
 	
   [self setupModerationSwipeView];
   [self setupGestureRecognizers];
+	
+	[self saveDateOfOldestComment];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -183,6 +192,7 @@
 		[commentsTableView setContentOffset:offset];
 		[_refreshHeaderView egoRefreshScrollViewDidEndDragging:commentsTableView];
 		[defaults setBool:false forKey:@"refreshCommentsRequired"];
+		[defaults setBool:NO forKey:@"commentsLaunchedViaPushNotification"];
 	}
 	
 }
@@ -295,9 +305,19 @@
 	[self syncComments];
 }
 
+- (void)saveDateOfOldestComment {
+	if (resultsController && resultsController.fetchedObjects && [resultsController.fetchedObjects count]) {
+		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+		Comment *comment = [self.resultsController objectAtIndexPath:indexPath];
+		self.dateOfPreviouslyOldestComment = comment.dateCreated;
+	}
+}
+
 - (void)syncComments {
+	[self saveDateOfOldestComment];
     [self.blog syncCommentsWithSuccess:^() {
         [self refreshCommentsList];
+		[newCommentIndexPaths removeAllObjects];
     } failure:^(NSError *error) {
         [WPError showAlertWithError:error title:NSLocalizedString(@"Couldn't sync comments", @"")];
         [self refreshCommentsList];
@@ -305,6 +325,7 @@
 }
 
 - (void)refreshCommentsList {
+
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:commentsTableView];
     if (!selectedComments) {
         selectedComments = [[NSMutableArray alloc] init];
@@ -546,10 +567,21 @@
 #pragma mark UITableViewDataSource Methods
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	
     //NSDictionary *dict = [selectedComments objectAtIndex:indexPath.row];
 	Comment *comment = [self.resultsController objectAtIndexPath:indexPath];
 	if ([comment.status isEqualToString:@"hold"]) {
 		cell.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
+	} else if (dateOfPreviouslyOldestComment && self.dateOfPreviouslyOldestComment == [self.dateOfPreviouslyOldestComment earlierDate:comment.dateCreated] && ![self.dateOfPreviouslyOldestComment isEqualToDate:comment.dateCreated]) {
+
+		if ([newCommentIndexPaths containsObject:indexPath]) {
+			cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
+		} else {		
+			cell.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
+			[newCommentIndexPaths addObject:indexPath];
+			[self performSelector:@selector(animateCell:) withObject:cell afterDelay:1.0];
+		}
+		
 	} else {
 		cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
 	}
@@ -621,6 +653,12 @@
   shadowImageView.image = shadow;
 
   [self.moderationSwipeView insertSubview:shadowImageView atIndex:0];  
+}
+
+- (void)animateCell:(UITableViewCell *)cell {
+	[UIView animateWithDuration:0.5 animations:^{
+		cell.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
+	}];
 }
 
 #pragma mark Gesture recognizers
@@ -1085,7 +1123,7 @@
 	return self.blog.isSyncingComments;
 }
 
--(NSDate *) lastSyncDate {
+- (NSDate *)lastSyncDate {
 	return self.blog.lastCommentsSync;
 }
 

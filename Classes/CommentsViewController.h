@@ -47,6 +47,9 @@
 	BOOL isSecondaryViewController;
 	
     EGORefreshTableHeaderView *_refreshHeaderView;
+
+	NSDate *dateOfPreviouslyOldestComment;
+	NSMutableArray *newCommentIndexPaths;
 }
 
 @property (readonly) UIBarButtonItem *editButtonItem;
@@ -62,6 +65,7 @@
 @property (nonatomic, retain) IBOutlet UIView* moderationSwipeView;
 @property (nonatomic, retain) UITableViewCell* moderationSwipeCell;
 @property (nonatomic) UISwipeGestureRecognizerDirection moderationSwipeDirection;
+@property (nonatomic, retain) NSDate *dateOfPreviouslyOldestComment;
 
 - (IBAction)deleteSelectedComments:(id)sender;
 - (IBAction)approveSelectedComments:(id)sender;
@@ -81,5 +85,8 @@
 - (void)showNextComment;
 - (void)trySelectSomething;
 - (void)trySelectSomethingAndShowIt;
+
+- (void)animateCell:(UITableViewCell *)cell;
+- (void)saveDateOfOldestComment;
 
 @end

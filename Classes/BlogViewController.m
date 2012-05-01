@@ -52,9 +52,7 @@
 	}
 	else if (![[NSUserDefaults standardUserDefaults] boolForKey:@"commentsLaunchedViaPushNotification"]) {
 		[tabBarController.selectedViewController viewWillAppear:animated];
-	} else {
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"commentsLaunchedViaPushNotification"];
-    }
+	}
 }
 
 - (void)viewDidUnload {
