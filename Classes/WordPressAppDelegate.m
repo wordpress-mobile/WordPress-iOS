@@ -992,7 +992,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	//get a references to media files linked in a post
     NSLog(@"%i media items to check for cleanup", [mediaObjectsToKeep count]);
 	for (Media *media in mediaObjectsToKeep) {
-        [mediaToKeep addObject:media.localURL];
+//        [mediaToKeep addObject:media.localURL];
 	}
 
 	//searches for jpg files within the app temp file
@@ -1022,7 +1022,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	[pool release];
 }
 
-#pragma mark Push Notification delegate
+#pragma mark - Push Notification delegate
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 	// Send the deviceToken to our server...
@@ -1247,6 +1247,9 @@ static WordPressAppDelegate *wordPressApp = NULL;
     if (blog) {
         [blog syncCommentsWithSuccess:nil failure:nil];
 
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		[defaults setBool:YES forKey:@"commentsLaunchedViaPushNotification"];
+		
         UIViewController *rootViewController = self.window.rootViewController;
         if ([rootViewController isKindOfClass:[UISplitViewController class]]) {
             rootViewController = [((UISplitViewController *)rootViewController).viewControllers objectAtIndex:0];

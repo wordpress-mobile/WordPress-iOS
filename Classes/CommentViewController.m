@@ -12,6 +12,7 @@
 #import "NSString+XMLExtensions.h"
 #import "WPWebViewController.h"
 #import "UIImageView+Gravatar.h"
+#import "WPWebViewController.h"
 
 #define COMMENT_BODY_TOP        100
 #define COMMENT_BODY_MAX_HEIGHT 4000
@@ -48,6 +49,7 @@
 
 
 @synthesize replyToCommentViewController, editCommentViewController, commentsViewController, wasLastCommentPending, commentAuthorUrlButton, commentAuthorEmailButton;
+@synthesize commentPostTitleButton;
 @synthesize comment = _comment, isVisible;
 
 #pragma mark -
@@ -63,6 +65,7 @@
 	[commentsViewController release];
 	[commentAuthorUrlButton release];
 	[commentAuthorEmailButton release];
+	[commentPostTitleButton release];
 	commentBodyWebView.delegate = nil;
     [commentBodyWebView stopLoading];
     [commentBodyWebView release];
@@ -131,6 +134,7 @@
     [gravatarImageView release]; gravatarImageView = nil;
     self.commentAuthorEmailButton = nil;
     self.commentAuthorUrlButton = nil;
+	self.commentPostTitleButton = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -154,7 +158,6 @@
         connectionStatus = ( [reach isReachable] );
         UIColor *textColor = connectionStatus == YES ? [UIColor blackColor] : [UIColor grayColor];
         commentAuthorLabel.textColor = textColor;
-        commentPostTitleLabel.textColor = textColor;
         commentDateLabel.textColor = textColor;
     }
 }
@@ -590,9 +593,9 @@
     rect.origin.y += pendingLabelHeight;
     commentAuthorEmailButton.frame = rect;
 
-    rect = commentPostTitleLabel.frame;
+    rect = commentPostTitleButton.frame;
     rect.origin.y += pendingLabelHeight;
-    commentPostTitleLabel.frame = rect;
+    commentPostTitleButton.frame = rect;
 
     rect = commentDateLabel.frame;
     rect.origin.y += pendingLabelHeight;
@@ -631,9 +634,9 @@
 		rect.origin.y -= pendingLabelHeight;
 		commentAuthorEmailButton.frame = rect;
 		
-		rect = commentPostTitleLabel.frame;
+		rect = commentPostTitleButton.frame;
 		rect.origin.y -= pendingLabelHeight;
-		commentPostTitleLabel.frame = rect;
+		commentPostTitleButton.frame = rect;
 		
 		rect = commentDateLabel.frame;
 		rect.origin.y -= pendingLabelHeight;
@@ -669,8 +672,10 @@
 	[commentAuthorEmailButton setTitle:[comment.author_email trim] forState:UIControlStateNormal];
 	[commentAuthorEmailButton setTitle:[comment.author_email trim] forState:UIControlStateHighlighted];
 	[commentAuthorEmailButton setTitle:[comment.author_email trim] forState:UIControlStateSelected];
-    if (comment.postTitle)
-        commentPostTitleLabel.text = [NSLocalizedString(@"on ", @"(Comment) on (Post Title)") stringByAppendingString:[[comment.postTitle stringByDecodingXMLCharacters] trim]];
+    if (comment.postTitle) {
+		NSString *postTitle = [NSLocalizedString(@"on ", @"(Comment) on (Post Title)") stringByAppendingString:[[comment.postTitle stringByDecodingXMLCharacters] trim]];
+		[commentPostTitleButton setTitle:postTitle forState:UIControlStateNormal];
+	}
 	if(comment.dateCreated != nil)
 		commentDateLabel.text = [@"" stringByAppendingString:[dateFormatter stringFromDate:comment.dateCreated]];
 	else
@@ -739,6 +744,18 @@
 		[recipient release];
 		[controller release];
 	}
+}
+
+- (IBAction)handlePostTitleButtonTapped:(id)sender {
+	
+	
+	
+	WPWebViewController *controller = [[WPWebViewController alloc] initWithNibName:nil bundle:nil];
+	controller.url = [NSURL URLWithString:self.comment.post.permaLink];
+	[self.navigationController pushViewController:controller animated:YES];
+	[controller release];
+	
+	
 }
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller  didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;

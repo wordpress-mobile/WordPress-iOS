@@ -94,16 +94,39 @@
 }
 
 - (NSString *)postTitle {
+	NSString *title = nil;
     if (self.post) {
-        return self.post.postTitle;
+        title = self.post.postTitle;
     } else {
         [self willAccessValueForKey:@"postTitle"];
-        NSString *title = [self primitiveValueForKey:@"postTitle"];
+        title = [self primitiveValueForKey:@"postTitle"];
         [self didAccessValueForKey:@"postTitle"];
-        return title;
     }
 
+	if (title == nil || [@"" isEqualToString:title]) {
+		title = NSLocalizedString(@"(no title)", @"the post has no title.");
+	}
+	return title;
+
 }
+
+- (NSString *)author {
+	NSString *authorName = nil;
+    if (self.post) {
+        authorName = self.post.author;
+    } else {
+        [self willAccessValueForKey:@"author"];
+        authorName = [self primitiveValueForKey:@"author"];
+        [self didAccessValueForKey:@"author"];
+    }
+	
+	if (authorName == nil || [@"" isEqualToString:authorName]) {
+		authorName = [NSLocalizedString(@"anonymous", @"the comment has an anonymous author.") capitalizedString];
+	}
+	return authorName;
+	
+}
+
 
 #pragma mark - Remote management
 

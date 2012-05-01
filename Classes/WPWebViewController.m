@@ -285,6 +285,7 @@
 }
 
 - (void)setLoading:(BOOL)loading {
+	
     if (isLoading == loading)
         return;
 
@@ -305,20 +306,7 @@
     }
     else {
         if( self.refreshButton ) { //the refresh
-            if (loading) {
-                UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
-                
-                UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-                [spinner setCenter:customView.center];
-                [customView addSubview:spinner];
-                
-                [spinner startAnimating];
-                
-                self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:customView] autorelease];
-                
-                [spinner release];
-                [customView release];
-            } else {
+            if (!loading) {
                 NSArray *items = [NSArray arrayWithObjects:backButton,
                                   [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
                                   forwardButton,
@@ -328,6 +316,24 @@
             }
         }
     }
+	if( self.refreshButton ) { //the refresh
+		if (loading) {
+			UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
+			
+			UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+			[spinner setCenter:customView.center];
+			[customView addSubview:spinner];
+			
+			[spinner startAnimating];
+			
+			self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:customView] autorelease];
+			
+			[spinner release];
+			[customView release];
+		} else {
+			self.navigationItem.rightBarButtonItem = optionsButton;
+		}
+	}
     isLoading = loading;
 }
 

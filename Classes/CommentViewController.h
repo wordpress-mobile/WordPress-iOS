@@ -20,7 +20,7 @@
     IBOutlet UILabel *commentAuthorLabel;
     IBOutlet UIButton *commentAuthorUrlButton;
 	IBOutlet UIButton *commentAuthorEmailButton;
-    IBOutlet UILabel *commentPostTitleLabel;
+	IBOutlet UIButton *commentPostTitleButton;
     IBOutlet UILabel *commentDateLabel;
     IBOutlet UIWebView *commentBodyWebView;
 	
@@ -57,6 +57,7 @@
 - (IBAction)launchDeleteCommentActionSheet;
 - (IBAction)viewURL;
 - (IBAction)sendEmail;
+- (IBAction)handlePostTitleButtonTapped:(id)sender;
 
 - (void)segmentAction:(id)sender;
 - (void)showComment:(Comment *)comment;
@@ -76,6 +77,7 @@
 @property (nonatomic, retain) Comment *comment;
 @property (nonatomic, retain) IBOutlet UIButton *commentAuthorUrlButton;
 @property (nonatomic, retain) IBOutlet UIButton *commentAuthorEmailButton;
+@property (nonatomic, retain) IBOutlet UIButton *commentPostTitleButton;
 @property BOOL wasLastCommentPending;
 @property BOOL isVisible;
 
