@@ -1065,22 +1065,37 @@ static WordPressAppDelegate *wordPressApp = NULL;
             NSLog(@"app state UIApplicationStateActive"); //application is in foreground
             //we should show an alert since the OS doesn't show anything in this case. Unfortunately no sound!!
             if([self isAlertRunning] != YES) {
-                NSDictionary *comment = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
-                if ([comment count] > 0) {
-                    [self setAlertRunning:YES];
-                    NSArray *args = [comment objectForKey:@"loc-args"];
-                    NSString *msg;
+                id comment = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
+                NSString *message = nil;
+                if ([comment isKindOfClass:[NSString class]]) {
+                    message = (NSString *)comment;
+                } else if ([comment isKindOfClass:[NSDictionary class]]) {
+                    NSDictionary *commentDict = (NSDictionary *)comment;
+                    NSArray *args = [commentDict objectForKey:@"loc-args"];
                     if ([[comment objectForKey:@"loc-key"] isEqualToString:@"C1"])
-                        msg = [NSString stringWithFormat: NSLocalizedString(@"%@ commented on %@: \n%@", @""), [args objectAtIndex: 0], [args objectAtIndex: 1], [args objectAtIndex: 2]];
+                        message = [NSString stringWithFormat: NSLocalizedString(@"%@ commented on %@: \n%@", @""), [args objectAtIndex: 0], [args objectAtIndex: 1], [args objectAtIndex: 2]];
                     else 
-                        msg = [NSString stringWithFormat: NSLocalizedString(@"Comment from %@: \n%@", @""), [args objectAtIndex: 0], [args objectAtIndex: 2]];
+                        message = [NSString stringWithFormat: NSLocalizedString(@"Comment from %@: \n%@", @""), [args objectAtIndex: 0], [args objectAtIndex: 2]];
+                }
+                if (message && [message length] > 0) {
+                    [self setAlertRunning:YES];
                     [lastNotificationInfo release];
                     lastNotificationInfo = [userInfo retain];
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"New comment", @"")
-                                                                    message:msg
-                                                                   delegate:self
-                                                          cancelButtonTitle:NSLocalizedString(@"Dismiss", @"")
-                                                          otherButtonTitles:NSLocalizedString(@"View", @"View comment from push notification"), nil];
+                    UIAlertView *alert = nil;
+                    if ([userInfo objectForKey:@"blog_id"] && [userInfo objectForKey:@"comment_id"]) {
+                        alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"New comment", @"")
+                                                           message:message
+                                                          delegate:self
+                                                 cancelButtonTitle:NSLocalizedString(@"Dismiss", @"")
+                                                 otherButtonTitles:NSLocalizedString(@"View", @"View comment from push notification"), nil];
+                    } else {
+                        // Unsupported notification: show it but do nothing when it's dismissed
+                        alert = [[UIAlertView alloc] initWithTitle:nil
+                                                           message:message
+                                                          delegate:self
+                                                 cancelButtonTitle:NSLocalizedString(@"Dismiss", @"")
+                                                 otherButtonTitles:nil];
+                    }
                     alert.tag = kNotificationNewComment;
                     [alert show];
                     [alert release];
@@ -1242,22 +1257,26 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif {
-    NSLog(@"Opening the notification screen");
-    Blog *blog = [Blog findWithId:[[remoteNotif objectForKey:@"blog_id"] intValue] withContext:self.managedObjectContext];
-    if (blog) {
-		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-		[defaults setBool:YES forKey:@"commentsLaunchedViaPushNotification"];
-		
-        UIViewController *rootViewController = self.window.rootViewController;
-        if ([rootViewController isKindOfClass:[UISplitViewController class]]) {
-            rootViewController = [((UISplitViewController *)rootViewController).viewControllers objectAtIndex:0];
+    if ([remoteNotif objectForKey:@"blog_id"] && [remoteNotif objectForKey:@"comment_id"]) {
+        WPFLog(@"Received notification: %@", remoteNotif);
+        Blog *blog = [Blog findWithId:[[remoteNotif objectForKey:@"blog_id"] intValue] withContext:self.managedObjectContext];
+        if (blog) {
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setBool:YES forKey:@"commentsLaunchedViaPushNotification"];
+
+            UIViewController *rootViewController = self.window.rootViewController;
+            if ([rootViewController isKindOfClass:[UISplitViewController class]]) {
+                rootViewController = [((UISplitViewController *)rootViewController).viewControllers objectAtIndex:0];
+            }
+            UINavigationController *nav = (UINavigationController *)rootViewController;
+            [nav popToRootViewControllerAnimated:NO];
+            BlogsViewController *blogsViewController = (BlogsViewController *)nav.topViewController;
+            [blogsViewController showBlog:blog animated:NO];
+            BlogViewController *blogViewController = (BlogViewController *)nav.visibleViewController;
+            blogViewController.selectedIndex = 2;
         }
-        UINavigationController *nav = (UINavigationController *)rootViewController;
-        [nav popToRootViewControllerAnimated:NO];
-        BlogsViewController *blogsViewController = (BlogsViewController *)nav.topViewController;
-        [blogsViewController showBlog:blog animated:NO];
-        BlogViewController *blogViewController = (BlogViewController *)nav.visibleViewController;
-        blogViewController.selectedIndex = 2;
+    } else {
+        WPFLog(@"Got unsupported notification: %@", remoteNotif);
     }
 }
 
