@@ -305,7 +305,9 @@
 
 - (void)saveDateOfOldestComment {
 	if (resultsController && resultsController.fetchedObjects && [resultsController.fetchedObjects count]) {
-		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+		// The last section will be the comments section.
+		NSInteger section = [[self.resultsController sections] count] - 1;
+		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:section];
 		Comment *comment = [self.resultsController objectAtIndexPath:indexPath];
 		self.dateOfPreviouslyOldestComment = comment.dateCreated;
 	}
