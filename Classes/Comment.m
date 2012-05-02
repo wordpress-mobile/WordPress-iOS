@@ -112,13 +112,10 @@
 
 - (NSString *)author {
 	NSString *authorName = nil;
-    if (self.post) {
-        authorName = self.post.author;
-    } else {
-        [self willAccessValueForKey:@"author"];
-        authorName = [self primitiveValueForKey:@"author"];
-        [self didAccessValueForKey:@"author"];
-    }
+
+	[self willAccessValueForKey:@"author"];
+	authorName = [self primitiveValueForKey:@"author"];
+	[self didAccessValueForKey:@"author"];
 	
 	if (authorName == nil || [@"" isEqualToString:authorName]) {
 		authorName = [NSLocalizedString(@"anonymous", @"the comment has an anonymous author.") capitalizedString];
