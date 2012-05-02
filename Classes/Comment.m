@@ -182,11 +182,11 @@
 }
 
 - (void)remove {
-    [[self managedObjectContext] deleteObject:self];
-    [self save];
     if (self.commentID) {
         [self deleteCommentWithSuccess:nil failure:nil];
     }
+    [[self managedObjectContext] deleteObject:self];
+    [self save];
 }
 
 #pragma mark - Private Methods

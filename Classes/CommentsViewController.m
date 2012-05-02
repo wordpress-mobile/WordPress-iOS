@@ -9,7 +9,6 @@
 #import "CommentTableViewCell.h"
 #import "CommentViewController.h"
 #import "WordPressAppDelegate.h"
-#import "WPProgressHUD.h"
 #import "Reachability.h"
 #import "BlogViewController.h"
 #import "ReplyToCommentViewController.h"
@@ -372,77 +371,29 @@
 
 - (IBAction)deleteSelectedComments:(id)sender {
     [self removeModerationSwipeView:NO];
-
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Deleting...", @"")];
-    [progressAlert show];
-
-    [self performSelectorInBackground:@selector(deleteComments) withObject:nil];
+    [self moderateCommentsWithSelector:@selector(remove)];
+    [self trySelectSomethingAndShowIt];
 }
 
 - (IBAction)approveSelectedComments:(id)sender {
     [self removeModerationSwipeView:NO];
-
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Moderating...", @"")];
-    [progressAlert show];
-
-    [self performSelectorInBackground:@selector(approveComments) withObject:nil];
+    [self moderateCommentsWithSelector:@selector(approve)];
 }
 
 - (IBAction)unapproveSelectedComments:(id)sender {
     [self removeModerationSwipeView:NO];
-
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Moderating...", @"")];
-    [progressAlert show];
-
-    [self performSelectorInBackground:@selector(unapproveComments) withObject:nil];
+    [self moderateCommentsWithSelector:@selector(unapprove)];
 }
 
 - (IBAction)spamSelectedComments:(id)sender {
     [self removeModerationSwipeView:NO];
-
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Moderating...", @"")];
-    [progressAlert show];
-
-    [self performSelectorInBackground:@selector(markCommentsAsSpam) withObject:nil];
-}
-
-- (void)didModerateComments {
-    [self setEditing:NO];
-    [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-    [progressAlert release];
+    [self moderateCommentsWithSelector:@selector(spam)];
+    [self trySelectSomethingAndShowIt];
 }
 
 - (void)moderateCommentsWithSelector:(SEL)selector {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     [FileLogger log:@"%@ %@%@", self, NSStringFromSelector(_cmd), NSStringFromSelector(selector)];
-	BOOL fails = NO;
-    for (Comment *comment in selectedComments) {
-        if(![comment performSelector:selector])
-			fails = YES;
-    }
-    [self performSelectorOnMainThread:@selector(didModerateComments) withObject:nil waitUntilDone:NO];
-    
-	if(fails)
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:NSLocalizedString(@"Sorry, something went wrong during comment moderation. Please try again.", @"")];
-	[pool release];
-}
-
-- (void)deleteComments {
-    [self moderateCommentsWithSelector:@selector(remove)];
-	[self performSelectorOnMainThread:@selector(trySelectSomethingAndShowIt) withObject:nil waitUntilDone:NO];
-}
-
-- (void)approveComments {
-    [self moderateCommentsWithSelector:@selector(approve)];
-}
-
-- (void)markCommentsAsSpam {
-    [self moderateCommentsWithSelector:@selector(spam)];
-	[self performSelectorOnMainThread:@selector(trySelectSomethingAndShowIt) withObject:nil waitUntilDone:NO];
-}
-
-- (void)unapproveComments {
-    [self moderateCommentsWithSelector:@selector(unapprove)];
+    [selectedComments makeObjectsPerformSelector:selector];
 }
 
 - (void)updateSelectedComments {

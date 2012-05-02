@@ -37,7 +37,6 @@
     NSMutableArray *commentsArray;
     NSMutableDictionary *commentsDict;
     NSMutableArray *selectedComments;
-    UIAlertView *progressAlert;
     int indexForCurrentPost;
 	NSNumber *lastUserSelectedCommentID;
 	NSIndexPath *selectedIndexPath;
