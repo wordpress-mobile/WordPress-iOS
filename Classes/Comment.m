@@ -118,7 +118,7 @@
 	[self didAccessValueForKey:@"author"];
 	
 	if (authorName == nil || [@"" isEqualToString:authorName]) {
-		authorName = [NSLocalizedString(@"anonymous", @"the comment has an anonymous author.") capitalizedString];
+		authorName = [NSLocalizedString(@"Anonymous", @"the comment has an anonymous author.") capitalizedString];
 	}
 	return authorName;
 	
