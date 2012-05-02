@@ -11,7 +11,6 @@
 #import "WordPressAppDelegate.h"
 #import "WPProgressHUD.h"
 #import "Reachability.h"
-#import "CommentViewController.h"
 #import "BlogViewController.h"
 #import "ReplyToCommentViewController.h"
 
@@ -551,7 +550,11 @@
 
 - (void)reloadTableView {
 	[self updateBadge];
+	willReloadTable = NO;
     [commentsTableView reloadData];
+	if (DeviceIsPad()) {
+		[commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+	}
 }
 
 #pragma mark -
@@ -1098,11 +1101,20 @@
        atIndexPath:(NSIndexPath *)indexPath
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath {
-    [commentsTableView reloadData];
     
     if (!DeviceIsPad()) {
+		[commentsTableView reloadData];
         return;
     }
+	
+	// When the Blog merges comments and saves, this method gets called once for each comment.
+	// Rather than spamming the reloadData method, (which clobbers our highlights on the iPad), 
+	// call it once after a short delay. 
+	if (!willReloadTable) {
+		willReloadTable = YES;
+		[self performSelector:@selector(reloadTableView) withObject:nil afterDelay:0.1];
+	}
+	
     switch (type) {
         case NSFetchedResultsChangeDelete:
             [self trySelectSomething];

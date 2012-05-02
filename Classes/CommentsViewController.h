@@ -27,6 +27,7 @@
     IBOutlet UIBarButtonItem *spamButton;
     IBOutlet UIBarButtonItem *deleteButton;
     BOOL editing;
+	BOOL willReloadTable;
 
     IBOutlet UIView* moderationSwipeView;
     UITableViewCell* moderationSwipeCell;
