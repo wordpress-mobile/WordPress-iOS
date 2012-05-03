@@ -124,6 +124,19 @@
 	
 }
 
+- (NSDate *)dateCreated {
+	NSDate *date = nil;
+	
+	[self willAccessValueForKey:@"dateCreated"];
+	date = [self primitiveValueForKey:@"dateCreated"];
+	[self didAccessValueForKey:@"dateCreated"];
+	
+	if(date != nil)
+		return [DateUtils GMTDateTolocalDate:date];
+	else 
+		return nil;
+	
+}
 
 #pragma mark - Remote management
 
