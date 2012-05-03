@@ -38,7 +38,9 @@
 	self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.isAccessibilityElement = YES;
     self.tableView.accessibilityLabel = @"Blog List";       // required for UIAutomation for iOS 4
-    self.tableView.accessibilityIdentifier = @"Blog List";  // required for UIAutomation for iOS 5
+	if([self.tableView respondsToSelector:@selector(setAccessibilityIdentifier:)]){
+		self.tableView.accessibilityIdentifier = @"Blog List";  // required for UIAutomation for iOS 5		
+	}
     
     [self setupPhotoButton];
 	
