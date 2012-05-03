@@ -130,7 +130,10 @@
     
     commentsTableView.isAccessibilityElement = YES;
     commentsTableView.accessibilityLabel = @"Comments";       // required for UIAutomation for iOS 4
-    commentsTableView.accessibilityIdentifier = @"Comments";  // required for UIAutomation for iOS 5
+	if([commentsTableView respondsToSelector:@selector(setAccessibilityIdentifier:)]){
+		commentsTableView.accessibilityIdentifier = @"Comments";  // required for UIAutomation for iOS 5
+	}
+
     
     editButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Edit", @"") style:UIBarButtonItemStyleBordered
                                                      target:self action:@selector(editComments)];
