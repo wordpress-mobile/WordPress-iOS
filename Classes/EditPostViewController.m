@@ -662,13 +662,14 @@ NSTimeInterval kAnimationDuration = 0.3f;
     
     [self.view endEditing:YES];
     [self.apost.original applyRevision];
-	if (upload)
+	if (upload){
+		NSString *postTitle = self.apost.postTitle;
         [self.apost.original uploadWithSuccess:^{
-            NSLog(@"post uploaded: %@", self.apost.postTitle);
+            NSLog(@"post uploaded: %@", postTitle);
         } failure:^(NSError *error) {
             NSLog(@"post failed: %@", [error localizedDescription]);
         }];
-	else {
+	} else {
 		[self.apost.original save];
 	}
 
