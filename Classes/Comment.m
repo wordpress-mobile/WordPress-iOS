@@ -41,6 +41,7 @@
 @dynamic type;
 @dynamic blog;
 @dynamic post;
+@synthesize isNew;
 
 #pragma mark - Creating and finding comment objects
 

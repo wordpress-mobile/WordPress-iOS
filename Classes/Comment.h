@@ -35,6 +35,7 @@ typedef enum {
 @property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) Blog * blog;
 @property (nonatomic, retain) AbstractPost * post;
+@property (nonatomic, assign) BOOL isNew;
 
 ///-------------------------------------------
 /// @name Creating and finding comment objects

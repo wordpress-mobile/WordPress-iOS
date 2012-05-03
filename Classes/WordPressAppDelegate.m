@@ -1261,10 +1261,15 @@ static WordPressAppDelegate *wordPressApp = NULL;
         WPFLog(@"Received notification: %@", remoteNotif);
         Blog *blog = [Blog findWithId:[[remoteNotif objectForKey:@"blog_id"] intValue] withContext:self.managedObjectContext];
         if (blog) {
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            [defaults setBool:YES forKey:@"commentsLaunchedViaPushNotification"];
-
             UIViewController *rootViewController = self.window.rootViewController;
+            if (rootViewController.modalViewController) {
+                WPFLog(@"We're showing a modal controller and it's not safe to load the notification");
+#if DEBUG
+                [rootViewController dismissModalViewControllerAnimated:NO];
+#else
+                return;
+#endif
+            }
             if ([rootViewController isKindOfClass:[UISplitViewController class]]) {
                 rootViewController = [((UISplitViewController *)rootViewController).viewControllers objectAtIndex:0];
             }
@@ -1273,7 +1278,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
             BlogsViewController *blogsViewController = (BlogsViewController *)nav.topViewController;
             [blogsViewController showBlog:blog animated:NO];
             BlogViewController *blogViewController = (BlogViewController *)nav.visibleViewController;
-            blogViewController.selectedIndex = 2;
+            [blogViewController showCommentWithId:[remoteNotif objectForKey:@"comment_id"]];
         }
     } else {
         WPFLog(@"Got unsupported notification: %@", remoteNotif);

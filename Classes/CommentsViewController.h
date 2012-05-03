@@ -39,7 +39,7 @@
     NSMutableArray *selectedComments;
     int indexForCurrentPost;
 	NSNumber *lastUserSelectedCommentID;
-	NSIndexPath *selectedIndexPath;
+	NSIndexPath *selectedIndexPath, *selectionWanted;
 	
 	// added to distinguish a single posts's comments VC
 	// from the master VC's comments list.
@@ -66,13 +66,13 @@
 @property (nonatomic, retain) UITableViewCell* moderationSwipeCell;
 @property (nonatomic) UISwipeGestureRecognizerDirection moderationSwipeDirection;
 @property (nonatomic, retain) NSDate *dateOfPreviouslyOldestComment;
+@property (nonatomic, retain) NSNumber *wantedCommentId;
 
 - (IBAction)deleteSelectedComments:(id)sender;
 - (IBAction)approveSelectedComments:(id)sender;
 - (IBAction)unapproveSelectedComments:(id)sender;
 - (IBAction)spamSelectedComments:(id)sender;
 - (IBAction)replyToSelectedComment:(id)sender;
-- (void)refreshCommentsList;
 - (void)setIndexForCurrentPost:(int)index;
 - (void)showCommentAtIndexPath:(NSIndexPath *)indexPath;
 
@@ -84,9 +84,5 @@
 - (void)showPreviousComment;
 - (void)showNextComment;
 - (void)trySelectSomething;
-- (void)trySelectSomethingAndShowIt;
-
-- (void)animateCell:(UITableViewCell *)cell;
-- (void)saveDateOfOldestComment;
 
 @end

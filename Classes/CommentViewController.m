@@ -662,8 +662,6 @@
         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
         [dateFormatter setDateStyle:NSDateFormatterLongStyle];
     }
-    NSLog(@"Comment: %@", comment);
-	NSLog(@"Trimmed: %@", [comment.author_url trim]);
 	[gravatarImageView setImageWithGravatarEmail:[comment.author_email trim]];
     commentAuthorLabel.text = [comment.author trim];
 	[commentAuthorUrlButton setTitle:[comment.author_url trim] forState:UIControlStateNormal];

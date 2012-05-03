@@ -35,5 +35,6 @@
 - (void)restoreState;
 - (void)refreshBlogs:(NSNotification *)notification;
 - (void)configureCommentsTab;
+- (void)showCommentWithId:(NSNumber *)commentId;
 
 @end

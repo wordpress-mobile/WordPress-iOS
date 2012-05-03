@@ -49,8 +49,7 @@
     
 	if (DeviceIsPad() == YES) {
 		[self restoreState];
-	}
-	else if (![[NSUserDefaults standardUserDefaults] boolForKey:@"commentsLaunchedViaPushNotification"]) {
+	} else {
 		[tabBarController.selectedViewController viewWillAppear:animated];
 	}
 }
@@ -90,6 +89,12 @@
     [super dealloc];
 }
 
+- (void)showCommentWithId:(NSNumber *)commentId {
+    [self view]; // Force XIB outlet load
+    [self.tabBarController setSelectedViewController:commentsViewController];
+    commentsViewController.wantedCommentId = commentId;
+}
+
 #pragma mark -
 #pragma mark UITabBarControllerDelegate Methods
 
@@ -115,8 +120,7 @@
 		[[NSUserDefaults standardUserDefaults] setValue:@"Stats" forKey:@"WPSelectedContentType"];
 	}
 	
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"commentsLaunchedViaPushNotification"])
-        [viewController viewWillAppear:NO];
+    [viewController viewWillAppear:NO];
 }
 
 - (void)configureCommentsTab {
