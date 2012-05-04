@@ -23,7 +23,6 @@
 @synthesize photo;
 @synthesize blogsViewController;
 @synthesize sourceType;
-@synthesize useCameraPlus;
 
 - (void)dealloc
 {
@@ -131,27 +130,17 @@
     [pool release];
 }
 
-- (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+
     if (self.photo == nil) {
-        if (useCameraPlus) {
-            CameraPlusPickerManager *picker = [CameraPlusPickerManager sharedManager];
-            picker.callbackURLProtocol = @"wordpress";
-            picker.maxImages = 1;
-            picker.imageSize = 4096;
-            CameraPlusPickerMode mode = (self.sourceType == UIImagePickerControllerSourceTypeCamera) ? CameraPlusPickerModeShootOnly : CameraPlusPickerModeLightboxOnly;
-            [picker openCameraPlusPickerWithMode:mode];
-            [self cancel];
-        } else {
-            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-            picker.sourceType = self.sourceType;
-            picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
-            picker.allowsEditing = NO;
-            picker.delegate = self;
-            [self presentModalViewController:picker animated:YES];
-            [picker release];            
-        }
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        picker.sourceType = self.sourceType;
+        picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
+        picker.allowsEditing = NO;
+        picker.delegate = self;
+        [self presentModalViewController:picker animated:YES];
+        [picker release];
     } else {
         [self.titleTextField becomeFirstResponder];
     }

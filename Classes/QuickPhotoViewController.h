@@ -30,7 +30,6 @@
 @property (nonatomic, retain) UIImage *photo;
 @property (nonatomic, retain) BlogsViewController *blogsViewController;
 @property (nonatomic, assign) UIImagePickerControllerSourceType sourceType;
-@property (nonatomic, assign) BOOL useCameraPlus;
 
 - (void)post;
 - (void)cancel;

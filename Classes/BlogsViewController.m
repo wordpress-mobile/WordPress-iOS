@@ -381,12 +381,20 @@
 } 
 
 - (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType useCameraPlus:(BOOL)withCameraPlus {
-    QuickPhotoViewController *quickPhotoViewController = [[QuickPhotoViewController alloc] init];
-    quickPhotoViewController.blogsViewController = self;
-    quickPhotoViewController.sourceType = sourceType;
-    quickPhotoViewController.useCameraPlus = withCameraPlus;
-    [self.navigationController pushViewController:quickPhotoViewController animated:YES];
-    [quickPhotoViewController release];
+    if (withCameraPlus) {
+        CameraPlusPickerManager *picker = [CameraPlusPickerManager sharedManager];
+        picker.callbackURLProtocol = @"wordpress";
+        picker.maxImages = 1;
+        picker.imageSize = 4096;
+        CameraPlusPickerMode mode = (sourceType == UIImagePickerControllerSourceTypeCamera) ? CameraPlusPickerModeShootOnly : CameraPlusPickerModeLightboxOnly;
+        [picker openCameraPlusPickerWithMode:mode];
+    } else {
+        QuickPhotoViewController *quickPhotoViewController = [[QuickPhotoViewController alloc] init];
+        quickPhotoViewController.blogsViewController = self;
+        quickPhotoViewController.sourceType = sourceType;
+        [self.navigationController pushViewController:quickPhotoViewController animated:YES];
+        [quickPhotoViewController release];
+    }
 }
 
 - (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType {
