@@ -666,7 +666,7 @@
 
 - (void)viewURL{
 	NSURL *url = [NSURL URLWithString: [self.comment.author_url trim]];
-	if (url != nil) {
+	if (url != nil && [[url path] length] > 0) {
         WPWebViewController *webViewController;
         if (DeviceIsPad()) {
             webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
