@@ -36,14 +36,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 @synthesize splitViewController, crashReportView, isUploadingPost;
 @synthesize connectionAvailable, wpcomAvailable, currentBlogAvailable, wpcomReachability, internetReachability, currentBlogReachability;
 
-#if FALSE
-// This code never runs or gets compiled, but it's the only way to keep the translations updated with annotations
-- (void)fakePushNotificationStringsForTranslation {
-    NSLocalizedString(@"C1", @"%@ commented on %@: \n%@");
-    NSLocalizedString(@"C2", @"Comment from %1$@: \n%3$@")
-}
-#endif
-
 - (id)init {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     if (!wordPressApp) {
