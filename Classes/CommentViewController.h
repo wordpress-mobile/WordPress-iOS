@@ -42,8 +42,6 @@
     UIBarButtonItem *segmentBarItem;
     UISegmentedControl *segmentedControl;
 
-    UIAlertView *progressAlert;
-    
     ReplyToCommentViewController *replyToCommentViewController;
     BOOL connectionStatus;
 	//to control whether

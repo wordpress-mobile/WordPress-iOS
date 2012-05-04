@@ -8,7 +8,6 @@
 #import "CommentViewController.h"
 #import "Reachability.h"
 #import "WordPressAppDelegate.h"
-#import "WPProgressHUD.h"
 #import "NSString+XMLExtensions.h"
 #import "WPWebViewController.h"
 #import "UIImageView+Gravatar.h"
@@ -451,35 +450,23 @@
 }
 
 - (void)deleteComment:(id)sender {
-	if(self.commentsViewController.blog.isSyncingComments) {
-		[self showSynchInProgressAlert];
-		return;
-	}
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Deleting...", @"")];
-    [progressAlert show];
-    [self performSelectorInBackground:@selector(deleteThisComment) withObject:nil];
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    [self moderateCommentWithSelector:@selector(remove)];
 }
 
 - (void)approveComment:(id)sender {
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Moderating...", @"")];
-    [progressAlert show];
-
-    [self performSelectorInBackground:@selector(approveThisComment) withObject:nil];
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    [self moderateCommentWithSelector:@selector(approve)];
 }
 
 - (void)unApproveComment:(id)sender {
-    progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Moderating...", @"")];
-    [progressAlert show];
-
-    [self performSelectorInBackground:@selector(unapproveThisComment) withObject:nil];
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    [self moderateCommentWithSelector:@selector(unapprove)];
 }
 
 - (void)spamComment:(id)sender {
-   progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Moderating...", @"")];
-    [progressAlert show];
-
-    [self performSelectorInBackground:@selector(markThisCommentAsSpam) withObject:nil];
-	
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    [self moderateCommentWithSelector:@selector(spam)];
 }
 
 - (BOOL)isConnectedToHost {
@@ -503,57 +490,11 @@
 	}
 }
 
-- (void)didFailModerateComment {
-    [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-    [progressAlert release];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:NSLocalizedString(@"Sorry, something went wrong during comment moderation. Please try again.", @"")];	
-}
-
-- (void)didModerateComment {
-    [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-    [progressAlert release];
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
 - (void)moderateCommentWithSelector:(SEL)selector {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	BOOL fails = NO;
-    if ([self isConnectedToHost]) {
-		if(![self.comment performSelector:selector])
-			fails = YES;
+    [self.comment performSelector:selector];
+    if (!DeviceIsPad()) {
+        [self.navigationController popViewControllerAnimated:YES];
     }
-    
-    if (fails) {
-        [self performSelectorOnMainThread:@selector(didFailModerateComment) withObject:NO waitUntilDone:YES];
-    } else {
-        [self performSelectorOnMainThread:@selector(didModerateComment) withObject:NO waitUntilDone:YES];        
-    }
-
-	[pool release];
-}
-
-- (void)deleteThisComment {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [self moderateCommentWithSelector:@selector(remove)];
-	if (DeviceIsPad() == YES)
-		[self.commentsViewController performSelectorOnMainThread:@selector(trySelectSomethingAndShowIt) withObject:nil waitUntilDone:NO];
-}
-
-- (void)approveThisComment {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [self moderateCommentWithSelector:@selector(approve)];
-}
-
-- (void)markThisCommentAsSpam {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [self moderateCommentWithSelector:@selector(spam)];
-	if (DeviceIsPad() == YES)
-		[self.commentsViewController performSelectorOnMainThread:@selector(trySelectSomethingAndShowIt) withObject:nil waitUntilDone:NO];
-}
-
-- (void)unapproveThisComment {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [self moderateCommentWithSelector:@selector(unapprove)];
 }
 
 #pragma mark resize top UIView

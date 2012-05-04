@@ -385,7 +385,6 @@
 	
 	[progressAlert dismissWithClickedButtonIndex:0 animated:YES];
     [progressAlert release];
-	//[self performSelectorOnMainThread:@selector(trySelectSomethingAndShowIt) withObject:nil waitUntilDone:NO];
     [pool release];
 }
 
