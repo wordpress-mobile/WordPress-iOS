@@ -338,27 +338,27 @@ static WordPressAppDelegate *wordPressApp = NULL;
             NSString *secret = [params objectForKey:@"secret"];
             if (clientId && redirectUrl && secret && oauthCallback) {
                 [WPComOAuthController presentWithClientId:clientId redirectUrl:redirectUrl clientSecret:secret delegate:self];
+                return YES;
             }
+        } else if ([[CameraPlusPickerManager sharedManager] shouldHandleURLAsCameraPlusPickerCallback:url]) {
+            /* Note that your application has been in the background and may have been terminated.
+             * The only CameraPlusPickerManager state that is restored is the pickerMode, which is
+             * restored to indicate the mode used to pick images.
+             */
+            
+            /* Handle the callback and notify the delegate. */
+            [[CameraPlusPickerManager sharedManager] handleCameraPlusPickerCallback:url usingBlock:^(CameraPlusPickedImages *images) {
+                NSLog(@"Camera+ returned %@", [images images]);
+                UIImage *image = [images image];
+                UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+                [self.blogsViewController showQuickPhotoWithImage:image isCameraPlus:YES];
+            } cancelBlock:^(void) {
+                NSLog(@"Camera+ picker canceled");
+            }];
+            return YES;
         }
-    } else if ([[CameraPlusPickerManager sharedManager] shouldHandleURLAsCameraPlusPickerCallback:url]) {
-        /* Note that your application has been in the background and may have been terminated.
-         * The only CameraPlusPickerManager state that is restored is the pickerMode, which is
-         * restored to indicate the mode used to pick images.
-         */
-        
-        /* Handle the callback and notify the delegate. */
-        [[CameraPlusPickerManager sharedManager] handleCameraPlusPickerCallback:url usingBlock:^(CameraPlusPickedImages *images) {
-            NSLog(@"Camera+ returned %@", [images images]);
-            UIImage *image = [images image];
-            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-            [self.blogsViewController showQuickPhotoWithImage:image isCameraPlus:YES];
-        } cancelBlock:^(void) {
-            NSLog(@"Camera+ picker canceled");
-        }];
-        return YES;
-    } else {
-        return NO;
     }
+    return NO;
 }
 
 - (void)handleCrashReport {

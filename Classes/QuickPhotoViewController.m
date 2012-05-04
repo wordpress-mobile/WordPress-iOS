@@ -80,7 +80,7 @@
     self.blogSelector.delegate = self;
     if (self.photo) {
         self.photoImageView.image = self.photo;
-        [self performSelectorInBackground:@selector(saveImage) withObject:nil];
+        [self saveImage];
     }
     self.photoImageView.delegate = self;
     self.navigationItem.title = NSLocalizedString(@"Quick Photo", @"");
@@ -90,45 +90,48 @@
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)] autorelease];
 }
 
-- (void) saveImage{
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    if (self.sourceType == UIImagePickerControllerSourceTypeCamera)
-        UIImageWriteToSavedPhotosAlbum(self.photo, nil, nil, nil);
-    Media *media;
-    
-    Blog *blog = self.blogSelector.activeBlog;
-    if (post == nil) {
-        post = [Post newDraftForBlog:blog];
-    }
-    
-    if (post.media && [post.media count] > 0) {
-        media = [post.media anyObject];
-    } else {
-        media = [Media newMediaForPost:post];
-        int resizePreference = 0;
-		if([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil)
-			resizePreference = [[[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] intValue];
+- (void)saveImage {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        if (self.sourceType == UIImagePickerControllerSourceTypeCamera)
+            UIImageWriteToSavedPhotosAlbum(self.photo, nil, nil, nil);
         
-        MediaResize newSize = kResizeLarge;
-        switch (resizePreference) {
-            case 1:
-                newSize = kResizeSmall;
-                break;
-            case 2:
-                newSize = kResizeMedium;
-                break;
-            case 4:
-                newSize = kResizeOriginal;
-                break;
-        }
-        
-        [media setImage:self.photo withSize:newSize];
-    }
-    
-    [media save];
-    [media release];
-    [postButtonItem setEnabled:YES];
-    [pool release];
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+            Media *media;
+            
+            Blog *blog = self.blogSelector.activeBlog;
+            if (post == nil) {
+                post = [Post newDraftForBlog:blog];
+            }
+            
+            if (post.media && [post.media count] > 0) {
+                media = [post.media anyObject];
+            } else {
+                media = [Media newMediaForPost:post];
+                int resizePreference = 0;
+                if([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil)
+                    resizePreference = [[[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] intValue];
+                
+                MediaResize newSize = kResizeLarge;
+                switch (resizePreference) {
+                    case 1:
+                        newSize = kResizeSmall;
+                        break;
+                    case 2:
+                        newSize = kResizeMedium;
+                        break;
+                    case 4:
+                        newSize = kResizeOriginal;
+                        break;
+                }
+                
+                [media setImage:self.photo withSize:newSize];
+            }
+            
+            [media save];
+            [media release];
+            [postButtonItem setEnabled:YES];
+        });
+    });
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -230,7 +233,7 @@
     self.photoImageView.image = self.photo;
     
     [picker dismissModalViewControllerAnimated:NO];
-    [self performSelectorInBackground:@selector(saveImage) withObject:nil];
+    [self saveImage];
     
     [self.titleTextField becomeFirstResponder];
 }
