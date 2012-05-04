@@ -626,10 +626,10 @@
         CGSize largeSize =  [[predefDim objectForKey: @"largeSize"] CGSizeValue];
         CGSize originalSize = CGSizeMake(currentImage.size.width, currentImage.size.height); //The dimensions of the image, taking orientation into account.
         
-		NSString *resizeSmallStr = [NSString stringWithFormat:NSLocalizedString(@"Small %ix%i", @""), (int)smallSize.width, (int)smallSize.height];
-   		NSString *resizeMediumStr = [NSString stringWithFormat:NSLocalizedString(@"Medium %ix%i", @""), (int)mediumSize.width, (int)mediumSize.height];
-        NSString *resizeLargeStr = [NSString stringWithFormat:NSLocalizedString(@"Large %ix%i", @""), (int)largeSize.width, (int)largeSize.height];
-        NSString *originalSizeStr = [NSString stringWithFormat:NSLocalizedString(@"Original %ix%i", @""), (int)originalSize.width, (int)originalSize.height];
+		NSString *resizeSmallStr = [NSString stringWithFormat:NSLocalizedString(@"Small (%@)", @"Small (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)smallSize.width, (int)smallSize.height]];
+   		NSString *resizeMediumStr = [NSString stringWithFormat:NSLocalizedString(@"Medium (%@)", @"Medium (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)mediumSize.width, (int)mediumSize.height]];
+        NSString *resizeLargeStr = [NSString stringWithFormat:NSLocalizedString(@"Large (%@)", @"Large (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)largeSize.width, (int)largeSize.height]];
+        NSString *originalSizeStr = [NSString stringWithFormat:NSLocalizedString(@"Original (%@)", @"Original (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)originalSize.width, (int)originalSize.height]];
         
 		UIActionSheet *resizeActionSheet;
 		//NSLog(@"img dimension: %f x %f ",currentImage.size.width, currentImage.size.height );
