@@ -12,6 +12,7 @@
 #import "Blog.h"
 #import "Media.h"
 #import "BlogsViewController.h"
+#import "CameraPlusPickerManager.h"
 
 @implementation QuickPhotoViewController
 @synthesize photoImageView;
@@ -22,6 +23,7 @@
 @synthesize photo;
 @synthesize blogsViewController;
 @synthesize sourceType;
+@synthesize useCameraPlus;
 
 - (void)dealloc
 {
@@ -78,6 +80,7 @@
     self.blogSelector.delegate = self;
     if (self.photo) {
         self.photoImageView.image = self.photo;
+        [self performSelectorInBackground:@selector(saveImage) withObject:nil];
     }
     self.photoImageView.delegate = self;
     self.navigationItem.title = NSLocalizedString(@"Quick Photo", @"");
@@ -132,13 +135,25 @@
     [super viewWillAppear:animated];
     
     if (self.photo == nil) {
-        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-        picker.sourceType = self.sourceType;
-        picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
-        picker.allowsEditing = NO;
-        picker.delegate = self;
-        [self presentModalViewController:picker animated:YES];
-        [picker release];
+        if (useCameraPlus) {
+            CameraPlusPickerManager *picker = [CameraPlusPickerManager sharedManager];
+            picker.callbackURLProtocol = @"wordpress";
+            picker.maxImages = 1;
+            picker.imageSize = 4096;
+            CameraPlusPickerMode mode = (self.sourceType == UIImagePickerControllerSourceTypeCamera) ? CameraPlusPickerModeShootOnly : CameraPlusPickerModeLightboxOnly;
+            [picker openCameraPlusPickerWithMode:mode];
+            [self cancel];
+        } else {
+            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+            picker.sourceType = self.sourceType;
+            picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
+            picker.allowsEditing = NO;
+            picker.delegate = self;
+            [self presentModalViewController:picker animated:YES];
+            [picker release];            
+        }
+    } else {
+        [self.titleTextField becomeFirstResponder];
     }
 }
 

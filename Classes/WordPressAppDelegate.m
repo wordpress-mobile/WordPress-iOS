@@ -12,6 +12,7 @@
 #import "InAppSettings.h"
 #import "Blog.h"
 #import "SFHFKeychainUtils.h"
+#import "CameraPlusPickerManager.h"
 
 @interface WordPressAppDelegate (Private)
 - (void)setAppBadge;
@@ -35,6 +36,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 @synthesize navigationController, alertRunning, isWPcomAuthenticated;
 @synthesize splitViewController, crashReportView, isUploadingPost;
 @synthesize connectionAvailable, wpcomAvailable, currentBlogAvailable, wpcomReachability, internetReachability, currentBlogReachability;
+@synthesize blogsViewController;
 
 - (id)init {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
@@ -105,7 +107,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	else if(getenv("NSAutoreleaseFreedObjectCheckEnabled"))
 		NSLog(@"NSAutoreleaseFreedObjectCheckEnabled enabled!");
 
-	
 	// Set current directory for WordPress app
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -189,7 +190,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
     });
 
     [self checkWPcomAuthentication];
-	BlogsViewController *blogsViewController = [[BlogsViewController alloc] init];
+	self.blogsViewController = [[BlogsViewController alloc] init];
 	crashReportView = [[CrashReportViewController alloc] initWithNibName:@"CrashReportView" bundle:nil];
 	
 	//BETA FEEDBACK BAR, COMMENT THIS OUT BEFORE RELEASE
@@ -339,7 +340,20 @@ static WordPressAppDelegate *wordPressApp = NULL;
                 [WPComOAuthController presentWithClientId:clientId redirectUrl:redirectUrl clientSecret:secret delegate:self];
             }
         }
+    } else if ([[CameraPlusPickerManager sharedManager] shouldHandleURLAsCameraPlusPickerCallback:url]) {
+        /* Note that your application has been in the background and may have been terminated.
+         * The only CameraPlusPickerManager state that is restored is the pickerMode, which is
+         * restored to indicate the mode used to pick images.
+         */
         
+        /* Handle the callback and notify the delegate. */
+        [[CameraPlusPickerManager sharedManager] handleCameraPlusPickerCallback:url usingBlock:^(CameraPlusPickedImages *images) {
+            NSLog(@"Camera+ returned %@", [images images]);
+            UIImage *image = [images image];
+            [self.blogsViewController showQuickPhotoWithImage:image];
+        } cancelBlock:^(void) {
+            NSLog(@"Camera+ picker canceled");
+        }];
         return YES;
     } else {
         return NO;
@@ -461,7 +475,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	//we are using a custom notification
 	[[NSNotificationCenter defaultCenter] postNotificationName:DidChangeStatusBarFrame object:nil];
 }
-
 
 #pragma mark -
 #pragma mark Public Methods

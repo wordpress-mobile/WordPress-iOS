@@ -23,6 +23,7 @@
     IBOutlet UITableView *tableView;
     WPReaderViewController *readerViewController;
     BOOL isTransitioning;
+    BOOL hasCameraPlus;
 }
 
 @property (nonatomic, retain) NSFetchedResultsController *resultsController;
@@ -39,5 +40,6 @@
 - (void)quickPhotoPost;
 - (void)uploadQuickPhoto:(Post *)post;
 - (void)showQuickPhotoButton:(BOOL)delay;
+- (void)showQuickPhotoWithImage:(UIImage *)image;
 
 @end

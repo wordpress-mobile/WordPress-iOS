@@ -477,6 +477,7 @@
 		E1D91456134A853D0089019C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1D91454134A853D0089019C /* Localizable.strings */; };
 		E1EAD5261553CD9B00C0ED7A /* keyboardButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FB89D0140BCF15003BBEC5 /* keyboardButton@2x.png */; };
 		E1EAD5271553CDA800C0ED7A /* keyboardButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FB89CF140BCF15003BBEC5 /* keyboardButton.png */; };
+		E1EAD5401554498000C0ED7A /* CameraPlusPickerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E1EAD53F1554498000C0ED7A /* CameraPlusPickerManager.m */; };
 		E1EE23E512E62864000B2BE6 /* movie.png in Resources */ = {isa = PBXBuildFile; fileRef = E1EE23E312E62864000B2BE6 /* movie.png */; };
 		E1EE23E612E62864000B2BE6 /* movie@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1EE23E412E62864000B2BE6 /* movie@2x.png */; };
 		E1EE23E912E628F6000B2BE6 /* attachment.png in Resources */ = {isa = PBXBuildFile; fileRef = E1EE23E712E628F6000B2BE6 /* attachment.png */; };
@@ -1186,6 +1187,8 @@
 		E1D5549212E8C61B0032C680 /* Info-dev.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-dev.plist"; sourceTree = "<group>"; };
 		E1D91455134A853D0089019C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E1D91457134A854A0089019C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1EAD53E1554498000C0ED7A /* CameraPlusPickerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraPlusPickerManager.h; sourceTree = "<group>"; };
+		E1EAD53F1554498000C0ED7A /* CameraPlusPickerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraPlusPickerManager.m; sourceTree = "<group>"; };
 		E1EE23E312E62864000B2BE6 /* movie.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = movie.png; sourceTree = "<group>"; };
 		E1EE23E412E62864000B2BE6 /* movie@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "movie@2x.png"; sourceTree = "<group>"; };
 		E1EE23E712E628F6000B2BE6 /* attachment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = attachment.png; sourceTree = "<group>"; };
@@ -2225,6 +2228,7 @@
 		E12F55F714A1F2640060A510 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				E1EAD53D1554498000C0ED7A /* CameraPlus */,
 				FDA68C1D14AC6CB800151896 /* Reachability */,
 				E1F807F714641AC700726BC7 /* AFNetworking */,
 				FD0D42C2149A0B5500F5E115 /* InAppSettings */,
@@ -2401,6 +2405,15 @@
 				E1D5549212E8C61B0032C680 /* Info-dev.plist */,
 			);
 			name = "Dev builds";
+			sourceTree = "<group>";
+		};
+		E1EAD53D1554498000C0ED7A /* CameraPlus */ = {
+			isa = PBXGroup;
+			children = (
+				E1EAD53E1554498000C0ED7A /* CameraPlusPickerManager.h */,
+				E1EAD53F1554498000C0ED7A /* CameraPlusPickerManager.m */,
+			);
+			path = CameraPlus;
 			sourceTree = "<group>";
 		};
 		E1F807F714641AC700726BC7 /* AFNetworking */ = {
@@ -3095,6 +3108,7 @@
 				A2D4F859153F0E3F00686803 /* Config.js in Sources */,
 				A2D4F85A153F0E3F00686803 /* Post.js in Sources */,
 				A2D4F85B153F0E3F00686803 /* WPiOSTests.js in Sources */,
+				E1EAD5401554498000C0ED7A /* CameraPlusPickerManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

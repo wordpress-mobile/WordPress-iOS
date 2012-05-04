@@ -33,6 +33,8 @@
 /CXMLNode_PrivateExtensions.m -text
 /CXMLNode_XPathExtensions.h -text
 /CXMLNode_XPathExtensions.m -text
+CameraPlus/CameraPlusPickerManager.h -text
+CameraPlus/CameraPlusPickerManager.m -text
 Classes/AboutViewController.h -text
 Classes/AboutViewController.m -text
 Classes/AbstractPost.h -text

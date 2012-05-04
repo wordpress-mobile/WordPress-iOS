@@ -5,6 +5,7 @@
 #import "QuickPhotoUploadProgressController.h"
 #import "UIImageView+Gravatar.h"
 #import "SFHFKeychainUtils.h"
+#import "CameraPlusPickerManager.h"
 
 @interface BlogsViewController (Private)
 - (void)setupPhotoButton;
@@ -321,6 +322,7 @@
         [quickPhotoButton addTarget:self action:@selector(quickPhotoPost) forControlEvents:UIControlEventTouchUpInside];
         [quickPhotoButton retain];
         [self.view addSubview:quickPhotoButton];
+        hasCameraPlus = [[CameraPlusPickerManager sharedManager] cameraPlusPickerAvailable];
     }
     if (wantsReaderButton && readerButton == nil) {
         readerButton = [QuickPhotoButton button];
@@ -378,12 +380,25 @@
     [self.navigationController pushViewController:readerViewController animated:YES]; 
 } 
 
-- (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType {
+- (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType useCameraPlus:(BOOL)withCameraPlus {
     QuickPhotoViewController *quickPhotoViewController = [[QuickPhotoViewController alloc] init];
     quickPhotoViewController.blogsViewController = self;
     quickPhotoViewController.sourceType = sourceType;
+    quickPhotoViewController.useCameraPlus = withCameraPlus;
     [self.navigationController pushViewController:quickPhotoViewController animated:YES];
     [quickPhotoViewController release];
+}
+
+- (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType {
+    [self showQuickPhoto:sourceType useCameraPlus:NO];
+}
+
+- (void)showQuickPhotoWithImage:(UIImage *)image {
+    QuickPhotoViewController *quickPhotoViewController = [[QuickPhotoViewController alloc] init];
+    quickPhotoViewController.blogsViewController = self;
+    quickPhotoViewController.photo = image;
+    [self.navigationController pushViewController:quickPhotoViewController animated:YES];
+    [quickPhotoViewController release];    
 }
 
 - (void)quickPhotoPost {
@@ -391,11 +406,19 @@
 
 	UIActionSheet *actionSheet;
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-		actionSheet = [[UIActionSheet alloc] initWithTitle:@"" 
-												  delegate:self 
-										 cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
-									destructiveButtonTitle:nil 
-										 otherButtonTitles:NSLocalizedString(@"Add Photo from Library", @""),NSLocalizedString(@"Take Photo", @""),nil];
+        if (hasCameraPlus) {
+            actionSheet = [[UIActionSheet alloc] initWithTitle:@"" 
+                                                      delegate:self 
+                                             cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
+                                        destructiveButtonTitle:nil 
+                                             otherButtonTitles:NSLocalizedString(@"Add Photo from Library", @""),NSLocalizedString(@"Take Photo", @""),NSLocalizedString(@"Add Photo from Camera+", @""), NSLocalizedString(@"Take Photo with Camera+", @""),nil];
+        } else {
+            actionSheet = [[UIActionSheet alloc] initWithTitle:@"" 
+                                                      delegate:self 
+                                             cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
+                                        destructiveButtonTitle:nil 
+                                             otherButtonTitles:NSLocalizedString(@"Add Photo from Library", @""),NSLocalizedString(@"Take Photo", @""),nil];            
+        }
 	}
 	else {
         [self showQuickPhoto:UIImagePickerControllerSourceTypePhotoLibrary];
@@ -493,6 +516,10 @@
         [self showQuickPhoto:UIImagePickerControllerSourceTypePhotoLibrary];
     } else if(buttonIndex == 1) {
         [self showQuickPhoto:UIImagePickerControllerSourceTypeCamera];
+    } else if(buttonIndex == 2) {
+        [self showQuickPhoto:UIImagePickerControllerSourceTypePhotoLibrary useCameraPlus:YES];
+    } else if(buttonIndex == 3) {
+        [self showQuickPhoto:UIImagePickerControllerSourceTypeCamera useCameraPlus:YES];
     }
 }
 
