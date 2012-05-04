@@ -611,6 +611,13 @@
 	[commentAuthorEmailButton setTitle:[comment.author_email trim] forState:UIControlStateNormal];
 	[commentAuthorEmailButton setTitle:[comment.author_email trim] forState:UIControlStateHighlighted];
 	[commentAuthorEmailButton setTitle:[comment.author_email trim] forState:UIControlStateSelected];
+    if (comment.author_email && ![comment.author_email isEqualToString:@""] && [MFMailComposeViewController canSendMail]) {
+        commentAuthorEmailButton.enabled = YES;
+        [commentAuthorEmailButton setTitleColor:[UIColor colorWithRed:0.1289f green:0.457f blue:0.6054f alpha:1.0f] forState:UIControlStateNormal];
+    } else {
+        commentAuthorEmailButton.enabled = NO;
+        [commentAuthorEmailButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    }
     if (comment.postTitle) {
 		NSString *postTitle = [NSLocalizedString(@"on ", @"(Comment) on (Post Title)") stringByAppendingString:[[comment.postTitle stringByDecodingXMLCharacters] trim]];
 		[commentPostTitleButton setTitle:postTitle forState:UIControlStateNormal];
@@ -672,7 +679,7 @@
 }
 
 - (void)sendEmail{
-	if (self.comment.author_email) {
+	if (self.comment.author_email && [MFMailComposeViewController canSendMail]) {
 		MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
 		controller.mailComposeDelegate = self;
 		NSArray *recipient = [[NSArray alloc] initWithObjects:[self.comment.author_email trim], nil];
