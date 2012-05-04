@@ -179,11 +179,15 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
             if ([response object] == nil) {
                 NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Blog returned invalid data.", @""), NSLocalizedDescriptionKey, nil];
                 err = [NSError errorWithDomain:@"XMLRPC" code:kNoXMLPrefix userInfo:usrInfo];
+#ifndef DEBUG
                 NSNumber *extra_debug = [[NSUserDefaults standardUserDefaults] objectForKey:@"extra_debug"];
                 if ([extra_debug boolValue]) {
+#endif
                     // Log the whole response for "invalid data"
                     WPFLog(@"Blog returned invalid data (URL: %@)\n%@", request.URL.absoluteString, operation.responseString);
+#ifndef DEBUG
                 }
+#endif
             }
             
             id object = [[response object] copy];
