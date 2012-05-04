@@ -475,6 +475,8 @@
 		E1D5549412E8C61C0032C680 /* Icon-dev.png in Resources */ = {isa = PBXBuildFile; fileRef = E1D5549012E8C61B0032C680 /* Icon-dev.png */; };
 		E1D5549512E8C61C0032C680 /* Icon-dev@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1D5549112E8C61B0032C680 /* Icon-dev@2x.png */; };
 		E1D91456134A853D0089019C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1D91454134A853D0089019C /* Localizable.strings */; };
+		E1EAD5261553CD9B00C0ED7A /* keyboardButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FB89D0140BCF15003BBEC5 /* keyboardButton@2x.png */; };
+		E1EAD5271553CDA800C0ED7A /* keyboardButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FB89CF140BCF15003BBEC5 /* keyboardButton.png */; };
 		E1EE23E512E62864000B2BE6 /* movie.png in Resources */ = {isa = PBXBuildFile; fileRef = E1EE23E312E62864000B2BE6 /* movie.png */; };
 		E1EE23E612E62864000B2BE6 /* movie@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1EE23E412E62864000B2BE6 /* movie@2x.png */; };
 		E1EE23E912E628F6000B2BE6 /* attachment.png in Resources */ = {isa = PBXBuildFile; fileRef = E1EE23E712E628F6000B2BE6 /* attachment.png */; };
@@ -2881,6 +2883,8 @@
 				30811747151057940028A15E /* Icon-72@2x.png in Resources */,
 				30811749151057B50028A15E /* fabric@2x.png in Resources */,
 				E12AAB641513C4CA009D025B /* WPComOAuthController.xib in Resources */,
+				E1EAD5261553CD9B00C0ED7A /* keyboardButton@2x.png in Resources */,
+				E1EAD5271553CDA800C0ED7A /* keyboardButton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
