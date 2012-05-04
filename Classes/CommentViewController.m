@@ -547,10 +547,10 @@
     rect.size.height -= pendingLabelHeight;
     commentBodyWebView.frame = rect;
 	
-	[labelHolder sizeToFit];
+	rect = labelHolder.frame;
+	rect.size.height += pendingLabelHeight;
+	labelHolder.frame = rect;
 	
-	
-
 	}
 
 - (void)removePendingLabel {
@@ -587,6 +587,10 @@
 		rect.origin.y -= pendingLabelHeight;
 		rect.size.height += pendingLabelHeight;
 		commentBodyWebView.frame = rect;
+		
+		rect = labelHolder.frame;
+		rect.size.height -= pendingLabelHeight;
+		labelHolder.frame = rect;
 	}
 }
 

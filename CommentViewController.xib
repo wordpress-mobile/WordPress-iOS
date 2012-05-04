@@ -220,7 +220,7 @@
 								<string key="NSFrame">{{100, 59}, {210, 17}}</string>
 								<reference key="NSSuperview" ref="898074275"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
+								<reference key="NSNextKeyView" ref="810455794"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -364,7 +364,7 @@
 			</object>
 			<object class="IBUIView" id="673266904">
 				<reference key="NSNextResponder"/>
-				<int key="NSvFlags">274</int>
+				<int key="NSvFlags">290</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUILabel" id="301925908">
@@ -989,7 +989,6 @@
 							<string>commentBodyWebView</string>
 							<string>commentDateLabel</string>
 							<string>commentPostTitleButton</string>
-							<string>commentPostTitleLabel</string>
 							<string>deleteButton</string>
 							<string>deleteButtonBar</string>
 							<string>gravatarImageView</string>
@@ -1011,7 +1010,6 @@
 							<string>UIWebView</string>
 							<string>UILabel</string>
 							<string>UIButton</string>
-							<string>UILabel</string>
 							<string>UIBarButtonItem</string>
 							<string>UIToolbar</string>
 							<string>UIImageView</string>
@@ -1036,7 +1034,6 @@
 							<string>commentBodyWebView</string>
 							<string>commentDateLabel</string>
 							<string>commentPostTitleButton</string>
-							<string>commentPostTitleLabel</string>
 							<string>deleteButton</string>
 							<string>deleteButtonBar</string>
 							<string>gravatarImageView</string>
@@ -1081,10 +1078,6 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">commentPostTitleButton</string>
 								<string key="candidateClassName">UIButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">commentPostTitleLabel</string>
-								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">deleteButton</string>
