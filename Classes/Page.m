@@ -96,6 +96,24 @@
 	self.post_thumbnail = [postInfo objectForKey:@"featured_image"];
 }
 
+- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    void (^uploadSuccessful)() = ^{
+        [self getPostWithSuccess:nil failure:nil];
+        if (success) success();
+    };
+
+    if ([self.password isEmpty])
+        self.password = nil;
+
+    [self save];
+
+    if ([self hasRemote]) {
+        [self editPostWithSuccess:uploadSuccessful failure:failure];
+    } else {
+        [self postPostWithSuccess:uploadSuccessful failure:failure];
+    }
+}
+
 @end
 
 @implementation Page (WordPressApi)
@@ -115,7 +133,7 @@
     NSArray *parameters = [self.blog getXMLRPCArgsWithExtra:[self XMLRPCDictionary]];
     self.remoteStatus = AbstractPostRemoteStatusPushing;
     
-    [self.blog.api callMethod:@"metaWeblog.newPost"
+    [self.blog.api callMethod:@"wp.newPage"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
                           if ([responseObject respondsToSelector:@selector(numericValue)]) {
@@ -140,8 +158,8 @@
 }
 
 - (void)getPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    NSArray *parameters = [NSArray arrayWithObjects:self.postID, self.blog.username, self.blog.password, nil];
-    [self.blog.api callMethod:@"metaWeblog.getPost"
+    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.postID, self.blog.username, [self.blog fetchPassword], nil];
+    [self.blog.api callMethod:@"wp.getPage"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
                           [self updateFromDictionary:responseObject];
@@ -163,9 +181,9 @@
         return;
     }
     
-    NSArray *parameters = [NSArray arrayWithObjects:self.postID, self.blog.username, self.blog.password, [self XMLRPCDictionary], nil];
+    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.postID, self.blog.username, [self.blog fetchPassword], [self XMLRPCDictionary], nil];
     self.remoteStatus = AbstractPostRemoteStatusPushing;
-    [self.blog.api callMethod:@"metaWeblog.editPost"
+    [self.blog.api callMethod:@"wp.editPage"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
                           self.remoteStatus = AbstractPostRemoteStatusSync;
@@ -194,8 +212,8 @@
         return;
     }
     
-    NSArray *parameters = [NSArray arrayWithObjects:@"unused", self.postID, self.blog.username, self.blog.password, nil];
-    [self.blog.api callMethod:@"metaWeblog.deletePost"
+    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.postID, self.blog.username, [self.blog fetchPassword], nil];
+    [self.blog.api callMethod:@"wp.deletePage"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
                           [[self managedObjectContext] deleteObject:self];
