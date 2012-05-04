@@ -86,7 +86,7 @@
                      NSNumber *categoryID = responseObject;
                      int newID = [categoryID intValue];
                      if (newID > 0) {
-                         category.categoryID = categoryID;
+                         category.categoryID = [categoryID numericValue];
                          [blog dataSave];
                          if (success) {
                              success(category);
