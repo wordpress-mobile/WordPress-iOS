@@ -40,6 +40,6 @@
 - (void)quickPhotoPost;
 - (void)uploadQuickPhoto:(Post *)post;
 - (void)showQuickPhotoButton:(BOOL)delay;
-- (void)showQuickPhotoWithImage:(UIImage *)image;
+- (void)showQuickPhotoWithImage:(UIImage *)image isCameraPlus:(BOOL)cameraPlus;
 
 @end

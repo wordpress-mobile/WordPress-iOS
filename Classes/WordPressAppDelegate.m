@@ -351,7 +351,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
             NSLog(@"Camera+ returned %@", [images images]);
             UIImage *image = [images image];
             UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-            [self.blogsViewController showQuickPhotoWithImage:image];
+            [self.blogsViewController showQuickPhotoWithImage:image isCameraPlus:YES];
         } cancelBlock:^(void) {
             NSLog(@"Camera+ picker canceled");
         }];

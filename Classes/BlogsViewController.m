@@ -401,10 +401,11 @@
     [self showQuickPhoto:sourceType useCameraPlus:NO];
 }
 
-- (void)showQuickPhotoWithImage:(UIImage *)image {
+- (void)showQuickPhotoWithImage:(UIImage *)image isCameraPlus:(BOOL)cameraPlus {
     QuickPhotoViewController *quickPhotoViewController = [[QuickPhotoViewController alloc] init];
     quickPhotoViewController.blogsViewController = self;
     quickPhotoViewController.photo = image;
+    quickPhotoViewController.isCameraPlus = cameraPlus;
     [self.navigationController pushViewController:quickPhotoViewController animated:YES];
     [quickPhotoViewController release];    
 }

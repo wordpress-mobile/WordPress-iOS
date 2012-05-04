@@ -23,6 +23,7 @@
 @synthesize photo;
 @synthesize blogsViewController;
 @synthesize sourceType;
+@synthesize isCameraPlus;
 
 - (void)dealloc
 {
@@ -187,7 +188,11 @@
     }
     post.postTitle = titleTextField.text;
     post.content = contentTextView.text;
-    post.specialType = @"QuickPhoto";
+    if (self.isCameraPlus) {
+        post.specialType = @"QuickPhotoCameraPlus";
+    } else {
+        post.specialType = @"QuickPhoto";
+    }
     post.postFormat = @"image";
 
     [[NSNotificationCenter defaultCenter] addObserver:post selector:@selector(mediaDidUploadSuccessfully:) name:ImageUploadSuccessful object:nil];        
