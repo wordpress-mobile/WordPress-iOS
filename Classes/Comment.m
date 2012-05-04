@@ -281,6 +281,7 @@
                           // wp.newComment should return an integer with the new comment ID
                           if ([responseObject respondsToSelector:@selector(numericValue)]) {
                               self.commentID = [responseObject numericValue];
+                              [self save];
                               if (success) success();
                           } else if (failure) {
                               NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"Invalid value returned for new comment: %@", responseObject] forKey:NSLocalizedDescriptionKey];
