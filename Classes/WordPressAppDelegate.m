@@ -1285,8 +1285,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
             }
             UINavigationController *nav = (UINavigationController *)rootViewController;
             [nav popToRootViewControllerAnimated:NO];
-            BlogsViewController *blogsViewController = (BlogsViewController *)nav.topViewController;
-            [blogsViewController showBlog:blog animated:NO];
+            BlogsViewController *blogsController = (BlogsViewController *)nav.topViewController;
+            [blogsController showBlog:blog animated:NO];
             BlogViewController *blogViewController = (BlogViewController *)nav.visibleViewController;
             [blogViewController showCommentWithId:[remoteNotif objectForKey:@"comment_id"]];
         }
