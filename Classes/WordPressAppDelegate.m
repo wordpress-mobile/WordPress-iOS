@@ -1078,12 +1078,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
                 if ([comment isKindOfClass:[NSString class]]) {
                     message = (NSString *)comment;
                 } else if ([comment isKindOfClass:[NSDictionary class]]) {
-                    NSDictionary *commentDict = (NSDictionary *)comment;
-                    NSArray *args = [commentDict objectForKey:@"loc-args"];
-                    if ([[comment objectForKey:@"loc-key"] isEqualToString:@"C1"])
-                        message = [NSString stringWithFormat: NSLocalizedString(@"%@ commented on %@: \n%@", @""), [args objectAtIndex: 0], [args objectAtIndex: 1], [args objectAtIndex: 2]];
-                    else 
-                        message = [NSString stringWithFormat: NSLocalizedString(@"Comment from %@: \n%@", @""), [args objectAtIndex: 0], [args objectAtIndex: 2]];
+                    // Might be used in the future
+                    WPLog(@"Received NSDictionary from Push Notification");
                 }
                 if (message && [message length] > 0) {
                     [self setAlertRunning:YES];
