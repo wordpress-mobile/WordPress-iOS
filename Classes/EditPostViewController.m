@@ -892,7 +892,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
             //NSString *selection = [textView.text substringWithRange:range];
             NSString *oldText = textView.text;
             NSRange oldRange = textView.selectedRange;
-            textView.text = [textView.text stringByReplacingCharactersInRange:range withString:aTagText];
+            // Weird. On iOS 4.2.x iPad the selectedRange can be larger than the string's length? #1011-ios 
+            if (range.location > [oldText length]) {
+                textView.text = [textView.text stringByAppendingString:aTagText];
+            } else {
+                textView.text = [textView.text stringByReplacingCharactersInRange:range withString:aTagText];
+            }
             
             //reset selection back to nothing
             range.length = 0;
