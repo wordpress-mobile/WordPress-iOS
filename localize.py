@@ -121,7 +121,7 @@ def merge(merged_fname, old_fname, new_fname):
 STRINGS_FILE = 'Localizable.strings'
 
 def localize(path):
-    languages = [name for name in os.listdir(path) if name.endswith('.lproj') and os.path.isdir(name)]
+    languages = [name for name in os.listdir(path) if name.endswith('en.lproj') and os.path.isdir(name)]
     
     for language in languages:
         original = merged = language + os.path.sep + STRINGS_FILE
@@ -130,11 +130,11 @@ def localize(path):
     
         if os.path.isfile(original):
             os.rename(original, old)
-            os.system('genstrings -q -o "%s" `find . -name "*.m"`' % language)
+            os.system('genstrings -q -o "%s" `find . -name "*.m" | grep -v Vendor`' % language)
             os.rename(original, new)
             merge(merged, old, new)
         else:
-            os.system('genstrings -q -o "%s" `find . -name "*.m"`' % language)        
+            os.system('genstrings -q -o "%s" `find . -name "*.m"` | grep -v Vendor' % language)
         
         # for xib in os.listdir('en.lproj'):
         #     if not xib.endswith('.xib'):
