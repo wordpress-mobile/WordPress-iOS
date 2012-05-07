@@ -11,7 +11,7 @@
 #import "CommentsViewController.h"
 #import "Comment.h"
 
-@interface CommentViewController : UIViewController <UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UIWebViewDelegate> {
+@interface CommentViewController : UIViewController <ReplyToCommentViewControllerDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UIWebViewDelegate> {
 
 	CommentsViewController *commentsViewController;
 	EditCommentViewController *editCommentViewController;

@@ -205,8 +205,14 @@
 
 #pragma mark -
 
-- (void) cancelView {
-	[self.navigationController popViewControllerAnimated:YES];
+- (void)cancelReplyToCommentViewController:(id)sender {
+	if (DeviceIsPad() == NO) {
+		WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+        [delegate.navigationController popViewControllerAnimated:YES];
+	}
+	else if (DeviceIsPad() == YES) {
+		[self dismissModalViewControllerAnimated:YES];
+	}
 }
 
 - (void)setEditing:(BOOL)value {
@@ -447,7 +453,7 @@
                                         initWithNibName:@"ReplyToCommentViewController" 
                                         bundle:nil] autorelease];
   
-  replyToCommentViewController.commentViewController = nil;
+  replyToCommentViewController.delegate = self;
   replyToCommentViewController.comment = [[selectedComment newReply] autorelease];
   replyToCommentViewController.title = NSLocalizedString(@"Comment Reply", @"Comment Reply view title");
 	
@@ -682,7 +688,7 @@
   [self removeModerationSwipeView:YES];
 }
 
-- (void) removeModerationSwipeView:(BOOL)animated
+- (void)removeModerationSwipeView:(BOOL)animated
 {
   if (!moderationSwipeCell || (moderationSwipeCell.frame.origin.x == 0 && moderationSwipeView.superview == nil)) return;
   

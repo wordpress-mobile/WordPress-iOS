@@ -10,10 +10,11 @@
 #import "CommentsTableViewDelegate.h"
 #import "Blog.h"
 #import "EGORefreshTableHeaderView.h"
+#import "ReplyToCommentViewController.h"
 
 @class CommentViewController;
 
-@interface CommentsViewController : UIViewController <UITableViewDataSource, CommentsTableViewDelegate, UIAccelerometerDelegate, NSFetchedResultsControllerDelegate, EGORefreshTableHeaderDelegate> {
+@interface CommentsViewController : UIViewController <ReplyToCommentViewControllerDelegate, UITableViewDataSource, CommentsTableViewDelegate, UIAccelerometerDelegate, NSFetchedResultsControllerDelegate, EGORefreshTableHeaderDelegate> {
 @private
     IBOutlet UITableView *commentsTableView;
 

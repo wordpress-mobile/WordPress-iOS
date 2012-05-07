@@ -19,35 +19,16 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 - (void)saveReplyBackgroundMethod:(id)sender;
 - (void)callBDMSaveCommentReply:(SEL)selector;
 - (void)endTextEnteringButtonAction:(id)sender;
-- (void)testStringAccess;
--(void) receivedRotate: (NSNotification*) notification;
-
+- (void)receivedRotate:(NSNotification*)notification;
 
 @end
 
-
-
 @implementation ReplyToCommentViewController
 
-@synthesize commentViewController, saveButton, doneButton, comment;
+@synthesize delegate, saveButton, doneButton, comment;
 @synthesize cancelButton, label, hasChanges, textViewText, isTransitioning, isEditing;
 
 //TODO: Make sure to give this class a connection to commentDetails and currentIndex from CommentViewController
-
-/*
- // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        // Custom initialization
-    }
-    return self;
-}
-*/
-
-
-- (void)testStringAccess{
-	//NSLog(@"%@",foo);
-}
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
@@ -91,22 +72,14 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	}
 	
 	[textView becomeFirstResponder];
-	[self testStringAccess];
+
 }
 
--(void) viewWillDisappear: (BOOL) animated{
+- (void)viewWillDisappear: (BOOL) animated{
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	[[NSNotificationCenter defaultCenter] removeObserver: self];
 	[[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
 }
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
 
 - (void)didReceiveMemoryWarning {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
@@ -118,13 +91,14 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 
 - (void)viewDidUnload {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
+	[super viewDidUnload];
+	
 }
 
 
 - (void)dealloc {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+	self.delegate = nil;
 	[saveButton release];
 	saveButton = nil;
 	[doneButton release];
@@ -141,15 +115,15 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 #pragma mark Button Override Methods
 
 - (void)cancelView:(id)sender {
-    [commentViewController cancelView:self];
+	if (delegate) {
+		[delegate cancelReplyToCommentViewController:self];	
+	} else {
+		[self.navigationController popViewControllerAnimated:YES];
+	}
 }
 
 #pragma mark -
 #pragma mark Helper Methods
-
-- (void)test {
-	NSLog(@"inside replyTOCommentViewController:test");
-}
 
 - (void)endTextEnteringButtonAction:(id)sender {
     [textView resignFirstResponder];
@@ -205,11 +179,10 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 		}
 	}
 }
+
+
 #pragma mark -
 #pragma mark Text View Delegate Methods
-
-
-
 
 - (void)textViewDidEndEditing:(UITextView *)aTextView {
 	NSString *textString = textView.text;
@@ -228,7 +201,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	if (DeviceIsPad() == NO) {
 		self.navigationItem.leftBarButtonItem =
 		[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"")
-										 style: UIBarButtonItemStyleBordered
+										 style:UIBarButtonItemStyleBordered
 										target:self
 										action:@selector(cancelView:)];
 	}
@@ -339,7 +312,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 - (void)initiateSaveCommentReply:(id)sender {
 	//we should call endTextEnteringButtonAction here, bc if you click on reply without clicking on the 'done' btn
 	//within the keyboard, the textViewDidEndEditing is never called
-	[self endTextEnteringButtonAction: sender];
+	[self endTextEnteringButtonAction:sender];
 	if(hasChanges == NO) {
 		if (DeviceIsPad() == YES) {
 			[textView becomeFirstResponder];
@@ -360,7 +333,11 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
         [progressAlert release];
         progressAlert = nil;
 		hasChanges = NO;
-        [commentViewController closeReplyViewAndSelectTheNewComment];
+		if(delegate && [delegate respondsToSelector:@selector(closeReplyViewAndSelectTheNewComment)]){
+			[delegate closeReplyViewAndSelectTheNewComment];
+		} else {
+			[self cancelView:nil];
+		}
     } failure:^(NSError *error) {
         [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
         [progressAlert release];

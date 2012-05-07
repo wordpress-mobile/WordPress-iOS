@@ -294,10 +294,13 @@
 - (void)showReplyToCommentViewWithAnimation:(BOOL)animate {
 	WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 	
+	if (self.replyToCommentViewController) {
+		self.replyToCommentViewController.delegate = nil;
+	}
 		self.replyToCommentViewController = [[[ReplyToCommentViewController alloc] 
 										 initWithNibName:@"ReplyToCommentViewController" 
 										 bundle:nil]autorelease];
-		replyToCommentViewController.commentViewController = self;
+		replyToCommentViewController.delegate = self;
 		replyToCommentViewController.comment = [[self.comment newReply] autorelease];
 		replyToCommentViewController.title = NSLocalizedString(@"Comment Reply", @"Comment Reply view title");
 	
@@ -395,11 +398,16 @@
 	}
 }
 
+
+#pragma mark -
+#pragma mark ReplyToCommentViewControllerDelegate Methods
+
+- (void)cancelReplyToCommentViewController:(id)sender {
+	[self cancelView:sender];
+}
 	
 #pragma mark -
 #pragma mark Action Sheet Button Helper Methods
-
-
 
 - (void)discard {
 //    hasChanges = NO;
