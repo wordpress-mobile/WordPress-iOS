@@ -214,6 +214,7 @@
         [webViewController setUrl:[NSURL URLWithString:dashboardUrl]];
         [webViewController setUsername:self.username];
         [webViewController setPassword:self.password];
+        [webViewController setWpLoginURL:[NSURL URLWithString:blog.loginURL]];
         if (DeviceIsPad())
             [self presentModalViewController:webViewController animated:YES];
         else
