@@ -12,7 +12,7 @@
 #define TAG_OFFSET 1010
 
 @interface PagesViewController (PrivateMethods)
-- (void)refreshPostList;
+- (void)syncFinished;
 @end
 
 @implementation PagesViewController
@@ -24,10 +24,10 @@
 
 - (void)syncPosts {
     [self.blog syncPagesWithSuccess:^{
-        [self refreshPostList];
+        [self syncFinished];
     } failure:^(NSError *error) {
         [WPError showAlertWithError:error title:NSLocalizedString(@"Couldn't sync pages", @"")];
-        [self refreshPostList];
+        [self syncFinished];
     } loadMore:NO];
 }
 
@@ -112,10 +112,10 @@
 	return NO;
 }
 
-- (void)loadMoreItems {
-	[self.blog syncPagesWithSuccess:^ {
-        [self refreshPostList];
-    } failure:nil loadMore:YES];
+- (void)loadMoreItemsWithBlock:(void (^)())block {
+	[self.blog syncPagesWithSuccess:block failure:^(NSError *error) {
+        if (block) block();
+    } loadMore:YES];
 }
 
 #pragma mark -

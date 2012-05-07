@@ -23,9 +23,10 @@
 - (void)checkLastSyncDate;
 - (NSDate *)lastSyncDate;
 - (BOOL) hasOlderItems;
-- (void)loadMoreItems;
+- (void)loadMoreItemsWithBlock:(void (^)())block;
 - (NSString *)entityName;
-- (void)refreshPostList;
+- (void)syncFinished;
+- (void)configureCell:(PostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 @end
 
 @implementation PostsViewController
@@ -146,12 +147,11 @@
 	return [self.blog.hasOlderPosts boolValue];
 }
 
-- (void)loadMoreItems {
-	[self.blog syncPostsWithSuccess:^ {
-        [self refreshPostList];
-    } failure:nil loadMore:YES];
+- (void)loadMoreItemsWithBlock:(void (^)())block {
+	[self.blog syncPostsWithSuccess:block failure:^(NSError *error) {
+        if (block) block();
+    } loadMore:YES];
 }
-
 
 #pragma mark -
 #pragma mark TableView delegate
@@ -169,7 +169,7 @@
         [activityFooter startAnimating];
         if (![self isSyncing]) {
             WPLog(@"Approaching end of table, let's load more posts");
-            [self performSelectorInBackground:@selector(loadMore) withObject:nil];
+            [self loadMore];
         }
     }
 }
@@ -191,22 +191,25 @@
     return [sectionInfo numberOfObjects];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"PostCell";
-    PostTableViewCell *cell = (PostTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+- (void)configureCell:(PostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     AbstractPost *apost = (AbstractPost*) [self.resultsController objectAtIndexPath:indexPath];
-
-    if (cell == nil) {
-        cell = [[[PostTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-    }
-
     cell.post = apost;
 	if (cell.post.remoteStatus == AbstractPostRemoteStatusPushing) {
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	} else {
 		cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 	}
+}
 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *CellIdentifier = @"PostCell";
+    PostTableViewCell *cell = (PostTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+
+    if (cell == nil) {
+        cell = [[[PostTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+    }
+
+    [self configureCell:cell atIndexPath:indexPath];
 
     return cell;
 }
@@ -261,9 +264,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-	progressAlert = [[WPProgressHUD alloc] initWithLabel:[NSString stringWithFormat:NSLocalizedString(@"Deleting %@...", @""), [self entityName]]];
-	[progressAlert show];
-	[self performSelectorInBackground:@selector(deletePostAtIndexPath:) withObject:indexPath];
+    [self deletePostAtIndexPath:indexPath];
 }
 
 #pragma mark -
@@ -277,11 +278,8 @@
 #pragma mark -
 #pragma mark Custom methods
 
-- (void)refreshPostList {
-    [self.tableView reloadData]; // It's automatically reloaded from the results controller but with a delay, so we do it now too: #929
-    [self trySelectSomething];
-    [activityFooter stopAnimating];
-	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+- (void)syncFinished {
+    [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
 }
 
 - (void)refreshHandler {
@@ -296,96 +294,41 @@
         [self.blog syncPostFormatsWithSuccess:nil failure:nil];
         [self.blog syncOptionsWithWithSuccess:nil failure:nil];
         [self.blog syncPostsWithSuccess:^{
-            [self refreshPostList];
+            [self syncFinished];
         } failure:^(NSError *error) {
-            [self refreshPostList];
             NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
+            [self syncFinished];
         } loadMore:NO];
     } failure:^(NSError *error) {
         [WPError showAlertWithError:error title:NSLocalizedString(@"Couldn't sync posts", @"")];
-        [self refreshPostList];
     }];
 }
 
-- (void)didLoadMore {
-    [activityFooter stopAnimating];
-}
-
 - (void)loadMore {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    NSError *error = nil;
     if ((![self isSyncing]) && [self hasOlderItems]) {
         WPLog(@"We have older posts to load");
-        [self loadMoreItems];
-	    // TODO: handle errors. 
-		//This method is called so many times. if you show an error msg the app will be very unusable
-		if(error) {
-			//[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error];
-		} else {
-			[self performSelectorOnMainThread:@selector(refreshPostList) withObject:nil waitUntilDone:NO];
-		}
+        [self loadMoreItemsWithBlock:^{
+            [activityFooter stopAnimating];
+        }];
     }
-    [self performSelectorOnMainThread:@selector(didLoadMore) withObject:nil waitUntilDone:NO];
-    [pool release];
 }
 
-- (void)deletePostAtIndexPath:(id)object{
-	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-	
-	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-	//NewObj* pNew = (NewObj*)oldObj;
-	NSIndexPath *indexPath = (NSIndexPath*)object;
+- (void)deletePostAtIndexPath:(NSIndexPath *)indexPath{
     Post *post = [resultsController objectAtIndexPath:indexPath];
-	
-    if (![post hasRemote]) {
-        // FIXME: use custom post method
-		[appDelegate.managedObjectContext deleteObject:post];
-		
-        // Commit the change.
-        NSError *error;
-        if (![appDelegate.managedObjectContext save:&error]) {
-			NSLog(@"Severe error when trying to delete local draft. Error: %@", error);
-        }		
-    } 
-	else {
-        //check for reachability
-        if ( appDelegate.connectionAvailable == NO ) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Communication Error.", @"")
-                                                            message:NSLocalizedString(@"No internet connection.", @"")
-                                                           delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
-            alert.tag = TAG_OFFSET;
-            [alert show];
-            
-            WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-            [delegate setAlertRunning:YES];
-            [alert release];
-            return;
+    [post deletePostWithSuccess:nil failure:^(NSError *error) {
+        NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
+        [self syncPosts];
+        if(DeviceIsPad() && self.postReaderViewController) {
+            if(self.postReaderViewController.apost == post) {
+                //push an the W logo on the right. 
+                WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+                [delegate showContentDetailViewController:nil];
+                self.selectedIndexPath = nil;
+            }
         }
-        else{
-            //delete post on the server
-            Post *post = [resultsController objectAtIndexPath:indexPath];
-            
-			[post deletePostWithSuccess:^{
-                [self syncPosts];
-            } failure:^(NSError *error) {
-				NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
-                [[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
-				if(DeviceIsPad() && self.postReaderViewController) {
-					if(self.postReaderViewController.apost == post) {
-						//push an the W logo on the right. 
-						WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-						[delegate showContentDetailViewController:nil];
-						self.selectedIndexPath = nil;
-					}
-				}
-            }];
-        }
-	}
-	
-	[progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-    [progressAlert release];
-    [pool release];
+    }];
 }
 
 - (void)reselect {
@@ -537,11 +480,11 @@
 }
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    //    [self.tableView beginUpdates];
+    [self.tableView beginUpdates];
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    //    [self.tableView endUpdates];
+    [self.tableView endUpdates];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller
@@ -549,27 +492,52 @@
        atIndexPath:(NSIndexPath *)indexPath
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath {
-    [self.tableView reloadData];
-	
-    if (!DeviceIsPad()) {
-        return;
+
+    if (NSFetchedResultsChangeUpdate == type && newIndexPath != nil) {
+        // Seriously, Apple?
+        // http://developer.apple.com/library/ios/#releasenotes/iPhone/NSFetchedResultsChangeMoveReportedAsNSFetchedResultsChangeUpdate/_index.html
+        type = NSFetchedResultsChangeMove;
     }
+    
     switch (type) {
-        case NSFetchedResultsChangeDelete:
-			// A post was deleted, we should try to figure out if the deleted post is the currently opened on the right side
-			if(self.selectedIndexPath && (self.selectedIndexPath == indexPath)) {
-				//push an the W logo on the right. 
-				//FIXME: I've tried to select something but even with try/catch the app could crash
-				WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-				[delegate showContentDetailViewController:nil];
-				self.selectedIndexPath = nil;
-			}
-            break;
         case NSFetchedResultsChangeInsert:
-            self.selectedIndexPath = newIndexPath;
-            [self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-        default:
-            [self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            if (DeviceIsPad()) {
+                self.selectedIndexPath = newIndexPath;
+            }
+            break;
+        case NSFetchedResultsChangeDelete:
+            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            if(self.selectedIndexPath && (self.selectedIndexPath == indexPath)) {
+                //push an the W logo on the right. 
+                WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+                [delegate showContentDetailViewController:nil];
+                if (DeviceIsPad()) {
+                    self.selectedIndexPath = nil;
+                }
+            }
+            break;
+        case NSFetchedResultsChangeUpdate:
+            [self configureCell:((PostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath]) atIndexPath:indexPath];
+            break;
+            
+        case NSFetchedResultsChangeMove:
+            [self.tableView deleteRowsAtIndexPaths:[NSArray
+                                                    arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView insertRowsAtIndexPaths:[NSArray
+                                                    arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+    }
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id )sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+    switch(type) {
+        case NSFetchedResultsChangeInsert:
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
             break;
     }
 }

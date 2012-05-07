@@ -347,6 +347,8 @@
                                                                                    if ([responseObject respondsToSelector:@selector(numericValue)]) {
                                                                                        self.postID = [responseObject numericValue];
                                                                                        self.remoteStatus = AbstractPostRemoteStatusSync;
+                                                                                       // Set the temporary date until we get it from the server so it sorts properly on the list
+                                                                                       self.date_created_gmt = [DateUtils localDateToGMTDate:[NSDate date]];
                                                                                        [self save];
                                                                                        [self getPostWithSuccess:nil failure:nil];
                                                                                        if (success) success();
@@ -374,6 +376,7 @@
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
                           [self updateFromDictionary:responseObject];
+                          [self save];
                           if (success) success();
                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                           if (failure) {
@@ -410,30 +413,22 @@
 
 - (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     WPFLogMethod();
-    if (![self hasRemote]) {
-        [[self managedObjectContext] deleteObject:self];
-        if (success) success();
-        return;
+    if ([self hasRemote]) {
+        NSArray *parameters = [NSArray arrayWithObjects:@"unused", self.postID, self.blog.username, [self.blog fetchPassword], nil];
+        [self.blog.api callMethod:@"metaWeblog.deletePost"
+                       parameters:parameters
+                          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                              [[self managedObjectContext] deleteObject:self];
+                              if (success) success();
+                          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                              if (failure) failure(error);
+                          }];
     }
-
-    if (self.postID == nil) {
-        if (failure) {
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Can't delete a post if it's not in the server" forKey:NSLocalizedDescriptionKey];
-            NSError *error = [NSError errorWithDomain:@"org.wordpress.iphone" code:0 userInfo:userInfo];
-            failure(error);
-        }
-        return;
+    [[self managedObjectContext] deleteObject:self];
+    [self save];
+    if (![self hasRemote] && success) {
+        success();
     }
-
-    NSArray *parameters = [NSArray arrayWithObjects:@"unused", self.postID, self.blog.username, [self.blog fetchPassword], nil];
-    [self.blog.api callMethod:@"metaWeblog.deletePost"
-                   parameters:parameters
-                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                          [[self managedObjectContext] deleteObject:self];
-                          if (success) success();
-                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                          if (failure) failure(error);
-                      }];
 }
 
 @end

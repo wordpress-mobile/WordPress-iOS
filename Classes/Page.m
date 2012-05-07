@@ -139,6 +139,8 @@
                           if ([responseObject respondsToSelector:@selector(numericValue)]) {
                               self.postID = [responseObject numericValue];
                               self.remoteStatus = AbstractPostRemoteStatusSync;
+                              // Set the temporary date until we get it from the server so it sorts properly on the list
+                              self.date_created_gmt = [DateUtils localDateToGMTDate:[NSDate date]];
                               [self save];
                               [self getPostWithSuccess:nil failure:nil];
                               if (success) success();
@@ -163,6 +165,7 @@
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
                           [self updateFromDictionary:responseObject];
+                          [self save];
                           if (success) success();
                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                           if (failure) {
