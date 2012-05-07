@@ -197,22 +197,8 @@
 }
 
 - (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    if (![self hasRemote]) {
-        [[self managedObjectContext] deleteObject:self];
-        if (success) success();
-        return;
-    }
-    
-    if (self.postID == nil) {
-        if (failure) {
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Can't delete a post if it's not in the server" forKey:NSLocalizedDescriptionKey];
-            NSError *error = [NSError errorWithDomain:@"org.wordpress.iphone" code:0 userInfo:userInfo];
-            failure(error);
-        }
-        return;
-    }
-    
-    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.blog.username, [self.blog fetchPassword], self.postID, nil];
+    WPFLogMethod();
+    NSArray *parameters = [self.blog getXMLRPCArgsWithExtra:self.postID];
     [self.blog.api callMethod:@"wp.deletePage"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -221,6 +207,11 @@
                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                           if (failure) failure(error);
                       }];
+    [[self managedObjectContext] deleteObject:self];
+    [self save];
+    if (![self hasRemote] && success) {
+        success();
+    }
 }
 
 @end
