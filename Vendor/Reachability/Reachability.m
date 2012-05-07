@@ -152,7 +152,7 @@ static void TMReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
         CFRelease(self.reachabilityRef);
         self.reachabilityRef = nil;
     }
-#ifdef DEBUG
+#ifdef REACHABILITY_DEBUG
     NSLog(@"Reachability: dealloc");
 #endif
     [super dealloc];
@@ -177,7 +177,7 @@ static void TMReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
     
     if (!SCNetworkReachabilitySetCallback(self.reachabilityRef, TMReachabilityCallback, &context)) 
     {
-#ifdef DEBUG
+#ifdef REACHABILITY_DEBUG
         NSLog(@"SCNetworkReachabilitySetCallback() failed: %s\n", SCErrorString(SCError()));
 #endif
         return NO;
@@ -412,7 +412,7 @@ static void TMReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
 
 -(void)reachabilityChanged:(SCNetworkReachabilityFlags)flags
 {
-#ifdef DEBUG
+#ifdef REACHABILITY_DEBUG
     NSLog(@"Reachability: %@", reachabilityFlags(flags));
 #endif
     
