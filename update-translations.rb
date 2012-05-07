@@ -43,15 +43,18 @@ LANGS={
   'fr' => 'fr',
   'he' => 'he',
   'hr' => 'hr',
+  'hu' => 'hu',
   'id' => 'id',
   'it' => 'it',
   'ja' => 'ja',
   'nb' => 'nb',
   'nl' => 'nl',
+  'pl' => 'pl',
   'pt' => 'pt',
   'sv' => 'sv',
   'tr' => 'tr',
-  'zh-cn' => 'zh-Hans'
+  'zh-cn' => 'zh-Hans',
+  'zh-tw' => 'zh-Hant'
 }
 
 LANGS.each do |code,local|

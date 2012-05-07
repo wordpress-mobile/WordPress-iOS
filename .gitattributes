@@ -687,6 +687,7 @@ fr.lproj/Localizable.strings -text svneol=unset#unset
 he.lproj/Localizable.strings -text svneol=unset#unset
 /help.png -text
 hr.lproj/Localizable.strings -text svneol=unset#unset
+hu.lproj/Localizable.strings -text svneol=unset#unset
 /i18n_download -text
 /iTunesArtwork -text
 id.lproj/Localizable.strings -text
@@ -744,6 +745,7 @@ nl.lproj/Localizable.strings -text svneol=unset#unset
 /paperclip@2x.png -text
 /photos.png -text
 /photos@2x.png -text
+pl.lproj/Localizable.strings -text svneol=unset#unset
 /posts.png -text
 /posts@2x.png -text
 /preview.png -text
@@ -866,3 +868,4 @@ tr.lproj/Localizable.strings -text
 /xhtml1-transitional.dtd -text
 /xhtmlValidatorTemplate.xhtml -text
 zh-Hans.lproj/Localizable.strings -text svneol=unset#unset
+zh-Hant.lproj/Localizable.strings -text svneol=unset#unset
