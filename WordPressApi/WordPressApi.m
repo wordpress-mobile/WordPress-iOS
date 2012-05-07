@@ -191,6 +191,8 @@
                         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                             if (failure) failure(error);
                         }];
+                        NSOperationQueue *queue = [[[NSOperationQueue alloc] init] autorelease];
+                        [queue addOperation:operation];
                     };
                     // ----------------------------------------------------------------------------
                     // 4. Try removing "?rsd" from the url, it should point to the XML-RPC endpoint         
