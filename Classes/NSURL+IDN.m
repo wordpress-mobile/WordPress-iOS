@@ -374,4 +374,35 @@ fail:
     }
 }
 
++ (NSString *)IDNEncodedURL:(NSString *)aURL {
+    NSString *hostname = aURL;
+    NSMutableArray *components = [[aURL componentsSeparatedByString:@"://"] mutableCopy];
+    if ([components count] > 1) {
+        hostname = [components objectAtIndex:1];
+    }
+    hostname = [NSURL IDNEncodedHostname:hostname];
+    if ([components count] > 1) {
+        [components replaceObjectAtIndex:1 withObject:hostname];
+        return [components componentsJoinedByString:@"://"];
+    } else {
+        return hostname;
+    }
+}
+
++ (NSString *)IDNDecodedURL:(NSString *)anIDNURL {
+    NSString *hostname = anIDNURL;
+    NSMutableArray *components = [[anIDNURL componentsSeparatedByString:@"://"] mutableCopy];
+    if ([components count] > 1) {
+        hostname = [components objectAtIndex:1];
+    }
+    hostname = [NSURL IDNDecodedHostname:hostname];
+    if ([components count] > 1) {
+        [components replaceObjectAtIndex:1 withObject:hostname];
+        return [components componentsJoinedByString:@"://"];
+    } else {
+        return hostname;
+    }    
+}
+
+
 @end

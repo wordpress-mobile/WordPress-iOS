@@ -298,7 +298,7 @@
 }
 
 - (void)checkURL {	
-	NSString *urlToValidate = urlTextField.text;    
+	NSString *urlToValidate = self.url;
 	
     if(![urlToValidate hasPrefix:@"http"])
         urlToValidate = [NSString stringWithFormat:@"http://%@", url];
@@ -400,7 +400,7 @@
 }
 
 - (void)validateFields {
-    self.url = [NSURL IDNEncodedHostname:urlTextField.text];
+    self.url = [NSURL IDNEncodedURL:urlTextField.text];
     NSLog(@"blog url: %@", self.url);
     self.username = usernameTextField.text;
     self.password = passwordTextField.text;
