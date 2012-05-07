@@ -212,7 +212,7 @@
         return;
     }
     
-    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.postID, self.blog.username, [self.blog fetchPassword], nil];
+    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.blog.username, [self.blog fetchPassword], self.postID, nil];
     [self.blog.api callMethod:@"wp.deletePage"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
