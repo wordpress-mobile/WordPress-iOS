@@ -146,8 +146,8 @@
     return _blavatarUrl;
 }
 
-
-- (NSString *)hostURL {
+// used as a key to store passwords, if you change the algorithm, logins will break
+- (NSString *)displayURL {
     NSString *result = [NSString stringWithFormat:@"%@",
                         [[NSURL IDNDecodedHostname:self.url] stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""]];
     
@@ -157,18 +157,21 @@
     return result;
 }
 
+- (NSString *)hostURL {
+    return [self displayURL];
+}
 
-- (NSString *)blogLoginURL {
+- (NSString *)hostname {
+    NSString *hostname = [[NSURL URLWithString:self.url] host];
+    if (hostname == nil) {
+        hostname = [[self.url stringByReplacingOccurrencesOfRegex:@"^.*://" withString:@""] stringByReplacingOccurrencesOfRegex:@"/.*$" withString:@""];
+        WPFLog(@"- [Blog hostname] for %@: %@", self.url, hostname);
+    }
+    return hostname;
+}
+
+- (NSString *)loginURL {
     return [self.xmlrpc stringByReplacingOccurrencesOfRegex:@"/xmlrpc.php$" withString:@"/wp-login.php"];
-    /*
-     i have used the blogURL and worked fine, but the xmlrpc url should be a better choice since it is usually on https.
-     
-     if(![wpLoginURL hasPrefix:@"http"])
-     wpLoginURL = [NSString stringWithFormat:@"http://%@/%@", postDetailViewController.apost.blog.url, @"wp-login.php"];
-     else 
-     wpLoginURL = [NSString stringWithFormat:@"%@/%@", postDetailViewController.apost.blog.url, @"wp-login.php"];
-     
-     */
 }
 
 -(NSArray *)sortedCategories {

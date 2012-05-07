@@ -12,8 +12,8 @@
 @interface Blog : NSManagedObject
 
 @property (nonatomic, retain) NSNumber *blogID;
-@property (nonatomic, retain) NSString *blogName, *url, *username, *password, *xmlrpc, *apiKey;
-@property (readonly) NSString *hostURL, *blavatarUrl;
+@property (nonatomic, retain) NSString *blogName, *username, *password, *xmlrpc, *apiKey;
+@property (readonly) NSString *blavatarUrl;
 @property (nonatomic, assign) NSNumber *isAdmin, *hasOlderPosts, *hasOlderPages;
 @property (nonatomic, retain) NSSet *posts;
 @property (nonatomic, retain) NSSet *categories;
@@ -31,11 +31,28 @@
 @property (readonly, nonatomic, retain) AFXMLRPCClient *api;
 @property (readonly) NSString *version;
 
+/**
+ URL properties (example: http://wp.koke.me/sub/xmlrpc.php)
+ */
+
+// User to display the blog url to the user (IDN decoded, no http:)
+// wp.koke.me/sub
+@property (readonly) NSString *displayURL;
+// alias of displayURL
+// kept for compatibilty, used as a key to store passwords
+@property (readonly) NSString *hostURL;
+// http://wp.koke.me/sub
+@property (nonatomic, retain) NSString *url;
+// Used for reachability checks (IDN encoded)
+// wp.koke.me
+@property (readonly) NSString *hostname;
+
+
 #pragma mark - Blog information
 - (BOOL)isWPcom;
 - (NSArray *)sortedCategories;
 - (NSString *)getOptionValue:(NSString *) name;
-- (NSString *)blogLoginURL;
+- (NSString *)loginURL;
 - (NSArray *)getXMLRPCArgsWithExtra:(id)extra;
 - (NSString *)fetchPassword;
 

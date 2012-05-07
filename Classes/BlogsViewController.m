@@ -503,7 +503,7 @@
     blogViewController.blog = blog;
     [appDelegate setCurrentBlog:blog];
     
-   [appDelegate setCurrentBlogReachability: [Reachability reachabilityWithHostname:blog.hostURL] ];
+   [appDelegate setCurrentBlogReachability: [Reachability reachabilityWithHostname:blog.hostname] ];
     
 	[self.navigationController pushViewController:blogViewController animated:animated];
 	[blogViewController release];
