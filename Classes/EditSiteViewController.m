@@ -313,7 +313,7 @@
     [WordPressApi guessXMLRPCURLForSite:urlToValidate success:^(NSURL *xmlrpcURL) {
         WordPressApi *api = [WordPressApi apiWithXMLRPCEndpoint:xmlrpcURL username:usernameTextField.text password:passwordTextField.text];
         [api getBlogsWithSuccess:^(NSArray *blogs) {
-            subsites = blogs;
+            subsites = [blogs retain];
             [self validationSuccess:[xmlrpcURL absoluteString]];
         } failure:^(NSError *error) {
             [self validationDidFail:error];
