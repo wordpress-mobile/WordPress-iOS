@@ -2,6 +2,40 @@
 
 # Supported languages:
 # ar,ca,cs,da,de,el,en,en-GB,es,fi,fr,he,hr,hu,id,it,ja,ko,ms,nb,nl,pl,pt,pt-PT,ro,ru,sk,sv,th,tr,uk,vi,zh-Hans,zh-Hant
+# * Arabic
+# * Catalan
+# * Czech
+# * Danish
+# * German
+# * Greek
+# * English
+# * English (UK)
+# * Spanish
+# * Finnish
+# * French
+# * Hebrew
+# * Croatian
+# * Hungarian
+# * Indonesian
+# * Italian
+# * Japanese
+# * Korean
+# * Malay
+# * Norwegian (Bokmål)
+# * Dutch
+# * Polish
+# * Portuguese
+# * Portuguese (Portugal)
+# * Romanian
+# * Russian
+# * Slovak
+# * Swedish
+# * Thai
+# * Turkish
+# * Ukranian
+# * Vietnamese
+# * Chinese (China) [zh-Hans]
+# * Chinese (Taiwan) [zh-Hant]
 
 LANGS={
   'de' => 'de',
