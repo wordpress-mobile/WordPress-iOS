@@ -369,6 +369,7 @@
 		E12F55F314A1F22D0060A510 /* XMLRPCConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55EC14A1F22D0060A510 /* XMLRPCConnectionManager.m */; };
 		E12F55F414A1F22D0060A510 /* XMLRPCEventBasedParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55EE14A1F22D0060A510 /* XMLRPCEventBasedParser.m */; };
 		E12F55F514A1F22D0060A510 /* XMLRPCEventBasedParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55F014A1F22D0060A510 /* XMLRPCEventBasedParserDelegate.m */; };
+		E12F95B9155820A40067A653 /* NSObject+BlockObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F95B8155820A40067A653 /* NSObject+BlockObservation.m */; };
 		E131D08912C8C9160056BAB9 /* AbstractPost.m in Sources */ = {isa = PBXBuildFile; fileRef = E131D08812C8C9160056BAB9 /* AbstractPost.m */; };
 		E1330B0F151275300010018D /* AFAuthenticationAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = E1330B0E151275300010018D /* AFAuthenticationAlertView.m */; };
 		E138623C1355FF8800AAB235 /* UINavigationController+FormSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = E138623B1355FF8800AAB235 /* UINavigationController+FormSheet.m */; };
@@ -1014,6 +1015,8 @@
 		E12F95A51557C9C20067A653 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E12F95A61557CA210067A653 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E12F95A71557CA400067A653 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E12F95B7155820A40067A653 /* NSObject+BlockObservation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+BlockObservation.h"; sourceTree = "<group>"; };
+		E12F95B8155820A40067A653 /* NSObject+BlockObservation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+BlockObservation.m"; sourceTree = "<group>"; };
 		E131D08712C8C9150056BAB9 /* AbstractPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractPost.h; sourceTree = "<group>"; };
 		E131D08812C8C9160056BAB9 /* AbstractPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractPost.m; sourceTree = "<group>"; };
 		E1330B0D151275300010018D /* AFAuthenticationAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFAuthenticationAlertView.h; sourceTree = "<group>"; };
@@ -2231,6 +2234,7 @@
 		E12F55F714A1F2640060A510 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				E12F95B6155820A40067A653 /* KVO+Blocks */,
 				E1EAD53D1554498000C0ED7A /* CameraPlus */,
 				FDA68C1D14AC6CB800151896 /* Reachability */,
 				E1F807F714641AC700726BC7 /* AFNetworking */,
@@ -2238,6 +2242,16 @@
 				837614E8120A7FA3005CCB33 /* XMLRPC */,
 			);
 			name = Vendor;
+			sourceTree = "<group>";
+		};
+		E12F95B6155820A40067A653 /* KVO+Blocks */ = {
+			isa = PBXGroup;
+			children = (
+				E12F95B7155820A40067A653 /* NSObject+BlockObservation.h */,
+				E12F95B8155820A40067A653 /* NSObject+BlockObservation.m */,
+			);
+			name = "KVO+Blocks";
+			path = "Vendor/KVO+Blocks";
 			sourceTree = "<group>";
 		};
 		E159D1011309AAF200F498E2 /* Migrations */ = {
@@ -3115,6 +3129,7 @@
 				A2D4F85A153F0E3F00686803 /* Post.js in Sources */,
 				A2D4F85B153F0E3F00686803 /* WPiOSTests.js in Sources */,
 				E1EAD5401554498000C0ED7A /* CameraPlusPickerManager.m in Sources */,
+				E12F95B9155820A40067A653 /* NSObject+BlockObservation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

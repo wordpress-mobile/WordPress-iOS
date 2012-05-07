@@ -457,6 +457,8 @@ Vendor/InAppSettings/InAppSettingsTestApp/test_settings/Settings.bundle/littledo
 Vendor/InAppSettings/InAppSettingsTestApp/test_settings/Settings.bundle/littledot@2x.png -text svneol=unset#unset
 Vendor/InAppSettings/LICENSE -text
 Vendor/InAppSettings/README.md -text
+Vendor/KVO+Blocks/NSObject+BlockObservation.h -text
+Vendor/KVO+Blocks/NSObject+BlockObservation.m -text
 Vendor/Reachability/Reachability.h -text
 Vendor/Reachability/Reachability.m -text
 Vendor/libraries.txt -text
