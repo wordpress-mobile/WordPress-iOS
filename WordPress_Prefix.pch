@@ -15,6 +15,7 @@
 	#import "XMLRPCRequest.h"
 	#import "XMLRPCResponse.h"
 	#import "XMLRPCConnection.h"
+    #import "NSObject+BlockObservation.h"
 
 	// Project-specific
     #import "Constants.h"

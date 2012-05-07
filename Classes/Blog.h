@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 #import <CommonCrypto/CommonDigest.h>
 #import "AFXMLRPCClient.h"
+#import "Reachability.h"
 
 @interface Blog : NSManagedObject
 
@@ -30,6 +31,8 @@
 @property (nonatomic, retain) NSDictionary *postFormats;
 @property (readonly, nonatomic, retain) AFXMLRPCClient *api;
 @property (readonly) NSString *version;
+@property (readonly) Reachability *reachability;
+@property (readonly) BOOL reachable;
 
 /**
  URL properties (example: http://wp.koke.me/sub/xmlrpc.php)

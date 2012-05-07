@@ -33,6 +33,8 @@
 @implementation Blog {
     AFXMLRPCClient *_api;
     NSString *_blavatarUrl;
+    Reachability *_reachability;
+    BOOL _isReachable;
 }
 @dynamic blogID, blogName, url, username, password, xmlrpc, apiKey;
 @dynamic isAdmin, hasOlderPosts, hasOlderPages;
@@ -188,6 +190,10 @@
 	return (range.location != NSNotFound);
 }
 
+- (void)awakeFromFetch {
+    [self reachability];
+}
+
 - (void)dataSave {
     NSError *error = nil;
     if (![[self managedObjectContext] save:&error]) {
@@ -242,6 +248,31 @@
 
 - (NSString *)version {
     return [self getOptionValue:@"software_version"];
+}
+
+- (Reachability *)reachability {
+    if (_reachability == nil) {
+        _reachability = [[Reachability reachabilityWithHostname:self.hostname] retain];
+        _reachability.reachableBlock = ^(Reachability *reach) {
+            [self willChangeValueForKey:@"reachable"];
+            _isReachable = YES;
+            [self didChangeValueForKey:@"reachable"];
+        };
+        _reachability.unreachableBlock = ^(Reachability *reach) {
+            [self willChangeValueForKey:@"reachable"];
+            _isReachable = NO;
+            [self didChangeValueForKey:@"reachable"];
+        };
+        [_reachability startNotifier];
+    }
+    
+    return _reachability;
+}
+
+- (BOOL)reachable {
+    // Creates reachability object if it's nil
+    [self reachability];
+    return _isReachable;
 }
 
 #pragma mark -
@@ -741,7 +772,9 @@
 - (void)dealloc {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [_blavatarUrl release]; _blavatarUrl = nil;
-    [_api release];
+    [_api release]; _api = nil;
+    [_reachability stopNotifier];
+    [_reachability release]; _reachability = nil;
     [super dealloc];
 }
 

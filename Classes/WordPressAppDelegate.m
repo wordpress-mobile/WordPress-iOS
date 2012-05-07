@@ -146,12 +146,12 @@ static WordPressAppDelegate *wordPressApp = NULL;
     // set the blocks 
     internetReachability.reachableBlock = ^(Reachability*reach)
     {  
-        WPLog(@"REACHABLE!");
+        WPLog(@"Internet connection is back");
         self.connectionAvailable = YES;
     };
     internetReachability.unreachableBlock = ^(Reachability*reach)
     {
-        WPLog(@"UNREACHABLE!");
+        WPLog(@"No internet connection");
         self.connectionAvailable = NO;
     };
     // start the notifier which will cause the reachability object to retain itself!
@@ -162,12 +162,12 @@ static WordPressAppDelegate *wordPressApp = NULL;
     // set the blocks 
     wpcomReachability.reachableBlock = ^(Reachability*reach)
     {  
-        WPLog(@"WPCOM REACHABLE!");
+        WPLog(@"Connection to WordPress.com is back");
         self.wpcomAvailable = YES;
     };
     wpcomReachability.unreachableBlock = ^(Reachability*reach)
     {
-        WPLog(@"WPCOM UNREACHABLE!");
+        WPLog(@"No connection to WordPress.com");
         self.wpcomAvailable = NO;
     };
     // start the notifier which will cause the reachability object to retain itself!
@@ -301,29 +301,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
     }];
 #endif
     return YES;
-}
-
-
--(void) setCurrentBlogReachability:(Reachability *)newBlogReachability {
-    WPLog(@"setCurrentBlogReachability");
-    [currentBlogReachability stopNotifier];
-    [currentBlogReachability release];
-    self.currentBlogAvailable = NO;
-    currentBlogReachability = [newBlogReachability retain];
-    
-    // set the blocks 
-    currentBlogReachability.reachableBlock = ^(Reachability*reach)
-    {  
-        WPLog(@"Current Blog REACHABLE!");
-        self.currentBlogAvailable = YES;
-    };
-    currentBlogReachability.unreachableBlock = ^(Reachability*reach)
-    {
-        WPLog(@"Current Blog UNREACHABLE!");
-        self.currentBlogAvailable = NO;
-    };
-    // start the notifier which will cause the reachability object to retain itself!
-    [currentBlogReachability startNotifier];
 }
 
 -(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {

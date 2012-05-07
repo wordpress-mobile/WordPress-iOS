@@ -40,12 +40,13 @@
 - (void)launchReplyToComments;
 - (void)launchEditComment;
 
--(void)reachabilityChanged:(NSNotification*)note;
+-(void)reachabilityChanged:(BOOL)reachable;
 
 @end
 
-@implementation CommentViewController
-
+@implementation CommentViewController {
+    AMBlockToken *_reachabilityToken;
+}
 
 @synthesize replyToCommentViewController, editCommentViewController, commentsViewController, wasLastCommentPending, commentAuthorUrlButton, commentAuthorEmailButton;
 @synthesize commentPostTitleButton;
@@ -68,7 +69,6 @@
 	commentBodyWebView.delegate = nil;
     [commentBodyWebView stopLoading];
     [commentBodyWebView release];
-    [pendingApproveButton release];
     [super dealloc];
 }
 
@@ -113,22 +113,22 @@
 	for(UIView *wview in [[[commentBodyWebView subviews] objectAtIndex:0] subviews]) { 
 		if([wview isKindOfClass:[UIImageView class]]) { wview.hidden = YES; } 
 	}
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(reachabilityChanged:) 
-                                                 name:kReachabilityChangedNotification 
-                                               object:nil];
-    
+
     if (self.comment) {
         [self showComment:self.comment];
     }
 }
 
 - (void)viewDidUnload {
-    [pendingApproveButton release];
-    pendingApproveButton = nil;
     [super viewDidUnload];
+    if (_reachabilityToken) {
+        [_comment.blog removeObserverWithBlockToken:_reachabilityToken];
+        [_reachabilityToken release]; _reachabilityToken = nil;
+    }
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [approveButton release]; approveButton = nil;
+    [actionButton release]; actionButton = nil;
+    [replyButton release]; replyButton = nil;
     [segmentedControl release]; segmentedControl = nil;
     [gravatarImageView release]; gravatarImageView = nil;
     self.commentAuthorEmailButton = nil;
@@ -149,15 +149,13 @@
     [super viewWillDisappear:animated];
 }
 
--(void)reachabilityChanged:(NSNotification*)note
-{
-    Reachability *reach = [note object];
-    WordPressAppDelegate  *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    if ( reach == appDelegate.currentBlogReachability ) { //The reachability of the current blog changed
-        connectionStatus = ( [reach isReachable] );
-        UIColor *textColor = connectionStatus == YES ? [UIColor blackColor] : [UIColor grayColor];
-        commentAuthorLabel.textColor = textColor;
-        commentDateLabel.textColor = textColor;
+- (void)reachabilityChanged:(BOOL)reachable {
+    approveButton.enabled = reachable;
+    replyButton.enabled = reachable;
+    actionButton.enabled = reachable;
+    if (reachable) {
+        // Load gravatar if it wasn't loaded yet
+        [gravatarImageView setImageWithGravatarEmail:[self.comment.author_email trim]];
     }
 }
 
@@ -190,8 +188,8 @@
 	actionSheet.tag = 301;
 	actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
 	if (DeviceIsPad() == YES) {
-        spamButton1.enabled = NO;
-		[actionSheet showFromBarButtonItem:spamButton1 animated:YES];
+        actionButton.enabled = NO;
+		[actionSheet showFromBarButtonItem:actionButton animated:YES];
 	} else {
 		[actionSheet showInView:self.view];
 	}
@@ -246,7 +244,7 @@
 	
 	//handle action sheet for approve/spam/edit
     if ([actionSheet tag] == 301) {
-        spamButton1.enabled = YES;
+        actionButton.enabled = YES;
         if (buttonIndex == 0) {  //Delete comment was selected
 			[self deleteComment:nil];
         }
@@ -598,6 +596,27 @@
 #pragma mark -
 #pragma mark Public Methods
 
+- (void)setComment:(Comment *)comment {
+    if ([_comment isEqual:comment]) {
+        return;
+    }
+    if (_reachabilityToken) {
+        [_comment.blog removeObserverWithBlockToken:_reachabilityToken];
+    }
+
+    [self willChangeValueForKey:@"comment"];
+    [_comment release];
+    _comment = [comment retain];
+    [self didChangeValueForKey:@"comment"];
+
+    _reachabilityToken = [[comment.blog addObserverForKeyPath:@"reachable" task:^(id obj, NSDictionary *change) {
+        Blog *blog = (Blog *)obj;
+        [self reachabilityChanged:blog.reachable];
+    }] retain];
+
+    [self reachabilityChanged:comment.blog.reachable];
+}
+
 - (void)showComment:(Comment *)comment {
     self.comment = comment;
     static NSDateFormatter *dateFormatter = nil;
@@ -640,24 +659,18 @@
 	[commentBodyWebView loadHTMLString:htmlString baseURL:nil];
 
     if ([comment.status isEqualToString:@"hold"] && ![pendingLabelHolder superview]) {
-		[self insertPendingLabel];
-		[approveAndUnapproveButtonBar setHidden:YES];
-		[deleteButtonBar setHidden:NO];
-		
+		[self insertPendingLabel];		
 	} else if (![comment.status isEqualToString:@"hold"]){
 		[self removePendingLabel];
-		[approveAndUnapproveButtonBar setHidden:YES];
-		[deleteButtonBar setHidden:NO];
-
     }
 
-    [pendingApproveButton setTarget:self];
+    [approveButton setTarget:self];
     if ([self isApprove]) {
-        [pendingApproveButton setImage:[UIImage imageNamed:@"approve.png"]];
-        [pendingApproveButton setAction:@selector(approveComment:)];
+        [approveButton setImage:[UIImage imageNamed:@"approve.png"]];
+        [approveButton setAction:@selector(approveComment:)];
 	} else {
-        [pendingApproveButton setImage:[UIImage imageNamed:@"unapprove.png"]];
-        [pendingApproveButton setAction:@selector(unApproveComment:)];
+        [approveButton setImage:[UIImage imageNamed:@"unapprove.png"]];
+        [approveButton setAction:@selector(unApproveComment:)];
 	}
     
     [segmentedControl setEnabled:[commentsViewController hasPreviousComment] forSegmentAtIndex:0];

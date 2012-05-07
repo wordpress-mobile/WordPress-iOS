@@ -28,16 +28,9 @@
 	IBOutlet UILabel *pendingLabel;
 	IBOutlet UIView *pendingLabelHolder;
 
-    IBOutlet UIToolbar *approveAndUnapproveButtonBar;
-    IBOutlet UIToolbar *deleteButtonBar;
-
     IBOutlet UIBarButtonItem *approveButton;
-    IBOutlet UIBarButtonItem *unapproveButton;
-    IBOutlet UIBarButtonItem *spamButton1;
-    IBOutlet UIBarButtonItem *spamButton2;
-    IBOutlet UIBarButtonItem *pendingApproveButton;
-	
-	IBOutlet UIBarButtonItem *deleteButton;
+    IBOutlet UIBarButtonItem *actionButton;
+    IBOutlet UIBarButtonItem *replyButton;
 
     UIBarButtonItem *segmentBarItem;
     UISegmentedControl *segmentedControl;
@@ -60,7 +53,7 @@
 - (void)segmentAction:(id)sender;
 - (void)showComment:(Comment *)comment;
 - (void)dismissEditViewController;
-- (void) closeReplyViewAndSelectTheNewComment;
+- (void)closeReplyViewAndSelectTheNewComment;
 - (void)cancelView:(id)sender;
 
 - (void)deleteComment:(id)sender;
