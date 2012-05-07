@@ -42,8 +42,6 @@
 	if([self.tableView respondsToSelector:@selector(setAccessibilityIdentifier:)]){
 		self.tableView.accessibilityIdentifier = @"Blog List";  // required for UIAutomation for iOS 5		
 	}
-    
-    [self setupPhotoButton];
 	
 	// Check to see if we should prompt about rating in the App Store
 	NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -296,11 +294,11 @@
             wantsReaderButton = YES;
         }
     }
-    if (quickPhotoButton.superview != nil) {
+    if (quickPhotoButton.superview != nil && !wantsPhotoButton) {
         [quickPhotoButton removeFromSuperview];
         [quickPhotoButton release]; quickPhotoButton = nil;
     }
-    if (readerButton.superview != nil) {
+    if (readerButton.superview != nil && !wantsReaderButton) {
         [readerButton removeFromSuperview];
         [readerButton release]; readerButton = nil;
     }
