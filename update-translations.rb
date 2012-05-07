@@ -60,6 +60,7 @@ LANGS.each do |code,local|
   system "curl -so #{local}.lproj/Localizable.strings http://translate.wordpress.org/projects/ios/dev/#{code}/default/export-translations?format=strings" or begin
     puts "Error downloading #{code}"
   end
+  system "php fix-translation.php #{local}.lproj/Localizable.strings"
   system "plutil -lint #{local}.lproj/Localizable.strings" and system "rm #{local}.lproj/Localizable.strings.bak"
   system "grep -aP '\\x00\\x22\\x00\\x22' #{local}.lproj/Localizable.strings"
 end
