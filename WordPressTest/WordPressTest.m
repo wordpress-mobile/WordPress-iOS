@@ -7,7 +7,7 @@
 //
 
 #import "WordPressTest.h"
-#import "XMLRPCDecoder.h"
+#import "XMLRPCEventBasedParser.h"
 #import "XMLRPCEncoder.h"
 #import "NSString+XMLExtensions.h"
 
@@ -29,10 +29,10 @@
 
 - (void)testXmlEntitiesDecoding
 {
-    XMLRPCDecoder *decoder = [[XMLRPCDecoder alloc] initWithData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"entities" ofType:@"xml"]]];
-    NSDictionary *response = [decoder decode];
+    XMLRPCEventBasedParser *parser = [[XMLRPCEventBasedParser alloc] initWithData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"entities" ofType:@"xml"]]];
+    NSDictionary *response = [parser parse];
     NSString *decoded = [response objectForKey:@"description"];
-    NSString *expected = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"entitiesDecoded" ofType:@"xml"]];
+    NSString *expected = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"entitiesDecoded" ofType:@"xml"] encoding:NSUTF8StringEncoding error:nil];
     STAssertEqualObjects(decoded, expected, nil);
 
     decoded = [NSString decodeXMLCharactersIn:@"&lt;td&gt;&amp;gt;&lt;/td&gt;&lt;td&gt;&amp;amp;#62;&lt;/td&gt;&lt;td&gt;&amp;amp;gt;&lt;/td&gt;"];
@@ -42,7 +42,7 @@
 
 - (void)testXmlEntitiesEncoding {
     XMLRPCEncoder *encoder = [[XMLRPCEncoder alloc] init];
-    [encoder setMethod:@"fake.test" withObjects:[NSArray arrayWithObject:@"<b>&lt;b&gt;</b> tag &amp; &quot;other&quot; \"tags\""]];
+    [encoder setMethod:@"fake.test" withParameters:[NSArray arrayWithObject:@"<b>&lt;b&gt;</b> tag &amp; &quot;other&quot; \"tags\""]];
     NSString *encoded = [encoder encode];
     NSString *expected = @"<?xml version=\"1.0\"?><methodCall><methodName>fake.test</methodName><params><param><value><string>&#60;b&#62;&#38;lt;b&#38;gt;&#60;/b&#62; tag &#38;amp; &#38;quot;other&#38;quot; \"tags\"</string></value></param></params></methodCall>";
     STAssertEqualObjects(encoded, expected, @"Failed encoding test. \nencoded:  %@\nexpected: %@", encoded, expected);
