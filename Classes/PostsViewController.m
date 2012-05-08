@@ -15,7 +15,7 @@
 //- (void) addSpinnerToCell:(NSIndexPath *)indexPath;
 //- (void) removeSpinnerFromCell:(NSIndexPath *)indexPath;
 - (BOOL)handleAutoSavedContext:(NSInteger)tag;
-- (void)deletePostAtIndexPath;
+- (void)deletePostAtIndexPath:(NSIndexPath *)indexPath;
 - (void)trySelectSomething;
 - (void)editPost:(AbstractPost *)apost;
 - (void)showSelectedPost;
@@ -23,6 +23,7 @@
 - (void)checkLastSyncDate;
 - (NSDate *)lastSyncDate;
 - (BOOL) hasOlderItems;
+- (void)loadMore;
 - (void)loadMoreItemsWithBlock:(void (^)())block;
 - (NSString *)entityName;
 - (void)syncFinished;
