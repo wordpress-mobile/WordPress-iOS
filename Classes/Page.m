@@ -201,7 +201,8 @@
 
 - (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     WPFLogMethod();
-    if ([self hasRemote]) {
+    BOOL remote = [self hasRemote];
+    if (remote) {
         NSArray *parameters = [self.blog getXMLRPCArgsWithExtra:self.postID];
         [self.blog.api callMethod:@"wp.deletePage"
                        parameters:parameters
@@ -214,7 +215,7 @@
     }
     [[self managedObjectContext] deleteObject:self];
     [self save];
-    if (![self hasRemote] && success) {
+    if (!remote && success) {
         success();
     }
 }
