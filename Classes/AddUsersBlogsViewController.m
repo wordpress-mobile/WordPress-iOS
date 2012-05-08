@@ -325,8 +325,42 @@
                 }
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 WPFLog(@"Failed getting user blogs: %@", [error localizedDescription]);
-                hasCompletedGetUsersBlogs = YES;
+                hasCompletedGetUsersBlogs = YES; 
+                [self.tableView reloadData];
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, can't log in", @"")
+                                                                    message:[error localizedDescription]
+                                                                   delegate:self
+                                                          cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
+                                                          otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
+                [alertView show];
+                [alertView release];   
             }];
+}
+
+#pragma mark -
+#pragma mark UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex { 
+	switch(buttonIndex) {
+		case 0: {
+			HelpViewController *helpViewController = [[HelpViewController alloc] init];
+						
+			if (DeviceIsPad()) {
+				helpViewController.isBlogSetup = YES;
+				[self.navigationController pushViewController:helpViewController animated:YES];
+			}
+			else
+				[appDelegate.navigationController presentModalViewController:helpViewController animated:YES];
+			
+			[helpViewController release];
+			break;
+		}
+		case 1:
+			//ok
+			break;
+		default:
+			break;
+	}
 }
 
 - (IBAction)saveSelectedBlogs:(id)sender {
