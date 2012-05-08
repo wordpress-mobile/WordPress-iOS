@@ -8,6 +8,7 @@
 #import "WPSegmentedSelectionTableViewController.h"
 #import "WPCategoryTree.h"
 #import "Category.h"
+#import "NSString+XMLExtensions.h"
 
 @interface NSObject (WPSelectionTableViewControllerDelegateCategory)
 
@@ -169,8 +170,8 @@
         cell.imageView.image = [UIImage imageNamed:@"category_child.png"];
     }
 
-    cell.textLabel.text = [[objects objectAtIndex:indexPath.row] valueForKey:@"categoryName"];
-
+    cell.textLabel.text = [[[objects objectAtIndex:indexPath.row] valueForKey:@"categoryName"] stringByDecodingXMLCharacters];
+        
     BOOL curStatus = [[selectionStatusOfObjects objectAtIndex:indexPath.row] boolValue];
 
     if (curStatus) {
