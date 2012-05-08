@@ -142,7 +142,7 @@
 
     self.remoteStatus = MediaRemoteStatusProcessing;
 
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^(void) {
         // Create the request asynchronously
         // TODO: use streaming to avoid processing on memory
         NSMutableURLRequest *request = [self.blog.api requestWithMethod:@"metaWeblog.newMediaObject" parameters:parameters];
