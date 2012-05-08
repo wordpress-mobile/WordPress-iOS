@@ -502,7 +502,7 @@
             dispatch_async(dispatch_get_main_queue(), ^(void) {
                 [UIView animateWithDuration:1.0
                                       delay:1.0
-                                    options:0
+                                    options:UIViewAnimationOptionAllowUserInteraction
                                  animations:^{
                     cell.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
                 } completion:nil];
@@ -511,13 +511,13 @@
             dispatch_async(dispatch_get_main_queue(), ^(void) {
                 [UIView animateWithDuration:1.0
                                       delay:1.0
-                                    options:0
+                                    options:UIViewAnimationOptionAllowUserInteraction
                                  animations:^{
                     cell.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
                 } completion:^(BOOL finished) {
                     [UIView animateWithDuration:0.5
                                           delay:1.0
-                                        options:0
+                                        options:UIViewAnimationOptionAllowUserInteraction
                                      animations:^{
                                          cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
                                      }
