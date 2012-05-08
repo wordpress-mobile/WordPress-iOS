@@ -36,7 +36,6 @@
 @dynamic blog;
 @dynamic posts;
 @dynamic remoteStatusNumber;
-@synthesize uploader;
 
 - (void)dealloc {
     [_uploadOperation release]; _uploadOperation = nil;
@@ -55,7 +54,7 @@
 }
 
 - (void)awakeFromFetch {
-    if ((self.remoteStatus == MediaRemoteStatusPushing && self.uploader == nil) || (self.remoteStatus == MediaRemoteStatusProcessing)) {
+    if ((self.remoteStatus == MediaRemoteStatusPushing && _uploadOperation == nil) || (self.remoteStatus == MediaRemoteStatusProcessing)) {
         self.remoteStatus = MediaRemoteStatusFailed;
     }
 }
@@ -103,9 +102,7 @@
 }
 
 - (void)remove {
-    if (self.uploader) {
-        [self.uploader stop];
-    }
+    [self cancelUpload];
     [[self managedObjectContext] deleteObject:self];
 }
 

@@ -18,8 +18,6 @@ typedef enum {
     MediaRemoteStatusProcessing, // Intermediate status before uploading
 } MediaRemoteStatus;
 
-@class WPMediaUploader;
-
 @interface Media :  NSManagedObject  
 {
 }
@@ -42,7 +40,6 @@ typedef enum {
 @property (nonatomic, readonly) NSString * html;
 @property (nonatomic, retain) NSNumber * remoteStatusNumber;
 @property (nonatomic) MediaRemoteStatus remoteStatus;
-@property (nonatomic, retain) WPMediaUploader * uploader;
 @property (nonatomic) float progress;
 
 @property (nonatomic, retain) Blog * blog;
