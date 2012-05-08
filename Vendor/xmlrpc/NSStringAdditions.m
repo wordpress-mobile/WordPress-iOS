@@ -119,11 +119,11 @@ static char base64EncodingTable[64] = {
 - (NSString *)escapedString {
     NSMutableString *string = [NSMutableString stringWithString: self];
     
-    [string replaceOccurrencesOfString: @"&"  withString: @"&amp;" options: NSLiteralSearch range: NSMakeRange(0, [string length])];
-    [string replaceOccurrencesOfString: @"\"" withString: @"&quot;" options: NSLiteralSearch range: NSMakeRange(0, [string length])];
-    [string replaceOccurrencesOfString: @"'"  withString: @"&#x27;" options: NSLiteralSearch range: NSMakeRange(0, [string length])];
-    [string replaceOccurrencesOfString: @">"  withString: @"&gt;" options: NSLiteralSearch range: NSMakeRange(0, [string length])];
-    [string replaceOccurrencesOfString: @"<"  withString: @"&lt;" options: NSLiteralSearch range: NSMakeRange(0, [string length])];
+    // NOTE: we use unicode entities instead of &amp; &gt; &lt; etc. since some hosts (powweb, fatcow, and similar)
+    // have a weird PHP/libxml2 combination that ignores regular entities
+    [string replaceOccurrencesOfString: @"&"  withString: @"&#38;" options: NSLiteralSearch range: NSMakeRange(0, [string length])];
+    [string replaceOccurrencesOfString: @">"  withString: @"&#62;" options: NSLiteralSearch range: NSMakeRange(0, [string length])];
+    [string replaceOccurrencesOfString: @"<"  withString: @"&#60;" options: NSLiteralSearch range: NSMakeRange(0, [string length])];
     
     return [NSString stringWithString: string];
 }
