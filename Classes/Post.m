@@ -413,7 +413,8 @@
 
 - (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     WPFLogMethod();
-    if ([self hasRemote]) {
+    BOOL remote = [self hasRemote];
+    if (remote) {
         NSArray *parameters = [NSArray arrayWithObjects:@"unused", self.postID, self.blog.username, [self.blog fetchPassword], nil];
         [self.blog.api callMethod:@"metaWeblog.deletePost"
                        parameters:parameters
@@ -426,7 +427,7 @@
     }
     [[self managedObjectContext] deleteObject:self];
     [self save];
-    if (![self hasRemote] && success) {
+    if (!remote && success) {
         success();
     }
 }
