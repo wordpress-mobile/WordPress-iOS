@@ -87,6 +87,7 @@
 
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+	[super viewDidLoad];
 	
     segmentedControl = [[UISegmentedControl alloc] initWithItems:
                         [NSArray arrayWithObjects:
@@ -297,17 +298,22 @@
 	if (self.replyToCommentViewController) {
 		self.replyToCommentViewController.delegate = nil;
 	}
-		self.replyToCommentViewController = [[[ReplyToCommentViewController alloc] 
-										 initWithNibName:@"ReplyToCommentViewController" 
-										 bundle:nil]autorelease];
-		replyToCommentViewController.delegate = self;
-		replyToCommentViewController.comment = [[self.comment newReply] autorelease];
-		replyToCommentViewController.title = NSLocalizedString(@"Comment Reply", @"Comment Reply view title");
+	
+	self.replyToCommentViewController = [[[ReplyToCommentViewController alloc] 
+									 initWithNibName:@"ReplyToCommentViewController" 
+									 bundle:nil] autorelease];
+	replyToCommentViewController.delegate = self;
+	replyToCommentViewController.comment = [[self.comment newReply] autorelease];
+	replyToCommentViewController.title = NSLocalizedString(@"Comment Reply", @"Comment Reply view title");
 	
 	
 	if (DeviceIsPad() == NO) {
 		[delegate.navigationController pushViewController:self.replyToCommentViewController animated:YES];
 	} else {
+		if (self.commentsViewController) {
+			[self.commentsViewController setReplying:YES];
+		}
+
 		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:replyToCommentViewController] autorelease];
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
 		navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
@@ -319,8 +325,7 @@
 {
 	if (DeviceIsPad() == NO) {
         [self.navigationController popViewControllerAnimated:YES];
-	}
-	else if (DeviceIsPad() == YES) {
+	} else {
 		[self dismissModalViewControllerAnimated:YES];
 	}
 }
@@ -332,7 +337,7 @@
 }
 
 - (void)cancelView:(id)sender {
-	
+
 	//there are no changes
 	if (!replyToCommentViewController.hasChanges && !editCommentViewController.hasChanges) {
 		[self dismissEditViewController];
@@ -341,9 +346,11 @@
 			commentsViewController.selectedIndexPath = nil; //the selectedIndex path is on the reply comment
 			
 			[replyToCommentViewController.comment remove]; //delete the empty comment
+			replyToCommentViewController.comment = nil;
 			
 			if (DeviceIsPad() == YES)  //an half-patch for #790: sometimes the modal view is not disposed when click on cancel. 
-				[self dismissModalViewControllerAnimated:YES]; 		
+				[self dismissModalViewControllerAnimated:YES];
+			
 		} 
 		return;
 	}
@@ -383,7 +390,7 @@
 	
 	self.editCommentViewController = [[[EditCommentViewController alloc] 
 									 initWithNibName:@"EditCommentViewController" 
-									 bundle:nil]autorelease];
+									 bundle:nil] autorelease];
 	editCommentViewController.commentViewController = self;
 	editCommentViewController.comment = self.comment;
 	editCommentViewController.title = NSLocalizedString(@"Edit Comment", @"");
@@ -404,6 +411,9 @@
 
 - (void)cancelReplyToCommentViewController:(id)sender {
 	[self cancelView:sender];
+	if (self.commentsViewController) {
+		[self.commentsViewController setReplying:NO];
+	}
 }
 	
 #pragma mark -

@@ -400,6 +400,7 @@
 	if (self.isSecondaryViewController) {
 		[self.navigationController pushViewController:self.commentViewController animated:YES];
 	} else {
+		
 		if (!self.commentViewController.isVisible) {
 			WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 			[delegate showContentDetailViewController:self.commentViewController];
@@ -1016,10 +1017,14 @@
     [selectionWanted release]; selectionWanted = nil;
 }
 
+- (void)setReplying:(BOOL)value {
+	replying = value;
+}
+
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [commentsTableView endUpdates];
 
-    if (!editing) {
+    if (!editing && !replying) {
         if (selectionWanted) {
             if (![selectionWanted isEqual:[commentsTableView indexPathForSelectedRow]]) {
                 self.selectedIndexPath = selectionWanted;

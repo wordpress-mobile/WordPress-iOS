@@ -28,6 +28,7 @@
     IBOutlet UIBarButtonItem *spamButton;
     IBOutlet UIBarButtonItem *deleteButton;
     BOOL editing;
+	BOOL replying;
 	BOOL willReloadTable;
 
     IBOutlet UIView* moderationSwipeView;
@@ -85,5 +86,6 @@
 - (void)showPreviousComment;
 - (void)showNextComment;
 - (void)trySelectSomething;
+- (void)setReplying:(BOOL)value;
 
 @end
