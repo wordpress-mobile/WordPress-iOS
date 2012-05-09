@@ -34,5 +34,6 @@
 + (BOOL)isValidHybridURL:(NSURL *)url;
 - (NSString *)hybridAuthToken;
 + (NSString *)hybridAuthToken;
+- (void)showRefreshingState;
 
 @end

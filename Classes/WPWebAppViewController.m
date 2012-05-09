@@ -344,6 +344,12 @@ Adds a token to the querystring of the request and to a request header
     
 }
 
+// provide a way for web apps to show the native pull to refresh loading indicator
+- (void)showRefreshingState {
+    [_refreshHeaderView setState:EGOOPullRefreshLoading];
+    [self.scrollView setContentOffset:CGPointMake(0, -60.0f) animated:YES];
+}
+
 #pragma mark -
 #pragma mark UIScrollViewDelegate Methods
 
