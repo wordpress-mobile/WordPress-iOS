@@ -666,7 +666,7 @@
       moderationSwipeView.frame = CGRectMake(direction == UISwipeGestureRecognizerDirectionRight ? -cellFrame.size.width : cellFrame.size.width, cellFrame.origin.y, cellFrame.size.width, cellFrame.size.height);
 
       [UIView beginAnimations:nil context:nil];
-      [UIView setAnimationDuration:0.4];
+      [UIView setAnimationDuration:0.2];
       moderationSwipeView.frame = CGRectMake(0, cellFrame.origin.y, cellFrame.size.width, cellFrame.size.height);
       cell.frame = CGRectMake(direction == UISwipeGestureRecognizerDirectionRight ? cellFrame.size.width : -cellFrame.size.width, cellFrame.origin.y, cellFrame.size.width, cellFrame.size.height);
       [UIView commitAnimations];
@@ -697,7 +697,7 @@
   {
     animatingRemovalOfModerationSwipeView = YES;
     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.4];
+    [UIView setAnimationDuration:0.2];
     if (moderationSwipeDirection == UISwipeGestureRecognizerDirectionRight)
     {
       moderationSwipeView.frame = CGRectMake(-moderationSwipeView.frame.size.width + 5.0,moderationSwipeView.frame.origin.y,moderationSwipeView.frame.size.width, moderationSwipeView.frame.size.height);
@@ -729,7 +729,7 @@
 - (void)animationDidStopOne:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
 {
   [UIView beginAnimations:nil context:nil];
-  [UIView setAnimationDuration:0.2];
+  [UIView setAnimationDuration:0.1];
   if (moderationSwipeDirection == UISwipeGestureRecognizerDirectionRight)
   {
     moderationSwipeView.frame = CGRectMake(-moderationSwipeView.frame.size.width + 10.0,moderationSwipeView.frame.origin.y,moderationSwipeView.frame.size.width, moderationSwipeView.frame.size.height);
@@ -750,7 +750,7 @@
 {
   [UIView commitAnimations];
   [UIView beginAnimations:nil context:nil];
-  [UIView setAnimationDuration:0.2];
+  [UIView setAnimationDuration:0.1];
   if (moderationSwipeDirection == UISwipeGestureRecognizerDirectionRight)
   {
     moderationSwipeView.frame = CGRectMake(-moderationSwipeView.frame.size.width ,moderationSwipeView.frame.origin.y,moderationSwipeView.frame.size.width, moderationSwipeView.frame.size.height);
