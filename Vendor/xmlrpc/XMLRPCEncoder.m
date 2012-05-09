@@ -1,5 +1,6 @@
 #import "XMLRPCEncoder.h"
 #import "NSStringAdditions.h"
+#import "NSData+Base64.h"
 
 // If you change this, be sure it's a multiple of 90.
 // The base 64 encoding adds a new line every 90 characters.
@@ -305,9 +306,7 @@
 }
 
 - (void)encodeData: (NSData *)data {
-    NSString *buffer = [NSString base64StringFromData: data length: [data length]];
-
-    [self valueTag: @"base64" value: buffer];
+    [self valueTag: @"base64" value: [data base64EncodedString]];
 }
 
 - (void)encodeInputStream: (NSInputStream *)stream {
@@ -323,7 +322,7 @@
         if (len) {
             NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
             NSData *chunk = [NSData dataWithBytes:buf length:len];
-            NSString *encodedChunk = [NSString base64StringFromData:chunk length:0];
+            NSString *encodedChunk = [chunk base64EncodedString];
             [self appendString:encodedChunk];
             [pool release];
         }
@@ -339,7 +338,7 @@
 
     NSData *chunk = [handle readDataOfLength:CHUNK_SIZE];
     while ([chunk length] > 0) {
-        NSString *encodedChunk = [NSString base64StringFromData:chunk length:0];
+        NSString *encodedChunk = [chunk base64EncodedString];
         [self appendString:encodedChunk];
         chunk = [handle readDataOfLength:CHUNK_SIZE];
     }

@@ -4,7 +4,7 @@ Version: 34b7d01af8f87fcadcc29abb87d2e323ed6597aa
 
 XMLRPC
 Source: https://github.com/wordpress-mobile/xmlrpc/tree/wordpress-ios
-Version: 49b62b067d70a458a627cdec275751b5a09c338d
+Version: 5ac95ed8f77d077e5d3b004a9459ab5d7184a465
 
 InAppSettings
 Source: https://github.com/InScopeApps/InAppSettings

@@ -1,6 +1,5 @@
 #import "XMLRPCParserTest.h"
 #import "XMLRPCEventBasedParser.h"
-#import "NSDataAdditions.h"
 
 @interface XMLRPCParserTest (XMLRPCParserTestPrivate)
 

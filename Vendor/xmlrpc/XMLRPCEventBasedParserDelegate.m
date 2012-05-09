@@ -1,5 +1,5 @@
 #import "XMLRPCEventBasedParserDelegate.h"
-#import "NSDataAdditions.h"
+#import "NSData+Base64.h"
 
 @interface XMLRPCEventBasedParserDelegate (XMLRPCEventBasedParserDelegatePrivate)
 
@@ -341,7 +341,7 @@
 }
 
 - (NSData *)parseData: (NSString *)value {
-    return [NSData base64DataFromString: value];
+    return [NSData dataFromBase64String: value];
 }
 
 @end

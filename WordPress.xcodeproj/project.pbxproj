@@ -364,7 +364,6 @@
 		E128567915103A4500406BC9 /* toolbarUliPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566F15103A4500406BC9 /* toolbarUliPad@2x.png */; };
 		E12AAB621513C4B6009D025B /* WPComOAuthController.m in Sources */ = {isa = PBXBuildFile; fileRef = E12AAB611513C4B6009D025B /* WPComOAuthController.m */; };
 		E12AAB641513C4CA009D025B /* WPComOAuthController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E12AAB631513C4CA009D025B /* WPComOAuthController.xib */; };
-		E12F55F114A1F22D0060A510 /* NSDataAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55E714A1F22D0060A510 /* NSDataAdditions.m */; };
 		E12F55F214A1F22D0060A510 /* NSStringAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55E914A1F22D0060A510 /* NSStringAdditions.m */; };
 		E12F55F314A1F22D0060A510 /* XMLRPCConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55EC14A1F22D0060A510 /* XMLRPCConnectionManager.m */; };
 		E12F55F414A1F22D0060A510 /* XMLRPCEventBasedParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55EE14A1F22D0060A510 /* XMLRPCEventBasedParser.m */; };
@@ -1001,8 +1000,6 @@
 		E12AAB601513C4B6009D025B /* WPComOAuthController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPComOAuthController.h; sourceTree = "<group>"; };
 		E12AAB611513C4B6009D025B /* WPComOAuthController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPComOAuthController.m; sourceTree = "<group>"; };
 		E12AAB631513C4CA009D025B /* WPComOAuthController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WPComOAuthController.xib; sourceTree = "<group>"; };
-		E12F55E614A1F22D0060A510 /* NSDataAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDataAdditions.h; sourceTree = "<group>"; };
-		E12F55E714A1F22D0060A510 /* NSDataAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDataAdditions.m; sourceTree = "<group>"; };
 		E12F55E814A1F22D0060A510 /* NSStringAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStringAdditions.h; sourceTree = "<group>"; };
 		E12F55E914A1F22D0060A510 /* NSStringAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringAdditions.m; sourceTree = "<group>"; };
 		E12F55EA14A1F22D0060A510 /* XMLRPCConnectionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCConnectionDelegate.h; sourceTree = "<group>"; };
@@ -2223,8 +2220,6 @@
 		E12F55F614A1F2350060A510 /* Additions */ = {
 			isa = PBXGroup;
 			children = (
-				E12F55E614A1F22D0060A510 /* NSDataAdditions.h */,
-				E12F55E714A1F22D0060A510 /* NSDataAdditions.m */,
 				E12F55E814A1F22D0060A510 /* NSStringAdditions.h */,
 				E12F55E914A1F22D0060A510 /* NSStringAdditions.m */,
 			);
@@ -3106,7 +3101,6 @@
 				FD0D42E8149A0B5500F5E115 /* InAppSettingsReader.m in Sources */,
 				FD0D42E9149A0B5500F5E115 /* InAppSettingsSpecifier.m in Sources */,
 				E1764A36149A12BA0012F7E4 /* XMLRPCDataCleaner.m in Sources */,
-				E12F55F114A1F22D0060A510 /* NSDataAdditions.m in Sources */,
 				E12F55F214A1F22D0060A510 /* NSStringAdditions.m in Sources */,
 				E12F55F314A1F22D0060A510 /* XMLRPCConnectionManager.m in Sources */,
 				E12F55F414A1F22D0060A510 /* XMLRPCEventBasedParser.m in Sources */,

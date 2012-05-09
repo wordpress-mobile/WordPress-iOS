@@ -473,8 +473,8 @@ Vendor/xmlrpc/Configurations/XMLRPCUnitTestsDevelopment.xcconfig -text
 Vendor/xmlrpc/Configurations/XMLRPCUnitTestsRelease.xcconfig -text
 Vendor/xmlrpc/LICENSE.md -text
 Vendor/xmlrpc/Languages/English.lproj/InfoPlist.strings -text svneol=unset#unset
-Vendor/xmlrpc/NSDataAdditions.h -text
-Vendor/xmlrpc/NSDataAdditions.m -text
+Vendor/xmlrpc/NSData+Base64.h -text
+Vendor/xmlrpc/NSData+Base64.m -text
 Vendor/xmlrpc/NSStringAdditions.h -text
 Vendor/xmlrpc/NSStringAdditions.m -text
 Vendor/xmlrpc/README.md -text

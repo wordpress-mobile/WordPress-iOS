@@ -74,7 +74,7 @@ Those wishing to contribute to the project should begin by obtaining the latest 
 
 # Acknowledgments
 
-The Base64 encoder/decoder found in NSStringAdditions and NSDataAdditions have been adapted from code provided by Dave Winer.
+The Base64 encoder/decoder found in NSData+Base64 is created by [Matt Gallagher](http://cocoawithlove.com/2009/06/base64-encoding-options-on-mac-and.html).
 
 The idea for this framework came from examples provided by Brent Simmons, the creator of NetNewsWire.
 
