@@ -195,9 +195,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if (DeviceIsPad())
         if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
             || (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
-            return CGRectMake(0, 143, 768, 537);
+            return CGRectMake(0, 143, 768, 517);
         else // Portrait
-            return CGRectMake(0, 143, 768, 773);
+            return CGRectMake(0, 143, 768, 753);
 		else if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
 				 || (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
 			return CGRectMake(0, 136, 480, 236);
