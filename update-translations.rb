@@ -38,23 +38,23 @@
 # * Chinese (Taiwan) [zh-Hant]
 
 LANGS={
-  'de' => 'de',
-  'es' => 'es',
-  'fr' => 'fr',
-  'he' => 'he',
-  'hr' => 'hr',
-  'hu' => 'hu',
-  'id' => 'id',
-  'it' => 'it',
-  'ja' => 'ja',
-  'nb' => 'nb',
-  'nl' => 'nl',
-  'pl' => 'pl',
-  'pt' => 'pt',
-  'sv' => 'sv',
-  'tr' => 'tr',
-  'zh-cn' => 'zh-Hans',
-  'zh-tw' => 'zh-Hant'
+  'de' => 'de', # German
+  'es' => 'es', # Spanish
+  'fr' => 'fr', # French
+  'he' => 'he', # Hebrew
+  'hr' => 'hr', # Croatian
+  'hu' => 'hu', # Hungarian
+  'id' => 'id', # Indonesian
+  'it' => 'it', # Italian
+  'ja' => 'ja', # Japanese
+  'nb' => 'nb', # Norwegian (Bokmål)
+  'nl' => 'nl', # Dutch
+  'pl' => 'pl', # Polish
+  'pt' => 'pt', # Portuguese
+  'sv' => 'sv', # Swedish
+  'tr' => 'tr', # Turkish
+  'zh-cn' => 'zh-Hans', # Chinese (Chine)
+  'zh-tw' => 'zh-Hant' # Chinese (Taiwan)
 }
 
 LANGS.each do |code,local|

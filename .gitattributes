@@ -680,6 +680,7 @@ en.lproj/Localizable.strings -text svneol=unset#unset
 es.lproj/Localizable.strings -text svneol=unset#unset
 /fix-translation.php -text
 fr.lproj/Localizable.strings -text svneol=unset#unset
+fr.lproj/Localizable.strings.bak -text svneol=unset#unset
 /getLocation.png -text
 /getLocation@2x.png -text
 /gettingLocation.png -text
