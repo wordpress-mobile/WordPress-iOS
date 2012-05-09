@@ -21,6 +21,7 @@
     IBOutlet UIButton *commentAuthorUrlButton;
 	IBOutlet UIButton *commentAuthorEmailButton;
 	IBOutlet UIButton *commentPostTitleButton;
+	IBOutlet UILabel *commentPostTitleLabel;
     IBOutlet UILabel *commentDateLabel;
     IBOutlet UIWebView *commentBodyWebView;
 	
@@ -69,6 +70,7 @@
 @property (nonatomic, retain) IBOutlet UIButton *commentAuthorUrlButton;
 @property (nonatomic, retain) IBOutlet UIButton *commentAuthorEmailButton;
 @property (nonatomic, retain) IBOutlet UIButton *commentPostTitleButton;
+@property (nonatomic, retain) IBOutlet UILabel *commentPostTitleLabel;
 @property BOOL wasLastCommentPending;
 @property BOOL isVisible;
 

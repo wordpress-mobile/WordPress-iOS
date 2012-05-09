@@ -49,7 +49,7 @@
 }
 
 @synthesize replyToCommentViewController, editCommentViewController, commentsViewController, wasLastCommentPending, commentAuthorUrlButton, commentAuthorEmailButton;
-@synthesize commentPostTitleButton;
+@synthesize commentPostTitleButton, commentPostTitleLabel;
 @synthesize comment = _comment, isVisible;
 
 #pragma mark -
@@ -66,6 +66,7 @@
 	[commentAuthorUrlButton release];
 	[commentAuthorEmailButton release];
 	[commentPostTitleButton release];
+	[commentPostTitleLabel release];
 	commentBodyWebView.delegate = nil;
     [commentBodyWebView stopLoading];
     [commentBodyWebView release];
@@ -135,6 +136,7 @@
     self.commentAuthorEmailButton = nil;
     self.commentAuthorUrlButton = nil;
 	self.commentPostTitleButton = nil;
+	self.commentPostTitleLabel = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -554,6 +556,10 @@
     rect.origin.y += pendingLabelHeight;
     commentPostTitleButton.frame = rect;
 
+	rect = commentPostTitleLabel.frame;
+	rect.origin.y+= pendingLabelHeight;
+	commentPostTitleLabel.frame = rect;
+	
     rect = commentDateLabel.frame;
     rect.origin.y += pendingLabelHeight;
     commentDateLabel.frame = rect;
@@ -567,7 +573,7 @@
 	rect.size.height += pendingLabelHeight;
 	labelHolder.frame = rect;
 	
-	}
+}
 
 - (void)removePendingLabel {
 	
@@ -594,6 +600,10 @@
 		rect = commentPostTitleButton.frame;
 		rect.origin.y -= pendingLabelHeight;
 		commentPostTitleButton.frame = rect;
+
+		rect = commentPostTitleLabel.frame;
+		rect.origin.y -= pendingLabelHeight;
+		commentPostTitleLabel.frame = rect;
 		
 		rect = commentDateLabel.frame;
 		rect.origin.y -= pendingLabelHeight;
@@ -660,7 +670,23 @@
         [commentAuthorEmailButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     }
     if (comment.postTitle) {
-		NSString *postTitle = [NSLocalizedString(@"on ", @"(Comment) on (Post Title)") stringByAppendingString:[[comment.postTitle stringByDecodingXMLCharacters] trim]];
+		NSString *postTitleOn = NSLocalizedString(@"on ", @"(Comment) on (Post Title)");
+		
+		NSString *postTitle = [[comment.postTitle stringByDecodingXMLCharacters] trim];
+		
+		CGSize sz = [postTitleOn sizeWithFont:commentPostTitleLabel.font];
+		CGRect frm = commentPostTitleLabel.frame;
+		CGFloat widthDiff = frm.size.width - sz.width;
+
+		frm.size.width = sz.width;
+		commentPostTitleLabel.frame = frm;
+		
+		frm = commentPostTitleButton.frame;
+		frm.origin.x = frm.origin.x - widthDiff;
+		frm.size.width = frm.size.width + widthDiff;
+		commentPostTitleButton.frame = frm;
+		
+		commentPostTitleLabel.text = postTitleOn;
 		[commentPostTitleButton setTitle:postTitle forState:UIControlStateNormal];
 	}
 	if(comment.dateCreated != nil)
