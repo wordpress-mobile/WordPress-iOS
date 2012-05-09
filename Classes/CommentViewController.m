@@ -645,7 +645,7 @@
         [dateFormatter setDateStyle:NSDateFormatterLongStyle];
     }
 	[gravatarImageView setImageWithGravatarEmail:[comment.author_email trim]];
-    commentAuthorLabel.text = [comment.author trim];
+    commentAuthorLabel.text = [[comment.author stringByDecodingXMLCharacters] trim];
 	[commentAuthorUrlButton setTitle:[comment.author_url trim] forState:UIControlStateNormal];
 	[commentAuthorUrlButton setTitle:[comment.author_url trim] forState:UIControlStateHighlighted];
 	[commentAuthorUrlButton setTitle:[comment.author_url trim] forState:UIControlStateSelected];

@@ -114,7 +114,7 @@
     comment = value;
 
     NSCharacterSet *whitespaceCS = [NSCharacterSet whitespaceCharacterSet];
-    NSString *author = [comment.author stringByTrimmingCharactersInSet:whitespaceCS];
+    NSString *author = [[comment.author stringByDecodingXMLCharacters] stringByTrimmingCharactersInSet:whitespaceCS];
     nameLabel.text = author;
 	
 //conditional load of author_email if url is empty per ticket #273
