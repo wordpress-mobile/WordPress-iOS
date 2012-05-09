@@ -795,26 +795,14 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 //code to append http:// if protocol part is not there as part of urlText.
 - (NSString *)validateNewLinkInfo:(NSString *)urlText {
-    NSArray *stringArray = [NSArray arrayWithObjects:@"http:", @"ftp:", @"https:", nil];
-    int i, count = [stringArray count];
-    BOOL searchRes = NO;
-	
-    for (i = 0; i < count; i++) {
-        NSString *searchString = [stringArray objectAtIndex:i];
-		
-        if ((searchRes = [urlText hasPrefix:[searchString capitalizedString]]))
-            break;else if ((searchRes = [urlText hasPrefix:[searchString lowercaseString]]))
-				break;else if ((searchRes = [urlText hasPrefix:[searchString uppercaseString]]))
-					break;
+    NSError *error = nil;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^[\\w]+:" options:0 error:&error];
+
+    if ([regex numberOfMatchesInString:urlText options:0 range:NSMakeRange(0, [urlText length])] > 0) {
+        return urlText;
+    } else {
+        return [NSString stringWithFormat:@"http://%@", urlText];
     }
-	
-    NSString *returnStr;
-	
-    if (searchRes)
-        returnStr = [NSString stringWithString:urlText];else
-			returnStr = [NSString stringWithFormat:@"http://%@", urlText];
-	
-    return returnStr;
 }
 
 - (void)showLinkView {
