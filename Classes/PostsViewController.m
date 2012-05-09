@@ -11,6 +11,7 @@
 @interface PostsViewController (Private)
 
 - (void)refreshHandler;
+- (void)syncPostsWithBlogInfo:(BOOL)blogInfo;
 - (void)syncPosts;
 //- (void) addSpinnerToCell:(NSIndexPath *)indexPath;
 //- (void) removeSpinnerFromCell:(NSIndexPath *)indexPath;
@@ -286,23 +287,27 @@
 - (void)refreshHandler {
     if ([self isSyncing])
         return;
-    [self syncPosts];
+    [self syncPostsWithBlogInfo:YES];
+}
+
+- (void)syncPostsWithBlogInfo:(BOOL)blogInfo {
+    void (^success)() = ^{
+        [self syncFinished];
+    };
+    void (^failure)(NSError *error) = ^(NSError *error) {
+        [WPError showAlertWithError:error title:NSLocalizedString(@"Couldn't sync posts", @"")];
+        [self syncFinished];
+    };
+
+    if (blogInfo) {
+        [self.blog syncBlogPostsWithSuccess:success failure:failure];
+    } else {
+        [self.blog syncPostsWithSuccess:success failure:failure loadMore:NO];
+    }
 }
 
 - (void)syncPosts {
-    [self.blog syncCategoriesWithSuccess:^{
-        [self.blog syncPostFormatsWithSuccess:nil failure:nil];
-        [self.blog syncOptionsWithWithSuccess:nil failure:nil];
-        [self.blog syncPostsWithSuccess:^{
-            [self syncFinished];
-        } failure:^(NSError *error) {
-            NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
-            [self syncFinished];
-        } loadMore:NO];
-    } failure:^(NSError *error) {
-        [WPError showAlertWithError:error title:NSLocalizedString(@"Couldn't sync posts", @"")];
-    }];
+    [self syncPostsWithBlogInfo:NO];
 }
 
 - (void)loadMore {

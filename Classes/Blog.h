@@ -73,6 +73,9 @@
 - (void)syncCommentsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)syncPostFormatsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)syncBlogWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+// Called when manually refreshing PostsViewController
+// Syncs posts, categories, options, and post formats
+- (void)syncBlogPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 #pragma mark -
 #pragma mark Class methods

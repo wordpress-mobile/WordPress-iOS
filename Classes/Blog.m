@@ -397,6 +397,33 @@
     [self.api enqueueHTTPRequestOperation:combinedOperation];
 }
 
+- (void)syncBlogPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    AFXMLRPCRequestOperation *operation;
+    NSMutableArray *operations = [NSMutableArray arrayWithCapacity:4];
+    operation = [self operationForOptionsWithSuccess:nil failure:nil];
+    [operations addObject:operation];
+    operation = [self operationForPostFormatsWithSuccess:nil failure:nil];
+    [operations addObject:operation];
+    operation = [self operationForCategoriesWithSuccess:nil failure:nil];
+    [operations addObject:operation];
+    if (!self.isSyncingPosts) {
+        operation = [self operationForPostsWithSuccess:nil failure:nil loadMore:NO];
+        [operations addObject:operation];
+        self.isSyncingPosts = YES;
+    }
+    
+    AFHTTPRequestOperation *combinedOperation = [self.api combinedHTTPRequestOperationWithOperations:operations success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (success) {
+            success();
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+    [self.api enqueueHTTPRequestOperation:combinedOperation];    
+}
+
 #pragma mark - api accessor
 
 - (AFXMLRPCClient *)api {
