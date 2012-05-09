@@ -509,13 +509,14 @@
     // 
     // Blogs with long history can get really slow really fast, 
     // with no chance to go back
+    int postBatchSize = 40;
     if (more) {
-        num = MAX([self.posts count], 20);
+        num = MAX([self.posts count], postBatchSize);
         if ([self.hasOlderPosts boolValue]) {
-            num += 20;
+            num += postBatchSize;
         }
     } else {
-        num = 20;
+        num = postBatchSize;
     }
 
     NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithInt:num]];
@@ -565,13 +566,14 @@
     // 
     // Blogs with long history can get really slow really fast, 
     // with no chance to go back
+    int pageBatchSize = 40;
     if (more) {
-        num = MAX(syncCount, 20);
+        num = MAX(syncCount, pageBatchSize);
         if ([self.hasOlderPages boolValue]) {
-            num += 20;
+            num += pageBatchSize;
         }
     } else {
-        num = 20;
+        num = pageBatchSize;
     }
 
     NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithInt:num]];
