@@ -2,6 +2,7 @@
 #import "WordPressAppDelegate.h"
 #import "WPSegmentedSelectionTableViewController.h"
 #import "CPopoverManager.h"
+#import "NSString+XMLExtensions.h"
 
 NSTimeInterval kAnimationDuration = 0.3f;
 
@@ -465,7 +466,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if (self.post) {
         // FIXME: tags should be an array/set of Tag objects
         tagsTextField.text = self.post.tags;
-        [categoriesButton setTitle:[self.post categoriesText] forState:UIControlStateNormal];
+        [categoriesButton setTitle:[NSString decodeXMLCharactersIn:[self.post categoriesText]] forState:UIControlStateNormal];
     }
     
     if(self.apost.content == nil || [self.apost.content isEmpty]) {
@@ -588,7 +589,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         NSLog(@"selected categories: %@", selectedObjects);
         NSLog(@"post: %@", self.post);
         self.post.categories = [NSMutableSet setWithArray:selectedObjects];
-        [categoriesButton setTitle:[self.post categoriesText] forState:UIControlStateNormal];
+        [categoriesButton setTitle:[NSString decodeXMLCharactersIn:[self.post categoriesText]] forState:UIControlStateNormal];
     }
 	
     [selctionController clean];

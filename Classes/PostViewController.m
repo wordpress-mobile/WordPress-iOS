@@ -7,6 +7,7 @@
 //
 
 #import "PostViewController.h"
+#import "NSString+XMLExtensions.h"
 
 
 @implementation PostViewController
@@ -40,7 +41,7 @@
     titleLabel.text = self.apost.postTitle;
     if (self.post) {
         tagsLabel.text = self.post.tags;
-        categoriesLabel.text = [self.post categoriesText];
+        categoriesLabel.text = [NSString decodeXMLCharactersIn:[self.post categoriesText]];
     }
 	if ((self.apost.mt_text_more != nil) && ([self.apost.mt_text_more length] > 0))
 		contentView.text = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", self.apost.content, self.apost.mt_text_more];
