@@ -97,20 +97,15 @@
 }
 
 - (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    void (^uploadSuccessful)() = ^{
-        [self getPostWithSuccess:nil failure:nil];
-        if (success) success();
-    };
-
     if ([self.password isEmpty])
         self.password = nil;
 
     [self save];
 
     if ([self hasRemote]) {
-        [self editPostWithSuccess:uploadSuccessful failure:failure];
+        [self editPostWithSuccess:success failure:failure];
     } else {
-        [self postPostWithSuccess:uploadSuccessful failure:failure];
+        [self postPostWithSuccess:success failure:failure];
     }
 }
 
@@ -141,8 +136,8 @@
                               self.remoteStatus = AbstractPostRemoteStatusSync;
                               // Set the temporary date until we get it from the server so it sorts properly on the list
                               self.date_created_gmt = [DateUtils localDateToGMTDate:[NSDate date]];
-                              [self save];
                               [self getPostWithSuccess:nil failure:nil];
+                              [self save];
                               if (success) success();
                               [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploaded" object:self];
                           } else if (failure) {
@@ -190,6 +185,7 @@
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
                           self.remoteStatus = AbstractPostRemoteStatusSync;
+                          [self getPostWithSuccess:nil failure:nil];
                           if (success) success();
                           [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploaded" object:self];
                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
