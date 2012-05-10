@@ -92,6 +92,7 @@
 - (void)showCommentWithId:(NSNumber *)commentId {
     [self view]; // Force XIB outlet load
     [self.tabBarController setSelectedViewController:commentsViewController];
+    [self configureCommentsTab];
     commentsViewController.wantedCommentId = commentId;
 }
 
