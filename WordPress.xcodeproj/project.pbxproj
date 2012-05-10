@@ -427,10 +427,6 @@
 		A2CDC81214C7681600091CEB /* approve@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A2CDC80E14C7681600091CEB /* approve@2x.png */; };
 		A2CDC81314C7681600091CEB /* unapprove.png in Resources */ = {isa = PBXBuildFile; fileRef = A2CDC80F14C7681600091CEB /* unapprove.png */; };
 		A2CDC81414C7681600091CEB /* unapprove@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A2CDC81014C7681600091CEB /* unapprove@2x.png */; };
-		A2D4F858153F0E3F00686803 /* Blog.js in Sources */ = {isa = PBXBuildFile; fileRef = A2D4F854153F0E3F00686803 /* Blog.js */; };
-		A2D4F859153F0E3F00686803 /* Config.js in Sources */ = {isa = PBXBuildFile; fileRef = A2D4F855153F0E3F00686803 /* Config.js */; };
-		A2D4F85A153F0E3F00686803 /* Post.js in Sources */ = {isa = PBXBuildFile; fileRef = A2D4F856153F0E3F00686803 /* Post.js */; };
-		A2D4F85B153F0E3F00686803 /* WPiOSTests.js in Sources */ = {isa = PBXBuildFile; fileRef = A2D4F857153F0E3F00686803 /* WPiOSTests.js */; };
 		AC3D2C110E2222430064A705 /* RoundedRectBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = AC3D2C100E2222430064A705 /* RoundedRectBlack.png */; };
 		AC600C0C0E20B80400D663AA /* write.png in Resources */ = {isa = PBXBuildFile; fileRef = AC600C080E20B80400D663AA /* write.png */; };
 		AC600C0E0E20B80400D663AA /* photos.png in Resources */ = {isa = PBXBuildFile; fileRef = AC600C0A0E20B80400D663AA /* photos.png */; };
@@ -3618,10 +3614,6 @@
 				E1330B0F151275300010018D /* AFAuthenticationAlertView.m in Sources */,
 				E12AAB621513C4B6009D025B /* WPComOAuthController.m in Sources */,
 				E114D79A153D85A800984182 /* WPError.m in Sources */,
-				A2D4F858153F0E3F00686803 /* Blog.js in Sources */,
-				A2D4F859153F0E3F00686803 /* Config.js in Sources */,
-				A2D4F85A153F0E3F00686803 /* Post.js in Sources */,
-				A2D4F85B153F0E3F00686803 /* WPiOSTests.js in Sources */,
 				E1EAD5401554498000C0ED7A /* CameraPlusPickerManager.m in Sources */,
 				E12F95B9155820A40067A653 /* NSObject+BlockObservation.m in Sources */,
 			);
