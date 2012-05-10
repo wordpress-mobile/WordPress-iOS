@@ -22,6 +22,12 @@
     self.title = NSLocalizedString(@"Pages", @"");
 }
 
+- (void)refreshHandler {
+    if ([self isSyncing])
+        return;
+    [self syncPosts];
+}
+
 - (void)syncPosts {
     [self.blog syncPagesWithSuccess:^{
         [self syncFinished];
