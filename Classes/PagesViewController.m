@@ -13,7 +13,8 @@
 
 @interface PagesViewController (PrivateMethods)
 - (void)syncFinished;
-- (void)refreshHandler;
+- (void)syncPosts;
+- (BOOL)isSyncing;
 @end
 
 @implementation PagesViewController
