@@ -339,6 +339,9 @@
         [readerViewController release]; 
         readerViewController = nil; 
     }
+    if (wantsPhotoButton && uploadController.view.superview) {
+        [self showQuickPhotoButton:NO];
+    }
 }
 
 - (void)didChangeStatusBarFrame:(NSNotification *)notification {
@@ -659,6 +662,7 @@
     uploadController.view.frame = CGRectMake(frame.origin.x, self.view.bounds.size.height + 83, frame.size.width, frame.size.height);
     
     [UIView commitAnimations];
+    // TODO: convert to block based animations and remove uploadController from superview when finished
 }
 
 - (void)postDidUploadSuccessfully:(NSNotification *)notification {
