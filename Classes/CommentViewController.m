@@ -758,7 +758,7 @@
 	
 	
 	WPWebViewController *controller = [[WPWebViewController alloc] initWithNibName:nil bundle:nil];
-	controller.url = [NSURL URLWithString:self.comment.post.permaLink];
+	controller.url = [NSURL URLWithString:self.comment.link];
 	[self.navigationController pushViewController:controller animated:YES];
 	[controller release];
 	
