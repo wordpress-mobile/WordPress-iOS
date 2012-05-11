@@ -407,20 +407,12 @@
     operation = [self operationForCategoriesWithSuccess:nil failure:nil];
     [operations addObject:operation];
     if (!self.isSyncingPosts) {
-        operation = [self operationForPostsWithSuccess:nil failure:nil loadMore:NO];
+        operation = [self operationForPostsWithSuccess:success failure:failure loadMore:NO];
         [operations addObject:operation];
         self.isSyncingPosts = YES;
     }
     
-    AFHTTPRequestOperation *combinedOperation = [self.api combinedHTTPRequestOperationWithOperations:operations success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success) {
-            success();
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
+    AFHTTPRequestOperation *combinedOperation = [self.api combinedHTTPRequestOperationWithOperations:operations success:nil failure:nil];
     [self.api enqueueHTTPRequestOperation:combinedOperation];    
 }
 
