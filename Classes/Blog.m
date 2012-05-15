@@ -190,6 +190,13 @@
 	return (range.location != NSNotFound);
 }
 
+//WP.COM private blog. 
+- (BOOL)isPrivate {
+    if ( [self isWPcom] && [[self getOptionValue:@"blog_public"] isEqual:@"-1"] )
+        return YES;
+    return NO;
+}
+
 - (void)awakeFromFetch {
     [self reachability];
 }

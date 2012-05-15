@@ -141,6 +141,7 @@
 	BOOL isDraft = [self.postDetailViewController isAFreshlyCreatedDraft];
 	BOOL isPrivate = NO;
 	BOOL isPending = NO;
+    BOOL isPrivateBlog = [postDetailViewController.apost.blog isPrivate];
 	
 	if ([status isEqualToString:@"draft"])
 		isDraft = YES;
@@ -173,7 +174,7 @@
 			NSDate *postGMTDate = postDetailViewController.apost.date_created_gmt;
 			NSDate *laterDate = postDetailViewController.apost.date_created_gmt;//[currentGMTDate laterDate:postGMTDate];
 			
-			if(isDraft || isPending || isPrivate || (laterDate == postGMTDate)) {
+			if(isDraft || isPending || isPrivate || isPrivateBlog || (laterDate == postGMTDate)) {
 				
 				NSString *wpLoginURL = [postDetailViewController.apost.blog loginURL];
 				NSURL *url = [NSURL URLWithString:wpLoginURL]; 
