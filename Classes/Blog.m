@@ -555,9 +555,6 @@
         }
 
         [self mergePosts:posts];
-        if (success) {
-            success();
-        }
 
         self.lastPostsSync = [NSDate date];
         self.isSyncingPosts = NO;
