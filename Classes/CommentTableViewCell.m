@@ -154,7 +154,11 @@
     } else {
         checkButton.alpha = 0;
         checkButton.enabled = NO;
-        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        if (DeviceIsPad() == YES) {
+            self.accessoryType = UITableViewCellAccessoryNone;
+        } else {
+            self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
     }
     
     rect = gravatarImageView.frame;

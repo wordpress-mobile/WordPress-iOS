@@ -531,9 +531,7 @@
     } else {
         cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
     }
-	if (DeviceIsPad() == YES && !self.isSecondaryViewController) {
-		cell.accessoryType = UITableViewCellAccessoryNone;
-	}
+
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -566,8 +564,14 @@
         cell = [[[CommentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
 
+    if ((DeviceIsPad() == YES && !self.isSecondaryViewController) || tableView.isEditing) {
+		cell.accessoryType = UITableViewCellAccessoryNone;
+	} else {
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    
     [self configureCell:cell atIndexPath:indexPath];
-
+    
     return cell;
 }
 
@@ -885,7 +889,8 @@
 
     if (indexPath) {
         self.selectedIndexPath = indexPath;
-     }
+        [commentsTableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
+	}
 }
 
 - (void)showNextComment {
@@ -903,6 +908,7 @@
 
     if (indexPath) {
         self.selectedIndexPath = indexPath;
+        [commentsTableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
     }
 }
 
