@@ -167,7 +167,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (IBAction)switchToPreview {
     if (currentView != postPreviewViewController.view) {
-		[postPreviewViewController refreshWebView];
         [self switchToView:postPreviewViewController.view];
     }
 	self.navigationItem.title = NSLocalizedString(@"Preview", @"");
