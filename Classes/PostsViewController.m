@@ -77,6 +77,19 @@
             self.selectedIndexPath = nil;
         }
     }
+    
+    if (activityFooter == nil) {
+        CGRect rect = CGRectMake(145.0, 10.0, 30.0, 30.0);
+        activityFooter = [[UIActivityIndicatorView alloc] initWithFrame:rect];
+        activityFooter.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+        activityFooter.hidesWhenStopped = YES;
+        activityFooter.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+        [activityFooter stopAnimating];
+    }
+    UIView *footerView = [[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 50.0)] autorelease];
+    footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    [footerView addSubview:activityFooter];
+    self.tableView.tableFooterView = footerView;
 }
 
 
@@ -168,8 +181,8 @@
     // Are we approaching the end of the table?
     if ((indexPath.section + 1 == [self numberOfSectionsInTableView:tableView]) && (indexPath.row + 4 >= [self tableView:tableView numberOfRowsInSection:indexPath.section]) && [self tableView:tableView numberOfRowsInSection:indexPath.section] > 10) {
         // Only 3 rows till the end of table
-        [activityFooter startAnimating];
-        if (![self isSyncing]) {
+        if (![self isSyncing] && [self hasOlderItems]) {
+            [activityFooter startAnimating];
             WPLog(@"Approaching end of table, let's load more posts");
             [self loadMore];
         }
@@ -240,29 +253,6 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     return YES;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-	//only show footer in 'Posted' section
-	if (section == [[self.resultsController sections] count] - 1)
-		return 50;
-	
-	return 0;
-    
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    if (activityFooter == nil) {
-        CGRect rect = CGRectMake(145, 10, 30, 30);
-        activityFooter = [[UIActivityIndicatorView alloc] initWithFrame:rect];
-        activityFooter.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-        activityFooter.hidesWhenStopped = YES;
-        activityFooter.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-    }
-    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
-    footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    [footerView addSubview:activityFooter];
-    return [footerView autorelease];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
