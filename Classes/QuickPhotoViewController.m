@@ -183,11 +183,13 @@
 
 - (void)post {
     Blog *blog = self.blogSelector.activeBlog;
+    Media *media = nil;
     if (post == nil) {
         post = [Post newDraftForBlog:blog];
     } else {
         post.blog = blog;
-        [[post.media anyObject] setBlog:blog];
+        media = [post.media anyObject];
+        [media setBlog:blog];
     }
     post.postTitle = titleTextField.text;
     post.content = contentTextView.text;
@@ -197,14 +199,14 @@
         post.specialType = @"QuickPhoto";
     }
     post.postFormat = @"image";
-
-    [[NSNotificationCenter defaultCenter] addObserver:post selector:@selector(mediaDidUploadSuccessfully:) name:ImageUploadSuccessful object:nil];        
-    [[NSNotificationCenter defaultCenter] addObserver:post selector:@selector(mediaUploadFailed:) name:ImageUploadFailed object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:post selector:@selector(mediaDidUploadSuccessfully:) name:ImageUploadSuccessful object:media];        
+    [[NSNotificationCenter defaultCenter] addObserver:post selector:@selector(mediaUploadFailed:) name:ImageUploadFailed object:media];
     
     appDelegate.isUploadingPost = YES;
     
     dispatch_async(dispatch_get_main_queue(), ^(void) {
-        [[post.media anyObject] uploadWithSuccess:nil failure:nil];
+        [media uploadWithSuccess:nil failure:nil];
         
         [post save];
     });
