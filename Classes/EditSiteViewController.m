@@ -13,9 +13,13 @@
 - (void)validateFields;
 - (void)validationSuccess:(NSString *)xmlrpc;
 - (void)validationDidFail:(id)wrong;
+- (void)handleKeyboardWillShow:(NSNotification *)notification;
+- (void)handleKeyboardWillHide:(NSNotification *)notification;
+- (void)handleViewTapped;
 @end
 
 @implementation EditSiteViewController
+
 @synthesize password, username, url, geolocationEnabled;
 @synthesize blog, tableView, savingIndicator;
 @synthesize urlCell, usernameCell, passwordCell;
@@ -54,7 +58,22 @@
     
     saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save:)];
     
-    self.navigationItem.rightBarButtonItem = saveButton;	
+    self.navigationItem.rightBarButtonItem = saveButton;
+    
+    if (!DeviceIsPad()){
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+        
+        UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleViewTapped)];
+        [tableView addGestureRecognizer:tgr];
+        [tgr release];
+        
+    }
+}
+
+- (void)viewDidUnload {
+    [super viewDidUnload];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -62,6 +81,30 @@
 		return YES;
 	else
 		return NO;
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
+- (void)dealloc {
+    self.username = nil;
+    self.password = nil;
+    self.url = nil;
+    self.urlCell = nil;
+    self.usernameCell = nil;
+    self.passwordCell = nil;
+    self.tableView = nil;
+    self.blog = nil;
+    [subsites release]; subsites = nil;
+    [saveButton release]; saveButton = nil;
+    [switchCell release]; switchCell = nil;
+    [urlTextField release]; urlTextField = nil;
+    [usernameTextField release]; usernameTextField = nil;
+    [passwordTextField release]; passwordTextField = nil;
+    [lastTextField release]; lastTextField = nil;
+	[savingIndicator release];
+    [super dealloc];
 }
 
 #pragma mark -
@@ -226,6 +269,14 @@
 
 #pragma mark -
 #pragma mark UITextField methods
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    if (lastTextField) {
+        [lastTextField release];
+        lastTextField = nil;
+    }
+    lastTextField = [textField retain];
+}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField.returnKeyType == UIReturnKeyNext) {
@@ -473,32 +524,31 @@
 		[self dismissModalViewControllerAnimated:YES];
 }
 
-#pragma mark -
-#pragma mark Memory management
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
+- (void)handleKeyboardWillShow:(NSNotification *)notification {
+    CGRect rect = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, rect.size.height, 0.0);
+    tableView.contentInset = contentInsets;
+    tableView.scrollIndicatorInsets = contentInsets;
+    
+    CGRect frame = self.view.frame;
+    frame.size.height -= rect.size.height;
+    if (!CGRectContainsPoint(frame, lastTextField.frame.origin)) {
+        CGPoint scrollPoint = CGPointMake(0.0, lastTextField.frame.origin.y - rect.size.height/2.0);
+        [tableView setContentOffset:scrollPoint animated:YES];
+    }
 }
 
-- (void)dealloc {
-    self.username = nil;
-    self.password = nil;
-    self.url = nil;
-    self.urlCell = nil;
-    self.usernameCell = nil;
-    self.passwordCell = nil;
-    self.tableView = nil;
-    self.blog = nil;
-    [subsites release]; subsites = nil;
-    [saveButton release]; saveButton = nil;
-    [switchCell release]; switchCell = nil;
-    [urlTextField release]; urlTextField = nil;
-    [usernameTextField release]; usernameTextField = nil;
-    [passwordTextField release]; passwordTextField = nil;
-	[savingIndicator release];
-    [super dealloc];
+- (void)handleKeyboardWillHide:(NSNotification *)notification {
+    [UIView animateWithDuration:0.3 animations:^{
+        tableView.contentInset = UIEdgeInsetsZero;
+        tableView.scrollIndicatorInsets = UIEdgeInsetsZero;
+    }];
 }
 
+- (void)handleViewTapped {
+    [lastTextField resignFirstResponder];
+}
 
 @end
 

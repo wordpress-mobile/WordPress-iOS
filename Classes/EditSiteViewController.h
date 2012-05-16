@@ -17,7 +17,7 @@
 
 @interface EditSiteViewController : UIViewController <UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate> {
 	IBOutlet UITableView *tableView;
-	UITextField *urlTextField, *usernameTextField, *passwordTextField;
+	UITextField *urlTextField, *usernameTextField, *passwordTextField, *lastTextField;
     UITableViewSwitchCell *switchCell;
     UIBarButtonItem *saveButton;
 	BOOL isValidating;
