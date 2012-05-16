@@ -20,6 +20,7 @@
 	WordPressAppDelegate *appDelegate;
     Post *post;
     BlogsViewController *blogsViewController;
+    CGRect startingFrame;
 }
 
 @property (nonatomic, retain) IBOutlet QuickPicturePreviewView *photoImageView;
@@ -35,4 +36,7 @@
 - (void)post;
 - (void)cancel;
 - (void)saveImage;
+- (void)handleKeyboardWillShow:(NSNotification *)notification;
+- (void)handleKeyboardDidShow:(NSNotification *)notification;
+
 @end

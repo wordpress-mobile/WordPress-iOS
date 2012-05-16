@@ -52,9 +52,20 @@
             CGFloat imageRatio = imageSize.width / imageSize.height;
             CGSize frameSize = self.bounds.size;
             CGRect imageFrame;
-            
-            CGFloat width = (imageRatio > 1) ? frameSize.width - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH) : (frameSize.height - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH)) * imageRatio;
-            CGFloat height = (imageRatio < 1) ? frameSize.height - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH) : (frameSize.width - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH)) / imageRatio;
+
+            CGFloat width, height, maxsize;
+            if (frameSize.width > frameSize.height) {
+                maxsize = frameSize.height;
+            } else {
+                maxsize = frameSize.width;
+            }
+            if (imageRatio > 1) {
+                width = maxsize - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH);
+                height = width / imageRatio;
+            } else {
+                height = maxsize - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH);
+                width = height * imageRatio;
+            }
             
             width += 5.0f;
             height += 5.0f;

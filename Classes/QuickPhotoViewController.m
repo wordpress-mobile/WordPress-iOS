@@ -88,6 +88,9 @@
     [postButtonItem setEnabled:NO];
     self.navigationItem.rightBarButtonItem = self.postButtonItem;
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)] autorelease];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)saveImage {
@@ -136,7 +139,8 @@
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-
+    
+    startingFrame = self.view.frame;
     if (self.photo == nil) {
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
         picker.sourceType = self.sourceType;
@@ -174,6 +178,18 @@
 
 #pragma mark -
 #pragma mark Custom methods
+
+- (void)handleKeyboardWillShow:(NSNotification *)notification {
+    CGRect keyboardFrame = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    
+    CGRect frame = startingFrame;
+    frame.size.height = frame.size.height - keyboardFrame.size.height;
+    [self.view setFrame:frame];
+}
+
+- (void)handleKeyboardWillHide:(NSNotification *)notification {
+    self.view.frame = startingFrame;
+}
 
 - (void)postInBackground {
 
