@@ -14,6 +14,11 @@
 #import "BlogsViewController.h"
 #import "CameraPlusPickerManager.h"
 
+@interface QuickPhotoViewController ()
+- (void)handleKeyboardWillShow:(NSNotification *)notification;
+- (void)handleKeyboardWillHide:(NSNotification *)notification;
+@end
+
 @implementation QuickPhotoViewController
 @synthesize photoImageView;
 @synthesize titleTextField;

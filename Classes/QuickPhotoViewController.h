@@ -36,7 +36,5 @@
 - (void)post;
 - (void)cancel;
 - (void)saveImage;
-- (void)handleKeyboardWillShow:(NSNotification *)notification;
-- (void)handleKeyboardDidShow:(NSNotification *)notification;
 
 @end
