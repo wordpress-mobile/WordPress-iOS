@@ -63,5 +63,11 @@
     [super dealloc];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	if(DeviceIsPad() == YES)
+		return YES;
+	else
+		return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
 
 @end
