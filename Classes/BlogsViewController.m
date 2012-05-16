@@ -304,10 +304,11 @@
         [readerButton removeFromSuperview];
         [readerButton release]; readerButton = nil;
     }
-    if (!wantsReaderButton && !wantsPhotoButton) {
-        self.tableView.contentInset = UIEdgeInsetsZero;
+    CGRect tableFrame = self.tableView.frame;
+    if (wantsReaderButton || wantsPhotoButton) {
+        self.tableView.frame = CGRectMake(tableFrame.origin.x, tableFrame.origin.y, tableFrame.size.width, 336);
     } else {
-        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 83, 0);
+        self.tableView.frame = CGRectMake(tableFrame.origin.x, tableFrame.origin.y, tableFrame.size.width, 416);
     }
     if (wantsPhotoButton && quickPhotoButton == nil) {
         quickPhotoButton = [QuickPhotoButton button];
