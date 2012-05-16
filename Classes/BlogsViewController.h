@@ -31,7 +31,6 @@
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 
 - (void)showBlog:(Blog *)blog animated:(BOOL)animated;
-- (void)showBlogWithoutAnimation;
 - (void)edit:(id)sender;
 - (void)cancel:(id)sender;
 - (BOOL)canChangeBlog:(Blog *)blog;

@@ -12,13 +12,19 @@
 - (void)setupReader;
 @end
 
+@interface BlogsViewController ()
+@property (nonatomic, retain) Post *currentQuickPost;
+@end
+
 @implementation BlogsViewController
 @synthesize resultsController, currentBlog, tableView;
+@synthesize currentQuickPost = _currentQuickPost;
 
 #pragma mark -
 #pragma mark View lifecycle
 
 - (void)viewDidUnload {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [quickPhotoButton release]; quickPhotoButton = nil;
     [readerButton release]; readerButton = nil;
     self.tableView = nil;
@@ -87,12 +93,7 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 		
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blogsRefreshNotificationReceived:) name:@"BlogsRefreshNotification" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBlogWithoutAnimation) name:@"NewBlogAdded" object:nil];
 
-    //quick photo upload notifications
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postDidUploadSuccessfully:) name:@"PostUploaded" object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postUploadFailed:) name:@"PostUploadFailed" object:nil];
-    
 	//status bar notification
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeStatusBarFrame:) name:DidChangeStatusBarFrame object:nil];
 	
@@ -102,7 +103,8 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"BlogsRefreshNotification" object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:DidChangeStatusBarFrame object:nil];
 	[super viewWillDisappear:animated];
 }
 
@@ -339,9 +341,6 @@
         [readerViewController release]; 
         readerViewController = nil; 
     }
-    if (wantsPhotoButton && uploadController.view.superview) {
-        [self showQuickPhotoButton:NO];
-    }
 }
 
 - (void)didChangeStatusBarFrame:(NSNotification *)notification {
@@ -497,10 +496,6 @@
 	[welcomeView release];
 }
 
-- (void)showBlogWithoutAnimation {
-//    [self showBlog:NO];
-}
-
 - (void)showBlog:(Blog *)blog animated:(BOOL)animated {
 	BlogViewController *blogViewController = [[BlogViewController alloc] initWithNibName:@"BlogViewController" bundle:nil];
     blogViewController.blog = blog;
@@ -517,6 +512,21 @@
 	if(event.subtype == UIEventSubtypeMotionShake){
 		
 	}
+}
+
+- (void)setCurrentQuickPost:(Post *)currentQuickPost {
+    if (currentQuickPost != _currentQuickPost) {
+        if (_currentQuickPost) {
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:@"PostUploaded" object:_currentQuickPost];
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:@"PostUploadFailed" object:_currentQuickPost];
+            [_currentQuickPost release];
+        }
+        _currentQuickPost = [currentQuickPost retain];
+        if (_currentQuickPost) {
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postDidUploadSuccessfully:) name:@"PostUploaded" object:currentQuickPost];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postUploadFailed:) name:@"PostUploadFailed" object:currentQuickPost];
+        }
+    }
 }
 
 #pragma mark - UIActionSheetDelegate
@@ -618,6 +628,8 @@
 
 - (void)uploadQuickPhoto:(Post *)post {
     if (post != nil) {
+        self.currentQuickPost = post;
+
         //remove the quick photo button w/ sexy animation
         CGRect frame = quickPhotoButton.frame;
         
@@ -648,38 +660,42 @@
     }
 }
 
-- (void)showQuickPhotoButton: (BOOL)delay{
-    CGRect frame = quickPhotoButton.frame;
-    [UIView beginAnimations:nil context:nil]; 
-    [UIView setAnimationDuration:0.6f];
-    if (delay)
-        [UIView setAnimationDelay:1.2f];
-    
-    quickPhotoButton.frame = CGRectMake(frame.origin.x, self.view.bounds.size.height - 83, frame.size.width, frame.size.height);
-    
-    frame = uploadController.view.frame;
-    
-    uploadController.view.frame = CGRectMake(frame.origin.x, self.view.bounds.size.height + 83, frame.size.width, frame.size.height);
-    
-    [UIView commitAnimations];
-    // TODO: convert to block based animations and remove uploadController from superview when finished
+- (void)showQuickPhotoButton:(BOOL)delay {
+    if (uploadController) {
+        [UIView animateWithDuration:0.6f
+                              delay:delay ? 1.2f : 0.0f
+                            options:0
+                         animations:^{
+                             CGRect frame = quickPhotoButton.frame;
+                             quickPhotoButton.frame = CGRectMake(frame.origin.x, self.view.bounds.size.height - 83, frame.size.width, frame.size.height);
+                             frame = uploadController.view.frame;
+                             uploadController.view.frame = CGRectMake(frame.origin.x, self.view.bounds.size.height + 83, frame.size.width, frame.size.height);
+                         } completion:^(BOOL finished) {
+                             [uploadController.view removeFromSuperview];
+                             [uploadController release]; uploadController = nil;
+                         }];
+    }
 }
 
 - (void)postDidUploadSuccessfully:(NSNotification *)notification {
     appDelegate.isUploadingPost = NO;
-    [UIView beginAnimations:nil context:nil]; 
-    [UIView setAnimationDuration:0.6f];
-    [uploadController.spinner setAlpha:0.0f];
-    uploadController.label.text = NSLocalizedString(@"Published!", @"");
-    uploadController.label.textColor = [[UIColor alloc] initWithRed:0.0f green:128.0f/255.0f blue:0.0f alpha:1.0f];
-    uploadController.label.frame = CGRectMake(uploadController.label.frame.origin.x, uploadController.label.frame.origin.y - 12, uploadController.label.frame.size.width, uploadController.label.frame.size.height);
-    [UIView commitAnimations];
-    [self showQuickPhotoButton: YES];
+    self.currentQuickPost = nil;
+    if (uploadController) {
+        [UIView animateWithDuration:0.6f animations:^{
+            [uploadController.spinner setAlpha:0.0f];
+            uploadController.label.text = NSLocalizedString(@"Published!", @"");
+            uploadController.label.textColor = [[UIColor alloc] initWithRed:0.0f green:128.0f/255.0f blue:0.0f alpha:1.0f];
+            uploadController.label.frame = CGRectMake(uploadController.label.frame.origin.x, uploadController.label.frame.origin.y - 12, uploadController.label.frame.size.width, uploadController.label.frame.size.height);
+        } completion:^(BOOL finished) {
+            [self showQuickPhotoButton:YES];
+        }];
+    }
 }
 
 - (void)postUploadFailed:(NSNotification *)notification {
     appDelegate.isUploadingPost = NO;
-    [self showQuickPhotoButton: NO];
+    self.currentQuickPost = nil;
+    [self showQuickPhotoButton:NO];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick Photo Failed", @"")
                                                     message:NSLocalizedString(@"Sorry, the photo publish failed. The post has been saved as a Local Draft.", @"")
                                                    delegate:self
