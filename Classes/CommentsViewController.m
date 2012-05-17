@@ -652,7 +652,6 @@
   
     if (cell!= moderationSwipeCell)
     {
-      UIButton *moderationApproveButton = (UIButton*)[moderationSwipeView viewWithTag:3];
       [moderationApproveButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
       
       if ([cell.comment.status isEqualToString:@"hold"]) {
