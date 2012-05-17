@@ -190,7 +190,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
     });
 
     [self checkWPcomAuthentication];
-	self.blogsViewController = [[BlogsViewController alloc] init];
+	self.blogsViewController = [[[BlogsViewController alloc] init] autorelease];
 	crashReportView = [[CrashReportViewController alloc] initWithNibName:@"CrashReportView" bundle:nil];
 	
 	//BETA FEEDBACK BAR, COMMENT THIS OUT BEFORE RELEASE

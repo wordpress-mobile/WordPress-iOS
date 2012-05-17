@@ -376,7 +376,7 @@ fail:
 
 + (NSString *)IDNEncodedURL:(NSString *)aURL {
     NSString *hostname = aURL;
-    NSMutableArray *components = [[aURL componentsSeparatedByString:@"://"] mutableCopy];
+    NSMutableArray *components = [[[aURL componentsSeparatedByString:@"://"] mutableCopy] autorelease];
     if ([components count] > 1) {
         hostname = [components objectAtIndex:1];
     }
@@ -391,7 +391,7 @@ fail:
 
 + (NSString *)IDNDecodedURL:(NSString *)anIDNURL {
     NSString *hostname = anIDNURL;
-    NSMutableArray *components = [[anIDNURL componentsSeparatedByString:@"://"] mutableCopy];
+    NSMutableArray *components = [[[anIDNURL componentsSeparatedByString:@"://"] mutableCopy] autorelease];
     if ([components count] > 1) {
         hostname = [components objectAtIndex:1];
     }

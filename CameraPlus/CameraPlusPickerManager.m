@@ -249,6 +249,7 @@ NSString *CameraPlusExportPhotoMetadataType = @"com.taptaptap.CameraPlus.photoMe
             }
 #else
             [delegate cameraPlusPickerManager:self didPickImages:images];
+            [images release];
 #endif
             
             [UIPasteboard removePasteboardWithName:pasteboardName];

@@ -7,7 +7,6 @@
 
 @interface PostsViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, UIAccelerometerDelegate, NSFetchedResultsControllerDelegate, EGORefreshTableHeaderDelegate> {
 @private
-	UIAlertView *progressAlert;
     EGORefreshTableHeaderView *_refreshHeaderView;
     UIActivityIndicatorView *activityFooter;
 }
