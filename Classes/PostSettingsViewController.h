@@ -16,14 +16,17 @@
     IBOutlet UITableViewCell *statusTableViewCell;
     IBOutlet UITableViewCell *visibilityTableViewCell;
     IBOutlet UITableViewCell *publishOnTableViewCell;
+    IBOutlet UITableViewCell *postFormatTableViewCell;
     IBOutlet UILabel *statusLabel;
     IBOutlet UILabel *visibilityLabel;
+    IBOutlet UILabel *postFormatLabel;
     IBOutlet UITextField *passwordTextField;
     IBOutlet UILabel *publishOnLabel;
     IBOutlet UILabel *publishOnDateLabel;
     EditPostViewController *postDetailViewController;
     NSArray *statusList;
     NSArray *visibilityList;
+    NSArray *formatsList;
     UIPickerView *pickerView;
     UIActionSheet *actionSheet;
     UIDatePicker *datePickerView;
@@ -42,7 +45,7 @@
 	PostAnnotation *annotation;
 	NSString *address;
 	BOOL isUpdatingLocation;
-    IBOutlet UILabel *visibilityTitleLabel, *statusTitleLabel;
+    IBOutlet UILabel *visibilityTitleLabel, *statusTitleLabel, *postFormatTitleLabel;
 }
 
 @property (nonatomic, assign) EditPostViewController *postDetailViewController;

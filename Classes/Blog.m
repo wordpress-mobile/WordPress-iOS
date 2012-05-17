@@ -185,6 +185,17 @@
 	return [[self.categories allObjects] sortedArrayUsingDescriptors:sortDescriptors];
 }
 
+- (NSArray *)sortedPostFormatNames {
+    NSMutableArray *sortedNames = [NSMutableArray arrayWithCapacity:[self.postFormats count]];
+    [sortedNames addObject:[self.postFormats objectForKey:@"standard"]];
+    [self.postFormats enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        if (![key isEqual:@"standard"]) {
+            [sortedNames addObject:obj];
+        }
+    }];
+    return [NSArray arrayWithArray:sortedNames];
+}
+
 - (BOOL)isWPcom {
     NSRange range = [self.xmlrpc rangeOfString:@"wordpress.com"];
 	return (range.location != NSNotFound);

@@ -7,6 +7,7 @@
 #define TAG_PICKER_STATUS       0
 #define TAG_PICKER_VISIBILITY   1
 #define TAG_PICKER_DATE         2
+#define TAG_PICKER_FORMAT       3
 
 @interface PostSettingsViewController (Private)
 
@@ -45,6 +46,7 @@
     [datePickerView release];
     [visibilityList release];
     [statusList release];
+    [formatsList release];
 
     [super dealloc];
 }
@@ -73,11 +75,13 @@
 
     statusTitleLabel.text = NSLocalizedString(@"Status", @"");
     visibilityTitleLabel.text = NSLocalizedString(@"Visibility", @"");
+    postFormatTitleLabel.text = NSLocalizedString(@"Post Format", @"");
     passwordTextField.placeholder = NSLocalizedString(@"Enter a password", @"");
     NSMutableArray *allStatuses = [NSMutableArray arrayWithArray:[postDetailViewController.apost availableStatuses]];
     [allStatuses removeObject:NSLocalizedString(@"Private", @"")];
     statusList = [[NSArray arrayWithArray:allStatuses] retain];
     visibilityList = [[NSArray arrayWithObjects:NSLocalizedString(@"Public", @""), NSLocalizedString(@"Password protected", @""), NSLocalizedString(@"Private", @""), nil] retain];
+    formatsList = [postDetailViewController.post.blog.sortedPostFormatNames retain];
 
     CGRect pickerFrame;
 	if (DeviceIsPad())
@@ -154,6 +158,7 @@
     
     statusTitleLabel = nil;
     visibilityTitleLabel = nil;
+    postFormatTitleLabel = nil;
     passwordTextField = nil;
 
     [super viewDidUnload];
@@ -196,16 +201,18 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	if (postDetailViewController.post &&  postDetailViewController.post.blog.geolocationEnabled ) {
-		return 2; // Geolocation
+		return 3; // Geolocation
 	} else {
-		return 1; // Pages don't have geolocation
+		return 2; // Pages don't have geolocation
 	}
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (section == 0) {
 		return 3;
-	} else if (section == 1) {
+    } else if (section == 1) {
+        return 1;
+	} else if (section == 2) {
 		if (postDetailViewController.post.geolocation)
 			return 3; // Add/Update | Map | Remove
 		else
@@ -219,6 +226,8 @@
 	if (section == 0)
 		return NSLocalizedString(@"Publish", @"");
 	else if (section == 1)
+		return nil; // Post Format
+	else if (section == 2)
 		return NSLocalizedString(@"Geolocation", @"");
 	else
 		return nil;
@@ -293,7 +302,12 @@
 				break;
 		}
 		break;
-	case 1: // Geolocation
+    case 1: // Post format
+        {
+            postFormatLabel.text = postDetailViewController.post.postFormatText;
+            return postFormatTableViewCell;
+        }
+	case 2: // Geolocation
 		switch (indexPath.row) {
 			case 0: // Add/update location
 				if (addGeotagTableViewCell == nil) {
@@ -389,7 +403,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if ((indexPath.section == 0) && (indexPath.row == 1) && (postDetailViewController.apost.password))
         return 88.f;
-    else if ((indexPath.section == 1) && (indexPath.row == 1))
+    else if ((indexPath.section == 2) && (indexPath.row == 1))
 		return 188.0f;
 	else
         return 44.0f;
@@ -437,7 +451,15 @@
 					break;
 			}
 			break;
-		case 1:
+        case 1:
+        {
+            pickerView.tag = TAG_PICKER_FORMAT;
+            [pickerView reloadAllComponents];
+            [pickerView selectRow:[formatsList indexOfObject:postDetailViewController.post.postFormatText] inComponent:0 animated:NO];
+            [self showPicker:pickerView];
+            break;
+        }
+		case 2:
 			switch (indexPath.row) {
 				case 0:
 					if (!isUpdatingLocation) {
@@ -475,6 +497,8 @@
         return [statusList count];
     } else if (aPickerView.tag == TAG_PICKER_VISIBILITY) {
         return [visibilityList count];
+    } else if (aPickerView.tag == TAG_PICKER_FORMAT) {
+        return [formatsList count];
     }
     return 0;
 }
@@ -487,6 +511,8 @@
         return [statusList objectAtIndex:row];
     } else if (aPickerView.tag == TAG_PICKER_VISIBILITY) {
         return [visibilityList objectAtIndex:row];
+    } else if (aPickerView.tag == TAG_PICKER_FORMAT) {
+        return [formatsList objectAtIndex:row];
     }
 
     return @"";
@@ -510,6 +536,8 @@
                 postDetailViewController.apost.password = nil;
             }
         }
+    } else if (aPickerView.tag == TAG_PICKER_FORMAT) {
+        postDetailViewController.post.postFormatText = [formatsList objectAtIndex:row];
     }
 	[postDetailViewController refreshButtons];
     [tableView reloadData];
@@ -560,6 +588,8 @@
             popoverRect = [self.view convertRect:statusLabel.frame fromView:[statusLabel superview]];
         else if (picker.tag == TAG_PICKER_VISIBILITY)
             popoverRect = [self.view convertRect:visibilityLabel.frame fromView:[visibilityLabel superview]];
+        else if (picker.tag == TAG_PICKER_FORMAT)
+            popoverRect = [self.view convertRect:postFormatLabel.frame fromView:[postFormatLabel superview]];
         else 
             popoverRect = [self.view convertRect:publishOnDateLabel.frame fromView:[publishOnDateLabel superview]];
 

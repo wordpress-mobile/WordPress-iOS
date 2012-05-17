@@ -189,6 +189,29 @@
     return [[[self.categories valueForKey:@"categoryName"] allObjects] componentsJoinedByString:@", "];
 }
 
+- (NSString *)postFormatText {
+    NSDictionary *allFormats = self.blog.postFormats;
+    NSString *formatText = self.postFormat;
+    if ([allFormats objectForKey:self.postFormat]) {
+        formatText = [allFormats objectForKey:self.postFormat];
+    }
+    if ((formatText == nil || [formatText isEqualToString:@""]) && [allFormats objectForKey:@"standard"]) {
+        formatText = [allFormats objectForKey:@"standard"];
+    }
+    return formatText;
+}
+
+- (void)setPostFormatText:(NSString *)postFormatText {
+    __block NSString *format = nil;
+    [self.blog.postFormats enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        if ([obj isEqual:postFormatText]) {
+            format = (NSString *)key;
+            *stop = YES;
+        }
+    }];
+    self.postFormat = format;
+}
+
 - (void)setCategoriesFromNames:(NSArray *)categoryNames {
     [self.categories removeAllObjects];
 	NSMutableSet *categories = nil;
