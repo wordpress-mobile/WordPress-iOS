@@ -48,17 +48,20 @@
 @synthesize blog;
 @synthesize resultsController = _resultsController;
 @synthesize moderationSwipeView, moderationSwipeCell, moderationSwipeDirection;
+@synthesize moderationApproveButton, moderationSpamButton, moderationReplyButton;
 @synthesize dateOfPreviouslyOldestComment;
 @synthesize wantedCommentId = _wantedCommentId;
 
 #pragma mark -
 #pragma mark Memory Management
 
-- (void)viewDidUnload
-{
-  [super viewDidUnload];
-  
-  self.moderationSwipeView = nil;
+- (void)viewDidUnload {
+    [super viewDidUnload];
+
+    self.moderationSwipeView = nil;
+    self.moderationApproveButton = nil;
+    self.moderationSpamButton = nil;
+    self.moderationReplyButton = nil;
 }
 
 - (void)dealloc {
@@ -111,6 +114,9 @@
     spamButton.title = NSLocalizedString(@"Spam", @"");
     unapproveButton.title = NSLocalizedString(@"Unapprove", @"");
     approveButton.title = NSLocalizedString(@"Approve", @"");
+    [moderationApproveButton setTitle:NSLocalizedString(@"Approve", @"") forState:UIControlStateNormal];
+    [moderationSpamButton setTitle:NSLocalizedString(@"Spam", @"") forState:UIControlStateNormal];
+    [moderationReplyButton setTitle:NSLocalizedString(@"Reply", @"") forState:UIControlStateNormal];
     
     commentsDict = [[NSMutableDictionary alloc] init];
     selectedComments = [[NSMutableArray alloc] init];

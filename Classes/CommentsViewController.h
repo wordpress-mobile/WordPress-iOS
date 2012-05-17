@@ -65,6 +65,7 @@
 @property (nonatomic, retain) NSFetchedResultsController *resultsController;
 @property (nonatomic, retain) Blog *blog;
 @property (nonatomic, retain) IBOutlet UIView* moderationSwipeView;
+@property (nonatomic, retain) IBOutlet UIButton *moderationApproveButton, *moderationSpamButton, *moderationReplyButton;
 @property (nonatomic, retain) UITableViewCell* moderationSwipeCell;
 @property (nonatomic) UISwipeGestureRecognizerDirection moderationSwipeDirection;
 @property (nonatomic, retain) NSDate *dateOfPreviouslyOldestComment;
