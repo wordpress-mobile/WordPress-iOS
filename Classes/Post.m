@@ -273,10 +273,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    if ([self.password isEmpty])
-        self.password = nil;
-    
+- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {    
     [self save];
     
     if ([self hasRemote]) {

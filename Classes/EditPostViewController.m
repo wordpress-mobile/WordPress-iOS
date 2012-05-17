@@ -661,6 +661,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		self.apost.mt_text_more = @"";
     
     [self.view endEditing:YES];
+    
+    if ( self.apost.original.password != nil ) { //original post was password protected
+        if ( self.apost.password == nil || [self.apost.password isEqualToString:@""] ) { //removed the password
+            self.apost.password = @"";
+        }
+    }
+            
     [self.apost.original applyRevision];
 	if (upload){
 		NSString *postTitle = self.apost.postTitle;
