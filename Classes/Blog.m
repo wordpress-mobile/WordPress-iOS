@@ -468,13 +468,30 @@
 }
 
 - (AFXMLRPCRequestOperation *)operationForPostFormatsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    NSArray *parameters = [self getXMLRPCArgsWithExtra:nil];
+    NSDictionary *dict = [NSDictionary dictionaryWithObject:@"1" forKey:@"show-supported"];
+    NSArray *parameters = [self getXMLRPCArgsWithExtra:dict];
+    
     AFXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPostFormats" parameters:parameters];
     AFXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if ([self isDeleted])
             return;
 
-        self.postFormats = [NSDictionary dictionaryWithDictionary:(NSDictionary *)responseObject];
+        NSDictionary *respDict = [NSDictionary dictionaryWithDictionary:(NSDictionary *)responseObject];
+        if ([respDict objectForKey:@"supported"]) {
+            NSMutableArray *supportedKeys = [NSMutableArray arrayWithArray:[respDict objectForKey:@"supported"]];
+            // Standard isn't included in the list of supported formats? Maybe it will be one day?
+            if (![supportedKeys containsObject:@"standard"]) {
+                [supportedKeys addObject:@"standard"];
+            }
+            
+            NSDictionary *allFormats = [respDict objectForKey:@"all"];
+            NSMutableArray *supportedValues = [NSMutableArray array];
+            for (NSString *key in supportedKeys) {
+                [supportedValues addObject:[allFormats objectForKey:key]];
+            }
+            respDict = [NSDictionary dictionaryWithObjects:supportedValues forKeys:supportedKeys];
+        }
+        self.postFormats = respDict;
         if (success) {
             success();
         }
