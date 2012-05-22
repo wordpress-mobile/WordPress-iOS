@@ -205,29 +205,28 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	//betaWindow.hidden = NO;
 	//BETA FEEDBACK BAR
 	
+#ifdef PANELS_EXPERIMENTAL
+    NSError *err = nil;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:[self managedObjectContext]]];
+    NSArray *blogs = [self.managedObjectContext executeFetchRequest:fetchRequest error:&err];
+
+    PostsViewController *postsViewController = [[[PostsViewController alloc] init] autorelease];
+    postsViewController.blog = [blogs objectAtIndex:0];
+    CommentsViewController *commentsViewController = [[[CommentsViewController alloc] init] autorelease];
+    commentsViewController.blog = [blogs objectAtIndex:0];
+    SidebarViewController *sidebarViewController = [[[SidebarViewController alloc] init] autorelease];
+    panelNavigationController = [[PanelNavigationController alloc] initWithDetailController:commentsViewController masterViewController:sidebarViewController];
+    window.rootViewController = panelNavigationController;
+#else
 	if(DeviceIsPad() == NO)
 	{
-#ifdef PANELS_EXPERIMENTAL
-        NSError *error = nil;
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:[self managedObjectContext]]];
-        NSArray *blogs = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-
-        PostsViewController *postsViewController = [[[PostsViewController alloc] init] autorelease];
-        postsViewController.blog = [blogs objectAtIndex:0];
-        CommentsViewController *commentsViewController = [[[CommentsViewController alloc] init] autorelease];
-        commentsViewController.blog = [blogs objectAtIndex:0];
-        SidebarViewController *sidebarViewController = [[[SidebarViewController alloc] init] autorelease];
-        panelNavigationController = [[PanelNavigationController alloc] initWithDetailController:commentsViewController masterViewController:sidebarViewController];
-        window.rootViewController = panelNavigationController;
-#else
         UINavigationController *aNavigationController = [[[UINavigationController alloc] initWithRootViewController:blogsViewController] autorelease];
         aNavigationController.navigationBar.tintColor = [UIColor colorWithRed:31/256.0 green:126/256.0 blue:163/256.0 alpha:1.0];
         self.navigationController = aNavigationController;
         
         [window addSubview:aNavigationController.view];
         window.rootViewController = aNavigationController;
-#endif
 
 		if ([Blog countWithContext:context] == 0) {
 			WelcomeViewController *wViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
@@ -262,7 +261,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newBlogNotification:) name:@"NewBlogAdded" object:nil];
 		[self performSelector:@selector(showPopoverIfNecessary) withObject:nil afterDelay:0.1];
 	}
-	
+#endif
+
 	// Add listeners
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(deleteLocalDraft:)

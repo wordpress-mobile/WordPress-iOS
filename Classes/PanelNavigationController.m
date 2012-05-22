@@ -20,15 +20,27 @@
 #define OPEN_SLIDE_DURATION(animated) SLIDE_DURATION(animated,DURATION_FAST)
 #define CLOSE_SLIDE_DURATION(animated) SLIDE_DURATION(animated,DURATION_SLOW)
 
+#define IPHONE_DETAIL_OFFSET 0
+#define IPHONE_DETAIL_HEIGHT self.view.frame.size.height
+#define IPHONE_DETAIL_WIDTH self.view.frame.size.width
+#define IPAD_DETAIL_OFFSET DETAIL_LEDGE
+#define IPAD_DETAIL_HEIGHT IPHONE_DETAIL_HEIGHT
+#define IPAD_DETAIL_WIDTH ((IPHONE_DETAIL_WIDTH - IPAD_DETAIL_OFFSET) / 2)
+#define DETAIL_OFFSET (IS_IPAD ? IPAD_DETAIL_OFFSET : IPHONE_DETAIL_OFFSET)
+#define DETAIL_HEIGHT (IS_IPAD ? IPAD_DETAIL_HEIGHT : IPHONE_DETAIL_HEIGHT)
+#define DETAIL_WIDTH (IS_IPAD ? IPAD_DETAIL_WIDTH : IPHONE_DETAIL_WIDTH)
+
 #pragma mark -
 
 @interface PanelNavigationController () <UIGestureRecognizerDelegate>
 @property (nonatomic, retain) UINavigationController *navigationController;
 @property (nonatomic, retain) UIView *detailView;
 @property (nonatomic, readonly) UIView *masterView;
+@property (nonatomic, readonly) UIView *rootView;
 @property (nonatomic, retain) NSMutableArray *detailViewControllers;
 @property (nonatomic, retain) UIButton *detailTapper;
 @property (nonatomic, retain) UIPanGestureRecognizer *panner;
+@property (nonatomic, retain) UIImageView *backgroundImageView;
 - (void)showSidebar;
 - (void)showSidebarAnimated:(BOOL)animated;
 - (void)closeSidebar;
@@ -37,6 +49,7 @@
 - (void)enableDetailView;
 - (void)addShadowTo:(UIView *)view;
 - (void)removeShadowFrom:(UIView *)view;
+- (void)applyShadows;
 - (void)addPanner;
 - (void)removePanner;
 - (void)setDetailViewOffset:(CGFloat)offset;
@@ -58,6 +71,7 @@
 @synthesize detailViewControllers = _detailViewControllers;
 @synthesize detailTapper = _detailTapper;
 @synthesize panner = _panner;
+@synthesize backgroundImageView = _backgroundImageView;
 
 - (void)dealloc {
     self.detailViewController.panelNavigationController = nil;
@@ -98,6 +112,7 @@
 
 - (void)loadView {
     self.view = [[[UIView alloc] init] autorelease];
+    self.view.frame = [UIScreen mainScreen].applicationFrame;
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.view.autoresizesSubviews = YES;
     self.view.clipsToBounds = YES;
@@ -107,7 +122,7 @@
     [super viewDidLoad];
 
     self.detailView = [[[UIView alloc] init] autorelease];
-    self.detailView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.detailView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     self.detailView.autoresizesSubviews = YES;
     self.detailView.clipsToBounds = YES;
     [self.view addSubview:self.detailView];
@@ -118,10 +133,20 @@
         [self.navigationController didMoveToParentViewController:self];
         self.detailViewController.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"list"] style:UIBarButtonItemStyleBordered target:self action:@selector(showSidebar)] autorelease];
     }
+    if (IS_IPAD) {
+        self.backgroundImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"fabric"]] autorelease];
+        self.backgroundImageView.frame = CGRectMake(DETAIL_LEDGE_OFFSET, 0, self.view.frame.size.width - DETAIL_LEDGE_OFFSET, DETAIL_HEIGHT);
+        self.backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [self.view insertSubview:self.backgroundImageView belowSubview:self.detailView];
+
+        self.detailView.frame = CGRectMake(0, 0, DETAIL_WIDTH, DETAIL_HEIGHT);
+        [self showSidebarAnimated:NO];
+    }
 }
 
 - (void)viewDidUnload {
     self.detailView = nil;
+    self.backgroundImageView = nil;
 
     if (self.navigationController) {
         [self.navigationController willMoveToParentViewController:nil];
@@ -133,7 +158,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+
     if (self.navigationController) {
         [self.navigationController.view removeFromSuperview];
         [self.detailView addSubview:self.navigationController.view];
@@ -144,10 +169,13 @@
         [self.detailViewController viewWillAppear:animated];
     }
     [self.masterViewController.view removeFromSuperview];
+    self.masterView.frame = CGRectMake(0, 0, DETAIL_LEDGE_OFFSET, self.view.frame.size.height);
     [self.view insertSubview:self.masterViewController.view belowSubview:self.detailView];
-    self.masterViewController.view.frame = self.view.bounds;
-    
+    // FIXME: keep sliding status
+    self.detailViewController.view.frame = CGRectMake(0, 0, DETAIL_WIDTH, DETAIL_HEIGHT);
+
     [self addPanner];
+    [self applyShadows];
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -181,6 +209,10 @@
 
 - (UIView *)masterView {
     return self.masterViewController.view;
+}
+
+- (UIView *)rootView {
+    return self.rootViewController.view;
 }
 
 - (UIViewController *)topViewController {
@@ -284,7 +316,7 @@
 
 - (void)showSidebarAnimated:(BOOL)animated {
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
-        [self addShadowTo:self.detailView];
+        [self applyShadows];
         self.masterViewController.view.hidden = NO;
         [self setDetailViewOffset:DETAIL_LEDGE_OFFSET];
         [self disableDetailView];
@@ -300,7 +332,7 @@
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
         self.detailView.frame = self.rootViewController.view.bounds;
     } completion:^(BOOL finished) {
-        [self removeShadowFrom:self.detailView];
+        [self applyShadows];
         [self enableDetailView];
     }];
 }
@@ -310,6 +342,8 @@
 }
 
 - (void)disableDetailView {
+    if (IS_IPAD) return;
+
     // TODO: remove pan recognizer?
     if (!self.detailTapper) {
         self.detailTapper = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -328,6 +362,8 @@
 }
 
 - (void)enableDetailView {
+    if (IS_IPAD) return;
+
     if (self.detailTapper) {
         [self.detailTapper removeTarget:self action:@selector(centerTapped) forControlEvents:UIControlEventTouchUpInside];
         [self.detailTapper removeFromSuperview];
@@ -349,10 +385,18 @@
     view.layer.shadowOpacity = 0.0f;
 }
 
+- (void)applyShadows {
+    if (self.detailView.frame.origin.x > 0) {
+        [self addShadowTo:self.detailView];
+    } else {
+        [self removeShadowFrom:self.detailView];
+    }
+}
+
 #pragma mark - Panning
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-    [self addShadowTo:self.detailView];
+    [self applyShadows];
     return YES;
 }
 
@@ -494,6 +538,5 @@ static const char *panelNavigationControllerKey = "PanelNavigationController";
 
 - (void)fake_didMoveToParentViewController:(UIViewController *)parent {
 }
-
 
 @end
