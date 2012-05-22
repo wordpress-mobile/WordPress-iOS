@@ -101,20 +101,11 @@
  Remove any text before the XML preamble `<?xml`
  */
 - (NSString *)cleanCharactersBeforePreamble:(NSString *)str {
-    int len = [str length];
-    int charIndex;
-    
-    for( charIndex = 0; charIndex < len; charIndex++) {
-        unichar testChar = [str characterAtIndex:charIndex];
-        if(testChar == 60) {
-            break;
-        }
+    NSRange range = [str rangeOfString:@"<?xml"];
+    // Did we find the string "<?xml" ?
+    if (range.location != NSNotFound && range.length > 0 && range.location > 0) {   
+        str = [str substringFromIndex:range.location];
     }
-    
-    if(charIndex != 0) {
-        str = [str substringFromIndex:charIndex];
-    }
-    
     return str;
 }
 
