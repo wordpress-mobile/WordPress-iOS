@@ -291,14 +291,16 @@
      When replacing the master view controller:
      
      - Call the right UIViewController containment methods
-     - Set/restore scrollsToTop. Only one scroll view can have it enabled if we
+     - On iPhone: Set/restore scrollsToTop. Only one scroll view can have it enabled if we
      want to be able to scroll by tapping on the status bar
+     - On iPad: scroll to top is magically awesome and decides which scroll view to scroll
+     depending on where you tap
      - Replace the master view with the new one
      */
     if (_masterViewController == masterViewController) return;
 
     if (_masterViewController) {
-        if ([_masterViewController.view respondsToSelector:@selector(setScrollsToTop:)]) {
+        if (IS_IPHONE && [_masterViewController.view respondsToSelector:@selector(setScrollsToTop:)]) {
             [(UIScrollView *)_masterViewController.view setScrollsToTop:YES];
         }
         [_masterViewController willMoveToParentViewController:nil];
@@ -316,7 +318,7 @@
         [self addChildViewController:_masterViewController];
         [_masterViewController setPanelNavigationController:self];
         [_masterViewController didMoveToParentViewController:self];
-        if ([_masterViewController.view respondsToSelector:@selector(setScrollsToTop:)]) {
+        if (IS_IPHONE && [_masterViewController.view respondsToSelector:@selector(setScrollsToTop:)]) {
             [(UIScrollView *)_masterViewController.view setScrollsToTop:NO];
         }
     }
