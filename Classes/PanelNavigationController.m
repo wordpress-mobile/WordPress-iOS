@@ -161,6 +161,12 @@
 	return YES;
 }
 
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    if (self.detailView.frame.origin.x > 0.0f) {
+        [self showSidebarAnimated:NO];
+    }
+}
+
 #pragma mark - Memory management
 
 - (void)didReceiveMemoryWarning {
