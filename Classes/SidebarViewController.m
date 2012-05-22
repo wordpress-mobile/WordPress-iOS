@@ -37,6 +37,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.view.backgroundColor = SIDEBAR_BGCOLOR;
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -87,18 +88,15 @@
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, SIDEBAR_CELL_HEIGHT)];
     headerView.backgroundColor = SIDEBAR_BGCOLOR;
     headerView.opaque = YES;
-    UILabel *titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(51, 8, 260, 20)] autorelease];
+    UILabel *titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(51, 7, 220, 21)] autorelease];
+    UIImageView *blavatarView = [[[UIImageView alloc] initWithFrame:CGRectMake(8, 8, 35, 35)] autorelease];
     if (section >= SIDEBAR_BLOGS_OFFSET) {
         Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(section - SIDEBAR_BLOGS_OFFSET) inSection:0]];
-        UIImageView *blavatarView = [[[UIImageView alloc] initWithFrame:CGRectMake(8, 8, 35, 35)] autorelease];
-        blavatarView.layer.cornerRadius = 4.0f;
-        blavatarView.layer.masksToBounds = YES;
-        blavatarView.opaque = YES;
         [blavatarView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
-        [headerView addSubview:blavatarView];
-        UILabel *urlLabel = [[[UILabel alloc] initWithFrame:CGRectMake(51, 32, 260, 18)] autorelease];
+        UILabel *urlLabel = [[[UILabel alloc] initWithFrame:CGRectMake(51, 28, 220, 18)] autorelease];
+        urlLabel.adjustsFontSizeToFitWidth = YES;
         urlLabel.text = blog.hostURL;
-        urlLabel.font = [UIFont systemFontOfSize:16.0f];
+        urlLabel.font = [UIFont systemFontOfSize:14.0f];
         urlLabel.textColor = [UIColor darkGrayColor];
         urlLabel.backgroundColor = SIDEBAR_BGCOLOR;
         [headerView addSubview:urlLabel];
@@ -106,14 +104,24 @@
     } else {
         if (section == 0) {
             titleLabel.text = @"Read";
+            blavatarView.image = [UIImage imageNamed:@"read"];
         } else {
             titleLabel.text = @"Notifications";
+            blavatarView.image = [UIImage imageNamed:@"comments"];
         }
     }
 
     titleLabel.font = [UIFont boldSystemFontOfSize:17.0f];
     titleLabel.backgroundColor = SIDEBAR_BGCOLOR;
+    titleLabel.adjustsFontSizeToFitWidth = YES;
     [headerView addSubview:titleLabel];
+    blavatarView.layer.cornerRadius = 4.0f;
+    blavatarView.layer.masksToBounds = NO;
+    blavatarView.layer.shadowOpacity = 0.33f;
+    blavatarView.layer.shadowRadius = 2.0f;
+    blavatarView.layer.shadowOffset = CGSizeZero;
+    blavatarView.opaque = YES;
+    [headerView addSubview:blavatarView];
 
     return [headerView autorelease];
 }
