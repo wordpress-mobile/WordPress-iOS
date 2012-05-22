@@ -173,6 +173,10 @@
     [self.view insertSubview:self.masterViewController.view belowSubview:self.detailView];
     // FIXME: keep sliding status
     self.detailViewController.view.frame = CGRectMake(0, 0, DETAIL_WIDTH, DETAIL_HEIGHT);
+    if (IS_IPAD) {
+        self.detailViewController.view.layer.cornerRadius = 7.0f;
+        self.detailViewController.view.layer.masksToBounds = YES;
+    }
 
     [self addPanner];
     [self applyShadows];

@@ -47,11 +47,17 @@
 - (void)addPostLabel;
 - (void)addCommentLabel;
 - (void)addGravatarImageView;
+- (void)setupBackgrounds;
 
 @end
 
 
-@implementation CommentTableViewCell
+@implementation CommentTableViewCell {
+    UIView *backgroundView;
+    UIView *selectedBackgroundView;
+    CAGradientLayer *gradient;
+    CAGradientLayer *selectedGradient;
+}
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier]) {
@@ -63,6 +69,7 @@
         [self addPostLabel];
         [self addCommentLabel];
         [self addGravatarImageView];
+        [self setupBackgrounds];
     }
 
     return self;
@@ -75,6 +82,10 @@
     [commentLabel release];
     [gravatarImageView release];
     [checkButton release];
+    [backgroundView release];
+    [selectedBackgroundView release];
+    [gradient release];
+    [selectedGradient release];
     [super dealloc];
 }
 
@@ -186,6 +197,11 @@
     commentLabel.frame = rect;
 }
 
+- (void)layoutSubviews {
+    gradient.frame = self.bounds;
+    selectedGradient.frame = self.bounds;
+}
+
 - (void)addCheckButton {
     CGRect rect = CGRectMake(LEFT_OFFSET, 15, 30, COMMENT_ROW_HEIGHT - 30);
 
@@ -258,6 +274,27 @@
     commentLabel.verticalAlignment = VerticalAlignmentTop;
 
     [self.contentView addSubview:commentLabel];
+}
+
+- (void)setupBackgrounds {
+    backgroundView = [[UIView alloc] initWithFrame:self.bounds];
+    backgroundView.autoresizesSubviews = YES;
+    backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    backgroundView.clipsToBounds = YES;
+    gradient = [[CAGradientLayer layer] retain];
+    gradient.frame = backgroundView.bounds;
+    gradient.colors = [NSArray arrayWithObjects:(id)[UIColor colorWithWhite:0.99f alpha:1.0f].CGColor, (id)[UIColor colorWithWhite:0.95f alpha:1.0f].CGColor, nil];
+    [backgroundView.layer addSublayer:gradient];
+    self.backgroundView = backgroundView;
+
+    selectedBackgroundView = [[UIView alloc] initWithFrame:self.bounds];
+    selectedBackgroundView.autoresizesSubviews = YES;
+    selectedBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    selectedGradient = [[CAGradientLayer layer] retain];
+    selectedGradient.frame = backgroundView.bounds;
+    selectedGradient.colors = [NSArray arrayWithObjects:(id)[UIColor colorWithRed:0 green:0.59f blue:1.0f alpha:1.0f].CGColor, (id)[UIColor colorWithRed:0 green:0.38f blue:0.92f alpha:1.0f].CGColor, nil];
+    [selectedBackgroundView.layer addSublayer:selectedGradient];
+    self.selectedBackgroundView = selectedBackgroundView;
 }
 
 @end

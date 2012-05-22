@@ -123,6 +123,10 @@
     
     [commentsTableView setDataSource:self];
     commentsTableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
+#ifdef PANELS_EXPERIMENTAL
+    commentsTableView.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1.0f];
+    commentsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+#endif
     commentsTableView.allowsSelectionDuringEditing = YES;
     
     commentsTableView.isAccessibilityElement = YES;
@@ -586,6 +590,9 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+#ifdef PANELS_EXPERIMENTAL
+    return 0;
+#endif
     return kSectionHeaderHight;
 }
 
