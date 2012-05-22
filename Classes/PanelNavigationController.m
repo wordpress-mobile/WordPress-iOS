@@ -45,6 +45,8 @@
 
 @interface PanelNavigationController () <UIGestureRecognizerDelegate>
 @property (nonatomic, retain) UINavigationController *navigationController;
+// FIXME: masterView is a shortcut to masterViewController.view while detailView
+// is a container for detailViewController.view, which can be confusing
 @property (nonatomic, retain) UIView *detailView;
 @property (nonatomic, readonly) UIView *masterView;
 @property (nonatomic, readonly) UIView *rootView;
@@ -61,6 +63,7 @@
 - (void)addShadowTo:(UIView *)view;
 - (void)removeShadowFrom:(UIView *)view;
 - (void)applyShadows;
+- (void)setScrollsToTop:(BOOL)scrollsToTop forView:(UIView *)view;
 - (void)addPanner;
 - (void)removePanner;
 - (void)setDetailViewOffset:(CGFloat)offset;
@@ -300,8 +303,8 @@
     if (_masterViewController == masterViewController) return;
 
     if (_masterViewController) {
-        if (IS_IPHONE && [_masterViewController.view respondsToSelector:@selector(setScrollsToTop:)]) {
-            [(UIScrollView *)_masterViewController.view setScrollsToTop:YES];
+        if (IS_IPHONE) {
+            [self setScrollsToTop:YES forView:_masterViewController.view];
         }
         [_masterViewController willMoveToParentViewController:nil];
         [_masterViewController setPanelNavigationController:nil];
@@ -318,8 +321,8 @@
         [self addChildViewController:_masterViewController];
         [_masterViewController setPanelNavigationController:self];
         [_masterViewController didMoveToParentViewController:self];
-        if (IS_IPHONE && [_masterViewController.view respondsToSelector:@selector(setScrollsToTop:)]) {
-            [(UIScrollView *)_masterViewController.view setScrollsToTop:NO];
+        if (IS_IPHONE) {
+            [self setScrollsToTop:NO forView:_masterViewController.view];
         }
     }
 }
@@ -375,6 +378,10 @@
     }
     
     self.detailTapper.frame = self.detailView.bounds;
+
+    // Switch scroll to top behavior to master view
+    [self setScrollsToTop:NO forView:self.detailViewController.view];
+    [self setScrollsToTop:YES forView:self.masterView];
 }
 
 - (void)enableDetailView {
@@ -386,6 +393,10 @@
     }
 
     self.detailTapper = nil;
+
+    // Restore scroll to top behavior to detail view
+    [self setScrollsToTop:NO forView:self.masterView];
+    [self setScrollsToTop:YES forView:self.detailViewController.view];
 }
 
 - (void)addShadowTo:(UIView *)view {
@@ -406,6 +417,20 @@
         [self addShadowTo:self.detailView];
     } else {
         [self removeShadowFrom:self.detailView];
+    }
+}
+
+- (void)setScrollsToTop:(BOOL)scrollsToTop forView:(UIView *)view {
+    if ([view respondsToSelector:@selector(setScrollsToTop:)]) {
+        [(UIScrollView *)view setScrollsToTop:scrollsToTop];
+    } else {
+        // Search for a subview that will respond
+        [view.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            if ([obj respondsToSelector:@selector(setScrollsToTop:)]) {
+                [(UIScrollView *)obj setScrollsToTop:scrollsToTop];
+                *stop = YES;
+            }
+        }];
     }
 }
 
