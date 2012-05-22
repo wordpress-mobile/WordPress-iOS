@@ -135,7 +135,7 @@
     if ([parentID intValue] == 0) {
         return 0;
     } else {
-        Category *category = [categoryDict valueForKey:[parentID stringValue]];
+        Category *category = [categoryDict objectForKey:parentID];
         return ([self indentationLevelForCategory:category.parentID categoryCollection:categoryDict]) + 1;
     }
 }
