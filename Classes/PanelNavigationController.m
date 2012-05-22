@@ -13,7 +13,7 @@
 #define IS_IPAD   ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
 #define IS_IPHONE   (!IS_IPAD)
 #define DETAIL_LEDGE 44.0f
-#define DETAIL_LEDGE_OFFSET (self.rootViewController.view.bounds.size.width - DETAIL_LEDGE)
+#define DETAIL_LEDGE_OFFSET (320.0f - DETAIL_LEDGE)
 #define DURATION_FAST 0.3
 #define DURATION_SLOW 0.3
 #define SLIDE_DURATION(animated,duration) ((animated) ? (duration) : 0)
@@ -29,6 +29,10 @@
 @property (nonatomic, retain) NSMutableArray *detailViewControllers;
 @property (nonatomic, retain) UIButton *detailTapper;
 @property (nonatomic, retain) UIPanGestureRecognizer *panner;
+- (void)showSidebar;
+- (void)showSidebarAnimated:(BOOL)animated;
+- (void)closeSidebar;
+- (void)closeSidebarAnimated:(BOOL)animated;
 - (void)disableDetailView;
 - (void)enableDetailView;
 - (void)addShadowTo:(UIView *)view;
@@ -269,7 +273,11 @@
 #pragma mark - Sidebar control
 
 - (void)showSidebar {
-    [UIView animateWithDuration:OPEN_SLIDE_DURATION(YES) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
+    [self showSidebarAnimated:YES];
+}
+
+- (void)showSidebarAnimated:(BOOL)animated {
+    [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
         [self addShadowTo:self.detailView];
         self.masterViewController.view.hidden = NO;
         [self setDetailViewOffset:DETAIL_LEDGE_OFFSET];
@@ -279,7 +287,11 @@
 }
 
 - (void)closeSidebar {
-    [UIView animateWithDuration:OPEN_SLIDE_DURATION(YES) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
+    [self closeSidebarAnimated:YES];
+}
+
+- (void)closeSidebarAnimated:(BOOL)animated {
+    [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
         self.detailView.frame = self.rootViewController.view.bounds;
     } completion:^(BOOL finished) {
         [self removeShadowFrom:self.detailView];
@@ -346,6 +358,12 @@
 - (void)panned:(UIPanGestureRecognizer *)sender {
     CGPoint p = [sender translationInView:self.rootViewController.view];
     CGFloat x = p.x + _panOrigin;
+    CGFloat lx = MIN(MAX(0,x),DETAIL_LEDGE_OFFSET);
+    CGFloat dx = ABS(x) - ABS(lx);
+    if (dx > 0) {
+        dx = dx / logf(dx + 1) * 2;
+        x = lx + (x < 0 ? -dx : dx);
+    }
     CGFloat w = self.rootViewController.view.bounds.size.width;
     [self setDetailViewOffset:x];
     
@@ -385,7 +403,7 @@
 
 - (void)setDetailViewOffset:(CGFloat)offset {
     CGRect frame = self.detailView.frame;
-    frame.origin.x = MIN(MAX(0,offset),DETAIL_LEDGE_OFFSET);
+    frame.origin.x = MAX(0,offset);
     self.detailView.frame = frame;
 }
 
