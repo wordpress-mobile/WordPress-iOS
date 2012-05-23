@@ -108,13 +108,13 @@
 - (id)initWithDetailController:(UIViewController *)detailController masterViewController:(UIViewController *)masterController {
     self = [super init];
     if (self) {
-        self.detailViewController = detailController;
-        self.masterViewController = masterController;
         if (IS_IPHONE) {
             _navigationController = [[UINavigationController alloc] initWithRootViewController:detailController];
         } else {
             _detailViewControllers = [[NSMutableArray alloc] init];
         }
+        self.detailViewController = detailController;
+        self.masterViewController = masterController;
     }
     return self;
 }
