@@ -152,6 +152,7 @@
         self.backgroundImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"fabric"]] autorelease];
         self.backgroundImageView.frame = CGRectMake(DETAIL_LEDGE_OFFSET, 0, self.view.frame.size.width - DETAIL_LEDGE_OFFSET, DETAIL_HEIGHT);
         self.backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
         [self.view insertSubview:self.backgroundImageView belowSubview:self.detailView];
         [self showSidebarAnimated:NO];
     }
@@ -183,6 +184,7 @@
     }
     [self.masterViewController.view removeFromSuperview];
     self.masterView.frame = CGRectMake(0, 0, DETAIL_LEDGE_OFFSET, self.view.frame.size.height);
+    self.masterView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     [self.view insertSubview:self.masterViewController.view belowSubview:self.detailView];
     // FIXME: keep sliding status
     self.detailViewController.view.frame = CGRectMake(0, 0, DETAIL_WIDTH, DETAIL_HEIGHT);
@@ -335,7 +337,7 @@
 
 - (void)showSidebarAnimated:(BOOL)animated {
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
-        [self applyShadows];
+        [self addShadowTo:self.detailView];
         self.masterViewController.view.hidden = NO;
         [self setDetailViewOffset:DETAIL_LEDGE_OFFSET];
         [self disableDetailView];
@@ -449,28 +451,42 @@
 - (void)panned:(UIPanGestureRecognizer *)sender {
     CGPoint p = [sender translationInView:self.rootViewController.view];
     CGFloat x = p.x + _panOrigin;
-    CGFloat lx = MIN(MAX(0,x),DETAIL_LEDGE_OFFSET);
-    CGFloat dx = ABS(x) - ABS(lx);
+    // TODO: limits will change with multiple panels on display
+    CGFloat leftLimit = IS_IPAD ? DETAIL_LEDGE_OFFSET : DETAIL_OFFSET;
+    CGFloat rightLimit = DETAIL_LEDGE_OFFSET;
+    // x limited to allowed bounds
+    CGFloat lx = MIN(MAX(leftLimit, x), rightLimit);
+    // how far are we from the limit
+    CGFloat dx = ABS(x - ABS(lx));
+
+    // if we're outside the allowed bounds
     if (dx > 0) {
+        // Reduce the dragged distance
         dx = dx / logf(dx + 1) * 2;
-        x = lx + (x < 0 ? -dx : dx);
+        x = lx + (x < lx ? -dx : dx);
     }
     CGFloat w = self.rootViewController.view.bounds.size.width;
     [self setDetailViewOffset:x];
     
     if (sender.state == UIGestureRecognizerStateEnded) {
-        CGFloat velocity = [sender velocityInView:self.rootViewController.view].x;
-        if (ABS(velocity) < 100) {
-            if (x > w / 3) {
+        if (IS_IPAD && [self.detailViewControllers count] == 0) {
+            // If there's only one panel don't allow closing the sidebar
+            [self showSidebar];
+        } else {
+            CGFloat velocity = [sender velocityInView:self.rootViewController.view].x;
+            // TODO: multiple panel panning
+            if (ABS(velocity) < 100) {
+                if (x > w / 3) {
+                    [self showSidebar];
+                } else {
+                    [self closeSidebar];
+                }
+            } else if (velocity > 0) {
+                // Going right
                 [self showSidebar];
             } else {
                 [self closeSidebar];
             }
-        } else if (velocity > 0) {
-            // Going right
-            [self showSidebar];
-        } else {
-            [self closeSidebar];
         }
     }
 }
@@ -482,7 +498,11 @@
     panner.cancelsTouchesInView = YES;
     panner.delegate = self;
     self.panner = panner;
-    [self.navigationController.navigationBar addGestureRecognizer:panner];
+    if (self.navigationController) {
+        [self.navigationController.navigationBar addGestureRecognizer:panner];
+    } else {
+        [self.detailView addGestureRecognizer:panner];
+    }
 }
 
 - (void)removePanner {
