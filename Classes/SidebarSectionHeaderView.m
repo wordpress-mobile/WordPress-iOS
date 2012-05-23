@@ -35,13 +35,6 @@
         
         UIImageView *blavatarView = [[[UIImageView alloc] initWithFrame:CGRectMake(6.0, 6.0, 35.0, 35.0)] autorelease];
         [blavatarView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
-        blavatarView.layer.cornerRadius = 4.0f;
-        blavatarView.layer.masksToBounds = NO;
-        blavatarView.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0.0f, 0.0f, 35.0f, 35.0f) cornerRadius:4.0f].CGPath;
-        blavatarView.layer.shouldRasterize = YES;
-        blavatarView.layer.shadowOpacity = 0.33f;
-        blavatarView.layer.shadowRadius = 2.0f;
-        blavatarView.layer.shadowOffset = CGSizeZero;
         blavatarView.opaque = YES;
         [self addSubview:blavatarView];
         
