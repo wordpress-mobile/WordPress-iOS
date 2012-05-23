@@ -31,11 +31,6 @@ NSString *CrashFilePath() {
 }
 
 @implementation WordPressAppDelegate
-#ifdef PANELS_EXPERIMENTAL
-{
-PanelNavigationController *panelNavigationController;
-}
-#endif
 
 static WordPressAppDelegate *wordPressApp = NULL;
 
@@ -44,6 +39,9 @@ static WordPressAppDelegate *wordPressApp = NULL;
 @synthesize splitViewController, crashReportView, isUploadingPost;
 @synthesize connectionAvailable, wpcomAvailable, currentBlogAvailable, wpcomReachability, internetReachability, currentBlogReachability;
 @synthesize blogsViewController;
+#ifdef PANELS_EXPERIMENTAL
+@synthesize panelNavigationController;
+#endif
 
 - (id)init {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];

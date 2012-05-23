@@ -11,21 +11,34 @@
 #import "SidebarViewController.h"
 #import "WordPressAppDelegate.h"
 #import "UIImageView+Gravatar.h"
+#import "SidebarSectionHeaderView.h"
+#import "SectionInfo.h"
+#import "PostsViewController.h"
+#import "PagesViewController.h"
+#import "CommentsViewController.h"
+#import "StatsTableViewController.h"
 
 // Number of items before blogs list */
-#define SIDEBAR_BLOGS_OFFSET 2
+#define SIDEBAR_BLOGS_OFFSET 0
 // Height for reader/notification/blog cells
 #define SIDEBAR_CELL_HEIGHT 51.0f
 // Height for secondary cells (posts/pages/comments/... inside a blog)
 #define SIDEBAR_CELL_SECONDARY_HEIGHT 38.0f
 #define SIDEBAR_BGCOLOR [UIColor colorWithWhite:0.921875f alpha:1.0f];
+#define HEADER_HEIGHT 47
+#define DEFAULT_ROW_HEIGHT 48
+#define NUM_ROWS 4
 
 @interface SidebarViewController () <NSFetchedResultsControllerDelegate>
 @property (nonatomic, retain) NSFetchedResultsController *resultsController;
+@property (nonatomic, assign) NSInteger openSectionIndex;
+@property (nonatomic, strong) NSMutableArray* sectionInfoArray;
+@property (nonatomic, assign) NSInteger topSectionRowCount;
 @end
 
 @implementation SidebarViewController
-@synthesize resultsController = _resultsController;
+@synthesize resultsController = _resultsController, openSectionIndex=openSectionIndex_, sectionInfoArray=sectionInfoArray_;
+@synthesize topSectionRowCount = topSectionRowCount_;
 
 - (void)dealloc {
     self.resultsController.delegate = nil;
@@ -37,7 +50,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     self.view.backgroundColor = SIDEBAR_BGCOLOR;
+    openSectionIndex_ = NSNotFound;
+    
+    //depending on what we want to add here (quick video? etc) created a variable for the row count
+    topSectionRowCount_ = 2;
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -49,8 +67,8 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+    
+    self.sectionInfoArray = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -58,26 +76,61 @@
 	return YES;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	
+	[super viewWillAppear:animated]; 
+	
+    /*
+     Check whether the section info array has been created, and if so whether the section count still matches the current section count. In general, you need to keep the section info synchronized with the rows and section. If you support editing in the table view, you need to appropriately update the section info during editing operations.
+     */
+	if ((self.sectionInfoArray == nil) || ([self.sectionInfoArray count] != [self numberOfSectionsInTableView:self.tableView])) {
+		
+        // For each play, set up a corresponding SectionInfo object to contain the default height for each row.
+		NSMutableArray *infoArray = [[NSMutableArray alloc] init];
+		
+		for (Blog *blog in [self.resultsController fetchedObjects]) {
+			
+			SectionInfo *sectionInfo = [[SectionInfo alloc] init];			
+			sectionInfo.blog = blog;
+			sectionInfo.open = NO;
+			
+            NSNumber *defaultRowHeight = [NSNumber numberWithInteger:DEFAULT_ROW_HEIGHT];
+			for (NSInteger i = 0; i < NUM_ROWS; i++) {
+				[sectionInfo insertObject:defaultRowHeight inRowHeightsAtIndex:i];
+			}
+			
+			[infoArray addObject:sectionInfo];
+		}
+		
+		self.sectionInfoArray = infoArray;
+	}
+	
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
-    return SIDEBAR_BLOGS_OFFSET + [[self.resultsController fetchedObjects] count];
+    // Return the number of blogs + the top section
+    return [[self.resultsController fetchedObjects] count] + 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section < SIDEBAR_BLOGS_OFFSET) {
-        return 0;
+    if (section == 0) {
+        return self.topSectionRowCount;
     } else {
-        /* Posts, Pages, Comments, Stats */
-        return 4;
+        SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:section - 1];
+        return sectionInfo.open ? NUM_ROWS : 0;
     }
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return SIDEBAR_CELL_HEIGHT;
+    if (section == 0)
+        return 0;
+    else 
+        return HEADER_HEIGHT;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -85,45 +138,15 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, SIDEBAR_CELL_HEIGHT)];
-    headerView.backgroundColor = SIDEBAR_BGCOLOR;
-    headerView.opaque = YES;
-    UILabel *titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(51, 7, 220, 21)] autorelease];
-    UIImageView *blavatarView = [[[UIImageView alloc] initWithFrame:CGRectMake(8, 8, 35, 35)] autorelease];
-    if (section >= SIDEBAR_BLOGS_OFFSET) {
-        Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(section - SIDEBAR_BLOGS_OFFSET) inSection:0]];
-        [blavatarView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
-        UILabel *urlLabel = [[[UILabel alloc] initWithFrame:CGRectMake(51, 28, 220, 18)] autorelease];
-        urlLabel.adjustsFontSizeToFitWidth = YES;
-        urlLabel.text = blog.hostURL;
-        urlLabel.font = [UIFont systemFontOfSize:14.0f];
-        urlLabel.textColor = [UIColor darkGrayColor];
-        urlLabel.backgroundColor = SIDEBAR_BGCOLOR;
-        [headerView addSubview:urlLabel];
-        titleLabel.text = blog.blogName;
-    } else {
-        if (section == 0) {
-            titleLabel.text = @"Read";
-            blavatarView.image = [UIImage imageNamed:@"read"];
-        } else {
-            titleLabel.text = @"Notifications";
-            blavatarView.image = [UIImage imageNamed:@"comments"];
-        }
+    if (section == 0)
+        return nil;
+    Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(section - 1) inSection:0]];
+    SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:section - 1];
+    if (!sectionInfo.headerView) {
+        sectionInfo.headerView = [[SidebarSectionHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.tableView.bounds.size.width, HEADER_HEIGHT) blog:blog section:section delegate:self];
     }
-
-    titleLabel.font = [UIFont boldSystemFontOfSize:17.0f];
-    titleLabel.backgroundColor = SIDEBAR_BGCOLOR;
-    titleLabel.adjustsFontSizeToFitWidth = YES;
-    [headerView addSubview:titleLabel];
-    blavatarView.layer.cornerRadius = 4.0f;
-    blavatarView.layer.masksToBounds = NO;
-    blavatarView.layer.shadowOpacity = 0.33f;
-    blavatarView.layer.shadowRadius = 2.0f;
-    blavatarView.layer.shadowOffset = CGSizeZero;
-    blavatarView.opaque = YES;
-    [headerView addSubview:blavatarView];
-
-    return [headerView autorelease];
+    
+    return sectionInfo.headerView;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -136,28 +159,113 @@
     
     // Configure the cell...
     NSString *title = nil;
-    switch (indexPath.row) {
-        case 0:
-            title = @"Posts";
-            break;
-        case 1:
-            title = @"Pages";
-            break;
-        case 2:
-            title = @"Comments";
-            break;
-        case 3:
-            title = @"Stats";
-            break;
-        default:
-            break;
+    
+    if (indexPath.section == 0) {
+        switch (indexPath.row) {
+            case 0:
+                title = @"Quick Photo";
+                break;
+            case 1:
+                title = @"Read";
+                break;
+        }
+    } else {
+        switch (indexPath.row) {
+            case 0:
+                title = @"Posts";
+                break;
+            case 1:
+                title = @"Pages";
+                break;
+            case 2:
+                title = @"Comments";
+                break;
+            case 3:
+                title = @"Stats";
+                break;
+            default:
+                break;
+        }
     }
+    
+    
     cell.textLabel.text = title;
     cell.backgroundColor = SIDEBAR_BGCOLOR;
     cell.textLabel.backgroundColor = SIDEBAR_BGCOLOR;
     
     return cell;
 }
+
+#pragma mark Section header delegate
+
+-(void)sectionHeaderView:(SidebarSectionHeaderView*)sectionHeaderView sectionOpened:(NSInteger)sectionOpened {
+    
+	SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:sectionOpened - 1];
+	
+	sectionInfo.open = YES;
+    
+    /*
+     Create an array containing the index paths of the rows to insert: These correspond to the rows for each quotation in the current section.
+     */
+    NSMutableArray *indexPathsToInsert = [[NSMutableArray alloc] init];
+    for (NSInteger i = 0; i < NUM_ROWS; i++) {
+        [indexPathsToInsert addObject:[NSIndexPath indexPathForRow:i inSection:sectionOpened]];
+    }
+    
+    /*
+     Create an array containing the index paths of the rows to delete: These correspond to the rows for each quotation in the previously-open section, if there was one.
+     */
+    NSMutableArray *indexPathsToDelete = [[NSMutableArray alloc] init];
+    
+    NSInteger previousOpenSectionIndex = self.openSectionIndex;
+    if (previousOpenSectionIndex != NSNotFound) {
+        SectionInfo *previousOpenSection = [self.sectionInfoArray objectAtIndex:previousOpenSectionIndex - 1];
+        previousOpenSection.open = NO;
+        [previousOpenSection.headerView toggleOpenWithUserAction:NO];
+        for (NSInteger i = 0; i < NUM_ROWS; i++) {
+            [indexPathsToDelete addObject:[NSIndexPath indexPathForRow:i inSection:previousOpenSectionIndex]];
+        }
+    }
+    
+    // Style the animation so that there's a smooth flow in either direction.
+    UITableViewRowAnimation insertAnimation;
+    UITableViewRowAnimation deleteAnimation;
+    if (previousOpenSectionIndex == NSNotFound || sectionOpened < previousOpenSectionIndex) {
+        insertAnimation = UITableViewRowAnimationTop;
+        deleteAnimation = UITableViewRowAnimationBottom;
+    }
+    else {
+        insertAnimation = UITableViewRowAnimationBottom;
+        deleteAnimation = UITableViewRowAnimationTop;
+    }
+    
+    // Apply the updates.
+    [self.tableView beginUpdates];
+    [self.tableView insertRowsAtIndexPaths:indexPathsToInsert withRowAnimation:insertAnimation];
+    [self.tableView deleteRowsAtIndexPaths:indexPathsToDelete withRowAnimation:deleteAnimation];
+    [self.tableView endUpdates];
+    self.openSectionIndex = sectionOpened;
+    //select the first row in the section
+    [self.tableView selectRowAtIndexPath:[indexPathsToInsert objectAtIndex:0] animated:NO scrollPosition:UITableViewScrollPositionMiddle];
+    [self processRowSelectionAtIndexPath:[indexPathsToInsert objectAtIndex:0]];
+    
+}
+
+
+-(void)sectionHeaderView:(SidebarSectionHeaderView*)sectionHeaderView sectionClosed:(NSInteger)sectionClosed {
+    
+    SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:sectionClosed - 1];
+	
+	sectionInfo.open = NO;
+    
+    NSMutableArray *indexPathsToDelete = [[NSMutableArray alloc] init];
+    for (NSInteger i = 0; i < NUM_ROWS; i++) {
+        [indexPathsToDelete addObject:[NSIndexPath indexPathForRow:i inSection:sectionClosed]];
+    }
+    [self.tableView deleteRowsAtIndexPaths:indexPathsToDelete withRowAnimation:UITableViewRowAnimationTop];
+    self.openSectionIndex = NSNotFound;
+}
+
 
 /*
 // Override to support conditional editing of the table view.
@@ -210,6 +318,36 @@
      [self.navigationController pushViewController:detailViewController animated:YES];
      [detailViewController release];
      */
+    
+    [self processRowSelectionAtIndexPath: indexPath];
+}
+
+- (void) processRowSelectionAtIndexPath: (NSIndexPath *) indexPath {
+    
+    if (indexPath.section != 0) {
+        Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.section - 1) inSection:0]];
+        [appDelegate.panelNavigationController popToRootViewControllerAnimated:NO];
+        if (indexPath.row == 0) {
+            PostsViewController *postsViewController = [[[PostsViewController alloc] init] autorelease];
+            postsViewController.blog = blog;
+            [appDelegate.panelNavigationController pushViewController:postsViewController animated:NO];
+        }
+        if (indexPath.row == 1) {
+            PagesViewController *pagesViewController = [[[PagesViewController alloc] init] autorelease];
+            pagesViewController.blog = blog;
+            [appDelegate.panelNavigationController pushViewController:pagesViewController animated:NO];
+        }
+        if (indexPath.row == 2) {
+            CommentsViewController *commentsViewController = [[[CommentsViewController alloc] init] autorelease];
+            commentsViewController.blog = blog;
+            [appDelegate.panelNavigationController pushViewController:commentsViewController animated:NO];
+        }
+        if (indexPath.row == 3) {
+            StatsTableViewController *statsTableViewController = [[[StatsTableViewController alloc] init] autorelease];
+            statsTableViewController.blog = blog;
+            [appDelegate.panelNavigationController pushViewController:statsTableViewController animated:NO];
+        }
+    }
 }
 
 #pragma mark - Accessor methods

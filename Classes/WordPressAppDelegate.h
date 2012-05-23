@@ -8,6 +8,7 @@
 #import "HelpViewController.h"
 #import "Reachability.h"
 #import "WPComOAuthController.h"
+#import "PanelNavigationController.h"
 
 @class AutosaveManager;
 @class BlogsViewController;
@@ -43,6 +44,9 @@
     
     // Push notifications
     NSDictionary *lastNotificationInfo;
+#ifdef PANELS_EXPERIMENTAL
+    PanelNavigationController *panelNavigationController;
+#endif
 }
 
 @property (nonatomic, retain) UIWindow *window;
@@ -60,6 +64,9 @@
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, retain) BlogsViewController *blogsViewController;
+#ifdef PANELS_EXPERIMENTAL
+@property (nonatomic, retain) PanelNavigationController *panelNavigationController;
+#endif
 
 //Connection Reachability variables
 @property (nonatomic, retain) Reachability *internetReachability, *wpcomReachability, *currentBlogReachability;

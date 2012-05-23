@@ -171,6 +171,10 @@ Classes/QuickPhotoViewController.h -text
 Classes/QuickPhotoViewController.m -text
 Classes/QuickPicturePreviewView.h -text
 Classes/QuickPicturePreviewView.m -text
+Classes/SectionInfo.h -text
+Classes/SectionInfo.m -text
+Classes/SidebarSectionHeaderView.h -text
+Classes/SidebarSectionHeaderView.m -text
 Classes/SidebarViewController.h -text
 Classes/SidebarViewController.m -text
 Classes/StatsChartViewController.h -text
@@ -249,6 +253,8 @@ Classes/WordPress.xcdatamodeld/WordPress.xcdatamodel/elements -text
 Classes/WordPress.xcdatamodeld/WordPress.xcdatamodel/layout -text
 Classes/WordPressAppDelegate.h -text
 Classes/WordPressAppDelegate.m -text
+Classes/carat-open.png -text
+Classes/carat.png -text
 Classes/fabric.png -text svneol=unset#unset
 Classes/fabric@2x.png -text svneol=unset#unset
 Classes/stats.png -text

@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SidebarSectionHeaderView.h"
+#import "WordPressAppDelegate.h"
 
-@interface SidebarViewController : UITableViewController
+@interface SidebarViewController : UITableViewController <SidebarSectionHeaderViewDelegate> {
+    WordPressAppDelegate *appDelegate;
+}
+
+- (void) processRowSelectionAtIndexPath: (NSIndexPath *) indexPath;
 
 @end

@@ -134,6 +134,12 @@
 		30FE87C31367417E00808634 /* quickPhotoButtonBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FE87C11367417E00808634 /* quickPhotoButtonBackground@2x.png */; };
 		3704ACFC13128C9800120911 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 3704ACFA13128C9800120911 /* Default.png */; };
 		3704ACFD13128C9800120911 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3704ACFB13128C9800120911 /* Default@2x.png */; };
+		371C367B156CCFDD007EA03E /* SectionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 371C3678156CCFDD007EA03E /* SectionInfo.m */; };
+		371C367C156CCFDD007EA03E /* SidebarSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 371C367A156CCFDD007EA03E /* SidebarSectionHeaderView.m */; };
+		371C3680156CD03A007EA03E /* carat-open.png in Resources */ = {isa = PBXBuildFile; fileRef = 371C367E156CD03A007EA03E /* carat-open.png */; };
+		371C3681156CD03A007EA03E /* carat.png in Resources */ = {isa = PBXBuildFile; fileRef = 371C367F156CD03A007EA03E /* carat.png */; };
+		371C3682156CD12D007EA03E /* SectionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 371C3678156CCFDD007EA03E /* SectionInfo.m */; };
+		371C3683156CD12D007EA03E /* SidebarSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 371C367A156CCFDD007EA03E /* SidebarSectionHeaderView.m */; };
 		37245ADC13FC23FF006CDBE3 /* WPWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37245ADB13FC23FF006CDBE3 /* WPWebViewController.xib */; };
 		3744A0DE130ABB0800CE7BE1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3744A0DC130ABB0800CE7BE1 /* HelpViewController.m */; };
 		3744A0DF130ABB0800CE7BE1 /* HelpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3744A0DD130ABB0800CE7BE1 /* HelpViewController.xib */; };
@@ -177,7 +183,6 @@
 		45F285DD1149BD020014D36C /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 45F285DA1149BD020014D36C /* Icon.png */; };
 		45F45AFD11614A0E0022D394 /* CDeviceSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F45AFC11614A0E0022D394 /* CDeviceSupport.m */; };
 		45F45B3611614BA50022D394 /* CPopoverManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F45B3511614BA50022D394 /* CPopoverManager.m */; };
-		5DBFE999156C3FCA001FDEF9 /* WPChromelessWebViewControllerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DBFE998156C3FCA001FDEF9 /* WPChromelessWebViewControllerViewController.m */; };
 		6E05AEE411EE8C1B00237983 /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E05AEE311EE8C1B00237983 /* Icon-Small-50.png */; };
 		6E05AEE711EE8DDD00237983 /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E05AEE611EE8DDD00237983 /* Icon-Small.png */; };
 		6E05AEF311EE8EF800237983 /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E05AEF211EE8EF800237983 /* Icon-Small@2x.png */; };
@@ -688,6 +693,12 @@
 		30FE87C11367417E00808634 /* quickPhotoButtonBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "quickPhotoButtonBackground@2x.png"; sourceTree = "<group>"; };
 		3704ACFA13128C9800120911 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		3704ACFB13128C9800120911 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		371C3677156CCFDD007EA03E /* SectionInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SectionInfo.h; sourceTree = "<group>"; };
+		371C3678156CCFDD007EA03E /* SectionInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SectionInfo.m; sourceTree = "<group>"; };
+		371C3679156CCFDD007EA03E /* SidebarSectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SidebarSectionHeaderView.h; sourceTree = "<group>"; };
+		371C367A156CCFDD007EA03E /* SidebarSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarSectionHeaderView.m; sourceTree = "<group>"; };
+		371C367E156CD03A007EA03E /* carat-open.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "carat-open.png"; path = "Classes/carat-open.png"; sourceTree = "<group>"; };
+		371C367F156CD03A007EA03E /* carat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = carat.png; path = Classes/carat.png; sourceTree = "<group>"; };
 		37245ADB13FC23FF006CDBE3 /* WPWebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WPWebViewController.xib; sourceTree = "<group>"; };
 		3744A0DB130ABB0800CE7BE1 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
 		3744A0DC130ABB0800CE7BE1 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
@@ -1828,6 +1839,8 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				371C367E156CD03A007EA03E /* carat-open.png */,
+				371C367F156CD03A007EA03E /* carat.png */,
 				E128566615103A4500406BC9 /* toolbarBlockquoteiPad@2x.png */,
 				E128566715103A4500406BC9 /* toolbarBoldiPad@2x.png */,
 				E128566815103A4500406BC9 /* toolbarCodeiPad@2x.png */,
@@ -2282,6 +2295,10 @@
 		E15D46C7156A506A00227392 /* Panels */ = {
 			isa = PBXGroup;
 			children = (
+				371C3677156CCFDD007EA03E /* SectionInfo.h */,
+				371C3678156CCFDD007EA03E /* SectionInfo.m */,
+				371C3679156CCFDD007EA03E /* SidebarSectionHeaderView.h */,
+				371C367A156CCFDD007EA03E /* SidebarSectionHeaderView.m */,
 				E15D46C8156A511D00227392 /* PanelNavigationController.h */,
 				E15D46C9156A511D00227392 /* PanelNavigationController.m */,
 				E15D46CF156AABD900227392 /* SidebarViewController.h */,
@@ -2940,6 +2957,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E16AB93414D978240047A2E5 /* InfoPlist.strings in Resources */,
+				371C3680156CD03A007EA03E /* carat-open.png in Resources */,
+				371C3681156CD03A007EA03E /* carat.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2966,6 +2985,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				371C3682156CD12D007EA03E /* SectionInfo.m in Sources */,
+				371C3683156CD12D007EA03E /* SidebarSectionHeaderView.m in Sources */,
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* WordPressAppDelegate.m in Sources */,
 				28C286E10D94DF7D0034E888 /* BlogsViewController.m in Sources */,
@@ -3141,7 +3162,6 @@
 				E12F95B9155820A40067A653 /* NSObject+BlockObservation.m in Sources */,
 				E15D46CA156A511D00227392 /* PanelNavigationController.m in Sources */,
 				E15D46D1156AABD900227392 /* SidebarViewController.m in Sources */,
-				5DBFE999156C3FCA001FDEF9 /* WPChromelessWebViewControllerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3150,6 +3170,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E16AB93714D978240047A2E5 /* WordPressTest.m in Sources */,
+				371C367B156CCFDD007EA03E /* SectionInfo.m in Sources */,
+				371C367C156CCFDD007EA03E /* SidebarSectionHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
