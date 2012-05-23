@@ -17,6 +17,7 @@
 #import "PagesViewController.h"
 #import "CommentsViewController.h"
 #import "StatsTableViewController.h"
+#import "WPReaderViewController.h"
 
 // Number of items before blogs list */
 #define SIDEBAR_BLOGS_OFFSET 0
@@ -354,6 +355,12 @@
             StatsTableViewController *statsTableViewController = [[[StatsTableViewController alloc] init] autorelease];
             statsTableViewController.blog = blog;
             detailViewController = statsTableViewController;
+        }
+    } else {
+        if (indexPath.row == 1) {
+            // Reader
+            WPReaderViewController *readerViewController = [[[WPReaderViewController alloc] init] autorelease];
+            detailViewController = readerViewController;
         }
     }
 

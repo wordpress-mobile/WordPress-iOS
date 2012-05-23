@@ -9,6 +9,7 @@
 #import "WPReaderViewController.h"
 #import "WPWebViewController.h"
 #import "WordPressAppDelegate.h"
+#import "SFHFKeychainUtils.h"
 
 #ifdef DEBUG
 #define kReaderRefreshThreshold 10*60 // 10min
@@ -43,6 +44,24 @@
     self.refreshTimer = nil;
     self.topicsViewController = nil;
     [super dealloc];
+}
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        self.url = [NSURL URLWithString:kMobileReaderURL];
+        NSError *error = nil; 
+        NSString *wpcom_username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"]; 
+        NSString *wpcom_password = [SFHFKeychainUtils getPasswordForUsername:wpcom_username 
+                                                              andServiceName:@"WordPress.com" 
+                                                                       error:&error];
+        if (wpcom_username && wpcom_password) {
+            self.username = wpcom_username;
+            self.password = wpcom_password;
+        }
+    }
+    return self;
 }
 
 - (void)didReceiveMemoryWarning
