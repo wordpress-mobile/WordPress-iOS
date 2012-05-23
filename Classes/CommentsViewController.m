@@ -598,6 +598,8 @@
 
 - (void) setupModerationSwipeView
 {
+    if (DeviceIsPad()) return;
+
   for (UIView* subview in moderationSwipeView.subviews)
   {
     if ([subview isKindOfClass:[UIButton class]])
@@ -625,6 +627,8 @@
 
 - (void) setupGestureRecognizers
 {
+    if (DeviceIsPad()) return;
+
   UISwipeGestureRecognizer* rightSwipeGestureRecognizer = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeRight:)] autorelease];
   rightSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
   
