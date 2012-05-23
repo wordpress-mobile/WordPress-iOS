@@ -111,6 +111,7 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
 
+    self.title = NSLocalizedString(@"Comments", @"");
     spamButton.title = NSLocalizedString(@"Spam", @"");
     unapproveButton.title = NSLocalizedString(@"Unapprove", @"");
     approveButton.title = NSLocalizedString(@"Approve", @"");

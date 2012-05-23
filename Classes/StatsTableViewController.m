@@ -68,6 +68,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	loadMoreSearchTerms = 10;
 	loadMoreClicks = 10;
 	
+    self.title = NSLocalizedString(@"Stats", @"");
 	self.tableView = [[[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped] autorelease];
 	self.view.frame = CGRectMake(0, 0, 320, 460);
 	self.tableView.sectionHeaderHeight = 30;
