@@ -667,6 +667,8 @@ c_tidy/win32tc.c -text
 c_tidy/win32tc.h -text
 /camera.png -text svneol=unset#unset
 /camera@2x.png -text svneol=unset#unset
+/carat-open@2x.png -text
+/carat@2x.png -text
 /categoriesHighlighted.png -text svneol=unset#unset
 /categoriesHighlighted@2x.png -text svneol=unset#unset
 /category_child.png -text
