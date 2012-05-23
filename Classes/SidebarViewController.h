@@ -10,8 +10,13 @@
 #import "SidebarSectionHeaderView.h"
 #import "WordPressAppDelegate.h"
 
-@interface SidebarViewController : UITableViewController <SidebarSectionHeaderViewDelegate> {
+@interface SidebarViewController : UIViewController <SidebarSectionHeaderViewDelegate, UITableViewDataSource, UITableViewDelegate> {
+    IBOutlet UITableView *tableView;
+    IBOutlet UIButton *footerButton;
 }
+
+@property (nonatomic, retain) IBOutlet UITableView *tableView;
+@property (nonatomic, retain) IBOutlet UIButton *footerButton;
 
 - (void) processRowSelectionAtIndexPath: (NSIndexPath *) indexPath;
 - (void) processRowSelectionAtIndexPath: (NSIndexPath *) indexPath closingSidebar:(BOOL)closingSidebar;

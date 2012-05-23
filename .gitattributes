@@ -313,6 +313,7 @@ Resources-iPad/MainWindow-iPad.xib -text
 /RoundedRectBlack.png -text
 Settings.bundle/Root.plist -text
 Settings.bundle/en.lproj/Root.strings -text
+/SidebarViewController.xib -text
 /StatsCategoryViewController.xib -text
 /StatsChartViewController-iPad.xib -text
 /StatsChartViewController.xib -text

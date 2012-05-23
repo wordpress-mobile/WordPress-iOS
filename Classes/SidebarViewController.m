@@ -39,6 +39,7 @@
 @implementation SidebarViewController
 @synthesize resultsController = _resultsController, openSectionIndex=openSectionIndex_, sectionInfoArray=sectionInfoArray_;
 @synthesize topSectionRowCount = topSectionRowCount_;
+@synthesize tableView, footerButton;
 
 - (void)dealloc {
     self.resultsController.delegate = nil;
@@ -50,10 +51,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
     self.view.backgroundColor = SIDEBAR_BGCOLOR;
     openSectionIndex_ = NSNotFound;
     
-    //depending on what we want to add here (quick video? etc) created a variable for the row count
+    // Depending on what we want to add here (quick video? etc) created a variable for the row count
     topSectionRowCount_ = 2;
 
     // Uncomment the following line to preserve selection between presentations.
@@ -66,6 +69,8 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
+    [tableView release];
+    [footerButton release];
     
     self.sectionInfoArray = nil;
 }
@@ -148,10 +153,10 @@
     return sectionInfo.headerView;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
