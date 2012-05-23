@@ -27,6 +27,7 @@
 @property (nonatomic, retain) NSDate *lastCommentsSync;
 @property (nonatomic, retain) NSDate *lastStatsSync;
 @property (nonatomic, assign) BOOL geolocationEnabled;
+@property (nonatomic, assign) NSNumber *isActivated;
 @property (nonatomic, retain) NSDictionary *options; //we can store an NSArray or an NSDictionary as a transformable attribute... 
 @property (nonatomic, retain) NSDictionary *postFormats;
 @property (readonly) NSArray *sortedPostFormatNames;

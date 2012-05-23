@@ -41,7 +41,7 @@
 @dynamic posts, categories, comments; 
 @dynamic lastPostsSync, lastStatsSync, lastPagesSync, lastCommentsSync;
 @synthesize isSyncingPosts, isSyncingPages, isSyncingComments;
-@dynamic geolocationEnabled, options, postFormats;
+@dynamic geolocationEnabled, options, postFormats, isActivated;
 
 - (BOOL)geolocationEnabled 
 {

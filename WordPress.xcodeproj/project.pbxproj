@@ -516,6 +516,9 @@
 		FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD21397E13128C5300099582 /* libiconv.dylib */; };
 		FD3890F01442F91000135C6D /* WPReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD3890EF1442F91000135C6D /* WPReaderViewController.m */; };
 		FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3D6D2B1349F5D30061136A /* ImageIO.framework */; };
+		FD76A898156CEB0B001FBAC6 /* XMLSignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD76A897156CEB0B001FBAC6 /* XMLSignupViewController.xib */; };
+		FD76A89A156CEB22001FBAC6 /* XMLSignupViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD76A899156CEB22001FBAC6 /* XMLSignupViewController-iPad.xib */; };
+		FD76A89D156CEB4C001FBAC6 /* XMLSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD76A89C156CEB4C001FBAC6 /* XMLSignupViewController.m */; };
 		FD9A948C12FAEA2300438F94 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FD9A948B12FAEA2300438F94 /* DateUtils.m */; };
 		FDA68C2014AC6CB800151896 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = FDA68C1F14AC6CB800151896 /* Reachability.m */; };
 /* End PBXBuildFile section */
@@ -1268,6 +1271,10 @@
 		FD3890EE1442F91000135C6D /* WPReaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPReaderViewController.h; sourceTree = "<group>"; };
 		FD3890EF1442F91000135C6D /* WPReaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPReaderViewController.m; sourceTree = "<group>"; };
 		FD3D6D2B1349F5D30061136A /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		FD76A897156CEB0B001FBAC6 /* XMLSignupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = XMLSignupViewController.xib; sourceTree = "<group>"; };
+		FD76A899156CEB22001FBAC6 /* XMLSignupViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "XMLSignupViewController-iPad.xib"; sourceTree = "<group>"; };
+		FD76A89B156CEB4C001FBAC6 /* XMLSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLSignupViewController.h; sourceTree = "<group>"; };
+		FD76A89C156CEB4C001FBAC6 /* XMLSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLSignupViewController.m; sourceTree = "<group>"; };
 		FD9A948A12FAEA2300438F94 /* DateUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateUtils.h; sourceTree = "<group>"; };
 		FD9A948B12FAEA2300438F94 /* DateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateUtils.m; sourceTree = "<group>"; };
 		FDA68C1E14AC6CB800151896 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
@@ -1751,6 +1758,7 @@
 				8362C54512027BC300599347 /* AddUsersBlogsViewController-iPad.xib */,
 				8362C1031201E7CE00599347 /* WebSignupViewController-iPad.xib */,
 				03B1DF2E113D87CF00BBD1C6 /* BlogSplitViewDetailViewController.xib */,
+				FD76A899156CEB22001FBAC6 /* XMLSignupViewController-iPad.xib */,
 				030DB993113C4BE6002FF1A2 /* BlogViewController-iPad.xib */,
 			);
 			name = Blogs;
@@ -1832,6 +1840,8 @@
 				28C286E00D94DF7D0034E888 /* BlogsViewController.m */,
 				03FF35C2100423A10066ED95 /* BlogViewController.h */,
 				03FF35C3100423A10066ED95 /* BlogViewController.m */,
+				FD76A89B156CEB4C001FBAC6 /* XMLSignupViewController.h */,
+				FD76A89C156CEB4C001FBAC6 /* XMLSignupViewController.m */,
 			);
 			name = Blog;
 			sourceTree = "<group>";
@@ -2094,6 +2104,7 @@
 				37A443BA1354D05B00029509 /* BlogsViewController.xib */,
 				8333FE0D11FF6EF200A495C1 /* EditSiteViewController.xib */,
 				8370D1BC11FA6295009D650F /* AddSiteViewController.xib */,
+				FD76A897156CEB0B001FBAC6 /* XMLSignupViewController.xib */,
 				8369FF9011F4F3BF003106C7 /* AddUsersBlogsViewController.xib */,
 				83610AA911F4AD2C00421116 /* WPcomLoginViewController.xib */,
 				E100D630134B163E001AC67F /* BlogViewController.xib */,
@@ -2949,6 +2960,8 @@
 				E12AAB641513C4CA009D025B /* WPComOAuthController.xib in Resources */,
 				E1EAD5261553CD9B00C0ED7A /* keyboardButton@2x.png in Resources */,
 				E1EAD5271553CDA800C0ED7A /* keyboardButton.png in Resources */,
+				FD76A898156CEB0B001FBAC6 /* XMLSignupViewController.xib in Resources */,
+				FD76A89A156CEB22001FBAC6 /* XMLSignupViewController-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3162,6 +3175,7 @@
 				E12F95B9155820A40067A653 /* NSObject+BlockObservation.m in Sources */,
 				E15D46CA156A511D00227392 /* PanelNavigationController.m in Sources */,
 				E15D46D1156AABD900227392 /* SidebarViewController.m in Sources */,
+				FD76A89D156CEB4C001FBAC6 /* XMLSignupViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

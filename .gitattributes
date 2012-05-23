@@ -253,6 +253,8 @@ Classes/WordPress.xcdatamodeld/WordPress.xcdatamodel/elements -text
 Classes/WordPress.xcdatamodeld/WordPress.xcdatamodel/layout -text
 Classes/WordPressAppDelegate.h -text
 Classes/WordPressAppDelegate.m -text
+Classes/XMLSignupViewController.h -text
+Classes/XMLSignupViewController.m -text
 Classes/carat-open.png -text
 Classes/carat.png -text
 Classes/fabric.png -text svneol=unset#unset
@@ -586,6 +588,8 @@ WordPressTest/en.lproj/InfoPlist.strings -text
 WordPressTest/entities.xml -text
 WordPressTest/entitiesDecoded.xml -text
 /WordPress_Prefix.pch -text
+/XMLSignupViewController-iPad.xib -text
+/XMLSignupViewController.xib -text
 /XMLValueDecoder.h -text
 /XMLValueDecoder.m -text
 /approve.png -text svneol=unset#unset

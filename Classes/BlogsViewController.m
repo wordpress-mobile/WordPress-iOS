@@ -18,6 +18,7 @@
 
 @implementation BlogsViewController
 @synthesize resultsController, currentBlog, tableView;
+@synthesize WPcomXMLRPCUrl;
 @synthesize currentQuickPost = _currentQuickPost;
 
 #pragma mark -
@@ -33,6 +34,7 @@
 
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    WPcomXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	
     self.title = NSLocalizedString(@"Blogs", @"RootViewController_Title");
@@ -178,14 +180,40 @@
         firstLine = [blog hostURL];
         secondLine = @"";
     }
-           
+               
 #if defined __IPHONE_3_0
     cell.textLabel.text = firstLine;
-    cell.detailTextLabel.text = secondLine;
+    
+    UIColor *backgroundColor;
+    
+    if (blog.isActivated == nil || ([blog.isActivated isEqualToNumber:[NSNumber numberWithBool:NO]] && [blog isWPcom] == NO)) 
+        blog.isActivated = [NSNumber numberWithBool:YES];
+    
+    if ([blog.isActivated isEqualToNumber:[NSNumber numberWithBool:YES]]) {
+        backgroundColor = [UIColor whiteColor];
+        
+        cell.detailTextLabel.text = secondLine;
+    } else {
+        backgroundColor = [UIColor lightGrayColor];
+        
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        cell.detailTextLabel.text = NSLocalizedString(@"Tap to check activation...", @"");
+        
+        NSDictionary *checkData = [NSDictionary dictionaryWithObjectsAndKeys:indexPath, @"indexPath", @"NO", @"tapCheck", nil];
+        [self performSelectorInBackground:@selector(checkActivation:) withObject:checkData];
+    }
+    
+    cell.backgroundView = [[[UIView alloc] init] autorelease];
+    cell.backgroundView.backgroundColor = backgroundColor;
+    cell.textLabel.backgroundColor = backgroundColor;
+    cell.detailTextLabel.backgroundColor = backgroundColor;    
 #elif defined __IPHONE_2_0
     cell.text = firstLine;
 #endif
-
+    
+    
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
     return cell;
@@ -221,12 +249,17 @@
     }
 	else {	// if ([self canChangeCurrentBlog]) {
         Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
-		[self showBlog:blog animated:YES];
-
-		//we should keep a reference to the last selected blog
-		if (DeviceIsPad() == YES) {
-			self.currentBlog = blog;
-		}
+        if ([blog.isActivated isEqualToNumber:[NSNumber numberWithBool:YES]]) {
+            [self showBlog:blog animated:YES];
+            
+            //we should keep a reference to the last selected blog
+            if (DeviceIsPad() == YES) {
+                self.currentBlog = blog;
+            }
+        } else {
+            NSDictionary *checkData = [NSDictionary dictionaryWithObjectsAndKeys:indexPath, @"indexPath", @"YES", @"tapCheck", nil];
+            [self performSelectorInBackground:@selector(checkActivation:) withObject:checkData];
+        }
     }
 	[aTableView deselectRowAtIndexPath:[aTableView indexPathForSelectedRow] animated:YES];
 }
@@ -707,6 +740,39 @@
                                           otherButtonTitles:nil];
     [alert show];
     [alert release];
+}
+
+
+
+- (void)checkActivation:(NSDictionary *)data {
+    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+    
+    NSString *tapCheck = [NSString stringWithString:[data valueForKey:@"tapCheck"]];
+    NSIndexPath *indexPath = [data valueForKey:@"indexPath"];
+    
+    Blog *blog = [resultsController objectAtIndexPath:indexPath];
+    
+    BOOL status = NO;
+    
+    if ([blog.isActivated isEqualToNumber:[NSNumber numberWithBool:NO]]) {
+        status = YES;//[[WPDataController sharedInstance] checkActivationStatusForBlog:blog];
+        
+        if ([blog.isActivated isEqualToNumber:[NSNumber numberWithBool:YES]]) {
+            [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        } else if ([tapCheck isEqualToString:@"YES"] && [blog.isActivated isEqualToNumber:[NSNumber numberWithBool:NO]]) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Pending Activation", @"")
+                                                                message:NSLocalizedString(@"Please check your e-mail to activate this blog.", @"")
+                                                               delegate:self
+                                                      cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
+                                                      otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
+            [alertView setTag:2];
+            [alertView show];
+            [alertView release];           
+        }
+    }
+    
+    
+    [pool release];
 }
 
 #pragma mark -

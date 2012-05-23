@@ -14,7 +14,8 @@
 #import "WPReaderViewController.h"
 
 @interface BlogsViewController : UIViewController <NSFetchedResultsControllerDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate> {
-	WordPressAppDelegate *appDelegate;
+	NSString *WPcomXMLRPCUrl;
+    WordPressAppDelegate *appDelegate;
     NSFetchedResultsController *resultsController;
     Blog *currentBlog;
     QuickPhotoButton *quickPhotoButton, *readerButton;
@@ -26,6 +27,7 @@
     BOOL hasCameraPlus;
 }
 
+@property (nonatomic, retain) NSString *WPcomXMLRPCUrl;
 @property (nonatomic, retain) NSFetchedResultsController *resultsController;
 @property (nonatomic, retain) Blog *currentBlog;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;

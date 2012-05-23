@@ -14,6 +14,7 @@
 #import "WPcomLoginViewController.h"
 #import "EditSiteViewController.h"
 #import "WordPressAppDelegate.h"
+#import "XMLSignupViewController.h"
 
 @interface WelcomeViewController : UIViewController<UITableViewDelegate> {
 	IBOutlet UITableView *tableView;
