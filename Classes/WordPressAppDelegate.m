@@ -214,8 +214,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
     CommentsViewController *commentsViewController = [[[CommentsViewController alloc] init] autorelease];
     commentsViewController.blog = [blogs objectAtIndex:0];
     SidebarViewController *sidebarViewController = [[[SidebarViewController alloc] init] autorelease];
-    WelcomeViewController *wViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
-    panelNavigationController = [[PanelNavigationController alloc] initWithDetailController:wViewController masterViewController:sidebarViewController];
+    //WelcomeViewController *wViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
+    panelNavigationController = [[PanelNavigationController alloc] initWithDetailController:commentsViewController masterViewController:sidebarViewController];
     window.rootViewController = panelNavigationController;
 #else
 	if(DeviceIsPad() == NO)
