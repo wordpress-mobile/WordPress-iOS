@@ -1029,7 +1029,6 @@
         NSLog(@"Couldn't fetch comments");
         _resultsController = nil;
     }
-    NSLog(@"fetched comments: %@", [_resultsController fetchedObjects]);
     
     return _resultsController;
 }
