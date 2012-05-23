@@ -103,23 +103,16 @@
     [super dealloc];
 }
 
-- (id)init
-{
-    self = [super init];
-    if (self) {
-        if (IS_IPHONE) {
-            _navigationController = [[UINavigationController alloc] init];
-            _detailViewControllers = [[NSMutableArray alloc] init];
-        }
-    }
-    return self;
-}
-
 - (id)initWithDetailController:(UIViewController *)detailController masterViewController:(UIViewController *)masterController {
-    self = [self init];
+    self = [super init];
     if (self) {
         self.detailViewController = detailController;
         self.masterViewController = masterController;
+        if (IS_IPHONE) {
+            _navigationController = [[UINavigationController alloc] initWithRootViewController:detailController];
+        } else {
+            _detailViewControllers = [[NSMutableArray alloc] init];
+        }
     }
     return self;
 }
@@ -296,7 +289,7 @@
         [_detailViewController willMoveToParentViewController:self];
         [self addChildViewController:_detailViewController];
         if (self.navigationController) {
-            self.navigationController.viewControllers = [NSArray arrayWithObject:_detailViewController];
+            [self.navigationController setViewControllers:[NSArray arrayWithObject:_detailViewController] animated:NO];
             if (sidebarButton == nil) {
                 sidebarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"list"] style:UIBarButtonItemStyleBordered target:self action:@selector(showSidebar)];
             }
