@@ -434,6 +434,40 @@
     [self.api enqueueHTTPRequestOperation:combinedOperation];    
 }
 
+
+- (void)checkActivationStatusWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    WPFLogMethod();
+    AFXMLRPCClient *api = [AFXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:[NSString stringWithFormat: @"%@", kWPcomXMLRPCUrl]]];
+    [api callMethod:@"wpcom.getActivationStatus"
+         parameters:[NSArray arrayWithObjects:[self hostURL], nil]
+            success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSString *returnData = [responseObject retain];
+                if ([returnData isKindOfClass:[NSString class]]) {
+                    [self setBlogID:[returnData numericValue]];
+                    [self setIsActivated:[NSNumber numberWithBool:YES]];
+                    [self dataSave];
+                }
+                if (success) success();
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                NSString *errorMessage = [error localizedDescription];
+                
+                if ([errorMessage isEqualToString:@"Parse Error. Please check your XML-RPC endpoint."])
+                {
+                    [self setIsActivated:[NSNumber numberWithBool:YES]];
+                    [self dataSave];
+                    if (success) success();
+                } else if ([errorMessage isEqualToString:@"Site not activated."]) {
+                    if (failure) failure(error);
+                } else if ([errorMessage isEqualToString:@"Blog not found."]) {
+                    if (failure) failure(error);
+                } else {
+                    if (failure) failure(error);
+                }
+                
+            }];
+}
+
+
 #pragma mark - api accessor
 
 - (AFXMLRPCClient *)api {

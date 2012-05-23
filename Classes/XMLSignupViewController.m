@@ -21,7 +21,6 @@
 
 @implementation XMLSignupViewController
 @synthesize buttonText, footerText, blogName, email, username, password, passwordconfirm;
-@synthesize WPcomXMLRPCUrl;
 @synthesize tableView;
 @synthesize lastTextField;
 
@@ -52,7 +51,6 @@
     appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     
     [self setFooterText:@" "];
-    WPcomXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
     
     // set up table header
 	CGRect headerFrame = CGRectMake(0, 0, 320, 70);
@@ -434,26 +432,55 @@
 
 - (void)xmlrpcCreateAccount {
     NSAutoreleasePool *pool = [NSAutoreleasePool new];
-    //FIXME
-    NSString *xmlOutput = @"no"; //[[WPDataController sharedInstance] createWPComAccountForBlog:blogName username:username password:password email:email];
-    
-    if (xmlOutput != @"Success") {
-        [self setFooterText:xmlOutput];
-        [self setButtonText:NSLocalizedString(@"Create WordPress.com Account", @"")];                
-    } else {
-        [self saveLoginData];
-        [self createBlog];
-
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Activation e-mail sent.", @"") 
-                                                        message:NSLocalizedString(@"Please check your e-mail to activate this blog.", @"")
-                                                       delegate:self 
-                                              cancelButtonTitle:@"OK" 
-                                              otherButtonTitles:nil];
-        [alert autorelease];
-        [alert show];
-    }
-    
-    [self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
+    [self setFooterText:@"Creating Account..."];
+    AFXMLRPCClient *api = [AFXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:[NSString stringWithFormat: @"%@", kWPcomXMLRPCUrl]]];
+    [api callMethod:@"wpcom.registerAccount"
+         parameters:[NSArray arrayWithObjects:blogName, username, password, email, nil]
+            success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSString *status = [[NSString alloc] init];
+                status = @"";
+                NSDictionary *returnData = [responseObject retain];
+                NSArray *errors = [NSArray arrayWithObjects:@"blogname", @"user_name", @"pass1", @"user_email", nil];
+                for (id e in errors) {
+                    if ([returnData valueForKey:e])
+                        status = [returnData valueForKey:e];
+                }
+                
+                if ([status isEqualToString:@""])
+                    status = @"Success";
+            
+                if (status != @"Success") {
+                    [self setFooterText:@"Error"];
+                    [self setButtonText:NSLocalizedString(@"Create WordPress.com Account", @"")];                
+                } else {
+                    [self saveLoginData];
+                    [self createBlog];
+                    
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Activation e-mail sent.", @"") 
+                                                                    message:NSLocalizedString(@"Please check your e-mail to activate this blog.", @"")
+                                                                   delegate:self 
+                                                          cancelButtonTitle:@"OK" 
+                                                          otherButtonTitles:nil];
+                    alert.tag = 10;
+                    [alert autorelease];
+                    [alert show];
+                    [self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
+                }
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 WPFLog(@"Failed registering account: %@", [error localizedDescription]); 
+                [self setFooterText:[error localizedDescription]];
+                [self setButtonText:NSLocalizedString(@"Create WordPress.com Account", @"")];
+                
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, can't log in", @"")
+                                                                    message:[error localizedDescription]
+                                                                   delegate:self
+                                                          cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
+                                                          otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
+                alertView.tag = 20;
+                [alertView show];
+                [alertView release]; 
+                [self performSelectorOnMainThread:@selector(refreshTable) withObject:nil waitUntilDone:NO];
+            }];
     
     [pool release];
 }
@@ -477,10 +504,18 @@
     [blog dataSave];
     
     [newBlog release];
+    //FIXME: should we send a notification? addUsersBlogsViewController does this.
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    switch (alertView.tag) {
+        case 10:
+           [self.navigationController popToRootViewControllerAnimated:YES];
+            break;
+        case 20:
+            break;
+    }
 }
 
 @end

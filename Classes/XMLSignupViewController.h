@@ -18,14 +18,12 @@
     WordPressAppDelegate *appDelegate;
     
     NSString *buttonText, *footerText, *blogName, *email, *username, *password, *passwordconfirm;
-    NSString *WPcomXMLRPCUrl;
     
     UITableView *tableView;
     UITextField *lastTextField;
 }
 
 @property (nonatomic, retain) NSString *buttonText, *footerText, *blogName, *email, *username, *password, *passwordconfirm;
-@property (nonatomic, retain) NSString *WPcomXMLRPCUrl;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) UITextField *lastTextField;
 

@@ -79,6 +79,7 @@
 // Called when manually refreshing PostsViewController
 // Syncs posts, categories, options, and post formats
 - (void)syncBlogPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)checkActivationStatusWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 #pragma mark -
 #pragma mark Class methods
