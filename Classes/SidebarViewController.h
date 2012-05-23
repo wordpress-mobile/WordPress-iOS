@@ -11,9 +11,9 @@
 #import "WordPressAppDelegate.h"
 
 @interface SidebarViewController : UITableViewController <SidebarSectionHeaderViewDelegate> {
-    WordPressAppDelegate *appDelegate;
 }
 
 - (void) processRowSelectionAtIndexPath: (NSIndexPath *) indexPath;
+- (void) processRowSelectionAtIndexPath: (NSIndexPath *) indexPath closingSidebar:(BOOL)closingSidebar;
 
 @end

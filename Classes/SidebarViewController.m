@@ -50,7 +50,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     self.view.backgroundColor = SIDEBAR_BGCOLOR;
     openSectionIndex_ = NSNotFound;
     
@@ -247,7 +246,7 @@
     self.openSectionIndex = sectionOpened;
     //select the first row in the section
     [self.tableView selectRowAtIndexPath:[indexPathsToInsert objectAtIndex:0] animated:NO scrollPosition:UITableViewScrollPositionMiddle];
-    [self processRowSelectionAtIndexPath:[indexPathsToInsert objectAtIndex:0]];
+    [self processRowSelectionAtIndexPath:[indexPathsToInsert objectAtIndex:0] closingSidebar:NO];
     
 }
 
@@ -323,30 +322,38 @@
 }
 
 - (void) processRowSelectionAtIndexPath: (NSIndexPath *) indexPath {
-    
+    [self processRowSelectionAtIndexPath:indexPath closingSidebar:YES];
+}
+
+- (void) processRowSelectionAtIndexPath: (NSIndexPath *) indexPath closingSidebar:(BOOL)closingSidebar {
+    UIViewController *detailViewController = nil;
+
     if (indexPath.section != 0) {
         Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.section - 1) inSection:0]];
-        [appDelegate.panelNavigationController popToRootViewControllerAnimated:NO];
         if (indexPath.row == 0) {
             PostsViewController *postsViewController = [[[PostsViewController alloc] init] autorelease];
             postsViewController.blog = blog;
-            [appDelegate.panelNavigationController pushViewController:postsViewController animated:NO];
+            detailViewController = postsViewController;
         }
         if (indexPath.row == 1) {
             PagesViewController *pagesViewController = [[[PagesViewController alloc] init] autorelease];
             pagesViewController.blog = blog;
-            [appDelegate.panelNavigationController pushViewController:pagesViewController animated:NO];
+            detailViewController = pagesViewController;
         }
         if (indexPath.row == 2) {
             CommentsViewController *commentsViewController = [[[CommentsViewController alloc] init] autorelease];
             commentsViewController.blog = blog;
-            [appDelegate.panelNavigationController pushViewController:commentsViewController animated:NO];
+            detailViewController = commentsViewController;
         }
         if (indexPath.row == 3) {
             StatsTableViewController *statsTableViewController = [[[StatsTableViewController alloc] init] autorelease];
             statsTableViewController.blog = blog;
-            [appDelegate.panelNavigationController pushViewController:statsTableViewController animated:NO];
+            detailViewController = statsTableViewController;
         }
+    }
+
+    if (detailViewController) {
+        [self.panelNavigationController setDetailViewController:detailViewController closingSidebar:closingSidebar];
     }
 }
 

@@ -23,6 +23,7 @@
 
 #pragma mark - Controllers
 @property(nonatomic,retain) UIViewController *detailViewController; // The first detail controller
+- (void)setDetailViewController:(UIViewController *)detailViewController closingSidebar:(BOOL)closingSidebar;
 @property(nonatomic,retain) UIViewController *masterViewController; // The sidebar (left) controller
 @property(nonatomic,readonly,retain) UINavigationController *navigationController; // The navigation controller on iPhone.
 @property(nonatomic,readonly,retain) UIViewController *rootViewController; // The navigation controller on iPhone, masterViewController on iPad

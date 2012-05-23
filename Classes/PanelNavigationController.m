@@ -10,8 +10,12 @@
 #import <QuartzCore/QuartzCore.h>
 #import "PanelNavigationController.h"
 
+#ifndef IS_IPAD
 #define IS_IPAD   ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+#endif
+#ifndef IS_IPHONE
 #define IS_IPHONE   (!IS_IPAD)
+#endif
 
 // Visible part of the detail view on iPhone when sidebar is open
 // Also used as minimum part visible of sidebar when closed on iPad (see: IPAD_DETAIL_OFFSET)
@@ -116,10 +120,6 @@
     if (self) {
         self.detailViewController = detailController;
         self.masterViewController = masterController;
-        
-        if (IS_IPHONE) {
-            [self.navigationController pushViewController:detailController animated:NO];
-        }
     }
     return self;
 }
@@ -270,24 +270,45 @@
 }
 
 - (void)setDetailViewController:(UIViewController *)detailViewController {
+    [self setDetailViewController:detailViewController closingSidebar:YES];
+}
+
+- (void)setDetailViewController:(UIViewController *)detailViewController closingSidebar:(BOOL)closingSidebar {
     if (_detailViewController == detailViewController) return;
 
+    UIBarButtonItem *sidebarButton = nil;
+
     if (_detailViewController) {
+        if (self.navigationController) {
+            sidebarButton = [_detailViewController.navigationItem.leftBarButtonItem retain];
+        }
         [_detailViewController willMoveToParentViewController:nil];
         [_detailViewController setPanelNavigationController:nil];
         [_detailViewController removeFromParentViewController];
         [_detailViewController didMoveToParentViewController:nil];
         [_detailViewController release];
     }
-    
+
     _detailViewController = detailViewController;
-    
+
     if (_detailViewController) {
         [_detailViewController retain];
         [_detailViewController willMoveToParentViewController:self];
         [self addChildViewController:_detailViewController];
+        if (self.navigationController) {
+            self.navigationController.viewControllers = [NSArray arrayWithObject:_detailViewController];
+            if (sidebarButton == nil) {
+                sidebarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"list"] style:UIBarButtonItemStyleBordered target:self action:@selector(showSidebar)];
+            }
+            _detailViewController.navigationItem.leftBarButtonItem = sidebarButton;
+            [sidebarButton release];
+        }
         [_detailViewController setPanelNavigationController:self];
         [_detailViewController didMoveToParentViewController:self];
+    }
+
+    if (IS_IPHONE && closingSidebar) {
+        [self closeSidebar];
     }
 }
 
