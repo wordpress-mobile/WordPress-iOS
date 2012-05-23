@@ -141,6 +141,9 @@
 		371C3682156CD12D007EA03E /* SectionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 371C3678156CCFDD007EA03E /* SectionInfo.m */; };
 		371C3683156CD12D007EA03E /* SidebarSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 371C367A156CCFDD007EA03E /* SidebarSectionHeaderView.m */; };
 		37245ADC13FC23FF006CDBE3 /* WPWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37245ADB13FC23FF006CDBE3 /* WPWebViewController.xib */; };
+		373C5184156D0523007C2977 /* SidebarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 373C5183156D0523007C2977 /* SidebarViewController.xib */; };
+		373C5187156D2547007C2977 /* carat-open@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 373C5185156D2547007C2977 /* carat-open@2x.png */; };
+		373C5188156D2547007C2977 /* carat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 373C5186156D2547007C2977 /* carat@2x.png */; };
 		3744A0DE130ABB0800CE7BE1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3744A0DC130ABB0800CE7BE1 /* HelpViewController.m */; };
 		3744A0DF130ABB0800CE7BE1 /* HelpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3744A0DD130ABB0800CE7BE1 /* HelpViewController.xib */; };
 		3751D68A136721AE0010B274 /* QuickPhotoUploadProgressController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3751D688136721AE0010B274 /* QuickPhotoUploadProgressController.m */; };
@@ -703,6 +706,9 @@
 		371C367E156CD03A007EA03E /* carat-open.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "carat-open.png"; path = "Classes/carat-open.png"; sourceTree = "<group>"; };
 		371C367F156CD03A007EA03E /* carat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = carat.png; path = Classes/carat.png; sourceTree = "<group>"; };
 		37245ADB13FC23FF006CDBE3 /* WPWebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WPWebViewController.xib; sourceTree = "<group>"; };
+		373C5183156D0523007C2977 /* SidebarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SidebarViewController.xib; sourceTree = "<group>"; };
+		373C5185156D2547007C2977 /* carat-open@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "carat-open@2x.png"; sourceTree = "<group>"; };
+		373C5186156D2547007C2977 /* carat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "carat@2x.png"; sourceTree = "<group>"; };
 		3744A0DB130ABB0800CE7BE1 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
 		3744A0DC130ABB0800CE7BE1 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
 		3744A0DD130ABB0800CE7BE1 /* HelpViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = HelpViewController.xib; path = ../HelpViewController.xib; sourceTree = "<group>"; };
@@ -1515,6 +1521,14 @@
 			name = About;
 			sourceTree = "<group>";
 		};
+		373C5181156D0504007C2977 /* Panels */ = {
+			isa = PBXGroup;
+			children = (
+				373C5183156D0523007C2977 /* SidebarViewController.xib */,
+			);
+			name = Panels;
+			sourceTree = "<group>";
+		};
 		3744A0DA130ABAFA00CE7BE1 /* Help */ = {
 			isa = PBXGroup;
 			children = (
@@ -1848,6 +1862,8 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				373C5185156D2547007C2977 /* carat-open@2x.png */,
+				373C5186156D2547007C2977 /* carat@2x.png */,
 				371C367E156CD03A007EA03E /* carat-open.png */,
 				371C367F156CD03A007EA03E /* carat.png */,
 				E128566615103A4500406BC9 /* toolbarBlockquoteiPad@2x.png */,
@@ -2356,6 +2372,7 @@
 		E19472D8134E3E4A00879F63 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				373C5181156D0504007C2977 /* Panels */,
 				E12AAB631513C4CA009D025B /* WPComOAuthController.xib */,
 				28AD735F0D9D9599002E5188 /* MainWindow.xib */,
 				836FECEA12715E2A000309D8 /* CrashReportView.xib */,
@@ -2959,6 +2976,9 @@
 				E1EAD5271553CDA800C0ED7A /* keyboardButton.png in Resources */,
 				FD76A898156CEB0B001FBAC6 /* XMLSignupViewController.xib in Resources */,
 				FD76A89A156CEB22001FBAC6 /* XMLSignupViewController-iPad.xib in Resources */,
+				373C5184156D0523007C2977 /* SidebarViewController.xib in Resources */,
+				373C5187156D2547007C2977 /* carat-open@2x.png in Resources */,
+				373C5188156D2547007C2977 /* carat@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
