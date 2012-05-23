@@ -1268,6 +1268,7 @@
 		FD0D42DB149A0B5500F5E115 /* InAppSettingsSpecifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppSettingsSpecifier.h; sourceTree = "<group>"; };
 		FD0D42DC149A0B5500F5E115 /* InAppSettingsSpecifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppSettingsSpecifier.m; sourceTree = "<group>"; };
 		FD21397E13128C5300099582 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
+		FD374343156CF4B800BAB5B5 /* WordPress 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 6.xcdatamodel"; sourceTree = "<group>"; };
 		FD3890EE1442F91000135C6D /* WPReaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPReaderViewController.h; sourceTree = "<group>"; };
 		FD3890EF1442F91000135C6D /* WPReaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPReaderViewController.m; sourceTree = "<group>"; };
 		FD3D6D2B1349F5D30061136A /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
@@ -3627,13 +3628,14 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				FD374343156CF4B800BAB5B5 /* WordPress 6.xcdatamodel */,
 				E1472EF915344A2A00D08657 /* WordPress 5.xcdatamodel */,
 				FD0D42C11499F31700F5E115 /* WordPress 4.xcdatamodel */,
 				E19BF8F913CC69E7004753FE /* WordPress 3.xcdatamodel */,
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = E1472EF915344A2A00D08657 /* WordPress 5.xcdatamodel */;
+			currentVersion = FD374343156CF4B800BAB5B5 /* WordPress 6.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";
