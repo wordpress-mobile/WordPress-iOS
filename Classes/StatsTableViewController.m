@@ -69,8 +69,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	loadMoreClicks = 10;
 	
     self.title = NSLocalizedString(@"Stats", @"");
-	self.tableView = [[[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped] autorelease];
-	self.view.frame = CGRectMake(0, 0, 320, 460);
+	self.tableView = [[[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped] autorelease];
 	self.tableView.sectionHeaderHeight = 30;
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	

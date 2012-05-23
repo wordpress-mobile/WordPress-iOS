@@ -23,6 +23,7 @@
 // Maximum x position for detail view
 #define DETAIL_LEDGE_OFFSET (320.0f - DETAIL_LEDGE)
 
+#define PANEL_CORNER_RADIUS 7.0f
 #define DURATION_FAST 0.3
 #define DURATION_SLOW 0.3
 #define SLIDE_DURATION(animated,duration) ((animated) ? (duration) : 0)
@@ -64,6 +65,7 @@
 - (void)closeSidebarAnimated:(BOOL)animated;
 - (void)disableDetailView;
 - (void)enableDetailView;
+- (void)prepareDetailView:(UIView *)view;
 - (void)addShadowTo:(UIView *)view;
 - (void)removeShadowFrom:(UIView *)view;
 - (void)applyShadows;
@@ -180,11 +182,7 @@
     self.masterView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     [self.view insertSubview:self.masterViewController.view belowSubview:self.detailView];
     // FIXME: keep sliding status
-    self.detailViewController.view.frame = CGRectMake(0, 0, DETAIL_WIDTH, DETAIL_HEIGHT);
-    if (IS_IPAD) {
-        self.detailViewController.view.layer.cornerRadius = 7.0f;
-        self.detailViewController.view.layer.masksToBounds = YES;
-    }
+    [self prepareDetailView:self.detailViewController.view];
 
     [self addPanner];
     [self applyShadows];
@@ -274,6 +272,8 @@
     if (_detailViewController) {
         if (self.navigationController) {
             sidebarButton = [_detailViewController.navigationItem.leftBarButtonItem retain];
+        } else {
+            [_detailViewController.view removeFromSuperview];
         }
         [_detailViewController willMoveToParentViewController:nil];
         [_detailViewController setPanelNavigationController:nil];
@@ -295,6 +295,9 @@
             }
             _detailViewController.navigationItem.leftBarButtonItem = sidebarButton;
             [sidebarButton release];
+        } else {
+            [self prepareDetailView:_detailViewController.view];
+            [self.detailView addSubview:_detailViewController.view];
         }
         [_detailViewController setPanelNavigationController:self];
         [_detailViewController didMoveToParentViewController:self];
@@ -415,13 +418,21 @@
     [self setScrollsToTop:YES forView:self.detailViewController.view];
 }
 
+- (void)prepareDetailView:(UIView *)view {
+    view.frame = CGRectMake(0, 0, DETAIL_WIDTH, DETAIL_HEIGHT);
+    if (IS_IPAD) {
+        view.layer.cornerRadius = PANEL_CORNER_RADIUS;
+        view.layer.masksToBounds = YES;
+    }
+}
+
 - (void)addShadowTo:(UIView *)view {
     view.layer.masksToBounds = NO;
     view.layer.shadowRadius = 10.0f;
     view.layer.shadowOpacity = 0.5f;
     view.layer.shadowColor = [[UIColor blackColor] CGColor];
     view.layer.shadowOffset = CGSizeZero;
-    view.layer.shadowPath = [[UIBezierPath bezierPathWithRect:view.bounds] CGPath];
+    view.layer.shadowPath = [[UIBezierPath bezierPathWithRoundedRect:view.bounds cornerRadius:PANEL_CORNER_RADIUS] CGPath];
 }
 
 - (void)removeShadowFrom:(UIView *)view {
