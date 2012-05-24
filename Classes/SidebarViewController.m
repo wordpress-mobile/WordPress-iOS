@@ -59,6 +59,29 @@
     
     // Depending on what we want to add here (quick video? etc) created a variable for the row count
     topSectionRowCount_ = 2;
+    
+    // create the sectionInfoArray, stores data for collapsing/expanding sections in the tableView
+	if ((self.sectionInfoArray == nil) || ([self.sectionInfoArray count] != [self numberOfSectionsInTableView:self.tableView])) {
+		
+        // For each play, set up a corresponding SectionInfo object to contain the default height for each row.
+		NSMutableArray *infoArray = [[NSMutableArray alloc] init];
+		
+		for (Blog *blog in [self.resultsController fetchedObjects]) {
+			
+			SectionInfo *sectionInfo = [[SectionInfo alloc] init];			
+			sectionInfo.blog = blog;
+			sectionInfo.open = NO;
+			
+            NSNumber *defaultRowHeight = [NSNumber numberWithInteger:DEFAULT_ROW_HEIGHT];
+			for (NSInteger i = 0; i < NUM_ROWS; i++) {
+				[sectionInfo insertObject:defaultRowHeight inRowHeightsAtIndex:i];
+			}
+			
+			[infoArray addObject:sectionInfo];
+		}
+		
+		self.sectionInfoArray = infoArray;
+	}
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -84,31 +107,6 @@
 - (void)viewWillAppear:(BOOL)animated {
 	
 	[super viewWillAppear:animated]; 
-	
-    /*
-     Check whether the section info array has been created, and if so whether the section count still matches the current section count. In general, you need to keep the section info synchronized with the rows and section. If you support editing in the table view, you need to appropriately update the section info during editing operations.
-     */
-	if ((self.sectionInfoArray == nil) || ([self.sectionInfoArray count] != [self numberOfSectionsInTableView:self.tableView])) {
-		
-        // For each play, set up a corresponding SectionInfo object to contain the default height for each row.
-		NSMutableArray *infoArray = [[NSMutableArray alloc] init];
-		
-		for (Blog *blog in [self.resultsController fetchedObjects]) {
-			
-			SectionInfo *sectionInfo = [[SectionInfo alloc] init];			
-			sectionInfo.blog = blog;
-			sectionInfo.open = NO;
-			
-            NSNumber *defaultRowHeight = [NSNumber numberWithInteger:DEFAULT_ROW_HEIGHT];
-			for (NSInteger i = 0; i < NUM_ROWS; i++) {
-				[sectionInfo insertObject:defaultRowHeight inRowHeightsAtIndex:i];
-			}
-			
-			[infoArray addObject:sectionInfo];
-		}
-		
-		self.sectionInfoArray = infoArray;
-	}
 	
 }
 
