@@ -229,6 +229,8 @@ Classes/WPSegmentedSelectionTableViewController.h -text
 Classes/WPSegmentedSelectionTableViewController.m -text
 Classes/WPSelectionTableViewController.h -text
 Classes/WPSelectionTableViewController.m -text
+Classes/WPTableViewController.h -text
+Classes/WPTableViewController.m -text
 Classes/WPWebAppViewController.h -text
 Classes/WPWebAppViewController.m -text
 Classes/WPWebViewController.h -text
