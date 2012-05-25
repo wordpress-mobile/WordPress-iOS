@@ -215,7 +215,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
     commentsViewController.blog = [blogs objectAtIndex:0];
     SidebarViewController *sidebarViewController = [[[SidebarViewController alloc] init] autorelease];
     //WelcomeViewController *wViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
-    panelNavigationController = [[PanelNavigationController alloc] initWithDetailController:commentsViewController masterViewController:sidebarViewController];
+    WPReaderViewController *readerViewController = [[[WPReaderViewController alloc] init] autorelease];
+    panelNavigationController = [[PanelNavigationController alloc] initWithDetailController:readerViewController masterViewController:sidebarViewController];
     window.rootViewController = panelNavigationController;
 #else
 	if(DeviceIsPad() == NO)
@@ -597,7 +598,11 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)showContentDetailViewController:(UIViewController *)viewController {
 #ifdef PANELS_EXPERIMENTAL
-    [panelNavigationController pushViewController:viewController animated:YES];
+    if (viewController) {
+        [panelNavigationController pushViewController:viewController animated:YES];
+    } else {
+        [panelNavigationController popToRootViewControllerAnimated:YES];
+    }
     return;
 #endif
 	if (self.splitViewController) {
