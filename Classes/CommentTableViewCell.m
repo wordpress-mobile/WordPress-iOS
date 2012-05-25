@@ -18,9 +18,9 @@
 #define LEFT_OFFSET                 CELL_PADDING
 
 #define NAME_FONT_SIZE              17
-#define COMMENT_FONT_SIZE           13
+#define COMMENT_FONT_SIZE           15
 
-#define COMMENT_LABEL_HEIGHT        40
+#define COMMENT_LABEL_HEIGHT        80
 #define COMMENT_LABEL_WIDTH         280
 
 #define OTHER_LABEL_WIDTH           220
@@ -57,11 +57,12 @@
     UIView *selectedBackgroundView;
     CAGradientLayer *gradient;
     CAGradientLayer *selectedGradient;
+    BOOL editing;
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier]) {
-        self.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 
         [self addCheckButton];
         [self addNameLabel];
@@ -96,7 +97,7 @@
         [UIView setAnimationDuration:0.25];
     }
 
-    [self updateLayout:value];
+    [self setNeedsLayout];
 
     if (animated) {
         [UIView commitAnimations];
@@ -153,7 +154,7 @@
 
 #pragma mark Private Methods
 
-- (void)updateLayout:(BOOL)editing {
+- (void)layoutSubviews {
     CGRect rect;
     int buttonOffset = 0;
     
@@ -172,32 +173,33 @@
         }
     }
     
+    CGFloat width = self.bounds.size.width - CELL_PADDING;
+    CGFloat gravatarWidth = width - GRAVATAR_LEFT_OFFSET;
+    
     rect = gravatarImageView.frame;
     rect.origin.x = LEFT_OFFSET + buttonOffset;
     gravatarImageView.frame = rect;
     
     rect = nameLabel.frame;
     rect.origin.x = GRAVATAR_LEFT_OFFSET + buttonOffset;
-    rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
+    rect.size.width = gravatarWidth - buttonOffset;
     nameLabel.frame = rect;
     
     rect = urlLabel.frame;
     rect.origin.x = GRAVATAR_LEFT_OFFSET + buttonOffset;
-    rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
+    rect.size.width = gravatarWidth - buttonOffset;
     urlLabel.frame = rect;
     
     rect = postLabel.frame;
     rect.origin.x = GRAVATAR_LEFT_OFFSET + buttonOffset;
-    rect.size.width = OTHER_LABEL_WIDTH - buttonOffset;
+    rect.size.width = gravatarWidth - buttonOffset;
     postLabel.frame = rect;
     
     rect = commentLabel.frame;
     rect.origin.x = LEFT_OFFSET + buttonOffset;
-    rect.size.width = COMMENT_LABEL_WIDTH - buttonOffset;
+    rect.size.width = width - buttonOffset;
     commentLabel.frame = rect;
-}
 
-- (void)layoutSubviews {
     gradient.frame = self.bounds;
     selectedGradient.frame = self.bounds;
 }
@@ -229,7 +231,7 @@
     nameLabel.font = [UIFont boldSystemFontOfSize:NAME_FONT_SIZE];
     nameLabel.backgroundColor = [UIColor clearColor];
     nameLabel.highlightedTextColor = [UIColor whiteColor];
-    nameLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+    nameLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 
     [self.contentView addSubview:nameLabel];
 }
@@ -268,8 +270,8 @@
     commentLabel.backgroundColor = [UIColor clearColor];
     commentLabel.textColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.8];
     commentLabel.highlightedTextColor = [UIColor whiteColor];
-    commentLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-    commentLabel.numberOfLines = 2;
+    commentLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    commentLabel.numberOfLines = 3;
     commentLabel.lineBreakMode = UILineBreakModeTailTruncation;
     commentLabel.verticalAlignment = VerticalAlignmentTop;
 

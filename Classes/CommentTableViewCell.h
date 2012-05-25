@@ -9,7 +9,7 @@
 #import "WPLabel.h"
 #import "Comment.h"
 
-#define COMMENT_ROW_HEIGHT 100
+#define COMMENT_ROW_HEIGHT 130
 
 @interface CommentTableViewCell : UITableViewCell {
     Comment *comment;
