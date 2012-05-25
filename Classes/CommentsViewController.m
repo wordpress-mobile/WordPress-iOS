@@ -188,7 +188,7 @@
         [self triggerRefresh];
 		[defaults setBool:false forKey:@"refreshCommentsRequired"];
 	}
-	
+
     if (DeviceIsPad()) {
         [self trySelectSomething];
     }
@@ -931,7 +931,9 @@
 
 
 - (void)trySelectSomething {
+#ifndef PANELS_EXPERIMENTAL
 	if (!DeviceIsPad())
+#endif
         return;
     
     if (self.selectedIndexPath && [[commentsTableView indexPathForSelectedRow] isEqual:self.selectedIndexPath]) {
