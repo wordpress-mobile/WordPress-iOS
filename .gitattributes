@@ -205,6 +205,8 @@ Classes/WPCategoriesController.h -text
 Classes/WPCategoriesController.m -text
 Classes/WPCategoryTree.h -text
 Classes/WPCategoryTree.m -text
+Classes/WPChromelessWebViewController.h -text
+Classes/WPChromelessWebViewController.m -text
 Classes/WPComOAuthController.h -text
 Classes/WPComOAuthController.m -text
 Classes/WPError.h -text
@@ -233,6 +235,8 @@ Classes/WPTableViewController.h -text
 Classes/WPTableViewController.m -text
 Classes/WPWebAppViewController.h -text
 Classes/WPWebAppViewController.m -text
+Classes/WPWebView.h -text
+Classes/WPWebView.m -text
 Classes/WPWebViewController.h -text
 Classes/WPWebViewController.m -text
 Classes/WPcomLoginViewController.h -text
