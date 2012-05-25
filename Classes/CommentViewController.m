@@ -732,10 +732,14 @@
             webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
         }
         [webViewController setUrl:url];
+#ifdef PANELS_EXPERIMENTAL
+        [self.panelNavigationController pushViewController:webViewController animated:YES];
+#else
         if (DeviceIsPad())
             [self presentModalViewController:webViewController animated:YES];
         else
             [self.navigationController pushViewController:webViewController animated:YES];
+#endif
 	}
 }
 
@@ -759,7 +763,11 @@
 	
 	WPWebViewController *controller = [[WPWebViewController alloc] initWithNibName:nil bundle:nil];
 	controller.url = [NSURL URLWithString:self.comment.link];
+#ifdef PANELS_EXPERIMENTAL
+    [self.panelNavigationController pushViewController:controller animated:YES];
+#else
 	[self.navigationController pushViewController:controller animated:YES];
+#endif
 	[controller release];
 	
 	
@@ -788,10 +796,14 @@
             webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
         }
         [webViewController setUrl:[inRequest URL]];
+#ifdef PANELS_EXPERIMENTAL
+        [self.panelNavigationController pushViewController:webViewController animated:YES];
+#else
         if (DeviceIsPad())
             [self presentModalViewController:webViewController animated:YES];
         else
             [self.navigationController pushViewController:webViewController animated:YES];
+#endif
 		return NO;
 	}
 	return YES;
