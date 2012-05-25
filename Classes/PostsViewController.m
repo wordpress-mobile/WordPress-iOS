@@ -34,8 +34,7 @@
 
 @synthesize composeButtonItem, postDetailViewController, postReaderViewController;
 @synthesize anyMorePosts, selectedIndexPath, drafts;
-@synthesize resultsController;
-@synthesize blog;
+@synthesize resultsController, blog = _blog;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -551,6 +550,25 @@
 	}
 	
 	return NO;
+}
+
+- (void)setBlog:(Blog *)blog {
+    if (_blog == blog) 
+        return;
+    [_blog release];
+    _blog = [blog retain];
+    self.resultsController = nil;
+    NSError *error = nil;
+    [self.resultsController performFetch:&error];
+    [self.tableView reloadData];
+    if ([self.resultsController.fetchedObjects count] == 0) {
+        if (![self isSyncing]) {
+            CGPoint offset = self.tableView.contentOffset;
+            offset.y = - 65.0f;
+            self.tableView.contentOffset = offset;
+            [_refreshHeaderView egoRefreshScrollViewDidEndDragging:self.tableView];
+        }
+    }
 }
 
 #pragma mark -

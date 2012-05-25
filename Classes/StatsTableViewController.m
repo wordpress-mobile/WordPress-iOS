@@ -21,7 +21,7 @@ currentBlog, currentProperty, rootTag,
 statsTableData, leftColumn, rightColumn, xArray, yArray, xValues, yValues, wpcomLoginTable, 
 statsPageControlViewController, apiKeyConn, viewsConn, postViewsConn, referrersConn, 
 searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
-@synthesize blog;
+@synthesize blog = _blog;
 #define LABEL_TAG 1 
 #define VALUE_TAG 2 
 #define FIRST_CELL_IDENTIFIER @"TrailItemCell" 
@@ -55,7 +55,6 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
     self.statsTableData = nil;
     self.xValues = nil;
     self.yValues = nil;
-    self.blog = nil;
 	[super dealloc];
 }
 
@@ -136,15 +135,19 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	}
 }
 
-- (void)loadView {
-    [super loadView];
-    
-	
+- (void)setBlog:(Blog *)blog {
+    if (_blog == blog) 
+        return;
+    [_blog release];
+    _blog = [blog retain];
+    if (_blog.apiKey != nil)
+        statsRequest = YES;
+    [self initStats];
 }
 
 -(void) initStats {
 	
-	NSString *apiKey = blog.apiKey;
+	NSString *apiKey = _blog.apiKey;
 	if (apiKey == nil){
 		//first run or api key was deleted
 		[self getUserAPIKey];
@@ -168,7 +171,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 }
 
 -(void)getUserAPIKey {
-	if ([blog isWPcom] || dotorgLogin == YES)
+	if ([_blog isWPcom] || dotorgLogin == YES)
 	{
 		[self showLoadingDialog];
 		apiKeyConn = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://public-api.wordpress.com/get-user-blogs/1.0"]] delegate:self];
@@ -183,7 +186,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 	else 
 	{
 		BOOL presentDialog = YES;
-		if (dotorgLogin == YES && ![blog isWPcom])
+		if (dotorgLogin == YES && ![_blog isWPcom])
 		{
 			presentDialog = NO;
 			dotorgLogin = NO;
@@ -220,7 +223,7 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 
 - (void) refreshStats: (int) titleIndex reportInterval: (int) intervalIndex {
     //make sure we have the apiKey
-    if (blog.apiKey == nil){
+    if (_blog.apiKey == nil){
         statsRequest = NO;
 		[self getUserAPIKey];
         return;
@@ -285,14 +288,14 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 			break;
 	}	
     */
-	NSString *apiKey = blog.apiKey;
+	NSString *apiKey = _blog.apiKey;
     
     NSString *idType;
 	
-    if ([blog isWPcom])
-        idType = [NSString stringWithFormat:@"blog_id=%@", blog.blogID];
+    if ([_blog isWPcom])
+        idType = [NSString stringWithFormat:@"_blogid=%@", _blog.blogID];
     else
-        idType = [NSString stringWithFormat:@"blog_uri=%@", blog.url];
+        idType = [NSString stringWithFormat:@"_bloguri=%@", _blog.url];
 
 	//request the 5 reports for display in the UITableView
     
@@ -634,10 +637,10 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 		NSString *s_username, *s_password;
 		NSError *error = nil;
 		
-        if ([blog isWPcom]) {
+        if ([_blog isWPcom]) {
             //use set username/pw for wpcom blogs
-            s_username = blog.username;
-            s_password = [SFHFKeychainUtils getPasswordForUsername:blog.username andServiceName:blog.hostURL error:&error];
+            s_username = _blog.username;
+            s_password = [SFHFKeychainUtils getPasswordForUsername:_blog.username andServiceName:_blog.hostURL error:&error];
         }
         else {
             //use wpcom preference for self-hosted
@@ -727,8 +730,8 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 		}
         displayedLoginView = YES;
 		if (!statsAPIAlertShowing){
-			blog.apiKey = nil;
-			[blog dataSave];
+			_blog.apiKey = nil;
+			[_blog dataSave];
 			UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Login Error" 
 															 message:@"Please enter an administrator login for this blog and refresh." 
 															delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil] autorelease];
@@ -845,8 +848,8 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 		}
 	}
 	else if ([elementName isEqualToString:@"apikey"]) {
-		[blog setValue:self.currentProperty forKey:@"apiKey"];
-		[blog dataSave];
+		[_blog setValue:self.currentProperty forKey:@"apiKey"];
+		[_blog dataSave];
 		apiKeyFound = YES;
 		[parser abortParsing];
 		[self showLoadingDialog];

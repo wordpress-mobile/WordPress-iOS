@@ -23,5 +23,6 @@
 - (void)showAddPostView;
 - (void)reselect;
 - (BOOL)refreshRequired;
+- (void)setBlog:(Blog *)blog;
 
 @end

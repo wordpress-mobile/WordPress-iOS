@@ -45,7 +45,7 @@
 - (void)dealloc {
     self.resultsController.delegate = nil;
     self.resultsController = nil;
-
+    [selectedIndex release];
     [super dealloc];
 }
 
@@ -81,7 +81,12 @@
 		}
 		
 		self.sectionInfoArray = infoArray;
+        [infoArray release];
 	}
+    
+    // Select the Reader row
+    NSIndexPath *path = [NSIndexPath indexPathForRow:1 inSection:0];
+    [self.tableView selectRowAtIndexPath: path animated:NO scrollPosition:UITableViewScrollPositionNone];
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -95,6 +100,7 @@
     [super viewDidUnload];
     [tableView release];
     [footerButton release];
+    selectedIndex = nil;
     
     self.sectionInfoArray = nil;
 }
@@ -157,7 +163,7 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
     // Configure the cell...
@@ -166,25 +172,25 @@
     if (indexPath.section == 0) {
         switch (indexPath.row) {
             case 0:
-                title = @"Quick Photo";
+                title = NSLocalizedString(@"Quick Photo", @"");
                 break;
             case 1:
-                title = @"Read";
+                title = NSLocalizedString(@"Read", @"");
                 break;
         }
     } else {
         switch (indexPath.row) {
             case 0:
-                title = @"Posts";
+                title = NSLocalizedString(@"Posts", @"");
                 break;
             case 1:
-                title = @"Pages";
+                title = NSLocalizedString(@"Pages", @"");
                 break;
             case 2:
-                title = @"Comments";
+                title = NSLocalizedString(@"Comments", @"");
                 break;
             case 3:
-                title = @"Stats";
+                title = NSLocalizedString(@"Stats", @"");
                 break;
             default:
                 break;
@@ -206,6 +212,10 @@
 	SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:sectionOpened - 1];
 	
 	sectionInfo.open = YES;
+    NSIndexPath *currentIndex = [self.tableView indexPathForSelectedRow];
+    if (currentIndex) {
+        selectedIndex = [[NSIndexPath indexPathForRow:currentIndex.row inSection:currentIndex.section] retain];
+    }
     
     /*
      Create an array containing the index paths of the rows to insert: These correspond to the rows for each quotation in the current section.
@@ -249,8 +259,8 @@
     [self.tableView endUpdates];
     self.openSectionIndex = sectionOpened;
     //select the first row in the section
-    [self.tableView selectRowAtIndexPath:[indexPathsToInsert objectAtIndex:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
-    [self processRowSelectionAtIndexPath:[indexPathsToInsert objectAtIndex:0] closingSidebar:NO];
+    //[self.tableView selectRowAtIndexPath:[indexPathsToInsert objectAtIndex:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
+    //[self processRowSelectionAtIndexPath:[indexPathsToInsert objectAtIndex:0] closingSidebar:NO];
     
 }
 
@@ -311,6 +321,15 @@
 
 #pragma mark - Table view delegate
 
+-(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSIndexPath *currentIndex = [self.tableView indexPathForSelectedRow];
+    if (currentIndex) {
+        selectedIndex = [[NSIndexPath indexPathForRow:currentIndex.row inSection:currentIndex.section] retain];
+    }
+    return indexPath;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Navigation logic may go here. Create and push another view controller.
@@ -330,10 +349,35 @@
 }
 
 - (void) processRowSelectionAtIndexPath: (NSIndexPath *) indexPath closingSidebar:(BOOL)closingSidebar {
-    UIViewController *detailViewController = nil;
-
+    UIViewController *detailViewController = nil;  
+    
     if (indexPath.section != 0) {
         Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.section - 1) inSection:0]];
+        
+        //did user select the same item, but for a different blog? If so then just update the data in the view controller.
+        if (selectedIndex != nil) {
+            if (indexPath.row == selectedIndex.row) {
+                switch (indexPath.row) {
+                    case 0:
+                        [(PostsViewController*) self.panelNavigationController.detailViewController setBlog: blog];
+                        break;
+                    case 1:
+                        [(PagesViewController*) self.panelNavigationController.detailViewController setBlog: blog];
+                        break; 
+                    case 2:
+                        [(CommentsViewController*) self.panelNavigationController.detailViewController setBlog: blog];
+                        break;
+                    case 3:
+                        [(StatsTableViewController*) self.panelNavigationController.detailViewController setBlog: blog];
+                        break;
+                }
+            [self.panelNavigationController popToRootViewControllerAnimated:NO];
+            if (!DeviceIsPad())
+                [self.panelNavigationController closeSidebar];
+            return;
+            }
+        }
+
         if (indexPath.row == 0) {
             PostsViewController *postsViewController = [[[PostsViewController alloc] init] autorelease];
             postsViewController.blog = blog;

@@ -21,6 +21,9 @@
 - (NSArray *)popToViewController:(UIViewController *)viewController animated:(BOOL)animated; // Pops view controllers until the one specified is on top. Returns the popped controllers.
 - (NSArray *)popToRootViewControllerAnimated:(BOOL)animated; // Pops until there's only a single view controller left on the stack. Returns the popped controllers.
 
+- (void) closeSidebar;
+- (void) showSidebar;
+
 #pragma mark - Controllers
 @property(nonatomic,retain) UIViewController *detailViewController; // The first detail controller
 - (void)setDetailViewController:(UIViewController *)detailViewController closingSidebar:(BOOL)closingSidebar;

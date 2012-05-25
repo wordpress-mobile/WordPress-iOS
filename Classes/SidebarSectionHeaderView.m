@@ -29,13 +29,13 @@
         // Set up the tap gesture recognizer.
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleOpen:)];
         [self addGestureRecognizer:tapGesture];
+        [tapGesture release];
         
         _delegate = delegate;        
         self.userInteractionEnabled = YES;
         
         UIImageView *blavatarView = [[[UIImageView alloc] initWithFrame:CGRectMake(6.0, 6.0, 35.0, 35.0)] autorelease];
         [blavatarView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
-        blavatarView.opaque = YES;
         [self addSubview:blavatarView];
         
         // Create and configure the title label.

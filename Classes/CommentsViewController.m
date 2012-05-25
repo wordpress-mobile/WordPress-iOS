@@ -45,7 +45,7 @@
 @synthesize selectedIndexPath;
 @synthesize commentViewController;
 @synthesize isSecondaryViewController;
-@synthesize blog;
+@synthesize blog = _blog;
 @synthesize resultsController = _resultsController;
 @synthesize moderationSwipeView, moderationSwipeCell, moderationSwipeDirection;
 @synthesize moderationApproveButton, moderationSpamButton, moderationReplyButton;
@@ -212,6 +212,25 @@
 		return YES;
 	}
 	return NO;
+}
+
+- (void)setBlog:(Blog *)blog {
+    if (_blog == blog) 
+        return;
+    [_blog release];
+    _blog = [blog retain];
+    self.resultsController = nil;
+    NSError *error = nil;
+    [self.resultsController performFetch:&error];
+    [commentsTableView reloadData];
+    if ([self.resultsController.fetchedObjects count] == 0) {
+        if (![self isSyncing]) {
+            CGPoint offset = commentsTableView.contentOffset;
+            offset.y = - 65.0f;
+            commentsTableView.contentOffset = offset;
+            [_refreshHeaderView egoRefreshScrollViewDidEndDragging:commentsTableView];
+        }
+    }
 }
 
 #pragma mark -

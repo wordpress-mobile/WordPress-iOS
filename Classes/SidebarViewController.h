@@ -13,6 +13,7 @@
 @interface SidebarViewController : UIViewController <SidebarSectionHeaderViewDelegate, UITableViewDataSource, UITableViewDelegate> {
     IBOutlet UITableView *tableView;
     IBOutlet UIButton *footerButton;
+    NSIndexPath *selectedIndex;
 }
 
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
