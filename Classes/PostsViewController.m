@@ -365,7 +365,9 @@
 // Subclassed in PagesViewController
 - (void)showSelectedPost {
     Post *post = nil;
+#ifndef PANELS_EXPERIMENTAL
     WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+#endif
     NSIndexPath *indexPath = self.selectedIndexPath;
 
     @try {
@@ -379,7 +381,12 @@
         post = nil;
     }
     self.postReaderViewController = [[PostViewController alloc] initWithPost:post];
-    [delegate showContentDetailViewController:self.postReaderViewController];    
+#ifdef PANELS_EXPERIMENTAL
+    [self.panelNavigationController popToRootViewControllerAnimated:NO];
+    [self.panelNavigationController pushViewController:self.postReaderViewController animated:YES];
+#else
+    [delegate showContentDetailViewController:self.postReaderViewController];
+#endif
 }
 
 - (void)setSelectedIndexPath:(NSIndexPath *)indexPath {
