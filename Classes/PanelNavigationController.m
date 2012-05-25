@@ -20,8 +20,9 @@
 // Visible part of the detail view on iPhone when sidebar is open
 // Also used as minimum part visible of sidebar when closed on iPad (see: IPAD_DETAIL_OFFSET)
 #define DETAIL_LEDGE 44.0f
+#define SIDEBAR_WIDTH 320.0f
 // Maximum x position for detail view
-#define DETAIL_LEDGE_OFFSET (320.0f - DETAIL_LEDGE)
+#define DETAIL_LEDGE_OFFSET (IS_IPAD ? SIDEBAR_WIDTH : (SIDEBAR_WIDTH - DETAIL_LEDGE))
 
 #define PANEL_CORNER_RADIUS 7.0f
 #define DURATION_FAST 0.3
@@ -39,7 +40,7 @@
 #define IPAD_DETAIL_OFFSET DETAIL_LEDGE
 #define IPAD_DETAIL_HEIGHT IPHONE_DETAIL_HEIGHT
 // Fits two regular size panels with the sidebar collapsed
-#define IPAD_DETAIL_WIDTH 448.0f
+#define IPAD_DETAIL_WIDTH 490.0f
 
 // Minimum x position for detail view
 #define DETAIL_OFFSET (IS_IPAD ? IPAD_DETAIL_OFFSET : IPHONE_DETAIL_OFFSET)
@@ -55,7 +56,11 @@
 @property (nonatomic, retain) UIView *detailView;
 @property (nonatomic, readonly) UIView *masterView;
 @property (nonatomic, readonly) UIView *rootView;
+@property (nonatomic, readonly) UIView *topView;
+@property (nonatomic, readonly) UIView *lastVisibleView;
 @property (nonatomic, retain) NSMutableArray *detailViewControllers;
+@property (nonatomic, retain) NSMutableArray *detailViews;
+@property (nonatomic, retain) NSMutableArray *detailViewWidths;
 @property (nonatomic, retain) UIButton *detailTapper;
 @property (nonatomic, retain) UIPanGestureRecognizer *panner;
 @property (nonatomic, retain) UIImageView *backgroundImageView;
@@ -72,7 +77,13 @@
 - (void)setScrollsToTop:(BOOL)scrollsToTop forView:(UIView *)view;
 - (void)addPanner;
 - (void)removePanner;
-- (void)setDetailViewOffset:(CGFloat)offset;
+- (void)setViewOffset:(CGFloat)offset forView:(UIView *)view;
+- (void)setStackOffset:(CGFloat)offset duration:(CGFloat)duration;
+- (CGFloat)nearestValidOffsetWithVelocity:(CGFloat)velocity;
+- (NSInteger)indexForView:(UIView *)view;
+- (UIView *)viewForIndex:(NSUInteger)index;
+- (UIView *)viewBefore:(UIView *)view;
+- (UIView *)viewAfter:(UIView *)view;
 @end
 
 @interface UIViewController (PanelNavigationController_Internal)
@@ -83,12 +94,15 @@
 
 @implementation PanelNavigationController {
     CGFloat _panOrigin;
+    CGFloat _stackOffset;
 }
 @synthesize detailViewController = _detailViewController;
 @synthesize masterViewController = _masterViewController;
 @synthesize navigationController = _navigationController;
 @synthesize detailView = _detailView;
 @synthesize detailViewControllers = _detailViewControllers;
+@synthesize detailViews = _detailViews;
+@synthesize detailViewWidths = _detailViewWidths;
 @synthesize detailTapper = _detailTapper;
 @synthesize panner = _panner;
 @synthesize backgroundImageView = _backgroundImageView;
@@ -99,6 +113,8 @@
     self.masterViewController = nil;
     self.navigationController = nil;
     self.detailViewControllers = nil;
+    self.detailViews = nil;
+    self.detailViewWidths = nil;
     self.detailTapper = nil;
     self.panner = nil;
 
@@ -112,6 +128,8 @@
             _navigationController = [[UINavigationController alloc] initWithRootViewController:detailController];
         } else {
             _detailViewControllers = [[NSMutableArray alloc] init];
+            _detailViews = [[NSMutableArray alloc] init];
+            _detailViewWidths = [[NSMutableArray alloc] init];
         }
         self.detailViewController = detailController;
         self.masterViewController = masterController;
@@ -143,6 +161,9 @@
         self.detailViewController.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"list"] style:UIBarButtonItemStyleBordered target:self action:@selector(showSidebar)] autorelease];
     }
     self.detailView.frame = CGRectMake(0, 0, DETAIL_WIDTH, DETAIL_HEIGHT);
+    [self.detailViews addObject:self.detailView];
+    [self.detailViewWidths addObject:[NSNumber numberWithFloat:DETAIL_WIDTH]];
+    _stackOffset = 0;
     if (IS_IPAD) {
         self.backgroundImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"fabric"]] autorelease];
         self.backgroundImageView.frame = CGRectMake(DETAIL_LEDGE_OFFSET, 0, self.view.frame.size.width - DETAIL_LEDGE_OFFSET, DETAIL_HEIGHT);
@@ -155,6 +176,8 @@
 
 - (void)viewDidUnload {
     self.detailView = nil;
+    self.detailViews = nil;
+    self.detailViewWidths = nil;
     self.backgroundImageView = nil;
 
     if (self.navigationController) {
@@ -225,11 +248,37 @@
     return self.rootViewController.view;
 }
 
+- (UIView *)topView {
+    if ([self.detailViewControllers count] == 0) {
+        return self.detailView;
+    } else {
+        return self.topViewController.view;
+    }
+}
+
+- (UIView *)lastVisibleView {
+    __block UIView *view = self.detailView;
+    [self.detailViewControllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        UIView *vcView = [(UIViewController *)obj view];
+        if (CGRectGetMinX(vcView.frame) < self.rootView.bounds.size.width) {
+            view = vcView;
+        } else {
+            *stop = YES;
+        }
+    }];
+
+    return view;
+}
+
 - (UIViewController *)topViewController {
     if (self.navigationController) {
         return self.navigationController.topViewController;
     } else {
-        return self.detailViewController;
+        if ([self.detailViewControllers count] > 0) {
+            return [self.detailViewControllers lastObject];
+        } else {
+            return self.detailViewController;
+        }
     }
 }
 
@@ -268,6 +317,8 @@
     if (_detailViewController == detailViewController) return;
 
     UIBarButtonItem *sidebarButton = nil;
+    
+    [self popToRootViewControllerAnimated:NO];
 
     if (_detailViewController) {
         if (self.navigationController) {
@@ -356,7 +407,7 @@
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
         [self addShadowTo:self.detailView];
         self.masterViewController.view.hidden = NO;
-        [self setDetailViewOffset:DETAIL_LEDGE_OFFSET];
+        [self setStackOffset:0 duration:0];
         [self disableDetailView];
     } completion:^(BOOL finished) {
     }];
@@ -368,7 +419,7 @@
 
 - (void)closeSidebarAnimated:(BOOL)animated {
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
-        self.detailView.frame = self.rootViewController.view.bounds;
+        [self setStackOffset:(DETAIL_LEDGE_OFFSET - DETAIL_OFFSET) duration:0];
     } completion:^(BOOL finished) {
         [self applyShadows];
         [self enableDetailView];
@@ -469,15 +520,113 @@
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    _panOrigin = self.detailView.frame.origin.x;
+    _panOrigin = _stackOffset;
+    NSLog(@"panOrigin: %.0f", _panOrigin);
     return YES;
 }
 
 - (void)panned:(UIPanGestureRecognizer *)sender {
+    /*
+     _stackOffset is how many pixels the views are dragged to the left from the initial (sidebar open) position
+     
+     Limits:
+     * Min: 0 [soft], - ( width - DETAIL_LEDGE_OFFSET) [hard]
+     * Max (1 panel): 0 [soft], (sidebar width - ledge) [hard]
+     * Max (2+ panels: (v[n]-v[n-1]) + v[n-2] + ... + v[0]) [soft],
+                       sum(v[0..n-1]) [hard]
+     Note that v[0] is only used if n > 2.
+     
+     When a soft limit is reached, we add elasticity
+     Views can't move over hard limits
+     
+     TODO: store lastFullyVisible for rotation
+     */
     CGPoint p = [sender translationInView:self.rootViewController.view];
+    CGFloat offset = _panOrigin - p.x;
+    NSLog(@"offset: %.1f", offset);
+    
+    /*
+     Step 1: setup boundaries
+     */
+    CGFloat w = self.view.bounds.size.width;
+    CGFloat minSoft = 0;
+    CGFloat minHard = -w;
+    CGFloat maxSoft;
+    CGFloat maxHard;
+    NSUInteger viewCount = [self.detailViewWidths count];
+    if (viewCount <= 1) {
+        maxSoft = 0;
+        maxHard = DETAIL_LEDGE_OFFSET;
+    } else {
+        maxSoft = DETAIL_LEDGE_OFFSET - DETAIL_OFFSET;
+        maxSoft+= DETAIL_LEDGE;
+        maxSoft+= [[self.detailViewWidths objectAtIndex:(viewCount - 1)] floatValue];
+        maxSoft+= [[self.detailViewWidths objectAtIndex:(viewCount - 2)] floatValue];
+        maxSoft-= w;
+        maxHard = DETAIL_LEDGE_OFFSET - DETAIL_OFFSET;
+        maxHard+= [[self.detailViewWidths objectAtIndex:(viewCount - 2)] floatValue];
+        for (int i = viewCount - 3; i >= 0; i--) {
+            maxSoft += [[self.detailViewWidths objectAtIndex:i] floatValue];
+        }
+    }
+    if (IS_IPHONE) {
+        minSoft = 0;
+        minHard = 0;
+        maxSoft = DETAIL_LEDGE_OFFSET;
+        maxHard = DETAIL_LEDGE_OFFSET;
+    }
+    NSLog(@"min [%.1f,%.1f] max[%.1f,%.1f]", minSoft, minHard, maxSoft, maxHard);
+    NSLog(@"before adjusting: %.1f", offset);
+    CGFloat limitOffset = MAX(minSoft, MIN(maxSoft, offset));
+    CGFloat diff = ABS(ABS(offset) - ABS(limitOffset));
+    // if we're outside the allowed bounds
+    if (diff > 0) {
+        // Reduce the dragged distance
+        diff = diff / logf(diff + 1) * 2;
+        offset = limitOffset + (offset < limitOffset ? -diff : diff);
+    }
+    NSLog(@"after soft adjusting: %.1f", offset);
+    offset = MAX(minHard, MIN(maxHard, offset));
+    NSLog(@"after hard adjusting: %.1f", offset);
+    
+    /*
+     Step 2: calculate each view position
+     */
+    [self setStackOffset:offset duration:0];
+
+    /*
+     Step 3: when released, calculate final positions
+     */
+    if (sender.state == UIGestureRecognizerStateEnded) {
+        CGFloat velocity = [sender velocityInView:self.view].x;
+        if (IS_IPAD) {
+            CGFloat nearestOffset = [self nearestValidOffsetWithVelocity:-velocity];
+            [self setStackOffset:nearestOffset duration:DURATION_FAST];
+        } else {
+            // TODO: multiple panel panning
+            if (ABS(velocity) < 100) {
+                if (offset < DETAIL_LEDGE_OFFSET / 3) {
+                    [self showSidebar];
+                } else {
+                    [self closeSidebar];
+                }
+            } else if (velocity > 0) {
+                // Going right
+                [self showSidebar];
+            } else {
+                [self closeSidebar];
+            }
+        }
+    }
+    return;
+    
     CGFloat x = p.x + _panOrigin;
+    NSLog(@"pan: %.0f", offset);
     // TODO: limits will change with multiple panels on display
     CGFloat leftLimit = IS_IPAD ? DETAIL_LEDGE_OFFSET : DETAIL_OFFSET;
+    if (IS_IPAD && [self.detailViewControllers count] > 0) {
+        leftLimit = DETAIL_OFFSET;
+    }
     CGFloat rightLimit = DETAIL_LEDGE_OFFSET;
     // x limited to allowed bounds
     CGFloat lx = MIN(MAX(leftLimit, x), rightLimit);
@@ -490,13 +639,15 @@
         dx = dx / logf(dx + 1) * 2;
         x = lx + (x < lx ? -dx : dx);
     }
-    CGFloat w = self.rootViewController.view.bounds.size.width;
-    [self setDetailViewOffset:x];
+    [self setViewOffset:x forView:self.topView];
     
     if (sender.state == UIGestureRecognizerStateEnded) {
-        if (IS_IPAD && [self.detailViewControllers count] == 0) {
-            // If there's only one panel don't allow closing the sidebar
-            [self showSidebar];
+        if (IS_IPAD) {
+            if ([self.detailViewControllers count] == 0) {
+                // If there's only one panel don't allow closing the sidebar
+                [self showSidebar];
+            } else {
+            }
         } else {
             CGFloat velocity = [sender velocityInView:self.rootViewController.view].x;
             // TODO: multiple panel panning
@@ -526,7 +677,7 @@
     if (self.navigationController) {
         [self.navigationController.navigationBar addGestureRecognizer:panner];
     } else {
-        [self.detailView addGestureRecognizer:panner];
+        [self.view addGestureRecognizer:panner];
     }
 }
 
@@ -537,11 +688,121 @@
     self.panner = nil;
 }
 
-- (void)setDetailViewOffset:(CGFloat)offset {
-    CGRect frame = self.detailView.frame;
-    frame.origin.x = MAX(0,offset);
-    self.detailView.frame = frame;
+- (void)setViewOffset:(CGFloat)offset forView:(UIView *)view {
+    CGRect frame = view.frame;
+    frame.origin.x = MAX(0, MIN(offset, self.view.bounds.size.width));
+    view.frame = frame;
 }
+
+- (void)setStackOffset:(CGFloat)offset duration:(CGFloat)duration {
+    CGFloat remainingOffset = offset;
+    CGFloat usedOffset = MIN(DETAIL_LEDGE_OFFSET - DETAIL_OFFSET, remainingOffset);
+    CGFloat viewX = DETAIL_LEDGE_OFFSET - usedOffset;
+    if (duration > 0) {
+        [UIView beginAnimations:@"stackOffset" context:nil];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+        [UIView setAnimationDuration:duration];
+    }
+    [self setViewOffset:viewX forView:self.detailView];
+    remainingOffset -= usedOffset;
+    NSUInteger i = 1;
+    while (i < [self.detailViews count]) {
+        UIView *view = [self.detailViews objectAtIndex:i];
+        UIView *previousView = [self.detailViews objectAtIndex:(i - 1)];
+        usedOffset = MIN(previousView.frame.size.width, remainingOffset);
+        viewX += previousView.frame.size.width;
+        viewX -= usedOffset;
+        [self setViewOffset:viewX forView:view];
+        remainingOffset -= usedOffset;
+        
+        i++;
+    }
+    [UIView commitAnimations];
+    _stackOffset = offset - remainingOffset;
+}
+
+- (CGFloat)nearestValidOffsetWithVelocity:(CGFloat)velocity {
+    CGFloat offset = 0;
+    CGFloat diff = ABS(_stackOffset - offset);
+    CGFloat previousOffset = offset;
+    CGFloat previousDiff = diff;
+    
+    // View 0
+    offset += DETAIL_LEDGE_OFFSET - DETAIL_OFFSET;
+    diff = ABS(_stackOffset - offset);
+    if (diff > previousDiff) {
+        return previousOffset;
+    } else {
+        previousOffset = offset;
+        previousDiff = diff;
+    }
+
+    NSUInteger viewCount = [self.detailViews count];
+    for (int i = 0; i < viewCount - 2; i++) {
+        UIView *view = [self.detailViews objectAtIndex:i];
+        offset += view.frame.size.width;
+        diff = ABS(_stackOffset - offset);
+        if (diff > previousDiff) {
+            return previousOffset;
+        } else {
+            previousOffset = offset;
+            previousDiff = diff;
+        }
+    }
+    
+    offset += DETAIL_LEDGE;
+    offset += [[self.detailViewWidths objectAtIndex:(viewCount - 1)] floatValue];
+    offset += [[self.detailViewWidths objectAtIndex:(viewCount - 2)] floatValue];
+    offset -= self.view.bounds.size.width;
+    diff = ABS(_stackOffset - offset);
+    if (diff > previousDiff) {
+        return previousOffset;
+    } else {
+        previousOffset = offset;
+        previousDiff = diff;
+    }
+
+    return previousOffset;
+}
+
+- (NSInteger)indexForView:(UIView *)view {
+    if (view == self.detailView) {
+        return 0;
+    }
+    __block NSInteger index = -1;
+    [self.detailViewControllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if (view == [obj view]) {
+            index = idx + 1;
+            *stop = YES;
+        }
+    }];
+    return index;
+}
+
+- (UIView *)viewForIndex:(NSUInteger)index {
+    if (index == 0) {
+        return self.detailView;
+    } else {
+        if (index > [self.detailViewControllers count]) {
+            return nil;
+        }
+        return [[self.detailViewControllers objectAtIndex:(index - 1)] view];
+    }
+}
+
+- (UIView *)viewBefore:(UIView *)view {
+    if (view == self.detailView) {
+        return nil;
+    }
+
+    NSInteger index = [self indexForView:view];
+    return [self viewForIndex:index - 1];
+}
+
+- (UIView *)viewAfter:(UIView *)view {
+    return [self viewForIndex:[self indexForView:view] + 1];
+}
+
 
 #pragma mark - Navigation methods
 
@@ -549,17 +810,60 @@
     if (self.navigationController) {
         [self.navigationController pushViewController:viewController animated:animated];
     } else {
-        // TODO
+        UIView *topView;
+        if ([self.detailViewControllers count] == 0) {
+            [self closeSidebar];
+            topView = self.detailView;
+        } else {
+            topView = self.topViewController.view;
+        }
+        CGRect topViewFrame = topView.frame;
+        CGFloat newPanelWidth = DETAIL_WIDTH;
+        if ([viewController respondsToSelector:@selector(expectedWidth)]) {
+            newPanelWidth = [[viewController performSelector:@selector(expectedWidth)] floatValue];
+        }
+        
+        if (CGRectGetMaxX(topViewFrame) + newPanelWidth > self.view.bounds.size.width) {
+            // Move previous controller to the left
+            topViewFrame.origin.x = MAX(DETAIL_OFFSET, self.view.bounds.size.width - newPanelWidth - topViewFrame.size.width);
+            viewController.view.frame = CGRectMake(self.view.bounds.size.width - newPanelWidth, 0, newPanelWidth, DETAIL_HEIGHT);
+        } else {
+            viewController.view.frame = CGRectMake(CGRectGetMaxX(topViewFrame), 0, newPanelWidth, DETAIL_HEIGHT);
+        }
+        [viewController willMoveToParentViewController:self];
+        [self addChildViewController:viewController];
+        [self.view addSubview:viewController.view];
+        [self.detailViews addObject:viewController.view];
+        [self.detailViewWidths addObject:[NSNumber numberWithFloat:newPanelWidth]];
+        [UIView animateWithDuration:CLOSE_SLIDE_DURATION(animated) animations:^{
+            topView.frame = topViewFrame;
+        }];
+        [viewController setPanelNavigationController:self];
+        [viewController didMoveToParentViewController:self];
+        [self.detailViewControllers addObject:viewController];
     }
 }
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
+    UIViewController *viewController = nil;
     if (self.navigationController) {
         return [self.navigationController popViewControllerAnimated:animated];
     } else {
-        // TODO
+        if (self.topViewController != self.detailViewController) {
+            viewController = self.topViewController;
+            [viewController willMoveToParentViewController:nil];
+            [viewController removeFromParentViewController];
+            [viewController.view removeFromSuperview];
+            [viewController didMoveToParentViewController:nil];
+            [self.detailViewControllers removeLastObject];
+            [self.detailViews removeLastObject];
+            [self.detailViewWidths removeLastObject];
+            if ([self.detailViewControllers count] == 0) {
+                [self showSidebar];
+            }
+        }
     }
-    return nil;
+    return viewController;
 }
 
 - (NSArray *)popToViewController:(UIViewController *)viewController animated:(BOOL)animated {
@@ -572,12 +876,17 @@
 }
 
 - (NSArray *)popToRootViewControllerAnimated:(BOOL)animated {
+    NSMutableArray *viewControllers = [NSMutableArray array];
     if (self.navigationController) {
         return [self.navigationController popToRootViewControllerAnimated:animated];
     } else {
-        // TODO;
+        NSInteger count = [self.detailViewControllers count];
+        for (int i = 0; i < count; i++) {
+            [viewControllers addObject:[self popViewControllerAnimated:animated]];
+        }
+        _stackOffset = 0;
     }
-    return nil;
+    return [NSArray arrayWithArray:viewControllers];
 }
 
 
