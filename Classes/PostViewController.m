@@ -115,6 +115,10 @@
     [self refreshUI];
 }
 
+- (NSNumber *)expectedWidth {
+    return [NSNumber numberWithFloat:768];
+}
+
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     CGPoint point = [[touches anyObject] locationInView:self.view];
     // Did the touch ended inside?
