@@ -80,6 +80,10 @@
 - (void)setViewOffset:(CGFloat)offset forView:(UIView *)view;
 - (void)setStackOffset:(CGFloat)offset duration:(CGFloat)duration;
 - (CGFloat)nearestValidOffsetWithVelocity:(CGFloat)velocity;
+- (CGFloat)maxOffsetSoft;
+- (CGFloat)maxOffsetHard;
+- (CGFloat)minOffsetSoft;
+- (CGFloat)minOffsetHard;
 - (NSInteger)indexForView:(UIView *)view;
 - (UIView *)viewForIndex:(NSUInteger)index;
 - (UIView *)viewBefore:(UIView *)view;
@@ -548,33 +552,10 @@
     /*
      Step 1: setup boundaries
      */
-    CGFloat w = self.view.bounds.size.width;
-    CGFloat minSoft = 0;
-    CGFloat minHard = -w;
-    CGFloat maxSoft;
-    CGFloat maxHard;
-    NSUInteger viewCount = [self.detailViewWidths count];
-    if (viewCount <= 1) {
-        maxSoft = 0;
-        maxHard = DETAIL_LEDGE_OFFSET;
-    } else {
-        maxSoft = DETAIL_LEDGE_OFFSET - DETAIL_OFFSET;
-        maxSoft+= DETAIL_LEDGE;
-        maxSoft+= [[self.detailViewWidths objectAtIndex:(viewCount - 1)] floatValue];
-        maxSoft+= [[self.detailViewWidths objectAtIndex:(viewCount - 2)] floatValue];
-        maxSoft-= w;
-        maxHard = DETAIL_LEDGE_OFFSET - DETAIL_OFFSET;
-        maxHard+= [[self.detailViewWidths objectAtIndex:(viewCount - 2)] floatValue];
-        for (int i = viewCount - 3; i >= 0; i--) {
-            maxSoft += [[self.detailViewWidths objectAtIndex:i] floatValue];
-        }
-    }
-    if (IS_IPHONE) {
-        minSoft = 0;
-        minHard = 0;
-        maxSoft = DETAIL_LEDGE_OFFSET;
-        maxHard = DETAIL_LEDGE_OFFSET;
-    }
+    CGFloat minSoft = [self minOffsetSoft];
+    CGFloat minHard = [self minOffsetHard];
+    CGFloat maxSoft = [self maxOffsetSoft];
+    CGFloat maxHard = [self maxOffsetHard];
     NSLog(@"min [%.1f,%.1f] max[%.1f,%.1f]", minSoft, minHard, maxSoft, maxHard);
     NSLog(@"before adjusting: %.1f", offset);
     CGFloat limitOffset = MAX(minSoft, MIN(maxSoft, offset));
@@ -606,53 +587,6 @@
             // TODO: multiple panel panning
             if (ABS(velocity) < 100) {
                 if (offset < DETAIL_LEDGE_OFFSET / 3) {
-                    [self showSidebar];
-                } else {
-                    [self closeSidebar];
-                }
-            } else if (velocity > 0) {
-                // Going right
-                [self showSidebar];
-            } else {
-                [self closeSidebar];
-            }
-        }
-    }
-    return;
-    
-    CGFloat x = p.x + _panOrigin;
-    NSLog(@"pan: %.0f", offset);
-    // TODO: limits will change with multiple panels on display
-    CGFloat leftLimit = IS_IPAD ? DETAIL_LEDGE_OFFSET : DETAIL_OFFSET;
-    if (IS_IPAD && [self.detailViewControllers count] > 0) {
-        leftLimit = DETAIL_OFFSET;
-    }
-    CGFloat rightLimit = DETAIL_LEDGE_OFFSET;
-    // x limited to allowed bounds
-    CGFloat lx = MIN(MAX(leftLimit, x), rightLimit);
-    // how far are we from the limit
-    CGFloat dx = ABS(x - ABS(lx));
-
-    // if we're outside the allowed bounds
-    if (dx > 0) {
-        // Reduce the dragged distance
-        dx = dx / logf(dx + 1) * 2;
-        x = lx + (x < lx ? -dx : dx);
-    }
-    [self setViewOffset:x forView:self.topView];
-    
-    if (sender.state == UIGestureRecognizerStateEnded) {
-        if (IS_IPAD) {
-            if ([self.detailViewControllers count] == 0) {
-                // If there's only one panel don't allow closing the sidebar
-                [self showSidebar];
-            } else {
-            }
-        } else {
-            CGFloat velocity = [sender velocityInView:self.rootViewController.view].x;
-            // TODO: multiple panel panning
-            if (ABS(velocity) < 100) {
-                if (x > w / 3) {
                     [self showSidebar];
                 } else {
                     [self closeSidebar];
@@ -763,6 +697,48 @@
     }
 
     return previousOffset;
+}
+
+- (CGFloat)maxOffsetSoft {
+    CGFloat maxSoft;
+    NSUInteger viewCount = [self.detailViewWidths count];
+    if (IS_IPHONE) {
+        maxSoft = DETAIL_LEDGE_OFFSET;
+    } else if (viewCount <= 1) {
+        maxSoft = 0;
+    } else {
+        maxSoft = DETAIL_LEDGE_OFFSET - DETAIL_OFFSET;
+        maxSoft+= DETAIL_LEDGE;
+        maxSoft+= [[self.detailViewWidths objectAtIndex:(viewCount - 1)] floatValue];
+        maxSoft+= [[self.detailViewWidths objectAtIndex:(viewCount - 2)] floatValue];
+        maxSoft-= self.view.bounds.size.width;
+        for (int i = viewCount - 3; i >= 0; i--) {
+            maxSoft += [[self.detailViewWidths objectAtIndex:i] floatValue];
+        }
+    }
+    return maxSoft;
+}
+
+- (CGFloat)maxOffsetHard {
+    CGFloat maxHard;
+    NSUInteger viewCount = [self.detailViewWidths count];
+    if (IS_IPHONE) {
+        maxHard = DETAIL_LEDGE_OFFSET;
+    } else if (viewCount <= 1) {
+        maxHard = DETAIL_LEDGE_OFFSET;
+    } else {
+        maxHard = DETAIL_LEDGE_OFFSET - DETAIL_OFFSET;
+        maxHard+= [[self.detailViewWidths objectAtIndex:(viewCount - 2)] floatValue];
+    }
+    return maxHard;
+}
+
+- (CGFloat)minOffsetSoft {
+    return 0;
+}
+
+- (CGFloat)minOffsetHard {
+    return DETAIL_LEDGE_OFFSET - self.view.bounds.size.width;
 }
 
 - (NSInteger)indexForView:(UIView *)view {
