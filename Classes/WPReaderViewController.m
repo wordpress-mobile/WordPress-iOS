@@ -347,7 +347,8 @@
 
             detailViewController.detailContent = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.last_selected_item;"];
             detailViewController.readerAllItems = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.get_loaded_items();"];
-            [self.navigationController pushViewController:detailViewController animated:YES];
+            [self.panelNavigationController popToRootViewControllerAnimated:NO];
+            [self.panelNavigationController pushViewController:detailViewController animated:YES];
             [detailViewController release];
             
             return NO;
@@ -356,7 +357,8 @@
             //When in FP and the user click on an item we should push a new VC into the stack
             WPWebViewController *detailViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil]; 
             detailViewController.url = [request URL]; 
-            [self.navigationController pushViewController:detailViewController animated:YES];
+            [self.panelNavigationController popToRootViewControllerAnimated:NO];
+            [self.panelNavigationController pushViewController:detailViewController animated:YES];
             [detailViewController release];
             return NO;
         }
