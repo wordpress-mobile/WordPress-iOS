@@ -119,7 +119,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     
     // WebView
     self.webView = [[[UIWebView alloc] initWithFrame:frame] autorelease];
-    webView.autoresizingMask = UIViewAutoresizingFlexibleWidth & UIViewAutoresizingFlexibleHeight;
+    webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     webView.hidden = YES; // Hidden until content is loaded.
     webView.scalesPageToFit = YES;
     webView.backgroundColor = [UIColor colorWithHue:0.0 saturation:0.0 brightness:0.95 alpha:1.0];
