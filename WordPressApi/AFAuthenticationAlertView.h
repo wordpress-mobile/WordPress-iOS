@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "AFHTTPRequestOperation.h"
 
-@interface AFAuthenticationAlertView : NSObject<UIAlertViewDelegate>
+@interface AFAuthenticationAlertView : UIAlertView
 - (id)initWithChallenge:(NSURLAuthenticationChallenge *)challenge;
-- (void)show;
 @end

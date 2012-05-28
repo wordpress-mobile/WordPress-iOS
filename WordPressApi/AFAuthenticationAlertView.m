@@ -26,23 +26,21 @@
     if (self) {
         _challenge = [challenge retain];
     }
-    return self;
-}
-
-- (void)show {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Authentication required", @"")
+    
+    [self initWithTitle:NSLocalizedString(@"Authentication required", @"")
                                                     message:NSLocalizedString(@"Please enter your credentials", @"")
                                                    delegate:self
                                           cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
                                           otherButtonTitles:NSLocalizedString(@"Login", @""), nil];
+    
     // FIXME: what about iOS 4?
-    if ([alert respondsToSelector:@selector(setAlertViewStyle:)]) {
-        alert.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
+    if ([self respondsToSelector:@selector(setAlertViewStyle:)]) {
+        self.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
     } else {
         if (DeviceIsPad()) {
-            alert.message = [alert.message stringByAppendingString:@"\n\n\n\n"];
+            self.message = [self.message stringByAppendingString:@"\n\n\n\n"];
         } else {
-            alert.message = [alert.message stringByAppendingString:@"\n\n\n"];
+            self.message = [self.message stringByAppendingString:@"\n\n\n"];
         }
         usernameField = [[UITextField alloc] initWithFrame:CGRectMake(12.0f, 48.0f, 260.0f, 29.0f)];
         usernameField.placeholder = NSLocalizedString(@"Username", @"");
@@ -52,7 +50,7 @@
         usernameField.keyboardType = UIKeyboardTypeDefault;
         usernameField.autocorrectionType = UITextAutocorrectionTypeNo;
         usernameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        [alert addSubview:usernameField];
+        [self addSubview:usernameField];
         
         passwordField = [[UITextField alloc]  initWithFrame:CGRectMake(12.0, 82.0, 260.0, 29.0)]; 
         passwordField.placeholder = NSLocalizedString(@"Password", @"");
@@ -62,21 +60,19 @@
         passwordField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         passwordField.keyboardType = UIKeyboardTypeDefault;
         passwordField.autocorrectionType = UITextAutocorrectionTypeNo;
-        [alert addSubview:passwordField];
+        [self addSubview:passwordField];
     }
-    alert.delegate = self;
-    [alert show];
-    [alert release];
+    
+    return self;
 }
 
-#pragma mark - UIAlertViewDelegate
 
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+-(void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated {
     if (buttonIndex == 1) {
         NSString *username, *password;
-        if ([alertView respondsToSelector:@selector(setAlertViewStyle:)]) {
-            username = [[alertView textFieldAtIndex:0] text];
-            password = [[alertView textFieldAtIndex:1] text];
+        if ([self respondsToSelector:@selector(setAlertViewStyle:)]) {
+            username = [[self textFieldAtIndex:0] text];
+            password = [[self textFieldAtIndex:1] text];
         } else {
             username = usernameField.text;
             password = passwordField.text;
@@ -88,6 +84,7 @@
     } else {
         [[_challenge sender] cancelAuthenticationChallenge:_challenge];
     }
+    [super dismissWithClickedButtonIndex:buttonIndex animated:animated];
 }
 
 @end
