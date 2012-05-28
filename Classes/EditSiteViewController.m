@@ -317,17 +317,22 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex { 
 	switch(buttonIndex) {
 		case 0: {
-			HelpViewController *helpViewController = [[HelpViewController alloc] init];
-			WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-			
-			if (DeviceIsPad()) {
-				helpViewController.isBlogSetup = YES;
-				[self.navigationController pushViewController:helpViewController animated:YES];
-			}
-			else
-				[appDelegate.navigationController presentModalViewController:helpViewController animated:YES];
-			
-			[helpViewController release];
+            if ( alertView.tag == 20 ) {
+                //Domain Error or malformed response
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://ios.wordpress.org/faq/#faq_3"]];
+            } else {
+                HelpViewController *helpViewController = [[HelpViewController alloc] init];
+                WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+                
+                if (DeviceIsPad()) {
+                    helpViewController.isBlogSetup = YES;
+                    [self.navigationController pushViewController:helpViewController animated:YES];
+                }
+                else
+                    [appDelegate.navigationController presentModalViewController:helpViewController animated:YES];
+                
+                [helpViewController release];
+            }
 			break;
 		}
 		case 1:
@@ -376,7 +381,7 @@
         } else {
             // FIXME: find a better error
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                      NSLocalizedString(@"Couldn't find a WordPress site on that URL", @""),NSLocalizedDescriptionKey,
+                                      NSLocalizedString(@"Unable to read the WordPress site on that URL. Tap Need Help? to learn more and resolve this error.", @""),NSLocalizedDescriptionKey,
                                       nil];
             NSError *err = [NSError errorWithDomain:@"org.wordpress.iphone" code:NSURLErrorBadURL userInfo:userInfo];
             [self validationDidFail:err];
@@ -442,6 +447,11 @@
                                                                delegate:self
                                                       cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
                                                       otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
+            if ( [error code] == NSURLErrorBadURL ) {
+                alertView.tag = 20; // take the user to the FAQ page when hit "Need Help"
+            } else {
+                alertView.tag = 10;
+            }
             [alertView show];
             [alertView release];            
         }
