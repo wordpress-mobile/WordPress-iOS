@@ -140,11 +140,11 @@
     /*
      The conditional code we're executing is the equivalent of:
      
-        [[CTidy tidy] tidyString:str inputFormat:TidyFormat_XML outputFormat:TidyFormat_XML diagnostics:NULL error:&err];
+     [[CTidy tidy] tidyString:str inputFormat:TidyFormat_XML outputFormat:TidyFormat_XML diagnostics:NULL error:&err];
      */
     id _CTidyClass = NSClassFromString(@"CTidy");
     SEL _CTidySelector = NSSelectorFromString(@"tidy");
-    SEL _CTidyTidyStringSelector = NSSelectorFromString(@"tidyString:inputFormat:outputFormat:diagnostics:error");
+    SEL _CTidyTidyStringSelector = NSSelectorFromString(@"tidyString:inputFormat:outputFormat:diagnostics:error:");
     
     if (_CTidyClass && [_CTidyClass respondsToSelector:_CTidySelector]) {
         id _CTidyInstance = [_CTidyClass performSelector:_CTidySelector];
@@ -153,23 +153,22 @@
             NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[_CTidyInstance methodSignatureForSelector:_CTidyTidyStringSelector]];
             invocation.target = _CTidyInstance;
             invocation.selector = _CTidyTidyStringSelector;
-
+            
             // arguments 0 and 1 are self and _cmd respectively, automatically set by NSInvocation
-            [invocation setArgument:str atIndex:2]; // tidyString:
-            uint8_t format = 1; // TidyFormat_XML
+            [invocation setArgument:&str atIndex:2]; // tidyString:
+            int format = 1; // TidyFormat_XML
             [invocation setArgument:&format atIndex:3]; // inputFormat:
             [invocation setArgument:&format atIndex:4]; // outputFormat:
             NSError *err = nil;
-            [invocation setArgument:err atIndex:6];
+            [invocation setArgument:&err atIndex:6];
             
             [invocation invoke];
             
             NSString *result = nil;
             [invocation getReturnValue:&result];
-            
             if (result)
                 return result;
-        }
+        }        
     }
     
     // If we reach this point, something failed. Return the original string
