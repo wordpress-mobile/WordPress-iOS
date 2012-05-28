@@ -14,7 +14,7 @@
 
 @class CommentViewController;
 
-@interface CommentsViewController : WPTableViewController <ReplyToCommentViewControllerDelegate, UIAccelerometerDelegate> {
+@interface CommentsViewController : WPTableViewController <ReplyToCommentViewControllerDelegate, UIAccelerometerDelegate, CommentsTableViewDelegate> {
 @private
     IBOutlet UITableView *commentsTableView;
 
